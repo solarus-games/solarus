@@ -689,7 +689,7 @@ class LuaContext {
       map_api_create_crystal,
       map_api_create_crystal_block,
       map_api_create_shop_treasure,
-      map_api_create_conveyor_belt,
+      map_api_create_stream,
       map_api_create_door,
       map_api_create_stairs,
       map_api_create_separator,

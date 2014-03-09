@@ -266,10 +266,9 @@ bool Hero::JumpingState::can_avoid_teletransporter() const {
 }
 
 /**
- * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
- * \return true if the hero ignores the effect of conveyor belts in this state
+ * \copydoc Hero::State::can_avoid_stream
  */
-bool Hero::JumpingState::can_avoid_conveyor_belt() const {
+bool Hero::JumpingState::can_avoid_stream() const {
   return true;
 }
 

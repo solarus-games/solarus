@@ -14,35 +14,35 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_CONVEYOR_BELT_STATE_H
-#define SOLARUS_HERO_CONVEYOR_BELT_STATE_H
+#ifndef SOLARUS_HERO_STREAM_STATE_H
+#define SOLARUS_HERO_STREAM_STATE_H
 
 #include "hero/State.h"
 
 namespace solarus {
 
 /**
- * \brief The state "ConveyorBelt" of the hero.
+ * \brief The state "stream" of the hero.
  */
-class Hero::ConveyorBeltState: public Hero::State {
+class Hero::StreamState: public Hero::State {
 
   public:
 
-    ConveyorBeltState(Hero& hero, ConveyorBelt& conveyor_belt);
-    ~ConveyorBeltState();
+    StreamState(Hero& hero, Stream& stream);
+    ~StreamState();
 
     void start(const State* previous_state);
     void stop(const State* next_state);
     void update();
 
     bool can_avoid_teletransporter() const;
-    bool can_avoid_conveyor_belt() const;
+    bool can_avoid_stream() const;
 
   private:
 
-    ConveyorBelt& conveyor_belt;    /**< the conveyor belt to take */
-    bool snapping;                  /**< indicates that the hero is currently moving towards the
-                                     * center of the conveyor belt, before following its real direction */
+    Stream& stream;          /**< The stream to take. */
+    bool snapping;           /**< Whether the hero is currently moving towards the
+                              * center of the stream, before following its real direction. */
 
 };
 

@@ -35,7 +35,7 @@ class Bomb: public Detector {
     EntityType get_type() const;
 
     bool can_be_obstacle() const;
-    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
+    bool is_stream_obstacle(Stream& stream);
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     bool is_deep_water_obstacle() const;
     bool is_hole_obstacle() const;
@@ -44,7 +44,7 @@ class Bomb: public Detector {
     bool is_ladder_obstacle() const;
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
-    void notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int dx, int dy);
+    void notify_collision_with_stream(Stream& stream, int dx, int dy);
     void notify_position_changed();
     void notify_action_command_pressed();
     void set_suspended(bool suspended);

@@ -17,7 +17,7 @@
 #include "entities/CustomEntity.h"
 #include "entities/Block.h"
 #include "entities/Bomb.h"
-#include "entities/ConveyorBelt.h"
+#include "entities/Stream.h"
 #include "entities/Chest.h"
 #include "entities/Crystal.h"
 #include "entities/CrystalBlock.h"
@@ -439,15 +439,15 @@ bool CustomEntity::is_teletransporter_obstacle(Teletransporter& teletransporter)
 }
 
 /**
- * \copydoc MapEntity::is_conveyor_belt_obstacle
+ * \copydoc MapEntity::is_stream_obstacle
  */
-bool CustomEntity::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+bool CustomEntity::is_stream_obstacle(Stream& stream) {
 
-  const TraversableInfo& info = get_can_traverse_entity_info(conveyor_belt.get_type());
+  const TraversableInfo& info = get_can_traverse_entity_info(stream.get_type());
   if (!info.is_empty()) {
-    return info.is_traversable(conveyor_belt);
+    return info.is_traversable(stream);
   }
-  return Detector::is_conveyor_belt_obstacle(conveyor_belt);
+  return Detector::is_stream_obstacle(stream);
 }
 
 /**
@@ -930,12 +930,12 @@ void CustomEntity::notify_collision_with_teletransporter(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_conveyor_belt
+ * \copydoc MapEntity::notify_collision_with_stream
  */
-void CustomEntity::notify_collision_with_conveyor_belt(
-    ConveyorBelt& conveyor_belt, int dx, int dy) {
+void CustomEntity::notify_collision_with_stream(
+    Stream& stream, int dx, int dy) {
 
-  notify_collision_from(conveyor_belt);
+  notify_collision_from(stream);
 }
 
 /**

@@ -42,7 +42,7 @@
 #include "entities/Crystal.h"
 #include "entities/CrystalBlock.h"
 #include "entities/ShopTreasure.h"
-#include "entities/ConveyorBelt.h"
+#include "entities/Stream.h"
 #include "entities/Door.h"
 #include "entities/Stairs.h"
 #include "entities/Separator.h"
@@ -111,7 +111,7 @@ void LuaContext::register_map_module() {
       { "create_crystal", map_api_create_crystal },
       { "create_crystal_block", map_api_create_crystal_block },
       { "create_shop_treasure", map_api_create_shop_treasure },
-      { "create_conveyor_belt", map_api_create_conveyor_belt },
+      { "create_stream", map_api_create_stream },
       { "create_door", map_api_create_door },
       { "create_stairs", map_api_create_stairs },
       { "create_separator", map_api_create_separator },
@@ -1665,11 +1665,11 @@ int LuaContext::map_api_create_shop_treasure(lua_State* l) {
 }
 
 /**
- * \brief Implementation of map:create_conveyor_belt().
+ * \brief Implementation of map:create_stream().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
-int LuaContext::map_api_create_conveyor_belt(lua_State* l) {
+int LuaContext::map_api_create_stream(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
@@ -1679,12 +1679,13 @@ int LuaContext::map_api_create_conveyor_belt(lua_State* l) {
   int y = LuaTools::check_int_field(l, 1, "y");
   int direction = LuaTools::check_int_field(l, 1, "direction");
 
-  MapEntity* entity = new ConveyorBelt(
+  MapEntity* entity = new Stream(
       name,
       layer,
       x,
       y,
-      direction);
+      direction
+  );
   map.get_entities().add_entity(entity);
 
   if (map.is_started()) {

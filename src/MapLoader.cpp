@@ -171,7 +171,7 @@ int MapLoader::l_properties(lua_State* l) {
     { "crystal",          LuaContext::map_api_create_crystal },
     { "crystal_block",    LuaContext::map_api_create_crystal_block },
     { "shop_treasure",    LuaContext::map_api_create_shop_treasure },
-    { "conveyor_belt",    LuaContext::map_api_create_conveyor_belt },
+    { "conveyor_belt",    LuaContext::map_api_create_stream },  // TODO stream
     { "door",             LuaContext::map_api_create_door },
     { "stairs",           LuaContext::map_api_create_stairs },
     { "separator",        LuaContext::map_api_create_separator },

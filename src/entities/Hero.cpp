@@ -20,7 +20,7 @@
 #include "entities/Teletransporter.h"
 #include "entities/Stairs.h"
 #include "entities/Destructible.h"
-#include "entities/ConveyorBelt.h"
+#include "entities/Stream.h"
 #include "entities/Switch.h"
 #include "entities/Crystal.h"
 #include "entities/Chest.h"
@@ -31,7 +31,7 @@
 #include "entities/Enemy.h"
 #include "hero/HeroSprites.h"
 #include "hero/CarryingState.h"
-#include "hero/ConveyorBeltState.h"
+#include "hero/StreamState.h"
 #include "hero/FallingState.h"
 #include "hero/FreeState.h"
 #include "hero/FreezedState.h"
@@ -76,7 +76,7 @@ Hero::Hero(Equipment& equipment):
   end_invincible_date(0),
   normal_walking_speed(88),
   walking_speed(normal_walking_speed),
-  on_conveyor_belt(false),
+  on_stream(false),
   on_raised_blocks(false),
   next_ground_date(0),
   next_ice_date(0) {
@@ -1503,15 +1503,10 @@ bool Hero::is_teletransporter_obstacle(Teletransporter& teletransporter) {
 }
 
 /**
- * \brief Returns whether a conveyor belt is currently considered as an obstacle for the hero.
- *
- * This depends on the hero's state.
- *
- * \param conveyor_belt a conveyor belt
- * \return true if the conveyor belt is currently an obstacle for this entity
+ * \copydoc MapEntity::is_stream_obstacle
  */
-bool Hero::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
-  return state->is_conveyor_belt_obstacle(conveyor_belt);
+bool Hero::is_stream_obstacle(Stream& stream) {
+  return state->is_stream_obstacle(stream);
 }
 
 /**
@@ -1639,49 +1634,46 @@ Teletransporter* Hero::get_delayed_teletransporter() {
 }
 
 /**
- * \brief This function is called when a conveyor belt detects a collision with this entity.
- * \param conveyor_belt a conveyor belt
- * \param dx direction of the x move in pixels (0, 1 or -1)
- * \param dy direction of the y move in pixels (0, 1 or -1)
+ * \copydoc MapEntity::notify_collision_with_stream
  */
-void Hero::notify_collision_with_conveyor_belt(
-    ConveyorBelt& conveyor_belt, int dx, int dy) {
+void Hero::notify_collision_with_stream(
+    Stream& stream, int dx, int dy) {
 
-  on_conveyor_belt = true;
+  on_stream = true;
 
-  if (!state->can_avoid_conveyor_belt()) {
+  if (!state->can_avoid_stream()) {
 
-    // check that a significant part of the hero is on the conveyor belt
+    // check that a significant part of the hero is on the stream
     Rectangle center = get_center_point();
     center.add_xy(-1, -1);
     center.set_size(2, 2);
 
-    if (conveyor_belt.overlaps(center)) {
+    if (stream.overlaps(center)) {
 
-      // check that the hero can go in the conveyor belt's direction
+      // check that the hero can go in the stream's direction
       // (otherwise the hero would be trapped forever if there
-      // is an obstacle 8 pixels after the conveyor belt)
+      // is an obstacle 8 pixels after the straem)
       Rectangle collision_box(0, 0, 16, 16);
-      if (dx != 0) { // horizontal conveyor belt
+      if (dx != 0) { // horizontal stream
         collision_box.set_xy(get_top_left_x() + dx,
-            conveyor_belt.get_top_left_y());
+            stream.get_top_left_y());
       }
-      else { // vertical conveyor belt
-        collision_box.set_xy(conveyor_belt.get_top_left_x(),
+      else { // vertical stream
+        collision_box.set_xy(stream.get_top_left_x(),
             get_top_left_y() + dy);
       }
 
       if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
 
-        // check that the conveyor belt's exit is clear
-        // (otherwise the hero could not take a blocked conveyor belt the reverse way)
-        collision_box.set_xy(conveyor_belt.get_bounding_box());
+        // check that the stream's exit is clear
+        // (otherwise the hero could not take a blocked stream the reverse way)
+        collision_box.set_xy(stream.get_bounding_box());
         collision_box.add_xy(dx, dy);
 
         if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
 
           // move the hero
-          set_state(new ConveyorBeltState(*this, conveyor_belt));
+          set_state(new StreamState(*this, stream));
         }
       }
     }

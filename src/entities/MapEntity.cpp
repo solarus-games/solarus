@@ -1667,14 +1667,15 @@ bool MapEntity::is_teletransporter_obstacle(Teletransporter& teletransporter) {
 }
 
 /**
- * \brief Returns whether a conveyor belt is currently considered as an obstacle by this entity.
+ * \brief Returns whether a stream is currently considered as an obstacle by
+ * this entity.
  *
  * This function returns true by default.
  *
- * \param conveyor_belt a conveyor belt
- * \return true if the conveyor belt is currently an obstacle for this entity
+ * \param stream A stream.
+ * \return \c true if the stream is currently an obstacle for this entity.
  */
-bool MapEntity::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+bool MapEntity::is_stream_obstacle(Stream& stream) {
   return true;
 }
 
@@ -2058,12 +2059,14 @@ void MapEntity::notify_collision_with_teletransporter(Teletransporter &teletrans
 }
 
 /**
- * \brief This function is called when a conveyor belt detects a collision with this entity.
- * \param conveyor_belt a conveyor belt
- * \param dx direction of the x move in pixels (0, 1 or -1)
- * \param dy direction of the y move in pixels (0, 1 or -1)
+ * \brief This function is called when a stream detects a collision with this
+ * entity.
+ * \param stream A stream.
+ * \param dx Direction of the x move in pixels (0, 1 or -1).
+ * \param dy Direction of the y move in pixels (0, 1 or -1).
  */
-void MapEntity::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy) {
+void MapEntity::notify_collision_with_stream(
+    Stream& stream, int dx, int dy) {
 }
 
 /**

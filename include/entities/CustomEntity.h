@@ -85,7 +85,7 @@ class CustomEntity: public Detector {
     bool is_hero_obstacle(Hero& hero);
     bool is_block_obstacle(Block& block);
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
+    bool is_stream_obstacle(Stream& stream);
     bool is_stairs_obstacle(Stairs& stairs);
     bool is_sensor_obstacle(Sensor& sensor);
     bool is_switch_obstacle(Switch& sw);
@@ -122,7 +122,7 @@ class CustomEntity: public Detector {
 
     virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
     virtual void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode);
-    virtual void notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int dx, int dy);
+    virtual void notify_collision_with_stream(Stream& stream, int dx, int dy);
     virtual void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode);
     virtual void notify_collision_with_jumper(Jumper& jumper, CollisionMode collision_mode);
     void notify_collision_with_sensor(

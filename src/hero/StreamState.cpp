@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "hero/ConveyorBeltState.h"
+#include "hero/StreamState.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
-#include "entities/ConveyorBelt.h"
+#include "entities/Stream.h"
 #include "movements/TargetMovement.h"
 #include "movements/PathMovement.h"
 #include "Game.h"
@@ -28,12 +28,12 @@ namespace solarus {
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
- * \param conveyor_belt The conveyor belt to take.
+ * \param stream The stream to take.
  */
-Hero::ConveyorBeltState::ConveyorBeltState(
-    Hero& hero, ConveyorBelt& conveyor_belt):
-  State(hero, "conveyor belt"),
-  conveyor_belt(conveyor_belt),
+Hero::StreamState::StreamState(
+    Hero& hero, Stream& stream):
+  State(hero, "stream"),
+  stream(stream),
   snapping(false) {
 
 }
@@ -41,7 +41,7 @@ Hero::ConveyorBeltState::ConveyorBeltState(
 /**
  * \brief Destructor.
  */
-Hero::ConveyorBeltState::~ConveyorBeltState() {
+Hero::StreamState::~StreamState() {
 
 }
 
@@ -49,24 +49,24 @@ Hero::ConveyorBeltState::~ConveyorBeltState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::ConveyorBeltState::start(const State* previous_state) {
+void Hero::StreamState::start(const State* previous_state) {
 
   State::start(previous_state);
 
   get_sprites().set_animation_stopped_normal();
 
-  // first, snap the hero to the center of the conveyor belt
+  // first, snap the hero to the center of the stream.
   snapping = true;
   Hero& hero = get_hero();
   hero.set_movement(new TargetMovement(
-      &conveyor_belt, 0, 0, hero.get_walking_speed() * 2 / 3, true));
+      &stream, 0, 0, hero.get_walking_speed() * 2 / 3, true));
 }
 
 /**
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::ConveyorBeltState::stop(const State* next_state) {
+void Hero::StreamState::stop(const State* next_state) {
 
   State::stop(next_state);
 
@@ -76,7 +76,7 @@ void Hero::ConveyorBeltState::stop(const State* next_state) {
 /**
  * \brief Updates this state.
  */
-void Hero::ConveyorBeltState::update() {
+void Hero::StreamState::update() {
 
   State::update();
 
@@ -87,24 +87,24 @@ void Hero::ConveyorBeltState::update() {
   Hero& hero = get_hero();
   if (snapping && hero.get_movement()->is_finished()) {
 
-    // the hero is now exactly placed on the conveyor belt: start the conveyor belt's movement
+    // the hero is now exactly placed on the stream: start the stream's movement
     snapping = false;
     std::string path = "  ";
-    path[0] = path[1] = '0' + conveyor_belt.get_direction();
+    path[0] = path[1] = '0' + stream.get_direction();
     hero.clear_movement();
     hero.set_movement(new PathMovement(path, 64, false, false, false));
   }
   else {
 
-    // see if the conveyor belt's movement is finished
-    if (hero.get_movement()->is_finished() || !hero.on_conveyor_belt) {
+    // see if the stream's movement is finished
+    if (hero.get_movement()->is_finished() || !hero.on_stream) {
 
       hero.set_state(new FreeState(hero));
     }
     else {
       // update the sprites direction
       int keys_direction8 = get_commands().get_wanted_direction8();
-      int movement_direction8 = conveyor_belt.get_direction();
+      int movement_direction8 = stream.get_direction();
 
       int animation_direction = get_sprites().get_animation_direction(keys_direction8, movement_direction8);
       if (animation_direction != get_sprites().get_animation_direction()
@@ -113,7 +113,7 @@ void Hero::ConveyorBeltState::update() {
       }
     }
 
-    hero.on_conveyor_belt = false;
+    hero.on_stream = false;
   }
 }
 
@@ -121,15 +121,14 @@ void Hero::ConveyorBeltState::update() {
  * \brief Returns whether the hero ignores the effect of teletransporters in this state.
  * \return true if the hero ignores the effect of teletransporters in this state
  */
-bool Hero::ConveyorBeltState::can_avoid_teletransporter() const {
-  return true; // ignore the teletransporter until the conveyor belt is finished
+bool Hero::StreamState::can_avoid_teletransporter() const {
+  return true; // ignore the teletransporter until the stream is finished
 }
 
 /**
- * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
- * \return true if the hero ignores the effect of conveyor belts in this state
+ * \copydoc Hero::State::can_avoid_stream
  */
-bool Hero::ConveyorBeltState::can_avoid_conveyor_belt() const {
+bool Hero::StreamState::can_avoid_stream() const {
   return true;
 }
 

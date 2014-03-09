@@ -51,7 +51,7 @@ enum EntityType {
   ENTITY_CRYSTAL,            /**< a switch that lowers or raises the blue and orange blocks */
   ENTITY_CRYSTAL_BLOCK,      /**< the blue or orange blocks that are changed by the crystals */
   ENTITY_SHOP_TREASURE,      /**< a treasure the hero can buy in a shop */
-  ENTITY_CONVEYOR_BELT,      /**< a special terrain that moves the hero */
+  ENTITY_STREAM,             /**< a special terrain that moves the hero */
   ENTITY_DOOR,               /**< a door to open with a key or another action */
   ENTITY_STAIRS,             /**< stairs between two maps or inside a single map */
   ENTITY_SEPARATOR,          /**< an horizontal or vertical separation for the camera */

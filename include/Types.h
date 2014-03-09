@@ -129,7 +129,7 @@ class Separator;
 class CustomEntity;
 class Boomerang;
 class Arrow;
-class ConveyorBelt;
+class Stream;
 class Stairs;
 class Door;
 class Explosion;

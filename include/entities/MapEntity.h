@@ -209,7 +209,7 @@ class MapEntity: public ExportableToLua {
 
     virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
     virtual void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode);
-    virtual void notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int dx, int dy);
+    virtual void notify_collision_with_stream(Stream& stream, int dx, int dy);
     virtual void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode);
     virtual void notify_collision_with_jumper(Jumper& jumper, CollisionMode collision_mode);
     virtual void notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode);
@@ -244,7 +244,7 @@ class MapEntity: public ExportableToLua {
     virtual bool is_hero_obstacle(Hero& hero);
     virtual bool is_block_obstacle(Block& block);
     virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    virtual bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
+    virtual bool is_stream_obstacle(Stream& stream);
     virtual bool is_stairs_obstacle(Stairs& stairs);
     virtual bool is_sensor_obstacle(Sensor& sensor);
     virtual bool is_switch_obstacle(Switch& sw);

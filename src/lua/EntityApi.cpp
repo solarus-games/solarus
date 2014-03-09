@@ -71,7 +71,7 @@ const std::string entity_type_names[ENTITY_NUMBER + 1] = {
     "crystal",
     "crystal_block",
     "shop_treasure",
-    "conveyor_belt",
+    "stream",
     "door",
     "stairs",
     "separator",
@@ -483,7 +483,7 @@ void LuaContext::register_entity_module() {
   register_type(get_entity_internal_type_name(ENTITY_WALL), NULL, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(ENTITY_CRYSTAL), NULL, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(ENTITY_CRYSTAL_BLOCK), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_CONVEYOR_BELT), NULL, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_STREAM), NULL, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(ENTITY_STAIRS), NULL, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(ENTITY_BOMB), NULL, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(ENTITY_EXPLOSION), NULL, entity_common_methods, metamethods);

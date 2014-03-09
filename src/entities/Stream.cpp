@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/ConveyorBelt.h"
+#include "entities/Stream.h"
 #include "Map.h"
 #include "Sprite.h"
 #include "lowlevel/FileTools.h"
@@ -22,14 +22,14 @@
 namespace solarus {
 
 /**
- * \brief Creates a new conveyor belt.
+ * \brief Creates a new stream.
  * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the entity to create on the map
  * \param x x coordinate of the entity to create
  * \param y y coordinate of the entity to create
- * \param direction direction of the conveyor belt
+ * \param direction direction of the stream
  */
-ConveyorBelt::ConveyorBelt(const std::string& name,
+Stream::Stream(const std::string& name,
     Layer layer, int x, int y, int direction):
   Detector(COLLISION_OVERLAPPING, name, layer, x, y, 16, 16) {
 
@@ -42,7 +42,7 @@ ConveyorBelt::ConveyorBelt(const std::string& name,
 /**
  * \brief Destructor.
  */
-ConveyorBelt::~ConveyorBelt() {
+Stream::~Stream() {
 
 }
 
@@ -50,8 +50,8 @@ ConveyorBelt::~ConveyorBelt() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType ConveyorBelt::get_type() const {
-  return ENTITY_CONVEYOR_BELT;
+EntityType Stream::get_type() const {
+  return ENTITY_STREAM;
 }
 
 /**
@@ -59,9 +59,9 @@ EntityType ConveyorBelt::get_type() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool ConveyorBelt::is_obstacle_for(MapEntity& other) {
+bool Stream::is_obstacle_for(MapEntity& other) {
 
-  return other.is_conveyor_belt_obstacle(*this);
+  return other.is_stream_obstacle(*this);
 }
 
 /**
@@ -69,10 +69,10 @@ bool ConveyorBelt::is_obstacle_for(MapEntity& other) {
  * \param entity_overlapping the other entity
  * \param collision_mode the collision mode that detected the collision
  */
-void ConveyorBelt::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Stream::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   const Rectangle& xy_move = direction_to_xy_move(get_direction());
-  entity_overlapping.notify_collision_with_conveyor_belt(*this, xy_move.get_x(), xy_move.get_y());
+  entity_overlapping.notify_collision_with_stream(*this, xy_move.get_x(), xy_move.get_y());
 }
 
 }

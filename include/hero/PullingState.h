@@ -45,7 +45,7 @@ class Hero::PullingState: public Hero::State {
     bool is_hole_obstacle() const;
     bool is_lava_obstacle() const;
     bool is_prickle_obstacle() const;
-    bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
+    bool is_stream_obstacle(const Stream& stream) const;
     bool is_separator_obstacle(const Separator& separator) const;
 
     bool can_be_hurt(MapEntity* attacker) const;

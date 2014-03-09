@@ -754,26 +754,20 @@ bool Hero::State::is_teletransporter_delayed() const {
 }
 
 /**
- * \brief Returns whether a conveyor belt is considered as an obstacle in this state.
- *
- * Returns false by default.
- *
- * \param conveyor_belt a conveyor belt
- * \return true if the conveyor belt is an obstacle in this state
+ * \brief Returns whether a stream is considered as an obstacle in this state.
+ * \param stream A stream.
+ * \return \c true if the stream is an obstacle in this state.
  */
-bool Hero::State::is_conveyor_belt_obstacle(
-    const ConveyorBelt& conveyor_belt) const {
+bool Hero::State::is_stream_obstacle(
+    const Stream& stream) const {
   return false;
 }
 
 /**
- * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
- *
- * Returns false by default.
- *
- * \return true if the hero ignores the effect of conveyor belts in this state
+ * \brief Returns whether the hero ignores the effect of streams in this state.
+ * \return \c true if the hero ignores the effect of streams in this state.
  */
-bool Hero::State::can_avoid_conveyor_belt() const {
+bool Hero::State::can_avoid_stream() const {
   return false;
 }
 

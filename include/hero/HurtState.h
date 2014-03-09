@@ -40,7 +40,7 @@ class Hero::HurtState: public Hero::State {
     bool can_start_gameover_sequence() const;
     bool is_touching_ground() const;
     bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
-    bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
+    bool is_stream_obstacle(const Stream& stream) const;
     bool is_sensor_obstacle(const Sensor& sensor) const;
     bool is_separator_obstacle(const Separator& separator) const;
     bool can_be_hurt(MapEntity* attacker) const;

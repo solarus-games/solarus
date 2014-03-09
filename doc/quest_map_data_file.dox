@@ -931,7 +931,7 @@ stream{
   x = 200,
   y = 157,
   direction = 5,
-  sprite = "entities/conveyor_belt",
+  sprite = "entities/air_stream",
   allow_movement = false,
   allow_attack = true,
   allow_item = true,

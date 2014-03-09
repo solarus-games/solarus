@@ -494,11 +494,9 @@ bool CarriedItem::is_teletransporter_obstacle(Teletransporter& teletransporter) 
 }
 
 /**
- * \brief Returns whether a conveyor belt is currently considered as an obstacle for this entity.
- * \param conveyor_belt a conveyor belt
- * \return true if the conveyor belt is currently an obstacle for this entity
+ * \copydoc MapEntity::is_stream_obstacle
  */
-bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+bool CarriedItem::is_stream_obstacle(Stream& stream) {
   return false;
 }
 

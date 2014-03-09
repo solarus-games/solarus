@@ -48,7 +48,7 @@ class Hero::ForcedWalkingState: public Hero::State {
     bool can_avoid_lava() const;
     bool can_avoid_prickle() const;
     bool can_avoid_teletransporter() const;
-    bool can_avoid_conveyor_belt() const;
+    bool can_avoid_stream() const;
     bool can_avoid_sensor() const;
     bool can_avoid_switch() const;
     bool can_be_hurt(MapEntity* attacker) const;

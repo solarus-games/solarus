@@ -302,12 +302,9 @@ bool Hero::PullingState::is_prickle_obstacle() const {
 }
 
 /**
- * \brief Returns whether a conveyor belt is considered as an obstacle in this state.
- * \param conveyor_belt a conveyor belt
- * \return true if the conveyor belt is an obstacle in this state
+ * \copydoc Hero::State::is_stream_obstacle
  */
-bool Hero::PullingState::is_conveyor_belt_obstacle(
-    const ConveyorBelt& conveyor_belt) const {
+bool Hero::PullingState::is_stream_obstacle(const Stream& stream) const {
   return true;
 }
 

@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_CONVEYOR_BELT_H
-#define SOLARUS_CONVEYOR_BELT_H
+#ifndef SOLARUS_STREAM_H
+#define SOLARUS_STREAM_H
 
 #include "Common.h"
 #include "entities/Detector.h"
@@ -23,17 +23,19 @@
 namespace solarus {
 
 /**
- * \brief A special terrain where the hero is moved towards a specific direction.
+ * \brief A special terrain where the hero is moved towards a specific
+ * direction.
  *
- * The hero cannot resist to the movement of the conveyor belt.
+ * The hero may or may not resist to the movement of the stream, depending
+ * on its properties.
  */
-class ConveyorBelt: public Detector {
+class Stream: public Detector {
 
   public:
 
-    ConveyorBelt(const std::string& name, Layer layer, int x, int y,
+    Stream(const std::string& name, Layer layer, int x, int y,
         int direction);
-    ~ConveyorBelt();
+    ~Stream();
 
     EntityType get_type() const;
 

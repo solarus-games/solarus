@@ -169,12 +169,9 @@ bool Hero::HurtState::is_teletransporter_obstacle(
 }
 
 /**
- * \brief Returns whether a conveyor belt is considered as an obstacle in this state.
- * \param conveyor_belt a conveyor belt
- * \return true if the conveyor belt is an obstacle in this state
+ * \copydoc Hero::State::is_stream_obstacle
  */
-bool Hero::HurtState::is_conveyor_belt_obstacle(
-    const ConveyorBelt& conveyor_belt) const {
+bool Hero::HurtState::is_stream_obstacle(const Stream& stream) const {
   return true;
 }
 

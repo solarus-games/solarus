@@ -157,7 +157,7 @@ class Hero: public MapEntity {
     bool is_ladder_obstacle() const;
     bool is_block_obstacle(Block& block);
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
+    bool is_stream_obstacle(Stream& stream);
     bool is_stairs_obstacle(Stairs& stairs);
     bool is_sensor_obstacle(Sensor& sensor);
     bool is_raised_block_obstacle(CrystalBlock& raised_block);
@@ -174,7 +174,7 @@ class Hero: public MapEntity {
     void notify_collision_with_enemy(Enemy& enemy);
     void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
     void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode);
-    void notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int dx, int dy);
+    void notify_collision_with_stream(Stream& stream, int dx, int dy);
     void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode);
     void notify_collision_with_jumper(Jumper& jumper, CollisionMode collision_mode);
     void notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode);
@@ -272,7 +272,7 @@ class Hero: public MapEntity {
     class SwordTappingState;        /**< the hero is tapping his sword on a wall */
     class PullingState;             /**< the hero is pulling an object */
     class GrabbingState;            /**< the hero is grabbing an object and can pull it */
-    class ConveyorBeltState;        /**< the hero is being moved by a conveyor belt */
+    class StreamState;              /**< the hero is being moved by a stream */
     class SwordSwingingState;       /**< the hero is swinging his sword */
     class SpinAttackState;          /**< the hero is releasing a spin attack */
     class LiftingState;             /**< the hero is lifting an destroyable item (a pot, a bush, etc.) */
@@ -330,8 +330,8 @@ class Hero: public MapEntity {
     // state specific
     Teletransporter* delayed_teletransporter;   /**< a teletransporter that will be activated when the hero finishes
                                                  * a special behavior, such as falling into a hole or walking on stairs */
-    bool on_conveyor_belt;          /**< indicates that the hero's rectangle is currently overlapping a conveyor belt
-                                     * (even if the collision is not enough to take the conveyor belt and move the hero) */
+    bool on_stream;                 /**< indicates that the hero's rectangle is currently overlapping a stream
+                                     * (even if the collision is not enough to take the stream and move the hero) */
     bool on_raised_blocks;          /**< indicates that the hero is currently on
                                      * raised crystal blocks */
 

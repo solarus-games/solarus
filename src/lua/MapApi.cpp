@@ -1699,7 +1699,7 @@ int LuaContext::map_api_create_stream(lua_State* l) {
   map.get_entities().add_entity(stream);
 
   if (map.is_started()) {
-    push_entity(l, *stream);
+    push_stream(l, *stream);
     return 1;
   }
   return 0;

@@ -790,6 +790,14 @@ class LuaContext {
       switch_api_is_activated,
       switch_api_set_activated,
       switch_api_set_locked,
+      stream_api_get_speed,
+      stream_api_set_speed,
+      stream_api_get_allow_movement,
+      stream_api_set_allow_movement,
+      stream_api_get_allow_attack,
+      stream_api_set_allow_attack,
+      stream_api_get_allow_item,
+      stream_api_set_allow_item,
       door_api_is_open,
       door_api_is_opening,
       door_api_is_closed,
@@ -957,6 +965,7 @@ class LuaContext {
     static void push_chest(lua_State* l, Chest& chest);
     static void push_block(lua_State* l, Block& block);
     static void push_switch(lua_State* l, Switch& sw);
+    static void push_stream(lua_State* l, Stream& stream);
     static void push_door(lua_State* l, Door& door);
     static void push_shop_treasure(lua_State* l, ShopTreasure& shop_treasure);
     static void push_pickable(lua_State* l, Pickable& pickable);
@@ -1019,6 +1028,8 @@ class LuaContext {
     static Block& check_block(lua_State* l, int index);
     static bool is_switch(lua_State* l, int index);
     static Switch& check_switch(lua_State* l, int index);
+    static bool is_stream(lua_State* l, int index);
+    static Stream& check_stream(lua_State* l, int index);
     static bool is_door(lua_State* l, int index);
     static Door& check_door(lua_State* l, int index);
     static bool is_shop_treasure(lua_State* l, int index);

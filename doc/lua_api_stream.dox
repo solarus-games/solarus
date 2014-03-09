@@ -54,7 +54,7 @@ Returns whether the player can still move the hero while being on this stream.
 Sets whether the player can still move the hero while being on this stream.
 - \c allow_movement (boolean): \c true to allow the player to move, \c false to
   make a blocking stream.
-  The default value is \c true.
+  No value means \c true.
 
 \subsection lua_api_stream_get_allow_attack stream:get_allow_attack()
 
@@ -65,7 +65,7 @@ Returns whether the player can still use the sword while being on this stream.
 
 Sets whether the player can still use the sword while being on this stream.
 - \c allow_attack (boolean): \c true to allow the player to use the sword.
-  The default value is \c true.
+  No value means \c true.
 
 \subsection lua_api_stream_get_allow_item stream:get_allow_item()
 
@@ -78,7 +78,7 @@ stream.
 Sets whether the player can still use equipment items while being on this
 stream.
 - \c allow_item (boolean): \c true to allow the player to use equipment items.
-  The default value is \c true.
+  No value means \c true.
 
 \section lua_api_stream Events inherited from map entity
 

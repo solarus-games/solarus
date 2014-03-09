@@ -23,6 +23,7 @@
 #include "entities/Chest.h"
 #include "entities/Block.h"
 #include "entities/Switch.h"
+#include "entities/Stream.h"
 #include "entities/Door.h"
 #include "entities/Enemy.h"
 #include "entities/Sensor.h"
@@ -300,6 +301,27 @@ void LuaContext::register_entity_module() {
       metamethods
   );
 
+  // Stream.
+  static const luaL_Reg stream_methods[] = {
+      ENTITY_COMMON_METHODS,
+      { "get_speed", stream_api_get_speed },
+      { "set_speed", stream_api_set_speed },
+      { "get_allow_movement", stream_api_get_allow_movement },
+      { "set_allow_movement", stream_api_set_allow_movement },
+      { "get_allow_attack", stream_api_get_allow_attack },
+      { "set_allow_attack", stream_api_set_allow_attack },
+      { "get_allow_item", stream_api_get_allow_item },
+      { "set_allow_item", stream_api_set_allow_item },
+      { NULL, NULL }
+  };
+
+  register_type(
+      get_entity_internal_type_name(ENTITY_STREAM),
+      NULL,
+      stream_methods,
+      metamethods
+  );
+
   // Door.
   static const luaL_Reg door_methods[] = {
       ENTITY_COMMON_METHODS,
@@ -483,7 +505,6 @@ void LuaContext::register_entity_module() {
   register_type(get_entity_internal_type_name(ENTITY_WALL), NULL, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(ENTITY_CRYSTAL), NULL, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(ENTITY_CRYSTAL_BLOCK), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_STREAM), NULL, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(ENTITY_STAIRS), NULL, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(ENTITY_BOMB), NULL, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(ENTITY_EXPLOSION), NULL, entity_common_methods, metamethods);
@@ -2487,6 +2508,159 @@ Door& LuaContext::check_door(lua_State* l, int index) {
  */
 void LuaContext::push_door(lua_State* l, Door& door) {
   push_userdata(l, door);
+}
+
+/**
+ * \brief Returns whether a value is a userdata of type stream.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return true if the value at this index is a stream.
+ */
+bool LuaContext::is_stream(lua_State* l, int index) {
+  return is_userdata(l, index, get_entity_internal_type_name(ENTITY_STREAM));
+}
+
+/**
+ * \brief Checks that the userdata at the specified index of the stack is a
+ * stream and returns it.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return The stream.
+ */
+Stream& LuaContext::check_stream(lua_State* l, int index) {
+  return static_cast<Stream&>(
+      check_userdata(l, index, get_entity_internal_type_name(ENTITY_STREAM))
+  );
+}
+
+/**
+ * \brief Pushes a stream userdata onto the stack.
+ * \param l A Lua context.
+ * \param stream A stream.
+ */
+void LuaContext::push_stream(lua_State* l, Stream& stream) {
+  push_userdata(l, stream);
+}
+
+/**
+ * \brief Implementation of stream:get_speed().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::stream_api_get_speed(lua_State* l) {
+
+  Stream& stream = check_stream(l, 1);
+
+  lua_pushinteger(l, stream.get_speed());
+  return 1;
+}
+
+/**
+ * \brief Implementation of stream:set_speed().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::stream_api_set_speed(lua_State* l) {
+
+  Stream& stream = check_stream(l, 1);
+  int speed = luaL_checkint(l, 2);
+
+  stream.set_speed(speed);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of stream:get_allow_movement().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::stream_api_get_allow_movement(lua_State* l) {
+
+  Stream& stream = check_stream(l, 1);
+
+  lua_pushboolean(l, stream.get_allow_movement());
+  return 1;
+}
+
+/**
+ * \brief Implementation of stream:set_allow_movement().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::stream_api_set_allow_movement(lua_State* l) {
+
+  Stream& stream = check_stream(l, 1);
+  bool allow_movement = true;
+  if (lua_gettop(l) >= 2) {
+    allow_movement = lua_toboolean(l, 2);
+  }
+
+  stream.set_allow_movement(allow_movement);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of stream:get_allow_attack().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::stream_api_get_allow_attack(lua_State* l) {
+
+  Stream& stream = check_stream(l, 1);
+
+  lua_pushboolean(l, stream.get_allow_attack());
+  return 1;
+}
+
+/**
+ * \brief Implementation of stream:set_allow_attack().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::stream_api_set_allow_attack(lua_State* l) {
+
+  Stream& stream = check_stream(l, 1);
+  bool allow_attack = true;
+  if (lua_gettop(l) >= 2) {
+    allow_attack = lua_toboolean(l, 2);
+  }
+
+  stream.set_allow_attack(allow_attack);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of stream:get_allow_item().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::stream_api_get_allow_item(lua_State* l) {
+
+  Stream& stream = check_stream(l, 1);
+
+  lua_pushboolean(l, stream.get_allow_item());
+  return 1;
+}
+
+/**
+ * \brief Implementation of stream:set_allow_item().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::stream_api_set_allow_item(lua_State* l) {
+
+  Stream& stream = check_stream(l, 1);
+  bool allow_item = true;
+  if (lua_gettop(l) >= 2) {
+    allow_item = lua_toboolean(l, 2);
+  }
+
+  stream.set_allow_item(allow_item);
+
+  return 0;
 }
 
 /**

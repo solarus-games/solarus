@@ -188,7 +188,7 @@ void Savegame::load() {
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  int load_result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  const int load_result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
   FileTools::data_file_close_buffer(buffer);
 
   // Call the Lua savegame file.
@@ -273,8 +273,8 @@ int Savegame::l_newindex(lua_State* l) {
 void Savegame::save() {
 
   std::ostringstream oss;
-  std::map<std::string, SavedValue>::iterator it;
-  for (it = saved_values.begin(); it != saved_values.end(); it++) {
+  std::map<std::string, SavedValue>::const_iterator it;
+  for (it = saved_values.begin(); it != saved_values.end(); ++it) {
     const std::string& key = it->first;
     oss << key << " = ";
     const SavedValue& value = it->second;
@@ -378,7 +378,7 @@ bool Savegame::is_string(const std::string& key) const {
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
-  std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  const std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
   if (it != saved_values.end()) {
     const SavedValue& value = it->second;
     result = (value.type == SavedValue::VALUE_STRING);
@@ -396,7 +396,7 @@ const std::string& Savegame::get_string(const std::string& key) const {
   SOLARUS_ASSERT(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
-  std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  const std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
   if (it != saved_values.end()) {
     const SavedValue& value = it->second;
     SOLARUS_ASSERT(value.type == SavedValue::VALUE_STRING,
@@ -433,7 +433,7 @@ bool Savegame::is_integer(const std::string& key) const {
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
-  std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  const std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
   if (it != saved_values.end()) {
     const SavedValue& value = it->second;
     result = (value.type == SavedValue::VALUE_INTEGER);
@@ -452,7 +452,7 @@ int Savegame::get_integer(const std::string& key) const {
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   int result = 0;
-  std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  const std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
   if (it != saved_values.end()) {
     const SavedValue& value = it->second;
     SOLARUS_ASSERT(value.type == SavedValue::VALUE_INTEGER,
@@ -487,7 +487,7 @@ bool Savegame::is_boolean(const std::string& key) const {
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
-  std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  const std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
   if (it != saved_values.end()) {
     const SavedValue& value = it->second;
     result = (value.type == SavedValue::VALUE_BOOLEAN);
@@ -506,7 +506,7 @@ bool Savegame::get_boolean(const std::string& key) const {
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
-  std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  const std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
   if (it != saved_values.end()) {
     const SavedValue& value = it->second;
     SOLARUS_ASSERT(value.type == SavedValue::VALUE_BOOLEAN,

@@ -138,7 +138,7 @@ int LuaContext::audio_api_play_music(lua_State* l) {
 
   const std::string& music_id = luaL_optstring(l, 1, "");
   bool loop = true;  // true by default, unless there is a callback.
-  int callback_ref = LUA_NOREF;
+  int callback_ref = LUA_REFNIL;
   if (lua_gettop(l) >= 2) {
     if (lua_isboolean(l, 2)) {
       // There is a loop parameter.

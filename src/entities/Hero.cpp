@@ -1641,7 +1641,7 @@ void Hero::notify_collision_with_stream(
 
   on_stream = true;
 
-  if (!state->can_avoid_stream()) {
+  if (!state->can_avoid_stream(stream)) {
 
     // check that a significant part of the hero is on the stream
     Rectangle center = get_center_point();

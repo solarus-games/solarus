@@ -37,6 +37,7 @@ class Hero::UsingItemState: public Hero::State {
 
     virtual bool is_using_item() const;
     virtual EquipmentItemUsage& get_item_being_used();
+    virtual bool can_avoid_stream(const Stream& stream) const;
 
   private:
 

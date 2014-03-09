@@ -764,10 +764,11 @@ bool Hero::State::is_stream_obstacle(
 }
 
 /**
- * \brief Returns whether the hero ignores the effect of streams in this state.
- * \return \c true if the hero ignores the effect of streams in this state.
+ * \brief Returns whether the hero ignores the effect of a stream in this state.
+ * \param stream A stream.
+ * \return \c true if the hero ignores the effect of the stream in this state.
  */
-bool Hero::State::can_avoid_stream() const {
+bool Hero::State::can_avoid_stream(const Stream& stream) const {
   return false;
 }
 

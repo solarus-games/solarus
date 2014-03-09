@@ -156,7 +156,7 @@ bool Hero::ForcedWalkingState::can_avoid_teletransporter() const {
 /**
  * \copydoc Hero::State::can_avoid_stream
  */
-bool Hero::ForcedWalkingState::can_avoid_stream() const {
+bool Hero::ForcedWalkingState::can_avoid_stream(const Stream& stream) const {
   return true;
 }
 

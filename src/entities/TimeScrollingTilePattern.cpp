@@ -52,7 +52,7 @@ TimeScrollingTilePattern::~TimeScrollingTilePattern() {
  */
 void TimeScrollingTilePattern::update() {
 
-  uint32_t now = System::now();
+  const uint32_t now = System::now();
 
   while (now >= next_shift_date) {
     shift++;

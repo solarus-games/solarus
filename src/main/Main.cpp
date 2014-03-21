@@ -22,7 +22,8 @@
 #include <string>
 #include <SDL.h>  // Necessary on some systems for SDLMain.
 
-using namespace solarus;
+using solarus::CommandLine;
+using solarus::MainLoop;
 
 namespace {
 

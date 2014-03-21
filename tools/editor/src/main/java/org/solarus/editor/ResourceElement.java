@@ -15,10 +15,11 @@ public class ResourceElement {
         this.type = type;
         this.id = id;
         this.name = "<html>" + Project.getResource(type).getElementName(id)
-                    + "<font style=\"color:gray;\">(" + id + ")</font></html>";
+                    + " <font style=\"color:gray;\">(" + id + ")</font></html>";
     }
 
     public String toString() {
         return name;
     }
 }
+

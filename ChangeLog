@@ -164,6 +164,7 @@ Solarus Quest Editor changes
 * Increase the stepsize when scrolling the map view.
 * Center the dialog of editing an entity (#443).
 * Show the map or tileset name in the "do you want to save" dialog.
+* Show quest name and resource ids in the tree view (thanks rekcah1986).
 * Don't place new tiles below other entities if there are some (#461).
 * Fix hidden entities getting selected when clicked (#460).
 * Fix selecting entities losing their order when changing the layer.

@@ -22,9 +22,6 @@
 #include <string>
 #include <SDL.h>  // Necessary on some systems for SDLMain.
 
-using solarus::CommandLine;
-using solarus::MainLoop;
-
 namespace {
 
 /**
@@ -86,6 +83,9 @@ void print_help(int argc, char **argv) {
  * \param argv Command-line arguments.
  */
 int main(int argc, char** argv) {
+
+  using solarus::CommandLine;
+  using solarus::MainLoop;
 
   std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
 

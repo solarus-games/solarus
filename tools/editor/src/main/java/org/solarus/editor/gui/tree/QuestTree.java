@@ -221,7 +221,9 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
      */
     public void rebuildTree() {
 
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Quest");
+		String title = "<html>Quest<font style=\"color:gray;\">("
+			+ Project.getRootPath() + ")</font></html>";
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(title);
         DefaultTreeModel model = new DefaultTreeModel(root);
         model.setAsksAllowsChildren(true);
         

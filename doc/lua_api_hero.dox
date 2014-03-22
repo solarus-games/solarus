@@ -335,6 +335,7 @@ Returns the name of the current built-in state of the hero.
   \c "pushing",
   \c "running",
   \c "stairs",
+  \c "stream",
   \c "swimming",
   \c "sword loading",
   \c "sword spin attack",

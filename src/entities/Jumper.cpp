@@ -209,9 +209,9 @@ bool Jumper::is_point_in_diagonal(const Rectangle& point) const {
   }
 
   bool collision = false;
-  int x = point.get_x() - this->get_x();
-  int y = point.get_y() - this->get_y();
-  int width = get_width();
+  const int x = point.get_x() - this->get_x();
+  const int y = point.get_y() - this->get_y();
+  const int width = get_width();
 
   switch (get_direction()) {
 

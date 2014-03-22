@@ -137,8 +137,14 @@ public abstract class OkCancelDialog extends JDialog {
         if (borderTitle != null) {
             panel.setBorder(BorderFactory.createTitledBorder(borderTitle));
         }
-
-        getContentPane().add(panel);
+        final int LIMIT_HEIGHT = 480;
+        JScrollPane scrollPane = new JScrollPane(panel);
+        Dimension size = panel.getPreferredSize();
+        if(size.height > LIMIT_HEIGHT) {
+            scrollPane.setPreferredSize(new Dimension(size.width + 40,
+                    Math.min(size.height, LIMIT_HEIGHT)));
+        }
+        getContentPane().add(scrollPane);
         getContentPane().add(Box.createVerticalStrut(20));
         getContentPane().add(bottomPanel);
         getContentPane().add(Box.createVerticalStrut(10));
@@ -182,8 +188,12 @@ public abstract class OkCancelDialog extends JDialog {
      * @return true if the user applied modifications, false if he cancelled
      */
     public boolean display() {
-        setLocationRelativeTo(null);
         pack();
+
+        // Center the dialog box now that its size is determined.
+        setLocationRelativeTo(null);
+
+        // Show the dialog box.
         setVisible(true);
 
         return appliedModifications;

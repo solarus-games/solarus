@@ -54,7 +54,7 @@ class Hero::RunningState: public Hero::State {
     bool can_avoid_lava() const;
     bool can_avoid_prickle() const;
     bool can_avoid_teletransporter() const;
-    bool can_avoid_stream() const;
+    bool can_avoid_stream(const Stream& stream) const;
     bool is_sensor_obstacle(const Sensor& sensor) const;
     bool is_cutting_with_sword(Detector& detector);
     int get_sword_damage_factor() const;

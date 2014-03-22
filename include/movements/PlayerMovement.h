@@ -48,9 +48,11 @@ class PlayerMovement: public StraightMovement {
 
     void set_wanted_direction();
 
-    int moving_speed;        /**< speed of the entity when it is moving */
-    int direction8;          /**< current direction of the movement (0 to 7), as defined by the directional keys
-                              * currently pressed by the player (when the movement allows them) or -1 */
+    int moving_speed;        /**< Speed of the entity when it is moving. */
+    int direction8;          /**< Current direction of the movement (0 to 7),
+                              * as defined by the directional commands
+                              * currently pressed by the player (when the
+                              * movement allows them) or -1. */
 
 };
 

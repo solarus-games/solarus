@@ -363,8 +363,9 @@ bool Video::is_acceleration_enabled() {
  */
 bool Video::is_mode_supported(const VideoMode& mode) {
 
-  std::vector<VideoMode*>::const_iterator it = std::find(
-      all_video_modes.begin(), all_video_modes.end(), &mode);
+  const std::vector<VideoMode*>::const_iterator it = std::find(
+      all_video_modes.begin(), all_video_modes.end(), &mode
+  );
 
   if (it == all_video_modes.end()) {
     // The initial detection of this mode failed.

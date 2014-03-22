@@ -77,7 +77,7 @@ void print_help(int argc, char **argv) {
  * The following options are supported:
  *   -help                             Shows a help message.
  *   -no-audio                         Disables sounds and musics.
- *   -no-video                         Disables displaying (used for unitary tests).
+ *   -no-video                         Disables displaying (used for unit tests).
  *   -video-acceleration=yes|no        Enables or disables 2D accelerated graphics if available (default yes).
  *   -quest-size=<width>x<height>      Sets the size of the drawing area (if compatible with the quest).
  *

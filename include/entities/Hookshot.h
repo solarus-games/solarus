@@ -30,7 +30,7 @@ class Hookshot: public MapEntity {
 
   public:
 
-    Hookshot(Hero& hero);
+    Hookshot(const Hero& hero);
     ~Hookshot();
 
     EntityType get_type() const;

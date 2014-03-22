@@ -37,7 +37,7 @@ namespace solarus {
  * \brief Creates a hookshot.
  * \param hero the hero
  */
-Hookshot::Hookshot(Hero& hero):
+Hookshot::Hookshot(const Hero& hero):
   MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
   next_sound_date(System::now()),
   has_to_go_back(false),
@@ -58,7 +58,7 @@ Hookshot::Hookshot(Hero& hero):
 
   std::string path = " ";
   path[0] = '0' + (direction * 2);
-  Movement *movement = new PathMovement(path, 192, true, false, false);
+  Movement* movement = new PathMovement(path, 192, true, false, false);
   set_movement(movement);
 }
 
@@ -355,7 +355,8 @@ void Hookshot::notify_obstacle_reached() {
  * \param enemy_sprite the enemy's sprite that overlaps the hero
  * \param this_sprite the arrow sprite
  */
-void Hookshot::notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) {
+void Hookshot::notify_collision_with_enemy(
+    Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) {
 
   if (!overlaps(get_hero())) {
     enemy.try_hurt(ATTACK_HOOKSHOT, *this, &enemy_sprite);

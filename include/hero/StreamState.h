@@ -36,7 +36,9 @@ class Hero::StreamState: public Hero::State {
     void update();
 
     bool can_avoid_teletransporter() const;
-    bool can_avoid_stream() const;
+    bool can_avoid_stream(const Stream& stream) const;
+    bool can_start_sword() const;
+    bool can_start_item(EquipmentItem& item) const;
 
   private:
 

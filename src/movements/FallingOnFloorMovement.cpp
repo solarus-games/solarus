@@ -18,10 +18,12 @@
 
 namespace solarus {
 
+namespace {
+
 /**
  * \brief Y move at each time frame.
  */
-const std::string FallingOnFloorMovement::trajectories[4] = {
+const std::string trajectories[4] = {
 
     "", // none
 
@@ -33,9 +35,11 @@ const std::string FallingOnFloorMovement::trajectories[4] = {
     "0 -2  0 -1  0 -1  0 -1  0 -1  0 1  0 1  0 1  0 1  0 2  0 -1  0 -1  0 1  0 1" // high
 };
 
+}
+
 /**
  * \brief Creates a movement falling object.
- * \param height height the entity will fall from
+ * \param height Height the entity will fall from.
  */
 FallingOnFloorMovement::FallingOnFloorMovement(FallingHeight height):
   PixelMovement(trajectories[height], 30, false, true) {

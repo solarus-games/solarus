@@ -39,7 +39,7 @@ Stream::Stream(
     const std::string& sprite_name
 ):
   Detector(COLLISION_OVERLAPPING, name, layer, x, y, 16, 16),
-  speed(40),
+  speed(64),
   allow_movement(true),
   allow_attack(true),
   allow_item(true) {

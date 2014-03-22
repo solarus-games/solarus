@@ -46,13 +46,14 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
     /**
      * Constructor.
      * @param settings The map view settings to visualise with this component.
+     * @param mapViewScroller The map view's scroller
      */
-    public MapViewSettingsPanel(MapViewSettings settings) {
+    public MapViewSettingsPanel(MapViewSettings settings, JScrollPane mapViewScroller) {
         super(new BorderLayout());
 
         this.settings = settings;
 
-        zoomChooser = new ZoomChooser();
+        zoomChooser = new ZoomChooser(mapViewScroller);
         JPanel boxesPanel = new JPanel(new GridLayout(2, 3));
 
         showLowLayerCheckBox = new JCheckBox("Show low layer");
@@ -164,7 +165,7 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
         }
 
         /**
-         * Method invoked when the user clicks on the checkbox.
+		 * Method invoked when the user clicks on the checkbox.
          */
         public void itemStateChanged(ItemEvent itemEvent) {
 
@@ -185,7 +186,7 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
 
         private JSlider slider;
 
-        public ZoomChooser() {
+        public ZoomChooser(JScrollPane mapViewScroller) {
             super();
 
             setBorder(BorderFactory.createTitledBorder("Zoom"));
@@ -207,6 +208,17 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
             slider.setSnapToTicks(true);
 
             slider.addChangeListener(this);
+            if (mapViewScroller != null) {
+                mapViewScroller.addMouseWheelListener(new MouseWheelListener() {
+                    @Override
+                    public void mouseWheelMoved(MouseWheelEvent e) {
+                        if (e.isControlDown()) {
+                            slider.setValue(slider.getValue()
+                                    + e.getWheelRotation());
+                        }
+                    }
+                });
+            }
         }
 
         public void update() {

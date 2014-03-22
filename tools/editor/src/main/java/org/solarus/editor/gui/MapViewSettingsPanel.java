@@ -165,7 +165,7 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
         }
 
         /**
-		 * Method invoked when the user clicks on the checkbox.
+         * Method invoked when the user clicks on the checkbox.
          */
         public void itemStateChanged(ItemEvent itemEvent) {
 

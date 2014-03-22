@@ -17,10 +17,11 @@
 package org.solarus.editor.entities;
 
 import org.solarus.editor.*;
+
 import java.awt.*;
 
 /**
- * An special terrain where the hero is moved into a specific direction.
+ * A special terrain where the hero is moved into a specific direction.
  */
 public class Stream extends MapEntity {
 
@@ -58,6 +59,37 @@ public class Stream extends MapEntity {
      */
     public int getNbDirections() {
         return 8;
+    }
+
+    /**
+     * Declares all properties specific to the current entity type and sets
+     * their initial values.
+     */
+    public void createProperties() throws MapException {
+        createStringProperty("sprite", true, null);
+        createIntegerProperty("speed", true, 40);
+        createBooleanProperty("allow_movement", true, true);
+        createBooleanProperty("allow_attack", true, true);
+        createBooleanProperty("allow_item", true, true);
+    }
+
+    /**
+     * Notifies this entity that a property specific to its type has just changed.
+     * Does nothing by default.
+     * @param name Name of the property that has changed.
+     * @param value The new value.
+     */
+    protected void notifyPropertyChanged(String name, String value) throws MapException {
+
+        if (name.equals("sprite")) {
+
+            if (isValidSpriteName(value)) {
+                setSprite(new Sprite(value, getMap()));
+            }
+            else {
+                setSprite(null);
+            }
+        }
     }
 
     /**

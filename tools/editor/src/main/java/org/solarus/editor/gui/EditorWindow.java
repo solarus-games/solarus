@@ -884,11 +884,11 @@ public class EditorWindow extends JFrame
         String resourceName = resourceType.getName();
         String resourceNameLower = resourceName.toLowerCase();
         try {
-            String newId = JOptionPane.showInputDialog(
+            String newId = (String) JOptionPane.showInputDialog(
                     null,
                     "Please enter a new id for " + resourceNameLower + " '" + oldId + "'",
                     "Change id of " + resourceNameLower + " '" + oldId + "'",
-                    JOptionPane.QUESTION_MESSAGE);
+                    JOptionPane.QUESTION_MESSAGE, null, null, oldId);
 
             if (newId != null) {
                 if (Project.getResource(resourceType).exists(newId)) {
@@ -917,11 +917,11 @@ public class EditorWindow extends JFrame
         String resourceNameLower = resourceName.toLowerCase();
         try {
             String oldName = resource.getElementName(id);
-            String newName = JOptionPane.showInputDialog(
+            String newName = (String) JOptionPane.showInputDialog(
                     null,
                     "Please enter a new name for '" + oldName + "'",
                     "Rename " + resourceNameLower + " '" + oldName + "'",
-                    JOptionPane.QUESTION_MESSAGE);
+                    JOptionPane.QUESTION_MESSAGE, null, null, oldName);
 
             if (newName != null) {
                 Project.renameResourceElement(resourceType, id, newName);

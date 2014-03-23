@@ -336,7 +336,7 @@ public class MapView extends JComponent implements Observer {
                     }
 
                     switchAddingNewEntity(EntityType.TILE, null);
-                   }
+                }
             }
         }
         else if (o instanceof MapViewSettings) {
@@ -356,6 +356,7 @@ public class MapView extends JComponent implements Observer {
                 MapViewSettings.ChangeInfo info = (MapViewSettings.ChangeInfo) parameter;
                 if (info.setting.equals("zoom")) {
                     // The zoom has changed.
+                    setSize(getPreferredSize());  // Make sure the scroller knows our now size.
                     if (getParent() instanceof JViewport) {
                         JViewport viewport = (JViewport) getParent();
 
@@ -363,11 +364,24 @@ public class MapView extends JComponent implements Observer {
                         double newZoom = (double) info.newValue;
                         Rectangle viewRegion = viewport.getViewRect();
 
-                        int centerX = viewRegion.x + viewRegion.width / 2;
-                        int x = (int) (centerX / oldZoom * newZoom) - viewRegion.width / 2;
-
-                        int centerY = viewRegion.y + viewRegion.height / 2;
-                        int y = (int) (centerY / oldZoom * newZoom) - viewRegion.height / 2;
+                        int oldX = 0;
+                        int oldY = 0;
+                        if (getMousePosition() != null) {
+                            // The mouse is in the map view: center the zoom on
+                            // the mouse.
+                            oldX = (int) getMousePosition().getX();
+                            oldY = (int) getMousePosition().getY();
+                        }
+                        else {
+                            // Otherwise use the center of the viewport as
+                            // reference.
+                            oldX = viewRegion.x + viewRegion.width / 2;
+                            oldY = viewRegion.y + viewRegion.height / 2;
+                        }
+                        int offsetX = oldX - viewRegion.x;
+                        int offsetY = oldY - viewRegion.y;
+                        int x = (int) (oldX / oldZoom * newZoom) - offsetX;
+                        int y = (int) (oldY / oldZoom * newZoom) - offsetY;
 
                         viewport.setViewPosition(new Point(x, y));
                     }

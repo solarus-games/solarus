@@ -31,12 +31,13 @@ public class MapViewHeader extends JPanel {
      * Constructor.
      * @param map The map.
      * @param mapView The map view.
+     * @param mapViewScroller The map view's scroller
      */
-    MapViewHeader(Map map, MapView mapView) {
+    MapViewHeader(Map map, MapView mapView, JScrollPane mapViewScroller) {
         super(new BorderLayout());
 
         MapViewSettingsPanel settingsPanel =
-            new MapViewSettingsPanel(map.getViewSettings());
+            new MapViewSettingsPanel(map.getViewSettings(), mapViewScroller);
 
         AddEntitiesToolbar addEntitiesToolbar = new AddEntitiesToolbar(mapView);
 

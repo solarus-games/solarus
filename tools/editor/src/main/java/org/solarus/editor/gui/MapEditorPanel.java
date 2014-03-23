@@ -69,7 +69,7 @@ public class MapEditorPanel extends AbstractEditorPanel {
         MapViewMouseCoordinates mapViewMouseCoordinates =
                 new MapViewMouseCoordinates(getMapView());
 
-        mapViewHeader = new MapViewHeader(map, getMapView());
+        mapViewHeader = new MapViewHeader(map, getMapView(), mapViewScroller);
 
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.add(mapViewHeader, BorderLayout.NORTH);

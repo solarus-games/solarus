@@ -138,7 +138,14 @@ public abstract class OkCancelDialog extends JDialog {
             panel.setBorder(BorderFactory.createTitledBorder(borderTitle));
         }
 
-        getContentPane().add(panel);
+        final int LIMIT_HEIGHT = 480;
+        JScrollPane scrollPane = new JScrollPane(panel);
+        Dimension size = panel.getPreferredSize();
+        if(size.height > LIMIT_HEIGHT) {
+            scrollPane.setPreferredSize(new Dimension(size.width + 40,
+                    Math.min(size.height, LIMIT_HEIGHT)));
+        }
+        getContentPane().add(scrollPane);
         getContentPane().add(Box.createVerticalStrut(20));
         getContentPane().add(bottomPanel);
         getContentPane().add(Box.createVerticalStrut(10));

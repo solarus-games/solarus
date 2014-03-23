@@ -46,14 +46,13 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
     /**
      * Constructor.
      * @param settings The map view settings to visualise with this component.
-     * @param mapViewScroller The map view's scroller
      */
-    public MapViewSettingsPanel(MapViewSettings settings, JScrollPane mapViewScroller) {
+    public MapViewSettingsPanel(MapViewSettings settings) {
         super(new BorderLayout());
 
         this.settings = settings;
 
-        zoomChooser = new ZoomChooser(mapViewScroller);
+        zoomChooser = new ZoomChooser();
         JPanel boxesPanel = new JPanel(new GridLayout(2, 3));
 
         showLowLayerCheckBox = new JCheckBox("Show low layer");
@@ -186,7 +185,7 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
 
         private JSlider slider;
 
-        public ZoomChooser(final JScrollPane mapViewScroller) {
+        public ZoomChooser() {
             super();
 
             setBorder(BorderFactory.createTitledBorder("Zoom"));
@@ -208,31 +207,6 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
             slider.setSnapToTicks(true);
 
             slider.addChangeListener(this);
-            if (mapViewScroller != null) {
-                mapViewScroller.setWheelScrollingEnabled(false);
-                mapViewScroller.getHorizontalScrollBar().setBlockIncrement(50);
-                mapViewScroller.getHorizontalScrollBar().setUnitIncrement(10);
-                mapViewScroller.getVerticalScrollBar().setBlockIncrement(50);
-                mapViewScroller.getVerticalScrollBar().setUnitIncrement(10);
-                mapViewScroller.addMouseWheelListener(new MouseWheelListener() {
-                    @Override
-                    public void mouseWheelMoved(MouseWheelEvent e) {
-                        if (e.isControlDown()) {
-                            slider.setValue(slider.getValue() - e.getWheelRotation());
-                        } else {
-                            JScrollBar bar;
-                            if(e.isShiftDown()) {
-                                bar = mapViewScroller.getHorizontalScrollBar();
-                            } else {
-                                bar = mapViewScroller.getVerticalScrollBar();
-                            }
-                            int newValue = bar.getValue() + bar.getBlockIncrement()
-                                    * e.getUnitsToScroll();
-                            bar.setValue(newValue);
-                        }
-                    }
-                });
-            }
         }
 
         public void update() {

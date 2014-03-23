@@ -64,12 +64,12 @@ public class MapEditorPanel extends AbstractEditorPanel {
         leftPanel.setContinuousLayout(true);
 
         mapView = new MapView(this);
-        JScrollPane mapViewScroller = new JScrollPane(getMapView());
+        JScrollPane mapViewScroller = new MapViewScroller(mapView);
 
         MapViewMouseCoordinates mapViewMouseCoordinates =
                 new MapViewMouseCoordinates(getMapView());
 
-        mapViewHeader = new MapViewHeader(map, getMapView(), mapViewScroller);
+        mapViewHeader = new MapViewHeader(map, getMapView());
 
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.add(mapViewHeader, BorderLayout.NORTH);

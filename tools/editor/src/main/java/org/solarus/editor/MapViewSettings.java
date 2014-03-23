@@ -94,6 +94,7 @@ public class MapViewSettings extends Observable {
 
     /**
      * Returns the zoom of the map view.
+     * Possible values are 0.25, 0.5, 1.0 and 2.0 (default).
      * @return the zoom
      */
     public double getZoom() {
@@ -102,6 +103,7 @@ public class MapViewSettings extends Observable {
 
     /**
      * Sets the zoom of the map view.
+     * Possible values are 0.25, 0.5, 1.0 and 2.0 (default).
      * @param zoom the zoom
      */
     public void setZoom(double zoom) {
@@ -110,6 +112,24 @@ public class MapViewSettings extends Observable {
             this.zoom = zoom;
             setChanged();
             notifyObservers(new ChangeInfo("zoom", oldZoom, zoom));
+        }
+    }
+
+    /**
+     * Multiplies the zoom value by 2 if possible.
+     */
+    public void zoomIn() {
+        if (zoom < 2.0) {
+            setZoom(zoom * 2.0);
+        }
+    }
+
+    /**
+     * Divides the zoom value by 2 if possible.
+     */
+    public void zoomOut() {
+        if (zoom > 0.25) {
+            setZoom(zoom / 2.0);
         }
     }
 

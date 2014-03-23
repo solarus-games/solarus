@@ -33,7 +33,7 @@ import org.solarus.editor.map_editor_actions.*;
 /**
  * This component shows the map image and allows the user to modify it.
  */
-public class MapView extends JComponent implements Observer, Scrollable {
+public class MapView extends JComponent implements Observer {
 
     /**
      * The parent panel.
@@ -231,28 +231,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
         height = (int) ((height + 2 * AREA_AROUND_MAP) * getZoom());
 
         return new Dimension(width, height);
-    }
-
-    // interface Scrollable
-    public Dimension getPreferredScrollableViewportSize() {
-        return getPreferredSize();
-    }
-
-    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-        return getScrollableBlockIncrement(visibleRect, orientation, direction) / 10;
-    }
-
-    public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-        return orientation == SwingConstants.HORIZONTAL ?
-                visibleRect.width : visibleRect.height;
-    }
-
-    public boolean getScrollableTracksViewportWidth() {
-        return false;
-    }
-
-    public boolean getScrollableTracksViewportHeight() {
-        return false;
     }
 
     /**

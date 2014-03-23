@@ -210,11 +210,15 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
             slider.addChangeListener(this);
             if (mapViewScroller != null) {
                 mapViewScroller.setWheelScrollingEnabled(false);
+                mapViewScroller.getHorizontalScrollBar().setBlockIncrement(50);
+                mapViewScroller.getHorizontalScrollBar().setUnitIncrement(10);
+                mapViewScroller.getVerticalScrollBar().setBlockIncrement(50);
+                mapViewScroller.getVerticalScrollBar().setUnitIncrement(10);
                 mapViewScroller.addMouseWheelListener(new MouseWheelListener() {
                     @Override
                     public void mouseWheelMoved(MouseWheelEvent e) {
                         if (e.isControlDown()) {
-                            slider.setValue(slider.getValue() + e.getWheelRotation());
+                            slider.setValue(slider.getValue() - e.getWheelRotation());
                         } else {
                             JScrollBar bar;
                             if(e.isShiftDown()) {

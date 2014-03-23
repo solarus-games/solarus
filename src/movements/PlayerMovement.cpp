@@ -60,7 +60,7 @@ void PlayerMovement::update() {
   else {
 
     // check whether the wanted direction has changed
-    GameCommands& commands = get_entity()->get_game().get_commands();
+    const GameCommands& commands = get_entity()->get_game().get_commands();
     int wanted_direction8 = commands.get_wanted_direction8();
     if (wanted_direction8 != direction8 && !is_suspended()) {
       direction8 = wanted_direction8;
@@ -130,8 +130,7 @@ void PlayerMovement::compute_movement() {
     set_angle(Geometry::degrees_to_radians(direction8 * 45));
   }
 
-  // notify the entity that its movement has just changed:
-  // indeed, the entity may need to update its sprites
+  // Notify the entity that the properties of its movement have just changed.
   notify_movement_changed();
 }
 

@@ -1329,7 +1329,7 @@ on the map.
     No value means no sprite (the stream will then be invisible).
   - \c speed (number, optional): Speed of the movement applied to the hero by
     the stream, in pixels per second.
-    The default value is \c 88.
+    The default value is \c 64.
   - \c allow_movement (boolean, optional): Whether the player can still move the
     hero when he is on the stream.
     The default value is \c true.

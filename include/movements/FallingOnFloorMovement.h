@@ -24,10 +24,10 @@
 namespace solarus {
 
 /**
- * \brief Movement of an entity that falls on the floor and bounces.
+ * \brief Movement of something that falls on the floor and slightly bounces.
  *
- * Movement of an item that falls on the floor and
- * bounces one or several times before it stops.
+ * This is used for objects that fall on the floor and
+ * bounce one or several times before they stop.
  * This movement is typically used by the pickable treasures
  * that appear when the player kills an enemy.
  */
@@ -35,13 +35,8 @@ class FallingOnFloorMovement: public PixelMovement {
 
   public:
 
-    // construction and destruction
     FallingOnFloorMovement(FallingHeight height);
     ~FallingOnFloorMovement();
-
-  private:
-
-    static const std::string trajectories[];
 
 };
 

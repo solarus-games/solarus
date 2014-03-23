@@ -36,6 +36,8 @@ class Hero::BoomerangState: public Hero::State {
     void start(const State* previous_state);
     void update();
 
+    bool can_avoid_stream(const Stream& stream) const;
+
   private:
 
     int direction_pressed8;                      /**< direction pressed by the player */

@@ -67,7 +67,7 @@ public class Stream extends MapEntity {
      */
     public void createProperties() throws MapException {
         createStringProperty("sprite", true, null);
-        createIntegerProperty("speed", true, 40);
+        createIntegerProperty("speed", true, 64);
         createBooleanProperty("allow_movement", true, true);
         createBooleanProperty("allow_attack", true, true);
         createBooleanProperty("allow_item", true, true);

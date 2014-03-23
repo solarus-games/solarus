@@ -59,7 +59,7 @@ void Hero::StreamState::start(const State* previous_state) {
   snapping = true;
   Hero& hero = get_hero();
   hero.set_movement(new TargetMovement(
-      &stream, 0, 0, hero.get_walking_speed() * 2 / 3, true));
+      &stream, 0, 0, stream.get_speed(), true));
 }
 
 /**
@@ -92,7 +92,7 @@ void Hero::StreamState::update() {
     std::string path = "  ";
     path[0] = path[1] = '0' + stream.get_direction();
     hero.clear_movement();
-    hero.set_movement(new PathMovement(path, 64, false, false, false));
+    hero.set_movement(new PathMovement(path, stream.get_speed(), false, false, false));
   }
   else {
 
@@ -128,8 +128,22 @@ bool Hero::StreamState::can_avoid_teletransporter() const {
 /**
  * \copydoc Hero::State::can_avoid_stream
  */
-bool Hero::StreamState::can_avoid_stream() const {
+bool Hero::StreamState::can_avoid_stream(const Stream& stream) const {
   return true;
+}
+
+/**
+ * \copydoc Hero::State::can_start_sword
+ */
+bool Hero::StreamState::can_start_sword() const {
+  return stream.get_allow_attack();
+}
+
+/**
+ * \copydoc Hero::State::can_start_item
+ */
+bool Hero::StreamState::can_start_item(EquipmentItem& item) const {
+  return stream.get_allow_item();
 }
 
 }

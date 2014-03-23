@@ -86,12 +86,12 @@ std::string PathFinding::compute_path() {
   target.add_x(-target.get_x() % 8);
   target.add_y(4);
   target.add_y(-target.get_y() % 8);
-  int target_index = get_square_index(target);
+  const int target_index = get_square_index(target);
 
   Debug::check_assertion(target.get_x() % 8 == 0 && target.get_y() % 8 == 0,
       "Could not snap the target to the map grid");
 
-  int total_mdistance = get_manhattan_distance(source, target);
+  const int total_mdistance = get_manhattan_distance(source, target);
   if (total_mdistance > 200 || target_entity.get_layer() != source_entity.get_layer()) {
     //std::cout << "too far, not computing a path\n";
     return ""; // too far to compute a path
@@ -100,7 +100,7 @@ std::string PathFinding::compute_path() {
   std::string path = "";
 
   Node starting_node;
-  int index = get_square_index(source);
+  const int index = get_square_index(source);
   starting_node.location = source;
   starting_node.index = index;
   starting_node.previous_cost = 0;
@@ -116,7 +116,7 @@ std::string PathFinding::compute_path() {
   while (!finished) {
 
     // pick the node with the lowest total cost in the open list
-    int index = open_list_indices.front();
+    const int index = open_list_indices.front();
     Node* current_node = &open_list[index];
     open_list_indices.pop_front();
     closed_list[index] = *current_node;
@@ -140,20 +140,20 @@ std::string PathFinding::compute_path() {
       for (int i = 0; i < 8; i++) {
 
         Node new_node;
-        int immediate_cost = (i & 1) ? 11 : 8;
+        const int immediate_cost = (i & 1) ? 11 : 8;
         new_node.previous_cost = current_node->previous_cost + immediate_cost;
         new_node.location = current_node->location;
         new_node.location.add_xy(neighbours_locations[i]);
         new_node.index = get_square_index(new_node.location);
         //std::cout << "  node in direction " << i << ": index = " << new_node.index << std::endl;
 
-        bool in_closed_list = (closed_list.find(new_node.index) != closed_list.end());
+        const bool in_closed_list = (closed_list.find(new_node.index) != closed_list.end());
         if (!in_closed_list && get_manhattan_distance(new_node.location, target) < 200
             && is_node_transition_valid(*current_node, i)) {
           //std::cout << "  node in direction " << i << " is not in the closed list\n";
           // not in the closed list: look in the open list
 
-          bool in_open_list = open_list.find(new_node.index) != open_list.end();
+          const bool in_open_list = open_list.find(new_node.index) != open_list.end();
 
           if (!in_open_list) {
             // not in the open list: add it
@@ -204,8 +204,8 @@ std::string PathFinding::compute_path() {
  */
 int PathFinding::get_square_index(const Rectangle& location) const {
 
-  int x8 = location.get_x() / 8;
-  int y8 = location.get_y() / 8;
+  const int x8 = location.get_x() / 8;
+  const int y8 = location.get_y() / 8;
   return y8 * map.get_width8() + x8;
 }
 
@@ -218,8 +218,8 @@ int PathFinding::get_square_index(const Rectangle& location) const {
 int PathFinding::get_manhattan_distance(
     const Rectangle& point1, const Rectangle& point2) const {
 
-  int distance = abs(point2.get_x() - point1.get_x()) + abs(point2.get_y() - point1.get_y());
-  return distance;
+  return abs(point2.get_x() - point1.get_x()) +
+      abs(point2.get_y() - point1.get_y());
 }
 
 
@@ -233,20 +233,20 @@ bool PathFinding::Node::operator<(const Node& other) const {
 
 /**
  * \brief Adds the index of a node to the sorted list of indices of the open
- * list, making sure the list remains sorted.
+ * list, making sure that the list remains sorted.
  * \param node The node.
  */
 void PathFinding::add_index_sorted(Node* node) {
 
   bool inserted = false;
-  std::list<int>::iterator i;
-  for (i = open_list_indices.begin();
-      i != open_list_indices.end() && !inserted;
-      ++i) {
-    int index = *i;
-    Node* current_node = &open_list[index];
+  std::list<int>::iterator it;
+  for (it = open_list_indices.begin();
+      it != open_list_indices.end() && !inserted;
+      ++it) {
+    const int index = *it;
+    const Node* current_node = &open_list[index];
     if (current_node->total_cost >= node->total_cost) {
-      open_list_indices.insert(i, node->index);
+      open_list_indices.insert(it, node->index);
       inserted = true;
     }
   }

@@ -17,7 +17,7 @@
 #include "hero/UsingItemState.h"
 #include "hero/FreeState.h"
 #include "lowlevel/System.h"
-#include "entities/Detector.h"
+#include "entities/Stream.h"
 
 namespace solarus {
 
@@ -92,6 +92,14 @@ bool Hero::UsingItemState::is_using_item() const {
  */
 EquipmentItemUsage& Hero::UsingItemState::get_item_being_used() {
   return item_usage;
+}
+
+/**
+ * \copydoc Hero::State::can_avoid_stream
+ */
+bool Hero::UsingItemState::can_avoid_stream(const Stream& stream) const {
+  // If the hero can use items on this stream, allow to stay in UsingItemState.
+  return stream.get_allow_item();
 }
 
 }

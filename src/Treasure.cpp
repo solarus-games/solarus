@@ -73,8 +73,8 @@ Treasure::~Treasure() {
 
 /**
  * \brief Assignment operator.
- * \param other the treasure to copy
- * \return this treasure
+ * \param other The treasure to copy.
+ * \return This treasure.
  */
 Treasure& Treasure::operator=(const Treasure& other) {
 
@@ -160,7 +160,7 @@ int Treasure::get_variant() const {
 
 /**
  * \brief Returns whether this treasure is saved.
- * \return true if this treasure is saved.
+ * \return \c true if this treasure is saved.
  */
 bool Treasure::is_saved() const {
   return !get_savegame_variable().empty();
@@ -172,7 +172,7 @@ bool Treasure::is_saved() const {
  *
  * Returns false if the treasure is not saved.
  *
- * \return true if the player has found this treasure.
+ * \return \c true if the player has found this treasure.
  */
 bool Treasure::is_found() const {
   return is_saved() && game->get_savegame().get_boolean(savegame_variable);
@@ -180,7 +180,7 @@ bool Treasure::is_found() const {
 
 /**
  * \brief Returns whether this treasure is empty.
- * \return true if this treasure is empty
+ * \return \c true if this treasure is empty.
  */
 bool Treasure::is_empty() const {
   return get_item_name().empty();
@@ -225,20 +225,21 @@ void Treasure::give_to_player() const {
 
 /**
  * \brief Draws the treasure.
- * \param dst_surface the surface where to draw
- * \param x the treasure x position on this surface
- * \param y the treasure y position on this surface
+ * \param dst_surface The surface where to draw.
+ * \param x The treasure x position on this surface.
+ * \param y The treasure y position on this surface.
  */
 void Treasure::draw(Surface& dst_surface, int x, int y) {
 
   if (sprite == NULL) {
-    // create the sprite only if needed (many treasures are actually never drawn)
+    // Create the sprite only if needed (many treasures are actually
+    // never drawn).
     sprite = new Sprite("entities/items");
     sprite->set_current_animation(get_item_name());
     sprite->set_current_direction(get_variant() - 1);
   }
 
-  // draw the item
+  // Draw the item.
   sprite->draw(dst_surface, x, y);
 }
 

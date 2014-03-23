@@ -127,7 +127,7 @@ void Hero::PushingState::update() {
 /**
  * \copydoc Hero::State::can_avoid_stream
  */
-bool Hero::PushingState::can_avoid_stream() const {
+bool Hero::PushingState::can_avoid_stream(const Stream& stream) const {
   return true;
 }
 

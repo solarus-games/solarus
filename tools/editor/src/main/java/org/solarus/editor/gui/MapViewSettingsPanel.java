@@ -186,7 +186,7 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
 
         private JSlider slider;
 
-        public ZoomChooser(JScrollPane mapViewScroller) {
+        public ZoomChooser(final JScrollPane mapViewScroller) {
             super();
 
             setBorder(BorderFactory.createTitledBorder("Zoom"));
@@ -209,12 +209,22 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
 
             slider.addChangeListener(this);
             if (mapViewScroller != null) {
+                mapViewScroller.setWheelScrollingEnabled(false);
                 mapViewScroller.addMouseWheelListener(new MouseWheelListener() {
                     @Override
                     public void mouseWheelMoved(MouseWheelEvent e) {
                         if (e.isControlDown()) {
-                            slider.setValue(slider.getValue()
-                                    + e.getWheelRotation());
+                            slider.setValue(slider.getValue() + e.getWheelRotation());
+                        } else {
+                            JScrollBar bar;
+                            if(e.isShiftDown()) {
+                                bar = mapViewScroller.getHorizontalScrollBar();
+                            } else {
+                                bar = mapViewScroller.getVerticalScrollBar();
+                            }
+                            int newValue = bar.getValue() + bar.getBlockIncrement()
+                                    * e.getUnitsToScroll();
+                            bar.setValue(newValue);
                         }
                     }
                 });

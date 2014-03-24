@@ -943,7 +943,6 @@ bool Map::test_collision_with_obstacles(
 
   // This function is called very often.
   // For performance reasons, we only check the border of the of the collision box.
-  // TODO check that the size is a multiple of 8x8 in MapEntity::set_size().
 
   // Collisions with the terrain
   // (i.e., tiles and dynamic entities that may change it).

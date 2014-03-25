@@ -165,6 +165,7 @@ Solarus Quest Editor changes
 * The order of resources in the quest tree can now be changed (#319).
 * Increase the stepsize when scrolling the map view.
 * Center the dialog of editing an entity (#443).
+* Add a scroller to dialogs that are too high (#437) (rekcah1986).
 * Show the map or tileset name in the "do you want to save" dialog.
 * Show quest name and resource ids in the tree view (thanks rekcah1986).
 * Don't place new tiles below other entities if there are some (#461).

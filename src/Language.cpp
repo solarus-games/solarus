@@ -90,7 +90,7 @@ const std::string& Language::get_language_name(
     }
   }
 
-  static std::string empty_string("");
+  static const std::string empty_string("");
   return empty_string;
 }
 

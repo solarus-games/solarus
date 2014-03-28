@@ -62,7 +62,7 @@ void MapLoader::load_map(Game& game, Map& map) {
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  int load_result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  const int load_result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
   FileTools::data_file_close_buffer(buffer);
 
   if (load_result != 0) {

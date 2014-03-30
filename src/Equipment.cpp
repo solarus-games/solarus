@@ -57,7 +57,7 @@ Equipment::Equipment(Savegame& savegame):
 Equipment::~Equipment() {
 
   std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
+  for (it = items.begin(); it != items.end(); ++it) {
     EquipmentItem* item = it->second;
     RefCountable::unref(item);
   }

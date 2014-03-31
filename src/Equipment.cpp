@@ -658,7 +658,7 @@ void Equipment::set_ability(Ability ability, int level) {
  */
 void Equipment::notify_ability_used(Ability ability) {
 
-  std::map<std::string, EquipmentItem*>::iterator it;
+  std::map<std::string, EquipmentItem*>::const_iterator it;
   for (it = items.begin(); it != items.end(); it++) {
     it->second->notify_ability_used(ability);
   }

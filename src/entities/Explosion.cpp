@@ -169,11 +169,11 @@ void Explosion::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, 
  * \param enemy the enemy to attack
  * \param enemy_sprite the enemy's sprite detected by the explosion
  */
-void Explosion::try_attack_enemy(Enemy &enemy, Sprite &enemy_sprite) {
+void Explosion::try_attack_enemy(Enemy& enemy, Sprite& enemy_sprite) {
 
   // see if the enemy was already hurt by this explosion
   bool found = false;
-  std::list<Enemy*>::iterator it;
+  std::list<Enemy*>::const_iterator it;
   for (it = victims.begin(); it != victims.end() && !found; it++) {
     found = ((*it) == &enemy);
   }

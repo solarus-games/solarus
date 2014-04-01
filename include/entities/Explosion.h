@@ -44,12 +44,12 @@ class Explosion: public Detector {
     void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
 
     // collisions
-    void notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite);
+    void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
     void notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping);
-    void notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overlapping);
+    void notify_collision_with_crystal(Crystal& crystal, Sprite& sprite_overlapping);
     void notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode);
-    void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
-    void try_attack_enemy(Enemy &enemy, Sprite &enemy_sprite);
+    void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
+    void try_attack_enemy(Enemy& enemy, Sprite &enemy_sprite);
     void notify_attacked_enemy(
         EnemyAttack attack,
         Enemy& victim,

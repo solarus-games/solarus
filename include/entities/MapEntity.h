@@ -36,7 +36,7 @@ namespace solarus {
  * \brief Abstract class for all objects placed on a map.
  *
  * Example of entities include tiles, enemies, the hero,
- * interactive objects, doors, chests, etc.
+ * non-playing characters, doors, chests, etc.
  * Each entity has:
  * - a bounding box that represents its position on the map (a rectangle),
  * - a layer on the map

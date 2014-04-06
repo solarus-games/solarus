@@ -1,0 +1,48 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH SOLARUS 6 "April 6, 2014"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+solarus \- ARPG engine
+.SH SYNOPSIS
+.B solarus
+.RI [OPTIONS]
+.br
+.SH DESCRIPTION
+This manual page documents briefly the
+.B solarus
+engine.
+.PP
+.\" TeX users may be more comfortable with the \fB<whatever>\fP and
+.\" \fI<whatever>\fP escape sequences to invode bold face and italics,
+.\" respectively.
+\fBsolarus\fP is a C++ engine that runs quests written in lua.
+.SH OPTIONS
+A summary of options is included below.
+.TP
+.B \-help
+Show summary of options.
+.TP
+.B /path/to/quest
+Insert path to quest directory.
+This directory must contain a data.solarus (or data.solarus.zip)
+.B OR
+A directory containing a data subdirectory with the quest data inside.
+.SH AUTHOR
+solarus was written by Christopho.
+.PP
+This manual page was written by Nathan Moore <nathanmoore@cox.net>,
+for the Solarus project (feel free to use it).

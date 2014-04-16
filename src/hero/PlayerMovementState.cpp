@@ -17,6 +17,8 @@
 #include "hero/PlayerMovementState.h"
 #include "hero/HeroSprites.h"
 #include "entities/Jumper.h"
+#include "entities/Stream.h"
+#include "entities/StreamAction.h"
 #include "movements/PlayerMovement.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/System.h"

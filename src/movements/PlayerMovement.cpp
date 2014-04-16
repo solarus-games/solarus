@@ -16,6 +16,8 @@
  */
 #include "movements/PlayerMovement.h"
 #include "entities/MapEntity.h"
+#include "entities/Stream.h"
+#include "entities/StreamAction.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Debug.h"
 #include "Game.h"
@@ -48,8 +50,15 @@ void PlayerMovement::update() {
 
   StraightMovement::update();
 
-  if (get_entity() == NULL || !get_entity()->is_on_map()) {
+  const MapEntity* entity = get_entity();
+  if (entity == NULL || !entity->is_on_map()) {
     return; // the entity is not ready yet
+  }
+
+  if (entity->has_stream_action() &&
+      !entity->get_stream_action()->get_stream().get_allow_movement()) {
+    // A stream blocks the control from the player.
+    return;
   }
 
   // someone may have stopped the movement from outside (e.g. Hero::reset_movement())

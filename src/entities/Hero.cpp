@@ -948,6 +948,13 @@ Stairs* Hero::get_stairs_overlapping() {
  * \return true if the player can control his movements
  */
 bool Hero::can_control_movement() const {
+
+  if (has_stream_action()
+      && !get_stream_action()->get_stream().get_allow_movement()) {
+    // A stream prevents the control.
+    return false;
+  }
+
   return state->can_control_movement();
 }
 
@@ -1268,7 +1275,7 @@ void Hero::notify_movement_changed() {
  */
 void Hero::reset_movement() {
 
-  if (state->can_control_movement()) {
+  if (can_control_movement()) {
     get_movement()->stop();
   }
 }
@@ -2165,7 +2172,7 @@ void Hero::start_deep_water() {
  */
 void Hero::start_hole() {
 
-  if (!state->can_control_movement()) {
+  if (!can_control_movement()) {
     // the player has no control (e.g. he is running or being hurt):
     // fall immediately
     set_state(new FallingState(*this));

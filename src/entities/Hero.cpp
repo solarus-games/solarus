@@ -1663,21 +1663,27 @@ void Hero::notify_collision_with_stream(
 
       if (stream.get_allow_movement()) {
         // The stream can be forced: there is no risk.
+        // Even if the stream is faster than the player's movement,
+        // he can still move perpendicularly.
         activate_stream = true;
       }
       else {
         // This is a blocking stream.
-        // Check that the hero can go in the stream's direction
-        // (otherwise the hero would be trapped forever if there
-        // is an obstacle 8 pixels after the straem)
+        // Check that the hero can go in the stream's direction.
+        // Otherwise the hero, would be trapped forever if there
+        // is an obstacle after the stream.
         Rectangle collision_box(0, 0, 16, 16);
         if (dx != 0) { // horizontal stream
-          collision_box.set_xy(get_top_left_x() + dx,
-              stream.get_top_left_y());
+          collision_box.set_xy(
+              get_top_left_x() + dx,
+              get_top_left_y()
+          );
         }
         else { // vertical stream
-          collision_box.set_xy(stream.get_top_left_x(),
-              get_top_left_y() + dy);
+          collision_box.set_xy(
+              get_top_left_x(),
+              get_top_left_y() + dy
+          );
         }
 
         if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {

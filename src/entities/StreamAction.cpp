@@ -172,7 +172,7 @@ void StreamAction::update() {
         active = false;
       }
     }
-    else if (dy > 0) {
+    else if (dy < 0) {
       if (entity_moved->get_y() <= target_y) {
         active = false;
       }

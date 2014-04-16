@@ -37,7 +37,8 @@ StreamAction::StreamAction(Stream& stream, MapEntity& entity_moved):
   dy(0),
   target_x(0),
   target_y(0),
-  next_move_date(0) {
+  next_move_date(0),
+  delay(0) {
 
   RefCountable::ref(this->stream);
   RefCountable::ref(this->entity_moved);
@@ -61,7 +62,7 @@ StreamAction::StreamAction(Stream& stream, MapEntity& entity_moved):
   delay = (uint32_t) (1000 / stream.get_speed());
   if (direction8 % 2 != 0) {
     // Diagonal movement.
-    delay = (uint32_t) (delay / std::sqrt(2));
+    delay = (uint32_t) (delay * std::sqrt(2));
   }
   next_move_date = System::now() + delay;
 }

@@ -17,6 +17,8 @@
 #include "entities/StreamAction.h"
 #include "entities/Stream.h"
 #include "lowlevel/System.h"
+#include "Map.h"
+#include <cmath>
 
 namespace solarus {
 
@@ -29,10 +31,39 @@ StreamAction::StreamAction(Stream& stream, MapEntity& entity_moved):
   stream(&stream),
   entity_moved(&entity_moved),
   active(true),
-  suspended(false) {
+  suspended(false),
+  when_suspended(0),
+  dx(0),
+  dy(0),
+  target_x(0),
+  target_y(0),
+  next_move_date(0) {
 
   RefCountable::ref(this->stream);
   RefCountable::ref(this->entity_moved);
+
+  // Compute the direction of the movement and its target point.
+  const int direction8 = stream.get_direction();
+  const Rectangle& xy = MapEntity::direction_to_xy_move(direction8);
+  dx = xy.get_x();
+  dy = xy.get_y();
+
+  // The stream will stop when one of target_x or target_y is reached.
+  if (dx != 0) {
+    target_x = stream.get_x() + (dx > 0 ? 16 : -16);
+  }
+
+  if (dy != 0) {
+    target_y = stream.get_y() + (dy > 0 ? 16 : -16);
+  }
+
+  // Compute the delay between two moves.
+  delay = (uint32_t) (1000 / stream.get_speed());
+  if (direction8 % 2 != 0) {
+    // Diagonal movement.
+    delay = (uint32_t) (delay / std::sqrt(2));
+  }
+  next_move_date = System::now() + delay;
 }
 
 /**
@@ -108,24 +139,45 @@ void StreamAction::update() {
     return;
   }
 
-  /* TODO
-    // see if the stream's movement is finished
-    if (hero.get_movement()->is_finished() || !stream.overlaps(hero)) {
+  // Update the position.
+  while (
+      System::now() >= next_move_date &&
+      is_active()
+  ) {
+    next_move_date += delay;
 
-      hero.set_state(new FreeState(hero));
+    if (test_obstacles()) {
+      // Collision with an obstacle: don't move the entity.
+      break;
     }
-    else {
-      // update the sprites direction
-      int keys_direction8 = get_commands().get_wanted_direction8();
-      int movement_direction8 = stream.get_direction();
 
-      int animation_direction = get_sprites().get_animation_direction(keys_direction8, movement_direction8);
-      if (animation_direction != get_sprites().get_animation_direction()
-          && animation_direction != -1) {
-        get_sprites().set_animation_direction(animation_direction);
+    entity_moved->set_xy(entity_moved->get_x() + dx, entity_moved->get_y() + dy);
+    entity_moved->notify_position_changed();
+
+    // See if the entity has come outside the stream,
+    // in other words, if the movement is finished.
+    if (dx > 0) {
+      if (entity_moved->get_x() >= target_x) {
+        active = false;
       }
     }
-    */
+    else if (dx < 0) {
+      if (entity_moved->get_x() <= target_x) {
+        active = false;
+      }
+    }
+
+    if (dy > 0) {
+      if (entity_moved->get_y() >= target_y) {
+        active = false;
+      }
+    }
+    else if (dy > 0) {
+      if (entity_moved->get_y() <= target_y) {
+        active = false;
+      }
+    }
+  }
 }
 
 /**
@@ -146,6 +198,30 @@ void StreamAction::set_suspended(bool suspended) {
   if (suspended) {
     when_suspended = System::now();
   }
+  else {
+    if (when_suspended != 0) {
+      next_move_date += System::now() - when_suspended;
+    }
+  }
+}
+
+/**
+ * \brief Returns whether an obstacle blocks the next one-pixel move.
+ * \return \c true if the entity cannot currently follow the stream because of
+ * an obstacle.
+ */
+bool StreamAction::test_obstacles() {
+
+  Rectangle collision_box = entity_moved->get_bounding_box();
+  collision_box.add_xy(dx, dy);
+
+  Map& map = entity_moved->get_map();
+  return map.test_collision_with_obstacles(
+      entity_moved->get_layer(),
+      collision_box,
+      *entity_moved
+  );
+
 }
 
 }

@@ -58,10 +58,11 @@ void PlayerMovement::update() {
   if (entity->has_stream_action() &&
       !entity->get_stream_action()->get_stream().get_allow_movement()) {
     // A stream blocks the control from the player.
-    return;
+    stop();
   }
 
-  // someone may have stopped the movement from outside (e.g. Hero::reset_movement())
+  // Someone may have stopped the movement
+  // (e.g. Hero::reset_movement() or a blocking stream).
   if (is_stopped() && direction8 != -1) {
     direction8 = -1;
     compute_movement();

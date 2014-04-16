@@ -35,17 +35,6 @@
 
 namespace solarus {
 
-const Rectangle MapEntity::directions_to_xy_moves[] = {
-  Rectangle( 1, 0),
-  Rectangle( 1,-1),
-  Rectangle( 0,-1),
-  Rectangle(-1,-1),
-  Rectangle(-1, 0),
-  Rectangle(-1, 1),
-  Rectangle( 0, 1),
-  Rectangle( 1, 1)
-};
-
 /**
  * \brief Creates an entity, specifying its position, its name and its direction.
  * \param name Name identifying the entity on the map or an empty string.
@@ -1517,6 +1506,18 @@ void MapEntity::notify_moved_by(MapEntity& entity) {
  * \return a rectangle with x and y set to -1, 0 or 1 depending on the direction
  */
 const Rectangle& MapEntity::direction_to_xy_move(int direction8) {
+
+  static const Rectangle directions_to_xy_moves[] = {
+    Rectangle( 1, 0),
+    Rectangle( 1,-1),
+    Rectangle( 0,-1),
+    Rectangle(-1,-1),
+    Rectangle(-1, 0),
+    Rectangle(-1, 1),
+    Rectangle( 0, 1),
+    Rectangle( 1, 1)
+  };
+
   return directions_to_xy_moves[direction8];
 }
 

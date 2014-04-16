@@ -268,8 +268,6 @@ class MapEntity: public ExportableToLua {
     virtual void update();
     virtual void draw_on_map();
 
-    static const Rectangle directions_to_xy_moves[8];  /**< converts a direction (0 to 7) into a one-pixel xy move */
-
   protected:
 
     // creation

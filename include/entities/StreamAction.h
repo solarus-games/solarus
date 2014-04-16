@@ -45,6 +45,8 @@ class StreamAction {
 
   private:
 
+    bool test_obstacles();
+
     Stream* stream;               /**< The stream applied,
                                    * or NULL if it was destroyed. */
     MapEntity* entity_moved;      /**< The entity the stream is applied to,
@@ -55,6 +57,13 @@ class StreamAction {
                                    * suspended. */
     uint32_t when_suspended;      /**< Date when the stream effect was suspended. */
 
+    int dx;                       /**< X change of the movement. */
+    int dy;                       /**< Y change of the movement. */
+    int target_x;                 /**< X coordinate where to stop. */
+    int target_y;                 /**< Y coordinate where to stop. The stream stops
+                                   * when one of target_x or target_y is reached. */
+    uint32_t next_move_date;      /**< Date of the next one-pixel move. */
+    uint32_t delay;               /**< Interval between two one-pixel moves. */
 };
 
 }

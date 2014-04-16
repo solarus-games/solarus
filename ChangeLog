@@ -12,6 +12,7 @@ Engine changes
 * Make the window resizable (#338).
 * Use LuaJIT if available instead of vanilla Lua for better performance.
 * New map entity type: custom entities, fully scripted (#323).
+* Conveyor belts are now called streams an can be non-blocking (#288).
 * Rewrite the main loop with a constant timestep (#351).
 * Show a dialog box in case of fatal error.
 * The "wide" video modes do not exist anymore. SDL2 does the job now.

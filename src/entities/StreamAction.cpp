@@ -148,6 +148,11 @@ void StreamAction::update() {
 
     if (test_obstacles()) {
       // Collision with an obstacle: don't move the entity.
+
+      if (!stream->get_allow_movement()) {
+        // And stop the stream if it was a blocking one.
+        active = false;
+      }
       break;
     }
 

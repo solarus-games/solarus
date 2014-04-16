@@ -2055,7 +2055,7 @@ void MapEntity::notify_collision_with_destructible(Destructible &destructible, C
  * \param teletransporter the teletransporter
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode) {
 }
 
 /**
@@ -2074,7 +2074,7 @@ void MapEntity::notify_collision_with_stream(
  * \param stairs the stairs
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode) {
 }
 
 /**
@@ -2187,7 +2187,6 @@ void MapEntity::notify_collision_with_explosion(Explosion &explosion, Sprite &sp
  * \param sprite_overlapping the sprite of the current entity that collides with the fire
  */
 void MapEntity::notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) {
-
 }
 
 /**

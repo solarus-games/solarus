@@ -97,7 +97,7 @@ void Hero::StreamState::update() {
   else {
 
     // see if the stream's movement is finished
-    if (hero.get_movement()->is_finished() || !hero.on_stream) {
+    if (hero.get_movement()->is_finished() || !stream.overlaps(hero)) {
 
       hero.set_state(new FreeState(hero));
     }
@@ -112,8 +112,6 @@ void Hero::StreamState::update() {
         get_sprites().set_animation_direction(animation_direction);
       }
     }
-
-    hero.on_stream = false;
   }
 }
 

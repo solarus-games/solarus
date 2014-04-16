@@ -330,8 +330,6 @@ class Hero: public MapEntity {
     // state specific
     Teletransporter* delayed_teletransporter;   /**< a teletransporter that will be activated when the hero finishes
                                                  * a special behavior, such as falling into a hole or walking on stairs */
-    bool on_stream;                 /**< indicates that the hero's rectangle is currently overlapping a stream
-                                     * (even if the collision is not enough to take the stream and move the hero) */
     bool on_raised_blocks;          /**< indicates that the hero is currently on
                                      * raised crystal blocks */
 

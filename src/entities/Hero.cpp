@@ -76,7 +76,6 @@ Hero::Hero(Equipment& equipment):
   end_invincible_date(0),
   normal_walking_speed(88),
   walking_speed(normal_walking_speed),
-  on_stream(false),
   on_raised_blocks(false),
   next_ground_date(0),
   next_ice_date(0) {
@@ -1639,16 +1638,10 @@ Teletransporter* Hero::get_delayed_teletransporter() {
 void Hero::notify_collision_with_stream(
     Stream& stream, int dx, int dy) {
 
-  on_stream = true;
-
   if (!state->can_avoid_stream(stream)) {
 
-    // check that a significant part of the hero is on the stream
-    Rectangle center = get_center_point();
-    center.add_xy(-1, -1);
-    center.set_size(2, 2);
-
-    if (stream.overlaps(center)) {
+    // Check that the feet of the hero are on the stream.
+    if (stream.overlaps(get_ground_point())) {
 
       // check that the hero can go in the stream's direction
       // (otherwise the hero would be trapped forever if there

@@ -99,6 +99,7 @@ class Hero::State {
     virtual bool is_teletransporter_delayed() const;
     virtual bool is_stream_obstacle(const Stream& stream) const;
     virtual bool can_avoid_stream(const Stream& stream) const;
+    virtual bool can_persist_on_stream(const Stream& stream) const;
     virtual bool is_stairs_obstacle(const Stairs& stairs) const;
     virtual bool is_sensor_obstacle(const Sensor& sensor) const;
     virtual bool is_jumper_obstacle(const Jumper& jumper) const;

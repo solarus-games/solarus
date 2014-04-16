@@ -21,6 +21,7 @@
 #include "entities/Destructible.h"
 #include "entities/Separator.h"
 #include "entities/Hero.h"
+#include "entities/StreamAction.h"
 #include "movements/Movement.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/Geometry.h"
@@ -33,17 +34,6 @@
 #include "SpriteAnimationSet.h"
 
 namespace solarus {
-
-const Rectangle MapEntity::directions_to_xy_moves[] = {
-  Rectangle( 1, 0),
-  Rectangle( 1,-1),
-  Rectangle( 0,-1),
-  Rectangle(-1,-1),
-  Rectangle(-1, 0),
-  Rectangle(-1, 1),
-  Rectangle( 0, 1),
-  Rectangle( 1, 1)
-};
 
 /**
  * \brief Creates an entity, specifying its position, its name and its direction.
@@ -76,6 +66,7 @@ MapEntity::MapEntity(
   movement(NULL),
   movement_events_enabled(true),
   facing_entity(NULL),
+  stream_action(NULL),
   initialized(false),
   being_removed(false),
   enabled(true),
@@ -95,6 +86,8 @@ MapEntity::MapEntity(
  * The sprite and the movement of the entity are deleted (if any).
  */
 MapEntity::~MapEntity() {
+
+  stop_stream_action();
 
   clear_sprites();
   clear_old_sprites();
@@ -1336,6 +1329,49 @@ void MapEntity::set_movement_events_enabled(bool notify) {
 }
 
 /**
+ * \brief Returns whether this entity is following a stream.
+ * \return \c true if there is an active stream action.
+ */
+bool MapEntity::has_stream_action() const {
+  return stream_action != NULL && stream_action->is_active();
+}
+
+/**
+ * \brief Returns the stream action currently applied if any.
+ * \return The stream action of this entity or NULL.
+ */
+const StreamAction* MapEntity::get_stream_action() const {
+  return stream_action;
+}
+
+/**
+ * \brief Returns the stream action currently applied if any.
+ * \return The stream action of this entity or NULL.
+ */
+StreamAction* MapEntity::get_stream_action() {
+  return stream_action;
+}
+
+/**
+ * \brief Makes this entity follow a stream.
+ * \param stream_action The stream action to start.
+ */
+void MapEntity::start_stream_action(StreamAction* stream_action) {
+
+  stop_stream_action();
+  this->stream_action = stream_action;
+}
+
+/**
+ * \brief Stops following a stream if any.
+ */
+void MapEntity::stop_stream_action() {
+
+  delete stream_action;
+  stream_action = NULL;
+}
+
+/**
  * \brief Notifies this entity that it has just failed to change its position
  * because of obstacles.
  *
@@ -1470,6 +1506,18 @@ void MapEntity::notify_moved_by(MapEntity& entity) {
  * \return a rectangle with x and y set to -1, 0 or 1 depending on the direction
  */
 const Rectangle& MapEntity::direction_to_xy_move(int direction8) {
+
+  static const Rectangle directions_to_xy_moves[] = {
+    Rectangle( 1, 0),
+    Rectangle( 1,-1),
+    Rectangle( 0,-1),
+    Rectangle(-1,-1),
+    Rectangle(-1, 0),
+    Rectangle(-1, 1),
+    Rectangle( 0, 1),
+    Rectangle( 1, 1)
+  };
+
   return directions_to_xy_moves[direction8];
 }
 
@@ -2055,7 +2103,7 @@ void MapEntity::notify_collision_with_destructible(Destructible &destructible, C
  * \param teletransporter the teletransporter
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode) {
 }
 
 /**
@@ -2074,7 +2122,7 @@ void MapEntity::notify_collision_with_stream(
  * \param stairs the stairs
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode) {
 }
 
 /**
@@ -2187,7 +2235,6 @@ void MapEntity::notify_collision_with_explosion(Explosion &explosion, Sprite &sp
  * \param sprite_overlapping the sprite of the current entity that collides with the fire
  */
 void MapEntity::notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) {
-
 }
 
 /**
@@ -2258,6 +2305,9 @@ void MapEntity::set_suspended(bool suspended) {
   if (movement != NULL) {
     movement->set_suspended(suspended || !is_enabled());
   }
+  if (stream_action != NULL) {
+    stream_action->set_suspended(suspended || !is_enabled());
+  }
 
   // Suspend/unsuspend the timers.
   if (is_on_map()) {
@@ -2320,6 +2370,10 @@ void MapEntity::update() {
           get_movement()->set_suspended(false);
         }
 
+        if (stream_action != NULL) {
+          stream_action->set_suspended(false);
+        }
+
         std::vector<Sprite*>::iterator it;
         for (it = sprites.begin(); it != sprites.end(); it++) {
 
@@ -2365,6 +2419,13 @@ void MapEntity::update() {
     movement->update();
   }
   clear_old_movements();
+  if (stream_action != NULL) {
+    stream_action->update();
+    if (!get_stream_action()->is_active()) {
+      stop_stream_action();
+    }
+  }
+
 
   // suspend the entity if far from the camera
   // TODO don't do this, it has too many side effects

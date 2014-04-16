@@ -112,7 +112,7 @@ void Hero::FreeState::notify_action_command_pressed() {
     // grab an obstacle
     hero.set_state(new GrabbingState(hero));
   }
-  else if (get_equipment().has_ability(ABILITY_RUN)) {
+  else if (hero.can_run()) {
 
     // run
     hero.start_running();

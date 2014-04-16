@@ -400,7 +400,7 @@ void Hero::State::notify_attack_command_pressed() {
 
   if (!hero.is_suspended()
       && get_keys_effect().get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD
-      && can_start_sword()) {
+      && hero.can_start_sword()) {
 
     hero.set_state(new SwordSwingingState(hero));
   }
@@ -770,6 +770,20 @@ bool Hero::State::is_stream_obstacle(
  */
 bool Hero::State::can_avoid_stream(const Stream& stream) const {
   return false;
+}
+
+/**
+ * \brief Returns whether this state can continue when taking a stream.
+ *
+ * This function only matters if the stream is applied in this state, that is,
+ * when can_avoid_stream() is \c false.
+ *
+ * \param stream A stream.
+ * \return \c true if this state can continue, \c false if the hero should
+ * get back to FreeState.
+ */
+bool Hero::State::can_persist_on_stream(const Stream& stream) const {
+  return true;
 }
 
 /**

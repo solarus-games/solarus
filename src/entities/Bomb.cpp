@@ -163,6 +163,7 @@ void Bomb::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_
 void Bomb::notify_collision_with_stream(Stream& stream, int dx, int dy) {
 
   if (get_movement() == NULL) {
+    // TODO use a StreamAction, since it now works with any entity and not only the hero.
 
     // Check that a significant part of the bomb is on the stream.
     Rectangle center = get_center_point();

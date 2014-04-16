@@ -57,6 +57,8 @@ class Stream: public Detector {
     bool is_obstacle_for(MapEntity& other);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
 
+    void activate(MapEntity& target);
+
   private:
 
     int speed;                    /**< Speed to apply in pixels per second. */

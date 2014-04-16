@@ -247,7 +247,9 @@ class Hero: public MapEntity {
     void start_running();
     void start_grabbing();
     bool can_pick_treasure(EquipmentItem& item);
+    bool can_avoid_teletransporter(const Teletransporter& teletransporter) const;
     bool can_use_shield() const;
+    bool can_start_sword() const;
     bool can_start_item(EquipmentItem& item);
     void start_item(EquipmentItem& item);
     void start_boomerang(int max_distance, int speed,
@@ -272,7 +274,6 @@ class Hero: public MapEntity {
     class SwordTappingState;        /**< the hero is tapping his sword on a wall */
     class PullingState;             /**< the hero is pulling an object */
     class GrabbingState;            /**< the hero is grabbing an object and can pull it */
-    class StreamState;              /**< the hero is being moved by a stream */
     class SwordSwingingState;       /**< the hero is swinging his sword */
     class SpinAttackState;          /**< the hero is releasing a spin attack */
     class LiftingState;             /**< the hero is lifting an destroyable item (a pot, a bush, etc.) */

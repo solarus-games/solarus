@@ -130,6 +130,7 @@ class CustomEntity;
 class Boomerang;
 class Arrow;
 class Stream;
+class StreamAction;
 class Stairs;
 class Door;
 class Explosion;

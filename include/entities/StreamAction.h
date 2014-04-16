@@ -35,17 +35,25 @@ class StreamAction {
     StreamAction(Stream& stream, MapEntity& entity_moved);
     ~StreamAction();
 
-    void update();
+    const Stream& get_stream() const;
+    const MapEntity& get_entity_moved() const;
     bool is_active() const;
+
+    void update();
+    bool is_suspended() const;
+    void set_suspended(bool suspended);
 
   private:
 
     Stream* stream;               /**< The stream applied,
-                                   * or NULL if it gets destroyed. */
+                                   * or NULL if it was destroyed. */
     MapEntity* entity_moved;      /**< The entity the stream is applied to,
-                                   * or NULL if it gets destroyed. */
+                                   * or NULL if it was destroyed. */
     bool active;                  /**< Whether the stream effect is currently
                                    * applied. */
+    bool suspended;               /**< Whether the stream effect is currently
+                                   * suspended. */
+    uint32_t when_suspended;      /**< Date when the stream effect was suspended. */
 
 };
 

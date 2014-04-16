@@ -400,7 +400,7 @@ void Hero::State::notify_attack_command_pressed() {
 
   if (!hero.is_suspended()
       && get_keys_effect().get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD
-      && can_start_sword()) {
+      && hero.can_start_sword()) {
 
     hero.set_state(new SwordSwingingState(hero));
   }

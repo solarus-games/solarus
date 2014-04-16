@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Stream.h"
+#include "entities/StreamAction.h"
 #include "Map.h"
 #include "Sprite.h"
 #include "lowlevel/FileTools.h"
@@ -147,6 +148,16 @@ void Stream::notify_collision(MapEntity& entity_overlapping, CollisionMode colli
 
   const Rectangle& xy_move = direction_to_xy_move(get_direction());
   entity_overlapping.notify_collision_with_stream(*this, xy_move.get_x(), xy_move.get_y());
+}
+
+/**
+ * \brief Applies this stream on an entity.
+ * \param target The entity to move. It should overlap the stream.
+ */
+void Stream::activate(MapEntity& target) {
+
+  StreamAction* stream_action = new StreamAction(*this, target);
+  target.start_stream_action(stream_action);
 }
 
 }

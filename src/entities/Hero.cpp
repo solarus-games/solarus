@@ -29,9 +29,9 @@
 #include "entities/Sensor.h"
 #include "entities/Bomb.h"
 #include "entities/Enemy.h"
+#include "entities/StreamAction.h"
 #include "hero/HeroSprites.h"
 #include "hero/CarryingState.h"
-#include "hero/StreamState.h"
 #include "hero/FallingState.h"
 #include "hero/FreeState.h"
 #include "hero/FreezedState.h"
@@ -268,6 +268,14 @@ void Hero::update_movement() {
 
   if (get_movement() != NULL) {
     get_movement()->update();
+  }
+  // TODO clear_old_movements() is missing
+
+  if (has_stream_action()) {
+    get_stream_action()->update();
+    if (!get_stream_action()->is_active()) {
+      stop_stream_action();
+    }
   }
 }
 
@@ -1609,7 +1617,7 @@ void Hero::notify_collision_with_enemy(
 void Hero::notify_collision_with_teletransporter(
     Teletransporter& teletransporter, CollisionMode collision_mode) {
 
-  if (teletransporter.is_on_map_side() || !state->can_avoid_teletransporter()) {
+  if (!can_avoid_teletransporter(teletransporter)) {
 
     update_ground_below();  // Make sure the ground is up-to-date.
     bool on_hole = get_ground_below() == GROUND_HOLE;
@@ -1638,36 +1646,50 @@ Teletransporter* Hero::get_delayed_teletransporter() {
 void Hero::notify_collision_with_stream(
     Stream& stream, int dx, int dy) {
 
-  if (!state->can_avoid_stream(stream)) {
+  if (!has_stream_action() &&
+      !state->can_avoid_stream(stream)) {
 
     // Check that the feet of the hero are on the stream.
     if (stream.overlaps(get_ground_point())) {
 
-      // check that the hero can go in the stream's direction
-      // (otherwise the hero would be trapped forever if there
-      // is an obstacle 8 pixels after the straem)
-      Rectangle collision_box(0, 0, 16, 16);
-      if (dx != 0) { // horizontal stream
-        collision_box.set_xy(get_top_left_x() + dx,
-            stream.get_top_left_y());
-      }
-      else { // vertical stream
-        collision_box.set_xy(stream.get_top_left_x(),
-            get_top_left_y() + dy);
-      }
+      bool activate_stream = false;
 
-      if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
-
-        // check that the stream's exit is clear
-        // (otherwise the hero could not take a blocked stream the reverse way)
-        collision_box.set_xy(stream.get_bounding_box());
-        collision_box.add_xy(dx, dy);
+      if (stream.get_allow_movement()) {
+        // The stream can be forced: there is no risk.
+        activate_stream = true;
+      }
+      else {
+        // This is a blocking stream.
+        // Check that the hero can go in the stream's direction
+        // (otherwise the hero would be trapped forever if there
+        // is an obstacle 8 pixels after the straem)
+        Rectangle collision_box(0, 0, 16, 16);
+        if (dx != 0) { // horizontal stream
+          collision_box.set_xy(get_top_left_x() + dx,
+              stream.get_top_left_y());
+        }
+        else { // vertical stream
+          collision_box.set_xy(stream.get_top_left_x(),
+              get_top_left_y() + dy);
+        }
 
         if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
 
-          // move the hero
-          set_state(new StreamState(*this, stream));
+          // check that the stream's exit is clear
+          // (otherwise the hero could not take a blocked stream the reverse way)
+          collision_box.set_xy(stream.get_bounding_box());
+          collision_box.add_xy(dx, dy);
+
+          if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
+
+            // move the hero
+            activate_stream = true;
+          }
         }
+      }
+
+      if (activate_stream) {
+        stream.activate(*this);
       }
     }
   }
@@ -2425,6 +2447,26 @@ bool Hero::can_pick_treasure(EquipmentItem& item) {
 }
 
 /**
+ * \brief Returns whether the hero currently ignores the effect of a teletransporter.
+ * \param teletransporter A candidate teletransporter.
+ * \return \c true if the hero currently ignores this teletransporter.
+ */
+bool Hero::can_avoid_teletransporter(const Teletransporter& teletransporter) const {
+
+  if (teletransporter.is_on_map_side()) {
+    // Never ignore this kind of teletransporter.
+    return false;
+  }
+
+  if (has_stream_action()) {
+    // Ignore teletransporters until the stream is finished.
+    return true;
+  }
+
+  return state->can_avoid_teletransporter();
+}
+
+/**
  * \brief Returns whether the hero can stop attacks with a shield in his
  * current state.
  * \return \c true if the shield is active is this state.
@@ -2434,6 +2476,21 @@ bool Hero::can_use_shield() const {
   return state->can_use_shield();
 }
 
+
+/**
+ * \brief Returns whether the hero can currently use his sword.
+ * \return \c true if the sword can be used now.
+ */
+bool Hero::can_start_sword() const {
+
+  if (has_stream_action() &&
+      !get_stream_action()->get_stream().get_allow_attack()) {
+    // A stream prevents from using the sword.
+    return false;
+  }
+
+  return state->can_start_sword();
+}
 /**
  * \brief Returns whether the hero can starts using an equipment item.
  * \param item The equipment item to use.
@@ -2441,9 +2498,23 @@ bool Hero::can_use_shield() const {
  */
 bool Hero::can_start_item(EquipmentItem& item) {
 
-  return item.is_assignable()
-      && item.get_variant() > 0
-      && state->can_start_item(item);
+  if (!item.is_assignable()) {
+    // This item cannot be used explicitly.
+    return false;
+  }
+
+  if (item.get_variant() == 0) {
+    // The player does not have this item.
+    return false;
+  }
+
+  if (has_stream_action() &&
+      !get_stream_action()->get_stream().get_allow_item()) {
+    // A stream prevents from using items.
+    return false;
+  }
+
+  return state->can_start_item(item);
 }
 
 /**

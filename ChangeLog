@@ -13,10 +13,10 @@ Engine changes
 * Use LuaJIT if available instead of vanilla Lua for better performance.
 * New map entity type: custom entities, fully scripted (#323).
 * Conveyor belts are now called streams an can be non-blocking (#288).
+* Collision rules of streams (conveyor belts) are now like holes.
 * Rewrite the main loop with a constant timestep (#351).
 * Show a dialog box in case of fatal error.
 * The "wide" video modes do not exist anymore. SDL2 does the job now.
-* Call enemy:on_hurt() before enemy:on_dying() (#325).
 * Fix enemy:on_hurt() that was wrongly called when immobilized.
 * Fix life and money exceeding the max when the max changes (#355).
 * Make stairs sounds optional (#364).
@@ -87,6 +87,7 @@ Changes that introduce incompatibilities:
 * The state "conveyor belt" no longer exists in hero:get_state() (#288).
 * The built-in strength of the sword has changed (#426).
 * Bosses are not initially disabled anymore (#448).
+* Call enemy:on_hurt() before enemy:on_dying() (#325).
 * enemy:on_hurt() no longer takes a life_lost parameter (#426).
 * The built-in defense of the tunic has changed (#428).
 * enemy:get/set_magic_damage() no longer exists (#428).

@@ -46,6 +46,7 @@ class StreamAction {
   private:
 
     bool test_obstacles();
+    bool has_reached_target() const;
 
     Stream* stream;               /**< The stream applied,
                                    * or NULL if it was destroyed. */
@@ -59,10 +60,8 @@ class StreamAction {
 
     int dx;                       /**< X change of the movement. */
     int dy;                       /**< Y change of the movement. */
-    int target_x;                 /**< X coordinate where to stop.
-                                   * Ignored if the stream is vertical. */
+    int target_x;                 /**< X coordinate where to stop. */
     int target_y;                 /**< Y coordinate where to stop.
-                                   * Ignored if the stream is horizontal.
                                    * Diagonal streams stop when both target_x
                                    * and target_y are reached. */
     uint32_t next_move_date;      /**< Date of the next one-pixel move. */

@@ -55,11 +55,13 @@ StreamAction::StreamAction(Stream& stream, MapEntity& entity_moved):
     if (dx != 0) {
       // Horizontal stream.
       target_x = stream.get_x() + (dx > 0 ? 16 : -16);
+      target_y = entity_moved.get_y();
     }
 
     else {
       // Vertical stream.
       target_y = stream.get_y() + (dy > 0 ? 16 : -16);
+      target_x = entity_moved.get_x();
     }
   }
   else {
@@ -115,7 +117,7 @@ bool StreamAction::is_active() const {
  */
 void StreamAction::update() {
 
-  // If the action is disabled, do nothing.
+  // If the action is already disabled, do nothing.
   if (!is_active()) {
     return;
   }
@@ -126,22 +128,46 @@ void StreamAction::update() {
     RefCountable::unref(stream);
     stream = NULL;
     active = false;
+    return;
   }
-  else if (!stream->is_enabled()) {
+
+  if (!stream->is_enabled()) {
     active = false;
+    return;
   }
 
   if (entity_moved->is_being_removed()) {
     RefCountable::unref(entity_moved);
     entity_moved = NULL;
     active = false;
-  }
-  else if (!entity_moved->is_enabled()) {
-    active = false;
+    return;
   }
 
-  if (!is_active()) {
+  if (!entity_moved->is_enabled()) {
+    active = false;
     return;
+  }
+
+  // Stop the stream action if the hero escapes a non-blocking stream.
+  const Rectangle& ground_point = entity_moved->get_ground_point();
+  if (
+      stream->get_allow_movement() &&
+      !stream->overlaps(ground_point)  // We are not no longer on the stream.
+  ) {
+    // Blocking streams are more special.
+    // The hero cannot escape them so we don't need this.
+    // Also, diagonal blocking streams continue
+    // to move the entity even when it does not overlap anymore.
+    // This is needed to have precise
+    // exact diagonal movements of 16 pixels in stream mazes.
+
+    if (entity_moved->get_distance(target_x, target_y) > 8) {
+      // This last test is to avoid stopping a stream when being close to the target.
+      // Indeed, in the last pixels before the target, the entity's ground
+      // point is no longer on the stream. We continue anyway until the target.
+      active = false;
+      return;
+    }
   }
 
   if (is_suspended()) {
@@ -170,20 +196,29 @@ void StreamAction::update() {
 
     // See if the entity has come outside the stream,
     // in other words, if the movement is finished.
-    const bool finished_x =
-      dx == 0 ||
-      (dx > 0 && entity_moved->get_x() >= target_x) ||
-      (dx < 0 && entity_moved->get_x() <= target_x);
-    const bool finished_y =
-      dy == 0 ||
-      (dy > 0 && entity_moved->get_y() >= target_y) ||
-      (dy < 0 && entity_moved->get_y() <= target_y);
-
-    if (finished_x && finished_y) {
+    if (has_reached_target()) {
       // The target point is reached: stop the stream.
       active = false;
     }
   }
+}
+
+/**
+ * \brief Returns whether the entity moved has finished to follow the stream.
+ * \return \c true if the target point is reached.
+ */
+bool StreamAction::has_reached_target() const {
+
+  const bool finished_x =
+    dx == 0 ||
+    (dx > 0 && entity_moved->get_x() >= target_x) ||
+    (dx < 0 && entity_moved->get_x() <= target_x);
+  const bool finished_y =
+    dy == 0 ||
+    (dy > 0 && entity_moved->get_y() >= target_y) ||
+    (dy < 0 && entity_moved->get_y() <= target_y);
+
+  return finished_x && finished_y;
 }
 
 /**

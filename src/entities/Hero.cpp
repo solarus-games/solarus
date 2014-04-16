@@ -1703,6 +1703,9 @@ void Hero::notify_collision_with_stream(
 
       if (activate_stream) {
         stream.activate(*this);
+        if (!state->can_persist_on_stream(stream)) {
+          start_free();
+        }
       }
     }
   }
@@ -2477,6 +2480,27 @@ bool Hero::can_avoid_teletransporter(const Teletransporter& teletransporter) con
   }
 
   return state->can_avoid_teletransporter();
+}
+
+/**
+ * \brief Returns whether the hero can currently start running.
+ * \return \c true if the hero can run.
+ */
+bool Hero::can_run() const {
+
+  if (!get_equipment().has_ability(ABILITY_RUN)) {
+    return false;
+  }
+
+  if (
+      has_stream_action() &&
+      !get_stream_action()->get_stream().get_allow_movement()
+  ) {
+    // Don't run on a blocking stream.
+    return false;
+  }
+
+  return is_free();
 }
 
 /**

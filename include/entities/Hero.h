@@ -248,6 +248,7 @@ class Hero: public MapEntity {
     void start_grabbing();
     bool can_pick_treasure(EquipmentItem& item);
     bool can_avoid_teletransporter(const Teletransporter& teletransporter) const;
+    bool can_run() const;
     bool can_use_shield() const;
     bool can_start_sword() const;
     bool can_start_item(EquipmentItem& item);

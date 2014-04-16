@@ -773,6 +773,20 @@ bool Hero::State::can_avoid_stream(const Stream& stream) const {
 }
 
 /**
+ * \brief Returns whether this state can continue when taking a stream.
+ *
+ * This function only matters if the stream is applied in this state, that is,
+ * when can_avoid_stream() is \c false.
+ *
+ * \param stream A stream.
+ * \return \c true if this state can continue, \c false if the hero should
+ * get back to FreeState.
+ */
+bool Hero::State::can_persist_on_stream(const Stream& stream) const {
+  return true;
+}
+
+/**
  * \brief Returns whether the hero can take stairs in this state.
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
  *

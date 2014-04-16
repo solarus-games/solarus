@@ -19,6 +19,7 @@
 #include "hero/HeroSprites.h"
 #include "entities/Enemy.h"
 #include "entities/Jumper.h"
+#include "entities/Stream.h"
 #include "movements/StraightMovement.h"
 #include "movements/JumpMovement.h"
 #include "lowlevel/System.h"
@@ -334,6 +335,15 @@ bool Hero::RunningState::can_avoid_teletransporter() const {
  */
 bool Hero::RunningState::can_avoid_stream(const Stream& stream) const {
   return is_bouncing();
+}
+
+/**
+ * \copydoc Hero::State::can_persist_on_stream
+ */
+bool Hero::RunningState::can_persist_on_stream(const Stream& stream) const {
+
+  // Continue to run if this is a non-blocking stream.
+  return stream.get_allow_movement();
 }
 
 /**

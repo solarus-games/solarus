@@ -48,22 +48,30 @@ StreamAction::StreamAction(Stream& stream, MapEntity& entity_moved):
   const Rectangle& xy = MapEntity::direction_to_xy_move(direction8);
   dx = xy.get_x();
   dy = xy.get_y();
-
-  // The stream will stop when one of target_x or target_y is reached.
-  if (dx != 0) {
-    target_x = stream.get_x() + (dx > 0 ? 16 : -16);
-  }
-
-  if (dy != 0) {
-    target_y = stream.get_y() + (dy > 0 ? 16 : -16);
-  }
-
-  // Compute the delay between two moves.
   delay = (uint32_t) (1000 / stream.get_speed());
-  if (direction8 % 2 != 0) {
-    // Diagonal movement.
+
+  if (direction8 % 2 == 0) {
+    // Non-diagonal stream: stop 16 pixels after the stream.
+    if (dx != 0) {
+      // Horizontal stream.
+      target_x = stream.get_x() + (dx > 0 ? 16 : -16);
+    }
+
+    else {
+      // Vertical stream.
+      target_y = stream.get_y() + (dy > 0 ? 16 : -16);
+    }
+  }
+  else {
+    // Diagonal movement: stop when the entity has done exactly 16 pixels.
+    // Otherwise it could reach an adjacent stream.
+    target_x = entity_moved.get_x() + (dx > 0 ? 16 : -16);
+    target_y = entity_moved.get_y() + (dy > 0 ? 16 : -16);
+
+    // Adjust the speed to diagonal.
     delay = (uint32_t) (delay * std::sqrt(2));
   }
+
   next_move_date = System::now() + delay;
 }
 
@@ -162,26 +170,18 @@ void StreamAction::update() {
 
     // See if the entity has come outside the stream,
     // in other words, if the movement is finished.
-    if (dx > 0) {
-      if (entity_moved->get_x() >= target_x) {
-        active = false;
-      }
-    }
-    else if (dx < 0) {
-      if (entity_moved->get_x() <= target_x) {
-        active = false;
-      }
-    }
+    const bool finished_x =
+      dx == 0 ||
+      (dx > 0 && entity_moved->get_x() >= target_x) ||
+      (dx < 0 && entity_moved->get_x() <= target_x);
+    const bool finished_y =
+      dy == 0 ||
+      (dy > 0 && entity_moved->get_y() >= target_y) ||
+      (dy < 0 && entity_moved->get_y() <= target_y);
 
-    if (dy > 0) {
-      if (entity_moved->get_y() >= target_y) {
-        active = false;
-      }
-    }
-    else if (dy < 0) {
-      if (entity_moved->get_y() <= target_y) {
-        active = false;
-      }
+    if (finished_x && finished_y) {
+      // The target point is reached: stop the stream.
+      active = false;
     }
   }
 }

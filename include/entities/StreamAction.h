@@ -59,9 +59,12 @@ class StreamAction {
 
     int dx;                       /**< X change of the movement. */
     int dy;                       /**< Y change of the movement. */
-    int target_x;                 /**< X coordinate where to stop. */
-    int target_y;                 /**< Y coordinate where to stop. The stream stops
-                                   * when one of target_x or target_y is reached. */
+    int target_x;                 /**< X coordinate where to stop.
+                                   * Ignored if the stream is vertical. */
+    int target_y;                 /**< Y coordinate where to stop.
+                                   * Ignored if the stream is horizontal.
+                                   * Diagonal streams stop when both target_x
+                                   * and target_y are reached. */
     uint32_t next_move_date;      /**< Date of the next one-pixel move. */
     uint32_t delay;               /**< Interval between two one-pixel moves. */
 };

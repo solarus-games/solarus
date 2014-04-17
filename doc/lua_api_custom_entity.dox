@@ -27,9 +27,8 @@ custom entities in your game, like for example torches.
 If you make an entity that is unique in your game, like for example,
 a big rock that blocks the entrance of a dungeon and that requires some
 special action from the player, you don't need a model.
-You can just program define the behavior of your custom entity in the
-script of the map where your entity is placed.
-
+You can just program the behavior of your custom entity in the
+script of its map.
 Similarly, to define a customized weapon of the hero, like a hammer,
 you don't need a model.
 Just create a custom entity from the item script of the hammer and define
@@ -74,7 +73,7 @@ of the custom entity may be larger.
 \remark If you create a
   \ref lua_api_custom_entity_add_collision_test
   "pixel-precise collision test",
-  the test will use the sprit(e) of this custom entity,
+  the test will use the sprite(s) of this custom entity,
   not its bounding box.
   Therefore, this function has no influence on pixel-precise collisions,
   only on the detection of obstacles of the map when the custom entity moves.

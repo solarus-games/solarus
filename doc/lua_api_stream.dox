@@ -32,6 +32,21 @@ See \ref lua_api_entity_methods to know these methods.
 
 The following methods are specific to streams.
 
+\subsection lua_api_stream_get_direction stream:get_direction()
+
+Returns the direction of this stream.
+
+This direction will be applied to entities that follow the stream.
+- Return value (number): The direction between \c 0 (East) and \c 7 (South-East).
+
+\subsection lua_api_stream_set_direction stream:set_direction(direction)
+
+Sets the direction of this stream.
+
+This direction will be applied to entities that follow the stream.
+- \c direction (number): The direction to set,
+  between \c 0 (East) and \c 7 (South-East).
+
 \subsection lua_api_stream_get_speed stream:get_speed()
 
 Returns the speed applied by this stream.

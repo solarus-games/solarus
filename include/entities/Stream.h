@@ -53,10 +53,10 @@ class Stream: public Detector {
     void set_allow_attack(bool allow_attack);
     bool get_allow_item() const;
     void set_allow_item(bool allow_item);
+    void notify_direction_changed();
 
     bool is_obstacle_for(MapEntity& other);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
-
     void activate(MapEntity& target);
 
   private:

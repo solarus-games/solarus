@@ -46,11 +46,11 @@ Stream::Stream(
   allow_item(true) {
 
   set_origin(8, 13);
+  set_direction(direction);
   if (!sprite_name.empty()) {
     create_sprite(sprite_name);
-    get_sprite().set_current_direction(direction);
+    notify_direction_changed();
   }
-  set_direction(direction);
 }
 
 /**
@@ -131,6 +131,22 @@ bool Stream::get_allow_item() const {
  */
 void Stream::set_allow_item(bool allow_item) {
   this->allow_item = allow_item;
+}
+
+/**
+ * \copydoc MapEntity::notify_direction_changed
+ */
+void Stream::notify_direction_changed() {
+
+  Detector::notify_direction_changed();
+
+  // Give the correct direction to the sprite if any.
+  int direction8 = get_direction();
+  if (has_sprite()
+      && get_sprite().get_nb_directions() >= 8) {
+    // There is a sprite with all necessary directions.
+    get_sprite().set_current_direction(direction8);
+  }
 }
 
 /**

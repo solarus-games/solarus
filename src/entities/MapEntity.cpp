@@ -632,7 +632,17 @@ int MapEntity::get_direction() const {
  * \param direction the direction
  */
 void MapEntity::set_direction(int direction) {
-  this->direction = direction;
+
+  if (direction != this->direction) {
+    this->direction = direction;
+    notify_direction_changed();
+  }
+}
+
+/**
+ * \brief Notifies this entity that its direction property has changed.
+ */
+void MapEntity::notify_direction_changed() {
 }
 
 /**

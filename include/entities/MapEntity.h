@@ -140,6 +140,8 @@ class MapEntity: public ExportableToLua {
     void set_name(const std::string& name);
     bool has_prefix(const std::string& prefix) const;
     int get_direction() const;
+    void set_direction(int direction);
+    virtual void notify_direction_changed();
 
     // sprites
     bool has_sprite() const;
@@ -282,8 +284,6 @@ class MapEntity: public ExportableToLua {
     );
 
     uint32_t get_when_suspended() const;
-
-    void set_direction(int direction);
 
     void update_ground_observers();
     void update_ground_below();

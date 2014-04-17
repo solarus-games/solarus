@@ -304,6 +304,8 @@ void LuaContext::register_entity_module() {
   // Stream.
   static const luaL_Reg stream_methods[] = {
       ENTITY_COMMON_METHODS,
+      { "get_direction", stream_api_get_direction },
+      { "set_direction", stream_api_set_direction },
       { "get_speed", stream_api_get_speed },
       { "set_speed", stream_api_set_speed },
       { "get_allow_movement", stream_api_get_allow_movement },
@@ -2540,6 +2542,38 @@ Stream& LuaContext::check_stream(lua_State* l, int index) {
  */
 void LuaContext::push_stream(lua_State* l, Stream& stream) {
   push_userdata(l, stream);
+}
+
+/**
+ * \brief Implementation of stream:get_direction().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::stream_api_get_direction(lua_State* l) {
+
+  const Stream& stream = check_stream(l, 1);
+
+  lua_pushinteger(l, stream.get_direction());
+  return 1;
+}
+
+/**
+ * \brief Implementation of stream:set_direction().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::stream_api_set_direction(lua_State* l) {
+
+  Stream& stream = check_stream(l, 1);
+  int direction = luaL_checkint(l, 2);
+
+  if (direction < 0 || direction >= 8) {
+    LuaTools::arg_error(l, 2, "Invalid stream direction: must be between 0 and 7");
+  }
+
+  stream.set_direction(direction);
+
+  return 0;
 }
 
 /**

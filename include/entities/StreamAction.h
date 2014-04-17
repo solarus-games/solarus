@@ -45,7 +45,8 @@ class StreamAction {
 
   private:
 
-    bool test_obstacles();
+    void recompute_movement();
+    bool test_obstacles(int dx, int dy);
     bool has_reached_target() const;
 
     Stream* stream;               /**< The stream applied,
@@ -58,14 +59,11 @@ class StreamAction {
                                    * suspended. */
     uint32_t when_suspended;      /**< Date when the stream effect was suspended. */
 
-    int dx;                       /**< X change of the movement. */
-    int dy;                       /**< Y change of the movement. */
     int target_x;                 /**< X coordinate where to stop. */
-    int target_y;                 /**< Y coordinate where to stop.
-                                   * Diagonal streams stop when both target_x
-                                   * and target_y are reached. */
+    int target_y;                 /**< Y coordinate where to stop. */
     uint32_t next_move_date;      /**< Date of the next one-pixel move. */
     uint32_t delay;               /**< Interval between two one-pixel moves. */
+
 };
 
 }

@@ -17,6 +17,7 @@
 #include "entities/StreamAction.h"
 #include "entities/Stream.h"
 #include "lowlevel/System.h"
+#include "movements/Movement.h"
 #include "Map.h"
 #include <cmath>
 
@@ -33,8 +34,6 @@ StreamAction::StreamAction(Stream& stream, MapEntity& entity_moved):
   active(true),
   suspended(false),
   when_suspended(0),
-  dx(0),
-  dy(0),
   target_x(0),
   target_y(0),
   next_move_date(0),
@@ -43,36 +42,7 @@ StreamAction::StreamAction(Stream& stream, MapEntity& entity_moved):
   RefCountable::ref(this->stream);
   RefCountable::ref(this->entity_moved);
 
-  // Compute the direction of the movement and its target point.
-  const int direction8 = stream.get_direction();
-  const Rectangle& xy = MapEntity::direction_to_xy_move(direction8);
-  dx = xy.get_x();
-  dy = xy.get_y();
-  delay = (uint32_t) (1000 / stream.get_speed());
-
-  if (direction8 % 2 == 0) {
-    // Non-diagonal stream: stop 16 pixels after the stream.
-    if (dx != 0) {
-      // Horizontal stream.
-      target_x = stream.get_x() + (dx > 0 ? 16 : -16);
-      target_y = entity_moved.get_y();
-    }
-
-    else {
-      // Vertical stream.
-      target_y = stream.get_y() + (dy > 0 ? 16 : -16);
-      target_x = entity_moved.get_x();
-    }
-  }
-  else {
-    // Diagonal movement: stop when the entity has done exactly 16 pixels.
-    // Otherwise it could reach an adjacent stream.
-    target_x = entity_moved.get_x() + (dx > 0 ? 16 : -16);
-    target_y = entity_moved.get_y() + (dy > 0 ? 16 : -16);
-
-    // Adjust the speed to diagonal.
-    delay = (uint32_t) (delay * std::sqrt(2));
-  }
+  recompute_movement();
 
   next_move_date = System::now() + delay;
 }
@@ -109,6 +79,44 @@ const MapEntity& StreamAction::get_entity_moved() const {
  */
 bool StreamAction::is_active() const {
   return active;
+}
+
+/**
+ * \brief Updates the direction of the movement to the target.
+ *
+ * This function should be called periodically.
+ */
+void StreamAction::recompute_movement() {
+
+  if (!is_active()) {
+    return;
+  }
+
+  // Compute the direction of the movement and its target point.
+  const int direction8 = stream->get_direction();
+  const Rectangle& xy = MapEntity::direction_to_xy_move(direction8);
+  const int dx = xy.get_x();
+  const int dy = xy.get_y();
+  delay = (uint32_t) (1000 / stream->get_speed());
+
+  target_x = stream->get_x();
+  target_y = stream->get_y();
+
+  // Stop 16 pixels after the stream.
+  if (dx != 0) {
+    // Horizontal stream.
+    target_x = stream->get_x() + (dx > 0 ? 16 : -16);
+  }
+
+  if (dy != 0) {
+    // Vertical stream.
+    target_y = stream->get_y() + (dy > 0 ? 16 : -16);
+  }
+
+  if (target_x != entity_moved->get_x() && target_y != entity_moved->get_y()) {
+    // Adjust the speed to the diagonal movement.
+    delay = (uint32_t) (delay * std::sqrt(2));
+  }
 }
 
 /**
@@ -175,20 +183,49 @@ void StreamAction::update() {
   }
 
   // Update the position.
+  recompute_movement();
   while (
       System::now() >= next_move_date &&
       is_active()
   ) {
     next_move_date += delay;
 
-    if (test_obstacles()) {
-      // Collision with an obstacle: don't move the entity.
+    int dx = 0;
+    int dy = 0;
+    if (target_x > entity_moved->get_x()) {
+      dx = 1;
+    }
+    else if (target_x < entity_moved->get_x()) {
+      dx = -1;
+    }
+    if (target_y > entity_moved->get_y()) {
+      dy = 1;
+    }
+    else if (target_y < entity_moved->get_y()) {
+      dy = -1;
+    }
 
-      if (!stream->get_allow_movement()) {
-        // And stop the stream if it was a blocking one.
-        active = false;
+    if (test_obstacles(dx, dy)) {
+      bool collision = true;
+      // Collision with an obstacle: try only X or only Y.
+      if (dx != 0 && dy != 0) {
+        if (!test_obstacles(dx, 0)) {
+          dy = 0;
+          collision = false;
+        }
+        else if (!test_obstacles(0, dy)) {
+          dx = 0;
+          collision = false;
+        }
       }
-      break;
+
+      if (collision) {
+        if (!stream->get_allow_movement()) {
+          // Stop the stream if it was a blocking one.
+          active = false;
+        }
+        break;
+      }
     }
 
     entity_moved->set_xy(entity_moved->get_x() + dx, entity_moved->get_y() + dy);
@@ -200,6 +237,7 @@ void StreamAction::update() {
       // The target point is reached: stop the stream.
       active = false;
     }
+    recompute_movement();
   }
 }
 
@@ -209,16 +247,8 @@ void StreamAction::update() {
  */
 bool StreamAction::has_reached_target() const {
 
-  const bool finished_x =
-    dx == 0 ||
-    (dx > 0 && entity_moved->get_x() >= target_x) ||
-    (dx < 0 && entity_moved->get_x() <= target_x);
-  const bool finished_y =
-    dy == 0 ||
-    (dy > 0 && entity_moved->get_y() >= target_y) ||
-    (dy < 0 && entity_moved->get_y() <= target_y);
-
-  return finished_x && finished_y;
+  return entity_moved->get_x() == target_x &&
+    entity_moved->get_y() == target_y;
 }
 
 /**
@@ -247,11 +277,19 @@ void StreamAction::set_suspended(bool suspended) {
 }
 
 /**
- * \brief Returns whether an obstacle blocks the next one-pixel move.
- * \return \c true if the entity cannot currently follow the stream because of
- * an obstacle.
+ * \brief Returns whether an obstacle blocks a candidate move.
+ * \param dx X component of the translation to test.
+ * \param dy Y component of the translation to test.
+ * \return \c true if the entity cannot currently move of dx,dy because of an
+ * obstacle.
  */
-bool StreamAction::test_obstacles() {
+bool StreamAction::test_obstacles(int dx, int dy) {
+
+  if (entity_moved->get_movement() != NULL &&
+      entity_moved->get_movement()->are_obstacles_ignored()) {
+    // This entity currently ignores obstacles.
+    return false;
+  }
 
   Rectangle collision_box = entity_moved->get_bounding_box();
   collision_box.add_xy(dx, dy);

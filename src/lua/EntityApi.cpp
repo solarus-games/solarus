@@ -4147,7 +4147,7 @@ int LuaContext::custom_entity_api_get_direction(lua_State* l) {
 int LuaContext::custom_entity_api_set_direction(lua_State* l) {
 
   CustomEntity& entity = check_custom_entity(l, 1);
-  int direction = entity.get_direction();
+  int direction = luaL_checkint(l, 2);
 
   entity.set_sprites_direction(direction);
 

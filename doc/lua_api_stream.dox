@@ -21,14 +21,17 @@ he moves into a specific direction (one of the 8 main directions).
 During this process, the player may or may not continue to control the hero,
 use his sword and his equipment items, depending on the stream properties.
 
-\section lua_api_destination_inherited_methods Methods inherited from map entity
+The hero is not the only map entity that can follow a stream:
+\ref lua_api_bomb "Bombs" also have this ability.
+
+\section lua_api_stream_inherited_methods Methods inherited from map entity
 
 Streams are particular \ref lua_api_entity "map entities".
 Therefore, they inherit all methods from the type map entity.
 
 See \ref lua_api_entity_methods to know these methods.
 
-\section lua_api_stream Methods of the type stream
+\section lua_api_stream_methods Methods of the type stream
 
 The following methods are specific to streams.
 
@@ -95,7 +98,7 @@ stream.
 - \c allow_item (boolean): \c true to allow the player to use equipment items.
   No value means \c true.
 
-\section lua_api_stream Events inherited from map entity
+\section lua_api_stream_inherited_events Events inherited from map entity
 
 Events are callback methods automatically called by the engine if you define
 them.
@@ -105,9 +108,9 @@ Therefore, they inherit all events from the type map entity.
 
 See \ref lua_api_entity_events to know these events.
 
-\section lua_api_stream Events of the type stream
+\section lua_api_stream_events Events of the type stream
 
-The following events are specific to streams.
+None.
 
 */
 

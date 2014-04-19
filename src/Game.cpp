@@ -128,10 +128,13 @@ Game::~Game() {
 
   Music::stop_playing();
 
+  if (hero->is_on_map()) {
+    // The hero was initialized.
+    hero->notify_being_removed();
+  }
+  RefCountable::unref(hero);
   delete transition;
   delete keys_effect;
-  hero->notify_being_removed();
-  RefCountable::unref(hero);
   delete commands;
 
   RefCountable::unref(previous_map_surface);

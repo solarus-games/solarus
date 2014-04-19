@@ -82,6 +82,7 @@ HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
   lifted_item(NULL),
   animation_callback_ref(LUA_REFNIL) {
 
+  RefCountable::ref(&hero);
   rebuild_equipment();
 }
 
@@ -99,6 +100,7 @@ HeroSprites::~HeroSprites() {
   RefCountable::unref(shield_sprite);
   RefCountable::unref(ground_sprite);
   RefCountable::unref(trail_sprite);
+  RefCountable::unref(&hero);
 }
 
 /**

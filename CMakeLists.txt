@@ -12,8 +12,8 @@ option(SOLARUS_USE_LUAJIT "Use LuaJIT instead of default Lua (recommended)" ON)
 
 # find the headers and the libraries of dependencies
 #find_package(OpenGL)
-find_package(SDL2 "2" REQUIRED)
-find_package(SDL2_image "2" REQUIRED)
+find_package(SDL2 "2.0.1" REQUIRED)
+find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf "2.0.12" REQUIRED)
 find_package(OpenAL REQUIRED)
 find_package(VorbisFile REQUIRED)

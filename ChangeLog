@@ -12,7 +12,7 @@ Engine changes
 * Make the window resizable (#338).
 * Use LuaJIT if available instead of vanilla Lua for better performance.
 * New map entity type: custom entities, fully scripted (#323).
-* Conveyor belts are now called streams an can be non-blocking (#288).
+* Conveyor belts are now called streams and can be non-blocking (#288).
 * Collision rules of streams (conveyor belts) are now like holes.
 * Rewrite the main loop with a constant timestep (#351).
 * Show a dialog box in case of fatal error.

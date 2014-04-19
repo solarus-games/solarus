@@ -504,18 +504,24 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
     // Initialize the window.
     // Set fullscreen flag first to set the size on the right mode.
     SDL_SetWindowFullscreen(main_window, fullscreen_flag);
-    if (mode_changed) {
-
-      reset_window_size();
-      SDL_RenderSetLogicalSize(
-          main_renderer,
-          render_size.get_width(),
-          render_size.get_height());
-      if (video_mode->get_hardware_filter() != NULL) {
-        video_mode->get_hardware_filter()->reset_time();
-      }
+    if (!fullscreen && is_fullscreen()) {
+      SDL_SetWindowSize(
+          main_window,
+          window_size.get_width(),
+          window_size.get_height()
+      );
+      SDL_SetWindowPosition(main_window,
+          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     }
+    SDL_RenderSetLogicalSize(
+        main_renderer,
+        render_size.get_width(),
+        render_size.get_height());
     SDL_ShowCursor(show_cursor);
+    
+    if (mode_changed) {
+      reset_window_size();
+    }
   }
 
   return true;
@@ -778,19 +784,8 @@ void Video::set_window_size(const Rectangle& size) {
   else {
     int width = 0;
     int height = 0;
-    SDL_DisplayMode desktop_mode;
     SDL_GetWindowSize(main_window, &width, &height);
-    
-    // Workaround : the desktop size is not the occupable size, but it is the closer accessible value.
-    if (SDL_GetCurrentDisplayMode(0, &desktop_mode) == 0
-        && (size.get_width() > desktop_mode.w
-        || size.get_height() > desktop_mode.h)) {
-          
-      // Clamp the window into the screen.
-      SDL_MaximizeWindow(main_window);
-    }
-    else if (width != size.get_width() || height != size.get_height()) {
-      
+    if (width != size.get_width() || height != size.get_height()) {
       SDL_SetWindowSize(
           main_window,
           size.get_width(),

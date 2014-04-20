@@ -224,10 +224,10 @@ public class Jumper extends MapEntity {
             switch (getDirection()) {
 
             case 1: // right-up
-                xPoints = new int[] {dx1, dx2 - 1, dx2 - thickness, dx1, dx1};
-                yPoints = new int[] {dy1, dy2 - 1, dy2 - 1, dy1 + thickness - 1, dy1};
-                xPoints2 = new int[] {dx1 + 3, dx2 - 8, dx2 - thickness + 1, dx1 + 3, dx1 + 3};
-                yPoints2 = new int[] {dy1 + 7, dy2 - 4, dy2 - 4, dy1 + thickness - 2, dy1 + 7};
+                xPoints = new int[] {dx1, dx1 + thickness - 1, dx2 - 1, dx2 - 1, dx1};
+                yPoints = new int[] {dy1, dy1, dy2 - thickness, dy2 - 1, dy1};
+                xPoints2 = new int[] {dx1 + 7, dx1 + thickness - 2, dx2 - 4, dx2 - 4, dx1 + 7};
+                yPoints2 = new int[] {dy1 + 3, dy1 + 3, dy2 - thickness + 1, dy2 - 8, dy1 + 3};
                 break;
 
             case 3: // left-up
@@ -238,10 +238,10 @@ public class Jumper extends MapEntity {
                 break;
 
             case 5: // left-down
-                xPoints = new int[] {dx1, dx1 + thickness - 1, dx2 - 1, dx2 - 1, dx1};
-                yPoints = new int[] {dy1, dy1, dy2 - thickness, dy2 - 1, dy1};
-                xPoints2 = new int[] {dx1 + 7, dx1 + thickness - 2, dx2 - 4, dx2 - 4, dx1 + 7};
-                yPoints2 = new int[] {dy1 + 3, dy1 + 3, dy2 - thickness + 1, dy2 - 8, dy1 + 3};
+                xPoints = new int[] {dx1, dx2 - 1, dx2 - thickness, dx1, dx1};
+                yPoints = new int[] {dy1, dy2 - 1, dy2 - 1, dy1 + thickness - 1, dy1};
+                xPoints2 = new int[] {dx1 + 3, dx2 - 8, dx2 - thickness + 1, dx1 + 3, dx1 + 3};
+                yPoints2 = new int[] {dy1 + 7, dy2 - 4, dy2 - 4, dy1 + thickness - 2, dy1 + 7};
                 break;
 
             case 7: // right-down

@@ -178,6 +178,7 @@ Solarus Quest Editor changes
 * Fix the tree not refreshing when deleting a resource (#335).
 * Fix the tileset editor not always showing the save dialog on closing.
 * Fix the num_columns property of sprites wrongly parsed.
+* Fix wrong displaying of right-up and left-down diagonal jumpers.
 * Switches, crystals and crystal blocks now show their actual sprite (#376).
 
 _________________________________

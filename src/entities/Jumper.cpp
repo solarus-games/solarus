@@ -122,12 +122,15 @@ bool Jumper::is_in_jump_position(const MapEntity& entity) const {
 
   const int expected_direction4 = direction8 / 2;
   const Rectangle& facing_point = entity.get_facing_point(expected_direction4);
-  const bool horizontal_jump = is_jump_horizontal();
 
-  return overlaps(facing_point.get_x() + (horizontal_jump ? 0 : -8),
-      facing_point.get_y() + (horizontal_jump ? -8 : 0))
-    && overlaps(facing_point.get_x() + (horizontal_jump ? 0 : 7),
-        facing_point.get_y() + (horizontal_jump ? 7 : 0));
+  if (is_jump_horizontal()) {
+    return overlaps(facing_point.get_x(), facing_point.get_y() - 8)
+        && overlaps(facing_point.get_x(), facing_point.get_y() + 7);
+  }
+  else {
+    return overlaps(facing_point.get_x() - 8, facing_point.get_y())
+        && overlaps(facing_point.get_x() + 7, facing_point.get_y());
+  }
 }
 
 /**

@@ -105,7 +105,7 @@ include_directories(
   ${SOLARUS_ENGINE_SOURCE_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party
   ${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party/snes_spc
-  ${MODPLUG_INCLUDE_DIR}  # Before SDL because we want the sndfile.h of ModPlug.
+  ${MODPLUG_INCLUDE_DIR}  # Before SDL2 because we want the sndfile.h of ModPlug.
   ${SDL2_INCLUDE_DIR}
   ${SDL2_TTF_INCLUDE_DIR}
   ${SDL2_IMAGE_INCLUDE_DIR}

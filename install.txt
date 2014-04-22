@@ -179,7 +179,7 @@ which overwrites the DEFAULT_QUEST constant.
 
 Various developers have had trouble with SDL2 vesion 2.0.0.
 If you are having trouble, use a later version.
-  Debian devlopers:
+  Debian developers:
     If you want SDL Debian packages for stable (wheezy) go to
     http://forum.solarus-games.org/index.php/topic,45.msg166.html#msg166.
 

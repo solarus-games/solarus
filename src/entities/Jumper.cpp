@@ -216,7 +216,7 @@ bool Jumper::is_point_in_diagonal(const Rectangle& point) const {
   switch (get_direction()) {
 
   case 1:
-    collision = (y >= x) && (y - 8 < x);
+    collision = (x >= y) && (x < y + 8);
     break;
 
   case 3:
@@ -224,7 +224,7 @@ bool Jumper::is_point_in_diagonal(const Rectangle& point) const {
     break;
 
   case 5:
-    collision = (x >= y) && (x - 8 < y);
+    collision = (y >= x) && (y < x + 8);
     break;
 
   case 7:

@@ -23,6 +23,7 @@
 #include "entities/Layer.h"
 #include "entities/Ground.h"
 #include "lowlevel/Rectangle.h"
+#include "lowlevel/Debug.h"
 #include "lua/ExportableToLua.h"
 
 namespace solarus {
@@ -225,6 +226,7 @@ inline bool Map::test_collision_with_border(int x, int y) const {
  * \return The rectangle of the visible area.
  */
 inline const Rectangle& Map::get_camera_position() const {
+  SOLARUS_ASSERT(camera != NULL, "Missing camera");
   return camera->get_position();
 }
 

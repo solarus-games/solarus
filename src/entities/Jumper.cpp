@@ -112,13 +112,12 @@ bool Jumper::is_in_jump_position(
 
     // The player should move toward one of both directions.
     if (!hero.is_moving_towards(expected_hero_direction4) &&
-        !hero.is_moving_towards((expected_hero_direction4 + 1) % 4)
-       ) {
+        !hero.is_moving_towards((expected_hero_direction4 + 1) % 4)) {
       return false;
     }
 
     // Test if the appropriate corner of the hero crosses the diagonal.
-    Rectangle corner = candidate_position;
+    Rectangle corner(candidate_position.get_x(), candidate_position.get_y(), 1, 1);
     corner.add_xy(-1, -1);
     if (direction8 == 1 || direction8 == 7) {
       // Right-up or right-down.
@@ -129,7 +128,7 @@ bool Jumper::is_in_jump_position(
       corner.add_y(candidate_position.get_height() + 1);
     }
 
-    return is_point_in_extended_diagonal(corner);
+    return is_point_in_diagonal(corner);
   }
 
   // Non-diagonal case: the sensor has one of the four main directions.
@@ -146,22 +145,26 @@ bool Jumper::is_in_jump_position(
 
     // right
     case 0:
-      facing_point.set_xy(candidate_position.get_x() + 16, candidate_position.get_y() + 8);
+      facing_point.set_xy(
+          candidate_position.get_x() + 16, candidate_position.get_y() + 8);
       break;
 
       // up
     case 1:
-      facing_point.set_xy(candidate_position.get_x() + 8, candidate_position.get_y() - 1);
+      facing_point.set_xy(
+          candidate_position.get_x() + 8, candidate_position.get_y() - 1);
       break;
 
       // left
     case 2:
-      facing_point.set_xy(candidate_position.get_x() - 1, candidate_position.get_y() + 8);
+      facing_point.set_xy(
+          candidate_position.get_x() - 1, candidate_position.get_y() + 8);
       break;
 
       // down
     case 3:
-      facing_point.set_xy(candidate_position.get_x() + 8, candidate_position.get_y() + 16);
+      facing_point.set_xy(
+          candidate_position.get_x() + 8, candidate_position.get_y() + 16);
       break;
 
     default:
@@ -192,7 +195,9 @@ bool Jumper::test_collision_custom(MapEntity& entity) {
     return false;
   }
 
-  return is_in_jump_position(static_cast<Hero&>(entity), entity.get_bounding_box());
+  return is_in_jump_position(
+      static_cast<Hero&>(entity), entity.get_bounding_box()
+  );
 }
 
 /**

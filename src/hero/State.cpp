@@ -836,7 +836,8 @@ bool Hero::State::is_sensor_obstacle(const Sensor& sensor) const {
  * \return \c true if the jumper is an obstacle in this state with this
  * hero position.
  */
-bool Hero::State::is_jumper_obstacle(const Jumper& jumper, const Rectangle& candidate_position) const {
+bool Hero::State::is_jumper_obstacle(
+    const Jumper& jumper, const Rectangle& candidate_position) const {
 
   if (jumper.overlaps_jumping_region(hero.get_bounding_box())) {
     // The hero already overlaps the active part of the jumper.
@@ -860,8 +861,8 @@ bool Hero::State::is_jumper_obstacle(const Jumper& jumper, const Rectangle& cand
 
   // At this point, we know that the jumper can be activated.
 
-  if (jumper.is_in_jump_position(hero, candidate_position)) {
-    // If the candidate position is correctly placed (ready to jump),
+  if (jumper.is_in_jump_position(hero, hero.get_bounding_box())) {
+    // If the hero is correctly placed (ready to jump),
     // make the jumper obstacle so that the player has to move in the
     // jumper's direction during a small delay before jumping.
     // This also prevents the hero to be partially inside the jumper when
@@ -869,8 +870,16 @@ bool Hero::State::is_jumper_obstacle(const Jumper& jumper, const Rectangle& cand
     return true;
   }
 
+  if (jumper.is_in_jump_position(hero, candidate_position)) {
+    // TODO is this necessary?
+    return false;
+  }
+
   // But if the hero is not placed correctly, make the jumper traversable so
   // that the smooth movement can slide to it.
+  if (jumper.overlaps_jumping_region(candidate_position)) {
+    return true;
+  }
   return false;
 }
 

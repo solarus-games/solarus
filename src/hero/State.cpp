@@ -838,18 +838,19 @@ bool Hero::State::is_sensor_obstacle(const Sensor& sensor) const {
  */
 bool Hero::State::is_jumper_obstacle(const Jumper& jumper, const Rectangle& candidate_position) const {
 
-  if (jumper.overlaps_jumping_region(candidate_position)) {
-    // The hero may overlap the jumper if he arrived by another direction
+  if (jumper.overlaps_jumping_region(hero.get_bounding_box())) {
+    // The hero already overlaps the active part of the jumper.
+    // This is authorized if he arrived from another direction
     // and thus did not activate it.
-    // This is allowed and can be used to leave water pools for example.
+    // This can be used to leave water pools for example.
     return false;
   }
 
   if (!can_take_jumper()) {
     // If jumpers cannot be used in this state, consider their active region
-    // as obstacles.
+    // as obstacles and their inactive region as traversable.
     if (jumper.overlaps(candidate_position)) {
-      // The hero overlaps the inactive region.
+      // The candidate position is in the inactive region: we accept that.
       return false;
     }
 
@@ -860,10 +861,9 @@ bool Hero::State::is_jumper_obstacle(const Jumper& jumper, const Rectangle& cand
   // At this point, we know that the jumper can be activated.
 
   if (jumper.is_in_jump_position(hero, candidate_position)) {
-    // If the candiate position is correctly placed (ready to jump),
-    // make the jumper
-    // obstacle so that the player has to move in the jumper's direction
-    // during a small delay before jumping.
+    // If the candidate position is correctly placed (ready to jump),
+    // make the jumper obstacle so that the player has to move in the
+    // jumper's direction during a small delay before jumping.
     // This also prevents the hero to be partially inside the jumper when
     // starting the jump.
     return true;

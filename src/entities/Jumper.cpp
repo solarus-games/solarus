@@ -301,22 +301,22 @@ bool Jumper::overlaps_jumping_region(const Rectangle& rectangle) const {
   // Only check the 4 corners of the rectangle.
   // TODO this might be a problem for sharp angles of diagonal jumpers.
   Rectangle xy = rectangle;
-  if (overlaps_jumping_region(xy)) {
+  if (is_point_in_diagonal(xy)) {
     return true;
   }
 
   xy.add_x(rectangle.get_width() - 1);
-  if (overlaps_jumping_region(xy)) {
+  if (is_point_in_diagonal(xy)) {
     return true;
   }
 
   xy.add_y(rectangle.get_height() - 1);
-  if (overlaps_jumping_region(xy)) {
+  if (is_point_in_diagonal(xy)) {
     return true;
   }
 
   xy.set_x(rectangle.get_x());
-  if (overlaps_jumping_region(xy)) {
+  if (is_point_in_diagonal(xy)) {
     return true;
   }
 

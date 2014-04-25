@@ -147,7 +147,7 @@ bool Jumper::test_collision_custom(MapEntity& entity) {
     return false;
   }
 
-  Hero& hero = static_cast<Hero&>(entity);
+  const Hero& hero = static_cast<Hero&>(entity);
   const int direction8 = get_direction();
 
   if (!is_jump_diagonal()) {

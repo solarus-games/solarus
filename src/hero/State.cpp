@@ -829,13 +829,16 @@ bool Hero::State::is_sensor_obstacle(const Sensor& sensor) const {
 }
 
 /**
- * \brief Returns whether a jumper is considered as an obstacle in this state.
- * \param jumper a jumper
- * \return true if the sensor is an obstacle in this state
+ * \brief Returns whether a jumper is considered as an obstacle in this state
+ * for the hero at the specified position.
+ * \param jumper A jumper.
+ * \param candidate_position Position of the hero to test.
+ * \return \c true if the jumper is an obstacle in this state with this
+ * hero position.
  */
-bool Hero::State::is_jumper_obstacle(const Jumper& jumper) const {
+bool Hero::State::is_jumper_obstacle(const Jumper& jumper, const Rectangle& candidate_position) const {
 
-  if (hero.overlaps(jumper)) {
+  if (jumper.overlaps_jumping_region(candidate_position)) {
     // The hero may overlap the jumper if he arrived by another direction
     // and thus did not activate it.
     // This is allowed and can be used to leave water pools for example.
@@ -843,14 +846,22 @@ bool Hero::State::is_jumper_obstacle(const Jumper& jumper) const {
   }
 
   if (!can_take_jumper()) {
-    // If jumpers cannot be used in this state, consider them as obstacles.
+    // If jumpers cannot be used in this state, consider their active region
+    // as obstacles.
+    if (jumper.overlaps(candidate_position)) {
+      // The hero overlaps the inactive region.
+      return false;
+    }
+
+    // The active region should be an obstacle.
     return true;
   }
 
   // At this point, we know that the jumper can be activated.
 
-  if (jumper.is_in_jump_position(hero)) {
-    // If the hero is correctly placed (ready to jump), make the jumper
+  if (jumper.is_in_jump_position(hero, candidate_position)) {
+    // If the candiate position is correctly placed (ready to jump),
+    // make the jumper
     // obstacle so that the player has to move in the jumper's direction
     // during a small delay before jumping.
     // This also prevents the hero to be partially inside the jumper when

@@ -102,7 +102,7 @@ class Hero::State {
     virtual bool can_persist_on_stream(const Stream& stream) const;
     virtual bool is_stairs_obstacle(const Stairs& stairs) const;
     virtual bool is_sensor_obstacle(const Sensor& sensor) const;
-    virtual bool is_jumper_obstacle(const Jumper& jumper) const;
+    virtual bool is_jumper_obstacle(const Jumper& jumper, const Rectangle& candidate_position) const;
     virtual bool is_separator_obstacle(const Separator& separator) const;
     virtual bool can_avoid_sensor() const;
     virtual bool can_avoid_explosion() const;

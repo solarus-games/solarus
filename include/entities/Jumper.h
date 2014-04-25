@@ -45,7 +45,7 @@ class Jumper: public Detector {
     EntityType get_type() const;
     bool can_be_drawn() const;
     bool is_sword_ignored() const;
-    bool is_obstacle_for(MapEntity& other);
+    bool is_obstacle_for(MapEntity& other, const Rectangle& candidate_position);
     bool test_collision_custom(MapEntity& entity);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
 
@@ -53,11 +53,15 @@ class Jumper: public Detector {
     bool is_jump_horizontal() const;
     bool is_jump_vertical() const;
     bool is_jump_diagonal() const;
-    bool is_in_jump_position(const MapEntity& entity) const;
+    bool is_in_jump_position(
+        const Hero& hero, const Rectangle& candidate_position) const;
+
+    bool overlaps_jumping_region(const Rectangle& rectangle) const;
 
   private:
 
     bool is_point_in_diagonal(const Rectangle& point) const;
+    bool is_point_in_extended_diagonal(const Rectangle& point) const;
 
     int jump_length; /**< length of the jump in pixels (should be a multiple of 8) */
 

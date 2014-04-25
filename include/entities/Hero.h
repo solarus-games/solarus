@@ -161,7 +161,7 @@ class Hero: public MapEntity {
     bool is_stairs_obstacle(Stairs& stairs);
     bool is_sensor_obstacle(Sensor& sensor);
     bool is_raised_block_obstacle(CrystalBlock& raised_block);
-    bool is_jumper_obstacle(Jumper& jumper);
+    bool is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position);
     bool is_separator_obstacle(Separator& separator);
 
     /**

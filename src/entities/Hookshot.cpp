@@ -173,11 +173,9 @@ bool Hookshot::is_crystal_obstacle(Crystal& crystal) {
 }
 
 /**
- * \brief Returns whether a non-diagonal jumper is currently considered as an obstacle for this entity.
- * \param jumper a non-diagonal jumper
- * \return true if the jumper is currently an obstacle for this entity
+ * \copydoc MapEntity::is_jumper_obstacle
  */
-bool Hookshot::is_jumper_obstacle(Jumper& jumper) {
+bool Hookshot::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) {
   return false;
 }
 

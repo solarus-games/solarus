@@ -112,9 +112,11 @@ class MapEntity: public ExportableToLua {
     void set_origin(const Rectangle& origin);
     int get_top_left_x() const;
     int get_top_left_y() const;
+    const Rectangle get_top_left_xy() const;
     void set_top_left_x(int x);
     void set_top_left_y(int y);
     void set_top_left_xy(int x, int y);
+    void set_top_left_xy(const Rectangle& xy);
 
     virtual const Rectangle get_facing_point() const;
     virtual const Rectangle get_facing_point(int direction) const;
@@ -241,6 +243,7 @@ class MapEntity: public ExportableToLua {
         bool killed);
 
     virtual bool is_obstacle_for(MapEntity& other);
+    virtual bool is_obstacle_for(MapEntity& other, const Rectangle& candidate_position);
     virtual bool is_low_wall_obstacle() const;
     virtual bool is_shallow_water_obstacle() const;
     virtual bool is_deep_water_obstacle() const;
@@ -259,7 +262,7 @@ class MapEntity: public ExportableToLua {
     virtual bool is_crystal_obstacle(Crystal& crystal);
     virtual bool is_npc_obstacle(Npc& npc);
     virtual bool is_enemy_obstacle(Enemy& enemy);
-    virtual bool is_jumper_obstacle(Jumper& jumper);
+    virtual bool is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position);
     virtual bool is_destructible_obstacle(Destructible& destructible);
     virtual bool is_separator_obstacle(Separator& separator);
     virtual bool is_sword_ignored() const;

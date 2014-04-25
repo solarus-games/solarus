@@ -48,7 +48,7 @@ class Arrow: public MapEntity {
     bool is_raised_block_obstacle(CrystalBlock& raised_block);
     bool is_crystal_obstacle(Crystal& crystal);
     bool is_npc_obstacle(Npc& npc);
-    bool is_jumper_obstacle(Jumper& jumper);
+    bool is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position);
 
     // state
     void update();

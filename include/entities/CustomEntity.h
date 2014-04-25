@@ -93,7 +93,7 @@ class CustomEntity: public Detector {
     bool is_crystal_obstacle(Crystal& crystal);
     bool is_npc_obstacle(Npc& npc);
     bool is_enemy_obstacle(Enemy& enemy);
-    bool is_jumper_obstacle(Jumper& jumper);
+    bool is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position);
     bool is_destructible_obstacle(Destructible& destructible);
     bool is_separator_obstacle(Separator& separator);
 

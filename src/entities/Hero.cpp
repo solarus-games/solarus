@@ -1551,12 +1551,10 @@ bool Hero::is_raised_block_obstacle(CrystalBlock& raised_block) {
 }
 
 /**
- * \brief Returns whether a non-diagonal jumper is currently considered as an obstacle for this entity.
- * \param jumper a non-diagonal jumper
- * \return true if the jumper is currently an obstacle for this entity
+ * \copydoc MapEntity::is_jumper_obstacle
  */
-bool Hero::is_jumper_obstacle(Jumper& jumper) {
-  return state->is_jumper_obstacle(jumper);
+bool Hero::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) {
+  return state->is_jumper_obstacle(jumper, candidate_position);
 }
 
 /**

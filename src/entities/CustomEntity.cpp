@@ -537,13 +537,13 @@ bool CustomEntity::is_enemy_obstacle(Enemy& enemy) {
 /**
  * \copydoc MapEntity::is_jumper_obstacle
  */
-bool CustomEntity::is_jumper_obstacle(Jumper& jumper) {
+bool CustomEntity::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(jumper.get_type());
   if (!info.is_empty()) {
     return info.is_traversable(jumper);
   }
-  return Detector::is_jumper_obstacle(jumper);
+  return Detector::is_jumper_obstacle(jumper, candidate_position);
 }
 
 /**

@@ -735,6 +735,14 @@ int MapEntity::get_top_left_y() const {
 }
 
 /**
+ * \brief Returns the position of the entity's top-left corner.
+ * \return The position of the entity's top-left corner.
+ */
+const Rectangle MapEntity::get_top_left_xy() const {
+  return Rectangle(get_top_left_x(), get_top_left_y(), 1, 1);
+}
+
+/**
  * \brief Sets the x position of the entity's top-left corner.
  * \param x the new top-left x position
  */
@@ -761,6 +769,14 @@ void MapEntity::set_top_left_y(int y) {
 void MapEntity::set_top_left_xy(int x, int y) {
   set_top_left_x(x);
   set_top_left_y(y);
+}
+
+/**
+ * \brief Sets the position of the entity's top-left corner.
+ * \param xy The new top-left position.
+ */
+void MapEntity::set_top_left_xy(const Rectangle& xy) {
+  set_top_left_xy(xy.get_x(), xy.get_y());
 }
 
 /**
@@ -1586,16 +1602,32 @@ void MapEntity::notify_enabled(bool enabled) {
 }
 
 /**
- * \brief Returns whether this entity is an obstacle for another one when
- * it is enabled.
+ * \brief Returns whether this entity is an obstacle for another one.
  *
- * By default, this function returns false.
+ * This function is called by the default implementation of
+ * MapEntity::is_obstacle_for(MapEntity&, const Rectangle& candidate_position).
  *
- * \param other another entity
- * \return true if this entity is an obstacle for the other one
+ * \param other Another entity.
+ * \return \c true if this entity is an obstacle for the other one.
  */
 bool MapEntity::is_obstacle_for(MapEntity& other) {
   return false;
+}
+
+/**
+ * \brief Returns whether this entity is an obstacle for another one it that
+ * other entity was at the specified place.
+ * \param other Another entity.
+ * \param candidate_position Candidate position of this other entity.
+ * \return \c true if this entity is an obstacle for the other one at that
+ * position.
+ */
+bool MapEntity::is_obstacle_for(MapEntity& other, const Rectangle& candidate_position) {
+
+  // By default, use a position-independent test.
+  // Most entities don't need the candidate position of the other one to decide
+  // if they want to block them.
+  return is_obstacle_for(other);
 }
 
 /**
@@ -1823,14 +1855,13 @@ bool MapEntity::is_enemy_obstacle(Enemy& enemy) {
 }
 
 /**
- * \brief Returns whether a non-diagonal jumper is currently considered as an obstacle by this entity.
- *
- * This function returns true by default.
- *
- * \param jumper a non-diagonal jumper
- * \return true if the jumper is currently an obstacle for this entity
+ * \brief Returns whether a jumper is currently considered as an obstacle by this entity.
+ * \param jumper A jumper.
+ * \param candidate_position Candidate position of this entity to test.
+ * \return \c true if the jumper is currently an obstacle for this entity at
+ * this candidate position.
  */
-bool MapEntity::is_jumper_obstacle(Jumper& jumper) {
+bool MapEntity::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) {
   return true;
 }
 

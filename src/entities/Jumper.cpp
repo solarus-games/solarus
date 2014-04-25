@@ -86,44 +86,89 @@ bool Jumper::can_be_drawn() const {
 }
 
 /**
- * \brief Returns whether this entity is an obstacle for another one.
- * \param other another entity
- * \return true if this entity is an obstacle for the other one
+ * \copydoc MapEntity::is_obstacle_for(MapEntity&, const Rectangle&)
  */
-bool Jumper::is_obstacle_for(MapEntity& other) {
+bool Jumper::is_obstacle_for(
+    MapEntity& other, const Rectangle& candidate_position) {
 
-  if (get_direction() % 2 != 0) {
-    return false; // diagonal jumper: never obstacle (the tiles below the jumper should block entities)
-  }
-
-  // non-diagonal jumper: it depends on the entities (the tiles below the jumper should NOT block entities)
-  return other.is_jumper_obstacle(*this);
+  return other.is_jumper_obstacle(*this, candidate_position);
 }
 
 /**
- * \brief Returns whether an entity is correctly placed to start jumping
- * with this jumper.
- * \param entity A map entity.
- * \return \c true if the entity is correctly placed to start the jump.
+ * \brief Returns whether the hero is correctly placed to
+ * start jumping with this jumper.
+ * \param hero The hero.
+ * \param candidate_position The candidate bounding box.
+ * \return \c true if the hero is correctly placed to start a jump.
  */
-bool Jumper::is_in_jump_position(const MapEntity& entity) const {
+bool Jumper::is_in_jump_position(
+    const Hero& hero, const Rectangle& candidate_position) const {
 
   const int direction8 = get_direction();
+  const int expected_hero_direction4 = direction8 / 2;
 
   if (is_jump_diagonal()) {
-    // The sensor's shape is a diagonal bar.
+    // Diagonal case: The sensor's shape is a diagonal bar.
 
-    return is_point_in_diagonal(entity.get_facing_point((direction8 - 1) / 2))
-      || is_point_in_diagonal(entity.get_facing_point((direction8 + 1) % 8 / 2));
+    // The player should move toward one of both directions.
+    if (!hero.is_moving_towards(expected_hero_direction4) &&
+        !hero.is_moving_towards((expected_hero_direction4 + 1) % 4)
+       ) {
+      return false;
+    }
+
+    // Test if the appropriate corner of the hero crosses the diagonal.
+    Rectangle corner = candidate_position;
+    corner.add_xy(-1, -1);
+    if (direction8 == 1 || direction8 == 7) {
+      // Right-up or right-down.
+      corner.add_x(candidate_position.get_width() + 1);
+    }
+    if (direction8 == 5 || direction8 == 7) {
+      // Left-down or right-down.
+      corner.add_y(candidate_position.get_height() + 1);
+    }
+
+    return is_point_in_extended_diagonal(corner);
   }
 
-  // The sensor has one of the four main directions.
+  // Non-diagonal case: the sensor has one of the four main directions.
   // Its shape is exactly its rectangle.
 
-  const int expected_direction4 = direction8 / 2;
-  const Rectangle& facing_point = entity.get_facing_point(expected_direction4);
-  const bool horizontal_jump = is_jump_horizontal();
+  // The player should move toward the jumper's direction.
+  if (!hero.is_moving_towards(expected_hero_direction4)) {
+    return false;
+  }
 
+  Rectangle facing_point(0, 0, 1, 1);
+
+  switch (expected_hero_direction4) {
+
+    // right
+    case 0:
+      facing_point.set_xy(candidate_position.get_x() + 16, candidate_position.get_y() + 8);
+      break;
+
+      // up
+    case 1:
+      facing_point.set_xy(candidate_position.get_x() + 8, candidate_position.get_y() - 1);
+      break;
+
+      // left
+    case 2:
+      facing_point.set_xy(candidate_position.get_x() - 1, candidate_position.get_y() + 8);
+      break;
+
+      // down
+    case 3:
+      facing_point.set_xy(candidate_position.get_x() + 8, candidate_position.get_y() + 16);
+      break;
+
+    default:
+      Debug::die("Invalid direction");
+  }
+
+  const bool horizontal_jump = is_jump_horizontal();
   return overlaps(facing_point.get_x() + (horizontal_jump ? 0 : -8),
       facing_point.get_y() + (horizontal_jump ? -8 : 0))
     && overlaps(facing_point.get_x() + (horizontal_jump ? 0 : 7),
@@ -144,18 +189,7 @@ bool Jumper::test_collision_custom(MapEntity& entity) {
     return false;
   }
 
-  const Hero& hero = static_cast<Hero&>(entity);
-  const int direction8 = get_direction();
-
-  if (!is_jump_diagonal()) {
-
-    int expected_hero_direction4 = direction8 / 2;
-    if (!hero.is_moving_towards(expected_hero_direction4)) {
-      return false;
-    }
-  }
-
-  return is_in_jump_position(hero);
+  return is_in_jump_position(static_cast<Hero&>(entity), entity.get_bounding_box());
 }
 
 /**
@@ -195,20 +229,31 @@ bool Jumper::is_jump_diagonal() const {
 }
 
 /**
- * \brief Returns whether the specified point is in the jumper's shape.
+ * \brief Returns whether a point is in the 8-pixel active strip
+ * of this diagonal jumper.
  *
- * This function is used only for a jumper with diagonal direction.
+ * This function only make sense for a diagonal jumper.
  *
- * \param point the point to check
- * \return true if this point is overlapping the jumper
+ * \param point The point to check.
+ * \return \c true if this point is overlapping the jumper
  */
 bool Jumper::is_point_in_diagonal(const Rectangle& point) const {
 
-  if (!overlaps(point.get_x(), point.get_y())) {
-    return false;
-  }
+  return overlaps(point.get_x(), point.get_y()) &&
+    is_point_in_extended_diagonal(point);
+}
 
-  bool collision = false;
+/**
+ * \brief Returns whether a point is in the 8-pixel active strip
+ * of this diagonal jumper or in the extension of that strip.
+ *
+ * This function only make sense for a diagonal jumper.
+ *
+ * \param point The point to check.
+ * \return \c true if this point is overlapping the jumper
+ */
+bool Jumper::is_point_in_extended_diagonal(const Rectangle& point) const {
+
   const int x = point.get_x() - this->get_x();
   const int y = point.get_y() - this->get_y();
   const int width = get_width();
@@ -216,26 +261,63 @@ bool Jumper::is_point_in_diagonal(const Rectangle& point) const {
   switch (get_direction()) {
 
   case 1:
-    collision = (x >= y) && (x < y + 8);
-    break;
+    return (x >= y) && (x < y + 8);
 
   case 3:
-    collision = (x + y <= width) && (x + y > width - 8);
-    break;
+    return (x + y <= width) && (x + y > width - 8);
 
   case 5:
-    collision = (y >= x) && (y < x + 8);
-    break;
+    return (y >= x) && (y < x + 8);
 
   case 7:
-    collision = (x + y >= width) && (x + y < width + 8);
-    break;
+    return (x + y >= width) && (x + y < width + 8);
 
   default:
     Debug::die("Invalid direction of jumper");
   }
 
-  return collision;
+  return false;
+}
+
+/**
+ * \brief Returns whether a rectangle overlaps the active region of the jumper.
+ *
+ * For a horizontal or vertical jumper, the active region is the whole
+ * bounding box.
+ * For a diagonal jumper, the active region is an 8-pixel thick diagonal strip.
+ *
+ * \param entity An entity.
+ * \return \c true if the rectangle overlaps the active region of the jumper.
+ */
+bool Jumper::overlaps_jumping_region(const Rectangle& rectangle) const {
+
+  if (!is_jump_diagonal()) {
+    return overlaps(rectangle);
+  }
+
+  // Only check the 4 corners of the rectangle.
+  // TODO this might be a problem for sharp angles of diagonal jumpers.
+  Rectangle xy = rectangle;
+  if (overlaps_jumping_region(xy)) {
+    return true;
+  }
+
+  xy.add_x(rectangle.get_width() - 1);
+  if (overlaps_jumping_region(xy)) {
+    return true;
+  }
+
+  xy.add_y(rectangle.get_height() - 1);
+  if (overlaps_jumping_region(xy)) {
+    return true;
+  }
+
+  xy.set_x(rectangle.get_x());
+  if (overlaps_jumping_region(xy)) {
+    return true;
+  }
+
+  return false;
 }
 
 /**

@@ -596,11 +596,9 @@ bool CarriedItem::is_npc_obstacle(Npc& npc) {
 }
 
 /**
- * \brief Returns whether a non-diagonal jumper is currently considered as an obstacle for this entity.
- * \param jumper a non-diagonal jumper
- * \return true if the jumper is currently an obstacle for this entity
+ * \copydoc MapEntity::is_jumper_obstacle
  */
-bool CarriedItem::is_jumper_obstacle(Jumper& jumper) {
+bool CarriedItem::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) {
   return false;
 }
 

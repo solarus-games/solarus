@@ -918,7 +918,7 @@ bool Map::test_collision_with_entities(
 
     MapEntity* entity = *it;
     if (entity->overlaps(collision_box)
-        && entity->is_obstacle_for(entity_to_check)
+        && entity->is_obstacle_for(entity_to_check, collision_box)
         && entity->is_enabled()
         && entity != &entity_to_check)
       return true;

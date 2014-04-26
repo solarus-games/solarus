@@ -149,7 +149,7 @@ void Hero::PlayerMovementState::update() {
       const int jump_direction8 = current_jumper->get_direction();
       if (!current_jumper->is_enabled()
           || current_jumper->is_being_removed()
-          || !current_jumper->is_in_jump_position(get_hero(), get_hero().get_bounding_box())) {
+          || !current_jumper->is_in_jump_position(get_hero(), get_hero().get_bounding_box(), false)) {
 
         // Cancel the jumper preparation.
         RefCountable::unref(current_jumper);

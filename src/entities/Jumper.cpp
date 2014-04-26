@@ -99,10 +99,19 @@ bool Jumper::is_obstacle_for(
  * start jumping with this jumper.
  * \param hero The hero.
  * \param candidate_position The candidate bounding box.
+ * \param extended_region Whether you want to consider the extended jumper
+ * beyond its bounding box, or to keep it restricted to its bounding box.
  * \return \c true if the hero is correctly placed to start a jump.
  */
 bool Jumper::is_in_jump_position(
-    const Hero& hero, const Rectangle& candidate_position) const {
+    const Hero& hero,
+    const Rectangle& candidate_position,
+    bool extended_region) const {
+
+  if (overlaps_jumping_region(candidate_position, extended_region)) {
+    // Overlapping the active region: cannot start a jump from there.
+    return false;
+  }
 
   const int direction8 = get_direction();
   const int expected_hero_direction4 = direction8 / 2;
@@ -128,7 +137,9 @@ bool Jumper::is_in_jump_position(
       corner.add_y(candidate_position.get_height() + 1);
     }
 
-    return is_point_in_diagonal(corner);
+    return extended_region ?
+        is_point_in_extended_diagonal(corner) :
+        is_point_in_diagonal(corner);
   }
 
   // Non-diagonal case: the sensor has one of the four main directions.
@@ -172,12 +183,28 @@ bool Jumper::is_in_jump_position(
   }
 
   if (is_jump_horizontal()) {
-    return overlaps(facing_point.get_x(), facing_point.get_y() - 8)
-        && overlaps(facing_point.get_x(), facing_point.get_y() + 7);
+    if (extended_region) {
+      // Are we inside the extended strip?
+      return facing_point.get_x() >= get_top_left_x() &&
+          facing_point.get_x() < get_top_left_x() + get_width();
+    }
+    else {
+      // Are we inside the strip and the bounding box?
+      return overlaps(facing_point.get_x(), facing_point.get_y() - 8)
+          && overlaps(facing_point.get_x(), facing_point.get_y() + 7);
+    }
   }
   else {
-    return overlaps(facing_point.get_x() - 8, facing_point.get_y())
-        && overlaps(facing_point.get_x() + 7, facing_point.get_y());
+    // Same thing for a vertical jump.
+    if (extended_region) {
+      // Are we inside the extended strip?
+      return facing_point.get_y() >= get_top_left_y() &&
+          facing_point.get_y() < get_top_left_y() + get_height();
+    }
+    else {
+      return overlaps(facing_point.get_x() - 8, facing_point.get_y()) &&
+          overlaps(facing_point.get_x() + 7, facing_point.get_y());
+    }
   }
 }
 
@@ -196,7 +223,7 @@ bool Jumper::test_collision_custom(MapEntity& entity) {
   }
 
   return is_in_jump_position(
-      static_cast<Hero&>(entity), entity.get_bounding_box()
+      static_cast<Hero&>(entity), entity.get_bounding_box(), false
   );
 }
 
@@ -291,20 +318,21 @@ bool Jumper::is_point_in_extended_diagonal(const Rectangle& point) const {
  * \brief Returns whether a rectangle overlaps the active region of the jumper.
  *
  * For a horizontal or vertical jumper, the active region is the whole
- * bounding box.
+ * bounding box, that is, an 8-pixel thick horizontal or vertical strip.
  * For a diagonal jumper, the active region is an 8-pixel thick diagonal strip.
  *
- * \param entity An entity.
+ * \param rectangle A rectangle.
+ * \param extended_region Whether you want to consider the extended jumper
+ * beyond its bounding box, or to keep it restricted to its bounding box.
  * \return \c true if the rectangle overlaps the active region of the jumper.
  */
-bool Jumper::overlaps_jumping_region(const Rectangle& rectangle) const {
+bool Jumper::overlaps_jumping_region(const Rectangle& rectangle, bool extended_region) const {
 
   if (!is_jump_diagonal()) {
     return overlaps(rectangle);
   }
 
-  // Only check the 4 corners of the rectangle.
-  // TODO this might be a problem for sharp angles of diagonal jumpers.
+  // Check the 4 corners of the rectangle.
   Rectangle xy = rectangle;
   if (is_point_in_diagonal(xy)) {
     return true;
@@ -323,6 +351,28 @@ bool Jumper::overlaps_jumping_region(const Rectangle& rectangle) const {
   xy.set_x(rectangle.get_x());
   if (is_point_in_diagonal(xy)) {
     return true;
+  }
+
+  // Check the two ends of the diagonal.
+  if (get_direction() == 1 || get_direction() == 5) {
+    if (rectangle.contains(get_top_left_x(), get_top_left_y())) {
+      return true;
+    }
+    if (rectangle.contains(
+        get_top_left_x() + get_width() - 1,
+        get_top_left_y() + get_height() - 1)) {
+      return true;
+    }
+  }
+  else {
+    if (rectangle.contains(
+        get_top_left_x() + get_width() - 1, get_top_left_y())) {
+      return true;
+    }
+    if (rectangle.contains(
+        get_top_left_x(), get_top_left_y() + get_height() - 1)) {
+      return true;
+    }
   }
 
   return false;

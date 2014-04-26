@@ -54,9 +54,15 @@ class Jumper: public Detector {
     bool is_jump_vertical() const;
     bool is_jump_diagonal() const;
     bool is_in_jump_position(
-        const Hero& hero, const Rectangle& candidate_position) const;
+        const Hero& hero,
+        const Rectangle& candidate_position,
+        bool extended_region
+    ) const;
 
-    bool overlaps_jumping_region(const Rectangle& rectangle) const;
+    bool overlaps_jumping_region(
+        const Rectangle& rectangle,
+        bool extended_region
+    ) const;
 
   private:
 

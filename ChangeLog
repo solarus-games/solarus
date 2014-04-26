@@ -45,6 +45,7 @@ Engine changes
 * Fix the hero leaving the grabbing state even while the game is suspended.
 * Fix low walls in dynamic tiles behaving like normal walls.
 * Fix wrong collisions of right-up and left-down diagonal jumpers.
+* Fix jumpers that could be traversed sideways (#481).
 * Fix entities not always shown when they have no optimization distance.
 * Call hero:on_removed() and stop hero timers when stopping the game (#421).
 * Don't die if the map or destination saved no longer exists (#301).

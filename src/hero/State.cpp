@@ -839,7 +839,7 @@ bool Hero::State::is_sensor_obstacle(const Sensor& sensor) const {
 bool Hero::State::is_jumper_obstacle(
     const Jumper& jumper, const Rectangle& candidate_position) const {
 
-  if (jumper.overlaps_jumping_region(hero.get_bounding_box())) {
+  if (jumper.overlaps_jumping_region(hero.get_bounding_box(), false)) {
     // The hero already overlaps the active part of the jumper.
     // This is authorized if he arrived from another direction
     // and thus did not activate it.
@@ -847,40 +847,55 @@ bool Hero::State::is_jumper_obstacle(
     return false;
   }
 
+  if (!jumper.overlaps_jumping_region(candidate_position, false)) {
+    // The candidate position is in the inactive region: always accept that.
+    return false;
+  }
+
   if (!can_take_jumper()) {
     // If jumpers cannot be used in this state, consider their active region
     // as obstacles and their inactive region as traversable.
-    if (jumper.overlaps(candidate_position)) {
-      // The candidate position is in the inactive region: we accept that.
-      return false;
-    }
-
     // The active region should be an obstacle.
     return true;
   }
 
   // At this point, we know that the jumper can be activated.
 
-  if (jumper.is_in_jump_position(hero, hero.get_bounding_box())) {
-    // If the hero is correctly placed (ready to jump),
-    // make the jumper obstacle so that the player has to move in the
-    // jumper's direction during a small delay before jumping.
-    // This also prevents the hero to be partially inside the jumper when
-    // starting the jump.
-    return true;
-  }
+  const bool hero_in_jump_position =
+      jumper.is_in_jump_position(hero, hero.get_bounding_box(), false);
+  const bool candidate_in_jump_position =
+      jumper.is_in_jump_position(hero, candidate_position, false);
 
-  if (jumper.is_in_jump_position(hero, candidate_position)) {
-    // TODO is this necessary?
+  if (candidate_in_jump_position) {
+    // Wants to move to a valid jump position: accept.
     return false;
   }
 
-  // But if the hero is not placed correctly, make the jumper traversable so
-  // that the smooth movement can slide to it.
-  if (jumper.overlaps_jumping_region(candidate_position)) {
+  if (hero_in_jump_position) {
+    // If the hero is already correctly placed (ready to jump),
+    // make the jumper obstacle so that the player has to move in the
+    // jumper's direction during a small delay before jumping.
+    // This also prevents the hero to get inside the jumper's active region.
     return true;
   }
-  return false;
+
+  const bool candidate_in_extended_jump_position =
+      jumper.is_in_jump_position(hero, candidate_position, true);
+
+  if (candidate_in_extended_jump_position) {
+    // Wants to get inside the active region from an end of the jumper:
+    // don't accept this.
+    return true;
+  }
+
+  if (!jumper.is_jump_diagonal() &&
+      hero.is_moving_towards(jumper.get_direction() / 2)) {
+    // Special case: make the jumper traversable so
+    // that the smooth movement can slide to it.
+    return false;
+  }
+
+  return true;
 }
 
 /**

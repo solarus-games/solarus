@@ -24,6 +24,14 @@ use his sword and his equipment items, depending on the stream properties.
 The hero is not the only map entity that can follow a stream:
 \ref lua_api_bomb "Bombs" also have this ability.
 
+\section lua_api_stream_quest_maker_notes Notes for quest makers
+
+It is the responsibility of the quest maker to make sure to call
+\ref lua_api_hero_save_solid_ground "hero:save_solid_ground()" in order
+that the player does not die from a stream pushing him into a hole.
+A \ref_lua_api_hero "hero" is placed one pixel before the hole without a
+call, so the \ref lua_api_hero "hero" will die in this case.
+
 \section lua_api_stream_inherited_methods Methods inherited from map entity
 
 Streams are particular \ref lua_api_entity "map entities".

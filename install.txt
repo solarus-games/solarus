@@ -12,9 +12,11 @@ Contents
 3  Compilation instructions
   3.1  Default settings
   3.2  Change the install directory
-  3.3  More about the datapath
-  3.4  Windows developers
-  3.5  Mac OS X developers
+  3.3  More about the quest path
+  3.4  SDL2 warning and luajit
+  3.5  Windows developers
+  3.6  Mac OS X developers
+  3.7  OpenPandora
 
 
 -----------
@@ -172,7 +174,22 @@ You can still launch another quest by using the command-line argument,
 which overwrites the DEFAULT_QUEST constant.
 
 
-3.4  Windows developers
+3.4  SDL2 warning and luajit
+----------------------------
+
+Various developers have had trouble with SDL2 vesion 2.0.0.
+If you are having trouble, use a later version.
+  Debian developers:
+    If you want SDL Debian packages for stable (wheezy) go to
+    http://forum.solarus-games.org/index.php/topic,45.msg166.html#msg166.
+
+Solarus requires, by default luajit.  Use of luajit is determined by the preprocessor constant
+SOLARUS_USE_LUAJIT.
+If you would like to turn off luajit, configure the constant from your cmake command by using:
+
+$ cmake -DSOLARUS_USE_LUAJIT=0 .
+
+3.5  Windows developers
 -----------------------
 
 I have managed to compile Solarus with Code::Blocks, without using CMake.
@@ -200,7 +217,7 @@ Here is my procedure with Code::Blocks:
   and libraries are missing (it’s hard to get them right in one try!).
 
 
-3.5  Mac OS X developers
+3.6  Mac OS X developers
 ---------------------
 
 * Compile on OSX
@@ -259,7 +276,7 @@ to make sure you have a fully 10.8+ and Mac App Store compatible application.
 Just copy the quest file (data.solarus, data.solarus.zip or data/) into ${your_bundle_name}.app/Contents/Resources/
 
 
-3.6  OpenPandora
+3.7  OpenPandora
 ----------------
 
 First, you need a working OpenPandora cross-compiling environment.
@@ -279,3 +296,23 @@ $ cd pandora-build
 $ cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/pandora/PandoraToolchain.cmake ..
 $ make
 
+
+3.8 GCW-Zero
+------------
+
+First, you need a working GCW-Zero toolchain.  See the GCW-Zero development page at:
+http://www.gcw-zero.com/develop to see how to set it up.
+
+To compile Solarus, we provide a CMake toolchain file:
+cmake/gcw-zero/gcw-zero.cmake
+The role of this toolchain file is essentially to indicate the compiler to
+CMake.
+You may want to modify some paths in this toolchain file to better fit your
+configuration.
+Then, compile Solarus normally with CMake, indicating the toolchain file like
+this:
+
+$ mkdir gcw-zero-build
+$ cd gcw-zero-build
+$ cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/gcw-zero/.cmake ..
+$ make

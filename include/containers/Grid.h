@@ -185,13 +185,13 @@ void Grid<T>::get_elements(
         continue;
       }
 
-      const std::vector<T>& in_cell = elements[i * num_columns + j];
+      const std::vector<T>& in_cell = this->elements[i * num_columns + j];
       typename std::vector<T>::const_iterator it;
       for (it = in_cell.begin(); it != in_cell.end(); ++it) {
         const T& element = *it;
         if (elements_added.find(element) == elements_added.end()) {
           elements_added.insert(element);
-          elements.push_back(it);
+          elements.push_back(element);
         }
       }
     }

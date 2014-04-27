@@ -38,7 +38,7 @@ class ItDecoder {
 
     void load(void* sound_data, size_t sound_size);
     void unload();
-    void decode(void* decoded_data, int nb_samples);
+    int decode(void* decoded_data, int nb_samples);
 
     int get_num_channels() const;
     int get_channel_volume(int channel) const;

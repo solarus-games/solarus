@@ -74,11 +74,12 @@ void ItDecoder::unload() {
  * \brief Decodes a chunk of the previously loaded IT data into PCM data.
  * \param decoded_data Pointer to where you want the decoded data to be written.
  * \param nb_samples Number of samples to write.
+ * \return The number of bytes read, or 0 if the end is reached.
  */
-void ItDecoder::decode(void* decoded_data, int nb_samples) {
+int ItDecoder::decode(void* decoded_data, int nb_samples) {
 
   // Decode from the IT data the specified number of PCM samples.
-  ModPlug_Read(modplug_file, decoded_data, nb_samples);
+  return ModPlug_Read(modplug_file, decoded_data, nb_samples);
 }
 
 /**

@@ -21,7 +21,6 @@
 #include "lowlevel/Debug.h"
 #include "lua/LuaContext.h"
 #include <lua.hpp>
-#include <vector>
 #include <sstream>
 
 namespace solarus {
@@ -448,8 +447,14 @@ bool Music::update_playing() {
     alSourceQueueBuffers(source, 1, &buffer);  // Queue it again.
   }
 
-  // Returns whether there is still something playing.
+  // Check whether there is still something playing.
   ALint status;
+  alGetSourcei(source, AL_SOURCE_STATE, &status);
+  if (status != AL_PLAYING) {
+    // The end of the file is reached, or we need to decode more data.
+    alSourcePlay(source);
+  }
+
   alGetSourcei(source, AL_SOURCE_STATE, &status);
   return status == AL_PLAYING;
 }
@@ -486,17 +491,19 @@ void Music::decode_it(ALuint destination_buffer, ALsizei nb_samples) {
 
   // Decode the IT data.
   std::vector<ALushort> raw_data(nb_samples);
-  it_decoder->decode(&raw_data[0], nb_samples);
+  int bytes_read = it_decoder->decode(&raw_data[0], nb_samples);
 
-  // Put this decoded data into the buffer.
-  alBufferData(destination_buffer, AL_FORMAT_STEREO16, &raw_data[0], nb_samples, 44100);
+  if (bytes_read > 0) {
+    // Put this decoded data into the buffer.
+    alBufferData(destination_buffer, AL_FORMAT_STEREO16, &raw_data[0], nb_samples, 44100);
 
-  int error = alGetError();
-  if (error != AL_NO_ERROR) {
-    std::ostringstream oss;
-    oss << "Failed to fill the audio buffer with decoded IT data for music file '"
-      << file_name << ": error " << error;
-    Debug::die(oss.str());
+    int error = alGetError();
+    if (error != AL_NO_ERROR) {
+      std::ostringstream oss;
+      oss << "Failed to fill the audio buffer with decoded IT data for music file '"
+          << file_name << ": error " << error;
+      Debug::die(oss.str());
+    }
   }
 }
 

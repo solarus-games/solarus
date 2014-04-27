@@ -82,7 +82,6 @@ HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
   lifted_item(NULL),
   animation_callback_ref(LUA_REFNIL) {
 
-  RefCountable::ref(&hero);
   rebuild_equipment();
 }
 
@@ -91,7 +90,9 @@ HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
  */
 HeroSprites::~HeroSprites() {
 
-  get_lua_context().cancel_callback(animation_callback_ref);
+  if (animation_callback_ref != LUA_REFNIL) {
+    get_lua_context().cancel_callback(animation_callback_ref);
+  }
 
   RefCountable::unref(tunic_sprite);
   RefCountable::unref(shadow_sprite);
@@ -100,7 +101,6 @@ HeroSprites::~HeroSprites() {
   RefCountable::unref(shield_sprite);
   RefCountable::unref(ground_sprite);
   RefCountable::unref(trail_sprite);
-  RefCountable::unref(&hero);
 }
 
 /**

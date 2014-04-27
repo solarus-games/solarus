@@ -56,8 +56,20 @@ void NonAnimatedRegions::clear() {
   optimized_tiles_surfaces.clear();
   are_squares_animated.clear();
 
-  for (unsigned i = 0; i < tiles.size(); ++i) {
-    map.get_entities().destroy_entity(tiles[i]);
+  // Destroy all non-animated tiles.
+  Rectangle where(non_animated_tiles.get_grid_size());
+  std::vector<Tile*> tiles;
+  non_animated_tiles.get_elements(where, tiles);
+  std::vector<Tile*>::const_iterator it;
+  for (it = tiles.begin(); it != tiles.end(); ++it) {
+    Tile* tile = *it;
+    RefCountable::unref(tile);
+  }
+
+  // Destroy candidates tiles if the grid is not built yet.
+  for (it = this->tiles.begin(); it != this->tiles.end(); ++it) {
+    Tile* tile = *it;
+    RefCountable::unref(tile);
   }
   tiles.clear();
 }
@@ -131,6 +143,7 @@ void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
     if (!tile.is_animated()) {
       non_animated_tiles.add(&tile);
       if (overlaps_animated_tile(tile)) {
+        RefCountable::ref(&tile);  // Tile will be in both lists.
         rejected_tiles.push_back(&tile);
       }
     }

@@ -73,6 +73,14 @@ MapEntities::~MapEntities() {
     ground_observers[layer].clear();
     ground_modifiers[layer].clear();
     stairs[layer].clear();
+
+    std::vector<Tile*>::iterator it;
+    for (it = tiles_in_animated_regions[layer].begin();
+        it != tiles_in_animated_regions[layer].end();
+        ++it) {
+      Tile* tile = *it;
+      RefCountable::unref(tile);
+    }
   }
 
   // delete the other entities

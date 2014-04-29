@@ -28,6 +28,7 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
 #include <sstream>
+#include <iostream>
 
 namespace solarus {
 
@@ -91,7 +92,6 @@ Sprite::Sprite(const std::string& id):
   current_animation(NULL),
   current_direction(0),
   current_frame(-1),
-  suspended(false),
   ignore_suspend(false),
   paused(false),
   finished(false),
@@ -436,14 +436,6 @@ void Sprite::stop_animation() {
 }
 
 /**
- * \brief Returns true if the game is suspended.
- * \return true if the game is suspended, false otherwise
- */
-bool Sprite::is_suspended() const {
-  return suspended;
-}
-
-/**
  * \brief Suspends or resumes the animation.
  *
  * Nothing is done if the parameter specified does not change.
@@ -452,8 +444,10 @@ bool Sprite::is_suspended() const {
  */
 void Sprite::set_suspended(bool suspended) {
 
-  if (suspended != this->suspended && !ignore_suspend) {
-    this->suspended = suspended;
+  if (suspended != is_suspended() &&
+      !ignore_suspend) {
+
+    Drawable::set_suspended(suspended);
 
     // compte next_frame_date if the animation is being resumed
     if (!suspended) {
@@ -463,17 +457,6 @@ void Sprite::set_suspended(bool suspended) {
     }
     else {
       blink_is_sprite_visible = true;
-    }
-
-    // Also suspend or resumed the transition effect and the movement if any.
-    Transition* transition = get_transition();
-    if (transition != NULL) {
-      transition->set_suspended(suspended);
-    }
-
-    Movement* movement = get_movement();
-    if (movement != NULL) {
-      movement->set_suspended(suspended);
     }
   }
 }
@@ -614,7 +597,7 @@ void Sprite::update() {
 
   Drawable::update();
 
-  if (suspended || paused) {
+  if (is_suspended() || paused) {
     return;
   }
 
@@ -628,7 +611,7 @@ void Sprite::update() {
       || synchronize_to->get_current_frame() > get_nb_frames()) {
     // update the frames normally (with the time)
     int next_frame;
-    while (!finished && !suspended && !paused && get_frame_delay() > 0
+    while (!finished && !is_suspended() && !paused && get_frame_delay() > 0
         && now >= next_frame_date) {
 
       // we get the next frame

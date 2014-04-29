@@ -31,7 +31,8 @@ Drawable::Drawable():
   movement(NULL),
   transition(NULL),
   transition_callback_ref(LUA_REFNIL),
-  lua_context(NULL) {
+  lua_context(NULL),
+  suspended(false) {
 
 }
 
@@ -57,6 +58,8 @@ void Drawable::start_movement(Movement& movement) {
   this->movement = &movement;
   movement.set_drawable(this);
   RefCountable::ref(&movement);
+
+  movement.set_suspended(is_suspended());
 }
 
 /**
@@ -117,6 +120,7 @@ void Drawable::start_transition(
   this->transition_callback_ref = callback_ref;
   this->lua_context = lua_context;
   transition.start();
+  transition.set_suspended(is_suspended());
 }
 
 /**
@@ -174,6 +178,36 @@ void Drawable::update() {
     if (movement != NULL && movement->is_finished()) {
       stop_movement();
     }
+  }
+}
+
+/**
+ * \brief Returns whether this drawable is suspended.
+ * \return \c true if this drawable is suspended.
+ */
+bool Drawable::is_suspended() const {
+  return suspended;
+}
+
+/**
+ * \brief Suspends or resumes this drawable.
+ * \param suspended \c true to suspend this drawable, \c false to resume it.
+ */
+void Drawable::set_suspended(bool suspended) {
+
+  if (suspended == this->suspended) {
+    return;
+  }
+
+  this->suspended = suspended;
+
+  // Suspend or resume the transition effect and the movement if any.
+  if (transition != NULL) {
+    transition->set_suspended(suspended);
+  }
+
+  if (movement != NULL) {
+    movement->set_suspended(suspended);
   }
 }
 

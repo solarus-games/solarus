@@ -101,7 +101,10 @@ class Drawable: public ExportableToLua {
      * \return The surface for transitions.
      */
     virtual Surface& get_transition_surface() = 0;
+
     virtual void update();
+    bool is_suspended() const;
+    virtual void set_suspended(bool suspended);
 
   protected:
 
@@ -118,6 +121,7 @@ class Drawable: public ExportableToLua {
     int transition_callback_ref;  /**< Lua registry ref of a function to call
                                    * when the transition finishes */
     LuaContext* lua_context;      /**< The Lua world used for callbacks. */
+    bool suspended;               /**< Whether this object is suspended. */
 };
 
 }

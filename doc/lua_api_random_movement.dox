@@ -21,12 +21,12 @@ The following methods are specific to random movements.
 
 \subsection lua_api_random_movement_get_speed random_movement:get_speed()
 
-Returns the speed of this movement.
+Returns the speed applied to this movement when it is started.
 - Return value (number): The speed in pixels per second.
 
 \subsection lua_api_random_movement_set_speed random_movement:set_speed(speed)
 
-Sets the speed of this movement.
+Sets the speed applied to this movement when it is started.
 - \c speed (number): The new speed in pixels per second.
 
 \subsection lua_api_random_movement_get_angle random_movement:get_angle()

@@ -814,7 +814,7 @@ int LuaContext::random_movement_api_set_speed(lua_State* l) {
 
   RandomMovement& movement = check_random_movement(l, 1);
   int speed = luaL_checkint(l, 2);
-  movement.set_speed(speed);
+  movement.set_normal_speed(speed);
   return 0;
 }
 

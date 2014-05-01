@@ -38,6 +38,8 @@ class RandomMovement: public StraightMovement {
     void update();
     void set_suspended(bool suspended);
 
+    double get_normal_speed() const;
+    void set_normal_speed(double normal_speed);
     int get_max_radius() const;
     void set_max_radius(int max_radius);
 
@@ -51,10 +53,11 @@ class RandomMovement: public StraightMovement {
 
     void set_next_direction();
 
-    int max_radius;                                     /**< if the object goes further than this distance in x or y, it will come back
-                                                         * (this is not a hard limit, there is no guarantee) */
-    Rectangle bounds;                                   /**< a rectangle the object should not escape from */
-    uint32_t next_direction_change_date;                /**< date of the next direction change */
+    double normal_speed;                    /** Speed applied when the movement is started. */
+    int max_radius;                         /**< if the object goes further than this distance in x or y, it will come back
+                                             * (this is not a hard limit, there is no guarantee) */
+    Rectangle bounds;                       /**< a rectangle the object should not escape from */
+    uint32_t next_direction_change_date;    /**< date of the next direction change */
 
 };
 

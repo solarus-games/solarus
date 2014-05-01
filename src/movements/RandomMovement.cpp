@@ -22,6 +22,7 @@
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Debug.h"
 #include <sstream>
+#include <iostream>
 
 namespace solarus {
 
@@ -32,6 +33,7 @@ namespace solarus {
  */
 RandomMovement::RandomMovement(int speed, int max_radius):
   StraightMovement(false, false),
+  normal_speed(speed),
   max_radius(max_radius),
   next_direction_change_date(0) {
 
@@ -53,6 +55,27 @@ void RandomMovement::notify_object_controlled() {
 
   StraightMovement::notify_object_controlled();
   set_max_radius(max_radius);
+}
+
+/**
+ * \brief Returns the speed applied when the movement is started.
+ * \return The speed when moving.
+ */
+double RandomMovement::get_normal_speed() const {
+  return normal_speed;
+}
+
+/**
+ * \brief Sets the speed to apply when the movement is started.
+ * \param normal_speed The new speed.
+ */
+void RandomMovement::set_normal_speed(double normal_speed) {
+
+  this->normal_speed = normal_speed;
+
+  if (is_started()) {
+    StraightMovement::set_speed(normal_speed);
+  }
 }
 
 /**
@@ -87,6 +110,8 @@ void RandomMovement::set_max_radius(int max_radius) {
  * \brief Chooses a new direction for the movement.
  */
 void RandomMovement::set_next_direction() {
+
+  set_speed(normal_speed);
 
   double angle;
   if (get_entity() == NULL

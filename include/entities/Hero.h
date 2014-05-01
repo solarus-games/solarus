@@ -236,7 +236,7 @@ class Hero: public MapEntity {
 
     void start_next_state();
     void start_free();
-    void start_free_carrying_or_running();
+    void start_free_carrying_loading_or_running();
     void start_treasure(const Treasure& treasure, int callback_ref);
     void start_forced_walking(const std::string& path, bool loop, bool ignore_obstacles);
     void start_jumping(int direction8, int distance, bool ignore_obstacles,

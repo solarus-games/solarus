@@ -2326,9 +2326,15 @@ void Hero::start_free() {
  * \brief Lets the hero walk.
  *
  * If the hero is carrying item in the current state, the item is preserved.
- * If the hero is runing in the current state, he continues to run.
+ * If the hero is loading his sword in the current state, this continues.
+ * If the hero is running in the current state, he continues to run.
  */
-void Hero::start_free_carrying_or_running() {
+void Hero::start_free_carrying_loading_or_running() {
+
+  if (state->get_name() == "sword loading") {
+    // Nothing to do: just keep the sword loaded.
+    return;
+  }
 
   if (state->get_name() == "running" && state->is_touching_ground()) {
     // Nothing to do: just keep running.
@@ -2650,19 +2656,19 @@ void Hero::start_state_from_ground() {
 
   case GROUND_SHALLOW_WATER:
     start_shallow_water();
-    start_free_carrying_or_running();
+    start_free_carrying_loading_or_running();
     break;
 
   case GROUND_GRASS:
     start_grass();
-    start_free_carrying_or_running();
+    start_free_carrying_loading_or_running();
     break;
 
   case GROUND_TRAVERSABLE:
   case GROUND_EMPTY:
   case GROUND_LADDER:
   case GROUND_ICE:
-    start_free_carrying_or_running();
+    start_free_carrying_loading_or_running();
     break;
 
   case GROUND_WALL:
@@ -2678,7 +2684,7 @@ void Hero::start_state_from_ground() {
     // The hero is stuck in a wall,
     // possibly because a teletransporter sent him here.
     // It is the fault of the quest maker and there is not much we can do.
-    start_free_carrying_or_running();
+    start_free_carrying_loading_or_running();
     break;
   }
 }

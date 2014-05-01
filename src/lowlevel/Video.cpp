@@ -422,16 +422,17 @@ void Video::switch_video_mode() {
     return;
   }
 
+  // Find the current video mode in the list and traverse the list from there.
   std::vector<VideoMode*>::const_iterator it = std::find(
       all_video_modes.begin(), all_video_modes.end(), video_mode
   );
   VideoMode* mode = NULL;
   do {
+    if (it != all_video_modes.end()) {
+      ++it;
+    }
     if (it == all_video_modes.end()) {
       it = all_video_modes.begin();
-    }
-    else {
-      ++it;
     }
     mode = *it;
   } while (mode == NULL || !is_mode_supported(*mode));

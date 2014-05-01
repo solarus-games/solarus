@@ -18,6 +18,7 @@
 #include "lua/LuaTools.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
+#include "entities/MapEntity.h"
 #include "Timer.h"
 #include "MainLoop.h"
 #include "Game.h"
@@ -141,21 +142,29 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
         || is_entity(l, context_index)
         || is_item(l, context_index)) {
 
+      bool initially_suspended = false;
+
       // By default, we want the timer to be automatically suspended when a
       // camera movement, a dialog or the pause menu starts.
       if (!is_entity(l, context_index)) {
+        // The timer normally get suspended/unsuspend with the map.
+        timer->set_suspended_with_map(true);
+
+        // But in the initial state, we override that rule.
+        // We initially suspend the timer only during a dialog.
+        // In particular, we don't want to suspend timers created during a
+        // camera movement.
+        // This would be very painful for users.
+        initially_suspended = game->is_dialog_enabled();
+      }
+      else {
         // Entities are more complex: they also get suspended when disabled
         // and when far from the camera. Therefore, they don't simply follow
         // the map suspended state.
-        timer->set_suspended_with_map(true);
+        const MapEntity& entity = check_entity(l, context_index);
+        initially_suspended = entity.is_suspended() || !entity.is_enabled();
       }
 
-      // In the initial state, we override that rule.
-      // We initially suspend the timer only during a dialog.
-      // In particular, we don't want to suspend timers created during a
-      // camera movement.
-      // This would be very painful for users.
-      bool initially_suspended = game->is_dialog_enabled();
       timer->set_suspended(initially_suspended);
     }
   }

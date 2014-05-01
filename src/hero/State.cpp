@@ -895,6 +895,17 @@ bool Hero::State::is_jumper_obstacle(
     return false;
   }
 
+  if (!jumper.is_jump_diagonal() &&
+      get_name() == "swimming" &&  // TODO use inheritance instead
+      hero.is_moving_towards(((jumper.get_direction() / 2) + 2) % 4)
+  ) {
+    // Other special case: trying to enter the jumper the reverse way while
+    // swimming: we accept this to allow the hero to leave water pools.
+    // TODO I'm not sure this behavior is really a good idea.
+    // This may change in a future version.
+    return false;
+  }
+
   return true;
 }
 

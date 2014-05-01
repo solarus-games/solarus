@@ -51,12 +51,8 @@ VideoMode::VideoMode(
  */
 VideoMode::~VideoMode() {
 
-  if (software_filter != NULL) {
-    delete software_filter;
-  }
-  if (hardware_filter) {
-    delete hardware_filter;
-  }
+  delete software_filter;
+  delete hardware_filter;
 }
 
 /**

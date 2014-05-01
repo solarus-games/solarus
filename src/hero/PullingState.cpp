@@ -180,12 +180,11 @@ void Hero::PullingState::notify_position_changed() {
     // we stop the movement
 
     bool horizontal = get_sprites().get_animation_direction() % 2 == 0;
-    bool has_reached_grid = pulling_movement->get_total_distance_covered() >= 16
+    bool has_reached_grid = pulling_movement->get_total_distance_covered() > 8
       && ((horizontal && pulled_entity->is_aligned_to_grid_x())
           || (!horizontal && pulled_entity->is_aligned_to_grid_y()));
 
     if (has_reached_grid) {
-      pulled_entity->update();
       stop_moving_pulled_entity();
     }
   }

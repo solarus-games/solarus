@@ -191,12 +191,11 @@ void Hero::PushingState::notify_position_changed() {
     // we stop the movement
 
     bool horizontal = pushing_direction4 % 2 == 0;
-    bool has_reached_grid = pushing_movement->get_total_distance_covered() >= 16
+    bool has_reached_grid = pushing_movement->get_total_distance_covered() > 8
       && ((horizontal && pushed_entity->is_aligned_to_grid_x())
           || (!horizontal && pushed_entity->is_aligned_to_grid_y()));
 
     if (has_reached_grid) {
-      pushed_entity->update();
       stop_moving_pushed_entity();
     }
   }

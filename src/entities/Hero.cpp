@@ -1674,36 +1674,68 @@ void Hero::notify_collision_with_stream(
     // he can still move perpendicularly.
     activate_stream = true;
   }
+  else if (dx != 0 && dy != 0) {
+    // Case of a diagonal stream.
+    // TODO Diagonal streams are always activated for now, this could be improved.
+    activate_stream = true;
+  }
   else {
     // This is a blocking stream.
     // Check that the hero can go in the stream's direction.
     // Otherwise the hero, would be trapped forever if there
     // is an obstacle after the stream.
+    Map& map = get_map();
     Rectangle collision_box(0, 0, 16, 16);
-    if (dx != 0) { // horizontal stream
-      collision_box.set_xy(
-          get_top_left_x() + dx,
-          get_top_left_y()
-      );
-    }
-    else { // vertical stream
-      collision_box.set_xy(
-          get_top_left_x(),
-          get_top_left_y() + dy
-      );
-    }
 
-    // Check that we can make at least one pixel with the stream.
-    if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
-
-      // Check that the stream's exit is clear
-      // (otherwise the hero could not take a blocked stream the reverse way).
-      collision_box.set_xy(stream.get_bounding_box());
-      collision_box.add_xy(dx, dy);
+    // First check that the exit of the stream is clear.
+    collision_box.set_xy(stream.get_bounding_box());
+    collision_box.add_xy(dx, dy);
+    if (!map.test_collision_with_obstacles(get_layer(), collision_box, *this)) {
+      // The stream's exit is clear.
+      // Check that we can make at least one pixel with the stream.
+      // Because maybe we have already passed the exit and cannot do more.
+      const bool horizontal = dx != 0;
+      if (horizontal) {
+        collision_box.set_xy(
+            get_top_left_x() + dx,
+            get_top_left_y()
+        );
+      }
+      else {
+        collision_box.set_xy(
+            get_top_left_x(),
+            get_top_left_y() + dy
+        );
+      }
 
       if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
-        // The stream exit is clear: move the hero.
+        // We can make at least one pixel with the stream.
         activate_stream = true;
+      }
+      else {
+        // We would be blocked if we took the stream straight.
+        // Maybe we won't get blocked when getting aligned with the stream.
+        // Let's check that.
+
+        if (horizontal) {
+          // Horizontal stream: try to align the Y coordinate.
+          collision_box.set_xy(
+              get_top_left_x() + dx,
+              stream.get_top_left_y()
+          );
+        }
+        else {
+          // Vertical stream: try to align the X coordinate.
+          collision_box.set_xy(
+              stream.get_top_left_x(),
+              get_top_left_y() + dy
+          );
+        }
+
+        if (!map.test_collision_with_obstacles(get_layer(), collision_box, *this)) {
+          // We can move into the direction when correctly aligned.
+          activate_stream = true;
+        }
       }
     }
   }

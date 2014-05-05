@@ -1651,60 +1651,67 @@ Teletransporter* Hero::get_delayed_teletransporter() {
 void Hero::notify_collision_with_stream(
     Stream& stream, int dx, int dy) {
 
-  if (!has_stream_action() &&
-      !state->can_avoid_stream(stream)) {
+  if (has_stream_action()) {
+    // There is already an active stream.
+    return;
+  }
 
-    // Check that the feet of the hero are on the stream.
-    if (stream.overlaps(get_ground_point())) {
+  if (state->can_avoid_stream(stream)) {
+    // Streams are ignored in the current state of the hero.
+    return;
+  }
 
-      bool activate_stream = false;
+  // Check that the feet of the hero are on the stream.
+  if (!stream.overlaps(get_ground_point())) {
+    return;
+  }
 
-      if (stream.get_allow_movement()) {
-        // The stream can be forced: there is no risk.
-        // Even if the stream is faster than the player's movement,
-        // he can still move perpendicularly.
+  bool activate_stream = false;
+
+  if (stream.get_allow_movement()) {
+    // The stream can be forced: there is no risk.
+    // Even if the stream is faster than the player's movement,
+    // he can still move perpendicularly.
+    activate_stream = true;
+  }
+  else {
+    // This is a blocking stream.
+    // Check that the hero can go in the stream's direction.
+    // Otherwise the hero, would be trapped forever if there
+    // is an obstacle after the stream.
+    Rectangle collision_box(0, 0, 16, 16);
+    if (dx != 0) { // horizontal stream
+      collision_box.set_xy(
+          get_top_left_x() + dx,
+          get_top_left_y()
+      );
+    }
+    else { // vertical stream
+      collision_box.set_xy(
+          get_top_left_x(),
+          get_top_left_y() + dy
+      );
+    }
+
+    // Check that we can make at least one pixel with the stream.
+    if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
+
+      // Check that the stream's exit is clear
+      // (otherwise the hero could not take a blocked stream the reverse way).
+      collision_box.set_xy(stream.get_bounding_box());
+      collision_box.add_xy(dx, dy);
+
+      if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
+        // The stream exit is clear: move the hero.
         activate_stream = true;
       }
-      else {
-        // This is a blocking stream.
-        // Check that the hero can go in the stream's direction.
-        // Otherwise the hero, would be trapped forever if there
-        // is an obstacle after the stream.
-        Rectangle collision_box(0, 0, 16, 16);
-        if (dx != 0) { // horizontal stream
-          collision_box.set_xy(
-              get_top_left_x() + dx,
-              get_top_left_y()
-          );
-        }
-        else { // vertical stream
-          collision_box.set_xy(
-              get_top_left_x(),
-              get_top_left_y() + dy
-          );
-        }
+    }
+  }
 
-        if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
-
-          // check that the stream's exit is clear
-          // (otherwise the hero could not take a blocked stream the reverse way)
-          collision_box.set_xy(stream.get_bounding_box());
-          collision_box.add_xy(dx, dy);
-
-          if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
-
-            // move the hero
-            activate_stream = true;
-          }
-        }
-      }
-
-      if (activate_stream) {
-        stream.activate(*this);
-        if (!state->can_persist_on_stream(stream)) {
-          start_free();
-        }
-      }
+  if (activate_stream) {
+    stream.activate(*this);
+    if (!state->can_persist_on_stream(stream)) {
+      start_free();
     }
   }
 }

@@ -14,24 +14,12 @@ It can also be created dynamically with
 
 \section lua_api_destructible_overview Overview
 
-There exists various subtypes of destructible objects.
+Destructible objects can be customized in various ways.
+You can allow the hero to lift them or to cut them.
 The ones that can be lifted may require a minimum level of
 the \c "lift" \ref lua_api_game_get_ability "ability".
 Their size is always 16x16 pixels (like the
 \ref lua_api_hero "hero").
-Except \c "grass", they are
-are all obstacles for other map entities.
-- \c "pot": Can be lifted.
-- \c "bush": Can be cut. Can be lifted with level 1 of
- ability \c "lift".
-- \c "grass": Can be cut. Can be traversed.
-- \c "bomb_flower": Can be lifted with level 1 of
- ability \c "lift". Explodes a few seconds later.
- Regenerates itself automatically from the ground.
-- \c "white_stone": Can be lifted with level 1 of
- ability \c "lift".
-- \c "black_stone": Can be lifted with level 2 of
- ability \c "lift".
 
 \section lua_api_destructible_inherited_methods Methods inherited from map entity
 

@@ -80,7 +80,6 @@ Changes that introduce incompatibilities:
 * sol.video.switch_mode() no longer changes the fullscreen flag.
 * surface:set_transparency_color() no longer exists. Use surface:clear().
 * sol.audio.play_music("none") is replaced by sol.audio.play_music(nil).
-* Add loop and callback features to sol.audio.play_music() (#280).
 * on_key_pressed() and on_character_pressed() are now both called (#344).
 * Destructible objects no longer show hardcoded dialogs (#270).
 * map:create_destructible() has no hardcoded subtypes anymore (#270).
@@ -110,6 +109,7 @@ Changes that do not introduce incompatibilities:
 * Colors now take an optional alpha value as fourth component.
 * New functions sol.video.get/set/reset_window_size().
 * New method surface:clear().
+* Add loop and callback features to sol.audio.play_music() (#280).
 * New function sol.main.get_metatable(), allows to implement shared behaviors.
 * The lifetime of a menu can now be another menu.
 * New method menu:is_started().

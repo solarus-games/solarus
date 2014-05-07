@@ -134,8 +134,6 @@ Changes that do not introduce incompatibilities:
 * New methods hero:get/set_animation() to set custom animations (#155).
 * New methods hero:get/set_sword_sound_id() to change the sword sound (#155).
 * New methods to set custom tunic, sword and shield sprites (#155).
-* New event sensor:on_left() (#339).
-* New event block:on_moving() (#334).
 * New functions to get/set the properties of teletransporters (#403).
 * New functions to get/set the properties of blocks.
 * New methods to simulate game commands, by mrunderhill (#382).

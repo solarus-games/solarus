@@ -28,17 +28,17 @@ endif()
 
 # Explicit link to libdl is needed for Lua on some systems.
 find_library(DL_LIBRARY dl)
-if("${DL_LIBRARY}" MATCHES DL_LIBRARY-NOTFOUND)
+if(${DL_LIBRARY} MATCHES DL_LIBRARY-NOTFOUND)
   set(DL_LIBRARY "")
 endif()
 
 include(CheckFunctionExists)
 check_function_exists(mkstemp HAVE_MKSTEMP)
-configure_file("${CMAKE_SOURCE_DIR}/include/config.h.in" "${CMAKE_BINARY_DIR}/include/config.h")
+configure_file(${CMAKE_SOURCE_DIR}/include/config.h.in ${CMAKE_BINARY_DIR}/include/config.h)
 
 include(CheckIncludeFiles)
 check_include_files(unistd.h HAVE_UNISTD_H)
-configure_file("${CMAKE_SOURCE_DIR}/include/config.h.in" "${CMAKE_BINARY_DIR}/include/config.h")
+configure_file(${CMAKE_SOURCE_DIR}/include/config.h.in ${CMAKE_BINARY_DIR}/include/config.h)
 
 # source files
 file(
@@ -101,33 +101,33 @@ else()
 endif()
 
 include_directories(
-  "${CMAKE_BINARY_DIR}/include"
-  "${SOLARUS_ENGINE_SOURCE_DIR}/include"
-  "${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party"
-  "${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party/snes_spc"
-  "${MODPLUG_INCLUDE_DIR}"  # Before SDL2 because we want the sndfile.h of ModPlug.
-  "${SDL2_INCLUDE_DIR}"
-  "${SDL2_TTF_INCLUDE_DIR}"
-  "${SDL2_IMAGE_INCLUDE_DIR}"
-  "${OPENAL_INCLUDE_DIR}"
-  "${VORBISFILE_INCLUDE_DIR}"
-  "${OGG_INCLUDE_DIR}"
-  "${LUA_INCLUDE_DIR}"
-  "${PHYSFS_INCLUDE_DIR}"
+  ${CMAKE_BINARY_DIR}/include
+  ${SOLARUS_ENGINE_SOURCE_DIR}/include
+  ${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party
+  ${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party/snes_spc
+  ${MODPLUG_INCLUDE_DIR}  # Before SDL2 because we want the sndfile.h of ModPlug.
+  ${SDL2_INCLUDE_DIR}
+  ${SDL2_TTF_INCLUDE_DIR}
+  ${SDL2_IMAGE_INCLUDE_DIR}
+  ${OPENAL_INCLUDE_DIR}
+  ${VORBISFILE_INCLUDE_DIR}
+  ${OGG_INCLUDE_DIR}
+  ${LUA_INCLUDE_DIR}
+  ${PHYSFS_INCLUDE_DIR}
 )
 
 # generate -l flags
 target_link_libraries(solarus
-  "${SDL2_LIBRARY}"
-  "${SDL2_IMAGE_LIBRARY}"
-  "${SDL2_TTF_LIBRARY}"
-  "${OPENAL_LIBRARY}"
-  "${LUA_LIBRARY}"
-  "${DL_LIBRARY}"
-  "${PHYSFS_LIBRARY}"
-  "${VORBISFILE_LIBRARY}"
-  "${OGG_LIBRARY}"
-  "${MODPLUG_LIBRARY}"
+  ${SDL2_LIBRARY}
+  ${SDL2_IMAGE_LIBRARY}
+  ${SDL2_TTF_LIBRARY}
+  ${OPENAL_LIBRARY}
+  ${LUA_LIBRARY}
+  ${DL_LIBRARY}
+  ${PHYSFS_LIBRARY}
+  ${VORBISFILE_LIBRARY}
+  ${OGG_LIBRARY}
+  ${MODPLUG_LIBRARY}
 )
 
 # default compilation flags
@@ -202,11 +202,11 @@ endif()
 # install the bundle if requested, or only the binary else
 if(SOLARUS_BUNDLE)
   install(TARGETS solarus
-    BUNDLE DESTINATION "${SOLARUS_INSTALL_DESTINATION}"
+    BUNDLE DESTINATION ${SOLARUS_INSTALL_DESTINATION}
   )
 else()
   install(TARGETS solarus
-    RUNTIME DESTINATION "${SOLARUS_INSTALL_DESTINATION}"
+    RUNTIME DESTINATION ${SOLARUS_INSTALL_DESTINATION}
   )
 endif()
 

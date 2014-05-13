@@ -19,10 +19,14 @@
 
 #include "Common.h"
 
+#if defined(SOLARUS_OSX)
+
 // This are C "trampoline" function that will be used
 // to invoke a specific Objective-C method FROM C++
 void init_pool();
 void drain_pool();
 const char* get_user_application_support_directory();
+
+#endif
 
 #endif

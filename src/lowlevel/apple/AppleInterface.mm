@@ -17,6 +17,8 @@
 #include <lowlevel/apple/AppleInterface.h>
 
 #if defined(SOLARUS_OSX)
+
+#if defined(SOLARUS_OSX)
 #  import <Cocoa/Cocoa.h>
 #elif defined(SOLARUS_IOS)
 #  import <Foundation/Foundation.h>
@@ -70,3 +72,5 @@ const char* get_user_application_support_directory()
             UTF8String];
 #endif
 }
+
+#endif

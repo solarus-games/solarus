@@ -44,7 +44,7 @@ bool ShaderContext::initialize() {
  */
 void ShaderContext::quit() {
   
-  if(shader_supported) {
+  if (shader_supported) {
 #if SOLARUS_HAVE_OPENGL == 1
     GLContext::quit();
 #endif
@@ -61,7 +61,7 @@ Shader* ShaderContext::create_shader(const std::string& shader_name) {
   Shader* shader = NULL;
   
 #if SOLARUS_HAVE_OPENGL == 1
-  if(Shader::get_sampler_type() == "sampler2DRect") {
+  if (Shader::get_sampler_type() == "sampler2DRect") {
     shader = new GL_ARBShader(shader_name);
   }
   else {

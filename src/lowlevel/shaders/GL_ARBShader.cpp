@@ -25,23 +25,23 @@
 
 namespace solarus {
 
-PFNGLATTACHOBJECTARBPROC GL_ARBShader::glAttachObjectARB;
-PFNGLCOMPILESHADERARBPROC GL_ARBShader::glCompileShaderARB;
-PFNGLCREATEPROGRAMOBJECTARBPROC GL_ARBShader::glCreateProgramObjectARB;
-PFNGLCREATESHADEROBJECTARBPROC GL_ARBShader::glCreateShaderObjectARB;
-PFNGLDELETEOBJECTARBPROC GL_ARBShader::glDeleteObjectARB;
-PFNGLGETINFOLOGARBPROC GL_ARBShader::glGetInfoLogARB;
-PFNGLGETOBJECTPARAMETERIVARBPROC GL_ARBShader::glGetObjectParameterivARB;
-PFNGLGETUNIFORMLOCATIONARBPROC GL_ARBShader::glGetUniformLocationARB;
-PFNGLLINKPROGRAMARBPROC GL_ARBShader::glLinkProgramARB;
-PFNGLSHADERSOURCEARBPROC GL_ARBShader::glShaderSourceARB;
-PFNGLUNIFORM1IARBPROC GL_ARBShader::glUniform1iARB;
-PFNGLUNIFORM2FARBPROC GL_ARBShader::glUniform2fARB;
-PFNGLUSEPROGRAMOBJECTARBPROC GL_ARBShader::glUseProgramObjectARB;
-PFNGLGETHANDLEARBPROC GL_ARBShader::glGetHandleARB;
+PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
+PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
+PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB;
+PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObjectARB;
+PFNGLDELETEOBJECTARBPROC glDeleteObjectARB;
+PFNGLGETINFOLOGARBPROC glGetInfoLogARB;
+PFNGLGETOBJECTPARAMETERIVARBPROC glGetObjectParameterivARB;
+PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocationARB;
+PFNGLLINKPROGRAMARBPROC glLinkProgramARB;
+PFNGLSHADERSOURCEARBPROC glShaderSourceARB;
+PFNGLUNIFORM1IARBPROC glUniform1iARB;
+PFNGLUNIFORM2FARBPROC glUniform2fARB;
+PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
+PFNGLGETHANDLEARBPROC glGetHandleARB;
 
-GLhandleARB GL_ARBShader::default_shader_program = 0;
-GL_ARBShader* GL_ARBShader::loading_shader = NULL;
+GLhandleARB default_shader_program = 0;
+GL_ARBShader* loading_shader = NULL;
 
 
 /**
@@ -50,10 +50,10 @@ GL_ARBShader* GL_ARBShader::loading_shader = NULL;
  */
 bool GL_ARBShader::initialize() {
 
+  //TODO Be sure that SDL doesn't disable GL ARB for render targets even if available.
+  
   // Check for shader support
-  if ((SDL_GL_ExtensionSupported("GL_ARB_texture_rectangle") || // WORKAROUND : this is the way SDL check for the GL_ARB support
-      SDL_GL_ExtensionSupported("GL_EXT_texture_rectangle")) && // but it may change in the future or be deactivate with render target.
-      SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
+  if (SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
       SDL_GL_ExtensionSupported("GL_ARB_shading_language_100") &&
       SDL_GL_ExtensionSupported("GL_ARB_vertex_shader") &&
       SDL_GL_ExtensionSupported("GL_ARB_fragment_shader")) {
@@ -233,7 +233,7 @@ int GL_ARBShader::l_shader(lua_State* l) {
       loading_shader = NULL;
     }
     else {
-      Debug::warning("The engine shader context is explicitly set as not compatible with the shader script : " + loading_shader->shader_name);
+      Debug::warning("The shader script '" + loading_shader->shader_name + "' is not compatible with GLSL " + shading_language_version);
     }
   }
 

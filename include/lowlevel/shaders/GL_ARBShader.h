@@ -51,24 +51,6 @@ class GL_ARBShader : public Shader {
     void register_callback(lua_State* l);
     void render(Surface& quest_surface);
 
-    static PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
-    static PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
-    static PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB;
-    static PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObjectARB;
-    static PFNGLDELETEOBJECTARBPROC glDeleteObjectARB;
-    static PFNGLGETINFOLOGARBPROC glGetInfoLogARB;
-    static PFNGLGETOBJECTPARAMETERIVARBPROC glGetObjectParameterivARB;
-    static PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocationARB;
-    static PFNGLLINKPROGRAMARBPROC glLinkProgramARB;
-    static PFNGLSHADERSOURCEARBPROC glShaderSourceARB;
-    static PFNGLUNIFORM1IARBPROC glUniform1iARB;
-    static PFNGLUNIFORM2FARBPROC glUniform2fARB;
-    static PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
-    static PFNGLGETHANDLEARBPROC glGetHandleARB;
-
-    static GLhandleARB default_shader_program;   /**< Default shader program to restore once a shaded render is done. */
-    static GL_ARBShader* loading_shader;         /**< Shader to fill by l_shader(). TODO : remove if possible. */
-
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */
     GLhandleARB vertex_shader;                   /**< The vertex shader. */
     GLhandleARB fragment_shader;                 /**< The fragment shader. */

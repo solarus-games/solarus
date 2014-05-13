@@ -65,7 +65,7 @@ class Surface::SubSurfaceNode: public RefCountable {
 
       // Clip the source rectangle to the size of the source surface.
       // Otherwise, SDL_RenderCopy() will stretch the image.
-      // FIXME should be fixed with the next SDL patch version :
+      // FIXME still buggy with software renderer for now but should be fixed soon :
       // https://bugzilla.libsdl.org/show_bug.cgi?id=1968
       if (this->src_rect.get_x() < 0) {
         this->src_rect.set_x(0);
@@ -756,6 +756,10 @@ void Surface::render(
     uint8_t opacity,
     const std::vector<SubSurfaceNode*>& subsurfaces) {
 
+  //FIXME SDL_RenderSetClipRect is buggy for now, but should be fixed soon.
+  // It means that software and hardware surface doesn't have the exact same behavior for now.
+  // Uncomment the two lines using it when https://bugzilla.libsdl.org/show_bug.cgi?id=2336 will be solved.
+  
   // Accelerate the internal software surface.
   if (internal_surface != NULL) {
 

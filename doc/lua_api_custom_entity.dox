@@ -118,7 +118,7 @@ This direction is set at creation time or when you can call
 
 Sets the direction of this custom entity.
 
-Sprites of your custom entity has have such a direction automatically take it.
+Sprites of your custom entity that have such a direction automatically take it.
 - Return value 1 (number): The direction.
 
 \subsection lua_api_custom_entity_get_sprite custom_entity:get_sprite()
@@ -431,17 +431,17 @@ When this happens, all \ref lua_api_entity "map entities" stop moving and most
 
 \subsection lua_api_custom_entity_on_created custom_entity:on_created()
 
-called when this custom entity has just been created on the
+Called when this custom entity has just been created on the
 \ref lua_api_map "map".
 
 \subsection lua_api_custom_entity_on_enabled custom_entity:on_enabled()
 
-called when this custom entity has just been
+Called when this custom entity has just been
 \ref lua_api_entity_is_enabled "enabled".
 
 \subsection lua_api_custom_entity_on_disabled custom_entity:on_disabled()
 
-called when this custom entity has just been
+Called when this custom entity has just been
 \ref lua_api_entity_is_enabled "disabled".
 
 \subsection lua_api_custom_entity_on_pre_draw custom_entity:on_pre_draw()

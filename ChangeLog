@@ -3,6 +3,15 @@ _______________________________
 Solarus 1.3.0 (under development)
 _______________________________
 
+Lua API changes
+---------------
+
+Changes that introduce incompatibilities:
+
+Changes that do not introduce incompatibilities:
+
+* Add a method enemy:get_treasure() (#501).
+* Fix pickable/destructible:get_treasure() returning wrong types.
 
 _________________________________
 

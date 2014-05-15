@@ -433,6 +433,7 @@ void LuaContext::register_entity_module() {
       { "set_invincible_sprite", enemy_api_set_invincible_sprite },
       { "has_layer_independent_collisions", entity_api_has_layer_independent_collisions },
       { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
+      { "get_treasure", enemy_api_get_treasure },
       { "set_treasure", enemy_api_set_treasure },
       { "is_traversable", enemy_api_is_traversable },
       { "set_traversable", enemy_api_set_traversable },
@@ -2967,7 +2968,12 @@ int LuaContext::pickable_api_get_treasure(lua_State* l) {
 
   push_item(l, treasure.get_item());
   lua_pushinteger(l, treasure.get_variant());
-  push_string(l, treasure.get_savegame_variable());
+  if (!treasure.is_saved()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, treasure.get_savegame_variable());
+  }
   return 3;
 }
 
@@ -3017,9 +3023,14 @@ int LuaContext::destructible_api_get_treasure(lua_State* l) {
     return 1;
   }
 
-  push_item(l, treasure.get_item());
+  push_string(l, treasure.get_item_name());
   lua_pushinteger(l, treasure.get_variant());
-  push_string(l, treasure.get_savegame_variable());
+  if (!treasure.is_saved()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, treasure.get_savegame_variable());
+  }
   return 3;
 }
 
@@ -3030,7 +3041,7 @@ int LuaContext::destructible_api_get_treasure(lua_State* l) {
  */
 int LuaContext::destructible_api_set_treasure(lua_State* l) {
 
-  Destructible& destructible= check_destructible(l, 1);
+  Destructible& destructible = check_destructible(l, 1);
   std::string item_name, savegame_variable;
   int variant = 1;
 
@@ -3761,6 +3772,34 @@ int LuaContext::enemy_api_set_invincible_sprite(lua_State* l) {
 
   return 0;
 }
+
+/**
+ * \brief Implementation of enemy:get_treasure().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::enemy_api_get_treasure(lua_State* l) {
+
+  Enemy& enemy = check_enemy(l, 1);
+  const Treasure& treasure = enemy.get_treasure();
+
+  if (treasure.get_item_name().empty()) {
+    // No treasure: return nil.
+    lua_pushnil(l);
+    return 1;
+  }
+
+  push_string(l, treasure.get_item_name());
+  lua_pushinteger(l, treasure.get_variant());
+  if (!treasure.is_saved()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, treasure.get_savegame_variable());
+  }
+  return 3;
+}
+
 
 /**
  * \brief Implementation of enemy:set_treasure().

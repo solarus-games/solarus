@@ -186,6 +186,7 @@ class Enemy: public Detector {
     void hurt(MapEntity& source, Sprite* this_sprite);
     void kill();
     bool is_dying() const;
+    const Treasure& get_treasure() const;
     void set_treasure(const Treasure& treasure);
 
     static const std::string attack_names[];

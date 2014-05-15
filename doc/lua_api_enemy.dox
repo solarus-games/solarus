@@ -385,6 +385,21 @@ the \ref lua_api_hero "hero" even from a different layer.
   collisions even
   with entities on other layers. No value means \c true.
 
+\subsection lua_api_enemy_get_treasure enemy:get_treasure()
+
+Returns the \ref lua_api_pickable
+"pickable treasure" that will drop this enemy when killed.
+- Return value 1 (string): Name of an \ref lua_api_item
+  "equipment item".
+  \c nil means no item dropped
+  (in this case, other return values are \c nil too).
+- Return value 2 (number): Variant of this equipment item
+  (\c 1 means the first variant).
+- Return value 3 (string): Name of the boolean
+  value that stores in the \ref lua_api_game "savegame"
+  whether the treasure dropped is found.
+  \c nil means that the treasure is not saved.
+
 \subsection lua_api_enemy_set_treasure enemy:set_treasure([item_name, [variant, [savegame_variable]]])
 
 Sets the \ref lua_api_pickable

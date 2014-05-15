@@ -1431,8 +1431,16 @@ bool Enemy::is_dying() const {
 }
 
 /**
+ * \brief Returns the treasure dropped by this enemy.
+ * \return The treasure.
+ */
+const Treasure& Enemy::get_treasure() const {
+  return treasure;
+}
+
+/**
  * \brief Sets the treasure dropped by this enemy.
- * \param treasure the treasure to set
+ * \param treasure The treasure to set.
  */
 void Enemy::set_treasure(const Treasure& treasure) {
   this->treasure = treasure;

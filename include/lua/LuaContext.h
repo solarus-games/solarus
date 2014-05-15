@@ -851,6 +851,7 @@ class LuaContext {
       enemy_api_set_default_attack_consequences_sprite,
       enemy_api_set_invincible,
       enemy_api_set_invincible_sprite,
+      enemy_api_get_treasure,
       enemy_api_set_treasure,
       enemy_api_is_traversable,
       enemy_api_set_traversable,

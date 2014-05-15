@@ -2099,6 +2099,9 @@ int MapEntity::get_distance_to_camera2() const {
  */
 bool MapEntity::is_in_same_region(const MapEntity& other) const {
 
+  const Rectangle& this_center = get_center_point();
+  const Rectangle& other_center = other.get_center_point();
+
   const std::list<const Separator*>& separators = get_entities().get_separators();
   std::list<const Separator*>::const_iterator it;
   for (it = separators.begin(); it != separators.end(); ++it) {
@@ -2106,23 +2109,62 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
     const Separator& separator = *(*it);
     if (separator.is_vertical()) {
       // Vertical separation.
+      if (this_center.get_y() < separator.get_top_left_y() ||
+          this_center.get_y() >= separator.get_top_left_y() + separator.get_height()) {
+        // This separator is irrelevant: the entity is not in either side,
+        // it is too much to the north or to the south.
+        //
+        //     |
+        //     |
+        //     |
+        //
+        //  x
+        //
+        continue;
+      }
+
+      if (other_center.get_y() < separator.get_top_left_y() ||
+          other_center.get_y() >= separator.get_top_left_y() + separator.get_height()) {
+        // This separator is irrelevant: the other entity is not in either side.
+        // it is too much to the north or to the south.
+        continue;
+      }
+
+      // Both entities are in the zone of influence of this separator.
+      // See if they are in the same side.
       const int separation_x = separator.get_center_point().get_x();
-      if (get_x() < separation_x && separation_x <= other.get_x()) {
+      if (this_center.get_x() < separation_x &&
+          separation_x <= other_center.get_x()) {
+        // Different side.
         return false;
       }
 
-      if (other.get_x() < separation_x && separation_x <= get_x()) {
+      if (other_center.get_x() < separation_x &&
+          separation_x <= this_center.get_x()) {
+        // Different side.
         return false;
       }
     }
     else {
       // Horizontal separation.
+      if (this_center.get_x() < separator.get_top_left_x() ||
+          this_center.get_x() >= separator.get_top_left_x() + separator.get_width()) {
+        continue;
+      }
+
+      if (other_center.get_x() < separator.get_top_left_x() ||
+          other_center.get_x() >= separator.get_top_left_x() + separator.get_width()) {
+        continue;
+      }
+
       const int separation_y = separator.get_center_point().get_y();
-      if (get_y() < separation_y && separation_y <= other.get_y()) {
+      if (this_center.get_y() < separation_y &&
+          separation_y <= other_center.get_y()) {
         return false;
       }
 
-      if (other.get_y() < separation_y && separation_y <= get_y()) {
+      if (other_center.get_y() < separation_y &&
+          separation_y <= this_center.get_y()) {
         return false;
       }
     }
@@ -2136,7 +2178,7 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
  * \param destructible the destructible item
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode) {
 }
 
 /**

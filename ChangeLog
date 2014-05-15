@@ -1,3 +1,15 @@
+_________________________________
+
+Solarus 1.2.1 (under development)
+_________________________________
+
+Bug fixes for the 1.2 release.
+
+Engine changes
+--------------
+
+* Fix entity:is_in_same_region() giving wrong results (#500).
+
 _______________________________
 
 Solarus 1.2.0 (2014-05-06)

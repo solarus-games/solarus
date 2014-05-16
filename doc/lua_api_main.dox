@@ -222,7 +222,7 @@ function map_metatable:on_draw(dst_surface)
 end
 
 -- Now, all your maps will have a function map:add_overlay() and an event
--- map:on_draw() that allow to draw an additional image above the map!
+-- map:on_draw() that allows to draw an additional image above the map!
 \endverbatim
 
 When you define a field in a metatable, everything acts like if you defined it

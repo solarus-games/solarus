@@ -254,9 +254,16 @@ void LuaContext::run_map(Map& map, Destination* destination) {
                                   // map_fun env env_mt
   push_map(l, map);
                                   // map_fun env env_mt map
+  // Set our special __index function that gets entities on-demand.
   lua_pushcclosure(l, l_get_map_entity_or_global, 1);
                                   // map_fun env env_mt __index
   lua_setfield(l, -2, "__index");
+                                  // map_fun env env_mt
+  // We are changing the environment, so we need to also define __newindex
+  // with its usual setting (the global table).
+  lua_pushvalue(l, LUA_GLOBALSINDEX);
+                                  // map_fun env env_mt _G
+  lua_setfield(l, -2, "__newindex");
                                   // map_fun env env_mt
   lua_setmetatable(l, -2);
                                   // map_fun env

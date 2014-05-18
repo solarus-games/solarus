@@ -25,6 +25,7 @@ Engine changes
 
 * Fix entity:is_in_same_region() giving wrong results (#500).
 * Fix timer:get_remaining_time() always returning 0 (#503).
+* Fix declaring global variables from a map script (#507).
 
 _______________________________
 

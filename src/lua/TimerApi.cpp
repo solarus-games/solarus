@@ -559,7 +559,10 @@ int LuaContext::timer_api_get_remaining_time(lua_State* l) {
     lua_pushinteger(l, 0);
   }
   else {
-    int remaining_time = std::max(0, int(System::now()) - int(timer.get_expiration_date()));
+    int remaining_time = (int) timer.get_expiration_date() - (int) System::now();
+    if (remaining_time < 0) {
+      remaining_time = 0;
+    }
     lua_pushinteger(l, remaining_time);
   }
   return 1;

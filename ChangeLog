@@ -12,6 +12,7 @@ Changes that do not introduce incompatibilities:
 
 * Add a method enemy:get_treasure() (#501).
 * Fix pickable/destructible:get_treasure() returning wrong types.
+* Allow to call map methods even when the map is not running.
 
 _________________________________
 

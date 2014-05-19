@@ -152,10 +152,6 @@ bool LuaContext::is_map(lua_State* l, int index) {
 Map& LuaContext::check_map(lua_State* l, int index) {
 
   Map& map = static_cast<Map&>(check_userdata(l, index, map_module_name));
-
-  if (!map.is_loaded()) {
-    LuaTools::arg_error(l, index, "This map is not running");
-  }
   return map;
 }
 

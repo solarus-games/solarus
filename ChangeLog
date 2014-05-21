@@ -32,6 +32,7 @@ Solarus Quest Editor changes
 ----------------------------
 
 * Fix tiles created on invisible layer (#508). By Maxs1789.
+* Fix crash when an NPC sprite does not have 4 directions (#510). By Maxs1789.
 
 _______________________________
 

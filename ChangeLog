@@ -12,6 +12,11 @@ Engine changes
 * Fix timer:get_remaining_time() always returning 0 (#503).
 * Fix declaring global variables from a map script (#507).
 
+Solarus Quest Editor changes
+----------------------------
+
+* Fix tiles created on invisible layer (#508). By Maxs1789.
+
 _______________________________
 
 Solarus 1.2.0 (2014-05-06)

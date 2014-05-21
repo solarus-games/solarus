@@ -576,17 +576,17 @@ public class Map extends Observable {
 
     /**
      * Returns the highest layer where a specified rectangle overlaps an
-     * existing entity.
+     * existing visible entity.
      * @param rectangle a rectangle
      * @return the highest layer where an entity exists in this rectangle,
      * or Layer.LOW if there is nothing here
      */
     public Layer getLayerInRectangle(Rectangle rectangle) {
 
-        Layer[] layers = { Layer.HIGH, Layer.INTERMEDIATE, Layer.LOW };
-        for (Layer layer: layers) {
+        for (Layer layer: Layer.values()) {
             for (MapEntity entity: allEntities[layer.getId()]) {
-                if (rectangle.intersects(entity.getPositionInMap())) {
+                if (viewSettings.isEntityShown(entity) 
+                        && rectangle.intersects(entity.getPositionInMap())) {
                     return layer;
                 }
             }
@@ -595,7 +595,7 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns the entities located in a rectangle defined by two points.
+     * Returns the visible entities located in a rectangle defined by two points.
      * @param x1 x coordinate of the first point
      * @param y1 y coordinate of the first point
      * @param x2 x coordinate of the second point
@@ -616,7 +616,8 @@ public class Map extends Observable {
         for (Layer layer: Layer.values()) {
 
             for (MapEntity entity: allEntities[layer.getId()]) {
-                if (rectangle.contains(entity.getPositionInMap())) {
+                if (viewSettings.isEntityShown(entity) 
+                        && rectangle.contains(entity.getPositionInMap())) {
                     entitiesInRectangle.add(entity);
                 }
             }

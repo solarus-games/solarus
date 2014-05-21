@@ -221,6 +221,10 @@ public class NPC extends MapEntity {
             if (direction == -1) {
                 direction = 3;
             }
+            int numDirections = sprite.getAnimation(sprite.getDefaultAnimationName()).getNbDirections();
+            if (direction < 0 || direction >= numDirections) {
+                direction = 0;
+            }
             sprite.paint(g, zoom, showTransparency, getX(), getY(), null, direction, 0);
         }
     }

@@ -940,12 +940,8 @@ public class MapView extends JComponent implements Observer {
                     map.getEntitiesInRectangle(fixedLocation.x, fixedLocation.y,
                     cursorLocation.x, cursorLocation.y);
 
-            // select the entities in the rectangle, except the hidden ones
-            for (MapEntity entity : entitiesInRectangle) {
-                if (getViewSettings().isEntityShown(entity)) {
-                    entitySelection.select(entity);
-                }
-            }
+            // select the entities in the rectangle
+            entitySelection.select(entitiesInRectangle);
 
             // also restore the initial selection (for a multiple selection)
             for (MapEntity entity : initialSelection) {

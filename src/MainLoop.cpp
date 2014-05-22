@@ -182,7 +182,7 @@ void MainLoop::run() {
     lag += last_frame_duration;
     // At this point, lag represents how much late the simulated time with
     // compared to the real time.
- 
+
     if (lag >= 200) {
       // Huge lag: don't try to catch up.
       // Maybe we have just made a one-time heavy operation like loading a
@@ -221,14 +221,15 @@ void MainLoop::run() {
 }
 
 /**
- * \brief Detects whether there was an input event and if yes, handles it.
+ * \brief Detects whether there were input events and if yes, handles them.
  */
 void MainLoop::check_input() {
 
   InputEvent* event = InputEvent::get_event();
-  if (event != NULL) {
+  while(event != NULL) {
     notify_input(*event);
     delete event;
+    event = InputEvent::get_event();
   }
 }
 

@@ -57,15 +57,17 @@ public class SpriteAnimation  extends Observable {
 
     /**
      * Creates an animation.
+     * @param srcImageName the source image name of this animation
      * @param directions the list of directions of this animation
      * @param frameDelay interval in milliseconds between two frames
      * @param loopOnFrame index of a frame to loop on when the animation is finished, or -1
      */
-    public SpriteAnimation(Vector<SpriteAnimationDirection> directions, int frameDelay, int loopOnFrame) {
+    public SpriteAnimation(String srcImageName, Vector<SpriteAnimationDirection> directions,
+            int frameDelay, int loopOnFrame) {
         this.directions = directions;
         this.frameDelay = frameDelay;
         this.loopOnFrame = loopOnFrame;
-        this.srcImage = "tileset";
+        this.srcImage = srcImageName;
     }
 
     /**
@@ -75,7 +77,22 @@ public class SpriteAnimation  extends Observable {
      */
     public void reloadImage() throws SpriteException {
 
+        BufferedImage image = getImage();
+        for (SpriteAnimationDirection direction: directions) {
+            direction.setSrcImage(image);
+        }
+        notifyObservers(image);
+    }
+
+    /**
+     * Returns the animation's image.
+     * @return the animation image
+     * @throws SpriteException if image cannot be loaded
+     */
+    public BufferedImage getImage() throws SpriteException {
+
         String imagePath;
+
         if (!srcImage.equals("tileset")) {
             imagePath = "sprites/" + srcImage;
         } else {
@@ -83,12 +100,7 @@ public class SpriteAnimation  extends Observable {
         }
 
         try {
-            BufferedImage image = Project.getProjectImage(imagePath);
-            for (SpriteAnimationDirection direction: directions) {
-                direction.setSrcImage(image);
-            }
-            setChanged();
-            notifyObservers(image);
+            return Project.getProjectImage(imagePath);
         } catch (IOException ex) {
             throw new SpriteException("Can't load image " + imagePath + ":\n" + ex.getMessage());
         }
@@ -218,6 +230,39 @@ public class SpriteAnimation  extends Observable {
     public void setLoopOnFrame(int index) {
 
         this.loopOnFrame = index;
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Add a new direction in this animation.
+     * the direction is create with one frame corresponding to the rect and his
+     * origin point centered.
+     * @param rect the rect corresponding to the first frame of the direction
+     * @throws SpriteException if the direction cannot be created.
+     */
+    public void addDirection(Rectangle rect) throws SpriteException {
+
+        BufferedImage image = getImage();
+        Point origin = new Point(rect.width / 2, rect.height / 2);
+        directions.add(new SpriteAnimationDirection(image, rect, 1, 1, origin.x, origin.y));
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Remove a direction from this animation.
+     * @param directionNb the number of the direction to remove
+     * @throws SpriteException if the direction doesn't exist
+     */
+    public void removeDirection(int directionNb) throws SpriteException {
+
+        if (directionNb < 0 || directionNb >= directions.size()) {
+            throw new SpriteException("The direction " + directionNb +
+                    " doesn't exist in this animation");
+        }
+
+        directions.remove(directionNb);
         setChanged();
         notifyObservers();
     }

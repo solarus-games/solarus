@@ -75,6 +75,21 @@ public class Sprite extends Observable {
     private boolean isSaved;
 
     /**
+     * Name of the animation currently selected by the user.
+     * null: no animation is selected
+     */
+    private String selectedAnimationName;
+
+    /**
+     * Id of the direction currently selected by the user.
+     * -1: no direction is selected
+     * 0 or more: an existing direction is selected
+     */
+    private int selectedDirectionNb;
+
+    private BufferedImage doubleImage;
+
+    /**
      * Loads the description file of the animation set used by this sprite
      * and builds its animation set.
      * @throws SpriteException if there is an error when analyzing the file.
@@ -106,6 +121,7 @@ public class Sprite extends Observable {
      */
     private class AnimationFunction extends OneArgFunction {
 
+        @Override
         public LuaValue call(LuaValue arg) {
 
             try {
@@ -169,7 +185,7 @@ public class Sprite extends Observable {
                           + directions.size() + ": " + ex.getMessage());
                     }
 
-                    SpriteAnimation animation = new SpriteAnimation(directions, frameDelay, frameToLoopOn);
+                    SpriteAnimation animation = new SpriteAnimation(srcImageName, directions, frameDelay, frameToLoopOn);
                     animations.put(animationName, animation);
                     if (defaultAnimationName == null) {
                         defaultAnimationName = animationName; // set first animation as the default one
@@ -209,6 +225,8 @@ public class Sprite extends Observable {
         this.animationSetId = animationSetId;
         this.tilesetId = tilesetId;
         this.isSaved = false;
+        this.selectedAnimationName = null;
+        this.selectedDirectionNb = -1;
 
         load();
         setSaved(true);
@@ -285,6 +303,7 @@ public class Sprite extends Observable {
     /**
      * Changes the name of the sprite.
      * @param name New human-readable name of the sprite.
+     * @throws QuestEditorException if the resource cannot be renamed
      */
     public void setName(String name) throws QuestEditorException {
 
@@ -309,6 +328,223 @@ public class Sprite extends Observable {
      */
     public boolean hasAnimation(String animationName) {
         return animations.containsKey(animationName);
+    }
+
+    /**
+     * Retuns animations of this sprite.
+     * @return animations of this sprite.
+     */
+    public Collection<SpriteAnimation> getAnimations() {
+
+        return animations.values();
+    }
+
+    /**
+     * Returns the number of the direction at a location in the sprite,
+     * or -1 if there is no direction there.
+     * @param x x coordinate of the point
+     * @param y y coordinate of the point
+     * @return number of the direction at this point, or -1 if there is no direction here
+     */
+    public int getDirectionNbAt(int x, int y) {
+
+        SpriteAnimation animation = getSelectedAnimation();
+
+        if (animation != null) {
+            for (int i = 0; i < animation.getNbDirections(); i++) {
+                SpriteAnimationDirection direction = animation.getDirection(i);
+                if (direction.getRect().contains(x, y)) {
+                    return i; // a direction was found at this point
+                }
+            }
+        }
+
+        return -1; // no direction found
+    }
+
+    /**
+     * Returns the name of the selected animation.
+     * @return null if no animation is selected, a string if an existing animation is selected.
+     */
+    public String getSelectedAnimationName() {
+
+        return selectedAnimationName;
+    }
+
+    /**
+     * Set the selected animation of this sprite.
+     * @param animationName null to unselect, the name of animation to select
+     * @throws SpriteException if the animation doesn't exist
+     */
+    public void setSelectedAnimation(String animationName) throws SpriteException {
+
+        if (!animationName.equals(selectedAnimationName)) {
+            if (animationName == null) {
+                // unselect direction
+                selectedDirectionNb = -1;
+            } else if (!animations.containsKey(animationName)) {
+                throw new SpriteException("the animation " + animationName + " doesn't exist");
+            }
+
+            selectedAnimationName = animationName;
+            notifyObservers();
+        }
+    }
+
+    /**
+     * Returns the selected animation.
+     * @return null is no animation is selected, the animation otherwise.
+     */
+    public SpriteAnimation getSelectedAnimation() {
+
+        return selectedAnimationName != null ? animations.get(selectedAnimationName) : null;
+    }
+
+    /**
+     * Returns the number of the selected direction.
+     * @return -1 if no direction is selected, 0 or more if an existing direction is selected.
+     */
+    public int getSelectedDirectionNb() {
+
+        return selectedDirectionNb;
+    }
+
+    /**
+     * Selects a direction and notifies the observers.
+     * @param selectedDirectionNb -1 to select no direction,
+     * 0 or more to select the existing direction with this number.
+     * @throws SpriteException if the selected direction doesn't exist.
+     */
+    public void setSelectedDirectionNb(int selectedDirectionNb) throws SpriteException {
+
+        if (selectedDirectionNb != this.selectedDirectionNb) {
+
+            // select a direction
+            if (selectedDirectionNb != -1) {
+                SpriteAnimation animation = getSelectedAnimation();
+                if (animation == null) {
+                    throw new SpriteException("Cannot select direction number " +
+                            selectedDirectionNb + ": no animation was selected");
+                } else if (selectedDirectionNb >= animation.getNbDirections()) {
+                    throw new SpriteException("Cannot select direction number " +
+                            selectedDirectionNb + ": this direction doesn't exist");
+                }
+            }
+            this.selectedDirectionNb = selectedDirectionNb;
+            notifyObservers();
+        }
+    }
+
+    /**
+     * Unselects the current animation.
+     * This is equivalent to call setSelectedAnimation(null).
+     */
+    public void unselectAnimation() {
+
+        try {
+            setSelectedAnimation(null);
+        } catch (SpriteException ex) {
+            // setSelectedAnimation don't throw exception if the direction is -1
+        }
+    }
+
+    /**
+     * Unselects the current direction.
+     * This is equivalent to call setSelectedDirectionNb(-1).
+     */
+    public void unselectDirection() {
+
+        try {
+            setSelectedDirectionNb(-1);
+        } catch (SpriteException ex) {
+            // setSelectedDirectionNb don't throw exception if the direction is -1
+        }
+    }
+
+    /**
+     * Returns the selected direction.
+     * @return the selected direction, or null if there is no selected direction
+     */
+    public SpriteAnimationDirection getSelectedDirection() {
+        if (selectedDirectionNb != -1) {
+            return getSelectedAnimation().getDirection(selectedDirectionNb);
+        }
+        else {
+            return null;
+        }
+    }
+
+    /**
+     * Add a new direction in the current selected animation.
+     * the direction is create with one frame corresponding to the rect and his
+     * origin point centered.
+     * @param rect the rect corresponding to the first frame of the direction
+     * @throws SpriteException if no animation was selected or if the direction
+     * cannot be created.
+     */
+    public void addDirection(Rectangle rect) throws SpriteException {
+
+        SpriteAnimation animation = getSelectedAnimation();
+
+        if (animation == null) {
+            throw new SpriteException("No selected animation");
+        }
+
+        animation.addDirection(rect);
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Remove the selected direction from the selected animation of this sprite.
+     * @throws SpriteException if the direction doesn't exist
+     */
+    public void removeDirection() throws SpriteException {
+
+        if (selectedDirectionNb != -1) {
+            getSelectedAnimation().removeDirection(selectedDirectionNb);
+            selectedDirectionNb = -1;
+            setChanged();
+            notifyObservers();
+        }
+    }
+
+    /**
+     * Reloads the selected animation's image.
+     * The observers are notified with the new image as parameter.
+     */
+    public void reloadImage() {
+
+        SpriteAnimation animation = getSelectedAnimation();
+
+        if (animation != null) {
+            try {
+                BufferedImage image = animation.getImage();
+                int width = image.getWidth();
+                int height = image.getHeight();
+                doubleImage = createScaledImage(animation.getImage(), width * 2, height * 2);
+            } catch (SpriteException ex) {
+                doubleImage = null;
+            }
+        }
+    }
+
+    private BufferedImage createScaledImage(BufferedImage image, int width, int height) {
+        BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = scaledImage.createGraphics();
+        g.drawImage(image, 0, 0, width, height, null);
+        g.dispose();
+        return scaledImage;
+    }
+
+    /**
+     * Returns the 200% scaled version of the selected animation's image, previously
+     * loaded by reloadImage().
+     * @return the selected animation's image in 200%, or null if the image is not loaded
+     */
+    public BufferedImage getDoubleImage() {
+
+        return doubleImage;
     }
 
     /**
@@ -421,10 +657,11 @@ public class Sprite extends Observable {
      * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
      * @param showTransparency true to make transparent pixels,
      * false to replace them by a background color
+     * @param x horizontal position to draw
+     * @param y vertical position to draw
      * @param animationName name of animation to use (null to pick the default one)
      * @param direction direction of animation
      * @param frame index of the frame to get
-     * @return the frame
      */
     public void paint(Graphics g, double zoom, boolean showTransparency,
             int x, int y, String animationName, int direction, int frame) {
@@ -506,12 +743,12 @@ public class Sprite extends Observable {
                     Dimension dimension = direction.getSize();
                     Point origin = direction.getOrigin();
 
-                    int x = (new Double(position.x)).intValue();
-                    int y = (new Double(position.y)).intValue();
-                    int frameWidth = (new Double(dimension.width)).intValue();
-                    int frameHeight = (new Double(dimension.height)).intValue();
-                    int originX = (new Double(origin.x)).intValue();
-                    int originY = (new Double(origin.y)).intValue();
+                    int x = (int) position.x;
+                    int y = (int) position.y;
+                    int frameWidth = (int) dimension.width;
+                    int frameHeight = (int) dimension.height;
+                    int originX = (int) origin.x;
+                    int originY = (int) origin.y;
                     int numFrames = direction.getNbFrames();
                     int numColumns = direction.getNbColumns();
 
@@ -536,7 +773,7 @@ public class Sprite extends Observable {
 
             setSaved(true);
         }
-        catch (Exception ex) {
+        catch (IOException ex) {
             String message = "";
             if (lastName.length() > 0) {
                 message = "Failed to save animation '" + lastName + "': ";

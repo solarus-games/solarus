@@ -105,6 +105,20 @@ public class SpriteAnimationDirection extends Observable {
     }
 
     /**
+     * Returns the number of rows for a number of frames.
+     * @param nbFrames the number of fframes
+     * @return the number of rows
+     */
+    public int getNbRows(int nbFrames) {
+
+        int nbRows = nbFrames / nbColumns;
+        if (nbFrames % nbColumns != 0) {
+            nbRows++;
+        }
+        return nbRows;
+    }
+
+    /**
      * Changes the source image used to create frames of this direction
      * @param srcImage the source image to use
      * @param nbFrames the number of frames
@@ -112,10 +126,7 @@ public class SpriteAnimationDirection extends Observable {
      */
     public void setSrcImage (BufferedImage srcImage, int nbFrames) throws SpriteException {
 
-        int nbRows = nbFrames / nbColumns;
-        if (nbFrames % nbColumns != 0) {
-            nbRows++;
-        }
+        int nbRows = getNbRows(nbFrames);
         try {
             if (position.x + nbColumns * size.width > srcImage.getWidth() ||
                     position.y + nbRows * size.height > srcImage.getHeight()) {
@@ -161,6 +172,16 @@ public class SpriteAnimationDirection extends Observable {
         this.origin = origin;
         setChanged();
         notifyObservers();
+    }
+
+    /**
+     * Returns the rectangle of this direction.
+     * @return the rectangle
+     */
+    public Rectangle getRect() {
+
+        Dimension dim = new Dimension(size.width * nbColumns, size.height * getNbRows(getNbFrames()));
+        return new Rectangle(position, dim);
     }
 
     /**

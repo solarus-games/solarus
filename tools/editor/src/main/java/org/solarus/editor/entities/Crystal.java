@@ -48,7 +48,7 @@ public class Crystal extends MapEntity {
         try {
             setSprite(new Sprite("entities/crystal", map));
         }
-        catch (MapException ex) {
+        catch (SpriteException ex) {
             // The sprite could not be loaded.
             // The default icon for this entity will be used instead.
         }

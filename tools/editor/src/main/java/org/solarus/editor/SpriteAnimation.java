@@ -17,12 +17,15 @@
 package org.solarus.editor;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Observable;
 import java.util.Vector;
 
 /**
  * Represents an animation of a sprite.
  */
-public class SpriteAnimation {
+public class SpriteAnimation  extends Observable {
 
     /**
      * @brief The directions of this animation.
@@ -43,6 +46,16 @@ public class SpriteAnimation {
     private int loopOnFrame;
 
     /**
+     * @brief Name of the source image of this animation.
+     */
+    private String srcImage;
+
+    /**
+     * @brief Id of the tileset used to draw this animation (if srcImage equals "tileset").
+     */
+    private String tilesetId;
+
+    /**
      * Creates an animation.
      * @param directions the list of directions of this animation
      * @param frameDelay interval in milliseconds between two frames
@@ -52,6 +65,65 @@ public class SpriteAnimation {
         this.directions = directions;
         this.frameDelay = frameDelay;
         this.loopOnFrame = loopOnFrame;
+        this.srcImage = "tileset";
+    }
+
+    /**
+     * Reloads the animation's image.
+     * The observers are notified with the new image as parameter.
+     * @throws SpriteException if image cannot be loaded
+     */
+    public void reloadImage() throws SpriteException {
+
+        String imagePath;
+        if (!srcImage.equals("tileset")) {
+            imagePath = "sprites/" + srcImage;
+        } else {
+            imagePath = "tilesets/" + Project.getTilesetEntitiesImageFile(tilesetId).getName();
+        }
+
+        try {
+            BufferedImage image = Project.getProjectImage(imagePath);
+            for (SpriteAnimationDirection direction: directions) {
+                direction.setSrcImage(image);
+            }
+            setChanged();
+            notifyObservers(image);
+        } catch (IOException ex) {
+            throw new SpriteException("Can't load image " + imagePath + ":\n" + ex.getMessage());
+        }
+    }
+
+    /**
+     * Returns the name of the source image.
+     * @return the name
+     */
+    public String getSrcImage () {
+
+        return srcImage;
+    }
+
+    /**
+     * Changes the source image.
+     * @param srcImage the name of the source image
+     * @throws SpriteException if this image could not be applied
+     */
+    public void setSrcImage (String srcImage) throws SpriteException {
+
+        if (srcImage.equals(this.srcImage)) {
+            return;
+        }
+
+        String previousSrcImage = this.srcImage;
+
+        try {
+            this.srcImage = srcImage;
+            reloadImage();
+        } catch (SpriteException ex) {
+            this.srcImage = previousSrcImage;
+            reloadImage();
+            throw ex;
+        }
     }
 
     /**
@@ -115,12 +187,72 @@ public class SpriteAnimation {
     }
 
     /**
+     * @brief Changes the time interval between two frames.
+     *
+     * This delay is the same for all directions.
+     *
+     * @param frameDelay The interval in milliseconds between two frames.
+     * 0 means infinite (only possible when there is one frame).
+     */
+    public void setFrameDelay(int frameDelay) {
+
+        this.frameDelay = frameDelay;
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
      * @brief Returns the frame where the animation loops.
      * @returns The index of a frame where to the sprite loops after the last
      * frame, or -1 if there is no loop.
      */
     public int getLoopOnFrame() {
         return loopOnFrame;
+    }
+
+    /**
+     * @brief Changes the frame where the animation loops.
+     * @param index The index of a frame where to the sprite loops after the last
+     * frame, or -1 if there is no loop.
+     */
+    public void setLoopOnFrame(int index) {
+
+        this.loopOnFrame = index;
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Returns id of the tileset used to draw this animation.
+     *
+     * Used only if srcImage equals "tileset".
+     *
+     * @return The id of the tileset
+     */
+    public String getTilesetId () {
+
+        return tilesetId;
+    }
+
+    /**
+     * Changes id of the tileset used to draw this animation.
+     *
+     * Used only if srcImage equals "tileset".
+     *
+     * @param tilesetId The id of the tileset
+     */
+    public void setTilesetId (String tilesetId) throws SpriteException {
+
+        this.tilesetId = tilesetId;
+        if (srcImage.equals("tileset")) {
+            try {
+                reloadImage();
+            } catch (SpriteException ex) {
+                throw new SpriteException("Tileset image cannot be loaded:\n" + ex.getMessage());
+            }
+        } else {
+            notifyObservers();
+        }
     }
 
     /**

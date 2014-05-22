@@ -117,13 +117,19 @@ public class Block extends MapEntity {
      * Does nothing by default.
      * @param name Name of the property that has changed.
      * @param value The new value.
+     * @throws MapException if sprite cannot be loaded.
      */
+    @Override
     protected void notifyPropertyChanged(String name, String value) throws MapException {
 
         if (name.equals("sprite")) {
 
             if (value != null) {
-                setSprite(new Sprite(value, getMap()));
+                try {
+                    setSprite(new Sprite(value, getMap()));
+                } catch (SpriteException ex) {
+                    throw new MapException(ex.getMessage());
+                }
             }
             else {
                 setSprite(null);

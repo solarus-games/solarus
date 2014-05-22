@@ -18,13 +18,13 @@ package org.solarus.editor;
 
 import java.awt.*;
 import java.awt.image.*;
-
 import org.solarus.editor.entities.MapEntity;
+import java.util.Observable;
 
 /**
  * Represents a direction of animation of a sprite.
  */
-public class SpriteAnimationDirection {
+public class SpriteAnimationDirection extends Observable {
 
     /**
      * @brief The frames of this animation direction.
@@ -32,60 +32,115 @@ public class SpriteAnimationDirection {
     private BufferedImage[] frames;
 
     /**
+     * @brief The source image used to create frames of this direction.
+     */
+    private BufferedImage srcImage;
+
+    /**
+     * @brief Position point of the animation direction (position of the first frame).
+     */
+    private Point position;
+
+    /**
+     * @brief Size of the animation direction (the same for all frames).
+     */
+    private Dimension size;
+
+    /**
      * @brief Origin point of the sprite (the same for all frames).
      */
     private Point origin;
 
     /**
+     * @brief Number of columns of the animation direction.
+     */
+    private int nbColumns;
+
+    /**
      * Creates a direction of animation.
-     * @param srcImage the image to use
+     * @param srcImage the source image to use
      * @param firstFrameRectangle rectangle representing the first frame
      * (the other ones will have the same size)
-     * @param originX x coordinate of the sprite's origin in each rectangle
-     * @param originY y coordinate of the sprite's origin in each rectangle
      * @param nbFrames number of frames to create
      * @param nbColumns number of columns (because the rectangles may be organized in several rows)
-     * @param frames the list of rectangles representing the frames in the image
-     * @throws MapException If some rectangles are outside the image.
+     * @param originX x coordinate of the sprite's origin in each rectangle
+     * @param originY y coordinate of the sprite's origin in each rectangle
+     * @throws SpriteException if some rectangles are outside the image.
      */
     public SpriteAnimationDirection(BufferedImage srcImage,
             Rectangle firstFrameRectangle,
             int nbFrames, int nbColumns, int originX, int originY)
-            throws MapException {
+            throws SpriteException {
 
-        int i = 0;
-        int j = 0;
-        int x = 0;
-        int y = 0;
-        int width = firstFrameRectangle.width;
-        int height = firstFrameRectangle.height;
+        this.position = new Point(firstFrameRectangle.x, firstFrameRectangle.y);
+        this.size = new Dimension(firstFrameRectangle.width, firstFrameRectangle.height);
+        this.origin = new Point(originX, originY);
+        this.nbColumns = nbColumns;
+
+        setSrcImage(srcImage, nbFrames);
+    }
+
+    /**
+     * Creates the frames of this direction.
+     * @param nbFrames the number of frames to create
+     * @throws SpriteException if some rectangles are outside the image.
+     */
+    private void createFrames(int nbFrames) throws RasterFormatException {
+
+        int nbRows = nbFrames / nbColumns;
+        if (nbFrames % nbColumns != 0) {
+            nbRows++;
+        }
+        frames = new BufferedImage[nbFrames];
         int frame = 0;
+        for (int i = 0; i < nbRows && frame < nbFrames; i++) {
+            for (int j = 0; j < nbColumns && frame < nbFrames; j++) {
 
+                int x = position.x + j * size.width;
+                int y = position.y + i * size.height;
+                frames[frame] = srcImage.getSubimage(x, y, size.width, size.height);
+                frame++;
+            }
+        }
+    }
+
+    /**
+     * Changes the source image used to create frames of this direction
+     * @param srcImage the source image to use
+     * @param nbFrames the number of frames
+     * @throws SpriteException if some rectangles are outside the image.
+     */
+    public void setSrcImage (BufferedImage srcImage, int nbFrames) throws SpriteException {
+
+        int nbRows = nbFrames / nbColumns;
+        if (nbFrames % nbColumns != 0) {
+            nbRows++;
+        }
         try {
-            origin = new Point(originX, originY);
-            frames = new BufferedImage[nbFrames];
-
-            int nbRows = nbFrames / nbColumns;
-            if (nbFrames % nbColumns != 0) {
-                nbRows++;
+            if (position.x + nbColumns * size.width > srcImage.getWidth() ||
+                    position.y + nbRows * size.height > srcImage.getHeight()) {
+                throw new Exception();
             }
-
-            for (i = 0; i < nbRows && frame < nbFrames; i++) {
-                for (j = 0; j < nbColumns && frame < nbFrames; j++) {
-
-                    x = firstFrameRectangle.x + j * width;
-                    y = firstFrameRectangle.y + i * height;
-                    frames[frame] = srcImage.getSubimage(x, y, width, height);
-                    frame++;
-                }
-            }
+            this.srcImage = srcImage;
+            createFrames(nbFrames);
+            setChanged();
+            notifyObservers();
+        } catch (Exception ex) {
+            throw new SpriteException("One of frames is outside the image bounds: (" +
+                    position.x + "," + position.y + ")->(" +
+                    (position.x + size.width) + "," + (position.y + size.height) +
+                    "). Size of source image is only " + srcImage.getWidth() +
+                    "x" + srcImage.getHeight() + ".\nPlease fix your sprite file.");
         }
-        catch (RasterFormatException ex) {
-            throw new MapException("Frame " + frame +
-                    " is outside the image bounds: (" + x + "," + y + ")->(" + (x + width) + "," + (y + height) +
-                    "). Size of source image is only " + srcImage.getWidth() + "x" + srcImage.getHeight() +
-                    ".\nPlease fix your sprite file.");
-        }
+    }
+
+    /**
+     * Changes the source image used to create frames of this direction
+     * @param srcImage the source image to use
+     * @throws SpriteException if some rectangles are outside the image.
+     */
+    public void setSrcImage (BufferedImage srcImage) throws SpriteException {
+        setSrcImage(srcImage, getNbFrames());
     }
 
     /**
@@ -98,12 +153,68 @@ public class SpriteAnimationDirection {
     }
 
     /**
+     * Changes the origin point of this direction.
+     * @param origin the origin
+     */
+    public void setOrigin(Point origin) {
+
+        this.origin = origin;
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Returns the position of the first frame in this direction.
+     * @return the position
+     */
+    public Point getPosition() {
+
+        return position;
+    }
+
+    /**
+     * Changes the position of the first frame in this direction.
+     * @param position the position
+     * @throws SpriteException if some rectangles are outside the image.
+     */
+    public void setPosition(Point position) throws SpriteException {
+
+        Point prevPosition = this.position;
+
+        try {
+            this.position = position;
+            setSrcImage(srcImage);
+        } catch (SpriteException ex) {
+            this.position = prevPosition;
+            throw ex;
+        }
+    }
+
+    /**
      * Returns the size of frames in this direction.
      * @return the size
      */
     public Dimension getSize() {
 
-        return new Dimension(frames[0].getWidth(), frames[0].getHeight());
+        return size;
+    }
+
+    /**
+     * Changes the size of frames in this direction.
+     * @param size the size
+     * @throws SpriteException if some rectangles are outside the image.
+     */
+    public void setSize(Dimension size) throws SpriteException {
+
+        Dimension prevSize = this.size;
+
+        try {
+            this.size = size;
+            setSrcImage(srcImage);
+        } catch (SpriteException ex) {
+            this.size = prevSize;
+            throw ex;
+        }
     }
 
     /**
@@ -115,6 +226,43 @@ public class SpriteAnimationDirection {
     }
 
     /**
+     * Changes the number of frames in this direction.
+     * @param nbFrames the number of frames
+     * @throws SpriteException if some rectangles are outside the image.
+     */
+    public void setNbFrames(int nbFrames) throws SpriteException {
+
+        setSrcImage(srcImage, nbFrames);
+    }
+
+    /**
+     * Returns the number of columns in this direction.
+     * @return The number of columns.
+     */
+    public int getNbColumns() {
+
+        return nbColumns;
+    }
+
+    /**
+     * Changes the number of columns in this direction.
+     * @param nbColumns the number of columns
+     * @throws SpriteException if some rectangles are outside the image.
+     */
+    public void setNbColumns(int nbColumns) throws SpriteException {
+
+        int prevNbColumns = this.nbColumns;
+
+        try {
+            this.nbColumns = nbColumns;
+            setSrcImage(srcImage);
+        } catch (SpriteException ex) {
+            this.nbColumns = prevNbColumns;
+            throw ex;
+        }
+    }
+
+     /**
      * Returns a frame of this direction.
      * @param frame Index of the frame to get.
      * @return The corresponding frame.

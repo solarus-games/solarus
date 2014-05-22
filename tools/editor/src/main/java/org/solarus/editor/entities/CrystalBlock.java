@@ -90,7 +90,7 @@ public class CrystalBlock extends MapEntity {
         try {
             setSprite(new Sprite("entities/crystal_block", map));
         }
-        catch (MapException ex) {
+        catch (SpriteException ex) {
             // The sprite could not be loaded.
             // The default icon for this entity will be used instead.
         }

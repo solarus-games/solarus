@@ -41,10 +41,15 @@ public class Pickable extends MapEntity {
     /**
      * Creates a new pickable item.
      * @param map the map
+     * @throws MapException if sprite cannot be loaded.
      */
     public Pickable(Map map) throws MapException {
         super(map, 16, 16);
-        setSprite(new Sprite("entities/items", map));
+        try {
+            setSprite(new Sprite("entities/items", map));
+        } catch (SpriteException ex) {
+            throw new MapException(ex.getMessage());
+        }
     }
 
     /**

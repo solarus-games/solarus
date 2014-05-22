@@ -34,7 +34,7 @@ import org.solarus.editor.entities.*;
 /**
  * Represents a sprite.
  */
-public class Sprite {
+public class Sprite extends Observable {
 
     /**
      * Name of the animation set.
@@ -69,11 +69,17 @@ public class Sprite {
     private static Image emptySpriteImage = Project.getEditorImageOrEmpty("entity_npc.png");
 
     /**
+     * Tells whether the sprite has changed since the last save.
+     * True if there has been no modifications, false otherwise.
+     */
+    private boolean isSaved;
+
+    /**
      * Loads the description file of the animation set used by this sprite
      * and builds its animation set.
-     * @throws MapException if there is an error when analyzing the file.
+     * @throws SpriteException if there is an error when analyzing the file.
      */
-    public void load() throws MapException {
+    public void load() throws SpriteException {
 
         try {
             this.animations = new TreeMap<String, SpriteAnimation>();
@@ -88,10 +94,10 @@ public class Sprite {
             code.call();
         }
         catch (IOException ex) {
-            throw new MapException(ex.getMessage());
+            throw new SpriteException(ex.getMessage());
         }
         catch (LuaError ex) {
-            throw new MapException(ex.getMessage());
+            throw new SpriteException(ex.getMessage());
         }
     }
 
@@ -156,7 +162,7 @@ public class Sprite {
                           );
                       directions.add(direction);
                     }
-                    catch (MapException ex) {
+                    catch (SpriteException ex) {
                       // The direction has invalid properties:
                       // rethow an exception with a more complete error message.
                       throw new MapException("Animation '" + animationName + "', direction "
@@ -191,14 +197,100 @@ public class Sprite {
     /**
      * Creates a sprite from the specified animation set id
      * @param animationSetId id of the animation set to use
-     * @param map the map where this sprite will be displayed (if any)
-     * @throws QuestEditorException If the sprite could not be loaded.
+     * @param tilesetId id of the tileset to use
+     * @throws SpriteException If the sprite could not be loaded.
      */
-    public Sprite(String animationSetId, Map map) throws MapException {
+    public Sprite(String animationSetId, String tilesetId) throws SpriteException {
+
+        if (!isValidId(animationSetId)) {
+            throw new SpriteException("Invalid sprite ID: '" + animationSetId + "'");
+        }
 
         this.animationSetId = animationSetId;
-        this.tilesetId = map.getTilesetId();
+        this.tilesetId = tilesetId;
+        this.isSaved = false;
+
         load();
+        setSaved(true);
+    }
+
+    /**
+     * Creates a sprite from the specified animation set id
+     * @param animationSetId id of the animation set to use
+     * @throws SpriteException If the sprite could not be loaded.
+     */
+    public Sprite (String animationSetId) throws SpriteException {
+
+        this(animationSetId, Project.getResource(ResourceType.TILESET).getIds()[0]);
+    }
+
+    /**
+     * Creates a sprite from the specified animation set id
+     * @param animationSetId id of the animation set to use
+     * @param map the map where this sprite will be displayed (if any)
+     * @throws SpriteException If the sprite could not be loaded.
+     */
+    public Sprite(String animationSetId, Map map) throws SpriteException {
+
+        this(animationSetId, map.getTilesetId());
+    }
+
+    /**
+     * Returns the id of the sprite.
+     * @return the id of the sprite
+     */
+    public String getId() {
+        return animationSetId;
+    }
+
+    /**
+     * @brief Returns whether a string is a valid sprite id.
+     * @param spriteId The id to check.
+     * @return true if this is legal.
+     */
+    public static boolean isValidId(String spriteId) {
+
+        if (spriteId.isEmpty()) {
+            return false;
+        }
+
+        for (int i = 0; i < spriteId.length(); i++) {
+            char c = spriteId.charAt(i);
+            if (!Character.isLetterOrDigit(c) && c != '_' && c != '/') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns the sprite name.
+     * @return The human name of the sprite.
+     */
+    public String getName() {
+        Resource mapResource = Project.getResource(ResourceType.SPRITE);
+        String name = animationSetId;
+
+        try {
+            name = mapResource.getElementName(animationSetId);
+        }
+        catch (QuestEditorException ex) {
+            // Cannot happen: the sprite id must be valid.
+            ex.printStackTrace();
+        }
+        return name;
+    }
+
+    /**
+     * Changes the name of the sprite.
+     * @param name New human-readable name of the sprite.
+     */
+    public void setName(String name) throws QuestEditorException {
+
+        if (!name.equals(getName())) {
+            Project.renameResourceElement(ResourceType.SPRITE, animationSetId, name);
+        }
     }
 
     /**
@@ -226,6 +318,16 @@ public class Sprite {
      */
     public SpriteAnimation getAnimation(String animationName) {
         return animations.get(animationName);
+    }
+
+    /**
+     * Set an animation of this sprite.
+     * @param animationName name of the animation to set
+     * @param animation the animation
+     */
+    public void setAnimation (String animationName, SpriteAnimation animation) {
+        animations.put(animationName, animation);
+        notifyObservers();
     }
 
     /**
@@ -291,8 +393,10 @@ public class Sprite {
      * This function has an effect only for tileset-dependent sprites.
      *
      * @param tilesetId Id of the new tileset to use.
+     * @throws SpriteException if there is an error when analyzing the file or
+     * when loading the image.
      */
-    public void notifyTilesetChanged(String tilesetId) throws MapException {
+    public void notifyTilesetChanged(String tilesetId) throws SpriteException {
 
         if (tilesetId == null || !tilesetDependent) {
             return;
@@ -303,6 +407,11 @@ public class Sprite {
             this.tilesetId = tilesetId;
             // Reload the sprite because its source image has changed.
             load();
+
+            for (SpriteAnimation animation: animations.values()) {
+                animation.setTilesetId(tilesetId);
+                animation.reloadImage();
+            }
         }
     }
 
@@ -336,6 +445,104 @@ public class Sprite {
             }
             animations.get(animationName).paint(g, zoom, showTransparency,
                     x, y, direction, frame);
+        }
+    }
+
+    /**
+     * Returns whether or not the sprite has changed since the last save.
+     * @return true if there has been no modifications, false otherwise
+     */
+    public boolean isSaved() {
+        return isSaved;
+    }
+
+    /**
+     * Sets whether the sprite has changed since the last save.
+     * @param isSaved true if there has been no modifications.
+     */
+    public void setSaved(boolean isSaved) {
+        this.isSaved = isSaved;
+    }
+
+    /**
+     * Saves the sprite into its file.
+     * @throws QuestEditorException if the file could not be written
+     */
+    public void save() throws QuestEditorException {
+
+        String lastName = "";
+        try {
+
+            // Open the sprite file.
+            File spriteFile = Project.getSpriteFile(animationSetId);
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(spriteFile)));
+
+            // Animations.
+            for (String name: animations.keySet()) {
+                lastName = name;
+                SpriteAnimation animation = animations.get(name);
+
+                String srcImage = animation.getSrcImage();
+                int frameDelay = animation.getFrameDelay();
+                int loopOnFrame = animation.getLoopOnFrame();
+                int nbDirections = animation.getNbDirections();
+
+                out.println("animation{");
+                out.println("  name = \"" + name + "\",");
+                out.println("  src_image = \"" + srcImage + "\",");
+                if (frameDelay > 0) {
+                    out.println("  frame_delay = " + frameDelay + ",");
+                    if (loopOnFrame > 0 && loopOnFrame < nbDirections) {
+                        out.println("  frame_to_loop_on = " + loopOnFrame + ",");
+                    }
+                }
+
+                // Directions.
+                out.println("  directions = {");
+                for (int directionId = 0; directionId < nbDirections; directionId++) {
+                    SpriteAnimationDirection direction = animation.getDirection(directionId);
+
+                    Point position = direction.getPosition();
+                    Dimension dimension = direction.getSize();
+                    Point origin = direction.getOrigin();
+
+                    int x = (new Double(position.x)).intValue();
+                    int y = (new Double(position.y)).intValue();
+                    int frameWidth = (new Double(dimension.width)).intValue();
+                    int frameHeight = (new Double(dimension.height)).intValue();
+                    int originX = (new Double(origin.x)).intValue();
+                    int originY = (new Double(origin.y)).intValue();
+                    int numFrames = direction.getNbFrames();
+                    int numColumns = direction.getNbColumns();
+
+                    out.print("    {");
+                    out.print(" x = " + x + ", y = " + y);
+                    out.print(", frame_width = " + frameWidth + ", frame_height = " + frameHeight);
+                    out.print(", origin_x = " + originX + ", origin_y = " + originY);
+                    if (numFrames > 1) {
+                        out.print(", num_frames = " + numFrames);
+                    }
+                    if (numColumns > 0) {
+                        out.print(", num_columns = " + numColumns);
+                    }
+                    out.println(" },");
+                }
+                out.println("  },");
+
+                out.println("}");
+            }
+
+            out.close();
+
+            setSaved(true);
+        }
+        catch (Exception ex) {
+            String message = "";
+            if (lastName.length() > 0) {
+                message = "Failed to save animation '" + lastName + "': ";
+            }
+            message += ex.getMessage();
+            throw new QuestEditorException(message);
         }
     }
 }

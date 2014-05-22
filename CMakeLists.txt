@@ -6,7 +6,7 @@ if(COMMAND cmake_policy)
 endif()
 
 set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
-set(SOLARUS_INSTALL_DESTINATION "bin")
+set(SOLARUS_INSTALL_DESTINATION "bin" CACHE PATH "binary install destination")
 
 option(SOLARUS_USE_LUAJIT "Use LuaJIT instead of default Lua (recommended)" ON)
 

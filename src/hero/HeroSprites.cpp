@@ -199,9 +199,11 @@ void HeroSprites::set_tunic_sprite_id(const std::string& sprite_id) {
   this->tunic_sprite_id = sprite_id;
 
   std::string animation;
+  int direction = -1;
   if (tunic_sprite != NULL) {
-    // Delete the previous sprite, but save its animation.
+    // Delete the previous sprite, but save its animation and direction.
     animation = tunic_sprite->get_current_animation();
+    direction = tunic_sprite->get_current_direction();
     RefCountable::unref(tunic_sprite);
     tunic_sprite = NULL;
   }
@@ -211,6 +213,7 @@ void HeroSprites::set_tunic_sprite_id(const std::string& sprite_id) {
   tunic_sprite->enable_pixel_collisions();
   if (!animation.empty()) {
     set_tunic_animation(animation);
+    tunic_sprite->set_current_direction(direction);
   }
 
   if (sprite_id == get_default_tunic_sprite_id()) {
@@ -264,10 +267,12 @@ void HeroSprites::set_sword_sprite_id(const std::string& sprite_id) {
   this->sword_sprite_id = sprite_id;
 
   std::string animation;
+  int direction = -1;
   if (sword_sprite != NULL) {
-    // Delete the previous sprite, but save its animation.
+    // Delete the previous sprite, but save its animation and direction.
     if (sword_sprite->is_animation_started()) {
       animation = sword_sprite->get_current_animation();
+      direction = sword_sprite->get_current_direction();
     }
     RefCountable::unref(sword_sprite);
     sword_sprite = NULL;
@@ -284,6 +289,7 @@ void HeroSprites::set_sword_sprite_id(const std::string& sprite_id) {
     }
     else {
       sword_sprite->set_current_animation(animation);
+      sword_sprite->set_current_direction(direction);
     }
   }
 
@@ -382,10 +388,12 @@ void HeroSprites::set_shield_sprite_id(const std::string& sprite_id) {
   this->shield_sprite_id = sprite_id;
 
   std::string animation;
+  int direction = -1;
   if (shield_sprite != NULL) {
-    // Delete the previous sprite, but save its animation.
+    // Delete the previous sprite, but save its animation and direction.
     if (shield_sprite->is_animation_started()) {
       animation = shield_sprite->get_current_animation();
+      direction = shield_sprite->get_current_direction();
     }
     RefCountable::unref(shield_sprite);
     shield_sprite = NULL;
@@ -401,6 +409,7 @@ void HeroSprites::set_shield_sprite_id(const std::string& sprite_id) {
     }
     else {
       shield_sprite->set_current_animation(animation);
+      shield_sprite->set_current_direction(direction);
     }
   }
 

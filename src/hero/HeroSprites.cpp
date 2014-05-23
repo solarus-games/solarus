@@ -1480,7 +1480,7 @@ void HeroSprites::set_animation(
     set_tunic_animation(animation, callback_ref);
   }
   else {
-    solarus::Debug::error("Animation" + animation + "not found.");
+    solarus::Debug::error("Animation " + animation + " not found.");
     return;
   }
 

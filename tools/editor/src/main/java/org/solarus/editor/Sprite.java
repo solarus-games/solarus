@@ -188,7 +188,7 @@ public class Sprite extends Observable {
                     SpriteAnimation animation = new SpriteAnimation(srcImageName,
                             directions, frameDelay, frameToLoopOn, tilesetId);
                     animations.put(animationName, animation);
-                    if (defaultAnimationName == null) {
+                    if (defaultAnimationName == "") {
                         defaultAnimationName = animationName; // set first animation as the default one
                     }
                 }
@@ -227,6 +227,7 @@ public class Sprite extends Observable {
         this.tilesetId = tilesetId;
         this.isSaved = false;
         this.selectedAnimationName = "";
+        this.defaultAnimationName = "";
         this.selectedDirectionNb = -1;
 
         load();
@@ -503,7 +504,11 @@ public class Sprite extends Observable {
 
         Vector<SpriteAnimationDirection> directions = new Vector<SpriteAnimationDirection>();
         SpriteAnimation animation = new SpriteAnimation("", directions, 0, 0, tilesetId);
+
         animations.put(name, animation);
+        selectedAnimationName = name;
+        selectedDirectionNb = -1;
+        reloadImage();
 
         isSaved = false;
         setChanged();
@@ -567,8 +572,12 @@ public class Sprite extends Observable {
 
         if (selectedAnimationName != null && !selectedAnimationName.isEmpty()) {
             String animationName = selectedAnimationName;
+
+            animations.remove(animationName);
+            reloadImage();
             selectedAnimationName = "";
             selectedDirectionNb = -1;
+
             isSaved = false;
             setChanged();
             notifyObservers(animationName);
@@ -618,6 +627,8 @@ public class Sprite extends Observable {
             } catch (SpriteException ex) {
                 doubleImage = null;
             }
+        } else {
+            doubleImage = null;
         }
     }
 

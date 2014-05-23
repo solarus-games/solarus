@@ -253,7 +253,6 @@ public class SpriteAnimationsView extends JPanel {
         @Override
         public void update(Observable o, Object params) {
 
-            System.out.println("update!");
             loadIcons();
 
             // update the enabled state of the buttons

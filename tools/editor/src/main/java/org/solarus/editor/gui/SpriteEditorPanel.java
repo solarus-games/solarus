@@ -79,11 +79,13 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
         spriteAnimationsView.setSprite(sprite);
         spriteImageView.setSprite(sprite);
 
-        // select the first direction of the default animation
-        sprite.setSelectedAnimation(sprite.getDefaultAnimationName());
+        if (sprite != null) {
+            // select the first direction of the default animation
+            sprite.setSelectedAnimation(sprite.getDefaultAnimationName());
 
-        // reload image of selected animation
-        sprite.reloadImage();
+            // reload image of selected animation
+            sprite.reloadImage();
+        }
     }
 
     /**

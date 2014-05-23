@@ -60,7 +60,7 @@ class SpriteAnimationChooser extends JComboBox<String> implements Observer {
      */
     protected void reloadList() {
 
-        String selectedName = getSelected();
+        String selectedName = sprite != null ? sprite.getSelectedAnimationName() : "";
 
         removeAllItems();
         buildList();
@@ -92,7 +92,7 @@ class SpriteAnimationChooser extends JComboBox<String> implements Observer {
             if (sprite != null) {
                 sprite.addObserver(this);
             }
-            update(sprite, sprite);
+            update(sprite, null);
         }
     }
 
@@ -135,8 +135,9 @@ class SpriteAnimationChooser extends JComboBox<String> implements Observer {
             // add, remove or rename animation
             if (obj instanceof String || obj instanceof SpriteAnimation) {
                 reloadList();
+            } else {
+                setSelected(sprite.getSelectedAnimationName());
             }
-            setSelected(sprite.getSelectedAnimationName());
         }
     }
 }

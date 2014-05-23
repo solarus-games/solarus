@@ -126,6 +126,12 @@ public class SpriteAnimationDirection extends Observable {
      */
     public void setSrcImage (BufferedImage srcImage, int nbFrames) throws SpriteException {
 
+        if (srcImage == null) {
+            this.srcImage = null;
+            frames = new BufferedImage[0];
+            return;
+        }
+
         int nbRows = getNbRows(nbFrames);
         try {
             if (position.x + nbColumns * size.width > srcImage.getWidth() ||
@@ -290,7 +296,7 @@ public class SpriteAnimationDirection extends Observable {
      */
     public Image getFrame(int frame) {
 
-        return frames[frame];
+        return frame >= 0 && frame < frames.length ? frames[frame] : null;
     }
 
     /**
@@ -305,7 +311,7 @@ public class SpriteAnimationDirection extends Observable {
     public void paint(Graphics g, double zoom, boolean showTransparency,
             int x, int y, int frame) {
 
-        Image image = frames[frame];
+        Image image = getFrame(frame);
 
         // calculate the coordinates
         x = (int) ((x - origin.x) * zoom);

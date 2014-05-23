@@ -133,18 +133,22 @@ public class Sprite extends Observable {
                 int frameToLoopOn = table.get("frame_to_loop_on").optint(-1);
                 LuaTable directionsTable = table.get("directions").checktable();
 
-                BufferedImage srcImage;
+                BufferedImage srcImage = null;
 
-                if (!srcImageName.equals("tileset")) {
-                    srcImage = Project.getProjectImage("sprites/" + srcImageName);
-                }
-                else {
-                    if (tilesetId.isEmpty()) {
-                        throw new SpriteException("No tileset selected");
+                try {
+                    if (!srcImageName.equals("tileset")) {
+                        srcImage = Project.getProjectImage("sprites/" + srcImageName);
                     }
-                    tilesetDependent = true;
-                    srcImage = Project.getProjectImage(
-                            "tilesets/" + Project.getTilesetEntitiesImageFile(tilesetId).getName());
+                    else {
+                        if (tilesetId.isEmpty()) {
+                            throw new SpriteException("No tileset selected");
+                        }
+                        tilesetDependent = true;
+                        srcImage = Project.getProjectImage(
+                                "tilesets/" + Project.getTilesetEntitiesImageFile(tilesetId).getName());
+                    }
+                } catch (IOException ex) {
+                    // image cannot be loaded
                 }
 
                 Vector<SpriteAnimationDirection> directions = new Vector<SpriteAnimationDirection>();
@@ -171,7 +175,6 @@ public class Sprite extends Observable {
 
                     Rectangle firstFrameRectangle = new Rectangle(x, y, frameWidth, frameHeight);
 
-
                     try {
                       SpriteAnimationDirection direction =  new SpriteAnimationDirection(
                           srcImage, firstFrameRectangle, numFrames, numColumns, originX, originY
@@ -184,18 +187,14 @@ public class Sprite extends Observable {
                       throw new SpriteException("Animation '" + animationName + "', direction "
                           + directions.size() + ": " + ex.getMessage());
                     }
-
-                    SpriteAnimation animation = new SpriteAnimation(srcImageName,
-                            directions, frameDelay, frameToLoopOn, tilesetId);
-                    animations.put(animationName, animation);
-                    if (defaultAnimationName == "") {
-                        defaultAnimationName = animationName; // set first animation as the default one
-                    }
                 }
-            }
-            catch (IOException ex) {
-                // File error.
-                throw new LuaError(ex);
+
+                SpriteAnimation animation = new SpriteAnimation(srcImageName,
+                        directions, frameDelay, frameToLoopOn, tilesetId);
+                animations.put(animationName, animation);
+                if (defaultAnimationName == "") {
+                    defaultAnimationName = animationName; // set first animation as the default one
+                }
             }
             catch (SpriteException ex) {
                 // Error in the input file.
@@ -503,7 +502,7 @@ public class Sprite extends Observable {
         }
 
         Vector<SpriteAnimationDirection> directions = new Vector<SpriteAnimationDirection>();
-        SpriteAnimation animation = new SpriteAnimation("", directions, 0, 0, tilesetId);
+        SpriteAnimation animation = new SpriteAnimation("", directions, 0, -1, tilesetId);
 
         animations.put(name, animation);
         selectedAnimationName = name;
@@ -624,7 +623,7 @@ public class Sprite extends Observable {
                 int width = image.getWidth();
                 int height = image.getHeight();
                 doubleImage = createScaledImage(animation.getImage(), width * 2, height * 2);
-            } catch (SpriteException ex) {
+            } catch (Exception ex) {
                 doubleImage = null;
             }
         } else {

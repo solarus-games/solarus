@@ -104,7 +104,7 @@ public class SpriteAnimation  extends Observable {
         try {
             return Project.getProjectImage(imagePath);
         } catch (IOException ex) {
-            throw new SpriteException("Can't load image " + imagePath + ":\n" + ex.getMessage());
+            return null;
         }
     }
 

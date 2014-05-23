@@ -61,13 +61,15 @@ public class SpriteAnimation  extends Observable {
      * @param directions the list of directions of this animation
      * @param frameDelay interval in milliseconds between two frames
      * @param loopOnFrame index of a frame to loop on when the animation is finished, or -1
+     * @param tilesetId the id of tileset to use (only if srcImageName = "tileset")
      */
     public SpriteAnimation(String srcImageName, Vector<SpriteAnimationDirection> directions,
-            int frameDelay, int loopOnFrame) {
+            int frameDelay, int loopOnFrame, String tilesetId) {
         this.directions = directions;
         this.frameDelay = frameDelay;
         this.loopOnFrame = loopOnFrame;
         this.srcImage = srcImageName;
+        this.tilesetId = tilesetId;
     }
 
     /**
@@ -180,10 +182,11 @@ public class SpriteAnimation  extends Observable {
     /**
      * Returns a direction in this animation.
      * @param direction Index of the direction to get (the first one is 0).
-     * @return The corresponding direction.
+     * @return The corresponding direction or null if doesn't exist.
      */
     public SpriteAnimationDirection getDirection(int direction) {
-        return directions.get(direction);
+
+        return direction >= 0 && direction < directions.size() ? directions.get(direction) : null;
     }
 
     /**
@@ -239,32 +242,41 @@ public class SpriteAnimation  extends Observable {
      * the direction is create with one frame corresponding to the rect and his
      * origin point centered.
      * @param rect the rect corresponding to the first frame of the direction
+     * @return the added direction.
      * @throws SpriteException if the direction cannot be created.
      */
-    public void addDirection(Rectangle rect) throws SpriteException {
+    public SpriteAnimationDirection addDirection(Rectangle rect) throws SpriteException {
 
         BufferedImage image = getImage();
         Point origin = new Point(rect.width / 2, rect.height / 2);
-        directions.add(new SpriteAnimationDirection(image, rect, 1, 1, origin.x, origin.y));
+
+        SpriteAnimationDirection direction = new SpriteAnimationDirection(image, rect, 1, 1, origin.x, origin.y);
+        directions.add(direction);
+
         setChanged();
-        notifyObservers();
+        notifyObservers(direction);
+
+        return direction;
     }
 
     /**
      * Remove a direction from this animation.
      * @param directionNb the number of the direction to remove
+     * @return the removed direction
      * @throws SpriteException if the direction doesn't exist
      */
-    public void removeDirection(int directionNb) throws SpriteException {
+    public SpriteAnimationDirection removeDirection(int directionNb) throws SpriteException {
 
         if (directionNb < 0 || directionNb >= directions.size()) {
             throw new SpriteException("The direction " + directionNb +
                     " doesn't exist in this animation");
         }
 
+        SpriteAnimationDirection direction = directions.get(directionNb);
         directions.remove(directionNb);
         setChanged();
-        notifyObservers();
+        notifyObservers(direction);
+        return direction;
     }
 
     /**

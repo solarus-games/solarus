@@ -1663,11 +1663,11 @@ bool LuaContext::on_key_released(const InputEvent& event) {
 bool LuaContext::on_joypad_button_pressed(const InputEvent& event) {
 
   bool handled = false;
-  if (find_method("on_joyad_button_pressed")) {
+  if (find_method("on_joypad_button_pressed")) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    bool success = call_function(2, 1, "on_joyad_button_pressed");
+    bool success = call_function(2, 1, "on_joypad_button_pressed");
     if (!success) {
       // Something was wrong in the script: don't propagate the input to other objects.
       handled = true;
@@ -1689,11 +1689,11 @@ bool LuaContext::on_joypad_button_pressed(const InputEvent& event) {
 bool LuaContext::on_joypad_button_released(const InputEvent& event) {
 
   bool handled = false;
-  if (find_method("on_joyad_button_released")) {
+  if (find_method("on_joypad_button_released")) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    bool success = call_function(2, 1, "on_joyad_button_released");
+    bool success = call_function(2, 1, "on_joypad_button_released");
     if (!success) {
       // Something was wrong in the script: don't propagate the input to other objects.
       handled = true;
@@ -1715,13 +1715,13 @@ bool LuaContext::on_joypad_button_released(const InputEvent& event) {
 bool LuaContext::on_joypad_axis_moved(const InputEvent& event) {
 
   bool handled = false;
-  if (find_method("on_joyad_axis_moved")) {
+  if (find_method("on_joypad_axis_moved")) {
     int axis = event.get_joypad_axis();
     int state = event.get_joypad_axis_state();
 
     lua_pushinteger(l, axis);
     lua_pushinteger(l, state);
-    bool success = call_function(3, 1, "on_joyad_axis_moved");
+    bool success = call_function(3, 1, "on_joypad_axis_moved");
     if (!success) {
       // Something was wrong in the script: don't propagate the input to other objects.
       handled = true;
@@ -1743,13 +1743,13 @@ bool LuaContext::on_joypad_axis_moved(const InputEvent& event) {
 bool LuaContext::on_joypad_hat_moved(const InputEvent& event) {
 
   bool handled = false;
-  if (find_method("on_joyad_hat_moved")) {
+  if (find_method("on_joypad_hat_moved")) {
     int hat = event.get_joypad_hat();
     int direction8 = event.get_joypad_hat_direction();
 
     lua_pushinteger(l, hat);
     lua_pushinteger(l, direction8);
-    bool success = call_function(3, 1, "on_joyad_hat_moved");
+    bool success = call_function(3, 1, "on_joypad_hat_moved");
     if (!success) {
       // Something was wrong in the script: don't propagate the input to other objects.
       handled = true;

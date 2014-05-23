@@ -68,6 +68,9 @@ MainLoop::MainLoop(const CommandLine& args):
 
   // Finally show the window.
   Video::show_window();
+  
+  joypad_axis_state[0] = 0; // Horizontal centered
+  joypad_axis_state[1] = 0; // Verticle centered
 }
 
 /**
@@ -226,8 +229,29 @@ void MainLoop::run() {
 void MainLoop::check_input() {
 
   InputEvent* event = InputEvent::get_event();
-  while(event != NULL) {
-    notify_input(*event);
+  while(event != NULL){
+    bool should_handle_event = true;
+    
+    // If this is a joypad axis event
+    if(event->is_joypad_axis_moved())
+    {
+      // and state is same as last event for this axis
+      if(joypad_axis_state[event->get_joypad_axis()] == event->get_joypad_axis_state())
+      {
+        // Ignore repeat joypad axis movement state.  
+        should_handle_event = false;
+      }
+      else
+      {
+        // Otherwise store the new axis state
+        joypad_axis_state[event->get_joypad_axis()] = event->get_joypad_axis_state();
+      }
+    }
+    
+    if(should_handle_event)
+    {
+      notify_input(*event);
+    }
     delete event;
     event = InputEvent::get_event();
   }

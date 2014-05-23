@@ -1488,6 +1488,10 @@ void HeroSprites::set_animation(
   if (tunic_sprite->has_animation(animation)) {
     set_tunic_animation(animation, callback_ref);
   }
+  else {
+    solarus::Debug::error("Animation" + animation + "not found.");
+    return;
+  }
 
   if (shield_sprite != NULL
       && shield_sprite->has_animation(animation)) {

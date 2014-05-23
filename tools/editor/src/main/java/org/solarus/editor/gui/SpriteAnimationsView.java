@@ -46,12 +46,12 @@ public class SpriteAnimationsView extends JPanel {
     /**
      * The directions list.
      */
-    private JList<SpriteAnimationDirection> spriteAnimationDirectionsList;
+    private final JList<SpriteAnimationDirection> spriteAnimationDirectionsList;
 
     /**
      * The directions list pattern model.
      */
-    private SpriteAnimationDirectionsListModel spriteAnimationDirectionsListModel;
+    private final SpriteAnimationDirectionsListModel spriteAnimationDirectionsListModel;
 
     /**
      * Component with the properties of the sprite animation direction.
@@ -59,10 +59,17 @@ public class SpriteAnimationsView extends JPanel {
     private final SpriteAnimationDirectionView spriteAnimationDirectionView;
 
     /**
+     * The icon associated to each direction.
+     */
+    private ArrayList<SpriteAnimationDirectionIcon> directionIcons;
+
+    /**
      * Constructor.
      */
     public SpriteAnimationsView() {
         super();
+
+        directionIcons = new ArrayList<SpriteAnimationDirectionIcon>();
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -128,10 +135,40 @@ public class SpriteAnimationsView extends JPanel {
             return;
         }
 
+        if (this.sprite != null) {
+            this.sprite.addObserver(spriteAnimationDirectionsListModel);
+        }
+
         this.sprite = sprite;
         spritePropertiesView.setSprite(sprite);
         spriteAnimationView.setSprite(sprite);
         spriteAnimationDirectionView.setSprite(sprite);
+
+        if (sprite != null) {
+            sprite.addObserver(spriteAnimationDirectionsListModel);
+
+            loadIcons();
+            spriteAnimationDirectionsListModel.update(sprite, null);
+        }
+        else {
+            repaint();
+        }
+    }
+
+    /**
+     * Loads the icons for the sprite animation direction list.
+     */
+    private void loadIcons() {
+
+        directionIcons.clear();
+
+        SpriteAnimation animation = sprite.getSelectedAnimation();
+        if (animation != null) {
+            for (int i = 0; i < animation.getNbDirections(); i++) {
+                SpriteAnimationDirection direction = animation.getDirection(i);
+                directionIcons.add(new SpriteAnimationDirectionIcon(direction, sprite));
+            }
+        }
     }
 
     /**
@@ -216,6 +253,9 @@ public class SpriteAnimationsView extends JPanel {
         @Override
         public void update(Observable o, Object params) {
 
+            System.out.println("update!");
+            loadIcons();
+
             // update the enabled state of the buttons
             int spriteSelectedDirectionNb = sprite.getSelectedDirectionNb();
             int listSelectedRank = spriteAnimationDirectionsList.getSelectedIndex();
@@ -253,7 +293,11 @@ public class SpriteAnimationsView extends JPanel {
                 JList<? extends SpriteAnimationDirection> list, SpriteAnimationDirection value,
                 int rank, boolean isSelected, boolean cellHasFocus) {
 
-            return new JPanel();
+            if (rank >= directionIcons.size()) {
+                // the icon doesn't exist yet
+                loadIcons();
+            }
+            return directionIcons.get(rank);
         }
     }
 }

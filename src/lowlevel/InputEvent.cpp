@@ -211,8 +211,8 @@ InputEvent* InputEvent::get_event() {
 
     // Ignore intermediate positions of joystick axis.
     if (internal_event.type != SDL_JOYAXISMOTION
-        || internal_event.jaxis.value <= 1000
-        || internal_event.jaxis.value >= 10000) {
+        || std::abs(internal_event.jaxis.value) <= 1000
+        || std::abs(internal_event.jaxis.value) >= 10000) {
 
       result = new InputEvent(internal_event);
     }

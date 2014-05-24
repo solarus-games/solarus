@@ -54,8 +54,6 @@ class MainLoop {
     bool exiting;               /**< indicates that the program is about to stop */
     Game* game;                 /**< The current game if any, NULL otherwise. */
     Game* next_game;            /**< The game to start at next cycle (NULL means resetting the game). */
-       
-    int joypad_axis_state[2];              /**< keep track of the current horizontal and verticle axis states */
 
     void notify_input(const InputEvent& event);
     void draw();

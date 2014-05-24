@@ -1488,6 +1488,10 @@ void HeroSprites::set_animation(
   if (tunic_sprite->has_animation(animation)) {
     set_tunic_animation(animation, callback_ref);
   }
+  else {
+    Debug::error("Sprite '" + tunic_sprite->get_animation_set_id()"': Animation " + animation + " not found.");
+    get_lua_context().cancel_callback(callback_ref);
+  }
 
   if (shield_sprite != NULL
       && shield_sprite->has_animation(animation)) {

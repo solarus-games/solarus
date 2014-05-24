@@ -179,6 +179,8 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
      */
     private class PositionField extends CoordinatesField {
 
+        private boolean updating = false;
+
         /**
          * Constructor.
          */
@@ -192,12 +194,16 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
                 @Override
                 public void stateChanged(ChangeEvent ev) {
 
-                    if (selectedDirection != null) {
-                        try {
-                            selectedDirection.setPosition(getCoordinates());
-                            sprite.setSaved(false);
-                        } catch (SpriteException ex) {
-                             GuiTools.errorDialog("Cannot move the direction: " + ex.getMessage());
+                    if (selectedDirection != null && !updating) {
+                        Point position = getCoordinates();
+                        if (position != selectedDirection.getPosition()) {
+                            try {
+                                selectedDirection.setPosition(position);
+                                sprite.setSaved(false);
+                            } catch (SpriteException ex) {
+                                 GuiTools.errorDialog("Cannot move the direction: " +
+                                         ex.getMessage());
+                            }
                         }
                     }
                     update(selectedDirection);
@@ -211,7 +217,8 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
          */
         public void update(Observable o) {
 
-            if (selectedDirection != null) {
+            updating = true;
+            if (sprite != null && selectedDirection != null) {
                 setEnabled(true);
                 Point position = selectedDirection.getPosition();
                 setCoordinates(position.x, position.y);
@@ -226,6 +233,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
             else {
                 setEnabled(false);
             }
+            updating = false;
         }
     }
 
@@ -233,6 +241,8 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
      * Component to change the direction origin.
      */
     private class OriginField extends CoordinatesField {
+
+        private boolean updating = false;
 
         /**
          * Constructor.
@@ -246,9 +256,12 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
                 @Override
                 public void stateChanged(ChangeEvent ev) {
 
-                    if (selectedDirection != null) {
-                        selectedDirection.setOrigin(getCoordinates());
-                        sprite.setSaved(false);
+                    if (selectedDirection != null && !updating) {
+                        Point origin = getCoordinates();
+                        if (origin != selectedDirection.getOrigin()) {
+                            selectedDirection.setOrigin(origin);
+                            sprite.setSaved(false);
+                        }
                     }
                     update(selectedDirection);
                 }
@@ -261,6 +274,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
          */
         public void update(Observable o) {
 
+            updating = true;
             if (selectedDirection != null) {
                 setEnabled(true);
                 Point origin = selectedDirection.getOrigin();
@@ -269,6 +283,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
             else {
                 setEnabled(false);
             }
+            updating = false;
         }
     }
 
@@ -288,13 +303,16 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
                 public void stateChanged(ChangeEvent ev) {
 
                     if (selectedDirection != null) {
-                        try {
-                            selectedDirection.setNbFrames(getNumber());
-                            sprite.setSaved(false);
-                        } catch (SpriteException ex) {
-                            GuiTools.errorDialog(
-                                    "Cannot changes the number of frames of the direction: " +
-                                            ex.getMessage());
+                        int nbFrames = getNumber();
+                        if (nbFrames != selectedDirection.getNbFrames()) {
+                            try {
+                                selectedDirection.setNbFrames(nbFrames);
+                                sprite.setSaved(false);
+                            } catch (SpriteException ex) {
+                                GuiTools.errorDialog(
+                                        "Cannot changes the number of frames of the direction: " +
+                                                ex.getMessage());
+                            }
                         }
                     }
                     update(selectedDirection);
@@ -334,13 +352,16 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
                 public void stateChanged(ChangeEvent ev) {
 
                     if (selectedDirection != null) {
-                        try {
-                            selectedDirection.setNbColumns(getNumber());
-                            sprite.setSaved(false);
-                        } catch (SpriteException ex) {
-                            GuiTools.errorDialog(
-                                    "Cannot changes the number of columns of the direction: " +
-                                            ex.getMessage());
+                        int nbColumns = getNumber();
+                        if (nbColumns != selectedDirection.getNbColumns()) {
+                            try {
+                                selectedDirection.setNbColumns(nbColumns);
+                                sprite.setSaved(false);
+                            } catch (SpriteException ex) {
+                                GuiTools.errorDialog(
+                                        "Cannot changes the number of columns of the direction: " +
+                                                ex.getMessage());
+                            }
                         }
                     }
                     update(selectedDirection);

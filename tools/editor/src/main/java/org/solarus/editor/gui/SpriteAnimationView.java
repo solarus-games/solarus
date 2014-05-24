@@ -41,7 +41,7 @@ class SpriteAnimationView extends JPanel implements Observer {
 
     // components
     private final AnimationField animationField;
-    private final JLabel srcImageView;
+    private final SrcImageField srcImageView;
     private final FrameDelayField frameDelayView;
     private final LoopOnFrameField loopOnFrameView;
 
@@ -76,7 +76,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         add(animationField, constraints);
 
         constraints.gridy++;
-        srcImageView = new JLabel();
+        srcImageView = new SrcImageField();
         add(srcImageView, constraints);
 
         constraints.gridy++;
@@ -148,19 +148,13 @@ class SpriteAnimationView extends JPanel implements Observer {
 
         if (o instanceof Sprite) {
             setSelectedAnimation(sprite.getSelectedAnimationName());
-        } else {
-            // update the elementary components here
-            if (selectedAnimation == null) {
-                srcImageView.setText("");
-            }
-            else {
-                srcImageView.setText(selectedAnimation.getSrcImage());
-            }
         }
-
-        animationField.update(o);
-        frameDelayView.update(o);
-        loopOnFrameView.update(o);
+        else if (o instanceof SpriteAnimation) {
+            animationField.update(o);
+            srcImageView.update(o);
+            frameDelayView.update(o);
+            loopOnFrameView.update(o);
+        }
     }
 
     /**
@@ -327,6 +321,90 @@ class SpriteAnimationView extends JPanel implements Observer {
    }
 
    /**
+     * Component to choose the source image of this animation.
+     */
+    private class SrcImageField extends JPanel implements ActionListener {
+
+        // components
+        private JTextField srcImage;
+        private ResourceChooser tilesetChooser;
+
+        /**
+         * Constructor.
+         */
+        public SrcImageField() {
+            super();
+            setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+
+            srcImage = new JTextField();
+            srcImage.setEditable(false);
+            srcImage.setPreferredSize(new Dimension(144, 24));
+
+            tilesetChooser = new ResourceChooser(ResourceType.TILESET, false);
+            tilesetChooser.setPreferredSize(new Dimension(144, 24));
+            tilesetChooser.addActionListener(this);
+
+            add(srcImage);
+            add(tilesetChooser);
+
+            JButton setButton = new JButton(Project.getEditorImageIconOrEmpty("icon_edit.png"));
+            setButton.setPreferredSize(new Dimension(24, 24));
+            setButton.setToolTipText("Changes source image");
+            setButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ev) {
+
+                    if (selectedAnimation == null) {
+                        return;
+                    }
+
+                    GuiTools.errorDialog("Cannot changes the source image: not implemented yet !");
+                }
+            });
+            add(setButton);
+
+            update((SpriteAnimation) null);
+        }
+
+        /**
+         * This function is called when the animation is changed.
+         * The component is updated.
+         */
+        public void update(Observable o) {
+
+            if (selectedAnimation != null) {
+                setEnabled(true);
+                String image = selectedAnimation.getSrcImage();
+                srcImage.setText(image.isEmpty() ? "<none>" : image);
+                srcImage.setVisible(!image.equals("tileset"));
+                tilesetChooser.setVisible(image.equals("tileset"));
+                tilesetChooser.setSelectedId(selectedAnimation.getTilesetId());
+            }
+            else {
+                tilesetChooser.setVisible(false);
+                setEnabled(false);
+            }
+        }
+
+        /**
+         * This method is called when the user changes the selected item.
+         * The tileset of the sprite is changed.
+         */
+        @Override
+        public void actionPerformed(ActionEvent ev) {
+
+            if (sprite != null && selectedAnimation!= null) {
+                String selectedTilesetId = tilesetChooser.getSelectedId();
+                try {
+                    sprite.notifyTilesetChanged(selectedTilesetId);
+                } catch (SpriteException ex) {
+                    GuiTools.errorDialog("Cannot load the tileset '" + selectedTilesetId + "': " + ex.getMessage());
+                }
+            }
+        }
+    }
+
+   /**
      * Component to choose the frame delay of this animation.
      */
     private class FrameDelayField extends NumberChooser implements ChangeListener {
@@ -364,8 +442,13 @@ class SpriteAnimationView extends JPanel implements Observer {
         public void stateChanged(ChangeEvent ev) {
 
             if (selectedAnimation != null) {
-                selectedAnimation.setFrameDelay(getNumber());
-                sprite.setSaved(false);
+                int selectedFrameDelay = getNumber();
+                int currentframeDelay = selectedAnimation.getFrameDelay();
+
+                if (currentframeDelay != selectedFrameDelay) {
+                    selectedAnimation.setFrameDelay(selectedFrameDelay);
+                    sprite.setSaved(false);
+                }
             }
         }
     }
@@ -408,8 +491,12 @@ class SpriteAnimationView extends JPanel implements Observer {
         public void stateChanged(ChangeEvent ev) {
 
             if (selectedAnimation != null) {
-                selectedAnimation.setLoopOnFrame(getNumber());
-                sprite.setSaved(false);
+                int selectedLoopOnFrame = getNumber();
+                int currentloopOnFrame = selectedAnimation.getLoopOnFrame();
+                if (currentloopOnFrame != selectedLoopOnFrame) {
+                    selectedAnimation.setLoopOnFrame(selectedLoopOnFrame);
+                    sprite.setSaved(false);
+                }
             }
         }
     }

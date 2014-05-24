@@ -753,12 +753,13 @@ public class Sprite extends Observable {
         if (this.tilesetId == null || !tilesetId.equals(this.tilesetId)) {
 
             this.tilesetId = tilesetId;
-            // Reload the sprite because its source image has changed.
-            load();
-
             for (SpriteAnimation animation: animations.values()) {
                 animation.setTilesetId(tilesetId);
             }
+            reloadImage();
+
+            setChanged();
+            notifyObservers();
         }
     }
 

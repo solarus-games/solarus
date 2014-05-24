@@ -83,6 +83,7 @@ public class SpriteAnimation  extends Observable {
         for (SpriteAnimationDirection direction: directions) {
             direction.setSrcImage(image);
         }
+        setChanged();
         notifyObservers(image);
     }
 
@@ -300,15 +301,13 @@ public class SpriteAnimation  extends Observable {
      */
     public void setTilesetId (String tilesetId) throws SpriteException {
 
-        this.tilesetId = tilesetId;
         if (srcImage.equals("tileset")) {
             try {
+                this.tilesetId = tilesetId;
                 reloadImage();
             } catch (SpriteException ex) {
                 throw new SpriteException("Tileset image cannot be loaded:\n" + ex.getMessage());
             }
-        } else {
-            notifyObservers();
         }
     }
 

@@ -119,7 +119,7 @@ class SpriteAnimationView extends JPanel implements Observer {
 
         SpriteAnimation animation = null;
         if (sprite != null) {
-            if (animationName != null && animationName.length() > 0) {
+            if (!animationName.isEmpty()) {
                 animation = sprite.getAnimation(animationName);
             } else {
                 animation = null;
@@ -146,10 +146,12 @@ class SpriteAnimationView extends JPanel implements Observer {
     @Override
     public void update(Observable o, Object obj) {
 
-        if (o instanceof Sprite) {
+        if (o instanceof Sprite && (obj == null || obj instanceof String)) {
+            // the sprite has changed
             setSelectedAnimation(sprite.getSelectedAnimationName());
         }
-        else if (o instanceof SpriteAnimation) {
+        else if (obj instanceof SpriteAnimation || o instanceof SpriteAnimation || o == null) {
+            // the animation has changed
             animationField.update(o);
             srcImageView.update(o);
             frameDelayView.update(o);
@@ -167,6 +169,8 @@ class SpriteAnimationView extends JPanel implements Observer {
          */
         private SpriteAnimationChooser animationChooser;
 
+        private JButton removeButton;
+
         /**
          * Constructor.
          */
@@ -175,36 +179,12 @@ class SpriteAnimationView extends JPanel implements Observer {
             setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
             animationChooser = new SpriteAnimationChooser(sprite);
-            animationChooser.setPreferredSize(new Dimension(120, 24));
-            add(animationChooser);
+            animationChooser.setPreferredSize(new Dimension(140, 24));
             animationChooser.addActionListener(this);
+            animationChooser.setEditable(true);
+            add(animationChooser);
 
-            JButton addButton = new JButton(Project.getEditorImageIconOrEmpty("icon_add.png"));
-            addButton.setPreferredSize(new Dimension(24, 24));
-            addButton.setToolTipText("Add animation");
-            addButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ev) {
-
-                    if (sprite == null) {
-                        return;
-                    }
-
-                    // Add an animation.
-                    try {
-                        NewAnimationDialog dialog = new NewAnimationDialog();
-                        if (dialog.display()) {
-                            sprite.addAnimation(dialog.getAnimationName());
-                        }
-                    }
-                    catch (SpriteException ex) {
-                        GuiTools.errorDialog("Cannot add animation: " + ex.getMessage());
-                    }
-                }
-            });
-            add(addButton);
-
-            JButton removeButton = new JButton(Project.getEditorImageIconOrEmpty("icon_remove.png"));
+            removeButton = new JButton(Project.getEditorImageIconOrEmpty("icon_remove.png"));
             removeButton.setPreferredSize(new Dimension(24, 24));
             removeButton.setToolTipText("Remove animation");
             removeButton.addActionListener(new ActionListener() {
@@ -246,6 +226,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         public void update(Observable o) {
 
             animationChooser.setEnabled(sprite != null && sprite.getAnimations().size() > 0);
+            removeButton.setEnabled(sprite != null && sprite.getSelectedAnimation() != null);
         }
 
         /**
@@ -259,66 +240,47 @@ class SpriteAnimationView extends JPanel implements Observer {
                 return;
             }
 
-            String selectedAnimationName = animationChooser.getSelected();
-            String currentAnimationName = sprite.getSelectedAnimationName();
+            if (ev.getActionCommand().equals("comboBoxEdited")) {
 
-            if (!currentAnimationName.equals(selectedAnimationName)) {
 
-                try {
-                    sprite.setSelectedAnimation(selectedAnimationName);
+                String name = sprite.getSelectedAnimationName();
+                String newName = animationChooser.getSelected();
+
+                if (!newName.isEmpty()) {
+                    if (name.isEmpty()){
+                        // Add a new animation
+                        try {
+                            sprite.addAnimation(newName);
+                        }
+                        catch (SpriteException ex) {
+                            GuiTools.errorDialog("Cannot add animation: " + ex.getMessage());
+                        }
+                    } else {
+                        try {
+                            sprite.renameAnimation(name, newName);
+                        } catch (SpriteException ex) {
+                            GuiTools.errorDialog("Cannot rename the animation '" +
+                                        name + "': " + ex.getMessage());
+                        }
+                    }
                 }
-                catch (SpriteException ex) {
-                    GuiTools.errorDialog("Cannot select the animation '" +
-                            selectedAnimationName + "': " + ex.getMessage());
+            }
+            else {
+                String selectedAnimationName = animationChooser.getSelected();
+                String currentAnimationName = sprite.getSelectedAnimationName();
+
+                if (!currentAnimationName.equals(selectedAnimationName)) {
+
+                    try {
+                        sprite.setSelectedAnimation(selectedAnimationName);
+                    }
+                    catch (SpriteException ex) {
+                        // animation doesn't exists
+                    }
                 }
             }
         }
     }
-
-    /**
-    * Dialog shown when we want to create a new animation in this sprite
-    */
-   private class NewAnimationDialog extends OkCancelDialog {
-           private static final long serialVersionUID = 1L;
-
-        // Subcomponents
-        private final JTextField nameField;
-
-        /**
-         * Constructor.
-         */
-        public NewAnimationDialog() {
-
-            super("New animation", false);
-
-            JPanel mainPanel = new JPanel(new GridBagLayout());
-            GridBagConstraints constraints = new GridBagConstraints();
-            constraints.insets = new Insets(5, 5, 5, 5); // margins
-            constraints.anchor = GridBagConstraints.LINE_START;
-            constraints.gridy = 0;
-            constraints.gridx = 0;
-
-            mainPanel.add(new JLabel("name:"), constraints);
-
-            constraints.gridx++;
-            nameField = new JTextField(15);
-            mainPanel.add(nameField, constraints);
-
-            setComponent(mainPanel);
-        }
-
-        /**
-         * Returns the name of animation.
-         * @return the name
-         */
-        public String getAnimationName() {
-            return nameField.getText();
-        }
-
-        @Override
-        protected void applyModifications() {
-        }
-   }
 
    /**
      * Component to choose the source image of this animation.
@@ -338,10 +300,10 @@ class SpriteAnimationView extends JPanel implements Observer {
 
             srcImage = new JTextField();
             srcImage.setEditable(false);
-            srcImage.setPreferredSize(new Dimension(144, 24));
+            srcImage.setPreferredSize(new Dimension(140, 24));
 
             tilesetChooser = new ResourceChooser(ResourceType.TILESET, false);
-            tilesetChooser.setPreferredSize(new Dimension(144, 24));
+            tilesetChooser.setPreferredSize(new Dimension(140, 24));
             tilesetChooser.addActionListener(this);
 
             add(srcImage);
@@ -382,6 +344,8 @@ class SpriteAnimationView extends JPanel implements Observer {
             }
             else {
                 tilesetChooser.setVisible(false);
+                srcImage.setText("<none>");
+                srcImage.setVisible(true);
                 setEnabled(false);
             }
         }

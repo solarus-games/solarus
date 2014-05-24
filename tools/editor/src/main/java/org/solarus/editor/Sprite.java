@@ -393,7 +393,7 @@ public class Sprite extends Observable {
                 // unselect direction
                 selectedDirectionNb = -1;
             } else if (!animations.containsKey(animationName) ) {
-                throw new SpriteException("the animation " + animationName + " doesn't exist");
+                throw new SpriteException("the animation '" + animationName + "' doesn't exists");
             } else {
                 // select the first direction
                 selectedDirectionNb = 0;
@@ -523,15 +523,18 @@ public class Sprite extends Observable {
     public void renameAnimation(String name, String newName) throws SpriteException {
 
         if (!animations.containsKey(name)) {
-            throw new SpriteException("Cannot rename animation '" + name + "': this animation doesn't exist" );
+            throw new SpriteException("this animation doesn't exists" );
+        }
+        if (name.equals(newName)) {
+            return;
         }
         if (animations.containsKey(newName)) {
-            throw new SpriteException("Cannot rename animation '" + name + "': the name '" +
-                    newName + "' already exist" );
+            throw new SpriteException("the animation '" + newName + "' already exists" );
         }
 
         SpriteAnimation animation = animations.remove(name);
         animations.put(newName, animation);
+        selectedAnimationName = newName;
 
         isSaved = false;
         setChanged();

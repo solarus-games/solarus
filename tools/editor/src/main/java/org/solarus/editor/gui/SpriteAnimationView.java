@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import org.solarus.editor.*;
 
 /**
@@ -41,8 +42,8 @@ class SpriteAnimationView extends JPanel implements Observer {
     // components
     private final AnimationField animationField;
     private final JLabel srcImageView;
-    private final JLabel frameDelayView;
-    private final JLabel loopOnFrameView;
+    private final FrameDelayField frameDelayView;
+    private final LoopOnFrameField loopOnFrameView;
 
     /**
      * Constructor.
@@ -79,12 +80,14 @@ class SpriteAnimationView extends JPanel implements Observer {
         add(srcImageView, constraints);
 
         constraints.gridy++;
-        frameDelayView = new JLabel();
+        frameDelayView = new FrameDelayField();
         add(frameDelayView, constraints);
 
         constraints.gridy++;
-        loopOnFrameView = new JLabel();
+        loopOnFrameView = new LoopOnFrameField();
         add(loopOnFrameView, constraints);
+
+        update(sprite, null);
     }
 
     /**
@@ -149,17 +152,15 @@ class SpriteAnimationView extends JPanel implements Observer {
             // update the elementary components here
             if (selectedAnimation == null) {
                 srcImageView.setText("");
-                frameDelayView.setText("");
-                loopOnFrameView.setText("");
             }
             else {
                 srcImageView.setText(selectedAnimation.getSrcImage());
-                frameDelayView.setText("" + selectedAnimation.getFrameDelay());
-                loopOnFrameView.setText("" + selectedAnimation.getLoopOnFrame());
             }
-       }
+        }
 
         animationField.update(o);
+        frameDelayView.update(o);
+        loopOnFrameView.update(o);
     }
 
     /**
@@ -303,7 +304,7 @@ class SpriteAnimationView extends JPanel implements Observer {
             constraints.gridy = 0;
             constraints.gridx = 0;
 
-            mainPanel.add(new JLabel("name:"), constraints); 
+            mainPanel.add(new JLabel("name:"), constraints);
 
             constraints.gridx++;
             nameField = new JTextField(15);
@@ -324,4 +325,92 @@ class SpriteAnimationView extends JPanel implements Observer {
         protected void applyModifications() {
         }
    }
+
+   /**
+     * Component to choose the frame delay of this animation.
+     */
+    private class FrameDelayField extends NumberChooser implements ChangeListener {
+
+        /**
+         * Constructor.
+         */
+        public FrameDelayField() {
+            super(0, 0, Integer.MAX_VALUE);
+            setStepSize(10);
+
+            addChangeListener(this);
+            update((SpriteAnimation) null);
+        }
+
+        /**
+         * This function is called when the animation is changed.
+         * The component is updated.
+         */
+        public void update(Observable o) {
+
+            if (selectedAnimation != null) {
+                setEnabled(true);
+                setValue(selectedAnimation.getFrameDelay());
+            }
+            else {
+                setEnabled(false);
+            }
+        }
+
+        /**
+         * This method is called when the user changes the value of this field.
+         */
+        @Override
+        public void stateChanged(ChangeEvent ev) {
+
+            if (selectedAnimation != null) {
+                selectedAnimation.setFrameDelay(getNumber());
+                sprite.setSaved(false);
+            }
+        }
+    }
+
+   /**
+     * Component to choose the frame delay of this animation.
+     */
+    private class LoopOnFrameField extends NumberChooser implements ChangeListener {
+
+        /**
+         * Constructor.
+         */
+        public LoopOnFrameField() {
+            super(0, -1, Integer.MAX_VALUE);
+
+            addChangeListener(this);
+            update((SpriteAnimation) null);
+        }
+
+        /**
+         * This function is called when the animation is changed.
+         * The component is updated.
+         */
+        public void update(Observable o) {
+
+            if (selectedAnimation != null && selectedAnimation.getFrameDelay() > 0) {
+                setEnabled(true);
+                setValue(selectedAnimation.getLoopOnFrame());
+                setMaximum(selectedAnimation.getNbDirections() - 1);
+            }
+            else {
+                setEnabled(false);
+            }
+        }
+
+        /**
+         * This method is called when the user changes the value of this field.
+         */
+        @Override
+        public void stateChanged(ChangeEvent ev) {
+
+            if (selectedAnimation != null) {
+                selectedAnimation.setLoopOnFrame(getNumber());
+                sprite.setSaved(false);
+            }
+        }
+    }
 }

@@ -666,8 +666,16 @@ public class Sprite extends Observable {
      */
     public void setAnimation (String animationName, SpriteAnimation animation) {
 
-        animations.put(animationName, animation);
-        notifyObservers(animation);
+        if (animations.containsKey(animationName) && animations.get(animationName) != animation) {
+            animations.put(animationName, animation);
+            if (animationName.equals(selectedAnimationName)) {
+                reloadImage();
+            }
+
+            isSaved = false;
+            setChanged();
+            notifyObservers(animation);
+        }
     }
 
     /**

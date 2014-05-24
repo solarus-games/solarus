@@ -300,8 +300,8 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
             revalidate();
             repaint();
         }
-        else if (o instanceof SpriteAnimation || o instanceof SpriteAnimationDirection) {
-            // An animation or a direction has changed or has been added.
+        else if (o instanceof SpriteAnimationDirection) {
+            // A direction has changed or has been added.
             revalidate();
             repaint();
         }

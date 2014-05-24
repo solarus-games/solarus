@@ -17,8 +17,10 @@
 package org.solarus.editor.gui;
 
 import java.awt.*;
-import javax.swing.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
+import javax.swing.*;
+import javax.swing.event.*;
 import org.solarus.editor.*;
 
 /**
@@ -37,11 +39,11 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
     private SpriteAnimationDirection selectedDirection;
 
     // components
-    private final JLabel positionView;
     private final JLabel sizeView;
-    private final JLabel originView;
-    private final JLabel nbFramesView;
-    private final JLabel nbColumnsView;
+    private final PositionField positionView;
+    private final OriginField originView;
+    private final NbFramesField nbFramesView;
+    private final NbColumnsField nbColumnsView;
 
     /**
      * Constructor.
@@ -57,11 +59,11 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
         // position
         constraints.gridx = 0;
         constraints.gridy = 0;
-        add(new JLabel("Position"), constraints);
+        add(new JLabel("Size"), constraints);
 
         // size
         constraints.gridy++;
-        add(new JLabel("Size"), constraints);
+        add(new JLabel("Position"), constraints);
 
         // origin
         constraints.gridy++;
@@ -78,23 +80,23 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
         constraints.weightx = 1;
         constraints.gridx = 1;
         constraints.gridy = 0;
-        positionView = new JLabel();
-        add(positionView, constraints);
-
-        constraints.gridy++;
         sizeView = new JLabel();
         add(sizeView, constraints);
 
         constraints.gridy++;
-        originView = new JLabel();
+        positionView = new PositionField();
+        add(positionView, constraints);
+
+        constraints.gridy++;
+        originView = new OriginField();
         add(originView, constraints);
 
         constraints.gridy++;
-        nbFramesView = new JLabel();
+        nbFramesView = new NbFramesField();
         add(nbFramesView, constraints);
 
         constraints.gridy++;
-        nbColumnsView = new JLabel();
+        nbColumnsView = new NbColumnsField();
         add(nbColumnsView, constraints);
     }
 
@@ -155,23 +157,210 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
         } else {
             // update the elementary components here
             if (selectedDirection == null) {
-                positionView.setText("");
                 sizeView.setText("");
-                originView.setText("");
-                nbFramesView.setText("");
-                nbColumnsView.setText("");
             }
             else {
                 Point position = selectedDirection.getPosition();
                 Dimension size = selectedDirection.getSize();
                 Point origin = selectedDirection.getOrigin();
 
-                positionView.setText(position.x + ", " + position.y);
                 sizeView.setText(size.width + "x" + size.height);
-                originView.setText(origin.x + ", " + origin.y);
-                nbFramesView.setText("" + selectedDirection.getNbFrames());
-                nbColumnsView.setText("" + selectedDirection.getNbColumns());
             }
+
+            positionView.update(selectedDirection);
+            originView.update(selectedDirection);
+            nbFramesView.update(selectedDirection);
+            nbColumnsView.update(selectedDirection);
        }
+    }
+
+    /**
+     * Component to change the direction position.
+     */
+    private class PositionField extends CoordinatesField {
+
+        /**
+         * Constructor.
+         */
+        public PositionField() {
+            super();
+            setMinimum(0, 0);
+            setStepSize(8, 8);
+            setSeparator(",");
+
+            addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent ev) {
+
+                    if (selectedDirection != null) {
+                        try {
+                            selectedDirection.setPosition(getCoordinates());
+                            sprite.setSaved(false);
+                        } catch (SpriteException ex) {
+                             GuiTools.errorDialog("Cannot move the direction: " + ex.getMessage());
+                        }
+                    }
+                    update(selectedDirection);
+                }
+            });
+        }
+
+        /**
+         * This function is called when the direction is changed.
+         * The component is updated.
+         */
+        public void update(Observable o) {
+
+            if (selectedDirection != null) {
+                setEnabled(true);
+                Point position = selectedDirection.getPosition();
+                setCoordinates(position.x, position.y);
+
+                try {
+                    BufferedImage image = sprite.getSelectedAnimation().getImage();
+                    setMaximum(image.getWidth(), image.getHeight());
+                } catch (SpriteException ex) {
+                    // image cannot be loaded
+                }
+            }
+            else {
+                setEnabled(false);
+            }
+        }
+    }
+
+    /**
+     * Component to change the direction origin.
+     */
+    private class OriginField extends CoordinatesField {
+
+        /**
+         * Constructor.
+         */
+        public OriginField() {
+            super();
+            setStepSize(4, 4);
+            setSeparator(",");
+
+            addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent ev) {
+
+                    if (selectedDirection != null) {
+                        selectedDirection.setOrigin(getCoordinates());
+                        sprite.setSaved(false);
+                    }
+                    update(selectedDirection);
+                }
+            });
+        }
+
+        /**
+         * This function is called when the direction is changed.
+         * The component is updated.
+         */
+        public void update(Observable o) {
+
+            if (selectedDirection != null) {
+                setEnabled(true);
+                Point origin = selectedDirection.getOrigin();
+                setCoordinates(origin.x, origin.y);
+            }
+            else {
+                setEnabled(false);
+            }
+        }
+    }
+
+    /**
+     * Component to change the number of frames of the direction.
+     */
+    private class NbFramesField extends NumberChooser {
+
+        /**
+         * Constructor.
+         */
+        public NbFramesField() {
+            super(0, 1, Integer.MAX_VALUE);
+
+            addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent ev) {
+
+                    if (selectedDirection != null) {
+                        try {
+                            selectedDirection.setNbFrames(getNumber());
+                            sprite.setSaved(false);
+                        } catch (SpriteException ex) {
+                            GuiTools.errorDialog(
+                                    "Cannot changes the number of frames of the direction: " +
+                                            ex.getMessage());
+                        }
+                    }
+                    update(selectedDirection);
+                }
+            });
+        }
+
+        /**
+         * This function is called when the direction is changed.
+         * The component is updated.
+         */
+        public void update(Observable o) {
+
+            if (selectedDirection != null) {
+                setEnabled(true);
+                setNumber(selectedDirection.getNbFrames());
+            }
+            else {
+                setEnabled(false);
+            }
+        }
+    }
+
+    /**
+     * Component to change the number of columns of the direction.
+     */
+    private class NbColumnsField extends NumberChooser {
+
+        /**
+         * Constructor.
+         */
+        public NbColumnsField() {
+            super(0, 1, Integer.MAX_VALUE);
+
+            addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent ev) {
+
+                    if (selectedDirection != null) {
+                        try {
+                            selectedDirection.setNbColumns(getNumber());
+                            sprite.setSaved(false);
+                        } catch (SpriteException ex) {
+                            GuiTools.errorDialog(
+                                    "Cannot changes the number of columns of the direction: " +
+                                            ex.getMessage());
+                        }
+                    }
+                    update(selectedDirection);
+                }
+            });
+        }
+
+        /**
+         * This function is called when the direction is changed.
+         * The component is updated.
+         */
+        public void update(Observable o) {
+
+            if (selectedDirection != null) {
+                setEnabled(true);
+                setNumber(selectedDirection.getNbColumns());
+            }
+            else {
+                setEnabled(false);
+            }
+        }
     }
 }

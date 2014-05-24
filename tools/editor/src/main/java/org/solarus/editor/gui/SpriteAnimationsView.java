@@ -146,8 +146,6 @@ public class SpriteAnimationsView extends JPanel {
 
         if (sprite != null) {
             sprite.addObserver(spriteAnimationDirectionsListModel);
-
-            loadIcons();
             spriteAnimationDirectionsListModel.update(sprite, null);
         }
         else {

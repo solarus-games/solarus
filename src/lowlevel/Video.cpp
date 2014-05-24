@@ -811,4 +811,39 @@ void Video::reset_window_size() {
   set_window_size(video_mode->get_initial_window_size());
 }
 
+/**
+ * \brief Get the viewport.
+ * \return A Rectangle filled with the viewport.
+ */
+Rectangle Video::get_viewport() {
+
+  SDL_Rect viewport;
+
+  SDL_RenderGetViewport(get_renderer(), &viewport);
+
+  return Rectangle(viewport.x, viewport.y, viewport.w, viewport.h);
+}
+
+/**
+ * \brief Get a scaled coordonate.
+ * \param position A pixel position relative and scaled to the window.
+ * \return A Rectangle filled with the position relative to
+ * the viewport position and scaled to quest_size, w and h are unused.
+ */
+Rectangle Video::get_scaled_position(const Rectangle& position) {
+
+  const Rectangle& viewport = get_viewport();
+
+  if (viewport.is_flat() || quest_size.is_flat()) {
+    return Rectangle();
+  }
+
+  return Rectangle(static_cast<double>(position.get_x()) *
+                     (static_cast<double>(viewport.get_width()) / static_cast<double>(quest_size.get_width())),
+                   static_cast<double>(position.get_y()) *
+                     (static_cast<double>(viewport.get_height()) / static_cast<double>(quest_size.get_height())),
+                   1,
+                   1);
+}
+
 }

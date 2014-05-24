@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/InputEvent.h"
-#include "lowlevel/Video.h"
+#include "lowlevel/Rectangle.h"
 #include <SDL.h>
 #include <cstdlib>  // std::abs
 
@@ -31,6 +31,7 @@ const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
 bool InputEvent::joypad_enabled = false;
 SDL_Joystick* InputEvent::joystick = NULL;
 std::map<InputEvent::KeyboardKey, std::string> InputEvent::keyboard_key_names;
+std::map<InputEvent::MouseButton, std::string> InputEvent::mouse_button_names;
 bool InputEvent::repeat_keyboard = false;
 
 /**
@@ -169,6 +170,14 @@ void InputEvent::initialize() {
   keyboard_key_names[InputEvent::KEY_LEFT_ALT]              = "left alt";
   keyboard_key_names[InputEvent::KEY_RIGHT_META]            = "right meta";
   keyboard_key_names[InputEvent::KEY_LEFT_META]             = "left meta";
+
+  // Initialize the map of mouse button names.
+  mouse_button_names[InputEvent::MOUSE_BUTTON_NONE] = "";
+  mouse_button_names[InputEvent::MOUSE_BUTTON_LEFT] = "left";
+  mouse_button_names[InputEvent::MOUSE_BUTTON_MIDDLE] = "middle";
+  mouse_button_names[InputEvent::MOUSE_BUTTON_RIGHT] = "right";
+  mouse_button_names[InputEvent::MOUSE_BUTTON_X1] = "x1";
+  mouse_button_names[InputEvent::MOUSE_BUTTON_X2] = "x2";
 }
 
 /**
@@ -321,6 +330,16 @@ bool InputEvent::is_joypad_button_down(int button) {
 }
 
 /**
+ * \brief Returns whether a mouse button is currently down.
+ * \param button A mouse button.
+ * \return \c true if this joypad button is currently down.
+ */
+bool InputEvent::is_mouse_button_down(MouseButton button) {
+
+  return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(button) != 0;
+}
+
+/**
  * \brief Returns the state of a joypad axis.
  * \param axis Index of a joypad axis.
  * \return The state of that axis:
@@ -398,6 +417,21 @@ int InputEvent::get_joypad_hat_direction(int hat) {
   return result;
 }
 
+/**
+ * \brief Returns the x and y position of the mouse.
+ * Values are relative to the point 0,0 of the viewport.
+ * \return A rectangle filled by the x and y position of the mouse,
+ * w and h are unused.
+ */
+Rectangle InputEvent::get_mouse_position() {
+
+  int x, y;
+
+  SDL_GetMouseState(&x, &y);
+
+  return Rectangle(x, y, 1, 1);
+}
+
 
 // event type
 
@@ -421,6 +455,18 @@ bool InputEvent::is_joypad_event() const {
     || internal_event.type == SDL_JOYHATMOTION
     || internal_event.type == SDL_JOYBUTTONDOWN
     || internal_event.type == SDL_JOYBUTTONUP;
+}
+
+/**
+ * \brief Returns whether this event is a mouse event.
+ * \return true if this is a mouse event
+ */
+bool InputEvent::is_mouse_event() const {
+
+  return internal_event.type == SDL_MOUSEMOTION
+  || internal_event.type == SDL_MOUSEBUTTONDOWN
+  || internal_event.type == SDL_MOUSEBUTTONUP
+  || internal_event.type == SDL_MOUSEWHEEL;
 }
 
 /**
@@ -915,6 +961,111 @@ bool InputEvent::is_joypad_hat_centered() const {
 }
 
 
+// mouse
+
+/**
+ * \brief Returns whether this event is a mouse event.
+ * corresponding to pressing a any button.
+ * \return true if this event corresponds to pressing a mouse button.
+ */
+bool InputEvent::is_mouse_button_pressed() const {
+
+  return internal_event.type == SDL_MOUSEBUTTONDOWN;
+}
+
+/**
+ * \brief Returns whether this event is a mouse event.
+ * corresponding to pressing a specific button.
+ * \param button the button to test.
+ * \return true if this event corresponds to pressing that mouse button.
+ */
+bool InputEvent::is_mouse_button_pressed(MouseButton button) const {
+
+  return is_mouse_button_pressed()
+    && internal_event.button.button == button;
+}
+
+/**
+ * \brief Returns whether this event is a mouse event.
+ * corresponding to releasing a any button.
+ * \return true if this event corresponds to releasing a mouse button.
+ */
+bool InputEvent::is_mouse_button_released() const {
+
+  return internal_event.type == SDL_MOUSEBUTTONUP;
+}
+
+/**
+ * \brief Returns whether this event is a mouse event.
+ * corresponding to releasing a specific button.
+ * \param button the button to test.
+ * \return true if this event corresponds to releasing that mouse button.
+ */
+bool InputEvent::is_mouse_button_released(MouseButton button) const {
+
+  return is_mouse_button_released()
+    && internal_event.button.button == button;
+}
+
+/**
+ * \brief Returns the button that was pressed or released during
+ * this mouse event.
+ *
+ * If this is not a keyboard event, MOUSE_BUTTON_NONE is returned.
+ * \return The button of this mouse event.
+ */
+InputEvent::MouseButton InputEvent::get_mouse_button() const {
+
+  if (!is_mouse_event()) {
+    return MOUSE_BUTTON_NONE;
+  }
+
+  return static_cast<MouseButton>(internal_event.button.button);
+}
+
+/**
+ * \brief Returns the x and y position of the mouse when a mouse event occur.
+ * Values are relative to the point 0,0 of the viewport.
+ * \return A rectangle filled by the x and y position of the mouse,
+ * w and h are unused.
+ */
+Rectangle InputEvent::get_position() const {
+
+  if (!is_mouse_event()) {
+    return Rectangle();
+  }
+
+  return Rectangle(internal_event.button.x, internal_event.button.y, 1, 1);
+}
+
+/**
+ * \brief Returns the Lua name of a mouse button.
+ * \param button A mouse button.
+ * \return The corresponding name (or an empty string for MOUSE_BUTTON_NONE).
+ */
+const std::string& InputEvent::get_mouse_button_name(MouseButton button) {
+
+  return mouse_button_names[button];
+}
+
+/**
+ * \brief Returns a mouse button given its name.
+ * \param keyboard_key_name The name of a keyboard key.
+ * \return The corresponding key, or KEY_NONE if this name is empty or unknown.
+ */
+InputEvent::MouseButton InputEvent::get_mouse_button_by_name(const std::string& button_name) {
+
+  // TODO check that this traversal is not significant, otherwise make a reverse mapping.
+  std::map<MouseButton, std::string>::iterator it;
+  for (it = mouse_button_names.begin(); it != mouse_button_names.end(); it++) {
+    if (it->second == button_name) {
+      return it->first;
+    }
+  }
+  return MOUSE_BUTTON_NONE;
+}
+
+
 // functions common to keyboard and joypad events
 
 /**
@@ -973,11 +1124,11 @@ int InputEvent::get_direction() const {
 }
 
 /**
- * \brief Returns whether this keyboard or joypad event
+ * \brief Returns whether this keyboard, joypad or mouse event
  * corresponds to pressing something.
  *
  * The thing pressed may be a key, a button or a direction.
- * If this is not a keyboard or joypad event, false is returned.
+ * If this is not a keyboard, joypad or mouse event, false is returned.
  *
  * \return true if something was pressed
  */
@@ -985,7 +1136,8 @@ bool InputEvent::is_pressed() const {
 
   return is_keyboard_key_pressed()
     || is_direction_pressed()
-    || is_joypad_button_pressed();
+    || is_joypad_button_pressed()
+    || is_mouse_button_pressed();
 }
 
 /**
@@ -1031,7 +1183,8 @@ bool InputEvent::is_released() const {
   return is_keyboard_key_released()
     || is_joypad_button_released()
     || (is_joypad_axis_moved() && is_joypad_axis_centered())
-    || (is_joypad_hat_moved() && is_joypad_hat_centered());
+    || (is_joypad_hat_moved() && is_joypad_hat_centered())
+    || is_mouse_button_released();
 }
 
 // window event

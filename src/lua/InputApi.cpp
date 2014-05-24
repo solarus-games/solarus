@@ -16,7 +16,9 @@
  */
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
+#include "lowlevel/Rectangle.h"
 #include "lowlevel/InputEvent.h"
+#include "lowlevel/Video.h"
 
 namespace solarus {
 
@@ -35,6 +37,8 @@ void LuaContext::register_input_module() {
       { "is_joypad_button_pressed", input_api_is_joypad_button_pressed },
       { "get_joypad_axis_state", input_api_get_joypad_axis_state },
       { "get_joypad_hat_direction", input_api_get_joypad_hat_direction },
+      { "is_mouse_button_pressed", input_api_is_mouse_button_pressed },
+      { "get_mouse_position", input_api_get_mouse_position },
       { NULL, NULL }
   };
 
@@ -163,6 +167,48 @@ int LuaContext::input_api_get_joypad_hat_direction(lua_State* l) {
 
   lua_pushinteger(l, InputEvent::get_joypad_hat_direction(hat));
   return 1;
+}
+
+/**
+ * \brief Implementation of sol.input.is_mouse_button_pressed().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::input_api_is_mouse_button_pressed(lua_State* l) {
+
+  const std::string& button_name = luaL_checkstring(l, 1);
+  InputEvent::MouseButton button = InputEvent::get_mouse_button_by_name(button_name);
+
+  lua_pushboolean(l, InputEvent::is_mouse_button_down(button));
+  return 1;
+}
+
+/**
+ * \brief Implementation of sol.input.is_mouse_button_released().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::input_api_is_mouse_button_released(lua_State* l) {
+
+  const std::string& button_name = luaL_checkstring(l, 1);
+  InputEvent::MouseButton button = InputEvent::get_mouse_button_by_name(button_name);
+
+  lua_pushboolean(l, !InputEvent::is_mouse_button_down(button));
+  return 1;
+}
+
+/**
+ * \brief Implementation of sol.input.get_mouse_position().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::input_api_get_mouse_position(lua_State* l) {
+
+  const Rectangle& position = Video::get_scaled_position(InputEvent::get_mouse_position());
+
+  lua_pushinteger(l, position.get_x());
+  lua_pushinteger(l, position.get_y());
+  return 2;
 }
 
 }

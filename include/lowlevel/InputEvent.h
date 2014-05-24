@@ -178,6 +178,15 @@ class InputEvent {
       KEY_LEFT_META                = SDLK_LGUI
     };
 
+    enum MouseButton {
+      MOUSE_BUTTON_NONE            = -1,
+      MOUSE_BUTTON_LEFT            = SDL_BUTTON_LEFT,
+      MOUSE_BUTTON_MIDDLE          = SDL_BUTTON_MIDDLE,
+      MOUSE_BUTTON_RIGHT           = SDL_BUTTON_RIGHT,
+      MOUSE_BUTTON_X1              = SDL_BUTTON_X1,
+      MOUSE_BUTTON_X2              = SDL_BUTTON_X2,
+    };
+
     static void initialize();
     static void quit();
 
@@ -195,12 +204,15 @@ class InputEvent {
     static bool is_num_lock_on();
     static bool is_key_down(KeyboardKey key);
     static bool is_joypad_button_down(int button);
+    static bool is_mouse_button_down(MouseButton button);
     static int get_joypad_axis_state(int axis);
     static int get_joypad_hat_direction(int hat);
+    static Rectangle get_mouse_position();
 
     // event type
     bool is_keyboard_event() const;
     bool is_joypad_event() const;
+    bool is_mouse_event() const;
     bool is_window_event() const;
 
     // keyboard
@@ -243,7 +255,18 @@ class InputEvent {
     int get_joypad_hat_direction() const;
     bool is_joypad_hat_centered() const;
 
-    // functions common to keyboard and joypad
+    // mouse
+    bool is_mouse_button_pressed() const;
+    bool is_mouse_button_pressed(MouseButton button) const;
+    bool is_mouse_button_released() const;
+    bool is_mouse_button_released(MouseButton button) const;
+
+    MouseButton get_mouse_button() const;
+    Rectangle get_position() const;
+    static const std::string& get_mouse_button_name(MouseButton button);
+    static MouseButton get_mouse_button_by_name(const std::string& button_name);
+
+    // functions common to keyboard, joypad and mouse
     int get_direction() const;
     bool is_pressed() const;
     bool is_direction_pressed() const;
@@ -263,6 +286,8 @@ class InputEvent {
     static SDL_Joystick* joystick;                /**< the joystick object if enabled and plugged */
     static std::map<KeyboardKey, std::string>
       keyboard_key_names;                         /**< Names of all existing keyboard keys. */
+    static std::map<MouseButton, std::string>
+      mouse_button_names;                         /**< Names of all existing keyboard keys. */
     static bool repeat_keyboard;                  /**< True to handle repeat KEYDOWN and KEYUP events. */
 
     const SDL_Event internal_event;               /**< the internal event encapsulated */

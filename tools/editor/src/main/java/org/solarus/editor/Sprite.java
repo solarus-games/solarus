@@ -495,7 +495,8 @@ public class Sprite extends Observable {
      * @return the selected direction, or null if there is no selected direction
      */
     public SpriteAnimationDirection getSelectedDirection() {
-        if (selectedDirectionNb != -1) {
+
+        if (getSelectedAnimation() != null && selectedDirectionNb != -1) {
             return getSelectedAnimation().getDirection(selectedDirectionNb);
         }
         else {

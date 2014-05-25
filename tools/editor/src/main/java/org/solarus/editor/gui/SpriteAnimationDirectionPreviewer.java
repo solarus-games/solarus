@@ -71,7 +71,6 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
         // image view
         imageView = new ImageView();
         JScrollPane imageViewScroller = new JScrollPane(imageView);
-        imageViewScroller.setAlignmentY(Component.TOP_ALIGNMENT);
         // first buttons row
         JPanel firstRowPanel = new JPanel();
         firstRowPanel.setLayout(new BoxLayout(firstRowPanel, BoxLayout.LINE_AXIS));
@@ -263,6 +262,8 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
             setDirection(sprite.getSelectedDirection());
         }
         else {
+            imageView.update(selectedDirection);
+
             if (selectedDirection != null) {
 
                 int lastFrame = selectedDirection.getNbFrames() - 1;
@@ -293,7 +294,6 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
             }
 
             updateCurrentFrame();
-            imageView.update(selectedDirection);
         }
     }
 
@@ -461,7 +461,7 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
         @Override
         public Dimension getPreferredSize() {
 
-            if (frames != null) {
+            if (frames != null && frames.length > 0) {
                 Image frame = frames[0];
                 return new Dimension(frame.getWidth(null) * 2, frame.getHeight(null) * 2);
             }

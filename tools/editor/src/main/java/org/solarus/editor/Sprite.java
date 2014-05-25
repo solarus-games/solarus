@@ -363,7 +363,7 @@ public class Sprite extends Observable {
         if (animation != null) {
             for (int i = 0; i < animation.getNbDirections(); i++) {
                 SpriteAnimationDirection direction = animation.getDirection(i);
-                if (direction.getRect().contains(x, y)) {
+                if (direction.contains(x, y)) {
                     return i; // a direction was found at this point
                 }
             }

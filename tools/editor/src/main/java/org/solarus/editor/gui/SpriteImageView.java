@@ -73,13 +73,6 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
     private Rectangle currentArea;
 
     /**
-     * In states DRAWING_DIRECTION and MOVING_DIRECTION:
-     * true if the area is overlapping an existing direction.
-     * Is so, the direction cannot be created or moved.
-     */
-    private boolean isCurrentAreaOverlapping;
-
-    /**
      * In state MOVING_DIRECTION:
      * the direction being moved by the user.
      */
@@ -362,23 +355,6 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
         if (!newArea.equals(this.currentArea)) {
 
             this.currentArea = new Rectangle(newArea);
-
-            // Determine whether or not the new area is overlapping
-            // an existing direction.
-            isCurrentAreaOverlapping = false;
-            SpriteAnimation animation = sprite.getSelectedAnimation();
-            if (animation != null) {
-                int i;
-                for (i = 0; i < animation.getNbDirections(); i++) {
-                    SpriteAnimationDirection direction = animation.getDirection(i);
-
-                    if (direction.getRect().intersects(newArea)
-                            && direction != directionBeingMoved) {
-                        isCurrentAreaOverlapping = true;
-                        break;
-                    }
-                }
-            }
             repaint();
         }
     }
@@ -400,13 +376,12 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
 
         if (isImageLoaded()) { // the image exists
 
-            SpriteAnimationDirection selectedDirection = null;
+            SpriteAnimationDirection selectedDirection = sprite.getSelectedDirection();
             Image scaledImage = sprite.getDoubleImage();
 
             // Draw the image of the sprite.
             g.drawImage(scaledImage, 0, 0, null);
 
-            // Draw a rectangle depending on the current state.
             Rectangle rectangleToDraw = null;
 
             switch (state) {
@@ -414,13 +389,11 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
             case DRAWING_NEW_DIRECTION:
             case MOVING_DIRECTION:
 
-                // Draw the rectangle the user is dragging.
                 rectangleToDraw = currentArea;
 
-                if (rectangleToDraw == null
-                    || rectangleToDraw.width == 0
-                    || rectangleToDraw.height == 0
-                    || isCurrentAreaOverlapping) {
+                if (currentArea == null
+                    || currentArea.width == 0
+                    || currentArea.height == 0) {
                     // Invalid area.
                     g.setColor(Color.RED);
                 }
@@ -431,19 +404,16 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
                 break;
 
             case NORMAL:
-                // Normal state: draw the selected direction if any.
-                selectedDirection = sprite.getSelectedDirection();
 
                 if (selectedDirection != null) {
-                    // An existing direction is selected.
                     rectangleToDraw = selectedDirection.getRect();
-                    g.setColor(Color.BLUE);
                 }
+
+                g.setColor(Color.BLUE);
                 break;
 
             }
 
-            // Draw the additional rectangle.
             if (rectangleToDraw != null) {
 
                 int x1 = rectangleToDraw.x * 2;
@@ -451,29 +421,47 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
                 int y1 = rectangleToDraw.y * 2;
                 int y2 = (rectangleToDraw.y + rectangleToDraw.height) * 2 - 1;
 
+                // draw the top & left lines
                 g.drawLine(x1, y1, x2, y1);
-                g.drawLine(x2, y1, x2, y2);
-                g.drawLine(x2, y2, x1, y2);
                 g.drawLine(x1, y2, x1, y1);
 
                 g.drawLine(x1, y1 + 1, x2, y1 + 1);
-                g.drawLine(x2 - 1, y1, x2 - 1, y2);
-                g.drawLine(x2, y2 - 1, x1, y2 - 1);
                 g.drawLine(x1 + 1, y2, x1 + 1, y1);
 
+                // have a selection (MOVING_DIRECTION or NORMAL state)
                 if (selectedDirection != null) {
-                    int nbColumns = selectedDirection.getNbColumns();
-                    int nbRows = selectedDirection.getNbRows(selectedDirection.getNbFrames());
-                    int width = selectedDirection.getSize().width * 2;
-                    int height = selectedDirection.getSize().height * 2;
-                    for (int i = 1; i < nbColumns; i++) {
-                        int x = x1 + width * i;
-                        g.drawLine(x, y1, x, y2);
+
+                    int dx = 0, dy = 0;
+                    // MOVE mode
+                    if (rectangleToDraw == currentArea) {
+
+                        Rectangle rect = selectedDirection.getRect();
+                        dx = rectangleToDraw.x - rect.x;
+                        dy = rectangleToDraw.y - rect.y;
                     }
-                    for (int i = 1; i < nbRows; i++) {
-                        int y = y1 + height * i;
-                        g.drawLine(x1, y, x2, y);
+
+                    // Draw rectangles.
+                    for (Rectangle rect: selectedDirection.getRects()) {
+
+                        x1 = (dx + rect.x) * 2;
+                        x2 = (dx + rect.x + rect.width) * 2 - 1;
+                        y1 = (dy + rect.y) * 2;
+                        y2 = (dy + rect.y + rect.height) * 2 - 1;
+
+                        g.drawLine(x2, y1, x2, y2);
+                        g.drawLine(x2, y2, x1, y2);
+
+                        g.drawLine(x2 - 1, y1, x2 - 1, y2);
+                        g.drawLine(x2, y2 - 1, x1, y2 - 1);
                     }
+                } // DRAWING_NEW_DIRECTION state
+                else if (rectangleToDraw == currentArea) {
+
+                    g.drawLine(x2, y1, x2, y2);
+                    g.drawLine(x2, y2, x1, y2);
+
+                    g.drawLine(x2 - 1, y1, x2 - 1, y2);
+                    g.drawLine(x2, y2 - 1, x1, y2 - 1);
                 }
             }
         }
@@ -566,7 +554,7 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
 
                     if (selectedDirection != null) {
                         // An existing direction is selected.
-                        if (selectedDirection.getRect().contains(x,y)) {
+                        if (selectedDirection.contains(x,y)) {
                             // The user pressed the button inside: move it.
                             startStateMovingDirection(selectedDirection, new Point(x, y));
                         }
@@ -625,8 +613,7 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
                     // Keep the new area only if it exists.
                     if (currentArea != null
                             && currentArea.width > 0
-                            && currentArea.height > 0
-                            && !isCurrentAreaOverlapping) {
+                            && currentArea.height > 0) {
 
                         // The area is valid: show a popup menu with an item "Create".
                         popupMenuCreate.show(SpriteImageView.this,
@@ -645,7 +632,6 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
                     if (currentArea != null
                             && currentArea.width > 0
                             && currentArea.height > 0
-                            && !isCurrentAreaOverlapping
                             && !currentArea.equals(directionBeingMoved.getRect())) {
                         // The pattern was dropped in a valid area: show a popup menu
                         // with an item "Move here".
@@ -769,7 +755,7 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
         @Override
         public void actionPerformed(ActionEvent ev) {
             try {
-                if (isDrawingNewDirection() && !isCurrentAreaOverlapping) {
+                if (isDrawingNewDirection()) {
                     sprite.addDirection(currentArea);
                     startStateNormal();
                 }

@@ -186,8 +186,48 @@ public class SpriteAnimationDirection extends Observable {
      */
     public Rectangle getRect() {
 
-        Dimension dim = new Dimension(size.width * nbColumns, size.height * getNbRows(getNbFrames()));
+        Dimension dim = new Dimension(size.width * getNbColumns(),
+                size.height * getNbRows(getNbFrames()));
         return new Rectangle(position, dim);
+    }
+
+    /**
+     * Returns the rectangles of this direction, a rectangle for each frame.
+     * @return the rectangle
+     */
+    public Rectangle[] getRects() {
+
+        int nbFrames = getNbFrames();
+        int nbRows = getNbRows(nbFrames);
+        Rectangle[] rects = new Rectangle[nbFrames];
+
+        int frame = 0;
+
+        for (int y = 0; frame < nbFrames && y < nbRows; y++) {
+            for (int x = 0; frame < nbFrames && x < nbColumns; x++) {
+
+                rects[frame] = new Rectangle(
+                        position.x + x * size.width, position.y + y * size.height,
+                        size.width, size.height);
+                frame++;
+            }
+        }
+
+        return rects;
+    }
+
+    /**
+     * Check if direction contains a point.
+     * @return true if the point is in the direction, false otherwise
+     */
+    public boolean contains (int x, int y) {
+
+        for (Rectangle rect: getRects()) {
+            if (rect.contains(x, y)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -268,7 +308,7 @@ public class SpriteAnimationDirection extends Observable {
      */
     public int getNbColumns() {
 
-        return nbColumns;
+        return Math.min(nbColumns, getNbFrames());
     }
 
     /**

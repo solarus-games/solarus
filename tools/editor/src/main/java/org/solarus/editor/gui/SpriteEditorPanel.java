@@ -68,7 +68,7 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
         JSplitPane mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 spriteAnimationsView, spriteImageScroller);
         mainPanel.setContinuousLayout(true);
-        mainPanel.setDividerLocation(400);
+        mainPanel.setDividerLocation(320);
         // we must put our main panel in another panel
         // otherwise the background color of the window is bad
         add(mainPanel);

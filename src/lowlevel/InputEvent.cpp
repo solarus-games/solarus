@@ -234,7 +234,7 @@ InputEvent* InputEvent::get_event() {
         if(joypad_axis_state[axis] == axis_state)
         {
           // Ignore repeat joypad axis movement state.  
-          // However, a valid event still needs to be returned so that 
+          // However, an event still needs to be returned so that 
           // all events will be handled this frame.  Therefore, change
           // the type to a invalid event so it will be ignored.
           internal_event.type = SDL_LASTEVENT;
@@ -245,8 +245,17 @@ InputEvent* InputEvent::get_event() {
           joypad_axis_state[axis] = axis_state;
         }
       }
-      result = new InputEvent(internal_event);
     }
+    else
+    {
+      // In deadzone band, however, an event still needs to be returned so that 
+      // all events will be handled this frame.  Therefore, change
+      // the type to a invalid event so it will be ignored.
+      internal_event.type = SDL_LASTEVENT;
+      
+    }
+    // Always return an event if one occured, so we will handle all successive events
+    result = new InputEvent(internal_event);
   }
 
   return result;

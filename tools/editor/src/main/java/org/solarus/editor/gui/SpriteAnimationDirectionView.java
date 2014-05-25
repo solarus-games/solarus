@@ -39,7 +39,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
     private SpriteAnimationDirection selectedDirection;
 
     // components
-    private final JLabel sizeView;
+    private final SizeField sizeView;
     private final PositionField positionView;
     private final OriginField originView;
     private final NbFramesField nbFramesView;
@@ -80,7 +80,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
         constraints.weightx = 1;
         constraints.gridx = 1;
         constraints.gridy = 0;
-        sizeView = new JLabel();
+        sizeView = new SizeField();
         add(sizeView, constraints);
 
         constraints.gridy++;
@@ -155,23 +155,77 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
         if (o instanceof Sprite || o instanceof SpriteAnimation) {
             setSelectedDirection(sprite.getSelectedDirectionNb());
         } else {
-            // update the elementary components here
-            if (selectedDirection == null) {
-                sizeView.setText("");
-            }
-            else {
-                Point position = selectedDirection.getPosition();
-                Dimension size = selectedDirection.getSize();
-                Point origin = selectedDirection.getOrigin();
 
-                sizeView.setText(size.width + "x" + size.height);
-            }
-
+            sizeView.update(selectedDirection);
             positionView.update(selectedDirection);
             originView.update(selectedDirection);
             nbFramesView.update(selectedDirection);
             nbColumnsView.update(selectedDirection);
        }
+    }
+
+    /**
+     * Component to change the size position.
+     */
+    private class SizeField extends CoordinatesField {
+
+        private boolean updating = false;
+
+        /**
+         * Constructor.
+         */
+        public SizeField() {
+            super();
+            setMinimum(1, 1);
+            setStepSize(8, 8);
+
+            addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent ev) {
+
+                    if (selectedDirection != null && !updating) {
+                        Point coord = getCoordinates();
+                        Dimension size = new Dimension(coord.x, coord.y);
+                        if (size != selectedDirection.getSize()) {
+                            try {
+                                selectedDirection.setSize(size);
+                                sprite.setSaved(false);
+                            } catch (SpriteException ex) {
+                                 GuiTools.errorDialog("Cannot resize the direction: " +
+                                         ex.getMessage());
+                            }
+                        }
+                    }
+                    update(selectedDirection);
+                }
+            });
+        }
+
+        /**
+         * This function is called when the direction is changed.
+         * The component is updated.
+         */
+        public void update(Observable o) {
+
+            updating = true;
+            if (sprite != null && selectedDirection != null) {
+                setEnabled(true);
+                Dimension size = selectedDirection.getSize();
+                setCoordinates(size.width, size.height);
+
+                try {
+                    BufferedImage image = sprite.getSelectedAnimation().getImage();
+                    Point position = selectedDirection.getPosition();
+                    setMaximum(image.getWidth() - position.x, image.getHeight() - position.y);
+                } catch (Exception ex) {
+                    // image cannot be loaded or is null
+                }
+            }
+            else {
+                setEnabled(false);
+            }
+            updating = false;
+        }
     }
 
     /**

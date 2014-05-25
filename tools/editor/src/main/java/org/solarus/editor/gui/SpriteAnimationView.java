@@ -43,6 +43,7 @@ class SpriteAnimationView extends JPanel implements Observer {
 
     // components
     private final AnimationField animationField;
+    private final DefaultAnimationField defaultAnimationView;
     private final SrcImageField srcImageView;
     private final FrameDelayField frameDelayView;
     private final LoopOnFrameField loopOnFrameView;
@@ -63,6 +64,9 @@ class SpriteAnimationView extends JPanel implements Observer {
         add(new JLabel("Animation"), constraints);
 
         constraints.gridy++;
+        add(new JLabel("Default animation"), constraints);
+
+        constraints.gridy++;
         add(new JLabel("Source image"), constraints);
 
         constraints.gridy++;
@@ -76,6 +80,10 @@ class SpriteAnimationView extends JPanel implements Observer {
         constraints.gridy = 0;
         animationField = new AnimationField();
         add(animationField, constraints);
+
+        constraints.gridy++;
+        defaultAnimationView = new DefaultAnimationField();
+        add(defaultAnimationView, constraints);
 
         constraints.gridy++;
         srcImageView = new SrcImageField();
@@ -151,6 +159,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         if (o instanceof Sprite && (obj == null || obj instanceof String)) {
             // the sprite has changed
             setSelectedAnimation(sprite.getSelectedAnimationName());
+            defaultAnimationView.update(o);
         }
         else if (obj instanceof SpriteAnimation || o instanceof SpriteAnimation || o == null) {
             // the animation has changed
@@ -504,6 +513,49 @@ class SpriteAnimationView extends JPanel implements Observer {
         protected void applyModifications() {
         }
    }
+
+   /**
+     * Component to set the selected animation as the default animation.
+     */
+    private class DefaultAnimationField extends JCheckBox implements ActionListener {
+
+        /**
+         * Constructor.
+         */
+        public DefaultAnimationField() {
+            super("Set a default");
+            addActionListener(this);
+            update((Sprite) null);
+        }
+
+        /**
+         * This method is called when the user changes the value of this field.
+         */
+        @Override
+        public void actionPerformed(ActionEvent ev) {
+
+            boolean selected = isSelected();
+            if (sprite != null) {
+                sprite.setDefaultAnimation(selected ? sprite.getSelectedAnimationName() : "");
+            }
+        }
+
+        /**
+         * This function is called when the map is changed.
+         * The component is updated.
+         */
+        public void update(Observable o) {
+
+            if (sprite != null && selectedAnimation != null) {
+                setSelected(sprite.getDefaultAnimationName() == sprite.getSelectedAnimationName());
+                setEnabled(true);
+            }
+            else {
+                setSelected(false);
+                setEnabled(false);
+            }
+        }
+    }
 
    /**
      * Component to choose the source image of this animation.

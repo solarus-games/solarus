@@ -323,6 +323,21 @@ public class Sprite extends Observable {
     }
 
     /**
+     * Changes the default animation of this sprite.
+     * @param animationName the name of the new default animation
+     */
+    public void setDefaultAnimation(String animationName) {
+
+        if (hasAnimation(animationName) || animationName.isEmpty()) {
+            defaultAnimationName = animationName;
+
+            isSaved = false;
+            setChanged();
+            notifyObservers();
+        }
+    }
+
+    /**
      * Returns whether the specified animation exists.
      * @param animationName Name of an animation.
      * @return true if such an animation exists.
@@ -531,6 +546,9 @@ public class Sprite extends Observable {
         SpriteAnimation animation = animations.remove(name);
         animations.put(newName, animation);
         selectedAnimationName = newName;
+        if (name.equals(defaultAnimationName)) {
+            defaultAnimationName = newName;
+        }
 
         isSaved = false;
         setChanged();
@@ -574,6 +592,9 @@ public class Sprite extends Observable {
             animations.remove(animationName);
             selectedAnimationName = "";
             selectedDirectionNb = -1;
+            if (animationName.equals(defaultAnimationName)) {
+                defaultAnimationName = "";
+            }
 
             isSaved = false;
             reloadImage(animationName);
@@ -832,59 +853,22 @@ public class Sprite extends Observable {
             File spriteFile = Project.getSpriteFile(animationSetId);
             PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(spriteFile)));
 
+            Set<String> animationNames = animations.keySet();
+
+            if (!defaultAnimationName.isEmpty() && animationNames.contains(defaultAnimationName)) {
+
+                lastName = defaultAnimationName;
+                SpriteAnimation animation = animations.get(defaultAnimationName);
+                out.println(animationToString(defaultAnimationName, animation));
+                animationNames.remove(defaultAnimationName);
+            }
+
             // Animations.
-            for (String name: animations.keySet()) {
+            for (String name: animationNames) {
+
                 lastName = name;
                 SpriteAnimation animation = animations.get(name);
-
-                String srcImage = animation.getSrcImage();
-                int frameDelay = animation.getFrameDelay();
-                int loopOnFrame = animation.getLoopOnFrame();
-                int nbDirections = animation.getNbDirections();
-
-                out.println("animation{");
-                out.println("  name = \"" + name + "\",");
-                out.println("  src_image = \"" + srcImage + "\",");
-                if (frameDelay > 0) {
-                    out.println("  frame_delay = " + frameDelay + ",");
-                    if (loopOnFrame >= 0) {
-                        out.println("  frame_to_loop_on = " + loopOnFrame + ",");
-                    }
-                }
-
-                // Directions.
-                out.println("  directions = {");
-                for (int directionId = 0; directionId < nbDirections; directionId++) {
-                    SpriteAnimationDirection direction = animation.getDirection(directionId);
-
-                    Point position = direction.getPosition();
-                    Dimension dimension = direction.getSize();
-                    Point origin = direction.getOrigin();
-
-                    int x = (int) position.x;
-                    int y = (int) position.y;
-                    int frameWidth = (int) dimension.width;
-                    int frameHeight = (int) dimension.height;
-                    int originX = (int) origin.x;
-                    int originY = (int) origin.y;
-                    int numFrames = direction.getNbFrames();
-                    int numColumns = direction.getNbColumns();
-
-                    out.print("    {");
-                    out.print(" x = " + x + ", y = " + y);
-                    out.print(", frame_width = " + frameWidth + ", frame_height = " + frameHeight);
-                    out.print(", origin_x = " + originX + ", origin_y = " + originY);
-                    if (numFrames > 1) {
-                        out.print(", num_frames = " + numFrames);
-                    }
-                    if (numColumns > 0) {
-                        out.print(", num_columns = " + numColumns);
-                    }
-                    out.println(" },");
-                }
-                out.println("  },");
-
-                out.println("}");
+                out.println(animationToString(name, animation));
             }
 
             out.close();
@@ -899,6 +883,57 @@ public class Sprite extends Observable {
             message += ex.getMessage();
             throw new QuestEditorException(message);
         }
+    }
+
+    static public String animationToString (String name, SpriteAnimation animation) {
+
+        String str = "animation {\n";
+
+        String srcImage = animation.getSrcImage();
+        int frameDelay = animation.getFrameDelay();
+        int loopOnFrame = animation.getLoopOnFrame();
+        int nbDirections = animation.getNbDirections();
+
+        str += "  name = \"" + name + "\",\n";
+        str += "  src_image = \"" + srcImage + "\",\n";
+        if (frameDelay > 0) {
+            str += "  frame_delay = " + frameDelay + ",\n";
+            if (loopOnFrame >= 0) {
+                str += "  frame_to_loop_on = " + loopOnFrame + ",\n";
+            }
+        }
+
+        // Directions.
+        str += "  directions = {\n";
+        for (int directionId = 0; directionId < nbDirections; directionId++) {
+            SpriteAnimationDirection direction = animation.getDirection(directionId);
+
+            Point position = direction.getPosition();
+            Dimension dimension = direction.getSize();
+            Point origin = direction.getOrigin();
+
+            int x = (int) position.x;
+            int y = (int) position.y;
+            int frameWidth = (int) dimension.width;
+            int frameHeight = (int) dimension.height;
+            int originX = (int) origin.x;
+            int originY = (int) origin.y;
+            int numFrames = direction.getNbFrames();
+            int numColumns = direction.getNbColumns();
+
+            str += "    { x = " + x + ", y = " + y;
+            str += ", frame_width = " + frameWidth + ", frame_height = " + frameHeight;
+            str += ", origin_x = " + originX + ", origin_y = " + originY;
+            if (numFrames > 1) {
+                str += ", num_frames = " + numFrames;
+            }
+            if (numColumns > 0) {
+                str += ", num_columns = " + numColumns;
+            }
+            str += " },\n";
+        }
+        str += "  },\n}";
+        return str;
     }
 }
 

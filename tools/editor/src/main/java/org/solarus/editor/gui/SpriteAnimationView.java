@@ -191,11 +191,10 @@ class SpriteAnimationView extends JPanel implements Observer {
 
             imageView = new ImageView();
             final JScrollPane imageViewScroller = new JScrollPane(imageView);
-            imageTreeScroller.setAlignmentY(Component.TOP_ALIGNMENT);
+            imageViewScroller.setAlignmentY(Component.TOP_ALIGNMENT);
 
             final JSplitPane mainSplitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                     true, imageTreeScroller, imageViewScroller);
-            mainSplitter.setOneTouchExpandable(true);
             mainSplitter.setDividerLocation(200);
             setComponent(mainSplitter);
 

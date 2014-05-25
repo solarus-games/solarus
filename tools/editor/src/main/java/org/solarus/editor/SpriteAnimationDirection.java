@@ -329,7 +329,7 @@ public class SpriteAnimationDirection extends Observable {
         }
     }
 
-     /**
+    /**
      * Returns a frame of this direction.
      * @param frame Index of the frame to get.
      * @return The corresponding frame.
@@ -337,6 +337,15 @@ public class SpriteAnimationDirection extends Observable {
     public Image getFrame(int frame) {
 
         return frame >= 0 && frame < frames.length ? frames[frame] : null;
+    }
+
+    /**
+     * Returns frames list of this direction.
+     * @return The frames list.
+     */
+    public Image[] getFrames() {
+
+        return frames;
     }
 
     /**

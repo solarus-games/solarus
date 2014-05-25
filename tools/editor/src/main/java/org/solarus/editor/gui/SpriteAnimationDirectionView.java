@@ -44,13 +44,16 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
     private final OriginField originView;
     private final NbFramesField nbFramesView;
     private final NbColumnsField nbColumnsView;
+    private final SpriteAnimationDirectionPreviewer directionPreviewer;
 
     /**
      * Constructor.
      */
     public SpriteAnimationDirectionView() {
 
-        super(new GridBagLayout());
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
+        JPanel properiesPanel = new JPanel(new GridBagLayout());
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(5, 5, 5, 5); // margins
@@ -59,45 +62,49 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
         // position
         constraints.gridx = 0;
         constraints.gridy = 0;
-        add(new JLabel("Size"), constraints);
+        properiesPanel.add(new JLabel("Size"), constraints);
 
         // size
         constraints.gridy++;
-        add(new JLabel("Position"), constraints);
+        properiesPanel.add(new JLabel("Position"), constraints);
 
         // origin
         constraints.gridy++;
-        add(new JLabel("Origin"), constraints);
+        properiesPanel.add(new JLabel("Origin"), constraints);
 
         // number of frames
         constraints.gridy++;
-        add(new JLabel("Number of frames"), constraints);
+        properiesPanel.add(new JLabel("Number of frames"), constraints);
 
         // number of columns
         constraints.gridy++;
-        add(new JLabel("Numbre of columns"), constraints);
+        properiesPanel.add(new JLabel("Numbre of columns"), constraints);
 
         constraints.weightx = 1;
         constraints.gridx = 1;
         constraints.gridy = 0;
         sizeView = new SizeField();
-        add(sizeView, constraints);
+        properiesPanel.add(sizeView, constraints);
 
         constraints.gridy++;
         positionView = new PositionField();
-        add(positionView, constraints);
+        properiesPanel.add(positionView, constraints);
 
         constraints.gridy++;
         originView = new OriginField();
-        add(originView, constraints);
+        properiesPanel.add(originView, constraints);
 
         constraints.gridy++;
         nbFramesView = new NbFramesField();
-        add(nbFramesView, constraints);
+        properiesPanel.add(nbFramesView, constraints);
 
         constraints.gridy++;
         nbColumnsView = new NbColumnsField();
-        add(nbColumnsView, constraints);
+        properiesPanel.add(nbColumnsView, constraints);
+
+        add(properiesPanel);
+        directionPreviewer = new SpriteAnimationDirectionPreviewer();
+        add(directionPreviewer);
     }
 
     /**
@@ -116,6 +123,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
             sprite.addObserver(this);
         }
         update(sprite, null);
+        directionPreviewer.setSprite(sprite);
     }
 
     /**

@@ -21,6 +21,7 @@ tools/solaruskeystore
 tools/editor/resources/data.solarus.zip
 tools/editor/dependency-reduced-pom.xml
 tools/editor/target
+tools/editor/nbactions.xml
 tools/update_quest.log
 tools/solarus-editor.jar
 work/unversioned/

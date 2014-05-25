@@ -145,7 +145,10 @@ public class SpriteImageTree extends JTree {
 
         if (path != null) {
             node = (DefaultMutableTreeNode) path.getLastPathComponent();
-            node = node.isRoot() ? null : node;
+            // don't select folders
+            if (node.getAllowsChildren()) {
+                node = null;
+            }
         }
         while (node != null) {
             if (!node.isRoot()) {

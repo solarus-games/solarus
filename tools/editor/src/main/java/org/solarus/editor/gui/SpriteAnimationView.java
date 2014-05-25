@@ -330,6 +330,7 @@ class SpriteAnimationView extends JPanel implements Observer {
          */
         private SpriteAnimationChooser animationChooser;
 
+        private JButton addButton;
         private JButton removeButton;
 
         /**
@@ -340,10 +341,36 @@ class SpriteAnimationView extends JPanel implements Observer {
             setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
             animationChooser = new SpriteAnimationChooser(sprite);
-            animationChooser.setPreferredSize(new Dimension(140, 24));
+            animationChooser.setPreferredSize(new Dimension(116, 24));
             animationChooser.addActionListener(this);
             animationChooser.setEditable(true);
             add(animationChooser);
+
+            addButton = new JButton(Project.getEditorImageIconOrEmpty("icon_add.png"));
+            addButton.setPreferredSize(new Dimension(24, 24));
+            addButton.setToolTipText("Add animation");
+            addButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ev) {
+
+                    if (sprite == null) {
+                        return;
+                    }
+
+                    // Add an animation.
+                    try {
+                        NewAnimationDialog dialog = new NewAnimationDialog(
+                                animationChooser.getSelected());
+                        if (dialog.display()) {
+                            sprite.addAnimation(dialog.getAnimationName());
+                        }
+                    }
+                    catch (SpriteException ex) {
+                        GuiTools.errorDialog("Cannot add animation: " + ex.getMessage());
+                    }
+                }
+            });
+            add(addButton);
 
             removeButton = new JButton(Project.getEditorImageIconOrEmpty("icon_remove.png"));
             removeButton.setPreferredSize(new Dimension(24, 24));
@@ -403,26 +430,15 @@ class SpriteAnimationView extends JPanel implements Observer {
 
             if (ev.getActionCommand().equals("comboBoxEdited")) {
 
-
                 String name = sprite.getSelectedAnimationName();
                 String newName = animationChooser.getSelected();
 
-                if (!newName.isEmpty()) {
-                    if (name.isEmpty()){
-                        // Add a new animation
-                        try {
-                            sprite.addAnimation(newName);
-                        }
-                        catch (SpriteException ex) {
-                            GuiTools.errorDialog("Cannot add animation: " + ex.getMessage());
-                        }
-                    } else {
-                        try {
-                            sprite.renameAnimation(name, newName);
-                        } catch (SpriteException ex) {
-                            GuiTools.errorDialog("Cannot rename the animation '" +
-                                        name + "': " + ex.getMessage());
-                        }
+                if (!newName.isEmpty() && !name.isEmpty()){
+                    try {
+                        sprite.renameAnimation(name, newName);
+                    } catch (SpriteException ex) {
+                        GuiTools.errorDialog("Cannot rename the animation '" +
+                                    name + "': " + ex.getMessage());
                     }
                 }
             }
@@ -442,6 +458,52 @@ class SpriteAnimationView extends JPanel implements Observer {
             }
         }
     }
+
+    /**
+    * Dialog shown when we want to create a new animation in this sprite
+    */
+   private class NewAnimationDialog extends OkCancelDialog {
+           private static final long serialVersionUID = 1L;
+
+        // Subcomponents
+        private final JTextField nameField;
+
+        /**
+         * Constructor.
+         */
+        public NewAnimationDialog(String name) {
+
+            super("New animation", false);
+
+            JPanel mainPanel = new JPanel(new GridBagLayout());
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.insets = new Insets(5, 5, 5, 5); // margins
+            constraints.anchor = GridBagConstraints.LINE_START;
+            constraints.gridy = 0;
+            constraints.gridx = 0;
+
+            mainPanel.add(new JLabel("name:"), constraints);
+
+            constraints.gridx++;
+            nameField = new JTextField(15);
+            nameField.setText(name);
+            mainPanel.add(nameField, constraints);
+
+            setComponent(mainPanel);
+        }
+
+        /**
+         * Returns the name of animation.
+         * @return the name
+         */
+        public String getAnimationName() {
+            return nameField.getText();
+        }
+
+        @Override
+        protected void applyModifications() {
+        }
+   }
 
    /**
      * Component to choose the source image of this animation.

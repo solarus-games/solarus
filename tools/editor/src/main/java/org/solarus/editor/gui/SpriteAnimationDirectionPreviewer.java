@@ -248,8 +248,8 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
 
         if (direction != null) {
             direction.addObserver(this);
-            update(direction, null);
         }
+        update(direction, null);
     }
 
     /**

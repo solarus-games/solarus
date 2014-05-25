@@ -336,14 +336,14 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
                 @Override
                 public void actionPerformed(ActionEvent ae) {
 
-                    if (selectedDirection == null || frameDelay <= 0) {
+                    if (selectedDirection == null || frameDelay <= 0 || frames == null || frames.length <= 1) {
                         stop();
                         SpriteAnimationDirectionPreviewer.this.update(selectedDirection, null);
                     } else {
                         int nbFrames = frames != null ? frames.length : 1;
                         if (currentFrame == nbFrames - 1) {
                             if (loopOnFrame >= 0) {
-                                currentFrame = loopOnFrame;
+                                currentFrame = Math.min(loopOnFrame, nbFrames - 1);
                             } else {
                                 pause();
                                 SpriteAnimationDirectionPreviewer.this.update(selectedDirection, null);

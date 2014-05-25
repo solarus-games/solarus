@@ -615,7 +615,6 @@ class SpriteAnimationView extends JPanel implements Observer {
             if (selectedAnimation != null && selectedAnimation.getFrameDelay() > 0) {
                 setEnabled(true);
                 setValue(selectedAnimation.getLoopOnFrame());
-                setMaximum(selectedAnimation.getNbDirections() - 1);
             }
             else {
                 setEnabled(false);

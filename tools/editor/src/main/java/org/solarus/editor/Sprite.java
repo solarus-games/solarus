@@ -847,7 +847,7 @@ public class Sprite extends Observable {
                 out.println("  src_image = \"" + srcImage + "\",");
                 if (frameDelay > 0) {
                     out.println("  frame_delay = " + frameDelay + ",");
-                    if (loopOnFrame > 0 && loopOnFrame < nbDirections) {
+                    if (loopOnFrame >= 0) {
                         out.println("  frame_to_loop_on = " + loopOnFrame + ",");
                     }
                 }

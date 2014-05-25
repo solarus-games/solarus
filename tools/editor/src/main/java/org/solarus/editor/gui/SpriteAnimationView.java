@@ -513,6 +513,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         // components
         private JTextField srcImage;
         private ResourceChooser tilesetChooser;
+        private JButton setButton;
 
         /**
          * Constructor.
@@ -532,7 +533,7 @@ class SpriteAnimationView extends JPanel implements Observer {
             add(srcImage);
             add(tilesetChooser);
 
-            JButton setButton = new JButton(Project.getEditorImageIconOrEmpty("icon_edit.png"));
+            setButton = new JButton(Project.getEditorImageIconOrEmpty("icon_edit.png"));
             setButton.setPreferredSize(new Dimension(24, 24));
             setButton.setToolTipText("Changes source image");
             setButton.addActionListener(new ActionListener() {
@@ -568,7 +569,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         public void update(Observable o) {
 
             if (selectedAnimation != null) {
-                setEnabled(true);
+                setButton.setEnabled(true);
                 String image = selectedAnimation.getSrcImage();
                 image = image.isEmpty() ? "<none>" : image;
                 if (!image.equals(srcImage.getText())) {
@@ -579,10 +580,10 @@ class SpriteAnimationView extends JPanel implements Observer {
                 tilesetChooser.setSelectedId(selectedAnimation.getTilesetId());
             }
             else {
+                setButton.setEnabled(false);
                 tilesetChooser.setVisible(false);
                 srcImage.setText("<none>");
                 srcImage.setVisible(true);
-                setEnabled(false);
             }
         }
 

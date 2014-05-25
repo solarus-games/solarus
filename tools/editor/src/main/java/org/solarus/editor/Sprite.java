@@ -401,8 +401,6 @@ public class Sprite extends Observable {
 
             selectedAnimationName = animationName;
             reloadImage();
-            setChanged();
-            notifyObservers();
         }
     }
 
@@ -507,11 +505,9 @@ public class Sprite extends Observable {
         animations.put(name, animation);
         selectedAnimationName = name;
         selectedDirectionNb = -1;
-        reloadImage();
 
         isSaved = false;
-        setChanged();
-        notifyObservers(animation);
+        reloadImage(animation);
     }
 
     /**
@@ -576,13 +572,11 @@ public class Sprite extends Observable {
             String animationName = selectedAnimationName;
 
             animations.remove(animationName);
-            reloadImage();
             selectedAnimationName = "";
             selectedDirectionNb = -1;
 
             isSaved = false;
-            setChanged();
-            notifyObservers(animationName);
+            reloadImage(animationName);
         } else {
             throw new SpriteException("No animation is selected");
         }
@@ -613,9 +607,9 @@ public class Sprite extends Observable {
 
     /**
      * Reloads the selected animation's image.
-     * The observers are notified with the new image as parameter.
+     * @param obj the object passed to observers
      */
-    public void reloadImage() {
+    public void reloadImage(Object obj) {
 
         SpriteAnimation animation = getSelectedAnimation();
 
@@ -632,6 +626,17 @@ public class Sprite extends Observable {
         } else {
             doubleImage = null;
         }
+
+        setChanged();
+        notifyObservers(obj);
+    }
+
+    /**
+     * Reloads the selected animation's image and notify.
+     */
+    public void reloadImage() {
+
+        reloadImage(null);
     }
 
     private BufferedImage createScaledImage(BufferedImage image, int width, int height) {
@@ -671,13 +676,14 @@ public class Sprite extends Observable {
 
         if (animations.containsKey(animationName) && animations.get(animationName) != animation) {
             animations.put(animationName, animation);
-            if (animationName.equals(selectedAnimationName)) {
-                reloadImage();
-            }
 
             isSaved = false;
-            setChanged();
-            notifyObservers(animation);
+            if (animationName.equals(selectedAnimationName)) {
+                reloadImage(animation);
+            } else {
+                setChanged();
+                notifyObservers(animation);
+            }
         }
     }
 
@@ -760,9 +766,6 @@ public class Sprite extends Observable {
                 animation.setTilesetId(tilesetId);
             }
             reloadImage();
-
-            setChanged();
-            notifyObservers();
         }
     }
 

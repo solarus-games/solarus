@@ -17,12 +17,14 @@
 package org.solarus.editor.gui;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import org.solarus.editor.*;
+import org.solarus.editor.gui.tree.SpriteImageTree;
 
 /**
  * This components shows information about animation of a sprite.
@@ -156,6 +158,166 @@ class SpriteAnimationView extends JPanel implements Observer {
             srcImageView.update(o);
             frameDelayView.update(o);
             loopOnFrameView.update(o);
+        }
+    }
+
+    /**
+    * Dialog shown when we want to changes a sprite image
+    */
+    private class ChooseSpriteImageDialog extends OkCancelDialog {
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * The source image
+         */
+        private String srcImage;
+
+        // Subcomponents
+        private SpriteImageTree imageTree;
+        private ImageView imageView;
+
+        /**
+         * Constructor.
+         */
+        public ChooseSpriteImageDialog(String selectedImage) throws SpriteException {
+
+            super("Change source image", false);
+
+            srcImage = selectedImage;
+
+            imageTree = new SpriteImageTree();
+            imageTree.setVisible(true);
+            final JScrollPane imageTreeScroller = new JScrollPane(imageTree);
+
+            imageView = new ImageView();
+            final JScrollPane imageViewScroller = new JScrollPane(imageView);
+            imageTreeScroller.setAlignmentY(Component.TOP_ALIGNMENT);
+
+            final JSplitPane mainSplitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                    true, imageTreeScroller, imageViewScroller);
+            mainSplitter.setOneTouchExpandable(true);
+            mainSplitter.setDividerLocation(200);
+            setComponent(mainSplitter);
+
+            imageTree.setSelectedFile(srcImage);
+            imageTree.addMouseListener(new MouseListener() {
+
+                @Override
+                public void mouseClicked(MouseEvent me) {
+
+                    String image = imageTree.getSelectedFile();
+
+                    if (image != null) {
+                        srcImage = image;
+                        imageView.revalidate();
+                        imageView.repaint();
+                    }
+                }
+
+                @Override
+                public void mousePressed(MouseEvent me) {
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent me) {
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent me) {
+                }
+
+                @Override
+                public void mouseExited(MouseEvent me) {
+                }
+            });
+
+            imageView.revalidate();
+        }
+
+        /**
+         * Returns the source image
+         * @return the sourc image
+         */
+        public String getSrcImage() {
+            return srcImage;
+        }
+
+        @Override
+        protected void applyModifications() {
+        }
+
+        /**
+         * Component to show the current selected source image.
+         */
+        private class ImageView extends JComponent implements Scrollable {
+
+            /**
+             * Returns the current image.
+             * @return the current image
+             */
+            public BufferedImage getImage () {
+
+                String path = "";
+
+                if (srcImage.equals("tileset")) {
+                    if (selectedAnimation != null) {
+                        String tilesetId = selectedAnimation.getTilesetId();
+                        path = "tilesets/" + Project.getTilesetEntitiesImageFile(tilesetId).getName();
+                    }
+                } else {
+                    path = "sprites/" + srcImage;
+                }
+                try {
+                    return Project.getProjectImage(path);
+                } catch (IOException ex) {
+                    return null;
+                }
+            }
+
+            @Override
+            public void paint(Graphics g) {
+                BufferedImage image = getImage();
+                if (image != null) {
+                    g.drawImage(image, 0, 0, null);
+                }
+            }
+
+            @Override
+            public Dimension getPreferredSize() {
+
+                BufferedImage image = getImage();
+                if (image != null) {
+                    return new Dimension(image.getWidth(), image.getHeight());
+                }
+                return new Dimension(0, 0);
+            }
+
+            @Override
+            public Dimension getPreferredScrollableViewportSize() {
+
+                return new Dimension(480, 320);
+            }
+
+            @Override
+            public int getScrollableUnitIncrement(Rectangle rctngl, int i, int i1) {
+                return 16;
+            }
+
+            @Override
+            public int getScrollableBlockIncrement(Rectangle rctngl, int i, int i1) {
+                return 160;
+            }
+
+            @Override
+            public boolean getScrollableTracksViewportWidth() {
+                return false;
+            }
+
+            @Override
+            public boolean getScrollableTracksViewportHeight() {
+                return false;
+            }
+
         }
     }
 
@@ -320,7 +482,17 @@ class SpriteAnimationView extends JPanel implements Observer {
                         return;
                     }
 
-                    GuiTools.errorDialog("Cannot changes the source image: not implemented yet !");
+                    try {
+                        ChooseSpriteImageDialog dialog =
+                                new ChooseSpriteImageDialog(selectedAnimation.getSrcImage());
+                        if (dialog.display()) {
+                            selectedAnimation.setSrcImage(dialog.getSrcImage());
+                            sprite.setSaved(false);
+                            sprite.reloadImage();
+                        }
+                    } catch (SpriteException ex) {
+                        GuiTools.errorDialog("Cannot changes the source image: " + ex.getMessage());
+                    }
                 }
             });
             add(setButton);
@@ -337,7 +509,10 @@ class SpriteAnimationView extends JPanel implements Observer {
             if (selectedAnimation != null) {
                 setEnabled(true);
                 String image = selectedAnimation.getSrcImage();
-                srcImage.setText(image.isEmpty() ? "<none>" : image);
+                image = image.isEmpty() ? "<none>" : image;
+                if (!image.equals(srcImage.getText())) {
+                    srcImage.setText(image.isEmpty() ? "<none>" : image);
+                }
                 srcImage.setVisible(!image.equals("tileset"));
                 tilesetChooser.setVisible(image.equals("tileset"));
                 tilesetChooser.setSelectedId(selectedAnimation.getTilesetId());

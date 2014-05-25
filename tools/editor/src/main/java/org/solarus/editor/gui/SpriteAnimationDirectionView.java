@@ -226,8 +226,8 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
                 try {
                     BufferedImage image = sprite.getSelectedAnimation().getImage();
                     setMaximum(image.getWidth(), image.getHeight());
-                } catch (SpriteException ex) {
-                    // image cannot be loaded
+                } catch (Exception ex) {
+                    // image cannot be loaded or is null
                 }
             }
             else {

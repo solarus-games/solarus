@@ -266,7 +266,6 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
 
             // load the sprite animation's image
             sprite.reloadImage();
-            update(sprite, null);
         }
 
         setSize(getPreferredSize());

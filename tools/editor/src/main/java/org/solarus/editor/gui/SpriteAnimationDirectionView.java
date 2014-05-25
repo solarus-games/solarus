@@ -78,7 +78,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
 
         // number of columns
         constraints.gridy++;
-        properiesPanel.add(new JLabel("Numbre of columns"), constraints);
+        properiesPanel.add(new JLabel("Number of columns"), constraints);
 
         constraints.weightx = 1;
         constraints.gridx = 1;

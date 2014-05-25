@@ -510,8 +510,12 @@ public class Sprite extends Observable {
      */
     public void addAnimation(String name) throws SpriteException {
 
+        if (name.isEmpty()) {
+            throw new SpriteException("the name is empty");
+        }
+
         if (animations.containsKey(name)) {
-            throw new SpriteException("Cannot create animation '" + name + "': this name already exist");
+            throw new SpriteException("the name already exists");
         }
 
         Vector<SpriteAnimationDirection> directions = new Vector<SpriteAnimationDirection>();
@@ -533,6 +537,9 @@ public class Sprite extends Observable {
      */
     public void renameAnimation(String name, String newName) throws SpriteException {
 
+        if (newName.isEmpty()) {
+            throw new SpriteException("the new name is empty" );
+        }
         if (!animations.containsKey(name)) {
             throw new SpriteException("this animation doesn't exists" );
         }

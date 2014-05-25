@@ -366,16 +366,22 @@ class SpriteAnimationView extends JPanel implements Observer {
                         return;
                     }
 
-                    // Add an animation.
-                    try {
-                        NewAnimationDialog dialog = new NewAnimationDialog(
+                    NewAnimationDialog dialog = new NewAnimationDialog(
                                 animationChooser.getSelected());
-                        if (dialog.display()) {
-                            sprite.addAnimation(dialog.getAnimationName());
-                        }
+                    String name = "";
+                    if (dialog.display()) {
+                        name = dialog.getAnimationName();
                     }
-                    catch (SpriteException ex) {
-                        GuiTools.errorDialog("Cannot add animation: " + ex.getMessage());
+
+                    if (!name.isEmpty()) {
+                        // Add an animation.
+                        try {
+                            sprite.addAnimation(name);
+                        }
+                        catch (SpriteException ex) {
+                            GuiTools.errorDialog("Cannot add animation '" +
+                                    name+ "': " + ex.getMessage());
+                        }
                     }
                 }
             });
@@ -523,7 +529,7 @@ class SpriteAnimationView extends JPanel implements Observer {
          * Constructor.
          */
         public DefaultAnimationField() {
-            super("Set a default");
+            super("Set as default");
             addActionListener(this);
             update((Sprite) null);
         }

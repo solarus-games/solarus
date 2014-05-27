@@ -402,6 +402,7 @@ class SpriteAnimationView extends JPanel implements Observer {
          */
         private SpriteAnimationChooser animationChooser;
 
+        private JButton renameButton;
         private JButton addButton;
         private JButton removeButton;
 
@@ -413,10 +414,41 @@ class SpriteAnimationView extends JPanel implements Observer {
             setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
             animationChooser = new SpriteAnimationChooser(sprite);
-            animationChooser.setPreferredSize(new Dimension(116, 24));
+            animationChooser.setPreferredSize(new Dimension(96, 24));
             animationChooser.addActionListener(this);
-            animationChooser.setEditable(true);
             add(animationChooser);
+
+            renameButton = new JButton(Project.getEditorImageIconOrEmpty("icon_edit.png"));
+            renameButton.setPreferredSize(new Dimension(24, 24));
+            renameButton.setToolTipText("Rename animation");
+            renameButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ev) {
+
+                    if (sprite == null) {
+                        return;
+                    }
+
+                    String name = animationChooser.getSelected();
+                    String newName = "";
+                    RenameAnimationDialog dialog = new RenameAnimationDialog(name);
+                    if (dialog.display()) {
+                        newName = dialog.getNewAnimationName();
+                    }
+
+                    if (!newName.isEmpty()) {
+                        // Rename the animation.
+                        try {
+                            sprite.renameAnimation(name, newName);
+                        }
+                        catch (SpriteException ex) {
+                            GuiTools.errorDialog("Cannot rename animation '" +
+                                    name+ "': " + ex.getMessage());
+                        }
+                    }
+                }
+            });
+            add(renameButton);
 
             addButton = new JButton(Project.getEditorImageIconOrEmpty("icon_add.png"));
             addButton.setPreferredSize(new Dimension(24, 24));
@@ -493,6 +525,7 @@ class SpriteAnimationView extends JPanel implements Observer {
 
             animationChooser.setEnabled(sprite != null && sprite.getAnimations().size() > 0);
             removeButton.setEnabled(sprite != null && sprite.getSelectedAnimation() != null);
+            renameButton.setEnabled(sprite != null && sprite.getSelectedAnimation() != null);
         }
 
         /**
@@ -506,36 +539,85 @@ class SpriteAnimationView extends JPanel implements Observer {
                 return;
             }
 
-            if (ev.getActionCommand().equals("comboBoxEdited")) {
+            String selectedAnimationName = animationChooser.getSelected();
+            String currentAnimationName = sprite.getSelectedAnimationName();
 
-                String name = sprite.getSelectedAnimationName();
-                String newName = animationChooser.getSelected();
+            if (!currentAnimationName.equals(selectedAnimationName)) {
 
-                if (!newName.isEmpty() && !name.isEmpty()){
-                    try {
-                        sprite.renameAnimation(name, newName);
-                    } catch (SpriteException ex) {
-                        GuiTools.errorDialog("Cannot rename the animation '" +
-                                    name + "': " + ex.getMessage());
-                    }
+                try {
+                    sprite.setSelectedAnimation(selectedAnimationName);
                 }
-            }
-            else {
-                String selectedAnimationName = animationChooser.getSelected();
-                String currentAnimationName = sprite.getSelectedAnimationName();
-
-                if (!currentAnimationName.equals(selectedAnimationName)) {
-
-                    try {
-                        sprite.setSelectedAnimation(selectedAnimationName);
-                    }
-                    catch (SpriteException ex) {
-                        // animation doesn't exists
-                    }
+                catch (SpriteException ex) {
+                    // animation doesn't exists
                 }
             }
         }
     }
+
+    /**
+    * Dialog shown when we want to rename an animation in this sprite
+    */
+   private class RenameAnimationDialog extends OkCancelDialog {
+           private static final long serialVersionUID = 1L;
+
+        // Subcomponents
+        private final JTextField nameField;
+        private final JTextField newNameField;
+
+        /**
+         * Constructor.
+         */
+        public RenameAnimationDialog(String name) {
+
+            super("Rename animation", false);
+
+            JPanel mainPanel = new JPanel(new GridBagLayout());
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.insets = new Insets(5, 5, 5, 5); // margins
+            constraints.anchor = GridBagConstraints.LINE_START;
+            constraints.gridy = 0;
+            constraints.gridx = 0;
+
+            mainPanel.add(new JLabel("name:"), constraints);
+
+            constraints.gridy++;
+            mainPanel.add(new JLabel("new name:"), constraints);
+
+            constraints.gridy = 0;
+            constraints.gridx++;
+            nameField = new JTextField(15);
+            nameField.setText(name);
+            nameField.setEditable(false);
+            mainPanel.add(nameField, constraints);
+
+            constraints.gridy++;
+            newNameField = new JTextField(15);
+            newNameField.setText(name);
+            mainPanel.add(newNameField, constraints);
+
+            setComponent(mainPanel);
+        }
+
+        /**
+         * Returns the name of animation.
+         * @return the name
+         */
+        public String getAnimationName() {
+            return nameField.getText();
+        }
+
+        /**
+         * Returns the new name of animation.
+         * @return the new name
+         */
+        public String getNewAnimationName() {
+            return newNameField.getText();
+        }
+
+        @Override
+        protected void applyModifications() {
+        }
+   }
 
     /**
     * Dialog shown when we want to create a new animation in this sprite

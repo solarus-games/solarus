@@ -49,9 +49,6 @@ public class SpriteImageTree extends JTree {
         DefaultTreeModel model = new DefaultTreeModel(root);
         model.setAsksAllowsChildren(true);
 
-        // add tileset node
-        root.add(new DefaultMutableTreeNode("tileset", false));
-
         File folder = Project.getSpriteDir();
         if (folder.isDirectory()) {
             buildFolderNode(root, folder);
@@ -139,7 +136,7 @@ public class SpriteImageTree extends JTree {
      */
     public String getSelectedFile () {
 
-        String image = null;
+        String image = "";
         DefaultMutableTreeNode node = null;
         TreePath path = getSelectionPath();
 
@@ -152,7 +149,7 @@ public class SpriteImageTree extends JTree {
         }
         while (node != null) {
             if (!node.isRoot()) {
-                image = ((String) node.getUserObject()) + (image == null ? "" : "/" + image);
+                image = ((String) node.getUserObject()) + (image.isEmpty() ? "" : "/" + image);
             }
             node = (DefaultMutableTreeNode) node.getParent();
         }

@@ -185,6 +185,9 @@ class SpriteAnimationView extends JPanel implements Observer {
         private SpriteImageTree imageTree;
         private ImageView imageView;
 
+        private JRadioButton tilesetButton;
+        private JRadioButton imageButton;
+
         /**
          * Constructor.
          */
@@ -194,17 +197,62 @@ class SpriteAnimationView extends JPanel implements Observer {
 
             srcImage = selectedImage;
 
+            ButtonGroup buttonGroup = new ButtonGroup();
+            tilesetButton = new JRadioButton("tileset");
+            tilesetButton.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+
+                    if (tilesetButton.isSelected()) {
+                        srcImage = "tileset";
+                    } else {
+                        srcImage = imageTree.getSelectedFile();
+                    }
+                    update();
+                }
+            });
+            buttonGroup.add(tilesetButton);
+
+            imageButton = new JRadioButton("image");
+            imageButton.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+
+                    if (imageButton.isSelected()) {
+                        srcImage = imageTree.getSelectedFile();
+                    } else {
+                        srcImage = "tileset";
+                    }
+                    update();
+                }
+            });
+            buttonGroup.add(imageButton);
+
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+            buttonPanel.add(imageButton);
+            buttonPanel.add(tilesetButton);
+
             imageTree = new SpriteImageTree();
             imageTree.setVisible(true);
             final JScrollPane imageTreeScroller = new JScrollPane(imageTree);
+
+            JPanel rightPanel = new JPanel();
+            rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+
+            rightPanel.add(buttonPanel);
+            rightPanel.add(imageTreeScroller);
 
             imageView = new ImageView();
             final JScrollPane imageViewScroller = new JScrollPane(imageView);
             imageViewScroller.setAlignmentY(Component.TOP_ALIGNMENT);
 
             final JSplitPane mainSplitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                    true, imageTreeScroller, imageViewScroller);
+                    true, rightPanel, imageViewScroller);
             mainSplitter.setDividerLocation(200);
+            mainSplitter.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             setComponent(mainSplitter);
 
             imageTree.setSelectedFile(srcImage);
@@ -239,7 +287,22 @@ class SpriteAnimationView extends JPanel implements Observer {
                 }
             });
 
+            if (srcImage.equals("tileset")) {
+                tilesetButton.setSelected(true);
+            } else {
+                imageButton.setSelected(true);
+            }
+            update();
+        }
+
+        /**
+         * Called when one of a radio button has change.
+         */
+        private void update() {
+
+            imageTree.setEnabled(!srcImage.equals("tileset"));
             imageView.revalidate();
+            imageView.repaint();
         }
 
         /**

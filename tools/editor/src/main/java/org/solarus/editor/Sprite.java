@@ -861,22 +861,21 @@ public class Sprite extends Observable {
             File spriteFile = Project.getSpriteFile(animationSetId);
             PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(spriteFile)));
 
-            Set<String> animationNames = animations.keySet();
-
-            if (!defaultAnimationName.isEmpty() && animationNames.contains(defaultAnimationName)) {
+            if (!defaultAnimationName.isEmpty() && animations.containsKey(defaultAnimationName)) {
 
                 lastName = defaultAnimationName;
                 SpriteAnimation animation = animations.get(defaultAnimationName);
                 out.println(animationToString(defaultAnimationName, animation));
-                animationNames.remove(defaultAnimationName);
             }
 
             // Animations.
-            for (String name: animationNames) {
+            for (String name: animations.keySet()) {
 
-                lastName = name;
-                SpriteAnimation animation = animations.get(name);
-                out.println(animationToString(name, animation));
+                if (defaultAnimationName.isEmpty() || !name.equals(defaultAnimationName)) {
+                    lastName = name;
+                    SpriteAnimation animation = animations.get(name);
+                    out.println(animationToString(name, animation));
+                }
             }
 
             out.close();

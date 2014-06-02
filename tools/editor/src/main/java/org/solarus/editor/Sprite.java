@@ -52,13 +52,6 @@ public class Sprite extends Observable {
     private TreeMap<String, SpriteAnimation> animations;
 
     /**
-     * Whether this sprite depends on the tileset.
-     * If yes, the sprite sheet image file will come from the tileset
-     * instead of from a specified fixed file.
-     */
-    private boolean tilesetDependent;
-
-    /**
      * Id of the tileset used to draw this sprite (for tileset-dependent sprites).
      */
     private String tilesetId;
@@ -143,7 +136,6 @@ public class Sprite extends Observable {
                         if (tilesetId.isEmpty()) {
                             throw new SpriteException("No tileset selected");
                         }
-                        tilesetDependent = true;
                         srcImage = Project.getProjectImage(
                                 "tilesets/" + Project.getTilesetEntitiesImageFile(tilesetId).getName());
                     }
@@ -789,7 +781,7 @@ public class Sprite extends Observable {
      */
     public void notifyTilesetChanged(String tilesetId) throws SpriteException {
 
-        if (tilesetId == null || !tilesetDependent) {
+        if (tilesetId == null) {
             return;
         }
 

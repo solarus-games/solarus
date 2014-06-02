@@ -410,8 +410,12 @@ public class Sprite extends Observable {
             } else if (!animations.containsKey(animationName) ) {
                 throw new SpriteException("the animation '" + animationName + "' doesn't exists");
             } else {
-                // select the first direction
-                selectedDirectionNb = 0;
+                // select the first direction if a direction exists
+                if (animations.get(animationName).getNbDirections() > 0) {
+                    selectedDirectionNb = 0;
+                } else {
+                    selectedDirectionNb = -1;
+                }
             }
 
             selectedAnimationName = animationName;
@@ -523,11 +527,12 @@ public class Sprite extends Observable {
         SpriteAnimation animation = new SpriteAnimation("", directions, 0, -1, tilesetId);
 
         animations.put(name, animation);
-        selectedAnimationName = name;
-        selectedDirectionNb = -1;
 
-        isSaved = false;
-        reloadImage(animation);
+        // notify observers that an animation has been added
+        setChanged();
+        notifyObservers(name);
+        // changes the selected animation (notify observers that the sprite has changed)
+        setSelectedAnimation(name);
     }
 
     /**

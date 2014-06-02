@@ -32,6 +32,8 @@ bool InputEvent::joypad_enabled = false;
 SDL_Joystick* InputEvent::joystick = NULL;
 std::map<InputEvent::KeyboardKey, std::string> InputEvent::keyboard_key_names;
 bool InputEvent::repeat_keyboard = false;
+// Default the axis states to centered
+int InputEvent::joypad_axis_state[2] = { 0, 0 }; 
 
 /**
  * \brief Initializes the input event manager.
@@ -211,11 +213,49 @@ InputEvent* InputEvent::get_event() {
 
     // Ignore intermediate positions of joystick axis.
     if (internal_event.type != SDL_JOYAXISMOTION
-        || internal_event.jaxis.value <= 1000
-        || internal_event.jaxis.value >= 10000) {
-
-      result = new InputEvent(internal_event);
+        || std::abs(internal_event.jaxis.value) <= 1000
+        || std::abs(internal_event.jaxis.value) >= 10000) {
+      
+      // If this is a joypad axis event
+      if(internal_event.type == SDL_JOYAXISMOTION)
+      {
+        // Determine the current state of the axis
+        int axis_state = 0;
+        int axis = internal_event.jaxis.axis % 2; // Ensure we only get an index of 0 or 1
+        int value = internal_event.jaxis.value;
+        if (std::abs(value) < 10000) {
+          axis_state = 0;
+        }
+        else {
+          axis_state = (value > 0) ? 1 : -1;
+        }        
+        
+        // and state is same as last event for this axis
+        if(joypad_axis_state[axis] == axis_state)
+        {
+          // Ignore repeat joypad axis movement state.  
+          // However, an event still needs to be returned so that 
+          // all events will be handled this frame.  Therefore, change
+          // the type to a invalid event so it will be ignored.
+          internal_event.type = SDL_LASTEVENT;
+        }
+        else
+        {
+          // Otherwise store the new axis state
+          joypad_axis_state[axis] = axis_state;
+        }
+      }
     }
+    else
+    {
+      // In deadzone band, however, an event still needs to be returned so that 
+      // all events will be handled this frame.  Therefore, change
+      // the type to a invalid event so it will be ignored.
+      internal_event.type = SDL_LASTEVENT;
+      
+    }
+    // Always return an event if one occured, so we will handle all successive events
+    result = new InputEvent(internal_event);
   }
 
   return result;

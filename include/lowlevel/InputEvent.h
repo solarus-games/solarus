@@ -260,7 +260,8 @@ class InputEvent {
     static const KeyboardKey directional_keys[];  /**< array of the keyboard directional keys */
     static bool joypad_enabled;                   /**< true if joypad support is enabled
                                                    * (may be true even without joypad plugged) */
-    static SDL_Joystick* joystick;                /**< the joystick object if enabled and plugged */
+    static SDL_Joystick* joystick;                /**< the joystick object if enabled and plugged */      
+    static int joypad_axis_state[2];              /**< keep track of the current horizontal and verticle axis states */
     static std::map<KeyboardKey, std::string>
       keyboard_key_names;                         /**< Names of all existing keyboard keys. */
     static bool repeat_keyboard;                  /**< True to handle repeat KEYDOWN and KEYUP events. */

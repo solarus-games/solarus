@@ -17,10 +17,13 @@
 package org.solarus.editor.gui;
 
 import java.awt.*;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import org.fife.ui.rsyntaxtextarea.*;
+import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 /**
@@ -44,6 +47,11 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
     private boolean textChanged;
 
     /**
+     * The gutter, to display line numbers.
+     */
+    private Gutter gutter;
+
+    /**
      * Creates a text editor.
      * @param mainWindow The main window of the quest editor.
      * @param file The file to edit.
@@ -63,7 +71,37 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
         textArea.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 0, new Color(248,248,248)));
         textArea.getDocument().addDocumentListener(this);
 
-        RTextScrollPane scroller = new RTextScrollPane(textArea);
+        final RTextScrollPane scroller = new RTextScrollPane(textArea);
+        scroller.setWheelScrollingEnabled(false);
+        gutter = scroller.getGutter();
+
+        scroller.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent event) {
+                if (event.isControlDown()) {
+                    // Control + wheel: zoom.
+                    if (event.getWheelRotation() > 0) {
+                        decrementFontSize();
+                    }
+                    else {
+                        incrementFontSize();
+                    }
+                } else {
+                    // scroll vertically.
+                    JScrollBar bar;
+                    if (event.isShiftDown()) {
+                        // Shift + wheel: scroll horizontally.
+                        bar = scroller.getHorizontalScrollBar();
+                    } else {
+                        // Wheel alone: scroll vertically.
+                        bar = scroller.getVerticalScrollBar();
+                    }
+                    int newValue = bar.getValue() + bar.getBlockIncrement()
+                            * event.getUnitsToScroll();
+                    bar.setValue(newValue);
+                }
+            }
+        });
         add(scroller, BorderLayout.CENTER);
 
         JPopupMenu popup = textArea.getPopupMenu();
@@ -74,6 +112,41 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
         popup.remove(9);
 
         setFile(file);
+    }
+
+    /**
+     * Changes the current font size of the text area.
+     * @param fontSize the font size
+     */
+    private void setFontSize(int fontSize) {
+
+        Font textFont = textArea.getFont();
+        Font gutterFont = gutter.getLineNumberFont();
+
+        textArea.setFont(new Font(textFont.getName(), textFont.getStyle(), fontSize));
+        gutter.setLineNumberFont(new Font(gutterFont.getName(), gutterFont.getStyle(), fontSize));
+    }
+
+    /**
+     * Increments the font size of the text area by 2.
+     */
+    private void incrementFontSize() {
+
+        int size = textArea.getFont().getSize();
+        if (size < 72) {
+            setFontSize(size + 2);
+        }
+    }
+
+    /**
+     * Decrements the font size of the text area by 2.
+     */
+    private void decrementFontSize() {
+
+        int size = textArea.getFont().getSize();
+        if (size > 8) {
+            setFontSize(size - 2);
+        }
     }
 
     /**

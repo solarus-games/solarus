@@ -55,8 +55,14 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
         textArea = new RSyntaxTextArea();
         textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
+
         textArea.setAntiAliasingEnabled(true);
+        textArea.setPaintTabLines(true);
+        textArea.setAnimateBracketMatching(false);
+
+        textArea.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 0, new Color(248,248,248)));
         textArea.getDocument().addDocumentListener(this);
+
         RTextScrollPane scroller = new RTextScrollPane(textArea);
         add(scroller, BorderLayout.CENTER);
 
@@ -113,6 +119,7 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
 
         textChanged = false;
         textArea.discardAllEdits();
+        textArea.setCaretPosition(0);
     }
 
     /**

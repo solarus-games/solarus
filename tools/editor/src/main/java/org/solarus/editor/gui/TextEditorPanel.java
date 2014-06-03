@@ -20,6 +20,8 @@ import java.awt.*;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import org.fife.ui.rsyntaxtextarea.*;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 /**
  * A simple editor using for editing any resources as a text file.
@@ -34,7 +36,7 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
     /**
      * The text area use for the edition.
      */
-    private JTextArea textArea;
+    private RSyntaxTextArea textArea;
 
     /**
      * A boolean used for checking modifications in the content of the text area.
@@ -50,11 +52,20 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
         super(mainWindow, getEditorId(file));
         setLayout(new BorderLayout());
 
-        textArea = new JTextArea();
+        textArea = new RSyntaxTextArea();
         textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
+        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
+        textArea.setAntiAliasingEnabled(true);
         textArea.getDocument().addDocumentListener(this);
-        JScrollPane scroller = new JScrollPane(textArea);
+        RTextScrollPane scroller = new RTextScrollPane(textArea);
         add(scroller, BorderLayout.CENTER);
+
+        JPopupMenu popup = textArea.getPopupMenu();
+        // remove code folding from popupMenu
+        // because the code folding doesn't work with Lua
+        popup.remove(10);
+        // and remove the last separator
+        popup.remove(9);
 
         setFile(file);
     }
@@ -95,7 +106,13 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
         } catch (Exception err) {
             err.printStackTrace();
         }
+
+        if (file.getName().endsWith(".lua") || file.getName().endsWith(".dat")) {
+            textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_LUA);
+        }
+
         textChanged = false;
+        textArea.discardAllEdits();
     }
 
     /**
@@ -142,7 +159,7 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
     }
 
     /**
-     * Closes this editor without confirmation. 
+     * Closes this editor without confirmation.
      */
     @Override
     public void close() {

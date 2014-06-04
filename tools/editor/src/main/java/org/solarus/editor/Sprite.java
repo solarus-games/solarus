@@ -132,10 +132,7 @@ public class Sprite extends Observable {
                     if (!srcImageName.equals("tileset")) {
                         srcImage = Project.getProjectImage("sprites/" + srcImageName);
                     }
-                    else {
-                        if (tilesetId.isEmpty()) {
-                            throw new SpriteException("No tileset selected");
-                        }
+                    else if (!tilesetId.isEmpty()) {
                         srcImage = Project.getProjectImage(
                                 "tilesets/" + Project.getTilesetEntitiesImageFile(tilesetId).getName());
                     }
@@ -232,7 +229,12 @@ public class Sprite extends Observable {
      */
     public Sprite (String animationSetId) throws SpriteException {
 
-        this(animationSetId, Project.getResource(ResourceType.TILESET).getIds()[0]);
+        this(animationSetId, "");
+
+        String[] tilesetIds = Project.getResource(ResourceType.TILESET).getIds();
+        if (tilesetIds.length > 0) {
+            notifyTilesetChanged(tilesetIds[0]);
+        }
     }
 
     /**

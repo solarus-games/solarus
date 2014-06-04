@@ -52,6 +52,11 @@ public class SpriteAnimationDirection extends Observable {
     private Point origin;
 
     /**
+     * @brief Number of frames of the animation direction.
+     */
+    private int nbFrames;
+
+    /**
      * @brief Number of columns of the animation direction.
      */
     private int nbColumns;
@@ -76,18 +81,18 @@ public class SpriteAnimationDirection extends Observable {
         this.size = new Dimension(firstFrameRectangle.width, firstFrameRectangle.height);
         this.origin = new Point(originX, originY);
         this.nbColumns = nbColumns;
+        this.nbFrames = nbFrames;
 
-        setSrcImage(srcImage, nbFrames);
+        setSrcImage(srcImage);
     }
 
     /**
      * Creates the frames of this direction.
-     * @param nbFrames the number of frames to create
      * @throws SpriteException if some rectangles are outside the image.
      */
-    private void createFrames(int nbFrames) throws RasterFormatException {
+    private void createFrames() throws RasterFormatException {
 
-        int nbRows = getNbRows(nbFrames);
+        int nbRows = getNbRows();
         frames = new BufferedImage[nbFrames];
         int frame = 0;
         for (int i = 0; i < nbRows && frame < nbFrames; i++) {
@@ -103,10 +108,9 @@ public class SpriteAnimationDirection extends Observable {
 
     /**
      * Returns the number of rows for a number of frames.
-     * @param nbFrames the number of fframes
      * @return the number of rows
      */
-    public int getNbRows(int nbFrames) {
+    public int getNbRows() {
 
         int nbRows = nbFrames / nbColumns;
         if (nbFrames % nbColumns != 0) {
@@ -118,10 +122,9 @@ public class SpriteAnimationDirection extends Observable {
     /**
      * Changes the source image used to create frames of this direction
      * @param srcImage the source image to use
-     * @param nbFrames the number of frames
      * @throws SpriteException if some rectangles are outside the image.
      */
-    public void setSrcImage (BufferedImage srcImage, int nbFrames) throws SpriteException {
+    public void setSrcImage (BufferedImage srcImage) throws SpriteException {
 
         if (srcImage == null) {
             this.srcImage = null;
@@ -129,7 +132,7 @@ public class SpriteAnimationDirection extends Observable {
             return;
         }
 
-        int nbRows = getNbRows(nbFrames);
+        int nbRows = getNbRows();
         int nbColumns = Math.min(this.nbColumns, nbFrames);
         try {
             if (position.x + nbColumns * size.width > srcImage.getWidth() ||
@@ -137,7 +140,7 @@ public class SpriteAnimationDirection extends Observable {
                 throw new Exception();
             }
             this.srcImage = srcImage;
-            createFrames(nbFrames);
+            createFrames();
             setChanged();
             notifyObservers();
         } catch (Exception ex) {
@@ -147,15 +150,6 @@ public class SpriteAnimationDirection extends Observable {
                     "). Size of source image is only " + srcImage.getWidth() +
                     "x" + srcImage.getHeight() + ".\nPlease fix your sprite file.");
         }
-    }
-
-    /**
-     * Changes the source image used to create frames of this direction
-     * @param srcImage the source image to use
-     * @throws SpriteException if some rectangles are outside the image.
-     */
-    public void setSrcImage (BufferedImage srcImage) throws SpriteException {
-        setSrcImage(srcImage, getNbFrames());
     }
 
     /**
@@ -184,9 +178,8 @@ public class SpriteAnimationDirection extends Observable {
      */
     public Rectangle getRect() {
 
-        int nbFrames = getNbFrames();
         int width = size.width * Math.min(nbColumns, nbFrames);
-        int height = size.height * getNbRows(nbFrames);
+        int height = size.height * getNbRows();
         return new Rectangle(position, new Dimension(width, height));
     }
 
@@ -196,8 +189,7 @@ public class SpriteAnimationDirection extends Observable {
      */
     public Rectangle[] getRects() {
 
-        int nbFrames = getNbFrames();
-        int nbRows = getNbRows(nbFrames);
+        int nbRows = getNbRows();
         Rectangle[] rects = new Rectangle[nbFrames];
 
         int frame = 0;
@@ -288,7 +280,8 @@ public class SpriteAnimationDirection extends Observable {
      * @return The number of frames.
      */
     public int getNbFrames() {
-        return frames.length;
+
+        return nbFrames;
     }
 
     /**
@@ -298,7 +291,15 @@ public class SpriteAnimationDirection extends Observable {
      */
     public void setNbFrames(int nbFrames) throws SpriteException {
 
-        setSrcImage(srcImage, nbFrames);
+        int prevNbFrames = this.nbFrames;
+
+        try {
+            this.nbFrames = nbFrames;
+            setSrcImage(srcImage);
+        } catch (SpriteException ex) {
+            this.nbFrames = prevNbFrames;
+            throw ex;
+        }
     }
 
     /**

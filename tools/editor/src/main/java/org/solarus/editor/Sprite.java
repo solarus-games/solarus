@@ -930,9 +930,9 @@ public class Sprite extends Observable {
             str += ", origin_x = " + originX + ", origin_y = " + originY;
             if (numFrames > 1) {
                 str += ", num_frames = " + numFrames;
-            }
-            if (numColumns > 0) {
-                str += ", num_columns = " + numColumns;
+                if (numColumns > 0 && numColumns < numFrames) {
+                    str += ", num_columns = " + numColumns;
+                }
             }
             str += " },\n";
         }

@@ -87,10 +87,7 @@ public class SpriteAnimationDirection extends Observable {
      */
     private void createFrames(int nbFrames) throws RasterFormatException {
 
-        int nbRows = nbFrames / nbColumns;
-        if (nbFrames % nbColumns != 0) {
-            nbRows++;
-        }
+        int nbRows = getNbRows(nbFrames);
         frames = new BufferedImage[nbFrames];
         int frame = 0;
         for (int i = 0; i < nbRows && frame < nbFrames; i++) {
@@ -133,6 +130,7 @@ public class SpriteAnimationDirection extends Observable {
         }
 
         int nbRows = getNbRows(nbFrames);
+        int nbColumns = Math.min(this.nbColumns, nbFrames);
         try {
             if (position.x + nbColumns * size.width > srcImage.getWidth() ||
                     position.y + nbRows * size.height > srcImage.getHeight()) {
@@ -186,9 +184,10 @@ public class SpriteAnimationDirection extends Observable {
      */
     public Rectangle getRect() {
 
-        Dimension dim = new Dimension(size.width * getNbColumns(),
-                size.height * getNbRows(getNbFrames()));
-        return new Rectangle(position, dim);
+        int nbFrames = getNbFrames();
+        int width = size.width * Math.min(nbColumns, nbFrames);
+        int height = size.height * getNbRows(nbFrames);
+        return new Rectangle(position, new Dimension(width, height));
     }
 
     /**
@@ -308,7 +307,7 @@ public class SpriteAnimationDirection extends Observable {
      */
     public int getNbColumns() {
 
-        return Math.min(nbColumns, getNbFrames());
+        return nbColumns;
     }
 
     /**

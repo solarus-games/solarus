@@ -409,7 +409,7 @@ bool CustomEntity::is_hero_obstacle(Hero& hero) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(hero.get_type());
   if (!info.is_empty()) {
-    return info.is_traversable(hero);
+    return !info.is_traversable(hero);
   }
   return Detector::is_hero_obstacle(hero);
 }
@@ -421,7 +421,7 @@ bool CustomEntity::is_block_obstacle(Block& block) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(block.get_type());
   if (!info.is_empty()) {
-    return info.is_traversable(block);
+    return !info.is_traversable(block);
   }
   return Detector::is_block_obstacle(block);
 }
@@ -433,7 +433,7 @@ bool CustomEntity::is_teletransporter_obstacle(Teletransporter& teletransporter)
 
   const TraversableInfo& info = get_can_traverse_entity_info(teletransporter.get_type());
   if (!info.is_empty()) {
-    return info.is_traversable(teletransporter);
+    return !info.is_traversable(teletransporter);
   }
   return Detector::is_teletransporter_obstacle(teletransporter);
 }
@@ -445,7 +445,7 @@ bool CustomEntity::is_stream_obstacle(Stream& stream) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(stream.get_type());
   if (!info.is_empty()) {
-    return info.is_traversable(stream);
+    return !info.is_traversable(stream);
   }
   return Detector::is_stream_obstacle(stream);
 }
@@ -457,7 +457,7 @@ bool CustomEntity::is_stairs_obstacle(Stairs& stairs) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(stairs.get_type());
   if (!info.is_empty()) {
-    return info.is_traversable(stairs);
+    return !info.is_traversable(stairs);
   }
   return Detector::is_stairs_obstacle(stairs);
 }
@@ -469,7 +469,7 @@ bool CustomEntity::is_sensor_obstacle(Sensor& sensor) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(sensor.get_type());
   if (!info.is_empty()) {
-    return info.is_traversable(sensor);
+    return !info.is_traversable(sensor);
   }
   return Detector::is_sensor_obstacle(sensor);
 }
@@ -481,7 +481,7 @@ bool CustomEntity::is_switch_obstacle(Switch& sw) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(sw.get_type());
   if (!info.is_empty()) {
-    return info.is_traversable(sw);
+    return !info.is_traversable(sw);
   }
   return Detector::is_switch_obstacle(sw);
 }
@@ -493,7 +493,7 @@ bool CustomEntity::is_raised_block_obstacle(CrystalBlock& raised_block) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(raised_block.get_type());
   if (!info.is_empty()) {
-    return info.is_traversable(raised_block);
+    return !info.is_traversable(raised_block);
   }
   return Detector::is_raised_block_obstacle(raised_block);
 }
@@ -505,7 +505,7 @@ bool CustomEntity::is_crystal_obstacle(Crystal& crystal) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(crystal.get_type());
   if (!info.is_empty()) {
-    return info.is_traversable(crystal);
+    return !info.is_traversable(crystal);
   }
   return Detector::is_crystal_obstacle(crystal);
 }
@@ -517,7 +517,7 @@ bool CustomEntity::is_npc_obstacle(Npc& npc) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(npc.get_type());
   if (!info.is_empty()) {
-    return info.is_traversable(npc);
+    return !info.is_traversable(npc);
   }
   return Detector::is_npc_obstacle(npc);
 }
@@ -529,7 +529,7 @@ bool CustomEntity::is_enemy_obstacle(Enemy& enemy) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(enemy.get_type());
   if (!info.is_empty()) {
-    return info.is_traversable(enemy);
+    return !info.is_traversable(enemy);
   }
   return Detector::is_enemy_obstacle(enemy);
 }
@@ -541,7 +541,7 @@ bool CustomEntity::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate
 
   const TraversableInfo& info = get_can_traverse_entity_info(jumper.get_type());
   if (!info.is_empty()) {
-    return info.is_traversable(jumper);
+    return !info.is_traversable(jumper);
   }
   return Detector::is_jumper_obstacle(jumper, candidate_position);
 }
@@ -553,7 +553,7 @@ bool CustomEntity::is_destructible_obstacle(Destructible& destructible) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(destructible.get_type());
   if (!info.is_empty()) {
-    return info.is_traversable(destructible);
+    return !info.is_traversable(destructible);
   }
   return Detector::is_destructible_obstacle(destructible);
 }
@@ -565,7 +565,7 @@ bool CustomEntity::is_separator_obstacle(Separator& separator) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(separator.get_type());
   if (!info.is_empty()) {
-    return info.is_traversable(separator);
+    return !info.is_traversable(separator);
   }
   return Detector::is_separator_obstacle(separator);
 }

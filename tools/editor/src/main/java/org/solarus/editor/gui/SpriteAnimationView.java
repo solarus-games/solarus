@@ -780,7 +780,11 @@ class SpriteAnimationView extends JPanel implements Observer {
                 }
                 srcImage.setVisible(!image.equals("tileset"));
                 tilesetChooser.setVisible(image.equals("tileset"));
-                tilesetChooser.setSelectedId(selectedAnimation.getTilesetId());
+                try {
+                    tilesetChooser.setSelectedId(selectedAnimation.getTilesetId());
+                } catch (NoSuchElementException ex) {
+                    // tileset not found in the list
+                }
             }
             else {
                 setButton.setEnabled(false);

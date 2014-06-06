@@ -56,6 +56,9 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
     final private JButton firstButton;
     final private JButton lastButton;
 
+    // checkbox to draw origin point or not
+    final private JCheckBox drawOrigin;
+
     // icons of start button
     final private ImageIcon startIcon;
     final private ImageIcon pauseIcon;
@@ -191,8 +194,23 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
         secondRowPanel.add(Box.createRigidArea(new Dimension(5, 0)));
         secondRowPanel.add(lastButton);
 
+        // origin point
+        drawOrigin = new JCheckBox("Display origin point");
+        drawOrigin.setAlignmentX(CENTER_ALIGNMENT);
+        drawOrigin.setSelected(imageView.isDrawOrigin());
+        drawOrigin.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+
+                imageView.setDrawOrigin(drawOrigin.isSelected());
+                imageView.repaint();
+            }
+        });
+
         add(imageViewScroller);
         add(Box.createRigidArea(new Dimension(0, 5)));
+        add(drawOrigin);
         add(firstRowPanel);
         add(Box.createRigidArea(new Dimension(0, 5)));
         add(secondRowPanel);
@@ -323,7 +341,12 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
         private int loopOnFrame = 0;
         // the curretn frame
         private int currentFrame = 0;
+        // draw origin point
+        private boolean drawOrigin = true;
 
+        /**
+         * The timer used for animation.
+         */
         private javax.swing.Timer timer;
 
         /**
@@ -360,13 +383,31 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
         }
 
         /**
-         * Check if the previwer is started.
+         * Check if the previewer is started.
          *
          * @return true if the previewer is stared, false otherwise
          */
         public boolean isStarted() {
 
             return timer.isRunning();
+        }
+
+        /**
+         * Check if the previewer draw the origin point.
+         * @return
+         */
+        public boolean isDrawOrigin() {
+
+            return drawOrigin;
+        }
+
+        /**
+         * Sets draw origin point.
+         * @param drawOrigin
+         */
+        public void setDrawOrigin(boolean drawOrigin) {
+
+            this.drawOrigin = drawOrigin;
         }
 
         /**
@@ -455,6 +496,19 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
             if (frames != null && frames.length > 0) {
                 Image image = frames[currentFrame % frames.length];
                 g.drawImage(image, 0, 0, size.width, size.height, null);
+
+                if (drawOrigin && selectedDirection != null) {
+                    Point origin = selectedDirection.getOrigin();
+                    int x = origin.x * 2;
+                    int y = origin.y * 2;
+
+                    g.setColor(Color.MAGENTA);
+                    g.drawLine(x, 0, x, size.height);
+                    g.drawLine(x + 1, 0, x + 1, size.height);
+
+                    g.drawLine(0, y, size.width, y);
+                    g.drawLine(0, y + 1, size.width, y + 1);
+                }
             }
         }
 

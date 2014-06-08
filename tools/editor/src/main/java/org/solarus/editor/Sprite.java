@@ -404,9 +404,16 @@ public class Sprite extends Observable {
             } else if (!animations.containsKey(animationName) ) {
                 throw new SpriteException("the animation '" + animationName + "' doesn't exists");
             } else {
-                // select the first direction if a direction exists
-                if (animations.get(animationName).getNbDirections() > 0) {
-                    selectedDirectionNb = 0;
+                int nbDirections = animations.get(animationName).getNbDirections();
+                if (nbDirections > 0) {
+                    // select the first direction if no direction was selected
+                    if (selectedDirectionNb < 0) {
+                        selectedDirectionNb = 0;
+                    }
+                    // select the last direction if selected direction doesn't exists
+                    else if (selectedDirectionNb >= nbDirections) {
+                        selectedDirectionNb = nbDirections - 1;
+                    }
                 } else {
                     selectedDirectionNb = -1;
                 }

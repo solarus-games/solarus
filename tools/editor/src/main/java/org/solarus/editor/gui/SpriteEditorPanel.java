@@ -18,6 +18,8 @@
 package org.solarus.editor.gui;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import javax.swing.*;
 
 import org.solarus.editor.*;
@@ -68,8 +70,15 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
         JScrollPane spriteImageScroller = new JScrollPane(spriteImageView);
         spriteImageScroller.setAlignmentY(Component.TOP_ALIGNMENT);
 
+        MouseCoordinates mouseCoordinates = new MouseCoordinates(spriteImageView);
+        mouseCoordinates.setAlignmentX(LEFT_ALIGNMENT);
+
+        JPanel rightPanel = new JPanel(new BorderLayout());
+        rightPanel.add(spriteImageScroller, BorderLayout.CENTER);
+        rightPanel.add(mouseCoordinates, BorderLayout.SOUTH);
+
         JSplitPane mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                spriteAnimationsScroller, spriteImageScroller);
+                spriteAnimationsScroller, rightPanel);
         mainPanel.setContinuousLayout(true);
         mainPanel.setDividerLocation(344);
         // we must put our main panel in another panel
@@ -165,5 +174,43 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
         // Notify the children views.
         spriteAnimationsView.setSprite(null);
         spriteImageView.setSprite(null);
+    }
+
+    private class MouseCoordinates extends JLabel {
+
+       /**
+        * Constructor.
+        */
+       public MouseCoordinates(final SpriteImageView imageView) {
+
+           setCoordinates(0, 0);
+
+           imageView.addMouseMotionListener(new MouseMotionAdapter() {
+
+                   @Override
+                   public void mouseMoved(MouseEvent e) {
+
+                       Point coordinate = imageView.getMouseInImage(e.getX(), e.getY());
+                       setCoordinates(coordinate.x, coordinate.y);
+                   }
+
+                   @Override
+                   public void mouseDragged(MouseEvent e) {
+                       mouseMoved(e);
+                   }
+               });
+       }
+
+       /**
+        * Changes the coordinates shown in the label.
+        * @param x the new x coordinate (will be rounded)
+        * @param y the new y coordinate (will be rounded)
+        */
+       private void setCoordinates(int x, int y) {
+
+           int xShown = GuiTools.round8(x);
+           int yShown = GuiTools.round8(y);
+           setText("(" + xShown + ", " + yShown + ")");
+       }
     }
 }

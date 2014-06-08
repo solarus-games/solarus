@@ -473,6 +473,23 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
     }
 
     /**
+     * Converts a position value from the view coordinates to the image coordinate system.
+     * The image coordinate system differs from the image view coordinate system
+     * because of the zoom.
+     * @param x The x value relative to the image view.
+     * @param y The y value relative to the image view.
+     * @return The position value relative to the image.
+     */
+    public Point getMouseInImage (int x, int y) {
+
+        if (isImageLoaded()) {
+            return new Point(x / 2, y / 2);
+        }
+
+        return new Point(0, 0);
+    }
+
+    /**
      * The mouse listener associated to the sprite image.
      */
     private class SpriteImageMouseListener extends MouseAdapter {

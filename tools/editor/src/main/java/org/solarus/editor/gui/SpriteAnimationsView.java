@@ -110,10 +110,35 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
                 }
             });
 
-        JScrollPane listScroller = new JScrollPane(spriteAnimationDirectionsList);
+        final JScrollPane listScroller = new JScrollPane(spriteAnimationDirectionsList);
         listScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         listScroller.setAlignmentX(Component.LEFT_ALIGNMENT);
         listScroller.setPreferredSize(new Dimension(320, 320));
+        listScroller.setWheelScrollingEnabled(false);
+        listScroller.addMouseWheelListener(new MouseWheelListener() {
+
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent event) {
+
+                JScrollBar bar;
+                if (event.isShiftDown()) {
+                    // Shift + wheel: scroll horizontally.
+                    bar = listScroller.getHorizontalScrollBar();
+                } else {
+                    // Wheel alone: scroll vertically.
+                    bar = listScroller.getVerticalScrollBar();
+                }
+                int value = bar.getValue();
+                int newValue = value + bar.getBlockIncrement()
+                        * event.getUnitsToScroll();
+                bar.setValue(newValue);
+
+                // if has no effect, dispatch the event
+                if (bar.getValue() == value) {
+                    SpriteAnimationsView.this.getParent().dispatchEvent(event);
+                }
+            }
+        });
 
         // animation direction
         spriteAnimationDirectionView = new SpriteAnimationDirectionView();

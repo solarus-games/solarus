@@ -77,9 +77,9 @@ Returns the current direction of a hat of the joypad.
 Returns whether a mouse button is currently down.
 - \c button (string): The name of a mouse button.
 - \c x (integer): The x position of the mouse, relative to the viewport
-  scaled to the quest size.
+  position and scaled to the quest size.
 - \c y (integer): The y position of the mouse, relative to the viewport
-  scaled to the quest size.
+  position and scaled to the quest size.
 - Return value (boolean): \c true if this mouse button is currently down.
 
 \subsection lua_api_input_is_moutton_button_pressed sol.input.is_moutton_button_pressed(button, x, y)

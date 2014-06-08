@@ -26,7 +26,7 @@ import org.solarus.editor.*;
 /**
  * This components shows information about animations of a sprite.
  */
-public class SpriteAnimationsView extends JPanel {
+public class SpriteAnimationsView extends JPanel implements Scrollable {
 
     /**
      * The current sprite.
@@ -113,6 +113,7 @@ public class SpriteAnimationsView extends JPanel {
         JScrollPane listScroller = new JScrollPane(spriteAnimationDirectionsList);
         listScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         listScroller.setAlignmentX(Component.LEFT_ALIGNMENT);
+        listScroller.setPreferredSize(new Dimension(320, 320));
 
         // animation direction
         spriteAnimationDirectionView = new SpriteAnimationDirectionView();
@@ -167,6 +168,36 @@ public class SpriteAnimationsView extends JPanel {
                 directionIcons.add(new SpriteAnimationDirectionIcon(direction, sprite));
             }
         }
+    }
+
+    @Override
+    public Dimension getPreferredScrollableViewportSize() {
+
+        return getPreferredSize();
+    }
+
+    @Override
+    public int getScrollableUnitIncrement(Rectangle rctngl, int i, int i1) {
+
+        return 16;
+    }
+
+    @Override
+    public int getScrollableBlockIncrement(Rectangle rctngl, int i, int i1) {
+
+        return 160;
+    }
+
+    @Override
+    public boolean getScrollableTracksViewportWidth() {
+
+        return false;
+    }
+
+    @Override
+    public boolean getScrollableTracksViewportHeight() {
+
+        return false;
     }
 
     /**

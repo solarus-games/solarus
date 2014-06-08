@@ -59,6 +59,9 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
         spriteAnimationsView.setAlignmentY(Component.TOP_ALIGNMENT);
         spriteAnimationsView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
         spriteAnimationsView.setMinimumSize(new Dimension(0, 0));
+        JScrollPane spriteAnimationsScroller = new JScrollPane(spriteAnimationsView);
+        spriteAnimationsScroller.setHorizontalScrollBarPolicy(
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         // sprite animation image
         spriteImageView = new SpriteImageView();
@@ -66,9 +69,9 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
         spriteImageScroller.setAlignmentY(Component.TOP_ALIGNMENT);
 
         JSplitPane mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                spriteAnimationsView, spriteImageScroller);
+                spriteAnimationsScroller, spriteImageScroller);
         mainPanel.setContinuousLayout(true);
-        mainPanel.setDividerLocation(328);
+        mainPanel.setDividerLocation(344);
         // we must put our main panel in another panel
         // otherwise the background color of the window is bad
         add(mainPanel);

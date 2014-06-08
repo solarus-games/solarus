@@ -73,7 +73,9 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
 
         // image view
         imageView = new ImageView();
-        JScrollPane imageViewScroller = new JScrollPane(imageView);
+        JPanel imageViewPanel = new JPanel();
+        imageViewPanel.add(imageView);
+        imageViewPanel.setBorder(BorderFactory.createEtchedBorder());
         // first buttons row
         JPanel firstRowPanel = new JPanel();
         firstRowPanel.setLayout(new BoxLayout(firstRowPanel, BoxLayout.LINE_AXIS));
@@ -208,7 +210,7 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
             }
         });
 
-        add(imageViewScroller);
+        add(imageViewPanel);
         add(Box.createRigidArea(new Dimension(0, 5)));
         add(drawOrigin);
         add(firstRowPanel);
@@ -331,7 +333,7 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
     /**
      * Component to show the direction frame (animated).
      */
-    private class ImageView extends JPanel implements Scrollable {
+    private class ImageView extends JPanel {
 
         // frames list
         private Image[] frames = null;
@@ -494,13 +496,19 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
             Dimension size = getPreferredSize();
             g.clearRect(0, 0, size.width, size.height);
             if (frames != null && frames.length > 0) {
+
                 Image image = frames[currentFrame % frames.length];
-                g.drawImage(image, 0, 0, size.width, size.height, null);
+                int width = image.getWidth(null) * 2;
+                int height = image.getHeight(null) * 2;
+                int x = (size.width - width) / 2;
+                int y = (size.height - height) / 2;
+
+                g.drawImage(image, x, y, width, height, null);
 
                 if (drawOrigin && selectedDirection != null) {
                     Point origin = selectedDirection.getOrigin();
-                    int x = origin.x * 2;
-                    int y = origin.y * 2;
+                    x += origin.x * 2;
+                    y += origin.y * 2;
 
                     g.setColor(Color.MAGENTA);
                     g.drawLine(x, 0, x, size.height);
@@ -517,37 +525,11 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
 
             if (frames != null && frames.length > 0) {
                 Image frame = frames[0];
-                return new Dimension(frame.getWidth(null) * 2, frame.getHeight(null) * 2);
+                return new Dimension(Math.max(208, frame.getWidth(null) * 2),
+                        Math.max(64, frame.getHeight(null) * 2));
             }
 
-            return new Dimension(0, 0);
+            return new Dimension(208, 64);
         }
-
-        @Override
-        public Dimension getPreferredScrollableViewportSize() {
-
-            return new Dimension(240, 128);
-        }
-
-        @Override
-        public int getScrollableUnitIncrement(Rectangle rctngl, int i, int i1) {
-            return 16;
-        }
-
-        @Override
-        public int getScrollableBlockIncrement(Rectangle rctngl, int i, int i1) {
-            return 160;
-        }
-
-        @Override
-        public boolean getScrollableTracksViewportWidth() {
-            return false;
-        }
-
-        @Override
-        public boolean getScrollableTracksViewportHeight() {
-            return false;
-        }
-
     }
 }

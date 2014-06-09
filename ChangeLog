@@ -17,6 +17,7 @@ Changes that do not introduce incompatibilities:
 Solarus Quest Editor changes
 ----------------------------
 
+* Add a sprite editor (#135). By Maxs.
 * Add Lua syntax coloring (#470). By Maxs.
 
 _________________________________

@@ -113,11 +113,19 @@ public class Switch extends MapEntity {
         switch ((Subtype) subtype) {
 
         case WALKABLE_VISIBLE:
-            setSprite(new Sprite("entities/switch", getMap()));
+            try {
+                setSprite(new Sprite("entities/switch", getMap()));
+            } catch (SpriteException ex) {
+                throw new MapException(ex.getMessage());
+            }
             break;
 
         case SOLID:
-            setSprite(new Sprite("entities/solid_switch", getMap()));
+            try {
+                setSprite(new Sprite("entities/solid_switch", getMap()));
+            } catch (SpriteException ex) {
+                throw new MapException(ex.getMessage());
+            }
             break;
 
         default:

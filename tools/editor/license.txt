@@ -8,4 +8,12 @@
   Creative Commons Attribution 3.0 License:
   - icon_refresh.png
   - icon_edit.png
-
+  - icon_add.png
+  - icon_remove.png
+  - icon_first.png
+  - icon_last.png
+  - icon_next.png
+  - icon_pause.png
+  - icon_previous.png
+  - icon_start.png
+  - icon_stop.png

@@ -728,7 +728,14 @@ public class EditorWindow extends JFrame
 
             case SPRITE:
             {
-                openTextEditor(Project.getSpriteFile(resourceId));
+                existingEditor = tabs.getEditor(SpriteEditorPanel.getEditorId(resourceId));
+                if (existingEditor != null) {
+                    tabs.setSelectedComponent(existingEditor);
+                }
+                else {
+                    SpriteEditorPanel spriteEditor = new SpriteEditorPanel(this, resourceId);
+                    tabs.addEditor(spriteEditor);
+                }
                 break;
             }
 
@@ -855,7 +862,7 @@ public class EditorWindow extends JFrame
 
         case SPRITE:
         {
-            editorIds.add(TextEditorPanel.getEditorId(Project.getSpriteFile(elementId)));
+            editorIds.add(SpriteEditorPanel.getEditorId(elementId));
             break;
         }
 

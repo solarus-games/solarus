@@ -17,12 +17,15 @@
 package org.solarus.editor;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Observable;
 import java.util.Vector;
 
 /**
  * Represents an animation of a sprite.
  */
-public class SpriteAnimation {
+public class SpriteAnimation  extends Observable {
 
     /**
      * @brief The directions of this animation.
@@ -43,15 +46,99 @@ public class SpriteAnimation {
     private int loopOnFrame;
 
     /**
+     * @brief Name of the source image of this animation.
+     */
+    private String srcImage;
+
+    /**
+     * @brief Id of the tileset used to draw this animation (if srcImage equals "tileset").
+     */
+    private String tilesetId;
+
+    /**
      * Creates an animation.
+     * @param srcImageName the source image name of this animation
      * @param directions the list of directions of this animation
      * @param frameDelay interval in milliseconds between two frames
      * @param loopOnFrame index of a frame to loop on when the animation is finished, or -1
+     * @param tilesetId the id of tileset to use (only if srcImageName = "tileset")
      */
-    public SpriteAnimation(Vector<SpriteAnimationDirection> directions, int frameDelay, int loopOnFrame) {
+    public SpriteAnimation(String srcImageName, Vector<SpriteAnimationDirection> directions,
+            int frameDelay, int loopOnFrame, String tilesetId) {
         this.directions = directions;
         this.frameDelay = frameDelay;
         this.loopOnFrame = loopOnFrame;
+        this.srcImage = srcImageName;
+        this.tilesetId = tilesetId;
+    }
+
+    /**
+     * Reloads the animation's image.
+     * The observers are notified with the new image as parameter.
+     * @throws SpriteException if image cannot be loaded
+     */
+    public void reloadImage() throws SpriteException {
+
+        BufferedImage image = getImage();
+        for (SpriteAnimationDirection direction: directions) {
+            direction.setSrcImage(image);
+        }
+        setChanged();
+        notifyObservers(image);
+    }
+
+    /**
+     * Returns the animation's image.
+     * @return the animation image
+     * @throws SpriteException if image cannot be loaded
+     */
+    public BufferedImage getImage() throws SpriteException {
+
+        String imagePath;
+
+        if (!srcImage.equals("tileset")) {
+            imagePath = "sprites/" + srcImage;
+        } else {
+            imagePath = "tilesets/" + Project.getTilesetEntitiesImageFile(tilesetId).getName();
+        }
+
+        try {
+            return Project.getProjectImage(imagePath);
+        } catch (IOException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * Returns the name of the source image.
+     * @return the name
+     */
+    public String getSrcImage () {
+
+        return srcImage;
+    }
+
+    /**
+     * Changes the source image.
+     * @param srcImage the name of the source image
+     * @throws SpriteException if this image could not be applied
+     */
+    public void setSrcImage (String srcImage) throws SpriteException {
+
+        if (srcImage.equals(this.srcImage)) {
+            return;
+        }
+
+        String previousSrcImage = this.srcImage;
+
+        try {
+            this.srcImage = srcImage;
+            reloadImage();
+        } catch (SpriteException ex) {
+            this.srcImage = previousSrcImage;
+            reloadImage();
+            throw ex;
+        }
     }
 
     /**
@@ -96,10 +183,11 @@ public class SpriteAnimation {
     /**
      * Returns a direction in this animation.
      * @param direction Index of the direction to get (the first one is 0).
-     * @return The corresponding direction.
+     * @return The corresponding direction or null if doesn't exist.
      */
     public SpriteAnimationDirection getDirection(int direction) {
-        return directions.get(direction);
+
+        return direction >= 0 && direction < directions.size() ? directions.get(direction) : null;
     }
 
     /**
@@ -115,12 +203,112 @@ public class SpriteAnimation {
     }
 
     /**
+     * @brief Changes the time interval between two frames.
+     *
+     * This delay is the same for all directions.
+     *
+     * @param frameDelay The interval in milliseconds between two frames.
+     * 0 means infinite (only possible when there is one frame).
+     */
+    public void setFrameDelay(int frameDelay) {
+
+        this.frameDelay = frameDelay;
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
      * @brief Returns the frame where the animation loops.
      * @returns The index of a frame where to the sprite loops after the last
      * frame, or -1 if there is no loop.
      */
     public int getLoopOnFrame() {
         return loopOnFrame;
+    }
+
+    /**
+     * @brief Changes the frame where the animation loops.
+     * @param index The index of a frame where to the sprite loops after the last
+     * frame, or -1 if there is no loop.
+     */
+    public void setLoopOnFrame(int index) {
+
+        this.loopOnFrame = index;
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Add a new direction in this animation.
+     * the direction is create with one frame corresponding to the rect and his
+     * origin point centered.
+     * @param rect the rect corresponding to the first frame of the direction
+     * @return the added direction.
+     * @throws SpriteException if the direction cannot be created.
+     */
+    public SpriteAnimationDirection addDirection(Rectangle rect) throws SpriteException {
+
+        BufferedImage image = getImage();
+        Point origin = new Point(rect.width / 2, rect.height / 2);
+
+        SpriteAnimationDirection direction = new SpriteAnimationDirection(image, rect, 1, 1, origin.x, origin.y);
+        directions.add(direction);
+
+        setChanged();
+        notifyObservers(direction);
+
+        return direction;
+    }
+
+    /**
+     * Remove a direction from this animation.
+     * @param directionNb the number of the direction to remove
+     * @return the removed direction
+     * @throws SpriteException if the direction doesn't exist
+     */
+    public SpriteAnimationDirection removeDirection(int directionNb) throws SpriteException {
+
+        if (directionNb < 0 || directionNb >= directions.size()) {
+            throw new SpriteException("The direction " + directionNb +
+                    " doesn't exist in this animation");
+        }
+
+        SpriteAnimationDirection direction = directions.get(directionNb);
+        directions.remove(directionNb);
+        setChanged();
+        notifyObservers(direction);
+        return direction;
+    }
+
+    /**
+     * Returns id of the tileset used to draw this animation.
+     *
+     * Used only if srcImage equals "tileset".
+     *
+     * @return The id of the tileset
+     */
+    public String getTilesetId () {
+
+        return tilesetId;
+    }
+
+    /**
+     * Changes id of the tileset used to draw this animation.
+     *
+     * Used only if srcImage equals "tileset".
+     *
+     * @param tilesetId The id of the tileset
+     */
+    public void setTilesetId (String tilesetId) throws SpriteException {
+
+        if (srcImage.equals("tileset")) {
+            try {
+                this.tilesetId = tilesetId;
+                reloadImage();
+            } catch (SpriteException ex) {
+                throw new SpriteException("Tileset image cannot be loaded:\n" + ex.getMessage());
+            }
+        }
     }
 
     /**

@@ -1668,7 +1668,11 @@ public abstract class MapEntity extends Observable {
     public void notifyTilesetChanged(Tileset oldTileset, Tileset newTileset) throws MapException {
 
         if (sprite != null) {
-            sprite.notifyTilesetChanged(newTileset.getId());
+            try {
+                sprite.notifyTilesetChanged(newTileset.getId());
+            } catch (SpriteException ex) {
+                throw new MapException(ex.getMessage());
+            }
         }
     }
 }

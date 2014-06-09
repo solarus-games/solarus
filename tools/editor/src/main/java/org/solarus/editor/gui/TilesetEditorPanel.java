@@ -45,7 +45,7 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
     /**
      * Creates a tileset editor.
      * @param mainWindow The main window of the quest editor.
-     * @param tileset Id of the tileset to open.
+     * @param tilesetId Id of the tileset to open.
      * @throws QuestEditorException If the tileset could not be loaded.
      */
     public TilesetEditorPanel(EditorWindow mainWindow, String tilesetId)
@@ -95,6 +95,7 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
      * If the tileset is not saved, we propose to save it.
      * @return false if the user canceled.
      */
+    @Override
     public boolean checkCurrentFileSaved() {
         boolean result = true;
 
@@ -115,8 +116,8 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
     }
 
     /**
-     * Give the name of the resource opened in the editor
-     * @return the name of the map
+     * Give the resource opened in the editor
+     * @return the tileset
      */
     public Tileset getTileset() {
         return tileset;
@@ -124,8 +125,9 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
 
     /**
      * Give the name of the resource opened in the editor
-     * @return the name of the map
+     * @return the name of the tileset
      */
+    @Override
     public String getTitle() {
         return tileset == null ? "" : "Tileset " + tileset.getName();
     }
@@ -133,6 +135,7 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
     /**
      * Saves the current resource.
      */
+    @Override
     public void save() {
 
         try {

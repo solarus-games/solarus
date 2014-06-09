@@ -26,6 +26,7 @@ import javax.swing.event.*;
 public class CoordinatesField extends JPanel {
 
     // subcomponents
+    protected JLabel fieldSeparator;
     protected JSpinner fieldX;
     protected JSpinner fieldY;
 
@@ -35,6 +36,7 @@ public class CoordinatesField extends JPanel {
     public CoordinatesField() {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
+        fieldSeparator = new JLabel("x");
         fieldX = new JSpinner();
         fieldY = new JSpinner();
 
@@ -46,7 +48,7 @@ public class CoordinatesField extends JPanel {
         Dimension size = new Dimension(5, 0);
         add(fieldX);
         add(Box.createRigidArea(size));
-        add(new JLabel("x"));
+        add(fieldSeparator);
         add(Box.createRigidArea(size));
         add(fieldY);
 
@@ -58,6 +60,7 @@ public class CoordinatesField extends JPanel {
      * Enables or disables the two text fields.
      * @param enable true to make the text fields enabled, false to disable them
      */
+    @Override
     public void setEnabled(boolean enable) {
         fieldX.setEnabled(enable);
         fieldY.setEnabled(enable);
@@ -94,6 +97,28 @@ public class CoordinatesField extends JPanel {
         }
 
         if (getYValue() < y) {
+            setYValue(y);
+        }
+    }
+
+    /**
+     * Sets the maximum values of the two fields.
+     * If the current values are greater than the maximum, they are updated.
+     * @param x maximum x value
+     * @param y maximum y value
+     */
+    public void setMaximum(int x, int y) {
+        SpinnerNumberModel spinnerModel = (SpinnerNumberModel) fieldX.getModel();
+        spinnerModel.setMaximum(x);
+
+        spinnerModel = (SpinnerNumberModel) fieldY.getModel();
+        spinnerModel.setMaximum(y);
+
+        if (getXValue() > x) {
+            setXValue(x);
+        }
+
+        if (getYValue() > y) {
             setYValue(y);
         }
     }
@@ -156,7 +181,7 @@ public class CoordinatesField extends JPanel {
 
     /**
      * Changes the two coordinates values.
-     * @param d the new coordinates
+     * @param p the new coordinates
      */
     public void setCoordinates(Point p) {
         setCoordinates(p.x, p.y);
@@ -191,5 +216,23 @@ public class CoordinatesField extends JPanel {
             result = (getYValue() != y);
         }
         return result;
+    }
+
+    /**
+     * Returns the current field separator.
+     * @return the current separator
+     */
+    public String getSeparator() {
+
+        return fieldSeparator.getText();
+    }
+
+    /**
+     * Changes the field separator.
+     * @param separator the new seperator
+     */
+    public void setSeparator(String separator) {
+
+        fieldSeparator.setText(separator);
     }
 }

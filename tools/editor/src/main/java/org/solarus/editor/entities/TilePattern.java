@@ -176,7 +176,7 @@ public class TilePattern extends Observable {
         setAnimationSeparation(animationSeparation);
         setGround(ground);
 
-        this.images = new BufferedImage[4];
+        this.images = new BufferedImage[Zoom.values().length];
     }
 
     /**
@@ -453,28 +453,19 @@ public class TilePattern extends Observable {
      * @param zoom the zoom
      * @param tileset the tileset
      */
-    public BufferedImage getTileImage(Tileset tileset, double zoom) {
+    public BufferedImage getTileImage(Tileset tileset, Zoom zoom) {
 
-        int index;
-        if (zoom == 0.25) {
-            index = 0;
-        }
-        else if (zoom == 0.5) {
-            index = 1;
-        }
-        else if (zoom == 1.0) {
-            index = 2;
-        }
-        else {
-            index = 3;
-        }
+        int index = zoom.getIndex();
 
         if (images[index] == null) {
-            int x = (int) Math.round(getX() * zoom);
-            int y = (int) Math.round(getY() * zoom);
-            int width = (int) Math.round(getWidth() * zoom);
-            int height = (int) Math.round(getHeight() * zoom);
-            images[index] = tileset.getScaledImage(index).getSubimage(x, y, width, height);
+
+            double zoomValue = zoom.getValue();
+            int x = (int) Math.round(getX() * zoomValue);
+            int y = (int) Math.round(getY() * zoomValue);
+            int width = (int) Math.round(getWidth() * zoomValue);
+            int height = (int) Math.round(getHeight() * zoomValue);
+
+            images[index] = tileset.getScaledImage(zoom).getSubimage(x, y, width, height);
         }
 
         return images[index];
@@ -486,13 +477,13 @@ public class TilePattern extends Observable {
      * @param tileset the tileset
      * @param x x coordinate of where the tile pattern has to be painted
      * @param y y coordinate of where the tile pattern has to be painted
-     * @param zoom scale of the image (1: unchanged, 2: zoom of 200%)
+     * @param zoom zoom value of the image
      * @param showTransparency true to make transparent pixels,
      * false to replace them by a background color
      */
     public void paint(Graphics g, Tileset tileset, int x, int y, double zoom, boolean showTransparency) {
 
-        BufferedImage patternImage = getTileImage(tileset, zoom);
+        BufferedImage patternImage = getTileImage(tileset, Zoom.get(zoom));
         int dx = (int) Math.round(x * zoom);
         int dy = (int) Math.round(y * zoom);
 

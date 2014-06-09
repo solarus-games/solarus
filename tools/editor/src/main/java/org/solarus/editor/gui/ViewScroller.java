@@ -1,21 +1,41 @@
+/*
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Solarus Quest Editor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.solarus.editor.gui;
 
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-
+import java.util.Observer;
+import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
-/**
- * The scroll pane of the map view.
- * It allows the scroll the map view vertically with the mouse wheel,
- * horizontally with shift + mouse wheel,
- * and to zoom with control + mouse wheel.
- */
-public class MapViewScroller extends JScrollPane {
 
-    public MapViewScroller(final MapView mapView) {
-        super(mapView);
+public class ViewScroller extends JScrollPane {
+
+    public static final String ZOOM_IN = "zoomIn";
+    public static final String ZOOM_OUT = "zoomOut";
+
+    /**
+     * Constructor.
+     * @param component the contained component
+     */
+    public ViewScroller(final JComponent component, final Observer observer) {
+
+        super(component);
 
         getHorizontalScrollBar().setBlockIncrement(50);
         getHorizontalScrollBar().setUnitIncrement(10);
@@ -30,10 +50,10 @@ public class MapViewScroller extends JScrollPane {
                 if (event.isControlDown()) {
                     // Control + wheel: zoom.
                     if (event.getWheelRotation() > 0) {
-                        mapView.getViewSettings().zoomOut();
+                        observer.update(null, ZOOM_OUT);
                     }
                     else {
-                        mapView.getViewSettings().zoomIn();
+                        observer.update(null, ZOOM_IN);
                     }
                 } else {
                     JScrollBar bar;

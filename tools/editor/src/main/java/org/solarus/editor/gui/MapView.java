@@ -198,7 +198,7 @@ public class MapView extends JComponent implements Observer {
      * Returns the zoom of the map view.
      * @return the zoom
      */
-    public double getZoom() {
+    public Zoom getZoom() {
         return getViewSettings().getZoom();
     }
 
@@ -207,7 +207,7 @@ public class MapView extends JComponent implements Observer {
      * @return the number of pixels displayed around the map
      */
     public int getScaledSpaceAroundMap() {
-        return (int) (AREA_AROUND_MAP * getZoom());
+        return (int) (AREA_AROUND_MAP * getZoom().getValue());
     }
 
     /**
@@ -227,8 +227,9 @@ public class MapView extends JComponent implements Observer {
             height = map.getHeight();
         }
 
-        width = (int) ((width + 2 * AREA_AROUND_MAP) * getZoom());
-        height = (int) ((height + 2 * AREA_AROUND_MAP) * getZoom());
+        double level = getZoom().getValue();
+        width = (int) ((width + 2 * AREA_AROUND_MAP) * level);
+        height = (int) ((height + 2 * AREA_AROUND_MAP) * level);
 
         return new Dimension(width, height);
     }
@@ -242,7 +243,7 @@ public class MapView extends JComponent implements Observer {
     }
 
     /**
-     * This function is called when the map, the selected entities, the tileset 
+     * This function is called when the map, the selected entities, the tileset
      * or the view settings changes.
      * @param o The object changed.
      * @param parameter Parameter about what has changed, or null.
@@ -360,8 +361,8 @@ public class MapView extends JComponent implements Observer {
                     if (getParent() instanceof JViewport) {
                         JViewport viewport = (JViewport) getParent();
 
-                        double oldZoom = (double) info.oldValue;
-                        double newZoom = (double) info.newValue;
+                        double oldZoom = ((Zoom) info.oldValue).getValue();
+                        double newZoom = ((Zoom) info.newValue).getValue();
                         Rectangle viewRegion = viewport.getViewRect();
 
                         int oldX = 0;
@@ -387,6 +388,14 @@ public class MapView extends JComponent implements Observer {
                     }
                 }
             }
+        } else if (o == null && parameter instanceof String) {
+
+            String event = (String) parameter;
+            if (event.equals(ViewScroller.ZOOM_IN)) {
+                getViewSettings().zoomIn();
+            } else if (event.equals(ViewScroller.ZOOM_OUT)) {
+                getViewSettings().zoomOut();
+            }
         }
     }
 
@@ -411,7 +420,7 @@ public class MapView extends JComponent implements Observer {
         Tileset tileset = map.getTileset();
 
         // outside the map
-        double zoom = getZoom();
+        double zoom = getZoom().getValue();
         int scaledSpaceAroundMap = getScaledSpaceAroundMap();
 
         g.setColor(Color.lightGray);
@@ -1227,7 +1236,7 @@ public class MapView extends JComponent implements Observer {
      * @return The x value relative to the map.
      */
     public int getMouseInMapX(int x) {
-        return (int) ((x - getScaledSpaceAroundMap()) / getZoom());
+        return (int) ((x - getScaledSpaceAroundMap()) / getZoom().getValue());
     }
 
     /**
@@ -1238,7 +1247,7 @@ public class MapView extends JComponent implements Observer {
      * @return The y value relative to the map.
      */
     public int getMouseInMapY(int y) {
-        return (int) ((y - getScaledSpaceAroundMap()) / getZoom());
+        return (int) ((y - getScaledSpaceAroundMap()) / getZoom().getValue());
     }
 
     /**
@@ -1350,7 +1359,7 @@ public class MapView extends JComponent implements Observer {
             int button = mouseEvent.getButton();
             int x = getMouseInMapX(mouseEvent);
             int y = getMouseInMapY(mouseEvent);
-            
+
             if (button != MouseEvent.BUTTON2) {
 
                 switch (state) {
@@ -1554,7 +1563,7 @@ public class MapView extends JComponent implements Observer {
                         // If the rectangle is empty, this was actually a single selection,
                         // that ends when releasing the mouse because ctrl or shift was pressed.
                         // Usually, a single selection ends when pressing the mouse, but when
-                        // ctrl and shift are pressed, a selection rectangle is started instead. 
+                        // ctrl and shift are pressed, a selection rectangle is started instead.
                         if (fixedLocation.x == cursorLocation.x &&
                                 fixedLocation.y == cursorLocation.y) {
 

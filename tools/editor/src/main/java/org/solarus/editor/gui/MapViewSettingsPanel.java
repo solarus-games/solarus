@@ -71,7 +71,7 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
         showTransparencyCheckBox = new JCheckBox("Show transparency");
         showTransparencyCheckBox.addItemListener(new ItemListenerTransparency());
         boxesPanel.add(showTransparencyCheckBox);
-        
+
         showGridCheckBox = new JCheckBox("Show grid");
         showGridCheckBox.addItemListener(new ItemListenerGrid());
         boxesPanel.add(showGridCheckBox);
@@ -137,7 +137,7 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
     	 * Constructor.
     	 */
     	public ItemListenerGrid() {
-    		
+
     	}
         /**
          * Method invoked when the user clicks on the checkbox.
@@ -181,7 +181,7 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
      */
     private class ZoomChooser extends JPanel implements ChangeListener {
 
-        private final double[] zooms = {0.25, 0.5, 1, 2};
+        private final Zoom[] zooms = Zoom.values();
 
         private JSlider slider;
 
@@ -190,14 +190,14 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
 
             setBorder(BorderFactory.createTitledBorder("Zoom"));
 
-            slider = new JSlider(0, 3);
+            slider = new JSlider(0, zooms.length - 1);
             add(slider, BorderLayout.CENTER);
 
             Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
-            labelTable.put(0, new JLabel("25%"));
-            labelTable.put(1, new JLabel("50%"));
-            labelTable.put(2, new JLabel("100%"));
-            labelTable.put(3, new JLabel("200%"));
+            int i = 0;
+            for (Zoom zoom: zooms) {
+                labelTable.put(i++, new JLabel(zoom.getLabel()));
+            }
             slider.setLabelTable(labelTable);
 
             slider.setMajorTickSpacing(10);
@@ -210,12 +210,9 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
         }
 
         public void update() {
-            double zoom = settings.getZoom();
-            for (int i = 0; i < zooms.length; i++) {
-                if (zooms[i] == zoom) {
-                    slider.setValue(i);
-                }
-            }
+
+            Zoom zoom = settings.getZoom();
+            slider.setValue(zoom.getIndex());
         }
 
         @Override

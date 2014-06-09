@@ -151,7 +151,7 @@ public class Tileset extends Observable {
     public String getName() {
         Resource mapResource = Project.getResource(ResourceType.TILESET);
         String name = tilesetId;
-        
+
         try {
             name = mapResource.getElementName(tilesetId);
         }
@@ -198,19 +198,23 @@ public class Tileset extends Observable {
      */
     public void reloadImage() {
         try {
-            scaledImages = new BufferedImage[4];
+            Zoom zooms[] = Zoom.values();
+            scaledImages = new BufferedImage[zooms.length];
 
             image = ImageIO.read(getImageFile());
             int width = image.getWidth(null);
             int height = image.getHeight(null);
 
-            scaledImages[0] = createScaledImage(image, width / 4, height / 4);
+            for (int i = 0; i < zooms.length; i++) {
 
-            scaledImages[1] = createScaledImage(image, width / 2, height / 2);
-
-            scaledImages[2] = image;
-
-            scaledImages[3] = createScaledImage(image, width * 2, height * 2);
+                double zoom = zooms[i].getValue();
+                if (zoom != 1.0) {
+                    scaledImages[i] = createScaledImage(image, (int) Math.round(width * zoom),
+                            (int) Math.round(height * zoom));
+                } else {
+                    scaledImages[i] = image;
+                }
+            }
         }
         catch (IOException e) {
             image = null;
@@ -247,39 +251,25 @@ public class Tileset extends Observable {
 
     /**
      * Returns a scaled version of the tileset image, previously loaded by reloadImage().
-     * @param zoom an integer representing the scale (0: 25%, 1: 50%, 2: 100%, 3: 200%)
+     * @param zoom the zoom
      * @return the scaled tileset image, or null if the image is not loaded
      */
-    public BufferedImage getScaledImage(int zoom) {
-        return scaledImages == null ? null : scaledImages[zoom];
+    public BufferedImage getScaledImage(Zoom zoom) {
+        return scaledImages == null ? null : scaledImages[zoom.getIndex()];
     }
 
     /**
      * Returns a scaled version of the tileset image, previously loaded by reloadImage().
-     * @param zoom the scale (0.25, 0.5, 1 or 2)
+     * @param zoomValue the value of zoom
      * @return the scaled tileset image, or null if the image is not loaded
      */
-    public BufferedImage getScaledImage(double zoom) {
+    public BufferedImage getScaledImage(double zoomValue) {
 
-        if (scaledImages == null) {
+        Zoom zoom = Zoom.get(zoomValue);
+        if (zoom == null) {
             return null;
         }
-
-        int index;
-        if (zoom == 0.25) {
-            index = 0;
-        }
-        else if (zoom == 0.5) {
-            index = 1;
-        }
-        else if (zoom == 1.0) {
-            index = 2;
-        }
-        else {
-            index = 3;
-        }
-
-        return scaledImages[index];
+        return getScaledImage(zoom);
     }
 
     /**
@@ -287,7 +277,7 @@ public class Tileset extends Observable {
      * @return the tileset's image in 200%, or null if the image is not loaded
      */
     public BufferedImage getDoubleImage() {
-        return scaledImages == null ? null : scaledImages[3];
+        return getScaledImage(Zoom.BIG);
     }
 
     /**

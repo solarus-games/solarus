@@ -81,7 +81,7 @@ public class SpriteAnimationDirectionIcon extends JComponent implements Observer
      */
     @Override
     public void paint(Graphics g) {
-        Image image = sprite.getDoubleImage();
+        Image image = sprite.getScaledImage(Zoom.BIG);
 
         if (image != null) {
             Color bgColor = (sprite.getSelectedDirection() == direction) ? bgColorSelected : bgColorUnselected;

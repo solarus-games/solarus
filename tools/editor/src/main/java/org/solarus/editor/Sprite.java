@@ -80,7 +80,15 @@ public class Sprite extends Observable {
      */
     private int selectedDirectionNb;
 
-    private BufferedImage doubleImage;
+    /**
+     * The current sprite animation image.
+     */
+    private BufferedImage image;
+
+    /**
+     * The scaled images of current sprite animation.
+     */
+    private BufferedImage[] scaledImages;
 
     /**
      * Loads the description file of the animation set used by this sprite
@@ -217,6 +225,7 @@ public class Sprite extends Observable {
         this.selectedAnimationName = "";
         this.defaultAnimationName = "";
         this.selectedDirectionNb = -1;
+        this.scaledImages = new BufferedImage[Zoom.values().length];
 
         load();
         setSaved(true);
@@ -648,18 +657,16 @@ public class Sprite extends Observable {
 
         SpriteAnimation animation = getSelectedAnimation();
 
+        scaledImages = new BufferedImage[Zoom.values().length];
         if (animation != null) {
             try {
                 animation.reloadImage();
-                BufferedImage image = animation.getImage();
-                int width = image.getWidth();
-                int height = image.getHeight();
-                doubleImage = createScaledImage(animation.getImage(), width * 2, height * 2);
+                image = animation.getImage();
             } catch (Exception ex) {
-                doubleImage = null;
+                image = null;
             }
         } else {
-            doubleImage = null;
+            image = null;
         }
 
         setChanged();
@@ -683,13 +690,39 @@ public class Sprite extends Observable {
     }
 
     /**
-     * Returns the 200% scaled version of the selected animation's image, previously
-     * loaded by reloadImage().
-     * @return the selected animation's image in 200%, or null if the image is not loaded
+     * Returns the animation's image, previously loaded by reloadImage().
+     * @return the selected animation's image, or null if the image is not loaded
      */
-    public BufferedImage getDoubleImage() {
+    public BufferedImage getImage() {
 
-        return doubleImage;
+        return image;
+    }
+
+    /**
+     * Returns a scaled version of the animation's image, previously loaded by reloadImage().
+     * @param zoom the zoom
+     * @return the scaled animation's image, or null if the image is not loaded
+     */
+    public BufferedImage getScaledImage(Zoom zoom) {
+
+        if (image == null) {
+            return null;
+        }
+
+        int index = zoom.getIndex();
+        double zoomValue = zoom.getValue();
+
+        if (scaledImages[index] == null) {
+            if (zoomValue == 1.0) {
+                scaledImages[index] = image;
+            } else {
+                int width = (int) Math.round(image.getWidth() * zoomValue);
+                int height = (int) Math.round(image.getHeight() * zoomValue);
+                scaledImages[index] = createScaledImage(image, width, height);
+            }
+        }
+
+        return scaledImages[index];
     }
 
     /**

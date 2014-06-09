@@ -67,7 +67,7 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
 
         // sprite animation image
         spriteImageView = new SpriteImageView();
-        JScrollPane spriteImageScroller = new JScrollPane(spriteImageView);
+        JScrollPane spriteImageScroller = new ViewScroller(spriteImageView, spriteImageView);
         spriteImageScroller.setAlignmentY(Component.TOP_ALIGNMENT);
 
         MouseCoordinates mouseCoordinates = new MouseCoordinates(spriteImageView);

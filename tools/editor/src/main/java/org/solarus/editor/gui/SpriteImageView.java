@@ -97,12 +97,18 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
     private final JPopupMenu popupMenuSelectedDirection;
 
     /**
+     * The zoom value of the view.
+     */
+    private Zoom zoom;
+
+    /**
      * Constructor.
      */
     public SpriteImageView() {
         super();
 
         this.state = State.NORMAL;
+        this.zoom = Zoom.get(2.0);
 
         addMouseListener(new SpriteImageMouseListener());
         addMouseMotionListener(new SpriteImageMouseMotionListener());
@@ -194,7 +200,7 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
             height = 0;
         }
         else {
-            Image scaledImage = sprite.getDoubleImage();
+            Image scaledImage = sprite.getScaledImage(zoom);
             width = scaledImage.getWidth(null);
             height = scaledImage.getHeight(null);
         }
@@ -297,6 +303,40 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
             revalidate();
             repaint();
         }
+        else if (o == null && obj instanceof String) {
+
+            String event = (String) obj;
+            switch (event) {
+                case ViewScroller.ZOOM_IN:
+                    zoomIn();
+                    break;
+                case ViewScroller.ZOOM_OUT:
+                    zoomOut();
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Sets the zoom to next value if possible.
+     */
+    public void zoomIn() {
+        if (!zoom.isLastValue()) {
+            zoom = zoom.getNext();
+            revalidate();
+            repaint();
+        }
+    }
+
+    /**
+     * Sets the zoom to previous value if possible.
+     */
+    public void zoomOut() {
+        if (!zoom.isFirstValue()) {
+            zoom = zoom.getPrevious();
+            revalidate();
+            repaint();
+        }
     }
 
     /**
@@ -304,7 +344,7 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
      * @return true if the sprite animation image exists
      */
     public boolean isImageLoaded() {
-        return sprite != null && sprite.getDoubleImage() != null;
+        return sprite != null && sprite.getImage() != null;
     }
 
     /**
@@ -377,7 +417,7 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
         if (isImageLoaded()) { // the image exists
 
             SpriteAnimationDirection selectedDirection = sprite.getSelectedDirection();
-            Image scaledImage = sprite.getDoubleImage();
+            Image scaledImage = sprite.getScaledImage(zoom);
 
             // Draw the image of the sprite.
             g.drawImage(scaledImage, 0, 0, null);
@@ -416,10 +456,11 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
 
             if (rectangleToDraw != null) {
 
-                int x1 = rectangleToDraw.x * 2;
-                int x2 = (rectangleToDraw.x + rectangleToDraw.width) * 2 - 1;
-                int y1 = rectangleToDraw.y * 2;
-                int y2 = (rectangleToDraw.y + rectangleToDraw.height) * 2 - 1;
+                double zoomValue = zoom.getValue();
+                int x1 = (int) Math.round(rectangleToDraw.x * zoomValue);
+                int x2 = (int) Math.round((rectangleToDraw.x + rectangleToDraw.width) * zoomValue) - 1;
+                int y1 = (int) Math.round(rectangleToDraw.y * zoomValue);
+                int y2 = (int) Math.round((rectangleToDraw.y + rectangleToDraw.height) * zoomValue) - 1;
 
                 // draw the top & left lines
                 g.drawLine(x1, y1, x2, y1);
@@ -443,10 +484,10 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
                     // Draw rectangles.
                     for (Rectangle rect: selectedDirection.getRects()) {
 
-                        x1 = (dx + rect.x) * 2;
-                        x2 = (dx + rect.x + rect.width) * 2 - 1;
-                        y1 = (dy + rect.y) * 2;
-                        y2 = (dy + rect.y + rect.height) * 2 - 1;
+                        x1 = (int) Math.round((dx + rect.x) * zoomValue);
+                        x2 = (int) Math.round((dx + rect.x + rect.width) * zoomValue) - 1;
+                        y1 = (int) Math.round((dy + rect.y) * zoomValue);
+                        y2 = (int) Math.round((dy + rect.y + rect.height) * zoomValue) - 1;
 
                         g.drawLine(x2, y1, x2, y2);
                         g.drawLine(x2, y2, x1, y2);
@@ -483,7 +524,8 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
     public Point getMouseInImage (int x, int y) {
 
         if (isImageLoaded()) {
-            return new Point(x / 2, y / 2);
+            double zoomValue = zoom.getValue();
+            return new Point((int) (x / zoomValue), (int) (y / zoomValue));
         }
 
         return new Point(0, 0);
@@ -504,12 +546,13 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
         public void mouseClicked(MouseEvent mouseEvent) {
             if (isImageLoaded()) {
 
-                Image scaledImage = sprite.getDoubleImage();
+                Image scaledImage = sprite.getScaledImage(zoom);
 
-                int x = Math.min(Math.max(mouseEvent.getX(), 0),
-                        scaledImage.getWidth(SpriteImageView.this)) / 2;
-                int y = Math.min(Math.max(mouseEvent.getY(), 0),
-                        scaledImage.getHeight(SpriteImageView.this)) / 2;
+                double zoomValue = zoom.getValue();
+                int x = (int) (Math.min(Math.max(mouseEvent.getX(), 0),
+                        scaledImage.getWidth(SpriteImageView.this)) / zoomValue);
+                int y = (int) (Math.min(Math.max(mouseEvent.getY(), 0),
+                        scaledImage.getHeight(SpriteImageView.this)) / zoomValue);
 
                 // search the direction clicked
                 int clickedDirectionNb = sprite.getDirectionNbAt(x, y);
@@ -556,12 +599,13 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
             // Only consider left clicks.
             if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
-                Image scaledImage = sprite.getDoubleImage();
+                Image scaledImage = sprite.getScaledImage(zoom);
 
-                int x = Math.min(Math.max(mouseEvent.getX(), 0),
-                        scaledImage.getWidth(SpriteImageView.this)) / 2;
-                int y = Math.min(Math.max(mouseEvent.getY(), 0),
-                        scaledImage.getHeight(SpriteImageView.this)) / 2;
+                double zoomValue = zoom.getValue();
+                int x = (int) (Math.min(Math.max(mouseEvent.getX(), 0),
+                        scaledImage.getWidth(SpriteImageView.this)) / zoomValue);
+                int y = (int) (Math.min(Math.max(mouseEvent.getY(), 0),
+                        scaledImage.getHeight(SpriteImageView.this)) / zoomValue);
 
                 switch (state) {
 
@@ -684,7 +728,9 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
                 return;
             }
 
-            Image scaledImage = sprite.getDoubleImage();
+            Image scaledImage = sprite.getScaledImage(zoom);
+            double zoomValue = zoom.getValue();
+
             switch (state) {
 
             case NORMAL:
@@ -696,10 +742,10 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
                 Point selectionPreviousPoint = draggingCurrentPoint;
                 draggingCurrentPoint = mouseEvent.getPoint();
 
-                draggingCurrentPoint.x = Math.min(Math.max(
-                        mouseEvent.getX(), 0), scaledImage.getWidth(SpriteImageView.this));
-                draggingCurrentPoint.y = Math.min(Math.max(
-                        mouseEvent.getY(), 0), scaledImage.getHeight(SpriteImageView.this));
+                draggingCurrentPoint.x = (int) (Math.min(Math.max(mouseEvent.getX(), 0),
+                        scaledImage.getWidth(SpriteImageView.this)) / zoomValue * 2);
+                draggingCurrentPoint.y = (int) (Math.min(Math.max(mouseEvent.getY(), 0),
+                        scaledImage.getHeight(SpriteImageView.this)) / zoomValue * 2);
 
                 draggingCurrentPoint.x = (draggingCurrentPoint.x + 8) / 16 * 8;
                 draggingCurrentPoint.y = (draggingCurrentPoint.y + 8) / 16 * 8;
@@ -735,10 +781,10 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
             {
                 draggingCurrentPoint = mouseEvent.getPoint();
 
-                draggingCurrentPoint.x = Math.min(Math.max(
-                        mouseEvent.getX(), 0), scaledImage.getWidth(SpriteImageView.this));
-                draggingCurrentPoint.y = Math.min(Math.max(
-                        mouseEvent.getY(), 0), scaledImage.getHeight(SpriteImageView.this));
+                draggingCurrentPoint.x = (int) (Math.min(Math.max(mouseEvent.getX(), 0),
+                        scaledImage.getWidth(SpriteImageView.this)) / zoomValue * 2);
+                draggingCurrentPoint.y = (int) (Math.min(Math.max(mouseEvent.getY(), 0),
+                        scaledImage.getHeight(SpriteImageView.this)) / zoomValue * 2);
 
                 Rectangle newDirectionArea = new Rectangle(currentArea);
                 newDirectionArea.x = directionBeingMoved.getPosition().x

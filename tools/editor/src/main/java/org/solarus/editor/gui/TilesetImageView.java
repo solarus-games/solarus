@@ -20,6 +20,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import org.solarus.editor.Zoom;
 import org.solarus.editor.entities.*;
 
 /**
@@ -112,6 +113,11 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
      * Items in the popup menu to set the type of ground of the selected tile pattern.
      */
     private JRadioButtonMenuItem[] itemsGround;
+
+    /**
+     * The zoom value.
+     */
+    private Zoom zoom = Zoom.get(2.0);
 
     /**
      * Constructor.
@@ -221,7 +227,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
             height = 0;
         }
         else {
-            Image scaledImage = tileset.getDoubleImage();
+            Image scaledImage = tileset.getScaledImage(zoom);
             width = scaledImage.getWidth(null);
             height = scaledImage.getHeight(null);
         }
@@ -317,6 +323,18 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
             // A tile pattern has changed or has been added.
             repaint();
         }
+        else if (o == null && obj instanceof String) {
+
+            String event = (String) obj;
+            switch (event) {
+                case ViewScroller.ZOOM_IN:
+                    zoomIn();
+                    break;
+                case ViewScroller.ZOOM_OUT:
+                    zoomOut();
+                    break;
+            }
+        }
     }
 
     /**
@@ -324,7 +342,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
      * @return true if the tileset image exists
      */
     public boolean isImageLoaded() {
-        return tileset != null && tileset.getDoubleImage() != null;
+        return tileset != null && tileset.getImage() != null;
     }
 
     /**
@@ -408,7 +426,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
         if (isImageLoaded()) { // the image exists
 
             TilePattern selectedTilePattern = null;
-            Image scaledImage = tileset.getDoubleImage();
+            Image scaledImage = tileset.getScaledImage(zoom);
 
             // Draw the image of the tileset.
             g.drawImage(scaledImage, 0, 0, null);
@@ -453,10 +471,11 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
             // Draw the additional rectangle.
             if (rectangleToDraw != null) {
 
-                int x1 = rectangleToDraw.x * 2;
-                int x2 = (rectangleToDraw.x + rectangleToDraw.width) * 2 - 1;
-                int y1 = rectangleToDraw.y * 2;
-                int y2 = (rectangleToDraw.y + rectangleToDraw.height) * 2 - 1;
+                double zoomValue = zoom.getValue();
+                int x1 = (int) Math.round(rectangleToDraw.x * zoomValue);
+                int x2 = (int) Math.round((rectangleToDraw.x + rectangleToDraw.width) * zoomValue) - 1;
+                int y1 = (int) Math.round(rectangleToDraw.y * zoomValue);
+                int y2 = (int) Math.round((rectangleToDraw.y + rectangleToDraw.height) * zoomValue) - 1;
 
                 g.drawLine(x1, y1, x2, y1);
                 g.drawLine(x2, y1, x2, y2);
@@ -506,6 +525,28 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
     }
 
     /**
+     * Sets the zoom to next value if possible.
+     */
+    public void zoomIn() {
+        if (!zoom.isLastValue()) {
+            zoom = zoom.getNext();
+            revalidate();
+            repaint();
+        }
+    }
+
+    /**
+     * Sets the zoom to previous value if possible.
+     */
+    public void zoomOut() {
+        if (!zoom.isFirstValue()) {
+            zoom = zoom.getPrevious();
+            revalidate();
+            repaint();
+        }
+    }
+
+    /**
      * The mouse listener associated to the tileset image.
      */
     private class TilesetImageMouseListener extends MouseAdapter {
@@ -520,12 +561,13 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
         public void mouseClicked(MouseEvent mouseEvent) {
             if (isImageLoaded()) {
 
-                Image scaledImage = tileset.getDoubleImage();
+                Image scaledImage = tileset.getScaledImage(zoom);
 
-                int x = Math.min(Math.max(mouseEvent.getX(), 0),
-                        scaledImage.getWidth(TilesetImageView.this)) / 2;
-                int y = Math.min(Math.max(mouseEvent.getY(), 0),
-                        scaledImage.getHeight(TilesetImageView.this)) / 2;
+                double zoomValue = zoom.getValue();
+                int x = (int) (Math.min(Math.max(mouseEvent.getX(), 0),
+                        scaledImage.getWidth(TilesetImageView.this)) / zoomValue);
+                int y = (int) (Math.min(Math.max(mouseEvent.getY(), 0),
+                        scaledImage.getHeight(TilesetImageView.this)) / zoomValue);
 
                 // search the tile pattern clicked
                 int clickedTileId = tileset.getTilePatternIdAt(x, y);
@@ -568,12 +610,13 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
             // Only consider left clicks.
             if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
-                Image scaledImage = tileset.getDoubleImage();
+                Image scaledImage = tileset.getScaledImage(zoom);
 
-                int x = Math.min(Math.max(mouseEvent.getX(), 0),
-                        scaledImage.getWidth(TilesetImageView.this)) / 2;
-                int y = Math.min(Math.max(mouseEvent.getY(), 0),
-                        scaledImage.getHeight(TilesetImageView.this)) / 2;
+                double zoomValue = zoom.getValue();
+                int x = (int) (Math.min(Math.max(mouseEvent.getX(), 0),
+                        scaledImage.getWidth(TilesetImageView.this)) / zoomValue);
+                int y = (int) (Math.min(Math.max(mouseEvent.getY(), 0),
+                        scaledImage.getHeight(TilesetImageView.this)) / zoomValue);
 
                 switch (state) {
 
@@ -696,7 +739,9 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
                 return;
             }
 
-            Image scaledImage = tileset.getDoubleImage();
+            Image scaledImage = tileset.getScaledImage(zoom);
+            double zoomValue = zoom.getValue();
+
             switch (state) {
 
             case NORMAL:
@@ -708,10 +753,10 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
                 Point selectionPreviousPoint = draggingCurrentPoint;
                 draggingCurrentPoint = mouseEvent.getPoint();
 
-                draggingCurrentPoint.x = Math.min(Math.max(
-                        mouseEvent.getX(), 0), scaledImage.getWidth(TilesetImageView.this));
-                draggingCurrentPoint.y = Math.min(Math.max(
-                        mouseEvent.getY(), 0), scaledImage.getHeight(TilesetImageView.this));
+                draggingCurrentPoint.x = (int) (Math.min(Math.max(mouseEvent.getX(), 0),
+                        scaledImage.getWidth(TilesetImageView.this)) / zoomValue * 2);
+                draggingCurrentPoint.y = (int) (Math.min(Math.max(mouseEvent.getY(), 0),
+                        scaledImage.getHeight(TilesetImageView.this)) / zoomValue * 2);
 
                 draggingCurrentPoint.x = (draggingCurrentPoint.x + 8) / 16 * 8;
                 draggingCurrentPoint.y = (draggingCurrentPoint.y + 8) / 16 * 8;
@@ -747,10 +792,10 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
             {
                 draggingCurrentPoint = mouseEvent.getPoint();
 
-                draggingCurrentPoint.x = Math.min(Math.max(
-                        mouseEvent.getX(), 0), scaledImage.getWidth(TilesetImageView.this));
-                draggingCurrentPoint.y = Math.min(Math.max(
-                        mouseEvent.getY(), 0), scaledImage.getHeight(TilesetImageView.this));
+                draggingCurrentPoint.x = (int) (Math.min(Math.max(mouseEvent.getX(), 0),
+                        scaledImage.getWidth(TilesetImageView.this)) / zoomValue * 2);
+                draggingCurrentPoint.y = (int) (Math.min(Math.max(mouseEvent.getY(), 0),
+                        scaledImage.getHeight(TilesetImageView.this)) / zoomValue * 2);
 
                 Rectangle newTilePatternArea = new Rectangle(currentArea);
                 newTilePatternArea.x = patternBeingMoved.getX()

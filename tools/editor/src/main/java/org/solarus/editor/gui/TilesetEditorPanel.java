@@ -64,7 +64,7 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
 
         // tileset image
         tilesetImageView = new TilesetImageView(true);
-        JScrollPane tilesetImageScroller = new JScrollPane(tilesetImageView);
+        JScrollPane tilesetImageScroller = new ViewScroller(tilesetImageView, tilesetImageView);
         tilesetImageScroller.setAlignmentY(Component.TOP_ALIGNMENT);
 
         JSplitPane tilesetPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tilePatternsView, tilesetImageScroller);
@@ -146,7 +146,7 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
     }
 
     /**
-     * Closes this editor without confirmation. 
+     * Closes this editor without confirmation.
      */
     @Override
     public void close() {

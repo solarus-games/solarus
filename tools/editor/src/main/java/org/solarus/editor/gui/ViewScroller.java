@@ -23,19 +23,23 @@ import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
-
+/**
+ * A generic scroll pane for graphic views.
+ * It allows the scroll the view vertically with the mouse wheel,
+ * horizontally with shift + mouse wheel,
+ * and to zoom with control + mouse wheel.
+ */
 public class ViewScroller extends JScrollPane {
 
     public static final String ZOOM_IN = "zoomIn";
     public static final String ZOOM_OUT = "zoomOut";
 
+    private Observer observer;
+
     /**
      * Constructor.
-     * @param component the contained component
      */
-    public ViewScroller(final JComponent component, final Observer observer) {
-
-        super(component);
+    public ViewScroller() {
 
         getHorizontalScrollBar().setBlockIncrement(50);
         getHorizontalScrollBar().setUnitIncrement(10);
@@ -50,10 +54,10 @@ public class ViewScroller extends JScrollPane {
                 if (event.isControlDown()) {
                     // Control + wheel: zoom.
                     if (event.getWheelRotation() > 0) {
-                        observer.update(null, ZOOM_OUT);
+                        zoomOut();
                     }
                     else {
-                        observer.update(null, ZOOM_IN);
+                        zoomIn();
                     }
                 } else {
                     JScrollBar bar;
@@ -70,5 +74,56 @@ public class ViewScroller extends JScrollPane {
                 }
             }
         });
+    }
+
+    /**
+     * Constructor.
+     * @param observer the observer
+     */
+    public ViewScroller(Observer observer) {
+
+        this();
+        this.observer = observer;
+    }
+
+    /**
+     * Constructor.
+     * @param component the component
+     * @param observer the observer
+     */
+    public ViewScroller(final JComponent component, Observer observer) {
+
+        this();
+        this.observer = observer;
+        setViewportView(component);
+    }
+
+    /**
+     * Notify observer to sets the zoom to next value.
+     */
+    private void zoomIn() {
+
+        if (observer != null) {
+            observer.update(null, ZOOM_IN);
+        }
+    }
+
+    /**
+     * Notify observer to sets the zoom to previous value.
+     */
+    private void zoomOut() {
+
+        if (observer != null) {
+            observer.update(null, ZOOM_OUT);
+        }
+    }
+
+    /**
+     * Changes the current observer (usually the viewportView of this scrollpane).
+     * @param observer the observer
+     */
+    protected void setObserver(Observer observer) {
+
+        this.observer = observer;
     }
 }

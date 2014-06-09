@@ -16,7 +16,6 @@
  */
 package org.solarus.editor.gui;
 
-import javax.swing.*;
 import java.util.*;
 import org.solarus.editor.Map;
 
@@ -24,7 +23,7 @@ import org.solarus.editor.Map;
  * This component shows the tileset and allows the user to pick a tile
  * in order to put it into the map.
  */
-public class TilePicker extends JScrollPane implements Observer {
+public class TilePicker extends ViewScroller implements Observer {
 
     /**
      * The current map.
@@ -43,6 +42,7 @@ public class TilePicker extends JScrollPane implements Observer {
         super();
 
         tilesetImageView = new TilesetImageView(false);
+        setObserver(tilesetImageView);
         setViewportView(tilesetImageView);
     }
 

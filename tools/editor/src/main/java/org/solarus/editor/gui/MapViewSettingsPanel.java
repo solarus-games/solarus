@@ -36,9 +36,9 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
      */
     private MapViewSettings settings;
 
-    private JCheckBox showLowLayerCheckBox;
-    private JCheckBox showIntermediateLayerCheckBox;
-    private JCheckBox showHighLayerCheckBox;
+    private JCheckBoxMenuItem showLowLayerCheckBox;
+    private JCheckBoxMenuItem showIntermediateLayerCheckBox;
+    private JCheckBoxMenuItem showHighLayerCheckBox;
     private JCheckBox showTransparencyCheckBox;
     private JCheckBox showGridCheckBox;
     private ZoomChooser zoomChooser;
@@ -53,31 +53,73 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
         this.settings = settings;
 
         zoomChooser = new ZoomChooser();
-        JPanel boxesPanel = new JPanel(new GridLayout(2, 3));
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(5, 5, 5, 5); // margins
+        constraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        constraints.weightx = 1;
 
-        showLowLayerCheckBox = new JCheckBox("Show low layer");
+        // show/hide layer
+        showLowLayerCheckBox = new JCheckBoxMenuItem("Show low layer");
         showLowLayerCheckBox.addItemListener(new ItemListenerLayer(Layer.LOW));
-        boxesPanel.add(showLowLayerCheckBox);
 
-        showIntermediateLayerCheckBox = new JCheckBox("Show intermediate layer");
+        showIntermediateLayerCheckBox = new JCheckBoxMenuItem("Show intermediate layer");
         showIntermediateLayerCheckBox.addItemListener(new ItemListenerLayer(Layer.INTERMEDIATE));
-        boxesPanel.add(showIntermediateLayerCheckBox);
 
-        showHighLayerCheckBox = new JCheckBox("Show high layer");
+        showHighLayerCheckBox = new JCheckBoxMenuItem("Show high layer");
         showHighLayerCheckBox.setSelected(settings.getShowLayer(Layer.HIGH));
         showHighLayerCheckBox.addItemListener(new ItemListenerLayer(Layer.HIGH));
-        boxesPanel.add(showHighLayerCheckBox);
 
+        final JPopupMenu showLayerPopupMenu = new JPopupMenu();
+        showLayerPopupMenu.add(showLowLayerCheckBox);
+        showLayerPopupMenu.add(showIntermediateLayerCheckBox);
+        showLayerPopupMenu.add(showHighLayerCheckBox);
+
+        final JButton showLayerButton = new JButton("Show/Hide layer");
+        showLayerButton.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent me) {
+
+                showLayerPopupMenu.show(showLayerButton, 0, showLayerButton.getHeight());
+            }
+
+            @Override
+            public void mousePressed(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent me) {
+            }
+        });
+
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        centerPanel.add(showLayerButton, constraints);
+
+        // show transparency
         showTransparencyCheckBox = new JCheckBox("Show transparency");
         showTransparencyCheckBox.addItemListener(new ItemListenerTransparency());
-        boxesPanel.add(showTransparencyCheckBox);
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        centerPanel.add(showTransparencyCheckBox, constraints);
 
+        // show grid
         showGridCheckBox = new JCheckBox("Show grid");
         showGridCheckBox.addItemListener(new ItemListenerGrid());
-        boxesPanel.add(showGridCheckBox);
+        constraints.gridx++;
+        centerPanel.add(showGridCheckBox, constraints);
 
         add(zoomChooser, BorderLayout.WEST);
-        add(boxesPanel, BorderLayout.CENTER);
+        add(centerPanel, BorderLayout.CENTER);
 
         update(settings, null);
         settings.addObserver(this);

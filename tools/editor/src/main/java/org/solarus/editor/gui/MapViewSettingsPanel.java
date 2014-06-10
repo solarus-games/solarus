@@ -42,6 +42,7 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
     private JCheckBox showTransparencyCheckBox;
     private JCheckBox showGridCheckBox;
     private ZoomChooser zoomChooser;
+    private JCheckBoxMenuItem[] showEntityCheckBoxes;
 
     /**
      * Constructor.
@@ -105,6 +106,50 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
         constraints.gridy = 0;
         centerPanel.add(showLayerButton, constraints);
 
+        // show/hide entity type
+        final JPopupMenu showEntityPopupMenu = new JPopupMenu();
+
+        EntityType[] types = EntityType.values();
+        showEntityCheckBoxes = new JCheckBoxMenuItem[types.length];
+
+        for (int i = 0; i < types.length; i++) {
+
+            EntityType type = types[i];
+            showEntityCheckBoxes[i] = new JCheckBoxMenuItem("Show " + types[i].getHumanName());
+            showEntityCheckBoxes[i].setSelected(settings.getShowEntityType(type));
+            showEntityCheckBoxes[i].addItemListener(new ItemListenerEntity(type));
+            showEntityPopupMenu.add(showEntityCheckBoxes[i]);
+        }
+
+        final JButton showEntityButton = new JButton("Show/Hide entity type");
+        showEntityButton.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent me) {
+
+                showEntityPopupMenu.show(showEntityButton, 0, showEntityButton.getHeight());
+            }
+
+            @Override
+            public void mousePressed(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent me) {
+            }
+        });
+
+        constraints.gridx++;
+        centerPanel.add(showEntityButton, constraints);
+
         // show transparency
         showTransparencyCheckBox = new JCheckBox("Show transparency");
         showTransparencyCheckBox.addItemListener(new ItemListenerTransparency());
@@ -137,6 +182,10 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
             showTransparencyCheckBox.setSelected(settings.getShowTransparency());
             showGridCheckBox.setSelected(settings.getShowGrid());
             zoomChooser.update();
+
+            for (EntityType type: EntityType.values()) {
+                showEntityCheckBoxes[type.ordinal()].setSelected(settings.getShowEntityType(type));
+            }
         }
     }
 
@@ -260,6 +309,39 @@ public class MapViewSettingsPanel extends JPanel implements Observer {
         @Override
         public void stateChanged(ChangeEvent ev) {
             settings.setZoom(zooms[slider.getValue()]);
+        }
+    }
+
+    /**
+     * Listener invoked when the state of a entity checkbox has changed.
+     */
+    private class ItemListenerEntity implements ItemListener {
+
+        /**
+         * The entity type controlled by this checkbox.
+         */
+        private final EntityType type;
+
+        /**
+         * Constructor.
+         * @param type the entity type controlled by the checkbox.
+         */
+        public ItemListenerEntity(EntityType type) {
+
+            this.type = type;
+        }
+
+        /**
+         * Method invoked when the user clicks on the checkbox.
+         */
+        @Override
+        public void itemStateChanged(ItemEvent itemEvent) {
+
+            // get the new checkbox state
+            boolean show = (itemEvent.getStateChange() == ItemEvent.SELECTED);
+
+            // update the options
+            settings.setShowEntityType(type, show);
         }
     }
 }

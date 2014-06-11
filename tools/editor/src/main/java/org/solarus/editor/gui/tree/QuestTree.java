@@ -16,75 +16,54 @@
  */
 package org.solarus.editor.gui.tree;
 
-import imagej.util.swing.tree.CheckBoxNodeData;
-import imagej.util.swing.tree.CheckBoxNodeEditor;
-import imagej.util.swing.tree.CheckBoxNodeRenderer;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.lang.reflect.InvocationTargetException;
-import java.util.NoSuchElementException;
-import java.util.Observable;
-import java.util.Observer;
-
+import java.awt.event.*;
+import java.io.File;
 import javax.swing.JComponent;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-
-import org.solarus.editor.Map;
-import org.solarus.editor.MapViewSettings;
-import org.solarus.editor.Project;
-import org.solarus.editor.ProjectObserver;
-import org.solarus.editor.QuestEditorException;
-import org.solarus.editor.Resource;
-import org.solarus.editor.ResourceElement;
-import org.solarus.editor.ResourceType;
-import org.solarus.editor.entities.EntitySubtype;
-import org.solarus.editor.entities.EntityType;
-import org.solarus.editor.gui.EditorWindow;
-import org.solarus.editor.gui.GuiTools;
-import org.solarus.editor.gui.MapEditorPanel;
+import org.solarus.editor.*;
+import org.solarus.editor.gui.*;
 
 /**
- * A tree that shows the whole resource list of the game:
- * maps, tilesets, sprites, enemies, etc.
- * Under the root node, there is a node for each resource type.
- * These nodes have a ResourceType user object.
+ * A tree that shows the project data directory, resources and scripts.
+ * Under the root node, there is a node for each sub directories, resource files
+ * or lua scripts.
  *
- * Under each resource type, there are the nodes of all corresponding
- * resource elements. These nodes have a ResourceElement user object.
- * 
- * - Root
- *   - ResourceType
- *     - ResourceElement
- *     - ResourceElement
+ * The tree keeps the hierarchy order and the alphabetical order of files.
+ *
+ * All file or directory nodes have a FileElement user object, and all resource
+ * nodes have a ResourceElement user object.
+ *
+ * - Root (FileElement)
+ *   - FileElement
+ *     - FileElement
+ *       - FileElement (script)
+ *       - FileElement (script)
+ *       - ...
+ *       - ResourceElement
+ *       - ResourceElement
+ *       - ...
+ *     - FileElement (script)
+ *     - ...
  *     - ResourceElement
  *     - ...
- *   - ResourceType
- *     - ResourceElement
- *     - ResourceElement
+ *   - FileElement
+ *     - FileElement (script)
+ *     - ...
  *     - ResourceElement
  *     - ...
- *   - ResourceType
- *     - ResourceElement
- *     - ResourceElement
- *     - ResourceElement
- *     - ...
+ *   - FileElement (script)
  *   - ...
  */
-public class QuestTree extends JTree implements ProjectObserver, Observer {
+public class QuestTree extends JTree implements ProjectObserver {
 
     private EditorWindow editorWindow;  // The main window.
-    
+
     /**
      * Creates a quest tree.
      * @param parent The main quest editor window.
@@ -93,19 +72,12 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
         setModel(null);  // Because Java makes a stupid example tree by default.
         this.editorWindow = parent;
 
-        final CheckBoxNodeRenderer renderer = new CheckBoxNodeRenderer();
-        setCellRenderer(renderer);
-
-        final CheckBoxNodeEditor editor = new CheckBoxNodeEditor(this);
-        setCellEditor(editor);
-        setEditable(true);
-        setDragEnabled(true);
-        
+        //setDragEnabled(true);
         addMouseListener(new QuestTreeMouseAdapter());
 
         Project.addProjectObserver(this);
-        
-        setTransferHandler(new QuestTreeTransferHandler());
+
+        //setTransferHandler(new QuestTreeTransferHandler());
     }
 
     /**
@@ -116,33 +88,10 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
         rebuildTree();
 
         // Initially expand maps.
-        expandRow(ResourceType.MAP.ordinal() + 1);
-    }
-
-    /**
-     * Called when an observed model changes.
-     * @param model The model.
-     * @param param Parameter.
-     */
-    @Override
-    public void update(Observable model, Object param) {
-
-        if (model instanceof MapViewSettings) {
-            MapViewSettings mapViewSettings = (MapViewSettings) model;
-            Map map = mapViewSettings.getMap();
-            DefaultMutableTreeNode mapNode = getResourceElementNode(
-                    ResourceType.MAP, map.getId());
-
-            DefaultMutableTreeNode child =
-                    (DefaultMutableTreeNode) mapNode.getFirstChild();
-            while (child != null) {
-                CheckBoxNodeData data =
-                        (CheckBoxNodeData) child.getUserObject();
-                EntityType entityType = EntityType.values()[mapNode.getIndex(child)];
-                boolean shown = mapViewSettings.getShowEntityType(entityType);
-                data.setChecked(shown);
-                child = child.getNextSibling();
-            }
+        DefaultMutableTreeNode node = getFileElement(ResourceType.MAP.getDirName());
+        if (node != null) {
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode) getModel().getRoot();
+            expandRow(root.getIndex(node) + 1);
         }
     }
 
@@ -153,12 +102,10 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
      */
     @Override
     public void resourceElementAdded(ResourceType resourceType, String id) {
-        // Insert the new element in the tree.
+
         try {
             addResourceElementToTree(new ResourceElement(resourceType, id));
-        }
-        catch (QuestEditorException ex) {
-            // Cannot happen: the id is valid here.
+        } catch (QuestEditorException ex) {
             ex.printStackTrace();
         }
     }
@@ -170,8 +117,13 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
      */
     @Override
     public void resourceElementRemoved(ResourceType resourceType, String id) {
-        DefaultMutableTreeNode resourceNode = getResourceElementNode(resourceType, id);
-        getQuestTreeModel().removeNodeFromParent(resourceNode);
+
+        DefaultMutableTreeNode node = getResourceElement(resourceType, id);
+        if (node != null) {
+            DefaultTreeModel model = (DefaultTreeModel) getModel();
+            model.removeNodeFromParent(node);
+            repaint();
+        }
     }
 
     /**
@@ -184,15 +136,8 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
     public void resourceElementMoved(ResourceType resourceType, String oldId,
             String newId) {
 
-        try {
-            DefaultMutableTreeNode resourceNode = getResourceElementNode(resourceType, oldId);
-            resourceNode.setUserObject(new ResourceElement(resourceType, newId));
-            repaint();
-        }
-        catch (QuestEditorException ex) {
-            // Should not happen.
-            ex.printStackTrace();
-        }
+        resourceElementRemoved(resourceType, oldId);
+        resourceElementAdded(resourceType, newId);
     }
 
     /**
@@ -206,209 +151,455 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
             String id, String name) {
 
         try {
-            DefaultMutableTreeNode resourceNode = getResourceElementNode(resourceType, id);
-            resourceNode.setUserObject(new ResourceElement(resourceType, id));
-            repaint();
-        }
-        catch (QuestEditorException ex) {
-            // Should not happen.
+            ResourceElement element = new ResourceElement(resourceType, id);
+            DefaultMutableTreeNode node = getResourceElement(resourceType, id);
+            if (node != null) {
+                node.setUserObject(element);
+                repaint();
+            }
+        } catch (QuestEditorException ex) {
+            // if project isn't loaded
             ex.printStackTrace();
         }
     }
 
     /**
-     * Rebuilds the whole tree from the resources.
+     * Rebuilds the whole tree from the data project directory.
      */
     public void rebuildTree() {
 
-        String title = "<html>Quest <font style=\"color:gray;\">("
-                       + Project.getRootPath() + ")</font></html>";
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(title);
-        DefaultTreeModel model = new DefaultTreeModel(root);
-        model.setAsksAllowsChildren(true);
-        
-        // Create a parent node for each type of resource:
-        // map, tileset, sound, etc.
-        for (ResourceType resourceType: ResourceType.values()) {
-            DefaultMutableTreeNode resourceTypeNode =
-                    new DefaultMutableTreeNode(resourceType);
-            root.add(resourceTypeNode);
-            if (Project.isLoaded()) {
-                buildResourceTypeChildren(resourceTypeNode);
+        try {
+            DefaultMutableTreeNode root =
+                    new DefaultMutableTreeNode(new FileElement(""), true);
+            DefaultTreeModel model = new DefaultTreeModel(root);
+            model.setAsksAllowsChildren(true);
+            setModel(model);
+
+            // add resources
+            for (ResourceType type: ResourceType.values()) {
+                for (String id: Project.getResource(type).getIds()) {
+                    addResourceElementToTree(new ResourceElement(type, id));
+                }
             }
+
+            // add lua script files
+            buildNode("", new File(Project.getDataPath()));
+
+            repaint();
+        }
+        catch (QuestEditorException ex) {
+            // if the data project directory doesn't exists, can not happen
+            ex.printStackTrace();
+        }
+    }
+
+    private void buildNode(String prefix, File directory) {
+
+        if (!directory.exists() || !directory.isDirectory()) {
+            return;
         }
 
-        setModel(model);
+        for (File file: directory.listFiles()) {
 
-        treeModel.addTreeModelListener(new TreeModelListener() {
+            String path = (prefix.isEmpty() ? "" : prefix + "/") + file.getName();
+            if (file.isDirectory()) {
 
-            @Override
-            public void treeNodesChanged(final TreeModelEvent event) {
+                buildNode(path, file);
+            }
+            else if (path.endsWith(".lua")) {
 
-                Object[] children = event.getChildren();
-                for (final Object child: children) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) child;
-                    final Object userObject = node.getUserObject();
+                // the file script isn't a resource
+                if (!isResourcePath(path)) {
+                    addFileElementToTree(path);
+                }
+            }
+        }
+    }
 
-                    if (node.getLevel() == 3 && userObject instanceof CheckBoxNodeData) {
-                        final CheckBoxNodeData data =
-                                (CheckBoxNodeData) userObject;
-                        DefaultMutableTreeNode mapNode = (DefaultMutableTreeNode) node.getParent();
-                        int index = mapNode.getIndex(node);
-                        EntityType entityType = EntityType.values()[index];
+    /**
+     * Checks if a path corresponds to an existing resource.
+     * @param path the path to check
+     * @return true if the path corresponds to en existing resource, false otherwise
+     */
+    private boolean isResourcePath(String path) {
 
-                        String mapId = ((ResourceElement) mapNode.getUserObject()).id;
-                        Map map = editorWindow.getOpenMap(mapId);
-                        map.getViewSettings().setShowEntityType(
-                                entityType, data.isChecked());
+        if (path.contains("/") && (path.endsWith(".dat") || path.endsWith(".lua"))) {
+
+            path = path.substring(path.indexOf("/") + 1);
+            path = path.replace(".dat", "").replace(".lua", "");
+
+            for (ResourceType type: ResourceType.values()) {
+                if (Project.getResource(type).exists(path)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns a specified file node.
+     * @param path the path corresponding to the node
+     * @return The found node or null if no exists
+     */
+    private DefaultMutableTreeNode getFileElement(String path) {
+
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) getModel().getRoot();
+
+        if (!path.isEmpty()) {
+            node = getFileChildNode(node, path);
+        }
+
+        return node;
+    }
+
+    /**
+     * Returns a specified child file node.
+     * @param parentNode the parent node that contains the node
+     * @param path the path corresponding to the node
+     * @return the node or null if no exists
+     */
+    private DefaultMutableTreeNode getFileChildNode(
+            DefaultMutableTreeNode parentNode,String path) {
+
+        DefaultMutableTreeNode child = null;
+
+        if (parentNode.getChildCount() > 0) {
+            child = (DefaultMutableTreeNode) parentNode.getFirstChild();
+        }
+
+        while (child != null) {
+
+            Object userObject = child.getUserObject();
+            if (userObject instanceof FileElement) {
+
+                FileElement type = (FileElement) userObject;
+                if (path.equals(type.getPath())) {
+                    return child;
+                }
+                else if (type.isDirectory() && path.startsWith(type.getPath())) {
+                    return getFileChildNode(child, path);
+                }
+            }
+
+            child = child.getNextSibling();
+        }
+
+        return child;
+    }
+
+    /**
+     * Returns a specified resource node.
+     * @param resourceType the type of the resource
+     * @param id the id of the resource
+     * @return The found node or null if no exists
+     */
+    private DefaultMutableTreeNode getResourceElement(ResourceType resourceType, String id) {
+
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) getModel().getRoot();
+        return getResourceChildNode(node, resourceType, id);
+    }
+
+    /**
+     * Returns a specified child resource node.
+     * @param parentNode the parent node that contains the node
+     * @param resourceType the type of the resource
+     * @param id the id of the resource
+     * @return the node or null if no exists
+     */
+    private DefaultMutableTreeNode getResourceChildNode(
+            DefaultMutableTreeNode parentNode, ResourceType resourceType, String id) {
+
+        DefaultMutableTreeNode child = null;
+
+        if (parentNode.getChildCount() > 0) {
+            child = (DefaultMutableTreeNode) parentNode.getFirstChild();
+        }
+
+        while (child != null) {
+
+            Object userObject = child.getUserObject();
+            if (userObject instanceof ResourceElement) {
+
+                ResourceElement nodeElement = (ResourceElement) userObject;
+                if (nodeElement.type == resourceType && nodeElement.id.equals(id)) {
+                    return child;
+                }
+            }
+            else if (userObject instanceof FileElement) {
+
+                FileElement type = (FileElement) userObject;
+                if (type.isDirectory()) {
+                    DefaultMutableTreeNode node = getResourceChildNode(child, resourceType, id);
+                    if (node != null) {
+                        return node;
                     }
                 }
             }
 
-            @Override
-            public void treeNodesInserted(final TreeModelEvent event) {
-            }
+            child = child.getNextSibling();
+        }
 
-            @Override
-            public void treeNodesRemoved(final TreeModelEvent event) {
-            }
-
-            @Override
-            public void treeStructureChanged(final TreeModelEvent event) {
-            }
-        });
-
-        repaint();
+        return child;
     }
 
     /**
-     * Builds the subtree of a resource type node.
-     * @param resourceTypeNode The node where to built the subtree.
+     * Adds a node element that represent a file to the tree.
+     * @param path the path corresponding to the node
      */
-    private void buildResourceTypeChildren(DefaultMutableTreeNode resourceTypeNode) {
+    private void addFileElementToTree(String path) {
 
-        ResourceType resourceType = (ResourceType) resourceTypeNode.getUserObject();
-        Resource resource = Project.getResource(resourceType);
-        String[] ids = resource.getIds();
+        // if the node alreay exists
+        if (getFileElement(path) != null) {
+            return;
+        }
+        DefaultMutableTreeNode node, parentNode;
 
         try {
-            for (int i = 0; i < ids.length; i++) {
-                DefaultMutableTreeNode elementNode = new DefaultMutableTreeNode(
-                        new ResourceElement(resourceType, ids[i]));
-                elementNode.setAllowsChildren(false);
-                resourceTypeNode.add(elementNode);
+            FileElement element = new FileElement(path);
+            node = new DefaultMutableTreeNode(element, element.isDirectory());
+            // if is in the root dir
+            if (!path.contains("/")) {
+                parentNode = (DefaultMutableTreeNode) getModel().getRoot();
+            }
+            else {
+                path = path.substring(0, path.lastIndexOf("/"));
+                parentNode = getFileElement(path);
+                // try to create directory if is not exists
+                if (parentNode == null) {
+                    addFileElementToTree(path);
+                    parentNode = getFileElement(path);
+                }
+            }
+
+            if (parentNode != null) {
+                DefaultTreeModel model = (DefaultTreeModel) getModel();
+                int location = findNewFileLocation(parentNode, element);
+                model.insertNodeInto(node, parentNode, location);
+                repaint();
+            }
+        } catch (QuestEditorException ex) {
+            // if the project isn't loaded, can not be happen
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Find a location for a new file in a node.
+     * Lets keep the alphabetical order of files, and keep a separation between
+     * files and directories.
+     * @param node the node to insert the new file
+     * @param element the file element of the node to add
+     * @return the new location
+     */
+    private int findNewFileLocation(DefaultMutableTreeNode node, FileElement element) {
+
+        int location = 0;
+
+        if (node.getChildCount() > 0) {
+
+            DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getFirstChild();
+            while (child != null) {
+
+                Object userObject = child.getUserObject();
+                if (userObject instanceof FileElement) {
+
+                    FileElement file = (FileElement) userObject;
+                    if (element.isDirectory()) {
+                        if (file.isDirectory()) {
+                            if (file.getPath().compareTo(element.getPath()) > 0) {
+                                return location;
+                            }
+                        } else {
+                            return location;
+                        }
+                    }
+                    else {
+                        if (!file.isDirectory() && file.getPath().compareTo(element.getPath()) > 0) {
+                            return location;
+                        }
+                    }
+                } else if (userObject instanceof ResourceElement) {
+                    return location;
+                }
+
+                child = child.getNextSibling();
+                location++;
             }
         }
-        catch (QuestEditorException ex) {
-            GuiTools.errorDialog("Unexpected error while building the quest tree: " + ex.getMessage());
-        }
+
+        return location;
     }
 
     /**
-     * Returns the model used by the quest tree.
-     * @return The model.
-     */
-    private DefaultTreeModel getQuestTreeModel() {
-        return (DefaultTreeModel) getModel();
-    }
-
-    /**
-     * Returns the node that represents a specified resource type.
-     * @param resourceType Type of resource.
-     * @return The node of this resource.
-     */
-    private DefaultMutableTreeNode getResourceTypeNode(
-            ResourceType resourceType) {
-
-        return (DefaultMutableTreeNode) getModel().getChild(
-                getModel().getRoot(), resourceType.ordinal());
-    }
-
-    /**
-     * Returns the node that represents a specified resource element.
-     * @param resourceType Type of resource.
-     * @param id Id of the element to get.
-     * @return The node of this element.
-     * @throws NoSuchElementException If such a resource node was not found in
-     * the tree.
-     */
-    private DefaultMutableTreeNode getResourceElementNode(ResourceType resourceType,
-            String id) throws NoSuchElementException {
-
-        DefaultMutableTreeNode typeNode = getResourceTypeNode(resourceType);
-        DefaultMutableTreeNode candidateNode = (DefaultMutableTreeNode) typeNode.getFirstChild();
-        while (candidateNode != null) {
-            ResourceElement element = (ResourceElement) candidateNode.getUserObject(); 
-            if (element.id.equals(id)) {
-                return candidateNode;
-            }
-            candidateNode = candidateNode.getNextSibling();
-        }
-
-        throw new NoSuchElementException("Cannot find a " +
-                resourceType.getName() + " node with id '" + id + "'");
-    }
-
-    /**
-     * Adds a resource element to the tree.
+     * Adds a node element that represent a resource to the tree.
      * @param element The resource element to add.
      */
     private void addResourceElementToTree(ResourceElement element) {
-        DefaultMutableTreeNode resourceNode = getResourceTypeNode(element.type);
-        getQuestTreeModel().insertNodeInto(
-                new DefaultMutableTreeNode(element),
-                resourceNode,
-                resourceNode.getChildCount());
-        repaint();
-    }
 
-    /**
-     * This function is called when a map is being opened in the editor.
-     * The quest tree then creates some nodes under that map.
-     * @param map The map just opened.
-     */
-    public void openMap(Map map) {
-
-        DefaultMutableTreeNode mapNode = getResourceElementNode(
-                ResourceType.MAP, map.getId());
-        mapNode.setAllowsChildren(true);
-        mapNode.removeAllChildren();
-
-        for (EntityType entityType: EntityType.values()) {
-            final CheckBoxNodeData data = new CheckBoxNodeData(
-                    entityType.getHumanName(),
-                    map.getViewSettings().getShowEntityType(entityType));
-            DefaultMutableTreeNode entityTypeNode =
-                    new DefaultMutableTreeNode(data);
-            entityTypeNode.setAllowsChildren(false);
-            getQuestTreeModel().insertNodeInto(
-                    entityTypeNode,
-                    mapNode,
-                    mapNode.getChildCount());
+        String path = element.type.getDirName() + "/" + element.id + ".lua";
+        DefaultMutableTreeNode node = getResourceElement(element.type, element.id);
+        // if the resource node already exists
+        if (node != null) {
+            return;
         }
 
-        TreePath path = new TreePath(mapNode.getPath());
-        expandPath(path);
-        scrollPathToVisible(path);
+        node = getFileElement(path);
+        // if the node exists as a script
+        if (node != null) {
+            node.setUserObject(element);
+        }
+        else {
+            node = new DefaultMutableTreeNode(element, false);
 
-        map.getViewSettings().addObserver(this);
-        update(map.getViewSettings(), null);
+            path = path.substring(0, path.lastIndexOf("/"));
+            DefaultMutableTreeNode parentNode = getFileElement(path);
+            // try to create if no exists
+            if (parentNode == null) {
+                addFileElementToTree(path);
+                parentNode = getFileElement(path);
+            }
+
+            if (parentNode != null) {
+                DefaultTreeModel model = (DefaultTreeModel) getModel();
+                int location = findNewResourceLocation(parentNode, element);
+                model.insertNodeInto(node, parentNode, location);
+                repaint();
+            }
+        }
+
+        repaint();
     }
 
     /**
-     * This function is called when a map is being closed in the editor.
-     * The quest tree then removes all nodes under that map.
-     * @param map The map being closed.
+     * Find a location for a new resource in a node.
+     * Lets keep the order of resources.
+     * @param node the node to insert the new file
+     * @param element the resource element of the node to add
+     * @return the new location
      */
-    public void closeMap(Map map) {
+    private int findNewResourceLocation(DefaultMutableTreeNode node, ResourceElement element) {
 
-        map.getViewSettings().deleteObserver(this);
-        DefaultMutableTreeNode mapNode = getResourceElementNode(
-                ResourceType.MAP, map.getId());
-        mapNode.removeAllChildren();
-        mapNode.setAllowsChildren(false);
-        getQuestTreeModel().reload(mapNode);
-        repaint();
+        int location = 0;
+        int elementIndex = Project.getResource(element.type).getElementIndex(element.id);
+
+        if (node.getChildCount() > 0) {
+
+            DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getFirstChild();
+            while (child != null) {
+
+                Object userObject = child.getUserObject();
+                if (userObject instanceof ResourceElement) {
+
+                    ResourceElement resource = (ResourceElement) userObject;
+                    int resourceIndex = Project.getResource(element.type).getElementIndex(resource.id);
+                    if (resourceIndex > elementIndex) {
+                        return location;
+                    }
+                }
+
+                child = child.getNextSibling();
+                location++;
+            }
+        }
+
+        return location;
+    }
+
+    /**
+     * Quest tree file userObject type.
+     */
+    private class FileElement {
+
+        // is a directory
+        private final boolean isDirectory;
+        // path file corresponding to the file relative to the data project directory
+        private final String path;
+        // the name to display node (by default filename without extension)
+        private String name;
+
+        /**
+         * Constructor.
+         * @param path path file corresponding to the node file relative to the data project directory
+         * @throws QuestEditorException if file no exists
+         */
+        public FileElement(String path) throws QuestEditorException {
+
+            this.path = path;
+
+            File file = new File(Project.getDataPath() + "/" + path);
+            isDirectory = file.isDirectory();
+            // if is the root
+            if (path.isEmpty()) {
+                name = Project.getRootPath();
+                name = "<html>Quest <font style=\"color:gray;\">(" + name  + ")</font></html>";
+            }
+            else {
+                name = file.getName();
+            }
+        }
+
+        /**
+         * Checks if the node represents a directory.
+         * @return true if the node reprensents a directory, false otherwise
+         */
+        public boolean isDirectory() {
+
+            return isDirectory;
+        }
+
+        /**
+         * Returns the path file.
+         * @return path file
+         */
+        public String getPath() {
+
+            return path;
+        }
+
+        @Override
+        public String toString() {
+
+            return name;
+        }
+    }
+
+    private void openPopupMenu (DefaultMutableTreeNode node, JComponent source, int x, int y) {
+
+        JPopupMenu popupMenu = null;
+        Object userObject = node.getUserObject();
+
+        if (userObject instanceof ResourceElement) {
+
+            ResourceElement element = (ResourceElement) userObject;
+            popupMenu = new ResourceElementPopupMenu(element);
+        }
+        else if (userObject instanceof FileElement) {
+
+            FileElement element = (FileElement) userObject;
+            String path = element.getPath();
+
+            if (element.isDirectory()) {
+                for (ResourceType type: ResourceType.values()) {
+                    String dirName = type.getDirName();
+                    if (path.equals(dirName)) {
+                        popupMenu = new ResourceParentPopupMenu(type, "");
+                        break;
+                    }
+                    else if (path.startsWith(dirName)) {
+                        path = path.substring(path.indexOf("/") + 1);
+                        popupMenu = new ResourceParentPopupMenu(type, path);
+                        break;
+                    }
+                }
+            } else {
+                popupMenu = new FileElementPopupMenu(path);
+            }
+        }
+
+        if (popupMenu != null) {
+            popupMenu.show(source, x, y);
+        }
     }
 
     /**
@@ -435,45 +626,14 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
             // Retrieve the node clicked.
             DefaultMutableTreeNode clickedNode = (DefaultMutableTreeNode)
                     selectionPath.getLastPathComponent();
-            Object clickedObject = clickedNode.getUserObject();
 
             if (ev.getButton() == MouseEvent.BUTTON3) {
                 // Right click.
-
-                JPopupMenu popupMenu = null;
-
-                if (clickedObject instanceof ResourceElement) {
-                    // Right click on a resource element.
-                    ResourceElement element = (ResourceElement) clickedObject;
-                    popupMenu = new ResourceElementPopupMenu(element);
-                }
-                else if (clickedObject instanceof ResourceType) {
-                    // Right click on a resource type (parent node).
-                    ResourceType resourceType = (ResourceType) clickedObject;
-                    popupMenu = new ResourceParentPopupMenu(resourceType);
-                }
-                else if (clickedObject instanceof CheckBoxNodeData) {
-                    // Right click on a map entity type.
-                    DefaultMutableTreeNode mapNode = (DefaultMutableTreeNode) clickedNode.getParent();
-                    int index = mapNode.getIndex(clickedNode);
-                    EntityType entityType = EntityType.values()[index];
-
-                    String mapId = ((ResourceElement) mapNode.getUserObject()).id;
-                    MapEditorPanel mapEditor = editorWindow.getOpenMapEditor(mapId);
-
-                    if (mapEditor == null) {
-                        throw new IllegalStateException("This map is not open");
-                    }
-                    popupMenu = new MapEntityTypePopupMenu(mapEditor, entityType);
-                }
-                
-                if (popupMenu != null) {
-                    popupMenu.show((JComponent) ev.getSource(),
-                            ev.getX(), ev.getY());
-                }
+                openPopupMenu(clickedNode, (JComponent) ev.getSource(), ev.getX(), ev.getY());
             }
             else if (ev.getClickCount() == 2) {
                 // Double-click: open the clicked element.
+                Object clickedObject = clickedNode.getUserObject();
                 if (clickedObject instanceof ResourceElement) {
                     ResourceElement element = (ResourceElement) clickedObject;
                     editorWindow.openResourceElement(element.type, element.id);
@@ -483,21 +643,45 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
     }
 
     /**
+     * Popup menu of any script file node.
+     */
+    private class FileElementPopupMenu extends JPopupMenu {
+
+        /**
+         * Creates the popup menu of a script file.
+         * @param path The path of the file
+         */
+        public FileElementPopupMenu(final String path) {
+
+            // Open.
+            JMenuItem menuItem = new JMenuItem("Open script");
+            add(menuItem);
+            menuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    editorWindow.openTextEditor(new File(Project.getDataPath() + "/" + path));
+                }
+            });
+        }
+    }
+
+    /**
      * Popup menu of any resource parent node.
      */
-    private class ResourceParentPopupMenu extends JPopupMenu {    
+    private class ResourceParentPopupMenu extends JPopupMenu {
 
         /**
          * Creates the popup menu of a resource type.
          * @param resourceType A resource type.
+         * @param basepath the default path of the resource.
          */
-        public ResourceParentPopupMenu(final ResourceType resourceType) {
+        public ResourceParentPopupMenu(final ResourceType resourceType, final String basepath) {
 
             JMenuItem newElementItem = new JMenuItem(
                     "New " + resourceType.getName().toLowerCase());
             newElementItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent ev) {
-                    editorWindow.createResourceElement(resourceType);
+                    editorWindow.createResourceElement(resourceType, basepath);
                 }
             });
             add(newElementItem);
@@ -569,74 +753,4 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
             });
         }
     }
-
-    /**
-     * Popup menu of a map entity type.
-     */
-    private class MapEntityTypePopupMenu extends JPopupMenu {
-
-        /**
-         * Creates a popup menu for the given type of map entity.
-         * @param mapEditor A map editor currently open.
-         * @param entityType A type of map entity.
-         */
-        public MapEntityTypePopupMenu(final MapEditorPanel mapEditor, final EntityType entityType) {
-
-            // Create.
-            String entityTypeHumanName = entityType.getHumanName();
-            if (!entityType.hasSubtype()) {
-                // Only one subtype.
-                JMenuItem menuItem = new JMenuItem("Create " + entityTypeHumanName);
-                add(menuItem);
-                menuItem.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        mapEditor.getMapView().switchAddingNewEntity(entityType, null);
-                    }
-                });
-            }
-            else {
-                // Several subtypes: make a submenu to give the choice.
-                Class<? extends EntitySubtype> subtypeEnum = entityType.getSubtypeEnum();
-                try {
-                    String[] humanNames = (String[]) subtypeEnum.getField("humanNames").get(null);
-                    Enum<?>[] values = (Enum<?>[]) subtypeEnum.getMethod("values").invoke(null);
-
-                    JMenu menu = new JMenu("Create " + entityTypeHumanName);
-                    for (int i = 0; i < values.length; i++) {
-                        final EntitySubtype entitySubtype = (EntitySubtype) values[i];
-                        JMenuItem menuItem = new JMenuItem(humanNames[i]);
-                        menu.add(menuItem);
-                        menuItem.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                mapEditor.getMapView().switchAddingNewEntity(entityType, entitySubtype);
-                            }
-                        });
-                    }
-                    add(menu);
-                }
-                catch (NoSuchFieldException ex) {
-                    System.err.println("Field 'humanNames' is missing in enumeration " + subtypeEnum.getName());
-                    ex.printStackTrace();
-                    System.exit(1);
-                }
-                catch (NoSuchMethodException ex) {
-                    System.err.println("Method 'values' is missing in enumeration " + subtypeEnum.getName());
-                    ex.printStackTrace();
-                    System.exit(1);
-                }
-                catch (IllegalAccessException ex) {
-                    System.err.println("Cannot access a member in enumeration " + subtypeEnum.getName() + ": ex.getMessage()");
-                    ex.printStackTrace();
-                    System.exit(1);
-                }
-                catch (InvocationTargetException ex) {
-                    ex.getCause().printStackTrace();
-                    System.exit(1);
-                }
-            }
-        }
-    }
 }
-

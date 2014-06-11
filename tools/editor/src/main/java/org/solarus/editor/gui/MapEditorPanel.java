@@ -97,9 +97,6 @@ public class MapEditorPanel extends AbstractEditorPanel {
         map.getEntitySelection().addObserver(getMainWindow());
 
         mapPropertiesView.update(null, null);
-
-        // Synchronize the quest tree.
-        getMainWindow().getQuestTree().openMap(map);
     }
 
     /**
@@ -183,8 +180,6 @@ public class MapEditorPanel extends AbstractEditorPanel {
      */
     @Override
     public void close() {
-
-        getMainWindow().getQuestTree().closeMap(map);
 
         map.deleteObservers();
         map.getEntitySelection().deleteObservers();

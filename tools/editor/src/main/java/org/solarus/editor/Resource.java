@@ -33,7 +33,7 @@ public class Resource extends Observable {
     private HashMap<String, String> elements;
 
     private ArrayList<String> elementsIndexes;
-    
+
     /**
      * Creates the resource.
      */
@@ -106,14 +106,14 @@ public class Resource extends Observable {
             if (oldName == null) {
             	elementsIndexes.add(id);
             }
-            
+
             setChanged();
             notifyObservers();
         }
     }
 
     /**
-     * Add an element to the resource. 
+     * Add an element to the resource.
      * If the element already exists in the database, throws an exception
      * @param id Id of the element to add.
      * @param name Human-readable name of this element. Cannot be null.
@@ -157,12 +157,12 @@ public class Resource extends Observable {
 
     /**
      * Changes the id of an existing element in this resource.
-     * @param oldId Id of an element 
+     * @param oldId Id of an element
      * @param newId
      */
     public void moveElement(String oldId, String newId)
             throws QuestEditorException {
-        
+
     	String value = elements.get(oldId);
         if (value == null) {
 	        throw new QuestEditorException(
@@ -171,14 +171,28 @@ public class Resource extends Observable {
     	elements.remove(oldId);
     	int index = elementsIndexes.indexOf(oldId);
     	elementsIndexes.set(index, newId);
-        
+
         elements.put(newId, value);
 
         setChanged();
         notifyObservers();
     }
 
-    
+    /**
+     * Returns the index of an element in this resource.
+     * @param id Id of the element
+     * @return the index of the element or -1 if no exists
+     */
+    public int getElementIndex(String id) {
+
+        return elementsIndexes.indexOf(id);
+    }
+
+    /**
+     * Changes the index of an element in this resource.
+     * @param id Id of the element
+     * @param newIndex The new index
+     */
     public void setElementIndex(String id, int newIndex) {
     	int oldIndex = elementsIndexes.indexOf(id);
     	if (oldIndex != newIndex) {
@@ -186,7 +200,7 @@ public class Resource extends Observable {
     		elementsIndexes.add(newIndex, id);
     	}
     }
-    
+
     /**
      * Removes all elements from the resource.
      */

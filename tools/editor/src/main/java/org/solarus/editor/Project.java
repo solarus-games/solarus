@@ -762,6 +762,31 @@ public class Project {
     }
 
     /**
+     * Ensures that a parent directory of a file exists.
+     * @param file the file
+     * @return true if the directory exists or has been create, false otherwise
+     */
+    public static boolean ensureParentDirectoryExists(File file) {
+
+        if (!file.exists()) {
+
+            file = file.getParentFile();
+
+            if (!file.exists()) {
+
+                if (file.getAbsolutePath().equals(Project.getDataPath())) {
+                    return false;
+                }
+                if (ensureParentDirectoryExists(file)) {
+                    file.mkdir();
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Creates the appropriate files for a new resource element,
      * unless they already exist.
      *
@@ -773,17 +798,20 @@ public class Project {
             ResourceType resourceType, String id)
             throws IOException {
 
+        File file;
         switch (resourceType) {
 
         case MAP:
-            getMapDir().mkdir();
-            getMapFile(id).createNewFile();
+            file = getMapFile(id);
+            ensureParentDirectoryExists(file);
+            file.createNewFile();
             getMapScriptFile(id).createNewFile();
             break;
 
         case TILESET:
-            getTilesetDir().mkdir();
-            getTilesetFile(id).createNewFile();
+            file = getTilesetFile(id);
+            ensureParentDirectoryExists(file);
+            file.createNewFile();
             break;
 
         case LANGUAGE:
@@ -796,23 +824,27 @@ public class Project {
             break;
 
         case ENEMY:
-            getEnemyDir().mkdir();
-            getEnemyScriptFile(id).createNewFile();
+            file = getEnemyScriptFile(id);
+            ensureParentDirectoryExists(file);
+            file.createNewFile();
             break;
 
         case ITEM:
-            getItemDir().mkdir();
-            getItemScriptFile(id).createNewFile();
+            file = getItemScriptFile(id);
+            ensureParentDirectoryExists(file);
+            file.createNewFile();
             break;
 
         case ENTITY:
-            getEntityDir().mkdir();
-            getEntityScriptFile(id).createNewFile();
+            file = getEntityScriptFile(id);
+            ensureParentDirectoryExists(file);
+            file.createNewFile();
             break;
 
         case SPRITE:
-            getSpriteDir().mkdir();
-            getSpriteFile(id).createNewFile();
+            file = getSpriteFile(id);
+            ensureParentDirectoryExists(file);
+            file.createNewFile();
             break;
 
         case SOUND:

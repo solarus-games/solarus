@@ -651,6 +651,40 @@ public class EditorWindow extends JFrame
     }
 
     /**
+     * Creates a new lua script, asking its name to the user.
+     * @param path The default path of the new script.
+     * @return the file name (relative to the project data directory) or null if no exists
+     */
+    public String createNewLuaScript(String path) {
+
+        NewLuaScriptDialog dialog = new NewLuaScriptDialog(path.isEmpty() ? "" : path + "/");
+        if (!dialog.display()) {
+            return null;
+        }
+
+        String name = dialog.getFileName();
+        File file = new File(Project.getDataPath() + "/" + name);
+
+        try {
+            if (file.exists()) {
+                throw new QuestEditorException("this file already exists");
+            }
+            if (!Project.ensureParentDirectoryExists(file)) {
+                throw new QuestEditorException(
+                        "the parent directory no exists and cannot be create");
+            }
+
+            file.createNewFile();
+            return name;
+        }
+        catch (Exception ex) {
+            GuiTools.errorDialog("Cannot create the script '" +
+                    file.getAbsolutePath() + "': " + ex.getMessage());
+        }
+        return null;
+    }
+
+    /**
      * Opens a resource element, asking its id to the user.
      * @param resourceType Type of resource.
      */
@@ -1053,5 +1087,57 @@ public class EditorWindow extends JFrame
         AbstractEditorPanel editor = tabs.getEditor(editorId);
         return (MapEditorPanel) editor;
     }
-}
 
+    /**
+    * Dialog shown when we want to create a new lua script
+    */
+   private class NewLuaScriptDialog extends OkCancelDialog {
+           private static final long serialVersionUID = 1L;
+
+        // Subcomponents
+        private final JTextField nameField;
+
+        /**
+         * Constructor.
+         */
+        public NewLuaScriptDialog(String name) {
+
+            super("New lua script", false);
+
+            JPanel mainPanel = new JPanel(new GridBagLayout());
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.insets = new Insets(5, 5, 5, 5); // margins
+            constraints.anchor = GridBagConstraints.LINE_START;
+            constraints.gridy = 0;
+            constraints.gridx = 0;
+
+            mainPanel.add(new JLabel("name:"), constraints);
+
+            constraints.gridx++;
+            nameField = new JTextField(15);
+            nameField.setText(name);
+            mainPanel.add(nameField, constraints);
+
+            setComponent(mainPanel);
+        }
+
+        /**
+         * Returns the name of lua script file.
+         * @return the file name
+         */
+        public String getFileName() {
+
+            String name = nameField.getText();
+
+            if (!name.endsWith(".lua")) {
+                name += ".lua";
+            }
+
+            return name;
+        }
+
+        @Override
+        protected void applyModifications() {
+        }
+   }
+}

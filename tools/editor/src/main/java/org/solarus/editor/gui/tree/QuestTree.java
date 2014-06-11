@@ -19,10 +19,7 @@ package org.solarus.editor.gui.tree;
 
 import java.awt.event.*;
 import java.io.File;
-import javax.swing.JComponent;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -583,15 +580,20 @@ public class QuestTree extends JTree implements ProjectObserver {
                 for (ResourceType type: ResourceType.values()) {
                     String dirName = type.getDirName();
                     if (path.equals(dirName)) {
-                        popupMenu = new ResourceParentPopupMenu(type, "");
+                        popupMenu = new ResourceParentPopupMenu(path, type, "");
                         break;
                     }
                     else if (path.startsWith(dirName)) {
-                        path = path.substring(path.indexOf("/") + 1);
-                        popupMenu = new ResourceParentPopupMenu(type, path);
+                        String basepath = path.substring(path.indexOf("/") + 1);
+                        popupMenu = new ResourceParentPopupMenu(path, type, basepath);
                         break;
                     }
                 }
+
+                if (popupMenu == null) {
+                    popupMenu = new DirectoryPopupMenu(path);
+                }
+
             } else {
                 popupMenu = new FileElementPopupMenu(path);
             }
@@ -673,25 +675,73 @@ public class QuestTree extends JTree implements ProjectObserver {
     }
 
     /**
-     * Popup menu of any resource parent node.
+     * Popup menu of any directory node.
      */
-    private class ResourceParentPopupMenu extends JPopupMenu {
+    private class DirectoryPopupMenu extends JPopupMenu {
 
         /**
          * Creates the popup menu of a resource type.
-         * @param resourceType A resource type.
+         * @param path the path of the directory.
+         */
+        public DirectoryPopupMenu(final String path) {
+
+            // new script
+            JMenuItem elementItem = new JMenuItem("New script");
+            elementItem.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent ev) {
+
+                    String name = editorWindow.createNewLuaScript(path);
+                    if (name != null && !name.isEmpty()) {
+                        addFileElementToTree(name);
+                    }
+                }
+            });
+            add(elementItem);
+
+            // remove directory (if empty)
+            final File file = new File(path);
+            elementItem = new JMenuItem("remove directory");
+            elementItem.setEnabled(file.isDirectory() && file.list().length == 0);
+            elementItem.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent ev) {
+                    file.delete();
+                }
+            });
+            add(elementItem);
+        }
+    }
+
+    /**
+     * Popup menu of any resource parent node.
+     */
+    private class ResourceParentPopupMenu extends DirectoryPopupMenu {
+
+        /**
+         * Creates the popup menu of a resource type.
+         * @param path the path of the director
+         * @param resourceType A resource type.y.
          * @param basepath the default path of the resource.
          */
-        public ResourceParentPopupMenu(final ResourceType resourceType, final String basepath) {
+        public ResourceParentPopupMenu(final String path,
+                final ResourceType resourceType, final String basepath) {
+            super(path);
 
-            JMenuItem newElementItem = new JMenuItem(
+            JMenuItem elementItem = new JMenuItem(
                     "New " + resourceType.getName().toLowerCase());
-            newElementItem.addActionListener(new ActionListener() {
+            elementItem.addActionListener(new ActionListener() {
+
+                @Override
                 public void actionPerformed(ActionEvent ev) {
+
                     editorWindow.createResourceElement(resourceType, basepath);
                 }
             });
-            add(newElementItem);
+            addSeparator();
+            add(elementItem);
         }
     }
 

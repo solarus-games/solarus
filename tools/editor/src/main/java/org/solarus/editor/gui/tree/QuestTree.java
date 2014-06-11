@@ -638,6 +638,13 @@ public class QuestTree extends JTree implements ProjectObserver {
                     ResourceElement element = (ResourceElement) clickedObject;
                     editorWindow.openResourceElement(element.type, element.id);
                 }
+                else if  (clickedObject instanceof FileElement) {
+                    FileElement element = (FileElement) clickedObject;
+                    if (!element.isDirectory()) {
+                        editorWindow.openTextEditor(new File(Project.getDataPath()
+                                + "/" + element.getPath()));
+                    }
+                }
             }
         }
     }

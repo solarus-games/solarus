@@ -10,25 +10,25 @@ public class ResourceBuilderDialog extends OkCancelDialog {
 	private static final long serialVersionUID = 1L;
 
 	private ResourceBuilderComponent resourceBuilder;
-	
-	public ResourceBuilderDialog(ResourceType resourceType) {
+
+	public ResourceBuilderDialog(ResourceType resourceType, String basepath) {
 		super("New " + resourceType.getName().toLowerCase(), false);
-		
-		resourceBuilder = new ResourceBuilderComponent(resourceType);
+
+		resourceBuilder = new ResourceBuilderComponent(resourceType, basepath);
 		setComponent(resourceBuilder);
-		
+
 	}
-	
+
 	public String getId() {
 		return resourceBuilder.getId();
 	}
 	public String getFriendlyName() {
 		return resourceBuilder.getFriendlyName();
 	}
-		
+
 	@Override
 	protected void applyModifications() throws QuestEditorException {
-		
+
 	}
-	
+
 }

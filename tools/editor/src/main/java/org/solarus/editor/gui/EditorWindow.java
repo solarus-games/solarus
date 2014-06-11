@@ -499,7 +499,7 @@ public class EditorWindow extends JFrame
 
         @Override
         public void actionPerformed(ActionEvent ev) {
-            createResourceElement(resourceType);
+            createResourceElement(resourceType, "");
         }
     }
 
@@ -628,22 +628,23 @@ public class EditorWindow extends JFrame
     /**
      * Creates a resource element, asking its id to the user.
      * @param resourceType Type of resource element to create.
+     * @param basepath the default path of the resource.
      */
-    public void createResourceElement(ResourceType resourceType) {
+    public void createResourceElement(ResourceType resourceType, String basepath) {
 
         String resourceName = resourceType.getName();
         try {
-        	ResourceBuilderDialog dialog = new ResourceBuilderDialog(resourceType);
-        	if (dialog.display()) {
-        		String id = dialog.getId();
-        		String friendlyName = dialog.getFriendlyName();
+            ResourceBuilderDialog dialog = new ResourceBuilderDialog(resourceType, basepath);
+            if (dialog.display()) {
+                    String id = dialog.getId();
+                    String friendlyName = dialog.getFriendlyName();
 
-        		if (Project.getResource(resourceType).exists(id)) {
-                    throw new QuestEditorException(
-                            resourceName + " '" + id + "' already exists");
-                }
-                Project.newResourceElement(resourceType, id, friendlyName);
-        	}
+                    if (Project.getResource(resourceType).exists(id)) {
+                throw new QuestEditorException(
+                        resourceName + " '" + id + "' already exists");
+            }
+            Project.newResourceElement(resourceType, id, friendlyName);
+            }
         } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot create " + resourceName + ": " + ex.getMessage());
         }
@@ -985,7 +986,7 @@ public class EditorWindow extends JFrame
     public void resourceElementRemoved(ResourceType resourceType, String id) {
 
         // Close the editor if any (but it is a bug).
-        AbstractEditorPanel editor = tabs.getEditor(id); 
+        AbstractEditorPanel editor = tabs.getEditor(id);
         if (editor != null) {
             tabs.removeEditor(editor, false);
             new IllegalStateException(resourceType.getName() + " '" + id
@@ -1005,7 +1006,7 @@ public class EditorWindow extends JFrame
             String newId) {
 
         // Close the old editor if any (but it is a bug).
-        AbstractEditorPanel editor = tabs.getEditor(oldId); 
+        AbstractEditorPanel editor = tabs.getEditor(oldId);
         if (editor != null) {
             tabs.removeEditor(editor, false);
             new IllegalStateException(resourceType.getName() + " Id '" + oldId

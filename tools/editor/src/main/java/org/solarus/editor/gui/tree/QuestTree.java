@@ -201,6 +201,7 @@ public class QuestTree extends JTree implements ProjectObserver {
             String path = (prefix.isEmpty() ? "" : prefix + "/") + file.getName();
             if (file.isDirectory()) {
 
+                addFileElementToTree(path);
                 buildNode(path, file);
             }
             else if (path.endsWith(".lua")) {

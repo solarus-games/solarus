@@ -374,7 +374,7 @@ public class Project {
      * Returns the fonts file.
      * @return The font list file.
      */
-    public static File getFontsFile() {       
+    public static File getFontsFile() {
         return new File(getTextPath() + "/fonts.dat");
     }
 
@@ -383,7 +383,7 @@ public class Project {
      * @return the path of the tileset files
      */
     public static String getTilesetPath() {
-        return getDataPath() + "/tilesets";
+        return getDataPath() + "/" + ResourceType.TILESET.getDirName();
     }
 
     /**
@@ -429,7 +429,7 @@ public class Project {
      * @return the path of the map files
      */
     public static String getMapPath() {
-        return getDataPath() + "/maps";
+        return getDataPath() + "/" + ResourceType.MAP.getDirName();
     }
 
     /**
@@ -465,7 +465,7 @@ public class Project {
      * @return the path of the sprite files
      */
     public static String getSpritePath() {
-        return getDataPath() + "/sprites";
+        return getDataPath() + "/"  + ResourceType.SPRITE.getDirName();
     }
 
     /**
@@ -491,7 +491,7 @@ public class Project {
      * @return the path of the music files
      */
     public static String getMusicPath() {
-        return getDataPath() + "/musics";
+        return getDataPath() + "/" + ResourceType.MUSIC.getDirName();
     }
 
     /**
@@ -507,7 +507,7 @@ public class Project {
      * @return the path of the sound files
      */
     public static String getSoundPath() {
-        return getDataPath() + "/sounds";
+        return getDataPath() + "/" + ResourceType.SOUND.getDirName();
     }
 
     /**
@@ -523,7 +523,7 @@ public class Project {
      * @return The languages path.
      */
     public static String getLanguagePath() {
-        return getDataPath() + "/languages";
+        return getDataPath() + "/" +  ResourceType.LANGUAGE.getDirName();
     }
 
     /**
@@ -611,7 +611,7 @@ public class Project {
      * @return The path of the enemy scripts.
      */
     public static String getEnemyPath() {
-        return getDataPath() + "/enemies";
+        return getDataPath() + "/" +  ResourceType.ENEMY.getDirName();
     }
 
     /**
@@ -636,7 +636,7 @@ public class Project {
      * @return The path of the custom entity scripts.
      */
     public static String getEntityPath() {
-        return getDataPath() + "/entities";
+        return getDataPath() + "/" + ResourceType.ENTITY.getDirName();
     }
 
     /**
@@ -661,7 +661,7 @@ public class Project {
      * @return The path of the item scripts.
      */
     public static String getItemPath() {
-        return getDataPath() + "/items";
+        return getDataPath() + "/" + ResourceType.ITEM.getDirName();
     }
 
     /**
@@ -712,7 +712,7 @@ public class Project {
                     throw new IOException("Failed to create the \"data\" directory");
                 }
             }
-    
+
             // Create the resource database file.
             File resourceDatabaseFile = getResourceDatabaseFile();
             if (resourceDatabaseFile.exists()) {
@@ -736,7 +736,7 @@ public class Project {
      *
      * @param resourceType Type of element to create.
      * @param id Id of the element to create.
-     * @param name A human-readable name for this element. 
+     * @param name A human-readable name for this element.
      * @throws QuestEditorException If the element could not be created.
      */
     public static void newResourceElement(ResourceType resourceType,
@@ -920,11 +920,11 @@ public class Project {
         try {
             // Rename the files.
             moveResourceElementFiles(resourceType, oldId, newId);
-    
+
             // Move the resource in the resource list.
             getResource(resourceType).moveElement(oldId, newId);
             getResourceDatabase().save();
-    
+
             // Notify the GUI.
             for (ProjectObserver o: new ArrayList<ProjectObserver>(observers)) {
                 o.resourceElementMoved(resourceType, oldId, newId);

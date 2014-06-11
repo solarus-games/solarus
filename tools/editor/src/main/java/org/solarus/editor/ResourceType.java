@@ -5,15 +5,15 @@ package org.solarus.editor;
  */
 public enum ResourceType {
 
-    MAP("Map", "map"),
-    TILESET("Tileset", "tileset"),
-    SPRITE("Sprite", "sprite"),
-    MUSIC("Music", "music"),
-    SOUND("Sound", "sound"),
-    ITEM("Item", "item"),
-    ENEMY("Enemy", "enemy"),
-    ENTITY("Custom entity", "entity"),
-    LANGUAGE("Language", "language");
+    MAP("Map", "map", "maps"),
+    TILESET("Tileset", "tileset", "tilesets"),
+    SPRITE("Sprite", "sprite", "sprites"),
+    MUSIC("Music", "music", "musics"),
+    SOUND("Sound", "sound", "sounds"),
+    ITEM("Item", "item", "items"),
+    ENEMY("Enemy", "enemy", "enemies"),
+    ENTITY("Custom entity", "entity", "entities"),
+    LANGUAGE("Language", "language", "languages");
 
     /**
      * The human-readable name of the resource type.
@@ -25,14 +25,23 @@ public enum ResourceType {
      */
     private String luaName;
 
+
+    /**
+     * The name of the directory that contains resources of this type.
+     * The name is relative to the project data directory.
+     */
+    private String dirName;
+
     /**
      * Creates a new resource type.
      * @param name Name of the resource type.
      * @param luaName Lua name of the resource type.
+     * @param dirName Directory name of the resource type.
      */
-    private ResourceType(String name, String luaName) {
+    private ResourceType(String name, String luaName, String dirName) {
         this.name = name;
         this.luaName = luaName;
+        this.dirName = dirName;
     }
 
     /**
@@ -74,6 +83,14 @@ public enum ResourceType {
      */
     public String getLuaName() {
         return luaName;
+    }
+
+    /**
+     * Returns the directory name of the resource type.
+     * @return The directory name of the resource type.
+     */
+    public String getDirName() {
+        return dirName;
     }
 
 

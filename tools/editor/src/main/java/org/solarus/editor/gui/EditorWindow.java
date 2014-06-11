@@ -913,6 +913,18 @@ public class EditorWindow extends JFrame
     }
 
     /**
+     * Closes the text editor of a file.
+     * @param file File to close.
+     * @param promptSave true to let the user save the element if necessary,
+     * false to close it without confirmation.
+     */
+    public void closeTextEditor(File file, boolean promptSave) {
+
+        String id = TextEditorPanel.getEditorId(file);
+        tabs.removeEditor(id, promptSave);
+    }
+
+    /**
      * Changes the id of a resource element, asking the new id to the user.
      * @param resourceType Type of resource element to change.
      * @param oldId The id to change.

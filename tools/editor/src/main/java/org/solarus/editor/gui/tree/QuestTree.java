@@ -429,6 +429,26 @@ public class QuestTree extends JTree implements ProjectObserver {
     }
 
     /**
+     * Removes a file element node from the tree.
+     * If element is a directory, it must be empty to be deleted.
+     * @param path the path of the file element
+     */
+    private void removeFileElement(String path) {
+
+        DefaultMutableTreeNode node = getFileElement(path);
+        if (node != null) {
+            if (node.getUserObject() instanceof FileElement) {
+
+                File file = new File(Project.getDataPath() + "/" + path);
+                if (!file.isDirectory() || file.list().length == 0) {
+                    DefaultTreeModel model = (DefaultTreeModel) getModel();
+                    model.removeNodeFromParent(node);
+                }
+            }
+        }
+    }
+
+    /**
      * Adds a node element that represent a resource to the tree.
      * @param element The resource element to add.
      */
@@ -671,6 +691,29 @@ public class QuestTree extends JTree implements ProjectObserver {
                     editorWindow.openTextEditor(new File(Project.getDataPath() + "/" + path));
                 }
             });
+
+            // Delete.
+            menuItem = new JMenuItem("Delete script");
+            add(menuItem);
+            menuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    File file = new File(Project.getDataPath() + "/" + path);
+
+                    int answer = JOptionPane.showConfirmDialog(editorWindow,
+                    "Are you sure you want to delete '"
+                            + path + "' script ?",
+                    "Are you sure?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE);
+
+                    // if yes, delete the file
+                    if (answer == JOptionPane.YES_OPTION && file.delete()) {
+                        removeFileElement(path);
+                        editorWindow.closeTextEditor(file, false);
+                    }
+                }
+            });
         }
     }
 
@@ -700,15 +743,17 @@ public class QuestTree extends JTree implements ProjectObserver {
             });
             add(elementItem);
 
-            // remove directory (if empty)
-            final File file = new File(path);
-            elementItem = new JMenuItem("remove directory");
+            // delete directory (if empty)
+            final File file = new File(Project.getDataPath() + "/" + path);
+            elementItem = new JMenuItem("delete directory");
             elementItem.setEnabled(file.isDirectory() && file.list().length == 0);
             elementItem.addActionListener(new ActionListener() {
 
                 @Override
                 public void actionPerformed(ActionEvent ev) {
-                    file.delete();
+                    if (file.delete()) {
+                        removeFileElement(path);
+                    }
                 }
             });
             add(elementItem);

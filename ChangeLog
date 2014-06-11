@@ -18,6 +18,8 @@ Solarus Quest Editor changes
 ----------------------------
 
 * Add a sprite editor (#135). By Maxs.
+* Add a zoom level of 400%. By Maxs.
+* Add keyboard/mouse zoom features to sprites and tilesets. By Maxs.
 * Add Lua syntax coloring (#470). By Maxs.
 
 _________________________________

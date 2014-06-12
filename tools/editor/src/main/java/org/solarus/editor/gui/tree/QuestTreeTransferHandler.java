@@ -86,8 +86,6 @@ public class QuestTreeTransferHandler extends TransferHandler {
             }
             String newPath = droppedInElement.getPath();
 
-            //
-            QuestTree tree = (QuestTree)support.getComponent();
             // trying to move a resource
             if (dmtUserObject instanceof ResourceElement) {
 
@@ -148,12 +146,17 @@ public class QuestTreeTransferHandler extends TransferHandler {
                     return false;
                 }
 
+                if (!newPath.isEmpty()) {
+                    newPath += "/";
+                }
+
                 String path = dmtFile.getPath();
                 if (path.contains("/")) {
-                    newPath += path.substring(path.lastIndexOf("/"));
+                    newPath += path.substring(path.lastIndexOf("/") + 1);
                 } else {
-                    newPath += "/" + path;
+                    newPath += path;
                 }
+                QuestTree tree = (QuestTree)support.getComponent();
                 tree.moveFileElement(path, newPath);
             }
 

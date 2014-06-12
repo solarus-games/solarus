@@ -744,6 +744,30 @@ public class QuestTree extends JTree implements ProjectObserver {
                 }
             });
 
+            // Rename.
+            menuItem = new JMenuItem("Rename script");
+            add(menuItem);
+            menuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String newName = (String) JOptionPane.showInputDialog(
+                        null,
+                        "Please enter a new name for the script '" + path + "'",
+                        "Change name of script '" + path + "'",
+                        JOptionPane.QUESTION_MESSAGE, null, null, path);
+                    if (newName != null) {
+                        try {
+                            if (!newName.endsWith(".lua")) {
+                                newName += ".lua";
+                            }
+                            moveFileElement(path, newName);
+                        } catch (QuestEditorException ex) {
+                            GuiTools.errorDialog(ex.getMessage());
+                        }
+                    }
+                }
+            });
+
             // Delete.
             menuItem = new JMenuItem("Delete script");
             add(menuItem);

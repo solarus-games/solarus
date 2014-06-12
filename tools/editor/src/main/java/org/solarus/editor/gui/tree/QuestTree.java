@@ -491,7 +491,7 @@ public class QuestTree extends JTree implements ProjectObserver {
 
     /**
      * Find a location for a new resource in a node.
-     * Lets keep the order of resources.
+     * Lets keep the alphabetical order of resources.
      * @param node the node to insert the new file
      * @param element the resource element of the node to add
      * @return the new location
@@ -499,7 +499,6 @@ public class QuestTree extends JTree implements ProjectObserver {
     private int findNewResourceLocation(DefaultMutableTreeNode node, ResourceElement element) {
 
         int location = 0;
-        int elementIndex = Project.getResource(element.type).getElementIndex(element.id);
 
         if (node.getChildCount() > 0) {
 
@@ -510,8 +509,7 @@ public class QuestTree extends JTree implements ProjectObserver {
                 if (userObject instanceof ResourceElement) {
 
                     ResourceElement resource = (ResourceElement) userObject;
-                    int resourceIndex = Project.getResource(element.type).getElementIndex(resource.id);
-                    if (resourceIndex > elementIndex) {
+                    if (resource.id.compareTo(element.id) > 0) {
                         return location;
                     }
                 }

@@ -179,29 +179,6 @@ public class Resource extends Observable {
     }
 
     /**
-     * Returns the index of an element in this resource.
-     * @param id Id of the element
-     * @return the index of the element or -1 if no exists
-     */
-    public int getElementIndex(String id) {
-
-        return elementsIndexes.indexOf(id);
-    }
-
-    /**
-     * Changes the index of an element in this resource.
-     * @param id Id of the element
-     * @param newIndex The new index
-     */
-    public void setElementIndex(String id, int newIndex) {
-    	int oldIndex = elementsIndexes.indexOf(id);
-    	if (oldIndex != newIndex) {
-    		elementsIndexes.remove(oldIndex);
-    		elementsIndexes.add(newIndex, id);
-    	}
-    }
-
-    /**
      * Removes all elements from the resource.
      */
     public void clear() {

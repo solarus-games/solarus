@@ -119,7 +119,7 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
         // popup menu to create a direction
         popupMenuCreate = new JPopupMenu();
 
-        item = new JMenuItem("Create");
+        item = new JMenuItem("Create direction");
         item.addActionListener(new ActionCreateDirection());
         popupMenuCreate.add(item);
 

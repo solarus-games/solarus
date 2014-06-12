@@ -223,12 +223,14 @@ public class QuestTree extends JTree implements ProjectObserver {
 
         if (path.contains("/") && (path.endsWith(".dat") || path.endsWith(".lua"))) {
 
-            path = path.substring(path.indexOf("/") + 1);
             path = path.replace(".dat", "").replace(".lua", "");
 
             for (ResourceType type: ResourceType.values()) {
-                if (Project.getResource(type).exists(path)) {
-                    return true;
+                if (path.startsWith(type.getDirName() + "/")) {
+                    String id = path.substring(path.indexOf("/") + 1);
+                    if (Project.getResource(type).exists(id)) {
+                        return true;
+                    }
                 }
             }
         }

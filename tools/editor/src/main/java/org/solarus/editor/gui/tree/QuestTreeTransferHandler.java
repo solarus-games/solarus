@@ -2,10 +2,13 @@ package org.solarus.editor.gui.tree;
 
 import java.awt.datatransfer.Transferable;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+import org.solarus.editor.Project;
+import org.solarus.editor.QuestEditorException;
 import org.solarus.editor.ResourceElement;
 /**
  * Transfer handler to allow drag&drop on the QuestTree
@@ -102,6 +105,7 @@ public class QuestTreeTransferHandler extends TransferHandler {
                     newPath = "";
                 }
 
+                // get the new id
                 String newId = dmtResource.id;
                 if (newId.contains("/")) {
                     newId = newId.substring(newId.lastIndexOf("/") + 1);
@@ -110,9 +114,29 @@ public class QuestTreeTransferHandler extends TransferHandler {
                     newId = newPath + "/" + newId;
                 }
 
-                //TODO: change id of the resource
-                // dmtResource.id => newId
-                return false;
+                if (dmtResource.id.equals(newId)) {
+                    return false;
+                }
+
+                int answer = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to change the id of the " +
+                            dmtResource.type.getName() + " '" + dmtResource.id +
+                            "' in '" + newId + "' ?",
+                    "Are you sure?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE);
+                if (answer != JOptionPane.YES_OPTION) {
+                    return false;
+                }
+
+                // change the resource id
+                try {
+                    Project.moveElement(dmtResource.type, dmtResource.id, newId);
+                }
+                catch (QuestEditorException ex) {
+                    // error on change the resource id
+                    return false;
+                }
             }
             // trying to move a file
             else if (dmtUserObject instanceof QuestTree.FileElement) {

@@ -69,12 +69,12 @@ public class QuestTree extends JTree implements ProjectObserver {
         setModel(null);  // Because Java makes a stupid example tree by default.
         this.editorWindow = parent;
 
-        //setDragEnabled(true);
+        setDragEnabled(true);
         addMouseListener(new QuestTreeMouseAdapter());
 
         Project.addProjectObserver(this);
 
-        //setTransferHandler(new QuestTreeTransferHandler());
+        setTransferHandler(new QuestTreeTransferHandler());
     }
 
     /**
@@ -450,6 +450,59 @@ public class QuestTree extends JTree implements ProjectObserver {
     }
 
     /**
+     * Move a file element node in the tree.
+     * The lua script file will be moved in the file system.
+     * @param oldPath the path of file element ot move
+     * @param newPath the new path of the file element
+     * @throws QuestEditorException if the script cannot be move
+     */
+    public void moveFileElement(String oldPath, String newPath)
+            throws QuestEditorException {
+
+        if (newPath.equals(oldPath)) {
+            return;
+        }
+
+        try {
+            // check old path
+            DefaultMutableTreeNode node = getFileElement(oldPath);
+            if (node == null) {
+                throw new QuestEditorException("this script doesn't exists");
+            }
+            // check new path
+            DefaultMutableTreeNode newNode = getFileElement(newPath);
+            if (newNode != null) {
+                throw new QuestEditorException("the new script already exists");
+            }
+            // trying to move a resource
+            if (!(node.getUserObject() instanceof FileElement)) {
+                throw new QuestEditorException("the script corresponds to a resource");
+            }
+            // trying to move a directory
+            File file = new File(Project.getDataPath() + "/" + oldPath);
+            if (file.isDirectory()) {
+                throw new QuestEditorException("the path corresponds to a directory");
+            }
+
+            // rename file
+            editorWindow.closeTextEditor(file, false);
+            File newFile = new File(Project.getDataPath() + "/" + newPath);
+            if (!file.renameTo(newFile)) {
+                throw new QuestEditorException("error on renaming");
+            }
+            // remove node
+            DefaultTreeModel model = (DefaultTreeModel) getModel();
+            model.removeNodeFromParent(node);
+            // add new node
+            addFileElementToTree(newPath);
+        }
+        catch (QuestEditorException ex) {
+            throw new QuestEditorException("cannot rename script '" + oldPath +
+                    "' in '" + newPath + "': " + ex.getMessage());
+        }
+    }
+
+    /**
      * Adds a node element that represent a resource to the tree.
      * @param element The resource element to add.
      */
@@ -525,7 +578,7 @@ public class QuestTree extends JTree implements ProjectObserver {
     /**
      * Quest tree file userObject type.
      */
-    private class FileElement {
+    protected class FileElement {
 
         // is a directory
         private final boolean isDirectory;

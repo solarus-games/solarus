@@ -201,7 +201,12 @@ public class QuestTree extends JTree implements ProjectObserver {
             String path = (prefix.isEmpty() ? "" : prefix + "/") + file.getName();
             if (file.isDirectory()) {
 
-                addFileElementToTree(path);
+                // add the directory if isn't the text directory or a
+                // sub directory of the language resources directory.
+                // these directories could be added after, if it's necessary
+                if (!path.equals("text") && !path.startsWith(ResourceType.LANGUAGE.getDirName())) {
+                    addFileElementToTree(path);
+                }
                 buildNode(path, file);
             }
             else if (path.endsWith(".lua")) {

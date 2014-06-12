@@ -24,7 +24,14 @@ public class QuestTreeTransferHandler extends TransferHandler {
         JTree tree = (JTree)c;
         DefaultMutableTreeNode selected =
                 (DefaultMutableTreeNode )tree.getLastSelectedPathComponent();
-        ResourceTransferable transferable = new ResourceTransferable(selected);
+        ResourceTransferable transferable = null;
+
+        // check if the node is a lua script file or a resource
+        if (selected.getUserObject() instanceof ResourceElement ||
+                (selected.getUserObject() instanceof QuestTree.FileElement &&
+                !((QuestTree.FileElement) selected.getUserObject()).isDirectory())) {
+            transferable = new ResourceTransferable(selected);
+        }
 
         return transferable;
     }

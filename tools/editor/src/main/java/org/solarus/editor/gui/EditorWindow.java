@@ -751,7 +751,7 @@ public class EditorWindow extends JFrame
 
             case LANGUAGE:
             {
-                openTextEditor(Project.getDialogsFile(resourceId));
+                openTextEditor(Project.getStringsFile(resourceId));
                 break;
             }
 

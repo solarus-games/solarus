@@ -907,19 +907,19 @@ public class QuestTree extends JTree implements ProjectObserver {
             String resourceTypeName = element.type.getName().toLowerCase();
             JMenuItem menuItem;
 
-            // Open strings (specific to languages).
+            // Open dialogs (specific to languages).
             if (element.type == ResourceType.LANGUAGE) {
-                menuItem = new JMenuItem("Open strings");
+                menuItem = new JMenuItem("Open dialogs");
                 add(menuItem);
                 menuItem.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        editorWindow.openTextEditor(Project.getStringsFile(element.id));
+                        editorWindow.openTextEditor(Project.getDialogsFile(element.id));
                     }
                 });
 
-                // Open dialogs (specific to languages).
-                menuItem = new JMenuItem("Open dialogs");
+                // Open strings (specific to languages).
+                menuItem = new JMenuItem("Open strings");
             }
             else {
                 // Open <resource type name>

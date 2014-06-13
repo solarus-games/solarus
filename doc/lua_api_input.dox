@@ -72,20 +72,17 @@ Returns the current direction of a hat of the joypad.
   \c -1 means that the hat is centered.
   \c 0 to \c 7 indicates that the hat is in one of the eight main directions.
 
-\subsection lua_api_input_get_mouse_position sol.input.is_moutton_button_pressed(button, x, y)
+\subsection lua_api_input_get_mouse_position sol.input.get_mouse_position()
+
+Returns the current position of the mouse cursor.
+- Return value (integer): The \c x position of the mouse in \ref lua_api_video_get_quest_size "quest size" coordinates, relative to the viewport.
+- Return value (integer): The \c y position of the mouse in \ref lua_api_video_get_quest_size "quest size" coordinates, relative to the viewport.
+
+\subsection lua_api_input_is_moutton_button_pressed sol.input.is_moutton_button_pressed(button)
 
 Returns whether a mouse button is currently down.
 - \c button (string): The name of a mouse button.
-- \c x (integer): The x position of the mouse, relative to the viewport
-  position and scaled to the quest size.
-- \c y (integer): The y position of the mouse, relative to the viewport
-  position and scaled to the quest size.
-- Return value (boolean): \c true if this mouse button is currently down.
-
-\subsection lua_api_input_is_moutton_button_pressed sol.input.is_moutton_button_pressed(button, x, y)
-
-Returns whether mouse button is down.
-- \c button (string): The name of a mouse button.
+  Possible values are \c "left", \c "middle", \c "right", \c "x1" and \c "x2".
 - Return value (boolean): \c true if mouse button is down.
 
 */

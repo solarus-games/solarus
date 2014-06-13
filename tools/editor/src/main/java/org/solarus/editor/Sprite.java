@@ -604,6 +604,30 @@ public class Sprite extends Observable {
     }
 
     /**
+     * Clone the selected animation direction in the selected animation.
+     * @throws SpriteException if no animation or direction was selected
+     */
+    public void cloneDirection() throws SpriteException {
+
+        SpriteAnimation animation = getSelectedAnimation();
+        if (animation == null) {
+            throw new SpriteException("No selected animation");
+        }
+
+        if (selectedDirectionNb < 0) {
+            throw new SpriteException("No selected direction");
+        }
+
+        SpriteAnimationDirection direction = animation.cloneDirection(selectedDirectionNb);
+
+        selectedDirectionNb = animation.getNbDirections() - 1;
+
+        isSaved = false;
+        setChanged();
+        notifyObservers(direction);
+    }
+
+    /**
      * Remove the selected animation from this sprite.
      * @throws SpriteException if the animation doesn't exist
      */

@@ -169,6 +169,22 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
         // popup menu for a selected tile pattern
         popupMenuSelectedDirection = new JPopupMenu();
 
+        item = new JMenuItem("Clone direction");
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    sprite.cloneDirection();
+                } catch (SpriteException ex) {
+                    JOptionPane.showMessageDialog(null,
+                        "Unable to clone the direction: " + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        popupMenuSelectedDirection.add(item);
+
         item = new JMenuItem("Delete");
         item.addActionListener(new ActionListener() {
                 @Override

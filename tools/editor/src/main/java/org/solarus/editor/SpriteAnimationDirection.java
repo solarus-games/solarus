@@ -377,4 +377,20 @@ public class SpriteAnimationDirection extends Observable {
             g.drawImage(image, x, y, width, height, MapEntity.bgColor, null);
         }
     }
+
+    /**
+     * Clone this direction.
+     * @return the clone of this direction
+     * @throws CloneNotSupportedException if cannot be cloned
+     */
+    @Override
+    public SpriteAnimationDirection clone() throws CloneNotSupportedException {
+
+        try {
+            return new SpriteAnimationDirection(srcImage, new Rectangle(position, size),
+                    nbFrames, nbColumns, origin.x, origin.y);
+        } catch (SpriteException ex) {
+            throw new CloneNotSupportedException(ex.getMessage());
+        }
+    }
 }

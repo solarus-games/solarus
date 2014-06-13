@@ -806,10 +806,27 @@ public class QuestTree extends JTree implements ProjectObserver {
     private class DirectoryPopupMenu extends JPopupMenu {
 
         /**
-         * Creates the popup menu of a resource type.
+         * Creates the popup menu of a directory.
          * @param path the path of the directory.
          */
         public DirectoryPopupMenu(final String path) {
+
+            buildDirectoryMenu(path);
+        }
+
+        /**
+         * Creates the popup menu of a directory.
+         * This constructor does not build the menu, you can call the
+         * buildDirectoryMenu method to do that.
+         */
+        protected DirectoryPopupMenu() {
+        }
+
+        /**
+         * Builds the directory menu.
+         * @param path the path of the directory.
+         */
+        protected void buildDirectoryMenu(final String path) {
 
             // new script
             JMenuItem elementItem = new JMenuItem("New script");
@@ -856,7 +873,7 @@ public class QuestTree extends JTree implements ProjectObserver {
          */
         public ResourceParentPopupMenu(final String path,
                 final ResourceType resourceType, final String basepath) {
-            super(path);
+            super();
 
             JMenuItem elementItem = new JMenuItem(
                     "New " + resourceType.getName().toLowerCase());
@@ -868,8 +885,10 @@ public class QuestTree extends JTree implements ProjectObserver {
                     editorWindow.createResourceElement(resourceType, basepath);
                 }
             });
-            addSeparator();
             add(elementItem);
+
+            addSeparator();
+            buildDirectoryMenu(path);
         }
     }
 

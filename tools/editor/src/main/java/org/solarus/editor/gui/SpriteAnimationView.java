@@ -461,8 +461,7 @@ class SpriteAnimationView extends JPanel implements Observer {
                         return;
                     }
 
-                    NewAnimationDialog dialog = new NewAnimationDialog(
-                                animationChooser.getSelected());
+                    NewAnimationDialog dialog = new NewAnimationDialog();
                     String name = "";
                     if (dialog.display()) {
                         name = dialog.getAnimationName();
@@ -631,7 +630,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         /**
          * Constructor.
          */
-        public NewAnimationDialog(String name) {
+        public NewAnimationDialog() {
 
             super("New animation", false);
 
@@ -646,7 +645,6 @@ class SpriteAnimationView extends JPanel implements Observer {
 
             constraints.gridx++;
             nameField = new JTextField(15);
-            nameField.setText(name);
             mainPanel.add(nameField, constraints);
 
             setComponent(mainPanel);

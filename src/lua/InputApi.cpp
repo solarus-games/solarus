@@ -214,7 +214,7 @@ int LuaContext::input_api_is_mouse_button_released(lua_State* l) {
  */
 int LuaContext::input_api_get_mouse_position(lua_State* l) {
 
-  const Rectangle& position = Video::get_scaled_position(InputEvent::get_global_mouse_position());
+  const Rectangle& position = InputEvent::get_global_mouse_position();
 
   if (!position.is_flat()) {
     lua_pushinteger(l, position.get_x());

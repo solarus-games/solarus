@@ -39,6 +39,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
     private SpriteAnimationDirection selectedDirection;
 
     // components
+    private final JLabel numberView;
     private final SizeField sizeView;
     private final PositionField positionView;
     private final OriginField originView;
@@ -59,9 +60,13 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
         constraints.insets = new Insets(5, 5, 5, 5); // margins
         constraints.anchor = GridBagConstraints.LINE_START; // alignment of the components
 
-        // position
+        // number
         constraints.gridx = 0;
         constraints.gridy = 0;
+        properiesPanel.add(new JLabel("Number"), constraints);
+
+        // position
+        constraints.gridy++;
         properiesPanel.add(new JLabel("Size"), constraints);
 
         // size
@@ -83,6 +88,11 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
         constraints.weightx = 1;
         constraints.gridx = 1;
         constraints.gridy = 0;
+
+        numberView = new JLabel();
+        properiesPanel.add(numberView, constraints);
+
+        constraints.gridy++;
         sizeView = new SizeField();
         properiesPanel.add(sizeView, constraints);
 
@@ -161,7 +171,24 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
     public void update(Observable o, Object obj) {
 
         if (o instanceof Sprite || o instanceof SpriteAnimation) {
-            setSelectedDirection(sprite.getSelectedDirectionNb());
+
+            int directionNb = sprite.getSelectedDirectionNb();
+
+            setSelectedDirection(directionNb);
+
+            String numberText = "";
+            if (directionNb >= 0) {
+                numberText += directionNb;
+                if (sprite.getSelectedAnimation().getNbDirections() == 4) {
+                    switch (directionNb) {
+                    case 0: numberText += " - right"; break;
+                    case 1: numberText += " - up"; break;
+                    case 2: numberText += " - left"; break;
+                    case 3: numberText += " - down"; break;
+                    }
+                }
+            }
+            numberView.setText(numberText);
         } else {
 
             sizeView.update(selectedDirection);

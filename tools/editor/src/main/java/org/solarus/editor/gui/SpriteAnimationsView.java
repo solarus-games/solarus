@@ -111,7 +111,7 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
         final JScrollPane listScroller = new JScrollPane(spriteAnimationDirectionsList);
         listScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         listScroller.setAlignmentX(Component.LEFT_ALIGNMENT);
-        listScroller.setPreferredSize(new Dimension(320, 300));
+        listScroller.setPreferredSize(new Dimension(320, 280));
         listScroller.setWheelScrollingEnabled(false);
         listScroller.addMouseWheelListener(new MouseWheelListener() {
 

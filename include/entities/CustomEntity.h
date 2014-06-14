@@ -140,7 +140,7 @@ class CustomEntity: public Detector {
     virtual void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping);
     virtual void notify_collision_with_enemy(Enemy& enemy);
     virtual void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
-    void notify_action_command_pressed();
+    bool notify_action_command_pressed();
     bool interaction_with_item(EquipmentItem& item);
 
     // Observing the ground.

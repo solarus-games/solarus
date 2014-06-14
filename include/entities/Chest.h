@@ -70,7 +70,7 @@ class Chest: public Detector {
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_enabled(bool enabled);
     void update();
-    void notify_action_command_pressed();
+    bool notify_action_command_pressed();
     void set_suspended(bool suspended);
 
     static const std::string opening_method_names[];

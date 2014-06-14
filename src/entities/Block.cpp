@@ -182,18 +182,16 @@ void Block::notify_collision_with_switch(Switch& sw, CollisionMode collision_mod
 }
 
 /**
- * \brief Notifies this detector that the player is interacting with it by
- * pressing the action command.
- *
- * This function is called when the player presses the action command
- * while the hero is facing this detector, and the action command effect lets
- * him do this.
+ * \copydoc Detector::notify_action_command_pressed
  */
-void Block::notify_action_command_pressed() {
+bool Block::notify_action_command_pressed() {
 
   if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_GRAB) {
     get_hero().start_grabbing();
+    return true;
   }
+
+  return false;
 }
 
 /**

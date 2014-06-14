@@ -54,7 +54,7 @@ class Block: public Detector {
     void notify_created();
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
-    void notify_action_command_pressed();
+    bool notify_action_command_pressed();
     bool start_movement_by_hero();
     void stop_movement_by_hero();
     void notify_moving_by(MapEntity& entity);

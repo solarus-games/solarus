@@ -197,15 +197,9 @@ void Bomb::notify_position_changed() {
 }
 
 /**
- * \brief Notifies this detector that the player is interacting with it by
- * pressing the action command.
- *
- * This function is called when the player presses the action command
- * while the hero is facing this detector, and the action command effect lets
- * him do this.
- * The hero lifts the bomb if possible.
+ * \copydoc Detector::notify_action_command_pressed
  */
-void Bomb::notify_action_command_pressed() {
+bool Bomb::notify_action_command_pressed() {
 
   KeysEffect::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
 
@@ -223,7 +217,10 @@ void Bomb::notify_action_command_pressed() {
     );
     Sound::play("lift");
     remove_from_map();
+    return true;
   }
+
+  return false;
 }
 
 /**

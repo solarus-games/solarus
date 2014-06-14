@@ -285,7 +285,7 @@ class LuaContext {
     void entity_on_obstacle_reached(MapEntity& entity, Movement& movement);
     void entity_on_movement_changed(MapEntity& entity, Movement& movement);
     void entity_on_movement_finished(MapEntity& entity);
-    void entity_on_interaction(MapEntity& entity);
+    bool entity_on_interaction(MapEntity& entity);
     bool entity_on_interaction_item(MapEntity& entity, EquipmentItem& item_used);
     void hero_on_state_changed(Hero& hero, const std::string& state_name);
     bool hero_on_taking_damage(Hero& hero, int damage);
@@ -1090,7 +1090,7 @@ class LuaContext {
     void on_activated_repeat();
     void on_inactivated();
     void on_left();
-    void on_interaction();
+    bool on_interaction();
     bool on_interaction_item(EquipmentItem& item_used);
     void on_npc_interaction(Npc& npc);
     bool on_npc_interaction_item(Npc& npc, EquipmentItem& item_used);

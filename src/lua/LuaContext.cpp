@@ -2113,12 +2113,16 @@ bool LuaContext::on_npc_interaction_item(Npc& npc, EquipmentItem& item_used) {
 
 /**
  * \brief Calls the on_interaction() method of the object on top of the stack.
+ * \return true if an interaction occurred.
  */
-void LuaContext::on_interaction() {
+bool LuaContext::on_interaction() {
 
   if (find_method("on_interaction")) {
     call_function(1, 0, "on_interaction");
+    return true;
   }
+
+  return false;
 }
 
 /**

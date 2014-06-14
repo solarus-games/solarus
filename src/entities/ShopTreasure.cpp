@@ -177,22 +177,19 @@ void ShopTreasure::notify_collision(
 }
 
 /**
- * \brief Notifies this detector that the player is interacting with it by
- * pressing the action command.
- *
- * This function is called when the player presses the action command
- * while the hero is facing this detector, and the action command effect lets
- * him do this.
- * A dialog is shown to let the hero buy the item.
+ * \copydoc Detector::notify_action_command_pressed
  */
-void ShopTreasure::notify_action_command_pressed() {
+bool ShopTreasure::notify_action_command_pressed() {
 
   if (get_hero().is_free()
       && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {
 
     LuaContext& lua_context = get_lua_context();
     lua_context.notify_shop_treasure_interaction(*this);
+    return true;
   }
+
+  return false;
 }
 
 /**

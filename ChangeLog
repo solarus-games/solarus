@@ -10,6 +10,7 @@ Engine changes
 
 * Fix entity:is_in_same_region() giving wrong results (#500).
 * Fix custom_entity:set_can_traverse() giving opposite results.
+* Fix custom_entity:on_interaction() not always called.
 * Fix hero:set_tunic_sprite_id() resetting the direction to right (#511).
 * Fix timer:get_remaining_time() always returning 0 (#503).
 * Fix declaring global variables from a map script (#507).

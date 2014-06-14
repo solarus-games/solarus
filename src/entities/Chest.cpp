@@ -393,15 +393,9 @@ void Chest::update() {
 }
 
 /**
- * \brief Notifies this detector that the player is interacting with it by
- * pressing the action command.
- *
- * This function is called when the player presses the action command
- * while the hero is facing this detector, and the action command effect lets
- * him do this.
- * The hero opens the chest if possible.
+ * \copydoc Detector::notify_action_command_pressed
  */
-void Chest::notify_action_command_pressed() {
+bool Chest::notify_action_command_pressed() {
 
   if (is_enabled() && get_hero().is_free()) {
 
@@ -417,7 +411,11 @@ void Chest::notify_action_command_pressed() {
       Sound::play("wrong");
       get_game().start_dialog(get_cannot_open_dialog_id(), LUA_REFNIL, LUA_REFNIL);
     }
+
+    return true;
   }
+
+  return false;
 }
 
 /**

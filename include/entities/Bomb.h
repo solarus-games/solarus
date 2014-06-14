@@ -46,7 +46,7 @@ class Bomb: public Detector {
     void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
     void notify_collision_with_stream(Stream& stream, int dx, int dy);
     void notify_position_changed();
-    void notify_action_command_pressed();
+    bool notify_action_command_pressed();
     void set_suspended(bool suspended);
     void update();
 

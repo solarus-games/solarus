@@ -4735,16 +4735,19 @@ void LuaContext::entity_on_movement_finished(MapEntity& entity) {
  * Does nothing if the method is not defined.
  *
  * \param entity A map entity.
+ * \return \c true if an interaction occurred.
  */
-void LuaContext::entity_on_interaction(MapEntity& entity) {
+bool LuaContext::entity_on_interaction(MapEntity& entity) {
 
   if (!userdata_has_field(entity, "on_interaction")) {
-    return;
+    return false;
   }
 
   push_entity(l, entity);
-  on_interaction();
+  bool exists = on_interaction();
   lua_pop(l, 1);
+
+  return exists;
 }
 
 /**

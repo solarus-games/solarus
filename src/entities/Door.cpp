@@ -562,15 +562,9 @@ void Door::draw_on_map() {
 }
 
 /**
- * \brief Notifies this detector that the player is interacting with it by
- * pressing the action command.
- *
- * This function is called when the player presses the action command
- * while the hero is facing this detector, and the action command effect lets
- * him do this.
- * The hero opens the door if possible, otherwise a message is shown.
+ * \copydoc Detector::notify_action_command_pressed
  */
-void Door::notify_action_command_pressed() {
+bool Door::notify_action_command_pressed() {
 
   if (get_hero().is_free() && is_closed()) {
 
@@ -594,7 +588,11 @@ void Door::notify_action_command_pressed() {
       Sound::play("wrong");
       get_game().start_dialog(cannot_open_dialog_id, LUA_REFNIL, LUA_REFNIL);
     }
+
+    return true;
   }
+
+  return false;
 }
 
 /**

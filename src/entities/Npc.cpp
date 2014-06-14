@@ -224,14 +224,9 @@ void Npc::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
 }
 
 /**
- * \brief Notifies this detector that the player is interacting with it by
- * pressing the action command.
- *
- * This function is called when the player presses the action command
- * while the hero is facing this detector, and the action command effect lets
- * him do this.
+ * \copydoc Detector::notify_action_command_pressed
  */
-void Npc::notify_action_command_pressed() {
+bool Npc::notify_action_command_pressed() {
 
   Hero& hero = get_hero();
   if (hero.is_free()) {
@@ -253,6 +248,7 @@ void Npc::notify_action_command_pressed() {
       else {
         call_script_hero_interaction();
       }
+      return true;
     }
     else {
       // lift the entity
@@ -268,9 +264,11 @@ void Npc::notify_action_command_pressed() {
         );
         Sound::play("lift");
         remove_from_map();
+        return true;
       }
     }
   }
+  return false;
 }
 
 /**

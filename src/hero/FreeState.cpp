@@ -102,20 +102,30 @@ void Hero::FreeState::set_suspended(bool suspended) {
 void Hero::FreeState::notify_action_command_pressed() {
 
   Hero& hero = get_hero();
-  if (get_keys_effect().is_action_key_acting_on_facing_entity()) {
+  Detector* facing_entity = hero.get_facing_entity();
+  bool facing_entity_interaction = false;
+  if (facing_entity != NULL) {
+    if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE ||
+        get_keys_effect().is_action_key_acting_on_facing_entity()
+    ) {
 
-    // action on the facing entity
-    hero.get_facing_entity()->notify_action_command_pressed();
+      // action on the facing entity
+      facing_entity_interaction = facing_entity->notify_action_command_pressed();
+    }
   }
-  else if (hero.is_facing_point_on_obstacle()) {
 
-    // grab an obstacle
-    hero.set_state(new GrabbingState(hero));
-  }
-  else if (hero.can_run()) {
+  if (!facing_entity_interaction) {
+    // The event was not handled by the facing entity.
+    if (hero.is_facing_point_on_obstacle()) {
 
-    // run
-    hero.start_running();
+      // grab an obstacle
+      hero.set_state(new GrabbingState(hero));
+    }
+    else if (hero.can_run()) {
+
+      // run
+      hero.start_running();
+    }
   }
 }
 

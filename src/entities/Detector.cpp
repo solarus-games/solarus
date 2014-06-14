@@ -353,9 +353,11 @@ void Detector::notify_collision(MapEntity& other_entity, Sprite& other_sprite, S
  * By default, nothing happens.
  * Redefine your function in the subclasses to allow the hero to interact with
  * this entity.
+ *
+ * \return \c true if an interaction happened.
  */
-void Detector::notify_action_command_pressed() {
-
+bool Detector::notify_action_command_pressed() {
+  return false;
 }
 
 /**

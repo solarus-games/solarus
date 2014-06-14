@@ -64,7 +64,7 @@ CustomEntity::CustomEntity(
     const std::string& model):
 
   Detector(
-      COLLISION_NONE,
+      COLLISION_FACING,
       name, layer, x, y, width, height),
   model(model),
   ground_modifier(true),
@@ -741,7 +741,7 @@ void CustomEntity::clear_collision_tests() {
 
   // Disable all collisions checks.
   collision_tests.clear();
-  set_collision_modes(COLLISION_NONE);
+  set_collision_modes(COLLISION_FACING);
 }
 
 /**
@@ -788,11 +788,6 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
         if (test_collision_facing_point(entity)) {
           collision = true;
           successful_collision_tests.push_back(info);
-
-          // Make sure only one entity can think "I am the facing entity".
-          if (entity.get_facing_entity() == NULL) {
-            entity.set_facing_entity(this);
-          }
         }
         break;
 
@@ -836,6 +831,12 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
  * \copydoc Detector::notify_collision(MapEntity&,CollisionMode)
  */
 void CustomEntity::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+
+  if (collision_mode == COLLISION_FACING) {
+    // This collision mode is only useful to set the facing entity, which
+    // is already done by Detector.
+    return;
+  }
 
   // One or several collisions were detected with an another entity.
   // The collision tests could have been of any kind
@@ -1082,9 +1083,9 @@ void CustomEntity::notify_collision_with_enemy(
 /**
  * \copydoc Detector::notify_action_command_pressed
  */
-void CustomEntity::notify_action_command_pressed() {
+bool CustomEntity::notify_action_command_pressed() {
 
-  get_lua_context().entity_on_interaction(*this);
+  return get_lua_context().entity_on_interaction(*this);
 }
 
 /**

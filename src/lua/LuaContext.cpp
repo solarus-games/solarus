@@ -1781,8 +1781,14 @@ bool LuaContext::on_mouse_button_pressed(const InputEvent& event) {
       const Rectangle& position = event.get_mouse_position();
 
       push_string(l, button_name);
-      lua_pushinteger(l, position.get_x());
-      lua_pushinteger(l, position.get_y());
+      if (!position.is_flat()) {
+        lua_pushinteger(l, position.get_x());
+        lua_pushinteger(l, position.get_y());
+      }
+      else {
+        lua_pushnil(l);
+        lua_pushnil(l);
+      }
 
       bool success = call_function(4, 1, "on_mouse_pressed");
       if (!success) {
@@ -1815,8 +1821,14 @@ bool LuaContext::on_mouse_button_released(const InputEvent& event) {
       const Rectangle& position = event.get_mouse_position();
 
       push_string(l, button_name);
-      lua_pushinteger(l, position.get_x());
-      lua_pushinteger(l, position.get_y());
+      if (!position.is_flat()) {
+        lua_pushinteger(l, position.get_x());
+        lua_pushinteger(l, position.get_y());
+      }
+      else {
+        lua_pushnil(l);
+        lua_pushnil(l);
+      }
 
       bool success = call_function(4, 1, "on_mouse_released");
       if (!success) {

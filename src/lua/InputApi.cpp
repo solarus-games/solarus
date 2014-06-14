@@ -216,8 +216,14 @@ int LuaContext::input_api_get_mouse_position(lua_State* l) {
 
   const Rectangle& position = Video::get_scaled_position(InputEvent::get_global_mouse_position());
 
-  lua_pushinteger(l, position.get_x());
-  lua_pushinteger(l, position.get_y());
+  if (!position.is_flat()) {
+    lua_pushinteger(l, position.get_x());
+    lua_pushinteger(l, position.get_y());
+  }
+  else {
+    lua_pushnil(l);
+    lua_pushnil(l);
+  }
   return 2;
 }
 

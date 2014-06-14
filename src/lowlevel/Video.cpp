@@ -826,22 +826,25 @@ Rectangle Video::get_viewport() {
 
 /**
  * \brief Get a scaled coordonate.
- * \param position A pixel position relative and scaled to the window.
- * \return A Rectangle filled with the position relative to
- * the viewport position and scaled to quest_size, w and h are unused.
+ * \param position A pixel position relative and scaled to the viewport.
+ * \return A Rectangle filled with the coordinate scaled to quest_size,
+ *  w and h are unused.
+ * A coordinate outside the quest bound is clamped.
  */
 Rectangle Video::get_scaled_position(const Rectangle& position) {
 
+  double x, y;
   const Rectangle& viewport = get_viewport();
 
   if (viewport.is_flat() || quest_size.is_flat()) {
     return Rectangle();
   }
 
-  return Rectangle(static_cast<double>(position.get_x()) *
-                     (static_cast<double>(viewport.get_width()) / static_cast<double>(quest_size.get_width())),
-                   static_cast<double>(position.get_y()) *
-                     (static_cast<double>(viewport.get_height()) / static_cast<double>(quest_size.get_height())),
+  x = std::abs(std::min(position.get_x(), viewport.get_width()));
+  y = std::abs(std::min(position.get_y(), viewport.get_height()));
+
+  return Rectangle(x * static_cast<double>(viewport.get_width()) / static_cast<double>(quest_size.get_width()),
+                   y * static_cast<double>(viewport.get_height()) / static_cast<double>(quest_size.get_height()),
                    1,
                    1);
 }

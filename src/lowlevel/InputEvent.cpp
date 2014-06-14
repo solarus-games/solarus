@@ -419,9 +419,9 @@ int InputEvent::get_joypad_hat_direction(int hat) {
 }
 
 /**
- * \brief Returns the x and y position of the mouse by the "state" way.
- * Values are in quest size coordinates and relative to the point 0,0 of the viewport.
- * \return A rectangle filled by the x and y position of the mouse,
+ * \brief Returns the x and y position of the mouse by the state way.
+ * Values are in quest size coordinates and relative to the viewport.
+ * \return A rectangle filled with the x and y position of the mouse,
  * w and h are unused.
  */
 Rectangle InputEvent::get_global_mouse_position() {
@@ -1026,8 +1026,8 @@ InputEvent::MouseButton InputEvent::get_mouse_button() const {
 
 /**
  * \brief Returns the x and y position of this mouse event, if any.
- * Values are in quest size coordinates and relative to the point 0,0 of the viewport.
- * \return A rectangle filled by the x and y position of the mouse,
+ * Values are in quest size coordinates and relative to the viewport.
+ * \return A rectangle filled with the x and y position of the mouse,
  * w and h are unused.
  */
 Rectangle InputEvent::get_mouse_position() const {

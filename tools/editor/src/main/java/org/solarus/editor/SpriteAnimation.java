@@ -268,7 +268,7 @@ public class SpriteAnimation  extends Observable {
     public SpriteAnimationDirection addDirection(Rectangle rect) throws SpriteException {
 
         BufferedImage image = getImage();
-        Point origin = new Point(rect.width / 2, rect.height / 2);
+        Point origin = new Point(rect.width / 2, rect.height - 3);
 
         SpriteAnimationDirection direction = new SpriteAnimationDirection(image, rect, 1, 1, origin.x, origin.y);
         directions.add(direction);

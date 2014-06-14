@@ -6,6 +6,7 @@ The git repository of Solarus includes two subprojects:
 
 * Solarus: the C++ engine.
 * Solarus Quest Editor: an editor for creating quests, written in Java.
+    * Note: The Quest Editor will not compile for maven using Java 6.
 
 Solarus and Solarus Quest Editor are both licensed under GPL v3.
 

@@ -48,6 +48,7 @@ public class SpritePropertiesView extends JPanel
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(5, 5, 5, 5); // margins
         constraints.anchor = GridBagConstraints.LINE_START; // alignment of the components
+        constraints.fill = GridBagConstraints.HORIZONTAL;
 
         // tileset id
         constraints.gridx = 0;

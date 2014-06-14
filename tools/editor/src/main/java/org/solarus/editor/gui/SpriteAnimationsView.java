@@ -76,12 +76,10 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
 
         // sprite properties
         spritePropertiesView = new SpritePropertiesView();
-        spritePropertiesView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
         spritePropertiesView.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // animation
         spriteAnimationView = new SpriteAnimationView();
-        spriteAnimationView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
         spriteAnimationView.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // list
@@ -142,7 +140,6 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
 
         // animation direction
         spriteAnimationDirectionView = new SpriteAnimationDirectionView();
-        spriteAnimationDirectionView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
         spriteAnimationDirectionView.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         add(spritePropertiesView);

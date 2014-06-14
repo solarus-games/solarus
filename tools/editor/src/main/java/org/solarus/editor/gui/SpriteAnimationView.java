@@ -58,6 +58,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(5, 5, 5, 5); // margins
         constraints.anchor = GridBagConstraints.LINE_START; // alignment of the components
+        constraints.fill = GridBagConstraints.HORIZONTAL;
 
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -89,6 +90,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         srcImageView = new SrcImageField();
         add(srcImageView, constraints);
 
+        constraints.fill = GridBagConstraints.NONE;
         constraints.gridy++;
         frameDelayView = new FrameDelayField();
         add(frameDelayView, constraints);
@@ -414,7 +416,7 @@ class SpriteAnimationView extends JPanel implements Observer {
             setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
             animationChooser = new SpriteAnimationChooser(sprite);
-            animationChooser.setPreferredSize(new Dimension(96, 24));
+            animationChooser.setPreferredSize(new Dimension(80, 24));
             animationChooser.addActionListener(this);
             add(animationChooser);
 

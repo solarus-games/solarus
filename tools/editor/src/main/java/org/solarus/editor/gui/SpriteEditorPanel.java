@@ -18,6 +18,8 @@
 package org.solarus.editor.gui;
 
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.*;
@@ -59,11 +61,42 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
         // sprite animations
         spriteAnimationsView = new SpriteAnimationsView();
         spriteAnimationsView.setAlignmentY(Component.TOP_ALIGNMENT);
-        spriteAnimationsView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
-        spriteAnimationsView.setMinimumSize(new Dimension(0, 0));
-        JScrollPane spriteAnimationsScroller = new JScrollPane(spriteAnimationsView);
+        final JScrollPane spriteAnimationsScroller = new JScrollPane(spriteAnimationsView);
+        spriteAnimationsScroller.setMinimumSize(new Dimension(340, 0));
         spriteAnimationsScroller.setHorizontalScrollBarPolicy(
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        // listen the resize event of the scroll pane
+        // to sync the spriteAnimationView width.
+        spriteAnimationsScroller.addComponentListener(new ComponentListener() {
+
+            @Override
+            public void componentResized(ComponentEvent ce) {
+
+                int width = spriteAnimationsScroller.getWidth();
+                int height =  spriteAnimationsView.getHeight();
+
+                // check if the vertical scroll bar is visible
+                JScrollBar bar = spriteAnimationsScroller.getVerticalScrollBar();
+                if (bar.isVisible()) {
+
+                    width -= bar.getWidth();
+                }
+                // resize the view
+                spriteAnimationsView.setPreferredSize(new Dimension(width, height));
+                // refresh the view
+                spriteAnimationsView.revalidate();
+                spriteAnimationsView.repaint();
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent ce) {}
+
+            @Override
+            public void componentShown(ComponentEvent ce) {}
+
+            @Override
+            public void componentHidden(ComponentEvent ce) {}
+        });
 
         // sprite animation image
         spriteImageView = new SpriteImageView();
@@ -80,7 +113,7 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
         JSplitPane mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 spriteAnimationsScroller, rightPanel);
         mainPanel.setContinuousLayout(true);
-        mainPanel.setDividerLocation(344);
+        mainPanel.setDividerLocation(340);
         // we must put our main panel in another panel
         // otherwise the background color of the window is bad
         add(mainPanel);

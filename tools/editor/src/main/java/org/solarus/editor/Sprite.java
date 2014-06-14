@@ -533,8 +533,15 @@ public class Sprite extends Observable {
             throw new SpriteException("the name already exists");
         }
 
+        // if have a selected animation, set the same source image to new animation
+        String srcImage = "";
+        SpriteAnimation selectedAnimation = getSelectedAnimation();
+        if (selectedAnimation != null) {
+            srcImage = selectedAnimation.getSrcImage();
+        }
+
         Vector<SpriteAnimationDirection> directions = new Vector<SpriteAnimationDirection>();
-        SpriteAnimation animation = new SpriteAnimation("", directions, 0, -1, tilesetId);
+        SpriteAnimation animation = new SpriteAnimation(srcImage, directions, 0, -1, tilesetId);
 
         animations.put(name, animation);
 

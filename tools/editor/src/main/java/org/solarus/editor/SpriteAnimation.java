@@ -263,10 +263,12 @@ public class SpriteAnimation  extends Observable {
     /**
      * Clone a direction in this animation.
      * @param directionNb the number of the direction to clone
+     * @param position the position of the clone, null to keep the same position
      * @return the added direction.
      * @throws SpriteException if the direction doesn't exists or cannot be cloned
      */
-    public SpriteAnimationDirection cloneDirection(int directionNb) throws SpriteException {
+    public SpriteAnimationDirection cloneDirection(int directionNb, Point position)
+            throws SpriteException {
 
         if (directionNb < 0 || directionNb >= directions.size()) {
             throw new SpriteException("The direction " + directionNb +
@@ -277,6 +279,9 @@ public class SpriteAnimation  extends Observable {
 
         try {
             direction = direction.clone();
+            if (position != null) {
+                direction.setPosition(position);
+            }
             directions.add(direction);
 
             setChanged();

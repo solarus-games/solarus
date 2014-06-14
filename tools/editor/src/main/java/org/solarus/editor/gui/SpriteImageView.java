@@ -156,6 +156,25 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
         });
         popupMenuMove.add(item);
 
+        item = new JMenuItem("Clone here");
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Actually move the direction.
+                try {
+                    sprite.cloneDirection(currentArea.getLocation());
+                }
+                catch (SpriteException ex) {
+                    JOptionPane.showMessageDialog(null,
+                        "Unable to clone the direction here: " + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                }
+                startStateNormal();
+            }
+        });
+        popupMenuMove.add(item);
+
         JMenuItem itemCancelMove = new JMenuItem("Cancel");
         itemCancelMove.addActionListener(new ActionListener() {
                 @Override

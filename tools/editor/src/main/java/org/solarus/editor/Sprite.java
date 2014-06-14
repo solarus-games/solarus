@@ -605,9 +605,10 @@ public class Sprite extends Observable {
 
     /**
      * Clone the selected animation direction in the selected animation.
+     * @param position the position of the clone, null to keep the same position
      * @throws SpriteException if no animation or direction was selected
      */
-    public void cloneDirection() throws SpriteException {
+    public void cloneDirection(Point position) throws SpriteException {
 
         SpriteAnimation animation = getSelectedAnimation();
         if (animation == null) {
@@ -618,13 +619,23 @@ public class Sprite extends Observable {
             throw new SpriteException("No selected direction");
         }
 
-        SpriteAnimationDirection direction = animation.cloneDirection(selectedDirectionNb);
+        SpriteAnimationDirection direction = animation.cloneDirection(
+                selectedDirectionNb, position);
 
         selectedDirectionNb = animation.getNbDirections() - 1;
 
         isSaved = false;
         setChanged();
         notifyObservers(direction);
+    }
+
+    /**
+     * Clone the selected animation direction in the selected animation.
+     * @throws SpriteException if no animation or direction was selected
+     */
+    public void cloneDirection() throws SpriteException {
+
+        cloneDirection(null);
     }
 
     /**

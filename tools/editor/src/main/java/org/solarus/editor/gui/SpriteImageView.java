@@ -589,8 +589,13 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
                 int y = (int) (Math.min(Math.max(mouseEvent.getY(), 0),
                         scaledImage.getHeight(SpriteImageView.this)) / zoomValue);
 
-                // search the direction clicked
-                int clickedDirectionNb = sprite.getDirectionNbAt(x, y);
+                int clickedDirectionNb = sprite.getSelectedDirectionNb();
+                SpriteAnimationDirection direction = sprite.getSelectedDirection();
+                // if no selected direction or the position isn't in this direction
+                if (direction == null || !direction.contains(x, y)) {
+                    // search the direction clicked
+                    clickedDirectionNb = sprite.getDirectionNbAt(x, y);
+                }
 
                 // a direction was just clicked
                 if (clickedDirectionNb >= 0) {

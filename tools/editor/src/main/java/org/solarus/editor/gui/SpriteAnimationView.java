@@ -19,8 +19,10 @@ package org.solarus.editor.gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.*;
 import org.solarus.editor.*;
@@ -330,18 +332,18 @@ class SpriteAnimationView extends JPanel implements Observer {
              */
             public BufferedImage getImage () {
 
-                String path = "";
+                File file = null;
 
                 if (srcImage.equals("tileset")) {
                     if (selectedAnimation != null) {
                         String tilesetId = selectedAnimation.getTilesetId();
-                        path = "tilesets/" + Project.getTilesetEntitiesImageFile(tilesetId).getName();
+                        file = Project.getTilesetEntitiesImageFile(tilesetId);
                     }
                 } else {
-                    path = "sprites/" + srcImage;
+                    file = new File(Project.getDataPath() + "/sprites/" + srcImage);
                 }
                 try {
-                    return Project.getProjectImage(path);
+                    return ImageIO.read(file);
                 } catch (IOException ex) {
                     return null;
                 }
@@ -716,6 +718,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         // components
         private JTextField srcImage;
         private ResourceChooser tilesetChooser;
+        private JButton refreshButton;
         private JButton setButton;
 
         /**
@@ -735,6 +738,20 @@ class SpriteAnimationView extends JPanel implements Observer {
 
             add(srcImage);
             add(tilesetChooser);
+
+            refreshButton = new JButton(Project.getEditorImageIconOrEmpty("icon_refresh.png"));
+            refreshButton.setPreferredSize(new Dimension(24, 24));
+            refreshButton.setToolTipText("Refresh source image");
+            refreshButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ev) {
+
+                    if (selectedAnimation != null) {
+                        sprite.reloadImage();
+                    }
+                }
+            });
+            add(refreshButton);
 
             setButton = new JButton(Project.getEditorImageIconOrEmpty("icon_edit.png"));
             setButton.setPreferredSize(new Dimension(24, 24));
@@ -772,6 +789,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         public void update(Observable o) {
 
             if (selectedAnimation != null) {
+                refreshButton.setEnabled(true);
                 setButton.setEnabled(true);
                 String image = selectedAnimation.getSrcImage();
                 image = image.isEmpty() ? "<none>" : image;
@@ -787,6 +805,7 @@ class SpriteAnimationView extends JPanel implements Observer {
                 }
             }
             else {
+                refreshButton.setEnabled(false);
                 setButton.setEnabled(false);
                 tilesetChooser.setVisible(false);
                 srcImage.setText("<none>");

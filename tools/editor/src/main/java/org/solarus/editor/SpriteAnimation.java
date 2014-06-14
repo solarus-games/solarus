@@ -18,9 +18,11 @@ package org.solarus.editor;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Vector;
+import javax.imageio.ImageIO;
 
 /**
  * Represents an animation of a sprite.
@@ -56,6 +58,11 @@ public class SpriteAnimation  extends Observable {
     private String tilesetId;
 
     /**
+     * @brief Image of this animation.
+     */
+    private BufferedImage image = null;
+
+    /**
      * Creates an animation.
      * @param srcImageName the source image name of this animation
      * @param directions the list of directions of this animation
@@ -79,12 +86,31 @@ public class SpriteAnimation  extends Observable {
      */
     public void reloadImage() throws SpriteException {
 
-        BufferedImage image = getImage();
-        for (SpriteAnimationDirection direction: directions) {
-            direction.setSrcImage(image);
+        try {
+            image = ImageIO.read(getImageFile());
+            for (SpriteAnimationDirection direction: directions) {
+                direction.setSrcImage(image);
+            }
+            setChanged();
+            notifyObservers(image);
         }
-        setChanged();
-        notifyObservers(image);
+        catch (IOException ex) {
+            throw new SpriteException(ex.getMessage());
+        }
+    }
+
+    /**
+     * Returns the animation's image file.
+     * @return the file of animation image
+     */
+    public File getImageFile() {
+
+        if (srcImage.equals("tileset")) {
+
+            return Project.getTilesetEntitiesImageFile(tilesetId);
+        }
+
+        return new File(Project.getDataPath() + "/sprites/" + srcImage);
     }
 
     /**
@@ -94,19 +120,12 @@ public class SpriteAnimation  extends Observable {
      */
     public BufferedImage getImage() throws SpriteException {
 
-        String imagePath;
-
-        if (!srcImage.equals("tileset")) {
-            imagePath = "sprites/" + srcImage;
-        } else {
-            imagePath = "tilesets/" + Project.getTilesetEntitiesImageFile(tilesetId).getName();
+        // try to reload image if not loaded yet
+        if (image == null) {
+            reloadImage();
         }
 
-        try {
-            return Project.getProjectImage(imagePath);
-        } catch (IOException ex) {
-            return null;
-        }
+        return image;
     }
 
     /**

@@ -207,7 +207,7 @@ class InputEvent {
     static bool is_mouse_button_down(MouseButton button);
     static int get_joypad_axis_state(int axis);
     static int get_joypad_hat_direction(int hat);
-    static Rectangle get_mouse_position();
+    static Rectangle get_global_mouse_position();
 
     // event type
     bool is_keyboard_event() const;
@@ -262,7 +262,7 @@ class InputEvent {
     bool is_mouse_button_released(MouseButton button) const;
 
     MouseButton get_mouse_button() const;
-    Rectangle get_position() const;
+    Rectangle get_mouse_position() const;
     static const std::string& get_mouse_button_name(MouseButton button);
     static MouseButton get_mouse_button_by_name(const std::string& button_name);
 
@@ -287,7 +287,7 @@ class InputEvent {
     static std::map<KeyboardKey, std::string>
       keyboard_key_names;                         /**< Names of all existing keyboard keys. */
     static std::map<MouseButton, std::string>
-      mouse_button_names;                         /**< Names of all existing keyboard keys. */
+      mouse_button_names;                         /**< Names of all existing mouse buttons. */
     static bool repeat_keyboard;                  /**< True to handle repeat KEYDOWN and KEYUP events. */
 
     const SDL_Event internal_event;               /**< the internal event encapsulated */

@@ -19,7 +19,7 @@
 
 #include "Common.h"
 
-#if defined(SOLARUS_OSX)
+#if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
 
 // This are C "trampoline" function that will be used
 // to invoke a specific Objective-C method FROM C++

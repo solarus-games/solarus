@@ -29,7 +29,6 @@
 #include "entities/CustomEntity.h"
 #include "entities/Tileset.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/Video.h"
 #include "lowlevel/Debug.h"
 #include "Equipment.h"
 #include "EquipmentItem.h"
@@ -1779,7 +1778,7 @@ bool LuaContext::on_mouse_button_pressed(const InputEvent& event) {
     const std::string& button_name = InputEvent::get_mouse_button_name(event.get_mouse_button());
 
     if (!button_name.empty()) { // This button exists in the Solarus API.
-      const Rectangle& position = Video::get_scaled_position(event.get_position());
+      const Rectangle& position = event.get_mouse_position();
 
       push_string(l, button_name);
       lua_pushinteger(l, position.get_x());
@@ -1813,7 +1812,7 @@ bool LuaContext::on_mouse_button_released(const InputEvent& event) {
     const std::string& button_name = InputEvent::get_mouse_button_name(event.get_mouse_button());
 
     if (!button_name.empty()) { // This key exists in the Solarus API.
-      const Rectangle& position = Video::get_scaled_position(event.get_position());
+      const Rectangle& position = event.get_mouse_position();
 
       push_string(l, button_name);
       lua_pushinteger(l, position.get_x());

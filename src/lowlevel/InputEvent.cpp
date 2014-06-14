@@ -16,6 +16,7 @@
  */
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/Rectangle.h"
+#include "lowlevel/Video.h"
 #include <SDL.h>
 #include <cstdlib>  // std::abs
 
@@ -418,18 +419,18 @@ int InputEvent::get_joypad_hat_direction(int hat) {
 }
 
 /**
- * \brief Returns the x and y position of the mouse.
- * Values are relative to the point 0,0 of the viewport.
+ * \brief Returns the x and y position of the mouse by the "state" way.
+ * Values are in quest size coordinates and relative to the point 0,0 of the viewport.
  * \return A rectangle filled by the x and y position of the mouse,
  * w and h are unused.
  */
-Rectangle InputEvent::get_mouse_position() {
+Rectangle InputEvent::get_global_mouse_position() {
 
   int x, y;
 
   SDL_GetMouseState(&x, &y);
 
-  return Rectangle(x, y, 1, 1);
+  return Video::get_scaled_position(Rectangle(x, y, 1, 1));
 }
 
 
@@ -464,9 +465,9 @@ bool InputEvent::is_joypad_event() const {
 bool InputEvent::is_mouse_event() const {
 
   return internal_event.type == SDL_MOUSEMOTION
-  || internal_event.type == SDL_MOUSEBUTTONDOWN
-  || internal_event.type == SDL_MOUSEBUTTONUP
-  || internal_event.type == SDL_MOUSEWHEEL;
+    || internal_event.type == SDL_MOUSEBUTTONDOWN
+    || internal_event.type == SDL_MOUSEBUTTONUP
+    || internal_event.type == SDL_MOUSEWHEEL;
 }
 
 /**
@@ -965,7 +966,7 @@ bool InputEvent::is_joypad_hat_centered() const {
 
 /**
  * \brief Returns whether this event is a mouse event.
- * corresponding to pressing a any button.
+ * corresponding to pressing any button.
  * \return true if this event corresponds to pressing a mouse button.
  */
 bool InputEvent::is_mouse_button_pressed() const {
@@ -1011,7 +1012,7 @@ bool InputEvent::is_mouse_button_released(MouseButton button) const {
  * \brief Returns the button that was pressed or released during
  * this mouse event.
  *
- * If this is not a keyboard event, MOUSE_BUTTON_NONE is returned.
+ * If this is not a mouse event, MOUSE_BUTTON_NONE is returned.
  * \return The button of this mouse event.
  */
 InputEvent::MouseButton InputEvent::get_mouse_button() const {
@@ -1024,18 +1025,18 @@ InputEvent::MouseButton InputEvent::get_mouse_button() const {
 }
 
 /**
- * \brief Returns the x and y position of the mouse when a mouse event occur.
- * Values are relative to the point 0,0 of the viewport.
+ * \brief Returns the x and y position of this mouse event, if any.
+ * Values are in quest size coordinates and relative to the point 0,0 of the viewport.
  * \return A rectangle filled by the x and y position of the mouse,
  * w and h are unused.
  */
-Rectangle InputEvent::get_position() const {
+Rectangle InputEvent::get_mouse_position() const {
 
   if (!is_mouse_event()) {
     return Rectangle();
   }
 
-  return Rectangle(internal_event.button.x, internal_event.button.y, 1, 1);
+  return Video::get_scaled_position(Rectangle(internal_event.button.x, internal_event.button.y, 1, 1));
 }
 
 /**
@@ -1055,7 +1056,6 @@ const std::string& InputEvent::get_mouse_button_name(MouseButton button) {
  */
 InputEvent::MouseButton InputEvent::get_mouse_button_by_name(const std::string& button_name) {
 
-  // TODO check that this traversal is not significant, otherwise make a reverse mapping.
   std::map<MouseButton, std::string>::iterator it;
   for (it = mouse_button_names.begin(); it != mouse_button_names.end(); it++) {
     if (it->second == button_name) {

@@ -179,6 +179,11 @@ int LuaContext::input_api_is_mouse_button_pressed(lua_State* l) {
   const std::string& button_name = luaL_checkstring(l, 1);
   InputEvent::MouseButton button = InputEvent::get_mouse_button_by_name(button_name);
 
+  if (button == InputEvent::MOUSE_BUTTON_NONE) {
+    LuaTools::arg_error(l, 1, std::string(
+        "Unknown mouse button name: '") + button_name + "'");
+  }
+
   lua_pushboolean(l, InputEvent::is_mouse_button_down(button));
   return 1;
 }
@@ -193,6 +198,11 @@ int LuaContext::input_api_is_mouse_button_released(lua_State* l) {
   const std::string& button_name = luaL_checkstring(l, 1);
   InputEvent::MouseButton button = InputEvent::get_mouse_button_by_name(button_name);
 
+  if (button == InputEvent::MOUSE_BUTTON_NONE) {
+    LuaTools::arg_error(l, 1, std::string(
+        "Unknown mouse button name: '") + button_name + "'");
+  }
+
   lua_pushboolean(l, !InputEvent::is_mouse_button_down(button));
   return 1;
 }
@@ -204,7 +214,7 @@ int LuaContext::input_api_is_mouse_button_released(lua_State* l) {
  */
 int LuaContext::input_api_get_mouse_position(lua_State* l) {
 
-  const Rectangle& position = Video::get_scaled_position(InputEvent::get_mouse_position());
+  const Rectangle& position = Video::get_scaled_position(InputEvent::get_global_mouse_position());
 
   lua_pushinteger(l, position.get_x());
   lua_pushinteger(l, position.get_y());

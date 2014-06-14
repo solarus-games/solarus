@@ -397,7 +397,10 @@ void Chest::update() {
  */
 bool Chest::notify_action_command_pressed() {
 
-  if (is_enabled() && get_hero().is_free()) {
+  if (is_enabled() &&
+      get_hero().is_free() &&
+      get_keys_effect().get_action_key_effect() != KeysEffect::ACTION_KEY_NONE
+  ) {
 
     if (can_open()) {
       Sound::play("chest_open");

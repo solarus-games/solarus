@@ -566,7 +566,10 @@ void Door::draw_on_map() {
  */
 bool Door::notify_action_command_pressed() {
 
-  if (get_hero().is_free() && is_closed()) {
+  if (get_hero().is_free() &&
+      is_closed() &&
+      get_keys_effect().get_action_key_effect() != KeysEffect::ACTION_KEY_NONE
+  ) {
 
     if (can_open()) {
       Sound::play("door_unlocked");

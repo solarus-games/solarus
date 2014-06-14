@@ -229,7 +229,9 @@ void Npc::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
 bool Npc::notify_action_command_pressed() {
 
   Hero& hero = get_hero();
-  if (hero.is_free()) {
+  if (hero.is_free() &&
+      get_keys_effect().get_action_key_effect() != KeysEffect::ACTION_KEY_NONE
+  ) {
 
     KeysEffect::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);

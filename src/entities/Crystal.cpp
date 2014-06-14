@@ -116,7 +116,9 @@ void Crystal::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sp
  */
 bool Crystal::notify_action_command_pressed() {
 
-  if (get_hero().is_free()) {
+  if (get_hero().is_free() &&
+      get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK
+  ) {
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // start a dialog

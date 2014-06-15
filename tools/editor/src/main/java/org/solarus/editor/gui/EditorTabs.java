@@ -20,9 +20,11 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.plaf.basic.BasicButtonUI;
+import org.solarus.editor.Project;
 
 /**
- * The main tab pane with all editors currently open. 
+ * The main tab pane with all editors currently open.
  */
 public class EditorTabs extends JTabbedPane implements MouseListener, ChangeListener {
 
@@ -47,8 +49,13 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
                     "There is already an editor with id '" + editor.getId() + "'");
         }
 
-        add(editor.getTitle(), editor);
-        setSelectedIndex(getTabCount() - 1);
+        add(editor);
+
+        int index = getTabCount() - 1;
+        JComponent tabComponent = new TabComponent(editor);
+        setTabComponentAt(index, tabComponent);
+
+        setSelectedIndex(index);
         repaint();
     }
 
@@ -91,7 +98,7 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
      * Removes an editor if it exists.
      * @param promptSave true to let the user save the element if necessary,
      * false to close it without confirmation.
-     * @param id Id of editor to remove. Nothing happens if there is no editor
+     * @param editorId Id of editor to remove. Nothing happens if there is no editor
      * with this id.
      */
     public void removeEditor(String editorId, boolean promptSave) {
@@ -150,6 +157,7 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
      * Allow to close the editor with a middle click on his tab.
      * @param e The event.
      */
+    @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON2 && countEditors() > 0) {
             Point clic = e.getPoint();
@@ -162,33 +170,120 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
         }
     }
 
-    @Override
-    public void repaint() {
-        // TODO Don't do this in repaint().
-        super.repaint();
-        for (int i = 0; i < getTabCount(); i++) {
-            setTitleAt(i, ((AbstractEditorPanel) getComponentAt(i)).getTitle());
+    /**
+     * Refreshs the title of a specified editor.
+     * @param id The index of the editor
+     */
+    public void refreshEditorTitle(String id) {
+
+        AbstractEditorPanel editor = getEditor(id);
+
+        if (editor != null) {
+            TabComponent tabComponent = (TabComponent) getTabComponentAt(
+                    indexOfComponent(editor));
+            tabComponent.setTitle(editor.getTitle());
         }
     }
 
+    @Override
     public void mousePressed(MouseEvent e) {
     }
 
+    @Override
     public void mouseReleased(MouseEvent e) {
     }
 
+    @Override
     public void mouseEntered(MouseEvent e) {
     }
 
+    @Override
     public void mouseExited(MouseEvent e) {
     }
 
+    @Override
     public void stateChanged(ChangeEvent e) {
         if (countEditors() > 0) {
             Component editor = getSelectedComponent();
             if (editor instanceof MapEditorPanel) {
                 ((MapEditorPanel) editor).getMapView().requestFocus();
             }
+        }
+    }
+
+    /**
+     * Component, with a title and a close button, used in tabs.
+     */
+    private class TabComponent extends JPanel {
+
+        /**
+         * The title of this tab component.
+         */
+        final private JLabel title;
+
+        /**
+         * Constructor.
+         * @param title the title of the tab component
+         * @param editor the editor of the tab (used to close the tab)
+         */
+        public TabComponent(final AbstractEditorPanel editor) {
+
+            setLayout(new BorderLayout());
+            setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
+            setOpaque(false);
+
+            // title
+            title = new JLabel(editor.getTitle());
+            title.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+            add(title, BorderLayout.WEST);
+
+            // close
+            final JButton close = new JButton(
+                    Project.getEditorImageIconOrEmpty("icon_cross.png"));
+            close.setPreferredSize(new Dimension(16, 16));
+            close.setUI(new BasicButtonUI());
+            close.setBorderPainted(false);
+            close.setOpaque(false);
+            close.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    removeEditor(editor, true);
+                }
+            });
+            close.addMouseListener(new MouseListener() {
+
+                @Override
+                public void mouseClicked(MouseEvent me) {}
+
+                @Override
+                public void mousePressed(MouseEvent me) {}
+
+                @Override
+                public void mouseReleased(MouseEvent me) {}
+
+                @Override
+                public void mouseEntered(MouseEvent me) {
+
+                    close.setBorderPainted(true);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent me) {
+
+                    close.setBorderPainted(false);
+                }
+            });
+            add(close, BorderLayout.EAST);
+        }
+
+        /**
+         * Set the title of this tab component.
+         * @param title the new title
+         */
+        public void setTitle(String title) {
+
+            this.title.setText(title);
         }
     }
 }

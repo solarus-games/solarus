@@ -1071,7 +1071,28 @@ public class EditorWindow extends JFrame
     @Override
     public void resourceElementRenamed(ResourceType resourceType,
             String id, String name) {
-        tabs.repaint();  // TODO don't use repaint for this.
+
+        String editorId = null;
+
+        switch (resourceType) {
+
+        case MAP: editorId = MapEditorPanel.getEditorId(id); break;
+        case TILESET: editorId = TilesetEditorPanel.getEditorId(id); break;
+        case SPRITE: editorId = SpriteEditorPanel.getEditorId(id); break;
+
+        case LANGUAGE:
+        case ENEMY:
+        case ITEM:
+        case ENTITY:
+        case SOUND:
+        case MUSIC:
+            // No need to refresh title for these kinds of resources.
+            break;
+        }
+
+        if (editorId != null) {
+            tabs.refreshEditorTitle(editorId);
+        }
     }
 
     /**

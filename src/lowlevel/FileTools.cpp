@@ -359,52 +359,6 @@ std::vector<std::string> FileTools::data_files_enumerate(
 }
 
 /**
- * \brief Reads an integer value from an input stream.
- *
- * Stops the program on an error message if the read fails.
- *
- * \param is an input stream
- * \param value the value read
- */
-void FileTools::read(std::istream& is, int& value) {
-
-  if (!(is >> value)) {
-    Debug::die("Cannot read integer from input stream");
-  }
-}
-
-/**
- * \brief Reads an integer value from an input stream.
- *
- * Stops the program on an error message if the read fails.
- *
- * \param is an input stream
- * \param value the value read
- */
-void FileTools::read(std::istream& is, uint32_t& value) {
-
-  int v;
-  read(is, v);
-  Debug::check_assertion(v >= 0, "Positive integer value expected from input stream");
-  value = (uint32_t) v;
-}
-
-/**
- * \brief Reads a string value from an input stream.
- *
- * Stops the program on an error message if the read fails.
- *
- * \param is an input stream
- * \param value the value read
- */
-void FileTools::read(std::istream& is, std::string& value) {
-
-  if (!(is >> value)) {
-    Debug::die("Cannot read string from input stream");
-  }
-}
-
-/**
  * \brief Returns the directory where the engine can write files.
  * \returns The directory where the engine can write files, relative to the
  * base write directory.

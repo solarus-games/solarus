@@ -76,10 +76,6 @@ class FileTools {
         bool list_directories = true
     );
 
-    static void read(std::istream& is, int& value);
-    static void read(std::istream& is, uint32_t& value);
-    static void read(std::istream& is, std::string& value);
-
     // Writing files.
     static std::string get_base_write_dir();
     static const std::string& get_solarus_write_dir();

@@ -22,7 +22,6 @@
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Debug.h"
 #include <sstream>
-#include <iostream>
 
 namespace solarus {
 

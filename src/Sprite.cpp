@@ -28,7 +28,6 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
 #include <sstream>
-#include <iostream>
 
 namespace solarus {
 

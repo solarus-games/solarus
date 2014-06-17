@@ -981,7 +981,7 @@ void CustomEntity::notify_collision_with_switch(
 void CustomEntity::notify_collision_with_switch(
     Switch& sw, Sprite& sprite_overlapping) {
 
-  notify_collision_from(sw);
+  notify_collision_from(sw, sw.get_sprite(), sprite_overlapping);
 }
 
 /**
@@ -999,7 +999,7 @@ void CustomEntity::notify_collision_with_crystal(
 void CustomEntity::notify_collision_with_crystal(
     Crystal& crystal, Sprite& sprite_overlapping) {
 
-  notify_collision_from(crystal, sprite_overlapping, crystal.get_sprite());
+  notify_collision_from(crystal, crystal.get_sprite(), sprite_overlapping);
 }
 
 /**
@@ -1051,7 +1051,7 @@ void CustomEntity::notify_collision_with_explosion(
 void CustomEntity::notify_collision_with_explosion(
     Explosion& explosion, Sprite& sprite_overlapping) {
 
-  notify_collision_from(explosion, sprite_overlapping, explosion.get_sprite());
+  notify_collision_from(explosion, explosion.get_sprite(), sprite_overlapping);
 }
 
 /**
@@ -1060,7 +1060,7 @@ void CustomEntity::notify_collision_with_explosion(
 void CustomEntity::notify_collision_with_fire(
     Fire& fire, Sprite& sprite_overlapping) {
 
-  notify_collision_from(fire, sprite_overlapping, fire.get_sprite());
+  notify_collision_from(fire, fire.get_sprite(), sprite_overlapping);
 }
 
 /**

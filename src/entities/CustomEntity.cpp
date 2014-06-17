@@ -792,7 +792,7 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
         break;
 
       case COLLISION_TOUCHING:
-        if (test_collision_facing_point_any(entity)) {
+        if (test_collision_touching(entity)) {
           collision = true;
           successful_collision_tests.push_back(info);
         }
@@ -1180,7 +1180,6 @@ void CustomEntity::update() {
     return;
   }
 
-  check_collision_with_detectors(true);
   get_lua_context().entity_on_update(*this);
 }
 

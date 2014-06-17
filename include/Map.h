@@ -137,6 +137,7 @@ class Map: public ExportableToLua {
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(MapEntity& entity);
     void check_collision_with_detectors(MapEntity& entity, Sprite& sprite);
+    void check_collision_from_detector(Detector& detector);
 
     // main loop
     bool notify_input(const InputEvent& event);

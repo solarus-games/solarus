@@ -933,25 +933,69 @@ void MapEntity::set_aligned_to_grid_y() {
 /**
  * \brief Returns the coordinates of the point the entity is looking at.
  *
- * You should redefine this method to define what is a facing point for your subclass.
+ * By default, this point depends on the direction of the sprite if any.
+ * If there is no sprite, or if the sprite has not 4 directions,
+ * then the movement is considered.
+ * If there is no movement either, the entity is assumed to look to the north.
+ * You can redefine this method to change what is a facing point for your
+ * subclass.
  *
- * \return the coordinates of the point the entity is looking at
+ * \return The coordinates of the point the entity is looking at.
  */
 const Rectangle MapEntity::get_facing_point() const {
-  return Rectangle(-1, -1);
+
+  int direction4 = 1;  // North by default.
+  if (has_sprite() && get_sprite().get_nb_directions() == 4) {
+    // Use the sprite to decide where the entity is looking to.
+    direction4 = get_sprite().get_current_direction();
+  }
+  else {
+    if (get_movement() != NULL) {
+      // Otherwise use the movement.
+      direction4 = get_movement()->get_displayed_direction4();
+    }
+  }
+
+  return get_touching_point(direction4);
 }
 
 /**
  * \brief Returns the coordinates of the point the entity would be facing
  * if it was looking towards the specified direction.
- *
- * You should redefine this method to define what is a facing point for your subclass.
- *
- * \param direction a direction (0 to 3)
- * \return the coordinates of the point the entity in this direction
+ * \param Direction a direction (0 to 3).
+ * \return The point the entity touching this direction.
+ * Its size is <tt>1,1</tt>.
  */
-const Rectangle MapEntity::get_facing_point(int direction) const {
-  return Rectangle(-1, -1);
+const Rectangle MapEntity::get_touching_point(int direction) const {
+
+  Rectangle touching_point = get_center_point();
+
+  switch (direction) {
+
+    // right
+    case 0:
+      touching_point.add_x(get_width() / 2);
+      break;
+
+    // up
+    case 1:
+      touching_point.add_y(-get_height() / 2 - 1);
+      break;
+
+    // left
+    case 2:
+      touching_point.add_x(-get_width() / 2 - 1);
+      break;
+
+    // down
+    case 3:
+      touching_point.add_y(get_height() / 2);
+      break;
+
+    default:
+      Debug::die("Invalid direction for MapEntity::get_touching_point()");
+  }
+  return touching_point;
 }
 
 /**
@@ -1957,17 +2001,17 @@ bool MapEntity::is_facing_point_in(const Rectangle& rectangle) const {
 }
 
 /**
- * \brief Returns whether a facing point of this entity is in
+ * \brief Returns whether a touching point of this entity is in
  * the specified rectangle.
  * \param rectangle the rectangle to check
- * \param direction direction of the facing point to consider (0 to 3)
- * \return true if this facing point is in the specified rectangle
+ * \param direction direction of the touching point to consider (0 to 3)
+ * \return true if this touching point is in the specified rectangle
  */
-bool MapEntity::is_facing_point_in(
+bool MapEntity::is_touching_point_in(
     const Rectangle& rectangle, int direction) const {
 
-  const Rectangle& facing_point = get_facing_point(direction);
-  return rectangle.contains(facing_point.get_x(), facing_point.get_y());
+  const Rectangle& touching_point = get_touching_point(direction);
+  return rectangle.contains(touching_point.get_x(), touching_point.get_y());
 }
 
 /**

@@ -57,7 +57,6 @@ class Arrow: public MapEntity {
     bool is_stopped() const;
     bool is_flying() const;
     void attach_to(MapEntity &entity_reached);
-    const Rectangle get_facing_point() const;
 
     // collisions
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);

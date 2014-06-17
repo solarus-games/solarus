@@ -763,63 +763,11 @@ void Hero::notify_map_opening_transition_finished() {
 }
 
 /**
- * \brief Returns the coordinates of the first point in the direction the hero's sprite is looking at.
- *
- * This point is 1 pixel outside the hero's bounding box (and centered). It is used
- * to determine the actions he can do depending on the entity he is facing
- * (a bush, a pot, an NPC...)
- *
- * \return the point the hero is touching
+ * \copydoc MapEntity::get_facing_point
  */
 const Rectangle Hero::get_facing_point() const {
 
-  return get_facing_point(get_animation_direction());
-}
-
-/**
- * \brief Returns the coordinates of the first point in the specified direction.
- *
- * This point is 1 pixel outside the hero's bounding box (and centered). It is used
- * to determine the actions he can do depending on the entity he is facing
- * (a bush, a pot, an NPC...)
- *
- * \param direction a direction (0 to 3)
- * \return coordinates of the point the hero would be touching if he was looking towards that direction
- */
-const Rectangle Hero::get_facing_point(int direction) const {
-
-  Rectangle facing_point;
-  const Rectangle& bounding_box = get_bounding_box();
-
-  switch (direction) {
-
-    // right
-    case 0:
-      facing_point.set_xy(bounding_box.get_x() + 16, bounding_box.get_y() + 8);
-      break;
-
-      // up
-    case 1:
-      facing_point.set_xy(bounding_box.get_x() + 8, bounding_box.get_y() - 1);
-      break;
-
-      // left
-    case 2:
-      facing_point.set_xy(bounding_box.get_x() - 1, bounding_box.get_y() + 8);
-      break;
-
-      // down
-    case 3:
-      facing_point.set_xy(bounding_box.get_x() + 8, bounding_box.get_y() + 16);
-      break;
-
-    default:
-      Debug::die("Invalid direction for Hero::get_facing_point()");
-  }
-
-  facing_point.set_size(1, 1);
-
-  return facing_point;
+  return get_touching_point(get_animation_direction());
 }
 
 /**

@@ -1119,8 +1119,8 @@ Ground Map::get_ground(Layer layer, const Rectangle& xy) const {
  * We check whether or not the entity overlaps an entity detector.
  * If the map is suspended, this function does nothing.
  *
- * \param entity the entity that has just moved (this entity should have
- * a movement sensible to the collisions)
+ * \param entity The entity that has just moved (this entity should have
+ * a movement sensible to the collisions).
  */
 void Map::check_collision_with_detectors(MapEntity& entity) {
 
@@ -1128,7 +1128,7 @@ void Map::check_collision_with_detectors(MapEntity& entity) {
     return;
   }
 
-  // Check each detector.
+  // Check this entity with each detector.
   const std::list<Detector*>& detectors = entities->get_detectors();
   std::list<Detector*>::const_iterator it;
   const std::list<Detector*>::const_iterator end = detectors.end();
@@ -1137,6 +1137,38 @@ void Map::check_collision_with_detectors(MapEntity& entity) {
     Detector& detector = *(*it);
     if (detector.is_enabled()
         && !detector.is_being_removed()) {
+      detector.check_collision(entity);
+    }
+  }
+}
+
+/**
+ * \brief Checks the collisions between all entities and a detector.
+ *
+ * This function is called when a detector wants to check entities,
+ * typically when the detector has just moved.
+ * If the map is suspended, this function does nothing.
+ *
+ * \param detector A detector.
+ */
+void Map::check_collision_from_detector(Detector& detector) {
+
+  if (suspended) {
+    return;
+  }
+
+  // First check the hero.
+  detector.check_collision(get_entities().get_hero());
+
+  // Check each entity with this detector.
+  const std::list<MapEntity*>& all_entities = entities->get_entities();
+  std::list<MapEntity*>::const_iterator it;
+  const std::list<MapEntity*>::const_iterator end = all_entities.end();
+  for (it = all_entities.begin(); it != end; ++it) {
+
+    MapEntity& entity = *(*it);
+    if (entity.is_enabled()
+        && !entity.is_being_removed()) {
       detector.check_collision(entity);
     }
   }

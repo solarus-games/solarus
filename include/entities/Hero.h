@@ -95,7 +95,6 @@ class Hero: public MapEntity {
      * what is in front of him (we call this the "facing point").
      */
     const Rectangle get_facing_point() const;
-    const Rectangle get_facing_point(int direction4) const;
     void notify_facing_entity_changed(Detector* facing_entity);
     bool is_facing_obstacle();
     bool is_facing_point_on_obstacle();

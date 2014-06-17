@@ -51,7 +51,6 @@ class Hookshot: public MapEntity {
     // state
     void update();
     virtual void draw_on_map();
-    const Rectangle get_facing_point() const;
     bool is_flying() const;
     bool is_going_back() const;
     void go_back();

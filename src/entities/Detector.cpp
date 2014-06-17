@@ -167,7 +167,7 @@ void Detector::check_collision(MapEntity& entity) {
       notify_collision(entity, COLLISION_FACING);
     }
 
-    if (has_collision_mode(COLLISION_TOUCHING) && test_collision_facing_point_any(entity)) {
+    if (has_collision_mode(COLLISION_TOUCHING) && test_collision_touching(entity)) {
       notify_collision(entity, COLLISION_TOUCHING);
     }
 
@@ -265,22 +265,24 @@ bool Detector::test_collision_facing_point(MapEntity& entity) {
 }
 
 /**
- * \brief Returns whether the facing point of an entity (in any of the four main directions)
+ * \brief Returns whether a touching point of an entity
+ * (in any of the four main directions)
  * is overlapping the detector's rectangle.
  *
  * This method is called by check_collision(MapEntity*) when the detector's collision
- * mode is COLLISION_FACING_POINT_ANY.
+ * mode is COLLISION_TOUCHING_POINT.
  *
- * \param entity the entity
- * \return true if a facing point of the entity is overlapping the detector's rectangle
+ * \param entity The entity.
+ * \return \c true if a touching point of the entity is overlapping the
+ * detector's rectangle.
  */
-bool Detector::test_collision_facing_point_any(MapEntity& entity) {
+bool Detector::test_collision_touching(MapEntity& entity) {
 
   const Rectangle& bounding_box = get_bounding_box();
-  return entity.is_facing_point_in(bounding_box, 0)
-      || entity.is_facing_point_in(bounding_box, 1)
-      || entity.is_facing_point_in(bounding_box, 2)
-      || entity.is_facing_point_in(bounding_box, 3);
+  return entity.is_touching_point_in(bounding_box, 0)
+      || entity.is_touching_point_in(bounding_box, 1)
+      || entity.is_touching_point_in(bounding_box, 2)
+      || entity.is_touching_point_in(bounding_box, 3);
 }
 
 /**
@@ -427,6 +429,30 @@ void Detector::notify_being_removed() {
   if (get_hero().get_facing_entity() == this) {
     get_hero().set_facing_entity(NULL);
   }
+}
+
+/**
+ * \copydoc MapEntity::notify_position_changed
+ */
+void Detector::notify_position_changed() {
+
+  // Since this entity is a detector, all entities need to check
+  // their collisions with it.
+  get_map().check_collision_from_detector(*this);
+
+  MapEntity::notify_position_changed();
+}
+
+/**
+ * \copydoc MapEntity::notify_layer_changed
+ */
+void Detector::notify_layer_changed() {
+
+  // Since this entity is a detector, all entities need to check
+  // their collisions with it.
+  get_map().check_collision_from_detector(*this);
+
+  MapEntity::notify_layer_changed();
 }
 
 }

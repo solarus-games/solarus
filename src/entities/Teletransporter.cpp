@@ -229,9 +229,9 @@ bool Teletransporter::test_collision_custom(MapEntity& entity) {
     Hero& hero = static_cast<Hero&>(entity);
     if (is_on_map_side()) {
       // scrolling towards an adjacent map
-      Rectangle facing_point = hero.get_facing_point(transition_direction);
+      const Rectangle& touching_point = hero.get_touching_point(transition_direction);
       collision = hero.is_moving_towards(transition_direction)
-          && overlaps(facing_point.get_x(), facing_point.get_y());
+          && overlaps(touching_point.get_x(), touching_point.get_y());
       normal_case = false;
     }
 

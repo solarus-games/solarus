@@ -123,6 +123,14 @@ Hero& MapEntities::get_hero() {
 }
 
 /**
+ * \brief Returns all entities expect tiles and the hero.
+ * \return The entities except tiles and the hero.
+ */
+const std::list<MapEntity*>& MapEntities::get_entities() {
+  return all_entities;
+}
+
+/**
  * \brief Returns the entities (other that tiles) such that the hero cannot walk on them.
  * \param layer The layer.
  * \return The obstacle entities on that layer.

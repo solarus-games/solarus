@@ -119,7 +119,7 @@ class MapEntity: public ExportableToLua {
     void set_top_left_xy(const Rectangle& xy);
 
     virtual const Rectangle get_facing_point() const;
-    virtual const Rectangle get_facing_point(int direction) const;
+    const Rectangle get_touching_point(int direction) const;
     const Rectangle get_center_point() const;
 
     bool is_aligned_to_grid() const;
@@ -195,7 +195,7 @@ class MapEntity: public ExportableToLua {
     bool overlaps_camera() const;
     bool is_origin_point_in(const Rectangle& rectangle) const;
     bool is_facing_point_in(const Rectangle& rectangle) const;
-    bool is_facing_point_in(const Rectangle& rectangle, int direction) const;
+    bool is_touching_point_in(const Rectangle& rectangle, int direction) const;
     bool is_center_in(const Rectangle& rectangle) const;
 
     double get_angle(int x, int y) const;
@@ -215,6 +215,7 @@ class MapEntity: public ExportableToLua {
 
     void check_collision_with_detectors(bool with_pixel_precise);
     void check_collision_with_detectors(Sprite& sprite);
+    void check_collision_from_detector(Detector& detector);
 
     virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
     virtual void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode);

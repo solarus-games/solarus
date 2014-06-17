@@ -48,6 +48,7 @@ class MapEntities {
     // entities
     Hero& get_hero();
     Ground get_tile_ground(Layer layer, int x, int y) const;
+    const std::list<MapEntity*>& get_entities();
     const std::list<MapEntity*>& get_obstacle_entities(Layer layer);
     const std::list<MapEntity*>& get_ground_observers(Layer layer);
     const std::list<MapEntity*>& get_ground_modifiers(Layer layer);

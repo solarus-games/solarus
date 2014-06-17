@@ -217,43 +217,6 @@ bool Arrow::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_positi
 }
 
 /**
- * \brief Returns the point located just outside the arrow's collision box,
- * in its current direction.
- */
-const Rectangle Arrow::get_facing_point() const {
-
-  Rectangle facing_point = get_xy();
-
-  switch (get_sprite().get_current_direction()) {
-
-    // right
-    case 0:
-      facing_point.add_x(8);
-      break;
-
-      // up
-    case 1:
-      facing_point.add_y(-9);
-      break;
-
-      // left
-    case 2:
-      facing_point.add_x(-9);
-      break;
-
-      // down
-    case 3:
-      facing_point.add_y(8);
-      break;
-
-    default:
-      Debug::die("Invalid direction for Arrow::get_facing_point()");
-  }
-
-  return facing_point;
-}
-
-/**
  * \brief Updates this entity.
  */
 void Arrow::update() {

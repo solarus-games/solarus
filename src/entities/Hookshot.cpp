@@ -180,43 +180,6 @@ bool Hookshot::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_pos
 }
 
 /**
- * \brief Returns the point located just outside the hookshot's collision box,
- * in its current direction.
- */
-const Rectangle Hookshot::get_facing_point() const {
-
-  Rectangle facing_point = get_center_point();
-
-  switch (get_sprite().get_current_direction()) {
-
-    // right
-    case 0:
-      facing_point.add_x(8);
-      break;
-
-      // up
-    case 1:
-      facing_point.add_y(-9);
-      break;
-
-      // left
-    case 2:
-      facing_point.add_x(-9);
-      break;
-
-      // down
-    case 3:
-      facing_point.add_y(8);
-      break;
-
-    default:
-      Debug::die("Invalid direction for Hookshot::get_facing_point()");
-  }
-
-  return facing_point;
-}
-
-/**
  * \brief Updates this entity.
  */
 void Hookshot::update() {

@@ -43,6 +43,10 @@ class Detector: public MapEntity {
     bool has_layer_independent_collisions() const;
     void set_layer_independent_collisions(bool independent);
 
+    // position
+    virtual void notify_position_changed();
+    virtual void notify_layer_changed();
+
     // general collision checking functions
     void check_collision(MapEntity& entity);
     void check_collision(MapEntity& entity, Sprite& sprite);
@@ -71,7 +75,7 @@ class Detector: public MapEntity {
     bool test_collision_inside(MapEntity& entity);
     bool test_collision_origin_point(MapEntity& entity);
     bool test_collision_facing_point(MapEntity& entity);
-    bool test_collision_facing_point_any(MapEntity& entity);
+    bool test_collision_touching(MapEntity& entity);
     bool test_collision_center(MapEntity& entity);
     virtual bool test_collision_custom(MapEntity& entity);
 

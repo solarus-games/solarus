@@ -1789,7 +1789,7 @@ void Hero::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) 
 void Hero::notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_FACING) {
-    // The hero is touching the chest and is looking in its direction.
+    // The hero is touching the crystal and is looking in its direction.
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
         && is_free()) {

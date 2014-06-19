@@ -165,10 +165,10 @@ public class Map extends Observable {
         }
         File mapScriptFile = Project.getMapScriptFile(id);
         if (!mapScriptFile.delete()) {
-            throw new QuestEditorException("Can't remove the file " + mapScriptFile.getAbsolutePath());            
+            throw new QuestEditorException("Can't remove the file " + mapScriptFile.getAbsolutePath());
         }
     }
-    
+
     /**
      * Returns the id of the map.
      * @return the id of the map
@@ -190,7 +190,7 @@ public class Map extends Observable {
 
         for (int i = 0; i < mapId.length(); i++) {
             char c = mapId.charAt(i);
-            if (!Character.isLetterOrDigit(c) && c != '_') {
+            if (!Character.isLetterOrDigit(c) && c != '_' && c != '/') {
                 return false;
             }
         }
@@ -214,7 +214,7 @@ public class Map extends Observable {
     public String getName() {
         Resource mapResource = Project.getResource(ResourceType.MAP);
         String name = mapId;
-        
+
         try {
             name = mapResource.getElementName(mapId);
         }
@@ -585,7 +585,7 @@ public class Map extends Observable {
 
         for (Layer layer: Layer.values()) {
             for (MapEntity entity: allEntities[layer.getId()]) {
-                if (viewSettings.isEntityShown(entity) 
+                if (viewSettings.isEntityShown(entity)
                         && rectangle.intersects(entity.getPositionInMap())) {
                     return layer;
                 }
@@ -616,7 +616,7 @@ public class Map extends Observable {
         for (Layer layer: Layer.values()) {
 
             for (MapEntity entity: allEntities[layer.getId()]) {
-                if (viewSettings.isEntityShown(entity) 
+                if (viewSettings.isEntityShown(entity)
                         && rectangle.contains(entity.getPositionInMap())) {
                     entitiesInRectangle.add(entity);
                 }
@@ -1004,7 +1004,7 @@ public class Map extends Observable {
 
         // check that the map is valid
         checkValidity();
-        
+
         try {
             // Open the map file in writing.
             File mapFile = Project.getMapFile(mapId);
@@ -1047,7 +1047,7 @@ public class Map extends Observable {
             throw new MapException(ex.getMessage());
         }
     }
-    
+
     /**
      * @brief Lua function properties() called by the map data file.
      */
@@ -1057,7 +1057,7 @@ public class Map extends Observable {
 
             try {
                 LuaTable table = arg.checktable();
-    
+
                 int x = table.get("x").checkint();
                 int y = table.get("y").checkint();
                 int width = table.get("width").checkint();
@@ -1076,7 +1076,7 @@ public class Map extends Observable {
                 setLocation(new Point(x, y));
                 setTileset(tilesetId);
                 setMusic(musicId);
-    
+
                 return LuaValue.NIL;
             }
             catch (QuestEditorException ex) {

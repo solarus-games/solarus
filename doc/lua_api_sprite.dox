@@ -64,6 +64,13 @@ Sets the current animation of this sprite.
 - \c animation_name (string): Name of the animation to set.
   This animation must exist in the animation set.
 
+\subsection lua_api_sprite_has_animation sprite:has_animation(animation_name)
+
+Returns whether the specified animation exists on a sprite.
+- \c animation_name (string): Name of the animation to check.
+- Return value (boolean): \c true if the sprite animation set contains an
+  animation with this name.
+
 \subsection lua_api_sprite_get_direction sprite:get_direction()
 
 Returns the current direction of this sprite.
@@ -74,6 +81,14 @@ Returns the current direction of this sprite.
 Sets the current direction of this sprite.
 - \c direction (number): The direction to set (the first one is \c 0).
   This direction must exist in the current animation.
+
+\subsection lua_api_sprite_get_num_directions sprite:get_num_directions([animation_name])
+
+Returns the number of direction of an animation of this sprite.
+- \c animation_name (string, optional): Name of an animation of the sprite.
+  This animation must exist in the animation set.
+  No value means the current animation.
+- Return value (number): The number of directions in this animation.
 
 \subsection lua_api_sprite_get_frame sprite:get_frame()
 

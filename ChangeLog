@@ -11,6 +11,8 @@ Changes that introduce incompatibilities:
 Changes that do not introduce incompatibilities:
 
 * Add a method sprite:get_animation_set_id() (#552).
+* Add a method sprite:has_animation() (#525).
+* Add a method sprite:get_num_directions().
 * Add a method enemy:get_treasure() (#501).
 * Fix pickable/destructible:get_treasure() returning wrong types.
 * Fix custom entity collision detection when the other is not moving (#551).

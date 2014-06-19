@@ -135,7 +135,7 @@ bool Sprite::contains(const std::string& sequence) const {
  *
  * \return the animation set of this sprite
  */
-SpriteAnimationSet& Sprite::get_animation_set() {
+const SpriteAnimationSet& Sprite::get_animation_set() const {
   return animation_set;
 }
 
@@ -269,7 +269,7 @@ void Sprite::set_current_animation(const std::string& animation_name) {
  * \param animation_name an animation name
  * \return true if this animation exists
  */
-bool Sprite::has_animation(const std::string& animation_name) {
+bool Sprite::has_animation(const std::string& animation_name) const {
   return animation_set.has_animation(animation_name);
 }
 

@@ -17,6 +17,8 @@
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
 #include "Sprite.h"
+#include "SpriteAnimationSet.h"
+#include "SpriteAnimation.h"
 #include <sstream>
 
 namespace solarus {
@@ -37,8 +39,10 @@ void LuaContext::register_sprite_module() {
       { "get_animation_set", sprite_api_get_animation_set },
       { "get_animation", sprite_api_get_animation },
       { "set_animation", sprite_api_set_animation },
+      { "has_animation", sprite_api_has_animation },
       { "get_direction", sprite_api_get_direction },
       { "set_direction", sprite_api_set_direction },
+      { "get_num_directions", sprite_api_get_num_directions },
       { "get_frame", sprite_api_get_frame },
       { "set_frame", sprite_api_set_frame },
       { "get_frame_delay", sprite_api_get_frame_delay },
@@ -126,8 +130,8 @@ int LuaContext::sprite_api_get_animation_set(lua_State* l) {
   const Sprite& sprite = check_sprite(l, 1);
 
   const std::string& animation_set_id = sprite.get_animation_set_id();
-  push_string(l, animation_set_id);
 
+  push_string(l, animation_set_id);
   return 1;
 }
 
@@ -141,8 +145,8 @@ int LuaContext::sprite_api_get_animation(lua_State* l) {
   const Sprite& sprite = check_sprite(l, 1);
 
   const std::string& animation_name = sprite.get_current_animation();
-  push_string(l, animation_name);
 
+  push_string(l, animation_name);
   return 1;
 }
 
@@ -167,6 +171,20 @@ int LuaContext::sprite_api_set_animation(lua_State* l) {
   sprite.restart_animation();
 
   return 0;
+}
+
+/**
+ * \brief Implementation of sprite:has_animation().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::sprite_api_has_animation(lua_State* l) {
+
+  const Sprite& sprite = check_sprite(l, 1);
+  const std::string& animation_name = luaL_checkstring(l, 2);
+
+  lua_pushboolean(l, sprite.has_animation(animation_name));
+  return 1;
 }
 
 /**
@@ -202,6 +220,28 @@ int LuaContext::sprite_api_set_direction(lua_State* l) {
   sprite.set_current_direction(direction);
 
   return 0;
+}
+
+/**
+ * \brief Implementation of sprite:get_num_directions().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::sprite_api_get_num_directions(lua_State* l) {
+
+  const Sprite& sprite = check_sprite(l, 1);
+  const std::string& animation_name = luaL_optstring(l, 2, sprite.get_current_animation().c_str());
+  if (!sprite.has_animation(animation_name)) {
+    LuaTools::arg_error(l, 2,
+        std::string("Animation '") + animation_name
+        + "' does not exist in sprite '" + sprite.get_animation_set_id() + "'"
+    );
+  }
+
+  const int num_directions = sprite.get_animation_set().get_animation(animation_name).get_nb_directions();
+
+  lua_pushinteger(l, num_directions);
+  return 1;
 }
 
 /**

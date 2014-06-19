@@ -53,7 +53,7 @@ class Sprite: public Drawable {
     // animation set
     const std::string& get_animation_set_id() const;
     bool contains(const std::string& s) const;
-    SpriteAnimationSet& get_animation_set();
+    const SpriteAnimationSet& get_animation_set() const;
     void enable_pixel_collisions();
     bool are_pixel_collisions_enabled() const;
 
@@ -65,7 +65,7 @@ class Sprite: public Drawable {
     // animation state
     const std::string& get_current_animation() const;
     void set_current_animation(const std::string& animation_name);
-    bool has_animation(const std::string& animation_name);
+    bool has_animation(const std::string& animation_name) const;
     int get_current_direction() const;
     int get_nb_directions() const;
     void set_current_direction(int current_direction);

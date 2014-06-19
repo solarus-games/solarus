@@ -111,6 +111,7 @@ public class Project {
         project.createInitialFiles();
         project.questProperties.load();
         project.resourceDatabase.load();
+        project.resourceDatabase.ensureResourceDirectoriesExists();
         setCurrentProject(project);
     }
 
@@ -126,6 +127,7 @@ public class Project {
 
         project.questProperties.load();
         project.resourceDatabase.load();
+        project.resourceDatabase.ensureResourceDirectoriesExists();
         setCurrentProject(project);
     }
 

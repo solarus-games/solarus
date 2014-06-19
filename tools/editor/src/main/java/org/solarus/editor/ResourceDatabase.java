@@ -110,6 +110,44 @@ public class ResourceDatabase extends Observable {
     }
 
     /**
+     * Ensures that all directories of resources declared in project_db.dat exists.
+     * @throws QuestEditorException if some directories are missing and cannot be created.
+     */
+    public void ensureResourceDirectoriesExists() throws QuestEditorException {
+
+        File dataDirectory = project.getResourceDatabaseFile().getParentFile();
+
+        for (ResourceType type: ResourceType.values()) {
+
+            // check the resource type directory
+            File typeDirectory = new File(dataDirectory.getAbsolutePath() + "/" + type.getDirName());
+            if (!typeDirectory.exists() || !typeDirectory.isDirectory()) {
+                if (!typeDirectory.mkdir()) {
+                    throw new QuestEditorException("the directory '" +
+                            typeDirectory.getName() + "' cannot be created");
+                }
+            }
+
+            // check resource directories
+            for (String id: resources[type.getId()].getIds()) {
+
+                if (id.contains("/")) {
+                    // get the sub directory of the resource
+                    String path = type.getDirName() + "/" + id.substring(0, id.lastIndexOf("/"));
+                    File subDirectory = new File(dataDirectory.getAbsolutePath() + "/" + path);
+                    // try to mkdirs if the sub directory don't exists
+                    if (!subDirectory.exists() || !subDirectory.isDirectory()) {
+                        if (!subDirectory.mkdirs()) {
+                            throw new QuestEditorException("the directory '" +
+                                path + "' cannot be created");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Saves the list of the game resources and their descriptions into the file project_db.dat.
      * @throws QuestEditorException if the file could not be written
      */

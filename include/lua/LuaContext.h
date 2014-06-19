@@ -36,15 +36,18 @@ struct luaL_Reg;
 namespace solarus {
 
 /**
- * \brief This class represents a living Lua context that can execute dynamic
+ * \brief This class represents a living Lua context that can execute quest
  * scripts at runtime.
  *
- * Such scripts includes menus, map scripts, enemy behaviors, etc.
- * All these scripts run in the same Lua context.
+ * Such scripts include the quest main script, map scripts, enemy behaviors,
+ * etc.
+ * All these scripts run in the same Lua context. This means that they share
+ * global values and other global mechanisms like the registry and metatables.
  *
- * On the contrary, data files written in Lua (like maps and dialogs) are
- * always parsed in their own, independent Lua states because data files only
- * have access to a few determined functions.
+ * On the contrary, data files that happen to have a Lua-compatible syntax
+ * (like maps) are always parsed in their own, independent Lua states.
+ * These files are considered as pure data (not code) and only have access
+ * to a few determined functions.
  */
 class LuaContext {
 
@@ -463,6 +466,7 @@ class LuaContext {
 
       // Sprite API.
       sprite_api_create,
+      sprite_api_get_animation_set,
       sprite_api_get_animation,
       sprite_api_set_animation,  // TODO allow to pass the on_animation_finished callback as a parameter?
       sprite_api_get_direction,

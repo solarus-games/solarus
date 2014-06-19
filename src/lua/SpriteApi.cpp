@@ -34,6 +34,7 @@ void LuaContext::register_sprite_module() {
   };
 
   static const luaL_Reg methods[] = {
+      { "get_animation_set", sprite_api_get_animation_set },
       { "get_animation", sprite_api_get_animation },
       { "set_animation", sprite_api_set_animation },
       { "get_direction", sprite_api_get_direction },
@@ -112,6 +113,21 @@ int LuaContext::sprite_api_create(lua_State* l) {
   get_lua_context(l).add_drawable(sprite);
 
   push_sprite(l, *sprite);
+  return 1;
+}
+
+/**
+ * \brief Implementation of sprite:get_animation_set().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::sprite_api_get_animation_set(lua_State* l) {
+
+  const Sprite& sprite = check_sprite(l, 1);
+
+  const std::string& animation_set_id = sprite.get_animation_set_id();
+  push_string(l, animation_set_id);
+
   return 1;
 }
 

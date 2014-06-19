@@ -30,7 +30,7 @@ game or your menus.
 
 Creates a sprite.
 - \c animation_set_id (string): Name of the animation set to use. This name
-  must correspond to a valid sprite data file in the \c sprites directory
+  must correspond to a valid sprite sheet data file in the \c sprites directory
   (without its extension).
 - Return value (sprite): The sprite created, or \c nil if the sprite data file
   could not be loaded.
@@ -45,6 +45,13 @@ See \ref lua_api_drawable_methods to know these methods.
 \section lua_api_sprite_methods Methods of the type sprite
 
 The following methods are specific to sprites.
+
+\subsection lua_api_sprite_get_animation_set sprite:get_animation_set()
+
+Returns the name of the animation set used by this sprite.
+- Return value (string): Name of the animation set used by this sprite.
+  This name corresponds to a sprite sheet data file in the \c sprites directory
+  (without its extension).
 
 \subsection lua_api_sprite_get_animation sprite:get_animation()
 

@@ -711,6 +711,35 @@ public class EditorWindow extends JFrame
     }
 
     /**
+     * Ensures that a resource element file exists.
+     * If the file doesn't exists, ask and try to create it.
+     * @param resourceFile the file of the resource element
+     * @param resourceType the type of the resource element
+     * @param resourceId the id of the resource element
+     * @return true if the file exists or has been successfully created, false otherwise
+     * @throws QuestEditorException If the file doesn't exist and cannot be created
+     */
+    private boolean ensureResourceElementFileExists(File resourceFile,
+            ResourceType resourceType, String resourceId) throws QuestEditorException {
+
+        if (!resourceFile.exists()) {
+            String resourceTypeName = resourceType.getName().toLowerCase();
+            if (!GuiTools.yesNoDialog("The " + resourceTypeName  +
+                    " '" + resourceId + "' doesn't exists yet.\n" +
+                    "Do you want to create this " + resourceTypeName + "?")) {
+                return false;
+            }
+            try {
+                resourceFile.createNewFile();
+            } catch (IOException ex) {
+                throw new QuestEditorException("the file '" + resourceFile.getAbsolutePath() +
+                        "' cannot be created: " + ex.getMessage());
+            }
+        }
+        return true;
+    }
+
+    /**
      * Opens a resource element with its default editor.
      * @param resourceType Type of resource.
      * @param resourceId Id of the new element.
@@ -728,10 +757,15 @@ public class EditorWindow extends JFrame
                     tabs.setSelectedComponent(existingEditor);
                 }
                 else {
-                    MapEditorPanel mapEditor = new MapEditorPanel(this, resourceId);
-                    tabs.addEditor(mapEditor);
-                    // Keep menu items Undo, Cut, Copy, etc. synchronized.
-                    mapEditor.getMap().addObserver(this);
+
+                    File file = Project.getMapFile(resourceId);
+                    if (ensureResourceElementFileExists(file, resourceType, resourceId)) {
+
+                        MapEditorPanel mapEditor = new MapEditorPanel(this, resourceId);
+                        tabs.addEditor(mapEditor);
+                        // Keep menu items Undo, Cut, Copy, etc. synchronized.
+                        mapEditor.getMap().addObserver(this);
+                    }
                 }
                 break;
             }
@@ -743,8 +777,13 @@ public class EditorWindow extends JFrame
                     tabs.setSelectedComponent(existingEditor);
                 }
                 else {
-                    TilesetEditorPanel tilesetEditor = new TilesetEditorPanel(this, resourceId);
-                    tabs.addEditor(tilesetEditor);
+
+                    File file = Project.getTilesetFile(resourceId);
+                    if (ensureResourceElementFileExists(file, resourceType, resourceId)) {
+
+                        TilesetEditorPanel tilesetEditor = new TilesetEditorPanel(this, resourceId);
+                        tabs.addEditor(tilesetEditor);
+                    }
                 }
                 break;
             }
@@ -768,8 +807,13 @@ public class EditorWindow extends JFrame
                     tabs.setSelectedComponent(existingEditor);
                 }
                 else {
-                    SpriteEditorPanel spriteEditor = new SpriteEditorPanel(this, resourceId);
-                    tabs.addEditor(spriteEditor);
+
+                    File file = Project.getSpriteFile(resourceId);
+                    if (ensureResourceElementFileExists(file, resourceType, resourceId)) {
+
+                        SpriteEditorPanel spriteEditor = new SpriteEditorPanel(this, resourceId);
+                        tabs.addEditor(spriteEditor);
+                    }
                 }
                 break;
             }

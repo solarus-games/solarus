@@ -458,7 +458,7 @@ void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
     PHYSFS_setWriteDir(full_write_dir.c_str());
 
     // Also allow the quest to read savegames, settings and data files there.
-    PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 1);
+    PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 0);
   }
 }
 

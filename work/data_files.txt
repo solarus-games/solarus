@@ -51,7 +51,6 @@ sounds/
   stairs_up_end.ogg
   stone.ogg
   swim.ogg
-  switch.ogg
   sword1.ogg ...
   sword_spin_attack_load.ogg
   sword_spin_attack_release.ogg
@@ -79,9 +78,7 @@ sprites/
     miscellaneous.png
     rupee_icon.dat
     shadow.dat
-    solid_switch.dat
     star.dat
-    switch.dat
   hero/
     tunic1.dat ...
     sword1.dat ...

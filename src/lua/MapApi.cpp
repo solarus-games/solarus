@@ -1435,20 +1435,22 @@ int LuaContext::map_api_create_switch(lua_State* l) {
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
   int y = LuaTools::check_int_field(l, 1, "y");
-  const std::string& subtype_name = LuaTools::check_string_field(l, 1, "subtype");
+  Switch::Subtype subtype = LuaTools::check_enum_field<Switch::Subtype>(
+      l, 1, "subtype", Switch::subtype_names
+  );
+  const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
+  const std::string& sound_id = LuaTools::opt_string_field(l, 1, "sound", "");
   bool needs_block = LuaTools::check_boolean_field(l, 1, "needs_block");
   bool inactivate_when_leaving = LuaTools::check_boolean_field(l, 1, "inactivate_when_leaving");
-
-  int subtype;
-  std::istringstream iss(subtype_name);
-  iss >> subtype;
 
   MapEntity* entity = new Switch(
       name,
       layer,
       x,
       y,
-      Switch::Subtype(subtype),
+      subtype,
+      sprite_name,
+      sound_id,
       needs_block,
       inactivate_when_leaving);
   map.get_entities().add_entity(entity);

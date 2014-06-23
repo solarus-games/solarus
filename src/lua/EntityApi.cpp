@@ -288,6 +288,7 @@ void LuaContext::register_entity_module() {
   // Switch.
   static const luaL_Reg switch_methods[] = {
       ENTITY_COMMON_METHODS,
+      { "get_sprite", entity_api_get_sprite },
       { "is_activated", switch_api_is_activated },
       { "set_activated", switch_api_set_activated },
       { "set_locked", switch_api_set_locked },

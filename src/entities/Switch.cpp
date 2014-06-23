@@ -28,16 +28,26 @@
 
 namespace solarus {
 
+const std::string Switch::subtype_names[] = {
+  "walkable",
+  "arrow_target",
+  "solid",
+  ""  // Sentinel for Lua.
+};
+
 /**
  * \brief Constructor.
- * \param name name of the entity
- * \param layer layer of the entity
- * \param x x position of the entity's rectangle
- * \param y y position of the entity's rectangle
- * \param subtype the subtype of switch
- * \param needs_block true if a block is required to activate this switch
- * \param inactivate_when_leaving true to inactivate the switch when the hero or
- * the block leaves it
+ * \param name Name of the entity.
+ * \param layer Layer of the entity.
+ * \param x X position of the entity.
+ * \param y X position of the entity.
+ * \param subtype The subtype of switch.
+ * \param sprite_name Sprite animation set id to use, or an empty string.
+ * \param sound_id Sound to play when activating the switch,
+ * or an empty string.
+ * \param needs_block \c true if a block is required to activate this switch.
+ * \param inactivate_when_leaving \c true to inactivate the switch when the
+ * hero or the block leaves it.
  */
 Switch::Switch(
     const std::string& name,
@@ -45,10 +55,13 @@ Switch::Switch(
     int x,
     int y,
     Subtype subtype,
+    const std::string& sprite_name,
+    const std::string& sound_id,
     bool needs_block,
     bool inactivate_when_leaving):
   Detector(COLLISION_NONE, name, layer, x, y, 16, 16),
   subtype(subtype),
+  sound_id(sound_id),
   activated(false),
   locked(false),
   needs_block(needs_block),
@@ -56,20 +69,20 @@ Switch::Switch(
   entity_overlapping(NULL),
   entity_overlapping_still_present(false) {
 
-  // sprite
+  // Sprite.
+  if (!sprite_name.empty()) {
+    create_sprite(sprite_name);
+    get_sprite().set_current_animation("inactivated");
+  }
+
+  // Collisions.
   if (is_walkable()) {
     set_collision_modes(COLLISION_CUSTOM);
-    if (subtype == WALKABLE_VISIBLE) {
-      create_sprite("entities/switch");
-      get_sprite().set_current_animation("inactivated");
-    }
   }
   else if (subtype == ARROW_TARGET) {
     set_collision_modes(COLLISION_FACING);
   }
   else if (subtype == SOLID) {
-    create_sprite("entities/solid_switch");
-    get_sprite().set_current_animation("inactivated");
     set_collision_modes(COLLISION_SPRITE | COLLISION_OVERLAPPING);
     set_optimization_distance(2000);  // Because of bombs and arrows on the switch.
   }
@@ -79,7 +92,6 @@ Switch::Switch(
  * \brief Destructor.
  */
 Switch::~Switch() {
-
 }
 
 /**
@@ -102,15 +114,15 @@ bool Switch::is_obstacle_for(MapEntity& other) {
 
 /**
  * \brief Returns whether this switch is a walkable switch.
- * \return true if the subtype of this switch is WALKABLE_INVISIBLE or WALKABLE_VISIBLE
+ * \return \c true if the subtype of this switch is WALKABLE.
  */
 bool Switch::is_walkable() const {
-  return subtype == WALKABLE_INVISIBLE || subtype == WALKABLE_VISIBLE;
+  return subtype == WALKABLE;
 }
 
 /**
  * \brief Returns whether this switch is an arrow target.
- * \return true if the subtype of this switch is ARROW_TARGET
+ * \return \c true if the subtype of this switch is ARROW_TARGET.
  */
 bool Switch::is_arrow_target() const {
   return subtype == ARROW_TARGET;
@@ -118,7 +130,7 @@ bool Switch::is_arrow_target() const {
 
 /**
  * \brief Returns whether this switch is a solid switch.
- * \return true if the subtype of this switch is SOLID
+ * \return \c true if the subtype of this switch is SOLID.
  */
 bool Switch::is_solid() const {
   return subtype == SOLID;
@@ -144,8 +156,8 @@ void Switch::activate() {
 
     set_activated(true);
 
-    if (subtype == WALKABLE_VISIBLE || subtype == SOLID) {
-      Sound::play("switch");
+    if (!sound_id.empty()) {
+      Sound::play(sound_id);
     }
 
     get_lua_context().switch_on_activated(*this);
@@ -164,7 +176,7 @@ void Switch::set_activated(bool activated) {
   if (activated != this->activated) {
     this->activated = activated;
 
-    if (subtype == WALKABLE_VISIBLE || subtype == SOLID) {
+    if (has_sprite()) {
       if (activated) {
         get_sprite().set_current_animation("activated");
       }
@@ -194,7 +206,9 @@ void Switch::update() {
 
   Detector::update();
 
-  if (is_enabled() && is_walkable() && entity_overlapping != NULL) {
+  if (is_enabled() &&
+      is_walkable() &&
+      entity_overlapping != NULL) {
 
     // if an entity was on the switch, see if it is still there
     entity_overlapping_still_present = false;
@@ -221,7 +235,7 @@ void Switch::update() {
  */
 bool Switch::test_collision_custom(MapEntity& entity) {
 
-  // this collision test is performed for walkable switches only
+  // This collision test is performed for walkable switches only.
 
   const Rectangle& entity_rectangle = entity.get_bounding_box();
   int x1 = entity_rectangle.get_x() + 4;
@@ -278,7 +292,9 @@ void Switch::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Spr
  */
 void Switch::try_activate(Hero& hero) {
 
-  if (is_walkable() && !needs_block && !is_activated()) {
+  if (is_walkable() &&
+      !needs_block &&
+      !is_activated()) {
     // this switch allows the hero to activate it
     activate();
   }
@@ -294,7 +310,8 @@ void Switch::try_activate(Hero& hero) {
  */
 void Switch::try_activate(Block& block) {
 
-  if (subtype == WALKABLE_VISIBLE && !is_activated()) {
+  if (is_walkable() &&
+      !is_activated()) {
     // blocks can only activate walkable, visible switches
     activate();
   }

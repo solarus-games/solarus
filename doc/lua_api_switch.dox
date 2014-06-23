@@ -15,15 +15,13 @@ It can also be created dynamically with
 A switch may be activated by the
 \ref lua_api_hero "hero",
 by a \ref lua_api_block "block"
-or by an
-\ref lua_api_arrow "arrow",
+or by a projectile,
 depending on its subtype.
 The following subtypes of switches are available:
-- walkable, invisible pressure plate,
-- walkable, visible pressure plate,
-- Invisible button to be activated by shooting an
-  \ref lua_api_arrow "arrow" shot by the
-  \ref lua_api_hero_start_bow "bow",
+- Walkable, traversable pressure plate.
+- Button to be activated by shooting an
+  \ref lua_api_arrow "arrow" on it with the
+  \ref lua_api_hero_start_bow "bow".
 - Solid switch to be activated with the sword or other weapons.
 
 When a switch is activated, the event
@@ -35,12 +33,13 @@ Define that event to implement what happens:
 
 Some switches get inactivated when the hero
 (or the entity that activated them) leaves them.
-Similarly, when a switch is inactivated, the event
+In this case, when the switch is inactivated, the event
 \ref lua_api_switch_on_inactivated "switch:on_inactivated()"
 is called.
 
 The size of a switch is always 16x16 pixels.
-Its \ref lua_api_sprite "sprite" depends on its subtype.
+Its \ref lua_api_sprite "sprite" can be defined at creation time,
+as well as the sound played when it gets activated.
 
 \section lua_api_switch_inherited_methods Methods inherited from map entity
 

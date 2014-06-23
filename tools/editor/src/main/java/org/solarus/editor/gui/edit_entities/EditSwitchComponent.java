@@ -16,8 +16,9 @@
  */
 package org.solarus.editor.gui.edit_entities;
 
-import javax.swing.*;
 import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 import org.solarus.editor.gui.*;
@@ -29,9 +30,13 @@ import org.solarus.editor.entities.Switch.Subtype;
  */
 public class EditSwitchComponent extends EditEntityComponent {
 
-    // specific fields of a switch
+    // Specific fields of a switch.
+    private JCheckBox withSpriteField;
+    private ResourceChooser spriteField;
+    private JCheckBox withSoundField;
+    private ResourceChooser soundField;
     private JCheckBox needsBlockField;
-    private JCheckBox disableWhenLeavingField;
+    private JCheckBox inactivateWhenLeavingField;
 
     /**
      * Constructor.
@@ -47,19 +52,58 @@ public class EditSwitchComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 
+        // has a sprite?
+        withSpriteField = new JCheckBox("Display a sprite");
+        addField("Visibility", withSpriteField);
+
+        // sprite name
+        spriteField = new ResourceChooser(ResourceType.SPRITE, true);
+        addField("Sprite name", spriteField);
+
+        // has a sound?
+        withSoundField = new JCheckBox("Play a sound");
+        addField("Sound", withSoundField);
+
+        // sound name
+        soundField = new ResourceChooser(ResourceType.SOUND, true);
+        addField("Sound id", soundField);
+
         // needs block
         needsBlockField = new JCheckBox("Requires a block or a statue to be activated");
         addField("Activation", needsBlockField);
 
-        // disable when leaving
-        disableWhenLeavingField = new JCheckBox("Inactivate the switch when leaving");
-        addField("Stay on switch", disableWhenLeavingField);
+        // inactivate when leaving
+        inactivateWhenLeavingField = new JCheckBox("Inactivate the switch when leaving");
+        addField("Stay on switch", inactivateWhenLeavingField);
 
-        // disable the 'needs block' field when the subtype is invisible
+        // Listeners.
+        withSpriteField.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent ev) {
+                spriteField.setEnabled(withSpriteField.isSelected());
+            }
+        });
+
+        withSoundField.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent ev) {
+                soundField.setEnabled(withSoundField.isSelected());
+            }
+        });
+
+        // Disable the 'needs block' and 'inactivate when leaving' fields
+        // when the subtype is other than walkable.
         subtypeField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-                needsBlockField.setEnabled(subtypeField.getValue() == Subtype.WALKABLE_VISIBLE);
-                disableWhenLeavingField.setEnabled(Subtype.isWalkable(subtypeField.getValue()));
+                boolean walkable = subtypeField.getValue() == Subtype.WALKABLE;
+                if (walkable) {
+                    needsBlockField.setEnabled(true);
+                    inactivateWhenLeavingField.setEnabled(true);
+                }
+                else {
+                    needsBlockField.setSelected(false);
+                    inactivateWhenLeavingField.setEnabled(false);
+                    needsBlockField.setEnabled(false);
+                    inactivateWhenLeavingField.setEnabled(false);
+                }
             }
         });
     }
@@ -72,10 +116,31 @@ public class EditSwitchComponent extends EditEntityComponent {
 
         Switch sw = (Switch) entity;
 
+        String sprite = sw.getStringProperty("sprite");
+        boolean hasSprite = sprite != null;
+        withSpriteField.setSelected(hasSprite);
+        spriteField.setSelectedId(hasSprite ? sprite : "");
+        spriteField.setEnabled(hasSprite);
+
+        String sound = sw.getStringProperty("sound");
+        boolean hasSound = sound != null;
+        withSoundField.setSelected(hasSound);
+        soundField.setSelectedId(hasSound ? sound : "");
+        soundField.setEnabled(hasSound);
+
         needsBlockField.setSelected(sw.getBooleanProperty("needs_block"));
-        disableWhenLeavingField.setSelected(sw.getBooleanProperty("inactivate_when_leaving"));
-        needsBlockField.setEnabled(entity.getSubtype() == Subtype.WALKABLE_VISIBLE);
-        disableWhenLeavingField.setEnabled(Subtype.isWalkable(entity.getSubtype()));
+        inactivateWhenLeavingField.setSelected(sw.getBooleanProperty("inactivate_when_leaving"));
+        boolean walkable = entity.getSubtype() == Subtype.WALKABLE;
+        if (walkable) {
+            needsBlockField.setEnabled(true);
+            inactivateWhenLeavingField.setEnabled(true);
+        }
+        else {
+            needsBlockField.setSelected(false);
+            inactivateWhenLeavingField.setEnabled(false);
+            needsBlockField.setEnabled(false);
+            inactivateWhenLeavingField.setEnabled(false);
+        }
     }
 
     /**
@@ -84,10 +149,26 @@ public class EditSwitchComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-        int needsBlock = needsBlockField.isSelected() ? 1 : 0;
-        int disableWhenLeaving = disableWhenLeavingField.isSelected() ? 1 : 0;
+        String sprite = spriteField.getSelectedId();
+        if (!withSpriteField.isSelected()) {
+            sprite = null;
+        }
 
-        return new ActionEditEntitySpecific(entity, needsBlock, disableWhenLeaving);
+        String sound = soundField.getSelectedId();
+        if (!withSoundField.isSelected()) {
+            sound = null;
+        }
+
+        String needsBlock = needsBlockField.isSelected() ? "1" : "0";
+        String inactivateWhenLeaving = inactivateWhenLeavingField.isSelected() ? "1" : "0";
+
+        return new ActionEditEntitySpecific(
+                entity,
+                sprite,
+                sound,
+                needsBlock,
+                inactivateWhenLeaving
+        );
     }
 }
 

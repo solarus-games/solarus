@@ -41,7 +41,7 @@ public class AddEntitiesToolbar extends JComponent {
         new Cell(EntityType.ENEMY),
         new Cell(EntityType.NPC, NPC.Subtype.USUAL_NPC),
         new Cell(EntityType.BLOCK),
-        new Cell(EntityType.SWITCH, Switch.Subtype.WALKABLE_VISIBLE),
+        new Cell(EntityType.SWITCH, Switch.Subtype.WALKABLE),
         new Cell(EntityType.WALL),
         new Cell(EntityType.SENSOR),
         new Cell(EntityType.CRYSTAL),

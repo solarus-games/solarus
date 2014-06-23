@@ -757,10 +757,23 @@ A switch can be declared in the map data file with
 <tt>switch{ ... }</tt>.
 
 Additional properties:
-- \c subtype (number): Kind of switch to create: \c 0 for a walkable,
-  invisible pressure plate, \c 1 for a walkable, visible pressure plate,
-  \c 2 for an invisible switch that can be activated by shooting an arrow,
-  \c 3 for a solid switch that can be activated with the sword.
+- \c subtype (string): Kind of switch to create:
+  - \c "walkable": A traversable pressure plate that gets activated when the
+    hero walks on it.
+  - \c "solid": A non-traversable, solid switch that can be activated in
+    various conditions: by the sword, by an explosion
+    or by a projectile (a thrown object, an arrow, the boomerang or the
+    hookshot).
+  - \c "arrow_target" A switch that can be only activated by shooting an
+    arrow on it.
+- \c sprite (string): Name of the animation set of a
+  \ref quest_sprite_data_file "sprite" to create for the switch.
+  The animation set must at least contain animations
+  \c "activated" and \c "inactivated".
+  No value means no sprite.
+- \c sound (string, optional): Sound to play
+  when the switch is activated.
+  No value means no sound.
 - \c needs_block (boolean): If \c true, the switch can only be activated by
   a \ref quest_map_data_file_syntax_block "block" (only for a walkable switch).
 - \c inactivate_when_leaving (boolean): If \c true, the switch becomes
@@ -774,7 +787,9 @@ switch{
   layer = 1,
   x = 376,
   y = 152,
-  subtype = 1,
+  subtype = "walkable",
+  sprite = "entities/switch",
+  sound = "switch_pressed",
   needs_block = false,
   inactivate_when_leaving = true,
 }

@@ -13,11 +13,24 @@ Changes that do not introduce incompatibilities:
 * Add a method sprite:get_animation_set_id() (#552).
 * Add a method sprite:has_animation() (#525).
 * Add a method sprite:get_num_directions().
+* Add a method switch:get_sprite().
+* Allow to customize the sprite and sound of switches (#553).
 * Add a method enemy:get_treasure() (#501).
 * Fix the write directory not having priority over the data dir since 1.1.
 * Fix pickable/destructible:get_treasure() returning wrong types.
 * Fix custom entity collision detection when the other is not moving (#551).
 * Allow to call map methods even when the map is not running.
+
+Data files format changes
+-------------------------
+
+You can use the script
+editor/resources/tools/data_files_conversion/1.2_to_1.3/update_quest.lua
+to automatically update your data files.
+Don't forget to make a backup first.
+
+* Maps: New properties sprite, sound for switches (#553).
+* Maps: The subtype of switches is now a string.
 
 Solarus Quest Editor changes
 ----------------------------

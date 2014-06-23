@@ -29,15 +29,12 @@ public class Switch extends MapEntity {
      * Subtypes of switches.
      */
     public enum Subtype implements EntitySubtype {
-        // We use integers ids for historical reasons.
-        WALKABLE_INVISIBLE("0"),
-        WALKABLE_VISIBLE("1"),
-        ARROW_TARGET("2"),
-        SOLID("3");
+        WALKABLE("walkable"),
+        ARROW_TARGET("arrow_target"),
+        SOLID("solid");
 
         public static final String[] humanNames = {
-          "Walkable invisible",
-          "Walkable visible",
+          "Walkable",
           "Arrow target",
           "Solid"
         };
@@ -59,11 +56,11 @@ public class Switch extends MapEntity {
                 }
             }
             throw new NoSuchElementException(
-                    "No crystal block subtype with id '" + id + "'");
+                    "No switch subtype with id '" + id + "'");
         }
 
         public static boolean isWalkable(EntitySubtype subtype) {
-            return subtype == WALKABLE_INVISIBLE || subtype == WALKABLE_VISIBLE;
+            return subtype == WALKABLE;
         }
     }
 
@@ -71,10 +68,9 @@ public class Switch extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("entity_switch.png", 0, 0, 32, 32),  // walkable invisible
-        new EntityImageDescription("entity_switch.png", 0, 0, 32, 32),  // walkable visible
-        new EntityImageDescription("entity_switch.png", 0, 0, 32, 32),  // arrow target
-        new EntityImageDescription("entity_switch.png", 0, 0, 32, 32),  // solid
+        new EntityImageDescription("entity_switch.png", 0, 0, 32, 32),
+        new EntityImageDescription("entity_switch.png", 0, 0, 32, 32),
+        new EntityImageDescription("entity_switch.png", 0, 0, 32, 32),
     };
 
     /**
@@ -87,53 +83,10 @@ public class Switch extends MapEntity {
 
     /**
      * Returns whether this switch is walkable.
-     * @return true if the subtype is WALKABLE_INVISIBLE or WALKABLE_VISIBLE
+     * @return true if the subtype is WALKABLE.
      */
     public boolean isWalkable() {
         return Subtype.isWalkable(getSubtype());
-    }
-
-    /**
-     * Sets the subtype of this entity.
-     * @param subtype the subtype of entity
-     * @throws MapException if the subtype is not valid
-     */
-    public void setSubtype(EntitySubtype subtype) throws MapException {
-
-        if (subtype != getSubtype() && hasProperty("needs_block")) {
-            if (subtype == Subtype.WALKABLE_INVISIBLE) {
-                setBooleanProperty("needs_block", false);
-            }
-            else if (Subtype.isWalkable(subtype)) {
-                setBooleanProperty("needs_block", false);
-                setBooleanProperty("inactivate_when_leaving", false);
-            }
-        }
-
-        switch ((Subtype) subtype) {
-
-        case WALKABLE_VISIBLE:
-            try {
-                setSprite(new Sprite("entities/switch", getMap()));
-            } catch (SpriteException ex) {
-                throw new MapException(ex.getMessage());
-            }
-            break;
-
-        case SOLID:
-            try {
-                setSprite(new Sprite("entities/solid_switch", getMap()));
-            } catch (SpriteException ex) {
-                throw new MapException(ex.getMessage());
-            }
-            break;
-
-        default:
-            // No sprite.
-            setSprite(null);
-            break;
-        }
-        super.setSubtype(subtype);
     }
 
     /**
@@ -141,9 +94,36 @@ public class Switch extends MapEntity {
      * their initial values.
      */
     public void createProperties() throws MapException {
+        createStringProperty("sprite", true, null);
+        createStringProperty("sound", true, null);
         createBooleanProperty("needs_block", false, false);
         createBooleanProperty("inactivate_when_leaving", false, false);
-        setSubtype(Subtype.WALKABLE_INVISIBLE);
+        setSubtype(Subtype.WALKABLE);
+    }
+
+    /**
+     * Notifies this entity that a property specific to its type has just changed.
+     * Does nothing by default.
+     * @param name Name of the property that has changed.
+     * @param value The new value.
+     * @throws MapException if sprite cannot be loaded.
+     */
+    @Override
+    protected void notifyPropertyChanged(String name, String value) throws MapException {
+
+        if (name.equals("sprite")) {
+
+            if (value != null && value.length() > 0) {
+                try {
+                    setSprite(new Sprite(value, getMap()));
+                } catch (SpriteException ex) {
+                    throw new MapException(ex.getMessage());
+                }
+            }
+            else {
+                setSprite(null);
+            }
+        }
     }
 
     /**
@@ -152,8 +132,14 @@ public class Switch extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        if (getSubtype() == Subtype.WALKABLE_INVISIBLE && getBooleanProperty("needs_block")) {
-            throw new MapException("Cannot put a block on an invisible switch");
+        String spriteName = getStringProperty("sprite");
+        if (!isSpriteOrSoundNameValid(spriteName)) {
+            throw new MapException("Invalid sprite name: '" + spriteName + "'");
+        }
+
+        String soundId = getStringProperty("sound");
+        if (!isSpriteOrSoundNameValid(soundId)) {
+            throw new MapException("Invalid sound id: '" + soundId + "'");
         }
 
         if (!isWalkable()) {
@@ -163,9 +149,19 @@ public class Switch extends MapEntity {
             }
 
             if (getBooleanProperty("inactivate_when_leaving")) {
-                throw new MapException("Cannot disable the switch when leaving for a non-walkable switch");
+                throw new MapException("Cannot inactivate the switch when leaving for a non-walkable switch");
             }
         }
     }
+
+    /**
+     * Returns whether the specified teletransporter sprite or sound name is valid.
+     * @param name A sprite or sound name.
+     * @return true if it is valid.
+     */
+    private boolean isSpriteOrSoundNameValid(String name) {
+        return name == null || !name.isEmpty();
+    }
+
 }
 

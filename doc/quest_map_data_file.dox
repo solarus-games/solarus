@@ -826,7 +826,7 @@ Additional properties:
 - \c stops_blocks (boolean, optional): \c true to make the wall stop
   \ref quest_map_data_file_syntax_block "blocks".
   No value means \c false.
-- \c stops_blocks (boolean, optional): \c true to make the wall stop
+- \c stops_projectiles (boolean, optional): \c true to make the wall stop
   projectiles: thrown objects, arrows, the hookshot and the boomerang.
   No value means \c false.
 

@@ -100,8 +100,8 @@ public class EditSwitchComponent extends EditEntityComponent {
                 }
                 else {
                     needsBlockField.setSelected(false);
-                    inactivateWhenLeavingField.setEnabled(false);
                     needsBlockField.setEnabled(false);
+                    inactivateWhenLeavingField.setSelected(false);
                     inactivateWhenLeavingField.setEnabled(false);
                 }
             }
@@ -137,8 +137,8 @@ public class EditSwitchComponent extends EditEntityComponent {
         }
         else {
             needsBlockField.setSelected(false);
-            inactivateWhenLeavingField.setEnabled(false);
             needsBlockField.setEnabled(false);
+            inactivateWhenLeavingField.setSelected(false);
             inactivateWhenLeavingField.setEnabled(false);
         }
     }

@@ -17,6 +17,7 @@
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/Video.h"
+#include "lowlevel/Debug.h"
 #include <SDL.h>
 #include <cstdlib>  // std::abs
 
@@ -422,7 +423,8 @@ int InputEvent::get_joypad_hat_direction(int hat) {
  * \brief Returns the x and y position of the mouse by the state way.
  * Values are in quest size coordinates and relative to the viewport.
  * \return A rectangle filled with the x and y position of the mouse,
- * w and h are unused.
+ * w and h are unused and set to 1.
+ * Return a flat Rectangle if the position is not inside the viewport.
  */
 Rectangle InputEvent::get_global_mouse_position() {
 
@@ -1028,13 +1030,12 @@ InputEvent::MouseButton InputEvent::get_mouse_button() const {
  * \brief Returns the x and y position of this mouse event, if any.
  * Values are in quest size coordinates and relative to the viewport.
  * \return A rectangle filled with the x and y position of the mouse,
- * w and h are unused.
+ * w and h are unused and set to 1.
+ * Return a flat Rectangle if the position is not inside the viewport.
  */
 Rectangle InputEvent::get_mouse_position() const {
 
-  if (!is_mouse_event()) {
-    return Rectangle();
-  }
+  Debug::check_assertion(is_mouse_event(), "Event is not a mouse event");
 
   return Video::get_scaled_position(Rectangle(internal_event.button.x, internal_event.button.y, 1, 1));
 }

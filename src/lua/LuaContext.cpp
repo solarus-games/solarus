@@ -1780,15 +1780,15 @@ bool LuaContext::on_mouse_button_pressed(const InputEvent& event) {
     if (!button_name.empty()) { // This button exists in the Solarus API.
       const Rectangle& position = event.get_mouse_position();
 
+      // Stop to handle the event if the mouse position is not inside the viewport.
+      if (position.is_flat()) {
+        lua_pop(l, 2);  // Pop the object and the method.
+        return true;
+      }
+
       push_string(l, button_name);
-      if (!position.is_flat()) {
-        lua_pushinteger(l, position.get_x());
-        lua_pushinteger(l, position.get_y());
-      }
-      else {
-        lua_pushnil(l);
-        lua_pushnil(l);
-      }
+      lua_pushinteger(l, position.get_x());
+      lua_pushinteger(l, position.get_y());
 
       bool success = call_function(4, 1, "on_mouse_pressed");
       if (!success) {
@@ -1799,6 +1799,10 @@ bool LuaContext::on_mouse_button_pressed(const InputEvent& event) {
         handled = lua_toboolean(l, -1);
         lua_pop(l, 1);
       }
+    }
+    else {
+      // The method exists but the key is unknown.
+      lua_pop(l, 2);  // Pop the object and the method.
     }
   }
   return handled;
@@ -1820,15 +1824,15 @@ bool LuaContext::on_mouse_button_released(const InputEvent& event) {
     if (!button_name.empty()) { // This key exists in the Solarus API.
       const Rectangle& position = event.get_mouse_position();
 
+      // Stop to handle the event if the mouse position is not inside the viewport.
+      if (position.is_flat()) {
+        lua_pop(l, 2);  // Pop the object and the method.
+        return true;
+      }
+
       push_string(l, button_name);
-      if (!position.is_flat()) {
-        lua_pushinteger(l, position.get_x());
-        lua_pushinteger(l, position.get_y());
-      }
-      else {
-        lua_pushnil(l);
-        lua_pushnil(l);
-      }
+      lua_pushinteger(l, position.get_x());
+      lua_pushinteger(l, position.get_y());
 
       bool success = call_function(4, 1, "on_mouse_released");
       if (!success) {

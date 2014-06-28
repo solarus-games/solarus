@@ -828,25 +828,30 @@ Rectangle Video::get_viewport() {
  * \brief Get a scaled coordonate.
  * \param position A pixel position relative and scaled to the viewport.
  * \return A Rectangle filled with the coordinate scaled to quest_size,
- *  w and h are unused.
- * A coordinate outside the quest bound is clamped.
+ * w and h are unused and set to 1.
+ * Return a flat Rectangle if the position is not inside the viewport.
  */
 Rectangle Video::get_scaled_position(const Rectangle& position) {
 
-  double x, y;
   const Rectangle& viewport = get_viewport();
 
-  if (viewport.is_flat() || quest_size.is_flat()) {
+  Debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
+  Debug::check_assertion(!viewport.is_flat(), "Viewport is not initialized");
+
+  if (position.get_x() < 0
+      || position.get_y() < 0
+      || position.get_x() > viewport.get_width()
+      || position.get_y() > viewport.get_height()) {
     return Rectangle();
   }
 
-  x = std::abs(std::min(position.get_x(), viewport.get_width()));
-  y = std::abs(std::min(position.get_y(), viewport.get_height()));
-
-  return Rectangle(x * static_cast<double>(viewport.get_width()) / static_cast<double>(quest_size.get_width()),
-                   y * static_cast<double>(viewport.get_height()) / static_cast<double>(quest_size.get_height()),
-                   1,
-                   1);
+  return Rectangle(
+      static_cast<double>(viewport.get_x())
+          * static_cast<double>(viewport.get_width()) / static_cast<double>(quest_size.get_width()),
+      static_cast<double>(viewport.get_y())
+          * static_cast<double>(viewport.get_height()) / static_cast<double>(quest_size.get_height()),
+      1,
+      1);
 }
 
 }

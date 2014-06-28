@@ -18,7 +18,6 @@
 #include "lua/LuaTools.h"
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/InputEvent.h"
-#include "lowlevel/Video.h"
 
 namespace solarus {
 
@@ -224,6 +223,7 @@ int LuaContext::input_api_get_mouse_position(lua_State* l) {
     lua_pushnil(l);
     lua_pushnil(l);
   }
+
   return 2;
 }
 

@@ -75,12 +75,14 @@ Returns the current direction of a hat of the joypad.
 \subsection lua_api_input_get_mouse_position sol.input.get_mouse_position()
 
 Returns the current position of the mouse cursor.
-- Return value (integer): The \c x position of the mouse in \ref lua_api_video_get_quest_size "quest size" coordinates, relative to the viewport.
-    The value is clamped to quest borders if the mouse position is outside the viewport.
-    Return nil if an error occurs.
-- Return value (integer): The \c y position of the mouse in \ref lua_api_video_get_quest_size "quest size" coordinates, relative to the viewport.
-    The value is clamped to quest borders if the mouse position is outside the viewport.
-    Return nil if an error occurs.
+- Return value (integer): The \c x position of the mouse in
+  \ref lua_api_video_get_quest_size "quest size" coordinates,
+  relative to the viewport.
+  Return \c nil if the mouse position is outside the viewport.
+- Return value (integer): The \c y position of the mouse in
+  \ref lua_api_video_get_quest_size "quest size" coordinates,
+  relative to the viewport.
+  Return \c nil if the mouse position is outside the viewport.
 
 \subsection lua_api_input_is_moutton_button_pressed sol.input.is_moutton_button_pressed(button)
 

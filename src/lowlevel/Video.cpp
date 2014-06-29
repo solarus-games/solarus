@@ -846,9 +846,9 @@ Rectangle Video::get_scaled_position(const Rectangle& position) {
   }
 
   return Rectangle(
-      static_cast<double>(viewport.get_x())
+      static_cast<double>(position.get_x())
           * static_cast<double>(viewport.get_width()) / static_cast<double>(quest_size.get_width()),
-      static_cast<double>(viewport.get_y())
+      static_cast<double>(position.get_y())
           * static_cast<double>(viewport.get_height()) / static_cast<double>(quest_size.get_height()),
       1,
       1);

@@ -59,7 +59,6 @@ const std::string Tileset::ground_names[] = {
  */
 Tileset::Tileset(const std::string& id):
   id(id),
-  max_tile_id(0),
   tiles_image(NULL),
   entities_image(NULL) {
 }
@@ -86,14 +85,11 @@ const std::string& Tileset::get_id() {
  *
  * This function is called by load().
  *
- * \param id id of this tile pattern (1 to 1024)
+ * \param id id of this tile pattern
  * \param tile_pattern the tile pattern to add
  */
-void Tileset::add_tile_pattern(int id, TilePattern *tile_pattern) {
-
+void Tileset::add_tile_pattern(const std::string& id, TilePattern *tile_pattern) {
   tile_patterns[id] = tile_pattern;
-
-  max_tile_id = std::max(id, max_tile_id);
 }
 
 /**
@@ -145,7 +141,7 @@ void Tileset::load() {
  */
 void Tileset::unload() {
 
-  std::map<int, TilePattern*>::iterator it;
+  std::map<std::string, TilePattern*>::iterator it;
   for (it = tile_patterns.begin(); it != tile_patterns.end(); it++) {
     delete it->second;
   }
@@ -195,7 +191,7 @@ Surface& Tileset::get_entities_image() {
  * \param id id of the tile pattern to get
  * \return the tile pattern with this id
  */
-TilePattern& Tileset::get_tile_pattern(int id) {
+TilePattern& Tileset::get_tile_pattern(const std::string& id) {
 
   TilePattern* tile_pattern =  tile_patterns[id];
   if (tile_pattern == NULL) {
@@ -272,7 +268,8 @@ int Tileset::l_tile_pattern(lua_State* l) {
   Tileset* tileset = static_cast<Tileset*>(lua_touserdata(l, -1));
   lua_pop(l, 1);
 
-  int id = -1, default_layer = -1, width = 0, height = 0;
+  std::string id = "";
+  int default_layer = -1, width = 0, height = 0;
   int x[] = { -1, -1, -1, -1 };
   int y[] = { -1, -1, -1, -1 };
   Ground ground = GROUND_EMPTY;
@@ -287,7 +284,12 @@ int Tileset::l_tile_pattern(lua_State* l) {
 
     const std::string& key = luaL_checkstring(l, 2);
     if (key == "id") {
-      id = luaL_checkint(l, 3);
+      // We're using lua_tolstring instead of luaL_checkstring
+      // because we want to support older quests that used int as tile pattern ids
+      // and newer Quests that use strings as the ids.
+      size_t len;
+      const char* cstr = lua_tolstring(l, 3, &len);
+      id = std::string(cstr, len);
     }
     else if (key == "ground") {
       ground = LuaTools::check_enum<Ground>(l, 3, ground_names);
@@ -343,7 +345,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
   }
 
   // Check data.
-  if (id == -1) {
+  if (id == "") {
     LuaTools::arg_error(l, 1, "Missing id for this tile pattern");
   }
 

@@ -40,7 +40,7 @@ class InputEvent {
      * Enumeration of keyboard keys.
      * This is a Solarus dedicated enumeration.
      * To make the SDL encapsulation easier, this enumeration is compatible
-     * with the SDLKey enumeration from SDL.
+     * with the SDL_Keycode enumeration from SDL.
      * If you intend to replace SDL by another library one day, the API of the
      * Input class will not have to change
      * (only its implementation will).
@@ -178,6 +178,15 @@ class InputEvent {
       KEY_LEFT_META                = SDLK_LGUI
     };
 
+    /**
+     * Enumeration of mouse buttons.
+     * This is a Solarus dedicated enumeration.
+     * To make the SDL encapsulation easier, this enumeration is compatible
+     * with SDL_BUTTON definitions from SDL.
+     * If you intend to replace SDL by another library one day, the API of the
+     * Input class will not have to change
+     * (only its implementation will).
+     */
     enum MouseButton {
       MOUSE_BUTTON_NONE            = -1,
       MOUSE_BUTTON_LEFT            = SDL_BUTTON_LEFT,

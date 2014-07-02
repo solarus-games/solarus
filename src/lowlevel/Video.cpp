@@ -812,7 +812,9 @@ void Video::reset_window_size() {
 }
 
 /**
- * \brief Get the viewport.
+ * \brief Gets the viewport.
+ * The viewport is equal to the windows,
+ * without borders and possible black bars.
  * \return A Rectangle filled with the viewport.
  */
 Rectangle Video::get_viewport() {
@@ -825,15 +827,22 @@ Rectangle Video::get_viewport() {
 }
 
 /**
- * \brief Get a scaled coordonate.
+ * \brief Converts a viewport coordinate to a quest size coordinate.
  * \param position A pixel position relative and scaled to the viewport.
+ * The width and height of the parameter are unused.
  * \return A Rectangle filled with the coordinate scaled to quest_size,
- * w and h are unused and set to 1.
- * Return a flat Rectangle if the position is not inside the viewport.
+ * in which the width and height are set to 1.
+ * Returns a flat Rectangle if the position is not inside the viewport.
  */
 Rectangle Video::get_scaled_position(const Rectangle& position) {
 
   const Rectangle& viewport = get_viewport();
+  const double x_position = static_cast<double>(position.get_x());
+  const double y_position = static_cast<double>(position.get_y());
+  const double quest_size_width = static_cast<double>(quest_size.get_width());
+  const double quest_size_height = static_cast<double>(quest_size.get_height());
+  const double viewport_width = static_cast<double>(viewport.get_width());
+  const double viewport_height = static_cast<double>(viewport.get_height());
 
   Debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
   Debug::check_assertion(!viewport.is_flat(), "Viewport is not initialized");
@@ -846,10 +855,8 @@ Rectangle Video::get_scaled_position(const Rectangle& position) {
   }
 
   return Rectangle(
-      static_cast<double>(position.get_x())
-          * static_cast<double>(viewport.get_width()) / static_cast<double>(quest_size.get_width()),
-      static_cast<double>(position.get_y())
-          * static_cast<double>(viewport.get_height()) / static_cast<double>(quest_size.get_height()),
+      x_position * viewport_width / quest_size_width,
+      y_position * viewport_height / quest_size_height,
       1,
       1);
 }

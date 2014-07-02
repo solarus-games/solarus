@@ -221,7 +221,7 @@ int LuaContext::input_api_get_mouse_position(lua_State* l) {
   }
   else {
     lua_pushnil(l);
-    lua_pushnil(l);
+    return 1;
   }
 
   return 2;

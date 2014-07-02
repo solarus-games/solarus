@@ -420,11 +420,11 @@ int InputEvent::get_joypad_hat_direction(int hat) {
 }
 
 /**
- * \brief Returns the x and y position of the mouse by the state way.
+ * \brief Returns the x and y position of the mouse.
  * Values are in quest size coordinates and relative to the viewport.
  * \return A rectangle filled with the x and y position of the mouse,
- * w and h are unused and set to 1.
- * Return a flat Rectangle if the position is not inside the viewport.
+ * in which the width and height are set to 1.
+ * Returns a flat Rectangle if the position is not inside the viewport.
  */
 Rectangle InputEvent::get_global_mouse_position() {
 
@@ -462,7 +462,7 @@ bool InputEvent::is_joypad_event() const {
 
 /**
  * \brief Returns whether this event is a mouse event.
- * \return true if this is a mouse event
+ * \return true if this is a mouse event.
  */
 bool InputEvent::is_mouse_event() const {
 
@@ -985,7 +985,7 @@ bool InputEvent::is_mouse_button_pressed() const {
 bool InputEvent::is_mouse_button_pressed(MouseButton button) const {
 
   return is_mouse_button_pressed()
-    && internal_event.button.button == button;
+    && internal_event.button.button == static_cast<MouseButton>(button);
 }
 
 /**
@@ -1030,14 +1030,15 @@ InputEvent::MouseButton InputEvent::get_mouse_button() const {
  * \brief Returns the x and y position of this mouse event, if any.
  * Values are in quest size coordinates and relative to the viewport.
  * \return A rectangle filled with the x and y position of the mouse,
- * w and h are unused and set to 1.
- * Return a flat Rectangle if the position is not inside the viewport.
+ * in which the width and height are set to 1.
+ * Returns a flat Rectangle if the position is not inside the viewport.
  */
 Rectangle InputEvent::get_mouse_position() const {
 
   Debug::check_assertion(is_mouse_event(), "Event is not a mouse event");
 
-  return Video::get_scaled_position(Rectangle(internal_event.button.x, internal_event.button.y, 1, 1));
+  return Video::get_scaled_position(
+      Rectangle(internal_event.button.x, internal_event.button.y, 1, 1));
 }
 
 /**
@@ -1157,10 +1158,10 @@ bool InputEvent::is_direction_pressed() const {
 }
 
 /**
- * \brief Returns whether this keyboard or joypad event
+ * \brief Returns whether this keyboard, joypad or mouse event
  * corresponds to pressing something other than a direction.
  *
- * If this is not a keyboard or joypad event, false is returned.
+ * If this is not a keyboard, joypad or mouse event, false is returned.
  *
  * \return true if something other that a direction was pressed
  */
@@ -1171,11 +1172,11 @@ bool InputEvent::is_non_direction_pressed() const {
 }
 
 /**
- * \brief Returns whether this keyboard or joypad event
+ * \brief Returns whether this keyboard, joypad or mouse event
  * corresponds to releasing something.
  *
  * The thing released may be a key, a button or a direction.
- * If this is not a keyboard or joypad event, false is returned.
+ * If this is not a keyboard, joypad or mouse event, false is returned.
  *
  * \return true if something was released
  */

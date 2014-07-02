@@ -1801,7 +1801,7 @@ bool LuaContext::on_mouse_button_pressed(const InputEvent& event) {
       }
     }
     else {
-      // The method exists but the key is unknown.
+      // The method exists but the button is unknown.
       lua_pop(l, 2);  // Pop the object and the method.
     }
   }

@@ -985,7 +985,7 @@ bool InputEvent::is_mouse_button_pressed() const {
 bool InputEvent::is_mouse_button_pressed(MouseButton button) const {
 
   return is_mouse_button_pressed()
-    && internal_event.button.button == static_cast<MouseButton>(button);
+    && static_cast<MouseButton>(internal_event.button.button) == button;
 }
 
 /**

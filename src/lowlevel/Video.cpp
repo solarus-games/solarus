@@ -837,12 +837,12 @@ Rectangle Video::get_viewport() {
 Rectangle Video::get_scaled_position(const Rectangle& position) {
 
   const Rectangle& viewport = get_viewport();
-  const double x_position = static_cast<double>(position.get_x());
-  const double y_position = static_cast<double>(position.get_y());
-  const double quest_size_width = static_cast<double>(quest_size.get_width());
-  const double quest_size_height = static_cast<double>(quest_size.get_height());
-  const double viewport_width = static_cast<double>(viewport.get_width());
-  const double viewport_height = static_cast<double>(viewport.get_height());
+  const double x_position = position.get_x();
+  const double y_position = position.get_y();
+  const double quest_size_width = quest_size.get_width();
+  const double quest_size_height = quest_size.get_height();
+  const double viewport_width = viewport.get_width();
+  const double viewport_height = viewport.get_height();
 
   Debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
   Debug::check_assertion(!viewport.is_flat(), "Viewport is not initialized");

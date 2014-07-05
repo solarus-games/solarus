@@ -843,6 +843,22 @@ public class QuestTree extends JTree implements ProjectObserver {
             });
             add(elementItem);
 
+            // new directory
+            elementItem = new JMenuItem("New directory");
+            elementItem.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent ev) {
+
+                    String name = editorWindow.createNewDirectory(path);
+                    if (name != null && !name.isEmpty()) {
+                        addFileElementToTree(name);
+                    }
+                }
+            });
+            add(elementItem);
+            addSeparator();
+
             // delete directory (if empty)
             final File file = new File(Project.getDataPath() + "/" + path);
             elementItem = new JMenuItem("delete directory");

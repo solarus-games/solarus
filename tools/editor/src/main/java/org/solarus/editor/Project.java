@@ -1079,6 +1079,12 @@ public class Project {
             }
         }
 
+        // make the destination directory if no exists
+        File destinationDir = destinationFile.getParentFile();
+        if (!destinationDir.exists()) {
+            destinationDir.mkdirs();
+        }
+
         sourceFile.renameTo(destinationFile);
     }
 }

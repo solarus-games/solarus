@@ -268,94 +268,55 @@ int Tileset::l_tile_pattern(lua_State* l) {
   Tileset* tileset = static_cast<Tileset*>(lua_touserdata(l, -1));
   lua_pop(l, 1);
 
-  std::string id = "";
-  int default_layer = -1, width = 0, height = 0;
   int x[] = { -1, -1, -1, -1 };
   int y[] = { -1, -1, -1, -1 };
-  Ground ground = GROUND_EMPTY;
-  std::string scrolling;
+
+  const std::string& id = LuaTools::check_string_field(l, 1, "id");
+  const Ground ground = LuaTools::check_enum_field<Ground>(l, 1, "ground", ground_names);
+  const int default_layer = LuaTools::check_layer_field(l, 1, "default_layer");
+  const int width = LuaTools::check_int_field(l, 1, "width");
+  const int height = LuaTools::check_int_field(l, 1, "height");
+  const std::string& scrolling = LuaTools::opt_string_field(l, 1, "scrolling", "");
+
   int i = 0, j = 0;
-
-  // Traverse the table.
-  // TODO rewrite using check_string_field() and others.
   lua_settop(l, 1);
-  lua_pushnil(l);
-  while (lua_next(l, 1) != 0) {
-
-    const std::string& key = luaL_checkstring(l, 2);
-    if (key == "id") {
-      id = luaL_checkstring(l, 3);
-    }
-    else if (key == "ground") {
-      ground = LuaTools::check_enum<Ground>(l, 3, ground_names);
-    }
-    else if (key == "default_layer") {
-      default_layer = luaL_checkint(l, 3);
-    }
-    else if (key == "x") {
-      if (lua_isnumber(l, 3)) {
-        // Single frame.
-        x[0] = luaL_checkint(l, 3);
-        i = 1;
-      }
-      else {
-        // Multi-frame.
-        lua_pushnil(l);
-        while (lua_next(l, 3) != 0 && i < 4) {
-          x[i] = luaL_checkint(l, 5);
-          ++i;
-          lua_pop(l, 1);
-        }
-      }
-    }
-    else if (key == "y") {
-      if (lua_isnumber(l, 3)) {
-        // Single frame.
-        y[0] = luaL_checkint(l, 3);
-        j = 1;
-      }
-      else {
-        // Multi-frame.
-        lua_pushnil(l);
-        while (lua_next(l, 3) != 0 && j < 4) {
-          y[j] = luaL_checkint(l, 5);
-          ++j;
-          lua_pop(l, 1);
-        }
-      }
-    }
-    else if (key == "width") {
-      width = luaL_checkint(l, 3);
-    }
-    else if (key == "height") {
-      height = luaL_checkint(l, 3);
-    }
-    else if (key == "scrolling") {
-      scrolling = luaL_checkstring(l, 3);
-    }
-    else {
-      LuaTools::error(l, std::string("Unknown key '") + key + "'");
-    }
-    lua_pop(l, 1);
+  lua_getfield(l, 1, "x");
+  if (lua_isnumber(l, 2)) {
+    // Single frame.
+    x[0] = luaL_checkint(l, 2);
+    i = 1;
   }
+  else {
+    // Multi-frame.
+    lua_pushnil(l);
+    while (lua_next(l, 2) != 0 && i < 4) {
+      x[i] = luaL_checkint(l, 4);
+      ++i;
+      lua_pop(l, 1);
+    }
+  }
+  lua_pop(l, 1);
+  Debug::check_assertion(lua_gettop(l) == 1, "Invalid stack when parsing tile pattern");
+
+  lua_getfield(l, 1, "y");
+  if (lua_isnumber(l, 2)) {
+    // Single frame.
+    y[0] = luaL_checkint(l, 2);
+    j = 1;
+  }
+  else {
+    // Multi-frame.
+    lua_pushnil(l);
+    while (lua_next(l, 2) != 0 && j < 4) {
+      y[j] = luaL_checkint(l, 4);
+      ++j;
+      lua_pop(l, 1);
+    }
+  }
+  lua_pop(l, 1);
+  Debug::check_assertion(lua_gettop(l) == 1, "Invalid stack when parsing tile pattern");
 
   // Check data.
-  if (id.empty()) {
-    LuaTools::arg_error(l, 1, "Missing id for this tile pattern");
-  }
-
-  if (default_layer == -1) {
-    LuaTools::arg_error(l, 1, "Missing default layer for this tile pattern");
-  }
-
-  if (width == 0) {
-    LuaTools::arg_error(l, 1, "Missing width for this tile pattern");
-  }
-
-  if (height == 0) {
-    LuaTools::arg_error(l, 1, "Missing height for this tile pattern");
-  }
-
   if (i != 1 && i != 3 && i != 4) {
     LuaTools::arg_error(l, 1, "Invalid number of frames for x");
   }

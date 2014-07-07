@@ -897,7 +897,8 @@ int LuaContext::map_api_create_tile(lua_State* l) {
   const int y = LuaTools::check_int_field(l, 1, "y");
   const int width = LuaTools::check_int_field(l, 1, "width");
   const int height = LuaTools::check_int_field(l, 1, "height");
-  const int tile_pattern_id = LuaTools::check_int_field(l, 1, "pattern");
+
+  const std::string tile_pattern_id = LuaTools::coerce_to_string_field(l, 1, "pattern");
 
   entity_creation_check_size(l, 1, width, height);
 
@@ -1398,7 +1399,7 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
   int y = LuaTools::check_int_field(l, 1, "y");
   int width = LuaTools::check_int_field(l, 1, "width");
   int height = LuaTools::check_int_field(l, 1, "height");
-  int tile_pattern_id = LuaTools::check_int_field(l, 1, "pattern");
+  const std::string& tile_pattern_id = LuaTools::coerce_to_string_field(l, 1, "pattern");
   bool enabled_at_start = LuaTools::check_boolean_field(l, 1, "enabled_at_start");
 
   entity_creation_check_size(l, 1, width, height);

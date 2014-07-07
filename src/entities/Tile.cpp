@@ -40,7 +40,7 @@ Tile::Tile(
     int width,
     int height,
     Tileset& tileset,
-    int tile_pattern_id
+    const std::string& tile_pattern_id
 ):
   MapEntity("", 0, layer, x, y, width, height),
   tile_pattern_id(tile_pattern_id),
@@ -121,7 +121,7 @@ TilePattern& Tile::get_tile_pattern() {
  * \brief Returns the id of the pattern of this tile.
  * \return The tile pattern id.
  */
-int Tile::get_tile_pattern_id() const {
+const std::string& Tile::get_tile_pattern_id() const {
   return tile_pattern_id;
 }
 

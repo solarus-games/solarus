@@ -43,7 +43,7 @@ class DynamicTile: public MapEntity {
         int width,
         int height,
         Tileset& tileset,
-        int tile_pattern_id,
+        const std::string& tile_pattern_id,
         bool enabled
     );
     ~DynamicTile();
@@ -55,7 +55,7 @@ class DynamicTile: public MapEntity {
 
   private:
 
-    int tile_pattern_id;               /**< Id of the tile pattern. */
+    const std::string tile_pattern_id; /**< Id of the tile pattern. */
     TilePattern& tile_pattern;         /**< Pattern of the tile. */
 
 };

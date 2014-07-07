@@ -299,6 +299,35 @@ const std::string LuaTools::opt_string_field(
 }
 
 /**
+ * \brief Converts a field into a string.
+ *
+ * The underlaying Lua value may actually be a number or a string.
+ *
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The wanted field as a string.
+ */
+const std::string LuaTools::coerce_to_string_field(
+    lua_State* l, int table_index, const std::string& key) {
+
+  lua_getfield(l, table_index, key.c_str());
+  std::string value;
+  if (!lua_isnumber(l, -1) && !lua_isstring(l, -1)) {
+    arg_error(l, table_index, std::string("Bad field '") + key + "' (number or string expected, got  " + luaL_typename(l, -1) + ")");
+  }
+  else {
+    size_t len;
+    const char* cstr = lua_tolstring(l, -1, &len);
+    value = std::string(cstr, len);
+  }
+
+  lua_pop(l, 1);
+  return value;
+}
+
+
+/**
  * \brief Checks that a table field is a boolean and returns it.
  *
  * This function acts like lua_getfield() followed by luaL_checktype()

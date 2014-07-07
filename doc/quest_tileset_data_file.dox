@@ -78,7 +78,7 @@ separated with commas. It is allowed to have an extra comma after
 the last property. String values should be enclosed within
 double quotes.
 Each tile pattern must have the following properties:
-- \c id (number): Id of the tile pattern. Maps refer to this id when they want
+- \c id (string): Id of the tile pattern. Maps refer to this id when they want
   to use the tile pattern. It must be unique in the tileset.
 - \c ground (string): Kind of ground. Must be one of:
   - \c "empty": There is no ground, this tile is purely decorative.
@@ -181,7 +181,7 @@ Example of a valid tileset file:
 background_color{ 104, 184, 104 }
 
 tile_pattern{
-  id = 7,
+  id = "path_dirt",
   ground = "traversable",
   default_layer = 0,
   x = 32,
@@ -191,7 +191,7 @@ tile_pattern{
 }
 
 tile_pattern{
-  id = 28,
+  id = "ocean",
   ground = "deep_water",
   default_layer = 0,
   x = { 0, 8, 16 },
@@ -201,7 +201,7 @@ tile_pattern{
 }
 
 tile_pattern{
-  id = 46,
+  id = "parallax_tree",
   ground = "traversable",
   default_layer = 0,
   x = 320,

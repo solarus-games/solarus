@@ -284,12 +284,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
 
     const std::string& key = luaL_checkstring(l, 2);
     if (key == "id") {
-      // We're using lua_tolstring instead of luaL_checkstring
-      // because we want to support older quests that used int as tile pattern ids
-      // and newer Quests that use strings as the ids.
-      size_t len;
-      const char* cstr = lua_tolstring(l, 3, &len);
-      id = std::string(cstr, len);
+      id = luaL_checkstring(l, 3);
     }
     else if (key == "ground") {
       ground = LuaTools::check_enum<Ground>(l, 3, ground_names);
@@ -345,7 +340,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
   }
 
   // Check data.
-  if (id == "") {
+  if (id.empty()) {
     LuaTools::arg_error(l, 1, "Missing id for this tile pattern");
   }
 

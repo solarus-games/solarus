@@ -27,19 +27,6 @@ struct lua_State;
 namespace solarus {
 
 /**
- * \brief A compare functor for std:string.
- *
- * This is needed for putting std:string as the key in a STL map.
- */
-class strless {
-  public:
-    bool operator() (const std::string& first, const std::string& second ) const  {
-        return first < second;
-    }
-};
- 
-
-/**
  * \brief An image containing all tile patterns.
  *
  * A tileset is an image containing a set of elements (tile patterns)
@@ -74,7 +61,8 @@ class Tileset {
     static int l_tile_pattern(lua_State* l);
 
     const std::string id;                             /**< id of the tileset */
-    std::map<std::string, TilePattern*> tile_patterns;        /**< tile patterns in this tileset */
+    std::map<std::string, TilePattern*>
+        tile_patterns;                                /**< tile patterns in this tileset */
     Color background_color;                           /**< background color of the tileset */
     Surface* tiles_image;                             /**< image from which the tile patterns are extracted */
     Surface* entities_image;                          /**< image from which the skin-dependent entities are extracted */

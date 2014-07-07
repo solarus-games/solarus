@@ -61,9 +61,6 @@ class LuaTools {
         lua_State* l, int table_index, const std::string& key,
         const std::string& default_value
     );
-    static const std::string coerce_to_string_field(
-        lua_State* l, int table_index, const std::string& key
-    );
     static bool check_boolean_field(
         lua_State* l, int table_index, const std::string& key
     );

@@ -570,10 +570,10 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
                         scaledImage.getHeight(TilesetImageView.this)) / zoomValue);
 
                 // search the tile pattern clicked
-                int clickedTileId = tileset.getTilePatternIdAt(x, y);
+                String clickedTileId = tileset.getTilePatternIdAt(x, y);
 
                 // a tile pattern was just clicked
-                if (clickedTileId > 0) {
+                if (clickedTileId != null) {
 
                     // select the tile pattern
                     startStateNormal();

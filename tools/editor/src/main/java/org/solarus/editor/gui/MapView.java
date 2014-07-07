@@ -301,7 +301,7 @@ public class MapView extends JComponent implements Observer {
             else if (selection.getNbEntitiesSelected() == 1
                     && selection.getEntity() instanceof Tile) {
                 // A single tile is selected: highlight its pattern in the tileset view.
-                int tilePatternId = ((Tile) selection.getEntity()).getTilePatternId();
+                String tilePatternId = ((Tile) selection.getEntity()).getTilePatternId();
                 tileset.setSelectedTilePatternId(tilePatternId);
             }
             blockTilesetUpdates = false;
@@ -668,8 +668,8 @@ public class MapView extends JComponent implements Observer {
                 }
 
                 if (entityType == EntityType.TILE) {
-                    int tileId = map.getTileset().getSelectedTilePatternId();
-                    entity.setIntegerProperty("pattern", tileId);
+                    String patternId = map.getTileset().getSelectedTilePatternId();
+                    entity.setStringProperty("pattern", patternId);
                 }
 
                 List<MapEntity> entities = new ArrayList<MapEntity>();
@@ -1435,8 +1435,8 @@ public class MapView extends JComponent implements Observer {
 
                         if (entitiesAdded.size() == 1
                                 && entitiesAdded.get(0) instanceof Tile) {
-                            int tilePatternId = ((Tile) entitiesAdded.get(0)).getTilePatternId();
-                            map.getTileset().setSelectedTilePatternId(tilePatternId);
+                            String patternId = ((Tile) entitiesAdded.get(0)).getTilePatternId();
+                            map.getTileset().setSelectedTilePatternId(patternId);
                         }
 
                         copiedEntities = new ArrayList<MapEntity>();
@@ -1523,8 +1523,8 @@ public class MapView extends JComponent implements Observer {
                                     && entityTypeBeingAdded == EntityType.TILE) {
                                 // If it is a single tile just created, update the tileset view.
                                 Tile tile = (Tile) entitySelection.getEntity();
-                                int tilePatternId = tile.getTilePatternId();
-                                map.getTileset().setSelectedTilePatternId(tilePatternId);
+                                String patternId = tile.getTilePatternId();
+                                map.getTileset().setSelectedTilePatternId(patternId);
                             }
 
                             // Move to the state State.ADDING_ENTITIES.

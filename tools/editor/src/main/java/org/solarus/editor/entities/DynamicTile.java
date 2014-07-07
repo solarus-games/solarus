@@ -45,7 +45,7 @@ public class DynamicTile extends Tile {
      */
     public DynamicTile(Tile regularTile) throws MapException {
         this(regularTile.getMap());
-        setIntegerProperty("pattern", regularTile.getTilePatternId());
+        setStringProperty("pattern", regularTile.getTilePatternId());
         setLayer(regularTile.getLayer());
         setPositionInMap(regularTile.getPositionInMap());
         setName("tile");

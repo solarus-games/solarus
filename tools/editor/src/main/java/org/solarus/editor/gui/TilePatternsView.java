@@ -52,6 +52,11 @@ public class TilePatternsView extends JPanel {
     private TilePatternsListModel tilePatternsListModel;
 
     /**
+     * Id of each tile pattern in the list.
+     */
+    private ArrayList<String> tilePatternIds;
+
+    /**
      * The icon associated to each tile.
      */
     private ArrayList<TilePatternIcon> tilePatternIcons;
@@ -67,6 +72,7 @@ public class TilePatternsView extends JPanel {
     public TilePatternsView() {
         super();
 
+        tilePatternIds = new ArrayList<String>();
         tilePatternIcons = new ArrayList<TilePatternIcon>();
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -87,7 +93,7 @@ public class TilePatternsView extends JPanel {
         tilePatternsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tilePatternsList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         tilePatternsList.setVisibleRowCount(-1); // make the rows as wide as possible
-         tilePatternsList.getSelectionModel().addListSelectionListener(new TilePatternListSelectionListener());
+        tilePatternsList.getSelectionModel().addListSelectionListener(new TilePatternListSelectionListener());
         tilePatternsList.setCellRenderer(new TilePatternListRenderer());
 
         tilePatternsList.addKeyListener(new KeyAdapter() {
@@ -137,7 +143,7 @@ public class TilePatternsView extends JPanel {
         if (tileset != null) {
             tileset.addObserver(tilePatternsListModel);
 
-            loadIcons();
+            loadPatterns();
             tilePatternsListModel.update(tileset, null);
         }
         else {
@@ -148,11 +154,14 @@ public class TilePatternsView extends JPanel {
     /**
      * Loads the icons for the tile patterns list.
      */
-    private void loadIcons() {
+    private void loadPatterns() {
 
+        tilePatternIds.clear();
         tilePatternIcons.clear();
 
-        for (TilePattern tilePattern: tileset.getTilePatterns()) {
+        for (String tilePatternId: tileset.getTilePatternIds()) {
+            tilePatternIds.add(tilePatternId);
+            TilePattern tilePattern = tileset.getTilePattern(tilePatternId);
             tilePatternIcons.add(new TilePatternIcon(tilePattern, tileset));
         }
     }
@@ -173,7 +182,8 @@ public class TilePatternsView extends JPanel {
 
             // select this tile pattern in the tileset
             if (selectedTilePatternRank != -1) {
-                tileset.setSelectedTilePatternId(tileset.rankToId(selectedTilePatternRank));
+                String patternId = tilePatternIds.get(selectedTilePatternRank);
+                tileset.setSelectedTilePatternId(patternId);
             }
             else {
                 tileset.unselectTilePattern();
@@ -204,7 +214,23 @@ public class TilePatternsView extends JPanel {
          */
         public TilePattern getElementAt(int rank) {
 
-            return tileset.getTilePattern(tileset.rankToId(rank));
+            String patternId = tilePatternIds.get(rank);
+            return tileset.getTilePattern(patternId);
+        }
+
+        /**
+         * Returns the index of a tile pattern in the list view.
+         * @param patternId Id of a tile pattern.
+         * @return The index of this pattern in the list.
+         */
+        private int tilePatternIdToListRank(String patternId) {
+
+            for (int i = 0; i < tilePatternIds.size(); i++) {
+                if (tilePatternIds.get(i).equals(patternId)) {
+                    return i;
+                }
+            }
+            throw new NoSuchElementException("No tile pattern with id '" + patternId + "' in the list view");
         }
 
         /**
@@ -218,19 +244,19 @@ public class TilePatternsView extends JPanel {
          */
         public void update(Observable o, Object params) {
 
-            // reload the icons if a tile was added or removed
-            if (params instanceof Integer || params instanceof TilePattern) {
-                loadIcons();
+            // reload the patterns if a tile was added, changed or removed
+            if (params instanceof String || params instanceof TilePattern) {
+                loadPatterns();
             }
 
             // update the enabled state of the buttons
-            int tilesetSelectedPatternId = tileset.getSelectedTilePatternId();
+            String tilesetSelectedPatternId = tileset.getSelectedTilePatternId();
             int listSelectedRank = tilePatternsList.getSelectedIndex();
 
             if (tileset.getSelectedTilePattern() != null) {
                 // an existing tile pattern is selected
                 // make this tile pattern selected in the list
-                int listRank = tileset.idToRank(tilesetSelectedPatternId);
+                int listRank = tilePatternIdToListRank(tilesetSelectedPatternId);
                 if (listRank != listSelectedRank) {
                     tilePatternsList.setSelectedIndex(listRank);
                     tilePatternsList.ensureIndexIsVisible(listRank);
@@ -260,10 +286,11 @@ public class TilePatternsView extends JPanel {
                                                       boolean isSelected, boolean cellHasFocus) {
             if (rank >= tilePatternIcons.size()) {
                 // the icon doesn't exist yet
-                loadIcons();
+                loadPatterns();
             }
 
             return tilePatternIcons.get(rank);
         }
     }
 }
+

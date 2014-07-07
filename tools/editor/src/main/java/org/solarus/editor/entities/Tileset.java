@@ -50,12 +50,12 @@ public class Tileset extends Observable {
 
     /**
      * The tile patterns.
-     * The key of a tile pattern is its id in the tileset. The first id is 1.
+     * The key of a tile pattern is its id in the tileset.
      */
-    private TreeMap<Integer,TilePattern> tilePatterns;
+    private TreeMap<String, TilePattern> tilePatterns;
 
     /**
-     * Maximum id of a tile in the map.
+     * Maximum integer id of a tile in the map.
      */
     private int maxId;
 
@@ -78,11 +78,10 @@ public class Tileset extends Observable {
     private boolean isSaved;
 
     /**
-     * Id of the tile pattern currently selected by the user.
-     * 0: no tile pattern is selected
-     * 1 or more: an existing tile pattern is selected
+     * Id of the tile pattern currently selected by the user,
+     * or null if no tile pattern is selected.
      */
-    private int selectedTilePatternId;
+    private String selectedTilePatternId;
 
     /**
      * Creates or loads a tileset.
@@ -92,14 +91,14 @@ public class Tileset extends Observable {
     public Tileset(String tilesetId) throws QuestEditorException {
 
         if (!isValidId(tilesetId)) {
-            throw new MapException("Invalid tileset ID: '" + tilesetId + "'");
+            throw new MapException("Invalid tileset id: '" + tilesetId + "'");
         }
 
         this.backgroundColor = Color.BLACK;
         this.isSaved = false;
         this.maxId = 0;
-        this.selectedTilePatternId = 0; // none
-        this.tilePatterns = new TreeMap<Integer,TilePattern>();
+        this.selectedTilePatternId = null; // none
+        this.tilePatterns = new TreeMap<String, TilePattern>(new NaturalOrderComparator());
         this.tilesetId = tilesetId;
 
         load();
@@ -292,7 +291,7 @@ public class Tileset extends Observable {
      * Returns the ids of the tile patterns.
      * @return the ids of the tile patterns
      */
-    public Set<Integer> getTilePatternIds() {
+    public Set<String> getTilePatternIds() {
         return tilePatterns.keySet();
     }
 
@@ -310,12 +309,12 @@ public class Tileset extends Observable {
      * @return the tile pattern with this id
      * @throws NoSuchElementException if there is no tile pattern with this id
      */
-    public TilePattern getTilePattern(int id) throws NoSuchElementException {
+    public TilePattern getTilePattern(String id) throws NoSuchElementException {
 
         TilePattern tilePattern = tilePatterns.get(id);
 
         if (tilePattern == null) {
-            throw new NoSuchElementException("There is no tile pattern with id #" + id + " in the tileset.");
+            throw new NoSuchElementException("There is no tile pattern with id '" + id + "' in the tileset.");
         }
 
         return tilePattern;
@@ -326,36 +325,44 @@ public class Tileset extends Observable {
      * or 0 if there is no tile pattern there.
      * @param x x coordinate of the point
      * @param y y coordinate of the point
-     * @return id of the tile pattern at this point, or 0 if there is no tile pattern here
+     * @return id of the tile pattern at this point, or null if there is no tile pattern here
      */
-    public int getTilePatternIdAt(int x, int y) {
+    public String getTilePatternIdAt(int x, int y) {
 
-        for (int id: getTilePatternIds()) {
+        for (String id: getTilePatternIds()) {
             Rectangle patternRectangle = getTilePattern(id).getPositionInTileset();
             if (patternRectangle.contains(x, y)) {
                 return id; // a tile pattern was found at this point
             }
         }
 
-        return 0; // no tile pattern found
+        return null; // no tile pattern found
     }
 
     /**
      * Returns the id of the selected tile pattern.
-     * @return 0 if no tile pattern is selected, 1 or more if an existing tile pattern is selected.
+     * @return The id of the selected tile pattern, or null if no tile pattern
+     * is selected.
      */
-    public int getSelectedTilePatternId() {
+    public String getSelectedTilePatternId() {
         return selectedTilePatternId;
     }
 
     /**
      * Selects a tile patterns and notifies the observers.
-     * @param selectedTilePatternId 0 to select no tile pattern,
-     * 1 or more to select the existing
-     * tile pattern with this id.
+     * @param selectedTilePatternId id of the tile pattern to select, or null
+     * to unselect any previously selected tile pattern.
      */
-    public void setSelectedTilePatternId(int selectedTilePatternId) {
-        if (selectedTilePatternId != this.selectedTilePatternId) {
+    public void setSelectedTilePatternId(String selectedTilePatternId) {
+
+        if (this.selectedTilePatternId == null && selectedTilePatternId == null) {
+            return;
+        }
+
+        if (this.selectedTilePatternId == null ||
+                selectedTilePatternId == null ||
+                !selectedTilePatternId.equals(this.selectedTilePatternId)
+            ) {
             this.selectedTilePatternId = selectedTilePatternId;
             setChanged();
             notifyObservers();
@@ -364,19 +371,19 @@ public class Tileset extends Observable {
 
     /**
      * Unselects the current tile pattern.
-     * This is equivalent to call setSelectedTileId(0).
+     * This is equivalent to setSelectedTileId(null).
      */
     public void unselectTilePattern() {
-        setSelectedTilePatternId(0);
+        setSelectedTilePatternId(null);
     }
 
     /**
      * Returns the selected tile pattern.
-     * @return the selected tile pattern, or null if there is no selected
-     * tile pattern or if doesn't exist yet
+     * @return The selected tile pattern, or null if there is no selected
+     * tile pattern or if doesn't exist yet.
      */
     public TilePattern getSelectedTilePattern() {
-        if (selectedTilePatternId > 0) {
+        if (selectedTilePatternId != null) {
             return getTilePattern(selectedTilePatternId);
         }
         else {
@@ -385,71 +392,28 @@ public class Tileset extends Observable {
     }
 
     /**
-     * Returns the rank of a tile pattern, knowing its id.
-     * The rank is the position of the tile pattern if you consider all tile patterns sorted by their ids.
-     * It is different from the id because all ids don't exist necessarily.
-     * @param id id of the tile pattern in the tileset
-     * @return rank of this tile pattern, in [0, getNbTilePatterns()[.
-     */
-    public int idToRank(int id) {
-
-        // count the tiles until we find the right one
-        int rank = 0;
-        for (int idFound: getTilePatternIds()) {
-
-            if (idFound == id) {
-                return rank;
-            }
-            rank++;
-        }
-
-        throw new NoSuchElementException("There is no tile pattern at id " + id + " in the tileset.");
-    }
-
-    /**
-     * Returns the id of a tile pattern knowing its rank.
-     * The rank is the position of the tile pattern if you consider all tile patterns sorted by their ids.
-     * It is different from the id because all ids don't exist necessarily.
-     * @param rank rank of the tile pattern considered, in [0, getNbTilePatterns()[
-     * @return the id of the tile pattern with this rank
-     */
-    public int rankToId(int rank) {
-
-        // count rank tiles
-        int i = 0;
-        for (int currentId: getTilePatternIds()) {
-
-            if (i == rank) {
-                return currentId;
-            }
-            i++;
-        }
-
-        throw new NoSuchElementException("There is no tile pattern with rank " + rank + " in the tileset.");
-    }
-
-    /**
      * Creates the tile pattern specified by the current selection area
-     * and adds it to the tileset.
+     * adds it to the tileset and make it selected.
      * The observers are notified with the created TilePattern as parameter.
      * @param newTilePatternArea Position of the new tile pattern.
      * @param ground Ground property of the created tile pattern.
      * @throws TilesetException if the tile size is incorrect
      */
     public void addTilePattern(Rectangle newTilePatternArea, Ground ground)
-            throws TilesetException {
+        throws TilesetException {
 
         TilePattern tilePattern = new TilePattern(newTilePatternArea, Layer.LOW, ground);
 
         maxId++;
-        tilePatterns.put(maxId, tilePattern);
-
-        setSelectedTilePatternId(maxId);
+        String id = Integer.toString(maxId);
+        tilePatterns.put(id, tilePattern);
 
         isSaved = false;
 
         setChanged();
         notifyObservers(tilePattern); // indicates that a tile pattern has been created
+
+        setSelectedTilePatternId(id);
     }
 
     /**
@@ -457,7 +421,7 @@ public class Tileset extends Observable {
      * @param tilePatternId id of the tile pattern
      * @param tilePattern the tile pattern to add
      */
-    private void addTilePattern(int tilePatternId, TilePattern tilePattern) {
+    private void addTilePattern(String tilePatternId, TilePattern tilePattern) {
         tilePatterns.put(tilePatternId, tilePattern);
     }
 
@@ -466,11 +430,11 @@ public class Tileset extends Observable {
      * The oberservers are notified with the removed tile pattern as parameter.
      */
     public void removeTilePattern() {
-        Integer id = new Integer(getSelectedTilePatternId());
+        String id = getSelectedTilePatternId();
 
-        if (id > 0) {
+        if (id != null) {
             tilePatterns.remove(id);
-            setSelectedTilePatternId(0);
+            setSelectedTilePatternId(null);
 
             isSaved = false;
 
@@ -510,7 +474,7 @@ public class Tileset extends Observable {
             environment.set("tile_pattern", new TilePatternFunction());
 
             LuaFunction code = LoadState.load(new FileInputStream(tilesetFile),
-                tilesetFile.getName(), environment);
+                    tilesetFile.getName(), environment);
             code.call();
         }
         catch (IOException ex) {
@@ -530,7 +494,7 @@ public class Tileset extends Observable {
      */
     public void save() throws QuestEditorException {
 
-        int lastId = -1;
+        String lastPatternId = null;
         try {
 
             // Open the tileset file.
@@ -539,16 +503,16 @@ public class Tileset extends Observable {
 
             // Background color.
             out.println("background_color{ "
-                + backgroundColor.getRed()
-                + ", "
-                + backgroundColor.getGreen()
-                + ", "
-                + backgroundColor.getBlue()
-                + " }");
+                    + backgroundColor.getRed()
+                    + ", "
+                    + backgroundColor.getGreen()
+                    + ", "
+                    + backgroundColor.getBlue()
+                    + " }");
 
             // Tile patterns.
-            for (int id: getTilePatternIds()) {
-                lastId = id;
+            for (String id: getTilePatternIds()) {
+                lastPatternId = id;
                 TilePattern tilePattern = getTilePattern(id);
 
                 TilePattern.Animation animation = tilePattern.getAnimation();
@@ -573,10 +537,10 @@ public class Tileset extends Observable {
                         y3 = y2 + height;
                     }
                     if (animation == TilePattern.Animation.SEQUENCE_012
-                        || animation == TilePattern.Animation.SEQUENCE_012_PARALLAX) {
+                            || animation == TilePattern.Animation.SEQUENCE_012_PARALLAX) {
                         x = "{ " + x1 + ", " + x2 + ", " + x3 + " }";
                         y = "{ " + y1 + ", " + y2 + ", " + y3 + " }";
-                    }
+                            }
                     else {
                         x = "{ " + x1 + ", " + x2 + ", " + x3 + ", " + x2 + " }";
                         y = "{ " + y1 + ", " + y2 + ", " + y3 + ", " + y2 + " }";
@@ -593,13 +557,13 @@ public class Tileset extends Observable {
                     scrolling = "self";
                 }
                 else if (animation == TilePattern.Animation.PARALLAX_SCROLLING
-                    || animation == TilePattern.Animation.SEQUENCE_012_PARALLAX
-                    || animation == TilePattern.Animation.SEQUENCE_0121_PARALLAX) {
+                        || animation == TilePattern.Animation.SEQUENCE_012_PARALLAX
+                        || animation == TilePattern.Animation.SEQUENCE_0121_PARALLAX) {
                     scrolling = "parallax";
-                }
+                        }
 
                 out.println("tile_pattern{");
-                out.println("  id = " + id + ",");
+                out.println("  id = \"" + id + "\",");
                 out.println("  ground = \"" + tilePattern.getGround().getName() + "\",");
                 out.println("  default_layer = " + tilePattern.getDefaultLayer().getId() + ",");
                 out.println("  x = " + x + ",");
@@ -607,7 +571,7 @@ public class Tileset extends Observable {
                 out.println("  width = " + width + ",");
                 out.println("  height = " + height + ",");
                 if (scrolling != null) {
-                  out.println("  scrolling = \"" + scrolling + "\",");
+                    out.println("  scrolling = \"" + scrolling + "\",");
                 }
                 out.println("}");
                 out.println();
@@ -619,8 +583,8 @@ public class Tileset extends Observable {
         }
         catch (Exception ex) {
             String message = "";
-            if (lastId != -1) {
-                message = "Failed to save tile '" + lastId + "': ";
+            if (lastPatternId != null) {
+                message = "Failed to save tile '" + lastPatternId + "': ";
             }
             message += ex.getMessage();
             throw new QuestEditorException(message);
@@ -636,10 +600,10 @@ public class Tileset extends Observable {
 
             LuaTable colorTable = arg.checktable();
             setBackgroundColor(new Color(
-                  colorTable.get(1).checkint(),
-                  colorTable.get(2).checkint(),
-                  colorTable.get(3).checkint()
-            ));
+                        colorTable.get(1).checkint(),
+                        colorTable.get(2).checkint(),
+                        colorTable.get(3).checkint()
+                        ));
             return LuaValue.NIL;
         }
     }
@@ -651,7 +615,7 @@ public class Tileset extends Observable {
 
         public LuaValue call(LuaValue arg) {
 
-            int id = -1;
+            String id = null;
             Layer defaultLayer = null;
             int width = 0;
             int height = 0;
@@ -675,7 +639,7 @@ public class Tileset extends Observable {
 
                     String keyString = key.checkjstring();
                     if (keyString.equals("id")) {
-                        id = value.checkint();
+                        id = value.checkjstring();
                     }
                     else if (keyString.equals("ground")) {
                         String groundName = value.checkjstring();
@@ -758,13 +722,13 @@ public class Tileset extends Observable {
                     }
                     if (scrolling != null && scrolling.equals("parallax")) {
                         animation = (i == 3) ?
-                          TilePattern.Animation.SEQUENCE_012_PARALLAX :
-                          TilePattern.Animation.SEQUENCE_0121_PARALLAX;
+                            TilePattern.Animation.SEQUENCE_012_PARALLAX :
+                            TilePattern.Animation.SEQUENCE_0121_PARALLAX;
                     }
                     else {
                         animation = (i == 3) ?
-                          TilePattern.Animation.SEQUENCE_012 :
-                          TilePattern.Animation.SEQUENCE_0121;
+                            TilePattern.Animation.SEQUENCE_012 :
+                            TilePattern.Animation.SEQUENCE_0121;
                     }
                 }
                 else {
@@ -780,27 +744,35 @@ public class Tileset extends Observable {
                     }
                 }
 
-                    // Add the tile pattern.
-                    addTilePattern(id, new TilePattern(
-                          positionInTileset,
-                          defaultLayer,
-                          ground,
-                          animation,
-                          separation
-                    ));
-                }
+                // Add the tile pattern.
+                addTilePattern(id, new TilePattern(
+                            positionInTileset,
+                            defaultLayer,
+                            ground,
+                            animation,
+                            separation
+                            ));
+            }
             catch (Exception ex) {
                 String message = "";
-                if (id != -1) {
+                if (id != null) {
                     message += "Failed to load tile '" + id + "': ";
                 }
                 message += ex.getMessage();
                 throw new LuaError(message);
             }
 
-            if (id > maxId) {
-                maxId = id;
+            // If the tile pattern id is an integer, check the maximum integer id.
+            int intId;
+            try {
+                intId = Integer.parseInt(id);
+                if (intId > maxId) {
+                    maxId = intId;
+                }
             }
+            catch (NumberFormatException ex) {
+            }
+
             setSaved(true);
 
             return LuaValue.NIL;

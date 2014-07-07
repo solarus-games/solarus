@@ -51,7 +51,7 @@ public class Tile extends MapEntity {
      */
     public Tile(DynamicTile dynamicTile) throws MapException {
         this(dynamicTile.getMap());
-        setIntegerProperty("pattern", dynamicTile.getTilePatternId());
+        setStringProperty("pattern", dynamicTile.getTilePatternId());
         setLayer(dynamicTile.getLayer());
         setPositionInMap(dynamicTile.getPositionInMap());
         updateImageDescription();
@@ -109,23 +109,23 @@ public class Tile extends MapEntity {
             return;
         }
 
-        int tilePatternId = getTilePatternId();
+        String tilePatternId = getTilePatternId();
         try {
             TilePattern newTilePattern = newTileset.getTilePattern(tilePatternId);
 
-            // if a tileset was already defined, check that the
-            // tile has the same properties
+            // If a tileset was already defined, check that the
+            // tile pattern has the same properties.
             if (oldTileset != null) {
 
                 TilePattern oldTilePattern = oldTileset.getTilePattern(tilePatternId);
 
                 if (!newTilePattern.equals(oldTilePattern)) {
-                    throw new NoSuchTilePatternException("The tile pattern #" + tilePatternId + " is different in this tileset.");
+                    throw new NoSuchTilePatternException("Tile pattern '" + tilePatternId + "' is different in this tileset.");
                 }
             }
         }
         catch (NoSuchElementException e) {
-            throw new NoSuchTilePatternException("Unable to apply the tileset because the tile pattern #" + tilePatternId + " doesn't exist in this tileset.");
+            throw new NoSuchTilePatternException("Tile pattern '" + tilePatternId + "' doesn't exist in this tileset.");
         }
     }
 
@@ -133,8 +133,8 @@ public class Tile extends MapEntity {
      * Returns the id of the tile pattern in the tileset.
      * @return The id of the tile pattern in the tileset or null.
      */
-    public Integer getTilePatternId() {
-        return getIntegerProperty("pattern");
+    public String getTilePatternId() {
+        return getStringProperty("pattern");
     }
 
     /**

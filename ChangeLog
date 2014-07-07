@@ -31,6 +31,7 @@ Don't forget to make a backup first.
 
 * Maps: New properties sprite, sound for switches (#553).
 * Maps: The subtype of switches is now a string.
+* Tilesets: The id of a tile pattern is now a string (#559).
 
 Solarus Quest Editor changes
 ----------------------------
@@ -42,6 +43,7 @@ Solarus Quest Editor changes
 * Add a close button on tabs (#439). By Maxs.
 * Rework the quest tree to show the file hierarchy and Lua scripts. By Maxs.
 * Move the entity checkboxes to the map view settings panel. By Maxs.
+* Allow to change the id of a tile pattern in the tileset editor (#559).
 
 _________________________________
 

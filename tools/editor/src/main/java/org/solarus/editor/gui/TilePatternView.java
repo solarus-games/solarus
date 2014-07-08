@@ -71,6 +71,19 @@ public class TilePatternView extends JPanel implements Observer {
         changePatternIdButton = new JButton(Project.getEditorImageIconOrEmpty("icon_edit.png"));
         changePatternIdButton.setPreferredSize(new Dimension(24, 24));
         changePatternIdButton.setToolTipText("Change pattern id");
+        changePatternIdButton.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent ev) {
+
+                if (patternId == null) {
+                    return;
+                }
+                TilePatternIdRefactoringDialog dialog = new TilePatternIdRefactoringDialog(
+                    tileset, patternId
+                );
+                dialog.display();
+            }
+        });
         patternIdView.add(changePatternIdButton);
         add(patternIdView, constraints);
         patternIdLabel = new JLabel();
@@ -171,6 +184,7 @@ public class TilePatternView extends JPanel implements Observer {
 
         if (tilePattern != null) {
             patternIdLabel.setText(patternId);
+            changePatternIdButton.setEnabled(true);
             groundView.setValue(tilePattern.getGround());
             groundView.setEnabled(true);
             defaultLayerView.setValue(tilePattern.getDefaultLayer());
@@ -179,6 +193,7 @@ public class TilePatternView extends JPanel implements Observer {
         }
         else {
             patternIdLabel.setText("");
+            changePatternIdButton.setEnabled(false);
             groundView.setEnabled(false);
             groundView.setValue(Ground.TRAVERSABLE);
             defaultLayerView.setEnabled(false);

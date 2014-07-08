@@ -39,6 +39,7 @@
         <configuration>
           <source>1.7</source>
           <target>1.7</target>
+          <compilerArgument>-Xlint:unchecked</compilerArgument>
         </configuration>
       </plugin>
       <plugin>
@@ -51,7 +52,7 @@
             <index>true</index>
             <manifest>
               <addClasspath>true</addClasspath>
-		          <mainClass>org.solarus.editor.Editor</mainClass>
+              <mainClass>org.solarus.editor.Editor</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -89,13 +90,13 @@
           </execution>
         </executions>
         <configuration>
-	          <manifest>
-		          <mainClass>org.solarus.editor.Editor</mainClass>
-	          </manifest>
+          <manifest>
+            <mainClass>org.solarus.editor.Editor</mainClass>
+          </manifest>
         </configuration>
       </plugin>
       <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
+        <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-assembly-plugin</artifactId>
       <configuration>
         <descriptors>

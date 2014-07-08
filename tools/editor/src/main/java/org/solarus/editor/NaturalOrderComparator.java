@@ -2,6 +2,9 @@ package org.solarus.editor;
 
 /*
  NaturalOrderComparator.java -- Perform 'natural order' comparisons of strings in Java.
+ Copyright (C) 2014 by Christopho <christopho@solarus-games.org>
+
+ Based on the version of Pierre-Luc Paour, fixing unchecked conversions warnings.
  Copyright (C) 2003 by Pierre-Luc Paour <natorder@paour.com>
 
  Based on the C version by Martin Pool, of which this is more or less a straight conversion.
@@ -26,7 +29,7 @@ package org.solarus.editor;
 
 import java.util.*;
 
-public class NaturalOrderComparator implements Comparator
+public class NaturalOrderComparator<T> implements Comparator<T>
 {
     int compareRight(String a, String b)
     {
@@ -74,7 +77,7 @@ public class NaturalOrderComparator implements Comparator
         }
     }
 
-    public int compare(Object o1, Object o2)
+    public int compare(T o1, T o2)
     {
         String a = o1.toString();
         String b = o2.toString();
@@ -172,16 +175,16 @@ public class NaturalOrderComparator implements Comparator
             "pic 5 something", "pic 6", "pic   7", "pic100", "pic100a", "pic120", "pic121",
             "pic02000", "tom", "x2-g8", "x2-y7", "x2-y08", "x8-y8" };
 
-        List orig = Arrays.asList(strings);
+        List<String> orig = Arrays.asList(strings);
 
         System.out.println("Original: " + orig);
 
-        List scrambled = Arrays.asList(strings);
+        List<String> scrambled = Arrays.asList(strings);
         Collections.shuffle(scrambled);
 
         System.out.println("Scrambled: " + scrambled);
 
-        Collections.sort(scrambled, new NaturalOrderComparator());
+        Collections.sort(scrambled, new NaturalOrderComparator<String>());
 
         System.out.println("Sorted: " + scrambled);
     }

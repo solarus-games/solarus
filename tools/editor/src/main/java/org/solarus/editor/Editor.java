@@ -35,7 +35,8 @@ public class Editor {
         // create the main window
         EditorWindow window = new EditorWindow(questPath);
         window.pack();
-        window.setSize(new Dimension(1024, 720));
+        window.setSize(new Dimension(1280, 720));
+        window.setLocationRelativeTo(null);
         window.setVisible(true);
     }
 }

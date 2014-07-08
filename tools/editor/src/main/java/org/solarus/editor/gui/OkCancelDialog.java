@@ -23,7 +23,7 @@ import org.solarus.editor.*;
 
 /**
  * Abstract class to make a modal dialog box with the standard OK and Cancel button,
- * and optionnaly, an Apply button.
+ * and optionally, an Apply button.
  */
 public abstract class OkCancelDialog extends JDialog {
 
@@ -194,7 +194,7 @@ public abstract class OkCancelDialog extends JDialog {
 
     /**
      * Displays the dialog box.
-     * @return true if the user applied modifications, false if he cancelled
+     * @return true if the user applied modifications, false if he canceled
      */
     public boolean display() {
         pack();

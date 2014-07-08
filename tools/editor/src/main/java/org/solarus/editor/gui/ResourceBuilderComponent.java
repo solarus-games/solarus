@@ -15,26 +15,26 @@ import org.solarus.editor.ResourceType;
  * with its name and its user-friendly name
  */
 public class ResourceBuilderComponent extends JPanel {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     // Subcomponents
     private JTextField idField;
     private JTextField friendlyNameField;
 
-	/**
-	 * Constructor
-	 * @param resourceType the kind of the resource we want to build
-         * @param basepath the default path of the resource
-	 */
-	public ResourceBuilderComponent(ResourceType resourceType, String basepath) {
+    /**
+     * Constructor
+     * @param resourceType the kind of the resource we want to build
+     * @param basepath the default path of the resource
+     */
+    public ResourceBuilderComponent(ResourceType resourceType, String basepath) {
         super(new GridBagLayout());
 
-		GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.insets = new Insets(5, 5, 5, 5); // margins
         gridBagConstraints.anchor = GridBagConstraints.LINE_START;
         gridBagConstraints.gridy = 0;
 
-	// Resource id
+        // Resource id
         JLabel idLabel = new JLabel(resourceType.getName() + " id (filename):");
         gridBagConstraints.gridx = 0;
         add(idLabel, gridBagConstraints);
@@ -44,7 +44,7 @@ public class ResourceBuilderComponent extends JPanel {
         add(idField, gridBagConstraints);
         gridBagConstraints.gridy++;
 
-       //Resource friendly name
+        //Resource friendly name
         JLabel friendlyNameLabel = new JLabel(resourceType.getName() + " friendly name:");
         gridBagConstraints.gridx = 0;
         add(friendlyNameLabel, gridBagConstraints);
@@ -53,15 +53,15 @@ public class ResourceBuilderComponent extends JPanel {
         add(friendlyNameField, gridBagConstraints);
         gridBagConstraints.gridy++;
 
-	}
+    }
 
-	public String getId() {
-		return idField.getText();
-	}
+    public String getId() {
+        return idField.getText();
+    }
 
-	public String getFriendlyName() {
-		return friendlyNameField.getText();
-	}
+    public String getFriendlyName() {
+        return friendlyNameField.getText();
+    }
 
 
 }

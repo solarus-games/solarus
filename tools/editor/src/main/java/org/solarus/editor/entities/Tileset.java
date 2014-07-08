@@ -98,7 +98,7 @@ public class Tileset extends Observable {
         this.isSaved = false;
         this.maxId = 0;
         this.selectedTilePatternId = null; // none
-        this.tilePatterns = new TreeMap<String, TilePattern>(new NaturalOrderComparator());
+        this.tilePatterns = new TreeMap<String, TilePattern>(new NaturalOrderComparator<String>());
         this.tilesetId = tilesetId;
 
         load();
@@ -115,7 +115,7 @@ public class Tileset extends Observable {
 
     /**
      * @brief Returns whether a string is a valid tileset id.
-     * @param mapId The id to check.
+     * @param tilesetId The id to check.
      * @return true if this is legal.
      */
     public static boolean isValidId(String tilesetId) {
@@ -127,6 +127,32 @@ public class Tileset extends Observable {
         for (int i = 0; i < tilesetId.length(); i++) {
             char c = tilesetId.charAt(i);
             if (!Character.isLetterOrDigit(c) && c != '_') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @brief Returns whether a string is a valid tile pattern id.
+     * @param patternId The id to check.
+     * @return true if this is legal.
+     */
+    public static boolean isValidPatternId(String patternId) {
+
+        if (patternId.isEmpty()) {
+            return false;
+        }
+
+        for (int i = 0; i < patternId.length(); i++) {
+            char c = patternId.charAt(i);
+            if (
+                    c == '\"' ||
+                    c == '\'' ||
+                    c == '\\' ||
+                    Character.getType(c) == Character.LINE_SEPARATOR
+               ) {
                 return false;
             }
         }
@@ -440,6 +466,69 @@ public class Tileset extends Observable {
 
             setChanged();
             notifyObservers(id); // indicate that the tile has been removed
+        }
+    }
+
+    /**
+     * Changes the id of a tile pattern.
+     * Observers are notified twice: with the old tile pattern id that gets
+     * removes, and then with the new tile pattern.
+     * @param oldPatternId Id to change.
+     * @param newPatternId New id.
+     * @throws TilesetException If the old pattern id does not exist or if the
+     * new one is invalid or already used.
+     */
+    public void changeTilePatternId(String oldPatternId, String newPatternId) throws TilesetException {
+
+        if (newPatternId.equals(oldPatternId)) {
+            return;
+        }
+
+        TilePattern pattern = getTilePattern(oldPatternId);
+        if (pattern == null) {
+            throw new TilesetException("No such tile pattern: '" + oldPatternId + "'");
+        }
+
+        if (!isValidPatternId(newPatternId)) {
+            throw new TilesetException("Invalid tile pattern id: '" + newPatternId + "'");
+        }
+
+        if (tilePatterns.containsKey(newPatternId)) {
+            throw new TilesetException("Tile pattern '" + newPatternId + "' already exists");
+        }
+
+        String selectedPatternId = getSelectedTilePatternId();
+        boolean wasSelected = selectedPatternId != null && selectedPatternId.equals(oldPatternId);
+
+        // Remove the old one.
+        if (wasSelected) {
+            setSelectedTilePatternId(null);
+        }
+
+        tilePatterns.remove(oldPatternId);
+        isSaved = false;
+        setChanged();
+        notifyObservers(oldPatternId);
+
+        // Add the new one.
+
+        int intId;
+        try {
+            intId = Integer.parseInt(newPatternId);
+            // If the new id is an integer, keep maxId up to date.
+            if (intId > maxId) {
+                maxId = intId;
+            }
+        }
+        catch (NumberFormatException ex) {
+        }
+
+        tilePatterns.put(newPatternId, pattern);
+        setChanged();
+        notifyObservers(pattern);
+
+        if (wasSelected) {
+            setSelectedTilePatternId(newPatternId);
         }
     }
 

@@ -636,14 +636,14 @@ public class EditorWindow extends JFrame
         try {
             ResourceBuilderDialog dialog = new ResourceBuilderDialog(resourceType, basepath);
             if (dialog.display()) {
-                    String id = dialog.getId();
-                    String friendlyName = dialog.getFriendlyName();
+                String id = dialog.getId();
+                String friendlyName = dialog.getFriendlyName();
 
-                    if (Project.getResource(resourceType).exists(id)) {
-                throw new QuestEditorException(
-                        resourceName + " '" + id + "' already exists");
-            }
-            Project.newResourceElement(resourceType, id, friendlyName);
+                if (Project.getResource(resourceType).exists(id)) {
+                    throw new QuestEditorException(
+                            resourceName + " '" + id + "' already exists");
+                }
+                Project.newResourceElement(resourceType, id, friendlyName);
             }
         } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot create " + resourceName + ": " + ex.getMessage());

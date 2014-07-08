@@ -42,6 +42,7 @@ Solarus Quest Editor changes
 * Add a close button on tabs (#439). By Maxs.
 * Rework the quest tree to show the file hierarchy and Lua scripts. By Maxs.
 * Move the entity checkboxes to the map view settings panel. By Maxs.
+* Don't initially maximize the editor window.
 
 _________________________________
 

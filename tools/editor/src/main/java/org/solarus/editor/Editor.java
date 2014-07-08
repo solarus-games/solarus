@@ -17,6 +17,7 @@
 package org.solarus.editor;
 
 import org.solarus.editor.gui.*;
+import java.awt.Dimension;
 
 /**
  * Main class of the quest editor.
@@ -34,7 +35,7 @@ public class Editor {
         // create the main window
         EditorWindow window = new EditorWindow(questPath);
         window.pack();
-        window.setExtendedState(EditorWindow.MAXIMIZED_BOTH);
+        window.setSize(new Dimension(1024, 720));
         window.setVisible(true);
     }
 }

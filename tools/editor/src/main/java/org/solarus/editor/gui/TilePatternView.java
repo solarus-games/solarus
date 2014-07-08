@@ -16,6 +16,7 @@
  */
 package org.solarus.editor.gui;
 
+import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -33,11 +34,18 @@ public class TilePatternView extends JPanel implements Observer {
     private TilePattern tilePattern;
 
     /**
+     * Id of the tile pattern observed.
+     */
+    private String patternId;
+
+    /**
      * The tileset.
      */
     private Tileset tileset;
 
     // the components
+    private JLabel patternIdLabel;
+    private JButton changePatternIdButton;
     private EnumerationIconChooser<Ground> groundView;
     private TilePatternAnimationView animationView;
     private EnumerationChooser<Layer> defaultLayerView;
@@ -53,9 +61,22 @@ public class TilePatternView extends JPanel implements Observer {
         constraints.insets = new Insets(5, 5, 5, 5); // margins
         constraints.anchor = GridBagConstraints.LINE_START; // alignment of the components
 
-        // Ground.
+        // Tile pattern id.
         constraints.gridx = 0;
         constraints.gridy = 0;
+        JPanel patternIdView = new JPanel();
+        patternIdView.setLayout(new BoxLayout(patternIdView, BoxLayout.LINE_AXIS));
+        patternIdView.add(new JLabel("Id"));
+        patternIdView.add(Box.createRigidArea(new Dimension(10, 0)));
+        changePatternIdButton = new JButton(Project.getEditorImageIconOrEmpty("icon_edit.png"));
+        changePatternIdButton.setPreferredSize(new Dimension(24, 24));
+        changePatternIdButton.setToolTipText("Change pattern id");
+        patternIdView.add(changePatternIdButton);
+        add(patternIdView, constraints);
+        patternIdLabel = new JLabel();
+
+        // Ground.
+        constraints.gridy++;
         add(new JLabel("Ground"), constraints);
         groundView = new EnumerationIconChooser<Ground>(Ground.class);
 
@@ -78,15 +99,16 @@ public class TilePatternView extends JPanel implements Observer {
                         }
                     }
                 }
-            });
+            }
+        );
 
         // animation
-        constraints.gridy = 1;
+        constraints.gridy++;
         add(new JLabel("Animation"), constraints);
         animationView = new TilePatternAnimationView();
 
         // default layer
-        constraints.gridy = 2;
+        constraints.gridy++;
         add(new JLabel("Default layer"), constraints);
         defaultLayerView = new EnumerationChooser<Layer>(Layer.class);
 
@@ -105,12 +127,16 @@ public class TilePatternView extends JPanel implements Observer {
         constraints.weightx = 1;
         constraints.gridx = 1;
         constraints.gridy = 0;
+
+        add(patternIdLabel, constraints);
+
+        constraints.gridy++;
         add(groundView, constraints);
 
-        constraints.gridy = 1;
+        constraints.gridy++;
         add(animationView, constraints);
 
-        constraints.gridy = 2;
+        constraints.gridy++;
         add(defaultLayerView, constraints);
 
         // bouton delete
@@ -122,7 +148,7 @@ public class TilePatternView extends JPanel implements Observer {
                 }
             });
         constraints.gridx = 0;
-        constraints.gridy = 3;
+        constraints.gridy = 4;
         constraints.gridwidth = 2;
         add(buttonDelete, constraints);
 
@@ -135,7 +161,7 @@ public class TilePatternView extends JPanel implements Observer {
      */
     public void setTileset(Tileset tileset) {
         this.tileset = tileset;
-        setCurrentTilePattern(null);
+        setCurrentTilePattern(null, null);
     }
 
     /**
@@ -144,31 +170,37 @@ public class TilePatternView extends JPanel implements Observer {
     public void update(Observable o, Object params) {
 
         if (tilePattern != null) {
-            buttonDelete.setEnabled(true);
+            patternIdLabel.setText(patternId);
             groundView.setValue(tilePattern.getGround());
             groundView.setEnabled(true);
             defaultLayerView.setValue(tilePattern.getDefaultLayer());
             defaultLayerView.setEnabled(true);
+            buttonDelete.setEnabled(true);
         }
         else {
-            buttonDelete.setEnabled(false);
+            patternIdLabel.setText("");
             groundView.setEnabled(false);
             groundView.setValue(Ground.TRAVERSABLE);
             defaultLayerView.setEnabled(false);
+            buttonDelete.setEnabled(false);
         }
         animationView.update(tilePattern);
     }
 
     /**
      * Changes the tile pattern shown.
-     * @param tile the new current tile pattern (can be null)
+     * @param patternId Id of the new tile pattern in its tileset,
+     * or null to show no tile pattern.
+     * @param tilePattern The new current tile pattern,
+     * or null to show no tile pattern.
      */
-    public void setCurrentTilePattern(TilePattern tilePattern) {
+    public void setCurrentTilePattern(String patternId, TilePattern tilePattern) {
 
         if (this.tilePattern != null) {
             this.tilePattern.deleteObserver(this);
         }
 
+        this.patternId = patternId;
         this.tilePattern = tilePattern;
 
         if (tilePattern != null) {
@@ -178,3 +210,4 @@ public class TilePatternView extends JPanel implements Observer {
         update(null, null);
     }
 }
+

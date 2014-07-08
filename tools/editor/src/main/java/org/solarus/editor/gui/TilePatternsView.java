@@ -270,7 +270,9 @@ public class TilePatternsView extends JPanel {
             fireContentsChanged(this, 0, tileset.getNbTilePatterns() - 1);
 
             // notify the tile pattern view
-            tilePatternView.setCurrentTilePattern(tileset.getSelectedTilePattern());
+            tilePatternView.setCurrentTilePattern(
+                    tilesetSelectedPatternId, tileset.getSelectedTilePattern()
+            );
         }
     }
 

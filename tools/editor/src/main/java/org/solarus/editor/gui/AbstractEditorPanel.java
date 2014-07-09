@@ -89,6 +89,7 @@ public abstract class AbstractEditorPanel extends JPanel {
         // Return null by default.
         return null;
     }
+
     /**
      * Returns the main window of the quest editor.
      * @return The main window.

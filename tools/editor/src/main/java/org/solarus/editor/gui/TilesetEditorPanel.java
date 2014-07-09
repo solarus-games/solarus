@@ -57,7 +57,7 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
         // tile patterns list and tileset image
 
         // tile patterns list
-        tilePatternsView = new TilePatternsView();
+        tilePatternsView = new TilePatternsView(mainWindow);
         tilePatternsView.setAlignmentY(Component.TOP_ALIGNMENT);
         tilePatternsView.setPreferredSize(new Dimension(200, Integer.MAX_VALUE));
         tilePatternsView.setMinimumSize(new Dimension(0, 0));
@@ -121,6 +121,24 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
      */
     public Tileset getTileset() {
         return tileset;
+    }
+
+    /**
+     * Returns the type of resource represented by this editor.
+     * @return The type of resource.
+     */
+    @Override
+    public ResourceType getResourceType() {
+        return ResourceType.TILESET;
+    }
+
+    /**
+     * Returns the id of the resource element open in this editor.
+     * @return The id of the tileset.
+     */
+    @Override
+    public String getResourceId() {
+        return tileset.getId();
     }
 
     /**

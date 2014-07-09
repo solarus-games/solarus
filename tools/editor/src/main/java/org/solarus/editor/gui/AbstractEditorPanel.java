@@ -18,6 +18,7 @@
 package org.solarus.editor.gui;
 
 import javax.swing.JPanel;
+import org.solarus.editor.ResourceType;
 
 /**
  * Main component of an editor. Every editor (map, tileset...)
@@ -72,6 +73,23 @@ public abstract class AbstractEditorPanel extends JPanel {
     public abstract void close();
 
     /**
+     * Returns the type of resource represented by this editor.
+     * @return The type of resource or null.
+     */
+    public ResourceType getResourceType() {
+        return null;
+    }
+
+    /**
+     * Returns the id of the resource element currently open in this editor.
+     * @return The resource id, or null if this editor does not represent a
+     * resource element.
+     */
+    public String getResourceId() {
+        // Return null by default.
+        return null;
+    }
+    /**
      * Returns the main window of the quest editor.
      * @return The main window.
      */
@@ -87,5 +105,6 @@ public abstract class AbstractEditorPanel extends JPanel {
     public final String getId() {
         return id;
     }
+
 }
 

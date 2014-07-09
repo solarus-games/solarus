@@ -35,6 +35,11 @@ public class TilePatternIdRefactoringComponent extends JPanel {
     private JTextField patternIdField;
 
     /**
+     * The checkbox to update existing maps.
+     */
+    private JCheckBox updateMapsCheckBox;
+
+    /**
      * Constructor.
      * @param tileset A tileset.
      * @param oldPatternId The tile pattern id to change in this tileset.
@@ -57,7 +62,7 @@ public class TilePatternIdRefactoringComponent extends JPanel {
         patternIdPanel.setAlignmentX(0.0f);
         add(patternIdPanel);
         add(Box.createVerticalStrut(10));
-        JCheckBox updateMapsCheckBox = new JCheckBox("Update references in existing maps");
+        updateMapsCheckBox = new JCheckBox("Update references in existing maps");
         updateMapsCheckBox.setSelected(true);
         updateMapsCheckBox.setAlignmentX(0.0f);
         add(updateMapsCheckBox);
@@ -68,6 +73,14 @@ public class TilePatternIdRefactoringComponent extends JPanel {
      */
     public String getTilePatternId() {
         return patternIdField.getText();
+    }
+
+    /**
+     * Returns whether the user wants to update existing maps refering to
+     * this tile pattern.
+     */
+    public boolean isUpdateMapsChecked() {
+        return updateMapsCheckBox.isSelected();
     }
 }
 

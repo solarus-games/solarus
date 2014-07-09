@@ -19,6 +19,10 @@ package org.solarus.editor.gui;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 import javax.swing.*;
+import java.io.*;
+import java.nio.charset.*;
+import java.nio.file.*;
+import java.util.*;
 
 /**
  * \brief A dialog that prompts the user to change the id of a tile pattern
@@ -45,13 +49,23 @@ public class TilePatternIdRefactoringDialog extends OkCancelDialog {
     private TilePatternIdRefactoringComponent form;
 
     /**
+     * The main window of the quest editor.
+     */
+    private EditorWindow mainWindow;
+
+    /**
      * Constructor.
      * @param tileset A tileset.
      * @param oldPatternId The tile pattern id to change in this tileset.
      */
-    public TilePatternIdRefactoringDialog(Tileset tileset, String oldPatternId) {
+    public TilePatternIdRefactoringDialog(
+            EditorWindow mainWindow,
+            Tileset tileset,
+            String oldPatternId
+            ) {
         super("Rename tile pattern '" + oldPatternId + "'", false);
 
+        this.mainWindow = mainWindow;
         this.tileset = tileset;
         this.oldPatternId = oldPatternId;
 
@@ -71,9 +85,63 @@ public class TilePatternIdRefactoringDialog extends OkCancelDialog {
             return;
         }
 
+        boolean updateMaps = form.isUpdateMapsChecked();
+        if (updateMaps) {
+            // Check that no map is open.
+            Collection<AbstractEditorPanel> mapEditors = mainWindow.getOpenEditors(ResourceType.MAP);
+            if (!mapEditors.isEmpty()) {
+                throw new QuestEditorException("Please close all maps before updating tile pattern references.");
+            }
+        }
+
         tileset.changeTilePatternId(oldPatternId, newPatternId);
 
-        // TODO update maps if requested and save the tileset
+        if (updateMaps) {
+            // First save the tileset.
+            tileset.save();
+
+            // Update all maps that use this tileset.
+            Resource mapResource = Project.getResourceDatabase().getResource(ResourceType.MAP);
+            String[] mapIds = mapResource.getIds();
+
+            for (String mapId: mapIds) {
+                updateMap(mapId);
+            }
+        }
+    }
+
+    /**
+     * Updates references to the modified tile pattern in the specified map.
+     * Does nothing if the map does not use this tileset.
+     * @param mapId Id of the map to update.
+     */
+    private void updateMap(String mapId) throws QuestEditorException {
+
+        // We don't create a Map object for performance reasons.
+        // This would load the entire map with all its entities.
+        // Instead, we just find and replace the appropriate text in the map
+        // data file.
+
+        try {
+            File mapFile = Project.getMapFile(mapId);
+            Path path = Paths.get(mapFile.getAbsolutePath());
+            Charset charset = StandardCharsets.UTF_8;
+
+            String content = new String(Files.readAllBytes(path), charset);
+            String tilesetLine = "\n  tileset = \"" + tileset.getId() + "\",\n";
+            if (!content.contains(tilesetLine)) {
+                // This map uses another tileset: nothing to do.
+                return;
+            }
+
+            String newPatternId = form.getTilePatternId();
+            String patternRegex = "\n  pattern = \"?" + oldPatternId + "\"?,\n";
+            content = content.replaceAll(patternRegex, "\n  pattern = \"" + newPatternId + "\",\n");
+            Files.write(path, content.getBytes(charset));
+        }
+        catch (IOException ex) {
+            throw new QuestEditorException("Failed to update map '" + mapId + "': " + ex.getMessage());
+        }
     }
 }
 

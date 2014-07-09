@@ -117,9 +117,19 @@ public class MapEditorPanel extends AbstractEditorPanel {
     }
 
     /**
-     * Returns the id of the resource open in the editor.
+     * Returns the type of resource represented by this editor.
+     * @return The type of resource.
+     */
+    @Override
+    public ResourceType getResourceType() {
+        return ResourceType.MAP;
+    }
+
+    /**
+     * Returns the id of the resource element open in the editor.
      * @return The id of the map.
      */
+    @Override
     public String getResourceId() {
         return getMap().getId();
     }

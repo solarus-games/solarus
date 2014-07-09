@@ -21,7 +21,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicButtonUI;
-import org.solarus.editor.Project;
+import java.util.ArrayList;
+import org.solarus.editor.*;
 
 /**
  * The main tab pane with all editors currently open.
@@ -134,6 +135,7 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
      */
     public AbstractEditorPanel[] getEditors() {
         // TODO store this.
+        // TODO return an ArrayList instead.
         int nb = getTabCount();
         if (nb > 0) {
             AbstractEditorPanel[] editors = new AbstractEditorPanel[nb];
@@ -143,6 +145,23 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
             return editors;
         }
         return null;
+    }
+
+    /**
+     * Returns all editors of the specified resource type currently open.
+     * @param resourceType A type of resource.
+     * @return A list of the editors of this resource type currently open.
+     */
+    public ArrayList<AbstractEditorPanel> getEditors(ResourceType resourceType) {
+
+        ArrayList<AbstractEditorPanel> editors = new ArrayList<AbstractEditorPanel>();
+        for (int i = 0; i < getTabCount(); i++) {
+            AbstractEditorPanel editor = (AbstractEditorPanel) getComponentAt(i);
+            if (editor.getResourceType() == resourceType) {
+                editors.add(editor);
+            }
+        }
+        return editors;
     }
 
     /**

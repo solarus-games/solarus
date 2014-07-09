@@ -1195,6 +1195,15 @@ public class EditorWindow extends JFrame
         return (MapEditorPanel) editor;
     }
 
+    /**
+     * Returns all currently open editors of the specified resource type.
+     * @param resourceType A type of resource.
+     * @return The list of editors of this resource type currently open.
+     */
+    public Collection<AbstractEditorPanel> getOpenEditors(ResourceType resourceType) {
+        return tabs.getEditors(resourceType);
+    }
+
    /**
     * Dialog shown when we want to create a new lua script
     */
@@ -1295,3 +1304,4 @@ public class EditorWindow extends JFrame
         }
    }
 }
+

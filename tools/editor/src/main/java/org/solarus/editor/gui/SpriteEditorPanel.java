@@ -143,6 +143,24 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
     }
 
     /**
+     * Returns the type of resource represented by this editor.
+     * @return The type of resource.
+     */
+    @Override
+    public ResourceType getResourceType() {
+        return ResourceType.SPRITE;
+    }
+
+    /**
+     * Returns the id of the resource element open in the editor.
+     * @return The id of the sprite.
+     */
+    @Override
+    public String getResourceId() {
+        return sprite.getId();
+    }
+
+    /**
      * This function is called when the user wants to close the current sprite.
      * If the sprite is not saved, we propose to save it.
      * @return false if the user canceled.

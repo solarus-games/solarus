@@ -67,10 +67,18 @@ public class TilePatternsView extends JPanel {
     private TilePatternView tilePatternView;
 
     /**
-     * Constructor.
+     * The main window of the quest editor.
      */
-    public TilePatternsView() {
+    private EditorWindow mainWindow;
+
+    /**
+     * Constructor.
+     * @param mainWindow The main window of the quest editor.
+     */
+    public TilePatternsView(EditorWindow mainWindow) {
         super();
+
+        this.mainWindow = mainWindow;
 
         tilePatternIds = new ArrayList<String>();
         tilePatternIcons = new ArrayList<TilePatternIcon>();
@@ -111,7 +119,7 @@ public class TilePatternsView extends JPanel {
         listScroller.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // tile view
-        tilePatternView = new TilePatternView();
+        tilePatternView = new TilePatternView(mainWindow);
         tilePatternView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
         tilePatternView.setAlignmentX(Component.LEFT_ALIGNMENT);
 

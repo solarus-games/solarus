@@ -23,6 +23,7 @@ import java.io.*;
 import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * \brief A dialog that prompts the user to change the id of a tile pattern
@@ -135,7 +136,7 @@ public class TilePatternIdRefactoringDialog extends OkCancelDialog {
             }
 
             String newPatternId = form.getTilePatternId();
-            String patternRegex = "\n  pattern = \"?" + oldPatternId + "\"?,\n";
+            String patternRegex = "\n  pattern = \"?" + Pattern.quote(oldPatternId) + "\"?,\n";
             content = content.replaceAll(patternRegex, "\n  pattern = \"" + newPatternId + "\",\n");
             Files.write(path, content.getBytes(charset));
         }

@@ -338,7 +338,7 @@ bool InputEvent::is_joypad_button_down(int button) {
  */
 bool InputEvent::is_mouse_button_down(MouseButton button) {
 
-  return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(button) != 0;
+  return (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(button)) != 0;
 }
 
 /**

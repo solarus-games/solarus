@@ -847,10 +847,10 @@ Rectangle Video::get_scaled_position(const Rectangle& position) {
   Debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
   Debug::check_assertion(!viewport.is_flat(), "Viewport is not initialized");
 
-  if (position.get_x() < 0
-      || position.get_y() < 0
-      || position.get_x() > viewport.get_width()
-      || position.get_y() > viewport.get_height()) {
+  if (x_position < 0
+      || y_position < 0
+      || x_position > viewport_width
+      || y_position > viewport_height) {
     return Rectangle();
   }
 

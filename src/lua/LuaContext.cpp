@@ -1776,15 +1776,11 @@ bool LuaContext::on_mouse_button_pressed(const InputEvent& event) {
   if (find_method("on_mouse_pressed")) {
 
     const std::string& button_name = InputEvent::get_mouse_button_name(event.get_mouse_button());
+    const Rectangle& position = event.get_mouse_position();
 
-    if (!button_name.empty()) { // This button exists in the Solarus API.
-      const Rectangle& position = event.get_mouse_position();
-
-      // Stop to handle the event if the mouse position is not inside the viewport.
-      if (position.is_flat()) {
-        lua_pop(l, 2);  // Pop the object and the method.
-        return true;
-      }
+    // Don't call the lua event if this button doesn't exists in the Solarus API
+    // or if the mouse position is not inside the viewport.
+    if (!button_name.empty() || position.is_flat()) {
 
       push_string(l, button_name);
       lua_pushinteger(l, position.get_x());
@@ -1801,7 +1797,7 @@ bool LuaContext::on_mouse_button_pressed(const InputEvent& event) {
       }
     }
     else {
-      // The method exists but the button is unknown.
+      // The method exists but parameters are not congruent.
       lua_pop(l, 2);  // Pop the object and the method.
     }
   }
@@ -1820,15 +1816,11 @@ bool LuaContext::on_mouse_button_released(const InputEvent& event) {
   if (find_method("on_mouse_released")) {
 
     const std::string& button_name = InputEvent::get_mouse_button_name(event.get_mouse_button());
+    const Rectangle& position = event.get_mouse_position();
 
-    if (!button_name.empty()) { // This key exists in the Solarus API.
-      const Rectangle& position = event.get_mouse_position();
-
-      // Stop to handle the event if the mouse position is not inside the viewport.
-      if (position.is_flat()) {
-        lua_pop(l, 2);  // Pop the object and the method.
-        return true;
-      }
+    // Don't call the lua event if this button doesn't exists in the Solarus API
+    // or if the mouse position is not inside the viewport.
+    if (!button_name.empty() || position.is_flat()) {
 
       push_string(l, button_name);
       lua_pushinteger(l, position.get_x());
@@ -1845,7 +1837,7 @@ bool LuaContext::on_mouse_button_released(const InputEvent& event) {
       }
     }
     else {
-      // The method exists but the key is unknown.
+      // The method exists but parameters are not congruent.
       lua_pop(l, 2);  // Pop the object and the method.
     }
   }

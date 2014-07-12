@@ -1780,7 +1780,7 @@ bool LuaContext::on_mouse_button_pressed(const InputEvent& event) {
 
     // Don't call the lua event if this button doesn't exists in the Solarus API
     // or if the mouse position is not inside the viewport.
-    if (!button_name.empty() || position.is_flat()) {
+    if (!button_name.empty() && !position.is_flat()) {
 
       push_string(l, button_name);
       lua_pushinteger(l, position.get_x());
@@ -1820,7 +1820,7 @@ bool LuaContext::on_mouse_button_released(const InputEvent& event) {
 
     // Don't call the lua event if this button doesn't exists in the Solarus API
     // or if the mouse position is not inside the viewport.
-    if (!button_name.empty() || position.is_flat()) {
+    if (!button_name.empty() && !position.is_flat()) {
 
       push_string(l, button_name);
       lua_pushinteger(l, position.get_x());

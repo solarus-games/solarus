@@ -1007,7 +1007,7 @@ bool InputEvent::is_mouse_button_released() const {
 bool InputEvent::is_mouse_button_released(MouseButton button) const {
 
   return is_mouse_button_released()
-    && internal_event.button.button == button;
+    && static_cast<MouseButton>(internal_event.button.button) == button;
 }
 
 /**

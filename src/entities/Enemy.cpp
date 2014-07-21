@@ -1110,8 +1110,14 @@ void Enemy::play_hurt_sound() {
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
  * By default, the "walking" animation is set on the enemy's sprites.
+ *
+ * Nothing happens if the enemy is dying.
  */
 void Enemy::restart() {
+
+  if (is_dying()) {
+    return;
+  }
 
   if (is_immobilized()) {
     stop_immobilized();

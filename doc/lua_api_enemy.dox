@@ -487,6 +487,8 @@ This plays animation \c "walking" on its \ref lua_api_sprite "sprites",
 destroys any timer of the enemy
 and calls the event \ref lua_api_enemy_on_restarted "enemy:on_restarted()".
 
+This function has no effect if the enemy is dying.
+
 \subsection lua_api_enemy_hurt enemy:hurt(life_points)
 
 Hurts this enemy if possible.

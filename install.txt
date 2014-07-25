@@ -67,7 +67,7 @@ Linux developers:
 
 Just install the corresponding packages. For example, with Ubuntu or Debian:
 
-libsdl2-dev libsdl-image2-dev libsdl2-ttf-dev liblua5.1-0-dev
+libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev liblua5.1-0-dev
 libphysfs-dev libopenal-dev libvorbis-dev libmodplug-dev
 
 

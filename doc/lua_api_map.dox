@@ -1790,5 +1790,17 @@ command.
 \remark This event is not triggered if you already handled its underlying
   low-level keyboard or joypad event.
 
+\subsection lua_api_map_on_mouse_pressed map:on_mouse_pressed(button, x, y)
+
+Called when the user presses a mouse button while this map is active.
+- \c button (string): Name of the mouse button that was pressed. 
+  Possible values are \c "left", \c "middle", \c "right", \c "x1" and \c "x2".
+- \c x (integer): The x position of the mouse in
+  \ref lua_api_video_get_quest_size "quest size" coordinates.
+- \c y (integer): The y position of the mouse in
+  \ref lua_api_video_get_quest_size "quest size" coordinates.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects.
+
 */
 

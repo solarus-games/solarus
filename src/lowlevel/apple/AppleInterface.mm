@@ -16,7 +16,7 @@
  */
 #include <lowlevel/apple/AppleInterface.h>
 
-#if defined(SOLARUS_OSX)
+#if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
 
 #if defined(SOLARUS_OSX)
 #  import <Cocoa/Cocoa.h>
@@ -67,7 +67,6 @@ const char* get_user_application_support_directory()
             UTF8String];
 #else
     // WORKAROUND : Avoid to report errors with undefined enum, and warning with undefined functions.
-    // ( enum NSApplicationSupportDirectory and NSUserDomainMask are not defined on older OSX frameworks )
     return [[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Application Support"] 
             UTF8String];
 #endif

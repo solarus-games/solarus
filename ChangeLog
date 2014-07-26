@@ -10,6 +10,7 @@ Changes that introduce incompatibilities:
 
 Changes that do not introduce incompatibilities:
 
+* Add mouse functions and events.
 * Add a method sprite:get_animation_set_id() (#552).
 * Add a method sprite:has_animation() (#525).
 * Add a method sprite:get_num_directions().

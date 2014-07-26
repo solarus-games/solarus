@@ -394,6 +394,9 @@ class LuaContext {
       input_api_is_joypad_button_pressed,
       input_api_get_joypad_axis_state,
       input_api_get_joypad_hat_direction,
+      input_api_is_mouse_button_pressed,
+      input_api_is_mouse_button_released,
+      input_api_get_mouse_position,
 
       // File API.
       file_api_open,
@@ -1074,6 +1077,8 @@ class LuaContext {
     bool on_joypad_button_released(const InputEvent& event);
     bool on_joypad_axis_moved(const InputEvent& event);
     bool on_joypad_hat_moved(const InputEvent& event);
+    bool on_mouse_button_pressed(const InputEvent& event);
+    bool on_mouse_button_released(const InputEvent& event);
     bool on_command_pressed(GameCommands::Command command);
     bool on_command_released(GameCommands::Command command);
     void on_animation_finished(const std::string& animation);

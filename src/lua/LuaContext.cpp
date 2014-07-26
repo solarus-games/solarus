@@ -219,9 +219,9 @@ bool LuaContext::notify_input(const InputEvent& event) {
       "Non-empty stack before LuaContext::notify_input()"
   );
 
+  // Call the appropriate callback in sol.main (if it exists).
   const bool handled = main_on_input(event);
 
-  // Call the appropriate callback in sol.main (if it exists).
   Debug::check_assertion(lua_gettop(l) == 0,
       "Non-empty stack after LuaContext::notify_input()"
   );
@@ -1541,6 +1541,15 @@ bool LuaContext::on_input(const InputEvent& event) {
       handled = on_joypad_hat_moved(event) || handled;
     }
   }
+  else if (event.is_mouse_event()) {
+    // Mouse.
+    if (event.is_mouse_button_pressed()) {
+      handled = on_mouse_button_pressed(event) || handled;
+    }
+    else if (event.is_mouse_button_released()) {
+      handled = on_mouse_button_released(event) || handled;
+    }
+  }
 
   return handled;
 }
@@ -1757,6 +1766,86 @@ bool LuaContext::on_joypad_hat_moved(const InputEvent& event) {
     else {
       handled = lua_toboolean(l, -1);
       lua_pop(l, 1);
+    }
+  }
+  return handled;
+}
+
+/**
+ * \brief Notifies the object on top of the stack
+ * that a mouse button was just pressed.
+ * \param event The corresponding input event.
+ * \return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::on_mouse_button_pressed(const InputEvent& event) {
+
+  bool handled = false;
+  if (find_method("on_mouse_pressed")) {
+
+    const std::string& button_name = InputEvent::get_mouse_button_name(event.get_mouse_button());
+    const Rectangle& position = event.get_mouse_position();
+
+    // Don't call the lua event if this button doesn't exists in the Solarus API
+    // or if the mouse position is not inside the viewport.
+    if (!button_name.empty() && !position.is_flat()) {
+
+      push_string(l, button_name);
+      lua_pushinteger(l, position.get_x());
+      lua_pushinteger(l, position.get_y());
+
+      bool success = call_function(4, 1, "on_mouse_pressed");
+      if (!success) {
+        // Something was wrong in the script: don't propagate the input to other objects.
+        handled = true;
+      }
+      else {
+        handled = lua_toboolean(l, -1);
+        lua_pop(l, 1);
+      }
+    }
+    else {
+      // The method exists but parameters are not congruent.
+      lua_pop(l, 2);  // Pop the object and the method.
+    }
+  }
+  return handled;
+}
+
+/**
+ * \brief Notifies the object on top of the stack
+ * that a mouse button was just released.
+ * \param event The corresponding input event.
+ * \return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::on_mouse_button_released(const InputEvent& event) {
+
+  bool handled = false;
+  if (find_method("on_mouse_released")) {
+
+    const std::string& button_name = InputEvent::get_mouse_button_name(event.get_mouse_button());
+    const Rectangle& position = event.get_mouse_position();
+
+    // Don't call the lua event if this button doesn't exists in the Solarus API
+    // or if the mouse position is not inside the viewport.
+    if (!button_name.empty() && !position.is_flat()) {
+
+      push_string(l, button_name);
+      lua_pushinteger(l, position.get_x());
+      lua_pushinteger(l, position.get_y());
+
+      bool success = call_function(4, 1, "on_mouse_released");
+      if (!success) {
+        // Something was wrong in the script: don't propagate the input to other objects.
+        handled = true;
+      }
+      else {
+        handled = lua_toboolean(l, -1);
+        lua_pop(l, 1);
+      }
+    }
+    else {
+      // The method exists but parameters are not congruent.
+      lua_pop(l, 2);  // Pop the object and the method.
     }
   }
   return handled;

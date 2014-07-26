@@ -51,9 +51,6 @@ class Video {
     static const std::string& get_rendering_driver_name();
     static void show_window();
 
-    static Rectangle& get_viewport();
-    static void update_viewport();
-
     static const VideoMode& get_video_mode();
     static std::vector<const VideoMode*> get_video_modes();
     static bool is_mode_supported(const VideoMode& mode);
@@ -86,6 +83,10 @@ class Video {
     static Rectangle get_window_size();
     static void set_window_size(const Rectangle& size);
     static void reset_window_size();
+
+    static Rectangle get_viewport();
+    static Rectangle get_scaled_position(const Rectangle& position);
+
     static void render(Surface& quest_surface);
 
   private:

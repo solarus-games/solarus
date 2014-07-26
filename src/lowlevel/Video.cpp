@@ -811,4 +811,54 @@ void Video::reset_window_size() {
   set_window_size(video_mode->get_initial_window_size());
 }
 
+/**
+ * \brief Gets the viewport.
+ * The viewport is equal to the windows,
+ * without borders and possible black bars.
+ * \return A Rectangle filled with the viewport.
+ */
+Rectangle Video::get_viewport() {
+
+  SDL_Rect viewport;
+
+  SDL_RenderGetViewport(get_renderer(), &viewport);
+
+  return Rectangle(viewport.x, viewport.y, viewport.w, viewport.h);
+}
+
+/**
+ * \brief Converts a viewport coordinate to a quest size coordinate.
+ * \param position A pixel position relative and scaled to the viewport.
+ * The width and height of the parameter are unused.
+ * \return A Rectangle filled with the coordinate scaled to quest_size,
+ * in which the width and height are set to 1.
+ * Returns a flat Rectangle if the position is not inside the viewport.
+ */
+Rectangle Video::get_scaled_position(const Rectangle& position) {
+
+  const Rectangle& viewport = get_viewport();
+  const double x_position = position.get_x();
+  const double y_position = position.get_y();
+  const double quest_size_width = quest_size.get_width();
+  const double quest_size_height = quest_size.get_height();
+  const double viewport_width = viewport.get_width();
+  const double viewport_height = viewport.get_height();
+
+  Debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
+  Debug::check_assertion(!viewport.is_flat(), "Viewport is not initialized");
+
+  if (x_position < 0
+      || y_position < 0
+      || x_position > viewport_width
+      || y_position > viewport_height) {
+    return Rectangle();
+  }
+
+  return Rectangle(
+      x_position * viewport_width / quest_size_width,
+      y_position * viewport_height / quest_size_height,
+      1,
+      1);
+}
+
 }

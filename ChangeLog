@@ -8,6 +8,8 @@ Lua API changes
 
 Changes that introduce incompatibilities:
 
+* Fix hero:save_solid_ground having no effect on water/lava/prickles (#567).
+
 Changes that do not introduce incompatibilities:
 
 * Add mouse functions and events.

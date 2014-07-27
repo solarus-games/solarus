@@ -2241,7 +2241,7 @@ void Hero::start_prickle(uint32_t delay) {
 
   Sound::play("hero_hurt");
   get_equipment().remove_life(2);
-  start_back_to_solid_ground(false, delay, false);
+  start_back_to_solid_ground(true, delay, false);
 }
 
 /**

@@ -29,7 +29,7 @@ Thus, they can stay aligned on the 8x8 grid of the
 However, they may get stopped in the middle of their movement if they collide
 with entities like
 \ref lua_api_enemy "enemies" or \ref lua_api_npc "non-playing characters".
-In this case, they lose their alignement on the grid, and this might be a
+In this case, they lose their alignment on the grid, and this might be a
 problem because you often want the to move a block
 precisely through narrow places
 and place it at an exact position to solve a puzzle.

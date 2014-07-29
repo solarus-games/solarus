@@ -15,10 +15,10 @@ Creates a text surface with the specified properties.
 - \c properties (optional table): A table that describes all properties
   of the text surface to create. Its key-value pairs are all optional,
   they can be:
-  - \c horizontal_alignement (string, default \c "left"): \c "left",
+  - \c horizontal_alignment (string, default \c "left"): \c "left",
     \c "center" or \c "right". When you draw the text surface at some
     coordinates on a destination surface, it is anchored at this position.
-  - \c vertical_alignement (string, default \c "middle"): \c "top",
+  - \c vertical_alignment (string, default \c "middle"): \c "top",
     \c "middle" or \c "bottom". When you draw the text surface at some
     coordinates on a destination surface, it is anchored at this position.
   - \c font (string, default specified in

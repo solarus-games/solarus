@@ -16,7 +16,7 @@
  */
 #include <lowlevel/apple/AppleInterface.h>
 
-#if defined(SOLARUS_OSX)
+#if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
 
 #if defined(SOLARUS_OSX)
 #  import <Cocoa/Cocoa.h>
@@ -26,51 +26,29 @@
 #endif
 
 
-NSAutoreleasePool* solarus_pool = nil;
-
-/**
- * @brief Initialize and allocate the NSAutoreleasePool object.
- *
- * Allow to use the Cocoa's reference-counted memory management system on Cocoa objects.
- */
-void init_pool()
-{
-    if (solarus_pool == nil)
-        solarus_pool = [[NSAutoreleasePool alloc] init];
-}
-
-/**
- * @brief Drain the NSAutoreleasePool object.
- */
-void drain_pool()
-{
-    if (solarus_pool)
-        [solarus_pool drain];
-}
-
 /**
  * @brief Return "~/Library/Application Support" or equivalent from the official way, which is available in OSX 10.6+ and iOS 4.0+.
  *
  * Return an OSX 10.0+ and iOS 1.0+ (not compatible with Iphone Simulator) hardcoded equivalent workaround if the 
  * build configuration is set for a lower minimum version.
- *
  * @return The Application Support folder from the User Domain.
  */
-const char* get_user_application_support_directory()
+std::string get_user_application_support_directory()
 {
+  @autoreleasepool {
+
 #if defined(SOLARUS_OSX) && __MAC_OS_X_VERSION_MIN_REQUIRED  >= MAC_OS_X_VERSION_10_6 \
- || defined(SOLARUS_IOS) && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
-    return [[[[[NSFileManager defaultManager] 
-               URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] 
-              objectAtIndex:0] 
-             path] 
+|| defined(SOLARUS_IOS) && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+    return [[[[[NSFileManager defaultManager]
+               URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask]
+              objectAtIndex:0]
+             path]
             UTF8String];
 #else
-    // WORKAROUND : Avoid to report errors with undefined enum, and warning with undefined functions.
-    // ( enum NSApplicationSupportDirectory and NSUserDomainMask are not defined on older OSX frameworks )
-    return [[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Application Support"] 
+    return [[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Application Support"]
             UTF8String];
 #endif
+  }
 }
 
 #endif

@@ -18,14 +18,13 @@
 #define __APPLEINTERFACE_H__
 
 #include "Common.h"
+#include <string>
 
-#if defined(SOLARUS_OSX)
+#if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
 
-// This are C "trampoline" function that will be used
-// to invoke a specific Objective-C method FROM C++
-void init_pool();
-void drain_pool();
-const char* get_user_application_support_directory();
+// This are C++ "trampoline" function that will be used
+// to invoke a specific Objective-C method from C++.
+std::string get_user_application_support_directory();
 
 #endif
 

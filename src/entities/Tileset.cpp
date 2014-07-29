@@ -273,7 +273,6 @@ int Tileset::l_tile_pattern(lua_State* l) {
 
   const std::string& id = LuaTools::check_string_field(l, 1, "id");
   const Ground ground = LuaTools::check_enum_field<Ground>(l, 1, "ground", ground_names);
-  const int default_layer = LuaTools::check_layer_field(l, 1, "default_layer");
   const int width = LuaTools::check_int_field(l, 1, "width");
   const int height = LuaTools::check_int_field(l, 1, "height");
   const std::string& scrolling = LuaTools::opt_string_field(l, 1, "scrolling", "");

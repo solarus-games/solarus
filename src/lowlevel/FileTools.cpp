@@ -248,7 +248,7 @@ void FileTools::data_file_open_buffer(const std::string& file_name, char** buffe
   );
 
   // load it into memory
-  *size = PHYSFS_fileLength(file);
+  *size = static_cast<size_t>(PHYSFS_fileLength(file));
 
   *buffer = new char[*size];
 

@@ -43,11 +43,6 @@ public class TilePatternView extends JPanel implements Observer {
      */
     private Tileset tileset;
 
-    /**
-     * The main window of the quest editor.
-     */
-    private EditorWindow mainWindow;
-
     // the components
     private JLabel patternIdLabel;
     private JButton changePatternIdButton;
@@ -62,7 +57,6 @@ public class TilePatternView extends JPanel implements Observer {
      */
     public TilePatternView(final EditorWindow mainWindow) {
         super(new GridBagLayout());
-        this.mainWindow = mainWindow;
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(5, 5, 5, 5); // margins

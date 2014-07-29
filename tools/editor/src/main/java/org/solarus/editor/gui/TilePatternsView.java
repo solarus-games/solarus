@@ -67,18 +67,11 @@ public class TilePatternsView extends JPanel {
     private TilePatternView tilePatternView;
 
     /**
-     * The main window of the quest editor.
-     */
-    private EditorWindow mainWindow;
-
-    /**
      * Constructor.
      * @param mainWindow The main window of the quest editor.
      */
     public TilePatternsView(EditorWindow mainWindow) {
         super();
-
-        this.mainWindow = mainWindow;
 
         tilePatternIds = new ArrayList<String>();
         tilePatternIcons = new ArrayList<TilePatternIcon>();

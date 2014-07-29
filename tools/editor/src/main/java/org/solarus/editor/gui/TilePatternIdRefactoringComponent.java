@@ -16,7 +16,6 @@
  */
 package org.solarus.editor.gui;
 
-import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 import javax.swing.*;
 

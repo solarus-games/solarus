@@ -18,7 +18,6 @@ package org.solarus.editor.gui;
 
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
-import javax.swing.*;
 import java.io.*;
 import java.nio.charset.*;
 import java.nio.file.*;

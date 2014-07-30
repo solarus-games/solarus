@@ -92,16 +92,6 @@
  */
 
 /**
- * \def SOLARUS_USE_APPLE_POOL
- * \brief Set if Obj-C pool have to be in place.
- */
-#ifndef SOLARUS_USE_APPLE_POOL
-#  if defined(__APPLE__)
-#    define SOLARUS_USE_APPLE_POOL
-#  endif
-#endif
-
-/**
  * \def SOLARUS_HAVE_OPENGL
  * \brief Whether the system supports OpenGL as renderer driver.
  * This is optional, but allows to use advanced display features.

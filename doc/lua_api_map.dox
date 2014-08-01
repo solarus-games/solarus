@@ -1178,7 +1178,7 @@ on the map.
 \subsection lua_api_map_create_wall map:create_wall(properties)
 
 Creates an entity of type
-\ref lua_api_switch "wall"
+\ref lua_api_wall "wall"
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
@@ -1204,7 +1204,7 @@ on the map.
   - \c stops_blocks (boolean, optional): \c true to make the wall stop
     \ref lua_api_block "blocks".
     No value means \c false.
-  - \c stops_blocks (boolean, optional): \c true to make the wall stop
+  - \c stops_projectiles (boolean, optional): \c true to make the wall stop
     projectiles:
     \ref lua_api_carried_object "thrown objects",
     \ref lua_api_arrow "arrows",

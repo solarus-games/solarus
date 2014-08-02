@@ -18,7 +18,7 @@ function sol.main:on_started()
   -- Show the Solarus logo initially.
   sol.menu.start(self, solarus_logo)
   solarus_logo.on_finished = function()
-    -- Do whather you want next, like showing your title screen
+    -- Do whathever you want next, like showing your title screen
     -- or starting a game.
   end
 

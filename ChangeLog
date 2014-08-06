@@ -3,6 +3,11 @@ _______________________________
 Solarus 1.3.0 (under development)
 _______________________________
 
+Engine changes
+--------------
+
+* Fix a crash when creating a timer from game:on_started() (#575).
+
 Lua API changes
 ---------------
 

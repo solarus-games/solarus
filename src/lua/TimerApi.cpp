@@ -383,7 +383,7 @@ int LuaContext::timer_api_start(lua_State *l) {
     // - outside a game: sol.main.
 
     Game* game = lua_context.get_main_loop().get_game();
-    if (game != NULL) {
+    if (game != NULL && game->has_current_map()) {
       push_map(l, game->get_current_map());
     }
     else {

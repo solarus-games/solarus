@@ -71,7 +71,7 @@ parameters, and returns its results.
   an error message in case of failure.
   The file value is the standard Lua file object as returned by \c io.open(),
   and you can then use all Lua file functions
-  (file:read(), file:write(), file:lines(), file:close(), etc.).
+  (%file:read(), %file:write(), %file:lines(), %file:close(), etc.).
 
 \subsection lua_api_file_exists sol.file.exists(file_name)
 

@@ -177,6 +177,7 @@ void LuaContext::register_entity_module() {
       { "set_walking_speed", hero_api_set_walking_speed },
       { "save_solid_ground", hero_api_save_solid_ground },
       { "reset_solid_ground", hero_api_reset_solid_ground },
+      { "get_solid_ground_position", hero_api_get_solid_ground_position },
       { "get_animation", hero_api_get_animation },
       { "set_animation", hero_api_set_animation },
       { "get_tunic_sprite_id", hero_api_get_tunic_sprite_id },
@@ -1413,6 +1414,39 @@ int LuaContext::hero_api_reset_solid_ground(lua_State* l) {
   hero.reset_target_solid_ground_coords();
 
   return 0;
+}
+
+/**
+ * \brief Implementation of hero:get_solid_ground().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_get_solid_ground_position(lua_State* l) {
+
+  const Hero& hero = check_hero(l, 1);
+
+  const Rectangle& target_coords = hero.get_target_solid_ground_coords();
+  if (target_coords.get_x() != -1) {
+    // Coordinates memorized by hero:save_solid_ground().
+    lua_pushinteger(l, target_coords.get_x());
+    lua_pushinteger(l, target_coords.get_y());
+    lua_pushinteger(l, hero.get_target_solid_ground_layer());
+    return 3;
+  }
+
+  const Rectangle& last_coords = hero.get_last_solid_ground_coords();
+  if (last_coords.get_x() != -1) {
+    // Last solid ground coordinates.
+    lua_pushinteger(l, last_coords.get_x());
+    lua_pushinteger(l, last_coords.get_y());
+    lua_pushinteger(l, hero.get_last_solid_ground_layer());
+    return 3;
+  }
+
+  // No solid ground coordinates.
+  // Maybe the map started in water.
+  lua_pushnil(l);
+  return 1;
 }
 
 /**

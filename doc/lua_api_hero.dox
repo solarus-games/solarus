@@ -133,6 +133,23 @@ The initial behavior is restored: the hero will now get
 back to where he was just before falling, instead going to of a memorized
 position.
 
+\subsection lua_api_hero_get_solid_ground() hero:get_solid_ground_position()
+
+Returns the position where the hero gets back if he falls into a hole or
+other bad ground now.
+
+This is the position that was previously memorized by the last call to
+\ref lua_api_hero_save_solid_ground "hero:save_solid_ground()",
+if any.
+Otherwise, this is the position of the hero the last time he was on solid
+ground.
+- Return value 1 (number): X coordinate where to get back to solid ground,
+  or \nil if the hero never went on solid ground on this map yet.
+- Return value 2 (number): Y coordinate where to get back to solid ground,
+  or no value if the hero never went on solid ground on this map yet.
+- Return value 3 (number): Layer where to get back to solid ground,
+  or no value if the hero never went on solid ground on this map yet.
+
 \subsection lua_api_hero_get_animation hero:get_animation()
 
 Returns the current animation of the hero's sprites.

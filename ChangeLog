@@ -21,6 +21,7 @@ Changes that do not introduce incompatibilities:
 * Add a method sprite:get_animation_set_id() (#552).
 * Add a method sprite:has_animation() (#525).
 * Add a method sprite:get_num_directions().
+* Add a method hero:get_solid_ground_position() (#572).
 * Add a method switch:get_sprite().
 * Allow to customize the sprite and sound of switches (#553).
 * Add a method enemy:get_treasure() (#501).

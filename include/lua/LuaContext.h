@@ -752,6 +752,7 @@ class LuaContext {
       hero_api_set_walking_speed,
       hero_api_save_solid_ground,
       hero_api_reset_solid_ground,
+      hero_api_get_solid_ground_position,
       hero_api_get_animation,
       hero_api_set_animation,
       hero_api_get_tunic_sprite_id,

@@ -139,7 +139,14 @@ class Hero: public MapEntity {
     bool is_ground_observer() const;
     const Rectangle get_ground_point() const;
     void notify_ground_below_changed();
-    void set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer);
+    const Rectangle& get_last_solid_ground_coords() const;
+    Layer get_last_solid_ground_layer() const;
+    const Rectangle& get_target_solid_ground_coords() const;
+    Layer get_target_solid_ground_layer() const;
+    void set_target_solid_ground_coords(
+        const Rectangle& target_solid_ground_coords,
+        Layer layer
+    );
     void reset_target_solid_ground_coords();
 
     /**

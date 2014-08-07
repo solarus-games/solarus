@@ -594,7 +594,8 @@ void Hero::set_map(Map& map, int initial_direction) {
   }
 
   last_solid_ground_coords.set_xy(-1, -1);
-  target_solid_ground_coords.set_xy(-1, -1);
+  last_solid_ground_layer = LAYER_LOW;
+  reset_target_solid_ground_coords();
   get_sprites().set_clipping_rectangle();
 
   state->set_map(map);
@@ -1358,11 +1359,46 @@ const Rectangle Hero::get_ground_point() const {
 }
 
 /**
+ * \brief Returns the last point of solid ground where the hero was.
+ * \return The last solid ground coordinates, or
+ * <tt>-1,-1</tt> if the hero never was on solid ground on this map yet.
+ */
+const Rectangle& Hero::get_last_solid_ground_coords() const {
+  return last_solid_ground_coords;
+}
+
+/**
+ * \brief Returns the layer of the last of solid ground where the hero was.
+ * \return The last solid ground layer, or
+ * LAYER_LOW if the hero never was on solid ground on this map yet.
+ */
+Layer Hero::get_last_solid_ground_layer() const {
+  return last_solid_ground_layer;
+}
+
+/**
+ * \brief Returns the point memorized by the last call to
+ * set_target_solid_ground().
+ * \return The solid ground coordinates, or
+ * <tt>-1,-1</tt> if set_target_solid_ground() was not called.
+ */
+const Rectangle& Hero::get_target_solid_ground_coords() const {
+  return target_solid_ground_coords;
+}
+
+/**
+ * \brief Returns the layer memorized by the last call to
+ * set_target_solid_ground().
+ * \return The solid ground layer, or
+ * LAYER_LOW if set_target_solid_ground() was not called.
+ */
+Layer Hero::get_target_solid_ground_layer() const {
+  return target_solid_ground_layer;
+}
+
+/**
  * \brief Specifies a point of the map where the hero will go back if he falls
  * into a hole or some other bad ground.
- *
- * This function is usually called when the hero walks on a special sensor.
- *
  * \param target_solid_ground_coords coordinates of the position where
  * the hero will go if he falls into a hole or some other bad ground
  * \param layer the layer
@@ -1384,6 +1420,7 @@ void Hero::set_target_solid_ground_coords(
 void Hero::reset_target_solid_ground_coords() {
 
   this->target_solid_ground_coords.set_xy(-1, -1);
+  this->target_solid_ground_layer = LAYER_LOW;
 }
 
 /**

@@ -755,7 +755,7 @@ class SpriteAnimationView extends JPanel implements Observer {
 
             setButton = new JButton(Project.getEditorImageIconOrEmpty("icon_edit.png"));
             setButton.setPreferredSize(new Dimension(24, 24));
-            setButton.setToolTipText("Changes source image");
+            setButton.setToolTipText("Change source image");
             setButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ev) {
@@ -773,7 +773,7 @@ class SpriteAnimationView extends JPanel implements Observer {
                             sprite.reloadImage();
                         }
                     } catch (SpriteException ex) {
-                        GuiTools.errorDialog("Cannot changes the source image: " + ex.getMessage());
+                        GuiTools.errorDialog("Cannot change the source image: " + ex.getMessage());
                     }
                 }
             });

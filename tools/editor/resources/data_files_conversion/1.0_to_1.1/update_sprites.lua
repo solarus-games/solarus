@@ -4,7 +4,7 @@
 -- into the format of Solarus 1.1.
 -- Usage: lua update_sprites.lua path/to/your/quest sprite_id ...
 
-local sprite_converter = require("sprite_converter")
+local sprite_converter = require("sprite_converter_1_0")
 
 local args = { ... }
 local quest_path = args[1]

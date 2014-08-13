@@ -39,7 +39,6 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
     private SpriteAnimationDirection selectedDirection;
 
     // components
-    private final JLabel numberView;
     private final SizeField sizeView;
     private final PositionField positionView;
     private final OriginField originView;
@@ -52,69 +51,69 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
      */
     public SpriteAnimationDirectionView() {
 
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
-        JPanel properiesPanel = new JPanel(new GridBagLayout());
+        setLayout(new GridBagLayout());
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(5, 5, 5, 5); // margins
-        constraints.anchor = GridBagConstraints.LINE_START; // alignment of the components
+        constraints.anchor = GridBagConstraints.FIRST_LINE_START; // alignment of the components
 
-        // number
+        // Preview.
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
         constraints.gridx = 0;
         constraints.gridy = 0;
-        properiesPanel.add(new JLabel("Number"), constraints);
+        constraints.gridwidth = 2;
+        constraints.fill = GridBagConstraints.NONE;
+
+        directionPreviewer = new SpriteAnimationDirectionPreviewer();
+        add(directionPreviewer, constraints);
+
+        // size
+        constraints.weightx = 0.0;
+        constraints.weighty = 0.0;
+        constraints.gridwidth = 1;
+        constraints.gridx = 0;
+        constraints.gridy++;
+        add(new JLabel("Size"), constraints);
 
         // position
         constraints.gridy++;
-        properiesPanel.add(new JLabel("Size"), constraints);
-
-        // size
-        constraints.gridy++;
-        properiesPanel.add(new JLabel("Position"), constraints);
+        add(new JLabel("Position"), constraints);
 
         // origin
         constraints.gridy++;
-        properiesPanel.add(new JLabel("Origin"), constraints);
+        add(new JLabel("Origin"), constraints);
 
         // number of frames
         constraints.gridy++;
-        properiesPanel.add(new JLabel("Number of frames"), constraints);
+        add(new JLabel("Number of frames"), constraints);
 
         // number of columns
         constraints.gridy++;
-        properiesPanel.add(new JLabel("Number of columns"), constraints);
+        add(new JLabel("Number of columns"), constraints);
 
-        constraints.weightx = 1;
+        constraints.weightx = 1.0;
         constraints.gridx = 1;
-        constraints.gridy = 0;
+        constraints.gridy = 1;
 
-        numberView = new JLabel();
-        properiesPanel.add(numberView, constraints);
-
-        constraints.gridy++;
         sizeView = new SizeField();
-        properiesPanel.add(sizeView, constraints);
+        add(sizeView, constraints);
 
         constraints.gridy++;
         positionView = new PositionField();
-        properiesPanel.add(positionView, constraints);
+        add(positionView, constraints);
 
         constraints.gridy++;
         originView = new OriginField();
-        properiesPanel.add(originView, constraints);
+        add(originView, constraints);
 
         constraints.gridy++;
         nbFramesView = new NbFramesField();
-        properiesPanel.add(nbFramesView, constraints);
+        add(nbFramesView, constraints);
 
         constraints.gridy++;
         nbColumnsView = new NbColumnsField();
-        properiesPanel.add(nbColumnsView, constraints);
-
-        add(properiesPanel);
-        directionPreviewer = new SpriteAnimationDirectionPreviewer();
-        add(directionPreviewer);
+        add(nbColumnsView, constraints);
     }
 
     /**
@@ -175,20 +174,6 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
             int directionNb = sprite.getSelectedDirectionNb();
 
             setSelectedDirection(directionNb);
-
-            String numberText = "";
-            if (directionNb >= 0) {
-                numberText += directionNb;
-                if (sprite.getSelectedAnimation().getNbDirections() == 4) {
-                    switch (directionNb) {
-                    case 0: numberText += " - right"; break;
-                    case 1: numberText += " - up"; break;
-                    case 2: numberText += " - left"; break;
-                    case 3: numberText += " - down"; break;
-                    }
-                }
-            }
-            numberView.setText(numberText);
         } else {
 
             sizeView.update(selectedDirection);

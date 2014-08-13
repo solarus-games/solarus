@@ -22,9 +22,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.*;
+
 import org.solarus.editor.*;
 import org.solarus.editor.gui.tree.SpriteImageTree;
 
@@ -44,7 +46,6 @@ class SpriteAnimationView extends JPanel implements Observer {
     private SpriteAnimation selectedAnimation;
 
     // components
-    private final AnimationField animationField;
     private final DefaultAnimationField defaultAnimationView;
     private final SrcImageField srcImageView;
     private final FrameDelayField frameDelayView;
@@ -59,14 +60,12 @@ class SpriteAnimationView extends JPanel implements Observer {
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(5, 5, 5, 5); // margins
-        constraints.anchor = GridBagConstraints.LINE_START; // alignment of the components
+        constraints.anchor = GridBagConstraints.FIRST_LINE_START; // alignment of the components
         constraints.fill = GridBagConstraints.HORIZONTAL;
 
+        constraints.weightx = 0;  // Don't give more space to this column when resizing.
         constraints.gridx = 0;
         constraints.gridy = 0;
-        add(new JLabel("Animation"), constraints);
-
-        constraints.gridy++;
         add(new JLabel("Default animation"), constraints);
 
         constraints.gridy++;
@@ -78,18 +77,15 @@ class SpriteAnimationView extends JPanel implements Observer {
         constraints.gridy++;
         add(new JLabel("Loop on frame"), constraints);
 
-        constraints.weightx = 1;
+        constraints.weightx = 1;  // Give any available space to this column when resizing.
         constraints.gridx = 1;
         constraints.gridy = 0;
-        animationField = new AnimationField();
-        add(animationField, constraints);
-
-        constraints.gridy++;
         defaultAnimationView = new DefaultAnimationField();
         add(defaultAnimationView, constraints);
 
         constraints.gridy++;
         srcImageView = new SrcImageField();
+        srcImageView.setPreferredSize(new Dimension(188, 24));
         add(srcImageView, constraints);
 
         constraints.fill = GridBagConstraints.NONE;
@@ -116,7 +112,6 @@ class SpriteAnimationView extends JPanel implements Observer {
             }
 
             this.sprite = sprite;
-            animationField.setSprite();
 
             if (sprite != null) {
                 sprite.addObserver(this);
@@ -167,7 +162,6 @@ class SpriteAnimationView extends JPanel implements Observer {
         }
         else if (obj instanceof SpriteAnimation || o instanceof SpriteAnimation || o == null) {
             // the animation has changed
-            animationField.update(o);
             srcImageView.update(o);
             frameDelayView.update(o);
             loopOnFrameView.update(o);
@@ -311,7 +305,7 @@ class SpriteAnimationView extends JPanel implements Observer {
 
         /**
          * Returns the source image
-         * @return the sourc image
+         * @return the source image
          */
         public String getSrcImage() {
             return srcImage;
@@ -396,168 +390,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         }
     }
 
-    /**
-     * Component to change the selected animation of the sprite.
-     */
-    private class AnimationField extends JPanel implements ActionListener {
-
-        /**
-         * The animation selector.
-         */
-        private SpriteAnimationChooser animationChooser;
-
-        private JButton renameButton;
-        private JButton addButton;
-        private JButton removeButton;
-
-        /**
-         * Constructor.
-         */
-        public AnimationField() {
-            super();
-            setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-
-            animationChooser = new SpriteAnimationChooser(sprite);
-            animationChooser.setPreferredSize(new Dimension(80, 24));
-            animationChooser.addActionListener(this);
-            add(animationChooser);
-
-            renameButton = new JButton(Project.getEditorImageIconOrEmpty("icon_edit.png"));
-            renameButton.setPreferredSize(new Dimension(24, 24));
-            renameButton.setToolTipText("Rename animation");
-            renameButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ev) {
-
-                    if (sprite == null) {
-                        return;
-                    }
-
-                    String name = animationChooser.getSelected();
-                    String newName = "";
-                    RenameAnimationDialog dialog = new RenameAnimationDialog(name);
-                    if (dialog.display()) {
-                        newName = dialog.getNewAnimationName();
-                    }
-
-                    if (!newName.isEmpty()) {
-                        // Rename the animation.
-                        try {
-                            sprite.renameAnimation(name, newName);
-                        }
-                        catch (SpriteException ex) {
-                            GuiTools.errorDialog("Cannot rename animation '" +
-                                    name+ "': " + ex.getMessage());
-                        }
-                    }
-                }
-            });
-            add(renameButton);
-
-            addButton = new JButton(Project.getEditorImageIconOrEmpty("icon_add.png"));
-            addButton.setPreferredSize(new Dimension(24, 24));
-            addButton.setToolTipText("Add animation");
-            addButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ev) {
-
-                    if (sprite == null) {
-                        return;
-                    }
-
-                    NewAnimationDialog dialog = new NewAnimationDialog();
-                    String name = "";
-                    if (dialog.display()) {
-                        name = dialog.getAnimationName();
-                    }
-
-                    if (!name.isEmpty()) {
-                        // Add an animation.
-                        try {
-                            sprite.addAnimation(name);
-                        }
-                        catch (SpriteException ex) {
-                            GuiTools.errorDialog("Cannot add animation '" +
-                                    name+ "': " + ex.getMessage());
-                        }
-                    }
-                }
-            });
-            add(addButton);
-
-            removeButton = new JButton(Project.getEditorImageIconOrEmpty("icon_remove.png"));
-            removeButton.setPreferredSize(new Dimension(24, 24));
-            removeButton.setToolTipText("Remove animation");
-            removeButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ev) {
-
-                    if (sprite == null) {
-                        return;
-                    }
-
-                    String selectedAnimationName = animationChooser.getSelected();
-
-                    // Remove the animation
-                    try {
-                        sprite.removeAnimation();
-                    } catch (SpriteException ex) {
-                        GuiTools.errorDialog("Cannot remove animation '" +
-                                selectedAnimationName + "': " + ex.getMessage());
-                    }
-                }
-            });
-            add(removeButton);
-
-            update(sprite);
-        }
-
-        /**
-        * Changes the sprite observed for the chooser component.
-        */
-       public void setSprite() {
-
-           animationChooser.setSprite(sprite);
-       }
-
-        /**
-         * This function is called when the sprite is changed.
-         * The selection is updated.
-         */
-        public void update(Observable o) {
-
-            animationChooser.setEnabled(sprite != null && sprite.getAnimations().size() > 0);
-            removeButton.setEnabled(sprite != null && sprite.getSelectedAnimation() != null);
-            renameButton.setEnabled(sprite != null && sprite.getSelectedAnimation() != null);
-        }
-
-        /**
-         * This method is called when the user changes the selected item.
-         * The selected animation of the sprite is changed.
-         */
-        @Override
-        public void actionPerformed(ActionEvent ev) {
-
-            if (sprite == null) {
-                return;
-            }
-
-            String selectedAnimationName = animationChooser.getSelected();
-            String currentAnimationName = sprite.getSelectedAnimationName();
-
-            if (!currentAnimationName.equals(selectedAnimationName)) {
-
-                try {
-                    sprite.setSelectedAnimation(selectedAnimationName);
-                }
-                catch (SpriteException ex) {
-                    // animation doesn't exists
-                }
-            }
-        }
-    }
-
-    /**
+   /**
     * Dialog shown when we want to rename an animation in this sprite
     */
    private class RenameAnimationDialog extends OkCancelDialog {
@@ -726,22 +559,33 @@ class SpriteAnimationView extends JPanel implements Observer {
          */
         public SrcImageField() {
             super();
-            setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+            setLayout(new GridBagLayout());
+
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.anchor = GridBagConstraints.FIRST_LINE_START; // alignment of the components
 
             srcImage = new JTextField();
             srcImage.setEditable(false);
-            srcImage.setPreferredSize(new Dimension(140, 24));
+            constraints.gridx = 0;
+            constraints.gridy = 0;
+            constraints.weightx = 1.0;
+            constraints.fill = GridBagConstraints.BOTH;
+            add(srcImage, constraints);
 
             tilesetChooser = new ResourceChooser(ResourceType.TILESET, false);
-            tilesetChooser.setPreferredSize(new Dimension(140, 24));
             tilesetChooser.addActionListener(this);
 
-            add(srcImage);
-            add(tilesetChooser);
+            constraints.gridx = 1;
+            constraints.gridy = 0;
+            constraints.weightx = 0.0;
+            constraints.fill = GridBagConstraints.BOTH;
+            add(tilesetChooser, constraints);
 
             refreshButton = new JButton(Project.getEditorImageIconOrEmpty("icon_refresh.png"));
-            refreshButton.setPreferredSize(new Dimension(24, 24));
             refreshButton.setToolTipText("Refresh source image");
+            refreshButton.setMinimumSize(new Dimension(24, 24));
+            refreshButton.setPreferredSize(new Dimension(24, 24));
+            refreshButton.setMaximumSize(new Dimension(24, 24));
             refreshButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ev) {
@@ -751,11 +595,18 @@ class SpriteAnimationView extends JPanel implements Observer {
                     }
                 }
             });
-            add(refreshButton);
+
+            constraints.gridx = 2;
+            constraints.gridy = 0;
+            constraints.weightx = 0.0;
+            constraints.fill = GridBagConstraints.NONE;
+            add(refreshButton, constraints);
 
             setButton = new JButton(Project.getEditorImageIconOrEmpty("icon_edit.png"));
-            setButton.setPreferredSize(new Dimension(24, 24));
             setButton.setToolTipText("Change source image");
+            setButton.setMinimumSize(new Dimension(24, 24));
+            setButton.setPreferredSize(new Dimension(24, 24));
+            setButton.setMaximumSize(new Dimension(24, 24));
             setButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ev) {
@@ -777,7 +628,12 @@ class SpriteAnimationView extends JPanel implements Observer {
                     }
                 }
             });
-            add(setButton);
+
+            constraints.gridx = 3;
+            constraints.gridy = 0;
+            constraints.weightx = 0.0;
+            constraints.fill = GridBagConstraints.NONE;
+            add(setButton, constraints);
 
             update((SpriteAnimation) null);
         }

@@ -34,29 +34,19 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
     private Sprite sprite;
 
     /**
-     * Component with the properties of the sprite.
+     * Component with a tree of animations and directions for the sprite.
      */
-    private final SpritePropertiesView spritePropertiesView;
+    private SpriteTree spriteTree;
 
     /**
-     * Component with the properties of the sprite animation.
+     * Component with the properties of a sprite animation.
      */
-    private final SpriteAnimationView spriteAnimationView;
+    private final SpriteAnimationView animationView;
 
     /**
-     * The directions list.
+     * Component with the properties of a sprite animation direction.
      */
-    private final JList<SpriteAnimationDirection> spriteAnimationDirectionsList;
-
-    /**
-     * The directions list pattern model.
-     */
-    private final SpriteAnimationDirectionsListModel spriteAnimationDirectionsListModel;
-
-    /**
-     * Component with the properties of the sprite animation direction.
-     */
-    private final SpriteAnimationDirectionView spriteAnimationDirectionView;
+    private final SpriteAnimationDirectionView directionView;
 
     /**
      * The icon associated to each direction.
@@ -67,91 +57,56 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
      * Constructor.
      */
     public SpriteAnimationsView() {
-        super();
+        super(new GridBagLayout());
 
-        directionIcons = new ArrayList<SpriteAnimationDirectionIcon>();
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(5, 5, 5, 5);
 
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        // Tree.
+        spriteTree = new SpriteTree();
+        final JScrollPane treeScroller = new JScrollPane(spriteTree);
+        JPanel treePanel = new JPanel();
+        treePanel.setLayout(new BorderLayout());
+        treePanel.setBorder(BorderFactory.createTitledBorder("Sprite sheet"));
+        treePanel.add(treeScroller);
 
-        // sprite properties
-        spritePropertiesView = new SpritePropertiesView();
-        spritePropertiesView.setAlignmentX(Component.LEFT_ALIGNMENT);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.weightx = 1.0;
+        constraints.weighty = 0.25;
+        constraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        constraints.fill = GridBagConstraints.BOTH;
+        add(treePanel, constraints);
 
-        // animation
-        spriteAnimationView = new SpriteAnimationView();
-        spriteAnimationView.setAlignmentX(Component.LEFT_ALIGNMENT);
+        // Current animation.
+        animationView = new SpriteAnimationView();
+        JPanel animationPanel = new JPanel(new BorderLayout());
+        animationPanel.setBorder(BorderFactory.createTitledBorder("Selected animation"));
+        animationPanel.add(animationView);
 
-        // list
-        spriteAnimationDirectionsListModel = new SpriteAnimationDirectionsListModel();
-        spriteAnimationDirectionsList =
-                new JList<SpriteAnimationDirection>(spriteAnimationDirectionsListModel);
-        spriteAnimationDirectionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        spriteAnimationDirectionsList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        spriteAnimationDirectionsList.setVisibleRowCount(-1); // make the rows as wide as possible
-        spriteAnimationDirectionsList.getSelectionModel().addListSelectionListener(
-                new SpriteAnimationDirectionsListSelectionListener());
-        spriteAnimationDirectionsList.setCellRenderer(new SpriteAnimationDirectionsListRenderer());
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.weightx = 1.0;
+        constraints.weighty = 0.0;
+        constraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        add(animationPanel, constraints);
 
-        spriteAnimationDirectionsList.addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyPressed(KeyEvent keyEvent) {
-                    if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
-                        if (sprite != null && sprite.getSelectedDirection() != null) {
-                            try {
-                                sprite.removeDirection();
-                            } catch (SpriteException ex) {
-                                GuiTools.errorDialog("Cannot remove direction: " + ex.getMessage());
-                            }
-                        }
-                    }
-                }
-            });
+        // Current animation direction.
+        directionView = new SpriteAnimationDirectionView();
+        final JScrollPane directionScroller = new JScrollPane(directionView);
+        directionScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JPanel directionPanel = new JPanel(new BorderLayout());
+        directionPanel.setBorder(BorderFactory.createTitledBorder("Selected direction"));
+        directionPanel.add(directionScroller);
 
-        final JScrollPane listScroller = new JScrollPane(spriteAnimationDirectionsList);
-        listScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
-        listScroller.setAlignmentX(Component.LEFT_ALIGNMENT);
-        listScroller.setPreferredSize(new Dimension(320, 280));
-        listScroller.setWheelScrollingEnabled(false);
-        listScroller.addMouseWheelListener(new MouseWheelListener() {
-
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent event) {
-
-                JScrollBar bar;
-                if (event.isShiftDown()) {
-                    // Shift + wheel: scroll horizontally.
-                    bar = listScroller.getHorizontalScrollBar();
-                } else {
-                    // Wheel alone: scroll vertically.
-                    bar = listScroller.getVerticalScrollBar();
-                }
-                int value = bar.getValue();
-                int newValue = value + bar.getBlockIncrement()
-                        * event.getUnitsToScroll();
-                bar.setValue(newValue);
-
-                // if has no effect, dispatch the event
-                if (bar.getValue() == value) {
-                    SpriteAnimationsView.this.getParent().dispatchEvent(event);
-                }
-            }
-        });
-
-        // animation direction
-        spriteAnimationDirectionView = new SpriteAnimationDirectionView();
-        spriteAnimationDirectionView.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        add(spritePropertiesView);
-        add(spriteAnimationView);
-
-        JPanel directionPanel = new JPanel();
-        directionPanel.setLayout(new BoxLayout(directionPanel, BoxLayout.Y_AXIS));
-        directionPanel.setBorder(BorderFactory.createTitledBorder("Directions"));
-        directionPanel.add(listScroller);
-        directionPanel.add(spriteAnimationDirectionView);
-
-        add(directionPanel);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.weightx = 1.0;
+        constraints.weighty = 0.75;
+        constraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        constraints.fill = GridBagConstraints.BOTH;
+        add(directionPanel, constraints);
     }
 
     /**
@@ -164,22 +119,10 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
             return;
         }
 
-        if (this.sprite != null) {
-            this.sprite.addObserver(spriteAnimationDirectionsListModel);
-        }
-
         this.sprite = sprite;
-        spritePropertiesView.setSprite(sprite);
-        spriteAnimationView.setSprite(sprite);
-        spriteAnimationDirectionView.setSprite(sprite);
-
-        if (sprite != null) {
-            sprite.addObserver(spriteAnimationDirectionsListModel);
-            spriteAnimationDirectionsListModel.update(sprite, null);
-        }
-        else {
-            repaint();
-        }
+        spriteTree.setSprite(sprite);
+        animationView.setSprite(sprite);
+        directionView.setSprite(sprite);
     }
 
     /**
@@ -200,160 +143,27 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
 
     @Override
     public Dimension getPreferredScrollableViewportSize() {
-
         return getPreferredSize();
     }
 
     @Override
     public int getScrollableUnitIncrement(Rectangle rctngl, int i, int i1) {
-
         return 16;
     }
 
     @Override
     public int getScrollableBlockIncrement(Rectangle rctngl, int i, int i1) {
-
         return 160;
     }
 
     @Override
     public boolean getScrollableTracksViewportWidth() {
-
-        return false;
+        return true;
     }
 
     @Override
     public boolean getScrollableTracksViewportHeight() {
-
-        return false;
+        return true;
     }
 
-    /**
-     * List selection listener associated to the animation directions list.
-     * When the user selects a direction, it becomes selected also in the sprite.
-     */
-    private class SpriteAnimationDirectionsListSelectionListener implements ListSelectionListener {
-
-        /**
-         * This function is called when the selection is changed.
-         */
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
-
-            // get the direction just selected in the list
-            int selectedDirection = spriteAnimationDirectionsList.getSelectedIndex();
-
-            // select this direction in the sprite
-            if (selectedDirection != -1) {
-                try {
-                    sprite.setSelectedDirectionNb(selectedDirection);
-                } catch (SpriteException ex) {
-                    GuiTools.errorDialog("Cannot select direction: " + ex.getMessage());
-                }
-            }
-            else {
-                sprite.unselectDirection();
-            }
-        }
-    }
-
-    /**
-     * List model for the animation directions list.
-     */
-    private class SpriteAnimationDirectionsListModel
-        extends AbstractListModel<SpriteAnimationDirection> implements Observer {
-
-        /**
-         * Returns the number of directions.
-         */
-        @Override
-        public int getSize() {
-            int size = 0;
-
-            if (sprite != null) {
-                SpriteAnimation animation = sprite.getSelectedAnimation();
-                if (animation != null) {
-                    size = animation.getNbDirections();
-                }
-            }
-
-            return size;
-        }
-
-        /**
-         * Returns the a component of the specified direction.
-         */
-        @Override
-        public SpriteAnimationDirection getElementAt(int rank) {
-
-            SpriteAnimationDirection direction = null;
-            if (sprite != null) {
-                SpriteAnimation animation = sprite.getSelectedAnimation();
-                if (animation != null) {
-                    direction = animation.getDirection(rank);
-                }
-            }
-            return direction;
-        }
-
-        /**
-         * This function is called when the sprite changes.
-         * @param o the sprite
-         * @param params information about what has changed:
-         *   - a SpriteAnimation: indicates that this animation has just been
-         *     created or has changed
-         *   - a string: indicates that the animation with this name has just been removed
-         *   - an Integer: indicates that the direction of the selected animation with
-         * this number has just been removed
-         *   - null: other cases
-         */
-        @Override
-        public void update(Observable o, Object params) {
-
-            loadIcons();
-
-            // update the enabled state of the buttons
-            int spriteSelectedDirectionNb = sprite.getSelectedDirectionNb();
-            int listSelectedRank = spriteAnimationDirectionsList.getSelectedIndex();
-
-            if (sprite.getSelectedDirection() != null) {
-                // an existing direction is selected
-                // make this direction selected in the list
-                if (spriteSelectedDirectionNb != listSelectedRank) {
-                    spriteAnimationDirectionsList.setSelectedIndex(spriteSelectedDirectionNb);
-                    spriteAnimationDirectionsList.ensureIndexIsVisible(spriteSelectedDirectionNb);
-                }
-            }
-            else if (sprite.getSelectedDirection() == null) {
-                // no direction is selected anymore
-                spriteAnimationDirectionsList.removeSelectionInterval(listSelectedRank, listSelectedRank);
-            }
-            // redraw the table
-            fireContentsChanged(this, 0, getSize() - 1);
-
-            // notify the animation direction view
-            spriteAnimationDirectionView.setSelectedDirection(sprite.getSelectedDirectionNb());
-        }
-    }
-
-    /**
-     * This class defines how the list elements are displayed.
-     */
-    private class SpriteAnimationDirectionsListRenderer implements ListCellRenderer<SpriteAnimationDirection> {
-
-        /**
-         * Returns a component representing a tile.
-         */
-        @Override
-        public Component getListCellRendererComponent(
-                JList<? extends SpriteAnimationDirection> list, SpriteAnimationDirection value,
-                int rank, boolean isSelected, boolean cellHasFocus) {
-
-            if (rank >= directionIcons.size()) {
-                // the icon doesn't exist yet
-                loadIcons();
-            }
-            return directionIcons.get(rank);
-        }
-    }
 }

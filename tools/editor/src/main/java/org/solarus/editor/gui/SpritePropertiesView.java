@@ -24,6 +24,7 @@ import org.solarus.editor.*;
 
 /**
  * This components shows information about a sprite.
+ * TODO remove this class? (never used)
  */
 public class SpritePropertiesView extends JPanel
         implements Observer, ProjectObserver {

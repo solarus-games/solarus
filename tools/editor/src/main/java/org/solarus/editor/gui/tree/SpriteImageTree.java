@@ -24,7 +24,8 @@ import org.solarus.editor.Project;
 import org.solarus.editor.SpriteException;
 
 /**
- * A tree that shows the imags list in the sprites folder of the game.
+ * A tree that allows to choose an image file in the sprite directory of the
+ * quest.
  */
 public class SpriteImageTree extends JTree {
 

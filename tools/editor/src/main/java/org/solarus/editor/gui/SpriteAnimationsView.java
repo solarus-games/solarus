@@ -76,6 +76,7 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
         constraints.weighty = 0.25;
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
         constraints.fill = GridBagConstraints.BOTH;
+        treePanel.setPreferredSize(new Dimension(1, 1));  // Workaround to avoid sudden resizes
         add(treePanel, constraints);
 
         // Current animation.
@@ -87,9 +88,10 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
         constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.weightx = 1.0;
-        constraints.weighty = 0.0;
+        constraints.weighty = 0.25;
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
         constraints.fill = GridBagConstraints.HORIZONTAL;
+        animationPanel.setPreferredSize(new Dimension(1, 1));
         add(animationPanel, constraints);
 
         // Current animation direction.
@@ -106,7 +108,10 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
         constraints.weighty = 0.75;
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
         constraints.fill = GridBagConstraints.BOTH;
+        directionPanel.setPreferredSize(new Dimension(1, 1));
         add(directionPanel, constraints);
+
+        // TODO add empty space below
     }
 
     /**

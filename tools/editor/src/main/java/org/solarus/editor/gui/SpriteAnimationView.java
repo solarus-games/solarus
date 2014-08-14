@@ -85,7 +85,6 @@ class SpriteAnimationView extends JPanel implements Observer {
 
         constraints.gridy++;
         srcImageView = new SrcImageField();
-        srcImageView.setPreferredSize(new Dimension(188, 24));
         add(srcImageView, constraints);
 
         constraints.fill = GridBagConstraints.NONE;

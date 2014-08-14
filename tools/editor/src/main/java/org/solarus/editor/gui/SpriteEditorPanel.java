@@ -60,7 +60,7 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
 
         // sprite animations and directions
         spriteAnimationsView = new SpriteAnimationsView();
-        spriteAnimationsView.setAlignmentY(Component.TOP_ALIGNMENT);
+        spriteAnimationsView.setMinimumSize(new Dimension(0, 0));
 
         // sprite animation image
         spriteImageView = new SpriteImageView();

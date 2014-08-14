@@ -567,7 +567,7 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
                         frame.getHeight(null) * 2);
             }
 
-            return new Dimension(10, 10);
+            return new Dimension(32, 32);
         }
     }
 }

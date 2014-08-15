@@ -73,10 +73,10 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.weightx = 1.0;
-        constraints.weighty = 0.25;
+        constraints.weighty = 0.33;
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
         constraints.fill = GridBagConstraints.BOTH;
-        treePanel.setPreferredSize(new Dimension(1, 1));  // Workaround to avoid sudden resizes
+        treePanel.setPreferredSize(new Dimension(0, 0));
         add(treePanel, constraints);
 
         // Current animation.
@@ -88,10 +88,10 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
         constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.weightx = 1.0;
-        constraints.weighty = 0.25;
+        constraints.weighty = 0.0;
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        animationPanel.setPreferredSize(new Dimension(1, 1));
+        animationPanel.setPreferredSize(new Dimension(0, 180));
         add(animationPanel, constraints);
 
         // Current animation direction.
@@ -105,13 +105,11 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
         constraints.gridx = 0;
         constraints.gridy = 2;
         constraints.weightx = 1.0;
-        constraints.weighty = 0.75;
+        constraints.weighty = 0.67;
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
         constraints.fill = GridBagConstraints.BOTH;
-        directionPanel.setPreferredSize(new Dimension(1, 1));
+        directionPanel.setPreferredSize(new Dimension(0, 0));
         add(directionPanel, constraints);
-
-        // TODO add empty space below
     }
 
     /**
@@ -163,12 +161,12 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
 
     @Override
     public boolean getScrollableTracksViewportWidth() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean getScrollableTracksViewportHeight() {
-        return true;
+        return false;
     }
 
 }

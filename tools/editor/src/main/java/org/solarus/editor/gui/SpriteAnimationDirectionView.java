@@ -19,14 +19,16 @@ package org.solarus.editor.gui;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
+
 import javax.swing.*;
 import javax.swing.event.*;
+
 import org.solarus.editor.*;
 
 /**
  * This components shows information about animation directions of a sprite.
  */
-public class SpriteAnimationDirectionView extends JPanel implements Observer {
+public class SpriteAnimationDirectionView extends JPanel implements Observer, Scrollable {
 
     /**
      * The sprite observed.
@@ -58,14 +60,13 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
         constraints.anchor = GridBagConstraints.FIRST_LINE_START; // alignment of the components
 
         // Preview.
+        directionPreviewer = new SpriteAnimationDirectionPreviewer();
         constraints.weightx = 1.0;
-        constraints.weighty = 1.0;
+        constraints.weighty = 0.0;
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 2;
         constraints.fill = GridBagConstraints.NONE;
-
-        directionPreviewer = new SpriteAnimationDirectionPreviewer();
         add(directionPreviewer, constraints);
 
         // size
@@ -92,9 +93,20 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
         constraints.gridy++;
         add(new JLabel("Number of columns"), constraints);
 
+        // fill vertical blank space
+        constraints.gridy++;
+        constraints.gridwidth = 2;
         constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.fill = GridBagConstraints.BOTH;
+        add(new JLabel(""), constraints);
+
         constraints.gridx = 1;
         constraints.gridy = 1;
+        constraints.gridwidth = 1;
+        constraints.weightx = 1.0;
+        constraints.weighty = 0.0;
+        constraints.fill = GridBagConstraints.NONE;
 
         sizeView = new SizeField();
         add(sizeView, constraints);
@@ -182,6 +194,31 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
             nbFramesView.update(selectedDirection);
             nbColumnsView.update(selectedDirection);
        }
+    }
+
+    @Override
+    public Dimension getPreferredScrollableViewportSize() {
+        return getPreferredSize();
+    }
+
+    @Override
+    public int getScrollableUnitIncrement(Rectangle rctngl, int i, int i1) {
+        return 16;
+    }
+
+    @Override
+    public int getScrollableBlockIncrement(Rectangle rctngl, int i, int i1) {
+        return 160;
+    }
+
+    @Override
+    public boolean getScrollableTracksViewportWidth() {
+        return false;
+    }
+
+    @Override
+    public boolean getScrollableTracksViewportHeight() {
+        return false;
     }
 
     /**

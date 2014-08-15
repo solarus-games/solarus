@@ -60,7 +60,7 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
 
         // sprite animations and directions
         spriteAnimationsView = new SpriteAnimationsView();
-        spriteAnimationsView.setMinimumSize(new Dimension(0, 0));
+        spriteAnimationsView.setMinimumSize(new Dimension(0, 0));  // Allow the splitter to hide entirely the component.
 
         // sprite animation image
         spriteImageView = new SpriteImageView();

@@ -377,10 +377,13 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
         private int frameDelay = 0;
         // frame on loop
         private int loopOnFrame = 0;
-        // the curretn frame
+        // the current frame
         private int currentFrame = 0;
         // draw origin point
         private boolean drawOrigin = true;
+
+        // Dimensions of the last displayed frame.
+        private Dimension lastFrameSize;
 
         /**
          * The timer used for animation.
@@ -391,6 +394,8 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
          * Constructor.
          */
         public ImageView() {
+
+            lastFrameSize = new Dimension(32, 32);
 
             timer = new javax.swing.Timer(0, new ActionListener() {
 
@@ -563,11 +568,13 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
 
             if (frames != null && frames.length > 0) {
                 Image frame = frames[0];
-                return new Dimension(frame.getWidth(null) * 2,
-                        frame.getHeight(null) * 2);
+                lastFrameSize = new Dimension(
+                        frame.getWidth(null) * 2,
+                        frame.getHeight(null) * 2
+                );
             }
 
-            return new Dimension(32, 32);
+            return lastFrameSize;
         }
     }
 }

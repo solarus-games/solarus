@@ -236,7 +236,7 @@ public class Sprite extends Observable {
      * @param animationSetId id of the animation set to use
      * @throws SpriteException If the sprite could not be loaded.
      */
-    public Sprite (String animationSetId) throws SpriteException {
+    public Sprite(String animationSetId) throws SpriteException {
 
         this(animationSetId, "");
 
@@ -406,31 +406,33 @@ public class Sprite extends Observable {
      */
     public void setSelectedAnimation(String animationName) throws SpriteException {
 
-        if (!animationName.equals(selectedAnimationName)) {
-            if (animationName.isEmpty()) {
-                // unselect direction
-                selectedDirectionNb = -1;
-            } else if (!animations.containsKey(animationName) ) {
-                throw new SpriteException("the animation '" + animationName + "' doesn't exists");
-            } else {
-                int nbDirections = animations.get(animationName).getNbDirections();
-                if (nbDirections > 0) {
-                    // select the first direction if no direction was selected
-                    if (selectedDirectionNb < 0) {
-                        selectedDirectionNb = 0;
-                    }
-                    // select the last direction if selected direction doesn't exists
-                    else if (selectedDirectionNb >= nbDirections) {
-                        selectedDirectionNb = nbDirections - 1;
-                    }
-                } else {
-                    selectedDirectionNb = -1;
-                }
-            }
-
-            selectedAnimationName = animationName;
-            reloadImage();
+        if (animationName.equals(selectedAnimationName)) {
+            return;
         }
+
+        if (animationName.isEmpty()) {
+            // unselect direction
+            selectedDirectionNb = -1;
+        } else if (!animations.containsKey(animationName) ) {
+            throw new SpriteException("No such animation: '" + animationName + "'");
+        } else {
+            int nbDirections = animations.get(animationName).getNbDirections();
+            if (nbDirections > 0) {
+                // select the first direction if no direction was selected
+                if (selectedDirectionNb < 0) {
+                    selectedDirectionNb = 0;
+                }
+                // select the last direction if selected direction doesn't exists
+                else if (selectedDirectionNb >= nbDirections) {
+                    selectedDirectionNb = nbDirections - 1;
+                }
+            } else {
+                selectedDirectionNb = -1;
+            }
+        }
+
+        selectedAnimationName = animationName;
+        reloadImage();
     }
 
     /**
@@ -459,23 +461,24 @@ public class Sprite extends Observable {
      */
     public void setSelectedDirectionNb(int selectedDirectionNb) throws SpriteException {
 
-        if (selectedDirectionNb != this.selectedDirectionNb) {
-
-            // select a direction
-            if (selectedDirectionNb != -1) {
-                SpriteAnimation animation = getSelectedAnimation();
-                if (animation == null) {
-                    throw new SpriteException("Cannot select direction number " +
-                            selectedDirectionNb + ": no animation was selected");
-                } else if (selectedDirectionNb >= animation.getNbDirections()) {
-                    throw new SpriteException("Cannot select direction number " +
-                            selectedDirectionNb + ": this direction doesn't exist");
-                }
-            }
-            this.selectedDirectionNb = selectedDirectionNb;
-            setChanged();
-            notifyObservers(getSelectedDirection());
+        if (selectedDirectionNb == this.selectedDirectionNb) {
+            return;
         }
+
+        // select a direction
+        if (selectedDirectionNb != -1) {
+            SpriteAnimation animation = getSelectedAnimation();
+            if (animation == null) {
+                throw new SpriteException("Cannot select direction number " +
+                        selectedDirectionNb + ": no animation was selected");
+            } else if (selectedDirectionNb >= animation.getNbDirections()) {
+                throw new SpriteException("Cannot select direction number " +
+                        selectedDirectionNb + ": this direction doesn't exist");
+            }
+        }
+        this.selectedDirectionNb = selectedDirectionNb;
+        setChanged();
+        notifyObservers(getSelectedDirection());
     }
 
     /**
@@ -516,6 +519,55 @@ public class Sprite extends Observable {
         else {
             return null;
         }
+    }
+
+    /**
+     * Returns a name describing the selected direction.
+     *
+     * If there are 4 or 8 directions, this is the direction number followed by
+     * a hint like "up" or "right-left".
+     * Otherwise, this is the direction number alone.
+     *
+     * @return A name describing the selected direction, or an empty string if
+     * no direction is selected.
+     */
+    public String getSelectedDirectionName() {
+
+        int direction = selectedDirectionNb;
+        if (direction == -1) {
+            // No direction is selected.
+            return "";
+        }
+
+        if (getSelectedAnimation().getNbDirections() == 4 &&
+                direction < 4) {
+            // 4-direction case.
+            String[] directionNames = {
+                    "right",
+                    "up",
+                    "left",
+                    "down",
+            };
+            return direction + " (" + directionNames[direction] + ")";
+        }
+
+        if (getSelectedAnimation().getNbDirections() == 8 &&
+                direction < 8) {
+            // 8-direction case.
+            String[] directionNames = {
+                    "right",
+                    "right-up",
+                    "up",
+                    "left-up",
+                    "left",
+                    "left-down",
+                    "down",
+                    "right-down"
+            };
+            return direction + " (" + directionNames[direction] + ")";
+        }
+
+        return Integer.toString(direction);
     }
 
     /**
@@ -778,11 +830,11 @@ public class Sprite extends Observable {
     }
 
     /**
-     * Set an animation of this sprite.
+     * Sets an animation of this sprite.
      * @param animationName name of the animation to set
      * @param animation the animation
      */
-    public void setAnimation (String animationName, SpriteAnimation animation) {
+    public void setAnimation(String animationName, SpriteAnimation animation) {
 
         if (animations.containsKey(animationName) && animations.get(animationName) != animation) {
             animations.put(animationName, animation);
@@ -975,6 +1027,7 @@ public class Sprite extends Observable {
 
     static public String animationToString (String name, SpriteAnimation animation) {
 
+        // TODO use a StringBuffer
         String str = "animation{\n";
 
         String srcImage = animation.getSrcImage();

@@ -17,16 +17,16 @@
 package org.solarus.editor.gui;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
+
 import javax.swing.*;
-import javax.swing.event.*;
+
 import org.solarus.editor.*;
 
 /**
  * This components shows information about animations of a sprite.
  */
-public class SpriteAnimationsView extends JPanel implements Scrollable {
+public class SpriteAnimationsView extends JPanel implements Observer, Scrollable {
 
     /**
      * The current sprite.
@@ -39,14 +39,29 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
     private SpriteTree spriteTree;
 
     /**
-     * Component with the properties of a sprite animation.
+     * Bordered panel containing the sprite tree.
+     */
+    private JPanel treePanel;
+
+    /**
+     * Component with the properties of the selected sprite animation.
      */
     private final SpriteAnimationView animationView;
 
     /**
-     * Component with the properties of a sprite animation direction.
+     * Bordered panel containing the animation view.
+     */
+    private JPanel animationPanel;
+
+    /**
+     * Component with the properties of the selected direction.
      */
     private final SpriteAnimationDirectionView directionView;
+
+    /**
+     * Bordered panel containing the direction view.
+     */
+    private JPanel directionPanel;
 
     /**
      * The icon associated to each direction.
@@ -65,7 +80,7 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
         // Tree.
         spriteTree = new SpriteTree();
         final JScrollPane treeScroller = new JScrollPane(spriteTree);
-        JPanel treePanel = new JPanel();
+        treePanel = new JPanel();
         treePanel.setLayout(new BorderLayout());
         treePanel.setBorder(BorderFactory.createTitledBorder("Sprite sheet"));
         treePanel.add(treeScroller);
@@ -81,7 +96,7 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
 
         // Current animation.
         animationView = new SpriteAnimationView();
-        JPanel animationPanel = new JPanel(new BorderLayout());
+        animationPanel = new JPanel(new BorderLayout());
         animationPanel.setBorder(BorderFactory.createTitledBorder("Selected animation"));
         animationPanel.add(animationView);
 
@@ -98,7 +113,7 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
         directionView = new SpriteAnimationDirectionView();
         final JScrollPane directionScroller = new JScrollPane(directionView);
         directionScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        JPanel directionPanel = new JPanel(new BorderLayout());
+        directionPanel = new JPanel(new BorderLayout());
         directionPanel.setBorder(BorderFactory.createTitledBorder("Selected direction"));
         directionPanel.add(directionScroller);
 
@@ -126,6 +141,11 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
         spriteTree.setSprite(sprite);
         animationView.setSprite(sprite);
         directionView.setSprite(sprite);
+
+        if (sprite != null) {
+            sprite.addObserver(this);
+        }
+        update(null, null);
     }
 
     /**
@@ -140,6 +160,31 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
             for (int i = 0; i < animation.getNbDirections(); i++) {
                 SpriteAnimationDirection direction = animation.getDirection(i);
                 directionIcons.add(new SpriteAnimationDirectionIcon(direction, sprite));
+            }
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object param) {
+
+        SpriteAnimation animation = null;
+        if (sprite != null) {
+            animation = sprite.getSelectedAnimation();
+        }
+
+        if (sprite == null || animation == null) {
+            animationPanel.setBorder(BorderFactory.createTitledBorder("(No animation selected)"));
+            directionPanel.setBorder(BorderFactory.createTitledBorder("(No direction selected)"));
+        }
+        else {
+            animationPanel.setBorder(BorderFactory.createTitledBorder("Animation \"" + sprite.getSelectedAnimationName() + "\""));
+
+            SpriteAnimationDirection direction = sprite.getSelectedDirection();
+            if (direction == null) {
+                directionPanel.setBorder(BorderFactory.createTitledBorder("(No direction selected)"));
+            }
+            else {
+                directionPanel.setBorder(BorderFactory.createTitledBorder("Direction " + sprite.getSelectedDirectionName() + ""));
             }
         }
     }

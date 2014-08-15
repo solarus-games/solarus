@@ -70,12 +70,14 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
 
         TreePath selectionPath = null;
 
+        System.out.println("sprite.getSelectedAnimationName(): " + sprite.getSelectedAnimationName());
+        System.out.println("sprite.getSelectedDirectionNb(): " + sprite.getSelectedDirectionNb());
         // Add a node for each animation.
         for (String animationName: sprite.getAnimationNames()) {
             SpriteAnimation animation = sprite.getAnimation(animationName);
             DefaultMutableTreeNode animationNode = new DefaultMutableTreeNode(animationName);
             animationNode.setAllowsChildren(true);
-         // TODO animationNode.setUserObject(animation);
+            // TODO animationNode.setUserObject(animation);
             root.add(animationNode);
 
             // Add a node for each direction of this animation.
@@ -84,7 +86,7 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
                         "Direction " + animation.getDirectionName(i)
                 );
                 directionNode.setAllowsChildren(false);
-             // TODO directionNode.setUserObject(animation.getDirection(i));
+                // TODO directionNode.setUserObject(animation.getDirection(i));
                 animationNode.add(directionNode);
 
                 // Initially select the sprite's current animation and direction.
@@ -100,12 +102,32 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
         }
         expandRow(0);  // Expand the root node.
         setSelectionPath(selectionPath);
+        expandPath(selectionPath);
+        scrollPathToVisible(selectionPath);
     }
 
+    /**
+     * Updates this component.
+     * @param o The object that has changed.
+     * @param info Info about what has changed, or null to update everything.
+     */
     @Override
-    public void update(Observable o, Object param) {
-        // TODO keep the expanded state
-        buildTree();
+    public void update(Observable o, Object info) {
+
+        if (o == null) {
+            return;
+        }
+
+        if (o instanceof Sprite) {
+
+            if (info == null) {
+                // Rebuild everything.
+                buildTree();
+                return;
+            }
+
+            // TODO
+        }
     }
 
     /**

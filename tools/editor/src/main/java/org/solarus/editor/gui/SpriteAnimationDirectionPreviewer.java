@@ -308,10 +308,12 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
     }
 
     /**
-     * This function is called when the sprite, animation or direction is changed.
+     * Updates this component.
+     * @param o The object that has changed.
+     * @param info Info about what has changed, or null to update everything.
      */
     @Override
-    public void update(Observable o, Object obj) {
+    public void update(Observable o, Object info) {
 
         if (o instanceof Sprite) {
             setAnimation(sprite.getSelectedAnimation());

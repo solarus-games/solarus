@@ -145,7 +145,7 @@ public class SpriteAnimationsView extends JPanel implements Observer, Scrollable
         if (sprite != null) {
             sprite.addObserver(this);
         }
-        update(null, null);
+        update(sprite, null);
     }
 
     /**
@@ -164,22 +164,54 @@ public class SpriteAnimationsView extends JPanel implements Observer, Scrollable
         }
     }
 
+    /**
+     * Updates this component.
+     * @param o The object that has changed.
+     * @param info Info about what has changed, or null to update everything.
+     */
     @Override
-    public void update(Observable o, Object param) {
+    public void update(Observable o, Object info) {
 
-        SpriteAnimation animation = null;
-        if (sprite != null) {
-            animation = sprite.getSelectedAnimation();
+        if (o == null) {
+            return;
         }
 
-        if (sprite == null || animation == null) {
+        if (o instanceof Sprite) {
+
+            Sprite.Change change = (Sprite.Change) info;
+            if (change == null) {
+                updateTitles();
+                return;
+            }
+            switch (change.getWhatChanged()) {
+
+            case SELECTED_ANIMATION_CHANGED:
+            case SELECTED_DIRECTION_CHANGED:
+            case DIRECTION_ADDED:
+            case DIRECTION_REMOVED:
+                updateTitles();
+                break;
+
+            default:
+                break;
+            }
+
+        }
+    }
+
+    /**
+     * Updates the titled borders in this view.
+     */
+    private void updateTitles() {
+
+        SpriteAnimation animation = sprite.getSelectedAnimation();
+        SpriteAnimationDirection direction = sprite.getSelectedDirection();
+        if (animation == null) {
             animationPanel.setBorder(BorderFactory.createTitledBorder("(No animation selected)"));
             directionPanel.setBorder(BorderFactory.createTitledBorder("(No direction selected)"));
         }
         else {
             animationPanel.setBorder(BorderFactory.createTitledBorder("Animation \"" + sprite.getSelectedAnimationName() + "\""));
-
-            SpriteAnimationDirection direction = sprite.getSelectedDirection();
             if (direction == null) {
                 directionPanel.setBorder(BorderFactory.createTitledBorder("(No direction selected)"));
             }

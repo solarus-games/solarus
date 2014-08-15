@@ -296,7 +296,7 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
             sprite.addObserver(this);
 
             // initialize the popup menu of the selected direction
-            update(sprite.getSelectedDirection(), null);
+            update(sprite.getSelectedDirection(), null);  // TODO
 
             // load the sprite animation's image
             sprite.reloadImage();

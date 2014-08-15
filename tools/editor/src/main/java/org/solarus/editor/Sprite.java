@@ -208,6 +208,55 @@ public class Sprite extends Observable {
     }
 
     /**
+     * Possible values passed to notifyObservers() to inform observers
+     * about what has changed.
+     */
+    public enum WhatChanged {
+        ANIMATION_ADDED,
+        ANIMATION_REMOVED,
+        ANIMATION_RENAMED,
+        DEFAULT_ANIMATION_CHANGED,
+        SELECTED_ANIMATION_CHANGED,
+        DIRECTION_ADDED,
+        DIRECTION_REMOVED,
+        SELECTED_DIRECTION_CHANGED,
+        SOURCE_IMAGE_REFRESHED
+    }
+
+    /**
+     * Description of what has changed when notifying observers.
+     */
+    public class Change {
+
+        private final WhatChanged whatChanged;
+
+        private final Object[] info;
+
+        /**
+         * Creates a change description.
+         * @param whatChanged Nature of the change.
+         * @param info Optional info describing what animations or
+         * directions are impacted by the change.
+         */
+        public Change(WhatChanged whatChanged, Object... info) {
+            this.whatChanged = whatChanged;
+            this.info = info;
+        }
+
+        public WhatChanged getWhatChanged() {
+            return whatChanged;
+        }
+
+        public Object getInfo() {
+            return getInfo(0);
+        }
+
+        public Object getInfo(int index) {
+            return info[index];
+        }
+    }
+
+    /**
      * Creates a sprite from the specified animation set id
      * @param animationSetId id of the animation set to use
      * @param tilesetId id of the tileset to use
@@ -327,7 +376,8 @@ public class Sprite extends Observable {
 
     /**
      * Changes the default animation of this sprite.
-     * @param animationName the name of the new default animation
+     * @param animationName the name of the new default animation,
+     * or an empty string to make no explicit default animation.
      */
     public void setDefaultAnimation(String animationName) {
 
@@ -336,7 +386,7 @@ public class Sprite extends Observable {
 
             isSaved = false;
             setChanged();
-            notifyObservers();
+            notifyObservers(new Change(WhatChanged.DEFAULT_ANIMATION_CHANGED));
         }
     }
 
@@ -433,6 +483,9 @@ public class Sprite extends Observable {
 
         selectedAnimationName = animationName;
         reloadImage();
+
+        setChanged();
+        notifyObservers(new Change(WhatChanged.SELECTED_ANIMATION_CHANGED));
     }
 
     /**
@@ -478,7 +531,7 @@ public class Sprite extends Observable {
         }
         this.selectedDirectionNb = selectedDirectionNb;
         setChanged();
-        notifyObservers(getSelectedDirection());
+        notifyObservers(new Change(WhatChanged.SELECTED_DIRECTION_CHANGED));
     }
 
     /**
@@ -571,7 +624,7 @@ public class Sprite extends Observable {
 
         // notify observers that an animation has been added
         setChanged();
-        notifyObservers(name);
+        notifyObservers(new Change(WhatChanged.ANIMATION_ADDED, name));
         // changes the selected animation (notify observers that the sprite has changed)
         setSelectedAnimation(name);
     }
@@ -606,7 +659,7 @@ public class Sprite extends Observable {
 
         isSaved = false;
         setChanged();
-        notifyObservers(animation);
+        notifyObservers(new Change(WhatChanged.ANIMATION_RENAMED, name, newName));
     }
 
     /**
@@ -626,12 +679,12 @@ public class Sprite extends Observable {
         }
 
         int directionNb = animation.getNbDirections();
-        SpriteAnimationDirection direction = animation.addDirection(rect);
-        selectedDirectionNb = directionNb;
 
         isSaved = false;
         setChanged();
-        notifyObservers(direction);
+        notifyObservers(new Change(WhatChanged.DIRECTION_ADDED, directionNb));
+
+        setSelectedDirectionNb(directionNb);
     }
 
     /**
@@ -650,14 +703,13 @@ public class Sprite extends Observable {
             throw new SpriteException("No selected direction");
         }
 
-        SpriteAnimationDirection direction = animation.cloneDirection(
-                selectedDirectionNb, position);
-
-        selectedDirectionNb = animation.getNbDirections() - 1;
+        animation.cloneDirection(selectedDirectionNb, position);
 
         isSaved = false;
         setChanged();
-        notifyObservers(direction);
+        notifyObservers(new Change(WhatChanged.DIRECTION_ADDED, selectedDirectionNb));
+
+        setSelectedDirectionNb(animation.getNbDirections() - 1);
     }
 
     /**
@@ -679,14 +731,14 @@ public class Sprite extends Observable {
             String animationName = selectedAnimationName;
 
             animations.remove(animationName);
-            selectedAnimationName = "";
-            selectedDirectionNb = -1;
+            unselectAnimation();
             if (animationName.equals(defaultAnimationName)) {
-                defaultAnimationName = "";
+                setDefaultAnimation("");
             }
 
             isSaved = false;
-            reloadImage(animationName);
+            setChanged();
+            notifyObservers(new Change(WhatChanged.ANIMATION_REMOVED, animationName));
         } else {
             throw new SpriteException("No animation is selected");
         }
@@ -706,20 +758,19 @@ public class Sprite extends Observable {
                 throw new SpriteException("No animation is selected");
             }
 
+            unselectDirection();
             int directionNb = selectedDirectionNb;
             animation.removeDirection(selectedDirectionNb);
-            selectedDirectionNb = -1;
             isSaved = false;
             setChanged();
-            notifyObservers(directionNb);
+            notifyObservers(new Change(WhatChanged.DIRECTION_REMOVED, directionNb));
         }
     }
 
     /**
      * Reloads the selected animation's image.
-     * @param obj the object passed to observers
      */
-    public void reloadImage(Object obj) {
+    public void reloadImage() {
 
         SpriteAnimation animation = getSelectedAnimation();
 
@@ -736,15 +787,7 @@ public class Sprite extends Observable {
         }
 
         setChanged();
-        notifyObservers(obj);
-    }
-
-    /**
-     * Reloads the selected animation's image and notify.
-     */
-    public void reloadImage() {
-
-        reloadImage(null);
+        notifyObservers(new Change(WhatChanged.SOURCE_IMAGE_REFRESHED));
     }
 
     private BufferedImage createScaledImage(BufferedImage image, int width, int height) {
@@ -799,26 +842,6 @@ public class Sprite extends Observable {
     public SpriteAnimation getAnimation(String animationName) {
 
         return animations.get(animationName);
-    }
-
-    /**
-     * Sets an animation of this sprite.
-     * @param animationName name of the animation to set
-     * @param animation the animation
-     */
-    public void setAnimation(String animationName, SpriteAnimation animation) {
-
-        if (animations.containsKey(animationName) && animations.get(animationName) != animation) {
-            animations.put(animationName, animation);
-
-            isSaved = false;
-            if (animationName.equals(selectedAnimationName)) {
-                reloadImage(animation);
-            } else {
-                setChanged();
-                notifyObservers(animation);
-            }
-        }
     }
 
     /**
@@ -997,7 +1020,7 @@ public class Sprite extends Observable {
         }
     }
 
-    static public String animationToString (String name, SpriteAnimation animation) {
+    public static String animationToString(String name, SpriteAnimation animation) {
 
         // TODO use a StringBuffer
         String str = "animation{\n";

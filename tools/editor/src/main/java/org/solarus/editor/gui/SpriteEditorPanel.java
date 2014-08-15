@@ -85,10 +85,6 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
 
         sprite = new Sprite(spriteId);
 
-        // Notify the children views.
-        spriteAnimationsView.setSprite(sprite);
-        spriteImageView.setSprite(sprite);
-
         if (sprite != null) {
             // select the default animation initially
             sprite.setSelectedAnimation(sprite.getDefaultAnimationName());
@@ -96,6 +92,11 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
             // reload image of selected animation
             sprite.reloadImage();
         }
+
+        // Notify the children views.
+        spriteAnimationsView.setSprite(sprite);
+        spriteImageView.setSprite(sprite);
+
     }
 
     /**

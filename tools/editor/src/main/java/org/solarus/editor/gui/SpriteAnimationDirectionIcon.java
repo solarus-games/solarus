@@ -61,12 +61,11 @@ public class SpriteAnimationDirectionIcon extends JComponent implements Observer
         sprite.addObserver(this);
 
         update(direction, null);
-        update(sprite, null);
     }
 
     /**
      * Returns the preferred size.
-     * @return the preffered size
+     * @return the preferred size
      */
     @Override
     public Dimension getPreferredSize() {

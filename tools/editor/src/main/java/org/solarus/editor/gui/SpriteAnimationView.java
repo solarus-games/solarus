@@ -97,8 +97,6 @@ class SpriteAnimationView extends JPanel implements Observer {
         constraints.gridy++;
         loopOnFrameView = new LoopOnFrameField();
         add(loopOnFrameView, constraints);
-
-        update(sprite, null);
     }
 
     /**
@@ -122,8 +120,9 @@ class SpriteAnimationView extends JPanel implements Observer {
     }
 
     /**
-     * Sets the selected animation.
-     * @param animationName the name of animation
+     * Sets the animation shown in this component.
+     * @param animationName The name of animation, or an empty string to
+     * show no animation in the component.
      */
     public void setSelectedAnimation(String animationName) {
 
@@ -145,31 +144,26 @@ class SpriteAnimationView extends JPanel implements Observer {
         if (selectedAnimation != null) {
             selectedAnimation.addObserver(this);
         }
-        update(animation, null);
     }
 
     /**
-     * This function is called when the sprite is changed.
-     * @param o the sprite, or null if no sprite is set
-     * @param obj not used
+     * Updates this component.
+     * @param o The object that has changed.
+     * @param info Info about what has changed, or null to update everything.
      */
     @Override
-    public void update(Observable o, Object obj) {
+    public void update(Observable o, Object info) {
 
-        if (o instanceof Sprite && (obj == null || obj instanceof String)) {
-            // the sprite has changed
-            setSelectedAnimation(sprite.getSelectedAnimationName());
-            defaultAnimationView.update(o);
+        if (o == null) {
+            return;
         }
-        else if (obj instanceof SpriteAnimation ||
-                o instanceof SpriteAnimation ||
-                o == null) {
-            // the animation has changed
-            srcImageView.update(o);
-            frameDelayView.update(o);
-            loopView.update(o);
-            loopOnFrameView.update(o);
-        }
+
+        setSelectedAnimation(sprite.getSelectedAnimationName());
+        defaultAnimationView.update();
+        srcImageView.update();
+        frameDelayView.update();
+        loopView.update();
+        loopOnFrameView.update();
     }
 
     /**
@@ -515,7 +509,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         public DefaultAnimationField() {
             super("Set as default");
             addActionListener(this);
-            update((Sprite) null);
+            update();
         }
 
         /**
@@ -534,7 +528,7 @@ class SpriteAnimationView extends JPanel implements Observer {
          * This function is called when the sprite is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             if (sprite != null && selectedAnimation != null) {
                 setSelected(sprite.getDefaultAnimationName() == sprite.getSelectedAnimationName());
@@ -547,7 +541,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         }
     }
 
-   /**
+    /**
      * Component to choose the source image of this animation.
      */
     private class SrcImageField extends JPanel implements ActionListener {
@@ -639,14 +633,14 @@ class SpriteAnimationView extends JPanel implements Observer {
             constraints.fill = GridBagConstraints.NONE;
             add(refreshButton, constraints);
 
-            update((SpriteAnimation) null);
+            update();
         }
 
         /**
          * This function is called when the animation is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             if (selectedAnimation != null) {
                 refreshButton.setEnabled(true);
@@ -704,14 +698,14 @@ class SpriteAnimationView extends JPanel implements Observer {
             setStepSize(10);
 
             addChangeListener(this);
-            update((SpriteAnimation) null);
+            update();
         }
 
         /**
          * This function is called when the animation is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             if (selectedAnimation != null) {
                 setEnabled(true);
@@ -756,14 +750,14 @@ class SpriteAnimationView extends JPanel implements Observer {
             loopCheckBox = new JCheckBox();
             add(loopCheckBox, BorderLayout.CENTER);
             loopCheckBox.addActionListener(this);
-            update((SpriteAnimation) null);
+            update();
         }
 
         /**
          * This function is called when the animation is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             if (selectedAnimation == null) {
                 loopLabel.setEnabled(false);
@@ -824,7 +818,7 @@ class SpriteAnimationView extends JPanel implements Observer {
             add(frameLabel, BorderLayout.LINE_START);
             add(frameField, BorderLayout.CENTER);
             frameField.addChangeListener(this);
-            update((SpriteAnimation) null);
+            update();
         }
         
         /**
@@ -839,7 +833,7 @@ class SpriteAnimationView extends JPanel implements Observer {
          * This function is called when the animation is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             if (selectedAnimation != null &&
                     selectedAnimation.getFrameDelay() > 0 &&

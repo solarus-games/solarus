@@ -200,7 +200,7 @@ public class SpritePropertiesView extends JPanel
             String name) {
         // This sprite has just been renamed.
         if (resourceType == ResourceType.SPRITE && id.equals(sprite.getId())) {
-            update(null, null);
+            update(sprite, null);
         }
     }
 }

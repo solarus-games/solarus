@@ -148,7 +148,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer, Sc
     }
 
     /**
-     * Sets the selected direction.
+     * Sets the direction shown in this component.
      * @param directionNb the number of the direction
      */
     public void setSelectedDirection(int directionNb) {
@@ -170,30 +170,23 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer, Sc
         if (selectedDirection != null) {
             selectedDirection.addObserver(this);
         }
-        update(direction, null);
     }
 
     /**
-     * This function is called when the sprite is changed.
-     * @param o the sprite, or null if no sprite is set
-     * @param obj not used
+     * Updates this component.
+     * @param o The object that has changed.
+     * @param info Info about what has changed, or null to update everything.
      */
     @Override
-    public void update(Observable o, Object obj) {
+    public void update(Observable o, Object info) {
 
-        if (o instanceof Sprite || o instanceof SpriteAnimation) {
-
-            int directionNb = sprite.getSelectedDirectionNb();
-
-            setSelectedDirection(directionNb);
-        } else {
-
-            sizeView.update(selectedDirection);
-            positionView.update(selectedDirection);
-            originView.update(selectedDirection);
-            nbFramesView.update(selectedDirection);
-            nbColumnsView.update(selectedDirection);
-       }
+        int directionNb = sprite.getSelectedDirectionNb();
+        setSelectedDirection(directionNb);
+        sizeView.update();
+        positionView.update();
+        originView.update();
+        nbFramesView.update();
+        nbColumnsView.update();
     }
 
     @Override
@@ -253,7 +246,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer, Sc
                             }
                         }
                     }
-                    update(selectedDirection);
+                    update();
                 }
             });
         }
@@ -262,7 +255,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer, Sc
          * This function is called when the direction is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             updating = true;
             if (sprite != null && selectedDirection != null) {
@@ -317,7 +310,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer, Sc
                             }
                         }
                     }
-                    update(selectedDirection);
+                    update();
                 }
             });
         }
@@ -326,7 +319,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer, Sc
          * This function is called when the direction is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             updating = true;
             if (sprite != null && selectedDirection != null) {
@@ -374,7 +367,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer, Sc
                             sprite.setSaved(false);
                         }
                     }
-                    update(selectedDirection);
+                    update();
                 }
             });
         }
@@ -383,7 +376,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer, Sc
          * This function is called when the direction is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             updating = true;
             if (selectedDirection != null) {
@@ -426,7 +419,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer, Sc
                             }
                         }
                     }
-                    update(selectedDirection);
+                    update();
                 }
             });
         }
@@ -435,7 +428,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer, Sc
          * This function is called when the direction is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             if (selectedDirection != null) {
                 setEnabled(true);
@@ -475,7 +468,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer, Sc
                             }
                         }
                     }
-                    update(selectedDirection);
+                    update();
                 }
             });
         }
@@ -484,7 +477,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer, Sc
          * This function is called when the direction is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             if (selectedDirection != null) {
                 setEnabled(true);

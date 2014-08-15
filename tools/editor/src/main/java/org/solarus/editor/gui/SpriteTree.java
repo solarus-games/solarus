@@ -114,6 +114,8 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
         expandPath(selectionPath);  // Expand the selected animation and direction.
         setSelectionPath(selectionPath);
         scrollPathToVisible(selectionPath);
+
+        // TODO show the icon of each direction
     }
 
     /**
@@ -136,7 +138,45 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
                 return;
             }
 
-            // TODO
+            Sprite.Change change = (Sprite.Change) info;
+            switch (change.getWhatChanged()) {
+
+            case ANIMATION_ADDED:
+                // TODO add a new node
+                break;
+
+            case ANIMATION_REMOVED:
+                // TODO remove the node
+                break;
+
+            case ANIMATION_RENAMED:
+                // TODO change the node text
+                break;
+
+            case DEFAULT_ANIMATION_CHANGED:
+                // Nothing to do.
+                break;
+
+            case SELECTED_ANIMATION_CHANGED:
+                // TODO make the animation and direction selected in the tree.
+                break;
+
+            case DIRECTION_ADDED:
+                // TODO add a new node
+                break;
+
+            case DIRECTION_REMOVED:
+                // TODO remove the new node
+                break;
+
+            case SELECTED_DIRECTION_CHANGED:
+                // TODO make the animation and direction selected in the tree.
+                break;
+
+            case SOURCE_IMAGE_REFRESHED:
+                // The icons may have changed.
+                break;
+            }
         }
     }
 

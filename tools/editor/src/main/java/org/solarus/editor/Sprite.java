@@ -975,7 +975,7 @@ public class Sprite extends Observable {
 
     static public String animationToString (String name, SpriteAnimation animation) {
 
-        String str = "animation {\n";
+        String str = "animation{\n";
 
         String srcImage = animation.getSrcImage();
         int frameDelay = animation.getFrameDelay();

@@ -49,6 +49,7 @@ class SpriteAnimationView extends JPanel implements Observer {
     private final DefaultAnimationField defaultAnimationView;
     private final SrcImageField srcImageView;
     private final FrameDelayField frameDelayView;
+    private final LoopField loopView;
     private final LoopOnFrameField loopOnFrameView;
 
     /**
@@ -75,7 +76,8 @@ class SpriteAnimationView extends JPanel implements Observer {
         add(new JLabel("Frame delay"), constraints);
 
         constraints.gridy++;
-        add(new JLabel("Loop on frame"), constraints);
+        loopView = new LoopField();
+        add(loopView, constraints);
 
         constraints.weightx = 1;  // Give any available space to this column when resizing.
         constraints.gridx = 1;
@@ -159,10 +161,13 @@ class SpriteAnimationView extends JPanel implements Observer {
             setSelectedAnimation(sprite.getSelectedAnimationName());
             defaultAnimationView.update(o);
         }
-        else if (obj instanceof SpriteAnimation || o instanceof SpriteAnimation || o == null) {
+        else if (obj instanceof SpriteAnimation ||
+                o instanceof SpriteAnimation ||
+                o == null) {
             // the animation has changed
             srcImageView.update(o);
             frameDelayView.update(o);
+            loopView.update(o);
             loopOnFrameView.update(o);
         }
     }
@@ -735,18 +740,22 @@ class SpriteAnimationView extends JPanel implements Observer {
         }
     }
 
-   /**
-     * Component to choose the frame delay of this animation.
+    /**
+     * Component to choose whether the animation loops.
      */
-    private class LoopOnFrameField extends NumberChooser implements ChangeListener {
+    private class LoopField extends JPanel implements ChangeListener {
 
-        /**
-         * Constructor.
-         */
-        public LoopOnFrameField() {
-            super(0, -1, Integer.MAX_VALUE);
+        private final JLabel loopLabel;
+        private final JCheckBox loopCheckBox;
 
-            addChangeListener(this);
+        public LoopField() {
+
+            super(new BorderLayout());
+            loopLabel = new JLabel("Loop ");
+            add(loopLabel, BorderLayout.LINE_START);
+            loopCheckBox = new JCheckBox();
+            add(loopCheckBox, BorderLayout.CENTER);
+            loopCheckBox.addChangeListener(this);
             update((SpriteAnimation) null);
         }
 
@@ -756,12 +765,90 @@ class SpriteAnimationView extends JPanel implements Observer {
          */
         public void update(Observable o) {
 
-            if (selectedAnimation != null && selectedAnimation.getFrameDelay() > 0) {
-                setEnabled(true);
-                setValue(selectedAnimation.getLoopOnFrame());
+            if (selectedAnimation == null) {
+                return;
+            }
+
+            if (selectedAnimation.getFrameDelay() > 0) {
+                loopLabel.setEnabled(true);
+                loopCheckBox.setEnabled(true);
+                loopCheckBox.setSelected(selectedAnimation.getLoopOnFrame() != -1);
             }
             else {
-                setEnabled(false);
+                loopLabel.setEnabled(false);
+                loopCheckBox.setEnabled(false);
+            }
+        }
+
+        @Override
+        public void stateChanged(ChangeEvent event) {
+            if (selectedAnimation == null) {
+                return;
+            }
+
+            boolean currentLoop = selectedAnimation.getLoopOnFrame() != -1;
+            boolean newLoop = loopCheckBox.isSelected();
+            
+            if (newLoop == currentLoop) {
+                return;
+            }
+
+            if (newLoop) { 
+                selectedAnimation.setLoopOnFrame(loopOnFrameView.getLoopOnFrame());
+            }
+            else {
+                selectedAnimation.setLoopOnFrame(-1);
+            }
+            sprite.setSaved(false);
+        }
+    }
+
+    /**
+     * Component to choose the frame to loop on in this animation.
+     */
+    private class LoopOnFrameField extends JPanel implements ChangeListener {
+
+        private final JLabel frameLabel;
+        private final NumberChooser frameField;
+
+        /**
+         * Constructor.
+         */
+        public LoopOnFrameField() {
+            super(new BorderLayout());
+
+            frameField = new NumberChooser(0, 0, Integer.MAX_VALUE);
+            frameLabel = new JLabel("on frame ");
+            add(frameLabel, BorderLayout.LINE_START);
+            add(frameField, BorderLayout.CENTER);
+            frameField.addChangeListener(this);
+            update((SpriteAnimation) null);
+        }
+        
+        /**
+         * Returns the number shown in the field.
+         * @return The frame number, even if the field is disabled.
+         */
+        public int getLoopOnFrame() {
+            return frameField.getNumber();
+        }
+
+        /**
+         * This function is called when the animation is changed.
+         * The component is updated.
+         */
+        public void update(Observable o) {
+
+            if (selectedAnimation != null &&
+                    selectedAnimation.getFrameDelay() > 0 &&
+                    selectedAnimation.getLoopOnFrame() != -1) {
+                frameLabel.setEnabled(true);
+                frameField.setEnabled(true);
+                frameField.setNumber(selectedAnimation.getLoopOnFrame());
+            }
+            else {
+                frameLabel.setEnabled(false);
+                frameField.setEnabled(false);
             }
         }
 
@@ -771,13 +858,15 @@ class SpriteAnimationView extends JPanel implements Observer {
         @Override
         public void stateChanged(ChangeEvent ev) {
 
-            if (selectedAnimation != null) {
-                int selectedLoopOnFrame = getNumber();
-                int currentloopOnFrame = selectedAnimation.getLoopOnFrame();
-                if (currentloopOnFrame != selectedLoopOnFrame) {
-                    selectedAnimation.setLoopOnFrame(selectedLoopOnFrame);
-                    sprite.setSaved(false);
-                }
+            if (selectedAnimation == null) {
+                return;
+            }
+
+            int selectedLoopOnFrame = frameField.getNumber();
+            int currentloopOnFrame = selectedAnimation.getLoopOnFrame();
+            if (currentloopOnFrame != selectedLoopOnFrame) {
+                selectedAnimation.setLoopOnFrame(selectedLoopOnFrame);
+                sprite.setSaved(false);
             }
         }
     }

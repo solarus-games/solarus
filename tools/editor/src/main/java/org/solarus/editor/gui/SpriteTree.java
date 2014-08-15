@@ -60,9 +60,7 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
         root.setAllowsChildren(true);  // Show node as a folder even if empty.
         // TODO root.setUserObject(sprite);
   
-        DefaultTreeModel model = new DefaultTreeModel(root);
         getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        setModel(model);
 
         if (sprite == null) {
             return;
@@ -100,6 +98,11 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
                 }
             }
         }
+
+        DefaultTreeModel model = new DefaultTreeModel(root);
+        model.setAsksAllowsChildren(true);
+        setModel(model);
+
         expandRow(0);  // Expand the root node.
         setSelectionPath(selectionPath);
         expandPath(selectionPath);

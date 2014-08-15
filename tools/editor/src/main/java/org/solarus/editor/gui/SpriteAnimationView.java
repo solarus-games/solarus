@@ -531,7 +531,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         }
 
         /**
-         * This function is called when the map is changed.
+         * This function is called when the sprite is changed.
          * The component is updated.
          */
         public void update(Observable o) {
@@ -766,6 +766,8 @@ class SpriteAnimationView extends JPanel implements Observer {
         public void update(Observable o) {
 
             if (selectedAnimation == null) {
+                loopLabel.setEnabled(false);
+                loopCheckBox.setEnabled(false);
                 return;
             }
 

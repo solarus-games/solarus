@@ -91,7 +91,7 @@ public class SpriteAnimationsView extends JPanel implements Scrollable {
         constraints.weighty = 0.0;
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        animationPanel.setPreferredSize(new Dimension(0, 180));
+        animationPanel.setPreferredSize(new Dimension(0, 160));
         add(animationPanel, constraints);
 
         // Current animation direction.

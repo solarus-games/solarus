@@ -585,28 +585,7 @@ class SpriteAnimationView extends JPanel implements Observer {
             constraints.fill = GridBagConstraints.BOTH;
             add(tilesetChooser, constraints);
 
-            refreshButton = new JButton(Project.getEditorImageIconOrEmpty("icon_refresh.png"));
-            refreshButton.setToolTipText("Refresh source image");
-            refreshButton.setMinimumSize(new Dimension(24, 24));
-            refreshButton.setPreferredSize(new Dimension(24, 24));
-            refreshButton.setMaximumSize(new Dimension(24, 24));
-            refreshButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ev) {
-
-                    if (selectedAnimation != null) {
-                        sprite.reloadImage();
-                    }
-                }
-            });
-
-            constraints.gridx = 2;
-            constraints.gridy = 0;
-            constraints.weightx = 0.0;
-            constraints.fill = GridBagConstraints.NONE;
-            add(refreshButton, constraints);
-
-            setButton = new JButton(Project.getEditorImageIconOrEmpty("icon_edit.png"));
+            setButton = new JButton(Project.getEditorImageIconOrEmpty("icon_open.png"));
             setButton.setToolTipText("Change source image");
             setButton.setMinimumSize(new Dimension(24, 24));
             setButton.setPreferredSize(new Dimension(24, 24));
@@ -633,11 +612,32 @@ class SpriteAnimationView extends JPanel implements Observer {
                 }
             });
 
-            constraints.gridx = 3;
+            constraints.gridx = 2;
             constraints.gridy = 0;
             constraints.weightx = 0.0;
             constraints.fill = GridBagConstraints.NONE;
             add(setButton, constraints);
+
+            refreshButton = new JButton(Project.getEditorImageIconOrEmpty("icon_refresh.png"));
+            refreshButton.setToolTipText("Refresh source image");
+            refreshButton.setMinimumSize(new Dimension(24, 24));
+            refreshButton.setPreferredSize(new Dimension(24, 24));
+            refreshButton.setMaximumSize(new Dimension(24, 24));
+            refreshButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ev) {
+
+                    if (selectedAnimation != null) {
+                        sprite.reloadImage();
+                    }
+                }
+            });
+
+            constraints.gridx = 3;
+            constraints.gridy = 0;
+            constraints.weightx = 0.0;
+            constraints.fill = GridBagConstraints.NONE;
+            add(refreshButton, constraints);
 
             update((SpriteAnimation) null);
         }

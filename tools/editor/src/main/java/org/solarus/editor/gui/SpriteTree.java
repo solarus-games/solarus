@@ -97,6 +97,15 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
                     });
                 }
             }
+
+            if (selectionPath == null &&
+                    animationName.equals(sprite.getSelectedAnimationName())) {
+                // Initially select the current animation and no direction.
+                selectionPath = new TreePath(new Object[] {
+                        root,
+                        animationNode
+                });
+            }
         }
 
         DefaultTreeModel model = new DefaultTreeModel(root);
@@ -104,8 +113,8 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
         setModel(model);
 
         expandRow(0);  // Expand the root node.
+        expandPath(selectionPath);  // Expand the selected animation and direction.
         setSelectionPath(selectionPath);
-        expandPath(selectionPath);
         scrollPathToVisible(selectionPath);
     }
 

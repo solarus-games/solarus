@@ -27,6 +27,11 @@ import java.util.Observable;
 public class SpriteAnimationDirection extends Observable {
 
     /**
+     * @brief The animation this direction belongs to.
+     */
+    private SpriteAnimation animation;
+
+    /**
      * @brief The frames of this animation direction.
      */
     private BufferedImage[] frames;
@@ -72,9 +77,13 @@ public class SpriteAnimationDirection extends Observable {
      * @param originY y coordinate of the sprite's origin in each rectangle
      * @throws SpriteException if some rectangles are outside the image.
      */
-    public SpriteAnimationDirection(BufferedImage srcImage,
+    public SpriteAnimationDirection(
+            BufferedImage srcImage,
             Rectangle firstFrameRectangle,
-            int nbFrames, int nbColumns, int originX, int originY)
+            int nbFrames,
+            int nbColumns,
+            int originX,
+            int originY)
             throws SpriteException {
 
         this.position = new Point(firstFrameRectangle.x, firstFrameRectangle.y);
@@ -104,6 +113,22 @@ public class SpriteAnimationDirection extends Observable {
                 frame++;
             }
         }
+    }
+
+    /**
+     * Returns the animation this direction belongs to.
+     * @return The animation.
+     */
+    public SpriteAnimation getAnimation() {
+        return animation;
+    }
+
+    /**
+     * Sets the animation this directions belongs to.
+     * @param animation The animation this direction belongs to.
+     */
+    public void setAnimation(SpriteAnimation animation) {
+        this.animation = animation;
     }
 
     /**
@@ -387,8 +412,16 @@ public class SpriteAnimationDirection extends Observable {
     public SpriteAnimationDirection clone() throws CloneNotSupportedException {
 
         try {
-            return new SpriteAnimationDirection(srcImage, new Rectangle(position, size),
-                    nbFrames, nbColumns, origin.x, origin.y);
+            SpriteAnimationDirection direction = new SpriteAnimationDirection(
+                    srcImage,
+                    new Rectangle(position, size),
+                    nbFrames,
+                    nbColumns,
+                    origin.x,
+                    origin.y
+            );
+            direction.setAnimation(animation);
+            return direction;
         } catch (SpriteException ex) {
             throw new CloneNotSupportedException(ex.getMessage());
         }

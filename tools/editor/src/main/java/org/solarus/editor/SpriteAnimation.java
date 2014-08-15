@@ -28,7 +28,12 @@ import javax.imageio.ImageIO;
 /**
  * Represents an animation of a sprite.
  */
-public class SpriteAnimation  extends Observable {
+public class SpriteAnimation extends Observable {
+
+    /**
+     * @brief Name of the animation.
+     */
+    private String name;
 
     /**
      * @brief The directions of this animation.
@@ -65,19 +70,30 @@ public class SpriteAnimation  extends Observable {
 
     /**
      * Creates an animation.
+     * @param name Name of the animation.
      * @param srcImageName the source image name of this animation
      * @param directions the list of directions of this animation
      * @param frameDelay interval in milliseconds between two frames
      * @param loopOnFrame index of a frame to loop on when the animation is finished, or -1
      * @param tilesetId the id of tileset to use (only if srcImageName = "tileset")
      */
-    public SpriteAnimation(String srcImageName, Vector<SpriteAnimationDirection> directions,
-            int frameDelay, int loopOnFrame, String tilesetId) {
+    public SpriteAnimation(
+            String name,
+            String srcImageName,
+            Vector<SpriteAnimationDirection> directions,
+            int frameDelay,
+            int loopOnFrame,
+            String tilesetId) {
+        this.name = name;
         this.directions = directions;
         this.frameDelay = frameDelay;
         this.loopOnFrame = loopOnFrame;
         this.srcImage = srcImageName;
         this.tilesetId = tilesetId;
+
+        for (SpriteAnimationDirection direction: directions) {
+            direction.setAnimation(this);
+        }
     }
 
     /**
@@ -133,7 +149,7 @@ public class SpriteAnimation  extends Observable {
      * Returns the name of the source image.
      * @return the name
      */
-    public String getSrcImage () {
+    public String getSrcImage() {
 
         return srcImage;
     }
@@ -159,6 +175,14 @@ public class SpriteAnimation  extends Observable {
             reloadImage();
             throw ex;
         }
+    }
+
+    /**
+     * Returns the name of this animation.
+     * @return The name.
+     */
+    public String getName() {
+        return name;
     }
 
     /**
@@ -314,6 +338,7 @@ public class SpriteAnimation  extends Observable {
         Point origin = new Point(rect.width / 2, rect.height - 3);
 
         SpriteAnimationDirection direction = new SpriteAnimationDirection(image, rect, 1, 1, origin.x, origin.y);
+        direction.setAnimation(this);
         directions.add(direction);
 
         setChanged();

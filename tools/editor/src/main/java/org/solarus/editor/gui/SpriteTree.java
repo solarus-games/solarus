@@ -13,6 +13,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.solarus.editor.Sprite;
 import org.solarus.editor.SpriteAnimation;
+import org.solarus.editor.SpriteAnimationDirection;
 
 public class SpriteTree extends JTree implements Observer, TreeSelectionListener {
 
@@ -55,10 +56,9 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
      */
     private void buildTree() {
 
-        DefaultMutableTreeNode root =
-                new DefaultMutableTreeNode("Animations");
+       DefaultMutableTreeNode root =
+                new DefaultMutableTreeNode(new NodeInfo(sprite, "Animations"));
         root.setAllowsChildren(true);  // Show node as a folder even if empty.
-        // TODO root.setUserObject(sprite);
   
         getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
@@ -68,23 +68,21 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
 
         TreePath selectionPath = null;
 
-        System.out.println("sprite.getSelectedAnimationName(): " + sprite.getSelectedAnimationName());
-        System.out.println("sprite.getSelectedDirectionNb(): " + sprite.getSelectedDirectionNb());
         // Add a node for each animation.
         for (String animationName: sprite.getAnimationNames()) {
             SpriteAnimation animation = sprite.getAnimation(animationName);
-            DefaultMutableTreeNode animationNode = new DefaultMutableTreeNode(animationName);
+            DefaultMutableTreeNode animationNode = new DefaultMutableTreeNode(
+                    new NodeInfo(animation, animationName));
             animationNode.setAllowsChildren(true);
-            // TODO animationNode.setUserObject(animation);
             root.add(animationNode);
 
             // Add a node for each direction of this animation.
             for (int i = 0; i < animation.getNbDirections(); i++) {
+                SpriteAnimationDirection direction = animation.getDirection(i);
                 DefaultMutableTreeNode directionNode = new DefaultMutableTreeNode(
-                        "Direction " + animation.getDirectionName(i)
+                        new NodeInfo(direction, "Direction " + animation.getDirectionName(i))
                 );
                 directionNode.setAllowsChildren(false);
-                // TODO directionNode.setUserObject(animation.getDirection(i));
                 animationNode.add(directionNode);
 
                 // Initially select the sprite's current animation and direction.
@@ -147,7 +145,62 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
      */
     @Override
     public void valueChanged(TreeSelectionEvent event) {
-        // TODO
+
+        try {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) getLastSelectedPathComponent();
+            NodeInfo info = (NodeInfo) node.getUserObject();
+
+            Object data = info.getData();
+            if (data instanceof Sprite) {
+                // The sprite itself: root node.
+                sprite.unselectAnimation();
+            }
+
+            else if (data instanceof SpriteAnimation) {
+                // A sprite animation: show it and show no direction.
+                SpriteAnimation animation = (SpriteAnimation) data;
+                sprite.unselectDirection();
+                sprite.setSelectedAnimation(animation.getName());
+            }
+
+            else if (data instanceof SpriteAnimationDirection) {
+                // A direction: show it and show its parent animation.
+                SpriteAnimationDirection direction = (SpriteAnimationDirection) data;
+                sprite.setSelectedAnimation(direction.getAnimation());
+                sprite.setSelectedDirection(direction);
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Data to be used as user object in the nodes of the tree.
+     */
+    private class NodeInfo {
+
+        private Object data;
+
+        private String text;
+
+        /**
+         * Constructor.
+         * @param data Data associated to the node.
+         * @param text Text representation to show for the node.
+         */
+        public NodeInfo(Object data, String text) {
+            this.data = data;
+            this.text = text;
+        }
+
+        public Object getData() {
+            return data;
+        }
+        
+        public String toString() {
+            return text;
+        }
     }
 
 }

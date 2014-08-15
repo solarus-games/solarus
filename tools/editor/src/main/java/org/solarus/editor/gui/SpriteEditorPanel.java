@@ -18,8 +18,6 @@
 package org.solarus.editor.gui;
 
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.*;
@@ -86,8 +84,9 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
         sprite = new Sprite(spriteId);
 
         if (sprite != null) {
-            // select the default animation initially
+            // select the default animation initially and its first direction
             sprite.setSelectedAnimation(sprite.getDefaultAnimationName());
+            sprite.setSelectedDirectionNb(0);
 
             // reload image of selected animation
             sprite.reloadImage();

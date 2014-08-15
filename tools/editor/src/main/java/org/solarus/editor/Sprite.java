@@ -174,8 +174,13 @@ public class Sprite extends Observable {
 
                     try {
                       SpriteAnimationDirection direction =  new SpriteAnimationDirection(
-                          srcImage, firstFrameRectangle, numFrames, numColumns, originX, originY
-                          );
+                          srcImage,
+                          firstFrameRectangle,
+                          numFrames,
+                          numColumns,
+                          originX,
+                          originY
+                      );
                       directions.add(direction);
                     }
                     catch (SpriteException ex) {
@@ -186,8 +191,14 @@ public class Sprite extends Observable {
                     }
                 }
 
-                SpriteAnimation animation = new SpriteAnimation(srcImageName,
-                        directions, frameDelay, frameToLoopOn, tilesetId);
+                SpriteAnimation animation = new SpriteAnimation(
+                        animationName,
+                        srcImageName,
+                        directions,
+                        frameDelay,
+                        frameToLoopOn,
+                        tilesetId
+                );
                 animations.put(animationName, animation);
                 if (defaultAnimationName == "") {
                     defaultAnimationName = animationName; // set first animation as the default one
@@ -468,12 +479,8 @@ public class Sprite extends Observable {
         } else {
             int nbDirections = animations.get(animationName).getNbDirections();
             if (nbDirections > 0) {
-                // select the first direction if no direction was selected
-                if (selectedDirectionNb < 0) {
-                    selectedDirectionNb = 0;
-                }
-                // select the last direction if selected direction doesn't exists
-                else if (selectedDirectionNb >= nbDirections) {
+                // select the last direction if wanted direction doesn't exist
+                if (selectedDirectionNb >= nbDirections) {
                     selectedDirectionNb = nbDirections - 1;
                 }
             } else {
@@ -498,11 +505,19 @@ public class Sprite extends Observable {
     }
 
     /**
+     * Sets the selected animation of this sprite.
+     * @param animation The animation to select or null to unselect.
+     * @throws SpriteException if the animation doesn't exist
+     */
+    public void setSelectedAnimation(SpriteAnimation animation) throws SpriteException {
+        setSelectedAnimation(animation.getName());
+    }
+
+    /**
      * Returns the number of the selected direction.
      * @return -1 if no direction is selected, 0 or more if an existing direction is selected.
      */
     public int getSelectedDirectionNb() {
-
         return selectedDirectionNb;
     }
 
@@ -532,6 +547,34 @@ public class Sprite extends Observable {
         this.selectedDirectionNb = selectedDirectionNb;
         setChanged();
         notifyObservers(new Change(WhatChanged.SELECTED_DIRECTION_CHANGED));
+    }
+
+    /**
+     * Selects a direction and notifies the observers.
+     * @param direction The direction to select or null to unselect.
+     * @throws SpriteException if the direction doesn't exist.
+     */
+    public void setSelectedDirection(SpriteAnimationDirection direction) throws SpriteException {
+
+        if (direction == null) {
+            unselectDirection();
+            return;
+        }
+
+        SpriteAnimation animation = getSelectedAnimation();
+        if (animation == null) {
+            throw new SpriteException("No animation is selected");
+        }
+        for (int i = 0; i < animation.getNbDirections(); i++) {
+            SpriteAnimationDirection currentDirection = animation.getDirection(i);
+            if (currentDirection == direction) {
+                // Found it.
+                setSelectedDirectionNb(i);
+                return;
+            }
+        }
+
+        throw new SpriteException("No such direction");
     }
 
     /**
@@ -618,7 +661,14 @@ public class Sprite extends Observable {
         }
 
         Vector<SpriteAnimationDirection> directions = new Vector<SpriteAnimationDirection>();
-        SpriteAnimation animation = new SpriteAnimation(srcImage, directions, 0, -1, tilesetId);
+        SpriteAnimation animation = new SpriteAnimation(
+                name,
+                srcImage,
+                directions,
+                0,
+                -1,
+                tilesetId
+        );
 
         animations.put(name, animation);
 

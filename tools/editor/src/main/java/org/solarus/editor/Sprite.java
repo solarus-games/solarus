@@ -539,35 +539,7 @@ public class Sprite extends Observable {
             return "";
         }
 
-        if (getSelectedAnimation().getNbDirections() == 4 &&
-                direction < 4) {
-            // 4-direction case.
-            String[] directionNames = {
-                    "right",
-                    "up",
-                    "left",
-                    "down",
-            };
-            return direction + " (" + directionNames[direction] + ")";
-        }
-
-        if (getSelectedAnimation().getNbDirections() == 8 &&
-                direction < 8) {
-            // 8-direction case.
-            String[] directionNames = {
-                    "right",
-                    "right-up",
-                    "up",
-                    "left-up",
-                    "left",
-                    "left-down",
-                    "down",
-                    "right-down"
-            };
-            return direction + " (" + directionNames[direction] + ")";
-        }
-
-        return Integer.toString(direction);
+        return getSelectedAnimation().getDirectionName(direction);
     }
 
     /**

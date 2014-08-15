@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Vector;
+
 import javax.imageio.ImageIO;
 
 /**
@@ -142,7 +143,7 @@ public class SpriteAnimation  extends Observable {
      * @param srcImage the name of the source image
      * @throws SpriteException if this image could not be applied
      */
-    public void setSrcImage (String srcImage) throws SpriteException {
+    public void setSrcImage(String srcImage) throws SpriteException {
 
         if (srcImage.equals(this.srcImage)) {
             return;
@@ -207,6 +208,48 @@ public class SpriteAnimation  extends Observable {
     public SpriteAnimationDirection getDirection(int direction) {
 
         return direction >= 0 && direction < directions.size() ? directions.get(direction) : null;
+    }
+
+    /**
+     * Returns a name describing a direction of this animation.
+     *
+     * If there are 4 or 8 directions, this is the direction number followed by
+     * a hint like "up" or "right-left".
+     * Otherwise, this is the direction number alone.
+     *
+     * @param direction Index of a direction in this animation.
+     * @return A name describing the direction.
+     */
+    public String getDirectionName(int direction) {
+        if (getNbDirections() == 4 &&
+                direction < 4) {
+            // 4-direction case.
+            String[] directionNames = {
+                    "right",
+                    "up",
+                    "left",
+                    "down",
+            };
+            return direction + " (" + directionNames[direction] + ")";
+        }
+
+        if (getNbDirections() == 8 &&
+                direction < 8) {
+            // 8-direction case.
+            String[] directionNames = {
+                    "right",
+                    "right-up",
+                    "up",
+                    "left-up",
+                    "left",
+                    "left-down",
+                    "down",
+                    "right-down"
+            };
+            return direction + " (" + directionNames[direction] + ")";
+        }
+
+        return Integer.toString(direction);
     }
 
     /**

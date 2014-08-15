@@ -743,7 +743,7 @@ class SpriteAnimationView extends JPanel implements Observer {
     /**
      * Component to choose whether the animation loops.
      */
-    private class LoopField extends JPanel implements ChangeListener {
+    private class LoopField extends JPanel implements ActionListener {
 
         private final JLabel loopLabel;
         private final JCheckBox loopCheckBox;
@@ -755,7 +755,7 @@ class SpriteAnimationView extends JPanel implements Observer {
             add(loopLabel, BorderLayout.LINE_START);
             loopCheckBox = new JCheckBox();
             add(loopCheckBox, BorderLayout.CENTER);
-            loopCheckBox.addChangeListener(this);
+            loopCheckBox.addActionListener(this);
             update((SpriteAnimation) null);
         }
 
@@ -783,7 +783,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         }
 
         @Override
-        public void stateChanged(ChangeEvent event) {
+        public void actionPerformed(ActionEvent event) {
             if (selectedAnimation == null) {
                 return;
             }

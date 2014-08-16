@@ -1,11 +1,18 @@
 package org.solarus.editor.gui;
 
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -15,11 +22,17 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.solarus.editor.Project;
 import org.solarus.editor.Sprite;
 import org.solarus.editor.SpriteAnimation;
 import org.solarus.editor.SpriteAnimationDirection;
 
-public class SpriteTree extends JTree implements Observer, TreeSelectionListener {
+/**
+ * A sprite view composed of:
+ * - a tree of animations and directions on the left,
+ * - some buttons on the right to add/remove/rename animations and directions.
+ */
+public class SpriteTree extends JPanel implements Observer, TreeSelectionListener {
 
     /**
      * The sprite observed.
@@ -27,12 +40,65 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
     private Sprite sprite;
 
     /**
+     * The tree.
+     */
+    private JTree tree;
+
+    /**
      * Constructor.
      */
     public SpriteTree() {
-        setModel(null);
+        super(new GridBagLayout());
+
+        // Left part: the tree.
+        tree = new JTree();
         buildTree();
-        addTreeSelectionListener(this);
+        tree.addTreeSelectionListener(this);
+
+        JScrollPane scroller = new JScrollPane(tree);
+
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.fill = GridBagConstraints.BOTH;
+        add(scroller, constraints);
+
+        // Right part: the buttons.
+        JPanel buttonsPanel = new JPanel(new GridBagLayout());
+        Dimension buttonSize = new Dimension(24, 24);
+
+        JButton addAnimationButton = new JButton(Project.getEditorImageIconOrEmpty("icon_add.png"));
+        addAnimationButton.setMinimumSize(buttonSize);
+        addAnimationButton.setMaximumSize(buttonSize);
+        addAnimationButton.setPreferredSize(buttonSize);
+        addAnimationButton.setToolTipText("Create new animation");
+
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        constraints.weightx = 0.0;
+        constraints.weighty = 0.0;
+        constraints.fill = GridBagConstraints.NONE;
+        buttonsPanel.add(addAnimationButton, constraints);
+
+        // TODO other buttons
+
+        constraints.gridy++;
+        constraints.weighty = 1.0;
+        constraints.fill = GridBagConstraints.BOTH;
+        buttonsPanel.add(new JLabel(), constraints);  // Fill the remaining with empty space.
+
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        constraints.weightx = 0.0;
+        constraints.weighty = 1.0;
+        constraints.fill = GridBagConstraints.VERTICAL;
+        add(buttonsPanel, constraints);
+
     }
 
     /**
@@ -60,10 +126,11 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
      */
     private void buildTree() {
 
-        DefaultMutableTreeNode root = createSpriteNode();
+        tree.setModel(null);
+        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        tree.setCellRenderer(new SpriteCellRenderer());
 
-        getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        setCellRenderer(new SpriteCellRenderer());
+        DefaultMutableTreeNode root = createSpriteNode();
 
         if (sprite == null) {
             return;
@@ -105,12 +172,12 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
 
         DefaultTreeModel model = new DefaultTreeModel(root);
         model.setAsksAllowsChildren(true);
-        setModel(model);
+        tree.setModel(model);
 
-        expandRow(0);  // Expand the root node.
-        expandPath(selectionPath);  // Expand the selected animation and direction.
-        setSelectionPath(selectionPath);
-        scrollPathToVisible(selectionPath);
+        tree.expandRow(0);  // Expand the root node.
+        tree.expandPath(selectionPath);  // Expand the selected animation and direction.
+        tree.setSelectionPath(selectionPath);
+        tree.scrollPathToVisible(selectionPath);
 
         // TODO show the icon of each direction
     }
@@ -130,7 +197,7 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
      * Returns the node associated to the sprite, that is, the root node.
      */
     private DefaultMutableTreeNode getSpriteNode() {
-        return (DefaultMutableTreeNode) getModel().getRoot();
+        return (DefaultMutableTreeNode) tree.getModel().getRoot();
     }
 
     /**
@@ -275,7 +342,7 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
     public void valueChanged(TreeSelectionEvent event) {
 
         try {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) getLastSelectedPathComponent();
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 
             if (node == null) {
                 // Nothing is selected in the tree.
@@ -340,7 +407,7 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
                     getDirectionNode(animation, direction)
             });
         }
-        getSelectionModel().setSelectionPath(path);
+        tree.getSelectionModel().setSelectionPath(path);
     }
 
     /**

@@ -74,11 +74,10 @@ public class SpriteAnimationsView extends JPanel implements Observer, Scrollable
 
         // Tree.
         spriteTree = new SpriteTree();
-        final JScrollPane treeScroller = new JScrollPane(spriteTree);
         treePanel = new JPanel();
         treePanel.setLayout(new BorderLayout());
         treePanel.setBorder(BorderFactory.createTitledBorder("Sprite sheet"));
-        treePanel.add(treeScroller);
+        treePanel.add(spriteTree);
 
         constraints.gridx = 0;
         constraints.gridy = 0;

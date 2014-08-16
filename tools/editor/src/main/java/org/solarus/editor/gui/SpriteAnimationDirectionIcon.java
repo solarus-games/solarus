@@ -86,7 +86,6 @@ public class SpriteAnimationDirectionIcon extends JComponent implements Icon, Ob
      */
     @Override
     public Dimension getPreferredSize() {
-        //System.out.println(getIconWidth() + "x" + getIconHeight());
         return new Dimension(getIconWidth(), getIconHeight());
     }
 

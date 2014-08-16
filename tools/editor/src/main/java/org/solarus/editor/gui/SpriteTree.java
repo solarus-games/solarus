@@ -273,22 +273,26 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
         int direction = sprite.getSelectedDirectionNb();
         TreePath path = null;
 
-        if (!animation.isEmpty()) {
-            if (direction != -1) {
-                // A animation and direction are selected.
-                path = new TreePath(new Object[] {
-                        getSpriteNode(),
-                        getAnimationNode(animation),
-                        getDirectionNode(animation, direction)
-                });
-            }
-            else {
-                // A animation is selected and no direction is selected.
-                path = new TreePath(new Object[] {
-                        getSpriteNode(),
-                        getAnimationNode(animation)
-                });
-            }
+        if (animation.isEmpty()) {
+            // Nothing is selected selected.
+            path = new TreePath(new Object[] {
+                    getSpriteNode()
+            });
+        }
+        else if (direction == -1) {
+            // An animation is selected and no direction is selected.
+            path = new TreePath(new Object[] {
+                    getSpriteNode(),
+                    getAnimationNode(animation)
+            });
+        }
+        else {
+            // An animation and direction are selected.
+            path = new TreePath(new Object[] {
+                    getSpriteNode(),
+                    getAnimationNode(animation),
+                    getDirectionNode(animation, direction)
+            });
         }
         getSelectionModel().setSelectionPath(path);
     }

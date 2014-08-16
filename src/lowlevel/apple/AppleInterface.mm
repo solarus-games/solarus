@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <lowlevel/apple/AppleInterface.h>
+#include "lowlevel/apple/AppleInterface.h"
 
 #if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
 
@@ -27,10 +27,12 @@
 
 
 /**
- * @brief Return "~/Library/Application Support" or equivalent from the official way, which is available in OSX 10.6+ and iOS 4.0+.
+ * @brief Return "~/Library/Application Support" or equivalent from the official
+ * way, which is available in OSX 10.6+ and iOS 4.0+.
  *
- * Return an OSX 10.0+ and iOS 1.0+ (not compatible with Iphone Simulator) hardcoded equivalent workaround if the 
- * build configuration is set for a lower minimum version.
+ * Return an OSX 10.0+ and iOS 1.0+ (not compatible with Iphone Simulator)
+ * hardcoded equivalent workaround if the build configuration is set for a
+ * lower minimum version.
  * @return The Application Support folder from the User Domain.
  */
 std::string get_user_application_support_directory()
@@ -38,7 +40,7 @@ std::string get_user_application_support_directory()
   @autoreleasepool {
 
 #if defined(SOLARUS_OSX) && __MAC_OS_X_VERSION_MIN_REQUIRED  >= MAC_OS_X_VERSION_10_6 \
-|| defined(SOLARUS_IOS) && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+ || defined(SOLARUS_IOS) && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
     return [[[[[NSFileManager defaultManager]
                URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask]
               objectAtIndex:0]

@@ -1,5 +1,6 @@
 package org.solarus.editor.gui;
 
+import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -56,10 +57,10 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
      */
     private void buildTree() {
 
-       DefaultMutableTreeNode root =
+        DefaultMutableTreeNode root =
                 new DefaultMutableTreeNode(new NodeInfo(sprite, "Animations"));
         root.setAllowsChildren(true);  // Show node as a folder even if empty.
-  
+
         getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         if (sprite == null) {
@@ -119,6 +120,45 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
     }
 
     /**
+     * Returns the node associated to the sprite, that is, the root node.
+     */
+    private DefaultMutableTreeNode getSpriteNode() {
+        return (DefaultMutableTreeNode) getModel().getRoot();
+    }
+
+    /**
+     * Returns the node associated to the specified animation.
+     * @param animationName Name of an animation.
+     * @return The corresponding node of the tree.
+     */
+    private DefaultMutableTreeNode getAnimationNode(String animationName) {
+
+        DefaultMutableTreeNode root = getSpriteNode();
+        for (int i = 0; i < root.getChildCount(); i++) {
+            DefaultMutableTreeNode animationNode = (DefaultMutableTreeNode) root.getChildAt(i);
+            NodeInfo info = (NodeInfo) animationNode.getUserObject();
+            SpriteAnimation animation = (SpriteAnimation) info.getData();
+            if (animation.getName().equals(animationName)) {
+                return animationNode;
+            }
+        }
+
+        throw new NoSuchElementException("No such animation: '" + animationName + "'");
+    }
+
+    /**
+     * Returns the node associated to the specified animation and direction.
+     * @param animationName Name of an animation.
+     * @param direction A direction.
+     * @return The corresponding node of the tree.
+     */
+    private DefaultMutableTreeNode getDirectionNode(String animationName, int direction) {
+
+        DefaultMutableTreeNode animationNode = getAnimationNode(animationName);
+        return (DefaultMutableTreeNode) animationNode.getChildAt(direction);
+    }
+
+    /**
      * Updates this component.
      * @param o The object that has changed.
      * @param info Info about what has changed, or null to update everything.
@@ -138,6 +178,7 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
                 return;
             }
 
+            // Local change in the tree.
             Sprite.Change change = (Sprite.Change) info;
             switch (change.getWhatChanged()) {
 
@@ -158,7 +199,7 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
                 break;
 
             case SELECTED_ANIMATION_CHANGED:
-                // TODO make the animation and direction selected in the tree.
+                updateSelection();
                 break;
 
             case DIRECTION_ADDED:
@@ -170,7 +211,7 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
                 break;
 
             case SELECTED_DIRECTION_CHANGED:
-                // TODO make the animation and direction selected in the tree.
+                updateSelection();
                 break;
 
             case SOURCE_IMAGE_REFRESHED:
@@ -182,12 +223,20 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
 
     /**
      * Event called when the user changes the selection in the tree.
+     * The corresponding element gets selected in the sprite.
      */
     @Override
     public void valueChanged(TreeSelectionEvent event) {
 
         try {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) getLastSelectedPathComponent();
+
+            if (node == null) {
+                // Nothing is selected in the tree.
+                sprite.unselectAnimation();
+                return;
+            }
+
             NodeInfo info = (NodeInfo) node.getUserObject();
 
             Object data = info.getData();
@@ -213,6 +262,35 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
         catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * Selects in the tree what is selected in the sprite.
+     */
+    private void updateSelection() {
+
+        String animation = sprite.getSelectedAnimationName();
+        int direction = sprite.getSelectedDirectionNb();
+        TreePath path = null;
+
+        if (!animation.isEmpty()) {
+            if (direction != -1) {
+                // A animation and direction are selected.
+                path = new TreePath(new Object[] {
+                        getSpriteNode(),
+                        getAnimationNode(animation),
+                        getDirectionNode(animation, direction)
+                });
+            }
+            else {
+                // A animation is selected and no direction is selected.
+                path = new TreePath(new Object[] {
+                        getSpriteNode(),
+                        getAnimationNode(animation)
+                });
+            }
+        }
+        getSelectionModel().setSelectionPath(path);
     }
 
     /**

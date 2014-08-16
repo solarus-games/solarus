@@ -19,7 +19,9 @@ package org.solarus.editor.gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+
 import javax.swing.*;
+
 import org.solarus.editor.*;
 
 /**
@@ -49,7 +51,12 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
     private Sprite sprite;
 
     /**
-     * The currently selected direction in the sprite.
+     * The currently selected direction in the sprite image view.
+     */
+    private SpriteAnimation currentSelectedAnimation;
+
+    /**
+     * The currently selected direction in the sprite image view.
      */
     private SpriteAnimationDirection currentSelectedDirection;
 
@@ -235,7 +242,7 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
             height = 0;
         }
         else {
-            Image scaledImage = sprite.getScaledImage(zoom);
+            Image scaledImage = sprite.getSelectedAnimation().getScaledSrcImage(zoom);
             width = scaledImage.getWidth(null);
             height = scaledImage.getHeight(null);
         }
@@ -294,12 +301,18 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
 
             this.sprite = sprite;
             sprite.addObserver(this);
+            if (sprite.getSelectedAnimation() != null) {
+                sprite.getSelectedAnimation().addObserver(this);
+                if (sprite.getSelectedDirection() != null) {
+                    sprite.getSelectedDirection().addObserver(this);
+                }
+            }
 
             // initialize the popup menu of the selected direction
             update(sprite.getSelectedDirection(), null);  // TODO
 
             // load the sprite animation's image
-            sprite.reloadImage();
+            sprite.getSelectedAnimation().reloadSrcImage();
         }
 
         setSize(getPreferredSize());
@@ -309,10 +322,24 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
      * This function is called when the sprite, the selected animation or direction changes.
      */
     @Override
-    public void update(Observable o, Object obj) {
+    public void update(Observable o, Object info) {
 
         if (o instanceof Sprite) {
             // the sprite has changed
+
+            SpriteAnimation newSelectedAnimation = sprite.getSelectedAnimation();
+            if (newSelectedAnimation != currentSelectedAnimation) {
+                // observe the new selected animation
+                if (currentSelectedAnimation != null) {
+                    currentSelectedAnimation.deleteObserver(this);
+                }
+
+                if (newSelectedAnimation != null) {
+                    newSelectedAnimation.addObserver(this);
+                }
+
+                currentSelectedAnimation = newSelectedAnimation;
+            }
 
             SpriteAnimationDirection newSelectedDirection = sprite.getSelectedDirection();
             if (newSelectedDirection != currentSelectedDirection) {
@@ -333,14 +360,21 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
             revalidate();
             repaint();
         }
+        else if (o instanceof SpriteAnimation) {
+            if (info instanceof Image) {
+                // The source image has changed.
+                revalidate();
+                repaint();
+            }
+        }
         else if (o instanceof SpriteAnimationDirection) {
             // A direction has changed or has been added.
             revalidate();
             repaint();
         }
-        else if (o == null && obj instanceof String) {
+        else if (o == null && info instanceof String) {
 
-            String event = (String) obj;
+            String event = (String) info;
             switch (event) {
                 case ViewScroller.ZOOM_IN:
                     zoomIn();
@@ -379,7 +413,9 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
      * @return true if the sprite animation image exists
      */
     public boolean isImageLoaded() {
-        return sprite != null && sprite.getImage() != null;
+        return sprite != null &&
+                sprite.getSelectedAnimation() != null &&
+                sprite.getSelectedAnimation().getSrcImage() != null;
     }
 
     /**
@@ -452,7 +488,7 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
         if (isImageLoaded()) { // the image exists
 
             SpriteAnimationDirection selectedDirection = sprite.getSelectedDirection();
-            Image scaledImage = sprite.getScaledImage(zoom);
+            Image scaledImage = sprite.getSelectedAnimation().getScaledSrcImage(zoom);
 
             // Draw the image of the sprite.
             g.drawImage(scaledImage, 0, 0, null);
@@ -581,7 +617,7 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
         public void mouseClicked(MouseEvent mouseEvent) {
             if (isImageLoaded()) {
 
-                Image scaledImage = sprite.getScaledImage(zoom);
+                Image scaledImage = sprite.getSelectedAnimation().getScaledSrcImage(zoom);
 
                 double zoomValue = zoom.getValue();
                 int x = (int) (Math.min(Math.max(mouseEvent.getX(), 0),
@@ -618,7 +654,7 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
                 }
             }
             else if (sprite != null) {
-                sprite.reloadImage();
+                sprite.getSelectedAnimation().reloadSrcImage();
             }
         }
 
@@ -639,7 +675,7 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
             // Only consider left clicks.
             if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
-                Image scaledImage = sprite.getScaledImage(zoom);
+                Image scaledImage = sprite.getSelectedAnimation().getScaledSrcImage(zoom);
 
                 double zoomValue = zoom.getValue();
                 int x = (int) (Math.min(Math.max(mouseEvent.getX(), 0),
@@ -768,7 +804,7 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
                 return;
             }
 
-            Image scaledImage = sprite.getScaledImage(zoom);
+            Image scaledImage = sprite.getSelectedAnimation().getScaledSrcImage(zoom);
             double zoomValue = zoom.getValue();
 
             switch (state) {

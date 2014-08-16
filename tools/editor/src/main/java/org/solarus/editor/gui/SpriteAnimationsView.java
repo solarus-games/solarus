@@ -64,11 +64,6 @@ public class SpriteAnimationsView extends JPanel implements Observer, Scrollable
     private JPanel directionPanel;
 
     /**
-     * The icon associated to each direction.
-     */
-    private ArrayList<SpriteAnimationDirectionIcon> directionIcons;
-
-    /**
      * Constructor.
      */
     public SpriteAnimationsView() {
@@ -146,22 +141,6 @@ public class SpriteAnimationsView extends JPanel implements Observer, Scrollable
             sprite.addObserver(this);
         }
         update(sprite, null);
-    }
-
-    /**
-     * Loads the icons for the sprite animation direction list.
-     */
-    private void loadIcons() {
-
-        directionIcons.clear();
-
-        SpriteAnimation animation = sprite.getSelectedAnimation();
-        if (animation != null) {
-            for (int i = 0; i < animation.getNbDirections(); i++) {
-                SpriteAnimationDirection direction = animation.getDirection(i);
-                directionIcons.add(new SpriteAnimationDirectionIcon(direction, sprite));
-            }
-        }
     }
 
     /**

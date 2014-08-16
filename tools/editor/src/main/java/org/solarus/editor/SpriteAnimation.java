@@ -54,9 +54,14 @@ public class SpriteAnimation extends Observable {
     private int loopOnFrame;
 
     /**
-     * @brief Name of the source image of this animation.
+     * @brief Name of the source image of this animation, possibly "tileset".
      */
-    private String srcImage;
+    private String srcImageName;
+
+    /**
+     * The scaled images of current sprite animation.
+     */
+    private BufferedImage[] scaledImages;
 
     /**
      * @brief Id of the tileset used to draw this animation (if srcImage equals "tileset").
@@ -66,7 +71,7 @@ public class SpriteAnimation extends Observable {
     /**
      * @brief Image of this animation.
      */
-    private BufferedImage image = null;
+    private BufferedImage srcImage = null;
 
     /**
      * Creates an animation.
@@ -88,92 +93,12 @@ public class SpriteAnimation extends Observable {
         this.directions = directions;
         this.frameDelay = frameDelay;
         this.loopOnFrame = loopOnFrame;
-        this.srcImage = srcImageName;
+        this.srcImageName = srcImageName;
         this.tilesetId = tilesetId;
+        this.scaledImages = new BufferedImage[Zoom.values().length];
 
         for (SpriteAnimationDirection direction: directions) {
             direction.setAnimation(this);
-        }
-    }
-
-    /**
-     * Reloads the animation's image.
-     * The observers are notified with the new image as parameter.
-     * @throws SpriteException if image cannot be loaded
-     */
-    public void reloadImage() throws SpriteException {
-
-        try {
-            image = ImageIO.read(getImageFile());
-            for (SpriteAnimationDirection direction: directions) {
-                direction.setSrcImage(image);
-            }
-            setChanged();
-            notifyObservers(image);
-        }
-        catch (IOException ex) {
-            throw new SpriteException(ex.getMessage());
-        }
-    }
-
-    /**
-     * Returns the animation's image file.
-     * @return the file of animation image
-     */
-    public File getImageFile() {
-
-        if (srcImage.equals("tileset")) {
-
-            return Project.getTilesetEntitiesImageFile(tilesetId);
-        }
-
-        return new File(Project.getDataPath() + "/sprites/" + srcImage);
-    }
-
-    /**
-     * Returns the animation's image.
-     * @return the animation image
-     * @throws SpriteException if image cannot be loaded
-     */
-    public BufferedImage getImage() throws SpriteException {
-
-        // try to reload image if not loaded yet
-        if (image == null) {
-            reloadImage();
-        }
-
-        return image;
-    }
-
-    /**
-     * Returns the name of the source image.
-     * @return the name
-     */
-    public String getSrcImage() {
-
-        return srcImage;
-    }
-
-    /**
-     * Changes the source image.
-     * @param srcImage the name of the source image
-     * @throws SpriteException if this image could not be applied
-     */
-    public void setSrcImage(String srcImage) throws SpriteException {
-
-        if (srcImage.equals(this.srcImage)) {
-            return;
-        }
-
-        String previousSrcImage = this.srcImage;
-
-        try {
-            this.srcImage = srcImage;
-            reloadImage();
-        } catch (SpriteException ex) {
-            this.srcImage = previousSrcImage;
-            reloadImage();
-            throw ex;
         }
     }
 
@@ -334,10 +259,10 @@ public class SpriteAnimation extends Observable {
      */
     public SpriteAnimationDirection addDirection(Rectangle rect) throws SpriteException {
 
-        BufferedImage image = getImage();
+        BufferedImage srcImage = getSrcImage();
         Point origin = new Point(rect.width / 2, rect.height - 3);
 
-        SpriteAnimationDirection direction = new SpriteAnimationDirection(image, rect, 1, 1, origin.x, origin.y);
+        SpriteAnimationDirection direction = new SpriteAnimationDirection(srcImage, rect, 1, 1, origin.x, origin.y);
         direction.setAnimation(this);
         directions.add(direction);
 
@@ -420,15 +345,11 @@ public class SpriteAnimation extends Observable {
      *
      * @param tilesetId The id of the tileset
      */
-    public void setTilesetId (String tilesetId) throws SpriteException {
+    public void setTilesetId(String tilesetId) throws SpriteException {
 
-        if (srcImage.equals("tileset")) {
-            try {
-                this.tilesetId = tilesetId;
-                reloadImage();
-            } catch (SpriteException ex) {
-                throw new SpriteException("Tileset image cannot be loaded:\n" + ex.getMessage());
-            }
+        if (srcImageName.equals("tileset")) {
+            this.tilesetId = tilesetId;
+            reloadSrcImage();
         }
     }
 
@@ -447,5 +368,126 @@ public class SpriteAnimation extends Observable {
 
         directions.get(direction).paint(g, zoom, showTransparency, x, y, frame);
     }
+
+    /**
+     * Reloads the animation's image.
+     * The observers are notified with the new image as parameter.
+     * The image will be null if it cannot be loaded.
+     */
+    public void reloadSrcImage() {
+
+        try {
+            scaledImages = new BufferedImage[Zoom.values().length];
+            srcImage = ImageIO.read(getSrcImageFile());
+            for (SpriteAnimationDirection direction: directions) {
+                direction.setSrcImage(srcImage);
+            }
+
+            setChanged();
+            notifyObservers(srcImage);
+        }
+        catch (SpriteException ex) {
+            srcImage = null;
+        }
+        catch (IOException ex) {
+            srcImage = null;
+        }
+    }
+
+    /**
+     * Returns the animation's image file.
+     * @return the file of animation image
+     */
+    public File getSrcImageFile() {
+
+        if (srcImageName.equals("tileset")) {
+
+            return Project.getTilesetEntitiesImageFile(tilesetId);
+        }
+
+        return new File(Project.getDataPath() + "/sprites/" + srcImageName);
+    }
+
+    /**
+     * Returns the name of the source image.
+     * @return the name
+     */
+    public String getSrcImageName() {
+
+        return srcImageName;
+    }
+
+    /**
+     * Changes the source image.
+     * @param srcImage the name of the source image
+     * @throws SpriteException if this image could not be applied
+     */
+    public void setSrcImageName(String srcImageName) throws SpriteException {
+
+        if (srcImageName.equals(this.srcImageName)) {
+            return;
+        }
+
+        this.srcImageName = srcImageName;
+        reloadSrcImage();
+    }
+
+    /**
+     * Returns the animation's image.
+     * @return The animation image or null if it cannot be loaded.
+     */
+    public BufferedImage getSrcImage() {
+
+        // Try to reload image if not loaded yet.
+        if (srcImage == null) {
+            reloadSrcImage();
+        }
+
+        return srcImage;
+    }
+
+    /**
+     * Creates a scaled version of an image (without any kind of interpolation).
+     * @param image The original image.
+     * @param width The new width.
+     * @param height The new height.
+     * @return The scaled image.
+     */
+    private BufferedImage createScaledImage(BufferedImage image, int width, int height) {
+
+        BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = scaledImage.createGraphics();
+        g.drawImage(image, 0, 0, width, height, null);
+        g.dispose();
+        return scaledImage;
+    }
+
+    /**
+     * Returns a scaled version of the animation's image, previously loaded by reloadImage().
+     * @param zoom the zoom
+     * @return the scaled animation's image, or null if the image is not loaded
+     */
+    public BufferedImage getScaledSrcImage(Zoom zoom) {
+
+        if (srcImage == null) {
+            return null;
+        }
+
+        int index = zoom.getIndex();
+        double zoomValue = zoom.getValue();
+
+        if (scaledImages[index] == null) {
+            if (zoomValue == 1.0) {
+                scaledImages[index] = srcImage;
+            } else {
+                int width = (int) Math.round(srcImage.getWidth() * zoomValue);
+                int height = (int) Math.round(srcImage.getHeight() * zoomValue);
+                scaledImages[index] = createScaledImage(srcImage, width, height);
+            }
+        }
+
+        return scaledImages[index];
+    }
+
 }
 

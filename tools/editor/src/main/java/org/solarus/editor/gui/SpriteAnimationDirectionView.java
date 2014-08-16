@@ -180,7 +180,10 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer, Sc
     @Override
     public void update(Observable o, Object info) {
 
-        int directionNb = sprite.getSelectedDirectionNb();
+        int directionNb = -1;
+        if (sprite != null) {
+            directionNb = sprite.getSelectedDirectionNb();
+        }
         setSelectedDirection(directionNb);
         sizeView.update();
         positionView.update();
@@ -264,7 +267,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer, Sc
                 setCoordinates(size.width, size.height);
 
                 try {
-                    BufferedImage image = sprite.getSelectedAnimation().getImage();
+                    BufferedImage image = sprite.getSelectedAnimation().getSrcImage();
                     Point position = selectedDirection.getPosition();
                     setMaximum(image.getWidth() - position.x, image.getHeight() - position.y);
                 } catch (Exception ex) {
@@ -328,7 +331,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer, Sc
                 setCoordinates(position.x, position.y);
 
                 try {
-                    BufferedImage image = sprite.getSelectedAnimation().getImage();
+                    BufferedImage image = sprite.getSelectedAnimation().getSrcImage();
                     setMaximum(image.getWidth(), image.getHeight());
                 } catch (Exception ex) {
                     // image cannot be loaded or is null

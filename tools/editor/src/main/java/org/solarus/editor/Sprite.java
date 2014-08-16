@@ -81,16 +81,6 @@ public class Sprite extends Observable {
     private int selectedDirectionNb;
 
     /**
-     * The current sprite animation image.
-     */
-    private BufferedImage image;
-
-    /**
-     * The scaled images of current sprite animation.
-     */
-    private BufferedImage[] scaledImages;
-
-    /**
      * Loads the description file of the animation set used by this sprite
      * and builds its animation set.
      * @throws SpriteException if there is an error when analyzing the file.
@@ -230,8 +220,7 @@ public class Sprite extends Observable {
         SELECTED_ANIMATION_CHANGED,
         DIRECTION_ADDED,
         DIRECTION_REMOVED,
-        SELECTED_DIRECTION_CHANGED,
-        SOURCE_IMAGE_REFRESHED
+        SELECTED_DIRECTION_CHANGED
     }
 
     /**
@@ -285,7 +274,6 @@ public class Sprite extends Observable {
         this.selectedAnimationName = "";
         this.defaultAnimationName = "";
         this.selectedDirectionNb = -1;
-        this.scaledImages = new BufferedImage[Zoom.values().length];
 
         load();
         setSaved(true);
@@ -489,7 +477,9 @@ public class Sprite extends Observable {
         }
 
         selectedAnimationName = animationName;
-        reloadImage();
+        if (!selectedAnimationName.isEmpty()) {
+            getSelectedAnimation().reloadSrcImage();
+        }
 
         setChanged();
         notifyObservers(new Change(WhatChanged.SELECTED_ANIMATION_CHANGED));
@@ -654,16 +644,16 @@ public class Sprite extends Observable {
         }
 
         // if have a selected animation, set the same source image to new animation
-        String srcImage = "";
+        String srcImageName = "";
         SpriteAnimation selectedAnimation = getSelectedAnimation();
         if (selectedAnimation != null) {
-            srcImage = selectedAnimation.getSrcImage();
+            srcImageName = selectedAnimation.getSrcImageName();
         }
 
         Vector<SpriteAnimationDirection> directions = new Vector<SpriteAnimationDirection>();
         SpriteAnimation animation = new SpriteAnimation(
                 name,
-                srcImage,
+                srcImageName,
                 directions,
                 0,
                 -1,
@@ -818,73 +808,6 @@ public class Sprite extends Observable {
     }
 
     /**
-     * Reloads the selected animation's image.
-     */
-    public void reloadImage() {
-
-        SpriteAnimation animation = getSelectedAnimation();
-
-        scaledImages = new BufferedImage[Zoom.values().length];
-        if (animation != null) {
-            try {
-                animation.reloadImage();
-                image = animation.getImage();
-            } catch (Exception ex) {
-                image = null;
-            }
-        } else {
-            image = null;
-        }
-
-        setChanged();
-        notifyObservers(new Change(WhatChanged.SOURCE_IMAGE_REFRESHED));
-    }
-
-    private BufferedImage createScaledImage(BufferedImage image, int width, int height) {
-        BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = scaledImage.createGraphics();
-        g.drawImage(image, 0, 0, width, height, null);
-        g.dispose();
-        return scaledImage;
-    }
-
-    /**
-     * Returns the animation's image, previously loaded by reloadImage().
-     * @return the selected animation's image, or null if the image is not loaded
-     */
-    public BufferedImage getImage() {
-
-        return image;
-    }
-
-    /**
-     * Returns a scaled version of the animation's image, previously loaded by reloadImage().
-     * @param zoom the zoom
-     * @return the scaled animation's image, or null if the image is not loaded
-     */
-    public BufferedImage getScaledImage(Zoom zoom) {
-
-        if (image == null) {
-            return null;
-        }
-
-        int index = zoom.getIndex();
-        double zoomValue = zoom.getValue();
-
-        if (scaledImages[index] == null) {
-            if (zoomValue == 1.0) {
-                scaledImages[index] = image;
-            } else {
-                int width = (int) Math.round(image.getWidth() * zoomValue);
-                int height = (int) Math.round(image.getHeight() * zoomValue);
-                scaledImages[index] = createScaledImage(image, width, height);
-            }
-        }
-
-        return scaledImages[index];
-    }
-
-    /**
      * Returns an animation of this sprite.
      * @param animationName Name of the animation to get
      * @return The corresponding animation.
@@ -971,8 +894,8 @@ public class Sprite extends Observable {
             this.tilesetId = tilesetId;
             for (SpriteAnimation animation: animations.values()) {
                 animation.setTilesetId(tilesetId);
+                animation.reloadSrcImage();
             }
-            reloadImage();
         }
     }
 
@@ -1075,13 +998,13 @@ public class Sprite extends Observable {
         // TODO use a StringBuffer
         String str = "animation{\n";
 
-        String srcImage = animation.getSrcImage();
+        String srcImageName = animation.getSrcImageName();
         int frameDelay = animation.getFrameDelay();
         int loopOnFrame = animation.getLoopOnFrame();
         int nbDirections = animation.getNbDirections();
 
         str += "  name = \"" + name + "\",\n";
-        str += "  src_image = \"" + srcImage + "\",\n";
+        str += "  src_image = \"" + srcImageName + "\",\n";
         if (frameDelay > 0) {
             str += "  frame_delay = " + frameDelay + ",\n";
             if (loopOnFrame >= 0) {

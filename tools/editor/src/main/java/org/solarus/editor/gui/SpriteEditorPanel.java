@@ -87,9 +87,6 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
             // select the default animation initially and its first direction
             sprite.setSelectedAnimation(sprite.getDefaultAnimationName());
             sprite.setSelectedDirectionNb(0);
-
-            // reload image of selected animation
-            sprite.reloadImage();
         }
 
         // Notify the children views.

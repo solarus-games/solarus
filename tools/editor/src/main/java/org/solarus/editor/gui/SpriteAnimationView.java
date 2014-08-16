@@ -575,7 +575,7 @@ class SpriteAnimationView extends JPanel implements Observer {
 
             constraints.gridx = 1;
             constraints.gridy = 0;
-            constraints.weightx = 0.0;
+            constraints.weightx = 1.0;
             constraints.fill = GridBagConstraints.BOTH;
             add(tilesetChooser, constraints);
 
@@ -594,11 +594,11 @@ class SpriteAnimationView extends JPanel implements Observer {
 
                     try {
                         ChooseSpriteImageDialog dialog =
-                                new ChooseSpriteImageDialog(selectedAnimation.getSrcImage());
+                                new ChooseSpriteImageDialog(selectedAnimation.getSrcImageName());
                         if (dialog.display()) {
-                            selectedAnimation.setSrcImage(dialog.getSrcImage());
+                            selectedAnimation.setSrcImageName(dialog.getSrcImage());
                             sprite.setSaved(false);
-                            sprite.reloadImage();
+                            selectedAnimation.reloadSrcImage();
                         }
                     } catch (SpriteException ex) {
                         GuiTools.errorDialog("Cannot change the source image: " + ex.getMessage());
@@ -622,7 +622,7 @@ class SpriteAnimationView extends JPanel implements Observer {
                 public void actionPerformed(ActionEvent ev) {
 
                     if (selectedAnimation != null) {
-                        sprite.reloadImage();
+                        selectedAnimation.reloadSrcImage();
                     }
                 }
             });
@@ -645,7 +645,7 @@ class SpriteAnimationView extends JPanel implements Observer {
             if (selectedAnimation != null) {
                 refreshButton.setEnabled(true);
                 setButton.setEnabled(true);
-                String image = selectedAnimation.getSrcImage();
+                String image = selectedAnimation.getSrcImageName();
                 image = image.isEmpty() ? "<none>" : image;
                 if (!image.equals(srcImage.getText())) {
                     srcImage.setText(image.isEmpty() ? "<none>" : image);

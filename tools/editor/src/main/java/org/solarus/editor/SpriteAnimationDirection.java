@@ -18,7 +18,11 @@ package org.solarus.editor;
 
 import java.awt.*;
 import java.awt.image.*;
+
+import org.solarus.editor.Sprite.Change;
+import org.solarus.editor.Sprite.WhatChanged;
 import org.solarus.editor.entities.MapEntity;
+
 import java.util.Observable;
 
 /**
@@ -145,11 +149,11 @@ public class SpriteAnimationDirection extends Observable {
     }
 
     /**
-     * Changes the source image used to create frames of this direction
-     * @param srcImage the source image to use
-     * @throws SpriteException if some rectangles are outside the image.
+     * Changes the source image used to create frames of this direction.
+     * @param srcImage The source image to use.
+     * @throws SpriteException If some rectangles are outside the image.
      */
-    public void setSrcImage (BufferedImage srcImage) throws SpriteException {
+    public void setSrcImage(BufferedImage srcImage) throws SpriteException {
 
         if (srcImage == null) {
             this.srcImage = null;
@@ -236,7 +240,7 @@ public class SpriteAnimationDirection extends Observable {
      * Check if direction contains a point.
      * @return true if the point is in the direction, false otherwise
      */
-    public boolean contains (int x, int y) {
+    public boolean contains(int x, int y) {
 
         for (Rectangle rect: getRects()) {
             if (rect.contains(x, y)) {
@@ -369,7 +373,6 @@ public class SpriteAnimationDirection extends Observable {
      * @return The frames list.
      */
     public Image[] getFrames() {
-
         return frames;
     }
 

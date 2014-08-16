@@ -1,5 +1,7 @@
 package org.solarus.editor.gui;
 
+import java.awt.Component;
+import java.awt.Image;
 import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Observer;
@@ -8,6 +10,7 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -57,11 +60,10 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
      */
     private void buildTree() {
 
-        DefaultMutableTreeNode root =
-                new DefaultMutableTreeNode(new NodeInfo(sprite, "Animations"));
-        root.setAllowsChildren(true);  // Show node as a folder even if empty.
+        DefaultMutableTreeNode root = createSpriteNode();
 
         getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        setCellRenderer(new SpriteCellRenderer());
 
         if (sprite == null) {
             return;
@@ -72,18 +74,12 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
         // Add a node for each animation.
         for (String animationName: sprite.getAnimationNames()) {
             SpriteAnimation animation = sprite.getAnimation(animationName);
-            DefaultMutableTreeNode animationNode = new DefaultMutableTreeNode(
-                    new NodeInfo(animation, animationName));
-            animationNode.setAllowsChildren(true);
+            DefaultMutableTreeNode animationNode = createAnimationNode(animationName);
             root.add(animationNode);
 
             // Add a node for each direction of this animation.
             for (int i = 0; i < animation.getNbDirections(); i++) {
-                SpriteAnimationDirection direction = animation.getDirection(i);
-                DefaultMutableTreeNode directionNode = new DefaultMutableTreeNode(
-                        new NodeInfo(direction, "Direction " + animation.getDirectionName(i))
-                );
-                directionNode.setAllowsChildren(false);
+                DefaultMutableTreeNode directionNode = createDirectionNode(animationName, i);
                 animationNode.add(directionNode);
 
                 // Initially select the sprite's current animation and direction.
@@ -120,10 +116,37 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
     }
 
     /**
+     * Creates a node to be used as root element of the tree.
+     * @return The sprite node created.
+     */
+    private DefaultMutableTreeNode createSpriteNode() {
+
+        DefaultMutableTreeNode spriteNode = new DefaultMutableTreeNode(new NodeInfo(sprite, "Animations"));
+        spriteNode.setAllowsChildren(true);  // Show node as a folder even if empty.
+        return spriteNode;
+    }
+
+    /**
      * Returns the node associated to the sprite, that is, the root node.
      */
     private DefaultMutableTreeNode getSpriteNode() {
         return (DefaultMutableTreeNode) getModel().getRoot();
+    }
+
+    /**
+     * Creates a node associated to the specified animation.
+     * @param animationName Name of an animation.
+     * @return The node created.
+     */
+    private DefaultMutableTreeNode createAnimationNode(String animationName) {
+
+        SpriteAnimation animation = sprite.getAnimation(animationName);
+        animation.addObserver(this);
+        DefaultMutableTreeNode animationNode = new DefaultMutableTreeNode(
+                new NodeInfo(animation, animationName));
+        animationNode.setAllowsChildren(true);
+
+        return animationNode;
     }
 
     /**
@@ -144,6 +167,25 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
         }
 
         throw new NoSuchElementException("No such animation: '" + animationName + "'");
+    }
+
+    /**
+     * Creates a node for the specified animation and direction.
+     * @param animationName Name of an animation.
+     * @param directionIndex A direction.
+     * @return The created node.
+     */
+    private DefaultMutableTreeNode createDirectionNode(String animationName, int directionIndex) {
+
+        SpriteAnimation animation = sprite.getAnimation(animationName);
+        SpriteAnimationDirection direction = animation.getDirection(directionIndex);
+        direction.addObserver(this);
+        DefaultMutableTreeNode directionNode = new DefaultMutableTreeNode(new NodeInfo(
+                direction, "Direction " + animation.getDirectionName(directionIndex))
+        );
+        directionNode.setAllowsChildren(false);
+
+        return directionNode;
     }
 
     /**
@@ -214,9 +256,13 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
                 updateSelection();
                 break;
 
-            case SOURCE_IMAGE_REFRESHED:
-                // The icons may have changed.
-                break;
+            }
+        }
+
+        else if (o instanceof SpriteAnimation) {
+            if (info instanceof Image) {
+                // The source image has changed.
+                repaint();
             }
         }
     }
@@ -325,4 +371,45 @@ public class SpriteTree extends JTree implements Observer, TreeSelectionListener
         }
     }
 
+    /**
+     * Cell rendered used to show a custom icon for each direction node.
+     */
+    private class SpriteCellRenderer extends DefaultTreeCellRenderer {
+
+        @Override
+        public Component getTreeCellRendererComponent(
+                JTree tree,
+                Object node,
+                boolean selected,
+                boolean expanded,
+                boolean leaf,
+                int row,
+                boolean hasFocus
+        ) {
+
+            super.getTreeCellRendererComponent(
+                    tree,
+                    node,
+                    selected,
+                    expanded,
+                    leaf,
+                    row,
+                    hasFocus
+            );
+
+            NodeInfo info = (NodeInfo) ((DefaultMutableTreeNode) node).getUserObject();
+            if (info.getData() instanceof SpriteAnimationDirection) {
+                // This is a direction node: use the appropriate icon.
+                SpriteAnimationDirection direction = (SpriteAnimationDirection) info.getData();
+                setIcon(new SpriteAnimationDirectionIcon(
+                        sprite,
+                        direction.getAnimation(),
+                        direction)
+                );
+            }
+
+            return this;
+        }
+
+    }
 }

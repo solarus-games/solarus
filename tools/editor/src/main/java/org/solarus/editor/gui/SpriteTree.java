@@ -44,6 +44,12 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
      */
     private JTree tree;
 
+    // Buttons on the right.
+    private JButton createButton;
+    private JButton cloneButton;
+    private JButton renameButton;
+    private JButton deleteButton;
+
     /**
      * Constructor.
      */
@@ -70,26 +76,47 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
         JPanel buttonsPanel = new JPanel(new GridBagLayout());
         Dimension buttonSize = new Dimension(24, 24);
 
-        JButton addAnimationButton = new JButton(Project.getEditorImageIconOrEmpty("icon_add.png"));
-        addAnimationButton.setMinimumSize(buttonSize);
-        addAnimationButton.setMaximumSize(buttonSize);
-        addAnimationButton.setPreferredSize(buttonSize);
-        addAnimationButton.setToolTipText("Create new animation");
-
+        createButton = new JButton(Project.getEditorImageIconOrEmpty("icon_add.png"));
+        createButton.setMinimumSize(buttonSize);
+        createButton.setMaximumSize(buttonSize);
+        createButton.setPreferredSize(buttonSize);
+        createButton.setToolTipText("Create animation or direction");
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
         constraints.weightx = 0.0;
         constraints.weighty = 0.0;
         constraints.fill = GridBagConstraints.NONE;
-        buttonsPanel.add(addAnimationButton, constraints);
+        buttonsPanel.add(createButton, constraints);
 
-        // TODO other buttons
+        cloneButton = new JButton(Project.getEditorImageIconOrEmpty("icon_copy.png"));
+        cloneButton.setMinimumSize(buttonSize);
+        cloneButton.setMaximumSize(buttonSize);
+        cloneButton.setPreferredSize(buttonSize);
+        cloneButton.setToolTipText("Clone");
+        constraints.gridy++;
+        buttonsPanel.add(cloneButton, constraints);
+
+        renameButton = new JButton(Project.getEditorImageIconOrEmpty("icon_rename.png"));
+        renameButton.setMinimumSize(buttonSize);
+        renameButton.setMaximumSize(buttonSize);
+        renameButton.setPreferredSize(buttonSize);
+        renameButton.setToolTipText("Rename");
+        constraints.gridy++;
+        buttonsPanel.add(renameButton, constraints);
+
+        deleteButton = new JButton(Project.getEditorImageIconOrEmpty("icon_cross.png"));
+        deleteButton.setMinimumSize(buttonSize);
+        deleteButton.setMaximumSize(buttonSize);
+        deleteButton.setPreferredSize(buttonSize);
+        deleteButton.setToolTipText("Delete");
+        constraints.gridy++;
+        buttonsPanel.add(deleteButton, constraints);
 
         constraints.gridy++;
         constraints.weighty = 1.0;
         constraints.fill = GridBagConstraints.BOTH;
-        buttonsPanel.add(new JLabel(), constraints);  // Fill the remaining with empty space.
+        buttonsPanel.add(new JLabel(), constraints);  // Fill the rest with empty space.
 
         constraints.gridx = 1;
         constraints.gridy = 0;

@@ -108,6 +108,7 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
         cloneButton.setMaximumSize(buttonSize);
         cloneButton.setPreferredSize(buttonSize);
         cloneButton.setToolTipText("Clone");
+        cloneButton.addActionListener(new ActionClone());
         constraints.gridy++;
         buttonsPanel.add(cloneButton, constraints);
 
@@ -363,6 +364,23 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
                         root,
                         root.getChildCount()
                 );
+
+                // Maybe the new animation already has directions.
+                SpriteAnimation animation = sprite.getAnimation(animationName);
+                for (int i = 0; i < animation.getNbDirections(); i++) {
+                    DefaultMutableTreeNode directionNode = createDirectionNode(
+                            animationName,
+                            i
+                            );
+                    getTreeModel().insertNodeInto(
+                            directionNode,
+                            animationNode,
+                            animationNode.getChildCount()
+                    );
+                }
+
+                updateDirectionTexts(animationNode);
+                updateSelection();
             }
             break;
 
@@ -412,6 +430,8 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
 
                 // The number of directions has changed: update direction texts.
                 updateDirectionTexts(animationNode);
+
+                updateSelection();
             }
             break;
 
@@ -762,6 +782,58 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
             catch (SpriteException ex) {
                 GuiTools.errorDialog("Cannot create direction: " + ex.getMessage());
             }
+        }
+
+    }
+
+    /**
+     * Action performed when the user clicks the
+     * "Clone" button.
+     */
+    private class ActionClone implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+
+            if (sprite == null) {
+                return;
+            }
+
+            // Clone the selected animation or direction.
+            String animationName = sprite.getSelectedAnimationName();
+            if (animationName.isEmpty()) {
+                // No animation is selected.
+                return;
+            }
+
+            int direction = sprite.getSelectedDirectionNb();
+            if (direction != -1) {
+                // Clone the direction.
+                try {
+                    sprite.cloneDirection();
+                }
+                catch (SpriteException ex) {
+                    GuiTools.errorDialog("Cannot clone direction: " + ex.getMessage());
+                }
+            }
+            else {
+                // Clone the animation.
+                String newAnimationName = (String) JOptionPane.showInputDialog(
+                        null,
+                        "New animation name:",
+                        "Clone animation '" + animationName,
+                        JOptionPane.QUESTION_MESSAGE
+                );
+                if (newAnimationName != null) {
+                    try {
+                        sprite.cloneAnimation(newAnimationName);
+                    }
+                    catch (SpriteException ex) {
+                        GuiTools.errorDialog("Cannot clone animation '" + animationName + "': " + ex.getMessage());
+                    }
+                }
+            }
+
         }
 
     }

@@ -673,6 +673,41 @@ public class Sprite extends Observable {
     }
 
     /**
+     * Clones the selected animation into a new animation.
+     * @throws SpriteException If the animation could not be created.
+     */
+    public void cloneAnimation(String newAnimationName) throws SpriteException {
+
+        if (newAnimationName.isEmpty()) {
+            throw new SpriteException("Animation name is empty");
+        }
+
+        if (animations.containsKey(newAnimationName)) {
+            throw new SpriteException("Animation '" + newAnimationName + "' already exists");
+        }
+
+        // If an animation is already selected, set the same source image
+        // to the new animation.
+        SpriteAnimation selectedAnimation = getSelectedAnimation();
+        if (selectedAnimation == null) {
+            throw new SpriteException("No animation is selected");
+        }
+
+        SpriteAnimation newAnimation = new SpriteAnimation(newAnimationName, selectedAnimation);
+
+        animations.put(newAnimationName, newAnimation);
+
+        // Notify observers that an animation has just been added.
+        isSaved = false;
+        setChanged();
+        notifyObservers(new Change(WhatChanged.ANIMATION_ADDED, newAnimationName));
+
+        // Select the newly created animation.
+        // (This will notify observers again.)
+        setSelectedAnimation(newAnimationName);
+    }
+
+    /**
      * Rename an animation in this sprite.
      * @param oldName The name of animation to rename.
      * @param newName The new name of the animation.
@@ -779,7 +814,7 @@ public class Sprite extends Observable {
     }
 
     /**
-     * Clone the selected animation direction in the selected animation.
+     * Clones the selected animation direction in the selected animation.
      * @throws SpriteException if no animation or direction was selected
      */
     public void cloneDirection() throws SpriteException {

@@ -103,6 +103,34 @@ public class SpriteAnimation extends Observable {
     }
 
     /**
+     * Copy constructor.
+     * @param name Name of the animation to create.
+     * @param other Existing animation to copy.
+     */
+    public SpriteAnimation(
+            String name,
+            SpriteAnimation other) throws SpriteException {
+        this.name = name;
+        this.directions = new Vector<SpriteAnimationDirection>();
+        this.frameDelay = other.frameDelay;
+        this.loopOnFrame = other.loopOnFrame;
+        this.srcImageName = other.srcImageName;
+        this.tilesetId = other.tilesetId;
+        this.scaledImages = new BufferedImage[Zoom.values().length];
+
+        try {
+            for (SpriteAnimationDirection otherDirection: other.directions) {
+                SpriteAnimationDirection direction = otherDirection.clone();
+                direction.setAnimation(this);
+                directions.add(direction);
+            }
+        } catch (CloneNotSupportedException ex) {
+            ex.printStackTrace();
+            throw new SpriteException(ex.getMessage());
+        }
+    }
+
+    /**
      * Returns the name of this animation.
      * @return The name.
      */

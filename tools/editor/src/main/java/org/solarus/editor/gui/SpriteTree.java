@@ -5,12 +5,15 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -26,6 +29,7 @@ import org.solarus.editor.Project;
 import org.solarus.editor.Sprite;
 import org.solarus.editor.SpriteAnimation;
 import org.solarus.editor.SpriteAnimationDirection;
+import org.solarus.editor.SpriteException;
 
 /**
  * A sprite view composed of:
@@ -102,6 +106,7 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
         renameButton.setMaximumSize(buttonSize);
         renameButton.setPreferredSize(buttonSize);
         renameButton.setToolTipText("Rename");
+        renameButton.addActionListener(new ActionRenameAnimation());
         constraints.gridy++;
         buttonsPanel.add(renameButton, constraints);
 
@@ -205,8 +210,13 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
         tree.expandPath(selectionPath);  // Expand the selected animation and direction.
         tree.setSelectionPath(selectionPath);
         tree.scrollPathToVisible(selectionPath);
+    }
 
-        // TODO show the icon of each direction
+    /**
+     * Returns the tree model.
+     */
+    private DefaultTreeModel getTreeModel() {
+        return (DefaultTreeModel) tree.getModel();
     }
 
     /**
@@ -311,6 +321,7 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
             if (info == null) {
                 // Rebuild everything.
                 buildTree();
+                updateButtons();
                 return;
             }
 
@@ -327,8 +338,15 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
                 break;
 
             case ANIMATION_RENAMED:
-                // TODO change the node text
-                break;
+            {
+                // Update the node's text
+                String newAnimationName = (String) change.getInfo(1);
+                DefaultMutableTreeNode animationNode = getAnimationNode(newAnimationName);
+                NodeInfo nodeInfo = (NodeInfo) animationNode.getUserObject();
+                nodeInfo.setText(newAnimationName);
+                getTreeModel().nodeChanged(animationNode);
+            }
+            break;
 
             case DEFAULT_ANIMATION_CHANGED:
                 // Nothing to do.
@@ -435,6 +453,36 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
             });
         }
         tree.getSelectionModel().setSelectionPath(path);
+
+        updateButtons();
+    }
+
+    /**
+     * Enables or disables the appropriate buttons depending on what is
+     * selected.
+     */
+    private void updateButtons() {
+
+        // The creation button is always enabled.
+
+        if (sprite.getSelectedAnimation() == null) {
+            // Nothing is selected.
+            cloneButton.setEnabled(false);
+            deleteButton.setEnabled(false);
+            renameButton.setEnabled(false);
+        }
+        else {
+            cloneButton.setEnabled(true);
+            deleteButton.setEnabled(true);
+            if (sprite.getSelectedDirection() == null) {
+                // An animation is selected but no direction is selected.
+                renameButton.setEnabled(true);
+            }
+            else {
+                // An animation and a direction are selected.
+                renameButton.setEnabled(false);
+            }
+        }
     }
 
     /**
@@ -459,7 +507,19 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
         public Object getData() {
             return data;
         }
-        
+
+        /**
+         * Sets the text displayed for this node.
+         * @param text The new text.
+         */
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        /**
+         * Returns the text displayed for this node.
+         * @return The text.
+         */
         public String toString() {
             return text;
         }
@@ -505,5 +565,43 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
             return this;
         }
 
+    }
+
+    /**
+     * Action performed when the user clicks the "Rename animation" button.
+     */
+    private class ActionRenameAnimation implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+
+            if (sprite == null) {
+                return;
+            }
+
+            String oldAnimationName = sprite.getSelectedAnimationName();
+            if (oldAnimationName.isEmpty()) {
+                return;
+            }
+
+            String newAnimationName = (String) JOptionPane.showInputDialog(
+                null,
+                "New animation name:",
+                "Rename animation '" + oldAnimationName + "'",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                null,
+                oldAnimationName
+            );
+            if (newAnimationName != null &&
+                    !newAnimationName.equals(oldAnimationName)) {
+                try {
+                    sprite.renameAnimation(oldAnimationName, newAnimationName);
+                }
+                catch (SpriteException ex) {
+                    GuiTools.errorDialog("Cannot rename animation: " + ex.getMessage());
+                }
+            }
+        }
     }
 }

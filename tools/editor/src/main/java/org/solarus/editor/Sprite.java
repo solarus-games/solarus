@@ -671,35 +671,51 @@ public class Sprite extends Observable {
 
     /**
      * Rename an animation in this sprite.
-     * @param name the name of animation to rename
-     * @param newName the new name of the animation
-     * @throws SpriteException if animation doesn't exist or name already exist.
+     * @param oldName The name of animation to rename.
+     * @param newName The new name of the animation.
+     * @throws SpriteException If the animation doesn't exist or the new name
+     * is already used or is invalid.
      */
-    public void renameAnimation(String name, String newName) throws SpriteException {
+    public void renameAnimation(String oldName, String newName) throws SpriteException {
 
         if (newName.isEmpty()) {
-            throw new SpriteException("the new name is empty" );
-        }
-        if (!animations.containsKey(name)) {
-            throw new SpriteException("this animation doesn't exists" );
-        }
-        if (name.equals(newName)) {
-            return;
-        }
-        if (animations.containsKey(newName)) {
-            throw new SpriteException("the animation '" + newName + "' already exists" );
+            throw new SpriteException("The new name is empty" );
         }
 
-        SpriteAnimation animation = animations.remove(name);
+        if (!animations.containsKey(oldName)) {
+            throw new SpriteException("No such animation: '" + oldName + "'");
+        }
+
+        if (oldName.equals(newName)) {
+            return;
+        }
+
+        if (animations.containsKey(newName)) {
+            throw new SpriteException("Animation '" + newName + "' already exists" );
+        }
+
+        SpriteAnimation animation = animations.get(oldName);
+        animation.setName(newName);
+
+        // The key has changed.
+        animations.remove(oldName);
         animations.put(newName, animation);
-        selectedAnimationName = newName;
-        if (name.equals(defaultAnimationName)) {
+
+        if (selectedAnimationName.equals(oldName)) {
+            // The animation renamed was the selected one.
+            selectedAnimationName = newName;
+        }
+
+        if (oldName.equals(defaultAnimationName)) {
+            // The animation renamed was the default one.
             defaultAnimationName = newName;
         }
 
         isSaved = false;
         setChanged();
-        notifyObservers(new Change(WhatChanged.ANIMATION_RENAMED, name, newName));
+        notifyObservers(new Change(WhatChanged.ANIMATION_RENAMED, oldName, newName));
+        setChanged();
+        notifyObservers(new Change(WhatChanged.SELECTED_ANIMATION_CHANGED, newName));
     }
 
     /**

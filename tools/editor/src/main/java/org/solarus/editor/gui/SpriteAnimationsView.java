@@ -165,8 +165,7 @@ public class SpriteAnimationsView extends JPanel implements Observer, Scrollable
 
             case SELECTED_ANIMATION_CHANGED:
             case SELECTED_DIRECTION_CHANGED:
-            case DIRECTION_ADDED:
-            case DIRECTION_REMOVED:
+            case ANIMATION_RENAMED:
                 updateTitles();
                 break;
 

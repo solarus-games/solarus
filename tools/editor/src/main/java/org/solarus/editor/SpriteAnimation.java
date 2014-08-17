@@ -111,6 +111,17 @@ public class SpriteAnimation extends Observable {
     }
 
     /**
+     * Changes the name of this animation.
+     * @param name The new name.
+     */
+    public void setName(String name) {
+
+        this.name = name;
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
      * Returns the origin point of this animation.
      * @param direction direction of animation
      * @return the corresponding origin point

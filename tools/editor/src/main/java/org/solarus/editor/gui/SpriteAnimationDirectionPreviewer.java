@@ -19,7 +19,9 @@ package org.solarus.editor.gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+
 import javax.swing.*;
+
 import org.solarus.editor.*;
 
 /**
@@ -46,7 +48,7 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
     final private ImageView imageView;
 
     // current displayed frame view
-    final private JTextField frameView;
+    final private JLabel frameView;
 
     // buttons
     final private JButton startButton;
@@ -68,21 +70,34 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
      */
     public SpriteAnimationDirectionPreviewer() {
 
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        setLayout(new GridBagLayout());
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(5, 5, 5, 5); // margins
+        constraints.anchor = GridBagConstraints.PAGE_START; // alignment of the components
 
         // image view
         imageView = new ImageView();
-        JPanel imageViewPanel = new JPanel();
+        JPanel imageViewPanel = new JPanel(new BorderLayout());
         imageViewPanel.add(imageView);
         imageViewPanel.setBorder(BorderFactory.createEtchedBorder());
-        // first buttons row
-        JPanel firstRowPanel = new JPanel();
-        firstRowPanel.setLayout(new BoxLayout(firstRowPanel, BoxLayout.LINE_AXIS));
+
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        add(imageViewPanel, constraints);
+
+        // buttons row
+        JPanel buttonsPanel = new JPanel(new GridBagLayout());
+
+        GridBagConstraints constraints2 = new GridBagConstraints();
+        constraints2.insets = new Insets(5, 5, 5, 5); // margins
+        constraints2.anchor = GridBagConstraints.CENTER; // alignment of the components
 
         // previous button
         prevButton = new JButton(Project.getEditorImageIconOrEmpty("icon_previous.png"));
-        prevButton.setPreferredSize(new Dimension(24, 24));
         prevButton.setToolTipText("Previous frame");
         prevButton.addActionListener(new ActionListener() {
 
@@ -93,20 +108,24 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
                 update(selectedDirection, null);
             }
         });
-        firstRowPanel.add(prevButton);
+        constraints2.gridx = 0;
+        constraints2.gridy = 0;
+        constraints2.gridwidth = 1;
+        constraints2.weightx = 0.0;
+        constraints2.weighty = 0.0;
+        buttonsPanel.add(prevButton, constraints2);
 
         // frame view
-        frameView = new JTextField("0/0");
-        frameView.setEditable(false);
-        frameView.setHorizontalAlignment(JTextField.CENTER);
-        frameView.setMinimumSize(new Dimension(48, 24));
-        frameView.setMaximumSize(new Dimension(105, 24));
-        firstRowPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-        firstRowPanel.add(frameView);
+        frameView = new JLabel("0/0");
+        constraints2.gridx = 1;
+        constraints2.gridy = 0;
+        constraints2.gridwidth = 2;
+        constraints2.weightx = 0.0;
+        constraints2.weighty = 0.0;
+        buttonsPanel.add(frameView, constraints2);
 
         // next button
         nextButton = new JButton(Project.getEditorImageIconOrEmpty("icon_next.png"));
-        nextButton.setPreferredSize(new Dimension(24, 24));
         nextButton.setToolTipText("Next frame");
         nextButton.addActionListener(new ActionListener() {
 
@@ -117,16 +136,17 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
                 update(selectedDirection, null);
             }
         });
-        firstRowPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-        firstRowPanel.add(nextButton);
+        constraints2.gridx = 3;
+        constraints2.gridy = 0;
+        constraints2.gridwidth = 1;
+        constraints2.weightx = 0.0;
+        constraints2.weighty = 0.0;
+        buttonsPanel.add(nextButton, constraints2);
 
         // second buttons row
-        JPanel secondRowPanel = new JPanel();
-        secondRowPanel.setLayout(new BoxLayout(secondRowPanel, BoxLayout.LINE_AXIS));
 
         // first button
         firstButton = new JButton(Project.getEditorImageIconOrEmpty("icon_first.png"));
-        firstButton.setPreferredSize(new Dimension(24, 24));
         firstButton.setToolTipText("First frame");
         firstButton.addActionListener(new ActionListener() {
 
@@ -137,13 +157,17 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
                 update(selectedDirection, null);
             }
         });
-        secondRowPanel.add(firstButton);
+        constraints2.gridx = 0;
+        constraints2.gridy = 1;
+        constraints2.gridwidth = 1;
+        constraints2.weightx = 0.0;
+        constraints2.weighty = 0.0;
+        buttonsPanel.add(firstButton, constraints2);
 
         // start button
         startIcon = Project.getEditorImageIconOrEmpty("icon_start.png");
         pauseIcon = Project.getEditorImageIconOrEmpty("icon_pause.png");
         startButton = new JButton(startIcon);
-        startButton.setPreferredSize(new Dimension(24, 24));
         startButton.addActionListener(new ActionListener() {
 
             @Override
@@ -157,12 +181,15 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
                 update(selectedDirection, null);
             }
         });
-        secondRowPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-        secondRowPanel.add(startButton);
+        constraints2.gridx = 1;
+        constraints2.gridy = 1;
+        constraints2.gridwidth = 1;
+        constraints2.weightx = 0.0;
+        constraints2.weighty = 0.0;
+        buttonsPanel.add(startButton, constraints2);
 
         // stop button
         stopButton = new JButton(Project.getEditorImageIconOrEmpty("icon_stop.png"));
-        stopButton.setPreferredSize(new Dimension(24, 24));
         stopButton.setToolTipText("Stop");
         stopButton.addActionListener(new ActionListener() {
 
@@ -173,12 +200,15 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
                 update(selectedDirection, null);
             }
         });
-        secondRowPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-        secondRowPanel.add(stopButton);
+        constraints2.gridx = 2;
+        constraints2.gridy = 1;
+        constraints2.gridwidth = 1;
+        constraints2.weightx = 0.0;
+        constraints2.weighty = 0.0;
+        buttonsPanel.add(stopButton, constraints2);
 
         // last button
         lastButton = new JButton(Project.getEditorImageIconOrEmpty("icon_last.png"));
-        lastButton.setPreferredSize(new Dimension(24, 24));
         lastButton.setToolTipText("Last frame");
         lastButton.addActionListener(new ActionListener() {
 
@@ -193,8 +223,12 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
                 update(selectedDirection, null);
             }
         });
-        secondRowPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-        secondRowPanel.add(lastButton);
+        constraints2.gridx = 3;
+        constraints2.gridy = 1;
+        constraints2.gridwidth = 1;
+        constraints2.weightx = 0.0;
+        constraints2.weighty = 0.0;
+        buttonsPanel.add(lastButton, constraints2);
 
         // origin point
         drawOrigin = new JCheckBox("Display origin point");
@@ -210,12 +244,14 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
             }
         });
 
-        add(imageViewPanel);
-        add(Box.createRigidArea(new Dimension(0, 5)));
-        add(drawOrigin);
-        add(firstRowPanel);
-        add(Box.createRigidArea(new Dimension(0, 5)));
-        add(secondRowPanel);
+        constraints.gridy++;
+        constraints.weightx = 1.0;
+        constraints.weighty = 0.0;
+        add(drawOrigin, constraints);
+
+        constraints.gridy++;
+        constraints.weightx = 1.0;
+        add(buttonsPanel, constraints);
     }
 
     /**
@@ -272,10 +308,12 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
     }
 
     /**
-     * This function is called when the sprite, animation or direction is changed.
+     * Updates this component.
+     * @param o The object that has changed.
+     * @param info Info about what has changed, or null to update everything.
      */
     @Override
-    public void update(Observable o, Object obj) {
+    public void update(Observable o, Object info) {
 
         if (o instanceof Sprite) {
             setAnimation(sprite.getSelectedAnimation());
@@ -341,10 +379,13 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
         private int frameDelay = 0;
         // frame on loop
         private int loopOnFrame = 0;
-        // the curretn frame
+        // the current frame
         private int currentFrame = 0;
         // draw origin point
         private boolean drawOrigin = true;
+
+        // Dimensions of the last displayed frame.
+        private Dimension lastFrameSize;
 
         /**
          * The timer used for animation.
@@ -355,6 +396,8 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
          * Constructor.
          */
         public ImageView() {
+
+            lastFrameSize = new Dimension(32, 32);
 
             timer = new javax.swing.Timer(0, new ActionListener() {
 
@@ -464,6 +507,9 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
                 loopOnFrame = 0;
             }
 
+            setMinimumSize(getFrameSize());
+            setMaximumSize(getFrameSize());
+            setPreferredSize(getFrameSize());
             revalidate();
             repaint();
         }
@@ -520,16 +566,17 @@ public class SpriteAnimationDirectionPreviewer extends JPanel implements Observe
             }
         }
 
-        @Override
-        public Dimension getPreferredSize() {
+        public Dimension getFrameSize() {
 
             if (frames != null && frames.length > 0) {
                 Image frame = frames[0];
-                return new Dimension(Math.max(208, frame.getWidth(null) * 2),
-                        Math.max(64, frame.getHeight(null) * 2));
+                lastFrameSize = new Dimension(
+                        frame.getWidth(null) * 2,
+                        frame.getHeight(null) * 2
+                );
             }
 
-            return new Dimension(208, 64);
+            return lastFrameSize;
         }
     }
 }

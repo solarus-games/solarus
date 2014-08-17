@@ -6,16 +6,21 @@
 
 - Some icons are by Yusuke Kamiyamane, licensed under a
   Creative Commons Attribution 3.0 License:
-  - icon_refresh.png
-  - icon_edit.png
   - icon_add.png
-  - icon_remove.png
+  - icon_copy.png
+  - icon_cross.png
+  - icon_cross_small.png
+  - icon_delete.png
+  - icon_edit.png
   - icon_first.png
   - icon_last.png
   - icon_next.png
+  - icon_open.png
   - icon_pause.png
   - icon_previous.png
+  - icon_refresh.png
+  - icon_remove.png
+  - icon_rename.png
   - icon_start.png
   - icon_stop.png
-  - icon_cross.png
 

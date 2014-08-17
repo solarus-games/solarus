@@ -18,8 +18,6 @@
 package org.solarus.editor.gui;
 
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.*;
@@ -50,7 +48,7 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
      * Creates a sprite editor.
      * @param mainWindow The main window of the quest editor.
      * @param spriteId Id of the sprite to open.
-     * @throws QuestEditorException If the tileset could not be loaded.
+     * @throws QuestEditorException If the sprite could not be loaded.
      */
     public SpriteEditorPanel(EditorWindow mainWindow, String spriteId)
             throws QuestEditorException {
@@ -58,48 +56,13 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
 
         setLayout(new BorderLayout());
 
-        // sprite animations
+        // sprite animations and directions
         spriteAnimationsView = new SpriteAnimationsView();
-        spriteAnimationsView.setAlignmentY(Component.TOP_ALIGNMENT);
-        final JScrollPane spriteAnimationsScroller = new JScrollPane(spriteAnimationsView);
-        spriteAnimationsScroller.setMinimumSize(new Dimension(340, 0));
-        spriteAnimationsScroller.setHorizontalScrollBarPolicy(
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        // listen the resize event of the scroll pane
-        // to sync the spriteAnimationView width.
-        spriteAnimationsScroller.addComponentListener(new ComponentListener() {
-
-            @Override
-            public void componentResized(ComponentEvent ce) {
-
-                int width = spriteAnimationsScroller.getWidth();
-                int height =  spriteAnimationsView.getHeight();
-
-                // check if the vertical scroll bar is visible
-                JScrollBar bar = spriteAnimationsScroller.getVerticalScrollBar();
-                if (bar.isVisible()) {
-
-                    width -= bar.getWidth();
-                }
-                // resize the view
-                spriteAnimationsView.setPreferredSize(new Dimension(width, height));
-                // refresh the view
-                spriteAnimationsView.revalidate();
-                spriteAnimationsView.repaint();
-            }
-
-            @Override
-            public void componentMoved(ComponentEvent ce) {}
-
-            @Override
-            public void componentShown(ComponentEvent ce) {}
-
-            @Override
-            public void componentHidden(ComponentEvent ce) {}
-        });
+        spriteAnimationsView.setMinimumSize(new Dimension(0, 0));  // Allow the splitter to hide entirely the component.
 
         // sprite animation image
         spriteImageView = new SpriteImageView();
+        spriteImageView.setMinimumSize(new Dimension(0, 0));  // Allow the splitter to hide entirely the component.
         JScrollPane spriteImageScroller = new ViewScroller(spriteImageView, spriteImageView);
         spriteImageScroller.setAlignmentY(Component.TOP_ALIGNMENT);
 
@@ -111,7 +74,7 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
         rightPanel.add(mouseCoordinates, BorderLayout.SOUTH);
 
         JSplitPane mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                spriteAnimationsScroller, rightPanel);
+                spriteAnimationsView, rightPanel);
         mainPanel.setContinuousLayout(true);
         mainPanel.setDividerLocation(340);
         // we must put our main panel in another panel
@@ -120,17 +83,16 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
 
         sprite = new Sprite(spriteId);
 
+        if (sprite != null) {
+            // select the default animation initially and its first direction
+            sprite.setSelectedAnimation(sprite.getDefaultAnimationName());
+            sprite.setSelectedDirectionNb(0);
+        }
+
         // Notify the children views.
         spriteAnimationsView.setSprite(sprite);
         spriteImageView.setSprite(sprite);
 
-        if (sprite != null) {
-            // select the first direction of the default animation
-            sprite.setSelectedAnimation(sprite.getDefaultAnimationName());
-
-            // reload image of selected animation
-            sprite.reloadImage();
-        }
     }
 
     /**
@@ -227,6 +189,9 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
         spriteImageView.setSprite(null);
     }
 
+    /**
+     * A JLabel that shows mouse coordinates on a sprite image view.
+     */
     private class MouseCoordinates extends JLabel {
 
        /**

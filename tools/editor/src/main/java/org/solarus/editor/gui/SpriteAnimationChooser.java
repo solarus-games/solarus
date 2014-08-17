@@ -132,12 +132,7 @@ class SpriteAnimationChooser extends JComboBox<String> implements Observer {
         if (sprite == null) {
             removeAllItems();
         } else {
-            // add, remove or rename animation
-            if (obj instanceof String || obj instanceof SpriteAnimation) {
-                reloadList();
-            } else {
-                setSelected(sprite.getSelectedAnimationName());
-            }
+            reloadList();
         }
     }
 }

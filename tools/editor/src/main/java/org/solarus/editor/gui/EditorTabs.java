@@ -258,7 +258,7 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
 
             // close
             final JButton close = new JButton(
-                    Project.getEditorImageIconOrEmpty("icon_cross.png"));
+                    Project.getEditorImageIconOrEmpty("icon_cross_small.png"));
             close.setPreferredSize(new Dimension(16, 16));
             close.setUI(new BasicButtonUI());
             close.setBorderPainted(false);

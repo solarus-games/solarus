@@ -23,21 +23,27 @@ import org.solarus.editor.*;
 
 /**
  * This component shows a sprite animation direction's icon.
+ * It can be used as a JComponent or as an Icon.
  */
-public class SpriteAnimationDirectionIcon extends JComponent implements Observer {
+public class SpriteAnimationDirectionIcon extends JComponent implements Icon, Observer {
 
     private static final Color bgColorSelected = new Color(128, 128, 255);
     private static final Color bgColorUnselected = Color.WHITE;
 
     /**
-     * The sprite animation direction
-     */
-    private SpriteAnimationDirection direction;
-
-    /**
-     * The sprite
+     * The sprite.
      */
     private Sprite sprite;
+
+    /**
+     * The sprite animation this direction belongs to.
+     */
+    private SpriteAnimation animation;
+
+    /**
+     * The sprite animation direction represented.
+     */
+    private SpriteAnimationDirection direction;
 
     /**
      * Coordinates of the tile pattern as displayed by the icon.
@@ -50,44 +56,61 @@ public class SpriteAnimationDirectionIcon extends JComponent implements Observer
     private int sx1, sx2, sy1, sy2;
 
     /**
-     * Constructor.
-     * @param direction
-     * @param sprite
+     * Maximum width and height of an icon.
      */
-    public SpriteAnimationDirectionIcon(SpriteAnimationDirection direction, Sprite sprite) {
-        this.direction = direction;
+    public static final int maxLength = 64;
+
+    /**
+     * Constructor.
+     * @param sprite The sprite.
+     * @param animation Animation the icon will belong to.
+     * @param direction Direction in this animation.
+     */
+    public SpriteAnimationDirectionIcon(
+            Sprite sprite,
+            SpriteAnimation animation,
+            SpriteAnimationDirection direction
+    ) {
         this.sprite = sprite;
+        this.animation = animation;
+        this.direction = direction;
         direction.addObserver(this);
         sprite.addObserver(this);
 
         update(direction, null);
-        update(sprite, null);
     }
 
     /**
      * Returns the preferred size.
-     * @return the preffered size
+     * @return the preferred size
      */
     @Override
     public Dimension getPreferredSize() {
-
-        Dimension size = direction.getSize();
-        return new Dimension(8 + size.width * 2, 8 + size.height * 2);
+        return new Dimension(getIconWidth(), getIconHeight());
     }
 
     /**
      * Draws the direction first frame's image.
-     * @param g graphic context
+     * @param g Graphic context.
      */
     @Override
     public void paint(Graphics g) {
-        Image image = sprite.getScaledImage(Zoom.BIG);
+        paintIcon(this, g, 0, 0);
+    }
+
+    /**
+     * Draws the direction first frame's image.
+     * @param g Graphic context.
+     */
+    @Override
+    public void paintIcon(Component component, Graphics g, int x, int y) {
+
+        Image image = animation.getSrcImage();
 
         if (image != null) {
             Color bgColor = (sprite.getSelectedDirection() == direction) ? bgColorSelected : bgColorUnselected;
             g.setColor(bgColor);
-            Dimension size = getPreferredSize();
-            g.fillRect(0, 0, size.width, size.height);
+            g.fillRect(0, 0, getIconWidth(), getIconHeight());
             g.drawImage(image, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
         }
     }
@@ -101,24 +124,51 @@ public class SpriteAnimationDirectionIcon extends JComponent implements Observer
         if (o instanceof SpriteAnimationDirection) { // the direction has changed
 
             Point position = direction.getPosition();
-            Dimension size = direction.getSize();
+            Dimension srcSize = direction.getSize();
 
             // coordinates of the direction in the animation image
-            sx1 = position.x * 2;
-            sx2 = sx1 + (size.width * 2);
-            sy1 = position.y * 2;
-            sy2 = sy1 + (size.height * 2);
+            sx1 = position.x;
+            sx2 = sx1 + srcSize.width;
+            sy1 = position.y;
+            sy2 = sy1 + srcSize.height;
 
             // coordinates of the direction in the icon
 
             // check the direction dimensions
-            Dimension maxSize = getPreferredSize();
-            dx1 = maxSize.width / 2 - size.width;
-            dx2 = maxSize.width / 2  + size.width;
-            dy1 = maxSize.height / 2 - size.height;
-            dy2 = maxSize.height / 2 + size.height;
+            Dimension dstSize = getPreferredSize();
+            dx1 = 0;
+            dx2 = dstSize.width;
+            dy1 = 0;
+            dy2 = dstSize.height;
         }
 
         repaint();
+    }
+
+    @Override
+    public int getIconWidth() {
+        Dimension size = direction.getSize();
+        if (size.width > size.height) {
+            return Math.min(maxLength, size.width);
+        }
+
+        if (size.height > maxLength) {
+            return size.width * maxLength / size.height;
+        }
+        return size.width;
+    }
+
+    @Override
+    public int getIconHeight() {
+
+        Dimension size = direction.getSize();
+        if (size.height > size.width) {
+            return Math.min(maxLength, size.height);
+        }
+
+        if (size.width > maxLength) {
+            return size.height * maxLength / size.width;
+        }
+        return size.height;
     }
 }

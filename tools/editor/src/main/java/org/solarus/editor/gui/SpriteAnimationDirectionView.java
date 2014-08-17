@@ -19,14 +19,16 @@ package org.solarus.editor.gui;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
+
 import javax.swing.*;
 import javax.swing.event.*;
+
 import org.solarus.editor.*;
 
 /**
  * This components shows information about animation directions of a sprite.
  */
-public class SpriteAnimationDirectionView extends JPanel implements Observer {
+public class SpriteAnimationDirectionView extends JPanel implements Observer, Scrollable {
 
     /**
      * The sprite observed.
@@ -39,7 +41,6 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
     private SpriteAnimationDirection selectedDirection;
 
     // components
-    private final JLabel numberView;
     private final SizeField sizeView;
     private final PositionField positionView;
     private final OriginField originView;
@@ -52,69 +53,79 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
      */
     public SpriteAnimationDirectionView() {
 
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
-        JPanel properiesPanel = new JPanel(new GridBagLayout());
+        setLayout(new GridBagLayout());
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(5, 5, 5, 5); // margins
-        constraints.anchor = GridBagConstraints.LINE_START; // alignment of the components
+        constraints.anchor = GridBagConstraints.FIRST_LINE_START; // alignment of the components
 
-        // number
+        // Preview.
+        directionPreviewer = new SpriteAnimationDirectionPreviewer();
+        constraints.weightx = 1.0;
+        constraints.weighty = 0.0;
         constraints.gridx = 0;
         constraints.gridy = 0;
-        properiesPanel.add(new JLabel("Number"), constraints);
+        constraints.gridwidth = 2;
+        constraints.fill = GridBagConstraints.NONE;
+        add(directionPreviewer, constraints);
+
+        // size
+        constraints.weightx = 0.0;
+        constraints.weighty = 0.0;
+        constraints.gridwidth = 1;
+        constraints.gridx = 0;
+        constraints.gridy++;
+        add(new JLabel("Size"), constraints);
 
         // position
         constraints.gridy++;
-        properiesPanel.add(new JLabel("Size"), constraints);
-
-        // size
-        constraints.gridy++;
-        properiesPanel.add(new JLabel("Position"), constraints);
+        add(new JLabel("Position"), constraints);
 
         // origin
         constraints.gridy++;
-        properiesPanel.add(new JLabel("Origin"), constraints);
+        add(new JLabel("Origin"), constraints);
 
         // number of frames
         constraints.gridy++;
-        properiesPanel.add(new JLabel("Number of frames"), constraints);
+        add(new JLabel("Number of frames"), constraints);
 
         // number of columns
         constraints.gridy++;
-        properiesPanel.add(new JLabel("Number of columns"), constraints);
+        add(new JLabel("Number of columns"), constraints);
 
-        constraints.weightx = 1;
-        constraints.gridx = 1;
-        constraints.gridy = 0;
-
-        numberView = new JLabel();
-        properiesPanel.add(numberView, constraints);
-
+        // fill vertical blank space
         constraints.gridy++;
+        constraints.gridwidth = 2;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.fill = GridBagConstraints.BOTH;
+        add(new JLabel(""), constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 1;
+        constraints.gridwidth = 1;
+        constraints.weightx = 1.0;
+        constraints.weighty = 0.0;
+        constraints.fill = GridBagConstraints.NONE;
+
         sizeView = new SizeField();
-        properiesPanel.add(sizeView, constraints);
+        add(sizeView, constraints);
 
         constraints.gridy++;
         positionView = new PositionField();
-        properiesPanel.add(positionView, constraints);
+        add(positionView, constraints);
 
         constraints.gridy++;
         originView = new OriginField();
-        properiesPanel.add(originView, constraints);
+        add(originView, constraints);
 
         constraints.gridy++;
         nbFramesView = new NbFramesField();
-        properiesPanel.add(nbFramesView, constraints);
+        add(nbFramesView, constraints);
 
         constraints.gridy++;
         nbColumnsView = new NbColumnsField();
-        properiesPanel.add(nbColumnsView, constraints);
-
-        add(properiesPanel);
-        directionPreviewer = new SpriteAnimationDirectionPreviewer();
-        add(directionPreviewer);
+        add(nbColumnsView, constraints);
     }
 
     /**
@@ -137,7 +148,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
     }
 
     /**
-     * Sets the selected direction.
+     * Sets the direction shown in this component.
      * @param directionNb the number of the direction
      */
     public void setSelectedDirection(int directionNb) {
@@ -159,44 +170,51 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
         if (selectedDirection != null) {
             selectedDirection.addObserver(this);
         }
-        update(direction, null);
     }
 
     /**
-     * This function is called when the sprite is changed.
-     * @param o the sprite, or null if no sprite is set
-     * @param obj not used
+     * Updates this component.
+     * @param o The object that has changed.
+     * @param info Info about what has changed, or null to update everything.
      */
     @Override
-    public void update(Observable o, Object obj) {
+    public void update(Observable o, Object info) {
 
-        if (o instanceof Sprite || o instanceof SpriteAnimation) {
+        int directionNb = -1;
+        if (sprite != null) {
+            directionNb = sprite.getSelectedDirectionNb();
+        }
+        setSelectedDirection(directionNb);
+        sizeView.update();
+        positionView.update();
+        originView.update();
+        nbFramesView.update();
+        nbColumnsView.update();
+    }
 
-            int directionNb = sprite.getSelectedDirectionNb();
+    @Override
+    public Dimension getPreferredScrollableViewportSize() {
+        return getPreferredSize();
+    }
 
-            setSelectedDirection(directionNb);
+    @Override
+    public int getScrollableUnitIncrement(Rectangle rctngl, int i, int i1) {
+        return 16;
+    }
 
-            String numberText = "";
-            if (directionNb >= 0) {
-                numberText += directionNb;
-                if (sprite.getSelectedAnimation().getNbDirections() == 4) {
-                    switch (directionNb) {
-                    case 0: numberText += " - right"; break;
-                    case 1: numberText += " - up"; break;
-                    case 2: numberText += " - left"; break;
-                    case 3: numberText += " - down"; break;
-                    }
-                }
-            }
-            numberView.setText(numberText);
-        } else {
+    @Override
+    public int getScrollableBlockIncrement(Rectangle rctngl, int i, int i1) {
+        return 160;
+    }
 
-            sizeView.update(selectedDirection);
-            positionView.update(selectedDirection);
-            originView.update(selectedDirection);
-            nbFramesView.update(selectedDirection);
-            nbColumnsView.update(selectedDirection);
-       }
+    @Override
+    public boolean getScrollableTracksViewportWidth() {
+        return false;
+    }
+
+    @Override
+    public boolean getScrollableTracksViewportHeight() {
+        return false;
     }
 
     /**
@@ -231,7 +249,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
                             }
                         }
                     }
-                    update(selectedDirection);
+                    update();
                 }
             });
         }
@@ -240,7 +258,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
          * This function is called when the direction is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             updating = true;
             if (sprite != null && selectedDirection != null) {
@@ -249,7 +267,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
                 setCoordinates(size.width, size.height);
 
                 try {
-                    BufferedImage image = sprite.getSelectedAnimation().getImage();
+                    BufferedImage image = sprite.getSelectedAnimation().getSrcImage();
                     Point position = selectedDirection.getPosition();
                     setMaximum(image.getWidth() - position.x, image.getHeight() - position.y);
                 } catch (Exception ex) {
@@ -295,7 +313,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
                             }
                         }
                     }
-                    update(selectedDirection);
+                    update();
                 }
             });
         }
@@ -304,7 +322,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
          * This function is called when the direction is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             updating = true;
             if (sprite != null && selectedDirection != null) {
@@ -313,7 +331,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
                 setCoordinates(position.x, position.y);
 
                 try {
-                    BufferedImage image = sprite.getSelectedAnimation().getImage();
+                    BufferedImage image = sprite.getSelectedAnimation().getSrcImage();
                     setMaximum(image.getWidth(), image.getHeight());
                 } catch (Exception ex) {
                     // image cannot be loaded or is null
@@ -352,7 +370,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
                             sprite.setSaved(false);
                         }
                     }
-                    update(selectedDirection);
+                    update();
                 }
             });
         }
@@ -361,7 +379,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
          * This function is called when the direction is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             updating = true;
             if (selectedDirection != null) {
@@ -404,7 +422,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
                             }
                         }
                     }
-                    update(selectedDirection);
+                    update();
                 }
             });
         }
@@ -413,7 +431,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
          * This function is called when the direction is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             if (selectedDirection != null) {
                 setEnabled(true);
@@ -453,7 +471,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
                             }
                         }
                     }
-                    update(selectedDirection);
+                    update();
                 }
             });
         }
@@ -462,7 +480,7 @@ public class SpriteAnimationDirectionView extends JPanel implements Observer {
          * This function is called when the direction is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             if (selectedDirection != null) {
                 setEnabled(true);

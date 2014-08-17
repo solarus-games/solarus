@@ -22,12 +22,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Vector;
+
 import javax.imageio.ImageIO;
 
 /**
  * Represents an animation of a sprite.
  */
-public class SpriteAnimation  extends Observable {
+public class SpriteAnimation extends Observable {
+
+    /**
+     * @brief Name of the animation.
+     */
+    private String name;
 
     /**
      * @brief The directions of this animation.
@@ -48,9 +54,14 @@ public class SpriteAnimation  extends Observable {
     private int loopOnFrame;
 
     /**
-     * @brief Name of the source image of this animation.
+     * @brief Name of the source image of this animation, possibly "tileset".
      */
-    private String srcImage;
+    private String srcImageName;
+
+    /**
+     * The scaled images of current sprite animation.
+     */
+    private BufferedImage[] scaledImages;
 
     /**
      * @brief Id of the tileset used to draw this animation (if srcImage equals "tileset").
@@ -60,104 +71,82 @@ public class SpriteAnimation  extends Observable {
     /**
      * @brief Image of this animation.
      */
-    private BufferedImage image = null;
+    private BufferedImage srcImage = null;
 
     /**
      * Creates an animation.
+     * @param name Name of the animation.
      * @param srcImageName the source image name of this animation
      * @param directions the list of directions of this animation
      * @param frameDelay interval in milliseconds between two frames
      * @param loopOnFrame index of a frame to loop on when the animation is finished, or -1
      * @param tilesetId the id of tileset to use (only if srcImageName = "tileset")
      */
-    public SpriteAnimation(String srcImageName, Vector<SpriteAnimationDirection> directions,
-            int frameDelay, int loopOnFrame, String tilesetId) {
+    public SpriteAnimation(
+            String name,
+            String srcImageName,
+            Vector<SpriteAnimationDirection> directions,
+            int frameDelay,
+            int loopOnFrame,
+            String tilesetId) {
+        this.name = name;
         this.directions = directions;
         this.frameDelay = frameDelay;
         this.loopOnFrame = loopOnFrame;
-        this.srcImage = srcImageName;
+        this.srcImageName = srcImageName;
         this.tilesetId = tilesetId;
+        this.scaledImages = new BufferedImage[Zoom.values().length];
+
+        for (SpriteAnimationDirection direction: directions) {
+            direction.setAnimation(this);
+        }
     }
 
     /**
-     * Reloads the animation's image.
-     * The observers are notified with the new image as parameter.
-     * @throws SpriteException if image cannot be loaded
+     * Copy constructor.
+     * @param name Name of the animation to create.
+     * @param other Existing animation to copy.
      */
-    public void reloadImage() throws SpriteException {
+    public SpriteAnimation(
+            String name,
+            SpriteAnimation other) throws SpriteException {
+        this.name = name;
+        this.directions = new Vector<SpriteAnimationDirection>();
+        this.frameDelay = other.frameDelay;
+        this.loopOnFrame = other.loopOnFrame;
+        this.srcImageName = other.srcImageName;
+        this.tilesetId = other.tilesetId;
+        this.scaledImages = new BufferedImage[Zoom.values().length];
 
         try {
-            image = ImageIO.read(getImageFile());
-            for (SpriteAnimationDirection direction: directions) {
-                direction.setSrcImage(image);
+            for (SpriteAnimationDirection otherDirection: other.directions) {
+                SpriteAnimationDirection direction = otherDirection.clone();
+                direction.setAnimation(this);
+                directions.add(direction);
             }
-            setChanged();
-            notifyObservers(image);
-        }
-        catch (IOException ex) {
+        } catch (CloneNotSupportedException ex) {
+            ex.printStackTrace();
             throw new SpriteException(ex.getMessage());
         }
     }
 
     /**
-     * Returns the animation's image file.
-     * @return the file of animation image
+     * Returns the name of this animation.
+     * @return The name.
      */
-    public File getImageFile() {
-
-        if (srcImage.equals("tileset")) {
-
-            return Project.getTilesetEntitiesImageFile(tilesetId);
-        }
-
-        return new File(Project.getDataPath() + "/sprites/" + srcImage);
+    public String getName() {
+        return name;
     }
 
     /**
-     * Returns the animation's image.
-     * @return the animation image
-     * @throws SpriteException if image cannot be loaded
+     * Changes the name of this animation.
+     * @param name The new name.
      */
-    public BufferedImage getImage() throws SpriteException {
+    public void setName(String name) {
 
-        // try to reload image if not loaded yet
-        if (image == null) {
-            reloadImage();
-        }
-
-        return image;
-    }
-
-    /**
-     * Returns the name of the source image.
-     * @return the name
-     */
-    public String getSrcImage () {
-
-        return srcImage;
-    }
-
-    /**
-     * Changes the source image.
-     * @param srcImage the name of the source image
-     * @throws SpriteException if this image could not be applied
-     */
-    public void setSrcImage (String srcImage) throws SpriteException {
-
-        if (srcImage.equals(this.srcImage)) {
-            return;
-        }
-
-        String previousSrcImage = this.srcImage;
-
-        try {
-            this.srcImage = srcImage;
-            reloadImage();
-        } catch (SpriteException ex) {
-            this.srcImage = previousSrcImage;
-            reloadImage();
-            throw ex;
-        }
+        this.name = name;
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -210,6 +199,48 @@ public class SpriteAnimation  extends Observable {
     }
 
     /**
+     * Returns a name describing a direction of this animation.
+     *
+     * If there are 4 or 8 directions, this is the direction number followed by
+     * a hint like "up" or "right-left".
+     * Otherwise, this is the direction number alone.
+     *
+     * @param direction Index of a direction in this animation.
+     * @return A name describing the direction.
+     */
+    public String getDirectionName(int direction) {
+        if (getNbDirections() == 4 &&
+                direction < 4) {
+            // 4-direction case.
+            String[] directionNames = {
+                    "right",
+                    "up",
+                    "left",
+                    "down",
+            };
+            return direction + " (" + directionNames[direction] + ")";
+        }
+
+        if (getNbDirections() == 8 &&
+                direction < 8) {
+            // 8-direction case.
+            String[] directionNames = {
+                    "right",
+                    "right-up",
+                    "up",
+                    "left-up",
+                    "left",
+                    "left-down",
+                    "down",
+                    "right-down"
+            };
+            return direction + " (" + directionNames[direction] + ")";
+        }
+
+        return Integer.toString(direction);
+    }
+
+    /**
      * @brief Returns the time interval between two frames.
      *
      * This delay is the same for all directions.
@@ -259,18 +290,18 @@ public class SpriteAnimation  extends Observable {
 
     /**
      * Add a new direction in this animation.
-     * the direction is create with one frame corresponding to the rect and his
-     * origin point centered.
+     * The direction is created with one frame corresponding to the rect.
      * @param rect the rect corresponding to the first frame of the direction
      * @return the added direction.
      * @throws SpriteException if the direction cannot be created.
      */
     public SpriteAnimationDirection addDirection(Rectangle rect) throws SpriteException {
 
-        BufferedImage image = getImage();
+        BufferedImage srcImage = getSrcImage();
         Point origin = new Point(rect.width / 2, rect.height - 3);
 
-        SpriteAnimationDirection direction = new SpriteAnimationDirection(image, rect, 1, 1, origin.x, origin.y);
+        SpriteAnimationDirection direction = new SpriteAnimationDirection(srcImage, rect, 1, 1, origin.x, origin.y);
+        direction.setAnimation(this);
         directions.add(direction);
 
         setChanged();
@@ -290,8 +321,7 @@ public class SpriteAnimation  extends Observable {
             throws SpriteException {
 
         if (directionNb < 0 || directionNb >= directions.size()) {
-            throw new SpriteException("The direction " + directionNb +
-                    " doesn't exists in this animation");
+            throw new SpriteException("No such direction: " + directionNb);
         }
 
         SpriteAnimationDirection direction = directions.get(directionNb);
@@ -322,8 +352,7 @@ public class SpriteAnimation  extends Observable {
     public SpriteAnimationDirection removeDirection(int directionNb) throws SpriteException {
 
         if (directionNb < 0 || directionNb >= directions.size()) {
-            throw new SpriteException("The direction " + directionNb +
-                    " doesn't exist in this animation");
+            throw new SpriteException("No such direction: " + directionNb);
         }
 
         SpriteAnimationDirection direction = directions.get(directionNb);
@@ -352,15 +381,11 @@ public class SpriteAnimation  extends Observable {
      *
      * @param tilesetId The id of the tileset
      */
-    public void setTilesetId (String tilesetId) throws SpriteException {
+    public void setTilesetId(String tilesetId) throws SpriteException {
 
-        if (srcImage.equals("tileset")) {
-            try {
-                this.tilesetId = tilesetId;
-                reloadImage();
-            } catch (SpriteException ex) {
-                throw new SpriteException("Tileset image cannot be loaded:\n" + ex.getMessage());
-            }
+        if (srcImageName.equals("tileset")) {
+            this.tilesetId = tilesetId;
+            reloadSrcImage();
         }
     }
 
@@ -379,5 +404,126 @@ public class SpriteAnimation  extends Observable {
 
         directions.get(direction).paint(g, zoom, showTransparency, x, y, frame);
     }
+
+    /**
+     * Reloads the animation's image.
+     * The observers are notified with the new image as parameter.
+     * The image will be null if it cannot be loaded.
+     */
+    public void reloadSrcImage() {
+
+        try {
+            scaledImages = new BufferedImage[Zoom.values().length];
+            srcImage = ImageIO.read(getSrcImageFile());
+            for (SpriteAnimationDirection direction: directions) {
+                direction.setSrcImage(srcImage);
+            }
+
+            setChanged();
+            notifyObservers(srcImage);
+        }
+        catch (SpriteException ex) {
+            srcImage = null;
+        }
+        catch (IOException ex) {
+            srcImage = null;
+        }
+    }
+
+    /**
+     * Returns the animation's image file.
+     * @return the file of animation image
+     */
+    public File getSrcImageFile() {
+
+        if (srcImageName.equals("tileset")) {
+
+            return Project.getTilesetEntitiesImageFile(tilesetId);
+        }
+
+        return new File(Project.getDataPath() + "/sprites/" + srcImageName);
+    }
+
+    /**
+     * Returns the name of the source image.
+     * @return the name
+     */
+    public String getSrcImageName() {
+
+        return srcImageName;
+    }
+
+    /**
+     * Changes the source image.
+     * @param srcImage the name of the source image
+     * @throws SpriteException if this image could not be applied
+     */
+    public void setSrcImageName(String srcImageName) throws SpriteException {
+
+        if (srcImageName.equals(this.srcImageName)) {
+            return;
+        }
+
+        this.srcImageName = srcImageName;
+        reloadSrcImage();
+    }
+
+    /**
+     * Returns the animation's image.
+     * @return The animation image or null if it cannot be loaded.
+     */
+    public BufferedImage getSrcImage() {
+
+        // Try to reload image if not loaded yet.
+        if (srcImage == null) {
+            reloadSrcImage();
+        }
+
+        return srcImage;
+    }
+
+    /**
+     * Creates a scaled version of an image (without any kind of interpolation).
+     * @param image The original image.
+     * @param width The new width.
+     * @param height The new height.
+     * @return The scaled image.
+     */
+    private BufferedImage createScaledImage(BufferedImage image, int width, int height) {
+
+        BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = scaledImage.createGraphics();
+        g.drawImage(image, 0, 0, width, height, null);
+        g.dispose();
+        return scaledImage;
+    }
+
+    /**
+     * Returns a scaled version of the animation's image, previously loaded by reloadImage().
+     * @param zoom the zoom
+     * @return the scaled animation's image, or null if the image is not loaded
+     */
+    public BufferedImage getScaledSrcImage(Zoom zoom) {
+
+        if (srcImage == null) {
+            return null;
+        }
+
+        int index = zoom.getIndex();
+        double zoomValue = zoom.getValue();
+
+        if (scaledImages[index] == null) {
+            if (zoomValue == 1.0) {
+                scaledImages[index] = srcImage;
+            } else {
+                int width = (int) Math.round(srcImage.getWidth() * zoomValue);
+                int height = (int) Math.round(srcImage.getHeight() * zoomValue);
+                scaledImages[index] = createScaledImage(srcImage, width, height);
+            }
+        }
+
+        return scaledImages[index];
+    }
+
 }
 

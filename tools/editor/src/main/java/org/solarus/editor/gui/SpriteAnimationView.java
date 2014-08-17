@@ -22,9 +22,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.*;
+
 import org.solarus.editor.*;
 import org.solarus.editor.gui.tree.SpriteImageTree;
 
@@ -44,10 +46,10 @@ class SpriteAnimationView extends JPanel implements Observer {
     private SpriteAnimation selectedAnimation;
 
     // components
-    private final AnimationField animationField;
     private final DefaultAnimationField defaultAnimationView;
     private final SrcImageField srcImageView;
     private final FrameDelayField frameDelayView;
+    private final LoopField loopView;
     private final LoopOnFrameField loopOnFrameView;
 
     /**
@@ -59,14 +61,12 @@ class SpriteAnimationView extends JPanel implements Observer {
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(5, 5, 5, 5); // margins
-        constraints.anchor = GridBagConstraints.LINE_START; // alignment of the components
+        constraints.anchor = GridBagConstraints.FIRST_LINE_START; // alignment of the components
         constraints.fill = GridBagConstraints.HORIZONTAL;
 
+        constraints.weightx = 0;  // Don't give more space to this column when resizing.
         constraints.gridx = 0;
         constraints.gridy = 0;
-        add(new JLabel("Animation"), constraints);
-
-        constraints.gridy++;
         add(new JLabel("Default animation"), constraints);
 
         constraints.gridy++;
@@ -76,15 +76,12 @@ class SpriteAnimationView extends JPanel implements Observer {
         add(new JLabel("Frame delay"), constraints);
 
         constraints.gridy++;
-        add(new JLabel("Loop on frame"), constraints);
+        loopView = new LoopField();
+        add(loopView, constraints);
 
-        constraints.weightx = 1;
+        constraints.weightx = 1;  // Give any available space to this column when resizing.
         constraints.gridx = 1;
         constraints.gridy = 0;
-        animationField = new AnimationField();
-        add(animationField, constraints);
-
-        constraints.gridy++;
         defaultAnimationView = new DefaultAnimationField();
         add(defaultAnimationView, constraints);
 
@@ -100,8 +97,6 @@ class SpriteAnimationView extends JPanel implements Observer {
         constraints.gridy++;
         loopOnFrameView = new LoopOnFrameField();
         add(loopOnFrameView, constraints);
-
-        update(sprite, null);
     }
 
     /**
@@ -116,7 +111,6 @@ class SpriteAnimationView extends JPanel implements Observer {
             }
 
             this.sprite = sprite;
-            animationField.setSprite();
 
             if (sprite != null) {
                 sprite.addObserver(this);
@@ -126,8 +120,9 @@ class SpriteAnimationView extends JPanel implements Observer {
     }
 
     /**
-     * Sets the selected animation.
-     * @param animationName the name of animation
+     * Sets the animation shown in this component.
+     * @param animationName The name of animation, or an empty string to
+     * show no animation in the component.
      */
     public void setSelectedAnimation(String animationName) {
 
@@ -149,29 +144,26 @@ class SpriteAnimationView extends JPanel implements Observer {
         if (selectedAnimation != null) {
             selectedAnimation.addObserver(this);
         }
-        update(animation, null);
     }
 
     /**
-     * This function is called when the sprite is changed.
-     * @param o the sprite, or null if no sprite is set
-     * @param obj not used
+     * Updates this component.
+     * @param o The object that has changed.
+     * @param info Info about what has changed, or null to update everything.
      */
     @Override
-    public void update(Observable o, Object obj) {
+    public void update(Observable o, Object info) {
 
-        if (o instanceof Sprite && (obj == null || obj instanceof String)) {
-            // the sprite has changed
-            setSelectedAnimation(sprite.getSelectedAnimationName());
-            defaultAnimationView.update(o);
+        if (o == null) {
+            return;
         }
-        else if (obj instanceof SpriteAnimation || o instanceof SpriteAnimation || o == null) {
-            // the animation has changed
-            animationField.update(o);
-            srcImageView.update(o);
-            frameDelayView.update(o);
-            loopOnFrameView.update(o);
-        }
+
+        setSelectedAnimation(sprite.getSelectedAnimationName());
+        defaultAnimationView.update();
+        srcImageView.update();
+        frameDelayView.update();
+        loopView.update();
+        loopOnFrameView.update();
     }
 
     /**
@@ -311,7 +303,7 @@ class SpriteAnimationView extends JPanel implements Observer {
 
         /**
          * Returns the source image
-         * @return the sourc image
+         * @return the source image
          */
         public String getSrcImage() {
             return srcImage;
@@ -396,277 +388,6 @@ class SpriteAnimationView extends JPanel implements Observer {
         }
     }
 
-    /**
-     * Component to change the selected animation of the sprite.
-     */
-    private class AnimationField extends JPanel implements ActionListener {
-
-        /**
-         * The animation selector.
-         */
-        private SpriteAnimationChooser animationChooser;
-
-        private JButton renameButton;
-        private JButton addButton;
-        private JButton removeButton;
-
-        /**
-         * Constructor.
-         */
-        public AnimationField() {
-            super();
-            setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-
-            animationChooser = new SpriteAnimationChooser(sprite);
-            animationChooser.setPreferredSize(new Dimension(80, 24));
-            animationChooser.addActionListener(this);
-            add(animationChooser);
-
-            renameButton = new JButton(Project.getEditorImageIconOrEmpty("icon_edit.png"));
-            renameButton.setPreferredSize(new Dimension(24, 24));
-            renameButton.setToolTipText("Rename animation");
-            renameButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ev) {
-
-                    if (sprite == null) {
-                        return;
-                    }
-
-                    String name = animationChooser.getSelected();
-                    String newName = "";
-                    RenameAnimationDialog dialog = new RenameAnimationDialog(name);
-                    if (dialog.display()) {
-                        newName = dialog.getNewAnimationName();
-                    }
-
-                    if (!newName.isEmpty()) {
-                        // Rename the animation.
-                        try {
-                            sprite.renameAnimation(name, newName);
-                        }
-                        catch (SpriteException ex) {
-                            GuiTools.errorDialog("Cannot rename animation '" +
-                                    name+ "': " + ex.getMessage());
-                        }
-                    }
-                }
-            });
-            add(renameButton);
-
-            addButton = new JButton(Project.getEditorImageIconOrEmpty("icon_add.png"));
-            addButton.setPreferredSize(new Dimension(24, 24));
-            addButton.setToolTipText("Add animation");
-            addButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ev) {
-
-                    if (sprite == null) {
-                        return;
-                    }
-
-                    NewAnimationDialog dialog = new NewAnimationDialog();
-                    String name = "";
-                    if (dialog.display()) {
-                        name = dialog.getAnimationName();
-                    }
-
-                    if (!name.isEmpty()) {
-                        // Add an animation.
-                        try {
-                            sprite.addAnimation(name);
-                        }
-                        catch (SpriteException ex) {
-                            GuiTools.errorDialog("Cannot add animation '" +
-                                    name+ "': " + ex.getMessage());
-                        }
-                    }
-                }
-            });
-            add(addButton);
-
-            removeButton = new JButton(Project.getEditorImageIconOrEmpty("icon_remove.png"));
-            removeButton.setPreferredSize(new Dimension(24, 24));
-            removeButton.setToolTipText("Remove animation");
-            removeButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ev) {
-
-                    if (sprite == null) {
-                        return;
-                    }
-
-                    String selectedAnimationName = animationChooser.getSelected();
-
-                    // Remove the animation
-                    try {
-                        sprite.removeAnimation();
-                    } catch (SpriteException ex) {
-                        GuiTools.errorDialog("Cannot remove animation '" +
-                                selectedAnimationName + "': " + ex.getMessage());
-                    }
-                }
-            });
-            add(removeButton);
-
-            update(sprite);
-        }
-
-        /**
-        * Changes the sprite observed for the chooser component.
-        */
-       public void setSprite() {
-
-           animationChooser.setSprite(sprite);
-       }
-
-        /**
-         * This function is called when the sprite is changed.
-         * The selection is updated.
-         */
-        public void update(Observable o) {
-
-            animationChooser.setEnabled(sprite != null && sprite.getAnimations().size() > 0);
-            removeButton.setEnabled(sprite != null && sprite.getSelectedAnimation() != null);
-            renameButton.setEnabled(sprite != null && sprite.getSelectedAnimation() != null);
-        }
-
-        /**
-         * This method is called when the user changes the selected item.
-         * The selected animation of the sprite is changed.
-         */
-        @Override
-        public void actionPerformed(ActionEvent ev) {
-
-            if (sprite == null) {
-                return;
-            }
-
-            String selectedAnimationName = animationChooser.getSelected();
-            String currentAnimationName = sprite.getSelectedAnimationName();
-
-            if (!currentAnimationName.equals(selectedAnimationName)) {
-
-                try {
-                    sprite.setSelectedAnimation(selectedAnimationName);
-                }
-                catch (SpriteException ex) {
-                    // animation doesn't exists
-                }
-            }
-        }
-    }
-
-    /**
-    * Dialog shown when we want to rename an animation in this sprite
-    */
-   private class RenameAnimationDialog extends OkCancelDialog {
-           private static final long serialVersionUID = 1L;
-
-        // Subcomponents
-        private final JTextField nameField;
-        private final JTextField newNameField;
-
-        /**
-         * Constructor.
-         */
-        public RenameAnimationDialog(String name) {
-
-            super("Rename animation", false);
-
-            JPanel mainPanel = new JPanel(new GridBagLayout());
-            GridBagConstraints constraints = new GridBagConstraints();
-            constraints.insets = new Insets(5, 5, 5, 5); // margins
-            constraints.anchor = GridBagConstraints.LINE_START;
-            constraints.gridy = 0;
-            constraints.gridx = 0;
-
-            mainPanel.add(new JLabel("name:"), constraints);
-
-            constraints.gridy++;
-            mainPanel.add(new JLabel("new name:"), constraints);
-
-            constraints.gridy = 0;
-            constraints.gridx++;
-            nameField = new JTextField(15);
-            nameField.setText(name);
-            nameField.setEditable(false);
-            mainPanel.add(nameField, constraints);
-
-            constraints.gridy++;
-            newNameField = new JTextField(15);
-            newNameField.setText(name);
-            mainPanel.add(newNameField, constraints);
-
-            setComponent(mainPanel);
-        }
-
-        /**
-         * Returns the name of animation.
-         * @return the name
-         */
-        public String getAnimationName() {
-            return nameField.getText();
-        }
-
-        /**
-         * Returns the new name of animation.
-         * @return the new name
-         */
-        public String getNewAnimationName() {
-            return newNameField.getText();
-        }
-
-        @Override
-        protected void applyModifications() {
-        }
-   }
-
-    /**
-    * Dialog shown when we want to create a new animation in this sprite
-    */
-   private class NewAnimationDialog extends OkCancelDialog {
-           private static final long serialVersionUID = 1L;
-
-        // Subcomponents
-        private final JTextField nameField;
-
-        /**
-         * Constructor.
-         */
-        public NewAnimationDialog() {
-
-            super("New animation", false);
-
-            JPanel mainPanel = new JPanel(new GridBagLayout());
-            GridBagConstraints constraints = new GridBagConstraints();
-            constraints.insets = new Insets(5, 5, 5, 5); // margins
-            constraints.anchor = GridBagConstraints.LINE_START;
-            constraints.gridy = 0;
-            constraints.gridx = 0;
-
-            mainPanel.add(new JLabel("name:"), constraints);
-
-            constraints.gridx++;
-            nameField = new JTextField(15);
-            mainPanel.add(nameField, constraints);
-
-            setComponent(mainPanel);
-        }
-
-        /**
-         * Returns the name of animation.
-         * @return the name
-         */
-        public String getAnimationName() {
-            return nameField.getText();
-        }
-
-        @Override
-        protected void applyModifications() {
-        }
-   }
-
    /**
      * Component to set the selected animation as the default animation.
      */
@@ -678,7 +399,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         public DefaultAnimationField() {
             super("Set as default");
             addActionListener(this);
-            update((Sprite) null);
+            update();
         }
 
         /**
@@ -694,10 +415,10 @@ class SpriteAnimationView extends JPanel implements Observer {
         }
 
         /**
-         * This function is called when the map is changed.
+         * This function is called when the sprite is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             if (sprite != null && selectedAnimation != null) {
                 setSelected(sprite.getDefaultAnimationName() == sprite.getSelectedAnimationName());
@@ -710,7 +431,7 @@ class SpriteAnimationView extends JPanel implements Observer {
         }
     }
 
-   /**
+    /**
      * Component to choose the source image of this animation.
      */
     private class SrcImageField extends JPanel implements ActionListener {
@@ -726,36 +447,33 @@ class SpriteAnimationView extends JPanel implements Observer {
          */
         public SrcImageField() {
             super();
-            setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+            setLayout(new GridBagLayout());
+
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.anchor = GridBagConstraints.FIRST_LINE_START; // alignment of the components
 
             srcImage = new JTextField();
             srcImage.setEditable(false);
-            srcImage.setPreferredSize(new Dimension(140, 24));
+            constraints.gridx = 0;
+            constraints.gridy = 0;
+            constraints.weightx = 1.0;
+            constraints.fill = GridBagConstraints.BOTH;
+            add(srcImage, constraints);
 
             tilesetChooser = new ResourceChooser(ResourceType.TILESET, false);
-            tilesetChooser.setPreferredSize(new Dimension(140, 24));
             tilesetChooser.addActionListener(this);
 
-            add(srcImage);
-            add(tilesetChooser);
+            constraints.gridx = 1;
+            constraints.gridy = 0;
+            constraints.weightx = 1.0;
+            constraints.fill = GridBagConstraints.BOTH;
+            add(tilesetChooser, constraints);
 
-            refreshButton = new JButton(Project.getEditorImageIconOrEmpty("icon_refresh.png"));
-            refreshButton.setPreferredSize(new Dimension(24, 24));
-            refreshButton.setToolTipText("Refresh source image");
-            refreshButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ev) {
-
-                    if (selectedAnimation != null) {
-                        sprite.reloadImage();
-                    }
-                }
-            });
-            add(refreshButton);
-
-            setButton = new JButton(Project.getEditorImageIconOrEmpty("icon_edit.png"));
-            setButton.setPreferredSize(new Dimension(24, 24));
+            setButton = new JButton(Project.getEditorImageIconOrEmpty("icon_open.png"));
             setButton.setToolTipText("Change source image");
+            setButton.setMinimumSize(new Dimension(24, 24));
+            setButton.setPreferredSize(new Dimension(24, 24));
+            setButton.setMaximumSize(new Dimension(24, 24));
             setButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ev) {
@@ -766,32 +484,58 @@ class SpriteAnimationView extends JPanel implements Observer {
 
                     try {
                         ChooseSpriteImageDialog dialog =
-                                new ChooseSpriteImageDialog(selectedAnimation.getSrcImage());
+                                new ChooseSpriteImageDialog(selectedAnimation.getSrcImageName());
                         if (dialog.display()) {
-                            selectedAnimation.setSrcImage(dialog.getSrcImage());
+                            selectedAnimation.setSrcImageName(dialog.getSrcImage());
                             sprite.setSaved(false);
-                            sprite.reloadImage();
+                            selectedAnimation.reloadSrcImage();
                         }
                     } catch (SpriteException ex) {
                         GuiTools.errorDialog("Cannot change the source image: " + ex.getMessage());
                     }
                 }
             });
-            add(setButton);
 
-            update((SpriteAnimation) null);
+            constraints.gridx = 2;
+            constraints.gridy = 0;
+            constraints.weightx = 0.0;
+            constraints.fill = GridBagConstraints.NONE;
+            add(setButton, constraints);
+
+            refreshButton = new JButton(Project.getEditorImageIconOrEmpty("icon_refresh.png"));
+            refreshButton.setToolTipText("Refresh source image");
+            refreshButton.setMinimumSize(new Dimension(24, 24));
+            refreshButton.setPreferredSize(new Dimension(24, 24));
+            refreshButton.setMaximumSize(new Dimension(24, 24));
+            refreshButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ev) {
+
+                    if (selectedAnimation != null) {
+                        selectedAnimation.reloadSrcImage();
+                    }
+                }
+            });
+
+            constraints.gridx = 3;
+            constraints.gridy = 0;
+            constraints.weightx = 0.0;
+            constraints.fill = GridBagConstraints.NONE;
+            add(refreshButton, constraints);
+
+            update();
         }
 
         /**
          * This function is called when the animation is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             if (selectedAnimation != null) {
                 refreshButton.setEnabled(true);
                 setButton.setEnabled(true);
-                String image = selectedAnimation.getSrcImage();
+                String image = selectedAnimation.getSrcImageName();
                 image = image.isEmpty() ? "<none>" : image;
                 if (!image.equals(srcImage.getText())) {
                     srcImage.setText(image.isEmpty() ? "<none>" : image);
@@ -844,14 +588,14 @@ class SpriteAnimationView extends JPanel implements Observer {
             setStepSize(10);
 
             addChangeListener(this);
-            update((SpriteAnimation) null);
+            update();
         }
 
         /**
          * This function is called when the animation is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
             if (selectedAnimation != null) {
                 setEnabled(true);
@@ -880,33 +624,117 @@ class SpriteAnimationView extends JPanel implements Observer {
         }
     }
 
-   /**
-     * Component to choose the frame delay of this animation.
+    /**
+     * Component to choose whether the animation loops.
      */
-    private class LoopOnFrameField extends NumberChooser implements ChangeListener {
+    private class LoopField extends JPanel implements ActionListener {
 
-        /**
-         * Constructor.
-         */
-        public LoopOnFrameField() {
-            super(0, -1, Integer.MAX_VALUE);
+        private final JLabel loopLabel;
+        private final JCheckBox loopCheckBox;
 
-            addChangeListener(this);
-            update((SpriteAnimation) null);
+        public LoopField() {
+
+            super(new BorderLayout());
+            loopLabel = new JLabel("Loop ");
+            add(loopLabel, BorderLayout.LINE_START);
+            loopCheckBox = new JCheckBox();
+            add(loopCheckBox, BorderLayout.CENTER);
+            loopCheckBox.addActionListener(this);
+            update();
         }
 
         /**
          * This function is called when the animation is changed.
          * The component is updated.
          */
-        public void update(Observable o) {
+        public void update() {
 
-            if (selectedAnimation != null && selectedAnimation.getFrameDelay() > 0) {
-                setEnabled(true);
-                setValue(selectedAnimation.getLoopOnFrame());
+            if (selectedAnimation == null) {
+                loopLabel.setEnabled(false);
+                loopCheckBox.setEnabled(false);
+                return;
+            }
+
+            if (selectedAnimation.getFrameDelay() > 0) {
+                loopLabel.setEnabled(true);
+                loopCheckBox.setEnabled(true);
+                loopCheckBox.setSelected(selectedAnimation.getLoopOnFrame() != -1);
             }
             else {
-                setEnabled(false);
+                loopLabel.setEnabled(false);
+                loopCheckBox.setEnabled(false);
+            }
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            if (selectedAnimation == null) {
+                return;
+            }
+
+            boolean currentLoop = selectedAnimation.getLoopOnFrame() != -1;
+            boolean newLoop = loopCheckBox.isSelected();
+            
+            if (newLoop == currentLoop) {
+                return;
+            }
+
+            if (newLoop) { 
+                selectedAnimation.setLoopOnFrame(loopOnFrameView.getLoopOnFrame());
+            }
+            else {
+                selectedAnimation.setLoopOnFrame(-1);
+            }
+            sprite.setSaved(false);
+        }
+    }
+
+    /**
+     * Component to choose the frame to loop on in this animation.
+     */
+    private class LoopOnFrameField extends JPanel implements ChangeListener {
+
+        private final JLabel frameLabel;
+        private final NumberChooser frameField;
+
+        /**
+         * Constructor.
+         */
+        public LoopOnFrameField() {
+            super(new BorderLayout());
+
+            frameField = new NumberChooser(0, 0, Integer.MAX_VALUE);
+            frameLabel = new JLabel("on frame ");
+            add(frameLabel, BorderLayout.LINE_START);
+            add(frameField, BorderLayout.CENTER);
+            frameField.addChangeListener(this);
+            update();
+        }
+        
+        /**
+         * Returns the number shown in the field.
+         * @return The frame number, even if the field is disabled.
+         */
+        public int getLoopOnFrame() {
+            return frameField.getNumber();
+        }
+
+        /**
+         * This function is called when the animation is changed.
+         * The component is updated.
+         */
+        public void update() {
+
+            if (selectedAnimation != null &&
+                    selectedAnimation.getFrameDelay() > 0 &&
+                    selectedAnimation.getLoopOnFrame() != -1) {
+                frameLabel.setEnabled(true);
+                frameField.setEnabled(true);
+                frameField.setNumber(selectedAnimation.getLoopOnFrame());
+            }
+            else {
+                frameLabel.setEnabled(false);
+                frameField.setEnabled(false);
             }
         }
 
@@ -916,13 +744,15 @@ class SpriteAnimationView extends JPanel implements Observer {
         @Override
         public void stateChanged(ChangeEvent ev) {
 
-            if (selectedAnimation != null) {
-                int selectedLoopOnFrame = getNumber();
-                int currentloopOnFrame = selectedAnimation.getLoopOnFrame();
-                if (currentloopOnFrame != selectedLoopOnFrame) {
-                    selectedAnimation.setLoopOnFrame(selectedLoopOnFrame);
-                    sprite.setSaved(false);
-                }
+            if (selectedAnimation == null) {
+                return;
+            }
+
+            int selectedLoopOnFrame = frameField.getNumber();
+            int currentloopOnFrame = selectedAnimation.getLoopOnFrame();
+            if (currentloopOnFrame != selectedLoopOnFrame) {
+                selectedAnimation.setLoopOnFrame(selectedLoopOnFrame);
+                sprite.setSaved(false);
             }
         }
     }

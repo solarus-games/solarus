@@ -81,16 +81,6 @@ public class Sprite extends Observable {
     private int selectedDirectionNb;
 
     /**
-     * The current sprite animation image.
-     */
-    private BufferedImage image;
-
-    /**
-     * The scaled images of current sprite animation.
-     */
-    private BufferedImage[] scaledImages;
-
-    /**
      * Loads the description file of the animation set used by this sprite
      * and builds its animation set.
      * @throws SpriteException if there is an error when analyzing the file.
@@ -174,8 +164,13 @@ public class Sprite extends Observable {
 
                     try {
                       SpriteAnimationDirection direction =  new SpriteAnimationDirection(
-                          srcImage, firstFrameRectangle, numFrames, numColumns, originX, originY
-                          );
+                          srcImage,
+                          firstFrameRectangle,
+                          numFrames,
+                          numColumns,
+                          originX,
+                          originY
+                      );
                       directions.add(direction);
                     }
                     catch (SpriteException ex) {
@@ -186,8 +181,14 @@ public class Sprite extends Observable {
                     }
                 }
 
-                SpriteAnimation animation = new SpriteAnimation(srcImageName,
-                        directions, frameDelay, frameToLoopOn, tilesetId);
+                SpriteAnimation animation = new SpriteAnimation(
+                        animationName,
+                        srcImageName,
+                        directions,
+                        frameDelay,
+                        frameToLoopOn,
+                        tilesetId
+                );
                 animations.put(animationName, animation);
                 if (defaultAnimationName == "") {
                     defaultAnimationName = animationName; // set first animation as the default one
@@ -204,6 +205,54 @@ public class Sprite extends Observable {
             }
 
             return LuaValue.NIL;
+        }
+    }
+
+    /**
+     * Possible values passed to notifyObservers() to inform observers
+     * about what has changed.
+     */
+    public enum WhatChanged {
+        ANIMATION_ADDED,
+        ANIMATION_REMOVED,
+        ANIMATION_RENAMED,
+        DEFAULT_ANIMATION_CHANGED,
+        SELECTED_ANIMATION_CHANGED,
+        DIRECTION_ADDED,
+        DIRECTION_REMOVED,
+        SELECTED_DIRECTION_CHANGED
+    }
+
+    /**
+     * Description of what has changed when notifying observers.
+     */
+    public class Change {
+
+        private final WhatChanged whatChanged;
+
+        private final Object[] info;
+
+        /**
+         * Creates a change description.
+         * @param whatChanged Nature of the change.
+         * @param info Optional info describing what animations or
+         * directions are impacted by the change.
+         */
+        public Change(WhatChanged whatChanged, Object... info) {
+            this.whatChanged = whatChanged;
+            this.info = info;
+        }
+
+        public WhatChanged getWhatChanged() {
+            return whatChanged;
+        }
+
+        public Object getInfo() {
+            return getInfo(0);
+        }
+
+        public Object getInfo(int index) {
+            return info[index];
         }
     }
 
@@ -225,7 +274,6 @@ public class Sprite extends Observable {
         this.selectedAnimationName = "";
         this.defaultAnimationName = "";
         this.selectedDirectionNb = -1;
-        this.scaledImages = new BufferedImage[Zoom.values().length];
 
         load();
         setSaved(true);
@@ -236,7 +284,7 @@ public class Sprite extends Observable {
      * @param animationSetId id of the animation set to use
      * @throws SpriteException If the sprite could not be loaded.
      */
-    public Sprite (String animationSetId) throws SpriteException {
+    public Sprite(String animationSetId) throws SpriteException {
 
         this(animationSetId, "");
 
@@ -327,7 +375,8 @@ public class Sprite extends Observable {
 
     /**
      * Changes the default animation of this sprite.
-     * @param animationName the name of the new default animation
+     * @param animationName the name of the new default animation,
+     * or an empty string to make no explicit default animation.
      */
     public void setDefaultAnimation(String animationName) {
 
@@ -336,7 +385,7 @@ public class Sprite extends Observable {
 
             isSaved = false;
             setChanged();
-            notifyObservers();
+            notifyObservers(new Change(WhatChanged.DEFAULT_ANIMATION_CHANGED));
         }
     }
 
@@ -406,31 +455,34 @@ public class Sprite extends Observable {
      */
     public void setSelectedAnimation(String animationName) throws SpriteException {
 
-        if (!animationName.equals(selectedAnimationName)) {
-            if (animationName.isEmpty()) {
-                // unselect direction
-                selectedDirectionNb = -1;
-            } else if (!animations.containsKey(animationName) ) {
-                throw new SpriteException("the animation '" + animationName + "' doesn't exists");
-            } else {
-                int nbDirections = animations.get(animationName).getNbDirections();
-                if (nbDirections > 0) {
-                    // select the first direction if no direction was selected
-                    if (selectedDirectionNb < 0) {
-                        selectedDirectionNb = 0;
-                    }
-                    // select the last direction if selected direction doesn't exists
-                    else if (selectedDirectionNb >= nbDirections) {
-                        selectedDirectionNb = nbDirections - 1;
-                    }
-                } else {
-                    selectedDirectionNb = -1;
-                }
-            }
-
-            selectedAnimationName = animationName;
-            reloadImage();
+        if (animationName.equals(selectedAnimationName)) {
+            return;
         }
+
+        if (animationName.isEmpty()) {
+            // unselect direction
+            selectedDirectionNb = -1;
+        } else if (!animations.containsKey(animationName) ) {
+            throw new SpriteException("No such animation: '" + animationName + "'");
+        } else {
+            int nbDirections = animations.get(animationName).getNbDirections();
+            if (nbDirections > 0) {
+                // select the last direction if wanted direction doesn't exist
+                if (selectedDirectionNb >= nbDirections) {
+                    selectedDirectionNb = nbDirections - 1;
+                }
+            } else {
+                selectedDirectionNb = -1;
+            }
+        }
+
+        selectedAnimationName = animationName;
+        if (!selectedAnimationName.isEmpty()) {
+            getSelectedAnimation().reloadSrcImage();
+        }
+
+        setChanged();
+        notifyObservers(new Change(WhatChanged.SELECTED_ANIMATION_CHANGED));
     }
 
     /**
@@ -443,11 +495,19 @@ public class Sprite extends Observable {
     }
 
     /**
+     * Sets the selected animation of this sprite.
+     * @param animation The animation to select or null to unselect.
+     * @throws SpriteException if the animation doesn't exist
+     */
+    public void setSelectedAnimation(SpriteAnimation animation) throws SpriteException {
+        setSelectedAnimation(animation.getName());
+    }
+
+    /**
      * Returns the number of the selected direction.
      * @return -1 if no direction is selected, 0 or more if an existing direction is selected.
      */
     public int getSelectedDirectionNb() {
-
         return selectedDirectionNb;
     }
 
@@ -459,23 +519,52 @@ public class Sprite extends Observable {
      */
     public void setSelectedDirectionNb(int selectedDirectionNb) throws SpriteException {
 
-        if (selectedDirectionNb != this.selectedDirectionNb) {
-
-            // select a direction
-            if (selectedDirectionNb != -1) {
-                SpriteAnimation animation = getSelectedAnimation();
-                if (animation == null) {
-                    throw new SpriteException("Cannot select direction number " +
-                            selectedDirectionNb + ": no animation was selected");
-                } else if (selectedDirectionNb >= animation.getNbDirections()) {
-                    throw new SpriteException("Cannot select direction number " +
-                            selectedDirectionNb + ": this direction doesn't exist");
-                }
-            }
-            this.selectedDirectionNb = selectedDirectionNb;
-            setChanged();
-            notifyObservers(getSelectedDirection());
+        if (selectedDirectionNb == this.selectedDirectionNb) {
+            return;
         }
+
+        // select a direction
+        if (selectedDirectionNb != -1) {
+            SpriteAnimation animation = getSelectedAnimation();
+            if (animation == null) {
+                throw new SpriteException("Cannot select direction " +
+                        selectedDirectionNb + ": no animation was selected");
+            } else if (selectedDirectionNb >= animation.getNbDirections()) {
+                throw new SpriteException("Cannot select direction " +
+                        selectedDirectionNb + ": no such direction");
+            }
+        }
+        this.selectedDirectionNb = selectedDirectionNb;
+        setChanged();
+        notifyObservers(new Change(WhatChanged.SELECTED_DIRECTION_CHANGED));
+    }
+
+    /**
+     * Selects a direction and notifies the observers.
+     * @param direction The direction to select or null to unselect.
+     * @throws SpriteException if the direction doesn't exist.
+     */
+    public void setSelectedDirection(SpriteAnimationDirection direction) throws SpriteException {
+
+        if (direction == null) {
+            unselectDirection();
+            return;
+        }
+
+        SpriteAnimation animation = getSelectedAnimation();
+        if (animation == null) {
+            throw new SpriteException("No animation is selected");
+        }
+        for (int i = 0; i < animation.getNbDirections(); i++) {
+            SpriteAnimationDirection currentDirection = animation.getDirection(i);
+            if (currentDirection == direction) {
+                // Found it.
+                setSelectedDirectionNb(i);
+                return;
+            }
+        }
+
+        throw new SpriteException("No such direction");
     }
 
     /**
@@ -519,6 +608,27 @@ public class Sprite extends Observable {
     }
 
     /**
+     * Returns a name describing the selected direction.
+     *
+     * If there are 4 or 8 directions, this is the direction number followed by
+     * a hint like "up" or "right-left".
+     * Otherwise, this is the direction number alone.
+     *
+     * @return A name describing the selected direction, or an empty string if
+     * no direction is selected.
+     */
+    public String getSelectedDirectionName() {
+
+        int direction = selectedDirectionNb;
+        if (direction == -1) {
+            // No direction is selected.
+            return "";
+        }
+
+        return getSelectedAnimation().getDirectionName(direction);
+    }
+
+    /**
      * Add a new animation in this sprite.
      * @param name the name of animation to add
      * @throws SpriteException if animation name already exist.
@@ -526,69 +636,129 @@ public class Sprite extends Observable {
     public void addAnimation(String name) throws SpriteException {
 
         if (name.isEmpty()) {
-            throw new SpriteException("the name is empty");
+            throw new SpriteException("Animation name is empty");
         }
 
         if (animations.containsKey(name)) {
-            throw new SpriteException("the name already exists");
+            throw new SpriteException("Animation '" + name + "' already exists");
         }
 
-        // if have a selected animation, set the same source image to new animation
-        String srcImage = "";
+        // If an animation is already selected, set the same source image
+        // to the new animation.
+        String srcImageName = "";
         SpriteAnimation selectedAnimation = getSelectedAnimation();
         if (selectedAnimation != null) {
-            srcImage = selectedAnimation.getSrcImage();
+            srcImageName = selectedAnimation.getSrcImageName();
         }
 
         Vector<SpriteAnimationDirection> directions = new Vector<SpriteAnimationDirection>();
-        SpriteAnimation animation = new SpriteAnimation(srcImage, directions, 0, -1, tilesetId);
+        SpriteAnimation animation = new SpriteAnimation(
+                name,
+                srcImageName,
+                directions,
+                0,
+                -1,
+                tilesetId
+        );
 
         animations.put(name, animation);
 
-        // notify observers that an animation has been added
+        // Notify observers that an animation has just been added.
         setChanged();
-        notifyObservers(name);
-        // changes the selected animation (notify observers that the sprite has changed)
+        notifyObservers(new Change(WhatChanged.ANIMATION_ADDED, name));
+
+        // Select the newly created animation.
+        // (This will notify observers again.)
         setSelectedAnimation(name);
     }
 
     /**
-     * Rename an animation in this sprite.
-     * @param name the name of animation to rename
-     * @param newName the new name of the animation
-     * @throws SpriteException if animation doesn't exist or name already exist.
+     * Clones the selected animation into a new animation.
+     * @throws SpriteException If the animation could not be created.
      */
-    public void renameAnimation(String name, String newName) throws SpriteException {
+    public void cloneAnimation(String newAnimationName) throws SpriteException {
+
+        if (newAnimationName.isEmpty()) {
+            throw new SpriteException("Animation name is empty");
+        }
+
+        if (animations.containsKey(newAnimationName)) {
+            throw new SpriteException("Animation '" + newAnimationName + "' already exists");
+        }
+
+        // If an animation is already selected, set the same source image
+        // to the new animation.
+        SpriteAnimation selectedAnimation = getSelectedAnimation();
+        if (selectedAnimation == null) {
+            throw new SpriteException("No animation is selected");
+        }
+
+        SpriteAnimation newAnimation = new SpriteAnimation(newAnimationName, selectedAnimation);
+
+        animations.put(newAnimationName, newAnimation);
+
+        // Notify observers that an animation has just been added.
+        isSaved = false;
+        setChanged();
+        notifyObservers(new Change(WhatChanged.ANIMATION_ADDED, newAnimationName));
+
+        // Select the newly created animation.
+        // (This will notify observers again.)
+        setSelectedAnimation(newAnimationName);
+    }
+
+    /**
+     * Rename an animation in this sprite.
+     * @param oldName The name of animation to rename.
+     * @param newName The new name of the animation.
+     * @throws SpriteException If the animation doesn't exist or the new name
+     * is already used or is invalid.
+     */
+    public void renameAnimation(String oldName, String newName) throws SpriteException {
 
         if (newName.isEmpty()) {
-            throw new SpriteException("the new name is empty" );
-        }
-        if (!animations.containsKey(name)) {
-            throw new SpriteException("this animation doesn't exists" );
-        }
-        if (name.equals(newName)) {
-            return;
-        }
-        if (animations.containsKey(newName)) {
-            throw new SpriteException("the animation '" + newName + "' already exists" );
+            throw new SpriteException("The new name is empty" );
         }
 
-        SpriteAnimation animation = animations.remove(name);
+        if (!animations.containsKey(oldName)) {
+            throw new SpriteException("No such animation: '" + oldName + "'");
+        }
+
+        if (oldName.equals(newName)) {
+            return;
+        }
+
+        if (animations.containsKey(newName)) {
+            throw new SpriteException("Animation '" + newName + "' already exists" );
+        }
+
+        SpriteAnimation animation = animations.get(oldName);
+        animation.setName(newName);
+
+        // The key has changed.
+        animations.remove(oldName);
         animations.put(newName, animation);
-        selectedAnimationName = newName;
-        if (name.equals(defaultAnimationName)) {
+
+        if (selectedAnimationName.equals(oldName)) {
+            // The animation renamed was the selected one.
+            selectedAnimationName = newName;
+        }
+
+        if (oldName.equals(defaultAnimationName)) {
+            // The animation renamed was the default one.
             defaultAnimationName = newName;
         }
 
         isSaved = false;
         setChanged();
-        notifyObservers(animation);
+        notifyObservers(new Change(WhatChanged.ANIMATION_RENAMED, oldName, newName));
+        setChanged();
+        notifyObservers(new Change(WhatChanged.SELECTED_ANIMATION_CHANGED, newName));
     }
 
     /**
-     * Add a new direction in the current selected animation.
-     * the direction is create with one frame corresponding to the rect and his
-     * origin point centered.
+     * Add a new direction to the selected animation.
+     * The direction is created with one frame corresponding to the rect.
      * @param rect the rect corresponding to the first frame of the direction
      * @throws SpriteException if no animation was selected or if the direction
      * cannot be created.
@@ -602,12 +772,20 @@ public class Sprite extends Observable {
         }
 
         int directionNb = animation.getNbDirections();
-        SpriteAnimationDirection direction = animation.addDirection(rect);
-        selectedDirectionNb = directionNb;
+        if (directionNb == 0) {
+            // This is the first direction in this animation.
+            animation.addDirection(rect);
+        }
+        else {
+            // Some directions already exist: clone the last one.
+            animation.cloneDirection(directionNb - 1, null);
+        }
 
         isSaved = false;
         setChanged();
-        notifyObservers(direction);
+        notifyObservers(new Change(WhatChanged.DIRECTION_ADDED, directionNb));
+
+        setSelectedDirectionNb(directionNb);
     }
 
     /**
@@ -622,22 +800,21 @@ public class Sprite extends Observable {
             throw new SpriteException("No selected animation");
         }
 
-        if (selectedDirectionNb < 0) {
+        if (selectedDirectionNb == -1) {
             throw new SpriteException("No selected direction");
         }
 
-        SpriteAnimationDirection direction = animation.cloneDirection(
-                selectedDirectionNb, position);
-
-        selectedDirectionNb = animation.getNbDirections() - 1;
+        animation.cloneDirection(selectedDirectionNb, position);
 
         isSaved = false;
         setChanged();
-        notifyObservers(direction);
+        notifyObservers(new Change(WhatChanged.DIRECTION_ADDED, animation.getNbDirections() - 1));
+
+        setSelectedDirectionNb(animation.getNbDirections() - 1);
     }
 
     /**
-     * Clone the selected animation direction in the selected animation.
+     * Clones the selected animation direction in the selected animation.
      * @throws SpriteException if no animation or direction was selected
      */
     public void cloneDirection() throws SpriteException {
@@ -655,14 +832,14 @@ public class Sprite extends Observable {
             String animationName = selectedAnimationName;
 
             animations.remove(animationName);
-            selectedAnimationName = "";
-            selectedDirectionNb = -1;
+            unselectAnimation();
             if (animationName.equals(defaultAnimationName)) {
-                defaultAnimationName = "";
+                setDefaultAnimation("");
             }
 
             isSaved = false;
-            reloadImage(animationName);
+            setChanged();
+            notifyObservers(new Change(WhatChanged.ANIMATION_REMOVED, animationName));
         } else {
             throw new SpriteException("No animation is selected");
         }
@@ -683,88 +860,12 @@ public class Sprite extends Observable {
             }
 
             int directionNb = selectedDirectionNb;
-            animation.removeDirection(selectedDirectionNb);
-            selectedDirectionNb = -1;
+            unselectDirection();
+            animation.removeDirection(directionNb);
             isSaved = false;
             setChanged();
-            notifyObservers(directionNb);
+            notifyObservers(new Change(WhatChanged.DIRECTION_REMOVED, animation.getName(), directionNb));
         }
-    }
-
-    /**
-     * Reloads the selected animation's image.
-     * @param obj the object passed to observers
-     */
-    public void reloadImage(Object obj) {
-
-        SpriteAnimation animation = getSelectedAnimation();
-
-        scaledImages = new BufferedImage[Zoom.values().length];
-        if (animation != null) {
-            try {
-                animation.reloadImage();
-                image = animation.getImage();
-            } catch (Exception ex) {
-                image = null;
-            }
-        } else {
-            image = null;
-        }
-
-        setChanged();
-        notifyObservers(obj);
-    }
-
-    /**
-     * Reloads the selected animation's image and notify.
-     */
-    public void reloadImage() {
-
-        reloadImage(null);
-    }
-
-    private BufferedImage createScaledImage(BufferedImage image, int width, int height) {
-        BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = scaledImage.createGraphics();
-        g.drawImage(image, 0, 0, width, height, null);
-        g.dispose();
-        return scaledImage;
-    }
-
-    /**
-     * Returns the animation's image, previously loaded by reloadImage().
-     * @return the selected animation's image, or null if the image is not loaded
-     */
-    public BufferedImage getImage() {
-
-        return image;
-    }
-
-    /**
-     * Returns a scaled version of the animation's image, previously loaded by reloadImage().
-     * @param zoom the zoom
-     * @return the scaled animation's image, or null if the image is not loaded
-     */
-    public BufferedImage getScaledImage(Zoom zoom) {
-
-        if (image == null) {
-            return null;
-        }
-
-        int index = zoom.getIndex();
-        double zoomValue = zoom.getValue();
-
-        if (scaledImages[index] == null) {
-            if (zoomValue == 1.0) {
-                scaledImages[index] = image;
-            } else {
-                int width = (int) Math.round(image.getWidth() * zoomValue);
-                int height = (int) Math.round(image.getHeight() * zoomValue);
-                scaledImages[index] = createScaledImage(image, width, height);
-            }
-        }
-
-        return scaledImages[index];
     }
 
     /**
@@ -775,26 +876,6 @@ public class Sprite extends Observable {
     public SpriteAnimation getAnimation(String animationName) {
 
         return animations.get(animationName);
-    }
-
-    /**
-     * Set an animation of this sprite.
-     * @param animationName name of the animation to set
-     * @param animation the animation
-     */
-    public void setAnimation (String animationName, SpriteAnimation animation) {
-
-        if (animations.containsKey(animationName) && animations.get(animationName) != animation) {
-            animations.put(animationName, animation);
-
-            isSaved = false;
-            if (animationName.equals(selectedAnimationName)) {
-                reloadImage(animation);
-            } else {
-                setChanged();
-                notifyObservers(animation);
-            }
-        }
     }
 
     /**
@@ -874,8 +955,8 @@ public class Sprite extends Observable {
             this.tilesetId = tilesetId;
             for (SpriteAnimation animation: animations.values()) {
                 animation.setTilesetId(tilesetId);
+                animation.reloadSrcImage();
             }
-            reloadImage();
         }
     }
 
@@ -973,17 +1054,18 @@ public class Sprite extends Observable {
         }
     }
 
-    static public String animationToString (String name, SpriteAnimation animation) {
+    public static String animationToString(String name, SpriteAnimation animation) {
 
-        String str = "animation {\n";
+        // TODO use a StringBuffer
+        String str = "animation{\n";
 
-        String srcImage = animation.getSrcImage();
+        String srcImageName = animation.getSrcImageName();
         int frameDelay = animation.getFrameDelay();
         int loopOnFrame = animation.getLoopOnFrame();
         int nbDirections = animation.getNbDirections();
 
         str += "  name = \"" + name + "\",\n";
-        str += "  src_image = \"" + srcImage + "\",\n";
+        str += "  src_image = \"" + srcImageName + "\",\n";
         if (frameDelay > 0) {
             str += "  frame_delay = " + frameDelay + ",\n";
             if (loopOnFrame >= 0) {

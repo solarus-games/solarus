@@ -24,6 +24,7 @@ import org.solarus.editor.*;
 
 /**
  * This components shows information about a sprite.
+ * TODO remove this class? (never used)
  */
 public class SpritePropertiesView extends JPanel
         implements Observer, ProjectObserver {
@@ -199,7 +200,7 @@ public class SpritePropertiesView extends JPanel
             String name) {
         // This sprite has just been renamed.
         if (resourceType == ResourceType.SPRITE && id.equals(sprite.getId())) {
-            update(null, null);
+            update(sprite, null);
         }
     }
 }

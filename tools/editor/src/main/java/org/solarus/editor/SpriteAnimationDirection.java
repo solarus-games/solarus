@@ -18,13 +18,20 @@ package org.solarus.editor;
 
 import java.awt.*;
 import java.awt.image.*;
+
 import org.solarus.editor.entities.MapEntity;
+
 import java.util.Observable;
 
 /**
  * Represents a direction of animation of a sprite.
  */
 public class SpriteAnimationDirection extends Observable {
+
+    /**
+     * @brief The animation this direction belongs to.
+     */
+    private SpriteAnimation animation;
 
     /**
      * @brief The frames of this animation direction.
@@ -72,9 +79,13 @@ public class SpriteAnimationDirection extends Observable {
      * @param originY y coordinate of the sprite's origin in each rectangle
      * @throws SpriteException if some rectangles are outside the image.
      */
-    public SpriteAnimationDirection(BufferedImage srcImage,
+    public SpriteAnimationDirection(
+            BufferedImage srcImage,
             Rectangle firstFrameRectangle,
-            int nbFrames, int nbColumns, int originX, int originY)
+            int nbFrames,
+            int nbColumns,
+            int originX,
+            int originY)
             throws SpriteException {
 
         this.position = new Point(firstFrameRectangle.x, firstFrameRectangle.y);
@@ -107,6 +118,22 @@ public class SpriteAnimationDirection extends Observable {
     }
 
     /**
+     * Returns the animation this direction belongs to.
+     * @return The animation.
+     */
+    public SpriteAnimation getAnimation() {
+        return animation;
+    }
+
+    /**
+     * Sets the animation this directions belongs to.
+     * @param animation The animation this direction belongs to.
+     */
+    public void setAnimation(SpriteAnimation animation) {
+        this.animation = animation;
+    }
+
+    /**
      * Returns the number of rows for a number of frames.
      * @return the number of rows
      */
@@ -120,11 +147,11 @@ public class SpriteAnimationDirection extends Observable {
     }
 
     /**
-     * Changes the source image used to create frames of this direction
-     * @param srcImage the source image to use
-     * @throws SpriteException if some rectangles are outside the image.
+     * Changes the source image used to create frames of this direction.
+     * @param srcImage The source image to use.
+     * @throws SpriteException If some rectangles are outside the image.
      */
-    public void setSrcImage (BufferedImage srcImage) throws SpriteException {
+    public void setSrcImage(BufferedImage srcImage) throws SpriteException {
 
         if (srcImage == null) {
             this.srcImage = null;
@@ -211,7 +238,7 @@ public class SpriteAnimationDirection extends Observable {
      * Check if direction contains a point.
      * @return true if the point is in the direction, false otherwise
      */
-    public boolean contains (int x, int y) {
+    public boolean contains(int x, int y) {
 
         for (Rectangle rect: getRects()) {
             if (rect.contains(x, y)) {
@@ -344,7 +371,6 @@ public class SpriteAnimationDirection extends Observable {
      * @return The frames list.
      */
     public Image[] getFrames() {
-
         return frames;
     }
 
@@ -387,8 +413,16 @@ public class SpriteAnimationDirection extends Observable {
     public SpriteAnimationDirection clone() throws CloneNotSupportedException {
 
         try {
-            return new SpriteAnimationDirection(srcImage, new Rectangle(position, size),
-                    nbFrames, nbColumns, origin.x, origin.y);
+            SpriteAnimationDirection direction = new SpriteAnimationDirection(
+                    srcImage,
+                    new Rectangle(position, size),
+                    nbFrames,
+                    nbColumns,
+                    origin.x,
+                    origin.y
+            );
+            direction.setAnimation(animation);
+            return direction;
         } catch (SpriteException ex) {
             throw new CloneNotSupportedException(ex.getMessage());
         }

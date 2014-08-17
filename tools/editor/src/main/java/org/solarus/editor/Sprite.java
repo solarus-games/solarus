@@ -527,11 +527,11 @@ public class Sprite extends Observable {
         if (selectedDirectionNb != -1) {
             SpriteAnimation animation = getSelectedAnimation();
             if (animation == null) {
-                throw new SpriteException("Cannot select direction number " +
+                throw new SpriteException("Cannot select direction " +
                         selectedDirectionNb + ": no animation was selected");
             } else if (selectedDirectionNb >= animation.getNbDirections()) {
-                throw new SpriteException("Cannot select direction number " +
-                        selectedDirectionNb + ": this direction doesn't exist");
+                throw new SpriteException("Cannot select direction " +
+                        selectedDirectionNb + ": no such direction");
             }
         }
         this.selectedDirectionNb = selectedDirectionNb;
@@ -824,12 +824,12 @@ public class Sprite extends Observable {
                 throw new SpriteException("No animation is selected");
             }
 
-            unselectDirection();
             int directionNb = selectedDirectionNb;
-            animation.removeDirection(selectedDirectionNb);
+            unselectDirection();
+            animation.removeDirection(directionNb);
             isSaved = false;
             setChanged();
-            notifyObservers(new Change(WhatChanged.DIRECTION_REMOVED, directionNb));
+            notifyObservers(new Change(WhatChanged.DIRECTION_REMOVED, animation.getName(), directionNb));
         }
     }
 

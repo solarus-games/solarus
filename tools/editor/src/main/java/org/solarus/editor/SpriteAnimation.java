@@ -293,8 +293,7 @@ public class SpriteAnimation extends Observable {
             throws SpriteException {
 
         if (directionNb < 0 || directionNb >= directions.size()) {
-            throw new SpriteException("The direction " + directionNb +
-                    " doesn't exists in this animation");
+            throw new SpriteException("No such direction: " + directionNb);
         }
 
         SpriteAnimationDirection direction = directions.get(directionNb);
@@ -325,8 +324,7 @@ public class SpriteAnimation extends Observable {
     public SpriteAnimationDirection removeDirection(int directionNb) throws SpriteException {
 
         if (directionNb < 0 || directionNb >= directions.size()) {
-            throw new SpriteException("The direction " + directionNb +
-                    " doesn't exist in this animation");
+            throw new SpriteException("No such direction: " + directionNb);
         }
 
         SpriteAnimationDirection direction = directions.get(directionNb);

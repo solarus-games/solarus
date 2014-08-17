@@ -91,9 +91,9 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
         createButton.setPreferredSize(buttonSize);
         createButton.setToolTipText("Create animation or direction");
         createButton.addActionListener(new ActionCreate());
-        createAnimationItem = new JMenuItem("Create animation...");
+        createAnimationItem = new JMenuItem("Create animation");
         createAnimationItem.addActionListener(new ActionCreateAnimation());
-        createDirectionItem = new JMenuItem("Create direction...");
+        createDirectionItem = new JMenuItem("Create direction");
         createDirectionItem.addActionListener(new ActionCreateDirection());
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -125,6 +125,7 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
         deleteButton.setMaximumSize(buttonSize);
         deleteButton.setPreferredSize(buttonSize);
         deleteButton.setToolTipText("Delete");
+        deleteButton.addActionListener(new ActionDelete());
         constraints.gridy++;
         buttonsPanel.add(deleteButton, constraints);
 
@@ -366,8 +367,13 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
             break;
 
             case ANIMATION_REMOVED:
-                // TODO remove the node
-                break;
+            {
+                // Remove the node.
+                String animationName = (String) change.getInfo();
+                DefaultMutableTreeNode animationNode = getAnimationNode(animationName);
+                getTreeModel().removeNodeFromParent(animationNode);
+            }
+            break;
 
             case ANIMATION_RENAMED:
             {
@@ -404,14 +410,23 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
                         animationNode.getChildCount()
                 );
 
-                // The number of direction has changed: update direction texts.
+                // The number of directions has changed: update direction texts.
                 updateDirectionTexts(animationNode);
             }
             break;
 
             case DIRECTION_REMOVED:
-                // TODO remove the new node
-                break;
+            {
+                // Remove the node.
+                String animationName = (String) change.getInfo(0);
+                int direction = (int) change.getInfo(1);
+                DefaultMutableTreeNode directionNode = getDirectionNode(animationName, direction);
+                getTreeModel().removeNodeFromParent(directionNode);
+
+                // The number of directions has changed: update direction texts.
+                updateDirectionTexts(getAnimationNode(animationName));
+            }
+            break;
 
             case SELECTED_DIRECTION_CHANGED:
                 updateSelection();
@@ -746,6 +761,68 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
             }
             catch (SpriteException ex) {
                 GuiTools.errorDialog("Cannot create direction: " + ex.getMessage());
+            }
+        }
+
+    }
+
+    /**
+     * Action performed when the user clicks the
+     * "Delete" button.
+     */
+    private class ActionDelete implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+
+            // After confirmation, delete the selected animation or direction.
+            if (sprite == null) {
+                return;
+            }
+
+            String animationName = sprite.getSelectedAnimationName();
+            if (animationName.isEmpty()) {
+                // No animation is selected.
+                return;
+            }
+
+            String message;
+            String title;
+            int direction = sprite.getSelectedDirectionNb();
+            if (direction == -1) {
+                message = "Do you really want to delete animation '" + animationName + "' and all its directions?";
+                title = "Remove animation";
+            }
+            else {
+                message = "Do you really want to delete direction " + sprite.getSelectedDirectionName() + "?";
+                title = "Remove direction";
+            }
+            int answer = JOptionPane.showConfirmDialog(
+                    null,
+                    message,
+                    title,
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            if (answer != 0) {
+                // Canceled.
+                return;
+            }
+
+            try {
+                if (direction == -1) {
+                    // Remove the animation.
+                    sprite.removeAnimation();
+                }
+                else {
+                    // Remove the direction.
+                    sprite.removeDirection();
+                }
+            }
+            catch (SpriteException ex) {
+                String what = (direction == -1) ? "animation" : "direction";
+                GuiTools.errorDialog("Cannot delete " + what + ": " + ex.getMessage());
             }
         }
 

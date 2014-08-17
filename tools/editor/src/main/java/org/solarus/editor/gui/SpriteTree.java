@@ -537,6 +537,7 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
             });
         }
         tree.getSelectionModel().setSelectionPath(path);
+        tree.scrollPathToVisible(path);
 
         updateButtons();
     }

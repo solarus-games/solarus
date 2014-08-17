@@ -19,8 +19,6 @@ package org.solarus.editor;
 import java.awt.*;
 import java.awt.image.*;
 
-import org.solarus.editor.Sprite.Change;
-import org.solarus.editor.Sprite.WhatChanged;
 import org.solarus.editor.entities.MapEntity;
 
 import java.util.Observable;

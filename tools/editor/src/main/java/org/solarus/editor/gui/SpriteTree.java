@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.NoSuchElementException;
@@ -13,8 +14,10 @@ import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
@@ -50,6 +53,8 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
 
     // Buttons on the right.
     private JButton createButton;
+    private JMenuItem createAnimationItem;
+    private JMenuItem createDirectionItem;
     private JButton cloneButton;
     private JButton renameButton;
     private JButton deleteButton;
@@ -85,6 +90,11 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
         createButton.setMaximumSize(buttonSize);
         createButton.setPreferredSize(buttonSize);
         createButton.setToolTipText("Create animation or direction");
+        createButton.addActionListener(new ActionCreate());
+        createAnimationItem = new JMenuItem("Create animation...");
+        createAnimationItem.addActionListener(new ActionCreateAnimation());
+        createDirectionItem = new JMenuItem("Create direction...");
+        createDirectionItem.addActionListener(new ActionCreateDirection());
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -285,8 +295,8 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
         SpriteAnimationDirection direction = animation.getDirection(directionIndex);
         direction.addObserver(this);
         DefaultMutableTreeNode directionNode = new DefaultMutableTreeNode(new NodeInfo(
-                direction, "Direction " + animation.getDirectionName(directionIndex))
-        );
+                direction, getDirectionNodeText(animationName, directionIndex)
+        ));
         directionNode.setAllowsChildren(false);
 
         return directionNode;
@@ -305,6 +315,18 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
     }
 
     /**
+     * Returns the text to display for a direction node.
+     * @param animationName A sprite animation.
+     * @param direction A direction in this animation.
+     * @return The appropriate text.
+     */
+    private String getDirectionNodeText(String animationName, int direction) {
+
+        SpriteAnimation animation = sprite.getAnimation(animationName);
+        return "Direction " + animation.getDirectionName(direction);
+    }
+
+    /**
      * Updates this component.
      * @param o The object that has changed.
      * @param info Info about what has changed, or null to update everything.
@@ -319,7 +341,7 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
         if (o instanceof Sprite) {
 
             if (info == null) {
-                // Rebuild everything.
+                // Build or rebuild everything.
                 buildTree();
                 updateButtons();
                 return;
@@ -330,8 +352,18 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
             switch (change.getWhatChanged()) {
 
             case ANIMATION_ADDED:
-                // TODO add a new node
-                break;
+            {
+                // Create a new node.
+                String animationName = (String) change.getInfo();
+                DefaultMutableTreeNode animationNode = createAnimationNode(animationName);
+                DefaultMutableTreeNode root = getSpriteNode();
+                getTreeModel().insertNodeInto(
+                        animationNode,
+                        root,
+                        root.getChildCount()
+                );
+            }
+            break;
 
             case ANIMATION_REMOVED:
                 // TODO remove the node
@@ -357,8 +389,25 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
                 break;
 
             case DIRECTION_ADDED:
-                // TODO add a new node
-                break;
+            {
+                // Create a new node.
+                String animationName = sprite.getSelectedAnimationName();
+                int direction = (int) change.getInfo();
+                DefaultMutableTreeNode directionNode = createDirectionNode(
+                        animationName,
+                        direction
+                );
+                DefaultMutableTreeNode animationNode = getAnimationNode(animationName);
+                getTreeModel().insertNodeInto(
+                        directionNode,
+                        animationNode,
+                        animationNode.getChildCount()
+                );
+
+                // The number of direction has changed: update direction texts.
+                updateDirectionTexts(animationNode);
+            }
+            break;
 
             case DIRECTION_REMOVED:
                 // TODO remove the new node
@@ -463,15 +512,15 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
      */
     private void updateButtons() {
 
-        // The creation button is always enabled.
-
         if (sprite.getSelectedAnimation() == null) {
             // Nothing is selected.
+            createDirectionItem.setEnabled(false);
             cloneButton.setEnabled(false);
             deleteButton.setEnabled(false);
             renameButton.setEnabled(false);
         }
         else {
+            createDirectionItem.setEnabled(true);
             cloneButton.setEnabled(true);
             deleteButton.setEnabled(true);
             if (sprite.getSelectedDirection() == null) {
@@ -482,6 +531,24 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
                 // An animation and a direction are selected.
                 renameButton.setEnabled(false);
             }
+        }
+    }
+
+    /**
+     * Sets the appropriate texts in the direction nodes under the specified
+     * animation node.
+     * @param animationNode An animation node.
+     */
+    private void updateDirectionTexts(DefaultMutableTreeNode animationNode) {
+
+        NodeInfo animationNodeInfo = (NodeInfo) animationNode.getUserObject();
+        SpriteAnimation animation = (SpriteAnimation) animationNodeInfo.getData();
+
+        for (int i = 0; i < animation.getNbDirections(); i++) {
+            DefaultMutableTreeNode directionNode = (DefaultMutableTreeNode) animationNode.getChildAt(i);
+            NodeInfo nodeInfo = (NodeInfo) directionNode.getUserObject();
+            nodeInfo.setText(getDirectionNodeText(animation.getName(), i));
+            getTreeModel().nodeChanged(directionNode);
         }
     }
 
@@ -603,5 +670,85 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
                 }
             }
         }
+
     }
+
+    /**
+     * Action performed when the user clicks the
+     * "Create animation or direction" button.
+     */
+    private class ActionCreate implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+
+            // Show a popup menu to choose between creating animation or direction.
+            JPopupMenu menu = new JPopupMenu();
+
+            menu.add(createAnimationItem);
+            menu.add(createDirectionItem);
+            Component source = (Component) event.getSource();
+            menu.show(source, source.getWidth(), 0);
+        }
+
+    }
+
+    /**
+     * Action performed when the user clicks the "Create animation" menu item.
+     */
+    private class ActionCreateAnimation implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+
+            if (sprite == null) {
+                return;
+            }
+
+            String animationName = (String) JOptionPane.showInputDialog(
+                null,
+                "Animation name:",
+                "Create animation",
+                JOptionPane.QUESTION_MESSAGE
+            );
+            if (animationName != null) {
+                try {
+                    sprite.addAnimation(animationName);
+                }
+                catch (SpriteException ex) {
+                    GuiTools.errorDialog("Cannot rename animation: " + ex.getMessage());
+                }
+            }
+        }
+
+    }
+
+    /**
+     * Action performed when the user clicks the "Create direction" menu item.
+     */
+    private class ActionCreateDirection implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+
+            if (sprite == null) {
+                return;
+            }
+
+            SpriteAnimation animation = sprite.getSelectedAnimation();
+            if (animation == null) {
+                // No animation is selected.
+                return;
+            }
+
+            try {
+                sprite.addDirection(new Rectangle(0, 0, 16, 16));
+            }
+            catch (SpriteException ex) {
+                GuiTools.errorDialog("Cannot create direction: " + ex.getMessage());
+            }
+        }
+
+    }
+
 }

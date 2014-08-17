@@ -636,14 +636,15 @@ public class Sprite extends Observable {
     public void addAnimation(String name) throws SpriteException {
 
         if (name.isEmpty()) {
-            throw new SpriteException("the name is empty");
+            throw new SpriteException("Animation name is empty");
         }
 
         if (animations.containsKey(name)) {
-            throw new SpriteException("the name already exists");
+            throw new SpriteException("Animation '" + name + "' already exists");
         }
 
-        // if have a selected animation, set the same source image to new animation
+        // If an animation is already selected, set the same source image
+        // to the new animation.
         String srcImageName = "";
         SpriteAnimation selectedAnimation = getSelectedAnimation();
         if (selectedAnimation != null) {
@@ -662,10 +663,12 @@ public class Sprite extends Observable {
 
         animations.put(name, animation);
 
-        // notify observers that an animation has been added
+        // Notify observers that an animation has just been added.
         setChanged();
         notifyObservers(new Change(WhatChanged.ANIMATION_ADDED, name));
-        // changes the selected animation (notify observers that the sprite has changed)
+
+        // Select the newly created animation.
+        // (This will notify observers again.)
         setSelectedAnimation(name);
     }
 
@@ -719,9 +722,8 @@ public class Sprite extends Observable {
     }
 
     /**
-     * Add a new direction in the current selected animation.
-     * the direction is create with one frame corresponding to the rect and his
-     * origin point centered.
+     * Add a new direction to the selected animation.
+     * The direction is created with one frame corresponding to the rect.
      * @param rect the rect corresponding to the first frame of the direction
      * @throws SpriteException if no animation was selected or if the direction
      * cannot be created.
@@ -735,6 +737,14 @@ public class Sprite extends Observable {
         }
 
         int directionNb = animation.getNbDirections();
+        if (directionNb == 0) {
+            // This is the first direction in this animation.
+            animation.addDirection(rect);
+        }
+        else {
+            // Some directions already exist: clone the last one.
+            animation.cloneDirection(directionNb - 1, null);
+        }
 
         isSaved = false;
         setChanged();

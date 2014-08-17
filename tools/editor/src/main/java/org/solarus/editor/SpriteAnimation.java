@@ -262,8 +262,7 @@ public class SpriteAnimation extends Observable {
 
     /**
      * Add a new direction in this animation.
-     * the direction is create with one frame corresponding to the rect and his
-     * origin point centered.
+     * The direction is created with one frame corresponding to the rect.
      * @param rect the rect corresponding to the first frame of the direction
      * @return the added direction.
      * @throws SpriteException if the direction cannot be created.

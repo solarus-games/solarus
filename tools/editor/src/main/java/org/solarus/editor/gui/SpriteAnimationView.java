@@ -388,51 +388,6 @@ class SpriteAnimationView extends JPanel implements Observer {
         }
     }
 
-    /**
-    * Dialog shown when we want to create a new animation in this sprite
-    */
-   private class NewAnimationDialog extends OkCancelDialog {
-           private static final long serialVersionUID = 1L;
-
-        // Subcomponents
-        private final JTextField nameField;
-
-        /**
-         * Constructor.
-         */
-        public NewAnimationDialog() {
-
-            super("New animation", false);
-
-            JPanel mainPanel = new JPanel(new GridBagLayout());
-            GridBagConstraints constraints = new GridBagConstraints();
-            constraints.insets = new Insets(5, 5, 5, 5); // margins
-            constraints.anchor = GridBagConstraints.LINE_START;
-            constraints.gridy = 0;
-            constraints.gridx = 0;
-
-            mainPanel.add(new JLabel("name:"), constraints);
-
-            constraints.gridx++;
-            nameField = new JTextField(15);
-            mainPanel.add(nameField, constraints);
-
-            setComponent(mainPanel);
-        }
-
-        /**
-         * Returns the name of animation.
-         * @return the name
-         */
-        public String getAnimationName() {
-            return nameField.getText();
-        }
-
-        @Override
-        protected void applyModifications() {
-        }
-   }
-
    /**
      * Component to set the selected animation as the default animation.
      */

@@ -800,7 +800,7 @@ public class Sprite extends Observable {
             throw new SpriteException("No selected animation");
         }
 
-        if (selectedDirectionNb < 0) {
+        if (selectedDirectionNb == -1) {
             throw new SpriteException("No selected direction");
         }
 
@@ -808,7 +808,7 @@ public class Sprite extends Observable {
 
         isSaved = false;
         setChanged();
-        notifyObservers(new Change(WhatChanged.DIRECTION_ADDED, selectedDirectionNb));
+        notifyObservers(new Change(WhatChanged.DIRECTION_ADDED, animation.getNbDirections() - 1));
 
         setSelectedDirectionNb(animation.getNbDirections() - 1);
     }

@@ -17,24 +17,28 @@
 package org.solarus.editor.gui.tree;
 
 
+import java.awt.Component;
 import java.awt.event.*;
 import java.io.File;
+
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+
 import org.solarus.editor.*;
 import org.solarus.editor.gui.*;
 
 /**
  * A tree that shows the project data directory, resources and scripts.
- * Under the root node, there is a node for each sub directories, resource files
- * or lua scripts.
+ * Under the root node, there is a node for each subdirectory, resource file
+ * or Lua script. Other files are ignored.
  *
  * The tree keeps the hierarchy order and the alphabetical order of files.
  *
- * All file or directory nodes have a FileElement user object, and all resource
- * nodes have a ResourceElement user object.
+ * All files or directory nodes have a FileElement user object, and all
+ * resource nodes have a ResourceElement user object.
  *
  * - Root (FileElement)
  *   - FileElement
@@ -170,6 +174,7 @@ public class QuestTree extends JTree implements ProjectObserver {
                     new DefaultMutableTreeNode(new FileElement(""), true);
             DefaultTreeModel model = new DefaultTreeModel(root);
             model.setAsksAllowsChildren(true);
+            setCellRenderer(new QuestCellRenderer());
             setModel(model);
 
             // add resources
@@ -474,7 +479,7 @@ public class QuestTree extends JTree implements ProjectObserver {
             // check old path
             DefaultMutableTreeNode node = getFileElement(oldPath);
             if (node == null) {
-                throw new QuestEditorException("this script doesn't exists");
+                throw new QuestEditorException("this script doesn't exist");
             }
             // check new path
             DefaultMutableTreeNode newNode = getFileElement(newPath);
@@ -992,4 +997,79 @@ public class QuestTree extends JTree implements ProjectObserver {
             });
         }
     }
+
+
+    /**
+     * Cell renderer used to show a custom icon for some nodes.
+     */
+    private class QuestCellRenderer extends DefaultTreeCellRenderer {
+
+        @Override
+        public Component getTreeCellRendererComponent(
+                JTree tree,
+                Object node,
+                boolean selected,
+                boolean expanded,
+                boolean leaf,
+                int row,
+                boolean hasFocus
+        ) {
+
+            super.getTreeCellRendererComponent(
+                    tree,
+                    node,
+                    selected,
+                    expanded,
+                    leaf,
+                    row,
+                    hasFocus
+            );
+
+            // Decide the appropriate icon.
+            String iconFileName = "";
+            Object info = ((DefaultMutableTreeNode) node).getUserObject();
+            if (info instanceof FileElement) {
+                // Regular file or directory.
+                FileElement fileElement = (FileElement) info;
+
+                String path = fileElement.getPath();
+
+                if (path.isEmpty()) {
+                    // Root node: put the Solarus logo.
+                    iconFileName = "icon_solarus.png";
+                }
+                if (fileElement.isDirectory()) {
+                    for (ResourceType type: ResourceType.values()) {
+                        String dirName = type.getDirName();
+                        if (path.equals(dirName)) {
+                            // Directory of a resource.
+                            iconFileName = "icon_folder_open_" + type.getLuaName() + ".png";
+                        }
+                    }
+                    if (iconFileName.isEmpty()) {
+                        // Other directory: usual folder icon.
+                        iconFileName = expanded ? "icon_folder_open.png" : "icon_folder_closed.png";
+                    }
+                }
+                else {
+                    if (path.endsWith(".lua")) {
+                        // Lua script that is not a resource.
+                        iconFileName = "icon_script.png";
+                    }
+                }
+            }
+            else if (info instanceof ResourceElement) {
+                ResourceElement resourceElement = (ResourceElement) info;
+                iconFileName = "icon_resource_" + resourceElement.type.getLuaName() + ".png";
+            }
+
+            if (!iconFileName.isEmpty()) {
+                setIcon(Project.getEditorImageIconOrEmpty(iconFileName));
+            }
+
+            return this;
+        }
+
+    }
+
 }

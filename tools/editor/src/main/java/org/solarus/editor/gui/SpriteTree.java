@@ -629,7 +629,7 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
     }
 
     /**
-     * Cell rendered used to show a custom icon for each direction node.
+     * Cell renderer used to show a custom icon for each direction node.
      */
     private class SpriteCellRenderer extends DefaultTreeCellRenderer {
 

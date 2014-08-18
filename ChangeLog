@@ -51,6 +51,7 @@ Solarus Quest Editor changes
 * Add Lua syntax coloring (#470). By Maxs.
 * Add a close button on tabs (#439). By Maxs.
 * Rework the quest tree to show the file hierarchy and Lua scripts. By Maxs.
+* Add specific icons for each resource type in the quest tree.
 * Move the entity checkboxes to the map view settings panel. By Maxs.
 * Allow to change the id of a tile pattern in the tileset editor (#559).
 * Don't initially maximize the editor window.

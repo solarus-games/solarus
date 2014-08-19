@@ -9,7 +9,7 @@ A text surface can be seen as a special
 
 \section lua_api_text_surface_functions Functions of sol.text_surface
 
-\subsection lua_api_text_surface_create sol.text_surface.create([properties]):
+\subsection lua_api_text_surface_create sol.text_surface.create([properties])
 
 Creates a text surface with the specified properties.
 - \c properties (optional table): A table that describes all properties

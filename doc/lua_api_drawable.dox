@@ -100,7 +100,7 @@ when the map entity is destroyed.
 
 Returns the offset added where this drawable object is drawn.
 
-This value is initially \c 0,0.
+This value is initially <tt>0,0</tt>.
 It is added to whatever coordinates the object is drawn at.
 
 They can be modified by a \ref lua_api_movement "movement"
@@ -112,7 +112,7 @@ or by \ref lua_api_drawable_set_xy "drawable:set_xy()".
 
 Sets the offset added where this drawable object is drawn.
 
-This value is initially \c 0,0.
+This value is initially <tt>0,0</tt>.
 It is added to whatever coordinates the object is drawn at.
 
 - \c x (number): X offset to set.

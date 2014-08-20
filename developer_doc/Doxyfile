@@ -832,8 +832,8 @@ RECURSIVE              = YES
 # Note that relative paths are relative to the directory from which doxygen is
 # run.
 
-EXCLUDE                = ../include/snes_spc \
-                         ../src/snes_spc \
+EXCLUDE                = ../include/third_party \
+                         ../src/third_party \
                          ../include/lowlevel/apple \
                          ../src/lowlevel/apple
 

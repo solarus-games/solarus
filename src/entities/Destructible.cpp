@@ -213,7 +213,7 @@ bool Destructible::get_can_explode() const {
 /**
  * \brief Sets whether this object explodes after a delay when the hero
  * lifts it.
- * \param can_be_cut \c true if this object can explode.
+ * \param can_explode \c true if this object can explode.
  */
 void Destructible::set_can_explode(bool can_explode) {
 

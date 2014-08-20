@@ -235,7 +235,7 @@ void initialize_video_modes() {
  * Options recognized:
  *   -no-video
  *   -video-acceleration=yes|no
- *   -quest-size=<width>x<height>
+ *   -quest-size=WIDTHxHEIGHT
  *
  * \param args Command-line arguments.
  */
@@ -676,9 +676,9 @@ const Rectangle& Video::get_quest_size() {
 
 /**
  * \brief Gets the allowed range of quest sizes for this quest.
- * \param normal_quest_size Gets the default size for this quest.
- * \param min_quest_size Gets the minimum size for this quest.
- * \param max_quest_size Gets the maximum size for this quest.
+ * \param normal_size Gets the default size for this quest.
+ * \param min_size Gets the minimum size for this quest.
+ * \param max_size Gets the maximum size for this quest.
  */
 void Video::get_quest_size_range(
     Rectangle& normal_size,
@@ -696,9 +696,9 @@ void Video::get_quest_size_range(
  * This function sets the actual quest size and finishes the initialization
  * by creating the window.
  *
- * \param normal_quest_size Default size for this quest.
- * \param min_quest_size Minimum size for this quest.
- * \param max_quest_size Maximum size for this quest.
+ * \param normal_size Default size for this quest.
+ * \param min_size Minimum size for this quest.
+ * \param max_size Maximum size for this quest.
  */
 void Video::set_quest_size_range(
     const Rectangle& normal_size,
@@ -766,7 +766,7 @@ Rectangle Video::get_window_size() {
 
 /**
  * \brief Sets the size of the window.
- * \param window_size The size of the window in pixels.
+ * \param size The size of the window in pixels.
  * The x and y values of the rectangle are ignored.
  */
 void Video::set_window_size(const Rectangle& size) {

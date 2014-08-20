@@ -127,7 +127,7 @@ bool Stream::get_allow_item() const {
 
 /**
  * \brief Sets whether the hero can use equipment items in this stream.
- * \param allow_attack \c true to allow the hero to use equipment items.
+ * \param allow_item \c true to allow the hero to use equipment items.
  */
 void Stream::set_allow_item(bool allow_item) {
   this->allow_item = allow_item;

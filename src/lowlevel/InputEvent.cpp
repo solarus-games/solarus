@@ -1093,8 +1093,9 @@ const std::string& InputEvent::get_mouse_button_name(MouseButton button) {
 
 /**
  * \brief Returns a mouse button given its name.
- * \param keyboard_key_name The name of a keyboard key.
- * \return The corresponding key, or KEY_NONE if this name is empty or unknown.
+ * \param button_name The name of a mouse button.
+ * \return The corresponding button, or MOUSE_BUTTON_NONE if this name is
+ * empty or unknown.
  */
 InputEvent::MouseButton InputEvent::get_mouse_button_by_name(const std::string& button_name) {
 

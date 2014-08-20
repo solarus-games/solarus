@@ -167,7 +167,7 @@ void Hero::JumpingState::update() {
 
 /**
  * \brief Notifies this state that the game was just suspended or resumed.
- * \param su1spended true if the game is suspended
+ * \param suspended true if the game is suspended
  */
 void Hero::JumpingState::set_suspended(bool suspended) {
 

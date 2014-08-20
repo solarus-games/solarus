@@ -459,7 +459,7 @@ void LuaContext::destroy_ref(int ref) {
 
 /**
  * \brief Creates a new reference to the Lua value of an existing reference.
- * \param The Lua reference to copy.
+ * \param ref The Lua reference to copy.
  * If LUA_REFNIL or LUA_NOREF, the same ref is returned.
  * \return The reference created.
  */

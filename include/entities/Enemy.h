@@ -189,9 +189,9 @@ class Enemy: public Detector {
     const Treasure& get_treasure() const;
     void set_treasure(const Treasure& treasure);
 
-    static const std::string attack_names[];
-    static const std::string hurt_style_names[];
-    static const std::string obstacle_behavior_names[];
+    static const std::string attack_names[];               /**< Lua names of the EnemyAttack enum. */
+    static const std::string hurt_style_names[];           /**< Lua names of the HurtStyle enum. */
+    static const std::string obstacle_behavior_names[];    /**< Lua names of the ObstacleBehavior enum. */
 
   private:
 
@@ -217,7 +217,7 @@ class Enemy: public Detector {
     bool is_saved() const;
 
     // enemy characteristics
-    std::string breed;                  /**< breed of the enemy (determines its sprites and behavior) */
+    std::string breed;                 /**< breed of the enemy (determines its sprites and behavior) */
 
     int damage_on_hero;                /**< number of heart quarters the player loses when he gets hurt by this enemy;
                                         * this number is divided depending on the hero's tunic number (default: 1) */

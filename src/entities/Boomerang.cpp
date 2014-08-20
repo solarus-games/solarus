@@ -131,7 +131,7 @@ bool Boomerang::is_teletransporter_obstacle(Teletransporter& teletransporter) {
 }
 
 /**
- * \copdydoc MapEntity::is_stream_obstacle
+ * \copydoc MapEntity::is_stream_obstacle
  */
 bool Boomerang::is_stream_obstacle(Stream& stream) {
   return false;

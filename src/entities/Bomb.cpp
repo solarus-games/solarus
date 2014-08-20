@@ -79,7 +79,7 @@ bool Bomb::can_be_obstacle() const {
 }
 
 /**
- * \copydoc MapEntity is_stream_obstacle
+ * \copydoc MapEntity::is_stream_obstacle
  */
 bool Bomb::is_stream_obstacle(Stream& stream) {
   return false;

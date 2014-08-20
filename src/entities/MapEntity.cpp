@@ -962,7 +962,7 @@ const Rectangle MapEntity::get_facing_point() const {
 /**
  * \brief Returns the coordinates of the point the entity would be facing
  * if it was looking towards the specified direction.
- * \param Direction a direction (0 to 3).
+ * \param direction A direction (0 to 3).
  * \return The point the entity touching this direction.
  * Its size is <tt>1,1</tt>.
  */
@@ -1072,7 +1072,7 @@ const std::string& MapEntity::get_name() const {
  *
  * The name can only be changed before the entity is added to a map.
  *
- * \return The name of the entity, or an empty string to unset the name.
+ * \param name The name of the entity, or an empty string to unset the name.
  */
 void MapEntity::set_name(const std::string& name) {
 
@@ -1557,6 +1557,7 @@ void MapEntity::notify_movement_finished() {
 /**
  * \brief This function is called when this entity starts being moved by
  * another one.
+ * \param entity The other entity.
  */
 void MapEntity::notify_moving_by(MapEntity& entity) {
   // Do nothing by default.
@@ -1565,6 +1566,7 @@ void MapEntity::notify_moving_by(MapEntity& entity) {
 /**
  * \brief This function is called when this entity has just finished to get
  * moved by another one.
+ * \param entity The other entity.
  */
 void MapEntity::notify_moved_by(MapEntity& entity) {
   // Do nothing by default.

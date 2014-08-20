@@ -839,8 +839,6 @@ class LuaContext {
       enemy_api_remove_life,
       enemy_api_get_damage,
       enemy_api_set_damage,
-      enemy_api_get_magic_damage,
-      enemy_api_set_magic_damage,
       enemy_api_is_pushed_back_when_hurt,
       enemy_api_set_pushed_back_when_hurt,
       enemy_api_get_push_hero_on_sword,

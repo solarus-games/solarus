@@ -51,7 +51,6 @@ class Chest: public Detector {
     ~Chest();
 
     EntityType get_type() const;
-    bool is_drawn_in_y_order() const;
 
     bool is_open() const;
     void set_open(bool open);

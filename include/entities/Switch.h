@@ -80,7 +80,7 @@ class Switch: public Detector {
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
 
-    static const std::string subtype_names[];
+    static const std::string subtype_names[];  /**< Lua names of the Subtype enum. */
 
   private:
 

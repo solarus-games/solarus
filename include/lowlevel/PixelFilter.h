@@ -42,7 +42,7 @@ class PixelFilter {
      * \param src The rectangle of pixels in RGBA format.
      * Must be a buffer of size src_width * dst_width.
      * \param src_width Width of the rectangle.
-     * \param dst_width Height of the rectangle.
+     * \param src_height Height of the rectangle.
      * \param dst The destination rectangle to write.
      * Must be a buffer of size
      * src_width * dst_width * get_scaling_factor().

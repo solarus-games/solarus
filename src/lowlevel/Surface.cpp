@@ -47,6 +47,14 @@ class Surface::SubSurfaceNode: public RefCountable {
 
   public:
 
+    /**
+     * Creates a subsurface node.
+     * \param src_surface The surface to draw.
+     * \param src_rect Region of the surface to draw.
+     * \param dst_rect The rectangle where to draw the surface, relative to
+     * the parent surface.
+     * \param subsurfaces Surfaces drawn onto src_surface.
+     */
     SubSurfaceNode(
         Surface* src_surface,
         const Rectangle& src_rect,
@@ -97,8 +105,8 @@ class Surface::SubSurfaceNode: public RefCountable {
 
     Surface* src_surface;                        /**< Surface to draw. */
 
-    Rectangle src_rect;                          /**< Region of the Subsurface to draw. */
-    Rectangle dst_rect;                          /**< The rectangle where to draw the Subsurface, relative to the parent Surface. */
+    Rectangle src_rect;                          /**< Region of the surface to draw. */
+    Rectangle dst_rect;                          /**< The rectangle where to draw the surface, relative to the parent surface. */
     std::vector<SubSurfaceNode*> subsurfaces;    /**< Subsurfaces drawn onto src_surface. */
 };
 
@@ -168,6 +176,7 @@ Surface::~Surface() {
  *
  * \param width The width in pixels.
  * \param height The height in pixels.
+ * \return The created surface.
  */
 Surface* Surface::create(int width, int height) {
   return new Surface(width, height);
@@ -176,6 +185,7 @@ Surface* Surface::create(int width, int height) {
 /**
  * \brief Creates a surface with the specified size.
  * \param size The size in pixels.
+ * \return The created surface.
  */
 Surface* Surface::create(const Rectangle& size) {
   return new Surface(size.get_width(), size.get_height());
@@ -366,12 +376,14 @@ void Surface::set_opacity(uint8_t opacity) {
 
 /**
  * When this surface is used as the destination of a drawing operation,
- * return whether the drawing operation is performed in RAM or by the GPU.
+ * returns whether the drawing operation is performed in RAM or by the GPU.
  *
  * By default, this setting is true and all drawing operations are performed
  * in RAM.
  * Otherwise, when 2D acceleration is active, drawing operations are delayed
  * and performed by the GPU at rendering time.
+ *
+ * \return Whether this surface is a software destination surface.
  */
 bool Surface::is_software_destination() const {
   return software_destination;
@@ -398,6 +410,9 @@ bool Surface::is_software_destination() const {
  *
  * Use hardware surfaces only if you know what you are doing.
  * If in doubt, leave this to \c true.
+ *
+ * \param software_destination Whether this surface is a software destination
+ * surface.
  */
 void Surface::set_software_destination(bool software_destination) {
 
@@ -469,8 +484,9 @@ void Surface::clear() {
  * \brief Clears a rectangle of this surface.
  *
  * This is only supported for software surfaces.
- *
  * The rectangle cleared becomes fully transparent.
+ *
+ * \param where The rectangle to clear.
  */
 void Surface::clear(const Rectangle& where) {
 
@@ -686,7 +702,7 @@ void Surface::draw_transition(Transition& transition) {
 /**
  * \brief Draws this software surface with a pixel filter on another software
  * surface.
- * \param filter The pixel filter to apply.
+ * \param pixel_filter The pixel filter to apply.
  * \param dst_surface The destination surface. It must have the size of the
  * this surface multiplied by the scaling factor of the filter.
  */

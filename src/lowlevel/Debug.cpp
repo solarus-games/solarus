@@ -72,7 +72,9 @@ void Debug::check_assertion(bool assertion, const char* error_message) {
 }
 
 /**
- * \overload
+ * \brief Aborts the program if the specified assertion is \c false.
+ * \param assertion The assertion to check.
+ * \param error_message Error message to show in case of failure.
  */
 void Debug::check_assertion(bool assertion, const std::string& error_message) {
 

@@ -346,7 +346,8 @@ bool Block::is_pushable() const {
 
 /**
  * \brief Returns whether this block can be pushed.
- * \return \c true if it can be pushed, independently of the maximum moves.
+ * \param pushable \c true if it can be pushed, independently of the maximum
+ * moves.
  */
 void Block::set_pushable(bool pushable) {
   this->can_be_pushed = pushable;
@@ -387,7 +388,7 @@ int Block::get_maximum_moves() const {
  *
  * This resets the remaining allowed moves.
  *
- * \return How many times the block can be moved
+ * \param maximum_moves How many times the block can be moved
  * (0: none, 1: once, 2: infinite).
  */
 void Block::set_maximum_moves(int maximum_moves) {

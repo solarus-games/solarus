@@ -40,8 +40,7 @@ ExportableToLua::~ExportableToLua() {
  *
  * This stays \c true even if the object was collected from Lua.
  *
- * \param known_to_lua \c true if this object was exported in the Lua side
- * at least once.
+ * \return \c true if this object was exported in the Lua side at least once.
  */
 bool ExportableToLua::is_known_to_lua() const {
   return known_to_lua;

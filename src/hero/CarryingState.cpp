@@ -242,9 +242,7 @@ void Hero::CarryingState::destroy_carried_item() {
 }
 
 /**
- * \brief Returns the action to do with an item previously carried by the hero when this state starts.
- * \param carried_item the item carried in the previous state
- * \return the action to do with a previous carried item when this state starts
+ * \copydoc Hero::State::get_previous_carried_item_behavior
  */
 CarriedItem::Behavior Hero::CarryingState::get_previous_carried_item_behavior() const {
 

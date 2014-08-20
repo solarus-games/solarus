@@ -5440,7 +5440,7 @@ void LuaContext::enemy_on_immobilized(Enemy& enemy) {
  *
  * \param enemy An enemy.
  * \param hero The hero attacked.
- * \param enemy_sprite Enemy's sprite that caused the collision or NULL.
+ * \param attacker_sprite Enemy's sprite that caused the collision or NULL.
  * \return \c true if the method is defined.
  */
 bool LuaContext::enemy_on_attacking_hero(Enemy& enemy, Hero& hero, Sprite* attacker_sprite) {

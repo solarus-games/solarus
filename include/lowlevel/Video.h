@@ -59,7 +59,6 @@ class Video {
     static void set_default_video_mode();
     static void switch_video_mode();
 
-    static const std::string& get_video_mode_name(const VideoMode& mode);
     static const VideoMode* get_video_mode_by_name(const std::string& mode_name);
 
     static bool is_fullscreen();

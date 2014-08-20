@@ -118,7 +118,7 @@ int CustomEntity::get_sprites_direction() const {
  *
  * It will be applied to sprites that have such a direction.
  *
- * \return The direction.
+ * \param direction The direction.
  */
 void CustomEntity::set_sprites_direction(int direction) {
 

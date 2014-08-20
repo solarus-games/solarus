@@ -215,7 +215,6 @@ class MapEntity: public ExportableToLua {
 
     void check_collision_with_detectors(bool with_pixel_precise);
     void check_collision_with_detectors(Sprite& sprite);
-    void check_collision_from_detector(Detector& detector);
 
     virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
     virtual void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode);

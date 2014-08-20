@@ -23,6 +23,7 @@ namespace solarus {
  * \brief Prints a rectangle to an output stream.
  * \param stream The stream.
  * \param rectangle A rectangle.
+ * \return The output stream.
  */
 std::ostream& operator<<(std::ostream& stream, const Rectangle& rectangle) {
 

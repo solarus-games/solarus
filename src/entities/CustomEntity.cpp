@@ -1209,7 +1209,7 @@ void CustomEntity::notify_enabled(bool enabled) {
 }
 
 /**
- * \copydoc CustomEntity::draw_on_map
+ * \copydoc MapEntity::draw_on_map
  */
 void CustomEntity::draw_on_map() {
 

@@ -59,6 +59,7 @@ const std::vector<std::string>& CommandLine::get_arguments() const {
 
 /**
  * \brief Returns whether the following exact string was passed as an argument.
+ * \param argument The string to test.
  * \return \c true if an argument is exactly this string.
  */
 bool CommandLine::has_argument(const std::string& argument) const {

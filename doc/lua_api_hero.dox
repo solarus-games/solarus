@@ -144,7 +144,7 @@ if any.
 Otherwise, this is the position of the hero the last time he was on solid
 ground.
 - Return value 1 (number): X coordinate where to get back to solid ground,
-  or \nil if the hero never went on solid ground on this map yet.
+  or \c nil if the hero never went on solid ground on this map yet.
 - Return value 2 (number): Y coordinate where to get back to solid ground,
   or no value if the hero never went on solid ground on this map yet.
 - Return value 3 (number): Layer where to get back to solid ground,

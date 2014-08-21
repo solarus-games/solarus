@@ -23,6 +23,9 @@
 
 namespace solarus {
 
+/**
+ * Name of the Lua table representing the text surface module.
+ */
 const std::string LuaContext::text_surface_module_name = "sol.text_surface";
 
 static const std::string rendering_mode_names[] = {

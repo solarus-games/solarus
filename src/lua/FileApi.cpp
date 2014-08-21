@@ -20,6 +20,9 @@
 
 namespace solarus {
 
+/**
+ * Name of the Lua table representing the file module.
+ */
 const std::string LuaContext::file_module_name = "sol.file";
 
 /**

@@ -22,6 +22,9 @@
 
 namespace solarus {
 
+/**
+ * Name of the Lua table representing the menu module.
+ */
 const std::string LuaContext::menu_module_name = "sol.menu";
 
 /**

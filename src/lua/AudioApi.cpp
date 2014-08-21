@@ -23,6 +23,9 @@
 
 namespace solarus {
 
+/**
+ * Name of the Lua table representing the audio module.
+ */
 const std::string LuaContext::audio_module_name = "sol.audio";
 
 /**

@@ -21,6 +21,9 @@
 
 namespace solarus {
 
+/**
+ * Name of the Lua table representing the input module.
+ */
 const std::string LuaContext::input_module_name = "sol.input";
 
 /**

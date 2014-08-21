@@ -23,6 +23,9 @@
 
 namespace solarus {
 
+/**
+ * Name of the Lua table representing the sprite module.
+ */
 const std::string LuaContext::sprite_module_name = "sol.sprite";
 
 /**

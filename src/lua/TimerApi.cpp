@@ -28,6 +28,9 @@
 
 namespace solarus {
 
+/**
+ * Name of the Lua table representing the timer module.
+ */
 const std::string LuaContext::timer_module_name = "sol.timer";
 
 /**

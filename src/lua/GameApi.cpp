@@ -29,6 +29,9 @@
 
 namespace solarus {
 
+/**
+ * Name of the Lua table representing the game module.
+ */
 const std::string LuaContext::game_module_name = "sol.game";
 
 /**

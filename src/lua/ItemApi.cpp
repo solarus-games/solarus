@@ -30,6 +30,9 @@
 
 namespace solarus {
 
+/**
+ * Name of the Lua table representing the item module.
+ */
 const std::string LuaContext::item_module_name = "sol.item";
 
 /**

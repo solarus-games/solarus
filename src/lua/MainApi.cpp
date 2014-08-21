@@ -27,6 +27,9 @@
 
 namespace solarus {
 
+/**
+ * Name of the Lua table representing the main module of Solarus.
+ */
 const std::string LuaContext::main_module_name = "sol.main";
 
 /**

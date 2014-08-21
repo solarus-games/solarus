@@ -36,15 +36,54 @@
 
 namespace solarus {
 
+/**
+ * Name of the Lua table representing the movement module.
+ */
 const std::string LuaContext::movement_module_name = "sol.movement";
+
+/**
+ * Name of the Lua table representing the straight movement module.
+ */
 const std::string LuaContext::movement_straight_module_name = "sol.straight_movement";
+
+/**
+ * Name of the Lua table representing the target movement module.
+ */
 const std::string LuaContext::movement_target_module_name = "sol.target_movement";
+
+/**
+ * Name of the Lua table representing the random movement module.
+ */
 const std::string LuaContext::movement_random_module_name = "sol.random_movement";
+
+/**
+ * Name of the Lua table representing the path movement module.
+ */
 const std::string LuaContext::movement_path_module_name = "sol.path_movement";
+
+/**
+ * Name of the Lua table representing the random path movement module.
+ */
 const std::string LuaContext::movement_random_path_module_name = "sol.random_path_movement";
+
+/**
+ * Name of the Lua table representing the path finding movement module.
+ */
 const std::string LuaContext::movement_path_finding_module_name = "sol.path_finding_movement";
+
+/**
+ * Name of the Lua table representing the circle movement module.
+ */
 const std::string LuaContext::movement_circle_module_name = "sol.circle_movement";
+
+/**
+ * Name of the Lua table representing the jump movement module.
+ */
 const std::string LuaContext::movement_jump_module_name = "sol.jump_movement";
+
+/**
+ * Name of the Lua table representing the pixel movement module.
+ */
 const std::string LuaContext::movement_pixel_module_name = "sol.pixel_movement";
 
 /**

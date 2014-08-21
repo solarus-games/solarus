@@ -25,6 +25,9 @@
 
 namespace solarus {
 
+/**
+ * Name of the Lua table representing the surface module.
+ */
 const std::string LuaContext::surface_module_name = "sol.surface";
 
 /**

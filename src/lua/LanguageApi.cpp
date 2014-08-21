@@ -25,6 +25,9 @@
 
 namespace solarus {
 
+/**
+ * Name of the Lua table representing the language module.
+ */
 const std::string LuaContext::language_module_name = "sol.language";
 
 /**

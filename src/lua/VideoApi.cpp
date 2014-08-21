@@ -23,6 +23,9 @@
 
 namespace solarus {
 
+/**
+ * Name of the Lua table representing the video module.
+ */
 const std::string LuaContext::video_module_name = "sol.video";
 
 /**

@@ -60,6 +60,9 @@
 
 namespace solarus {
 
+/**
+ * Name of the Lua table representing the map module.
+ */
 const std::string LuaContext::map_module_name = "sol.map";
 
 /**

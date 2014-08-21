@@ -88,6 +88,10 @@ Sprites have to take care of this setting to obtain correct results.
 
 \section quest_sprite_data_file_syntax Syntax of the quest properties file
 
+Solarus Quest Editor fully supports the edition of sprites.
+You should not have to edit sprite data files by hand unless you know what you
+are doing.
+
 The sequence of characters \c \-\- (two dashes) marks
 the beginning of a comment.
 After them, the rest of the line is ignored by the engine.
@@ -208,15 +212,15 @@ animation{
   }
 }
 \endverbatim
-The current version of the editor does not support edition of sprites yet.
-You have to edit it them by hand. However, graphical edition of sprites is the
-next important feature planned in the development of the editor.
 
 Don't forget to add all sprite animation sets to the
 quest tree in the editor (or by editing
 \ref quest_resource_file "project_db.dat" by hand).
 Otherwise, they won't show up when you configure entities with sprites (like
 non-playing characters) in the editor.
+
+\remark The syntax of sprite data files is actually valid Lua.
+  The engine and the editor internally use Lua to parse it.
 
 */
 

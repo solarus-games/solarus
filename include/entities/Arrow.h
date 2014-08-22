@@ -32,43 +32,44 @@ class Arrow: public MapEntity {
     Arrow(const Hero& hero);
     ~Arrow();
 
-    EntityType get_type() const;
-    bool can_be_obstacle() const;
+    virtual EntityType get_type() const override;
+    virtual bool can_be_obstacle() const override;
 
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_stream_obstacle(Stream& stream);
-    bool is_stairs_obstacle(Stairs& stairs);
-    bool is_low_wall_obstacle() const;
-    bool is_deep_water_obstacle() const;
-    bool is_hole_obstacle() const;
-    bool is_lava_obstacle() const;
-    bool is_prickle_obstacle() const;
-    bool is_ladder_obstacle() const;
-    bool is_switch_obstacle(Switch& sw);
-    bool is_raised_block_obstacle(CrystalBlock& raised_block);
-    bool is_crystal_obstacle(Crystal& crystal);
-    bool is_npc_obstacle(Npc& npc);
-    bool is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position);
+    virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter) override;
+    virtual bool is_stream_obstacle(Stream& stream) override;
+    virtual bool is_stairs_obstacle(Stairs& stairs) override;
+    virtual bool is_low_wall_obstacle() const override;
+    virtual bool is_deep_water_obstacle() const override;
+    virtual bool is_hole_obstacle() const override;
+    virtual bool is_lava_obstacle() const override;
+    virtual bool is_prickle_obstacle() const override;
+    virtual bool is_ladder_obstacle() const override;
+    virtual bool is_switch_obstacle(Switch& sw) override;
+    virtual bool is_raised_block_obstacle(CrystalBlock& raised_block) override;
+    virtual bool is_crystal_obstacle(Crystal& crystal) override;
+    virtual bool is_npc_obstacle(Npc& npc) override;
+    virtual bool is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) override;
 
     // state
-    void update();
-    void set_suspended(bool suspended);
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
     void stop();
     bool is_stopped() const;
     bool is_flying() const;
     void attach_to(MapEntity &entity_reached);
 
     // collisions
-    void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
-    void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
-    void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
-    void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
-    void notify_attacked_enemy(
+    virtual void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) override;
+    virtual void notify_attacked_enemy(
         EnemyAttack attack,
         Enemy& victim,
         const Sprite* victim_sprite,
         EnemyReaction::Reaction& result,
-        bool killed);
+        bool killed
+    ) override;
     bool has_reached_map_border() const;
 
   private:

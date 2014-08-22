@@ -52,9 +52,9 @@ class Destructible: public Detector {
     ~Destructible();
 
     // Properties overridden from MapEntity.
-    EntityType get_type() const;
-    bool is_ground_modifier() const;
-    Ground get_modified_ground() const;
+    virtual EntityType get_type() const override;
+    virtual bool is_ground_modifier() const override;
+    virtual Ground get_modified_ground() const override;
 
     // Propeties specific to destructibles.
     const Treasure& get_treasure() const;
@@ -78,16 +78,16 @@ class Destructible: public Detector {
     bool is_waiting_for_regeneration() const;
 
     // Collisions.
-    bool is_obstacle_for(MapEntity& other);
-    bool test_collision_custom(MapEntity& entity);
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
-    void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
+    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual bool test_collision_custom(MapEntity& entity) override;
+    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) override;
     void notify_collision_with_hero(Hero& hero, CollisionMode collision_mode);
-    bool notify_action_command_pressed();
+    virtual bool notify_action_command_pressed() override;
 
     // Game loop.
-    void set_suspended(bool suspended);
-    void update();
+    virtual void set_suspended(bool suspended) override;
+    virtual void update() override;
 
   private:
 

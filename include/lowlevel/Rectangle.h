@@ -139,12 +139,12 @@ inline int Rectangle::get_y() const {
  */
 inline Rectangle Rectangle::get_center() const {
 
-  return Rectangle(
+  return {
       get_x() + get_width() / 2,
       get_y() + get_height() / 2,
       1,
       1
-  );
+  };
 }
 
 /**

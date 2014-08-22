@@ -108,7 +108,7 @@ int MapLoader::l_properties(lua_State* l) {
 
   // Retrieve the map to build.
   Map* map = LuaContext::get_entity_implicit_creation_map(l);
-  Debug::check_assertion(map != NULL, "No map has not been set in this Lua state");
+  Debug::check_assertion(map != nullptr, "No map has not been set in this Lua state");
 
   // Retrieve the map properties from the table parameter.
   luaL_checktype(l, 1, LUA_TTABLE);
@@ -149,7 +149,7 @@ int MapLoader::l_properties(lua_State* l) {
 
     entities.non_animated_regions[layer] = new NonAnimatedRegions(*map, Layer(layer));
   }
-  entities.boomerang = NULL;
+  entities.boomerang = nullptr;
   map->camera = new Camera(*map);
 
   // Properties are set: we now allow the data file to declare entities.
@@ -176,10 +176,10 @@ int MapLoader::l_properties(lua_State* l) {
     { "stairs",           LuaContext::map_api_create_stairs },
     { "separator",        LuaContext::map_api_create_separator },
     { "custom_entity",    LuaContext::map_api_create_custom_entity },
-    { NULL, NULL }
+    { nullptr, nullptr }
   };
   const luaL_Reg* function = functions;
-  while (function->name != NULL) {
+  while (function->name != nullptr) {
     lua_register(l, function->name, function->func);
     function++;
   }

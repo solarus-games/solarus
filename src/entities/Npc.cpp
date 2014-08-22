@@ -327,7 +327,7 @@ void Npc::notify_position_changed() {
   if (subtype == USUAL_NPC) {
 
     Sprite& sprite = get_sprite();
-    if (get_movement() != NULL) {
+    if (get_movement() != nullptr) {
       // The NPC is moving.
       if (sprite.get_current_animation() != "walking") {
         sprite.set_current_animation("walking");

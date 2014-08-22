@@ -38,7 +38,7 @@ void LuaContext::register_menu_module() {
       { "stop", menu_api_stop },
       { "stop_all", menu_api_stop_all },
       { "is_started", menu_api_is_started },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_functions(menu_module_name, functions);
@@ -106,7 +106,7 @@ void LuaContext::remove_menus(int context_index) {
     int menu_ref = it->ref;
     if (it->context == context && !it->recently_added) {
       it->ref = LUA_REFNIL;
-      it->context = NULL;
+      it->context = nullptr;
       menu_on_finished(menu_ref);
       destroy_ref(menu_ref);
     }
@@ -133,7 +133,7 @@ void LuaContext::remove_menus() {
       int menu_ref = it->ref;
       if (menu_ref != LUA_REFNIL) {
         it->ref = LUA_REFNIL;
-        it->context = NULL;
+        it->context = nullptr;
         menu_on_finished(menu_ref);
         destroy_ref(menu_ref);
       }
@@ -172,8 +172,8 @@ void LuaContext::update_menus() {
     it->recently_added = false;
     if (it->ref == LUA_REFNIL) {
       // LUA_REFNIL on a menu means that we should remove it.
-      // In this case, context must also be NULL.
-      Debug::check_assertion(it->context == NULL, "Menu with context and no ref");
+      // In this case, context must also be nullptr.
+      Debug::check_assertion(it->context == nullptr, "Menu with context and no ref");
       menus.erase(it--);
     }
   }
@@ -225,7 +225,7 @@ int LuaContext::menu_api_stop(lua_State* l) {
     if (lua_equal(l, 1, -1)) {
       menu_ref = ref;
       it->ref = LUA_REFNIL;  // Don't erase it immediately since we may be iterating over menus.
-      it->context = NULL;
+      it->context = nullptr;
       lua_context.menu_on_finished(menu_ref);
       lua_context.destroy_ref(menu_ref);
       break;

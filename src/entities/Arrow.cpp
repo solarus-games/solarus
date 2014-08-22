@@ -68,7 +68,7 @@ Arrow::Arrow(const Hero& hero):
 
   disappear_date = System::now() + 10000;
   stop_now = false;
-  entity_reached = NULL;
+  entity_reached = nullptr;
 }
 
 /**
@@ -234,14 +234,14 @@ void Arrow::update() {
     clear_movement();
     stop_now = false;
 
-    if (entity_reached != NULL) {
+    if (entity_reached != nullptr) {
       // the arrow just hit an entity (typically an enemy) and this entity may have a movement
       Rectangle dxy(get_x() - entity_reached->get_x(), get_y() - entity_reached->get_y());
       set_movement(new FollowMovement(entity_reached, dxy.get_x(), dxy.get_y(), true));
     }
   }
 
-  if (entity_reached != NULL) {
+  if (entity_reached != nullptr) {
 
     // see if the entity reached is still valid
     if (is_stopped()) {
@@ -262,7 +262,7 @@ void Arrow::update() {
 
   if (get_sprite().get_current_animation() != "reached_obstacle") {
 
-    if (entity_reached != NULL) {
+    if (entity_reached != nullptr) {
       // the arrow was just attached to an entity
       reached_obstacle = true;
     }
@@ -285,7 +285,7 @@ void Arrow::update() {
     get_sprite().set_current_animation("reached_obstacle");
     Sound::play("arrow_hit");
 
-    if (entity_reached == NULL) {
+    if (entity_reached == nullptr) {
       clear_movement();
     }
     check_collision_with_detectors(false);
@@ -323,7 +323,7 @@ void Arrow::stop() {
  * \return true if the arrow is stopped
  */
 bool Arrow::is_stopped() const {
-  return get_movement() == NULL || get_movement()->is_finished();
+  return get_movement() == nullptr || get_movement()->is_finished();
 }
 
 /**
@@ -331,7 +331,7 @@ bool Arrow::is_stopped() const {
  * \return true if the arrow was shot and has not reached a target yet
  */
 bool Arrow::is_flying() const {
-  return !is_stopped() && entity_reached == NULL;
+  return !is_stopped() && entity_reached == nullptr;
 }
 
 /**
@@ -340,7 +340,7 @@ bool Arrow::is_flying() const {
  */
 void Arrow::attach_to(MapEntity& entity_reached) {
 
-  Debug::check_assertion(this->entity_reached == NULL,
+  Debug::check_assertion(this->entity_reached == nullptr,
       "This arrow is already attached to an entity");
 
   this->entity_reached = &entity_reached;
@@ -441,7 +441,7 @@ void Arrow::notify_attacked_enemy(
  */
 bool Arrow::has_reached_map_border() const {
 
-  if (get_sprite().get_current_animation() != "flying" || get_movement() == NULL) {
+  if (get_sprite().get_current_animation() != "flying" || get_movement() == nullptr) {
     return false;
   }
 

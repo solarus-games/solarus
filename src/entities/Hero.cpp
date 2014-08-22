@@ -71,7 +71,7 @@ namespace solarus {
  */
 Hero::Hero(Equipment& equipment):
   MapEntity("hero", 0, LAYER_LOW, 0, 0, 16, 16),
-  state(NULL),
+  state(nullptr),
   invincible(false),
   end_invincible_date(0),
   normal_walking_speed(88),
@@ -137,7 +137,7 @@ void Hero::set_state(State* new_state) {
 
   // Stop the previous state.
   State* old_state = this->state;
-  if (old_state != NULL) {
+  if (old_state != nullptr) {
 
     old_state->stop(new_state);  // Should not change the state again.
 
@@ -177,12 +177,12 @@ void Hero::set_state(State* new_state) {
  * This function is used internally to allow this item to be preserved between
  * different hero states.
  *
- * \return The carried item or NULL.
+ * \return The carried item or nullptr.
  */
 CarriedItem* Hero::get_carried_item() {
 
-  if (state == NULL) {
-    return NULL;
+  if (state == nullptr) {
+    return nullptr;
   }
   return state->get_carried_item();
 }
@@ -266,7 +266,7 @@ void Hero::update_movement() {
     on_raised_blocks = get_entities().overlaps_raised_blocks(get_layer(), get_bounding_box());
   }
 
-  if (get_movement() != NULL) {
+  if (get_movement() != nullptr) {
     get_movement()->update();
   }
   // TODO clear_old_movements() is missing
@@ -290,11 +290,11 @@ void Hero::update_ground_effects() {
   uint32_t now = System::now();
   if (now >= next_ground_date) {
 
-    if (is_ground_visible() && get_movement() != NULL) {
+    if (is_ground_visible() && get_movement() != nullptr) {
 
       // a special ground is displayed under the hero and it's time to play a sound
       StraightMovement* movement = dynamic_cast<StraightMovement*>(get_movement());
-      if (movement != NULL) {
+      if (movement != nullptr) {
         // TODO replace the dynamic_cast by a virtual method get_speed() in Movement.
         double speed = movement->get_speed();
         next_ground_date = now + std::max(150, (int) (20000 / speed));
@@ -680,7 +680,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
 
       Destination* destination = map.get_destination();
 
-      if (destination == NULL) {
+      if (destination == nullptr) {
         // This is embarrassing: there is no valid destination that we can use.
         // The map is probably in an early development phase.
         // For now, let's place the hero at the top-left corner of the map.
@@ -703,12 +703,12 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
 
       map.get_entities().remove_boomerang(); // useful when the map remains the same
 
-      if (destination != NULL) {
+      if (destination != nullptr) {
         get_lua_context().destination_on_activated(*destination);
       }
 
       Stairs* stairs = get_stairs_overlapping();
-      if (stairs != NULL) {
+      if (stairs != nullptr) {
         // The hero arrived on the map by stairs.
         set_state(new StairsState(*this, *stairs, Stairs::REVERSE_WAY));
       }
@@ -773,11 +773,11 @@ const Rectangle Hero::get_facing_point() const {
 
 /**
  * \brief Notifies this entity that its facing entity has just changed.
- * \param facing_entity the detector this entity is now facing (possibly NULL)
+ * \param facing_entity the detector this entity is now facing (possibly nullptr)
  */
 void Hero::notify_facing_entity_changed(Detector* facing_entity) {
 
-  if (facing_entity == NULL &&
+  if (facing_entity == nullptr &&
       get_keys_effect().is_action_key_acting_on_facing_entity()) {
 
     // the hero just stopped facing an entity that was showing an action icon
@@ -874,7 +874,7 @@ bool Hero::is_on_raised_blocks() const {
  * The result is calculated (not stored) so that you can know it
  * even when the game is suspended.
  *
- * \return the stairs the hero is currently overlapping, or NULL
+ * \return the stairs the hero is currently overlapping, or nullptr
  */
 Stairs* Hero::get_stairs_overlapping() {
 
@@ -889,7 +889,7 @@ Stairs* Hero::get_stairs_overlapping() {
     }
   }
 
-  return NULL;
+  return nullptr;
 }
 
 /**
@@ -1035,7 +1035,7 @@ int Hero::get_real_movement_direction8() {
 bool Hero::is_moving_towards(int direction4) const {
 
   const Movement* movement = get_movement();
-  if (movement == NULL || movement->is_stopped()) {
+  if (movement == nullptr || movement->is_stopped()) {
     return false;
   }
 
@@ -1119,7 +1119,7 @@ void Hero::check_position() {
   }
 
   // Recompute the facing entity.
-  set_facing_entity(NULL);
+  set_facing_entity(nullptr);
   check_collision_with_detectors(true);
 
   if (is_suspended()
@@ -1922,7 +1922,7 @@ void Hero::notify_collision_with_explosion(
   if (!state->can_avoid_explosion()
       && sprite_overlapping.contains("tunic")
       && can_be_hurt(&explosion)) {
-    hurt(explosion, NULL, 2);
+    hurt(explosion, nullptr, 2);
   }
 }
 
@@ -2088,7 +2088,7 @@ void Hero::update_invincibility() {
 /**
  * \brief Returns whether the hero can be hurt currently.
  * \param attacker An attacker that is trying to hurt the hero
- * (or NULL if the source of the attack is not an entity).
+ * (or nullptr if the source of the attack is not an entity).
  * \return \c true if the hero can be hurt.
  */
 bool Hero::can_be_hurt(MapEntity* attacker) const {
@@ -2105,7 +2105,7 @@ bool Hero::can_be_hurt(MapEntity* attacker) const {
 void Hero::hurt(MapEntity& source, Sprite* source_sprite, int damage) {
 
   Rectangle source_xy = source.get_xy();
-  if (source_sprite != NULL) {
+  if (source_sprite != nullptr) {
     // Add the offset of the sprite if any.
     source_xy.add_xy(source_sprite->get_xy());
   }
@@ -2130,7 +2130,7 @@ void Hero::hurt(const Rectangle& source_xy, int damage) {
  */
 void Hero::hurt(int damage) {
 
-  set_state(new HurtState(*this, NULL, damage));
+  set_state(new HurtState(*this, nullptr, damage));
 }
 
 /**

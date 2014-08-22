@@ -28,7 +28,7 @@
 
 namespace solarus {
   
-SDL_GLContext GLContext::gl_context = NULL;
+SDL_GLContext GLContext::gl_context = nullptr;
 
   
 /**

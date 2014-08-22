@@ -118,9 +118,9 @@ class Surface::SubSurfaceNode: public RefCountable {
 Surface::Surface(int width, int height):
   Drawable(),
   software_destination(true),
-  internal_surface(NULL),
-  internal_texture(NULL),
-  internal_color(NULL),
+  internal_surface(nullptr),
+  internal_texture(nullptr),
+  internal_color(nullptr),
   is_rendered(false),
   internal_opacity(255),
   width(width),
@@ -143,8 +143,8 @@ Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
   software_destination(true),
   internal_surface(internal_surface),
-  internal_texture(NULL),
-  internal_color(NULL),
+  internal_texture(nullptr),
+  internal_color(nullptr),
   is_rendered(false),
   internal_opacity(255) {
 
@@ -157,10 +157,10 @@ Surface::Surface(SDL_Surface* internal_surface):
  */
 Surface::~Surface() {
 
-  if (internal_texture != NULL) {
+  if (internal_texture != nullptr) {
     SDL_DestroyTexture(internal_texture);
   }
-  if (internal_surface != NULL) {
+  if (internal_surface != nullptr) {
     SDL_FreeSurface(internal_surface);
   }
 
@@ -194,20 +194,20 @@ Surface* Surface::create(const Rectangle& size) {
 /**
  * \brief Creates a surface from the specified image file name.
  *
- * This function acts like a constructor excepts that it returns NULL if the
+ * This function acts like a constructor excepts that it returns nullptr if the
  * file does not exist or is not a valid image.
  *
  * \param file_name Name of the image file to load, relative to the base directory specified.
  * \param base_directory The base directory to use.
- * \return The surface created, or NULL if the file could not be loaded.
+ * \return The surface created, or nullptr if the file could not be loaded.
  */
 Surface* Surface::create(const std::string& file_name,
     ImageDirectory base_directory) {
 
   SDL_Surface* sdl_surface = get_surface_from_file(file_name, base_directory);
 
-  if (sdl_surface == NULL) {
-    return NULL;
+  if (sdl_surface == nullptr) {
+    return nullptr;
   }
 
   Surface* surface = new Surface(sdl_surface);
@@ -241,7 +241,7 @@ SDL_Surface* Surface::get_surface_from_file(
 
   if (!FileTools::data_file_exists(prefixed_file_name, language_specific)) {
     // File not found.
-    return NULL;
+    return nullptr;
   }
 
   size_t size;
@@ -254,7 +254,7 @@ SDL_Surface* Surface::get_surface_from_file(
   SDL_RWclose(rw);
   FileTools::data_file_close_buffer(buffer);
 
-  Debug::check_assertion(software_surface != NULL,
+  Debug::check_assertion(software_surface != nullptr,
       std::string("Cannot load image '") + prefixed_file_name + "'");
 
   return software_surface;
@@ -266,7 +266,7 @@ SDL_Surface* Surface::get_surface_from_file(
  */
 void Surface::convert_software_surface() {
 
-  Debug::check_assertion(internal_surface != NULL,
+  Debug::check_assertion(internal_surface != nullptr,
       "Missing software surface to convert");
 
   SDL_PixelFormat* pixel_format = Video::get_pixel_format();
@@ -279,7 +279,7 @@ void Surface::convert_software_surface() {
         pixel_format,
         0
     );
-    Debug::check_assertion(converted_surface != NULL,
+    Debug::check_assertion(converted_surface != nullptr,
         "Failed to convert software surface");
 
     SDL_FreeSurface(internal_surface);
@@ -296,9 +296,9 @@ void Surface::convert_software_surface() {
 void Surface::create_texture_from_surface() {
 
   SDL_Renderer* main_renderer = Video::get_renderer();
-  if (main_renderer != NULL) {
+  if (main_renderer != nullptr) {
 
-    Debug::check_assertion(internal_surface != NULL,
+    Debug::check_assertion(internal_surface != nullptr,
         "Missing software surface to create texture from");
 
     // Make sure the software surface has the same format as the texture.
@@ -317,7 +317,7 @@ void Surface::create_texture_from_surface() {
     SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
 
     // Copy the pixels of the software surface to the GPU texture.
-    SDL_UpdateTexture(internal_texture, NULL, internal_surface->pixels, internal_surface->pitch);
+    SDL_UpdateTexture(internal_texture, nullptr, internal_surface->pixels, internal_surface->pitch);
     SDL_GetSurfaceAlphaMod(internal_surface, &internal_opacity);
   }
 }
@@ -356,7 +356,7 @@ void Surface::set_opacity(uint8_t opacity) {
   if (software_destination  // The destination surface is in RAM.
       || !Video::is_acceleration_enabled()  // The rendering is in RAM.
   ) {
-    if (internal_surface == NULL) {
+    if (internal_surface == nullptr) {
       create_software_surface();
     }
 
@@ -425,7 +425,7 @@ void Surface::set_software_destination(bool software_destination) {
  */
 void Surface::create_software_surface() {
 
-  Debug::check_assertion(internal_surface == NULL,
+  Debug::check_assertion(internal_surface == nullptr,
       "Software surface already exists");
 
   // Create a surface with the appropriate pixel format.
@@ -443,7 +443,7 @@ void Surface::create_software_surface() {
   SDL_SetSurfaceBlendMode(internal_surface, SDL_BLENDMODE_BLEND);
   is_rendered = false;
 
-  Debug::check_assertion(internal_surface != NULL,
+  Debug::check_assertion(internal_surface != nullptr,
       "Failed to create software surface");
 }
 
@@ -458,24 +458,24 @@ void Surface::clear() {
   clear_subsurfaces();
 
   delete internal_color;
-  internal_color = NULL;
+  internal_color = nullptr;
 
-  if (internal_texture != NULL) {
+  if (internal_texture != nullptr) {
     SDL_DestroyTexture(internal_texture);
-    internal_texture = NULL;
+    internal_texture = nullptr;
   }
 
-  if (internal_surface != NULL) {
+  if (internal_surface != nullptr) {
     if (software_destination) {
       SDL_FillRect(
           internal_surface,
-          NULL,
+          nullptr,
           Color::get_transparent().get_internal_value()
       );
     }
     else {
       SDL_FreeSurface(internal_surface);
-      internal_surface = NULL;
+      internal_surface = nullptr;
     }
   }
 }
@@ -493,7 +493,7 @@ void Surface::clear(const Rectangle& where) {
   Debug::check_assertion(software_destination,
       "Partial surface clear is only supported with software surfaces");
 
-  if (internal_surface == NULL) {
+  if (internal_surface == nullptr) {
     // Nothing to do.
     return;
   }
@@ -605,7 +605,7 @@ void Surface::raw_draw_region(
       || !Video::is_acceleration_enabled()  // The rendering is in RAM.
   ) {
 
-    if (dst_surface.internal_surface == NULL) {
+    if (dst_surface.internal_surface == nullptr) {
       dst_surface.create_software_surface();
     }
 
@@ -614,7 +614,7 @@ void Surface::raw_draw_region(
     // one to a software one.
     if (!subsurfaces.empty()) {
 
-      if (this->internal_surface == NULL) {
+      if (this->internal_surface == nullptr) {
         create_software_surface();
       }
 
@@ -640,7 +640,7 @@ void Surface::raw_draw_region(
       clear_subsurfaces();
     }
 
-    if (this->internal_surface != NULL) {
+    if (this->internal_surface != nullptr) {
       // The source surface is not empty: draw it onto the destination.
 
       SDL_BlitSurface(
@@ -650,7 +650,7 @@ void Surface::raw_draw_region(
           Rectangle(dst_position).get_internal_rect()
       );
     }
-    else if (internal_color != NULL) { // No internal surface to draw: this may be a color.
+    else if (internal_color != nullptr) { // No internal surface to draw: this may be a color.
 
       if (internal_color->get_internal_color()->a == 255) {
         // Fill with opaque color: we can directly modify the destination pixels.
@@ -669,7 +669,7 @@ void Surface::raw_draw_region(
         create_software_surface();
         SDL_FillRect(
             this->internal_surface,
-            NULL,
+            nullptr,
             this->internal_color->get_internal_value()
         );
         SDL_BlitSurface(
@@ -718,12 +718,12 @@ void Surface::apply_pixel_filter(
   SDL_Surface* src_internal_surface = this->internal_surface;
   SDL_Surface* dst_internal_surface = dst_surface.internal_surface;
 
-  if (src_internal_surface == NULL) {
+  if (src_internal_surface == nullptr) {
     // This is possible if nothing was drawn on the surface yet.
     return;
   }
 
-  Debug::check_assertion(dst_internal_surface != NULL,
+  Debug::check_assertion(dst_internal_surface != nullptr,
       "Missing software destination surface for pixel filter");
 
   SDL_LockSurface(src_internal_surface);
@@ -777,9 +777,9 @@ void Surface::render(
   // Uncomment the two lines using it when https://bugzilla.libsdl.org/show_bug.cgi?id=2336 will be solved.
   
   // Accelerate the internal software surface.
-  if (internal_surface != NULL) {
+  if (internal_surface != nullptr) {
 
-    if (internal_texture == NULL) {
+    if (internal_texture == nullptr) {
       create_texture_from_surface();
     }
 
@@ -790,7 +790,7 @@ void Surface::render(
       convert_software_surface();
       SDL_UpdateTexture(
           internal_texture,
-          NULL,
+          nullptr,
           internal_surface->pixels,
           internal_surface->pitch
       );
@@ -801,7 +801,7 @@ void Surface::render(
   const uint8_t current_opacity = std::min(internal_opacity, opacity);
 
   // Draw the internal color as background color.
-  if (internal_color != NULL) {
+  if (internal_color != nullptr) {
     int r, g, b, a;
     internal_color->get_components(r, g, b, a);
 
@@ -811,7 +811,7 @@ void Surface::render(
   }
 
   // Draw the internal texture.
-  if (internal_texture != NULL) {
+  if (internal_texture != nullptr) {
     SDL_SetTextureAlphaMod(internal_texture, current_opacity);
     //SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect());
 
@@ -880,7 +880,7 @@ Surface& Surface::get_transition_surface() {
  */
 uint32_t Surface::get_pixel(int index) const {
 
-  SOLARUS_ASSERT(internal_surface != NULL,
+  SOLARUS_ASSERT(internal_surface != nullptr,
     "Attempt to read a pixel on a hardware or a buffer surface.");
 
   SDL_PixelFormat* format = internal_surface->format;

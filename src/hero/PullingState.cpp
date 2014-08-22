@@ -31,8 +31,8 @@ namespace solarus {
  */
 Hero::PullingState::PullingState(Hero& hero):
   State(hero, "pulling"),
-  pulled_entity(NULL),
-  pulling_movement(NULL) {
+  pulled_entity(nullptr),
+  pulling_movement(nullptr) {
 
 }
 
@@ -52,7 +52,7 @@ void Hero::PullingState::start(const State* previous_state) {
 
   State::start(previous_state);
 
-  pulled_entity = NULL;
+  pulled_entity = nullptr;
   get_sprites().set_animation_pulling();
 }
 
@@ -98,7 +98,7 @@ void Hero::PullingState::update() {
     else {
 
       Detector* facing_entity = hero.get_facing_entity();
-      if (facing_entity != NULL) {
+      if (facing_entity != nullptr) {
 
         if (facing_entity->get_type() == ENTITY_BLOCK) { // TODO use dynamic binding
           hero.try_snap_to_facing_entity();
@@ -133,7 +133,7 @@ bool Hero::PullingState::is_grabbing_or_pulling() const {
  * \return true if the hero is grabbing and moving an entity
  */
 bool Hero::PullingState::is_moving_grabbed_entity() const {
-  return pulled_entity != NULL;
+  return pulled_entity != nullptr;
 }
 
 /**
@@ -200,7 +200,7 @@ void Hero::PullingState::notify_position_changed() {
 void Hero::PullingState::stop_moving_pulled_entity() {
 
   Hero& hero = get_hero();
-  if (pulled_entity != NULL) {
+  if (pulled_entity != nullptr) {
     pulled_entity->stop_movement_by_hero();
 
     // the hero may have moved one or several pixels too much
@@ -232,9 +232,9 @@ void Hero::PullingState::stop_moving_pulled_entity() {
 
     hero.clear_movement();
     RefCountable::unref(pulling_movement);
-    pulling_movement = NULL;
+    pulling_movement = nullptr;
     MapEntity* entity_just_moved = pulled_entity;
-    pulled_entity = NULL;
+    pulled_entity = nullptr;
     entity_just_moved->notify_moved_by(hero);
   }
 
@@ -245,7 +245,7 @@ void Hero::PullingState::stop_moving_pulled_entity() {
  * \brief Returns whether the hero can be hurt in this state.
  * \return true if the hero can be hurt in this state
  * \param attacker an attacker that is trying to hurt the hero
- * (or NULL if the source of the attack is not an enemy)
+ * (or nullptr if the source of the attack is not an enemy)
  */
 bool Hero::PullingState::can_be_hurt(MapEntity* attacker) const {
   return !is_moving_grabbed_entity();

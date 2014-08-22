@@ -134,7 +134,7 @@ void StreamAction::update() {
   // and are enabled.
   if (stream->is_being_removed()) {
     RefCountable::unref(stream);
-    stream = NULL;
+    stream = nullptr;
     active = false;
     return;
   }
@@ -146,7 +146,7 @@ void StreamAction::update() {
 
   if (entity_moved->is_being_removed()) {
     RefCountable::unref(entity_moved);
-    entity_moved = NULL;
+    entity_moved = nullptr;
     active = false;
     return;
   }
@@ -285,7 +285,7 @@ void StreamAction::set_suspended(bool suspended) {
  */
 bool StreamAction::test_obstacles(int dx, int dy) {
 
-  if (entity_moved->get_movement() != NULL &&
+  if (entity_moved->get_movement() != nullptr &&
       entity_moved->get_movement()->are_obstacles_ignored()) {
     // This entity currently ignores obstacles.
     return false;

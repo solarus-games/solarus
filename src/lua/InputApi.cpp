@@ -41,7 +41,7 @@ void LuaContext::register_input_module() {
       { "get_joypad_hat_direction", input_api_get_joypad_hat_direction },
       { "is_mouse_button_pressed", input_api_is_mouse_button_pressed },
       { "get_mouse_position", input_api_get_mouse_position },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_functions(input_module_name, functions);

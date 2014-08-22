@@ -26,10 +26,10 @@
 namespace solarus {
 
 const int Music::nb_buffers;
-SpcDecoder* Music::spc_decoder = NULL;
-ItDecoder* Music::it_decoder = NULL;
+SpcDecoder* Music::spc_decoder = nullptr;
+ItDecoder* Music::it_decoder = nullptr;
 float Music::volume = 1.0;
-Music* Music::current_music = NULL;
+Music* Music::current_music = nullptr;
 
 const std::string Music::none = "none";
 const std::string Music::unchanged = "same";
@@ -52,7 +52,7 @@ Music::Music():
   id(none),
   format(NO_FORMAT),
   loop(false),
-  lua_context(NULL),
+  lua_context(nullptr),
   callback_ref(LUA_REFNIL),
   source(AL_NONE) {
 
@@ -99,7 +99,7 @@ Music::~Music() {
     stop();
   }
 
-  if (lua_context != NULL) {
+  if (lua_context != nullptr) {
     lua_context->cancel_callback(callback_ref);
   }
 }
@@ -123,11 +123,11 @@ void Music::quit() {
 
   if (is_initialized()) {
     delete current_music;
-    current_music = NULL;
+    current_music = nullptr;
     delete spc_decoder;
-    spc_decoder = NULL;
+    spc_decoder = nullptr;
     delete it_decoder;
-    it_decoder = NULL;
+    it_decoder = nullptr;
   }
 }
 
@@ -136,7 +136,7 @@ void Music::quit() {
  * \return true if the music system is initilialized
  */
 bool Music::is_initialized() {
-  return spc_decoder != NULL;
+  return spc_decoder != nullptr;
 }
 
 /**
@@ -145,7 +145,7 @@ bool Music::is_initialized() {
  */
 Music::Format Music::get_format() {
 
-  if (current_music == NULL) {
+  if (current_music == nullptr) {
     return NO_FORMAT;
   }
 
@@ -170,7 +170,7 @@ void Music::set_volume(int volume) {
   volume = std::min(100, std::max(0, volume));
   Music::volume = volume / 100.0;
 
-  if (current_music != NULL) {
+  if (current_music != nullptr) {
     alSourcef(current_music->source, AL_GAIN, Music::volume);
   }
 }
@@ -257,7 +257,7 @@ void Music::set_tempo(int tempo) {
  * \return the id of the current music, or "none" if no music is being played
  */
 const std::string& Music::get_current_music_id() {
-  return current_music != NULL ? current_music->id : none;
+  return current_music != nullptr ? current_music->id : none;
 }
 
 /**
@@ -322,7 +322,7 @@ bool Music::exists(const std::string& music_id) {
  */
 void Music::play(const std::string& music_id, bool loop) {
 
-  play(music_id, loop, NULL, LUA_REFNIL);
+  play(music_id, loop, nullptr, LUA_REFNIL);
 }
 
 /**
@@ -340,10 +340,10 @@ void Music::play(const std::string& music_id, bool loop,
   if (music_id != unchanged && music_id != get_current_music_id()) {
     // The music is changed.
 
-    if (current_music != NULL) {
+    if (current_music != nullptr) {
       // Stop the music that was played.
       delete current_music;
-      current_music = NULL;
+      current_music = nullptr;
     }
 
     if (music_id != none) {
@@ -355,13 +355,13 @@ void Music::play(const std::string& music_id, bool loop,
       if (!current_music->start()) {
         // Could not play the music.
         delete current_music;
-        current_music = NULL;
+        current_music = nullptr;
       }
     }
   }
   else if (music_id != none) {
     // Keep the same music.
-    if (lua_context != NULL) {
+    if (lua_context != nullptr) {
       // Discard the new callback if any.
       lua_context->cancel_callback(callback_ref);
     }
@@ -389,7 +389,7 @@ void Music::update() {
     return;
   }
 
-  if (current_music != NULL) {
+  if (current_music != nullptr) {
     bool playing = current_music->update_playing();
     if (!playing) {
       // Music is finished.
@@ -397,8 +397,8 @@ void Music::update() {
       int callback_ref = current_music->callback_ref;
       current_music->callback_ref = LUA_REFNIL;
       delete current_music;
-      current_music = NULL;
-      if (lua_context != NULL) {
+      current_music = nullptr;
+      if (lua_context != nullptr) {
         lua_context->do_callback(callback_ref);
         lua_context->cancel_callback(callback_ref);
       }
@@ -631,7 +631,7 @@ bool Music::start() {
       FileTools::data_file_open_buffer(file_name, &ogg_mem.data, &ogg_mem.size);
       // now, ogg_mem contains the encoded data
 
-      int error = ov_open_callbacks(&ogg_mem, &ogg_file, NULL, 0, Sound::ogg_callbacks);
+      int error = ov_open_callbacks(&ogg_mem, &ogg_file, nullptr, 0, Sound::ogg_callbacks);
       if (error) {
         std::ostringstream oss;
         oss << "Cannot load music file '" << file_name
@@ -681,7 +681,7 @@ void Music::stop() {
   }
 
   // Release the callback if any.
-  if (lua_context != NULL) {
+  if (lua_context != nullptr) {
     lua_context->cancel_callback(callback_ref);
     callback_ref = LUA_REFNIL;
   }
@@ -766,7 +766,7 @@ void Music::set_paused(bool pause) {
  */
 void Music::set_callback(int callback_ref) {
 
-  if (lua_context == NULL) {
+  if (lua_context == nullptr) {
     return;
   }
 

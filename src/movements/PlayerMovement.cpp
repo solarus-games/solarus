@@ -51,7 +51,7 @@ void PlayerMovement::update() {
   StraightMovement::update();
 
   const MapEntity* entity = get_entity();
-  if (entity == NULL || !entity->is_on_map()) {
+  if (entity == nullptr || !entity->is_on_map()) {
     return; // the entity is not ready yet
   }
 
@@ -113,7 +113,7 @@ void PlayerMovement::set_moving_speed(int moving_speed) {
  */
 void PlayerMovement::set_wanted_direction() {
 
-  if (get_entity() != NULL && get_entity()->is_on_map()) {
+  if (get_entity() != nullptr && get_entity()->is_on_map()) {
     GameCommands& commands = get_entity()->get_game().get_commands();
     direction8 = commands.get_wanted_direction8();
   }

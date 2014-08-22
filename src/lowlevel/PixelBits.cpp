@@ -33,12 +33,12 @@ PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position):
   width(0),
   height(0),
   nb_integers_per_row(0),
-  bits(NULL) {
+  bits(nullptr) {
 
   // Create a list of boolean values representing the transparency of each pixel.
   // This list is implemented as bit fields.
 
-  Debug::check_assertion(surface.internal_surface != NULL,
+  Debug::check_assertion(surface.internal_surface != nullptr,
     "Attempt to read a surface that doesn't have pixel buffer in RAM.");
 
   // Clip the rectangle passed as parameter.
@@ -90,7 +90,7 @@ PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position):
  */
 PixelBits::~PixelBits() {
 
-  if (bits != NULL) {
+  if (bits != nullptr) {
     for (int i = 0; i < height; i++) {
       delete[] bits[i];
     }
@@ -115,7 +115,7 @@ bool PixelBits::test_collision(
 
   const bool debug_pixel_collisions = false;
 
-  if (bits == NULL) {
+  if (bits == nullptr) {
     // No image.
     return false;
   }

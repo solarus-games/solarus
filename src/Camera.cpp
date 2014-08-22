@@ -39,10 +39,10 @@ Camera::Camera(Map& map):
   separator_scrolling_dy(0),
   separator_next_scrolling_date(0),
   separator_scrolling_direction4(0),
-  separator_traversed(NULL),
+  separator_traversed(nullptr),
   restoring(false),
   speed(120),
-  movement(NULL) {
+  movement(nullptr) {
 }
 
 /**
@@ -79,7 +79,7 @@ void Camera::update() {
     // If the camera is not moving towards a target, center it on the hero.
     update_fixed_on_hero();
   }
-  else if (movement != NULL) {
+  else if (movement != nullptr) {
     update_moving();
   }
 }
@@ -220,7 +220,7 @@ void Camera::update_fixed_on_hero() {
         separator_next_scrolling_date = 0;
         separator_traversed->notify_activated(separator_scrolling_direction4);
         RefCountable::unref(separator_traversed);
-        separator_traversed = NULL;
+        separator_traversed = nullptr;
         separator_scrolling_direction4 = 0;
     }
   }
@@ -255,7 +255,7 @@ void Camera::update_moving() {
   Debug::check_assertion(!fixed_on_hero,
       "Illegal call to Camera::update_moving()");
 
-  if (movement == NULL) {
+  if (movement == nullptr) {
     return;
   }
 
@@ -265,7 +265,7 @@ void Camera::update_moving() {
 
   if (movement->is_finished()) {
     delete movement;
-    movement = NULL;
+    movement = nullptr;
 
     if (restoring) {
       restoring = false;
@@ -333,7 +333,7 @@ void Camera::move(int target_x, int target_y) {
         map_location.get_height() - get_height() / 2);
   }
 
-  movement = new TargetMovement(NULL, target_x, target_y, speed, true);
+  movement = new TargetMovement(nullptr, target_x, target_y, speed, true);
   movement->set_xy(position.get_x() + get_width() / 2, position.get_y() + get_height() / 2);
 
   fixed_on_hero = false;
@@ -371,11 +371,11 @@ void Camera::restore() {
  *
  * The hero must touch the separator when you call this function.
  *
- * \param separator The separator to traverse (cannot be NULL).
+ * \param separator The separator to traverse (cannot be nullptr).
  */
 void Camera::traverse_separator(Separator* separator) {
 
-  Debug::check_assertion(separator != NULL, "Missing parameter separator");
+  Debug::check_assertion(separator != nullptr, "Missing parameter separator");
 
   // Save the current position of the camera.
   separator_scrolling_position = position;

@@ -71,7 +71,7 @@ void RefCountable::decrement_refcount() {
 
 /**
  * \brief Inccrements the refcount of an object.
- * \param object Pointer to the object to increment_refcount. Cannot be NULL.
+ * \param object Pointer to the object to increment_refcount. Cannot be nullptr.
  */
 void RefCountable::ref(RefCountable* object) {
 
@@ -80,12 +80,12 @@ void RefCountable::ref(RefCountable* object) {
 
 /**
  * \brief Decrements the refcount of an object and destroys it if necessary.
- * \param object Pointer to the object to decrement_refcount. If the pointer is NULL,
+ * \param object Pointer to the object to decrement_refcount. If the pointer is nullptr,
  * nothing happens.
  */
 void RefCountable::unref(RefCountable* object) {
 
-  if (object == NULL) {
+  if (object == nullptr) {
     // No-op. This is allowed.
     return;
   }

@@ -38,7 +38,7 @@ FollowMovement::FollowMovement(
   y(y),
   finished(false) {
 
-  if (entity_followed != NULL) {
+  if (entity_followed != nullptr) {
     RefCountable::ref(entity_followed);
   }
 }
@@ -62,7 +62,7 @@ bool FollowMovement::is_finished() const {
  */
 void FollowMovement::update() {
 
-  if (entity_followed == NULL) {
+  if (entity_followed == nullptr) {
     finished = true;
     return;
   }
@@ -70,7 +70,7 @@ void FollowMovement::update() {
   if (entity_followed->is_being_removed()) {
     finished = true;
     RefCountable::unref(entity_followed);
-    entity_followed = NULL;
+    entity_followed = nullptr;
   }
   else {
 
@@ -108,7 +108,7 @@ void FollowMovement::update() {
  */
 const Rectangle FollowMovement::get_displayed_xy() const {
 
-  if (entity_followed == NULL) {
+  if (entity_followed == nullptr) {
     return get_xy();
   }
 

@@ -45,12 +45,12 @@ Hero::StairsState::StairsState(
   way(way),
   phase(0),
   next_phase_date(0),
-  carried_item(NULL) {
+  carried_item(nullptr) {
 
   if (get_previous_carried_item_behavior() == CarriedItem::BEHAVIOR_KEEP) {
     // Keep the carried item of the previous state.
     carried_item = hero.get_carried_item();
-    if (carried_item != NULL) {
+    if (carried_item != nullptr) {
       RefCountable::ref(carried_item);
     }
   }
@@ -73,7 +73,7 @@ void Hero::StairsState::set_map(Map& map) {
   State::set_map(map);
 
   // the hero may go to another map while taking stairs and carrying an item
-  if (carried_item != NULL) {
+  if (carried_item != nullptr) {
     carried_item->set_map(map);
   }
 }
@@ -93,7 +93,7 @@ void Hero::StairsState::start(const State* previous_state) {
 
   // sprites and sound
   HeroSprites& sprites = get_sprites();
-  if (carried_item == NULL) {
+  if (carried_item == nullptr) {
     sprites.set_animation_walking_normal();
   }
   else {
@@ -134,20 +134,20 @@ void Hero::StairsState::stop(const State* next_state) {
 
   State::stop(next_state);
 
-  if (carried_item != NULL) {
+  if (carried_item != nullptr) {
 
     switch (next_state->get_previous_carried_item_behavior()) {
 
     case CarriedItem::BEHAVIOR_THROW:
       carried_item->throw_item(get_sprites().get_animation_direction());
       get_entities().add_entity(carried_item);
-      carried_item = NULL;
-      get_sprites().set_lifted_item(NULL);
+      carried_item = nullptr;
+      get_sprites().set_lifted_item(nullptr);
       break;
 
     case CarriedItem::BEHAVIOR_DESTROY:
       destroy_carried_item();
-      get_sprites().set_lifted_item(NULL);
+      get_sprites().set_lifted_item(nullptr);
       break;
 
     case CarriedItem::BEHAVIOR_KEEP:
@@ -155,7 +155,7 @@ void Hero::StairsState::stop(const State* next_state) {
       Debug::check_assertion(carried_item->get_refcount() > 1,
           "Invalid carried item refcount");
       RefCountable::unref(carried_item);
-      carried_item = NULL;
+      carried_item = nullptr;
       break;
 
     default:
@@ -183,7 +183,7 @@ void Hero::StairsState::update() {
   }
 
   // update the carried item if any
-  if (carried_item != NULL) {
+  if (carried_item != nullptr) {
     carried_item->update();
   }
 
@@ -197,7 +197,7 @@ void Hero::StairsState::update() {
         get_entities().set_entity_layer(hero, stairs.get_layer());
       }
       hero.clear_movement();
-      if (carried_item == NULL) {
+      if (carried_item == nullptr) {
         hero.set_state(new FreeState(hero));
       }
       else {
@@ -212,7 +212,7 @@ void Hero::StairsState::update() {
     if (hero.get_movement()->is_finished()) {
       hero.clear_movement();
 
-      if (carried_item == NULL) {
+      if (carried_item == nullptr) {
         hero.set_state(new FreeState(hero));
       }
       else {
@@ -224,7 +224,7 @@ void Hero::StairsState::update() {
         // there must be a teletransporter associated with these stairs,
         // otherwise the hero would get stuck into the walls
         Teletransporter* teletransporter = hero.get_delayed_teletransporter();
-        Debug::check_assertion(teletransporter != NULL, "Teletransporter expected with the stairs");
+        Debug::check_assertion(teletransporter != nullptr, "Teletransporter expected with the stairs");
         teletransporter->transport_hero(hero);
       }
       else {
@@ -279,7 +279,7 @@ void Hero::StairsState::set_suspended(bool suspended) {
 
   State::set_suspended(suspended);
 
-  if (carried_item != NULL) {
+  if (carried_item != nullptr) {
     carried_item->set_suspended(suspended);
   }
 
@@ -334,19 +334,19 @@ int Hero::StairsState::get_wanted_movement_direction8() const {
 
 /**
  * \brief Returns the item currently carried by the hero in this state, if any.
- * \return the item carried by the hero, or NULL
+ * \return the item carried by the hero, or nullptr
  */
 CarriedItem* Hero::StairsState::get_carried_item() const {
   return carried_item;
 }
 
 /**
- * \brief Destroys the item carried if any and sets it to NULL.
+ * \brief Destroys the item carried if any and sets it to nullptr.
  */
 void Hero::StairsState::destroy_carried_item() {
 
   RefCountable::unref(carried_item);
-  carried_item = NULL;
+  carried_item = nullptr;
 }
 
 /**
@@ -365,7 +365,7 @@ CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior() co
  */
 void Hero::StairsState::notify_layer_changed() {
 
-  if (carried_item != NULL) {
+  if (carried_item != nullptr) {
     carried_item->set_layer(get_hero().get_layer());
   }
 }

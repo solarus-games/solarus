@@ -82,7 +82,7 @@ Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
   file_name(file_name),
   main_loop(main_loop),
   equipment(*this),
-  game(NULL) {
+  game(nullptr) {
 
   const std::string& quest_write_dir = FileTools::get_quest_write_dir();
   Debug::check_assertion(!quest_write_dir.empty(),
@@ -337,7 +337,7 @@ const Equipment& Savegame::get_equipment() const {
 
 /**
  * \brief If this savegame is currently running in a game, return that game.
- * \return A game or NULL.
+ * \return A game or nullptr.
  */
 Game* Savegame::get_game() {
   return game;
@@ -345,7 +345,7 @@ Game* Savegame::get_game() {
 
 /**
  * \brief Sets the game that is running this savegame.
- * \param game A game or NULL.
+ * \param game A game or nullptr.
  */
 void Savegame::set_game(Game* game) {
   this->game = game;

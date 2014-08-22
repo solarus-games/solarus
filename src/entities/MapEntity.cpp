@@ -53,8 +53,8 @@ MapEntity::MapEntity(
     int y,
     int width,
     int height):
-  main_loop(NULL),
-  map(NULL),
+  main_loop(nullptr),
+  map(nullptr),
   layer(layer),
   bounding_box(x, y, width, height),
   ground_below(GROUND_EMPTY),
@@ -63,10 +63,10 @@ MapEntity::MapEntity(
   direction(direction),
   visible(true),
   drawn_in_y_order(false),
-  movement(NULL),
+  movement(nullptr),
   movement_events_enabled(true),
-  facing_entity(NULL),
-  stream_action(NULL),
+  facing_entity(nullptr),
+  stream_action(nullptr),
   initialized(false),
   being_removed(false),
   enabled(true),
@@ -302,7 +302,7 @@ void MapEntity::set_drawn_in_y_order(bool drawn_in_y_order) {
  * \return true if the entity is on a map
  */
 bool MapEntity::is_on_map() const {
-  return map != NULL;
+  return map != nullptr;
 }
 
 /**
@@ -428,7 +428,7 @@ Map& MapEntity::get_map() const {
  * \return The game.
  */
 Game& MapEntity::get_game() {
-  SOLARUS_ASSERT(map != NULL, "No map was set");
+  SOLARUS_ASSERT(map != nullptr, "No map was set");
   return map->get_game();
 }
 
@@ -437,7 +437,7 @@ Game& MapEntity::get_game() {
  * \return The game.
  */
 const Game& MapEntity::get_game() const {
-  SOLARUS_ASSERT(map != NULL, "No map was set");
+  SOLARUS_ASSERT(map != nullptr, "No map was set");
   return map->get_game();
 }
 
@@ -446,7 +446,7 @@ const Game& MapEntity::get_game() const {
  * \return The entities.
  */
 MapEntities& MapEntity::get_entities() {
-  Debug::check_assertion(map != NULL, "No map was set");
+  Debug::check_assertion(map != nullptr, "No map was set");
   return map->get_entities();
 }
 
@@ -455,7 +455,7 @@ MapEntities& MapEntity::get_entities() {
  * \return The entities.
  */
 const MapEntities& MapEntity::get_entities() const {
-  Debug::check_assertion(map != NULL, "No map was set");
+  Debug::check_assertion(map != nullptr, "No map was set");
   return map->get_entities();
 }
 
@@ -465,7 +465,7 @@ const MapEntities& MapEntity::get_entities() const {
  */
 LuaContext& MapEntity::get_lua_context() {
 
-  Debug::check_assertion(main_loop != NULL,
+  Debug::check_assertion(main_loop != nullptr,
       "This entity is not fully constructed yet");
   return main_loop->get_lua_context();
 }
@@ -476,7 +476,7 @@ LuaContext& MapEntity::get_lua_context() {
  */
 const LuaContext& MapEntity::get_lua_context() const {
 
-  Debug::check_assertion(main_loop != NULL,
+  Debug::check_assertion(main_loop != nullptr,
       "This entity is not fully constructed yet");
   return main_loop->get_lua_context();
 }
@@ -790,7 +790,7 @@ void MapEntity::set_top_left_xy(const Rectangle& xy) {
  */
 const Rectangle MapEntity::get_displayed_xy() const {
 
-  if (get_movement() == NULL) {
+  if (get_movement() == nullptr) {
     return get_xy();
   }
 
@@ -950,7 +950,7 @@ const Rectangle MapEntity::get_facing_point() const {
     direction4 = get_sprite().get_current_direction();
   }
   else {
-    if (get_movement() != NULL) {
+    if (get_movement() != nullptr) {
       // Otherwise use the movement.
       direction4 = get_movement()->get_displayed_direction4();
     }
@@ -1000,7 +1000,7 @@ const Rectangle MapEntity::get_touching_point(int direction) const {
 
 /**
  * \brief Returns the detector in front of this entity.
- * \return the detector this entity is touching, or NULL if there is no detector in front of him
+ * \return the detector this entity is touching, or nullptr if there is no detector in front of him
  */
 Detector* MapEntity::get_facing_entity() {
   return facing_entity;
@@ -1008,7 +1008,7 @@ Detector* MapEntity::get_facing_entity() {
 
 /**
  * \brief Returns the detector in front of this entity.
- * \return the detector this entity is touching, or NULL if there is no detector in front of him
+ * \return the detector this entity is touching, or nullptr if there is no detector in front of him
  */
 const Detector* MapEntity::get_facing_entity() const {
   return facing_entity;
@@ -1019,7 +1019,7 @@ const Detector* MapEntity::get_facing_entity() const {
  *
  * This function is called when this entity is facing a new detector.
  *
- * \param facing_entity the detector this entity is now facing (possibly NULL)
+ * \param facing_entity the detector this entity is now facing (possibly nullptr)
  */
 void MapEntity::set_facing_entity(Detector* facing_entity) {
 
@@ -1029,7 +1029,7 @@ void MapEntity::set_facing_entity(Detector* facing_entity) {
 
 /**
  * \brief Notifies this entity that its facing entity has just changed.
- * \param facing_entity the detector this entity is now facing (possibly NULL)
+ * \param facing_entity the detector this entity is now facing (possibly nullptr)
  */
 void MapEntity::notify_facing_entity_changed(Detector* facing_entity) {
 }
@@ -1301,7 +1301,7 @@ void MapEntity::set_visible(bool visible) {
 
 /**
  * \brief Returns the current movement of the entity.
- * \return the entity's movement, or NULL if there is no movement
+ * \return the entity's movement, or nullptr if there is no movement
  */
 Movement* MapEntity::get_movement() {
   return movement;
@@ -1309,7 +1309,7 @@ Movement* MapEntity::get_movement() {
 
 /**
  * \brief Returns the current movement of the entity.
- * \return the entity's movement, or NULL if there is no movement
+ * \return the entity's movement, or nullptr if there is no movement
  */
 const Movement* MapEntity::get_movement() const {
   return movement;
@@ -1325,14 +1325,14 @@ const Movement* MapEntity::get_movement() const {
  * If a previous movement was already set, it is not deleted (so that you can reassign it later).
  * Thus, most of the time, you should call clear_movement() before set_movement() to avoid a memory leak.
  *
- * \param movement the movement to set, or NULL to set no movement
+ * \param movement the movement to set, or nullptr to set no movement
  */
 void MapEntity::set_movement(Movement* movement) {
 
   this->movement = movement;
   RefCountable::ref(movement);
 
-  if (movement != NULL) {
+  if (movement != nullptr) {
     movement->set_entity(this);
 
     if (movement->is_suspended() != suspended) {
@@ -1350,11 +1350,11 @@ void MapEntity::set_movement(Movement* movement) {
  */
 void MapEntity::clear_movement() {
 
-  if (movement != NULL) {
-    movement->set_entity(NULL);         // Tell the movement to forget me.
-    movement->set_lua_context(NULL);    // Stop future Lua callbacks.
+  if (movement != nullptr) {
+    movement->set_entity(nullptr);         // Tell the movement to forget me.
+    movement->set_lua_context(nullptr);    // Stop future Lua callbacks.
     old_movements.push_back(movement);  // Destroy it later.
-    movement = NULL;
+    movement = nullptr;
   }
 }
 
@@ -1382,7 +1382,7 @@ void MapEntity::clear_old_movements() {
  * \return Whether movement events are currently enabled.
  */
 bool MapEntity::are_movement_notifications_enabled() const {
-  return main_loop != NULL && movement_events_enabled;
+  return main_loop != nullptr && movement_events_enabled;
 }
 
 /**
@@ -1403,12 +1403,12 @@ void MapEntity::set_movement_events_enabled(bool notify) {
  * \return \c true if there is an active stream action.
  */
 bool MapEntity::has_stream_action() const {
-  return stream_action != NULL && stream_action->is_active();
+  return stream_action != nullptr && stream_action->is_active();
 }
 
 /**
  * \brief Returns the stream action currently applied if any.
- * \return The stream action of this entity or NULL.
+ * \return The stream action of this entity or nullptr.
  */
 const StreamAction* MapEntity::get_stream_action() const {
   return stream_action;
@@ -1416,7 +1416,7 @@ const StreamAction* MapEntity::get_stream_action() const {
 
 /**
  * \brief Returns the stream action currently applied if any.
- * \return The stream action of this entity or NULL.
+ * \return The stream action of this entity or nullptr.
  */
 StreamAction* MapEntity::get_stream_action() {
   return stream_action;
@@ -1438,7 +1438,7 @@ void MapEntity::start_stream_action(StreamAction* stream_action) {
 void MapEntity::stop_stream_action() {
 
   delete stream_action;
-  stream_action = NULL;
+  stream_action = nullptr;
 }
 
 /**
@@ -1614,7 +1614,7 @@ void MapEntity::set_enabled(bool enabled) {
     if (!is_suspended()) {
       // Disabling an entity that is not suspended:
       // suspend its movement, its sprites and its timers.
-      if (get_movement() != NULL) {
+      if (get_movement() != nullptr) {
         get_movement()->set_suspended(true);
       }
 
@@ -2054,9 +2054,9 @@ double MapEntity::get_angle(const MapEntity& other) const {
  * one of its sprite and the origin of another entity or one of its sprites.
  * \param other The other entity.
  * \param this_sprite Sprite of this entity to use instead of the entity itself
- * or NULL.
+ * or nullptr.
  * \param other_sprite Sprite of the other entity to use instead of the entity
- * itself or NULL.
+ * itself or nullptr.
  * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
  */
 double MapEntity::get_angle(
@@ -2066,12 +2066,12 @@ double MapEntity::get_angle(
 
   // Add the coordinates of sprites as offsets.
   Rectangle this_offset(0, 0);
-  if (this_sprite != NULL) {
+  if (this_sprite != nullptr) {
     this_offset.add_xy(this_sprite->get_xy());
   }
 
   Rectangle other_offset(0, 0);
-  if (other_sprite != NULL) {
+  if (other_sprite != nullptr) {
     other_offset.add_xy(other_sprite->get_xy());
   }
 
@@ -2389,7 +2389,7 @@ void MapEntity::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, 
  *
  * \param attack The attack.
  * \param victim The enemy just hurt.
- * \param victim_sprite The enemy's sprite that was touched or NULL.
+ * \param victim_sprite The enemy's sprite that was touched or nullptr.
  * \param result How the enemy has reacted to the attack.
  * \param killed Whether the attack has just killed the enemy.
  */
@@ -2431,10 +2431,10 @@ void MapEntity::set_suspended(bool suspended) {
   }
 
   // suspend/unsuspend the movement
-  if (movement != NULL) {
+  if (movement != nullptr) {
     movement->set_suspended(suspended || !is_enabled());
   }
-  if (stream_action != NULL) {
+  if (stream_action != nullptr) {
     stream_action->set_suspended(suspended || !is_enabled());
   }
 
@@ -2495,11 +2495,11 @@ void MapEntity::update() {
       if (!is_suspended()) {
         // Enabling an entity that is not suspended:
         // unsuspend its movement, its sprites and its timers.
-        if (get_movement() != NULL) {
+        if (get_movement() != nullptr) {
           get_movement()->set_suspended(false);
         }
 
-        if (stream_action != NULL) {
+        if (stream_action != nullptr) {
           stream_action->set_suspended(false);
         }
 
@@ -2518,8 +2518,8 @@ void MapEntity::update() {
   }
 
   // check the facing entity
-  if (facing_entity != NULL && facing_entity->is_being_removed()) {
-    set_facing_entity(NULL);
+  if (facing_entity != nullptr && facing_entity->is_being_removed()) {
+    set_facing_entity(nullptr);
   }
 
   // update the sprites
@@ -2544,11 +2544,11 @@ void MapEntity::update() {
   clear_old_sprites();
 
   // update the movement
-  if (movement != NULL) {
+  if (movement != nullptr) {
     movement->update();
   }
   clear_old_movements();
-  if (stream_action != NULL) {
+  if (stream_action != nullptr) {
     stream_action->update();
     if (!get_stream_action()->is_active()) {
       stop_stream_action();

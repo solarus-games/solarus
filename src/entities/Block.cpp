@@ -129,7 +129,7 @@ bool Block::is_teletransporter_obstacle(Teletransporter& teletransporter) {
  * \return true if the hero is an obstacle for this entity.
  */
 bool Block::is_hero_obstacle(Hero& hero) {
-  return get_movement() == NULL;
+  return get_movement() == nullptr;
 }
 
 /**
@@ -209,7 +209,7 @@ bool Block::start_movement_by_hero() {
     hero_direction = (hero_direction + 2) % 4;
   }
 
-  if (get_movement() != NULL                // the block is already moving
+  if (get_movement() != nullptr                // the block is already moving
       || maximum_moves == 0                 // the block cannot move anymore
       || System::now() < when_can_move      // the block cannot move for a while
       || (pulling && !can_be_pulled)        // the hero tries to pull a block that cannot be pulled
@@ -234,7 +234,7 @@ void Block::notify_position_changed() {
 
   // now we know that the block moves at least of 1 pixel:
   // we can play the sound
-  if (get_movement() != NULL && !sound_played) {
+  if (get_movement() != nullptr && !sound_played) {
     Sound::play("hero_pushes");
     sound_played = true;
   }
@@ -325,7 +325,7 @@ void Block::notify_moved_by(MapEntity& entity) {
  */
 void Block::reset() {
 
-  if (get_movement() != NULL) {
+  if (get_movement() != nullptr) {
     // the block was being pushed or pulled by the hero
     clear_movement();
     when_can_move = System::now() + moving_delay;

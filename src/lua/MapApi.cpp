@@ -122,17 +122,17 @@ void LuaContext::register_map_module() {
       { "create_bomb", map_api_create_bomb },
       { "create_explosion", map_api_create_explosion },
       { "create_fire", map_api_create_fire },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   static const luaL_Reg metamethods[] = {
       { "__gc", userdata_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
       { "__index", userdata_meta_index_as_table },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
-  register_type(map_module_name, NULL, methods, metamethods);
+  register_type(map_module_name, nullptr, methods, metamethods);
 }
 
 /**
@@ -184,7 +184,7 @@ void LuaContext::push_map(lua_State* l, Map& map) {
  */
 Map& LuaContext::get_entity_creation_map(lua_State* l) {
 
-  Map* map = NULL;
+  Map* map = nullptr;
 
   if (is_map(l, 1)) {
     // The map is passed as a parameter (typically, by the map script).
@@ -194,7 +194,7 @@ Map& LuaContext::get_entity_creation_map(lua_State* l) {
   else {
     // The map was is implicit (typically, we are loading its data file).
     map = get_entity_implicit_creation_map(l);
-    Debug::check_assertion(map != NULL,
+    Debug::check_assertion(map != nullptr,
         "No implicit creation was been set in this Lua state");
   }
 
@@ -205,13 +205,13 @@ Map& LuaContext::get_entity_creation_map(lua_State* l) {
  * \brief Returns the map previously stored by
  * set_entity_implicit_creation_map().
  * \param l A Lua context.
- * \return The map stored in this Lua context or NULL.
+ * \return The map stored in this Lua context or nullptr.
  */
 Map* LuaContext::get_entity_implicit_creation_map(lua_State* l) {
 
   lua_getfield(l, LUA_REGISTRYINDEX, "map");
   if (lua_isnil(l, -1)) {
-    return NULL;
+    return nullptr;
   }
 
   Map* map = static_cast<Map*>(lua_touserdata(l, -1));
@@ -248,12 +248,12 @@ Map* LuaContext::get_entity_implicit_creation_map(lua_State* l) {
  *
  * \param l A Lua context.
  * \param map The map where future entities should be created.
- * NULL forces the map to be explicitly passed (this is the default
+ * nullptr forces the map to be explicitly passed (this is the default
  * behavior).
  */
 void LuaContext::set_entity_implicit_creation_map(lua_State* l, Map* map) {
 
-  if (map == NULL) {
+  if (map == nullptr) {
     lua_pushnil(l);
   }
   else {
@@ -280,12 +280,12 @@ int LuaContext::l_get_map_entity_or_global(lua_State* l) {
   Map& map = check_map(l, -1);
   const std::string& name = luaL_checkstring(l, 2);
 
-  MapEntity* entity = NULL;
+  MapEntity* entity = nullptr;
   if (map.is_started()) {
     entity = map.get_entities().find_entity(name);
   }
 
-  if (entity != NULL && !entity->is_being_removed()) {
+  if (entity != nullptr && !entity->is_being_removed()) {
     push_entity(l, *entity);
   }
   else {
@@ -712,7 +712,7 @@ int LuaContext::map_api_get_entity(lua_State* l) {
 
   MapEntity* entity = map.get_entities().find_entity(name);
 
-  if (entity != NULL && !entity->is_being_removed()) {
+  if (entity != nullptr && !entity->is_being_removed()) {
     push_entity(l, *entity);
   }
   else {
@@ -733,7 +733,7 @@ int LuaContext::map_api_has_entity(lua_State* l) {
 
   MapEntity* entity = map.get_entities().find_entity(name);
 
-  lua_pushboolean(l, entity != NULL);
+  lua_pushboolean(l, entity != nullptr);
   return 1;
 }
 
@@ -1046,7 +1046,7 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
       falling_height, force_persistent
   );
 
-  if (entity == NULL) {
+  if (entity == nullptr) {
     lua_pushnil(l);
     return 1;
   }
@@ -1287,7 +1287,7 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
       direction,
       Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
 
-  if (entity == NULL) {
+  if (entity == nullptr) {
     lua_pushnil(l);
     return 1;
   }
@@ -1652,7 +1652,7 @@ int LuaContext::map_api_create_shop_treasure(lua_State* l) {
       price,
       dialog_id);
 
-  if (entity == NULL) {
+  if (entity == nullptr) {
     lua_pushnil(l);
     return 1;
   }
@@ -1980,7 +1980,7 @@ int LuaContext::map_api_create_fire(lua_State* l) {
  * Does nothing if the method is not defined.
  *
  * \param map A map.
- * \param destination The destination point used (NULL if it's a special one).
+ * \param destination The destination point used (nullptr if it's a special one).
  */
 void LuaContext::map_on_started(Map& map, Destination* destination) {
 
@@ -2144,7 +2144,7 @@ void LuaContext::map_on_suspended(Map& map, bool suspended) {
  * Does nothing if the method is not defined.
  *
  * \param map A map.
- * \param destination The destination point used (NULL if it's a special one).
+ * \param destination The destination point used (nullptr if it's a special one).
  */
 void LuaContext::map_on_opening_transition_finished(Map& map,
     Destination* destination) {

@@ -48,7 +48,7 @@ std::map<lua_State*, LuaContext*> LuaContext::lua_contexts;
  * \param main_loop The Solarus main loop manager.
  */
 LuaContext::LuaContext(MainLoop& main_loop):
-  l(NULL),
+  l(nullptr),
   main_loop(main_loop) {
 
 }
@@ -163,7 +163,7 @@ void LuaContext::initialize() {
  */
 void LuaContext::exit() {
 
-  if (l != NULL) {
+  if (l != nullptr) {
     // Call sol.main.on_finished() if it exists.
     main_on_finished();
 
@@ -175,7 +175,7 @@ void LuaContext::exit() {
     // Finalize Lua.
     lua_close(l);
     lua_contexts.erase(l);
-    l = NULL;
+    l = nullptr;
   }
 }
 
@@ -236,7 +236,7 @@ bool LuaContext::notify_input(const InputEvent& event) {
  *
  * \param map The map started.
  * \param destination The destination point used if it's a normal one,
- * NULL otherwise.
+ * nullptr otherwise.
  */
 void LuaContext::run_map(Map& map, Destination* destination) {
 
@@ -895,7 +895,7 @@ void LuaContext::print_stack(lua_State* l) {
  * \param module_name name of the table that will contain the functions
  * (e.g. "sol.main").
  * \param functions list of functions to define in the table
- * (must end with {NULLL, NULL}).
+ * (must end with {nullptrL, nullptr}).
  */
 void LuaContext::register_functions(
     const std::string& module_name,
@@ -912,13 +912,13 @@ void LuaContext::register_functions(
  * \param module_name name of the table that will contain the functions
  * (e.g. "sol.game"). It may already exist or not.
  * This string will also identify the type.
- * \param functions List of functions to define in the module table or NULL.
- * Must end with {NULLL, NULL}.
- * \param methods List of methods to define in the type or NULL.
- * Must end with {NULLL, NULL}.
+ * \param functions List of functions to define in the module table or nullptr.
+ * Must end with {nullptrL, nullptr}.
+ * \param methods List of methods to define in the type or nullptr.
+ * Must end with {nullptrL, nullptr}.
  * \param metamethods List of metamethods to define in the metatable of the
- * type or NULL.
- * Must end with {NULLL, NULL}.
+ * type or nullptr.
+ * Must end with {nullptrL, nullptr}.
  */
 void LuaContext::register_type(
     const std::string& module_name,
@@ -935,14 +935,14 @@ void LuaContext::register_type(
 
   // Make sure we create the table.
   const luaL_Reg empty[] = {
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   luaL_register(l, module_name.c_str(), empty);
                                   // module
 
   // Add the functions to the module.
-  if (functions != NULL) {
-    luaL_register(l, NULL, functions);
+  if (functions != nullptr) {
+    luaL_register(l, nullptr, functions);
                                   // module
   }
   lua_pop(l, 1);
@@ -959,14 +959,14 @@ void LuaContext::register_type(
                                   // meta
 
   // Add the methods to the metatable.
-  if (methods != NULL) {
-    luaL_register(l, NULL, methods);
+  if (methods != nullptr) {
+    luaL_register(l, nullptr, methods);
   }
                                   // meta
 
   // Add the metamethods to the metatable.
-  if (metamethods != NULL) {
-    luaL_register(l, NULL, metamethods);
+  if (metamethods != nullptr) {
+    luaL_register(l, nullptr, metamethods);
                                   // meta
   }
 
@@ -1135,7 +1135,7 @@ bool LuaContext::is_userdata(lua_State* l, int index,
 
                                   // ... udata ...
   void* udata = lua_touserdata(l, index);
-  if (udata == NULL) {
+  if (udata == nullptr) {
     // This is not a userdata.
     return false;
   }
@@ -1983,12 +1983,12 @@ void LuaContext::on_changed() {
 
 /**
  * \brief Calls the on_started() method of the object on top of the stack.
- * \param destination The destination point used (NULL if it's a special one).
+ * \param destination The destination point used (nullptr if it's a special one).
  */
 void LuaContext::on_started(Destination* destination) {
 
   if (find_method("on_started")) {
-    if (destination == NULL) {
+    if (destination == nullptr) {
       lua_pushnil(l);
     }
     else {
@@ -2000,12 +2000,12 @@ void LuaContext::on_started(Destination* destination) {
 
 /**
  * \brief Calls the on_opening_transition_finished() method of the object on top of the stack.
- * \param destination The destination point used (NULL if it's a special one).
+ * \param destination The destination point used (nullptr if it's a special one).
  */
 void LuaContext::on_opening_transition_finished(Destination* destination) {
 
   if (find_method("on_opening_transition_finished")) {
-    if (destination == NULL) {
+    if (destination == nullptr) {
       lua_pushnil(l);
     }
     else {
@@ -2653,7 +2653,7 @@ void LuaContext::on_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
 
   if (find_method("on_custom_attack_received")) {
     push_string(l, Enemy::attack_names[attack]);
-    if (sprite != NULL) {
+    if (sprite != nullptr) {
       // Pixel-precise collision.
       push_sprite(l, *sprite);
       call_function(3, 0, "on_custom_attack_received");
@@ -2726,14 +2726,14 @@ void LuaContext::on_immobilized() {
 /**
  * \brief Calls the on_attacking_hero() method of the object on top of the stack.
  * \param hero The hero attacked.
- * \param attacker_sprite Sprite that caused the collision or NULL.
+ * \param attacker_sprite Sprite that caused the collision or nullptr.
  * \return \c true if the method is defined.
  */
 bool LuaContext::on_attacking_hero(Hero& hero, Sprite* attacker_sprite) {
 
   if (find_method("on_attacking_hero")) {
     push_hero(l, hero);
-    if (attacker_sprite == NULL) {
+    if (attacker_sprite == nullptr) {
       lua_pushnil(l);
     }
     else {

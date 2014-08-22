@@ -76,7 +76,7 @@ CarriedItem::CarriedItem(
   break_one_layer_above(false),
   destruction_sound_id(destruction_sound_id),
   damage_on_enemies(damage_on_enemies),
-  shadow_sprite(NULL),
+  shadow_sprite(nullptr),
   throwing_direction(0),
   next_down_date(0),
   item_height(0),
@@ -465,7 +465,7 @@ void CarriedItem::notify_collision_with_enemy(Enemy &enemy) {
   if (is_throwing
       && !can_explode()
       && get_damage_on_enemies() > 0) {
-    enemy.try_hurt(ATTACK_THROWN_ITEM, *this, NULL);
+    enemy.try_hurt(ATTACK_THROWN_ITEM, *this, nullptr);
   }
 }
 

@@ -31,7 +31,7 @@ namespace solarus {
  */
 TransitionScrolling::TransitionScrolling(Transition::Direction direction):
   Transition(direction),
-  both_maps_surface(NULL),
+  both_maps_surface(nullptr),
   scrolling_direction(0),
   next_scroll_date(0),
   dx(0),
@@ -190,7 +190,7 @@ void TransitionScrolling::draw(Surface& dst_surface) {
   }
 
   Surface* previous_surface = get_previous_surface();
-  Debug::check_assertion(previous_surface != NULL,
+  Debug::check_assertion(previous_surface != nullptr,
       "No previous surface defined for scrolling");
 
   // draw the old map

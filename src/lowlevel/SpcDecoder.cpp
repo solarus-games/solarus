@@ -64,7 +64,7 @@ void SpcDecoder::decode(int16_t* decoded_data, int nb_samples) {
   // Decode from the SPC data the specified number of PCM samples.
 
   const char* err = spc_play(snes_spc_manager, nb_samples, (short int*) decoded_data);
-  if (err != NULL) {
+  if (err != nullptr) {
       Debug::die(std::string("Failed to decode SPC data: ") + err);
   }
   spc_filter_run(snes_spc_filter, (short int*) decoded_data, nb_samples);

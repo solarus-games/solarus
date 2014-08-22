@@ -176,7 +176,7 @@ class CustomEntity: public Detector {
       private:
 
         CustomEntity* entity;            /**< The custom entity.
-                                        * NULL means no info. */
+                                        * nullptr means no info. */
         int traversable_test_ref;        /**< Lua ref to a boolean function
                                         * that decides, or LUA_REFNIL. */
         bool traversable;                /**< Traversable property (unused if
@@ -209,7 +209,7 @@ class CustomEntity: public Detector {
       private:
 
         CustomEntity* entity;            /**< The custom entity.
-                                          * NULL means no info. */
+                                          * nullptr means no info. */
 
         CollisionMode built_in_test;     /**< A built-in collision test
                                           * or COLLISION_CUSTOM. */
@@ -230,11 +230,11 @@ class CustomEntity: public Detector {
 
     // Obstacles.
 
-    TraversableInfo traversable_by_entities_general;  /**< Whether entities can traverse me by default or NULL. */
+    TraversableInfo traversable_by_entities_general;  /**< Whether entities can traverse me by default or nullptr. */
     std::map<EntityType, TraversableInfo>
         traversable_by_entities_type;                 /**< Whether entities of a type can traverse me. */
 
-    TraversableInfo can_traverse_entities_general;    /**< Whether I can traverse entities by default or NULL. */
+    TraversableInfo can_traverse_entities_general;    /**< Whether I can traverse entities by default or nullptr. */
     std::map<EntityType, TraversableInfo>
         can_traverse_entities_type;                   /**< Whether I can traverse entities of a type. */
     std::map<Ground, bool> can_traverse_grounds;      /**< Whether I can traverse each kind of ground. */

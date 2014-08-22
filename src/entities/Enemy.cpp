@@ -135,7 +135,7 @@ Enemy::~Enemy() {
  * This method acts like a constructor, and usually returns an enemy.
  * However, if the enemy is already dead and cannot be killed again,
  * this function returns:
- * - NULL if the enemy has no treasure (or its treasure was already picked)
+ * - nullptr if the enemy has no treasure (or its treasure was already picked)
  * - or a pickable treasure if the enemy has one
  *
  * \param game the current game
@@ -149,7 +149,7 @@ Enemy::~Enemy() {
  * \param direction initial direction of the enemy on the map (0 to 3)
  * this enemy is killed, or -1 if this enemy is not saved
  * \param treasure the pickable item that the enemy drops
- * \return the enemy created (may also be a Pickable or NULL)
+ * \return the enemy created (may also be a Pickable or nullptr)
  */
 MapEntity* Enemy::create(
     Game& game,
@@ -171,7 +171,7 @@ MapEntity* Enemy::create(
     if (treasure.is_saved() && !game.get_savegame().get_boolean(treasure.get_savegame_variable())) {
       return Pickable::create(game, "", layer, x, y, treasure, FALLING_NONE, true);
     }
-    return NULL;
+    return nullptr;
   }
 
   // create the enemy
@@ -632,7 +632,7 @@ void Enemy::set_minimum_shield_needed(int minimum_shield_needed) {
 /**
  * \brief Returns the reaction corresponding to an attack on a sprite of this enemy.
  * \param attack an attack this enemy receives
- * \param this_sprite the sprite attacked, or NULL if the attack does not come from
+ * \param this_sprite the sprite attacked, or nullptr if the attack does not come from
  * a pixel-precise collision test
  * \return the corresponding reaction
  */
@@ -1014,7 +1014,7 @@ void Enemy::notify_collision_with_enemy(Enemy& other,
  *
  * \param hero The hero to attack.
  * \param this_sprite The sprite of this enemy that detected the collision with the hero,
- * or NULL if it was not a pixel-precise collision.
+ * or nullptr if it was not a pixel-precise collision.
  */
 void Enemy::attack_hero(Hero& hero, Sprite* this_sprite) {
 
@@ -1028,13 +1028,13 @@ void Enemy::attack_hero(Hero& hero, Sprite* this_sprite) {
         && hero.can_use_shield()) {
 
       // Compute the direction corresponding to the angle between the enemy and the hero.
-      double angle = hero.get_angle(*this, NULL, this_sprite);
+      double angle = hero.get_angle(*this, nullptr, this_sprite);
       int protected_direction4 = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
       protected_direction4 = (protected_direction4 + 4) % 4;
 
       // Also get the direction of the enemy's sprite.
       int sprite_opposite_direction4 = -1;
-      if (this_sprite != NULL) {
+      if (this_sprite != nullptr) {
         sprite_opposite_direction4 = (this_sprite->get_current_direction() + 2) % 4;
       }
 
@@ -1159,7 +1159,7 @@ bool Enemy::is_invulnerable() const {
  *
  * \param attack type of attack
  * \param source the entity attacking the enemy (often the hero)
- * \param this_sprite the sprite of this enemy that received the attack, or NULL
+ * \param this_sprite the sprite of this enemy that received the attack, or nullptr
  * if the attack comes from a non pixel-precise collision test
  */
 void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite) {
@@ -1213,7 +1213,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
         Hero& hero = static_cast<Hero&>(source);
 
         // Sword attacks only use pixel-precise collisions.
-        Debug::check_assertion(this_sprite != NULL,
+        Debug::check_assertion(this_sprite != nullptr,
             "Missing enemy sprite for sword attack"
         );
 
@@ -1265,7 +1265,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
  * Updates its state, its sprite and plays the sound.
  *
  * \param source The entity attacking the enemy (often the hero).
- * \param this_sprite The sprite of this enemy that received the attack, or NULL
+ * \param this_sprite The sprite of this enemy that received the attack, or nullptr
  * if the attack comes from a non pixel-precise collision test.
  */
 void Enemy::hurt(MapEntity& source, Sprite* this_sprite) {
@@ -1287,7 +1287,7 @@ void Enemy::hurt(MapEntity& source, Sprite* this_sprite) {
 
   // push the enemy back
   if (pushed_back_when_hurt) {
-    double angle = source.get_angle(*this, NULL, this_sprite);
+    double angle = source.get_angle(*this, nullptr, this_sprite);
     StraightMovement* movement = new StraightMovement(false, true);
     movement->set_max_distance(24);
     movement->set_speed(120);
@@ -1495,7 +1495,7 @@ bool Enemy::is_immobilized() const {
  * Redefine this function to handle the attack.
  *
  * \param attack the attack
- * \param this_sprite the sprite of this enemy subject to the attack, or NULL
+ * \param this_sprite the sprite of this enemy subject to the attack, or nullptr
  * if the attack does not come from a pixel-precise collision test
  */
 void Enemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {

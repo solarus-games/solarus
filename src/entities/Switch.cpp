@@ -66,7 +66,7 @@ Switch::Switch(
   locked(false),
   needs_block(needs_block),
   inactivate_when_leaving(inactivate_when_leaving),
-  entity_overlapping(NULL),
+  entity_overlapping(nullptr),
   entity_overlapping_still_present(false) {
 
   // Sprite.
@@ -208,7 +208,7 @@ void Switch::update() {
 
   if (is_enabled() &&
       is_walkable() &&
-      entity_overlapping != NULL) {
+      entity_overlapping != nullptr) {
 
     // if an entity was on the switch, see if it is still there
     entity_overlapping_still_present = false;
@@ -218,7 +218,7 @@ void Switch::update() {
       // the entity just left the switch or disappeared from the map
       // (it may even have been freed)
 
-      entity_overlapping = NULL;
+      entity_overlapping = nullptr;
       if (is_activated() && inactivate_when_leaving && !locked) {
         set_activated(false);
         get_lua_context().switch_on_inactivated(*this);

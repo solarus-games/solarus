@@ -42,7 +42,7 @@ Hookshot::Hookshot(const Hero& hero):
   next_sound_date(System::now()),
   has_to_go_back(false),
   going_back(false),
-  entity_reached(NULL),
+  entity_reached(nullptr),
   link_sprite("entities/hookshot") {
 
   // initialize the entity
@@ -196,7 +196,7 @@ void Hookshot::update() {
     next_sound_date = now + 150;
   }
 
-  if (entity_reached == NULL) {
+  if (entity_reached == nullptr) {
     if (!going_back) {
 
       if (has_to_go_back) {
@@ -210,7 +210,7 @@ void Hookshot::update() {
       }
     }
     else if (get_distance(get_hero()) == 0 ||
-        (get_movement() != NULL && get_movement()->is_finished())) {
+        (get_movement() != nullptr && get_movement()->is_finished())) {
       remove_from_map();
       get_hero().start_state_from_ground();
     }
@@ -256,7 +256,7 @@ void Hookshot::draw_on_map() {
  * \return true if the hookshot was shot, is not going back and has not reached any target yet
  */
 bool Hookshot::is_flying() const {
-  return !is_going_back() && entity_reached == NULL;
+  return !is_going_back() && entity_reached == nullptr;
 }
 
 /**
@@ -283,7 +283,7 @@ void Hookshot::go_back() {
  */
 void Hookshot::attach_to(MapEntity& entity_reached) {
 
-  Debug::check_assertion(this->entity_reached == NULL,
+  Debug::check_assertion(this->entity_reached == nullptr,
       "The hookshot is already attached to an entity");
 
   this->entity_reached = &entity_reached;

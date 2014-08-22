@@ -33,8 +33,8 @@ namespace solarus {
  */
 Movement::Movement(bool ignore_obstacles):
 
-  entity(NULL),
-  drawable(NULL),
+  entity(nullptr),
+  drawable(nullptr),
   xy(0, 0),
   last_move_date(0),
   finished(false),
@@ -43,7 +43,7 @@ Movement::Movement(bool ignore_obstacles):
   last_collision_box_on_obstacle(-1, -1),
   default_ignore_obstacles(ignore_obstacles),
   current_ignore_obstacles(ignore_obstacles),
-  lua_context(NULL),
+  lua_context(nullptr),
   finished_callback_ref(LUA_REFNIL) {
 
 }
@@ -53,14 +53,14 @@ Movement::Movement(bool ignore_obstacles):
  */
 Movement::~Movement() {
 
-  if (get_lua_context() != NULL) {
+  if (get_lua_context() != nullptr) {
     get_lua_context()->cancel_callback(finished_callback_ref);
   }
 }
 
 /**
  * \brief Returns the entity controlled by this movement (if any).
- * \return the entity controlled by this movement, or NULL if this movement
+ * \return the entity controlled by this movement, or nullptr if this movement
  * is not attached to a map entity
  */
 MapEntity* Movement::get_entity() const {
@@ -70,20 +70,20 @@ MapEntity* Movement::get_entity() const {
 /**
  * \brief Sets the entity to be controlled by this movement object.
  *
- * This entity can be NULL if your movement applies to something else than a map entity.
- * However, some subclasses of Movement may require a non NULL entity because they
+ * This entity can be nullptr if your movement applies to something else than a map entity.
+ * However, some subclasses of Movement may require a non nullptr entity because they
  * implement movements that depend on the map content (e.g. to handle the collisions).
  *
- * \param entity The entity to control, or NULL if the movement should not be
+ * \param entity The entity to control, or nullptr if the movement should not be
  * attached to a map entity.
  */
 void Movement::set_entity(MapEntity* entity) {
 
-  Debug::check_assertion(drawable == NULL, "This movement is already assigned to a drawable");
+  Debug::check_assertion(drawable == nullptr, "This movement is already assigned to a drawable");
 
   this->entity = entity;
 
-  if (entity == NULL) {
+  if (entity == nullptr) {
     this->xy.set_xy(0, 0);
   }
   else {
@@ -95,7 +95,7 @@ void Movement::set_entity(MapEntity* entity) {
 
 /**
  * \brief Returns the drawable controlled by this movement (if any).
- * \return The drawable controlled by this movement, or NULL if this movement
+ * \return The drawable controlled by this movement, or nullptr if this movement
  * is not attached to a drawable.
  */
 Drawable* Movement::get_drawable() const {
@@ -105,18 +105,18 @@ Drawable* Movement::get_drawable() const {
 /**
  * \brief Sets the drawable to be controlled by this movement object.
  *
- * This entity can be NULL if your movement applies to something else than a drawable.
+ * This entity can be nullptr if your movement applies to something else than a drawable.
  *
- * \param drawable The drawable to control, or NULL if the movement should not be
+ * \param drawable The drawable to control, or nullptr if the movement should not be
  * attached to a drawable.
  */
 void Movement::set_drawable(Drawable* drawable) {
 
-  Debug::check_assertion(entity == NULL, "This movement is already assigned to an entity");
+  Debug::check_assertion(entity == nullptr, "This movement is already assigned to an entity");
 
   this->drawable = drawable;
 
-  if (drawable == NULL) {
+  if (drawable == nullptr) {
     this->xy.set_xy(0, 0);
   }
   else {
@@ -158,12 +158,12 @@ int Movement::get_y() const {
  */
 const Rectangle Movement::get_xy() const {
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     // The object controlled is a map entity.
     return entity->get_xy();
   }
 
-  if (drawable != NULL) {
+  if (drawable != nullptr) {
     // The object controlled is a drawable.
     return drawable->get_xy();
   }
@@ -204,12 +204,12 @@ void Movement::set_xy(int x, int y) {
  */
 void Movement::set_xy(const Rectangle& xy) {
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     // The object controlled is a map entity.
     entity->set_xy(xy);
   }
 
-  else if (drawable != NULL) {
+  else if (drawable != nullptr) {
     // The object controlled is a drawable.
     drawable->set_xy(xy);
   }
@@ -262,11 +262,11 @@ void Movement::translate_xy(const Rectangle &dxy) {
 void Movement::notify_position_changed() {
 
   LuaContext* lua_context = get_lua_context();
-  if (lua_context != NULL) {
+  if (lua_context != nullptr) {
     lua_context->movement_on_position_changed(*this, get_xy());
   }
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     if (!entity->is_being_removed()) {
       entity->notify_position_changed();
     }
@@ -280,11 +280,11 @@ void Movement::notify_position_changed() {
 void Movement::notify_obstacle_reached() {
 
   LuaContext* lua_context = get_lua_context();
-  if (lua_context != NULL) {
+  if (lua_context != nullptr) {
     lua_context->movement_on_obstacle_reached(*this);
   }
 
-  if (entity != NULL && !entity->is_being_removed()) {
+  if (entity != nullptr && !entity->is_being_removed()) {
     entity->notify_obstacle_reached();
   }
 }
@@ -296,11 +296,11 @@ void Movement::notify_obstacle_reached() {
 void Movement::notify_movement_changed() {
 
   LuaContext* lua_context = get_lua_context();
-  if (lua_context != NULL) {
+  if (lua_context != nullptr) {
     lua_context->movement_on_changed(*this);
   }
 
-  if (entity != NULL && !entity->is_being_removed()) {
+  if (entity != nullptr && !entity->is_being_removed()) {
     entity->notify_movement_changed();
   }
 }
@@ -311,7 +311,7 @@ void Movement::notify_movement_changed() {
 void Movement::notify_movement_finished() {
 
   LuaContext* lua_context = get_lua_context();
-  if (lua_context != NULL) {
+  if (lua_context != nullptr) {
     int callback_ref = finished_callback_ref;
     finished_callback_ref = LUA_REFNIL;
     lua_context->do_callback(callback_ref);
@@ -319,7 +319,7 @@ void Movement::notify_movement_finished() {
     lua_context->movement_on_finished(*this);
   }
 
-  if (entity != NULL && !entity->is_being_removed()) {
+  if (entity != nullptr && !entity->is_being_removed()) {
     entity->notify_movement_finished();
   }
 }
@@ -434,7 +434,7 @@ void Movement::update() {
  */
 bool Movement::test_collision_with_obstacles(int dx, int dy) const {
 
-  if (entity == NULL || current_ignore_obstacles) {
+  if (entity == nullptr || current_ignore_obstacles) {
     return false;
   }
 
@@ -538,7 +538,7 @@ const Rectangle Movement::get_displayed_xy() const {
 
 /**
  * \brief Returns the Solarus Lua API.
- * \return The Lua context, or NULL if Lua callbacks are not enabled for this movement.
+ * \return The Lua context, or nullptr if Lua callbacks are not enabled for this movement.
  */
 LuaContext* Movement::get_lua_context() {
   return lua_context;
@@ -546,7 +546,7 @@ LuaContext* Movement::get_lua_context() {
 
 /**
  * \brief Sets the Solarus Lua API.
- * \param lua_context The Lua context, or NULL to disable Lua callbacks
+ * \param lua_context The Lua context, or nullptr to disable Lua callbacks
  * for this movement.
  */
 void Movement::set_lua_context(LuaContext* lua_context) {
@@ -568,7 +568,7 @@ int Movement::get_finished_callback() const {
  */
 void Movement::set_finished_callback(int finished_callback_ref) {
 
-  Debug::check_assertion(get_lua_context() != NULL, "Undefined Lua context");
+  Debug::check_assertion(get_lua_context() != nullptr, "Undefined Lua context");
 
   get_lua_context()->cancel_callback(this->finished_callback_ref);
   this->finished_callback_ref = finished_callback_ref;

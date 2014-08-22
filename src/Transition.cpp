@@ -35,9 +35,9 @@ const std::string Transition::style_names[] = {
  * \param direction direction of the transition effect (in or out)
  */
 Transition::Transition(Transition::Direction direction):
-  game(NULL),
+  game(nullptr),
   direction(direction),
-  previous_surface(NULL),
+  previous_surface(nullptr),
   suspended(false),
   when_suspended(0) {
 
@@ -64,7 +64,7 @@ Transition* Transition::create(
     Surface& dst_surface,
     Game* game) {
 
-  Transition* transition = NULL;
+  Transition* transition = nullptr;
 
   switch (style) {
 
@@ -91,7 +91,7 @@ Transition* Transition::create(
  *
  * Some transition effects need a game to run.
  *
- * \return The current game or NULL.
+ * \return The current game or nullptr.
  */
 Game* Transition::get_game() const {
   return game;
@@ -108,7 +108,7 @@ Transition::Direction Transition::get_direction() const {
 /**
  * \brief Returns the surface to show during the closing transition
  * that was played before this opening transition.
- * \return The previous surface or NULL.
+ * \return The previous surface or nullptr.
  */
 Surface* Transition::get_previous_surface() const {
   return previous_surface;
@@ -117,11 +117,11 @@ Surface* Transition::get_previous_surface() const {
 /**
  * \brief Indicates the surface that was shown during the closing transition
  * that was played before this opening transition.
- * \param previous_surface The previous surface or NULL.
+ * \param previous_surface The previous surface or nullptr.
  */
 void Transition::set_previous_surface(Surface* previous_surface) {
 
-  Debug::check_assertion(previous_surface == NULL
+  Debug::check_assertion(previous_surface == nullptr
       || get_direction() != TRANSITION_CLOSING,
       "Cannot show a previous surface with an closing transition effect");
 

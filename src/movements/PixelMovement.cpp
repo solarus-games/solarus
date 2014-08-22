@@ -181,7 +181,7 @@ void PixelMovement::update() {
   while (now >= next_move_date
       && !is_suspended()
       && !finished
-      && (get_entity() == NULL || get_entity()->get_movement() == this)) {
+      && (get_entity() == nullptr || get_entity()->get_movement() == this)) {
 
     Rectangle old_xy(get_x(), get_y());
     make_next_step();

@@ -35,7 +35,7 @@ Hero::LiftingState::LiftingState(Hero& hero, CarriedItem* lifted_item):
   State(hero, "lifting"),
   lifted_item(lifted_item) {
 
-  Debug::check_assertion(lifted_item != NULL, "Missing lifted item");
+  Debug::check_assertion(lifted_item != nullptr, "Missing lifted item");
   RefCountable::ref(lifted_item);
 }
 
@@ -61,7 +61,7 @@ void Hero::LiftingState::start(const State* previous_state) {
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
   get_sprites().set_animation_lifting();
   get_sprites().set_lifted_item(lifted_item);
-  get_hero().set_facing_entity(NULL);
+  get_hero().set_facing_entity(nullptr);
 
   get_equipment().notify_ability_used(ABILITY_LIFT);
 }
@@ -74,9 +74,9 @@ void Hero::LiftingState::stop(const State* next_state) {
 
   State::stop(next_state);
 
-  if (lifted_item != NULL) {
+  if (lifted_item != nullptr) {
 
-    get_sprites().set_lifted_item(NULL);
+    get_sprites().set_lifted_item(nullptr);
 
     // the lifted item is still managed by this state
     switch (next_state->get_previous_carried_item_behavior()) {
@@ -94,7 +94,7 @@ void Hero::LiftingState::stop(const State* next_state) {
       Debug::check_assertion(lifted_item->get_refcount() > 1,
           "Invalid carried item refcount");
       RefCountable::unref(lifted_item);
-      lifted_item = NULL;
+      lifted_item = nullptr;
       break;
     }
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
@@ -114,7 +114,7 @@ void Hero::LiftingState::update() {
 
     Hero& hero = get_hero();
     CarriedItem *carried_item = lifted_item;
-    lifted_item = NULL; // we do not take care of the carried item from this state anymore
+    lifted_item = nullptr; // we do not take care of the carried item from this state anymore
     hero.set_state(new CarryingState(hero, carried_item));
   }
 }
@@ -127,7 +127,7 @@ void Hero::LiftingState::set_suspended(bool suspended) {
 
   State::set_suspended(suspended);
 
-  if (lifted_item != NULL) {
+  if (lifted_item != nullptr) {
     lifted_item->set_suspended(suspended);
   }
 }
@@ -136,7 +136,7 @@ void Hero::LiftingState::set_suspended(bool suspended) {
  * \brief Returns whether the hero can be hurt in this state.
  * \return true if the hero can be hurt in this state
  * \param attacker an attacker that is trying to hurt the hero
- * (or NULL if the source of the attack is not an enemy)
+ * (or nullptr if the source of the attack is not an enemy)
  */
 bool Hero::LiftingState::can_be_hurt(MapEntity* attacker) const {
   return true;
@@ -152,16 +152,16 @@ void Hero::LiftingState::throw_item() {
 
   lifted_item->throw_item(get_sprites().get_animation_direction());
   get_entities().add_entity(lifted_item);
-  lifted_item = NULL;
+  lifted_item = nullptr;
 }
 
 /**
- * \brief Destroys the item being lifted if any and sets it to NULL.
+ * \brief Destroys the item being lifted if any and sets it to nullptr.
  */
 void Hero::LiftingState::destroy_lifted_item() {
 
   RefCountable::unref(lifted_item);
-  lifted_item = NULL;
+  lifted_item = nullptr;
 }
 
 }

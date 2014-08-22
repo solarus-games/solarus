@@ -313,7 +313,7 @@ class MapEntity: public ExportableToLua {
     void clear_old_sprites();
 
     MainLoop* main_loop;                        /**< The Solarus main loop. */
-    Map* map;                                   /**< The map where this entity is, or NULL
+    Map* map;                                   /**< The map where this entity is, or nullptr
                                                  * (automatically set by class MapEntities after adding the entity to the map) */
 
     Layer layer;                                /**< Layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
@@ -350,7 +350,7 @@ class MapEntity: public ExportableToLua {
     bool visible;                               /**< indicates that this entity's sprites are currently displayed */
     bool drawn_in_y_order;                      /**< Whether this entity is drawn in Y order or in Z order. */
     Movement* movement;                         /**< movement of the entity, not used for all kinds of entities;
-                                                 * NULL indicates that the entity has no movement */
+                                                 * nullptr indicates that the entity has no movement */
     std::vector<Movement*> old_movements;       /**< old movements to destroy as soon as possible */
     bool movement_events_enabled;               /**< Whether entity:on_position_changed() and friends should be called. */
     Detector* facing_entity;                    /**< The detector in front of this entity if any. */

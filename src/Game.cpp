@@ -52,12 +52,12 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   showing_game_over(false),
   started(false),
   restarting(false),
-  keys_effect(NULL),
-  current_map(NULL),
-  next_map(NULL),
-  previous_map_surface(NULL),
+  keys_effect(nullptr),
+  current_map(nullptr),
+  next_map(nullptr),
+  previous_map_surface(nullptr),
   transition_style(Transition::IMMEDIATE),
-  transition(NULL),
+  transition(nullptr),
   crystal_state(false) {
 
   // notify objects
@@ -118,8 +118,8 @@ Game::~Game() {
   Debug::check_assertion(!current_map->is_started(),
       "Deleting a game while a map is still running. Call Game::stop() before.");
 
-  if (savegame != NULL) {
-    savegame->set_game(NULL);
+  if (savegame != nullptr) {
+    savegame->set_game(nullptr);
     RefCountable::unref(savegame);
   }
 
@@ -155,7 +155,7 @@ void Game::start() {
  */
 void Game::stop() {
 
-  if (current_map != NULL && current_map->is_started()) {
+  if (current_map != nullptr && current_map->is_started()) {
     current_map->leave();
   }
   get_lua_context().game_on_finished(*this);
@@ -273,7 +273,7 @@ bool Game::notify_input(const InputEvent& event) {
 
   bool handled = false;
 
-  if (current_map != NULL && current_map->is_loaded()) {
+  if (current_map != nullptr && current_map->is_loaded()) {
     handled = get_lua_context().game_on_input(*this, event);
     if (!handled) {
       handled = current_map->notify_input(event);
@@ -390,16 +390,16 @@ void Game::update() {
  */
 void Game::update_transitions() {
 
-  if (transition != NULL) {
+  if (transition != nullptr) {
     transition->update();
   }
 
   // if the map has just changed, close the current map if any and play an out transition
-  if (next_map != NULL && transition == NULL) { // the map has changed (i.e. set_current_map has been called)
+  if (next_map != nullptr && transition == nullptr) { // the map has changed (i.e. set_current_map has been called)
 
-    if (current_map == NULL) { // special case: no map was playing, so we don't have any out transition to do
+    if (current_map == nullptr) { // special case: no map was playing, so we don't have any out transition to do
       current_map = next_map;
-      next_map = NULL;
+      next_map = nullptr;
     }
     else { // normal case: stop the control and play an out transition before leaving the current map
       transition = Transition::create(
@@ -414,19 +414,19 @@ void Game::update_transitions() {
   Rectangle previous_map_location = current_map->get_location();
 
   // if a transition was playing and has just been finished
-  if (transition != NULL && transition->is_finished()) {
+  if (transition != nullptr && transition->is_finished()) {
 
     Transition::Direction transition_direction = transition->get_direction();
     bool needs_previous_surface = transition->needs_previous_surface();
     delete transition;
-    transition = NULL;
+    transition = nullptr;
 
     MainLoop& main_loop = get_main_loop();
     if (restarting) {
       current_map->unload();
       main_loop.set_game(new Game(main_loop, savegame));
       RefCountable::unref(savegame);
-      savegame = NULL;  // The new game is the owner.
+      savegame = nullptr;  // The new game is the owner.
     }
     else if (transition_direction == Transition::TRANSITION_CLOSING) {
 
@@ -439,7 +439,7 @@ void Game::update_transitions() {
             current_map->get_visible_surface(),
             this);
         transition->start();
-        next_map = NULL;
+        next_map = nullptr;
       }
       else {
 
@@ -479,14 +479,14 @@ void Game::update_transitions() {
         RefCountable::unref(current_map);
 
         current_map = next_map;
-        next_map = NULL;
+        next_map = nullptr;
       }
     }
     else {
       current_map->notify_opening_transition_finished();
 
       RefCountable::unref(previous_map_surface);
-      previous_map_surface = NULL;
+      previous_map_surface = nullptr;
     }
   }
 
@@ -499,7 +499,7 @@ void Game::update_transitions() {
         current_map->get_visible_surface(),
         this);
 
-    if (previous_map_surface != NULL) {
+    if (previous_map_surface != nullptr) {
       // some transition effects need to display both maps simultaneously
       transition->set_previous_surface(previous_map_surface);
     }
@@ -540,7 +540,7 @@ void Game::update_keys_effect() {
  */
 void Game::draw(Surface& dst_surface) {
 
-  if (current_map == NULL) {
+  if (current_map == nullptr) {
     // Nothing to do. The game is not fully initialized yet.
     return;
   }
@@ -548,7 +548,7 @@ void Game::draw(Surface& dst_surface) {
   // Draw the map.
   if (current_map->is_loaded()) {
     current_map->draw();
-    if (transition != NULL) {
+    if (transition != nullptr) {
       transition->draw(current_map->get_visible_surface());
     }
     current_map->get_visible_surface().draw(dst_surface);
@@ -571,7 +571,7 @@ void Game::draw(Surface& dst_surface) {
  * \return true if there is a map
  */
 bool Game::has_current_map() const {
-  return current_map != NULL;
+  return current_map != nullptr;
 }
 
 /**
@@ -597,13 +597,13 @@ void Game::set_current_map(
     const std::string& destination_name,
     Transition::Style transition_style) {
 
-  if (current_map != NULL) {
+  if (current_map != nullptr) {
     // stop the hero's movement
     hero->reset_movement();
   }
 
   // prepare the next map
-  if (current_map == NULL || map_id != current_map->get_id()) {
+  if (current_map == nullptr || map_id != current_map->get_id()) {
     // another map
     next_map = new Map(map_id);
     RefCountable::ref(next_map);
@@ -615,7 +615,7 @@ void Game::set_current_map(
     next_map = current_map;
   }
 
-  if (current_map != NULL) {
+  if (current_map != nullptr) {
     current_map->check_suspended();
   }
 
@@ -666,7 +666,7 @@ bool Game::is_paused() const {
  * \return true if there is a transition
  */
 bool Game::is_playing_transition() const {
-  return transition != NULL || next_map != NULL;
+  return transition != nullptr || next_map != nullptr;
 }
 
 /**
@@ -683,7 +683,7 @@ bool Game::is_playing_transition() const {
  */
 bool Game::is_suspended() const {
 
-  return current_map == NULL
+  return current_map == nullptr
       || is_paused()
       || is_dialog_enabled()
       || is_playing_transition()
@@ -815,7 +815,7 @@ void Game::set_paused(bool paused) {
  */
 void Game::restart() {
 
-  if (current_map != NULL) {
+  if (current_map != nullptr) {
     transition = Transition::create(
         Transition::FADE,
         Transition::TRANSITION_CLOSING,

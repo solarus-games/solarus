@@ -94,7 +94,7 @@ void LuaContext::register_movement_module() {
   // Functions of sol.movement.
   static const luaL_Reg movement_functions[] = {
       { "create", movement_api_create },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   // Methods common to all movement types.
@@ -112,13 +112,13 @@ void LuaContext::register_movement_module() {
       { "__gc", userdata_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
       { "__index", userdata_meta_index_as_table },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   // Methods of the movement type.
   static const luaL_Reg movement_methods[] = {
       MOVEMENT_COMMON_METHODS,
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(
@@ -139,11 +139,11 @@ void LuaContext::register_movement_module() {
       { "set_max_distance", straight_movement_api_set_max_distance },
       { "is_smooth", straight_movement_api_is_smooth },
       { "set_smooth", straight_movement_api_set_smooth },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   register_type(
       movement_straight_module_name,
-      NULL,
+      nullptr,
       straight_movement_methods,
       metamethods
   );
@@ -158,11 +158,11 @@ void LuaContext::register_movement_module() {
       { "set_max_distance", random_movement_api_set_max_distance },
       { "is_smooth", random_movement_api_is_smooth },
       { "set_smooth", random_movement_api_set_smooth },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   register_type(
       movement_random_module_name,
-      NULL,
+      nullptr,
       random_movement_methods,
       metamethods
   );
@@ -176,11 +176,11 @@ void LuaContext::register_movement_module() {
       { "get_angle", target_movement_api_get_angle },
       { "is_smooth", target_movement_api_is_smooth },
       { "set_smooth", target_movement_api_set_smooth },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   register_type(
       movement_target_module_name,
-      NULL,
+      nullptr,
       target_movement_methods,
       metamethods
   );
@@ -196,11 +196,11 @@ void LuaContext::register_movement_module() {
       { "set_loop", path_movement_api_set_loop },
       { "get_snap_to_grid", path_movement_api_get_snap_to_grid },
       { "set_snap_to_grid", path_movement_api_set_snap_to_grid },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   register_type(
       movement_path_module_name,
-      NULL,
+      nullptr,
       path_movement_methods,
       metamethods
   );
@@ -210,11 +210,11 @@ void LuaContext::register_movement_module() {
       MOVEMENT_COMMON_METHODS,
       { "get_speed", random_path_movement_api_get_speed },
       { "set_speed", random_path_movement_api_set_speed },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   register_type(
       movement_random_path_module_name,
-      NULL,
+      nullptr,
       random_path_movement_methods,
       metamethods
   );
@@ -225,11 +225,11 @@ void LuaContext::register_movement_module() {
       { "set_target", path_finding_movement_api_set_target },
       { "get_speed", path_finding_movement_api_get_speed },
       { "set_speed", path_finding_movement_api_set_speed },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   register_type(
       movement_path_finding_module_name,
-      NULL,
+      nullptr,
       path_finding_movement_methods,
       metamethods
   );
@@ -254,11 +254,11 @@ void LuaContext::register_movement_module() {
       { "set_duration", circle_movement_api_set_duration },
       { "get_loop_delay", circle_movement_api_get_loop_delay },
       { "set_loop_delay", circle_movement_api_set_loop_delay },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   register_type(
       movement_circle_module_name,
-      NULL,
+      nullptr,
       circle_movement_methods,
       metamethods
   );
@@ -272,11 +272,11 @@ void LuaContext::register_movement_module() {
       { "set_distance", jump_movement_api_set_distance },
       { "get_speed", jump_movement_api_get_speed },
       { "set_speed", jump_movement_api_set_speed },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   register_type(
       movement_jump_module_name,
-      NULL,
+      nullptr,
       jump_movement_methods,
       metamethods
   );
@@ -290,11 +290,11 @@ void LuaContext::register_movement_module() {
       { "set_loop", pixel_movement_api_set_loop },
       { "get_delay", pixel_movement_api_get_delay },
       { "set_delay", pixel_movement_api_set_delay },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   register_type(
       movement_pixel_module_name,
-      NULL,
+      nullptr,
       pixel_movement_methods,
       metamethods
   );
@@ -342,7 +342,7 @@ bool LuaContext::is_movement(lua_State* l, int index) {
  */
 Movement& LuaContext::check_movement(lua_State* l, int index) {
 
-  Movement** movement = NULL;
+  Movement** movement = nullptr;
 
   if (is_movement(l, index)) {
     movement = static_cast<Movement**>(lua_touserdata(l, index));
@@ -476,7 +476,7 @@ int LuaContext::movement_api_create(lua_State* l) {
   LuaContext& lua_context = get_lua_context(l);
   const std::string& type = luaL_checkstring(l, 1);
 
-  Movement* movement = NULL;
+  Movement* movement = nullptr;
   if (type == "straight") {
     StraightMovement* straight_movement = new StraightMovement(false, true);
     straight_movement->set_speed(32);
@@ -487,13 +487,13 @@ int LuaContext::movement_api_create(lua_State* l) {
   }
   else if (type == "target") {
     Game* game = lua_context.get_main_loop().get_game();
-    if (game != NULL) {
+    if (game != nullptr) {
       // If we are on a map, the default target is the hero.
       movement = new TargetMovement(
           &game->get_hero(), 0, 0, 96, false);
     }
     else {
-      movement = new TargetMovement(NULL, 0, 0, 32, false);
+      movement = new TargetMovement(nullptr, 0, 0, 32, false);
     }
   }
   else if (type == "path") {
@@ -505,7 +505,7 @@ int LuaContext::movement_api_create(lua_State* l) {
   else if (type == "path_finding") {
     PathFindingMovement* path_finding_movement = new PathFindingMovement(32);
     Game* game = lua_context.get_main_loop().get_game();
-    if (game != NULL) {
+    if (game != nullptr) {
       // If we are on a map, the default target is the hero.
       path_finding_movement->set_target(game->get_hero());
     }
@@ -621,13 +621,13 @@ int LuaContext::movement_api_stop(lua_State* l) {
   Movement& movement = check_movement(l, 1);
 
   MapEntity* entity = movement.get_entity();
-  if (entity != NULL) {
+  if (entity != nullptr) {
     // The object controlled is a map entity.
     entity->clear_movement();
   }
   else {
     Drawable* drawable = movement.get_drawable();
-    if (drawable != NULL) {
+    if (drawable != nullptr) {
       // The object controlled is a drawable.
       drawable->stop_movement();
     }
@@ -957,7 +957,7 @@ int LuaContext::target_movement_api_set_target(lua_State* l) {
     // The target is a fixed point.
     int x = luaL_checkint(l, 2);
     int y = luaL_checkint(l, 3);
-    movement.set_target(NULL, x, y);
+    movement.set_target(nullptr, x, y);
   }
   else {
     // the target is an entity, possibly with an offset.

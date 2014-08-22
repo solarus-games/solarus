@@ -51,7 +51,7 @@ void FileTools::initialize(const CommandLine& args) {
 
   const std::string& program_name = args.get_program_name().c_str();
   if (program_name.empty()) {
-    PHYSFS_init(NULL);
+    PHYSFS_init(nullptr);
   }
   else {
     PHYSFS_init(program_name.c_str());
@@ -135,7 +135,7 @@ FileTools::DataFileLocation FileTools::data_file_get_location(
     const std::string& file_name) {
 
   const char* path_ptr = PHYSFS_getRealDir(file_name.c_str());
-  std::string path = path_ptr == NULL ? "" : path_ptr;
+  std::string path = path_ptr == nullptr ? "" : path_ptr;
   if (path.empty()) {
     // File does not exist.
     return LOCATION_NONE;
@@ -243,7 +243,7 @@ void FileTools::data_file_open_buffer(const std::string& file_name, char** buffe
       std::string("Data file '") + full_file_name + "' does not exist"
   );
   PHYSFS_file* file = PHYSFS_openRead(full_file_name.c_str());
-  Debug::check_assertion(file != NULL,
+  Debug::check_assertion(file != nullptr,
       std::string("Cannot open data file '") + full_file_name + "'"
   );
 
@@ -268,7 +268,7 @@ void FileTools::data_file_save_buffer(const std::string& file_name,
 
   // open the file to write
   PHYSFS_file* file = PHYSFS_openWrite(file_name.c_str());
-  if (file == NULL) {
+  if (file == nullptr) {
     Debug::die(std::string("Cannot open file '") + file_name
         + "' for writing: " + PHYSFS_getLastError()
     );
@@ -343,7 +343,7 @@ std::vector<std::string> FileTools::data_files_enumerate(
   if (data_file_exists(dir_path.c_str())) {
     char** files = PHYSFS_enumerateFiles(dir_path.c_str());
   
-    for (char** file = files; *file != NULL; file++) {
+    for (char** file = files; *file != nullptr; file++) {
       bool is_directory = PHYSFS_isDirectory((dir_path + "/" + *file).c_str());
       
       if (!PHYSFS_isSymbolicLink(*file)
@@ -484,7 +484,7 @@ std::string FileTools::get_base_write_dir() {
 
 /**
  * \brief Creates a temporary file with the specified content and closes it.
- * \param buffer Content of the file to create, or NULL to create an empty file.
+ * \param buffer Content of the file to create, or nullptr to create an empty file.
  * \param size Size of the buffer.
  * \return Full name of the file created, or en ampty string in case of failure.
  */
@@ -504,7 +504,7 @@ std::string FileTools::create_temporary_file(const char* buffer, size_t size) {
   close(file_descriptor);
   file_name = name_template;
 #else
-  file_name = std::tmpnam(NULL);
+  file_name = std::tmpnam(nullptr);
 #endif
 
   std::ofstream out(file_name.c_str());
@@ -516,7 +516,7 @@ std::string FileTools::create_temporary_file(const char* buffer, size_t size) {
   // File successfully created.
   temporary_files.push_back(file_name);
 
-  if (buffer != NULL) {
+  if (buffer != nullptr) {
     out.write(buffer, size);
     if (!out) {
       file_name = "";

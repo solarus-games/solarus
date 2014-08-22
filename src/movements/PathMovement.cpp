@@ -169,7 +169,7 @@ void PathMovement::update() {
   while (!is_suspended()
       && is_current_elementary_move_finished()
       && !PathMovement::is_finished()
-      && get_entity() != NULL) {
+      && get_entity() != nullptr) {
     start_next_elementary_move();
     PixelMovement::update();
   }
@@ -256,7 +256,7 @@ void PathMovement::start_next_elementary_move() {
   MapEntity* entity = get_entity();
 
   // don't move while the entity is unknown
-  if (entity == NULL) {
+  if (entity == nullptr) {
     return;
   }
 

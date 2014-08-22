@@ -24,7 +24,7 @@ namespace solarus {
  * \brief Initializes the random number generator.
  */
 void Random::initialize() {
-  srand((int) time(NULL));
+  srand((int) time(nullptr));
 }
 
 /**

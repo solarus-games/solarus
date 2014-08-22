@@ -104,7 +104,7 @@ void Hero::FreeState::notify_action_command_pressed() {
   Hero& hero = get_hero();
   Detector* facing_entity = hero.get_facing_entity();
   bool facing_entity_interaction = false;
-  if (facing_entity != NULL) {
+  if (facing_entity != nullptr) {
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE ||
         get_keys_effect().is_action_key_acting_on_facing_entity()
     ) {

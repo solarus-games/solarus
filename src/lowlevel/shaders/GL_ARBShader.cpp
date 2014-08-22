@@ -41,7 +41,7 @@ PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
 PFNGLGETHANDLEARBPROC glGetHandleARB;
 
 GLhandleARB default_shader_program = 0;
-GL_ARBShader* loading_shader = NULL;
+GL_ARBShader* loading_shader = nullptr;
 
 
 /**
@@ -148,7 +148,7 @@ void GL_ARBShader::compile_shader(GLhandleARB& shader, const char* source) {
 
   GLint status;
     
-  glShaderSourceARB(shader, 1, &source, NULL);
+  glShaderSourceARB(shader, 1, &source, nullptr);
   glCompileShaderARB(shader);
   glGetObjectParameterivARB(shader, GL_OBJECT_COMPILE_STATUS_ARB, &status);
   if (status == 0) {
@@ -157,7 +157,7 @@ void GL_ARBShader::compile_shader(GLhandleARB& shader, const char* source) {
       
     glGetObjectParameterivARB(shader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
     info = SDL_stack_alloc(char, length+1);
-    glGetInfoLogARB(shader, length, NULL, info);
+    glGetInfoLogARB(shader, length, nullptr, info);
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to compile shader:\n%s\n%s", source, info);
     SDL_stack_free(info);
   }
@@ -185,7 +185,7 @@ void GL_ARBShader::set_rendering_settings() {
  */
 int GL_ARBShader::l_shader(lua_State* l) {
 
-  if (loading_shader != NULL) {
+  if (loading_shader != nullptr) {
 
     GLhandleARB& program = loading_shader->program,
         vertex_shader = loading_shader->vertex_shader,
@@ -230,7 +230,7 @@ int GL_ARBShader::l_shader(lua_State* l) {
       glAttachObjectARB(program, fragment_shader);
       glLinkProgramARB(program);
 
-      loading_shader = NULL;
+      loading_shader = nullptr;
     }
     else {
       Debug::warning("The shader script '" + loading_shader->shader_name + "' is not compatible with GLSL " + shading_language_version);
@@ -272,14 +272,14 @@ void GL_ARBShader::render(Surface& quest_surface) {
   // Clear the render target
   SDL_SetRenderTarget(renderer, render_target);
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-  SDL_RenderSetClipRect(renderer, NULL);
+  SDL_RenderSetClipRect(renderer, nullptr);
   SDL_RenderClear(renderer);
     
   // Draw on the render target.
   quest_surface.render(renderer);
     
   // Render on the window using OpenGL, to apply a shader if we have to.
-  SDL_SetRenderTarget(renderer, NULL);
+  SDL_SetRenderTarget(renderer, nullptr);
   set_rendering_settings();
     
   glEnable(GL_TEXTURE_RECTANGLE_ARB);

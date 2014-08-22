@@ -1226,7 +1226,7 @@ void CustomEntity::draw_on_map() {
  * \brief Empty constructor.
  */
 CustomEntity::TraversableInfo::TraversableInfo():
-  entity(NULL),
+  entity(nullptr),
   traversable_test_ref(LUA_REFNIL),
   traversable(false) {
 
@@ -1267,7 +1267,7 @@ CustomEntity::TraversableInfo::TraversableInfo(const TraversableInfo& other):
   traversable_test_ref(LUA_REFNIL),
   traversable(other.traversable) {
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     RefCountable::ref(entity);
     traversable_test_ref = entity->get_lua_context().copy_ref(other.traversable_test_ref);
   }
@@ -1278,7 +1278,7 @@ CustomEntity::TraversableInfo::TraversableInfo(const TraversableInfo& other):
  */
 CustomEntity::TraversableInfo::~TraversableInfo() {
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     entity->get_lua_context().cancel_callback(traversable_test_ref);
     RefCountable::unref(entity);
   }
@@ -1294,7 +1294,7 @@ CustomEntity::TraversableInfo& CustomEntity::TraversableInfo::operator=(const Tr
     return *this;
   }
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     entity->get_lua_context().cancel_callback(traversable_test_ref);
     RefCountable::unref(entity);
   }
@@ -1302,7 +1302,7 @@ CustomEntity::TraversableInfo& CustomEntity::TraversableInfo::operator=(const Tr
   entity = other.entity;
   traversable_test_ref = LUA_REFNIL;
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     RefCountable::ref(entity);
     traversable_test_ref = entity->get_lua_context().copy_ref(other.traversable_test_ref);
   }
@@ -1317,7 +1317,7 @@ CustomEntity::TraversableInfo& CustomEntity::TraversableInfo::operator=(const Tr
  */
 bool CustomEntity::TraversableInfo::is_empty() const {
 
-  return entity == NULL;
+  return entity == nullptr;
 }
 
 /**
@@ -1348,7 +1348,7 @@ bool CustomEntity::TraversableInfo::is_traversable(
  * \brief Empty constructor.
  */
 CustomEntity::CollisionInfo::CollisionInfo():
-  entity(NULL),
+  entity(nullptr),
   built_in_test(COLLISION_NONE),
   custom_test_ref(LUA_REFNIL),
   callback_ref(LUA_REFNIL) {
@@ -1399,7 +1399,7 @@ CustomEntity::CollisionInfo::CollisionInfo(const CollisionInfo& other):
   custom_test_ref(LUA_REFNIL),
   callback_ref(LUA_REFNIL) {
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     RefCountable::ref(entity);
     custom_test_ref = entity->get_lua_context().copy_ref(other.custom_test_ref);
     callback_ref = entity->get_lua_context().copy_ref(other.callback_ref);
@@ -1411,7 +1411,7 @@ CustomEntity::CollisionInfo::CollisionInfo(const CollisionInfo& other):
  */
 CustomEntity::CollisionInfo::~CollisionInfo() {
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     entity->get_lua_context().cancel_callback(custom_test_ref);
     entity->get_lua_context().cancel_callback(callback_ref);
     RefCountable::unref(entity);
@@ -1428,7 +1428,7 @@ CustomEntity::CollisionInfo& CustomEntity::CollisionInfo::operator=(const Collis
     return *this;
   }
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     RefCountable::unref(entity);
     entity->get_lua_context().cancel_callback(custom_test_ref);
     entity->get_lua_context().cancel_callback(callback_ref);
@@ -1439,7 +1439,7 @@ CustomEntity::CollisionInfo& CustomEntity::CollisionInfo::operator=(const Collis
   custom_test_ref = LUA_REFNIL;
   callback_ref = LUA_REFNIL;
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     RefCountable::ref(entity);
     custom_test_ref = entity->get_lua_context().copy_ref(other.custom_test_ref);
     callback_ref = entity->get_lua_context().copy_ref(other.callback_ref);

@@ -45,12 +45,12 @@ Hero::JumpingState::JumpingState(
     bool with_sound,
     uint32_t movement_delay):
   State(hero, "jumping"),
-  carried_item(NULL) {
+  carried_item(nullptr) {
 
   if (get_previous_carried_item_behavior() == CarriedItem::BEHAVIOR_KEEP) {
     // Keep the carried item of the previous state.
     carried_item = hero.get_carried_item();
-    if (carried_item != NULL) {
+    if (carried_item != nullptr) {
       RefCountable::ref(carried_item);
     }
   }
@@ -79,7 +79,7 @@ void Hero::JumpingState::start(const State* previous_state) {
   HeroSprites& sprites = get_sprites();
   sprites.set_animation_direction8(direction8);
 
-  if (carried_item == NULL) {
+  if (carried_item == nullptr) {
     sprites.set_animation_jumping();
   }
   else {
@@ -105,20 +105,20 @@ void Hero::JumpingState::stop(const State* next_state) {
 
   get_hero().clear_movement();
 
-  if (carried_item != NULL) {
+  if (carried_item != nullptr) {
 
     switch (next_state->get_previous_carried_item_behavior()) {
 
     case CarriedItem::BEHAVIOR_THROW:
       carried_item->throw_item(get_sprites().get_animation_direction());
       get_entities().add_entity(carried_item);
-      carried_item = NULL;
-      get_sprites().set_lifted_item(NULL);
+      carried_item = nullptr;
+      get_sprites().set_lifted_item(nullptr);
       break;
 
     case CarriedItem::BEHAVIOR_DESTROY:
       destroy_carried_item();
-      get_sprites().set_lifted_item(NULL);
+      get_sprites().set_lifted_item(nullptr);
       break;
 
     case CarriedItem::BEHAVIOR_KEEP:
@@ -126,7 +126,7 @@ void Hero::JumpingState::stop(const State* next_state) {
       Debug::check_assertion(carried_item->get_refcount() > 1,
           "Invalid carried item refcount");
       RefCountable::unref(carried_item);
-      carried_item = NULL;
+      carried_item = nullptr;
       break;
 
     default:
@@ -144,7 +144,7 @@ void Hero::JumpingState::set_map(Map& map) {
   State::set_map(map);
 
   // the hero may go to another map while jumping and carrying an item
-  if (carried_item != NULL) {
+  if (carried_item != nullptr) {
     carried_item->set_map(map);
   }
 }
@@ -156,7 +156,7 @@ void Hero::JumpingState::update() {
 
   State::update();
 
-  if (carried_item != NULL) {
+  if (carried_item != nullptr) {
     carried_item->update();
   }
 
@@ -173,7 +173,7 @@ void Hero::JumpingState::set_suspended(bool suspended) {
 
   State::set_suspended(suspended);
 
-  if (carried_item != NULL) {
+  if (carried_item != nullptr) {
     carried_item->set_suspended(suspended);
   }
 }
@@ -183,7 +183,7 @@ void Hero::JumpingState::set_suspended(bool suspended) {
  */
 void Hero::JumpingState::notify_layer_changed() {
 
-  if (carried_item != NULL) {
+  if (carried_item != nullptr) {
     carried_item->set_layer(get_hero().get_layer());
   }
 }
@@ -320,7 +320,7 @@ bool Hero::JumpingState::can_avoid_switch() const {
  * \brief Returns whether the hero can be hurt in this state.
  * \return true if the hero can be hurt in this state
  * \param attacker an attacker that is trying to hurt the hero
- * (or NULL if the source of the attack is not an enemy)
+ * (or nullptr if the source of the attack is not an enemy)
  */
 bool Hero::JumpingState::can_be_hurt(MapEntity* attacker) const {
   return false;
@@ -328,19 +328,19 @@ bool Hero::JumpingState::can_be_hurt(MapEntity* attacker) const {
 
 /**
  * \brief Returns the item currently carried by the hero in this state, if any.
- * \return the item carried by the hero, or NULL
+ * \return the item carried by the hero, or nullptr
  */
 CarriedItem* Hero::JumpingState::get_carried_item() const {
   return carried_item;
 }
 
 /**
- * \brief Destroys the item carried if any and sets it to NULL.
+ * \brief Destroys the item carried if any and sets it to nullptr.
  */
 void Hero::JumpingState::destroy_carried_item() {
 
   RefCountable::unref(carried_item);
-  carried_item = NULL;
+  carried_item = nullptr;
 }
 
 /**

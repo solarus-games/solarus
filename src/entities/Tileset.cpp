@@ -59,8 +59,8 @@ const std::string Tileset::ground_names[] = {
  */
 Tileset::Tileset(const std::string& id):
   id(id),
-  tiles_image(NULL),
-  entities_image(NULL) {
+  tiles_image(nullptr),
+  entities_image(nullptr) {
 }
 
 /**
@@ -148,10 +148,10 @@ void Tileset::unload() {
   tile_patterns.clear();
 
   RefCountable::unref(tiles_image);
-  tiles_image = NULL;
+  tiles_image = nullptr;
 
   RefCountable::unref(entities_image);
-  entities_image = NULL;
+  entities_image = nullptr;
 }
 
 /**
@@ -167,7 +167,7 @@ Color& Tileset::get_background_color() {
  * \return true if this tileset is loaded
  */
 bool Tileset::is_loaded() {
-  return tiles_image != NULL;
+  return tiles_image != nullptr;
 }
 
 /**
@@ -194,7 +194,7 @@ Surface& Tileset::get_entities_image() {
 TilePattern& Tileset::get_tile_pattern(const std::string& id) {
 
   TilePattern* tile_pattern =  tile_patterns[id];
-  if (tile_pattern == NULL) {
+  if (tile_pattern == nullptr) {
     std::ostringstream oss;
     oss << "No such tile pattern in tileset '" << get_id() << "': " << id;
     Debug::die(oss.str());
@@ -327,7 +327,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
   }
 
   // Create the tile pattern.
-  TilePattern* tile_pattern = NULL;
+  TilePattern* tile_pattern = nullptr;
   if (i == 1) {
     // Single frame.
     if (scrolling.empty()) {

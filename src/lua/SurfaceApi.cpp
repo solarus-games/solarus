@@ -37,7 +37,7 @@ void LuaContext::register_surface_module() {
 
   static const luaL_Reg functions[] = {
       { "create", surface_api_create },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   static const luaL_Reg methods[] = {
@@ -53,12 +53,12 @@ void LuaContext::register_surface_module() {
       { "set_xy", drawable_api_set_xy },
       { "get_movement", drawable_api_get_movement },
       { "stop_movement", drawable_api_stop_movement },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   static const luaL_Reg metamethods[] = {
       { "__gc", drawable_meta_gc },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(surface_module_name, functions, methods, metamethods);
@@ -101,7 +101,7 @@ void LuaContext::push_surface(lua_State* l, Surface& surface) {
  */
 int LuaContext::surface_api_create(lua_State* l) {
 
-  Surface* surface = NULL;
+  Surface* surface = nullptr;
   if (lua_gettop(l) == 0) {
     // create an empty surface with the screen size
     surface = Surface::create(Video::get_quest_size());
@@ -123,7 +123,7 @@ int LuaContext::surface_api_create(lua_State* l) {
     luaL_typerror(l, 1, "number, string or no value");
   }
 
-  if (surface == NULL) {
+  if (surface == nullptr) {
     // Image file not found or not valid.
     lua_pushnil(l);
   }

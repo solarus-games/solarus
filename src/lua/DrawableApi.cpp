@@ -47,7 +47,7 @@ bool LuaContext::is_drawable(lua_State* l, int index) {
  */
 Drawable& LuaContext::check_drawable(lua_State* l, int index) {
 
-  Drawable** drawable = NULL;
+  Drawable** drawable = nullptr;
 
   if (is_drawable(l, index)) {
     drawable = static_cast<Drawable**>(lua_touserdata(l, index));
@@ -286,7 +286,7 @@ int LuaContext::drawable_api_get_movement(lua_State* l) {
   Drawable& drawable = check_drawable(l, 1);
 
   Movement* movement = drawable.get_movement();
-  if (movement == NULL) {
+  if (movement == nullptr) {
     lua_pushnil(l);
   }
   else {

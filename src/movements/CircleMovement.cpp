@@ -33,7 +33,7 @@ namespace solarus {
 CircleMovement::CircleMovement(bool ignore_obstacles):
 
   Movement(ignore_obstacles),
-  center_entity(NULL),
+  center_entity(nullptr),
   current_angle(0),
   initial_angle(0),
   angle_increment(1),
@@ -73,7 +73,7 @@ void CircleMovement::set_center(const Rectangle& center_point) {
 
   RefCountable::unref(this->center_entity);
 
-  this->center_entity = NULL;
+  this->center_entity = nullptr;
   this->center_point = center_point;
   recompute_position();
 }
@@ -327,7 +327,7 @@ void CircleMovement::set_loop(uint32_t delay) {
  */
 void CircleMovement::update() {
 
-  if (center_entity != NULL && center_entity->is_being_removed()) {
+  if (center_entity != nullptr && center_entity->is_being_removed()) {
     set_center(Rectangle(
           center_entity->get_x() + center_point.get_x(),
           center_entity->get_y() + center_point.get_y()));
@@ -378,7 +378,7 @@ void CircleMovement::update() {
   }
 
   // the center may have moved
-  if (center_entity != NULL) {
+  if (center_entity != nullptr) {
     update_needed = true;
   }
 
@@ -398,12 +398,12 @@ void CircleMovement::update() {
 void CircleMovement::recompute_position() {
 
   Rectangle center = this->center_point;
-  if (center_entity != NULL) {
+  if (center_entity != nullptr) {
     center.add_xy(center_entity->get_xy());
   }
 
   const Rectangle& xy = Geometry::get_xy(center, Geometry::degrees_to_radians(current_angle), current_radius);
-  if (get_entity() == NULL
+  if (get_entity() == nullptr
       || !test_collision_with_obstacles(xy.get_x() - get_entity()->get_x(), xy.get_y() - get_entity()->get_y())) {
     set_xy(xy);
     notify_position_changed();

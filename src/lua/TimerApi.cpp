@@ -42,7 +42,7 @@ void LuaContext::register_timer_module() {
   static const luaL_Reg functions[] = {
       { "start", timer_api_start },
       { "stop_all", timer_api_stop_all },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   // Methods of the timer type.
@@ -56,12 +56,12 @@ void LuaContext::register_timer_module() {
       { "set_suspended_with_map", timer_api_set_suspended_with_map },
       { "get_remaining_time", timer_api_get_remaining_time },
       { "set_remaining_time", timer_api_set_remaining_time },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   static const luaL_Reg metamethods[] = {
       { "__gc", userdata_meta_gc },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(timer_module_name, functions, methods, metamethods);
@@ -138,7 +138,7 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
   timers[timer].context = context;
 
   Game* game = main_loop.get_game();
-  if (game != NULL) {
+  if (game != nullptr) {
     // We are during a game: depending on the timer's context,
     // suspend the timer or not.
     if (is_map(l, context_index)
@@ -386,7 +386,7 @@ int LuaContext::timer_api_start(lua_State *l) {
     // - outside a game: sol.main.
 
     Game* game = lua_context.get_main_loop().get_game();
-    if (game != NULL && game->has_current_map()) {
+    if (game != nullptr && game->has_current_map()) {
       push_map(l, game->get_current_map());
     }
     else {
@@ -538,7 +538,7 @@ int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
   timer.set_suspended_with_map(suspended_with_map);
 
   Game* game = lua_context.get_main_loop().get_game();
-  if (game != NULL && game->has_current_map()) {
+  if (game != nullptr && game->has_current_map()) {
     // If the game is running, suspend/unsuspend the timer like the map.
     timer.notify_map_suspended(game->get_current_map().is_suspended());
   }

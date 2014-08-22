@@ -201,7 +201,7 @@ const GameCommands& Hero::State::get_commands() const {
  * state of the hero.
  * The initializations should be done here rather than in the constructor.
  *
- * \param previous_state The previous state or NULL if this is the first state
+ * \param previous_state The previous state or nullptr if this is the first state
  * (for information).
  */
 void Hero::State::start(const State* previous_state) {
@@ -434,7 +434,7 @@ void Hero::State::notify_item_command_pressed(int slot) {
 
   EquipmentItem* item = get_equipment().get_item_assigned(slot);
 
-  if (item != NULL && hero.can_start_item(*item)) {
+  if (item != nullptr && hero.can_start_item(*item)) {
     hero.start_item(*item);
   }
 }
@@ -998,7 +998,7 @@ void Hero::State::notify_jumper_activated(Jumper& jumper) {
  *
  * \param attack The attack.
  * \param victim The enemy just hurt.
- * \param victim_sprite The enemy's sprite that was touched or NULL.
+ * \param victim_sprite The enemy's sprite that was touched or nullptr.
  * \param result How the enemy has reacted to the attack.
  * \param killed Whether the attack has just killed the enemy.
  */
@@ -1029,7 +1029,7 @@ int Hero::State::get_sword_damage_factor() const {
  * Returns false by default.
  *
  * \param attacker an attacker that is trying to hurt the hero
- * (or NULL if the source of the attack is not an enemy)
+ * (or nullptr if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
 bool Hero::State::can_be_hurt(MapEntity* attacker) const {
@@ -1181,13 +1181,13 @@ bool Hero::State::can_start_item(EquipmentItem& item) const {
 /**
  * \brief Returns whether the hero is currently carrying an item in this state.
  *
- * This function returns true if get_carried_item() is not NULL.
+ * This function returns true if get_carried_item() is not nullptr.
  * Redefine get_carried_item() if the hero is able to carry an item in this state.
  *
  * \return true if the hero is currently carrying an item in this state
  */
 bool Hero::State::is_carrying_item() const {
-  return get_carried_item() != NULL;
+  return get_carried_item() != nullptr;
 }
 
 /**
@@ -1195,10 +1195,10 @@ bool Hero::State::is_carrying_item() const {
  *
  * Redefine this function to make the hero able to carry an item in this state.
  *
- * \return the item carried by the hero, or NULL
+ * \return the item carried by the hero, or nullptr
  */
 CarriedItem* Hero::State::get_carried_item() const {
-  return NULL;
+  return nullptr;
 }
 
 /**

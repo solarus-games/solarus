@@ -44,7 +44,7 @@ void LuaContext::register_game_module() {
       { "exists", game_api_exists },
       { "delete", game_api_delete },
       { "load", game_api_load },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   // Methods of the game type.
@@ -105,14 +105,14 @@ void LuaContext::register_game_module() {
       { "capture_command_binding", game_api_capture_command_binding },
       { "simulate_command_pressed", game_api_simulate_command_pressed },
       { "simulate_command_released", game_api_simulate_command_released },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   static const luaL_Reg metamethods[] = {
       { "__gc", userdata_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
       { "__index", userdata_meta_index_as_table },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(game_module_name, functions, methods, metamethods);
@@ -240,7 +240,7 @@ int LuaContext::game_api_start(lua_State* l) {
   }
 
   Game* game = savegame.get_game();
-  if (game != NULL) {
+  if (game != nullptr) {
     // A game is already running with this savegame: restart it.
     game->restart();
   }
@@ -264,7 +264,7 @@ int LuaContext::game_api_is_started(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
-  bool is_started = game != NULL;
+  bool is_started = game != nullptr;
 
   lua_pushboolean(l, is_started);
   return 1;
@@ -280,7 +280,7 @@ int LuaContext::game_api_is_suspended(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
-  bool is_suspended = game != NULL && game->is_suspended();
+  bool is_suspended = game != nullptr && game->is_suspended();
 
   lua_pushboolean(l, is_suspended);
   return 1;
@@ -296,7 +296,7 @@ int LuaContext::game_api_is_paused(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
-  bool is_paused = game != NULL && game->is_paused();
+  bool is_paused = game != nullptr && game->is_paused();
 
   lua_pushboolean(l, is_paused);
   return 1;
@@ -316,7 +316,7 @@ int LuaContext::game_api_set_paused(lua_State* l) {
   }
 
   Game* game = savegame.get_game();
-  if (game != NULL) {
+  if (game != nullptr) {
     game->set_paused(paused);
   }
 
@@ -333,7 +333,7 @@ int LuaContext::game_api_is_pause_allowed(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
-  bool is_pause_allowed = game != NULL && game->is_pause_allowed();
+  bool is_pause_allowed = game != nullptr && game->is_pause_allowed();
 
   lua_pushboolean(l, is_pause_allowed);
   return 1;
@@ -354,7 +354,7 @@ int LuaContext::game_api_set_pause_allowed(lua_State* l) {
   }
 
   Game* game = savegame.get_game();
-  if (game != NULL) {
+  if (game != nullptr) {
     game->set_pause_allowed(pause_allowed);
   }
 
@@ -371,7 +371,7 @@ int LuaContext::game_api_is_dialog_enabled(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
-  if (game == NULL) {
+  if (game == nullptr) {
     lua_pushboolean(l, false);
   }
   else {
@@ -397,7 +397,7 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
   }
 
   Game* game = savegame.get_game();
-  if (game == NULL) {
+  if (game == nullptr) {
     LuaTools::error(l, "Cannot start dialog: this game is not running");
   }
 
@@ -437,7 +437,7 @@ int LuaContext::game_api_stop_dialog(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
-  if (game == NULL) {
+  if (game == nullptr) {
     LuaTools::error(l, "Cannot stop dialog: this game is not running.");
   }
 
@@ -467,7 +467,7 @@ int LuaContext::game_api_is_game_over_enabled(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
-  if (game == NULL) {
+  if (game == nullptr) {
     lua_pushboolean(l, false);
   }
   else {
@@ -486,7 +486,7 @@ int LuaContext::game_api_start_game_over(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
-  if (game == NULL) {
+  if (game == nullptr) {
     LuaTools::error(l, "Cannot start game-over: this game is not running");
   }
 
@@ -505,7 +505,7 @@ int LuaContext::game_api_stop_game_over(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
-  if (game == NULL) {
+  if (game == nullptr) {
     LuaTools::error(l, "Cannot stop game-over: this game is not running.");
   }
 
@@ -524,7 +524,7 @@ int LuaContext::game_api_get_map(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
-  if (game == NULL || !game->has_current_map()) {
+  if (game == nullptr || !game->has_current_map()) {
     lua_pushnil(l);
   }
   else {
@@ -543,7 +543,7 @@ int LuaContext::game_api_get_hero(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
-  if (game == NULL) {
+  if (game == nullptr) {
     lua_pushnil(l);
   }
   else {
@@ -1110,7 +1110,7 @@ int LuaContext::game_api_get_item_assigned(lua_State* l) {
 
   EquipmentItem* item = savegame.get_equipment().get_item_assigned(slot);
 
-  if (item == NULL) {
+  if (item == nullptr) {
     lua_pushnil(l);
   }
   else {
@@ -1128,7 +1128,7 @@ int LuaContext::game_api_set_item_assigned(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int slot = luaL_checkint(l, 2);
-  EquipmentItem* item = NULL;
+  EquipmentItem* item = nullptr;
   if (!lua_isnil(l, 3)) {
     item = &check_item(l, 3);
   }
@@ -1154,7 +1154,7 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
       l, 2, GameCommands::command_names);
 
   Game* game = savegame.get_game();
-  if (game == NULL) {
+  if (game == nullptr) {
     lua_pushnil(l);
   }
   else {

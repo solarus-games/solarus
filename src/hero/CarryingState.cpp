@@ -35,7 +35,7 @@ Hero::CarryingState::CarryingState(Hero& hero, CarriedItem* carried_item):
   PlayerMovementState(hero, "carrying"),
   carried_item(carried_item) {
 
-  Debug::check_assertion(carried_item != NULL, "Missing carried item");
+  Debug::check_assertion(carried_item != nullptr, "Missing carried item");
   RefCountable::ref(carried_item);
 }
 
@@ -71,10 +71,10 @@ void Hero::CarryingState::stop(const State* next_state) {
 
   PlayerMovementState::stop(next_state);
 
-  get_sprites().set_lifted_item(NULL);
+  get_sprites().set_lifted_item(nullptr);
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
-  if (carried_item != NULL) {
+  if (carried_item != nullptr) {
 
     switch (next_state->get_previous_carried_item_behavior()) {
 
@@ -91,7 +91,7 @@ void Hero::CarryingState::stop(const State* next_state) {
       Debug::check_assertion(carried_item->get_refcount() > 1,
           "Invalid carried item refcount");
       RefCountable::unref(carried_item);
-      carried_item = NULL;
+      carried_item = nullptr;
       break;
 
     default:
@@ -109,7 +109,7 @@ void Hero::CarryingState::set_map(Map& map) {
   PlayerMovementState::set_map(map);
 
   // the hero may go to another map while carrying an item
-  if (carried_item != NULL) {
+  if (carried_item != nullptr) {
     carried_item->set_map(map);
   }
 }
@@ -121,7 +121,7 @@ void Hero::CarryingState::notify_layer_changed() {
 
   PlayerMovementState::notify_layer_changed();
 
-  if (carried_item != NULL) {
+  if (carried_item != nullptr) {
     carried_item->set_layer(get_hero().get_layer());
   }
 }
@@ -134,7 +134,7 @@ void Hero::CarryingState::set_suspended(bool suspended) {
 
   PlayerMovementState::set_suspended(suspended);
 
-  if (carried_item != NULL) {
+  if (carried_item != nullptr) {
     carried_item->set_suspended(suspended);
   }
 }
@@ -183,7 +183,7 @@ void Hero::CarryingState::throw_item() {
 
   carried_item->throw_item(get_sprites().get_animation_direction());
   get_entities().add_entity(carried_item);
-  carried_item = NULL;
+  carried_item = nullptr;
 }
 
 /**
@@ -226,19 +226,19 @@ void Hero::CarryingState::set_animation_walking() {
 
 /**
  * \brief Returns the item currently carried by the hero in this state, if any.
- * \return the item carried by the hero, or NULL
+ * \return the item carried by the hero, or nullptr
  */
 CarriedItem* Hero::CarryingState::get_carried_item() const {
   return carried_item;
 }
 
 /**
- * \brief Destroys the item carried if any and sets it to NULL.
+ * \brief Destroys the item carried if any and sets it to nullptr.
  */
 void Hero::CarryingState::destroy_carried_item() {
 
   RefCountable::unref(carried_item);
-  carried_item = NULL;
+  carried_item = nullptr;
 }
 
 /**

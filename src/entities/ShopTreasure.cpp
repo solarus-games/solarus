@@ -78,7 +78,7 @@ ShopTreasure::~ShopTreasure() {
  * \param treasure the treasure that the hero can buy
  * \param price the treasure's price in rupees
  * \param dialog_id id of the dialog describing the item when the player watches it
- * \return the shop treasure created, or NULL if it is already bought or if it
+ * \return the shop treasure created, or nullptr if it is already bought or if it
  * is not obtainable.
  */
 ShopTreasure* ShopTreasure::create(
@@ -93,7 +93,7 @@ ShopTreasure* ShopTreasure::create(
 
   // See if the item is not already bought and is obtainable.
   if (treasure.is_found() || !treasure.is_obtainable()) {
-    return NULL;
+    return nullptr;
   }
 
   return new ShopTreasure(name, layer, x, y, treasure, price, dialog_id);

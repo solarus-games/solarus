@@ -155,7 +155,7 @@ class MapEntities {
       crystal_blocks[LAYER_NB];                     /**< all crystal blocks of the map */
     std::list<const Separator*> separators;         /**< all separators of the map */
 
-    Boomerang* boomerang;                           /**< the boomerang if present on the map, NULL otherwise */
+    Boomerang* boomerang;                           /**< the boomerang if present on the map, nullptr otherwise */
 
 };
 

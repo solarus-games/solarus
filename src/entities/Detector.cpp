@@ -161,7 +161,7 @@ void Detector::check_collision(MapEntity& entity) {
 
     if (has_collision_mode(COLLISION_FACING) && test_collision_facing_point(entity)) {
 
-      if (entity.get_facing_entity() == NULL) { // make sure only one entity can think "I am the facing entity"
+      if (entity.get_facing_entity() == nullptr) { // make sure only one entity can think "I am the facing entity"
         entity.set_facing_entity(this);
       }
       notify_collision(entity, COLLISION_FACING);
@@ -427,7 +427,7 @@ void Detector::notify_being_removed() {
   MapEntity::notify_being_removed();
 
   if (get_hero().get_facing_entity() == this) {
-    get_hero().set_facing_entity(NULL);
+    get_hero().set_facing_entity(nullptr);
   }
 }
 

@@ -67,7 +67,7 @@ void Hero::SwordTappingState::stop(const State* next_state) {
   State::stop(next_state);
 
   Hero& hero = get_hero();
-  if (hero.get_movement() != NULL) {
+  if (hero.get_movement() != nullptr) {
     // stop the movement of being pushed by an enemy after hitting him
     hero.clear_movement();
   }
@@ -81,7 +81,7 @@ void Hero::SwordTappingState::update() {
   State::update();
 
   Hero& hero = get_hero();
-  if (hero.get_movement() == NULL) {
+  if (hero.get_movement() == nullptr) {
     // the hero is not being pushed after hitting an enemy
 
     const Rectangle& facing_point = hero.get_facing_point();
@@ -104,7 +104,7 @@ void Hero::SwordTappingState::update() {
 
         Detector* facing_entity = hero.get_facing_entity();
         std::string sound_id;
-        if (facing_entity != NULL) {
+        if (facing_entity != nullptr) {
           sound_id = facing_entity->get_sword_tapping_sound();
         }
         else {
@@ -181,7 +181,7 @@ bool Hero::SwordTappingState::is_teletransporter_obstacle(
     const Teletransporter& teletransporter) const {
 
   // if the hero was pushed by an enemy, don't go on a teletransporter
-  return get_hero().get_movement() != NULL;
+  return get_hero().get_movement() != nullptr;
 }
 
 /**
@@ -211,7 +211,7 @@ void Hero::SwordTappingState::notify_attacked_enemy(
     if (victim.get_push_hero_on_sword()) {
 
       Hero& hero = get_hero();
-      double angle = victim.get_angle(hero, victim_sprite, NULL);
+      double angle = victim.get_angle(hero, victim_sprite, nullptr);
       StraightMovement* movement = new StraightMovement(false, true);
       movement->set_max_distance(24);
       movement->set_speed(120);

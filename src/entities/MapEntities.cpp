@@ -48,8 +48,8 @@ MapEntities::MapEntities(Game& game, Map& map):
   map_height8(0),
   tiles_grid_size(0),
   hero(game.get_hero()),
-  default_destination(NULL),
-  boomerang(NULL) {
+  default_destination(nullptr),
+  boomerang(nullptr) {
 
   Layer hero_layer = hero.get_layer();
   this->obstacle_entities[hero_layer].push_back(&hero);
@@ -167,7 +167,7 @@ const std::list<Detector*>& MapEntities::get_detectors() {
 
 /**
  * \brief Returns the default destination of the map.
- * \return The default destination, or NULL if there exists no destination
+ * \return The default destination, or nullptr if there exists no destination
  * on this map.
  */
 Destination* MapEntities::get_default_destination() {
@@ -231,7 +231,7 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
 
   MapEntity* entity = find_entity(name);
 
-  if (entity == NULL) {
+  if (entity == nullptr) {
     Debug::die(std::string("Map '") + map.get_id()
         + "': Cannot find entity with name '" + name + "'");
   }
@@ -240,22 +240,22 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
 }
 
 /**
- * \brief Returns the entity with the specified name, or NULL if it doesn't exist.
+ * \brief Returns the entity with the specified name, or nullptr if it doesn't exist.
  * \param name Name of the entity to find.
- * \return The entity requested, or NULL if there is no entity with the specified name.
+ * \return The entity requested, or nullptr if there is no entity with the specified name.
  */
 MapEntity* MapEntities::find_entity(const std::string& name) {
 
   std::map<std::string, MapEntity*>::const_iterator it =
       named_entities.find(name);
   if (it == named_entities.end()) {
-    return NULL;
+    return nullptr;
   }
 
   MapEntity* entity = it->second;
 
   if (entity->is_being_removed()) {
-    return NULL;
+    return nullptr;
   }
 
   return entity;
@@ -574,14 +574,14 @@ void MapEntities::add_tile(Tile* tile) {
  * \brief Adds an entity to the map.
  *
  * This function is called when loading the map. If the entity
- * specified is NULL (because some entity creation functions
- * may return NULL), nothing is done.
+ * specified is nullptr (because some entity creation functions
+ * may return nullptr), nothing is done.
  *
- * \param entity The entity to add (can be NULL).
+ * \param entity The entity to add (can be nullptr).
  */
 void MapEntities::add_entity(MapEntity* entity) {
 
-  if (entity == NULL) {
+  if (entity == nullptr) {
     return;
   }
 
@@ -652,7 +652,7 @@ void MapEntities::add_entity(MapEntity* entity) {
       case ENTITY_DESTINATION:
         {
           Destination* destination = static_cast<Destination*>(entity);
-          if (this->default_destination == NULL || destination->is_default()) {
+          if (this->default_destination == nullptr || destination->is_default()) {
             this->default_destination = destination;
             break;
           }
@@ -719,7 +719,7 @@ void MapEntities::remove_entity(MapEntity* entity) {
     entity->notify_being_removed();
 
     if (entity == this->boomerang) {
-      this->boomerang = NULL;
+      this->boomerang = nullptr;
     }
   }
 }
@@ -731,7 +731,7 @@ void MapEntities::remove_entity(MapEntity* entity) {
 void MapEntities::remove_entity(const std::string& name) {
 
   MapEntity* entity = find_entity(name);
-  if (entity != NULL) {
+  if (entity != nullptr) {
     remove_entity(entity);
   }
 }
@@ -823,7 +823,7 @@ void MapEntities::remove_marked_entities() {
         break;
 
       case ENTITY_BOOMERANG:
-        this->boomerang = NULL;
+        this->boomerang = nullptr;
         break;
 
       default:
@@ -1042,7 +1042,7 @@ bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle& rectangle
  * \return true if the boomerang is present on the map
  */
 bool MapEntities::is_boomerang_present() {
-  return boomerang != NULL;
+  return boomerang != nullptr;
 }
 
 /**
@@ -1050,9 +1050,9 @@ bool MapEntities::is_boomerang_present() {
  */
 void MapEntities::remove_boomerang() {
 
-  if (boomerang != NULL) {
+  if (boomerang != nullptr) {
     remove_entity(boomerang);
-    boomerang = NULL;
+    boomerang = nullptr;
   }
 }
 

@@ -43,20 +43,20 @@ MapLoader Map::map_loader;
  * and the script file of the map. The data file must exist.
  */
 Map::Map(const std::string& id):
-  game(NULL),
+  game(nullptr),
   id(id),
   width8(0),
   height8(0),
-  tileset(NULL),
+  tileset(nullptr),
   floor(NO_FLOOR),
-  camera(NULL),
-  visible_surface(NULL),
-  background_surface(NULL),
-  foreground_surface(NULL),
+  camera(nullptr),
+  visible_surface(nullptr),
+  background_surface(nullptr),
+  foreground_surface(nullptr),
   loaded(false),
   started(false),
   destination_name(""),
-  entities(NULL),
+  entities(nullptr),
   suspended(false) {
 
 }
@@ -88,7 +88,7 @@ const std::string& Map::get_id() const {
  */
 Tileset& Map::get_tileset() {
 
-  SOLARUS_ASSERT(tileset != NULL,
+  SOLARUS_ASSERT(tileset != nullptr,
       std::string("Missing tileset in map '") + get_id() + "'"
   );
   return *tileset;
@@ -262,17 +262,17 @@ void Map::unload() {
 
   if (is_loaded()) {
     delete tileset;
-    tileset = NULL;
+    tileset = nullptr;
     RefCountable::unref(visible_surface);
-    visible_surface = NULL;
+    visible_surface = nullptr;
     RefCountable::unref(background_surface);
-    background_surface = NULL;
+    background_surface = nullptr;
     RefCountable::unref(foreground_surface);
-    foreground_surface = NULL;
+    foreground_surface = nullptr;
     delete entities;
-    entities = NULL;
+    entities = nullptr;
     delete camera;
-    camera = NULL;
+    camera = nullptr;
 
     loaded = false;
   }
@@ -382,31 +382,31 @@ const std::string& Map::get_destination_name() const {
  * set_destination().
  *
  * If the destination point was set to a special value
- * ("_same", "_side0", "_side1", "_side2" or "_side3"), returns NULL.
+ * ("_same", "_side0", "_side1", "_side2" or "_side3"), returns nullptr.
  *
  * If the destination name is empty, returns the default destination if any,
- * or NULL.
+ * or nullptr.
  *
  * Otherwise, if there is no destination entity with this name on the map,
- * prints an error message and returns the default destination if any or NULL.
+ * prints an error message and returns the default destination if any or nullptr.
  *
- * \return The destination point previously set, or NULL.
+ * \return The destination point previously set, or nullptr.
  */
 Destination* Map::get_destination() {
 
   if (destination_name == "_same"
       || destination_name.substr(0,5) == "_side") {
-    return NULL;
+    return nullptr;
   }
 
   Debug::check_assertion(is_loaded(), "This map is not loaded");
 
-  Destination* destination = NULL;
+  Destination* destination = nullptr;
   if (!destination_name.empty()) {
     // Use the destination whose name was specified.
     MapEntity* entity = get_entities().find_entity(destination_name);
 
-    if (entity == NULL || entity->get_type() != ENTITY_DESTINATION) {
+    if (entity == nullptr || entity->get_type() != ENTITY_DESTINATION) {
       Debug::error(
           std::string("Map '") + get_id() + "': No such destination: '"
           + destination_name + "'"
@@ -422,7 +422,7 @@ Destination* Map::get_destination() {
     }
   }
 
-  if (destination == NULL) {
+  if (destination == nullptr) {
     // No valid destination name was set: use the default one if any.
     destination = get_entities().get_default_destination();
   }
@@ -588,7 +588,7 @@ void Map::draw() {
  */
 void Map::build_background_surface() {
 
-  if (tileset != NULL) {
+  if (tileset != nullptr) {
     background_surface->clear();
     background_surface->fill_with_color(tileset->get_background_color());
   }
@@ -649,7 +649,7 @@ void Map::build_foreground_surface() {
  */
 void Map::draw_foreground() {
 
-  if (foreground_surface != NULL) {
+  if (foreground_surface != nullptr) {
     foreground_surface->draw(*visible_surface);
   }
 }

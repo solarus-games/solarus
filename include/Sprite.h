@@ -117,7 +117,7 @@ class Sprite: public Drawable {
     Surface& get_intermediate_surface() const ;
     void set_frame_changed(bool frame_changed);
 
-    LuaContext* lua_context;           /**< The Solarus Lua API (NULL means no callbacks for this sprite). TODO move this to ExportableToLua */
+    LuaContext* lua_context;           /**< The Solarus Lua API (nullptr means no callbacks for this sprite). TODO move this to ExportableToLua */
 
     // animation set
     static std::map<std::string, SpriteAnimationSet*> all_animation_sets;
@@ -142,7 +142,7 @@ class Sprite: public Drawable {
     bool paused;                       /**< true if the animation is paused */
     bool finished;                     /**< true if the animation has been stopped because the last frame is finished */
     Sprite* synchronize_to;            /**< another sprite to synchronize the frame to
-                                        * when they have the same animation name (or NULL) */
+                                        * when they have the same animation name (or nullptr) */
 
     // effects
     mutable Surface*

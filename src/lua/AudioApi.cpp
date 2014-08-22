@@ -49,7 +49,7 @@ void LuaContext::register_audio_module() {
       { "set_music_channel_volume", audio_api_set_music_channel_volume },
       { "get_music_tempo", audio_api_get_music_tempo },
       { "set_music_tempo", audio_api_set_music_tempo },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   register_functions(audio_module_name, functions);
 }

@@ -48,7 +48,7 @@ void Hero::FallingState::start(const State* previous_state) {
 
   State::start(previous_state);
 
-  get_hero().delayed_teletransporter = NULL;
+  get_hero().delayed_teletransporter = nullptr;
   get_sprites().save_animation_direction();
   get_sprites().set_animation_falling();
   Sound::play("hero_falls");
@@ -78,7 +78,7 @@ void Hero::FallingState::update() {
 
     // the hero has just finished falling
     Teletransporter* teletransporter = hero.get_delayed_teletransporter();
-    if (teletransporter != NULL) {
+    if (teletransporter != nullptr) {
       // special hole with a teletransporter
       teletransporter->transport_hero(hero);
     }

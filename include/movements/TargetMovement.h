@@ -56,7 +56,7 @@ class TargetMovement: public StraightMovement {
 
     int target_x;                      /**< X coordinate of the point or entity to track. */
     int target_y;                      /**< Y coordinate of the point or entity to track. */
-    MapEntity* target_entity;          /**< The entity to track (NULL if only
+    MapEntity* target_entity;          /**< The entity to track (nullptr if only
                                         * a point is targeted) */
     int entity_offset_x;               /**< X value to add to the entity's coordinates. */
     int entity_offset_y;               /**< Y value to add to the entity's coordinates. */

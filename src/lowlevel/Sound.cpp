@@ -26,8 +26,8 @@
 
 namespace solarus {
 
-ALCdevice* Sound::device = NULL;
-ALCcontext* Sound::context = NULL;
+ALCdevice* Sound::device = nullptr;
+ALCcontext* Sound::context = nullptr;
 bool Sound::initialized = false;
 bool Sound::sounds_preloaded = false;
 float Sound::volume = 1.0;
@@ -35,9 +35,9 @@ std::list<Sound*> Sound::current_sounds;
 std::map<std::string, Sound> Sound::all_sounds;
 ov_callbacks Sound::ogg_callbacks = {
     cb_read,
-    NULL,
-    NULL,
-    NULL
+    nullptr,
+    nullptr,
+    nullptr
 };
 
 /**
@@ -90,7 +90,7 @@ void Sound::initialize(const CommandLine& args) {
 
   // Initialize OpenAL.
 
-  device = alcOpenDevice(NULL);
+  device = alcOpenDevice(nullptr);
   if (!device) {
     Debug::error("Cannot open audio device");
     return;
@@ -136,11 +136,11 @@ void Sound::quit() {
 
     // uninitialize OpenAL
 
-    alcMakeContextCurrent(NULL);
+    alcMakeContextCurrent(nullptr);
     alcDestroyContext(context);
-    context = NULL;
+    context = nullptr;
     alcCloseDevice(device);
-    device = NULL;
+    device = nullptr;
 
     initialized = false;
   }
@@ -363,7 +363,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
   FileTools::data_file_open_buffer(file_name, &mem.data, &mem.size);
 
   OggVorbis_File file;
-  int error = ov_open_callbacks(&mem, &file, NULL, 0, ogg_callbacks);
+  int error = ov_open_callbacks(&mem, &file, nullptr, 0, ogg_callbacks);
 
   if (error) {
     std::ostringstream oss;

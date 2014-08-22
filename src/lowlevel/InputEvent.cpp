@@ -31,7 +31,7 @@ const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
     KEY_NONE
 };
 bool InputEvent::joypad_enabled = false;
-SDL_Joystick* InputEvent::joystick = NULL;
+SDL_Joystick* InputEvent::joystick = nullptr;
 std::map<InputEvent::KeyboardKey, std::string> InputEvent::keyboard_key_names;
 std::map<InputEvent::MouseButton, std::string> InputEvent::mouse_button_names;
 bool InputEvent::repeat_keyboard = false;
@@ -189,7 +189,7 @@ void InputEvent::initialize() {
  */
 void InputEvent::quit() {
 
-  if (joystick != NULL) {
+  if (joystick != nullptr) {
     SDL_JoystickClose(joystick);
   }
   SDL_StopTextInput();
@@ -212,13 +212,13 @@ InputEvent::~InputEvent() {
 }
 
 /**
- * \brief Returns the first event from the event queue, or NULL
+ * \brief Returns the first event from the event queue, or nullptr
  * if there is no event.
- * \return the current event to handle, or NULL if there is no event
+ * \return the current event to handle, or nullptr if there is no event
  */
 InputEvent* InputEvent::get_event() {
 
-  InputEvent* result = NULL;
+  InputEvent* result = nullptr;
   SDL_Event internal_event;
   if (SDL_PollEvent(&internal_event)) {
 
@@ -364,7 +364,7 @@ bool InputEvent::is_key_down(KeyboardKey key) {
  */
 bool InputEvent::is_joypad_button_down(int button) {
 
-  if (joystick == NULL) {
+  if (joystick == nullptr) {
     return false;
   }
 
@@ -378,7 +378,7 @@ bool InputEvent::is_joypad_button_down(int button) {
  */
 bool InputEvent::is_mouse_button_down(MouseButton button) {
 
-  return (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(button)) != 0;
+  return (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(button)) != 0;
 }
 
 /**
@@ -389,7 +389,7 @@ bool InputEvent::is_mouse_button_down(MouseButton button) {
  */
 int InputEvent::get_joypad_axis_state(int axis) {
 
-  if (joystick == NULL) {
+  if (joystick == nullptr) {
     return 0;
   }
 
@@ -413,7 +413,7 @@ int InputEvent::get_joypad_axis_state(int axis) {
  */
 int InputEvent::get_joypad_hat_direction(int hat) {
 
-  if (joystick == NULL) {
+  if (joystick == nullptr) {
     return -1;
   }
 
@@ -781,9 +781,9 @@ void InputEvent::set_joypad_enabled(bool joypad_enabled) {
 
     InputEvent::joypad_enabled = joypad_enabled;
 
-    if (joystick != NULL) {
+    if (joystick != nullptr) {
       SDL_JoystickClose(joystick);
-      joystick = NULL;
+      joystick = nullptr;
     }
 
     if (joypad_enabled && SDL_NumJoysticks() > 0) {

@@ -47,7 +47,7 @@ void LuaContext::register_video_module() {
       { "get_window_size", video_api_get_window_size },
       { "set_window_size", video_api_set_window_size },
       { "reset_window_size", video_api_reset_window_size },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   register_functions(video_module_name, functions);
 }
@@ -102,7 +102,7 @@ int LuaContext::video_api_set_mode(lua_State *l) {
   std::string mode_name = luaL_checkstring(l, 1);
   const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
-  if (mode != NULL && Video::get_video_mode().get_name() != mode_name) {
+  if (mode != nullptr && Video::get_video_mode().get_name() != mode_name) {
     Video::set_video_mode(*mode);
   }
 
@@ -155,7 +155,7 @@ int LuaContext::video_api_is_mode_supported(lua_State *l) {
   std::string mode_name = luaL_checkstring(l, 1);
   const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
-  bool supported = mode != NULL && Video::is_mode_supported(*mode);
+  bool supported = mode != nullptr && Video::is_mode_supported(*mode);
 
   lua_pushboolean(l, supported);
   return 1;

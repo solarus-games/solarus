@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,7 +39,9 @@ class Rectangle {
 
   public:
 
-    explicit Rectangle(int x = 0, int y = 0, int width = 0, int height = 0);
+    Rectangle();
+    explicit Rectangle(int x);
+    Rectangle(int x, int y, int width = 0, int height = 0);
     Rectangle(const Rectangle& other);
     ~Rectangle();
 
@@ -86,6 +88,21 @@ class Rectangle {
 };
 
 std::ostream& operator<<(std::ostream& stream, const Rectangle& rectangle);
+
+/**
+ * \brief Creates a rectangle, without specifying its properties.
+ */
+inline Rectangle::Rectangle():
+    Rectangle(0, 0, 0, 0)
+{}
+
+/**
+ * \brief Creates a rectangle, specifying its properties.
+ * \param x x coordinate of the top-left corner
+ */
+inline Rectangle::Rectangle(int x):
+    Rectangle(x, 0, 0, 0)
+{}
 
 /**
  * \brief Creates a rectangle, specifying its properties.

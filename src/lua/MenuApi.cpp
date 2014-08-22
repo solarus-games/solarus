@@ -67,10 +67,10 @@ void LuaContext::add_menu(int menu_ref, int context_index, bool on_top) {
   }
 
   if (on_top) {
-    menus.push_back(LuaMenuData(menu_ref, context));
+    menus.emplace_back(menu_ref, context);
   }
   else {
-    menus.push_front(LuaMenuData(menu_ref, context));
+    menus.emplace_front(menu_ref, context);
   }
 
   menu_on_started(menu_ref);

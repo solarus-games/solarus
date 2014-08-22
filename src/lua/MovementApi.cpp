@@ -1718,7 +1718,7 @@ int LuaContext::pixel_movement_api_set_trajectory(lua_State* l) {
     lua_rawgeti(l, 4, 2);
     int x = luaL_checkint(l, 5);
     int y = luaL_checkint(l, 6);
-    trajectory.push_back(Rectangle(x, y));
+    trajectory.emplace_back(x, y);
     lua_settop(l, 3); // let the key for the iteration
   }
   movement.set_trajectory(trajectory);

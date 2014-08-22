@@ -175,11 +175,11 @@ class CustomEntity: public Detector {
 
       private:
 
-        CustomEntity* entity;            /**< The custom entity.
+        CustomEntity* entity;          /**< The custom entity.
                                         * nullptr means no info. */
-        int traversable_test_ref;        /**< Lua ref to a boolean function
+        int traversable_test_ref;      /**< Lua ref to a boolean function
                                         * that decides, or LUA_REFNIL. */
-        bool traversable;                /**< Traversable property (unused if
+        bool traversable;              /**< Traversable property (unused if
                                         * there is a Lua function). */
 
     };
@@ -244,7 +244,7 @@ class CustomEntity: public Detector {
     std::vector<CollisionInfo>
         collision_tests;               /**< The collision tests to perform. */
     std::vector<CollisionInfo>
-        successful_collision_tests;   /**< Collision test that detected
+        successful_collision_tests;    /**< Collision test that detected
                                         * collisions other than
                                         * COLLISION_SPRITE. */
 

@@ -65,6 +65,8 @@ public class QuestTree extends JTree implements ProjectObserver {
 
     private EditorWindow editorWindow;  // The main window.
 
+    private NaturalOrderComparator<String> fileNameComparator;
+
     /**
      * Creates a quest tree.
      * @param parent The main quest editor window.
@@ -72,6 +74,7 @@ public class QuestTree extends JTree implements ProjectObserver {
     public QuestTree(EditorWindow parent) {
         setModel(null);  // Because Java makes a stupid example tree by default.
         this.editorWindow = parent;
+        this.fileNameComparator = new NaturalOrderComparator<String>();
 
         setDragEnabled(true);
         addMouseListener(new QuestTreeMouseAdapter());
@@ -417,7 +420,7 @@ public class QuestTree extends JTree implements ProjectObserver {
                     FileElement file = (FileElement) userObject;
                     if (element.isDirectory()) {
                         if (file.isDirectory()) {
-                            if (file.getPath().compareTo(element.getPath()) > 0) {
+                            if (fileNameComparator.compare(file.getPath(), element.getPath()) > 0) {
                                 return location;
                             }
                         } else {
@@ -425,7 +428,7 @@ public class QuestTree extends JTree implements ProjectObserver {
                         }
                     }
                     else {
-                        if (!file.isDirectory() && file.getPath().compareTo(element.getPath()) > 0) {
+                        if (!file.isDirectory() && fileNameComparator.compare(file.getPath(), element.getPath()) > 0) {
                             return location;
                         }
                     }
@@ -574,7 +577,7 @@ public class QuestTree extends JTree implements ProjectObserver {
                 if (userObject instanceof ResourceElement) {
 
                     ResourceElement resource = (ResourceElement) userObject;
-                    if (resource.id.compareTo(element.id) > 0) {
+                    if (fileNameComparator.compare(resource.id, element.id) > 0) {
                         return location;
                     }
                 }

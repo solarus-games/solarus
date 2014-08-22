@@ -42,8 +42,6 @@ class Rectangle {
     Rectangle();
     explicit Rectangle(int x);
     Rectangle(int x, int y, int width = 0, int height = 0);
-    Rectangle(const Rectangle& other);
-    ~Rectangle();
 
     int get_x() const;
     int get_y() const;
@@ -117,22 +115,6 @@ inline Rectangle::Rectangle(int x, int y, int width, int height) {
   rect.y = y;
   rect.w = width;
   rect.h = height;
-}
-
-/**
- * \brief Copy constructor.
- * \param other the rectangle to copy
- */
-inline Rectangle::Rectangle(const Rectangle& other):
-  rect(other.rect) {
-
-}
-
-/**
- * \brief Destructor.
- */
-inline Rectangle::~Rectangle() {
-
 }
 
 /**

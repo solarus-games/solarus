@@ -572,8 +572,7 @@ bool LuaContext::userdata_has_field(
     return false;
   }
 
-  const std::map<const ExportableToLua*, std::set<std::string> >::const_iterator it =
-      userdata_fields.find(&userdata);
+  auto it = userdata_fields.find(&userdata);
   if (it == userdata_fields.end()) {
     return false;
   }
@@ -607,8 +606,7 @@ bool LuaContext::userdata_has_field(
     return false;
   }
 
-  const std::map<const ExportableToLua*, std::set<std::string> >::const_iterator it =
-      userdata_fields.find(&userdata);
+  auto it = userdata_fields.find(&userdata);
   if (it == userdata_fields.end()) {
     return false;
   }

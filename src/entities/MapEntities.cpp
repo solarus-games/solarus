@@ -244,8 +244,7 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
  */
 MapEntity* MapEntities::find_entity(const std::string& name) {
 
-  std::map<std::string, MapEntity*>::const_iterator it =
-      named_entities.find(name);
+  auto it = named_entities.find(name);
   if (it == named_entities.end()) {
     return nullptr;
   }
@@ -310,8 +309,7 @@ std::list<MapEntity*> MapEntities::get_entities_with_prefix(
  */
 bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
 
-  std::list<MapEntity*>::const_iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+  for (auto i = all_entities.begin(); i != all_entities.end(); ++i) {
 
     const MapEntity* entity = *i;
     if (entity->has_prefix(prefix) && !entity->is_being_removed()) {

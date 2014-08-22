@@ -162,8 +162,7 @@ void Sound::load_all() {
 
     const std::vector<QuestResourceList::Element>& sound_elements =
         QuestResourceList::get_elements(QuestResourceList::RESOURCE_SOUND);
-    std::vector<QuestResourceList::Element>::const_iterator it;
-    for (it = sound_elements.begin(); it != sound_elements.end(); ++it) {
+    for (auto it = sound_elements.begin(); it != sound_elements.end(); ++it) {
       const std::string& sound_id = it->first;
 
       all_sounds[sound_id] = Sound(sound_id);

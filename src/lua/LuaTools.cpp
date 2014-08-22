@@ -506,7 +506,9 @@ bool LuaTools::is_valid_lua_identifier(const std::string& name) {
   }
 
   bool valid = true;
-  for (std::string::const_iterator it = name.begin(); it != name.end() && valid; it++) {
+  for (auto it = name.begin();
+      it != name.end() && valid;
+      ++it) {
     char character = *it;
     valid = (character == '_' ||
         (character >= 'a' && character <= 'z') ||

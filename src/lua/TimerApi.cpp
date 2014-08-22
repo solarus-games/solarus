@@ -286,8 +286,7 @@ void LuaContext::update_timers() {
  */
 void LuaContext::notify_timers_map_suspended(bool suspended) {
 
-  std::map<Timer*, LuaTimerData>::const_iterator it;
-  for (it = timers.begin(); it != timers.end(); ++it) {
+  for (auto it = timers.begin(); it != timers.end(); ++it) {
     Timer* timer = it->first;
     if (timer->is_suspended_with_map()) {
       timer->notify_map_suspended(suspended);
@@ -307,8 +306,7 @@ void LuaContext::set_entity_timers_suspended(
     MapEntity& entity, bool suspended
 ) {
 
-  std::map<Timer*, LuaTimerData>::const_iterator it;
-  for (it = timers.begin(); it != timers.end(); ++it) {
+  for (auto it = timers.begin(); it != timers.end(); ++it) {
 
     Timer* timer = it->first;
     if (it->second.context == &entity) {
@@ -553,7 +551,7 @@ int LuaContext::timer_api_get_remaining_time(lua_State* l) {
   Timer& timer = check_timer(l, 1);
 
   LuaContext& lua_context = get_lua_context(l);
-  const std::map<Timer*, LuaTimerData>::const_iterator it = lua_context.timers.find(&timer);
+  const auto it = lua_context.timers.find(&timer);
   if (it == lua_context.timers.end() || it->second.callback_ref == LUA_REFNIL) {
     // This timer is already finished or was canceled.
     lua_pushinteger(l, 0);
@@ -579,7 +577,7 @@ int LuaContext::timer_api_set_remaining_time(lua_State* l) {
   uint32_t remaining_time = luaL_checkint(l, 2);
 
   LuaContext& lua_context = get_lua_context(l);
-  const std::map<Timer*, LuaTimerData>::const_iterator it = lua_context.timers.find(&timer);
+  const auto it = lua_context.timers.find(&timer);
   if (it != lua_context.timers.end() && it->second.callback_ref != LUA_REFNIL) {
     // The timer is still active.
     const uint32_t now = System::now();

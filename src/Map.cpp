@@ -910,11 +910,9 @@ bool Map::test_collision_with_entities(
 
   const std::list<MapEntity*>& obstacle_entities =
       entities->get_obstacle_entities(layer);
-  const std::list<MapEntity*>::const_iterator end =
-      obstacle_entities.end();
+  const auto end = obstacle_entities.end();
 
-  std::list<MapEntity*>::const_iterator it;
-  for (it = obstacle_entities.begin(); it != end; ++it) {
+  for (auto it = obstacle_entities.begin(); it != end; ++it) {
 
     MapEntity* entity = *it;
     if (entity->overlaps(collision_box)
@@ -1130,9 +1128,8 @@ void Map::check_collision_with_detectors(MapEntity& entity) {
 
   // Check this entity with each detector.
   const std::list<Detector*>& detectors = entities->get_detectors();
-  std::list<Detector*>::const_iterator it;
-  const std::list<Detector*>::const_iterator end = detectors.end();
-  for (it = detectors.begin(); it != end; ++it) {
+  const auto end = detectors.end();
+  for (auto it = detectors.begin(); it != end; ++it) {
 
     Detector& detector = *(*it);
     if (detector.is_enabled()
@@ -1162,9 +1159,8 @@ void Map::check_collision_from_detector(Detector& detector) {
 
   // Check each entity with this detector.
   const std::list<MapEntity*>& all_entities = entities->get_entities();
-  std::list<MapEntity*>::const_iterator it;
-  const std::list<MapEntity*>::const_iterator end = all_entities.end();
-  for (it = all_entities.begin(); it != end; ++it) {
+  const auto end = all_entities.end();
+  for (auto it = all_entities.begin(); it != end; ++it) {
 
     MapEntity& entity = *(*it);
     if (entity.is_enabled()
@@ -1194,8 +1190,8 @@ void Map::check_collision_with_detectors(MapEntity& entity, Sprite& sprite) {
 
   // Check each detector.
   const std::list<Detector*>& detectors = entities->get_detectors();
-  std::list<Detector*>::const_iterator it;
-  for (it = detectors.begin(); it != detectors.end(); it++) {
+  const auto end = detectors.end();
+  for (auto it = detectors.begin(); it != end; ++it) {
 
     Detector& detector = *(*it);
     if (!detector.is_being_removed()

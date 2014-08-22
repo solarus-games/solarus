@@ -133,9 +133,8 @@ int LuaContext::video_api_get_modes(lua_State* l) {
 
   lua_newtable(l);
 
-  std::vector<const VideoMode*>::const_iterator it;
   int i = 1;
-  for (it = modes.begin(); it != modes.end(); ++it) {
+  for (auto it = modes.begin(); it != modes.end(); ++it) {
     const VideoMode* mode = *it;
     push_string(l, mode->get_name());
     lua_rawseti(l, -2, i);

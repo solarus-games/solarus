@@ -45,8 +45,9 @@ void Sprite::initialize() {
 void Sprite::quit() {
 
   // delete the animations loaded
-  std::map<std::string, SpriteAnimationSet*>::const_iterator it;
-  for (it = all_animation_sets.begin(); it != all_animation_sets.end(); ++it) {
+  for (auto it = all_animation_sets.begin();
+      it != all_animation_sets.end();
+      ++it) {
     delete it->second;
   }
   all_animation_sets.clear();

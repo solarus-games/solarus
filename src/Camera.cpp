@@ -112,8 +112,7 @@ void Camera::update_fixed_on_hero() {
     std::list<const Separator*> applied_separators;
     const std::list<const Separator*>& separators =
         map.get_entities().get_separators();
-    std::list<const Separator*>::const_iterator it;
-    for (it = separators.begin(); it != separators.end(); ++it) {
+    for (auto it = separators.begin(); it != separators.end(); ++it) {
       const Separator& separator = *(*it);
 
       if (separator.is_vertical()) {
@@ -163,8 +162,7 @@ void Camera::update_fixed_on_hero() {
 
       must_adjust_x = false;
       must_adjust_y = false;
-      std::list<const Separator*>::const_iterator it;
-      for (it = applied_separators.begin(); it != applied_separators.end(); ++it) {
+      for (auto it = applied_separators.begin(); it != applied_separators.end(); ++it) {
         const Separator& separator = *(*it);
 
         if (separator.is_vertical()) {

@@ -195,10 +195,9 @@ void MapEntity::update_ground_observers() {
   }
 
   // Update overlapping entities sensible to their ground.
-  std::list<MapEntity*>::const_iterator it;
   const std::list<MapEntity*>& ground_observers =
       get_entities().get_ground_observers(get_layer());
-  for (it = ground_observers.begin(); it != ground_observers.end(); ++it) {
+  for (auto it = ground_observers.begin(); it != ground_observers.end(); ++it) {
     MapEntity& ground_observer = *(*it);
     // Update the ground of entities that overlap or were just overlapping this one.
 
@@ -1229,8 +1228,7 @@ void MapEntity::remove_sprite(Sprite& sprite) {
  */
 void MapEntity::clear_sprites() {
 
-  std::vector<Sprite*>::const_iterator it;
-  for (it = sprites.begin(); it != sprites.end(); ++it) {
+  for (auto it = sprites.begin(); it != sprites.end(); ++it) {
     old_sprites.push_back(*it);
   }
   sprites.clear();
@@ -1359,9 +1357,8 @@ void MapEntity::clear_movement() {
  */
 void MapEntity::clear_old_movements() {
 
-  std::vector<Movement*>::const_iterator it;
-  const std::vector<Movement*>::const_iterator end = old_movements.end();
-  for (it = old_movements.begin(); it != end; ++it) {
+  auto end = old_movements.end();
+  for (auto it = old_movements.begin(); it != end; ++it) {
     Movement* movement = *it;
     RefCountable::unref(movement);
   }
@@ -1613,8 +1610,7 @@ void MapEntity::set_enabled(bool enabled) {
         get_movement()->set_suspended(true);
       }
 
-      std::vector<Sprite*>::const_iterator it;
-      for (it = sprites.begin(); it != sprites.end(); it++) {
+      for (auto it = sprites.begin(); it != sprites.end(); ++it) {
 
         Sprite& sprite = *(*it);
         sprite.set_suspended(true);
@@ -1958,9 +1954,8 @@ bool MapEntity::overlaps_camera() const {
   }
 
   bool found = false;
-  std::vector<Sprite*>::const_iterator it;
-  const std::vector<Sprite*>::const_iterator end = sprites.end();
-  for (it = sprites.begin(); it != end && !found; ++it) {
+  auto end = sprites.end();
+  for (auto it = sprites.begin(); it != end && !found; ++it) {
     const Sprite& sprite = *(*it);
     const Rectangle& sprite_size = sprite.get_size();
     const Rectangle& sprite_origin = sprite.get_origin();
@@ -2143,9 +2138,8 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
   const Rectangle& this_center = get_center_point();
   const Rectangle& other_center = other.get_center_point();
 
-  const std::list<const Separator*>& separators = get_entities().get_separators();
-  std::list<const Separator*>::const_iterator it;
-  for (it = separators.begin(); it != separators.end(); ++it) {
+  auto separators = get_entities().get_separators();
+  for (auto it = separators.begin(); it != separators.end(); ++it) {
 
     const Separator& separator = *(*it);
     if (separator.is_vertical()) {
@@ -2418,8 +2412,7 @@ void MapEntity::set_suspended(bool suspended) {
   }
 
   // suspend/unsuspend the sprites animations
-  std::vector<Sprite*>::const_iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
+  for (auto it = sprites.begin(); it != sprites.end(); ++it) {
 
     Sprite& sprite = *(*it);
     sprite.set_suspended(suspended || !is_enabled());
@@ -2516,9 +2509,8 @@ void MapEntity::update() {
   }
 
   // update the sprites
-  std::vector<Sprite*>::const_iterator it;
-  const std::vector<Sprite*>::const_iterator sprites_end = sprites.end();
-  for (it = sprites.begin(); it != sprites_end; ++it) {
+  const auto sprites_end = sprites.end();
+  for (auto it = sprites.begin(); it != sprites_end; ++it) {
 
     Sprite& sprite = *(*it);
     sprite.update();
@@ -2547,7 +2539,6 @@ void MapEntity::update() {
       stop_stream_action();
     }
   }
-
 
   // suspend the entity if far from the camera
   // TODO don't do this, it has too many side effects
@@ -2608,8 +2599,7 @@ void MapEntity::draw_on_map() {
   }
 
   // Draw the sprites.
-  std::vector<Sprite*>::const_iterator it;
-  for (it = sprites.begin(); it != sprites.end(); ++it) {
+  for (auto it = sprites.begin(); it != sprites.end(); ++it) {
     Sprite& sprite = *(*it);
     get_map().draw_sprite(sprite, get_displayed_xy());
   }

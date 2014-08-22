@@ -56,8 +56,7 @@ Equipment::Equipment(Savegame& savegame):
  */
 Equipment::~Equipment() {
 
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); ++it) {
+  for (auto it = items.begin(); it != items.end(); ++it) {
     EquipmentItem* item = it->second;
     RefCountable::unref(item);
   }
@@ -91,8 +90,7 @@ void Equipment::notify_game_started() {
 void Equipment::notify_game_finished() {
 
   // The equipment items will disappear: notify them.
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
+  for (auto it = items.begin(); it != items.end(); ++it) {
     it->second->exit();
   }
 }
@@ -104,8 +102,7 @@ void Equipment::notify_game_finished() {
 void Equipment::notify_map_changed(Map& map) {
 
   // Notify the items.
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
+  for (auto it = items.begin(); it != items.end(); ++it) {
     it->second->notify_map_changed(map);
   }
 }
@@ -132,8 +129,7 @@ void Equipment::update() {
   }
 
   // update the item scripts
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
+  for (auto it = items.begin(); it != items.end(); ++it) {
     it->second->update();
   }
 }
@@ -147,8 +143,7 @@ void Equipment::set_suspended(bool suspended) {
   this->suspended = suspended;
 
   // notify the item scripts
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
+  for (auto it = items.begin(); it != items.end(); ++it) {
     it->second->set_suspended(suspended);
   }
 }
@@ -417,27 +412,23 @@ void Equipment::restore_all_magic() {
 void Equipment::load_items() {
 
   // Create each equipment item declared in project_db.dat.
-  {
-    const std::vector<QuestResourceList::Element>& item_elements =
+  const std::vector<QuestResourceList::Element>& item_elements =
       QuestResourceList::get_elements(QuestResourceList::RESOURCE_ITEM);
-    std::vector<QuestResourceList::Element>::const_iterator it;
-    for (it = item_elements.begin(); it != item_elements.end(); ++it) {
-      const std::string& item_id = it->first;
-      EquipmentItem* item = new EquipmentItem(*this);
-      RefCountable::ref(item);
-      item->set_name(item_id);
-      items[item_id] = item;
-    }
+  for (auto it = item_elements.begin(); it != item_elements.end(); ++it) {
+    const std::string& item_id = it->first;
+    EquipmentItem* item = new EquipmentItem(*this);
+    RefCountable::ref(item);
+    item->set_name(item_id);
+    items[item_id] = item;
   }
 
   // Load the item scripts.
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
+  for (auto it = items.begin(); it != items.end(); ++it) {
     it->second->initialize();
   }
 
   // Start the items once they all exist.
-  for (it = items.begin(); it != items.end(); it++) {
+  for (auto it = items.begin(); it != items.end(); ++it) {
     it->second->start();
   }
 }
@@ -658,8 +649,7 @@ void Equipment::set_ability(Ability ability, int level) {
  */
 void Equipment::notify_ability_used(Ability ability) {
 
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
+  for (auto it = items.begin(); it != items.end(); ++it) {
     it->second->notify_ability_used(ability);
   }
 }

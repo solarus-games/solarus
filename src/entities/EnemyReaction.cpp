@@ -95,8 +95,7 @@ const EnemyReaction::Reaction& EnemyReaction::get_reaction(
     const Sprite* sprite) const {
 
   if (sprite != nullptr) {
-    const std::map<const Sprite*, Reaction>::const_iterator it =
-        sprite_reactions.find(sprite);
+    auto it = sprite_reactions.find(sprite);
     if (it != sprite_reactions.end()) {
       return it->second;
     }

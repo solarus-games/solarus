@@ -322,8 +322,7 @@ Rectangle PathMovement::get_xy_change() const {
 
   Rectangle xy;
 
-  std::string::const_iterator it;
-  for (it = initial_path.begin(); it != initial_path.end(); it++) {
+  for (auto it = initial_path.begin(); it != initial_path.end(); it++) {
     int direction = *it - '0';
     const Rectangle& xy_move = MapEntity::direction_to_xy_move(direction);
     xy.add_xy(xy_move.get_x() * 8, xy_move.get_y() * 8);

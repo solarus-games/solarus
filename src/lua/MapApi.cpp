@@ -748,8 +748,7 @@ int LuaContext::map_api_get_entities(lua_State* l) {
     map.get_entities().get_entities_with_prefix(prefix);
 
   lua_newtable(l);
-  std::list<MapEntity*>::const_iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
+  for (auto it = entities.begin(); it != entities.end(); ++it) {
     MapEntity* entity = *it;
     push_entity(l, *entity);
     lua_pushboolean(l, true);

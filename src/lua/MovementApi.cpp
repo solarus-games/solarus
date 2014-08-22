@@ -1685,8 +1685,7 @@ int LuaContext::pixel_movement_api_get_trajectory(lua_State* l) {
   lua_settop(l, 1);
   lua_newtable(l);
   int i = 0;
-  std::list<Rectangle>::const_iterator it;
-  for (it = trajectory.begin(); it != trajectory.end(); it++) {
+  for (auto it = trajectory.begin(); it != trajectory.end(); ++it) {
     const Rectangle& xy = *it;
     lua_newtable(l);
     lua_pushinteger(l, xy.get_x());

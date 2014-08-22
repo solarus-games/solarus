@@ -124,8 +124,7 @@ void CustomEntity::set_sprites_direction(int direction) {
 
   set_direction(direction);
 
-  std::vector<Sprite*>::const_iterator it;
-  for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
+  for (auto it = get_sprites().begin(); it != get_sprites().end(); ++it) {
     Sprite& sprite = *(*it);
     if (direction >= 0 && direction < sprite.get_nb_directions()) {
       sprite.set_current_direction(direction);
@@ -142,8 +141,7 @@ void CustomEntity::set_sprites_direction(int direction) {
 const CustomEntity::TraversableInfo& CustomEntity::get_traversable_by_entity_info(
     EntityType type) {
 
-  const std::map<EntityType, TraversableInfo>::const_iterator it =
-    traversable_by_entities_type.find(type);
+  auto it = traversable_by_entities_type.find(type);
   if (it != traversable_by_entities_type.end()) {
     // This entity type overrides the general setting.
     return it->second;
@@ -295,8 +293,7 @@ const CustomEntity::TraversableInfo& CustomEntity::get_can_traverse_entity_info(
     EntityType type) {
 
   // Find the obstacle settings.
-  const std::map<EntityType, TraversableInfo>::const_iterator it =
-    can_traverse_entities_type.find(type);
+  auto it = can_traverse_entities_type.find(type);
   if (it != can_traverse_entities_type.end()) {
     // This entity type overrides the general setting.
     return it->second;
@@ -577,8 +574,7 @@ bool CustomEntity::is_separator_obstacle(Separator& separator) {
  */
 bool CustomEntity::can_traverse_ground(Ground ground) const {
 
-  const std::map<Ground, bool>::const_iterator it =
-    can_traverse_grounds.find(ground);
+  auto it = can_traverse_grounds.find(ground);
 
   if (it != can_traverse_grounds.end()) {
     // Return the boolean value that was set.
@@ -757,8 +753,7 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
   bool collision = false;
 
   const std::vector<CollisionInfo> collision_tests = this->collision_tests;
-  std::vector<CollisionInfo>::const_iterator it;
-  for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {
+  for (auto it = collision_tests.begin(); it != collision_tests.end(); ++it) {
 
     const CollisionInfo& info = *it;
     switch (info.get_built_in_test()) {
@@ -846,10 +841,8 @@ void CustomEntity::notify_collision(MapEntity& entity_overlapping, CollisionMode
   Debug::check_assertion(collision_mode == COLLISION_CUSTOM,
       "Unexpected collision mode");
 
-  std::vector<CollisionInfo>::const_iterator it;
-
   // There is a collision: execute the callbacks.
-  for (it = successful_collision_tests.begin();
+  for (auto it = successful_collision_tests.begin();
       it != successful_collision_tests.end();
       ++it) {
 
@@ -869,8 +862,7 @@ void CustomEntity::notify_collision(MapEntity& other_entity, Sprite& other_sprit
 
   // A collision was detected with a sprite of another entity.
   const std::vector<CollisionInfo> collision_tests = this->collision_tests;
-  std::vector<CollisionInfo>::const_iterator it;
-  for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {
+  for (auto it = collision_tests.begin(); it != collision_tests.end(); ++it) {
 
     const CollisionInfo& info = *it;
     if (info.get_built_in_test() == COLLISION_SPRITE) {

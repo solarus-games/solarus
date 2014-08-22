@@ -363,7 +363,7 @@ bool Video::is_acceleration_enabled() {
  */
 bool Video::is_mode_supported(const VideoMode& mode) {
 
-  const std::vector<VideoMode*>::const_iterator it = std::find(
+  const auto it = std::find(
       all_video_modes.begin(), all_video_modes.end(), &mode
   );
 
@@ -423,7 +423,7 @@ void Video::switch_video_mode() {
   }
 
   // Find the current video mode in the list and traverse the list from there.
-  std::vector<VideoMode*>::const_iterator it = std::find(
+  auto it = std::find(
       all_video_modes.begin(), all_video_modes.end(), video_mode
   );
   VideoMode* mode = nullptr;
@@ -547,8 +547,7 @@ std::vector<const VideoMode*> Video::get_video_modes() {
 
   // Return a copy of all_video_modes with const elements.
   std::vector<const VideoMode*> result;
-  std::vector<VideoMode*>::const_iterator it;
-  for (it = all_video_modes.begin(); it != all_video_modes.end(); ++it) {
+  for (auto it = all_video_modes.begin(); it != all_video_modes.end(); ++it) {
     result.push_back(*it);
   }
   return result;

@@ -54,7 +54,7 @@ const double Geometry::SQRT_2 = 1.41421356237309504880;
  * \param radians angle in radians
  * \return the degrees value
  */
-const int Geometry::radians_to_degrees(double radians) {
+int Geometry::radians_to_degrees(double radians) {
   return (int) (radians * 360.0 / TWO_PI);
 }
 
@@ -63,7 +63,7 @@ const int Geometry::radians_to_degrees(double radians) {
  * \param degrees angle in degrees
  * \return the radians value
  */
-const double Geometry::degrees_to_radians(double degrees) {
+double Geometry::degrees_to_radians(double degrees) {
   return degrees * TWO_PI / 360.0;
 }
 

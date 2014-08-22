@@ -40,8 +40,8 @@ class Rectangle {
   public:
 
     Rectangle();
-    explicit Rectangle(int x);
-    Rectangle(int x, int y, int width = 0, int height = 0);
+    Rectangle(int x, int y);
+    Rectangle(int x, int y, int width, int height);
 
     int get_x() const;
     int get_y() const;
@@ -95,11 +95,12 @@ inline Rectangle::Rectangle():
 {}
 
 /**
- * \brief Creates a rectangle, specifying its properties.
+ * \brief Creates a rectangle, specifying its position.
  * \param x x coordinate of the top-left corner
+ * \param y y coordinate of the top-left corner
  */
-inline Rectangle::Rectangle(int x):
-    Rectangle(x, 0, 0, 0)
+inline Rectangle::Rectangle(int x, int y):
+    Rectangle(x, y, 0, 0)
 {}
 
 /**

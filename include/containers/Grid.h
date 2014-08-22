@@ -58,7 +58,7 @@ class Grid {
     const Rectangle cell_size;
     size_t num_rows;
     size_t num_columns;
-    std::vector<std::vector<T> > elements;     /**< Two-dimensional array of cells. */
+    std::vector<std::vector<T>> elements;     /**< Two-dimensional array of cells. */
 
 };
 

@@ -141,8 +141,7 @@ void Tileset::load() {
  */
 void Tileset::unload() {
 
-  std::map<std::string, TilePattern*>::iterator it;
-  for (it = tile_patterns.begin(); it != tile_patterns.end(); it++) {
+  for (auto it = tile_patterns.begin(); it != tile_patterns.end(); ++it) {
     delete it->second;
   }
   tile_patterns.clear();

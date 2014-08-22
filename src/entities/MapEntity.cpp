@@ -407,8 +407,7 @@ void MapEntity::notify_map_opening_transition_finished() {
  */
 void MapEntity::notify_tileset_changed() {
 
-  std::vector<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
+  for (auto it = sprites.begin(); it != sprites.end(); ++it) {
 
     Sprite& sprite = *(*it);
     sprite.set_tileset(get_map().get_tileset());
@@ -1213,8 +1212,7 @@ Sprite& MapEntity::create_sprite(
 void MapEntity::remove_sprite(Sprite& sprite) {
 
   bool found = false;
-  std::vector<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end() && !found; it++) {
+  for (auto it = sprites.begin(); it != sprites.end() && !found; ++it) {
     if (*it == &sprite) {
       old_sprites.push_back(&sprite);
       found = true;
@@ -1243,12 +1241,10 @@ void MapEntity::clear_sprites() {
  */
 void MapEntity::clear_old_sprites() {
 
-  std::vector<Sprite*>::const_iterator it;
-  const std::vector<Sprite*>::const_iterator end = old_sprites.end();
-  for (it = old_sprites.begin(); it != end; ++it) {
+  auto end = old_sprites.end();
+  for (auto it = old_sprites.begin(); it != end; ++it) {
     Sprite* sprite = *it;
-    std::vector<Sprite*>::iterator it2;
-    for (it2 = sprites.begin(); it2 != sprites.end(); ++it2) {
+    for (auto it2 = sprites.begin(); it2 != sprites.end(); ++it2) {
       if (*it2 == sprite) {
         sprites.erase(it2);
         break;
@@ -1499,8 +1495,7 @@ void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
   get_map().check_collision_with_detectors(*this);
 
   // Detect pixel-precise collisions.
-  std::vector<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
+  for (auto it = sprites.begin(); it != sprites.end(); ++it) {
 
     Sprite& sprite = *(*it);
     if (sprite.are_pixel_collisions_enabled()) {
@@ -2458,8 +2453,7 @@ uint32_t MapEntity::get_when_suspended() const {
  */
 void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
 
-  std::vector<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
+  for (auto it = sprites.begin(); it != sprites.end(); ++it) {
 
     Sprite& sprite = *(*it);
     sprite.set_ignore_suspend(ignore_suspend);
@@ -2503,8 +2497,7 @@ void MapEntity::update() {
           stream_action->set_suspended(false);
         }
 
-        std::vector<Sprite*>::iterator it;
-        for (it = sprites.begin(); it != sprites.end(); it++) {
+        for (auto it = sprites.begin(); it != sprites.end(); ++it) {
 
           Sprite& sprite = *(*it);
           sprite.set_suspended(false);

@@ -68,7 +68,7 @@ LuaContext::~LuaContext() {
  */
 LuaContext& LuaContext::get_lua_context(lua_State* l) {
 
-  std::map<lua_State*, LuaContext*>::iterator it = lua_contexts.find(l);
+  auto it = lua_contexts.find(l);
 
   Debug::check_assertion(it != lua_contexts.end(),
       "This Lua state does not belong to a LuaContext object");

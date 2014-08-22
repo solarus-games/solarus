@@ -120,8 +120,7 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
 
 #ifndef NDEBUG
   // Sanity check: check the uniqueness of the ref.
-  std::map<Timer*, LuaTimerData>::iterator it;
-  for (it = timers.begin(); it != timers.end(); ++it) {
+  for (auto it = timers.begin(); it != timers.end(); ++it) {
     if (it->second.callback_ref == callback_ref) {
       std::ostringstream oss;
       oss << "Callback ref " << callback_ref
@@ -212,8 +211,7 @@ void LuaContext::remove_timers(int context_index) {
     context = lua_topointer(l, context_index);
   }
 
-  std::map<Timer*, LuaTimerData>::iterator it;
-  for (it = timers.begin(); it != timers.end(); ++it) {
+  for (auto it = timers.begin(); it != timers.end(); ++it) {
     Timer* timer = it->first;
     if (it->second.context == context) {
       if (!timer->is_finished()) {
@@ -230,8 +228,7 @@ void LuaContext::remove_timers(int context_index) {
  */
 void LuaContext::destroy_timers() {
 
-  std::map<Timer*, LuaTimerData>::iterator it;
-  for (it = timers.begin(); it != timers.end(); ++it) {
+  for (auto it = timers.begin(); it != timers.end(); ++it) {
 
     Timer* timer = it->first;
     if (!timer->is_finished()) {
@@ -248,8 +245,7 @@ void LuaContext::destroy_timers() {
 void LuaContext::update_timers() {
 
   // Update all timers.
-  std::map<Timer*, LuaTimerData>::iterator it;
-  for (it = timers.begin(); it != timers.end(); ++it) {
+  for (auto it = timers.begin(); it != timers.end(); ++it) {
 
     Timer* timer = it->first;
     int callback_ref = it->second.callback_ref;
@@ -263,11 +259,12 @@ void LuaContext::update_timers() {
   }
 
   // Destroy the ones that should be removed.
-  std::list<Timer*>::iterator it2;
-  for (it2 = timers_to_remove.begin(); it2 != timers_to_remove.end(); ++it2) {
+  for (auto it2 = timers_to_remove.begin();
+      it2 != timers_to_remove.end();
+      ++it2) {
 
     Timer* timer = *it2;
-    it = timers.find(timer);
+    auto it = timers.find(timer);
     if (it != timers.end()) {
       if (!timer->is_finished()) {
         cancel_callback(it->second.callback_ref);
@@ -334,7 +331,7 @@ void LuaContext::do_timer_callback(Timer& timer) {
 
   Debug::check_assertion(timer.is_finished(), "This timer is still running");
 
-  const std::map<Timer*, LuaTimerData>::iterator it = timers.find(&timer);
+  auto it = timers.find(&timer);
   if (it != timers.end() && it->second.callback_ref != LUA_REFNIL) {
     const int callback_ref = it->second.callback_ref;
     push_callback(callback_ref);

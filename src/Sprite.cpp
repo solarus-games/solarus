@@ -64,8 +64,7 @@ void Sprite::quit() {
 SpriteAnimationSet& Sprite::get_animation_set(const std::string& id) {
 
   SpriteAnimationSet* animation_set = nullptr;
-  std::map<std::string, SpriteAnimationSet*>::iterator it =
-      all_animation_sets.find(id);
+  auto it = all_animation_sets.find(id);
   if (it != all_animation_sets.end()) {
     animation_set = it->second;
   }

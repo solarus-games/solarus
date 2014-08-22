@@ -536,8 +536,7 @@ std::string FileTools::create_temporary_file(const char* buffer, size_t size) {
 bool FileTools::remove_temporary_files() {
 
   bool success = true;
-  std::vector<std::string>::iterator it;
-  for (it = temporary_files.begin(); it != temporary_files.end(); ++it) {
+  for (auto it = temporary_files.begin(); it != temporary_files.end(); ++it) {
     success = (std::remove(it->c_str()) == 0) && success;
   }
 

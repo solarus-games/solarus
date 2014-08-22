@@ -59,8 +59,7 @@ Sound::~Sound() {
   if (is_initialized() && buffer != AL_NONE) {
 
     // stop the sources where this buffer is attached
-    std::list<ALuint>::iterator it;
-    for (it = sources.begin(); it != sources.end(); it++) {
+    for (auto it = sources.begin(); it != sources.end(); ++it) {
       ALuint source = (*it);
       alSourceStop(source);
       alSourcei(source, AL_BUFFER, 0);
@@ -229,15 +228,14 @@ void Sound::update() {
   // update the playing sounds
   Sound* sound;
   std::list<Sound*> sounds_to_remove;
-  std::list<Sound*>::iterator it;
-  for (it = current_sounds.begin(); it != current_sounds.end(); it++) {
+  for (auto it = current_sounds.begin(); it != current_sounds.end(); ++it) {
     sound = *it;
     if (!sound->update_playing()) {
       sounds_to_remove.push_back(sound);
     }
   }
 
-  for (it = sounds_to_remove.begin(); it != sounds_to_remove.end(); it++) {
+  for (auto it = sounds_to_remove.begin(); it != sounds_to_remove.end(); ++it) {
     sound = *it;
     current_sounds.remove(sound);
   }
@@ -253,7 +251,7 @@ void Sound::update() {
 bool Sound::update_playing() {
 
   // See if this sound is still playing.
-  std::list<ALuint>::iterator it = sources.begin();
+  auto it = sources.begin();
   if (it == sources.end()) {
     return false;
   }

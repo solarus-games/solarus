@@ -83,8 +83,7 @@ void TextSurface::load_fonts() {
  */
 void TextSurface::quit() {
 
-  std::map<std::string, FontData>::iterator it;
-  for (it = fonts.begin(); it != fonts.end(); it++) {
+  for (auto it = fonts.begin(); it != fonts.end(); ++it) {
     std::string font_id = it->first;
     FontData* font = &it->second;
 

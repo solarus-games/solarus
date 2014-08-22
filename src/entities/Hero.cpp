@@ -101,8 +101,7 @@ Hero::~Hero() {
   delete sprites;
   delete state;
 
-  std::list<State*>::iterator it;
-  for (it = old_states.begin(); it != old_states.end(); it++) {
+  for (auto it = old_states.begin(); it != old_states.end(); it++) {
     delete *it;
   }
 }
@@ -244,8 +243,7 @@ void Hero::update_state() {
   state->update();
 
   // see if there is old states to cleanup
-  std::list<State*>::iterator it;
-  for (it = old_states.begin(); it != old_states.end(); it++) {
+  for (auto it = old_states.begin(); it != old_states.end(); ++it) {
     delete *it;
   }
   old_states.clear();
@@ -879,8 +877,7 @@ bool Hero::is_on_raised_blocks() const {
 Stairs* Hero::get_stairs_overlapping() {
 
   std::list<Stairs*> all_stairs = get_entities().get_stairs(get_layer());
-  std::list<Stairs*>::iterator it;
-  for (it = all_stairs.begin(); it != all_stairs.end(); it++) {
+  for (auto it = all_stairs.begin(); it != all_stairs.end(); ++it) {
 
     Stairs* stairs = *it;
 

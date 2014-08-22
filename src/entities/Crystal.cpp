@@ -136,8 +136,9 @@ bool Crystal::notify_action_command_pressed() {
 void Crystal::activate(MapEntity& entity_activating) {
 
   bool recently_activated = false;
-  std::list<MapEntity*>::iterator it;
-  for (it = entities_activating.begin(); it != entities_activating.end() && !recently_activated; it++) {
+  for (auto it = entities_activating.begin();
+      it != entities_activating.end() && !recently_activated;
+      it++) {
     recently_activated  = (*it == &entity_activating);
   }
 

@@ -74,8 +74,7 @@ MapEntities::~MapEntities() {
     ground_modifiers[layer].clear();
     stairs[layer].clear();
 
-    std::vector<Tile*>::iterator it;
-    for (it = tiles_in_animated_regions[layer].begin();
+    for (auto it = tiles_in_animated_regions[layer].begin();
         it != tiles_in_animated_regions[layer].end();
         ++it) {
       Tile* tile = *it;
@@ -85,8 +84,7 @@ MapEntities::~MapEntities() {
 
   // delete the other entities
 
-  std::list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+  for (auto i = all_entities.begin(); i != all_entities.end(); ++i) {
     destroy_entity(*i);
   }
   all_entities.clear();
@@ -270,8 +268,7 @@ std::list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& p
 
   std::list<MapEntity*> entities;
 
-  std::list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+  for (auto i = all_entities.begin(); i != all_entities.end(); ++i) {
 
     MapEntity* entity = *i;
     if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
@@ -294,8 +291,7 @@ std::list<MapEntity*> MapEntities::get_entities_with_prefix(
 
   std::list<MapEntity*> entities;
 
-  std::list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+  for (auto i = all_entities.begin(); i != all_entities.end(); ++i) {
 
     MapEntity* entity = *i;
     if (entity->get_type() == type && entity->has_prefix(prefix) && !entity->is_being_removed()) {
@@ -361,8 +357,7 @@ void MapEntities::bring_to_back(MapEntity& entity) {
  */
 void MapEntities::notify_map_started() {
 
-  std::list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+  for (auto i = all_entities.begin(); i != all_entities.end(); ++i) {
     MapEntity* entity = *i;
     entity->notify_map_started();
     entity->notify_tileset_changed();
@@ -383,8 +378,7 @@ void MapEntities::notify_map_started() {
  */
 void MapEntities::notify_map_opening_transition_finished() {
 
-  std::list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+  for (auto i = all_entities.begin(); i != all_entities.end(); ++i) {
     MapEntity* entity = *i;
     entity->notify_map_opening_transition_finished();
   }
@@ -402,8 +396,7 @@ void MapEntities::notify_tileset_changed() {
     non_animated_regions[layer]->notify_tileset_changed();
   }
 
-  std::list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+  for (auto i = all_entities.begin(); i != all_entities.end(); ++i) {
     MapEntity* entity = *i;
     entity->notify_tileset_changed();
   }
@@ -743,8 +736,7 @@ void MapEntities::remove_entity(const std::string& name) {
 void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
 
   std::list<MapEntity*> entities = get_entities_with_prefix(prefix);
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
+  for (auto it = entities.begin(); it != entities.end(); ++it) {
     remove_entity(*it);
   }
 }
@@ -754,12 +746,10 @@ void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
  */
 void MapEntities::remove_marked_entities() {
 
-  std::list<MapEntity*>::iterator it;
-
   // remove the marked entities
-  for (it = entities_to_remove.begin();
+  for (auto it = entities_to_remove.begin();
        it != entities_to_remove.end();
-       it++) {
+       ++it) {
 
     MapEntity* entity = *it;
     Layer layer = entity->get_layer();
@@ -851,10 +841,9 @@ void MapEntities::set_suspended(bool suspended) {
   hero.set_suspended(suspended);
 
   // other entities
-  std::list<MapEntity*>::iterator i;
-  for (i = all_entities.begin();
+  for (auto i = all_entities.begin();
        i != all_entities.end();
-       i++) {
+       ++i) {
 
     (*i)->set_suspended(suspended);
   }
@@ -873,16 +862,15 @@ void MapEntities::update() {
   hero.update();
 
   // Update the dynamic entities.
-  std::list<MapEntity*>::iterator it;
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     // Sort the entities drawn in y order.
     entities_drawn_y_order[layer].sort(compare_y);
   }
 
-  for (it = all_entities.begin();
+  for (auto it = all_entities.begin();
        it != all_entities.end();
-       it++) {
+       ++it) {
 
     if (!(*it)->is_being_removed()) {
       (*it)->update();
@@ -913,10 +901,9 @@ void MapEntities::draw() {
     non_animated_regions[layer]->draw_on_map();
 
     // draw the first sprites
-    std::list<MapEntity*>::iterator i;
-    for (i = entities_drawn_first[layer].begin();
+    for (auto i = entities_drawn_first[layer].begin();
         i != entities_drawn_first[layer].end();
-        i++) {
+        ++i) {
 
       MapEntity* entity = *i;
       if (entity->is_enabled()) {
@@ -926,9 +913,9 @@ void MapEntities::draw() {
 
     // draw the sprites at the hero's level, in the order
     // defined by their y position (including the hero)
-    for (i = entities_drawn_y_order[layer].begin();
+    for (auto i = entities_drawn_y_order[layer].begin();
         i != entities_drawn_y_order[layer].end();
-        i++) {
+        ++i) {
 
       MapEntity* entity = *i;
       if (entity->is_enabled()) {
@@ -1029,8 +1016,7 @@ bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle& rectangle
   bool overlaps = false;
   std::list<CrystalBlock*> blocks = get_crystal_blocks(layer);
 
-  std::list<CrystalBlock*>::iterator it;
-  for (it = blocks.begin(); it != blocks.end() && !overlaps; it++) {
+  for (auto it = blocks.begin(); it != blocks.end() && !overlaps; ++it) {
     overlaps = (*it)->overlaps(rectangle) && (*it)->is_raised();
   }
 
@@ -1062,8 +1048,7 @@ void MapEntities::remove_boomerang() {
 void MapEntities::remove_arrows() {
 
   // TODO this function may be slow if there are a lot of entities: store the arrows?
-  std::list<MapEntity*>::iterator it;
-  for (it = all_entities.begin(); it != all_entities.end(); it++) {
+  for (auto it = all_entities.begin(); it != all_entities.end(); ++it) {
     MapEntity* entity = *it;
     if (entity->get_type() == ENTITY_ARROW) {
       remove_entity(entity);

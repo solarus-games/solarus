@@ -626,8 +626,7 @@ int LuaContext::map_api_open_doors(lua_State* l) {
   bool done = false;
   MapEntities& entities = map.get_entities();
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
-  std::list<MapEntity*>::iterator it;
-  for (it = doors.begin(); it != doors.end(); it++) {
+  for (auto it = doors.begin(); it != doors.end(); ++it) {
     Door* door = static_cast<Door*>(*it);
     if (!door->is_open() || door->is_closing()) {
       door->open();
@@ -657,8 +656,7 @@ int LuaContext::map_api_close_doors(lua_State* l) {
   bool done = false;
   MapEntities& entities = map.get_entities();
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
-  std::list<MapEntity*>::iterator it;
-  for (it = doors.begin(); it != doors.end(); it++) {
+  for (auto it = doors.begin(); it != doors.end(); ++it) {
     Door* door = static_cast<Door*>(*it);
     if (door->is_open() || door->is_opening()) {
       door->close();
@@ -691,8 +689,7 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
 
   MapEntities& entities = map.get_entities();
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
-  std::list<MapEntity*>::iterator it;
-  for (it = doors.begin(); it != doors.end(); it++) {
+  for (auto it = doors.begin(); it != doors.end(); ++it) {
     Door* door = static_cast<Door*>(*it);
     door->set_open(open);
   }
@@ -826,8 +823,7 @@ int LuaContext::map_api_set_entities_enabled(lua_State* l) {
 
   std::list<MapEntity*> entities =
       map.get_entities().get_entities_with_prefix(prefix);
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
+  for (auto it = entities.begin(); it != entities.end(); ++it) {
     (*it)->set_enabled(enabled);
   }
 

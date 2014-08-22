@@ -372,15 +372,14 @@ void Stairs::update_dynamic_tiles() {
 
   std::list<MapEntity*> tiles = get_entities().get_entities_with_prefix(
       ENTITY_DYNAMIC_TILE, get_name() + "_enabled");
-  std::list<MapEntity*>::iterator it;
-  for (it = tiles.begin(); it != tiles.end(); ++it) {
+  for (auto it = tiles.begin(); it != tiles.end(); ++it) {
     DynamicTile* tile = static_cast<DynamicTile*>(*it);
     tile->set_enabled(is_enabled());
   }
 
   tiles = get_entities().get_entities_with_prefix(
       ENTITY_DYNAMIC_TILE, get_name() + "_disabled");
-  for (it = tiles.begin(); it != tiles.end(); ++it) {
+  for (auto it = tiles.begin(); it != tiles.end(); ++it) {
     DynamicTile* tile = static_cast<DynamicTile*>(*it);
     tile->set_enabled(!is_enabled());
   }

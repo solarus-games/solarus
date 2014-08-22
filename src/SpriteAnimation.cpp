@@ -62,8 +62,7 @@ SpriteAnimation::SpriteAnimation(
  */
 SpriteAnimation::~SpriteAnimation() {
 
-  std::vector<SpriteAnimationDirection*>::iterator it;
-  for (it = directions.begin(); it != directions.end(); ++it) {
+  for (auto it = directions.begin(); it != directions.end(); ++it) {
     delete *it;
   }
 
@@ -193,8 +192,7 @@ void SpriteAnimation::enable_pixel_collisions() {
  */
 void SpriteAnimation::do_enable_pixel_collisions() {
 
-  std::vector<SpriteAnimationDirection*>::iterator it;
-  for (it = directions.begin(); it != directions.end(); ++it) {
+  for (auto it = directions.begin(); it != directions.end(); ++it) {
     (*it)->enable_pixel_collisions(src_image);
   }
 }
@@ -204,8 +202,7 @@ void SpriteAnimation::do_enable_pixel_collisions() {
  */
 void SpriteAnimation::disable_pixel_collisions() {
 
-  std::vector<SpriteAnimationDirection*>::iterator it;
-  for (it = directions.begin(); it != directions.end(); ++it) {
+  for (auto it = directions.begin(); it != directions.end(); ++it) {
     (*it)->disable_pixel_collisions();
   }
 }

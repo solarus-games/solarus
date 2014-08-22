@@ -727,8 +727,9 @@ const std::string& InputEvent::get_keyboard_key_name(KeyboardKey key) {
 InputEvent::KeyboardKey InputEvent::get_keyboard_key_by_name(const std::string& keyboard_key_name) {
 
   // TODO check that this traversal is not significant, otherwise make a reverse mapping.
-  std::map<KeyboardKey, std::string>::iterator it;
-  for (it = keyboard_key_names.begin(); it != keyboard_key_names.end(); it++) {
+  for (auto it = keyboard_key_names.begin();
+      it != keyboard_key_names.end();
+      ++it) {
     if (it->second == keyboard_key_name) {
       return it->first;
     }
@@ -1099,8 +1100,9 @@ const std::string& InputEvent::get_mouse_button_name(MouseButton button) {
  */
 InputEvent::MouseButton InputEvent::get_mouse_button_by_name(const std::string& button_name) {
 
-  std::map<MouseButton, std::string>::iterator it;
-  for (it = mouse_button_names.begin(); it != mouse_button_names.end(); it++) {
+  for (auto it = mouse_button_names.begin();
+      it != mouse_button_names.end();
+      ++it) {
     if (it->second == button_name) {
       return it->first;
     }

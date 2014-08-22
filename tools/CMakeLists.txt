@@ -7,7 +7,7 @@ if(COMMAND maven)
   else() # WINDOWS
     exec_program(COMMAND compile.bat)
   endif()
-else()
+endif()
 
 install(TARGETS solarus_tools
   RUNTIME DESTINATION ${SOLARUS_TOOLS_INSTALL_DESTINATION})

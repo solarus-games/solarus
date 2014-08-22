@@ -9,6 +9,7 @@ local solarus_formats = {
   "1.1",
   "1.2",
   "1.3",
+  "1.4",
 }
 
 local function write_info(message)

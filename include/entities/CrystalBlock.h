@@ -44,13 +44,13 @@ class CrystalBlock: public Detector {
         Layer layer, int x, int y, int width, int height, Subtype subtype);
     ~CrystalBlock();
 
-    EntityType get_type() const;
+    virtual EntityType get_type() const override;
 
-    bool is_obstacle_for(MapEntity& other);
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
 
-    void update();
-    void draw_on_map();
+    virtual void update() override;
+    virtual void draw_on_map() override;
 
     bool is_raised() const;
 

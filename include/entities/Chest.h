@@ -50,7 +50,7 @@ class Chest: public Detector {
         const Treasure& treasure);
     ~Chest();
 
-    EntityType get_type() const;
+    virtual EntityType get_type() const override;
 
     bool is_open() const;
     void set_open(bool open);
@@ -65,12 +65,12 @@ class Chest: public Detector {
     const std::string& get_cannot_open_dialog_id() const;
     void set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id);
 
-    bool is_obstacle_for(MapEntity& other);
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
-    void notify_enabled(bool enabled);
-    void update();
-    bool notify_action_command_pressed();
-    void set_suspended(bool suspended);
+    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual void notify_enabled(bool enabled) override;
+    virtual void update() override;
+    virtual bool notify_action_command_pressed() override;
+    virtual void set_suspended(bool suspended) override;
 
     static const std::string opening_method_names[];
 

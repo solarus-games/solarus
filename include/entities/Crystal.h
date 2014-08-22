@@ -34,18 +34,18 @@ class Crystal: public Detector {
     Crystal(const std::string& name, Layer layer, int x, int y);
     ~Crystal();
 
-    EntityType get_type() const;
+    virtual EntityType get_type() const override;
 
-    void notify_creating();
-    bool is_obstacle_for(MapEntity& other);
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
-    void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
-    bool notify_action_command_pressed();
+    virtual void notify_creating() override;
+    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) override;
+    virtual bool notify_action_command_pressed() override;
     void activate(MapEntity& entity_activating);
 
-    void update();
-    void draw_on_map();
-    void set_suspended(bool suspended);
+    virtual void update() override;
+    virtual void draw_on_map() override;
+    virtual void set_suspended(bool suspended) override;
 
   private:
 

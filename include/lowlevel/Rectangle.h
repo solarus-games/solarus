@@ -111,10 +111,8 @@ inline Rectangle::Rectangle(int x):
  */
 inline Rectangle::Rectangle(int x, int y, int width, int height) {
 
-  rect.x = x;
-  rect.y = y;
-  rect.w = width;
-  rect.h = height;
+  set_xy(x, y);
+  set_size(width, height);
 }
 
 /**

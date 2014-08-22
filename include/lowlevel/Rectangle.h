@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,9 +39,9 @@ class Rectangle {
 
   public:
 
-    explicit Rectangle(int x = 0, int y = 0, int width = 0, int height = 0);
-    Rectangle(const Rectangle& other);
-    ~Rectangle();
+    Rectangle();
+    Rectangle(int x, int y);
+    Rectangle(int x, int y, int width, int height);
 
     int get_x() const;
     int get_y() const;
@@ -88,6 +88,22 @@ class Rectangle {
 std::ostream& operator<<(std::ostream& stream, const Rectangle& rectangle);
 
 /**
+ * \brief Creates a rectangle, without specifying its properties.
+ */
+inline Rectangle::Rectangle():
+    Rectangle(0, 0, 0, 0)
+{}
+
+/**
+ * \brief Creates a rectangle, specifying its position.
+ * \param x x coordinate of the top-left corner
+ * \param y y coordinate of the top-left corner
+ */
+inline Rectangle::Rectangle(int x, int y):
+    Rectangle(x, y, 0, 0)
+{}
+
+/**
  * \brief Creates a rectangle, specifying its properties.
  * \param x x coordinate of the top-left corner
  * \param y y coordinate of the top-left corner
@@ -96,26 +112,8 @@ std::ostream& operator<<(std::ostream& stream, const Rectangle& rectangle);
  */
 inline Rectangle::Rectangle(int x, int y, int width, int height) {
 
-  rect.x = x;
-  rect.y = y;
-  rect.w = width;
-  rect.h = height;
-}
-
-/**
- * \brief Copy constructor.
- * \param other the rectangle to copy
- */
-inline Rectangle::Rectangle(const Rectangle& other):
-  rect(other.rect) {
-
-}
-
-/**
- * \brief Destructor.
- */
-inline Rectangle::~Rectangle() {
-
+  set_xy(x, y);
+  set_size(width, height);
 }
 
 /**
@@ -140,12 +138,12 @@ inline int Rectangle::get_y() const {
  */
 inline Rectangle Rectangle::get_center() const {
 
-  return Rectangle(
+  return {
       get_x() + get_width() / 2,
       get_y() + get_height() / 2,
       1,
       1
-  );
+  };
 }
 
 /**

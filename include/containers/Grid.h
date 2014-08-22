@@ -41,9 +41,9 @@ class Grid {
 
     const Rectangle& get_grid_size() const;
     const Rectangle& get_cell_size() const;
-    const size_t get_num_rows() const;
-    const size_t get_num_columns() const;
-    const size_t get_num_cells() const;
+    size_t get_num_rows() const;
+    size_t get_num_columns() const;
+    size_t get_num_cells() const;
 
     void clear();
     void add(const T& element);
@@ -115,7 +115,7 @@ const Rectangle& Grid<T>::get_cell_size() const {
  * \return The number of rows.
  */
 template <typename T>
-const size_t Grid<T>::get_num_rows() const {
+size_t Grid<T>::get_num_rows() const {
   return num_rows;
 }
 
@@ -124,7 +124,7 @@ const size_t Grid<T>::get_num_rows() const {
  * \return The number of columns.
  */
 template <typename T>
-const size_t Grid<T>::get_num_columns() const {
+size_t Grid<T>::get_num_columns() const {
   return num_columns;
 }
 
@@ -133,7 +133,7 @@ const size_t Grid<T>::get_num_columns() const {
  * \return The number of cells.
  */
 template <typename T>
-const size_t Grid<T>::get_num_cells() const {
+size_t Grid<T>::get_num_cells() const {
   return elements.size();
 }
 

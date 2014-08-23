@@ -80,18 +80,12 @@ double Geometry::get_angle(int x1, int y1, int x2, int y2) {
   int dx = x2 - x1;
   int dy = y2 - y1;
 
-  double angle;
-  if (dx != 0) {
-    angle = std::atan((double) -dy / (double) dx);
+  // atan2 is undefined if (y == 0 and x == 0)
+  if (dx == 0 && dy == 0) {
+    return PI_OVER_2;
+  }
 
-    if (dx < 0) {
-      angle += PI;
-    }
-  }
-  else {
-    // Special case (cannot divide by zero and compute atan).
-    angle = (dy > 0) ? -PI_OVER_2 : PI_OVER_2;
-  }
+  double angle = std::atan2(-dy, dx);
 
   // Normalize.
   if (angle < 0) {

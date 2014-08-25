@@ -124,10 +124,9 @@ void CustomEntity::set_sprites_direction(int direction) {
 
   set_direction(direction);
 
-  for (auto it = get_sprites().begin(); it != get_sprites().end(); ++it) {
-    Sprite& sprite = *(*it);
-    if (direction >= 0 && direction < sprite.get_nb_directions()) {
-      sprite.set_current_direction(direction);
+  for (Sprite* sprite: get_sprites()) {
+    if (direction >= 0 && direction < sprite->get_nb_directions()) {
+      sprite->set_current_direction(direction);
     }
   }
 }
@@ -753,9 +752,8 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
   bool collision = false;
 
   const std::vector<CollisionInfo> collision_tests = this->collision_tests;
-  for (auto it = collision_tests.begin(); it != collision_tests.end(); ++it) {
+  for (const CollisionInfo& info: collision_tests) {
 
-    const CollisionInfo& info = *it;
     switch (info.get_built_in_test()) {
 
       case COLLISION_OVERLAPPING:
@@ -842,11 +840,7 @@ void CustomEntity::notify_collision(MapEntity& entity_overlapping, CollisionMode
       "Unexpected collision mode");
 
   // There is a collision: execute the callbacks.
-  for (auto it = successful_collision_tests.begin();
-      it != successful_collision_tests.end();
-      ++it) {
-
-    const CollisionInfo& info = *it;
+  for (const CollisionInfo& info: successful_collision_tests) {
     get_lua_context().do_custom_entity_collision_callback(
         info.get_callback_ref(), *this, entity_overlapping
     );
@@ -862,9 +856,8 @@ void CustomEntity::notify_collision(MapEntity& other_entity, Sprite& other_sprit
 
   // A collision was detected with a sprite of another entity.
   const std::vector<CollisionInfo> collision_tests = this->collision_tests;
-  for (auto it = collision_tests.begin(); it != collision_tests.end(); ++it) {
+  for (const CollisionInfo& info: collision_tests) {
 
-    const CollisionInfo& info = *it;
     if (info.get_built_in_test() == COLLISION_SPRITE) {
       // Execute the callback.
       get_lua_context().do_custom_entity_collision_callback(

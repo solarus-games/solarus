@@ -56,7 +56,7 @@ Equipment::Equipment(Savegame& savegame):
  */
 Equipment::~Equipment() {
 
-  for (auto kvp: items) {
+  for (const auto& kvp: items) {
     EquipmentItem* item = kvp.second;
     RefCountable::unref(item);
   }
@@ -90,7 +90,7 @@ void Equipment::notify_game_started() {
 void Equipment::notify_game_finished() {
 
   // The equipment items will disappear: notify them.
-  for (auto kvp: items) {
+  for (const auto& kvp: items) {
     EquipmentItem* item = kvp.second;
     item->exit();
   }
@@ -103,7 +103,7 @@ void Equipment::notify_game_finished() {
 void Equipment::notify_map_changed(Map& map) {
 
   // Notify the items.
-  for (auto kvp: items) {
+  for (const auto& kvp: items) {
     EquipmentItem* item = kvp.second;
     item->notify_map_changed(map);
   }
@@ -131,7 +131,7 @@ void Equipment::update() {
   }
 
   // update the item scripts
-  for (auto kvp: items) {
+  for (const auto& kvp: items) {
     EquipmentItem* item = kvp.second;
     item->update();
   }
@@ -146,7 +146,7 @@ void Equipment::set_suspended(bool suspended) {
   this->suspended = suspended;
 
   // notify the item scripts
-  for (auto kvp: items) {
+  for (const auto& kvp: items) {
     EquipmentItem* item = kvp.second;
     item->set_suspended(suspended);
   }
@@ -418,7 +418,7 @@ void Equipment::load_items() {
   // Create each equipment item declared in project_db.dat.
   const std::vector<QuestResourceList::Element>& item_elements =
       QuestResourceList::get_elements(QuestResourceList::RESOURCE_ITEM);
-  for (auto kvp: item_elements) {
+  for (const auto& kvp: item_elements) {
     const std::string& item_id = kvp.first;
     EquipmentItem* item = new EquipmentItem(*this);
     RefCountable::ref(item);
@@ -427,13 +427,13 @@ void Equipment::load_items() {
   }
 
   // Load the item scripts.
-  for (auto kvp: items) {
+  for (const auto& kvp: items) {
     EquipmentItem* item = kvp.second;
     item->initialize();
   }
 
   // Start the items once they all exist.
-  for (auto kvp: items) {
+  for (const auto& kvp: items) {
     EquipmentItem* item = kvp.second;
     item->start();
   }
@@ -655,7 +655,7 @@ void Equipment::set_ability(Ability ability, int level) {
  */
 void Equipment::notify_ability_used(Ability ability) {
 
-  for (auto kvp: items) {
+  for (const auto& kvp: items) {
     EquipmentItem* item = kvp.second;
     item->notify_ability_used(ability);
   }

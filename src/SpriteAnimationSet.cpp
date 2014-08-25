@@ -40,8 +40,8 @@ SpriteAnimationSet::SpriteAnimationSet(const std::string& id):
 SpriteAnimationSet::~SpriteAnimationSet() {
 
   // delete the animations
-  for (auto it = animations.begin(); it != animations.end(); it++) {
-    delete it->second;
+  for (const auto& kvp: animations) {
+    delete kvp.second;
   }
 }
 
@@ -210,7 +210,7 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
  */
 void SpriteAnimationSet::set_tileset(Tileset& tileset) {
 
-  for (auto kvp: animations) {
+  for (const auto& kvp: animations) {
     kvp.second->set_tileset(tileset);
   }
 }
@@ -272,7 +272,7 @@ void SpriteAnimationSet::enable_pixel_collisions() {
 
   if (!are_pixel_collisions_enabled()) {
 
-    for (auto kvp: animations) {
+    for (const auto& kvp: animations) {
       kvp.second->enable_pixel_collisions();
     }
   }

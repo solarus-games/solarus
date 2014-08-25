@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,7 +39,7 @@ void Debug::warning(const std::string& message) {
   if (!error_output_file.is_open()) {
     error_output_file.open(error_output_file_name.c_str());
   }
-  error_output_file << "Warning: " << message << std::endl << std::flush;
+  error_output_file << "Warning: " << message << std::endl;
   std::cerr << "Warning: " << message << std::endl;
 }
 
@@ -55,7 +55,7 @@ void Debug::error(const std::string& message) {
   if (!error_output_file.is_open()) {
     error_output_file.open(error_output_file_name.c_str());
   }
-  error_output_file << "Error: " << message << std::endl << std::flush;
+  error_output_file << "Error: " << message << std::endl;
   std::cerr << "Error: " << message << std::endl;
 }
 
@@ -96,7 +96,7 @@ void Debug::die(const std::string& error_message) {
   if (!error_output_file.is_open()) {
     error_output_file.open(error_output_file_name.c_str());
   }
-  error_output_file << "Fatal: " << error_message << std::endl << std::flush;
+  error_output_file << "Fatal: " << error_message << std::endl;
   std::cerr << "Fatal: " << error_message << std::endl;
 
   SDL_ShowSimpleMessageBox(

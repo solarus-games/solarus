@@ -1230,7 +1230,7 @@ public abstract class MapEntity extends Observable {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
-        if (sprite != null && sprite.getDefaultAnimationName() != null) {
+        if (sprite != null && !sprite.getDefaultAnimationName().isEmpty()) {
             // There is a sprite, display it.
             int direction = getDirection();
             int numDirections = sprite.getAnimation(sprite.getDefaultAnimationName()).getNbDirections();

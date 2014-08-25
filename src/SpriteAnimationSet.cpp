@@ -289,6 +289,11 @@ void SpriteAnimationSet::enable_pixel_collisions() {
  * \return true if the pixel-perfect collisions are enabled
  */
 bool SpriteAnimationSet::are_pixel_collisions_enabled() const {
+
+  if (animations.empty()) {
+    return false;
+  }
+
   return animations.begin()->second->are_pixel_collisions_enabled();
 }
 

@@ -3,7 +3,10 @@ _______________________________
 Solarus 1.4.0 (under development)
 _______________________________
 
+Engine changes
+--------------
 
+* Fix a crash if an entity has a sprite without animation.
 
 _________________________________
 

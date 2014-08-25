@@ -46,7 +46,6 @@ class EquipmentItemUsage {
 
   private:
 
-    Game& game;              /**< the game this item is used in */
     EquipmentItem& item;     /**< name of the item being used */
     int variant;             /**< the possession state of this item when it is used */
 

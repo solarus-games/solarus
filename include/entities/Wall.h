@@ -57,9 +57,6 @@ class Wall: public MapEntity {
 
     std::set<EntityType> entity_types_stopped;
 
-    bool enabled;              /**< indicates that the obstacle is enabled (default: yes) */
-    bool waiting_enabled;      /**< indicates that the obstacle is waiting to be enabled */
-
 };
 
 }

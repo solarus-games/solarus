@@ -910,11 +910,9 @@ bool Map::test_collision_with_entities(
 
   const std::list<MapEntity*>& obstacle_entities =
       entities->get_obstacle_entities(layer);
-  const auto end = obstacle_entities.end();
 
-  for (auto it = obstacle_entities.begin(); it != end; ++it) {
+  for (MapEntity* entity: obstacle_entities) {
 
-    MapEntity* entity = *it;
     if (entity->overlaps(collision_box)
         && entity->is_obstacle_for(entity_to_check, collision_box)
         && entity->is_enabled()
@@ -1128,13 +1126,11 @@ void Map::check_collision_with_detectors(MapEntity& entity) {
 
   // Check this entity with each detector.
   const std::list<Detector*>& detectors = entities->get_detectors();
-  const auto end = detectors.end();
-  for (auto it = detectors.begin(); it != end; ++it) {
+  for (Detector* detector: detectors) {
 
-    Detector& detector = *(*it);
-    if (detector.is_enabled()
-        && !detector.is_being_removed()) {
-      detector.check_collision(entity);
+    if (detector->is_enabled()
+        && !detector->is_being_removed()) {
+      detector->check_collision(entity);
     }
   }
 }
@@ -1159,13 +1155,11 @@ void Map::check_collision_from_detector(Detector& detector) {
 
   // Check each entity with this detector.
   const std::list<MapEntity*>& all_entities = entities->get_entities();
-  const auto end = all_entities.end();
-  for (auto it = all_entities.begin(); it != end; ++it) {
+  for (MapEntity* entity: all_entities) {
 
-    MapEntity& entity = *(*it);
-    if (entity.is_enabled()
-        && !entity.is_being_removed()) {
-      detector.check_collision(entity);
+    if (entity->is_enabled()
+        && !entity->is_being_removed()) {
+      detector.check_collision(*entity);
     }
   }
 }
@@ -1190,13 +1184,11 @@ void Map::check_collision_with_detectors(MapEntity& entity, Sprite& sprite) {
 
   // Check each detector.
   const std::list<Detector*>& detectors = entities->get_detectors();
-  const auto end = detectors.end();
-  for (auto it = detectors.begin(); it != end; ++it) {
+  for (Detector* detector: detectors) {
 
-    Detector& detector = *(*it);
-    if (!detector.is_being_removed()
-        && detector.is_enabled()) {
-      detector.check_collision(entity, sprite);
+    if (!detector->is_being_removed()
+        && detector->is_enabled()) {
+      detector->check_collision(entity, sprite);
     }
   }
 }

@@ -186,8 +186,7 @@ void Grid<T>::get_elements(
       }
 
       const std::vector<T>& in_cell = this->elements[i * num_columns + j];
-      for (auto it = in_cell.begin(); it != in_cell.end(); ++it) {
-        const T& element = *it;
+      for (const T& element: in_cell) {
         if (elements_added.find(element) == elements_added.end()) {
           elements_added.insert(element);
           elements.push_back(element);

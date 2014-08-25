@@ -210,8 +210,8 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
  */
 void SpriteAnimationSet::set_tileset(Tileset& tileset) {
 
-  for (auto it = animations.begin(); it != animations.end(); ++it) {
-    it->second->set_tileset(tileset);
+  for (auto kvp: animations) {
+    kvp.second->set_tileset(tileset);
   }
 }
 
@@ -272,8 +272,8 @@ void SpriteAnimationSet::enable_pixel_collisions() {
 
   if (!are_pixel_collisions_enabled()) {
 
-    for (auto it = animations.begin(); it != animations.end(); ++it) {
-      it->second->enable_pixel_collisions();
+    for (auto kvp: animations) {
+      kvp.second->enable_pixel_collisions();
     }
   }
 }

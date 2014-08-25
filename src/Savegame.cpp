@@ -273,10 +273,10 @@ int Savegame::l_newindex(lua_State* l) {
 void Savegame::save() {
 
   std::ostringstream oss;
-  for (auto it = saved_values.begin(); it != saved_values.end(); ++it) {
-    const std::string& key = it->first;
+  for (auto kvp: saved_values) {
+    const std::string& key = kvp.first;
     oss << key << " = ";
-    const SavedValue& value = it->second;
+    const SavedValue& value = kvp.second;
     if (value.type == SavedValue::VALUE_BOOLEAN) {
       oss << (value.int_data ? "true" : "false");
     }

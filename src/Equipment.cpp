@@ -56,8 +56,8 @@ Equipment::Equipment(Savegame& savegame):
  */
 Equipment::~Equipment() {
 
-  for (auto it = items.begin(); it != items.end(); ++it) {
-    EquipmentItem* item = it->second;
+  for (auto kvp: items) {
+    EquipmentItem* item = kvp.second;
     RefCountable::unref(item);
   }
 }
@@ -90,8 +90,9 @@ void Equipment::notify_game_started() {
 void Equipment::notify_game_finished() {
 
   // The equipment items will disappear: notify them.
-  for (auto it = items.begin(); it != items.end(); ++it) {
-    it->second->exit();
+  for (auto kvp: items) {
+    EquipmentItem* item = kvp.second;
+    item->exit();
   }
 }
 
@@ -102,8 +103,9 @@ void Equipment::notify_game_finished() {
 void Equipment::notify_map_changed(Map& map) {
 
   // Notify the items.
-  for (auto it = items.begin(); it != items.end(); ++it) {
-    it->second->notify_map_changed(map);
+  for (auto kvp: items) {
+    EquipmentItem* item = kvp.second;
+    item->notify_map_changed(map);
   }
 }
 
@@ -129,8 +131,9 @@ void Equipment::update() {
   }
 
   // update the item scripts
-  for (auto it = items.begin(); it != items.end(); ++it) {
-    it->second->update();
+  for (auto kvp: items) {
+    EquipmentItem* item = kvp.second;
+    item->update();
   }
 }
 
@@ -143,8 +146,9 @@ void Equipment::set_suspended(bool suspended) {
   this->suspended = suspended;
 
   // notify the item scripts
-  for (auto it = items.begin(); it != items.end(); ++it) {
-    it->second->set_suspended(suspended);
+  for (auto kvp: items) {
+    EquipmentItem* item = kvp.second;
+    item->set_suspended(suspended);
   }
 }
 
@@ -414,8 +418,8 @@ void Equipment::load_items() {
   // Create each equipment item declared in project_db.dat.
   const std::vector<QuestResourceList::Element>& item_elements =
       QuestResourceList::get_elements(QuestResourceList::RESOURCE_ITEM);
-  for (auto it = item_elements.begin(); it != item_elements.end(); ++it) {
-    const std::string& item_id = it->first;
+  for (auto kvp: item_elements) {
+    const std::string& item_id = kvp.first;
     EquipmentItem* item = new EquipmentItem(*this);
     RefCountable::ref(item);
     item->set_name(item_id);
@@ -423,13 +427,15 @@ void Equipment::load_items() {
   }
 
   // Load the item scripts.
-  for (auto it = items.begin(); it != items.end(); ++it) {
-    it->second->initialize();
+  for (auto kvp: items) {
+    EquipmentItem* item = kvp.second;
+    item->initialize();
   }
 
   // Start the items once they all exist.
-  for (auto it = items.begin(); it != items.end(); ++it) {
-    it->second->start();
+  for (auto kvp: items) {
+    EquipmentItem* item = kvp.second;
+    item->start();
   }
 }
 
@@ -649,8 +655,9 @@ void Equipment::set_ability(Ability ability, int level) {
  */
 void Equipment::notify_ability_used(Ability ability) {
 
-  for (auto it = items.begin(); it != items.end(); ++it) {
-    it->second->notify_ability_used(ability);
+  for (auto kvp: items) {
+    EquipmentItem* item = kvp.second;
+    item->notify_ability_used(ability);
   }
 }
 

@@ -112,16 +112,15 @@ void Camera::update_fixed_on_hero() {
     std::list<const Separator*> applied_separators;
     const std::list<const Separator*>& separators =
         map.get_entities().get_separators();
-    for (auto it = separators.begin(); it != separators.end(); ++it) {
-      const Separator& separator = *(*it);
+    for (const Separator* separator: separators) {
 
-      if (separator.is_vertical()) {
+      if (separator->is_vertical()) {
         // Vertical separator.
-        int separation_x = separator.get_x() + 8;
+        int separation_x = separator->get_x() + 8;
 
         if (x < separation_x && separation_x < x + get_width()
-            && separator.get_y() < y + get_height()
-            && y < separator.get_y() + separator.get_height()) {
+            && separator->get_y() < y + get_height()
+            && y < separator->get_y() + separator->get_height()) {
           int left = separation_x - x;
           int right = x + get_width() - separation_x;
           if (left > right) {
@@ -130,17 +129,17 @@ void Camera::update_fixed_on_hero() {
           else {
             adjusted_x = separation_x;
           }
-          applied_separators.push_back(&separator);
+          applied_separators.push_back(separator);
         }
       }
       else {
-        Debug::check_assertion(separator.is_horizontal(), "Invalid separator shape");
+        Debug::check_assertion(separator->is_horizontal(), "Invalid separator shape");
 
         // Horizontal separator.
-        int separation_y = separator.get_y() + 8;
+        int separation_y = separator->get_y() + 8;
         if (y < separation_y && separation_y < y + get_height()
-            && separator.get_x() < x + get_width()
-            && x < separator.get_x() + separator.get_width()) {
+            && separator->get_x() < x + get_width()
+            && x < separator->get_x() + separator->get_width()) {
           int top = separation_y - y;
           int bottom = y + get_height() - separation_y;
           if (top > bottom) {
@@ -149,7 +148,7 @@ void Camera::update_fixed_on_hero() {
           else {
             adjusted_y = separation_y;
           }
-          applied_separators.push_back(&separator);
+          applied_separators.push_back(separator);
         }
       }
     }  // End for each separator.
@@ -162,26 +161,25 @@ void Camera::update_fixed_on_hero() {
 
       must_adjust_x = false;
       must_adjust_y = false;
-      for (auto it = applied_separators.begin(); it != applied_separators.end(); ++it) {
-        const Separator& separator = *(*it);
+      for (const Separator* separator: applied_separators) {
 
-        if (separator.is_vertical()) {
+        if (separator->is_vertical()) {
           // Vertical separator.
-          int separation_x = separator.get_x() + 8;
+          int separation_x = separator->get_x() + 8;
 
           if (x < separation_x && separation_x < x + get_width()
-              && separator.get_y() < adjusted_y + get_height()
-              && adjusted_y < separator.get_y() + separator.get_height()) {
+              && separator->get_y() < adjusted_y + get_height()
+              && adjusted_y < separator->get_y() + separator->get_height()) {
             must_adjust_x = true;
           }
         }
         else {
           // Horizontal separator.
-          int separation_y = separator.get_y() + 8;
+          int separation_y = separator->get_y() + 8;
 
           if (y < separation_y && separation_y < y + get_height()
-              && separator.get_x() < adjusted_x + get_width()
-              && adjusted_x < separator.get_x() + separator.get_width()) {
+              && separator->get_x() < adjusted_x + get_width()
+              && adjusted_x < separator->get_x() + separator->get_width()) {
             must_adjust_y = true;
           }
         }

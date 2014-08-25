@@ -192,8 +192,8 @@ void SpriteAnimation::enable_pixel_collisions() {
  */
 void SpriteAnimation::do_enable_pixel_collisions() {
 
-  for (auto it = directions.begin(); it != directions.end(); ++it) {
-    (*it)->enable_pixel_collisions(src_image);
+  for (SpriteAnimationDirection* direction: directions) {
+    direction->enable_pixel_collisions(src_image);
   }
 }
 
@@ -202,8 +202,8 @@ void SpriteAnimation::do_enable_pixel_collisions() {
  */
 void SpriteAnimation::disable_pixel_collisions() {
 
-  for (auto it = directions.begin(); it != directions.end(); ++it) {
-    (*it)->disable_pixel_collisions();
+  for (SpriteAnimationDirection* direction: directions) {
+    direction->disable_pixel_collisions();
   }
 }
 

@@ -518,10 +518,10 @@ void GameCommands::game_command_released(Command command) {
  */
 InputEvent::KeyboardKey GameCommands::get_keyboard_binding(Command command) const {
 
-  for (auto it = keyboard_mapping.begin(); it != keyboard_mapping.end(); ++it) {
+  for (auto kvp: keyboard_mapping) {
 
-    if (it->second == command) {
-      return it->first;
+    if (kvp.second == command) {
+      return kvp.first;
     }
   }
 
@@ -568,10 +568,10 @@ void GameCommands::set_keyboard_binding(Command command, InputEvent::KeyboardKey
  */
 const std::string& GameCommands::get_joypad_binding(Command command) const {
 
-  for (auto it = joypad_mapping.begin(); it != joypad_mapping.end(); ++it) {
+  for (auto kvp: joypad_mapping) {
 
-    if (it->second == command) {
-      return it->first;
+    if (kvp.second == command) {
+      return kvp.first;
     }
   }
 

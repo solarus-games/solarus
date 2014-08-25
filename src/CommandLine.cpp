@@ -75,8 +75,7 @@ bool CommandLine::has_argument(const std::string& argument) const {
  */
 std::string CommandLine::get_argument_value(const std::string& key) const {
 
-  for (auto it = args.begin(); it != args.end(); ++it) {
-    const std::string& arg = *it;
+  for (const std::string& arg: args) {
     if (arg.size() > key.size()
         && arg.substr(0, key.size() + 1) == key + '=') {
       return arg.substr(key.size() + 1);

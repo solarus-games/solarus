@@ -153,7 +153,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 
 else()
   set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
-  set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
+  set(CMAKE_CXX_FLAGS_DEBUG "-Werror -Wextra -pedantic ${CMAKE_CXX_FLAGS_DEBUG}")
 endif()
 
 set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")

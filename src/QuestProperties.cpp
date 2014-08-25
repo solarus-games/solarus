@@ -78,8 +78,7 @@ void check_version_compatibility(const std::string& solarus_required_version) {
  * \brief Creates the quest properties loader.
  * \param main_loop The quest main loop.
  */
-QuestProperties::QuestProperties(MainLoop& main_loop):
-  main_loop(main_loop) {
+QuestProperties::QuestProperties(MainLoop& main_loop) {
 
 }
 

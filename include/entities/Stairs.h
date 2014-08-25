@@ -97,8 +97,6 @@ class Stairs: public Detector {
     void update_dynamic_tiles();
 
     Subtype subtype;            /**< subtype of stairs */
-    bool enabled;               /**< indicates that the stairs are enabled
-                                 * (if not, they have no effect and are not obstacle) */
 
 };
 

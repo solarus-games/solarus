@@ -51,8 +51,6 @@ class QuestProperties {
   private:
 
     static int l_quest(lua_State* l);
-
-    MainLoop& main_loop;  /**< The quest main loop. */
 };
 
 }

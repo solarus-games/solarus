@@ -42,8 +42,7 @@ Stairs::Stairs(
     int direction,
     Subtype subtype):
   Detector(COLLISION_TOUCHING | COLLISION_OVERLAPPING, name, layer, x, y, 16, 16),
-  subtype(subtype),
-  enabled(true) {
+  subtype(subtype) {
 
   Debug::check_assertion(!is_inside_floor() || layer != LAYER_HIGH,
       "Cannot put single floor stairs on the high layer");

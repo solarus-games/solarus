@@ -595,7 +595,7 @@ void MapEntity::set_layer(Layer layer) {
 void MapEntity::notify_layer_changed() {
 
   if (is_on_map()) {
-    check_collision_with_detectors(true);
+    check_collision_with_detectors();
     update_ground_observers();
     update_ground_below();
 
@@ -1456,7 +1456,7 @@ void MapEntity::notify_obstacle_reached() {
  */
 void MapEntity::notify_position_changed() {
 
-  check_collision_with_detectors(true);
+  check_collision_with_detectors();
   update_ground_observers();
   update_ground_below();
 
@@ -1467,10 +1467,11 @@ void MapEntity::notify_position_changed() {
 
 /**
  * \brief Checks collisions between this entity and the detectors of the map.
- * \param with_pixel_precise true to include pixel-precise collisions (if any),
- * false to only check simple collisions
+ *
+ * Simple collisions are checked, and then pixel-precise collisions if they are
+ * enabled for some sprites of this entity.
  */
-void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
+void MapEntity::check_collision_with_detectors() {
 
   if (!is_on_map()) {
     // The entity is still being initialized.

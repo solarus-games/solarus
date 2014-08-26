@@ -265,7 +265,7 @@ void Bomb::update() {
   }
 
   // check collision with explosions, streams, etc.
-  check_collision_with_detectors(true);
+  check_collision_with_detectors();
 }
 
 /**

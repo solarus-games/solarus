@@ -157,7 +157,7 @@ void Block::notify_created() {
 
   Detector::notify_created();
 
-  check_collision_with_detectors(false);
+  check_collision_with_detectors();
   update_ground_below();
 }
 
@@ -239,7 +239,7 @@ void Block::notify_position_changed() {
     sound_played = true;
   }
 
-  check_collision_with_detectors(false);
+  check_collision_with_detectors();
   update_ground_below();
 
   if (are_movement_notifications_enabled()) {

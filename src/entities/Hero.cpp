@@ -227,7 +227,7 @@ void Hero::update() {
 
   if (!is_suspended()) {
     update_ground_effects();
-    check_collision_with_detectors(false);
+    check_collision_with_detectors();
     check_gameover();
   }
 }
@@ -1117,7 +1117,7 @@ void Hero::check_position() {
 
   // Recompute the facing entity.
   set_facing_entity(nullptr);
-  check_collision_with_detectors(true);
+  check_collision_with_detectors();
 
   if (is_suspended()
       && get_map().test_collision_with_border(get_ground_point())) {

@@ -213,7 +213,7 @@ class MapEntity: public ExportableToLua {
     // collisions
     virtual bool has_layer_independent_collisions() const;
 
-    void check_collision_with_detectors(bool with_pixel_precise);
+    void check_collision_with_detectors();
     void check_collision_with_detectors(Sprite& sprite);
 
     virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);

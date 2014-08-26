@@ -177,7 +177,7 @@ const Rectangle JumpMovement::get_displayed_xy() const {
  * \param step_index index of the step in the trajectory (the first one is 0)
  * \param success true if the move was made, false if there was an obstacle
  */
-void JumpMovement::notify_step_done(int step_index, bool success) {
+void JumpMovement::notify_step_done(int step_index, bool /* success */) {
 
   if (step_index == 1 || step_index == get_length()) {
     jump_height = 0;

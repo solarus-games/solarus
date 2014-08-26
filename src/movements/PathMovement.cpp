@@ -222,7 +222,7 @@ void PathMovement::restart() {
  * \param step_index index of the one-pixel step in the elementary move (the first one is 0)
  * \param success true if the one-pixel move was made, false if the movement was stopped by an obstacle
  */
-void PathMovement::notify_step_done(int step_index, bool success) {
+void PathMovement::notify_step_done(int /* step_index */, bool success) {
 
   if (success) {
     if (!snapping) {

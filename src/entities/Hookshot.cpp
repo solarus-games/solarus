@@ -94,14 +94,14 @@ bool Hookshot::can_be_obstacle() const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Hookshot::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Hookshot::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) {
   return false;
 }
 
 /**
  * \copydoc MapEntity::is_stream_obstacle
  */
-bool Hookshot::is_stream_obstacle(Stream& stream) {
+bool Hookshot::is_stream_obstacle(Stream& /* stream */) {
   return false;
 }
 
@@ -159,7 +159,7 @@ bool Hookshot::is_ladder_obstacle() const {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool Hookshot::is_switch_obstacle(Switch& sw) {
+bool Hookshot::is_switch_obstacle(Switch& /* sw */) {
   return false;
 }
 
@@ -168,14 +168,14 @@ bool Hookshot::is_switch_obstacle(Switch& sw) {
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool Hookshot::is_crystal_obstacle(Crystal& crystal) {
+bool Hookshot::is_crystal_obstacle(Crystal& /* crystal */) {
   return false;
 }
 
 /**
  * \copydoc MapEntity::is_jumper_obstacle
  */
-bool Hookshot::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) {
+bool Hookshot::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candidate_position */) {
   return false;
 }
 
@@ -317,7 +317,7 @@ void Hookshot::notify_obstacle_reached() {
  * \param this_sprite the arrow sprite
  */
 void Hookshot::notify_collision_with_enemy(
-    Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) {
+    Enemy& enemy, Sprite& enemy_sprite, Sprite& /* this_sprite */) {
 
   if (!overlaps(get_hero())) {
     enemy.try_hurt(ATTACK_HOOKSHOT, *this, &enemy_sprite);
@@ -328,11 +328,11 @@ void Hookshot::notify_collision_with_enemy(
  * \copydoc MapEntity::notify_attacked_enemy
  */
 void Hookshot::notify_attacked_enemy(
-    EnemyAttack attack,
-    Enemy& victim,
-    const Sprite* victim_sprite,
+    EnemyAttack /* attack */,
+    Enemy& /* victim */,
+    const Sprite* /* victim_sprite */,
     EnemyReaction::Reaction& result,
-    bool killed) {
+    bool /* killed */) {
 
   if (result.type != EnemyReaction::IGNORED && !is_going_back()) {
     go_back();
@@ -355,7 +355,7 @@ void Hookshot::notify_collision_with_chest(Chest& chest) {
  * \param destructible the destructible item
  * \param collision_mode the collision mode that detected the event
  */
-void Hookshot::notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode) {
+void Hookshot::notify_collision_with_destructible(Destructible& destructible, CollisionMode /* collision_mode */) {
 
   if (destructible.is_obstacle_for(*this) && is_flying()) {
 
@@ -402,7 +402,7 @@ void Hookshot::notify_collision_with_switch(Switch& sw, CollisionMode collision_
  * \param crystal the crystal
  * \param collision_mode the collision mode that detected the event
  */
-void Hookshot::notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) {
+void Hookshot::notify_collision_with_crystal(Crystal& crystal, CollisionMode /* collision_mode */) {
 
   if (is_flying()) {
 

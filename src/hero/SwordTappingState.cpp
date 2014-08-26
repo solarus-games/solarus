@@ -147,7 +147,7 @@ bool Hero::SwordTappingState::can_sword_hit_crystal() const {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::SwordTappingState::can_pick_treasure(EquipmentItem& item) const {
+bool Hero::SwordTappingState::can_pick_treasure(EquipmentItem& /* item */) const {
   return true;
 }
 
@@ -178,7 +178,7 @@ bool Hero::SwordTappingState::is_cutting_with_sword(Detector& detector) {
  * \return true if the teletransporter is an obstacle in this state
  */
 bool Hero::SwordTappingState::is_teletransporter_obstacle(
-    const Teletransporter& teletransporter) const {
+    const Teletransporter& /* teletransporter */) const {
 
   // if the hero was pushed by an enemy, don't go on a teletransporter
   return get_hero().get_movement() != nullptr;
@@ -204,7 +204,7 @@ void Hero::SwordTappingState::notify_attacked_enemy(
     Enemy& victim,
     const Sprite* victim_sprite,
     EnemyReaction::Reaction& result,
-    bool killed) {
+    bool /* killed */) {
 
   if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
 

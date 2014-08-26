@@ -124,7 +124,7 @@ bool Hero::SpinAttackState::can_sword_hit_crystal() const {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::SpinAttackState::can_pick_treasure(EquipmentItem& item) const {
+bool Hero::SpinAttackState::can_pick_treasure(EquipmentItem& /* item */) const {
   return true;
 }
 
@@ -134,7 +134,7 @@ bool Hero::SpinAttackState::can_pick_treasure(EquipmentItem& item) const {
  * \param attacker an attacker that is trying to hurt the hero
  * (or nullptr if the source of the attack is not an enemy)
  */
-bool Hero::SpinAttackState::can_be_hurt(MapEntity* attacker) const {
+bool Hero::SpinAttackState::can_be_hurt(MapEntity* /* attacker */) const {
   return false;
 }
 
@@ -144,7 +144,7 @@ bool Hero::SpinAttackState::can_be_hurt(MapEntity* attacker) const {
  * \param detector the detector to check
  * \return true if the sword is cutting this detector
  */
-bool Hero::SpinAttackState::is_cutting_with_sword(Detector& detector) {
+bool Hero::SpinAttackState::is_cutting_with_sword(Detector& /* detector */) {
 
   // during a spin attack, any sprite collision can cut things
   return true;
@@ -214,7 +214,7 @@ bool Hero::SpinAttackState::is_prickle_obstacle() const {
  * \return true if the teletransporter is an obstacle in this state
  */
 bool Hero::SpinAttackState::is_teletransporter_obstacle(
-    const Teletransporter& teletransporter) const {
+    const Teletransporter& /* teletransporter */) const {
 
   // if the hero is pushed by an enemy or making a super spin attack,
   // don't go on a teletransporter
@@ -225,7 +225,7 @@ bool Hero::SpinAttackState::is_teletransporter_obstacle(
  * \copydoc Hero::State::is_separator_obstacle
  */
 bool Hero::SpinAttackState::is_separator_obstacle(
-    const Separator& separator) const {
+    const Separator& /* separator */) const {
   return true;
 }
 
@@ -253,7 +253,7 @@ void Hero::SpinAttackState::notify_attacked_enemy(
     Enemy& victim,
     const Sprite* victim_sprite,
     EnemyReaction::Reaction& result,
-    bool killed) {
+    bool /* killed */) {
 
   Hero& hero = get_hero();
   if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {

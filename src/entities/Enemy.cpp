@@ -79,7 +79,7 @@ const std::string Enemy::obstacle_behavior_names[] = {
  * \param treasure Treasure dropped when the enemy is killed.
  */
 Enemy::Enemy(
-    Game& game,
+    Game& /* game */,
     const std::string& name,
     Layer layer,
     int x,
@@ -330,7 +330,7 @@ bool Enemy::is_block_obstacle(Block& block) {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Enemy::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Enemy::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) {
   return false;
 }
 
@@ -948,7 +948,7 @@ void Enemy::notify_ground_below_changed() {
  * \param entity_overlapping the other entity
  * \param collision_mode the collision mode that detected the collision
  */
-void Enemy::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Enemy::notify_collision(MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   entity_overlapping.notify_collision_with_enemy(*this);
 }
@@ -1301,7 +1301,7 @@ void Enemy::hurt(MapEntity& source, Sprite* this_sprite) {
  * \param source The source of the attack.
  * \param attack The attack that was just successful.
  */
-void Enemy::notify_hurt(MapEntity& source, EnemyAttack attack) {
+void Enemy::notify_hurt(MapEntity& /* source */, EnemyAttack attack) {
 
   get_lua_context().enemy_on_hurt(*this, attack);
   if (get_life() <= 0) {

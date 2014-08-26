@@ -118,7 +118,7 @@ bool Block::is_hole_obstacle() const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Block::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Block::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) {
   // necessary to push a block into a hole having a teletransporter
   return false;
 }
@@ -128,7 +128,7 @@ bool Block::is_teletransporter_obstacle(Teletransporter& teletransporter) {
  * \param hero the hero
  * \return true if the hero is an obstacle for this entity.
  */
-bool Block::is_hero_obstacle(Hero& hero) {
+bool Block::is_hero_obstacle(Hero& /* hero */) {
   return get_movement() == nullptr;
 }
 
@@ -137,7 +137,7 @@ bool Block::is_hero_obstacle(Hero& hero) {
  * \param enemy an enemy
  * \return true if this enemy is currently considered as an obstacle by this entity.
  */
-bool Block::is_enemy_obstacle(Enemy& enemy) {
+bool Block::is_enemy_obstacle(Enemy& /* enemy */) {
   return true;
 }
 
@@ -146,7 +146,7 @@ bool Block::is_enemy_obstacle(Enemy& enemy) {
  * \param destructible a destructible item
  * \return true if the destructible item is currently an obstacle by this entity
  */
-bool Block::is_destructible_obstacle(Destructible& destructible) {
+bool Block::is_destructible_obstacle(Destructible& /* destructible */) {
   return true;
 }
 
@@ -166,7 +166,7 @@ void Block::notify_created() {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Block::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Block::notify_collision(MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   entity_overlapping.notify_collision_with_block(*this);
 }
@@ -176,7 +176,7 @@ void Block::notify_collision(MapEntity& entity_overlapping, CollisionMode collis
  * \param sw the switch
  * \param collision_mode the collision mode that detected the event
  */
-void Block::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
+void Block::notify_collision_with_switch(Switch& sw, CollisionMode /* collision_mode */) {
 
   sw.try_activate(*this);
 }
@@ -307,7 +307,7 @@ void Block::stop_movement_by_hero() {
 /**
  * \copydoc MapEntity::notify_moving_by
  */
-void Block::notify_moving_by(MapEntity& entity) {
+void Block::notify_moving_by(MapEntity& /* entity */) {
 
   get_lua_context().block_on_moving(*this);
 }
@@ -315,7 +315,7 @@ void Block::notify_moving_by(MapEntity& entity) {
 /**
  * \copydoc MapEntity::notify_moved_by
  */
-void Block::notify_moved_by(MapEntity& entity) {
+void Block::notify_moved_by(MapEntity& /* entity */) {
 
   get_lua_context().block_on_moved(*this);
 }

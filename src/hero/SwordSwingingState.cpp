@@ -123,7 +123,7 @@ bool Hero::SwordSwingingState::can_start_sword() const {
  * \param attacker an attacker that is trying to hurt the hero
  * (or nullptr if the source of the attack is not an enemy)
  */
-bool Hero::SwordSwingingState::can_be_hurt(MapEntity* attacker) const {
+bool Hero::SwordSwingingState::can_be_hurt(MapEntity* /* attacker */) const {
   return true;
 }
 
@@ -132,14 +132,14 @@ bool Hero::SwordSwingingState::can_be_hurt(MapEntity* attacker) const {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::SwordSwingingState::can_pick_treasure(EquipmentItem& item) const {
+bool Hero::SwordSwingingState::can_pick_treasure(EquipmentItem& /* item */) const {
   return true;
 }
 
 /**
  * \copydoc Hero::State::can_avoid_stream
  */
-bool Hero::SwordSwingingState::can_avoid_stream(const Stream& stream) const {
+bool Hero::SwordSwingingState::can_avoid_stream(const Stream& /* stream */) const {
   return true;
 }
 
@@ -204,7 +204,7 @@ bool Hero::SwordSwingingState::is_cutting_with_sword(
  * \return true if the teletransporter is an obstacle in this state
  */
 bool Hero::SwordSwingingState::is_teletransporter_obstacle(
-    const Teletransporter& teletransporter) const {
+    const Teletransporter& /* teletransporter */) const {
 
   // if the hero was pushed by an enemy, don't go on a teletransporter
   return get_hero().get_movement() != nullptr;
@@ -233,7 +233,7 @@ void Hero::SwordSwingingState::notify_attacked_enemy(
     Enemy& victim,
     const Sprite* victim_sprite,
     EnemyReaction::Reaction& result,
-    bool killed) {
+    bool /* killed */) {
 
   if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
     attacked = true;

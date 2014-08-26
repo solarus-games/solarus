@@ -107,7 +107,7 @@ void Crystal::notify_collision(MapEntity& entity_overlapping, CollisionMode coll
  * \param other_sprite the sprite of other_entity that is overlapping this detector
  * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Crystal::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
+void Crystal::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& /* this_sprite */) {
   other_entity.notify_collision_with_crystal(*this, other_sprite);
 }
 

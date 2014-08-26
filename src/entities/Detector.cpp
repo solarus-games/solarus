@@ -307,7 +307,7 @@ bool Detector::test_collision_center(MapEntity& entity) {
  * \param entity the entity
  * \return true if the entity's collides with this detector with respect to the custom rule
  */
-bool Detector::test_collision_custom(MapEntity& entity) {
+bool Detector::test_collision_custom(MapEntity& /* entity */) {
 
   Debug::die("Custom collision mode invoked but not defined");
   return false;
@@ -324,7 +324,7 @@ bool Detector::test_collision_custom(MapEntity& entity) {
  * \param collision_mode the collision mode that detected the collision (useful if
  * the detector has several collision modes)
  */
-void Detector::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Detector::notify_collision(MapEntity& /* entity_overlapping */, CollisionMode /* collision_mode */) {
 
 }
 
@@ -339,7 +339,7 @@ void Detector::notify_collision(MapEntity& entity_overlapping, CollisionMode col
  * \param other_sprite the sprite of other_entity that is overlapping this detector
  * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Detector::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
+void Detector::notify_collision(MapEntity& /* other_entity */, Sprite& /* other_sprite */, Sprite& /* this_sprite */) {
 
 }
 
@@ -376,7 +376,7 @@ bool Detector::notify_action_command_pressed() {
  * \param item The equipment item used.
  * \return true if an interaction occured.
  */
-bool Detector::interaction_with_item(EquipmentItem& item) {
+bool Detector::interaction_with_item(EquipmentItem& /* item */) {
   return false;
 }
 

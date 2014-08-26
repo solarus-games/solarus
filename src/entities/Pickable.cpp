@@ -101,7 +101,7 @@ EntityType Pickable::get_type() const {
  * \return the pickable item created, or nullptr
  */
 Pickable* Pickable::create(
-    Game& game,
+    Game& /* game */,
     const std::string& name,
     Layer layer,
     int x,
@@ -269,7 +269,7 @@ MapEntity* Pickable::get_entity_followed() {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   if (entity_overlapping.is_hero()) {
     try_give_item_to_player();
@@ -311,7 +311,7 @@ void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode col
  * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
 void Pickable::notify_collision(MapEntity& other_entity, Sprite& other_sprite,
-    Sprite& this_sprite) {
+    Sprite& /* this_sprite */) {
 
   // taking the item with the sword
   if (other_entity.is_hero()

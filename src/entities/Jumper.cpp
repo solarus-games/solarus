@@ -326,7 +326,7 @@ bool Jumper::is_point_in_extended_diagonal(const Rectangle& point) const {
  * beyond its bounding box, or to keep it restricted to its bounding box.
  * \return \c true if the rectangle overlaps the active region of the jumper.
  */
-bool Jumper::overlaps_jumping_region(const Rectangle& rectangle, bool extended_region) const {
+bool Jumper::overlaps_jumping_region(const Rectangle& rectangle, bool /* extended_region */) const {
 
   if (!is_jump_diagonal()) {
     return overlaps(rectangle);

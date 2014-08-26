@@ -52,7 +52,7 @@ namespace solarus {
  * \param model Model of custom entity or an empty string.
  */
 CustomEntity::CustomEntity(
-    Game& game,
+    Game& /* game */,
     const std::string& name,
     int direction,
     Layer layer,
@@ -140,7 +140,7 @@ void CustomEntity::set_sprites_direction(int direction) {
 const CustomEntity::TraversableInfo& CustomEntity::get_traversable_by_entity_info(
     EntityType type) {
 
-  auto it = traversable_by_entities_type.find(type);
+  const auto it = traversable_by_entities_type.find(type);
   if (it != traversable_by_entities_type.end()) {
     // This entity type overrides the general setting.
     return it->second;
@@ -292,7 +292,7 @@ const CustomEntity::TraversableInfo& CustomEntity::get_can_traverse_entity_info(
     EntityType type) {
 
   // Find the obstacle settings.
-  auto it = can_traverse_entities_type.find(type);
+  const auto it = can_traverse_entities_type.find(type);
   if (it != can_traverse_entities_type.end()) {
     // This entity type overrides the general setting.
     return it->second;
@@ -573,7 +573,7 @@ bool CustomEntity::is_separator_obstacle(Separator& separator) {
  */
 bool CustomEntity::can_traverse_ground(Ground ground) const {
 
-  auto it = can_traverse_grounds.find(ground);
+  const auto it = can_traverse_grounds.find(ground);
 
   if (it != can_traverse_grounds.end()) {
     // Return the boolean value that was set.
@@ -901,7 +901,7 @@ void CustomEntity::notify_collision_from(MapEntity& other_entity, Sprite& other_
  * \copydoc MapEntity::notify_collision_with_destructible
  */
 void CustomEntity::notify_collision_with_destructible(
-    Destructible& destructible, CollisionMode collision_mode) {
+    Destructible& destructible, CollisionMode /* collision_mode */) {
 
   notify_collision_from(destructible);
 }
@@ -910,7 +910,7 @@ void CustomEntity::notify_collision_with_destructible(
  * \copydoc MapEntity::notify_collision_with_teletransporter
  */
 void CustomEntity::notify_collision_with_teletransporter(
-    Teletransporter& teletransporter, CollisionMode collision_mode) {
+    Teletransporter& teletransporter, CollisionMode /* collision_mode */) {
 
   notify_collision_from(teletransporter);
 }
@@ -919,7 +919,7 @@ void CustomEntity::notify_collision_with_teletransporter(
  * \copydoc MapEntity::notify_collision_with_stream
  */
 void CustomEntity::notify_collision_with_stream(
-    Stream& stream, int dx, int dy) {
+    Stream& stream, int /* dx */, int /* dy */) {
 
   notify_collision_from(stream);
 }
@@ -928,7 +928,7 @@ void CustomEntity::notify_collision_with_stream(
  * \copydoc MapEntity::notify_collision_with_stairs
  */
 void CustomEntity::notify_collision_with_stairs(
-    Stairs& stairs, CollisionMode collision_mode) {
+    Stairs& stairs, CollisionMode /* collision_mode */) {
 
   notify_collision_from(stairs);
 }
@@ -937,7 +937,7 @@ void CustomEntity::notify_collision_with_stairs(
  * \copydoc MapEntity::notify_collision_with_jumper
  */
 void CustomEntity::notify_collision_with_jumper(
-    Jumper& jumper, CollisionMode collision_mode) {
+    Jumper& jumper, CollisionMode /* collision_mode */) {
 
   notify_collision_from(jumper);
 }
@@ -946,7 +946,7 @@ void CustomEntity::notify_collision_with_jumper(
  * \copydoc MapEntity::notify_collision_with_sensor
  */
 void CustomEntity::notify_collision_with_sensor(
-    Sensor& sensor, CollisionMode collision_mode) {
+    Sensor& sensor, CollisionMode /* collision_mode */) {
 
   notify_collision_from(sensor);
 }
@@ -955,7 +955,7 @@ void CustomEntity::notify_collision_with_sensor(
  * \copydoc MapEntity::notify_collision_with_switch(Switch&,CollisionMode)
  */
 void CustomEntity::notify_collision_with_switch(
-    Switch& sw, CollisionMode collision_mode) {
+    Switch& sw, CollisionMode /* collision_mode */) {
 
   notify_collision_from(sw);
 }
@@ -973,7 +973,7 @@ void CustomEntity::notify_collision_with_switch(
  * \copydoc MapEntity::notify_collision_with_crystal(Crystal&,CollisionMode)
  */
 void CustomEntity::notify_collision_with_crystal(
-    Crystal& crystal, CollisionMode collision_mode) {
+    Crystal& crystal, CollisionMode /* collision_mode */) {
 
   notify_collision_from(crystal);
 }
@@ -1007,7 +1007,7 @@ void CustomEntity::notify_collision_with_block(Block& block) {
  * \copydoc MapEntity::notify_collision_with_separator
  */
 void CustomEntity::notify_collision_with_separator(
-    Separator& separator, CollisionMode collision_mode) {
+    Separator& separator, CollisionMode /* collision_mode */) {
 
   notify_collision_from(separator);
 }
@@ -1016,7 +1016,7 @@ void CustomEntity::notify_collision_with_separator(
  * \copydoc MapEntity::notify_collision_with_bomb
  */
 void CustomEntity::notify_collision_with_bomb(
-    Bomb& bomb, CollisionMode collision_mode) {
+    Bomb& bomb, CollisionMode /* collision_mode */) {
 
   notify_collision_from(bomb);
 }
@@ -1025,7 +1025,7 @@ void CustomEntity::notify_collision_with_bomb(
  * \copydoc MapEntity::notify_collision_with_explosion(Explosion&, CollisionMode)
  */
 void CustomEntity::notify_collision_with_explosion(
-    Explosion& explosion, CollisionMode collision_mode) {
+    Explosion& explosion, CollisionMode /* collision_mode */) {
 
   notify_collision_from(explosion);
 }

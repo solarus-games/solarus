@@ -276,7 +276,7 @@ void Switch::notify_collision(
  * \param other_sprite the sprite of other_entity that is overlapping this detector
  * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Switch::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
+void Switch::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& /* this_sprite */) {
 
   if (!locked) {
     other_entity.notify_collision_with_switch(*this, other_sprite);
@@ -325,7 +325,7 @@ void Switch::try_activate(Block& block) {
  *
  * \param arrow the arrow overlapping this switch
  */
-void Switch::try_activate(Arrow& arrow) {
+void Switch::try_activate(Arrow& /* arrow */) {
 
   if ((subtype == ARROW_TARGET || subtype == SOLID)
       && !is_activated()) {

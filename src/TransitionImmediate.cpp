@@ -60,7 +60,7 @@ bool TransitionImmediate::is_finished() const {
  * or resumed.
  * \param suspended true if suspended, false if resumed.
  */
-void TransitionImmediate::notify_suspended(bool suspended) {
+void TransitionImmediate::notify_suspended(bool /* suspended */) {
 }
 
 /**
@@ -74,7 +74,7 @@ void TransitionImmediate::update() {
  * \brief Draws the transition effect on a surface.
  * \param dst_surface the surface to draw
  */
-void TransitionImmediate::draw(Surface& dst_surface) {
+void TransitionImmediate::draw(Surface& /* dst_surface */) {
 
 }
 

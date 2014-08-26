@@ -103,14 +103,14 @@ bool Arrow::can_be_obstacle() const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Arrow::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Arrow::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) {
   return false;
 }
 
 /**
  * \copydoc MapEntity::is_stream_obstacle
  */
-bool Arrow::is_stream_obstacle(Stream& stream) {
+bool Arrow::is_stream_obstacle(Stream& /* stream */) {
   return false;
 }
 
@@ -177,7 +177,7 @@ bool Arrow::is_ladder_obstacle() const {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool Arrow::is_switch_obstacle(Switch& sw) {
+bool Arrow::is_switch_obstacle(Switch& /* sw */) {
   return false;
 }
 
@@ -186,7 +186,7 @@ bool Arrow::is_switch_obstacle(Switch& sw) {
  * \param raised_block a crystal block raised
  * \return false
  */
-bool Arrow::is_raised_block_obstacle(CrystalBlock& raised_block) {
+bool Arrow::is_raised_block_obstacle(CrystalBlock& /* raised_block */) {
   // arrows can traverse the crystal blocks
   return false;
 }
@@ -196,7 +196,7 @@ bool Arrow::is_raised_block_obstacle(CrystalBlock& raised_block) {
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool Arrow::is_crystal_obstacle(Crystal& crystal) {
+bool Arrow::is_crystal_obstacle(Crystal& /* crystal */) {
   return false;
 }
 
@@ -212,7 +212,7 @@ bool Arrow::is_npc_obstacle(Npc& npc) {
 /**
  * \copydoc MapEntity::is_jumper_obstacle
  */
-bool Arrow::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) {
+bool Arrow::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candidate_position */) {
   return false;
 }
 
@@ -352,7 +352,7 @@ void Arrow::attach_to(MapEntity& entity_reached) {
  * \param sw the switch
  * \param collision_mode the collision mode that detected the event
  */
-void Arrow::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
+void Arrow::notify_collision_with_switch(Switch& sw, CollisionMode /* collision_mode */) {
 
   if (sw.is_arrow_target() && is_stopped()) {
     sw.try_activate(*this);
@@ -383,7 +383,7 @@ void Arrow::notify_collision_with_crystal(Crystal& crystal, CollisionMode collis
  * \param collision_mode the collision mode that detected the event
  */
 void Arrow::notify_collision_with_destructible(
-    Destructible& destructible, CollisionMode collision_mode) {
+    Destructible& destructible, CollisionMode /* collision_mode */) {
 
   if (destructible.is_obstacle_for(*this) && is_flying()) {
 
@@ -400,11 +400,11 @@ void Arrow::notify_collision_with_destructible(
 /**
  * \brief This function is called when an enemy's sprite collides with a sprite of this entity.
  * \param enemy the enemy
- * \param enemy_sprite the enemy's sprite that overlaps the hero
+ * \param enemy_sprite the enemy's sprite that overlaps this entity
  * \param this_sprite the arrow sprite
  */
 void Arrow::notify_collision_with_enemy(
-    Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) {
+    Enemy& enemy, Sprite& enemy_sprite, Sprite& /* this_sprite */) {
 
   if (!overlaps(hero) && is_flying()) {
     enemy.try_hurt(ATTACK_ARROW, *this, &enemy_sprite);
@@ -415,9 +415,9 @@ void Arrow::notify_collision_with_enemy(
  * \copydoc MapEntity::notify_attacked_enemy
  */
 void Arrow::notify_attacked_enemy(
-    EnemyAttack attack,
+    EnemyAttack /* attack */,
     Enemy& victim,
-    const Sprite* victim_sprite,
+    const Sprite* /* victim_sprite */,
     EnemyReaction::Reaction& result,
     bool killed) {
 

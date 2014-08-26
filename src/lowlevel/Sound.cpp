@@ -460,7 +460,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
  * \param datasource source of the data to read
  * \return number of bytes loaded
  */
-size_t Sound::cb_read(void* ptr, size_t size, size_t nb_bytes, void* datasource) {
+size_t Sound::cb_read(void* ptr, size_t /* size */, size_t nb_bytes, void* datasource) {
 
   SoundFromMemory* mem = (SoundFromMemory*) datasource;
 

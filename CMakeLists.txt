@@ -105,6 +105,10 @@ include_directories(
   "${SOLARUS_ENGINE_SOURCE_DIR}/include"
   "${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party"
   "${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party/snes_spc"
+)
+
+# Marking include directories as system ones disables warnings with gcc.
+include_directories(SYSTEM  
   "${MODPLUG_INCLUDE_DIR}"  # Before SDL2 because we want the sndfile.h of ModPlug.
   "${SDL2_INCLUDE_DIR}"
   "${SDL2_TTF_INCLUDE_DIR}"
@@ -153,7 +157,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 
 else()
   set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
-  set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
+  set(CMAKE_CXX_FLAGS_DEBUG "-Werror -Wextra -pedantic ${CMAKE_CXX_FLAGS_DEBUG}")
 endif()
 
 set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")

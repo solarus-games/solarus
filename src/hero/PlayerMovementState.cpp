@@ -159,7 +159,7 @@ void Hero::PlayerMovementState::update() {
       else if (System::now() >= jumper_start_date) {
         // Time to make the jump and everything is okay.
         get_hero().start_jumping(
-            jump_direction8, current_jumper->get_jump_length(), true, true, 0);
+            jump_direction8, current_jumper->get_jump_length(), true, true);
       }
     }
   }
@@ -273,7 +273,7 @@ void Hero::PlayerMovementState::notify_layer_changed() {
  * \param attacker an attacker that is trying to hurt the hero
  * (or nullptr if the source of the attack is not an enemy)
  */
-bool Hero::PlayerMovementState::can_be_hurt(MapEntity* attacker) const {
+bool Hero::PlayerMovementState::can_be_hurt(MapEntity* /* attacker */) const {
   return true;
 }
 
@@ -282,7 +282,7 @@ bool Hero::PlayerMovementState::can_be_hurt(MapEntity* attacker) const {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::PlayerMovementState::can_pick_treasure(EquipmentItem& item) const {
+bool Hero::PlayerMovementState::can_pick_treasure(EquipmentItem& /* item */) const {
   return true;
 }
 

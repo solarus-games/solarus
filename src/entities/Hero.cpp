@@ -1528,7 +1528,7 @@ bool Hero::is_sensor_obstacle(Sensor& sensor) {
  * \param raised_block a crystal block raised
  * \return true if the raised block is currently an obstacle for this entity
  */
-bool Hero::is_raised_block_obstacle(CrystalBlock& raised_block) {
+bool Hero::is_raised_block_obstacle(CrystalBlock& /* raised_block */) {
   return !is_on_raised_blocks();
 }
 
@@ -1560,7 +1560,7 @@ void Hero::notify_collision_with_destructible(
  * \brief This function is called when the rectangle of an enemy collides with the hero.
  * \param enemy the enemy
  */
-void Hero::notify_collision_with_enemy(Enemy& enemy) {
+void Hero::notify_collision_with_enemy(Enemy& /* enemy */) {
   // hurt the hero only on pixel-precise collisions
 }
 
@@ -1602,7 +1602,7 @@ void Hero::notify_collision_with_enemy(
  * \param collision_mode the collision mode that detected the event
  */
 void Hero::notify_collision_with_teletransporter(
-    Teletransporter& teletransporter, CollisionMode collision_mode) {
+    Teletransporter& teletransporter, CollisionMode /* collision_mode */) {
 
   if (!can_avoid_teletransporter(teletransporter)) {
 
@@ -1788,7 +1788,7 @@ void Hero::notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_
  * \param sw the switch
  * \param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
+void Hero::notify_collision_with_switch(Switch& sw, CollisionMode /* collision_mode */) {
 
   // it's normally a walkable switch
   if (sw.is_walkable()
@@ -1820,7 +1820,7 @@ void Hero::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) 
  * \param crystal the crystal
  * \param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) {
+void Hero::notify_collision_with_crystal(Crystal& /* crystal */, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_FACING) {
     // The hero is touching the crystal and is looking in its direction.
@@ -1869,7 +1869,7 @@ void Hero::notify_collision_with_chest(Chest& chest) {
  * \brief This function is called when a block detects a collision with this entity.
  * \param block the block
  */
-void Hero::notify_collision_with_block(Block& block) {
+void Hero::notify_collision_with_block(Block& /* block */) {
 
   if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
       && is_free()) {
@@ -1883,7 +1883,7 @@ void Hero::notify_collision_with_block(Block& block) {
  * \copydoc MapEntity::notify_collision_with_separator
  */
 void Hero::notify_collision_with_separator(
-    Separator& separator, CollisionMode collision_mode) {
+    Separator& separator, CollisionMode /* collision_mode */) {
 
   get_map().traverse_separator(&separator);
 }
@@ -2190,7 +2190,7 @@ void Hero::start_deep_water() {
       if (direction8 == -1) {
         direction8 = get_animation_direction() * 2;
       }
-      start_jumping(direction8, 32, false, true, 13);
+      start_jumping(direction8, 32, false, true);
     }
   }
 }
@@ -2405,22 +2405,19 @@ void Hero::start_forced_walking(const std::string& path, bool loop, bool ignore_
  * \param distance distance of the jump in pixels
  * \param ignore_obstacles true make the movement ignore obstacles
  * \param with_sound true to play the "jump" sound
- * \param movement_delay delay between each one-pixel move in the jump movement in milliseconds (0: default)
  */
 void Hero::start_jumping(
     int direction8,
     int distance,
     bool ignore_obstacles,
-    bool with_sound,
-    uint32_t movement_delay) {
+    bool with_sound) {
 
   JumpingState* state = new JumpingState(
       *this,
       direction8,
       distance,
       ignore_obstacles,
-      with_sound,
-      movement_delay);
+      with_sound);
   set_state(state);
 }
 

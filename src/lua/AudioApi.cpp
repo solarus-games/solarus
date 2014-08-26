@@ -101,7 +101,7 @@ int LuaContext::audio_api_play_sound(lua_State* l) {
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
  */
-int LuaContext::audio_api_preload_sounds(lua_State* l) {
+int LuaContext::audio_api_preload_sounds(lua_State* /* l */) {
 
   Sound::load_all();
   return 0;
@@ -180,7 +180,7 @@ int LuaContext::audio_api_play_music(lua_State* l) {
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
  */
-int LuaContext::audio_api_stop_music(lua_State* l) {
+int LuaContext::audio_api_stop_music(lua_State* /* l */) {
 
   Music::stop_playing();
 

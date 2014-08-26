@@ -815,7 +815,7 @@ void GameCommands::do_customization_callback() {
  * \param joypad_string The string to check.
  * \return true if this string is a valid joypad action.
  */
-bool GameCommands::is_joypad_string_valid(const std::string& joypad_string) {
+bool GameCommands::is_joypad_string_valid(const std::string& /* joypad_string */) {
 
   // TODO
   return true;

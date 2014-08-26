@@ -93,7 +93,7 @@ void Explosion::update() {
  * \param animation the current animation
  * \param frame the new frame
  */
-void Explosion::notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame) {
+void Explosion::notify_sprite_frame_changed(Sprite& /* sprite */, const std::string& /* animation */, int frame) {
 
   if (frame == 1) {
     // also detect non-pixel precise collisions
@@ -111,7 +111,7 @@ void Explosion::notify_sprite_frame_changed(Sprite& sprite, const std::string& a
  * \param other_sprite the sprite of other_entity that is overlapping this detector
  * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Explosion::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
+void Explosion::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& /* this_sprite */) {
 
   other_entity.notify_collision_with_explosion(*this, other_sprite);
 }
@@ -122,7 +122,7 @@ void Explosion::notify_collision(MapEntity &other_entity, Sprite &other_sprite, 
  * \param sw the switch
  * \param sprite_overlapping the sprite of the current entity that collides with the switch
  */
-void Explosion::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) {
+void Explosion::notify_collision_with_switch(Switch& sw, Sprite& /* sprite_overlapping */) {
 
   sw.try_activate();
 }
@@ -133,7 +133,7 @@ void Explosion::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapp
  * \param crystal the crystal
  * \param sprite_overlapping the sprite of the current entity that collides with the crystal
  */
-void Explosion::notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overlapping) {
+void Explosion::notify_collision_with_crystal(Crystal& crystal, Sprite& /* sprite_overlapping */) {
 
   crystal.activate(*this);
 }
@@ -156,7 +156,7 @@ void Explosion::notify_collision_with_sensor(Sensor& sensor, CollisionMode colli
  * \param enemy_sprite the enemy's sprite that overlaps a sprite of this entity
  * \param this_sprite this entity's sprite that overlaps the enemy's sprite
  */
-void Explosion::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite) {
+void Explosion::notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& /* this_sprite */) {
 
   try_attack_enemy(enemy, enemy_sprite);
 }
@@ -188,11 +188,11 @@ void Explosion::try_attack_enemy(Enemy& enemy, Sprite& enemy_sprite) {
  * \copydoc MapEntity::notify_attacked_enemy
  */
 void Explosion::notify_attacked_enemy(
-    EnemyAttack attack,
+    EnemyAttack /* attack */,
     Enemy& victim,
-    const Sprite* victim_sprite,
+    const Sprite* /* victim_sprite */,
     EnemyReaction::Reaction& result,
-    bool killed) {
+    bool /* killed */) {
 
   if (result.type != EnemyReaction::IGNORED) {
     victims.push_back(&victim);

@@ -107,7 +107,7 @@ bool CrystalBlock::is_obstacle_for(MapEntity& other) {
  * \param entity_overlapping the other entity
  * \param collision_mode the collision mode that detected the collision
  */
-void CrystalBlock::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void CrystalBlock::notify_collision(MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   if (entity_overlapping.is_hero() && is_raised()) {
 

@@ -126,14 +126,14 @@ bool Boomerang::can_be_drawn() const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Boomerang::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Boomerang::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) {
   return false;
 }
 
 /**
  * \copydoc MapEntity::is_stream_obstacle
  */
-bool Boomerang::is_stream_obstacle(Stream& stream) {
+bool Boomerang::is_stream_obstacle(Stream& /* stream */) {
   return false;
 }
 
@@ -200,7 +200,7 @@ bool Boomerang::is_ladder_obstacle() const {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool Boomerang::is_switch_obstacle(Switch& sw) {
+bool Boomerang::is_switch_obstacle(Switch& /* sw */) {
   return false;
 }
 
@@ -209,8 +209,8 @@ bool Boomerang::is_switch_obstacle(Switch& sw) {
  * \param raised_block a crystal block raised
  * \return false
  */
-bool Boomerang::is_raised_block_obstacle(CrystalBlock& raised_block) {
-  // the boomerang can traverse the crystal blocks
+bool Boomerang::is_raised_block_obstacle(CrystalBlock& /* raised_block */) {
+  // the boomerang can traverse crystal blocks
   return false;
 }
 
@@ -219,7 +219,7 @@ bool Boomerang::is_raised_block_obstacle(CrystalBlock& raised_block) {
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool Boomerang::is_crystal_obstacle(Crystal& crystal) {
+bool Boomerang::is_crystal_obstacle(Crystal& /* crystal */) {
   return false;
 }
 
@@ -235,7 +235,7 @@ bool Boomerang::is_npc_obstacle(Npc& npc) {
 /**
  * \copydoc MapEntity::is_jumper_obstacle
  */
-bool Boomerang::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) {
+bool Boomerang::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candidate_position */) {
   return false;
 }
 
@@ -336,7 +336,7 @@ void Boomerang::notify_collision_with_switch(Switch& sw, CollisionMode collision
  * \param crystal the crystal
  * \param collision_mode the collision mode that detected the event
  */
-void Boomerang::notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode) {
+void Boomerang::notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_OVERLAPPING) {
 
@@ -351,7 +351,7 @@ void Boomerang::notify_collision_with_crystal(Crystal &crystal, CollisionMode co
  * \brief This function is called when an enemy collides with the entity.
  * \param enemy the enemy
  */
-void Boomerang::notify_collision_with_enemy(Enemy &enemy) {
+void Boomerang::notify_collision_with_enemy(Enemy& enemy) {
 
   if (!overlaps(hero)) {
     enemy.try_hurt(ATTACK_BOOMERANG, *this, nullptr);
@@ -362,11 +362,11 @@ void Boomerang::notify_collision_with_enemy(Enemy &enemy) {
  * \copydoc MapEntity::notify_attacked_enemy
  */
 void Boomerang::notify_attacked_enemy(
-    EnemyAttack attack,
-    Enemy& victim,
-    const Sprite* victim_sprite,
+    EnemyAttack /* attack */,
+    Enemy& /* victim */,
+    const Sprite* /* victim_sprite */,
     EnemyReaction::Reaction& result,
-    bool killed) {
+    bool /* killed */) {
 
   if (result.type != EnemyReaction::IGNORED && !is_going_back()) {
     go_back();

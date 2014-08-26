@@ -96,7 +96,7 @@ void Sensor::notify_collision(MapEntity& entity_overlapping, CollisionMode colli
  * \param explosion an explosion
  * \param collision_mode the collision mode that detected the collision
  */
-void Sensor::notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode) {
+void Sensor::notify_collision_with_explosion(Explosion& /* explosion */, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_OVERLAPPING) {
     get_lua_context().sensor_on_collision_explosion(*this);
@@ -110,7 +110,7 @@ void Sensor::notify_collision_with_explosion(Explosion& explosion, CollisionMode
  *
  * \param hero the hero
  */
-void Sensor::activate(Hero& hero) {
+void Sensor::activate(Hero& /* hero */) {
 
   if (!activated_by_hero) {
 

@@ -1029,7 +1029,7 @@ void MapEntity::set_facing_entity(Detector* facing_entity) {
  * \brief Notifies this entity that its facing entity has just changed.
  * \param facing_entity the detector this entity is now facing (possibly nullptr)
  */
-void MapEntity::notify_facing_entity_changed(Detector* facing_entity) {
+void MapEntity::notify_facing_entity_changed(Detector* /* facing_entity */) {
 }
 
 /**
@@ -1262,7 +1262,7 @@ void MapEntity::clear_old_sprites() {
  * \param animation the current animation
  * \param frame the new frame
  */
-void MapEntity::notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame) {
+void MapEntity::notify_sprite_frame_changed(Sprite& /* sprite */, const std::string& /* animation */, int /* frame */) {
 }
 
 /**
@@ -1274,7 +1274,7 @@ void MapEntity::notify_sprite_frame_changed(Sprite& sprite, const std::string& a
  * \param sprite the sprite
  * \param animation the animation just finished
  */
-void MapEntity::notify_sprite_animation_finished(Sprite& sprite, const std::string& animation) {
+void MapEntity::notify_sprite_animation_finished(Sprite& /* sprite */, const std::string& /* animation */) {
 }
 
 /**

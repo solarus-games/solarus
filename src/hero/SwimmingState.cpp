@@ -177,7 +177,7 @@ int Hero::SwimmingState::get_fast_swimming_speed() const {
  * \param stairs some stairs
  * \return true if the stairs are obstacle in this state
  */
-bool Hero::SwimmingState::is_stairs_obstacle(const Stairs& stairs) const {
+bool Hero::SwimmingState::is_stairs_obstacle(const Stairs& /* stairs */) const {
   return false;
 }
 
@@ -186,7 +186,7 @@ bool Hero::SwimmingState::is_stairs_obstacle(const Stairs& stairs) const {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::SwimmingState::can_pick_treasure(EquipmentItem& item) const {
+bool Hero::SwimmingState::can_pick_treasure(EquipmentItem& /* item */) const {
   return true;
 }
 

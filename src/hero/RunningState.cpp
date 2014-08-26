@@ -232,8 +232,8 @@ void Hero::RunningState::notify_jumper_activated(Jumper& jumper) {
       jumper.get_direction(),
       jumper.get_jump_length(),
       true,
-      true,
-      0);
+      true
+  );
 }
 
 /**
@@ -263,7 +263,7 @@ bool Hero::RunningState::can_be_hurt(MapEntity* attacker) const {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::RunningState::can_pick_treasure(EquipmentItem& item) const {
+bool Hero::RunningState::can_pick_treasure(EquipmentItem& /* item */) const {
   return true;
 }
 
@@ -333,7 +333,7 @@ bool Hero::RunningState::can_avoid_teletransporter() const {
 /**
  * \copydoc Hero::State::can_avoid_stream
  */
-bool Hero::RunningState::can_avoid_stream(const Stream& stream) const {
+bool Hero::RunningState::can_avoid_stream(const Stream& /* stream */) const {
   return is_bouncing();
 }
 
@@ -351,7 +351,7 @@ bool Hero::RunningState::can_persist_on_stream(const Stream& stream) const {
  * \param sensor a sensor
  * \return true if the sensor is an obstacle in this state
  */
-bool Hero::RunningState::is_sensor_obstacle(const Sensor& sensor) const {
+bool Hero::RunningState::is_sensor_obstacle(const Sensor& /* sensor */) const {
   return is_bouncing();
 }
 

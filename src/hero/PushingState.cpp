@@ -127,7 +127,7 @@ void Hero::PushingState::update() {
 /**
  * \copydoc Hero::State::can_avoid_stream
  */
-bool Hero::PushingState::can_avoid_stream(const Stream& stream) const {
+bool Hero::PushingState::can_avoid_stream(const Stream& /* stream */) const {
   return true;
 }
 
@@ -270,7 +270,7 @@ void Hero::PushingState::stop_moving_pushed_entity() {
  * (or nullptr if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::PushingState::can_be_hurt(MapEntity* attacker) const {
+bool Hero::PushingState::can_be_hurt(MapEntity* /* attacker */) const {
   return !is_moving_grabbed_entity();
 }
 
@@ -279,7 +279,7 @@ bool Hero::PushingState::can_be_hurt(MapEntity* attacker) const {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::PushingState::can_pick_treasure(EquipmentItem& item) const {
+bool Hero::PushingState::can_pick_treasure(EquipmentItem& /* item */) const {
   return true;
 }
 

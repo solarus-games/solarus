@@ -114,7 +114,7 @@ int LuaContext::video_api_set_mode(lua_State *l) {
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
  */
-int LuaContext::video_api_switch_mode(lua_State *l) {
+int LuaContext::video_api_switch_mode(lua_State* /* l */) {
 
   Video::switch_video_mode();
 
@@ -245,7 +245,7 @@ int LuaContext::video_api_set_window_size(lua_State* l) {
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
-int LuaContext::video_api_reset_window_size(lua_State* l) {
+int LuaContext::video_api_reset_window_size(lua_State* /* l */) {
 
   Video::reset_window_size();
 

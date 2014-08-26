@@ -102,7 +102,7 @@ bool Shader::is_valid() {
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
  */
-void Shader::render(Surface& quest_surface) {
+void Shader::render(Surface& /* quest_surface */) {
   
   display_time += System::timestep;
 }
@@ -125,7 +125,7 @@ void Shader::load(const std::string& shader_name) {
  * \brief Dummy method used to call the static lua callback for a specific shader implementation.
  * \param l The lua state.
  */
-void Shader::register_callback(lua_State* l) {
+void Shader::register_callback(lua_State* /* l */) {
 }
   
 /**

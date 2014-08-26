@@ -2190,7 +2190,7 @@ void Hero::start_deep_water() {
       if (direction8 == -1) {
         direction8 = get_animation_direction() * 2;
       }
-      start_jumping(direction8, 32, false, true, 13);
+      start_jumping(direction8, 32, false, true);
     }
   }
 }
@@ -2405,22 +2405,19 @@ void Hero::start_forced_walking(const std::string& path, bool loop, bool ignore_
  * \param distance distance of the jump in pixels
  * \param ignore_obstacles true make the movement ignore obstacles
  * \param with_sound true to play the "jump" sound
- * \param movement_delay delay between each one-pixel move in the jump movement in milliseconds (0: default)
  */
 void Hero::start_jumping(
     int direction8,
     int distance,
     bool ignore_obstacles,
-    bool with_sound,
-    uint32_t movement_delay) {
+    bool with_sound) {
 
   JumpingState* state = new JumpingState(
       *this,
       direction8,
       distance,
       ignore_obstacles,
-      with_sound,
-      movement_delay);
+      with_sound);
   set_state(state);
 }
 

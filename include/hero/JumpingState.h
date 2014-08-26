@@ -33,8 +33,7 @@ class Hero::JumpingState: public Hero::State {
         int direction8,
         int distance,
         bool ignore_obstacles,
-        bool with_sound,
-        uint32_t movement_delay);
+        bool with_sound);
     ~JumpingState();
 
     void start(const State* previous_state);

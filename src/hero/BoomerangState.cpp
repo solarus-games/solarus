@@ -106,7 +106,7 @@ void Hero::BoomerangState::update() {
 /**
  * \copydoc Hero::State::can_avoid_stream
  */
-bool Hero::BoomerangState::can_avoid_stream(const Stream& stream) const {
+bool Hero::BoomerangState::can_avoid_stream(const Stream& /* stream */) const {
   return true;
 }
 

@@ -1552,7 +1552,7 @@ void MapEntity::notify_movement_finished() {
  * another one.
  * \param entity The other entity.
  */
-void MapEntity::notify_moving_by(MapEntity& entity) {
+void MapEntity::notify_moving_by(MapEntity& /* entity */) {
   // Do nothing by default.
 }
 
@@ -1561,7 +1561,7 @@ void MapEntity::notify_moving_by(MapEntity& entity) {
  * moved by another one.
  * \param entity The other entity.
  */
-void MapEntity::notify_moved_by(MapEntity& entity) {
+void MapEntity::notify_moved_by(MapEntity& /* entity */) {
   // Do nothing by default.
 }
 
@@ -1629,7 +1629,7 @@ void MapEntity::set_enabled(bool enabled) {
  * \brief Notifies this entity that it was just enabled or disabled.
  * \param enabled \c true if the entity is now enabled.
  */
-void MapEntity::notify_enabled(bool enabled) {
+void MapEntity::notify_enabled(bool /* enabled */) {
 
   if (!is_on_map()) {
     return;
@@ -1648,7 +1648,7 @@ void MapEntity::notify_enabled(bool enabled) {
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool MapEntity::is_obstacle_for(MapEntity& other) {
+bool MapEntity::is_obstacle_for(MapEntity& /* other */) {
   return false;
 }
 
@@ -1660,7 +1660,7 @@ bool MapEntity::is_obstacle_for(MapEntity& other) {
  * \return \c true if this entity is an obstacle for the other one at that
  * position.
  */
-bool MapEntity::is_obstacle_for(MapEntity& other, const Rectangle& candidate_position) {
+bool MapEntity::is_obstacle_for(MapEntity& other, const Rectangle& /* candidate_position */) {
 
   // By default, use a position-independent test.
   // Most entities don't need the candidate position of the other one to decide
@@ -1766,7 +1766,7 @@ bool MapEntity::is_ladder_obstacle() const {
  * \param hero the hero
  * \return true if the hero is currently an obstacle for this entity
  */
-bool MapEntity::is_hero_obstacle(Hero& hero) {
+bool MapEntity::is_hero_obstacle(Hero& /* hero */) {
   return false;
 }
 
@@ -1778,7 +1778,7 @@ bool MapEntity::is_hero_obstacle(Hero& hero) {
  * \param block a block
  * \return true if the block is currently an obstacle for this entity
  */
-bool MapEntity::is_block_obstacle(Block& block) {
+bool MapEntity::is_block_obstacle(Block& /* block */) {
   return true;
 }
 
@@ -1790,7 +1790,7 @@ bool MapEntity::is_block_obstacle(Block& block) {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool MapEntity::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool MapEntity::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) {
   return true;
 }
 
@@ -1803,7 +1803,7 @@ bool MapEntity::is_teletransporter_obstacle(Teletransporter& teletransporter) {
  * \param stream A stream.
  * \return \c true if the stream is currently an obstacle for this entity.
  */
-bool MapEntity::is_stream_obstacle(Stream& stream) {
+bool MapEntity::is_stream_obstacle(Stream& /* stream */) {
   return true;
 }
 
@@ -1815,7 +1815,7 @@ bool MapEntity::is_stream_obstacle(Stream& stream) {
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool MapEntity::is_stairs_obstacle(Stairs& stairs) {
+bool MapEntity::is_stairs_obstacle(Stairs& /* stairs */) {
   return true;
 }
 
@@ -1827,7 +1827,7 @@ bool MapEntity::is_stairs_obstacle(Stairs& stairs) {
  * \param sensor a sensor
  * \return true if the sensor is currently an obstacle for this entity
  */
-bool MapEntity::is_sensor_obstacle(Sensor& sensor) {
+bool MapEntity::is_sensor_obstacle(Sensor& /* sensor */) {
   return false;
 }
 
@@ -1851,7 +1851,7 @@ bool MapEntity::is_switch_obstacle(Switch& sw) {
  * \param raised_block a crystal block raised
  * \return true if the raised block is currently an obstacle for this entity
  */
-bool MapEntity::is_raised_block_obstacle(CrystalBlock& raised_block) {
+bool MapEntity::is_raised_block_obstacle(CrystalBlock& /* raised_block */) {
   return true;
 }
 
@@ -1864,7 +1864,7 @@ bool MapEntity::is_raised_block_obstacle(CrystalBlock& raised_block) {
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool MapEntity::is_crystal_obstacle(Crystal& crystal) {
+bool MapEntity::is_crystal_obstacle(Crystal& /* crystal */) {
   return true;
 }
 
@@ -1876,7 +1876,7 @@ bool MapEntity::is_crystal_obstacle(Crystal& crystal) {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool MapEntity::is_npc_obstacle(Npc& npc) {
+bool MapEntity::is_npc_obstacle(Npc& /* npc */) {
   return true;
 }
 
@@ -1888,7 +1888,7 @@ bool MapEntity::is_npc_obstacle(Npc& npc) {
  * \param enemy an enemy
  * \return true if the enemy is currently an obstacle for this entity
  */
-bool MapEntity::is_enemy_obstacle(Enemy& enemy) {
+bool MapEntity::is_enemy_obstacle(Enemy& /* enemy */) {
   return false;
 }
 
@@ -1899,7 +1899,7 @@ bool MapEntity::is_enemy_obstacle(Enemy& enemy) {
  * \return \c true if the jumper is currently an obstacle for this entity at
  * this candidate position.
  */
-bool MapEntity::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) {
+bool MapEntity::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candidate_position */) {
   return true;
 }
 
@@ -1926,7 +1926,7 @@ bool MapEntity::is_destructible_obstacle(Destructible& destructible) {
  * \param separator A separator.
  * \return \c true if the separator is currently an obstacle for this entity.
  */
-bool MapEntity::is_separator_obstacle(Separator& separator) {
+bool MapEntity::is_separator_obstacle(Separator& /* separator */) {
 
   return true;
 }
@@ -2214,7 +2214,7 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
  * \param destructible the destructible item
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_destructible(Destructible& /* destructible */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2222,7 +2222,7 @@ void MapEntity::notify_collision_with_destructible(Destructible& destructible, C
  * \param teletransporter the teletransporter
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_teletransporter(Teletransporter& /* teletransporter */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2233,7 +2233,7 @@ void MapEntity::notify_collision_with_teletransporter(Teletransporter& teletrans
  * \param dy Direction of the y move in pixels (0, 1 or -1).
  */
 void MapEntity::notify_collision_with_stream(
-    Stream& stream, int dx, int dy) {
+    Stream& /* stream */, int /* dx */, int /* dy */) {
 }
 
 /**
@@ -2241,7 +2241,7 @@ void MapEntity::notify_collision_with_stream(
  * \param stairs the stairs
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_stairs(Stairs& /* stairs */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2249,7 +2249,7 @@ void MapEntity::notify_collision_with_stairs(Stairs& stairs, CollisionMode colli
  * \param jumper The jumper.
  * \param collision_mode The collision mode that detected the event.
  */
-void MapEntity::notify_collision_with_jumper(Jumper& jumper, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_jumper(Jumper& /* jumper */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2257,7 +2257,7 @@ void MapEntity::notify_collision_with_jumper(Jumper& jumper, CollisionMode colli
  * \param sensor a sensor
  * \param collision_mode the collision mode that detected the collision
  */
-void MapEntity::notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_sensor(Sensor& /* sensor */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2265,8 +2265,8 @@ void MapEntity::notify_collision_with_sensor(Sensor &sensor, CollisionMode colli
  * \param sw a switch
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_switch(Switch& sw,
-    CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_switch(Switch& /* sw */,
+    CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2275,7 +2275,7 @@ void MapEntity::notify_collision_with_switch(Switch& sw,
  * \param sw the switch
  * \param sprite_overlapping the sprite of the current entity that collides with the switch
  */
-void MapEntity::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) {
+void MapEntity::notify_collision_with_switch(Switch& /* sw */, Sprite& /* sprite_overlapping */) {
 }
 
 /**
@@ -2283,8 +2283,8 @@ void MapEntity::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapp
  * \param crystal the crystal
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_crystal(Crystal &crystal,
-    CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_crystal(Crystal& /* crystal */,
+    CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2293,21 +2293,21 @@ void MapEntity::notify_collision_with_crystal(Crystal &crystal,
  * \param crystal the crystal
  * \param sprite_overlapping the sprite of the current entity that collides with the crystal
  */
-void MapEntity::notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overlapping) {
+void MapEntity::notify_collision_with_crystal(Crystal& /* crystal */, Sprite& /* sprite_overlapping */) {
 }
 
 /**
  * \brief This function is called when a chest detects a collision with this entity.
  * \param chest the chest
  */
-void MapEntity::notify_collision_with_chest(Chest& chest) {
+void MapEntity::notify_collision_with_chest(Chest& /* chest */) {
 }
 
 /**
  * \brief This function is called when a block detects a collision with this entity.
  * \param block the block
  */
-void MapEntity::notify_collision_with_block(Block& block) {
+void MapEntity::notify_collision_with_block(Block& /* block */) {
 }
 
 /**
@@ -2317,7 +2317,7 @@ void MapEntity::notify_collision_with_block(Block& block) {
  * \param collision_mode The collision mode that detected the event.
  */
 void MapEntity::notify_collision_with_separator(
-    Separator& separator, CollisionMode collision_mode) {
+    Separator& /* separator */, CollisionMode /* collision_mode */) {
 
 }
 
@@ -2326,7 +2326,7 @@ void MapEntity::notify_collision_with_separator(
  * \param bomb the bomb
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_bomb(Bomb& /* bomb */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2334,8 +2334,8 @@ void MapEntity::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_m
  * \param explosion the explosion
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_explosion(Explosion& explosion,
-    CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_explosion(Explosion& /* explosion */,
+    CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2344,7 +2344,7 @@ void MapEntity::notify_collision_with_explosion(Explosion& explosion,
  * \param explosion the explosion
  * \param sprite_overlapping the sprite of the current entity that collides with the explosion
  */
-void MapEntity::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
+void MapEntity::notify_collision_with_explosion(Explosion& /* explosion */, Sprite& /* sprite_overlapping */) {
 }
 
 /**
@@ -2353,14 +2353,14 @@ void MapEntity::notify_collision_with_explosion(Explosion &explosion, Sprite &sp
  * \param fire the fire
  * \param sprite_overlapping the sprite of the current entity that collides with the fire
  */
-void MapEntity::notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) {
+void MapEntity::notify_collision_with_fire(Fire& /* fire */, Sprite& /* sprite_overlapping */) {
 }
 
 /**
  * \brief This function is called when an enemy's rectangle detects a collision with this entity's rectangle.
  * \param enemy the enemy
  */
-void MapEntity::notify_collision_with_enemy(Enemy &enemy) {
+void MapEntity::notify_collision_with_enemy(Enemy& /* enemy */) {
 }
 
 /**
@@ -2369,7 +2369,7 @@ void MapEntity::notify_collision_with_enemy(Enemy &enemy) {
  * \param enemy_sprite the enemy's sprite that overlaps a sprite of this entity
  * \param this_sprite this entity's sprite that overlaps the enemy's sprite
  */
-void MapEntity::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite) {
+void MapEntity::notify_collision_with_enemy(Enemy& /* enemy */, Sprite& /* enemy_sprite */, Sprite& /* this_sprite */) {
 }
 
 /**
@@ -2384,11 +2384,11 @@ void MapEntity::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, 
  * \param killed Whether the attack has just killed the enemy.
  */
 void MapEntity::notify_attacked_enemy(
-    EnemyAttack attack,
-    Enemy& victim,
-    const Sprite* victim_sprite,
-    EnemyReaction::Reaction& result,
-    bool killed) {
+    EnemyAttack /* attack */,
+    Enemy& /* victim */,
+    const Sprite* /* victim_sprite */,
+    EnemyReaction::Reaction& /* result */,
+    bool /* killed */) {
 }
 
 /**

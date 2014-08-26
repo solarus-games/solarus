@@ -164,14 +164,14 @@ bool Hero::HurtState::is_touching_ground() const {
  * \return true if the teletransporter is an obstacle in this state
  */
 bool Hero::HurtState::is_teletransporter_obstacle(
-    const Teletransporter& teletransporter) const {
+    const Teletransporter& /* teletransporter */) const {
   return true;
 }
 
 /**
  * \copydoc Hero::State::is_stream_obstacle
  */
-bool Hero::HurtState::is_stream_obstacle(const Stream& stream) const {
+bool Hero::HurtState::is_stream_obstacle(const Stream& /* stream */) const {
   return true;
 }
 
@@ -180,14 +180,14 @@ bool Hero::HurtState::is_stream_obstacle(const Stream& stream) const {
  * \param sensor a sensor
  * \return true if the sensor is an obstacle in this state
  */
-bool Hero::HurtState::is_sensor_obstacle(const Sensor& sensor) const {
+bool Hero::HurtState::is_sensor_obstacle(const Sensor& /* sensor */) const {
   return true;
 }
 
 /**
  * \copydoc Hero::State::is_separator_obstacle
  */
-bool Hero::HurtState::is_separator_obstacle(const Separator& separator) const {
+bool Hero::HurtState::is_separator_obstacle(const Separator& /* separator */) const {
   return true;
 }
 
@@ -197,7 +197,7 @@ bool Hero::HurtState::is_separator_obstacle(const Separator& separator) const {
  * (or nullptr if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::HurtState::can_be_hurt(MapEntity* attacker) const {
+bool Hero::HurtState::can_be_hurt(MapEntity* /* attacker */) const {
   return false;
 }
 

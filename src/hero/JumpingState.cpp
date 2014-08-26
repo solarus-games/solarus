@@ -42,8 +42,7 @@ Hero::JumpingState::JumpingState(
     int direction8,
     int distance,
     bool ignore_obstacles,
-    bool with_sound,
-    uint32_t movement_delay):
+    bool with_sound):
   State(hero, "jumping"),
   carried_item(nullptr) {
 
@@ -268,7 +267,7 @@ bool Hero::JumpingState::can_avoid_teletransporter() const {
 /**
  * \copydoc Hero::State::can_avoid_stream
  */
-bool Hero::JumpingState::can_avoid_stream(const Stream& stream) const {
+bool Hero::JumpingState::can_avoid_stream(const Stream& /* stream */) const {
   return true;
 }
 
@@ -277,7 +276,7 @@ bool Hero::JumpingState::can_avoid_stream(const Stream& stream) const {
  * \param stairs some stairs
  * \return true if the stairs are obstacle in this state
  */
-bool Hero::JumpingState::is_stairs_obstacle(const Stairs& stairs) const {
+bool Hero::JumpingState::is_stairs_obstacle(const Stairs& /* stairs */) const {
   // allow to jump over stairs covered by water
   return get_hero().get_ground_below() != GROUND_DEEP_WATER;
 }
@@ -287,7 +286,7 @@ bool Hero::JumpingState::is_stairs_obstacle(const Stairs& stairs) const {
  * \param sensor a sensor
  * \return true if the sensor is an obstacle in this state
  */
-bool Hero::JumpingState::is_sensor_obstacle(const Sensor& sensor) const {
+bool Hero::JumpingState::is_sensor_obstacle(const Sensor& /* sensor */) const {
 
   return false;
 }
@@ -296,7 +295,7 @@ bool Hero::JumpingState::is_sensor_obstacle(const Sensor& sensor) const {
  * \copydoc Hero::State::is_separator_obstacle
  */
 bool Hero::JumpingState::is_separator_obstacle(
-    const Separator& separator) const {
+    const Separator& /* separator */) const {
   return true;
 }
 
@@ -322,7 +321,7 @@ bool Hero::JumpingState::can_avoid_switch() const {
  * \param attacker an attacker that is trying to hurt the hero
  * (or nullptr if the source of the attack is not an enemy)
  */
-bool Hero::JumpingState::can_be_hurt(MapEntity* attacker) const {
+bool Hero::JumpingState::can_be_hurt(MapEntity* /* attacker */) const {
   return false;
 }
 

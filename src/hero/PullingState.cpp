@@ -247,7 +247,7 @@ void Hero::PullingState::stop_moving_pulled_entity() {
  * \param attacker an attacker that is trying to hurt the hero
  * (or nullptr if the source of the attack is not an enemy)
  */
-bool Hero::PullingState::can_be_hurt(MapEntity* attacker) const {
+bool Hero::PullingState::can_be_hurt(MapEntity* /* attacker */) const {
   return !is_moving_grabbed_entity();
 }
 
@@ -256,7 +256,7 @@ bool Hero::PullingState::can_be_hurt(MapEntity* attacker) const {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::PullingState::can_pick_treasure(EquipmentItem& item) const {
+bool Hero::PullingState::can_pick_treasure(EquipmentItem& /* item */) const {
   return true;
 }
 
@@ -303,7 +303,7 @@ bool Hero::PullingState::is_prickle_obstacle() const {
 /**
  * \copydoc Hero::State::is_stream_obstacle
  */
-bool Hero::PullingState::is_stream_obstacle(const Stream& stream) const {
+bool Hero::PullingState::is_stream_obstacle(const Stream& /* stream */) const {
   return true;
 }
 
@@ -311,7 +311,7 @@ bool Hero::PullingState::is_stream_obstacle(const Stream& stream) const {
  * \copydoc Hero::State::is_separator_obstacle
  */
 bool Hero::PullingState::is_separator_obstacle(
-    const Separator& separator) const {
+    const Separator& /* separator */) const {
   return true;
 }
 

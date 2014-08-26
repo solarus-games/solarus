@@ -47,7 +47,7 @@ namespace solarus {
  * (with an event_hero_interaction() call) or "item#XXX" to call the script
  * of item XXX  (with an event_hero_interaction() call)
  */
-Npc::Npc(Game& game, const std::string& name, Layer layer, int x, int y,
+Npc::Npc(Game& /* game */, const std::string& name, Layer layer, int x, int y,
     Subtype subtype, const std::string& sprite_name,
     int direction, const std::string& behavior_string):
   Detector(COLLISION_FACING | COLLISION_OVERLAPPING, name, layer, x, y, 0, 0),
@@ -142,7 +142,7 @@ bool Npc::is_obstacle_for(MapEntity& other) {
  * \param hero the hero
  * \return true if the hero is an obstacle for this entity
  */
-bool Npc::is_hero_obstacle(Hero& hero) {
+bool Npc::is_hero_obstacle(Hero& /* hero */) {
   return true;
 }
 
@@ -162,7 +162,7 @@ bool Npc::is_npc_obstacle(Npc& npc) {
  * \param enemy an enemy
  * \return true if this enemy is currently considered as an obstacle by this entity
  */
-bool Npc::is_enemy_obstacle(Enemy& enemy) {
+bool Npc::is_enemy_obstacle(Enemy& /* enemy */) {
 
   // usual NPCs can traverse enemies
   return subtype != USUAL_NPC;

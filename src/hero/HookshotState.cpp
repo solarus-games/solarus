@@ -128,7 +128,7 @@ bool Hero::HookshotState::can_avoid_teletransporter() const {
 /**
  * \copydoc Hero::State::can_avoid_stream
  */
-bool Hero::HookshotState::can_avoid_stream(const Stream& stream) const {
+bool Hero::HookshotState::can_avoid_stream(const Stream& /* stream */) const {
   return true;
 }
 
@@ -137,7 +137,7 @@ bool Hero::HookshotState::can_avoid_stream(const Stream& stream) const {
  * \param stairs some stairs
  * \return true if the stairs are obstacle in this state
  */
-bool Hero::HookshotState::is_stairs_obstacle(const Stairs& stairs) const {
+bool Hero::HookshotState::is_stairs_obstacle(const Stairs& /* stairs */) const {
 
   // allow to fly over stairs covered by water
   return get_hero().get_ground_below() != GROUND_DEEP_WATER;
@@ -148,7 +148,7 @@ bool Hero::HookshotState::is_stairs_obstacle(const Stairs& stairs) const {
  * \param sensor a sensor
  * \return true if the sensor is an obstacle in this state
  */
-bool Hero::HookshotState::is_sensor_obstacle(const Sensor& sensor) const {
+bool Hero::HookshotState::is_sensor_obstacle(const Sensor& /* sensor */) const {
   return false;
 }
 
@@ -156,7 +156,7 @@ bool Hero::HookshotState::is_sensor_obstacle(const Sensor& sensor) const {
  * \copydoc Hero::State::is_jumper_obstacle
  */
 bool Hero::HookshotState::is_jumper_obstacle(
-    const Jumper& jumper, const Rectangle& candidate_position) const {
+    const Jumper& /* jumper */, const Rectangle& /* candidate_position */) const {
   return false;
 }
 
@@ -174,7 +174,7 @@ bool Hero::HookshotState::can_avoid_switch() const {
  * (or nullptr if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::HookshotState::can_be_hurt(MapEntity* attacker) const {
+bool Hero::HookshotState::can_be_hurt(MapEntity* /* attacker */) const {
   return false;
 }
 
@@ -183,7 +183,7 @@ bool Hero::HookshotState::can_be_hurt(MapEntity* attacker) const {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::HookshotState::can_pick_treasure(EquipmentItem& item) const {
+bool Hero::HookshotState::can_pick_treasure(EquipmentItem& /* item */) const {
   return true;
 }
 

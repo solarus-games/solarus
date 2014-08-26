@@ -175,7 +175,7 @@ bool Hero::SwordLoadingState::can_take_stairs() const {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::SwordLoadingState::can_pick_treasure(EquipmentItem& item) const {
+bool Hero::SwordLoadingState::can_pick_treasure(EquipmentItem& /* item */) const {
   return true;
 }
 

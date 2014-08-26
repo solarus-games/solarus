@@ -252,7 +252,7 @@ void PixelMovement::make_next_step() {
  * \param step_index index of the step in the trajectory (the first one is 0)
  * \param success true if the move was made, false if the movement was stopped by an obstacle
  */
-void PixelMovement::notify_step_done(int step_index, bool success) {
+void PixelMovement::notify_step_done(int /* step_index */, bool /* success */) {
 }
 
 /**

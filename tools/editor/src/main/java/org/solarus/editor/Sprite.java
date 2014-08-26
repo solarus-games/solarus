@@ -42,7 +42,7 @@ public class Sprite extends Observable {
     private String animationSetId;
 
     /**
-     * Name of the default animation in the animation set.
+     * Name of the default animation in the animation set or an empty string.
      */
     private String defaultAnimationName;
 
@@ -190,7 +190,7 @@ public class Sprite extends Observable {
                         tilesetId
                 );
                 animations.put(animationName, animation);
-                if (defaultAnimationName == "") {
+                if (defaultAnimationName.isEmpty()) {
                     defaultAnimationName = animationName; // set first animation as the default one
                 }
             }
@@ -265,7 +265,7 @@ public class Sprite extends Observable {
     public Sprite(String animationSetId, String tilesetId) throws SpriteException {
 
         if (!isValidId(animationSetId)) {
-            throw new SpriteException("Invalid sprite ID: '" + animationSetId + "'");
+            throw new SpriteException("Invalid sprite id: '" + animationSetId + "'");
         }
 
         this.animationSetId = animationSetId;
@@ -367,7 +367,7 @@ public class Sprite extends Observable {
     /**
      * Returns the name of the default animation of this sprite.
      * @return The default animation name, i.e. the first one in the
-     * description file, or null if the sprite is empty.
+     * description file, or an empty string if the sprite is empty.
      */
     public String getDefaultAnimationName() {
         return defaultAnimationName;

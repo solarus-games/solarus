@@ -85,14 +85,18 @@ public class SpriteEditorPanel extends AbstractEditorPanel {
 
         if (sprite != null) {
             // select the default animation initially and its first direction
-            sprite.setSelectedAnimation(sprite.getDefaultAnimationName());
-            sprite.setSelectedDirectionNb(0);
+            String defaultAnimationName = sprite.getDefaultAnimationName();
+            if (!defaultAnimationName.isEmpty()) {
+                sprite.setSelectedAnimation(defaultAnimationName);
+                if (sprite.getSelectedAnimation().getNbDirections() > 0) {
+                    sprite.setSelectedDirectionNb(0);
+                }
+            }
         }
 
         // Notify the children views.
         spriteAnimationsView.setSprite(sprite);
         spriteImageView.setSprite(sprite);
-
     }
 
     /**

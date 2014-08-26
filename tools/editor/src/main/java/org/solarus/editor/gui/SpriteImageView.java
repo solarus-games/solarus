@@ -312,7 +312,9 @@ public class SpriteImageView extends JComponent implements Observer, Scrollable 
             update(sprite.getSelectedDirection(), null);  // TODO
 
             // load the sprite animation's image
-            sprite.getSelectedAnimation().reloadSrcImage();
+            if (sprite.getSelectedAnimation() != null) {
+                sprite.getSelectedAnimation().reloadSrcImage();
+            }
         }
 
         setSize(getPreferredSize());

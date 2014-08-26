@@ -27,8 +27,7 @@ namespace solarus {
  * \param game The game.
  * \param item The item to use.
  */
-EquipmentItemUsage::EquipmentItemUsage(Game& game, EquipmentItem& item):
-  game(game),
+EquipmentItemUsage::EquipmentItemUsage(Game& /* game */, EquipmentItem& item):
   item(item),
   variant(item.get_variant()),
   finished(true) {

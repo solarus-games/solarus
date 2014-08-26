@@ -47,9 +47,7 @@ Wall::Wall(
     bool stops_npcs,
     bool stops_blocks,
     bool stops_projectiles):
-  MapEntity(name, 0, layer, x, y, width, height),
-  enabled(true),
-  waiting_enabled(false) {
+  MapEntity(name, 0, layer, x, y, width, height) {
 
   if (stops_hero) {
     entity_types_stopped.insert(ENTITY_HERO);

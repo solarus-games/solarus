@@ -34,8 +34,8 @@ bool Language::has_language(const std::string& language_code) {
   const std::vector<QuestResourceList::Element>& languages =
     QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
 
-  for (auto it = languages.begin(); it != languages.end(); ++it) {
-    if (it->first == language_code) {
+  for (const auto& kvp: languages) {
+    if (kvp.first == language_code) {
       return true;
     }
   }
@@ -82,9 +82,9 @@ const std::string& Language::get_language_name(
   const std::vector<QuestResourceList::Element>& languages =
     QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
 
-  for (auto it = languages.begin(); it != languages.end(); ++it) {
-    if (it->first == language_code) {
-      return it->second;
+  for (const auto& kvp: languages) {
+    if (kvp.first == language_code) {
+      return kvp.second;
     }
   }
 

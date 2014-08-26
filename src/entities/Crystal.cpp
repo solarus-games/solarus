@@ -136,10 +136,8 @@ bool Crystal::notify_action_command_pressed() {
 void Crystal::activate(MapEntity& entity_activating) {
 
   bool recently_activated = false;
-  for (auto it = entities_activating.begin();
-      it != entities_activating.end() && !recently_activated;
-      it++) {
-    recently_activated  = (*it == &entity_activating);
+  for (MapEntity* entity: entities_activating) {
+    recently_activated  = (entity == &entity_activating);
   }
 
   uint32_t now = System::now();

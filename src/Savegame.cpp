@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -137,13 +137,13 @@ void Savegame::set_initial_values() {
  */
 void Savegame::set_default_keyboard_controls() {
 
-#if PANDORA
+#if defined(PANDORA)
   set_string(KEY_KEYBOARD_ACTION, InputEvent::get_keyboard_key_name(InputEvent::KEY_PAGE_DOWN));
   set_string(KEY_KEYBOARD_ATTACK, InputEvent::get_keyboard_key_name(InputEvent::KEY_HOME));
   set_string(KEY_KEYBOARD_ITEM_1, InputEvent::get_keyboard_key_name(InputEvent::KEY_PAGE_UP));
   set_string(KEY_KEYBOARD_ITEM_2, InputEvent::get_keyboard_key_name(InputEvent::KEY_END));
   set_string(KEY_KEYBOARD_PAUSE, InputEvent::get_keyboard_key_name(InputEvent::KEY_LEFT_ALT));
-#elif GCWZERO
+#elif defined(GCWZERO)
   set_string(KEY_KEYBOARD_ACTION, InputEvent::get_keyboard_key_name(InputEvent::KEY_LEFT_ALT));//B
   set_string(KEY_KEYBOARD_ATTACK, InputEvent::get_keyboard_key_name(InputEvent::KEY_SPACE));//Y
   set_string(KEY_KEYBOARD_ITEM_1, InputEvent::get_keyboard_key_name(InputEvent::KEY_LEFT_SHIFT));//X

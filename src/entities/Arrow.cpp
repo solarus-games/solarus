@@ -288,7 +288,7 @@ void Arrow::update() {
     if (entity_reached == NULL) {
       clear_movement();
     }
-    check_collision_with_detectors(false);
+    check_collision_with_detectors();
   }
 
   // destroy the arrow when disappear_date is reached

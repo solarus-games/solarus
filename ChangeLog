@@ -8,6 +8,13 @@ Engine changes
 
 * Fix a crash if an entity has a sprite without animation.
 
+Lua API changes
+---------------
+
+Changes that do not introduce incompatibilities:
+
+* Fix sprite:on_frame_changed() called twice on animation/direction change.
+
 _________________________________
 
 Solarus 1.3.1 (2014-08-25)

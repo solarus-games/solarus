@@ -359,7 +359,7 @@ void Sprite::set_current_frame(int current_frame, bool notify_script) {
     this->current_frame = current_frame;
     set_frame_changed(true);
 
-    if (lua_context != NULL) {
+    if (notify_script && lua_context != NULL) {
       lua_context->sprite_on_frame_changed(
           *this, current_animation_name, current_frame);
     }

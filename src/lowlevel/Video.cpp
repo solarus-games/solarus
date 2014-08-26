@@ -226,7 +226,7 @@ void initialize_video_modes() {
   Video::set_default_video_mode();
 }
 
-};
+}
 
 /**
  * \brief Initializes the video system.

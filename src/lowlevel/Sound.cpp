@@ -108,7 +108,7 @@ void Sound::initialize(const CommandLine& args) {
     return;
   }
 
-  alGenBuffers(0, AL_NONE);  // Necessary on some systems to avoid errors with the first sound loaded.
+  alGenBuffers(0, nullptr);  // Necessary on some systems to avoid errors with the first sound loaded.
 
   initialized = true;
   set_volume(100);

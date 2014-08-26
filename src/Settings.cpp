@@ -68,7 +68,7 @@ bool Settings::load(const std::string& file_name) {
     const std::string& mode_name = lua_tostring(l, 1);
     if (mode_name != "" && mode_name != Video::get_video_mode().get_name()) {
       const VideoMode* video_mode = Video::get_video_mode_by_name(mode_name);
-      if (video_mode != NULL) {  // Valid video mode.
+      if (video_mode != nullptr) {  // Valid video mode.
         Video::set_video_mode(*video_mode);
       }
     }

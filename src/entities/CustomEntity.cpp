@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -52,7 +52,7 @@ namespace solarus {
  * \param model Model of custom entity or an empty string.
  */
 CustomEntity::CustomEntity(
-    Game& game,
+    Game& /* game */,
     const std::string& name,
     int direction,
     Layer layer,
@@ -124,11 +124,9 @@ void CustomEntity::set_sprites_direction(int direction) {
 
   set_direction(direction);
 
-  std::vector<Sprite*>::const_iterator it;
-  for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
-    Sprite& sprite = *(*it);
-    if (direction >= 0 && direction < sprite.get_nb_directions()) {
-      sprite.set_current_direction(direction);
+  for (Sprite* sprite: get_sprites()) {
+    if (direction >= 0 && direction < sprite->get_nb_directions()) {
+      sprite->set_current_direction(direction);
     }
   }
 }
@@ -142,8 +140,7 @@ void CustomEntity::set_sprites_direction(int direction) {
 const CustomEntity::TraversableInfo& CustomEntity::get_traversable_by_entity_info(
     EntityType type) {
 
-  const std::map<EntityType, TraversableInfo>::const_iterator it =
-    traversable_by_entities_type.find(type);
+  const auto it = traversable_by_entities_type.find(type);
   if (it != traversable_by_entities_type.end()) {
     // This entity type overrides the general setting.
     return it->second;
@@ -295,8 +292,7 @@ const CustomEntity::TraversableInfo& CustomEntity::get_can_traverse_entity_info(
     EntityType type) {
 
   // Find the obstacle settings.
-  const std::map<EntityType, TraversableInfo>::const_iterator it =
-    can_traverse_entities_type.find(type);
+  const auto it = can_traverse_entities_type.find(type);
   if (it != can_traverse_entities_type.end()) {
     // This entity type overrides the general setting.
     return it->second;
@@ -577,8 +573,7 @@ bool CustomEntity::is_separator_obstacle(Separator& separator) {
  */
 bool CustomEntity::can_traverse_ground(Ground ground) const {
 
-  const std::map<Ground, bool>::const_iterator it =
-    can_traverse_grounds.find(ground);
+  const auto it = can_traverse_grounds.find(ground);
 
   if (it != can_traverse_grounds.end()) {
     // Return the boolean value that was set.
@@ -715,7 +710,7 @@ void CustomEntity::add_collision_test(CollisionMode collision_test, int callback
     add_collision_mode(COLLISION_CUSTOM);
   }
 
-  collision_tests.push_back(CollisionInfo(*this, collision_test, callback_ref));
+  collision_tests.emplace_back(*this, collision_test, callback_ref);
 }
 
 /**
@@ -731,7 +726,7 @@ void CustomEntity::add_collision_test(int collision_test_ref, int callback_ref) 
 
   add_collision_mode(COLLISION_CUSTOM);
 
-  collision_tests.push_back(CollisionInfo(*this, collision_test_ref, callback_ref));
+  collision_tests.emplace_back(*this, collision_test_ref, callback_ref);
 }
 
 /**
@@ -757,10 +752,8 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
   bool collision = false;
 
   const std::vector<CollisionInfo> collision_tests = this->collision_tests;
-  std::vector<CollisionInfo>::const_iterator it;
-  for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {
+  for (const CollisionInfo& info: collision_tests) {
 
-    const CollisionInfo& info = *it;
     switch (info.get_built_in_test()) {
 
       case COLLISION_OVERLAPPING:
@@ -846,14 +839,8 @@ void CustomEntity::notify_collision(MapEntity& entity_overlapping, CollisionMode
   Debug::check_assertion(collision_mode == COLLISION_CUSTOM,
       "Unexpected collision mode");
 
-  std::vector<CollisionInfo>::const_iterator it;
-
   // There is a collision: execute the callbacks.
-  for (it = successful_collision_tests.begin();
-      it != successful_collision_tests.end();
-      ++it) {
-
-    const CollisionInfo& info = *it;
+  for (const CollisionInfo& info: successful_collision_tests) {
     get_lua_context().do_custom_entity_collision_callback(
         info.get_callback_ref(), *this, entity_overlapping
     );
@@ -869,10 +856,8 @@ void CustomEntity::notify_collision(MapEntity& other_entity, Sprite& other_sprit
 
   // A collision was detected with a sprite of another entity.
   const std::vector<CollisionInfo> collision_tests = this->collision_tests;
-  std::vector<CollisionInfo>::const_iterator it;
-  for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {
+  for (const CollisionInfo& info: collision_tests) {
 
-    const CollisionInfo& info = *it;
     if (info.get_built_in_test() == COLLISION_SPRITE) {
       // Execute the callback.
       get_lua_context().do_custom_entity_collision_callback(
@@ -916,7 +901,7 @@ void CustomEntity::notify_collision_from(MapEntity& other_entity, Sprite& other_
  * \copydoc MapEntity::notify_collision_with_destructible
  */
 void CustomEntity::notify_collision_with_destructible(
-    Destructible& destructible, CollisionMode collision_mode) {
+    Destructible& destructible, CollisionMode /* collision_mode */) {
 
   notify_collision_from(destructible);
 }
@@ -925,7 +910,7 @@ void CustomEntity::notify_collision_with_destructible(
  * \copydoc MapEntity::notify_collision_with_teletransporter
  */
 void CustomEntity::notify_collision_with_teletransporter(
-    Teletransporter& teletransporter, CollisionMode collision_mode) {
+    Teletransporter& teletransporter, CollisionMode /* collision_mode */) {
 
   notify_collision_from(teletransporter);
 }
@@ -934,7 +919,7 @@ void CustomEntity::notify_collision_with_teletransporter(
  * \copydoc MapEntity::notify_collision_with_stream
  */
 void CustomEntity::notify_collision_with_stream(
-    Stream& stream, int dx, int dy) {
+    Stream& stream, int /* dx */, int /* dy */) {
 
   notify_collision_from(stream);
 }
@@ -943,7 +928,7 @@ void CustomEntity::notify_collision_with_stream(
  * \copydoc MapEntity::notify_collision_with_stairs
  */
 void CustomEntity::notify_collision_with_stairs(
-    Stairs& stairs, CollisionMode collision_mode) {
+    Stairs& stairs, CollisionMode /* collision_mode */) {
 
   notify_collision_from(stairs);
 }
@@ -952,7 +937,7 @@ void CustomEntity::notify_collision_with_stairs(
  * \copydoc MapEntity::notify_collision_with_jumper
  */
 void CustomEntity::notify_collision_with_jumper(
-    Jumper& jumper, CollisionMode collision_mode) {
+    Jumper& jumper, CollisionMode /* collision_mode */) {
 
   notify_collision_from(jumper);
 }
@@ -961,7 +946,7 @@ void CustomEntity::notify_collision_with_jumper(
  * \copydoc MapEntity::notify_collision_with_sensor
  */
 void CustomEntity::notify_collision_with_sensor(
-    Sensor& sensor, CollisionMode collision_mode) {
+    Sensor& sensor, CollisionMode /* collision_mode */) {
 
   notify_collision_from(sensor);
 }
@@ -970,7 +955,7 @@ void CustomEntity::notify_collision_with_sensor(
  * \copydoc MapEntity::notify_collision_with_switch(Switch&,CollisionMode)
  */
 void CustomEntity::notify_collision_with_switch(
-    Switch& sw, CollisionMode collision_mode) {
+    Switch& sw, CollisionMode /* collision_mode */) {
 
   notify_collision_from(sw);
 }
@@ -988,7 +973,7 @@ void CustomEntity::notify_collision_with_switch(
  * \copydoc MapEntity::notify_collision_with_crystal(Crystal&,CollisionMode)
  */
 void CustomEntity::notify_collision_with_crystal(
-    Crystal& crystal, CollisionMode collision_mode) {
+    Crystal& crystal, CollisionMode /* collision_mode */) {
 
   notify_collision_from(crystal);
 }
@@ -1022,7 +1007,7 @@ void CustomEntity::notify_collision_with_block(Block& block) {
  * \copydoc MapEntity::notify_collision_with_separator
  */
 void CustomEntity::notify_collision_with_separator(
-    Separator& separator, CollisionMode collision_mode) {
+    Separator& separator, CollisionMode /* collision_mode */) {
 
   notify_collision_from(separator);
 }
@@ -1031,7 +1016,7 @@ void CustomEntity::notify_collision_with_separator(
  * \copydoc MapEntity::notify_collision_with_bomb
  */
 void CustomEntity::notify_collision_with_bomb(
-    Bomb& bomb, CollisionMode collision_mode) {
+    Bomb& bomb, CollisionMode /* collision_mode */) {
 
   notify_collision_from(bomb);
 }
@@ -1040,7 +1025,7 @@ void CustomEntity::notify_collision_with_bomb(
  * \copydoc MapEntity::notify_collision_with_explosion(Explosion&, CollisionMode)
  */
 void CustomEntity::notify_collision_with_explosion(
-    Explosion& explosion, CollisionMode collision_mode) {
+    Explosion& explosion, CollisionMode /* collision_mode */) {
 
   notify_collision_from(explosion);
 }
@@ -1226,7 +1211,7 @@ void CustomEntity::draw_on_map() {
  * \brief Empty constructor.
  */
 CustomEntity::TraversableInfo::TraversableInfo():
-  entity(NULL),
+  entity(nullptr),
   traversable_test_ref(LUA_REFNIL),
   traversable(false) {
 
@@ -1267,7 +1252,7 @@ CustomEntity::TraversableInfo::TraversableInfo(const TraversableInfo& other):
   traversable_test_ref(LUA_REFNIL),
   traversable(other.traversable) {
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     RefCountable::ref(entity);
     traversable_test_ref = entity->get_lua_context().copy_ref(other.traversable_test_ref);
   }
@@ -1278,7 +1263,7 @@ CustomEntity::TraversableInfo::TraversableInfo(const TraversableInfo& other):
  */
 CustomEntity::TraversableInfo::~TraversableInfo() {
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     entity->get_lua_context().cancel_callback(traversable_test_ref);
     RefCountable::unref(entity);
   }
@@ -1294,7 +1279,7 @@ CustomEntity::TraversableInfo& CustomEntity::TraversableInfo::operator=(const Tr
     return *this;
   }
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     entity->get_lua_context().cancel_callback(traversable_test_ref);
     RefCountable::unref(entity);
   }
@@ -1302,7 +1287,7 @@ CustomEntity::TraversableInfo& CustomEntity::TraversableInfo::operator=(const Tr
   entity = other.entity;
   traversable_test_ref = LUA_REFNIL;
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     RefCountable::ref(entity);
     traversable_test_ref = entity->get_lua_context().copy_ref(other.traversable_test_ref);
   }
@@ -1317,7 +1302,7 @@ CustomEntity::TraversableInfo& CustomEntity::TraversableInfo::operator=(const Tr
  */
 bool CustomEntity::TraversableInfo::is_empty() const {
 
-  return entity == NULL;
+  return entity == nullptr;
 }
 
 /**
@@ -1348,7 +1333,7 @@ bool CustomEntity::TraversableInfo::is_traversable(
  * \brief Empty constructor.
  */
 CustomEntity::CollisionInfo::CollisionInfo():
-  entity(NULL),
+  entity(nullptr),
   built_in_test(COLLISION_NONE),
   custom_test_ref(LUA_REFNIL),
   callback_ref(LUA_REFNIL) {
@@ -1399,7 +1384,7 @@ CustomEntity::CollisionInfo::CollisionInfo(const CollisionInfo& other):
   custom_test_ref(LUA_REFNIL),
   callback_ref(LUA_REFNIL) {
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     RefCountable::ref(entity);
     custom_test_ref = entity->get_lua_context().copy_ref(other.custom_test_ref);
     callback_ref = entity->get_lua_context().copy_ref(other.callback_ref);
@@ -1411,7 +1396,7 @@ CustomEntity::CollisionInfo::CollisionInfo(const CollisionInfo& other):
  */
 CustomEntity::CollisionInfo::~CollisionInfo() {
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     entity->get_lua_context().cancel_callback(custom_test_ref);
     entity->get_lua_context().cancel_callback(callback_ref);
     RefCountable::unref(entity);
@@ -1428,7 +1413,7 @@ CustomEntity::CollisionInfo& CustomEntity::CollisionInfo::operator=(const Collis
     return *this;
   }
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     RefCountable::unref(entity);
     entity->get_lua_context().cancel_callback(custom_test_ref);
     entity->get_lua_context().cancel_callback(callback_ref);
@@ -1439,7 +1424,7 @@ CustomEntity::CollisionInfo& CustomEntity::CollisionInfo::operator=(const Collis
   custom_test_ref = LUA_REFNIL;
   callback_ref = LUA_REFNIL;
 
-  if (entity != NULL) {
+  if (entity != nullptr) {
     RefCountable::ref(entity);
     custom_test_ref = entity->get_lua_context().copy_ref(other.custom_test_ref);
     callback_ref = entity->get_lua_context().copy_ref(other.callback_ref);

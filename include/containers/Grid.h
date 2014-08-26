@@ -58,7 +58,7 @@ class Grid {
     const Rectangle cell_size;
     size_t num_rows;
     size_t num_columns;
-    std::vector<std::vector<T> > elements;     /**< Two-dimensional array of cells. */
+    std::vector<std::vector<T>> elements;     /**< Two-dimensional array of cells. */
 
 };
 
@@ -186,9 +186,7 @@ void Grid<T>::get_elements(
       }
 
       const std::vector<T>& in_cell = this->elements[i * num_columns + j];
-      typename std::vector<T>::const_iterator it;
-      for (it = in_cell.begin(); it != in_cell.end(); ++it) {
-        const T& element = *it;
+      for (const T& element: in_cell) {
         if (elements_added.find(element) == elements_added.end()) {
           elements_added.insert(element);
           elements.push_back(element);

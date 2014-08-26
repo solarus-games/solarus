@@ -26,7 +26,7 @@ namespace solarus {
  * \brief Creates an Impulse Tracker decoder.
  */
 ItDecoder::ItDecoder():
-  modplug_file(NULL) {
+  modplug_file(nullptr) {
 
   ModPlug_Settings settings;
   ModPlug_GetSettings(&settings);
@@ -49,7 +49,7 @@ ItDecoder::~ItDecoder() {
  */
 void ItDecoder::load(void* sound_data, size_t sound_size) {
 
-  Debug::check_assertion(modplug_file == NULL,
+  Debug::check_assertion(modplug_file == nullptr,
       "IT data is already loaded"
   );
 
@@ -62,12 +62,12 @@ void ItDecoder::load(void* sound_data, size_t sound_size) {
  */
 void ItDecoder::unload() {
 
-  Debug::check_assertion(modplug_file != NULL,
+  Debug::check_assertion(modplug_file != nullptr,
       "IT data is not loaded"
   );
 
   ModPlug_Unload(modplug_file);
-  modplug_file = NULL;
+  modplug_file = nullptr;
 }
 
 /**

@@ -164,7 +164,7 @@ void LuaContext::register_entity_module() {
       { "__gc", userdata_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
       { "__index", userdata_meta_index_as_table },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   // Hero.
@@ -205,12 +205,12 @@ void LuaContext::register_entity_module() {
       { "start_hookshot", hero_api_start_hookshot },
       { "start_running", hero_api_start_running },
       { "start_hurt", hero_api_start_hurt },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(
       get_entity_internal_type_name(ENTITY_HERO),
-      NULL,
+      nullptr,
       hero_methods,
       metamethods
   );
@@ -227,12 +227,12 @@ void LuaContext::register_entity_module() {
       { "set_destination_map", teletransporter_api_set_destination_map},
       { "get_destination_name", teletransporter_api_get_destination_name },
       { "set_destination_name", teletransporter_api_set_destination_name },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(
       get_entity_internal_type_name(ENTITY_TELETRANSPORTER),
-      NULL,
+      nullptr,
       teletransporter_methods,
       metamethods
   );
@@ -241,12 +241,12 @@ void LuaContext::register_entity_module() {
   static const luaL_Reg npc_methods[] = {
       ENTITY_COMMON_METHODS,
       { "get_sprite", entity_api_get_sprite },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(
       get_entity_internal_type_name(ENTITY_NPC),
-      NULL,
+      nullptr,
       npc_methods,
       metamethods
   );
@@ -256,12 +256,12 @@ void LuaContext::register_entity_module() {
       ENTITY_COMMON_METHODS,
       { "is_open", chest_api_is_open },
       { "set_open", chest_api_set_open },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(
       get_entity_internal_type_name(ENTITY_CHEST),
-      NULL,
+      nullptr,
       chest_methods,
       metamethods
   );
@@ -276,12 +276,12 @@ void LuaContext::register_entity_module() {
       { "set_pullable", block_api_set_pullable },
       { "get_maximum_moves", block_api_get_maximum_moves },
       { "set_maximum_moves", block_api_set_maximum_moves },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(
       get_entity_internal_type_name(ENTITY_BLOCK),
-      NULL,
+      nullptr,
       block_methods,
       metamethods
   );
@@ -293,12 +293,12 @@ void LuaContext::register_entity_module() {
       { "is_activated", switch_api_is_activated },
       { "set_activated", switch_api_set_activated },
       { "set_locked", switch_api_set_locked },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(
       get_entity_internal_type_name(ENTITY_SWITCH),
-      NULL,
+      nullptr,
       switch_methods,
       metamethods
   );
@@ -316,12 +316,12 @@ void LuaContext::register_entity_module() {
       { "set_allow_attack", stream_api_set_allow_attack },
       { "get_allow_item", stream_api_get_allow_item },
       { "set_allow_item", stream_api_set_allow_item },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(
       get_entity_internal_type_name(ENTITY_STREAM),
-      NULL,
+      nullptr,
       stream_methods,
       metamethods
   );
@@ -333,12 +333,12 @@ void LuaContext::register_entity_module() {
       { "is_opening", door_api_is_opening },
       { "is_closed", door_api_is_closed },
       { "is_closing", door_api_is_closing },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(
       get_entity_internal_type_name(ENTITY_DOOR),
-      NULL,
+      nullptr,
       door_methods,
       metamethods
   );
@@ -346,12 +346,12 @@ void LuaContext::register_entity_module() {
   // Shop treasure.
   static const luaL_Reg shop_treasure_methods[] = {
       ENTITY_COMMON_METHODS,
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(
       get_entity_internal_type_name(ENTITY_SHOP_TREASURE),
-      NULL,
+      nullptr,
       shop_treasure_methods,
       metamethods
   );
@@ -365,12 +365,12 @@ void LuaContext::register_entity_module() {
       { "get_followed_entity", pickable_api_get_followed_entity },
       { "get_falling_height", pickable_api_get_falling_height },
       { "get_treasure", pickable_api_get_treasure },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(
       get_entity_internal_type_name(ENTITY_PICKABLE),
-      NULL,
+      nullptr,
       pickable_methods,
       metamethods
   );
@@ -393,12 +393,12 @@ void LuaContext::register_entity_module() {
       { "get_damage_on_enemies", destructible_api_get_damage_on_enemies },
       { "set_damage_on_enemies", destructible_api_set_damage_on_enemies },
       { "get_modified_ground", destructible_api_get_modified_ground },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(
       get_entity_internal_type_name(ENTITY_DESTRUCTIBLE),
-      NULL,
+      nullptr,
       destructible_methods,
       metamethods
   );
@@ -450,12 +450,12 @@ void LuaContext::register_entity_module() {
       { "create_sprite", entity_api_create_sprite },
       { "remove_sprite", entity_api_remove_sprite },
       { "create_enemy", enemy_api_create_enemy },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(
       get_entity_internal_type_name(ENTITY_ENEMY),
-      NULL,
+      nullptr,
       enemy_methods,
       metamethods
   );
@@ -483,12 +483,12 @@ void LuaContext::register_entity_module() {
       { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
       { "get_modified_ground", custom_entity_api_get_modified_ground },
       { "set_modified_ground", custom_entity_api_set_modified_ground },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(
       get_entity_internal_type_name(ENTITY_CUSTOM),
-      NULL,
+      nullptr,
       custom_entity_methods,
       metamethods
   );
@@ -496,27 +496,27 @@ void LuaContext::register_entity_module() {
   // Methods of the entity type.
   static const luaL_Reg entity_common_methods[] = {
       ENTITY_COMMON_METHODS,
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   // Also register all other types of entities that have no specific methods.
-  register_type(get_entity_internal_type_name(ENTITY_TILE), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_DYNAMIC_TILE), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_DESTINATION), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_CARRIED_ITEM), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_JUMPER), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_SENSOR), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_SEPARATOR), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_WALL), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_CRYSTAL), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_CRYSTAL_BLOCK), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_STAIRS), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_BOMB), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_EXPLOSION), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_FIRE), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_ARROW), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_HOOKSHOT), NULL, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(ENTITY_BOOMERANG), NULL, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_TILE), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_DYNAMIC_TILE), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_DESTINATION), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_CARRIED_ITEM), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_JUMPER), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_SENSOR), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_SEPARATOR), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_WALL), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_CRYSTAL), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_CRYSTAL_BLOCK), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_STAIRS), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_BOMB), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_EXPLOSION), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_FIRE), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_ARROW), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_HOOKSHOT), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(ENTITY_BOOMERANG), nullptr, entity_common_methods, metamethods);
 }
 
 /**
@@ -531,7 +531,7 @@ bool LuaContext::is_entity(lua_State* l, int index) {
   // but this would be tedious and costly.
 
   void* udata = lua_touserdata(l, index);
-  if (udata == NULL) {
+  if (udata == nullptr) {
     // This is not a userdata.
     return false;
   }
@@ -566,7 +566,7 @@ bool LuaContext::is_entity(lua_State* l, int index) {
  */
 MapEntity& LuaContext::check_entity(lua_State* l, int index) {
 
-  MapEntity** entity = NULL;
+  MapEntity** entity = nullptr;
 
   if (is_entity(l, index)) {
     entity = static_cast<MapEntity**>(lua_touserdata(l, index));
@@ -1135,7 +1135,7 @@ int LuaContext::entity_api_get_movement(lua_State* l) {
   MapEntity& entity = check_entity(l, 1);
 
   Movement* movement = entity.get_movement();
-  if (movement == NULL) {
+  if (movement == nullptr) {
     lua_pushnil(l);
   }
   else {
@@ -1934,7 +1934,7 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
   else {
     // hero:start_hurt(source_entity, [source_sprite], damage)
     MapEntity& source_entity = check_entity(l, 2);
-    Sprite* source_sprite = NULL;
+    Sprite* source_sprite = nullptr;
     int index = 3;
     if (is_sprite(l, 3)) {
       source_sprite = &check_sprite(l, 3);
@@ -2002,7 +2002,7 @@ int LuaContext::l_treasure_dialog_finished(lua_State* l) {
 
   // Check upvalues. Any error here would be the fault of the C++ side
   // because the user cannot call this function.
-  Debug::check_assertion(item.get_game() != NULL,
+  Debug::check_assertion(item.get_game() != nullptr,
       "Equipment item without game");
 
   Debug::check_assertion(lua_isnil(l, -1) || lua_isfunction(l, -1),
@@ -2969,7 +2969,7 @@ int LuaContext::pickable_api_get_followed_entity(lua_State* l) {
 
   MapEntity* followed_entity = pickable.get_entity_followed();
 
-  if (followed_entity != NULL) {
+  if (followed_entity != nullptr) {
     push_entity(l, *followed_entity);
   }
   else {
@@ -3656,7 +3656,7 @@ int LuaContext::enemy_api_get_attack_consequence(lua_State* l) {
   Enemy& enemy = check_enemy(l, 1);
   EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 2, Enemy::attack_names);
 
-  const EnemyReaction::Reaction& reaction = enemy.get_attack_consequence(attack, NULL);
+  const EnemyReaction::Reaction& reaction = enemy.get_attack_consequence(attack, nullptr);
   if (reaction.type == EnemyReaction::HURT) {
     // Return the life damage.
     lua_pushinteger(l, reaction.life_lost);
@@ -3960,7 +3960,7 @@ int LuaContext::enemy_api_hurt(lua_State* l) {
   if (enemy.is_in_normal_state() && !enemy.is_invulnerable()) {
     Hero& hero = enemy.get_map().get_entities().get_hero();
     enemy.set_attack_consequence(ATTACK_SCRIPT, EnemyReaction::HURT, life_points);
-    enemy.try_hurt(ATTACK_SCRIPT, hero, NULL);
+    enemy.try_hurt(ATTACK_SCRIPT, hero, nullptr);
   }
 
   return 0;
@@ -3978,7 +3978,7 @@ int LuaContext::enemy_api_immobilize(lua_State* l) {
   if (enemy.is_in_normal_state() && !enemy.is_invulnerable()) {
     Hero& hero = enemy.get_map().get_entities().get_hero();
     enemy.set_attack_consequence(ATTACK_SCRIPT, EnemyReaction::IMMOBILIZED, 0);
-    enemy.try_hurt(ATTACK_SCRIPT, hero, NULL);
+    enemy.try_hurt(ATTACK_SCRIPT, hero, nullptr);
   }
 
   return 0;
@@ -4044,7 +4044,7 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
       Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable)
   );
 
-  if (entity == NULL) {
+  if (entity == nullptr) {
     // The enemy is saved as already dead.
     lua_pushnil(l);
     return 1;
@@ -5440,7 +5440,7 @@ void LuaContext::enemy_on_immobilized(Enemy& enemy) {
  *
  * \param enemy An enemy.
  * \param hero The hero attacked.
- * \param attacker_sprite Enemy's sprite that caused the collision or NULL.
+ * \param attacker_sprite Enemy's sprite that caused the collision or nullptr.
  * \return \c true if the method is defined.
  */
 bool LuaContext::enemy_on_attacking_hero(Enemy& enemy, Hero& hero, Sprite* attacker_sprite) {

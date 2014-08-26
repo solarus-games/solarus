@@ -53,8 +53,8 @@ MapEntity::MapEntity(
     int y,
     int width,
     int height):
-  main_loop(NULL),
-  map(NULL),
+  main_loop(nullptr),
+  map(nullptr),
   layer(layer),
   bounding_box(x, y, width, height),
   ground_below(GROUND_EMPTY),
@@ -63,10 +63,10 @@ MapEntity::MapEntity(
   direction(direction),
   visible(true),
   drawn_in_y_order(false),
-  movement(NULL),
+  movement(nullptr),
   movement_events_enabled(true),
-  facing_entity(NULL),
-  stream_action(NULL),
+  facing_entity(nullptr),
+  stream_action(nullptr),
   initialized(false),
   being_removed(false),
   enabled(true),
@@ -195,17 +195,15 @@ void MapEntity::update_ground_observers() {
   }
 
   // Update overlapping entities sensible to their ground.
-  std::list<MapEntity*>::const_iterator it;
   const std::list<MapEntity*>& ground_observers =
       get_entities().get_ground_observers(get_layer());
-  for (it = ground_observers.begin(); it != ground_observers.end(); ++it) {
-    MapEntity& ground_observer = *(*it);
+  for (MapEntity* ground_observer: ground_observers) {
     // Update the ground of entities that overlap or were just overlapping this one.
 
-    if (overlaps(ground_observer.get_ground_point())
-        || overlaps(ground_observer)  // FIXME this is not precise and does not work for entities that disappear.
+    if (overlaps(ground_observer->get_ground_point())
+        || overlaps(*ground_observer)  // FIXME this is not precise and does not work for entities that disappear.
     ) {
-      ground_observer.update_ground_below();
+      ground_observer->update_ground_below();
     }
   }
 }
@@ -302,7 +300,7 @@ void MapEntity::set_drawn_in_y_order(bool drawn_in_y_order) {
  * \return true if the entity is on a map
  */
 bool MapEntity::is_on_map() const {
-  return map != NULL;
+  return map != nullptr;
 }
 
 /**
@@ -407,11 +405,8 @@ void MapEntity::notify_map_opening_transition_finished() {
  */
 void MapEntity::notify_tileset_changed() {
 
-  std::vector<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
-
-    Sprite& sprite = *(*it);
-    sprite.set_tileset(get_map().get_tileset());
+  for (Sprite* sprite: sprites) {
+    sprite->set_tileset(get_map().get_tileset());
   }
 }
 
@@ -428,7 +423,7 @@ Map& MapEntity::get_map() const {
  * \return The game.
  */
 Game& MapEntity::get_game() {
-  SOLARUS_ASSERT(map != NULL, "No map was set");
+  SOLARUS_ASSERT(map != nullptr, "No map was set");
   return map->get_game();
 }
 
@@ -437,7 +432,7 @@ Game& MapEntity::get_game() {
  * \return The game.
  */
 const Game& MapEntity::get_game() const {
-  SOLARUS_ASSERT(map != NULL, "No map was set");
+  SOLARUS_ASSERT(map != nullptr, "No map was set");
   return map->get_game();
 }
 
@@ -446,7 +441,7 @@ const Game& MapEntity::get_game() const {
  * \return The entities.
  */
 MapEntities& MapEntity::get_entities() {
-  Debug::check_assertion(map != NULL, "No map was set");
+  Debug::check_assertion(map != nullptr, "No map was set");
   return map->get_entities();
 }
 
@@ -455,7 +450,7 @@ MapEntities& MapEntity::get_entities() {
  * \return The entities.
  */
 const MapEntities& MapEntity::get_entities() const {
-  Debug::check_assertion(map != NULL, "No map was set");
+  Debug::check_assertion(map != nullptr, "No map was set");
   return map->get_entities();
 }
 
@@ -465,7 +460,7 @@ const MapEntities& MapEntity::get_entities() const {
  */
 LuaContext& MapEntity::get_lua_context() {
 
-  Debug::check_assertion(main_loop != NULL,
+  Debug::check_assertion(main_loop != nullptr,
       "This entity is not fully constructed yet");
   return main_loop->get_lua_context();
 }
@@ -476,7 +471,7 @@ LuaContext& MapEntity::get_lua_context() {
  */
 const LuaContext& MapEntity::get_lua_context() const {
 
-  Debug::check_assertion(main_loop != NULL,
+  Debug::check_assertion(main_loop != nullptr,
       "This entity is not fully constructed yet");
   return main_loop->get_lua_context();
 }
@@ -790,7 +785,7 @@ void MapEntity::set_top_left_xy(const Rectangle& xy) {
  */
 const Rectangle MapEntity::get_displayed_xy() const {
 
-  if (get_movement() == NULL) {
+  if (get_movement() == nullptr) {
     return get_xy();
   }
 
@@ -950,7 +945,7 @@ const Rectangle MapEntity::get_facing_point() const {
     direction4 = get_sprite().get_current_direction();
   }
   else {
-    if (get_movement() != NULL) {
+    if (get_movement() != nullptr) {
       // Otherwise use the movement.
       direction4 = get_movement()->get_displayed_direction4();
     }
@@ -1000,7 +995,7 @@ const Rectangle MapEntity::get_touching_point(int direction) const {
 
 /**
  * \brief Returns the detector in front of this entity.
- * \return the detector this entity is touching, or NULL if there is no detector in front of him
+ * \return the detector this entity is touching, or nullptr if there is no detector in front of him
  */
 Detector* MapEntity::get_facing_entity() {
   return facing_entity;
@@ -1008,7 +1003,7 @@ Detector* MapEntity::get_facing_entity() {
 
 /**
  * \brief Returns the detector in front of this entity.
- * \return the detector this entity is touching, or NULL if there is no detector in front of him
+ * \return the detector this entity is touching, or nullptr if there is no detector in front of him
  */
 const Detector* MapEntity::get_facing_entity() const {
   return facing_entity;
@@ -1019,7 +1014,7 @@ const Detector* MapEntity::get_facing_entity() const {
  *
  * This function is called when this entity is facing a new detector.
  *
- * \param facing_entity the detector this entity is now facing (possibly NULL)
+ * \param facing_entity the detector this entity is now facing (possibly nullptr)
  */
 void MapEntity::set_facing_entity(Detector* facing_entity) {
 
@@ -1029,9 +1024,9 @@ void MapEntity::set_facing_entity(Detector* facing_entity) {
 
 /**
  * \brief Notifies this entity that its facing entity has just changed.
- * \param facing_entity the detector this entity is now facing (possibly NULL)
+ * \param facing_entity the detector this entity is now facing (possibly nullptr)
  */
-void MapEntity::notify_facing_entity_changed(Detector* facing_entity) {
+void MapEntity::notify_facing_entity_changed(Detector* /* facing_entity */) {
 }
 
 /**
@@ -1212,16 +1207,14 @@ Sprite& MapEntity::create_sprite(
  */
 void MapEntity::remove_sprite(Sprite& sprite) {
 
-  bool found = false;
-  std::vector<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end() && !found; it++) {
-    if (*it == &sprite) {
+  for (Sprite* current_sprite: sprites) {
+    if (current_sprite == &sprite) {
       old_sprites.push_back(&sprite);
-      found = true;
+      return;
     }
   }
 
-  Debug::check_assertion(found, "This sprite does not belong to this entity");
+  Debug::die("This sprite does not belong to this entity");
 }
 
 /**
@@ -1231,9 +1224,8 @@ void MapEntity::remove_sprite(Sprite& sprite) {
  */
 void MapEntity::clear_sprites() {
 
-  std::vector<Sprite*>::const_iterator it;
-  for (it = sprites.begin(); it != sprites.end(); ++it) {
-    old_sprites.push_back(*it);
+  for (Sprite* sprite: sprites) {
+    old_sprites.push_back(sprite);
   }
   sprites.clear();
 }
@@ -1243,18 +1235,14 @@ void MapEntity::clear_sprites() {
  */
 void MapEntity::clear_old_sprites() {
 
-  std::vector<Sprite*>::const_iterator it;
-  const std::vector<Sprite*>::const_iterator end = old_sprites.end();
-  for (it = old_sprites.begin(); it != end; ++it) {
-    Sprite* sprite = *it;
-    std::vector<Sprite*>::iterator it2;
-    for (it2 = sprites.begin(); it2 != sprites.end(); ++it2) {
-      if (*it2 == sprite) {
-        sprites.erase(it2);
+  for (Sprite* old_sprite: old_sprites) {
+    for (auto it = sprites.begin(); it != sprites.end(); ++it) {
+      if (*it == old_sprite) {
+        sprites.erase(it);
         break;
       }
     }
-    RefCountable::unref(sprite);
+    RefCountable::unref(old_sprite);
   }
   old_sprites.clear();
 }
@@ -1268,7 +1256,7 @@ void MapEntity::clear_old_sprites() {
  * \param animation the current animation
  * \param frame the new frame
  */
-void MapEntity::notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame) {
+void MapEntity::notify_sprite_frame_changed(Sprite& /* sprite */, const std::string& /* animation */, int /* frame */) {
 }
 
 /**
@@ -1280,7 +1268,7 @@ void MapEntity::notify_sprite_frame_changed(Sprite& sprite, const std::string& a
  * \param sprite the sprite
  * \param animation the animation just finished
  */
-void MapEntity::notify_sprite_animation_finished(Sprite& sprite, const std::string& animation) {
+void MapEntity::notify_sprite_animation_finished(Sprite& /* sprite */, const std::string& /* animation */) {
 }
 
 /**
@@ -1301,7 +1289,7 @@ void MapEntity::set_visible(bool visible) {
 
 /**
  * \brief Returns the current movement of the entity.
- * \return the entity's movement, or NULL if there is no movement
+ * \return the entity's movement, or nullptr if there is no movement
  */
 Movement* MapEntity::get_movement() {
   return movement;
@@ -1309,7 +1297,7 @@ Movement* MapEntity::get_movement() {
 
 /**
  * \brief Returns the current movement of the entity.
- * \return the entity's movement, or NULL if there is no movement
+ * \return the entity's movement, or nullptr if there is no movement
  */
 const Movement* MapEntity::get_movement() const {
   return movement;
@@ -1325,14 +1313,14 @@ const Movement* MapEntity::get_movement() const {
  * If a previous movement was already set, it is not deleted (so that you can reassign it later).
  * Thus, most of the time, you should call clear_movement() before set_movement() to avoid a memory leak.
  *
- * \param movement the movement to set, or NULL to set no movement
+ * \param movement the movement to set, or nullptr to set no movement
  */
 void MapEntity::set_movement(Movement* movement) {
 
   this->movement = movement;
   RefCountable::ref(movement);
 
-  if (movement != NULL) {
+  if (movement != nullptr) {
     movement->set_entity(this);
 
     if (movement->is_suspended() != suspended) {
@@ -1350,11 +1338,11 @@ void MapEntity::set_movement(Movement* movement) {
  */
 void MapEntity::clear_movement() {
 
-  if (movement != NULL) {
-    movement->set_entity(NULL);         // Tell the movement to forget me.
-    movement->set_lua_context(NULL);    // Stop future Lua callbacks.
+  if (movement != nullptr) {
+    movement->set_entity(nullptr);         // Tell the movement to forget me.
+    movement->set_lua_context(nullptr);    // Stop future Lua callbacks.
     old_movements.push_back(movement);  // Destroy it later.
-    movement = NULL;
+    movement = nullptr;
   }
 }
 
@@ -1363,10 +1351,7 @@ void MapEntity::clear_movement() {
  */
 void MapEntity::clear_old_movements() {
 
-  std::vector<Movement*>::const_iterator it;
-  const std::vector<Movement*>::const_iterator end = old_movements.end();
-  for (it = old_movements.begin(); it != end; ++it) {
-    Movement* movement = *it;
+  for (Movement* movement: old_movements) {
     RefCountable::unref(movement);
   }
   old_movements.clear();
@@ -1382,7 +1367,7 @@ void MapEntity::clear_old_movements() {
  * \return Whether movement events are currently enabled.
  */
 bool MapEntity::are_movement_notifications_enabled() const {
-  return main_loop != NULL && movement_events_enabled;
+  return main_loop != nullptr && movement_events_enabled;
 }
 
 /**
@@ -1403,12 +1388,12 @@ void MapEntity::set_movement_events_enabled(bool notify) {
  * \return \c true if there is an active stream action.
  */
 bool MapEntity::has_stream_action() const {
-  return stream_action != NULL && stream_action->is_active();
+  return stream_action != nullptr && stream_action->is_active();
 }
 
 /**
  * \brief Returns the stream action currently applied if any.
- * \return The stream action of this entity or NULL.
+ * \return The stream action of this entity or nullptr.
  */
 const StreamAction* MapEntity::get_stream_action() const {
   return stream_action;
@@ -1416,7 +1401,7 @@ const StreamAction* MapEntity::get_stream_action() const {
 
 /**
  * \brief Returns the stream action currently applied if any.
- * \return The stream action of this entity or NULL.
+ * \return The stream action of this entity or nullptr.
  */
 StreamAction* MapEntity::get_stream_action() {
   return stream_action;
@@ -1438,7 +1423,7 @@ void MapEntity::start_stream_action(StreamAction* stream_action) {
 void MapEntity::stop_stream_action() {
 
   delete stream_action;
-  stream_action = NULL;
+  stream_action = nullptr;
 }
 
 /**
@@ -1500,12 +1485,9 @@ void MapEntity::check_collision_with_detectors() {
   get_map().check_collision_with_detectors(*this);
 
   // Detect pixel-precise collisions.
-  std::vector<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
-
-    Sprite& sprite = *(*it);
-    if (sprite.are_pixel_collisions_enabled()) {
-      get_map().check_collision_with_detectors(*this, sprite);
+  for (Sprite* sprite: sprites) {
+    if (sprite->are_pixel_collisions_enabled()) {
+      get_map().check_collision_with_detectors(*this, *sprite);
     }
   }
 }
@@ -1560,7 +1542,7 @@ void MapEntity::notify_movement_finished() {
  * another one.
  * \param entity The other entity.
  */
-void MapEntity::notify_moving_by(MapEntity& entity) {
+void MapEntity::notify_moving_by(MapEntity& /* entity */) {
   // Do nothing by default.
 }
 
@@ -1569,7 +1551,7 @@ void MapEntity::notify_moving_by(MapEntity& entity) {
  * moved by another one.
  * \param entity The other entity.
  */
-void MapEntity::notify_moved_by(MapEntity& entity) {
+void MapEntity::notify_moved_by(MapEntity& /* entity */) {
   // Do nothing by default.
 }
 
@@ -1615,15 +1597,12 @@ void MapEntity::set_enabled(bool enabled) {
     if (!is_suspended()) {
       // Disabling an entity that is not suspended:
       // suspend its movement, its sprites and its timers.
-      if (get_movement() != NULL) {
+      if (get_movement() != nullptr) {
         get_movement()->set_suspended(true);
       }
 
-      std::vector<Sprite*>::const_iterator it;
-      for (it = sprites.begin(); it != sprites.end(); it++) {
-
-        Sprite& sprite = *(*it);
-        sprite.set_suspended(true);
+      for (Sprite* sprite: sprites) {
+        sprite->set_suspended(true);
       }
 
       if (is_on_map()) {
@@ -1638,7 +1617,7 @@ void MapEntity::set_enabled(bool enabled) {
  * \brief Notifies this entity that it was just enabled or disabled.
  * \param enabled \c true if the entity is now enabled.
  */
-void MapEntity::notify_enabled(bool enabled) {
+void MapEntity::notify_enabled(bool /* enabled */) {
 
   if (!is_on_map()) {
     return;
@@ -1657,7 +1636,7 @@ void MapEntity::notify_enabled(bool enabled) {
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool MapEntity::is_obstacle_for(MapEntity& other) {
+bool MapEntity::is_obstacle_for(MapEntity& /* other */) {
   return false;
 }
 
@@ -1669,7 +1648,7 @@ bool MapEntity::is_obstacle_for(MapEntity& other) {
  * \return \c true if this entity is an obstacle for the other one at that
  * position.
  */
-bool MapEntity::is_obstacle_for(MapEntity& other, const Rectangle& candidate_position) {
+bool MapEntity::is_obstacle_for(MapEntity& other, const Rectangle& /* candidate_position */) {
 
   // By default, use a position-independent test.
   // Most entities don't need the candidate position of the other one to decide
@@ -1775,7 +1754,7 @@ bool MapEntity::is_ladder_obstacle() const {
  * \param hero the hero
  * \return true if the hero is currently an obstacle for this entity
  */
-bool MapEntity::is_hero_obstacle(Hero& hero) {
+bool MapEntity::is_hero_obstacle(Hero& /* hero */) {
   return false;
 }
 
@@ -1787,7 +1766,7 @@ bool MapEntity::is_hero_obstacle(Hero& hero) {
  * \param block a block
  * \return true if the block is currently an obstacle for this entity
  */
-bool MapEntity::is_block_obstacle(Block& block) {
+bool MapEntity::is_block_obstacle(Block& /* block */) {
   return true;
 }
 
@@ -1799,7 +1778,7 @@ bool MapEntity::is_block_obstacle(Block& block) {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool MapEntity::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool MapEntity::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) {
   return true;
 }
 
@@ -1812,7 +1791,7 @@ bool MapEntity::is_teletransporter_obstacle(Teletransporter& teletransporter) {
  * \param stream A stream.
  * \return \c true if the stream is currently an obstacle for this entity.
  */
-bool MapEntity::is_stream_obstacle(Stream& stream) {
+bool MapEntity::is_stream_obstacle(Stream& /* stream */) {
   return true;
 }
 
@@ -1824,7 +1803,7 @@ bool MapEntity::is_stream_obstacle(Stream& stream) {
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool MapEntity::is_stairs_obstacle(Stairs& stairs) {
+bool MapEntity::is_stairs_obstacle(Stairs& /* stairs */) {
   return true;
 }
 
@@ -1836,7 +1815,7 @@ bool MapEntity::is_stairs_obstacle(Stairs& stairs) {
  * \param sensor a sensor
  * \return true if the sensor is currently an obstacle for this entity
  */
-bool MapEntity::is_sensor_obstacle(Sensor& sensor) {
+bool MapEntity::is_sensor_obstacle(Sensor& /* sensor */) {
   return false;
 }
 
@@ -1860,7 +1839,7 @@ bool MapEntity::is_switch_obstacle(Switch& sw) {
  * \param raised_block a crystal block raised
  * \return true if the raised block is currently an obstacle for this entity
  */
-bool MapEntity::is_raised_block_obstacle(CrystalBlock& raised_block) {
+bool MapEntity::is_raised_block_obstacle(CrystalBlock& /* raised_block */) {
   return true;
 }
 
@@ -1873,7 +1852,7 @@ bool MapEntity::is_raised_block_obstacle(CrystalBlock& raised_block) {
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool MapEntity::is_crystal_obstacle(Crystal& crystal) {
+bool MapEntity::is_crystal_obstacle(Crystal& /* crystal */) {
   return true;
 }
 
@@ -1885,7 +1864,7 @@ bool MapEntity::is_crystal_obstacle(Crystal& crystal) {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool MapEntity::is_npc_obstacle(Npc& npc) {
+bool MapEntity::is_npc_obstacle(Npc& /* npc */) {
   return true;
 }
 
@@ -1897,7 +1876,7 @@ bool MapEntity::is_npc_obstacle(Npc& npc) {
  * \param enemy an enemy
  * \return true if the enemy is currently an obstacle for this entity
  */
-bool MapEntity::is_enemy_obstacle(Enemy& enemy) {
+bool MapEntity::is_enemy_obstacle(Enemy& /* enemy */) {
   return false;
 }
 
@@ -1908,7 +1887,7 @@ bool MapEntity::is_enemy_obstacle(Enemy& enemy) {
  * \return \c true if the jumper is currently an obstacle for this entity at
  * this candidate position.
  */
-bool MapEntity::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) {
+bool MapEntity::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candidate_position */) {
   return true;
 }
 
@@ -1935,7 +1914,7 @@ bool MapEntity::is_destructible_obstacle(Destructible& destructible) {
  * \param separator A separator.
  * \return \c true if the separator is currently an obstacle for this entity.
  */
-bool MapEntity::is_separator_obstacle(Separator& separator) {
+bool MapEntity::is_separator_obstacle(Separator& /* separator */) {
 
   return true;
 }
@@ -1963,22 +1942,21 @@ bool MapEntity::overlaps_camera() const {
     return true;
   }
 
-  bool found = false;
-  std::vector<Sprite*>::const_iterator it;
-  const std::vector<Sprite*>::const_iterator end = sprites.end();
-  for (it = sprites.begin(); it != end && !found; ++it) {
-    const Sprite& sprite = *(*it);
-    const Rectangle& sprite_size = sprite.get_size();
-    const Rectangle& sprite_origin = sprite.get_origin();
+  for (Sprite* sprite: sprites) {
+    const Rectangle& sprite_size = sprite->get_size();
+    const Rectangle& sprite_origin = sprite->get_origin();
     const Rectangle sprite_bounding_box(
         get_x() - sprite_origin.get_x(),
         get_y() - sprite_origin.get_y(),
         sprite_size.get_width(),
         sprite_size.get_height()
     );
-    found = sprite_bounding_box.overlaps(camera_position);
+    if (sprite_bounding_box.overlaps(camera_position)) {
+      return true;
+    }
   }
-  return found;
+
+  return false;
 }
 
 /**
@@ -2055,9 +2033,9 @@ double MapEntity::get_angle(const MapEntity& other) const {
  * one of its sprite and the origin of another entity or one of its sprites.
  * \param other The other entity.
  * \param this_sprite Sprite of this entity to use instead of the entity itself
- * or NULL.
+ * or nullptr.
  * \param other_sprite Sprite of the other entity to use instead of the entity
- * itself or NULL.
+ * itself or nullptr.
  * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
  */
 double MapEntity::get_angle(
@@ -2067,12 +2045,12 @@ double MapEntity::get_angle(
 
   // Add the coordinates of sprites as offsets.
   Rectangle this_offset(0, 0);
-  if (this_sprite != NULL) {
+  if (this_sprite != nullptr) {
     this_offset.add_xy(this_sprite->get_xy());
   }
 
   Rectangle other_offset(0, 0);
-  if (other_sprite != NULL) {
+  if (other_sprite != nullptr) {
     other_offset.add_xy(other_sprite->get_xy());
   }
 
@@ -2150,14 +2128,12 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
   const Rectangle& other_center = other.get_center_point();
 
   const std::list<const Separator*>& separators = get_entities().get_separators();
-  std::list<const Separator*>::const_iterator it;
-  for (it = separators.begin(); it != separators.end(); ++it) {
+  for (const Separator* separator: separators) {
 
-    const Separator& separator = *(*it);
-    if (separator.is_vertical()) {
+    if (separator->is_vertical()) {
       // Vertical separation.
-      if (this_center.get_y() < separator.get_top_left_y() ||
-          this_center.get_y() >= separator.get_top_left_y() + separator.get_height()) {
+      if (this_center.get_y() < separator->get_top_left_y() ||
+          this_center.get_y() >= separator->get_top_left_y() + separator->get_height()) {
         // This separator is irrelevant: the entity is not in either side,
         // it is too much to the north or to the south.
         //
@@ -2170,8 +2146,8 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
         continue;
       }
 
-      if (other_center.get_y() < separator.get_top_left_y() ||
-          other_center.get_y() >= separator.get_top_left_y() + separator.get_height()) {
+      if (other_center.get_y() < separator->get_top_left_y() ||
+          other_center.get_y() >= separator->get_top_left_y() + separator->get_height()) {
         // This separator is irrelevant: the other entity is not in either side.
         // it is too much to the north or to the south.
         continue;
@@ -2179,7 +2155,7 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
 
       // Both entities are in the zone of influence of this separator.
       // See if they are in the same side.
-      const int separation_x = separator.get_center_point().get_x();
+      const int separation_x = separator->get_center_point().get_x();
       if (this_center.get_x() < separation_x &&
           separation_x <= other_center.get_x()) {
         // Different side.
@@ -2194,17 +2170,17 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
     }
     else {
       // Horizontal separation.
-      if (this_center.get_x() < separator.get_top_left_x() ||
-          this_center.get_x() >= separator.get_top_left_x() + separator.get_width()) {
+      if (this_center.get_x() < separator->get_top_left_x() ||
+          this_center.get_x() >= separator->get_top_left_x() + separator->get_width()) {
         continue;
       }
 
-      if (other_center.get_x() < separator.get_top_left_x() ||
-          other_center.get_x() >= separator.get_top_left_x() + separator.get_width()) {
+      if (other_center.get_x() < separator->get_top_left_x() ||
+          other_center.get_x() >= separator->get_top_left_x() + separator->get_width()) {
         continue;
       }
 
-      const int separation_y = separator.get_center_point().get_y();
+      const int separation_y = separator->get_center_point().get_y();
       if (this_center.get_y() < separation_y &&
           separation_y <= other_center.get_y()) {
         return false;
@@ -2225,7 +2201,7 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
  * \param destructible the destructible item
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_destructible(Destructible& /* destructible */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2233,7 +2209,7 @@ void MapEntity::notify_collision_with_destructible(Destructible& destructible, C
  * \param teletransporter the teletransporter
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_teletransporter(Teletransporter& /* teletransporter */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2244,7 +2220,7 @@ void MapEntity::notify_collision_with_teletransporter(Teletransporter& teletrans
  * \param dy Direction of the y move in pixels (0, 1 or -1).
  */
 void MapEntity::notify_collision_with_stream(
-    Stream& stream, int dx, int dy) {
+    Stream& /* stream */, int /* dx */, int /* dy */) {
 }
 
 /**
@@ -2252,7 +2228,7 @@ void MapEntity::notify_collision_with_stream(
  * \param stairs the stairs
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_stairs(Stairs& /* stairs */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2260,7 +2236,7 @@ void MapEntity::notify_collision_with_stairs(Stairs& stairs, CollisionMode colli
  * \param jumper The jumper.
  * \param collision_mode The collision mode that detected the event.
  */
-void MapEntity::notify_collision_with_jumper(Jumper& jumper, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_jumper(Jumper& /* jumper */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2268,7 +2244,7 @@ void MapEntity::notify_collision_with_jumper(Jumper& jumper, CollisionMode colli
  * \param sensor a sensor
  * \param collision_mode the collision mode that detected the collision
  */
-void MapEntity::notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_sensor(Sensor& /* sensor */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2276,8 +2252,8 @@ void MapEntity::notify_collision_with_sensor(Sensor &sensor, CollisionMode colli
  * \param sw a switch
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_switch(Switch& sw,
-    CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_switch(Switch& /* sw */,
+    CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2286,7 +2262,7 @@ void MapEntity::notify_collision_with_switch(Switch& sw,
  * \param sw the switch
  * \param sprite_overlapping the sprite of the current entity that collides with the switch
  */
-void MapEntity::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) {
+void MapEntity::notify_collision_with_switch(Switch& /* sw */, Sprite& /* sprite_overlapping */) {
 }
 
 /**
@@ -2294,8 +2270,8 @@ void MapEntity::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapp
  * \param crystal the crystal
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_crystal(Crystal &crystal,
-    CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_crystal(Crystal& /* crystal */,
+    CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2304,21 +2280,21 @@ void MapEntity::notify_collision_with_crystal(Crystal &crystal,
  * \param crystal the crystal
  * \param sprite_overlapping the sprite of the current entity that collides with the crystal
  */
-void MapEntity::notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overlapping) {
+void MapEntity::notify_collision_with_crystal(Crystal& /* crystal */, Sprite& /* sprite_overlapping */) {
 }
 
 /**
  * \brief This function is called when a chest detects a collision with this entity.
  * \param chest the chest
  */
-void MapEntity::notify_collision_with_chest(Chest& chest) {
+void MapEntity::notify_collision_with_chest(Chest& /* chest */) {
 }
 
 /**
  * \brief This function is called when a block detects a collision with this entity.
  * \param block the block
  */
-void MapEntity::notify_collision_with_block(Block& block) {
+void MapEntity::notify_collision_with_block(Block& /* block */) {
 }
 
 /**
@@ -2328,7 +2304,7 @@ void MapEntity::notify_collision_with_block(Block& block) {
  * \param collision_mode The collision mode that detected the event.
  */
 void MapEntity::notify_collision_with_separator(
-    Separator& separator, CollisionMode collision_mode) {
+    Separator& /* separator */, CollisionMode /* collision_mode */) {
 
 }
 
@@ -2337,7 +2313,7 @@ void MapEntity::notify_collision_with_separator(
  * \param bomb the bomb
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_bomb(Bomb& /* bomb */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2345,8 +2321,8 @@ void MapEntity::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_m
  * \param explosion the explosion
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_explosion(Explosion& explosion,
-    CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_explosion(Explosion& /* explosion */,
+    CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2355,7 +2331,7 @@ void MapEntity::notify_collision_with_explosion(Explosion& explosion,
  * \param explosion the explosion
  * \param sprite_overlapping the sprite of the current entity that collides with the explosion
  */
-void MapEntity::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
+void MapEntity::notify_collision_with_explosion(Explosion& /* explosion */, Sprite& /* sprite_overlapping */) {
 }
 
 /**
@@ -2364,14 +2340,14 @@ void MapEntity::notify_collision_with_explosion(Explosion &explosion, Sprite &sp
  * \param fire the fire
  * \param sprite_overlapping the sprite of the current entity that collides with the fire
  */
-void MapEntity::notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) {
+void MapEntity::notify_collision_with_fire(Fire& /* fire */, Sprite& /* sprite_overlapping */) {
 }
 
 /**
  * \brief This function is called when an enemy's rectangle detects a collision with this entity's rectangle.
  * \param enemy the enemy
  */
-void MapEntity::notify_collision_with_enemy(Enemy &enemy) {
+void MapEntity::notify_collision_with_enemy(Enemy& /* enemy */) {
 }
 
 /**
@@ -2380,7 +2356,7 @@ void MapEntity::notify_collision_with_enemy(Enemy &enemy) {
  * \param enemy_sprite the enemy's sprite that overlaps a sprite of this entity
  * \param this_sprite this entity's sprite that overlaps the enemy's sprite
  */
-void MapEntity::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite) {
+void MapEntity::notify_collision_with_enemy(Enemy& /* enemy */, Sprite& /* enemy_sprite */, Sprite& /* this_sprite */) {
 }
 
 /**
@@ -2390,16 +2366,16 @@ void MapEntity::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, 
  *
  * \param attack The attack.
  * \param victim The enemy just hurt.
- * \param victim_sprite The enemy's sprite that was touched or NULL.
+ * \param victim_sprite The enemy's sprite that was touched or nullptr.
  * \param result How the enemy has reacted to the attack.
  * \param killed Whether the attack has just killed the enemy.
  */
 void MapEntity::notify_attacked_enemy(
-    EnemyAttack attack,
-    Enemy& victim,
-    const Sprite* victim_sprite,
-    EnemyReaction::Reaction& result,
-    bool killed) {
+    EnemyAttack /* attack */,
+    Enemy& /* victim */,
+    const Sprite* /* victim_sprite */,
+    EnemyReaction::Reaction& /* result */,
+    bool /* killed */) {
 }
 
 /**
@@ -2424,18 +2400,15 @@ void MapEntity::set_suspended(bool suspended) {
   }
 
   // suspend/unsuspend the sprites animations
-  std::vector<Sprite*>::const_iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
-
-    Sprite& sprite = *(*it);
-    sprite.set_suspended(suspended || !is_enabled());
+  for (Sprite* sprite: sprites) {
+    sprite->set_suspended(suspended || !is_enabled());
   }
 
   // suspend/unsuspend the movement
-  if (movement != NULL) {
+  if (movement != nullptr) {
     movement->set_suspended(suspended || !is_enabled());
   }
-  if (stream_action != NULL) {
+  if (stream_action != nullptr) {
     stream_action->set_suspended(suspended || !is_enabled());
   }
 
@@ -2459,11 +2432,8 @@ uint32_t MapEntity::get_when_suspended() const {
  */
 void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
 
-  std::vector<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
-
-    Sprite& sprite = *(*it);
-    sprite.set_ignore_suspend(ignore_suspend);
+  for (Sprite* sprite: sprites) {
+    sprite->set_ignore_suspend(ignore_suspend);
   }
 }
 
@@ -2496,19 +2466,16 @@ void MapEntity::update() {
       if (!is_suspended()) {
         // Enabling an entity that is not suspended:
         // unsuspend its movement, its sprites and its timers.
-        if (get_movement() != NULL) {
+        if (get_movement() != nullptr) {
           get_movement()->set_suspended(false);
         }
 
-        if (stream_action != NULL) {
+        if (stream_action != nullptr) {
           stream_action->set_suspended(false);
         }
 
-        std::vector<Sprite*>::iterator it;
-        for (it = sprites.begin(); it != sprites.end(); it++) {
-
-          Sprite& sprite = *(*it);
-          sprite.set_suspended(false);
+        for (Sprite* sprite: sprites) {
+          sprite->set_suspended(false);
         }
 
         if (is_on_map()) {
@@ -2519,43 +2486,39 @@ void MapEntity::update() {
   }
 
   // check the facing entity
-  if (facing_entity != NULL && facing_entity->is_being_removed()) {
-    set_facing_entity(NULL);
+  if (facing_entity != nullptr && facing_entity->is_being_removed()) {
+    set_facing_entity(nullptr);
   }
 
   // update the sprites
-  std::vector<Sprite*>::const_iterator it;
-  const std::vector<Sprite*>::const_iterator sprites_end = sprites.end();
-  for (it = sprites.begin(); it != sprites_end; ++it) {
+  for (Sprite* sprite: sprites) {
 
-    Sprite& sprite = *(*it);
-    sprite.update();
-    if (sprite.has_frame_changed()) {
+    sprite->update();
+    if (sprite->has_frame_changed()) {
 
-      if (sprite.are_pixel_collisions_enabled()) {
-        check_collision_with_detectors(sprite);
+      if (sprite->are_pixel_collisions_enabled()) {
+        check_collision_with_detectors(*sprite);
       }
 
-      notify_sprite_frame_changed(sprite, sprite.get_current_animation(), sprite.get_current_frame());
-      if (sprite.is_animation_finished()) {
-        notify_sprite_animation_finished(sprite, sprite.get_current_animation());
+      notify_sprite_frame_changed(*sprite, sprite->get_current_animation(), sprite->get_current_frame());
+      if (sprite->is_animation_finished()) {
+        notify_sprite_animation_finished(*sprite, sprite->get_current_animation());
       }
     }
   }
   clear_old_sprites();
 
   // update the movement
-  if (movement != NULL) {
+  if (movement != nullptr) {
     movement->update();
   }
   clear_old_movements();
-  if (stream_action != NULL) {
+  if (stream_action != nullptr) {
     stream_action->update();
     if (!get_stream_action()->is_active()) {
       stop_stream_action();
     }
   }
-
 
   // suspend the entity if far from the camera
   // TODO don't do this, it has too many side effects
@@ -2616,10 +2579,8 @@ void MapEntity::draw_on_map() {
   }
 
   // Draw the sprites.
-  std::vector<Sprite*>::const_iterator it;
-  for (it = sprites.begin(); it != sprites.end(); ++it) {
-    Sprite& sprite = *(*it);
-    get_map().draw_sprite(sprite, get_displayed_xy());
+  for (Sprite* sprite: sprites) {
+    get_map().draw_sprite(*sprite, get_displayed_xy());
   }
 }
 

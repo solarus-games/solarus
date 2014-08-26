@@ -47,7 +47,7 @@ Treasure::Treasure(Game& game, const std::string& item_name, int variant,
   item_name(item_name),
   variant(variant),
   savegame_variable(savegame_variable),
-  sprite(NULL) {
+  sprite(nullptr) {
 
 }
 
@@ -60,7 +60,7 @@ Treasure::Treasure(const Treasure& other):
   item_name(other.item_name),
   variant(other.variant),
   savegame_variable(other.savegame_variable),
-  sprite(NULL) {
+  sprite(nullptr) {
 
 }
 
@@ -82,7 +82,7 @@ Treasure& Treasure::operator=(const Treasure& other) {
   this->item_name = other.item_name;
   this->variant = other.variant;
   this->savegame_variable = other.savegame_variable;
-  this->sprite = NULL;
+  this->sprite = nullptr;
   return *this;
 }
 
@@ -231,7 +231,7 @@ void Treasure::give_to_player() const {
  */
 void Treasure::draw(Surface& dst_surface, int x, int y) {
 
-  if (sprite == NULL) {
+  if (sprite == nullptr) {
     // Create the sprite only if needed (many treasures are actually
     // never drawn).
     sprite = new Sprite("entities/items");

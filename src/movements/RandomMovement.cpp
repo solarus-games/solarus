@@ -113,7 +113,7 @@ void RandomMovement::set_next_direction() {
   set_speed(normal_speed);
 
   double angle;
-  if (get_entity() == NULL
+  if (get_entity() == nullptr
       || max_radius == 0 // means no limit
       || bounds.contains(get_x(), get_y())) {
 

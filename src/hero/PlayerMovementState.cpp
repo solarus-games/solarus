@@ -33,8 +33,8 @@ namespace solarus {
 Hero::PlayerMovementState::PlayerMovementState(
     Hero& hero, const std::string& state_name):
   State(hero, state_name),
-  player_movement(NULL),
-  current_jumper(NULL),
+  player_movement(nullptr),
+  current_jumper(nullptr),
   jumper_start_date(0) {
 }
 
@@ -116,7 +116,7 @@ void Hero::PlayerMovementState::stop(const State* next_state) {
   get_sprites().set_animation_stopped_normal();
   cancel_jumper();
   RefCountable::unref(player_movement);
-  player_movement = NULL;
+  player_movement = nullptr;
 }
 
 /**
@@ -144,7 +144,7 @@ void Hero::PlayerMovementState::update() {
 
   if (!is_suspended()) {
 
-    if (current_jumper != NULL) {
+    if (current_jumper != nullptr) {
 
       const int jump_direction8 = current_jumper->get_direction();
       if (!current_jumper->is_enabled()
@@ -153,13 +153,13 @@ void Hero::PlayerMovementState::update() {
 
         // Cancel the jumper preparation.
         RefCountable::unref(current_jumper);
-        current_jumper = NULL;
+        current_jumper = nullptr;
         jumper_start_date = 0;
       }
       else if (System::now() >= jumper_start_date) {
         // Time to make the jump and everything is okay.
         get_hero().start_jumping(
-            jump_direction8, current_jumper->get_jump_length(), true, true, 0);
+            jump_direction8, current_jumper->get_jump_length(), true, true);
       }
     }
   }
@@ -223,7 +223,7 @@ int Hero::PlayerMovementState::get_wanted_movement_direction8() const {
  */
 void Hero::PlayerMovementState::notify_walking_speed_changed() {
 
-  if (get_player_movement() != NULL) {
+  if (get_player_movement() != nullptr) {
     get_player_movement()->set_moving_speed(get_hero().get_walking_speed());
   }
 }
@@ -271,9 +271,9 @@ void Hero::PlayerMovementState::notify_layer_changed() {
  * \brief Returns whether the hero can be hurt in this state.
  * \return true if the hero can be hurt in this state
  * \param attacker an attacker that is trying to hurt the hero
- * (or NULL if the source of the attack is not an enemy)
+ * (or nullptr if the source of the attack is not an enemy)
  */
-bool Hero::PlayerMovementState::can_be_hurt(MapEntity* attacker) const {
+bool Hero::PlayerMovementState::can_be_hurt(MapEntity* /* attacker */) const {
   return true;
 }
 
@@ -282,7 +282,7 @@ bool Hero::PlayerMovementState::can_be_hurt(MapEntity* attacker) const {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::PlayerMovementState::can_pick_treasure(EquipmentItem& item) const {
+bool Hero::PlayerMovementState::can_pick_treasure(EquipmentItem& /* item */) const {
   return true;
 }
 
@@ -320,9 +320,9 @@ void Hero::PlayerMovementState::notify_jumper_activated(Jumper& jumper) {
  */
 void Hero::PlayerMovementState::cancel_jumper() {
 
-  if (current_jumper != NULL) {
+  if (current_jumper != nullptr) {
     RefCountable::unref(current_jumper);
-    current_jumper = NULL;
+    current_jumper = nullptr;
     jumper_start_date = 0;
   }
 }

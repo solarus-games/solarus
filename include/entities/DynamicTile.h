@@ -48,10 +48,10 @@ class DynamicTile: public MapEntity {
     );
     ~DynamicTile();
 
-    EntityType get_type() const;
-    bool is_ground_modifier() const;
-    Ground get_modified_ground() const;
-    void draw_on_map();
+    virtual EntityType get_type() const override;
+    virtual bool is_ground_modifier() const override;
+    virtual Ground get_modified_ground() const override;
+    virtual void draw_on_map() override;
 
   private:
 

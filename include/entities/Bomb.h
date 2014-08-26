@@ -32,23 +32,23 @@ class Bomb: public Detector {
     Bomb(const std::string& name, Layer layer, int x, int y);
     ~Bomb();
 
-    EntityType get_type() const;
+    virtual EntityType get_type() const override;
 
-    bool can_be_obstacle() const;
-    bool is_stream_obstacle(Stream& stream);
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_deep_water_obstacle() const;
-    bool is_hole_obstacle() const;
-    bool is_lava_obstacle() const;
-    bool is_prickle_obstacle() const;
-    bool is_ladder_obstacle() const;
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
-    void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
-    void notify_collision_with_stream(Stream& stream, int dx, int dy);
-    void notify_position_changed();
-    bool notify_action_command_pressed();
-    void set_suspended(bool suspended);
-    void update();
+    virtual bool can_be_obstacle() const override;
+    virtual bool is_stream_obstacle(Stream& stream) override;
+    virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter) override;
+    virtual bool is_deep_water_obstacle() const override;
+    virtual bool is_hole_obstacle() const override;
+    virtual bool is_lava_obstacle() const override;
+    virtual bool is_prickle_obstacle() const override;
+    virtual bool is_ladder_obstacle() const override;
+    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
+    virtual void notify_collision_with_stream(Stream& stream, int dx, int dy) override;
+    virtual void notify_position_changed() override;
+    virtual bool notify_action_command_pressed() override;
+    virtual void set_suspended(bool suspended) override;
+    virtual void update() override;
 
     void explode();
 

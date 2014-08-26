@@ -518,11 +518,10 @@ void GameCommands::game_command_released(Command command) {
  */
 InputEvent::KeyboardKey GameCommands::get_keyboard_binding(Command command) const {
 
-  std::map<InputEvent::KeyboardKey, Command>::const_iterator it;
-  for (it = keyboard_mapping.begin(); it != keyboard_mapping.end(); it++) {
+  for (const auto& kvp: keyboard_mapping) {
 
-    if (it->second == command) {
-      return it->first;
+    if (kvp.second == command) {
+      return kvp.first;
     }
   }
 
@@ -569,11 +568,10 @@ void GameCommands::set_keyboard_binding(Command command, InputEvent::KeyboardKey
  */
 const std::string& GameCommands::get_joypad_binding(Command command) const {
 
-  std::map<std::string, Command>::const_iterator it;
-  for (it = joypad_mapping.begin(); it != joypad_mapping.end(); it++) {
+  for (const auto& kvp: joypad_mapping) {
 
-    if (it->second == command) {
-      return it->first;
+    if (kvp.second == command) {
+      return kvp.first;
     }
   }
 
@@ -701,8 +699,7 @@ void GameCommands::set_saved_keyboard_binding(
 GameCommands::Command GameCommands::get_command_from_keyboard(
     InputEvent::KeyboardKey key) const {
 
-  std::map<InputEvent::KeyboardKey, Command>::const_iterator it =
-      keyboard_mapping.find(key);
+  const auto& it = keyboard_mapping.find(key);
   if (it != keyboard_mapping.end()) {
     return it->second;
   }
@@ -745,8 +742,7 @@ void GameCommands::set_saved_joypad_binding(
 GameCommands::Command GameCommands::get_command_from_joypad(
     const std::string& joypad_string) const {
 
-  std::map<std::string, Command>::const_iterator it =
-      joypad_mapping.find(joypad_string);
+  const auto& it = joypad_mapping.find(joypad_string);
   if (it != joypad_mapping.end()) {
     return it->second;
   }
@@ -819,7 +815,7 @@ void GameCommands::do_customization_callback() {
  * \param joypad_string The string to check.
  * \return true if this string is a valid joypad action.
  */
-bool GameCommands::is_joypad_string_valid(const std::string& joypad_string) {
+bool GameCommands::is_joypad_string_valid(const std::string& /* joypad_string */) {
 
   // TODO
   return true;

@@ -105,9 +105,8 @@ bool Detector::has_collision_mode(CollisionMode collision_mode) {
  */
 void Detector::enable_pixel_collisions() {
 
-  std::vector<Sprite*>::const_iterator it;
-  for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
-    (*it)->enable_pixel_collisions();
+  for (Sprite* sprite: get_sprites()) {
+    sprite->enable_pixel_collisions();
   }
 }
 
@@ -161,7 +160,7 @@ void Detector::check_collision(MapEntity& entity) {
 
     if (has_collision_mode(COLLISION_FACING) && test_collision_facing_point(entity)) {
 
-      if (entity.get_facing_entity() == NULL) { // make sure only one entity can think "I am the facing entity"
+      if (entity.get_facing_entity() == nullptr) { // make sure only one entity can think "I am the facing entity"
         entity.set_facing_entity(this);
       }
       notify_collision(entity, COLLISION_FACING);
@@ -196,12 +195,10 @@ void Detector::check_collision(MapEntity& entity, Sprite& sprite) {
       && (has_layer_independent_collisions() || get_layer() == entity.get_layer())) {
 
     // we check the collision between the specified entity's sprite and all sprites of the current entity
-    std::vector<Sprite*>::const_iterator it;
-    for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
-      Sprite& this_sprite = *(*it);
+    for (Sprite* this_sprite: get_sprites()) {
 
-      if (this_sprite.test_collision(sprite, get_x(), get_y(), entity.get_x(), entity.get_y())) {
-        notify_collision(entity, sprite, this_sprite);
+      if (this_sprite->test_collision(sprite, get_x(), get_y(), entity.get_x(), entity.get_y())) {
+        notify_collision(entity, sprite, *this_sprite);
       }
     }
   }
@@ -309,7 +306,7 @@ bool Detector::test_collision_center(MapEntity& entity) {
  * \param entity the entity
  * \return true if the entity's collides with this detector with respect to the custom rule
  */
-bool Detector::test_collision_custom(MapEntity& entity) {
+bool Detector::test_collision_custom(MapEntity& /* entity */) {
 
   Debug::die("Custom collision mode invoked but not defined");
   return false;
@@ -326,7 +323,7 @@ bool Detector::test_collision_custom(MapEntity& entity) {
  * \param collision_mode the collision mode that detected the collision (useful if
  * the detector has several collision modes)
  */
-void Detector::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Detector::notify_collision(MapEntity& /* entity_overlapping */, CollisionMode /* collision_mode */) {
 
 }
 
@@ -341,7 +338,7 @@ void Detector::notify_collision(MapEntity& entity_overlapping, CollisionMode col
  * \param other_sprite the sprite of other_entity that is overlapping this detector
  * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Detector::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
+void Detector::notify_collision(MapEntity& /* other_entity */, Sprite& /* other_sprite */, Sprite& /* this_sprite */) {
 
 }
 
@@ -378,7 +375,7 @@ bool Detector::notify_action_command_pressed() {
  * \param item The equipment item used.
  * \return true if an interaction occured.
  */
-bool Detector::interaction_with_item(EquipmentItem& item) {
+bool Detector::interaction_with_item(EquipmentItem& /* item */) {
   return false;
 }
 
@@ -427,7 +424,7 @@ void Detector::notify_being_removed() {
   MapEntity::notify_being_removed();
 
   if (get_hero().get_facing_entity() == this) {
-    get_hero().set_facing_entity(NULL);
+    get_hero().set_facing_entity(nullptr);
   }
 }
 

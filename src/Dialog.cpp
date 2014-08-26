@@ -129,7 +129,7 @@ const std::string& Dialog::get_property(const std::string& key) const {
   Debug::check_assertion(!key.empty() && key != "text" && key != "dialog_id",
       "Invalid property key for dialog");
 
-  std::map<std::string, std::string>::const_iterator it = properties.find(key);
+  const auto it = properties.find(key);
 
   Debug::check_assertion(it != properties.end(),
       std::string("No such dialog property: '") + key + "'");

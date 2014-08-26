@@ -64,7 +64,7 @@ class NonAnimatedRegions {
     std::vector<Surface*>
         optimized_tiles_surfaces;           /**< All non-animated tiles are drawn here once for all
                                              * for performance. Each cell of the grid has a surface
-                                             * or NULL before it is drawn. */
+                                             * or nullptr before it is drawn. */
 
 };
 

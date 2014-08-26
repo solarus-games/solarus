@@ -129,7 +129,7 @@ class Savegame: public ExportableToLua {
     std::string file_name;           /**< Savegame file name relative to the quest write directory. */
     MainLoop& main_loop;
     Equipment equipment;
-    Game* game;             /**< NULL if this savegame is not currently running */
+    Game* game;             /**< nullptr if this savegame is not currently running */
 
     void load();
     static int l_newindex(lua_State* l);

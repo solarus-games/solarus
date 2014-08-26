@@ -309,7 +309,7 @@ std::string Stairs::get_path(Way way) {
  * \return The subarea of the map where the entity displaying should be
  * restricted to.
  */
-Rectangle Stairs::get_clipping_rectangle(Way way) {
+Rectangle Stairs::get_clipping_rectangle(Way /* way */) {
 
   if (subtype == INSIDE_FLOOR || subtype == STRAIGHT_UPSTAIRS) {
     return Rectangle(0, 0, 0, 0); // no restriction
@@ -371,16 +371,13 @@ void Stairs::update_dynamic_tiles() {
 
   std::list<MapEntity*> tiles = get_entities().get_entities_with_prefix(
       ENTITY_DYNAMIC_TILE, get_name() + "_enabled");
-  std::list<MapEntity*>::iterator it;
-  for (it = tiles.begin(); it != tiles.end(); ++it) {
-    DynamicTile* tile = static_cast<DynamicTile*>(*it);
+  for (MapEntity* tile: tiles) {
     tile->set_enabled(is_enabled());
   }
 
   tiles = get_entities().get_entities_with_prefix(
       ENTITY_DYNAMIC_TILE, get_name() + "_disabled");
-  for (it = tiles.begin(); it != tiles.end(); ++it) {
-    DynamicTile* tile = static_cast<DynamicTile*>(*it);
+  for (MapEntity* tile: tiles) {
     tile->set_enabled(!is_enabled());
   }
 }

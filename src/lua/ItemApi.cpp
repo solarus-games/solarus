@@ -73,17 +73,17 @@ void LuaContext::register_item_module() {
       { "get_max_amount", item_api_get_max_amount },
       { "set_max_amount", item_api_set_max_amount },
       { "set_finished", item_api_set_finished },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   static const luaL_Reg metamethods[] = {
       { "__gc", userdata_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
       { "__index", userdata_meta_index_as_table },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
-  register_type(item_module_name, NULL, methods, metamethods);
+  register_type(item_module_name, nullptr, methods, metamethods);
 }
 
 /**
@@ -153,7 +153,7 @@ int LuaContext::item_api_get_map(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
 
   Game* game = item.get_game();
-  if (game != NULL) {
+  if (game != nullptr) {
     push_map(l, game->get_current_map());
   }
   else {

@@ -210,7 +210,7 @@ class SavegameConverterV1 {
      * integer defined by the engine.
      */
     typedef struct SavedData {
-      char strings[64][64];     /**< 64 NULL-terminated strings of 64 bytes each (4 Ko) */
+      char strings[64][64];     /**< 64 nullptr-terminated strings of 64 bytes each (4 Ko) */
       uint32_t integers[2048];  /**< 2048 integers (8 Ko) */
       uint32_t booleans[1024];  /**< 32768 boolean values (4 Ko) */
     } SavedData;

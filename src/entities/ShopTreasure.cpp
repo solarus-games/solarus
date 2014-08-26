@@ -78,11 +78,11 @@ ShopTreasure::~ShopTreasure() {
  * \param treasure the treasure that the hero can buy
  * \param price the treasure's price in rupees
  * \param dialog_id id of the dialog describing the item when the player watches it
- * \return the shop treasure created, or NULL if it is already bought or if it
+ * \return the shop treasure created, or nullptr if it is already bought or if it
  * is not obtainable.
  */
 ShopTreasure* ShopTreasure::create(
-    Game& game,
+    Game& /* game */,
     const std::string& name,
     Layer layer,
     int x,
@@ -93,7 +93,7 @@ ShopTreasure* ShopTreasure::create(
 
   // See if the item is not already bought and is obtainable.
   if (treasure.is_found() || !treasure.is_obtainable()) {
-    return NULL;
+    return nullptr;
   }
 
   return new ShopTreasure(name, layer, x, y, treasure, price, dialog_id);
@@ -148,7 +148,7 @@ bool ShopTreasure::is_sword_ignored() const {
  * \param other another entity
  * \return true
  */
-bool ShopTreasure::is_obstacle_for(MapEntity& other) {
+bool ShopTreasure::is_obstacle_for(MapEntity& /* other */) {
   return true;
 }
 
@@ -161,11 +161,11 @@ bool ShopTreasure::is_obstacle_for(MapEntity& other) {
  * \param collision_mode the collision mode that detected the collision
  */
 void ShopTreasure::notify_collision(
-    MapEntity& entity_overlapping, CollisionMode collision_mode) {
+    MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   if (entity_overlapping.is_hero() && !get_game().is_suspended()) {
 
-    Hero &hero = (Hero&) entity_overlapping;
+    Hero& hero = (Hero&) entity_overlapping;
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
         && hero.is_free()) {

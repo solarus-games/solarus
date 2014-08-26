@@ -37,11 +37,11 @@ namespace solarus {
  * \param args Command-line arguments.
  */
 MainLoop::MainLoop(const CommandLine& args):
-  root_surface(NULL),
-  lua_context(NULL),
+  root_surface(nullptr),
+  lua_context(nullptr),
   exiting(false),
-  game(NULL),
-  next_game(NULL) {
+  game(nullptr),
+  next_game(nullptr) {
 
   // Initialize basic features (input, audio, video, files...).
   System::initialize(args);
@@ -75,10 +75,10 @@ MainLoop::MainLoop(const CommandLine& args):
  */
 MainLoop::~MainLoop() {
 
-  if (game != NULL) {
+  if (game != nullptr) {
     game->stop();
     delete game;
-    game = NULL;
+    game = nullptr;
   }
 
   // Destroying the root surface may indirectly trigger Lua operations,
@@ -124,7 +124,7 @@ void MainLoop::set_exiting() {
  */
 bool MainLoop::is_resetting() {
 
-  return game != NULL && next_game == NULL;
+  return game != nullptr && next_game == nullptr;
 }
 
 /**
@@ -134,12 +134,12 @@ bool MainLoop::is_resetting() {
 void MainLoop::set_resetting() {
 
   // Reset the program.
-  set_game(NULL);
+  set_game(nullptr);
 }
 
 /**
  * \brief Returns the current game if any.
- * \return The game currently running or NULL.
+ * \return The game currently running or nullptr.
  */
 Game* MainLoop::get_game() {
   return game;
@@ -147,11 +147,11 @@ Game* MainLoop::get_game() {
 
 /**
  * \brief Changes the game.
- * \param game The new game to start, or NULL to start no game.
+ * \param game The new game to start, or nullptr to start no game.
  */
 void MainLoop::set_game(Game* game) {
 
-  if (this->game != NULL) {
+  if (this->game != nullptr) {
     this->game->stop();
   }
 
@@ -226,7 +226,7 @@ void MainLoop::run() {
 void MainLoop::check_input() {
 
   InputEvent* event = InputEvent::get_event();
-  while(event != NULL){
+  while(event != nullptr){
     notify_input(*event);
     delete event;
     event = InputEvent::get_event();
@@ -258,7 +258,7 @@ void MainLoop::notify_input(const InputEvent& event) {
 
   // Send the event to Lua and to the current screen.
   bool handled = lua_context->notify_input(event);
-  if (!handled && game != NULL) {
+  if (!handled && game != nullptr) {
     game->notify_input(event);
   }
 }
@@ -270,7 +270,7 @@ void MainLoop::notify_input(const InputEvent& event) {
  */
 void MainLoop::update() {
 
-  if (game != NULL) {
+  if (game != nullptr) {
     game->update();
   }
   lua_context->update();
@@ -282,7 +282,7 @@ void MainLoop::update() {
     delete game;
     game = next_game;
 
-    if (game != NULL) {
+    if (game != nullptr) {
       game->start();
     }
     else {
@@ -302,7 +302,7 @@ void MainLoop::draw() {
 
   root_surface->clear();
 
-  if (game != NULL) {
+  if (game != nullptr) {
     game->draw(*root_surface);
   }
   lua_context->main_on_draw(*root_surface);

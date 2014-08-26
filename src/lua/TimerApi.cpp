@@ -42,7 +42,7 @@ void LuaContext::register_timer_module() {
   static const luaL_Reg functions[] = {
       { "start", timer_api_start },
       { "stop_all", timer_api_stop_all },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   // Methods of the timer type.
@@ -56,12 +56,12 @@ void LuaContext::register_timer_module() {
       { "set_suspended_with_map", timer_api_set_suspended_with_map },
       { "get_remaining_time", timer_api_get_remaining_time },
       { "set_remaining_time", timer_api_set_remaining_time },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   static const luaL_Reg metamethods[] = {
       { "__gc", userdata_meta_gc },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(timer_module_name, functions, methods, metamethods);
@@ -120,8 +120,7 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
 
 #ifndef NDEBUG
   // Sanity check: check the uniqueness of the ref.
-  std::map<Timer*, LuaTimerData>::iterator it;
-  for (it = timers.begin(); it != timers.end(); ++it) {
+  for (auto it = timers.begin(); it != timers.end(); ++it) {
     if (it->second.callback_ref == callback_ref) {
       std::ostringstream oss;
       oss << "Callback ref " << callback_ref
@@ -138,7 +137,7 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
   timers[timer].context = context;
 
   Game* game = main_loop.get_game();
-  if (game != NULL) {
+  if (game != nullptr) {
     // We are during a game: depending on the timer's context,
     // suspend the timer or not.
     if (is_map(l, context_index)
@@ -212,8 +211,7 @@ void LuaContext::remove_timers(int context_index) {
     context = lua_topointer(l, context_index);
   }
 
-  std::map<Timer*, LuaTimerData>::iterator it;
-  for (it = timers.begin(); it != timers.end(); ++it) {
+  for (auto it = timers.begin(); it != timers.end(); ++it) {
     Timer* timer = it->first;
     if (it->second.context == context) {
       if (!timer->is_finished()) {
@@ -230,8 +228,7 @@ void LuaContext::remove_timers(int context_index) {
  */
 void LuaContext::destroy_timers() {
 
-  std::map<Timer*, LuaTimerData>::iterator it;
-  for (it = timers.begin(); it != timers.end(); ++it) {
+  for (auto it = timers.begin(); it != timers.end(); ++it) {
 
     Timer* timer = it->first;
     if (!timer->is_finished()) {
@@ -248,8 +245,7 @@ void LuaContext::destroy_timers() {
 void LuaContext::update_timers() {
 
   // Update all timers.
-  std::map<Timer*, LuaTimerData>::iterator it;
-  for (it = timers.begin(); it != timers.end(); ++it) {
+  for (auto it = timers.begin(); it != timers.end(); ++it) {
 
     Timer* timer = it->first;
     int callback_ref = it->second.callback_ref;
@@ -263,11 +259,12 @@ void LuaContext::update_timers() {
   }
 
   // Destroy the ones that should be removed.
-  std::list<Timer*>::iterator it2;
-  for (it2 = timers_to_remove.begin(); it2 != timers_to_remove.end(); ++it2) {
+  for (auto it2 = timers_to_remove.begin();
+      it2 != timers_to_remove.end();
+      ++it2) {
 
     Timer* timer = *it2;
-    it = timers.find(timer);
+    auto it = timers.find(timer);
     if (it != timers.end()) {
       if (!timer->is_finished()) {
         cancel_callback(it->second.callback_ref);
@@ -289,8 +286,7 @@ void LuaContext::update_timers() {
  */
 void LuaContext::notify_timers_map_suspended(bool suspended) {
 
-  std::map<Timer*, LuaTimerData>::const_iterator it;
-  for (it = timers.begin(); it != timers.end(); ++it) {
+  for (auto it = timers.begin(); it != timers.end(); ++it) {
     Timer* timer = it->first;
     if (timer->is_suspended_with_map()) {
       timer->notify_map_suspended(suspended);
@@ -310,8 +306,7 @@ void LuaContext::set_entity_timers_suspended(
     MapEntity& entity, bool suspended
 ) {
 
-  std::map<Timer*, LuaTimerData>::const_iterator it;
-  for (it = timers.begin(); it != timers.end(); ++it) {
+  for (auto it = timers.begin(); it != timers.end(); ++it) {
 
     Timer* timer = it->first;
     if (it->second.context == &entity) {
@@ -334,7 +329,7 @@ void LuaContext::do_timer_callback(Timer& timer) {
 
   Debug::check_assertion(timer.is_finished(), "This timer is still running");
 
-  const std::map<Timer*, LuaTimerData>::iterator it = timers.find(&timer);
+  auto it = timers.find(&timer);
   if (it != timers.end() && it->second.callback_ref != LUA_REFNIL) {
     const int callback_ref = it->second.callback_ref;
     push_callback(callback_ref);
@@ -386,7 +381,7 @@ int LuaContext::timer_api_start(lua_State *l) {
     // - outside a game: sol.main.
 
     Game* game = lua_context.get_main_loop().get_game();
-    if (game != NULL && game->has_current_map()) {
+    if (game != nullptr && game->has_current_map()) {
       push_map(l, game->get_current_map());
     }
     else {
@@ -538,7 +533,7 @@ int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
   timer.set_suspended_with_map(suspended_with_map);
 
   Game* game = lua_context.get_main_loop().get_game();
-  if (game != NULL && game->has_current_map()) {
+  if (game != nullptr && game->has_current_map()) {
     // If the game is running, suspend/unsuspend the timer like the map.
     timer.notify_map_suspended(game->get_current_map().is_suspended());
   }
@@ -556,7 +551,7 @@ int LuaContext::timer_api_get_remaining_time(lua_State* l) {
   Timer& timer = check_timer(l, 1);
 
   LuaContext& lua_context = get_lua_context(l);
-  const std::map<Timer*, LuaTimerData>::const_iterator it = lua_context.timers.find(&timer);
+  const auto it = lua_context.timers.find(&timer);
   if (it == lua_context.timers.end() || it->second.callback_ref == LUA_REFNIL) {
     // This timer is already finished or was canceled.
     lua_pushinteger(l, 0);
@@ -582,7 +577,7 @@ int LuaContext::timer_api_set_remaining_time(lua_State* l) {
   uint32_t remaining_time = luaL_checkint(l, 2);
 
   LuaContext& lua_context = get_lua_context(l);
-  const std::map<Timer*, LuaTimerData>::const_iterator it = lua_context.timers.find(&timer);
+  const auto it = lua_context.timers.find(&timer);
   if (it != lua_context.timers.end() && it->second.callback_ref != LUA_REFNIL) {
     // The timer is still active.
     const uint32_t now = System::now();

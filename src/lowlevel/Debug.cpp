@@ -103,7 +103,7 @@ void Debug::die(const std::string& error_message) {
       SDL_MESSAGEBOX_ERROR,
       "Error",
       error_message.c_str(),
-      NULL);
+      nullptr);
 
   std::abort();
 }

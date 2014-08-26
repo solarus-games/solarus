@@ -50,7 +50,7 @@ class FollowMovement: public Movement {
 
   private:
 
-    MapEntity* entity_followed;        /**< The entity followed by this movement or NULL. */
+    MapEntity* entity_followed;        /**< The entity followed by this movement or nullptr. */
     const int x;                       /**< x coordinate of where this entity should be placed,
                                         * relative to the entity followed */
     const int y;                       /**< y coordinate of where this entity should be placed,

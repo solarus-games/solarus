@@ -56,9 +56,8 @@ Equipment::Equipment(Savegame& savegame):
  */
 Equipment::~Equipment() {
 
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); ++it) {
-    EquipmentItem* item = it->second;
+  for (const auto& kvp: items) {
+    EquipmentItem* item = kvp.second;
     RefCountable::unref(item);
   }
 }
@@ -73,7 +72,7 @@ Savegame& Equipment::get_savegame() {
 
 /**
  * \brief If this equipment object is currently running in a game, return that game.
- * \return A game or NULL.
+ * \return A game or nullptr.
  */
 Game* Equipment::get_game() {
   return savegame.get_game();
@@ -91,9 +90,9 @@ void Equipment::notify_game_started() {
 void Equipment::notify_game_finished() {
 
   // The equipment items will disappear: notify them.
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
-    it->second->exit();
+  for (const auto& kvp: items) {
+    EquipmentItem* item = kvp.second;
+    item->exit();
   }
 }
 
@@ -104,9 +103,9 @@ void Equipment::notify_game_finished() {
 void Equipment::notify_map_changed(Map& map) {
 
   // Notify the items.
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
-    it->second->notify_map_changed(map);
+  for (const auto& kvp: items) {
+    EquipmentItem* item = kvp.second;
+    item->notify_map_changed(map);
   }
 }
 
@@ -120,7 +119,7 @@ void Equipment::notify_map_changed(Map& map) {
 void Equipment::update() {
 
   Game* game = savegame.get_game();
-  if (game == NULL) {
+  if (game == nullptr) {
     // nothing dynamic when there is no game
     return;
   }
@@ -132,9 +131,9 @@ void Equipment::update() {
   }
 
   // update the item scripts
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
-    it->second->update();
+  for (const auto& kvp: items) {
+    EquipmentItem* item = kvp.second;
+    item->update();
   }
 }
 
@@ -147,9 +146,9 @@ void Equipment::set_suspended(bool suspended) {
   this->suspended = suspended;
 
   // notify the item scripts
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
-    it->second->set_suspended(suspended);
+  for (const auto& kvp: items) {
+    EquipmentItem* item = kvp.second;
+    item->set_suspended(suspended);
   }
 }
 
@@ -417,28 +416,26 @@ void Equipment::restore_all_magic() {
 void Equipment::load_items() {
 
   // Create each equipment item declared in project_db.dat.
-  {
-    const std::vector<QuestResourceList::Element>& item_elements =
+  const std::vector<QuestResourceList::Element>& item_elements =
       QuestResourceList::get_elements(QuestResourceList::RESOURCE_ITEM);
-    std::vector<QuestResourceList::Element>::const_iterator it;
-    for (it = item_elements.begin(); it != item_elements.end(); ++it) {
-      const std::string& item_id = it->first;
-      EquipmentItem* item = new EquipmentItem(*this);
-      RefCountable::ref(item);
-      item->set_name(item_id);
-      items[item_id] = item;
-    }
+  for (const auto& kvp: item_elements) {
+    const std::string& item_id = kvp.first;
+    EquipmentItem* item = new EquipmentItem(*this);
+    RefCountable::ref(item);
+    item->set_name(item_id);
+    items[item_id] = item;
   }
 
   // Load the item scripts.
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
-    it->second->initialize();
+  for (const auto& kvp: items) {
+    EquipmentItem* item = kvp.second;
+    item->initialize();
   }
 
   // Start the items once they all exist.
-  for (it = items.begin(); it != items.end(); it++) {
-    it->second->start();
+  for (const auto& kvp: items) {
+    EquipmentItem* item = kvp.second;
+    item->start();
   }
 }
 
@@ -481,7 +478,7 @@ const EquipmentItem& Equipment::get_item(const std::string& item_name) const {
 /**
  * \brief Returns the item currently assigned to a slot.
  * \param slot Slot of the item to get (1 or 2).
- * \return The item currently assigned to this slot or NULL.
+ * \return The item currently assigned to this slot or nullptr.
  */
 EquipmentItem* Equipment::get_item_assigned(int slot) {
 
@@ -494,7 +491,7 @@ EquipmentItem* Equipment::get_item_assigned(int slot) {
   savegame_variable[11] = '0' + slot;
   const std::string& item_name = savegame.get_string(savegame_variable);
 
-  EquipmentItem* item = NULL;
+  EquipmentItem* item = nullptr;
   if (!item_name.empty()) {
     item = &get_item(item_name);
   }
@@ -504,7 +501,7 @@ EquipmentItem* Equipment::get_item_assigned(int slot) {
 /**
  * \brief Returns the item currently assigned to a slot.
  * \param slot Slot of the item to get (1 or 2).
- * \return The item currently assigned to this slot or NULL.
+ * \return The item currently assigned to this slot or nullptr.
  */
 const EquipmentItem* Equipment::get_item_assigned(int slot) const {
 
@@ -515,7 +512,7 @@ const EquipmentItem* Equipment::get_item_assigned(int slot) const {
   oss << "_item_slot_" << slot;
   const std::string& item_name = savegame.get_string(oss.str());
 
-  const EquipmentItem* item = NULL;
+  const EquipmentItem* item = nullptr;
   if (!item_name.empty()) {
     item = &get_item(item_name);
   }
@@ -529,7 +526,7 @@ const EquipmentItem* Equipment::get_item_assigned(int slot) const {
  * cannot be assigned or if the player does not have it.
  * 
  * \param slot Slot to set (1 or 2).
- * \param item The item to assign to this slot or NULL to empty the slot.
+ * \param item The item to assign to this slot or nullptr to empty the slot.
  */
 void Equipment::set_item_assigned(int slot, EquipmentItem* item) {
 
@@ -539,7 +536,7 @@ void Equipment::set_item_assigned(int slot, EquipmentItem* item) {
   std::ostringstream oss;
   oss << "_item_slot_" << slot;
 
-  if (item != NULL) {
+  if (item != nullptr) {
     Debug::check_assertion(item->get_variant() > 0,
         std::string("Cannot assign item '") + item->get_name()
         + "' because the player does not have it");
@@ -562,7 +559,7 @@ int Equipment::get_item_slot(const EquipmentItem& item) const {
 
   for (int i = 1; i <= 2; ++i) {
     const EquipmentItem* assigned_item = get_item_assigned(i);
-    if (assigned_item != NULL && assigned_item->get_name() == item.get_name()) {
+    if (assigned_item != nullptr && assigned_item->get_name() == item.get_name()) {
       return i;
     }
   }
@@ -639,7 +636,7 @@ void Equipment::set_ability(Ability ability, int level) {
   savegame.set_integer(get_ability_savegame_variable(ability), level);
 
   Game* game = get_game();
-  if (game != NULL) {
+  if (game != nullptr) {
     if (ability == ABILITY_TUNIC ||
         ability == ABILITY_SWORD ||
         ability == ABILITY_SHIELD) {
@@ -658,9 +655,9 @@ void Equipment::set_ability(Ability ability, int level) {
  */
 void Equipment::notify_ability_used(Ability ability) {
 
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
-    it->second->notify_ability_used(ability);
+  for (const auto& kvp: items) {
+    EquipmentItem* item = kvp.second;
+    item->notify_ability_used(ability);
   }
 }
 

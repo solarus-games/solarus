@@ -28,10 +28,10 @@ namespace solarus {
  */
 Drawable::Drawable():
   xy(),
-  movement(NULL),
-  transition(NULL),
+  movement(nullptr),
+  transition(nullptr),
   transition_callback_ref(LUA_REFNIL),
-  lua_context(NULL),
+  lua_context(nullptr),
   suspended(false) {
 
 }
@@ -70,12 +70,12 @@ void Drawable::start_movement(Movement& movement) {
 void Drawable::stop_movement() {
 
   RefCountable::unref(movement);
-  movement = NULL;
+  movement = nullptr;
 }
 
 /**
  * \brief Returns the current movement of this drawable object.
- * \return The object's movement, or NULL if there is no movement.
+ * \return The object's movement, or nullptr if there is no movement.
  */
 Movement* Drawable::get_movement() {
   return movement;
@@ -107,7 +107,7 @@ void Drawable::set_xy(const Rectangle& xy) {
  * \param transition The transition to start.
  * \param callback_ref A Lua registry ref to the function to call when
  * the transition finishes, or LUA_REFNIL.
- * \param lua_context The Lua world for the callback (or NULL).
+ * \param lua_context The Lua world for the callback (or nullptr).
  */
 void Drawable::start_transition(
     Transition& transition,
@@ -131,9 +131,9 @@ void Drawable::start_transition(
 void Drawable::stop_transition() {
 
   delete transition;
-  transition = NULL;
+  transition = nullptr;
 
-  if (lua_context != NULL) {
+  if (lua_context != nullptr) {
     lua_context->cancel_callback(this->transition_callback_ref);
     transition_callback_ref = LUA_REFNIL;
   }
@@ -141,7 +141,7 @@ void Drawable::stop_transition() {
 
 /**
  * \brief Returns the current transition of this drawable object.
- * \return The object's transition, or NULL if there is no transition.
+ * \return The object's transition, or nullptr if there is no transition.
  */
 Transition* Drawable::get_transition() {
   return transition;
@@ -155,17 +155,17 @@ Transition* Drawable::get_transition() {
  */
 void Drawable::update() {
 
-  if (transition != NULL) {
+  if (transition != nullptr) {
     transition->update();
     if (transition->is_finished()) {
 
       delete transition;
-      transition = NULL;
+      transition = nullptr;
 
       int ref = transition_callback_ref;
       transition_callback_ref = LUA_REFNIL;
 
-      if (lua_context != NULL) {
+      if (lua_context != nullptr) {
         // Note that this callback may create a new transition right now.
         lua_context->do_callback(ref);
         lua_context->cancel_callback(ref);
@@ -173,9 +173,9 @@ void Drawable::update() {
     }
   }
 
-  if (movement != NULL) {
+  if (movement != nullptr) {
     movement->update();
-    if (movement != NULL && movement->is_finished()) {
+    if (movement != nullptr && movement->is_finished()) {
       stop_movement();
     }
   }
@@ -202,11 +202,11 @@ void Drawable::set_suspended(bool suspended) {
   this->suspended = suspended;
 
   // Suspend or resume the transition effect and the movement if any.
-  if (transition != NULL) {
+  if (transition != nullptr) {
     transition->set_suspended(suspended);
   }
 
-  if (movement != NULL) {
+  if (movement != nullptr) {
     movement->set_suspended(suspended);
   }
 }
@@ -243,7 +243,7 @@ void Drawable::draw(Surface& dst_surface,
   Rectangle dst_position2(dst_position);
   dst_position2.add_xy(xy);
 
-  if (transition != NULL) {
+  if (transition != nullptr) {
     draw_transition(*transition);
   }
 
@@ -278,7 +278,7 @@ void Drawable::draw_region(
   Rectangle dst_position2(dst_position);
   dst_position2.add_xy(xy);
 
-  if (transition != NULL) {
+  if (transition != nullptr) {
     draw_transition(*transition);
   }
 

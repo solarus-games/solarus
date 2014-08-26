@@ -53,8 +53,8 @@ class VideoMode {
                                           * selecting this video mode. */
 
     // Pixel filter (in CPU or GPU).
-    PixelFilter* software_filter;        /**< Software scaling pixel filter to use or NULL. */
-    Shader* hardware_filter;             /**< Scaling shader to use or NULL. */
+    PixelFilter* software_filter;        /**< Software scaling pixel filter to use or nullptr. */
+    Shader* hardware_filter;             /**< Scaling shader to use or nullptr. */
 
 };
 

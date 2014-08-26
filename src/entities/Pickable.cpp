@@ -50,7 +50,7 @@ Pickable::Pickable(
   Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE, name, layer, x, y, 0, 0),
   treasure(treasure),
   given_to_player(false),
-  shadow_sprite(NULL),
+  shadow_sprite(nullptr),
   falling_height(FALLING_NONE),
   will_disappear(false),
   shadow_xy(Rectangle(x, y)),
@@ -59,7 +59,7 @@ Pickable::Pickable(
   can_be_picked(true),
   blink_date(0),
   disappear_date(0),
-  entity_followed(NULL) {
+  entity_followed(nullptr) {
 
 }
 
@@ -82,7 +82,7 @@ EntityType Pickable::get_type() const {
 /**
  * \brief Creates a pickable item with the specified subtype.
  *
- * This method acts like a constructor, except that it can return NULL in several cases:
+ * This method acts like a constructor, except that it can return nullptr in several cases:
  * - the treasure is saved and the player already has it,
  * or:
  * - the treasure is empty,
@@ -98,10 +98,10 @@ EntityType Pickable::get_type() const {
  * \param falling_height to make the item fall when it appears
  * \param force_persistent true to make the item stay forever (otherwise, the properties of the item
  * decide if it disappears after some time)
- * \return the pickable item created, or NULL
+ * \return the pickable item created, or nullptr
  */
 Pickable* Pickable::create(
-    Game& game,
+    Game& /* game */,
     const std::string& name,
     Layer layer,
     int x,
@@ -114,7 +114,7 @@ Pickable* Pickable::create(
 
   // Don't create anything if there is no treasure to give.
   if (treasure.is_found() || treasure.is_empty()) {
-    return NULL;
+    return nullptr;
   }
 
   Pickable* pickable = new Pickable(name, layer, x, y, treasure);
@@ -161,7 +161,7 @@ void Pickable::initialize_sprites() {
   if (!has_shadow) {
     // No shadow or no such shadow animation.
     delete shadow_sprite;
-    shadow_sprite = NULL;
+    shadow_sprite = nullptr;
   }
   else {
     shadow_sprite->set_current_animation(animation);
@@ -255,7 +255,7 @@ const Treasure& Pickable::get_treasure() {
 
 /**
  * \brief Returns the entity (if any) followed by this pickable item.
- * \return the entity followed or NULL
+ * \return the entity followed or nullptr
  */
 MapEntity* Pickable::get_entity_followed() {
   return entity_followed;
@@ -269,12 +269,12 @@ MapEntity* Pickable::get_entity_followed() {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   if (entity_overlapping.is_hero()) {
     try_give_item_to_player();
   }
-  else if (entity_followed == NULL) {
+  else if (entity_followed == nullptr) {
 
     if (entity_overlapping.get_type() == ENTITY_BOOMERANG) {
       Boomerang& boomerang = static_cast<Boomerang&>(entity_overlapping);
@@ -291,7 +291,7 @@ void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode col
       entity_followed = &hookshot;
     }
 
-    if (entity_followed != NULL) {
+    if (entity_followed != nullptr) {
       clear_movement();
       set_movement(new FollowMovement(entity_followed, 0, 0, true));
       falling_height = FALLING_NONE;
@@ -311,7 +311,7 @@ void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode col
  * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
 void Pickable::notify_collision(MapEntity& other_entity, Sprite& other_sprite,
-    Sprite& this_sprite) {
+    Sprite& /* this_sprite */) {
 
   // taking the item with the sword
   if (other_entity.is_hero()
@@ -370,7 +370,7 @@ void Pickable::set_blinking(bool blinking) {
 
   get_sprite().set_blinking(blink_delay);
 
-  if (shadow_sprite != NULL) {
+  if (shadow_sprite != nullptr) {
     shadow_sprite->set_blinking(blink_delay);
   }
 }
@@ -387,7 +387,7 @@ void Pickable::set_suspended(bool suspended) {
 
   Detector::set_suspended(suspended); // suspend the animation and the movement
 
-  if (shadow_sprite != NULL) {
+  if (shadow_sprite != nullptr) {
     shadow_sprite->set_suspended(suspended);
   }
 
@@ -425,7 +425,7 @@ void Pickable::update() {
   Detector::update();
 
   // update the shadow
-  if (shadow_sprite != NULL) {
+  if (shadow_sprite != nullptr) {
     shadow_sprite->update();
   }
 
@@ -434,7 +434,7 @@ void Pickable::update() {
     shadow_xy.set_y(get_y());
   }
 
-  if (entity_followed != NULL && entity_followed->is_being_removed()) {
+  if (entity_followed != nullptr && entity_followed->is_being_removed()) {
 
     if (entity_followed->get_type() == ENTITY_BOOMERANG ||
         entity_followed->get_type() == ENTITY_HOOKSHOT) {
@@ -444,7 +444,7 @@ void Pickable::update() {
         try_give_item_to_player();
       }
     }
-    entity_followed = NULL;
+    entity_followed = nullptr;
   }
 
   if (!is_suspended()) {
@@ -461,7 +461,7 @@ void Pickable::update() {
       // make the item blink and then disappear
       if (will_disappear) {
 
-        if (now >= blink_date && !get_sprite().is_blinking() && entity_followed == NULL) {
+        if (now >= blink_date && !get_sprite().is_blinking() && entity_followed == nullptr) {
           set_blinking(true);
         }
 
@@ -486,7 +486,7 @@ void Pickable::draw_on_map() {
   }
 
   // draw the shadow
-  if (shadow_sprite != NULL) {
+  if (shadow_sprite != nullptr) {
     get_map().draw_sprite(*shadow_sprite, shadow_xy.get_x(), shadow_xy.get_y());
   }
 

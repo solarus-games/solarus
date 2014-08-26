@@ -160,7 +160,7 @@ bool Stream::is_obstacle_for(MapEntity& other) {
 /**
  * \copydoc Detector::notify_collision
  */
-void Stream::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Stream::notify_collision(MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   const Rectangle& xy_move = direction_to_xy_move(get_direction());
   entity_overlapping.notify_collision_with_stream(*this, xy_move.get_x(), xy_move.get_y());

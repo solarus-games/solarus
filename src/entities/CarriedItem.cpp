@@ -76,7 +76,7 @@ CarriedItem::CarriedItem(
   break_one_layer_above(false),
   destruction_sound_id(destruction_sound_id),
   damage_on_enemies(damage_on_enemies),
-  shadow_sprite(NULL),
+  shadow_sprite(nullptr),
   throwing_direction(0),
   next_down_date(0),
   item_height(0),
@@ -465,7 +465,7 @@ void CarriedItem::notify_collision_with_enemy(Enemy &enemy) {
   if (is_throwing
       && !can_explode()
       && get_damage_on_enemies() > 0) {
-    enemy.try_hurt(ATTACK_THROWN_ITEM, *this, NULL);
+    enemy.try_hurt(ATTACK_THROWN_ITEM, *this, nullptr);
   }
 }
 
@@ -473,11 +473,11 @@ void CarriedItem::notify_collision_with_enemy(Enemy &enemy) {
  * \copydoc MapEntity::notify_attacked_enemy
  */
 void CarriedItem::notify_attacked_enemy(
-    EnemyAttack attack,
-    Enemy& victim,
-        const Sprite* victim_sprite,
+    EnemyAttack /* attack */,
+    Enemy& /* victim */,
+    const Sprite* /* victim_sprite */,
     EnemyReaction::Reaction& result,
-    bool killed) {
+    bool /* killed */) {
 
   if (result.type != EnemyReaction::IGNORED) {
     break_item();
@@ -489,14 +489,14 @@ void CarriedItem::notify_attacked_enemy(
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool CarriedItem::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool CarriedItem::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) {
   return false;
 }
 
 /**
  * \copydoc MapEntity::is_stream_obstacle
  */
-bool CarriedItem::is_stream_obstacle(Stream& stream) {
+bool CarriedItem::is_stream_obstacle(Stream& /* stream */) {
   return false;
 }
 
@@ -505,7 +505,7 @@ bool CarriedItem::is_stream_obstacle(Stream& stream) {
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool CarriedItem::is_stairs_obstacle(Stairs& stairs) {
+bool CarriedItem::is_stairs_obstacle(Stairs& /* stairs */) {
   return false;
 }
 
@@ -563,7 +563,7 @@ bool CarriedItem::is_ladder_obstacle() const {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool CarriedItem::is_switch_obstacle(Switch& sw) {
+bool CarriedItem::is_switch_obstacle(Switch& /* sw */) {
   return !is_being_thrown();
 }
 
@@ -572,8 +572,8 @@ bool CarriedItem::is_switch_obstacle(Switch& sw) {
  * \param raised_block a crystal block raised
  * \return false
  */
-bool CarriedItem::is_raised_block_obstacle(CrystalBlock& raised_block) {
-  // the thrown items can traverse the crystal blocks
+bool CarriedItem::is_raised_block_obstacle(CrystalBlock& /* raised_block */) {
+  // thrown items can traverse crystal blocks
   return false;
 }
 
@@ -582,7 +582,7 @@ bool CarriedItem::is_raised_block_obstacle(CrystalBlock& raised_block) {
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool CarriedItem::is_crystal_obstacle(Crystal& crystal) {
+bool CarriedItem::is_crystal_obstacle(Crystal& /* crystal */) {
   return !is_being_thrown();
 }
 
@@ -598,7 +598,7 @@ bool CarriedItem::is_npc_obstacle(Npc& npc) {
 /**
  * \copydoc MapEntity::is_jumper_obstacle
  */
-bool CarriedItem::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) {
+bool CarriedItem::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candidate_position */) {
   return false;
 }
 
@@ -607,7 +607,7 @@ bool CarriedItem::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_
  * \param sensor a sensor
  * \return true if this sensor is currently an obstacle for this entity.
  */
-bool CarriedItem::is_sensor_obstacle(Sensor& sensor) {
+bool CarriedItem::is_sensor_obstacle(Sensor& /* sensor */) {
   return false;
 }
 
@@ -616,7 +616,7 @@ bool CarriedItem::is_sensor_obstacle(Sensor& sensor) {
  * \param enemy an enemy
  * \return true if this enemy is considered as an obstacle for this entity.
  */
-bool CarriedItem::is_enemy_obstacle(Enemy& enemy) {
+bool CarriedItem::is_enemy_obstacle(Enemy& /* enemy */) {
   // if this item explodes when reaching an obstacle, then we consider enemies as obstacles
   return can_explode();
 }
@@ -642,7 +642,7 @@ void CarriedItem::notify_collision_with_switch(Switch& sw, CollisionMode collisi
  * \param crystal the crystal
  * \param collision_mode the collision mode that detected the event
  */
-void CarriedItem::notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode) {
+void CarriedItem::notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_OVERLAPPING
       && is_being_thrown()
@@ -658,7 +658,7 @@ void CarriedItem::notify_collision_with_crystal(Crystal &crystal, CollisionMode 
  * \param stairs the stairs entity
  * \param collision_mode the collision mode that detected the event
  */
-void CarriedItem::notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode) {
+void CarriedItem::notify_collision_with_stairs(Stairs& stairs, CollisionMode /* collision_mode */) {
 
   if (is_throwing
       && !is_breaking

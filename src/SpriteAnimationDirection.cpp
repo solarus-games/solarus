@@ -41,9 +41,8 @@ SpriteAnimationDirection::SpriteAnimationDirection(
  */
 SpriteAnimationDirection::~SpriteAnimationDirection() {
 
-  std::vector<PixelBits*>::iterator it;
-  for (it = pixel_bits.begin(); it != pixel_bits.end(); ++it) {
-    delete *it;
+  for (PixelBits* frame_pixel_bits: pixel_bits) {
+    delete frame_pixel_bits;
   }
 }
 
@@ -126,9 +125,8 @@ void SpriteAnimationDirection::enable_pixel_collisions(Surface* src_image) {
  */
 void SpriteAnimationDirection::disable_pixel_collisions() {
 
-  std::vector<PixelBits*>::iterator it;
-  for (it = pixel_bits.begin(); it != pixel_bits.end(); ++it) {
-    delete *it;
+  for (PixelBits* frame_pixel_bits: pixel_bits) {
+    delete frame_pixel_bits;
   }
   pixel_bits.clear();
 }

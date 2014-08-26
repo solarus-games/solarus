@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -286,6 +286,10 @@ class MapEntity: public ExportableToLua {
         int height
     );
 
+    // No copy constructor or assignment operator.
+    MapEntity(const MapEntity& other) = delete;
+    MapEntity& operator=(const MapEntity& other) = delete;
+
     uint32_t get_when_suspended() const;
 
     void update_ground_observers();
@@ -304,16 +308,12 @@ class MapEntity: public ExportableToLua {
 
   private:
 
-    // No copy constructor or assignment operator.
-    MapEntity(const MapEntity& other);
-    MapEntity& operator=(const MapEntity& other);
-
     void finish_initialization();
     void clear_old_movements();
     void clear_old_sprites();
 
     MainLoop* main_loop;                        /**< The Solarus main loop. */
-    Map* map;                                   /**< The map where this entity is, or NULL
+    Map* map;                                   /**< The map where this entity is, or nullptr
                                                  * (automatically set by class MapEntities after adding the entity to the map) */
 
     Layer layer;                                /**< Layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
@@ -350,7 +350,7 @@ class MapEntity: public ExportableToLua {
     bool visible;                               /**< indicates that this entity's sprites are currently displayed */
     bool drawn_in_y_order;                      /**< Whether this entity is drawn in Y order or in Z order. */
     Movement* movement;                         /**< movement of the entity, not used for all kinds of entities;
-                                                 * NULL indicates that the entity has no movement */
+                                                 * nullptr indicates that the entity has no movement */
     std::vector<Movement*> old_movements;       /**< old movements to destroy as soon as possible */
     bool movement_events_enabled;               /**< Whether entity:on_position_changed() and friends should be called. */
     Detector* facing_entity;                    /**< The detector in front of this entity if any. */

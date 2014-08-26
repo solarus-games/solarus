@@ -83,15 +83,14 @@ void TextSurface::load_fonts() {
  */
 void TextSurface::quit() {
 
-  std::map<std::string, FontData>::iterator it;
-  for (it = fonts.begin(); it != fonts.end(); it++) {
+  for (auto it = fonts.begin(); it != fonts.end(); ++it) {
     std::string font_id = it->first;
     FontData* font = &it->second;
 
-    if (font->bitmap != NULL) {
+    if (font->bitmap != nullptr) {
       // It's a bitmap font.
       RefCountable::unref(font->bitmap);
-      font->bitmap = NULL;
+      font->bitmap = nullptr;
     }
     else {
       // It's a normal font.
@@ -145,10 +144,10 @@ int TextSurface::l_font(lua_State* l) {
     // It's a normal font.
     size_t size;
     FileTools::data_file_open_buffer(file_name, &fonts[font_id].buffer, &size);
-    fonts[font_id].bitmap = NULL;
+    fonts[font_id].bitmap = nullptr;
     fonts[font_id].rw = SDL_RWFromMem(fonts[font_id].buffer, int(size));
     fonts[font_id].internal_font = TTF_OpenFontRW(fonts[font_id].rw, 0, font_size);
-    Debug::check_assertion(fonts[font_id].internal_font != NULL,
+    Debug::check_assertion(fonts[font_id].internal_font != nullptr,
         std::string("Cannot load font from file '") + file_name
         + "': " + TTF_GetError()
     );
@@ -176,7 +175,7 @@ TextSurface::TextSurface(int x, int y):
   horizontal_alignment(ALIGN_LEFT),
   vertical_alignment(ALIGN_MIDDLE),
   rendering_mode(TEXT_SOLID),
-  surface(NULL) {
+  surface(nullptr) {
 
   text = "";
   set_text_color(Color::get_white());
@@ -200,7 +199,7 @@ TextSurface::TextSurface(int x, int y,
   horizontal_alignment(horizontal_alignment),
   vertical_alignment(vertical_alignment),
   rendering_mode(TEXT_SOLID),
-  surface(NULL) {
+  surface(nullptr) {
 
   text = "";
   set_text_color(Color::get_white());
@@ -406,7 +405,7 @@ bool TextSurface::is_empty() const {
 
 /**
  * \brief Returns the text currently displayed.
- * \return the text currently displayed, or NULL if there is no text
+ * \return the text currently displayed, or nullptr if there is no text
  */
 const std::string& TextSurface::get_text() const {
   return text;
@@ -417,7 +416,7 @@ const std::string& TextSurface::get_text() const {
  *
  * If the specified string is the same than the current text, nothing is done.
  *
- * \param text the text to display (cannot be NULL)
+ * \param text the text to display (cannot be nullptr)
  */
 void TextSurface::set_text(const std::string& text) {
 
@@ -446,7 +445,7 @@ void TextSurface::add_char(char c) {
  */
 int TextSurface::get_width() const {
 
-  if (surface == NULL) {
+  if (surface == nullptr) {
     return 0;
   }
 
@@ -459,7 +458,7 @@ int TextSurface::get_width() const {
  */
 int TextSurface::get_height() const {
 
-  if (surface == NULL) {
+  if (surface == nullptr) {
     return 0;
   }
 
@@ -490,7 +489,7 @@ void TextSurface::rebuild() {
   }
 
   RefCountable::unref(surface);
-  surface = NULL;
+  surface = nullptr;
 
   if (is_empty()) {
     // Empty string or only whitespaces: no surface to create.
@@ -603,7 +602,7 @@ void TextSurface::rebuild_ttf() {
 
   // create the text surface
 
-  SDL_Surface* internal_surface = NULL;
+  SDL_Surface* internal_surface = nullptr;
   switch (rendering_mode) {
 
   case TEXT_SOLID:
@@ -615,7 +614,7 @@ void TextSurface::rebuild_ttf() {
     break;
   }
 
-  Debug::check_assertion(internal_surface != NULL,
+  Debug::check_assertion(internal_surface != nullptr,
       std::string("Cannot create the text surface for string '") + text + "': "
       + SDL_GetError()
   );
@@ -637,7 +636,7 @@ void TextSurface::rebuild_ttf() {
 void TextSurface::raw_draw(Surface& dst_surface,
     const Rectangle& dst_position) {
 
-  if (surface != NULL) {
+  if (surface != nullptr) {
 
     Rectangle dst_position2(text_position);
     dst_position2.add_xy(dst_position);
@@ -654,7 +653,7 @@ void TextSurface::raw_draw(Surface& dst_surface,
 void TextSurface::raw_draw_region(const Rectangle& region,
     Surface& dst_surface, const Rectangle& dst_position) {
 
-  if (surface != NULL) {
+  if (surface != nullptr) {
 
     Rectangle dst_position2(text_position);
     dst_position2.add_xy(dst_position);

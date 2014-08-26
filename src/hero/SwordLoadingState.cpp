@@ -121,7 +121,7 @@ void Hero::SwordLoadingState::notify_obstacle_reached() {
 
   if (hero.is_facing_point_on_obstacle()     // he is really facing an obstacle
       && get_wanted_movement_direction8() == get_sprites().get_animation_direction8()   // he is trying to move towards the obstacle
-      && (facing_entity == NULL || !facing_entity->is_sword_ignored())) {               // the obstacle allows him to tap with his sword
+      && (facing_entity == nullptr || !facing_entity->is_sword_ignored())) {               // the obstacle allows him to tap with his sword
 
     hero.set_state(new SwordTappingState(hero));
   }
@@ -175,7 +175,7 @@ bool Hero::SwordLoadingState::can_take_stairs() const {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::SwordLoadingState::can_pick_treasure(EquipmentItem& item) const {
+bool Hero::SwordLoadingState::can_pick_treasure(EquipmentItem& /* item */) const {
   return true;
 }
 

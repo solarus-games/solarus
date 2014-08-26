@@ -68,7 +68,7 @@ Arrow::Arrow(const Hero& hero):
 
   disappear_date = System::now() + 10000;
   stop_now = false;
-  entity_reached = NULL;
+  entity_reached = nullptr;
 }
 
 /**
@@ -103,14 +103,14 @@ bool Arrow::can_be_obstacle() const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Arrow::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Arrow::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) {
   return false;
 }
 
 /**
  * \copydoc MapEntity::is_stream_obstacle
  */
-bool Arrow::is_stream_obstacle(Stream& stream) {
+bool Arrow::is_stream_obstacle(Stream& /* stream */) {
   return false;
 }
 
@@ -177,7 +177,7 @@ bool Arrow::is_ladder_obstacle() const {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool Arrow::is_switch_obstacle(Switch& sw) {
+bool Arrow::is_switch_obstacle(Switch& /* sw */) {
   return false;
 }
 
@@ -186,7 +186,7 @@ bool Arrow::is_switch_obstacle(Switch& sw) {
  * \param raised_block a crystal block raised
  * \return false
  */
-bool Arrow::is_raised_block_obstacle(CrystalBlock& raised_block) {
+bool Arrow::is_raised_block_obstacle(CrystalBlock& /* raised_block */) {
   // arrows can traverse the crystal blocks
   return false;
 }
@@ -196,7 +196,7 @@ bool Arrow::is_raised_block_obstacle(CrystalBlock& raised_block) {
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool Arrow::is_crystal_obstacle(Crystal& crystal) {
+bool Arrow::is_crystal_obstacle(Crystal& /* crystal */) {
   return false;
 }
 
@@ -212,7 +212,7 @@ bool Arrow::is_npc_obstacle(Npc& npc) {
 /**
  * \copydoc MapEntity::is_jumper_obstacle
  */
-bool Arrow::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) {
+bool Arrow::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candidate_position */) {
   return false;
 }
 
@@ -234,14 +234,14 @@ void Arrow::update() {
     clear_movement();
     stop_now = false;
 
-    if (entity_reached != NULL) {
+    if (entity_reached != nullptr) {
       // the arrow just hit an entity (typically an enemy) and this entity may have a movement
       Rectangle dxy(get_x() - entity_reached->get_x(), get_y() - entity_reached->get_y());
       set_movement(new FollowMovement(entity_reached, dxy.get_x(), dxy.get_y(), true));
     }
   }
 
-  if (entity_reached != NULL) {
+  if (entity_reached != nullptr) {
 
     // see if the entity reached is still valid
     if (is_stopped()) {
@@ -262,7 +262,7 @@ void Arrow::update() {
 
   if (get_sprite().get_current_animation() != "reached_obstacle") {
 
-    if (entity_reached != NULL) {
+    if (entity_reached != nullptr) {
       // the arrow was just attached to an entity
       reached_obstacle = true;
     }
@@ -285,7 +285,7 @@ void Arrow::update() {
     get_sprite().set_current_animation("reached_obstacle");
     Sound::play("arrow_hit");
 
-    if (entity_reached == NULL) {
+    if (entity_reached == nullptr) {
       clear_movement();
     }
     check_collision_with_detectors();
@@ -323,7 +323,7 @@ void Arrow::stop() {
  * \return true if the arrow is stopped
  */
 bool Arrow::is_stopped() const {
-  return get_movement() == NULL || get_movement()->is_finished();
+  return get_movement() == nullptr || get_movement()->is_finished();
 }
 
 /**
@@ -331,7 +331,7 @@ bool Arrow::is_stopped() const {
  * \return true if the arrow was shot and has not reached a target yet
  */
 bool Arrow::is_flying() const {
-  return !is_stopped() && entity_reached == NULL;
+  return !is_stopped() && entity_reached == nullptr;
 }
 
 /**
@@ -340,7 +340,7 @@ bool Arrow::is_flying() const {
  */
 void Arrow::attach_to(MapEntity& entity_reached) {
 
-  Debug::check_assertion(this->entity_reached == NULL,
+  Debug::check_assertion(this->entity_reached == nullptr,
       "This arrow is already attached to an entity");
 
   this->entity_reached = &entity_reached;
@@ -352,7 +352,7 @@ void Arrow::attach_to(MapEntity& entity_reached) {
  * \param sw the switch
  * \param collision_mode the collision mode that detected the event
  */
-void Arrow::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
+void Arrow::notify_collision_with_switch(Switch& sw, CollisionMode /* collision_mode */) {
 
   if (sw.is_arrow_target() && is_stopped()) {
     sw.try_activate(*this);
@@ -383,7 +383,7 @@ void Arrow::notify_collision_with_crystal(Crystal& crystal, CollisionMode collis
  * \param collision_mode the collision mode that detected the event
  */
 void Arrow::notify_collision_with_destructible(
-    Destructible& destructible, CollisionMode collision_mode) {
+    Destructible& destructible, CollisionMode /* collision_mode */) {
 
   if (destructible.is_obstacle_for(*this) && is_flying()) {
 
@@ -400,11 +400,11 @@ void Arrow::notify_collision_with_destructible(
 /**
  * \brief This function is called when an enemy's sprite collides with a sprite of this entity.
  * \param enemy the enemy
- * \param enemy_sprite the enemy's sprite that overlaps the hero
+ * \param enemy_sprite the enemy's sprite that overlaps this entity
  * \param this_sprite the arrow sprite
  */
 void Arrow::notify_collision_with_enemy(
-    Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) {
+    Enemy& enemy, Sprite& enemy_sprite, Sprite& /* this_sprite */) {
 
   if (!overlaps(hero) && is_flying()) {
     enemy.try_hurt(ATTACK_ARROW, *this, &enemy_sprite);
@@ -415,9 +415,9 @@ void Arrow::notify_collision_with_enemy(
  * \copydoc MapEntity::notify_attacked_enemy
  */
 void Arrow::notify_attacked_enemy(
-    EnemyAttack attack,
+    EnemyAttack /* attack */,
     Enemy& victim,
-    const Sprite* victim_sprite,
+    const Sprite* /* victim_sprite */,
     EnemyReaction::Reaction& result,
     bool killed) {
 
@@ -441,7 +441,7 @@ void Arrow::notify_attacked_enemy(
  */
 bool Arrow::has_reached_map_border() const {
 
-  if (get_sprite().get_current_animation() != "flying" || get_movement() == NULL) {
+  if (get_sprite().get_current_animation() != "flying" || get_movement() == nullptr) {
     return false;
   }
 

@@ -32,7 +32,7 @@ namespace solarus {
  * \param hero The hero controlled by this state.
  * \param source_xy Coordinates of the thing (usually an enemy) that hurts
  * the hero, used to compute the trajectory of the hero.
- * If NULL, the hero won't move.
+ * If nullptr, the hero won't move.
  * \param damage Number of life poitns to remove
  * (this number may be reduced by the tunic or by hero:on_taking_damage()).
  */
@@ -41,7 +41,7 @@ Hero::HurtState::HurtState(
     const Rectangle* source_xy,
     int damage):
   State(hero, "hurt"),
-  has_source(source_xy != NULL),
+  has_source(source_xy != nullptr),
   source_xy(has_source ? *source_xy : Rectangle()),
   damage(damage),
   end_hurt_date(0) {
@@ -118,7 +118,7 @@ void Hero::HurtState::update() {
   State::update();
 
   Hero& hero = get_hero();
-  if ((hero.get_movement() != NULL && hero.get_movement()->is_finished())
+  if ((hero.get_movement() != nullptr && hero.get_movement()->is_finished())
       || System::now() >= end_hurt_date) {
     // The movement may be finished, or the end date may be reached
     // when there is an obstacle or when there is no movement at all.
@@ -164,14 +164,14 @@ bool Hero::HurtState::is_touching_ground() const {
  * \return true if the teletransporter is an obstacle in this state
  */
 bool Hero::HurtState::is_teletransporter_obstacle(
-    const Teletransporter& teletransporter) const {
+    const Teletransporter& /* teletransporter */) const {
   return true;
 }
 
 /**
  * \copydoc Hero::State::is_stream_obstacle
  */
-bool Hero::HurtState::is_stream_obstacle(const Stream& stream) const {
+bool Hero::HurtState::is_stream_obstacle(const Stream& /* stream */) const {
   return true;
 }
 
@@ -180,24 +180,24 @@ bool Hero::HurtState::is_stream_obstacle(const Stream& stream) const {
  * \param sensor a sensor
  * \return true if the sensor is an obstacle in this state
  */
-bool Hero::HurtState::is_sensor_obstacle(const Sensor& sensor) const {
+bool Hero::HurtState::is_sensor_obstacle(const Sensor& /* sensor */) const {
   return true;
 }
 
 /**
  * \copydoc Hero::State::is_separator_obstacle
  */
-bool Hero::HurtState::is_separator_obstacle(const Separator& separator) const {
+bool Hero::HurtState::is_separator_obstacle(const Separator& /* separator */) const {
   return true;
 }
 
 /**
  * \brief Returns whether the hero can be hurt in this state.
  * \param attacker an attacker that is trying to hurt the hero
- * (or NULL if the source of the attack is not an enemy)
+ * (or nullptr if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::HurtState::can_be_hurt(MapEntity* attacker) const {
+bool Hero::HurtState::can_be_hurt(MapEntity* /* attacker */) const {
   return false;
 }
 

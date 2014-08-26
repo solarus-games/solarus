@@ -63,7 +63,7 @@ class Hero::StairsState: public Hero::State {
                                         * phase of the animations (0: not started, 1: initial animation,
                                         * 2: diagonal animation, 3: final animation) */
     uint32_t next_phase_date;          /**< date when the stairs phase changes */
-    CarriedItem* carried_item;         /**< an item carried by the hero while taking the stairs, or NULL */
+    CarriedItem* carried_item;         /**< an item carried by the hero while taking the stairs, or nullptr */
 
 };
 

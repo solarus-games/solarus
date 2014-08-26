@@ -37,7 +37,7 @@ SpriteAnimation::SpriteAnimation(
     uint32_t frame_delay,
     int loop_on_frame):
 
-  src_image(NULL),
+  src_image(nullptr),
   src_image_is_tileset(image_file_name == "tileset"),
   directions(directions),
   frame_delay(frame_delay),
@@ -50,7 +50,7 @@ SpriteAnimation::SpriteAnimation(
     // However, sprite animation sets are already cached so the gain might
     // not be significant.
     src_image = Surface::create(image_file_name);
-    Debug::check_assertion(src_image != NULL,
+    Debug::check_assertion(src_image != nullptr,
         std::string("Cannot load image '" + image_file_name + "'")
     );
     RefCountable::ref(src_image);
@@ -62,9 +62,8 @@ SpriteAnimation::SpriteAnimation(
  */
 SpriteAnimation::~SpriteAnimation() {
 
-  std::vector<SpriteAnimationDirection*>::iterator it;
-  for (it = directions.begin(); it != directions.end(); ++it) {
-    delete *it;
+  for (SpriteAnimationDirection* direction: directions) {
+    delete direction;
   }
 
   RefCountable::unref(src_image);
@@ -160,7 +159,7 @@ int SpriteAnimation::get_next_frame(
 void SpriteAnimation::draw(Surface& dst_surface,
     const Rectangle& dst_position, int current_direction, int current_frame) {
 
-  if (src_image != NULL) {
+  if (src_image != nullptr) {
     if (current_direction < 0
         || current_direction >= get_nb_directions()) {
       std::ostringstream oss;
@@ -179,7 +178,7 @@ void SpriteAnimation::draw(Surface& dst_surface,
  */
 void SpriteAnimation::enable_pixel_collisions() {
 
-  if (src_image != NULL) {
+  if (src_image != nullptr) {
     do_enable_pixel_collisions();
   }
   else {
@@ -193,9 +192,8 @@ void SpriteAnimation::enable_pixel_collisions() {
  */
 void SpriteAnimation::do_enable_pixel_collisions() {
 
-  std::vector<SpriteAnimationDirection*>::iterator it;
-  for (it = directions.begin(); it != directions.end(); ++it) {
-    (*it)->enable_pixel_collisions(src_image);
+  for (SpriteAnimationDirection* direction: directions) {
+    direction->enable_pixel_collisions(src_image);
   }
 }
 
@@ -204,9 +202,8 @@ void SpriteAnimation::do_enable_pixel_collisions() {
  */
 void SpriteAnimation::disable_pixel_collisions() {
 
-  std::vector<SpriteAnimationDirection*>::iterator it;
-  for (it = directions.begin(); it != directions.end(); ++it) {
-    (*it)->disable_pixel_collisions();
+  for (SpriteAnimationDirection* direction: directions) {
+    direction->disable_pixel_collisions();
   }
 }
 

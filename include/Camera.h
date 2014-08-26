@@ -68,12 +68,12 @@ class Camera {
     int separator_scrolling_dy;             /**< Y increment to the camera position when crossing a separator. */
     uint32_t separator_next_scrolling_date; /**< Next camera position change when crossing a separator. */
     int separator_scrolling_direction4;     /**< Direction when scrolling. */
-    Separator* separator_traversed;         /**< Separator currently being traversed or NULL. */
+    Separator* separator_traversed;         /**< Separator currently being traversed or nullptr. */
 
     // Camera being moved toward a point or back to the hero.
     bool restoring;               /**< \c true if the camera is moving back to the hero. */
     int speed;                    /**< Speed of the next movement. */
-    TargetMovement* movement;     /**< Movement of the camera, or NULL for no movement. */
+    TargetMovement* movement;     /**< Movement of the camera, or nullptr for no movement. */
 };
 
 /**

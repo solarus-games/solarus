@@ -49,7 +49,7 @@ void LuaContext::register_audio_module() {
       { "set_music_channel_volume", audio_api_set_music_channel_volume },
       { "get_music_tempo", audio_api_get_music_tempo },
       { "set_music_tempo", audio_api_set_music_tempo },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   register_functions(audio_module_name, functions);
 }
@@ -101,7 +101,7 @@ int LuaContext::audio_api_play_sound(lua_State* l) {
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
  */
-int LuaContext::audio_api_preload_sounds(lua_State* l) {
+int LuaContext::audio_api_preload_sounds(lua_State* /* l */) {
 
   Sound::load_all();
   return 0;
@@ -180,7 +180,7 @@ int LuaContext::audio_api_play_music(lua_State* l) {
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
  */
-int LuaContext::audio_api_stop_music(lua_State* l) {
+int LuaContext::audio_api_stop_music(lua_State* /* l */) {
 
   Music::stop_playing();
 

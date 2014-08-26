@@ -77,7 +77,7 @@ class Hookshot: public MapEntity {
 
     bool has_to_go_back;         /**< true if the hookshot is about to go back */
     bool going_back;             /**< indicates that the hookshot is going back towards the hero */
-    MapEntity* entity_reached;   /**< the entity the hookshot is attached to (or NULL) */
+    MapEntity* entity_reached;   /**< the entity the hookshot is attached to (or nullptr) */
 
     Sprite link_sprite;          /**< sprite of the links */
 

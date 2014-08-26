@@ -100,8 +100,7 @@ bool Wall::can_be_drawn() const {
  */
 bool Wall::is_obstacle_for(MapEntity& other) {
 
-  std::set<EntityType>::const_iterator it =
-      entity_types_stopped.find(other.get_type());
+  const auto it = entity_types_stopped.find(other.get_type());
   return it != entity_types_stopped.end();
 }
 

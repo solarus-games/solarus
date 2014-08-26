@@ -31,7 +31,7 @@ namespace solarus {
  */
 PathFindingMovement::PathFindingMovement(int speed):
   PathMovement("", speed, false, false, true),
-  target(NULL),
+  target(nullptr),
   next_recomputation_date(0) {
 
 }
@@ -61,9 +61,9 @@ void PathFindingMovement::update() {
 
   PathMovement::update();
 
-  if (target != NULL && target->is_being_removed()) {
+  if (target != nullptr && target->is_being_removed()) {
     RefCountable::unref(target);
-    target = NULL;
+    target = nullptr;
   }
 
 
@@ -74,7 +74,7 @@ void PathFindingMovement::update() {
   if (PathMovement::is_finished()) {
 
     // there was a collision or the path was made
-    if (target != NULL
+    if (target != nullptr
         && System::now() >= next_recomputation_date
         && get_entity()->is_aligned_to_grid()) {
       recompute_movement();
@@ -91,7 +91,7 @@ void PathFindingMovement::update() {
  */
 void PathFindingMovement::recompute_movement() {
 
-  if (target != NULL) {
+  if (target != nullptr) {
     PathFinding path_finding(get_entity()->get_map(), *get_entity(), *target);
     std::string path = path_finding.compute_path();
 

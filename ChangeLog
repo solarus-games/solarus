@@ -6,6 +6,7 @@ _______________________________
 Engine changes
 --------------
 
+* Solarus now compiles with C++11.
 * Fix a crash if an entity has a sprite without animation.
 
 Lua API changes

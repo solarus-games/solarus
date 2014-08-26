@@ -29,7 +29,7 @@ const uint32_t TargetMovement::recomputation_delay = 150;
 
 /**
  * \brief Creates a new target movement toward an entity or a fixed point.
- * \param target_entity The entity to target or NULL.
+ * \param target_entity The entity to target or nullptr.
  * \param x X of the target point, or X offset in the case of an entity.
  * \param y Y of the target point, or Y offset in the case of an entity.
  * \param moving_speed Speed of the movement when not stopped0
@@ -54,7 +54,7 @@ TargetMovement::TargetMovement(
   next_recomputation_date(System::now()),
   finished(false) {
 
-  if (this->target_entity != NULL) {
+  if (this->target_entity != nullptr) {
     RefCountable::ref(this->target_entity);
   }
 }
@@ -80,7 +80,7 @@ void TargetMovement::notify_object_controlled() {
 
 /**
  * \brief Changes the target of this movement.
- * \param target_entity The entity to target or NULL.
+ * \param target_entity The entity to target or nullptr.
  * \param x X of the target point, or X offset in the case of an entity.
  * \param y Y of the target point, or Y offset in the case of an entity.
  */
@@ -90,7 +90,7 @@ void TargetMovement::set_target(MapEntity* target_entity, int x, int y) {
 
   this->target_entity = target_entity;
 
-  if (this->target_entity != NULL) {
+  if (this->target_entity != nullptr) {
     RefCountable::ref(this->target_entity);
     this->entity_offset_x = x;
     this->entity_offset_y = y;
@@ -126,8 +126,8 @@ void TargetMovement::set_moving_speed(int moving_speed) {
  */
 void TargetMovement::update() {
 
-  if (target_entity != NULL && target_entity->is_being_removed()) {
-    set_target(NULL, target_x, target_y);
+  if (target_entity != nullptr && target_entity->is_being_removed()) {
+    set_target(nullptr, target_x, target_y);
   }
 
   if (System::now() >= next_recomputation_date) {
@@ -155,7 +155,7 @@ void TargetMovement::update() {
  */
 void TargetMovement::recompute_movement() {
 
-  if (target_entity != NULL) {
+  if (target_entity != nullptr) {
     // the target may be a moving entity
     target_x = target_entity->get_x() + entity_offset_x;
     target_y = target_entity->get_y() + entity_offset_y;

@@ -64,17 +64,17 @@ class Door: public Detector {
         const std::string& savegame_variable);
     ~Door();
 
-    EntityType get_type() const;
+    virtual EntityType get_type() const override;
 
-    bool is_obstacle_for(MapEntity& other);
-    void set_suspended(bool suspended);
-    void update();
-    void draw_on_map();
-    std::string get_sword_tapping_sound();
-    bool notify_action_command_pressed();
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
-    void notify_collision(MapEntity& entity, Sprite& this_sprite, Sprite& other_sprite);
-    void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
+    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual void set_suspended(bool suspended) override;
+    virtual void update() override;
+    virtual void draw_on_map() override;
+    virtual std::string get_sword_tapping_sound() override;
+    virtual bool notify_action_command_pressed() override;
+    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual void notify_collision(MapEntity& entity, Sprite& this_sprite, Sprite& other_sprite) override;
+    virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
 
     // Properties.
     bool is_saved() const;

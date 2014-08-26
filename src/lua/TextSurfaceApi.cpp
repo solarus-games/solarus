@@ -56,7 +56,7 @@ void LuaContext::register_text_surface_module() {
   // Functions of sol.surface.
   static const luaL_Reg functions[] = {
       { "create", text_surface_api_create },
-      { NULL, NULL },
+      { nullptr, nullptr },
   };
 
   // Methods of the text_surface type.
@@ -83,12 +83,12 @@ void LuaContext::register_text_surface_module() {
       { "set_xy", drawable_api_set_xy },
       { "get_movement", drawable_api_get_movement },
       { "stop_movement", drawable_api_stop_movement },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   static const luaL_Reg metamethods[] = {
       { "__gc", drawable_meta_gc },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_type(text_surface_module_name, functions, methods, metamethods);

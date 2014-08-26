@@ -26,8 +26,8 @@
 
 namespace solarus {
 
-ALCdevice* Sound::device = NULL;
-ALCcontext* Sound::context = NULL;
+ALCdevice* Sound::device = nullptr;
+ALCcontext* Sound::context = nullptr;
 bool Sound::initialized = false;
 bool Sound::sounds_preloaded = false;
 float Sound::volume = 1.0;
@@ -35,9 +35,9 @@ std::list<Sound*> Sound::current_sounds;
 std::map<std::string, Sound> Sound::all_sounds;
 ov_callbacks Sound::ogg_callbacks = {
     cb_read,
-    NULL,
-    NULL,
-    NULL
+    nullptr,
+    nullptr,
+    nullptr
 };
 
 /**
@@ -59,9 +59,7 @@ Sound::~Sound() {
   if (is_initialized() && buffer != AL_NONE) {
 
     // stop the sources where this buffer is attached
-    std::list<ALuint>::iterator it;
-    for (it = sources.begin(); it != sources.end(); it++) {
-      ALuint source = (*it);
+    for (ALuint source: sources) {
       alSourceStop(source);
       alSourcei(source, AL_BUFFER, 0);
       alDeleteSources(1, &source);
@@ -90,7 +88,7 @@ void Sound::initialize(const CommandLine& args) {
 
   // Initialize OpenAL.
 
-  device = alcOpenDevice(NULL);
+  device = alcOpenDevice(nullptr);
   if (!device) {
     Debug::error("Cannot open audio device");
     return;
@@ -136,11 +134,11 @@ void Sound::quit() {
 
     // uninitialize OpenAL
 
-    alcMakeContextCurrent(NULL);
+    alcMakeContextCurrent(nullptr);
     alcDestroyContext(context);
-    context = NULL;
+    context = nullptr;
     alcCloseDevice(device);
-    device = NULL;
+    device = nullptr;
 
     initialized = false;
   }
@@ -163,9 +161,8 @@ void Sound::load_all() {
 
     const std::vector<QuestResourceList::Element>& sound_elements =
         QuestResourceList::get_elements(QuestResourceList::RESOURCE_SOUND);
-    std::vector<QuestResourceList::Element>::const_iterator it;
-    for (it = sound_elements.begin(); it != sound_elements.end(); ++it) {
-      const std::string& sound_id = it->first;
+    for (const auto& kvp: sound_elements) {
+      const std::string& sound_id = kvp.first;
 
       all_sounds[sound_id] = Sound(sound_id);
       all_sounds[sound_id].load();
@@ -227,18 +224,14 @@ void Sound::set_volume(int volume) {
 void Sound::update() {
 
   // update the playing sounds
-  Sound* sound;
   std::list<Sound*> sounds_to_remove;
-  std::list<Sound*>::iterator it;
-  for (it = current_sounds.begin(); it != current_sounds.end(); it++) {
-    sound = *it;
+  for (Sound* sound: current_sounds) {
     if (!sound->update_playing()) {
       sounds_to_remove.push_back(sound);
     }
   }
 
-  for (it = sounds_to_remove.begin(); it != sounds_to_remove.end(); it++) {
-    sound = *it;
+  for (Sound* sound: sounds_to_remove) {
     current_sounds.remove(sound);
   }
 
@@ -253,7 +246,7 @@ void Sound::update() {
 bool Sound::update_playing() {
 
   // See if this sound is still playing.
-  std::list<ALuint>::iterator it = sources.begin();
+  const auto it = sources.begin();
   if (it == sources.end()) {
     return false;
   }
@@ -363,7 +356,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
   FileTools::data_file_open_buffer(file_name, &mem.data, &mem.size);
 
   OggVorbis_File file;
-  int error = ov_open_callbacks(&mem, &file, NULL, 0, ogg_callbacks);
+  int error = ov_open_callbacks(&mem, &file, nullptr, 0, ogg_callbacks);
 
   if (error) {
     std::ostringstream oss;
@@ -463,7 +456,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
  * \param datasource source of the data to read
  * \return number of bytes loaded
  */
-size_t Sound::cb_read(void* ptr, size_t size, size_t nb_bytes, void* datasource) {
+size_t Sound::cb_read(void* ptr, size_t /* size */, size_t nb_bytes, void* datasource) {
 
   SoundFromMemory* mem = (SoundFromMemory*) datasource;
 

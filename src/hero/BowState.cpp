@@ -65,7 +65,7 @@ void Hero::BowState::update() {
 /**
  * \copydoc Hero::State::can_avoid_stream
  */
-bool Hero::BowState::can_avoid_stream(const Stream& stream) const {
+bool Hero::BowState::can_avoid_stream(const Stream& /* stream */) const {
   return true;
 }
 

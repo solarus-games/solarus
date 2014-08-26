@@ -37,15 +37,15 @@ class Detector: public MapEntity {
 
     // destruction
     virtual ~Detector();
-    virtual void notify_being_removed();
+    virtual void notify_being_removed() override;
 
     // properties
-    bool has_layer_independent_collisions() const;
+    virtual bool has_layer_independent_collisions() const override;
     void set_layer_independent_collisions(bool independent);
 
     // position
-    virtual void notify_position_changed();
-    virtual void notify_layer_changed();
+    virtual void notify_position_changed() override;
+    virtual void notify_layer_changed() override;
 
     // general collision checking functions
     void check_collision(MapEntity& entity);
@@ -62,7 +62,7 @@ class Detector: public MapEntity {
     // construction
     Detector(int collision_mode, const std::string& name, Layer layer,
         int x, int y, int width, int height);
-    bool is_detector() const;
+    virtual bool is_detector() const override;
 
     // properties of the detector
     void set_collision_modes(int collision_modes);

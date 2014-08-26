@@ -35,7 +35,7 @@ void LuaContext::register_file_module() {
       { "exists", file_api_exists },
       { "remove", file_api_remove },
       { "mkdir", file_api_mkdir },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   register_functions(file_module_name, functions);
 

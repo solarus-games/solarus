@@ -71,13 +71,13 @@ void EnemyReaction::set_general_reaction(ReactionType reaction, int life_lost) {
 
 /**
  * \brief Makes the enemy reacts differently when the attack is received by a particular sprite.
- * \param sprite a sprite of the enemy (if NULL, this is equivalent to set_general_reaction)
+ * \param sprite a sprite of the enemy (if nullptr, this is equivalent to set_general_reaction)
  * \param reaction the reaction to make when this specific sprites receives an attack
  * \param life_lost number of life points to remove (only for reaction HURT)
  */
 void EnemyReaction::set_sprite_reaction(const Sprite* sprite, ReactionType reaction, int life_lost) {
 
-  if (sprite == NULL) {
+  if (sprite == nullptr) {
     set_general_reaction(reaction, life_lost);
   }
   else {
@@ -94,9 +94,8 @@ void EnemyReaction::set_sprite_reaction(const Sprite* sprite, ReactionType react
 const EnemyReaction::Reaction& EnemyReaction::get_reaction(
     const Sprite* sprite) const {
 
-  if (sprite != NULL) {
-    const std::map<const Sprite*, Reaction>::const_iterator it =
-        sprite_reactions.find(sprite);
+  if (sprite != nullptr) {
+    auto it = sprite_reactions.find(sprite);
     if (it != sprite_reactions.end()) {
       return it->second;
     }

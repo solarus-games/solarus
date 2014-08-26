@@ -195,7 +195,7 @@ class HeroSprites {
     Rectangle clipping_rectangle;           /**< when drawing the sprites onto a map, indicates an area of the map to be restricted to
                                              * (usually, the whole map is considered and this rectangle's values are all 0) */
 
-    CarriedItem* lifted_item;               /**< if not NULL, an item to display above the hero */
+    CarriedItem* lifted_item;               /**< if not nullptr, an item to display above the hero */
 
     int animation_callback_ref;             /**< Lua ref of a function to call when a custom animation ends. */
 };

@@ -333,7 +333,7 @@ void Destructible::notify_collision(
  * \param hero the hero
  * \param collision_mode the collision mode that detected the collision
  */
-void Destructible::notify_collision_with_hero(Hero& hero, CollisionMode collision_mode) {
+void Destructible::notify_collision_with_hero(Hero& hero, CollisionMode /* collision_mode */) {
 
   if (get_weight() != -1
       && !is_being_cut
@@ -362,7 +362,7 @@ void Destructible::notify_collision_with_hero(Hero& hero, CollisionMode collisio
  * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
 void Destructible::notify_collision(MapEntity& other_entity,
-    Sprite& other_sprite, Sprite& this_sprite) {
+    Sprite& other_sprite, Sprite& /* this_sprite */) {
 
   if (get_can_be_cut()
       && !is_being_cut

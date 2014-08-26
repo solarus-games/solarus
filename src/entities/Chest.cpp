@@ -333,7 +333,7 @@ void Chest::set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id) 
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool Chest::is_obstacle_for(MapEntity& other) {
+bool Chest::is_obstacle_for(MapEntity& /* other */) {
   return true;
 }
 
@@ -342,7 +342,7 @@ bool Chest::is_obstacle_for(MapEntity& other) {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Chest::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Chest::notify_collision(MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   if (!is_suspended()) {
     entity_overlapping.notify_collision_with_chest(*this);

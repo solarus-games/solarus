@@ -51,7 +51,7 @@ void NonAnimatedRegions::clear() {
 
   for (unsigned i = 0; i < optimized_tiles_surfaces.size(); ++i) {
     RefCountable::unref(optimized_tiles_surfaces[i]);
-    optimized_tiles_surfaces[i] = NULL;
+    optimized_tiles_surfaces[i] = nullptr;
   }
   optimized_tiles_surfaces.clear();
   are_squares_animated.clear();
@@ -60,15 +60,12 @@ void NonAnimatedRegions::clear() {
   Rectangle where(non_animated_tiles.get_grid_size());
   std::vector<Tile*> tiles;
   non_animated_tiles.get_elements(where, tiles);
-  std::vector<Tile*>::const_iterator it;
-  for (it = tiles.begin(); it != tiles.end(); ++it) {
-    Tile* tile = *it;
+  for (Tile* tile: tiles) {
     RefCountable::unref(tile);
   }
 
   // Destroy candidates tiles if the grid is not built yet.
-  for (it = this->tiles.begin(); it != this->tiles.end(); ++it) {
-    Tile* tile = *it;
+  for (Tile* tile: this->tiles) {
     RefCountable::unref(tile);
   }
   tiles.clear();
@@ -81,7 +78,7 @@ void NonAnimatedRegions::add_tile(Tile* tile) {
 
   Debug::check_assertion(optimized_tiles_surfaces.empty(),
       "Tile regions are already built");
-  Debug::check_assertion(tile != NULL, "Missing tile");
+  Debug::check_assertion(tile != nullptr, "Missing tile");
   Debug::check_assertion(tile->get_layer() == layer, "Wrong layer for add tile");
 
   tiles.push_back(tile);
@@ -164,7 +161,7 @@ void NonAnimatedRegions::notify_tileset_changed() {
 
   for (unsigned i = 0; i < non_animated_tiles.get_num_cells(); ++i) {
     RefCountable::unref(optimized_tiles_surfaces[i]);
-    optimized_tiles_surfaces[i] = NULL;
+    optimized_tiles_surfaces[i] = nullptr;
   }
   // Everything will be redrawn when necessary.
 }
@@ -235,7 +232,7 @@ void NonAnimatedRegions::draw_on_map() {
 
       // Make sure this cell is built.
       int cell_index = i * num_columns + j;
-      if (optimized_tiles_surfaces[cell_index] == NULL) {
+      if (optimized_tiles_surfaces[cell_index] == nullptr) {
         // Lazily build the cell.
         build_cell(cell_index);
       }
@@ -266,7 +263,7 @@ void NonAnimatedRegions::build_cell(int cell_index) {
       cell_index >= 0 && (size_t) cell_index < non_animated_tiles.get_num_cells(),
       "Wrong cell index"
   );
-  Debug::check_assertion(optimized_tiles_surfaces[cell_index] == NULL,
+  Debug::check_assertion(optimized_tiles_surfaces[cell_index] == nullptr,
       "This cell is already built"
   );
 
@@ -288,10 +285,8 @@ void NonAnimatedRegions::build_cell(int cell_index) {
 
   const std::vector<Tile*>& tiles_in_cell =
       non_animated_tiles.get_elements(cell_index);
-  std::vector<Tile*>::const_iterator it;
-  for (it = tiles_in_cell.begin(); it != tiles_in_cell.end(); ++it) {
-    Tile& tile = *(*it);
-    tile.draw(*cell_surface, cell_xy);
+  for (Tile* tile: tiles_in_cell) {
+    tile->draw(*cell_surface, cell_xy);
   }
 
   // Remember that non-animated tiles are drawn after animated ones.

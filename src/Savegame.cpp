@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -82,7 +82,7 @@ Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
   file_name(file_name),
   main_loop(main_loop),
   equipment(*this),
-  game(NULL) {
+  game(nullptr) {
 
   const std::string& quest_write_dir = FileTools::get_quest_write_dir();
   Debug::check_assertion(!quest_write_dir.empty(),
@@ -137,13 +137,13 @@ void Savegame::set_initial_values() {
  */
 void Savegame::set_default_keyboard_controls() {
 
-#if PANDORA
+#if defined(PANDORA)
   set_string(KEY_KEYBOARD_ACTION, InputEvent::get_keyboard_key_name(InputEvent::KEY_PAGE_DOWN));
   set_string(KEY_KEYBOARD_ATTACK, InputEvent::get_keyboard_key_name(InputEvent::KEY_HOME));
   set_string(KEY_KEYBOARD_ITEM_1, InputEvent::get_keyboard_key_name(InputEvent::KEY_PAGE_UP));
   set_string(KEY_KEYBOARD_ITEM_2, InputEvent::get_keyboard_key_name(InputEvent::KEY_END));
   set_string(KEY_KEYBOARD_PAUSE, InputEvent::get_keyboard_key_name(InputEvent::KEY_LEFT_ALT));
-#elif GCWZERO
+#elif defined(GCWZERO)
   set_string(KEY_KEYBOARD_ACTION, InputEvent::get_keyboard_key_name(InputEvent::KEY_LEFT_ALT));//B
   set_string(KEY_KEYBOARD_ATTACK, InputEvent::get_keyboard_key_name(InputEvent::KEY_SPACE));//Y
   set_string(KEY_KEYBOARD_ITEM_1, InputEvent::get_keyboard_key_name(InputEvent::KEY_LEFT_SHIFT));//X
@@ -273,11 +273,10 @@ int Savegame::l_newindex(lua_State* l) {
 void Savegame::save() {
 
   std::ostringstream oss;
-  std::map<std::string, SavedValue>::const_iterator it;
-  for (it = saved_values.begin(); it != saved_values.end(); ++it) {
-    const std::string& key = it->first;
+  for (const auto& kvp: saved_values) {
+    const std::string& key = kvp.first;
     oss << key << " = ";
-    const SavedValue& value = it->second;
+    const SavedValue& value = kvp.second;
     if (value.type == SavedValue::VALUE_BOOLEAN) {
       oss << (value.int_data ? "true" : "false");
     }
@@ -337,7 +336,7 @@ const Equipment& Savegame::get_equipment() const {
 
 /**
  * \brief If this savegame is currently running in a game, return that game.
- * \return A game or NULL.
+ * \return A game or nullptr.
  */
 Game* Savegame::get_game() {
   return game;
@@ -345,7 +344,7 @@ Game* Savegame::get_game() {
 
 /**
  * \brief Sets the game that is running this savegame.
- * \param game A game or NULL.
+ * \param game A game or nullptr.
  */
 void Savegame::set_game(Game* game) {
   this->game = game;
@@ -378,7 +377,7 @@ bool Savegame::is_string(const std::string& key) const {
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
-  const std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  const auto& it = saved_values.find(key);
   if (it != saved_values.end()) {
     const SavedValue& value = it->second;
     result = (value.type == SavedValue::VALUE_STRING);
@@ -396,7 +395,7 @@ const std::string& Savegame::get_string(const std::string& key) const {
   SOLARUS_ASSERT(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
-  const std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  const auto& it = saved_values.find(key);
   if (it != saved_values.end()) {
     const SavedValue& value = it->second;
     SOLARUS_ASSERT(value.type == SavedValue::VALUE_STRING,
@@ -433,7 +432,7 @@ bool Savegame::is_integer(const std::string& key) const {
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
-  const std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  const auto& it = saved_values.find(key);
   if (it != saved_values.end()) {
     const SavedValue& value = it->second;
     result = (value.type == SavedValue::VALUE_INTEGER);
@@ -452,7 +451,7 @@ int Savegame::get_integer(const std::string& key) const {
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   int result = 0;
-  const std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  const auto& it = saved_values.find(key);
   if (it != saved_values.end()) {
     const SavedValue& value = it->second;
     SOLARUS_ASSERT(value.type == SavedValue::VALUE_INTEGER,
@@ -487,7 +486,7 @@ bool Savegame::is_boolean(const std::string& key) const {
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
-  const std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  const auto& it = saved_values.find(key);
   if (it != saved_values.end()) {
     const SavedValue& value = it->second;
     result = (value.type == SavedValue::VALUE_BOOLEAN);
@@ -506,7 +505,7 @@ bool Savegame::get_boolean(const std::string& key) const {
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
-  const std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  const auto& it = saved_values.find(key);
   if (it != saved_values.end()) {
     const SavedValue& value = it->second;
     SOLARUS_ASSERT(value.type == SavedValue::VALUE_BOOLEAN,

@@ -81,7 +81,7 @@ bool Bomb::can_be_obstacle() const {
 /**
  * \copydoc MapEntity::is_stream_obstacle
  */
-bool Bomb::is_stream_obstacle(Stream& stream) {
+bool Bomb::is_stream_obstacle(Stream& /* stream */) {
   return false;
 }
 
@@ -90,7 +90,7 @@ bool Bomb::is_stream_obstacle(Stream& stream) {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Bomb::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Bomb::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) {
   return false;
 }
 
@@ -150,7 +150,7 @@ void Bomb::notify_collision(MapEntity& entity_overlapping, CollisionMode collisi
  * \param explosion the explosion
  * \param sprite_overlapping the sprite of the current entity that collides with the explosion
  */
-void Bomb::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) {
+void Bomb::notify_collision_with_explosion(Explosion& /* explosion */, Sprite& /* sprite_overlapping */) {
 
   if (!is_being_removed()) {
     explode();
@@ -160,9 +160,9 @@ void Bomb::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_
 /**
  * \copydoc MapEntity::notify_collision_with_stream
  */
-void Bomb::notify_collision_with_stream(Stream& stream, int dx, int dy) {
+void Bomb::notify_collision_with_stream(Stream& stream, int /* dx */, int /* dy */) {
 
-  if (get_movement() == NULL) {
+  if (get_movement() == nullptr) {
     // TODO use a StreamAction, since it now works with any entity and not only the hero.
 
     // Check that a significant part of the bomb is on the stream.
@@ -260,7 +260,7 @@ void Bomb::update() {
   }
 
   // destroy the movement once finished
-  if (get_movement() != NULL && get_movement()->is_finished()) {
+  if (get_movement() != nullptr && get_movement()->is_finished()) {
     clear_movement();
   }
 

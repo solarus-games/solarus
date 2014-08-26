@@ -118,7 +118,7 @@ bool Block::is_hole_obstacle() const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Block::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Block::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) {
   // necessary to push a block into a hole having a teletransporter
   return false;
 }
@@ -128,8 +128,8 @@ bool Block::is_teletransporter_obstacle(Teletransporter& teletransporter) {
  * \param hero the hero
  * \return true if the hero is an obstacle for this entity.
  */
-bool Block::is_hero_obstacle(Hero& hero) {
-  return get_movement() == NULL;
+bool Block::is_hero_obstacle(Hero& /* hero */) {
+  return get_movement() == nullptr;
 }
 
 /**
@@ -137,7 +137,7 @@ bool Block::is_hero_obstacle(Hero& hero) {
  * \param enemy an enemy
  * \return true if this enemy is currently considered as an obstacle by this entity.
  */
-bool Block::is_enemy_obstacle(Enemy& enemy) {
+bool Block::is_enemy_obstacle(Enemy& /* enemy */) {
   return true;
 }
 
@@ -146,7 +146,7 @@ bool Block::is_enemy_obstacle(Enemy& enemy) {
  * \param destructible a destructible item
  * \return true if the destructible item is currently an obstacle by this entity
  */
-bool Block::is_destructible_obstacle(Destructible& destructible) {
+bool Block::is_destructible_obstacle(Destructible& /* destructible */) {
   return true;
 }
 
@@ -166,7 +166,7 @@ void Block::notify_created() {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Block::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Block::notify_collision(MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   entity_overlapping.notify_collision_with_block(*this);
 }
@@ -176,7 +176,7 @@ void Block::notify_collision(MapEntity& entity_overlapping, CollisionMode collis
  * \param sw the switch
  * \param collision_mode the collision mode that detected the event
  */
-void Block::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
+void Block::notify_collision_with_switch(Switch& sw, CollisionMode /* collision_mode */) {
 
   sw.try_activate(*this);
 }
@@ -209,7 +209,7 @@ bool Block::start_movement_by_hero() {
     hero_direction = (hero_direction + 2) % 4;
   }
 
-  if (get_movement() != NULL                // the block is already moving
+  if (get_movement() != nullptr                // the block is already moving
       || maximum_moves == 0                 // the block cannot move anymore
       || System::now() < when_can_move      // the block cannot move for a while
       || (pulling && !can_be_pulled)        // the hero tries to pull a block that cannot be pulled
@@ -234,7 +234,7 @@ void Block::notify_position_changed() {
 
   // now we know that the block moves at least of 1 pixel:
   // we can play the sound
-  if (get_movement() != NULL && !sound_played) {
+  if (get_movement() != nullptr && !sound_played) {
     Sound::play("hero_pushes");
     sound_played = true;
   }
@@ -307,7 +307,7 @@ void Block::stop_movement_by_hero() {
 /**
  * \copydoc MapEntity::notify_moving_by
  */
-void Block::notify_moving_by(MapEntity& entity) {
+void Block::notify_moving_by(MapEntity& /* entity */) {
 
   get_lua_context().block_on_moving(*this);
 }
@@ -315,7 +315,7 @@ void Block::notify_moving_by(MapEntity& entity) {
 /**
  * \copydoc MapEntity::notify_moved_by
  */
-void Block::notify_moved_by(MapEntity& entity) {
+void Block::notify_moved_by(MapEntity& /* entity */) {
 
   get_lua_context().block_on_moved(*this);
 }
@@ -325,7 +325,7 @@ void Block::notify_moved_by(MapEntity& entity) {
  */
 void Block::reset() {
 
-  if (get_movement() != NULL) {
+  if (get_movement() != nullptr) {
     // the block was being pushed or pulled by the hero
     clear_movement();
     when_can_move = System::now() + moving_delay;

@@ -232,14 +232,14 @@ void Hero::RunningState::notify_jumper_activated(Jumper& jumper) {
       jumper.get_direction(),
       jumper.get_jump_length(),
       true,
-      true,
-      0);
+      true
+  );
 }
 
 /**
  * \brief Returns whether the hero can be hurt by an attacker in this state.
  * \param attacker an attacker that is trying to hurt the hero
- * (or NULL if the source of the attack is not an enemy)
+ * (or nullptr if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
 bool Hero::RunningState::can_be_hurt(MapEntity* attacker) const {
@@ -249,7 +249,7 @@ bool Hero::RunningState::can_be_hurt(MapEntity* attacker) const {
     return true;
   }
 
-  if (attacker != NULL && attacker->get_type() == ENTITY_ENEMY) {
+  if (attacker != nullptr && attacker->get_type() == ENTITY_ENEMY) {
     // TODO move get_can_hurt_hero_running to MapEntity.
     Enemy* enemy = static_cast<Enemy*>(attacker);
     return enemy->get_can_hurt_hero_running();
@@ -263,7 +263,7 @@ bool Hero::RunningState::can_be_hurt(MapEntity* attacker) const {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::RunningState::can_pick_treasure(EquipmentItem& item) const {
+bool Hero::RunningState::can_pick_treasure(EquipmentItem& /* item */) const {
   return true;
 }
 
@@ -333,7 +333,7 @@ bool Hero::RunningState::can_avoid_teletransporter() const {
 /**
  * \copydoc Hero::State::can_avoid_stream
  */
-bool Hero::RunningState::can_avoid_stream(const Stream& stream) const {
+bool Hero::RunningState::can_avoid_stream(const Stream& /* stream */) const {
   return is_bouncing();
 }
 
@@ -351,7 +351,7 @@ bool Hero::RunningState::can_persist_on_stream(const Stream& stream) const {
  * \param sensor a sensor
  * \return true if the sensor is an obstacle in this state
  */
-bool Hero::RunningState::is_sensor_obstacle(const Sensor& sensor) const {
+bool Hero::RunningState::is_sensor_obstacle(const Sensor& /* sensor */) const {
   return is_bouncing();
 }
 

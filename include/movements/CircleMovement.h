@@ -71,7 +71,7 @@ class CircleMovement: public Movement {
     void recompute_position();
 
     // center of the circle
-    MapEntity* center_entity;                 /**< the entity to make circles around (NULL if only a point is used) */
+    MapEntity* center_entity;                 /**< the entity to make circles around (nullptr if only a point is used) */
     Rectangle center_point;                         /**< absolute coordinates of the center if only a point is used,
                                                      * or coordinates relative to the center entity otherwise */
 

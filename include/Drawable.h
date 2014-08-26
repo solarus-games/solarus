@@ -114,9 +114,9 @@ class Drawable: public ExportableToLua {
 
     Rectangle xy;                 /**< Current position of this object
                                    * (result of movements). */
-    Movement* movement;           /**< A movement applied, or NULL (will be
+    Movement* movement;           /**< A movement applied, or nullptr (will be
                                    * deleted then if unused elsewhere). */
-    Transition* transition;       /**< A transition applied, or NULL
+    Transition* transition;       /**< A transition applied, or nullptr
                                    * (will be deleted then). */
     int transition_callback_ref;  /**< Lua registry ref of a function to call
                                    * when the transition finishes */

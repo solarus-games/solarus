@@ -83,7 +83,7 @@ void Hero::SpinAttackState::stop(const State* next_state) {
   State::stop(next_state);
 
   Hero& hero = get_hero();
-  if (hero.get_movement() != NULL) {
+  if (hero.get_movement() != nullptr) {
     // stop the movement of being pushed by an enemy after hitting him
     hero.clear_movement();
   }
@@ -101,7 +101,7 @@ void Hero::SpinAttackState::update() {
   }
 
   // check the movement if any
-  if (hero.get_movement() != NULL && hero.get_movement()->is_finished()) {
+  if (hero.get_movement() != nullptr && hero.get_movement()->is_finished()) {
     hero.clear_movement();
 
     if (!being_pushed) {
@@ -124,7 +124,7 @@ bool Hero::SpinAttackState::can_sword_hit_crystal() const {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::SpinAttackState::can_pick_treasure(EquipmentItem& item) const {
+bool Hero::SpinAttackState::can_pick_treasure(EquipmentItem& /* item */) const {
   return true;
 }
 
@@ -132,9 +132,9 @@ bool Hero::SpinAttackState::can_pick_treasure(EquipmentItem& item) const {
  * \brief Returns whether the hero can be hurt in this state.
  * \return true if the hero can be hurt in this state
  * \param attacker an attacker that is trying to hurt the hero
- * (or NULL if the source of the attack is not an enemy)
+ * (or nullptr if the source of the attack is not an enemy)
  */
-bool Hero::SpinAttackState::can_be_hurt(MapEntity* attacker) const {
+bool Hero::SpinAttackState::can_be_hurt(MapEntity* /* attacker */) const {
   return false;
 }
 
@@ -144,7 +144,7 @@ bool Hero::SpinAttackState::can_be_hurt(MapEntity* attacker) const {
  * \param detector the detector to check
  * \return true if the sword is cutting this detector
  */
-bool Hero::SpinAttackState::is_cutting_with_sword(Detector& detector) {
+bool Hero::SpinAttackState::is_cutting_with_sword(Detector& /* detector */) {
 
   // during a spin attack, any sprite collision can cut things
   return true;
@@ -214,18 +214,18 @@ bool Hero::SpinAttackState::is_prickle_obstacle() const {
  * \return true if the teletransporter is an obstacle in this state
  */
 bool Hero::SpinAttackState::is_teletransporter_obstacle(
-    const Teletransporter& teletransporter) const {
+    const Teletransporter& /* teletransporter */) const {
 
   // if the hero is pushed by an enemy or making a super spin attack,
   // don't go on a teletransporter
-  return get_hero().get_movement() != NULL;
+  return get_hero().get_movement() != nullptr;
 }
 
 /**
  * \copydoc Hero::State::is_separator_obstacle
  */
 bool Hero::SpinAttackState::is_separator_obstacle(
-    const Separator& separator) const {
+    const Separator& /* separator */) const {
   return true;
 }
 
@@ -253,21 +253,21 @@ void Hero::SpinAttackState::notify_attacked_enemy(
     Enemy& victim,
     const Sprite* victim_sprite,
     EnemyReaction::Reaction& result,
-    bool killed) {
+    bool /* killed */) {
 
   Hero& hero = get_hero();
   if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
 
     if (victim.get_push_hero_on_sword()) {
 
-      if (hero.get_movement() != NULL) {
+      if (hero.get_movement() != nullptr) {
         // interrupting a super spin attack: finish with a normal one
         hero.clear_movement();
         get_sprites().set_animation_spin_attack();
       }
 
       being_pushed = true;
-      double angle = victim.get_angle(hero, victim_sprite, NULL);
+      double angle = victim.get_angle(hero, victim_sprite, nullptr);
       StraightMovement* movement = new StraightMovement(false, true);
       movement->set_max_distance(24);
       movement->set_speed(120);

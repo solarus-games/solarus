@@ -35,7 +35,7 @@ void LuaContext::register_sprite_module() {
 
   static const luaL_Reg functions[] = {
       { "create", sprite_api_create },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   static const luaL_Reg methods[] = {
@@ -62,14 +62,14 @@ void LuaContext::register_sprite_module() {
       { "set_xy", drawable_api_set_xy },
       { "get_movement", drawable_api_get_movement },
       { "stop_movement", drawable_api_stop_movement },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   static const luaL_Reg metamethods[] = {
       { "__gc", drawable_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
       { "__index", userdata_meta_index_as_table },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   register_type(sprite_module_name, functions, methods, metamethods);
 }
@@ -385,7 +385,7 @@ int LuaContext::sprite_api_synchronize(lua_State *l) {
     sprite.set_synchronized_to(&reference_sprite);
   }
   else {
-    sprite.set_synchronized_to(NULL);
+    sprite.set_synchronized_to(nullptr);
   }
 
   return 0;

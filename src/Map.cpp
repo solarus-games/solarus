@@ -43,20 +43,20 @@ MapLoader Map::map_loader;
  * and the script file of the map. The data file must exist.
  */
 Map::Map(const std::string& id):
-  game(NULL),
+  game(nullptr),
   id(id),
   width8(0),
   height8(0),
-  tileset(NULL),
+  tileset(nullptr),
   floor(NO_FLOOR),
-  camera(NULL),
-  visible_surface(NULL),
-  background_surface(NULL),
-  foreground_surface(NULL),
+  camera(nullptr),
+  visible_surface(nullptr),
+  background_surface(nullptr),
+  foreground_surface(nullptr),
   loaded(false),
   started(false),
   destination_name(""),
-  entities(NULL),
+  entities(nullptr),
   suspended(false) {
 
 }
@@ -88,7 +88,7 @@ const std::string& Map::get_id() const {
  */
 Tileset& Map::get_tileset() {
 
-  SOLARUS_ASSERT(tileset != NULL,
+  SOLARUS_ASSERT(tileset != nullptr,
       std::string("Missing tileset in map '") + get_id() + "'"
   );
   return *tileset;
@@ -262,17 +262,17 @@ void Map::unload() {
 
   if (is_loaded()) {
     delete tileset;
-    tileset = NULL;
+    tileset = nullptr;
     RefCountable::unref(visible_surface);
-    visible_surface = NULL;
+    visible_surface = nullptr;
     RefCountable::unref(background_surface);
-    background_surface = NULL;
+    background_surface = nullptr;
     RefCountable::unref(foreground_surface);
-    foreground_surface = NULL;
+    foreground_surface = nullptr;
     delete entities;
-    entities = NULL;
+    entities = nullptr;
     delete camera;
-    camera = NULL;
+    camera = nullptr;
 
     loaded = false;
   }
@@ -382,31 +382,31 @@ const std::string& Map::get_destination_name() const {
  * set_destination().
  *
  * If the destination point was set to a special value
- * ("_same", "_side0", "_side1", "_side2" or "_side3"), returns NULL.
+ * ("_same", "_side0", "_side1", "_side2" or "_side3"), returns nullptr.
  *
  * If the destination name is empty, returns the default destination if any,
- * or NULL.
+ * or nullptr.
  *
  * Otherwise, if there is no destination entity with this name on the map,
- * prints an error message and returns the default destination if any or NULL.
+ * prints an error message and returns the default destination if any or nullptr.
  *
- * \return The destination point previously set, or NULL.
+ * \return The destination point previously set, or nullptr.
  */
 Destination* Map::get_destination() {
 
   if (destination_name == "_same"
       || destination_name.substr(0,5) == "_side") {
-    return NULL;
+    return nullptr;
   }
 
   Debug::check_assertion(is_loaded(), "This map is not loaded");
 
-  Destination* destination = NULL;
+  Destination* destination = nullptr;
   if (!destination_name.empty()) {
     // Use the destination whose name was specified.
     MapEntity* entity = get_entities().find_entity(destination_name);
 
-    if (entity == NULL || entity->get_type() != ENTITY_DESTINATION) {
+    if (entity == nullptr || entity->get_type() != ENTITY_DESTINATION) {
       Debug::error(
           std::string("Map '") + get_id() + "': No such destination: '"
           + destination_name + "'"
@@ -422,7 +422,7 @@ Destination* Map::get_destination() {
     }
   }
 
-  if (destination == NULL) {
+  if (destination == nullptr) {
     // No valid destination name was set: use the default one if any.
     destination = get_entities().get_default_destination();
   }
@@ -588,7 +588,7 @@ void Map::draw() {
  */
 void Map::build_background_surface() {
 
-  if (tileset != NULL) {
+  if (tileset != nullptr) {
     background_surface->clear();
     background_surface->fill_with_color(tileset->get_background_color());
   }
@@ -649,7 +649,7 @@ void Map::build_foreground_surface() {
  */
 void Map::draw_foreground() {
 
-  if (foreground_surface != NULL) {
+  if (foreground_surface != nullptr) {
     foreground_surface->draw(*visible_surface);
   }
 }
@@ -910,13 +910,9 @@ bool Map::test_collision_with_entities(
 
   const std::list<MapEntity*>& obstacle_entities =
       entities->get_obstacle_entities(layer);
-  const std::list<MapEntity*>::const_iterator end =
-      obstacle_entities.end();
 
-  std::list<MapEntity*>::const_iterator it;
-  for (it = obstacle_entities.begin(); it != end; ++it) {
+  for (MapEntity* entity: obstacle_entities) {
 
-    MapEntity* entity = *it;
     if (entity->overlaps(collision_box)
         && entity->is_obstacle_for(entity_to_check, collision_box)
         && entity->is_enabled()
@@ -1130,14 +1126,11 @@ void Map::check_collision_with_detectors(MapEntity& entity) {
 
   // Check this entity with each detector.
   const std::list<Detector*>& detectors = entities->get_detectors();
-  std::list<Detector*>::const_iterator it;
-  const std::list<Detector*>::const_iterator end = detectors.end();
-  for (it = detectors.begin(); it != end; ++it) {
+  for (Detector* detector: detectors) {
 
-    Detector& detector = *(*it);
-    if (detector.is_enabled()
-        && !detector.is_being_removed()) {
-      detector.check_collision(entity);
+    if (detector->is_enabled()
+        && !detector->is_being_removed()) {
+      detector->check_collision(entity);
     }
   }
 }
@@ -1162,14 +1155,11 @@ void Map::check_collision_from_detector(Detector& detector) {
 
   // Check each entity with this detector.
   const std::list<MapEntity*>& all_entities = entities->get_entities();
-  std::list<MapEntity*>::const_iterator it;
-  const std::list<MapEntity*>::const_iterator end = all_entities.end();
-  for (it = all_entities.begin(); it != end; ++it) {
+  for (MapEntity* entity: all_entities) {
 
-    MapEntity& entity = *(*it);
-    if (entity.is_enabled()
-        && !entity.is_being_removed()) {
-      detector.check_collision(entity);
+    if (entity->is_enabled()
+        && !entity->is_being_removed()) {
+      detector.check_collision(*entity);
     }
   }
 }
@@ -1194,13 +1184,11 @@ void Map::check_collision_with_detectors(MapEntity& entity, Sprite& sprite) {
 
   // Check each detector.
   const std::list<Detector*>& detectors = entities->get_detectors();
-  std::list<Detector*>::const_iterator it;
-  for (it = detectors.begin(); it != detectors.end(); it++) {
+  for (Detector* detector: detectors) {
 
-    Detector& detector = *(*it);
-    if (!detector.is_being_removed()
-        && detector.is_enabled()) {
-      detector.check_collision(entity, sprite);
+    if (!detector->is_being_removed()
+        && detector->is_enabled()) {
+      detector->check_collision(entity, sprite);
     }
   }
 }

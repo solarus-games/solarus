@@ -45,9 +45,8 @@ void Sprite::initialize() {
 void Sprite::quit() {
 
   // delete the animations loaded
-  std::map<std::string, SpriteAnimationSet*>::const_iterator it;
-  for (it = all_animation_sets.begin(); it != all_animation_sets.end(); ++it) {
-    delete it->second;
+  for (auto kvp: all_animation_sets) {
+    delete kvp.second;
   }
   all_animation_sets.clear();
 }
@@ -63,9 +62,8 @@ void Sprite::quit() {
  */
 SpriteAnimationSet& Sprite::get_animation_set(const std::string& id) {
 
-  SpriteAnimationSet* animation_set = NULL;
-  std::map<std::string, SpriteAnimationSet*>::iterator it =
-      all_animation_sets.find(id);
+  SpriteAnimationSet* animation_set = nullptr;
+  auto it = all_animation_sets.find(id);
   if (it != all_animation_sets.end()) {
     animation_set = it->second;
   }
@@ -74,7 +72,7 @@ SpriteAnimationSet& Sprite::get_animation_set(const std::string& id) {
     all_animation_sets[id] = animation_set;
   }
 
-  Debug::check_assertion(animation_set != NULL, "No animation set");
+  Debug::check_assertion(animation_set != nullptr, "No animation set");
 
   return *animation_set;
 }
@@ -85,17 +83,17 @@ SpriteAnimationSet& Sprite::get_animation_set(const std::string& id) {
  */
 Sprite::Sprite(const std::string& id):
   Drawable(),
-  lua_context(NULL),
+  lua_context(nullptr),
   animation_set_id(id),
   animation_set(get_animation_set(id)),
-  current_animation(NULL),
+  current_animation(nullptr),
   current_direction(0),
   current_frame(-1),
   ignore_suspend(false),
   paused(false),
   finished(false),
-  synchronize_to(NULL),
-  intermediate_surface(NULL),
+  synchronize_to(nullptr),
+  intermediate_surface(nullptr),
   blink_delay(0) {
 
   set_current_animation(animation_set.get_default_animation());
@@ -257,7 +255,7 @@ void Sprite::set_current_animation(const std::string& animation_name) {
 
     set_current_frame(0, false);
 
-    if (lua_context != NULL) {
+    if (lua_context != nullptr) {
       lua_context->sprite_on_animation_changed(*this, current_animation_name);
       lua_context->sprite_on_frame_changed(*this, current_animation_name, 0);
     }
@@ -314,7 +312,7 @@ void Sprite::set_current_direction(int current_direction) {
 
     set_current_frame(0, false);
 
-    if (lua_context != NULL) {
+    if (lua_context != nullptr) {
       lua_context->sprite_on_direction_changed(*this, current_animation_name, current_direction);
       lua_context->sprite_on_frame_changed(*this, current_animation_name, 0);
     }
@@ -359,7 +357,7 @@ void Sprite::set_current_frame(int current_frame, bool notify_script) {
     this->current_frame = current_frame;
     set_frame_changed(true);
 
-    if (notify_script && lua_context != NULL) {
+    if (notify_script && lua_context != nullptr) {
       lua_context->sprite_on_frame_changed(
           *this, current_animation_name, current_frame);
     }
@@ -395,7 +393,7 @@ void Sprite::set_frame_changed(bool frame_changed) {
 /**
  * \brief Makes this sprite always synchronized with another one as soon as
  * they have the same animation name.
- * \param other the sprite to synchronize to, or NULL to stop any previous synchronization
+ * \param other the sprite to synchronize to, or nullptr to stop any previous synchronization
  */
 void Sprite::set_synchronized_to(Sprite* other) {
   this->synchronize_to = other;
@@ -604,7 +602,7 @@ void Sprite::update() {
   uint32_t now = System::now();
 
   // update the current frame
-  if (synchronize_to == NULL
+  if (synchronize_to == nullptr
       || current_animation_name != synchronize_to->get_current_animation()
       || synchronize_to->get_current_direction() > get_nb_directions()
       || synchronize_to->get_current_frame() > get_nb_frames()) {
@@ -619,7 +617,7 @@ void Sprite::update() {
       // test whether the animation is finished
       if (next_frame == -1) {
         finished = true;
-        if (lua_context != NULL) {
+        if (lua_context != nullptr) {
           lua_context->sprite_on_animation_finished(*this, current_animation_name);
         }
       }
@@ -629,7 +627,7 @@ void Sprite::update() {
       }
       set_frame_changed(true);
 
-      if (lua_context != NULL) {
+      if (lua_context != nullptr) {
         lua_context->sprite_on_frame_changed(*this, current_animation_name, current_frame);
       }
     }
@@ -638,7 +636,7 @@ void Sprite::update() {
     // take the same frame as the other sprite
     if (synchronize_to->is_animation_finished()) {
       finished = true;
-      if (lua_context != NULL) {
+      if (lua_context != nullptr) {
         lua_context->sprite_on_animation_finished(*this, current_animation_name);
       }
     }
@@ -649,7 +647,7 @@ void Sprite::update() {
         next_frame_date = now + get_frame_delay();
         set_frame_changed(true);
 
-        if (lua_context != NULL) {
+        if (lua_context != nullptr) {
           lua_context->sprite_on_frame_changed(*this, current_animation_name, current_frame);
         }
       }
@@ -681,7 +679,7 @@ void Sprite::raw_draw(
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    if (intermediate_surface == NULL) {
+    if (intermediate_surface == nullptr) {
       current_animation->draw(dst_surface, dst_position,
           current_direction, current_frame);
     }
@@ -784,7 +782,7 @@ Surface& Sprite::get_transition_surface() {
  */
 Surface& Sprite::get_intermediate_surface() const {
 
-  if (intermediate_surface == NULL) {
+  if (intermediate_surface == nullptr) {
     intermediate_surface = Surface::create(get_max_size());
     RefCountable::ref(intermediate_surface);
   }
@@ -793,7 +791,7 @@ Surface& Sprite::get_intermediate_surface() const {
 
 /**
  * \brief Returns the Solarus Lua API.
- * \return The Lua context, or NULL if Lua callbacks are not enabled for this sprite.
+ * \return The Lua context, or nullptr if Lua callbacks are not enabled for this sprite.
  */
 LuaContext* Sprite::get_lua_context() const {
   return lua_context;
@@ -801,7 +799,7 @@ LuaContext* Sprite::get_lua_context() const {
 
 /**
  * \brief Sets the Solarus Lua API.
- * \param lua_context The Lua context, or NULL to disable Lua callbacks
+ * \param lua_context The Lua context, or nullptr to disable Lua callbacks
  * for this sprite.
  */
 void Sprite::set_lua_context(LuaContext* lua_context) {

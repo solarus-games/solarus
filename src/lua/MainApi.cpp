@@ -50,7 +50,7 @@ void LuaContext::register_main_module() {
       { "get_distance", main_api_get_distance },
       { "get_angle", main_api_get_angle },
       { "get_metatable", main_api_get_metatable },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_functions(main_module_name, functions);

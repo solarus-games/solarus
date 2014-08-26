@@ -50,8 +50,7 @@ void LuaContext::push_dialog(lua_State* l, const Dialog& dialog) {
   // User properties.
   const std::map<std::string, std::string>& properties =
       dialog.get_properties();
-  std::map<std::string, std::string>::const_iterator it;
-  for (it = properties.begin(); it != properties.end(); ++it) {
+  for (auto it = properties.begin(); it != properties.end(); ++it) {
     push_string(l, it->second);
     lua_setfield(l, -2, it->first.c_str());
   }
@@ -69,7 +68,7 @@ void LuaContext::register_language_module() {
       { "get_languages", language_api_get_languages },
       { "get_string", language_api_get_string },
       { "get_dialog", language_api_get_dialog },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
 
   register_functions(language_module_name, functions);
@@ -149,8 +148,7 @@ int LuaContext::language_api_get_languages(lua_State* l) {
 
   lua_newtable(l);
   int i = 1;
-  std::vector<QuestResourceList::Element>::const_iterator it;
-  for (it = languages.begin(); it != languages.end(); ++it) {
+  for (auto it = languages.begin(); it != languages.end(); ++it) {
     const std::string& language_code = it->first;
     push_string(l, language_code);
     lua_rawseti(l, -2, i);

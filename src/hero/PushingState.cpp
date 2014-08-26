@@ -33,8 +33,8 @@ namespace solarus {
 Hero::PushingState::PushingState(Hero& hero):
   State(hero, "pushing"),
   pushing_direction4(0),
-  pushed_entity(NULL),
-  pushing_movement(NULL) {
+  pushed_entity(nullptr),
+  pushing_movement(nullptr) {
 
 }
 
@@ -102,7 +102,7 @@ void Hero::PushingState::update() {
     else {
 
       Detector* facing_entity = hero.get_facing_entity();
-      if (facing_entity != NULL) { // the obstacle pushed is an entity
+      if (facing_entity != nullptr) { // the obstacle pushed is an entity
 
         if (facing_entity->get_type() == ENTITY_BLOCK) { // it can be moved by the hero (TODO dynamic binding)
           hero.try_snap_to_facing_entity();
@@ -127,7 +127,7 @@ void Hero::PushingState::update() {
 /**
  * \copydoc Hero::State::can_avoid_stream
  */
-bool Hero::PushingState::can_avoid_stream(const Stream& stream) const {
+bool Hero::PushingState::can_avoid_stream(const Stream& /* stream */) const {
   return true;
 }
 
@@ -144,7 +144,7 @@ bool Hero::PushingState::can_start_sword() const {
  * \return true if the hero is grabbing and moving an entity
  */
 bool Hero::PushingState::is_moving_grabbed_entity() const {
-  return pushed_entity != NULL;
+  return pushed_entity != nullptr;
 }
 
 /**
@@ -207,7 +207,7 @@ void Hero::PushingState::notify_position_changed() {
 void Hero::PushingState::stop_moving_pushed_entity() {
 
   Hero& hero = get_hero();
-  if (pushed_entity != NULL) {
+  if (pushed_entity != nullptr) {
     pushed_entity->stop_movement_by_hero();
 
     // the hero may have moved one or several pixels too much
@@ -238,9 +238,9 @@ void Hero::PushingState::stop_moving_pushed_entity() {
 
     hero.clear_movement();
     RefCountable::unref(pushing_movement);
-    pushing_movement = NULL;
+    pushing_movement = nullptr;
     MapEntity* entity_just_moved = pushed_entity;
-    pushed_entity = NULL;
+    pushed_entity = nullptr;
     entity_just_moved->notify_moved_by(hero);
   }
 
@@ -267,10 +267,10 @@ void Hero::PushingState::stop_moving_pushed_entity() {
 /**
  * \brief Returns whether the hero can be hurt in this state.
  * \param attacker an attacker that is trying to hurt the hero
- * (or NULL if the source of the attack is not an enemy)
+ * (or nullptr if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::PushingState::can_be_hurt(MapEntity* attacker) const {
+bool Hero::PushingState::can_be_hurt(MapEntity* /* attacker */) const {
   return !is_moving_grabbed_entity();
 }
 
@@ -279,7 +279,7 @@ bool Hero::PushingState::can_be_hurt(MapEntity* attacker) const {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::PushingState::can_pick_treasure(EquipmentItem& item) const {
+bool Hero::PushingState::can_pick_treasure(EquipmentItem& /* item */) const {
   return true;
 }
 

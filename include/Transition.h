@@ -54,7 +54,7 @@ class Transition {
         Style style,
         Direction direction,
         Surface& dst_surface,
-        Game* game = NULL);
+        Game* game = nullptr);
 
     Game* get_game() const;
     Direction get_direction() const;

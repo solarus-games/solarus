@@ -107,7 +107,7 @@ void Crystal::notify_collision(MapEntity& entity_overlapping, CollisionMode coll
  * \param other_sprite the sprite of other_entity that is overlapping this detector
  * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Crystal::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
+void Crystal::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& /* this_sprite */) {
   other_entity.notify_collision_with_crystal(*this, other_sprite);
 }
 
@@ -136,9 +136,8 @@ bool Crystal::notify_action_command_pressed() {
 void Crystal::activate(MapEntity& entity_activating) {
 
   bool recently_activated = false;
-  std::list<MapEntity*>::iterator it;
-  for (it = entities_activating.begin(); it != entities_activating.end() && !recently_activated; it++) {
-    recently_activated  = (*it == &entity_activating);
+  for (MapEntity* entity: entities_activating) {
+    recently_activated  = (entity == &entity_activating);
   }
 
   uint32_t now = System::now();

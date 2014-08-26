@@ -47,7 +47,7 @@ void LuaContext::register_video_module() {
       { "get_window_size", video_api_get_window_size },
       { "set_window_size", video_api_set_window_size },
       { "reset_window_size", video_api_reset_window_size },
-      { NULL, NULL }
+      { nullptr, nullptr }
   };
   register_functions(video_module_name, functions);
 }
@@ -102,7 +102,7 @@ int LuaContext::video_api_set_mode(lua_State *l) {
   std::string mode_name = luaL_checkstring(l, 1);
   const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
-  if (mode != NULL && Video::get_video_mode().get_name() != mode_name) {
+  if (mode != nullptr && Video::get_video_mode().get_name() != mode_name) {
     Video::set_video_mode(*mode);
   }
 
@@ -114,7 +114,7 @@ int LuaContext::video_api_set_mode(lua_State *l) {
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
  */
-int LuaContext::video_api_switch_mode(lua_State *l) {
+int LuaContext::video_api_switch_mode(lua_State* /* l */) {
 
   Video::switch_video_mode();
 
@@ -133,9 +133,8 @@ int LuaContext::video_api_get_modes(lua_State* l) {
 
   lua_newtable(l);
 
-  std::vector<const VideoMode*>::const_iterator it;
   int i = 1;
-  for (it = modes.begin(); it != modes.end(); ++it) {
+  for (auto it = modes.begin(); it != modes.end(); ++it) {
     const VideoMode* mode = *it;
     push_string(l, mode->get_name());
     lua_rawseti(l, -2, i);
@@ -155,7 +154,7 @@ int LuaContext::video_api_is_mode_supported(lua_State *l) {
   std::string mode_name = luaL_checkstring(l, 1);
   const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
-  bool supported = mode != NULL && Video::is_mode_supported(*mode);
+  bool supported = mode != nullptr && Video::is_mode_supported(*mode);
 
   lua_pushboolean(l, supported);
   return 1;
@@ -246,7 +245,7 @@ int LuaContext::video_api_set_window_size(lua_State* l) {
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
-int LuaContext::video_api_reset_window_size(lua_State* l) {
+int LuaContext::video_api_reset_window_size(lua_State* /* l */) {
 
   Video::reset_window_size();
 

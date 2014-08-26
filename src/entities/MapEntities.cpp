@@ -48,8 +48,8 @@ MapEntities::MapEntities(Game& game, Map& map):
   map_height8(0),
   tiles_grid_size(0),
   hero(game.get_hero()),
-  default_destination(NULL),
-  boomerang(NULL) {
+  default_destination(nullptr),
+  boomerang(nullptr) {
 
   Layer hero_layer = hero.get_layer();
   this->obstacle_entities[hero_layer].push_back(&hero);
@@ -74,20 +74,15 @@ MapEntities::~MapEntities() {
     ground_modifiers[layer].clear();
     stairs[layer].clear();
 
-    std::vector<Tile*>::iterator it;
-    for (it = tiles_in_animated_regions[layer].begin();
-        it != tiles_in_animated_regions[layer].end();
-        ++it) {
-      Tile* tile = *it;
+    for (Tile* tile: tiles_in_animated_regions[layer]) {
       RefCountable::unref(tile);
     }
   }
 
   // delete the other entities
 
-  std::list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
-    destroy_entity(*i);
+  for (MapEntity* entity: all_entities) {
+    destroy_entity(entity);
   }
   all_entities.clear();
   named_entities.clear();
@@ -167,7 +162,7 @@ const std::list<Detector*>& MapEntities::get_detectors() {
 
 /**
  * \brief Returns the default destination of the map.
- * \return The default destination, or NULL if there exists no destination
+ * \return The default destination, or nullptr if there exists no destination
  * on this map.
  */
 Destination* MapEntities::get_default_destination() {
@@ -231,7 +226,7 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
 
   MapEntity* entity = find_entity(name);
 
-  if (entity == NULL) {
+  if (entity == nullptr) {
     Debug::die(std::string("Map '") + map.get_id()
         + "': Cannot find entity with name '" + name + "'");
   }
@@ -240,22 +235,21 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
 }
 
 /**
- * \brief Returns the entity with the specified name, or NULL if it doesn't exist.
+ * \brief Returns the entity with the specified name, or nullptr if it doesn't exist.
  * \param name Name of the entity to find.
- * \return The entity requested, or NULL if there is no entity with the specified name.
+ * \return The entity requested, or nullptr if there is no entity with the specified name.
  */
 MapEntity* MapEntities::find_entity(const std::string& name) {
 
-  std::map<std::string, MapEntity*>::const_iterator it =
-      named_entities.find(name);
+  auto it = named_entities.find(name);
   if (it == named_entities.end()) {
-    return NULL;
+    return nullptr;
   }
 
   MapEntity* entity = it->second;
 
   if (entity->is_being_removed()) {
-    return NULL;
+    return nullptr;
   }
 
   return entity;
@@ -270,10 +264,7 @@ std::list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& p
 
   std::list<MapEntity*> entities;
 
-  std::list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
-
-    MapEntity* entity = *i;
+  for (MapEntity* entity: all_entities) {
     if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
       entities.push_back(entity);
     }
@@ -294,10 +285,7 @@ std::list<MapEntity*> MapEntities::get_entities_with_prefix(
 
   std::list<MapEntity*> entities;
 
-  std::list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
-
-    MapEntity* entity = *i;
+  for (MapEntity* entity: all_entities) {
     if (entity->get_type() == type && entity->has_prefix(prefix) && !entity->is_being_removed()) {
       entities.push_back(entity);
     }
@@ -314,10 +302,7 @@ std::list<MapEntity*> MapEntities::get_entities_with_prefix(
  */
 bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
 
-  std::list<MapEntity*>::const_iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
-
-    const MapEntity* entity = *i;
+  for (const MapEntity* entity: all_entities) {
     if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
       return true;
     }
@@ -361,9 +346,7 @@ void MapEntities::bring_to_back(MapEntity& entity) {
  */
 void MapEntities::notify_map_started() {
 
-  std::list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
-    MapEntity* entity = *i;
+  for (MapEntity* entity: all_entities) {
     entity->notify_map_started();
     entity->notify_tileset_changed();
   }
@@ -383,9 +366,7 @@ void MapEntities::notify_map_started() {
  */
 void MapEntities::notify_map_opening_transition_finished() {
 
-  std::list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
-    MapEntity* entity = *i;
+  for (MapEntity* entity: all_entities) {
     entity->notify_map_opening_transition_finished();
   }
   hero.notify_map_opening_transition_finished();
@@ -402,9 +383,7 @@ void MapEntities::notify_tileset_changed() {
     non_animated_regions[layer]->notify_tileset_changed();
   }
 
-  std::list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
-    MapEntity* entity = *i;
+  for (MapEntity* entity: all_entities) {
     entity->notify_tileset_changed();
   }
   hero.notify_tileset_changed();
@@ -574,14 +553,14 @@ void MapEntities::add_tile(Tile* tile) {
  * \brief Adds an entity to the map.
  *
  * This function is called when loading the map. If the entity
- * specified is NULL (because some entity creation functions
- * may return NULL), nothing is done.
+ * specified is nullptr (because some entity creation functions
+ * may return nullptr), nothing is done.
  *
- * \param entity The entity to add (can be NULL).
+ * \param entity The entity to add (can be nullptr).
  */
 void MapEntities::add_entity(MapEntity* entity) {
 
-  if (entity == NULL) {
+  if (entity == nullptr) {
     return;
   }
 
@@ -652,7 +631,7 @@ void MapEntities::add_entity(MapEntity* entity) {
       case ENTITY_DESTINATION:
         {
           Destination* destination = static_cast<Destination*>(entity);
-          if (this->default_destination == NULL || destination->is_default()) {
+          if (this->default_destination == nullptr || destination->is_default()) {
             this->default_destination = destination;
             break;
           }
@@ -719,7 +698,7 @@ void MapEntities::remove_entity(MapEntity* entity) {
     entity->notify_being_removed();
 
     if (entity == this->boomerang) {
-      this->boomerang = NULL;
+      this->boomerang = nullptr;
     }
   }
 }
@@ -731,7 +710,7 @@ void MapEntities::remove_entity(MapEntity* entity) {
 void MapEntities::remove_entity(const std::string& name) {
 
   MapEntity* entity = find_entity(name);
-  if (entity != NULL) {
+  if (entity != nullptr) {
     remove_entity(entity);
   }
 }
@@ -743,9 +722,8 @@ void MapEntities::remove_entity(const std::string& name) {
 void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
 
   std::list<MapEntity*> entities = get_entities_with_prefix(prefix);
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    remove_entity(*it);
+  for (MapEntity* entity: entities) {
+    remove_entity(entity);
   }
 }
 
@@ -754,14 +732,9 @@ void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
  */
 void MapEntities::remove_marked_entities() {
 
-  std::list<MapEntity*>::iterator it;
-
   // remove the marked entities
-  for (it = entities_to_remove.begin();
-       it != entities_to_remove.end();
-       it++) {
-
-    MapEntity* entity = *it;
+  for (MapEntity* entity: entities_to_remove) {
+ 
     Layer layer = entity->get_layer();
 
     // remove it from the obstacle entities list if present
@@ -823,7 +796,7 @@ void MapEntities::remove_marked_entities() {
         break;
 
       case ENTITY_BOOMERANG:
-        this->boomerang = NULL;
+        this->boomerang = nullptr;
         break;
 
       default:
@@ -851,12 +824,8 @@ void MapEntities::set_suspended(bool suspended) {
   hero.set_suspended(suspended);
 
   // other entities
-  std::list<MapEntity*>::iterator i;
-  for (i = all_entities.begin();
-       i != all_entities.end();
-       i++) {
-
-    (*i)->set_suspended(suspended);
+  for (MapEntity* entity: all_entities) {
+    entity->set_suspended(suspended);
   }
 
   // note that we don't suspend the tiles
@@ -873,19 +842,16 @@ void MapEntities::update() {
   hero.update();
 
   // Update the dynamic entities.
-  std::list<MapEntity*>::iterator it;
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     // Sort the entities drawn in y order.
     entities_drawn_y_order[layer].sort(compare_y);
   }
 
-  for (it = all_entities.begin();
-       it != all_entities.end();
-       it++) {
+  for (MapEntity* entity: all_entities) {
 
-    if (!(*it)->is_being_removed()) {
-      (*it)->update();
+    if (!entity->is_being_removed()) {
+      entity->update();
     }
   }
 
@@ -913,12 +879,8 @@ void MapEntities::draw() {
     non_animated_regions[layer]->draw_on_map();
 
     // draw the first sprites
-    std::list<MapEntity*>::iterator i;
-    for (i = entities_drawn_first[layer].begin();
-        i != entities_drawn_first[layer].end();
-        i++) {
+    for (MapEntity* entity: entities_drawn_first[layer]) {
 
-      MapEntity* entity = *i;
       if (entity->is_enabled()) {
         entity->draw_on_map();
       }
@@ -926,11 +888,8 @@ void MapEntities::draw() {
 
     // draw the sprites at the hero's level, in the order
     // defined by their y position (including the hero)
-    for (i = entities_drawn_y_order[layer].begin();
-        i != entities_drawn_y_order[layer].end();
-        i++) {
+    for (MapEntity* entity: entities_drawn_y_order[layer]) {
 
-      MapEntity* entity = *i;
       if (entity->is_enabled()) {
         entity->draw_on_map();
       }
@@ -1026,15 +985,15 @@ void MapEntities::set_entity_layer(MapEntity& entity, Layer layer) {
  */
 bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle& rectangle) {
 
-  bool overlaps = false;
   std::list<CrystalBlock*> blocks = get_crystal_blocks(layer);
 
-  std::list<CrystalBlock*>::iterator it;
-  for (it = blocks.begin(); it != blocks.end() && !overlaps; it++) {
-    overlaps = (*it)->overlaps(rectangle) && (*it)->is_raised();
+  for (const CrystalBlock* block: blocks) {
+    if (block->overlaps(rectangle) && block->is_raised()) {
+      return true;
+    }
   }
 
-  return overlaps;
+  return false;
 }
 
 /**
@@ -1042,7 +1001,7 @@ bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle& rectangle
  * \return true if the boomerang is present on the map
  */
 bool MapEntities::is_boomerang_present() {
-  return boomerang != NULL;
+  return boomerang != nullptr;
 }
 
 /**
@@ -1050,9 +1009,9 @@ bool MapEntities::is_boomerang_present() {
  */
 void MapEntities::remove_boomerang() {
 
-  if (boomerang != NULL) {
+  if (boomerang != nullptr) {
     remove_entity(boomerang);
-    boomerang = NULL;
+    boomerang = nullptr;
   }
 }
 
@@ -1062,9 +1021,7 @@ void MapEntities::remove_boomerang() {
 void MapEntities::remove_arrows() {
 
   // TODO this function may be slow if there are a lot of entities: store the arrows?
-  std::list<MapEntity*>::iterator it;
-  for (it = all_entities.begin(); it != all_entities.end(); it++) {
-    MapEntity* entity = *it;
+  for (MapEntity* entity: all_entities) {
     if (entity->get_type() == ENTITY_ARROW) {
       remove_entity(entity);
     }

@@ -50,9 +50,9 @@ class StreamAction {
     bool has_reached_target() const;
 
     Stream* stream;               /**< The stream applied,
-                                   * or NULL if it was destroyed. */
+                                   * or nullptr if it was destroyed. */
     MapEntity* entity_moved;      /**< The entity the stream is applied to,
-                                   * or NULL if it was destroyed. */
+                                   * or nullptr if it was destroyed. */
     bool active;                  /**< Whether the stream effect is currently
                                    * applied. */
     bool suspended;               /**< Whether the stream effect is currently

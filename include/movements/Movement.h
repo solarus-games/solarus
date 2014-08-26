@@ -125,7 +125,7 @@ class Movement: public ExportableToLua {
     bool default_ignore_obstacles;               /**< Indicates that this movement normally ignores obstacles. */
     bool current_ignore_obstacles;               /**< Indicates that this movement currently ignores obstacles. */
 
-    LuaContext* lua_context;                     /**< The Solarus Lua API (NULL means no callbacks for this movement).
+    LuaContext* lua_context;                     /**< The Solarus Lua API (nullptr means no callbacks for this movement).
                                                   * TODO move this to ExportableToLua */
     int finished_callback_ref;                   /**< Lua ref to a function to call when this movement finishes. */
 

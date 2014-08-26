@@ -239,8 +239,7 @@ bool PathFinding::Node::operator<(const Node& other) const {
 void PathFinding::add_index_sorted(Node* node) {
 
   bool inserted = false;
-  std::list<int>::iterator it;
-  for (it = open_list_indices.begin();
+  for (auto it = open_list_indices.begin();
       it != open_list_indices.end() && !inserted;
       ++it) {
     const int index = *it;

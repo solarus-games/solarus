@@ -104,7 +104,7 @@ void Hero::FreeState::notify_action_command_pressed() {
   Hero& hero = get_hero();
   Detector* facing_entity = hero.get_facing_entity();
   bool facing_entity_interaction = false;
-  if (facing_entity != NULL) {
+  if (facing_entity != nullptr) {
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE ||
         get_keys_effect().is_action_key_acting_on_facing_entity()
     ) {
@@ -173,7 +173,7 @@ bool Hero::FreeState::can_start_sword() const {
  * \param item The equipment item to check.
  * \return true if the hero can use this equipment item in this state.
  */
-bool Hero::FreeState::can_start_item(EquipmentItem& item) const {
+bool Hero::FreeState::can_start_item(EquipmentItem& /* item */) const {
 
   return get_hero().get_ground_below() != GROUND_HOLE;
 }

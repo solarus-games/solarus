@@ -58,7 +58,7 @@ Equipment& EquipmentItem::get_equipment() {
 
 /**
  * \brief If this equipment item is currently running in a game, return that game.
- * \return A game or NULL.
+ * \return A game or nullptr.
  */
 Game* EquipmentItem::get_game() {
   return equipment.get_game();
@@ -417,7 +417,7 @@ void EquipmentItem::set_variant(int variant) {
   if (variant == 0) {
     int slot = equipment.get_item_slot(*this);
     if (slot != 0) {
-      equipment.set_item_assigned(slot, NULL);
+      equipment.set_item_assigned(slot, nullptr);
     }
   }
 

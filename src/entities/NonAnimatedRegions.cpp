@@ -60,14 +60,12 @@ void NonAnimatedRegions::clear() {
   Rectangle where(non_animated_tiles.get_grid_size());
   std::vector<Tile*> tiles;
   non_animated_tiles.get_elements(where, tiles);
-  for (auto it = tiles.begin(); it != tiles.end(); ++it) {
-    Tile* tile = *it;
+  for (Tile* tile: tiles) {
     RefCountable::unref(tile);
   }
 
   // Destroy candidates tiles if the grid is not built yet.
-  for (auto it = this->tiles.begin(); it != this->tiles.end(); ++it) {
-    Tile* tile = *it;
+  for (Tile* tile: this->tiles) {
     RefCountable::unref(tile);
   }
   tiles.clear();
@@ -287,9 +285,8 @@ void NonAnimatedRegions::build_cell(int cell_index) {
 
   const std::vector<Tile*>& tiles_in_cell =
       non_animated_tiles.get_elements(cell_index);
-  for (auto it = tiles_in_cell.begin(); it != tiles_in_cell.end(); ++it) {
-    Tile& tile = *(*it);
-    tile.draw(*cell_surface, cell_xy);
+  for (Tile* tile: tiles_in_cell) {
+    tile->draw(*cell_surface, cell_xy);
   }
 
   // Remember that non-animated tiles are drawn after animated ones.

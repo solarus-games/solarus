@@ -141,8 +141,8 @@ void Tileset::load() {
  */
 void Tileset::unload() {
 
-  for (auto it = tile_patterns.begin(); it != tile_patterns.end(); ++it) {
-    delete it->second;
+  for (const auto& kvp: tile_patterns) {
+    delete kvp.second;
   }
   tile_patterns.clear();
 

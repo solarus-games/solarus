@@ -62,8 +62,8 @@ SpriteAnimation::SpriteAnimation(
  */
 SpriteAnimation::~SpriteAnimation() {
 
-  for (auto it = directions.begin(); it != directions.end(); ++it) {
-    delete *it;
+  for (SpriteAnimationDirection* direction: directions) {
+    delete direction;
   }
 
   RefCountable::unref(src_image);

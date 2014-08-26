@@ -197,14 +197,13 @@ void MapEntity::update_ground_observers() {
   // Update overlapping entities sensible to their ground.
   const std::list<MapEntity*>& ground_observers =
       get_entities().get_ground_observers(get_layer());
-  for (auto it = ground_observers.begin(); it != ground_observers.end(); ++it) {
-    MapEntity& ground_observer = *(*it);
+  for (MapEntity* ground_observer: ground_observers) {
     // Update the ground of entities that overlap or were just overlapping this one.
 
-    if (overlaps(ground_observer.get_ground_point())
-        || overlaps(ground_observer)  // FIXME this is not precise and does not work for entities that disappear.
+    if (overlaps(ground_observer->get_ground_point())
+        || overlaps(*ground_observer)  // FIXME this is not precise and does not work for entities that disappear.
     ) {
-      ground_observer.update_ground_below();
+      ground_observer->update_ground_below();
     }
   }
 }
@@ -406,10 +405,8 @@ void MapEntity::notify_map_opening_transition_finished() {
  */
 void MapEntity::notify_tileset_changed() {
 
-  for (auto it = sprites.begin(); it != sprites.end(); ++it) {
-
-    Sprite& sprite = *(*it);
-    sprite.set_tileset(get_map().get_tileset());
+  for (Sprite* sprite: sprites) {
+    sprite->set_tileset(get_map().get_tileset());
   }
 }
 
@@ -1210,15 +1207,14 @@ Sprite& MapEntity::create_sprite(
  */
 void MapEntity::remove_sprite(Sprite& sprite) {
 
-  bool found = false;
-  for (auto it = sprites.begin(); it != sprites.end() && !found; ++it) {
-    if (*it == &sprite) {
+  for (Sprite* current_sprite: sprites) {
+    if (current_sprite == &sprite) {
       old_sprites.push_back(&sprite);
-      found = true;
+      return;
     }
   }
 
-  Debug::check_assertion(found, "This sprite does not belong to this entity");
+  Debug::die("This sprite does not belong to this entity");
 }
 
 /**
@@ -1228,8 +1224,8 @@ void MapEntity::remove_sprite(Sprite& sprite) {
  */
 void MapEntity::clear_sprites() {
 
-  for (auto it = sprites.begin(); it != sprites.end(); ++it) {
-    old_sprites.push_back(*it);
+  for (Sprite* sprite: sprites) {
+    old_sprites.push_back(sprite);
   }
   sprites.clear();
 }
@@ -1239,16 +1235,14 @@ void MapEntity::clear_sprites() {
  */
 void MapEntity::clear_old_sprites() {
 
-  auto end = old_sprites.end();
-  for (auto it = old_sprites.begin(); it != end; ++it) {
-    Sprite* sprite = *it;
-    for (auto it2 = sprites.begin(); it2 != sprites.end(); ++it2) {
-      if (*it2 == sprite) {
-        sprites.erase(it2);
+  for (Sprite* old_sprite: old_sprites) {
+    for (auto it = sprites.begin(); it != sprites.end(); ++it) {
+      if (*it == old_sprite) {
+        sprites.erase(it);
         break;
       }
     }
-    RefCountable::unref(sprite);
+    RefCountable::unref(old_sprite);
   }
   old_sprites.clear();
 }
@@ -1357,9 +1351,7 @@ void MapEntity::clear_movement() {
  */
 void MapEntity::clear_old_movements() {
 
-  auto end = old_movements.end();
-  for (auto it = old_movements.begin(); it != end; ++it) {
-    Movement* movement = *it;
+  for (Movement* movement: old_movements) {
     RefCountable::unref(movement);
   }
   old_movements.clear();
@@ -1493,11 +1485,9 @@ void MapEntity::check_collision_with_detectors() {
   get_map().check_collision_with_detectors(*this);
 
   // Detect pixel-precise collisions.
-  for (auto it = sprites.begin(); it != sprites.end(); ++it) {
-
-    Sprite& sprite = *(*it);
-    if (sprite.are_pixel_collisions_enabled()) {
-      get_map().check_collision_with_detectors(*this, sprite);
+  for (Sprite* sprite: sprites) {
+    if (sprite->are_pixel_collisions_enabled()) {
+      get_map().check_collision_with_detectors(*this, *sprite);
     }
   }
 }
@@ -1611,10 +1601,8 @@ void MapEntity::set_enabled(bool enabled) {
         get_movement()->set_suspended(true);
       }
 
-      for (auto it = sprites.begin(); it != sprites.end(); ++it) {
-
-        Sprite& sprite = *(*it);
-        sprite.set_suspended(true);
+      for (Sprite* sprite: sprites) {
+        sprite->set_suspended(true);
       }
 
       if (is_on_map()) {
@@ -1954,21 +1942,21 @@ bool MapEntity::overlaps_camera() const {
     return true;
   }
 
-  bool found = false;
-  auto end = sprites.end();
-  for (auto it = sprites.begin(); it != end && !found; ++it) {
-    const Sprite& sprite = *(*it);
-    const Rectangle& sprite_size = sprite.get_size();
-    const Rectangle& sprite_origin = sprite.get_origin();
+  for (Sprite* sprite: sprites) {
+    const Rectangle& sprite_size = sprite->get_size();
+    const Rectangle& sprite_origin = sprite->get_origin();
     const Rectangle sprite_bounding_box(
         get_x() - sprite_origin.get_x(),
         get_y() - sprite_origin.get_y(),
         sprite_size.get_width(),
         sprite_size.get_height()
     );
-    found = sprite_bounding_box.overlaps(camera_position);
+    if (sprite_bounding_box.overlaps(camera_position)) {
+      return true;
+    }
   }
-  return found;
+
+  return false;
 }
 
 /**
@@ -2139,14 +2127,13 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
   const Rectangle& this_center = get_center_point();
   const Rectangle& other_center = other.get_center_point();
 
-  auto separators = get_entities().get_separators();
-  for (auto it = separators.begin(); it != separators.end(); ++it) {
+  const std::list<const Separator*>& separators = get_entities().get_separators();
+  for (const Separator* separator: separators) {
 
-    const Separator& separator = *(*it);
-    if (separator.is_vertical()) {
+    if (separator->is_vertical()) {
       // Vertical separation.
-      if (this_center.get_y() < separator.get_top_left_y() ||
-          this_center.get_y() >= separator.get_top_left_y() + separator.get_height()) {
+      if (this_center.get_y() < separator->get_top_left_y() ||
+          this_center.get_y() >= separator->get_top_left_y() + separator->get_height()) {
         // This separator is irrelevant: the entity is not in either side,
         // it is too much to the north or to the south.
         //
@@ -2159,8 +2146,8 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
         continue;
       }
 
-      if (other_center.get_y() < separator.get_top_left_y() ||
-          other_center.get_y() >= separator.get_top_left_y() + separator.get_height()) {
+      if (other_center.get_y() < separator->get_top_left_y() ||
+          other_center.get_y() >= separator->get_top_left_y() + separator->get_height()) {
         // This separator is irrelevant: the other entity is not in either side.
         // it is too much to the north or to the south.
         continue;
@@ -2168,7 +2155,7 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
 
       // Both entities are in the zone of influence of this separator.
       // See if they are in the same side.
-      const int separation_x = separator.get_center_point().get_x();
+      const int separation_x = separator->get_center_point().get_x();
       if (this_center.get_x() < separation_x &&
           separation_x <= other_center.get_x()) {
         // Different side.
@@ -2183,17 +2170,17 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
     }
     else {
       // Horizontal separation.
-      if (this_center.get_x() < separator.get_top_left_x() ||
-          this_center.get_x() >= separator.get_top_left_x() + separator.get_width()) {
+      if (this_center.get_x() < separator->get_top_left_x() ||
+          this_center.get_x() >= separator->get_top_left_x() + separator->get_width()) {
         continue;
       }
 
-      if (other_center.get_x() < separator.get_top_left_x() ||
-          other_center.get_x() >= separator.get_top_left_x() + separator.get_width()) {
+      if (other_center.get_x() < separator->get_top_left_x() ||
+          other_center.get_x() >= separator->get_top_left_x() + separator->get_width()) {
         continue;
       }
 
-      const int separation_y = separator.get_center_point().get_y();
+      const int separation_y = separator->get_center_point().get_y();
       if (this_center.get_y() < separation_y &&
           separation_y <= other_center.get_y()) {
         return false;
@@ -2413,10 +2400,8 @@ void MapEntity::set_suspended(bool suspended) {
   }
 
   // suspend/unsuspend the sprites animations
-  for (auto it = sprites.begin(); it != sprites.end(); ++it) {
-
-    Sprite& sprite = *(*it);
-    sprite.set_suspended(suspended || !is_enabled());
+  for (Sprite* sprite: sprites) {
+    sprite->set_suspended(suspended || !is_enabled());
   }
 
   // suspend/unsuspend the movement
@@ -2447,10 +2432,8 @@ uint32_t MapEntity::get_when_suspended() const {
  */
 void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
 
-  for (auto it = sprites.begin(); it != sprites.end(); ++it) {
-
-    Sprite& sprite = *(*it);
-    sprite.set_ignore_suspend(ignore_suspend);
+  for (Sprite* sprite: sprites) {
+    sprite->set_ignore_suspend(ignore_suspend);
   }
 }
 
@@ -2491,10 +2474,8 @@ void MapEntity::update() {
           stream_action->set_suspended(false);
         }
 
-        for (auto it = sprites.begin(); it != sprites.end(); ++it) {
-
-          Sprite& sprite = *(*it);
-          sprite.set_suspended(false);
+        for (Sprite* sprite: sprites) {
+          sprite->set_suspended(false);
         }
 
         if (is_on_map()) {
@@ -2510,20 +2491,18 @@ void MapEntity::update() {
   }
 
   // update the sprites
-  const auto sprites_end = sprites.end();
-  for (auto it = sprites.begin(); it != sprites_end; ++it) {
+  for (Sprite* sprite: sprites) {
 
-    Sprite& sprite = *(*it);
-    sprite.update();
-    if (sprite.has_frame_changed()) {
+    sprite->update();
+    if (sprite->has_frame_changed()) {
 
-      if (sprite.are_pixel_collisions_enabled()) {
-        check_collision_with_detectors(sprite);
+      if (sprite->are_pixel_collisions_enabled()) {
+        check_collision_with_detectors(*sprite);
       }
 
-      notify_sprite_frame_changed(sprite, sprite.get_current_animation(), sprite.get_current_frame());
-      if (sprite.is_animation_finished()) {
-        notify_sprite_animation_finished(sprite, sprite.get_current_animation());
+      notify_sprite_frame_changed(*sprite, sprite->get_current_animation(), sprite->get_current_frame());
+      if (sprite->is_animation_finished()) {
+        notify_sprite_animation_finished(*sprite, sprite->get_current_animation());
       }
     }
   }
@@ -2600,9 +2579,8 @@ void MapEntity::draw_on_map() {
   }
 
   // Draw the sprites.
-  for (auto it = sprites.begin(); it != sprites.end(); ++it) {
-    Sprite& sprite = *(*it);
-    get_map().draw_sprite(sprite, get_displayed_xy());
+  for (Sprite* sprite: sprites) {
+    get_map().draw_sprite(*sprite, get_displayed_xy());
   }
 }
 

@@ -59,8 +59,7 @@ Sound::~Sound() {
   if (is_initialized() && buffer != AL_NONE) {
 
     // stop the sources where this buffer is attached
-    for (auto it = sources.begin(); it != sources.end(); ++it) {
-      ALuint source = (*it);
+    for (ALuint source: sources) {
       alSourceStop(source);
       alSourcei(source, AL_BUFFER, 0);
       alDeleteSources(1, &source);
@@ -162,8 +161,8 @@ void Sound::load_all() {
 
     const std::vector<QuestResourceList::Element>& sound_elements =
         QuestResourceList::get_elements(QuestResourceList::RESOURCE_SOUND);
-    for (auto it = sound_elements.begin(); it != sound_elements.end(); ++it) {
-      const std::string& sound_id = it->first;
+    for (const auto& kvp: sound_elements) {
+      const std::string& sound_id = kvp.first;
 
       all_sounds[sound_id] = Sound(sound_id);
       all_sounds[sound_id].load();
@@ -225,17 +224,14 @@ void Sound::set_volume(int volume) {
 void Sound::update() {
 
   // update the playing sounds
-  Sound* sound;
   std::list<Sound*> sounds_to_remove;
-  for (auto it = current_sounds.begin(); it != current_sounds.end(); ++it) {
-    sound = *it;
+  for (Sound* sound: current_sounds) {
     if (!sound->update_playing()) {
       sounds_to_remove.push_back(sound);
     }
   }
 
-  for (auto it = sounds_to_remove.begin(); it != sounds_to_remove.end(); ++it) {
-    sound = *it;
+  for (Sound* sound: sounds_to_remove) {
     current_sounds.remove(sound);
   }
 
@@ -250,7 +246,7 @@ void Sound::update() {
 bool Sound::update_playing() {
 
   // See if this sound is still playing.
-  auto it = sources.begin();
+  const auto it = sources.begin();
   if (it == sources.end()) {
     return false;
   }

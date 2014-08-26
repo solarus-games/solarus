@@ -621,9 +621,7 @@ void Surface::raw_draw_region(
       std::vector<SubSurfaceNode*> subsurfaces = this->subsurfaces;
       this->subsurfaces.clear();  // Avoid infinite recursive calls if there are cycles.
 
-      const auto end = subsurfaces.end();
-      for (auto it = subsurfaces.begin(); it != end; ++it) {
-        SubSurfaceNode* subsurface = *it;
+      for (SubSurfaceNode* subsurface: subsurfaces) {
 
         // TODO draw the subsurfaces of the whole tree recursively instead.
         // The current version is not correct because it handles only one level
@@ -823,9 +821,7 @@ void Surface::render(
   }
 
   // The surface is rendered. Now draw all subtextures.
-  const auto end = subsurfaces.end();
-  for (auto it = subsurfaces.begin(); it != end; ++it) {
-    SubSurfaceNode* subsurface = *it;
+  for (SubSurfaceNode* subsurface: subsurfaces) {
 
     // subsurface has to be drawn on this surface
 

@@ -172,16 +172,13 @@ void Explosion::notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, 
 void Explosion::try_attack_enemy(Enemy& enemy, Sprite& enemy_sprite) {
 
   // see if the enemy was already hurt by this explosion
-  bool found = false;
-  for (auto it = victims.begin();
-      it != victims.end() && !found;
-      ++it) {
-    found = ((*it) == &enemy);
+  for (Enemy* victim: victims) {
+    if (victim == &enemy) {
+      return;
+    }
   }
 
-  if (!found) {
-    enemy.try_hurt(ATTACK_EXPLOSION, *this, &enemy_sprite);
-  }
+  enemy.try_hurt(ATTACK_EXPLOSION, *this, &enemy_sprite);
 }
 
 /**

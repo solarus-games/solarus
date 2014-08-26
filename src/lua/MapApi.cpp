@@ -861,12 +861,12 @@ void entity_creation_check_size(
   if (width < 0 || width % 8 != 0) {
     std::ostringstream oss;
     oss << "Invalid width " << width << ": should be a positive multiple of 8";
-    LuaTools::arg_error(l, 1, oss.str());
+    LuaTools::arg_error(l, index, oss.str());
   }
   if (height < 0 || height % 8 != 0) {
     std::ostringstream oss;
     oss << "Invalid height " << height << ": should be a positive multiple of 8";
-    LuaTools::arg_error(l, 1, oss.str());
+    LuaTools::arg_error(l, index, oss.str());
   }
 }
 

@@ -58,6 +58,7 @@ class MainLoop {
     void notify_input(const InputEvent& event);
     void draw();
     void update();
+
 };
 
 }

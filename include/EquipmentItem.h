@@ -89,7 +89,7 @@ class EquipmentItem: public ExportableToLua {
     int get_max_amount() const;
     void set_max_amount(int max_amount);
 
-    virtual const std::string& get_lua_type_name() const;
+    virtual const std::string& get_lua_type_name() const override;
 
   private:
 
@@ -109,6 +109,7 @@ class EquipmentItem: public ExportableToLua {
     std::string sound_when_picked;       /**< sound to play when the item is picked on the ground (or an empty string) */
     std::string sound_when_brandished;   /**< sound to play when the item is brandished (or an empty string) */
     std::string shadow;                  /**< animation of the shadow sprite when the item is on the ground (or an empty string) */
+
 };
 
 }

@@ -51,6 +51,7 @@ class EquipmentItemUsage {
 
     // state
     bool finished;           /**< true if we have finished using this item or not using it */
+
 };
 
 }

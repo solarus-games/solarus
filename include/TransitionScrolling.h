@@ -40,14 +40,14 @@ class TransitionScrolling: public Transition {
     TransitionScrolling(Direction direction);
     ~TransitionScrolling();
 
-    bool needs_previous_surface() const;
+    virtual bool needs_previous_surface() const override;
 
-    void start();
-    bool is_started() const;
-    bool is_finished() const;
-    void notify_suspended(bool suspended);
-    void update();
-    void draw(Surface& dst_surface);
+    virtual void start() override;
+    virtual bool is_started() const override;
+    virtual bool is_finished() const override;
+    virtual void notify_suspended(bool suspended) override;
+    virtual void update() override;
+    virtual void draw(Surface& dst_surface) override;
 
   private:
 

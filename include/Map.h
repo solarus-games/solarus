@@ -81,7 +81,7 @@ class Map: public ExportableToLua {
     void unload();
     Game& get_game();
     LuaContext& get_lua_context();
-    virtual const std::string& get_lua_type_name() const;
+    virtual const std::string& get_lua_type_name() const override;
 
     void notify_opening_transition_finished();
 

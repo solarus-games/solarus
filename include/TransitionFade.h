@@ -37,16 +37,16 @@ class TransitionFade: public Transition {
 
     void set_delay(uint32_t delay);
 
-    void start();
+    virtual void start() override;
     bool is_colored() const;
     const Color& get_color() const;
     void set_color(const Color& color);
     void clear_color();
-    bool is_started() const;
-    bool is_finished() const;
-    void notify_suspended(bool suspended);
-    void update();
-    void draw(Surface& surface);
+    virtual bool is_started() const override;
+    virtual bool is_finished() const override;
+    virtual void notify_suspended(bool suspended) override;
+    virtual void update() override;
+    virtual void draw(Surface& surface) override;
 
   private:
 

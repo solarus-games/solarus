@@ -82,7 +82,7 @@ class Sprite: public Drawable {
     void restart_animation();
     void stop_animation();
 
-    void set_suspended(bool suspended);
+    virtual void set_suspended(bool suspended) override;
     void set_ignore_suspend(bool ignore_suspend);
     bool is_paused() const;
     void set_paused(bool suspended);
@@ -99,16 +99,16 @@ class Sprite: public Drawable {
     bool test_collision(const Sprite& other, int x1, int y1, int x2, int y2) const;
 
     // udpate and draw
-    void update();
-    void raw_draw(Surface& dst_surface, const Rectangle& dst_position);
-    void raw_draw_region(const Rectangle& region,
-        Surface& dst_surface, const Rectangle& dst_position);
-    void draw_transition(Transition& transition);
-    Surface& get_transition_surface();
+    virtual void update() override;
+    virtual void raw_draw(Surface& dst_surface, const Rectangle& dst_position) override;
+    virtual void raw_draw_region(const Rectangle& region,
+        Surface& dst_surface, const Rectangle& dst_position) override;
+    virtual void draw_transition(Transition& transition);
+    virtual Surface& get_transition_surface() override;
 
     LuaContext* get_lua_context() const;
     void set_lua_context(LuaContext* lua_context);
-    const std::string& get_lua_type_name() const;
+    virtual const std::string& get_lua_type_name() const override;
 
   private:
 

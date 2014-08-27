@@ -107,7 +107,7 @@ class Savegame: public ExportableToLua {
     void notify_game_started();
     void notify_game_finished();
 
-    virtual const std::string& get_lua_type_name() const;
+    virtual const std::string& get_lua_type_name() const override;
 
   private:
 

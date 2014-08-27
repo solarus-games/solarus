@@ -34,7 +34,6 @@ class CommandLine {
   public:
 
     CommandLine(int argc, char** argv);
-    ~CommandLine();
 
     const std::string& get_program_name() const;
     const std::vector<std::string>& get_arguments() const;

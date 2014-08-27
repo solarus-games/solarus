@@ -36,12 +36,6 @@ CommandLine::CommandLine(int argc, char** argv) {
 }
 
 /**
- * \brief Destructor.
- */
-CommandLine::~CommandLine() {
-}
-
-/**
  * \brief Returns the program name that was passed as first argument of main().
  * \return The program name, or an empty string if unknown.
  */

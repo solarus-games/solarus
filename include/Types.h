@@ -25,7 +25,7 @@
 #ifndef SOLARUS_TYPES_H
 #define SOLARUS_TYPES_H
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace solarus {
 

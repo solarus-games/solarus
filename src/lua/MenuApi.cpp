@@ -97,15 +97,15 @@ void LuaContext::remove_menus(int context_index) {
 
   // Some menu:on_finished() callbacks may create menus themselves,
   // and we don't want those new menus to get removed.
-  for (auto it = menus.begin(); it != menus.end(); ++it) {
-    it->recently_added = false;
+  for (LuaMenuData& menu: menus) {
+    menu.recently_added = false;
   }
 
-  for (auto it = menus.begin(); it != menus.end(); ++it) {
-    int menu_ref = it->ref;
-    if (it->context == context && !it->recently_added) {
-      it->ref = LUA_REFNIL;
-      it->context = nullptr;
+  for (LuaMenuData& menu: menus) {
+    int menu_ref = menu.ref;
+    if (menu.context == context && !menu.recently_added) {
+      menu.ref = LUA_REFNIL;
+      menu.context = nullptr;
       menu_on_finished(menu_ref);
       destroy_ref(menu_ref);
     }
@@ -121,17 +121,17 @@ void LuaContext::remove_menus() {
 
   // Some menu:on_finished() callbacks may create menus themselves,
   // and we don't want those new menus to get removed.
-  for (auto it = menus.begin(); it != menus.end(); ++it) {
-    it->recently_added = false;
+  for (LuaMenuData& menu: menus) {
+    menu.recently_added = false;
   }
 
-  for (auto it = menus.begin(); it != menus.end(); ++it) {
+  for (LuaMenuData& menu: menus) {
 
-    if (!it->recently_added) {
-      int menu_ref = it->ref;
+    if (!menu.recently_added) {
+      int menu_ref = menu.ref;
       if (menu_ref != LUA_REFNIL) {
-        it->ref = LUA_REFNIL;
-        it->context = nullptr;
+        menu.ref = LUA_REFNIL;
+        menu.context = nullptr;
         menu_on_finished(menu_ref);
         destroy_ref(menu_ref);
       }
@@ -144,11 +144,10 @@ void LuaContext::remove_menus() {
  */
 void LuaContext::destroy_menus() {
 
-  for (auto it = menus.begin(); it != menus.end(); ++it) {
+  for (LuaMenuData& menu: menus) {
 
-    int menu_ref = it->ref;
-    if (menu_ref != LUA_REFNIL) {
-      destroy_ref(menu_ref);
+    if (menu.ref != LUA_REFNIL) {
+      destroy_ref(menu.ref);
     }
   }
   menus.clear();
@@ -214,13 +213,13 @@ int LuaContext::menu_api_stop(lua_State* l) {
 
   int menu_ref = LUA_REFNIL;
   std::list<LuaMenuData>& menus = lua_context.menus;
-  for (auto it = menus.begin(); it != menus.end(); it++) {
-    int ref = it->ref;
+  for (LuaMenuData& menu: menus) {
+    int ref = menu.ref;
     push_ref(l, ref);
     if (lua_equal(l, 1, -1)) {
       menu_ref = ref;
-      it->ref = LUA_REFNIL;  // Don't erase it immediately since we may be iterating over menus.
-      it->context = nullptr;
+      menu.ref = LUA_REFNIL;  // Don't erase it immediately since we may be iterating over menus.
+      menu.context = nullptr;
       lua_context.menu_on_finished(menu_ref);
       lua_context.destroy_ref(menu_ref);
       break;
@@ -260,13 +259,14 @@ int LuaContext::menu_api_is_started(lua_State* l) {
 
   bool found = false;
   std::list<LuaMenuData>& menus = lua_context.menus;
-  for (auto it = menus.begin();
-      it != menus.end() && !found;
-      ++it) {
-    int ref = it->ref;
-    push_ref(l, ref);
+  for (LuaMenuData& menu: menus) {
+    push_ref(l, menu.ref);
     found = lua_equal(l, 1, -1);
     lua_pop(l, 1);
+
+    if (found) {
+      break;
+    }
   }
 
   lua_pushboolean(l, found);
@@ -410,10 +410,9 @@ void LuaContext::menus_on_update(int context_index) {
     context = lua_topointer(l, context_index);
   }
 
-  for (auto it = menus.begin(); it != menus.end(); ++it) {
-    int menu_ref = it->ref;
-    if (it->context == context) {
-      menu_on_update(menu_ref);
+  for (LuaMenuData& menu: menus) {
+    if (menu.context == context) {
+      menu_on_update(menu.ref);
     }
   }
 }
@@ -435,10 +434,9 @@ void LuaContext::menus_on_draw(int context_index, Surface& dst_surface) {
     context = lua_topointer(l, context_index);
   }
 
-  for (auto it = menus.begin(); it != menus.end(); ++it) {
-    int menu_ref = it->ref;
-    if (it->context == context) {
-      menu_on_draw(menu_ref, dst_surface);
+  for (LuaMenuData& menu: menus) {
+    if (menu.context == context) {
+      menu_on_draw(menu.ref, dst_surface);
     }
   }
 }

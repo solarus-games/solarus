@@ -50,9 +50,9 @@ void LuaContext::push_dialog(lua_State* l, const Dialog& dialog) {
   // User properties.
   const std::map<std::string, std::string>& properties =
       dialog.get_properties();
-  for (auto it = properties.begin(); it != properties.end(); ++it) {
-    push_string(l, it->second);
-    lua_setfield(l, -2, it->first.c_str());
+  for (const auto& kvp: properties) {
+    push_string(l, kvp.second);
+    lua_setfield(l, -2, kvp.first.c_str());
   }
 }
 
@@ -148,8 +148,8 @@ int LuaContext::language_api_get_languages(lua_State* l) {
 
   lua_newtable(l);
   int i = 1;
-  for (auto it = languages.begin(); it != languages.end(); ++it) {
-    const std::string& language_code = it->first;
+  for (const auto& kvp: languages) {
+    const std::string& language_code = kvp.first;
     push_string(l, language_code);
     lua_rawseti(l, -2, i);
     ++i;

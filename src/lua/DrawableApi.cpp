@@ -100,8 +100,7 @@ void LuaContext::remove_drawable(Drawable* drawable) {
  */
 void LuaContext::destroy_drawables() {
 
-  for (auto it = drawables.begin(); it != drawables.end(); ++it) {
-    Drawable* drawable = *it;
+  for (Drawable* drawable: drawables) {
     RefCountable::unref(drawable);
   }
   drawables.clear();
@@ -114,16 +113,14 @@ void LuaContext::destroy_drawables() {
 void LuaContext::update_drawables() {
 
   // Update all drawables.
-  for (auto it = drawables.begin(); it != drawables.end(); ++it) {
-    Drawable* drawable = *it;
+  for (Drawable* drawable: drawables) {
     if (has_drawable(drawable)) {
       drawable->update();
     }
   }
 
   // Remove the ones that should be removed.
-  for (auto it = drawables_to_remove.begin(); it != drawables_to_remove.end(); ++it) {
-    Drawable* drawable = *it;
+  for (Drawable* drawable: drawables_to_remove) {
     drawables.erase(drawable);
     RefCountable::unref(drawable);
   }

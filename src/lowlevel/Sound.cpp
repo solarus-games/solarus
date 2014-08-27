@@ -246,12 +246,11 @@ void Sound::update() {
 bool Sound::update_playing() {
 
   // See if this sound is still playing.
-  const auto it = sources.begin();
-  if (it == sources.end()) {
+  if (sources.empty()) {
     return false;
   }
 
-  ALuint source = *it;
+  ALuint source = *sources.begin();
   ALint status;
   alGetSourcei(source, AL_SOURCE_STATE, &status);
 

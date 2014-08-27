@@ -83,20 +83,19 @@ void TextSurface::load_fonts() {
  */
 void TextSurface::quit() {
 
-  for (auto it = fonts.begin(); it != fonts.end(); ++it) {
-    std::string font_id = it->first;
-    FontData* font = &it->second;
+  for (auto& kvp: fonts) {
+    FontData& font = kvp.second;
 
-    if (font->bitmap != nullptr) {
+    if (font.bitmap != nullptr) {
       // It's a bitmap font.
-      RefCountable::unref(font->bitmap);
-      font->bitmap = nullptr;
+      RefCountable::unref(font.bitmap);
+      font.bitmap = nullptr;
     }
     else {
       // It's a normal font.
-      TTF_CloseFont(font->internal_font);
-      SDL_RWclose(font->rw);
-      FileTools::data_file_close_buffer(font->buffer);
+      TTF_CloseFont(font.internal_font);
+      SDL_RWclose(font.rw);
+      FileTools::data_file_close_buffer(font.buffer);
     }
   }
 

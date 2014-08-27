@@ -505,17 +505,15 @@ bool LuaTools::is_valid_lua_identifier(const std::string& name) {
     return false;
   }
 
-  bool valid = true;
-  for (auto it = name.begin();
-      it != name.end() && valid;
-      ++it) {
-    char character = *it;
-    valid = (character == '_' ||
-        (character >= 'a' && character <= 'z') ||
-        (character >= 'A' && character <= 'Z') ||
-        (character >= '0' && character <= '9'));
+  for (char character: name) {
+    if (character != '_' &&
+        !(character >= 'a' && character <= 'z') &&
+        !(character >= 'A' && character <= 'Z') &&
+        !(character >= '0' && character <= '9')) {
+      return false;
+    }
   }
-  return valid;
+  return true;
 }
 
 }

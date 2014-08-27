@@ -134,8 +134,7 @@ int LuaContext::video_api_get_modes(lua_State* l) {
   lua_newtable(l);
 
   int i = 1;
-  for (auto it = modes.begin(); it != modes.end(); ++it) {
-    const VideoMode* mode = *it;
+  for (const VideoMode* mode: modes) {
     push_string(l, mode->get_name());
     lua_rawseti(l, -2, i);
     ++i;

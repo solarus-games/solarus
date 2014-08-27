@@ -120,8 +120,8 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
 
 #ifndef NDEBUG
   // Sanity check: check the uniqueness of the ref.
-  for (auto it = timers.begin(); it != timers.end(); ++it) {
-    if (it->second.callback_ref == callback_ref) {
+  for (const auto& kvp: timers) {
+    if (kvp.second.callback_ref == callback_ref) {
       std::ostringstream oss;
       oss << "Callback ref " << callback_ref
           << " is already used by a timer (duplicate luaL_unref?)";
@@ -211,13 +211,13 @@ void LuaContext::remove_timers(int context_index) {
     context = lua_topointer(l, context_index);
   }
 
-  for (auto it = timers.begin(); it != timers.end(); ++it) {
-    Timer* timer = it->first;
-    if (it->second.context == context) {
+  for (auto& kvp: timers) {
+    Timer* timer = kvp.first;
+    if (kvp.second.context == context) {
       if (!timer->is_finished()) {
-        destroy_ref(it->second.callback_ref);
+        destroy_ref(kvp.second.callback_ref);
       }
-      it->second.callback_ref = LUA_REFNIL;
+      kvp.second.callback_ref = LUA_REFNIL;
       timers_to_remove.push_back(timer);
     }
   }
@@ -228,11 +228,11 @@ void LuaContext::remove_timers(int context_index) {
  */
 void LuaContext::destroy_timers() {
 
-  for (auto it = timers.begin(); it != timers.end(); ++it) {
+  for (const auto& kvp: timers) {
 
-    Timer* timer = it->first;
+    Timer* timer = kvp.first;
     if (!timer->is_finished()) {
-      destroy_ref(it->second.callback_ref);
+      destroy_ref(kvp.second.callback_ref);
     }
     RefCountable::unref(timer);
   }
@@ -245,10 +245,10 @@ void LuaContext::destroy_timers() {
 void LuaContext::update_timers() {
 
   // Update all timers.
-  for (auto it = timers.begin(); it != timers.end(); ++it) {
+  for (const auto& kvp: timers) {
 
-    Timer* timer = it->first;
-    int callback_ref = it->second.callback_ref;
+    Timer* timer = kvp.first;
+    int callback_ref = kvp.second.callback_ref;
     if (callback_ref != LUA_REFNIL) {
       // The timer is not being removed: update it.
       timer->update();
@@ -259,12 +259,9 @@ void LuaContext::update_timers() {
   }
 
   // Destroy the ones that should be removed.
-  for (auto it2 = timers_to_remove.begin();
-      it2 != timers_to_remove.end();
-      ++it2) {
+  for (Timer* timer: timers_to_remove) {
 
-    Timer* timer = *it2;
-    auto it = timers.find(timer);
+    const auto& it = timers.find(timer);
     if (it != timers.end()) {
       if (!timer->is_finished()) {
         cancel_callback(it->second.callback_ref);
@@ -286,8 +283,8 @@ void LuaContext::update_timers() {
  */
 void LuaContext::notify_timers_map_suspended(bool suspended) {
 
-  for (auto it = timers.begin(); it != timers.end(); ++it) {
-    Timer* timer = it->first;
+  for (const auto& kvp: timers) {
+    Timer* timer = kvp.first;
     if (timer->is_suspended_with_map()) {
       timer->notify_map_suspended(suspended);
     }
@@ -306,10 +303,9 @@ void LuaContext::set_entity_timers_suspended(
     MapEntity& entity, bool suspended
 ) {
 
-  for (auto it = timers.begin(); it != timers.end(); ++it) {
-
-    Timer* timer = it->first;
-    if (it->second.context == &entity) {
+  for (const auto& kvp: timers) {
+    Timer* timer = kvp.first;
+    if (kvp.second.context == &entity) {
       timer->set_suspended(suspended);
     }
   }

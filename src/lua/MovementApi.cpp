@@ -1685,15 +1685,14 @@ int LuaContext::pixel_movement_api_get_trajectory(lua_State* l) {
   lua_settop(l, 1);
   lua_newtable(l);
   int i = 0;
-  for (auto it = trajectory.begin(); it != trajectory.end(); ++it) {
-    const Rectangle& xy = *it;
+  for (const Rectangle& xy: trajectory) {
     lua_newtable(l);
     lua_pushinteger(l, xy.get_x());
     lua_rawseti(l, 3, 1);
     lua_pushinteger(l, xy.get_y());
     lua_rawseti(l, 3, 2);
     lua_rawseti(l, 2, i);
-    i++;
+    ++i;
   }
 
   return 1;

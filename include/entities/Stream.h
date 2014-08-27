@@ -43,7 +43,7 @@ class Stream: public Detector {
     );
     ~Stream();
 
-    EntityType get_type() const;
+    virtual EntityType get_type() const override;
 
     int get_speed() const;
     void set_speed(int speed);
@@ -53,10 +53,13 @@ class Stream: public Detector {
     void set_allow_attack(bool allow_attack);
     bool get_allow_item() const;
     void set_allow_item(bool allow_item);
-    void notify_direction_changed();
+    virtual void notify_direction_changed() override;
 
-    bool is_obstacle_for(MapEntity& other);
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual void notify_collision(
+            MapEntity& entity_overlapping,
+            CollisionMode collision_mode
+    ) override;
     void activate(MapEntity& target);
 
   private:

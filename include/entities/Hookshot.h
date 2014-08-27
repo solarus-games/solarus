@@ -33,43 +33,44 @@ class Hookshot: public MapEntity {
     Hookshot(const Hero& hero);
     ~Hookshot();
 
-    EntityType get_type() const;
-    bool can_be_obstacle() const;
+    virtual EntityType get_type() const override;
+    virtual bool can_be_obstacle() const override;
 
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_stream_obstacle(Stream& stream);
-    bool is_stairs_obstacle(Stairs& stairs);
-    bool is_deep_water_obstacle() const;
-    bool is_hole_obstacle() const;
-    bool is_lava_obstacle() const;
-    bool is_prickle_obstacle() const;
-    bool is_ladder_obstacle() const;
-    bool is_switch_obstacle(Switch& sw);
-    bool is_crystal_obstacle(Crystal& crystal);
-    bool is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position);
+    virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter) override;
+    virtual bool is_stream_obstacle(Stream& stream) override;
+    virtual bool is_stairs_obstacle(Stairs& stairs) override;
+    virtual bool is_deep_water_obstacle() const override;
+    virtual bool is_hole_obstacle() const override;
+    virtual bool is_lava_obstacle() const override;
+    virtual bool is_prickle_obstacle() const override;
+    virtual bool is_ladder_obstacle() const override;
+    virtual bool is_switch_obstacle(Switch& sw) override;
+    virtual bool is_crystal_obstacle(Crystal& crystal) override;
+    virtual bool is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) override;
 
     // state
-    void update();
-    virtual void draw_on_map();
+    virtual void update() override;
+    virtual void draw_on_map() override;
     bool is_flying() const;
     bool is_going_back() const;
     void go_back();
     void attach_to(MapEntity& entity_reached);
 
     // collisions
-    void notify_obstacle_reached();
-    void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
-    void notify_attacked_enemy(
+    virtual void notify_obstacle_reached() override;
+    virtual void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) override;
+    virtual void notify_attacked_enemy(
         EnemyAttack attack,
         Enemy& victim,
         const Sprite* victim_sprite,
         EnemyReaction::Reaction& result,
-        bool killed);
-    void notify_collision_with_chest(Chest& chest);
-    void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
-    void notify_collision_with_block(Block& block);
-    void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
-    void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
+        bool killed
+    ) override;
+    virtual void notify_collision_with_chest(Chest& chest) override;
+    virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_block(Block& block) override;
+    virtual void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) override;
 
   private:
 

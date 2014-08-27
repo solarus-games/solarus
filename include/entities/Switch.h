@@ -59,8 +59,8 @@ class Switch: public Detector {
     );
     ~Switch();
 
-    EntityType get_type() const;
-    bool is_obstacle_for(MapEntity& other);
+    virtual EntityType get_type() const override;
+    virtual bool is_obstacle_for(MapEntity& other) override;
 
     bool is_walkable() const;
     bool is_arrow_target() const;
@@ -75,10 +75,17 @@ class Switch: public Detector {
     void try_activate(Arrow& arrow);
     void try_activate();
 
-    void update();
-    bool test_collision_custom(MapEntity& entity);
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
-    void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
+    virtual void update() override;
+    virtual bool test_collision_custom(MapEntity& entity) override;
+    virtual void notify_collision(
+        MapEntity& entity_overlapping,
+        CollisionMode collision_mode
+    ) override;
+    virtual void notify_collision(
+        MapEntity& other_entity,
+        Sprite& other_sprite,
+        Sprite& this_sprite
+    ) override;
 
     static const std::string subtype_names[];  /**< Lua names of the Subtype enum. */
 

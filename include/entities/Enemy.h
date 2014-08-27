@@ -93,12 +93,12 @@ class Enemy: public Detector {
         int direction,
         const Treasure& treasure);
 
-    EntityType get_type() const;
-    bool is_ground_observer() const;
+    virtual EntityType get_type() const override;
+    virtual bool is_ground_observer() const override;
 
-    void notify_creating();
-    void notify_created();
-    void notify_map_opening_transition_finished();
+    virtual void notify_creating() override;
+    virtual void notify_created() override;
+    virtual void notify_map_opening_transition_finished() override;
     Rank get_rank() const;
 
     // Enemy properties.
@@ -145,30 +145,30 @@ class Enemy: public Detector {
     void set_animation(const std::string& animation);
 
     // obstacles
-    bool is_obstacle_for(MapEntity& other);
-    bool is_destructible_obstacle(Destructible& destructible);
-    bool is_block_obstacle(Block& block);
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_raised_block_obstacle(CrystalBlock& raised_block);
-    bool is_low_wall_obstacle() const;
-    bool is_deep_water_obstacle() const;
-    bool is_shallow_water_obstacle() const;
-    bool is_hole_obstacle() const;
-    bool is_prickle_obstacle() const;
-    bool is_lava_obstacle() const;
+    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual bool is_destructible_obstacle(Destructible& destructible) override;
+    virtual bool is_block_obstacle(Block& block) override;
+    virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter) override;
+    virtual bool is_raised_block_obstacle(CrystalBlock& raised_block) override;
+    virtual bool is_low_wall_obstacle() const override;
+    virtual bool is_deep_water_obstacle() const override;
+    virtual bool is_shallow_water_obstacle() const override;
+    virtual bool is_hole_obstacle() const override;
+    virtual bool is_prickle_obstacle() const override;
+    virtual bool is_lava_obstacle() const override;
 
     // enemy state
-    void update();
-    void set_suspended(bool suspended);
-    void draw_on_map();
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
+    virtual void draw_on_map() override;
 
-    void notify_enabled(bool enabled);
-    void notify_ground_below_changed();
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
-    void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
-    void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
-    void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping);
-    void notify_collision_with_enemy(Enemy& other, Sprite& other_sprite, Sprite& this_sprite);
+    virtual void notify_enabled(bool enabled) override;
+    virtual void notify_ground_below_changed() override;
+    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) override;
+    virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
+    virtual void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) override;
+    virtual void notify_collision_with_enemy(Enemy& other, Sprite& other_sprite, Sprite& this_sprite) override;
 
     // attack the hero
     void attack_hero(Hero& hero, Sprite* this_sprite);

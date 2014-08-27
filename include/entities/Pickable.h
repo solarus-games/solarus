@@ -39,10 +39,10 @@ class Pickable: public Detector {
 
     ~Pickable();
 
-    EntityType get_type() const;
-    bool can_be_obstacle() const;
+    virtual EntityType get_type() const override;
+    virtual bool can_be_obstacle() const override;
 
-    void notify_created();
+    virtual void notify_created() override;
 
     // properties
     bool is_falling();
@@ -50,12 +50,12 @@ class Pickable: public Detector {
     const Treasure& get_treasure();
 
     // item state
-    void set_suspended(bool suspended);
+    virtual void set_suspended(bool suspended) override;
     MapEntity* get_entity_followed();
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
-    void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
-    void update();
-    void draw_on_map();
+    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) override;
+    virtual void update() override;
+    virtual void draw_on_map() override;
 
   private:
 

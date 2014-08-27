@@ -73,18 +73,18 @@ class Stairs: public Detector {
        int direction, Subtype subtype);
     ~Stairs();
 
-    EntityType get_type() const;
-    bool can_be_drawn() const;
+    virtual EntityType get_type() const override;
+    virtual bool can_be_drawn() const override;
     bool can_change_ground() const;
     Ground get_ground() const;
 
-    void notify_creating();
+    virtual void notify_creating() override;
     bool is_inside_floor() const;
-    bool has_layer_independent_collisions() const;
-    bool is_sword_ignored() const;
-    bool is_obstacle_for(MapEntity& other);
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
-    void notify_enabled(bool enabled);
+    virtual bool has_layer_independent_collisions() const override;
+    virtual bool is_sword_ignored() const override;
+    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual void notify_enabled(bool enabled) override;
 
     int get_movement_direction(Way way);
     int get_animation_direction(Way way);

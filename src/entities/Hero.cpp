@@ -489,7 +489,7 @@ void Hero::notify_command_released(GameCommands::Command command) {
  * \brief Returns the sprites currently representing the hero.
  * \return the sprites
  */
-HeroSprites& Hero::get_sprites() {
+HeroSprites& Hero::get_hero_sprites() {
   return *sprites;
 }
 
@@ -560,7 +560,7 @@ void Hero::notify_creating() {
 void Hero::notify_map_started() {
 
   MapEntity::notify_map_started();
-  get_sprites().notify_map_started();
+  get_hero_sprites().notify_map_started();
 
   // At this point the map is known and loaded. Notify the state.
   state->set_map(get_map());
@@ -572,7 +572,7 @@ void Hero::notify_map_started() {
 void Hero::notify_tileset_changed() {
 
   MapEntity::notify_tileset_changed();
-  get_sprites().notify_tileset_changed();
+  get_hero_sprites().notify_tileset_changed();
 }
 
 /**
@@ -594,7 +594,7 @@ void Hero::set_map(Map& map, int initial_direction) {
   last_solid_ground_coords.set_xy(-1, -1);
   last_solid_ground_layer = LAYER_LOW;
   reset_target_solid_ground_coords();
-  get_sprites().set_clipping_rectangle();
+  get_hero_sprites().set_clipping_rectangle();
 
   state->set_map(map);
 

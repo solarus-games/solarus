@@ -36,14 +36,14 @@ class Sensor: public Detector {
     Sensor(const std::string& name, Layer layer, int x, int y, int width, int height);
     ~Sensor();
 
-    EntityType get_type() const;
-    bool can_be_drawn() const;
+    virtual EntityType get_type() const override;
+    virtual bool can_be_drawn() const override;
 
-    bool is_obstacle_for(MapEntity& other);
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
-    void notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode);
+    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode) override;
     void activate(Hero& hero);
-    void update();
+    virtual void update() override;
 
   private:
 

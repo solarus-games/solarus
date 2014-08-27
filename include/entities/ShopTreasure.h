@@ -48,20 +48,21 @@ class ShopTreasure: public Detector {
         int y,
         const Treasure& treasure,
         int price,
-        const std::string& dialog_id);
+        const std::string& dialog_id
+    );
 
-    EntityType get_type() const;
+    virtual EntityType get_type() const override;
 
     const Treasure& get_treasure() const;
     int get_price() const;
     const std::string& get_dialog_id() const;
 
-    bool is_sword_ignored() const;
-    bool is_obstacle_for(MapEntity& other);
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
-    bool notify_action_command_pressed();
+    virtual bool is_sword_ignored() const override;
+    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual bool notify_action_command_pressed() override;
 
-    void draw_on_map();
+    virtual void draw_on_map() override;
 
   private:
 

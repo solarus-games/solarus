@@ -49,16 +49,16 @@ class Hero: public MapEntity {
      * These functions, required by MapEntity, indicate
      * the main properties of this type of entity.
      */
-    EntityType get_type() const;
+    virtual EntityType get_type() const override;
 
     /**
      * \name Game loop.
      *
      * Functions called by the game loop.
      */
-    void update();
-    void draw_on_map();
-    void set_suspended(bool suspended);
+    virtual void update() override;
+    virtual void draw_on_map() override;
+    virtual void set_suspended(bool suspended) override;
     void notify_command_pressed(GameCommands::Command command);
     void notify_command_released(GameCommands::Command command);
 
@@ -68,7 +68,7 @@ class Hero: public MapEntity {
      * Functions relative to the sprites.
      * The sprites are managed and drawn by the class HeroSprites.
      */
-    HeroSprites& get_sprites();
+    HeroSprites& get_hero_sprites();
     int get_animation_direction() const;
     void set_animation_direction(int direction);
     bool is_animation_finished() const;
@@ -81,11 +81,11 @@ class Hero: public MapEntity {
      * Functions called when the player goes to another map.
      */
     void set_map(Map& map, int initial_direction);
-    void notify_creating();
-    void notify_map_started();
-    void notify_tileset_changed();
+    virtual void notify_creating() override;
+    virtual void notify_map_started() override;
+    virtual void notify_tileset_changed() override;
     void place_on_destination(Map& map, const Rectangle& previous_map_location);
-    void notify_map_opening_transition_finished();
+    virtual void notify_map_opening_transition_finished() override;
 
     /**
      * \name Position.
@@ -94,8 +94,8 @@ class Hero: public MapEntity {
      * the hero relative to other entities, and about
      * what is in front of him (we call this the "facing point").
      */
-    const Rectangle get_facing_point() const;
-    void notify_facing_entity_changed(Detector* facing_entity);
+    virtual const Rectangle get_facing_point() const override;
+    virtual void notify_facing_entity_changed(Detector* facing_entity) override;
     bool is_facing_obstacle();
     bool is_facing_point_on_obstacle();
     bool is_facing_direction4(int direction4) const;
@@ -121,11 +121,11 @@ class Hero: public MapEntity {
     int get_real_movement_direction8();
     bool is_moving_towards(int direction4) const;
     bool is_direction_locked() const;
-    void notify_obstacle_reached();
-    void notify_position_changed();
-    void notify_layer_changed();
-    void notify_movement_changed();
-    void notify_movement_finished();
+    virtual void notify_obstacle_reached() override;
+    virtual void notify_position_changed() override;
+    virtual void notify_layer_changed() override;
+    virtual void notify_movement_changed() override;
+    virtual void notify_movement_finished() override;
     void reset_movement();
 
     /**
@@ -136,9 +136,9 @@ class Hero: public MapEntity {
      * or something bad can happen (deep water, holes).
      */
     bool is_ground_visible() const;
-    bool is_ground_observer() const;
-    const Rectangle get_ground_point() const;
-    void notify_ground_below_changed();
+    virtual bool is_ground_observer() const override;
+    virtual const Rectangle get_ground_point() const override;
+    virtual void notify_ground_below_changed() override;
     const Rectangle& get_last_solid_ground_coords() const;
     Layer get_last_solid_ground_layer() const;
     const Rectangle& get_target_solid_ground_coords() const;
@@ -154,21 +154,21 @@ class Hero: public MapEntity {
      *
      * Information about what is considered as an obstacle for the hero.
      */
-    bool is_obstacle_for(MapEntity& other);
-    bool is_shallow_water_obstacle() const;
-    bool is_deep_water_obstacle() const;
-    bool is_hole_obstacle() const;
-    bool is_lava_obstacle() const;
-    bool is_prickle_obstacle() const;
-    bool is_ladder_obstacle() const;
-    bool is_block_obstacle(Block& block);
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_stream_obstacle(Stream& stream);
-    bool is_stairs_obstacle(Stairs& stairs);
-    bool is_sensor_obstacle(Sensor& sensor);
-    bool is_raised_block_obstacle(CrystalBlock& raised_block);
-    bool is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position);
-    bool is_separator_obstacle(Separator& separator);
+    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual bool is_shallow_water_obstacle() const override;
+    virtual bool is_deep_water_obstacle() const override;
+    virtual bool is_hole_obstacle() const override;
+    virtual bool is_lava_obstacle() const override;
+    virtual bool is_prickle_obstacle() const override;
+    virtual bool is_ladder_obstacle() const override;
+    virtual bool is_block_obstacle(Block& block) override;
+    virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter) override;
+    virtual bool is_stream_obstacle(Stream& stream) override;
+    virtual bool is_stairs_obstacle(Stairs& stairs) override;
+    virtual bool is_sensor_obstacle(Sensor& sensor) override;
+    virtual bool is_raised_block_obstacle(CrystalBlock& raised_block) override;
+    virtual bool is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) override;
+    virtual bool is_separator_obstacle(Separator& separator) override;
 
     /**
      * \name Collisions.
@@ -176,23 +176,23 @@ class Hero: public MapEntity {
      * Handle collisions between the hero and other entities.
      */
     void check_position();
-    void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
-    void notify_collision_with_enemy(Enemy& enemy);
-    void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
-    void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode);
-    void notify_collision_with_stream(Stream& stream, int dx, int dy);
-    void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode);
-    void notify_collision_with_jumper(Jumper& jumper, CollisionMode collision_mode);
-    void notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode);
-    void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
-    void notify_collision_with_switch(Switch& sw, Sprite &sprite_overlapping);
-    void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
-    void notify_collision_with_crystal(Crystal& crystal, Sprite &sprite_overlapping);
-    void notify_collision_with_chest(Chest& chest);
-    void notify_collision_with_block(Block& block);
-    void notify_collision_with_separator(Separator& separator, CollisionMode collision_mode);
-    void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode);
-    void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
+    virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_enemy(Enemy& enemy) override;
+    virtual void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) override;
+    virtual void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_stream(Stream& stream, int dx, int dy) override;
+    virtual void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_jumper(Jumper& jumper, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_switch(Switch& sw, Sprite &sprite_overlapping) override;
+    virtual void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_crystal(Crystal& crystal, Sprite &sprite_overlapping) override;
+    virtual void notify_collision_with_chest(Chest& chest) override;
+    virtual void notify_collision_with_block(Block& block) override;
+    virtual void notify_collision_with_separator(Separator& separator, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) override;
+    virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
     void avoid_collision(MapEntity& entity, int direction);
     bool is_striking_with_sword(Detector& detector) const;
 
@@ -201,12 +201,13 @@ class Hero: public MapEntity {
      *
      * Attacking enemies or getting hurt by them.
      */
-    void notify_attacked_enemy(
+    virtual void notify_attacked_enemy(
         EnemyAttack attack,
         Enemy& victim,
         const Sprite* victim_sprite,
         EnemyReaction::Reaction& result,
-        bool killed);
+        bool killed
+    ) override;
     int get_sword_damage_factor() const;
     bool is_invincible() const;
     void set_invincible(bool invincible, uint32_t duration);

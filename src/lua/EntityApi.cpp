@@ -1458,7 +1458,7 @@ int LuaContext::hero_api_get_animation(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
 
-  const std::string& animation = hero.get_sprites().get_tunic_animation();
+  const std::string& animation = hero.get_hero_sprites().get_tunic_animation();
 
   push_string(l, animation);
   return 1;
@@ -1481,7 +1481,7 @@ int LuaContext::hero_api_set_animation(lua_State* l) {
     callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
   }
 
-  HeroSprites& sprites = hero.get_sprites();
+  HeroSprites& sprites = hero.get_hero_sprites();
   if (!sprites.has_tunic_animation(animation)) {
     LuaTools::arg_error(l, 2,
         std::string("No such animation in tunic sprite: '") + animation + "'"
@@ -1502,7 +1502,7 @@ int LuaContext::hero_api_get_tunic_sprite_id(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
 
-  const std::string& sprite_id = hero.get_sprites().get_tunic_sprite_id();
+  const std::string& sprite_id = hero.get_hero_sprites().get_tunic_sprite_id();
 
   push_string(l, sprite_id);
   return 1;
@@ -1520,7 +1520,7 @@ int LuaContext::hero_api_set_tunic_sprite_id(lua_State* l) {
 
   // TODO check the existence of the sprite animation set
   // (see also sol.sprite.create()).
-  hero.get_sprites().set_tunic_sprite_id(sprite_id);
+  hero.get_hero_sprites().set_tunic_sprite_id(sprite_id);
 
   return 0;
 }
@@ -1534,7 +1534,7 @@ int LuaContext::hero_api_get_sword_sprite_id(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
 
-  const std::string& sprite_id = hero.get_sprites().get_sword_sprite_id();
+  const std::string& sprite_id = hero.get_hero_sprites().get_sword_sprite_id();
 
   push_string(l, sprite_id);
   return 1;
@@ -1550,7 +1550,7 @@ int LuaContext::hero_api_set_sword_sprite_id(lua_State* l) {
   Hero& hero = check_hero(l, 1);
   const std::string& sprite_id = luaL_checkstring(l, 2);
 
-  hero.get_sprites().set_sword_sprite_id(sprite_id);
+  hero.get_hero_sprites().set_sword_sprite_id(sprite_id);
 
   return 0;
 }
@@ -1564,7 +1564,7 @@ int LuaContext::hero_api_get_sword_sound_id(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
 
-  const std::string& sound_id = hero.get_sprites().get_sword_sound_id();
+  const std::string& sound_id = hero.get_hero_sprites().get_sword_sound_id();
 
   push_string(l, sound_id);
   return 1;
@@ -1580,7 +1580,7 @@ int LuaContext::hero_api_set_sword_sound_id(lua_State* l) {
   Hero& hero = check_hero(l, 1);
   const std::string& sound_id = luaL_checkstring(l, 2);
 
-  hero.get_sprites().set_sword_sound_id(sound_id);
+  hero.get_hero_sprites().set_sword_sound_id(sound_id);
 
   return 0;
 }
@@ -1594,7 +1594,7 @@ int LuaContext::hero_api_get_shield_sprite_id(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
 
-  const std::string& sprite_id = hero.get_sprites().get_shield_sprite_id();
+  const std::string& sprite_id = hero.get_hero_sprites().get_shield_sprite_id();
 
   push_string(l, sprite_id);
   return 1;
@@ -1610,7 +1610,7 @@ int LuaContext::hero_api_set_shield_sprite_id(lua_State* l) {
   Hero& hero = check_hero(l, 1);
   const std::string& sprite_id = luaL_checkstring(l, 2);
 
-  hero.get_sprites().set_shield_sprite_id(sprite_id);
+  hero.get_hero_sprites().set_shield_sprite_id(sprite_id);
 
   return 0;
 }
@@ -1624,7 +1624,7 @@ int LuaContext::hero_api_is_blinking(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
 
-  lua_pushboolean(l, hero.get_sprites().is_blinking());
+  lua_pushboolean(l, hero.get_hero_sprites().is_blinking());
   return 1;
 }
 
@@ -1646,10 +1646,10 @@ int LuaContext::hero_api_set_blinking(lua_State* l) {
   }
 
   if (blinking) {
-    hero.get_sprites().blink(duration);
+    hero.get_hero_sprites().blink(duration);
   }
   else {
-    hero.get_sprites().stop_blinking();
+    hero.get_hero_sprites().stop_blinking();
   }
 
   return 0;

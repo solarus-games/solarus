@@ -70,32 +70,32 @@ class Npc: public Detector {
         int initial_direction, const std::string& behavior_string);
     ~Npc();
 
-    EntityType get_type() const;
+    EntityType get_type() const override;
 
     bool is_solid() const;
 
-    bool is_obstacle_for(MapEntity& other);
-    bool is_hero_obstacle(Hero& hero);
-    bool is_npc_obstacle(Npc& npc);
-    bool is_enemy_obstacle(Enemy& enemy);
-    bool is_sword_ignored() const;
+    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual bool is_hero_obstacle(Hero& hero) override;
+    virtual bool is_npc_obstacle(Npc& npc) override;
+    virtual bool is_enemy_obstacle(Enemy& enemy) override;
+    virtual bool is_sword_ignored() const override;
 
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
-    bool notify_action_command_pressed();
-    bool interaction_with_item(EquipmentItem& item);
-    void notify_position_changed();
-    void notify_movement_finished();
+    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual bool notify_action_command_pressed() override;
+    virtual bool interaction_with_item(EquipmentItem& item) override;
+    virtual void notify_position_changed() override;
+    virtual void notify_movement_finished() override;
     bool can_be_lifted() const;
 
   private:
+
+    void initialize_sprite(const std::string& sprite_name, int initial_direction);
+    void call_script_hero_interaction();
 
     Subtype subtype;                    /**< subtpype of NPC */
     Behavior behavior;                  /**< type of action done when the player interacts with this entity */
     std::string dialog_to_show;         /**< dialog to show when an interaction occurs, or an empty string */
     std::string item_name;              /**< name of an equipment item to notify when an interaction occurs */
-
-    void initialize_sprite(const std::string& sprite_name, int initial_direction);
-    void call_script_hero_interaction();
 
 };
 

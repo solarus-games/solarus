@@ -58,7 +58,7 @@ class MapEntity: public ExportableToLua {
      * \return the type of entity
      */
     virtual EntityType get_type() const = 0;
-    virtual const std::string& get_lua_type_name() const;
+    virtual const std::string& get_lua_type_name() const override;
     bool is_hero() const;
     virtual bool is_detector() const;
     virtual bool can_be_obstacle() const;

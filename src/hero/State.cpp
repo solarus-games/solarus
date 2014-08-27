@@ -103,7 +103,7 @@ const Hero& Hero::State::get_hero() const {
  * \return the sprites
  */
 HeroSprites& Hero::State::get_sprites() {
-  return hero.get_sprites();
+  return hero.get_hero_sprites();
 }
 
 /**
@@ -111,7 +111,7 @@ HeroSprites& Hero::State::get_sprites() {
  * \return the sprites
  */
 const HeroSprites& Hero::State::get_sprites() const {
-  return hero.get_sprites();
+  return hero.get_hero_sprites();
 }
 
 /**

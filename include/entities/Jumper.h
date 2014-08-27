@@ -26,28 +26,30 @@ namespace solarus {
  * \brief A sensor that makes the hero jump.
  *
  * A jumper is a detector placed on a map.
- * When the hero touches this detetor, he makes a jump with a specified length.
+ * When the hero touches this detector, he makes a jump with a specified length.
  */
 class Jumper: public Detector {
 
   public:
 
-    Jumper(const std::string& name,
+    Jumper(
+        const std::string& name,
         Layer layer,
         int x,
         int y,
         int width,
         int height,
         int direction,
-        int jump_length);
+        int jump_length
+    );
     ~Jumper();
 
-    EntityType get_type() const;
-    bool can_be_drawn() const;
-    bool is_sword_ignored() const;
-    bool is_obstacle_for(MapEntity& other, const Rectangle& candidate_position);
-    bool test_collision_custom(MapEntity& entity);
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+    virtual EntityType get_type() const override;
+    virtual bool can_be_drawn() const override;
+    virtual bool is_sword_ignored() const override;
+    virtual bool is_obstacle_for(MapEntity& other, const Rectangle& candidate_position) override;
+    virtual bool test_collision_custom(MapEntity& entity) override;
+    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
 
     int get_jump_length() const;
     bool is_jump_horizontal() const;

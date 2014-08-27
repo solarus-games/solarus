@@ -52,13 +52,13 @@ class Tile: public MapEntity {
     );
     ~Tile();
 
-    EntityType get_type() const;
-    void draw_on_map();
+    virtual EntityType get_type() const override;
+    virtual void draw_on_map() override;
     void draw(Surface& dst_surface, const Rectangle& viewport);
     TilePattern& get_tile_pattern();
     const std::string& get_tile_pattern_id() const;
     bool is_animated() const;
-    virtual bool is_drawn_at_its_position() const;
+    virtual bool is_drawn_at_its_position() const override;
 
   private:
 

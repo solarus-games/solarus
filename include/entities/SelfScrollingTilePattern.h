@@ -41,10 +41,10 @@ class SelfScrollingTilePattern: public SimpleTilePattern {
     SelfScrollingTilePattern(Ground ground, int x, int y, int width, int height);
     ~SelfScrollingTilePattern();
 
-    void draw(Surface& dst_surface, const Rectangle& dst_position,
-            Tileset& tileset, const Rectangle& viewport);
+    virtual void draw(Surface& dst_surface, const Rectangle& dst_position,
+            Tileset& tileset, const Rectangle& viewport) override;
 
-    virtual bool is_animated() const;
+    virtual bool is_animated() const override;
 
 };
 

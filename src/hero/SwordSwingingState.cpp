@@ -96,7 +96,7 @@ void Hero::SwordSwingingState::update() {
     }
     else {
       // the sword animation is finished, but the movement continues
-      hero.get_sprites().set_animation_stopped_normal();
+      hero.get_hero_sprites().set_animation_stopped_normal();
     }
   }
 

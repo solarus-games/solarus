@@ -49,9 +49,9 @@ class Wall: public MapEntity {
     );
     ~Wall();
 
-    EntityType get_type() const;
-    bool can_be_drawn() const;
-    bool is_obstacle_for(MapEntity& other);
+    virtual EntityType get_type() const override;
+    virtual bool can_be_drawn() const override;
+    virtual bool is_obstacle_for(MapEntity& other) override;
 
   private:
 

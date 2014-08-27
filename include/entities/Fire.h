@@ -35,14 +35,14 @@ class Fire: public Detector {
     Fire(const std::string& name, Layer layer, const Rectangle& xy);
     ~Fire();
 
-    EntityType get_type() const;
-    bool can_be_obstacle() const;
+    virtual EntityType get_type() const override;
+    virtual bool can_be_obstacle() const override;
 
     // state
-    void update();
+    virtual void update() override;
 
     // collisions
-    void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
+    virtual void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) override;
 
 };
 

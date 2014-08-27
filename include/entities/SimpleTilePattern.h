@@ -37,9 +37,9 @@ class SimpleTilePattern: public TilePattern {
     ~SimpleTilePattern();
 
     virtual void draw(Surface& dst_surface, const Rectangle& dst_position,
-        Tileset& tileset, const Rectangle& viewport);
+        Tileset& tileset, const Rectangle& viewport) override;
 
-    virtual bool is_animated() const;
+    virtual bool is_animated() const override;
 
   protected:
 

@@ -49,8 +49,8 @@ class Teletransporter: public Detector {
     );
     ~Teletransporter();
 
-    EntityType get_type() const;
-    void notify_creating();
+    virtual EntityType get_type() const override;
+    virtual void notify_creating() override;
 
     const std::string& get_sound_id() const;
     void set_sound_id(const std::string& sound_id);
@@ -62,9 +62,12 @@ class Teletransporter: public Detector {
     void set_destination_name(const std::string& destination_name);
     bool is_on_map_side() const;
 
-    bool is_obstacle_for(MapEntity& other);
-    bool test_collision_custom(MapEntity& entity);
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual bool test_collision_custom(MapEntity& entity) override;
+    virtual void notify_collision(
+        MapEntity& entity_overlapping,
+        CollisionMode collision_mode
+    ) override;
     void transport_hero(Hero& hero);
 
   private:

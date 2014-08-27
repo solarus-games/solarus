@@ -34,12 +34,13 @@ class Scale2xFilter: public PixelFilter {
     Scale2xFilter();
     ~Scale2xFilter();
 
-    int get_scaling_factor() const;
-    void filter(
+    virtual int get_scaling_factor() const override;
+    virtual void filter(
         const uint32_t* src,
         int src_width,
         int src_height,
-        uint32_t* dst) const;
+        uint32_t* dst
+    ) const override;
 
 };
 

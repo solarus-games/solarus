@@ -34,20 +34,20 @@ class RandomMovement: public StraightMovement {
     RandomMovement(int speed, int max_radius = 0);
     ~RandomMovement();
 
-    virtual void notify_object_controlled();
-    void update();
-    void set_suspended(bool suspended);
+    virtual void notify_object_controlled() override;
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
 
     double get_normal_speed() const;
     void set_normal_speed(double normal_speed);
     int get_max_radius() const;
     void set_max_radius(int max_radius);
 
-    virtual const std::string& get_lua_type_name() const;
+    virtual const std::string& get_lua_type_name() const override;
 
   protected:
 
-    virtual void notify_obstacle_reached();
+    virtual void notify_obstacle_reached() override;
 
   private:
 

@@ -36,10 +36,10 @@ class RandomPathMovement: public PathMovement {
     RandomPathMovement(int speed);
     ~RandomPathMovement();
 
-    void update();
-    bool is_finished() const;
+    virtual void update() override;
+    virtual bool is_finished() const override;
 
-    virtual const std::string& get_lua_type_name() const;
+    virtual const std::string& get_lua_type_name() const override;
 
 };
 

@@ -47,11 +47,10 @@ class PathMovement: public PixelMovement {
     PathMovement(const std::string& path, int speed, bool loop, bool ignore_obstacles, bool snap_to_grid);
     ~PathMovement();
 
-    void notify_object_controlled();
-    virtual void update();
-    virtual void set_suspended(bool suspended);
-    virtual bool is_finished() const;
-    void restart();
+    virtual void notify_object_controlled() override;
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
+    virtual bool is_finished() const override;
 
     const std::string& get_path() const;
     void set_path(const std::string& path);
@@ -65,15 +64,15 @@ class PathMovement: public PixelMovement {
     Rectangle get_xy_change() const;
     int get_current_direction() const;
     int get_total_distance_covered() const;
-    int get_displayed_direction4() const;
+    virtual int get_displayed_direction4() const override;
 
     static const std::string create_random_path();
 
-    virtual const std::string& get_lua_type_name() const;
+    virtual const std::string& get_lua_type_name() const override;
 
   protected:
 
-    void notify_step_done(int step_index, bool success);
+    virtual void notify_step_done(int step_index, bool success) override;
 
   private:
 
@@ -81,6 +80,7 @@ class PathMovement: public PixelMovement {
 
     void start_next_elementary_move();
     bool is_current_elementary_move_finished() const;
+    void restart();
 
     void snap();
     void set_snapping_trajectory(const Rectangle& src, const Rectangle& dst);

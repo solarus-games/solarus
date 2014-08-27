@@ -37,7 +37,7 @@ class PlayerMovement: public StraightMovement {
     PlayerMovement(int speed);
     ~PlayerMovement();
 
-    void update();
+    virtual void update() override;
 
     int get_moving_speed() const;
     void set_moving_speed(int moving_speed);

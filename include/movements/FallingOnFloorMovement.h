@@ -30,6 +30,8 @@ namespace solarus {
  * bounce one or several times before they stop.
  * This movement is typically used by the pickable treasures
  * that appear when the player kills an enemy.
+ *
+ * TODO kill this class
  */
 class FallingOnFloorMovement: public PixelMovement {
 

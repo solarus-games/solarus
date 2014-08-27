@@ -33,9 +33,9 @@ class StraightMovement: public Movement {
     StraightMovement(bool ignore_obstacles, bool smooth);
     virtual ~StraightMovement();
 
-    virtual void notify_object_controlled();
-    virtual void update();
-    virtual void set_suspended(bool suspended);
+    virtual void notify_object_controlled() override;
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
     bool has_to_move_now() const;
 
     // speed vector
@@ -51,15 +51,15 @@ class StraightMovement: public Movement {
     void set_max_distance(int max_distance);
     bool is_smooth() const;
     void set_smooth(bool smooth);
-    int get_displayed_direction4() const;
+    virtual int get_displayed_direction4() const override;
 
     // movement
-    virtual bool is_started() const;
-    bool is_finished() const;
+    virtual bool is_started() const override;
+    virtual bool is_finished() const override;
     void set_finished();
-    void stop();
+    virtual void stop() override;
 
-    virtual const std::string& get_lua_type_name() const;
+    virtual const std::string& get_lua_type_name() const override;
 
   protected:
 

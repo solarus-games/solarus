@@ -45,15 +45,14 @@ class PixelMovement: public Movement {
     void set_loop(bool loop);
 
     // state
-    bool is_started() const;
-    virtual bool is_finished() const;
+    virtual bool is_started() const override;
+    virtual bool is_finished() const override;
     int get_length() const;
-    void restart();
 
-    virtual void update();
-    virtual void set_suspended(bool suspended);
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
 
-    virtual const std::string& get_lua_type_name() const;
+    virtual const std::string& get_lua_type_name() const override;
 
   protected:
 
@@ -62,6 +61,7 @@ class PixelMovement: public Movement {
   private:
 
     void make_next_step();
+    void restart();
 
     // movement properties
 

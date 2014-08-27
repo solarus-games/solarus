@@ -38,15 +38,16 @@ class FollowMovement: public Movement {
         MapEntity* entity_followed,
         int x,
         int y,
-        bool ignore_obstacles);
+        bool ignore_obstacles
+    );
     ~FollowMovement();
 
-    bool is_finished() const;
-    const Rectangle get_displayed_xy() const;
+    virtual bool is_finished() const override;
+    virtual const Rectangle get_displayed_xy() const override;
 
   protected:
 
-    void update();
+    virtual void update() override;
 
   private:
 

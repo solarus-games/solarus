@@ -38,13 +38,13 @@ class PathFindingMovement: public PathMovement {
     ~PathFindingMovement();
 
     void set_target(MapEntity& target);
-    bool is_finished() const;
+    virtual bool is_finished() const override;
 
-    virtual const std::string& get_lua_type_name() const;
+    virtual const std::string& get_lua_type_name() const override;
 
   protected:
 
-    void update();
+    virtual void update() override;
     void recompute_movement();
 
   private:

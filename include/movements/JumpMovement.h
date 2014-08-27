@@ -41,14 +41,14 @@ class JumpMovement: public PixelMovement {
     int get_speed() const;
     void set_speed(int speed);
 
-    int get_displayed_direction4() const;
-    const Rectangle get_displayed_xy() const;
+    virtual int get_displayed_direction4() const override;
+    virtual const Rectangle get_displayed_xy() const override;
 
-    virtual const std::string& get_lua_type_name() const;
+    virtual const std::string& get_lua_type_name() const override;
 
   protected:
 
-    void notify_step_done(int step_index, bool success);
+    virtual void notify_step_done(int step_index, bool success) override;
 
   private:
 

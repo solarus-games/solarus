@@ -37,12 +37,12 @@ class CircleMovement: public Movement {
     ~CircleMovement();
 
     // state
-    void update();
-    void set_suspended(bool suspended);
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
     void start();
-    void stop();
-    bool is_started() const;
-    bool is_finished() const;
+    virtual void stop() override;
+    virtual bool is_started() const override;
+    virtual bool is_finished() const override;
 
     // properties
     void set_center(const Rectangle& center_point);
@@ -64,7 +64,7 @@ class CircleMovement: public Movement {
     uint32_t get_loop() const;
     void set_loop(uint32_t delay);
 
-    virtual const std::string& get_lua_type_name() const;
+    virtual const std::string& get_lua_type_name() const override;
 
   private:
 

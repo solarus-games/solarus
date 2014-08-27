@@ -36,7 +36,8 @@ class TargetMovement: public StraightMovement {
         int x,
         int y,
         int moving_speed,
-        bool ignore_obstacles);
+        bool ignore_obstacles
+    );
     ~TargetMovement();
 
     void set_target(MapEntity* target_entity, int x, int y);
@@ -44,11 +45,11 @@ class TargetMovement: public StraightMovement {
     int get_moving_speed() const;
     void set_moving_speed(int moving_speed);
 
-    virtual void notify_object_controlled();
-    bool is_finished() const;
-    void update();
+    virtual void notify_object_controlled() override;
+    virtual bool is_finished() const override;
+    virtual void update() override;
 
-    virtual const std::string& get_lua_type_name() const;
+    virtual const std::string& get_lua_type_name() const override;
 
   private:
 

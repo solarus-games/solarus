@@ -1182,7 +1182,7 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
 
   // Note that the full userdata disappears from Lua but it may come back later!
   // So we need to keep its table if the refcount is not zero.
-  // The full userdata is destroyed, but if the refcount is zero, the light
+  // The full userdata is destroyed, but if the refcount is not zero, the light
   // userdata and its table persist.
 
   // We don't need to remove the entry from sol.all_userdata

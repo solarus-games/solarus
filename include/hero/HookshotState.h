@@ -31,24 +31,24 @@ class Hero::HookshotState: public Hero::State {
     HookshotState(Hero& hero);
     ~HookshotState();
 
-    void start(const State* previous_state);
-    void stop(const State* next_state);
+    virtual void start(const State* previous_state);
+    virtual void stop(const State* next_state);
 
-    bool is_touching_ground() const;
-    bool can_avoid_deep_water() const;
-    bool can_avoid_hole() const;
-    bool can_avoid_ice() const;
-    bool can_avoid_lava() const;
-    bool can_avoid_prickle() const;
-    bool can_avoid_teletransporter() const;
-    bool can_avoid_stream(const Stream& stream) const;
-    bool is_stairs_obstacle(const Stairs& stairs) const;
-    bool is_sensor_obstacle(const Sensor& sensor) const;
-    bool is_jumper_obstacle(const Jumper& jumper, const Rectangle& candidate_position) const;
-    bool can_avoid_switch() const;
-    bool can_be_hurt(MapEntity* attacker) const;
-    bool can_pick_treasure(EquipmentItem& item) const;
-    void notify_obstacle_reached();
+    virtual bool is_touching_ground() const override;
+    virtual bool can_avoid_deep_water() const override;
+    virtual bool can_avoid_hole() const override;
+    virtual bool can_avoid_ice() const override;
+    virtual bool can_avoid_lava() const override;
+    virtual bool can_avoid_prickle() const override;
+    virtual bool can_avoid_teletransporter() const override;
+    virtual bool can_avoid_stream(const Stream& stream) const override;
+    virtual bool is_stairs_obstacle(const Stairs& stairs) const override;
+    virtual bool is_sensor_obstacle(const Sensor& sensor) const override;
+    virtual bool is_jumper_obstacle(const Jumper& jumper, const Rectangle& candidate_position) const override;
+    virtual bool can_avoid_switch() const override;
+    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_pick_treasure(EquipmentItem& item) const override;
+    virtual void notify_obstacle_reached() override;
 
   private:
 

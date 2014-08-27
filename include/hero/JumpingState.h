@@ -36,30 +36,30 @@ class Hero::JumpingState: public Hero::State {
         bool with_sound);
     ~JumpingState();
 
-    void start(const State* previous_state);
-    void stop(const State* next_state);
-    void set_map(Map& map);
-    void update();
-    void set_suspended(bool suspended);
-    void notify_layer_changed();
-    int get_wanted_movement_direction8() const;
-    bool can_start_gameover_sequence() const;
-    bool is_touching_ground() const;
-    bool is_stairs_obstacle(const Stairs& stairs) const;
-    bool is_sensor_obstacle(const Sensor& sensor) const;
-    bool is_separator_obstacle(const Separator& separator) const;
-    bool can_avoid_deep_water() const;
-    bool can_avoid_hole() const;
-    bool can_avoid_ice() const;
-    bool can_avoid_lava() const;
-    bool can_avoid_prickle() const;
-    bool can_avoid_teletransporter() const;
-    bool can_avoid_stream(const Stream& stream) const;
-    bool can_avoid_sensor() const;
-    bool can_avoid_switch() const;
-    bool can_be_hurt(MapEntity* attacker) const;
-    CarriedItem* get_carried_item() const;
-    CarriedItem::Behavior get_previous_carried_item_behavior() const;
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
+    virtual void set_map(Map& map) override;
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
+    virtual void notify_layer_changed() override;
+    virtual int get_wanted_movement_direction8() const override;
+    virtual bool can_start_gameover_sequence() const override;
+    virtual bool is_touching_ground() const override;
+    virtual bool is_stairs_obstacle(const Stairs& stairs) const override;
+    virtual bool is_sensor_obstacle(const Sensor& sensor) const override;
+    virtual bool is_separator_obstacle(const Separator& separator) const override;
+    virtual bool can_avoid_deep_water() const override;
+    virtual bool can_avoid_hole() const override;
+    virtual bool can_avoid_ice() const override;
+    virtual bool can_avoid_lava() const override;
+    virtual bool can_avoid_prickle() const override;
+    virtual bool can_avoid_teletransporter() const override;
+    virtual bool can_avoid_stream(const Stream& stream) const override;
+    virtual bool can_avoid_sensor() const override;
+    virtual bool can_avoid_switch() const override;
+    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual CarriedItem* get_carried_item() const override;
+    virtual CarriedItem::Behavior get_previous_carried_item_behavior() const override;
 
   private:
 

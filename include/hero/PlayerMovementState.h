@@ -36,24 +36,25 @@ class Hero::PlayerMovementState: public Hero::State {
   public:
 
     virtual ~PlayerMovementState();
-    virtual void start(const State* previous_state);
-    virtual void stop(const State* next_state);
-    void set_map(Map& map);
 
-    virtual void update();
-    virtual void set_suspended(bool suspended);
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
+    virtual void set_map(Map& map) override;
+
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
     virtual void set_animation_stopped();
     virtual void set_animation_walking();
-    bool can_control_movement() const;
-    int get_wanted_movement_direction8() const;
-    void notify_walking_speed_changed();
-    void notify_movement_changed();
-    void notify_position_changed();
-    void notify_layer_changed();
-    bool can_be_hurt(MapEntity* attacker) const;
-    bool can_pick_treasure(EquipmentItem& item) const;
-    bool can_take_jumper() const;
-    void notify_jumper_activated(Jumper& jumper);
+    virtual bool can_control_movement() const override;
+    virtual int get_wanted_movement_direction8() const override;
+    virtual void notify_walking_speed_changed() override;
+    virtual void notify_movement_changed() override;
+    virtual void notify_position_changed() override;
+    virtual void notify_layer_changed() override;
+    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_pick_treasure(EquipmentItem& item) const override;
+    virtual bool can_take_jumper() const override;
+    virtual void notify_jumper_activated(Jumper& jumper) override;
 
   protected:
 

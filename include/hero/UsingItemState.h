@@ -32,12 +32,12 @@ class Hero::UsingItemState: public Hero::State {
     UsingItemState(Hero& hero, EquipmentItem& item);
     ~UsingItemState();
 
-    void start(const State* previous_state);
-    void update();
+    virtual void start(const State* previous_state) override;
+    virtual void update() override;
 
-    virtual bool is_using_item() const;
-    virtual EquipmentItemUsage& get_item_being_used();
-    virtual bool can_avoid_stream(const Stream& stream) const;
+    virtual bool is_using_item() const override;
+    virtual EquipmentItemUsage& get_item_being_used() override;
+    virtual bool can_avoid_stream(const Stream& stream) const override;
 
   private:
 

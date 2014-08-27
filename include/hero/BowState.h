@@ -31,10 +31,10 @@ class Hero::BowState: public Hero::State {
     BowState(Hero& hero);
     ~BowState();
 
-    void start(const State* previous_state);
-    void update();
+    virtual void start(const State* previous_state) override;
+    virtual void update() override;
 
-    bool can_avoid_stream(const Stream& stream) const;
+    virtual bool can_avoid_stream(const Stream& stream) const override;
 
 };
 

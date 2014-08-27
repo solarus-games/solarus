@@ -31,11 +31,11 @@ class Hero::LiftingState: public Hero::State {
     LiftingState(Hero& hero, CarriedItem* lifted_item);
     ~LiftingState();
 
-    void start(const State* previous_state);
-    void stop(const State* next_state);
-    void update();
-    void set_suspended(bool suspended);
-    bool can_be_hurt(MapEntity* attacker) const;
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
+    virtual bool can_be_hurt(MapEntity* attacker) const override;
 
   private:
 

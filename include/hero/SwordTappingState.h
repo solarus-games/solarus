@@ -31,22 +31,23 @@ class Hero::SwordTappingState: public Hero::State {
     SwordTappingState(Hero& hero);
     ~SwordTappingState();
 
-    void start(const State* previous_state);
-    void stop(const State* next_state);
-    void update();
-    void set_suspended(bool suspended);
-    bool can_sword_hit_crystal() const;
-    bool can_pick_treasure(EquipmentItem& item) const;
-    bool can_use_shield() const;
-    bool is_cutting_with_sword(Detector& detector);
-    bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
-    void notify_obstacle_reached();
-    void notify_attacked_enemy(
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
+    virtual bool can_sword_hit_crystal() const override;
+    virtual bool can_pick_treasure(EquipmentItem& item) const override;
+    virtual bool can_use_shield() const override;
+    virtual bool is_cutting_with_sword(Detector& detector) override;
+    virtual bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const override;
+    virtual void notify_obstacle_reached() override;
+    virtual void notify_attacked_enemy(
         EnemyAttack attack,
         Enemy& victim,
         const Sprite* victim_sprite,
         EnemyReaction::Reaction& result,
-        bool killed);
+        bool killed
+    ) override;
 
   private:
 

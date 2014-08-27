@@ -31,10 +31,10 @@ class Hero::PlungingState: public Hero::State {
     PlungingState(Hero& hero);
     ~PlungingState();
 
-    void start(const State* previous_state);
-    void update();
-    bool can_start_gameover_sequence() const;
-    bool is_touching_ground() const;
+    virtual void start(const State* previous_state) override;
+    virtual void update() override;
+    virtual bool can_start_gameover_sequence() const override;
+    virtual bool is_touching_ground() const override;
 
 };
 

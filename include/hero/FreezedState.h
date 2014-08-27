@@ -31,7 +31,7 @@ class Hero::FreezedState: public Hero::State {
     FreezedState(Hero& hero);
     ~FreezedState();
 
-    void start(const State* previous_state);
+    virtual void start(const State* previous_state) override;
 
 };
 

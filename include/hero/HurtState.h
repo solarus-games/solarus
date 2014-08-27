@@ -33,19 +33,19 @@ class Hero::HurtState: public Hero::State {
         int damage);
     ~HurtState();
 
-    void start(const State* previous_state);
-    void stop(const State* next_state);
-    void update();
-    void set_suspended(bool suspended);
-    bool can_start_gameover_sequence() const;
-    bool is_touching_ground() const;
-    bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
-    bool is_stream_obstacle(const Stream& stream) const;
-    bool is_sensor_obstacle(const Sensor& sensor) const;
-    bool is_separator_obstacle(const Separator& separator) const;
-    bool can_be_hurt(MapEntity* attacker) const;
-    bool can_avoid_switch() const;
-    bool can_avoid_ice() const;
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
+    virtual bool can_start_gameover_sequence() const override;
+    virtual bool is_touching_ground() const override;
+    virtual bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const override;
+    virtual bool is_stream_obstacle(const Stream& stream) const override;
+    virtual bool is_sensor_obstacle(const Sensor& sensor) const override;
+    virtual bool is_separator_obstacle(const Separator& separator) const override;
+    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_avoid_switch() const override;
+    virtual bool can_avoid_ice() const override;
 
   private:
 

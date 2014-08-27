@@ -31,27 +31,28 @@ class Hero::SpinAttackState: public Hero::State {
     SpinAttackState(Hero& hero);
     ~SpinAttackState();
 
-    void start(const State* previous_state);
-    void stop(const State* next_state);
-    void update();
-    bool can_sword_hit_crystal() const;
-    bool can_be_hurt(MapEntity* attacker) const;
-    bool can_pick_treasure(EquipmentItem& item) const;
-    bool is_cutting_with_sword(Detector& detector);
-    int get_sword_damage_factor() const;
-    bool is_deep_water_obstacle() const;
-    bool is_hole_obstacle() const;
-    bool is_lava_obstacle() const;
-    bool is_prickle_obstacle() const;
-    bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
-    bool is_separator_obstacle(const Separator& separator) const;
-    void notify_obstacle_reached();
-    void notify_attacked_enemy(
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
+    virtual void update() override;
+    virtual bool can_sword_hit_crystal() const override;
+    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_pick_treasure(EquipmentItem& item) const override;
+    virtual bool is_cutting_with_sword(Detector& detector) override;
+    virtual int get_sword_damage_factor() const override;
+    virtual bool is_deep_water_obstacle() const override;
+    virtual bool is_hole_obstacle() const override;
+    virtual bool is_lava_obstacle() const override;
+    virtual bool is_prickle_obstacle() const override;
+    virtual bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const override;
+    virtual bool is_separator_obstacle(const Separator& separator) const override;
+    virtual void notify_obstacle_reached() override;
+    virtual void notify_attacked_enemy(
         EnemyAttack attack,
         Enemy& victim,
         const Sprite* victim_sprite,
         EnemyReaction::Reaction& result,
-        bool killed);
+        bool killed
+    ) override;
 
   private:
 

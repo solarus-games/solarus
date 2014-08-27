@@ -26,21 +26,21 @@ namespace solarus {
  */
 class Hero::VictoryState: public Hero::State {
 
-  private:
-
-    uint32_t end_victory_date;         /**< Date when the victory animation stops. */
-    bool finished;                     /**< Indicates that the victory sequence is finished. */
-    int callback_ref;                  /**< Lua ref of a function to call when the sequence finishes. */
-
   public:
 
     VictoryState(Hero& hero, int callback_ref);
     ~VictoryState();
 
-    void start(const State* previous_state);
-    void stop(const State* next_state);
-    void update();
-    void set_suspended(bool suspended);
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
+
+  private:
+
+    uint32_t end_victory_date;         /**< Date when the victory animation stops. */
+    bool finished;                     /**< Indicates that the victory sequence is finished. */
+    int callback_ref;                  /**< Lua ref of a function to call when the sequence finishes. */
 
 };
 

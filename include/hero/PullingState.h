@@ -31,25 +31,25 @@ class Hero::PullingState: public Hero::State {
     PullingState(Hero& hero);
     ~PullingState();
 
-    void start(const State* previous_state);
-    void stop(const State* next_state);
-    void update();
-    void notify_grabbed_entity_collision();
-    void notify_movement_finished();
-    void notify_position_changed();
-    void notify_obstacle_reached();
-    bool is_grabbing_or_pulling() const;
-    bool is_moving_grabbed_entity() const;
-    bool is_shallow_water_obstacle() const;
-    bool is_deep_water_obstacle() const;
-    bool is_hole_obstacle() const;
-    bool is_lava_obstacle() const;
-    bool is_prickle_obstacle() const;
-    bool is_stream_obstacle(const Stream& stream) const;
-    bool is_separator_obstacle(const Separator& separator) const;
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
+    virtual void update() override;
+    virtual void notify_grabbed_entity_collision() override;
+    virtual void notify_movement_finished() override;
+    virtual void notify_position_changed() override;
+    virtual void notify_obstacle_reached() override;
+    virtual bool is_grabbing_or_pulling() const override;
+    virtual bool is_moving_grabbed_entity() const override;
+    virtual bool is_shallow_water_obstacle() const override;
+    virtual bool is_deep_water_obstacle() const override;
+    virtual bool is_hole_obstacle() const override;
+    virtual bool is_lava_obstacle() const override;
+    virtual bool is_prickle_obstacle() const override;
+    virtual bool is_stream_obstacle(const Stream& stream) const override;
+    virtual bool is_separator_obstacle(const Separator& separator) const override;
 
-    bool can_be_hurt(MapEntity* attacker) const;
-    bool can_pick_treasure(EquipmentItem& item) const;
+    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_pick_treasure(EquipmentItem& item) const override;
 
   private:
 

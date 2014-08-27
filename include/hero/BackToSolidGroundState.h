@@ -32,28 +32,29 @@ class Hero::BackToSolidGroundState: public Hero::State {
         Hero& hero,
         bool use_memorized_xy,
         uint32_t end_delay = 0,
-        bool with_sound = true);
+        bool with_sound = true
+    );
     ~BackToSolidGroundState();
 
-    void start(const State* previous_state);
-    void stop(const State* next_state);
-    void update();
-    void set_suspended(bool suspended);
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
 
-    bool can_start_gameover_sequence() const;
-    bool is_hero_visible() const;
-    bool are_collisions_ignored() const;
-    bool can_avoid_deep_water() const;
-    bool can_avoid_hole() const;
-    bool can_avoid_ice() const;
-    bool can_avoid_lava() const;
-    bool can_avoid_prickle() const;
-    bool is_touching_ground() const;
-    bool can_avoid_teletransporter() const;
-    bool can_avoid_stream(const Stream& stream) const;
-    bool can_avoid_sensor() const;
-    bool can_avoid_switch() const;
-    bool can_avoid_explosion() const;
+    virtual bool can_start_gameover_sequence() const override;
+    virtual bool is_hero_visible() const override;
+    virtual bool are_collisions_ignored() const override;
+    virtual bool can_avoid_deep_water() const override;
+    virtual bool can_avoid_hole() const override;
+    virtual bool can_avoid_ice() const override;
+    virtual bool can_avoid_lava() const override;
+    virtual bool can_avoid_prickle() const override;
+    virtual bool is_touching_ground() const override;
+    virtual bool can_avoid_teletransporter() const override;
+    virtual bool can_avoid_stream(const Stream& stream) const override;
+    virtual bool can_avoid_sensor() const override;
+    virtual bool can_avoid_switch() const override;
+    virtual bool can_avoid_explosion() const override;
 
   private:
 

@@ -32,22 +32,23 @@ class Hero::StairsState: public Hero::State {
     StairsState(
         Hero& hero,
         Stairs& stairs,
-        Stairs::Way way);
+        Stairs::Way way
+    );
     ~StairsState();
 
-    void start(const State* previous_state);
-    void stop(const State* next_state);
-    void set_map(Map& map);
-    void update();
-    void set_suspended(bool suspended);
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
+    virtual void set_map(Map& map) override;
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
 
-    bool is_touching_ground() const;
-    bool can_come_from_bad_ground() const;
-    bool is_teletransporter_delayed() const;
-    int get_wanted_movement_direction8() const;
-    CarriedItem* get_carried_item() const;
-    CarriedItem::Behavior get_previous_carried_item_behavior() const;
-    void notify_layer_changed();
+    virtual bool is_touching_ground() const override;
+    virtual bool can_come_from_bad_ground() const override;
+    virtual bool is_teletransporter_delayed() const override;
+    virtual int get_wanted_movement_direction8() const override;
+    virtual CarriedItem* get_carried_item() const override;
+    virtual CarriedItem::Behavior get_previous_carried_item_behavior() const override;
+    virtual void notify_layer_changed() override;
 
   private:
 

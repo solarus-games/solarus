@@ -33,10 +33,10 @@ class Hero::BoomerangState: public Hero::State {
         const std::string& sprite_name);
     ~BoomerangState();
 
-    void start(const State* previous_state);
-    void update();
+    virtual void start(const State* previous_state) override;
+    virtual void update() override;
 
-    bool can_avoid_stream(const Stream& stream) const;
+    virtual bool can_avoid_stream(const Stream& stream) const override;
 
   private:
 

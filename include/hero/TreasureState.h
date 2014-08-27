@@ -32,11 +32,11 @@ class Hero::TreasureState: public Hero::State {
     TreasureState(Hero& hero, const Treasure& treasure, int callback_ref);
     ~TreasureState();
 
-    void start(const State* previous_state);
-    void stop(const State* next_state);
-    void draw_on_map();
-    CarriedItem::Behavior get_previous_carried_item_behavior() const;
-    bool is_brandishing_treasure() const;
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
+    virtual void draw_on_map() override;
+    virtual CarriedItem::Behavior get_previous_carried_item_behavior() const override;
+    virtual bool is_brandishing_treasure() const override;
 
   private:
 

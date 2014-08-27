@@ -30,13 +30,14 @@ class Hero::FallingState: public Hero::State {
 
     FallingState(Hero& hero);
     ~FallingState();
-    void start(const State* previous_state);
-    void stop(const State* next_state);
-    void update();
-    bool can_avoid_hole() const;
-    bool can_avoid_lava() const;
-    bool can_avoid_prickle() const;
-    bool can_start_gameover_sequence() const;
+
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
+    virtual void update() override;
+    virtual bool can_avoid_hole() const override;
+    virtual bool can_avoid_lava() const override;
+    virtual bool can_avoid_prickle() const override;
+    virtual bool can_start_gameover_sequence() const override;
 
 };
 

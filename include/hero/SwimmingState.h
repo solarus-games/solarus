@@ -31,19 +31,19 @@ class Hero::SwimmingState: public Hero::PlayerMovementState {
     SwimmingState(Hero& hero);
     ~SwimmingState();
 
-    void start(const State* previous_state);
-    void stop(const State* next_state);
-    void update();
-    void set_suspended(bool suspended);
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
+    virtual void update() override;
+    virtual void set_suspended(bool suspended) override;
 
-    void set_animation_stopped();
-    void set_animation_walking();
+    virtual void set_animation_stopped() override;
+    virtual void set_animation_walking() override;
 
-    void notify_action_command_pressed();
-    void notify_attack_command_pressed();
+    virtual void notify_action_command_pressed() override;
+    virtual void notify_attack_command_pressed() override;
 
-    bool is_stairs_obstacle(const Stairs& stairs) const;
-    bool can_pick_treasure(EquipmentItem& item) const;
+    virtual bool is_stairs_obstacle(const Stairs& stairs) const override;
+    virtual bool can_pick_treasure(EquipmentItem& item) const override;
 
   private:
 

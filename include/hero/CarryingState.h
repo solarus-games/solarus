@@ -31,20 +31,20 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
     CarryingState(Hero& hero, CarriedItem* carried_item);
     ~CarryingState();
 
-    void start(const State* previous_state);
-    void stop(const State* next_state);
-    void set_map(Map& map);
-    void notify_layer_changed();
-    void set_suspended(bool suspended);
-    void update();
-    void notify_action_command_pressed();
-    bool can_start_sword() const;
-    bool can_use_shield() const;
-    bool can_take_stairs() const;
-    void set_animation_stopped();
-    void set_animation_walking();
-    CarriedItem* get_carried_item() const;
-    CarriedItem::Behavior get_previous_carried_item_behavior() const;
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
+    virtual void set_map(Map& map) override;
+    virtual void notify_layer_changed() override;
+    virtual void set_suspended(bool suspended) override;
+    virtual void update() override;
+    virtual void notify_action_command_pressed() override;
+    virtual bool can_start_sword() const override;
+    virtual bool can_use_shield() const override;
+    virtual bool can_take_stairs() const override;
+    virtual void set_animation_stopped() override;
+    virtual void set_animation_walking() override;
+    virtual CarriedItem* get_carried_item() const override;
+    virtual CarriedItem::Behavior get_previous_carried_item_behavior() const override;
 
   private:
 

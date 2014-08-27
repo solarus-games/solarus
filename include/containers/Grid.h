@@ -36,8 +36,6 @@ class Grid {
   public:
 
     Grid(const Rectangle& grid_size, const Rectangle& cell_size);
-    ~Grid() {
-    }
 
     const Rectangle& get_grid_size() const;
     const Rectangle& get_cell_size() const;

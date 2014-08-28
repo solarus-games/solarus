@@ -164,7 +164,9 @@ Surface::~Surface() {
  * \return The created surface.
  */
 SurfacePtr Surface::create(int width, int height) {
-  return make_refcount_ptr(new Surface(width, height));
+  SurfacePtr surface = make_refcount_ptr(new Surface(width, height));
+  surface->weak_this = surface;
+  return surface;
 }
 
 /**
@@ -173,7 +175,9 @@ SurfacePtr Surface::create(int width, int height) {
  * \return The created surface.
  */
 SurfacePtr Surface::create(const Rectangle& size) {
-  return make_refcount_ptr(new Surface(size.get_width(), size.get_height()));
+  SurfacePtr surface = make_refcount_ptr(new Surface(size.get_width(), size.get_height()));
+  surface->weak_this = surface;
+  return surface;
 }
 
 /**
@@ -195,7 +199,9 @@ SurfacePtr Surface::create(const std::string& file_name,
     return nullptr;
   }
 
-  return make_refcount_ptr(new Surface(sdl_surface));
+  SurfacePtr surface = make_refcount_ptr(new Surface(sdl_surface));
+  surface->weak_this = surface;
+  return surface;
 }
 
 /**
@@ -660,7 +666,20 @@ void Surface::raw_draw_region(
     // The destination is a GPU surface (a texture).
     // Do not draw anything, just store the operation in the tree instead.
     // The actual drawing will be done at rendering time in GPU.
-    SurfacePtr src_surface(make_refcount_ptr(this));  // TODO shared_ptr
+
+    SurfacePtr src_surface;
+    if (weak_this.use_count() > 0) {
+      src_surface = SurfacePtr(this->weak_this);
+    }
+    else {
+      // No more shared_ptr: this is possible during the transition phase
+      // between the old system (RefCountable) and the new system (shared_ptr),
+      // because not all surfaces use shared_ptr everywhere yet.
+      // TODO When RefCountable is gone, assert that use_count > 0 and remove
+      // this special case.
+      src_surface = make_refcount_ptr(this);
+      weak_this = src_surface;
+    }
     dst_surface.add_subsurface(src_surface, region, dst_position);
   }
 

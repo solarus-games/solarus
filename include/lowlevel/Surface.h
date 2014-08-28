@@ -126,6 +126,11 @@ class Surface: public Drawable {
         const std::vector<SubSurfaceNodePtr>& subsurfaces
     );
 
+    std::weak_ptr<Surface> weak_this;     /**< Weak pointer to this surface itself.
+                                           * Necessary to get a shared_ptr from this
+                                           * when other existing shared_ptr already
+                                           * hold this object. */
+
     std::vector<SubSurfaceNodePtr>
         subsurfaces;                      /**< Source Subsurfaces not in the tree yet */
 

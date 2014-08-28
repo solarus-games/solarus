@@ -607,6 +607,7 @@ void TextSurface::rebuild_ttf() {
   );
 
   surface = make_refcount_ptr(new Surface(internal_surface));
+  surface->weak_this = surface;  // TODO move this initialization in Surface class
 }
 
 /**

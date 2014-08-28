@@ -572,7 +572,7 @@ bool LuaContext::userdata_has_field(
     return false;
   }
 
-  auto it = userdata_fields.find(&userdata);
+  const auto& it = userdata_fields.find(&userdata);
   if (it == userdata_fields.end()) {
     return false;
   }
@@ -606,7 +606,7 @@ bool LuaContext::userdata_has_field(
     return false;
   }
 
-  auto it = userdata_fields.find(&userdata);
+  const auto& it = userdata_fields.find(&userdata);
   if (it == userdata_fields.end()) {
     return false;
   }
@@ -1051,9 +1051,9 @@ void LuaContext::push_color(lua_State* l, const Color& color) {
 }
 
 /**
- * \brief Pushes a userdata onto the stack.
+ * \brief Pushes the Lua equivalent of a C++ object onto the stack.
  * \param l A Lua context.
- * \param userdata A userdata. It must live as an std::shared_ptr somewhere:
+ * \param userdata A userdata. It must live as a std::shared_ptr somewhere:
  * typically, it should have been stored in a std::shared_ptr at creation time.
  */
 void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
@@ -1067,6 +1067,7 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
                                   // ... all_udata udata/nil
   if (!lua_isnil(l, -1)) {
                                   // ... all_udata udata
+    // The userdata already exists in the Lua world.
     lua_remove(l, -2);
                                   // ... udata
   }
@@ -1107,8 +1108,10 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
     }
 
     ExportableToLuaPtr* block_address = static_cast<ExportableToLuaPtr*>(
-          lua_newuserdata(l, sizeof(ExportableToLuaPtr)));
-      new (block_address) ExportableToLuaPtr(shared_userdata);
+          lua_newuserdata(l, sizeof(ExportableToLuaPtr))
+    );
+    // Manually construct a shared_ptr in the block allocated by Lua.
+    new (block_address) ExportableToLuaPtr(shared_userdata);
                                   // ... all_udata lightudata udata
     luaL_getmetatable(l, userdata.get_lua_type_name().c_str());
                                   // ... all_udata lightudata udata mt
@@ -1199,8 +1202,8 @@ ExportableToLua& LuaContext::check_userdata(lua_State* l, int index,
  */
 int LuaContext::userdata_meta_gc(lua_State* l) {
 
-  ExportableToLuaPtr& userdata =
-      *(static_cast<ExportableToLuaPtr*>(lua_touserdata(l, 1)));
+  ExportableToLuaPtr* userdata =
+      static_cast<ExportableToLuaPtr*>(lua_touserdata(l, 1));
 
   // Note that the full userdata disappears from Lua but it may come back later!
   // So we need to keep its table if the refcount is not zero.
@@ -1211,17 +1214,17 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
   // because it is already done: that table is weak on its values and the
   // value was the full userdata.
 
-  if (userdata.use_count() == 1) {
-    // The userdata disappears from Lua and is not used elsewhere.
+  if (userdata->use_count() == 1) {
+    // The userdata is disappearing from Lua and is not used elsewhere.
 
-    if (userdata->is_with_lua_table()) {
+    if ((*userdata)->is_with_lua_table()) {
       // Remove the table associated to this userdata.
       // Otherwise, if the same pointer gets reallocated, a new userdata will get
       // its table from this deleted one!
                                     // udata
       lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                     // udata udata_tables
-      lua_pushlightuserdata(l, userdata.get());
+      lua_pushlightuserdata(l, userdata->get());
                                     // udata udata_tables lightudata
       lua_pushnil(l);
                                     // udata udata_tables lightudata nil
@@ -1229,9 +1232,11 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
                                     // udata udata_tables
       lua_pop(l, 1);
                                     // udata
-      get_lua_context(l).userdata_fields.erase(userdata.get());
+      get_lua_context(l).userdata_fields.erase(userdata->get());
     }
-    userdata.reset();  // This deletes the object.
+
+    // Manually destroy the shared_ptr allocated by Lua.
+    userdata->~shared_ptr<ExportableToLua>();
   }
 
   return 0;

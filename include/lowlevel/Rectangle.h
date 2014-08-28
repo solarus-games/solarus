@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -71,7 +71,6 @@ class Rectangle {
     bool overlaps(const Rectangle& other) const;
     Rectangle get_center() const;
 
-    bool equals(const Rectangle& other) const;
     bool equals_xy(const Rectangle& other) const;
 
     Rectangle get_intersection(const Rectangle& other) const;
@@ -84,6 +83,9 @@ class Rectangle {
     SDL_Rect rect;      /**< the SDL_Rect encapsulated */
 
 };
+
+bool operator==(const Rectangle& lhs, const Rectangle& rhs);
+bool operator!=(const Rectangle& lhs, const Rectangle& rhs);
 
 std::ostream& operator<<(std::ostream& stream, const Rectangle& rectangle);
 
@@ -301,18 +303,6 @@ inline void Rectangle::add_xy(const Rectangle& dxy) {
 }
 
 /**
- * \brief Compares this rectangle with another one.
- * \param other another rectangle
- * \return true if both rectangles have the same coordinates and size
- */
-inline bool Rectangle::equals(const Rectangle& other) const {
-
-  return equals_xy(other)
-      && other.get_width() == get_width()
-      && other.get_height() == get_height();
-}
-
-/**
  * \brief Compares the x and y values of this rectangle with another one.
  * \param other another rectangle
  * \return true if both rectangles have the same x and y values (the size are ignored)
@@ -412,6 +402,29 @@ inline Rectangle Rectangle::get_intersection(const Rectangle& other) const {
   else {
     return Rectangle(0, 0, 0, 0);
   }
+}
+
+/**
+ * \brief Compares two rectangles.
+ * \param lhs first rectangle
+ * \param rhs second rectangle
+ * \return true if both rectangles have the same coordinates and size
+ */
+inline bool operator==(const Rectangle& lhs, const Rectangle& rhs) {
+
+  return lhs.equals_xy(rhs)
+      && lhs.get_width() == rhs.get_width()
+      && lhs.get_height() == rhs.get_height();
+}
+
+/**
+ * \brief Compares two rectangles.
+ * \param lhs first rectangle
+ * \param rhs second rectangle
+ * \return true if the rectangles are not equal
+ */
+inline bool operator!=(const Rectangle& lhs, const Rectangle& rhs) {
+  return !(rhs == lhs);
 }
 
 }

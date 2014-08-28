@@ -86,7 +86,7 @@ void System::quit() {
 /**
  * \brief This function is called repeatedly by the main loop.
  *
- * It calls the update function of the low level systems that needs it.
+ * It calls the update function of low-level systems that need it.
  */
 void System::update() {
 

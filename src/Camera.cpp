@@ -204,7 +204,7 @@ void Camera::update_fixed_on_hero() {
 
       separator_next_scrolling_date += 1;
 
-      if (separator_scrolling_position.equals(separator_target_position)) {
+      if (separator_scrolling_position == separator_target_position) {
         // Finished.
         finished = true;
       }

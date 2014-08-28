@@ -1031,9 +1031,30 @@ void LuaContext::push_string(lua_State* l, const std::string& text) {
 }
 
 /**
+ * \brief Pushes a color onto the stack.
+ * \param l A Lua context.
+ * \param color A color.
+ */
+void LuaContext::push_color(lua_State* l, const Color& color) {
+
+  int r, g, b, a;
+  color.get_components(r, g, b, a);
+  lua_newtable(l);
+  lua_pushinteger(l, r);
+  lua_rawseti(l, -2, 1);
+  lua_pushinteger(l, g);
+  lua_rawseti(l, -2, 2);
+  lua_pushinteger(l, b);
+  lua_rawseti(l, -2, 3);
+  lua_pushinteger(l, a);
+  lua_rawseti(l, -2, 4);
+}
+
+/**
  * \brief Pushes a userdata onto the stack.
- * \param l a Lua context
- * \param userdata a userdata
+ * \param l A Lua context.
+ * \param userdata A userdata. It must live as an std::shared_ptr somewhere:
+ * typically, it should have been stored in a std::shared_ptr at creation time.
  */
 void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
 
@@ -1062,10 +1083,32 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
                                   // ... all_udata
     lua_pushlightuserdata(l, &userdata);
                                   // ... all_udata lightudata
-    RefCountable::ref(&userdata);
-    ExportableToLua** block_address = static_cast<ExportableToLua**>(
-        lua_newuserdata(l, sizeof(ExportableToLua*)));
-    *block_address = &userdata;
+
+    // Find the existing shared_ptr from the raw pointer.
+    ExportableToLuaPtr shared_userdata;
+    try {
+      shared_userdata = userdata.shared_from_this();
+    }
+    catch (const std::bad_weak_ptr& ex) {
+      // No existing shared_ptr. This is possible during the transition
+      // between the old system (the RefCountable class) and the new system
+      // (std::shared_ptr).
+
+      // This error message is here to help making the transition to the
+      // new system. If you get it, this is because the object is not stored
+      // in a shared_ptr, it is still managed by the old system.
+      Debug::error(
+          std::string("No living shared_ptr for ") + userdata.get_lua_type_name()
+      );
+      // Create the shared_ptr anyway.
+      // We are late, but this is okay as long as we use the transitional
+      // deleter of RefCountable::make_refcount_ptr().
+      shared_userdata = RefCountable::make_refcount_ptr(&userdata);
+    }
+
+    ExportableToLuaPtr* block_address = static_cast<ExportableToLuaPtr*>(
+          lua_newuserdata(l, sizeof(ExportableToLuaPtr)));
+      new (block_address) ExportableToLuaPtr(shared_userdata);
                                   // ... all_udata lightudata udata
     luaL_getmetatable(l, userdata.get_lua_type_name().c_str());
                                   // ... all_udata lightudata udata mt
@@ -1097,26 +1140,6 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
     lua_pop(l, 1);
                                   // ... udata
   }
-}
-
-/**
- * \brief Pushes a color onto the stack.
- * \param l A Lua context.
- * \param color A color.
- */
-void LuaContext::push_color(lua_State* l, const Color& color) {
-
-  int r, g, b, a;
-  color.get_components(r, g, b, a);
-  lua_newtable(l);
-  lua_pushinteger(l, r);
-  lua_rawseti(l, -2, 1);
-  lua_pushinteger(l, g);
-  lua_rawseti(l, -2, 2);
-  lua_pushinteger(l, b);
-  lua_rawseti(l, -2, 3);
-  lua_pushinteger(l, a);
-  lua_rawseti(l, -2, 4);
 }
 
 /**
@@ -1163,9 +1186,10 @@ ExportableToLua& LuaContext::check_userdata(lua_State* l, int index,
 
   index = LuaTools::get_positive_index(l, index);
 
-  ExportableToLua** userdata = static_cast<ExportableToLua**>(
-    luaL_checkudata(l, index, module_name.c_str()));
-  return **userdata;
+  const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(
+    luaL_checkudata(l, index, module_name.c_str())
+  ));
+  return *userdata;
 }
 
 /**
@@ -1175,8 +1199,8 @@ ExportableToLua& LuaContext::check_userdata(lua_State* l, int index,
  */
 int LuaContext::userdata_meta_gc(lua_State* l) {
 
-  ExportableToLua* userdata =
-      *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
+  ExportableToLuaPtr& userdata =
+      *(static_cast<ExportableToLuaPtr*>(lua_touserdata(l, 1)));
 
   // Note that the full userdata disappears from Lua but it may come back later!
   // So we need to keep its table if the refcount is not zero.
@@ -1187,8 +1211,8 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
   // because it is already done: that table is weak on its values and the
   // value was the full userdata.
 
-  userdata->decrement_refcount();
-  if (userdata->get_refcount() == 0) {
+  if (userdata.use_count() == 1) {
+    // The userdata disappears from Lua and is not used elsewhere.
 
     if (userdata->is_with_lua_table()) {
       // Remove the table associated to this userdata.
@@ -1197,7 +1221,7 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
                                     // udata
       lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                     // udata udata_tables
-      lua_pushlightuserdata(l, userdata);
+      lua_pushlightuserdata(l, userdata.get());
                                     // udata udata_tables lightudata
       lua_pushnil(l);
                                     // udata udata_tables lightudata nil
@@ -1205,9 +1229,9 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
                                     // udata udata_tables
       lua_pop(l, 1);
                                     // udata
-      get_lua_context(l).userdata_fields.erase(userdata);
+      get_lua_context(l).userdata_fields.erase(userdata.get());
     }
-    delete userdata;
+    userdata.reset();  // This deletes the object.
   }
 
   return 0;
@@ -1231,8 +1255,8 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
   luaL_checkany(l, 2);
   luaL_checkany(l, 3);
 
-  ExportableToLua* userdata =
-      *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
+  const ExportableToLuaPtr& userdata =
+      *(static_cast<ExportableToLuaPtr*>(lua_touserdata(l, 1)));
 
   // The user wants to make udata[key] = value but udata is a userdata.
   // So what we make instead is udata_tables[udata][key] = value.
@@ -1240,7 +1264,7 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
 
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                   // ... udata_tables
-  lua_pushlightuserdata(l, userdata);
+  lua_pushlightuserdata(l, userdata.get());
                                   // ... udata_tables lightudata
   lua_gettable(l, -2);
                                   // ... udata_tables udata_table/nil
@@ -1252,7 +1276,7 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
                                   // ... udata_tables
     lua_newtable(l);
                                   // ... udata_tables udata_table
-    lua_pushlightuserdata(l, userdata);
+    lua_pushlightuserdata(l, userdata.get());
                                   // ... udata_tables udata_table lightudata
     lua_pushvalue(l, -2);
                                   // ... udata_tables udata_table lightudata udata_table
@@ -1269,11 +1293,11 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
   if (lua_isstring(l, 2)) {
     if (!lua_isnil(l, 3)) {
       // Add the key to the list of existing strings keys on this userdata.
-      get_lua_context(l).userdata_fields[userdata].insert(lua_tostring(l, 2));
+      get_lua_context(l).userdata_fields[userdata.get()].insert(lua_tostring(l, 2));
     }
     else {
       // Assigning nil: remove the key from the list.
-      get_lua_context(l).userdata_fields[userdata].erase(lua_tostring(l, 2));
+      get_lua_context(l).userdata_fields[userdata.get()].erase(lua_tostring(l, 2));
     }
   }
 
@@ -1304,8 +1328,8 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
   luaL_checktype(l, 1, LUA_TUSERDATA);
   luaL_checkany(l, 2);
 
-  ExportableToLua* userdata =
-      *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
+  const ExportableToLuaPtr& userdata =
+      *(static_cast<ExportableToLuaPtr*>(lua_touserdata(l, 1)));
   LuaContext& lua_context = get_lua_context(l);
 
   // If the userdata actually has a table, lookup this table, unless we already
@@ -1315,7 +1339,7 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
 
     lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                   // ... udata_tables
-    lua_pushlightuserdata(l, userdata);
+    lua_pushlightuserdata(l, userdata.get());
                                   // ... udata_tables lightudata
     // Lookup the key in the table, without metamethods.
     lua_rawget(l, -2);

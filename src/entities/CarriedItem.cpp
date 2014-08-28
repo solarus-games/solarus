@@ -66,8 +66,8 @@ CarriedItem::CarriedItem(
     const std::string& animation_set_id,
     const std::string& destruction_sound_id,
     int damage_on_enemies,
-    uint32_t explosion_date):
-
+    uint32_t explosion_date
+):
   MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
   hero(hero),
   is_lifting(true),
@@ -102,16 +102,8 @@ CarriedItem::CarriedItem(
   set_movement(movement);
 
   // create the shadow (not visible yet)
-  shadow_sprite = new Sprite("entities/shadow");
-  RefCountable::ref(shadow_sprite);
+  shadow_sprite = RefCountable::make_refcount_ptr(new Sprite("entities/shadow"));
   shadow_sprite->set_current_animation("big");
-}
-
-/**
- * \brief Destructor.
- */
-CarriedItem::~CarriedItem() {
-  RefCountable::unref(shadow_sprite);
 }
 
 /**

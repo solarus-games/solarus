@@ -49,8 +49,8 @@ class CarriedItem: public MapEntity {
         const std::string& animation_set_id,
         const std::string& destruction_sound_id,
         int damage_on_enemies,
-        uint32_t explosion_date);
-    ~CarriedItem();
+        uint32_t explosion_date
+    );
 
     virtual EntityType get_type() const override;
     virtual bool can_be_obstacle() const override;
@@ -127,7 +127,7 @@ class CarriedItem: public MapEntity {
     int damage_on_enemies;      /**< damage for an enemy that receives the item */
 
     // throwing the item
-    Sprite* shadow_sprite;      /**< sprite of the shadow when the item is being thrown */
+    SpritePtr shadow_sprite;    /**< sprite of the shadow when the item is being thrown */
     int throwing_direction;     /**< direction where the item is thrown (0 to 3) */
     uint32_t next_down_date;    /**< when the item is thrown, date when it move one pixel downwards next time */
     int item_height;            /**< current height where the item is drawn above its shadow */

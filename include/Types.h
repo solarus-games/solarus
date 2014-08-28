@@ -164,9 +164,11 @@ class FollowMovement;
 class TargetMovement;
 class CircleMovement;
 
-typedef std::shared_ptr<Surface> SurfacePtr;
-typedef std::shared_ptr<Drawable> DrawablePtr;
 typedef std::shared_ptr<ExportableToLua> ExportableToLuaPtr;
+typedef std::shared_ptr<Drawable> DrawablePtr;
+typedef std::shared_ptr<Surface> SurfacePtr;
+typedef std::shared_ptr<TextSurface> TextSurfacePtr;
+typedef std::shared_ptr<Sprite> SpritePtr;
 
 }
 

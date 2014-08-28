@@ -132,7 +132,7 @@ void LuaContext::push_text_surface(lua_State* l, TextSurface& text_surface) {
  */
 int LuaContext::text_surface_api_create(lua_State* l) {
 
-  TextSurface* text_surface = new TextSurface(0, 0);
+  TextSurfacePtr text_surface = RefCountable::make_refcount_ptr(new TextSurface(0, 0));
 
   if (lua_gettop(l) > 0) {
     luaL_checktype(l, 1, LUA_TTABLE);
@@ -176,7 +176,6 @@ int LuaContext::text_surface_api_create(lua_State* l) {
         const std::string& text_key = luaL_checkstring(l, 3);
 
         if (!StringResource::exists(text_key)) {
-          delete text_surface;
           LuaTools::error(l, std::string("No value with key '") + text_key
               + "' in strings.dat for language '"
               + Language::get_language() + "'"
@@ -185,14 +184,13 @@ int LuaContext::text_surface_api_create(lua_State* l) {
         text_surface->set_text(StringResource::get_string(text_key));
       }
       else {
-        delete text_surface;
         LuaTools::error(l, std::string("Invalid key '") + key
             + "' for text surface properties");
       }
       lua_pop(l, 1); // Pop the value, let the key for the iteration.
     }
   }
-  get_lua_context(l).add_drawable(text_surface);
+  get_lua_context(l).add_drawable(text_surface.get());
 
   push_text_surface(l, *text_surface);
   return 1;

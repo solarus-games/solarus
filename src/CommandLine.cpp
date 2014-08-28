@@ -64,7 +64,7 @@ bool CommandLine::has_argument(const std::string& argument) const {
 /**
  * \brief If there is an argument of the form \c key=value, returns the value.
  * \param key The key to look for.
- * \return value The value that was passed for this key, or an empty string if
+ * \return The value that was passed for this key, or an empty string if
  * no such argument was passed.
  */
 std::string CommandLine::get_argument_value(const std::string& key) const {

@@ -60,7 +60,7 @@ class Treasure {
     void give_to_player() const;
     bool is_found() const;
 
-    void draw(Surface& dst_surface, int x, int y);
+    void draw(SurfacePtr& dst_surface, int x, int y);
 
   private:
 

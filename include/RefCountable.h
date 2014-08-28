@@ -43,12 +43,38 @@ class RefCountable {
     static void ref(RefCountable* object);
     static void unref(RefCountable* object);
 
+    template <typename T>
+    static std::shared_ptr<T> make_refcount_ptr(T* pointer);
+
   private:
 
     int refcount;                /**< Number of pointers to the object
                                   * (0 means that it can be deleted). */
 
 };
+
+/**
+ * \brief Returns an std::shared_ptr with a custom deleter that calls
+ * RefCountable::unref() instead of deleting the object.
+ *
+ * TODO This is a temporary utility function to ease the transition from
+ * RefCountable to shared_ptr.
+ * Once everyone uses shared pointers instead of calling ref/unref manually
+ * on raw pointers, we can remove the RefCountable class, remove this function
+ * and use the standard deleter of std::shared_ptr,
+ * provided that this function is never called twice on the same object.
+ */
+template <typename T>
+std::shared_ptr<T> RefCountable::make_refcount_ptr(T* pointer) {
+
+  // The shared_ptr counts for 1 in our refcount system.
+
+  RefCountable::ref(pointer);
+  return std::shared_ptr<T>(pointer, [](T* pointer) {
+    RefCountable::unref(pointer);
+  });
+
+}
 
 }
 

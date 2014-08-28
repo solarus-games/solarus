@@ -68,7 +68,7 @@ class Map: public ExportableToLua {
     int get_height8() const;
 
     // camera
-    Surface& get_visible_surface();
+    SurfacePtr& get_visible_surface();
     const Rectangle& get_camera_position() const;
     void move_camera(int x, int y, int speed);
     void restore_camera();
@@ -191,11 +191,13 @@ class Map: public ExportableToLua {
     // screen
 
     Camera* camera;               /**< The visible area of the map. */
-    Surface* visible_surface;     /**< Surface where the map is displayed. This is only the visible part
+    SurfacePtr visible_surface;   /**< Surface where the map is displayed. This is only the visible part
                                    * of the map, so the coordinates on this surface are relative to the screen,
                                    * not to the map. */
-    Surface* background_surface;  /**< A surface filled with the background color of the tileset. */
-    Surface* foreground_surface;  /**< A surface with black bars when the map is smaller than the screen. */
+    SurfacePtr
+        background_surface;       /**< A surface filled with the background color of the tileset. */
+    SurfacePtr
+        foreground_surface;       /**< A surface with black bars when the map is smaller than the screen. */
 
     // map state
     bool loaded;                  /**< Whether the loading phase is done. */

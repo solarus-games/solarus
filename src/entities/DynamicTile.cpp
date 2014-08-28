@@ -104,7 +104,7 @@ void DynamicTile::draw_on_map() {
       get_top_left_y() - camera_position.get_y(),
       get_width(), get_height());
 
-  tile_pattern.fill_surface(get_map().get_visible_surface(), dst_position,
+  tile_pattern.fill_surface(*get_map().get_visible_surface(), dst_position,  // TODO shared_ptr
       get_map().get_tileset(), camera_position);
 }
 

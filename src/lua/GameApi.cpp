@@ -1490,7 +1490,7 @@ void LuaContext::game_on_update(Game& game) {
  * \param game A game.
  * \param dst_surface The destination surface.
  */
-void LuaContext::game_on_draw(Game& game, Surface& dst_surface) {
+void LuaContext::game_on_draw(Game& game, SurfacePtr& dst_surface) {
 
   push_game(l, game.get_savegame());
   if (userdata_has_field(game.get_savegame(), "on_draw")) {

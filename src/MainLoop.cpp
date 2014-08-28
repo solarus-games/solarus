@@ -58,7 +58,6 @@ MainLoop::MainLoop(const CommandLine& args):
       Video::get_quest_size()
   );
   root_surface->set_software_destination(false);  // Accelerate this surface.
-  RefCountable::ref(root_surface);
 
   // Run the Lua world.
   // Do this after the creation of the window, but before showing the window,
@@ -83,7 +82,7 @@ MainLoop::~MainLoop() {
 
   // Destroying the root surface may indirectly trigger Lua operations,
   // so the Lua context must still exist at this point.
-  RefCountable::unref(root_surface);
+  root_surface.reset();
 
   delete lua_context;
   QuestResourceList::quit();
@@ -303,10 +302,10 @@ void MainLoop::draw() {
   root_surface->clear();
 
   if (game != nullptr) {
-    game->draw(*root_surface);
+    game->draw(root_surface);
   }
-  lua_context->main_on_draw(*root_surface);
-  Video::render(*root_surface);
+  lua_context->main_on_draw(root_surface);
+  Video::render(root_surface);
 }
 
 }

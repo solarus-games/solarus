@@ -26,6 +26,7 @@
 #define SOLARUS_TYPES_H
 
 #include <cstdint>
+#include <memory>
 
 namespace solarus {
 
@@ -162,6 +163,10 @@ class RandomMovement;
 class FollowMovement;
 class TargetMovement;
 class CircleMovement;
+
+typedef std::shared_ptr<Surface> SurfacePtr;
+typedef std::shared_ptr<Drawable> DrawablePtr;
+typedef std::shared_ptr<ExportableToLua> ExportableToLuaPtr;
 
 }
 

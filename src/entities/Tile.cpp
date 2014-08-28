@@ -92,7 +92,7 @@ void Tile::draw_on_map() {
  * \param viewport coordinates of the top-left corner of dst_surface
  * relative to the map
  */
-void Tile::draw(Surface& dst_surface, const Rectangle& viewport) {
+void Tile::draw(SurfacePtr& dst_surface, const Rectangle& viewport) {
 
   Rectangle dst_position(
       get_top_left_x() - viewport.get_x(),
@@ -102,7 +102,7 @@ void Tile::draw(Surface& dst_surface, const Rectangle& viewport) {
   );
 
   tile_pattern.fill_surface(
-      dst_surface,
+      *dst_surface,  // TODO shared_ptr
       dst_position,
       get_map().get_tileset(),
       viewport

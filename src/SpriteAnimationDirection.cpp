@@ -98,7 +98,8 @@ void SpriteAnimationDirection::draw(Surface& dst_surface,
   position_top_left.add_xy(-origin.get_x(), -origin.get_y());
   position_top_left.set_size(current_frame_rect);
 
-  src_image.draw_region(current_frame_rect, dst_surface, position_top_left);
+  SurfacePtr shared_dst_surface(RefCountable::make_refcount_ptr<Surface>(&dst_surface));
+  src_image.draw_region(current_frame_rect, shared_dst_surface, position_top_left);  // TODO shared_ptr
 }
 
 /**
@@ -111,11 +112,11 @@ void SpriteAnimationDirection::draw(Surface& dst_surface,
  *
  * \param src_image the surface containing the animations
  */
-void SpriteAnimationDirection::enable_pixel_collisions(Surface* src_image) {
+void SpriteAnimationDirection::enable_pixel_collisions(Surface& src_image) {
 
   if (!are_pixel_collisions_enabled()) {
     for (int i = 0; i < get_nb_frames(); i++) {
-      pixel_bits.push_back(new PixelBits(*src_image, frames[i]));
+      pixel_bits.push_back(new PixelBits(src_image, frames[i]));
     }
   }
 }

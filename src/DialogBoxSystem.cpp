@@ -297,7 +297,7 @@ bool DialogBoxSystem::notify_command_pressed(GameCommands::Command command) {
  *
  * \param dst_surface The destination surface.
  */
-void DialogBoxSystem::draw(Surface& dst_surface) {
+void DialogBoxSystem::draw(SurfacePtr& dst_surface) {
 
   if (!built_in) {
     // The dialog box is handled by a Lua script.

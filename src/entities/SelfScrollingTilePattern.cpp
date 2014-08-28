@@ -77,13 +77,14 @@ void SelfScrollingTilePattern::draw(Surface& dst_surface,
   offset_y /= 2;
 
   // draw the pattern in four steps
-  Surface& tileset_image = tileset.get_tiles_image();
+  SurfacePtr& tileset_image = tileset.get_tiles_image();
+  SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
 
   src.add_x(offset_x);
   src.add_width(-offset_x);
   src.add_y(offset_y);
   src.add_height(-offset_y);
-  tileset_image.draw_region(src, dst_surface, dst);
+  tileset_image->draw_region(src, shared_dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -91,7 +92,7 @@ void SelfScrollingTilePattern::draw(Surface& dst_surface,
   src.add_height(-offset_y);
   dst.add_x(src.get_width() - offset_x);
   src.set_width(offset_x);
-  tileset_image.draw_region(src, dst_surface, dst);
+  tileset_image->draw_region(src, shared_dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -99,7 +100,7 @@ void SelfScrollingTilePattern::draw(Surface& dst_surface,
   src.add_width(-offset_x);
   dst.add_y(src.get_height() - offset_y);
   src.set_height(offset_y);
-  tileset_image.draw_region(src, dst_surface, dst);
+  tileset_image->draw_region(src, shared_dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -107,7 +108,7 @@ void SelfScrollingTilePattern::draw(Surface& dst_surface,
   src.set_width(offset_x);
   dst.add_y(src.get_height() - offset_y);
   src.set_height(offset_y);
-  tileset_image.draw_region(src, dst_surface, dst);
+  tileset_image->draw_region(src, shared_dst_surface, dst);
 }
 
 /**

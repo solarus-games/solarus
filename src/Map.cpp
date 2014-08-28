@@ -263,12 +263,9 @@ void Map::unload() {
   if (is_loaded()) {
     delete tileset;
     tileset = nullptr;
-    RefCountable::unref(visible_surface);
-    visible_surface = nullptr;
-    RefCountable::unref(background_surface);
-    background_surface = nullptr;
-    RefCountable::unref(foreground_surface);
-    foreground_surface = nullptr;
+    visible_surface.reset();
+    background_surface.reset();
+    foreground_surface.reset();
     delete entities;
     entities = nullptr;
     delete camera;
@@ -290,13 +287,11 @@ void Map::load(Game& game) {
   visible_surface = Surface::create(
       Video::get_quest_size()
   );
-  RefCountable::ref(visible_surface);
   visible_surface->set_software_destination(false);
 
   background_surface = Surface::create(
       Video::get_quest_size()
   );
-  RefCountable::ref(background_surface);
   background_surface->set_software_destination(false);
 
   entities = new MapEntities(game, *this);
@@ -453,8 +448,8 @@ int Map::get_destination_side() const {
  *
  * \return the surface where the map is displayed
  */
-Surface& Map::get_visible_surface() {
-  return *visible_surface;
+SurfacePtr& Map::get_visible_surface() {
+  return visible_surface;
 }
 
 /**
@@ -578,7 +573,7 @@ void Map::draw() {
     draw_foreground();
 
     // Lua
-    get_lua_context().map_on_draw(*this, *visible_surface);
+    get_lua_context().map_on_draw(*this, visible_surface);
   }
 }
 
@@ -599,7 +594,7 @@ void Map::build_background_surface() {
  */
 void Map::draw_background() {
 
-  background_surface->draw(*visible_surface);
+  background_surface->draw(visible_surface);
 }
 
 /**
@@ -608,7 +603,7 @@ void Map::draw_background() {
  */
 void Map::build_foreground_surface() {
 
-  RefCountable::unref(foreground_surface);
+  foreground_surface.reset();
 
   const int screen_width = visible_surface->get_width();
   const int screen_height = visible_surface->get_height();
@@ -624,7 +619,6 @@ void Map::build_foreground_surface() {
   }
 
   foreground_surface = Surface::create(visible_surface->get_size());
-  RefCountable::ref(foreground_surface);
   // Keep this surface as software destination because it is built only once.
 
   if (map_width < screen_width) {
@@ -650,7 +644,7 @@ void Map::build_foreground_surface() {
 void Map::draw_foreground() {
 
   if (foreground_surface != nullptr) {
-    foreground_surface->draw(*visible_surface);
+    foreground_surface->draw(visible_surface);
   }
 }
 
@@ -676,7 +670,7 @@ void Map::draw_sprite(Sprite& sprite, int x, int y) {
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
   const Rectangle& camera_position = get_camera_position();
-  sprite.draw(*visible_surface,
+  sprite.draw(visible_surface,
       x - camera_position.get_x(),
       y - camera_position.get_y()
   );
@@ -712,7 +706,7 @@ void Map::draw_sprite(Sprite& sprite, int x, int y,
   );
   sprite.draw_region(
       region_in_frame,
-      *visible_surface,
+      visible_surface,
       dst_position
   );
 }

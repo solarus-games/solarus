@@ -100,14 +100,6 @@ Sprite::Sprite(const std::string& id):
 }
 
 /**
- * \brief Destructor.
- */
-Sprite::~Sprite() {
-
-  RefCountable::unref(intermediate_surface);
-}
-
-/**
  * \brief Returns the id of the animation set of this sprite.
  * \return the animation set id of this sprite
  */
@@ -689,7 +681,8 @@ void Sprite::raw_draw(
           current_direction, current_frame);
       Rectangle dst_position2(dst_position);
       dst_position2.add_xy(-get_origin().get_x(), -get_origin().get_y());
-      intermediate_surface->draw_region(get_size(), dst_surface, dst_position2);
+      SurfacePtr shared_dst_surface(RefCountable::make_refcount_ptr(&dst_surface));  // TODO shared_ptr
+      intermediate_surface->draw_region(get_size(), shared_dst_surface, dst_position2);
     }
   }
 }
@@ -750,7 +743,8 @@ void Sprite::raw_draw_region(
     Rectangle dst_position2(dst_position);
     dst_position2.add_xy(src_position.get_x(), src_position.get_y());  // Let a space for the part outside the region.
     dst_position2.add_xy(-origin.get_x(), -origin.get_y());  // Input coordinates were relative to the origin.
-    get_intermediate_surface().draw_region(src_position, dst_surface, dst_position2);
+    SurfacePtr shared_dst_surface(RefCountable::make_refcount_ptr(&dst_surface));  // TODO shared_ptr
+    get_intermediate_surface().draw_region(src_position, shared_dst_surface, dst_position2);
   }
 }
 
@@ -784,7 +778,6 @@ Surface& Sprite::get_intermediate_surface() const {
 
   if (intermediate_surface == nullptr) {
     intermediate_surface = Surface::create(get_max_size());
-    RefCountable::ref(intermediate_surface);
   }
   return *intermediate_surface;
 }

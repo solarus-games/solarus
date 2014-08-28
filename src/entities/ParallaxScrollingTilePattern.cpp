@@ -58,10 +58,11 @@ void ParallaxScrollingTilePattern::draw(Surface& dst_surface,
     const Rectangle& dst_position, Tileset& tileset,
     const Rectangle& viewport) {
 
-  Surface& tileset_image = tileset.get_tiles_image();
+  SurfacePtr& tileset_image = tileset.get_tiles_image();
   Rectangle dst(dst_position);
   dst.add_xy(viewport.get_x() / ratio, viewport.get_y() / ratio);
-  tileset_image.draw_region(position_in_tileset, dst_surface, dst);
+  SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
+  tileset_image->draw_region(position_in_tileset, shared_dst_surface, dst);
 
   // one day, we can implement several scrolling layers just by changing the ratio
 }

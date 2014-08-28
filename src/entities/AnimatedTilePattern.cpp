@@ -116,7 +116,7 @@ void AnimatedTilePattern::draw(Surface& dst_surface,
     const Rectangle& dst_position, Tileset& tileset,
     const Rectangle& viewport) {
 
-  Surface& tileset_image = tileset.get_tiles_image();
+  SurfacePtr& tileset_image = tileset.get_tiles_image();
   const Rectangle& src = position_in_tileset[current_frames[sequence]];
   Rectangle dst(dst_position);
 
@@ -125,7 +125,8 @@ void AnimatedTilePattern::draw(Surface& dst_surface,
         viewport.get_y() / ParallaxScrollingTilePattern::ratio);
   }
 
-  tileset_image.draw_region(src, dst_surface, dst);
+  SurfacePtr shared_dst_surface(RefCountable::make_refcount_ptr(&dst_surface));  // TODO shared_ptr
+  tileset_image->draw_region(src, shared_dst_surface, dst);
 }
 
 /**

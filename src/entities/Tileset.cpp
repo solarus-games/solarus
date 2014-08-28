@@ -128,11 +128,9 @@ void Tileset::load() {
   // load the tileset images
   file_name = std::string("tilesets/") + id + ".tiles.png";
   tiles_image = Surface::create(file_name, Surface::DIR_DATA);
-  RefCountable::ref(tiles_image);
 
   file_name = std::string("tilesets/") + id + ".entities.png";
   entities_image = Surface::create(file_name, Surface::DIR_DATA);
-  RefCountable::ref(entities_image);
 }
 
 /**
@@ -146,11 +144,8 @@ void Tileset::unload() {
   }
   tile_patterns.clear();
 
-  RefCountable::unref(tiles_image);
-  tiles_image = nullptr;
-
-  RefCountable::unref(entities_image);
-  entities_image = nullptr;
+  tiles_image.reset();
+  entities_image.reset();
 }
 
 /**
@@ -173,16 +168,16 @@ bool Tileset::is_loaded() {
  * \brief Returns the image containing the tiles of this tileset.
  * \return the tiles image
  */
-Surface& Tileset::get_tiles_image() {
-  return *tiles_image;
+SurfacePtr& Tileset::get_tiles_image() {
+  return tiles_image;
 }
 
 /**
  * \brief Returns the image containing the skin-dependent dynamic entities for this tileset.
  * \return the image containing the skin-dependent dynamic entities for this tileset
  */
-Surface& Tileset::get_entities_image() {
-  return *entities_image;
+SurfacePtr& Tileset::get_entities_image() {
+  return entities_image;
 }
 
 /**
@@ -213,13 +208,8 @@ void Tileset::set_images(const std::string& other_id) {
   Tileset tmp_tileset(other_id);
   tmp_tileset.load();
 
-  RefCountable::unref(tiles_image);
-  tiles_image = &tmp_tileset.get_tiles_image();
-  RefCountable::ref(tiles_image);
-
-  RefCountable::unref(entities_image);
-  entities_image = &tmp_tileset.get_entities_image();
-  RefCountable::ref(entities_image);
+  tiles_image = tmp_tileset.get_tiles_image();
+  entities_image = tmp_tileset.get_entities_image();
 
   background_color = tmp_tileset.get_background_color();
 }

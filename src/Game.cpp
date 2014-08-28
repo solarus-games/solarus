@@ -136,8 +136,6 @@ Game::~Game() {
   delete transition;
   delete keys_effect;
   delete commands;
-
-  RefCountable::unref(previous_map_surface);
 }
 
 /**
@@ -405,7 +403,7 @@ void Game::update_transitions() {
       transition = Transition::create(
           transition_style,
           Transition::TRANSITION_CLOSING,
-          current_map->get_visible_surface(),
+          *current_map->get_visible_surface(),  // TODO shared_ptr
           this);
       transition->start();
     }
@@ -436,7 +434,7 @@ void Game::update_transitions() {
         transition = Transition::create(
             transition_style,
             Transition::TRANSITION_OPENING,
-            current_map->get_visible_surface(),
+            *current_map->get_visible_surface(),  // TODO shared_ptr
             this);
         transition->start();
         next_map = nullptr;
@@ -469,9 +467,8 @@ void Game::update_transitions() {
               Video::get_quest_size()
           );
           previous_map_surface->set_software_destination(false);
-          RefCountable::ref(previous_map_surface);
           current_map->draw();
-          current_map->get_visible_surface().draw(*previous_map_surface);
+          current_map->get_visible_surface()->draw(previous_map_surface);
         }
 
         // set the next map
@@ -484,9 +481,7 @@ void Game::update_transitions() {
     }
     else {
       current_map->notify_opening_transition_finished();
-
-      RefCountable::unref(previous_map_surface);
-      previous_map_surface = nullptr;
+      previous_map_surface.reset();
     }
   }
 
@@ -496,12 +491,12 @@ void Game::update_transitions() {
     transition = Transition::create(
         transition_style,
         Transition::TRANSITION_OPENING,
-        current_map->get_visible_surface(),
+        *current_map->get_visible_surface(),  // TODO shared_ptr
         this);
 
     if (previous_map_surface != nullptr) {
       // some transition effects need to display both maps simultaneously
-      transition->set_previous_surface(previous_map_surface);
+      transition->set_previous_surface(previous_map_surface.get());  // TODO shared_ptr
     }
 
     hero->place_on_destination(*current_map, previous_map_location);
@@ -538,7 +533,7 @@ void Game::update_keys_effect() {
  * \brief Draws the game.
  * \param dst_surface The surface where the game will be drawn.
  */
-void Game::draw(Surface& dst_surface) {
+void Game::draw(SurfacePtr& dst_surface) {
 
   if (current_map == nullptr) {
     // Nothing to do. The game is not fully initialized yet.
@@ -549,9 +544,9 @@ void Game::draw(Surface& dst_surface) {
   if (current_map->is_loaded()) {
     current_map->draw();
     if (transition != nullptr) {
-      transition->draw(current_map->get_visible_surface());
+      transition->draw(*current_map->get_visible_surface());  // TODO shared_ptr
     }
-    current_map->get_visible_surface().draw(dst_surface);
+    current_map->get_visible_surface()->draw(dst_surface);
 
     // Draw the built-in dialog box if any.
     if (is_dialog_enabled()) {
@@ -819,7 +814,7 @@ void Game::restart() {
     transition = Transition::create(
         Transition::FADE,
         Transition::TRANSITION_CLOSING,
-        current_map->get_visible_surface(),
+        *current_map->get_visible_surface(),  // TODO shared_ptr
         this
     );
     transition->start();

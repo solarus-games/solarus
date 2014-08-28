@@ -46,7 +46,6 @@ class Sprite: public Drawable {
 
     // creation and destruction
     Sprite(const std::string& id);
-    ~Sprite();
 
     void set_tileset(Tileset& tileset);
 
@@ -145,7 +144,7 @@ class Sprite: public Drawable {
                                         * when they have the same animation name (or nullptr) */
 
     // effects
-    mutable Surface*
+    mutable SurfacePtr
         intermediate_surface;          /**< an intermediate surface used to show transitions and other effects */
     uint32_t blink_delay;              /**< blink delay of the sprite, or zero if the sprite is not blinking */
     bool blink_is_sprite_visible;      /**< when blinking, true if the sprite is visible or false if it is invisible */

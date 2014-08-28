@@ -77,7 +77,6 @@ class TextSurface: public Drawable {
     TextSurface(int x, int y,
         HorizontalAlignment horizontal_alignment,
         VerticalAlignment vertical_alignment);
-    ~TextSurface();
 
     static bool has_font(const std::string& font_id);
     const std::string& get_font() const;
@@ -127,7 +126,7 @@ class TextSurface: public Drawable {
       char* buffer;                                   /**< the file loaded into memory */
       SDL_RWops* rw;                                  /**< read/write object used to open the font file from memory */
       TTF_Font* internal_font;                        /**< the library-dependent font object */
-      Surface* bitmap;                                /**< only used if it's a PNG font */
+      SurfacePtr bitmap;                              /**< only used if it's a PNG font */
     };
 
     static void load_fonts();
@@ -150,7 +149,7 @@ class TextSurface: public Drawable {
 
     int x;                                            /**< x coordinate of where the text is aligned */
     int y;                                            /**< y coordinate of where the text is aligned */
-    Surface* surface;                                 /**< the surface to draw */
+    SurfacePtr surface;                               /**< the surface to draw */
     Rectangle text_position;                          /**< position of the top-left corner of the surface on the screen */
 
     std::string text;                                 /**< the string to draw (only one line) */

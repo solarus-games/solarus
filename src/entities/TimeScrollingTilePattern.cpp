@@ -80,11 +80,12 @@ void TimeScrollingTilePattern::draw(Surface& dst_surface,
   offset_x = src.get_width() - (shift % src.get_width());
   offset_y = shift % src.get_height();
 
+  SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
   src.add_x(offset_x);
   src.add_width(-offset_x);
   src.add_y(offset_y);
   src.add_height(-offset_y);
-  tileset.get_tiles_image().draw_region(src, dst_surface, dst);
+  tileset.get_tiles_image()->draw_region(src, shared_dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -92,7 +93,7 @@ void TimeScrollingTilePattern::draw(Surface& dst_surface,
   src.add_height(-offset_y);
   dst.add_x(src.get_width() - offset_x);
   src.set_width(offset_x);
-  tileset.get_tiles_image().draw_region(src, dst_surface, dst);
+  tileset.get_tiles_image()->draw_region(src, shared_dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -100,7 +101,7 @@ void TimeScrollingTilePattern::draw(Surface& dst_surface,
   src.add_width(-offset_x);
   dst.add_y(src.get_height() - offset_y);
   src.set_height(offset_y);
-  tileset.get_tiles_image().draw_region(src, dst_surface, dst);
+  tileset.get_tiles_image()->draw_region(src, shared_dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -108,7 +109,7 @@ void TimeScrollingTilePattern::draw(Surface& dst_surface,
   src.set_width(offset_x);
   dst.add_y(src.get_height() - offset_y);
   src.set_height(offset_y);
-  tileset.get_tiles_image().draw_region(src, dst_surface, dst);
+  tileset.get_tiles_image()->draw_region(src, shared_dst_surface, dst);
 }
 
 /**

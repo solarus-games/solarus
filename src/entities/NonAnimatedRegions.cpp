@@ -50,8 +50,7 @@ NonAnimatedRegions::~NonAnimatedRegions() {
 void NonAnimatedRegions::clear() {
 
   for (unsigned i = 0; i < optimized_tiles_surfaces.size(); ++i) {
-    RefCountable::unref(optimized_tiles_surfaces[i]);
-    optimized_tiles_surfaces[i] = nullptr;
+    optimized_tiles_surfaces[i].reset();
   }
   optimized_tiles_surfaces.clear();
   are_squares_animated.clear();
@@ -160,8 +159,7 @@ void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
 void NonAnimatedRegions::notify_tileset_changed() {
 
   for (unsigned i = 0; i < non_animated_tiles.get_num_cells(); ++i) {
-    RefCountable::unref(optimized_tiles_surfaces[i]);
-    optimized_tiles_surfaces[i] = nullptr;
+    optimized_tiles_surfaces[i].reset();
   }
   // Everything will be redrawn when necessary.
 }
@@ -277,8 +275,7 @@ void NonAnimatedRegions::build_cell(int cell_index) {
       row * cell_size.get_height()
   );
 
-  Surface* cell_surface = Surface::create(cell_size);
-  RefCountable::ref(cell_surface);
+  SurfacePtr cell_surface = Surface::create(cell_size);
   optimized_tiles_surfaces[cell_index] = cell_surface;
   // Let this surface as a software destination because it is built only
   // once (here) and never changes later.
@@ -286,7 +283,7 @@ void NonAnimatedRegions::build_cell(int cell_index) {
   const std::vector<Tile*>& tiles_in_cell =
       non_animated_tiles.get_elements(cell_index);
   for (Tile* tile: tiles_in_cell) {
-    tile->draw(*cell_surface, cell_xy);
+    tile->draw(cell_surface, cell_xy);
   }
 
   // Remember that non-animated tiles are drawn after animated ones.

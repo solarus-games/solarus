@@ -49,7 +49,7 @@ class MainLoop {
 
     void check_input();
 
-    Surface* root_surface;      /**< the surface where everything is drawn (always SOLARUS_GAME_WIDTH * SOLARUS_GAME_HEIGHT) */
+    SurfacePtr root_surface;    /**< the surface where everything is drawn */
     LuaContext* lua_context;    /**< the Lua world where scripts are run */
     bool exiting;               /**< indicates that the program is about to stop */
     Game* game;                 /**< The current game if any, nullptr otherwise. */

@@ -38,7 +38,6 @@ class TransitionScrolling: public Transition {
   public:
 
     TransitionScrolling(Direction direction);
-    ~TransitionScrolling();
 
     virtual bool needs_previous_surface() const override;
 
@@ -54,7 +53,7 @@ class TransitionScrolling: public Transition {
     void scroll();
     Rectangle get_previous_map_dst_position(int scrolling_direction);
 
-    Surface* both_maps_surface;           /**< an intermediate surface where the two map surfaces will be blitted */
+    SurfacePtr both_maps_surface;         /**< an intermediate surface where the two map surfaces will be blitted */
     int scrolling_direction;              /**< direction of the scrolling (0 to 3) */
     uint32_t next_scroll_date;            /**< date of the next scrolling step */
 

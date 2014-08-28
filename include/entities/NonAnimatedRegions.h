@@ -61,7 +61,7 @@ class NonAnimatedRegions {
     Grid<Tile*> non_animated_tiles;         /**< All non-animated tiles. Stored in a grid so that
                                              * we can quickly find the ones to draw lazily later when the
                                              * camera moves. */
-    std::vector<Surface*>
+    std::vector<SurfacePtr>
         optimized_tiles_surfaces;           /**< All non-animated tiles are drawn here once for all
                                              * for performance. Each cell of the grid has a surface
                                              * or nullptr before it is drawn. */

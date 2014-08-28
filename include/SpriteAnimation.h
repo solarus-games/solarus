@@ -59,7 +59,7 @@ class SpriteAnimation {
     void do_enable_pixel_collisions();
     void disable_pixel_collisions();
 
-    Surface* src_image;          /**< image from which the frames are extracted;
+    SurfacePtr src_image;        /**< image from which the frames are extracted;
                                   * this image is the same for
                                   * all directions of the sprite's animation */
     const bool

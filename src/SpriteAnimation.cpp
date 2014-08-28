@@ -53,7 +53,6 @@ SpriteAnimation::SpriteAnimation(
     Debug::check_assertion(src_image != nullptr,
         std::string("Cannot load image '" + image_file_name + "'")
     );
-    RefCountable::ref(src_image);
   }
 }
 
@@ -65,8 +64,6 @@ SpriteAnimation::~SpriteAnimation() {
   for (SpriteAnimationDirection* direction: directions) {
     delete direction;
   }
-
-  RefCountable::unref(src_image);
 }
 
 /**
@@ -83,10 +80,7 @@ void SpriteAnimation::set_tileset(Tileset& tileset) {
     return;
   }
 
-  RefCountable::unref(src_image);
-
-  src_image = &tileset.get_entities_image();
-  RefCountable::ref(src_image);
+  src_image = tileset.get_entities_image();
   if (should_enable_pixel_collisions) {
     disable_pixel_collisions(); // to force creating the images again
     do_enable_pixel_collisions();
@@ -193,7 +187,7 @@ void SpriteAnimation::enable_pixel_collisions() {
 void SpriteAnimation::do_enable_pixel_collisions() {
 
   for (SpriteAnimationDirection* direction: directions) {
-    direction->enable_pixel_collisions(src_image);
+    direction->enable_pixel_collisions(*src_image);
   }
 }
 

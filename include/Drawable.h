@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_DYNAMIC_DISPLAYABLE_H
-#define SOLARUS_DYNAMIC_DISPLAYABLE_H
+#ifndef SOLARUS_DRAWABLE_H
+#define SOLARUS_DRAWABLE_H
 
 #include "Common.h"
 #include "lua/ExportableToLua.h"
@@ -47,12 +47,12 @@ class Drawable: public ExportableToLua {
     Transition* get_transition();
 
     // drawing with effects
-    void draw(Surface& dst_surface);
-    void draw(Surface& dst_surface, int x, int y);
-    void draw(Surface& dst_surface, const Rectangle& dst_position);
-    void draw_region(const Rectangle& region, Surface& dst_surface);
+    void draw(SurfacePtr& dst_surface);
+    void draw(SurfacePtr& dst_surface, int x, int y);
+    void draw(SurfacePtr& dst_surface, const Rectangle& dst_position);
+    void draw_region(const Rectangle& region, SurfacePtr& dst_surface);
     void draw_region(const Rectangle& region,
-        Surface& dst_surface, const Rectangle& dst_position);
+        SurfacePtr& dst_surface, const Rectangle& dst_position);
 
     /**
      * \brief Draws this object without applying dynamic effects.
@@ -63,8 +63,10 @@ class Drawable: public ExportableToLua {
      * \param dst_surface The destination surface.
      * \param dst_position Coordinates on the destination surface.
      */
-    virtual void raw_draw(Surface& dst_surface,
-        const Rectangle& dst_position) = 0;
+    virtual void raw_draw(
+        Surface& dst_surface,
+        const Rectangle& dst_position
+    ) = 0;
 
     /**
      * \brief Draws a subrectangle of this object without applying dynamic
@@ -81,7 +83,8 @@ class Drawable: public ExportableToLua {
     virtual void raw_draw_region(
         const Rectangle& region,
         Surface& dst_surface,
-        const Rectangle& dst_position) = 0;
+        const Rectangle& dst_position
+    ) = 0;
 
     /**
      * \brief Draws a transition effect on this drawable object.

@@ -56,10 +56,11 @@ class Surface: public Drawable {
     ~Surface();
 
     // Constructors are private so that surfaces are only created on the heap.
-    // This is because they use the refcount system internally for drawing.
-    static Surface* create(int width, int height);
-    static Surface* create(const Rectangle& size);
-    static Surface* create(const std::string& file_name,
+    // This is because they are always reference-counted with shared_ptr
+    // internally for drawing.
+    static SurfacePtr create(int width, int height);
+    static SurfacePtr create(const Rectangle& size);
+    static SurfacePtr create(const std::string& file_name,
         ImageDirectory base_directory = DIR_SPRITES);
 
     int get_width() const;
@@ -99,6 +100,7 @@ class Surface: public Drawable {
   private:
 
     class SubSurfaceNode;
+    typedef std::shared_ptr<Surface::SubSurfaceNode> SubSurfaceNodePtr;
 
     Surface(int width, int height);
     explicit Surface(SDL_Surface* internal_surface);
@@ -113,7 +115,7 @@ class Surface: public Drawable {
     void create_software_surface();
     void convert_software_surface();
     void create_texture_from_surface();
-    void add_subsurface(Surface& src_surface, const Rectangle& region, const Rectangle& dst_position);
+    void add_subsurface(SurfacePtr& src_surface, const Rectangle& region, const Rectangle& dst_position);
     void clear_subsurfaces();
     void render(
         SDL_Renderer* renderer,
@@ -121,10 +123,11 @@ class Surface: public Drawable {
         const Rectangle& dst_rect,
         const Rectangle& clip_rect,
         uint8_t opacity,
-        const std::vector<SubSurfaceNode*>& subsurfaces
+        const std::vector<SubSurfaceNodePtr>& subsurfaces
     );
 
-    std::vector<SubSurfaceNode*> subsurfaces;      /**< Source Subsurfaces not in the tree yet */
+    std::vector<SubSurfaceNodePtr>
+        subsurfaces;                      /**< Source Subsurfaces not in the tree yet */
 
     bool software_destination;            /**< indicates that this surface is modified on software side
                                            * (and therefore immediately) when used as a destination */

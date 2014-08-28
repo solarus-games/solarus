@@ -56,20 +56,15 @@ class Surface::SubSurfaceNode: public RefCountable {
      * \param subsurfaces Surfaces drawn onto src_surface.
      */
     SubSurfaceNode(
-        Surface* src_surface,
+        SurfacePtr src_surface,
         const Rectangle& src_rect,
         const Rectangle& dst_rect,
-        const std::vector<SubSurfaceNode*> subsurfaces
+        const std::vector<SubSurfaceNodePtr> subsurfaces
     ):
       src_surface(src_surface),
       src_rect(src_rect),
       dst_rect(dst_rect),
       subsurfaces(subsurfaces) {
-
-      RefCountable::ref(src_surface);
-      for (unsigned i = 0; i < subsurfaces.size(); ++i) {
-        RefCountable::ref(subsurfaces[i]);
-      }
 
       // Clip the source rectangle to the size of the source surface.
       // Otherwise, SDL_RenderCopy() will stretch the image.
@@ -94,20 +89,10 @@ class Surface::SubSurfaceNode: public RefCountable {
 
     }
 
-    ~SubSurfaceNode() {
-
-      RefCountable::unref(src_surface);
-
-      for (unsigned i = 0; i < subsurfaces.size(); ++i) {
-        RefCountable::unref(subsurfaces[i]);
-      }
-    }
-
-    Surface* src_surface;                        /**< Surface to draw. */
-
+    SurfacePtr src_surface;                      /**< Surface to draw. */
     Rectangle src_rect;                          /**< Region of the surface to draw. */
     Rectangle dst_rect;                          /**< The rectangle where to draw the surface, relative to the parent surface. */
-    std::vector<SubSurfaceNode*> subsurfaces;    /**< Subsurfaces drawn onto src_surface. */
+    std::vector<SubSurfaceNodePtr> subsurfaces;  /**< Subsurfaces drawn onto src_surface. */
 };
 
 /**
@@ -178,8 +163,8 @@ Surface::~Surface() {
  * \param height The height in pixels.
  * \return The created surface.
  */
-Surface* Surface::create(int width, int height) {
-  return new Surface(width, height);
+SurfacePtr Surface::create(int width, int height) {
+  return make_refcount_ptr(new Surface(width, height));
 }
 
 /**
@@ -187,8 +172,8 @@ Surface* Surface::create(int width, int height) {
  * \param size The size in pixels.
  * \return The created surface.
  */
-Surface* Surface::create(const Rectangle& size) {
-  return new Surface(size.get_width(), size.get_height());
+SurfacePtr Surface::create(const Rectangle& size) {
+  return make_refcount_ptr(new Surface(size.get_width(), size.get_height()));
 }
 
 /**
@@ -201,7 +186,7 @@ Surface* Surface::create(const Rectangle& size) {
  * \param base_directory The base directory to use.
  * \return The surface created, or nullptr if the file could not be loaded.
  */
-Surface* Surface::create(const std::string& file_name,
+SurfacePtr Surface::create(const std::string& file_name,
     ImageDirectory base_directory) {
 
   SDL_Surface* sdl_surface = get_surface_from_file(file_name, base_directory);
@@ -210,8 +195,7 @@ Surface* Surface::create(const std::string& file_name,
     return nullptr;
   }
 
-  Surface* surface = new Surface(sdl_surface);
-  return surface;
+  return make_refcount_ptr(new Surface(sdl_surface));
 }
 
 /**
@@ -531,12 +515,10 @@ void Surface::fill_with_color(const Color& color) {
 void Surface::fill_with_color(const Color& color, const Rectangle& where) {
 
   // Create a surface with the requested size and color and draw it.
-  Surface* colored_surface = Surface::create(where);
+  SurfacePtr colored_surface = Surface::create(where);
   colored_surface->set_software_destination(false);
   colored_surface->internal_color = new Color(color);
-  RefCountable::ref(colored_surface);
   colored_surface->raw_draw_region(colored_surface->get_size(), *this, where);
-  RefCountable::unref(colored_surface);
 }
 
 /**
@@ -547,17 +529,16 @@ void Surface::fill_with_color(const Color& color, const Rectangle& where) {
  * The width and height of this rectangle are ignored.
  */
 void Surface::add_subsurface(
-    Surface& src_surface,
+    SurfacePtr& src_surface,
     const Rectangle& region,
     const Rectangle& dst_position) {
 
-  SubSurfaceNode* node = new SubSurfaceNode(
-      &src_surface,
+  SubSurfaceNodePtr node(new SubSurfaceNode(
+      src_surface,
       region,
       dst_position,
-      src_surface.subsurfaces
-  );
-  RefCountable::ref(node);
+      src_surface->subsurfaces
+  ));
 
   // Clear the subsurface queue if the current dst_surface has already been rendered.
   if (is_rendered) {
@@ -572,9 +553,6 @@ void Surface::add_subsurface(
  */
 void Surface::clear_subsurfaces() {
 
-  for (unsigned i = 0; i < subsurfaces.size() ; ++i) {
-    RefCountable::unref(subsurfaces[i]);
-  }
   subsurfaces.clear();
 }
 
@@ -618,10 +596,10 @@ void Surface::raw_draw_region(
         create_software_surface();
       }
 
-      std::vector<SubSurfaceNode*> subsurfaces = this->subsurfaces;
+      std::vector<SubSurfaceNodePtr> subsurfaces = this->subsurfaces;
       this->subsurfaces.clear();  // Avoid infinite recursive calls if there are cycles.
 
-      for (SubSurfaceNode* subsurface: subsurfaces) {
+      for (SubSurfaceNodePtr& subsurface: subsurfaces) {
 
         // TODO draw the subsurfaces of the whole tree recursively instead.
         // The current version is not correct because it handles only one level
@@ -632,7 +610,7 @@ void Surface::raw_draw_region(
             *this,
             subsurface->dst_rect
         );
-        RefCountable::unref(subsurface);
+        subsurface.reset();
       }
       clear_subsurfaces();
     }
@@ -682,7 +660,8 @@ void Surface::raw_draw_region(
     // The destination is a GPU surface (a texture).
     // Do not draw anything, just store the operation in the tree instead.
     // The actual drawing will be done at rendering time in GPU.
-    dst_surface.add_subsurface(*this, region, dst_position);
+    SurfacePtr src_surface(make_refcount_ptr(this));  // TODO shared_ptr
+    dst_surface.add_subsurface(src_surface, region, dst_position);
   }
 
   dst_surface.is_rendered = false;
@@ -767,7 +746,8 @@ void Surface::render(
     const Rectangle& dst_xy,
     const Rectangle& clip_rect,
     uint8_t opacity,
-    const std::vector<SubSurfaceNode*>& subsurfaces) {
+    const std::vector<SubSurfaceNodePtr>& subsurfaces
+) {
 
   //FIXME SDL_RenderSetClipRect is buggy for now, but should be fixed soon.
   // It means that software and hardware surface doesn't have the exact same behavior for now.
@@ -821,7 +801,7 @@ void Surface::render(
   }
 
   // The surface is rendered. Now draw all subtextures.
-  for (SubSurfaceNode* subsurface: subsurfaces) {
+  for (const SubSurfaceNodePtr& subsurface: subsurfaces) {
 
     // subsurface has to be drawn on this surface
 

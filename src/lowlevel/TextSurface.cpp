@@ -88,8 +88,7 @@ void TextSurface::quit() {
 
     if (font.bitmap != nullptr) {
       // It's a bitmap font.
-      RefCountable::unref(font.bitmap);
-      font.bitmap = nullptr;
+      font.bitmap.reset();
     }
     else {
       // It's a normal font.
@@ -137,7 +136,6 @@ int TextSurface::l_font(lua_State* l) {
   if (extension == ".png" || extension == ".PNG") {
     // It's a bitmap font.
     fonts[font_id].bitmap = Surface::create(file_name, Surface::DIR_DATA);
-    RefCountable::ref(fonts[font_id].bitmap);
   }
   else {
     // It's a normal font.
@@ -203,14 +201,6 @@ TextSurface::TextSurface(int x, int y,
   text = "";
   set_text_color(Color::get_white());
   set_position(x, y);
-}
-
-/**
- * \brief Destructor.
- */
-TextSurface::~TextSurface() {
-
-  RefCountable::unref(surface);
 }
 
 /**
@@ -487,7 +477,6 @@ void TextSurface::rebuild() {
     }
   }
 
-  RefCountable::unref(surface);
   surface = nullptr;
 
   if (is_empty()) {
@@ -562,13 +551,12 @@ void TextSurface::rebuild_bitmap() {
   }
 
   // Determine the letter size from the surface size.
-  Surface& bitmap = *fonts[font_id].bitmap;
-  const Rectangle& bitmap_size = bitmap.get_size();
+  SurfacePtr& bitmap = fonts[font_id].bitmap;
+  const Rectangle& bitmap_size = bitmap->get_size();
   int char_width = bitmap_size.get_width() / 128;
   int char_height = bitmap_size.get_height() / 16;
 
   surface = Surface::create((char_width - 1) * num_chars + 1, char_height);
-  RefCountable::ref(surface);
 
   // Traverse the string again to draw the characters.
   Rectangle dst_position(0, 0);
@@ -587,7 +575,7 @@ void TextSurface::rebuild_bitmap() {
       src_position.set_xy((code_point % 128) * char_width,
           (code_point / 128) * char_height);
     }
-    bitmap.draw_region(src_position, *surface, dst_position);
+    bitmap->draw_region(src_position, surface, dst_position);
     dst_position.add_x(char_width - 1);
   }
 }
@@ -618,8 +606,7 @@ void TextSurface::rebuild_ttf() {
       + SDL_GetError()
   );
 
-  surface = new Surface(internal_surface);
-  RefCountable::ref(surface);
+  surface = make_refcount_ptr(new Surface(internal_surface));
 }
 
 /**
@@ -665,7 +652,7 @@ void TextSurface::raw_draw_region(const Rectangle& region,
  * \param transition The transition effect to apply.
  */
 void TextSurface::draw_transition(Transition& transition) {
-  transition.draw(*surface);
+  transition.draw(*surface.get());  // TODO shared_ptr
 }
 
 /**
@@ -674,7 +661,7 @@ void TextSurface::draw_transition(Transition& transition) {
  * \return The surface for transitions.
  */
 Surface& TextSurface::get_transition_surface() {
-  return *surface;
+  return *surface;  // TODO shared_ptr
 }
 
 /**

@@ -58,7 +58,7 @@ class Game {
     // functions called by the main loop
     bool notify_input(const InputEvent& event);
     void update();
-    void draw(Surface& dst_surface);
+    void draw(SurfacePtr& dst_surface);
 
     // game controls
     void notify_command_pressed(GameCommands::Command command);
@@ -125,7 +125,7 @@ class Game {
     Map* current_map;          /**< the map currently displayed */
     Map* next_map;             /**< the map where the hero is going to; if not nullptr, it means that the hero
                                 * is changing from current_map to next_map */
-    Surface* previous_map_surface;  /**< a copy of the previous map surface for transition effects that display two maps */
+    SurfacePtr previous_map_surface;  /**< a copy of the previous map surface for transition effects that display two maps */
 
     Transition::Style transition_style; /**< the transition style between the current map and the next one */
     Transition* transition;             /**< the transition currently shown, or nullptr if no transition is playing */

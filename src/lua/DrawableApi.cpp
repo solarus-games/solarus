@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
+#include "lowlevel/Surface.h"
 #include "movements/Movement.h"
 #include "Drawable.h"
 #include "TransitionFade.h"
@@ -138,7 +139,8 @@ int LuaContext::drawable_api_draw(lua_State* l) {
   Surface& dst_surface = check_surface(l, 2);
   int x = luaL_optint(l, 3, 0);
   int y = luaL_optint(l, 4, 0);
-  drawable.draw(dst_surface, x, y);
+  SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
+  drawable.draw(shared_dst_surface, x, y);
 
   return 0;
 }
@@ -162,7 +164,8 @@ int LuaContext::drawable_api_draw_region(lua_State* l) {
      luaL_optint(l, 7, 0),
      luaL_optint(l, 8, 0)
   );
-  drawable.draw_region(region, dst_surface, dst_position);
+  SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
+  drawable.draw_region(region, shared_dst_surface, dst_position);
 
   return 0;
 }

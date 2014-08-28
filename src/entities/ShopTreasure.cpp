@@ -201,7 +201,7 @@ void ShopTreasure::draw_on_map() {
     return;
   }
 
-  Surface& map_surface = get_map().get_visible_surface();
+  SurfacePtr& map_surface = get_map().get_visible_surface();
   int x = get_x();
   int y = get_y();
 
@@ -209,7 +209,8 @@ void ShopTreasure::draw_on_map() {
   const Rectangle& camera_position = get_map().get_camera_position();
   treasure.draw(map_surface,
       x + 16 - camera_position.get_x(),
-      y + 13 - camera_position.get_y());
+      y + 13 - camera_position.get_y()
+  );
 
   // also draw the price
   price_digits.draw(map_surface,

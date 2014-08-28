@@ -101,7 +101,7 @@ void LuaContext::push_surface(lua_State* l, Surface& surface) {
  */
 int LuaContext::surface_api_create(lua_State* l) {
 
-  Surface* surface = nullptr;
+  SurfacePtr surface;
   if (lua_gettop(l) == 0) {
     // create an empty surface with the screen size
     surface = Surface::create(Video::get_quest_size());
@@ -128,7 +128,7 @@ int LuaContext::surface_api_create(lua_State* l) {
     lua_pushnil(l);
   }
   else {
-    get_lua_context(l).add_drawable(surface);
+    get_lua_context(l).add_drawable(surface.get());
     push_surface(l, *surface);
   }
   return 1;

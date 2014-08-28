@@ -40,16 +40,6 @@ TransitionScrolling::TransitionScrolling(Transition::Direction direction):
 }
 
 /**
- * \brief Destructor.
- */
-TransitionScrolling::~TransitionScrolling() {
-
-  if (get_direction() == TRANSITION_OPENING) {
-    RefCountable::unref(both_maps_surface);
-  }
-}
-
-/**
  * \brief Returns where the previous map should be blitted on
  * both_maps_surface, for the specified scrolling direction.
  * \param scrolling_direction The scrolling direction (0 to 3).
@@ -99,7 +89,6 @@ void TransitionScrolling::start() {
 
   // create a surface with the two maps
   both_maps_surface = Surface::create(width, height);
-  RefCountable::ref(both_maps_surface);
   both_maps_surface->set_software_destination(false);
 
   // set the blitting rectangles
@@ -194,13 +183,14 @@ void TransitionScrolling::draw(Surface& dst_surface) {
       "No previous surface defined for scrolling");
 
   // draw the old map
-  previous_surface->draw(*both_maps_surface, previous_map_dst_position);
+  previous_surface->draw(both_maps_surface, previous_map_dst_position);
 
   // draw the new map
-  dst_surface.draw(*both_maps_surface, current_map_dst_position);
+  dst_surface.draw(both_maps_surface, current_map_dst_position);
 
   // blit both surfaces
-  both_maps_surface->draw_region(current_scrolling_position, dst_surface);
+  SurfacePtr shared_dst_surface(RefCountable::make_refcount_ptr(&dst_surface));  // TODO shared_ptr
+  both_maps_surface->draw_region(current_scrolling_position, shared_dst_surface);
 }
 
 }

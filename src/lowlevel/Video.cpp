@@ -36,17 +36,17 @@ namespace solarus {
 
 namespace {
 
-SDL_Window* main_window = nullptr;           /**< The window. */
-SDL_Renderer* main_renderer = nullptr;       /**< The screen renderer. */
-SDL_Texture* render_target = nullptr;        /**< The render texture used when shader modes are supported. */
-SDL_PixelFormat* pixel_format = nullptr;     /**< The pixel color format to use. */
+SDL_Window* main_window = nullptr;        /**< The window. */
+SDL_Renderer* main_renderer = nullptr;    /**< The screen renderer. */
+SDL_Texture* render_target = nullptr;     /**< The render texture used when shader modes are supported. */
+SDL_PixelFormat* pixel_format = nullptr;  /**< The pixel color format to use. */
 std::string rendering_driver_name;        /**< The name of the rendering driver. */
 bool disable_window = false;              /**< Indicates that no window is displayed (used for unit tests). */
 bool fullscreen_window = false;           /**< True if the window is in fullscreen. */
 bool rendertarget_supported = false;      /**< True if rendering on texture is supported. */
 bool shaders_enabled = false;             /**< True if shaded modes support is enabled. */
 bool acceleration_enabled = false;        /**< \c true if 2D GPU acceleration is available and enabled. */
-Surface* scaled_surface = nullptr;           /**< The screen surface used with software-scaled modes. */
+SurfacePtr scaled_surface = nullptr;      /**< The screen surface used with software-scaled modes. */
 
 std::vector<VideoMode*>
     all_video_modes;                      /**< Display information for each supported video mode. */
@@ -485,8 +485,7 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
   
   if (!disable_window) {
 
-    RefCountable::unref(scaled_surface);
-    scaled_surface = nullptr;
+    scaled_surface.reset();
 
     Rectangle render_size(quest_size);
 
@@ -498,7 +497,6 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
           quest_size.get_height() * factor
       );
       scaled_surface = Surface::create(render_size);
-      RefCountable::ref(scaled_surface);
       scaled_surface->fill_with_color(Color::get_black());  // To initialize the internal surface.
     }
 
@@ -575,7 +573,7 @@ const VideoMode* Video::get_video_mode_by_name(
  * \brief Draws the quest surface on the screen with the current video mode.
  * \param quest_surface The quest surface to render on the screen.
  */
-void Video::render(Surface& quest_surface) {
+void Video::render(SurfacePtr& quest_surface) {
 
   if (disable_window) {
     return;
@@ -598,11 +596,11 @@ void Video::render(Surface& quest_surface) {
     if (software_filter != nullptr) {
       Debug::check_assertion(scaled_surface != nullptr,
           "Missing destination surface for scaling");
-      quest_surface.apply_pixel_filter(*software_filter, *scaled_surface);
-      surface_to_render = scaled_surface;
+      quest_surface->apply_pixel_filter(*software_filter, *scaled_surface);
+      surface_to_render = scaled_surface.get();
     }
     else {
-      surface_to_render = &quest_surface;
+      surface_to_render = quest_surface.get();
     }
 
     SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);

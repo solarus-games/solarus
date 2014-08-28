@@ -46,8 +46,8 @@ class Tileset {
     const std::string& get_id();
     Color& get_background_color();
     bool is_loaded();
-    Surface& get_tiles_image();
-    Surface& get_entities_image();
+    SurfacePtr& get_tiles_image();
+    SurfacePtr& get_entities_image();
     TilePattern& get_tile_pattern(const std::string& id);
     void set_images(const std::string& other_id);
 
@@ -64,8 +64,8 @@ class Tileset {
     std::map<std::string, TilePattern*>
         tile_patterns;                                /**< tile patterns in this tileset */
     Color background_color;                           /**< background color of the tileset */
-    Surface* tiles_image;                             /**< image from which the tile patterns are extracted */
-    Surface* entities_image;                          /**< image from which the skin-dependent entities are extracted */
+    SurfacePtr tiles_image;                           /**< image from which the tile patterns are extracted */
+    SurfacePtr entities_image;                        /**< image from which the skin-dependent entities are extracted */
 
 };
 

@@ -40,14 +40,15 @@ namespace solarus {
  * scripts at runtime.
  *
  * Such scripts include the quest main script, map scripts, enemy behaviors,
- * etc.
+ * etc. This class implements the Solarus scripting API that scripts can use.
+ *
  * All these scripts run in the same Lua context. This means that they share
  * global values and other global mechanisms like the registry and metatables.
  *
  * On the contrary, data files that happen to have a Lua-compatible syntax
  * (like maps) are always parsed in their own, independent Lua states.
- * These files are considered as pure data (not code) and only have access
- * to a few determined functions.
+ * These files are considered as pure data (not code) and only use the
+ * LuaTools class, not this class.
  */
 class LuaContext {
 

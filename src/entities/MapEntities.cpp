@@ -633,9 +633,9 @@ void MapEntities::add_entity(MapEntity* entity) {
           Destination* destination = static_cast<Destination*>(entity);
           if (this->default_destination == nullptr || destination->is_default()) {
             this->default_destination = destination;
-            break;
           }
         }
+        break;
 
       default:
       break;

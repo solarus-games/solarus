@@ -79,12 +79,6 @@ CustomEntity::CustomEntity(
 }
 
 /**
- * \brief Destructor.
- */
-CustomEntity::~CustomEntity() {
-}
-
-/**
  * \brief Returns the type of entity.
  * \return The type of entity.
  */
@@ -181,7 +175,10 @@ bool CustomEntity::is_traversable_by_entity(MapEntity& entity) {
  */
 void CustomEntity::set_traversable_by_entities(bool traversable) {
 
-  traversable_by_entities_general = TraversableInfo(*this, traversable);
+  traversable_by_entities_general = TraversableInfo(
+      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+      traversable
+  );
 }
 
 /**
@@ -197,7 +194,10 @@ void CustomEntity::set_traversable_by_entities(bool traversable) {
  */
 void CustomEntity::set_traversable_by_entities(int traversable_test_ref) {
 
-  traversable_by_entities_general = TraversableInfo(*this, traversable_test_ref);
+  traversable_by_entities_general = TraversableInfo(
+      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+      traversable_test_ref
+  );
 }
 
 /**
@@ -230,7 +230,10 @@ void CustomEntity::reset_traversable_by_entities() {
 void CustomEntity::set_traversable_by_entities(
     EntityType type, bool traversable) {
 
-  traversable_by_entities_type[type] = TraversableInfo(*this, traversable);
+  traversable_by_entities_type[type] = TraversableInfo(
+      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+      traversable
+  );
 }
 
 /**
@@ -248,7 +251,10 @@ void CustomEntity::set_traversable_by_entities(
 void CustomEntity::set_traversable_by_entities(
     EntityType type, int traversable_test_ref) {
 
-  traversable_by_entities_type[type] = TraversableInfo(*this, traversable_test_ref);
+  traversable_by_entities_type[type] = TraversableInfo(
+      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+      traversable_test_ref
+  );
 }
 
 /**
@@ -313,7 +319,9 @@ const CustomEntity::TraversableInfo& CustomEntity::get_can_traverse_entity_info(
  */
 void CustomEntity::set_can_traverse_entities(bool traversable) {
 
-  can_traverse_entities_general = TraversableInfo(*this, traversable);
+  can_traverse_entities_general = TraversableInfo(
+      std::static_pointer_cast<CustomEntity>(shared_from_this()), traversable
+  );
 }
 
 /**
@@ -329,7 +337,10 @@ void CustomEntity::set_can_traverse_entities(bool traversable) {
  */
 void CustomEntity::set_can_traverse_entities(int traversable_test_ref) {
 
-  can_traverse_entities_general = TraversableInfo(*this, traversable_test_ref);
+  can_traverse_entities_general = TraversableInfo(
+      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+      traversable_test_ref
+  );
 }
 
 /**
@@ -362,7 +373,10 @@ void CustomEntity::reset_can_traverse_entities() {
 void CustomEntity::set_can_traverse_entities(
     EntityType type, bool traversable) {
 
-  can_traverse_entities_type[type] = TraversableInfo(*this, traversable);
+  can_traverse_entities_type[type] = TraversableInfo(
+      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+      traversable
+  );
 }
 
 /**
@@ -380,7 +394,10 @@ void CustomEntity::set_can_traverse_entities(
 void CustomEntity::set_can_traverse_entities(
     EntityType type, int traversable_test_ref) {
 
-  can_traverse_entities_type[type] = TraversableInfo(*this, traversable_test_ref);
+  can_traverse_entities_type[type] = TraversableInfo(
+      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+      traversable_test_ref
+  );
 }
 
 /**
@@ -710,7 +727,11 @@ void CustomEntity::add_collision_test(CollisionMode collision_test, int callback
     add_collision_mode(COLLISION_CUSTOM);
   }
 
-  collision_tests.emplace_back(*this, collision_test, callback_ref);
+  collision_tests.emplace_back(
+      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+      collision_test,
+      callback_ref
+  );
 }
 
 /**
@@ -726,7 +747,11 @@ void CustomEntity::add_collision_test(int collision_test_ref, int callback_ref) 
 
   add_collision_mode(COLLISION_CUSTOM);
 
-  collision_tests.emplace_back(*this, collision_test_ref, callback_ref);
+  collision_tests.emplace_back(
+      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+      collision_test_ref,
+      callback_ref
+  );
 }
 
 /**
@@ -1155,6 +1180,24 @@ void CustomEntity::notify_creating() {
 }
 
 /**
+ * \copydoc MapEntity::notify_being_removed
+ */
+void CustomEntity::notify_being_removed() {
+
+  // Collision tests and traversable info contain pointers to this custom
+  // entity (and this is a mistake that will be fixed soon).
+  // Destroy them now to break the cycle.
+  // TODO shared_ptr all of this can be removed when removing those pointers
+  // from CollisionInfo and TraversableInfo.
+  clear_collision_tests();
+  traversable_by_entities_general = TraversableInfo();
+  traversable_by_entities_type.clear();
+  can_traverse_entities_general = TraversableInfo();
+  can_traverse_entities_type.clear();
+  can_traverse_grounds.clear();
+}
+
+/**
  * \copydoc MapEntity::update
  */
 void CustomEntity::update() {
@@ -1222,12 +1265,11 @@ CustomEntity::TraversableInfo::TraversableInfo():
  * \param entity The custom entity.
  * \param traversable The value to store.
  */
-CustomEntity::TraversableInfo::TraversableInfo(CustomEntity& entity, bool traversable):
-  entity(&entity),
+CustomEntity::TraversableInfo::TraversableInfo(const CustomEntityPtr& entity, bool traversable):
+  entity(entity),
   traversable_test_ref(LUA_REFNIL),
   traversable(traversable) {
 
-  RefCountable::ref(&entity);
 }
 
 /**
@@ -1235,12 +1277,11 @@ CustomEntity::TraversableInfo::TraversableInfo(CustomEntity& entity, bool traver
  * \param entity The custom entity.
  * \param traversable_test_ref Lua ref to a function.
  */
-CustomEntity::TraversableInfo::TraversableInfo(CustomEntity& entity, int traversable_test_ref):
-  entity(&entity),
+CustomEntity::TraversableInfo::TraversableInfo(const CustomEntityPtr& entity, int traversable_test_ref):
+  entity(entity),
   traversable_test_ref(traversable_test_ref),
   traversable(false) {
 
-  RefCountable::ref(&entity);
 }
 
 /**
@@ -1253,7 +1294,6 @@ CustomEntity::TraversableInfo::TraversableInfo(const TraversableInfo& other):
   traversable(other.traversable) {
 
   if (entity != nullptr) {
-    RefCountable::ref(entity);
     traversable_test_ref = entity->get_lua_context().copy_ref(other.traversable_test_ref);
   }
 }
@@ -1265,7 +1305,6 @@ CustomEntity::TraversableInfo::~TraversableInfo() {
 
   if (entity != nullptr) {
     entity->get_lua_context().cancel_callback(traversable_test_ref);
-    RefCountable::unref(entity);
   }
 }
 
@@ -1281,14 +1320,12 @@ CustomEntity::TraversableInfo& CustomEntity::TraversableInfo::operator=(const Tr
 
   if (entity != nullptr) {
     entity->get_lua_context().cancel_callback(traversable_test_ref);
-    RefCountable::unref(entity);
   }
 
   entity = other.entity;
   traversable_test_ref = LUA_REFNIL;
 
   if (entity != nullptr) {
-    RefCountable::ref(entity);
     traversable_test_ref = entity->get_lua_context().copy_ref(other.traversable_test_ref);
   }
   traversable = other.traversable;
@@ -1348,13 +1385,12 @@ CustomEntity::CollisionInfo::CollisionInfo():
  * detected.
  */
 CustomEntity::CollisionInfo::CollisionInfo(
-    CustomEntity& entity, CollisionMode built_in_test, int callback_ref):
-  entity(&entity),
+    const CustomEntityPtr& entity, CollisionMode built_in_test, int callback_ref):
+  entity(entity),
   built_in_test(built_in_test),
   custom_test_ref(LUA_REFNIL),
   callback_ref(callback_ref) {
 
-  RefCountable::ref(&entity);
 }
 
 /**
@@ -1365,13 +1401,12 @@ CustomEntity::CollisionInfo::CollisionInfo(
  * detected.
  */
 CustomEntity::CollisionInfo::CollisionInfo(
-    CustomEntity& entity, int custom_test_ref, int callback_ref):
-  entity(&entity),
+    const CustomEntityPtr& entity, int custom_test_ref, int callback_ref):
+  entity(entity),
   built_in_test(COLLISION_CUSTOM),
   custom_test_ref(custom_test_ref),
   callback_ref(callback_ref) {
 
-  RefCountable::ref(&entity);
 }
 
 /**
@@ -1385,7 +1420,6 @@ CustomEntity::CollisionInfo::CollisionInfo(const CollisionInfo& other):
   callback_ref(LUA_REFNIL) {
 
   if (entity != nullptr) {
-    RefCountable::ref(entity);
     custom_test_ref = entity->get_lua_context().copy_ref(other.custom_test_ref);
     callback_ref = entity->get_lua_context().copy_ref(other.callback_ref);
   }
@@ -1399,7 +1433,6 @@ CustomEntity::CollisionInfo::~CollisionInfo() {
   if (entity != nullptr) {
     entity->get_lua_context().cancel_callback(custom_test_ref);
     entity->get_lua_context().cancel_callback(callback_ref);
-    RefCountable::unref(entity);
   }
 }
 
@@ -1414,7 +1447,6 @@ CustomEntity::CollisionInfo& CustomEntity::CollisionInfo::operator=(const Collis
   }
 
   if (entity != nullptr) {
-    RefCountable::unref(entity);
     entity->get_lua_context().cancel_callback(custom_test_ref);
     entity->get_lua_context().cancel_callback(callback_ref);
   }
@@ -1425,7 +1457,6 @@ CustomEntity::CollisionInfo& CustomEntity::CollisionInfo::operator=(const Collis
   callback_ref = LUA_REFNIL;
 
   if (entity != nullptr) {
-    RefCountable::ref(entity);
     custom_test_ref = entity->get_lua_context().copy_ref(other.custom_test_ref);
     callback_ref = entity->get_lua_context().copy_ref(other.callback_ref);
   }

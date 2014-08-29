@@ -44,8 +44,8 @@ class CustomEntity: public Detector {
         int width,
         int height,
         const std::string& sprite_name,
-        const std::string& model);
-    ~CustomEntity();
+        const std::string& model
+    );
 
     virtual EntityType get_type() const override;
 
@@ -53,6 +53,7 @@ class CustomEntity: public Detector {
 
     // Game loop.
     virtual void notify_creating() override;
+    virtual void notify_being_removed() override;
     virtual void set_suspended(bool suspended) override;
     virtual void notify_enabled(bool enabled) override;
     virtual void update() override;
@@ -154,6 +155,9 @@ class CustomEntity: public Detector {
 
   private:
 
+    // TODO shared_ptr: remove entity pointers from TraversableInfo and CollisionInfo.
+    // (make something like CollisionInfo::get_custom_test_ref() in TraversableInfo too).
+
     /**
      * \brief Stores whether a custom entity can be traversed by or can traverse
      * other entities.
@@ -163,10 +167,10 @@ class CustomEntity: public Detector {
       public:
 
         TraversableInfo();
-        TraversableInfo(CustomEntity& entity, bool traversable);
-        TraversableInfo(CustomEntity& entity, int traversable_test_ref);
+        TraversableInfo(const CustomEntityPtr& entity, bool traversable);
+        TraversableInfo(const CustomEntityPtr& entity, int traversable_test_ref);
         TraversableInfo(const TraversableInfo& other);
-        ~TraversableInfo();
+        ~TraversableInfo();  // TODO shared_ptr: set a custom deleter to avoid this destructor.
 
         TraversableInfo& operator=(const TraversableInfo& other);
 
@@ -175,7 +179,7 @@ class CustomEntity: public Detector {
 
       private:
 
-        CustomEntity* entity;          /**< The custom entity.
+        CustomEntityPtr entity;        /**< The custom entity.
                                         * nullptr means no info. */
         int traversable_test_ref;      /**< Lua ref to a boolean function
                                         * that decides, or LUA_REFNIL. */
@@ -193,9 +197,9 @@ class CustomEntity: public Detector {
       public:
 
         CollisionInfo();
-        CollisionInfo(CustomEntity& entity,
+        CollisionInfo(const CustomEntityPtr& entity,
             CollisionMode built_in_test, int callback_ref);
-        CollisionInfo(CustomEntity& entity,
+        CollisionInfo(const CustomEntityPtr& entity,
             int custom_test_ref, int callback_ref);
         CollisionInfo(const CollisionInfo& other);
         ~CollisionInfo();
@@ -208,7 +212,7 @@ class CustomEntity: public Detector {
 
       private:
 
-        CustomEntity* entity;            /**< The custom entity.
+        CustomEntityPtr entity;          /**< The custom entity.
                                           * nullptr means no info. */
 
         CollisionMode built_in_test;     /**< A built-in collision test

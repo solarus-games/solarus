@@ -81,8 +81,8 @@ MapEntities::~MapEntities() {
 
   // delete the other entities
 
-  for (MapEntity* entity: all_entities) {
-    destroy_entity(entity);
+  for (const MapEntityPtr& entity: all_entities) {
+    notify_entity_removed(entity.get());
   }
   all_entities.clear();
   named_entities.clear();
@@ -94,19 +94,14 @@ MapEntities::~MapEntities() {
 }
 
 /**
- * \brief Destroys an entity.
- *
- * The object is freed if it is not used anywhere else.
- *
- * \param entity The entity to destroy.
+ * \brief Notifies an entity that it is being removed.
+ * \param entity The entity being removed.
  */
-void MapEntities::destroy_entity(MapEntity* entity) {
+void MapEntities::notify_entity_removed(MapEntity* entity) {
 
   if (!entity->is_being_removed()) {
     entity->notify_being_removed();
   }
-
-  RefCountable::unref(entity);
 }
 
 /**
@@ -121,7 +116,7 @@ Hero& MapEntities::get_hero() {
  * \brief Returns all entities expect tiles and the hero.
  * \return The entities except tiles and the hero.
  */
-const std::list<MapEntity*>& MapEntities::get_entities() {
+const std::list<MapEntityPtr>& MapEntities::get_entities() {
   return all_entities;
 }
 
@@ -264,9 +259,9 @@ std::list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& p
 
   std::list<MapEntity*> entities;
 
-  for (MapEntity* entity: all_entities) {
+  for (const MapEntityPtr& entity: all_entities) {
     if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
-      entities.push_back(entity);
+      entities.push_back(entity.get());
     }
   }
 
@@ -285,9 +280,9 @@ std::list<MapEntity*> MapEntities::get_entities_with_prefix(
 
   std::list<MapEntity*> entities;
 
-  for (MapEntity* entity: all_entities) {
+  for (const MapEntityPtr& entity: all_entities) {
     if (entity->get_type() == type && entity->has_prefix(prefix) && !entity->is_being_removed()) {
-      entities.push_back(entity);
+      entities.push_back(entity.get());
     }
   }
 
@@ -302,7 +297,7 @@ std::list<MapEntity*> MapEntities::get_entities_with_prefix(
  */
 bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
 
-  for (const MapEntity* entity: all_entities) {
+  for (const MapEntityPtr& entity: all_entities) {
     if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
       return true;
     }
@@ -346,7 +341,7 @@ void MapEntities::bring_to_back(MapEntity& entity) {
  */
 void MapEntities::notify_map_started() {
 
-  for (MapEntity* entity: all_entities) {
+  for (const MapEntityPtr& entity: all_entities) {
     entity->notify_map_started();
     entity->notify_tileset_changed();
   }
@@ -366,7 +361,7 @@ void MapEntities::notify_map_started() {
  */
 void MapEntities::notify_map_opening_transition_finished() {
 
-  for (MapEntity* entity: all_entities) {
+  for (const MapEntityPtr& entity: all_entities) {
     entity->notify_map_opening_transition_finished();
   }
   hero.notify_map_opening_transition_finished();
@@ -383,7 +378,7 @@ void MapEntities::notify_tileset_changed() {
     non_animated_regions[layer]->notify_tileset_changed();
   }
 
-  for (MapEntity* entity: all_entities) {
+  for (const MapEntityPtr& entity: all_entities) {
     entity->notify_tileset_changed();
   }
   hero.notify_tileset_changed();
@@ -395,14 +390,15 @@ void MapEntities::notify_tileset_changed() {
  * This function is called for each tile when loading the map.
  * The tiles cannot change during the game.
  *
- * \param tile the tile to add
+ * \param tile The tile to add.
  */
-void MapEntities::add_tile(Tile* tile) {
+void MapEntities::add_tile(const TilePtr& tile) {
 
   const Layer layer = tile->get_layer();
 
   // Add the tile to the map.
-  non_animated_regions[layer]->add_tile(tile);
+  RefCountable::ref(tile.get());  // TODO shared_ptr
+  non_animated_regions[layer]->add_tile(tile.get());  // TODO shared_ptr
 
   const TilePattern& pattern = tile->get_tile_pattern();
   Debug::check_assertion(
@@ -560,20 +556,40 @@ void MapEntities::add_tile(Tile* tile) {
  */
 void MapEntities::add_entity(MapEntity* entity) {
 
+  // TODO shared_ptr: remove this function once all callers use shared_ptrs.
+  if (entity == nullptr) {
+    return;
+  }
+
+  MapEntityPtr shared_entity = RefCountable::make_refcount_ptr(entity);
+  add_entity(shared_entity);
+}
+
+/**
+ * \brief Adds an entity to the map.
+ *
+ * This function is called when loading the map. If the entity
+ * specified is nullptr (because some entity creation functions
+ * may return nullptr), nothing is done.
+ *
+ * \param entity The entity to add (can be an empty pointer).
+ */
+void MapEntities::add_entity(const MapEntityPtr& entity) {
+
   if (entity == nullptr) {
     return;
   }
 
   if (entity->get_type() == ENTITY_TILE) {
     // Tiles are optimized specifically for obstacle checks and rendering.
-    add_tile(static_cast<Tile*>(entity));
+    add_tile(std::static_pointer_cast<Tile>(entity));
   }
   else {
     Layer layer = entity->get_layer();
 
     // update the detectors list
     if (entity->is_detector()) {
-      detectors.push_back(static_cast<Detector*>(entity));
+      detectors.push_back(static_cast<Detector*>(entity.get()));
     }
 
     // update the obstacle list
@@ -581,56 +597,56 @@ void MapEntities::add_entity(MapEntity* entity) {
 
       if (entity->has_layer_independent_collisions()) {
         // some entities handle collisions on any layer (e.g. stairs inside a single floor)
-        obstacle_entities[LAYER_LOW].push_back(entity);
-        obstacle_entities[LAYER_INTERMEDIATE].push_back(entity);
-        obstacle_entities[LAYER_HIGH].push_back(entity);
+        obstacle_entities[LAYER_LOW].push_back(entity.get());
+        obstacle_entities[LAYER_INTERMEDIATE].push_back(entity.get());
+        obstacle_entities[LAYER_HIGH].push_back(entity.get());
       }
       else {
         // but usually, an entity collides with only one layer
-        obstacle_entities[layer].push_back(entity);
+        obstacle_entities[layer].push_back(entity.get());
       }
     }
 
     // update the ground observers list
     if (entity->is_ground_observer()) {
-      ground_observers[layer].push_back(entity);
+      ground_observers[layer].push_back(entity.get());
     }
 
     // update the ground modifiers list
     if (entity->is_ground_modifier()) {
-      ground_modifiers[layer].push_back(entity);
+      ground_modifiers[layer].push_back(entity.get());
     }
 
     // update the sprites list
     if (entity->is_drawn_in_y_order()) {
-      entities_drawn_y_order[layer].push_back(entity);
+      entities_drawn_y_order[layer].push_back(entity.get());
     }
     else if (entity->can_be_drawn()) {
-      entities_drawn_first[layer].push_back(entity);
+      entities_drawn_first[layer].push_back(entity.get());
     }
 
     // update the specific entities lists
     switch (entity->get_type()) {
 
       case ENTITY_STAIRS:
-        stairs[layer].push_back(static_cast<Stairs*>(entity));
+        stairs[layer].push_back(static_cast<Stairs*>(entity.get()));
         break;
 
       case ENTITY_CRYSTAL_BLOCK:
-        crystal_blocks[layer].push_back(static_cast<CrystalBlock*>(entity));
+        crystal_blocks[layer].push_back(static_cast<CrystalBlock*>(entity.get()));
         break;
 
       case ENTITY_SEPARATOR:
-        separators.push_back(static_cast<Separator*>(entity));
+        separators.push_back(static_cast<Separator*>(entity.get()));
         break;
 
       case ENTITY_BOOMERANG:
-        this->boomerang = static_cast<Boomerang*>(entity);
+        this->boomerang = static_cast<Boomerang*>(entity.get());
         break;
 
       case ENTITY_DESTINATION:
         {
-          Destination* destination = static_cast<Destination*>(entity);
+          Destination* destination = static_cast<Destination*>(entity.get());
           if (this->default_destination == nullptr || destination->is_default()) {
             this->default_destination = destination;
           }
@@ -678,10 +694,8 @@ void MapEntities::add_entity(MapEntity* entity) {
 
       entity->set_name(name);
     }
-    named_entities[name] = entity;
+    named_entities[name] = entity.get();
   }
-
-  RefCountable::ref(entity);
 
   // Notify the entity.
   entity->set_map(map);
@@ -774,7 +788,8 @@ void MapEntities::remove_marked_entities() {
     }
 
     // remove it from the whole list
-    all_entities.remove(entity);
+    MapEntityPtr shared_entity = std::static_pointer_cast<MapEntity>(entity->shared_from_this());  // TODO shared_ptr
+    all_entities.remove(shared_entity);
     const std::string& name = entity->get_name();
     if (!name.empty()) {
       named_entities.erase(name);
@@ -804,7 +819,7 @@ void MapEntities::remove_marked_entities() {
     }
 
     // destroy it
-    destroy_entity(entity);
+    notify_entity_removed(shared_entity.get());
   }
   entities_to_remove.clear();
 }
@@ -824,7 +839,7 @@ void MapEntities::set_suspended(bool suspended) {
   hero.set_suspended(suspended);
 
   // other entities
-  for (MapEntity* entity: all_entities) {
+  for (const MapEntityPtr& entity: all_entities) {
     entity->set_suspended(suspended);
   }
 
@@ -848,7 +863,7 @@ void MapEntities::update() {
     entities_drawn_y_order[layer].sort(compare_y);
   }
 
-  for (MapEntity* entity: all_entities) {
+  for (const MapEntityPtr& entity: all_entities) {
 
     if (!entity->is_being_removed()) {
       entity->update();
@@ -1021,9 +1036,9 @@ void MapEntities::remove_boomerang() {
 void MapEntities::remove_arrows() {
 
   // TODO this function may be slow if there are a lot of entities: store the arrows?
-  for (MapEntity* entity: all_entities) {
+  for (const MapEntityPtr& entity: all_entities) {
     if (entity->get_type() == ENTITY_ARROW) {
-      remove_entity(entity);
+      remove_entity(entity.get());
     }
   }
 }

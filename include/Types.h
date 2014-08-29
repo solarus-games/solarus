@@ -169,6 +169,9 @@ typedef std::shared_ptr<Drawable> DrawablePtr;
 typedef std::shared_ptr<Surface> SurfacePtr;
 typedef std::shared_ptr<TextSurface> TextSurfacePtr;
 typedef std::shared_ptr<Sprite> SpritePtr;
+typedef std::shared_ptr<MapEntity> MapEntityPtr;
+typedef std::shared_ptr<CustomEntity> CustomEntityPtr;
+typedef std::shared_ptr<Tile> TilePtr;
 
 }
 

@@ -48,7 +48,7 @@ class MapEntities {
     // entities
     Hero& get_hero();
     Ground get_tile_ground(Layer layer, int x, int y) const;
-    const std::list<MapEntity*>& get_entities();
+    const std::list<MapEntityPtr>& get_entities();
     const std::list<MapEntity*>& get_obstacle_entities(Layer layer);
     const std::list<MapEntity*>& get_ground_observers(Layer layer);
     const std::list<MapEntity*>& get_ground_modifiers(Layer layer);
@@ -65,13 +65,13 @@ class MapEntities {
     bool has_entity_with_prefix(const std::string& prefix) const;
 
     // handle entities
-    void add_entity(MapEntity* entity);
+    void add_entity(MapEntity* entity);  // TODO shared_ptr: remove
+    void add_entity(const MapEntityPtr& entity);
     void remove_entity(MapEntity* entity);
     void remove_entity(const std::string& name);
     void remove_entities_with_prefix(const std::string& prefix);
     void bring_to_front(MapEntity& entity);
     void bring_to_back(MapEntity& entity);
-    void destroy_entity(MapEntity* entity);
     static bool compare_y(MapEntity* first, MapEntity* second);
     void set_entity_drawn_in_y_order(MapEntity& entity, bool drawn_in_y_order);
     void set_entity_layer(MapEntity& entity, Layer layer);
@@ -96,9 +96,10 @@ class MapEntities {
 
     friend class MapLoader;            /**< the map loader initializes the private fields of MapEntities */
 
-    void add_tile(Tile* tile);
+    void add_tile(const TilePtr& tile);
     void set_tile_ground(Layer layer, int x8, int y8, Ground ground);
     void remove_marked_entities();
+    void notify_entity_removed(MapEntity* entity);
     void update_crystal_blocks();
 
     // map
@@ -122,7 +123,7 @@ class MapEntities {
 
     std::map<std::string, MapEntity*>
       named_entities;                               /**< entities identified by a name */
-    std::list<MapEntity*> all_entities;             /**< all map entities except the tiles and the hero;
+    std::list<MapEntityPtr> all_entities;           /**< all map entities except the tiles and the hero;
                                                      * this vector is used to delete the entities
                                                      * when the map is unloaded */
     std::list<MapEntity*> entities_to_remove;       /**< list of entities that need to be removed right now */

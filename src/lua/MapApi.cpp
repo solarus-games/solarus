@@ -1865,7 +1865,7 @@ int LuaContext::map_api_create_custom_entity(lua_State* l) {
   entity_creation_check_size(l, 1, width, height);
 
   Game& game = map.get_game();
-  CustomEntity* entity = new CustomEntity(
+  MapEntityPtr entity = RefCountable::make_refcount_ptr<MapEntity>(new CustomEntity(
       game,
       name,
       direction,
@@ -1876,11 +1876,11 @@ int LuaContext::map_api_create_custom_entity(lua_State* l) {
       height,
       sprite_name,
       model
-  );
+  ));
 
   map.get_entities().add_entity(entity);
   if (map.is_started()) {
-    push_custom_entity(l, *entity);
+    push_entity(l, *entity);
     return 1;
   }
   return 0;

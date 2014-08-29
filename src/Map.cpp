@@ -1148,8 +1148,8 @@ void Map::check_collision_from_detector(Detector& detector) {
   detector.check_collision(get_entities().get_hero());
 
   // Check each entity with this detector.
-  const std::list<MapEntity*>& all_entities = entities->get_entities();
-  for (MapEntity* entity: all_entities) {
+  const std::list<MapEntityPtr>& all_entities = entities->get_entities();
+  for (const MapEntityPtr& entity: all_entities) {
 
     if (entity->is_enabled()
         && !entity->is_being_removed()) {

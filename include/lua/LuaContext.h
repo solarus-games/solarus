@@ -1178,7 +1178,7 @@ class LuaContext {
     std::set<Drawable*>
         drawables_to_remove;        /**< Drawable objects to be removed at the
                                      * next cycle. */
-    std::map<const ExportableToLua*, std::set<std::string>>
+    std::map<const ExportableToLua*, std::set<std::string>>  // TODO use std::weak_ptr for the key
         userdata_fields;            /**< Existing string keys created on each
                                      * userdata with our __newindex. This is
                                      * only for performance, to avoid Lua

@@ -1214,8 +1214,9 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
   // because it is already done: that table is weak on its values and the
   // value was the full userdata.
 
-  if (userdata->use_count() == 1) {
-    // The userdata is disappearing from Lua and is not used elsewhere.
+  if (userdata->unique() &&                // The userdata is not used by other shared_ptrs.
+      (*userdata)->get_refcount() == 1) {  // The userdata is not used by people other than shared_ptrs.
+    // The userdata is not used elsewhere. The object is going to be destroyed from C++ too.
 
     if ((*userdata)->is_with_lua_table()) {
       // Remove the table associated to this userdata.
@@ -1235,9 +1236,10 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
       get_lua_context(l).userdata_fields.erase(userdata->get());
     }
 
-    // Manually destroy the shared_ptr allocated by Lua.
-    userdata->~shared_ptr<ExportableToLua>();
   }
+
+  // Manually destroy the shared_ptr allocated by Lua.
+  userdata->~shared_ptr<ExportableToLua>();
 
   return 0;
 }

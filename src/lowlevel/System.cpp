@@ -96,6 +96,20 @@ void System::update() {
 }
 
 /**
+ * \brief Returns the name of the platform.
+ *
+ * Possible values are "Windows", "Mac OS X", "Linux", "iOS" and "Android".
+ *
+ * If the correct platform name is not available, returns a string
+ * beginning with the text "Unknown".
+ * \return the name of the platform.
+ */
+std::string System::get_platform() {
+
+  return SDL_GetPlatform();
+}
+
+/**
  * \brief Returns the number of simulated milliseconds elapsed since the
  * beginning of the program.
  *

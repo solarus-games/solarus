@@ -24,11 +24,11 @@ if(NOT SOLARUS_ARCH)
   if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.4.4")
     set(SOLARUS_ARCH "${SOLARUS_ARCH}i386;")
   endif()
-  # LuaJIT needs additional linker flag with the 64bit build.
-  # CMake can't set arch-specific flag with Makefile and Ninja generators for now,
-  # so make a 32bit-only build if LuaJit and i386 are requested without XCode generator.
-  if(XCODE OR NOT SOLARUS_USE_LUAJIT OR NOT SOLARUS_ARCH MATCHES "i386")
-    if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.5")
+  if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.5")
+    # WORKAROUND : LuaJIT needs additional linker flag with the 64bit build.
+    # CMake can't set arch-specific flag with Makefile and Ninja generators for now,
+    # so make a 32bit-only build if LuaJit and i386 are requested without XCode generator.
+    if(XCODE OR NOT SOLARUS_USE_LUAJIT OR NOT SOLARUS_ARCH MATCHES "i386")
       set(SOLARUS_ARCH "${SOLARUS_ARCH}x86_64;")
     endif()
   endif()
@@ -63,7 +63,7 @@ endif()
 set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Oldest OS version supported" FORCE)
 
 # Compatibility options
-if(SOLARUS_CURRENT_OSX_VERSION_SHORT VERSION_EQUAL "10.6" AND SOLARUS_DEPLOYMENT VERSION_LESS "10.6")
+if(SOLARUS_CURRENT_OSX_VERSION_SHORT NOT VERSION_LESS "10.6" AND SOLARUS_DEPLOYMENT VERSION_LESS "10.6")
   if(NOT CMAKE_EXE_LINKER_FLAGS MATCHES "-Wl,-no_compact_linkedit")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
   endif()
@@ -73,6 +73,7 @@ if(NOT CMAKE_CXX_FLAGS MATCHES "-force_cpusubtype_ALL")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -force_cpusubtype_ALL" CACHE STRING "Force all cpu subtypes, to avoid trouble with some old architectures" FORCE)
 endif()
 
+# LuaJIT workaround.
 if(SOLARUS_USE_LUAJIT AND SOLARUS_ARCH MATCHES "x86_64")
   if(XCODE)
     set_property(TARGET solarus PROPERTY

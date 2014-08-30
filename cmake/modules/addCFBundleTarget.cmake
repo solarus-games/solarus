@@ -2,20 +2,16 @@
 # This module can be included inside the main CMakeList.txt to add a
 # target which generate the CFBundle when building the engine. 
 # The bundle is build as 'solarus' target and from ${source_files}. 
-# The quest, icon and an info.plist template file can be added to the project.
+# A custom icon and info.plist template file can be added to the project.
 #
-# You can edit the Bundle configuration by passing some flags.
-# SOLARUS_BUNDLE represent the Bundle name. It's the only obligatory flag.
-# SOLARUS_BUNDLE_QUEST represent the quest path.
+# You can edit the bundle configuration by passing some flags.
+# SOLARUS_BUNDLE represent the bundle name. It's the only obligatory flag.
 # SOLARUS_BUNDLE_INFOPLIST represent the info.plist template file path.
 # SOLARUS_BUNDLE_ICON represent the icon path.
 # SOLARUS_BUNDLE_CODESIGN represent the codesign identity.
 # SOLARUS_BUNDLE_VERSION represent the version string
 #
-# There is a default icon and info.plist template provided, but no quest, so if you 
-# don't specify a quest path, you'll have to add one manually to your generic bundle.
-#
-# If ${SOLARUS_IOS_BUILD} is defined, an IPhone Bundle will be created.
+# If SOLARUS_IOS_BUILD is defined, an iPhone bundle will be created.
 #
 # Some options set to the cache also need the FORCE parameter for obscure reasons.
 #
@@ -25,9 +21,6 @@
 # Assertions
 if(NOT SOLARUS_BUNDLE)
   message(FATAL_ERROR "Bundle name not correctly specified. Set a valid SOLARUS_BUNDLE value")
-endif()
-if(NOT SOLARUS_BUNDLE_QUEST)
-  message(STATUS "Creating generic bundle. You should add a quest later")
 endif()
 
 # Configuration variable
@@ -86,7 +79,6 @@ endif()
 # Add executable target into CFBundle form and rename it as requested
 add_executable(${SOLARUS_BUNDLE_TARGET_NAME} MACOSX_BUNDLE
   ${source_files}
-  ${SOLARUS_BUNDLE_QUEST}
   ${SOLARUS_BUNDLE_ICON} 
   ${SOLARUS_BUNDLE_COPIED_LIBRARIES}
 )
@@ -95,8 +87,7 @@ set_target_properties(${SOLARUS_BUNDLE_TARGET_NAME} PROPERTIES
 )
 
 # Set right properties on copied files
-set_property(SOURCE 
-  ${SOLARUS_BUNDLE_QUEST} 
+set_property(SOURCE
   ${SOLARUS_BUNDLE_ICON} 
   PROPERTY MACOSX_PACKAGE_LOCATION Resources
 )

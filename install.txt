@@ -243,8 +243,8 @@ Which will install the application into a bundle named "your_bundle_name"
 and place it in the /Applications folder.
 A bundle is a .app suffixed folder, which typically contains 
 the executable and all resources it needs.
-Pass SOLARUS_BUNDLE_QUEST , SOLARUS_BUNDLE_INFOPLIST , 
-SOLARUS_BUNDLE_ICON and SOLARUS_BUNDLE_VERSION flags 
+Pass SOLARUS_BUNDLE_INFOPLIST, SOLARUS_BUNDLE_ICON,
+SOLARUS_BUNDLE_CODESIGN and/or SOLARUS_BUNDLE_VERSION flags
 in addition to SOLARUS_BUNDLE to specify your own configuration.
 See ./cmake/modules/addCFBundleTarget.cmake for more details.
 

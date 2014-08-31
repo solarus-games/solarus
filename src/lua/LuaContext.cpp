@@ -35,7 +35,6 @@
 #include "Treasure.h"
 #include "Map.h"
 #include "Timer.h"
-#include <iomanip>
 #include <sstream>
 #include <iostream>
 

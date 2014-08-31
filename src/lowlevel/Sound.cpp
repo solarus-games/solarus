@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include <algorithm>
 #include <cstring>  // memcpy
-#include <cmath>
 #include <sstream>
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"

@@ -31,7 +31,6 @@
 #include "Game.h"
 #include "Map.h"
 #include "Drawable.h"
-#include <cmath>
 
 namespace solarus {
 

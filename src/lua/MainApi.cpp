@@ -22,8 +22,6 @@
 #include "MainLoop.h"
 #include "Settings.h"
 #include <lua.hpp>
-#include <sstream>
-#include <cmath>
 
 namespace solarus {
 

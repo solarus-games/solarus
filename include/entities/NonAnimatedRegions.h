@@ -21,7 +21,6 @@
 #include "entities/Layer.h"
 #include "containers/Grid.h"
 #include <vector>
-#include <set>
 
 namespace solarus {
 

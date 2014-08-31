@@ -25,20 +25,20 @@ namespace solarus {
  * \brief Holds a Lua ref and does luaL_unref() on destruction.
  *
  * This class is meant to make the usage of Lua refs safer, by making sure
- * that for each luaL_ref() call, there is exaclty one luaL_unref() call.
+ * that for each luaL_ref() call, there is exactly one luaL_unref() call.
  * This avoids memory leaks and duplicate luaL_unref() calls.
  *
- * It is recommended to use this class instead of calling luaL_unref()
+ * It is recommended to use this class rather than calling luaL_unref()
  * directly.
  */
 class ScopedLuaRef {
 
   public:
 
-    explicit ScopedLuaRef(LuaContext& lua_context);
+    ScopedLuaRef();
     ScopedLuaRef(LuaContext& lua_context, int ref);
-    explicit ScopedLuaRef(ScopedLuaRef& other);
-    explicit ScopedLuaRef(ScopedLuaRef&& other);
+    ScopedLuaRef(const ScopedLuaRef& other);
+    ScopedLuaRef(ScopedLuaRef&& other);
     ~ScopedLuaRef();
 
     ScopedLuaRef& operator=(const ScopedLuaRef& other);
@@ -46,12 +46,12 @@ class ScopedLuaRef {
 
     bool is_empty() const;
     int get() const;
-    void set(int ref);
+    void set(LuaContext& lua_context, int ref);
     void clear();
 
   private:
 
-    LuaContext& lua_context;      /**< The Lua state. */
+    LuaContext* lua_context;      /**< The Lua state. nullptr means no ref. */
     int ref;                      /**< Lua ref to a value. */
 
 };

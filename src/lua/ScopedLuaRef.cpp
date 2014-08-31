@@ -22,10 +22,10 @@ namespace solarus {
 
 /**
  * \brief Creates an empty scoped Lua ref.
- * \param lua_context The Lua context.
  */
-ScopedLuaRef::ScopedLuaRef(LuaContext& lua_context):
-    ScopedLuaRef(lua_context, LUA_REFNIL) {
+ScopedLuaRef::ScopedLuaRef():
+    lua_context(nullptr),
+    ref(LUA_REFNIL) {
 }
 
 /**
@@ -34,7 +34,7 @@ ScopedLuaRef::ScopedLuaRef(LuaContext& lua_context):
  * \param ref The Lua ref, possibly LUA_REFNIL or LUA_NOREF.
  */
 ScopedLuaRef::ScopedLuaRef(LuaContext& lua_context, int ref):
-    lua_context(lua_context),
+    lua_context(&lua_context),
     ref(ref) {
 }
 
@@ -43,10 +43,15 @@ ScopedLuaRef::ScopedLuaRef(LuaContext& lua_context, int ref):
  *
  * This creates a new reference to the same Lua value.
  *
- * \param other An existing scopied Lua ref.
+ * \param other The object to copy.
  */
-ScopedLuaRef::ScopedLuaRef(ScopedLuaRef& other):
-    ScopedLuaRef(other.lua_context, other.ref) {
+ScopedLuaRef::ScopedLuaRef(const ScopedLuaRef& other):
+    lua_context(other.lua_context),
+    ref(LUA_REFNIL) {
+
+  if (lua_context != nullptr) {
+    this->ref = lua_context->copy_ref(other.ref);
+  }
 }
 
 /**
@@ -57,7 +62,9 @@ ScopedLuaRef::ScopedLuaRef(ScopedLuaRef& other):
  * \param other The object to move.
  */
 ScopedLuaRef::ScopedLuaRef(ScopedLuaRef&& other):
-    ScopedLuaRef(other.lua_context, other.ref) {
+    lua_context(other.lua_context),
+    ref(other.ref) {
+
   other.clear();
 }
 
@@ -74,9 +81,11 @@ ScopedLuaRef::~ScopedLuaRef() {
  */
 ScopedLuaRef& ScopedLuaRef::operator=(const ScopedLuaRef& other) {
 
-  Debug::check_assertion(&this->lua_context == &other.lua_context,
-      "Unexpected Lua context");
-  set(lua_context.copy_ref(other.ref));
+  clear();
+  this->lua_context = other.lua_context;
+  if (lua_context != nullptr) {
+    this->ref = lua_context->copy_ref(other.ref);
+  }
 
   return *this;
 }
@@ -87,21 +96,22 @@ ScopedLuaRef& ScopedLuaRef::operator=(const ScopedLuaRef& other) {
  */
 ScopedLuaRef& ScopedLuaRef::operator=(ScopedLuaRef&& other) {
 
-  Debug::check_assertion(&this->lua_context == &other.lua_context,
-      "Unexpected Lua context");
-  set(other.ref);
-  other.clear();
+  clear();
+  this->lua_context = lua_context;
+  this->ref = ref;
+  other.lua_context = nullptr;
+  other.ref = LUA_REFNIL;  // Don't unref from the other one.
 
   return *this;
 }
 
 /**
- * \brief Returns whether this ref is LUA_REFNIL or LUA_NOREF.
+ * \brief Returns whether this ref is empty.
  * \return \c true if the ref is empty.
  */
 bool ScopedLuaRef::is_empty() const {
 
-  return ref == LUA_REFNIL || ref == LUA_NOREF;
+  return lua_context == nullptr || ref == LUA_REFNIL || ref == LUA_NOREF;
 }
 
 /**
@@ -117,9 +127,10 @@ int ScopedLuaRef::get() const {
  *
  * Unrefs the previous one if any.
  */
-void ScopedLuaRef::set(int ref) {
+void ScopedLuaRef::set(LuaContext& lua_context, int ref) {
 
-  lua_context.destroy_ref(this->ref);
+  clear();
+  this->lua_context = &lua_context;
   this->ref = ref;
 }
 
@@ -130,7 +141,10 @@ void ScopedLuaRef::set(int ref) {
  */
 void ScopedLuaRef::clear() {
 
-  lua_context.destroy_ref(ref);
+  if (lua_context != nullptr) {
+    lua_context->destroy_ref(ref);
+  }
+  lua_context = nullptr;
   ref = LUA_REFNIL;
 }
 

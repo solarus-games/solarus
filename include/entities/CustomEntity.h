@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
+#include "lua/ScopedLuaRef.h"
 #include <map>
 
 namespace solarus {
@@ -53,7 +54,6 @@ class CustomEntity: public Detector {
 
     // Game loop.
     virtual void notify_creating() override;
-    virtual void notify_being_removed() override;
     virtual void set_suspended(bool suspended) override;
     virtual void notify_enabled(bool enabled) override;
     virtual void update() override;
@@ -155,9 +155,6 @@ class CustomEntity: public Detector {
 
   private:
 
-    // TODO shared_ptr: remove entity pointers from TraversableInfo and CollisionInfo.
-    // (make something like CollisionInfo::get_custom_test_ref() in TraversableInfo too).
-
     /**
      * \brief Stores whether a custom entity can be traversed by or can traverse
      * other entities.
@@ -167,21 +164,21 @@ class CustomEntity: public Detector {
       public:
 
         TraversableInfo();
-        TraversableInfo(const CustomEntityPtr& entity, bool traversable);
-        TraversableInfo(const CustomEntityPtr& entity, int traversable_test_ref);
-        TraversableInfo(const TraversableInfo& other);
-        ~TraversableInfo();  // TODO shared_ptr: set a custom deleter to avoid this destructor.
-
-        TraversableInfo& operator=(const TraversableInfo& other);
+        TraversableInfo(LuaContext& lua_context, bool traversable);
+        TraversableInfo(LuaContext& lua_context, int traversable_test_ref);
 
         bool is_empty() const;
-        bool is_traversable(MapEntity& other_entity) const;
+        bool is_traversable(
+            CustomEntity& current_entity,
+            MapEntity& other_entity
+        ) const;
 
       private:
 
-        CustomEntityPtr entity;        /**< The custom entity.
+        LuaContext* lua_context;       /**< The Lua world.
                                         * nullptr means no info. */
-        int traversable_test_ref;      /**< Lua ref to a boolean function
+        ScopedLuaRef
+            traversable_test_ref;      /**< Lua ref to a boolean function
                                         * that decides, or LUA_REFNIL. */
         bool traversable;              /**< Traversable property (unused if
                                         * there is a Lua function). */
@@ -197,14 +194,16 @@ class CustomEntity: public Detector {
       public:
 
         CollisionInfo();
-        CollisionInfo(const CustomEntityPtr& entity,
-            CollisionMode built_in_test, int callback_ref);
-        CollisionInfo(const CustomEntityPtr& entity,
-            int custom_test_ref, int callback_ref);
-        CollisionInfo(const CollisionInfo& other);
-        ~CollisionInfo();
-
-        CollisionInfo& operator=(const CollisionInfo& other);
+        CollisionInfo(
+            LuaContext& lua_context,
+            CollisionMode built_in_test,
+            int callback_ref
+        );
+        CollisionInfo(
+            LuaContext& lua_context,
+            int custom_test_ref,
+            int callback_ref
+        );
 
         CollisionMode get_built_in_test() const;
         int get_custom_test_ref() const;
@@ -212,14 +211,13 @@ class CustomEntity: public Detector {
 
       private:
 
-        CustomEntityPtr entity;          /**< The custom entity.
+        LuaContext* lua_context;         /**< The Lua world.
                                           * nullptr means no info. */
-
         CollisionMode built_in_test;     /**< A built-in collision test
                                           * or COLLISION_CUSTOM. */
-        int custom_test_ref;             /**< Ref to a custom collision test
+        ScopedLuaRef custom_test_ref;    /**< Ref to a custom collision test
                                           * or LUA_REFNIL. */
-        int callback_ref;                /**< Ref to the function to called when
+        ScopedLuaRef callback_ref;       /**< Ref to the function to called when
                                           * a collision is detected. */
 
     };

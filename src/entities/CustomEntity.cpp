@@ -159,7 +159,7 @@ bool CustomEntity::is_traversable_by_entity(MapEntity& entity) {
     return true;
   }
 
-  return info.is_traversable(entity);
+  return info.is_traversable(*this, entity);
 }
 
 /**
@@ -176,7 +176,7 @@ bool CustomEntity::is_traversable_by_entity(MapEntity& entity) {
 void CustomEntity::set_traversable_by_entities(bool traversable) {
 
   traversable_by_entities_general = TraversableInfo(
-      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+      get_lua_context(),
       traversable
   );
 }
@@ -195,7 +195,7 @@ void CustomEntity::set_traversable_by_entities(bool traversable) {
 void CustomEntity::set_traversable_by_entities(int traversable_test_ref) {
 
   traversable_by_entities_general = TraversableInfo(
-      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+      get_lua_context(),
       traversable_test_ref
   );
 }
@@ -230,10 +230,10 @@ void CustomEntity::reset_traversable_by_entities() {
 void CustomEntity::set_traversable_by_entities(
     EntityType type, bool traversable) {
 
-  traversable_by_entities_type[type] = TraversableInfo(
-      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+  traversable_by_entities_type.insert(std::make_pair(type, TraversableInfo(
+      get_lua_context(),
       traversable
-  );
+  )));
 }
 
 /**
@@ -251,10 +251,10 @@ void CustomEntity::set_traversable_by_entities(
 void CustomEntity::set_traversable_by_entities(
     EntityType type, int traversable_test_ref) {
 
-  traversable_by_entities_type[type] = TraversableInfo(
-      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+  traversable_by_entities_type.insert(std::make_pair(type, TraversableInfo(
+      get_lua_context(),
       traversable_test_ref
-  );
+  )));
 }
 
 /**
@@ -320,7 +320,8 @@ const CustomEntity::TraversableInfo& CustomEntity::get_can_traverse_entity_info(
 void CustomEntity::set_can_traverse_entities(bool traversable) {
 
   can_traverse_entities_general = TraversableInfo(
-      std::static_pointer_cast<CustomEntity>(shared_from_this()), traversable
+      get_lua_context(),
+      traversable
   );
 }
 
@@ -338,7 +339,7 @@ void CustomEntity::set_can_traverse_entities(bool traversable) {
 void CustomEntity::set_can_traverse_entities(int traversable_test_ref) {
 
   can_traverse_entities_general = TraversableInfo(
-      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+      get_lua_context(),
       traversable_test_ref
   );
 }
@@ -373,10 +374,10 @@ void CustomEntity::reset_can_traverse_entities() {
 void CustomEntity::set_can_traverse_entities(
     EntityType type, bool traversable) {
 
-  can_traverse_entities_type[type] = TraversableInfo(
-      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+  can_traverse_entities_type.insert(std::make_pair(type, TraversableInfo(
+      get_lua_context(),
       traversable
-  );
+  )));
 }
 
 /**
@@ -394,10 +395,10 @@ void CustomEntity::set_can_traverse_entities(
 void CustomEntity::set_can_traverse_entities(
     EntityType type, int traversable_test_ref) {
 
-  can_traverse_entities_type[type] = TraversableInfo(
-      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+  can_traverse_entities_type.insert(std::make_pair(type, TraversableInfo(
+      get_lua_context(),
       traversable_test_ref
-  );
+  )));
 }
 
 /**
@@ -422,7 +423,7 @@ bool CustomEntity::is_hero_obstacle(Hero& hero) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(hero.get_type());
   if (!info.is_empty()) {
-    return !info.is_traversable(hero);
+    return !info.is_traversable(*this, hero);
   }
   return Detector::is_hero_obstacle(hero);
 }
@@ -434,7 +435,7 @@ bool CustomEntity::is_block_obstacle(Block& block) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(block.get_type());
   if (!info.is_empty()) {
-    return !info.is_traversable(block);
+    return !info.is_traversable(*this, block);
   }
   return Detector::is_block_obstacle(block);
 }
@@ -446,7 +447,7 @@ bool CustomEntity::is_teletransporter_obstacle(Teletransporter& teletransporter)
 
   const TraversableInfo& info = get_can_traverse_entity_info(teletransporter.get_type());
   if (!info.is_empty()) {
-    return !info.is_traversable(teletransporter);
+    return !info.is_traversable(*this, teletransporter);
   }
   return Detector::is_teletransporter_obstacle(teletransporter);
 }
@@ -458,7 +459,7 @@ bool CustomEntity::is_stream_obstacle(Stream& stream) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(stream.get_type());
   if (!info.is_empty()) {
-    return !info.is_traversable(stream);
+    return !info.is_traversable(*this, stream);
   }
   return Detector::is_stream_obstacle(stream);
 }
@@ -470,7 +471,7 @@ bool CustomEntity::is_stairs_obstacle(Stairs& stairs) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(stairs.get_type());
   if (!info.is_empty()) {
-    return !info.is_traversable(stairs);
+    return !info.is_traversable(*this, stairs);
   }
   return Detector::is_stairs_obstacle(stairs);
 }
@@ -482,7 +483,7 @@ bool CustomEntity::is_sensor_obstacle(Sensor& sensor) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(sensor.get_type());
   if (!info.is_empty()) {
-    return !info.is_traversable(sensor);
+    return !info.is_traversable(*this, sensor);
   }
   return Detector::is_sensor_obstacle(sensor);
 }
@@ -494,7 +495,7 @@ bool CustomEntity::is_switch_obstacle(Switch& sw) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(sw.get_type());
   if (!info.is_empty()) {
-    return !info.is_traversable(sw);
+    return !info.is_traversable(*this, sw);
   }
   return Detector::is_switch_obstacle(sw);
 }
@@ -506,7 +507,7 @@ bool CustomEntity::is_raised_block_obstacle(CrystalBlock& raised_block) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(raised_block.get_type());
   if (!info.is_empty()) {
-    return !info.is_traversable(raised_block);
+    return !info.is_traversable(*this, raised_block);
   }
   return Detector::is_raised_block_obstacle(raised_block);
 }
@@ -518,7 +519,7 @@ bool CustomEntity::is_crystal_obstacle(Crystal& crystal) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(crystal.get_type());
   if (!info.is_empty()) {
-    return !info.is_traversable(crystal);
+    return !info.is_traversable(*this, crystal);
   }
   return Detector::is_crystal_obstacle(crystal);
 }
@@ -530,7 +531,7 @@ bool CustomEntity::is_npc_obstacle(Npc& npc) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(npc.get_type());
   if (!info.is_empty()) {
-    return !info.is_traversable(npc);
+    return !info.is_traversable(*this, npc);
   }
   return Detector::is_npc_obstacle(npc);
 }
@@ -542,7 +543,7 @@ bool CustomEntity::is_enemy_obstacle(Enemy& enemy) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(enemy.get_type());
   if (!info.is_empty()) {
-    return !info.is_traversable(enemy);
+    return !info.is_traversable(*this, enemy);
   }
   return Detector::is_enemy_obstacle(enemy);
 }
@@ -554,7 +555,7 @@ bool CustomEntity::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate
 
   const TraversableInfo& info = get_can_traverse_entity_info(jumper.get_type());
   if (!info.is_empty()) {
-    return !info.is_traversable(jumper);
+    return !info.is_traversable(*this, jumper);
   }
   return Detector::is_jumper_obstacle(jumper, candidate_position);
 }
@@ -566,7 +567,7 @@ bool CustomEntity::is_destructible_obstacle(Destructible& destructible) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(destructible.get_type());
   if (!info.is_empty()) {
-    return !info.is_traversable(destructible);
+    return !info.is_traversable(*this, destructible);
   }
   return Detector::is_destructible_obstacle(destructible);
 }
@@ -578,7 +579,7 @@ bool CustomEntity::is_separator_obstacle(Separator& separator) {
 
   const TraversableInfo& info = get_can_traverse_entity_info(separator.get_type());
   if (!info.is_empty()) {
-    return !info.is_traversable(separator);
+    return !info.is_traversable(*this, separator);
   }
   return Detector::is_separator_obstacle(separator);
 }
@@ -728,7 +729,7 @@ void CustomEntity::add_collision_test(CollisionMode collision_test, int callback
   }
 
   collision_tests.emplace_back(
-      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+      get_lua_context(),
       collision_test,
       callback_ref
   );
@@ -748,7 +749,7 @@ void CustomEntity::add_collision_test(int collision_test_ref, int callback_ref) 
   add_collision_mode(COLLISION_CUSTOM);
 
   collision_tests.emplace_back(
-      std::static_pointer_cast<CustomEntity>(shared_from_this()),
+      get_lua_context(),
       collision_test_ref,
       callback_ref
   );
@@ -826,7 +827,7 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
       case COLLISION_CUSTOM:
         if (get_lua_context().do_custom_entity_collision_test_function(
               info.get_custom_test_ref(), *this, entity)
-            ) {
+        ) {
           collision = true;
           successful_collision_tests.push_back(info);
         }
@@ -1180,24 +1181,6 @@ void CustomEntity::notify_creating() {
 }
 
 /**
- * \copydoc MapEntity::notify_being_removed
- */
-void CustomEntity::notify_being_removed() {
-
-  // Collision tests and traversable info contain pointers to this custom
-  // entity (and this is a mistake that will be fixed soon).
-  // Destroy them now to break the cycle.
-  // TODO shared_ptr all of this can be removed when removing those pointers
-  // from CollisionInfo and TraversableInfo.
-  clear_collision_tests();
-  traversable_by_entities_general = TraversableInfo();
-  traversable_by_entities_type.clear();
-  can_traverse_entities_general = TraversableInfo();
-  can_traverse_entities_type.clear();
-  can_traverse_grounds.clear();
-}
-
-/**
  * \copydoc MapEntity::update
  */
 void CustomEntity::update() {
@@ -1254,83 +1237,40 @@ void CustomEntity::draw_on_map() {
  * \brief Empty constructor.
  */
 CustomEntity::TraversableInfo::TraversableInfo():
-  entity(nullptr),
-  traversable_test_ref(LUA_REFNIL),
-  traversable(false) {
+    lua_context(nullptr),
+    traversable_test_ref(),
+    traversable(false) {
 
 }
 
 /**
  * \brief Creates a boolean traversable property.
- * \param entity The custom entity.
+ * \param lua_context The Lua context.
  * \param traversable The value to store.
  */
-CustomEntity::TraversableInfo::TraversableInfo(const CustomEntityPtr& entity, bool traversable):
-  entity(entity),
-  traversable_test_ref(LUA_REFNIL),
-  traversable(traversable) {
+CustomEntity::TraversableInfo::TraversableInfo(
+    LuaContext& lua_context,
+    bool traversable
+):
+    lua_context(&lua_context),
+    traversable_test_ref(),
+    traversable(traversable) {
 
 }
 
 /**
  * \brief Creates a traversable property as a Lua boolean function.
- * \param entity The custom entity.
+ * \param lua_context The Lua context.
  * \param traversable_test_ref Lua ref to a function.
  */
-CustomEntity::TraversableInfo::TraversableInfo(const CustomEntityPtr& entity, int traversable_test_ref):
-  entity(entity),
-  traversable_test_ref(traversable_test_ref),
-  traversable(false) {
+CustomEntity::TraversableInfo::TraversableInfo(
+    LuaContext& lua_context,
+    int traversable_test_ref
+):
+    lua_context(&lua_context),
+    traversable_test_ref(lua_context, traversable_test_ref),
+    traversable(false) {
 
-}
-
-/**
- * \brief Copy constructor.
- * \param other Another traversable property.
- */
-CustomEntity::TraversableInfo::TraversableInfo(const TraversableInfo& other):
-  entity(other.entity),
-  traversable_test_ref(LUA_REFNIL),
-  traversable(other.traversable) {
-
-  if (entity != nullptr) {
-    traversable_test_ref = entity->get_lua_context().copy_ref(other.traversable_test_ref);
-  }
-}
-
-/**
- * \brief Destroys a traversable property.
- */
-CustomEntity::TraversableInfo::~TraversableInfo() {
-
-  if (entity != nullptr) {
-    entity->get_lua_context().cancel_callback(traversable_test_ref);
-  }
-}
-
-/**
- * \brief Assignment operator.
- * \param other Another traversable property.
- */
-CustomEntity::TraversableInfo& CustomEntity::TraversableInfo::operator=(const TraversableInfo& other) {
-
-  if (&other == this) {
-    return *this;
-  }
-
-  if (entity != nullptr) {
-    entity->get_lua_context().cancel_callback(traversable_test_ref);
-  }
-
-  entity = other.entity;
-  traversable_test_ref = LUA_REFNIL;
-
-  if (entity != nullptr) {
-    traversable_test_ref = entity->get_lua_context().copy_ref(other.traversable_test_ref);
-  }
-  traversable = other.traversable;
-
-  return *this;
 }
 
 /**
@@ -1339,7 +1279,7 @@ CustomEntity::TraversableInfo& CustomEntity::TraversableInfo::operator=(const Tr
  */
 bool CustomEntity::TraversableInfo::is_empty() const {
 
-  return entity == nullptr;
+  return lua_context != nullptr;
 }
 
 /**
@@ -1347,22 +1287,25 @@ bool CustomEntity::TraversableInfo::is_empty() const {
  *
  * This traversable property must not be empty.
  *
+ * \param current_entity A custom entity.
  * \param other_entity Another entity.
  * \return \c true if traversing is allowed, \c false otherwise.
  */
 bool CustomEntity::TraversableInfo::is_traversable(
-    MapEntity& other_entity) const {
+    CustomEntity& current_entity,
+    MapEntity& other_entity
+) const {
 
   Debug::check_assertion(!is_empty(), "Empty traversable info");
 
-  if (traversable_test_ref == LUA_REFNIL) {
+  if (traversable_test_ref.is_empty()) {
     // A fixed boolean was set.
     return traversable;
   }
 
   // A Lua boolean function was set.
-  return entity->get_lua_context().do_custom_entity_traversable_test_function(
-      traversable_test_ref, *entity, other_entity
+  return lua_context->do_custom_entity_traversable_test_function(
+      traversable_test_ref.get(), current_entity, other_entity
   );
 }
 
@@ -1370,98 +1313,45 @@ bool CustomEntity::TraversableInfo::is_traversable(
  * \brief Empty constructor.
  */
 CustomEntity::CollisionInfo::CollisionInfo():
-  entity(nullptr),
-  built_in_test(COLLISION_NONE),
-  custom_test_ref(LUA_REFNIL),
-  callback_ref(LUA_REFNIL) {
+    lua_context(nullptr),
+    built_in_test(COLLISION_NONE),
+    custom_test_ref(),
+    callback_ref() {
 
 }
 
 /**
  * \brief Creates a collision test info.
- * \param entity The custom entity.
+ * \param lua_context The Lua context.
  * \param collision_test A built-in collision test.
  * \param callback_ref Lua ref to a function to call when this collision is
  * detected.
  */
 CustomEntity::CollisionInfo::CollisionInfo(
-    const CustomEntityPtr& entity, CollisionMode built_in_test, int callback_ref):
-  entity(entity),
-  built_in_test(built_in_test),
-  custom_test_ref(LUA_REFNIL),
-  callback_ref(callback_ref) {
+    LuaContext& lua_context, CollisionMode built_in_test, int callback_ref
+):
+    lua_context(&lua_context),
+    built_in_test(built_in_test),
+    custom_test_ref(),
+    callback_ref(lua_context, callback_ref) {
 
 }
 
 /**
  * \brief Creates a collision test info.
- * \param entity The custom entity.
+ * \param lua_context The Lua context.
  * \param collision_test_ref Lua ref to a custom collision test.
  * \param callback_ref Lua ref to a function to call when this collision is
  * detected.
  */
 CustomEntity::CollisionInfo::CollisionInfo(
-    const CustomEntityPtr& entity, int custom_test_ref, int callback_ref):
-  entity(entity),
-  built_in_test(COLLISION_CUSTOM),
-  custom_test_ref(custom_test_ref),
-  callback_ref(callback_ref) {
+    LuaContext& lua_context, int custom_test_ref, int callback_ref
+):
+    lua_context(&lua_context),
+    built_in_test(COLLISION_CUSTOM),
+    custom_test_ref(lua_context, custom_test_ref),
+    callback_ref(lua_context, callback_ref) {
 
-}
-
-/**
- * \brief Copy constructor.
- * \param other Another traversable property.
- */
-CustomEntity::CollisionInfo::CollisionInfo(const CollisionInfo& other):
-  entity(other.entity),
-  built_in_test(other.built_in_test),
-  custom_test_ref(LUA_REFNIL),
-  callback_ref(LUA_REFNIL) {
-
-  if (entity != nullptr) {
-    custom_test_ref = entity->get_lua_context().copy_ref(other.custom_test_ref);
-    callback_ref = entity->get_lua_context().copy_ref(other.callback_ref);
-  }
-}
-
-/**
- * \brief Destroys a collision test info.
- */
-CustomEntity::CollisionInfo::~CollisionInfo() {
-
-  if (entity != nullptr) {
-    entity->get_lua_context().cancel_callback(custom_test_ref);
-    entity->get_lua_context().cancel_callback(callback_ref);
-  }
-}
-
-/**
- * \brief Assignment operator.
- * \param other Another collision test info.
- */
-CustomEntity::CollisionInfo& CustomEntity::CollisionInfo::operator=(const CollisionInfo& other) {
-
-  if (&other == this) {
-    return *this;
-  }
-
-  if (entity != nullptr) {
-    entity->get_lua_context().cancel_callback(custom_test_ref);
-    entity->get_lua_context().cancel_callback(callback_ref);
-  }
-
-  entity = other.entity;
-  built_in_test = other.built_in_test;
-  custom_test_ref = LUA_REFNIL;
-  callback_ref = LUA_REFNIL;
-
-  if (entity != nullptr) {
-    custom_test_ref = entity->get_lua_context().copy_ref(other.custom_test_ref);
-    callback_ref = entity->get_lua_context().copy_ref(other.callback_ref);
-  }
-
-  return *this;
 }
 
 /**
@@ -1479,7 +1369,7 @@ CollisionMode CustomEntity::CollisionInfo::get_built_in_test() const {
  * or LUA_REFNIL if this is a built-in collision test.
  */
 int CustomEntity::CollisionInfo::get_custom_test_ref() const {
-  return custom_test_ref;
+  return custom_test_ref.get();
 }
 
 /**
@@ -1487,7 +1377,7 @@ int CustomEntity::CollisionInfo::get_custom_test_ref() const {
  * \return A Lua ref to the callback.
  */
 int CustomEntity::CollisionInfo::get_callback_ref() const {
-  return callback_ref;
+  return callback_ref.get();
 }
 
 }

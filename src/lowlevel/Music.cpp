@@ -22,6 +22,7 @@
 #include "lua/LuaContext.h"
 #include <lua.hpp>
 #include <sstream>
+#include <vector>
 
 namespace solarus {
 
@@ -468,10 +469,10 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
 
   // decode the SPC data
   std::vector<ALushort> raw_data(nb_samples);
-  spc_decoder->decode((int16_t*) &raw_data[0], nb_samples);
+  spc_decoder->decode((int16_t*) raw_data.data(), nb_samples);
 
   // put this decoded data into the buffer
-  alBufferData(destination_buffer, AL_FORMAT_STEREO16, &raw_data[0], nb_samples * 2, 32000);
+  alBufferData(destination_buffer, AL_FORMAT_STEREO16, raw_data.data(), nb_samples * 2, 32000);
 
   int error = alGetError();
   if (error != AL_NO_ERROR) {
@@ -491,11 +492,11 @@ void Music::decode_it(ALuint destination_buffer, ALsizei nb_samples) {
 
   // Decode the IT data.
   std::vector<ALushort> raw_data(nb_samples);
-  int bytes_read = it_decoder->decode(&raw_data[0], nb_samples);
+  int bytes_read = it_decoder->decode(raw_data.data(), nb_samples);
 
   if (bytes_read > 0) {
     // Put this decoded data into the buffer.
-    alBufferData(destination_buffer, AL_FORMAT_STEREO16, &raw_data[0], nb_samples, 44100);
+    alBufferData(destination_buffer, AL_FORMAT_STEREO16, raw_data.data(), nb_samples, 44100);
 
     int error = alGetError();
     if (error != AL_NO_ERROR) {
@@ -533,7 +534,7 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
   long total_bytes_read = 0;
   long remaining_bytes = nb_samples * info->channels * sizeof(ALshort);
   do {
-    bytes_read = ov_read(&ogg_file, ((char*) &raw_data[0]) + total_bytes_read, int(remaining_bytes), 0, 2, 1, &bitstream);
+    bytes_read = ov_read(&ogg_file, ((char*) raw_data.data()) + total_bytes_read, int(remaining_bytes), 0, 2, 1, &bitstream);
     if (bytes_read < 0) {
       if (bytes_read != OV_HOLE) { // OV_HOLE is normal when the music loops
         std::ostringstream oss;
@@ -550,7 +551,7 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
   while (remaining_bytes > 0 && bytes_read > 0);
 
   // Put this decoded data into the buffer.
-  alBufferData(destination_buffer, al_format, &raw_data[0], ALsizei(total_bytes_read), sample_rate);
+  alBufferData(destination_buffer, al_format, raw_data.data(), ALsizei(total_bytes_read), sample_rate);
 
   int error = alGetError();
   if (error != AL_NO_ERROR) {

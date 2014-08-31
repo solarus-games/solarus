@@ -35,6 +35,8 @@ class System {
     static void quit();
     static void update();
 
+    static std::string get_os();
+
     static uint32_t now();
     static uint32_t get_real_time();
     static void sleep(uint32_t duration);

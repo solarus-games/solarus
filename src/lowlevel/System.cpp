@@ -96,6 +96,20 @@ void System::update() {
 }
 
 /**
+ * \brief Returns the name of the running OS.
+ *
+ * Possible values are "Windows", "Mac OS X", "Linux", "iOS" and "Android".
+ *
+ * If the correct OS name is not available, returns a string
+ * beginning with the text "Unknown".
+ * \return the name of the running OS.
+ */
+std::string System::get_os() {
+
+  return SDL_GetPlatform();
+}
+
+/**
  * \brief Returns the number of simulated milliseconds elapsed since the
  * beginning of the program.
  *

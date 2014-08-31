@@ -17,7 +17,6 @@
 #include "lowlevel/Debug.h"
 #include <SDL_messagebox.h>
 #include <string>
-#include <sstream>
 #include <fstream>
 #include <iostream>
 #include <cstdlib>  // std::abort

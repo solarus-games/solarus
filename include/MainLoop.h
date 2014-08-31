@@ -18,7 +18,6 @@
 #define MAIN_LOOP_H
 
 #include "Common.h"
-#include <string>
 
 namespace solarus {
 

@@ -19,7 +19,6 @@
 #include "lowlevel/FileTools.h"
 #include "lua/LuaTools.h"
 #include <map>
-#include <sstream>
 
 namespace solarus {
 

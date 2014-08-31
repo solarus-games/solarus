@@ -32,7 +32,6 @@
 #include "Map.h"
 #include "Drawable.h"
 #include <cmath>
-#include <sstream>
 
 namespace solarus {
 

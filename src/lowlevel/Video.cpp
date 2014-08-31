@@ -26,7 +26,6 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/shaders/ShaderContext.h"
 #include "CommandLine.h"
-#include <map>
 #include <algorithm>
 #include <sstream>
 #include <iostream>
@@ -265,7 +264,7 @@ void Video::initialize(const CommandLine& args) {
 void Video::quit() {
 
   ShaderContext::quit();
-  
+
   if (is_fullscreen()) {
     // Get back on desktop before destroy the window.
     SDL_SetWindowFullscreen(main_window, 0);
@@ -302,7 +301,7 @@ SDL_Window* Video::get_window() {
 SDL_Renderer* Video::get_renderer() {
   return main_renderer;
 }
-  
+
 /**
  * \brief Returns the render texture target, if any.
  * \return the render target, or NULL.
@@ -439,7 +438,7 @@ void Video::switch_video_mode() {
 
   set_video_mode(*mode);
 }
-  
+
 /**
  * \brief Sets the video mode, keeping the fullscreen setting unchanged.
  * \param mode The video mode to set.
@@ -482,7 +481,7 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
 
   video_mode = &mode;
   fullscreen_window = fullscreen;
-  
+
   if (!disable_window) {
 
     RefCountable::unref(scaled_surface);
@@ -519,7 +518,7 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
         render_size.get_width(),
         render_size.get_height());
     SDL_ShowCursor(show_cursor);
-    
+
     if (mode_changed) {
       reset_window_size();
     }
@@ -568,7 +567,7 @@ const VideoMode* Video::get_video_mode_by_name(
       return all_video_modes[i];
     }
   }
-  
+
   return NULL;
 }
 

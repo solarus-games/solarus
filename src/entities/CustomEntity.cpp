@@ -65,7 +65,8 @@ CustomEntity::CustomEntity(
 
   Detector(
       COLLISION_FACING,
-      name, layer, x, y, width, height),
+      name, layer, x, y, width, height
+  ),
   model(model),
   ground_modifier(true),
   modified_ground(GROUND_EMPTY) {
@@ -1279,7 +1280,7 @@ CustomEntity::TraversableInfo::TraversableInfo(
  */
 bool CustomEntity::TraversableInfo::is_empty() const {
 
-  return lua_context != nullptr;
+  return lua_context == nullptr;
 }
 
 /**

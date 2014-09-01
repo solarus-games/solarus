@@ -97,8 +97,8 @@ ScopedLuaRef& ScopedLuaRef::operator=(const ScopedLuaRef& other) {
 ScopedLuaRef& ScopedLuaRef::operator=(ScopedLuaRef&& other) {
 
   clear();
-  this->lua_context = lua_context;
-  this->ref = ref;
+  this->lua_context = other.lua_context;
+  this->ref = other.ref;
   other.lua_context = nullptr;
   other.ref = LUA_REFNIL;  // Don't unref from the other one.
 

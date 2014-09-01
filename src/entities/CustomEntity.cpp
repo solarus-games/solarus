@@ -592,7 +592,7 @@ bool CustomEntity::is_separator_obstacle(Separator& separator) {
  */
 bool CustomEntity::can_traverse_ground(Ground ground) const {
 
-  const auto it = can_traverse_grounds.find(ground);
+  const auto& it = can_traverse_grounds.find(ground);
 
   if (it != can_traverse_grounds.end()) {
     // Return the boolean value that was set.

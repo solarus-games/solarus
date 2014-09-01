@@ -65,7 +65,8 @@ ScopedLuaRef::ScopedLuaRef(ScopedLuaRef&& other):
     lua_context(other.lua_context),
     ref(other.ref) {
 
-  other.clear();
+  other.lua_context = nullptr;
+  other.ref = LUA_REFNIL;  // Don't unref from the other one.
 }
 
 /**

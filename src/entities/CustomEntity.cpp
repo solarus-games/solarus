@@ -1336,6 +1336,7 @@ CustomEntity::CollisionInfo::CollisionInfo(
     custom_test_ref(),
     callback_ref(lua_context, callback_ref) {
 
+  Debug::check_assertion(callback_ref != LUA_REFNIL, "Missing callback ref");
 }
 
 /**
@@ -1353,6 +1354,7 @@ CustomEntity::CollisionInfo::CollisionInfo(
     custom_test_ref(lua_context, custom_test_ref),
     callback_ref(lua_context, callback_ref) {
 
+  Debug::check_assertion(callback_ref != LUA_REFNIL, "Missing callback ref");
 }
 
 /**

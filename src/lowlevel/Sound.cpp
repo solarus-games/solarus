@@ -423,7 +423,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
       }
       alBufferData(buffer,
           AL_FORMAT_STEREO16,
-          reinterpret_cast<ALshort*>(&samples[0]),
+          reinterpret_cast<ALshort*>(samples.data()),
           ALsizei(total_bytes_read),
           sample_rate);
       ALenum error = alGetError();

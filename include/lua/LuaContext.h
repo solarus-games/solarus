@@ -25,6 +25,7 @@
 #include "entities/Ground.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/Debug.h"
+#include "lua/ScopedLuaRef.h"
 #include "Ability.h"
 #include <map>
 #include <set>
@@ -111,6 +112,7 @@ class LuaContext {
     int create_ref();
     void destroy_ref(int ref);
     int copy_ref(int ref);
+    ScopedLuaRef create_scoped_ref();
 
     // Calling Lua functions.
     void push_callback(int callback_ref);

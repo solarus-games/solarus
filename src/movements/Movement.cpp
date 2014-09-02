@@ -87,7 +87,7 @@ void Movement::set_entity(MapEntity* entity) {
     this->xy.set_xy(0, 0);
   }
   else {
-    this->xy.set_xy(entity->get_xy());
+    this->xy.set_xy(entity->get_xy().get_xy());
     notify_movement_changed();
   }
   notify_object_controlled();
@@ -120,7 +120,7 @@ void Movement::set_drawable(Drawable* drawable) {
     this->xy.set_xy(0, 0);
   }
   else {
-    this->xy.set_xy(drawable->get_xy());
+    this->xy.set_xy(drawable->get_xy().get_xy());
     notify_movement_changed();
   }
   notify_object_controlled();
@@ -215,7 +215,7 @@ void Movement::set_xy(const Rectangle& xy) {
   }
 
   // The object controlled is a point.
-  this->xy.set_xy(xy);
+  this->xy.set_xy(xy.get_xy());
 
   notify_position_changed();
   last_move_date = System::now();

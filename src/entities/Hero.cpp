@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -355,7 +355,7 @@ void Hero::update_ice() {
     }
     else {
       // But he was just moving on ice: continue the ice movement.
-      ground_dxy.set_xy(direction_to_xy_move(ice_movement_direction8));
+      ground_dxy.set_xy(direction_to_xy_move(ice_movement_direction8).get_xy());
       next_ice_date = now + 300;
     }
   }
@@ -363,16 +363,16 @@ void Hero::update_ice() {
     // The player wants to move.
     if (ice_movement_direction8 == -1) {
       // But he was not just moving on ice: resist to the wanted movement.
-      ground_dxy.set_xy(direction_to_xy_move((wanted_movement_direction8 + 4) % 8));
+      ground_dxy.set_xy(direction_to_xy_move((wanted_movement_direction8 + 4) % 8).get_xy());
     }
     else if (ice_movement_direction8 != wanted_movement_direction8) {
       // He changed his direction: continue the ice movement.
-      ground_dxy.set_xy(direction_to_xy_move(ice_movement_direction8));
+      ground_dxy.set_xy(direction_to_xy_move(ice_movement_direction8).get_xy());
       next_ice_date = now + 300;
     }
     else {
       // He continues in the same direction.
-      ground_dxy.set_xy(direction_to_xy_move(wanted_movement_direction8));
+      ground_dxy.set_xy(direction_to_xy_move(wanted_movement_direction8).get_xy());
       next_ice_date = now + 300;
     }
   }
@@ -399,7 +399,7 @@ void Hero::apply_additional_ground_movement() {
 
   bool moved = false;
   Rectangle collision_box = get_bounding_box();
-  collision_box.add_xy(ground_dxy);
+  collision_box.add_xy(ground_dxy.get_xy());
 
   if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
     set_bounding_box(collision_box);
@@ -1137,7 +1137,7 @@ void Hero::check_position() {
       && state->can_come_from_bad_ground()
       && (get_x() != last_solid_ground_coords.get_x() || get_y() != last_solid_ground_coords.get_y())) {
 
-    last_solid_ground_coords.set_xy(get_xy());
+    last_solid_ground_coords.set_xy(get_xy().get_xy());
     last_solid_ground_layer = get_layer();
   }
 
@@ -1668,7 +1668,7 @@ void Hero::notify_collision_with_stream(
     Rectangle collision_box(0, 0, 16, 16);
 
     // First check that the exit of the stream is clear.
-    collision_box.set_xy(stream.get_bounding_box());
+    collision_box.set_xy(stream.get_bounding_box().get_xy());
     collision_box.add_xy(dx, dy);
     if (!map.test_collision_with_obstacles(get_layer(), collision_box, *this)) {
       // The stream's exit is clear.
@@ -2102,7 +2102,7 @@ void Hero::hurt(MapEntity& source, Sprite* source_sprite, int damage) {
   Rectangle source_xy = source.get_xy();
   if (source_sprite != nullptr) {
     // Add the offset of the sprite if any.
-    source_xy.add_xy(source_sprite->get_xy());
+    source_xy.add_xy(source_sprite->get_xy().get_xy());
   }
   set_state(new HurtState(*this, &source_xy, damage));
 }

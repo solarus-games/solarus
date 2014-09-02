@@ -704,7 +704,7 @@ void MapEntity::set_xy(int x, int y) {
 
 /**
  * \brief Sets the coordinates of the origin point of the entity, relative to the map.
- * 
+ *
  * This function sets the coordinates of the point as returned by get_x() and get_y().
  *
  * \param xy the new coordinates of the entity on the map (the width and height are ignored)
@@ -2046,12 +2046,12 @@ double MapEntity::get_angle(
   // Add the coordinates of sprites as offsets.
   Rectangle this_offset(0, 0);
   if (this_sprite != nullptr) {
-    this_offset.add_xy(this_sprite->get_xy());
+    this_offset.add_xy(this_sprite->get_xy().get_xy());
   }
 
   Rectangle other_offset(0, 0);
   if (other_sprite != nullptr) {
-    other_offset.add_xy(other_sprite->get_xy());
+    other_offset.add_xy(other_sprite->get_xy().get_xy());
   }
 
   return Geometry::get_angle(

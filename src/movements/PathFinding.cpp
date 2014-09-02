@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -143,7 +143,7 @@ std::string PathFinding::compute_path() {
         const int immediate_cost = (i & 1) ? 11 : 8;
         new_node.previous_cost = current_node->previous_cost + immediate_cost;
         new_node.location = current_node->location;
-        new_node.location.add_xy(neighbours_locations[i]);
+        new_node.location.add_xy(neighbours_locations[i].get_xy());
         new_node.index = get_square_index(new_node.location);
         //std::cout << "  node in direction " << i << ": index = " << new_node.index << std::endl;
 
@@ -283,7 +283,7 @@ bool PathFinding::is_node_transition_valid(
     const Node& initial_node, int direction) const {
 
   Rectangle collision_box = transition_collision_boxes[direction];
-  collision_box.add_xy(initial_node.location);
+  collision_box.add_xy(initial_node.location.get_xy());
 
   return !map.test_collision_with_obstacles(source_entity.get_layer(), collision_box, source_entity);
 }

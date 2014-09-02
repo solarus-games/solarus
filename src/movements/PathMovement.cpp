@@ -414,7 +414,7 @@ void PathMovement::set_snapping_trajectory(const Rectangle& src, const Rectangle
 
   std::list<Rectangle> trajectory;
   Rectangle xy = src;
-  while (!xy.equals_xy(dst)) {
+  while (xy.get_xy() != dst.get_xy()) {
 
     int dx = dst.get_x() - xy.get_x();
     int dy = dst.get_y() - xy.get_y();

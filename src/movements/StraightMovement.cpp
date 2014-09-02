@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -61,7 +61,7 @@ StraightMovement::~StraightMovement() {
 void StraightMovement::notify_object_controlled() {
 
   Movement::notify_object_controlled();
-  initial_xy.set_xy(get_xy());
+  initial_xy.set_xy(get_xy().get_xy());
 }
 
 /**
@@ -120,7 +120,7 @@ void StraightMovement::set_x_speed(double x_speed) {
     set_next_move_date_x(now + x_delay);
   }
   angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
-  initial_xy.set_xy(get_xy());
+  initial_xy.set_xy(get_xy().get_xy());
   finished = false;
 
   notify_movement_changed();
@@ -155,7 +155,7 @@ void StraightMovement::set_y_speed(double y_speed) {
     set_next_move_date_y(now + y_delay);
   }
   angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
-  initial_xy.set_xy(get_xy());
+  initial_xy.set_xy(get_xy().get_xy());
   finished = false;
 
   notify_movement_changed();

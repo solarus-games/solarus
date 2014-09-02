@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -107,7 +107,7 @@ void TransitionScrolling::start() {
   previous_map_dst_position = get_previous_map_dst_position(scrolling_direction);
   current_map_dst_position = get_previous_map_dst_position((scrolling_direction + 2) % 4);
   current_scrolling_position = previous_map_dst_position;
-  current_scrolling_position.set_size(Video::get_quest_size());
+  current_scrolling_position.set_size(Video::get_quest_size().get_size());
 
   next_scroll_date = System::now();
 }

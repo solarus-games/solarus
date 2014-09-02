@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -573,13 +573,13 @@ bool Sprite::test_collision(const Sprite& other, int x1, int y1, int x2, int y2)
   const SpriteAnimationDirection* direction1 = current_animation->get_direction(current_direction);
   const Rectangle& origin1 = direction1->get_origin();
   Rectangle location1(x1 - origin1.get_x(), y1 - origin1.get_y());
-  location1.add_xy(get_xy());
+  location1.add_xy(get_xy().get_xy());
   const PixelBits& pixel_bits1 = direction1->get_pixel_bits(current_frame);
 
   const SpriteAnimationDirection* direction2 = other.current_animation->get_direction(other.current_direction);
   const Rectangle& origin2 = direction2->get_origin();
   Rectangle location2(x2 - origin2.get_x(), y2 - origin2.get_y());
-  location2.add_xy(other.get_xy());
+  location2.add_xy(other.get_xy().get_xy());
   const PixelBits& pixel_bits2 = direction2->get_pixel_bits(other.current_frame);
 
   return pixel_bits1.test_collision(pixel_bits2, location1, location2);

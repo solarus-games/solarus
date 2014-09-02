@@ -638,7 +638,7 @@ void TextSurface::raw_draw(Surface& dst_surface,
   if (surface != nullptr) {
 
     Rectangle dst_position2(text_position);
-    dst_position2.add_xy(dst_position);
+    dst_position2.add_xy(dst_position.get_xy());
     surface->raw_draw(dst_surface, dst_position2);
   }
 }
@@ -655,7 +655,7 @@ void TextSurface::raw_draw_region(const Rectangle& region,
   if (surface != nullptr) {
 
     Rectangle dst_position2(text_position);
-    dst_position2.add_xy(dst_position);
+    dst_position2.add_xy(dst_position.get_xy());
     surface->raw_draw_region(region, dst_surface, dst_position2);
   }
 }

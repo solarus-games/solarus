@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,12 +43,12 @@ Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
 
   if (use_memorized_xy && hero.get_target_solid_ground_coords().get_x() != -1) {
     // go back to a target point specified earlier
-    this->target_xy.set_xy(hero.get_target_solid_ground_coords());
+    this->target_xy.set_xy(hero.get_target_solid_ground_coords().get_xy());
     this->target_layer = hero.get_target_solid_ground_layer();
   }
   else {
     // just go back to the last solid ground location
-    this->target_xy.set_xy(hero.get_last_solid_ground_coords());
+    this->target_xy.set_xy(hero.get_last_solid_ground_coords().get_xy());
     this->target_layer = hero.get_last_solid_ground_layer();
   }
 }

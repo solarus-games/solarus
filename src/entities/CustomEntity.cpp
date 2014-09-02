@@ -61,8 +61,8 @@ CustomEntity::CustomEntity(
     int width,
     int height,
     const std::string& sprite_name,
-    const std::string& model):
-
+    const std::string& model
+):
   Detector(
       COLLISION_FACING,
       name, layer, x, y, width, height
@@ -231,10 +231,10 @@ void CustomEntity::reset_traversable_by_entities() {
 void CustomEntity::set_traversable_by_entities(
     EntityType type, bool traversable) {
 
-  traversable_by_entities_type.insert(std::make_pair(type, TraversableInfo(
+  traversable_by_entities_type[type] = TraversableInfo(
       get_lua_context(),
       traversable
-  )));
+  );
 }
 
 /**
@@ -252,10 +252,10 @@ void CustomEntity::set_traversable_by_entities(
 void CustomEntity::set_traversable_by_entities(
     EntityType type, int traversable_test_ref) {
 
-  traversable_by_entities_type.insert(std::make_pair(type, TraversableInfo(
+  traversable_by_entities_type[type] = TraversableInfo(
       get_lua_context(),
       traversable_test_ref
-  )));
+  );
 }
 
 /**
@@ -375,10 +375,10 @@ void CustomEntity::reset_can_traverse_entities() {
 void CustomEntity::set_can_traverse_entities(
     EntityType type, bool traversable) {
 
-  can_traverse_entities_type.insert(std::make_pair(type, TraversableInfo(
+  can_traverse_entities_type[type] = TraversableInfo(
       get_lua_context(),
       traversable
-  )));
+  );
 }
 
 /**
@@ -396,10 +396,10 @@ void CustomEntity::set_can_traverse_entities(
 void CustomEntity::set_can_traverse_entities(
     EntityType type, int traversable_test_ref) {
 
-  can_traverse_entities_type.insert(std::make_pair(type, TraversableInfo(
+  can_traverse_entities_type[type] = TraversableInfo(
       get_lua_context(),
       traversable_test_ref
-  )));
+  );
 }
 
 /**

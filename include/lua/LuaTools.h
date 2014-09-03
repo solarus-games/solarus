@@ -27,85 +27,215 @@ namespace solarus {
 
 /**
  * \brief Provides general Lua helpers functions.
+ *
+ * All check_* and opt_* functions are similar to their equivalent of the
+ * Lua API, but throw an LuaException in case of error instead of calling
+ * lua_error(). This guarantees that stack-allocated objects are properly
+ * destroyed even in case of error.
  */
 class LuaTools {
 
   public:
 
-    static void error(lua_State* l, const std::string& message);
-    static void arg_error(lua_State* l, int arg_index, const std::string& message);
+    static int get_positive_index(lua_State* l, int index);
+    static bool is_valid_lua_identifier(const std::string& name);
 
-    static bool is_color(lua_State* l, int index);
-    static Color check_color(lua_State* l, int index);
-    static bool is_layer(lua_State* l, int index);
-    static Layer check_layer(lua_State* l, int index);
-
-    static int check_int_field(
-        lua_State* l, int table_index, const std::string& key
+    static void error(
+        lua_State* l,
+        const std::string& message
     );
-    static int opt_int_field(
-        lua_State* l, int table_index, const std::string& key,
+    static void arg_error(
+        lua_State* l,
+        int arg_index,
+        const std::string& message
+    );
+
+    // int
+    static int check_int(
+        lua_State* l,
+        int index
+    );
+    static int check_int_field(
+        lua_State* l,
+        int table_index,
+        const std::string& key
+    );
+    static int opt_int(
+        lua_State* l,
+        int index,
         int default_value
     );
+    static int opt_int_field(
+        lua_State* l,
+        int table_index,
+        const std::string& key,
+        int default_value
+    );
+
+    // double
+    static double check_number(
+        lua_State* l,
+        int index
+    );
     static double check_number_field(
-        lua_State* l, int table_index, const std::string& key
+        lua_State* l,
+        int table_index,
+        const std::string& key
+    );
+    static double opt_number(
+        lua_State* l,
+        int index,
+        double default_value
     );
     static double opt_number_field(
         lua_State* l, int table_index, const std::string& key,
         double default_value
     );
-    static const std::string check_string_field(
-        lua_State* l, int table_index, const std::string& key
+
+    // std::string
+    static std::string check_string(
+        lua_State* l,
+        int index
     );
-    static const std::string opt_string_field(
-        lua_State* l, int table_index, const std::string& key,
+    static std::string check_string_field(
+        lua_State* l,
+        int table_index,
+        const std::string& key
+    );
+    static std::string opt_string(
+        lua_State* l,
+        int index,
         const std::string& default_value
     );
-    static bool check_boolean_field(
-        lua_State* l, int table_index, const std::string& key
+    static std::string opt_string_field(
+        lua_State* l,
+        int table_index,
+        const std::string& key,
+        const std::string& default_value
     );
-    static bool opt_boolean_field(
-        lua_State* l, int table_index, const std::string& key,
+
+    // bool
+    static bool check_boolean(
+        lua_State* l,
+        int index
+    );
+    static bool check_boolean_field(
+        lua_State* l,
+        int table_index,
+        const std::string& key
+    );
+    static bool opt_boolean(
+        lua_State* l,
+        int index,
         bool default_value
     );
+    static bool opt_boolean_field(
+        lua_State* l,
+        int table_index,
+        const std::string& key,
+        bool default_value
+    );
+
+    // function
+    static int check_function(  // TODO shared_ptr return LuaScopedRef
+        lua_State* l,
+        int index
+    );
     static int check_function_field(
-        lua_State* l, int table_index, const std::string& key
+        lua_State* l,
+        int table_index,
+        const std::string& key
+    );
+    static int opt_function(
+        lua_State* l,
+        int index
     );
     static int opt_function_field(
-        lua_State* l, int table_index, const std::string& key
+        lua_State* l,
+        int table_index,
+        const std::string& key
+    );
+
+    // Layer
+    static bool is_layer(
+        lua_State* l,
+        int index
+    );
+    static Layer check_layer(
+        lua_State* l,
+        int index
     );
     static Layer check_layer_field(
-        lua_State* l, int table_index, const std::string& key
+        lua_State* l,
+        int table_index,
+        const std::string& key
     );
-    static Layer opt_layer_field(
-        lua_State* l, int table_index, const std::string& key,
+    static Layer opt_layer(
+        lua_State* l,
+        int index,
         Layer default_value
     );
-    template<typename E>
-    static E check_enum_field(
-        lua_State* l, int table_index, const std::string& key,
-        const std::string names[]
+    static Layer opt_layer_field(
+        lua_State* l,
+        int table_index,
+        const std::string& key,
+        Layer default_value
     );
-    template<typename E>
-    static E opt_enum_field(
-        lua_State* l, int table_index, const std::string& key,
-        const std::string names[], E default_value
+
+    // Color
+    static bool is_color(
+        lua_State* l,
+        int index
     );
+    static Color check_color(
+        lua_State* l,
+        int index
+    );
+    static Color check_color_field(
+        lua_State* l,
+        int table_index,
+        const std::string& key
+    );
+    static Color opt_color(
+        lua_State* l,
+        int index,
+        const Color& default_value
+    );
+    static Color opt_color_field(
+        lua_State* l,
+        int table_index,
+        const std::string& key,
+        const Color& default_value
+    );
+
+    // enum
     template<typename E>
     static E check_enum(
         lua_State* l, int index, const std::string names[]
     );
     template<typename E>
+    static E check_enum_field(
+        lua_State* l,
+        int table_index,
+        const std::string& key,
+        const std::string names[]
+    );
+    template<typename E>
     static E opt_enum(
         lua_State* l, int index, const std::string names[], E default_value
     );
-
-    static int get_positive_index(lua_State* l, int index);
-    static bool is_valid_lua_identifier(const std::string& name);
+    template<typename E>
+    static E opt_enum_field(
+        lua_State* l,
+        int table_index,
+        const std::string& key,
+        const std::string names[],
+        E default_value
+    );
 
   private:
 
-    LuaTools();  // Don't instantiate this class.
+    LuaTools() = delete;  // Don't instantiate this class.
 
 };
 
@@ -156,28 +286,6 @@ E LuaTools::check_enum(
 }
 
 /**
- * \brief Like check_enum but with a default value.
- *
- * \param l A Lua state.
- * \param index Index of a string in the Lua stack.
- * \param names An array of strings to search in. This array must be
- * terminated by an empty string.
- * \param default_value The default value to return.
- * \return The index (converted to the enumerated type E) where the string was
- * found in the array.
- */
-template<typename E>
-E LuaTools::opt_enum(
-    lua_State* l, int index, const std::string names[], E default_value) {
-
-  E value = default_value;
-  if (!lua_isnoneornil(l, index)) {
-    value = check_enum<E>(l, index, names);
-  }
-  return value;
-}
-
-/**
  * \brief Checks that a table field is the name of an enumeration value and
  * returns this value.
  *
@@ -206,6 +314,28 @@ E LuaTools::check_enum_field(
 
   E value = check_enum<E>(l, -1, names);
   lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * \brief Like check_enum but with a default value.
+ *
+ * \param l A Lua state.
+ * \param index Index of a string in the Lua stack.
+ * \param names An array of strings to search in. This array must be
+ * terminated by an empty string.
+ * \param default_value The default value to return.
+ * \return The index (converted to the enumerated type E) where the string was
+ * found in the array.
+ */
+template<typename E>
+E LuaTools::opt_enum(
+    lua_State* l, int index, const std::string names[], E default_value) {
+
+  E value = default_value;
+  if (!lua_isnoneornil(l, index)) {
+    value = check_enum<E>(l, index, names);
+  }
   return value;
 }
 

@@ -22,6 +22,48 @@
 namespace solarus {
 
 /**
+ * \brief For an index in the Lua stack, returns an equivalent positive index.
+ *
+ * Pseudo-indexes are unchanged.
+ *
+ * \param l A Lua state.
+ * \param index An index in the stack.
+ * \return The corresponding positive index.
+ */
+int LuaTools::get_positive_index(lua_State* l, int index) {
+
+  int positive_index = index;
+  if (index < 0 && index >= -lua_gettop(l)) {
+    positive_index = lua_gettop(l) + index + 1;
+  }
+
+  return positive_index;
+}
+
+/**
+ * \brief Returns whether the specified name is a valid Lua identifier.
+ * \param name The name to check.
+ * \return true if the name only contains alphanumeric characters or '_' and
+ * does not start with a digit.
+ */
+bool LuaTools::is_valid_lua_identifier(const std::string& name) {
+
+  if (name.empty() || (name[0] >= '0' && name[0] <= '9')) {
+    return false;
+  }
+
+  for (char character: name) {
+    if (character != '_' &&
+        !(character >= 'a' && character <= 'z') &&
+        !(character >= 'A' && character <= 'Z') &&
+        !(character >= '0' && character <= '9')) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
  * \brief Similar to luaL_error() but throws a LuaException.
  * \param l A Lua state.
  * \param message Error message.
@@ -63,6 +105,639 @@ void LuaTools::arg_error(lua_State* l, int arg_index, const std::string& message
 
   oss << "bad argument #" << arg_index << " to " << info.name << " (" << message << ")";
   error(l, oss.str());
+}
+
+/**
+ * \brief Checks that a value is a number and returns it as an integer.
+ *
+ * This function acts like luaL_checkint() except that it throws a LuaException
+ * in case of error.
+ *
+ * \param l A Lua state.
+ * \param index Index of a table in the stack.
+ * \return The value as an integer.
+ */
+int LuaTools::check_int(
+    lua_State* l,
+    int index
+) {
+  if (!lua_isnumber(l, index)) {
+    arg_error(l, index,
+        std::string("integer expected, got ")
+            + luaL_typename(l, index) + ")"
+    );
+  }
+
+  return (int) lua_tointeger(l, index);
+}
+
+/**
+ * \brief Checks that a table field is a number and returns it as an integer.
+ *
+ * This function acts like lua_getfield() followed by LuaTools::check_int().
+ *
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The wanted field as an integer.
+ */
+int LuaTools::check_int_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key
+) {
+  lua_getfield(l, table_index, key.c_str());
+  if (!lua_isnumber(l, -1)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (integer expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+
+  int value = (int) lua_tointeger(l, -1);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * \brief Like LuaTools::check_int() but with a default value.
+ *
+ * This function acts like luaL_optint() except that it throws a LuaException
+ * in case of error.
+ *
+ * \param l A Lua state.
+ * \param index Index of a value in the stack.
+ * \param default_value The default value to return if the value is \c nil.
+ * \return The wanted value as an integer.
+ */
+int LuaTools::opt_int(
+    lua_State* l,
+    int index,
+    int default_value
+) {
+  if (lua_isnil(l, index)) {
+    return default_value;
+  }
+  return check_int(l, index);
+}
+
+/**
+ * \brief Like LuaTools::check_int_field() but with a default value.
+ *
+ * This function acts like lua_getfield() followed by luaL_optint().
+ *
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param default_value The default value to return if the field is \c nil.
+ * \return The wanted field as an integer.
+ */
+int LuaTools::opt_int_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    int default_value
+) {
+  lua_getfield(l, table_index, key.c_str());
+  if (lua_isnil(l, -1)) {
+    lua_pop(l, 1);
+    return default_value;
+  }
+
+  if (!lua_isnumber(l, -1)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (integer expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+  int value = (int) lua_tointeger(l, -1);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * \brief Checks that a value is a number and returns it as a double.
+ *
+ * This function acts like luaL_checknumber() except that it throws a
+ * LuaException in case of error.
+ *
+ * \param l A Lua state.
+ * \param index Index of a value in the stack.
+ * \return The number value.
+ */
+double LuaTools::check_number(
+    lua_State* l,
+    int index
+) {
+  if (!lua_isnumber(l, index)) {
+    arg_error(l, index,
+        std::string("number expected, got ")
+            + luaL_typename(l, index) + ")"
+    );
+  }
+
+  return lua_tonumber(l, index);
+}
+
+/**
+ * \brief Checks that a table field is a number and returns it as a double.
+ *
+ * This function acts like lua_getfield() followed by LuaTools::check_number().
+ *
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The wanted field as a double.
+ */
+double LuaTools::check_number_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key
+) {
+  lua_getfield(l, table_index, key.c_str());
+  if (!lua_isnumber(l, -1)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (number expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+
+  double value = lua_tonumber(l, -1);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * \brief Like LuaTools::check_number() but with a default value.
+ *
+ * This function acts like luaL_optnumber() except that it throws a
+ * LuaException in case of error.
+ *
+ * \param l A Lua state.
+ * \param index Index of a value in the stack.
+ * \param default_value The default value to return if the value is \c nil.
+ * \return The wanted value as a double.
+ */
+double LuaTools::opt_number(
+    lua_State* l,
+    int index,
+    double default_value
+) {
+  if (lua_isnil(l, index)) {
+    return default_value;
+  }
+  return check_number(l, index);
+}
+
+/**
+ * \brief Like LuaTools::check_number_field() but with a default value.
+ *
+ * This function acts like lua_getfield() followed by LuaTools::opt_number().
+ *
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param default_value The default value to return if the field is \c nil.
+ * \return The wanted field as a double.
+ */
+double LuaTools::opt_number_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    double default_value
+) {
+  lua_getfield(l, table_index, key.c_str());
+  if (lua_isnil(l, -1)) {
+    lua_pop(l, 1);
+    return default_value;
+  }
+
+  if (!lua_isnumber(l, -1)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (number expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+  double value = lua_tonumber(l, -1);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * \brief Checks that a value is a string and returns it.
+ *
+ * This function acts like luaL_checkstring() except that it throws a
+ * LuaException in case of error.
+ *
+ * \param l A Lua state.
+ * \param index Index of a value in the stack.
+ * \return The string value.
+ */
+std::string LuaTools::check_string(
+    lua_State* l,
+    int index
+) {
+  if (!lua_isstring(l, index)) {
+    arg_error(l, index,
+        std::string("number expected, got ")
+            + luaL_typename(l, index) + ")"
+    );
+  }
+
+  return lua_tostring(l, index);
+}
+
+/**
+ * \brief Checks that a table field is a string and returns it.
+ *
+ * This function acts like lua_getfield() followed by LuaTools::check_string().
+ *
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The wanted field as a string.
+ */
+std::string LuaTools::check_string_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key
+) {
+  lua_getfield(l, table_index, key.c_str());
+  if (!lua_isstring(l, -1)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (string expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+
+  const std::string& value = lua_tostring(l, -1);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * \brief Like LuaTools::check_string() but with a default value.
+ *
+ * This function acts like luaL_optstring() except that it throws a
+ * LuaException in case of error.
+ *
+ * \param l A Lua state.
+ * \param index Index of a value in the stack.
+ * \param default_value The default value to return if the value is \c nil.
+ * \return The wanted value as a string.
+ */
+std::string LuaTools::opt_string(
+    lua_State* l,
+    int index,
+    const std::string& default_value
+) {
+  if (lua_isnil(l, index)) {
+    return default_value;
+  }
+  return check_string(l, index);
+}
+
+/**
+ * \brief Like LuaTools::check_string_field() but with a default value.
+ *
+ * This function acts like lua_getfield() followed by LuaTools::opt_string().
+ *
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param default_value The default value to return if the field is \c nil.
+ * \return The wanted field as a string.
+ */
+std::string LuaTools::opt_string_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    const std::string& default_value
+) {
+  lua_getfield(l, table_index, key.c_str());
+  if (lua_isnil(l, -1)) {
+    lua_pop(l, 1);
+    return default_value;
+  }
+
+  if (!lua_isstring(l, -1)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (string expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+  const std::string& value = lua_tostring(l, -1);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * \brief Checks that a value is a boolean and returns it.
+ *
+ * This function throws a LuaException in case of error.
+ *
+ * \param l A Lua state.
+ * \param index Index of a value in the stack.
+ * \return The boolean value.
+ */
+bool LuaTools::check_boolean(
+    lua_State* l,
+    int index
+) {
+  if (!lua_isboolean(l, index)) {
+    arg_error(l, index,
+        std::string("boolean expected, got ")
+            + luaL_typename(l, index) + ")"
+    );
+  }
+  bool value = lua_toboolean(l, index);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * \brief Checks that a table field is a boolean and returns it.
+* \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The wanted field as a boolean.
+ */
+bool LuaTools::check_boolean_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key
+) {
+  lua_getfield(l, table_index, key.c_str());
+  if (lua_type(l, -1) != LUA_TBOOLEAN) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (boolean expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+
+  bool value = lua_toboolean(l, -1);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * \brief Like LuaTools::check_boolean() but with a default value.
+ * \param l A Lua state.
+ * \param index Index of a value in the stack.
+ * \param default_value The default value to return if the value is \c nil.
+ * \return The wanted value as a boolean.
+ */
+bool LuaTools::opt_boolean(
+    lua_State* l,
+    int index,
+    bool default_value
+) {
+  if (lua_isnil(l, index)) {
+    return default_value;
+  }
+  return check_boolean(l, index);
+}
+
+/**
+ * \brief Like check_boolean_field() but with a default value.
+ *
+ * This function acts like lua_getfield() followed by lua_toboolean().
+ *
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param default_value The default value to return if the field is \c nil.
+ * \return The wanted field as a string.
+ */
+bool LuaTools::opt_boolean_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    bool default_value
+) {
+  lua_getfield(l, table_index, key.c_str());
+  if (lua_isnil(l, -1)) {
+    lua_pop(l, 1);
+    return default_value;
+  }
+
+  if (lua_type(l, -1) != LUA_TBOOLEAN) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (boolean expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+  return lua_toboolean(l, -1);
+}
+
+/**
+ * \brief Checks that a value is a function and returns a ref to it.
+ *
+ * This function throws a LuaException in case of error.
+ *
+ * \param l A Lua state.
+ * \param index Index of a value in the stack.
+ * \return The wanted value as a Lua ref to the function.
+ */
+int LuaTools::check_function(
+    lua_State* l,
+    int index
+) {
+  if (!lua_isfunction(l, index)) {
+    arg_error(l, index,
+        std::string("function expected, got ")
+            + luaL_typename(l, index) + ")"
+    );
+  }
+
+  int ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  return ref;
+}
+
+/**
+ * \brief Checks that a table field is a function and returns a ref to it.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The wanted field as a Lua ref to the function.
+ */
+int LuaTools::check_function_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key
+) {
+
+  lua_getfield(l, table_index, key.c_str());
+  if (!lua_isfunction(l, -1)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (function expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+
+  int ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  return ref;
+}
+
+/**
+ * \brief Like LuaTools::check_function() but the value is optional.
+ * \param l A Lua state.
+ * \param index Index of a value in the stack.
+ * \return The wanted value as a Lua ref to the function, or LUA_REFNIL.
+ */
+int LuaTools::opt_function(
+    lua_State* l,
+    int index
+) {
+  if (lua_isnil(l, index)) {
+    return LUA_REFNIL;
+  }
+  return check_function(l, index);
+}
+
+/**
+ * \brief Like LuaTools::check_function_field() but the field is optional.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The wanted field as a Lua ref to the function, or LUA_REFNIL.
+ */
+int LuaTools::opt_function_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key
+) {
+  lua_getfield(l, table_index, key.c_str());
+  if (lua_isnil(l, -1)) {
+    lua_pop(l, 1);
+    return LUA_REFNIL;
+  }
+
+  if (!lua_isfunction(l, -1)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (function expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+  return luaL_ref(l, LUA_REGISTRYINDEX);
+}
+
+/**
+ * \brief Returns whether a value is a layer.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return \c true if the value is a layer, that is, a number between 0 and 2.
+ */
+bool LuaTools::is_layer(
+    lua_State* l,
+    int index
+) {
+  if (!lua_isnumber(l, index)) {
+    return false;
+  }
+  int layer = check_int(l, index);
+  return layer >= 0 && layer < LAYER_NB;
+}
+
+/**
+ * \brief Checks that the value at the given index is a valid layer and returns it.
+ * \param l A Lua state.
+ * \param index An index in the Lua stack.
+ * \return The layer at this index.
+ */
+Layer LuaTools::check_layer(
+    lua_State* l,
+    int index
+) {
+  if (!is_layer(l, index)) {
+    std::ostringstream oss;
+    if (!lua_isnumber(l, index)) {
+      oss << "Invalid layer";
+    }
+    else {
+      oss << "Invalid layer: " << lua_tonumber(l, index);
+    }
+    arg_error(l, index, oss.str());
+  }
+
+  return Layer(lua_tointeger(l, index));
+}
+
+/**
+ * \brief Checks that a table field is a valid layer and returns it.
+ *
+ * This function acts like lua_getfield() followed by LuaTools::check_layer().
+ *
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The wanted field as a layer.
+ */
+Layer LuaTools::check_layer_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key
+) {
+  lua_getfield(l, table_index, key.c_str());
+  if (!is_layer(l, -1)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (layer expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+
+  Layer value = static_cast<Layer>(lua_tointeger(l, -1));
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * \brief Like LuaTools::check_layer() but with a default value.
+ * \param l A Lua state.
+ * \param index Index of a value in the stack.
+ * \param default_value The default value to return if the value is \c nil.
+ * \return The wanted value as a layer.
+ */
+Layer LuaTools::opt_layer(
+    lua_State* l,
+    int index,
+    Layer default_value
+) {
+  if (lua_isnil(l, index)) {
+    return default_value;
+  }
+  return check_layer(l, index);
+}
+
+/**
+ * \brief Like LuaTools::check_layer_field() but with a default value.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param default_value The default value to return if the field is \c nil.
+ * \return The wanted field as a layer.
+ */
+Layer LuaTools::opt_layer_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    Layer default_value
+) {
+  lua_getfield(l, table_index, key.c_str());
+  if (lua_isnil(l, -1)) {
+    lua_pop(l, 1);
+    return default_value;
+  }
+
+  if (!is_layer(l, -1)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (layer expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+  Layer value = static_cast<Layer>(lua_tointeger(l, -1));
+  lua_pop(l, 1);
+  return value;
 }
 
 /**
@@ -116,428 +791,80 @@ Color LuaTools::check_color(lua_State* l, int index) {
 }
 
 /**
- * \brief Returns whether a value is a layer.
- * \param l A Lua context.
- * \param index An index in the stack.
- * \return \c true if the value is a layer, that is, a number between 0 and 2.
- */
-bool LuaTools::is_layer(lua_State* l, int index) {
-
-  int layer = luaL_checkint(l, index);
-  return layer >= 0 && layer < LAYER_NB;
-}
-
-/**
- * \brief Checks that the value at the given index is a valid layer and returns it.
- * \param l A Lua state.
- * \param index An index in the Lua stack.
- * \return The layer at this index.
- */
-Layer LuaTools::check_layer(lua_State* l, int index) {
-
-  if (!is_layer(l, index)) {
-    std::ostringstream oss;
-    if (!lua_isnumber(l, index)) {
-      oss << "Invalid layer";
-    }
-    else {
-      oss << "Invalid layer: " << lua_tonumber(l, index);
-    }
-    arg_error(l, index, oss.str());
-  }
-
-  return Layer(lua_tointeger(l, index));
-}
-
-/**
- * \brief Checks that a table field is a number and returns it as an integer.
+ * \brief Checks that a table field is a color and returns it.
  *
- * This function acts like lua_getfield() followed by luaL_checkint().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \return The wanted field as an integer.
- */
-int LuaTools::check_int_field(
-    lua_State* l, int table_index, const std::string& key) {
-
-  lua_getfield(l, table_index, key.c_str());
-  if (!lua_isnumber(l, -1)) {
-    arg_error(l, table_index,
-        std::string("Bad field '") + key + "' (integer expected, got "
-        + luaL_typename(l, -1) + ")"
-    );
-  }
-
-  int value = int(lua_tointeger(l, -1));
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Like check_int_field() but with a default value.
- *
- * This function acts like lua_getfield() followed by luaL_optint().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \param default_value The default value to return if the field is \c nil.
- * \return The wanted field as an integer.
- */
-int LuaTools::opt_int_field(
-    lua_State* l, int table_index, const std::string& key, int default_value) {
-
-  lua_getfield(l, table_index, key.c_str());
-  int value = default_value;
-  if (!lua_isnil(l, -1)) {
-
-    if (!lua_isnumber(l, -1)) {
-      arg_error(l, table_index,
-          std::string("Bad field '") + key + "' (integer expected, got "
-          + luaL_typename(l, -1) + ")"
-      );
-    }
-    value = int(lua_tointeger(l, -1));
-  }
-
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Checks that a table field is a number and returns it as a double.
- *
- * This function acts like lua_getfield() followed by luaL_checknumber().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \return The wanted field as a double.
- */
-double LuaTools::check_number_field(
-    lua_State* l, int table_index, const std::string& key) {
-
-  lua_getfield(l, table_index, key.c_str());
-  if (!lua_isnumber(l, -1)) {
-    arg_error(l, table_index,
-        std::string("Bad field '") + key + "' (number expected, got "
-        + luaL_typename(l, -1) + ")"
-    );
-  }
-
-  int value = lua_tonumber(l, -1);
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Like check_number_field() but with a default value.
- *
- * This function acts like lua_getfield() followed by luaL_optnumber().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \param default_value The default value to return if the field is \c nil.
- * \return The wanted field as a double.
- */
-double LuaTools::opt_number_field(
-    lua_State* l, int table_index, const std::string& key, double default_value) {
-
-  lua_getfield(l, table_index, key.c_str());
-  double value = default_value;
-  if (!lua_isnil(l, -1)) {
-
-    if (!lua_isnumber(l, -1)) {
-      arg_error(l, table_index,
-          std::string("Bad field '") + key + "' (number expected, got "
-          + luaL_typename(l, -1) + ")"
-      );
-    }
-    value = lua_tonumber(l, -1);
-  }
-
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Checks that a table field is a string and returns it.
- *
- * This function acts like lua_getfield() followed by luaL_checkstring().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \return The wanted field as an string.
- */
-const std::string LuaTools::check_string_field(
-    lua_State* l, int table_index, const std::string& key) {
-
-  lua_getfield(l, table_index, key.c_str());
-  if (!lua_isstring(l, -1)) {
-    arg_error(l, table_index,
-        std::string("Bad field '") + key + "' (string expected, got "
-        + luaL_typename(l, -1) + ")"
-    );
-  }
-
-  const std::string& value = lua_tostring(l, -1);
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Like check_string_field() but with a default value.
- *
- * This function acts like lua_getfield() followed by luaL_optstring().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \param default_value The default value to return if the field is \c nil.
- * \return The wanted field as a string.
- */
-const std::string LuaTools::opt_string_field(
-    lua_State* l, int table_index, const std::string& key, const std::string& default_value) {
-
-  lua_getfield(l, table_index, key.c_str());
-  std::string value;
-  if (lua_isnil(l, -1)) {
-    value = default_value;
-  }
-  else {
-    if (!lua_isstring(l, -1)) {
-      arg_error(l, table_index,
-          std::string("Bad field '") + key + "' (string expected, got "
-          + luaL_typename(l, -1) + ")"
-      );
-    }
-    value = lua_tostring(l, -1);
-  }
-
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Checks that a table field is a boolean and returns it.
- *
- * This function acts like lua_getfield() followed by luaL_checktype()
- * and lua_toboolean().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \return The wanted field as a boolean.
- */
-bool LuaTools::check_boolean_field(
-    lua_State* l, int table_index, const std::string& key) {
-
-  lua_getfield(l, table_index, key.c_str());
-  if (lua_type(l, -1) != LUA_TBOOLEAN) {
-    arg_error(l, table_index,
-        std::string("Bad field '") + key + "' (boolean expected, got "
-        + luaL_typename(l, -1) + ")"
-    );
-  }
-
-  bool value = lua_toboolean(l, -1);
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Like check_boolean_field() but with a default value.
- *
- * This function acts like lua_getfield() followed by lua_toboolean().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \param default_value The default value to return if the field is \c nil.
- * \return The wanted field as a string.
- */
-bool LuaTools::opt_boolean_field(
-    lua_State* l, int table_index, const std::string& key, bool default_value) {
-
-  lua_getfield(l, table_index, key.c_str());
-  bool value = default_value;
-  if (!lua_isnil(l, -1)) {
-
-    if (lua_type(l, -1) != LUA_TBOOLEAN) {
-      arg_error(l, table_index,
-          std::string("Bad field '") + key + "' (boolean expected, got "
-          + luaL_typename(l, -1) + ")"
-      );
-    }
-    value = lua_toboolean(l, -1);
-  }
-
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Checks that a table field is a function and returns a ref to it.
- *
- * This function acts like lua_getfield() followed by lua_isfunction() and
- * luaL_ref().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \return The wanted field as a Lua ref to the function.
- */
-int LuaTools::check_function_field(
-    lua_State* l, int table_index, const std::string& key) {
-
-  lua_getfield(l, table_index, key.c_str());
-  if (!lua_isfunction(l, -1)) {
-    arg_error(l, table_index,
-        std::string("Bad field '") + key + "' (function expected, got "
-        + luaL_typename(l, -1) + ")"
-    );
-  }
-
-  int ref = luaL_ref(l, LUA_REGISTRYINDEX);
-  return ref;
-}
-
-/**
- * \brief Like check_function_field() but the field is optional.
- *
- * This function acts like lua_getfield() followed by lua_isfunction() and
- * luaL_ref().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \return The wanted field as a Lua ref to the function, or LUA_REFNIL.
- */
-int LuaTools::opt_function_field(
-    lua_State* l, int table_index, const std::string& key) {
-
-  lua_getfield(l, table_index, key.c_str());
-  int ref = LUA_REFNIL;
-  if (lua_isnil(l, -1)) {
-    lua_pop(l, 1);
-  }
-  else {
-    if (!lua_isfunction(l, -1)) {
-      arg_error(l, table_index,
-          std::string("Bad field '") + key + "' (function expected, got "
-          + luaL_typename(l, -1) + ")"
-      );
-    }
-    ref = luaL_ref(l, LUA_REGISTRYINDEX);
-  }
-
-  return ref;
-}
-
-/**
- * \brief Checks that a table field is a valid layer and returns it.
- *
- * This function acts like lua_getfield() followed by check_layer().
+ * This function acts like lua_getfield() followed by LuaTools::check_color().
  *
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
  * \param key Key of the field to get in that table.
  * \return The wanted field as a layer.
  */
-Layer LuaTools::check_layer_field(
-    lua_State* l, int table_index, const std::string& key) {
-
+Color LuaTools::check_color_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key
+) {
   lua_getfield(l, table_index, key.c_str());
-  if (!is_layer(l, -1)) {
+  if (!is_color(l, -1)) {
     arg_error(l, table_index,
-        std::string("Bad field '") + key + "' (layer expected, got "
+        std::string("Bad field '") + key + "' (color table expected, got "
         + luaL_typename(l, -1) + ")"
     );
   }
 
-  Layer value = Layer(lua_tointeger(l, -1));
+  const Color& value = check_color(l, -1);
   lua_pop(l, 1);
   return value;
 }
 
 /**
- * \brief Like check_layer_field() but with a default value.
- *
- * This function acts like lua_getfield() followed by is_layer().
- *
+ * \brief Like LuaTools::check_color() but with a default value.
+ * \param l A Lua state.
+ * \param index Index of a value in the stack.
+ * \param default_value The default value to return if the value is \c nil.
+ * \return The wanted value as a color.
+ */
+Color LuaTools::opt_color(
+    lua_State* l,
+    int index,
+    const Color& default_value
+) {
+  if (lua_isnil(l, index)) {
+    return default_value;
+  }
+  return check_color(l, index);
+}
+
+/**
+ * \brief Like LuaTools::check_color_field() but with a default value.
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
  * \param key Key of the field to get in that table.
  * \param default_value The default value to return if the field is \c nil.
- * \return The wanted field as a layer.
+ * \return The wanted field as a color.
  */
-Layer LuaTools::opt_layer_field(
+Color LuaTools::opt_color_field(
     lua_State* l,
     int table_index,
     const std::string& key,
-    Layer default_value) {
-
+    const Color& default_value
+) {
   lua_getfield(l, table_index, key.c_str());
-  Layer value = default_value;
-  if (!lua_isnil(l, -1)) {
-
-    if (!is_layer(l, -1)) {
-      arg_error(l, table_index,
-          std::string("Bad field '") + key + "' (layer expected, got "
-          + luaL_typename(l, -1) + ")"
-      );
-    }
-    value = Layer(lua_tointeger(l, -1));
+  if (lua_isnil(l, -1)) {
+    lua_pop(l, 1);
+    return default_value;
   }
 
+  if (!is_color(l, -1)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (color expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+  const Color& color = check_color(l, -1);
   lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief For an index in the Lua stack, returns an equivalent positive index.
- *
- * Pseudo-indexes are unchanged.
- *
- * \param l A Lua state.
- * \param index An index in the stack.
- * \return The corresponding positive index.
- */
-int LuaTools::get_positive_index(lua_State* l, int index) {
-
-  int positive_index = index;
-  if (index < 0 && index >= -lua_gettop(l)) {
-    positive_index = lua_gettop(l) + index + 1;
-  }
-
-  return positive_index;
-}
-
-/**
- * \brief Returns whether the specified name is a valid Lua identifier.
- * \param name The name to check.
- * \return true if the name only contains alphanumeric characters or '_' and
- * does not start with a digit.
- */
-bool LuaTools::is_valid_lua_identifier(const std::string& name) {
-
-  if (name.empty() || (name[0] >= '0' && name[0] <= '9')) {
-    return false;
-  }
-
-  for (char character: name) {
-    if (character != '_' &&
-        !(character >= 'a' && character <= 'z') &&
-        !(character >= 'A' && character <= 'Z') &&
-        !(character >= '0' && character <= '9')) {
-      return false;
-    }
-  }
-  return true;
+  return color;
 }
 
 }

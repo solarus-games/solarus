@@ -107,9 +107,9 @@ class MapEntity: public ExportableToLua {
     void set_size(const Size& size);
     const Rectangle& get_bounding_box() const;
     void set_bounding_box(const Rectangle& bounding_box);
-    const Rectangle& get_origin() const;
+    const Point& get_origin() const;
     void set_origin(int x, int y);
-    void set_origin(const Rectangle& origin);
+    void set_origin(const Point& origin);
     int get_top_left_x() const;
     int get_top_left_y() const;
     const Point get_top_left_xy() const;
@@ -328,7 +328,7 @@ class MapEntity: public ExportableToLua {
     Ground ground_below;                        /**< Kind of ground under this entity: grass, shallow water, etc.
                                                  * Only used by entities sensible to their ground. */
 
-    Rectangle origin;                           /**< Coordinates of the origin point of the entity,
+    Point origin;                               /**< Coordinates of the origin point of the entity,
                                                  * relative to the top-left corner of its rectangle.
                                                  * Remember that when you call get_x() and get_y(), you get the coordinates
                                                  * of the origin point on the map, not the coordinates of the rectangle's

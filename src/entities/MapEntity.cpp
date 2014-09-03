@@ -645,7 +645,7 @@ void MapEntity::notify_direction_changed() {
  * \return the x position of the entity
  */
 int MapEntity::get_x() const {
-  return bounding_box.get_x() + origin.get_x();
+  return bounding_box.get_x() + origin.x;
 }
 
 /**
@@ -653,7 +653,7 @@ int MapEntity::get_x() const {
  * \return the y position of the entity
  */
 int MapEntity::get_y() const {
-  return bounding_box.get_y() + origin.get_y();
+  return bounding_box.get_y() + origin.y;
 }
 
 /**
@@ -664,7 +664,7 @@ int MapEntity::get_y() const {
  * \param x the new x position
  */
 void MapEntity::set_x(int x) {
-  bounding_box.set_x(x - origin.get_x());
+  bounding_box.set_x(x - origin.x);
 }
 
 /**
@@ -675,7 +675,7 @@ void MapEntity::set_x(int x) {
  * \param y the new y position
  */
 void MapEntity::set_y(int y) {
-  bounding_box.set_y(y - origin.get_y());
+  bounding_box.set_y(y - origin.y);
 }
 
 /**
@@ -1089,7 +1089,7 @@ bool MapEntity::has_prefix(const std::string& prefix) const {
  * relative to the top-left corner of its rectangle.
  * \return the origin point
  */
-const Rectangle& MapEntity::get_origin() const {
+const Point& MapEntity::get_origin() const {
   return origin;
 }
 
@@ -1101,8 +1101,8 @@ const Rectangle& MapEntity::get_origin() const {
  */
 void MapEntity::set_origin(int x, int y) {
 
-  bounding_box.add_xy(origin.get_x() - x, origin.get_y() - y);
-  origin.set_xy(x, y);
+  bounding_box.add_xy(origin.x - x, origin.y - y);
+  origin = { x, y };
 }
 
 /**
@@ -1110,8 +1110,8 @@ void MapEntity::set_origin(int x, int y) {
  * relative to the top-left corner of its rectangle.
  * \param origin x and y coordinates of the origin
  */
-void MapEntity::set_origin(const Rectangle& origin) {
-  set_origin(origin.get_x(), origin.get_y());
+void MapEntity::set_origin(const Point& origin) {
+  set_origin(origin.x, origin.y);
 }
 
 /**

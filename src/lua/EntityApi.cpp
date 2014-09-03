@@ -768,10 +768,10 @@ int LuaContext::entity_api_get_origin(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
 
-  const Rectangle& origin = entity.get_origin();
+  const Point& origin = entity.get_origin();
 
-  lua_pushinteger(l, origin.get_x());
-  lua_pushinteger(l, origin.get_y());
+  lua_pushinteger(l, origin.x);
+  lua_pushinteger(l, origin.y);
   return 2;
 }
 

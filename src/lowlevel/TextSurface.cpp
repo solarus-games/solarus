@@ -468,8 +468,8 @@ int TextSurface::get_height() const {
  * \brief Returns the size of the surface containing the text.
  * \return the size of the surface
  */
-const Rectangle TextSurface::get_size() const {
-  return Rectangle(0, 0, get_width(), get_height());
+const Size TextSurface::get_size() const {
+  return { get_width(), get_height() };
 }
 
 /**

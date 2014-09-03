@@ -486,12 +486,12 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
     RefCountable::unref(scaled_surface);
     scaled_surface = nullptr;
 
-    Rectangle render_size(quest_size);
+    Size render_size = quest_size;
 
     const PixelFilter* software_filter = mode.get_software_filter();
     if (software_filter != nullptr) {
       int factor = software_filter->get_scaling_factor();
-      render_size.set_size(quest_size * factor);
+      render_size = quest_size * factor;
       scaled_surface = Surface::create(render_size);
       RefCountable::ref(scaled_surface);
       scaled_surface->fill_with_color(Color::get_black());  // To initialize the internal surface.
@@ -511,8 +511,8 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
     }
     SDL_RenderSetLogicalSize(
         main_renderer,
-        render_size.get_width(),
-        render_size.get_height());
+        render_size.width,
+        render_size.height);
     SDL_ShowCursor(show_cursor);
 
     if (mode_changed) {

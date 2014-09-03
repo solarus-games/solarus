@@ -563,9 +563,9 @@ void TextSurface::rebuild_bitmap() {
 
   // Determine the letter size from the surface size.
   Surface& bitmap = *fonts[font_id].bitmap;
-  const Rectangle& bitmap_size = bitmap.get_size();
-  int char_width = bitmap_size.get_width() / 128;
-  int char_height = bitmap_size.get_height() / 16;
+  const Size& bitmap_size = bitmap.get_size();
+  int char_width = bitmap_size.width / 128;
+  int char_height = bitmap_size.height / 16;
 
   surface = Surface::create((char_width - 1) * num_chars + 1, char_height);
   RefCountable::ref(surface);

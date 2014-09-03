@@ -288,13 +288,13 @@ void Map::unload() {
 void Map::load(Game& game) {
 
   visible_surface = Surface::create(
-      Rectangle(Video::get_quest_size())
+      Video::get_quest_size()
   );
   RefCountable::ref(visible_surface);
   visible_surface->set_software_destination(false);
 
   background_surface = Surface::create(
-      Rectangle(Video::get_quest_size())
+      Video::get_quest_size()
   );
   RefCountable::ref(background_surface);
   background_surface->set_software_destination(false);

@@ -783,7 +783,7 @@ Surface& Sprite::get_transition_surface() {
 Surface& Sprite::get_intermediate_surface() const {
 
   if (intermediate_surface == nullptr) {
-    intermediate_surface = Surface::create(get_max_size());
+    intermediate_surface = Surface::create(get_max_size().get_size());
     RefCountable::ref(intermediate_surface);
   }
   return *intermediate_surface;

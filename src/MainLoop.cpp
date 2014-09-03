@@ -55,7 +55,7 @@ MainLoop::MainLoop(const CommandLine& args):
 
   // Create the quest surface.
   root_surface = Surface::create(
-      Rectangle(Video::get_quest_size())
+      Video::get_quest_size()
   );
   root_surface->set_software_destination(false);  // Accelerate this surface.
   RefCountable::ref(root_surface);

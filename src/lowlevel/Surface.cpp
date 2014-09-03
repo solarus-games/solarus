@@ -1,21 +1,22 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/Surface.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/Size.h"
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
@@ -187,8 +188,8 @@ Surface* Surface::create(int width, int height) {
  * \param size The size in pixels.
  * \return The created surface.
  */
-Surface* Surface::create(const Rectangle& size) {
-  return new Surface(size.get_width(), size.get_height());
+Surface* Surface::create(const Size& size) {
+  return new Surface(size.width, size.height);
 }
 
 /**
@@ -342,9 +343,8 @@ int Surface::get_height() const {
  * \brief Returns the size of this surface.
  * \return the size of this surface
  */
-const Rectangle Surface::get_size() const {
-
-  return Rectangle(0, 0, get_width(), get_height());
+const Size Surface::get_size() const {
+  return { get_width(), get_height() };
 }
 
 /**
@@ -531,11 +531,11 @@ void Surface::fill_with_color(const Color& color) {
 void Surface::fill_with_color(const Color& color, const Rectangle& where) {
 
   // Create a surface with the requested size and color and draw it.
-  Surface* colored_surface = Surface::create(where);
+  Surface* colored_surface = Surface::create(where.get_size());
   colored_surface->set_software_destination(false);
   colored_surface->internal_color = new Color(color);
   RefCountable::ref(colored_surface);
-  colored_surface->raw_draw_region(colored_surface->get_size(), *this, where);
+  colored_surface->raw_draw_region(Rectangle(colored_surface->get_size()), *this, where);
   RefCountable::unref(colored_surface);
 }
 
@@ -772,7 +772,7 @@ void Surface::render(
   //FIXME SDL_RenderSetClipRect is buggy for now, but should be fixed soon.
   // It means that software and hardware surface doesn't have the exact same behavior for now.
   // Uncomment the two lines using it when https://bugzilla.libsdl.org/show_bug.cgi?id=2336 will be solved.
-  
+
   // Accelerate the internal software surface.
   if (internal_surface != nullptr) {
 

@@ -21,7 +21,7 @@
 #include "entities/MapEntities.h"
 #include "entities/Teletransporter.h"
 #include "movements/PathMovement.h"
-#include "lowlevel/Rectangle.h"
+#include "lowlevel/Point.h"
 #include "lowlevel/System.h"
 #include "Game.h"
 #include "Map.h"

@@ -19,7 +19,6 @@
 #include "hero/HeroSprites.h"
 #include "entities/MapEntities.h"
 #include "movements/TargetMovement.h"
-#include "lowlevel/Rectangle.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
 #include "Map.h"

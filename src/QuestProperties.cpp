@@ -17,7 +17,7 @@
 #include "QuestProperties.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Video.h"
-#include "lowlevel/Rectangle.h"
+#include "lowlevel/Size.h"
 #include "lowlevel/Debug.h"
 #include "lua/LuaTools.h"
 #include <lua.hpp>
@@ -194,4 +194,3 @@ int QuestProperties::l_quest(lua_State* l) {
 }
 
 }
-

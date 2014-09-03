@@ -101,9 +101,12 @@ double Geometry::get_angle(int x1, int y1, int x2, int y2) {
  * \param distance length of the vector in pixels
  * \return the coordinates of the second point
  */
-const Rectangle Geometry::get_xy(double angle, int distance) {
+const Point Geometry::get_xy(double angle, int distance) {
 
-  return Rectangle((int) (distance * std::cos(angle)), (int) (-distance * std::sin(angle)));
+  return {
+      static_cast<int>(distance * std::cos(angle)),
+      static_cast<int>(-distance * std::sin(angle))
+  };
 }
 
 /**
@@ -113,12 +116,8 @@ const Rectangle Geometry::get_xy(double angle, int distance) {
  * \param distance length of the vector in pixels
  * \return the coordinates of the second point
  */
-const Rectangle Geometry::get_xy(const Rectangle& xy1, double angle, int distance) {
-
-  Rectangle xy = get_xy(angle, distance);
-  xy.add_xy(xy1.get_x(), xy1.get_y());
-  return xy;
+const Point Geometry::get_xy(const Point& xy1, double angle, int distance) {
+  return xy1 + get_xy(angle, distance);
 }
 
 }
-

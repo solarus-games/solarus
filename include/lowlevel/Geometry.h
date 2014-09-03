@@ -18,7 +18,7 @@
 #define SOLARUS_GEOMETRY_H
 
 #include "Common.h"
-#include "lowlevel/Rectangle.h"
+#include "lowlevel/Point.h"
 #include <cmath>
 
 namespace solarus {
@@ -45,10 +45,10 @@ class Geometry {
 
     static double get_distance(int x1, int y1, int x2, int y2);
     static int get_distance2(int x1, int y1, int x2, int y2);
-    static double get_distance(const Rectangle& xy1, const Rectangle& xy2);
+    static double get_distance(const Point& xy1, const Point& xy2);
     static double get_angle(int x1, int y1, int x2, int y2);
-    static const Rectangle get_xy(double angle, int distance);
-    static const Rectangle get_xy(const Rectangle &xy1, double angle, int distance);
+    static const Point get_xy(double angle, int distance);
+    static const Point get_xy(const Point& xy1, double angle, int distance);
 
 };
 
@@ -88,9 +88,9 @@ inline int Geometry::get_distance2(int x1, int y1, int x2, int y2) {
  * \param xy2 coordinates of the second point
  * \return the distance in pixels
  */
-inline double Geometry::get_distance(const Rectangle& xy1, const Rectangle& xy2) {
+inline double Geometry::get_distance(const Point& xy1, const Point& xy2) {
 
-  return get_distance(xy1.get_x(), xy1.get_y(), xy2.get_x(), xy2.get_y());
+  return get_distance(xy1.x, xy1.y, xy2.x, xy2.y);
 }
 
 }

@@ -16,6 +16,7 @@
  */
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
+#include "lua/LuaException.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include <lua.hpp>
@@ -139,7 +140,7 @@ int LuaContext::audio_api_set_music_volume(lua_State* l) {
  */
 int LuaContext::audio_api_play_music(lua_State* l) {
 
-// TODO  try {
+  try {
     const std::string& music_id = luaL_optstring(l, 1, "");
     bool loop = true;  // true by default, unless there is a callback.
     ScopedLuaRef callback_ref;
@@ -172,11 +173,11 @@ int LuaContext::audio_api_play_music(lua_State* l) {
     }
 
     return 0;
-//  }
-// TODO
-//  catch (const LuaError& ex) {
-//    luaL_error(ex.what);
-//  }
+  }
+  catch (const LuaException& ex) {
+    luaL_error(l, ex.what());
+    return 0;
+  }
 }
 
 /**

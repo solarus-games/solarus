@@ -15,32 +15,54 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaTools.h"
+#include "lua/LuaException.h"
 #include "lowlevel/Color.h"
 #include <sstream>
 
 namespace solarus {
 
 /**
- * \brief Like luaL_error() but with an std::string message.
+ * \brief Similar to luaL_error() but throws a LuaException.
  * \param l A Lua state.
  * \param message Error message.
  * \return This function never returns.
  */
 void LuaTools::error(lua_State* l, const std::string& message) {
-  luaL_error(l, message.c_str());
-  throw;  // TODO throw LuaError
+  throw LuaException(l, message);
 }
 
 /**
- * \brief Like luaL_argerror() but with an std::string message.
+ * \brief Similar to luaL_argerror() but throws a LuaException.
  * \param l A Lua state.
  * \param arg_index Index of an argument in the stack.
  * \param message Error message.
  * \return This function never returns.
  */
 void LuaTools::arg_error(lua_State* l, int arg_index, const std::string& message) {
-  luaL_argerror(l, arg_index, message.c_str());
-  throw;  // TODO throw LuaError
+
+  // The code below is very similar to luaL_argerror(), but ends with
+  // an exception instead of a luaL_error() call.
+
+  std::ostringstream oss;
+  lua_Debug info;
+  if (!lua_getstack(l, 0, &info)) {
+    // No stack frame.
+     oss << "bad argument #" << arg_index << " (" << message << ")";
+  }
+  lua_getinfo(l, "n", &info);
+  if (std::string(info.namewhat) == "method") {
+     arg_index--;  // Do not count self.
+     if (arg_index == 0) {
+       // Error is in the self argument itself.
+       oss << "calling " << info.name << " on bad self (" << message << ")";
+     }
+  }
+  if (info.name == nullptr) {
+    info.name = "?";
+  }
+
+  oss << "bad argument #" << arg_index << " to " << info.name << " (" << message << ")";
+  error(l, oss.str());
 }
 
 /**

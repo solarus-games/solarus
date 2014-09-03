@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -243,10 +243,10 @@ void Hookshot::draw_on_map() {
   int x2 = get_x();
   int y2 = get_y() - 5;
 
-  Rectangle link_xy;
+  Point link_xy;
   for (int i = 0; i < nb_links; i++) {
-    link_xy.set_x(x1 + (x2 - x1) * i / nb_links);
-    link_xy.set_y(y1 + (y2 - y1) * i / nb_links);
+    link_xy.x = x1 + (x2 - x1) * i / nb_links;
+    link_xy.y = y1 + (y2 - y1) * i / nb_links;
     get_map().draw_sprite(link_sprite, link_xy);
   }
 }

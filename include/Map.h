@@ -145,7 +145,7 @@ class Map: public ExportableToLua {
     bool is_suspended() const;
     void check_suspended();
     void draw();
-    void draw_sprite(Sprite& sprite, const Rectangle& xy);
+    void draw_sprite(Sprite& sprite, const Point& xy);
     void draw_sprite(Sprite& sprite, int x, int y);
     void draw_sprite(Sprite& sprite, int x, int y,
         const Rectangle& clipping_area);

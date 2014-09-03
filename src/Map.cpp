@@ -658,11 +658,10 @@ void Map::draw_foreground() {
  * \brief Draws a sprite on the map surface.
  * \param sprite the sprite to draw
  * \param xy coordinates of the sprite's origin point in the map
- * (the size of the rectangle is ignored)
  */
-void Map::draw_sprite(Sprite& sprite, const Rectangle &xy) {
+void Map::draw_sprite(Sprite& sprite, const Point &xy) {
 
-  draw_sprite(sprite, xy.get_x(), xy.get_y());
+  draw_sprite(sprite, xy.x, xy.y);
 }
 
 /**

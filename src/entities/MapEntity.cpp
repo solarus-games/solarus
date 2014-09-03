@@ -2579,7 +2579,7 @@ void MapEntity::draw_on_map() {
 
   // Draw the sprites.
   for (Sprite* sprite: sprites) {
-    get_map().draw_sprite(*sprite, Rectangle(get_displayed_xy()));
+    get_map().draw_sprite(*sprite, get_displayed_xy());
   }
 }
 

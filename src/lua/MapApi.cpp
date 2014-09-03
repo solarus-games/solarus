@@ -1959,7 +1959,7 @@ int LuaContext::map_api_create_fire(lua_State* l) {
   MapEntity* entity = new Fire(
       name,
       layer,
-      Rectangle(x, y));
+      Point(x, y));
   map.get_entities().add_entity(entity);
 
   if (map.is_started()) {

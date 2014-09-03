@@ -43,12 +43,12 @@ Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
 
   if (use_memorized_xy && hero.get_target_solid_ground_coords().x != -1) {
     // go back to a target point specified earlier
-    this->target_xy.set_xy(hero.get_target_solid_ground_coords());
+    this->target_xy = hero.get_target_solid_ground_coords();
     this->target_layer = hero.get_target_solid_ground_layer();
   }
   else {
     // just go back to the last solid ground location
-    this->target_xy.set_xy(hero.get_last_solid_ground_coords());
+    this->target_xy = hero.get_last_solid_ground_coords();
     this->target_layer = hero.get_last_solid_ground_layer();
   }
 }
@@ -69,7 +69,7 @@ void Hero::BackToSolidGroundState::start(const State* previous_state) {
   State::start(previous_state);
 
   Hero& hero = get_hero();
-  hero.set_movement(new TargetMovement(nullptr, target_xy.get_x(), target_xy.get_y(), 144, true));
+  hero.set_movement(new TargetMovement(nullptr, target_xy.x, target_xy.y, 144, true));
   get_entities().set_entity_layer(hero, target_layer);
   get_entities().remove_boomerang();
 }

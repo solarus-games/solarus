@@ -673,7 +673,7 @@ void Sprite::update() {
  */
 void Sprite::raw_draw(
     Surface& dst_surface,
-    const Rectangle& dst_position) {
+    const Point& dst_position) {
 
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
@@ -684,11 +684,11 @@ void Sprite::raw_draw(
     }
     else {
       intermediate_surface->clear();
-      current_animation->draw(*intermediate_surface, Rectangle(get_origin()),
+      current_animation->draw(*intermediate_surface, get_origin(),
           current_direction, current_frame);
-      Rectangle dst_position2(dst_position);
-      dst_position2.add_xy(-get_origin());
-      intermediate_surface->draw_region(Rectangle(get_size()), dst_surface, dst_position2);
+      intermediate_surface->draw_region(
+          Rectangle(get_size()), dst_surface,
+          dst_position - get_origin());
     }
   }
 }
@@ -704,7 +704,7 @@ void Sprite::raw_draw(
 void Sprite::raw_draw_region(
     const Rectangle& region,
     Surface& dst_surface,
-    const Rectangle& dst_position) {
+    const Point& dst_position) {
 
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
@@ -716,7 +716,7 @@ void Sprite::raw_draw_region(
     const Point& origin = get_origin();
     current_animation->draw(
         get_intermediate_surface(),
-        Rectangle(origin),
+        origin,
         current_direction,
         current_frame);
 
@@ -746,9 +746,9 @@ void Sprite::raw_draw_region(
     }
 
     // Calculate the destination coordinates.
-    Rectangle dst_position2(dst_position);
-    dst_position2.add_xy(src_position.get_xy());  // Let a space for the part outside the region.
-    dst_position2.add_xy(-origin);  // Input coordinates were relative to the origin.
+    Point dst_position2 = dst_position;
+    dst_position2 += src_position.get_xy(); // Let a space for the part outside the region.
+    dst_position2 -= origin;                // Input coordinates were relative to the origin.
     get_intermediate_surface().draw_region(src_position, dst_surface, dst_position2);
   }
 }

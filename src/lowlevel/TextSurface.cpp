@@ -20,6 +20,8 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/Video.h"
+#include "lowlevel/Size.h"
+#include "lowlevel/Rectangle.h"
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
 #include "Transition.h"
@@ -540,7 +542,7 @@ void TextSurface::rebuild() {
     break;
   }
 
-  text_position.set_xy(x_left, y_top);
+  text_position = { x_left, y_top };
 }
 
 /**
@@ -571,7 +573,7 @@ void TextSurface::rebuild_bitmap() {
   RefCountable::ref(surface);
 
   // Traverse the string again to draw the characters.
-  Rectangle dst_position(0, 0);
+  Point dst_position;
   for (unsigned i = 0; i < text.size(); i++) {
     char first_byte = text[i];
     Rectangle src_position(0, 0, char_width, char_height);
@@ -588,7 +590,7 @@ void TextSurface::rebuild_bitmap() {
           (code_point / 128) * char_height);
     }
     bitmap.draw_region(src_position, *surface, dst_position);
-    dst_position.add_x(char_width - 1);
+    dst_position.x += char_width - 1;
   }
 }
 
@@ -633,13 +635,10 @@ void TextSurface::rebuild_ttf() {
  * \param dst_position Coordinates on the destination surface.
  */
 void TextSurface::raw_draw(Surface& dst_surface,
-    const Rectangle& dst_position) {
+    const Point& dst_position) {
 
   if (surface != nullptr) {
-
-    Rectangle dst_position2(text_position);
-    dst_position2.add_xy(dst_position.get_xy());
-    surface->raw_draw(dst_surface, dst_position2);
+    surface->raw_draw(dst_surface, dst_position + text_position);
   }
 }
 
@@ -650,13 +649,12 @@ void TextSurface::raw_draw(Surface& dst_surface,
  * \param dst_position Coordinates on the destination surface.
  */
 void TextSurface::raw_draw_region(const Rectangle& region,
-    Surface& dst_surface, const Rectangle& dst_position) {
+    Surface& dst_surface, const Point& dst_position) {
 
   if (surface != nullptr) {
-
-    Rectangle dst_position2(text_position);
-    dst_position2.add_xy(dst_position.get_xy());
-    surface->raw_draw_region(region, dst_surface, dst_position2);
+    surface->raw_draw_region(
+        region, dst_surface,
+        dst_position + text_position);
   }
 }
 

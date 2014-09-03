@@ -89,14 +89,13 @@ const Rectangle& SpriteAnimationDirection::get_frame(int frame) const {
  * \param src_image the image from which the frame is extracted
  */
 void SpriteAnimationDirection::draw(Surface& dst_surface,
-    const Rectangle& dst_position, int current_frame, Surface& src_image) {
+    const Point& dst_position, int current_frame, Surface& src_image) {
 
   const Rectangle& current_frame_rect = get_frame(current_frame);
 
   // Position of the sprite's upper left corner.
-  Rectangle position_top_left(dst_position);
-  position_top_left.add_xy(-origin);
-  position_top_left.set_size(current_frame_rect.get_size());
+  Point position_top_left = dst_position;
+  position_top_left -= origin;
 
   src_image.draw_region(current_frame_rect, dst_surface, position_top_left);
 }

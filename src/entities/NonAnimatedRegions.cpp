@@ -237,15 +237,12 @@ void NonAnimatedRegions::draw_on_map() {
         build_cell(cell_index);
       }
 
-      const Rectangle cell_xy(
+      const Point cell_xy = {
           j * cell_size.width,
           i * cell_size.height
-      );
+      };
 
-      const Rectangle dst_position(
-          cell_xy.get_x() - camera_position.get_x(),
-          cell_xy.get_y() - camera_position.get_y()
-      );
+      const Point dst_position = cell_xy - camera_position.get_xy();
       optimized_tiles_surfaces[cell_index]->draw(
           map.get_visible_surface(), dst_position
       );

@@ -217,7 +217,7 @@ void Drawable::set_suspended(bool suspended) {
  */
 void Drawable::draw(Surface& dst_surface) {
 
-  draw(dst_surface, Rectangle(0, 0));
+  draw(dst_surface, Point(0, 0));
 }
 
 /**
@@ -228,7 +228,7 @@ void Drawable::draw(Surface& dst_surface) {
  */
 void Drawable::draw(Surface& dst_surface, int x, int y) {
 
-  draw(dst_surface, Rectangle(x, y));
+  draw(dst_surface, Point(x, y));
 }
 
 /**
@@ -238,16 +238,13 @@ void Drawable::draw(Surface& dst_surface, int x, int y) {
  * (will be added to the position obtained by previous movements)
  */
 void Drawable::draw(Surface& dst_surface,
-    const Rectangle& dst_position) {
-
-  Rectangle dst_position2(dst_position);
-  dst_position2.add_xy(xy);
+    const Point& dst_position) {
 
   if (transition != nullptr) {
     draw_transition(*transition);
   }
 
-  raw_draw(dst_surface, dst_position2);
+  raw_draw(dst_surface, dst_position + xy);
 }
 
 /**
@@ -259,7 +256,7 @@ void Drawable::draw_region(
     const Rectangle& region,
     Surface& dst_surface) {
 
-  draw_region(region, dst_surface, Rectangle(0, 0));
+  draw_region(region, dst_surface, Point(0, 0));
 }
 
 /**
@@ -268,21 +265,17 @@ void Drawable::draw_region(
  * \param dst_surface The destination surface
  * \param dst_position Position on this surface
  * (will be added to the position obtained by previous movements).
- * The width and height of this rectangle are ignored.
  */
 void Drawable::draw_region(
     const Rectangle& region,
     Surface& dst_surface,
-    const Rectangle& dst_position) {
-
-  Rectangle dst_position2(dst_position);
-  dst_position2.add_xy(xy);
+    const Point& dst_position) {
 
   if (transition != nullptr) {
     draw_transition(*transition);
   }
 
-  raw_draw_region(region, dst_surface, dst_position2);
+  raw_draw_region(region, dst_surface, dst_position+xy);
 }
 
 }

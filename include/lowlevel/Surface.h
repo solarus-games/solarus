@@ -85,12 +85,12 @@ class Surface: public Drawable {
     // Implementation from Drawable.
     virtual void raw_draw(
         Surface& dst_surface,
-        const Rectangle& dst_position
+        const Point& dst_position
     ) override;
     virtual void raw_draw_region(
         const Rectangle& region,
         Surface& dst_surface,
-        const Rectangle& dst_position
+        const Point& dst_position
     ) override;
     virtual void draw_transition(Transition& transition) override;
     virtual Surface& get_transition_surface() override;

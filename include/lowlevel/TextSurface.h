@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "Drawable.h"
 #include "lowlevel/Color.h"
-#include "lowlevel/Rectangle.h"
+#include "lowlevel/Point.h"
 #include <SDL_ttf.h>
 #include <map>
 
@@ -108,9 +108,9 @@ class TextSurface: public Drawable {
     int get_height() const;
     const Size get_size() const;
 
-    virtual void raw_draw(Surface& dst_surface, const Rectangle& dst_position) override;
+    virtual void raw_draw(Surface& dst_surface, const Point& dst_position) override;
     virtual void raw_draw_region(const Rectangle& region,
-        Surface& dst_surface, const Rectangle& dst_position) override;
+        Surface& dst_surface, const Point& dst_position) override;
     virtual void draw_transition(Transition& transition) override;
     virtual Surface& get_transition_surface() override;
 
@@ -151,7 +151,7 @@ class TextSurface: public Drawable {
     int x;                                            /**< x coordinate of where the text is aligned */
     int y;                                            /**< y coordinate of where the text is aligned */
     Surface* surface;                                 /**< the surface to draw */
-    Rectangle text_position;                          /**< position of the top-left corner of the surface on the screen */
+    Point text_position;                              /**< position of the top-left corner of the surface on the screen */
 
     std::string text;                                 /**< the string to draw (only one line) */
 

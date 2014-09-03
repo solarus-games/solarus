@@ -100,9 +100,9 @@ class Sprite: public Drawable {
 
     // udpate and draw
     virtual void update() override;
-    virtual void raw_draw(Surface& dst_surface, const Rectangle& dst_position) override;
+    virtual void raw_draw(Surface& dst_surface, const Point& dst_position) override;
     virtual void raw_draw_region(const Rectangle& region,
-        Surface& dst_surface, const Rectangle& dst_position) override;
+        Surface& dst_surface, const Point& dst_position) override;
     virtual void draw_transition(Transition& transition);
     virtual Surface& get_transition_surface() override;
 

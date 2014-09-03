@@ -535,7 +535,7 @@ void Surface::fill_with_color(const Color& color, const Rectangle& where) {
   colored_surface->set_software_destination(false);
   colored_surface->internal_color = new Color(color);
   RefCountable::ref(colored_surface);
-  colored_surface->raw_draw_region(Rectangle(colored_surface->get_size()), *this, where);
+  colored_surface->raw_draw_region(Rectangle(colored_surface->get_size()), *this, where.get_xy());
   RefCountable::unref(colored_surface);
 }
 
@@ -583,7 +583,7 @@ void Surface::clear_subsurfaces() {
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
  */
-void Surface::raw_draw(Surface& dst_surface, const Rectangle& dst_position) {
+void Surface::raw_draw(Surface& dst_surface, const Point& dst_position) {
 
   Rectangle region(0, 0, width, height);
   raw_draw_region(region, dst_surface, dst_position);
@@ -594,12 +594,11 @@ void Surface::raw_draw(Surface& dst_surface, const Rectangle& dst_position) {
  * \param region The subrectangle to draw in this object.
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
- * The width and height of this rectangle are ignored.
  */
 void Surface::raw_draw_region(
     const Rectangle& region,
     Surface& dst_surface,
-    const Rectangle& dst_position) {
+    const Point& dst_position) {
 
   if (dst_surface.software_destination  // The destination surface is in RAM.
       || !Video::is_acceleration_enabled()  // The rendering is in RAM.
@@ -630,7 +629,7 @@ void Surface::raw_draw_region(
         subsurface->src_surface->raw_draw_region(
             subsurface->src_rect,
             *this,
-            subsurface->dst_rect
+            subsurface->dst_rect.get_xy()
         );
         RefCountable::unref(subsurface);
       }
@@ -652,8 +651,8 @@ void Surface::raw_draw_region(
       if (internal_color->get_internal_color()->a == 255) {
         // Fill with opaque color: we can directly modify the destination pixels.
         Rectangle dst_rect(
-            dst_position.get_x(), dst_position.get_y(),
-            region.get_width(), region.get_height()
+            dst_position,
+            region.get_size()
         );
         SDL_FillRect(
             dst_surface.internal_surface,
@@ -682,7 +681,7 @@ void Surface::raw_draw_region(
     // The destination is a GPU surface (a texture).
     // Do not draw anything, just store the operation in the tree instead.
     // The actual drawing will be done at rendering time in GPU.
-    dst_surface.add_subsurface(*this, region, dst_position);
+    dst_surface.add_subsurface(*this, region, Rectangle(dst_position));
   }
 
   dst_surface.is_rendered = false;

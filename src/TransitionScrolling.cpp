@@ -194,10 +194,10 @@ void TransitionScrolling::draw(Surface& dst_surface) {
       "No previous surface defined for scrolling");
 
   // draw the old map
-  previous_surface->draw(*both_maps_surface, previous_map_dst_position);
+  previous_surface->draw(*both_maps_surface, previous_map_dst_position.get_xy());
 
   // draw the new map
-  dst_surface.draw(*both_maps_surface, current_map_dst_position);
+  dst_surface.draw(*both_maps_surface, current_map_dst_position.get_xy());
 
   // blit both surfaces
   both_maps_surface->draw_region(current_scrolling_position, dst_surface);

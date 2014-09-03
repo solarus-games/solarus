@@ -705,10 +705,10 @@ void Map::draw_sprite(Sprite& sprite, int x, int y,
       clipping_area.get_width(),
       clipping_area.get_height()
   );
-  const Rectangle dst_position(
+  const Point dst_position = {
       x - camera_position.get_x(),
       y - camera_position.get_y()
-  );
+  };
   sprite.draw_region(
       region_in_frame,
       *visible_surface,

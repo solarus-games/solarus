@@ -47,6 +47,7 @@ class Geometry {
     static int get_distance2(int x1, int y1, int x2, int y2);
     static double get_distance(const Point& xy1, const Point& xy2);
     static double get_angle(int x1, int y1, int x2, int y2);
+    static double get_angle(const Point& point1, const Point& point2);
     static const Point get_xy(double angle, int distance);
     static const Point get_xy(const Point& xy1, double angle, int distance);
 

@@ -96,6 +96,16 @@ double Geometry::get_angle(int x1, int y1, int x2, int y2) {
 }
 
 /**
+ * \brief Returns the angle of the vector formed by two points.
+ * \param point1 first point
+ * \param point2 second point
+ * \return The angle in radians, between 0 and TWO_PI.
+ */
+double Geometry::get_angle(const Point& point1, const Point& point2) {
+  return get_angle(point1.x, point1.y, point2.x, point2.y);
+}
+
+/**
  * \brief Returns the cartesian coordinates of a vector that starts from the origin, given its angle and distance.
  * \param angle angle of the vector in radians
  * \param distance length of the vector in pixels

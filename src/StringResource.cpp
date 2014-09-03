@@ -36,7 +36,7 @@ std::map<std::string, std::string> strings;
  */
 int l_text(lua_State* l) {
 
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
 
   const std::string key = LuaTools::check_string_field(l, 1, "key");
   const std::string value = LuaTools::check_string_field(l, 1, "value");

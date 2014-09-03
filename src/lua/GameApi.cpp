@@ -417,7 +417,7 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
 
     if (lua_gettop(l) >= callback_index) {
       // There is a callback.
-      luaL_checktype(l, callback_index, LUA_TFUNCTION);
+      LuaTools::check_type(l, callback_index, LUA_TFUNCTION);
       lua_settop(l, callback_index);
       callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
     }
@@ -1345,7 +1345,7 @@ int LuaContext::game_api_capture_command_binding(lua_State* l) {
 
   int callback_ref = LUA_REFNIL;
   if (lua_gettop(l) >= 3) {
-    luaL_checktype(l, 3, LUA_TFUNCTION);
+    LuaTools::check_type(l, 3, LUA_TFUNCTION);
     lua_settop(l, 3);
     callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
   }

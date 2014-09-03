@@ -186,7 +186,7 @@ int LuaContext::menu_api_start(lua_State *l) {
       && lua_type(l, 1) != LUA_TUSERDATA) {
     LuaTools::type_error(l, 1, "table or userdata");
   }
-  luaL_checktype(l, 2, LUA_TTABLE);
+  LuaTools::check_type(l, 2, LUA_TTABLE);
   bool on_top = true;
   if (lua_gettop(l) >= 3) {
     on_top = lua_toboolean(l, 3);
@@ -209,7 +209,7 @@ int LuaContext::menu_api_stop(lua_State* l) {
 
   LuaContext& lua_context = get_lua_context(l);
 
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
 
   int menu_ref = LUA_REFNIL;
   std::list<LuaMenuData>& menus = lua_context.menus;
@@ -255,7 +255,7 @@ int LuaContext::menu_api_is_started(lua_State* l) {
 
   LuaContext& lua_context = get_lua_context(l);
 
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
 
   bool found = false;
   std::list<LuaMenuData>& menus = lua_context.menus;

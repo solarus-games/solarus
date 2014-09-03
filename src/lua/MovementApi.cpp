@@ -580,7 +580,7 @@ int LuaContext::movement_api_start(lua_State* l) {
 
   int callback_ref = LUA_REFNIL;
   if (lua_gettop(l) >= 3 && !lua_isnil(l, 3)) {
-    luaL_checktype(l, 3, LUA_TFUNCTION);
+    LuaTools::check_type(l, 3, LUA_TFUNCTION);
     lua_settop(l, 3);
     callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
     movement.set_lua_context(&lua_context);
@@ -1091,7 +1091,7 @@ int LuaContext::path_movement_api_get_path(lua_State* l) {
 int LuaContext::path_movement_api_set_path(lua_State* l) {
 
   PathMovement& movement = check_path_movement(l, 1);
-  luaL_checktype(l, 2, LUA_TTABLE);
+  LuaTools::check_type(l, 2, LUA_TTABLE);
 
   // build the path as a string from the Lua table
   std::string path = "";
@@ -1704,13 +1704,13 @@ int LuaContext::pixel_movement_api_get_trajectory(lua_State* l) {
 int LuaContext::pixel_movement_api_set_trajectory(lua_State* l) {
 
   PixelMovement& movement = check_pixel_movement(l, 1);
-  luaL_checktype(l, 2, LUA_TTABLE);
+  LuaTools::check_type(l, 2, LUA_TTABLE);
 
   // build the trajectory as a string from the Lua table
   std::list<Rectangle> trajectory;
   lua_pushnil(l); // first key
   while (lua_next(l, 2) != 0) {
-    luaL_checktype(l, 4, LUA_TTABLE);
+    LuaTools::check_type(l, 4, LUA_TTABLE);
     lua_rawgeti(l, 4, 1);
     lua_rawgeti(l, 4, 2);
     int x = luaL_checkint(l, 5);

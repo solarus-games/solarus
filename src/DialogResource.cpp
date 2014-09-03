@@ -117,7 +117,7 @@ const Dialog& DialogResource::get_dialog(const std::string& dialog_id) {
  */
 int DialogResource::l_dialog(lua_State* l) {
 
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
 
   std::string dialog_id;
   Dialog dialog;

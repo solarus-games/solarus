@@ -1271,9 +1271,9 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
  */
 int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
 
-  luaL_checktype(l, 1, LUA_TUSERDATA);
-  luaL_checkany(l, 2);
-  luaL_checkany(l, 3);
+  LuaTools::check_type(l, 1, LUA_TUSERDATA);
+  LuaTools::check_any(l, 2);
+  LuaTools::check_any(l, 3);
 
   const ExportableToLuaPtr& userdata =
       *(static_cast<ExportableToLuaPtr*>(lua_touserdata(l, 1)));
@@ -1345,8 +1345,8 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
    * to the userdata __index metamethod.
    */
 
-  luaL_checktype(l, 1, LUA_TUSERDATA);
-  luaL_checkany(l, 2);
+  LuaTools::check_type(l, 1, LUA_TUSERDATA);
+  LuaTools::check_any(l, 2);
 
   const ExportableToLuaPtr& userdata =
       *(static_cast<ExportableToLuaPtr*>(lua_touserdata(l, 1)));

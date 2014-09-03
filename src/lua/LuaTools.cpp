@@ -130,6 +130,37 @@ void LuaTools::type_error(
 }
 
 /**
+ * \brief Like luaL_checktype() but throws a LuaException in case of error.
+ * \param l A Lua state.
+ * \param arg_index Index of an argument in the stack.
+ * \param expected_type A Lua type value.
+ */
+void LuaTools::check_type(
+    lua_State* l,
+    int arg_index,
+    int expected_type
+) {
+  if (lua_type(l, arg_index) != expected_type) {
+    arg_error(l, arg_index, std::string(lua_typename(l, expected_type)) +
+        " expected, got " + luaL_typename(l, arg_index));
+  }
+}
+
+/**
+ * \brief Like luaL_checkany() but throws a LuaException in case of error.
+ * \param l A Lua state.
+ * \param arg_index Index of an argument in the stack.
+ */
+void LuaTools::check_any(
+    lua_State* l,
+    int arg_index
+) {
+  if (lua_type(l, arg_index) == LUA_TNONE) {
+    arg_error(l, arg_index, "value expected");
+  }
+}
+
+/**
  * \brief Checks that a value is a number and returns it as an integer.
  *
  * This function acts like luaL_checkint() except that it throws a LuaException
@@ -798,7 +829,7 @@ Color LuaTools::check_color(lua_State* l, int index) {
 
   index = get_positive_index(l, index);
 
-  luaL_checktype(l, index, LUA_TTABLE);
+  LuaTools::check_type(l, index, LUA_TTABLE);
   lua_rawgeti(l, index, 1);
   lua_rawgeti(l, index, 2);
   lua_rawgeti(l, index, 3);

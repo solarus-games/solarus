@@ -507,7 +507,7 @@ int LuaContext::map_api_move_camera(lua_State* l) {
   int x = luaL_checkint(l, 2);
   int y = luaL_checkint(l, 3);
   int speed = luaL_checkint(l, 4);
-  luaL_checktype(l, 5, LUA_TFUNCTION);
+  LuaTools::check_type(l, 5, LUA_TFUNCTION);
 
   uint32_t delay_before = 1000;
   uint32_t delay_after = 1000;
@@ -889,7 +889,7 @@ int LuaContext::map_api_create_tile(lua_State* l) {
   Debug::check_assertion(!map.is_started(),
       "Cannot create a tile when the map is already started");
 
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   const int x = LuaTools::check_int_field(l, 1, "x");
   const int y = LuaTools::check_int_field(l, 1, "y");
@@ -926,7 +926,7 @@ int LuaContext::map_api_create_tile(lua_State* l) {
 int LuaContext::map_api_create_destination(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -960,7 +960,7 @@ int LuaContext::map_api_create_destination(lua_State* l) {
 int LuaContext::map_api_create_teletransporter(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1005,7 +1005,7 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
 int LuaContext::map_api_create_pickable(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1062,7 +1062,7 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
 int LuaContext::map_api_create_destructible(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1124,7 +1124,7 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
 int LuaContext::map_api_create_chest(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1202,7 +1202,7 @@ int LuaContext::map_api_create_chest(lua_State* l) {
 int LuaContext::map_api_create_jumper(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1240,7 +1240,7 @@ int LuaContext::map_api_create_jumper(lua_State* l) {
 int LuaContext::map_api_create_enemy(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1303,7 +1303,7 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
 int LuaContext::map_api_create_npc(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1345,7 +1345,7 @@ int LuaContext::map_api_create_npc(lua_State* l) {
 int LuaContext::map_api_create_block(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1389,7 +1389,7 @@ int LuaContext::map_api_create_block(lua_State* l) {
 int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1428,7 +1428,7 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
 int LuaContext::map_api_create_switch(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1468,7 +1468,7 @@ int LuaContext::map_api_create_switch(lua_State* l) {
 int LuaContext::map_api_create_wall(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1513,7 +1513,7 @@ int LuaContext::map_api_create_wall(lua_State* l) {
 int LuaContext::map_api_create_sensor(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1547,7 +1547,7 @@ int LuaContext::map_api_create_sensor(lua_State* l) {
 int LuaContext::map_api_create_crystal(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1575,7 +1575,7 @@ int LuaContext::map_api_create_crystal(lua_State* l) {
 int LuaContext::map_api_create_crystal_block(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1617,7 +1617,7 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
 int LuaContext::map_api_create_shop_treasure(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1668,7 +1668,7 @@ int LuaContext::map_api_create_shop_treasure(lua_State* l) {
 int LuaContext::map_api_create_stream(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1709,7 +1709,7 @@ int LuaContext::map_api_create_stream(lua_State* l) {
 int LuaContext::map_api_create_door(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1780,7 +1780,7 @@ int LuaContext::map_api_create_door(lua_State* l) {
 int LuaContext::map_api_create_stairs(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1816,7 +1816,7 @@ int LuaContext::map_api_create_stairs(lua_State* l) {
 int LuaContext::map_api_create_separator(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1851,7 +1851,7 @@ int LuaContext::map_api_create_separator(lua_State* l) {
 int LuaContext::map_api_create_custom_entity(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   int direction = LuaTools::check_int_field(l, 1, "direction");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
@@ -1894,7 +1894,7 @@ int LuaContext::map_api_create_custom_entity(lua_State* l) {
 int LuaContext::map_api_create_bomb(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1922,7 +1922,7 @@ int LuaContext::map_api_create_bomb(lua_State* l) {
 int LuaContext::map_api_create_explosion(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
@@ -1950,7 +1950,7 @@ int LuaContext::map_api_create_explosion(lua_State* l) {
 int LuaContext::map_api_create_fire(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");

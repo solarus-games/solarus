@@ -229,7 +229,7 @@ int Tileset::l_background_color(lua_State* l) {
   Tileset* tileset = static_cast<Tileset*>(p);
   lua_pop(l, 1);
 
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   lua_rawgeti(l, 1, 1);
   lua_rawgeti(l, 1, 2);
   lua_rawgeti(l, 1, 3);

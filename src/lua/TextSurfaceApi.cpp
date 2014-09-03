@@ -135,7 +135,7 @@ int LuaContext::text_surface_api_create(lua_State* l) {
   TextSurfacePtr text_surface = RefCountable::make_refcount_ptr(new TextSurface(0, 0));
 
   if (lua_gettop(l) > 0) {
-    luaL_checktype(l, 1, LUA_TTABLE);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
 
     // Traverse the table, looking for properties.
     lua_pushnil(l); // First key.

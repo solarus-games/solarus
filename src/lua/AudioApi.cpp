@@ -152,7 +152,7 @@ int LuaContext::audio_api_play_music(lua_State* l) {
       else {
         // There is a callback parameter.
         loop = false;  // No loop when there is a callback.
-        luaL_checktype(l, 2, LUA_TFUNCTION);
+        LuaTools::check_type(l, 2, LUA_TFUNCTION);
         lua_settop(l, 2);  // Make sure that the callback is on top.
         callback_ref = get_lua_context(l).create_scoped_ref();
       }

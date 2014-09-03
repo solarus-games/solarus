@@ -1476,7 +1476,7 @@ int LuaContext::hero_api_set_animation(lua_State* l) {
 
   int callback_ref = LUA_REFNIL;
   if (lua_gettop(l) >= 3) {
-    luaL_checktype(l, 3, LUA_TFUNCTION);
+    LuaTools::check_type(l, 3, LUA_TFUNCTION);
     lua_settop(l, 3);
     callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
   }
@@ -1798,7 +1798,7 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
 
   int callback_ref = LUA_REFNIL;
   if (lua_gettop(l) >= 5) {
-    luaL_checktype(l, 5, LUA_TFUNCTION);
+    LuaTools::check_type(l, 5, LUA_TFUNCTION);
     lua_settop(l, 5);
     callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
   }
@@ -1818,7 +1818,7 @@ int LuaContext::hero_api_start_victory(lua_State* l) {
   Hero& hero = check_hero(l, 1);
   int callback_ref = LUA_REFNIL;
   if (lua_gettop(l) >= 2) {
-    luaL_checktype(l, 2, LUA_TFUNCTION);
+    LuaTools::check_type(l, 2, LUA_TFUNCTION);
     lua_settop(l, 2);
     callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
   }
@@ -3992,7 +3992,7 @@ int LuaContext::enemy_api_immobilize(lua_State* l) {
 int LuaContext::enemy_api_create_enemy(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  luaL_checktype(l, 2, LUA_TTABLE);
+  LuaTools::check_type(l, 2, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 2, "name", "");
   Layer layer = LuaTools::opt_layer_field(l, 2, "layer", enemy.get_layer());
   int x = LuaTools::opt_int_field(l, 2, "x", 0);

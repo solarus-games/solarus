@@ -37,9 +37,11 @@ class LuaTools {
 
   public:
 
+    // Helpers.
     static int get_positive_index(lua_State* l, int index);
     static bool is_valid_lua_identifier(const std::string& name);
 
+    // Error handling.
     static void error(
         lua_State* l,
         const std::string& message
@@ -53,6 +55,15 @@ class LuaTools {
         lua_State* l,
         int arg_index,
         const std::string& expected_type_name
+    );
+    static void check_type(
+        lua_State* l,
+        int arg_index,
+        int expected_type
+    );
+    static void check_any(
+        lua_State* l,
+        int arg_index
     );
 
     // int

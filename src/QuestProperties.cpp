@@ -136,7 +136,7 @@ void QuestProperties::load() {
 int QuestProperties::l_quest(lua_State* l) {
 
   // Retrieve the quest properties from the table parameter.
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
   const std::string& solarus_required_version =
       LuaTools::opt_string_field(l, 1, "solarus_version", "");
   check_version_compatibility(solarus_required_version);

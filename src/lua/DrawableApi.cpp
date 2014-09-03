@@ -192,7 +192,7 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
     }
     // the next argument (if any) is the callback
     if (lua_gettop(l) >= index) {
-      luaL_checktype(l, index, LUA_TFUNCTION);
+      LuaTools::check_type(l, index, LUA_TFUNCTION);
       lua_settop(l, index);
       callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
     }
@@ -229,7 +229,7 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
     }
     // the next argument (if any) is the callback
     if (lua_gettop(l) >= index) {
-      luaL_checktype(l, index, LUA_TFUNCTION);
+      LuaTools::check_type(l, index, LUA_TFUNCTION);
       lua_settop(l, index);
       callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
     }

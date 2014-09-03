@@ -96,8 +96,7 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
       lua_touserdata(l, -1));
   lua_pop(l, 1);
 
-  luaL_checktype(l, 1, LUA_TTABLE);
-
+  LuaTools::check_type(l, 1, LUA_TTABLE);
 
   std::string animation_name = LuaTools::check_string_field(l, 1, "name");
   std::string src_image = LuaTools::check_string_field(l, 1, "src_image");

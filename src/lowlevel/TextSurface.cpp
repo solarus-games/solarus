@@ -112,7 +112,7 @@ void TextSurface::quit() {
  */
 int TextSurface::l_font(lua_State* l) {
 
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
 
   const std::string& font_id = LuaTools::check_string_field(l, 1, "id");
   const std::string& file_name = LuaTools::check_string_field(l, 1, "file");

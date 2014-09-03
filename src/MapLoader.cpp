@@ -104,7 +104,7 @@ int MapLoader::l_properties(lua_State* l) {
   Debug::check_assertion(map != nullptr, "No map has not been set in this Lua state");
 
   // Retrieve the map properties from the table parameter.
-  luaL_checktype(l, 1, LUA_TTABLE);
+  LuaTools::check_type(l, 1, LUA_TTABLE);
 
   const int x = LuaTools::opt_int_field(l, 1, "x", 0);
   const int y = LuaTools::opt_int_field(l, 1, "y", 0);

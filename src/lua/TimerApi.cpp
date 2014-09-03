@@ -389,7 +389,7 @@ int LuaContext::timer_api_start(lua_State *l) {
   // Now the first parameter is the context.
 
   uint32_t delay = uint32_t(luaL_checkint(l, 2));
-  luaL_checktype(l, 3, LUA_TFUNCTION);
+  LuaTools::check_type(l, 3, LUA_TFUNCTION);
 
   // Create the timer.
   Timer* timer = new Timer(delay);

@@ -293,10 +293,10 @@ void Block::stop_movement_by_hero() {
   when_can_move = System::now() + moving_delay;
 
   // see if the block has moved
-  if (get_x() != last_position.get_x() || get_y() != last_position.get_y()) {
+  if (get_x() != last_position.x || get_y() != last_position.y) {
 
     // the block has moved
-    last_position.set_xy(get_x(), get_y()); // save the new position for next time
+    last_position = { get_x(), get_y() }; // save the new position for next time
 
     if (maximum_moves == 1) { // if the block could be moved only once,
       maximum_moves = 0;      // then it cannot move anymore
@@ -331,8 +331,8 @@ void Block::reset() {
     when_can_move = System::now() + moving_delay;
   }
 
-  set_xy(initial_position.get_xy());
-  last_position.set_xy(initial_position.get_xy());
+  set_xy(initial_position);
+  last_position = initial_position;
   this->maximum_moves = initial_maximum_moves;
 }
 

@@ -810,11 +810,10 @@ int MapEntity::get_height() const {
 
 /**
  * \brief Returns the size of the entity.
- * \return a rectangle whose width and height represent the size of the entity
- * (its coordinates should be ignored)
+ * \return the size of the entity
  */
-const Rectangle& MapEntity::get_size() const {
-  return bounding_box;
+Size MapEntity::get_size() const {
+  return bounding_box.get_size();
 }
 
 /**
@@ -831,11 +830,11 @@ void MapEntity::set_size(int width, int height) {
 
 /**
  * \brief Sets the size of the entity.
- * \param size a rectangle having the width and height to set to the entity
+ * \param size to set to the entity
  */
-void MapEntity::set_size(const Rectangle& size) {
+void MapEntity::set_size(const Size& size) {
 
-  set_size(size.get_width(), size.get_height());
+  bounding_box.set_size(size);
 }
 
 /**

@@ -20,7 +20,7 @@
 #include "entities/MapEntity.h"
 #include "entities/EnemyAttack.h"
 #include "entities/Ground.h"
-#include "lowlevel/Rectangle.h"
+#include "lowlevel/Point.h"
 #include "GameCommands.h"
 #include <list>
 
@@ -139,12 +139,12 @@ class Hero: public MapEntity {
     virtual bool is_ground_observer() const override;
     virtual const Rectangle get_ground_point() const override;
     virtual void notify_ground_below_changed() override;
-    const Rectangle& get_last_solid_ground_coords() const;
+    const Point& get_last_solid_ground_coords() const;
     Layer get_last_solid_ground_layer() const;
-    const Rectangle& get_target_solid_ground_coords() const;
+    const Point& get_target_solid_ground_coords() const;
     Layer get_target_solid_ground_layer() const;
     void set_target_solid_ground_coords(
-        const Rectangle& target_solid_ground_coords,
+        const Point& target_solid_ground_coords,
         Layer layer
     );
     void reset_target_solid_ground_coords();
@@ -343,17 +343,17 @@ class Hero: public MapEntity {
                                      * raised crystal blocks */
 
     // ground
-    Rectangle last_solid_ground_coords;    /**< coordinates of the last hero position on a ground
+    Point last_solid_ground_coords;        /**< coordinates of the last hero position on a ground
                                             * where he can walk (e.g. before jumping or falling into a hole) */
     Layer last_solid_ground_layer;         /**< layer of the last hero position on a solid ground */
-    Rectangle target_solid_ground_coords;  /**< coordinates of the position where the hero will go if he falls
+    Point target_solid_ground_coords;      /**< coordinates of the position where the hero will go if he falls
                                             * into a hole (or some other bad ground), or (-1,-1) to indicate
                                             * that the hero will just return to the last solid ground coordinates */
     Layer target_solid_ground_layer;       /**< layer of the place to go back when falling in some bad ground */
     uint32_t next_ground_date;             /**< when something will happen with the ground next time (a sound or a movement) */
     uint32_t next_ice_date;                /**< when recomputing the additional movement on ice */
     int ice_movement_direction8;           /**< wanted movement direction a while ago */
-    Rectangle ground_dxy;                  /**< additional movement with special ground (hole or ice) */
+    Point ground_dxy;                      /**< additional movement with special ground (hole or ice) */
 
 };
 

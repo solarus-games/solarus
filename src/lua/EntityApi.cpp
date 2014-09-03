@@ -1397,7 +1397,7 @@ int LuaContext::hero_api_save_solid_ground(lua_State* l) {
     layer = hero.get_layer();
   }
 
-  hero.set_target_solid_ground_coords(Rectangle(x, y), layer);
+  hero.set_target_solid_ground_coords(Point(x, y), layer);
 
   return 0;
 }
@@ -1425,20 +1425,20 @@ int LuaContext::hero_api_get_solid_ground_position(lua_State* l) {
 
   const Hero& hero = check_hero(l, 1);
 
-  const Rectangle& target_coords = hero.get_target_solid_ground_coords();
-  if (target_coords.get_x() != -1) {
+  const Point& target_coords = hero.get_target_solid_ground_coords();
+  if (target_coords.x != -1) {
     // Coordinates memorized by hero:save_solid_ground().
-    lua_pushinteger(l, target_coords.get_x());
-    lua_pushinteger(l, target_coords.get_y());
+    lua_pushinteger(l, target_coords.x);
+    lua_pushinteger(l, target_coords.y);
     lua_pushinteger(l, hero.get_target_solid_ground_layer());
     return 3;
   }
 
-  const Rectangle& last_coords = hero.get_last_solid_ground_coords();
-  if (last_coords.get_x() != -1) {
+  const Point& last_coords = hero.get_last_solid_ground_coords();
+  if (last_coords.x != -1) {
     // Last solid ground coordinates.
-    lua_pushinteger(l, last_coords.get_x());
-    lua_pushinteger(l, last_coords.get_y());
+    lua_pushinteger(l, last_coords.x);
+    lua_pushinteger(l, last_coords.y);
     lua_pushinteger(l, hero.get_last_solid_ground_layer());
     return 3;
   }

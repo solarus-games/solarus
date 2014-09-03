@@ -41,14 +41,14 @@ Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
   end_date(0),
   with_sound(with_sound) {
 
-  if (use_memorized_xy && hero.get_target_solid_ground_coords().get_x() != -1) {
+  if (use_memorized_xy && hero.get_target_solid_ground_coords().x != -1) {
     // go back to a target point specified earlier
-    this->target_xy.set_xy(hero.get_target_solid_ground_coords().get_xy());
+    this->target_xy.set_xy(hero.get_target_solid_ground_coords());
     this->target_layer = hero.get_target_solid_ground_layer();
   }
   else {
     // just go back to the last solid ground location
-    this->target_xy.set_xy(hero.get_last_solid_ground_coords().get_xy());
+    this->target_xy.set_xy(hero.get_last_solid_ground_coords());
     this->target_layer = hero.get_last_solid_ground_layer();
   }
 }

@@ -1557,19 +1557,19 @@ void MapEntity::notify_moved_by(MapEntity& /* entity */) {
 /**
  * \brief Converts a direction into the corresponding one-pixel move on x and y.
  * \param direction8 a direction (0 to 7)
- * \return a rectangle with x and y set to -1, 0 or 1 depending on the direction
+ * \return a point with x and y set to -1, 0 or 1 depending on the direction
  */
-const Rectangle& MapEntity::direction_to_xy_move(int direction8) {
+const Point& MapEntity::direction_to_xy_move(int direction8) {
 
-  static const Rectangle directions_to_xy_moves[] = {
-    Rectangle( 1, 0),
-    Rectangle( 1,-1),
-    Rectangle( 0,-1),
-    Rectangle(-1,-1),
-    Rectangle(-1, 0),
-    Rectangle(-1, 1),
-    Rectangle( 0, 1),
-    Rectangle( 1, 1)
+  static const Point directions_to_xy_moves[] = {
+    {  1,  0 },
+    {  1, -1 },
+    {  0, -1 },
+    { -1, -1 },
+    { -1,  0 },
+    { -1,  1 },
+    {  0,  1 },
+    {  1,  1 }
   };
 
   return directions_to_xy_moves[direction8];

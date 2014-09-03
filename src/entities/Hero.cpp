@@ -355,7 +355,7 @@ void Hero::update_ice() {
     }
     else {
       // But he was just moving on ice: continue the ice movement.
-      ground_dxy = direction_to_xy_move(ice_movement_direction8).get_xy();
+      ground_dxy = direction_to_xy_move(ice_movement_direction8);
       next_ice_date = now + 300;
     }
   }
@@ -363,16 +363,16 @@ void Hero::update_ice() {
     // The player wants to move.
     if (ice_movement_direction8 == -1) {
       // But he was not just moving on ice: resist to the wanted movement.
-      ground_dxy = direction_to_xy_move((wanted_movement_direction8 + 4) % 8).get_xy();
+      ground_dxy = direction_to_xy_move((wanted_movement_direction8 + 4) % 8);
     }
     else if (ice_movement_direction8 != wanted_movement_direction8) {
       // He changed his direction: continue the ice movement.
-      ground_dxy = direction_to_xy_move(ice_movement_direction8).get_xy();
+      ground_dxy = direction_to_xy_move(ice_movement_direction8);
       next_ice_date = now + 300;
     }
     else {
       // He continues in the same direction.
-      ground_dxy = direction_to_xy_move(wanted_movement_direction8).get_xy();
+      ground_dxy = direction_to_xy_move(wanted_movement_direction8);
       next_ice_date = now + 300;
     }
   }
@@ -982,8 +982,8 @@ int Hero::get_real_movement_direction8() {
     Rectangle collision_box(get_bounding_box());
 
     // if we can move towards the wanted direction, no problem
-    Rectangle xy_move = direction_to_xy_move(wanted_direction8);
-    collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
+    Point xy_move = direction_to_xy_move(wanted_direction8);
+    collision_box.add_xy(xy_move);
     if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
       result = wanted_direction8;
     }
@@ -993,7 +993,7 @@ int Hero::get_real_movement_direction8() {
       int alternative_direction8 = (wanted_direction8 + 1) % 8;
       collision_box = get_bounding_box();
       xy_move = direction_to_xy_move(alternative_direction8);
-      collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
+      collision_box.add_xy(xy_move);
       if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
         result = alternative_direction8;
       }
@@ -1001,7 +1001,7 @@ int Hero::get_real_movement_direction8() {
         alternative_direction8 = (wanted_direction8 - 1) % 8;
         collision_box = get_bounding_box();
         xy_move = direction_to_xy_move(alternative_direction8);
-        collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
+        collision_box.add_xy(xy_move);
         if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
           result = alternative_direction8;
         }
@@ -2252,7 +2252,7 @@ void Hero::start_ice() {
   }
   else {
     // Exagerate the movement.
-    ground_dxy = direction_to_xy_move(ice_movement_direction8).get_xy();
+    ground_dxy = direction_to_xy_move(ice_movement_direction8);
   }
 }
 

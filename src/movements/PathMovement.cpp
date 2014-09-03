@@ -324,8 +324,8 @@ Rectangle PathMovement::get_xy_change() const {
 
   for (char direction_char: initial_path) {
     int direction = direction_char - '0';
-    const Rectangle& xy_move = MapEntity::direction_to_xy_move(direction);
-    xy.add_xy(xy_move.get_x() * 8, xy_move.get_y() * 8);
+    const Point& xy_move = MapEntity::direction_to_xy_move(direction);
+    xy.add_xy(xy_move * 8);
   }
 
   return xy;

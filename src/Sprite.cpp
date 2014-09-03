@@ -571,14 +571,14 @@ bool Sprite::test_collision(const Sprite& other, int x1, int y1, int x2, int y2)
 
   const SpriteAnimationDirection* direction1 = current_animation->get_direction(current_direction);
   const Point& origin1 = direction1->get_origin();
-  Rectangle location1(x1 - origin1.x, y1 - origin1.y);
-  location1.add_xy(get_xy());
+  Point location1 = { x1 - origin1.x, y1 - origin1.y };
+  location1 += get_xy();
   const PixelBits& pixel_bits1 = direction1->get_pixel_bits(current_frame);
 
   const SpriteAnimationDirection* direction2 = other.current_animation->get_direction(other.current_direction);
   const Point& origin2 = direction2->get_origin();
-  Rectangle location2(x2 - origin2.x, y2 - origin2.y);
-  location2.add_xy(other.get_xy());
+  Point location2 = { x2 - origin2.x, y2 - origin2.y };
+  location2 += other.get_xy();
   const PixelBits& pixel_bits2 = direction2->get_pixel_bits(other.current_frame);
 
   return pixel_bits1.test_collision(pixel_bits2, location1, location2);

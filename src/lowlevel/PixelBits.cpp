@@ -104,16 +104,14 @@ PixelBits::~PixelBits() {
  * \brief Detects whether the image represented by these pixel bits is
  * overlapping another image.
  * \param other The other image.
- * \param location1 Position of the upper-left corner of this image on the map
- * (only x and y must be specified).
- * \param location2 Position of the upper-left corner of the other image
- * on the map (only x and y must be specified).
+ * \param location1 Position of the upper-left corner of this image on the map.
+ * \param location2 Position of the upper-left corner of the other image.
  * \return \c true if there is a collision.
  */
 bool PixelBits::test_collision(
     const PixelBits& other,
-    const Rectangle& location1,
-    const Rectangle& location2) const {
+    const Point& location1,
+    const Point& location2) const {
 
   const bool debug_pixel_collisions = false;
 
@@ -123,8 +121,8 @@ bool PixelBits::test_collision(
   }
 
   // Compute both bounding boxes.
-  const Rectangle bounding_box1(location1.get_x(), location1.get_y(), width, height);
-  const Rectangle bounding_box2(location2.get_x(), location2.get_y(), other.width, other.height);
+  const Rectangle bounding_box1(location1.x, location1.y, width, height);
+  const Rectangle bounding_box2(location2.x, location2.y, other.width, other.height);
 
   // Check collision between the two bounding boxes.
   if (!bounding_box1.overlaps(bounding_box2)) {

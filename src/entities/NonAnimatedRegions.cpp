@@ -269,10 +269,10 @@ void NonAnimatedRegions::build_cell(int cell_index) {
 
   // Position of this cell on the map.
   const Size cell_size = non_animated_tiles.get_cell_size();
-  const Rectangle cell_xy(
+  const Point cell_xy = {
       column * cell_size.width,
       row * cell_size.height
-  );
+  };
 
   Surface* cell_surface = Surface::create(cell_size);
   RefCountable::ref(cell_surface);
@@ -290,11 +290,11 @@ void NonAnimatedRegions::build_cell(int cell_index) {
   // We may have drawn too much.
   // We have to make sure we don't exceed the non-animated regions.
   // Erase 8x8 squares that contain animated tiles.
-  for (int y = cell_xy.get_y(); y < cell_xy.get_y() + cell_size.height; y += 8) {
+  for (int y = cell_xy.y; y < cell_xy.y + cell_size.height; y += 8) {
     if (y >= map.get_height()) {  // The last cell might exceed the map border.
       continue;
     }
-    for (int x = cell_xy.get_x(); x < cell_xy.get_x() + cell_size.width; x += 8) {
+    for (int x = cell_xy.x; x < cell_xy.x + cell_size.width; x += 8) {
       if (x >= map.get_width()) {
         continue;
       }
@@ -303,8 +303,8 @@ void NonAnimatedRegions::build_cell(int cell_index) {
 
       if (are_squares_animated[square_index]) {
         Rectangle animated_square(
-            x - cell_xy.get_x(),
-            y - cell_xy.get_y(),
+            x - cell_xy.x,
+            y - cell_xy.y,
             8,
             8
         );
@@ -315,4 +315,3 @@ void NonAnimatedRegions::build_cell(int cell_index) {
 }
 
 }
-

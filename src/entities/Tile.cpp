@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -83,7 +83,7 @@ void Tile::draw_on_map() {
   // Note that the tiles are also optimized for drawing.
   // This function is called at each frame only if the tile is in an
   // animated region. Otherwise, tiles are drawn once when loading the map.
-  draw(get_map().get_visible_surface(), get_map().get_camera_position());
+  draw(get_map().get_visible_surface(), get_map().get_camera_position().get_xy());
 }
 
 /**
@@ -92,11 +92,11 @@ void Tile::draw_on_map() {
  * \param viewport coordinates of the top-left corner of dst_surface
  * relative to the map
  */
-void Tile::draw(Surface& dst_surface, const Rectangle& viewport) {
+void Tile::draw(Surface& dst_surface, const Point& viewport) {
 
   Rectangle dst_position(
-      get_top_left_x() - viewport.get_x(),
-      get_top_left_y() - viewport.get_y(),
+      get_top_left_x() - viewport.x,
+      get_top_left_y() - viewport.y,
       get_width(),
       get_height()
   );
@@ -105,7 +105,7 @@ void Tile::draw(Surface& dst_surface, const Rectangle& viewport) {
       dst_surface,
       dst_position,
       get_map().get_tileset(),
-      viewport
+      Rectangle(viewport)
   );
 }
 

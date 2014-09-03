@@ -622,7 +622,7 @@ void StraightMovement::update() {
     while (x_move_now || y_move_now) { // while it's time to move
 
       // save the current coordinates
-      Rectangle old_xy(get_x(), get_y());
+      Point old_xy = { get_x(), get_y() };
 
       if (x_move_now) {
         // it's time to make an x move
@@ -657,7 +657,7 @@ void StraightMovement::update() {
 
         // the movement was successful if the entity's coordinates have changed
         // and the movement was not stopped
-        bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y())
+        bool success = (get_x() != old_xy.x || get_y() != old_xy.y)
             && (x_move != 0 || y_move != 0);
 
         if (!success) {

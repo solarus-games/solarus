@@ -99,7 +99,6 @@ void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
   Debug::check_assertion(optimized_tiles_surfaces.empty(),
       "Tile regions are already built");
 
-  const Rectangle map_size(0, 0, map.get_width(), map.get_height());
   const int map_width8 = map.get_width8();
   const int map_height8 = map.get_height8();
 

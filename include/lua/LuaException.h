@@ -54,7 +54,7 @@ class LuaException: public std::exception {
         const std::string& error_message
     );
 
-    lua_State* get_lua_state();
+    lua_State* get_lua_state() const;
     virtual const char* what() const throw() override;
 
   private:

@@ -35,7 +35,7 @@ LuaException::LuaException(
  * \brief Returns The Lua context where the error occurred.
  * \return The Lua context.
  */
-lua_State* LuaException::get_lua_state() {
+lua_State* LuaException::get_lua_state() const {
   return l;
 }
 

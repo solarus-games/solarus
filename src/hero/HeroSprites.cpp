@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -384,7 +384,7 @@ void HeroSprites::set_shield_sprite_id(const std::string& sprite_id) {
   if (sprite_id == this->shield_sprite_id) {
     return;
   }
- 
+
   this->shield_sprite_id = sprite_id;
 
   std::string animation;
@@ -813,9 +813,9 @@ void HeroSprites::draw_on_map() {
     map.draw_sprite(*shadow_sprite, x, y, clipping_rectangle);
   }
 
-  const Rectangle& displayed_xy = hero.get_displayed_xy();
-  x = displayed_xy.get_x();
-  y = displayed_xy.get_y();
+  const Point& displayed_xy = hero.get_displayed_xy();
+  x = displayed_xy.x;
+  y = displayed_xy.y;
 
   map.draw_sprite(*tunic_sprite, x, y, clipping_rectangle);
 

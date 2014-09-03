@@ -540,7 +540,7 @@ void Hero::rebuild_equipment() {
  * \return true if the shadow should be currently displayed.
  */
 bool Hero::is_shadow_visible() const {
-  return get_displayed_xy().get_y() != get_y();
+  return get_displayed_xy().y != get_y();
 }
 
 /**
@@ -668,7 +668,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
       default:
         Debug::die("Invalid destination side");
       }
-      last_solid_ground_coords = get_xy();
+      last_solid_ground_coords = Rectangle(get_xy());
       last_solid_ground_layer = get_layer();
       // Note that we keep the hero's state from the previous map.
     }
@@ -696,7 +696,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
         set_xy(destination->get_x(), destination->get_y());
         map.get_entities().set_entity_layer(*this, destination->get_layer());
       }
-      last_solid_ground_coords = get_xy();
+      last_solid_ground_coords = Rectangle(get_xy());
       last_solid_ground_layer = get_layer();
 
       map.get_entities().remove_boomerang(); // useful when the map remains the same
@@ -1137,7 +1137,7 @@ void Hero::check_position() {
       && state->can_come_from_bad_ground()
       && (get_x() != last_solid_ground_coords.get_x() || get_y() != last_solid_ground_coords.get_y())) {
 
-    last_solid_ground_coords.set_xy(get_xy().get_xy());
+    last_solid_ground_coords.set_xy(get_xy());
     last_solid_ground_layer = get_layer();
   }
 
@@ -2099,10 +2099,10 @@ bool Hero::can_be_hurt(MapEntity* attacker) const {
  */
 void Hero::hurt(MapEntity& source, Sprite* source_sprite, int damage) {
 
-  Rectangle source_xy = source.get_xy();
+  Point source_xy = source.get_xy();
   if (source_sprite != nullptr) {
     // Add the offset of the sprite if any.
-    source_xy.add_xy(source_sprite->get_xy());
+    source_xy += source_sprite->get_xy();
   }
   set_state(new HurtState(*this, &source_xy, damage));
 }
@@ -2113,7 +2113,7 @@ void Hero::hurt(MapEntity& source, Sprite* source_sprite, int damage) {
  * \param damage Number of life points to remove
  * (this number may be reduced later by the tunic on by hero:on_taking_damage()).
  */
-void Hero::hurt(const Rectangle& source_xy, int damage) {
+void Hero::hurt(const Point& source_xy, int damage) {
 
   set_state(new HurtState(*this, &source_xy, damage));
 }

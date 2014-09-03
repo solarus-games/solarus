@@ -84,10 +84,10 @@ void Movement::set_entity(MapEntity* entity) {
   this->entity = entity;
 
   if (entity == nullptr) {
-    this->xy.set_xy(0, 0);
+    this->xy = { 0, 0 };
   }
   else {
-    this->xy.set_xy(entity->get_xy().get_xy());
+    this->xy = entity->get_xy();
     notify_movement_changed();
   }
   notify_object_controlled();
@@ -117,10 +117,10 @@ void Movement::set_drawable(Drawable* drawable) {
   this->drawable = drawable;
 
   if (drawable == nullptr) {
-    this->xy.set_xy(0, 0);
+    this->xy = { 0, 0 };
   }
   else {
-    this->xy.set_xy(drawable->get_xy());
+    this->xy = drawable->get_xy();
     notify_movement_changed();
   }
   notify_object_controlled();
@@ -140,7 +140,7 @@ void Movement::notify_object_controlled() {
  */
 int Movement::get_x() const {
 
-  return get_xy().get_x();
+  return get_xy().x;
 }
 
 /**
@@ -149,14 +149,14 @@ int Movement::get_x() const {
  */
 int Movement::get_y() const {
 
-  return get_xy().get_y();
+  return get_xy().y;
 }
 
 /**
  * \brief Returns the coordinates of the object controlled by this movement.
  * \return The coordinates of the object controlled by this movement.
  */
-const Rectangle Movement::get_xy() const {
+const Point Movement::get_xy() const {
 
   if (entity != nullptr) {
     // The object controlled is a map entity.
@@ -165,7 +165,7 @@ const Rectangle Movement::get_xy() const {
 
   if (drawable != nullptr) {
     // The object controlled is a drawable.
-    return Rectangle(drawable->get_xy());
+    return drawable->get_xy();
   }
 
   // The object controlled is a point.
@@ -194,15 +194,14 @@ void Movement::set_y(int y) {
  * \param y The new y position.
  */
 void Movement::set_xy(int x, int y) {
-  set_xy(Rectangle(x, y));
+  set_xy(Point(x, y));
 }
 
 /**
  * \brief Sets the position of the object controlled by this movement.
- * \param xy The new coordinates (only x and y are used, the size of
- * the rectangle is ignored).
+ * \param xy The new coordinates.
  */
-void Movement::set_xy(const Rectangle& xy) {
+void Movement::set_xy(const Point& xy) {
 
   if (entity != nullptr) {
     // The object controlled is a map entity.
@@ -211,11 +210,11 @@ void Movement::set_xy(const Rectangle& xy) {
 
   else if (drawable != nullptr) {
     // The object controlled is a drawable.
-    drawable->set_xy(xy.get_xy());
+    drawable->set_xy(xy);
   }
 
   // The object controlled is a point.
-  this->xy.set_xy(xy.get_xy());
+  this->xy = xy;
 
   notify_position_changed();
   last_move_date = System::now();
@@ -249,10 +248,9 @@ void Movement::translate_xy(int dx, int dy) {
 /**
  * \brief Moves the object.
  * \param dxy number of pixel of the move on x and y
- * (the size of the rectangle is ignored)
  */
-void Movement::translate_xy(const Rectangle &dxy) {
-  translate_xy(dxy.get_x(), dxy.get_y());
+void Movement::translate_xy(const Point& dxy) {
+  translate_xy(dxy.x, dxy.y);
 }
 
 /**
@@ -532,7 +530,7 @@ int Movement::get_displayed_direction4() const {
  *
  * \return the coordinates to use to display the object controlled by this movement
  */
-const Rectangle Movement::get_displayed_xy() const {
+const Point Movement::get_displayed_xy() const {
   return get_xy();
 }
 

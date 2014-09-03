@@ -412,7 +412,7 @@ void PathMovement::snap() {
  */
 void PathMovement::set_snapping_trajectory(const Rectangle& src, const Rectangle& dst) {
 
-  std::list<Rectangle> trajectory;
+  std::list<Point> trajectory;
   Rectangle xy = src;
   while (xy.get_xy() != dst.get_xy()) {
 

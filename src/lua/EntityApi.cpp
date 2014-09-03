@@ -1929,7 +1929,7 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
     int source_x = luaL_checkint(l, 2);
     int source_y = luaL_checkint(l, 3);
     int damage = luaL_checkint(l, 4);
-    hero.hurt(Rectangle(source_x, source_y), damage);
+    hero.hurt(Point(source_x, source_y), damage);
   }
   else {
     // hero:start_hurt(source_entity, [source_sprite], damage)
@@ -4695,7 +4695,7 @@ void LuaContext::entity_on_post_draw(MapEntity& entity) {
  * \param layer The new layer.
  */
 void LuaContext::entity_on_position_changed(
-    MapEntity& entity, const Rectangle& xy, Layer layer) {
+    MapEntity& entity, const Point& xy, Layer layer) {
 
   if (!userdata_has_field(entity, "on_position_changed")) {
     return;

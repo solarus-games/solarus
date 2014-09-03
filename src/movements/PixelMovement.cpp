@@ -57,7 +57,7 @@ PixelMovement::~PixelMovement() {
  * \brief Returns the trajectory of this movement.
  * \return the succession of translations that compose this movement
  */
-const std::list<Rectangle>& PixelMovement::get_trajectory() const {
+const std::list<Point>& PixelMovement::get_trajectory() const {
   return trajectory;
 }
 
@@ -68,10 +68,10 @@ const std::list<Rectangle>& PixelMovement::get_trajectory() const {
  * The old trajectory is replaced and the movement starts the from beginning of the
  * new trajectory.
  *
- * \param trajectory a list of rectangles describing the succession of translations that compose this movement,
- * where each rectangle is an xy value representing a translation (the size is ignored)
+ * \param trajectory a list of points describing the succession of translations that compose this movement,
+ * where each point is an xy value representing a translation
  */
-void PixelMovement::set_trajectory(const std::list<Rectangle>& trajectory) {
+void PixelMovement::set_trajectory(const std::list<Point>& trajectory) {
 
   this->trajectory = trajectory;
   this->trajectory_string = ""; // will be computed only on demand
@@ -219,9 +219,9 @@ void PixelMovement::set_suspended(bool suspended) {
 void PixelMovement::make_next_step() {
 
   bool success = false;
-  const Rectangle& dxy = *trajectory_iterator;
+  const Point& dxy = *trajectory_iterator;
 
-  if (!test_collision_with_obstacles(dxy.get_x(), dxy.get_y())) {
+  if (!test_collision_with_obstacles(dxy.x, dxy.y)) {
     translate_xy(dxy);
     success = true;
   }

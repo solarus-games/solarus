@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include "movements/Movement.h"
-#include "lowlevel/Rectangle.h"
+#include "lowlevel/Point.h"
 #include <list>
 
 namespace solarus {
@@ -36,8 +36,8 @@ class PixelMovement: public Movement {
     virtual ~PixelMovement();
 
     // properties
-    const std::list<Rectangle>& get_trajectory() const;
-    void set_trajectory(const std::list<Rectangle>& trajectory);
+    const std::list<Point>& get_trajectory() const;
+    void set_trajectory(const std::list<Point>& trajectory);
     void set_trajectory(const std::string &trajectory_string);
     uint32_t get_delay() const;
     void set_delay(uint32_t delay);
@@ -65,9 +65,8 @@ class PixelMovement: public Movement {
 
     // movement properties
 
-    std::list<Rectangle> trajectory;   /**< The trajectory. Each element of the
-                                        * represents a move in pixels (only the
-                                        * x and y fields of the Rectangle are used). */
+    std::list<Point> trajectory;       /**< The trajectory. Each element of the
+                                        * represents a move in pixels. */
     std::string trajectory_string;     /**< String representation of the trajectory, like "dx1 dy1  dx2 dy2  dx3 dy3 ..." */
     uint32_t next_move_date;           /**< Date of the next move */
     uint32_t delay;                    /**< Delay in milliseconds between two translations. */
@@ -75,7 +74,7 @@ class PixelMovement: public Movement {
 
     // current state
 
-    std::list<Rectangle>::iterator
+    std::list<Point>::iterator
         trajectory_iterator;           /**< Current element of the trajectory. */
     int nb_steps_done;                 /**< Number of steps already done in the trajectory */
     bool finished;                     /**< Indicates whether the object has reached the end of the trajectory

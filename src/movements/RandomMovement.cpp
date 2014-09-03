@@ -100,7 +100,7 @@ void RandomMovement::set_max_radius(int max_radius) {
   this->max_radius = max_radius;
 
   // restrict the movement in a rectangle
-  bounds.set_xy(get_xy().get_xy());
+  bounds.set_xy(get_xy());
   bounds.add_xy(-max_radius, -max_radius);
   bounds.set_size(max_radius * 2, max_radius * 2);
 }

@@ -1931,7 +1931,7 @@ int LuaContext::map_api_create_explosion(lua_State* l) {
   MapEntity* entity = new Explosion(
       name,
       layer,
-      Rectangle(x, y),
+      Point(x, y),
       true);
   map.get_entities().add_entity(entity);
 

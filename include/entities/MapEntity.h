@@ -95,10 +95,10 @@ class MapEntity: public ExportableToLua {
     int get_y() const;
     void set_x(int x);
     void set_y(int y);
-    const Rectangle get_xy() const;
-    void set_xy(const Rectangle& xy);
+    const Point get_xy() const;
+    void set_xy(const Point& xy);
     void set_xy(int x, int y);
-    const Rectangle get_displayed_xy() const;
+    const Point get_displayed_xy() const;
 
     int get_width() const;
     int get_height() const;
@@ -112,11 +112,11 @@ class MapEntity: public ExportableToLua {
     void set_origin(const Rectangle& origin);
     int get_top_left_x() const;
     int get_top_left_y() const;
-    const Rectangle get_top_left_xy() const;
+    const Point get_top_left_xy() const;
     void set_top_left_x(int x);
     void set_top_left_y(int y);
     void set_top_left_xy(int x, int y);
-    void set_top_left_xy(const Rectangle& xy);
+    void set_top_left_xy(const Point& xy);
 
     virtual const Rectangle get_facing_point() const;
     const Rectangle get_touching_point(int direction) const;

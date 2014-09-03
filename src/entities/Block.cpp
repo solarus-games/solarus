@@ -331,7 +331,7 @@ void Block::reset() {
     when_can_move = System::now() + moving_delay;
   }
 
-  set_xy(initial_position);
+  set_xy(initial_position.get_xy());
   last_position.set_xy(initial_position.get_xy());
   this->maximum_moves = initial_maximum_moves;
 }

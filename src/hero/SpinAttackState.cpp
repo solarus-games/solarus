@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -61,7 +61,7 @@ void Hero::SpinAttackState::start(const State* previous_state) {
   if (get_equipment().has_ability(ABILITY_SWORD_KNOWLEDGE)) {
     get_sprites().set_animation_super_spin_attack();
     CircleMovement* movement = new CircleMovement(false);
-    movement->set_center(hero.get_xy());
+    movement->set_center(Rectangle(hero.get_xy()));
     movement->set_radius_speed(128);
     movement->set_radius(24);
     movement->set_angle_speed(540);

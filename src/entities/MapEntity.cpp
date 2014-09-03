@@ -685,8 +685,8 @@ void MapEntity::set_y(int y) {
  *
  * \return the coordinates of the entity on the map
  */
-const Rectangle MapEntity::get_xy() const {
-  return Rectangle(get_x(), get_y());
+const Point MapEntity::get_xy() const {
+  return { get_x(), get_y() };
 }
 
 /**
@@ -709,8 +709,8 @@ void MapEntity::set_xy(int x, int y) {
  *
  * \param xy the new coordinates of the entity on the map (the width and height are ignored)
  */
-void MapEntity::set_xy(const Rectangle& xy) {
-  set_xy(xy.get_x(), xy.get_y());
+void MapEntity::set_xy(const Point& xy) {
+  set_xy(xy.x, xy.y);
 }
 
 /**
@@ -733,8 +733,8 @@ int MapEntity::get_top_left_y() const {
  * \brief Returns the position of the entity's top-left corner.
  * \return The position of the entity's top-left corner.
  */
-const Rectangle MapEntity::get_top_left_xy() const {
-  return Rectangle(get_top_left_x(), get_top_left_y(), 1, 1);
+const Point MapEntity::get_top_left_xy() const {
+  return { get_top_left_x(), get_top_left_y() };
 }
 
 /**
@@ -770,8 +770,8 @@ void MapEntity::set_top_left_xy(int x, int y) {
  * \brief Sets the position of the entity's top-left corner.
  * \param xy The new top-left position.
  */
-void MapEntity::set_top_left_xy(const Rectangle& xy) {
-  set_top_left_xy(xy.get_x(), xy.get_y());
+void MapEntity::set_top_left_xy(const Point& xy) {
+  set_top_left_xy(xy.x, xy.y);
 }
 
 /**
@@ -783,7 +783,7 @@ void MapEntity::set_top_left_xy(const Rectangle& xy) {
  *
  * \return the coordinates of the entity on the map
  */
-const Rectangle MapEntity::get_displayed_xy() const {
+const Point MapEntity::get_displayed_xy() const {
 
   if (get_movement() == nullptr) {
     return get_xy();
@@ -2579,7 +2579,7 @@ void MapEntity::draw_on_map() {
 
   // Draw the sprites.
   for (Sprite* sprite: sprites) {
-    get_map().draw_sprite(*sprite, get_displayed_xy());
+    get_map().draw_sprite(*sprite, Rectangle(get_displayed_xy()));
   }
 }
 

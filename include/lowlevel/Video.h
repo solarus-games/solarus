@@ -18,7 +18,6 @@
 #define SOLARUS_VIDEO_H
 
 #include "Common.h"
-#include "lowlevel/Rectangle.h"
 #include <vector>
 #include <string>
 
@@ -66,20 +65,20 @@ class Video {
     static const std::string get_window_title();
     static void set_window_title(const std::string& window_title);
 
-    static bool parse_size(const std::string& size_string, Rectangle& size);
+    static bool parse_size(const std::string& size_string, Size& size);
 
-    static const Rectangle& get_quest_size();
+    static const Size& get_quest_size();
     static void get_quest_size_range(
-        Rectangle& normal_quest_size,
-        Rectangle& min_quest_size,
-        Rectangle& max_quest_size);
+        Size& normal_quest_size,
+        Size& min_quest_size,
+        Size& max_quest_size);
     static void set_quest_size_range(
-        const Rectangle& normal_quest_size,
-        const Rectangle& min_quest_size,
-        const Rectangle& max_quest_size);
+        const Size& normal_quest_size,
+        const Size& min_quest_size,
+        const Size& max_quest_size);
 
-    static Rectangle get_window_size();
-    static void set_window_size(const Rectangle& size);
+    static Size get_window_size();
+    static void set_window_size(const Size& size);
     static void reset_window_size();
 
     static Rectangle get_viewport();

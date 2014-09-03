@@ -55,7 +55,7 @@ MainLoop::MainLoop(const CommandLine& args):
 
   // Create the quest surface.
   root_surface = Surface::create(
-      Video::get_quest_size()
+      Rectangle(Video::get_quest_size())
   );
   root_surface->set_software_destination(false);  // Accelerate this surface.
   RefCountable::ref(root_surface);
@@ -182,7 +182,7 @@ void MainLoop::run() {
     lag += last_frame_duration;
     // At this point, lag represents how much late the simulated time with
     // compared to the real time.
- 
+
     if (lag >= 200) {
       // Huge lag: don't try to catch up.
       // Maybe we have just made a one-time heavy operation like loading a

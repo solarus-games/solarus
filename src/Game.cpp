@@ -465,7 +465,7 @@ void Game::update_transitions() {
         // that want to display both maps at the same time
         if (needs_previous_surface) {
           previous_map_surface = Surface::create(
-              Video::get_quest_size()
+              Rectangle(Video::get_quest_size())
           );
           previous_map_surface->set_software_destination(false);
           RefCountable::ref(previous_map_surface);

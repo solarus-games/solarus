@@ -156,7 +156,7 @@ int QuestProperties::l_quest(lua_State* l) {
     Video::set_window_title(title_bar);
   }
 
-  Rectangle normal_quest_size, min_quest_size, max_quest_size;
+  Size normal_quest_size, min_quest_size, max_quest_size;
   bool success = Video::parse_size(normal_quest_size_string, normal_quest_size);
   if (!success) {
     LuaTools::arg_error(l, 1, std::string(
@@ -178,10 +178,10 @@ int QuestProperties::l_quest(lua_State* l) {
         + max_quest_size_string + "')");
   }
 
-  if (normal_quest_size.get_width() < min_quest_size.get_width()
-      || normal_quest_size.get_height() < min_quest_size.get_height()
-      || normal_quest_size.get_width() > max_quest_size.get_width()
-      || normal_quest_size.get_height() > max_quest_size.get_height()) {
+  if (normal_quest_size.width < min_quest_size.width
+      || normal_quest_size.height < min_quest_size.height
+      || normal_quest_size.width > max_quest_size.width
+      || normal_quest_size.height > max_quest_size.height) {
     LuaTools::arg_error(l, 1, "Invalid range of quest sizes");
   }
 

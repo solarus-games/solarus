@@ -37,12 +37,12 @@ class SpriteAnimationDirection {
     // creation and destruction
     SpriteAnimationDirection(
         const std::vector<Rectangle>& frames,
-        const Rectangle& origin);
+        const Point& origin);
     ~SpriteAnimationDirection();
 
     // size and origin point
     Size get_size() const;
-    const Rectangle& get_origin() const;
+    const Point& get_origin() const;
 
     // frames
     int get_nb_frames() const;
@@ -59,7 +59,7 @@ class SpriteAnimationDirection {
   private:
 
     std::vector<Rectangle> frames;       /**< position of each frame of the sequence on the image */
-    Rectangle origin;                    /**< coordinates of the sprite's origin from the
+    Point origin;                        /**< coordinates of the sprite's origin from the
                                           * upper-left corner of its image. */
 
     std::vector<PixelBits*> pixel_bits;  /**< bit masks representing the non-transparent pixels of each frame,
@@ -70,7 +70,7 @@ class SpriteAnimationDirection {
  * \brief Returns the origin point of a frame.
  * \return The origin point of a frame.
  */
-inline const Rectangle& SpriteAnimationDirection::get_origin() const {
+inline const Point& SpriteAnimationDirection::get_origin() const {
   return origin;
 }
 

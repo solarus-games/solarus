@@ -60,7 +60,7 @@ class Sprite: public Drawable {
     // size and origin point
     Size get_size() const;
     const Size& get_max_size() const;
-    const Rectangle& get_origin() const;
+    const Point& get_origin() const;
 
     // animation state
     const std::string& get_current_animation() const;

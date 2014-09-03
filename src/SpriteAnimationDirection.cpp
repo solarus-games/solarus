@@ -29,7 +29,7 @@ namespace solarus {
  */
 SpriteAnimationDirection::SpriteAnimationDirection(
     const std::vector<Rectangle>& frames,
-    const Rectangle& origin):
+    const Point& origin):
   frames(frames),
   origin(origin) {
 
@@ -95,7 +95,7 @@ void SpriteAnimationDirection::draw(Surface& dst_surface,
 
   // Position of the sprite's upper left corner.
   Rectangle position_top_left(dst_position);
-  position_top_left.add_xy(-origin.get_x(), -origin.get_y());
+  position_top_left.add_xy(-origin);
   position_top_left.set_size(current_frame_rect.get_size());
 
   src_image.draw_region(current_frame_rect, dst_surface, position_top_left);

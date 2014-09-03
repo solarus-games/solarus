@@ -187,7 +187,7 @@ const Size& Sprite::get_max_size() const {
  * the current direction.
  * \return the origin point of a frame
  */
-const Rectangle& Sprite::get_origin() const {
+const Point& Sprite::get_origin() const {
 
   return current_animation->get_direction(current_direction)->get_origin();
 }
@@ -570,14 +570,14 @@ void Sprite::set_blinking(uint32_t blink_delay) {
 bool Sprite::test_collision(const Sprite& other, int x1, int y1, int x2, int y2) const {
 
   const SpriteAnimationDirection* direction1 = current_animation->get_direction(current_direction);
-  const Rectangle& origin1 = direction1->get_origin();
-  Rectangle location1(x1 - origin1.get_x(), y1 - origin1.get_y());
+  const Point& origin1 = direction1->get_origin();
+  Rectangle location1(x1 - origin1.x, y1 - origin1.y);
   location1.add_xy(get_xy());
   const PixelBits& pixel_bits1 = direction1->get_pixel_bits(current_frame);
 
   const SpriteAnimationDirection* direction2 = other.current_animation->get_direction(other.current_direction);
-  const Rectangle& origin2 = direction2->get_origin();
-  Rectangle location2(x2 - origin2.get_x(), y2 - origin2.get_y());
+  const Point& origin2 = direction2->get_origin();
+  Rectangle location2(x2 - origin2.x, y2 - origin2.y);
   location2.add_xy(other.get_xy());
   const PixelBits& pixel_bits2 = direction2->get_pixel_bits(other.current_frame);
 
@@ -684,10 +684,10 @@ void Sprite::raw_draw(
     }
     else {
       intermediate_surface->clear();
-      current_animation->draw(*intermediate_surface, get_origin(),
+      current_animation->draw(*intermediate_surface, Rectangle(get_origin()),
           current_direction, current_frame);
       Rectangle dst_position2(dst_position);
-      dst_position2.add_xy(-get_origin().get_x(), -get_origin().get_y());
+      dst_position2.add_xy(-get_origin());
       intermediate_surface->draw_region(Rectangle(get_size()), dst_surface, dst_position2);
     }
   }
@@ -713,17 +713,17 @@ void Sprite::raw_draw_region(
     get_intermediate_surface().clear();
 
     // Draw the current animation on the working surface.
-    const Rectangle& origin = get_origin();
+    const Point& origin = get_origin();
     current_animation->draw(
         get_intermediate_surface(),
-        origin,
+        Rectangle(origin),
         current_direction,
         current_frame);
 
     // If the region is bigger than the current frame, clip it.
     // Otherwise, more than the current frame could be visible.
     Rectangle src_position(region);
-    src_position.add_xy(origin.get_x(), origin.get_y());
+    src_position.add_xy(origin);
     const Size& frame_size = get_size();
     if (src_position.get_x() < 0) {
       src_position.set_width(src_position.get_width() + src_position.get_x());
@@ -747,8 +747,8 @@ void Sprite::raw_draw_region(
 
     // Calculate the destination coordinates.
     Rectangle dst_position2(dst_position);
-    dst_position2.add_xy(src_position.get_x(), src_position.get_y());  // Let a space for the part outside the region.
-    dst_position2.add_xy(-origin.get_x(), -origin.get_y());  // Input coordinates were relative to the origin.
+    dst_position2.add_xy(src_position.get_xy());  // Let a space for the part outside the region.
+    dst_position2.add_xy(-origin);  // Input coordinates were relative to the origin.
     get_intermediate_surface().draw_region(src_position, dst_surface, dst_position2);
   }
 }

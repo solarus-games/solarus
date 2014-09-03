@@ -183,7 +183,7 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
 
     directions.push_back(new SpriteAnimationDirection(
           positions_in_src,
-          Rectangle(origin_x, origin_y)));
+          Point(origin_x, origin_y)));
   }
 
   if (animation_set->animations.find(animation_name) != animation_set->animations.end()) {

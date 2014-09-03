@@ -32,7 +32,7 @@ namespace solarus {
 NonAnimatedRegions::NonAnimatedRegions(Map& map, Layer layer):
   map(map),
   layer(layer),
-  non_animated_tiles(map.get_size(), Rectangle(0, 0, 512, 256)) {
+  non_animated_tiles(map.get_size().get_size(), Size(512, 256)) {
 
 }
 
@@ -207,13 +207,13 @@ void NonAnimatedRegions::draw_on_map() {
   // Check all grid cells that overlap the camera.
   const int num_rows = non_animated_tiles.get_num_rows();
   const int num_columns = non_animated_tiles.get_num_columns();
-  const Rectangle& cell_size(non_animated_tiles.get_cell_size());
+  const Size& cell_size = non_animated_tiles.get_cell_size();
   const Rectangle& camera_position = map.get_camera_position();
 
-  const int row1 = camera_position.get_y() / cell_size.get_height();
-  const int row2 = (camera_position.get_y() + camera_position.get_height()) / cell_size.get_height();
-  const int column1 = camera_position.get_x() / cell_size.get_width();
-  const int column2 = (camera_position.get_x() + camera_position.get_width()) / cell_size.get_width();
+  const int row1 = camera_position.get_y() / cell_size.height;
+  const int row2 = (camera_position.get_y() + camera_position.get_height()) / cell_size.height;
+  const int column1 = camera_position.get_x() / cell_size.width;
+  const int column2 = (camera_position.get_x() + camera_position.get_width()) / cell_size.width;
 
   if (row1 > row2 || column1 > column2) {
     // No cell.
@@ -238,8 +238,8 @@ void NonAnimatedRegions::draw_on_map() {
       }
 
       const Rectangle cell_xy(
-          j * cell_size.get_width(),
-          i * cell_size.get_height()
+          j * cell_size.width,
+          i * cell_size.height
       );
 
       const Rectangle dst_position(
@@ -271,7 +271,7 @@ void NonAnimatedRegions::build_cell(int cell_index) {
   const int column = cell_index % non_animated_tiles.get_num_columns();
 
   // Position of this cell on the map.
-  const Size cell_size = non_animated_tiles.get_cell_size().get_size();
+  const Size cell_size = non_animated_tiles.get_cell_size();
   const Rectangle cell_xy(
       column * cell_size.width,
       row * cell_size.height

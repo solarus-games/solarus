@@ -33,7 +33,6 @@ class MapLoader {
   public:
 
     MapLoader();
-    ~MapLoader();
 
     void load_map(Game& game, Map& map);
 

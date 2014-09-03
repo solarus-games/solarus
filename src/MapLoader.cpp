@@ -41,13 +41,6 @@ MapLoader::MapLoader() {
 }
 
 /**
- * \brief Destructor.
- */
-MapLoader::~MapLoader() {
-
-}
-
-/**
  * \brief Loads a map into the game.
  * \param game The game.
  * \param map The map to load.

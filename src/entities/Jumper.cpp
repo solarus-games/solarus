@@ -152,32 +152,40 @@ bool Jumper::is_in_jump_position(
     return false;
   }
 
-  Rectangle facing_point(0, 0, 1, 1);
+  Point facing_point;
 
   switch (expected_hero_direction4) {
 
     // right
     case 0:
-      facing_point.set_xy(
-          candidate_position.get_x() + 16, candidate_position.get_y() + 8);
+      facing_point = {
+          candidate_position.get_x() + 16,
+          candidate_position.get_y() + 8
+      };
       break;
 
       // up
     case 1:
-      facing_point.set_xy(
-          candidate_position.get_x() + 8, candidate_position.get_y() - 1);
+      facing_point = {
+          candidate_position.get_x() + 8,
+          candidate_position.get_y() - 1
+      };
       break;
 
       // left
     case 2:
-      facing_point.set_xy(
-          candidate_position.get_x() - 1, candidate_position.get_y() + 8);
+      facing_point = {
+          candidate_position.get_x() - 1,
+          candidate_position.get_y() + 8
+      };
       break;
 
       // down
     case 3:
-      facing_point.set_xy(
-          candidate_position.get_x() + 8, candidate_position.get_y() + 16);
+      facing_point = {
+          candidate_position.get_x() + 8,
+          candidate_position.get_y() + 16
+      };
       break;
 
     default:
@@ -187,25 +195,25 @@ bool Jumper::is_in_jump_position(
   if (is_jump_horizontal()) {
     if (extended_region) {
       // Are we inside the extended strip?
-      return facing_point.get_x() >= get_top_left_x() &&
-          facing_point.get_x() < get_top_left_x() + get_width();
+      return facing_point.x >= get_top_left_x() &&
+          facing_point.x < get_top_left_x() + get_width();
     }
     else {
       // Are we inside the strip and the bounding box?
-      return overlaps(facing_point.get_x(), facing_point.get_y() - 8)
-          && overlaps(facing_point.get_x(), facing_point.get_y() + 7);
+      return overlaps(facing_point.x, facing_point.y - 8)
+          && overlaps(facing_point.x, facing_point.y + 7);
     }
   }
   else {
     // Same thing for a vertical jump.
     if (extended_region) {
       // Are we inside the extended strip?
-      return facing_point.get_y() >= get_top_left_y() &&
-          facing_point.get_y() < get_top_left_y() + get_height();
+      return facing_point.y >= get_top_left_y() &&
+          facing_point.y < get_top_left_y() + get_height();
     }
     else {
-      return overlaps(facing_point.get_x() - 8, facing_point.get_y()) &&
-          overlaps(facing_point.get_x() + 7, facing_point.get_y());
+      return overlaps(facing_point.x - 8, facing_point.y) &&
+          overlaps(facing_point.x + 7, facing_point.y);
     }
   }
 }

@@ -223,11 +223,11 @@ void Hookshot::update() {
 void Hookshot::draw_on_map() {
 
   static const int nb_links = 7;
-  static const Rectangle dxy[] = {
-    Rectangle(16, -5),
-    Rectangle(0, -13),
-    Rectangle(-16, -5),
-    Rectangle(0, 7)
+  static const Point dxy[] = {
+    {  16,  -5 },
+    {   0, -13 },
+    { -16,  -5 },
+    {   0,   7 }
   };
 
   if (!is_drawn()) {
@@ -238,8 +238,8 @@ void Hookshot::draw_on_map() {
 
   // also draw the links
   int direction = get_sprite().get_current_direction();
-  int x1 = get_hero().get_x() + dxy[direction].get_x();
-  int y1 = get_hero().get_y() + dxy[direction].get_y();
+  int x1 = get_hero().get_x() + dxy[direction].x;
+  int y1 = get_hero().get_y() + dxy[direction].y;
   int x2 = get_x();
   int y2 = get_y() - 5;
 

@@ -61,7 +61,7 @@ StraightMovement::~StraightMovement() {
 void StraightMovement::notify_object_controlled() {
 
   Movement::notify_object_controlled();
-  initial_xy.set_xy(get_xy());
+  initial_xy = get_xy();
 }
 
 /**
@@ -120,7 +120,7 @@ void StraightMovement::set_x_speed(double x_speed) {
     set_next_move_date_x(now + x_delay);
   }
   angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
-  initial_xy.set_xy(get_xy());
+  initial_xy = get_xy();
   finished = false;
 
   notify_movement_changed();
@@ -155,7 +155,7 @@ void StraightMovement::set_y_speed(double y_speed) {
     set_next_move_date_y(now + y_delay);
   }
   angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
-  initial_xy.set_xy(get_xy());
+  initial_xy = get_xy();
   finished = false;
 
   notify_movement_changed();
@@ -667,8 +667,8 @@ void StraightMovement::update() {
 
       now = System::now();
 
-      if (!finished && max_distance != 0 && Geometry::get_distance(initial_xy.get_x(),
-          initial_xy.get_y(), get_x(), get_y()) >= max_distance) {
+      if (!finished && max_distance != 0 && Geometry::get_distance(initial_xy.x,
+          initial_xy.y, get_x(), get_y()) >= max_distance) {
         set_finished();
       }
       else {

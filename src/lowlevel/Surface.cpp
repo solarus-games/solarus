@@ -544,17 +544,16 @@ void Surface::fill_with_color(const Color& color, const Rectangle& where) {
  * \param src_surface The Surface to draw.
  * \param region The subrectangle to draw in the source surface.
  * \param dst_position Coordinates on this surface.
- * The width and height of this rectangle are ignored.
  */
 void Surface::add_subsurface(
     Surface& src_surface,
     const Rectangle& region,
-    const Rectangle& dst_position) {
+    const Point& dst_position) {
 
   SubSurfaceNode* node = new SubSurfaceNode(
       &src_surface,
       region,
-      dst_position,
+      Rectangle(dst_position),
       src_surface.subsurfaces
   );
   RefCountable::ref(node);
@@ -681,7 +680,7 @@ void Surface::raw_draw_region(
     // The destination is a GPU surface (a texture).
     // Do not draw anything, just store the operation in the tree instead.
     // The actual drawing will be done at rendering time in GPU.
-    dst_surface.add_subsurface(*this, region, Rectangle(dst_position));
+    dst_surface.add_subsurface(*this, region, dst_position);
   }
 
   dst_surface.is_rendered = false;

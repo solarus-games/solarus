@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include "lua/ExportableToLua.h"
-#include "lowlevel/Rectangle.h"
+#include "lowlevel/Point.h"
 
 namespace solarus {
 
@@ -39,8 +39,8 @@ class Drawable: public ExportableToLua {
     void start_movement(Movement& movement);
     void stop_movement();
     Movement* get_movement();
-    const Rectangle& get_xy() const;
-    void set_xy(const Rectangle& xy);
+    const Point& get_xy() const;
+    void set_xy(const Point& xy);
 
     void start_transition(Transition& transition, int callback_ref, LuaContext* lua_context);
     void stop_transition();
@@ -112,7 +112,7 @@ class Drawable: public ExportableToLua {
 
   private:
 
-    Rectangle xy;                 /**< Current position of this object
+    Point xy;                     /**< Current position of this object
                                    * (result of movements). */
     Movement* movement;           /**< A movement applied, or nullptr (will be
                                    * deleted then if unused elsewhere). */

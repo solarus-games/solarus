@@ -1580,10 +1580,10 @@ void Hero::notify_collision_with_enemy(
     // Check that the 16x16 rectangle of the hero also overlaps the enemy.
     const Size& enemy_sprite_size = enemy_sprite.get_size();
     const Rectangle& enemy_sprite_origin = enemy_sprite.get_origin();
-    const Rectangle& enemy_sprite_offset = enemy_sprite.get_xy();
+    const Point& enemy_sprite_offset = enemy_sprite.get_xy();
     Rectangle enemy_sprite_rectangle(
-        enemy.get_x() - enemy_sprite_origin.get_x() + enemy_sprite_offset.get_x(),
-        enemy.get_y() - enemy_sprite_origin.get_y() + enemy_sprite_offset.get_y(),
+        enemy.get_x() - enemy_sprite_origin.get_x() + enemy_sprite_offset.x,
+        enemy.get_y() - enemy_sprite_origin.get_y() + enemy_sprite_offset.y,
         enemy_sprite_size.width,
         enemy_sprite_size.height
     );
@@ -2102,7 +2102,7 @@ void Hero::hurt(MapEntity& source, Sprite* source_sprite, int damage) {
   Rectangle source_xy = source.get_xy();
   if (source_sprite != nullptr) {
     // Add the offset of the sprite if any.
-    source_xy.add_xy(source_sprite->get_xy().get_xy());
+    source_xy.add_xy(source_sprite->get_xy());
   }
   set_state(new HurtState(*this, &source_xy, damage));
 }

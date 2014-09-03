@@ -86,7 +86,7 @@ Movement* Drawable::get_movement() {
  * movement.
  * \return The coordinates of this drawable object.
  */
-const Rectangle& Drawable::get_xy() const {
+const Point& Drawable::get_xy() const {
   return xy;
 }
 
@@ -94,8 +94,8 @@ const Rectangle& Drawable::get_xy() const {
  * \brief Sets the coordinates of this drawable object.
  * \param xy The new coordinates of this drawable object.
  */
-void Drawable::set_xy(const Rectangle& xy) {
-  this->xy.set_xy(xy.get_xy());
+void Drawable::set_xy(const Point& xy) {
+  this->xy = xy;
 }
 
 /**
@@ -241,7 +241,7 @@ void Drawable::draw(Surface& dst_surface,
     const Rectangle& dst_position) {
 
   Rectangle dst_position2(dst_position);
-  dst_position2.add_xy(xy.get_xy());
+  dst_position2.add_xy(xy);
 
   if (transition != nullptr) {
     draw_transition(*transition);
@@ -276,7 +276,7 @@ void Drawable::draw_region(
     const Rectangle& dst_position) {
 
   Rectangle dst_position2(dst_position);
-  dst_position2.add_xy(xy.get_xy());
+  dst_position2.add_xy(xy);
 
   if (transition != nullptr) {
     draw_transition(*transition);

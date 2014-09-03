@@ -250,8 +250,8 @@ int LuaContext::drawable_api_get_xy(lua_State* l) {
 
   Drawable& drawable = check_drawable(l, 1);
 
-  lua_pushinteger(l, drawable.get_xy().get_x());
-  lua_pushinteger(l, drawable.get_xy().get_y());
+  lua_pushinteger(l, drawable.get_xy().x);
+  lua_pushinteger(l, drawable.get_xy().y);
   return 2;
 }
 
@@ -266,7 +266,7 @@ int LuaContext::drawable_api_set_xy(lua_State* l) {
   int x = luaL_checkint(l, 2);
   int y = luaL_checkint(l, 3);
 
-  drawable.set_xy(Rectangle(x, y));
+  drawable.set_xy(Point(x, y));
 
   return 0;
 }

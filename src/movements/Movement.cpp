@@ -120,7 +120,7 @@ void Movement::set_drawable(Drawable* drawable) {
     this->xy.set_xy(0, 0);
   }
   else {
-    this->xy.set_xy(drawable->get_xy().get_xy());
+    this->xy.set_xy(drawable->get_xy());
     notify_movement_changed();
   }
   notify_object_controlled();
@@ -165,7 +165,7 @@ const Rectangle Movement::get_xy() const {
 
   if (drawable != nullptr) {
     // The object controlled is a drawable.
-    return drawable->get_xy();
+    return Rectangle(drawable->get_xy());
   }
 
   // The object controlled is a point.
@@ -211,7 +211,7 @@ void Movement::set_xy(const Rectangle& xy) {
 
   else if (drawable != nullptr) {
     // The object controlled is a drawable.
-    drawable->set_xy(xy);
+    drawable->set_xy(xy.get_xy());
   }
 
   // The object controlled is a point.

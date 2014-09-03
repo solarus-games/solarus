@@ -2045,12 +2045,12 @@ double MapEntity::get_angle(
   // Add the coordinates of sprites as offsets.
   Rectangle this_offset(0, 0);
   if (this_sprite != nullptr) {
-    this_offset.add_xy(this_sprite->get_xy().get_xy());
+    this_offset.add_xy(this_sprite->get_xy());
   }
 
   Rectangle other_offset(0, 0);
   if (other_sprite != nullptr) {
-    other_offset.add_xy(other_sprite->get_xy().get_xy());
+    other_offset.add_xy(other_sprite->get_xy());
   }
 
   return Geometry::get_angle(

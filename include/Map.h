@@ -132,7 +132,7 @@ class Map: public ExportableToLua {
     ) const;
 
     Ground get_ground(Layer layer, int x, int y) const;
-    Ground get_ground(Layer layer, const Rectangle& xy) const;
+    Ground get_ground(Layer layer, const Point& xy) const;
 
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(MapEntity& entity);

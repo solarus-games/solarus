@@ -1101,8 +1101,8 @@ Ground Map::get_ground(Layer layer, int x, int y) const {
  * \param xy Coordinate of the point.
  * \return The ground at this place.
  */
-Ground Map::get_ground(Layer layer, const Rectangle& xy) const {
-  return get_ground(layer, xy.get_x(), xy.get_y());
+Ground Map::get_ground(Layer layer, const Point& xy) const {
+  return get_ground(layer, xy.x, xy.y);
 }
 
 /**

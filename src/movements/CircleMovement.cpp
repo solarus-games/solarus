@@ -69,7 +69,7 @@ CircleMovement::~CircleMovement() {
  *
  * \param center_point center of the circles to make
  */
-void CircleMovement::set_center(const Rectangle& center_point) {
+void CircleMovement::set_center(const Point& center_point) {
 
   RefCountable::unref(this->center_entity);
 
@@ -93,7 +93,7 @@ void CircleMovement::set_center(MapEntity& center_entity, int x, int y) {
 
   this->center_entity = &center_entity;
   RefCountable::ref(this->center_entity);
-  this->center_point.set_xy(x, y);
+  this->center_point = { x, y };
   recompute_position();
 }
 
@@ -328,9 +328,9 @@ void CircleMovement::set_loop(uint32_t delay) {
 void CircleMovement::update() {
 
   if (center_entity != nullptr && center_entity->is_being_removed()) {
-    set_center(Rectangle(
-          center_entity->get_x() + center_point.get_x(),
-          center_entity->get_y() + center_point.get_y()));
+    set_center(Point(
+          center_entity->get_x() + center_point.x,
+          center_entity->get_y() + center_point.y));
   }
 
   if (is_suspended()) {
@@ -397,7 +397,7 @@ void CircleMovement::update() {
  */
 void CircleMovement::recompute_position() {
 
-  Point center = this->center_point.get_xy();
+  Point center = this->center_point;
   if (center_entity != nullptr) {
     center += center_entity->get_xy();
   }

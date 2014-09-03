@@ -61,7 +61,7 @@ void Hero::SpinAttackState::start(const State* previous_state) {
   if (get_equipment().has_ability(ABILITY_SWORD_KNOWLEDGE)) {
     get_sprites().set_animation_super_spin_attack();
     CircleMovement* movement = new CircleMovement(false);
-    movement->set_center(Rectangle(hero.get_xy()));
+    movement->set_center(hero.get_xy());
     movement->set_radius_speed(128);
     movement->set_radius(24);
     movement->set_angle_speed(540);

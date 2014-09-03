@@ -1332,7 +1332,7 @@ int LuaContext::circle_movement_api_set_center(lua_State* l) {
     // the center is a fixed point
     int x = luaL_checkint(l, 2);
     int y = luaL_checkint(l, 3);
-    movement.set_center(Rectangle(x, y));
+    movement.set_center(Point(x, y));
   }
   else {
     // the center is an entity

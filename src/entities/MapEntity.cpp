@@ -2043,21 +2043,21 @@ double MapEntity::get_angle(
     const Sprite* other_sprite) const {
 
   // Add the coordinates of sprites as offsets.
-  Rectangle this_offset(0, 0);
+  Point this_offset;
   if (this_sprite != nullptr) {
-    this_offset.add_xy(this_sprite->get_xy());
+    this_offset += this_sprite->get_xy();
   }
 
-  Rectangle other_offset(0, 0);
+  Point other_offset;
   if (other_sprite != nullptr) {
-    other_offset.add_xy(other_sprite->get_xy());
+    other_offset += other_sprite->get_xy();
   }
 
   return Geometry::get_angle(
-      get_x() + this_offset.get_x(),
-      get_y() + this_offset.get_y(),
-      other.get_x() + other_offset.get_x(),
-      other.get_y() + other_offset.get_y()
+      get_x() + this_offset.x,
+      get_y() + this_offset.y,
+      other.get_x() + other_offset.x,
+      other.get_y() + other_offset.y
   );
 }
 

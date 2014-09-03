@@ -76,7 +76,7 @@ class Movement: public ExportableToLua {
 
     // obstacles
     bool test_collision_with_obstacles(int dx, int dy) const;
-    bool test_collision_with_obstacles(const Rectangle& dxy) const;
+    bool test_collision_with_obstacles(const Point& dxy) const;
     const Rectangle& get_last_collision_box_on_obstacle() const;
     bool are_obstacles_ignored() const;
     void set_ignore_obstacles(bool ignore_obstacles);

@@ -461,8 +461,8 @@ bool Movement::test_collision_with_obstacles(int dx, int dy) const {
  * \param dxy distance between the current position and the position to check
  * \return true if the entity would overlap the map obstacles in this position
  */
-bool Movement::test_collision_with_obstacles(const Rectangle& dxy) const {
-  return test_collision_with_obstacles(dxy.get_x(), dxy.get_y());
+bool Movement::test_collision_with_obstacles(const Point& dxy) const {
+  return test_collision_with_obstacles(dxy.x, dxy.y);
 }
 
 /**

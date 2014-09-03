@@ -27,6 +27,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Size.h"
 #include <sstream>
 
 namespace solarus {
@@ -167,11 +168,9 @@ bool Sprite::are_pixel_collisions_enabled() const {
 
 /**
  * \brief Returns the size of the current frame.
- * \return A rectangle whose size is the size of the current frame.
- * X and Y are set to zero.
+ * \return The size of the current frame.
  */
-Rectangle Sprite::get_size() const {
-
+Size Sprite::get_size() const {
   return current_animation->get_direction(current_direction)->get_size();
 }
 
@@ -179,7 +178,7 @@ Rectangle Sprite::get_size() const {
  * \brief Returns the maximum frame size of the animation set of this sprite.
  * \return The maximum frame size.
  */
-const Rectangle& Sprite::get_max_size() const {
+const Size& Sprite::get_max_size() const {
   return animation_set.get_max_size();
 }
 
@@ -689,7 +688,7 @@ void Sprite::raw_draw(
           current_direction, current_frame);
       Rectangle dst_position2(dst_position);
       dst_position2.add_xy(-get_origin().get_x(), -get_origin().get_y());
-      intermediate_surface->draw_region(get_size(), dst_surface, dst_position2);
+      intermediate_surface->draw_region(Rectangle(get_size()), dst_surface, dst_position2);
     }
   }
 }
@@ -725,20 +724,20 @@ void Sprite::raw_draw_region(
     // Otherwise, more than the current frame could be visible.
     Rectangle src_position(region);
     src_position.add_xy(origin.get_x(), origin.get_y());
-    const Rectangle& frame_size = get_size();
+    const Size& frame_size = get_size();
     if (src_position.get_x() < 0) {
       src_position.set_width(src_position.get_width() + src_position.get_x());
       src_position.set_x(0);
     }
-    if (src_position.get_x() + src_position.get_width() > frame_size.get_width()) {
-      src_position.set_width(frame_size.get_width() - src_position.get_x());
+    if (src_position.get_x() + src_position.get_width() > frame_size.width) {
+      src_position.set_width(frame_size.width - src_position.get_x());
     }
     if (src_position.get_y() < 0) {
       src_position.set_height(src_position.get_height() + src_position.get_y());
       src_position.set_y(0);
     }
-    if (src_position.get_y() + src_position.get_height() > frame_size.get_height()) {
-      src_position.set_height(frame_size.get_height() - src_position.get_y());
+    if (src_position.get_y() + src_position.get_height() > frame_size.height) {
+      src_position.set_height(frame_size.height - src_position.get_y());
     }
 
     if (src_position.get_width() <= 0 || src_position.get_height() <= 0) {
@@ -783,7 +782,7 @@ Surface& Sprite::get_transition_surface() {
 Surface& Sprite::get_intermediate_surface() const {
 
   if (intermediate_surface == nullptr) {
-    intermediate_surface = Surface::create(get_max_size().get_size());
+    intermediate_surface = Surface::create(get_max_size());
     RefCountable::ref(intermediate_surface);
   }
   return *intermediate_surface;

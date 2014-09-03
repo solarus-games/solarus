@@ -1943,13 +1943,13 @@ bool MapEntity::overlaps_camera() const {
   }
 
   for (Sprite* sprite: sprites) {
-    const Rectangle& sprite_size = sprite->get_size();
+    const Size& sprite_size = sprite->get_size();
     const Rectangle& sprite_origin = sprite->get_origin();
     const Rectangle sprite_bounding_box(
         get_x() - sprite_origin.get_x(),
         get_y() - sprite_origin.get_y(),
-        sprite_size.get_width(),
-        sprite_size.get_height()
+        sprite_size.width,
+        sprite_size.height
     );
     if (sprite_bounding_box.overlaps(camera_position)) {
       return true;

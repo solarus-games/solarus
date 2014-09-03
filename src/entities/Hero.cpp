@@ -1578,14 +1578,14 @@ void Hero::notify_collision_with_enemy(
   else if (this_sprite.contains("tunic")) {
     // The hero's body sprite overlaps the enemy.
     // Check that the 16x16 rectangle of the hero also overlaps the enemy.
-    const Rectangle& enemy_sprite_size = enemy_sprite.get_size();
+    const Size& enemy_sprite_size = enemy_sprite.get_size();
     const Rectangle& enemy_sprite_origin = enemy_sprite.get_origin();
     const Rectangle& enemy_sprite_offset = enemy_sprite.get_xy();
     Rectangle enemy_sprite_rectangle(
         enemy.get_x() - enemy_sprite_origin.get_x() + enemy_sprite_offset.get_x(),
         enemy.get_y() - enemy_sprite_origin.get_y() + enemy_sprite_offset.get_y(),
-        enemy_sprite_size.get_width(),
-        enemy_sprite_size.get_height()
+        enemy_sprite_size.width,
+        enemy_sprite_size.height
     );
 
     if (overlaps(enemy_sprite_rectangle)) {

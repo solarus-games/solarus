@@ -69,7 +69,7 @@ Block::Block(
   set_origin(8, 13);
   set_direction(direction);
   create_sprite(sprite_name);
-  set_drawn_in_y_order(get_sprite().get_size().get_height() > 16);
+  set_drawn_in_y_order(get_sprite().get_size().height > 16);
 }
 
 /**

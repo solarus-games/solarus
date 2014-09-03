@@ -51,7 +51,7 @@ class Hero::HurtState: public Hero::State {
 
     bool has_source;              /**< Whether there is a source_xy rectangle.
                                    * If no, the hero does not move. */
-    const Rectangle source_xy;    /**< Coordinates of whatever is hurting the
+    const Point source_xy;        /**< Coordinates of whatever is hurting the
                                    * hero (usually an enemy). */
     int damage;                   /**< Number of life points to remove
                                    * (this number may be reduced by the tunic

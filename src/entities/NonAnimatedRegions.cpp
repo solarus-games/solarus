@@ -32,7 +32,7 @@ namespace solarus {
 NonAnimatedRegions::NonAnimatedRegions(Map& map, Layer layer):
   map(map),
   layer(layer),
-  non_animated_tiles(map.get_size().get_size(), Size(512, 256)) {
+  non_animated_tiles(map.get_size(), Size(512, 256)) {
 
 }
 

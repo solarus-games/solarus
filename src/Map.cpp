@@ -199,10 +199,10 @@ const Rectangle& Map::get_location() const {
 
 /**
  * \brief Returns the size of this map.
- * \return The size of this map in pixels. The x and y values are 0.
+ * \return The size of this map in pixels.
  */
-Rectangle Map::get_size() const {
-  return Rectangle(0, 0, location.get_width(), location.get_height());
+Size Map::get_size() const {
+  return { location.get_width(), location.get_height() };
 }
 
 /**

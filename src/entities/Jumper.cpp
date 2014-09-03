@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -126,15 +126,17 @@ bool Jumper::is_in_jump_position(
     }
 
     // Test if the appropriate corner of the hero crosses the diagonal.
-    Rectangle corner(candidate_position.get_x(), candidate_position.get_y(), 1, 1);
-    corner.add_xy(-1, -1);
+    Point corner = {
+        candidate_position.get_x() - 1,
+        candidate_position.get_y() - 1
+    };
     if (direction8 == 1 || direction8 == 7) {
       // Right-up or right-down.
-      corner.add_x(candidate_position.get_width() + 1);
+      corner.x += candidate_position.get_width() + 1;
     }
     if (direction8 == 5 || direction8 == 7) {
       // Left-down or right-down.
-      corner.add_y(candidate_position.get_height() + 1);
+      corner.y += candidate_position.get_height() + 1;
     }
 
     return extended_region ?
@@ -272,9 +274,9 @@ bool Jumper::is_jump_diagonal() const {
  * \param point The point to check.
  * \return \c true if this point is overlapping the jumper
  */
-bool Jumper::is_point_in_diagonal(const Rectangle& point) const {
+bool Jumper::is_point_in_diagonal(const Point& point) const {
 
-  return overlaps(point.get_x(), point.get_y()) &&
+  return overlaps(point.x, point.y) &&
     is_point_in_extended_diagonal(point);
 }
 
@@ -287,10 +289,10 @@ bool Jumper::is_point_in_diagonal(const Rectangle& point) const {
  * \param point The point to check.
  * \return \c true if this point is overlapping the jumper
  */
-bool Jumper::is_point_in_extended_diagonal(const Rectangle& point) const {
+bool Jumper::is_point_in_extended_diagonal(const Point& point) const {
 
-  const int x = point.get_x() - this->get_x();
-  const int y = point.get_y() - this->get_y();
+  const int x = point.x - this->get_x();
+  const int y = point.y - this->get_y();
   const int width = get_width();
 
   switch (get_direction()) {
@@ -333,22 +335,22 @@ bool Jumper::overlaps_jumping_region(const Rectangle& rectangle, bool /* extende
   }
 
   // Check the 4 corners of the rectangle.
-  Rectangle xy = rectangle;
+  Point xy = rectangle.get_xy();
   if (is_point_in_diagonal(xy)) {
     return true;
   }
 
-  xy.add_x(rectangle.get_width() - 1);
+  xy.x += rectangle.get_width() - 1;
   if (is_point_in_diagonal(xy)) {
     return true;
   }
 
-  xy.add_y(rectangle.get_height() - 1);
+  xy.y += rectangle.get_height() - 1;
   if (is_point_in_diagonal(xy)) {
     return true;
   }
 
-  xy.set_x(rectangle.get_x());
+  xy.x = rectangle.get_x();
   if (is_point_in_diagonal(xy)) {
     return true;
   }

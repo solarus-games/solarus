@@ -139,38 +139,44 @@ int LuaContext::audio_api_set_music_volume(lua_State* l) {
  */
 int LuaContext::audio_api_play_music(lua_State* l) {
 
-  const std::string& music_id = luaL_optstring(l, 1, "");
-  bool loop = true;  // true by default, unless there is a callback.
-  ScopedLuaRef callback_ref;
-  if (lua_gettop(l) >= 2) {
-    if (lua_isboolean(l, 2)) {
-      // There is a loop parameter.
-      loop = lua_toboolean(l, 2);
+// TODO  try {
+    const std::string& music_id = luaL_optstring(l, 1, "");
+    bool loop = true;  // true by default, unless there is a callback.
+    ScopedLuaRef callback_ref;
+    if (lua_gettop(l) >= 2) {
+      if (lua_isboolean(l, 2)) {
+        // There is a loop parameter.
+        loop = lua_toboolean(l, 2);
+      }
+      else {
+        // There is a callback parameter.
+        loop = false;  // No loop when there is a callback.
+        luaL_checktype(l, 2, LUA_TFUNCTION);
+        lua_settop(l, 2);  // Make sure that the callback is on top.
+        callback_ref = get_lua_context(l).create_scoped_ref();
+      }
+    }
+
+    if (music_id.empty()) {
+      // nil music: stop playing any music.
+      Music::stop_playing();
     }
     else {
-      // There is a callback parameter.
-      loop = false;  // No loop when there is a callback.
-      luaL_checktype(l, 2, LUA_TFUNCTION);
-      lua_settop(l, 2);  // Make sure that the callback is on top.
-      callback_ref = get_lua_context(l).create_scoped_ref();
-    }
-  }
+      if (!Music::exists(music_id)) {
+        // Could not find the specified music.
+        LuaTools::error(l, std::string("No such music: '") + music_id + "'");
+      }
 
-  if (music_id.empty()) {
-    // nil music: stop playing any music.
-    Music::stop_playing();
-  }
-  else {
-    if (!Music::exists(music_id)) {
-      // Could not find the specified music.
-      LuaTools::error(l, std::string("No such music: '") + music_id + "'");
+      // Valid music file name.
+      Music::play(music_id, loop, &get_lua_context(l), callback_ref.get());  // TODO scoped ref
     }
 
-    // Valid music file name.
-    Music::play(music_id, loop, &get_lua_context(l), callback_ref.get());  // TODO scoped ref
-  }
-
-  return 0;
+    return 0;
+//  }
+// TODO
+//  catch (const LuaError& ex) {
+//    luaL_error(ex.what);
+//  }
 }
 
 /**

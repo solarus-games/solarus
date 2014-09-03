@@ -26,8 +26,9 @@ namespace solarus {
  * \param message Error message.
  * \return This function never returns.
  */
-int LuaTools::error(lua_State* l, const std::string& message) {
-  return luaL_error(l, message.c_str());
+void LuaTools::error(lua_State* l, const std::string& message) {
+  luaL_error(l, message.c_str());
+  throw;  // TODO throw LuaError
 }
 
 /**
@@ -37,8 +38,9 @@ int LuaTools::error(lua_State* l, const std::string& message) {
  * \param message Error message.
  * \return This function never returns.
  */
-int LuaTools::arg_error(lua_State* l, int arg_index, const std::string& message) {
-  return luaL_argerror(l, arg_index, message.c_str());
+void LuaTools::arg_error(lua_State* l, int arg_index, const std::string& message) {
+  luaL_argerror(l, arg_index, message.c_str());
+  throw;  // TODO throw LuaError
 }
 
 /**

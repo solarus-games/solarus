@@ -93,11 +93,11 @@ inline Point operator-(const Point& point) {
   return { -point.x, -point.y };
 }
 
-inline Point operator+(const Point& lhs, const Point& rhs) {
+inline Point operator+(Point lhs, const Point& rhs) {
   return { lhs.x + rhs.x, lhs.y + rhs.y };
 }
 
-inline Point operator-(const Point& lhs, const Point& rhs) {
+inline Point operator-(Point lhs, const Point& rhs) {
   return { lhs.x - rhs.x, lhs.y - rhs.y };
 }
 

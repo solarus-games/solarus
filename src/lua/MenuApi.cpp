@@ -184,7 +184,7 @@ int LuaContext::menu_api_start(lua_State *l) {
   // Parameters: context table.
   if (lua_type(l, 1) != LUA_TTABLE
       && lua_type(l, 1) != LUA_TUSERDATA) {
-    luaL_typerror(l, 1, "table or userdata");
+    LuaTools::type_error(l, 1, "table or userdata");
   }
   luaL_checktype(l, 2, LUA_TTABLE);
   bool on_top = true;
@@ -238,7 +238,7 @@ int LuaContext::menu_api_stop_all(lua_State* l) {
 
   if (lua_type(l, 1) != LUA_TTABLE
       && lua_type(l, 1) != LUA_TUSERDATA) {
-    luaL_typerror(l, 1, "table, game or map");
+    LuaTools::type_error(l, 1, "table, game or map");
   }
 
   get_lua_context(l).remove_menus(1);

@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 #include "lowlevel/Surface.h"
 #include "movements/Movement.h"
 #include "Drawable.h"
@@ -54,7 +55,7 @@ Drawable& LuaContext::check_drawable(lua_State* l, int index) {
     drawable = static_cast<Drawable**>(lua_touserdata(l, index));
   }
   else {
-    luaL_typerror(l, index, "drawable");
+    LuaTools::type_error(l, index, "drawable");
   }
 
   return **drawable;

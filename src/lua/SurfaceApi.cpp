@@ -120,7 +120,7 @@ int LuaContext::surface_api_create(lua_State* l) {
         Surface::DIR_LANGUAGE : Surface::DIR_SPRITES);
   }
   else {
-    luaL_typerror(l, 1, "number, string or no value");
+    LuaTools::type_error(l, 1, "number, string or no value");
   }
 
   if (surface == nullptr) {

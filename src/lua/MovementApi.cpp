@@ -346,7 +346,7 @@ Movement& LuaContext::check_movement(lua_State* l, int index) {
     movement = static_cast<Movement**>(lua_touserdata(l, index));
   }
   else {
-    luaL_typerror(l, index, "movement");
+    LuaTools::type_error(l, index, "movement");
   }
 
   return **movement;
@@ -601,7 +601,7 @@ int LuaContext::movement_api_start(lua_State* l) {
   }
   else {
     lua_context.cancel_callback(callback_ref);
-    luaL_typerror(l, 2, "table, entity or drawable");
+    LuaTools::type_error(l, 2, "table, entity or drawable");
   }
 
   return 0;

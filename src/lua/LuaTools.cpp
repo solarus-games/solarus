@@ -65,9 +65,11 @@ bool LuaTools::is_valid_lua_identifier(const std::string& name) {
 
 /**
  * \brief Similar to luaL_error() but throws a LuaException.
+ *
+ * This function never returns.
+ *
  * \param l A Lua state.
  * \param message Error message.
- * \return This function never returns.
  */
 void LuaTools::error(lua_State* l, const std::string& message) {
   throw LuaException(l, message);
@@ -75,10 +77,12 @@ void LuaTools::error(lua_State* l, const std::string& message) {
 
 /**
  * \brief Similar to luaL_argerror() but throws a LuaException.
+ *
+ * This function never returns.
+ *
  * \param l A Lua state.
  * \param arg_index Index of an argument in the stack.
  * \param message Error message.
- * \return This function never returns.
  */
 void LuaTools::arg_error(lua_State* l, int arg_index, const std::string& message) {
 
@@ -105,6 +109,24 @@ void LuaTools::arg_error(lua_State* l, int arg_index, const std::string& message
 
   oss << "bad argument #" << arg_index << " to " << info.name << " (" << message << ")";
   error(l, oss.str());
+}
+
+/**
+ * \brief Similar to luaL_typerror() but throws a LuaException.
+ *
+ * This function never returns.
+ *
+ * \param l A Lua state.
+ * \param arg_index Index of an argument in the stack.
+ * \param expected_type_name A name describing the type that was expected.
+ */
+void LuaTools::type_error(
+    lua_State* l,
+    int arg_index,
+    const std::string& expected_type_name
+) {
+  arg_error(l, arg_index, std::string(expected_type_name) +
+      " expected, got " + luaL_typename(l, arg_index));
 }
 
 /**

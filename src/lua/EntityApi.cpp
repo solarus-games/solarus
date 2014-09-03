@@ -572,7 +572,7 @@ MapEntity& LuaContext::check_entity(lua_State* l, int index) {
     entity = static_cast<MapEntity**>(lua_touserdata(l, index));
   }
   else {
-    luaL_typerror(l, index, "entity");
+    LuaTools::type_error(l, index, "entity");
   }
 
   return **entity;
@@ -2418,7 +2418,7 @@ int LuaContext::block_api_set_maximum_moves(lua_State* l) {
 
   Block& block = check_block(l, 1);
   if (lua_type(l, 2) != LUA_TNUMBER && lua_type(l, 2) != LUA_TNIL) {
-    luaL_typerror(l, 2, "number or nil");
+    LuaTools::type_error(l, 2, "number or nil");
   }
 
 
@@ -4301,7 +4301,7 @@ int LuaContext::custom_entity_api_set_traversable_by(lua_State* l) {
   else {
     // Custom boolean function.
     if (!lua_isfunction(l, index)) {
-      luaL_typerror(l, index, "boolean, function or nil");
+      LuaTools::type_error(l, index, "boolean, function or nil");
     }
     lua_settop(l, index);  // Make sure the function is on the top of the stack.
 
@@ -4359,7 +4359,7 @@ int LuaContext::custom_entity_api_set_can_traverse(lua_State* l) {
   else {
     // Custom boolean function.
     if (!lua_isfunction(l, index)) {
-      luaL_typerror(l, index, "boolean, function or nil");
+      LuaTools::type_error(l, index, "boolean, function or nil");
     }
     lua_settop(l, index);  // Make sure the function is on the top of the stack.
 
@@ -4409,7 +4409,7 @@ int LuaContext::custom_entity_api_set_can_traverse_ground(lua_State* l) {
   }
   else {
     if (!lua_isboolean(l, 3)) {
-      luaL_typerror(l, 3, "boolean or nil");
+      LuaTools::type_error(l, 3, "boolean or nil");
     }
     bool traversable = lua_toboolean(l, 3);
 
@@ -4429,7 +4429,7 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
   CustomEntity& entity = check_custom_entity(l, 1);
 
   if (!lua_isfunction(l, 3)) {
-    luaL_typerror(l, 3, "function");
+    LuaTools::type_error(l, 3, "function");
   }
   lua_settop(l, 3);  // Make sure the callback is on the top of the stack.
 
@@ -4478,7 +4478,7 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
     entity.add_collision_test(collision_test_ref, callback_ref);
   }
   else {
-    luaL_typerror(l, 2, "string or function");
+    LuaTools::type_error(l, 2, "string or function");
   }
 
   return 0;

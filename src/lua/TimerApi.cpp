@@ -368,7 +368,7 @@ int LuaContext::timer_api_start(lua_State *l) {
     // The first parameter is the context.
     if (lua_type(l, 1) != LUA_TTABLE
         && lua_type(l, 1) != LUA_TUSERDATA) {
-      luaL_typerror(l, 1, "table or userdata");
+      LuaTools::type_error(l, 1, "table or userdata");
     }
   }
   else {
@@ -428,7 +428,7 @@ int LuaContext::timer_api_stop_all(lua_State* l) {
 
   if (lua_type(l, 1) != LUA_TTABLE
       && lua_type(l, 1) != LUA_TUSERDATA) {
-    luaL_typerror(l, 1, "table or userdata");
+    LuaTools::type_error(l, 1, "table or userdata");
   }
 
   get_lua_context(l).remove_timers(1);

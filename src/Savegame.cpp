@@ -261,7 +261,7 @@ int Savegame::l_newindex(lua_State* l) {
       break;
 
    default:
-      luaL_typerror(l, 3, "string, number or boolean");
+      LuaTools::type_error(l, 3, "string, number or boolean");
   }
 
   return 0;

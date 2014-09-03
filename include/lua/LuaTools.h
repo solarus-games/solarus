@@ -49,6 +49,11 @@ class LuaTools {
         int arg_index,
         const std::string& message
     );
+    static void type_error(
+        lua_State* l,
+        int arg_index,
+        const std::string& expected_type_name
+    );
 
     // int
     static int check_int(

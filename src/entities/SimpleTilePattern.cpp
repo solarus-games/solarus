@@ -51,7 +51,7 @@ SimpleTilePattern::~SimpleTilePattern() {
  * to the map (may be used for scrolling tiles)
  */
 void SimpleTilePattern::draw(Surface& dst_surface, const Point& dst_position,
-    Tileset& tileset, const Rectangle& /* viewport */) {
+    Tileset& tileset, const Point& /* viewport */) {
 
   Surface& tileset_image = tileset.get_tiles_image();
   tileset_image.draw_region(position_in_tileset, dst_surface, dst_position);

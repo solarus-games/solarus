@@ -48,7 +48,7 @@ class AnimatedTilePattern: public TilePattern {
 
     static void update();
     virtual void draw(Surface& dst_surface, const Point& dst_position,
-        Tileset& tileset, const Rectangle& viewport) override;
+        Tileset& tileset, const Point& viewport) override;
     virtual bool is_drawn_at_its_position() const override;
 
   private:

@@ -105,7 +105,7 @@ void Tile::draw(Surface& dst_surface, const Point& viewport) {
       dst_surface,
       dst_position,
       get_map().get_tileset(),
-      Rectangle(viewport)
+      viewport
   );
 }
 

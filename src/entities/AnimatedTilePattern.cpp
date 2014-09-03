@@ -114,14 +114,14 @@ void AnimatedTilePattern::update() {
  */
 void AnimatedTilePattern::draw(Surface& dst_surface,
     const Point& dst_position, Tileset& tileset,
-    const Rectangle& viewport) {
+    const Point& viewport) {
 
   Surface& tileset_image = tileset.get_tiles_image();
   const Rectangle& src = position_in_tileset[current_frames[sequence]];
   Point dst = dst_position;
 
   if (parallax) {
-    dst += viewport.get_xy() / ParallaxScrollingTilePattern::ratio;
+    dst += viewport / ParallaxScrollingTilePattern::ratio;
   }
 
   tileset_image.draw_region(src, dst_surface, dst);

@@ -41,7 +41,7 @@ class TilePattern {
 
     static void update();
     void fill_surface(Surface& dst_surface, const Rectangle& dst_position,
-        Tileset& tileset, const Rectangle& viewport);
+        Tileset& tileset, const Point& viewport);
 
     /**
      * \brief Draws the tile image on a surface.
@@ -52,7 +52,7 @@ class TilePattern {
      * relative to the map (may be used for scrolling tiles).
      */
     virtual void draw(Surface& dst_surface, const Point& dst_position,
-        Tileset& tileset, const Rectangle& viewport) = 0;
+        Tileset& tileset, const Point& viewport) = 0;
     virtual bool is_animated() const;
     virtual bool is_drawn_at_its_position() const;
 

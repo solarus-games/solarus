@@ -44,7 +44,7 @@ class ParallaxScrollingTilePattern: public SimpleTilePattern {
     ~ParallaxScrollingTilePattern();
 
     virtual void draw(Surface& dst_surface, const Point& dst_position,
-            Tileset& tileset, const Rectangle& viewport) override;
+            Tileset& tileset, const Point& viewport) override;
 
     virtual bool is_animated() const override;
     virtual bool is_drawn_at_its_position() const override;

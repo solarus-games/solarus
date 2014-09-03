@@ -135,7 +135,7 @@ bool TilePattern::is_drawn_at_its_position() const {
  * relative to the map (may be used for scrolling tiles).
  */
 void TilePattern::fill_surface(Surface& dst_surface, const Rectangle& dst_position,
-    Tileset& tileset, const Rectangle& viewport) {
+    Tileset& tileset, const Point& viewport) {
 
   Point dst;
 

@@ -50,7 +50,7 @@ SelfScrollingTilePattern::~SelfScrollingTilePattern() {
  */
 void SelfScrollingTilePattern::draw(Surface& dst_surface,
     const Point& dst_position, Tileset& tileset,
-    const Rectangle& /* viewport */) {
+    const Point& /* viewport */) {
 
   Rectangle src = position_in_tileset;
   Point dst = dst_position;

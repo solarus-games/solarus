@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -115,12 +115,12 @@ void Hero::StairsState::start(const State* previous_state) {
   else {
     sprites.set_clipping_rectangle(stairs.get_clipping_rectangle(way));
     if (way == Stairs::REVERSE_WAY) {
-      Rectangle dxy = movement->get_xy_change();
+      Point dxy = movement->get_xy_change();
       int fix_y = 8;
       if (path[path.size() - 1] == '2') {
         fix_y *= -1;
       }
-      hero.set_xy(hero.get_x() - dxy.get_x(), hero.get_y() - dxy.get_y() + fix_y);
+      hero.set_xy(hero.get_x() - dxy.x, hero.get_y() - dxy.y + fix_y);
     }
   }
   hero.set_movement(movement);

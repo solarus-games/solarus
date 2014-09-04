@@ -30,9 +30,9 @@ namespace solarus {
  * \brief Constructor.
  * \param hero The hero controlled by this state.
  * \param callback_ref Lua ref to a function to call when the
- * victory sequence finishes (possibly LUA_REFNIL).
+ * victory sequence finishes (possibly an empty ref).
  */
-Hero::VictoryState::VictoryState(Hero& hero, int callback_ref):
+Hero::VictoryState::VictoryState(Hero& hero, const ScopedLuaRef& callback_ref):
   State(hero, "victory"),
   end_victory_date(0),
   finished(false),
@@ -74,8 +74,7 @@ void Hero::VictoryState::stop(const State* next_state) {
 
   State::stop(next_state);
   get_sprites().set_ignore_suspend(false);
-  get_lua_context().cancel_callback(callback_ref);
-  callback_ref = LUA_REFNIL;
+  callback_ref.clear();
 }
 
 /**
@@ -87,12 +86,11 @@ void Hero::VictoryState::update() {
 
   if (!finished && System::now() >= end_victory_date) {
     finished = true;
-    if (callback_ref != LUA_REFNIL) {
+    if (!callback_ref.is_empty()) {
       // The behavior is defined by Lua.
-      int callback_ref = this->callback_ref;
-      this->callback_ref = LUA_REFNIL;
+      ScopedLuaRef callback_ref = this->callback_ref;
+      this->callback_ref.clear();
       get_lua_context().do_callback(callback_ref);
-      get_lua_context().cancel_callback(callback_ref);
     }
     else {
       // By default, get back to the normal state.

@@ -44,7 +44,7 @@ Movement::Movement(bool ignore_obstacles):
   default_ignore_obstacles(ignore_obstacles),
   current_ignore_obstacles(ignore_obstacles),
   lua_context(nullptr),
-  finished_callback_ref(LUA_REFNIL) {
+  finished_callback_ref() {
 
 }
 
@@ -52,10 +52,6 @@ Movement::Movement(bool ignore_obstacles):
  * \brief Destructor.
  */
 Movement::~Movement() {
-
-  if (get_lua_context() != nullptr) {
-    get_lua_context()->cancel_callback(finished_callback_ref);
-  }
 }
 
 /**
@@ -310,10 +306,10 @@ void Movement::notify_movement_finished() {
 
   LuaContext* lua_context = get_lua_context();
   if (lua_context != nullptr) {
-    int callback_ref = finished_callback_ref;
-    finished_callback_ref = LUA_REFNIL;
-    lua_context->do_callback(callback_ref);
-    lua_context->cancel_callback(callback_ref);
+    ScopedLuaRef callback_ref = finished_callback_ref;
+    finished_callback_ref.clear();
+    lua_context->do_callback(finished_callback_ref);
+    callback_ref.clear();
     lua_context->movement_on_finished(*this);
   }
 
@@ -554,21 +550,20 @@ void Movement::set_lua_context(LuaContext* lua_context) {
 /**
  * \brief Returns the Lua registry ref to the function to call when this
  * movement finishes.
- * \return The Lua ref to a function, or LUA_REFNIL.
+ * \return The Lua ref to a function, or an empty ref.
  */
-int Movement::get_finished_callback() const {
+const ScopedLuaRef& Movement::get_finished_callback() const {
   return finished_callback_ref;
 }
 
 /**
  * \brief Sets the function to call when this movement finishes.
- * \param finished_callback_ref The Lua ref to a function, or LUA_REFNIL.
+ * \param finished_callback_ref The Lua ref to a function, or an empty ref.
  */
-void Movement::set_finished_callback(int finished_callback_ref) {
+void Movement::set_finished_callback(const ScopedLuaRef& finished_callback_ref) {
 
   Debug::check_assertion(get_lua_context() != nullptr, "Undefined Lua context");
 
-  get_lua_context()->cancel_callback(this->finished_callback_ref);
   this->finished_callback_ref = finished_callback_ref;
 }
 

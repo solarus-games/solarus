@@ -28,7 +28,7 @@ class Hero::VictoryState: public Hero::State {
 
   public:
 
-    VictoryState(Hero& hero, int callback_ref);
+    VictoryState(Hero& hero, const ScopedLuaRef& callback_ref);
     ~VictoryState();
 
     virtual void start(const State* previous_state) override;
@@ -40,7 +40,7 @@ class Hero::VictoryState: public Hero::State {
 
     uint32_t end_victory_date;         /**< Date when the victory animation stops. */
     bool finished;                     /**< Indicates that the victory sequence is finished. */
-    int callback_ref;                  /**< Lua ref of a function to call when the sequence finishes. */
+    ScopedLuaRef callback_ref;         /**< Lua ref of a function to call when the sequence finishes. */
 
 };
 

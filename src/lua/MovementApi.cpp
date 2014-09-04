@@ -588,13 +588,12 @@ int LuaContext::movement_api_start(lua_State* l) {
     Movement& movement = check_movement(l, 1);
     movement_api_stop(l);  // First, stop any previous movement.
 
-    int callback_ref = LUA_REFNIL;
+    ScopedLuaRef callback_ref;
     if (lua_gettop(l) >= 3 && !lua_isnil(l, 3)) {
       LuaTools::check_type(l, 3, LUA_TFUNCTION);
       lua_settop(l, 3);
-      callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+      callback_ref = lua_context.create_ref();
       movement.set_lua_context(&lua_context);
-      movement.set_finished_callback(callback_ref);
     }
 
     if (lua_type(l, 2) == LUA_TTABLE) {
@@ -610,9 +609,9 @@ int LuaContext::movement_api_start(lua_State* l) {
       drawable.start_movement(movement);
     }
     else {
-      lua_context.cancel_callback(callback_ref);
       LuaTools::type_error(l, 2, "table, entity or drawable");
     }
+    movement.set_finished_callback(callback_ref);
 
     return 0;
   }

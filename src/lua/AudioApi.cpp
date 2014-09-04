@@ -185,7 +185,7 @@ int LuaContext::audio_api_play_music(lua_State* l) {
       }
 
       // Valid music file name.
-      Music::play(music_id, loop, &get_lua_context(l), callback_ref.get());  // TODO scoped ref
+      Music::play(music_id, loop, callback_ref);
     }
     return 0;
   }

@@ -80,7 +80,7 @@ HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
   walking(false),
   clipping_rectangle(Rectangle()),
   lifted_item(nullptr),
-  animation_callback_ref(LUA_REFNIL) {
+  animation_callback_ref() {
 
   rebuild_equipment();
 }
@@ -89,10 +89,6 @@ HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
  * \brief Destructor.
  */
 HeroSprites::~HeroSprites() {
-
-  if (animation_callback_ref != LUA_REFNIL) {
-    get_lua_context().cancel_callback(animation_callback_ref);
-  }
 
   RefCountable::unref(tunic_sprite);
   RefCountable::unref(shadow_sprite);
@@ -790,12 +786,11 @@ void HeroSprites::update() {
   }
 
   // Lua callback.
-  if (tunic_sprite->is_animation_finished()
-      && animation_callback_ref != LUA_REFNIL) {
-    int callback_ref = this->animation_callback_ref;
-    this->animation_callback_ref = LUA_REFNIL;
+  if (tunic_sprite->is_animation_finished() &&
+      !animation_callback_ref.is_empty()) {
+    ScopedLuaRef callback_ref = this->animation_callback_ref;
+    this->animation_callback_ref.clear();
     get_lua_context().do_callback(callback_ref);
-    get_lua_context().cancel_callback(callback_ref);
   }
 }
 
@@ -1430,7 +1425,7 @@ const std::string& HeroSprites::get_tunic_animation() const {
  */
 void HeroSprites::set_tunic_animation(const std::string& animation) {
 
-  set_tunic_animation(animation, LUA_REFNIL);
+  set_tunic_animation(animation, ScopedLuaRef());
 }
 
 
@@ -1441,14 +1436,12 @@ void HeroSprites::set_tunic_animation(const std::string& animation) {
  *
  * \param animation The animation name of the tunic sprite.
  * \param callback_ref Lua ref of a function to call when the animation ends
- * or LUA_REFNIL.
+ * or an empty ref.
  */
 void HeroSprites::set_tunic_animation(
-    const std::string& animation, int callback_ref) {
-
-  if (this->animation_callback_ref != LUA_REFNIL) {
-    get_lua_context().cancel_callback(this->animation_callback_ref);
-  }
+    const std::string& animation,
+    const ScopedLuaRef& callback_ref
+) {
 
   this->animation_callback_ref = callback_ref;
 
@@ -1467,7 +1460,7 @@ void HeroSprites::set_tunic_animation(
  */
 void HeroSprites::set_animation(const std::string& animation) {
 
-  set_animation(animation, LUA_REFNIL);
+  set_animation(animation, ScopedLuaRef());
 }
 
 /**
@@ -1480,17 +1473,18 @@ void HeroSprites::set_animation(const std::string& animation) {
  *
  * \param animation Name of the animation to give to the hero's sprites.
  * \param callback_ref Lua ref of a function to call when the animation ends
- * or LUA_REFNIL.
+ * or an empty ref.
  */
 void HeroSprites::set_animation(
-    const std::string& animation, int callback_ref) {
+    const std::string& animation,
+    const ScopedLuaRef& callback_ref
+) {
 
   if (tunic_sprite->has_animation(animation)) {
     set_tunic_animation(animation, callback_ref);
   }
   else {
     Debug::error("Sprite '" + tunic_sprite->get_animation_set_id() + "': Animation '" + animation + "' not found.");
-    get_lua_context().cancel_callback(callback_ref);
   }
 
   if (shield_sprite != nullptr

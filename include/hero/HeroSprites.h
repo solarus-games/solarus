@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "entities/Ground.h"
 #include "lowlevel/Rectangle.h"
+#include "lua/ScopedLuaRef.h"
 #include <string>
 
 namespace solarus {
@@ -110,7 +111,10 @@ class HeroSprites {
     void set_animation_running();
     void set_animation_boomerang(const std::string& tunic_preparing_animation);
     void set_animation(const std::string& animation);
-    void set_animation(const std::string& animation, int callback_ref);
+    void set_animation(
+        const std::string& animation,
+        const ScopedLuaRef& callback_ref
+    );
 
     void create_ground(Ground grond);
     void destroy_ground();
@@ -138,7 +142,7 @@ class HeroSprites {
     void stop_displaying_trail();
 
     void set_tunic_animation(const std::string& animation);
-    void set_tunic_animation(const std::string& animation, int callback_ref);
+    void set_tunic_animation(const std::string& animation, const ScopedLuaRef& callback_ref);
 
     LuaContext& get_lua_context();
 
@@ -197,7 +201,7 @@ class HeroSprites {
 
     CarriedItem* lifted_item;               /**< if not nullptr, an item to display above the hero */
 
-    int animation_callback_ref;             /**< Lua ref of a function to call when a custom animation ends. */
+    ScopedLuaRef animation_callback_ref;    /**< Lua ref of a function to call when a custom animation ends. */
 };
 
 }

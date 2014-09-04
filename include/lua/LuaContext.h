@@ -128,6 +128,7 @@ class LuaContext {
     void do_callback(int callback_ref);  // TODO remove
     void do_callback(const ScopedLuaRef& callback_ref);
     void cancel_callback(int callback_ref);  // TODO remove
+    // TODO add do_callback_unique
 
     bool call_function(
         int nb_arguments,

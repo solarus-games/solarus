@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/Sound.h"
+#include "lua/ScopedLuaRef.h"
 #include <vector>
 
 namespace solarus {
@@ -79,8 +80,7 @@ class Music {
     static void play(
         const std::string& music_id,
         bool loop,
-        LuaContext* lua_context,
-        int callback_ref
+        const ScopedLuaRef& callback_ref
     );
     static void stop_playing();
     static const std::string& get_current_music_id();
@@ -88,14 +88,18 @@ class Music {
   private:
 
     Music();
-    Music(const std::string& music_id, bool loop, LuaContext* lua_context, int callback_ref);
+    Music(
+        const std::string& music_id,
+        bool loop,
+        const ScopedLuaRef& callback_ref
+    );
     ~Music();
 
     bool start();
     void stop();
     bool is_paused();
     void set_paused(bool pause);
-    void set_callback(int callback_ref);
+    void set_callback(const ScopedLuaRef& callback_ref);
 
     void decode_spc(ALuint destination_buffer, ALsizei nb_samples);
     void decode_it(ALuint destination_buffer, ALsizei nb_samples);
@@ -107,8 +111,7 @@ class Music {
     std::string file_name;                       /**< name of the file to play */
     Format format;                               /**< format of the music, detected from the file name */
     bool loop;                                   /**< Whether the music should loop. */
-    LuaContext* lua_context;                     /**< Lua context to use for the callback if any. */
-    int callback_ref;                            /**< Lua ref to a function to call when the music finishes. */
+    ScopedLuaRef callback_ref;                   /**< Lua ref to a function to call when the music finishes. */
 
     // OGG specific
     OggVorbis_File ogg_file;                     /**< the file used by the vorbisfile lib */

@@ -1609,11 +1609,11 @@ int LuaContext::hero_api_set_animation(lua_State* l) {
     Hero& hero = check_hero(l, 1);
     const std::string& animation = LuaTools::check_string(l, 2);
 
-    int callback_ref = LUA_REFNIL;
+    ScopedLuaRef callback_ref;
     if (lua_gettop(l) >= 3) {
       LuaTools::check_type(l, 3, LUA_TFUNCTION);
       lua_settop(l, 3);
-      callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+      callback_ref = get_lua_context(l).create_ref();
     }
 
     HeroSprites& sprites = hero.get_hero_sprites();
@@ -2008,11 +2008,11 @@ int LuaContext::hero_api_start_victory(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Hero& hero = check_hero(l, 1);
-    int callback_ref = LUA_REFNIL;
+    ScopedLuaRef callback_ref;
     if (lua_gettop(l) >= 2) {
       LuaTools::check_type(l, 2, LUA_TFUNCTION);
       lua_settop(l, 2);
-      callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+      callback_ref = get_lua_context(l).create_ref();
     }
 
     hero.start_victory(callback_ref);

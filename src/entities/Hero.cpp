@@ -2425,9 +2425,9 @@ void Hero::start_jumping(
 /**
  * \brief Makes the hero brandish his sword meaning a victory.
  * \param callback_ref Lua ref to a function to call when the
- * victory sequence finishes (possibly LUA_REFNIL).
+ * victory sequence finishes (possibly an empty ref).
  */
-void Hero::start_victory(int callback_ref) {
+void Hero::start_victory(const ScopedLuaRef& callback_ref) {
   set_state(new VictoryState(*this, callback_ref));
 }
 

@@ -52,8 +52,7 @@ Music::Music():
   id(none),
   format(NO_FORMAT),
   loop(false),
-  lua_context(nullptr),
-  callback_ref(LUA_REFNIL),
+  callback_ref(),
   source(AL_NONE) {
 
   for (int i = 0; i < nb_buffers; i++) {
@@ -65,19 +64,21 @@ Music::Music():
  * \brief Creates a new music.
  * \param music_id Id of the music (file name without extension).
  * \param loop Whether the music should loop when reaching its end.
- * \param lua_context Lua context to use if there is a callback.
- * \param callback_ref Lua function to call when the music ends or LUA_REFNIL.
+ * \param callback_ref Lua function to call when the music ends
+ * or an empty ref.
  * There cannot be both a loop and a callback at the same time.
  */
-Music::Music(const std::string& music_id, bool loop, LuaContext* lua_context, int callback_ref):
+Music::Music(
+    const std::string& music_id,
+    bool loop,
+    const ScopedLuaRef& callback_ref):
   id(music_id),
   format(OGG),
   loop(loop),
-  lua_context(lua_context),
   callback_ref(callback_ref),
   source(AL_NONE) {
 
-  Debug::check_assertion(!loop || callback_ref == LUA_REFNIL,
+  Debug::check_assertion(!loop || callback_ref.is_empty(),
       "Attempt to set both a loop and a callback to music"
   );
 
@@ -97,10 +98,6 @@ Music::~Music() {
 
   if (current_music == this) {
     stop();
-  }
-
-  if (lua_context != nullptr) {
-    lua_context->cancel_callback(callback_ref);
   }
 }
 
@@ -322,7 +319,7 @@ bool Music::exists(const std::string& music_id) {
  */
 void Music::play(const std::string& music_id, bool loop) {
 
-  play(music_id, loop, nullptr, LUA_REFNIL);
+  play(music_id, loop, ScopedLuaRef());
 }
 
 /**
@@ -330,13 +327,14 @@ void Music::play(const std::string& music_id, bool loop) {
  * \param music_id Id of the music to play (file name without extension).
  * \param loop Whether the music should loop when reaching its end
  * (if there is an end).
- * \param lua_context Lua context of the callback if any.
  * \param callback_ref Lua function to call when the music finishes or
- * LUA_REFNIL. There cannot be both a loop and a callback at the same time.
+ * an empty ref. There cannot be both a loop and a callback at the same time.
  */
-void Music::play(const std::string& music_id, bool loop,
-    LuaContext* lua_context, int callback_ref) {
-
+void Music::play(
+    const std::string& music_id,
+    bool loop,
+    const ScopedLuaRef& callback_ref
+) {
   if (music_id != unchanged && music_id != get_current_music_id()) {
     // The music is changed.
 
@@ -348,22 +346,12 @@ void Music::play(const std::string& music_id, bool loop,
 
     if (music_id != none) {
       // Play another music.
-      if (callback_ref == LUA_NOREF) {
-        callback_ref = LUA_REFNIL;
-      }
-      current_music = new Music(music_id, loop, lua_context, callback_ref);
+      current_music = new Music(music_id, loop, callback_ref);
       if (!current_music->start()) {
         // Could not play the music.
         delete current_music;
         current_music = nullptr;
       }
-    }
-  }
-  else if (music_id != none) {
-    // Keep the same music.
-    if (lua_context != nullptr) {
-      // Discard the new callback if any.
-      lua_context->cancel_callback(callback_ref);
     }
   }
 }
@@ -393,14 +381,11 @@ void Music::update() {
     bool playing = current_music->update_playing();
     if (!playing) {
       // Music is finished.
-      LuaContext* lua_context = current_music->lua_context;
-      int callback_ref = current_music->callback_ref;
-      current_music->callback_ref = LUA_REFNIL;
+      ScopedLuaRef callback_ref = current_music->callback_ref;
       delete current_music;
       current_music = nullptr;
-      if (lua_context != nullptr) {
-        lua_context->do_callback(callback_ref);
-        lua_context->cancel_callback(callback_ref);
+      if (!callback_ref.is_empty()) {
+        callback_ref.get_lua_context()->do_callback(callback_ref);
       }
     }
   }
@@ -681,10 +666,7 @@ void Music::stop() {
   }
 
   // Release the callback if any.
-  if (lua_context != nullptr) {
-    lua_context->cancel_callback(callback_ref);
-    callback_ref = LUA_REFNIL;
-  }
+  callback_ref.clear();
 
   // empty the source
   alSourceStop(source);
@@ -762,17 +744,9 @@ void Music::set_paused(bool pause) {
  * The previous callback if any is discarded.
  *
  * \param callback_ref Lua ref to a function to call when the music ends
- * or LUA_REFNIL.
+ * or an empty ref.
  */
-void Music::set_callback(int callback_ref) {
-
-  if (lua_context == nullptr) {
-    return;
-  }
-
-  if (this->callback_ref != LUA_REFNIL) {
-    lua_context->cancel_callback(this->callback_ref);
-  }
+void Music::set_callback(const ScopedLuaRef& callback_ref) {
   this->callback_ref = callback_ref;
 }
 

@@ -18,8 +18,9 @@
 #define SOLARUS_MOVEMENT_H
 
 #include "Common.h"
-#include "lua/ExportableToLua.h"
 #include "lowlevel/Rectangle.h"
+#include "lua/ExportableToLua.h"
+#include "lua/ScopedLuaRef.h"
 
 namespace solarus {
 
@@ -89,8 +90,8 @@ class Movement: public ExportableToLua {
     // Lua
     LuaContext* get_lua_context();
     void set_lua_context(LuaContext* lua_context);
-    int get_finished_callback() const;
-    void set_finished_callback(int finished_callback_ref);
+    const ScopedLuaRef& get_finished_callback() const;
+    void set_finished_callback(const ScopedLuaRef& finished_callback_ref);
     virtual const std::string& get_lua_type_name() const override;
 
   protected:
@@ -127,7 +128,7 @@ class Movement: public ExportableToLua {
 
     LuaContext* lua_context;                     /**< The Solarus Lua API (nullptr means no callbacks for this movement).
                                                   * TODO move this to ExportableToLua */
-    int finished_callback_ref;                   /**< Lua ref to a function to call when this movement finishes. */
+    ScopedLuaRef finished_callback_ref;          /**< Lua ref to a function to call when this movement finishes. */
 
 };
 

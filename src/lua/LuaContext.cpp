@@ -2826,16 +2826,19 @@ int LuaContext::l_panic(lua_State* l) {
  */
 int LuaContext::l_loader(lua_State* l) {
 
-  const std::string& script_name = luaL_checkstring(l, 1);
-  bool exists = load_file_if_exists(l, script_name);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& script_name = luaL_checkstring(l, 1);
+    bool exists = load_file_if_exists(l, script_name);
 
-  if (!exists) {
-    std::ostringstream oss;
-    oss << std::endl << "\tno quest file '" << script_name
-      << ".lua' in 'data/', 'data.solarus' or 'data.solarus.zip'";
-    push_string(l, oss.str());
+    if (!exists) {
+      std::ostringstream oss;
+      oss << std::endl << "\tno quest file '" << script_name
+          << ".lua' in 'data/', 'data.solarus' or 'data.solarus.zip'";
+      push_string(l, oss.str());
+    }
+    return 1;
   }
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 }

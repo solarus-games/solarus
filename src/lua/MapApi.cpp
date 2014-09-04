@@ -756,7 +756,7 @@ int LuaContext::map_api_get_entities(lua_State* l) {
   }
   lua_getglobal(l, "pairs");
   lua_pushvalue(l, -2);
-  lua_call(l, 1, 3);
+  lua_call(l, 1, 3);  // TODO don't call the pairs global value, implement our own iterator instead.
 
   return 3;
 }

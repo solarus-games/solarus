@@ -837,10 +837,12 @@ Color LuaTools::check_color(lua_State* l, int index) {
   lua_rawgeti(l, index, 2);
   lua_rawgeti(l, index, 3);
   lua_rawgeti(l, index, 4);
-  Color color(luaL_checkint(l, -4),
-    luaL_checkint(l, -3),
-    luaL_checkint(l, -2),
-    luaL_optint(l, -1, 255));
+  Color color(
+      check_int(l, -4),
+      check_int(l, -3),
+      check_int(l, -2),
+      opt_int(l, -1, 255)
+  );
   lua_pop(l, 4);
 
   return color;

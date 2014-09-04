@@ -320,7 +320,7 @@ E LuaTools::check_enum(
 ) {
   Debug::check_assertion(!names[0].empty(), "Invalid list of names");
 
-  const std::string& name = luaL_checkstring(l, index);
+  const std::string& name = LuaTools::check_string(l, index);
   for (int i = 0; !names[i].empty(); ++i) {
     if (names[i] == name) {
       return E(i);

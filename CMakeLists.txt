@@ -58,15 +58,25 @@ file(
   src/movements/*.cpp
   src/containers/*.cpp
   include/*.h
+  include/*.inl
   include/entities/*.h
+  include/entities/*.inl
   include/hero/*.h
+  include/hero/*.inl
   include/hud/*.h
+  include/hud/*.inl
   include/lowlevel/*.h
+  include/lowlevel/*.inl
   include/lowlevel/shaders*.h
+  include/lowlevel/shaders*.inl
   include/lua/*.h
+  include/lua/*.inl
   include/menus/*.h
+  include/menus/*.inl
   include/movements/*.h
+  include/movements/*.inl
   include/containers/*.h
+  include/containers/*.inl
   include/third_party/snes_spc/*.h
   include/third_party/hqx/*.h
 )

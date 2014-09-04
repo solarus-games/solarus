@@ -340,16 +340,16 @@ bool LuaContext::is_movement(lua_State* l, int index) {
  */
 Movement& LuaContext::check_movement(lua_State* l, int index) {
 
-  Movement** movement = nullptr;
-
   if (is_movement(l, index)) {
-    movement = static_cast<Movement**>(lua_touserdata(l, index));
+    const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(
+      lua_touserdata(l, index)
+    ));
+    return *std::static_pointer_cast<Movement>(userdata);
   }
   else {
     LuaTools::type_error(l, index, "movement");
+    throw;
   }
-
-  return **movement;
 }
 
 /**
@@ -471,68 +471,71 @@ void LuaContext::update_movements() {
  */
 int LuaContext::movement_api_create(lua_State* l) {
 
-  LuaContext& lua_context = get_lua_context(l);
-  const std::string& type = LuaTools::check_string(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    LuaContext& lua_context = get_lua_context(l);
+    const std::string& type = LuaTools::check_string(l, 1);
 
-  Movement* movement = nullptr;
-  if (type == "straight") {
-    StraightMovement* straight_movement = new StraightMovement(false, true);
-    straight_movement->set_speed(32);
-    movement = straight_movement;
-  }
-  else if (type == "random") {
-    movement = new RandomMovement(32);
-  }
-  else if (type == "target") {
-    Game* game = lua_context.get_main_loop().get_game();
-    if (game != nullptr) {
-      // If we are on a map, the default target is the hero.
-      movement = new TargetMovement(
-          &game->get_hero(), 0, 0, 96, false);
+    Movement* movement = nullptr;
+    if (type == "straight") {
+      StraightMovement* straight_movement = new StraightMovement(false, true);
+      straight_movement->set_speed(32);
+      movement = straight_movement;
+    }
+    else if (type == "random") {
+      movement = new RandomMovement(32);
+    }
+    else if (type == "target") {
+      Game* game = lua_context.get_main_loop().get_game();
+      if (game != nullptr) {
+        // If we are on a map, the default target is the hero.
+        movement = new TargetMovement(
+            &game->get_hero(), 0, 0, 96, false);
+      }
+      else {
+        movement = new TargetMovement(nullptr, 0, 0, 32, false);
+      }
+    }
+    else if (type == "path") {
+      movement = new PathMovement("", 32, false, false, false);
+    }
+    else if (type == "random_path") {
+      movement = new RandomPathMovement(32);
+    }
+    else if (type == "path_finding") {
+      PathFindingMovement* path_finding_movement = new PathFindingMovement(32);
+      Game* game = lua_context.get_main_loop().get_game();
+      if (game != nullptr) {
+        // If we are on a map, the default target is the hero.
+        path_finding_movement->set_target(game->get_hero());
+      }
+      movement = path_finding_movement;
+    }
+    else if (type == "circle") {
+      movement = new CircleMovement(false);
+    }
+    else if (type == "jump") {
+      movement = new JumpMovement(0, 0, 0, false);
+    }
+    else if (type == "pixel") {
+      movement = new PixelMovement("", 30, false, false);
     }
     else {
-      movement = new TargetMovement(nullptr, 0, 0, 32, false);
+      LuaTools::arg_error(l, 1, "should be one of: "
+          "\"straight\", "
+          "\"random\", "
+          "\"target\", "
+          "\"path\", "
+          "\"random_path\", "
+          "\"path_finding\", "
+          "\"circle\", "
+          "\"jump\" or "
+          "\"pixel\"");
     }
-  }
-  else if (type == "path") {
-    movement = new PathMovement("", 32, false, false, false);
-  }
-  else if (type == "random_path") {
-    movement = new RandomPathMovement(32);
-  }
-  else if (type == "path_finding") {
-    PathFindingMovement* path_finding_movement = new PathFindingMovement(32);
-    Game* game = lua_context.get_main_loop().get_game();
-    if (game != nullptr) {
-      // If we are on a map, the default target is the hero.
-      path_finding_movement->set_target(game->get_hero());
-    }
-    movement = path_finding_movement;
-  }
-  else if (type == "circle") {
-    movement = new CircleMovement(false);
-  }
-  else if (type == "jump") {
-    movement = new JumpMovement(0, 0, 0, false);
-  }
-  else if (type == "pixel") {
-    movement = new PixelMovement("", 30, false, false);
-  }
-  else {
-    LuaTools::arg_error(l, 1, "should be one of: "
-        "\"straight\", "
-        "\"random\", "
-        "\"target\", "
-        "\"path\", "
-        "\"random_path\", "
-        "\"path_finding\", "
-        "\"circle\", "
-        "\"jump\" or "
-        "\"pixel\"");
-  }
 
-  push_movement(l, *movement);
-  return 1;
+    push_movement(l, *movement);
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -542,12 +545,15 @@ int LuaContext::movement_api_create(lua_State* l) {
  */
 int LuaContext::movement_api_get_xy(lua_State* l) {
 
-  Movement& movement = check_movement(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Movement& movement = check_movement(l, 1);
 
-  const Point& xy = movement.get_xy();
-  lua_pushinteger(l, xy.x);
-  lua_pushinteger(l, xy.y);
-  return 2;
+    const Point& xy = movement.get_xy();
+    lua_pushinteger(l, xy.x);
+    lua_pushinteger(l, xy.y);
+    return 2;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -557,13 +563,16 @@ int LuaContext::movement_api_get_xy(lua_State* l) {
  */
 int LuaContext::movement_api_set_xy(lua_State* l) {
 
-  Movement& movement = check_movement(l, 1);
-  int x = LuaTools::check_int(l, 2);
-  int y = LuaTools::check_int(l, 3);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Movement& movement = check_movement(l, 1);
+    int x = LuaTools::check_int(l, 2);
+    int y = LuaTools::check_int(l, 3);
 
-  movement.set_xy(x, y);
+    movement.set_xy(x, y);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -573,38 +582,41 @@ int LuaContext::movement_api_set_xy(lua_State* l) {
  */
 int LuaContext::movement_api_start(lua_State* l) {
 
-  LuaContext& lua_context = get_lua_context(l);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    LuaContext& lua_context = get_lua_context(l);
 
-  Movement& movement = check_movement(l, 1);
-  movement_api_stop(l);  // First, stop any previous movement.
+    Movement& movement = check_movement(l, 1);
+    movement_api_stop(l);  // First, stop any previous movement.
 
-  int callback_ref = LUA_REFNIL;
-  if (lua_gettop(l) >= 3 && !lua_isnil(l, 3)) {
-    LuaTools::check_type(l, 3, LUA_TFUNCTION);
-    lua_settop(l, 3);
-    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
-    movement.set_lua_context(&lua_context);
-    movement.set_finished_callback(callback_ref);
-  }
+    int callback_ref = LUA_REFNIL;
+    if (lua_gettop(l) >= 3 && !lua_isnil(l, 3)) {
+      LuaTools::check_type(l, 3, LUA_TFUNCTION);
+      lua_settop(l, 3);
+      callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+      movement.set_lua_context(&lua_context);
+      movement.set_finished_callback(callback_ref);
+    }
 
-  if (lua_type(l, 2) == LUA_TTABLE) {
-    lua_context.start_movement_on_point(movement, 2);
-  }
-  else if (is_entity(l, 2)) {
-    MapEntity& entity = check_entity(l, 2);
-    entity.clear_movement();
-    entity.set_movement(&movement);
-  }
-  else if (is_drawable(l, 2)) {
-    Drawable& drawable = check_drawable(l, 2);
-    drawable.start_movement(movement);
-  }
-  else {
-    lua_context.cancel_callback(callback_ref);
-    LuaTools::type_error(l, 2, "table, entity or drawable");
-  }
+    if (lua_type(l, 2) == LUA_TTABLE) {
+      lua_context.start_movement_on_point(movement, 2);
+    }
+    else if (is_entity(l, 2)) {
+      MapEntity& entity = check_entity(l, 2);
+      entity.clear_movement();
+      entity.set_movement(&movement);
+    }
+    else if (is_drawable(l, 2)) {
+      Drawable& drawable = check_drawable(l, 2);
+      drawable.start_movement(movement);
+    }
+    else {
+      lua_context.cancel_callback(callback_ref);
+      LuaTools::type_error(l, 2, "table, entity or drawable");
+    }
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -614,28 +626,31 @@ int LuaContext::movement_api_start(lua_State* l) {
  */
 int LuaContext::movement_api_stop(lua_State* l) {
 
-  LuaContext& lua_context = get_lua_context(l);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    LuaContext& lua_context = get_lua_context(l);
 
-  Movement& movement = check_movement(l, 1);
+    Movement& movement = check_movement(l, 1);
 
-  MapEntity* entity = movement.get_entity();
-  if (entity != nullptr) {
-    // The object controlled is a map entity.
-    entity->clear_movement();
-  }
-  else {
-    Drawable* drawable = movement.get_drawable();
-    if (drawable != nullptr) {
-      // The object controlled is a drawable.
-      drawable->stop_movement();
+    MapEntity* entity = movement.get_entity();
+    if (entity != nullptr) {
+      // The object controlled is a map entity.
+      entity->clear_movement();
     }
     else {
-      // The object controlled is a point.
-      lua_context.stop_movement_on_point(movement);
+      Drawable* drawable = movement.get_drawable();
+      if (drawable != nullptr) {
+        // The object controlled is a drawable.
+        drawable->stop_movement();
+      }
+      else {
+        // The object controlled is a point.
+        lua_context.stop_movement_on_point(movement);
+      }
     }
-  }
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -645,10 +660,13 @@ int LuaContext::movement_api_stop(lua_State* l) {
  */
 int LuaContext::movement_api_get_ignore_obstacles(lua_State* l) {
 
-  Movement& movement = check_movement(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Movement& movement = check_movement(l, 1);
 
-  lua_pushboolean(l, movement.are_obstacles_ignored());
-  return 1;
+    lua_pushboolean(l, movement.are_obstacles_ignored());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -658,15 +676,18 @@ int LuaContext::movement_api_get_ignore_obstacles(lua_State* l) {
  */
 int LuaContext::movement_api_set_ignore_obstacles(lua_State* l) {
 
-  Movement& movement = check_movement(l, 1);
-  bool ignore_obstacles = true; // true if unspecified
-  if (lua_gettop(l) >= 2) {
-    ignore_obstacles = lua_toboolean(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Movement& movement = check_movement(l, 1);
+    bool ignore_obstacles = true; // true if unspecified
+    if (lua_gettop(l) >= 2) {
+      ignore_obstacles = lua_toboolean(l, 2);
+    }
+
+    movement.set_ignore_obstacles(ignore_obstacles);
+
+    return 0;
   }
-
-  movement.set_ignore_obstacles(ignore_obstacles);
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -676,9 +697,12 @@ int LuaContext::movement_api_set_ignore_obstacles(lua_State* l) {
  */
 int LuaContext::movement_api_get_direction4(lua_State* l) {
 
-  Movement& movement = check_movement(l, 1);
-  lua_pushinteger(l, movement.get_displayed_direction4());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Movement& movement = check_movement(l, 1);
+    lua_pushinteger(l, movement.get_displayed_direction4());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -711,9 +735,12 @@ StraightMovement& LuaContext::check_straight_movement(lua_State* l, int index) {
  */
 int LuaContext::straight_movement_api_get_speed(lua_State* l) {
 
-  StraightMovement& movement = check_straight_movement(l, 1);
-  lua_pushinteger(l, movement.get_speed());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    StraightMovement& movement = check_straight_movement(l, 1);
+    lua_pushinteger(l, movement.get_speed());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -736,9 +763,12 @@ int LuaContext::straight_movement_api_set_speed(lua_State* l) {
  */
 int LuaContext::straight_movement_api_get_angle(lua_State* l) {
 
-  StraightMovement& movement = check_straight_movement(l, 1);
-  lua_pushnumber(l, movement.get_angle());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    StraightMovement& movement = check_straight_movement(l, 1);
+    lua_pushnumber(l, movement.get_angle());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -748,10 +778,13 @@ int LuaContext::straight_movement_api_get_angle(lua_State* l) {
  */
 int LuaContext::straight_movement_api_set_angle(lua_State* l) {
 
-  StraightMovement& movement = check_straight_movement(l, 1);
-  double angle = LuaTools::check_number(l, 2);
-  movement.set_angle(angle);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    StraightMovement& movement = check_straight_movement(l, 1);
+    double angle = LuaTools::check_number(l, 2);
+    movement.set_angle(angle);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -761,9 +794,12 @@ int LuaContext::straight_movement_api_set_angle(lua_State* l) {
  */
 int LuaContext::straight_movement_api_get_max_distance(lua_State* l) {
 
-  StraightMovement& movement = check_straight_movement(l, 1);
-  lua_pushinteger(l, movement.get_max_distance());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    StraightMovement& movement = check_straight_movement(l, 1);
+    lua_pushinteger(l, movement.get_max_distance());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -773,10 +809,13 @@ int LuaContext::straight_movement_api_get_max_distance(lua_State* l) {
  */
 int LuaContext::straight_movement_api_set_max_distance(lua_State* l) {
 
-  StraightMovement& movement = check_straight_movement(l, 1);
-  int max_distance = LuaTools::check_int(l, 2);
-  movement.set_max_distance(max_distance);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    StraightMovement& movement = check_straight_movement(l, 1);
+    int max_distance = LuaTools::check_int(l, 2);
+    movement.set_max_distance(max_distance);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -786,9 +825,12 @@ int LuaContext::straight_movement_api_set_max_distance(lua_State* l) {
  */
 int LuaContext::straight_movement_api_is_smooth(lua_State* l) {
 
-  StraightMovement& movement = check_straight_movement(l, 1);
-  lua_pushboolean(l, movement.is_smooth());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    StraightMovement& movement = check_straight_movement(l, 1);
+    lua_pushboolean(l, movement.is_smooth());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -798,14 +840,17 @@ int LuaContext::straight_movement_api_is_smooth(lua_State* l) {
  */
 int LuaContext::straight_movement_api_set_smooth(lua_State* l) {
 
-  StraightMovement& movement = check_straight_movement(l, 1);
-  bool smooth = true; // true if unspecified
-  if (lua_gettop(l) >= 2) {
-    smooth = lua_toboolean(l, 2);
-  }
-  movement.set_smooth(smooth);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    StraightMovement& movement = check_straight_movement(l, 1);
+    bool smooth = true; // true if unspecified
+    if (lua_gettop(l) >= 2) {
+      smooth = lua_toboolean(l, 2);
+    }
+    movement.set_smooth(smooth);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -837,9 +882,12 @@ RandomMovement& LuaContext::check_random_movement(lua_State* l, int index) {
  */
 int LuaContext::random_movement_api_get_speed(lua_State* l) {
 
-  RandomMovement& movement = check_random_movement(l, 1);
-  lua_pushinteger(l, movement.get_speed());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    RandomMovement& movement = check_random_movement(l, 1);
+    lua_pushinteger(l, movement.get_speed());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -849,10 +897,13 @@ int LuaContext::random_movement_api_get_speed(lua_State* l) {
  */
 int LuaContext::random_movement_api_set_speed(lua_State* l) {
 
-  RandomMovement& movement = check_random_movement(l, 1);
-  int speed = LuaTools::check_int(l, 2);
-  movement.set_normal_speed(speed);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    RandomMovement& movement = check_random_movement(l, 1);
+    int speed = LuaTools::check_int(l, 2);
+    movement.set_normal_speed(speed);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -862,9 +913,12 @@ int LuaContext::random_movement_api_set_speed(lua_State* l) {
  */
 int LuaContext::random_movement_api_get_angle(lua_State* l) {
 
-  RandomMovement& movement = check_random_movement(l, 1);
-  lua_pushnumber(l, movement.get_angle());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    RandomMovement& movement = check_random_movement(l, 1);
+    lua_pushnumber(l, movement.get_angle());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -874,9 +928,12 @@ int LuaContext::random_movement_api_get_angle(lua_State* l) {
  */
 int LuaContext::random_movement_api_get_max_distance(lua_State* l) {
 
-  RandomMovement& movement = check_random_movement(l, 1);
-  lua_pushinteger(l, movement.get_max_radius());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    RandomMovement& movement = check_random_movement(l, 1);
+    lua_pushinteger(l, movement.get_max_radius());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -886,10 +943,13 @@ int LuaContext::random_movement_api_get_max_distance(lua_State* l) {
  */
 int LuaContext::random_movement_api_set_max_distance(lua_State* l) {
 
-  RandomMovement& movement = check_random_movement(l, 1);
-  int max_radius = LuaTools::check_int(l, 2);
-  movement.set_max_radius(max_radius);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    RandomMovement& movement = check_random_movement(l, 1);
+    int max_radius = LuaTools::check_int(l, 2);
+    movement.set_max_radius(max_radius);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -899,9 +959,12 @@ int LuaContext::random_movement_api_set_max_distance(lua_State* l) {
  */
 int LuaContext::random_movement_api_is_smooth(lua_State* l) {
 
-  RandomMovement& movement = check_random_movement(l, 1);
-  lua_pushboolean(l, movement.is_smooth());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    RandomMovement& movement = check_random_movement(l, 1);
+    lua_pushboolean(l, movement.is_smooth());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -911,14 +974,17 @@ int LuaContext::random_movement_api_is_smooth(lua_State* l) {
  */
 int LuaContext::random_movement_api_set_smooth(lua_State* l) {
 
-  RandomMovement& movement = check_random_movement(l, 1);
-  bool smooth = true; // true if unspecified
-  if (lua_gettop(l) >= 2) {
-    smooth = lua_toboolean(l, 2);
-  }
-  movement.set_smooth(smooth);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    RandomMovement& movement = check_random_movement(l, 1);
+    bool smooth = true; // true if unspecified
+    if (lua_gettop(l) >= 2) {
+      smooth = lua_toboolean(l, 2);
+    }
+    movement.set_smooth(smooth);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -950,27 +1016,30 @@ TargetMovement& LuaContext::check_target_movement(lua_State* l, int index) {
  */
 int LuaContext::target_movement_api_set_target(lua_State* l) {
 
-  TargetMovement& movement = check_target_movement(l, 1);
-  if (lua_isnumber(l, 2)) {
-    // The target is a fixed point.
-    int x = LuaTools::check_int(l, 2);
-    int y = LuaTools::check_int(l, 3);
-    movement.set_target(nullptr, x, y);
-  }
-  else {
-    // the target is an entity, possibly with an offset.
-    MapEntity& target = check_entity(l, 2);
-    int x = 0;
-    int y = 0;
-    if (lua_isnumber(l, 3)) {
-       // There is an offset.
-       x = LuaTools::check_int(l, 3);
-       y = LuaTools::check_int(l, 4);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    TargetMovement& movement = check_target_movement(l, 1);
+    if (lua_isnumber(l, 2)) {
+      // The target is a fixed point.
+      int x = LuaTools::check_int(l, 2);
+      int y = LuaTools::check_int(l, 3);
+      movement.set_target(nullptr, x, y);
     }
-    movement.set_target(&target, x, y);
-  }
+    else {
+      // the target is an entity, possibly with an offset.
+      MapEntity& target = check_entity(l, 2);
+      int x = 0;
+      int y = 0;
+      if (lua_isnumber(l, 3)) {
+        // There is an offset.
+        x = LuaTools::check_int(l, 3);
+        y = LuaTools::check_int(l, 4);
+      }
+      movement.set_target(&target, x, y);
+    }
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -980,9 +1049,12 @@ int LuaContext::target_movement_api_set_target(lua_State* l) {
  */
 int LuaContext::target_movement_api_get_speed(lua_State* l) {
 
-  TargetMovement& movement = check_target_movement(l, 1);
-  lua_pushinteger(l, movement.get_speed());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    TargetMovement& movement = check_target_movement(l, 1);
+    lua_pushinteger(l, movement.get_speed());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -992,10 +1064,13 @@ int LuaContext::target_movement_api_get_speed(lua_State* l) {
  */
 int LuaContext::target_movement_api_set_speed(lua_State* l) {
 
-  TargetMovement& movement = check_target_movement(l, 1);
-  int speed = LuaTools::check_int(l, 2);
-  movement.set_moving_speed(speed);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    TargetMovement& movement = check_target_movement(l, 1);
+    int speed = LuaTools::check_int(l, 2);
+    movement.set_moving_speed(speed);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1005,9 +1080,12 @@ int LuaContext::target_movement_api_set_speed(lua_State* l) {
  */
 int LuaContext::target_movement_api_get_angle(lua_State* l) {
 
-  TargetMovement& movement = check_target_movement(l, 1);
-  lua_pushnumber(l, movement.get_angle());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    TargetMovement& movement = check_target_movement(l, 1);
+    lua_pushnumber(l, movement.get_angle());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1017,9 +1095,12 @@ int LuaContext::target_movement_api_get_angle(lua_State* l) {
  */
 int LuaContext::target_movement_api_is_smooth(lua_State* l) {
 
-  TargetMovement& movement = check_target_movement(l, 1);
-  lua_pushboolean(l, movement.is_smooth());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    TargetMovement& movement = check_target_movement(l, 1);
+    lua_pushboolean(l, movement.is_smooth());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1029,14 +1110,17 @@ int LuaContext::target_movement_api_is_smooth(lua_State* l) {
  */
 int LuaContext::target_movement_api_set_smooth(lua_State* l) {
 
-  TargetMovement& movement = check_target_movement(l, 1);
-  bool smooth = true; // true if unspecified
-  if (lua_gettop(l) >= 2) {
-    smooth = lua_toboolean(l, 2);
-  }
-  movement.set_smooth(smooth);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    TargetMovement& movement = check_target_movement(l, 1);
+    bool smooth = true; // true if unspecified
+    if (lua_gettop(l) >= 2) {
+      smooth = lua_toboolean(l, 2);
+    }
+    movement.set_smooth(smooth);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1068,19 +1152,22 @@ PathMovement& LuaContext::check_path_movement(lua_State* l, int index) {
  */
 int LuaContext::path_movement_api_get_path(lua_State* l) {
 
-  PathMovement& movement = check_path_movement(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PathMovement& movement = check_path_movement(l, 1);
 
-  const std::string& path = movement.get_path();
-  // build a Lua array containing the path
-  lua_settop(l, 1);
-  lua_newtable(l);
-  for (size_t i = 0; i < path.size(); i++) {
-    int direction8 = path[i] - '0';
-    lua_pushinteger(l, direction8);
-    lua_rawseti(l, 2, int(i));
+    const std::string& path = movement.get_path();
+    // build a Lua array containing the path
+    lua_settop(l, 1);
+    lua_newtable(l);
+    for (size_t i = 0; i < path.size(); i++) {
+      int direction8 = path[i] - '0';
+      lua_pushinteger(l, direction8);
+      lua_rawseti(l, 2, int(i));
+    }
+
+    return 1;
   }
-
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1090,20 +1177,23 @@ int LuaContext::path_movement_api_get_path(lua_State* l) {
  */
 int LuaContext::path_movement_api_set_path(lua_State* l) {
 
-  PathMovement& movement = check_path_movement(l, 1);
-  LuaTools::check_type(l, 2, LUA_TTABLE);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PathMovement& movement = check_path_movement(l, 1);
+    LuaTools::check_type(l, 2, LUA_TTABLE);
 
-  // build the path as a string from the Lua table
-  std::string path = "";
-  lua_pushnil(l); // first key
-  while (lua_next(l, 2) != 0) {
-    int direction8 = LuaTools::check_int(l, 4);
-    path += ('0' + direction8);
-    lua_pop(l, 1); // pop the value, let the key for the iteration
+    // build the path as a string from the Lua table
+    std::string path = "";
+    lua_pushnil(l); // first key
+    while (lua_next(l, 2) != 0) {
+      int direction8 = LuaTools::check_int(l, 4);
+      path += ('0' + direction8);
+      lua_pop(l, 1); // pop the value, let the key for the iteration
+    }
+    movement.set_path(path);
+
+    return 0;
   }
-  movement.set_path(path);
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1113,9 +1203,12 @@ int LuaContext::path_movement_api_set_path(lua_State* l) {
  */
 int LuaContext::path_movement_api_get_speed(lua_State* l) {
 
-  PathMovement& movement = check_path_movement(l, 1);
-  lua_pushinteger(l, movement.get_speed());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PathMovement& movement = check_path_movement(l, 1);
+    lua_pushinteger(l, movement.get_speed());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1125,10 +1218,13 @@ int LuaContext::path_movement_api_get_speed(lua_State* l) {
  */
 int LuaContext::path_movement_api_set_speed(lua_State* l) {
 
-  PathMovement& movement = check_path_movement(l, 1);
-  int speed = LuaTools::check_int(l, 2);
-  movement.set_speed(speed);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PathMovement& movement = check_path_movement(l, 1);
+    int speed = LuaTools::check_int(l, 2);
+    movement.set_speed(speed);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1138,9 +1234,12 @@ int LuaContext::path_movement_api_set_speed(lua_State* l) {
  */
 int LuaContext::path_movement_api_get_loop(lua_State* l) {
 
-  PathMovement& movement = check_path_movement(l, 1);
-  lua_pushboolean(l, movement.get_loop());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PathMovement& movement = check_path_movement(l, 1);
+    lua_pushboolean(l, movement.get_loop());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1150,14 +1249,17 @@ int LuaContext::path_movement_api_get_loop(lua_State* l) {
  */
 int LuaContext::path_movement_api_set_loop(lua_State* l) {
 
-  PathMovement& movement = check_path_movement(l, 1);
-  bool loop = true; // true if unspecified
-  if (lua_gettop(l) >= 2) {
-    loop = lua_toboolean(l, 2);
-  }
-  movement.set_loop(loop);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PathMovement& movement = check_path_movement(l, 1);
+    bool loop = true; // true if unspecified
+    if (lua_gettop(l) >= 2) {
+      loop = lua_toboolean(l, 2);
+    }
+    movement.set_loop(loop);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1167,9 +1269,12 @@ int LuaContext::path_movement_api_set_loop(lua_State* l) {
  */
 int LuaContext::path_movement_api_get_snap_to_grid(lua_State* l) {
 
-  PathMovement& movement = check_path_movement(l, 1);
-  lua_pushboolean(l, movement.get_snap_to_grid());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PathMovement& movement = check_path_movement(l, 1);
+    lua_pushboolean(l, movement.get_snap_to_grid());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1179,14 +1284,17 @@ int LuaContext::path_movement_api_get_snap_to_grid(lua_State* l) {
  */
 int LuaContext::path_movement_api_set_snap_to_grid(lua_State* l) {
 
-  PathMovement& movement = check_path_movement(l, 1);
-  bool snap_to_grid = true; // true if unspecified
-  if (lua_gettop(l) >= 2) {
-    snap_to_grid = lua_toboolean(l, 2);
-  }
-  movement.set_snap_to_grid(snap_to_grid);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PathMovement& movement = check_path_movement(l, 1);
+    bool snap_to_grid = true; // true if unspecified
+    if (lua_gettop(l) >= 2) {
+      snap_to_grid = lua_toboolean(l, 2);
+    }
+    movement.set_snap_to_grid(snap_to_grid);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1218,9 +1326,12 @@ bool LuaContext::is_random_path_movement(lua_State* l, int index) {
  */
 int LuaContext::random_path_movement_api_get_speed(lua_State* l) {
 
-  RandomPathMovement& movement = check_random_path_movement(l, 1);
-  lua_pushinteger(l, movement.get_speed());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    RandomPathMovement& movement = check_random_path_movement(l, 1);
+    lua_pushinteger(l, movement.get_speed());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1230,10 +1341,13 @@ int LuaContext::random_path_movement_api_get_speed(lua_State* l) {
  */
 int LuaContext::random_path_movement_api_set_speed(lua_State* l) {
 
-  RandomPathMovement& movement = check_random_path_movement(l, 1);
-  int speed = LuaTools::check_int(l, 2);
-  movement.set_speed(speed);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    RandomPathMovement& movement = check_random_path_movement(l, 1);
+    int speed = LuaTools::check_int(l, 2);
+    movement.set_speed(speed);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1265,12 +1379,15 @@ PathFindingMovement& LuaContext::check_path_finding_movement(lua_State* l, int i
  */
 int LuaContext::path_finding_movement_api_set_target(lua_State* l) {
 
-  PathFindingMovement& movement = check_path_finding_movement(l, 1);
-  MapEntity& target = check_entity(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PathFindingMovement& movement = check_path_finding_movement(l, 1);
+    MapEntity& target = check_entity(l, 2);
 
-  movement.set_target(target);
+    movement.set_target(target);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1280,9 +1397,12 @@ int LuaContext::path_finding_movement_api_set_target(lua_State* l) {
  */
 int LuaContext::path_finding_movement_api_get_speed(lua_State* l) {
 
-  PathFindingMovement& movement = check_path_finding_movement(l, 1);
-  lua_pushinteger(l, movement.get_speed());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PathFindingMovement& movement = check_path_finding_movement(l, 1);
+    lua_pushinteger(l, movement.get_speed());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1292,10 +1412,13 @@ int LuaContext::path_finding_movement_api_get_speed(lua_State* l) {
  */
 int LuaContext::path_finding_movement_api_set_speed(lua_State* l) {
 
-  PathFindingMovement& movement = check_path_finding_movement(l, 1);
-  int speed = LuaTools::check_int(l, 2);
-  movement.set_speed(speed);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PathFindingMovement& movement = check_path_finding_movement(l, 1);
+    int speed = LuaTools::check_int(l, 2);
+    movement.set_speed(speed);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1327,23 +1450,26 @@ CircleMovement& LuaContext::check_circle_movement(lua_State* l, int index) {
  */
 int LuaContext::circle_movement_api_set_center(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  if (lua_isnumber(l, 2)) {
-    // the center is a fixed point
-    int x = LuaTools::check_int(l, 2);
-    int y = LuaTools::check_int(l, 3);
-    movement.set_center(Point(x, y));
-  }
-  else {
-    // the center is an entity
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    if (lua_isnumber(l, 2)) {
+      // the center is a fixed point
+      int x = LuaTools::check_int(l, 2);
+      int y = LuaTools::check_int(l, 3);
+      movement.set_center(Point(x, y));
+    }
+    else {
+      // the center is an entity
 
-    MapEntity& center = check_entity(l, 2);
-    int dx = LuaTools::opt_int(l, 3, 0);
-    int dy = LuaTools::opt_int(l, 4, 0);
-    movement.set_center(center, dx, dy);
-  }
+      MapEntity& center = check_entity(l, 2);
+      int dx = LuaTools::opt_int(l, 3, 0);
+      int dy = LuaTools::opt_int(l, 4, 0);
+      movement.set_center(center, dx, dy);
+    }
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1353,9 +1479,12 @@ int LuaContext::circle_movement_api_set_center(lua_State* l) {
  */
 int LuaContext::circle_movement_api_get_radius(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  lua_pushinteger(l, movement.get_radius());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    lua_pushinteger(l, movement.get_radius());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1365,10 +1494,13 @@ int LuaContext::circle_movement_api_get_radius(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_radius(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  int radius = LuaTools::check_int(l, 2);
-  movement.set_radius(radius);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    int radius = LuaTools::check_int(l, 2);
+    movement.set_radius(radius);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1378,9 +1510,12 @@ int LuaContext::circle_movement_api_set_radius(lua_State* l) {
  */
 int LuaContext::circle_movement_api_get_radius_speed(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  lua_pushinteger(l, movement.get_radius_speed());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    lua_pushinteger(l, movement.get_radius_speed());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1390,10 +1525,13 @@ int LuaContext::circle_movement_api_get_radius_speed(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_radius_speed(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  int radius_speed = LuaTools::check_int(l, 2);
-  movement.set_radius_speed(radius_speed);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    int radius_speed = LuaTools::check_int(l, 2);
+    movement.set_radius_speed(radius_speed);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1403,9 +1541,12 @@ int LuaContext::circle_movement_api_set_radius_speed(lua_State* l) {
  */
 int LuaContext::circle_movement_api_is_clockwise(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  lua_pushboolean(l, movement.is_clockwise());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    lua_pushboolean(l, movement.is_clockwise());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1415,14 +1556,17 @@ int LuaContext::circle_movement_api_is_clockwise(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_clockwise(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  bool clockwise = true; // true if unspecified
-  if (lua_gettop(l) >= 2) {
-    clockwise = lua_toboolean(l, 2);
-  }
-  movement.set_clockwise(clockwise);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    bool clockwise = true; // true if unspecified
+    if (lua_gettop(l) >= 2) {
+      clockwise = lua_toboolean(l, 2);
+    }
+    movement.set_clockwise(clockwise);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1432,9 +1576,12 @@ int LuaContext::circle_movement_api_set_clockwise(lua_State* l) {
  */
 int LuaContext::circle_movement_api_get_initial_angle(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  lua_pushnumber(l, movement.get_initial_angle());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    lua_pushnumber(l, movement.get_initial_angle());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1444,10 +1591,13 @@ int LuaContext::circle_movement_api_get_initial_angle(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_initial_angle(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  double initial_angle = LuaTools::check_number(l, 2);
-  movement.set_initial_angle(initial_angle);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    double initial_angle = LuaTools::check_number(l, 2);
+    movement.set_initial_angle(initial_angle);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1457,9 +1607,12 @@ int LuaContext::circle_movement_api_set_initial_angle(lua_State* l) {
  */
 int LuaContext::circle_movement_api_get_angle_speed(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  lua_pushinteger(l, movement.get_angle_speed());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    lua_pushinteger(l, movement.get_angle_speed());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1469,10 +1622,13 @@ int LuaContext::circle_movement_api_get_angle_speed(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_angle_speed(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  int angle_speed = LuaTools::check_int(l, 2);
-  movement.set_angle_speed(angle_speed);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    int angle_speed = LuaTools::check_int(l, 2);
+    movement.set_angle_speed(angle_speed);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1482,9 +1638,12 @@ int LuaContext::circle_movement_api_set_angle_speed(lua_State* l) {
  */
 int LuaContext::circle_movement_api_get_max_rotations(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  lua_pushinteger(l, movement.get_max_rotations());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    lua_pushinteger(l, movement.get_max_rotations());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1494,10 +1653,13 @@ int LuaContext::circle_movement_api_get_max_rotations(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_max_rotations(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  int max_rotations = LuaTools::check_int(l, 2);
-  movement.set_max_rotations(max_rotations);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    int max_rotations = LuaTools::check_int(l, 2);
+    movement.set_max_rotations(max_rotations);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1507,9 +1669,12 @@ int LuaContext::circle_movement_api_set_max_rotations(lua_State* l) {
  */
 int LuaContext::circle_movement_api_get_duration(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  lua_pushinteger(l, movement.get_duration());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    lua_pushinteger(l, movement.get_duration());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1519,10 +1684,13 @@ int LuaContext::circle_movement_api_get_duration(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_duration(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  int duration = LuaTools::check_int(l, 2);
-  movement.set_duration(duration);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    int duration = LuaTools::check_int(l, 2);
+    movement.set_duration(duration);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1532,9 +1700,12 @@ int LuaContext::circle_movement_api_set_duration(lua_State* l) {
  */
 int LuaContext::circle_movement_api_get_loop_delay(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  lua_pushinteger(l, movement.get_loop());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    lua_pushinteger(l, movement.get_loop());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1544,10 +1715,13 @@ int LuaContext::circle_movement_api_get_loop_delay(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_loop_delay(lua_State* l) {
 
-  CircleMovement& movement = check_circle_movement(l, 1);
-  int loop_delay = LuaTools::check_int(l, 2);
-  movement.set_loop(loop_delay);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    CircleMovement& movement = check_circle_movement(l, 1);
+    int loop_delay = LuaTools::check_int(l, 2);
+    movement.set_loop(loop_delay);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1579,9 +1753,12 @@ JumpMovement& LuaContext::check_jump_movement(lua_State* l, int index) {
  */
 int LuaContext::jump_movement_api_get_direction8(lua_State* l) {
 
-  JumpMovement& movement = check_jump_movement(l, 1);
-  lua_pushinteger(l, movement.get_direction8());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    JumpMovement& movement = check_jump_movement(l, 1);
+    lua_pushinteger(l, movement.get_direction8());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1591,10 +1768,13 @@ int LuaContext::jump_movement_api_get_direction8(lua_State* l) {
  */
 int LuaContext::jump_movement_api_set_direction8(lua_State* l) {
 
-  JumpMovement& movement = check_jump_movement(l, 1);
-  int direction8 = LuaTools::check_int(l, 2);
-  movement.set_direction8(direction8);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    JumpMovement& movement = check_jump_movement(l, 1);
+    int direction8 = LuaTools::check_int(l, 2);
+    movement.set_direction8(direction8);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1604,9 +1784,12 @@ int LuaContext::jump_movement_api_set_direction8(lua_State* l) {
  */
 int LuaContext::jump_movement_api_get_distance(lua_State* l) {
 
-  JumpMovement& movement = check_jump_movement(l, 1);
-  lua_pushinteger(l, movement.get_distance());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    JumpMovement& movement = check_jump_movement(l, 1);
+    lua_pushinteger(l, movement.get_distance());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1616,10 +1799,13 @@ int LuaContext::jump_movement_api_get_distance(lua_State* l) {
  */
 int LuaContext::jump_movement_api_set_distance(lua_State* l) {
 
-  JumpMovement& movement = check_jump_movement(l, 1);
-  int distance = LuaTools::check_int(l, 2);
-  movement.set_distance(distance);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    JumpMovement& movement = check_jump_movement(l, 1);
+    int distance = LuaTools::check_int(l, 2);
+    movement.set_distance(distance);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1629,9 +1815,12 @@ int LuaContext::jump_movement_api_set_distance(lua_State* l) {
  */
 int LuaContext::jump_movement_api_get_speed(lua_State* l) {
 
-  JumpMovement& movement = check_jump_movement(l, 1);
-  lua_pushinteger(l, movement.get_speed());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    JumpMovement& movement = check_jump_movement(l, 1);
+    lua_pushinteger(l, movement.get_speed());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1641,10 +1830,13 @@ int LuaContext::jump_movement_api_get_speed(lua_State* l) {
  */
 int LuaContext::jump_movement_api_set_speed(lua_State* l) {
 
-  JumpMovement& movement = check_jump_movement(l, 1);
-  int speed = LuaTools::check_int(l, 2);
-  movement.set_speed(speed);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    JumpMovement& movement = check_jump_movement(l, 1);
+    int speed = LuaTools::check_int(l, 2);
+    movement.set_speed(speed);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1676,24 +1868,27 @@ PixelMovement& LuaContext::check_pixel_movement(lua_State* l, int index) {
  */
 int LuaContext::pixel_movement_api_get_trajectory(lua_State* l) {
 
-  PixelMovement& movement = check_pixel_movement(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PixelMovement& movement = check_pixel_movement(l, 1);
 
-  const std::list<Point>& trajectory = movement.get_trajectory();
-  // build a Lua array containing the trajectory
-  lua_settop(l, 1);
-  lua_newtable(l);
-  int i = 0;
-  for (const Point& xy: trajectory) {
+    const std::list<Point>& trajectory = movement.get_trajectory();
+    // build a Lua array containing the trajectory
+    lua_settop(l, 1);
     lua_newtable(l);
-    lua_pushinteger(l, xy.x);
-    lua_rawseti(l, 3, 1);
-    lua_pushinteger(l, xy.y);
-    lua_rawseti(l, 3, 2);
-    lua_rawseti(l, 2, i);
-    ++i;
-  }
+    int i = 0;
+    for (const Point& xy: trajectory) {
+      lua_newtable(l);
+      lua_pushinteger(l, xy.x);
+      lua_rawseti(l, 3, 1);
+      lua_pushinteger(l, xy.y);
+      lua_rawseti(l, 3, 2);
+      lua_rawseti(l, 2, i);
+      ++i;
+    }
 
-  return 1;
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1703,24 +1898,27 @@ int LuaContext::pixel_movement_api_get_trajectory(lua_State* l) {
  */
 int LuaContext::pixel_movement_api_set_trajectory(lua_State* l) {
 
-  PixelMovement& movement = check_pixel_movement(l, 1);
-  LuaTools::check_type(l, 2, LUA_TTABLE);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PixelMovement& movement = check_pixel_movement(l, 1);
+    LuaTools::check_type(l, 2, LUA_TTABLE);
 
-  // build the trajectory as a string from the Lua table
-  std::list<Point> trajectory;
-  lua_pushnil(l); // first key
-  while (lua_next(l, 2) != 0) {
-    LuaTools::check_type(l, 4, LUA_TTABLE);
-    lua_rawgeti(l, 4, 1);
-    lua_rawgeti(l, 4, 2);
-    int x = LuaTools::check_int(l, 5);
-    int y = LuaTools::check_int(l, 6);
-    trajectory.emplace_back(x, y);
-    lua_settop(l, 3); // let the key for the iteration
+    // build the trajectory as a string from the Lua table
+    std::list<Point> trajectory;
+    lua_pushnil(l); // first key
+    while (lua_next(l, 2) != 0) {
+      LuaTools::check_type(l, 4, LUA_TTABLE);
+      lua_rawgeti(l, 4, 1);
+      lua_rawgeti(l, 4, 2);
+      int x = LuaTools::check_int(l, 5);
+      int y = LuaTools::check_int(l, 6);
+      trajectory.emplace_back(x, y);
+      lua_settop(l, 3); // let the key for the iteration
+    }
+    movement.set_trajectory(trajectory);
+
+    return 0;
   }
-  movement.set_trajectory(trajectory);
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1730,9 +1928,12 @@ int LuaContext::pixel_movement_api_set_trajectory(lua_State* l) {
  */
 int LuaContext::pixel_movement_api_get_loop(lua_State* l) {
 
-  PixelMovement& movement = check_pixel_movement(l, 1);
-  lua_pushboolean(l, movement.get_loop());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PixelMovement& movement = check_pixel_movement(l, 1);
+    lua_pushboolean(l, movement.get_loop());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1742,14 +1943,17 @@ int LuaContext::pixel_movement_api_get_loop(lua_State* l) {
  */
 int LuaContext::pixel_movement_api_set_loop(lua_State* l) {
 
-  PixelMovement& movement = check_pixel_movement(l, 1);
-  bool loop = true; // true if unspecified
-  if (lua_gettop(l) >= 2) {
-    loop = lua_toboolean(l, 2);
-  }
-  movement.set_loop(loop);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PixelMovement& movement = check_pixel_movement(l, 1);
+    bool loop = true; // true if unspecified
+    if (lua_gettop(l) >= 2) {
+      loop = lua_toboolean(l, 2);
+    }
+    movement.set_loop(loop);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1759,9 +1963,12 @@ int LuaContext::pixel_movement_api_set_loop(lua_State* l) {
  */
 int LuaContext::pixel_movement_api_get_delay(lua_State* l) {
 
-  PixelMovement& movement = check_pixel_movement(l, 1);
-  lua_pushinteger(l, movement.get_delay());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PixelMovement& movement = check_pixel_movement(l, 1);
+    lua_pushinteger(l, movement.get_delay());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1771,10 +1978,13 @@ int LuaContext::pixel_movement_api_get_delay(lua_State* l) {
  */
 int LuaContext::pixel_movement_api_set_delay(lua_State* l) {
 
-  PixelMovement& movement = check_pixel_movement(l, 1);
-  uint32_t delay = uint32_t(LuaTools::check_int(l, 2));
-  movement.set_delay(delay);
-  return 0;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    PixelMovement& movement = check_pixel_movement(l, 1);
+    uint32_t delay = uint32_t(LuaTools::check_int(l, 2));
+    movement.set_delay(delay);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**

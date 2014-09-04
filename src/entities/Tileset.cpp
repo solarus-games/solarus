@@ -225,8 +225,7 @@ int Tileset::l_background_color(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     lua_getfield(l, LUA_REGISTRYINDEX, "tileset");
-    void* p = lua_touserdata(l, -1);
-    Tileset* tileset = static_cast<Tileset*>(p);
+    Tileset* tileset = static_cast<Tileset*>(lua_touserdata(l, -1));
     lua_pop(l, 1);
 
     LuaTools::check_type(l, 1, LUA_TTABLE);

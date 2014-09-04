@@ -276,22 +276,25 @@ void LuaContext::set_entity_implicit_creation_map(lua_State* l, Map* map) {
  */
 int LuaContext::l_get_map_entity_or_global(lua_State* l) {
 
-  lua_pushvalue(l, lua_upvalueindex(1));  // Because check_map does not like pseudo-indexes.
-  Map& map = check_map(l, -1);
-  const std::string& name = LuaTools::check_string(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    lua_pushvalue(l, lua_upvalueindex(1));  // Because check_map does not like pseudo-indexes.
+    Map& map = check_map(l, -1);
+    const std::string& name = LuaTools::check_string(l, 2);
 
-  MapEntity* entity = nullptr;
-  if (map.is_started()) {
-    entity = map.get_entities().find_entity(name);
-  }
+    MapEntity* entity = nullptr;
+    if (map.is_started()) {
+      entity = map.get_entities().find_entity(name);
+    }
 
-  if (entity != nullptr && !entity->is_being_removed()) {
-    push_entity(l, *entity);
+    if (entity != nullptr && !entity->is_being_removed()) {
+      push_entity(l, *entity);
+    }
+    else {
+      lua_getglobal(l, name.c_str());
+    }
+    return 1;
   }
-  else {
-    lua_getglobal(l, name.c_str());
-  }
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -301,21 +304,24 @@ int LuaContext::l_get_map_entity_or_global(lua_State* l) {
  */
 int LuaContext::l_camera_do_callback(lua_State* l) {
 
-  // Execute the function.
-  lua_settop(l, 0);
-  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_function");
-  call_function(l, 0, 0, "camera callback");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    // Execute the function.
+    lua_settop(l, 0);
+    lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_function");
+    call_function(l, 0, 0, "camera callback");
 
-  // Set a second timer to restore the camera.
-  Map& map = get_lua_context(l).get_main_loop().get_game()->get_current_map();
-  push_map(l, map);
-  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
-  lua_pushcfunction(l, l_camera_restore);
-  timer_api_start(l);
-  Timer& timer = check_timer(l, -1);
-  timer.set_suspended_with_map(false);
+    // Set a second timer to restore the camera.
+    Map& map = get_lua_context(l).get_main_loop().get_game()->get_current_map();
+    push_map(l, map);
+    lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
+    lua_pushcfunction(l, l_camera_restore);
+    timer_api_start(l);
+    Timer& timer = check_timer(l, -1);
+    timer.set_suspended_with_map(false);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -325,11 +331,14 @@ int LuaContext::l_camera_do_callback(lua_State* l) {
  */
 int LuaContext::l_camera_restore(lua_State* l) {
 
-  LuaContext& lua_context = get_lua_context(l);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    LuaContext& lua_context = get_lua_context(l);
 
-  lua_context.get_main_loop().get_game()->get_current_map().restore_camera();
+    lua_context.get_main_loop().get_game()->get_current_map().restore_camera();
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -339,10 +348,13 @@ int LuaContext::l_camera_restore(lua_State* l) {
  */
 int LuaContext::map_api_get_game(lua_State* l) {
 
-  Map& map = check_map(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
 
-  push_game(l, map.get_game().get_savegame());
-  return 1;
+    push_game(l, map.get_game().get_savegame());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -352,10 +364,13 @@ int LuaContext::map_api_get_game(lua_State* l) {
  */
 int LuaContext::map_api_get_id(lua_State* l) {
 
-  Map& map = check_map(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
 
-  push_string(l, map.get_id());
-  return 1;
+    push_string(l, map.get_id());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -365,17 +380,20 @@ int LuaContext::map_api_get_id(lua_State* l) {
  */
 int LuaContext::map_api_get_world(lua_State* l) {
 
-  Map& map = check_map(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
 
-  const std::string& world = map.get_world();
+    const std::string& world = map.get_world();
 
-  if (world.empty()) {
-    lua_pushnil(l);
+    if (world.empty()) {
+      lua_pushnil(l);
+    }
+    else {
+      push_string(l, world);
+    }
+    return 1;
   }
-  else {
-    push_string(l, world);
-  }
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -385,15 +403,18 @@ int LuaContext::map_api_get_world(lua_State* l) {
  */
 int LuaContext::map_api_get_floor(lua_State* l) {
 
-  Map& map = check_map(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
 
-  if (!map.has_floor()) {
-    lua_pushnil(l);
+    if (!map.has_floor()) {
+      lua_pushnil(l);
+    }
+    else {
+      lua_pushinteger(l, map.get_floor());
+    }
+    return 1;
   }
-  else {
-    lua_pushinteger(l, map.get_floor());
-  }
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -403,12 +424,15 @@ int LuaContext::map_api_get_floor(lua_State* l) {
  */
 int LuaContext::map_api_get_size(lua_State* l) {
 
-  Map& map = check_map(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
 
-  lua_pushinteger(l, map.get_width());
-  lua_pushinteger(l, map.get_height());
+    lua_pushinteger(l, map.get_width());
+    lua_pushinteger(l, map.get_height());
 
-  return 2;
+    return 2;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -418,12 +442,15 @@ int LuaContext::map_api_get_size(lua_State* l) {
  */
 int LuaContext::map_api_get_location(lua_State* l) {
 
-  Map& map = check_map(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
 
-  lua_pushinteger(l, map.get_location().get_x());
-  lua_pushinteger(l, map.get_location().get_y());
+    lua_pushinteger(l, map.get_location().get_x());
+    lua_pushinteger(l, map.get_location().get_y());
 
-  return 2;
+    return 2;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -433,10 +460,13 @@ int LuaContext::map_api_get_location(lua_State* l) {
  */
 int LuaContext::map_api_get_tileset(lua_State* l) {
 
-  Map& map = check_map(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
 
-  push_string(l, map.get_tileset_id());
-  return 1;
+    push_string(l, map.get_tileset_id());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -446,21 +476,24 @@ int LuaContext::map_api_get_tileset(lua_State* l) {
  */
 int LuaContext::map_api_get_music(lua_State* l) {
 
-  Map& map = check_map(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
 
-  const std::string& music_id = map.get_music_id();
-  if (music_id == Music::none) {
-    // Special id to stop any music.
-    lua_pushnil(l);
+    const std::string& music_id = map.get_music_id();
+    if (music_id == Music::none) {
+      // Special id to stop any music.
+      lua_pushnil(l);
+    }
+    else if (music_id == Music::unchanged) {
+      // Special id to keep the music unchanged.
+      push_string(l, "same");
+    }
+    else {
+      push_string(l, music_id);
+    }
+    return 1;
   }
-  else if (music_id == Music::unchanged) {
-    // Special id to keep the music unchanged.
-    push_string(l, "same");
-  }
-  else {
-    push_string(l, music_id);
-  }
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -470,12 +503,15 @@ int LuaContext::map_api_get_music(lua_State* l) {
  */
 int LuaContext::map_api_set_tileset(lua_State* l) {
 
-  Map& map = check_map(l, 1);
-  const std::string& tileset_id = LuaTools::check_string(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
+    const std::string& tileset_id = LuaTools::check_string(l, 2);
 
-  map.set_tileset(tileset_id);
+    map.set_tileset(tileset_id);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -485,15 +521,18 @@ int LuaContext::map_api_set_tileset(lua_State* l) {
  */
 int LuaContext::map_api_get_camera_position(lua_State* l) {
 
-  Map& map = check_map(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
 
-  const Rectangle& camera_position = map.get_camera_position();
+    const Rectangle& camera_position = map.get_camera_position();
 
-  lua_pushinteger(l, camera_position.get_x());
-  lua_pushinteger(l, camera_position.get_y());
-  lua_pushinteger(l, camera_position.get_width());
-  lua_pushinteger(l, camera_position.get_height());
-  return 4;
+    lua_pushinteger(l, camera_position.get_x());
+    lua_pushinteger(l, camera_position.get_y());
+    lua_pushinteger(l, camera_position.get_width());
+    lua_pushinteger(l, camera_position.get_height());
+    return 4;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -503,34 +542,37 @@ int LuaContext::map_api_get_camera_position(lua_State* l) {
  */
 int LuaContext::map_api_move_camera(lua_State* l) {
 
-  Map& map = check_map(l, 1);
-  int x = LuaTools::check_int(l, 2);
-  int y = LuaTools::check_int(l, 3);
-  int speed = LuaTools::check_int(l, 4);
-  LuaTools::check_type(l, 5, LUA_TFUNCTION);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
+    int x = LuaTools::check_int(l, 2);
+    int y = LuaTools::check_int(l, 3);
+    int speed = LuaTools::check_int(l, 4);
+    LuaTools::check_type(l, 5, LUA_TFUNCTION);
 
-  uint32_t delay_before = 1000;
-  uint32_t delay_after = 1000;
-  if (lua_gettop(l) >= 6) {
-    delay_before = LuaTools::check_int(l, 6);
-    if (lua_gettop(l) >= 7) {
-      delay_after = LuaTools::check_int(l, 7);
+    uint32_t delay_before = 1000;
+    uint32_t delay_after = 1000;
+    if (lua_gettop(l) >= 6) {
+      delay_before = LuaTools::check_int(l, 6);
+      if (lua_gettop(l) >= 7) {
+        delay_after = LuaTools::check_int(l, 7);
+      }
     }
+    lua_settop(l, 5); // let the function on top of the stack
+
+    // store the function and the delays
+    // TODO store this as Lua refs instead of globally
+    lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_function");
+    lua_pushinteger(l, delay_before);
+    lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
+    lua_pushinteger(l, delay_after);
+    lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
+
+    // start the camera
+    map.move_camera(x, y, speed);
+
+    return 0;
   }
-  lua_settop(l, 5); // let the function on top of the stack
-
-  // store the function and the delays
-  // TODO store this as Lua refs instead of globally
-  lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_function");
-  lua_pushinteger(l, delay_before);
-  lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
-  lua_pushinteger(l, delay_after);
-  lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
-
-  // start the camera
-  map.move_camera(x, y, speed);
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -540,15 +582,18 @@ int LuaContext::map_api_move_camera(lua_State* l) {
  */
 int LuaContext::map_api_get_ground(lua_State* l) {
 
-  Map& map = check_map(l, 1);
-  int x = LuaTools::check_int(l, 2);
-  int y = LuaTools::check_int(l, 3);
-  Layer layer = LuaTools::check_layer(l, 4);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
+    int x = LuaTools::check_int(l, 2);
+    int y = LuaTools::check_int(l, 3);
+    Layer layer = LuaTools::check_layer(l, 4);
 
-  Ground ground = map.get_ground(layer, x, y);
+    Ground ground = map.get_ground(layer, x, y);
 
-  push_string(l, Tileset::ground_names[ground]);
-  return 1;
+    push_string(l, Tileset::ground_names[ground]);
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -558,14 +603,17 @@ int LuaContext::map_api_get_ground(lua_State* l) {
  */
 int LuaContext::map_api_draw_sprite(lua_State* l) {
 
-  Map& map = check_map(l, 1);
-  Sprite& sprite = check_sprite(l, 2);
-  int x = LuaTools::check_int(l, 3);
-  int y = LuaTools::check_int(l, 4);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
+    Sprite& sprite = check_sprite(l, 2);
+    int x = LuaTools::check_int(l, 3);
+    int y = LuaTools::check_int(l, 4);
 
-  map.draw_sprite(sprite, x, y);
+    map.draw_sprite(sprite, x, y);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -575,10 +623,13 @@ int LuaContext::map_api_draw_sprite(lua_State* l) {
  */
 int LuaContext::map_api_get_crystal_state(lua_State* l) {
 
-  Map& map = check_map(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
 
-  lua_pushboolean(l, map.get_game().get_crystal_state());
-  return 1;
+    lua_pushboolean(l, map.get_game().get_crystal_state());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -588,15 +639,18 @@ int LuaContext::map_api_get_crystal_state(lua_State* l) {
  */
 int LuaContext::map_api_set_crystal_state(lua_State* l) {
 
-  Map& map = check_map(l, 1);
-  bool state = lua_toboolean(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
+    bool state = lua_toboolean(l, 2);
 
-  Game& game = map.get_game();
-  if (game.get_crystal_state() != state) {
-    game.change_crystal_state();
+    Game& game = map.get_game();
+    if (game.get_crystal_state() != state) {
+      game.change_crystal_state();
+    }
+
+    return 0;
   }
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -606,11 +660,14 @@ int LuaContext::map_api_set_crystal_state(lua_State* l) {
  */
 int LuaContext::map_api_change_crystal_state(lua_State* l) {
 
-  Map& map = check_map(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
 
-  map.get_game().change_crystal_state();
+    map.get_game().change_crystal_state();
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -620,27 +677,30 @@ int LuaContext::map_api_change_crystal_state(lua_State* l) {
  */
 int LuaContext::map_api_open_doors(lua_State* l) {
 
-  Map& map = check_map(l, 1);
-  const std::string& prefix = LuaTools::check_string(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
+    const std::string& prefix = LuaTools::check_string(l, 2);
 
-  bool done = false;
-  MapEntities& entities = map.get_entities();
-  std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
-  for (auto it = doors.begin(); it != doors.end(); ++it) {
-    Door* door = static_cast<Door*>(*it);
-    if (!door->is_open() || door->is_closing()) {
-      door->open();
-      done = true;
+    bool done = false;
+    MapEntities& entities = map.get_entities();
+    std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
+    for (auto it = doors.begin(); it != doors.end(); ++it) {
+      Door* door = static_cast<Door*>(*it);
+      if (!door->is_open() || door->is_closing()) {
+        door->open();
+        done = true;
+      }
     }
-  }
 
-  // make sure the sound is played only once even if the script calls
-  // this function repeatedly while the door is still changing
-  if (done) {
-    Sound::play("door_open");
-  }
+    // make sure the sound is played only once even if the script calls
+    // this function repeatedly while the door is still changing
+    if (done) {
+      Sound::play("door_open");
+    }
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -650,27 +710,30 @@ int LuaContext::map_api_open_doors(lua_State* l) {
  */
 int LuaContext::map_api_close_doors(lua_State* l) {
 
-  Map& map = check_map(l, 1);
-  const std::string& prefix = LuaTools::check_string(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
+    const std::string& prefix = LuaTools::check_string(l, 2);
 
-  bool done = false;
-  MapEntities& entities = map.get_entities();
-  std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
-  for (auto it = doors.begin(); it != doors.end(); ++it) {
-    Door* door = static_cast<Door*>(*it);
-    if (door->is_open() || door->is_opening()) {
-      door->close();
-      done = true;
+    bool done = false;
+    MapEntities& entities = map.get_entities();
+    std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
+    for (auto it = doors.begin(); it != doors.end(); ++it) {
+      Door* door = static_cast<Door*>(*it);
+      if (door->is_open() || door->is_opening()) {
+        door->close();
+        done = true;
+      }
     }
-  }
 
-  // make sure the sound is played only once even if the script calls
-  // this function repeatedly while the door is still changing
-  if (done) {
-    Sound::play("door_closed");
-  }
+    // make sure the sound is played only once even if the script calls
+    // this function repeatedly while the door is still changing
+    if (done) {
+      Sound::play("door_closed");
+    }
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -680,21 +743,24 @@ int LuaContext::map_api_close_doors(lua_State* l) {
  */
 int LuaContext::map_api_set_doors_open(lua_State* l) {
 
-  Map& map = check_map(l, 1);
-  const std::string& prefix = LuaTools::check_string(l, 2);
-  bool open = true;
-  if (lua_gettop(l) >= 3) {
-    open = lua_toboolean(l, 3);
-  }
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
+    const std::string& prefix = LuaTools::check_string(l, 2);
+    bool open = true;
+    if (lua_gettop(l) >= 3) {
+      open = lua_toboolean(l, 3);
+    }
 
-  MapEntities& entities = map.get_entities();
-  std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
-  for (auto it = doors.begin(); it != doors.end(); ++it) {
-    Door* door = static_cast<Door*>(*it);
-    door->set_open(open);
-  }
+    MapEntities& entities = map.get_entities();
+    std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
+    for (auto it = doors.begin(); it != doors.end(); ++it) {
+      Door* door = static_cast<Door*>(*it);
+      door->set_open(open);
+    }
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -704,18 +770,21 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
  */
 int LuaContext::map_api_get_entity(lua_State* l) {
 
-  Map& map = check_map(l, 1);
-  const std::string& name = LuaTools::check_string(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
+    const std::string& name = LuaTools::check_string(l, 2);
 
-  MapEntity* entity = map.get_entities().find_entity(name);
+    MapEntity* entity = map.get_entities().find_entity(name);
 
-  if (entity != nullptr && !entity->is_being_removed()) {
-    push_entity(l, *entity);
+    if (entity != nullptr && !entity->is_being_removed()) {
+      push_entity(l, *entity);
+    }
+    else {
+      lua_pushnil(l);
+    }
+    return 1;
   }
-  else {
-    lua_pushnil(l);
-  }
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -725,13 +794,16 @@ int LuaContext::map_api_get_entity(lua_State* l) {
  */
 int LuaContext::map_api_has_entity(lua_State* l) {
 
-  Map& map = check_map(l, 1);
-  const std::string& name = LuaTools::check_string(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
+    const std::string& name = LuaTools::check_string(l, 2);
 
-  MapEntity* entity = map.get_entities().find_entity(name);
+    MapEntity* entity = map.get_entities().find_entity(name);
 
-  lua_pushboolean(l, entity != nullptr);
-  return 1;
+    lua_pushboolean(l, entity != nullptr);
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -741,24 +813,30 @@ int LuaContext::map_api_has_entity(lua_State* l) {
  */
 int LuaContext::map_api_get_entities(lua_State* l) {
 
-  Map& map = check_map(l, 1);
-  const std::string& prefix = LuaTools::check_string(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
+    const std::string& prefix = LuaTools::check_string(l, 2);
 
-  const std::list<MapEntity*> entities =
-    map.get_entities().get_entities_with_prefix(prefix);
+    const std::list<MapEntity*> entities =
+        map.get_entities().get_entities_with_prefix(prefix);
 
-  lua_newtable(l);
-  for (auto it = entities.begin(); it != entities.end(); ++it) {
-    MapEntity* entity = *it;
-    push_entity(l, *entity);
-    lua_pushboolean(l, true);
-    lua_rawset(l, -3);
+    lua_newtable(l);
+    for (auto it = entities.begin(); it != entities.end(); ++it) {
+      MapEntity* entity = *it;
+      push_entity(l, *entity);
+      lua_pushboolean(l, true);
+      lua_rawset(l, -3);
+    }
+    lua_getglobal(l, "pairs");
+    lua_pushvalue(l, -2);
+    lua_call(l, 1, 3);  // TODO don't call the pairs global value, implement our
+    // own iterator instead.
+    // Or at least store pairs in the registry (like we do
+    // with io.open) to be sure it is the original one.
+
+    return 3;
   }
-  lua_getglobal(l, "pairs");
-  lua_pushvalue(l, -2);
-  lua_call(l, 1, 3);  // TODO don't call the pairs global value, implement our own iterator instead.
-
-  return 3;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -768,14 +846,17 @@ int LuaContext::map_api_get_entities(lua_State* l) {
  */
 int LuaContext::map_api_get_entities_count(lua_State* l) {
 
-  Map& map = check_map(l, 1);
-  const std::string& prefix = LuaTools::check_string(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
+    const std::string& prefix = LuaTools::check_string(l, 2);
 
-  const std::list<MapEntity*> entities =
-    map.get_entities().get_entities_with_prefix(prefix);
+    const std::list<MapEntity*> entities =
+        map.get_entities().get_entities_with_prefix(prefix);
 
-  lua_pushinteger(l, entities.size());
-  return 1;
+    lua_pushinteger(l, entities.size());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -785,11 +866,14 @@ int LuaContext::map_api_get_entities_count(lua_State* l) {
  */
 int LuaContext::map_api_has_entities(lua_State* l) {
 
-  Map& map = check_map(l, 1);
-  const std::string& prefix = LuaTools::check_string(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
+    const std::string& prefix = LuaTools::check_string(l, 2);
 
-  lua_pushboolean(l, map.get_entities().has_entity_with_prefix(prefix));
-  return 1;
+    lua_pushboolean(l, map.get_entities().has_entity_with_prefix(prefix));
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -799,11 +883,14 @@ int LuaContext::map_api_has_entities(lua_State* l) {
  */
 int LuaContext::map_api_get_hero(lua_State* l) {
 
-  Map& map = check_map(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
 
-  // Return the hero even if he is no longer on this map.
-  push_hero(l, map.get_game().get_hero());
-  return 1;
+    // Return the hero even if he is no longer on this map.
+    push_hero(l, map.get_game().get_hero());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -813,20 +900,23 @@ int LuaContext::map_api_get_hero(lua_State* l) {
  */
 int LuaContext::map_api_set_entities_enabled(lua_State* l) {
 
-  Map& map = check_map(l, 1);
-  const std::string& prefix = LuaTools::check_string(l, 2);
-  bool enabled = true;
-  if (lua_gettop(l) >= 3) {
-    enabled = lua_toboolean(l, 3);
-  }
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
+    const std::string& prefix = LuaTools::check_string(l, 2);
+    bool enabled = true;
+    if (lua_gettop(l) >= 3) {
+      enabled = lua_toboolean(l, 3);
+    }
 
-  std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(prefix);
-  for (auto it = entities.begin(); it != entities.end(); ++it) {
-    (*it)->set_enabled(enabled);
-  }
+    std::list<MapEntity*> entities =
+        map.get_entities().get_entities_with_prefix(prefix);
+    for (auto it = entities.begin(); it != entities.end(); ++it) {
+      (*it)->set_enabled(enabled);
+    }
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -836,11 +926,14 @@ int LuaContext::map_api_set_entities_enabled(lua_State* l) {
  */
 int LuaContext::map_api_remove_entities(lua_State* l) {
 
-  Map& map = check_map(l, 1);
-  const std::string& prefix = LuaTools::check_string(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = check_map(l, 1);
+    const std::string& prefix = LuaTools::check_string(l, 2);
 
-  map.get_entities().remove_entities_with_prefix(prefix);
-  return 0;
+    map.get_entities().remove_entities_with_prefix(prefix);
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 namespace {
@@ -883,39 +976,42 @@ void entity_creation_check_size(
  */
 int LuaContext::map_api_create_tile(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
 
-  // Should not happen: create_tile is not in the map metatable.
-  Debug::check_assertion(!map.is_started(),
-      "Cannot create a tile when the map is already started");
+    // Should not happen: create_tile is not in the map metatable.
+    Debug::check_assertion(!map.is_started(),
+        "Cannot create a tile when the map is already started");
 
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  const int x = LuaTools::check_int_field(l, 1, "x");
-  const int y = LuaTools::check_int_field(l, 1, "y");
-  const int width = LuaTools::check_int_field(l, 1, "width");
-  const int height = LuaTools::check_int_field(l, 1, "height");
-  const std::string& tile_pattern_id = LuaTools::check_string_field(l, 1, "pattern");
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    const int x = LuaTools::check_int_field(l, 1, "x");
+    const int y = LuaTools::check_int_field(l, 1, "y");
+    const int width = LuaTools::check_int_field(l, 1, "width");
+    const int height = LuaTools::check_int_field(l, 1, "height");
+    const std::string& tile_pattern_id = LuaTools::check_string_field(l, 1, "pattern");
 
-  entity_creation_check_size(l, 1, width, height);
+    entity_creation_check_size(l, 1, width, height);
 
-  const TilePattern& pattern = map.get_tileset().get_tile_pattern(tile_pattern_id);
+    const TilePattern& pattern = map.get_tileset().get_tile_pattern(tile_pattern_id);
 
-  for (int current_y = y; current_y < y + height; current_y += pattern.get_height()) {
-    for (int current_x = x; current_x < x + width; current_x += pattern.get_width()) {
-      MapEntity* entity = new Tile(
-          layer,
-          current_x,
-          current_y,
-          pattern.get_width(),
-          pattern.get_height(),
-          map.get_tileset(),
-          tile_pattern_id);
-      map.get_entities().add_entity(entity);
+    for (int current_y = y; current_y < y + height; current_y += pattern.get_height()) {
+      for (int current_x = x; current_x < x + width; current_x += pattern.get_width()) {
+        MapEntity* entity = new Tile(
+            layer,
+            current_x,
+            current_y,
+            pattern.get_width(),
+            pattern.get_height(),
+            map.get_tileset(),
+            tile_pattern_id);
+        map.get_entities().add_entity(entity);
+      }
     }
-  }
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -925,32 +1021,35 @@ int LuaContext::map_api_create_tile(lua_State* l) {
  */
 int LuaContext::map_api_create_destination(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  int direction = LuaTools::check_int_field(l, 1, "direction");
-  const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
-  bool is_default = LuaTools::opt_boolean_field(l, 1, "default", false);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    int direction = LuaTools::check_int_field(l, 1, "direction");
+    const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
+    bool is_default = LuaTools::opt_boolean_field(l, 1, "default", false);
 
-  MapEntity* entity = new Destination(
-      name,
-      layer,
-      x,
-      y,
-      direction,
-      sprite_name,
-      is_default);
-  map.get_entities().add_entity(entity);
+    MapEntity* entity = new Destination(
+        name,
+        layer,
+        x,
+        y,
+        direction,
+        sprite_name,
+        is_default);
+    map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
- }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
+}
 
 /**
  * \brief Implementation of map:create_teletransporter().
@@ -959,42 +1058,45 @@ int LuaContext::map_api_create_destination(lua_State* l) {
  */
 int LuaContext::map_api_create_teletransporter(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  int width = LuaTools::check_int_field(l, 1, "width");
-  int height = LuaTools::check_int_field(l, 1, "height");
-  const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
-  const std::string& sound_id = LuaTools::opt_string_field(l, 1, "sound", "");
-  Transition::Style transition_style = LuaTools::opt_enum_field<Transition::Style>(
-          l, 1, "transition", Transition::style_names, Transition::FADE);
-  const std::string& destination_map_id = LuaTools::check_string_field(l, 1, "destination_map");
-  const std::string& destination_name = LuaTools::opt_string_field(l, 1, "destination", "");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    int width = LuaTools::check_int_field(l, 1, "width");
+    int height = LuaTools::check_int_field(l, 1, "height");
+    const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
+    const std::string& sound_id = LuaTools::opt_string_field(l, 1, "sound", "");
+    Transition::Style transition_style = LuaTools::opt_enum_field<Transition::Style>(
+        l, 1, "transition", Transition::style_names, Transition::FADE);
+    const std::string& destination_map_id = LuaTools::check_string_field(l, 1, "destination_map");
+    const std::string& destination_name = LuaTools::opt_string_field(l, 1, "destination", "");
 
-  entity_creation_check_size(l, 1, width, height);
+    entity_creation_check_size(l, 1, width, height);
 
-  MapEntity* entity = new Teletransporter(
-      name,
-      layer,
-      x,
-      y,
-      width,
-      height,
-      sprite_name,
-      sound_id,
-      transition_style,
-      destination_map_id,
-      destination_name);
-  map.get_entities().add_entity(entity);
+    MapEntity* entity = new Teletransporter(
+        name,
+        layer,
+        x,
+        y,
+        width,
+        height,
+        sprite_name,
+        sound_id,
+        transition_style,
+        destination_map_id,
+        destination_name);
+    map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1004,54 +1106,57 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
  */
 int LuaContext::map_api_create_pickable(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  const std::string& treasure_name = LuaTools::opt_string_field(l, 1, "treasure_name", "");
-  int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
-  const std::string& treasure_savegame_variable = LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    const std::string& treasure_name = LuaTools::opt_string_field(l, 1, "treasure_name", "");
+    int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
+    const std::string& treasure_savegame_variable = LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
 
-  if (!treasure_savegame_variable.empty()
-      && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
-    LuaTools::arg_error(l, 1, std::string(
-        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier: '")
-        + treasure_savegame_variable + "')"
+    if (!treasure_savegame_variable.empty()
+        && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
+      LuaTools::arg_error(l, 1, std::string(
+          "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier: '")
+      + treasure_savegame_variable + "')"
+      );
+    }
+
+    bool force_persistent = false;
+    FallingHeight falling_height = FALLING_MEDIUM;
+    if (!map.is_loaded()) {
+      // Different behavior when the pickable is already placed on the map.
+      falling_height = FALLING_NONE;
+      force_persistent = true;
+    }
+
+    Game& game = map.get_game();
+    MapEntity* entity = Pickable::create(
+        game,
+        name,
+        layer,
+        x,
+        y,
+        Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
+        falling_height, force_persistent
     );
-  }
 
-  bool force_persistent = false;
-  FallingHeight falling_height = FALLING_MEDIUM;
-  if (!map.is_loaded()) {
-    // Different behavior when the pickable is already placed on the map.
-    falling_height = FALLING_NONE;
-    force_persistent = true;
-  }
+    if (entity == nullptr) {
+      lua_pushnil(l);
+      return 1;
+    }
 
-  Game& game = map.get_game();
-  MapEntity* entity = Pickable::create(
-      game,
-      name,
-      layer,
-      x,
-      y,
-      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
-      falling_height, force_persistent
-  );
-
-  if (entity == nullptr) {
-    lua_pushnil(l);
-    return 1;
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-
-  map.get_entities().add_entity(entity);
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
-  }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1061,59 +1166,62 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
  */
 int LuaContext::map_api_create_destructible(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  const std::string& treasure_name = LuaTools::opt_string_field(l, 1, "treasure_name", "");
-  int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
-  const std::string& treasure_savegame_variable =
-      LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
-  const std::string& animation_set_id = LuaTools::check_string_field(l, 1, "sprite");
-  Ground modified_ground = LuaTools::opt_enum_field<Ground>(
-      l, 1, "ground", Tileset::ground_names, GROUND_WALL
-  );
-  const std::string& destruction_sound_id = LuaTools::opt_string_field(
-      l, 1, "destruction_sound", ""
-  );
-  int weight = LuaTools::opt_int_field(l, 1, "weight", 0);
-  int damage_on_enemies = LuaTools::opt_int_field(l, 1, "damage_on_enemies", 1);
-  bool can_be_cut = LuaTools::opt_boolean_field(l, 1, "can_be_cut", false);
-  bool can_explode = LuaTools::opt_boolean_field(l, 1, "can_explode", false);
-  bool can_regenerate = LuaTools::opt_boolean_field(l, 1, "can_regenerate", false);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    const std::string& treasure_name = LuaTools::opt_string_field(l, 1, "treasure_name", "");
+    int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
+    const std::string& treasure_savegame_variable =
+        LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
+    const std::string& animation_set_id = LuaTools::check_string_field(l, 1, "sprite");
+    Ground modified_ground = LuaTools::opt_enum_field<Ground>(
+        l, 1, "ground", Tileset::ground_names, GROUND_WALL
+    );
+    const std::string& destruction_sound_id = LuaTools::opt_string_field(
+        l, 1, "destruction_sound", ""
+    );
+    int weight = LuaTools::opt_int_field(l, 1, "weight", 0);
+    int damage_on_enemies = LuaTools::opt_int_field(l, 1, "damage_on_enemies", 1);
+    bool can_be_cut = LuaTools::opt_boolean_field(l, 1, "can_be_cut", false);
+    bool can_explode = LuaTools::opt_boolean_field(l, 1, "can_explode", false);
+    bool can_regenerate = LuaTools::opt_boolean_field(l, 1, "can_regenerate", false);
 
-  if (!treasure_savegame_variable.empty()
-      && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
-    LuaTools::arg_error(l, 1, std::string(
-        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier: '")
-        + treasure_savegame_variable + "'");
+    if (!treasure_savegame_variable.empty()
+        && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
+      LuaTools::arg_error(l, 1, std::string(
+          "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier: '")
+      + treasure_savegame_variable + "'");
+    }
+
+    Destructible* destructible = new Destructible(
+        name,
+        layer,
+        x,
+        y,
+        animation_set_id,
+        Treasure(map.get_game(), treasure_name, treasure_variant, treasure_savegame_variable),
+        modified_ground
+    );
+    destructible->set_destruction_sound(destruction_sound_id);
+    destructible->set_weight(weight);
+    destructible->set_can_be_cut(can_be_cut);
+    destructible->set_can_explode(can_explode);
+    destructible->set_can_regenerate(can_regenerate);
+    destructible->set_damage_on_enemies(damage_on_enemies);
+
+    map.get_entities().add_entity(destructible);
+
+    if (map.is_started()) {
+      push_entity(l, *destructible);
+      return 1;
+    }
+    return 0;
   }
-
-  Destructible* destructible = new Destructible(
-      name,
-      layer,
-      x,
-      y,
-      animation_set_id,
-      Treasure(map.get_game(), treasure_name, treasure_variant, treasure_savegame_variable),
-      modified_ground
-  );
-  destructible->set_destruction_sound(destruction_sound_id);
-  destructible->set_weight(weight);
-  destructible->set_can_be_cut(can_be_cut);
-  destructible->set_can_explode(can_explode);
-  destructible->set_can_regenerate(can_regenerate);
-  destructible->set_damage_on_enemies(damage_on_enemies);
-
-  map.get_entities().add_entity(destructible);
-
-  if (map.is_started()) {
-    push_entity(l, *destructible);
-    return 1;
-  }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1123,75 +1231,78 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
  */
 int LuaContext::map_api_create_chest(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  const std::string& treasure_name = LuaTools::opt_string_field(l, 1, "treasure_name", "");
-  int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
-  const std::string& treasure_savegame_variable = LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
-  const std::string& sprite_name = LuaTools::check_string_field(l, 1, "sprite");
-  Chest::OpeningMethod opening_method = LuaTools::opt_enum_field<Chest::OpeningMethod>(l, 1, "opening_method",
-      Chest::opening_method_names, Chest::OPENING_BY_INTERACTION);
-  const std::string& opening_condition = LuaTools::opt_string_field(l, 1, "opening_condition", "");
-  bool opening_condition_consumed = LuaTools::opt_boolean_field(l, 1, "opening_condition_consumed", false);
-  const std::string& cannot_open_dialog_id = LuaTools::opt_string_field(l, 1, "cannot_open_dialog", "");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    const std::string& treasure_name = LuaTools::opt_string_field(l, 1, "treasure_name", "");
+    int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
+    const std::string& treasure_savegame_variable = LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
+    const std::string& sprite_name = LuaTools::check_string_field(l, 1, "sprite");
+    Chest::OpeningMethod opening_method = LuaTools::opt_enum_field<Chest::OpeningMethod>(l, 1, "opening_method",
+        Chest::opening_method_names, Chest::OPENING_BY_INTERACTION);
+    const std::string& opening_condition = LuaTools::opt_string_field(l, 1, "opening_condition", "");
+    bool opening_condition_consumed = LuaTools::opt_boolean_field(l, 1, "opening_condition_consumed", false);
+    const std::string& cannot_open_dialog_id = LuaTools::opt_string_field(l, 1, "cannot_open_dialog", "");
 
-  if (!treasure_savegame_variable.empty()
-      && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
-    LuaTools::arg_error(l, 1, std::string(
-        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '")
-        + treasure_savegame_variable + "')"
-    );
-  }
-
-  Game& game = map.get_game();
-
-  if (opening_method == Chest::OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
-    if (!LuaTools::is_valid_lua_identifier(opening_condition)) {
+    if (!treasure_savegame_variable.empty()
+        && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
       LuaTools::arg_error(l, 1, std::string(
-          "Bad field 'opening_condition' (invalid valid savegame variable identifier: '")
-          + opening_condition + "')"
+          "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '")
+      + treasure_savegame_variable + "')"
       );
     }
-  }
 
-  else if (opening_method == Chest::OPENING_BY_INTERACTION_IF_ITEM) {
-    if (!opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
-      LuaTools::arg_error(l, 1, std::string(
-          "Bad field 'opening_condition' (no such equipment item: '")
-          + opening_condition + "')"
-      );
+    Game& game = map.get_game();
+
+    if (opening_method == Chest::OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
+      if (!LuaTools::is_valid_lua_identifier(opening_condition)) {
+        LuaTools::arg_error(l, 1, std::string(
+            "Bad field 'opening_condition' (invalid valid savegame variable identifier: '")
+        + opening_condition + "')"
+        );
+      }
     }
-    EquipmentItem& item = game.get_equipment().get_item(opening_condition);
-    if (!item.is_saved()) {
-      LuaTools::arg_error(l, 1, std::string(
-          "Bad field 'opening_condition' (equipment item '")
-          + opening_condition + "' is not saved)"
-      );
+
+    else if (opening_method == Chest::OPENING_BY_INTERACTION_IF_ITEM) {
+      if (!opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
+        LuaTools::arg_error(l, 1, std::string(
+            "Bad field 'opening_condition' (no such equipment item: '")
+        + opening_condition + "')"
+        );
+      }
+      EquipmentItem& item = game.get_equipment().get_item(opening_condition);
+      if (!item.is_saved()) {
+        LuaTools::arg_error(l, 1, std::string(
+            "Bad field 'opening_condition' (equipment item '")
+        + opening_condition + "' is not saved)"
+        );
+      }
     }
-  }
 
-  Chest* chest = new Chest(
-      name,
-      layer,
-      x,
-      y,
-      sprite_name,
-      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
-  chest->set_opening_method(opening_method);
-  chest->set_opening_condition(opening_condition);
-  chest->set_opening_condition_consumed(opening_condition_consumed);
-  chest->set_cannot_open_dialog_id(cannot_open_dialog_id);
-  map.get_entities().add_entity(chest);
+    Chest* chest = new Chest(
+        name,
+        layer,
+        x,
+        y,
+        sprite_name,
+        Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
+    chest->set_opening_method(opening_method);
+    chest->set_opening_condition(opening_condition);
+    chest->set_opening_condition_consumed(opening_condition_consumed);
+    chest->set_cannot_open_dialog_id(cannot_open_dialog_id);
+    map.get_entities().add_entity(chest);
 
-  if (map.is_started()) {
-    push_entity(l, *chest);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *chest);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1201,35 +1312,38 @@ int LuaContext::map_api_create_chest(lua_State* l) {
  */
 int LuaContext::map_api_create_jumper(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  int width = LuaTools::check_int_field(l, 1, "width");
-  int height = LuaTools::check_int_field(l, 1, "height");
-  int direction = LuaTools::check_int_field(l, 1, "direction");
-  int jump_length = LuaTools::check_int_field(l, 1, "jump_length");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    int width = LuaTools::check_int_field(l, 1, "width");
+    int height = LuaTools::check_int_field(l, 1, "height");
+    int direction = LuaTools::check_int_field(l, 1, "direction");
+    int jump_length = LuaTools::check_int_field(l, 1, "jump_length");
 
-  entity_creation_check_size(l, 1, width, height);
+    entity_creation_check_size(l, 1, width, height);
 
-  MapEntity* entity = new Jumper(
-      name,
-      layer,
-      x,
-      y,
-      width,
-      height,
-      direction,
-      jump_length);
-  map.get_entities().add_entity(entity);
+    MapEntity* entity = new Jumper(
+        name,
+        layer,
+        x,
+        y,
+        width,
+        height,
+        direction,
+        jump_length);
+    map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1239,60 +1353,63 @@ int LuaContext::map_api_create_jumper(lua_State* l) {
  */
 int LuaContext::map_api_create_enemy(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  int direction = LuaTools::check_int_field(l, 1, "direction");
-  const std::string& breed = LuaTools::check_string_field(l, 1, "breed");
-  Enemy::Rank rank = Enemy::Rank(LuaTools::opt_int_field(l, 1, "rank", 0));
-  const std::string& savegame_variable = LuaTools::opt_string_field(l, 1, "savegame_variable", "");
-  const std::string& treasure_name = LuaTools::opt_string_field(l, 1, "treasure_name", "");
-  int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
-  const std::string& treasure_savegame_variable = LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    int direction = LuaTools::check_int_field(l, 1, "direction");
+    const std::string& breed = LuaTools::check_string_field(l, 1, "breed");
+    Enemy::Rank rank = Enemy::Rank(LuaTools::opt_int_field(l, 1, "rank", 0));
+    const std::string& savegame_variable = LuaTools::opt_string_field(l, 1, "savegame_variable", "");
+    const std::string& treasure_name = LuaTools::opt_string_field(l, 1, "treasure_name", "");
+    int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
+    const std::string& treasure_savegame_variable = LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
 
-  if (!savegame_variable.empty()
-      && !LuaTools::is_valid_lua_identifier(savegame_variable)) {
-    LuaTools::arg_error(l, 1, std::string(
-        "Bad field 'savegame_variable' (invalid savegame variable identifier: '")
-        + savegame_variable + "')"
-    );
+    if (!savegame_variable.empty()
+        && !LuaTools::is_valid_lua_identifier(savegame_variable)) {
+      LuaTools::arg_error(l, 1, std::string(
+          "Bad field 'savegame_variable' (invalid savegame variable identifier: '")
+      + savegame_variable + "')"
+      );
+    }
+
+    if (!treasure_savegame_variable.empty()
+        && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
+      LuaTools::arg_error(l, 1, std::string(
+          "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '")
+      + treasure_savegame_variable + "')"
+      );
+    }
+
+    Game& game = map.get_game();
+    MapEntity* entity = Enemy::create(
+        game,
+        breed,
+        rank,
+        savegame_variable,
+        name,
+        layer,
+        x,
+        y,
+        direction,
+        Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
+
+    if (entity == nullptr) {
+      lua_pushnil(l);
+      return 1;
+    }
+
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-
-  if (!treasure_savegame_variable.empty()
-      && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
-    LuaTools::arg_error(l, 1, std::string(
-        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '")
-        + treasure_savegame_variable + "')"
-    );
-  }
-
-  Game& game = map.get_game();
-  MapEntity* entity = Enemy::create(
-      game,
-      breed,
-      rank,
-      savegame_variable,
-      name,
-      layer,
-      x,
-      y,
-      direction,
-      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
-
-  if (entity == nullptr) {
-    lua_pushnil(l);
-    return 1;
-  }
-
-  map.get_entities().add_entity(entity);
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
-  }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1302,39 +1419,42 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
  */
 int LuaContext::map_api_create_npc(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  int direction = LuaTools::check_int_field(l, 1, "direction");
-  const std::string& subtype_name = LuaTools::check_string_field(l, 1, "subtype");
-  const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
-  const std::string& behavior = LuaTools::opt_string_field(l, 1, "behavior", "map");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    int direction = LuaTools::check_int_field(l, 1, "direction");
+    const std::string& subtype_name = LuaTools::check_string_field(l, 1, "subtype");
+    const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
+    const std::string& behavior = LuaTools::opt_string_field(l, 1, "behavior", "map");
 
-  int subtype;
-  std::istringstream iss(subtype_name);
-  iss >> subtype;
+    int subtype;
+    std::istringstream iss(subtype_name);
+    iss >> subtype;
 
-  Game& game = map.get_game();
-  MapEntity* entity = new Npc(
-      game,
-      name,
-      layer,
-      x,
-      y,
-      Npc::Subtype(subtype),
-      sprite_name,
-      direction,
-      behavior);
-  map.get_entities().add_entity(entity);
+    Game& game = map.get_game();
+    MapEntity* entity = new Npc(
+        game,
+        name,
+        layer,
+        x,
+        y,
+        Npc::Subtype(subtype),
+        sprite_name,
+        direction,
+        behavior);
+    map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1344,41 +1464,44 @@ int LuaContext::map_api_create_npc(lua_State* l) {
  */
 int LuaContext::map_api_create_block(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  int direction = LuaTools::opt_int_field(l, 1, "direction", -1);
-  const std::string& sprite_name = LuaTools::check_string_field(l, 1, "sprite");
-  bool pushable = LuaTools::check_boolean_field(l, 1, "pushable");
-  bool pullable = LuaTools::check_boolean_field(l, 1, "pullable");
-  int maximum_moves = LuaTools::check_int_field(l, 1, "maximum_moves");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    int direction = LuaTools::opt_int_field(l, 1, "direction", -1);
+    const std::string& sprite_name = LuaTools::check_string_field(l, 1, "sprite");
+    bool pushable = LuaTools::check_boolean_field(l, 1, "pushable");
+    bool pullable = LuaTools::check_boolean_field(l, 1, "pullable");
+    int maximum_moves = LuaTools::check_int_field(l, 1, "maximum_moves");
 
-  if (maximum_moves < 0 || maximum_moves > 2) {
-    std::ostringstream oss;
-    oss << "Invalid maximum_moves: " << maximum_moves;
-    LuaTools::arg_error(l, 1, oss.str());
+    if (maximum_moves < 0 || maximum_moves > 2) {
+      std::ostringstream oss;
+      oss << "Invalid maximum_moves: " << maximum_moves;
+      LuaTools::arg_error(l, 1, oss.str());
+    }
+
+    Block* entity = new Block(
+        name,
+        layer,
+        x,
+        y,
+        direction,
+        sprite_name,
+        pushable,
+        pullable,
+        maximum_moves);
+    map.get_entities().add_entity(entity);
+
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-
-  Block* entity = new Block(
-      name,
-      layer,
-      x,
-      y,
-      direction,
-      sprite_name,
-      pushable,
-      pullable,
-      maximum_moves);
-  map.get_entities().add_entity(entity);
-
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
-  }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1388,36 +1511,39 @@ int LuaContext::map_api_create_block(lua_State* l) {
  */
 int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  int width = LuaTools::check_int_field(l, 1, "width");
-  int height = LuaTools::check_int_field(l, 1, "height");
-  const std::string& tile_pattern_id = LuaTools::check_string_field(l, 1, "pattern");
-  bool enabled_at_start = LuaTools::check_boolean_field(l, 1, "enabled_at_start");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    int width = LuaTools::check_int_field(l, 1, "width");
+    int height = LuaTools::check_int_field(l, 1, "height");
+    const std::string& tile_pattern_id = LuaTools::check_string_field(l, 1, "pattern");
+    bool enabled_at_start = LuaTools::check_boolean_field(l, 1, "enabled_at_start");
 
-  entity_creation_check_size(l, 1, width, height);
+    entity_creation_check_size(l, 1, width, height);
 
-  MapEntity* entity = new DynamicTile(
-      name,
-      layer,
-      x,
-      y,
-      width,
-      height,
-      map.get_tileset(),
-      tile_pattern_id,
-      enabled_at_start);
-  map.get_entities().add_entity(entity);
+    MapEntity* entity = new DynamicTile(
+        name,
+        layer,
+        x,
+        y,
+        width,
+        height,
+        map.get_tileset(),
+        tile_pattern_id,
+        enabled_at_start);
+    map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1427,37 +1553,40 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
  */
 int LuaContext::map_api_create_switch(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  Switch::Subtype subtype = LuaTools::check_enum_field<Switch::Subtype>(
-      l, 1, "subtype", Switch::subtype_names
-  );
-  const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
-  const std::string& sound_id = LuaTools::opt_string_field(l, 1, "sound", "");
-  bool needs_block = LuaTools::check_boolean_field(l, 1, "needs_block");
-  bool inactivate_when_leaving = LuaTools::check_boolean_field(l, 1, "inactivate_when_leaving");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    Switch::Subtype subtype = LuaTools::check_enum_field<Switch::Subtype>(
+        l, 1, "subtype", Switch::subtype_names
+    );
+    const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
+    const std::string& sound_id = LuaTools::opt_string_field(l, 1, "sound", "");
+    bool needs_block = LuaTools::check_boolean_field(l, 1, "needs_block");
+    bool inactivate_when_leaving = LuaTools::check_boolean_field(l, 1, "inactivate_when_leaving");
 
-  MapEntity* entity = new Switch(
-      name,
-      layer,
-      x,
-      y,
-      subtype,
-      sprite_name,
-      sound_id,
-      needs_block,
-      inactivate_when_leaving);
-  map.get_entities().add_entity(entity);
+    MapEntity* entity = new Switch(
+        name,
+        layer,
+        x,
+        y,
+        subtype,
+        sprite_name,
+        sound_id,
+        needs_block,
+        inactivate_when_leaving);
+    map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1467,42 +1596,45 @@ int LuaContext::map_api_create_switch(lua_State* l) {
  */
 int LuaContext::map_api_create_wall(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  int width = LuaTools::check_int_field(l, 1, "width");
-  int height = LuaTools::check_int_field(l, 1, "height");
-  bool stops_hero = LuaTools::opt_boolean_field(l, 1, "stops_hero", false);
-  bool stops_enemies = LuaTools::opt_boolean_field(l, 1, "stops_enemies", false);
-  bool stops_npcs = LuaTools::opt_boolean_field(l, 1, "stops_npcs", false);
-  bool stops_blocks = LuaTools::opt_boolean_field(l, 1, "stops_blocks", false);
-  bool stops_projectiles = LuaTools::opt_boolean_field(l, 1, "stops_projectiles", false);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    int width = LuaTools::check_int_field(l, 1, "width");
+    int height = LuaTools::check_int_field(l, 1, "height");
+    bool stops_hero = LuaTools::opt_boolean_field(l, 1, "stops_hero", false);
+    bool stops_enemies = LuaTools::opt_boolean_field(l, 1, "stops_enemies", false);
+    bool stops_npcs = LuaTools::opt_boolean_field(l, 1, "stops_npcs", false);
+    bool stops_blocks = LuaTools::opt_boolean_field(l, 1, "stops_blocks", false);
+    bool stops_projectiles = LuaTools::opt_boolean_field(l, 1, "stops_projectiles", false);
 
-  entity_creation_check_size(l, 1, width, height);
+    entity_creation_check_size(l, 1, width, height);
 
-  MapEntity* entity = new Wall(
-      name,
-      layer,
-      x,
-      y,
-      width,
-      height,
-      stops_hero,
-      stops_enemies,
-      stops_npcs,
-      stops_blocks,
-      stops_projectiles
-  );
-  map.get_entities().add_entity(entity);
+    MapEntity* entity = new Wall(
+        name,
+        layer,
+        x,
+        y,
+        width,
+        height,
+        stops_hero,
+        stops_enemies,
+        stops_npcs,
+        stops_blocks,
+        stops_projectiles
+    );
+    map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1512,31 +1644,34 @@ int LuaContext::map_api_create_wall(lua_State* l) {
  */
 int LuaContext::map_api_create_sensor(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  int width = LuaTools::check_int_field(l, 1, "width");
-  int height = LuaTools::check_int_field(l, 1, "height");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    int width = LuaTools::check_int_field(l, 1, "width");
+    int height = LuaTools::check_int_field(l, 1, "height");
 
-  entity_creation_check_size(l, 1, width, height);
+    entity_creation_check_size(l, 1, width, height);
 
-  MapEntity* entity = new Sensor(
-      name,
-      layer,
-      x,
-      y,
-      width,
-      height);
-  map.get_entities().add_entity(entity);
+    MapEntity* entity = new Sensor(
+        name,
+        layer,
+        x,
+        y,
+        width,
+        height);
+    map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1546,25 +1681,28 @@ int LuaContext::map_api_create_sensor(lua_State* l) {
  */
 int LuaContext::map_api_create_crystal(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
 
-  MapEntity* entity = new Crystal(
-      name,
-      layer,
-      x,
-      y);
-  map.get_entities().add_entity(entity);
+    MapEntity* entity = new Crystal(
+        name,
+        layer,
+        x,
+        y);
+    map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1574,39 +1712,42 @@ int LuaContext::map_api_create_crystal(lua_State* l) {
  */
 int LuaContext::map_api_create_crystal_block(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  int width = LuaTools::check_int_field(l, 1, "width");
-  int height = LuaTools::check_int_field(l, 1, "height");
-  const std::string& subtype_name = LuaTools::check_string_field(l, 1, "subtype");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    int width = LuaTools::check_int_field(l, 1, "width");
+    int height = LuaTools::check_int_field(l, 1, "height");
+    const std::string& subtype_name = LuaTools::check_string_field(l, 1, "subtype");
 
-  entity_creation_check_size(l, 1, width, height);
+    entity_creation_check_size(l, 1, width, height);
 
-  int subtype;
-  std::istringstream iss(subtype_name);
-  iss >> subtype;
+    int subtype;
+    std::istringstream iss(subtype_name);
+    iss >> subtype;
 
-  Game& game = map.get_game();
-  MapEntity* entity = new CrystalBlock(
-      game,
-      name,
-      layer,
-      x,
-      y,
-      width,
-      height,
-      CrystalBlock::Subtype(subtype));
-  map.get_entities().add_entity(entity);
+    Game& game = map.get_game();
+    MapEntity* entity = new CrystalBlock(
+        game,
+        name,
+        layer,
+        x,
+        y,
+        width,
+        height,
+        CrystalBlock::Subtype(subtype));
+    map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1616,48 +1757,51 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
  */
 int LuaContext::map_api_create_shop_treasure(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  const std::string& treasure_name = LuaTools::check_string_field(l, 1, "treasure_name");
-  int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
-  const std::string& treasure_savegame_variable = LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
-  int price = LuaTools::check_int_field(l, 1, "price");
-  const std::string& dialog_id = LuaTools::check_string_field(l, 1, "dialog");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    const std::string& treasure_name = LuaTools::check_string_field(l, 1, "treasure_name");
+    int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
+    const std::string& treasure_savegame_variable = LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
+    int price = LuaTools::check_int_field(l, 1, "price");
+    const std::string& dialog_id = LuaTools::check_string_field(l, 1, "dialog");
 
-  if (!treasure_savegame_variable.empty()
-      && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
-    LuaTools::arg_error(l, 1, std::string(
-        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier: '")
-        + treasure_savegame_variable + "')"
-    );
+    if (!treasure_savegame_variable.empty()
+        && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
+      LuaTools::arg_error(l, 1, std::string(
+          "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier: '")
+      + treasure_savegame_variable + "')"
+      );
+    }
+
+    Game& game = map.get_game();
+    MapEntity* entity = ShopTreasure::create(
+        game,
+        name,
+        layer,
+        x,
+        y,
+        Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
+        price,
+        dialog_id);
+
+    if (entity == nullptr) {
+      lua_pushnil(l);
+      return 1;
+    }
+
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-
-  Game& game = map.get_game();
-  MapEntity* entity = ShopTreasure::create(
-      game,
-      name,
-      layer,
-      x,
-      y,
-      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
-      price,
-      dialog_id);
-
-  if (entity == nullptr) {
-    lua_pushnil(l);
-    return 1;
-  }
-
-  map.get_entities().add_entity(entity);
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
-  }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1667,38 +1811,41 @@ int LuaContext::map_api_create_shop_treasure(lua_State* l) {
  */
 int LuaContext::map_api_create_stream(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  int direction = LuaTools::check_int_field(l, 1, "direction");
-  const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
-  int speed = LuaTools::opt_int_field(l, 1, "speed", 64);
-  bool allow_movement = LuaTools::opt_boolean_field(l, 1, "allow_movement", true);
-  bool allow_attack = LuaTools::opt_boolean_field(l, 1, "allow_attack", true);
-  bool allow_item = LuaTools::opt_boolean_field(l, 1, "allow_item", true);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    int direction = LuaTools::check_int_field(l, 1, "direction");
+    const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
+    int speed = LuaTools::opt_int_field(l, 1, "speed", 64);
+    bool allow_movement = LuaTools::opt_boolean_field(l, 1, "allow_movement", true);
+    bool allow_attack = LuaTools::opt_boolean_field(l, 1, "allow_attack", true);
+    bool allow_item = LuaTools::opt_boolean_field(l, 1, "allow_item", true);
 
-  Stream* stream = new Stream(
-      name,
-      layer,
-      x,
-      y,
-      direction,
-      sprite_name
-  );
-  stream->set_speed(speed);
-  stream->set_allow_movement(allow_movement);
-  stream->set_allow_attack(allow_attack);
-  stream->set_allow_item(allow_item);
-  map.get_entities().add_entity(stream);
+    Stream* stream = new Stream(
+        name,
+        layer,
+        x,
+        y,
+        direction,
+        sprite_name
+    );
+    stream->set_speed(speed);
+    stream->set_allow_movement(allow_movement);
+    stream->set_allow_attack(allow_attack);
+    stream->set_allow_item(allow_item);
+    map.get_entities().add_entity(stream);
 
-  if (map.is_started()) {
-    push_stream(l, *stream);
-    return 1;
+    if (map.is_started()) {
+      push_stream(l, *stream);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1708,68 +1855,71 @@ int LuaContext::map_api_create_stream(lua_State* l) {
  */
 int LuaContext::map_api_create_door(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  int direction = LuaTools::check_int_field(l, 1, "direction");
-  const std::string& sprite_name = LuaTools::check_string_field(l, 1, "sprite");
-  const std::string& savegame_variable = LuaTools::opt_string_field(l, 1, "savegame_variable", "");
-  Door::OpeningMethod opening_method = LuaTools::opt_enum_field<Door::OpeningMethod>(l, 1, "opening_method",
-      Door::opening_method_names, Door::OPENING_NONE);
-  const std::string& opening_condition = LuaTools::opt_string_field(l, 1, "opening_condition", "");
-  bool opening_condition_consumed = LuaTools::opt_boolean_field(l, 1, "opening_condition_consumed", false);
-  const std::string& cannot_open_dialog_id = LuaTools::opt_string_field(l, 1, "cannot_open_dialog", "");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    int direction = LuaTools::check_int_field(l, 1, "direction");
+    const std::string& sprite_name = LuaTools::check_string_field(l, 1, "sprite");
+    const std::string& savegame_variable = LuaTools::opt_string_field(l, 1, "savegame_variable", "");
+    Door::OpeningMethod opening_method = LuaTools::opt_enum_field<Door::OpeningMethod>(l, 1, "opening_method",
+        Door::opening_method_names, Door::OPENING_NONE);
+    const std::string& opening_condition = LuaTools::opt_string_field(l, 1, "opening_condition", "");
+    bool opening_condition_consumed = LuaTools::opt_boolean_field(l, 1, "opening_condition_consumed", false);
+    const std::string& cannot_open_dialog_id = LuaTools::opt_string_field(l, 1, "cannot_open_dialog", "");
 
-  Game& game = map.get_game();
+    Game& game = map.get_game();
 
-  if (opening_method == Door::OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
-    if (!LuaTools::is_valid_lua_identifier(opening_condition)) {
-      LuaTools::arg_error(l, 1, std::string(
-          "Bad field 'opening_condition' (invalid savegame variable identifier: '")
-          + opening_condition + "')"
-      );
+    if (opening_method == Door::OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
+      if (!LuaTools::is_valid_lua_identifier(opening_condition)) {
+        LuaTools::arg_error(l, 1, std::string(
+            "Bad field 'opening_condition' (invalid savegame variable identifier: '")
+        + opening_condition + "')"
+        );
+      }
     }
-  }
 
-  else if (opening_method == Door::OPENING_BY_INTERACTION_IF_ITEM) {
-    if (opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
-      LuaTools::arg_error(l, 1, std::string(
-          "Bad field 'opening_condition' (no such equipment item: '")
-          + opening_condition + "')"
-      );
+    else if (opening_method == Door::OPENING_BY_INTERACTION_IF_ITEM) {
+      if (opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
+        LuaTools::arg_error(l, 1, std::string(
+            "Bad field 'opening_condition' (no such equipment item: '")
+        + opening_condition + "')"
+        );
+      }
+      EquipmentItem& item = game.get_equipment().get_item(opening_condition);
+      if (!item.is_saved()) {
+        LuaTools::arg_error(l, 1, std::string(
+            "Bad field 'opening_condition' (equipment item '")
+        + opening_condition + "' is not saved)"
+        );
+      }
     }
-    EquipmentItem& item = game.get_equipment().get_item(opening_condition);
-    if (!item.is_saved()) {
-      LuaTools::arg_error(l, 1, std::string(
-          "Bad field 'opening_condition' (equipment item '")
-          + opening_condition + "' is not saved)"
-      );
+
+    Door* door = new Door(
+        game,
+        name,
+        layer,
+        x,
+        y,
+        direction,
+        sprite_name,
+        savegame_variable);
+    door->set_opening_method(opening_method);
+    door->set_opening_condition(opening_condition);
+    door->set_opening_condition_consumed(opening_condition_consumed);
+    door->set_cannot_open_dialog_id(cannot_open_dialog_id);
+    map.get_entities().add_entity(door);
+
+    if (map.is_started()) {
+      push_entity(l, *door);
+      return 1;
     }
+    return 0;
   }
-
-  Door* door = new Door(
-      game,
-      name,
-      layer,
-      x,
-      y,
-      direction,
-      sprite_name,
-      savegame_variable);
-  door->set_opening_method(opening_method);
-  door->set_opening_condition(opening_condition);
-  door->set_opening_condition_consumed(opening_condition_consumed);
-  door->set_cannot_open_dialog_id(cannot_open_dialog_id);
-  map.get_entities().add_entity(door);
-
-  if (map.is_started()) {
-    push_entity(l, *door);
-    return 1;
-  }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1779,33 +1929,36 @@ int LuaContext::map_api_create_door(lua_State* l) {
  */
 int LuaContext::map_api_create_stairs(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  int direction = LuaTools::check_int_field(l, 1, "direction");
-  const std::string& subtype_name = LuaTools::check_string_field(l, 1, "subtype");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    int direction = LuaTools::check_int_field(l, 1, "direction");
+    const std::string& subtype_name = LuaTools::check_string_field(l, 1, "subtype");
 
-  int subtype;
-  std::istringstream iss(subtype_name);
-  iss >> subtype;
+    int subtype;
+    std::istringstream iss(subtype_name);
+    iss >> subtype;
 
-  MapEntity* entity = new Stairs(
-      name,
-      layer,
-      x,
-      y,
-      direction,
-      Stairs::Subtype(subtype));
-  map.get_entities().add_entity(entity);
+    MapEntity* entity = new Stairs(
+        name,
+        layer,
+        x,
+        y,
+        direction,
+        Stairs::Subtype(subtype));
+    map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1815,32 +1968,35 @@ int LuaContext::map_api_create_stairs(lua_State* l) {
  */
 int LuaContext::map_api_create_separator(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  int width = LuaTools::check_int_field(l, 1, "width");
-  int height = LuaTools::check_int_field(l, 1, "height");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    int width = LuaTools::check_int_field(l, 1, "width");
+    int height = LuaTools::check_int_field(l, 1, "height");
 
-  entity_creation_check_size(l, 1, width, height);
+    entity_creation_check_size(l, 1, width, height);
 
-  MapEntity* entity = new Separator(
-      name,
-      layer,
-      x,
-      y,
-      width,
-      height
-  );
-  map.get_entities().add_entity(entity);
+    MapEntity* entity = new Separator(
+        name,
+        layer,
+        x,
+        y,
+        width,
+        height
+    );
+    map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1850,40 +2006,43 @@ int LuaContext::map_api_create_separator(lua_State* l) {
  */
 int LuaContext::map_api_create_custom_entity(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  int direction = LuaTools::check_int_field(l, 1, "direction");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
-  int width = LuaTools::opt_int_field(l, 1, "width", 16);
-  int height = LuaTools::opt_int_field(l, 1, "height", 16);
-  const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
-  const std::string& model = LuaTools::opt_string_field(l, 1, "model", "");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    int direction = LuaTools::check_int_field(l, 1, "direction");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
+    int width = LuaTools::opt_int_field(l, 1, "width", 16);
+    int height = LuaTools::opt_int_field(l, 1, "height", 16);
+    const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
+    const std::string& model = LuaTools::opt_string_field(l, 1, "model", "");
 
-  entity_creation_check_size(l, 1, width, height);
+    entity_creation_check_size(l, 1, width, height);
 
-  Game& game = map.get_game();
-  MapEntityPtr entity = RefCountable::make_refcount_ptr<MapEntity>(new CustomEntity(
-      game,
-      name,
-      direction,
-      layer,
-      x,
-      y,
-      width,
-      height,
-      sprite_name,
-      model
-  ));
+    Game& game = map.get_game();
+    MapEntityPtr entity = RefCountable::make_refcount_ptr<MapEntity>(new CustomEntity(
+        game,
+        name,
+        direction,
+        layer,
+        x,
+        y,
+        width,
+        height,
+        sprite_name,
+        model
+    ));
 
-  map.get_entities().add_entity(entity);
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1893,25 +2052,28 @@ int LuaContext::map_api_create_custom_entity(lua_State* l) {
  */
 int LuaContext::map_api_create_bomb(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
 
-  MapEntity* entity = new Bomb(
-      name,
-      layer,
-      x,
-      y);
-  map.get_entities().add_entity(entity);
+    MapEntity* entity = new Bomb(
+        name,
+        layer,
+        x,
+        y);
+    map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1921,25 +2083,28 @@ int LuaContext::map_api_create_bomb(lua_State* l) {
  */
 int LuaContext::map_api_create_explosion(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
 
-  MapEntity* entity = new Explosion(
-      name,
-      layer,
-      Point(x, y),
-      true);
-  map.get_entities().add_entity(entity);
+    MapEntity* entity = new Explosion(
+        name,
+        layer,
+        Point(x, y),
+        true);
+    map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -1949,24 +2114,27 @@ int LuaContext::map_api_create_explosion(lua_State* l) {
  */
 int LuaContext::map_api_create_fire(lua_State* l) {
 
-  Map& map = get_entity_creation_map(l);
-  LuaTools::check_type(l, 1, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Map& map = get_entity_creation_map(l);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+    int x = LuaTools::check_int_field(l, 1, "x");
+    int y = LuaTools::check_int_field(l, 1, "y");
 
-  MapEntity* entity = new Fire(
-      name,
-      layer,
-      Point(x, y));
-  map.get_entities().add_entity(entity);
+    MapEntity* entity = new Fire(
+        name,
+        layer,
+        Point(x, y));
+    map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**

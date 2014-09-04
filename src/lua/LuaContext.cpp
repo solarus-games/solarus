@@ -884,7 +884,7 @@ void LuaContext::print_stack(lua_State* l) {
 
       case LUA_TUSERDATA:
       {
-        ExportableToLua* userdata = *(static_cast<ExportableToLua**>(
+        const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(
             lua_touserdata(l, i)));
         const std::string& lua_type_name = userdata->get_lua_type_name();
         std::cout << lua_type_name.substr(lua_type_name.find_last_of('.') + 1);

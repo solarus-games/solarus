@@ -54,8 +54,11 @@ void LuaContext::register_input_module() {
  */
 int LuaContext::input_api_is_joypad_enabled(lua_State* l) {
 
-  lua_pushboolean(l, InputEvent::is_joypad_enabled());
-  return 1;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    lua_pushboolean(l, InputEvent::is_joypad_enabled());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -65,14 +68,17 @@ int LuaContext::input_api_is_joypad_enabled(lua_State* l) {
  */
 int LuaContext::input_api_set_joypad_enabled(lua_State* l) {
 
-  bool joypad_enabled = true;
-  if (lua_gettop(l) >= 2) {
-    joypad_enabled = lua_toboolean(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    bool joypad_enabled = true;
+    if (lua_gettop(l) >= 2) {
+      joypad_enabled = lua_toboolean(l, 2);
+    }
+
+    InputEvent::set_joypad_enabled(joypad_enabled);
+
+    return 0;
   }
-
-  InputEvent::set_joypad_enabled(joypad_enabled);
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -82,16 +88,19 @@ int LuaContext::input_api_set_joypad_enabled(lua_State* l) {
  */
 int LuaContext::input_api_is_key_pressed(lua_State* l) {
 
-  const std::string& key_name = LuaTools::check_string(l, 1);
-  InputEvent::KeyboardKey key = InputEvent::get_keyboard_key_by_name(key_name);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& key_name = LuaTools::check_string(l, 1);
+    InputEvent::KeyboardKey key = InputEvent::get_keyboard_key_by_name(key_name);
 
-  if (key == InputEvent::KEY_NONE) {
-    LuaTools::arg_error(l, 1, std::string(
-        "Unknown keyboard key name: '") + key_name + "'");
+    if (key == InputEvent::KEY_NONE) {
+      LuaTools::arg_error(l, 1, std::string(
+          "Unknown keyboard key name: '") + key_name + "'");
+    }
+
+    lua_pushboolean(l, InputEvent::is_key_down(key));
+    return 1;
   }
-
-  lua_pushboolean(l, InputEvent::is_key_down(key));
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -101,35 +110,38 @@ int LuaContext::input_api_is_key_pressed(lua_State* l) {
  */
 int LuaContext::input_api_get_key_modifiers(lua_State* l) {
 
-  const bool shift = InputEvent::is_shift_down();
-  const bool control = InputEvent::is_control_down();
-  const bool alt = InputEvent::is_alt_down();
-  const bool caps_lock = InputEvent::is_caps_lock_on();
-  const bool num_lock = InputEvent::is_num_lock_on();
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const bool shift = InputEvent::is_shift_down();
+    const bool control = InputEvent::is_control_down();
+    const bool alt = InputEvent::is_alt_down();
+    const bool caps_lock = InputEvent::is_caps_lock_on();
+    const bool num_lock = InputEvent::is_num_lock_on();
 
-  lua_newtable(l);
-  if (shift) {
-    lua_pushboolean(l, 1);
-    lua_setfield(l, -2, "shift");
-  }
-  if (control) {
-    lua_pushboolean(l, 1);
-    lua_setfield(l, -2, "control");
-  }
-  if (alt) {
-    lua_pushboolean(l, 1);
-    lua_setfield(l, -2, "alt");
-  }
-  if (caps_lock) {
-    lua_pushboolean(l, 1);
-    lua_setfield(l, -2, "caps lock");
-  }
-  if (num_lock) {
-    lua_pushboolean(l, 1);
-    lua_setfield(l, -2, "num lock");
-  }
+    lua_newtable(l);
+    if (shift) {
+      lua_pushboolean(l, 1);
+      lua_setfield(l, -2, "shift");
+    }
+    if (control) {
+      lua_pushboolean(l, 1);
+      lua_setfield(l, -2, "control");
+    }
+    if (alt) {
+      lua_pushboolean(l, 1);
+      lua_setfield(l, -2, "alt");
+    }
+    if (caps_lock) {
+      lua_pushboolean(l, 1);
+      lua_setfield(l, -2, "caps lock");
+    }
+    if (num_lock) {
+      lua_pushboolean(l, 1);
+      lua_setfield(l, -2, "num lock");
+    }
 
-  return 1;
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -139,10 +151,13 @@ int LuaContext::input_api_get_key_modifiers(lua_State* l) {
  */
 int LuaContext::input_api_is_joypad_button_pressed(lua_State* l) {
 
-  int button = LuaTools::check_int(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    int button = LuaTools::check_int(l, 1);
 
-  lua_pushboolean(l, InputEvent::is_joypad_button_down(button));
-  return 1;
+    lua_pushboolean(l, InputEvent::is_joypad_button_down(button));
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -152,10 +167,13 @@ int LuaContext::input_api_is_joypad_button_pressed(lua_State* l) {
  */
 int LuaContext::input_api_get_joypad_axis_state(lua_State* l) {
 
-  int axis = LuaTools::check_int(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    int axis = LuaTools::check_int(l, 1);
 
-  lua_pushinteger(l, InputEvent::get_joypad_axis_state(axis));
-  return 1;
+    lua_pushinteger(l, InputEvent::get_joypad_axis_state(axis));
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -165,10 +183,13 @@ int LuaContext::input_api_get_joypad_axis_state(lua_State* l) {
  */
 int LuaContext::input_api_get_joypad_hat_direction(lua_State* l) {
 
-  int hat = LuaTools::check_int(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    int hat = LuaTools::check_int(l, 1);
 
-  lua_pushinteger(l, InputEvent::get_joypad_hat_direction(hat));
-  return 1;
+    lua_pushinteger(l, InputEvent::get_joypad_hat_direction(hat));
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -178,16 +199,19 @@ int LuaContext::input_api_get_joypad_hat_direction(lua_State* l) {
  */
 int LuaContext::input_api_is_mouse_button_pressed(lua_State* l) {
 
-  const std::string& button_name = LuaTools::check_string(l, 1);
-  InputEvent::MouseButton button = InputEvent::get_mouse_button_by_name(button_name);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& button_name = LuaTools::check_string(l, 1);
+    InputEvent::MouseButton button = InputEvent::get_mouse_button_by_name(button_name);
 
-  if (button == InputEvent::MOUSE_BUTTON_NONE) {
-    LuaTools::arg_error(l, 1, std::string(
-        "Unknown mouse button name: '") + button_name + "'");
+    if (button == InputEvent::MOUSE_BUTTON_NONE) {
+      LuaTools::arg_error(l, 1, std::string(
+          "Unknown mouse button name: '") + button_name + "'");
+    }
+
+    lua_pushboolean(l, InputEvent::is_mouse_button_down(button));
+    return 1;
   }
-
-  lua_pushboolean(l, InputEvent::is_mouse_button_down(button));
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -197,16 +221,19 @@ int LuaContext::input_api_is_mouse_button_pressed(lua_State* l) {
  */
 int LuaContext::input_api_is_mouse_button_released(lua_State* l) {
 
-  const std::string& button_name = LuaTools::check_string(l, 1);
-  InputEvent::MouseButton button = InputEvent::get_mouse_button_by_name(button_name);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& button_name = LuaTools::check_string(l, 1);
+    InputEvent::MouseButton button = InputEvent::get_mouse_button_by_name(button_name);
 
-  if (button == InputEvent::MOUSE_BUTTON_NONE) {
-    LuaTools::arg_error(l, 1, std::string(
-        "Unknown mouse button name: '") + button_name + "'");
+    if (button == InputEvent::MOUSE_BUTTON_NONE) {
+      LuaTools::arg_error(l, 1, std::string(
+          "Unknown mouse button name: '") + button_name + "'");
+    }
+
+    lua_pushboolean(l, !InputEvent::is_mouse_button_down(button));
+    return 1;
   }
-
-  lua_pushboolean(l, !InputEvent::is_mouse_button_down(button));
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -216,18 +243,21 @@ int LuaContext::input_api_is_mouse_button_released(lua_State* l) {
  */
 int LuaContext::input_api_get_mouse_position(lua_State* l) {
 
-  const Rectangle& position = InputEvent::get_global_mouse_position();
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const Rectangle& position = InputEvent::get_global_mouse_position();
 
-  if (!position.is_flat()) {
-    lua_pushinteger(l, position.get_x());
-    lua_pushinteger(l, position.get_y());
-  }
-  else {
-    lua_pushnil(l);
-    return 1;
-  }
+    if (!position.is_flat()) {
+      lua_pushinteger(l, position.get_x());
+      lua_pushinteger(l, position.get_y());
+    }
+    else {
+      lua_pushnil(l);
+      return 1;
+    }
 
-  return 2;
+    return 2;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 }

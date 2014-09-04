@@ -88,13 +88,16 @@ void LuaContext::push_main(lua_State* l) {
  */
 int LuaContext::main_api_load_file(lua_State *l) {
 
-  const std::string& file_name = LuaTools::check_string(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& file_name = LuaTools::check_string(l, 1);
 
-  if (!load_file_if_exists(l, file_name)) {
-    lua_pushnil(l);
+    if (!load_file_if_exists(l, file_name)) {
+      lua_pushnil(l);
+    }
+
+    return 1;
   }
-
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -104,11 +107,14 @@ int LuaContext::main_api_load_file(lua_State *l) {
  */
 int LuaContext::main_api_do_file(lua_State *l) {
 
-  const std::string& file_name = LuaTools::check_string(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& file_name = LuaTools::check_string(l, 1);
 
-  do_file(l, file_name);
+    do_file(l, file_name);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -118,9 +124,12 @@ int LuaContext::main_api_do_file(lua_State *l) {
  */
 int LuaContext::main_api_reset(lua_State* l) {
 
-  get_lua_context(l).get_main_loop().set_resetting();
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    get_lua_context(l).get_main_loop().set_resetting();
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -130,9 +139,12 @@ int LuaContext::main_api_reset(lua_State* l) {
  */
 int LuaContext::main_api_exit(lua_State* l) {
 
-  get_lua_context(l).get_main_loop().set_exiting();
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    get_lua_context(l).get_main_loop().set_exiting();
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -142,10 +154,13 @@ int LuaContext::main_api_exit(lua_State* l) {
  */
 int LuaContext::main_api_get_elapsed_time(lua_State* l) {
 
-  uint32_t elapsed_time = System::now();
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    uint32_t elapsed_time = System::now();
 
-  lua_pushinteger(l, elapsed_time);
-  return 1;
+    lua_pushinteger(l, elapsed_time);
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -155,15 +170,18 @@ int LuaContext::main_api_get_elapsed_time(lua_State* l) {
  */
 int LuaContext::main_api_get_quest_write_dir(lua_State* l) {
 
-  const std::string& quest_write_dir = FileTools::get_quest_write_dir();
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& quest_write_dir = FileTools::get_quest_write_dir();
 
-  if (quest_write_dir.empty()) {
-    lua_pushnil(l);
+    if (quest_write_dir.empty()) {
+      lua_pushnil(l);
+    }
+    else {
+      push_string(l, quest_write_dir);
+    }
+    return 1;
   }
-  else {
-    push_string(l, quest_write_dir);
-  }
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -173,11 +191,14 @@ int LuaContext::main_api_get_quest_write_dir(lua_State* l) {
  */
 int LuaContext::main_api_set_quest_write_dir(lua_State* l) {
 
-  const std::string& quest_write_dir = LuaTools::opt_string(l, 1, "");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& quest_write_dir = LuaTools::opt_string(l, 1, "");
 
-  FileTools::set_quest_write_dir(quest_write_dir);
+    FileTools::set_quest_write_dir(quest_write_dir);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -187,16 +208,19 @@ int LuaContext::main_api_set_quest_write_dir(lua_State* l) {
  */
 int LuaContext::main_api_load_settings(lua_State* l) {
 
-  std::string file_name = LuaTools::opt_string(l, 1, "settings.dat");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    std::string file_name = LuaTools::opt_string(l, 1, "settings.dat");
 
-  if (FileTools::get_quest_write_dir().empty()) {
-    LuaTools::error(l, "Cannot load settings: no write directory was specified in quest.dat");
+    if (FileTools::get_quest_write_dir().empty()) {
+      LuaTools::error(l, "Cannot load settings: no write directory was specified in quest.dat");
+    }
+
+    bool success = Settings::load(file_name);
+
+    lua_pushboolean(l, success);
+    return 1;
   }
-
-  bool success = Settings::load(file_name);
-
-  lua_pushboolean(l, success);
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -206,16 +230,19 @@ int LuaContext::main_api_load_settings(lua_State* l) {
  */
 int LuaContext::main_api_save_settings(lua_State* l) {
 
-  std::string file_name = LuaTools::opt_string(l, 1, "settings.dat");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    std::string file_name = LuaTools::opt_string(l, 1, "settings.dat");
 
-  if (FileTools::get_quest_write_dir().empty()) {
-    LuaTools::error(l, "Cannot save settings: no write directory was specified in quest.dat");
+    if (FileTools::get_quest_write_dir().empty()) {
+      LuaTools::error(l, "Cannot save settings: no write directory was specified in quest.dat");
+    }
+
+    bool success = Settings::save(file_name);
+
+    lua_pushboolean(l, success);
+    return 1;
   }
-
-  bool success = Settings::save(file_name);
-
-  lua_pushboolean(l, success);
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -225,15 +252,18 @@ int LuaContext::main_api_save_settings(lua_State* l) {
  */
 int LuaContext::main_api_get_distance(lua_State* l) {
 
-  int x1 = LuaTools::check_int(l, 1);
-  int y1 = LuaTools::check_int(l, 2);
-  int x2 = LuaTools::check_int(l, 3);
-  int y2 = LuaTools::check_int(l, 4);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    int x1 = LuaTools::check_int(l, 1);
+    int y1 = LuaTools::check_int(l, 2);
+    int x2 = LuaTools::check_int(l, 3);
+    int y2 = LuaTools::check_int(l, 4);
 
-  int distance = (int) Geometry::get_distance(x1, y1, x2, y2);
+    int distance = (int) Geometry::get_distance(x1, y1, x2, y2);
 
-  lua_pushinteger(l, distance);
-  return 1;
+    lua_pushinteger(l, distance);
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -243,15 +273,18 @@ int LuaContext::main_api_get_distance(lua_State* l) {
  */
 int LuaContext::main_api_get_angle(lua_State* l) {
 
-  int x1 = LuaTools::check_int(l, 1);
-  int y1 = LuaTools::check_int(l, 2);
-  int x2 = LuaTools::check_int(l, 3);
-  int y2 = LuaTools::check_int(l, 4);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    int x1 = LuaTools::check_int(l, 1);
+    int y1 = LuaTools::check_int(l, 2);
+    int x2 = LuaTools::check_int(l, 3);
+    int y2 = LuaTools::check_int(l, 4);
 
-  double angle = Geometry::get_angle(x1, y1, x2, y2);
+    double angle = Geometry::get_angle(x1, y1, x2, y2);
 
-  lua_pushnumber(l, angle);
-  return 1;
+    lua_pushnumber(l, angle);
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -261,10 +294,13 @@ int LuaContext::main_api_get_angle(lua_State* l) {
  */
 int LuaContext::main_api_get_metatable(lua_State* l) {
 
-  const std::string& type_name = LuaTools::check_string(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& type_name = LuaTools::check_string(l, 1);
 
-  luaL_getmetatable(l, (std::string("sol.") + type_name).c_str());
-  return 1;
+    luaL_getmetatable(l, (std::string("sol.") + type_name).c_str());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**

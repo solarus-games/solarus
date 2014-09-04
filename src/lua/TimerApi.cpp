@@ -107,9 +107,9 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+    ExportableToLuaPtr* userdata = static_cast<ExportableToLuaPtr*>(
         lua_touserdata(l, context_index));
-    context = *userdata;
+    context = userdata->get();
   }
   else {
     context = lua_topointer(l, context_index);
@@ -203,9 +203,9 @@ void LuaContext::remove_timers(int context_index) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+    ExportableToLuaPtr* userdata = static_cast<ExportableToLuaPtr*>(
         lua_touserdata(l, context_index));
-    context = *userdata;
+    context = userdata->get();
   }
   else {
     context = lua_topointer(l, context_index);
@@ -361,48 +361,51 @@ void LuaContext::do_timer_callback(Timer& timer) {
  */
 int LuaContext::timer_api_start(lua_State *l) {
 
-  // Parameters: [context] delay callback.
-  LuaContext& lua_context = get_lua_context(l);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    // Parameters: [context] delay callback.
+    LuaContext& lua_context = get_lua_context(l);
 
-  if (lua_type(l, 1) != LUA_TNUMBER) {
-    // The first parameter is the context.
-    if (lua_type(l, 1) != LUA_TTABLE
-        && lua_type(l, 1) != LUA_TUSERDATA) {
-      LuaTools::type_error(l, 1, "table or userdata");
-    }
-  }
-  else {
-    // No context specified: set a default context:
-    // - during a game: the current map,
-    // - outside a game: sol.main.
-
-    Game* game = lua_context.get_main_loop().get_game();
-    if (game != nullptr && game->has_current_map()) {
-      push_map(l, game->get_current_map());
+    if (lua_type(l, 1) != LUA_TNUMBER) {
+      // The first parameter is the context.
+      if (lua_type(l, 1) != LUA_TTABLE
+          && lua_type(l, 1) != LUA_TUSERDATA) {
+        LuaTools::type_error(l, 1, "table or userdata");
+      }
     }
     else {
-      LuaContext::push_main(l);
+      // No context specified: set a default context:
+      // - during a game: the current map,
+      // - outside a game: sol.main.
+
+      Game* game = lua_context.get_main_loop().get_game();
+      if (game != nullptr && game->has_current_map()) {
+        push_map(l, game->get_current_map());
+      }
+      else {
+        LuaContext::push_main(l);
+      }
+
+      lua_insert(l, 1);
+    }
+    // Now the first parameter is the context.
+
+    uint32_t delay = uint32_t(LuaTools::check_int(l, 2));
+    LuaTools::check_type(l, 3, LUA_TFUNCTION);
+
+    // Create the timer.
+    Timer* timer = new Timer(delay);
+    lua_context.add_timer(timer, 1, 3);
+
+    if (delay == 0) {
+      // The delay is zero: call the function right now.
+      lua_context.do_timer_callback(*timer);
     }
 
-    lua_insert(l, 1);
+    push_timer(l, *timer);
+
+    return 1;
   }
-  // Now the first parameter is the context.
-
-  uint32_t delay = uint32_t(LuaTools::check_int(l, 2));
-  LuaTools::check_type(l, 3, LUA_TFUNCTION);
-
-  // Create the timer.
-  Timer* timer = new Timer(delay);
-  lua_context.add_timer(timer, 1, 3);
-
-  if (delay == 0) {
-    // The delay is zero: call the function right now.
-    lua_context.do_timer_callback(*timer);
-  }
-
-  push_timer(l, *timer);
-
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -412,11 +415,14 @@ int LuaContext::timer_api_start(lua_State *l) {
  */
 int LuaContext::timer_api_stop(lua_State* l) {
 
-  LuaContext& lua_context = get_lua_context(l);
-  Timer& timer = check_timer(l, 1);
-  lua_context.remove_timer(&timer);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    LuaContext& lua_context = get_lua_context(l);
+    Timer& timer = check_timer(l, 1);
+    lua_context.remove_timer(&timer);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -426,14 +432,17 @@ int LuaContext::timer_api_stop(lua_State* l) {
  */
 int LuaContext::timer_api_stop_all(lua_State* l) {
 
-  if (lua_type(l, 1) != LUA_TTABLE
-      && lua_type(l, 1) != LUA_TUSERDATA) {
-    LuaTools::type_error(l, 1, "table or userdata");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    if (lua_type(l, 1) != LUA_TTABLE
+        && lua_type(l, 1) != LUA_TUSERDATA) {
+      LuaTools::type_error(l, 1, "table or userdata");
+    }
+
+    get_lua_context(l).remove_timers(1);
+
+    return 0;
   }
-
-  get_lua_context(l).remove_timers(1);
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -443,10 +452,13 @@ int LuaContext::timer_api_stop_all(lua_State* l) {
  */
 int LuaContext::timer_api_is_with_sound(lua_State* l) {
 
-  Timer& timer = check_timer(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Timer& timer = check_timer(l, 1);
 
-  lua_pushboolean(l, timer.is_with_sound());
-  return 1;
+    lua_pushboolean(l, timer.is_with_sound());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -456,15 +468,18 @@ int LuaContext::timer_api_is_with_sound(lua_State* l) {
  */
 int LuaContext::timer_api_set_with_sound(lua_State* l) {
 
-  Timer& timer = check_timer(l, 1);
-  bool with_sound = true;
-  if (lua_gettop(l) >= 2) {
-    with_sound = lua_toboolean(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Timer& timer = check_timer(l, 1);
+    bool with_sound = true;
+    if (lua_gettop(l) >= 2) {
+      with_sound = lua_toboolean(l, 2);
+    }
+
+    timer.set_with_sound(with_sound);
+
+    return 0;
   }
-
-  timer.set_with_sound(with_sound);
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -474,10 +489,13 @@ int LuaContext::timer_api_set_with_sound(lua_State* l) {
  */
 int LuaContext::timer_api_is_suspended(lua_State* l) {
 
-  Timer& timer = check_timer(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Timer& timer = check_timer(l, 1);
 
-  lua_pushboolean(l, timer.is_suspended());
-  return 1;
+    lua_pushboolean(l, timer.is_suspended());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -487,15 +505,18 @@ int LuaContext::timer_api_is_suspended(lua_State* l) {
  */
 int LuaContext::timer_api_set_suspended(lua_State* l) {
 
-  Timer& timer = check_timer(l, 1);
-  bool suspended = true;
-  if (lua_gettop(l) >= 2) {
-    suspended = lua_toboolean(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Timer& timer = check_timer(l, 1);
+    bool suspended = true;
+    if (lua_gettop(l) >= 2) {
+      suspended = lua_toboolean(l, 2);
+    }
+
+    timer.set_suspended(suspended);
+
+    return 0;
   }
-
-  timer.set_suspended(suspended);
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -505,10 +526,13 @@ int LuaContext::timer_api_set_suspended(lua_State* l) {
  */
 int LuaContext::timer_api_is_suspended_with_map(lua_State* l) {
 
-  Timer& timer = check_timer(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Timer& timer = check_timer(l, 1);
 
-  lua_pushboolean(l, timer.is_suspended_with_map());
-  return 1;
+    lua_pushboolean(l, timer.is_suspended_with_map());
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -518,23 +542,26 @@ int LuaContext::timer_api_is_suspended_with_map(lua_State* l) {
  */
 int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
 
-  LuaContext& lua_context = get_lua_context(l);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    LuaContext& lua_context = get_lua_context(l);
 
-  Timer& timer = check_timer(l, 1);
-  bool suspended_with_map = true;
-  if (lua_gettop(l) >= 2) {
-    suspended_with_map = lua_toboolean(l, 2);
+    Timer& timer = check_timer(l, 1);
+    bool suspended_with_map = true;
+    if (lua_gettop(l) >= 2) {
+      suspended_with_map = lua_toboolean(l, 2);
+    }
+
+    timer.set_suspended_with_map(suspended_with_map);
+
+    Game* game = lua_context.get_main_loop().get_game();
+    if (game != nullptr && game->has_current_map()) {
+      // If the game is running, suspend/unsuspend the timer like the map.
+      timer.notify_map_suspended(game->get_current_map().is_suspended());
+    }
+
+    return 0;
   }
-
-  timer.set_suspended_with_map(suspended_with_map);
-
-  Game* game = lua_context.get_main_loop().get_game();
-  if (game != nullptr && game->has_current_map()) {
-    // If the game is running, suspend/unsuspend the timer like the map.
-    timer.notify_map_suspended(game->get_current_map().is_suspended());
-  }
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -544,22 +571,25 @@ int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
  */
 int LuaContext::timer_api_get_remaining_time(lua_State* l) {
 
-  Timer& timer = check_timer(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Timer& timer = check_timer(l, 1);
 
-  LuaContext& lua_context = get_lua_context(l);
-  const auto it = lua_context.timers.find(&timer);
-  if (it == lua_context.timers.end() || it->second.callback_ref == LUA_REFNIL) {
-    // This timer is already finished or was canceled.
-    lua_pushinteger(l, 0);
-  }
-  else {
-    int remaining_time = (int) timer.get_expiration_date() - (int) System::now();
-    if (remaining_time < 0) {
-      remaining_time = 0;
+    LuaContext& lua_context = get_lua_context(l);
+    const auto it = lua_context.timers.find(&timer);
+    if (it == lua_context.timers.end() || it->second.callback_ref == LUA_REFNIL) {
+      // This timer is already finished or was canceled.
+      lua_pushinteger(l, 0);
     }
-    lua_pushinteger(l, remaining_time);
+    else {
+      int remaining_time = (int) timer.get_expiration_date() - (int) System::now();
+      if (remaining_time < 0) {
+        remaining_time = 0;
+      }
+      lua_pushinteger(l, remaining_time);
+    }
+    return 1;
   }
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -569,23 +599,26 @@ int LuaContext::timer_api_get_remaining_time(lua_State* l) {
  */
 int LuaContext::timer_api_set_remaining_time(lua_State* l) {
 
-  Timer& timer = check_timer(l, 1);
-  uint32_t remaining_time = LuaTools::check_int(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Timer& timer = check_timer(l, 1);
+    uint32_t remaining_time = LuaTools::check_int(l, 2);
 
-  LuaContext& lua_context = get_lua_context(l);
-  const auto it = lua_context.timers.find(&timer);
-  if (it != lua_context.timers.end() && it->second.callback_ref != LUA_REFNIL) {
-    // The timer is still active.
-    const uint32_t now = System::now();
-    const uint32_t expiration_date = now + remaining_time;
-    timer.set_expiration_date(expiration_date);
-    if (now >= expiration_date) {
-      // Execute the callback now.
-      lua_context.do_timer_callback(timer);
+    LuaContext& lua_context = get_lua_context(l);
+    const auto it = lua_context.timers.find(&timer);
+    if (it != lua_context.timers.end() && it->second.callback_ref != LUA_REFNIL) {
+      // The timer is still active.
+      const uint32_t now = System::now();
+      const uint32_t expiration_date = now + remaining_time;
+      timer.set_expiration_date(expiration_date);
+      if (now >= expiration_date) {
+        // Execute the callback now.
+        lua_context.do_timer_callback(timer);
+      }
     }
-  }
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 }

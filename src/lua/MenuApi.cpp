@@ -58,9 +58,9 @@ void LuaContext::add_menu(int menu_ref, int context_index, bool on_top) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+    ExportableToLuaPtr* userdata = static_cast<ExportableToLuaPtr*>(
         lua_touserdata(l, context_index));
-    context = *userdata;
+    context = userdata->get();
   }
   else {
     context = lua_topointer(l, context_index);
@@ -87,9 +87,9 @@ void LuaContext::remove_menus(int context_index) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+    ExportableToLuaPtr* userdata = static_cast<ExportableToLuaPtr*>(
         lua_touserdata(l, context_index));
-    context = *userdata;
+    context = userdata->get();
   }
   else {
     context = lua_topointer(l, context_index);
@@ -181,23 +181,26 @@ void LuaContext::update_menus() {
  */
 int LuaContext::menu_api_start(lua_State *l) {
 
-  // Parameters: context table.
-  if (lua_type(l, 1) != LUA_TTABLE
-      && lua_type(l, 1) != LUA_TUSERDATA) {
-    LuaTools::type_error(l, 1, "table or userdata");
-  }
-  LuaTools::check_type(l, 2, LUA_TTABLE);
-  bool on_top = true;
-  if (lua_gettop(l) >= 3) {
-    on_top = lua_toboolean(l, 3);
-  }
-  lua_settop(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    // Parameters: context table.
+    if (lua_type(l, 1) != LUA_TTABLE
+        && lua_type(l, 1) != LUA_TUSERDATA) {
+      LuaTools::type_error(l, 1, "table or userdata");
+    }
+    LuaTools::check_type(l, 2, LUA_TTABLE);
+    bool on_top = true;
+    if (lua_gettop(l) >= 3) {
+      on_top = lua_toboolean(l, 3);
+    }
+    lua_settop(l, 2);
 
-  LuaContext& lua_context = get_lua_context(l);
-  int menu_ref = lua_context.create_ref();
-  lua_context.add_menu(menu_ref, 1, on_top);
+    LuaContext& lua_context = get_lua_context(l);
+    int menu_ref = lua_context.create_ref();
+    lua_context.add_menu(menu_ref, 1, on_top);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -207,26 +210,29 @@ int LuaContext::menu_api_start(lua_State *l) {
  */
 int LuaContext::menu_api_stop(lua_State* l) {
 
-  LuaContext& lua_context = get_lua_context(l);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    LuaContext& lua_context = get_lua_context(l);
 
-  LuaTools::check_type(l, 1, LUA_TTABLE);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
 
-  int menu_ref = LUA_REFNIL;
-  std::list<LuaMenuData>& menus = lua_context.menus;
-  for (LuaMenuData& menu: menus) {
-    int ref = menu.ref;
-    push_ref(l, ref);
-    if (lua_equal(l, 1, -1)) {
-      menu_ref = ref;
-      menu.ref = LUA_REFNIL;  // Don't erase it immediately since we may be iterating over menus.
-      menu.context = nullptr;
-      lua_context.menu_on_finished(menu_ref);
-      lua_context.destroy_ref(menu_ref);
-      break;
+    int menu_ref = LUA_REFNIL;
+    std::list<LuaMenuData>& menus = lua_context.menus;
+    for (LuaMenuData& menu: menus) {
+      int ref = menu.ref;
+      push_ref(l, ref);
+      if (lua_equal(l, 1, -1)) {
+        menu_ref = ref;
+        menu.ref = LUA_REFNIL;  // Don't erase it immediately since we may be iterating over menus.
+        menu.context = nullptr;
+        lua_context.menu_on_finished(menu_ref);
+        lua_context.destroy_ref(menu_ref);
+        break;
+      }
     }
-  }
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -236,14 +242,17 @@ int LuaContext::menu_api_stop(lua_State* l) {
  */
 int LuaContext::menu_api_stop_all(lua_State* l) {
 
-  if (lua_type(l, 1) != LUA_TTABLE
-      && lua_type(l, 1) != LUA_TUSERDATA) {
-    LuaTools::type_error(l, 1, "table, game or map");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    if (lua_type(l, 1) != LUA_TTABLE
+        && lua_type(l, 1) != LUA_TUSERDATA) {
+      LuaTools::type_error(l, 1, "table, game or map");
+    }
+
+    get_lua_context(l).remove_menus(1);
+
+    return 0;
   }
-
-  get_lua_context(l).remove_menus(1);
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -253,25 +262,28 @@ int LuaContext::menu_api_stop_all(lua_State* l) {
  */
 int LuaContext::menu_api_is_started(lua_State* l) {
 
-  LuaContext& lua_context = get_lua_context(l);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    LuaContext& lua_context = get_lua_context(l);
 
-  LuaTools::check_type(l, 1, LUA_TTABLE);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
 
-  bool found = false;
-  std::list<LuaMenuData>& menus = lua_context.menus;
-  for (LuaMenuData& menu: menus) {
-    push_ref(l, menu.ref);
-    found = lua_equal(l, 1, -1);
-    lua_pop(l, 1);
+    bool found = false;
+    std::list<LuaMenuData>& menus = lua_context.menus;
+    for (LuaMenuData& menu: menus) {
+      push_ref(l, menu.ref);
+      found = lua_equal(l, 1, -1);
+      lua_pop(l, 1);
 
-    if (found) {
-      break;
+      if (found) {
+        break;
+      }
     }
+
+    lua_pushboolean(l, found);
+
+    return 1;
   }
-
-  lua_pushboolean(l, found);
-
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -402,9 +414,9 @@ void LuaContext::menus_on_update(int context_index) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+    ExportableToLuaPtr* userdata = static_cast<ExportableToLuaPtr*>(
         lua_touserdata(l, context_index));
-    context = *userdata;
+    context = userdata->get();
   }
   else {
     context = lua_topointer(l, context_index);
@@ -426,9 +438,9 @@ void LuaContext::menus_on_draw(int context_index, SurfacePtr& dst_surface) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+    ExportableToLuaPtr* userdata = static_cast<ExportableToLuaPtr*>(
         lua_touserdata(l, context_index));
-    context = *userdata;
+    context = userdata->get();
   }
   else {
     context = lua_topointer(l, context_index);
@@ -451,9 +463,9 @@ bool LuaContext::menus_on_input(int context_index, const InputEvent& event) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+    ExportableToLuaPtr* userdata = static_cast<ExportableToLuaPtr*>(
         lua_touserdata(l, context_index));
-    context = *userdata;
+    context = userdata->get();
   }
   else {
     context = lua_topointer(l, context_index);
@@ -482,9 +494,9 @@ bool LuaContext::menus_on_command_pressed(int context_index,
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+    ExportableToLuaPtr* userdata = static_cast<ExportableToLuaPtr*>(
         lua_touserdata(l, context_index));
-    context = *userdata;
+    context = userdata->get();
   }
   else {
     context = lua_topointer(l, context_index);
@@ -513,9 +525,9 @@ bool LuaContext::menus_on_command_released(int context_index,
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+    ExportableToLuaPtr* userdata = static_cast<ExportableToLuaPtr*>(
         lua_touserdata(l, context_index));
-    context = *userdata;
+    context = userdata->get();
   }
   else {
     context = lua_topointer(l, context_index);

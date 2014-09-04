@@ -81,15 +81,18 @@ void LuaContext::register_language_module() {
  */
 int LuaContext::language_api_get_language(lua_State* l) {
 
-  const std::string& language = Language::get_language();
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& language = Language::get_language();
 
-  if (language.empty()) {  // Return nil if no language is set.
-    lua_pushnil(l);
+    if (language.empty()) {  // Return nil if no language is set.
+      lua_pushnil(l);
+    }
+    else  {  // Return the language code.
+      push_string(l, language);
+    }
+    return 1;
   }
-  else  {  // Return the language code.
-    push_string(l, language);
-  }
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -99,14 +102,17 @@ int LuaContext::language_api_get_language(lua_State* l) {
  */
 int LuaContext::language_api_set_language(lua_State* l) {
 
-  const std::string& language_code = LuaTools::check_string(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& language_code = LuaTools::check_string(l, 1);
 
-  if (!Language::has_language(language_code)) {
-    LuaTools::arg_error(l, 1, std::string("No such language: '") + language_code + "'");
+    if (!Language::has_language(language_code)) {
+      LuaTools::arg_error(l, 1, std::string("No such language: '") + language_code + "'");
+    }
+    Language::set_language(language_code);
+
+    return 0;
   }
-  Language::set_language(language_code);
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -116,24 +122,27 @@ int LuaContext::language_api_set_language(lua_State* l) {
  */
 int LuaContext::language_api_get_language_name(lua_State* l) {
 
-  std::string language_code;
-  if (lua_gettop(l) >= 1) {
-    language_code = LuaTools::check_string(l, 1);
-    if (!Language::has_language(language_code)) {
-      LuaTools::arg_error(l, 1, std::string("No such language: '") + language_code + "'");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    std::string language_code;
+    if (lua_gettop(l) >= 1) {
+      language_code = LuaTools::check_string(l, 1);
+      if (!Language::has_language(language_code)) {
+        LuaTools::arg_error(l, 1, std::string("No such language: '") + language_code + "'");
+      }
     }
-  }
-  else {
-    language_code = Language::get_language();
-    if (language_code.empty()) {
-      LuaTools::error(l, "No language is set");
+    else {
+      language_code = Language::get_language();
+      if (language_code.empty()) {
+        LuaTools::error(l, "No language is set");
+      }
     }
+
+    const std::string& name = Language::get_language_name(language_code);
+    push_string(l, name);
+
+    return 1;
   }
-
-  const std::string& name = Language::get_language_name(language_code);
-  push_string(l, name);
-
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -143,19 +152,22 @@ int LuaContext::language_api_get_language_name(lua_State* l) {
  */
 int LuaContext::language_api_get_languages(lua_State* l) {
 
-  const std::vector<QuestResourceList::Element>& languages =
-    QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::vector<QuestResourceList::Element>& languages =
+        QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
 
-  lua_newtable(l);
-  int i = 1;
-  for (const auto& kvp: languages) {
-    const std::string& language_code = kvp.first;
-    push_string(l, language_code);
-    lua_rawseti(l, -2, i);
-    ++i;
+    lua_newtable(l);
+    int i = 1;
+    for (const auto& kvp: languages) {
+      const std::string& language_code = kvp.first;
+      push_string(l, language_code);
+      lua_rawseti(l, -2, i);
+      ++i;
+    }
+
+    return 1;
   }
-
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -165,15 +177,18 @@ int LuaContext::language_api_get_languages(lua_State* l) {
  */
 int LuaContext::language_api_get_string(lua_State* l) {
 
-  const std::string& key = LuaTools::check_string(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& key = LuaTools::check_string(l, 1);
 
-  if (!StringResource::exists(key)) {
-    lua_pushnil(l);
+    if (!StringResource::exists(key)) {
+      lua_pushnil(l);
+    }
+    else {
+      push_string(l, StringResource::get_string(key));
+    }
+    return 1;
   }
-  else {
-    push_string(l, StringResource::get_string(key));
-  }
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -183,15 +198,18 @@ int LuaContext::language_api_get_string(lua_State* l) {
  */
 int LuaContext::language_api_get_dialog(lua_State* l) {
 
-  const std::string& dialog_id = LuaTools::check_string(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& dialog_id = LuaTools::check_string(l, 1);
 
-  if (!DialogResource::exists(dialog_id)) {
-    lua_pushnil(l);
+    if (!DialogResource::exists(dialog_id)) {
+      lua_pushnil(l);
+    }
+    else {
+      push_dialog(l, DialogResource::get_dialog(dialog_id));
+    }
+    return 1;
   }
-  else {
-    push_dialog(l, DialogResource::get_dialog(dialog_id));
-  }
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 }

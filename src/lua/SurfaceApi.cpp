@@ -101,37 +101,40 @@ void LuaContext::push_surface(lua_State* l, Surface& surface) {
  */
 int LuaContext::surface_api_create(lua_State* l) {
 
-  SurfacePtr surface;
-  if (lua_gettop(l) == 0) {
-    // create an empty surface with the screen size
-    surface = Surface::create(Video::get_quest_size());
-  }
-  else if (lua_type(l, 1) == LUA_TNUMBER) {
-    // create an empty surface with the specified size
-    int width = LuaTools::check_int(l, 1);
-    int height = LuaTools::check_int(l, 2);
-    surface = Surface::create(width, height);
-  }
-  else if (lua_type(l, 1) == LUA_TSTRING) {
-    // load from a file
-    const std::string& file_name = lua_tostring(l, 1);
-    bool language_specific = lua_toboolean(l, 2); // default is false
-    surface = Surface::create(file_name, language_specific ?
-        Surface::DIR_LANGUAGE : Surface::DIR_SPRITES);
-  }
-  else {
-    LuaTools::type_error(l, 1, "number, string or no value");
-  }
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    SurfacePtr surface;
+    if (lua_gettop(l) == 0) {
+      // create an empty surface with the screen size
+      surface = Surface::create(Video::get_quest_size());
+    }
+    else if (lua_type(l, 1) == LUA_TNUMBER) {
+      // create an empty surface with the specified size
+      int width = LuaTools::check_int(l, 1);
+      int height = LuaTools::check_int(l, 2);
+      surface = Surface::create(width, height);
+    }
+    else if (lua_type(l, 1) == LUA_TSTRING) {
+      // load from a file
+      const std::string& file_name = lua_tostring(l, 1);
+      bool language_specific = lua_toboolean(l, 2); // default is false
+      surface = Surface::create(file_name, language_specific ?
+          Surface::DIR_LANGUAGE : Surface::DIR_SPRITES);
+    }
+    else {
+      LuaTools::type_error(l, 1, "number, string or no value");
+    }
 
-  if (surface == nullptr) {
-    // Image file not found or not valid.
-    lua_pushnil(l);
+    if (surface == nullptr) {
+      // Image file not found or not valid.
+      lua_pushnil(l);
+    }
+    else {
+      get_lua_context(l).add_drawable(surface.get());
+      push_surface(l, *surface);
+    }
+    return 1;
   }
-  else {
-    get_lua_context(l).add_drawable(surface.get());
-    push_surface(l, *surface);
-  }
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -141,11 +144,14 @@ int LuaContext::surface_api_create(lua_State* l) {
  */
 int LuaContext::surface_api_get_size(lua_State* l) {
 
-  Surface& surface = check_surface(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Surface& surface = check_surface(l, 1);
 
-  lua_pushinteger(l, surface.get_width());
-  lua_pushinteger(l, surface.get_height());
-  return 2;
+    lua_pushinteger(l, surface.get_width());
+    lua_pushinteger(l, surface.get_height());
+    return 2;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -155,11 +161,14 @@ int LuaContext::surface_api_get_size(lua_State* l) {
  */
 int LuaContext::surface_api_clear(lua_State* l) {
 
-  Surface& surface = check_surface(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Surface& surface = check_surface(l, 1);
 
-  surface.clear();
+    surface.clear();
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -169,22 +178,25 @@ int LuaContext::surface_api_clear(lua_State* l) {
  */
 int LuaContext::surface_api_fill_color(lua_State* l) {
 
-  Surface& surface = check_surface(l, 1);
-  Color color = LuaTools::check_color(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Surface& surface = check_surface(l, 1);
+    Color color = LuaTools::check_color(l, 2);
 
-  if (lua_gettop(l) >= 3) {
-    int x = LuaTools::check_int(l, 3);
-    int y = LuaTools::check_int(l, 4);
-    int width = LuaTools::check_int(l, 5);
-    int height = LuaTools::check_int(l, 6);
-    Rectangle where(x, y, width, height);
-    surface.fill_with_color(color, where);
-  }
-  else {
-    surface.fill_with_color(color);
-  }
+    if (lua_gettop(l) >= 3) {
+      int x = LuaTools::check_int(l, 3);
+      int y = LuaTools::check_int(l, 4);
+      int width = LuaTools::check_int(l, 5);
+      int height = LuaTools::check_int(l, 6);
+      Rectangle where(x, y, width, height);
+      surface.fill_with_color(color, where);
+    }
+    else {
+      surface.fill_with_color(color);
+    }
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -194,12 +206,15 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
  */
 int LuaContext::surface_api_set_opacity(lua_State* l) {
 
-  Surface& surface = check_surface(l, 1);
-  uint8_t opacity = (uint8_t) LuaTools::check_int(l, 2);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Surface& surface = check_surface(l, 1);
+    uint8_t opacity = (uint8_t) LuaTools::check_int(l, 2);
 
-  surface.set_opacity(opacity);
+    surface.set_opacity(opacity);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 }

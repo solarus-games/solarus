@@ -60,30 +60,31 @@ void LuaContext::register_file_module() {
  */
 int LuaContext::file_api_open(lua_State* l) {
 
-  const std::string& file_name = LuaTools::check_string(l, 1);
-  const std::string& mode = LuaTools::opt_string(l, 2, "r");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& file_name = LuaTools::check_string(l, 1);
+    const std::string& mode = LuaTools::opt_string(l, 2, "r");
 
-  const bool writing = mode != "r" && mode != "rb";
+    const bool writing = mode != "r" && mode != "rb";
 
-  // file_name is relative to the data directory, the data archive or the
-  // quest write directory.
-  // Let's determine the real file name and pass it to io.open().
-  std::string real_file_name;
-  if (writing) {
+    // file_name is relative to the data directory, the data archive or the
+    // quest write directory.
+    // Let's determine the real file name and pass it to io.open().
+    std::string real_file_name;
+    if (writing) {
 
-    // Writing a file.
-    if (FileTools::get_quest_write_dir().empty()) {
-      LuaTools::error(l,
-          "Cannot open file in writing: no write directory was specified in quest.dat");
+      // Writing a file.
+      if (FileTools::get_quest_write_dir().empty()) {
+        LuaTools::error(l,
+            "Cannot open file in writing: no write directory was specified in quest.dat");
+      }
+
+      real_file_name = FileTools::get_full_quest_write_dir() + "/" + file_name;
     }
+    else {
+      // Reading a file.
+      FileTools::DataFileLocation location = FileTools::data_file_get_location(file_name);
 
-    real_file_name = FileTools::get_full_quest_write_dir() + "/" + file_name;
-  }
-  else {
-    // Reading a file.
-    FileTools::DataFileLocation location = FileTools::data_file_get_location(file_name);
-
-    switch (location) {
+      switch (location) {
 
       case FileTools::LOCATION_NONE:
         // Not found.
@@ -103,31 +104,33 @@ int LuaContext::file_api_open(lua_State* l) {
         break;
 
       case FileTools::LOCATION_DATA_ARCHIVE:
-        {
-          // Found in the data archive.
-          // To call io.open(), we need a regular file, so let's create
-          // a temporary one.
-          char* buffer;
-          size_t size;
-          FileTools::data_file_open_buffer(file_name, &buffer, &size);
-          real_file_name = FileTools::create_temporary_file(buffer, size);
-          FileTools::data_file_close_buffer(buffer);
-          break;
-        }
+      {
+        // Found in the data archive.
+        // To call io.open(), we need a regular file, so let's create
+        // a temporary one.
+        char* buffer;
+        size_t size;
+        FileTools::data_file_open_buffer(file_name, &buffer, &size);
+        real_file_name = FileTools::create_temporary_file(buffer, size);
+        FileTools::data_file_close_buffer(buffer);
+        break;
+      }
+      }
     }
+
+    // Call io.open.
+    lua_getfield(l, LUA_REGISTRYINDEX, "io.open");
+    push_string(l, real_file_name);
+    push_string(l, mode);
+
+    bool called = call_function(l, 2, 2, "io.open");
+    if (!called) {
+      LuaTools::error(l, "Unexpected error: failed to call io.open()");
+    }
+
+    return 2;
   }
-
-  // Call io.open.
-  lua_getfield(l, LUA_REGISTRYINDEX, "io.open");
-  push_string(l, real_file_name);
-  push_string(l, mode);
-
-  bool called = call_function(l, 2, 2, "io.open");
-  if (!called) {
-    LuaTools::error(l, "Unexpected error: failed to call io.open()");
-  }
-
-  return 2;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -137,11 +140,14 @@ int LuaContext::file_api_open(lua_State* l) {
  */
 int LuaContext::file_api_exists(lua_State* l) {
 
-  const std::string& file_name = LuaTools::check_string(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& file_name = LuaTools::check_string(l, 1);
 
-  lua_pushboolean(l, FileTools::data_file_exists(file_name, false));
+    lua_pushboolean(l, FileTools::data_file_exists(file_name, false));
 
-  return 1;
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -151,18 +157,21 @@ int LuaContext::file_api_exists(lua_State* l) {
  */
 int LuaContext::file_api_remove(lua_State* l) {
 
-  const std::string& file_name = LuaTools::check_string(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& file_name = LuaTools::check_string(l, 1);
 
-  bool success = FileTools::data_file_delete(file_name);
+    bool success = FileTools::data_file_delete(file_name);
 
-  if (!success) {
-    lua_pushnil(l);
-    push_string(l, std::string("Failed to delete file '") + file_name + "'");
-    return 2;
+    if (!success) {
+      lua_pushnil(l);
+      push_string(l, std::string("Failed to delete file '") + file_name + "'");
+      return 2;
+    }
+
+    lua_pushboolean(l, true);
+    return 1;
   }
-
-  lua_pushboolean(l, true);
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -172,18 +181,21 @@ int LuaContext::file_api_remove(lua_State* l) {
  */
 int LuaContext::file_api_mkdir(lua_State* l) {
 
-  const std::string& dir_name = LuaTools::check_string(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    const std::string& dir_name = LuaTools::check_string(l, 1);
 
-  bool success = FileTools::data_file_mkdir(dir_name);
+    bool success = FileTools::data_file_mkdir(dir_name);
 
-  if (!success) {
-    lua_pushnil(l);
-    push_string(l, std::string("Failed to create directory '") + dir_name + "'");
-    return 2;
+    if (!success) {
+      lua_pushnil(l);
+      push_string(l, std::string("Failed to create directory '") + dir_name + "'");
+      return 2;
+    }
+
+    lua_pushboolean(l, true);
+    return 1;
   }
-
-  lua_pushboolean(l, true);
-  return 1;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 }

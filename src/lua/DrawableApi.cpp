@@ -186,7 +186,7 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     uint32_t delay = 20;
-    int callback_ref = LUA_REFNIL;
+    ScopedLuaRef callback_ref;
 
     Drawable& drawable = check_drawable(l, 1);
 
@@ -201,16 +201,17 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
       if (lua_gettop(l) >= index) {
         LuaTools::check_type(l, index, LUA_TFUNCTION);
         lua_settop(l, index);
-        callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);  // TODO scoped ref
+        callback_ref = get_lua_context(l).create_ref();
       }
     }
 
     TransitionFade* transition = new TransitionFade(
         Transition::TRANSITION_OPENING,
-        drawable.get_transition_surface());
+        drawable.get_transition_surface()
+    );
     transition->clear_color();
     transition->set_delay(delay);
-    drawable.start_transition(*transition, callback_ref, &get_lua_context(l));
+    drawable.start_transition(*transition, callback_ref);
 
     return 0;
   }
@@ -226,7 +227,7 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     uint32_t delay = 20;
-    int callback_ref = LUA_REFNIL;
+    ScopedLuaRef callback_ref;
 
     Drawable& drawable = check_drawable(l, 1);
 
@@ -241,7 +242,7 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
       if (lua_gettop(l) >= index) {
         LuaTools::check_type(l, index, LUA_TFUNCTION);
         lua_settop(l, index);
-        callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);  // TODO scoped ref
+        callback_ref = get_lua_context(l).create_ref();
       }
     }
 
@@ -250,7 +251,7 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
         drawable.get_transition_surface());
     transition->clear_color();
     transition->set_delay(delay);
-    drawable.start_transition(*transition, callback_ref, &get_lua_context(l));
+    drawable.start_transition(*transition, callback_ref);
 
     return 0;
   }

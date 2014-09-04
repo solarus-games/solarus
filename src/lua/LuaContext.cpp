@@ -460,12 +460,29 @@ void LuaContext::destroy_ref(int ref) {
  * See cancel_callback() if you want to release the reference.
  *
  * \param callback_ref Reference of the function to call.
- * Iif LUA_REFNIL, nothing is done.
+ * If LUA_REFNIL, nothing is done.
+ * TODO remove
  */
 void LuaContext::do_callback(int callback_ref) {
 
   if (callback_ref != LUA_REFNIL) {
-    push_callback(callback_ref);
+    push_ref(l, callback_ref);
+    call_function(0, 0, "callback");
+  }
+}
+
+/**
+ * \brief Calls a function stored in the registry with a reference.
+ *
+ * No parameters are passed to the function, and return values are ignored.
+ *
+ * \param callback_ref Reference of the function to call.
+ * If the reference is empty, nothing is done.
+ */
+void LuaContext::do_callback(const ScopedLuaRef& callback_ref) {
+
+  if (!callback_ref.is_empty()) {
+    push_ref(l, callback_ref);
     call_function(0, 0, "callback");
   }
 }

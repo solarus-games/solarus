@@ -119,14 +119,16 @@ class LuaContext {
 
     // Lua refs.
     ScopedLuaRef create_ref();
-    void destroy_ref(int ref);
+    void destroy_ref(int ref);  // TODO remove
+    static void push_ref(lua_State* l, int ref);  // TODO remove
+    static void push_ref(lua_State* l, const ScopedLuaRef& ref);
 
     // Calling Lua functions.
-    static void push_ref(lua_State* l, int ref);
-    static void push_ref(lua_State* l, const ScopedLuaRef& ref);
-    void push_callback(int callback_ref);
-    void do_callback(int callback_ref);
-    void cancel_callback(int callback_ref);
+    void push_callback(int callback_ref);  // TODO remove
+    void do_callback(int callback_ref);  // TODO remove
+    void do_callback(const ScopedLuaRef& callback_ref);
+    void cancel_callback(int callback_ref);  // TODO remove
+
     bool call_function(
         int nb_arguments,
         int nb_results,

@@ -113,6 +113,14 @@ ScopedLuaRef& ScopedLuaRef::operator=(ScopedLuaRef&& other) {
 }
 
 /**
+ * \brief Returns the Lua context this ref lives in.
+ * \return The Lua context (nullptr means that the ref is empty).
+ */
+LuaContext* ScopedLuaRef::get_lua_context() const {
+  return lua_context;
+}
+
+/**
  * \brief Returns whether this ref is empty.
  * \return \c true if the ref is empty.
  */

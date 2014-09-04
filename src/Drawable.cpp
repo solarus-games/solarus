@@ -30,8 +30,7 @@ Drawable::Drawable():
   xy(),
   movement(nullptr),
   transition(nullptr),
-  transition_callback_ref(LUA_REFNIL),
-  lua_context(nullptr),
+  transition_callback_ref(),
   suspended(false) {
 
 }
@@ -106,19 +105,16 @@ void Drawable::set_xy(const Point& xy) {
  *
  * \param transition The transition to start.
  * \param callback_ref A Lua registry ref to the function to call when
- * the transition finishes, or LUA_REFNIL.
- * \param lua_context The Lua world for the callback (or nullptr).
+ * the transition finishes, or an empty ref.
  */
 void Drawable::start_transition(
     Transition& transition,
-    int callback_ref,
-    LuaContext* lua_context) {
-
+    const ScopedLuaRef& callback_ref
+) {
   stop_transition();
 
   this->transition = &transition;
   this->transition_callback_ref = callback_ref;
-  this->lua_context = lua_context;
   transition.start();
   transition.set_suspended(is_suspended());
 }
@@ -132,11 +128,7 @@ void Drawable::stop_transition() {
 
   delete transition;
   transition = nullptr;
-
-  if (lua_context != nullptr) {
-    lua_context->cancel_callback(this->transition_callback_ref);
-    transition_callback_ref = LUA_REFNIL;
-  }
+  transition_callback_ref.clear();
 }
 
 /**
@@ -162,13 +154,13 @@ void Drawable::update() {
       delete transition;
       transition = nullptr;
 
-      int ref = transition_callback_ref;
-      transition_callback_ref = LUA_REFNIL;
+      ScopedLuaRef ref = transition_callback_ref;
+      transition_callback_ref.clear();
 
-      if (lua_context != nullptr) {
+      if (!ref.is_empty()) {
         // Note that this callback may create a new transition right now.
+        LuaContext* lua_context = ref.get_lua_context();
         lua_context->do_callback(ref);
-        lua_context->cancel_callback(ref);
       }
     }
   }

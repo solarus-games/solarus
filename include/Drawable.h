@@ -18,8 +18,9 @@
 #define SOLARUS_DRAWABLE_H
 
 #include "Common.h"
-#include "lua/ExportableToLua.h"
 #include "lowlevel/Point.h"
+#include "lua/ExportableToLua.h"
+#include "lua/ScopedLuaRef.h"
 
 namespace solarus {
 
@@ -42,7 +43,10 @@ class Drawable: public ExportableToLua {
     const Point& get_xy() const;
     void set_xy(const Point& xy);
 
-    void start_transition(Transition& transition, int callback_ref, LuaContext* lua_context);
+    void start_transition(
+        Transition& transition,
+        const ScopedLuaRef& callback_ref
+    );
     void stop_transition();
     Transition* get_transition();
 
@@ -121,9 +125,9 @@ class Drawable: public ExportableToLua {
                                    * deleted then if unused elsewhere). */
     Transition* transition;       /**< A transition applied, or nullptr
                                    * (will be deleted then). */
-    int transition_callback_ref;  /**< Lua registry ref of a function to call
+    ScopedLuaRef transition_callback_ref;
+                                  /**< Lua registry ref of a function to call
                                    * when the transition finishes */
-    LuaContext* lua_context;      /**< The Lua world used for callbacks. */
     bool suspended;               /**< Whether this object is suspended. */
 };
 

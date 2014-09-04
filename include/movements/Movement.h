@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -54,15 +54,15 @@ class Movement: public ExportableToLua {
     // position
     int get_x() const;
     int get_y() const;
-    const Rectangle get_xy() const;
+    const Point get_xy() const;
     void set_x(int x);
     void set_y(int y);
     void set_xy(int x, int y);
-    void set_xy(const Rectangle &xy);
+    void set_xy(const Point& xy);
     void translate_x(int dx);
     void translate_y(int dy);
     void translate_xy(int dx, int dy);
-    void translate_xy(const Rectangle& dxy);
+    void translate_xy(const Point& dxy);
     virtual void notify_position_changed(); // called whenever x or y is changed
     virtual void notify_obstacle_reached();
     virtual void notify_movement_changed();
@@ -76,7 +76,7 @@ class Movement: public ExportableToLua {
 
     // obstacles
     bool test_collision_with_obstacles(int dx, int dy) const;
-    bool test_collision_with_obstacles(const Rectangle& dxy) const;
+    bool test_collision_with_obstacles(const Point& dxy) const;
     const Rectangle& get_last_collision_box_on_obstacle() const;
     bool are_obstacles_ignored() const;
     void set_ignore_obstacles(bool ignore_obstacles);
@@ -84,7 +84,7 @@ class Movement: public ExportableToLua {
 
     // displaying moving objects
     virtual int get_displayed_direction4() const;
-    virtual const Rectangle get_displayed_xy() const;
+    virtual const Point get_displayed_xy() const;
 
     // Lua
     LuaContext* get_lua_context();
@@ -108,7 +108,7 @@ class Movement: public ExportableToLua {
     // Object to move (can be an entity, a drawable or a point).
     MapEntity* entity;                           /**< The entity controlled by this movement. */
     Drawable* drawable;                          /**< The drawable controlled by this movement. */
-    Rectangle xy;                                /**< Coordinates of the point controlled by this movement. */
+    Point xy;                                    /**< Coordinates of the point controlled by this movement. */
 
     uint32_t last_move_date;                     /**< Date of the last x or y move. */
     bool finished;                               /**< true if is_finished() returns true. */

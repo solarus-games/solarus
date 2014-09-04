@@ -768,10 +768,10 @@ int LuaContext::entity_api_get_origin(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
 
-  const Rectangle& origin = entity.get_origin();
+  const Point& origin = entity.get_origin();
 
-  lua_pushinteger(l, origin.get_x());
-  lua_pushinteger(l, origin.get_y());
+  lua_pushinteger(l, origin.x);
+  lua_pushinteger(l, origin.y);
   return 2;
 }
 
@@ -1397,7 +1397,7 @@ int LuaContext::hero_api_save_solid_ground(lua_State* l) {
     layer = hero.get_layer();
   }
 
-  hero.set_target_solid_ground_coords(Rectangle(x, y), layer);
+  hero.set_target_solid_ground_coords(Point(x, y), layer);
 
   return 0;
 }
@@ -1425,20 +1425,20 @@ int LuaContext::hero_api_get_solid_ground_position(lua_State* l) {
 
   const Hero& hero = check_hero(l, 1);
 
-  const Rectangle& target_coords = hero.get_target_solid_ground_coords();
-  if (target_coords.get_x() != -1) {
+  const Point& target_coords = hero.get_target_solid_ground_coords();
+  if (target_coords.x != -1) {
     // Coordinates memorized by hero:save_solid_ground().
-    lua_pushinteger(l, target_coords.get_x());
-    lua_pushinteger(l, target_coords.get_y());
+    lua_pushinteger(l, target_coords.x);
+    lua_pushinteger(l, target_coords.y);
     lua_pushinteger(l, hero.get_target_solid_ground_layer());
     return 3;
   }
 
-  const Rectangle& last_coords = hero.get_last_solid_ground_coords();
-  if (last_coords.get_x() != -1) {
+  const Point& last_coords = hero.get_last_solid_ground_coords();
+  if (last_coords.x != -1) {
     // Last solid ground coordinates.
-    lua_pushinteger(l, last_coords.get_x());
-    lua_pushinteger(l, last_coords.get_y());
+    lua_pushinteger(l, last_coords.x);
+    lua_pushinteger(l, last_coords.y);
     lua_pushinteger(l, hero.get_last_solid_ground_layer());
     return 3;
   }
@@ -1929,7 +1929,7 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
     int source_x = luaL_checkint(l, 2);
     int source_y = luaL_checkint(l, 3);
     int damage = luaL_checkint(l, 4);
-    hero.hurt(Rectangle(source_x, source_y), damage);
+    hero.hurt(Point(source_x, source_y), damage);
   }
   else {
     // hero:start_hurt(source_entity, [source_sprite], damage)
@@ -4695,7 +4695,7 @@ void LuaContext::entity_on_post_draw(MapEntity& entity) {
  * \param layer The new layer.
  */
 void LuaContext::entity_on_position_changed(
-    MapEntity& entity, const Rectangle& xy, Layer layer) {
+    MapEntity& entity, const Point& xy, Layer layer) {
 
   if (!userdata_has_field(entity, "on_position_changed")) {
     return;

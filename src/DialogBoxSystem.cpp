@@ -156,7 +156,7 @@ void DialogBoxSystem::open(const std::string& dialog_id,
     int x = camera_position.get_width() / 2 - 110;
     int y = top ? 32 : camera_position.get_height() - 96;
 
-    text_position.set_xy(x, y);
+    text_position = { x, y };
 
     // Start showing text.
     show_more_lines();
@@ -223,8 +223,8 @@ void DialogBoxSystem::show_more_lines() {
   keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
 
   // Prepare the 3 lines.
-  int text_x = text_position.get_x();
-  int text_y = text_position.get_y();
+  int text_x = text_position.x;
+  int text_y = text_position.y;
   for (int i = 0; i < nb_visible_lines; i++) {
     text_y += 16;
     line_surfaces[i]->set_x(text_x);

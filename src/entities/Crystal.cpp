@@ -154,7 +154,7 @@ void Crystal::activate(MapEntity& entity_activating) {
  */
 void Crystal::twinkle() {
 
-  star_xy.set_xy(Random::get_number(3, 13), Random::get_number(3, 13));
+  star_xy = { Random::get_number(3, 13), Random::get_number(3, 13) };
   star_sprite->restart_animation();
 }
 
@@ -202,7 +202,7 @@ void Crystal::draw_on_map() {
 
   // draw the star
   if (is_drawn()) {
-    get_map().draw_sprite(*star_sprite, get_top_left_x() + star_xy.get_x(), get_top_left_y() + star_xy.get_y());
+    get_map().draw_sprite(*star_sprite, get_top_left_x() + star_xy.x, get_top_left_y() + star_xy.y);
   }
 }
 

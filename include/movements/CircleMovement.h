@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include "movements/Movement.h"
-#include "lowlevel/Rectangle.h"
+#include "lowlevel/Point.h"
 
 namespace solarus {
 
@@ -45,7 +45,7 @@ class CircleMovement: public Movement {
     virtual bool is_finished() const override;
 
     // properties
-    void set_center(const Rectangle& center_point);
+    void set_center(const Point& center_point);
     void set_center(MapEntity& center_entity, int x = 0, int y = 0);
     int get_radius() const;
     void set_radius(int radius);
@@ -71,8 +71,8 @@ class CircleMovement: public Movement {
     void recompute_position();
 
     // center of the circle
-    MapEntity* center_entity;                 /**< the entity to make circles around (nullptr if only a point is used) */
-    Rectangle center_point;                         /**< absolute coordinates of the center if only a point is used,
+    MapEntity* center_entity;                       /**< the entity to make circles around (nullptr if only a point is used) */
+    Point center_point;                             /**< absolute coordinates of the center if only a point is used,
                                                      * or coordinates relative to the center entity otherwise */
 
     // angle
@@ -107,4 +107,3 @@ class CircleMovement: public Movement {
 }
 
 #endif
-

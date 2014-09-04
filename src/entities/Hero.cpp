@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -82,7 +82,7 @@ Hero::Hero(Equipment& equipment):
 
   // position
   set_origin(8, 13);
-  last_solid_ground_coords.set_xy(-1, -1);
+  last_solid_ground_coords = { -1, -1 };
   last_solid_ground_layer = LAYER_LOW;
 
   // sprites
@@ -310,7 +310,7 @@ void Hero::update_ground_effects() {
 
         next_ground_date = now + 60;
 
-        if (get_distance(last_solid_ground_coords.get_x(), last_solid_ground_coords.get_y()) >= 8) {
+        if (get_distance(last_solid_ground_coords.x, last_solid_ground_coords.y) >= 8) {
           // too far from the solid ground: make the hero fall
           set_walking_speed(normal_walking_speed);
           set_state(new FallingState(*this));
@@ -350,12 +350,12 @@ void Hero::update_ice() {
     // The player wants to stop.
     if (ice_movement_direction8 == -1) {
       // And he does for a while so stop.
-      ground_dxy.set_xy(0, 0);
+      ground_dxy = { 0, 0 };
       next_ice_date = now + 1000;
     }
     else {
       // But he was just moving on ice: continue the ice movement.
-      ground_dxy.set_xy(direction_to_xy_move(ice_movement_direction8));
+      ground_dxy = direction_to_xy_move(ice_movement_direction8);
       next_ice_date = now + 300;
     }
   }
@@ -363,16 +363,16 @@ void Hero::update_ice() {
     // The player wants to move.
     if (ice_movement_direction8 == -1) {
       // But he was not just moving on ice: resist to the wanted movement.
-      ground_dxy.set_xy(direction_to_xy_move((wanted_movement_direction8 + 4) % 8));
+      ground_dxy = direction_to_xy_move((wanted_movement_direction8 + 4) % 8);
     }
     else if (ice_movement_direction8 != wanted_movement_direction8) {
       // He changed his direction: continue the ice movement.
-      ground_dxy.set_xy(direction_to_xy_move(ice_movement_direction8));
+      ground_dxy = direction_to_xy_move(ice_movement_direction8);
       next_ice_date = now + 300;
     }
     else {
       // He continues in the same direction.
-      ground_dxy.set_xy(direction_to_xy_move(wanted_movement_direction8));
+      ground_dxy = direction_to_xy_move(wanted_movement_direction8);
       next_ice_date = now + 300;
     }
   }
@@ -384,7 +384,7 @@ void Hero::update_ice() {
 void Hero::stop_ice_movement() {
 
   ice_movement_direction8 = 0;
-  ground_dxy.set_xy(0, 0);
+  ground_dxy = { 0, 0 };
 }
 
 /**
@@ -393,7 +393,7 @@ void Hero::stop_ice_movement() {
  */
 void Hero::apply_additional_ground_movement() {
 
-  if (ground_dxy.get_x() == 0 && ground_dxy.get_y() == 0) {
+  if (ground_dxy.x == 0 && ground_dxy.y == 0) {
     return;
   }
 
@@ -407,9 +407,9 @@ void Hero::apply_additional_ground_movement() {
     moved = true;
   }
 
-  if (!moved && ground_dxy.get_x() != 0) { // try x only
+  if (!moved && ground_dxy.x != 0) { // try x only
     collision_box = get_bounding_box();
-    collision_box.add_xy(ground_dxy.get_x(), 0);
+    collision_box.add_xy(ground_dxy.x, 0);
     if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
       set_bounding_box(collision_box);
       notify_position_changed();
@@ -417,9 +417,9 @@ void Hero::apply_additional_ground_movement() {
     }
   }
 
-  if (!moved && ground_dxy.get_y() != 0) { // try y only
+  if (!moved && ground_dxy.y != 0) { // try y only
     collision_box = get_bounding_box();
-    collision_box.add_xy(0, ground_dxy.get_y());
+    collision_box.add_xy(0, ground_dxy.y);
     if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
       set_bounding_box(collision_box);
       notify_position_changed();
@@ -540,7 +540,7 @@ void Hero::rebuild_equipment() {
  * \return true if the shadow should be currently displayed.
  */
 bool Hero::is_shadow_visible() const {
-  return get_displayed_xy().get_y() != get_y();
+  return get_displayed_xy().y != get_y();
 }
 
 /**
@@ -591,7 +591,7 @@ void Hero::set_map(Map& map, int initial_direction) {
     sprites->set_animation_direction(initial_direction);
   }
 
-  last_solid_ground_coords.set_xy(-1, -1);
+  last_solid_ground_coords = { -1, -1 };
   last_solid_ground_layer = LAYER_LOW;
   reset_target_solid_ground_coords();
   get_hero_sprites().set_clipping_rectangle();
@@ -629,7 +629,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
     set_map(map, -1);
     set_xy(x, y);
     map.get_entities().set_entity_layer(*this, layer);
-    last_solid_ground_coords.set_xy(x, y);
+    last_solid_ground_coords = { x, y };
     last_solid_ground_layer = get_layer();
 
     start_free();
@@ -982,8 +982,8 @@ int Hero::get_real_movement_direction8() {
     Rectangle collision_box(get_bounding_box());
 
     // if we can move towards the wanted direction, no problem
-    Rectangle xy_move = direction_to_xy_move(wanted_direction8);
-    collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
+    Point xy_move = direction_to_xy_move(wanted_direction8);
+    collision_box.add_xy(xy_move);
     if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
       result = wanted_direction8;
     }
@@ -993,7 +993,7 @@ int Hero::get_real_movement_direction8() {
       int alternative_direction8 = (wanted_direction8 + 1) % 8;
       collision_box = get_bounding_box();
       xy_move = direction_to_xy_move(alternative_direction8);
-      collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
+      collision_box.add_xy(xy_move);
       if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
         result = alternative_direction8;
       }
@@ -1001,7 +1001,7 @@ int Hero::get_real_movement_direction8() {
         alternative_direction8 = (wanted_direction8 - 1) % 8;
         collision_box = get_bounding_box();
         xy_move = direction_to_xy_move(alternative_direction8);
-        collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
+        collision_box.add_xy(xy_move);
         if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
           result = alternative_direction8;
         }
@@ -1077,7 +1077,7 @@ void Hero::notify_obstacle_reached() {
   state->notify_obstacle_reached();
 
   if (get_ground_below() == GROUND_ICE) {
-    ground_dxy.set_xy(0, 0);
+    ground_dxy = { 0, 0 };
     ice_movement_direction8 = -1;
   }
 }
@@ -1135,9 +1135,9 @@ void Hero::check_position() {
       && ground != GROUND_PRICKLE
       && ground != GROUND_EMPTY
       && state->can_come_from_bad_ground()
-      && (get_x() != last_solid_ground_coords.get_x() || get_y() != last_solid_ground_coords.get_y())) {
+      && (get_x() != last_solid_ground_coords.x || get_y() != last_solid_ground_coords.y)) {
 
-    last_solid_ground_coords.set_xy(get_xy());
+    last_solid_ground_coords = get_xy();
     last_solid_ground_layer = get_layer();
   }
 
@@ -1358,7 +1358,7 @@ const Rectangle Hero::get_ground_point() const {
  * \return The last solid ground coordinates, or
  * <tt>-1,-1</tt> if the hero never was on solid ground on this map yet.
  */
-const Rectangle& Hero::get_last_solid_ground_coords() const {
+const Point& Hero::get_last_solid_ground_coords() const {
   return last_solid_ground_coords;
 }
 
@@ -1377,7 +1377,7 @@ Layer Hero::get_last_solid_ground_layer() const {
  * \return The solid ground coordinates, or
  * <tt>-1,-1</tt> if set_target_solid_ground() was not called.
  */
-const Rectangle& Hero::get_target_solid_ground_coords() const {
+const Point& Hero::get_target_solid_ground_coords() const {
   return target_solid_ground_coords;
 }
 
@@ -1399,7 +1399,7 @@ Layer Hero::get_target_solid_ground_layer() const {
  * \param layer the layer
  */
 void Hero::set_target_solid_ground_coords(
-    const Rectangle& target_solid_ground_coords, Layer layer) {
+    const Point& target_solid_ground_coords, Layer layer) {
 
   this->target_solid_ground_coords = target_solid_ground_coords;
   this->target_solid_ground_layer = layer;
@@ -1414,7 +1414,7 @@ void Hero::set_target_solid_ground_coords(
  */
 void Hero::reset_target_solid_ground_coords() {
 
-  this->target_solid_ground_coords.set_xy(-1, -1);
+  this->target_solid_ground_coords = { -1, -1 };
   this->target_solid_ground_layer = LAYER_LOW;
 }
 
@@ -1578,14 +1578,14 @@ void Hero::notify_collision_with_enemy(
   else if (this_sprite.contains("tunic")) {
     // The hero's body sprite overlaps the enemy.
     // Check that the 16x16 rectangle of the hero also overlaps the enemy.
-    const Rectangle& enemy_sprite_size = enemy_sprite.get_size();
-    const Rectangle& enemy_sprite_origin = enemy_sprite.get_origin();
-    const Rectangle& enemy_sprite_offset = enemy_sprite.get_xy();
+    const Size& enemy_sprite_size = enemy_sprite.get_size();
+    const Point& enemy_sprite_origin = enemy_sprite.get_origin();
+    const Point& enemy_sprite_offset = enemy_sprite.get_xy();
     Rectangle enemy_sprite_rectangle(
-        enemy.get_x() - enemy_sprite_origin.get_x() + enemy_sprite_offset.get_x(),
-        enemy.get_y() - enemy_sprite_origin.get_y() + enemy_sprite_offset.get_y(),
-        enemy_sprite_size.get_width(),
-        enemy_sprite_size.get_height()
+        enemy.get_x() - enemy_sprite_origin.x + enemy_sprite_offset.x,
+        enemy.get_y() - enemy_sprite_origin.y + enemy_sprite_offset.y,
+        enemy_sprite_size.width,
+        enemy_sprite_size.height
     );
 
     if (overlaps(enemy_sprite_rectangle)) {
@@ -1668,7 +1668,7 @@ void Hero::notify_collision_with_stream(
     Rectangle collision_box(0, 0, 16, 16);
 
     // First check that the exit of the stream is clear.
-    collision_box.set_xy(stream.get_bounding_box());
+    collision_box.set_xy(stream.get_bounding_box().get_xy());
     collision_box.add_xy(dx, dy);
     if (!map.test_collision_with_obstacles(get_layer(), collision_box, *this)) {
       // The stream's exit is clear.
@@ -2099,10 +2099,10 @@ bool Hero::can_be_hurt(MapEntity* attacker) const {
  */
 void Hero::hurt(MapEntity& source, Sprite* source_sprite, int damage) {
 
-  Rectangle source_xy = source.get_xy();
+  Point source_xy = source.get_xy();
   if (source_sprite != nullptr) {
     // Add the offset of the sprite if any.
-    source_xy.add_xy(source_sprite->get_xy());
+    source_xy += source_sprite->get_xy();
   }
   set_state(new HurtState(*this, &source_xy, damage));
 }
@@ -2113,7 +2113,7 @@ void Hero::hurt(MapEntity& source, Sprite* source_sprite, int damage) {
  * \param damage Number of life points to remove
  * (this number may be reduced later by the tunic on by hero:on_taking_damage()).
  */
-void Hero::hurt(const Rectangle& source_xy, int damage) {
+void Hero::hurt(const Point& source_xy, int damage) {
 
   set_state(new HurtState(*this, &source_xy, damage));
 }
@@ -2211,27 +2211,27 @@ void Hero::start_hole() {
     // Don't calculate the attraction direction based on the wanted movement
     // because the wanted movement may be different from the real one
 
-    if (last_solid_ground_coords.get_x() == -1 ||
-        (last_solid_ground_coords.get_x() == get_x() && last_solid_ground_coords.get_y() == get_y())) {
+    if (last_solid_ground_coords.x == -1 ||
+        (last_solid_ground_coords.x == get_x() && last_solid_ground_coords.y == get_y())) {
       // fall immediately because the hero was not moving but directly placed on the hole
       set_state(new FallingState(*this));
     }
     else {
 
-      ground_dxy.set_xy(0, 0);
+      ground_dxy = { 0, 0 };
 
-      if (get_x() > last_solid_ground_coords.get_x()) {
-        ground_dxy.set_x(1);
+      if (get_x() > last_solid_ground_coords.x) {
+        ground_dxy.x = 1;
       }
-      else if (get_x() < last_solid_ground_coords.get_x()) {
-        ground_dxy.set_x(-1);
+      else if (get_x() < last_solid_ground_coords.x) {
+        ground_dxy.x = -1;
       }
 
-      if (get_y() > last_solid_ground_coords.get_y()) {
-        ground_dxy.set_y(1);
+      if (get_y() > last_solid_ground_coords.y) {
+        ground_dxy.y = 1;
       }
-      else if (get_y() < last_solid_ground_coords.get_y()) {
-        ground_dxy.set_y(-1);
+      else if (get_y() < last_solid_ground_coords.y) {
+        ground_dxy.y = -1;
       }
       set_walking_speed(normal_walking_speed / 3);
     }
@@ -2248,7 +2248,7 @@ void Hero::start_ice() {
 
   ice_movement_direction8 = get_wanted_movement_direction8();
   if (ice_movement_direction8 == -1) {
-    ground_dxy = Rectangle(0, 0);
+    ground_dxy = { 0, 0 };
   }
   else {
     // Exagerate the movement.

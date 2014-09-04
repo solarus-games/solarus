@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -113,16 +113,15 @@ void AnimatedTilePattern::update() {
  * to the map (may be used for scrolling tiles)
  */
 void AnimatedTilePattern::draw(Surface& dst_surface,
-    const Rectangle& dst_position, Tileset& tileset,
-    const Rectangle& viewport) {
+    const Point& dst_position, Tileset& tileset,
+    const Point& viewport) {
 
   SurfacePtr& tileset_image = tileset.get_tiles_image();
   const Rectangle& src = position_in_tileset[current_frames[sequence]];
-  Rectangle dst(dst_position);
+  Point dst = dst_position;
 
   if (parallax) {
-    dst.add_xy(viewport.get_x() / ParallaxScrollingTilePattern::ratio,
-        viewport.get_y() / ParallaxScrollingTilePattern::ratio);
+    dst += viewport / ParallaxScrollingTilePattern::ratio;
   }
 
   SurfacePtr shared_dst_surface(RefCountable::make_refcount_ptr(&dst_surface));  // TODO shared_ptr

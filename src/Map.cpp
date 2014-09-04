@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -199,10 +199,10 @@ const Rectangle& Map::get_location() const {
 
 /**
  * \brief Returns the size of this map.
- * \return The size of this map in pixels. The x and y values are 0.
+ * \return The size of this map in pixels.
  */
-Rectangle Map::get_size() const {
-  return Rectangle(0, 0, location.get_width(), location.get_height());
+Size Map::get_size() const {
+  return { location.get_width(), location.get_height() };
 }
 
 /**
@@ -652,11 +652,10 @@ void Map::draw_foreground() {
  * \brief Draws a sprite on the map surface.
  * \param sprite the sprite to draw
  * \param xy coordinates of the sprite's origin point in the map
- * (the size of the rectangle is ignored)
  */
-void Map::draw_sprite(Sprite& sprite, const Rectangle &xy) {
+void Map::draw_sprite(Sprite& sprite, const Point &xy) {
 
-  draw_sprite(sprite, xy.get_x(), xy.get_y());
+  draw_sprite(sprite, xy.x, xy.y);
 }
 
 /**
@@ -700,10 +699,10 @@ void Map::draw_sprite(Sprite& sprite, int x, int y,
       clipping_area.get_width(),
       clipping_area.get_height()
   );
-  const Rectangle dst_position(
+  const Point dst_position = {
       x - camera_position.get_x(),
       y - camera_position.get_y()
-  );
+  };
   sprite.draw_region(
       region_in_frame,
       visible_surface,
@@ -1096,8 +1095,8 @@ Ground Map::get_ground(Layer layer, int x, int y) const {
  * \param xy Coordinate of the point.
  * \return The ground at this place.
  */
-Ground Map::get_ground(Layer layer, const Rectangle& xy) const {
-  return get_ground(layer, xy.get_x(), xy.get_y());
+Ground Map::get_ground(Layer layer, const Point& xy) const {
+  return get_ground(layer, xy.x, xy.y);
 }
 
 /**

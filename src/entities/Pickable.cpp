@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -53,7 +53,7 @@ Pickable::Pickable(
   shadow_sprite(nullptr),
   falling_height(FALLING_NONE),
   will_disappear(false),
-  shadow_xy(Rectangle(x, y)),
+  shadow_xy(Point(x, y)),
   appear_date(System::now()),
   allow_pick_date(0),
   can_be_picked(true),
@@ -429,9 +429,9 @@ void Pickable::update() {
     shadow_sprite->update();
   }
 
-  shadow_xy.set_x(get_x());
+  shadow_xy.x = get_x();
   if (!is_falling()) {
-    shadow_xy.set_y(get_y());
+    shadow_xy.y = get_y();
   }
 
   if (entity_followed != nullptr && entity_followed->is_being_removed()) {
@@ -487,7 +487,7 @@ void Pickable::draw_on_map() {
 
   // draw the shadow
   if (shadow_sprite != nullptr) {
-    get_map().draw_sprite(*shadow_sprite, shadow_xy.get_x(), shadow_xy.get_y());
+    get_map().draw_sprite(*shadow_sprite, shadow_xy);
   }
 
   // draw the sprite
@@ -495,4 +495,3 @@ void Pickable::draw_on_map() {
 }
 
 }
-

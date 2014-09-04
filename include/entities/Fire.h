@@ -31,7 +31,7 @@ class Fire: public Detector {
 
   public:
 
-    Fire(const std::string& name, Layer layer, const Rectangle& xy);
+    Fire(const std::string& name, Layer layer, const Point& xy);
     ~Fire();
 
     virtual EntityType get_type() const override;
@@ -48,4 +48,3 @@ class Fire: public Detector {
 }
 
 #endif
-

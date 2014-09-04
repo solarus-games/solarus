@@ -18,7 +18,7 @@
 #include "lua/LuaTools.h"
 #include "lowlevel/Video.h"
 #include "lowlevel/VideoMode.h"
-#include "lowlevel/Rectangle.h"
+#include "lowlevel/Size.h"
 #include <lua.hpp>
 
 namespace solarus {
@@ -196,10 +196,10 @@ int LuaContext::video_api_set_fullscreen(lua_State *l) {
  */
 int LuaContext::video_api_get_quest_size(lua_State* l) {
 
-  const Rectangle& quest_size = Video::get_quest_size();
+  const Size& quest_size = Video::get_quest_size();
 
-  lua_pushinteger(l, quest_size.get_width());
-  lua_pushinteger(l, quest_size.get_height());
+  lua_pushinteger(l, quest_size.width);
+  lua_pushinteger(l, quest_size.height);
   return 2;
 }
 
@@ -210,10 +210,10 @@ int LuaContext::video_api_get_quest_size(lua_State* l) {
  */
 int LuaContext::video_api_get_window_size(lua_State* l) {
 
-  const Rectangle& window_size = Video::get_window_size();
+  const Size& window_size = Video::get_window_size();
 
-  lua_pushinteger(l, window_size.get_width());
-  lua_pushinteger(l, window_size.get_height());
+  lua_pushinteger(l, window_size.width);
+  lua_pushinteger(l, window_size.height);
   return 2;
 }
 
@@ -234,7 +234,7 @@ int LuaContext::video_api_set_window_size(lua_State* l) {
     LuaTools::arg_error(l, 2, "Window height must be positive");
   }
 
-  Video::set_window_size(Rectangle(0, 0, width, height));
+  Video::set_window_size(Size(width, height));
 
   return 0;
 }

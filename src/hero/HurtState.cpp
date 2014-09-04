@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -38,11 +38,11 @@ namespace solarus {
  */
 Hero::HurtState::HurtState(
     Hero& hero,
-    const Rectangle* source_xy,
+    const Point* source_xy,
     int damage):
   State(hero, "hurt"),
   has_source(source_xy != nullptr),
-  source_xy(has_source ? *source_xy : Rectangle()),
+  source_xy(has_source ? *source_xy : Point()),
   damage(damage),
   end_hurt_date(0) {
 
@@ -73,8 +73,7 @@ void Hero::HurtState::start(const State* previous_state) {
   get_sprites().blink(invincibility_duration);
 
   if (has_source) {
-    double angle = Geometry::get_angle(source_xy.get_x(), source_xy.get_y(),
-        hero.get_x(), hero.get_y());
+    double angle = Geometry::get_angle(source_xy, hero.get_xy());
     StraightMovement* movement = new StraightMovement(false, true);
     movement->set_max_distance(24);
     movement->set_speed(120);

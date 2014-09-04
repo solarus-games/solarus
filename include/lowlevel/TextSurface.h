@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "Drawable.h"
 #include "lowlevel/Color.h"
-#include "lowlevel/Rectangle.h"
+#include "lowlevel/Point.h"
 #include <SDL_ttf.h>
 #include <map>
 
@@ -105,11 +105,11 @@ class TextSurface: public Drawable {
 
     int get_width() const;
     int get_height() const;
-    const Rectangle get_size() const;
+    const Size get_size() const;
 
-    virtual void raw_draw(Surface& dst_surface, const Rectangle& dst_position) override;
+    virtual void raw_draw(Surface& dst_surface, const Point& dst_position) override;
     virtual void raw_draw_region(const Rectangle& region,
-        Surface& dst_surface, const Rectangle& dst_position) override;
+        Surface& dst_surface, const Point& dst_position) override;
     virtual void draw_transition(Transition& transition) override;
     virtual Surface& get_transition_surface() override;
 
@@ -149,8 +149,9 @@ class TextSurface: public Drawable {
 
     int x;                                            /**< x coordinate of where the text is aligned */
     int y;                                            /**< y coordinate of where the text is aligned */
+
     SurfacePtr surface;                               /**< the surface to draw */
-    Rectangle text_position;                          /**< position of the top-left corner of the surface on the screen */
+    Point text_position;                              /**< position of the top-left corner of the surface on the screen */
 
     std::string text;                                 /**< the string to draw (only one line) */
 

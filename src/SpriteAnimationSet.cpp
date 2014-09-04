@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -19,6 +19,7 @@
 #include "SpriteAnimationDirection.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Rectangle.h"
 #include "lua/LuaTools.h"
 
 namespace solarus {
@@ -153,8 +154,8 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
     lua_pop(l, 1);
     lua_rawgeti(l, -1, i);
 
-    animation_set->max_size.set_width(std::max(frame_width, animation_set->max_size.get_width()));
-    animation_set->max_size.set_height(std::max(frame_height, animation_set->max_size.get_height()));
+    animation_set->max_size.width = std::max(frame_width, animation_set->max_size.width);
+    animation_set->max_size.height = std::max(frame_height, animation_set->max_size.height);
 
     int num_rows;
     if (num_frames % num_columns == 0) {
@@ -181,7 +182,7 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
 
     directions.push_back(new SpriteAnimationDirection(
           positions_in_src,
-          Rectangle(origin_x, origin_y)));
+          Point(origin_x, origin_y)));
   }
 
   if (animation_set->animations.find(animation_name) != animation_set->animations.end()) {
@@ -291,10 +292,10 @@ bool SpriteAnimationSet::are_pixel_collisions_enabled() const {
 }
 
 /**
- * \brief Returns a rectangle big enough to contain any frame of this animation set.
+ * \brief Returns a size big enough to contain any frame of this animation set.
  * \return The maximum size of a frame in this animation set.
  */
-const Rectangle& SpriteAnimationSet::get_max_size() const {
+const Size& SpriteAnimationSet::get_max_size() const {
   return max_size;
 }
 

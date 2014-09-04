@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -27,6 +27,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Size.h"
 #include <sstream>
 
 namespace solarus {
@@ -159,11 +160,9 @@ bool Sprite::are_pixel_collisions_enabled() const {
 
 /**
  * \brief Returns the size of the current frame.
- * \return A rectangle whose size is the size of the current frame.
- * X and Y are set to zero.
+ * \return The size of the current frame.
  */
-Rectangle Sprite::get_size() const {
-
+Size Sprite::get_size() const {
   return current_animation->get_direction(current_direction)->get_size();
 }
 
@@ -171,7 +170,7 @@ Rectangle Sprite::get_size() const {
  * \brief Returns the maximum frame size of the animation set of this sprite.
  * \return The maximum frame size.
  */
-const Rectangle& Sprite::get_max_size() const {
+const Size& Sprite::get_max_size() const {
   return animation_set.get_max_size();
 }
 
@@ -180,7 +179,7 @@ const Rectangle& Sprite::get_max_size() const {
  * the current direction.
  * \return the origin point of a frame
  */
-const Rectangle& Sprite::get_origin() const {
+const Point& Sprite::get_origin() const {
 
   return current_animation->get_direction(current_direction)->get_origin();
 }
@@ -563,15 +562,15 @@ void Sprite::set_blinking(uint32_t blink_delay) {
 bool Sprite::test_collision(const Sprite& other, int x1, int y1, int x2, int y2) const {
 
   const SpriteAnimationDirection* direction1 = current_animation->get_direction(current_direction);
-  const Rectangle& origin1 = direction1->get_origin();
-  Rectangle location1(x1 - origin1.get_x(), y1 - origin1.get_y());
-  location1.add_xy(get_xy());
+  const Point& origin1 = direction1->get_origin();
+  Point location1 = { x1 - origin1.x, y1 - origin1.y };
+  location1 += get_xy();
   const PixelBits& pixel_bits1 = direction1->get_pixel_bits(current_frame);
 
   const SpriteAnimationDirection* direction2 = other.current_animation->get_direction(other.current_direction);
-  const Rectangle& origin2 = direction2->get_origin();
-  Rectangle location2(x2 - origin2.get_x(), y2 - origin2.get_y());
-  location2.add_xy(other.get_xy());
+  const Point& origin2 = direction2->get_origin();
+  Point location2 = { x2 - origin2.x, y2 - origin2.y };
+  location2 += other.get_xy();
   const PixelBits& pixel_bits2 = direction2->get_pixel_bits(other.current_frame);
 
   return pixel_bits1.test_collision(pixel_bits2, location1, location2);
@@ -666,7 +665,7 @@ void Sprite::update() {
  */
 void Sprite::raw_draw(
     Surface& dst_surface,
-    const Rectangle& dst_position) {
+    const Point& dst_position) {
 
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
@@ -679,10 +678,12 @@ void Sprite::raw_draw(
       intermediate_surface->clear();
       current_animation->draw(*intermediate_surface, get_origin(),
           current_direction, current_frame);
-      Rectangle dst_position2(dst_position);
-      dst_position2.add_xy(-get_origin().get_x(), -get_origin().get_y());
       SurfacePtr shared_dst_surface(RefCountable::make_refcount_ptr(&dst_surface));  // TODO shared_ptr
-      intermediate_surface->draw_region(get_size(), shared_dst_surface, dst_position2);
+      intermediate_surface->draw_region(
+          Rectangle(get_size()),
+          shared_dst_surface,
+          dst_position - get_origin()
+      );
     }
   }
 }
@@ -698,7 +699,7 @@ void Sprite::raw_draw(
 void Sprite::raw_draw_region(
     const Rectangle& region,
     Surface& dst_surface,
-    const Rectangle& dst_position) {
+    const Point& dst_position) {
 
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
@@ -707,7 +708,7 @@ void Sprite::raw_draw_region(
     get_intermediate_surface().clear();
 
     // Draw the current animation on the working surface.
-    const Rectangle& origin = get_origin();
+    const Point& origin = get_origin();
     current_animation->draw(
         get_intermediate_surface(),
         origin,
@@ -717,21 +718,21 @@ void Sprite::raw_draw_region(
     // If the region is bigger than the current frame, clip it.
     // Otherwise, more than the current frame could be visible.
     Rectangle src_position(region);
-    src_position.add_xy(origin.get_x(), origin.get_y());
-    const Rectangle& frame_size = get_size();
+    src_position.add_xy(origin);
+    const Size& frame_size = get_size();
     if (src_position.get_x() < 0) {
       src_position.set_width(src_position.get_width() + src_position.get_x());
       src_position.set_x(0);
     }
-    if (src_position.get_x() + src_position.get_width() > frame_size.get_width()) {
-      src_position.set_width(frame_size.get_width() - src_position.get_x());
+    if (src_position.get_x() + src_position.get_width() > frame_size.width) {
+      src_position.set_width(frame_size.width - src_position.get_x());
     }
     if (src_position.get_y() < 0) {
       src_position.set_height(src_position.get_height() + src_position.get_y());
       src_position.set_y(0);
     }
-    if (src_position.get_y() + src_position.get_height() > frame_size.get_height()) {
-      src_position.set_height(frame_size.get_height() - src_position.get_y());
+    if (src_position.get_y() + src_position.get_height() > frame_size.height) {
+      src_position.set_height(frame_size.height - src_position.get_y());
     }
 
     if (src_position.get_width() <= 0 || src_position.get_height() <= 0) {
@@ -740,9 +741,9 @@ void Sprite::raw_draw_region(
     }
 
     // Calculate the destination coordinates.
-    Rectangle dst_position2(dst_position);
-    dst_position2.add_xy(src_position.get_x(), src_position.get_y());  // Let a space for the part outside the region.
-    dst_position2.add_xy(-origin.get_x(), -origin.get_y());  // Input coordinates were relative to the origin.
+    Point dst_position2 = dst_position;
+    dst_position2 += src_position.get_xy(); // Let a space for the part outside the region.
+    dst_position2 -= origin;                // Input coordinates were relative to the origin.
     SurfacePtr shared_dst_surface(RefCountable::make_refcount_ptr(&dst_surface));  // TODO shared_ptr
     get_intermediate_surface().draw_region(src_position, shared_dst_surface, dst_position2);
   }

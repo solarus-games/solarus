@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -126,15 +126,17 @@ bool Jumper::is_in_jump_position(
     }
 
     // Test if the appropriate corner of the hero crosses the diagonal.
-    Rectangle corner(candidate_position.get_x(), candidate_position.get_y(), 1, 1);
-    corner.add_xy(-1, -1);
+    Point corner = {
+        candidate_position.get_x() - 1,
+        candidate_position.get_y() - 1
+    };
     if (direction8 == 1 || direction8 == 7) {
       // Right-up or right-down.
-      corner.add_x(candidate_position.get_width() + 1);
+      corner.x += candidate_position.get_width() + 1;
     }
     if (direction8 == 5 || direction8 == 7) {
       // Left-down or right-down.
-      corner.add_y(candidate_position.get_height() + 1);
+      corner.y += candidate_position.get_height() + 1;
     }
 
     return extended_region ?
@@ -150,32 +152,40 @@ bool Jumper::is_in_jump_position(
     return false;
   }
 
-  Rectangle facing_point(0, 0, 1, 1);
+  Point facing_point;
 
   switch (expected_hero_direction4) {
 
     // right
     case 0:
-      facing_point.set_xy(
-          candidate_position.get_x() + 16, candidate_position.get_y() + 8);
+      facing_point = {
+          candidate_position.get_x() + 16,
+          candidate_position.get_y() + 8
+      };
       break;
 
       // up
     case 1:
-      facing_point.set_xy(
-          candidate_position.get_x() + 8, candidate_position.get_y() - 1);
+      facing_point = {
+          candidate_position.get_x() + 8,
+          candidate_position.get_y() - 1
+      };
       break;
 
       // left
     case 2:
-      facing_point.set_xy(
-          candidate_position.get_x() - 1, candidate_position.get_y() + 8);
+      facing_point = {
+          candidate_position.get_x() - 1,
+          candidate_position.get_y() + 8
+      };
       break;
 
       // down
     case 3:
-      facing_point.set_xy(
-          candidate_position.get_x() + 8, candidate_position.get_y() + 16);
+      facing_point = {
+          candidate_position.get_x() + 8,
+          candidate_position.get_y() + 16
+      };
       break;
 
     default:
@@ -185,25 +195,25 @@ bool Jumper::is_in_jump_position(
   if (is_jump_horizontal()) {
     if (extended_region) {
       // Are we inside the extended strip?
-      return facing_point.get_x() >= get_top_left_x() &&
-          facing_point.get_x() < get_top_left_x() + get_width();
+      return facing_point.x >= get_top_left_x() &&
+          facing_point.x < get_top_left_x() + get_width();
     }
     else {
       // Are we inside the strip and the bounding box?
-      return overlaps(facing_point.get_x(), facing_point.get_y() - 8)
-          && overlaps(facing_point.get_x(), facing_point.get_y() + 7);
+      return overlaps(facing_point.x, facing_point.y - 8)
+          && overlaps(facing_point.x, facing_point.y + 7);
     }
   }
   else {
     // Same thing for a vertical jump.
     if (extended_region) {
       // Are we inside the extended strip?
-      return facing_point.get_y() >= get_top_left_y() &&
-          facing_point.get_y() < get_top_left_y() + get_height();
+      return facing_point.y >= get_top_left_y() &&
+          facing_point.y < get_top_left_y() + get_height();
     }
     else {
-      return overlaps(facing_point.get_x() - 8, facing_point.get_y()) &&
-          overlaps(facing_point.get_x() + 7, facing_point.get_y());
+      return overlaps(facing_point.x - 8, facing_point.y) &&
+          overlaps(facing_point.x + 7, facing_point.y);
     }
   }
 }
@@ -272,9 +282,9 @@ bool Jumper::is_jump_diagonal() const {
  * \param point The point to check.
  * \return \c true if this point is overlapping the jumper
  */
-bool Jumper::is_point_in_diagonal(const Rectangle& point) const {
+bool Jumper::is_point_in_diagonal(const Point& point) const {
 
-  return overlaps(point.get_x(), point.get_y()) &&
+  return overlaps(point.x, point.y) &&
     is_point_in_extended_diagonal(point);
 }
 
@@ -287,10 +297,10 @@ bool Jumper::is_point_in_diagonal(const Rectangle& point) const {
  * \param point The point to check.
  * \return \c true if this point is overlapping the jumper
  */
-bool Jumper::is_point_in_extended_diagonal(const Rectangle& point) const {
+bool Jumper::is_point_in_extended_diagonal(const Point& point) const {
 
-  const int x = point.get_x() - this->get_x();
-  const int y = point.get_y() - this->get_y();
+  const int x = point.x - this->get_x();
+  const int y = point.y - this->get_y();
   const int width = get_width();
 
   switch (get_direction()) {
@@ -333,22 +343,22 @@ bool Jumper::overlaps_jumping_region(const Rectangle& rectangle, bool /* extende
   }
 
   // Check the 4 corners of the rectangle.
-  Rectangle xy = rectangle;
+  Point xy = rectangle.get_xy();
   if (is_point_in_diagonal(xy)) {
     return true;
   }
 
-  xy.add_x(rectangle.get_width() - 1);
+  xy.x += rectangle.get_width() - 1;
   if (is_point_in_diagonal(xy)) {
     return true;
   }
 
-  xy.add_y(rectangle.get_height() - 1);
+  xy.y += rectangle.get_height() - 1;
   if (is_point_in_diagonal(xy)) {
     return true;
   }
 
-  xy.set_x(rectangle.get_x());
+  xy.x = rectangle.get_x();
   if (is_point_in_diagonal(xy)) {
     return true;
   }

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,7 +21,7 @@
 #include "Treasure.h"
 #include "entities/Detector.h"
 #include "movements/FallingHeight.h"
-#include "lowlevel/Rectangle.h"
+#include "lowlevel/Point.h"
 
 namespace solarus {
 
@@ -79,7 +79,7 @@ class Pickable: public Detector {
                                                  * (only possible for items not saved) */
 
     // current state
-    Rectangle shadow_xy;                        /**< coordinates of the shadow (which does not move while the item does) */
+    Point shadow_xy;                            /**< coordinates of the shadow (which does not move while the item does) */
 
     uint32_t appear_date;                       /**< date when the item is created */
     uint32_t allow_pick_date;                   /**< date when the item can be picked */

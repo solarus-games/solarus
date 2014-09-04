@@ -252,7 +252,7 @@ class LuaContext {
         Sprite& sprite, const std::string& animation, int frame);
 
     // Movement events.
-    void movement_on_position_changed(Movement& movement, const Rectangle& xy);
+    void movement_on_position_changed(Movement& movement, const Point& xy);
     void movement_on_obstacle_reached(Movement& movement);
     void movement_on_changed(Movement& movement);
     void movement_on_finished(Movement& movement);
@@ -317,7 +317,7 @@ class LuaContext {
     void entity_on_disabled(MapEntity& entity);
     void entity_on_pre_draw(MapEntity& entity);
     void entity_on_post_draw(MapEntity& entity);
-    void entity_on_position_changed(MapEntity& entity, const Rectangle& xy, Layer layer);
+    void entity_on_position_changed(MapEntity& entity, const Point& xy, Layer layer);
     void entity_on_obstacle_reached(MapEntity& entity, Movement& movement);
     void entity_on_movement_changed(MapEntity& entity, Movement& movement);
     void entity_on_movement_finished(MapEntity& entity);
@@ -1117,7 +1117,7 @@ class LuaContext {
     void on_animation_changed(const std::string& animation);
     void on_direction_changed(const std::string& animation, int direction);
     void on_frame_changed(const std::string& animation, int frame);
-    void on_position_changed(const Rectangle& xy);
+    void on_position_changed(const Point& xy);
     void on_obstacle_reached();
     void on_changed();
     void on_started(Destination* destination);
@@ -1164,7 +1164,7 @@ class LuaContext {
     void on_restarted();
     void on_pre_draw();
     void on_post_draw();
-    void on_position_changed(const Rectangle& xy, Layer layer);
+    void on_position_changed(const Point& xy, Layer layer);
     void on_obstacle_reached(Movement& movement);
     void on_movement_changed(Movement& movement);
     void on_movement_finished();

@@ -18,6 +18,7 @@
 #define SOLARUS_GRID_H
 
 #include "Common.h"
+#include "lowlevel/Size.h"
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/Debug.h"
 #include <vector>
@@ -35,10 +36,10 @@ class Grid {
 
   public:
 
-    Grid(const Rectangle& grid_size, const Rectangle& cell_size);
+    Grid(const Size& grid_size, const Size& cell_size);
 
-    const Rectangle& get_grid_size() const;
-    const Rectangle& get_cell_size() const;
+    const Size& get_grid_size() const;
+    const Size& get_cell_size() const;
     size_t get_num_rows() const;
     size_t get_num_columns() const;
     size_t get_num_cells() const;
@@ -52,8 +53,8 @@ class Grid {
 
   private:
 
-    const Rectangle grid_size;
-    const Rectangle cell_size;
+    const Size grid_size;
+    const Size cell_size;
     size_t num_rows;
     size_t num_columns;
     std::vector<std::vector<T>> elements;     /**< Two-dimensional array of cells. */
@@ -67,24 +68,24 @@ class Grid {
  * the grid is not a multiple of the cell size.
  */
 template <typename T>
-Grid<T>::Grid(const Rectangle& grid_size, const Rectangle& cell_size):
+Grid<T>::Grid(const Size& grid_size, const Size& cell_size):
     grid_size(grid_size),
     cell_size(cell_size),
     num_rows(0),
     num_columns(0) {
 
-  Debug::check_assertion(grid_size.get_width() > 0 && grid_size.get_height() > 0,
+  Debug::check_assertion(grid_size.width > 0 && grid_size.height > 0,
       "Invalid grid size");
-  Debug::check_assertion(cell_size.get_width() > 0 && cell_size.get_height() > 0,
+  Debug::check_assertion(cell_size.width > 0 && cell_size.height > 0,
       "Invalid cell size");
 
-  num_rows = grid_size.get_height() / cell_size.get_height();
-  if (grid_size.get_height() % cell_size.get_height() != 0) {
+  num_rows = grid_size.height / cell_size.height;
+  if (grid_size.height % cell_size.height != 0) {
     ++num_rows;
   }
 
-  num_columns = grid_size.get_width() / cell_size.get_width();
-  if (grid_size.get_width() % cell_size.get_width() != 0) {
+  num_columns = grid_size.width / cell_size.width;
+  if (grid_size.width % cell_size.width != 0) {
     ++num_columns;
   }
   elements.resize(num_rows * num_columns);
@@ -95,7 +96,7 @@ Grid<T>::Grid(const Rectangle& grid_size, const Rectangle& cell_size):
  * \return The size of the grid.
  */
 template <typename T>
-const Rectangle& Grid<T>::get_grid_size() const {
+const Size& Grid<T>::get_grid_size() const {
   return grid_size;
 }
 
@@ -104,7 +105,7 @@ const Rectangle& Grid<T>::get_grid_size() const {
  * \return The size of a cell.
  */
 template <typename T>
-const Rectangle& Grid<T>::get_cell_size() const {
+const Size& Grid<T>::get_cell_size() const {
   return cell_size;
 }
 
@@ -216,10 +217,10 @@ void Grid<T>::add(const T& element) {
 
   const Rectangle& position = element->get_bounding_box();
 
-  const size_t row1 = position.get_y() / cell_size.get_height();
-  const size_t row2 = (position.get_y() + position.get_height()) / cell_size.get_height();
-  const size_t column1 = position.get_x() / cell_size.get_width();
-  const size_t column2 = (position.get_x() + position.get_width()) / cell_size.get_width();
+  const size_t row1 = position.get_y() / cell_size.height;
+  const size_t row2 = (position.get_y() + position.get_height()) / cell_size.height;
+  const size_t column1 = position.get_x() / cell_size.width;
+  const size_t column2 = (position.get_x() + position.get_width()) / cell_size.width;
 
   if (row1 > row2 || column1 > column2) {
     // No cell.

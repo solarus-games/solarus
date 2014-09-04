@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -49,27 +49,27 @@ SelfScrollingTilePattern::~SelfScrollingTilePattern() {
  * to the map (may be used for scrolling tiles)
  */
 void SelfScrollingTilePattern::draw(Surface& dst_surface,
-    const Rectangle& dst_position, Tileset& tileset,
-    const Rectangle& /* viewport */) {
+    const Point& dst_position, Tileset& tileset,
+    const Point& /* viewport */) {
 
   Rectangle src = position_in_tileset;
-  Rectangle dst = dst_position;
+  Point dst = dst_position;
 
   // draw the tile with an offset that depends on its position modulo its size
   int offset_x, offset_y;
 
-  if (dst.get_x() >= 0) {
-    offset_x = dst.get_x() % src.get_width();
+  if (dst.x >= 0) {
+    offset_x = dst.x % src.get_width();
   }
   else { // the modulo operation does not like negative numbers
-    offset_x = src.get_width() - (-dst.get_x() % src.get_width());
+    offset_x = src.get_width() - (-dst.x % src.get_width());
   }
 
-  if (dst.get_y() >= 0) {
-    offset_y = dst.get_y() % src.get_height();
+  if (dst.y >= 0) {
+    offset_y = dst.y % src.get_height();
   }
   else {
-    offset_y = src.get_height() - (-dst.get_y() % src.get_height());
+    offset_y = src.get_height() - (-dst.y % src.get_height());
   }
 
   // apply a scrolling ratio
@@ -90,7 +90,7 @@ void SelfScrollingTilePattern::draw(Surface& dst_surface,
   dst = dst_position;
   src.add_y(offset_y);
   src.add_height(-offset_y);
-  dst.add_x(src.get_width() - offset_x);
+  dst.x += src.get_width() - offset_x;
   src.set_width(offset_x);
   tileset_image->draw_region(src, shared_dst_surface, dst);
 
@@ -98,15 +98,15 @@ void SelfScrollingTilePattern::draw(Surface& dst_surface,
   dst = dst_position;
   src.add_x(offset_x);
   src.add_width(-offset_x);
-  dst.add_y(src.get_height() - offset_y);
+  dst.y += src.get_height() - offset_y;
   src.set_height(offset_y);
   tileset_image->draw_region(src, shared_dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
-  dst.add_x(src.get_width() - offset_x);
+  dst.x += src.get_width() - offset_x;
   src.set_width(offset_x);
-  dst.add_y(src.get_height() - offset_y);
+  dst.y += src.get_height() - offset_y;
   src.set_height(offset_y);
   tileset_image->draw_region(src, shared_dst_surface, dst);
 }

@@ -16,6 +16,8 @@
  */
 #include "lowlevel/Video.h"
 #include "lowlevel/VideoMode.h"
+#include "lowlevel/Rectangle.h"
+#include "lowlevel/Size.h"
 #include "lowlevel/Scale2xFilter.h"
 #include "lowlevel/Hq2xFilter.h"
 #include "lowlevel/Hq3xFilter.h"
@@ -52,13 +54,13 @@ std::vector<VideoMode*>
 const VideoMode* video_mode;              /**< Current video mode. */
 const VideoMode* default_video_mode;      /**< Default video mode. */
 
-Rectangle normal_quest_size;              /**< Default value of quest_size (depends on the quest). */
-Rectangle min_quest_size;                 /**< Minimum value of quest_size (depends on the quest). */
-Rectangle max_quest_size;                 /**< Maximum value of quest_size (depends on the quest). */
-Rectangle quest_size;                     /**< Size of the quest surface to render. */
-Rectangle wanted_quest_size;              /**< Size wanted by the user. */
+Size normal_quest_size;                   /**< Default value of quest_size (depends on the quest). */
+Size min_quest_size;                      /**< Minimum value of quest_size (depends on the quest). */
+Size max_quest_size;                      /**< Maximum value of quest_size (depends on the quest). */
+Size quest_size;                          /**< Size of the quest surface to render. */
+Size wanted_quest_size;                   /**< Size wanted by the user. */
 
-Rectangle window_size;                    /**< Size of the window. The quest size is stretched and
+Size window_size;                         /**< Size of the window. The quest size is stretched and
                                            * letterboxed to fit. In fullscreen, remembers the size
                                            * to use when returning to windowed mode. */
 
@@ -82,8 +84,8 @@ void create_window(const CommandLine& args) {
       (std::string("Solarus ") + SOLARUS_VERSION).c_str(),
       SDL_WINDOWPOS_CENTERED,
       SDL_WINDOWPOS_CENTERED,
-      wanted_quest_size.get_width(),
-      wanted_quest_size.get_height(),
+      wanted_quest_size.width,
+      wanted_quest_size.height,
       SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE
 #if SOLARUS_HAVE_OPENGL == 1
       | SDL_WINDOW_OPENGL
@@ -167,14 +169,11 @@ void initialize_video_modes() {
   shaders_enabled = rendertarget_supported && Video::is_acceleration_enabled() && ShaderContext::initialize();
 
   // Initialize hardcoded video modes.
-  const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
-  const Rectangle quest_size_3(0, 0, quest_size.get_width() * 3, quest_size.get_height() * 3);
-  const Rectangle quest_size_4(0, 0, quest_size.get_width() * 4, quest_size.get_height() * 4);
-  all_video_modes.push_back(new VideoMode("normal", quest_size_2, nullptr, nullptr));
-  all_video_modes.push_back(new VideoMode("scale2x", quest_size_2, new Scale2xFilter(), nullptr));
-  all_video_modes.push_back(new VideoMode("hq2x", quest_size_2, new Hq2xFilter(), nullptr));
-  all_video_modes.push_back(new VideoMode("hq3x", quest_size_3, new Hq3xFilter(), nullptr));
-  all_video_modes.push_back(new VideoMode("hq4x", quest_size_4, new Hq4xFilter(), nullptr));
+  all_video_modes.push_back(new VideoMode("normal", quest_size * 2, nullptr, nullptr));
+  all_video_modes.push_back(new VideoMode("scale2x", quest_size * 2, new Scale2xFilter(), nullptr));
+  all_video_modes.push_back(new VideoMode("hq2x", quest_size * 2, new Hq2xFilter(), nullptr));
+  all_video_modes.push_back(new VideoMode("hq3x", quest_size * 3, new Hq3xFilter(), nullptr));
+  all_video_modes.push_back(new VideoMode("hq4x", quest_size * 4, new Hq4xFilter(), nullptr));
   default_video_mode = all_video_modes[0];
   // TODO If shaders are enabled, use a C++ shader version of Scale2x and Hq4x instead.
 
@@ -186,8 +185,8 @@ void initialize_video_modes() {
         main_renderer,
         pixel_format->format,
         SDL_TEXTUREACCESS_TARGET,
-        quest_size.get_width(),
-        quest_size.get_height());
+        quest_size.width,
+        quest_size.height);
     SDL_SetTextureBlendMode(render_target, SDL_BLENDMODE_BLEND);
 
     // Get all shaders of the quest's shader/videomodes folder.
@@ -208,9 +207,7 @@ void initialize_video_modes() {
           continue;
         }
 
-        const Rectangle scaled_quest_size(0, 0,
-            int(quest_size.get_width() * video_mode_shader->get_default_window_scale()),
-            int(quest_size.get_height() * video_mode_shader->get_default_window_scale()));
+        const Size scaled_quest_size = quest_size * video_mode_shader->get_default_window_scale();
         all_video_modes.push_back(new VideoMode(
               video_mode_shader->get_name(),
               scaled_quest_size,
@@ -244,8 +241,10 @@ void Video::initialize(const CommandLine& args) {
   const std::string& quest_size_string = args.get_argument_value("-quest-size");
   disable_window = args.has_argument("-no-video");
 
-  wanted_quest_size = Rectangle(0, 0,
-      SOLARUS_DEFAULT_QUEST_WIDTH, SOLARUS_DEFAULT_QUEST_HEIGHT);
+  wanted_quest_size = {
+      SOLARUS_DEFAULT_QUEST_WIDTH,
+      SOLARUS_DEFAULT_QUEST_HEIGHT
+  };
 
   if (!quest_size_string.empty()) {
     if (!parse_size(quest_size_string, wanted_quest_size)) {
@@ -486,15 +485,12 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
 
     scaled_surface.reset();
 
-    Rectangle render_size(quest_size);
+    Size render_size = quest_size;
 
     const PixelFilter* software_filter = mode.get_software_filter();
     if (software_filter != nullptr) {
       int factor = software_filter->get_scaling_factor();
-      render_size.set_size(
-          quest_size.get_width() * factor,
-          quest_size.get_height() * factor
-      );
+      render_size = quest_size * factor;
       scaled_surface = Surface::create(render_size);
       scaled_surface->fill_with_color(Color::get_black());  // To initialize the internal surface.
     }
@@ -505,16 +501,16 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
     if (!fullscreen && is_fullscreen()) {
       SDL_SetWindowSize(
           main_window,
-          window_size.get_width(),
-          window_size.get_height()
+          window_size.width,
+          window_size.height
       );
       SDL_SetWindowPosition(main_window,
           SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     }
     SDL_RenderSetLogicalSize(
         main_renderer,
-        render_size.get_width(),
-        render_size.get_height());
+        render_size.width,
+        render_size.height);
     SDL_ShowCursor(show_cursor);
 
     if (mode_changed) {
@@ -564,7 +560,7 @@ const VideoMode* Video::get_video_mode_by_name(
       return video_mode;
     }
   }
-  
+
   return nullptr;
 }
 
@@ -635,7 +631,7 @@ void Video::set_window_title(const std::string& window_title) {
  * \param size The resulting size. Unchanged in case of failure.
  * \return true in case of success, false if the string is not a valid size.
  */
-bool Video::parse_size(const std::string& size_string, Rectangle& size) {
+bool Video::parse_size(const std::string& size_string, Size& size) {
 
   size_t index = size_string.find('x');
   if (index == std::string::npos || index + 1 >= size_string.size()) {
@@ -658,7 +654,7 @@ bool Video::parse_size(const std::string& size_string, Rectangle& size) {
     return false;
   }
 
-  size.set_size(width, height);
+  size = { width, height };
   return true;
 }
 
@@ -666,7 +662,7 @@ bool Video::parse_size(const std::string& size_string, Rectangle& size) {
  * \brief Returns the size of the quest surface to render on the screen.
  * \return The quest size.
  */
-const Rectangle& Video::get_quest_size() {
+const Size& Video::get_quest_size() {
   return quest_size;
 }
 
@@ -677,9 +673,9 @@ const Rectangle& Video::get_quest_size() {
  * \param max_size Gets the maximum size for this quest.
  */
 void Video::get_quest_size_range(
-    Rectangle& normal_size,
-    Rectangle& min_size,
-    Rectangle& max_size) {
+    Size& normal_size,
+    Size& min_size,
+    Size& max_size) {
 
   normal_size = normal_quest_size;
   min_size = min_quest_size;
@@ -697,34 +693,34 @@ void Video::get_quest_size_range(
  * \param max_size Maximum size for this quest.
  */
 void Video::set_quest_size_range(
-    const Rectangle& normal_size,
-    const Rectangle& min_size,
-    const Rectangle& max_size) {
+    const Size& normal_size,
+    const Size& min_size,
+    const Size& max_size) {
 
   Debug::check_assertion(
-      normal_size.get_width() >= min_size.get_width()
-      && normal_size.get_height() >= min_size.get_height()
-      && normal_size.get_width() <= max_size.get_width()
-      && normal_size.get_height() <= max_size.get_height(),
+      normal_size.width >= min_size.width
+      && normal_size.height >= min_size.height
+      && normal_size.width <= max_size.width
+      && normal_size.height <= max_size.height,
       "Invalid quest size range");
 
   normal_quest_size = normal_size;
   min_quest_size = min_size;
   max_quest_size = max_size;
 
-  if (wanted_quest_size.get_width() < min_size.get_width()
-      || wanted_quest_size.get_height() < min_size.get_height()
-      || wanted_quest_size.get_width() > max_size.get_width()
-      || wanted_quest_size.get_height() > max_size.get_height()) {
+  if (wanted_quest_size.width < min_size.width
+      || wanted_quest_size.height < min_size.height
+      || wanted_quest_size.width > max_size.width
+      || wanted_quest_size.height > max_size.height) {
     std::ostringstream oss;
     oss << "Cannot use quest size "
-        << wanted_quest_size.get_width() << "x" << wanted_quest_size.get_height()
+        << wanted_quest_size.width << "x" << wanted_quest_size.height
         << ": this quest only supports "
-        << min_size.get_width() << "x" << min_size.get_height()
+        << min_size.width << "x" << min_size.height
         << " to "
-        << max_size.get_width() << "x" << max_size.get_height()
+        << max_size.width << "x" << max_size.height
         << ". Using "
-        << normal_size.get_width() << "x" << normal_size.get_height()
+        << normal_size.width << "x" << normal_size.height
         << " instead.";
     Debug::warning(oss.str());
     quest_size = normal_size;
@@ -739,10 +735,9 @@ void Video::set_quest_size_range(
 
 /**
  * \brief Returns the size of the window.
- * \return The size of the window in pixels. The x and y value of the
- * returned rectangle are set to zero.
+ * \return The size of the window in pixels.
  */
-Rectangle Video::get_window_size() {
+Size Video::get_window_size() {
 
   Debug::check_assertion(main_window != nullptr, "No window");
   Debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
@@ -757,20 +752,19 @@ Rectangle Video::get_window_size() {
   int height = 0;
   SDL_GetWindowSize(main_window, &width, &height);
 
-  return Rectangle(0, 0, width, height);
+  return { width, height };
 }
 
 /**
  * \brief Sets the size of the window.
  * \param size The size of the window in pixels.
- * The x and y values of the rectangle are ignored.
  */
-void Video::set_window_size(const Rectangle& size) {
+void Video::set_window_size(const Size& size) {
 
   Debug::check_assertion(main_window != nullptr, "No window");
   Debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
   Debug::check_assertion(
-      size.get_width() > 0 && size.get_height() > 0,
+      size.width > 0 && size.height > 0,
       "Wrong window size"
   );
 
@@ -782,11 +776,11 @@ void Video::set_window_size(const Rectangle& size) {
     int width = 0;
     int height = 0;
     SDL_GetWindowSize(main_window, &width, &height);
-    if (width != size.get_width() || height != size.get_height()) {
+    if (width != size.width || height != size.height) {
       SDL_SetWindowSize(
           main_window,
-          size.get_width(),
-          size.get_height()
+          size.width,
+          size.height
       );
       SDL_SetWindowPosition(
           main_window,
@@ -835,8 +829,8 @@ Rectangle Video::get_scaled_position(const Rectangle& position) {
   const Rectangle& viewport = get_viewport();
   const double x_position = position.get_x();
   const double y_position = position.get_y();
-  const double quest_size_width = quest_size.get_width();
-  const double quest_size_height = quest_size.get_height();
+  const double quest_size_width = quest_size.width;
+  const double quest_size_height = quest_size.height;
   const double viewport_width = viewport.get_width();
   const double viewport_height = viewport.get_height();
 

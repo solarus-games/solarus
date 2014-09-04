@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "Drawable.h"
-#include "lowlevel/Rectangle.h"
 #include "lowlevel/PixelBits.h"
 #include <vector>
 
@@ -59,13 +58,13 @@ class Surface: public Drawable {
     // This is because they are always reference-counted with shared_ptr
     // internally for drawing.
     static SurfacePtr create(int width, int height);
-    static SurfacePtr create(const Rectangle& size);
+    static SurfacePtr create(const Size& size);
     static SurfacePtr create(const std::string& file_name,
         ImageDirectory base_directory = DIR_SPRITES);
 
     int get_width() const;
     int get_height() const;
-    const Rectangle get_size() const;
+    const Size get_size() const;
 
     bool is_software_destination() const;
     void set_software_destination(bool software_destination);
@@ -87,12 +86,12 @@ class Surface: public Drawable {
     // Implementation from Drawable.
     virtual void raw_draw(
         Surface& dst_surface,
-        const Rectangle& dst_position
+        const Point& dst_position
     ) override;
     virtual void raw_draw_region(
         const Rectangle& region,
         Surface& dst_surface,
-        const Rectangle& dst_position
+        const Point& dst_position
     ) override;
     virtual void draw_transition(Transition& transition) override;
     virtual Surface& get_transition_surface() override;
@@ -115,7 +114,7 @@ class Surface: public Drawable {
     void create_software_surface();
     void convert_software_surface();
     void create_texture_from_surface();
-    void add_subsurface(SurfacePtr& src_surface, const Rectangle& region, const Rectangle& dst_position);
+    void add_subsurface(SurfacePtr& src_surface, const Rectangle& region, const Point& dst_position);
     void clear_subsurfaces();
     void render(
         SDL_Renderer* renderer,

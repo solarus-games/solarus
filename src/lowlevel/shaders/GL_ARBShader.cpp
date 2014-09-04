@@ -21,7 +21,7 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Video.h"
-
+#include "lowlevel/Size.h"
 
 namespace solarus {
 
@@ -123,7 +123,7 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
 
     location = glGetUniformLocationARB(program, "solarus_io_size");
     if (location >= 0) {
-      glUniform2fARB(location, quest_size.widht, quest_size.height);
+      glUniform2fARB(location, quest_size.width, quest_size.height);
     }
     glUseProgramObjectARB(default_shader_program);
   }
@@ -185,59 +185,62 @@ void GL_ARBShader::set_rendering_settings() {
  */
 int GL_ARBShader::l_shader(lua_State* l) {
 
-  if (loading_shader != nullptr) {
+  SOLARUS_LUA_API_TRY() {
+    if (loading_shader != nullptr) {
 
-    GLhandleARB& program = loading_shader->program,
-        vertex_shader = loading_shader->vertex_shader,
-        fragment_shader = loading_shader->fragment_shader;
+      GLhandleARB& program = loading_shader->program,
+          vertex_shader = loading_shader->vertex_shader,
+          fragment_shader = loading_shader->fragment_shader;
 
-    // Retrieve the videomode properties from the table parameter.
-    LuaTools::check_type(l, 1, LUA_TTABLE);
+      // Retrieve the videomode properties from the table parameter.
+      LuaTools::check_type(l, 1, LUA_TTABLE);
 
-    const double& default_window_scale =
-        LuaTools::opt_number_field(l, 1, "default_window_scale", 1.0);
-    const std::string shader_name =
-        LuaTools::opt_string_field(l, 1, "name", loading_shader->shader_name);
-    const bool is_shader_valid =
-        LuaTools::opt_boolean_field(l, 1, "is_shader_valid", true);
-    const std::string vertex_source =
-        LuaTools::opt_string_field(l, 1, "vertex_source",
-            "void main(){\
+      const double& default_window_scale =
+          LuaTools::opt_number_field(l, 1, "default_window_scale", 1.0);
+      const std::string shader_name =
+          LuaTools::opt_string_field(l, 1, "name", loading_shader->shader_name);
+      const bool is_shader_valid =
+          LuaTools::opt_boolean_field(l, 1, "is_shader_valid", true);
+      const std::string vertex_source =
+          LuaTools::opt_string_field(l, 1, "vertex_source",
+              "void main(){\
                gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\
                gl_TexCoord[0] = gl_MultiTexCoord0;\
              }");
-    const std::string fragment_source =
-        LuaTools::check_string_field(l, 1, "fragment_source");
+      const std::string fragment_source =
+          LuaTools::check_string_field(l, 1, "fragment_source");
 
-    loading_shader->is_shader_valid = is_shader_valid;
+      loading_shader->is_shader_valid = is_shader_valid;
 
-    if (is_shader_valid) {
-      loading_shader->default_window_scale = default_window_scale;
-      loading_shader->shader_name = shader_name;
+      if (is_shader_valid) {
+        loading_shader->default_window_scale = default_window_scale;
+        loading_shader->shader_name = shader_name;
 
-      // Create the vertex and fragment shaders.
-      vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-      compile_shader(vertex_shader, vertex_source.c_str());
+        // Create the vertex and fragment shaders.
+        vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
+        compile_shader(vertex_shader, vertex_source.c_str());
 
-      fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
-      compile_shader(fragment_shader, fragment_source.c_str());
+        fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
+        compile_shader(fragment_shader, fragment_source.c_str());
 
-      // Create one program object to rule them all ...
-      program = glCreateProgramObjectARB();
+        // Create one program object to rule them all ...
+        program = glCreateProgramObjectARB();
 
-      // ... and in the darkness bind them
-      glAttachObjectARB(program, vertex_shader);
-      glAttachObjectARB(program, fragment_shader);
-      glLinkProgramARB(program);
+        // ... and in the darkness bind them
+        glAttachObjectARB(program, vertex_shader);
+        glAttachObjectARB(program, fragment_shader);
+        glLinkProgramARB(program);
 
-      loading_shader = nullptr;
+        loading_shader = nullptr;
+      }
+      else {
+        Debug::warning("The shader script '" + loading_shader->shader_name + "' is not compatible with GLSL " + shading_language_version);
+      }
     }
-    else {
-      Debug::warning("The shader script '" + loading_shader->shader_name + "' is not compatible with GLSL " + shading_language_version);
-    }
+
+    return 0;
   }
-
-  return 0;
+  SOLARUS_LUA_API_CATCH(l);
 }
 
 /**

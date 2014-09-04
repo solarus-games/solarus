@@ -26,6 +26,7 @@
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/Debug.h"
 #include "lua/ScopedLuaRef.h"
+#include "lua/LuaException.h"
 #include "Ability.h"
 #include <map>
 #include <set>

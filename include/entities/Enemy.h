@@ -189,9 +189,9 @@ class Enemy: public Detector {
     const Treasure& get_treasure() const;
     void set_treasure(const Treasure& treasure);
 
-    static const std::string attack_names[];               /**< Lua names of the EnemyAttack enum. */
-    static const std::string hurt_style_names[];           /**< Lua names of the HurtStyle enum. */
-    static const std::string obstacle_behavior_names[];    /**< Lua names of the ObstacleBehavior enum. */
+    static const std::vector<std::string> attack_names;               /**< Lua names of the EnemyAttack enum. */
+    static const std::vector<std::string> hurt_style_names;           /**< Lua names of the HurtStyle enum. */
+    static const std::vector<std::string> obstacle_behavior_names;    /**< Lua names of the ObstacleBehavior enum. */
 
   private:
 

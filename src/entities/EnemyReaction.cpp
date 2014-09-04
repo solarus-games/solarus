@@ -21,13 +21,12 @@
 
 namespace solarus {
 
-const std::string EnemyReaction::reaction_names[] = {
+const std::vector<std::string> EnemyReaction::reaction_names = {
   "hurt",
   "ignored",
   "protected",
   "immobilized",
-  "custom",
-  ""  // Sentinel for Lua.
+  "custom"
 };
 
 /**

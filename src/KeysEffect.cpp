@@ -21,7 +21,7 @@ namespace solarus {
 /**
  * \brief Lua name of each value of the ActionKeyEffect enum.
  */
-const std::string KeysEffect::action_key_effect_names[] = {
+const std::vector<std::string> KeysEffect::action_key_effect_names = {
   "",
   "next",
   "look",
@@ -30,27 +30,24 @@ const std::string KeysEffect::action_key_effect_names[] = {
   "throw",
   "grab",
   "speak",
-  "swim",
-  ""  // Sentinel.
+  "swim"
 };
 
 /**
  * \brief Lua name of each value of the SwordKeyEffect enum.
  */
-const std::string KeysEffect::sword_key_effect_names[] = {
+const std::vector<std::string> KeysEffect::sword_key_effect_names = {
   "",
-  "sword",
-  ""  // Sentinel.
+  "sword"
 };
 
 /**
  * \brief Lua name of each value of the PauseKeyEffect enum.
  */
-const std::string KeysEffect::pause_key_effect_names[] = {
+const std::vector<std::string> KeysEffect::pause_key_effect_names = {
   "",
   "pause",
-  "return",
-  ""  // Sentinel.
+  "return"
 };
 
 /**

@@ -21,6 +21,7 @@
 #include "Ability.h"
 #include <string>
 #include <map>
+#include <vector>
 
 struct lua_State;
 
@@ -97,7 +98,7 @@ class Equipment {
     void set_ability(Ability ability, int level);
     void notify_ability_used(Ability ability);
 
-    static const std::string ability_names[];    /**< Lua name of each ability. */
+    static const std::vector<std::string> ability_names;    /**< Lua name of each ability. */
 
   private:
 

@@ -28,25 +28,26 @@ namespace solarus {
  */
 const std::string LuaContext::text_surface_module_name = "sol.text_surface";
 
-static const std::string rendering_mode_names[] = {
+namespace {
+
+const std::vector<std::string> rendering_mode_names = {
     "solid",
-    "antialiasing",
-    ""  // Sentinel.
+    "antialiasing"
 };
 
-static const std::string horizontal_alignment_names[] = {
+const std::vector<std::string> horizontal_alignment_names = {
     "left",
     "center",
-    "right",
-    ""  // Sentinel.
+    "right"
 };
 
-static const std::string vertical_alignment_names[] = {
+const std::vector<std::string> vertical_alignment_names = {
     "top",
     "middle",
-    "bottom",
-    ""  // Sentinel.
+    "bottom"
 };
+
+}
 
 /**
  * \brief Initializes the text surface features provided to Lua.

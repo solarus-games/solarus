@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/Sound.h"
+#include <vector>
 
 namespace solarus {
 
@@ -51,7 +52,8 @@ class Music {
 
     static const std::string none;               /**< special id indicating that there is no music */
     static const std::string unchanged;          /**< special id indicating that the music is the same as before */
-    static const std::string format_names[];     /**< Name of each format. */
+    static const std::vector<std::string>
+        format_names;                            /**< Name of each format. */
 
     static void initialize();
     static void quit();

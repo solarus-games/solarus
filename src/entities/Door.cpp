@@ -40,13 +40,12 @@ namespace solarus {
 /**
  * \brief Lua name of each value of the OpeningMethod enum.
  */
-const std::string Door::opening_method_names[] = {
+const std::vector<std::string> Door::opening_method_names = {
   "none",
   "interaction",
   "interaction_if_savegame_variable",
   "interaction_if_item",
-  "explosion",
-  ""  // Sentinel.
+  "explosion"
 };
 
 /**

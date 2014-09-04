@@ -35,11 +35,10 @@ namespace solarus {
 /**
  * \brief Lua name of each value of the OpeningMethod enum.
  */
-const std::string Chest::opening_method_names[] = {
+const std::vector<std::string> Chest::opening_method_names = {
   "interaction",
   "interaction_if_savegame_variable",
-  "interaction_if_item",
-  ""  // Sentinel.
+  "interaction_if_item"
 };
 
 /**

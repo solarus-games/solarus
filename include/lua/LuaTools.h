@@ -22,6 +22,7 @@
 #include "lowlevel/Debug.h"
 #include "lua/LuaException.h"
 #include <string>
+#include <vector>
 #include <lua.hpp>
 
 /**
@@ -135,7 +136,9 @@ class LuaTools {
         double default_value
     );
     static double opt_number_field(
-        lua_State* l, int table_index, const std::string& key,
+        lua_State* l,
+        int table_index,
+        const std::string& key,
         double default_value
     );
 
@@ -258,25 +261,30 @@ class LuaTools {
     // enum
     template<typename E>
     static E check_enum(
-        lua_State* l, int index, const std::string names[]
+        lua_State* l,
+        int index,
+        const std::vector<std::string>& names
     );
     template<typename E>
     static E check_enum_field(
         lua_State* l,
         int table_index,
         const std::string& key,
-        const std::string names[]
+        const std::vector<std::string>& names
     );
     template<typename E>
     static E opt_enum(
-        lua_State* l, int index, const std::string names[], E default_value
+        lua_State* l,
+        int index,
+        const std::vector<std::string>& names,
+        E default_value
     );
     template<typename E>
     static E opt_enum_field(
         lua_State* l,
         int table_index,
         const std::string& key,
-        const std::string names[],
+        const std::vector<std::string>& names,
         E default_value
     );
 
@@ -300,16 +308,15 @@ class LuaTools {
  *
  * \param l A Lua state.
  * \param index Index of a string in the Lua stack.
- * \param names An array of strings to search in. This array must be
- * terminated by an empty string. TODO std::array
+ * \param names A list of strings to search in.
  * \return The index (converted to the enumerated type E) where the string was
- * found in the array.
+ * found in the list.
  */
 template<typename E>
 E LuaTools::check_enum(
     lua_State* l,
     int index,
-    const std::string names[]
+    const std::vector<std::string>& names
 ) {
   Debug::check_assertion(!names[0].empty(), "Invalid list of names");
 
@@ -343,16 +350,17 @@ E LuaTools::check_enum(
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
  * \param key Key of the field to get in that table.
- * \param names An array of strings to search in. This array must be
- * terminated by an empty string.
+ * \param names A list of strings to search in.
  * \return The index (converted to the enumerated type E) where the string was
- * found in the array.
+ * found in the list.
  */
 template<typename E>
 E LuaTools::check_enum_field(
-    lua_State* l, int table_index, const std::string& key,
-    const std::string names[]) {
-
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    const std::vector<std::string>& names
+) {
   lua_getfield(l, table_index, key.c_str());
   if (!lua_isstring(l, -1)) {
     arg_error(l, table_index,
@@ -371,17 +379,16 @@ E LuaTools::check_enum_field(
  *
  * \param l A Lua state.
  * \param index Index of a string in the Lua stack.
- * \param names An array of strings to search in. This array must be
- * terminated by an empty string.
+ * \param names A list of strings to search in.
  * \param default_value The default value to return.
  * \return The index (converted to the enumerated type E) where the string was
- * found in the array.
+ * found in the list.
  */
 template<typename E>
 E LuaTools::opt_enum(
     lua_State* l,
     int index,
-    const std::string names[],
+    const std::vector<std::string>& names,
     E default_value
 ) {
   if (lua_isnoneornil(l, index)) {
@@ -396,18 +403,17 @@ E LuaTools::opt_enum(
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
  * \param key Key of the field to get in that table.
- * \param names An array of strings to search in. This array must be
- * terminated by an empty string.
+ * \param names A list of strings to search in.
  * \param default_value The default value to return.
  * \return The index (converted to the enumerated type E) where the string was
- * found in the array.
+ * found in the list.
  */
 template<typename E>
 E LuaTools::opt_enum_field(
     lua_State* l,
     int table_index,
     const std::string& key,
-    const std::string names[],
+    const std::vector<std::string>& names,
     E default_value
 ) {
   lua_getfield(l, table_index, key.c_str());

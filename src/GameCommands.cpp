@@ -30,7 +30,7 @@ namespace solarus {
 /**
  * \brief Lua name of each value of the Command enum.
  */
-const std::string GameCommands::command_names[] = {
+const std::vector<std::string> GameCommands::command_names = {
   "action",
   "attack",
   "item_1",
@@ -39,8 +39,7 @@ const std::string GameCommands::command_names[] = {
   "right",
   "up",
   "left",
-  "down",
-  ""  // Sentinel.
+  "down"
 };
 
 const std::string GameCommands::direction_names[4] = {

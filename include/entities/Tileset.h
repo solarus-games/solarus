@@ -21,6 +21,7 @@
 #include "lowlevel/Color.h"
 #include <map>
 #include <string>
+#include <vector>
 
 struct lua_State;
 
@@ -51,7 +52,7 @@ class Tileset {
     TilePattern& get_tile_pattern(const std::string& id);
     void set_images(const std::string& other_id);
 
-    static const std::string ground_names[];  /**< Lua name of each ground type. */
+    static const std::vector<std::string> ground_names;  /**< Lua name of each ground type. */
 
   private:
 

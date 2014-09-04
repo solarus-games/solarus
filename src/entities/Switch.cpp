@@ -28,11 +28,10 @@
 
 namespace solarus {
 
-const std::string Switch::subtype_names[] = {
+const std::vector<std::string> Switch::subtype_names = {
   "walkable",
   "arrow_target",
-  "solid",
-  ""  // Sentinel for Lua.
+  "solid"
 };
 
 /**

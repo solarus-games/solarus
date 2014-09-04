@@ -87,7 +87,7 @@ class Switch: public Detector {
         Sprite& this_sprite
     ) override;
 
-    static const std::string subtype_names[];  /**< Lua names of the Subtype enum. */
+    static const std::vector<std::string> subtype_names;  /**< Lua names of the Subtype enum. */
 
   private:
 

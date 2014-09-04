@@ -29,7 +29,7 @@
 
 namespace solarus {
 
-const std::string Equipment::ability_names[] = {
+const std::vector<std::string> Equipment::ability_names = {
   "tunic",
   "sword",
   "sword_knowledge",
@@ -37,8 +37,7 @@ const std::string Equipment::ability_names[] = {
   "lift",
   "swim",
   "run",
-  "detect_weak_walls",
-  ""  // Sentinel.
+  "detect_weak_walls"
 };
 
 /**

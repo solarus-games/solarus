@@ -18,8 +18,9 @@
 #define SOLARUS_ENEMY_REACTION_H
 
 #include "Common.h"
-#include <string>
 #include <map>
+#include <string>
+#include <vector>
 
 namespace solarus {
 
@@ -63,12 +64,12 @@ class EnemyReaction {
     static const std::string& get_reaction_name(ReactionType reaction);
     static ReactionType get_reaction_by_name(const std::string& name);
 
-    static const std::string reaction_names[]; /**< Lua name of each reaction type */
+    static const std::vector<std::string> reaction_names;  /**< Lua name of each reaction type */
 
   private:
 
-    Reaction general_reaction;                 /**< reaction to make unless sprite-specific override */
-    std::map<const Sprite*, Reaction> sprite_reactions;  /**< sprite-specific reaction (overrides the default one) */
+    Reaction general_reaction;                             /**< reaction to make unless sprite-specific override */
+    std::map<const Sprite*, Reaction> sprite_reactions;    /**< sprite-specific reaction (overrides the default one) */
 
 };
 

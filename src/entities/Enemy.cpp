@@ -42,7 +42,7 @@
 
 namespace solarus {
 
-const std::string Enemy::attack_names[] = {
+const std::vector<std::string> Enemy::attack_names = {
   "sword",
   "thrown_item",
   "explosion",
@@ -50,22 +50,19 @@ const std::string Enemy::attack_names[] = {
   "hookshot",
   "boomerang",
   "fire",
-  "script",
-  ""  // Sentinel.
+  "script"
 };
 
-const std::string Enemy::hurt_style_names[] = {
+const std::vector<std::string> Enemy::hurt_style_names = {
   "normal",
   "monster",
-  "boss",
-  ""  // Sentinel.
+  "boss"
 };
 
-const std::string Enemy::obstacle_behavior_names[] = {
+const std::vector<std::string> Enemy::obstacle_behavior_names = {
   "normal",
   "flying",
-  "swimming",
-  ""  // Sentinel.
+  "swimming"
 };
 
 /**

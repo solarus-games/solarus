@@ -19,9 +19,10 @@
 
 #include "Common.h"
 #include "lowlevel/InputEvent.h"
-#include <string>
 #include <map>
 #include <set>
+#include <string>
+#include <vector>
 
 namespace solarus {
 
@@ -80,7 +81,7 @@ class GameCommands {
     static const std::string& get_command_name(Command command);
     static Command get_command_by_name(const std::string& command_name);
 
-    static const std::string command_names[];
+    static const std::vector<std::string> command_names;
 
     // High-level resulting commands.
     void game_command_pressed(Command command);

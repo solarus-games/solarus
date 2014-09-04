@@ -18,8 +18,8 @@
 #define SOLARUS_TRANSITION_H
 
 #include "Common.h"
-#include <cstdlib>
 #include <string>
+#include <vector>
 
 namespace solarus {
 
@@ -92,7 +92,7 @@ class Transition {
      */
     virtual void draw(Surface& dst_surface) = 0;
 
-    static const std::string style_names[];  /**< Lua name of each style. */
+    static const std::vector<std::string> style_names;  /**< Lua name of each style. */
 
   protected:
 

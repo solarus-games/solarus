@@ -54,7 +54,7 @@ namespace {
 /**
  * \brief Lua name of each map entity type.
  */
-const std::string entity_type_names[ENTITY_NUMBER + 1] = {
+const std::vector<std::string> entity_type_names = {
     "tile",
     "destination",
     "teletransporter",
@@ -84,8 +84,7 @@ const std::string entity_type_names[ENTITY_NUMBER + 1] = {
     "arrow",
     "bomb",
     "fire",
-    "hookshot",
-    ""  // Sentinel.
+    "hookshot"
 };
 
 /**

@@ -38,12 +38,11 @@ const std::string Music::unchanged = "same";
 /**
  * \brief Lua name of each music format.
  */
-const std::string Music::format_names[] = {
+const std::vector<std::string> Music::format_names = {
   "",
   "spc",
   "it",
-  "ogg",
-  ""  // Sentinel.
+  "ogg"
 };
 
 /**

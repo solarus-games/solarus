@@ -23,11 +23,10 @@
 
 namespace solarus {
 
-const std::string Transition::style_names[] = {
+const std::vector<std::string> Transition::style_names = {
   "immediate",
   "fade",
-  "scrolling",
-  ""  // Sentinel.
+  "scrolling"
 };
 
 /**

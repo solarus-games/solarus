@@ -29,7 +29,7 @@
 
 namespace solarus {
 
-const std::string Tileset::ground_names[] = {
+const std::vector<std::string> Tileset::ground_names = {
   "empty",
   "traversable",
   "wall",
@@ -49,8 +49,7 @@ const std::string Tileset::ground_names[] = {
   "ice",
   "ladder",
   "prickles",
-  "lava",
-  ""  // Sentinel.
+  "lava"
 };
 
 /**

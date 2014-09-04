@@ -100,7 +100,7 @@ class Door: public Detector {
     void close();
     void set_open(bool open);
 
-    static const std::string opening_method_names[];
+    static const std::vector<std::string> opening_method_names;
 
   private:
 

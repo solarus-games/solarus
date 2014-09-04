@@ -72,7 +72,7 @@ class Chest: public Detector {
     virtual bool notify_action_command_pressed() override;
     virtual void set_suspended(bool suspended) override;
 
-    static const std::string opening_method_names[];
+    static const std::vector<std::string> opening_method_names;
 
   private:
 

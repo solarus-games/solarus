@@ -25,7 +25,7 @@ namespace solarus {
 
 namespace {
 
-  const std::string resource_type_names[] = {
+  const std::vector<std::string> resource_type_names = {
     "map",
     "tileset",
     "sprite",
@@ -34,8 +34,7 @@ namespace {
     "item",
     "enemy",
     "entity",
-    "language",
-    "",  // Sentinel for Lua.
+    "language"
   };
 
   // Duplicate the data because we need to preserve the insertion order and we

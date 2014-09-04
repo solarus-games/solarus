@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <string>
+#include <vector>
 
 namespace solarus {
 
@@ -94,7 +95,7 @@ class KeysEffect {
     static const std::string& get_action_key_effect_name(ActionKeyEffect effect);
     static ActionKeyEffect get_action_key_effect_by_name(const std::string& effect_name);
 
-    static const std::string action_key_effect_names[];
+    static const std::vector<std::string> action_key_effect_names;
 
     // sword key
 
@@ -107,7 +108,7 @@ class KeysEffect {
     static const std::string& get_sword_key_effect_name(SwordKeyEffect effect);
     static SwordKeyEffect get_sword_key_effect_by_name(const std::string& effect_name);
 
-    static const std::string sword_key_effect_names[];
+    static const std::vector<std::string> sword_key_effect_names;
 
     // pause key
 
@@ -120,7 +121,7 @@ class KeysEffect {
     static const std::string& get_pause_key_effect_name(PauseKeyEffect effect);
     static PauseKeyEffect get_pause_key_effect_by_name(const std::string& effect_name);
 
-    static const std::string pause_key_effect_names[];
+    static const std::vector<std::string> pause_key_effect_names;
 
     // item keys
     bool are_item_keys_enabled();

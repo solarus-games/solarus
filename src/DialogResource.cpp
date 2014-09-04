@@ -132,24 +132,24 @@ int DialogResource::l_dialog(lua_State* l) {
 
       const std::string& key = LuaTools::check_string(l, -2);
       if (key == "id" || key == "text") {
+        lua_pop(l, 1);
         continue;
       }
-      else {
-        // Custom property.
-        std::string value;
-        int type = lua_type(l, -1);
-        if (type == LUA_TSTRING || type == LUA_TNUMBER) {
-          value = lua_tostring(l, -1);
-        }
-        else if (type == LUA_TBOOLEAN) {
-          value = lua_toboolean(l, -1) ? "1" : "0";
-        }
-        else {
-          LuaTools::error(l, std::string("Invalid value '") + key + "' for dialog '"
-              + dialog_id + "'");
-        }
-        dialog.set_property(key, value);
+
+      // Custom property.
+      std::string value;
+      int type = lua_type(l, -1);
+      if (type == LUA_TSTRING || type == LUA_TNUMBER) {
+        value = lua_tostring(l, -1);
       }
+      else if (type == LUA_TBOOLEAN) {
+        value = lua_toboolean(l, -1) ? "1" : "0";
+      }
+      else {
+        LuaTools::error(l, std::string("Invalid value '") + key + "' for dialog '"
+            + dialog_id + "'");
+      }
+      dialog.set_property(key, value);
       lua_pop(l, 1);
     }
 

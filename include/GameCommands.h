@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/InputEvent.h"
+#include "lua/ScopedLuaRef.h"
 #include <map>
 #include <set>
 #include <string>
@@ -61,8 +62,7 @@ class GameCommands {
       NB_COMMANDS
     };
 
-    GameCommands(Game& game);
-    ~GameCommands();
+    explicit GameCommands(Game& game);
 
     InputEvent::KeyboardKey get_keyboard_binding(Command command) const;
     void set_keyboard_binding(Command command, InputEvent::KeyboardKey keyboard_key);
@@ -73,7 +73,7 @@ class GameCommands {
     bool is_command_pressed(Command command) const;
     int get_wanted_direction8() const;
 
-    void customize(Command command, int callback_ref);
+    void customize(Command command, const ScopedLuaRef& callback_ref);
     bool is_customizing() const;
     Command get_command_to_customize() const;
 
@@ -127,7 +127,7 @@ class GameCommands {
                                           * new binding for a game command. */
     Command command_to_customize;        /**< The game command being customized
                                           * when customizing is true. */
-    int customize_callback_ref;          /**< Lua ref to a function to call
+    ScopedLuaRef customize_callback_ref; /**< Lua ref to a function to call
                                           * when the customization finishes. */
 
     static const uint16_t

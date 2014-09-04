@@ -83,7 +83,7 @@ GameCommands::GameCommands(Game& game):
   game(game),
   customizing(false),
   command_to_customize(NONE),
-  customize_callback_ref(LUA_REFNIL) {
+  customize_callback_ref() {
 
   // Load the commands from the savegame.
   for (int i = 0; i < NB_COMMANDS; i++) {
@@ -98,14 +98,6 @@ GameCommands::GameCommands(Game& game):
     const std::string& joypad_string = get_saved_joypad_binding(command);
     joypad_mapping[joypad_string] = command;
   }
-}
-
-/**
- * \brief Destructor.
- */
-GameCommands::~GameCommands() {
-
-  game.get_lua_context().cancel_callback(customize_callback_ref);
 }
 
 /**
@@ -761,9 +753,12 @@ GameCommands::Command GameCommands::get_command_from_joypad(
  *
  * \param command The command to customize.
  * \param callback_ref Lua ref to a function to call when the customization
- * finishes, or LUA_REFNIL.
+ * finishes, or an empty ref.
  */
-void GameCommands::customize(Command command, int callback_ref) {
+void GameCommands::customize(
+    Command command,
+    const ScopedLuaRef& callback_ref
+) {
   this->customizing = true;
   this->command_to_customize = command;
   this->customize_callback_ref = callback_ref;
@@ -795,11 +790,10 @@ GameCommands::Command GameCommands::get_command_to_customize() const {
  */
 void GameCommands::do_customization_callback() {
 
-  int callback_ref = customize_callback_ref;
-  customize_callback_ref = LUA_REFNIL;
+  ScopedLuaRef callback_ref = customize_callback_ref;
+  customize_callback_ref.clear();
   LuaContext& lua_context = game.get_lua_context();
   lua_context.do_callback(callback_ref);
-  lua_context.cancel_callback(callback_ref);
 }
 
 /**

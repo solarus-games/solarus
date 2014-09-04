@@ -1507,11 +1507,11 @@ int LuaContext::game_api_capture_command_binding(lua_State* l) {
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
 
-    int callback_ref = LUA_REFNIL;
+    ScopedLuaRef callback_ref;
     if (lua_gettop(l) >= 3) {
       LuaTools::check_type(l, 3, LUA_TFUNCTION);
       lua_settop(l, 3);
-      callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+      callback_ref = get_lua_context(l).create_ref();
     }
 
     GameCommands& commands = savegame.get_game()->get_commands();

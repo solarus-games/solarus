@@ -53,6 +53,7 @@ class ScopedLuaRef {
   private:
 
     LuaContext* lua_context;      /**< The Lua state. nullptr means no ref. */
+                                  // TODO keep a lua_State* instead, to allow LuaTools to use ScopeLuaRef
     int ref;                      /**< Lua ref to a value. */
 
 };

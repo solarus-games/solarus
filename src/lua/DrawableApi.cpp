@@ -49,16 +49,16 @@ bool LuaContext::is_drawable(lua_State* l, int index) {
  */
 Drawable& LuaContext::check_drawable(lua_State* l, int index) {
 
-  Drawable** drawable = nullptr;
-
   if (is_drawable(l, index)) {
-    drawable = static_cast<Drawable**>(lua_touserdata(l, index));
+    const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(
+      lua_touserdata(l, index)
+    ));
+    return *std::static_pointer_cast<Drawable>(userdata);
   }
   else {
     LuaTools::type_error(l, index, "drawable");
+    throw;
   }
-
-  return **drawable;
 }
 
 /**
@@ -136,14 +136,17 @@ void LuaContext::update_drawables() {
  */
 int LuaContext::drawable_api_draw(lua_State* l) {
 
-  Drawable& drawable = check_drawable(l, 1);
-  Surface& dst_surface = check_surface(l, 2);
-  int x = luaL_optint(l, 3, 0);
-  int y = luaL_optint(l, 4, 0);
-  SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
-  drawable.draw(shared_dst_surface, x, y);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Drawable& drawable = check_drawable(l, 1);
+    Surface& dst_surface = check_surface(l, 2);
+    int x = LuaTools::opt_int(l, 3, 0);
+    int y = LuaTools::opt_int(l, 4, 0);
+    SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
+    drawable.draw(shared_dst_surface, x, y);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -153,22 +156,25 @@ int LuaContext::drawable_api_draw(lua_State* l) {
  */
 int LuaContext::drawable_api_draw_region(lua_State* l) {
 
-  Drawable& drawable = check_drawable(l, 1);
-  Rectangle region = {
-      luaL_checkint(l, 2),
-      luaL_checkint(l, 3),
-      luaL_checkint(l, 4),
-      luaL_checkint(l, 5)
-  };
-  Surface& dst_surface = check_surface(l, 6);
-  Point dst_position = {
-     luaL_optint(l, 7, 0),
-     luaL_optint(l, 8, 0)
-  };
-  SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
-  drawable.draw_region(region, shared_dst_surface, dst_position);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Drawable& drawable = check_drawable(l, 1);
+    Rectangle region = {
+        LuaTools::check_int(l, 2),
+        LuaTools::check_int(l, 3),
+        LuaTools::check_int(l, 4),
+        LuaTools::check_int(l, 5)
+    };
+    Surface& dst_surface = check_surface(l, 6);
+    Point dst_position = {
+        LuaTools::opt_int(l, 7, 0),
+        LuaTools::opt_int(l, 8, 0)
+    };
+    SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
+    drawable.draw_region(region, shared_dst_surface, dst_position);
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -178,34 +184,37 @@ int LuaContext::drawable_api_draw_region(lua_State* l) {
  */
 int LuaContext::drawable_api_fade_in(lua_State* l) {
 
-  uint32_t delay = 20;
-  int callback_ref = LUA_REFNIL;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    uint32_t delay = 20;
+    int callback_ref = LUA_REFNIL;
 
-  Drawable& drawable = check_drawable(l, 1);
+    Drawable& drawable = check_drawable(l, 1);
 
-  if (lua_gettop(l) >= 2) {
-    // the second argument can be the delay or the callback
-    int index = 2;
-    if (lua_isnumber(l, index)) {
-      delay = lua_tonumber(l, index);
-      index++;
+    if (lua_gettop(l) >= 2) {
+      // the second argument can be the delay or the callback
+      int index = 2;
+      if (lua_isnumber(l, index)) {
+        delay = lua_tonumber(l, index);
+        index++;
+      }
+      // the next argument (if any) is the callback
+      if (lua_gettop(l) >= index) {
+        LuaTools::check_type(l, index, LUA_TFUNCTION);
+        lua_settop(l, index);
+        callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);  // TODO scoped ref
+      }
     }
-    // the next argument (if any) is the callback
-    if (lua_gettop(l) >= index) {
-      LuaTools::check_type(l, index, LUA_TFUNCTION);
-      lua_settop(l, index);
-      callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
-    }
+
+    TransitionFade* transition = new TransitionFade(
+        Transition::TRANSITION_OPENING,
+        drawable.get_transition_surface());
+    transition->clear_color();
+    transition->set_delay(delay);
+    drawable.start_transition(*transition, callback_ref, &get_lua_context(l));
+
+    return 0;
   }
-
-  TransitionFade* transition = new TransitionFade(
-      Transition::TRANSITION_OPENING,
-      drawable.get_transition_surface());
-  transition->clear_color();
-  transition->set_delay(delay);
-  drawable.start_transition(*transition, callback_ref, &get_lua_context(l));
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -215,34 +224,37 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
  */
 int LuaContext::drawable_api_fade_out(lua_State* l) {
 
-  uint32_t delay = 20;
-  int callback_ref = LUA_REFNIL;
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    uint32_t delay = 20;
+    int callback_ref = LUA_REFNIL;
 
-  Drawable& drawable = check_drawable(l, 1);
+    Drawable& drawable = check_drawable(l, 1);
 
-  if (lua_gettop(l) >= 2) {
-    // the second argument can be the delay or the callback
-    int index = 2;
-    if (lua_isnumber(l, index)) {
-      delay = lua_tonumber(l, index);
-      index++;
+    if (lua_gettop(l) >= 2) {
+      // the second argument can be the delay or the callback
+      int index = 2;
+      if (lua_isnumber(l, index)) {
+        delay = lua_tonumber(l, index);
+        index++;
+      }
+      // the next argument (if any) is the callback
+      if (lua_gettop(l) >= index) {
+        LuaTools::check_type(l, index, LUA_TFUNCTION);
+        lua_settop(l, index);
+        callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);  // TODO scoped ref
+      }
     }
-    // the next argument (if any) is the callback
-    if (lua_gettop(l) >= index) {
-      LuaTools::check_type(l, index, LUA_TFUNCTION);
-      lua_settop(l, index);
-      callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
-    }
+
+    TransitionFade* transition = new TransitionFade(
+        Transition::TRANSITION_CLOSING,
+        drawable.get_transition_surface());
+    transition->clear_color();
+    transition->set_delay(delay);
+    drawable.start_transition(*transition, callback_ref, &get_lua_context(l));
+
+    return 0;
   }
-
-  TransitionFade* transition = new TransitionFade(
-      Transition::TRANSITION_CLOSING,
-      drawable.get_transition_surface());
-  transition->clear_color();
-  transition->set_delay(delay);
-  drawable.start_transition(*transition, callback_ref, &get_lua_context(l));
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -252,11 +264,14 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
  */
 int LuaContext::drawable_api_get_xy(lua_State* l) {
 
-  Drawable& drawable = check_drawable(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Drawable& drawable = check_drawable(l, 1);
 
-  lua_pushinteger(l, drawable.get_xy().x);
-  lua_pushinteger(l, drawable.get_xy().y);
-  return 2;
+    lua_pushinteger(l, drawable.get_xy().x);
+    lua_pushinteger(l, drawable.get_xy().y);
+    return 2;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -266,13 +281,16 @@ int LuaContext::drawable_api_get_xy(lua_State* l) {
  */
 int LuaContext::drawable_api_set_xy(lua_State* l) {
 
-  Drawable& drawable = check_drawable(l, 1);
-  int x = luaL_checkint(l, 2);
-  int y = luaL_checkint(l, 3);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Drawable& drawable = check_drawable(l, 1);
+    int x = LuaTools::check_int(l, 2);
+    int y = LuaTools::check_int(l, 3);
 
-  drawable.set_xy(Point(x, y));
+    drawable.set_xy(Point(x, y));
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -282,17 +300,20 @@ int LuaContext::drawable_api_set_xy(lua_State* l) {
  */
 int LuaContext::drawable_api_get_movement(lua_State* l) {
 
-  Drawable& drawable = check_drawable(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Drawable& drawable = check_drawable(l, 1);
 
-  Movement* movement = drawable.get_movement();
-  if (movement == nullptr) {
-    lua_pushnil(l);
-  }
-  else {
-    push_userdata(l, *movement);
-  }
+    Movement* movement = drawable.get_movement();
+    if (movement == nullptr) {
+      lua_pushnil(l);
+    }
+    else {
+      push_userdata(l, *movement);
+    }
 
-  return 1;
+    return 1;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -302,28 +323,34 @@ int LuaContext::drawable_api_get_movement(lua_State* l) {
  */
 int LuaContext::drawable_api_stop_movement(lua_State* l) {
 
-  Drawable& drawable = check_drawable(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    Drawable& drawable = check_drawable(l, 1);
 
-  drawable.stop_movement();
+    drawable.stop_movement();
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
  * \brief Finalizer of types sprite, surface and text surface.
- * \param l the Lua context that is calling this function
- * \return number of values to return to Lua
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::drawable_meta_gc(lua_State* l) {
 
-  LuaContext& lua_context = get_lua_context(l);
-  Drawable& drawable = check_drawable(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    LuaContext& lua_context = get_lua_context(l);
+    Drawable& drawable = check_drawable(l, 1);
 
-  if (lua_context.has_drawable(&drawable)) {
-    // This drawable was created from Lua.
-    lua_context.remove_drawable(&drawable);
+    if (lua_context.has_drawable(&drawable)) {
+      // This drawable was created from Lua.
+      lua_context.remove_drawable(&drawable);
+    }
+    userdata_meta_gc(l);
   }
-  userdata_meta_gc(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 
   return 0;
 }

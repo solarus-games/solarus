@@ -290,25 +290,27 @@ class LuaTools {
  * \brief Checks whether a value is the name of an enumeration value and
  * returns this value.
  *
- * Raises a Lua error if the value is not a string or if the string cannot
+ * Throws a LuaException if the value is not a string or if the string cannot
  * be found in the array.
  * This is a useful function for mapping strings to C enums.
  *
- * This function is similar to luaL_checkoption except that it accepts an
+ * This function is similar to luaL_checkoption() except that it accepts an
  * array of std::string instead of char*, and returns a value of enumerated
  * type E instead of int.
  *
  * \param l A Lua state.
  * \param index Index of a string in the Lua stack.
  * \param names An array of strings to search in. This array must be
- * terminated by an empty string.
+ * terminated by an empty string. TODO std::array
  * \return The index (converted to the enumerated type E) where the string was
  * found in the array.
  */
 template<typename E>
 E LuaTools::check_enum(
-    lua_State* l, int index, const std::string names[]) {
-
+    lua_State* l,
+    int index,
+    const std::string names[]
+) {
   Debug::check_assertion(!names[0].empty(), "Invalid list of names");
 
   const std::string& name = luaL_checkstring(l, index);
@@ -365,7 +367,7 @@ E LuaTools::check_enum_field(
 }
 
 /**
- * \brief Like check_enum but with a default value.
+ * \brief Like LuaTools::check_enum() but with a default value.
  *
  * \param l A Lua state.
  * \param index Index of a string in the Lua stack.
@@ -377,18 +379,20 @@ E LuaTools::check_enum_field(
  */
 template<typename E>
 E LuaTools::opt_enum(
-    lua_State* l, int index, const std::string names[], E default_value) {
-
-  E value = default_value;
-  if (!lua_isnoneornil(l, index)) {
-    value = check_enum<E>(l, index, names);
+    lua_State* l,
+    int index,
+    const std::string names[],
+    E default_value
+) {
+  if (lua_isnoneornil(l, index)) {
+    return default_value;
   }
-  return value;
+
+  return check_enum<E>(l, index, names);
 }
 
 /**
- * \brief Like check_enum_field but with a default value.
- *
+ * \brief Like LuaTools::check_enum_field() but with a default value.
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
  * \param key Key of the field to get in that table.
@@ -400,22 +404,24 @@ E LuaTools::opt_enum(
  */
 template<typename E>
 E LuaTools::opt_enum_field(
-    lua_State* l, int table_index, const std::string& key,
-    const std::string names[], E default_value) {
-
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    const std::string names[],
+    E default_value
+) {
   lua_getfield(l, table_index, key.c_str());
-  E value = default_value;
-  if (!lua_isnil(l, -1)) {
-    if (!lua_isstring(l, -1)) {
-      arg_error(l, table_index,
-          std::string("Bad field '") + key + "' (string expected, got "
-          + luaL_typename(l, -1) + ")"
-      );
-    }
-    value = check_enum<E>(l, -1, names);
+  if (lua_isnil(l, -1)) {
+    return default_value;
   }
 
-  return value;
+  if (!lua_isstring(l, -1)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (string expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+  return check_enum<E>(l, -1, names);
 }
 
 }

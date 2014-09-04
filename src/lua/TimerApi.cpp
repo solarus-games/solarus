@@ -108,7 +108,8 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
     ExportableToLuaPtr* userdata = static_cast<ExportableToLuaPtr*>(
-        lua_touserdata(l, context_index));
+        lua_touserdata(l, context_index)
+    );
     context = userdata->get();
   }
   else {
@@ -116,14 +117,14 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
   }
 
   lua_pushvalue(l, callback_index);
-  int callback_ref = create_ref();
+  ScopedLuaRef callback_ref = create_scoped_ref();
 
 #ifndef NDEBUG
   // Sanity check: check the uniqueness of the ref.
   for (const auto& kvp: timers) {
-    if (kvp.second.callback_ref == callback_ref) {
+    if (kvp.second.callback_ref.get() == callback_ref.get()) {
       std::ostringstream oss;
-      oss << "Callback ref " << callback_ref
+      oss << "Callback ref " << callback_ref.get()
           << " is already used by a timer (duplicate luaL_unref?)";
       Debug::die(oss.str());
     }
@@ -182,10 +183,7 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
  */
 void LuaContext::remove_timer(Timer* timer) {
   if (timers.find(timer) != timers.end()) {
-    if (!timer->is_finished()) {
-      cancel_callback(timers[timer].callback_ref);
-    }
-    timers[timer].callback_ref = LUA_REFNIL;
+    timers[timer].callback_ref.clear();
     timers_to_remove.push_back(timer);
   }
 }
@@ -214,10 +212,7 @@ void LuaContext::remove_timers(int context_index) {
   for (auto& kvp: timers) {
     Timer* timer = kvp.first;
     if (kvp.second.context == context) {
-      if (!timer->is_finished()) {
-        destroy_ref(kvp.second.callback_ref);
-      }
-      kvp.second.callback_ref = LUA_REFNIL;
+      kvp.second.callback_ref.clear();
       timers_to_remove.push_back(timer);
     }
   }
@@ -231,9 +226,6 @@ void LuaContext::destroy_timers() {
   for (const auto& kvp: timers) {
 
     Timer* timer = kvp.first;
-    if (!timer->is_finished()) {
-      destroy_ref(kvp.second.callback_ref);
-    }
     RefCountable::unref(timer);
   }
   timers.clear();
@@ -248,8 +240,8 @@ void LuaContext::update_timers() {
   for (const auto& kvp: timers) {
 
     Timer* timer = kvp.first;
-    int callback_ref = kvp.second.callback_ref;
-    if (callback_ref != LUA_REFNIL) {
+    const ScopedLuaRef& callback_ref = kvp.second.callback_ref;
+    if (!callback_ref.is_empty()) {
       // The timer is not being removed: update it.
       timer->update();
       if (timer->is_finished()) {
@@ -263,9 +255,6 @@ void LuaContext::update_timers() {
 
     const auto& it = timers.find(timer);
     if (it != timers.end()) {
-      if (!timer->is_finished()) {
-        cancel_callback(it->second.callback_ref);
-      }
       timers.erase(it);
       RefCountable::unref(timer);
 
@@ -326,9 +315,9 @@ void LuaContext::do_timer_callback(Timer& timer) {
   Debug::check_assertion(timer.is_finished(), "This timer is still running");
 
   auto it = timers.find(&timer);
-  if (it != timers.end() && it->second.callback_ref != LUA_REFNIL) {
-    const int callback_ref = it->second.callback_ref;
-    push_callback(callback_ref);
+  if (it != timers.end() &&
+      !it->second.callback_ref.is_empty()) {
+    push_ref(l, it->second.callback_ref);
     const bool success = call_function(0, 1, "timer callback");
 
     bool repeat = false;
@@ -347,8 +336,7 @@ void LuaContext::do_timer_callback(Timer& timer) {
       }
     }
     else {
-      cancel_callback(callback_ref);
-      it->second.callback_ref = LUA_REFNIL;
+      it->second.callback_ref.clear();
       timers_to_remove.push_back(&timer);
     }
   }
@@ -576,7 +564,8 @@ int LuaContext::timer_api_get_remaining_time(lua_State* l) {
 
     LuaContext& lua_context = get_lua_context(l);
     const auto it = lua_context.timers.find(&timer);
-    if (it == lua_context.timers.end() || it->second.callback_ref == LUA_REFNIL) {
+    if (it == lua_context.timers.end() ||
+        it->second.callback_ref.is_empty()) {
       // This timer is already finished or was canceled.
       lua_pushinteger(l, 0);
     }
@@ -605,7 +594,8 @@ int LuaContext::timer_api_set_remaining_time(lua_State* l) {
 
     LuaContext& lua_context = get_lua_context(l);
     const auto it = lua_context.timers.find(&timer);
-    if (it != lua_context.timers.end() && it->second.callback_ref != LUA_REFNIL) {
+    if (it != lua_context.timers.end() &&
+        !it->second.callback_ref.is_empty()) {
       // The timer is still active.
       const uint32_t now = System::now();
       const uint32_t expiration_date = now + remaining_time;

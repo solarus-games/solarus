@@ -930,8 +930,8 @@ class LuaContext {
      * \brief Data associated to any Lua timer.
      */
     struct LuaTimerData {
-      int callback_ref;     /**< Lua ref of the function to call after the timer. */
-      const void* context;  /**< Lua table or userdata the timer is attached to. */
+      ScopedLuaRef callback_ref;  /**< Lua ref of the function to call after the timer. */
+      const void* context;        /**< Lua table or userdata the timer is attached to. */
     };
 
     // Executing Lua code.

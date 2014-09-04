@@ -192,7 +192,7 @@ int GL_ARBShader::l_shader(lua_State* l) {
         fragment_shader = loading_shader->fragment_shader;
 
     // Retrieve the videomode properties from the table parameter.
-    luaL_checktype(l, 1, LUA_TTABLE);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
 
     const double& default_window_scale =
         LuaTools::opt_number_field(l, 1, "default_window_scale", 1.0);
@@ -255,7 +255,7 @@ void GL_ARBShader::register_callback(lua_State* l) {
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
  */
-void GL_ARBShader::render(Surface& quest_surface) {
+void GL_ARBShader::render(SurfacePtr& quest_surface) {
 
   Shader::render(quest_surface);
 
@@ -276,7 +276,7 @@ void GL_ARBShader::render(Surface& quest_surface) {
   SDL_RenderClear(renderer);
 
   // Draw on the render target.
-  quest_surface.render(renderer);
+  quest_surface->render(renderer);
 
   // Render on the window using OpenGL, to apply a shader if we have to.
   SDL_SetRenderTarget(renderer, nullptr);

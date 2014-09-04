@@ -565,7 +565,7 @@ bool LuaContext::is_entity(lua_State* l, int index) {
  */
 MapEntity& LuaContext::check_entity(lua_State* l, int index) {
 
-  if (is_drawable(l, index)) {
+  if (is_entity(l, index)) {
     const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(
       lua_touserdata(l, index)
     ));

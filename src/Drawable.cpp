@@ -154,13 +154,10 @@ void Drawable::update() {
       delete transition;
       transition = nullptr;
 
-      ScopedLuaRef ref = transition_callback_ref;
-      transition_callback_ref.clear();
-
-      if (!ref.is_empty()) {
+      if (!transition_callback_ref.is_empty()) {
         // Note that this callback may create a new transition right now.
-        LuaContext* lua_context = ref.get_lua_context();
-        lua_context->do_callback(ref);
+        LuaContext* lua_context = transition_callback_ref.get_lua_context();
+        lua_context->clear_and_do_callback(transition_callback_ref);
       }
     }
   }

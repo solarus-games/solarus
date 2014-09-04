@@ -2183,7 +2183,7 @@ void LuaContext::notify_hero_brandish_treasure(
   push_string(l, treasure.get_savegame_variable());
   push_ref(l, callback_ref);
   lua_pushcclosure(l, l_treasure_dialog_finished, 4);
-  ScopedLuaRef dialog_callback_ref = create_ref();
+  const ScopedLuaRef& dialog_callback_ref = create_ref();
 
   treasure.get_game().start_dialog(dialog_id, ScopedLuaRef(), dialog_callback_ref);
 }
@@ -3137,7 +3137,7 @@ void LuaContext::notify_shop_treasure_interaction(ShopTreasure& shop_treasure) {
 
   push_shop_treasure(l, shop_treasure);
   lua_pushcclosure(l, l_shop_treasure_description_dialog_finished, 1);
-  ScopedLuaRef callback_ref = create_ref();
+  const ScopedLuaRef& callback_ref = create_ref();
 
   shop_treasure.get_game().start_dialog(
       shop_treasure.get_dialog_id(),
@@ -3168,7 +3168,7 @@ int LuaContext::l_shop_treasure_description_dialog_finished(lua_State* l) {
     }
 
     lua_pushinteger(l, shop_treasure.get_price());
-    ScopedLuaRef price_ref = lua_context.create_ref();
+    const ScopedLuaRef& price_ref = lua_context.create_ref();
 
     push_shop_treasure(l, shop_treasure);
     lua_pushcclosure(l, l_shop_treasure_question_dialog_finished, 1);
@@ -4562,11 +4562,11 @@ void LuaContext::push_custom_entity(lua_State* l, CustomEntity& entity) {
  * \return \c true if the traversable test function returned \c true.
  */
 bool LuaContext::do_custom_entity_traversable_test_function(
-    int traversable_test_ref,
+    const ScopedLuaRef& traversable_test_ref,
     CustomEntity& custom_entity,
     MapEntity& other_entity) {
 
-  Debug::check_assertion(traversable_test_ref != LUA_REFNIL,
+  Debug::check_assertion(!traversable_test_ref.is_empty(),
       "Missing traversable test function ref"
   );
 
@@ -4594,11 +4594,11 @@ bool LuaContext::do_custom_entity_traversable_test_function(
  * \return \c true if the collision test function returned \c true.
  */
 bool LuaContext::do_custom_entity_collision_test_function(
-    int collision_test_ref,
+    const ScopedLuaRef& collision_test_ref,
     CustomEntity& custom_entity,
     MapEntity& other_entity) {
 
-  Debug::check_assertion(collision_test_ref != LUA_REFNIL,
+  Debug::check_assertion(!collision_test_ref.is_empty(),
       "Missing collision test function"
   );
 
@@ -4625,11 +4625,11 @@ bool LuaContext::do_custom_entity_collision_test_function(
  * \param other_entity The entity that was detected.
  */
 void LuaContext::do_custom_entity_collision_callback(
-    int callback_ref,
+    const ScopedLuaRef& callback_ref,
     CustomEntity& custom_entity,
     MapEntity& other_entity) {
 
-  Debug::check_assertion(callback_ref != LUA_REFNIL,
+  Debug::check_assertion(!callback_ref.is_empty(),
       "Missing collision callback");
 
   push_ref(l, callback_ref);
@@ -4652,13 +4652,13 @@ void LuaContext::do_custom_entity_collision_callback(
  * collision.
  */
 void LuaContext::do_custom_entity_collision_callback(
-    int callback_ref,
+    const ScopedLuaRef& callback_ref,
     CustomEntity& custom_entity,
     MapEntity& other_entity,
     Sprite& custom_entity_sprite,
     Sprite& other_entity_sprite) {
 
-  Debug::check_assertion(callback_ref != LUA_REFNIL,
+  Debug::check_assertion(!callback_ref.is_empty(),
       "Missing sprite collision callback"
   );
 
@@ -4806,7 +4806,7 @@ int LuaContext::custom_entity_api_set_traversable_by(lua_State* l) {
       }
       lua_settop(l, index);  // Make sure the function is on the top of the stack.
 
-      int traversable_test_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+      const ScopedLuaRef& traversable_test_ref = get_lua_context(l).create_ref();
       if (!type_specific) {
         entity.set_traversable_by_entities(traversable_test_ref);
       }
@@ -4867,7 +4867,7 @@ int LuaContext::custom_entity_api_set_can_traverse(lua_State* l) {
       }
       lua_settop(l, index);  // Make sure the function is on the top of the stack.
 
-      int traversable_test_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+      const ScopedLuaRef& traversable_test_ref = get_lua_context(l).create_ref();
       if (!type_specific) {
         entity.set_can_traverse_entities(traversable_test_ref);
       }
@@ -4939,6 +4939,7 @@ int LuaContext::custom_entity_api_set_can_traverse_ground(lua_State* l) {
 int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
+    LuaContext& lua_context = get_lua_context(l);
     CustomEntity& entity = check_custom_entity(l, 1);
 
     if (!lua_isfunction(l, 3)) {
@@ -4981,13 +4982,13 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
         );
       }
 
-      int callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+      const ScopedLuaRef& callback_ref = lua_context.create_ref();
       entity.add_collision_test(collision_mode, callback_ref);
     }
     else if (lua_isfunction(l, 2)) {
       // Custom collision test.
-      int callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
-      int collision_test_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+      ScopedLuaRef callback_ref = lua_context.create_ref();
+      ScopedLuaRef collision_test_ref = lua_context.create_ref();
       entity.add_collision_test(collision_test_ref, callback_ref);
     }
     else {

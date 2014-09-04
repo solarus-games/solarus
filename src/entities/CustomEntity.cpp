@@ -169,7 +169,7 @@ bool CustomEntity::is_traversable_by_entity(MapEntity& entity) {
  * This applies to entities that are not overridden by
  * set_traversable_by_entities(EntityType, bool)
  * or
- * set_traversable_by_entities(EntityType, int).
+ * set_traversable_by_entities(EntityType, const ScopedLuaRef&).
  *
  * \param traversable \c true to allow other entities to traverse this custom
  * entity.
@@ -189,12 +189,13 @@ void CustomEntity::set_traversable_by_entities(bool traversable) {
  * This applies to entities that are not overridden by
  * set_traversable_by_entities(EntityType, bool)
  * or
- * set_traversable_by_entities(EntityType, int).
+ * set_traversable_by_entities(EntityType, const ScopedLuaRef&).
  *
  * \param traversable_test_ref Lua ref to a function that will do the test.
  */
-void CustomEntity::set_traversable_by_entities(int traversable_test_ref) {
-
+void CustomEntity::set_traversable_by_entities(
+    const ScopedLuaRef& traversable_test_ref
+) {
   traversable_by_entities_general = TraversableInfo(
       get_lua_context(),
       traversable_test_ref
@@ -208,7 +209,7 @@ void CustomEntity::set_traversable_by_entities(int traversable_test_ref) {
  * This reverts the settings of previous calls to
  * set_traversable_by_entities(bool)
  * and
- * set_traversable_by_entities(int).
+ * set_traversable_by_entities(const ScopedLuaRef&).
  */
 void CustomEntity::reset_traversable_by_entities() {
 
@@ -222,7 +223,7 @@ void CustomEntity::reset_traversable_by_entities() {
  * This overrides for a specific type whatever was set by
  * set_traversable_by_entities(bool)
  * or
- * set_traversable_by_entities(int).
+ * set_traversable_by_entities(const ScopedLuaRef&).
  *
  * \param type A type of entities.
  * \param traversable \c true to allow other entities to traverse this custom
@@ -244,14 +245,15 @@ void CustomEntity::set_traversable_by_entities(
  * This overrides for a specific type whatever was set by
  * set_traversable_by_entities(bool)
  * or
- * set_traversable_by_entities(int).
+ * set_traversable_by_entities(const ScopedLuaRef&).
  *
  * \param type A type of entities.
  * \param traversable_test_ref Lua ref to a function that will do the test.
  */
 void CustomEntity::set_traversable_by_entities(
-    EntityType type, int traversable_test_ref) {
-
+    EntityType type,
+    const ScopedLuaRef& traversable_test_ref
+) {
   traversable_by_entities_type[type] = TraversableInfo(
       get_lua_context(),
       traversable_test_ref
@@ -265,7 +267,7 @@ void CustomEntity::set_traversable_by_entities(
  * This reverts the settings of previous calls to
  * set_traversable_by_entities(EntityType, bool)
  * and
- * set_traversable_by_entities(EntityType, int).
+ * set_traversable_by_entities(EntityType, const ScopedLuaRef&).
  *
  * \param type A type of entities.
  */
@@ -314,7 +316,7 @@ const CustomEntity::TraversableInfo& CustomEntity::get_can_traverse_entity_info(
  * This applies to entities that are not overridden by
  * set_can_traverse_entities(EntityType, bool)
  * or
- * set_can_traverse_entities(EntityType, int).
+ * set_can_traverse_entities(EntityType, const ScopedLuaRef&).
  *
  * \param traversable \c true to allow this entity to traverse other entities.
  */
@@ -333,11 +335,11 @@ void CustomEntity::set_can_traverse_entities(bool traversable) {
  * This applies to entities that are not overridden by
  * set_can_traverse_entities(EntityType, bool)
  * or
- * set_can_traverse_entities(EntityType, int).
+ * set_can_traverse_entities(EntityType, const ScopedLuaRef&).
  *
  * \param traversable_test_ref Lua ref to a function that will do the test.
  */
-void CustomEntity::set_can_traverse_entities(int traversable_test_ref) {
+void CustomEntity::set_can_traverse_entities(const ScopedLuaRef& traversable_test_ref) {
 
   can_traverse_entities_general = TraversableInfo(
       get_lua_context(),
@@ -352,7 +354,7 @@ void CustomEntity::set_can_traverse_entities(int traversable_test_ref) {
  * This reverts the settings of previous calls to
  * set_can_traverse_entities(bool)
  * and
- * set_can_traverse_entities(int).
+ * set_can_traverse_entities(const ScopedLuaRef&).
  */
 void CustomEntity::reset_can_traverse_entities() {
 
@@ -366,14 +368,16 @@ void CustomEntity::reset_can_traverse_entities() {
  * This overrides for a specific type whatever was set by
  * set_can_traverse_entities(bool)
  * or
- * set_can_traverse_entities(int).
+ * set_can_traverse_entities(const ScopedLuaRef&).
  *
  * \param type A type of entities.
  * \param traversable \c true to allow this entity to traverse other entities
  * of the specified type.
  */
 void CustomEntity::set_can_traverse_entities(
-    EntityType type, bool traversable) {
+    EntityType type,
+    bool traversable
+) {
 
   can_traverse_entities_type[type] = TraversableInfo(
       get_lua_context(),
@@ -388,13 +392,15 @@ void CustomEntity::set_can_traverse_entities(
  * This overrides for a specific type whatever was set by
  * set_can_traverse_entities(bool)
  * or
- * set_can_traverse_entities(int).
+ * set_can_traverse_entities(const ScopedLuaRef&).
  *
  * \param type A type of entities.
  * \param traversable_test_ref Lua ref to a function that will do the test.
  */
 void CustomEntity::set_can_traverse_entities(
-    EntityType type, int traversable_test_ref) {
+    EntityType type,
+    const ScopedLuaRef& traversable_test_ref
+) {
 
   can_traverse_entities_type[type] = TraversableInfo(
       get_lua_context(),
@@ -408,7 +414,7 @@ void CustomEntity::set_can_traverse_entities(
  callback_ref This reverts the settings of previous calls to
  * set_can_traverse_entities(EntityType, bool)
  * and
- * set_can_traverse_entities(EntityType, int).
+ * set_can_traverse_entities(EntityType, const ScopedLuaRef&).
  *
  * \param type A type of entities.
  */
@@ -717,10 +723,12 @@ bool CustomEntity::is_ladder_obstacle() const {
  * \param callback_ref Lua ref to a function to call when this collision is
  * detected.
  */
-void CustomEntity::add_collision_test(CollisionMode collision_test, int callback_ref) {
-
+void CustomEntity::add_collision_test(
+    CollisionMode collision_test,
+    const ScopedLuaRef& callback_ref
+) {
   Debug::check_assertion(collision_test != COLLISION_NONE, "Invalid collision mode");
-  Debug::check_assertion(callback_ref != LUA_REFNIL, "Missing collision callback");
+  Debug::check_assertion(!callback_ref.is_empty(), "Missing collision callback");
 
   if (collision_test == COLLISION_SPRITE) {
     add_collision_mode(COLLISION_SPRITE);
@@ -743,9 +751,11 @@ void CustomEntity::add_collision_test(CollisionMode collision_test, int callback
  * \param callback_ref Lua ref to a function to call when this collision is
  * detected.
  */
-void CustomEntity::add_collision_test(int collision_test_ref, int callback_ref) {
-
-  Debug::check_assertion(callback_ref != LUA_REFNIL, "Missing collision callback");
+void CustomEntity::add_collision_test(
+    const ScopedLuaRef& collision_test_ref,
+    const ScopedLuaRef& callback_ref
+) {
+  Debug::check_assertion(!callback_ref.is_empty(), "Missing collision callback");
 
   add_collision_mode(COLLISION_CUSTOM);
 
@@ -1266,10 +1276,10 @@ CustomEntity::TraversableInfo::TraversableInfo(
  */
 CustomEntity::TraversableInfo::TraversableInfo(
     LuaContext& lua_context,
-    int traversable_test_ref
+    const ScopedLuaRef& traversable_test_ref
 ):
     lua_context(&lua_context),
-    traversable_test_ref(lua_context, traversable_test_ref),
+    traversable_test_ref(traversable_test_ref),
     traversable(false) {
 
 }
@@ -1306,7 +1316,7 @@ bool CustomEntity::TraversableInfo::is_traversable(
 
   // A Lua boolean function was set.
   return lua_context->do_custom_entity_traversable_test_function(
-      traversable_test_ref.get(), current_entity, other_entity
+      traversable_test_ref, current_entity, other_entity
   );
 }
 
@@ -1329,14 +1339,16 @@ CustomEntity::CollisionInfo::CollisionInfo():
  * detected.
  */
 CustomEntity::CollisionInfo::CollisionInfo(
-    LuaContext& lua_context, CollisionMode built_in_test, int callback_ref
+    LuaContext& lua_context,
+    CollisionMode built_in_test,
+    const ScopedLuaRef& callback_ref
 ):
     lua_context(&lua_context),
     built_in_test(built_in_test),
     custom_test_ref(),
-    callback_ref(lua_context, callback_ref) {
+    callback_ref(callback_ref) {
 
-  Debug::check_assertion(callback_ref != LUA_REFNIL, "Missing callback ref");
+  Debug::check_assertion(!callback_ref.is_empty(), "Missing callback ref");
 }
 
 /**
@@ -1347,14 +1359,16 @@ CustomEntity::CollisionInfo::CollisionInfo(
  * detected.
  */
 CustomEntity::CollisionInfo::CollisionInfo(
-    LuaContext& lua_context, int custom_test_ref, int callback_ref
+    LuaContext& lua_context,
+    const ScopedLuaRef& custom_test_ref,
+    const ScopedLuaRef& callback_ref
 ):
     lua_context(&lua_context),
     built_in_test(COLLISION_CUSTOM),
-    custom_test_ref(lua_context, custom_test_ref),
-    callback_ref(lua_context, callback_ref) {
+    custom_test_ref(custom_test_ref),
+    callback_ref(callback_ref) {
 
-  Debug::check_assertion(callback_ref != LUA_REFNIL, "Missing callback ref");
+  Debug::check_assertion(!callback_ref.is_empty(), "Missing callback ref");
 }
 
 /**
@@ -1369,18 +1383,18 @@ CollisionMode CustomEntity::CollisionInfo::get_built_in_test() const {
 /**
  * \brief Returns the customized collision test to perform.
  * \return A Lua ref to the customized collision test function,
- * or LUA_REFNIL if this is a built-in collision test.
+ * or an empty ref if this is a built-in collision test.
  */
-int CustomEntity::CollisionInfo::get_custom_test_ref() const {
-  return custom_test_ref.get();
+const ScopedLuaRef& CustomEntity::CollisionInfo::get_custom_test_ref() const {
+  return custom_test_ref;
 }
 
 /**
  * \brief Returns the function to call when the collision is detected.
  * \return A Lua ref to the callback.
  */
-int CustomEntity::CollisionInfo::get_callback_ref() const {
-  return callback_ref.get();
+const ScopedLuaRef& CustomEntity::CollisionInfo::get_callback_ref() const {
+  return callback_ref;
 }
 
 }

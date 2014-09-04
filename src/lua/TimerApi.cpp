@@ -117,7 +117,7 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
   }
 
   lua_pushvalue(l, callback_index);
-  ScopedLuaRef callback_ref = create_ref();
+  const ScopedLuaRef& callback_ref = create_ref();
 
 #ifndef NDEBUG
   // Sanity check: check the uniqueness of the ref.

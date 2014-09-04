@@ -790,10 +790,7 @@ GameCommands::Command GameCommands::get_command_to_customize() const {
  */
 void GameCommands::do_customization_callback() {
 
-  ScopedLuaRef callback_ref = customize_callback_ref;
-  customize_callback_ref.clear();
-  LuaContext& lua_context = game.get_lua_context();
-  lua_context.do_callback(callback_ref);
+  game.get_lua_context().clear_and_do_callback(customize_callback_ref);
 }
 
 /**

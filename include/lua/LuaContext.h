@@ -119,16 +119,11 @@ class LuaContext {
 
     // Lua refs.
     ScopedLuaRef create_ref();
-    void destroy_ref(int ref);  // TODO remove
-    static void push_ref(lua_State* l, int ref);  // TODO remove
     static void push_ref(lua_State* l, const ScopedLuaRef& ref);
 
     // Calling Lua functions.
-    void push_callback(int callback_ref);  // TODO remove
-    void do_callback(int callback_ref);  // TODO remove
     void do_callback(const ScopedLuaRef& callback_ref);
-    void cancel_callback(int callback_ref);  // TODO remove
-    // TODO add do_callback_unique
+    void clear_and_do_callback(ScopedLuaRef& callback_ref);
 
     bool call_function(
         int nb_arguments,
@@ -188,22 +183,22 @@ class LuaContext {
     static void set_entity_implicit_creation_map(lua_State* l, Map* map);
 
     bool do_custom_entity_traversable_test_function(
-        int traversable_test_ref,
+        const ScopedLuaRef& traversable_test_ref,
         CustomEntity& custom_entity,
         MapEntity& other_entity
     );
     bool do_custom_entity_collision_test_function(
-        int collision_test_ref,
+        const ScopedLuaRef& collision_test_ref,
         CustomEntity& custom_entity,
         MapEntity& other_entity
     );
     void do_custom_entity_collision_callback(
-        int callback_ref,
+        const ScopedLuaRef& callback_ref,
         CustomEntity& custom_entity,
         MapEntity& other_entity
     );
     void do_custom_entity_collision_callback(
-        int callback_ref,
+        const ScopedLuaRef& callback_ref,
         CustomEntity& custom_entity,
         MapEntity& other_entity,
         Sprite& custom_entity_sprite,

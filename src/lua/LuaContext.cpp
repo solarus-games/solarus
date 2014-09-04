@@ -443,35 +443,6 @@ ScopedLuaRef LuaContext::create_ref() {
 }
 
 /**
- * \brief Releases a Lua reference.
- * \param ref The Lua reference to free.
- * TODO remove, use scoped refs only
- */
-void LuaContext::destroy_ref(int ref) {
-
-  luaL_unref(l, LUA_REGISTRYINDEX, ref);
-}
-
-/**
- * \brief Calls a function stored in the registry with a reference.
- *
- * No parameters are passed to the function, and return values are ignored.
- * The reference is preserved for future calls.
- * See cancel_callback() if you want to release the reference.
- *
- * \param callback_ref Reference of the function to call.
- * If LUA_REFNIL, nothing is done.
- * TODO remove
- */
-void LuaContext::do_callback(int callback_ref) {
-
-  if (callback_ref != LUA_REFNIL) {
-    push_ref(l, callback_ref);
-    call_function(0, 0, "callback");
-  }
-}
-
-/**
  * \brief Calls a function stored in the registry with a reference.
  *
  * No parameters are passed to the function, and return values are ignored.
@@ -488,54 +459,32 @@ void LuaContext::do_callback(const ScopedLuaRef& callback_ref) {
 }
 
 /**
- * \brief Pushes onto the stack a function stored as a Lua ref.
- * \param callback_ref Reference of the function to call.
- * Must be a valid ref.
+ * \brief Like do_callback(), but clears the reference before calling
+ * the function.
+ *
+ * This avoids reentrant calls: your reference will become empty before
+ * the function is called.
+ *
+ * This is equivalent to:
+ *
+ * ScopedLuaRef copy = callback_ref;
+ * callback_ref.clear();  // Avoid nasty problems in case of reentrant calls.
+ * lua_context.do_callback(copy);
+ *
+ * \param callback_ref Reference of the function to call. Becomes empty before
+ * the actual call.
+ * If the reference is already empty, nothing happens.
  */
-void LuaContext::push_callback(int callback_ref) {
+void LuaContext::clear_and_do_callback(ScopedLuaRef& callback_ref) {
 
+  if (callback_ref.is_empty()) {
+    return;
+  }
+
+  ScopedLuaRef copy = callback_ref;
+  callback_ref.clear();
   push_ref(l, callback_ref);
-#ifndef NDEBUG
-  if (!lua_isfunction(l, -1)) {
-    std::ostringstream oss;
-    oss << "There is no callback with ref " << callback_ref
-        << " (function expected, got " << luaL_typename(l, -1)
-        << "). Did you already invoke or cancel it?";
-    Debug::die(oss.str());
-  }
-#endif
-}
-
-/**
- * \brief Releases the reference to a Lua callback.
- *
- * The callback may then be collected by Lua.
- *
- * \param callback_ref reference of the function.
- * If LUA_REFNIL, nothing is done.
- * TODO remove this function, use scoped refs
- */
-void LuaContext::cancel_callback(int callback_ref) {
-
-  if (callback_ref != LUA_REFNIL) {
-
-#ifndef NDEBUG
-    // Check that the callback is canceled only once.
-    // Otherwise, a duplicate call to luaL_unref() silently breaks the
-    // uniqueness of Lua refs.
-    push_ref(l, callback_ref);
-    if (!lua_isfunction(l, -1)) {
-      std::ostringstream oss;
-      oss << "There is no callback with ref " << callback_ref
-          << " (function expected, got " << luaL_typename(l, -1)
-          << "). Did you already invoke or cancel it?";
-      Debug::die(oss.str());
-    }
-    lua_pop(l, 1);
-#endif
-
-    destroy_ref(callback_ref);
-  }
+  call_function(0, 0, "callback");
 }
 
 /**
@@ -1011,16 +960,9 @@ void LuaContext::register_modules() {
 
 /**
  * \brief Pushes a Lua value from its reference.
- * \param l A Lua state.
- * \param ref A Lua reference.
- * TODO remove, use a scoped ref
- */
-void LuaContext::push_ref(lua_State* l, int ref) {
-  lua_rawgeti(l, LUA_REGISTRYINDEX, ref);
-}
-
-/**
- * \brief Pushes a Lua value from its reference.
+ *
+ * Pushes nil if the reference is empty.
+ *
  * \param l A Lua state.
  * \param ref Reference to a Lua value.
  */

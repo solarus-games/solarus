@@ -66,10 +66,10 @@ class CustomEntity: public Detector {
     // What can traverse this custom entity.
     bool is_traversable_by_entity(MapEntity& entity);
     void set_traversable_by_entities(bool traversable);
-    void set_traversable_by_entities(int traversable_test_ref);
+    void set_traversable_by_entities(const ScopedLuaRef& traversable_test_ref);
     void reset_traversable_by_entities();
     void set_traversable_by_entities(EntityType type, bool traversable);
-    void set_traversable_by_entities(EntityType type, int traversable_test_ref);
+    void set_traversable_by_entities(EntityType type, const ScopedLuaRef& traversable_test_ref);
     void reset_traversable_by_entities(EntityType type);
 
     virtual bool can_be_obstacle() const override;
@@ -77,10 +77,13 @@ class CustomEntity: public Detector {
 
     // What this custom entity can traverse.
     void set_can_traverse_entities(bool traversable);
-    void set_can_traverse_entities(int traversable_test_ref);
+    void set_can_traverse_entities(const ScopedLuaRef& traversable_test_ref);
     void reset_can_traverse_entities();
     void set_can_traverse_entities(EntityType type, bool traversable);
-    void set_can_traverse_entities(EntityType type, int traversable_test_ref);
+    void set_can_traverse_entities(
+        EntityType type,
+        const ScopedLuaRef& traversable_test_ref
+    );
     void reset_can_traverse_entities(EntityType type);
 
     virtual bool is_hero_obstacle(Hero& hero) override;
@@ -111,8 +114,14 @@ class CustomEntity: public Detector {
     virtual bool is_ladder_obstacle() const override;
 
     // Collisions.
-    void add_collision_test(CollisionMode collision_test, int callback_ref);
-    void add_collision_test(int collision_test_ref, int callback_ref);
+    void add_collision_test(
+        CollisionMode collision_test,
+        const ScopedLuaRef& callback_ref
+    );
+    void add_collision_test(
+        const ScopedLuaRef& collision_test_ref,
+        const ScopedLuaRef& callback_ref
+    );
     void clear_collision_tests();
 
     virtual bool test_collision_custom(MapEntity& entity) override;
@@ -164,8 +173,14 @@ class CustomEntity: public Detector {
       public:
 
         TraversableInfo();
-        TraversableInfo(LuaContext& lua_context, bool traversable);
-        TraversableInfo(LuaContext& lua_context, int traversable_test_ref);
+        TraversableInfo(
+            LuaContext& lua_context,
+            bool traversable
+        );
+        TraversableInfo(
+            LuaContext& lua_context,
+            const ScopedLuaRef& traversable_test_ref
+        );
 
         bool is_empty() const;
         bool is_traversable(
@@ -197,17 +212,17 @@ class CustomEntity: public Detector {
         CollisionInfo(
             LuaContext& lua_context,
             CollisionMode built_in_test,
-            int callback_ref
+            const ScopedLuaRef& callback_ref
         );
         CollisionInfo(
             LuaContext& lua_context,
-            int custom_test_ref,
-            int callback_ref
+            const ScopedLuaRef& custom_test_ref,
+            const ScopedLuaRef& callback_ref
         );
 
         CollisionMode get_built_in_test() const;
-        int get_custom_test_ref() const;
-        int get_callback_ref() const;
+        const ScopedLuaRef& get_custom_test_ref() const;
+        const ScopedLuaRef& get_callback_ref() const;
 
       private:
 

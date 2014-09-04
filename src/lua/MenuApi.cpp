@@ -190,7 +190,7 @@ int LuaContext::menu_api_start(lua_State *l) {
     lua_settop(l, 2);
 
     LuaContext& lua_context = get_lua_context(l);
-    ScopedLuaRef menu_ref = lua_context.create_ref();
+    const ScopedLuaRef& menu_ref = lua_context.create_ref();
     lua_context.add_menu(menu_ref, 1, on_top);
 
     return 0;

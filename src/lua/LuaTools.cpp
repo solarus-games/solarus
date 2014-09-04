@@ -94,19 +94,22 @@ void LuaTools::arg_error(lua_State* l, int arg_index, const std::string& message
   if (!lua_getstack(l, 0, &info)) {
     // No stack frame.
      oss << "bad argument #" << arg_index << " (" << message << ")";
+     error(l, oss.str());
   }
+
   lua_getinfo(l, "n", &info);
   if (std::string(info.namewhat) == "method") {
      arg_index--;  // Do not count self.
      if (arg_index == 0) {
        // Error is in the self argument itself.
        oss << "calling " << info.name << " on bad self (" << message << ")";
+       error(l, oss.str());
      }
   }
+
   if (info.name == nullptr) {
     info.name = "?";
   }
-
   oss << "bad argument #" << arg_index << " to " << info.name << " (" << message << ")";
   error(l, oss.str());
 }

@@ -16,7 +16,6 @@
  */
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
-#include "lua/LuaException.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include <lua.hpp>
@@ -62,11 +61,11 @@ void LuaContext::register_audio_module() {
  */
 int LuaContext::audio_api_get_sound_volume(lua_State* l) {
 
-  SOLARUS_LUA_API_TRY() {
+  SOLARUS_LUA_BOUNDARY_TRY() {
     lua_pushinteger(l, Sound::get_volume());
     return 1;
   }
-  SOLARUS_LUA_API_CATCH(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -76,13 +75,13 @@ int LuaContext::audio_api_get_sound_volume(lua_State* l) {
  */
 int LuaContext::audio_api_set_sound_volume(lua_State* l) {
 
-  SOLARUS_LUA_API_TRY() {
+  SOLARUS_LUA_BOUNDARY_TRY() {
     int volume = LuaTools::check_int(l, 1);
     Sound::set_volume(volume);
 
     return 0;
   }
-  SOLARUS_LUA_API_CATCH(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -92,7 +91,7 @@ int LuaContext::audio_api_set_sound_volume(lua_State* l) {
  */
 int LuaContext::audio_api_play_sound(lua_State* l) {
 
-  SOLARUS_LUA_API_TRY() {
+  SOLARUS_LUA_BOUNDARY_TRY() {
     const std::string& sound_id = LuaTools::check_string(l, 1);
 
     if (!Sound::exists(sound_id)) {
@@ -102,7 +101,7 @@ int LuaContext::audio_api_play_sound(lua_State* l) {
 
     return 0;
   }
-  SOLARUS_LUA_API_CATCH(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -112,11 +111,11 @@ int LuaContext::audio_api_play_sound(lua_State* l) {
  */
 int LuaContext::audio_api_preload_sounds(lua_State* l) {
 
-  SOLARUS_LUA_API_TRY() {
+  SOLARUS_LUA_BOUNDARY_TRY() {
     Sound::load_all();
     return 0;
   }
-  SOLARUS_LUA_API_CATCH(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -126,11 +125,11 @@ int LuaContext::audio_api_preload_sounds(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_volume(lua_State* l) {
 
-  SOLARUS_LUA_API_TRY() {
+  SOLARUS_LUA_BOUNDARY_TRY() {
     lua_pushinteger(l, Music::get_volume());
     return 1;
   }
-  SOLARUS_LUA_API_CATCH(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -140,14 +139,14 @@ int LuaContext::audio_api_get_music_volume(lua_State* l) {
  */
 int LuaContext::audio_api_set_music_volume(lua_State* l) {
 
-  SOLARUS_LUA_API_TRY() {
+  SOLARUS_LUA_BOUNDARY_TRY() {
     int volume = LuaTools::check_int(l, 1);
 
     Music::set_volume(volume);
 
     return 0;
   }
-  SOLARUS_LUA_API_CATCH(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -157,7 +156,7 @@ int LuaContext::audio_api_set_music_volume(lua_State* l) {
  */
 int LuaContext::audio_api_play_music(lua_State* l) {
 
-  SOLARUS_LUA_API_TRY() {
+  SOLARUS_LUA_BOUNDARY_TRY() {
     const std::string& music_id = LuaTools::opt_string(l, 1, "");
     bool loop = true;  // true by default, unless there is a callback.
     ScopedLuaRef callback_ref;
@@ -190,7 +189,7 @@ int LuaContext::audio_api_play_music(lua_State* l) {
     }
     return 0;
   }
-  SOLARUS_LUA_API_CATCH(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -200,12 +199,12 @@ int LuaContext::audio_api_play_music(lua_State* l) {
  */
 int LuaContext::audio_api_stop_music(lua_State* l) {
 
-  SOLARUS_LUA_API_TRY() {
+  SOLARUS_LUA_BOUNDARY_TRY() {
     Music::stop_playing();
 
     return 0;
   }
-  SOLARUS_LUA_API_CATCH(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -215,7 +214,7 @@ int LuaContext::audio_api_stop_music(lua_State* l) {
  */
 int LuaContext::audio_api_get_music(lua_State* l) {
 
-  SOLARUS_LUA_API_TRY() {
+  SOLARUS_LUA_BOUNDARY_TRY() {
     const std::string& music_id = Music::get_current_music_id();
 
     if (music_id == Music::none) {
@@ -226,7 +225,7 @@ int LuaContext::audio_api_get_music(lua_State* l) {
     }
     return 1;
   }
-  SOLARUS_LUA_API_CATCH(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -236,7 +235,7 @@ int LuaContext::audio_api_get_music(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_format(lua_State* l) {
 
-  SOLARUS_LUA_API_TRY() {
+  SOLARUS_LUA_BOUNDARY_TRY() {
     const Music::Format format = Music::get_format();
 
     if (format == Music::NO_FORMAT) {
@@ -248,7 +247,7 @@ int LuaContext::audio_api_get_music_format(lua_State* l) {
     }
     return 1;
   }
-  SOLARUS_LUA_API_CATCH(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -258,7 +257,7 @@ int LuaContext::audio_api_get_music_format(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_num_channels(lua_State* l) {
 
-  SOLARUS_LUA_API_TRY() {
+  SOLARUS_LUA_BOUNDARY_TRY() {
     if (Music::get_format() != Music::IT) {
       lua_pushnil(l);
     }
@@ -267,7 +266,7 @@ int LuaContext::audio_api_get_music_num_channels(lua_State* l) {
     }
     return 1;
   }
-  SOLARUS_LUA_API_CATCH(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -277,7 +276,7 @@ int LuaContext::audio_api_get_music_num_channels(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_channel_volume(lua_State* l) {
 
-  SOLARUS_LUA_API_TRY() {
+  SOLARUS_LUA_BOUNDARY_TRY() {
     int channel = LuaTools::check_int(l, 1);
 
     if (Music::get_format() != Music::IT) {
@@ -293,7 +292,7 @@ int LuaContext::audio_api_get_music_channel_volume(lua_State* l) {
     }
     return 1;
   }
-  SOLARUS_LUA_API_CATCH(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -303,7 +302,7 @@ int LuaContext::audio_api_get_music_channel_volume(lua_State* l) {
  */
 int LuaContext::audio_api_set_music_channel_volume(lua_State* l) {
 
-  SOLARUS_LUA_API_TRY() {
+  SOLARUS_LUA_BOUNDARY_TRY() {
     int channel = LuaTools::check_int(l, 1);
     int volume = LuaTools::check_int(l, 2);
 
@@ -321,7 +320,7 @@ int LuaContext::audio_api_set_music_channel_volume(lua_State* l) {
     }
     return 1;
   }
-  SOLARUS_LUA_API_CATCH(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -331,7 +330,7 @@ int LuaContext::audio_api_set_music_channel_volume(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_tempo(lua_State* l) {
 
-  SOLARUS_LUA_API_TRY() {
+  SOLARUS_LUA_BOUNDARY_TRY() {
     if (Music::get_format() != Music::IT) {
       lua_pushnil(l);
     }
@@ -340,7 +339,7 @@ int LuaContext::audio_api_get_music_tempo(lua_State* l) {
     }
     return 1;
   }
-  SOLARUS_LUA_API_CATCH(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**
@@ -350,7 +349,7 @@ int LuaContext::audio_api_get_music_tempo(lua_State* l) {
  */
 int LuaContext::audio_api_set_music_tempo(lua_State* l) {
 
-  SOLARUS_LUA_API_TRY() {
+  SOLARUS_LUA_BOUNDARY_TRY() {
     int tempo = LuaTools::check_int(l, 1);
 
     if (Music::get_format() != Music::IT) {
@@ -362,7 +361,7 @@ int LuaContext::audio_api_set_music_tempo(lua_State* l) {
     }
     return 1;
   }
-  SOLARUS_LUA_API_CATCH(l);
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 }

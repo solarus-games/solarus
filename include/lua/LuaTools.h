@@ -20,8 +20,39 @@
 #include "Common.h"
 #include "entities/Layer.h"
 #include "lowlevel/Debug.h"
+#include "lua/LuaException.h"
 #include <string>
 #include <lua.hpp>
+
+/**
+ * \brief Try block to be used at the Lua to C++ boundary.
+ *
+ * The whole code of any function that can directly be called from Lua must be
+ * protected by a SOLARUS_LUA_API_TRY() block, including the declaration of
+ * variables and the return instructions.
+ */
+#define SOLARUS_LUA_BOUNDARY_TRY() try
+
+/**
+ * \brief Catch block to be used at the Lua to C++ boundary.
+ *
+ * This macro is meant to be called at the end of in any C++ function that
+ * can directly be called be Lua, after the SOLARUS_LUA_API_TRY() block.
+ * Any exception is caught and generates a Lua error instead.
+ *
+ * \param l The Lua state.
+ */
+#define SOLARUS_LUA_BOUNDARY_CATCH(l)\
+    catch (const LuaException& ex) {\
+      luaL_error(l, ex.what());\
+    }\
+    catch (const std::exception& ex) {\
+      luaL_error(l, (std::string("Unexpected exception: ") + ex.what()).c_str());\
+    }\
+    catch (...) {\
+      luaL_error(l, "Unexpected exception");\
+    }\
+    return 0;
 
 namespace solarus {
 

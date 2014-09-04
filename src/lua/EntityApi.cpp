@@ -526,8 +526,8 @@ void LuaContext::register_entity_module() {
  */
 bool LuaContext::is_entity(lua_State* l, int index) {
 
-  // We could return is_hero() || is_tile() || is_dynamic_tile || ...
-  // but this would be tedious and costly.
+  // We could return is_hero() || is_tile() || is_dynamic_tile() || ...
+  // but this would be tedious, costly and error prone.
 
   void* udata = lua_touserdata(l, index);
   if (udata == nullptr) {
@@ -543,8 +543,8 @@ bool LuaContext::is_entity(lua_State* l, int index) {
   // Get the name of the Solarus type from this userdata.
   lua_pushstring(l, "__solarus_type");
   lua_rawget(l, -2);
-  if (lua_isnil(l, -1)) {
-    // This is a userdata from some library other than Solarus.
+  if (!lua_isstring(l, -1)) {
+    // This is probably a userdata from some library other than Solarus.
     lua_pop(l, 2);
     return false;
   }

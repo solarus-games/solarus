@@ -49,9 +49,7 @@ ScopedLuaRef::ScopedLuaRef(const ScopedLuaRef& other):
     lua_context(other.lua_context),
     ref(LUA_REFNIL) {
 
-  if (lua_context != nullptr) {
-    this->ref = lua_context->copy_ref(other.ref);
-  }
+  *this = other;
 }
 
 /**
@@ -85,7 +83,15 @@ ScopedLuaRef& ScopedLuaRef::operator=(const ScopedLuaRef& other) {
   clear();
   this->lua_context = other.lua_context;
   if (lua_context != nullptr) {
-    this->ref = lua_context->copy_ref(other.ref);
+    if (other.ref == LUA_REFNIL || other.ref == LUA_NOREF) {
+      this->ref = other.ref;
+    }
+    else {
+      lua_State* l = lua_context->get_internal_state();
+      // Get the value and make another ref of it.
+      lua_rawgeti(l, LUA_REGISTRYINDEX, other.ref);
+      this->ref = luaL_ref(l, LUA_REGISTRYINDEX);
+    }
   }
 
   return *this;
@@ -143,7 +149,7 @@ void ScopedLuaRef::set(LuaContext& lua_context, int ref) {
 void ScopedLuaRef::clear() {
 
   if (lua_context != nullptr) {
-    lua_context->destroy_ref(ref);
+    luaL_unref(lua_context->get_internal_state(), LUA_REGISTRYINDEX, ref);
   }
   lua_context = nullptr;
   ref = LUA_REFNIL;

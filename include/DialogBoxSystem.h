@@ -18,9 +18,10 @@
 #define SOLARUS_DIALOG_BOX_SYSTEM_H
 
 #include "Common.h"
+#include "lowlevel/Point.h"
+#include "lua/ScopedLuaRef.h"
 #include "Dialog.h"
 #include "GameCommands.h"
-#include "lowlevel/Point.h"
 #include <list>
 
 namespace solarus {
@@ -42,8 +43,12 @@ class DialogBoxSystem {
     Game& get_game();
     bool is_enabled() const;
 
-    void open(const std::string& dialog_id, int info_ref, int callback_ref);
-    void close(int status_ref);
+    void open(
+        const std::string& dialog_id,
+        const ScopedLuaRef& info_ref,
+        const ScopedLuaRef& callback_ref
+    );
+    void close(const ScopedLuaRef& status_ref);
     bool notify_command_pressed(GameCommands::Command command);
     const std::string& get_dialog_id() const;
 
@@ -57,7 +62,7 @@ class DialogBoxSystem {
     Game& game;                                     /**< The game this dialog box belongs to. */
     std::string dialog_id;                          /**< Id of the current dialog or an empty string. */
     Dialog dialog;                                  /**< Current dialog. */
-    int callback_ref;                               /**< Lua ref of a function to call when the dialog finishes. */
+    ScopedLuaRef callback_ref;                      /**< Lua ref of a function to call when the dialog finishes. */
 
     // Fields only used by the built-in dialog box.
     bool built_in;                                  /**< Whether we are using the built-in dialog box. */

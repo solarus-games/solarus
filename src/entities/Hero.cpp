@@ -2372,9 +2372,12 @@ void Hero::start_free_carrying_loading_or_running() {
  * \brief Makes the hero brandish a treasure.
  * \param treasure The treasure to give him. It must be obtainable.
  * \param callback_ref Lua ref to a function to call when the
- * treasure's dialog finishes (possibly LUA_REFNIL).
+ * treasure's dialog finishes (possibly an empty ref).
  */
-void Hero::start_treasure(const Treasure& treasure, int callback_ref) {
+void Hero::start_treasure(
+    const Treasure& treasure,
+    const ScopedLuaRef& callback_ref
+) {
   set_state(new TreasureState(*this, treasure, callback_ref));
 }
 

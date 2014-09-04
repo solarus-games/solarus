@@ -16,22 +16,22 @@
  */
 #include "entities/MapEntities.h"
 #include "entities/Door.h"
-#include "entities/Hero.h"
-#include "entities/Explosion.h"
 #include "entities/DynamicTile.h"
-#include "lua/LuaContext.h"
-#include "lowlevel/FileTools.h"
+#include "entities/Explosion.h"
+#include "entities/Hero.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/FileTools.h"
+#include "lowlevel/Geometry.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
-#include "lowlevel/Geometry.h"
-#include "Sprite.h"
-#include "Game.h"
+#include "lua/LuaContext.h"
 #include "Equipment.h"
-#include "KeysEffect.h"
-#include "Savegame.h"
 #include "EquipmentItem.h"
+#include "Game.h"
+#include "KeysEffect.h"
 #include "Map.h"
+#include "Savegame.h"
+#include "Sprite.h"
 #include <list>
 #include <lua.hpp>
 
@@ -584,7 +584,7 @@ bool Door::notify_action_command_pressed() {
     }
     else if (!cannot_open_dialog_id.empty()) {
       Sound::play("wrong");
-      get_game().start_dialog(cannot_open_dialog_id, LUA_REFNIL, LUA_REFNIL);
+      get_game().start_dialog(cannot_open_dialog_id, ScopedLuaRef(), ScopedLuaRef());
     }
 
     return true;

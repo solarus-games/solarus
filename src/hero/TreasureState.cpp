@@ -31,24 +31,19 @@ namespace solarus {
  * \param hero The hero controlled by this state.
  * \param treasure The treasure to give to the hero. It must be obtainable.
  * \param callback_ref Lua ref to a function to call when the
- * treasure's dialog finishes (possibly LUA_REFNIL).
+ * treasure's dialog finishes (possibly an empty ref).
  */
 Hero::TreasureState::TreasureState(
     Hero& hero,
     const Treasure& treasure,
-    int callback_ref):
+    const ScopedLuaRef& callback_ref
+):
 
   State(hero, "treasure"),
   treasure(treasure),
   callback_ref(callback_ref) {
 
   treasure.check_obtainable();
-}
-
-/**
- * \brief Destructor.
- */
-Hero::TreasureState::~TreasureState() {
 }
 
 /**
@@ -73,8 +68,8 @@ void Hero::TreasureState::start(const State* previous_state) {
   treasure.give_to_player();
 
   // Show a dialog (Lua does the job after this).
-  int callback_ref = this->callback_ref;
-  this->callback_ref = LUA_REFNIL;
+  ScopedLuaRef callback_ref = this->callback_ref;
+  this->callback_ref.clear();
   get_lua_context().notify_hero_brandish_treasure(treasure, callback_ref);
 }
 
@@ -88,8 +83,7 @@ void Hero::TreasureState::stop(const State* next_state) {
 
   // restore the sprite's direction
   get_sprites().restore_animation_direction();
-  get_lua_context().cancel_callback(callback_ref);
-  callback_ref = LUA_REFNIL;
+  callback_ref.clear();
 }
 
 /**

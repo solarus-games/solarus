@@ -34,7 +34,7 @@ namespace solarus {
  */
 DialogBoxSystem::DialogBoxSystem(Game& game):
   game(game),
-  callback_ref(LUA_REFNIL),
+  callback_ref(),
   built_in(false),
   is_question(false),
   selected_first_answer(true) {
@@ -51,9 +51,8 @@ DialogBoxSystem::DialogBoxSystem(Game& game):
 DialogBoxSystem::~DialogBoxSystem() {
 
   for (int i = 0; i < nb_visible_lines; i++) {
-    delete line_surfaces[i];
+    delete line_surfaces[i];  // TODO shared_ptr
   }
-  game.get_lua_context().cancel_callback(callback_ref);
 }
 
 /**
@@ -88,13 +87,15 @@ const std::string& DialogBoxSystem::get_dialog_id() const {
  *
  * \param dialog_id Id of the dialog to show.
  * \param info_ref Lua ref to an optional info parameter to pass to the
- * dialog box, or LUA_REFNIL.
+ * dialog box, or an empty ref.
  * \param callback_ref Lua ref to a function to call when the dialog finishes,
- * or LUA_REFNIL.
+ * or an empty ref.
  */
-void DialogBoxSystem::open(const std::string& dialog_id,
-    int info_ref, int callback_ref) {
-
+void DialogBoxSystem::open(
+    const std::string& dialog_id,
+    const ScopedLuaRef& info_ref,
+    const ScopedLuaRef& callback_ref
+) {
   Debug::check_assertion(!is_enabled(), "A dialog is already active");
 
   this->dialog_id = dialog_id;
@@ -114,7 +115,8 @@ void DialogBoxSystem::open(const std::string& dialog_id,
   LuaContext& lua_context = game.get_lua_context();
   lua_State* l = lua_context.get_internal_state();
   built_in = !lua_context.notify_dialog_started(
-      game, dialog, info_ref);
+      game, dialog, info_ref
+  );
 
   if (built_in) {
 
@@ -131,7 +133,7 @@ void DialogBoxSystem::open(const std::string& dialog_id,
       size_t index = text.find("$v");
       if (index != std::string::npos) {
         // Replace the special sequence '$v' by the price of the shop item.
-        lua_rawgeti(l, LUA_REGISTRYINDEX, info_ref);
+        LuaContext::push_ref(l, info_ref);
         int price = LuaTools::check_int(l, -1);
         lua_pop(l, -1);
         std::ostringstream oss;
@@ -139,7 +141,6 @@ void DialogBoxSystem::open(const std::string& dialog_id,
         text = text.replace(index, 2, oss.str());
       }
     }
-    luaL_unref(l, LUA_REGISTRYINDEX, info_ref);
 
     remaining_lines.clear();
     std::istringstream iss(text);
@@ -167,15 +168,15 @@ void DialogBoxSystem::open(const std::string& dialog_id,
 /**
  * \brief Closes the dialog box.
  * \param status_ref Lua ref to a status value to return to the start_dialog
- * callback, or LUA_REFNIL. "skipped" means that the dialog was canceled by
+ * callback, or an empty ref. "skipped" means that the dialog was canceled by
  * the user.
  */
-void DialogBoxSystem::close(int status_ref) {
+void DialogBoxSystem::close(const ScopedLuaRef& status_ref) {
 
   Debug::check_assertion(is_enabled(), "No dialog is active");
 
-  int callback_ref = this->callback_ref;
-  this->callback_ref = LUA_REFNIL;
+  ScopedLuaRef callback_ref = this->callback_ref;
+  this->callback_ref.clear();
   this->dialog_id = "";
 
   // Restore commands.
@@ -186,7 +187,8 @@ void DialogBoxSystem::close(int status_ref) {
 
   // A dialog was just finished: notify Lua.
   game.get_lua_context().notify_dialog_finished(
-      game, dialog, callback_ref, status_ref);
+      game, dialog, callback_ref, status_ref
+  );
 }
 
 /**
@@ -209,12 +211,12 @@ void DialogBoxSystem::show_more_lines() {
 
   if (!has_more_lines()) {
 
-    int status_ref = LUA_REFNIL;
+    ScopedLuaRef status_ref;
     if (is_question) {
       // Send the answer to the callback.
       LuaContext& lua_context = game.get_lua_context();
       lua_pushboolean(lua_context.get_internal_state(), selected_first_answer);
-      status_ref = lua_context.create_ref();
+      status_ref = lua_context.create_scoped_ref();
     }
     close(status_ref);
     return;

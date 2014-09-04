@@ -98,11 +98,20 @@ class LuaContext {
     void notify_camera_reached_target(Map& map);
     void notify_shop_treasure_interaction(ShopTreasure& shop_treasure);
     void notify_hero_brandish_treasure(
-        const Treasure& treasure, int callback_ref);
-    bool notify_dialog_started(Game& game, const Dialog& dialog,
-        int info_ref);
-    void notify_dialog_finished(Game& game, const Dialog& dialog,
-        int callback_ref, int status_ref);
+        const Treasure& treasure,
+        const ScopedLuaRef& callback_ref
+    );
+    bool notify_dialog_started(
+        Game& game,
+        const Dialog& dialog,
+        const ScopedLuaRef& info_ref
+    );
+    void notify_dialog_finished(
+        Game& game,
+        const Dialog& dialog,
+        const ScopedLuaRef& callback_ref,
+        const ScopedLuaRef& status_ref
+    );
     void run_item(EquipmentItem& item);
     void run_map(Map& map, Destination* destination);
     void run_enemy(Enemy& enemy);
@@ -111,10 +120,11 @@ class LuaContext {
     // Lua refs.
     int create_ref();
     void destroy_ref(int ref);
-    int copy_ref(int ref);
     ScopedLuaRef create_scoped_ref();
 
     // Calling Lua functions.
+    static void push_ref(lua_State* l, int ref);
+    static void push_ref(lua_State* l, const ScopedLuaRef& ref);
     void push_callback(int callback_ref);
     void do_callback(int callback_ref);
     void cancel_callback(int callback_ref);
@@ -128,9 +138,13 @@ class LuaContext {
         int nb_results,
         const char* function_name);
     bool userdata_has_field(
-        const ExportableToLua& userdata, const char* key) const;
+        const ExportableToLua& userdata,
+        const char* key
+    ) const;
     bool userdata_has_field(
-        const ExportableToLua& userdata, const std::string& key) const;
+        const ExportableToLua& userdata,
+        const std::string& key
+    ) const;
 
     // Timers.
     void add_timer(Timer* timer, int context_index, int callback_index);
@@ -254,8 +268,11 @@ class LuaContext {
     void game_on_map_changed(Game& game, Map& map);
     void game_on_paused(Game& game);
     void game_on_unpaused(Game& game);
-    bool game_on_dialog_started(Game& game, const Dialog& dialog,
-        int info_ref);
+    bool game_on_dialog_started(
+        Game& game,
+        const Dialog& dialog,
+        const ScopedLuaRef& info_ref
+    );
     void game_on_dialog_finished(Game& game, const Dialog& dialog);
     bool game_on_game_over_started(Game& game);
     void game_on_game_over_finished(Game& game);
@@ -958,7 +975,6 @@ class LuaContext {
     void register_entity_module();
 
     // Pushing objects to Lua.
-    static void push_ref(lua_State* l, int ref);
     static void push_main(lua_State* l);
     static void push_string(lua_State* l, const std::string& text);
     static void push_color(lua_State* l, const Color& color);
@@ -1067,7 +1083,7 @@ class LuaContext {
     void on_suspended(bool suspended);
     void on_paused();
     void on_unpaused();
-    bool on_dialog_started(const Dialog& dialog, int info_ref);
+    bool on_dialog_started(const Dialog& dialog, const ScopedLuaRef& info_ref);
     void on_dialog_finished(const Dialog& dialog);
     bool on_game_over_started();
     void on_game_over_finished();

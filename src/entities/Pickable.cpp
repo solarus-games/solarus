@@ -349,7 +349,7 @@ void Pickable::try_give_item_to_player() {
   if (item.get_brandish_when_picked()) {
     // The treasure is brandished.
     // on_obtained() will be called after the dialog.
-    get_hero().start_treasure(treasure, LUA_REFNIL);
+    get_hero().start_treasure(treasure, ScopedLuaRef());
   }
   else {
     treasure.give_to_player();

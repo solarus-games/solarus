@@ -389,14 +389,14 @@ void LuaContext::notify_camera_reached_target(Map& map) {
  * \param game The game.
  * \param dialog The dialog that is becoming active.
  * \param info_ref Lua ref to an optional info parameter to pass to
- * Lua, or LUA_REFNIL.
+ * Lua, or an empty ref.
  * \return true if Lua handles the dialog, false otherwise.
  */
 bool LuaContext::notify_dialog_started(
     Game& game,
     const Dialog& dialog,
-    int info_ref) {
-
+    const ScopedLuaRef& info_ref
+) {
   return game_on_dialog_started(game, dialog, info_ref);
 }
 
@@ -404,36 +404,30 @@ bool LuaContext::notify_dialog_started(
  * \brief Notifies Lua that a dialog is finished.
  * \param game The game.
  * \param dialog The dialog that was active.
- * \param callback_ref Lua ref of the function to call, or LUA_REFNIL.
+ * \param callback_ref Lua ref of the function to call, or an empty ref.
  * \param status_ref Lua ref to a status value to pass to the callback.
  * "skipped" means that the dialog was canceled by the user.
  */
 void LuaContext::notify_dialog_finished(
     Game& game,
     const Dialog& dialog,
-    int callback_ref,
-    int status_ref) {
+    const ScopedLuaRef& callback_ref,
+    const ScopedLuaRef& status_ref) {
 
   game_on_dialog_finished(game, dialog);
 
   // Execute the callback after game:on_dialog_finished()
   // because the callback may start another dialog.
-  if (callback_ref != LUA_REFNIL) {
-    push_callback(callback_ref);
-    destroy_ref(callback_ref);
-    if (status_ref != LUA_REFNIL) {
+  if (!callback_ref.is_empty()) {
+    push_ref(l, callback_ref);
+    if (!status_ref.is_empty()) {
       push_ref(l, status_ref);
-      destroy_ref(status_ref);
     }
     else {
       // No status.
       lua_pushnil(l);
     }
     call_function(1, 0, "dialog callback");
-  }
-  else {
-    // No callback: the status if ignored if any.
-    destroy_ref(status_ref);
   }
 }
 
@@ -453,26 +447,11 @@ int LuaContext::create_ref() {
 /**
  * \brief Releases a Lua reference.
  * \param ref The Lua reference to free.
+ * TODO remove, use scoped refs only
  */
 void LuaContext::destroy_ref(int ref) {
 
   luaL_unref(l, LUA_REGISTRYINDEX, ref);
-}
-
-/**
- * \brief Creates a new reference to the Lua value of an existing reference.
- * \param ref The Lua reference to copy.
- * If LUA_REFNIL or LUA_NOREF, the same ref is returned.
- * \return The reference created.
- */
-int LuaContext::copy_ref(int ref) {
-
-  if (ref == LUA_REFNIL || ref == LUA_NOREF) {
-    return ref;
-  }
-
-  push_ref(l, ref);
-  return luaL_ref(l, LUA_REGISTRYINDEX);
 }
 
 /**
@@ -530,6 +509,7 @@ void LuaContext::push_callback(int callback_ref) {
  *
  * \param callback_ref reference of the function.
  * If LUA_REFNIL, nothing is done.
+ * TODO remove this function, use scoped refs
  */
 void LuaContext::cancel_callback(int callback_ref) {
 
@@ -1029,9 +1009,19 @@ void LuaContext::register_modules() {
  * \brief Pushes a Lua value from its reference.
  * \param l A Lua state.
  * \param ref A Lua reference.
+ * TODO remove, use a scoped ref
  */
 void LuaContext::push_ref(lua_State* l, int ref) {
   lua_rawgeti(l, LUA_REGISTRYINDEX, ref);
+}
+
+/**
+ * \brief Pushes a Lua value from its reference.
+ * \param l A Lua state.
+ * \param ref Reference to a Lua value.
+ */
+void LuaContext::push_ref(lua_State* l, const ScopedLuaRef& ref) {
+  lua_rawgeti(l, LUA_REGISTRYINDEX, ref.get());
 }
 
 /**
@@ -1490,23 +1480,20 @@ void LuaContext::on_unpaused() {
 }
 
 /**
- * \brief Calls the on_dialog_started() method of the object on top of the stack.
+ * \brief Calls the on_dialog_started() method of the object on top of the
+ * stack.
  * \param dialog The dialog that just started.
  * \param info_ref Lua ref to the info parameter to pass to the method,
- * or LUA_REFNIL. Will be decrement_refcount'd if the method exists.
+ * or an empty ref.
  * \return true if the on_dialog_started() method is defined.
  */
-bool LuaContext::on_dialog_started(const Dialog& dialog, int info_ref) {
-
+bool LuaContext::on_dialog_started(
+    const Dialog& dialog,
+    const ScopedLuaRef& info_ref
+) {
   if (find_method("on_dialog_started")) {
     push_dialog(l, dialog);
-    if (info_ref == LUA_REFNIL) {
-      lua_pushnil(l);
-    }
-    else {
-      push_ref(l, info_ref);
-      destroy_ref(info_ref);
-    }
+    push_ref(l, info_ref);
     call_function(3, 0, "on_dialog_started");
     return true;
   }

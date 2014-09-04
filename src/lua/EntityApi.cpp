@@ -1985,11 +1985,11 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
       LuaTools::arg_error(l, 4, "This treasure is not obtainable");
     }
 
-    int callback_ref = LUA_REFNIL;
+    ScopedLuaRef callback_ref;
     if (lua_gettop(l) >= 5) {
       LuaTools::check_type(l, 5, LUA_TFUNCTION);
       lua_settop(l, 5);
-      callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+      callback_ref = get_lua_context(l).create_scoped_ref();
     }
 
     hero.start_treasure(treasure, callback_ref);
@@ -2166,11 +2166,12 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
  *
  * \param treasure The treasure being brandished.
  * \param callback_ref Lua ref to a function to call when the
- * treasure's dialog finishes (possibly LUA_REFNIL).
+ * treasure's dialog finishes (possibly an empty ref).
  */
 void LuaContext::notify_hero_brandish_treasure(
-    const Treasure& treasure, int callback_ref) {
-
+    const Treasure& treasure,
+    const ScopedLuaRef& callback_ref
+) {
   // This is getting tricky. We will define our own dialog callback
   // that will do some work and call callback_ref.
   std::ostringstream oss;
@@ -2180,17 +2181,11 @@ void LuaContext::notify_hero_brandish_treasure(
   push_item(l, treasure.get_item());
   lua_pushinteger(l, treasure.get_variant());
   push_string(l, treasure.get_savegame_variable());
-  if (callback_ref == LUA_REFNIL) {
-    lua_pushnil(l);
-  }
-  else {
-    push_callback(callback_ref);
-    cancel_callback(callback_ref);  // Now we have the callback as a regular function, so remove the ref.
-  }
+  push_ref(l, callback_ref);
   lua_pushcclosure(l, l_treasure_dialog_finished, 4);
-  int dialog_callback_ref = create_ref();
+  ScopedLuaRef dialog_callback_ref = create_scoped_ref();
 
-  treasure.get_game().start_dialog(dialog_id, LUA_REFNIL, dialog_callback_ref);
+  treasure.get_game().start_dialog(dialog_id, ScopedLuaRef(), dialog_callback_ref);
 }
 
 /**
@@ -3142,9 +3137,13 @@ void LuaContext::notify_shop_treasure_interaction(ShopTreasure& shop_treasure) {
 
   push_shop_treasure(l, shop_treasure);
   lua_pushcclosure(l, l_shop_treasure_description_dialog_finished, 1);
-  int callback_ref = create_ref();
+  ScopedLuaRef callback_ref = create_scoped_ref();
 
-  shop_treasure.get_game().start_dialog(shop_treasure.get_dialog_id(), LUA_REFNIL, callback_ref);
+  shop_treasure.get_game().start_dialog(
+      shop_treasure.get_dialog_id(),
+      ScopedLuaRef(),
+      callback_ref
+  );
 }
 
 /**
@@ -3169,11 +3168,11 @@ int LuaContext::l_shop_treasure_description_dialog_finished(lua_State* l) {
     }
 
     lua_pushinteger(l, shop_treasure.get_price());
-    int price_ref = lua_context.create_ref();
+    ScopedLuaRef price_ref = lua_context.create_scoped_ref();
 
     push_shop_treasure(l, shop_treasure);
     lua_pushcclosure(l, l_shop_treasure_question_dialog_finished, 1);
-    int callback_ref = lua_context.create_ref();
+    ScopedLuaRef callback_ref = lua_context.create_scoped_ref();
 
     game.start_dialog("_shop.question", price_ref, callback_ref);
 
@@ -3220,12 +3219,12 @@ int LuaContext::l_shop_treasure_question_dialog_finished(lua_State* l) {
       else if (equipment.get_money() < shop_treasure.get_price()) {
         // Not enough money.
         Sound::play("wrong");
-        game.start_dialog("_shop.not_enough_money", LUA_REFNIL, LUA_REFNIL);
+        game.start_dialog("_shop.not_enough_money", ScopedLuaRef(), ScopedLuaRef());
       }
       else if (item.has_amount() && item.get_amount() >= item.get_max_amount()) {
         // The player already has the maximum amount of this item.
         Sound::play("wrong");
-        game.start_dialog("_shop.amount_full", LUA_REFNIL, LUA_REFNIL);
+        game.start_dialog("_shop.amount_full", ScopedLuaRef(), ScopedLuaRef());
       }
       else {
 
@@ -3235,7 +3234,7 @@ int LuaContext::l_shop_treasure_question_dialog_finished(lua_State* l) {
           // Give the treasure.
           equipment.remove_money(shop_treasure.get_price());
 
-          game.get_hero().start_treasure(treasure, LUA_REFNIL);
+          game.get_hero().start_treasure(treasure, ScopedLuaRef());
           if (treasure.is_saved()) {
             shop_treasure.remove_from_map();
             game.get_savegame().set_boolean(treasure.get_savegame_variable(), true);

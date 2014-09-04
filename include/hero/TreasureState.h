@@ -18,6 +18,7 @@
 #define SOLARUS_HERO_TREASURE_STATE_H
 
 #include "hero/State.h"
+#include "lua/ScopedLuaRef.h"
 #include "Treasure.h"
 
 namespace solarus {
@@ -29,8 +30,11 @@ class Hero::TreasureState: public Hero::State {
 
   public:
 
-    TreasureState(Hero& hero, const Treasure& treasure, int callback_ref);
-    ~TreasureState();
+    TreasureState(
+        Hero& hero,
+        const Treasure& treasure,
+        const ScopedLuaRef& callback_ref
+    );
 
     virtual void start(const State* previous_state) override;
     virtual void stop(const State* next_state) override;
@@ -40,9 +44,9 @@ class Hero::TreasureState: public Hero::State {
 
   private:
 
-    Treasure treasure;       /**< the treasure to give to the hero */
-    int callback_ref;        /**< Lua ref of a function to call when the
-                              * treasure's dialog finishes. */
+    Treasure treasure;            /**< the treasure to give to the hero */
+    ScopedLuaRef callback_ref;    /**< Lua ref of a function to call when the
+                                   * treasure's dialog finishes. */
 
 };
 

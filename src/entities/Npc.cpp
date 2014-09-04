@@ -15,18 +15,19 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Npc.h"
-#include "entities/Hero.h"
 #include "entities/CarriedItem.h"
-#include "movements/Movement.h"
-#include "lua/LuaContext.h"
-#include "lowlevel/FileTools.h"
+#include "entities/Hero.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/FileTools.h"
 #include "lowlevel/Sound.h"
+#include "lua/LuaContext.h"
+#include "lua/ScopedLuaRef.h"
+#include "movements/Movement.h"
+#include "Equipment.h"
+#include "EquipmentItemUsage.h"
 #include "Game.h"
 #include "Map.h"
 #include "Sprite.h"
-#include "Equipment.h"
-#include "EquipmentItemUsage.h"
 #include <lua.hpp>
 
 namespace solarus {
@@ -245,7 +246,7 @@ bool Npc::notify_action_command_pressed() {
     if (effect != KeysEffect::ACTION_KEY_LIFT) {
       // start the normal behavior
       if (behavior == BEHAVIOR_DIALOG) {
-        get_game().start_dialog(dialog_to_show, LUA_REFNIL, LUA_REFNIL);
+        get_game().start_dialog(dialog_to_show, ScopedLuaRef(), ScopedLuaRef());
       }
       else {
         call_script_hero_interaction();

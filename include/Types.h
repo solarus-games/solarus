@@ -89,6 +89,7 @@ class ExportableToLua;
 class LuaContext;
 class LuaTools;
 class LuaError;
+class ScopedLuaRef;
 
 // drawable objects
 class Sprite;

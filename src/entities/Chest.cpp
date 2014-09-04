@@ -16,18 +16,18 @@
  */
 #include "entities/Chest.h"
 #include "entities/Hero.h"
-#include "KeysEffect.h"
-#include "Game.h"
-#include "Savegame.h"
-#include "Sprite.h"
-#include "Savegame.h"
-#include "Equipment.h"
-#include "EquipmentItem.h"
-#include "Map.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
 #include "lua/LuaContext.h"
+#include "lua/ScopedLuaRef.h"
+#include "Equipment.h"
+#include "EquipmentItem.h"
+#include "KeysEffect.h"
+#include "Map.h"
+#include "Game.h"
+#include "Savegame.h"
+#include "Sprite.h"
 #include <lua.hpp>
 
 namespace solarus {
@@ -365,7 +365,7 @@ void Chest::update() {
       if (!treasure.is_empty()) {
         // Give a treasure to the player.
 
-        get_hero().start_treasure(treasure, LUA_REFNIL);
+        get_hero().start_treasure(treasure, ScopedLuaRef());
         treasure_given = true;
       }
       else {  // The chest is empty.
@@ -410,7 +410,7 @@ bool Chest::notify_action_command_pressed() {
     }
     else if (!get_cannot_open_dialog_id().empty()) {
       Sound::play("wrong");
-      get_game().start_dialog(get_cannot_open_dialog_id(), LUA_REFNIL, LUA_REFNIL);
+      get_game().start_dialog(get_cannot_open_dialog_id(), ScopedLuaRef(), ScopedLuaRef());
     }
 
     return true;

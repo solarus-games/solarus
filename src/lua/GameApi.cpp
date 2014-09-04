@@ -426,8 +426,8 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
   SOLARUS_LUA_BOUNDARY_TRY() {
     Savegame& savegame = check_game(l, 1);
     const std::string& dialog_id = LuaTools::check_string(l, 2);
-    int info_ref = LUA_REFNIL;
-    int callback_ref = LUA_REFNIL;
+    ScopedLuaRef info_ref;
+    ScopedLuaRef callback_ref;
 
     if (!DialogResource::exists(dialog_id)) {
       LuaTools::arg_error(l, 2, std::string("No such dialog: '") + dialog_id + "'");
@@ -444,11 +444,12 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
 
     if (lua_gettop(l) >= 3) {
 
+      LuaContext& lua_context = get_lua_context(l);
       int callback_index = 3;
       if (lua_type(l, 3) != LUA_TFUNCTION) {
         // There is an info parameter.
         lua_pushvalue(l, 3);
-        info_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+        info_ref = lua_context.create_scoped_ref();
         ++callback_index;
       }
 
@@ -456,7 +457,7 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
         // There is a callback.
         LuaTools::check_type(l, callback_index, LUA_TFUNCTION);
         lua_settop(l, callback_index);
-        callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+        callback_ref = lua_context.create_scoped_ref();
       }
     }
     game->start_dialog(dialog_id, info_ref, callback_ref);
@@ -486,10 +487,10 @@ int LuaContext::game_api_stop_dialog(lua_State* l) {
     }
 
     // Optional parameter: status.
-    int status_ref = LUA_REFNIL;
+    ScopedLuaRef status_ref;
     if (lua_gettop(l) >= 2) {
       lua_settop(l, 2);
-      status_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+      status_ref = get_lua_context(l).create_scoped_ref();
     }
 
     game->stop_dialog(status_ref);
@@ -1740,12 +1741,14 @@ void LuaContext::game_on_unpaused(Game& game) {
  * \param game A game.
  * \param dialog The dialog just started.
  * \param info_ref Lua ref to the info parameter to pass to the method,
- * or LUA_REFNIL.
+ * or an empty ref.
  * \return true if the game:on_dialog_started() method is defined.
  */
-bool LuaContext::game_on_dialog_started(Game& game,
-    const Dialog& dialog, int info_ref) {
-
+bool LuaContext::game_on_dialog_started(
+    Game& game,
+    const Dialog& dialog,
+    const ScopedLuaRef& info_ref
+) {
   if (!userdata_has_field(game.get_savegame(), "on_dialog_started")) {
     return false;
   }

@@ -93,9 +93,12 @@ class Game {
     void set_paused(bool paused);
 
     // dialogs
-    void start_dialog(const std::string& dialog_id,
-        int info_ref, int callback_ref);
-    void stop_dialog(int status_ref);
+    void start_dialog(
+        const std::string& dialog_id,
+        const ScopedLuaRef& info_ref,
+        const ScopedLuaRef& callback_ref
+    );
+    void stop_dialog(const ScopedLuaRef& status_ref);
 
     // game over
     void start_game_over();

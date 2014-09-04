@@ -16,15 +16,15 @@
  */
 #include "entities/Crystal.h"
 #include "entities/Hero.h"
+#include "lowlevel/FileTools.h"
+#include "lowlevel/Random.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
 #include "Game.h"
+#include "KeysEffect.h"
 #include "Map.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
-#include "KeysEffect.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/System.h"
-#include "lowlevel/Random.h"
-#include "lowlevel/Sound.h"
 #include <lua.hpp>
 
 namespace solarus {
@@ -122,7 +122,7 @@ bool Crystal::notify_action_command_pressed() {
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // start a dialog
-    get_game().start_dialog("_crystal", LUA_REFNIL, LUA_REFNIL);
+    get_game().start_dialog("_crystal", ScopedLuaRef(), ScopedLuaRef());
     return true;
   }
 

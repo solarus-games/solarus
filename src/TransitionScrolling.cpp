@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -57,16 +57,16 @@ TransitionScrolling::~TransitionScrolling() {
 Rectangle TransitionScrolling::get_previous_map_dst_position(
     int scrolling_direction) {
 
-  const Rectangle& quest_size = Video::get_quest_size();
+  const Size& quest_size = Video::get_quest_size();
 
   Rectangle dst_position(0, 0);
   if (scrolling_direction == 1) {
     // Scroll to the north.
-    dst_position.set_y(quest_size.get_height());
+    dst_position.set_y(quest_size.height);
   }
   else if (scrolling_direction == 2) {
     // Scroll to the west.
-    dst_position.set_x(quest_size.get_width());
+    dst_position.set_x(quest_size.width);
   }
   return dst_position;
 }
@@ -84,9 +84,9 @@ void TransitionScrolling::start() {
   scrolling_direction = (get_game()->get_current_map().get_destination_side() + 2) % 4;
 
   const int scrolling_step = 5;
-  const Rectangle& quest_size = Video::get_quest_size();
-  int width = quest_size.get_width();
-  int height = quest_size.get_height();
+  const Size& quest_size = Video::get_quest_size();
+  int width = quest_size.width;
+  int height = quest_size.height;
   if (scrolling_direction % 2 == 0) {
     // right or left
     width *= 2;
@@ -194,10 +194,10 @@ void TransitionScrolling::draw(Surface& dst_surface) {
       "No previous surface defined for scrolling");
 
   // draw the old map
-  previous_surface->draw(*both_maps_surface, previous_map_dst_position);
+  previous_surface->draw(*both_maps_surface, previous_map_dst_position.get_xy());
 
   // draw the new map
-  dst_surface.draw(*both_maps_surface, current_map_dst_position);
+  dst_surface.draw(*both_maps_surface, current_map_dst_position.get_xy());
 
   // blit both surfaces
   both_maps_surface->draw_region(current_scrolling_position, dst_surface);

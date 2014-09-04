@@ -76,7 +76,7 @@ Chest::Chest(
   set_origin(get_width() / 2, get_height() - 3);
 
   // TODO set this as the default drawn_in_y_order for MapEntity
-  set_drawn_in_y_order(get_sprite().get_max_size().get_height() > get_height());
+  set_drawn_in_y_order(get_sprite().get_max_size().height > get_height());
 }
 
 /**

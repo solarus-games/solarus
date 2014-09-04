@@ -18,6 +18,8 @@
 #define SOLARUS_RECTANGLE_H
 
 #include "Common.h"
+#include "lowlevel/Point.h"
+#include "lowlevel/Size.h"
 #include <SDL_rect.h>
 #include <iosfwd>
 
@@ -41,12 +43,17 @@ class Rectangle {
 
     Rectangle();
     Rectangle(int x, int y);
+    explicit Rectangle(const Point& xy);
+    explicit Rectangle(const Size& size);
     Rectangle(int x, int y, int width, int height);
+    Rectangle(const Point& xy, const Size& size);
 
     int get_x() const;
     int get_y() const;
-    int get_width()  const;
+    Point get_xy() const;
+    int get_width() const;
     int get_height() const;
+    Size get_size() const;
     bool is_flat() const;
 
     void set_x(int x);
@@ -55,23 +62,22 @@ class Rectangle {
     void set_height(int height);
 
     void set_xy(int x, int y);
-    void set_xy(const Rectangle& xy);
+    void set_xy(const Point& xy);
     void set_size(int width, int height);
-    void set_size(const Rectangle& other);
+    void set_size(const Size& other);
 
     void add_x(int dx);
     void add_y(int dy);
     void add_width(int dw);
     void add_height(int dh);
     void add_xy(int dx, int dy);
-    void add_xy(const Rectangle& other);
+    void add_xy(const Point& other);
 
     bool contains(int x, int y) const;
+    bool contains(const Point& point) const;
     bool contains(const Rectangle& other) const;
     bool overlaps(const Rectangle& other) const;
     Rectangle get_center() const;
-
-    bool equals_xy(const Rectangle& other) const;
 
     Rectangle get_intersection(const Rectangle& other) const;
 
@@ -106,6 +112,22 @@ inline Rectangle::Rectangle(int x, int y):
 {}
 
 /**
+ * \brief Creates a rectangle, specifying its position.
+ * \param xy coordinates of the top-left corner
+ */
+inline Rectangle::Rectangle(const Point& xy):
+    Rectangle(xy.x, xy.y)
+{}
+
+/**
+ * \brief Creates a rectangle, specifying its size.
+ * \param size the rectangle's size
+ */
+inline Rectangle::Rectangle(const Size& size):
+    Rectangle(0, 0, size.width, size.height)
+{}
+
+/**
  * \brief Creates a rectangle, specifying its properties.
  * \param x x coordinate of the top-left corner
  * \param y y coordinate of the top-left corner
@@ -117,6 +139,15 @@ inline Rectangle::Rectangle(int x, int y, int width, int height) {
   set_xy(x, y);
   set_size(width, height);
 }
+
+/**
+ * \brief Creates a rectangle, specifying its properties.
+ * \param xy coordinates of the top-left corner
+ * \param size the rectangle's size
+ */
+inline Rectangle::Rectangle(const Point& xy, const Size& size):
+    Rectangle(xy.x, xy.y, size.width, size.height)
+{}
 
 /**
  * \brief Returns the x coordinate of the top-left corner of this rectangle.
@@ -132,6 +163,14 @@ inline int Rectangle::get_x() const {
  */
 inline int Rectangle::get_y() const {
   return rect.y;
+}
+
+/**
+ * \brief Returns the coordinates of the top-left corner of this rectangle.
+ * \return the coordinates of the top-left corner
+ */
+inline Point Rectangle::get_xy() const {
+  return { get_x(), get_y() };
 }
 
 /**
@@ -162,6 +201,14 @@ inline int Rectangle::get_width()  const {
  */
 inline int Rectangle::get_height() const {
   return rect.h;
+}
+
+/**
+ * \brief Returns the size of this rectangle.
+ * \return the size
+ */
+inline Size Rectangle::get_size() const {
+  return { get_width(), get_height() };
 }
 
 /**
@@ -204,7 +251,6 @@ inline void Rectangle::set_height(int height) {
   rect.h = height;
 }
 
-
 /**
  * \brief Sets the coordinates of the top-left corner of this rectangle
  * \param x the new x coordinate
@@ -217,19 +263,16 @@ inline void Rectangle::set_xy(int x, int y) {
 
 /**
  * \brief Sets the coordinates of the top-left corner of this rectangle.
- *
- * The coordinates are represented as a Rectangle whose size is ignored.
- *
- * \param xy a rectangle whose coordinates should be copied from
+ * \param xy the new coordinates
  */
-inline void Rectangle::set_xy(const Rectangle& xy) {
-  set_xy(xy.get_x(), xy.get_y());
+inline void Rectangle::set_xy(const Point& xy) {
+  set_xy(xy.x, xy.y);
 }
 
 /**
  * \brief Sets the size of this rectangle.
  * \param width the new width
- * \param height the new height.
+ * \param height the new height
  */
 inline void Rectangle::set_size(int width, int height) {
   set_width(width);
@@ -238,13 +281,10 @@ inline void Rectangle::set_size(int width, int height) {
 
 /**
  * \brief Sets the size of this rectangle.
- *
- * The size is represented as another rectangle whose coordinates are ignored.
- *
- * \param other a rectangle whose size should be copied from
+ * \param size the new size
  */
-inline void Rectangle::set_size(const Rectangle& other) {
-  set_size(other.get_width(), other.get_height());
+inline void Rectangle::set_size(const Size& size) {
+  set_size(size.width, size.height);
 }
 
 /**
@@ -291,23 +331,10 @@ inline void Rectangle::add_xy(int dx, int dy) {
 
 /**
  * \brief Adds something to both coordinates of this rectangle.
- *
- * The change of coordinates is represented as a rectangle whose size is ignored.
- *
- * \param dxy a rectangle whose coordinates should be added to the current's
+ * \param dxy coordinates that should be added to the current's
  */
-inline void Rectangle::add_xy(const Rectangle& dxy) {
-  add_xy(dxy.get_x(), dxy.get_y());
-}
-
-/**
- * \brief Compares the x and y values of this rectangle with another one.
- * \param other another rectangle
- * \return true if both rectangles have the same x and y values (the size are ignored)
- */
-inline bool Rectangle::equals_xy(const Rectangle& other) const {
-
-  return other.get_x() == get_x() && other.get_y() == get_y();
+inline void Rectangle::add_xy(const Point& dxy) {
+  add_xy(dxy.x, dxy.y);
 }
 
 /**
@@ -317,8 +344,17 @@ inline bool Rectangle::equals_xy(const Rectangle& other) const {
  * \return true if the point is in this rectangle
  */
 inline bool Rectangle::contains(int x, int y) const {
+  return x >= get_x() && x < get_x() + get_width()
+      && y >= get_y() && y < get_y() + get_height();
+}
 
-  return x >= get_x() && x < get_x() + get_width() && y >= get_y() && y < get_y() + get_height();
+/**
+ * \brief Returns whether the specified point is inside this rectangle.
+ * \param point point that may be in this rectangle
+ * \return true if \a point is in this rectangle
+ */
+inline bool Rectangle::contains(const Point& point) const {
+  return contains(point.x, point.y);
 }
 
 /**
@@ -327,11 +363,9 @@ inline bool Rectangle::contains(int x, int y) const {
  * \return true if the specified rectangle is inside this rectangle
  */
 inline bool Rectangle::contains(const Rectangle& other) const {
-
   return contains(other.get_x(), other.get_y())
-    && contains(other.get_x() + other.get_width() - 1, other.get_y() + other.get_height() - 1);
+      && contains(other.get_x() + other.get_width() - 1, other.get_y() + other.get_height() - 1);
 }
-
 
 /**
  * \brief Returns whether or not another rectangle overlaps this one.
@@ -409,10 +443,8 @@ inline Rectangle Rectangle::get_intersection(const Rectangle& other) const {
  * \return true if both rectangles have the same coordinates and size
  */
 inline bool operator==(const Rectangle& lhs, const Rectangle& rhs) {
-
-  return lhs.equals_xy(rhs)
-      && lhs.get_width() == rhs.get_width()
-      && lhs.get_height() == rhs.get_height();
+  return lhs.get_xy() == rhs.get_xy()
+      && lhs.get_size() == rhs.get_size();
 }
 
 /**
@@ -428,4 +460,3 @@ inline bool operator!=(const Rectangle& lhs, const Rectangle& rhs) {
 }
 
 #endif
-

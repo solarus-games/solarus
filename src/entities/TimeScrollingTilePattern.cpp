@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -69,11 +69,11 @@ void TimeScrollingTilePattern::update() {
  * to the map (may be used for scrolling tiles)
  */
 void TimeScrollingTilePattern::draw(Surface& dst_surface,
-    const Rectangle& dst_position, Tileset& tileset,
-    const Rectangle& /* viewport */) {
+    const Point& dst_position, Tileset& tileset,
+    const Point& /* viewport */) {
 
   Rectangle src = position_in_tileset;
-  Rectangle dst = dst_position;
+  Point dst = dst_position;
 
   int offset_x, offset_y; // draw the tile with an offset that depends on the time
 
@@ -90,7 +90,7 @@ void TimeScrollingTilePattern::draw(Surface& dst_surface,
   dst = dst_position;
   src.add_y(offset_y);
   src.add_height(-offset_y);
-  dst.add_x(src.get_width() - offset_x);
+  dst.x += src.get_width() - offset_x;
   src.set_width(offset_x);
   tileset.get_tiles_image().draw_region(src, dst_surface, dst);
 
@@ -98,15 +98,15 @@ void TimeScrollingTilePattern::draw(Surface& dst_surface,
   dst = dst_position;
   src.add_x(offset_x);
   src.add_width(-offset_x);
-  dst.add_y(src.get_height() - offset_y);
+  dst.y += src.get_height() - offset_y;
   src.set_height(offset_y);
   tileset.get_tiles_image().draw_region(src, dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
-  dst.add_x(src.get_width() - offset_x);
+  dst.x += src.get_width() - offset_x;
   src.set_width(offset_x);
-  dst.add_y(src.get_height() - offset_y);
+  dst.y += src.get_height() - offset_y;
   src.set_height(offset_y);
   tileset.get_tiles_image().draw_region(src, dst_surface, dst);
 }

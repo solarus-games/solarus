@@ -95,28 +95,28 @@ class MapEntity: public ExportableToLua {
     int get_y() const;
     void set_x(int x);
     void set_y(int y);
-    const Rectangle get_xy() const;
-    void set_xy(const Rectangle& xy);
+    const Point get_xy() const;
+    void set_xy(const Point& xy);
     void set_xy(int x, int y);
-    const Rectangle get_displayed_xy() const;
+    const Point get_displayed_xy() const;
 
     int get_width() const;
     int get_height() const;
-    const Rectangle& get_size() const;
+    Size get_size() const;
     void set_size(int width, int height);
-    void set_size(const Rectangle& size);
+    void set_size(const Size& size);
     const Rectangle& get_bounding_box() const;
     void set_bounding_box(const Rectangle& bounding_box);
-    const Rectangle& get_origin() const;
+    const Point& get_origin() const;
     void set_origin(int x, int y);
-    void set_origin(const Rectangle& origin);
+    void set_origin(const Point& origin);
     int get_top_left_x() const;
     int get_top_left_y() const;
-    const Rectangle get_top_left_xy() const;
+    const Point get_top_left_xy() const;
     void set_top_left_x(int x);
     void set_top_left_y(int y);
     void set_top_left_xy(int x, int y);
-    void set_top_left_xy(const Rectangle& xy);
+    void set_top_left_xy(const Point& xy);
 
     virtual const Rectangle get_facing_point() const;
     const Rectangle get_touching_point(int direction) const;
@@ -186,7 +186,7 @@ class MapEntity: public ExportableToLua {
     const Detector* get_facing_entity() const;
     void set_facing_entity(Detector* facing_entity);
     virtual void notify_facing_entity_changed(Detector* facing_entity);
-    static const Rectangle& direction_to_xy_move(int direction8);
+    static const Point& direction_to_xy_move(int direction8);
 
     // geometry
     bool overlaps(const Rectangle& rectangle) const;
@@ -328,7 +328,7 @@ class MapEntity: public ExportableToLua {
     Ground ground_below;                        /**< Kind of ground under this entity: grass, shallow water, etc.
                                                  * Only used by entities sensible to their ground. */
 
-    Rectangle origin;                           /**< Coordinates of the origin point of the entity,
+    Point origin;                               /**< Coordinates of the origin point of the entity,
                                                  * relative to the top-left corner of its rectangle.
                                                  * Remember that when you call get_x() and get_y(), you get the coordinates
                                                  * of the origin point on the map, not the coordinates of the rectangle's

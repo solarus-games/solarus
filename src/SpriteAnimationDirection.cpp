@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,7 +29,7 @@ namespace solarus {
  */
 SpriteAnimationDirection::SpriteAnimationDirection(
     const std::vector<Rectangle>& frames,
-    const Rectangle& origin):
+    const Point& origin):
   frames(frames),
   origin(origin) {
 
@@ -50,10 +50,10 @@ SpriteAnimationDirection::~SpriteAnimationDirection() {
  * \brief Returns the size of a frame.
  * \return The size of a frame.
  */
-Rectangle SpriteAnimationDirection::get_size() const {
+Size SpriteAnimationDirection::get_size() const {
 
   Debug::check_assertion(get_nb_frames() > 0, "Invalid number of frames");
-  return Rectangle(0, 0, frames[0].get_width(), frames[0].get_height());
+  return { frames[0].get_width(), frames[0].get_height() };
 }
 
 /**
@@ -89,14 +89,13 @@ const Rectangle& SpriteAnimationDirection::get_frame(int frame) const {
  * \param src_image the image from which the frame is extracted
  */
 void SpriteAnimationDirection::draw(Surface& dst_surface,
-    const Rectangle& dst_position, int current_frame, Surface& src_image) {
+    const Point& dst_position, int current_frame, Surface& src_image) {
 
   const Rectangle& current_frame_rect = get_frame(current_frame);
 
   // Position of the sprite's upper left corner.
-  Rectangle position_top_left(dst_position);
-  position_top_left.add_xy(-origin.get_x(), -origin.get_y());
-  position_top_left.set_size(current_frame_rect);
+  Point position_top_left = dst_position;
+  position_top_left -= origin;
 
   src_image.draw_region(current_frame_rect, dst_surface, position_top_left);
 }

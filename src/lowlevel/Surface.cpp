@@ -1,21 +1,22 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/Surface.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/Size.h"
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
@@ -187,8 +188,8 @@ Surface* Surface::create(int width, int height) {
  * \param size The size in pixels.
  * \return The created surface.
  */
-Surface* Surface::create(const Rectangle& size) {
-  return new Surface(size.get_width(), size.get_height());
+Surface* Surface::create(const Size& size) {
+  return new Surface(size.width, size.height);
 }
 
 /**
@@ -342,9 +343,8 @@ int Surface::get_height() const {
  * \brief Returns the size of this surface.
  * \return the size of this surface
  */
-const Rectangle Surface::get_size() const {
-
-  return Rectangle(0, 0, get_width(), get_height());
+const Size Surface::get_size() const {
+  return { get_width(), get_height() };
 }
 
 /**
@@ -531,11 +531,11 @@ void Surface::fill_with_color(const Color& color) {
 void Surface::fill_with_color(const Color& color, const Rectangle& where) {
 
   // Create a surface with the requested size and color and draw it.
-  Surface* colored_surface = Surface::create(where);
+  Surface* colored_surface = Surface::create(where.get_size());
   colored_surface->set_software_destination(false);
   colored_surface->internal_color = new Color(color);
   RefCountable::ref(colored_surface);
-  colored_surface->raw_draw_region(colored_surface->get_size(), *this, where);
+  colored_surface->raw_draw_region(Rectangle(colored_surface->get_size()), *this, where.get_xy());
   RefCountable::unref(colored_surface);
 }
 
@@ -544,17 +544,16 @@ void Surface::fill_with_color(const Color& color, const Rectangle& where) {
  * \param src_surface The Surface to draw.
  * \param region The subrectangle to draw in the source surface.
  * \param dst_position Coordinates on this surface.
- * The width and height of this rectangle are ignored.
  */
 void Surface::add_subsurface(
     Surface& src_surface,
     const Rectangle& region,
-    const Rectangle& dst_position) {
+    const Point& dst_position) {
 
   SubSurfaceNode* node = new SubSurfaceNode(
       &src_surface,
       region,
-      dst_position,
+      Rectangle(dst_position),
       src_surface.subsurfaces
   );
   RefCountable::ref(node);
@@ -583,7 +582,7 @@ void Surface::clear_subsurfaces() {
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
  */
-void Surface::raw_draw(Surface& dst_surface, const Rectangle& dst_position) {
+void Surface::raw_draw(Surface& dst_surface, const Point& dst_position) {
 
   Rectangle region(0, 0, width, height);
   raw_draw_region(region, dst_surface, dst_position);
@@ -594,12 +593,11 @@ void Surface::raw_draw(Surface& dst_surface, const Rectangle& dst_position) {
  * \param region The subrectangle to draw in this object.
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
- * The width and height of this rectangle are ignored.
  */
 void Surface::raw_draw_region(
     const Rectangle& region,
     Surface& dst_surface,
-    const Rectangle& dst_position) {
+    const Point& dst_position) {
 
   if (dst_surface.software_destination  // The destination surface is in RAM.
       || !Video::is_acceleration_enabled()  // The rendering is in RAM.
@@ -630,7 +628,7 @@ void Surface::raw_draw_region(
         subsurface->src_surface->raw_draw_region(
             subsurface->src_rect,
             *this,
-            subsurface->dst_rect
+            subsurface->dst_rect.get_xy()
         );
         RefCountable::unref(subsurface);
       }
@@ -652,8 +650,8 @@ void Surface::raw_draw_region(
       if (internal_color->get_internal_color()->a == 255) {
         // Fill with opaque color: we can directly modify the destination pixels.
         Rectangle dst_rect(
-            dst_position.get_x(), dst_position.get_y(),
-            region.get_width(), region.get_height()
+            dst_position,
+            region.get_size()
         );
         SDL_FillRect(
             dst_surface.internal_surface,
@@ -772,7 +770,7 @@ void Surface::render(
   //FIXME SDL_RenderSetClipRect is buggy for now, but should be fixed soon.
   // It means that software and hardware surface doesn't have the exact same behavior for now.
   // Uncomment the two lines using it when https://bugzilla.libsdl.org/show_bug.cgi?id=2336 will be solved.
-  
+
   // Accelerate the internal software surface.
   if (internal_surface != nullptr) {
 

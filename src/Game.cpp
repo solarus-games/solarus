@@ -194,9 +194,9 @@ Hero& Game::get_hero() {
  *
  * \return the position of the hero
  */
-const Rectangle& Game::get_hero_xy() {
+const Point& Game::get_hero_xy() {
 
-  static Rectangle xy;
+  static Point xy;
   xy = hero->get_xy();
   return xy;
 }

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -69,7 +69,7 @@ Block::Block(
   set_origin(8, 13);
   set_direction(direction);
   create_sprite(sprite_name);
-  set_drawn_in_y_order(get_sprite().get_size().get_height() > 16);
+  set_drawn_in_y_order(get_sprite().get_size().height > 16);
 }
 
 /**
@@ -293,10 +293,10 @@ void Block::stop_movement_by_hero() {
   when_can_move = System::now() + moving_delay;
 
   // see if the block has moved
-  if (get_x() != last_position.get_x() || get_y() != last_position.get_y()) {
+  if (get_x() != last_position.x || get_y() != last_position.y) {
 
     // the block has moved
-    last_position.set_xy(get_x(), get_y()); // save the new position for next time
+    last_position = { get_x(), get_y() }; // save the new position for next time
 
     if (maximum_moves == 1) { // if the block could be moved only once,
       maximum_moves = 0;      // then it cannot move anymore
@@ -332,7 +332,7 @@ void Block::reset() {
   }
 
   set_xy(initial_position);
-  last_position.set_xy(initial_position);
+  last_position = initial_position;
   this->maximum_moves = initial_maximum_moves;
 }
 

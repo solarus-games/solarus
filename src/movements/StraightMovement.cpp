@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -61,7 +61,7 @@ StraightMovement::~StraightMovement() {
 void StraightMovement::notify_object_controlled() {
 
   Movement::notify_object_controlled();
-  initial_xy.set_xy(get_xy());
+  initial_xy = get_xy();
 }
 
 /**
@@ -120,7 +120,7 @@ void StraightMovement::set_x_speed(double x_speed) {
     set_next_move_date_x(now + x_delay);
   }
   angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
-  initial_xy.set_xy(get_xy());
+  initial_xy = get_xy();
   finished = false;
 
   notify_movement_changed();
@@ -155,7 +155,7 @@ void StraightMovement::set_y_speed(double y_speed) {
     set_next_move_date_y(now + y_delay);
   }
   angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
-  initial_xy.set_xy(get_xy());
+  initial_xy = get_xy();
   finished = false;
 
   notify_movement_changed();
@@ -622,7 +622,7 @@ void StraightMovement::update() {
     while (x_move_now || y_move_now) { // while it's time to move
 
       // save the current coordinates
-      Rectangle old_xy(get_x(), get_y());
+      Point old_xy = { get_x(), get_y() };
 
       if (x_move_now) {
         // it's time to make an x move
@@ -657,7 +657,7 @@ void StraightMovement::update() {
 
         // the movement was successful if the entity's coordinates have changed
         // and the movement was not stopped
-        bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y())
+        bool success = (get_x() != old_xy.x || get_y() != old_xy.y)
             && (x_move != 0 || y_move != 0);
 
         if (!success) {
@@ -667,8 +667,8 @@ void StraightMovement::update() {
 
       now = System::now();
 
-      if (!finished && max_distance != 0 && Geometry::get_distance(initial_xy.get_x(),
-          initial_xy.get_y(), get_x(), get_y()) >= max_distance) {
+      if (!finished && max_distance != 0 && Geometry::get_distance(initial_xy.x,
+          initial_xy.y, get_x(), get_y()) >= max_distance) {
         set_finished();
       }
       else {

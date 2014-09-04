@@ -243,7 +243,7 @@ void MapEntity::update_ground_below() {
 
   Ground previous_ground = this->ground_below;
   this->ground_below = get_map().get_ground(
-      get_layer(), get_ground_point()
+      get_layer(), get_ground_point().get_xy()
   );
   if (this->ground_below != previous_ground) {
     notify_ground_below_changed();
@@ -645,7 +645,7 @@ void MapEntity::notify_direction_changed() {
  * \return the x position of the entity
  */
 int MapEntity::get_x() const {
-  return bounding_box.get_x() + origin.get_x();
+  return bounding_box.get_x() + origin.x;
 }
 
 /**
@@ -653,7 +653,7 @@ int MapEntity::get_x() const {
  * \return the y position of the entity
  */
 int MapEntity::get_y() const {
-  return bounding_box.get_y() + origin.get_y();
+  return bounding_box.get_y() + origin.y;
 }
 
 /**
@@ -664,7 +664,7 @@ int MapEntity::get_y() const {
  * \param x the new x position
  */
 void MapEntity::set_x(int x) {
-  bounding_box.set_x(x - origin.get_x());
+  bounding_box.set_x(x - origin.x);
 }
 
 /**
@@ -675,7 +675,7 @@ void MapEntity::set_x(int x) {
  * \param y the new y position
  */
 void MapEntity::set_y(int y) {
-  bounding_box.set_y(y - origin.get_y());
+  bounding_box.set_y(y - origin.y);
 }
 
 /**
@@ -685,8 +685,8 @@ void MapEntity::set_y(int y) {
  *
  * \return the coordinates of the entity on the map
  */
-const Rectangle MapEntity::get_xy() const {
-  return Rectangle(get_x(), get_y());
+const Point MapEntity::get_xy() const {
+  return { get_x(), get_y() };
 }
 
 /**
@@ -704,13 +704,13 @@ void MapEntity::set_xy(int x, int y) {
 
 /**
  * \brief Sets the coordinates of the origin point of the entity, relative to the map.
- * 
+ *
  * This function sets the coordinates of the point as returned by get_x() and get_y().
  *
  * \param xy the new coordinates of the entity on the map (the width and height are ignored)
  */
-void MapEntity::set_xy(const Rectangle& xy) {
-  set_xy(xy.get_x(), xy.get_y());
+void MapEntity::set_xy(const Point& xy) {
+  set_xy(xy.x, xy.y);
 }
 
 /**
@@ -733,8 +733,8 @@ int MapEntity::get_top_left_y() const {
  * \brief Returns the position of the entity's top-left corner.
  * \return The position of the entity's top-left corner.
  */
-const Rectangle MapEntity::get_top_left_xy() const {
-  return Rectangle(get_top_left_x(), get_top_left_y(), 1, 1);
+const Point MapEntity::get_top_left_xy() const {
+  return { get_top_left_x(), get_top_left_y() };
 }
 
 /**
@@ -770,8 +770,8 @@ void MapEntity::set_top_left_xy(int x, int y) {
  * \brief Sets the position of the entity's top-left corner.
  * \param xy The new top-left position.
  */
-void MapEntity::set_top_left_xy(const Rectangle& xy) {
-  set_top_left_xy(xy.get_x(), xy.get_y());
+void MapEntity::set_top_left_xy(const Point& xy) {
+  set_top_left_xy(xy.x, xy.y);
 }
 
 /**
@@ -783,7 +783,7 @@ void MapEntity::set_top_left_xy(const Rectangle& xy) {
  *
  * \return the coordinates of the entity on the map
  */
-const Rectangle MapEntity::get_displayed_xy() const {
+const Point MapEntity::get_displayed_xy() const {
 
   if (get_movement() == nullptr) {
     return get_xy();
@@ -810,11 +810,10 @@ int MapEntity::get_height() const {
 
 /**
  * \brief Returns the size of the entity.
- * \return a rectangle whose width and height represent the size of the entity
- * (its coordinates should be ignored)
+ * \return the size of the entity
  */
-const Rectangle& MapEntity::get_size() const {
-  return bounding_box;
+Size MapEntity::get_size() const {
+  return bounding_box.get_size();
 }
 
 /**
@@ -831,11 +830,11 @@ void MapEntity::set_size(int width, int height) {
 
 /**
  * \brief Sets the size of the entity.
- * \param size a rectangle having the width and height to set to the entity
+ * \param size to set to the entity
  */
-void MapEntity::set_size(const Rectangle& size) {
+void MapEntity::set_size(const Size& size) {
 
-  set_size(size.get_width(), size.get_height());
+  bounding_box.set_size(size);
 }
 
 /**
@@ -1090,7 +1089,7 @@ bool MapEntity::has_prefix(const std::string& prefix) const {
  * relative to the top-left corner of its rectangle.
  * \return the origin point
  */
-const Rectangle& MapEntity::get_origin() const {
+const Point& MapEntity::get_origin() const {
   return origin;
 }
 
@@ -1102,8 +1101,8 @@ const Rectangle& MapEntity::get_origin() const {
  */
 void MapEntity::set_origin(int x, int y) {
 
-  bounding_box.add_xy(origin.get_x() - x, origin.get_y() - y);
-  origin.set_xy(x, y);
+  bounding_box.add_xy(origin.x - x, origin.y - y);
+  origin = { x, y };
 }
 
 /**
@@ -1111,8 +1110,8 @@ void MapEntity::set_origin(int x, int y) {
  * relative to the top-left corner of its rectangle.
  * \param origin x and y coordinates of the origin
  */
-void MapEntity::set_origin(const Rectangle& origin) {
-  set_origin(origin.get_x(), origin.get_y());
+void MapEntity::set_origin(const Point& origin) {
+  set_origin(origin.x, origin.y);
 }
 
 /**
@@ -1558,19 +1557,19 @@ void MapEntity::notify_moved_by(MapEntity& /* entity */) {
 /**
  * \brief Converts a direction into the corresponding one-pixel move on x and y.
  * \param direction8 a direction (0 to 7)
- * \return a rectangle with x and y set to -1, 0 or 1 depending on the direction
+ * \return a point with x and y set to -1, 0 or 1 depending on the direction
  */
-const Rectangle& MapEntity::direction_to_xy_move(int direction8) {
+const Point& MapEntity::direction_to_xy_move(int direction8) {
 
-  static const Rectangle directions_to_xy_moves[] = {
-    Rectangle( 1, 0),
-    Rectangle( 1,-1),
-    Rectangle( 0,-1),
-    Rectangle(-1,-1),
-    Rectangle(-1, 0),
-    Rectangle(-1, 1),
-    Rectangle( 0, 1),
-    Rectangle( 1, 1)
+  static const Point directions_to_xy_moves[] = {
+    {  1,  0 },
+    {  1, -1 },
+    {  0, -1 },
+    { -1, -1 },
+    { -1,  0 },
+    { -1,  1 },
+    {  0,  1 },
+    {  1,  1 }
   };
 
   return directions_to_xy_moves[direction8];
@@ -1943,13 +1942,13 @@ bool MapEntity::overlaps_camera() const {
   }
 
   for (Sprite* sprite: sprites) {
-    const Rectangle& sprite_size = sprite->get_size();
-    const Rectangle& sprite_origin = sprite->get_origin();
+    const Size& sprite_size = sprite->get_size();
+    const Point& sprite_origin = sprite->get_origin();
     const Rectangle sprite_bounding_box(
-        get_x() - sprite_origin.get_x(),
-        get_y() - sprite_origin.get_y(),
-        sprite_size.get_width(),
-        sprite_size.get_height()
+        get_x() - sprite_origin.x,
+        get_y() - sprite_origin.y,
+        sprite_size.width,
+        sprite_size.height
     );
     if (sprite_bounding_box.overlaps(camera_position)) {
       return true;
@@ -2044,21 +2043,21 @@ double MapEntity::get_angle(
     const Sprite* other_sprite) const {
 
   // Add the coordinates of sprites as offsets.
-  Rectangle this_offset(0, 0);
+  Point this_offset;
   if (this_sprite != nullptr) {
-    this_offset.add_xy(this_sprite->get_xy());
+    this_offset += this_sprite->get_xy();
   }
 
-  Rectangle other_offset(0, 0);
+  Point other_offset;
   if (other_sprite != nullptr) {
-    other_offset.add_xy(other_sprite->get_xy());
+    other_offset += other_sprite->get_xy();
   }
 
   return Geometry::get_angle(
-      get_x() + this_offset.get_x(),
-      get_y() + this_offset.get_y(),
-      other.get_x() + other_offset.get_x(),
-      other.get_y() + other_offset.get_y()
+      get_x() + this_offset.x,
+      get_y() + this_offset.y,
+      other.get_x() + other_offset.x,
+      other.get_y() + other_offset.y
   );
 }
 

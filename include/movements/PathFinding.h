@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -18,6 +18,7 @@
 #define SOLARUS_PATH_FINDING_H
 
 #include "Common.h"
+#include "lowlevel/Point.h"
 #include "lowlevel/Rectangle.h"
 #include <list>
 #include <map>
@@ -55,7 +56,7 @@ class PathFinding {
 
      public:
 
-      Rectangle location; /**< location of this node on the map */
+      Point location;     /**< location of this node on the map */
       int index;          /**< index of this node's square on the map (depends on the location) */
 
       // total_cost = previous_cost + heuristic
@@ -69,13 +70,13 @@ class PathFinding {
       bool operator<(const Node& other) const;
     };
 
-    int get_square_index(const Rectangle& location) const;
-    int get_manhattan_distance(const Rectangle& point1, const Rectangle& point2) const;
+    int get_square_index(const Point& location) const;
+    int get_manhattan_distance(const Point& point1, const Point& point2) const;
     bool is_node_transition_valid(const Node& node, int direction) const;
     void add_index_sorted(Node* node);
     std::string rebuild_path(const Node* final_node);
 
-    static const Rectangle neighbours_locations[];
+    static const Point neighbours_locations[];
     static const Rectangle transition_collision_boxes[];
 
     Map& map;                          /**< the map */

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -61,7 +61,7 @@ class PathMovement: public PixelMovement {
     bool get_snap_to_grid() const;
     void set_snap_to_grid(bool snap_to_grid);
 
-    Rectangle get_xy_change() const;
+    Point get_xy_change() const;
     int get_current_direction() const;
     int get_total_distance_covered() const;
     virtual int get_displayed_direction4() const override;
@@ -83,7 +83,7 @@ class PathMovement: public PixelMovement {
     void restart();
 
     void snap();
-    void set_snapping_trajectory(const Rectangle& src, const Rectangle& dst);
+    void set_snapping_trajectory(const Point& src, const Point& dst);
 
     std::string initial_path;          /**< the path: each character is a direction ('0' to '7')
                                         * and corresponds to a trajectory of 8 pixels (performed by PixelMovement) */

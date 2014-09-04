@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -106,7 +106,7 @@ void FollowMovement::update() {
  * should be displayed.
  * \return the coordinates to use to display the object controlled by this movement
  */
-const Rectangle FollowMovement::get_displayed_xy() const {
+const Point FollowMovement::get_displayed_xy() const {
 
   if (entity_followed == nullptr) {
     return get_xy();
@@ -115,15 +115,13 @@ const Rectangle FollowMovement::get_displayed_xy() const {
   // if the followed entity is displayed at a different position than its real position,
   // we apply the same difference when displaying this entity
 
-  const Rectangle& followed_xy = entity_followed->get_xy();
-  const Rectangle& followed_displayed_xy = entity_followed->get_displayed_xy();
+  const Point& followed_xy = entity_followed->get_xy();
+  const Point& followed_displayed_xy = entity_followed->get_displayed_xy();
 
-  int dx = followed_displayed_xy.get_x() - followed_xy.get_x();
-  int dy = followed_displayed_xy.get_y() - followed_xy.get_y();
+  int dx = followed_displayed_xy.x - followed_xy.x;
+  int dy = followed_displayed_xy.y - followed_xy.y;
 
-  Rectangle displayed_xy = get_xy();
-  displayed_xy.add_xy(dx, dy);
-  return displayed_xy;
+  return get_xy() + Point(dx, dy);
 }
 
 }

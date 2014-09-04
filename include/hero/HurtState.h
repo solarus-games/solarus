@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,7 +29,7 @@ class Hero::HurtState: public Hero::State {
   public:
 
     HurtState(Hero& hero,
-        const Rectangle* source_xy,
+        const Point* source_xy,
         int damage);
     ~HurtState();
 
@@ -51,7 +51,7 @@ class Hero::HurtState: public Hero::State {
 
     bool has_source;              /**< Whether there is a source_xy rectangle.
                                    * If no, the hero does not move. */
-    const Rectangle source_xy;    /**< Coordinates of whatever is hurting the
+    const Point source_xy;        /**< Coordinates of whatever is hurting the
                                    * hero (usually an enemy). */
     int damage;                   /**< Number of life points to remove
                                    * (this number may be reduced by the tunic

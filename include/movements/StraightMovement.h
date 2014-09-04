@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -18,6 +18,7 @@
 #define SOLARUS_STRAIGHT_MOVEMENT_H
 
 #include "Common.h"
+#include "lowlevel/Point.h"
 #include "movements/Movement.h"
 
 namespace solarus {
@@ -97,7 +98,7 @@ class StraightMovement: public Movement {
     int x_move;                  /**< Number of pixels of the next x move : 0, 1 or -1. */
     int y_move;                  /**< Number of pixels of the next y move : 0, 1 or -1. */
 
-    Rectangle initial_xy;        /**< Initial position when the movement started
+    Point initial_xy;            /**< Initial position when the movement started
                                   * (reset whenever the speed of the angle changes) */
     int max_distance;            /**< After this distance in pixels from the initial position,
                                   * or when an obstacle is reached, the movement will stop

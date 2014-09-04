@@ -33,7 +33,7 @@ namespace solarus {
  */
 VideoMode::VideoMode(
     const std::string& name,
-    const Rectangle& initial_window_size,
+    const Size& initial_window_size,
     PixelFilter* software_filter,
     Shader* hardware_filter
 ):
@@ -67,7 +67,7 @@ const std::string& VideoMode::get_name() const {
  * \brief Returns the default size of the window when selecting this mode.
  * \return Default size of the window when selecting this video mode.
  */
-const Rectangle& VideoMode::get_initial_window_size() const {
+const Size& VideoMode::get_initial_window_size() const {
   return initial_window_size;
 }
 
@@ -88,4 +88,3 @@ Shader* VideoMode::get_hardware_filter() const {
 }
 
 }
-

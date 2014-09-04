@@ -151,17 +151,17 @@ int LuaContext::drawable_api_draw(lua_State* l) {
 int LuaContext::drawable_api_draw_region(lua_State* l) {
 
   Drawable& drawable = check_drawable(l, 1);
-  Rectangle region(
+  Rectangle region = {
       luaL_checkint(l, 2),
       luaL_checkint(l, 3),
       luaL_checkint(l, 4),
       luaL_checkint(l, 5)
-  );
+  };
   Surface& dst_surface = check_surface(l, 6);
-  Rectangle dst_position(
+  Point dst_position = {
      luaL_optint(l, 7, 0),
      luaL_optint(l, 8, 0)
-  );
+  };
   drawable.draw_region(region, dst_surface, dst_position);
 
   return 0;
@@ -250,8 +250,8 @@ int LuaContext::drawable_api_get_xy(lua_State* l) {
 
   Drawable& drawable = check_drawable(l, 1);
 
-  lua_pushinteger(l, drawable.get_xy().get_x());
-  lua_pushinteger(l, drawable.get_xy().get_y());
+  lua_pushinteger(l, drawable.get_xy().x);
+  lua_pushinteger(l, drawable.get_xy().y);
   return 2;
 }
 
@@ -266,7 +266,7 @@ int LuaContext::drawable_api_set_xy(lua_State* l) {
   int x = luaL_checkint(l, 2);
   int y = luaL_checkint(l, 3);
 
-  drawable.set_xy(Rectangle(x, y));
+  drawable.set_xy(Point(x, y));
 
   return 0;
 }

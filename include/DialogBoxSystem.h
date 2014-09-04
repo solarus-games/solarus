@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "Dialog.h"
 #include "GameCommands.h"
-#include "lowlevel/Rectangle.h"
+#include "lowlevel/Point.h"
 #include <list>
 
 namespace solarus {
@@ -64,7 +64,7 @@ class DialogBoxSystem {
     static const int nb_visible_lines = 3;          /**< Maximum number of visible lines. */
     std::list<std::string> remaining_lines;         /**< Text of each line still to be displayed. */
     TextSurface* line_surfaces[nb_visible_lines];   /**< Text surface of each visible line. */
-    Rectangle text_position;                        /**< Destination position of the first line. */
+    Point text_position;                            /**< Destination position of the first line. */
     bool is_question;                               /**< Whether the dialog is a question with two possible answers. */
     bool selected_first_answer;                     /**< If there is a question: whether the first or second answer is selected. */
 };

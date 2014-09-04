@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -69,7 +69,7 @@ CircleMovement::~CircleMovement() {
  *
  * \param center_point center of the circles to make
  */
-void CircleMovement::set_center(const Rectangle& center_point) {
+void CircleMovement::set_center(const Point& center_point) {
 
   RefCountable::unref(this->center_entity);
 
@@ -93,7 +93,7 @@ void CircleMovement::set_center(MapEntity& center_entity, int x, int y) {
 
   this->center_entity = &center_entity;
   RefCountable::ref(this->center_entity);
-  this->center_point.set_xy(x, y);
+  this->center_point = { x, y };
   recompute_position();
 }
 
@@ -328,9 +328,9 @@ void CircleMovement::set_loop(uint32_t delay) {
 void CircleMovement::update() {
 
   if (center_entity != nullptr && center_entity->is_being_removed()) {
-    set_center(Rectangle(
-          center_entity->get_x() + center_point.get_x(),
-          center_entity->get_y() + center_point.get_y()));
+    set_center(Point(
+          center_entity->get_x() + center_point.x,
+          center_entity->get_y() + center_point.y));
   }
 
   if (is_suspended()) {
@@ -397,14 +397,14 @@ void CircleMovement::update() {
  */
 void CircleMovement::recompute_position() {
 
-  Rectangle center = this->center_point;
+  Point center = this->center_point;
   if (center_entity != nullptr) {
-    center.add_xy(center_entity->get_xy());
+    center += center_entity->get_xy();
   }
 
-  const Rectangle& xy = Geometry::get_xy(center, Geometry::degrees_to_radians(current_angle), current_radius);
+  Point xy = Geometry::get_xy(center, Geometry::degrees_to_radians(current_angle), current_radius);
   if (get_entity() == nullptr
-      || !test_collision_with_obstacles(xy.get_x() - get_entity()->get_x(), xy.get_y() - get_entity()->get_y())) {
+      || !test_collision_with_obstacles(xy.x - get_entity()->get_x(), xy.y - get_entity()->get_y())) {
     set_xy(xy);
     notify_position_changed();
   }

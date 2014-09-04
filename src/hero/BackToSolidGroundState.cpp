@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -19,7 +19,6 @@
 #include "hero/HeroSprites.h"
 #include "entities/MapEntities.h"
 #include "movements/TargetMovement.h"
-#include "lowlevel/Rectangle.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
 #include "Map.h"
@@ -41,14 +40,14 @@ Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
   end_date(0),
   with_sound(with_sound) {
 
-  if (use_memorized_xy && hero.get_target_solid_ground_coords().get_x() != -1) {
+  if (use_memorized_xy && hero.get_target_solid_ground_coords().x != -1) {
     // go back to a target point specified earlier
-    this->target_xy.set_xy(hero.get_target_solid_ground_coords());
+    this->target_xy = hero.get_target_solid_ground_coords();
     this->target_layer = hero.get_target_solid_ground_layer();
   }
   else {
     // just go back to the last solid ground location
-    this->target_xy.set_xy(hero.get_last_solid_ground_coords());
+    this->target_xy = hero.get_last_solid_ground_coords();
     this->target_layer = hero.get_last_solid_ground_layer();
   }
 }
@@ -69,7 +68,7 @@ void Hero::BackToSolidGroundState::start(const State* previous_state) {
   State::start(previous_state);
 
   Hero& hero = get_hero();
-  hero.set_movement(new TargetMovement(nullptr, target_xy.get_x(), target_xy.get_y(), 144, true));
+  hero.set_movement(new TargetMovement(nullptr, target_xy.x, target_xy.y, 144, true));
   get_entities().set_entity_layer(hero, target_layer);
   get_entities().remove_boomerang();
 }

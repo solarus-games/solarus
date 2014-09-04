@@ -182,7 +182,7 @@ void MainLoop::run() {
     lag += last_frame_duration;
     // At this point, lag represents how much late the simulated time with
     // compared to the real time.
- 
+
     if (lag >= 200) {
       // Huge lag: don't try to catch up.
       // Maybe we have just made a one-time heavy operation like loading a

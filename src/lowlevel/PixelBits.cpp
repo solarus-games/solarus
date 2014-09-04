@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,7 +42,9 @@ PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position):
     "Attempt to read a surface that doesn't have pixel buffer in RAM.");
 
   // Clip the rectangle passed as parameter.
-  const Rectangle clipped_image_position(image_position.get_intersection(surface.get_size()));
+  const Rectangle clipped_image_position(
+      image_position.get_intersection(Rectangle(surface.get_size()))
+  );
 
   if (clipped_image_position.is_flat()) {
     return;
@@ -102,16 +104,14 @@ PixelBits::~PixelBits() {
  * \brief Detects whether the image represented by these pixel bits is
  * overlapping another image.
  * \param other The other image.
- * \param location1 Position of the upper-left corner of this image on the map
- * (only x and y must be specified).
- * \param location2 Position of the upper-left corner of the other image
- * on the map (only x and y must be specified).
+ * \param location1 Position of the upper-left corner of this image on the map.
+ * \param location2 Position of the upper-left corner of the other image.
  * \return \c true if there is a collision.
  */
 bool PixelBits::test_collision(
     const PixelBits& other,
-    const Rectangle& location1,
-    const Rectangle& location2) const {
+    const Point& location1,
+    const Point& location2) const {
 
   const bool debug_pixel_collisions = false;
 
@@ -121,8 +121,8 @@ bool PixelBits::test_collision(
   }
 
   // Compute both bounding boxes.
-  const Rectangle bounding_box1(location1.get_x(), location1.get_y(), width, height);
-  const Rectangle bounding_box2(location2.get_x(), location2.get_y(), other.width, other.height);
+  const Rectangle bounding_box1(location1.x, location1.y, width, height);
+  const Rectangle bounding_box2(location2.x, location2.y, other.width, other.height);
 
   // Check collision between the two bounding boxes.
   if (!bounding_box1.overlaps(bounding_box2)) {

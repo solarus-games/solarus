@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -18,7 +18,7 @@
 #define SOLARUS_SPRITE_ANIMATION_SET_H
 
 #include "Common.h"
-#include "lowlevel/Rectangle.h"
+#include "lowlevel/Size.h"
 #include <map>
 #include <string>
 
@@ -50,7 +50,7 @@ class SpriteAnimationSet {
 
     void enable_pixel_collisions();
     bool are_pixel_collisions_enabled() const;
-    const Rectangle& get_max_size() const;
+    const Size& get_max_size() const;
 
   private:
 
@@ -61,7 +61,7 @@ class SpriteAnimationSet {
     std::map<std::string, SpriteAnimation*>
             animations;                      /**< The animations */
     std::string default_animation_name;      /**< Name of the default animation. */
-    Rectangle max_size;                      /**< Size of this biggest frame. */
+    Size max_size;                           /**< Size of this biggest frame. */
 
 };
 

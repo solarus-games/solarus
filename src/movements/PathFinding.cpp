@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,15 +21,15 @@
 
 namespace solarus {
 
-const Rectangle PathFinding::neighbours_locations[] = {
-  Rectangle( 8,  0, 16, 16 ),
-  Rectangle( 8, -8, 16, 16 ),
-  Rectangle( 0, -8, 16, 16 ),
-  Rectangle(-8, -8, 16, 16 ),
-  Rectangle(-8,  0, 16, 16 ),
-  Rectangle(-8,  8, 16, 16 ),
-  Rectangle( 0,  8, 16, 16 ),
-  Rectangle( 8,  8, 16, 16 )
+const Point PathFinding::neighbours_locations[] = {
+  {  8,  0 },
+  {  8, -8 },
+  {  0, -8 },
+  { -8, -8 },
+  { -8,  0 },
+  { -8,  8 },
+  {  0,  8 },
+  {  8,  8 }
 };
 
 const Rectangle PathFinding::transition_collision_boxes[] = {
@@ -79,16 +79,16 @@ std::string PathFinding::compute_path() {
   //  << source_entity.get_top_left_y() << " to " << target_entity.get_top_left_x() << ","
   //  << target_entity.get_top_left_y() << std::endl;
 
-  const Rectangle& source = source_entity.get_bounding_box();
-  Rectangle target = target_entity.get_bounding_box();
+  Point source = source_entity.get_bounding_box().get_xy();
+  Point target = target_entity.get_bounding_box().get_xy();
 
-  target.add_x(4);
-  target.add_x(-target.get_x() % 8);
-  target.add_y(4);
-  target.add_y(-target.get_y() % 8);
+  target.x += 4;
+  target.x += -target.x % 8;
+  target.y += 4;
+  target.y += -target.y % 8;
   const int target_index = get_square_index(target);
 
-  Debug::check_assertion(target.get_x() % 8 == 0 && target.get_y() % 8 == 0,
+  Debug::check_assertion(target.x % 8 == 0 && target.y % 8 == 0,
       "Could not snap the target to the map grid");
 
   const int total_mdistance = get_manhattan_distance(source, target);
@@ -143,7 +143,7 @@ std::string PathFinding::compute_path() {
         const int immediate_cost = (i & 1) ? 11 : 8;
         new_node.previous_cost = current_node->previous_cost + immediate_cost;
         new_node.location = current_node->location;
-        new_node.location.add_xy(neighbours_locations[i]);
+        new_node.location += neighbours_locations[i];
         new_node.index = get_square_index(new_node.location);
         //std::cout << "  node in direction " << i << ": index = " << new_node.index << std::endl;
 
@@ -202,10 +202,10 @@ std::string PathFinding::compute_path() {
  * \param location location of a node on the map
  * \return index of the square corresponding to the top-left part of the location
  */
-int PathFinding::get_square_index(const Rectangle& location) const {
+int PathFinding::get_square_index(const Point& location) const {
 
-  const int x8 = location.get_x() / 8;
-  const int y8 = location.get_y() / 8;
+  const int x8 = location.x / 8;
+  const int y8 = location.y / 8;
   return y8 * map.get_width8() + x8;
 }
 
@@ -216,10 +216,10 @@ int PathFinding::get_square_index(const Rectangle& location) const {
  * \return the Manhattan distance between these points
  */
 int PathFinding::get_manhattan_distance(
-    const Rectangle& point1, const Rectangle& point2) const {
+    const Point& point1, const Point& point2) const {
 
-  return abs(point2.get_x() - point1.get_x()) +
-      abs(point2.get_y() - point1.get_y());
+  return abs(point2.x - point1.x) +
+         abs(point2.y - point1.y);
 }
 
 

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -27,7 +27,7 @@ namespace solarus {
  * \brief Constructor.
  *
  * It is called by the subclasses.
- * 
+ *
  * \param ground Kind of ground.
  * \param width Width of the pattern in pixels (must be a multiple of 8).
  * \param height Height of the pattern in pixels (must be a multiple of 8).
@@ -135,9 +135,9 @@ bool TilePattern::is_drawn_at_its_position() const {
  * relative to the map (may be used for scrolling tiles).
  */
 void TilePattern::fill_surface(Surface& dst_surface, const Rectangle& dst_position,
-    Tileset& tileset, const Rectangle& viewport) {
+    Tileset& tileset, const Point& viewport) {
 
-  Rectangle dst(0, 0);
+  Point dst;
 
   int limit_x = dst_position.get_x() + dst_position.get_width();
   int limit_y = dst_position.get_y() + dst_position.get_height();
@@ -148,7 +148,7 @@ void TilePattern::fill_surface(Surface& dst_surface, const Rectangle& dst_positi
 
     if ((y <= dst_surface.get_height() && y + get_height() > 0)
         || !is_drawn_at_its_position()) {
-      dst.set_y(y);
+      dst.y = y;
 
       for (int x = dst_position.get_x();
           x < limit_x;
@@ -156,7 +156,7 @@ void TilePattern::fill_surface(Surface& dst_surface, const Rectangle& dst_positi
 
         if ((x <= dst_surface.get_width() && x + get_width() > 0)
             || !is_drawn_at_its_position()) {
-          dst.set_x(x);
+          dst.x = x;
           draw(dst_surface, dst, tileset, viewport);
         }
       }

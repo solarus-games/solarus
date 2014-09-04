@@ -544,9 +544,9 @@ int LuaContext::movement_api_get_xy(lua_State* l) {
 
   Movement& movement = check_movement(l, 1);
 
-  const Rectangle& xy = movement.get_xy();
-  lua_pushinteger(l, xy.get_x());
-  lua_pushinteger(l, xy.get_y());
+  const Point& xy = movement.get_xy();
+  lua_pushinteger(l, xy.x);
+  lua_pushinteger(l, xy.y);
   return 2;
 }
 
@@ -1332,7 +1332,7 @@ int LuaContext::circle_movement_api_set_center(lua_State* l) {
     // the center is a fixed point
     int x = luaL_checkint(l, 2);
     int y = luaL_checkint(l, 3);
-    movement.set_center(Rectangle(x, y));
+    movement.set_center(Point(x, y));
   }
   else {
     // the center is an entity
@@ -1678,16 +1678,16 @@ int LuaContext::pixel_movement_api_get_trajectory(lua_State* l) {
 
   PixelMovement& movement = check_pixel_movement(l, 1);
 
-  const std::list<Rectangle>& trajectory = movement.get_trajectory();
+  const std::list<Point>& trajectory = movement.get_trajectory();
   // build a Lua array containing the trajectory
   lua_settop(l, 1);
   lua_newtable(l);
   int i = 0;
-  for (const Rectangle& xy: trajectory) {
+  for (const Point& xy: trajectory) {
     lua_newtable(l);
-    lua_pushinteger(l, xy.get_x());
+    lua_pushinteger(l, xy.x);
     lua_rawseti(l, 3, 1);
-    lua_pushinteger(l, xy.get_y());
+    lua_pushinteger(l, xy.y);
     lua_rawseti(l, 3, 2);
     lua_rawseti(l, 2, i);
     ++i;
@@ -1707,7 +1707,7 @@ int LuaContext::pixel_movement_api_set_trajectory(lua_State* l) {
   luaL_checktype(l, 2, LUA_TTABLE);
 
   // build the trajectory as a string from the Lua table
-  std::list<Rectangle> trajectory;
+  std::list<Point> trajectory;
   lua_pushnil(l); // first key
   while (lua_next(l, 2) != 0) {
     luaL_checktype(l, 4, LUA_TTABLE);
@@ -1786,7 +1786,7 @@ int LuaContext::pixel_movement_api_set_delay(lua_State* l) {
  * \param xy The new coordinates.
  */
 void LuaContext::movement_on_position_changed(
-    Movement& movement, const Rectangle& xy) {
+    Movement& movement, const Point& xy) {
 
                                   // ...
   push_movement(l, movement);
@@ -1799,11 +1799,11 @@ void LuaContext::movement_on_position_changed(
                                   // ... movement movements xy/nil
   if (!lua_isnil(l, -1)) {
                                   // ... movement movements xy
-    lua_pushinteger(l, xy.get_x());
+    lua_pushinteger(l, xy.x);
                                   // ... movement movements xy x
     lua_setfield(l, -2, "x");
                                   // ... movement movements xy
-    lua_pushinteger(l, xy.get_y());
+    lua_pushinteger(l, xy.y);
                                   // ... movement movements xy y
     lua_setfield(l, -2, "y");
                                   // ... movement movements xy

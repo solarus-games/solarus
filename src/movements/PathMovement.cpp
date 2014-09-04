@@ -21,6 +21,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Point.h"
 
 namespace solarus {
 
@@ -318,14 +319,14 @@ uint32_t PathMovement::speed_to_delay(int speed, int direction) {
  * \brief Returns an xy value representing the total distance of this movement.
  * \return the total x and y distance of this movement
  */
-Rectangle PathMovement::get_xy_change() const {
+Point PathMovement::get_xy_change() const {
 
-  Rectangle xy;
+  Point xy;
 
   for (char direction_char: initial_path) {
     int direction = direction_char - '0';
-    const Rectangle& xy_move = MapEntity::direction_to_xy_move(direction);
-    xy.add_xy(xy_move.get_x() * 8, xy_move.get_y() * 8);
+    const Point& xy_move = MapEntity::direction_to_xy_move(direction);
+    xy += xy_move * 8;
   }
 
   return xy;
@@ -380,7 +381,7 @@ void PathMovement::snap() {
 
   if (!snapping) {
     // if we haven't started to move the entity towards an intersection of the grid, do it now
-    set_snapping_trajectory(Rectangle(x, y), Rectangle(snapped_x, snapped_y));
+    set_snapping_trajectory(Point(x, y), Point(snapped_x, snapped_y));
     snapping = true;
     stop_snapping_date = now + 500; // timeout
   }
@@ -395,7 +396,7 @@ void PathMovement::snap() {
       // let's try the opposite grid intersection instead
       snapped_x += (snapped_x < x) ? 8 : -8;
       snapped_y += (snapped_y < y) ? 8 : -8;
-      set_snapping_trajectory(Rectangle(x, y), Rectangle(snapped_x, snapped_y));
+      set_snapping_trajectory(Point(x, y), Point(snapped_x, snapped_y));
       stop_snapping_date = now + 500;
     }
   }
@@ -410,14 +411,14 @@ void PathMovement::snap() {
  * \param src current position of the entity
  * \param dst snapped position
  */
-void PathMovement::set_snapping_trajectory(const Rectangle& src, const Rectangle& dst) {
+void PathMovement::set_snapping_trajectory(const Point& src, const Point& dst) {
 
-  std::list<Rectangle> trajectory;
-  Rectangle xy = src;
-  while (!xy.equals_xy(dst)) {
+  std::list<Point> trajectory;
+  Point xy = src;
+  while (xy != dst) {
 
-    int dx = dst.get_x() - xy.get_x();
-    int dy = dst.get_y() - xy.get_y();
+    int dx = dst.x - xy.x;
+    int dy = dst.y - xy.y;
 
     if (dx > 0) {
       dx = 1;
@@ -434,7 +435,7 @@ void PathMovement::set_snapping_trajectory(const Rectangle& src, const Rectangle
     }
 
     trajectory.emplace_back(dx, dy);
-    xy.add_xy(dx, dy);
+    xy += Point(dx, dy);
   }
   PixelMovement::set_delay(speed_to_delay(speed, 0)); // don't bother adjusting the speed of diagonal moves
   PixelMovement::set_loop(false);
@@ -467,4 +468,3 @@ const std::string& PathMovement::get_lua_type_name() const {
 }
 
 }
-

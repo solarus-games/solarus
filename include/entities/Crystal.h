@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -18,6 +18,7 @@
 #define SOLARUS_CRYSTAL_H
 
 #include "Common.h"
+#include "lowlevel/Point.h"
 #include "entities/Detector.h"
 #include <list>
 
@@ -56,7 +57,7 @@ class Crystal: public Detector {
     uint32_t next_possible_hit_date;               /**< date when the crystal can be hit again */
     std::list<MapEntity*> entities_activating;     /**< list of entities that recently activated this crystal */
     Sprite* star_sprite;                           /**< sprite of the star twinkling on the crystal */
-    Rectangle star_xy;                             /**< position of the star */
+    Point star_xy;                                 /**< position of the star */
 
 };
 

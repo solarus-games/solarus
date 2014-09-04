@@ -20,8 +20,7 @@
 #include "Common.h"
 #include <ostream>
 
-namespace solarus
-{
+namespace solarus {
 
 /**
  * \brief Represents a size.
@@ -82,3 +81,4 @@ std::ostream& operator<<(std::ostream& stream, const Size& size);
 #include "Size.inl"
 
 #endif
+

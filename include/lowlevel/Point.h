@@ -20,8 +20,7 @@
 #include "Common.h"
 #include <ostream>
 
-namespace solarus
-{
+namespace solarus {
 
 /**
  * \brief Represents a 2D point.
@@ -87,3 +86,4 @@ std::ostream& operator<<(std::ostream& stream, const Point& point);
 #include "Point.inl"
 
 #endif
+

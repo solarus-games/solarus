@@ -44,22 +44,26 @@ namespace {
   std::map<std::string, std::string> resource_map[QuestResourceList::RESOURCE_NB];
 
   /**
-   * \brief Implement of the resource() function.
+   * \brief Implementation of the resource() function.
    * \param l The Lua state of the quest resource file.
    * \return Number of values to return to Lua.
    */
   int l_resource_element(lua_State* l) {
 
-    QuestResourceList::ResourceType resource_type =
-        LuaTools::check_enum<QuestResourceList::ResourceType>(l, 1, resource_type_names);
-    const std::string& id = LuaTools::check_string_field(l, 2, "id");
-    const std::string& description = LuaTools::check_string_field(l, 2, "description");
+    SOLARUS_LUA_BOUNDARY_TRY() {
+      QuestResourceList::ResourceType resource_type =
+          LuaTools::check_enum<QuestResourceList::ResourceType>(l, 1, resource_type_names);
+      const std::string& id = LuaTools::check_string_field(l, 2, "id");
+      const std::string& description = LuaTools::check_string_field(l, 2, "description");
 
-    resource_vector[resource_type].push_back(std::make_pair(id, description));
-    resource_map[resource_type][id] = description;
+      resource_vector[resource_type].push_back(std::make_pair(id, description));
+      resource_map[resource_type][id] = description;
 
-    return 0;
+      return 0;
+    }
+    SOLARUS_LUA_BOUNDARY_CATCH(l);
   }
+
 }
 
 /**

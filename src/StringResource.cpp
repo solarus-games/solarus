@@ -36,14 +36,17 @@ std::map<std::string, std::string> strings;
  */
 int l_text(lua_State* l) {
 
-  LuaTools::check_type(l, 1, LUA_TTABLE);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    LuaTools::check_type(l, 1, LUA_TTABLE);
 
-  const std::string key = LuaTools::check_string_field(l, 1, "key");
-  const std::string value = LuaTools::check_string_field(l, 1, "value");
+    const std::string key = LuaTools::check_string_field(l, 1, "key");
+    const std::string value = LuaTools::check_string_field(l, 1, "value");
 
-  strings[key] = value;
+    strings[key] = value;
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 }

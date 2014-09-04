@@ -114,45 +114,48 @@ void TextSurface::quit() {
  */
 int TextSurface::l_font(lua_State* l) {
 
-  LuaTools::check_type(l, 1, LUA_TTABLE);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    LuaTools::check_type(l, 1, LUA_TTABLE);
 
-  const std::string& font_id = LuaTools::check_string_field(l, 1, "id");
-  const std::string& file_name = LuaTools::check_string_field(l, 1, "file");
-  int font_size = LuaTools::opt_int_field(l, 1, "size", 11);
-  bool is_default = LuaTools::opt_boolean_field(l, 1, "default", false);
+    const std::string& font_id = LuaTools::check_string_field(l, 1, "id");
+    const std::string& file_name = LuaTools::check_string_field(l, 1, "file");
+    int font_size = LuaTools::opt_int_field(l, 1, "size", 11);
+    bool is_default = LuaTools::opt_boolean_field(l, 1, "default", false);
 
-  fonts[font_id].file_name = file_name;
-  fonts[font_id].font_size = font_size;
+    fonts[font_id].file_name = file_name;
+    fonts[font_id].font_size = font_size;
 
-  if (is_default || default_font_id.empty()) {
-    default_font_id = font_id;
+    if (is_default || default_font_id.empty()) {
+      default_font_id = font_id;
+    }
+
+    // Load the font.
+    size_t index = file_name.rfind('.');
+    std::string extension;
+    if (index != std::string::npos) {
+      extension = file_name.substr(index);
+    }
+
+    if (extension == ".png" || extension == ".PNG") {
+      // It's a bitmap font.
+      fonts[font_id].bitmap = Surface::create(file_name, Surface::DIR_DATA);
+    }
+    else {
+      // It's a normal font.
+      size_t size;
+      FileTools::data_file_open_buffer(file_name, &fonts[font_id].buffer, &size);
+      fonts[font_id].bitmap = nullptr;
+      fonts[font_id].rw = SDL_RWFromMem(fonts[font_id].buffer, int(size));
+      fonts[font_id].internal_font = TTF_OpenFontRW(fonts[font_id].rw, 0, font_size);
+      Debug::check_assertion(fonts[font_id].internal_font != nullptr,
+          std::string("Cannot load font from file '") + file_name
+          + "': " + TTF_GetError()
+      );
+    }
+
+    return 0;
   }
-
-  // Load the font.
-  size_t index = file_name.rfind('.');
-  std::string extension;
-  if (index != std::string::npos) {
-    extension = file_name.substr(index);
-  }
-
-  if (extension == ".png" || extension == ".PNG") {
-    // It's a bitmap font.
-    fonts[font_id].bitmap = Surface::create(file_name, Surface::DIR_DATA);
-  }
-  else {
-    // It's a normal font.
-    size_t size;
-    FileTools::data_file_open_buffer(file_name, &fonts[font_id].buffer, &size);
-    fonts[font_id].bitmap = nullptr;
-    fonts[font_id].rw = SDL_RWFromMem(fonts[font_id].buffer, int(size));
-    fonts[font_id].internal_font = TTF_OpenFontRW(fonts[font_id].rw, 0, font_size);
-    Debug::check_assertion(fonts[font_id].internal_font != nullptr,
-        std::string("Cannot load font from file '") + file_name
-        + "': " + TTF_GetError()
-    );
-  }
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**

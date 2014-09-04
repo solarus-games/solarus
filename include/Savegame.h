@@ -78,7 +78,6 @@ class Savegame: public ExportableToLua {
 
     // creation and destruction
     Savegame(MainLoop& main_loop, const std::string& file_name);
-    ~Savegame();
 
     // file state
     bool is_empty() const;

@@ -92,113 +92,116 @@ void SpriteAnimationSet::load() {
  */
 int SpriteAnimationSet::l_animation(lua_State* l) {
 
-  lua_getfield(l, LUA_REGISTRYINDEX, "animation_set");
-  SpriteAnimationSet* animation_set = static_cast<SpriteAnimationSet*>(
-      lua_touserdata(l, -1));
-  lua_pop(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    lua_getfield(l, LUA_REGISTRYINDEX, "animation_set");
+    SpriteAnimationSet* animation_set = static_cast<SpriteAnimationSet*>(
+        lua_touserdata(l, -1));
+    lua_pop(l, 1);
 
-  LuaTools::check_type(l, 1, LUA_TTABLE);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
 
-  std::string animation_name = LuaTools::check_string_field(l, 1, "name");
-  std::string src_image = LuaTools::check_string_field(l, 1, "src_image");
-  uint32_t frame_delay = (uint32_t) LuaTools::opt_int_field(l, 1, "frame_delay", 0);
-  int frame_to_loop_on = LuaTools::opt_int_field(l, 1, "frame_to_loop_on", -1);
+    std::string animation_name = LuaTools::check_string_field(l, 1, "name");
+    std::string src_image = LuaTools::check_string_field(l, 1, "src_image");
+    uint32_t frame_delay = (uint32_t) LuaTools::opt_int_field(l, 1, "frame_delay", 0);
+    int frame_to_loop_on = LuaTools::opt_int_field(l, 1, "frame_to_loop_on", -1);
 
-  if (frame_to_loop_on < -1) {
-    LuaTools::arg_error(l, 1,
-        "Bad field 'frame_to_loop_on' (must be a positive number or -1)"
-    );
-  }
-
-  lua_settop(l, 1);
-  lua_getfield(l, 1, "directions");
-  if (lua_type(l, 2) != LUA_TTABLE) {
-    LuaTools::arg_error(l, 1,
-        std::string("Bad field 'directions' (table expected, got ")
-        + luaL_typename(l, -1) + ")");
-  }
-
-  // Traverse the directions table.
-  std::vector<SpriteAnimationDirection*> directions;
-  int i = 1;
-  lua_rawgeti(l, -1, i);
-  while (!lua_isnil(l, -1)) {
-    ++i;
-
-    if (lua_type(l, -1) != LUA_TTABLE) {
+    if (frame_to_loop_on < -1) {
       LuaTools::arg_error(l, 1,
-          std::string("Bad field 'directions' (expected table, got ")
-          + luaL_typename(l, -1)
+          "Bad field 'frame_to_loop_on' (must be a positive number or -1)"
       );
     }
 
-    int x = LuaTools::check_int_field(l, -1, "x");
-    int y = LuaTools::check_int_field(l, -1, "y");
-    int frame_width = LuaTools::check_int_field(l, -1, "frame_width");
-    int frame_height = LuaTools::check_int_field(l, -1, "frame_height");
-    int origin_x = LuaTools::opt_int_field(l, -1, "origin_x", 0);
-    int origin_y = LuaTools::opt_int_field(l, -1, "origin_y", 0);
-    int num_frames = LuaTools::opt_int_field(l, -1, "num_frames", 1);
-    int num_columns = LuaTools::opt_int_field(l, -1, "num_columns", num_frames);
-
-    if (num_columns < 1 || num_columns > num_frames) {
+    lua_settop(l, 1);
+    lua_getfield(l, 1, "directions");
+    if (lua_type(l, 2) != LUA_TTABLE) {
       LuaTools::arg_error(l, 1,
-          "Bad field 'num_columns': must be between 1 and the number of frames");
+          std::string("Bad field 'directions' (table expected, got ")
+      + luaL_typename(l, -1) + ")");
     }
 
-    if (frame_to_loop_on >= num_frames) {
-      LuaTools::arg_error(l, 1,
-          "Bad field 'frame_to_loop_on': exceeds the number of frames");
-    }
-
-    lua_pop(l, 1);
+    // Traverse the directions table.
+    std::vector<SpriteAnimationDirection*> directions;
+    int i = 1;
     lua_rawgeti(l, -1, i);
+    while (!lua_isnil(l, -1)) {
+      ++i;
 
-    animation_set->max_size.width = std::max(frame_width, animation_set->max_size.width);
-    animation_set->max_size.height = std::max(frame_height, animation_set->max_size.height);
-
-    int num_rows;
-    if (num_frames % num_columns == 0) {
-      num_rows = num_frames / num_columns;
-    }
-    else {
-      num_rows = (num_frames / num_columns) + 1;
-    }
-
-    std::vector<Rectangle> positions_in_src;
-    int j = 0;  // Frame number.
-    for (int r = 0; r < num_rows && j < num_frames; ++r) {
-      for (int c = 0; c < num_columns && j < num_frames; ++c) {
-
-        Rectangle position_in_src(
-            x + c * frame_width,
-            y + r * frame_height,
-            frame_width,
-            frame_height);
-        positions_in_src.push_back(position_in_src);
-        ++j;
+      if (lua_type(l, -1) != LUA_TTABLE) {
+        LuaTools::arg_error(l, 1,
+            std::string("Bad field 'directions' (expected table, got ")
+                + luaL_typename(l, -1)
+        );
       }
-    }
 
-    directions.push_back(new SpriteAnimationDirection(
+      int x = LuaTools::check_int_field(l, -1, "x");
+      int y = LuaTools::check_int_field(l, -1, "y");
+      int frame_width = LuaTools::check_int_field(l, -1, "frame_width");
+      int frame_height = LuaTools::check_int_field(l, -1, "frame_height");
+      int origin_x = LuaTools::opt_int_field(l, -1, "origin_x", 0);
+      int origin_y = LuaTools::opt_int_field(l, -1, "origin_y", 0);
+      int num_frames = LuaTools::opt_int_field(l, -1, "num_frames", 1);
+      int num_columns = LuaTools::opt_int_field(l, -1, "num_columns", num_frames);
+
+      if (num_columns < 1 || num_columns > num_frames) {
+        LuaTools::arg_error(l, 1,
+            "Bad field 'num_columns': must be between 1 and the number of frames");
+      }
+
+      if (frame_to_loop_on >= num_frames) {
+        LuaTools::arg_error(l, 1,
+            "Bad field 'frame_to_loop_on': exceeds the number of frames");
+      }
+
+      lua_pop(l, 1);
+      lua_rawgeti(l, -1, i);
+
+      animation_set->max_size.width = std::max(frame_width, animation_set->max_size.width);
+      animation_set->max_size.height = std::max(frame_height, animation_set->max_size.height);
+
+      int num_rows;
+      if (num_frames % num_columns == 0) {
+        num_rows = num_frames / num_columns;
+      }
+      else {
+        num_rows = (num_frames / num_columns) + 1;
+      }
+
+      std::vector<Rectangle> positions_in_src;
+      int j = 0;  // Frame number.
+      for (int r = 0; r < num_rows && j < num_frames; ++r) {
+        for (int c = 0; c < num_columns && j < num_frames; ++c) {
+
+          Rectangle position_in_src(
+              x + c * frame_width,
+              y + r * frame_height,
+              frame_width,
+              frame_height);
+          positions_in_src.push_back(position_in_src);
+          ++j;
+        }
+      }
+
+      directions.push_back(new SpriteAnimationDirection(
           positions_in_src,
           Point(origin_x, origin_y)));
+    }
+
+    if (animation_set->animations.find(animation_name) != animation_set->animations.end()) {
+      LuaTools::error(l, std::string("Duplicate animation '") + animation_name
+          + "' in sprite '" + animation_set->id + "'");
+    }
+
+    animation_set->animations[animation_name] = new SpriteAnimation(
+        src_image, directions, frame_delay, frame_to_loop_on);
+
+    // Set the first animation as the default one.
+    if (animation_set->animations.size() == 1) {
+      animation_set->default_animation_name = animation_name;
+    }
+
+    return 0;
   }
-
-  if (animation_set->animations.find(animation_name) != animation_set->animations.end()) {
-    LuaTools::error(l, std::string("Duplicate animation '") + animation_name
-        + "' in sprite '" + animation_set->id + "'");
-  }
-
-  animation_set->animations[animation_name] = new SpriteAnimation(
-      src_image, directions, frame_delay, frame_to_loop_on);
-
-  // Set the first animation as the default one.
-  if (animation_set->animations.size() == 1) {
-    animation_set->default_animation_name = animation_name;
-  }
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**

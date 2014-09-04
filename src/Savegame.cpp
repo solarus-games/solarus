@@ -101,12 +101,6 @@ Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
 }
 
 /**
- * \brief Destructor.
- */
-Savegame::~Savegame() {
-}
-
-/**
  * \brief Returns whether this is a new save.
  * \return true if there is no savegame file with this name yet
  */
@@ -240,31 +234,34 @@ void Savegame::load() {
  */
 int Savegame::l_newindex(lua_State* l) {
 
-  lua_getfield(l, LUA_REGISTRYINDEX, "savegame");
-  Savegame* savegame = static_cast<Savegame*>(lua_touserdata(l, -1));
-  lua_pop(l, 1);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    lua_getfield(l, LUA_REGISTRYINDEX, "savegame");
+    Savegame* savegame = static_cast<Savegame*>(lua_touserdata(l, -1));
+    lua_pop(l, 1);
 
-  const std::string& key = luaL_checkstring(l, 2);
+    const std::string& key = LuaTools::check_string(l, 2);
 
-  switch (lua_type(l, 3)) {
+    switch (lua_type(l, 3)) {
 
     case LUA_TBOOLEAN:
       savegame->set_boolean(key, lua_toboolean(l, 3));
       break;
 
     case LUA_TNUMBER:
-      savegame->set_integer(key, int(lua_tointeger(l, 3)));
+      savegame->set_integer(key, (int) lua_tointeger(l, 3));
       break;
 
     case LUA_TSTRING:
       savegame->set_string(key, lua_tostring(l, 3));
       break;
 
-   default:
+    default:
       LuaTools::type_error(l, 3, "string, number or boolean");
-  }
+    }
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 /**

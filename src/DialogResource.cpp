@@ -117,57 +117,59 @@ const Dialog& DialogResource::get_dialog(const std::string& dialog_id) {
  */
 int DialogResource::l_dialog(lua_State* l) {
 
-  LuaTools::check_type(l, 1, LUA_TTABLE);
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    LuaTools::check_type(l, 1, LUA_TTABLE);
 
-  std::string dialog_id;
-  Dialog dialog;
+    const std::string dialog_id = LuaTools::check_string_field(l, 1, "id");
+    const std::string text = LuaTools::check_string_field(l, 1, "text");
+    Dialog dialog;
+    dialog.set_id(dialog_id);
+    dialog.set_text(text);
 
-  // traverse the table, looking for properties
-  lua_pushnil(l); // first key
-  while (lua_next(l, 1) != 0) {
+    // Traverse the table, looking for custom properties.
+    lua_pushnil(l); // first key
+    while (lua_next(l, 1) != 0) {
 
-    const std::string& key = luaL_checkstring(l, -2);
-    if (key == "id") {
-      dialog_id = luaL_checkstring(l, -1);
-    }
-    else if (key == "text") {
-      const std::string text = luaL_checkstring(l, -1);
-      dialog.set_text(text);
-    }
-    else {
-      // Custom property.
-      std::string value;
-      int type = lua_type(l, -1);
-      if (type == LUA_TSTRING || type == LUA_TNUMBER) {
-        value = lua_tostring(l, -1);
-      }
-      else if (type == LUA_TBOOLEAN) {
-        value = lua_toboolean(l, -1) ? "1" : "0";
+      const std::string& key = LuaTools::check_string(l, -2);
+      if (key == "id" || key == "text") {
+        continue;
       }
       else {
-        LuaTools::error(l, std::string("Invalid value '") + key + "' for dialog '"
-            + dialog_id + "'");
+        // Custom property.
+        std::string value;
+        int type = lua_type(l, -1);
+        if (type == LUA_TSTRING || type == LUA_TNUMBER) {
+          value = lua_tostring(l, -1);
+        }
+        else if (type == LUA_TBOOLEAN) {
+          value = lua_toboolean(l, -1) ? "1" : "0";
+        }
+        else {
+          LuaTools::error(l, std::string("Invalid value '") + key + "' for dialog '"
+              + dialog_id + "'");
+        }
+        dialog.set_property(key, value);
       }
-      dialog.set_property(key, value);
+      lua_pop(l, 1);
     }
-    lua_pop(l, 1);
-  }
 
-  dialog.set_id(dialog_id);
-  if (dialog.get_id().empty()) {
-    LuaTools::error(l, "Missing value dialog_id");
-  }
+    dialog.set_id(dialog_id);
+    if (dialog.get_id().empty()) {
+      LuaTools::error(l, "Missing value dialog_id");
+    }
 
-  if (dialog.get_text().empty()) {
-    LuaTools::error(l, std::string("Missing text for dialog '") + dialog_id + "'");
-  }
+    if (dialog.get_text().empty()) {
+      LuaTools::error(l, std::string("Missing text for dialog '") + dialog_id + "'");
+    }
 
-  if (exists(dialog_id)) {
-    LuaTools::error(l, std::string("Duplicate dialog '") + dialog_id + "'");
-  }
-  dialogs[dialog_id] = dialog;
+    if (exists(dialog_id)) {
+      LuaTools::error(l, std::string("Duplicate dialog '") + dialog_id + "'");
+    }
+    dialogs[dialog_id] = dialog;
 
-  return 0;
+    return 0;
+  }
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 }

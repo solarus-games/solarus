@@ -85,7 +85,7 @@ void MapLoader::load_map(Game& game, Map& map) {
 
   lua_close(l);
 
-  // TODO if necessary, store the Lua compiled chunck to speed up next loadings of this map.
+  // TODO if necessary, store the Lua compiled chunk to speed up next loadings of this map.
 }
 
 /**
@@ -99,85 +99,88 @@ void MapLoader::load_map(Game& game, Map& map) {
  */
 int MapLoader::l_properties(lua_State* l) {
 
-  // Retrieve the map to build.
-  Map* map = LuaContext::get_entity_implicit_creation_map(l);
-  Debug::check_assertion(map != nullptr, "No map has not been set in this Lua state");
+  SOLARUS_LUA_BOUNDARY_TRY() {
+    // Retrieve the map to build.
+    Map* map = LuaContext::get_entity_implicit_creation_map(l);
+    Debug::check_assertion(map != nullptr, "No map has not been set in this Lua state");
 
-  // Retrieve the map properties from the table parameter.
-  LuaTools::check_type(l, 1, LUA_TTABLE);
+    // Retrieve the map properties from the table parameter.
+    LuaTools::check_type(l, 1, LUA_TTABLE);
 
-  const int x = LuaTools::opt_int_field(l, 1, "x", 0);
-  const int y = LuaTools::opt_int_field(l, 1, "y", 0);
-  const int width = LuaTools::check_int_field(l, 1, "width");
-  const int height = LuaTools::check_int_field(l, 1, "height");
-  const std::string& world_name = LuaTools::opt_string_field(l, 1 , "world", "");
-  const int floor = LuaTools::opt_int_field(l, 1, "floor", Map::NO_FLOOR);
-  const std::string& tileset_id = LuaTools::check_string_field(l, 1, "tileset");
-  const std::string& music_id = LuaTools::opt_string_field(l, 1, "music", Music::none);
+    const int x = LuaTools::opt_int_field(l, 1, "x", 0);
+    const int y = LuaTools::opt_int_field(l, 1, "y", 0);
+    const int width = LuaTools::check_int_field(l, 1, "width");
+    const int height = LuaTools::check_int_field(l, 1, "height");
+    const std::string& world_name = LuaTools::opt_string_field(l, 1 , "world", "");
+    const int floor = LuaTools::opt_int_field(l, 1, "floor", Map::NO_FLOOR);
+    const std::string& tileset_id = LuaTools::check_string_field(l, 1, "tileset");
+    const std::string& music_id = LuaTools::opt_string_field(l, 1, "music", Music::none);
 
-  // Initialize the map data.
-  // TODO implement methods in Map instead to check the values instead of changing directly the fields.
-  map->location.set_size(width, height);
-  map->width8 = width / 8;
-  map->height8 = height / 8;
-  map->location.set_xy(x, y);
-  map->music_id = music_id;
-  map->set_world(world_name);
-  map->set_floor(floor);
+    // Initialize the map data.
+    // TODO implement methods in Map instead to check the values instead of changing directly the fields.
+    map->location.set_size(width, height);
+    map->width8 = width / 8;
+    map->height8 = height / 8;
+    map->location.set_xy(x, y);
+    map->music_id = music_id;
+    map->set_world(world_name);
+    map->set_floor(floor);
 
-  map->tileset_id = tileset_id;
-  map->tileset = new Tileset(tileset_id);
-  map->tileset->load();
+    map->tileset_id = tileset_id;
+    map->tileset = new Tileset(tileset_id);
+    map->tileset->load();
 
-  MapEntities& entities = map->get_entities();
-  entities.map_width8 = map->width8;
-  entities.map_height8 = map->height8;
-  entities.tiles_grid_size = map->width8 * map->height8;
-  for (int layer = 0; layer < LAYER_NB; ++layer) {
+    MapEntities& entities = map->get_entities();
+    entities.map_width8 = map->width8;
+    entities.map_height8 = map->height8;
+    entities.tiles_grid_size = map->width8 * map->height8;
+    for (int layer = 0; layer < LAYER_NB; ++layer) {
 
-    Ground initial_ground = (layer == LAYER_LOW) ? GROUND_TRAVERSABLE : GROUND_EMPTY;
-    for (int i = 0; i < entities.tiles_grid_size; ++i) {
-      entities.tiles_ground[layer].push_back(initial_ground);
+      Ground initial_ground = (layer == LAYER_LOW) ? GROUND_TRAVERSABLE : GROUND_EMPTY;
+      for (int i = 0; i < entities.tiles_grid_size; ++i) {
+        entities.tiles_ground[layer].push_back(initial_ground);
+      }
+
+      entities.non_animated_regions[layer] = new NonAnimatedRegions(*map, Layer(layer));
+    }
+    entities.boomerang = nullptr;
+    map->camera = new Camera(*map);
+
+    // Properties are set: we now allow the data file to declare entities.
+    static const luaL_Reg functions[] = {
+        { "tile",             LuaContext::map_api_create_tile },
+        { "destination",      LuaContext::map_api_create_destination },
+        { "teletransporter",  LuaContext::map_api_create_teletransporter },
+        { "pickable",         LuaContext::map_api_create_pickable },
+        { "destructible",     LuaContext::map_api_create_destructible },
+        { "chest",            LuaContext::map_api_create_chest },
+        { "jumper",           LuaContext::map_api_create_jumper },
+        { "enemy",            LuaContext::map_api_create_enemy },
+        { "npc",              LuaContext::map_api_create_npc },
+        { "block",            LuaContext::map_api_create_block },
+        { "dynamic_tile",     LuaContext::map_api_create_dynamic_tile },
+        { "switch",           LuaContext::map_api_create_switch },
+        { "wall",             LuaContext::map_api_create_wall },
+        { "sensor",           LuaContext::map_api_create_sensor },
+        { "crystal",          LuaContext::map_api_create_crystal },
+        { "crystal_block",    LuaContext::map_api_create_crystal_block },
+        { "shop_treasure",    LuaContext::map_api_create_shop_treasure },
+        { "stream",           LuaContext::map_api_create_stream },
+        { "door",             LuaContext::map_api_create_door },
+        { "stairs",           LuaContext::map_api_create_stairs },
+        { "separator",        LuaContext::map_api_create_separator },
+        { "custom_entity",    LuaContext::map_api_create_custom_entity },
+        { nullptr, nullptr }
+    };
+    const luaL_Reg* function = functions;
+    while (function->name != nullptr) {
+      lua_register(l, function->name, function->func);
+      ++function;
     }
 
-    entities.non_animated_regions[layer] = new NonAnimatedRegions(*map, Layer(layer));
+    return 0;
   }
-  entities.boomerang = nullptr;
-  map->camera = new Camera(*map);
-
-  // Properties are set: we now allow the data file to declare entities.
-  static const luaL_Reg functions[] = {
-    { "tile",             LuaContext::map_api_create_tile },
-    { "destination",      LuaContext::map_api_create_destination },
-    { "teletransporter",  LuaContext::map_api_create_teletransporter },
-    { "pickable",         LuaContext::map_api_create_pickable },
-    { "destructible",     LuaContext::map_api_create_destructible },
-    { "chest",            LuaContext::map_api_create_chest },
-    { "jumper",           LuaContext::map_api_create_jumper },
-    { "enemy",            LuaContext::map_api_create_enemy },
-    { "npc",              LuaContext::map_api_create_npc },
-    { "block",            LuaContext::map_api_create_block },
-    { "dynamic_tile",     LuaContext::map_api_create_dynamic_tile },
-    { "switch",           LuaContext::map_api_create_switch },
-    { "wall",             LuaContext::map_api_create_wall },
-    { "sensor",           LuaContext::map_api_create_sensor },
-    { "crystal",          LuaContext::map_api_create_crystal },
-    { "crystal_block",    LuaContext::map_api_create_crystal_block },
-    { "shop_treasure",    LuaContext::map_api_create_shop_treasure },
-    { "stream",           LuaContext::map_api_create_stream },
-    { "door",             LuaContext::map_api_create_door },
-    { "stairs",           LuaContext::map_api_create_stairs },
-    { "separator",        LuaContext::map_api_create_separator },
-    { "custom_entity",    LuaContext::map_api_create_custom_entity },
-    { nullptr, nullptr }
-  };
-  const luaL_Reg* function = functions;
-  while (function->name != nullptr) {
-    lua_register(l, function->name, function->func);
-    function++;
-  }
-
-  return 0;
+  SOLARUS_LUA_BOUNDARY_CATCH(l);
 }
 
 }

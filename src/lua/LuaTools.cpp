@@ -228,7 +228,7 @@ int LuaTools::opt_int(
     int index,
     int default_value
 ) {
-  if (lua_isnil(l, index)) {
+  if (lua_isnoneornil(l, index)) {
     return default_value;
   }
   return check_int(l, index);
@@ -336,7 +336,7 @@ double LuaTools::opt_number(
     int index,
     double default_value
 ) {
-  if (lua_isnil(l, index)) {
+  if (lua_isnoneornil(l, index)) {
     return default_value;
   }
   return check_number(l, index);
@@ -444,7 +444,7 @@ std::string LuaTools::opt_string(
     int index,
     const std::string& default_value
 ) {
-  if (lua_isnil(l, index)) {
+  if (lua_isnoneornil(l, index)) {
     return default_value;
   }
   return check_string(l, index);
@@ -545,7 +545,7 @@ bool LuaTools::opt_boolean(
     int index,
     bool default_value
 ) {
-  if (lua_isnil(l, index)) {
+  if (lua_isnoneornil(l, index)) {
     return default_value;
   }
   return check_boolean(l, index);
@@ -642,7 +642,7 @@ int LuaTools::opt_function(
     lua_State* l,
     int index
 ) {
-  if (lua_isnil(l, index)) {
+  if (lua_isnoneornil(l, index)) {
     return LUA_REFNIL;
   }
   return check_function(l, index);
@@ -756,7 +756,7 @@ Layer LuaTools::opt_layer(
     int index,
     Layer default_value
 ) {
-  if (lua_isnil(l, index)) {
+  if (lua_isnoneornil(l, index)) {
     return default_value;
   }
   return check_layer(l, index);
@@ -883,7 +883,7 @@ Color LuaTools::opt_color(
     int index,
     const Color& default_value
 ) {
-  if (lua_isnil(l, index)) {
+  if (lua_isnoneornil(l, index)) {
     return default_value;
   }
   return check_color(l, index);

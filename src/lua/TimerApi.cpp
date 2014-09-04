@@ -388,7 +388,7 @@ int LuaContext::timer_api_start(lua_State *l) {
   }
   // Now the first parameter is the context.
 
-  uint32_t delay = uint32_t(luaL_checkint(l, 2));
+  uint32_t delay = uint32_t(LuaTools::check_int(l, 2));
   LuaTools::check_type(l, 3, LUA_TFUNCTION);
 
   // Create the timer.
@@ -570,7 +570,7 @@ int LuaContext::timer_api_get_remaining_time(lua_State* l) {
 int LuaContext::timer_api_set_remaining_time(lua_State* l) {
 
   Timer& timer = check_timer(l, 1);
-  uint32_t remaining_time = luaL_checkint(l, 2);
+  uint32_t remaining_time = LuaTools::check_int(l, 2);
 
   LuaContext& lua_context = get_lua_context(l);
   const auto it = lua_context.timers.find(&timer);

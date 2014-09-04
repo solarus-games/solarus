@@ -767,8 +767,8 @@ int LuaContext::entity_api_set_size(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     MapEntity& entity = check_entity(l, 1);
-    int width = luaL_checkint(l, 2);
-    int height = luaL_checkint(l, 3);
+    int width = LuaTools::check_int(l, 2);
+    int height = LuaTools::check_int(l, 3);
 
     if (width < 0 || width % 8 != 0) {
       std::ostringstream oss;
@@ -816,8 +816,8 @@ int LuaContext::entity_api_set_origin(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     MapEntity& entity = check_entity(l, 1);
-    int x = luaL_checkint(l, 2);
-    int y = luaL_checkint(l, 3);
+    int x = LuaTools::check_int(l, 2);
+    int y = LuaTools::check_int(l, 3);
 
     entity.set_origin(x, y);
 
@@ -853,8 +853,8 @@ int LuaContext::entity_api_set_position(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     MapEntity& entity = check_entity(l, 1);
-    int x = luaL_checkint(l, 2);
-    int y = luaL_checkint(l, 3);
+    int x = LuaTools::check_int(l, 2);
+    int y = LuaTools::check_int(l, 3);
     int layer = -1;
     if (lua_gettop(l) >= 4) {
       layer = LuaTools::check_layer(l, 4);
@@ -926,10 +926,10 @@ int LuaContext::entity_api_overlaps(lua_State* l) {
       overlaps = entity.overlaps(other_entity);
     }
     else {
-      int x = luaL_checkint(l, 2);
-      int y = luaL_checkint(l, 3);
-      int width = luaL_optint(l, 4, 1);
-      int height = luaL_optint(l, 5, 1);
+      int x = LuaTools::check_int(l, 2);
+      int y = LuaTools::check_int(l, 3);
+      int width = LuaTools::opt_int(l, 4, 1);
+      int height = LuaTools::opt_int(l, 5, 1);
       overlaps = entity.overlaps(Rectangle(x, y, width, height));
     }
 
@@ -967,8 +967,8 @@ int LuaContext::entity_api_get_distance(lua_State* l) {
     MapEntity& entity = check_entity(l, 1);
     int distance;
     if (lua_gettop(l) >= 3) {
-      int x = luaL_checknumber(l, 2);
-      int y = luaL_checknumber(l, 3);
+      int x = LuaTools::check_number(l, 2);
+      int y = LuaTools::check_number(l, 3);
       distance = entity.get_distance(x, y);
     }
     else {
@@ -993,8 +993,8 @@ int LuaContext::entity_api_get_angle(lua_State* l) {
     MapEntity& entity = check_entity(l, 1);
     double angle;
     if (lua_gettop(l) >= 3) {
-      int x = luaL_checknumber(l, 2);
-      int y = luaL_checknumber(l, 3);
+      int x = LuaTools::check_number(l, 2);
+      int y = LuaTools::check_number(l, 3);
       angle = entity.get_angle(x, y);
     }
     else {
@@ -1019,8 +1019,8 @@ int LuaContext::entity_api_get_direction4_to(lua_State* l) {
     MapEntity& entity = check_entity(l, 1);
     double angle;
     if (lua_gettop(l) >= 3) {
-      int x = luaL_checknumber(l, 2);
-      int y = luaL_checknumber(l, 3);
+      int x = LuaTools::check_number(l, 2);
+      int y = LuaTools::check_number(l, 3);
       angle = entity.get_angle(x, y);
     }
     else {
@@ -1051,8 +1051,8 @@ int LuaContext::entity_api_get_direction8_to(lua_State* l) {
     MapEntity& entity = check_entity(l, 1);
     double angle;
     if (lua_gettop(l) >= 3) {
-      int x = luaL_checknumber(l, 2);
-      int y = luaL_checknumber(l, 3);
+      int x = LuaTools::check_number(l, 2);
+      int y = LuaTools::check_number(l, 3);
       angle = entity.get_angle(x, y);
     }
     else {
@@ -1137,7 +1137,7 @@ int LuaContext::entity_api_create_sprite(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     MapEntity& entity = check_entity(l, 1);
-    const std::string& animation_set_id = luaL_checkstring(l, 2);
+    const std::string& animation_set_id = LuaTools::check_string(l, 2);
 
     Sprite& sprite = entity.create_sprite(animation_set_id, true);
     if (entity.is_suspended()) {
@@ -1307,8 +1307,8 @@ int LuaContext::entity_api_test_obstacles(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     MapEntity& entity = check_entity(l, 1);
-    int dx = luaL_checkint(l, 2);
-    int dy = luaL_checkint(l, 3);
+    int dx = LuaTools::check_int(l, 2);
+    int dy = LuaTools::check_int(l, 3);
     Layer layer = entity.get_layer();
     if (lua_gettop(l) >= 4) {
       layer = LuaTools::check_layer(l, 4);
@@ -1349,7 +1349,7 @@ int LuaContext::entity_api_set_optimization_distance(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     MapEntity& entity = check_entity(l, 1);
-    int distance = luaL_checkint(l, 2);
+    int distance = LuaTools::check_int(l, 2);
 
     entity.set_optimization_distance(distance);
 
@@ -1414,8 +1414,8 @@ int LuaContext::hero_api_teleport(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Hero& hero = check_hero(l, 1);
-    const std::string& map_id = luaL_checkstring(l, 2);
-    const std::string& destination_name = luaL_optstring(l, 3, "");
+    const std::string& map_id = LuaTools::check_string(l, 2);
+    const std::string& destination_name = LuaTools::opt_string(l, 3, "");
     Transition::Style transition_style = LuaTools::opt_enum<Transition::Style>(
         l, 4, Transition::style_names, Transition::FADE);
 
@@ -1455,7 +1455,7 @@ int LuaContext::hero_api_set_direction(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Hero& hero = check_hero(l, 1);
-    int direction = luaL_checkint(l, 2);
+    int direction = LuaTools::check_int(l, 2);
 
     hero.set_animation_direction(direction);
 
@@ -1489,7 +1489,7 @@ int LuaContext::hero_api_set_walking_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Hero& hero = check_hero(l, 1);
-    int normal_walking_speed = luaL_checkint(l, 2);
+    int normal_walking_speed = LuaTools::check_int(l, 2);
 
     hero.set_normal_walking_speed(normal_walking_speed);
 
@@ -1510,8 +1510,8 @@ int LuaContext::hero_api_save_solid_ground(lua_State* l) {
     int x, y;
     Layer layer;
     if (lua_gettop(l) >= 2) {
-      x = luaL_checkint(l, 2);
-      y = luaL_checkint(l, 3);
+      x = LuaTools::check_int(l, 2);
+      y = LuaTools::check_int(l, 3);
       layer = LuaTools::check_layer(l, 4);
     }
     else {
@@ -1607,7 +1607,7 @@ int LuaContext::hero_api_set_animation(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Hero& hero = check_hero(l, 1);
-    const std::string& animation = luaL_checkstring(l, 2);
+    const std::string& animation = LuaTools::check_string(l, 2);
 
     int callback_ref = LUA_REFNIL;
     if (lua_gettop(l) >= 3) {
@@ -1657,7 +1657,7 @@ int LuaContext::hero_api_set_tunic_sprite_id(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Hero& hero = check_hero(l, 1);
-    const std::string& sprite_id = luaL_checkstring(l, 2);
+    const std::string& sprite_id = LuaTools::check_string(l, 2);
 
     // TODO check the existence of the sprite animation set
     // (see also sol.sprite.create()).
@@ -1695,7 +1695,7 @@ int LuaContext::hero_api_set_sword_sprite_id(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Hero& hero = check_hero(l, 1);
-    const std::string& sprite_id = luaL_checkstring(l, 2);
+    const std::string& sprite_id = LuaTools::check_string(l, 2);
 
     hero.get_hero_sprites().set_sword_sprite_id(sprite_id);
 
@@ -1731,7 +1731,7 @@ int LuaContext::hero_api_set_sword_sound_id(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Hero& hero = check_hero(l, 1);
-    const std::string& sound_id = luaL_checkstring(l, 2);
+    const std::string& sound_id = LuaTools::check_string(l, 2);
 
     hero.get_hero_sprites().set_sword_sound_id(sound_id);
 
@@ -1767,7 +1767,7 @@ int LuaContext::hero_api_set_shield_sprite_id(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Hero& hero = check_hero(l, 1);
-    const std::string& sprite_id = luaL_checkstring(l, 2);
+    const std::string& sprite_id = LuaTools::check_string(l, 2);
 
     hero.get_hero_sprites().set_shield_sprite_id(sprite_id);
 
@@ -1806,7 +1806,7 @@ int LuaContext::hero_api_set_blinking(lua_State* l) {
     if (lua_gettop(l) >= 2) {
       blinking = lua_toboolean(l, 2);
       if (lua_gettop(l) >= 3) {
-        duration = luaL_checkint(l, 3);
+        duration = LuaTools::check_int(l, 3);
       }
     }
 
@@ -1852,7 +1852,7 @@ int LuaContext::hero_api_set_invincible(lua_State* l) {
     if (lua_gettop(l) >= 2) {
       invincible = lua_toboolean(l, 2);
       if (lua_gettop(l) >= 3) {
-        duration = luaL_checkint(l, 3);
+        duration = LuaTools::check_int(l, 3);
       }
     }
 
@@ -1922,7 +1922,7 @@ int LuaContext::hero_api_walk(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Hero& hero = check_hero(l, 1);
-    const std::string& path = luaL_checkstring(l, 2);
+    const std::string& path = LuaTools::check_string(l, 2);
     bool loop = lua_toboolean(l, 3) != 0;
     bool ignore_obstacles = lua_toboolean(l, 4) != 0;
 
@@ -1942,8 +1942,8 @@ int LuaContext::hero_api_start_jumping(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Hero& hero = check_hero(l, 1);
-    int direction = luaL_checkint(l, 2);
-    int length = luaL_checkint(l, 3);
+    int direction = LuaTools::check_int(l, 2);
+    int length = LuaTools::check_int(l, 3);
     bool ignore_obstacles = lua_toboolean(l, 4) != 0;
 
     hero.start_jumping(direction, length, ignore_obstacles, false);
@@ -1962,9 +1962,9 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Hero& hero = check_hero(l, 1);
-    const std::string& item_name = luaL_checkstring(l, 2);
-    int variant = luaL_optint(l, 3, 1);
-    const std::string& savegame_variable = luaL_optstring(l, 4, "");
+    const std::string& item_name = LuaTools::check_string(l, 2);
+    int variant = LuaTools::opt_int(l, 3, 1);
+    const std::string& savegame_variable = LuaTools::opt_string(l, 4, "");
 
     if (!savegame_variable.empty()
         && !LuaTools::is_valid_lua_identifier(savegame_variable)) {
@@ -2051,10 +2051,10 @@ int LuaContext::hero_api_start_boomerang(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Hero& hero = check_hero(l, 1);
-    int max_distance = luaL_checkint(l, 2);
-    int speed = luaL_checkint(l, 3);
-    const std::string& tunic_preparing_animation = luaL_checkstring(l, 4);
-    const std::string& sprite_name = luaL_checkstring(l, 5);
+    int max_distance = LuaTools::check_int(l, 2);
+    int speed = LuaTools::check_int(l, 3);
+    const std::string& tunic_preparing_animation = LuaTools::check_string(l, 4);
+    const std::string& sprite_name = LuaTools::check_string(l, 5);
 
     hero.start_boomerang(max_distance, speed,
         tunic_preparing_animation, sprite_name);
@@ -2131,14 +2131,14 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
 
     if (lua_gettop(l) <= 2) {
       // hero:start_hurt(damage)
-      int damage = luaL_checkint(l, 2);
+      int damage = LuaTools::check_int(l, 2);
       hero.hurt(damage);
     }
     else if (lua_isnumber(l, 2)) {
       // hero:start_hurt(source_x, source_y, damage)
-      int source_x = luaL_checkint(l, 2);
-      int source_y = luaL_checkint(l, 3);
-      int damage = luaL_checkint(l, 4);
+      int source_x = LuaTools::check_int(l, 2);
+      int source_y = LuaTools::check_int(l, 3);
+      int damage = LuaTools::check_int(l, 4);
       hero.hurt(Point(source_x, source_y), damage);
     }
     else {
@@ -2150,7 +2150,7 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
         source_sprite = &check_sprite(l, 3);
         index = 4;
       }
-      int damage = luaL_checkint(l, index);
+      int damage = LuaTools::check_int(l, index);
       hero.hurt(source_entity, source_sprite, damage);
     }
 
@@ -2208,9 +2208,9 @@ int LuaContext::l_treasure_dialog_finished(lua_State* l) {
 
     // The treasure's dialog is over.
     EquipmentItem& item = lua_context.check_item(l, lua_upvalueindex(1));
-    int treasure_variant = luaL_checkint(l, lua_upvalueindex(2));
+    int treasure_variant = LuaTools::check_int(l, lua_upvalueindex(2));
     const std::string& treasure_savegame_variable =
-        luaL_checkstring(l, lua_upvalueindex(3));
+        LuaTools::check_string(l, lua_upvalueindex(3));
     lua_pushvalue(l, lua_upvalueindex(4));
 
     // Check upvalues. Any error here would be the fault of the C++ side
@@ -2311,7 +2311,7 @@ int LuaContext::teletransporter_api_set_sound(lua_State* l) {
 
     std::string sound_id;
     if (lua_gettop(l) > 1) {
-      sound_id = luaL_checkstring(l, 2);
+      sound_id = LuaTools::check_string(l, 2);
     }
 
     teletransporter.set_sound_id(sound_id);
@@ -2385,7 +2385,7 @@ int LuaContext::teletransporter_api_set_destination_map(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Teletransporter& teletransporter = check_teletransporter(l, 1);
-    const std::string& map_id = luaL_checkstring(l, 2);
+    const std::string& map_id = LuaTools::check_string(l, 2);
 
     teletransporter.set_destination_map_id(map_id);
 
@@ -2421,7 +2421,7 @@ int LuaContext::teletransporter_api_set_destination_name(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Teletransporter& teletransporter = check_teletransporter(l, 1);
-    const std::string& destination_name = luaL_checkstring(l, 2);
+    const std::string& destination_name = LuaTools::check_string(l, 2);
 
     teletransporter.set_destination_name(destination_name);
 
@@ -2687,7 +2687,7 @@ int LuaContext::block_api_set_maximum_moves(lua_State* l) {
 
 
     if (lua_isnumber(l, 2)) {
-      const int maximum_moves = luaL_checkint(l, 2);
+      const int maximum_moves = LuaTools::check_int(l, 2);
       if (maximum_moves < 0 || maximum_moves > 1) {
         LuaTools::arg_error(l, 2, "maximum_moves should be 0, 1 or nil");
       }
@@ -2848,7 +2848,7 @@ int LuaContext::stream_api_set_direction(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Stream& stream = check_stream(l, 1);
-    int direction = luaL_checkint(l, 2);
+    int direction = LuaTools::check_int(l, 2);
 
     if (direction < 0 || direction >= 8) {
       LuaTools::arg_error(l, 2, "Invalid stream direction: must be between 0 and 7");
@@ -2886,7 +2886,7 @@ int LuaContext::stream_api_set_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Stream& stream = check_stream(l, 1);
-    int speed = luaL_checkint(l, 2);
+    int speed = LuaTools::check_int(l, 2);
 
     stream.set_speed(speed);
 
@@ -3415,13 +3415,13 @@ int LuaContext::destructible_api_set_treasure(lua_State* l) {
     int variant = 1;
 
     if (lua_gettop(l) >= 2 && !lua_isnil(l, 2)) {
-      item_name = luaL_checkstring(l, 2);
+      item_name = LuaTools::check_string(l, 2);
     }
     if (lua_gettop(l) >= 3 && !lua_isnil(l, 3)) {
-      variant = luaL_checkint(l, 3);
+      variant = LuaTools::check_int(l, 3);
     }
     if (lua_gettop(l) >= 4 && !lua_isnil(l, 4)) {
-      savegame_variable = luaL_checkstring(l, 4);
+      savegame_variable = LuaTools::check_string(l, 4);
     }
 
     if (!savegame_variable.empty()
@@ -3473,7 +3473,7 @@ int LuaContext::destructible_api_set_destruction_sound(lua_State* l) {
     Destructible& destructible = check_destructible(l, 1);
     std::string destruction_sound_id;
     if (!lua_isnil(l, 2)) {
-      destruction_sound_id = luaL_checkstring(l, 2);
+      destruction_sound_id = LuaTools::check_string(l, 2);
     }
 
     destructible.set_destruction_sound(destruction_sound_id);
@@ -3509,7 +3509,7 @@ int LuaContext::destructible_api_set_weight(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Destructible& destructible = check_destructible(l, 1);
-    int weight = luaL_checkint(l, 2);
+    int weight = LuaTools::check_int(l, 2);
 
     destructible.set_weight(weight);
 
@@ -3659,7 +3659,7 @@ int LuaContext::destructible_api_set_damage_on_enemies(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Destructible& destructible = check_destructible(l, 1);
-    int damage_on_enemies = luaL_checkint(l, 2);
+    int damage_on_enemies = LuaTools::check_int(l, 2);
 
     destructible.set_damage_on_enemies(damage_on_enemies);
 
@@ -3757,7 +3757,7 @@ int LuaContext::enemy_api_set_life(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Enemy& enemy = check_enemy(l, 1);
-    int life = luaL_checkint(l, 2);
+    int life = LuaTools::check_int(l, 2);
 
     enemy.set_life(life);
 
@@ -3775,7 +3775,7 @@ int LuaContext::enemy_api_add_life(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Enemy& enemy = check_enemy(l, 1);
-    int points = luaL_checkint(l, 2);
+    int points = LuaTools::check_int(l, 2);
 
     enemy.set_life(enemy.get_life() + points);
 
@@ -3793,7 +3793,7 @@ int LuaContext::enemy_api_remove_life(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Enemy& enemy = check_enemy(l, 1);
-    int points = luaL_checkint(l, 2);
+    int points = LuaTools::check_int(l, 2);
 
     enemy.set_life(enemy.get_life() - points);
 
@@ -3827,7 +3827,7 @@ int LuaContext::enemy_api_set_damage(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Enemy& enemy = check_enemy(l, 1);
-    int damage = luaL_checkint(l, 2);
+    int damage = LuaTools::check_int(l, 2);
 
     enemy.set_damage(damage);
 
@@ -4048,7 +4048,7 @@ int LuaContext::enemy_api_set_minimum_shield_needed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Enemy& enemy = check_enemy(l, 1);
-    int shield_level = luaL_checkint(l, 2);
+    int shield_level = LuaTools::check_int(l, 2);
 
     enemy.set_minimum_shield_needed(shield_level);
 
@@ -4094,7 +4094,7 @@ int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
     EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 2, Enemy::attack_names);
 
     if (lua_isnumber(l, 3)) {
-      int life_points = luaL_checkint(l, 3);
+      int life_points = LuaTools::check_int(l, 3);
       if (life_points < 0) {
         std::ostringstream oss;
         oss << "Invalid life points number for attack consequence: '"
@@ -4153,7 +4153,7 @@ int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
     EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 3, Enemy::attack_names);
 
     if (lua_isnumber(l, 4)) {
-      int life_points = luaL_checkint(l, 4);
+      int life_points = LuaTools::check_int(l, 4);
       if (life_points < 0) {
         std::ostringstream oss;
         oss << "Invalid life points number for attack consequence: '"
@@ -4287,13 +4287,13 @@ int LuaContext::enemy_api_set_treasure(lua_State* l) {
     int variant = 1;
 
     if (lua_gettop(l) >= 2 && !lua_isnil(l, 2)) {
-      item_name = luaL_checkstring(l, 2);
+      item_name = LuaTools::check_string(l, 2);
     }
     if (lua_gettop(l) >= 3 && !lua_isnil(l, 3)) {
-      variant = luaL_checkint(l, 3);
+      variant = LuaTools::check_int(l, 3);
     }
     if (lua_gettop(l) >= 4 && !lua_isnil(l, 4)) {
-      savegame_variable = luaL_checkstring(l, 4);
+      savegame_variable = LuaTools::check_string(l, 4);
     }
 
     if (!savegame_variable.empty()
@@ -4412,7 +4412,7 @@ int LuaContext::enemy_api_hurt(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Enemy& enemy = check_enemy(l, 1);
-    int life_points = luaL_checkint(l, 2);
+    int life_points = LuaTools::check_int(l, 2);
 
     if (enemy.is_in_normal_state() && !enemy.is_invulnerable()) {
       Hero& hero = enemy.get_map().get_entities().get_hero();
@@ -4714,7 +4714,7 @@ int LuaContext::custom_entity_api_set_direction(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     CustomEntity& entity = check_custom_entity(l, 1);
-    int direction = luaL_checkint(l, 2);
+    int direction = LuaTools::check_int(l, 2);
 
     entity.set_sprites_direction(direction);
 
@@ -4952,7 +4952,7 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
       // TODO move string to enum conversion into a function of Dectector.
       // We cannot use LuaTools::check_enum() like always, because this
       // enum has special numerical values.
-      const std::string& collision_mode_name = luaL_checkstring(l, 2);
+      const std::string& collision_mode_name = LuaTools::check_string(l, 2);
       CollisionMode collision_mode = COLLISION_NONE;
 
       if (collision_mode_name == "overlapping") {

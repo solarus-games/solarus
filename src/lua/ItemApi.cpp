@@ -191,7 +191,7 @@ int LuaContext::item_api_set_savegame_variable(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
   std::string savegame_variable;
   if (!lua_isnil(l, 2)) {
-    savegame_variable = luaL_checkstring(l, 2);
+    savegame_variable = LuaTools::check_string(l, 2);
   }
 
   if (!savegame_variable.empty()
@@ -235,7 +235,7 @@ int LuaContext::item_api_set_amount_savegame_variable(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
   std::string amount_savegame_variable;
   if (lua_gettop(l) >= 2) {
-    amount_savegame_variable = luaL_checkstring(l, 2);
+    amount_savegame_variable = LuaTools::check_string(l, 2);
   }
 
   if (!amount_savegame_variable.empty()
@@ -403,7 +403,7 @@ int LuaContext::item_api_set_shadow(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
   std::string shadow;
   if (!lua_isnil(l, 2)) {
-    shadow = luaL_checkstring(l, 2);
+    shadow = LuaTools::check_string(l, 2);
   }
 
   item.set_shadow(shadow);
@@ -440,7 +440,7 @@ int LuaContext::item_api_set_sound_when_picked(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
   std::string sound_when_picked;
   if (!lua_isnil(l, 2)) {
-    sound_when_picked = luaL_checkstring(l, 2);
+    sound_when_picked = LuaTools::check_string(l, 2);
   }
 
   item.set_sound_when_picked(sound_when_picked);
@@ -477,7 +477,7 @@ int LuaContext::item_api_set_sound_when_brandished(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
   std::string sound_when_brandished;
   if (!lua_isnil(l, 2)) {
-    sound_when_brandished = luaL_checkstring(l, 2);
+    sound_when_brandished = LuaTools::check_string(l, 2);
   }
 
   item.set_sound_when_brandished(sound_when_brandished);
@@ -495,7 +495,7 @@ int LuaContext::item_api_has_variant(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
   int variant = 1;
   if (lua_gettop(l) >= 2) {
-    variant = luaL_checkint(l, 2);
+    variant = LuaTools::check_int(l, 2);
   }
 
   lua_pushboolean(l, item.get_variant() >= variant);
@@ -527,7 +527,7 @@ int LuaContext::item_api_get_variant(lua_State* l) {
 int LuaContext::item_api_set_variant(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
-  int variant = luaL_checkint(l, 2);
+  int variant = LuaTools::check_int(l, 2);
 
   if (!item.is_saved()) {
     LuaTools::error(l, std::string("Item '") + item.get_name() + "' is not saved");
@@ -547,7 +547,7 @@ int LuaContext::item_api_has_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
   if (lua_gettop(l) >= 2) {
-    int amount = luaL_checkint(l, 2);
+    int amount = LuaTools::check_int(l, 2);
     if (!item.has_amount()) {
       LuaTools::error(l, std::string("Item '") + item.get_name() + "' has no amount");
     }
@@ -585,7 +585,7 @@ int LuaContext::item_api_get_amount(lua_State* l) {
 int LuaContext::item_api_set_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
-  int amount = luaL_checkint(l, 2);
+  int amount = LuaTools::check_int(l, 2);
 
   if (!item.has_amount()) {
     LuaTools::error(l, std::string("Item '") + item.get_name() + "' has no amount");
@@ -604,7 +604,7 @@ int LuaContext::item_api_set_amount(lua_State* l) {
 int LuaContext::item_api_add_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
-  int amount = luaL_checkint(l, 2);
+  int amount = LuaTools::check_int(l, 2);
 
   if (!item.has_amount()) {
     LuaTools::error(l, std::string("Item '") + item.get_name() + "' has no amount");
@@ -627,7 +627,7 @@ int LuaContext::item_api_add_amount(lua_State* l) {
 int LuaContext::item_api_remove_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
-  int amount = luaL_checkint(l, 2);
+  int amount = LuaTools::check_int(l, 2);
 
   if (!item.has_amount()) {
     LuaTools::error(l, std::string("Item '") + item.get_name() + "' has no amount");
@@ -667,7 +667,7 @@ int LuaContext::item_api_get_max_amount(lua_State* l) {
 int LuaContext::item_api_set_max_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
-  int max_amount = luaL_checkint(l, 2);
+  int max_amount = LuaTools::check_int(l, 2);
 
   if (!item.has_amount()) {
     LuaTools::error(l, std::string("Item '") + item.get_name() + "' has no amount");

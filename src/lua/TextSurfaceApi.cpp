@@ -142,9 +142,9 @@ int LuaContext::text_surface_api_create(lua_State* l) {
     lua_pushnil(l); // First key.
     while (lua_next(l, 1) != 0) {
 
-      const std::string& key = luaL_checkstring(l, 2);
+      const std::string& key = LuaTools::check_string(l, 2);
       if (key == "font") {
-        const std::string& font_id = luaL_checkstring(l, 3);
+        const std::string& font_id = LuaTools::check_string(l, 3);
         if (!TextSurface::has_font(font_id)) {
           LuaTools::error(l, std::string("No such font: '") + font_id + "'");
         }
@@ -170,11 +170,11 @@ int LuaContext::text_surface_api_create(lua_State* l) {
         text_surface->set_text_color(color);
       }
       else if (key == "text") {
-        const std::string& text = luaL_checkstring(l, 3);
+        const std::string& text = LuaTools::check_string(l, 3);
         text_surface->set_text(text);
       }
       else if (key == "text_key") {
-        const std::string& text_key = luaL_checkstring(l, 3);
+        const std::string& text_key = LuaTools::check_string(l, 3);
 
         if (!StringResource::exists(text_key)) {
           LuaTools::error(l, std::string("No value with key '") + text_key
@@ -284,7 +284,7 @@ int LuaContext::text_surface_api_get_font(lua_State* l) {
 int LuaContext::text_surface_api_set_font(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
-  const std::string& font_id = luaL_checkstring(l, 2);
+  const std::string& font_id = LuaTools::check_string(l, 2);
 
   if (!TextSurface::has_font(font_id)) {
     LuaTools::arg_error(l, 2, std::string("No such font: '") + font_id + "'");
@@ -380,7 +380,7 @@ int LuaContext::text_surface_api_set_text(lua_State* l) {
   TextSurface& text_surface = check_text_surface(l, 1);
   std::string text;
   if (lua_gettop(l) >= 2 && !lua_isnil(l, 2)) {
-    text = luaL_checkstring(l, 2);
+    text = LuaTools::check_string(l, 2);
   }
   text_surface.set_text(text);
 
@@ -395,7 +395,7 @@ int LuaContext::text_surface_api_set_text(lua_State* l) {
 int LuaContext::text_surface_api_set_text_key(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
-  const std::string& key = luaL_checkstring(l, 2);
+  const std::string& key = LuaTools::check_string(l, 2);
 
   if (!StringResource::exists(key)) {
     LuaTools::arg_error(l, 2, std::string("No value with key '") + key

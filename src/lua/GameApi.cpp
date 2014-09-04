@@ -155,7 +155,7 @@ void LuaContext::push_game(lua_State* l, Savegame& game) {
  */
 int LuaContext::game_api_exists(lua_State* l) {
 
-  const std::string& file_name = luaL_checkstring(l, 1);
+  const std::string& file_name = LuaTools::check_string(l, 1);
 
   if (FileTools::get_quest_write_dir().empty()) {
     LuaTools::error(l, "Cannot check savegame: no write directory was specified in quest.dat");
@@ -174,7 +174,7 @@ int LuaContext::game_api_exists(lua_State* l) {
  */
 int LuaContext::game_api_delete(lua_State* l) {
 
-  const std::string& file_name = luaL_checkstring(l, 1);
+  const std::string& file_name = LuaTools::check_string(l, 1);
 
   if (FileTools::get_quest_write_dir().empty()) {
     LuaTools::error(l, "Cannot delete savegame: no write directory was specified in quest.dat");
@@ -192,7 +192,7 @@ int LuaContext::game_api_delete(lua_State* l) {
  */
 int LuaContext::game_api_load(lua_State* l) {
 
-  const std::string& file_name = luaL_checkstring(l, 1);
+  const std::string& file_name = LuaTools::check_string(l, 1);
 
   if (FileTools::get_quest_write_dir().empty()) {
     LuaTools::error(l, "Cannot load savegame: no write directory was specified in quest.dat");
@@ -388,7 +388,7 @@ int LuaContext::game_api_is_dialog_enabled(lua_State* l) {
 int LuaContext::game_api_start_dialog(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  const std::string& dialog_id = luaL_checkstring(l, 2);
+  const std::string& dialog_id = LuaTools::check_string(l, 2);
   int info_ref = LUA_REFNIL;
   int callback_ref = LUA_REFNIL;
 
@@ -560,7 +560,7 @@ int LuaContext::game_api_get_hero(lua_State* l) {
 int LuaContext::game_api_get_value(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  const std::string& key = luaL_checkstring(l, 2);
+  const std::string& key = LuaTools::check_string(l, 2);
 
   if (!LuaTools::is_valid_lua_identifier(key)) {
     LuaTools::arg_error(l, 3,
@@ -593,7 +593,7 @@ int LuaContext::game_api_get_value(lua_State* l) {
 int LuaContext::game_api_set_value(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  const std::string& key = luaL_checkstring(l, 2);
+  const std::string& key = LuaTools::check_string(l, 2);
 
   if (key[0] == '_') {
     LuaTools::arg_error(l, 3,
@@ -671,8 +671,8 @@ int LuaContext::game_api_get_starting_location(lua_State* l) {
 int LuaContext::game_api_set_starting_location(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  const std::string& map_id = luaL_checkstring(l, 2);
-  const std::string& destination_name = luaL_optstring(l, 3, "");
+  const std::string& map_id = LuaTools::check_string(l, 2);
+  const std::string& destination_name = LuaTools::opt_string(l, 3, "");
 
   savegame.set_string(Savegame::KEY_STARTING_MAP, map_id);
   savegame.set_string(Savegame::KEY_STARTING_POINT, destination_name);
@@ -702,7 +702,7 @@ int LuaContext::game_api_get_life(lua_State* l) {
 int LuaContext::game_api_set_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int life = luaL_checkint(l, 2);
+  int life = LuaTools::check_int(l, 2);
 
   savegame.get_equipment().set_life(life);
 
@@ -717,7 +717,7 @@ int LuaContext::game_api_set_life(lua_State* l) {
 int LuaContext::game_api_add_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int life = luaL_checkint(l, 2);
+  int life = LuaTools::check_int(l, 2);
 
   if (life < 0) {
     LuaTools::arg_error(l, 2, "Invalid life value: must be positive or zero");
@@ -736,7 +736,7 @@ int LuaContext::game_api_add_life(lua_State* l) {
 int LuaContext::game_api_remove_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int life = luaL_checkint(l, 2);
+  int life = LuaTools::check_int(l, 2);
 
   if (life < 0) {
     LuaTools::arg_error(l, 2, "Invalid life value: must be positive or zero");
@@ -770,7 +770,7 @@ int LuaContext::game_api_get_max_life(lua_State* l) {
 int LuaContext::game_api_set_max_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int life = luaL_checkint(l, 2);
+  int life = LuaTools::check_int(l, 2);
 
   if (life <= 0) {
     LuaTools::arg_error(l, 2, "Invalid life value: max life must be strictly positive");
@@ -789,7 +789,7 @@ int LuaContext::game_api_set_max_life(lua_State* l) {
 int LuaContext::game_api_add_max_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int life = luaL_checkint(l, 2);
+  int life = LuaTools::check_int(l, 2);
 
   if (life < 0) {
     LuaTools::arg_error(l, 2, "Invalid life value: must be positive or zero");
@@ -824,7 +824,7 @@ int LuaContext::game_api_get_money(lua_State* l) {
 int LuaContext::game_api_set_money(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int money = luaL_checkint(l, 2);
+  int money = LuaTools::check_int(l, 2);
 
   savegame.get_equipment().set_money(money);
 
@@ -839,7 +839,7 @@ int LuaContext::game_api_set_money(lua_State* l) {
 int LuaContext::game_api_add_money(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int money = luaL_checkint(l, 2);
+  int money = LuaTools::check_int(l, 2);
 
   if (money < 0) {
     LuaTools::arg_error(l, 2, "Invalid money value: must be positive or zero");
@@ -858,7 +858,7 @@ int LuaContext::game_api_add_money(lua_State* l) {
 int LuaContext::game_api_remove_money(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int money = luaL_checkint(l, 2);
+  int money = LuaTools::check_int(l, 2);
 
   if (money < 0) {
     LuaTools::arg_error(l, 2, "Invalid money value: must be positive or zero");
@@ -892,7 +892,7 @@ int LuaContext::game_api_get_max_money(lua_State* l) {
 int LuaContext::game_api_set_max_money(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int money = luaL_checkint(l, 2);
+  int money = LuaTools::check_int(l, 2);
 
   if (money < 0) {
     LuaTools::arg_error(l, 2, "Invalid money value: must be positive or zero");
@@ -926,7 +926,7 @@ int LuaContext::game_api_get_magic(lua_State* l) {
 int LuaContext::game_api_set_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int magic = luaL_checkint(l, 2);
+  int magic = LuaTools::check_int(l, 2);
 
   savegame.get_equipment().set_magic(magic);
 
@@ -941,7 +941,7 @@ int LuaContext::game_api_set_magic(lua_State* l) {
 int LuaContext::game_api_add_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int magic = luaL_checkint(l, 2);
+  int magic = LuaTools::check_int(l, 2);
 
   if (magic < 0) {
     LuaTools::arg_error(l, 2, "Invalid magic points value: must be positive or zero");
@@ -960,7 +960,7 @@ int LuaContext::game_api_add_magic(lua_State* l) {
 int LuaContext::game_api_remove_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int magic = luaL_checkint(l, 2);
+  int magic = LuaTools::check_int(l, 2);
 
   if (magic < 0) {
     LuaTools::arg_error(l, 2, "Invalid magic points value: must be positive or zero");
@@ -994,7 +994,7 @@ int LuaContext::game_api_get_max_magic(lua_State* l) {
 int LuaContext::game_api_set_max_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int magic = luaL_checkint(l, 2);
+  int magic = LuaTools::check_int(l, 2);
 
   if (magic < 0) {
     LuaTools::arg_error(l, 2, "Invalid magic points value: must be positive or zero");
@@ -1046,7 +1046,7 @@ int LuaContext::game_api_set_ability(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
-  int level = luaL_checkint(l, 3);
+  int level = LuaTools::check_int(l, 3);
 
   savegame.get_equipment().set_ability(ability, level);
 
@@ -1061,7 +1061,7 @@ int LuaContext::game_api_set_ability(lua_State* l) {
 int LuaContext::game_api_get_item(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  const std::string& item_name = luaL_checkstring(l, 2);
+  const std::string& item_name = LuaTools::check_string(l, 2);
 
   if (!savegame.get_equipment().item_exists(item_name)) {
     LuaTools::error(l, std::string("No such item: '") + item_name + "'");
@@ -1079,7 +1079,7 @@ int LuaContext::game_api_get_item(lua_State* l) {
 int LuaContext::game_api_has_item(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  const std::string& item_name = luaL_checkstring(l, 2);
+  const std::string& item_name = LuaTools::check_string(l, 2);
 
   Equipment& equipment = savegame.get_equipment();
   if (!equipment.item_exists(item_name)) {
@@ -1102,7 +1102,7 @@ int LuaContext::game_api_has_item(lua_State* l) {
 int LuaContext::game_api_get_item_assigned(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int slot = luaL_checkint(l, 2);
+  int slot = LuaTools::check_int(l, 2);
 
   if (slot < 1 || slot > 2) {
     LuaTools::arg_error(l, 2, "The item slot should be 1 or 2");
@@ -1127,7 +1127,7 @@ int LuaContext::game_api_get_item_assigned(lua_State* l) {
 int LuaContext::game_api_set_item_assigned(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int slot = luaL_checkint(l, 2);
+  int slot = LuaTools::check_int(l, 2);
   EquipmentItem* item = nullptr;
   if (!lua_isnil(l, 3)) {
     item = &check_item(l, 3);
@@ -1271,7 +1271,7 @@ int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
   if (lua_gettop(l) <= 3) {
     LuaTools::type_error(l, 3, "string or nil");
   }
-  const std::string& key_name = luaL_optstring(l, 3, "");
+  const std::string& key_name = LuaTools::opt_string(l, 3, "");
 
   GameCommands& commands = savegame.get_game()->get_commands();
   InputEvent::KeyboardKey key = InputEvent::get_keyboard_key_by_name(key_name);
@@ -1320,7 +1320,7 @@ int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
   if (lua_gettop(l) <= 3) {
     LuaTools::type_error(l, 3, "string or nil");
   }
-  const std::string& joypad_string = luaL_optstring(l, 3, "");
+  const std::string& joypad_string = LuaTools::opt_string(l, 3, "");
 
   if (!joypad_string.empty() && !GameCommands::is_joypad_string_valid(joypad_string)) {
     LuaTools::arg_error(l, 3,

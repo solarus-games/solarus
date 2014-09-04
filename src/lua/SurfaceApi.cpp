@@ -108,8 +108,8 @@ int LuaContext::surface_api_create(lua_State* l) {
   }
   else if (lua_type(l, 1) == LUA_TNUMBER) {
     // create an empty surface with the specified size
-    int width = luaL_checkint(l, 1);
-    int height = luaL_checkint(l, 2);
+    int width = LuaTools::check_int(l, 1);
+    int height = LuaTools::check_int(l, 2);
     surface = Surface::create(width, height);
   }
   else if (lua_type(l, 1) == LUA_TSTRING) {
@@ -173,10 +173,10 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
   Color color = LuaTools::check_color(l, 2);
 
   if (lua_gettop(l) >= 3) {
-    int x = luaL_checkint(l, 3);
-    int y = luaL_checkint(l, 4);
-    int width = luaL_checkint(l, 5);
-    int height = luaL_checkint(l, 6);
+    int x = LuaTools::check_int(l, 3);
+    int y = LuaTools::check_int(l, 4);
+    int width = LuaTools::check_int(l, 5);
+    int height = LuaTools::check_int(l, 6);
     Rectangle where(x, y, width, height);
     surface.fill_with_color(color, where);
   }
@@ -195,7 +195,7 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
 int LuaContext::surface_api_set_opacity(lua_State* l) {
 
   Surface& surface = check_surface(l, 1);
-  uint8_t opacity = (uint8_t) luaL_checkint(l, 2);
+  uint8_t opacity = (uint8_t) LuaTools::check_int(l, 2);
 
   surface.set_opacity(opacity);
 

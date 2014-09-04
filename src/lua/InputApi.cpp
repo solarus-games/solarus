@@ -82,7 +82,7 @@ int LuaContext::input_api_set_joypad_enabled(lua_State* l) {
  */
 int LuaContext::input_api_is_key_pressed(lua_State* l) {
 
-  const std::string& key_name = luaL_checkstring(l, 1);
+  const std::string& key_name = LuaTools::check_string(l, 1);
   InputEvent::KeyboardKey key = InputEvent::get_keyboard_key_by_name(key_name);
 
   if (key == InputEvent::KEY_NONE) {
@@ -139,7 +139,7 @@ int LuaContext::input_api_get_key_modifiers(lua_State* l) {
  */
 int LuaContext::input_api_is_joypad_button_pressed(lua_State* l) {
 
-  int button = luaL_checkint(l, 1);
+  int button = LuaTools::check_int(l, 1);
 
   lua_pushboolean(l, InputEvent::is_joypad_button_down(button));
   return 1;
@@ -152,7 +152,7 @@ int LuaContext::input_api_is_joypad_button_pressed(lua_State* l) {
  */
 int LuaContext::input_api_get_joypad_axis_state(lua_State* l) {
 
-  int axis = luaL_checkint(l, 1);
+  int axis = LuaTools::check_int(l, 1);
 
   lua_pushinteger(l, InputEvent::get_joypad_axis_state(axis));
   return 1;
@@ -165,7 +165,7 @@ int LuaContext::input_api_get_joypad_axis_state(lua_State* l) {
  */
 int LuaContext::input_api_get_joypad_hat_direction(lua_State* l) {
 
-  int hat = luaL_checkint(l, 1);
+  int hat = LuaTools::check_int(l, 1);
 
   lua_pushinteger(l, InputEvent::get_joypad_hat_direction(hat));
   return 1;
@@ -178,7 +178,7 @@ int LuaContext::input_api_get_joypad_hat_direction(lua_State* l) {
  */
 int LuaContext::input_api_is_mouse_button_pressed(lua_State* l) {
 
-  const std::string& button_name = luaL_checkstring(l, 1);
+  const std::string& button_name = LuaTools::check_string(l, 1);
   InputEvent::MouseButton button = InputEvent::get_mouse_button_by_name(button_name);
 
   if (button == InputEvent::MOUSE_BUTTON_NONE) {
@@ -197,7 +197,7 @@ int LuaContext::input_api_is_mouse_button_pressed(lua_State* l) {
  */
 int LuaContext::input_api_is_mouse_button_released(lua_State* l) {
 
-  const std::string& button_name = luaL_checkstring(l, 1);
+  const std::string& button_name = LuaTools::check_string(l, 1);
   InputEvent::MouseButton button = InputEvent::get_mouse_button_by_name(button_name);
 
   if (button == InputEvent::MOUSE_BUTTON_NONE) {

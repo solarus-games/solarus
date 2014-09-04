@@ -88,7 +88,7 @@ void LuaContext::push_main(lua_State* l) {
  */
 int LuaContext::main_api_load_file(lua_State *l) {
 
-  const std::string& file_name = luaL_checkstring(l, 1);
+  const std::string& file_name = LuaTools::check_string(l, 1);
 
   if (!load_file_if_exists(l, file_name)) {
     lua_pushnil(l);
@@ -104,7 +104,7 @@ int LuaContext::main_api_load_file(lua_State *l) {
  */
 int LuaContext::main_api_do_file(lua_State *l) {
 
-  const std::string& file_name = luaL_checkstring(l, 1);
+  const std::string& file_name = LuaTools::check_string(l, 1);
 
   do_file(l, file_name);
 
@@ -173,7 +173,7 @@ int LuaContext::main_api_get_quest_write_dir(lua_State* l) {
  */
 int LuaContext::main_api_set_quest_write_dir(lua_State* l) {
 
-  const std::string& quest_write_dir = luaL_optstring(l, 1, "");
+  const std::string& quest_write_dir = LuaTools::opt_string(l, 1, "");
 
   FileTools::set_quest_write_dir(quest_write_dir);
 
@@ -187,7 +187,7 @@ int LuaContext::main_api_set_quest_write_dir(lua_State* l) {
  */
 int LuaContext::main_api_load_settings(lua_State* l) {
 
-  std::string file_name = luaL_optstring(l, 1, "settings.dat");
+  std::string file_name = LuaTools::opt_string(l, 1, "settings.dat");
 
   if (FileTools::get_quest_write_dir().empty()) {
     LuaTools::error(l, "Cannot load settings: no write directory was specified in quest.dat");
@@ -206,7 +206,7 @@ int LuaContext::main_api_load_settings(lua_State* l) {
  */
 int LuaContext::main_api_save_settings(lua_State* l) {
 
-  std::string file_name = luaL_optstring(l, 1, "settings.dat");
+  std::string file_name = LuaTools::opt_string(l, 1, "settings.dat");
 
   if (FileTools::get_quest_write_dir().empty()) {
     LuaTools::error(l, "Cannot save settings: no write directory was specified in quest.dat");
@@ -225,10 +225,10 @@ int LuaContext::main_api_save_settings(lua_State* l) {
  */
 int LuaContext::main_api_get_distance(lua_State* l) {
 
-  int x1 = luaL_checkint(l, 1);
-  int y1 = luaL_checkint(l, 2);
-  int x2 = luaL_checkint(l, 3);
-  int y2 = luaL_checkint(l, 4);
+  int x1 = LuaTools::check_int(l, 1);
+  int y1 = LuaTools::check_int(l, 2);
+  int x2 = LuaTools::check_int(l, 3);
+  int y2 = LuaTools::check_int(l, 4);
 
   int distance = (int) Geometry::get_distance(x1, y1, x2, y2);
 
@@ -243,10 +243,10 @@ int LuaContext::main_api_get_distance(lua_State* l) {
  */
 int LuaContext::main_api_get_angle(lua_State* l) {
 
-  int x1 = luaL_checkint(l, 1);
-  int y1 = luaL_checkint(l, 2);
-  int x2 = luaL_checkint(l, 3);
-  int y2 = luaL_checkint(l, 4);
+  int x1 = LuaTools::check_int(l, 1);
+  int y1 = LuaTools::check_int(l, 2);
+  int x2 = LuaTools::check_int(l, 3);
+  int y2 = LuaTools::check_int(l, 4);
 
   double angle = Geometry::get_angle(x1, y1, x2, y2);
 
@@ -261,7 +261,7 @@ int LuaContext::main_api_get_angle(lua_State* l) {
  */
 int LuaContext::main_api_get_metatable(lua_State* l) {
 
-  const std::string& type_name = luaL_checkstring(l, 1);
+  const std::string& type_name = LuaTools::check_string(l, 1);
 
   luaL_getmetatable(l, (std::string("sol.") + type_name).c_str());
   return 1;

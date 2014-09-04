@@ -99,7 +99,7 @@ int LuaContext::language_api_get_language(lua_State* l) {
  */
 int LuaContext::language_api_set_language(lua_State* l) {
 
-  const std::string& language_code = luaL_checkstring(l, 1);
+  const std::string& language_code = LuaTools::check_string(l, 1);
 
   if (!Language::has_language(language_code)) {
     LuaTools::arg_error(l, 1, std::string("No such language: '") + language_code + "'");
@@ -118,7 +118,7 @@ int LuaContext::language_api_get_language_name(lua_State* l) {
 
   std::string language_code;
   if (lua_gettop(l) >= 1) {
-    language_code = luaL_checkstring(l, 1);
+    language_code = LuaTools::check_string(l, 1);
     if (!Language::has_language(language_code)) {
       LuaTools::arg_error(l, 1, std::string("No such language: '") + language_code + "'");
     }
@@ -165,7 +165,7 @@ int LuaContext::language_api_get_languages(lua_State* l) {
  */
 int LuaContext::language_api_get_string(lua_State* l) {
 
-  const std::string& key = luaL_checkstring(l, 1);
+  const std::string& key = LuaTools::check_string(l, 1);
 
   if (!StringResource::exists(key)) {
     lua_pushnil(l);
@@ -183,7 +183,7 @@ int LuaContext::language_api_get_string(lua_State* l) {
  */
 int LuaContext::language_api_get_dialog(lua_State* l) {
 
-  const std::string& dialog_id = luaL_checkstring(l, 1);
+  const std::string& dialog_id = LuaTools::check_string(l, 1);
 
   if (!DialogResource::exists(dialog_id)) {
     lua_pushnil(l);

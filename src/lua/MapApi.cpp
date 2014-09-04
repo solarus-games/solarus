@@ -278,7 +278,7 @@ int LuaContext::l_get_map_entity_or_global(lua_State* l) {
 
   lua_pushvalue(l, lua_upvalueindex(1));  // Because check_map does not like pseudo-indexes.
   Map& map = check_map(l, -1);
-  const std::string& name = luaL_checkstring(l, 2);
+  const std::string& name = LuaTools::check_string(l, 2);
 
   MapEntity* entity = nullptr;
   if (map.is_started()) {
@@ -471,7 +471,7 @@ int LuaContext::map_api_get_music(lua_State* l) {
 int LuaContext::map_api_set_tileset(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  const std::string& tileset_id = luaL_checkstring(l, 2);
+  const std::string& tileset_id = LuaTools::check_string(l, 2);
 
   map.set_tileset(tileset_id);
 
@@ -504,17 +504,17 @@ int LuaContext::map_api_get_camera_position(lua_State* l) {
 int LuaContext::map_api_move_camera(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  int x = luaL_checkint(l, 2);
-  int y = luaL_checkint(l, 3);
-  int speed = luaL_checkint(l, 4);
+  int x = LuaTools::check_int(l, 2);
+  int y = LuaTools::check_int(l, 3);
+  int speed = LuaTools::check_int(l, 4);
   LuaTools::check_type(l, 5, LUA_TFUNCTION);
 
   uint32_t delay_before = 1000;
   uint32_t delay_after = 1000;
   if (lua_gettop(l) >= 6) {
-    delay_before = luaL_checkint(l, 6);
+    delay_before = LuaTools::check_int(l, 6);
     if (lua_gettop(l) >= 7) {
-      delay_after = luaL_checkint(l, 7);
+      delay_after = LuaTools::check_int(l, 7);
     }
   }
   lua_settop(l, 5); // let the function on top of the stack
@@ -541,8 +541,8 @@ int LuaContext::map_api_move_camera(lua_State* l) {
 int LuaContext::map_api_get_ground(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  int x = luaL_checkint(l, 2);
-  int y = luaL_checkint(l, 3);
+  int x = LuaTools::check_int(l, 2);
+  int y = LuaTools::check_int(l, 3);
   Layer layer = LuaTools::check_layer(l, 4);
 
   Ground ground = map.get_ground(layer, x, y);
@@ -560,8 +560,8 @@ int LuaContext::map_api_draw_sprite(lua_State* l) {
 
   Map& map = check_map(l, 1);
   Sprite& sprite = check_sprite(l, 2);
-  int x = luaL_checkint(l, 3);
-  int y = luaL_checkint(l, 4);
+  int x = LuaTools::check_int(l, 3);
+  int y = LuaTools::check_int(l, 4);
 
   map.draw_sprite(sprite, x, y);
 
@@ -621,7 +621,7 @@ int LuaContext::map_api_change_crystal_state(lua_State* l) {
 int LuaContext::map_api_open_doors(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
+  const std::string& prefix = LuaTools::check_string(l, 2);
 
   bool done = false;
   MapEntities& entities = map.get_entities();
@@ -651,7 +651,7 @@ int LuaContext::map_api_open_doors(lua_State* l) {
 int LuaContext::map_api_close_doors(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
+  const std::string& prefix = LuaTools::check_string(l, 2);
 
   bool done = false;
   MapEntities& entities = map.get_entities();
@@ -681,7 +681,7 @@ int LuaContext::map_api_close_doors(lua_State* l) {
 int LuaContext::map_api_set_doors_open(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
+  const std::string& prefix = LuaTools::check_string(l, 2);
   bool open = true;
   if (lua_gettop(l) >= 3) {
     open = lua_toboolean(l, 3);
@@ -705,7 +705,7 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
 int LuaContext::map_api_get_entity(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
+  const std::string& name = LuaTools::check_string(l, 2);
 
   MapEntity* entity = map.get_entities().find_entity(name);
 
@@ -726,7 +726,7 @@ int LuaContext::map_api_get_entity(lua_State* l) {
 int LuaContext::map_api_has_entity(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
+  const std::string& name = LuaTools::check_string(l, 2);
 
   MapEntity* entity = map.get_entities().find_entity(name);
 
@@ -742,7 +742,7 @@ int LuaContext::map_api_has_entity(lua_State* l) {
 int LuaContext::map_api_get_entities(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
+  const std::string& prefix = LuaTools::check_string(l, 2);
 
   const std::list<MapEntity*> entities =
     map.get_entities().get_entities_with_prefix(prefix);
@@ -769,7 +769,7 @@ int LuaContext::map_api_get_entities(lua_State* l) {
 int LuaContext::map_api_get_entities_count(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
+  const std::string& prefix = LuaTools::check_string(l, 2);
 
   const std::list<MapEntity*> entities =
     map.get_entities().get_entities_with_prefix(prefix);
@@ -786,7 +786,7 @@ int LuaContext::map_api_get_entities_count(lua_State* l) {
 int LuaContext::map_api_has_entities(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
+  const std::string& prefix = LuaTools::check_string(l, 2);
 
   lua_pushboolean(l, map.get_entities().has_entity_with_prefix(prefix));
   return 1;
@@ -814,7 +814,7 @@ int LuaContext::map_api_get_hero(lua_State* l) {
 int LuaContext::map_api_set_entities_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
+  const std::string& prefix = LuaTools::check_string(l, 2);
   bool enabled = true;
   if (lua_gettop(l) >= 3) {
     enabled = lua_toboolean(l, 3);
@@ -837,7 +837,7 @@ int LuaContext::map_api_set_entities_enabled(lua_State* l) {
 int LuaContext::map_api_remove_entities(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
+  const std::string& prefix = LuaTools::check_string(l, 2);
 
   map.get_entities().remove_entities_with_prefix(prefix);
   return 0;

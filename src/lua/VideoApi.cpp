@@ -73,7 +73,7 @@ int LuaContext::video_api_get_window_title(lua_State *l) {
  */
 int LuaContext::video_api_set_window_title(lua_State *l) {
 
-  const std::string& window_title = luaL_checkstring(l, 1);
+  const std::string& window_title = LuaTools::check_string(l, 1);
 
   Video::set_window_title(window_title);
   return 1;
@@ -99,7 +99,7 @@ int LuaContext::video_api_get_mode(lua_State *l) {
  */
 int LuaContext::video_api_set_mode(lua_State *l) {
 
-  std::string mode_name = luaL_checkstring(l, 1);
+  std::string mode_name = LuaTools::check_string(l, 1);
   const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
   if (mode != nullptr && Video::get_video_mode().get_name() != mode_name) {
@@ -150,7 +150,7 @@ int LuaContext::video_api_get_modes(lua_State* l) {
  */
 int LuaContext::video_api_is_mode_supported(lua_State *l) {
 
-  std::string mode_name = luaL_checkstring(l, 1);
+  std::string mode_name = LuaTools::check_string(l, 1);
   const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
   bool supported = mode != nullptr && Video::is_mode_supported(*mode);
@@ -224,8 +224,8 @@ int LuaContext::video_api_get_window_size(lua_State* l) {
  */
 int LuaContext::video_api_set_window_size(lua_State* l) {
 
-  int width = luaL_checkint(l, 1);
-  int height = luaL_checkint(l, 2);
+  int width = LuaTools::check_int(l, 1);
+  int height = LuaTools::check_int(l, 2);
 
   if (width <= 0) {
     LuaTools::arg_error(l, 1, "Window width must be positive");

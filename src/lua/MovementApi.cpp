@@ -396,7 +396,7 @@ void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
   }
   else {
                                   // ... movements movement xy x
-    x = luaL_checkint(l, -1);
+    x = LuaTools::check_int(l, -1);
     lua_pop(l, 1);
                                   // ... movements movement xy
   }
@@ -414,7 +414,7 @@ void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
   }
   else {
                                   // ... movements movement xy y
-    y = luaL_checkint(l, -1);
+    y = LuaTools::check_int(l, -1);
     lua_pop(l, 1);
                                   // ... movements movement xy
   }
@@ -472,7 +472,7 @@ void LuaContext::update_movements() {
 int LuaContext::movement_api_create(lua_State* l) {
 
   LuaContext& lua_context = get_lua_context(l);
-  const std::string& type = luaL_checkstring(l, 1);
+  const std::string& type = LuaTools::check_string(l, 1);
 
   Movement* movement = nullptr;
   if (type == "straight") {
@@ -558,8 +558,8 @@ int LuaContext::movement_api_get_xy(lua_State* l) {
 int LuaContext::movement_api_set_xy(lua_State* l) {
 
   Movement& movement = check_movement(l, 1);
-  int x = luaL_checkint(l, 2);
-  int y = luaL_checkint(l, 3);
+  int x = LuaTools::check_int(l, 2);
+  int y = LuaTools::check_int(l, 3);
 
   movement.set_xy(x, y);
 
@@ -724,7 +724,7 @@ int LuaContext::straight_movement_api_get_speed(lua_State* l) {
 int LuaContext::straight_movement_api_set_speed(lua_State* l) {
 
   StraightMovement& movement = check_straight_movement(l, 1);
-  int speed = luaL_checkint(l, 2);
+  int speed = LuaTools::check_int(l, 2);
   movement.set_speed(speed);
   return 0;
 }
@@ -749,7 +749,7 @@ int LuaContext::straight_movement_api_get_angle(lua_State* l) {
 int LuaContext::straight_movement_api_set_angle(lua_State* l) {
 
   StraightMovement& movement = check_straight_movement(l, 1);
-  double angle = luaL_checknumber(l, 2);
+  double angle = LuaTools::check_number(l, 2);
   movement.set_angle(angle);
   return 0;
 }
@@ -774,7 +774,7 @@ int LuaContext::straight_movement_api_get_max_distance(lua_State* l) {
 int LuaContext::straight_movement_api_set_max_distance(lua_State* l) {
 
   StraightMovement& movement = check_straight_movement(l, 1);
-  int max_distance = luaL_checkint(l, 2);
+  int max_distance = LuaTools::check_int(l, 2);
   movement.set_max_distance(max_distance);
   return 0;
 }
@@ -850,7 +850,7 @@ int LuaContext::random_movement_api_get_speed(lua_State* l) {
 int LuaContext::random_movement_api_set_speed(lua_State* l) {
 
   RandomMovement& movement = check_random_movement(l, 1);
-  int speed = luaL_checkint(l, 2);
+  int speed = LuaTools::check_int(l, 2);
   movement.set_normal_speed(speed);
   return 0;
 }
@@ -887,7 +887,7 @@ int LuaContext::random_movement_api_get_max_distance(lua_State* l) {
 int LuaContext::random_movement_api_set_max_distance(lua_State* l) {
 
   RandomMovement& movement = check_random_movement(l, 1);
-  int max_radius = luaL_checkint(l, 2);
+  int max_radius = LuaTools::check_int(l, 2);
   movement.set_max_radius(max_radius);
   return 0;
 }
@@ -953,8 +953,8 @@ int LuaContext::target_movement_api_set_target(lua_State* l) {
   TargetMovement& movement = check_target_movement(l, 1);
   if (lua_isnumber(l, 2)) {
     // The target is a fixed point.
-    int x = luaL_checkint(l, 2);
-    int y = luaL_checkint(l, 3);
+    int x = LuaTools::check_int(l, 2);
+    int y = LuaTools::check_int(l, 3);
     movement.set_target(nullptr, x, y);
   }
   else {
@@ -964,8 +964,8 @@ int LuaContext::target_movement_api_set_target(lua_State* l) {
     int y = 0;
     if (lua_isnumber(l, 3)) {
        // There is an offset.
-       x = luaL_checkint(l, 3);
-       y = luaL_checkint(l, 4);
+       x = LuaTools::check_int(l, 3);
+       y = LuaTools::check_int(l, 4);
     }
     movement.set_target(&target, x, y);
   }
@@ -993,7 +993,7 @@ int LuaContext::target_movement_api_get_speed(lua_State* l) {
 int LuaContext::target_movement_api_set_speed(lua_State* l) {
 
   TargetMovement& movement = check_target_movement(l, 1);
-  int speed = luaL_checkint(l, 2);
+  int speed = LuaTools::check_int(l, 2);
   movement.set_moving_speed(speed);
   return 0;
 }
@@ -1097,7 +1097,7 @@ int LuaContext::path_movement_api_set_path(lua_State* l) {
   std::string path = "";
   lua_pushnil(l); // first key
   while (lua_next(l, 2) != 0) {
-    int direction8 = luaL_checkint(l, 4);
+    int direction8 = LuaTools::check_int(l, 4);
     path += ('0' + direction8);
     lua_pop(l, 1); // pop the value, let the key for the iteration
   }
@@ -1126,7 +1126,7 @@ int LuaContext::path_movement_api_get_speed(lua_State* l) {
 int LuaContext::path_movement_api_set_speed(lua_State* l) {
 
   PathMovement& movement = check_path_movement(l, 1);
-  int speed = luaL_checkint(l, 2);
+  int speed = LuaTools::check_int(l, 2);
   movement.set_speed(speed);
   return 0;
 }
@@ -1231,7 +1231,7 @@ int LuaContext::random_path_movement_api_get_speed(lua_State* l) {
 int LuaContext::random_path_movement_api_set_speed(lua_State* l) {
 
   RandomPathMovement& movement = check_random_path_movement(l, 1);
-  int speed = luaL_checkint(l, 2);
+  int speed = LuaTools::check_int(l, 2);
   movement.set_speed(speed);
   return 0;
 }
@@ -1293,7 +1293,7 @@ int LuaContext::path_finding_movement_api_get_speed(lua_State* l) {
 int LuaContext::path_finding_movement_api_set_speed(lua_State* l) {
 
   PathFindingMovement& movement = check_path_finding_movement(l, 1);
-  int speed = luaL_checkint(l, 2);
+  int speed = LuaTools::check_int(l, 2);
   movement.set_speed(speed);
   return 0;
 }
@@ -1330,16 +1330,16 @@ int LuaContext::circle_movement_api_set_center(lua_State* l) {
   CircleMovement& movement = check_circle_movement(l, 1);
   if (lua_isnumber(l, 2)) {
     // the center is a fixed point
-    int x = luaL_checkint(l, 2);
-    int y = luaL_checkint(l, 3);
+    int x = LuaTools::check_int(l, 2);
+    int y = LuaTools::check_int(l, 3);
     movement.set_center(Point(x, y));
   }
   else {
     // the center is an entity
 
     MapEntity& center = check_entity(l, 2);
-    int dx = luaL_optint(l, 3, 0);
-    int dy = luaL_optint(l, 4, 0);
+    int dx = LuaTools::opt_int(l, 3, 0);
+    int dy = LuaTools::opt_int(l, 4, 0);
     movement.set_center(center, dx, dy);
   }
 
@@ -1366,7 +1366,7 @@ int LuaContext::circle_movement_api_get_radius(lua_State* l) {
 int LuaContext::circle_movement_api_set_radius(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
-  int radius = luaL_checkint(l, 2);
+  int radius = LuaTools::check_int(l, 2);
   movement.set_radius(radius);
   return 0;
 }
@@ -1391,7 +1391,7 @@ int LuaContext::circle_movement_api_get_radius_speed(lua_State* l) {
 int LuaContext::circle_movement_api_set_radius_speed(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
-  int radius_speed = luaL_checkint(l, 2);
+  int radius_speed = LuaTools::check_int(l, 2);
   movement.set_radius_speed(radius_speed);
   return 0;
 }
@@ -1445,7 +1445,7 @@ int LuaContext::circle_movement_api_get_initial_angle(lua_State* l) {
 int LuaContext::circle_movement_api_set_initial_angle(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
-  double initial_angle = luaL_checknumber(l, 2);
+  double initial_angle = LuaTools::check_number(l, 2);
   movement.set_initial_angle(initial_angle);
   return 0;
 }
@@ -1470,7 +1470,7 @@ int LuaContext::circle_movement_api_get_angle_speed(lua_State* l) {
 int LuaContext::circle_movement_api_set_angle_speed(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
-  int angle_speed = luaL_checkint(l, 2);
+  int angle_speed = LuaTools::check_int(l, 2);
   movement.set_angle_speed(angle_speed);
   return 0;
 }
@@ -1495,7 +1495,7 @@ int LuaContext::circle_movement_api_get_max_rotations(lua_State* l) {
 int LuaContext::circle_movement_api_set_max_rotations(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
-  int max_rotations = luaL_checkint(l, 2);
+  int max_rotations = LuaTools::check_int(l, 2);
   movement.set_max_rotations(max_rotations);
   return 0;
 }
@@ -1520,7 +1520,7 @@ int LuaContext::circle_movement_api_get_duration(lua_State* l) {
 int LuaContext::circle_movement_api_set_duration(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
-  int duration = luaL_checkint(l, 2);
+  int duration = LuaTools::check_int(l, 2);
   movement.set_duration(duration);
   return 0;
 }
@@ -1545,7 +1545,7 @@ int LuaContext::circle_movement_api_get_loop_delay(lua_State* l) {
 int LuaContext::circle_movement_api_set_loop_delay(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
-  int loop_delay = luaL_checkint(l, 2);
+  int loop_delay = LuaTools::check_int(l, 2);
   movement.set_loop(loop_delay);
   return 0;
 }
@@ -1592,7 +1592,7 @@ int LuaContext::jump_movement_api_get_direction8(lua_State* l) {
 int LuaContext::jump_movement_api_set_direction8(lua_State* l) {
 
   JumpMovement& movement = check_jump_movement(l, 1);
-  int direction8 = luaL_checkint(l, 2);
+  int direction8 = LuaTools::check_int(l, 2);
   movement.set_direction8(direction8);
   return 0;
 }
@@ -1617,7 +1617,7 @@ int LuaContext::jump_movement_api_get_distance(lua_State* l) {
 int LuaContext::jump_movement_api_set_distance(lua_State* l) {
 
   JumpMovement& movement = check_jump_movement(l, 1);
-  int distance = luaL_checkint(l, 2);
+  int distance = LuaTools::check_int(l, 2);
   movement.set_distance(distance);
   return 0;
 }
@@ -1642,7 +1642,7 @@ int LuaContext::jump_movement_api_get_speed(lua_State* l) {
 int LuaContext::jump_movement_api_set_speed(lua_State* l) {
 
   JumpMovement& movement = check_jump_movement(l, 1);
-  int speed = luaL_checkint(l, 2);
+  int speed = LuaTools::check_int(l, 2);
   movement.set_speed(speed);
   return 0;
 }
@@ -1713,8 +1713,8 @@ int LuaContext::pixel_movement_api_set_trajectory(lua_State* l) {
     LuaTools::check_type(l, 4, LUA_TTABLE);
     lua_rawgeti(l, 4, 1);
     lua_rawgeti(l, 4, 2);
-    int x = luaL_checkint(l, 5);
-    int y = luaL_checkint(l, 6);
+    int x = LuaTools::check_int(l, 5);
+    int y = LuaTools::check_int(l, 6);
     trajectory.emplace_back(x, y);
     lua_settop(l, 3); // let the key for the iteration
   }
@@ -1772,7 +1772,7 @@ int LuaContext::pixel_movement_api_get_delay(lua_State* l) {
 int LuaContext::pixel_movement_api_set_delay(lua_State* l) {
 
   PixelMovement& movement = check_pixel_movement(l, 1);
-  uint32_t delay = uint32_t(luaL_checkint(l, 2));
+  uint32_t delay = uint32_t(LuaTools::check_int(l, 2));
   movement.set_delay(delay);
   return 0;
 }

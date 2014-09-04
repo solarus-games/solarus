@@ -60,8 +60,8 @@ void LuaContext::register_file_module() {
  */
 int LuaContext::file_api_open(lua_State* l) {
 
-  const std::string& file_name = luaL_checkstring(l, 1);
-  const std::string& mode = luaL_optstring(l, 2, "r");
+  const std::string& file_name = LuaTools::check_string(l, 1);
+  const std::string& mode = LuaTools::opt_string(l, 2, "r");
 
   const bool writing = mode != "r" && mode != "rb";
 
@@ -137,7 +137,7 @@ int LuaContext::file_api_open(lua_State* l) {
  */
 int LuaContext::file_api_exists(lua_State* l) {
 
-  const std::string& file_name = luaL_checkstring(l, 1);
+  const std::string& file_name = LuaTools::check_string(l, 1);
 
   lua_pushboolean(l, FileTools::data_file_exists(file_name, false));
 
@@ -151,7 +151,7 @@ int LuaContext::file_api_exists(lua_State* l) {
  */
 int LuaContext::file_api_remove(lua_State* l) {
 
-  const std::string& file_name = luaL_checkstring(l, 1);
+  const std::string& file_name = LuaTools::check_string(l, 1);
 
   bool success = FileTools::data_file_delete(file_name);
 
@@ -172,7 +172,7 @@ int LuaContext::file_api_remove(lua_State* l) {
  */
 int LuaContext::file_api_mkdir(lua_State* l) {
 
-  const std::string& dir_name = luaL_checkstring(l, 1);
+  const std::string& dir_name = LuaTools::check_string(l, 1);
 
   bool success = FileTools::data_file_mkdir(dir_name);
 

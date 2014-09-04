@@ -54,8 +54,11 @@ void LuaContext::register_menu_module() {
  * \param on_top \c true to place this menu on top of existing one in the
  * same context, \c false to place it behind.
  */
-void LuaContext::add_menu(int menu_ref, int context_index, bool on_top) {
-
+void LuaContext::add_menu(
+    const ScopedLuaRef& menu_ref,
+    int context_index,
+    bool on_top
+) {
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
     ExportableToLuaPtr* userdata = static_cast<ExportableToLuaPtr*>(
@@ -102,12 +105,11 @@ void LuaContext::remove_menus(int context_index) {
   }
 
   for (LuaMenuData& menu: menus) {
-    int menu_ref = menu.ref;
+    ScopedLuaRef menu_ref = menu.ref;
     if (menu.context == context && !menu.recently_added) {
-      menu.ref = LUA_REFNIL;
+      menu.ref.clear();
       menu.context = nullptr;
       menu_on_finished(menu_ref);
-      destroy_ref(menu_ref);
     }
   }
 }
@@ -128,12 +130,11 @@ void LuaContext::remove_menus() {
   for (LuaMenuData& menu: menus) {
 
     if (!menu.recently_added) {
-      int menu_ref = menu.ref;
-      if (menu_ref != LUA_REFNIL) {
-        menu.ref = LUA_REFNIL;
+      ScopedLuaRef menu_ref = menu.ref;
+      if (!menu_ref.is_empty()) {
+        menu.ref.clear();
         menu.context = nullptr;
         menu_on_finished(menu_ref);
-        destroy_ref(menu_ref);
       }
     }
   }
@@ -144,12 +145,6 @@ void LuaContext::remove_menus() {
  */
 void LuaContext::destroy_menus() {
 
-  for (LuaMenuData& menu: menus) {
-
-    if (menu.ref != LUA_REFNIL) {
-      destroy_ref(menu.ref);
-    }
-  }
   menus.clear();
 }
 
@@ -165,8 +160,8 @@ void LuaContext::update_menus() {
   for (auto it = menus.begin(); it != menus.end(); ++it) {
 
     it->recently_added = false;
-    if (it->ref == LUA_REFNIL) {
-      // LUA_REFNIL on a menu means that we should remove it.
+    if (it->ref.is_empty()) {
+      // Empty ref on a menu means that we should remove it.
       // In this case, context must also be nullptr.
       Debug::check_assertion(it->context == nullptr, "Menu with context and no ref");
       menus.erase(it--);
@@ -195,7 +190,7 @@ int LuaContext::menu_api_start(lua_State *l) {
     lua_settop(l, 2);
 
     LuaContext& lua_context = get_lua_context(l);
-    int menu_ref = lua_context.create_ref();
+    ScopedLuaRef menu_ref = lua_context.create_ref();
     lua_context.add_menu(menu_ref, 1, on_top);
 
     return 0;
@@ -215,19 +210,19 @@ int LuaContext::menu_api_stop(lua_State* l) {
 
     LuaTools::check_type(l, 1, LUA_TTABLE);
 
-    int menu_ref = LUA_REFNIL;
     std::list<LuaMenuData>& menus = lua_context.menus;
     for (LuaMenuData& menu: menus) {
-      int ref = menu.ref;
+      ScopedLuaRef ref = menu.ref;
       push_ref(l, ref);
       if (lua_equal(l, 1, -1)) {
-        menu_ref = ref;
-        menu.ref = LUA_REFNIL;  // Don't erase it immediately since we may be iterating over menus.
+        ScopedLuaRef menu_ref = ref;  // Don't erase it immediately since we may be iterating over menus.
+        menu.ref.clear();
         menu.context = nullptr;
         lua_context.menu_on_finished(menu_ref);
-        lua_context.destroy_ref(menu_ref);
+        lua_pop(l, 1);
         break;
       }
+      lua_pop(l, 1);
     }
 
     return 0;
@@ -290,7 +285,7 @@ int LuaContext::menu_api_is_started(lua_State* l) {
  * \brief Calls the on_started() method of a Lua menu.
  * \param menu_ref A reference to the menu object.
  */
-void LuaContext::menu_on_started(int menu_ref) {
+void LuaContext::menu_on_started(const ScopedLuaRef& menu_ref) {
 
   push_ref(l, menu_ref);
   on_started();
@@ -301,7 +296,7 @@ void LuaContext::menu_on_started(int menu_ref) {
  * \brief Calls the on_finished() method of a Lua menu.
  * \param menu_ref A reference to the menu object.
  */
-void LuaContext::menu_on_finished(int menu_ref) {
+void LuaContext::menu_on_finished(const ScopedLuaRef& menu_ref) {
 
   push_ref(l, menu_ref);
   remove_menus(-1);  // First, stop children menus if any.
@@ -314,7 +309,7 @@ void LuaContext::menu_on_finished(int menu_ref) {
  * \brief Calls the on_update() method of a Lua menu.
  * \param menu_ref A reference to the menu object.
  */
-void LuaContext::menu_on_update(int menu_ref) {
+void LuaContext::menu_on_update(const ScopedLuaRef& menu_ref) {
 
   push_ref(l, menu_ref);
   on_update();
@@ -327,8 +322,10 @@ void LuaContext::menu_on_update(int menu_ref) {
  * \param menu_ref A reference to the menu object.
  * \param dst_surface The destination surface.
  */
-void LuaContext::menu_on_draw(int menu_ref, SurfacePtr& dst_surface) {
-
+void LuaContext::menu_on_draw(
+    const ScopedLuaRef& menu_ref,
+    SurfacePtr& dst_surface
+) {
   push_ref(l, menu_ref);
   on_draw(dst_surface);
   menus_on_draw(-1, dst_surface);  // Draw children menus if any.
@@ -341,8 +338,10 @@ void LuaContext::menu_on_draw(int menu_ref, SurfacePtr& dst_surface) {
  * \param event The input event to forward.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::menu_on_input(int menu_ref, const InputEvent& event) {
-
+bool LuaContext::menu_on_input(
+    const ScopedLuaRef& menu_ref,
+    const InputEvent& event
+) {
   // Get the Lua menu.
   push_ref(l, menu_ref);
 
@@ -366,8 +365,10 @@ bool LuaContext::menu_on_input(int menu_ref, const InputEvent& event) {
  * \param command The game command just pressed.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::menu_on_command_pressed(int menu_ref, GameCommands::Command command) {
-
+bool LuaContext::menu_on_command_pressed(
+    const ScopedLuaRef& menu_ref,
+    GameCommands::Command command
+) {
   push_ref(l, menu_ref);
 
   // Send the event to children menus first.
@@ -389,8 +390,10 @@ bool LuaContext::menu_on_command_pressed(int menu_ref, GameCommands::Command com
  * \param command The game command just released.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::menu_on_command_released(int menu_ref, GameCommands::Command command) {
-
+bool LuaContext::menu_on_command_released(
+    const ScopedLuaRef& menu_ref,
+    GameCommands::Command command
+) {
   push_ref(l, menu_ref);
 
   // Send the event to children menus first.
@@ -474,7 +477,7 @@ bool LuaContext::menus_on_input(int context_index, const InputEvent& event) {
   bool handled = false;
   std::list<LuaMenuData>::reverse_iterator it;
   for (it = menus.rbegin(); it != menus.rend() && !handled; ++it) {
-    int menu_ref = it->ref;
+    const ScopedLuaRef& menu_ref = it->ref;
     if (it->context == context) {
       handled = menu_on_input(menu_ref, event);
     }
@@ -505,7 +508,7 @@ bool LuaContext::menus_on_command_pressed(int context_index,
   bool handled = false;
   std::list<LuaMenuData>::reverse_iterator it;
   for (it = menus.rbegin(); it != menus.rend() && !handled; ++it) {
-    int menu_ref = it->ref;
+    const ScopedLuaRef& menu_ref = it->ref;
     if (it->context == context) {
       handled = menu_on_command_pressed(menu_ref, command);
     }
@@ -536,7 +539,7 @@ bool LuaContext::menus_on_command_released(int context_index,
   bool handled = false;
   std::list<LuaMenuData>::reverse_iterator it;
   for (it = menus.rbegin(); it != menus.rend() && !handled; ++it) {
-    int menu_ref = it->ref;
+    const ScopedLuaRef& menu_ref = it->ref;
     if (it->context == context) {
       handled = menu_on_command_released(menu_ref, command);
     }

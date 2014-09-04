@@ -216,7 +216,7 @@ void DialogBoxSystem::show_more_lines() {
       // Send the answer to the callback.
       LuaContext& lua_context = game.get_lua_context();
       lua_pushboolean(lua_context.get_internal_state(), selected_first_answer);
-      status_ref = lua_context.create_scoped_ref();
+      status_ref = lua_context.create_ref();
     }
     close(status_ref);
     return;

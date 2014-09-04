@@ -432,16 +432,14 @@ void LuaContext::notify_dialog_finished(
 }
 
 /**
- * \brief Creates a reference to the Lua value on top of the stack and pops this
- * value.
- *
- * TODO It is safer to use create_scoped_ref() instead. Remove this function.
- *
- * \return The reference created.
+ * \brief Creates a reference to the Lua value on top of the stack and pops
+ * this value.
+ * \return The reference created, wrapped in an object that manages its
+ * lifetime.
  */
-int LuaContext::create_ref() {
+ScopedLuaRef LuaContext::create_ref() {
 
-  return luaL_ref(l, LUA_REGISTRYINDEX);
+  return ScopedLuaRef(*this, luaL_ref(l, LUA_REGISTRYINDEX));
 }
 
 /**
@@ -452,17 +450,6 @@ int LuaContext::create_ref() {
 void LuaContext::destroy_ref(int ref) {
 
   luaL_unref(l, LUA_REGISTRYINDEX, ref);
-}
-
-/**
- * \brief Creates a reference to the Lua value on top of the stack and pops this
- * value.
- * \return The reference created, wrapped in an object that manages its
- * lifetime.
- */
-ScopedLuaRef LuaContext::create_scoped_ref() {
-
-  return ScopedLuaRef(*this, luaL_ref(l, LUA_REGISTRYINDEX));
 }
 
 /**

@@ -118,9 +118,8 @@ class LuaContext {
     void run_custom_entity(CustomEntity& custom_entity);
 
     // Lua refs.
-    int create_ref();
+    ScopedLuaRef create_ref();
     void destroy_ref(int ref);
-    ScopedLuaRef create_scoped_ref();
 
     // Calling Lua functions.
     static void push_ref(lua_State* l, int ref);
@@ -157,7 +156,11 @@ class LuaContext {
     void do_timer_callback(Timer& timer);
 
     // Menus.
-    void add_menu(int menu_ref, int context_index, bool on_top);
+    void add_menu(
+        const ScopedLuaRef& menu_ref,
+        int context_index,
+        bool on_top
+    );
     void remove_menus(int context_index);
     void remove_menus();
     void destroy_menus();
@@ -212,13 +215,19 @@ class LuaContext {
     bool main_on_input(const InputEvent& event);
 
     // Menu events.
-    void menu_on_started(int menu_ref);
-    void menu_on_finished(int menu_ref);
-    void menu_on_update(int menu_ref);
-    void menu_on_draw(int menu_ref, SurfacePtr& dst_surface);
-    bool menu_on_input(int menu_ref, const InputEvent& event);
-    bool menu_on_command_pressed(int menu_ref, GameCommands::Command command);
-    bool menu_on_command_released(int menu_ref, GameCommands::Command command);
+    void menu_on_started(const ScopedLuaRef& menu_ref);
+    void menu_on_finished(const ScopedLuaRef& menu_ref);
+    void menu_on_update(const ScopedLuaRef& menu_ref);
+    void menu_on_draw(const ScopedLuaRef& menu_ref, SurfacePtr& dst_surface);
+    bool menu_on_input(const ScopedLuaRef& menu_ref, const InputEvent& event);
+    bool menu_on_command_pressed(
+        const ScopedLuaRef& menu_ref,
+        GameCommands::Command command
+    );
+    bool menu_on_command_released(
+        const ScopedLuaRef& menu_ref,
+        GameCommands::Command command
+    );
     void menus_on_update(int context_index);
     void menus_on_draw(int context_index, SurfacePtr& dst_surface);
     bool menus_on_input(int context_index, const InputEvent& event);
@@ -914,12 +923,12 @@ class LuaContext {
      * \brief Data associated to any Lua menu.
      */
     struct LuaMenuData {
-      int ref;               /**< Lua ref of the table of the menu.
+      ScopedLuaRef ref;      /**< Lua ref of the table of the menu.
                               * LUA_REFNIL means that the menu will be removed. */
       const void* context;   /**< Lua table or userdata the menu is attached to. */
       bool recently_added;   /**< Used to avoid elements added during an iteration. */
 
-      LuaMenuData(int ref, const void* context):
+      LuaMenuData(const ScopedLuaRef& ref, const void* context):
         ref(ref),
         context(context),
         recently_added(true) {

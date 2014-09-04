@@ -449,7 +449,7 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
       if (lua_type(l, 3) != LUA_TFUNCTION) {
         // There is an info parameter.
         lua_pushvalue(l, 3);
-        info_ref = lua_context.create_scoped_ref();
+        info_ref = lua_context.create_ref();
         ++callback_index;
       }
 
@@ -457,7 +457,7 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
         // There is a callback.
         LuaTools::check_type(l, callback_index, LUA_TFUNCTION);
         lua_settop(l, callback_index);
-        callback_ref = lua_context.create_scoped_ref();
+        callback_ref = lua_context.create_ref();
       }
     }
     game->start_dialog(dialog_id, info_ref, callback_ref);
@@ -490,7 +490,7 @@ int LuaContext::game_api_stop_dialog(lua_State* l) {
     ScopedLuaRef status_ref;
     if (lua_gettop(l) >= 2) {
       lua_settop(l, 2);
-      status_ref = get_lua_context(l).create_scoped_ref();
+      status_ref = get_lua_context(l).create_ref();
     }
 
     game->stop_dialog(status_ref);

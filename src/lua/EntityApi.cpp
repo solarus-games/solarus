@@ -1989,7 +1989,7 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
     if (lua_gettop(l) >= 5) {
       LuaTools::check_type(l, 5, LUA_TFUNCTION);
       lua_settop(l, 5);
-      callback_ref = get_lua_context(l).create_scoped_ref();
+      callback_ref = get_lua_context(l).create_ref();
     }
 
     hero.start_treasure(treasure, callback_ref);
@@ -2183,7 +2183,7 @@ void LuaContext::notify_hero_brandish_treasure(
   push_string(l, treasure.get_savegame_variable());
   push_ref(l, callback_ref);
   lua_pushcclosure(l, l_treasure_dialog_finished, 4);
-  ScopedLuaRef dialog_callback_ref = create_scoped_ref();
+  ScopedLuaRef dialog_callback_ref = create_ref();
 
   treasure.get_game().start_dialog(dialog_id, ScopedLuaRef(), dialog_callback_ref);
 }
@@ -3137,7 +3137,7 @@ void LuaContext::notify_shop_treasure_interaction(ShopTreasure& shop_treasure) {
 
   push_shop_treasure(l, shop_treasure);
   lua_pushcclosure(l, l_shop_treasure_description_dialog_finished, 1);
-  ScopedLuaRef callback_ref = create_scoped_ref();
+  ScopedLuaRef callback_ref = create_ref();
 
   shop_treasure.get_game().start_dialog(
       shop_treasure.get_dialog_id(),
@@ -3168,11 +3168,11 @@ int LuaContext::l_shop_treasure_description_dialog_finished(lua_State* l) {
     }
 
     lua_pushinteger(l, shop_treasure.get_price());
-    ScopedLuaRef price_ref = lua_context.create_scoped_ref();
+    ScopedLuaRef price_ref = lua_context.create_ref();
 
     push_shop_treasure(l, shop_treasure);
     lua_pushcclosure(l, l_shop_treasure_question_dialog_finished, 1);
-    ScopedLuaRef callback_ref = lua_context.create_scoped_ref();
+    ScopedLuaRef callback_ref = lua_context.create_ref();
 
     game.start_dialog("_shop.question", price_ref, callback_ref);
 

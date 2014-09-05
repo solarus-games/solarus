@@ -67,7 +67,7 @@ bool operator>(const Point& lhs, const Point& rhs);
 bool operator>=(const Point& lhs, const Point& rhs);
 
 // Unary arithmetic operators
-Point operator+(Point point);
+Point operator+(const Point& point);
 Point operator-(const Point& point);
 
 // Binary arithmetic operators

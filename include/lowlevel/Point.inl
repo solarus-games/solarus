@@ -20,32 +20,60 @@ namespace solarus {
 ////////////////////////////////////////////////////////////
 // Point methods
 
+/**
+ * \brief Creates a point with coordinates <tt>(0, 0)</tt>.
+ */
 inline Point::Point()
   = default;
 
+/**
+ * \brief Creates a point with the specified coordinates.
+ * \param x The x coordinate.
+ * \param y The y coordinate.
+ */
 inline Point::Point(int x, int y):
   x(x),
-  y(y)
-{}
+  y(y) {
+}
 
+/**
+ * \brief Adds another point to this one.
+ * \param other Another point.
+ * \return The current point after modification.
+ */
 inline Point& Point::operator+=(const Point& other) {
   x += other.x;
   y += other.y;
   return *this;
 }
 
+/**
+ * \brief Subtracts another point from this one.
+ * \param other Another point.
+ * \return The current point after modification.
+ */
 inline Point& Point::operator-=(const Point& other) {
   x -= other.x;
   y -= other.y;
   return *this;
 }
 
+/**
+ * \brief Multiplies this point by a value.
+ * \param factor The multiplication factor.
+ * \return The current point after modification.
+ */
 inline Point& Point::operator*=(int factor) {
   x *= factor;
   y *= factor;
   return *this;
 }
 
+/**
+ * \brief Multiplies this point by a value.
+ * \param divisor The divisor.
+ * \return The current point after modification.
+ */
 inline Point& Point::operator/=(int divisor) {
   x /= divisor;
   y /= divisor;
@@ -55,60 +83,90 @@ inline Point& Point::operator/=(int divisor) {
 ////////////////////////////////////////////////////////////
 // Free functions
 
+/**
+ * \brief Returns whether two points are equal.
+ * \param lhs A point.
+ * \param rhs Another point.
+ * \return \c true if the points are equal.
+ */
 inline bool operator==(const Point& lhs, const Point& rhs) {
   return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
+/**
+ * \brief Returns whether two points are different.
+ * \param lhs A point.
+ * \param rhs Another point.
+ * \return \c true if the points are not equal.
+ */
 inline bool operator!=(const Point& lhs, const Point& rhs) {
   return !(lhs == rhs);
 }
 
-inline bool operator<(const Point& lhs, const Point& rhs) {
-  if (lhs.x < rhs.x) {
-      return true;
-  }
-  if (rhs.x < lhs.x) {
-      return false;
-  }
-  return lhs.y < rhs.y;
-}
-
-inline bool operator<=(const Point& lhs, const Point& rhs) {
-  return !(rhs < lhs);
-}
-
-inline bool operator>(const Point& lhs, const Point& rhs) {
-  return rhs < lhs;
-}
-
-inline bool operator>=(const Point& lhs, const Point& rhs) {
-  return !(lhs < rhs);
-}
-
+/**
+ * \brief Unary plus operator.
+ * \param point A point.
+ * \return A copy of the point.
+ */
 inline Point operator+(const Point& point) {
   return point;
 }
 
+/**
+ * \brief Unary minus operator.
+ * \param point A point.
+ * \return A point with opposite coordinates.
+ */
 inline Point operator-(const Point& point) {
   return { -point.x, -point.y };
 }
 
+/**
+ * \brief Adds two points.
+ * \param lhs A point.
+ * \param rhs Another point.
+ * \return A point with the sum of their coordinates.
+ */
 inline Point operator+(Point lhs, const Point& rhs) {
   return { lhs.x + rhs.x, lhs.y + rhs.y };
 }
 
+/**
+ * \brief Subtracts two points.
+ * \param lhs A point.
+ * \param rhs The point to subtract.
+ * \return A point with the difference of their coordinates.
+ */
 inline Point operator-(Point lhs, const Point& rhs) {
   return { lhs.x - rhs.x, lhs.y - rhs.y };
 }
 
+/**
+ * \brief Multiples a point by a number.
+ * \param point A point.
+ * \param factor The factor.
+ * \return A point with coordinates multiplied by the factor.
+ */
 inline Point operator*(Point point, int factor) {
   return point *= factor;
 }
 
+/**
+ * \brief Multiples a point by a number.
+ * \param factor The factor.
+ * \param point A point.
+ * \return A point with coordinates multiplied by the factor.
+ */
 inline Point operator*(int factor, Point point) {
   return point *= factor;
 }
 
+/**
+ * \brief Divides a point by a number.
+ * \param point A point.
+ * \param divisor The divisor.
+ * \return A point with coordinates divided by the divisor.
+ */
 inline Point operator/(Point point, int divisor) {
   return point /= divisor;
 }

@@ -63,6 +63,9 @@ class RefCountable {
  * on raw pointers, we can remove the RefCountable class, remove this function
  * and use std::make_shared() with the standard deleter,
  * provided that this function is never called twice on the same object.
+ *
+ * \param pointer The raw pointer to share.
+ * \return The shared pointer created.
  */
 template <typename T>
 std::shared_ptr<T> RefCountable::make_refcount_ptr(T* pointer) {

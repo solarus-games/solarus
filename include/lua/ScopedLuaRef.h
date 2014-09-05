@@ -47,7 +47,6 @@ class ScopedLuaRef {
     LuaContext* get_lua_context() const;
     bool is_empty() const;
     int get() const;
-    void set(LuaContext& lua_context, int ref);
     void clear();
 
   private:

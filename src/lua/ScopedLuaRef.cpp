@@ -77,6 +77,7 @@ ScopedLuaRef::~ScopedLuaRef() {
 /**
  * \brief Copy assignment operator.
  * \param other The object to copy.
+ * \return The current ref after modification.
  */
 ScopedLuaRef& ScopedLuaRef::operator=(const ScopedLuaRef& other) {
 
@@ -100,6 +101,7 @@ ScopedLuaRef& ScopedLuaRef::operator=(const ScopedLuaRef& other) {
 /**
  * \brief Move assignment operator.
  * \param other The object to move.
+ * \return The current ref after modification.
  */
 ScopedLuaRef& ScopedLuaRef::operator=(ScopedLuaRef&& other) {
 
@@ -135,18 +137,6 @@ bool ScopedLuaRef::is_empty() const {
  */
 int ScopedLuaRef::get() const {
   return ref;
-}
-
-/**
- * \briefs Changes the ref.
- *
- * Unrefs the previous one if any.
- */
-void ScopedLuaRef::set(LuaContext& lua_context, int ref) {
-
-  clear();
-  this->lua_context = &lua_context;
-  this->ref = ref;
 }
 
 /**

@@ -20,7 +20,7 @@ namespace solarus {
 
 /**
  * \brief Creates a Lua exception with the specified error message.
- * \param lua_context The Lua context where the error occurred.
+ * \param l The Lua state where the error occurred.
  * \param error_message The error message.
  */
 LuaException::LuaException(

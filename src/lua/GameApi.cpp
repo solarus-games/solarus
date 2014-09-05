@@ -1501,7 +1501,7 @@ int LuaContext::game_api_capture_command_binding(lua_State* l) {
     Savegame& savegame = check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
-    ScopedLuaRef callback_ref = LuaTools::opt_function(l, 3);
+    const ScopedLuaRef& callback_ref = LuaTools::opt_function(l, 3);
 
     GameCommands& commands = savegame.get_game()->get_commands();
     commands.customize(command, callback_ref);

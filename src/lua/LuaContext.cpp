@@ -449,12 +449,16 @@ ScopedLuaRef LuaContext::create_ref() {
  *
  * \param callback_ref Reference of the function to call.
  * If the reference is empty, nothing is done.
+ * \param function_name A name describing the Lua function (only used to print
+ * the error message if any).
  */
-void LuaContext::do_callback(const ScopedLuaRef& callback_ref) {
-
+void LuaContext::do_callback(
+    const ScopedLuaRef& callback_ref,
+    const std::string& function_name
+) {
   if (!callback_ref.is_empty()) {
     push_ref(l, callback_ref);
-    call_function(0, 0, "callback");
+    call_function(0, 0, function_name.c_str());
   }
 }
 
@@ -474,8 +478,13 @@ void LuaContext::do_callback(const ScopedLuaRef& callback_ref) {
  * \param callback_ref Reference of the function to call. Becomes empty before
  * the actual call.
  * If the reference is already empty, nothing happens.
+ * \param function_name A name describing the Lua function (only used to print
+ * the error message if any).
  */
-void LuaContext::clear_and_do_callback(ScopedLuaRef& callback_ref) {
+void LuaContext::clear_and_do_callback(
+    ScopedLuaRef& callback_ref,
+    const std::string& function_name
+) {
 
   if (callback_ref.is_empty()) {
     return;
@@ -484,7 +493,7 @@ void LuaContext::clear_and_do_callback(ScopedLuaRef& callback_ref) {
   ScopedLuaRef copy = callback_ref;
   callback_ref.clear();
   push_ref(l, copy);
-  call_function(0, 0, "callback");
+  call_function(0, 0, function_name.c_str());
 }
 
 /**

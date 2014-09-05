@@ -788,7 +788,9 @@ void HeroSprites::update() {
   // Lua callback.
   if (tunic_sprite->is_animation_finished() &&
       !animation_callback_ref.is_empty()) {
-    get_lua_context().clear_and_do_callback(animation_callback_ref);
+    get_lua_context().clear_and_do_callback(
+        animation_callback_ref, "hero animation callback"
+    );
   }
 }
 

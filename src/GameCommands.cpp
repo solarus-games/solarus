@@ -790,7 +790,9 @@ GameCommands::Command GameCommands::get_command_to_customize() const {
  */
 void GameCommands::do_customization_callback() {
 
-  game.get_lua_context().clear_and_do_callback(customize_callback_ref);
+  game.get_lua_context().clear_and_do_callback(
+      customize_callback_ref, "capture command callback"
+  );
 }
 
 /**

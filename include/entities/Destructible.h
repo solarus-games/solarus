@@ -49,7 +49,6 @@ class Destructible: public Detector {
         const Treasure& treasure,
         Ground modified_ground
     );
-    ~Destructible();
 
     // Properties overridden from MapEntity.
     virtual EntityType get_type() const override;

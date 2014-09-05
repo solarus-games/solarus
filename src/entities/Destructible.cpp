@@ -76,12 +76,6 @@ Destructible::Destructible(
 }
 
 /**
- * \brief Destructor.
- */
-Destructible::~Destructible() {
-}
-
-/**
  * \brief Returns the type of entity.
  * \return the type of entity
  */

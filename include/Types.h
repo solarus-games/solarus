@@ -168,14 +168,14 @@ class FollowMovement;
 class TargetMovement;
 class CircleMovement;
 
-typedef std::shared_ptr<ExportableToLua> ExportableToLuaPtr;
-typedef std::shared_ptr<Drawable> DrawablePtr;
-typedef std::shared_ptr<Surface> SurfacePtr;
-typedef std::shared_ptr<TextSurface> TextSurfacePtr;
-typedef std::shared_ptr<Sprite> SpritePtr;
-typedef std::shared_ptr<MapEntity> MapEntityPtr;
-typedef std::shared_ptr<CustomEntity> CustomEntityPtr;
-typedef std::shared_ptr<Tile> TilePtr;
+using ExportableToLuaPtr = std::shared_ptr<ExportableToLua>;
+using DrawablePtr = std::shared_ptr<Drawable>;
+using SurfacePtr = std::shared_ptr<Surface>;
+using TextSurfacePtr = std::shared_ptr<TextSurface>;
+using SpritePtr = std::shared_ptr<Sprite>;
+using MapEntityPtr = std::shared_ptr<MapEntity>;
+using CustomEntityPtr = std::shared_ptr<CustomEntity>;
+using TilePtr = std::shared_ptr<Tile>;
 
 }
 

@@ -38,7 +38,7 @@ namespace solarus {
  * the following animations are also required:
  * - "immobilized": used while the enemy is immobilized
  * - "shaking": used when the immobilized enemy is about to get back to its normal state.
- * The animation of its sprites automically switch between those animations
+ * The animation of its sprites automatically switches between those animations
  * depending on its current movement and the attacks it is subject to.
  * Additional animations may be defined.
  */
@@ -165,7 +165,7 @@ class Enemy: public Detector {
     virtual void notify_enabled(bool enabled) override;
     virtual void notify_ground_below_changed() override;
     virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
-    virtual void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) override;
+    virtual void notify_collision(MapEntity& other_entity, Sprite& this_sprite, Sprite& other_sprite) override;
     virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
     virtual void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) override;
     virtual void notify_collision_with_enemy(Enemy& other, Sprite& other_sprite, Sprite& this_sprite) override;

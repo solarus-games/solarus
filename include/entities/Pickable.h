@@ -52,8 +52,15 @@ class Pickable: public Detector {
     // item state
     virtual void set_suspended(bool suspended) override;
     MapEntity* get_entity_followed();
-    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
-    virtual void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) override;
+    virtual void notify_collision(
+        MapEntity& entity_overlapping,
+        CollisionMode collision_mode
+    ) override;
+    virtual void notify_collision(
+        MapEntity& other_entity,
+        Sprite& this_sprite,
+        Sprite& other_sprite
+    ) override;
     virtual void update() override;
     virtual void draw_on_map() override;
 

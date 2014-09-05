@@ -198,7 +198,7 @@ void Detector::check_collision(MapEntity& entity, Sprite& sprite) {
     for (Sprite* this_sprite: get_sprites()) {
 
       if (this_sprite->test_collision(sprite, get_x(), get_y(), entity.get_x(), entity.get_y())) {
-        notify_collision(entity, sprite, *this_sprite);
+        notify_collision(entity, *this_sprite, sprite);
       }
     }
   }
@@ -332,14 +332,18 @@ void Detector::notify_collision(MapEntity& /* entity_overlapping */, CollisionMo
  *
  * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
  * sprite overlaps a sprite of this detector.
- * By default, nothing happens. Redefine this method in the subclasses to do the appropriate action.
  *
  * \param other_entity the entity overlapping this detector
- * \param other_sprite the sprite of other_entity that is overlapping this detector
  * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
+ * \param other_sprite the sprite of other_entity that is overlapping this detector
  */
-void Detector::notify_collision(MapEntity& /* other_entity */, Sprite& /* other_sprite */, Sprite& /* this_sprite */) {
-
+void Detector::notify_collision(
+    MapEntity& /* other_entity */,
+    Sprite& /* this_sprite */,
+    Sprite& /* other_sprite */
+) {
+  // By default, nothing happens.
+  // Redefine this method in the subclasses to do the appropriate action.
 }
 
 /**

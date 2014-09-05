@@ -352,18 +352,13 @@ void Destructible::notify_collision_with_hero(Hero& hero, CollisionMode /* colli
 }
 
 /**
- * \brief Notifies this entity that another sprite is overlapping it.
- *
- * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
- * sprite overlaps a sprite of this detector.
- *
- * \param other_entity the entity overlapping this detector
- * \param other_sprite the sprite of other_entity that is overlapping this detector
- * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
+ * \copydoc Detector::notify_collision(MapEntity&, Sprite&, Sprite&)
  */
-void Destructible::notify_collision(MapEntity& other_entity,
-    Sprite& other_sprite, Sprite& /* this_sprite */) {
-
+void Destructible::notify_collision(
+    MapEntity& other_entity,
+    Sprite& /* this_sprite */,
+    Sprite& other_sprite
+) {
   if (get_can_be_cut()
       && !is_being_cut
       && !is_waiting_for_regeneration()

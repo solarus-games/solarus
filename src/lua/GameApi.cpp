@@ -453,12 +453,7 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
         ++callback_index;
       }
 
-      if (lua_gettop(l) >= callback_index) {
-        // There is a callback.
-        LuaTools::check_type(l, callback_index, LUA_TFUNCTION);
-        lua_settop(l, callback_index);
-        callback_ref = lua_context.create_ref();
-      }
+      callback_ref = LuaTools::opt_function(l, callback_index);
     }
     game->start_dialog(dialog_id, info_ref, callback_ref);
 
@@ -1506,13 +1501,7 @@ int LuaContext::game_api_capture_command_binding(lua_State* l) {
     Savegame& savegame = check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
-
-    ScopedLuaRef callback_ref;
-    if (lua_gettop(l) >= 3) {
-      LuaTools::check_type(l, 3, LUA_TFUNCTION);
-      lua_settop(l, 3);
-      callback_ref = get_lua_context(l).create_ref();
-    }
+    ScopedLuaRef callback_ref = LuaTools::opt_function(l, 3);
 
     GameCommands& commands = savegame.get_game()->get_commands();
     commands.customize(command, callback_ref);

@@ -1608,13 +1608,7 @@ int LuaContext::hero_api_set_animation(lua_State* l) {
   SOLARUS_LUA_BOUNDARY_TRY() {
     Hero& hero = check_hero(l, 1);
     const std::string& animation = LuaTools::check_string(l, 2);
-
-    ScopedLuaRef callback_ref;
-    if (lua_gettop(l) >= 3) {
-      LuaTools::check_type(l, 3, LUA_TFUNCTION);
-      lua_settop(l, 3);
-      callback_ref = get_lua_context(l).create_ref();
-    }
+    const ScopedLuaRef& callback_ref = LuaTools::opt_function(l, 3);
 
     HeroSprites& sprites = hero.get_hero_sprites();
     if (!sprites.has_tunic_animation(animation)) {
@@ -1985,12 +1979,7 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
       LuaTools::arg_error(l, 4, "This treasure is not obtainable");
     }
 
-    ScopedLuaRef callback_ref;
-    if (lua_gettop(l) >= 5) {
-      LuaTools::check_type(l, 5, LUA_TFUNCTION);
-      lua_settop(l, 5);
-      callback_ref = get_lua_context(l).create_ref();
-    }
+    const ScopedLuaRef& callback_ref = LuaTools::opt_function(l, 5);
 
     hero.start_treasure(treasure, callback_ref);
 
@@ -2008,12 +1997,7 @@ int LuaContext::hero_api_start_victory(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Hero& hero = check_hero(l, 1);
-    ScopedLuaRef callback_ref;
-    if (lua_gettop(l) >= 2) {
-      LuaTools::check_type(l, 2, LUA_TFUNCTION);
-      lua_settop(l, 2);
-      callback_ref = get_lua_context(l).create_ref();
-    }
+    ScopedLuaRef callback_ref = LuaTools::opt_function(l, 2);
 
     hero.start_victory(callback_ref);
 
@@ -4799,20 +4783,19 @@ int LuaContext::custom_entity_api_set_traversable_by(lua_State* l) {
         entity.set_traversable_by_entities(type, traversable);
       }
     }
-    else {
+    else if (lua_isfunction(l, index)) {
       // Custom boolean function.
-      if (!lua_isfunction(l, index)) {
-        LuaTools::type_error(l, index, "boolean, function or nil");
-      }
-      lua_settop(l, index);  // Make sure the function is on the top of the stack.
 
-      const ScopedLuaRef& traversable_test_ref = get_lua_context(l).create_ref();
+      const ScopedLuaRef& traversable_test_ref = LuaTools::check_function(l, index);
       if (!type_specific) {
         entity.set_traversable_by_entities(traversable_test_ref);
       }
       else {
         entity.set_traversable_by_entities(type, traversable_test_ref);
       }
+    }
+    else {
+      LuaTools::type_error(l, index, "boolean, function or nil");
     }
 
     return 0;
@@ -4860,20 +4843,19 @@ int LuaContext::custom_entity_api_set_can_traverse(lua_State* l) {
         entity.set_can_traverse_entities(type, traversable);
       }
     }
-    else {
+    else if (lua_isfunction(l, index)) {
       // Custom boolean function.
-      if (!lua_isfunction(l, index)) {
-        LuaTools::type_error(l, index, "boolean, function or nil");
-      }
-      lua_settop(l, index);  // Make sure the function is on the top of the stack.
 
-      const ScopedLuaRef& traversable_test_ref = get_lua_context(l).create_ref();
+      const ScopedLuaRef& traversable_test_ref = LuaTools::check_function(l, index);
       if (!type_specific) {
         entity.set_can_traverse_entities(traversable_test_ref);
       }
       else {
         entity.set_can_traverse_entities(type, traversable_test_ref);
       }
+    }
+    else {
+      LuaTools::type_error(l, index, "boolean, function or nil");
     }
 
     return 0;
@@ -4942,10 +4924,7 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
     LuaContext& lua_context = get_lua_context(l);
     CustomEntity& entity = check_custom_entity(l, 1);
 
-    if (!lua_isfunction(l, 3)) {
-      LuaTools::type_error(l, 3, "function");
-    }
-    lua_settop(l, 3);  // Make sure the callback is on the top of the stack.
+    const ScopedLuaRef& callback_ref = LuaTools::check_function(l, 3);
 
     if (lua_isstring(l, 2)) {
       // Built-in collision test.
@@ -4982,13 +4961,11 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
         );
       }
 
-      const ScopedLuaRef& callback_ref = lua_context.create_ref();
       entity.add_collision_test(collision_mode, callback_ref);
     }
     else if (lua_isfunction(l, 2)) {
       // Custom collision test.
-      ScopedLuaRef callback_ref = lua_context.create_ref();
-      ScopedLuaRef collision_test_ref = lua_context.create_ref();
+      const ScopedLuaRef& collision_test_ref = LuaTools::check_function(l, 2);
       entity.add_collision_test(collision_test_ref, callback_ref);
     }
     else {

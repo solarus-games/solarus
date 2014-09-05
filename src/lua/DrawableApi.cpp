@@ -198,11 +198,7 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
         index++;
       }
       // the next argument (if any) is the callback
-      if (lua_gettop(l) >= index) {
-        LuaTools::check_type(l, index, LUA_TFUNCTION);
-        lua_settop(l, index);
-        callback_ref = get_lua_context(l).create_ref();
-      }
+      callback_ref = LuaTools::opt_function(l, index);
     }
 
     TransitionFade* transition = new TransitionFade(
@@ -239,11 +235,7 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
         index++;
       }
       // the next argument (if any) is the callback
-      if (lua_gettop(l) >= index) {
-        LuaTools::check_type(l, index, LUA_TFUNCTION);
-        lua_settop(l, index);
-        callback_ref = get_lua_context(l).create_ref();
-      }
+      callback_ref = LuaTools::opt_function(l, index);
     }
 
     TransitionFade* transition = new TransitionFade(

@@ -588,14 +588,9 @@ int LuaContext::movement_api_start(lua_State* l) {
     Movement& movement = check_movement(l, 1);
     movement_api_stop(l);  // First, stop any previous movement.
 
-    ScopedLuaRef callback_ref;
-    if (lua_gettop(l) >= 3 && !lua_isnil(l, 3)) {
-      LuaTools::check_type(l, 3, LUA_TFUNCTION);
-      lua_settop(l, 3);
-      callback_ref = lua_context.create_ref();
-      movement.set_lua_context(&lua_context);
-    }
+    ScopedLuaRef callback_ref = LuaTools::opt_function(l, 3);
 
+    movement.set_lua_context(&lua_context);
     if (lua_type(l, 2) == LUA_TTABLE) {
       lua_context.start_movement_on_point(movement, 2);
     }

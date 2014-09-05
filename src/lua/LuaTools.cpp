@@ -661,10 +661,7 @@ ScopedLuaRef LuaTools::check_function(
     lua_State* l,
     int index
 ) {
-  if (!lua_isfunction(l, index)) {
-    type_error(l, index, "function");
-  }
-
+  check_type(l, index, LUA_TFUNCTION);
   return create_ref(l, index);  // Leave the function in the stack.
 }
 

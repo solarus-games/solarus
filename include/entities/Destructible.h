@@ -55,7 +55,7 @@ class Destructible: public Detector {
     virtual bool is_ground_modifier() const override;
     virtual Ground get_modified_ground() const override;
 
-    // Propeties specific to destructibles.
+    // Properties specific to destructibles.
     const Treasure& get_treasure() const;
     void set_treasure(const Treasure& treasure);
     const std::string& get_animation_set_id() const;

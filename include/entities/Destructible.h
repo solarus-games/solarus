@@ -49,14 +49,13 @@ class Destructible: public Detector {
         const Treasure& treasure,
         Ground modified_ground
     );
-    ~Destructible();
 
     // Properties overridden from MapEntity.
     virtual EntityType get_type() const override;
     virtual bool is_ground_modifier() const override;
     virtual Ground get_modified_ground() const override;
 
-    // Propeties specific to destructibles.
+    // Properties specific to destructibles.
     const Treasure& get_treasure() const;
     void set_treasure(const Treasure& treasure);
     const std::string& get_animation_set_id() const;
@@ -80,8 +79,15 @@ class Destructible: public Detector {
     // Collisions.
     virtual bool is_obstacle_for(MapEntity& other) override;
     virtual bool test_collision_custom(MapEntity& entity) override;
-    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
-    virtual void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) override;
+    virtual void notify_collision(
+        MapEntity& entity_overlapping,
+        CollisionMode collision_mode
+    ) override;
+    virtual void notify_collision(
+        MapEntity& other_entity,
+        Sprite& this_sprite,
+        Sprite& other_sprite
+    ) override;
     void notify_collision_with_hero(Hero& hero, CollisionMode collision_mode);
     virtual bool notify_action_command_pressed() override;
 

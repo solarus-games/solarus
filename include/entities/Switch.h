@@ -83,8 +83,8 @@ class Switch: public Detector {
     ) override;
     virtual void notify_collision(
         MapEntity& other_entity,
-        Sprite& other_sprite,
-        Sprite& this_sprite
+        Sprite& this_sprite,
+        Sprite& other_sprite
     ) override;
 
     static const std::vector<std::string> subtype_names;  /**< Lua names of the Subtype enum. */

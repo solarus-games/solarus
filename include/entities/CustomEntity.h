@@ -128,7 +128,7 @@ class CustomEntity: public Detector {
     virtual void notify_collision(
         MapEntity& entity_overlapping, CollisionMode collision_mode) override;
     virtual void notify_collision(
-        MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) override;
+        MapEntity& other_entity, Sprite& this_sprite, Sprite& other_sprite) override;
 
     virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode) override;
     virtual void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode) override;

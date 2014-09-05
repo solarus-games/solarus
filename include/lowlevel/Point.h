@@ -25,8 +25,7 @@ namespace solarus {
 /**
  * \brief Represents a 2D point.
  *
- * This class represents a point with its 2
- * coordinates, x and y.
+ * This class represents a point with its two integer coordinates, x and y.
  */
 struct Point {
 
@@ -60,14 +59,8 @@ struct Point {
 bool operator==(const Point& lhs, const Point& rhs);
 bool operator!=(const Point& lhs, const Point& rhs);
 
-// Relational operators
-bool operator<(const Point& lhs, const Point& rhs);
-bool operator<=(const Point& lhs, const Point& rhs);
-bool operator>(const Point& lhs, const Point& rhs);
-bool operator>=(const Point& lhs, const Point& rhs);
-
 // Unary arithmetic operators
-Point operator+(Point point);
+Point operator+(const Point& point);
 Point operator-(const Point& point);
 
 // Binary arithmetic operators

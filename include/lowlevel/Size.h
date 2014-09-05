@@ -23,7 +23,7 @@
 namespace solarus {
 
 /**
- * \brief Represents a size.
+ * \brief Represents a 2D size.
  *
  * This class represents a generic size with
  * width and height properties.

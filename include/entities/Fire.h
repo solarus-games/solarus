@@ -41,7 +41,11 @@ class Fire: public Detector {
     virtual void update() override;
 
     // collisions
-    virtual void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) override;
+    virtual void notify_collision(
+        MapEntity& other_entity,
+        Sprite& this_sprite,
+        Sprite& other_sprite
+    ) override;
 
 };
 

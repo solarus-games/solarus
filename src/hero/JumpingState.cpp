@@ -34,8 +34,6 @@ namespace solarus {
  * \param distance Distance of the jump in pixels.
  * \param ignore_obstacles \c true to make the movement ignore obstacles.
  * \param with_sound \c true to play the "jump" sound.
- * \param movement_delay Delay between each one-pixel move in the jump
- * movement (0: default).
  */
 Hero::JumpingState::JumpingState(
     Hero& hero,

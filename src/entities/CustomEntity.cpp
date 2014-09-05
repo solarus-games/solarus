@@ -887,10 +887,13 @@ void CustomEntity::notify_collision(MapEntity& entity_overlapping, CollisionMode
 }
 
 /**
- * \copydoc Detector::notify_collision(MapEntity&,Sprite&,Sprite&)
+ * \copydoc Detector::notify_collision(MapEntity&, Sprite&, Sprite&)
  */
-void CustomEntity::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
-
+void CustomEntity::notify_collision(
+    MapEntity& other_entity,
+    Sprite& this_sprite,
+    Sprite& other_sprite
+) {
   // A collision was detected with a sprite of another entity.
   const std::vector<CollisionInfo> collision_tests = this->collision_tests;
   for (const CollisionInfo& info: collision_tests) {

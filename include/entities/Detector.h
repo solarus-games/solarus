@@ -83,7 +83,7 @@ class Detector: public MapEntity {
     virtual void notify_collision(
         MapEntity& entity_overlapping, CollisionMode collision_mode);
     virtual void notify_collision(
-        MapEntity& entity, Sprite& this_sprite, Sprite& other_sprite);
+        MapEntity& other_entity, Sprite& this_sprite, Sprite& other_sprite);
 
   private:
 

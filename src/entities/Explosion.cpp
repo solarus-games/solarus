@@ -102,17 +102,13 @@ void Explosion::notify_sprite_frame_changed(Sprite& /* sprite */, const std::str
 }
 
 /**
- * \brief Notifies this entity that a pixel-perfect collision was just detected with another sprite.
- *
- * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
- * sprite overlaps a sprite of this detector.
- *
- * \param other_entity the entity overlapping this detector
- * \param other_sprite the sprite of other_entity that is overlapping this detector
- * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
+ * \copydoc Detector::notify_collision(MapEntity&, Sprite&, Sprite&)
  */
-void Explosion::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& /* this_sprite */) {
-
+void Explosion::notify_collision(
+    MapEntity& other_entity,
+    Sprite& /* this_sprite */,
+    Sprite& other_sprite
+) {
   other_entity.notify_collision_with_explosion(*this, other_sprite);
 }
 

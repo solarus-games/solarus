@@ -21,7 +21,7 @@ namespace solarus {
 // Point methods
 
 /**
- * \brief Creates a point with coordinates <tt>(0, 0)</tt>.
+ * \brief Creates a point with coordinates <tt>(0,0)</tt>.
  */
 inline Point::Point()
   = default;

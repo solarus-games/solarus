@@ -18,40 +18,72 @@
 namespace solarus {
 
 ////////////////////////////////////////////////////////////
-// Size<T> methods
+// Size methods
 
+/**
+ * \brief Creates the size <tt>(0,0)</tt>.
+ */
 inline Size::Size()
   = default;
 
+/**
+ * \brief Creates a size with the specified dimensions.
+ * \param width The width.
+ * \param height The height.
+ */
 inline Size::Size(int width, int height):
   width(width),
-  height(height)
-{}
+  height(height) {
+}
 
+/**
+ * \brief Adds another size to this one.
+ * \param other Another size.
+ * \return The current size after modification.
+ */
 inline Size& Size::operator+=(const Size& other) {
   width += other.width;
   height += other.height;
   return *this;
 }
 
+/**
+ * \brief Subtracts another size from this one.
+ * \param other The size to subtract.
+ * \return The current size after modification.
+ */
 inline Size& Size::operator-=(const Size& other) {
   width -= other.width;
   height -= other.height;
   return *this;
 }
 
+/**
+ * \brief Multiplies this size by a value.
+ * \param factor The multiplication factor.
+ * \return The current size after modification.
+ */
 inline Size& Size::operator*=(int factor) {
   width *= factor;
   height *= factor;
   return *this;
 }
 
+/**
+ * \brief Divides this size by a value.
+ * \param divisor The divisor.
+ * \return The current size after modification.
+ */
 inline Size& Size::operator/=(int divisor) {
   width /= divisor;
   height /= divisor;
   return *this;
 }
 
+/**
+ * \brief Returns whether this size is flat.
+ * \return \c true if the width or the height are zero.
+ */
 inline bool Size::is_flat() const {
   return width == 0 || height == 0;
 }
@@ -59,30 +91,72 @@ inline bool Size::is_flat() const {
 ////////////////////////////////////////////////////////////
 // Free functions
 
+/**
+ * \brief Returns whether two sizes are equal.
+ * \param lhs A size.
+ * \param rhs Another size.
+ * \return \c true if the sizes are equal.
+ */
 inline bool operator==(const Size& lhs, const Size& rhs) {
   return lhs.width == rhs.width && lhs.height == rhs.height;
 }
 
+/**
+ * \brief Returns whether two sizes are different.
+ * \param lhs A size.
+ * \param rhs Another size.
+ * \return \c true if the sizes are not equal.
+ */
 inline bool operator!=(const Size& lhs, const Size& rhs) {
   return !(lhs == rhs);
 }
 
+/**
+ * \brief Adds two sizes.
+ * \param lhs A size.
+ * \param rhs Another size.
+ * \return The sum of both sizes.
+ */
 inline Size operator+(Size lhs, const Size& rhs) {
   return lhs += rhs;
 }
 
+/**
+ * \brief Substracts two sizes.
+ * \param lhs A size.
+ * \param rhs The size to subtract.
+ * \return The difference of both sizes.
+ */
 inline Size operator-(Size lhs, const Size& rhs) {
   return lhs -= rhs;
 }
 
+/**
+ * \brief Multiplies a size by a value.
+ * \param size A size.
+ * \param factor The multiplication factor.
+ * \return A size with width and height multiplied by the factor.
+ */
 inline Size operator*(Size size, int factor) {
   return size *= factor;
 }
 
+/**
+ * \brief Multiplies a size by a value.
+ * \param factor The multiplication factor.
+ * \param size A size.
+ * \return A size with width and height multiplied by the factor.
+ */
 inline Size operator*(int factor, Size size) {
   return size *= factor;
 }
 
+/**
+ * \brief Divides a size by a value.
+ * \param size A size.
+ * \param divisor The divisor.
+ * \return A size with width and height divided by the divisor.
+ */
 inline Size operator/(Size size, int divisor) {
   return size /= divisor;
 }

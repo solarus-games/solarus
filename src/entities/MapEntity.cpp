@@ -1338,9 +1338,9 @@ void MapEntity::set_movement(Movement* movement) {
 void MapEntity::clear_movement() {
 
   if (movement != nullptr) {
-    movement->set_entity(nullptr);         // Tell the movement to forget me.
-    movement->set_lua_context(nullptr);    // Stop future Lua callbacks.
-    old_movements.push_back(movement);  // Destroy it later.
+    movement->set_entity(nullptr);       // Tell the movement to forget me.
+    movement->set_lua_context(nullptr);  // Stop future Lua callbacks.
+    old_movements.push_back(movement);   // Destroy it later.
     movement = nullptr;
   }
 }

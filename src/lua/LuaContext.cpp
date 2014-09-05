@@ -483,7 +483,7 @@ void LuaContext::clear_and_do_callback(ScopedLuaRef& callback_ref) {
 
   ScopedLuaRef copy = callback_ref;
   callback_ref.clear();
-  push_ref(l, callback_ref);
+  push_ref(l, copy);
   call_function(0, 0, "callback");
 }
 

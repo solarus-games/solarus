@@ -98,7 +98,6 @@ void DynamicTile::draw_on_map() {
   }
 
   const Rectangle& camera_position = get_map().get_camera_position();
-  Rectangle dst(0, 0);
 
   Rectangle dst_position(get_top_left_x() - camera_position.get_x(),
       get_top_left_y() - camera_position.get_y(),

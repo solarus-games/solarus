@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/ScopedLuaRef.h"
-#include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 #include <lua.hpp>
 
 namespace solarus {
@@ -24,18 +24,19 @@ namespace solarus {
  * \brief Creates an empty scoped Lua ref.
  */
 ScopedLuaRef::ScopedLuaRef():
-    lua_context(nullptr),
+    l(nullptr),
     ref(LUA_REFNIL) {
 }
 
 /**
  * \brief Creates a scoped Lua ref.
- * \param lua_context The Lua context.
+ * \param l The Lua state (cannot be nullptr).
  * \param ref The Lua ref, possibly LUA_REFNIL or LUA_NOREF.
  */
-ScopedLuaRef::ScopedLuaRef(LuaContext& lua_context, int ref):
-    lua_context(&lua_context),
+ScopedLuaRef::ScopedLuaRef(lua_State* l, int ref):
+    l(l),
     ref(ref) {
+  Debug::check_assertion(l != nullptr, "Missing Lua state");
 }
 
 /**
@@ -46,7 +47,7 @@ ScopedLuaRef::ScopedLuaRef(LuaContext& lua_context, int ref):
  * \param other The object to copy.
  */
 ScopedLuaRef::ScopedLuaRef(const ScopedLuaRef& other):
-    lua_context(other.lua_context),
+    l(other.l),
     ref(LUA_REFNIL) {
 
   *this = other;
@@ -60,10 +61,10 @@ ScopedLuaRef::ScopedLuaRef(const ScopedLuaRef& other):
  * \param other The object to move.
  */
 ScopedLuaRef::ScopedLuaRef(ScopedLuaRef&& other):
-    lua_context(other.lua_context),
+    l(other.l),
     ref(other.ref) {
 
-  other.lua_context = nullptr;
+  other.l = nullptr;
   other.ref = LUA_REFNIL;  // Don't unref from the other one.
 }
 
@@ -82,13 +83,12 @@ ScopedLuaRef::~ScopedLuaRef() {
 ScopedLuaRef& ScopedLuaRef::operator=(const ScopedLuaRef& other) {
 
   clear();
-  this->lua_context = other.lua_context;
-  if (lua_context != nullptr) {
+  this->l = other.l;
+  if (l != nullptr) {
     if (other.ref == LUA_REFNIL || other.ref == LUA_NOREF) {
       this->ref = other.ref;
     }
     else {
-      lua_State* l = lua_context->get_internal_state();
       // Get the value and make another ref of it.
       lua_rawgeti(l, LUA_REGISTRYINDEX, other.ref);
       this->ref = luaL_ref(l, LUA_REGISTRYINDEX);
@@ -106,20 +106,20 @@ ScopedLuaRef& ScopedLuaRef::operator=(const ScopedLuaRef& other) {
 ScopedLuaRef& ScopedLuaRef::operator=(ScopedLuaRef&& other) {
 
   clear();
-  this->lua_context = other.lua_context;
+  this->l = other.l;
   this->ref = other.ref;
-  other.lua_context = nullptr;
+  other.l = nullptr;
   other.ref = LUA_REFNIL;  // Don't unref from the other one.
 
   return *this;
 }
 
 /**
- * \brief Returns the Lua context this ref lives in.
- * \return The Lua context (nullptr means that the ref is empty).
+ * \brief Returns the Lua state this ref lives in.
+ * \return The Lua state (nullptr means that the ref is empty).
  */
-LuaContext* ScopedLuaRef::get_lua_context() const {
-  return lua_context;
+lua_State* ScopedLuaRef::get_lua_state() const {
+  return l;
 }
 
 /**
@@ -128,7 +128,7 @@ LuaContext* ScopedLuaRef::get_lua_context() const {
  */
 bool ScopedLuaRef::is_empty() const {
 
-  return lua_context == nullptr || ref == LUA_REFNIL || ref == LUA_NOREF;
+  return l == nullptr || ref == LUA_REFNIL || ref == LUA_NOREF;
 }
 
 /**
@@ -146,11 +146,68 @@ int ScopedLuaRef::get() const {
  */
 void ScopedLuaRef::clear() {
 
-  if (lua_context != nullptr) {
-    luaL_unref(lua_context->get_internal_state(), LUA_REGISTRYINDEX, ref);
+  if (l != nullptr) {
+    luaL_unref(l, LUA_REGISTRYINDEX, ref);
   }
-  lua_context = nullptr;
+  l = nullptr;
   ref = LUA_REFNIL;
+}
+
+/**
+ * \brief Pushes the referenced value onto the Lua stack.
+ *
+ * The ref must not be empty.
+ */
+void ScopedLuaRef::push() const {
+
+  Debug::check_assertion(!is_empty(), "Attempt to push an empty ref");
+
+  lua_rawgeti(l, LUA_REGISTRYINDEX, ref);
+}
+
+/**
+ * \brief Calls the referenced function.
+ *
+ * If the referenced value is not empty, it must be a function.
+ * No parameters are passed to the function, and return values are ignored.
+ *
+ * \param function_name A name describing the Lua function (only used to
+ * print the error message if any).
+ */
+void ScopedLuaRef::call(const std::string& function_name) const {
+
+  if (!is_empty()) {
+    push();
+    LuaTools::call_function(l, 0, 0, function_name.c_str());
+  }
+}
+
+/**
+ * \brief Like call(), but clears the reference before calling
+ * the function.
+ *
+ * This avoids reentrant calls: your reference will become clean before
+ * the function is called.
+ *
+ * This is equivalent to:
+ *
+ * ScopedLuaRef copy = callback_ref;
+ * callback_ref.clear();  // Avoid nasty problems in case of reentrant calls.
+ * copy.call(s);
+ *
+ * If the reference is already empty, nothing happens.
+ * \param function_name A name describing the Lua function (only used to
+ * print the error message if any).
+ */
+void ScopedLuaRef::clear_and_call(const std::string& function_name) {
+
+  if (is_empty()) {
+    return;
+  }
+
+  push();
+  clear();  // The function is still alive, onto the stack.
+  LuaTools::call_function(l, 0, 0, function_name.c_str());
 }
 
 }

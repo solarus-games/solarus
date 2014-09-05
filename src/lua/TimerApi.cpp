@@ -317,7 +317,8 @@ void LuaContext::do_timer_callback(Timer& timer) {
   auto it = timers.find(&timer);
   if (it != timers.end() &&
       !it->second.callback_ref.is_empty()) {
-    push_ref(l, it->second.callback_ref);
+    ScopedLuaRef& callback_ref = it->second.callback_ref;
+    push_ref(l, callback_ref);
     const bool success = call_function(0, 1, "timer callback");
 
     bool repeat = false;
@@ -336,7 +337,7 @@ void LuaContext::do_timer_callback(Timer& timer) {
       }
     }
     else {
-      it->second.callback_ref.clear();
+      callback_ref.clear();
       timers_to_remove.push_back(&timer);
     }
   }

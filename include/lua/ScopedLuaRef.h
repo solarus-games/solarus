@@ -18,6 +18,9 @@
 #define SOLARUS_SCOPED_LUA_REF_H
 
 #include "Common.h"
+#include <string>
+
+struct lua_State;
 
 namespace solarus {
 
@@ -36,7 +39,7 @@ class ScopedLuaRef {
   public:
 
     ScopedLuaRef();
-    ScopedLuaRef(LuaContext& lua_context, int ref);
+    ScopedLuaRef(lua_State* l, int ref);
     ScopedLuaRef(const ScopedLuaRef& other);
     ScopedLuaRef(ScopedLuaRef&& other);
     ~ScopedLuaRef();
@@ -44,16 +47,19 @@ class ScopedLuaRef {
     ScopedLuaRef& operator=(const ScopedLuaRef& other);
     ScopedLuaRef& operator=(ScopedLuaRef&& other);
 
-    LuaContext* get_lua_context() const;
+    lua_State* get_lua_state() const;
     bool is_empty() const;
     int get() const;
     void clear();
 
+    void push() const;
+    void call(const std::string& function_name) const;
+    void clear_and_call(const std::string& function_name);
+
   private:
 
-    LuaContext* lua_context;      /**< The Lua state. nullptr means no ref. */
-                                  // TODO keep a lua_State* instead, to allow LuaTools to use ScopeLuaRef
-    int ref;                      /**< Lua ref to a value. */
+    lua_State* l;  /**< The Lua state. nullptr means no ref. */
+    int ref;       /**< Lua ref to a value. */
 
 };
 

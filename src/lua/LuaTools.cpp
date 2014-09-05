@@ -15,8 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaTools.h"
-#include "lua/LuaException.h"
 #include "lowlevel/Color.h"
+#include "lua/LuaException.h"
+#include "lua/ScopedLuaRef.h"
 #include <sstream>
 
 namespace solarus {
@@ -60,6 +61,67 @@ bool LuaTools::is_valid_lua_identifier(const std::string& name) {
       return false;
     }
   }
+  return true;
+}
+
+/**
+ * \brief Creates a reference to the Lua value on top of the stack and pops
+ * this value.
+ * \param l A Lua state.
+ * \return The reference created, wrapped in an object that manages its
+ * lifetime.
+ */
+ScopedLuaRef LuaTools::create_ref(lua_State* l) {
+
+  return ScopedLuaRef(l, luaL_ref(l, LUA_REGISTRYINDEX));
+}
+
+/**
+ * \brief Creates a reference to the Lua value at the specified index.
+ * \param l A Lua state.
+ * \param An index in the Lua stack.
+ * \return The reference created, wrapped in an object that manages its
+ * lifetime.
+ */
+ScopedLuaRef LuaTools::create_ref(lua_State* l, int index) {
+
+  lua_pushvalue(l, index);
+  return ScopedLuaRef(l, luaL_ref(l, LUA_REGISTRYINDEX));
+}
+
+/**
+ * \brief Calls the Lua function with its arguments on top of the stack.
+ *
+ * This function is like lua_pcall, except that it additionally handles the
+ * error message if an error occurs in the Lua code (the error is printed).
+ * This function leaves the results on the stack if there is no error,
+ * and leaves nothing on the stack in case of error.
+ *
+ * \param l A Lua state.
+ * \param nb_arguments Number of arguments placed on the Lua stack above the
+ * function to call.
+ * \param nb_results Number of results expected (you get them on the stack if
+ * there is no error).
+ * \param function_name A name describing the Lua function (only used to print
+ * the error message if any).
+ * This is not a <tt>const std::string&</tt> but a <tt>const char*</tt> on
+ * purpose to avoid costly conversions as this function is called very often.
+ * \return true in case of success.
+ */
+bool LuaTools::call_function(
+    lua_State* l,
+    int nb_arguments,
+    int nb_results,
+    const char* function_name
+) {
+  if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
+    Debug::error(std::string("In ") + function_name + ": "
+        + lua_tostring(l, -1)
+    );
+    lua_pop(l, 1);
+    return false;
+  }
+
   return true;
 }
 
@@ -595,19 +657,15 @@ bool LuaTools::opt_boolean_field(
  * \param index Index of a value in the stack.
  * \return The wanted value as a Lua ref to the function.
  */
-int LuaTools::check_function(
+ScopedLuaRef LuaTools::check_function(
     lua_State* l,
     int index
 ) {
   if (!lua_isfunction(l, index)) {
-    arg_error(l, index,
-        std::string("function expected, got ")
-            + luaL_typename(l, index) + ")"
-    );
+    type_error(l, index, "function");
   }
 
-  int ref = luaL_ref(l, LUA_REGISTRYINDEX);
-  return ref;
+  return create_ref(l, index);  // Leave the function in the stack.
 }
 
 /**
@@ -617,12 +675,11 @@ int LuaTools::check_function(
  * \param key Key of the field to get in that table.
  * \return The wanted field as a Lua ref to the function.
  */
-int LuaTools::check_function_field(
+ScopedLuaRef LuaTools::check_function_field(
     lua_State* l,
     int table_index,
     const std::string& key
 ) {
-
   lua_getfield(l, table_index, key.c_str());
   if (!lua_isfunction(l, -1)) {
     arg_error(l, table_index,
@@ -631,22 +688,21 @@ int LuaTools::check_function_field(
     );
   }
 
-  int ref = luaL_ref(l, LUA_REGISTRYINDEX);
-  return ref;
+  return create_ref(l);  // This also pops the function from the stack.
 }
 
 /**
  * \brief Like LuaTools::check_function() but the value is optional.
  * \param l A Lua state.
  * \param index Index of a value in the stack.
- * \return The wanted value as a Lua ref to the function, or LUA_REFNIL.
+ * \return The wanted value as a Lua ref to the function, or an empty ref.
  */
-int LuaTools::opt_function(
+ScopedLuaRef LuaTools::opt_function(
     lua_State* l,
     int index
 ) {
   if (lua_isnoneornil(l, index)) {
-    return LUA_REFNIL;
+    return ScopedLuaRef();
   }
   return check_function(l, index);
 }
@@ -656,9 +712,9 @@ int LuaTools::opt_function(
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
  * \param key Key of the field to get in that table.
- * \return The wanted field as a Lua ref to the function, or LUA_REFNIL.
+ * \return The wanted field as a Lua ref to the function, or an empty ref.
  */
-int LuaTools::opt_function_field(
+ScopedLuaRef LuaTools::opt_function_field(
     lua_State* l,
     int table_index,
     const std::string& key
@@ -666,7 +722,7 @@ int LuaTools::opt_function_field(
   lua_getfield(l, table_index, key.c_str());
   if (lua_isnil(l, -1)) {
     lua_pop(l, 1);
-    return LUA_REFNIL;
+    return ScopedLuaRef();
   }
 
   if (!lua_isfunction(l, -1)) {
@@ -675,7 +731,7 @@ int LuaTools::opt_function_field(
         + luaL_typename(l, -1) + ")"
     );
   }
-  return luaL_ref(l, LUA_REGISTRYINDEX);
+  return create_ref(l);  // This also pops the function from the stack.
 }
 
 /**

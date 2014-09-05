@@ -88,7 +88,7 @@ void Hero::VictoryState::update() {
     finished = true;
     if (!callback_ref.is_empty()) {
       // The behavior is defined by Lua.
-      get_lua_context().clear_and_do_callback(callback_ref, "hero victory callback");
+      callback_ref.clear_and_call("hero victory callback");
     }
     else {
       // By default, get back to the normal state.

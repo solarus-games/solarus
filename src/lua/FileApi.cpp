@@ -123,7 +123,7 @@ int LuaContext::file_api_open(lua_State* l) {
     push_string(l, real_file_name);
     push_string(l, mode);
 
-    bool called = call_function(l, 2, 2, "io.open");
+    bool called = LuaTools::call_function(l, 2, 2, "io.open");
     if (!called) {
       LuaTools::error(l, "Unexpected error: failed to call io.open()");
     }

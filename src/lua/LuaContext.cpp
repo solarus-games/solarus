@@ -439,61 +439,25 @@ void LuaContext::notify_dialog_finished(
  */
 ScopedLuaRef LuaContext::create_ref() {
 
-  return ScopedLuaRef(*this, luaL_ref(l, LUA_REGISTRYINDEX));
+  return LuaTools::create_ref(l);
 }
 
 /**
- * \brief Calls a function stored in the registry with a reference.
+ * \brief Pushes onto the stack a Lua value from its reference.
  *
- * No parameters are passed to the function, and return values are ignored.
+ * Pushes nil if the reference is empty.
  *
- * \param callback_ref Reference of the function to call.
- * If the reference is empty, nothing is done.
- * \param function_name A name describing the Lua function (only used to print
- * the error message if any).
+ * \param l A Lua state.
+ * \param ref Reference to a Lua value.
  */
-void LuaContext::do_callback(
-    const ScopedLuaRef& callback_ref,
-    const std::string& function_name
-) {
-  if (!callback_ref.is_empty()) {
-    push_ref(l, callback_ref);
-    call_function(0, 0, function_name.c_str());
-  }
-}
+void LuaContext::push_ref(lua_State* l, const ScopedLuaRef& ref) {
 
-/**
- * \brief Like do_callback(), but clears the reference before calling
- * the function.
- *
- * This avoids reentrant calls: your reference will become empty before
- * the function is called.
- *
- * This is equivalent to:
- *
- * ScopedLuaRef copy = callback_ref;
- * callback_ref.clear();  // Avoid nasty problems in case of reentrant calls.
- * lua_context.do_callback(copy);
- *
- * \param callback_ref Reference of the function to call. Becomes empty before
- * the actual call.
- * If the reference is already empty, nothing happens.
- * \param function_name A name describing the Lua function (only used to print
- * the error message if any).
- */
-void LuaContext::clear_and_do_callback(
-    ScopedLuaRef& callback_ref,
-    const std::string& function_name
-) {
-
-  if (callback_ref.is_empty()) {
+  if (ref.is_empty()) {
     return;
   }
 
-  ScopedLuaRef copy = callback_ref;
-  callback_ref.clear();
-  push_ref(l, copy);
-  call_function(0, 0, function_name.c_str());
+  Debug::check_assertion(ref.get_lua_state() == l, "Wrong Lua state");
+  ref.push();
 }
 
 /**
@@ -665,45 +629,9 @@ bool LuaContext::find_method(int index, const char* function_name) {
 bool LuaContext::call_function(
     int nb_arguments,
     int nb_results,
-    const char* function_name) {
-
-  return call_function(l, nb_arguments, nb_results, function_name);
-}
-
-/**
- * \brief Calls the Lua function with its arguments on top of the stack.
- *
- * This function is like lua_pcall, except that it additionaly handles the
- * error message if an error occurs in the Lua code (the error is printed).
- * This function leaves the results on the stack if there is no error,
- * and leaves nothing on the stack in case of error.
- *
- * \param l A Lua state.
- * \param nb_arguments Number of arguments placed on the Lua stack above the
- * function to call.
- * \param nb_results Number of results expected (you get them on the stack if
- * there is no error).
- * \param function_name A name describing the Lua function (only used to print
- * the error message if any).
- * This is not an const std::string& but a const char* on purpose to avoid
- * costly conversions as this function is called very often.
- * \return true in case of success.
- */
-bool LuaContext::call_function(
-    lua_State* l,
-    int nb_arguments,
-    int nb_results,
-    const char* function_name) {
-
-  if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
-    Debug::error(std::string("In ") + function_name + ": "
-        + lua_tostring(l, -1)
-    );
-    lua_pop(l, 1);
-    return false;
-  }
-
-  return true;
+    const char* function_name
+) {
+  return LuaTools::call_function(l, nb_arguments, nb_results, function_name);
 }
 
 /**
@@ -771,7 +699,7 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
 void LuaContext::do_file(lua_State* l, const std::string& script_name) {
 
   load_file(l, script_name);
-  call_function(l, 0, 0, script_name.c_str());
+  LuaTools::call_function(l, 0, 0, script_name.c_str());
 }
 
 /**
@@ -788,7 +716,7 @@ void LuaContext::do_file(lua_State* l, const std::string& script_name) {
 bool LuaContext::do_file_if_exists(lua_State* l, const std::string& script_name) {
 
   if (load_file_if_exists(l, script_name)) {
-    call_function(l, 0, 0, script_name.c_str());
+    LuaTools::call_function(l, 0, 0, script_name.c_str());
     return true;
   }
   return false;
@@ -965,18 +893,6 @@ void LuaContext::register_modules() {
 
   Debug::check_assertion(lua_gettop(l) == 0,
       "Lua stack is not empty after modules initialization");
-}
-
-/**
- * \brief Pushes a Lua value from its reference.
- *
- * Pushes nil if the reference is empty.
- *
- * \param l A Lua state.
- * \param ref Reference to a Lua value.
- */
-void LuaContext::push_ref(lua_State* l, const ScopedLuaRef& ref) {
-  lua_rawgeti(l, LUA_REGISTRYINDEX, ref.get());
 }
 
 /**

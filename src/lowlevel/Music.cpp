@@ -384,11 +384,7 @@ void Music::update() {
       ScopedLuaRef callback_ref = current_music->callback_ref;
       delete current_music;
       current_music = nullptr;
-      if (!callback_ref.is_empty()) {
-        callback_ref.get_lua_context()->do_callback(
-            callback_ref, "music callback"
-        );
-      }
+      callback_ref.call("music callback");
     }
   }
 }

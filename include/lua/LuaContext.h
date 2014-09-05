@@ -122,24 +122,12 @@ class LuaContext {
     static void push_ref(lua_State* l, const ScopedLuaRef& ref);
 
     // Calling Lua functions.
-    void do_callback(
-        const ScopedLuaRef& callback_ref,
-        const std::string& function_name
-    );
-    void clear_and_do_callback(
-        ScopedLuaRef& callback_ref,
-        const std::string& function_name
-    );
-
     bool call_function(
         int nb_arguments,
         int nb_results,
-        const char* function_name);
-    static bool call_function(
-        lua_State* l,
-        int nb_arguments,
-        int nb_results,
-        const char* function_name);
+        const char* function_name
+    );
+
     bool userdata_has_field(
         const ExportableToLua& userdata,
         const char* key

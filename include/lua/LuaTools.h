@@ -72,6 +72,14 @@ class LuaTools {
     // Helpers.
     static int get_positive_index(lua_State* l, int index);
     static bool is_valid_lua_identifier(const std::string& name);
+    static ScopedLuaRef create_ref(lua_State* l);
+    static ScopedLuaRef create_ref(lua_State* l, int index);
+    static bool call_function(
+        lua_State* l,
+        int nb_arguments,
+        int nb_results,
+        const char* function_name
+    );
 
     // Error handling.
     static void error(
@@ -187,20 +195,20 @@ class LuaTools {
     );
 
     // function
-    static int check_function(  // TODO shared_ptr return LuaScopedRef
+    static ScopedLuaRef check_function(
         lua_State* l,
         int index
     );
-    static int check_function_field(
+    static ScopedLuaRef check_function_field(
         lua_State* l,
         int table_index,
         const std::string& key
     );
-    static int opt_function(
+    static ScopedLuaRef opt_function(
         lua_State* l,
         int index
     );
-    static int opt_function_field(
+    static ScopedLuaRef opt_function_field(
         lua_State* l,
         int table_index,
         const std::string& key

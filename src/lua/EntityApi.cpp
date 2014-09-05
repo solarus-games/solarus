@@ -4577,7 +4577,7 @@ bool LuaContext::do_custom_entity_traversable_test_function(
   );
   push_custom_entity(l, custom_entity);
   push_entity(l, other_entity);
-  call_function(l, 2, 1, "traversable test function");
+  LuaTools::call_function(l, 2, 1, "traversable test function");
 
   // See its result.
   bool traversable = lua_toboolean(l, -1);
@@ -4609,7 +4609,7 @@ bool LuaContext::do_custom_entity_collision_test_function(
   );
   push_custom_entity(l, custom_entity);
   push_entity(l, other_entity);
-  call_function(l, 2, 1, "collision test function");
+  LuaTools::call_function(l, 2, 1, "collision test function");
 
   // See its result.
   bool collision = lua_toboolean(l, -1);
@@ -4637,7 +4637,7 @@ void LuaContext::do_custom_entity_collision_callback(
       "Collision callback is not a function");
   push_custom_entity(l, custom_entity);
   push_entity(l, other_entity);
-  call_function(l, 2, 0, "collision callback");
+  LuaTools::call_function(l, 2, 0, "collision callback");
 }
 
 /**
@@ -4669,7 +4669,7 @@ void LuaContext::do_custom_entity_collision_callback(
   push_entity(l, other_entity);
   push_sprite(l, custom_entity_sprite);
   push_sprite(l, other_entity_sprite);
-  call_function(l, 4, 0, "collision callback");
+  LuaTools::call_function(l, 4, 0, "collision callback");
 }
 
 /**

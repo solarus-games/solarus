@@ -306,9 +306,7 @@ void Movement::notify_movement_finished() {
 
   LuaContext* lua_context = get_lua_context();
   if (lua_context != nullptr) {
-    lua_context->clear_and_do_callback(
-        finished_callback_ref, "movement callback"
-    );
+    finished_callback_ref.clear_and_call("movement callback");
     lua_context->movement_on_finished(*this);
   }
 

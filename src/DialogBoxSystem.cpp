@@ -133,7 +133,7 @@ void DialogBoxSystem::open(
       size_t index = text.find("$v");
       if (index != std::string::npos) {
         // Replace the special sequence '$v' by the price of the shop item.
-        LuaContext::push_ref(l, info_ref);
+        info_ref.push();
         int price = LuaTools::check_int(l, -1);
         lua_pop(l, -1);
         std::ostringstream oss;

@@ -308,7 +308,7 @@ int LuaContext::l_camera_do_callback(lua_State* l) {
     // Execute the function.
     lua_settop(l, 0);
     lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_function");
-    call_function(l, 0, 0, "camera callback");
+    LuaTools::call_function(l, 0, 0, "camera callback");
 
     // Set a second timer to restore the camera.
     Map& map = get_lua_context(l).get_main_loop().get_game()->get_current_map();

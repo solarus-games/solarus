@@ -17,9 +17,7 @@
 #ifndef SOLARUS_TILE_PTR_H
 #define SOLARUS_TILE_PTR_H
 
-namespace std {
-template<typename T> class shared_ptr;
-}
+#include <memory>
 
 namespace solarus {
 

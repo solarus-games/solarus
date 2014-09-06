@@ -155,8 +155,9 @@ bool LuaContext::is_map(lua_State* l, int index) {
  */
 Map& LuaContext::check_map(lua_State* l, int index) {
 
-  Map& map = static_cast<Map&>(check_userdata(l, index, map_module_name));
-  return map;
+  return static_cast<Map&>(*check_userdata(
+      l, index, map_module_name
+  ));
 }
 
 /**
@@ -317,8 +318,8 @@ int LuaContext::l_camera_do_callback(lua_State* l) {
     lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
     lua_pushcfunction(l, l_camera_restore);
     timer_api_start(l);
-    Timer& timer = check_timer(l, -1);
-    timer.set_suspended_with_map(false);
+    const TimerPtr& timer = check_timer(l, -1);
+    timer->set_suspended_with_map(false);
 
     return 0;
   }

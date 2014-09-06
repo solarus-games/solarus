@@ -720,8 +720,9 @@ bool LuaContext::is_straight_movement(lua_State* l, int index) {
  */
 StraightMovement& LuaContext::check_straight_movement(lua_State* l, int index) {
 
-  return static_cast<StraightMovement&>(
-      check_userdata(l, index, movement_straight_module_name));
+  return static_cast<StraightMovement&>(*check_userdata(
+      l, index, movement_straight_module_name
+  ));
 }
 
 /**
@@ -867,8 +868,9 @@ bool LuaContext::is_random_movement(lua_State* l, int index) {
  * \return the movement
  */
 RandomMovement& LuaContext::check_random_movement(lua_State* l, int index) {
-  return static_cast<RandomMovement&>(
-      check_userdata(l, index, movement_random_module_name));
+  return static_cast<RandomMovement&>(*check_userdata(
+      l, index, movement_random_module_name
+  ));
 }
 
 /**
@@ -1001,8 +1003,9 @@ bool LuaContext::is_target_movement(lua_State* l, int index) {
  * \return the movement
  */
 TargetMovement& LuaContext::check_target_movement(lua_State* l, int index) {
-  return static_cast<TargetMovement&>(
-      check_userdata(l, index, movement_target_module_name));
+  return static_cast<TargetMovement&>(*check_userdata(
+      l, index, movement_target_module_name
+  ));
 }
 
 /**
@@ -1137,8 +1140,9 @@ bool LuaContext::is_path_movement(lua_State* l, int index) {
  * \return the movement
  */
 PathMovement& LuaContext::check_path_movement(lua_State* l, int index) {
-  return static_cast<PathMovement&>(
-      check_userdata(l, index, movement_path_module_name));
+  return static_cast<PathMovement&>(*check_userdata(
+      l, index, movement_path_module_name
+  ));
 }
 
 /**
@@ -1301,8 +1305,9 @@ int LuaContext::path_movement_api_set_snap_to_grid(lua_State* l) {
  * \return the movement
  */
 RandomPathMovement& LuaContext::check_random_path_movement(lua_State* l, int index) {
-  return static_cast<RandomPathMovement&>(
-      check_userdata(l, index, movement_random_path_module_name));
+  return static_cast<RandomPathMovement&>(*check_userdata(
+      l, index, movement_random_path_module_name
+  ));
 }
 
 /**
@@ -1364,8 +1369,9 @@ bool LuaContext::is_path_finding_movement(lua_State* l, int index) {
  * \return the movement
  */
 PathFindingMovement& LuaContext::check_path_finding_movement(lua_State* l, int index) {
-  return static_cast<PathFindingMovement&>(
-      check_userdata(l, index, movement_path_finding_module_name));
+  return static_cast<PathFindingMovement&>(*check_userdata(
+      l, index, movement_path_finding_module_name
+  ));
 }
 
 /**
@@ -1435,8 +1441,9 @@ bool LuaContext::is_circle_movement(lua_State* l, int index) {
  * \return the movement
  */
 CircleMovement& LuaContext::check_circle_movement(lua_State* l, int index) {
-  return static_cast<CircleMovement&>(
-      check_userdata(l, index, movement_circle_module_name));
+  return static_cast<CircleMovement&>(*check_userdata(
+      l, index, movement_circle_module_name
+  ));
 }
 
 /**
@@ -1738,8 +1745,9 @@ bool LuaContext::is_jump_movement(lua_State* l, int index) {
  * \return the movement
  */
 JumpMovement& LuaContext::check_jump_movement(lua_State* l, int index) {
-  return static_cast<JumpMovement&>(
-      check_userdata(l, index, movement_jump_module_name));
+  return static_cast<JumpMovement&>(*check_userdata(
+      l, index, movement_jump_module_name
+  ));
 }
 
 /**
@@ -1853,8 +1861,9 @@ bool LuaContext::is_pixel_movement(lua_State* l, int index) {
  * \return the movement
  */
 PixelMovement& LuaContext::check_pixel_movement(lua_State* l, int index) {
-  return static_cast<PixelMovement&>(
-      check_userdata(l, index, movement_pixel_module_name));
+  return static_cast<PixelMovement&>(*check_userdata(
+      l, index, movement_pixel_module_name
+  ));
 }
 
 /**

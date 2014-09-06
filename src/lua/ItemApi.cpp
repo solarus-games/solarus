@@ -104,7 +104,9 @@ bool LuaContext::is_item(lua_State* l, int index) {
  * \return The equipment item.
  */
 EquipmentItem& LuaContext::check_item(lua_State* l, int index) {
-  return static_cast<EquipmentItem&>(check_userdata(l, index, item_module_name));
+  return static_cast<EquipmentItem&>(*check_userdata(
+      l, index, item_module_name
+  ));
 }
 
 /**

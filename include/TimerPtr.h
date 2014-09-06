@@ -14,15 +14,15 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_SPRITE_PTR_H
-#define SOLARUS_SPRITE_PTR_H
+#ifndef SOLARUS_TIMER_PTR_H
+#define SOLARUS_TIMER_PTR_H
 
 #include <memory>
 
 namespace solarus {
 
-class Sprite;
-using SpritePtr = std::shared_ptr<Sprite>;
+class Timer;
+using TimerPtr = std::shared_ptr<Timer>;
 
 }
 

@@ -114,8 +114,9 @@ bool LuaContext::is_text_surface(lua_State* l, int index) {
  * \return the text surface
  */
 TextSurface& LuaContext::check_text_surface(lua_State* l, int index) {
-  return static_cast<TextSurface&>(
-      check_userdata(l, index, text_surface_module_name));
+  return static_cast<TextSurface&>(*check_userdata(
+      l, index, text_surface_module_name
+  ));
 }
 
 /**

@@ -92,7 +92,9 @@ bool LuaContext::is_sprite(lua_State* l, int index) {
  * \return the sprite
  */
 Sprite& LuaContext::check_sprite(lua_State* l, int index) {
-  return static_cast<Sprite&>(check_userdata(l, index, sprite_module_name));
+  return static_cast<Sprite&>(*check_userdata(
+      l, index, sprite_module_name
+  ));
 }
 
 /**

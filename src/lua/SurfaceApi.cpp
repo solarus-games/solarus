@@ -82,7 +82,9 @@ bool LuaContext::is_surface(lua_State* l, int index) {
  * \return the surface
  */
 Surface& LuaContext::check_surface(lua_State* l, int index) {
-  return static_cast<Surface&>(check_userdata(l, index, surface_module_name));
+  return static_cast<Surface&>(*check_userdata(
+      l, index, surface_module_name
+  ));
 }
 
 /**

@@ -380,8 +380,8 @@ void LuaContext::notify_camera_reached_target(Map& map) {
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
   lua_pushcfunction(l, l_camera_do_callback);
   timer_api_start(l);
-  Timer& timer = check_timer(l, -1);
-  timer.set_suspended_with_map(false);
+  const TimerPtr& timer = check_timer(l, -1);
+  timer->set_suspended_with_map(false);
   lua_settop(l, 0);
 }
 
@@ -1059,7 +1059,9 @@ bool LuaContext::is_userdata(lua_State* l, int index,
  * \param module_name Name identifying the userdata type.
  * \return The userdata at this index.
  */
-ExportableToLua& LuaContext::check_userdata(lua_State* l, int index,
+const ExportableToLuaPtr& LuaContext::check_userdata(
+    lua_State* l,
+    int index,
     const std::string& module_name) {
 
   index = LuaTools::get_positive_index(l, index);
@@ -1067,7 +1069,7 @@ ExportableToLua& LuaContext::check_userdata(lua_State* l, int index,
   const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(
     luaL_checkudata(l, index, module_name.c_str())
   ));
-  return *userdata;
+  return userdata;
 }
 
 /**

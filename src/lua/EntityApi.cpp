@@ -1396,7 +1396,9 @@ bool LuaContext::is_hero(lua_State* l, int index) {
  * \return The hero.
  */
 Hero& LuaContext::check_hero(lua_State* l, int index) {
-  return static_cast<Hero&>(check_userdata(l, index, get_entity_internal_type_name(ENTITY_HERO)));
+  return static_cast<Hero&>(*check_userdata(
+      l, index, get_entity_internal_type_name(ENTITY_HERO)
+  ));
 }
 
 /**
@@ -2244,9 +2246,9 @@ bool LuaContext::is_teletransporter(lua_State* l, int index) {
  * \return The teletransporter.
  */
 Teletransporter& LuaContext::check_teletransporter(lua_State* l, int index) {
-  return static_cast<Teletransporter&>(check_userdata(
-      l, index, get_entity_internal_type_name(ENTITY_TELETRANSPORTER))
-  );
+  return static_cast<Teletransporter&>(*check_userdata(
+      l, index, get_entity_internal_type_name(ENTITY_TELETRANSPORTER)
+  ));
 }
 
 /**
@@ -2430,7 +2432,9 @@ bool LuaContext::is_npc(lua_State* l, int index) {
  * \return The NPC.
  */
 Npc& LuaContext::check_npc(lua_State* l, int index) {
-  return static_cast<Npc&>(check_userdata(l, index, get_entity_internal_type_name(ENTITY_NPC)));
+  return static_cast<Npc&>(*check_userdata(
+      l, index, get_entity_internal_type_name(ENTITY_NPC))
+  );
 }
 
 /**
@@ -2460,7 +2464,9 @@ bool LuaContext::is_chest(lua_State* l, int index) {
  * \return The chest.
  */
 Chest& LuaContext::check_chest(lua_State* l, int index) {
-  return static_cast<Chest&>(check_userdata(l, index, get_entity_internal_type_name(ENTITY_CHEST)));
+  return static_cast<Chest&>(*check_userdata(
+      l, index, get_entity_internal_type_name(ENTITY_CHEST)
+  ));
 }
 
 /**
@@ -2527,7 +2533,9 @@ bool LuaContext::is_block(lua_State* l, int index) {
  * \return The block.
  */
 Block& LuaContext::check_block(lua_State* l, int index) {
-  return static_cast<Block&>(check_userdata(l, index, get_entity_internal_type_name(ENTITY_BLOCK)));
+  return static_cast<Block&>(*check_userdata(
+      l, index, get_entity_internal_type_name(ENTITY_BLOCK)
+  ));
 }
 
 /**
@@ -2703,7 +2711,9 @@ bool LuaContext::is_switch(lua_State* l, int index) {
  * \return The switch.
  */
 Switch& LuaContext::check_switch(lua_State* l, int index) {
-  return static_cast<Switch&>(check_userdata(l, index, get_entity_internal_type_name(ENTITY_SWITCH)));
+  return static_cast<Switch&>(*check_userdata(
+      l, index, get_entity_internal_type_name(ENTITY_SWITCH)
+  ));
 }
 
 /**
@@ -2791,9 +2801,9 @@ bool LuaContext::is_stream(lua_State* l, int index) {
  * \return The stream.
  */
 Stream& LuaContext::check_stream(lua_State* l, int index) {
-  return static_cast<Stream&>(
-      check_userdata(l, index, get_entity_internal_type_name(ENTITY_STREAM))
-  );
+  return static_cast<Stream&>(*check_userdata(
+      l, index, get_entity_internal_type_name(ENTITY_STREAM)
+  ));
 }
 
 /**
@@ -3006,7 +3016,9 @@ bool LuaContext::is_door(lua_State* l, int index) {
  * \return The door.
  */
 Door& LuaContext::check_door(lua_State* l, int index) {
-  return static_cast<Door&>(check_userdata(l, index, get_entity_internal_type_name(ENTITY_DOOR)));
+  return static_cast<Door&>(*check_userdata(
+      l, index, get_entity_internal_type_name(ENTITY_DOOR))
+  );
 }
 
 /**
@@ -3100,8 +3112,9 @@ bool LuaContext::is_shop_treasure(lua_State* l, int index) {
  * \return The shop treasure.
  */
 ShopTreasure& LuaContext::check_shop_treasure(lua_State* l, int index) {
-  return static_cast<ShopTreasure&>(
-      check_userdata(l, index, get_entity_internal_type_name(ENTITY_SHOP_TREASURE)));
+  return static_cast<ShopTreasure&>(*check_userdata(
+      l, index, get_entity_internal_type_name(ENTITY_SHOP_TREASURE)
+  ));
 }
 
 /**
@@ -3253,7 +3266,9 @@ bool LuaContext::is_pickable(lua_State* l, int index) {
  * \return The pickable.
  */
 Pickable& LuaContext::check_pickable(lua_State* l, int index) {
-  return static_cast<Pickable&>(check_userdata(l, index, get_entity_internal_type_name(ENTITY_PICKABLE)));
+  return static_cast<Pickable&>(*check_userdata(
+      l, index, get_entity_internal_type_name(ENTITY_PICKABLE)
+  ));
 }
 
 /**
@@ -3346,7 +3361,9 @@ bool LuaContext::is_destructible(lua_State* l, int index) {
  * \return The destructible object.
  */
 Destructible& LuaContext::check_destructible(lua_State* l, int index) {
-  return static_cast<Destructible&>(check_userdata(l, index, get_entity_internal_type_name(ENTITY_DESTRUCTIBLE)));
+  return static_cast<Destructible&>(*check_userdata(
+      l, index, get_entity_internal_type_name(ENTITY_DESTRUCTIBLE)
+  ));
 }
 
 /**
@@ -3690,7 +3707,9 @@ bool LuaContext::is_enemy(lua_State* l, int index) {
  * \return The enemy.
  */
 Enemy& LuaContext::check_enemy(lua_State* l, int index) {
-  return static_cast<Enemy&>(check_userdata(l, index, get_entity_internal_type_name(ENTITY_ENEMY)));
+  return static_cast<Enemy&>(*check_userdata(
+      l, index, get_entity_internal_type_name(ENTITY_ENEMY)
+  ));
 }
 
 /**
@@ -4528,7 +4547,9 @@ bool LuaContext::is_custom_entity(lua_State* l, int index) {
  * \return The custom entity.
  */
 CustomEntity& LuaContext::check_custom_entity(lua_State* l, int index) {
-  return static_cast<CustomEntity&>(check_userdata(l, index, get_entity_internal_type_name(ENTITY_CUSTOM)));
+  return static_cast<CustomEntity&>(*check_userdata(
+      l, index, get_entity_internal_type_name(ENTITY_CUSTOM)
+  ));
 }
 
 /**

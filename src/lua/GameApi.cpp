@@ -136,7 +136,9 @@ bool LuaContext::is_game(lua_State* l, int index) {
  * \return the game
  */
 Savegame& LuaContext::check_game(lua_State* l, int index) {
-  return static_cast<Savegame&>(check_userdata(l, index, game_module_name));
+  return static_cast<Savegame&>(*check_userdata(
+      l, index, game_module_name
+  ));
 }
 
 /**

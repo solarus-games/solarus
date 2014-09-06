@@ -26,8 +26,10 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/SurfacePtr.h"
+#include "lua/ExportableToLuaPtr.h"
 #include "lua/ScopedLuaRef.h"
 #include "Ability.h"
+#include "TimerPtr.h"
 #include <map>
 #include <set>
 #include <list>
@@ -180,14 +182,18 @@ class LuaContext {
     ) const;
 
     // Timers.
-    void add_timer(Timer* timer, int context_index, int callback_index);
-    void remove_timer(Timer* timer);
+    void add_timer(
+        const TimerPtr& timer,
+        int context_index,
+        const ScopedLuaRef& callback_index
+    );
+    void remove_timer(const TimerPtr& timer);
     void remove_timers(int context_index);
     void destroy_timers();
     void update_timers();
     void notify_timers_map_suspended(bool suspended);
     void set_entity_timers_suspended(MapEntity& entity, bool suspended);
-    void do_timer_callback(Timer& timer);
+    void do_timer_callback(const TimerPtr& timer);
 
     // Menus.
     void add_menu(
@@ -1023,7 +1029,7 @@ class LuaContext {
     static void push_color(lua_State* l, const Color& color);
     static void push_userdata(lua_State* l, ExportableToLua& userdata);
     static void push_dialog(lua_State* l, const Dialog& dialog);
-    static void push_timer(lua_State* l, Timer& timer);
+    static void push_timer(lua_State* l, const TimerPtr& timer);
     static void push_surface(lua_State* l, Surface& surface);
     static void push_text_surface(lua_State* l, TextSurface& text_surface);
     static void push_sprite(lua_State* l, Sprite& sprite);
@@ -1049,10 +1055,13 @@ class LuaContext {
     // Getting userdata objects from Lua.
     static bool is_userdata(lua_State* l, int index,
         const std::string& module_name);
-    static ExportableToLua& check_userdata(lua_State* l, int index,
-        const std::string& module_name);
+    static const ExportableToLuaPtr& check_userdata(
+        lua_State* l,
+        int index,
+        const std::string& module_name
+    );
     static bool is_timer(lua_State* l, int index);
-    static Timer& check_timer(lua_State* l, int index);
+    static TimerPtr check_timer(lua_State* l, int index);
     static bool is_drawable(lua_State* l, int index);
     static Drawable& check_drawable(lua_State* l, int index);
     static bool is_surface(lua_State* l, int index);
@@ -1229,10 +1238,10 @@ class LuaContext {
 
     std::list<LuaMenuData> menus;   /**< The menus currently running in their context.
                                      * Invalid ones are to be removed at the next cycle. */
-    std::map<Timer*, LuaTimerData>
+    std::map<TimerPtr, LuaTimerData>
         timers;                     /**< The timers currently running, with
                                      * their context and callback. */
-    std::list<Timer*>
+    std::list<TimerPtr>
         timers_to_remove;           /**< Timers to be removed at the next cycle. */
 
     std::set<Drawable*> drawables;  /**< All drawable objects created by

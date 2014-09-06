@@ -32,7 +32,6 @@ class Timer: public ExportableToLua {
   public:
 
     Timer(uint32_t duration);
-    ~Timer();
 
     bool is_with_sound() const;
     void set_with_sound(bool with_sound);

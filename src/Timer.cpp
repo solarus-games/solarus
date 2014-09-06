@@ -38,12 +38,6 @@ Timer::Timer(uint32_t duration):
 }
 
 /**
- * \brief Destructor.
- */
-Timer::~Timer() {
-}
-
-/**
  * \brief Returns whether a clock sound is played during this timer.
  * \return true if a clock sound is played.
  */

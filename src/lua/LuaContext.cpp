@@ -454,6 +454,7 @@ ScopedLuaRef LuaContext::create_ref() {
 void LuaContext::push_ref(lua_State* l, const ScopedLuaRef& ref) {
 
   if (ref.is_empty()) {
+    lua_pushnil(l);
     return;
   }
 

@@ -19,8 +19,9 @@
 
 #include "Common.h"
 #include "Ability.h"
-#include <string>
+#include "EquipmentItemPtr.h"
 #include <map>
+#include <string>
 #include <vector>
 
 struct lua_State;
@@ -46,7 +47,6 @@ class Equipment {
 
     // creation and destruction
     Equipment(Savegame& savegame);
-    ~Equipment();
 
     Savegame& get_savegame();
     Game* get_game();
@@ -111,7 +111,8 @@ class Equipment {
     bool suspended;                              /**< Indicates that the game is suspended. */
 
     // items
-    std::map<std::string, EquipmentItem*> items; /**< Each item (properties loaded from item scripts). */
+    std::map<std::string, EquipmentItemPtr>
+        items;                                   /**< Each item (properties loaded from item scripts). */
 
     std::string get_ability_savegame_variable(Ability ability) const;
 

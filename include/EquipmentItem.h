@@ -41,7 +41,6 @@ class EquipmentItem: public ExportableToLua {
   public:
 
     EquipmentItem(Equipment& equipment);
-    ~EquipmentItem();
 
     Equipment& get_equipment();
     Game* get_game();

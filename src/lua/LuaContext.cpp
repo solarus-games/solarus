@@ -1063,8 +1063,8 @@ bool LuaContext::is_userdata(lua_State* l, int index,
 const ExportableToLuaPtr& LuaContext::check_userdata(
     lua_State* l,
     int index,
-    const std::string& module_name) {
-
+    const std::string& module_name
+) {
   index = LuaTools::get_positive_index(l, index);
 
   const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(

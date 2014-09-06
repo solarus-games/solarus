@@ -44,12 +44,6 @@ EquipmentItem::EquipmentItem(Equipment& equipment):
 }
 
 /**
- * Destructor.
- */
-EquipmentItem::~EquipmentItem() {
-}
-
-/**
  * \brief Returns the equipment object this item belongs to.
  * \return The equipment.
  */

@@ -213,10 +213,9 @@ int LuaContext::menu_api_stop(lua_State* l) {
 
     std::list<LuaMenuData>& menus = lua_context.menus;
     for (LuaMenuData& menu: menus) {
-      ScopedLuaRef ref = menu.ref;
-      push_ref(l, ref);
+      push_ref(l, menu.ref);
       if (lua_equal(l, 1, -1)) {
-        ScopedLuaRef menu_ref = ref;  // Don't erase it immediately since we may be iterating over menus.
+        ScopedLuaRef menu_ref = menu.ref;  // Don't erase it immediately since we may be iterating over menus.
         menu.ref.clear();
         menu.context = nullptr;
         lua_context.menu_on_finished(menu_ref);

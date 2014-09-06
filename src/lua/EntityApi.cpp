@@ -4927,7 +4927,7 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
 
     if (lua_isstring(l, 2)) {
       // Built-in collision test.
-      // TODO move string to enum conversion into a function of Dectector.
+      // TODO move string to enum conversion into a function of Detector.
       // We cannot use LuaTools::check_enum() like always, because this
       // enum has special numerical values.
       const std::string& collision_mode_name = LuaTools::check_string(l, 2);

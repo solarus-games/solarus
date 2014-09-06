@@ -4921,7 +4921,6 @@ int LuaContext::custom_entity_api_set_can_traverse_ground(lua_State* l) {
 int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    LuaContext& lua_context = get_lua_context(l);
     CustomEntity& entity = check_custom_entity(l, 1);
 
     const ScopedLuaRef& callback_ref = LuaTools::check_function(l, 3);

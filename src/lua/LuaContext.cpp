@@ -777,7 +777,7 @@ void LuaContext::print_stack(lua_State* l) {
  * \param module_name name of the table that will contain the functions
  * (e.g. "sol.main").
  * \param functions list of functions to define in the table
- * (must end with {nullptrL, nullptr}).
+ * (must end with {nullptr, nullptr}).
  */
 void LuaContext::register_functions(
     const std::string& module_name,
@@ -795,12 +795,12 @@ void LuaContext::register_functions(
  * (e.g. "sol.game"). It may already exist or not.
  * This string will also identify the type.
  * \param functions List of functions to define in the module table or nullptr.
- * Must end with {nullptrL, nullptr}.
+ * Must end with {nullptr, nullptr}.
  * \param methods List of methods to define in the type or nullptr.
- * Must end with {nullptrL, nullptr}.
+ * Must end with {nullptr, nullptr}.
  * \param metamethods List of metamethods to define in the metatable of the
  * type or nullptr.
- * Must end with {nullptrL, nullptr}.
+ * Must end with {nullptr, nullptr}.
  */
 void LuaContext::register_type(
     const std::string& module_name,

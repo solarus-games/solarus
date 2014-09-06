@@ -22,6 +22,8 @@
 
 namespace solarus {
 
+class PlayerMovement;
+
 /**
  * \brief State where the hero is controlled by the player.
  *

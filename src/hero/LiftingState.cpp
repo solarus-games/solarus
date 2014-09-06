@@ -14,15 +14,16 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "hero/LiftingState.h"
+#include "entities/CarriedItem.h"
+#include "entities/MapEntities.h"
 #include "hero/CarryingState.h"
 #include "hero/HeroSprites.h"
-#include "entities/MapEntities.h"
-#include "entities/CarriedItem.h"
+#include "hero/LiftingState.h"
 #include "lowlevel/Debug.h"
+#include "Equipment.h"
 #include "Game.h"
-#include "Map.h"
 #include "KeysEffect.h"
+#include "Map.h"
 
 namespace solarus {
 

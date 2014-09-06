@@ -18,15 +18,25 @@
 #define SOLARUS_MAP_H
 
 #include "Common.h"
-#include "Transition.h"
-#include "Camera.h"
-#include "entities/Layer.h"
 #include "entities/Ground.h"
-#include "lowlevel/Rectangle.h"
+#include "entities/Layer.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Rectangle.h"
+#include "lowlevel/SurfacePtr.h"
 #include "lua/ExportableToLua.h"
+#include "Camera.h"
+#include "Transition.h"
 
 namespace solarus {
+
+class Destination;
+class Detector;
+class InputEvent;
+class LuaContext;
+class MapEntities;
+class MapLoader;
+class Tileset;
+class Sprite;
 
 /**
  * \brief Represents a map where the game can take place.

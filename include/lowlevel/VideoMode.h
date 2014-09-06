@@ -23,6 +23,9 @@
 
 namespace solarus {
 
+class PixelFilter;
+class Shader;
+
 /**
  * \brief Represents a method to display the quest content on the screen.
  *

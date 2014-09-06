@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "lowlevel/Surface.h"
+#include "lua/ExportableToLuaPtr.h"
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
-#include "lowlevel/Surface.h"
-#include <lua.hpp>
 #include <list>
+#include <lua.hpp>
 
 namespace solarus {
 

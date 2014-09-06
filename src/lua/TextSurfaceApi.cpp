@@ -14,10 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "lowlevel/FileTools.h"
+#include "lowlevel/TextSurface.h"
+#include "lowlevel/TextSurfacePtr.h"
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
-#include "lowlevel/TextSurface.h"
-#include "lowlevel/FileTools.h"
 #include "Language.h"
 #include "StringResource.h"
 

@@ -22,6 +22,11 @@
 
 namespace solarus {
 
+class Point;
+class Rectangle;
+class Surface;
+class Tileset;
+
 /**
  * \brief Abstract class for a tile pattern.
  *

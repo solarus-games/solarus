@@ -23,6 +23,12 @@
 
 namespace solarus {
 
+class LuaContext;
+class Size;
+class SpriteAnimation;
+class SpriteAnimationSet;
+class Tileset;
+
 /**
  * \brief Represents an animated sprite.
  *
@@ -97,7 +103,7 @@ class Sprite: public Drawable {
     // collisions
     bool test_collision(const Sprite& other, int x1, int y1, int x2, int y2) const;
 
-    // udpate and draw
+    // update and draw
     virtual void update() override;
     virtual void raw_draw(Surface& dst_surface, const Point& dst_position) override;
     virtual void raw_draw_region(const Rectangle& region,

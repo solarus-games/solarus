@@ -25,6 +25,9 @@ struct lua_State;
 
 namespace solarus {
 
+class LuaContext;
+class MainLoop;
+
 /**
  * \brief Manages the game data saved.
  *

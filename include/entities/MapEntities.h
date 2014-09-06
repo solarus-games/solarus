@@ -18,16 +18,29 @@
 #define SOLARUS_MAP_ENTITIES_H
 
 #include "Common.h"
-#include "Transition.h"
+#include "entities/EntityType.h"
 #include "entities/Ground.h"
 #include "entities/Layer.h"
-#include "entities/EntityType.h"
+#include "entities/MapEntityPtr.h"
+#include "entities/TilePtr.h"
+#include "Transition.h"
 #include <vector>
 #include <list>
 #include <map>
 #include <string>
 
 namespace solarus {
+
+class Boomerang;
+class CrystalBlock;
+class Destination;
+class Detector;
+class Hero;
+class Map;
+class NonAnimatedRegions;
+class Rectangle;
+class Separator;
+class Stairs;
 
 /**
  * \brief Manages the whole content of a map.

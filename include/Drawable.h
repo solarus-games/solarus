@@ -19,10 +19,15 @@
 
 #include "Common.h"
 #include "lowlevel/Point.h"
+#include "lowlevel/SurfacePtr.h"
 #include "lua/ExportableToLua.h"
 #include "lua/ScopedLuaRef.h"
 
 namespace solarus {
+
+class Movement;
+class Transition;
+class Rectangle;
 
 /**
  * \brief An object that can be drawn on a surface with additional effects.

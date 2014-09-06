@@ -18,8 +18,11 @@
 #define SOLARUS_SYSTEM_H
 
 #include "Common.h"
+#include <cstdint>
 
 namespace solarus {
+
+class CommandLine;
 
 /**
  * \brief Provides lowlevel functions and initialization.

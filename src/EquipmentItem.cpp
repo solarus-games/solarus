@@ -15,11 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "EquipmentItem.h"
-#include "Equipment.h"
-#include "Game.h"
-#include "lua/LuaContext.h"
 #include "entities/Pickable.h"
 #include "lowlevel/Debug.h"
+#include "lua/LuaContext.h"
+#include "Equipment.h"
+#include "Game.h"
+#include "Savegame.h"
 
 namespace solarus {
 

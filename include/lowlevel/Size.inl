@@ -161,15 +161,4 @@ inline Size operator/(Size size, int divisor) {
   return size /= divisor;
 }
 
-/**
- * \brief Prints a point to an output stream.
- * \param stream The stream.
- * \param size A size object.
- * \return The output stream.
- */
-inline std::ostream& operator<<(std::ostream& stream, const Size& size) {
-  stream << '(' << size.width << ',' << size.height << ')';
-  return stream;
-}
-
 }

@@ -18,12 +18,22 @@
 #define SOLARUS_GAME_H
 
 #include "Common.h"
-#include "Transition.h"
-#include "GameCommands.h"
-#include "Savegame.h"
+#include "lowlevel/Point.h"
+#include "lowlevel/SurfacePtr.h"
 #include "DialogBoxSystem.h"
+#include "GameCommands.h"
+#include "Transition.h"
+#include <memory>
 
 namespace solarus {
+
+class Hero;
+class Equipment;
+class KeysEffect;
+class LuaContext;
+class MainLoop;
+class Map;
+class Savegame;
 
 /**
  * \brief Represents the game currently running.

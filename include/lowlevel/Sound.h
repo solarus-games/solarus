@@ -27,6 +27,8 @@
 
 namespace solarus {
 
+class CommandLine;
+
 /**
  * \brief Represents a sound effect that can be played in the program.
  *

@@ -18,7 +18,8 @@
 #define SOLARUS_SPC_DECODER_H
 
 #include "Common.h"
-#include <cstddef>
+#include <cstddef>  // size_t
+#include <cstdint>
 
 struct SNES_SPC;
 struct SPC_Filter;

@@ -19,12 +19,16 @@
 
 #include "Common.h"
 #include "lowlevel/Point.h"
+#include "lowlevel/SurfacePtr.h"
 #include "lua/ScopedLuaRef.h"
 #include "Dialog.h"
 #include "GameCommands.h"
 #include <list>
 
 namespace solarus {
+
+class Game;
+class TextSurface;
 
 /**
  * \brief Manages the dialog box where dialogs can be displayed.

@@ -18,8 +18,13 @@
 #define SOLARUS_PIXEL_BITS_H
 
 #include "Common.h"
+#include <cstdint>
 
 namespace solarus {
+
+class Point;
+class Rectangle;
+class Surface;
 
 /**
  * \brief Provides pixel-perfect collision checks for a surface.

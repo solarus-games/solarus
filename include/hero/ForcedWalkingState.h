@@ -21,6 +21,8 @@
 
 namespace solarus {
 
+class PathMovement;
+
 /**
  * \brief State of the hero where he is walking with a predetermined path.
  *

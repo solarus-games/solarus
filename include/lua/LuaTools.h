@@ -57,6 +57,9 @@
 
 namespace solarus {
 
+class Color;
+class ScopedLuaRef;
+
 /**
  * \brief Provides general Lua helpers functions.
  *

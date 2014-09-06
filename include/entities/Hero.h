@@ -26,6 +26,15 @@
 
 namespace solarus {
 
+class CarriedItem;
+class Equipment;
+class EquipmentItem;
+class EquipmentItemUsage;
+class HeroSprites;
+class Map;
+class Rectangle;
+class Treasure;
+
 /**
  * \brief The hero's entity.
  *

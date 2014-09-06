@@ -23,6 +23,8 @@
 
 namespace solarus {
 
+class Savegame;
+
 /**
  * \brief Old format of savegames (version 1) kept for compatibility.
  *

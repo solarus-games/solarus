@@ -24,6 +24,8 @@ struct lua_State;
 
 namespace solarus {
 
+class MainLoop;
+
 /**
  * \brief This class reads the quest properties from file quest.dat
  * and applies them.
@@ -43,7 +45,6 @@ class QuestProperties {
   public:
 
     QuestProperties(MainLoop& main_loop);
-    ~QuestProperties();
 
     void load();
 

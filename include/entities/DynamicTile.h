@@ -22,6 +22,9 @@
 
 namespace solarus {
 
+class TilePattern;
+class Tileset;
+
 /**
  * \brief A special tile that can be enabled or disabled.
  *

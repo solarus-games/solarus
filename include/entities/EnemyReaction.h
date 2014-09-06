@@ -24,6 +24,8 @@
 
 namespace solarus {
 
+class Sprite;
+
 /**
  * \brief Describes how an enemy reacts when it receives an attack.
  *

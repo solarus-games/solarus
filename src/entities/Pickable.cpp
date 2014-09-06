@@ -15,21 +15,22 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Pickable.h"
-#include "entities/Hero.h"
 #include "entities/Boomerang.h"
+#include "entities/Hero.h"
 #include "entities/Hookshot.h"
-#include "movements/FallingOnFloorMovement.h"
-#include "movements/FollowMovement.h"
-#include "lua/LuaContext.h"
-#include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
+#include "lua/LuaContext.h"
+#include "movements/FallingOnFloorMovement.h"
+#include "movements/FollowMovement.h"
+#include "Equipment.h"
+#include "EquipmentItem.h"
 #include "Game.h"
 #include "Map.h"
 #include "Sprite.h"
-#include "EquipmentItem.h"
-#include <sstream>
 #include <lua.hpp>
+#include <sstream>
 
 namespace solarus {
 

@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/MapEntity.h"
+#include "SpritePtr.h"
 
 namespace solarus {
 

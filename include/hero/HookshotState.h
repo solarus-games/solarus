@@ -21,6 +21,8 @@
 
 namespace solarus {
 
+class Hookshot;
+
 /**
  * \brief The state "hookshot" of the hero.
  */

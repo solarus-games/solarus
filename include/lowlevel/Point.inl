@@ -171,15 +171,4 @@ inline Point operator/(Point point, int divisor) {
   return point /= divisor;
 }
 
-/**
- * \brief Prints a point to an output stream.
- * \param stream The stream.
- * \param point A point.
- * \return The output stream.
- */
-inline std::ostream& operator<<(std::ostream& stream, const Point& point) {
-  stream << '(' << point.x << ',' << point.y << ')';
-  return stream;
-}
-
 }

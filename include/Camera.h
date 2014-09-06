@@ -22,6 +22,11 @@
 
 namespace solarus {
 
+class Map;
+class MapEntity;
+class Separator;
+class TargetMovement;
+
 /**
  * \brief Manages the visible area of the map.
  *

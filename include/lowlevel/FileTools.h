@@ -25,6 +25,8 @@ struct lua_State;
 
 namespace solarus {
 
+class CommandLine;
+
 /**
  * \brief Handles access to data files.
  *

@@ -24,6 +24,10 @@
 
 namespace solarus {
 
+class Drawable;
+class LuaContext;
+class MapEntity;
+
 /**
  * \brief Abstract class for representing a movement.
  *

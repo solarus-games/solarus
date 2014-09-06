@@ -19,11 +19,14 @@
 
 #include "Common.h"
 #include "lowlevel/Point.h"
-#include "lowlevel/Rectangle.h"
 #include <list>
 #include <map>
 
 namespace solarus {
+
+class Map;
+class MapEntity;
+class Rectangle;
 
 /**
  * \brief Implementation of the A* algorithm to compute a path.

@@ -14,15 +14,16 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "hero/SpinAttackState.h"
+#include "entities/Enemy.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
-#include "entities/Enemy.h"
-#include "movements/StraightMovement.h"
-#include "movements/CircleMovement.h"
-#include "lowlevel/Sound.h"
+#include "hero/SpinAttackState.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Geometry.h"
+#include "lowlevel/Sound.h"
+#include "movements/CircleMovement.h"
+#include "movements/StraightMovement.h"
+#include "Equipment.h"
 #include "Game.h"
 #include <sstream>
 

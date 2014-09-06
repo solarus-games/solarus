@@ -18,7 +18,7 @@
 #define SOLARUS_POINT_H
 
 #include "Common.h"
-#include <ostream>
+#include <iosfwd>
 
 namespace solarus {
 
@@ -27,28 +27,30 @@ namespace solarus {
  *
  * This class represents a point with its two integer coordinates, x and y.
  */
-struct Point {
+class Point {
 
-  ////////////////////////////////////////////////////////////
-  // Constructors
+  public:
 
-  Point();
-  Point(int x, int y);
+    ////////////////////////////////////////////////////////////
+    // Constructors
 
-  ////////////////////////////////////////////////////////////
-  // Operators
+    Point();
+    Point(int x, int y);
 
-  Point& operator+=(const Point& other);
-  Point& operator-=(const Point& other);
+    ////////////////////////////////////////////////////////////
+    // Operators
 
-  Point& operator*=(int factor);
-  Point& operator/=(int divisor);
+    Point& operator+=(const Point& other);
+    Point& operator-=(const Point& other);
 
-  ////////////////////////////////////////////////////////////
-  // Member data
+    Point& operator*=(int factor);
+    Point& operator/=(int divisor);
 
-  int x = 0;    /**< First coordinate */
-  int y = 0;    /**< Second coordinate */
+    ////////////////////////////////////////////////////////////
+    // Member data
+
+    int x = 0;    /**< First coordinate */
+    int y = 0;    /**< Second coordinate */
 
 };
 

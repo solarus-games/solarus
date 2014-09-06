@@ -20,9 +20,13 @@
 #include "Common.h"
 #include "entities/Layer.h"
 #include "containers/Grid.h"
+#include "lowlevel/SurfacePtr.h"
 #include <vector>
 
 namespace solarus {
+
+class Map;
+class Tile;
 
 /**
  * \brief Manages the tiles that are in non-animated regions.

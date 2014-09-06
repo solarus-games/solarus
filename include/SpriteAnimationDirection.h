@@ -24,6 +24,9 @@
 
 namespace solarus {
 
+class PixelBits;
+class Surface;
+
 /**
  * \brief A sequence of frames representing a sprite animated in a particular direction.
  *
@@ -37,7 +40,8 @@ class SpriteAnimationDirection {
     // creation and destruction
     SpriteAnimationDirection(
         const std::vector<Rectangle>& frames,
-        const Point& origin);
+        const Point& origin
+    );
     ~SpriteAnimationDirection();
 
     // size and origin point

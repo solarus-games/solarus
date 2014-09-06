@@ -22,6 +22,8 @@
 
 namespace solarus {
 
+class Arrow;
+
 /**
  * \brief A button that the hero can trigger.
  *

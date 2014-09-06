@@ -21,6 +21,8 @@
 
 namespace solarus {
 
+class JumpMovement;
+
 /**
  * \brief The state "Jumping" of the hero.
  */

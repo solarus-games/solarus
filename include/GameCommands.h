@@ -27,6 +27,9 @@
 
 namespace solarus {
 
+class Game;
+class Savegame;
+
 /**
  * \brief Stores the mapping between the in-game high-level commands
  * and their keyboard and joypad bindings.

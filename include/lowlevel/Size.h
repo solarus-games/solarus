@@ -18,7 +18,7 @@
 #define SOLARUS_SIZE_H
 
 #include "Common.h"
-#include <ostream>
+#include <iosfwd>
 
 namespace solarus {
 
@@ -28,33 +28,34 @@ namespace solarus {
  * This class represents a generic size with
  * width and height properties.
  */
-struct Size {
+class Size {
 
-  ////////////////////////////////////////////////////////////
-  // Constructors
+  public:
+    ////////////////////////////////////////////////////////////
+    // Constructors
 
-  Size();
-  Size(int width, int height);
+    Size();
+    Size(int width, int height);
 
-  ////////////////////////////////////////////////////////////
-  // Operators
+    ////////////////////////////////////////////////////////////
+    // Operators
 
-  Size& operator+=(const Size& other);
-  Size& operator-=(const Size& other);
+    Size& operator+=(const Size& other);
+    Size& operator-=(const Size& other);
 
-  Size& operator*=(int factor);
-  Size& operator/=(int divisor);
+    Size& operator*=(int factor);
+    Size& operator/=(int divisor);
 
-  ////////////////////////////////////////////////////////////
-  // Miscellaneous functions
+    ////////////////////////////////////////////////////////////
+    // Miscellaneous functions
 
-  bool is_flat() const;
+    bool is_flat() const;
 
-  ////////////////////////////////////////////////////////////
-  // Member data
+    ////////////////////////////////////////////////////////////
+    // Member data
 
-  int width = 0;    /**< Width of an object */
-  int height = 0;   /**< Height of an object */
+    int width = 0;    /**< Width of an object */
+    int height = 0;   /**< Height of an object */
 
 };
 

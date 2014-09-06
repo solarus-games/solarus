@@ -23,8 +23,9 @@
 #include "entities/EnemyAttack.h"
 #include "entities/EntityType.h"
 #include "entities/Ground.h"
-#include "lowlevel/InputEvent.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/InputEvent.h"
+#include "lowlevel/SurfacePtr.h"
 #include "lua/ScopedLuaRef.h"
 #include "Ability.h"
 #include <map>
@@ -35,6 +36,47 @@ struct lua_State;
 struct luaL_Reg;
 
 namespace solarus {
+
+class Block;
+class Chest;
+class CircleMovement;
+class Color;
+class CustomEntity;
+class Destination;
+class Destructible;
+class Dialog;
+class Door;
+class Drawable;
+class Enemy;
+class ExportableToLua;
+class EquipmentItem;
+class Hero;
+class Game;
+class JumpMovement;
+class MainLoop;
+class Map;
+class MapEntity;
+class Movement;
+class Npc;
+class PathFindingMovement;
+class PathMovement;
+class PixelMovement;
+class Pickable;
+class Point;
+class RandomMovement;
+class RandomPathMovement;
+class Sensor;
+class Separator;
+class ShopTreasure;
+class Sprite;
+class StraightMovement;
+class Stream;
+class Switch;
+class TargetMovement;
+class Teletransporter;
+class TextSurface;
+class Timer;
+class Treasure;
 
 /**
  * \brief This class represents a living Lua context that can execute quest

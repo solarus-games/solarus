@@ -14,12 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "hero/SwordSwingingState.h"
-#include "hero/SwordLoadingState.h"
+#include "entities/Enemy.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
-#include "entities/Enemy.h"
+#include "hero/SwordLoadingState.h"
+#include "hero/SwordSwingingState.h"
 #include "movements/StraightMovement.h"
+#include "Equipment.h"
 #include "Game.h"
 #include "GameCommands.h"
 

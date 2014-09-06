@@ -18,6 +18,7 @@
 #define SOLARUS_VIDEO_H
 
 #include "Common.h"
+#include "lowlevel/SurfacePtr.h"
 #include <vector>
 #include <string>
 
@@ -29,6 +30,11 @@ struct SDL_Texture;
 struct SDL_PixelFormat;
 
 namespace solarus {
+
+class CommandLine;
+class Rectangle;
+class Size;
+class VideoMode;
 
 /**
  * \brief Draws the window and handles the video mode.

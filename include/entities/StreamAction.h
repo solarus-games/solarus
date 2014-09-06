@@ -18,8 +18,12 @@
 #define SOLARUS_STREAM_ACTION_H
 
 #include "Common.h"
+#include <cstdint>
 
 namespace solarus {
+
+class MapEntity;
+class Stream;
 
 /**
  * \brief Manages a map entity being moved by a stream.

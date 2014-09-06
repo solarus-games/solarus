@@ -19,10 +19,16 @@
 
 #include "Common.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/SurfacePtr.h"
+#include <memory>
 #include <string>
 #include <vector>
 
 namespace solarus {
+
+class Point;
+class SpriteAnimationDirection;
+class Tileset;
 
 /**
  * \brief Stores the animated sequences of a sprite in a specific animation.

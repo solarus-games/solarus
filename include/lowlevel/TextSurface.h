@@ -18,15 +18,17 @@
 #define SOLARUS_TEXT_SURFACE_H
 
 #include "Common.h"
-#include "Drawable.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Point.h"
-#include <SDL_ttf.h>
+#include "Drawable.h"
 #include <map>
+#include <SDL_ttf.h>
 
 struct lua_State;
 
 namespace solarus {
+
+class Size;
 
 /**
  * \brief Draws a line of text on a surface.

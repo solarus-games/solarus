@@ -25,6 +25,12 @@
 
 namespace solarus {
 
+class CarriedItem;
+class Equipment;
+class Hero;
+class LuaContext;
+class Sprite;
+
 /**
  * \brief Manages the animations of the hero's main sprites.
  *

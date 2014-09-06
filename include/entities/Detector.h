@@ -23,6 +23,8 @@
 
 namespace solarus {
 
+class EquipmentItem;
+
 /**
  * \brief Abstract class for an entity able to detect the presence of other
  * entities.

@@ -21,6 +21,8 @@
 
 namespace solarus {
 
+class PathMovement;
+
 /**
  * \brief The state "Pulling" of the hero.
  */

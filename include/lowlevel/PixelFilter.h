@@ -18,6 +18,7 @@
 #define SOLARUS_PIXEL_FILTER_H
 
 #include "Common.h"
+#include <cstdint>
 
 namespace solarus {
 

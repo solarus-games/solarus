@@ -23,6 +23,9 @@
 
 namespace solarus {
 
+class Game;
+class Surface;
+
 /**
  * \brief Abstract class for a transition effect between two phases.
  *

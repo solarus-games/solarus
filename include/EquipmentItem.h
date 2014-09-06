@@ -24,6 +24,13 @@
 
 namespace solarus {
 
+class Equipment;
+class Game;
+class LuaContext;
+class Map;
+class Pickable;
+class Savegame;
+
 /**
  * \brief An item possibly possessed by the player.
  *

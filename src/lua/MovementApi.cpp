@@ -14,8 +14,6 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
 #include "movements/PixelMovement.h"
 #include "movements/PathMovement.h"
 #include "movements/RandomMovement.h"
@@ -25,6 +23,10 @@
 #include "movements/CircleMovement.h"
 #include "movements/JumpMovement.h"
 #include "lowlevel/Debug.h"
+#include "lua/ExportableToLua.h"
+#include "lua/ExportableToLuaPtr.h"
+#include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "MainLoop.h"

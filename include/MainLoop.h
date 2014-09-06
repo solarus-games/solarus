@@ -18,8 +18,15 @@
 #define MAIN_LOOP_H
 
 #include "Common.h"
+#include "lowlevel/SurfacePtr.h"
+#include <memory>
 
 namespace solarus {
+
+class CommandLine;
+class Game;
+class InputEvent;
+class LuaContext;
 
 /**
  * \brief Main class of the game engine.

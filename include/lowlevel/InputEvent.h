@@ -26,6 +26,8 @@ typedef struct _SDL_Joystick SDL_Joystick;
 
 namespace solarus {
 
+class Rectangle;
+
 /**
  * \brief Represents a low-level event.
  *

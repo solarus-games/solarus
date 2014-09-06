@@ -26,6 +26,9 @@ struct lua_State;
 
 namespace solarus {
 
+class SpriteAnimation;
+class Tileset;
+
 /**
  * \brief A set of animations representing a sprite.
  *

@@ -18,6 +18,7 @@
 #define SOLARUS_REF_COUNTABLE_H
 
 #include "Common.h"
+#include <memory>
 
 namespace solarus {
 

@@ -19,9 +19,9 @@
 
 #include "Common.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/SurfacePtr.h"
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
-
 
 namespace solarus {
 

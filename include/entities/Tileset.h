@@ -19,13 +19,17 @@
 
 #include "Common.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/SurfacePtr.h"
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
 struct lua_State;
 
 namespace solarus {
+
+class TilePattern;
 
 /**
  * \brief An image containing all tile patterns.

@@ -27,6 +27,11 @@ struct lua_State;
 
 namespace solarus {
 
+class EquipmentItem;
+class Game;
+class Map;
+class Savegame;
+
 /**
  * \brief Represents the hero's equipment.
  *

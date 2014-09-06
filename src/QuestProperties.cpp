@@ -84,13 +84,6 @@ QuestProperties::QuestProperties(MainLoop& /* main_loop */) {
 }
 
 /**
- * \brief Destructor.
- */
-QuestProperties::~QuestProperties() {
-
-}
-
-/**
  * \brief Reads the quest properties data file quest.dat and applies
  * these properties to the quest.
  */

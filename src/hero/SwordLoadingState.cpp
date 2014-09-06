@@ -14,16 +14,17 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "hero/SwordLoadingState.h"
-#include "hero/SpinAttackState.h"
-#include "hero/SwordTappingState.h"
+#include "entities/Enemy.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
-#include "entities/Enemy.h"
-#include "lowlevel/System.h"
-#include "lowlevel/Sound.h"
+#include "hero/SpinAttackState.h"
+#include "hero/SwordLoadingState.h"
+#include "hero/SwordTappingState.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Geometry.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
+#include "Equipment.h"
 #include "Game.h"
 #include "GameCommands.h"
 #include <sstream>

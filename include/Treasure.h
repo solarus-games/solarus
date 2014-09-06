@@ -18,9 +18,14 @@
 #define SOLARUS_TREASURE_H
 
 #include "Common.h"
+#include "lowlevel/SurfacePtr.h"
 #include <string>
 
 namespace solarus {
+
+class EquipmentItem;
+class Game;
+class Sprite;
 
 /**
  * \brief Represents an item that the hero brandishes when he receives it.

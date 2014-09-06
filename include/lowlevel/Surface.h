@@ -18,8 +18,9 @@
 #define SOLARUS_SURFACE_H
 
 #include "Common.h"
-#include "Drawable.h"
 #include "lowlevel/PixelBits.h"
+#include "lowlevel/SurfacePtr.h"
+#include "Drawable.h"
 #include <vector>
 
 struct SDL_Surface;
@@ -27,6 +28,11 @@ struct SDL_Texture;
 struct SDL_Renderer;
 
 namespace solarus {
+
+class Color;
+class PixelFilter;
+class Size;
+class Surface;
 
 /**
  * \brief Represents a graphic surface.
@@ -99,7 +105,7 @@ class Surface: public Drawable {
   private:
 
     class SubSurfaceNode;
-    typedef std::shared_ptr<Surface::SubSurfaceNode> SubSurfaceNodePtr;
+    using SubSurfaceNodePtr = std::shared_ptr<Surface::SubSurfaceNode>;
 
     Surface(int width, int height);
     explicit Surface(SDL_Surface* internal_surface);

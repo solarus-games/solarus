@@ -32,6 +32,38 @@ struct lua_State;
 
 namespace solarus {
 
+class Block;
+class Bomb;
+class Chest;
+class Crystal;
+class CrystalBlock;
+class Detector;
+class Destructible;
+class Enemy;
+class Equipment;
+class Explosion;
+class Fire;
+class Game;
+class GameCommands;
+class Hero;
+class KeysEffect;
+class Jumper;
+class LuaContext;
+class Map;
+class MainLoop;
+class MapEntities;
+class Movement;
+class Npc;
+class Savegame;
+class Separator;
+class Sensor;
+class Sprite;
+class Stairs;
+class Stream;
+class StreamAction;
+class Switch;
+class Teletransporter;
+
 /**
  * \brief Abstract class for all objects placed on a map.
  *

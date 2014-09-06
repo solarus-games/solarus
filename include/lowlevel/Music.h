@@ -24,6 +24,9 @@
 
 namespace solarus {
 
+class ItDecoder;
+class SpcDecoder;
+
 /**
  * \brief Represents a music that can be played.
  *

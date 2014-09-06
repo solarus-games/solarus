@@ -18,8 +18,8 @@
 #define SOLARUS_HERO_STATE_H
 
 #include "Common.h"
-#include "entities/Hero.h"
 #include "entities/CarriedItem.h"
+#include "entities/Hero.h"
 
 namespace solarus {
 

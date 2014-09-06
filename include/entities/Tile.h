@@ -19,8 +19,12 @@
 
 #include "Common.h"
 #include "entities/MapEntity.h"
+#include "lowlevel/SurfacePtr.h"
 
 namespace solarus {
+
+class TilePattern;
+class Tileset;
 
 /**
  * \brief A small fixed piece of the map, optimized for collisions and drawing.

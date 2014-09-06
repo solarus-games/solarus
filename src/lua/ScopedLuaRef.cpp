@@ -205,6 +205,7 @@ void ScopedLuaRef::clear_and_call(const std::string& function_name) {
     return;
   }
 
+  lua_State* l = this->l;
   push();
   clear();  // The function is still alive, onto the stack.
   LuaTools::call_function(l, 0, 0, function_name.c_str());

@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_MAP_ENTITY_PTR_FWD_H
-#define SOLARUS_MAP_ENTITY_PTR_FWD_H
+#ifndef SOLARUS_MAP_ENTITY_PTR_H
+#define SOLARUS_MAP_ENTITY_PTR_H
 
 namespace std {
 template<typename T> class shared_ptr;

@@ -3290,7 +3290,7 @@ int LuaContext::pickable_api_get_followed_entity(lua_State* l) {
   SOLARUS_LUA_BOUNDARY_TRY() {
     Pickable& pickable = check_pickable(l, 1);
 
-    MapEntity* followed_entity = pickable.get_entity_followed();
+    std::shared_ptr<MapEntity> followed_entity = pickable.get_entity_followed();
 
     if (followed_entity != nullptr) {
       push_entity(l, *followed_entity);

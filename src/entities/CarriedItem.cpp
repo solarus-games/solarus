@@ -365,7 +365,12 @@ void CarriedItem::update() {
 
     // make the item follow the hero
     clear_movement();
-    set_movement(make_refcount_ptr(new FollowMovement(&hero, 0, -18, true)));
+    set_movement(make_refcount_ptr(new FollowMovement(
+        std::static_pointer_cast<Hero>(hero.shared_from_this()),
+        0,
+        -18,
+        true
+    )));
   }
 
   // when the item has finished flying, destroy it

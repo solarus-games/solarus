@@ -56,7 +56,7 @@ class Pickable: public Detector {
 
     // item state
     virtual void set_suspended(bool suspended) override;
-    MapEntity* get_entity_followed();
+    const std::shared_ptr<MapEntity>& get_entity_followed();
     virtual void notify_collision(
         MapEntity& entity_overlapping,
         CollisionMode collision_mode
@@ -98,7 +98,7 @@ class Pickable: public Detector {
     bool can_be_picked;                         /**< indicates that the item can be picked now (i.e. allow_picked_date is past) */
     uint32_t blink_date;                        /**< date when the item starts blinking */
     uint32_t disappear_date;                    /**< date when the item disappears */
-    MapEntity* entity_followed;                 /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
+    std::shared_ptr<MapEntity> entity_followed; /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
 };
 
 }

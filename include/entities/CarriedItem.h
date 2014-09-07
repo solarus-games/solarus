@@ -107,7 +107,7 @@ class CarriedItem: public MapEntity {
     bool will_explode_soon() const;
 
     // game data
-    Hero& hero;             /**< the hero, who is carrying or throwing this item */
+    Hero& hero;                 /**< the hero, who is carrying or throwing this item */
 
     // state
     bool is_lifting;            /**< indicates that the hero is lifting this item */
@@ -126,7 +126,7 @@ class CarriedItem: public MapEntity {
     int y_increment;            /**< next y change for item_height */
 
     // explosion of the item
-    uint32_t explosion_date;        /**< date when the item explodes (0 if there is no explosion) */
+    uint32_t explosion_date;    /**< date when the item explodes (0 if there is no explosion) */
 
     static const std::string lifting_trajectories[4];   /**< trajectory of the lifting movement for each direction */
 

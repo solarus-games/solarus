@@ -35,12 +35,11 @@ class FollowMovement: public Movement {
   public:
 
     FollowMovement(
-        MapEntity* entity_followed,
+        const std::shared_ptr<MapEntity>& entity_followed,
         int x,
         int y,
         bool ignore_obstacles
     );
-    ~FollowMovement();
 
     virtual bool is_finished() const override;
     virtual const Point get_displayed_xy() const override;
@@ -51,7 +50,8 @@ class FollowMovement: public Movement {
 
   private:
 
-    MapEntity* entity_followed;        /**< The entity followed by this movement or nullptr. */
+    std::shared_ptr<MapEntity>
+        entity_followed;               /**< The entity followed by this movement or nullptr. */
     const int x;                       /**< x coordinate of where this entity should be placed,
                                         * relative to the entity followed */
     const int y;                       /**< y coordinate of where this entity should be placed,

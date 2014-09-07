@@ -209,7 +209,7 @@ bool Block::start_movement_by_hero() {
     hero_direction = (hero_direction + 2) % 4;
   }
 
-  if (get_movement() != nullptr                // the block is already moving
+  if (get_movement() != nullptr             // the block is already moving
       || maximum_moves == 0                 // the block cannot move anymore
       || System::now() < when_can_move      // the block cannot move for a while
       || (pulling && !can_be_pulled)        // the hero tries to pull a block that cannot be pulled
@@ -221,7 +221,12 @@ bool Block::start_movement_by_hero() {
   int dx = get_x() - hero.get_x();
   int dy = get_y() - hero.get_y();
 
-  set_movement(make_refcount_ptr(new FollowMovement(&hero, dx, dy, false)));
+  set_movement(make_refcount_ptr(new FollowMovement(
+      std::static_pointer_cast<Hero>(hero.shared_from_this()),
+      dx,
+      dy,
+      false
+  )));
   sound_played = false;
 
   return true;

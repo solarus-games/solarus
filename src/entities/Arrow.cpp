@@ -247,7 +247,8 @@ void Arrow::update() {
     else if (entity_reached->get_type() == ENTITY_DESTRUCTIBLE && !entity_reached->is_obstacle_for(*this)) {
       disappear_date = now;
     }
-    else if (entity_reached->get_type() == ENTITY_ENEMY && ((Enemy*) entity_reached)->is_dying()) {
+    else if (entity_reached->get_type() == ENTITY_ENEMY &&
+        (std::static_pointer_cast<Enemy>(entity_reached)->is_dying())) {
       // the enemy is dying
       disappear_date = now;
     }
@@ -339,7 +340,9 @@ void Arrow::attach_to(MapEntity& entity_reached) {
   Debug::check_assertion(this->entity_reached == nullptr,
       "This arrow is already attached to an entity");
 
-  this->entity_reached = &entity_reached;
+  this->entity_reached = std::static_pointer_cast<MapEntity>(
+      entity_reached.shared_from_this()
+  );
   stop_now = true;
 }
 

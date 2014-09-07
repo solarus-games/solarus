@@ -28,7 +28,7 @@ namespace solarus {
  * \param ignore_obstacles true to make the movement ignore obstacles
  */
 FollowMovement::FollowMovement(
-    MapEntity* entity_followed,
+    const std::shared_ptr<MapEntity>& entity_followed,
     int x,
     int y,
     bool ignore_obstacles):
@@ -37,16 +37,6 @@ FollowMovement::FollowMovement(
   x(x),
   y(y),
   finished(false) {
-
-  if (entity_followed != nullptr) {
-    RefCountable::ref(entity_followed);
-  }
-}
-
-/**
- * \brief Destructor.
- */
-FollowMovement::~FollowMovement() {
 }
 
 /**
@@ -69,7 +59,6 @@ void FollowMovement::update() {
 
   if (entity_followed->is_being_removed()) {
     finished = true;
-    RefCountable::unref(entity_followed);
     entity_followed = nullptr;
   }
   else {

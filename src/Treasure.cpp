@@ -52,41 +52,6 @@ Treasure::Treasure(Game& game, const std::string& item_name, int variant,
 }
 
 /**
- * \brief Copy constructor.
- * \param other The treasure to copy.
- */
-Treasure::Treasure(const Treasure& other):
-  game(other.game),
-  item_name(other.item_name),
-  variant(other.variant),
-  savegame_variable(other.savegame_variable),
-  sprite(nullptr) {
-
-}
-
-/**
- * \brief Destructor.
- */
-Treasure::~Treasure() {
-  delete sprite;
-}
-
-/**
- * \brief Assignment operator.
- * \param other The treasure to copy.
- * \return This treasure.
- */
-Treasure& Treasure::operator=(const Treasure& other) {
-
-  this->game = other.game;
-  this->item_name = other.item_name;
-  this->variant = other.variant;
-  this->savegame_variable = other.savegame_variable;
-  this->sprite = nullptr;
-  return *this;
-}
-
-/**
  * \brief Returns whether the player can obtain this treasure.
  */
 bool Treasure::is_obtainable() const {
@@ -234,7 +199,7 @@ void Treasure::draw(const SurfacePtr& dst_surface, int x, int y) {
   if (sprite == nullptr) {
     // Create the sprite only if needed (many treasures are actually
     // never drawn).
-    sprite = new Sprite("entities/items");
+    sprite = RefCountable::make_refcount_ptr(new Sprite("entities/items"));
     sprite->set_current_animation(get_item_name());
     sprite->set_current_direction(get_variant() - 1);
   }

@@ -47,9 +47,6 @@ class Treasure {
 
     Treasure(Game& game, const std::string& item_name, int variant,
         const std::string& savegame_variable);
-    Treasure(const Treasure& other);
-    ~Treasure();
-    Treasure& operator=(const Treasure& other);
 
     Game& get_game() const;
     EquipmentItem& get_item() const;
@@ -69,12 +66,12 @@ class Treasure {
 
   private:
 
-    Game* game;                     /**< the current game */
-    std::string item_name;          /**< content of the treasure (or an empty string) */
-    int variant;                    /**< variant of this content */
-    std::string savegame_variable;  /**< name of the savegame boolean variable corresponding to this treasure,
-                                     * or an empty string if the treasure state is not saved */
-    Sprite* sprite;                 /**< the sprite of the treasure (loaded on demand, nullptr until required) */
+    Game* game;                        /**< the current game */
+    std::string item_name;             /**< content of the treasure (or an empty string) */
+    int variant;                       /**< variant of this content */
+    std::string savegame_variable;     /**< name of the savegame boolean variable corresponding to this treasure,
+                                        * or an empty string if the treasure state is not saved */
+    std::shared_ptr<Sprite> sprite;    /**< the sprite of the treasure (loaded on demand, nullptr until required) */
 
 };
 

@@ -55,17 +55,11 @@ ShopTreasure::ShopTreasure(
   price(price),
   dialog_id(dialog_id),
   price_digits(0, 0, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP),
-  rupee_icon_sprite("entities/rupee_icon") {
+  rupee_icon_sprite(make_refcount_ptr(new Sprite("entities/rupee_icon"))) {
 
   std::ostringstream oss;
   oss << price;
   price_digits.set_text(oss.str());
-}
-
-/**
- * \brief Destructor.
- */
-ShopTreasure::~ShopTreasure() {
 }
 
 /**
@@ -165,7 +159,7 @@ void ShopTreasure::notify_collision(
 
   if (entity_overlapping.is_hero() && !get_game().is_suspended()) {
 
-    Hero& hero = (Hero&) entity_overlapping;
+    Hero& hero = static_cast<Hero&>(entity_overlapping);
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
         && hero.is_free()) {
@@ -216,7 +210,7 @@ void ShopTreasure::draw_on_map() {
   price_digits.draw(map_surface,
       x + 12 - camera_position.get_x(),
       y + 21 - camera_position.get_y());
-  rupee_icon_sprite.draw(map_surface,
+  rupee_icon_sprite->draw(map_surface,
       x - camera_position.get_x(),
       y + 22 - camera_position.get_y());
 }

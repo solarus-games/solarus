@@ -39,7 +39,6 @@ class ShopTreasure: public Detector {
 
   public:
 
-    ~ShopTreasure();
     static ShopTreasure* create(
         Game& game,
         const std::string& name,
@@ -77,12 +76,13 @@ class ShopTreasure: public Detector {
 
     // data
     Treasure treasure;                /**< the treasure the player can buy */
-    int price;                        /**< the treasure's price in rupees */
+    int price;                        /**< the treasure's price */
     std::string dialog_id;            /**< id of the dialog describing the shop item */
 
     // displaying
     TextSurface price_digits;         /**< the digits that show the price */
-    Sprite rupee_icon_sprite;         /**< the rupee icon near the price */
+    std::shared_ptr<Sprite>
+        rupee_icon_sprite;            /**< the rupee icon near the price */
 
 };
 

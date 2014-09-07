@@ -47,11 +47,12 @@ Pickable::Pickable(
     Layer layer,
     int x,
     int y,
-    const Treasure& treasure):
+    const Treasure& treasure
+):
   Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE, name, layer, x, y, 0, 0),
   treasure(treasure),
   given_to_player(false),
-  shadow_sprite(nullptr),
+  shadow_sprite(),
   falling_height(FALLING_NONE),
   will_disappear(false),
   shadow_xy(Point(x, y)),
@@ -62,14 +63,6 @@ Pickable::Pickable(
   disappear_date(0),
   entity_followed(nullptr) {
 
-}
-
-/**
- * \brief Destructor.
- */
-Pickable::~Pickable() {
-
-  delete shadow_sprite;
 }
 
 /**
@@ -109,8 +102,8 @@ std::shared_ptr<Pickable> Pickable::create(
     int y,
     Treasure treasure,
     FallingHeight falling_height,
-    bool force_persistent) {
-
+    bool force_persistent
+) {
   treasure.ensure_obtainable();
 
   // Don't create anything if there is no treasure to give.
@@ -151,19 +144,18 @@ bool Pickable::can_be_obstacle() const {
 void Pickable::initialize_sprites() {
 
   // Shadow sprite.
-  delete shadow_sprite;
+  shadow_sprite = nullptr;
   EquipmentItem& item = treasure.get_item();
   const std::string& animation = item.get_shadow();
 
   bool has_shadow = false;
   if (!animation.empty()) {
-    shadow_sprite = new Sprite("entities/shadow");
+    shadow_sprite = make_refcount_ptr(new Sprite("entities/shadow"));
     has_shadow = shadow_sprite->has_animation(animation);
   }
 
   if (!has_shadow) {
     // No shadow or no such shadow animation.
-    delete shadow_sprite;
     shadow_sprite = nullptr;
   }
   else {

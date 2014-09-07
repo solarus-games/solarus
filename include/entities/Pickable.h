@@ -33,9 +33,16 @@ class Pickable: public Detector {
   public:
 
     // creation and destruction
-    static Pickable* create(Game& game, const std::string& name,
-        Layer layer, int x, int y, Treasure treasure,
-        FallingHeight falling_height, bool force_persistent);
+    static std::shared_ptr<Pickable> create(
+        Game& game,
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        Treasure treasure,
+        FallingHeight falling_height,
+        bool force_persistent
+    );
 
     ~Pickable();
 

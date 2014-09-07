@@ -101,7 +101,7 @@ EntityType Pickable::get_type() const {
  * decide if it disappears after some time)
  * \return the pickable item created, or nullptr
  */
-Pickable* Pickable::create(
+std::shared_ptr<Pickable> Pickable::create(
     Game& /* game */,
     const std::string& name,
     Layer layer,
@@ -118,7 +118,9 @@ Pickable* Pickable::create(
     return nullptr;
   }
 
-  Pickable* pickable = new Pickable(name, layer, x, y, treasure);
+  std::shared_ptr<Pickable> pickable = RefCountable::make_refcount_ptr(
+      new Pickable(name, layer, x, y, treasure)
+  );
 
   // Set the item properties.
   pickable->falling_height = falling_height;

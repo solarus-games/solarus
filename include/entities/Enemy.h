@@ -23,6 +23,7 @@
 #include "entities/EnemyAttack.h"
 #include "entities/EnemyReaction.h"
 #include "entities/Explosion.h"
+#include "entities/MapEntityPtr.h"
 
 namespace solarus {
 
@@ -81,7 +82,7 @@ class Enemy: public Detector {
     // creation and destruction
     ~Enemy();
 
-    static MapEntity* create(
+    static MapEntityPtr create(
         Game& game,
         const std::string& breed,
         Rank rank,
@@ -91,7 +92,8 @@ class Enemy: public Detector {
         int x,
         int y,
         int direction,
-        const Treasure& treasure);
+        const Treasure& treasure
+    );
 
     virtual EntityType get_type() const override;
     virtual bool is_ground_observer() const override;

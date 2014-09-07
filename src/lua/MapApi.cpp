@@ -1136,7 +1136,7 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
     }
 
     Game& game = map.get_game();
-    MapEntity* entity = Pickable::create(
+    const std::shared_ptr<Pickable>& entity = Pickable::create(
         game,
         name,
         layer,
@@ -1387,7 +1387,7 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
     }
 
     Game& game = map.get_game();
-    MapEntity* entity = Enemy::create(
+    const MapEntityPtr& entity = Enemy::create(
         game,
         breed,
         rank,
@@ -1397,7 +1397,8 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
         x,
         y,
         direction,
-        Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
+        Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable)
+    );
 
     if (entity == nullptr) {
       lua_pushnil(l);

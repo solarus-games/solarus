@@ -4499,7 +4499,7 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
     }
 
     Game& game = map.get_game();
-    MapEntity* entity = Enemy::create(
+    const MapEntityPtr& entity = Enemy::create(
         game,
         breed,
         rank,

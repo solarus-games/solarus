@@ -148,7 +148,7 @@ Enemy::~Enemy() {
  * \param treasure the pickable item that the enemy drops
  * \return the enemy created (may also be a Pickable or nullptr)
  */
-MapEntity* Enemy::create(
+MapEntityPtr Enemy::create(
     Game& game,
     const std::string& breed,
     Rank rank,
@@ -158,8 +158,8 @@ MapEntity* Enemy::create(
     int x,
     int y,
     int direction,
-    const Treasure& treasure) {
-
+    const Treasure& treasure
+) {
   // see if the enemy is dead
   if (!savegame_variable.empty()
       && game.get_savegame().get_boolean(savegame_variable)) {
@@ -172,7 +172,9 @@ MapEntity* Enemy::create(
   }
 
   // create the enemy
-  Enemy* enemy = new Enemy(game, name, layer, x, y, breed, treasure);
+  const std::shared_ptr<Enemy>& enemy = make_refcount_ptr(
+      new Enemy(game, name, layer, x, y, breed, treasure)
+  );
 
   // initialize the fields
   enemy->set_direction(direction);

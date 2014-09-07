@@ -53,7 +53,7 @@ SimpleTilePattern::~SimpleTilePattern() {
 void SimpleTilePattern::draw(Surface& dst_surface, const Point& dst_position,
     Tileset& tileset, const Point& /* viewport */) {
 
-  SurfacePtr& tileset_image = tileset.get_tiles_image();
+  const SurfacePtr& tileset_image = tileset.get_tiles_image();
   SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
   tileset_image->draw_region(position_in_tileset, shared_dst_surface, dst_position);
 }

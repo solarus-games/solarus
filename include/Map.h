@@ -78,7 +78,7 @@ class Map: public ExportableToLua {
     int get_height8() const;
 
     // camera
-    SurfacePtr& get_visible_surface();
+    const SurfacePtr& get_visible_surface();
     const Rectangle& get_camera_position() const;
     void move_camera(int x, int y, int speed);
     void restore_camera();

@@ -92,7 +92,7 @@ void Tile::draw_on_map() {
  * \param viewport coordinates of the top-left corner of dst_surface
  * relative to the map
  */
-void Tile::draw(SurfacePtr& dst_surface, const Point& viewport) {
+void Tile::draw(const SurfacePtr& dst_surface, const Point& viewport) {
 
   Rectangle dst_position(
       get_top_left_x() - viewport.x,

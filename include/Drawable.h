@@ -57,12 +57,12 @@ class Drawable: public ExportableToLua {
 
     // drawing with effects
 
-    void draw(SurfacePtr& dst_surface);
-    void draw(SurfacePtr& dst_surface, int x, int y);
-    void draw(SurfacePtr& dst_surface, const Point& dst_position);
-    void draw_region(const Rectangle& region, SurfacePtr& dst_surface);
+    void draw(const SurfacePtr& dst_surface);
+    void draw(const SurfacePtr& dst_surface, int x, int y);
+    void draw(const SurfacePtr& dst_surface, const Point& dst_position);
+    void draw_region(const Rectangle& region, const SurfacePtr& dst_surface);
     void draw_region(const Rectangle& region,
-        SurfacePtr& dst_surface, const Point& dst_position);
+        const SurfacePtr& dst_surface, const Point& dst_position);
 
     /**
      * \brief Draws this object without applying dynamic effects.

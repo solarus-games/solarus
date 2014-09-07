@@ -531,7 +531,7 @@ void Surface::fill_with_color(const Color& color, const Rectangle& where) {
  * \param dst_position Coordinates on this surface.
  */
 void Surface::add_subsurface(
-    SurfacePtr& src_surface,
+    const SurfacePtr& src_surface,
     const Rectangle& region,
     const Point& dst_position) {
 

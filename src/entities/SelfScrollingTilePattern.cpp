@@ -77,7 +77,7 @@ void SelfScrollingTilePattern::draw(Surface& dst_surface,
   offset_y /= 2;
 
   // draw the pattern in four steps
-  SurfacePtr& tileset_image = tileset.get_tiles_image();
+  const SurfacePtr& tileset_image = tileset.get_tiles_image();
   SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
 
   src.add_x(offset_x);

@@ -568,7 +568,7 @@ const VideoMode* Video::get_video_mode_by_name(
  * \brief Draws the quest surface on the screen with the current video mode.
  * \param quest_surface The quest surface to render on the screen.
  */
-void Video::render(SurfacePtr& quest_surface) {
+void Video::render(const SurfacePtr& quest_surface) {
 
   if (disable_window) {
     return;

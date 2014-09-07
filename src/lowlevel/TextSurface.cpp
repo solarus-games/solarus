@@ -556,7 +556,7 @@ void TextSurface::rebuild_bitmap() {
   }
 
   // Determine the letter size from the surface size.
-  SurfacePtr& bitmap = fonts[font_id].bitmap;
+  const SurfacePtr& bitmap = fonts[font_id].bitmap;
   const Size& bitmap_size = bitmap->get_size();
   int char_width = bitmap_size.width / 128;
   int char_height = bitmap_size.height / 16;

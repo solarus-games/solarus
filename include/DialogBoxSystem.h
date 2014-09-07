@@ -56,7 +56,7 @@ class DialogBoxSystem {
     bool notify_command_pressed(GameCommands::Command command);
     const std::string& get_dialog_id() const;
 
-    void draw(SurfacePtr& dst_surface);
+    void draw(const SurfacePtr& dst_surface);
 
   private:
 

@@ -58,7 +58,7 @@ void ParallaxScrollingTilePattern::draw(Surface& dst_surface,
     const Point& dst_position, Tileset& tileset,
     const Point& viewport) {
 
-  SurfacePtr& tileset_image = tileset.get_tiles_image();
+  const SurfacePtr& tileset_image = tileset.get_tiles_image();
   Point dst = dst_position;
   dst += viewport / ratio;
   SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr

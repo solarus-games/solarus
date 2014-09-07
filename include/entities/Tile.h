@@ -58,7 +58,7 @@ class Tile: public MapEntity {
 
     virtual EntityType get_type() const override;
     virtual void draw_on_map() override;
-    void draw(SurfacePtr& dst_surface, const Point& viewport);
+    void draw(const SurfacePtr& dst_surface, const Point& viewport);
     TilePattern& get_tile_pattern();
     const std::string& get_tile_pattern_id() const;
     bool is_animated() const;

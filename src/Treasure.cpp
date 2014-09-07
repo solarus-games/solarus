@@ -229,7 +229,7 @@ void Treasure::give_to_player() const {
  * \param x The treasure x position on this surface.
  * \param y The treasure y position on this surface.
  */
-void Treasure::draw(SurfacePtr& dst_surface, int x, int y) {
+void Treasure::draw(const SurfacePtr& dst_surface, int x, int y) {
 
   if (sprite == nullptr) {
     // Create the sprite only if needed (many treasures are actually

@@ -68,7 +68,7 @@ class Game {
     // functions called by the main loop
     bool notify_input(const InputEvent& event);
     void update();
-    void draw(SurfacePtr& dst_surface);
+    void draw(const SurfacePtr& dst_surface);
 
     // game controls
     void notify_command_pressed(GameCommands::Command command);

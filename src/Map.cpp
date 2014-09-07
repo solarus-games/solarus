@@ -448,7 +448,7 @@ int Map::get_destination_side() const {
  *
  * \return the surface where the map is displayed
  */
-SurfacePtr& Map::get_visible_surface() {
+const SurfacePtr& Map::get_visible_surface() {
   return visible_surface;
 }
 

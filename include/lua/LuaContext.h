@@ -251,14 +251,14 @@ class LuaContext {
     void main_on_started();
     void main_on_finished();
     void main_on_update();
-    void main_on_draw(SurfacePtr& dst_surface);
+    void main_on_draw(const SurfacePtr& dst_surface);
     bool main_on_input(const InputEvent& event);
 
     // Menu events.
     void menu_on_started(const ScopedLuaRef& menu_ref);
     void menu_on_finished(const ScopedLuaRef& menu_ref);
     void menu_on_update(const ScopedLuaRef& menu_ref);
-    void menu_on_draw(const ScopedLuaRef& menu_ref, SurfacePtr& dst_surface);
+    void menu_on_draw(const ScopedLuaRef& menu_ref, const SurfacePtr& dst_surface);
     bool menu_on_input(const ScopedLuaRef& menu_ref, const InputEvent& event);
     bool menu_on_command_pressed(
         const ScopedLuaRef& menu_ref,
@@ -269,7 +269,7 @@ class LuaContext {
         GameCommands::Command command
     );
     void menus_on_update(int context_index);
-    void menus_on_draw(int context_index, SurfacePtr& dst_surface);
+    void menus_on_draw(int context_index, const SurfacePtr& dst_surface);
     bool menus_on_input(int context_index, const InputEvent& event);
     bool menus_on_command_pressed(int context_index, GameCommands::Command command);
     bool menus_on_command_released(int context_index, GameCommands::Command command);
@@ -313,7 +313,7 @@ class LuaContext {
     void game_on_started(Game& game);
     void game_on_finished(Game& game);
     void game_on_update(Game& game);
-    void game_on_draw(Game& game, SurfacePtr& dst_surface);
+    void game_on_draw(Game& game, const SurfacePtr& dst_surface);
     void game_on_map_changed(Game& game, Map& map);
     void game_on_paused(Game& game);
     void game_on_unpaused(Game& game);
@@ -333,7 +333,7 @@ class LuaContext {
     void map_on_started(Map& map, Destination* destination);
     void map_on_finished(Map& map);
     void map_on_update(Map& map);
-    void map_on_draw(Map& map, SurfacePtr& dst_surface);
+    void map_on_draw(Map& map, const SurfacePtr& dst_surface);
     void map_on_suspended(Map& map, bool suspended);
     void map_on_opening_transition_finished(Map& map,
         Destination* destination);
@@ -1129,9 +1129,9 @@ class LuaContext {
     void on_started();
     void on_finished();
     void on_update();
-    void on_draw(SurfacePtr& dst_surface);
-    void on_pre_draw(SurfacePtr& dst_surface);
-    void on_post_draw(SurfacePtr& dst_surface);
+    void on_draw(const SurfacePtr& dst_surface);
+    void on_pre_draw(const SurfacePtr& dst_surface);
+    void on_post_draw(const SurfacePtr& dst_surface);
     void on_suspended(bool suspended);
     void on_paused();
     void on_unpaused();

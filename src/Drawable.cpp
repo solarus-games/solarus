@@ -203,7 +203,7 @@ void Drawable::set_suspended(bool suspended) {
  * \brief Draws this object, applying dynamic effects.
  * \param dst_surface the destination surface
  */
-void Drawable::draw(SurfacePtr& dst_surface) {
+void Drawable::draw(const SurfacePtr& dst_surface) {
 
   draw(dst_surface, Point(0, 0));
 }
@@ -214,7 +214,7 @@ void Drawable::draw(SurfacePtr& dst_surface) {
  * \param x x coordinate of where to draw
  * \param y y coordinate of where to draw
  */
-void Drawable::draw(SurfacePtr& dst_surface, int x, int y) {
+void Drawable::draw(const SurfacePtr& dst_surface, int x, int y) {
 
   draw(dst_surface, Point(x, y));
 }
@@ -225,7 +225,7 @@ void Drawable::draw(SurfacePtr& dst_surface, int x, int y) {
  * \param dst_position position on this surface
  * (will be added to the position obtained by previous movements)
  */
-void Drawable::draw(SurfacePtr& dst_surface,
+void Drawable::draw(const SurfacePtr& dst_surface,
     const Point& dst_position) {
 
   if (transition != nullptr) {
@@ -242,7 +242,7 @@ void Drawable::draw(SurfacePtr& dst_surface,
  */
 void Drawable::draw_region(
     const Rectangle& region,
-    SurfacePtr& dst_surface) {
+    const SurfacePtr& dst_surface) {
 
   draw_region(region, dst_surface, Point(0, 0));  // TODO shared_ptr
 }
@@ -256,7 +256,7 @@ void Drawable::draw_region(
  */
 void Drawable::draw_region(
     const Rectangle& region,
-    SurfacePtr& dst_surface,
+    const SurfacePtr& dst_surface,
     const Point& dst_position) {
 
   if (transition != nullptr) {

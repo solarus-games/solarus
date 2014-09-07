@@ -348,7 +348,7 @@ void LuaContext::main_on_update() {
  * \brief Calls sol.main.on_draw() if it exists.
  * \param dst_surface The destination surface.
  */
-void LuaContext::main_on_draw(SurfacePtr& dst_surface) {
+void LuaContext::main_on_draw(const SurfacePtr& dst_surface) {
 
   push_main(l);
   on_draw(dst_surface);

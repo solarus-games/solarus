@@ -90,11 +90,11 @@ class Video {
     static Rectangle get_viewport();
     static Rectangle get_scaled_position(const Rectangle& position);
 
-    static void render(SurfacePtr& quest_surface);
+    static void render(const SurfacePtr& quest_surface);
 
   private:
 
-    static void shaded_render(SurfacePtr& quest_surface);
+    static void shaded_render(const SurfacePtr& quest_surface);
 
 };
 

@@ -201,7 +201,7 @@ void ShopTreasure::draw_on_map() {
     return;
   }
 
-  SurfacePtr& map_surface = get_map().get_visible_surface();
+  const SurfacePtr& map_surface = get_map().get_visible_surface();
   int x = get_x();
   int y = get_y();
 

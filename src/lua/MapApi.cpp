@@ -2204,7 +2204,7 @@ void LuaContext::map_on_update(Map& map) {
  * \param map A map.
  * \param dst_surface The destination surface.
  */
-void LuaContext::map_on_draw(Map& map, SurfacePtr& dst_surface) {
+void LuaContext::map_on_draw(Map& map, const SurfacePtr& dst_surface) {
 
   push_map(l, map);
   if (userdata_has_field(map, "on_draw")) {

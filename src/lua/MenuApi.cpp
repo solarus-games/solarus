@@ -324,7 +324,7 @@ void LuaContext::menu_on_update(const ScopedLuaRef& menu_ref) {
  */
 void LuaContext::menu_on_draw(
     const ScopedLuaRef& menu_ref,
-    SurfacePtr& dst_surface
+    const SurfacePtr& dst_surface
 ) {
   push_ref(l, menu_ref);
   on_draw(dst_surface);
@@ -437,7 +437,7 @@ void LuaContext::menus_on_update(int context_index) {
  * \param context_index Index of an object with menus.
  * \param dst_surface The destination surface to draw.
  */
-void LuaContext::menus_on_draw(int context_index, SurfacePtr& dst_surface) {
+void LuaContext::menus_on_draw(int context_index, const SurfacePtr& dst_surface) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {

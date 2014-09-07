@@ -532,7 +532,7 @@ void Game::update_keys_effect() {
  * \brief Draws the game.
  * \param dst_surface The surface where the game will be drawn.
  */
-void Game::draw(SurfacePtr& dst_surface) {
+void Game::draw(const SurfacePtr& dst_surface) {
 
   if (current_map == nullptr) {
     // Nothing to do. The game is not fully initialized yet.

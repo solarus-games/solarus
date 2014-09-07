@@ -167,7 +167,7 @@ bool Tileset::is_loaded() {
  * \brief Returns the image containing the tiles of this tileset.
  * \return the tiles image
  */
-SurfacePtr& Tileset::get_tiles_image() {
+const SurfacePtr& Tileset::get_tiles_image() {
   return tiles_image;
 }
 
@@ -175,7 +175,7 @@ SurfacePtr& Tileset::get_tiles_image() {
  * \brief Returns the image containing the skin-dependent dynamic entities for this tileset.
  * \return the image containing the skin-dependent dynamic entities for this tileset
  */
-SurfacePtr& Tileset::get_entities_image() {
+const SurfacePtr& Tileset::get_entities_image() {
   return entities_image;
 }
 

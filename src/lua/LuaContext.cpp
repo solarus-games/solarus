@@ -1290,7 +1290,7 @@ void LuaContext::on_update() {
  * \brief Calls the on_draw() method of the object on top of the stack.
  * \param dst_surface The destination surface.
  */
-void LuaContext::on_draw(SurfacePtr& dst_surface) {
+void LuaContext::on_draw(const SurfacePtr& dst_surface) {
 
   if (find_method("on_draw")) {
     push_surface(l, *dst_surface);  // TODO shared_ptr
@@ -1302,7 +1302,7 @@ void LuaContext::on_draw(SurfacePtr& dst_surface) {
  * \brief Calls the on_pre_draw() method of the object on top of the stack.
  * \param dst_surface The destination surface.
  */
-void LuaContext::on_pre_draw(SurfacePtr& dst_surface) {
+void LuaContext::on_pre_draw(const SurfacePtr& dst_surface) {
 
   if (find_method("on_pre_draw")) {
     push_surface(l, *dst_surface);  // TODO shared_ptr
@@ -1314,7 +1314,7 @@ void LuaContext::on_pre_draw(SurfacePtr& dst_surface) {
  * \brief Calls the on_post_draw() method of the object on top of the stack.
  * \param dst_surface The destination surface.
  */
-void LuaContext::on_post_draw(SurfacePtr& dst_surface) {
+void LuaContext::on_post_draw(const SurfacePtr& dst_surface) {
 
   if (find_method("on_post_draw")) {
     push_surface(l, *dst_surface);  // TODO shared_ptr

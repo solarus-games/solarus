@@ -257,14 +257,14 @@ bool Npc::notify_action_command_pressed() {
       // lift the entity
       if (get_equipment().has_ability(ABILITY_LIFT)) {
 
-        hero.start_lifting(new CarriedItem(
+        hero.start_lifting(make_refcount_ptr(new CarriedItem(
             hero,
             *this,
             get_sprite().get_animation_set_id(),
             "stone",
             2,
             0)
-        );
+        ));
         Sound::play("lift");
         remove_from_map();
         return true;

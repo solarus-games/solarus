@@ -2449,9 +2449,9 @@ void Hero::start_freezed() {
 
 /**
  * \brief Makes the hero lift a destructible item.
- * \param item_to_lift the item to lift (will be destroyed automatically)
+ * \param item_to_lift The item to lift.
  */
-void Hero::start_lifting(CarriedItem *item_to_lift) {
+void Hero::start_lifting(const std::shared_ptr<CarriedItem>& item_to_lift) {
   set_state(new LiftingState(*this, item_to_lift));
 }
 

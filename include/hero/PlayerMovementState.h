@@ -73,7 +73,8 @@ class Hero::PlayerMovementState: public Hero::State {
         player_movement;               /**< The movement created by this state.
                                         * The movement of the hero is also this object,
                                         * unless a script decided to change it. */
-    Jumper* current_jumper;            /**< The jumper about to be triggered or nullptr */  // TODO shared_ptr
+    std::shared_ptr<Jumper>
+        current_jumper;                /**< The jumper about to be triggered or nullptr */  // TODO shared_ptr
     uint32_t jumper_start_date;        /**< Date to trigger the jumper
                                         * (because a small delay is necessary) */
 

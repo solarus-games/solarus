@@ -30,14 +30,16 @@ namespace solarus {
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
- * \param lifted_item The item to lift (will be destroyed automatically).
+ * \param lifted_item The item to lift.
  */
-Hero::LiftingState::LiftingState(Hero& hero, CarriedItem* lifted_item):
+Hero::LiftingState::LiftingState(
+    Hero& hero,
+    const std::shared_ptr<CarriedItem>& lifted_item
+):
   State(hero, "lifting"),
   lifted_item(lifted_item) {
 
   Debug::check_assertion(lifted_item != nullptr, "Missing lifted item");
-  RefCountable::ref(lifted_item);
 }
 
 /**

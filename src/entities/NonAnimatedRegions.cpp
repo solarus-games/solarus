@@ -37,43 +37,9 @@ NonAnimatedRegions::NonAnimatedRegions(Map& map, Layer layer):
 }
 
 /**
- * \brief Destructor.
- */
-NonAnimatedRegions::~NonAnimatedRegions() {
-
-  clear();
-}
-
-/**
- * \brief Cleans everything.
- */
-void NonAnimatedRegions::clear() {
-
-  for (unsigned i = 0; i < optimized_tiles_surfaces.size(); ++i) {
-    optimized_tiles_surfaces[i].reset();
-  }
-  optimized_tiles_surfaces.clear();
-  are_squares_animated.clear();
-
-  // Destroy all non-animated tiles.
-  Rectangle where(non_animated_tiles.get_grid_size());
-  std::vector<Tile*> tiles;
-  non_animated_tiles.get_elements(where, tiles);
-  for (Tile* tile: tiles) {
-    RefCountable::unref(tile);
-  }
-
-  // Destroy candidates tiles if the grid is not built yet.
-  for (Tile* tile: this->tiles) {
-    RefCountable::unref(tile);
-  }
-  tiles.clear();
-}
-
-/**
  * \brief Adds a tile to the list of tiles.
  */
-void NonAnimatedRegions::add_tile(Tile* tile) {
+void NonAnimatedRegions::add_tile(const std::shared_ptr<Tile>& tile) {
 
   Debug::check_assertion(optimized_tiles_surfaces.empty(),
       "Tile regions are already built");
@@ -90,7 +56,7 @@ void NonAnimatedRegions::add_tile(Tile* tile) {
  * They include all animated tiles plus the static tiles overlapping them.
  * You will have to redraw these tiles at each frame.
  */
-void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
+void NonAnimatedRegions::build(std::vector<std::shared_ptr<Tile>>& rejected_tiles) {
 
   Debug::check_assertion(optimized_tiles_surfaces.empty(),
       "Tile regions are already built");
@@ -133,17 +99,15 @@ void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
   }
 
   // Build the list of animated tiles and tiles overlapping them.
-  for (unsigned i = 0; i < tiles.size(); ++i) {
-    Tile& tile = *tiles[i];
-    if (!tile.is_animated()) {
-      non_animated_tiles.add(&tile);
-      if (overlaps_animated_tile(tile)) {
-        RefCountable::ref(&tile);  // Tile will be in both lists.
-        rejected_tiles.push_back(&tile);
+  for (const std::shared_ptr<Tile>& tile: tiles) {
+    if (!tile->is_animated()) {
+      non_animated_tiles.add(tile);
+      if (overlaps_animated_tile(*tile)) {
+        rejected_tiles.push_back(tile);
       }
     }
     else {
-      rejected_tiles.push_back(&tile);
+      rejected_tiles.push_back(tile);
     }
   }
 
@@ -276,9 +240,9 @@ void NonAnimatedRegions::build_cell(int cell_index) {
   // Let this surface as a software destination because it is built only
   // once (here) and never changes later.
 
-  const std::vector<Tile*>& tiles_in_cell =
+  const std::vector<std::shared_ptr<Tile>>& tiles_in_cell =
       non_animated_tiles.get_elements(cell_index);
-  for (Tile* tile: tiles_in_cell) {
+  for (const std::shared_ptr<Tile>& tile: tiles_in_cell) {
     tile->draw(cell_surface, cell_xy);
   }
 

@@ -41,10 +41,9 @@ class NonAnimatedRegions {
   public:
 
     NonAnimatedRegions(Map& map, Layer layer);
-    ~NonAnimatedRegions();
 
-    void add_tile(Tile* tile);
-    void build(std::vector<Tile*>& rejected_tiles);
+    void add_tile(const std::shared_ptr<Tile>& tile);
+    void build(std::vector<std::shared_ptr<Tile>>& rejected_tiles);
     void notify_tileset_changed();
     void draw_on_map();
 
@@ -52,16 +51,17 @@ class NonAnimatedRegions {
 
     bool overlaps_animated_tile(Tile& tile) const;
     void build_cell(int cell_index);
-    void clear();
 
     Map& map;                               /**< The map. */
     Layer layer;                            /**< Layer of the map managed by this object. */
-    std::vector<Tile*> tiles;               /**< All tiles contained in this layer and candidates to
+    std::vector<std::shared_ptr<Tile>>
+        tiles;                              /**< All tiles contained in this layer and candidates to
                                              * be optimized. This list is cleared after build() is called. */
     std::vector<bool> are_squares_animated; /**< Whether each 8x8 square of the map has animated tiles. */
 
     // Handle the lazy drawing.
-    Grid<Tile*> non_animated_tiles;         /**< All non-animated tiles. Stored in a grid so that
+    Grid<std::shared_ptr<Tile>>
+        non_animated_tiles;                 /**< All non-animated tiles. Stored in a grid so that
                                              * we can quickly find the ones to draw lazily later when the
                                              * camera moves. */
     std::vector<SurfacePtr>

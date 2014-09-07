@@ -128,7 +128,7 @@ class MapEntities {
                                                      * of each 8x8 square. */
     NonAnimatedRegions*
         non_animated_regions[LAYER_NB];             /**< All non-animated tiles are managed here for performance. */
-    std::vector<Tile*>
+    std::vector<std::shared_ptr<Tile>>
         tiles_in_animated_regions[LAYER_NB];        /**< animated tiles and tiles overlapping them */
 
     // dynamic entities

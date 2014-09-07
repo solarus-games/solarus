@@ -266,7 +266,7 @@ class Hero: public MapEntity {
         bool with_sound);
     void start_freezed();
     void start_victory(const ScopedLuaRef& callback_ref);
-    void start_lifting(CarriedItem* item_to_lift);
+    void start_lifting(const std::shared_ptr<CarriedItem>& item_to_lift);
     void start_running();
     void start_grabbing();
     bool can_pick_treasure(EquipmentItem& item);

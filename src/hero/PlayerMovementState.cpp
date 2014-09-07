@@ -34,8 +34,8 @@ Hero::PlayerMovementState::PlayerMovementState(
     Hero& hero, const std::string& state_name
 ):
   State(hero, state_name),
-  player_movement(nullptr),
-  current_jumper(nullptr),
+  player_movement(),
+  current_jumper(),
   jumper_start_date(0) {
 }
 
@@ -151,7 +151,6 @@ void Hero::PlayerMovementState::update() {
           || !current_jumper->is_in_jump_position(get_hero(), get_hero().get_bounding_box(), false)) {
 
         // Cancel the jumper preparation.
-        RefCountable::unref(current_jumper);
         current_jumper = nullptr;
         jumper_start_date = 0;
       }
@@ -303,14 +302,13 @@ bool Hero::PlayerMovementState::can_take_jumper() const {
  */
 void Hero::PlayerMovementState::notify_jumper_activated(Jumper& jumper) {
 
-  if (&jumper == current_jumper) {
+  if (&jumper == current_jumper.get()) {
     // We already know.
     return;
   }
 
   // Add a small delay before jumping.
-  current_jumper = &jumper;
-  RefCountable::ref(current_jumper);
+  current_jumper = std::static_pointer_cast<Jumper>(jumper.shared_from_this());
   jumper_start_date = System::now() + 200;
 }
 
@@ -320,7 +318,6 @@ void Hero::PlayerMovementState::notify_jumper_activated(Jumper& jumper) {
 void Hero::PlayerMovementState::cancel_jumper() {
 
   if (current_jumper != nullptr) {
-    RefCountable::unref(current_jumper);
     current_jumper = nullptr;
     jumper_start_date = 0;
   }

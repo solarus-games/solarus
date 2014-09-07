@@ -73,10 +73,7 @@ MapEntities::~MapEntities() {
     ground_observers[layer].clear();
     ground_modifiers[layer].clear();
     stairs[layer].clear();
-
-    for (Tile* tile: tiles_in_animated_regions[layer]) {
-      RefCountable::unref(tile);
-    }
+    tiles_in_animated_regions[layer].clear();
   }
 
   // delete the other entities
@@ -397,8 +394,7 @@ void MapEntities::add_tile(const TilePtr& tile) {
   const Layer layer = tile->get_layer();
 
   // Add the tile to the map.
-  RefCountable::ref(tile.get());  // TODO shared_ptr
-  non_animated_regions[layer]->add_tile(tile.get());  // TODO shared_ptr
+  non_animated_regions[layer]->add_tile(tile);
 
   const TilePattern& pattern = tile->get_tile_pattern();
   Debug::check_assertion(

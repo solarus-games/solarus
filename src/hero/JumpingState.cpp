@@ -40,16 +40,14 @@ Hero::JumpingState::JumpingState(
     int direction8,
     int distance,
     bool ignore_obstacles,
-    bool with_sound):
+    bool with_sound
+):
   State(hero, "jumping"),
-  carried_item(nullptr) {
+  carried_item() {
 
   if (get_previous_carried_item_behavior() == CarriedItem::BEHAVIOR_KEEP) {
     // Keep the carried item of the previous state.
     carried_item = hero.get_carried_item();
-    if (carried_item != nullptr) {
-      RefCountable::ref(carried_item);
-    }
   }
 
   this->movement = make_refcount_ptr(new JumpMovement(
@@ -57,13 +55,6 @@ Hero::JumpingState::JumpingState(
   ));
   this->direction8 = direction8;
   this->with_sound = with_sound;
-}
-
-/**
- * \brief Destructor.
- */
-Hero::JumpingState::~JumpingState() {
-  destroy_carried_item();
 }
 
 /**
@@ -116,15 +107,12 @@ void Hero::JumpingState::stop(const State* next_state) {
       break;
 
     case CarriedItem::BEHAVIOR_DESTROY:
-      destroy_carried_item();
+      carried_item = nullptr;
       get_sprites().set_lifted_item(nullptr);
       break;
 
     case CarriedItem::BEHAVIOR_KEEP:
       // The next state is now the owner and has incremented the refcount.
-      Debug::check_assertion(carried_item->get_refcount() > 1,
-          "Invalid carried item refcount");
-      RefCountable::unref(carried_item);
       carried_item = nullptr;
       break;
 
@@ -329,17 +317,8 @@ bool Hero::JumpingState::can_be_hurt(MapEntity* /* attacker */) const {
  * \brief Returns the item currently carried by the hero in this state, if any.
  * \return the item carried by the hero, or nullptr
  */
-CarriedItem* Hero::JumpingState::get_carried_item() const {
+std::shared_ptr<CarriedItem> Hero::JumpingState::get_carried_item() const {
   return carried_item;
-}
-
-/**
- * \brief Destroys the item carried if any and sets it to nullptr.
- */
-void Hero::JumpingState::destroy_carried_item() {
-
-  RefCountable::unref(carried_item);
-  carried_item = nullptr;
 }
 
 /**

@@ -2029,7 +2029,8 @@ double MapEntity::get_angle(const MapEntity& other) const {
 double MapEntity::get_angle(
     const MapEntity& other,
     const Sprite* this_sprite,
-    const Sprite* other_sprite) const {
+    const Sprite* other_sprite
+) const {
 
   // Add the coordinates of sprites as offsets.
   Point this_offset;

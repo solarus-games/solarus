@@ -21,6 +21,7 @@
 #include "entities/Ground.h"
 #include "lowlevel/Rectangle.h"
 #include "lua/ScopedLuaRef.h"
+#include <memory>
 #include <string>
 
 namespace solarus {
@@ -46,7 +47,6 @@ class HeroSprites {
   public:
 
     HeroSprites(Hero& hero, Equipment& equipment);
-    ~HeroSprites();
 
     void update();
     void draw_on_map();
@@ -69,7 +69,8 @@ class HeroSprites {
     bool is_blinking() const;
     bool is_walking() const;
     void set_clipping_rectangle(
-        const Rectangle& clipping_rectangle = Rectangle());
+        const Rectangle& clipping_rectangle = Rectangle()
+    );
 
     int get_animation_direction(
         int keys_direction, int real_movement_direction) const;
@@ -126,7 +127,7 @@ class HeroSprites {
     void destroy_ground();
     void play_ground_sound();
 
-    void set_lifted_item(CarriedItem* lifted_item);
+    void set_lifted_item(const std::shared_ptr<CarriedItem>& lifted_item);
 
   private:
 
@@ -159,15 +160,16 @@ class HeroSprites {
     std::string tunic_sprite_id;            /**< Animation set used for the tunic.
                                              * By default, "hero/tunicX" where X is the tunic level. */
     bool has_default_tunic_sprite;          /**< Whether tunic_sprite_id has the defaut value. */
-    Sprite* tunic_sprite;                   /**< sprite of the current tunic */
+    std::shared_ptr<Sprite> tunic_sprite;   /**< sprite of the current tunic */
 
     // Sword.
     std::string sword_sprite_id;            /**< Animation set used for the sword.
                                              * An empty string means no sword sprite.
                                              * By default, "hero/swordX" where X is the sword level. */
     bool has_default_sword_sprite;          /**< Whether sword_sprite_id has the defaut value. */
-    Sprite* sword_sprite;                   /**< Current sword sprite. */
-    Sprite* sword_stars_sprite;             /**< Stars running along the sword when the sword is loading. */
+    std::shared_ptr<Sprite> sword_sprite;   /**< Current sword sprite. */
+    std::shared_ptr<Sprite>
+        sword_stars_sprite;                 /**< Stars running along the sword when the sword is loading. */
 
     std::string sword_sound_id;             /**< Sound played when using the sword.
                                              * By default, "swordX" where X is the sword level. */
@@ -178,13 +180,13 @@ class HeroSprites {
                                              * An empty string means no shield sprite.
                                              * By default, "hero/shieldX" where X is the shield level. */
     bool has_default_shield_sprite;         /**< Whether shield_sprite_id has the defaut value. */
-    Sprite* shield_sprite;                  /**< Current shield sprite. */
+    std::shared_ptr<Sprite> shield_sprite;                  /**< Current shield sprite. */
 
     // Other sprites.
-    Sprite* shadow_sprite;                  /**< shadow of the hero, only in specific states (most of the time
+    std::shared_ptr<Sprite> shadow_sprite;  /**< shadow of the hero, only in specific states (most of the time
                                              * the shadow is with the tunic sprite) */
-    Sprite* ground_sprite;                  /**< ground displayed under the hero (e.g. grass or shallow water) */
-    Sprite* trail_sprite;                   /**< trail of dust that the hero lets behind him (e.g. when running) */
+    std::shared_ptr<Sprite> ground_sprite;  /**< ground displayed under the hero (e.g. grass or shallow water) */
+    std::shared_ptr<Sprite> trail_sprite;   /**< trail of dust that the hero lets behind him (e.g. when running) */
 
     std::string ground_sound_id;            /**< sound id of the current ground displayed under the hero */
 
@@ -205,7 +207,8 @@ class HeroSprites {
     Rectangle clipping_rectangle;           /**< when drawing the sprites onto a map, indicates an area of the map to be restricted to
                                              * (usually, the whole map is considered and this rectangle's values are all 0) */
 
-    CarriedItem* lifted_item;               /**< if not nullptr, an item to display above the hero */
+    std::shared_ptr<CarriedItem>
+        lifted_item;                        /**< if not nullptr, an item to display above the hero */
 
     ScopedLuaRef animation_callback_ref;    /**< Lua ref of a function to call when a custom animation ends. */
 };

@@ -80,7 +80,7 @@ class Sprite: public Drawable {
     const Rectangle& get_current_frame_rectangle() const;
     uint32_t get_frame_delay() const;
     void set_frame_delay(uint32_t frame_delay);
-    void set_synchronized_to(Sprite* other);
+    void set_synchronized_to(const std::shared_ptr<Sprite>& other);
 
     bool is_animation_started() const;
     void start_animation();
@@ -146,7 +146,8 @@ class Sprite: public Drawable {
     bool ignore_suspend;               /**< true to continue playing the animation even when the game is suspended */
     bool paused;                       /**< true if the animation is paused */
     bool finished;                     /**< true if the animation has been stopped because the last frame is finished */
-    Sprite* synchronize_to;            /**< another sprite to synchronize the frame to
+    std::shared_ptr<Sprite>
+        synchronize_to;                /**< another sprite to synchronize the frame to
                                         * when they have the same animation name (or nullptr) */
 
     // effects

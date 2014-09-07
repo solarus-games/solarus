@@ -34,7 +34,6 @@ class Hero::StairsState: public Hero::State {
         Stairs& stairs,
         Stairs::Way way
     );
-    ~StairsState();
 
     virtual void start(const State* previous_state) override;
     virtual void stop(const State* next_state) override;
@@ -46,13 +45,11 @@ class Hero::StairsState: public Hero::State {
     virtual bool can_come_from_bad_ground() const override;
     virtual bool is_teletransporter_delayed() const override;
     virtual int get_wanted_movement_direction8() const override;
-    virtual CarriedItem* get_carried_item() const override;
+    virtual std::shared_ptr<CarriedItem> get_carried_item() const override;
     virtual CarriedItem::Behavior get_previous_carried_item_behavior() const override;
     virtual void notify_layer_changed() override;
 
   private:
-
-    void destroy_carried_item();
 
     Stairs& stairs;                    /**< the stairs the hero is currently taking */
     Stairs::Way way;                   /**< indicates the way the hero is taking the stairs:
@@ -64,7 +61,8 @@ class Hero::StairsState: public Hero::State {
                                         * phase of the animations (0: not started, 1: initial animation,
                                         * 2: diagonal animation, 3: final animation) */
     uint32_t next_phase_date;          /**< date when the stairs phase changes */
-    CarriedItem* carried_item;         /**< an item carried by the hero while taking the stairs, or nullptr */
+    std::shared_ptr<CarriedItem>
+        carried_item;                  /**< an item carried by the hero while taking the stairs, or nullptr */
 
 };
 

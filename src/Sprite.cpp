@@ -386,7 +386,7 @@ void Sprite::set_frame_changed(bool frame_changed) {
  * they have the same animation name.
  * \param other the sprite to synchronize to, or nullptr to stop any previous synchronization
  */
-void Sprite::set_synchronized_to(Sprite* other) {
+void Sprite::set_synchronized_to(const std::shared_ptr<Sprite>& other) {
   this->synchronize_to = other;
 }
 

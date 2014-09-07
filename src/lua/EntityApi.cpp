@@ -1164,7 +1164,7 @@ int LuaContext::entity_api_remove_sprite(lua_State* l) {
     MapEntity& entity = check_entity(l, 1);
 
     if (lua_gettop(l) >= 2) {
-      Sprite& sprite = check_sprite(l, 2);
+      Sprite& sprite = *check_sprite(l, 2);
       entity.remove_sprite(sprite);
     }
     else if (entity.has_sprite()) {
@@ -2133,14 +2133,14 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
     else {
       // hero:start_hurt(source_entity, [source_sprite], damage)
       MapEntity& source_entity = check_entity(l, 2);
-      Sprite* source_sprite = nullptr;
+      std::shared_ptr<Sprite> source_sprite;
       int index = 3;
       if (is_sprite(l, 3)) {
-        source_sprite = &check_sprite(l, 3);
+        source_sprite = check_sprite(l, 3);
         index = 4;
       }
       int damage = LuaTools::check_int(l, index);
-      hero.hurt(source_entity, source_sprite, damage);
+      hero.hurt(source_entity, source_sprite.get(), damage);
     }
 
     return 0;
@@ -4128,7 +4128,7 @@ int LuaContext::enemy_api_get_attack_consequence_sprite(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Enemy& enemy = check_enemy(l, 1);
-    Sprite& sprite = check_sprite(l, 2);
+    Sprite& sprite = *check_sprite(l, 2);
     EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 3, Enemy::attack_names);
 
     const EnemyReaction::Reaction& reaction = enemy.get_attack_consequence(attack, &sprite);
@@ -4154,7 +4154,7 @@ int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Enemy& enemy = check_enemy(l, 1);
-    Sprite& sprite = check_sprite(l, 2);
+    Sprite& sprite = *check_sprite(l, 2);
     EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 3, Enemy::attack_names);
 
     if (lua_isnumber(l, 4)) {
@@ -4204,7 +4204,7 @@ int LuaContext::enemy_api_set_default_attack_consequences_sprite(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Enemy& enemy = check_enemy(l, 1);
-    Sprite& sprite = check_sprite(l, 2);
+    Sprite& sprite = *check_sprite(l, 2);
 
     enemy.set_default_attack_consequences_sprite(sprite);
 
@@ -4239,7 +4239,7 @@ int LuaContext::enemy_api_set_invincible_sprite(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Enemy& enemy = check_enemy(l, 1);
-    Sprite& sprite = check_sprite(l, 2);
+    Sprite& sprite = *check_sprite(l, 2);
 
     enemy.set_no_attack_consequences_sprite(sprite);
 

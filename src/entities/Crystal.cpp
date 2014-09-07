@@ -45,15 +45,8 @@ Crystal::Crystal(const std::string& name, Layer layer, int x, int y):
   set_origin(8, 13);
   set_optimization_distance(2000);  // Because of bombs and arrows on the crystal.
   create_sprite("entities/crystal", true);
-  star_sprite = new Sprite("entities/star");
+  star_sprite = make_refcount_ptr(new Sprite("entities/star"));
   twinkle();
-}
-
-/**
- * \brief Destructor.
- */
-Crystal::~Crystal() {
-  delete star_sprite;
 }
 
 /**

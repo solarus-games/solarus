@@ -221,7 +221,11 @@ class Hero: public MapEntity {
     bool is_invincible() const;
     void set_invincible(bool invincible, uint32_t duration);
     bool can_be_hurt(MapEntity* attacker) const;
-    void hurt(MapEntity& source, Sprite* source_sprite, int life_points);
+    void hurt(
+        MapEntity& source,
+        Sprite* source_sprite,
+        int life_points
+    );
     void hurt(const Point& source_xy, int life_points);
     void hurt(int life_points);
     void notify_game_over_finished();
@@ -324,7 +328,7 @@ class Hero: public MapEntity {
     void try_snap_to_facing_entity();
     void apply_additional_ground_movement();
     Teletransporter* get_delayed_teletransporter();
-    CarriedItem* get_carried_item();
+    std::shared_ptr<CarriedItem> get_carried_item();
 
     // ground
     void update_ground_effects();

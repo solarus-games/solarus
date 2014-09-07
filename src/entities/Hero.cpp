@@ -178,7 +178,7 @@ void Hero::set_state(State* new_state) {
  *
  * \return The carried item or nullptr.
  */
-CarriedItem* Hero::get_carried_item() {
+std::shared_ptr<CarriedItem> Hero::get_carried_item() {
 
   if (state == nullptr) {
     return nullptr;
@@ -2094,12 +2094,16 @@ bool Hero::can_be_hurt(MapEntity* attacker) const {
 /**
  * \brief Hurts the hero, an entity being the source of the attack.
  * \param source An entity that hurts the hero (usually an enemy).
- * \param source_sprite Sprite of the source entity that is hurting the hero.
+ * \param source_sprite Sprite of the source entity that is hurting the hero
+ * or nullptr.
  * \param damage Number of life points to remove
  * (this number may be reduced later by the tunic on by hero:on_taking_damage()).
  */
-void Hero::hurt(MapEntity& source, Sprite* source_sprite, int damage) {
-
+void Hero::hurt(
+    MapEntity& source,
+    Sprite* source_sprite,
+    int damage
+) {
   Point source_xy = source.get_xy();
   if (source_sprite != nullptr) {
     // Add the offset of the sprite if any.

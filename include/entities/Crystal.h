@@ -33,7 +33,6 @@ class Crystal: public Detector {
   public:
 
     Crystal(const std::string& name, Layer layer, int x, int y);
-    ~Crystal();
 
     virtual EntityType get_type() const override;
 
@@ -56,7 +55,7 @@ class Crystal: public Detector {
                                                     * true if the blue blocks are lowered */
     uint32_t next_possible_hit_date;               /**< date when the crystal can be hit again */
     std::list<MapEntity*> entities_activating;     /**< list of entities that recently activated this crystal */
-    Sprite* star_sprite;                           /**< sprite of the star twinkling on the crystal */
+    std::shared_ptr<Sprite> star_sprite;           /**< sprite of the star twinkling on the crystal */
     Point star_xy;                                 /**< position of the star */
 
 };

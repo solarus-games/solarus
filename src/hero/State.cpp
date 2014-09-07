@@ -1197,7 +1197,7 @@ bool Hero::State::is_carrying_item() const {
  *
  * \return the item carried by the hero, or nullptr
  */
-CarriedItem* Hero::State::get_carried_item() const {
+std::shared_ptr<CarriedItem> Hero::State::get_carried_item() const {
   return nullptr;
 }
 

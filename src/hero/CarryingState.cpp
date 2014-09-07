@@ -31,20 +31,13 @@ namespace solarus {
  * \param hero The hero controlled by this state.
  * \param carried_item The item to carry.
  */
-Hero::CarryingState::CarryingState(Hero& hero, CarriedItem* carried_item):
+Hero::CarryingState::CarryingState(
+    Hero& hero, const std::shared_ptr<CarriedItem>& carried_item
+):
   PlayerMovementState(hero, "carrying"),
   carried_item(carried_item) {
 
   Debug::check_assertion(carried_item != nullptr, "Missing carried item");
-  RefCountable::ref(carried_item);
-}
-
-/**
- * \brief Destructor.
- */
-Hero::CarryingState::~CarryingState() {
-
-  destroy_carried_item();
 }
 
 /**
@@ -83,14 +76,7 @@ void Hero::CarryingState::stop(const State* next_state) {
       break;
 
     case CarriedItem::BEHAVIOR_DESTROY:
-      destroy_carried_item();
-      break;
-
     case CarriedItem::BEHAVIOR_KEEP:
-      // The next state is now the owner and has incremented the refcount.
-      Debug::check_assertion(carried_item->get_refcount() > 1,
-          "Invalid carried item refcount");
-      RefCountable::unref(carried_item);
       carried_item = nullptr;
       break;
 
@@ -153,7 +139,7 @@ void Hero::CarryingState::update() {
     if (!is_suspended()) {
 
       if (carried_item->is_broken()) {
-        destroy_carried_item();
+        carried_item = nullptr;
         Hero& hero = get_hero();
         hero.set_state(new FreeState(hero));
       }
@@ -228,17 +214,8 @@ void Hero::CarryingState::set_animation_walking() {
  * \brief Returns the item currently carried by the hero in this state, if any.
  * \return the item carried by the hero, or nullptr
  */
-CarriedItem* Hero::CarryingState::get_carried_item() const {
+std::shared_ptr<CarriedItem> Hero::CarryingState::get_carried_item() const {
   return carried_item;
-}
-
-/**
- * \brief Destroys the item carried if any and sets it to nullptr.
- */
-void Hero::CarryingState::destroy_carried_item() {
-
-  RefCountable::unref(carried_item);
-  carried_item = nullptr;
 }
 
 /**

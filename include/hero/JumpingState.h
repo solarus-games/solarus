@@ -35,8 +35,8 @@ class Hero::JumpingState: public Hero::State {
         int direction8,
         int distance,
         bool ignore_obstacles,
-        bool with_sound);
-    ~JumpingState();
+        bool with_sound
+    );
 
     virtual void start(const State* previous_state) override;
     virtual void stop(const State* next_state) override;
@@ -60,18 +60,17 @@ class Hero::JumpingState: public Hero::State {
     virtual bool can_avoid_sensor() const override;
     virtual bool can_avoid_switch() const override;
     virtual bool can_be_hurt(MapEntity* attacker) const override;
-    virtual CarriedItem* get_carried_item() const override;
+    virtual std::shared_ptr<CarriedItem> get_carried_item() const override;
     virtual CarriedItem::Behavior get_previous_carried_item_behavior() const override;
 
   private:
-
-    void destroy_carried_item();
 
     std::shared_ptr<JumpMovement>
         movement;                 /**< the movement applied to the hero */
     int direction8;               /**< direction of the jump (0 to 7) */
     bool with_sound;              /**< indicates that a jump sound is played */
-    CarriedItem* carried_item;    /**< an item carried by the hero while making this jump, or nullptr */  // TODO shared_ptr
+    std::shared_ptr<CarriedItem>
+        carried_item;             /**< an item carried by the hero while making this jump, or nullptr */  // TODO shared_ptr
 
 };
 

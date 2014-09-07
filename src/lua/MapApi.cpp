@@ -607,7 +607,7 @@ int LuaContext::map_api_draw_sprite(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     Map& map = check_map(l, 1);
-    Sprite& sprite = check_sprite(l, 2);
+    Sprite& sprite = *check_sprite(l, 2);
     int x = LuaTools::check_int(l, 3);
     int y = LuaTools::check_int(l, 4);
 

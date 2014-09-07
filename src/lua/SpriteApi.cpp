@@ -91,8 +91,8 @@ bool LuaContext::is_sprite(lua_State* l, int index) {
  * \param index an index in the stack
  * \return the sprite
  */
-Sprite& LuaContext::check_sprite(lua_State* l, int index) {
-  return static_cast<Sprite&>(*check_userdata(
+std::shared_ptr<Sprite> LuaContext::check_sprite(lua_State* l, int index) {
+  return std::static_pointer_cast<Sprite>(check_userdata(
       l, index, sprite_module_name
   ));
 }
@@ -136,7 +136,7 @@ int LuaContext::sprite_api_create(lua_State* l) {
 int LuaContext::sprite_api_get_animation_set(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    const Sprite& sprite = check_sprite(l, 1);
+    const Sprite& sprite = *check_sprite(l, 1);
 
     const std::string& animation_set_id = sprite.get_animation_set_id();
 
@@ -154,7 +154,7 @@ int LuaContext::sprite_api_get_animation_set(lua_State* l) {
 int LuaContext::sprite_api_get_animation(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    const Sprite& sprite = check_sprite(l, 1);
+    const Sprite& sprite = *check_sprite(l, 1);
 
     const std::string& animation_name = sprite.get_current_animation();
 
@@ -172,7 +172,7 @@ int LuaContext::sprite_api_get_animation(lua_State* l) {
 int LuaContext::sprite_api_set_animation(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Sprite& sprite = check_sprite(l, 1);
+    Sprite& sprite = *check_sprite(l, 1);
 
     const std::string& animation_name = LuaTools::check_string(l, 2);
     if (!sprite.has_animation(animation_name)) {
@@ -198,7 +198,7 @@ int LuaContext::sprite_api_set_animation(lua_State* l) {
 int LuaContext::sprite_api_has_animation(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    const Sprite& sprite = check_sprite(l, 1);
+    const Sprite& sprite = *check_sprite(l, 1);
     const std::string& animation_name = LuaTools::check_string(l, 2);
 
     lua_pushboolean(l, sprite.has_animation(animation_name));
@@ -215,7 +215,7 @@ int LuaContext::sprite_api_has_animation(lua_State* l) {
 int LuaContext::sprite_api_get_direction(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    const Sprite& sprite = check_sprite(l, 1);
+    const Sprite& sprite = *check_sprite(l, 1);
 
     lua_pushinteger(l, sprite.get_current_direction());
     return 1;
@@ -231,7 +231,7 @@ int LuaContext::sprite_api_get_direction(lua_State* l) {
 int LuaContext::sprite_api_set_direction(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Sprite& sprite = check_sprite(l, 1);
+    Sprite& sprite = *check_sprite(l, 1);
     int direction = LuaTools::check_int(l, 2);
 
     if (direction < 0 || direction >= sprite.get_nb_directions()) {
@@ -256,7 +256,7 @@ int LuaContext::sprite_api_set_direction(lua_State* l) {
 int LuaContext::sprite_api_get_num_directions(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    const Sprite& sprite = check_sprite(l, 1);
+    const Sprite& sprite = *check_sprite(l, 1);
     const std::string& animation_name = LuaTools::opt_string(l, 2, sprite.get_current_animation());
     if (!sprite.has_animation(animation_name)) {
       LuaTools::arg_error(l, 2,
@@ -281,7 +281,7 @@ int LuaContext::sprite_api_get_num_directions(lua_State* l) {
 int LuaContext::sprite_api_get_frame(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    const Sprite& sprite = check_sprite(l, 1);
+    const Sprite& sprite = *check_sprite(l, 1);
 
     lua_pushinteger(l, sprite.get_current_frame());
     return 1;
@@ -297,7 +297,7 @@ int LuaContext::sprite_api_get_frame(lua_State* l) {
 int LuaContext::sprite_api_set_frame(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Sprite& sprite = check_sprite(l, 1);
+    Sprite& sprite = *check_sprite(l, 1);
     int frame = LuaTools::check_int(l, 2);
 
     if (frame < 0 || frame >= sprite.get_nb_frames()) {
@@ -323,7 +323,7 @@ int LuaContext::sprite_api_set_frame(lua_State* l) {
 int LuaContext::sprite_api_get_frame_delay(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    const Sprite& sprite = check_sprite(l, 1);
+    const Sprite& sprite = *check_sprite(l, 1);
 
     uint32_t frame_delay = sprite.get_frame_delay();
     if (frame_delay == 0) {
@@ -346,7 +346,7 @@ int LuaContext::sprite_api_get_frame_delay(lua_State* l) {
 int LuaContext::sprite_api_set_frame_delay(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Sprite& sprite = check_sprite(l, 1);
+    Sprite& sprite = *check_sprite(l, 1);
     uint32_t delay = 0;
     if (!lua_isnil(l, 2)) {
       delay = uint32_t(LuaTools::check_int(l, 2));
@@ -367,7 +367,7 @@ int LuaContext::sprite_api_set_frame_delay(lua_State* l) {
 int LuaContext::sprite_api_is_paused(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    const Sprite& sprite = check_sprite(l, 1);
+    const Sprite& sprite = *check_sprite(l, 1);
 
     lua_pushboolean(l, sprite.is_paused());
 
@@ -384,7 +384,7 @@ int LuaContext::sprite_api_is_paused(lua_State* l) {
 int LuaContext::sprite_api_set_paused(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Sprite& sprite = check_sprite(l, 1);
+    Sprite& sprite = *check_sprite(l, 1);
     bool paused = true;  // true if unspecified.
     if (lua_gettop(l) >= 2) {
       paused = lua_toboolean(l, 2);
@@ -405,7 +405,7 @@ int LuaContext::sprite_api_set_paused(lua_State* l) {
 int LuaContext::sprite_api_set_ignore_suspend(lua_State *l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Sprite& sprite = check_sprite(l, 1);
+    Sprite& sprite = *check_sprite(l, 1);
     bool ignore_suspend = true;  // true if unspecified.
     if (lua_gettop(l) >= 2) {
       ignore_suspend = lua_toboolean(l, 2);
@@ -426,14 +426,14 @@ int LuaContext::sprite_api_set_ignore_suspend(lua_State *l) {
 int LuaContext::sprite_api_synchronize(lua_State *l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Sprite& sprite = check_sprite(l, 1);
+    const std::shared_ptr<Sprite>& sprite = check_sprite(l, 1);
 
     if (!lua_isnil(l, 2)) {
-      Sprite& reference_sprite = check_sprite(l, 2);
-      sprite.set_synchronized_to(&reference_sprite);
+      const std::shared_ptr<Sprite>& reference_sprite = check_sprite(l, 2);
+      sprite->set_synchronized_to(reference_sprite);
     }
     else {
-      sprite.set_synchronized_to(nullptr);
+      sprite->set_synchronized_to(nullptr);
     }
 
     return 0;

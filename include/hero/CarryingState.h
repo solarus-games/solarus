@@ -28,8 +28,7 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
 
   public:
 
-    CarryingState(Hero& hero, CarriedItem* carried_item);
-    ~CarryingState();
+    CarryingState(Hero& hero, const std::shared_ptr<CarriedItem>& carried_item);
 
     virtual void start(const State* previous_state) override;
     virtual void stop(const State* next_state) override;
@@ -43,15 +42,14 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
     virtual bool can_take_stairs() const override;
     virtual void set_animation_stopped() override;
     virtual void set_animation_walking() override;
-    virtual CarriedItem* get_carried_item() const override;
+    virtual std::shared_ptr<CarriedItem> get_carried_item() const override;
     virtual CarriedItem::Behavior get_previous_carried_item_behavior() const override;
 
   private:
 
     void throw_item();
-    void destroy_carried_item();
 
-    CarriedItem* carried_item;         /**< the item to carry */
+    std::shared_ptr<CarriedItem> carried_item;         /**< the item to carry */
 
 };
 

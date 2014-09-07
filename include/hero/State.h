@@ -136,7 +136,7 @@ class Hero::State {
     virtual bool can_take_jumper() const;
     virtual void notify_jumper_activated(Jumper& jumper);
     bool is_carrying_item() const;
-    virtual CarriedItem* get_carried_item() const;
+    virtual std::shared_ptr<CarriedItem> get_carried_item() const;
     virtual CarriedItem::Behavior get_previous_carried_item_behavior() const;
 
   protected:

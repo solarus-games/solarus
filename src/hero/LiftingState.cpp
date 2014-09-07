@@ -41,14 +41,6 @@ Hero::LiftingState::LiftingState(Hero& hero, CarriedItem* lifted_item):
 }
 
 /**
- * \brief Destructor.
- */
-Hero::LiftingState::~LiftingState() {
-
-  destroy_lifted_item();
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */
@@ -87,14 +79,7 @@ void Hero::LiftingState::stop(const State* next_state) {
       break;
 
     case CarriedItem::BEHAVIOR_DESTROY:
-      destroy_lifted_item();
-      break;
-
     case CarriedItem::BEHAVIOR_KEEP:
-      // The next state is now the owner and has incremented the refcount.
-      Debug::check_assertion(lifted_item->get_refcount() > 1,
-          "Invalid carried item refcount");
-      RefCountable::unref(lifted_item);
       lifted_item = nullptr;
       break;
     }
@@ -114,7 +99,7 @@ void Hero::LiftingState::update() {
   if (!is_suspended() && !lifted_item->is_being_lifted()) { // the item has finished being lifted
 
     Hero& hero = get_hero();
-    CarriedItem *carried_item = lifted_item;
+    std::shared_ptr<CarriedItem> carried_item = lifted_item;
     lifted_item = nullptr; // we do not take care of the carried item from this state anymore
     hero.set_state(new CarryingState(hero, carried_item));
   }
@@ -153,15 +138,6 @@ void Hero::LiftingState::throw_item() {
 
   lifted_item->throw_item(get_sprites().get_animation_direction());
   get_entities().add_entity(lifted_item);
-  lifted_item = nullptr;
-}
-
-/**
- * \brief Destroys the item being lifted if any and sets it to nullptr.
- */
-void Hero::LiftingState::destroy_lifted_item() {
-
-  RefCountable::unref(lifted_item);
   lifted_item = nullptr;
 }
 

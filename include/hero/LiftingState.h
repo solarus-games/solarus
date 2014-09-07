@@ -29,7 +29,6 @@ class Hero::LiftingState: public Hero::State {
   public:
 
     LiftingState(Hero& hero, CarriedItem* lifted_item);
-    ~LiftingState();
 
     virtual void start(const State* previous_state) override;
     virtual void stop(const State* next_state) override;
@@ -40,9 +39,8 @@ class Hero::LiftingState: public Hero::State {
   private:
 
     void throw_item();
-    void destroy_lifted_item();
 
-    CarriedItem* lifted_item;           /**< the item currently being lifted */
+    std::shared_ptr<CarriedItem> lifted_item;    /**< the item currently being lifted */
 };
 
 }

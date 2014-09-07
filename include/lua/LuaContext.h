@@ -1071,7 +1071,7 @@ class LuaContext {
     static bool is_text_surface(lua_State* l, int index);
     static TextSurface& check_text_surface(lua_State* l, int index);
     static bool is_sprite(lua_State* l, int index);
-    static Sprite& check_sprite(lua_State* l, int index);
+    static std::shared_ptr<Sprite> check_sprite(lua_State* l, int index);
     static bool is_item(lua_State* l, int index);
     static EquipmentItem& check_item(lua_State* l, int index);
     static bool is_movement(lua_State* l, int index);

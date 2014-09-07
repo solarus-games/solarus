@@ -50,18 +50,7 @@ Hero::StairsState::StairsState(
   if (get_previous_carried_item_behavior() == CarriedItem::BEHAVIOR_KEEP) {
     // Keep the carried item of the previous state.
     carried_item = hero.get_carried_item();
-    if (carried_item != nullptr) {
-      RefCountable::ref(carried_item);
-    }
   }
-}
-
-/**
- * \brief Destructor.
- */
-Hero::StairsState::~StairsState() {
-
-  destroy_carried_item();
 }
 
 /**
@@ -148,15 +137,10 @@ void Hero::StairsState::stop(const State* next_state) {
       break;
 
     case CarriedItem::BEHAVIOR_DESTROY:
-      destroy_carried_item();
       get_sprites().set_lifted_item(nullptr);
       break;
 
     case CarriedItem::BEHAVIOR_KEEP:
-      // The next state is now the owner and has incremented the refcount.
-      Debug::check_assertion(carried_item->get_refcount() > 1,
-          "Invalid carried item refcount");
-      RefCountable::unref(carried_item);
       carried_item = nullptr;
       break;
 
@@ -338,17 +322,8 @@ int Hero::StairsState::get_wanted_movement_direction8() const {
  * \brief Returns the item currently carried by the hero in this state, if any.
  * \return the item carried by the hero, or nullptr
  */
-CarriedItem* Hero::StairsState::get_carried_item() const {
+std::shared_ptr<CarriedItem> Hero::StairsState::get_carried_item() const {
   return carried_item;
-}
-
-/**
- * \brief Destroys the item carried if any and sets it to nullptr.
- */
-void Hero::StairsState::destroy_carried_item() {
-
-  RefCountable::unref(carried_item);
-  carried_item = nullptr;
 }
 
 /**

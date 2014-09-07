@@ -207,15 +207,16 @@ class LuaContext {
     void update_menus();
 
     // Drawable objects.
-    bool has_drawable(Drawable* drawable);
-    void add_drawable(Drawable* drawable);
-    void remove_drawable(Drawable* drawable);
+    bool has_drawable(const std::shared_ptr<Drawable>& drawable);
+    void add_drawable(const std::shared_ptr<Drawable>& drawable);
+    void remove_drawable(const std::shared_ptr<Drawable>& drawable);
     void destroy_drawables();
     void update_drawables();
 
     // Movements.
     void start_movement_on_point(
-        const std::shared_ptr<Movement>& movement, int point_index
+        const std::shared_ptr<Movement>& movement,
+        int point_index
     );
     void stop_movement_on_point(const std::shared_ptr<Movement>& movement);
     void update_movements();
@@ -1065,7 +1066,7 @@ class LuaContext {
     static bool is_timer(lua_State* l, int index);
     static TimerPtr check_timer(lua_State* l, int index);
     static bool is_drawable(lua_State* l, int index);
-    static Drawable& check_drawable(lua_State* l, int index);
+    static std::shared_ptr<Drawable> check_drawable(lua_State* l, int index);
     static bool is_surface(lua_State* l, int index);
     static Surface& check_surface(lua_State* l, int index);
     static bool is_text_surface(lua_State* l, int index);
@@ -1246,9 +1247,10 @@ class LuaContext {
     std::list<TimerPtr>
         timers_to_remove;           /**< Timers to be removed at the next cycle. */
 
-    std::set<Drawable*> drawables;  /**< All drawable objects created by
+    std::set<std::shared_ptr<Drawable>>
+        drawables;                  /**< All drawable objects created by
                                      * this script. */
-    std::set<Drawable*>
+    std::set<std::shared_ptr<Drawable>>
         drawables_to_remove;        /**< Drawable objects to be removed at the
                                      * next cycle. */
     std::map<const ExportableToLua*, std::set<std::string>>

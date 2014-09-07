@@ -131,7 +131,7 @@ int LuaContext::surface_api_create(lua_State* l) {
       lua_pushnil(l);
     }
     else {
-      get_lua_context(l).add_drawable(surface.get());
+      get_lua_context(l).add_drawable(surface);
       push_surface(l, *surface);
     }
     return 1;

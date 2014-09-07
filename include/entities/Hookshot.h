@@ -31,7 +31,6 @@ class Hookshot: public MapEntity {
   public:
 
     Hookshot(const Hero& hero);
-    ~Hookshot();
 
     virtual EntityType get_type() const override;
     virtual bool can_be_obstacle() const override;
@@ -80,7 +79,8 @@ class Hookshot: public MapEntity {
     bool going_back;             /**< indicates that the hookshot is going back towards the hero */
     MapEntity* entity_reached;   /**< the entity the hookshot is attached to (or nullptr) */
 
-    Sprite link_sprite;          /**< sprite of the links */
+    std::shared_ptr<Sprite>
+        link_sprite;             /**< sprite of the links */
 
 };
 

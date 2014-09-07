@@ -610,8 +610,8 @@ int LuaContext::movement_api_start(lua_State* l) {
       entity.set_movement(movement);
     }
     else if (is_drawable(l, 2)) {
-      Drawable& drawable = check_drawable(l, 2);
-      drawable.start_movement(movement);
+      const std::shared_ptr<Drawable>& drawable = check_drawable(l, 2);
+      drawable->start_movement(movement);
     }
     else {
       LuaTools::type_error(l, 2, "table, entity or drawable");

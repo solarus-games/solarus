@@ -194,7 +194,7 @@ int LuaContext::text_surface_api_create(lua_State* l) {
         lua_pop(l, 1); // Pop the value, let the key for the iteration.
       }
     }
-    get_lua_context(l).add_drawable(text_surface.get());
+    get_lua_context(l).add_drawable(text_surface);
 
     push_text_surface(l, *text_surface);
     return 1;

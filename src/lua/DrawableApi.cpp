@@ -46,15 +46,15 @@ bool LuaContext::is_drawable(lua_State* l, int index) {
  * object (surface, text surface of sprite) and returns it.
  * \param l a Lua context
  * \param index an index in the stack
- * \return the surface
+ * \return The drawable.
  */
-Drawable& LuaContext::check_drawable(lua_State* l, int index) {
+std::shared_ptr<Drawable> LuaContext::check_drawable(lua_State* l, int index) {
 
   if (is_drawable(l, index)) {
     const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(
       lua_touserdata(l, index)
     ));
-    return *std::static_pointer_cast<Drawable>(userdata);
+    return std::static_pointer_cast<Drawable>(userdata);
   }
   else {
     LuaTools::type_error(l, index, "drawable");
@@ -67,7 +67,7 @@ Drawable& LuaContext::check_drawable(lua_State* l, int index) {
  * \param drawable A drawable object.
  * \return true if the drawable object was created by this script.
  */
-bool LuaContext::has_drawable(Drawable* drawable) {
+bool LuaContext::has_drawable(const std::shared_ptr<Drawable>& drawable) {
 
   return drawables.find(drawable) != drawables.end();
 }
@@ -76,12 +76,11 @@ bool LuaContext::has_drawable(Drawable* drawable) {
  * \brief Registers a drawable object created by this script.
  * \param drawable a drawable object
  */
-void LuaContext::add_drawable(Drawable* drawable) {
+void LuaContext::add_drawable(const std::shared_ptr<Drawable>& drawable) {
 
   Debug::check_assertion(!has_drawable(drawable),
       "This drawable object is already registered");
 
-  RefCountable::ref(drawable);
   drawables.insert(drawable);
 }
 
@@ -89,7 +88,7 @@ void LuaContext::add_drawable(Drawable* drawable) {
  * \brief Unregisters a drawable object created by this script.
  * \param drawable a drawable object
  */
-void LuaContext::remove_drawable(Drawable* drawable) {
+void LuaContext::remove_drawable(const std::shared_ptr<Drawable>& drawable) {
 
   Debug::check_assertion(has_drawable(drawable),
       "This drawable object was not created by Lua");
@@ -103,9 +102,6 @@ void LuaContext::remove_drawable(Drawable* drawable) {
  */
 void LuaContext::destroy_drawables() {
 
-  for (Drawable* drawable: drawables) {
-    RefCountable::unref(drawable);
-  }
   drawables.clear();
   drawables_to_remove.clear();
 }
@@ -116,17 +112,13 @@ void LuaContext::destroy_drawables() {
 void LuaContext::update_drawables() {
 
   // Update all drawables.
-  for (Drawable* drawable: drawables) {
+  for (const std::shared_ptr<Drawable>& drawable: drawables) {
     if (has_drawable(drawable)) {
       drawable->update();
     }
   }
 
   // Remove the ones that should be removed.
-  for (Drawable* drawable: drawables_to_remove) {
-    drawables.erase(drawable);
-    RefCountable::unref(drawable);
-  }
   drawables_to_remove.clear();
 }
 
@@ -138,12 +130,12 @@ void LuaContext::update_drawables() {
 int LuaContext::drawable_api_draw(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Drawable& drawable = check_drawable(l, 1);
+    std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
     Surface& dst_surface = check_surface(l, 2);
     int x = LuaTools::opt_int(l, 3, 0);
     int y = LuaTools::opt_int(l, 4, 0);
     SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
-    drawable.draw(shared_dst_surface, x, y);
+    drawable->draw(shared_dst_surface, x, y);
 
     return 0;
   }
@@ -158,7 +150,7 @@ int LuaContext::drawable_api_draw(lua_State* l) {
 int LuaContext::drawable_api_draw_region(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Drawable& drawable = check_drawable(l, 1);
+    std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
     Rectangle region = {
         LuaTools::check_int(l, 2),
         LuaTools::check_int(l, 3),
@@ -171,7 +163,7 @@ int LuaContext::drawable_api_draw_region(lua_State* l) {
         LuaTools::opt_int(l, 8, 0)
     };
     SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
-    drawable.draw_region(region, shared_dst_surface, dst_position);
+    drawable->draw_region(region, shared_dst_surface, dst_position);
 
     return 0;
   }
@@ -189,7 +181,7 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
     uint32_t delay = 20;
     ScopedLuaRef callback_ref;
 
-    Drawable& drawable = check_drawable(l, 1);
+    std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
 
     if (lua_gettop(l) >= 2) {
       // the second argument can be the delay or the callback
@@ -204,11 +196,11 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
 
     TransitionFade* transition = new TransitionFade(
         Transition::TRANSITION_OPENING,
-        drawable.get_transition_surface()
+        drawable->get_transition_surface()
     );
     transition->clear_color();
     transition->set_delay(delay);
-    drawable.start_transition(*transition, callback_ref);
+    drawable->start_transition(*transition, callback_ref);
 
     return 0;
   }
@@ -226,7 +218,7 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
     uint32_t delay = 20;
     ScopedLuaRef callback_ref;
 
-    Drawable& drawable = check_drawable(l, 1);
+    std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
 
     if (lua_gettop(l) >= 2) {
       // the second argument can be the delay or the callback
@@ -241,10 +233,10 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
 
     TransitionFade* transition = new TransitionFade(
         Transition::TRANSITION_CLOSING,
-        drawable.get_transition_surface());
+        drawable->get_transition_surface());
     transition->clear_color();
     transition->set_delay(delay);
-    drawable.start_transition(*transition, callback_ref);
+    drawable->start_transition(*transition, callback_ref);
 
     return 0;
   }
@@ -259,10 +251,10 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
 int LuaContext::drawable_api_get_xy(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Drawable& drawable = check_drawable(l, 1);
+    std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
 
-    lua_pushinteger(l, drawable.get_xy().x);
-    lua_pushinteger(l, drawable.get_xy().y);
+    lua_pushinteger(l, drawable->get_xy().x);
+    lua_pushinteger(l, drawable->get_xy().y);
     return 2;
   }
   SOLARUS_LUA_BOUNDARY_CATCH(l);
@@ -276,11 +268,11 @@ int LuaContext::drawable_api_get_xy(lua_State* l) {
 int LuaContext::drawable_api_set_xy(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Drawable& drawable = check_drawable(l, 1);
+    std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
 
-    drawable.set_xy(Point(x, y));
+    drawable->set_xy(Point(x, y));
 
     return 0;
   }
@@ -295,9 +287,8 @@ int LuaContext::drawable_api_set_xy(lua_State* l) {
 int LuaContext::drawable_api_get_movement(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Drawable& drawable = check_drawable(l, 1);
-
-    std::shared_ptr<Movement> movement = drawable.get_movement();
+    std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
+    std::shared_ptr<Movement> movement = drawable->get_movement();
     if (movement == nullptr) {
       lua_pushnil(l);
     }
@@ -318,9 +309,9 @@ int LuaContext::drawable_api_get_movement(lua_State* l) {
 int LuaContext::drawable_api_stop_movement(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Drawable& drawable = check_drawable(l, 1);
+    std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
 
-    drawable.stop_movement();
+    drawable->stop_movement();
 
     return 0;
   }
@@ -336,11 +327,11 @@ int LuaContext::drawable_meta_gc(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     LuaContext& lua_context = get_lua_context(l);
-    Drawable& drawable = check_drawable(l, 1);
+    std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
 
-    if (lua_context.has_drawable(&drawable)) {
+    if (lua_context.has_drawable(drawable)) {
       // This drawable was created from Lua.
-      lua_context.remove_drawable(&drawable);
+      lua_context.remove_drawable(drawable);
     }
     userdata_meta_gc(l);
   }

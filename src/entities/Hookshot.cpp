@@ -38,18 +38,18 @@ namespace solarus {
  * \param hero the hero
  */
 Hookshot::Hookshot(const Hero& hero):
-  MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
-  next_sound_date(System::now()),
-  has_to_go_back(false),
-  going_back(false),
-  entity_reached(nullptr),
-  link_sprite("entities/hookshot") {
-
+    MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
+    next_sound_date(System::now()),
+    has_to_go_back(false),
+    going_back(false),
+    entity_reached(nullptr),
+    link_sprite(make_refcount_ptr(new Sprite("entities/hookshot"))
+) {
   // initialize the entity
   int direction = hero.get_animation_direction();
   create_sprite("entities/hookshot", true);
   get_sprite().set_current_direction(direction);
-  link_sprite.set_current_animation("link");
+  link_sprite->set_current_animation("link");
 
   set_size(16, 16);
   set_origin(8, 13);
@@ -59,13 +59,6 @@ Hookshot::Hookshot(const Hero& hero):
   std::string path = " ";
   path[0] = '0' + (direction * 2);
   set_movement(make_refcount_ptr(new PathMovement(path, 192, true, false, false)));
-}
-
-/**
- * \brief Destructor.
- */
-Hookshot::~Hookshot() {
-
 }
 
 /**
@@ -248,7 +241,7 @@ void Hookshot::draw_on_map() {
   for (int i = 0; i < nb_links; i++) {
     link_xy.x = x1 + (x2 - x1) * i / nb_links;
     link_xy.y = y1 + (y2 - y1) * i / nb_links;
-    get_map().draw_sprite(link_sprite, link_xy);
+    get_map().draw_sprite(*link_sprite, link_xy);
   }
 }
 

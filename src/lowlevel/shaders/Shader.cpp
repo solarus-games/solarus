@@ -90,7 +90,7 @@ double Shader::get_default_window_scale() {
 
 /**
  * \brief Check if the engine shader context is marked as compatible by the shader script.
- * \return True if the engine shader context is not been explicitely set as not compatible with the shader script .
+ * \return True if the engine shader context is not been explicitly set as not compatible with the shader script .
  */
 bool Shader::is_valid() {
 

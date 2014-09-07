@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <cstdint>
+#include <memory>
 
 namespace solarus {
 
@@ -37,7 +38,6 @@ class StreamAction {
   public:
 
     StreamAction(Stream& stream, MapEntity& entity_moved);
-    ~StreamAction();
 
     const Stream& get_stream() const;
     const MapEntity& get_entity_moved() const;
@@ -53,9 +53,11 @@ class StreamAction {
     bool test_obstacles(int dx, int dy);
     bool has_reached_target() const;
 
-    Stream* stream;               /**< The stream applied,
+    std::shared_ptr<Stream>
+        stream;                   /**< The stream applied,
                                    * or nullptr if it was destroyed. */
-    MapEntity* entity_moved;      /**< The entity the stream is applied to,
+    std::shared_ptr<MapEntity>
+        entity_moved;             /**< The entity the stream is applied to,
                                    * or nullptr if it was destroyed. */
     bool active;                  /**< Whether the stream effect is currently
                                    * applied. */

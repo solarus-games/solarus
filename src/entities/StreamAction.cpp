@@ -29,8 +29,8 @@ namespace solarus {
  * \param entity_moved Entity the stream is applied to.
  */
 StreamAction::StreamAction(Stream& stream, MapEntity& entity_moved):
-  stream(&stream),
-  entity_moved(&entity_moved),
+  stream(std::static_pointer_cast<Stream>(stream.shared_from_this())),
+  entity_moved(std::static_pointer_cast<MapEntity>(entity_moved.shared_from_this())),
   active(true),
   suspended(false),
   when_suspended(0),
@@ -39,21 +39,9 @@ StreamAction::StreamAction(Stream& stream, MapEntity& entity_moved):
   next_move_date(0),
   delay(0) {
 
-  RefCountable::ref(this->stream);
-  RefCountable::ref(this->entity_moved);
-
   recompute_movement();
 
   next_move_date = System::now() + delay;
-}
-
-/**
- * \brief Destructor.
- */
-StreamAction::~StreamAction() {
-
-  RefCountable::unref(this->stream);
-  RefCountable::unref(this->entity_moved);
 }
 
 /**
@@ -133,7 +121,6 @@ void StreamAction::update() {
   // First check that the stream and the entity still exist
   // and are enabled.
   if (stream->is_being_removed()) {
-    RefCountable::unref(stream);
     stream = nullptr;
     active = false;
     return;
@@ -145,7 +132,6 @@ void StreamAction::update() {
   }
 
   if (entity_moved->is_being_removed()) {
-    RefCountable::unref(entity_moved);
     entity_moved = nullptr;
     active = false;
     return;

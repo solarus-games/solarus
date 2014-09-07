@@ -82,7 +82,7 @@ Door::Door(Game& game,
   initialized(false),
   next_hint_sound_date(0) {
 
-  Sprite& sprite = create_sprite(sprite_name, true);
+  Sprite& sprite = *create_sprite(sprite_name, true);
   sprite.set_ignore_suspend(true);  // Continue the animation while the camera is moving.
   set_direction(direction);
 

@@ -181,9 +181,11 @@ class MapEntity: public ExportableToLua {
     bool has_sprite() const;
     Sprite& get_sprite();
     const Sprite& get_sprite() const;
-    const std::vector<Sprite*>& get_sprites();
-    Sprite& create_sprite(const std::string& animation_set_id,
-        bool enable_pixel_collisions = false);
+    const std::vector<std::shared_ptr<Sprite>>& get_sprites();
+    std::shared_ptr<Sprite> create_sprite(
+        const std::string& animation_set_id,
+        bool enable_pixel_collisions = false
+    );
     void remove_sprite(Sprite& sprite);
     void clear_sprites();
     virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
@@ -376,9 +378,12 @@ class MapEntity: public ExportableToLua {
 
     int direction;                              /**< direction of the entity, not used for all kinds of entities */
 
-    std::vector<Sprite*> sprites;               /**< sprites representing the entity;
-                                                 * note that some entities manage their sprites themselves rather than using this field */
-    std::vector<Sprite*> old_sprites;           /**< sprites to remove and destroy as soon as possible */
+    std::vector<std::shared_ptr<Sprite>>
+        sprites;                                /**< sprites representing the entity;
+                                                 * note that some entities manage their sprites themselves
+                                                 * rather than using this field */
+    std::vector<std::shared_ptr<Sprite>>
+        old_sprites;                            /**< sprites to remove and destroy as soon as possible */
     bool visible;                               /**< indicates that this entity's sprites are currently displayed */
     bool drawn_in_y_order;                      /**< Whether this entity is drawn in Y order or in Z order. */
     std::shared_ptr<Movement> movement;         /**< Movement of the entity.

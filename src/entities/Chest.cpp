@@ -68,14 +68,14 @@ Chest::Chest(
   opening_condition_consumed(false) {
 
   // Create the sprite.
-  Sprite& sprite = create_sprite(sprite_name);
+  Sprite& sprite = *create_sprite(sprite_name);
   std::string animation = is_open() ? "open" : "closed";
   sprite.set_current_animation(animation);
 
   set_origin(get_width() / 2, get_height() - 3);
 
   // TODO set this as the default drawn_in_y_order for MapEntity
-  set_drawn_in_y_order(get_sprite().get_max_size().height > get_height());
+  set_drawn_in_y_order(sprite.get_max_size().height > get_height());
 }
 
 /**

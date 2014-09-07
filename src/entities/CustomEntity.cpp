@@ -119,7 +119,7 @@ void CustomEntity::set_sprites_direction(int direction) {
 
   set_direction(direction);
 
-  for (Sprite* sprite: get_sprites()) {
+  for (const std::shared_ptr<Sprite>& sprite: get_sprites()) {
     if (direction >= 0 && direction < sprite->get_nb_directions()) {
       sprite->set_current_direction(direction);
     }

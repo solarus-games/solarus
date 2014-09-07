@@ -1142,7 +1142,7 @@ int LuaContext::entity_api_create_sprite(lua_State* l) {
     MapEntity& entity = check_entity(l, 1);
     const std::string& animation_set_id = LuaTools::check_string(l, 2);
 
-    Sprite& sprite = entity.create_sprite(animation_set_id, true);
+    Sprite& sprite = *entity.create_sprite(animation_set_id, true);
     if (entity.is_suspended()) {
       sprite.set_suspended(true);
     }

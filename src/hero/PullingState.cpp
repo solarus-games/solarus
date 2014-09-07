@@ -37,14 +37,6 @@ Hero::PullingState::PullingState(Hero& hero):
 }
 
 /**
- * \brief Destructor.
- */
-Hero::PullingState::~PullingState() {
-
-  RefCountable::unref(pulling_movement);
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */
@@ -109,8 +101,9 @@ void Hero::PullingState::update() {
           std::string path = "  ";
           path[0] = path[1] = '0' + opposite_direction8;
 
-          pulling_movement = new PathMovement(path, 40, false, false, false);
-          RefCountable::ref(pulling_movement);
+          pulling_movement = make_refcount_ptr(
+              new PathMovement(path, 40, false, false, false)
+          );
           hero.set_movement(pulling_movement);
           pulled_entity = facing_entity;
           pulled_entity->notify_moving_by(hero);
@@ -231,7 +224,6 @@ void Hero::PullingState::stop_moving_pulled_entity() {
     }
 
     hero.clear_movement();
-    RefCountable::unref(pulling_movement);
     pulling_movement = nullptr;
     MapEntity* entity_just_moved = pulled_entity;
     pulled_entity = nullptr;

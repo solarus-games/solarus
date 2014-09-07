@@ -38,7 +38,6 @@ class Hero::ForcedWalkingState: public Hero::State {
         bool loop,
         bool ignore_obstacles
     );
-    ~ForcedWalkingState();
 
     virtual void start(const State* previous_state) override;
     virtual void stop(const State* next_state) override;
@@ -58,7 +57,7 @@ class Hero::ForcedWalkingState: public Hero::State {
 
   private:
 
-    PathMovement* movement;       /**< the movement applied to the hero */
+    std::shared_ptr<PathMovement> movement;      /**< the movement applied to the hero */
 
 };
 

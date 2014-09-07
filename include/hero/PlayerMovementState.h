@@ -62,17 +62,18 @@ class Hero::PlayerMovementState: public Hero::State {
 
     PlayerMovementState(Hero& hero, const std::string& state_name);
 
-    PlayerMovement* get_player_movement();
-    const PlayerMovement* get_player_movement() const;
+    const std::shared_ptr<PlayerMovement>& get_player_movement();
+    std::shared_ptr<const PlayerMovement> get_player_movement() const;
 
   private:
 
     void cancel_jumper();
 
-    PlayerMovement* player_movement;   /**< The movement created by this state.
+    std::shared_ptr<PlayerMovement>
+        player_movement;               /**< The movement created by this state.
                                         * The movement of the hero is also this object,
                                         * unless a script decided to change it. */
-    Jumper* current_jumper;            /**< The jumper about to be triggered or nullptr */
+    Jumper* current_jumper;            /**< The jumper about to be triggered or nullptr */  // TODO shared_ptr
     uint32_t jumper_start_date;        /**< Date to trigger the jumper
                                         * (because a small delay is necessary) */
 

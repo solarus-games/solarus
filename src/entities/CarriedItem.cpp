@@ -96,7 +96,9 @@ CarriedItem::CarriedItem(
   set_drawn_in_y_order(true);
 
   // create the lift movement and the sprite
-  PixelMovement* movement = new PixelMovement(lifting_trajectories[direction], 100, false, true);
+  const std::shared_ptr<PixelMovement>& movement = make_refcount_ptr(
+      new PixelMovement(lifting_trajectories[direction], 100, false, true)
+  );
   create_sprite(animation_set_id);
   get_sprite().set_current_animation("stopped");
   set_movement(movement);
@@ -185,7 +187,9 @@ void CarriedItem::throw_item(int direction) {
 
   // set the movement of the item sprite
   set_y(hero.get_y());
-  StraightMovement* movement = new StraightMovement(false, false);
+  const std::shared_ptr<StraightMovement>& movement = make_refcount_ptr(
+      new StraightMovement(false, false)
+  );
   movement->set_speed(200);
   movement->set_angle(Geometry::degrees_to_radians(direction * 90));
   clear_movement();
@@ -361,7 +365,7 @@ void CarriedItem::update() {
 
     // make the item follow the hero
     clear_movement();
-    set_movement(new FollowMovement(&hero, 0, -18, true));
+    set_movement(make_refcount_ptr(new FollowMovement(&hero, 0, -18, true)));
   }
 
   // when the item has finished flying, destroy it

@@ -176,7 +176,9 @@ void Bomb::notify_collision_with_stream(Stream& stream, int /* dx */, int /* dy 
       std::string path = "  ";
       path[0] = path[1] = '0' + stream.get_direction();
       clear_movement();
-      set_movement(new PathMovement(path, 64, false, false, false));
+      set_movement(make_refcount_ptr(
+          new PathMovement(path, 64, false, false, false))
+      );
     }
   }
 }

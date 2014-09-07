@@ -1278,7 +1278,9 @@ void Enemy::hurt(MapEntity& source, Sprite* this_sprite) {
   // push the enemy back
   if (pushed_back_when_hurt) {
     double angle = source.get_angle(*this, nullptr, this_sprite);
-    StraightMovement* movement = new StraightMovement(false, true);
+    const std::shared_ptr<StraightMovement>& movement = make_refcount_ptr(
+        new StraightMovement(false, true)
+    );
     movement->set_max_distance(24);
     movement->set_speed(120);
     movement->set_angle(angle);

@@ -42,9 +42,9 @@ class Drawable: public ExportableToLua {
     virtual ~Drawable();
 
     // dynamic effects
-    void start_movement(Movement& movement);
+    void start_movement(const std::shared_ptr<Movement>& movement);
     void stop_movement();
-    Movement* get_movement();
+    const std::shared_ptr<Movement>& get_movement();
     const Point& get_xy() const;
     void set_xy(const Point& xy);
 
@@ -126,7 +126,8 @@ class Drawable: public ExportableToLua {
 
     Point xy;                     /**< Current position of this object
                                    * (result of movements). */
-    Movement* movement;           /**< A movement applied, or nullptr (will be
+    std::shared_ptr<Movement>
+        movement;                 /**< A movement applied, or nullptr (will be
                                    * deleted then if unused elsewhere). */
     Transition* transition;       /**< A transition applied, or nullptr
                                    * (will be deleted then). */

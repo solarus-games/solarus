@@ -340,13 +340,13 @@ bool LuaContext::is_movement(lua_State* l, int index) {
  * \param index an index in the stack
  * \return the sprite
  */
-Movement& LuaContext::check_movement(lua_State* l, int index) {
+std::shared_ptr<Movement> LuaContext::check_movement(lua_State* l, int index) {
 
   if (is_movement(l, index)) {
     const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(
       lua_touserdata(l, index)
     ));
-    return *std::static_pointer_cast<Movement>(userdata);
+    return std::static_pointer_cast<Movement>(userdata);
   }
   else {
     LuaTools::type_error(l, index, "movement");
@@ -374,14 +374,15 @@ void LuaContext::push_movement(lua_State* l, Movement& movement) {
  * \param movement The movement to apply to the points.
  * \param point_index Index of the x,y table in the Lua stack.
  */
-void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
-
+void LuaContext::start_movement_on_point(
+    const std::shared_ptr<Movement>& movement, int point_index
+) {
   int x = 0;
   int y = 0;
                                   // ...
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.movements_on_points");
                                   // ... movements
-  push_movement(l, movement);
+  push_movement(l, *movement);
                                   // ... movements movement
   lua_pushvalue(l, point_index);
                                   // ... movements movement xy
@@ -412,7 +413,7 @@ void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
                                   // ... movements movement xy 0
     lua_setfield(l, -2, "y");
                                   // ... movements movement xy
-    movement.set_y(0);
+    movement->set_y(0);
   }
   else {
                                   // ... movements movement xy y
@@ -425,19 +426,19 @@ void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
                                   // ... movements
   lua_pop(l, 1);
                                   // ...
-  movement.set_xy(x, y);
+  movement->set_xy(x, y);
 }
 
 /**
  * \brief Stops moving an x,y point.
  * \param movement The movement to stop.
  */
-void LuaContext::stop_movement_on_point(Movement& movement) {
+void LuaContext::stop_movement_on_point(const std::shared_ptr<Movement>& movement) {
 
                                   // ...
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.movements_on_points");
                                   // ... movements
-  push_movement(l, movement);
+  push_movement(l, *movement);
                                   // ... movements movement
   lua_pushnil(l);
                                   // ... movements movement nil
@@ -459,7 +460,7 @@ void LuaContext::update_movements() {
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.movements_on_points");
   lua_pushnil(l);  // First key.
   while (lua_next(l, -2)) {
-    Movement& movement = check_movement(l, -2);
+    Movement& movement = *check_movement(l, -2);
     movement.update();
     lua_pop(l, 1);  // Pop the value, keep the key for next iteration.
   }
@@ -477,34 +478,41 @@ int LuaContext::movement_api_create(lua_State* l) {
     LuaContext& lua_context = get_lua_context(l);
     const std::string& type = LuaTools::check_string(l, 1);
 
-    Movement* movement = nullptr;
+    std::shared_ptr<Movement> movement;
     if (type == "straight") {
-      StraightMovement* straight_movement = new StraightMovement(false, true);
+      std::shared_ptr<StraightMovement> straight_movement =
+          RefCountable::make_refcount_ptr(new StraightMovement(false, true));
       straight_movement->set_speed(32);
       movement = straight_movement;
     }
     else if (type == "random") {
-      movement = new RandomMovement(32);
+      movement = RefCountable::make_refcount_ptr(new RandomMovement(32));
     }
     else if (type == "target") {
       Game* game = lua_context.get_main_loop().get_game();
       if (game != nullptr) {
         // If we are on a map, the default target is the hero.
-        movement = new TargetMovement(
-            &game->get_hero(), 0, 0, 96, false);
+        movement = RefCountable::make_refcount_ptr(new TargetMovement(
+            &game->get_hero(), 0, 0, 96, false
+        ));
       }
       else {
-        movement = new TargetMovement(nullptr, 0, 0, 32, false);
+        movement = RefCountable::make_refcount_ptr(new TargetMovement(
+            nullptr, 0, 0, 32, false
+        ));
       }
     }
     else if (type == "path") {
-      movement = new PathMovement("", 32, false, false, false);
+      movement = RefCountable::make_refcount_ptr(new PathMovement(
+          "", 32, false, false, false
+      ));
     }
     else if (type == "random_path") {
-      movement = new RandomPathMovement(32);
+      movement = RefCountable::make_refcount_ptr(new RandomPathMovement(32));
     }
     else if (type == "path_finding") {
-      PathFindingMovement* path_finding_movement = new PathFindingMovement(32);
+      const std::shared_ptr<PathFindingMovement>& path_finding_movement =
+          RefCountable::make_refcount_ptr(new PathFindingMovement(32));
       Game* game = lua_context.get_main_loop().get_game();
       if (game != nullptr) {
         // If we are on a map, the default target is the hero.
@@ -513,13 +521,13 @@ int LuaContext::movement_api_create(lua_State* l) {
       movement = path_finding_movement;
     }
     else if (type == "circle") {
-      movement = new CircleMovement(false);
+      movement = RefCountable::make_refcount_ptr(new CircleMovement(false));
     }
     else if (type == "jump") {
-      movement = new JumpMovement(0, 0, 0, false);
+      movement = RefCountable::make_refcount_ptr(new JumpMovement(0, 0, 0, false));
     }
     else if (type == "pixel") {
-      movement = new PixelMovement("", 30, false, false);
+      movement = RefCountable::make_refcount_ptr(new PixelMovement("", 30, false, false));
     }
     else {
       LuaTools::arg_error(l, 1, "should be one of: "
@@ -548,7 +556,7 @@ int LuaContext::movement_api_create(lua_State* l) {
 int LuaContext::movement_api_get_xy(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Movement& movement = check_movement(l, 1);
+    Movement& movement = *check_movement(l, 1);
 
     const Point& xy = movement.get_xy();
     lua_pushinteger(l, xy.x);
@@ -566,7 +574,7 @@ int LuaContext::movement_api_get_xy(lua_State* l) {
 int LuaContext::movement_api_set_xy(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Movement& movement = check_movement(l, 1);
+    Movement& movement = *check_movement(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
 
@@ -587,19 +595,19 @@ int LuaContext::movement_api_start(lua_State* l) {
   SOLARUS_LUA_BOUNDARY_TRY() {
     LuaContext& lua_context = get_lua_context(l);
 
-    Movement& movement = check_movement(l, 1);
+    std::shared_ptr<Movement> movement = check_movement(l, 1);
     movement_api_stop(l);  // First, stop any previous movement.
 
     ScopedLuaRef callback_ref = LuaTools::opt_function(l, 3);
 
-    movement.set_lua_context(&lua_context);
+    movement->set_lua_context(&lua_context);
     if (lua_type(l, 2) == LUA_TTABLE) {
       lua_context.start_movement_on_point(movement, 2);
     }
     else if (is_entity(l, 2)) {
       MapEntity& entity = check_entity(l, 2);
       entity.clear_movement();
-      entity.set_movement(&movement);
+      entity.set_movement(movement);
     }
     else if (is_drawable(l, 2)) {
       Drawable& drawable = check_drawable(l, 2);
@@ -608,7 +616,7 @@ int LuaContext::movement_api_start(lua_State* l) {
     else {
       LuaTools::type_error(l, 2, "table, entity or drawable");
     }
-    movement.set_finished_callback(callback_ref);
+    movement->set_finished_callback(callback_ref);
 
     return 0;
   }
@@ -625,15 +633,15 @@ int LuaContext::movement_api_stop(lua_State* l) {
   SOLARUS_LUA_BOUNDARY_TRY() {
     LuaContext& lua_context = get_lua_context(l);
 
-    Movement& movement = check_movement(l, 1);
+    std::shared_ptr<Movement> movement = check_movement(l, 1);
 
-    MapEntity* entity = movement.get_entity();
+    MapEntity* entity = movement->get_entity();
     if (entity != nullptr) {
       // The object controlled is a map entity.
       entity->clear_movement();
     }
     else {
-      Drawable* drawable = movement.get_drawable();
+      Drawable* drawable = movement->get_drawable();
       if (drawable != nullptr) {
         // The object controlled is a drawable.
         drawable->stop_movement();
@@ -657,9 +665,9 @@ int LuaContext::movement_api_stop(lua_State* l) {
 int LuaContext::movement_api_get_ignore_obstacles(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Movement& movement = check_movement(l, 1);
+    std::shared_ptr<Movement> movement = check_movement(l, 1);
 
-    lua_pushboolean(l, movement.are_obstacles_ignored());
+    lua_pushboolean(l, movement->are_obstacles_ignored());
     return 1;
   }
   SOLARUS_LUA_BOUNDARY_CATCH(l);
@@ -673,13 +681,13 @@ int LuaContext::movement_api_get_ignore_obstacles(lua_State* l) {
 int LuaContext::movement_api_set_ignore_obstacles(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Movement& movement = check_movement(l, 1);
+    std::shared_ptr<Movement> movement = check_movement(l, 1);
     bool ignore_obstacles = true; // true if unspecified
     if (lua_gettop(l) >= 2) {
       ignore_obstacles = lua_toboolean(l, 2);
     }
 
-    movement.set_ignore_obstacles(ignore_obstacles);
+    movement->set_ignore_obstacles(ignore_obstacles);
 
     return 0;
   }
@@ -694,8 +702,8 @@ int LuaContext::movement_api_set_ignore_obstacles(lua_State* l) {
 int LuaContext::movement_api_get_direction4(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Movement& movement = check_movement(l, 1);
-    lua_pushinteger(l, movement.get_displayed_direction4());
+    std::shared_ptr<Movement> movement = check_movement(l, 1);
+    lua_pushinteger(l, movement->get_displayed_direction4());
     return 1;
   }
   SOLARUS_LUA_BOUNDARY_CATCH(l);

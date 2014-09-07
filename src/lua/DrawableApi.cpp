@@ -297,12 +297,12 @@ int LuaContext::drawable_api_get_movement(lua_State* l) {
   SOLARUS_LUA_BOUNDARY_TRY() {
     Drawable& drawable = check_drawable(l, 1);
 
-    Movement* movement = drawable.get_movement();
+    std::shared_ptr<Movement> movement = drawable.get_movement();
     if (movement == nullptr) {
       lua_pushnil(l);
     }
     else {
-      push_userdata(l, *movement);
+      push_movement(l, *movement);
     }
 
     return 1;

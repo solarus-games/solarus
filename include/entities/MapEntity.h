@@ -193,9 +193,9 @@ class MapEntity: public ExportableToLua {
     void set_animation_ignore_suspend(bool ignore_suspend);
 
     // Movement.
-    Movement* get_movement();
-    const Movement* get_movement() const;
-    void set_movement(Movement* movement);
+    const std::shared_ptr<Movement>& get_movement();
+    std::shared_ptr<const Movement> get_movement() const;
+    void set_movement(const std::shared_ptr<Movement>& movement);
     void clear_movement();
     bool are_movement_notifications_enabled() const;
     void set_movement_events_enabled(bool notify);
@@ -381,9 +381,10 @@ class MapEntity: public ExportableToLua {
     std::vector<Sprite*> old_sprites;           /**< sprites to remove and destroy as soon as possible */
     bool visible;                               /**< indicates that this entity's sprites are currently displayed */
     bool drawn_in_y_order;                      /**< Whether this entity is drawn in Y order or in Z order. */
-    Movement* movement;                         /**< movement of the entity, not used for all kinds of entities;
-                                                 * nullptr indicates that the entity has no movement */
-    std::vector<Movement*> old_movements;       /**< old movements to destroy as soon as possible */
+    std::shared_ptr<Movement> movement;         /**< Movement of the entity.
+                                                 * nullptr indicates that the entity has no movement. */
+    std::vector<std::shared_ptr<Movement>>
+        old_movements;                          /**< old movements to destroy as soon as possible */
     bool movement_events_enabled;               /**< Whether entity:on_position_changed() and friends should be called. */
     Detector* facing_entity;                    /**< The detector in front of this entity if any. */
     StreamAction* stream_action;                /**< The stream effect currently applied if any. */

@@ -87,7 +87,7 @@ class Pickable: public Detector {
     Treasure treasure;                          /**< the treasure obtained when the player picks this item */
     bool given_to_player;                       /**< indicates that the treasure was given to the player */
 
-    Sprite* shadow_sprite;                      /**< sprite of the shadow (if any) */
+    Sprite* shadow_sprite;                      /**< sprite of the shadow (if any) */  // TODO shared_ptr
     FallingHeight falling_height;               /**< indicates whether the item is falling when it appears */
     bool will_disappear;                        /**< indicates that the item will disappear after an amount of time
                                                  * (only possible for items not saved) */

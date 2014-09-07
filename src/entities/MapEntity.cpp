@@ -1290,7 +1290,7 @@ void MapEntity::set_visible(bool visible) {
  * \brief Returns the current movement of the entity.
  * \return the entity's movement, or nullptr if there is no movement
  */
-Movement* MapEntity::get_movement() {
+const std::shared_ptr<Movement>& MapEntity::get_movement() {
   return movement;
 }
 
@@ -1298,26 +1298,18 @@ Movement* MapEntity::get_movement() {
  * \brief Returns the current movement of the entity.
  * \return the entity's movement, or nullptr if there is no movement
  */
-const Movement* MapEntity::get_movement() const {
+std::shared_ptr<const Movement> MapEntity::get_movement() const {
   return movement;
 }
 
 /**
  * \brief Sets the movement of this entity.
- *
- * Once you have called this function, the pointer to the movement is managed by the entity only.
- * Never delete it from outside! The movement will be deleted if clear_movement() is called
- * or when the entity is destroyed.
- *
- * If a previous movement was already set, it is not deleted (so that you can reassign it later).
- * Thus, most of the time, you should call clear_movement() before set_movement() to avoid a memory leak.
- *
  * \param movement the movement to set, or nullptr to set no movement
  */
-void MapEntity::set_movement(Movement* movement) {
+void MapEntity::set_movement(const std::shared_ptr<Movement>& movement) {
 
+  clear_movement();
   this->movement = movement;
-  RefCountable::ref(movement);
 
   if (movement != nullptr) {
     movement->set_entity(this);
@@ -1329,10 +1321,10 @@ void MapEntity::set_movement(Movement* movement) {
 }
 
 /**
- * \brief Destroys the movement of this entity.
+ * \brief Clears the movement of this entity.
  *
  * The entity immediately stops moving.
- * The movement object will be destroyed at the next cycle,
+ * The movement object will be released at the next cycle,
  * thus this function can be called by the movement object itself.
  */
 void MapEntity::clear_movement() {
@@ -1350,9 +1342,6 @@ void MapEntity::clear_movement() {
  */
 void MapEntity::clear_old_movements() {
 
-  for (Movement* movement: old_movements) {
-    RefCountable::unref(movement);
-  }
   old_movements.clear();
 }
 

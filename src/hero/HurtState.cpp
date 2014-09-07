@@ -74,7 +74,9 @@ void Hero::HurtState::start(const State* previous_state) {
 
   if (has_source) {
     double angle = Geometry::get_angle(source_xy, hero.get_xy());
-    StraightMovement* movement = new StraightMovement(false, true);
+    const std::shared_ptr<StraightMovement>& movement = make_refcount_ptr(
+        new StraightMovement(false, true)
+    );
     movement->set_max_distance(24);
     movement->set_speed(120);
     movement->set_angle(angle);

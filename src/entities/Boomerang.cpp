@@ -45,7 +45,8 @@ Boomerang::Boomerang(
     int max_distance,
     int speed,
     double angle,
-    const std::string& sprite_name):
+    const std::string& sprite_name
+):
   MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
   hero(hero),
   has_to_go_back(false),
@@ -79,7 +80,9 @@ Boomerang::Boomerang(
 
   }
 
-  StraightMovement* movement = new StraightMovement(false, false);
+  const std::shared_ptr<StraightMovement>& movement = make_refcount_ptr(
+      new StraightMovement(false, false)
+  );
   movement->set_speed(speed);
   movement->set_angle(angle);
   movement->set_max_distance(max_distance);
@@ -275,7 +278,7 @@ void Boomerang::update() {
   if (!going_back && has_to_go_back) {
     going_back = true;
     clear_movement();
-    set_movement(new TargetMovement(&hero, 0, 0, speed, true));
+    set_movement(make_refcount_ptr(new TargetMovement(&hero, 0, 0, speed, true)));
     get_entities().set_entity_layer(*this, hero.get_layer()); // because the hero's layer may have changed
   }
 }

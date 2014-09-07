@@ -212,7 +212,9 @@ void Hero::SwordTappingState::notify_attacked_enemy(
 
       Hero& hero = get_hero();
       double angle = victim.get_angle(hero, victim_sprite, nullptr);
-      StraightMovement* movement = new StraightMovement(false, true);
+      const std::shared_ptr<StraightMovement>&  movement = make_refcount_ptr(
+          new StraightMovement(false, true)
+      );
       movement->set_max_distance(24);
       movement->set_speed(120);
       movement->set_angle(angle);

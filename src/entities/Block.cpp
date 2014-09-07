@@ -221,7 +221,7 @@ bool Block::start_movement_by_hero() {
   int dx = get_x() - hero.get_x();
   int dy = get_y() - hero.get_y();
 
-  set_movement(new FollowMovement(&hero, dx, dy, false));
+  set_movement(make_refcount_ptr(new FollowMovement(&hero, dx, dy, false)));
   sound_played = false;
 
   return true;

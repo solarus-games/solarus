@@ -1224,7 +1224,7 @@ int LuaContext::entity_api_get_movement(lua_State* l) {
   SOLARUS_LUA_BOUNDARY_TRY() {
     MapEntity& entity = check_entity(l, 1);
 
-    Movement* movement = entity.get_movement();
+    const std::shared_ptr<Movement>& movement = entity.get_movement();
     if (movement == nullptr) {
       lua_pushnil(l);
     }

@@ -178,11 +178,11 @@ void PixelMovement::update() {
 
   uint32_t now = System::now();
 
-  while (now >= next_move_date
-      && !is_suspended()
-      && !finished
-      && (get_entity() == nullptr || get_entity()->get_movement() == this)) {
-
+  while (now >= next_move_date &&
+      !is_suspended() &&
+      !finished &&
+      (get_entity() == nullptr || get_entity()->get_movement().get() == this)
+  ) {
     Point old_xy = { get_x(), get_y() };
     make_next_step();
 

@@ -38,14 +38,9 @@ Hero::ForcedWalkingState::ForcedWalkingState(
 
   State(hero, "forced walking") {
 
-  this->movement = new PathMovement(path, hero.get_walking_speed(),
-      loop, ignore_obstacles, false);
-}
-
-/**
- * \brief Destructor.
- */
-Hero::ForcedWalkingState::~ForcedWalkingState() {
+  this->movement = make_refcount_ptr(new PathMovement(
+      path, hero.get_walking_speed(), loop, ignore_obstacles, false)
+  );
 }
 
 /**
@@ -57,7 +52,7 @@ void Hero::ForcedWalkingState::start(const State* previous_state) {
   State::start(previous_state);
 
   // update the sprites
-  HeroSprites &sprites = get_sprites();
+  HeroSprites& sprites = get_sprites();
   sprites.set_animation_walking_normal();
 
   // walk

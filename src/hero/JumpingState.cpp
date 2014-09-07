@@ -52,7 +52,9 @@ Hero::JumpingState::JumpingState(
     }
   }
 
-  this->movement = new JumpMovement(direction8, distance, 0, ignore_obstacles);
+  this->movement = make_refcount_ptr(new JumpMovement(
+      direction8, distance, 0, ignore_obstacles
+  ));
   this->direction8 = direction8;
   this->with_sound = with_sound;
 }

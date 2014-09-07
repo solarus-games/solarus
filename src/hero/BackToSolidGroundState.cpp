@@ -68,7 +68,9 @@ void Hero::BackToSolidGroundState::start(const State* previous_state) {
   State::start(previous_state);
 
   Hero& hero = get_hero();
-  hero.set_movement(new TargetMovement(nullptr, target_xy.x, target_xy.y, 144, true));
+  hero.set_movement(make_refcount_ptr(
+      new TargetMovement(nullptr, target_xy.x, target_xy.y, 144, true)
+  ));
   get_entities().set_entity_layer(hero, target_layer);
   get_entities().remove_boomerang();
 }

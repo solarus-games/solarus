@@ -291,7 +291,8 @@ void Hero::update_ground_effects() {
     if (is_ground_visible() && get_movement() != nullptr) {
 
       // a special ground is displayed under the hero and it's time to play a sound
-      StraightMovement* movement = dynamic_cast<StraightMovement*>(get_movement());
+      const std::shared_ptr<StraightMovement> movement =
+          std::dynamic_pointer_cast<StraightMovement>(get_movement());
       if (movement != nullptr) {
         // TODO replace the dynamic_cast by a virtual method get_speed() in Movement.
         double speed = movement->get_speed();
@@ -1029,7 +1030,7 @@ int Hero::get_real_movement_direction8() {
  */
 bool Hero::is_moving_towards(int direction4) const {
 
-  const Movement* movement = get_movement();
+  const std::shared_ptr<const Movement>& movement = get_movement();
   if (movement == nullptr || movement->is_stopped()) {
     return false;
   }

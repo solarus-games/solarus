@@ -31,7 +31,6 @@ class Hero::PushingState: public Hero::State {
   public:
 
     PushingState(Hero& hero);
-    ~PushingState();
 
     virtual void start(const State* previous_state) override;
     virtual void stop(const State* next_state) override;
@@ -58,7 +57,8 @@ class Hero::PushingState: public Hero::State {
 
     int pushing_direction4;            /**< Direction where the hero is looking (0 to 3). */
     Detector* pushed_entity;           /**< The entity the hero is pushing or nullptr. */
-    PathMovement* pushing_movement;    /**< The movement created by this state.
+    std::shared_ptr<PathMovement>
+        pushing_movement;              /**< The movement created by this state.
                                         * The movement of the hero is also this object,
                                         * unless a script decided to change it. */
 };

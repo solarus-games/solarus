@@ -63,19 +63,13 @@ Arrow::Arrow(const Hero& hero):
 
   std::string path = " ";
   path[0] = '0' + (direction * 2);
-  Movement* movement = new PathMovement(path, 192, true, false, false);
-  set_movement(movement);
+  set_movement(make_refcount_ptr(
+      new PathMovement(path, 192, true, false, false)
+  ));
 
   disappear_date = System::now() + 10000;
   stop_now = false;
   entity_reached = nullptr;
-}
-
-/**
- * \brief Destructor.
- */
-Arrow::~Arrow() {
-
 }
 
 /**
@@ -237,7 +231,9 @@ void Arrow::update() {
     if (entity_reached != nullptr) {
       // the arrow just hit an entity (typically an enemy) and this entity may have a movement
       Rectangle dxy(get_x() - entity_reached->get_x(), get_y() - entity_reached->get_y());
-      set_movement(new FollowMovement(entity_reached, dxy.get_x(), dxy.get_y(), true));
+      set_movement(make_refcount_ptr(new FollowMovement(
+          entity_reached, dxy.get_x(), dxy.get_y(), true
+      )));
     }
   }
 

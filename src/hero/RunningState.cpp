@@ -105,7 +105,9 @@ void Hero::RunningState::update() {
     if (now >= next_phase_date) {
 
       double angle = Geometry::degrees_to_radians(get_sprites().get_animation_direction() * 90);
-      StraightMovement* movement = new StraightMovement(false, true);
+      const std::shared_ptr<StraightMovement>& movement = make_refcount_ptr(
+          new StraightMovement(false, true)
+      );
       movement->set_max_distance(3000);
       movement->set_speed(300);
       movement->set_angle(angle);
@@ -180,7 +182,9 @@ void Hero::RunningState::notify_obstacle_reached() {
 
   if (phase == 1) {
     int opposite_direction = (get_sprites().get_animation_direction8() + 4) % 8;
-    get_hero().set_movement(new JumpMovement(opposite_direction, 32, 64, false));
+    get_hero().set_movement(make_refcount_ptr(
+        new JumpMovement(opposite_direction, 32, 64, false)
+    ));
     get_sprites().set_animation_hurt();
     Sound::play("running_obstacle");
     phase++;

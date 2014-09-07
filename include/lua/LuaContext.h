@@ -214,8 +214,10 @@ class LuaContext {
     void update_drawables();
 
     // Movements.
-    void start_movement_on_point(Movement& movement, int point_index);
-    void stop_movement_on_point(Movement& movement);
+    void start_movement_on_point(
+        const std::shared_ptr<Movement>& movement, int point_index
+    );
+    void stop_movement_on_point(const std::shared_ptr<Movement>& movement);
     void update_movements();
 
     // Entities.
@@ -1073,7 +1075,7 @@ class LuaContext {
     static bool is_item(lua_State* l, int index);
     static EquipmentItem& check_item(lua_State* l, int index);
     static bool is_movement(lua_State* l, int index);
-    static Movement& check_movement(lua_State* l, int index);
+    static std::shared_ptr<Movement> check_movement(lua_State* l, int index);
     static bool is_straight_movement(lua_State* l, int index);
     static StraightMovement& check_straight_movement(lua_State* l, int index);
     static bool is_random_movement(lua_State* l, int index);

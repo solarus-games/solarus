@@ -51,14 +51,13 @@ Drawable::~Drawable() {
  *
  * \param movement The movement to apply.
  */
-void Drawable::start_movement(Movement& movement) {
+void Drawable::start_movement(const std::shared_ptr<Movement>& movement) {
 
   stop_movement();
-  this->movement = &movement;
-  movement.set_drawable(this);
-  RefCountable::ref(&movement);
+  this->movement = movement;
+  movement->set_drawable(this);
 
-  movement.set_suspended(is_suspended());
+  movement->set_suspended(is_suspended());
 }
 
 /**
@@ -68,7 +67,6 @@ void Drawable::start_movement(Movement& movement) {
  */
 void Drawable::stop_movement() {
 
-  RefCountable::unref(movement);
   movement = nullptr;
 }
 
@@ -76,7 +74,7 @@ void Drawable::stop_movement() {
  * \brief Returns the current movement of this drawable object.
  * \return The object's movement, or nullptr if there is no movement.
  */
-Movement* Drawable::get_movement() {
+const std::shared_ptr<Movement>& Drawable::get_movement() {
   return movement;
 }
 

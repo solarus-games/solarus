@@ -58,8 +58,7 @@ Hookshot::Hookshot(const Hero& hero):
 
   std::string path = " ";
   path[0] = '0' + (direction * 2);
-  Movement* movement = new PathMovement(path, 192, true, false, false);
-  set_movement(movement);
+  set_movement(make_refcount_ptr(new PathMovement(path, 192, true, false, false)));
 }
 
 /**
@@ -201,7 +200,9 @@ void Hookshot::update() {
 
       if (has_to_go_back) {
         going_back = true;
-        Movement* movement = new TargetMovement(&get_hero(), 0, 0, 192, true);
+        const std::shared_ptr<Movement> movement = make_refcount_ptr(
+            new TargetMovement(&get_hero(), 0, 0, 192, true)
+        );
         clear_movement();
         set_movement(movement);
       }
@@ -291,7 +292,9 @@ void Hookshot::attach_to(MapEntity& entity_reached) {
   int direction = get_sprite().get_current_direction();
   std::string path = " ";
   path[0] = '0' + (direction * 2);
-  get_hero().set_movement(new PathMovement(path, 192, true, false, false));
+  get_hero().set_movement(make_refcount_ptr(
+      new PathMovement(path, 192, true, false, false))
+  );
 }
 
 /**

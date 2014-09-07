@@ -228,7 +228,9 @@ void Pickable::notify_created() {
 void Pickable::initialize_movement() {
 
   if (is_falling()) {
-    set_movement(new FallingOnFloorMovement(falling_height));
+    set_movement(make_refcount_ptr(
+        new FallingOnFloorMovement(falling_height)
+    ));
   }
 }
 
@@ -296,7 +298,9 @@ void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode /* 
 
     if (entity_followed != nullptr) {
       clear_movement();
-      set_movement(new FollowMovement(entity_followed, 0, 0, true));
+      set_movement(make_refcount_ptr(
+          new FollowMovement(entity_followed, 0, 0, true)
+      ));
       falling_height = FALLING_NONE;
       set_blinking(false);
     }

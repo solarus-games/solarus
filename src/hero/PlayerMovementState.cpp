@@ -31,7 +31,8 @@ namespace solarus {
  * \param state_name A name describing this state.
  */
 Hero::PlayerMovementState::PlayerMovementState(
-    Hero& hero, const std::string& state_name):
+    Hero& hero, const std::string& state_name
+):
   State(hero, state_name),
   player_movement(nullptr),
   current_jumper(nullptr),
@@ -42,8 +43,6 @@ Hero::PlayerMovementState::PlayerMovementState(
  * \brief Destructor.
  */
 Hero::PlayerMovementState::~PlayerMovementState() {
-
-  RefCountable::unref(player_movement);
 }
 
 /**
@@ -54,7 +53,7 @@ Hero::PlayerMovementState::~PlayerMovementState() {
  *
  * \return The player movement.
  */
-PlayerMovement* Hero::PlayerMovementState::get_player_movement() {
+const std::shared_ptr<PlayerMovement>& Hero::PlayerMovementState::get_player_movement() {
   return player_movement;
 }
 
@@ -66,7 +65,7 @@ PlayerMovement* Hero::PlayerMovementState::get_player_movement() {
  *
  * \return The player movement.
  */
-const PlayerMovement* Hero::PlayerMovementState::get_player_movement() const {
+std::shared_ptr<const PlayerMovement> Hero::PlayerMovementState::get_player_movement() const {
   return player_movement;
 }
 
@@ -82,8 +81,9 @@ void Hero::PlayerMovementState::start(const State* previous_state) {
 
   State::start(previous_state);
 
-  player_movement = new PlayerMovement(get_hero().get_walking_speed());
-  RefCountable::ref(player_movement);
+  player_movement = make_refcount_ptr(
+      new PlayerMovement(get_hero().get_walking_speed())
+  );
   get_hero().set_movement(player_movement);
 
   if (is_current_state()) { // yes, the state may have already changed
@@ -115,7 +115,6 @@ void Hero::PlayerMovementState::stop(const State* next_state) {
   get_hero().clear_movement();
   get_sprites().set_animation_stopped_normal();
   cancel_jumper();
-  RefCountable::unref(player_movement);
   player_movement = nullptr;
 }
 
@@ -199,7 +198,7 @@ void Hero::PlayerMovementState::set_animation_walking() {
 bool Hero::PlayerMovementState::can_control_movement() const {
 
   // The player has control, unless a script has set another movement.
-  return get_hero().get_movement() == get_player_movement();
+  return get_hero().get_movement().get() == get_player_movement().get();
 }
 
 /**

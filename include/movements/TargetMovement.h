@@ -32,15 +32,18 @@ class TargetMovement: public StraightMovement {
   public:
 
     TargetMovement(
-        MapEntity* target_entity,
+        const std::shared_ptr<MapEntity>& target_entity,
         int x,
         int y,
         int moving_speed,
         bool ignore_obstacles
     );
-    ~TargetMovement();
 
-    void set_target(MapEntity* target_entity, int x, int y);
+    void set_target(
+        const std::shared_ptr<MapEntity>& target_entity,
+        int x,
+        int y
+    );
 
     int get_moving_speed() const;
     void set_moving_speed(int moving_speed);
@@ -57,7 +60,8 @@ class TargetMovement: public StraightMovement {
 
     int target_x;                      /**< X coordinate of the point or entity to track. */
     int target_y;                      /**< Y coordinate of the point or entity to track. */
-    MapEntity* target_entity;          /**< The entity to track (nullptr if only
+    std::shared_ptr<MapEntity>
+        target_entity;                 /**< The entity to track (nullptr if only
                                         * a point is targeted) */
     int entity_offset_x;               /**< X value to add to the entity's coordinates. */
     int entity_offset_y;               /**< Y value to add to the entity's coordinates. */

@@ -39,17 +39,10 @@ Camera::Camera(Map& map):
   separator_scrolling_dy(0),
   separator_next_scrolling_date(0),
   separator_scrolling_direction4(0),
-  separator_traversed(nullptr),
+  separator_traversed(),
   restoring(false),
   speed(120),
-  movement(nullptr) {
-}
-
-/**
- * \brief Destructor.
- */
-Camera::~Camera() {
-  delete movement;
+  movement() {
 }
 
 /**
@@ -215,7 +208,6 @@ void Camera::update_fixed_on_hero() {
     if (finished) {
         separator_next_scrolling_date = 0;
         separator_traversed->notify_activated(separator_scrolling_direction4);
-        RefCountable::unref(separator_traversed);
         separator_traversed = nullptr;
         separator_scrolling_direction4 = 0;
     }
@@ -260,7 +252,6 @@ void Camera::update_moving() {
   int y = movement->get_y() - get_height() / 2;
 
   if (movement->is_finished()) {
-    delete movement;
     movement = nullptr;
 
     if (restoring) {
@@ -308,7 +299,7 @@ void Camera::set_speed(int speed) {
  */
 void Camera::move(int target_x, int target_y) {
 
-  delete movement;
+  movement = nullptr;
 
   // Take care of the limits of the map.
   // TODO Also take care of separators.
@@ -329,7 +320,9 @@ void Camera::move(int target_x, int target_y) {
         map_location.get_height() - get_height() / 2);
   }
 
-  movement = new TargetMovement(nullptr, target_x, target_y, speed, true);
+  movement = RefCountable::make_refcount_ptr(
+      new TargetMovement(nullptr, target_x, target_y, speed, true)
+  );
   movement->set_xy(position.get_x() + get_width() / 2, position.get_y() + get_height() / 2);
 
   fixed_on_hero = false;
@@ -377,8 +370,9 @@ void Camera::traverse_separator(Separator* separator) {
   separator_scrolling_position = position;
 
   // Start scrolling.
-  separator_traversed = separator;
-  RefCountable::ref(separator);
+  separator_traversed = std::static_pointer_cast<Separator>(
+      separator->shared_from_this()
+  );
   separator_scrolling_dx = 0;
   separator_scrolling_dy = 0;
   separator_target_position = position;

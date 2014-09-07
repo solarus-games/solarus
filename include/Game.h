@@ -45,7 +45,7 @@ class Game {
   public:
 
     // creation and destruction
-    Game(MainLoop& main_loop, Savegame* savegame);
+    Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame);
     ~Game();
 
     void start();
@@ -55,8 +55,7 @@ class Game {
     // global objects
     MainLoop& get_main_loop();
     LuaContext& get_lua_context();
-    Hero& get_hero();
-    const Point& get_hero_xy();
+    const std::shared_ptr<Hero>& get_hero();
     GameCommands& get_commands();
     const GameCommands& get_commands() const;
     KeysEffect& get_keys_effect();
@@ -118,8 +117,10 @@ class Game {
 
     // main objects
     MainLoop& main_loop;       /**< the main loop object */
-    Savegame* savegame;        /**< the game data saved */
-    Hero* hero;
+    std::shared_ptr<Savegame>
+        savegame;        /**< the game data saved */
+    std::shared_ptr<Hero>
+        hero;                  /**< The hero entity.  */
 
     // current game state (elements currently shown)
     bool pause_allowed;        /**< indicates that the player is allowed to use the pause command */
@@ -135,8 +136,10 @@ class Game {
                                 * (represented on the HUD by the action icon, the objects icons, etc.) */
 
     // map
-    Map* current_map;          /**< the map currently displayed */
-    Map* next_map;             /**< the map where the hero is going to; if not nullptr, it means that the hero
+    std::shared_ptr<Map>
+        current_map;          /**< the map currently displayed */
+    std::shared_ptr<Map>
+        next_map;             /**< the map where the hero is going to; if not nullptr, it means that the hero
                                 * is changing from current_map to next_map */
     SurfacePtr previous_map_surface;  /**< a copy of the previous map surface for transition effects that display two maps */
 

@@ -97,7 +97,13 @@ void Hero::BoomerangState::update() {
       boomerang_direction8 = direction_pressed8;
     }
     double angle = Geometry::degrees_to_radians(boomerang_direction8 * 45);
-    get_entities().add_entity(new Boomerang(hero, max_distance, speed, angle, sprite_name));
+    get_entities().add_entity(new Boomerang(
+        std::static_pointer_cast<Hero>(get_hero().shared_from_this()),
+        max_distance,
+        speed,
+        angle,
+        sprite_name
+    ));
 
     hero.set_state(new FreeState(hero));
   }

@@ -32,9 +32,13 @@ class Boomerang: public MapEntity {
 
   public:
 
-    Boomerang(Hero& hero, int max_distance, int speed, double angle,
-        const std::string& sprite_name);
-    ~Boomerang();
+    Boomerang(
+        const std::shared_ptr<Hero>& hero,
+        int max_distance,
+        int speed,
+        double angle,
+        const std::string& sprite_name
+    );
 
     EntityType get_type() const override;
     virtual bool can_be_obstacle() const override;
@@ -79,7 +83,7 @@ class Boomerang: public MapEntity {
 
   private:
 
-    Hero& hero;                     /**< the hero */
+    std::shared_ptr<Hero> hero;     /**< The hero who shot this boomerang. */
 
     uint32_t next_sound_date;       /**< date when the boomerang sound is played next time */
 

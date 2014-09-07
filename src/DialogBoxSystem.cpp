@@ -152,7 +152,7 @@ void DialogBoxSystem::open(
     // Determine the position.
     const Rectangle& camera_position = game.get_current_map().get_camera_position();
     bool top = false;
-    if (game.get_hero().get_y() >= camera_position.get_y() + 130) {
+    if (game.get_hero()->get_y() >= camera_position.get_y() + 130) {
       top = true;
     }
     int x = camera_position.get_width() / 2 - 110;

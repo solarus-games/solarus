@@ -493,7 +493,7 @@ int LuaContext::movement_api_create(lua_State* l) {
       if (game != nullptr) {
         // If we are on a map, the default target is the hero.
         movement = RefCountable::make_refcount_ptr(new TargetMovement(
-            &game->get_hero(), 0, 0, 96, false
+            game->get_hero(), 0, 0, 96, false
         ));
       }
       else {
@@ -605,7 +605,7 @@ int LuaContext::movement_api_start(lua_State* l) {
       lua_context.start_movement_on_point(movement, 2);
     }
     else if (is_entity(l, 2)) {
-      MapEntity& entity = check_entity(l, 2);
+      MapEntity& entity = *check_entity(l, 2);
       entity.clear_movement();
       entity.set_movement(movement);
     }
@@ -1033,7 +1033,7 @@ int LuaContext::target_movement_api_set_target(lua_State* l) {
     }
     else {
       // the target is an entity, possibly with an offset.
-      MapEntity& target = check_entity(l, 2);
+      std::shared_ptr<MapEntity> target = check_entity(l, 2);
       int x = 0;
       int y = 0;
       if (lua_isnumber(l, 3)) {
@@ -1041,7 +1041,7 @@ int LuaContext::target_movement_api_set_target(lua_State* l) {
         x = LuaTools::check_int(l, 3);
         y = LuaTools::check_int(l, 4);
       }
-      movement.set_target(&target, x, y);
+      movement.set_target(target, x, y);
     }
 
     return 0;
@@ -1391,7 +1391,7 @@ int LuaContext::path_finding_movement_api_set_target(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     PathFindingMovement& movement = check_path_finding_movement(l, 1);
-    MapEntity& target = check_entity(l, 2);
+    const std::shared_ptr<MapEntity>& target = check_entity(l, 2);
 
     movement.set_target(target);
 
@@ -1472,7 +1472,7 @@ int LuaContext::circle_movement_api_set_center(lua_State* l) {
     else {
       // the center is an entity
 
-      MapEntity& center = check_entity(l, 2);
+      std::shared_ptr<MapEntity> center = check_entity(l, 2);
       int dx = LuaTools::opt_int(l, 3, 0);
       int dy = LuaTools::opt_int(l, 4, 0);
       movement.set_center(center, dx, dy);

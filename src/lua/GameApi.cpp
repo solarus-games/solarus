@@ -135,8 +135,8 @@ bool LuaContext::is_game(lua_State* l, int index) {
  * \param index an index in the stack
  * \return the game
  */
-Savegame& LuaContext::check_game(lua_State* l, int index) {
-  return static_cast<Savegame&>(*check_userdata(
+std::shared_ptr<Savegame> LuaContext::check_game(lua_State* l, int index) {
+  return std::static_pointer_cast<Savegame>(check_userdata(
       l, index, game_module_name
   ));
 }
@@ -207,13 +207,13 @@ int LuaContext::game_api_load(lua_State* l) {
       LuaTools::error(l, "Cannot load savegame: no write directory was specified in quest.dat");
     }
 
-    Savegame* savegame = new Savegame(get_lua_context(l).get_main_loop(), file_name);
+    const std::shared_ptr<Savegame> savegame = RefCountable::make_refcount_ptr(
+        new Savegame(get_lua_context(l).get_main_loop(), file_name)
+    );
 
-    RefCountable::ref(savegame);
     savegame->get_equipment().load_items();
 
     push_game(l, *savegame);
-    RefCountable::unref(savegame);
     return 1;
   }
   SOLARUS_LUA_BOUNDARY_CATCH(l);
@@ -227,7 +227,7 @@ int LuaContext::game_api_load(lua_State* l) {
 int LuaContext::game_api_save(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     if (FileTools::get_quest_write_dir().empty()) {
       LuaTools::error(l, "Cannot save game: no write directory was specified in quest.dat");
@@ -248,21 +248,21 @@ int LuaContext::game_api_save(lua_State* l) {
 int LuaContext::game_api_start(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    std::shared_ptr<Savegame> savegame = check_game(l, 1);
 
     if (QuestResourceList::get_elements(QuestResourceList::RESOURCE_MAP).empty()) {
       LuaTools::error(l, "Cannot start game: there is no map in this quest");
     }
 
-    Game* game = savegame.get_game();
+    Game* game = savegame->get_game();
     if (game != nullptr) {
       // A game is already running with this savegame: restart it.
       game->restart();
     }
     else {
       // Create a new game to run.
-      MainLoop& main_loop = savegame.get_lua_context().get_main_loop();
-      Game* game = new Game(main_loop, &savegame);
+      MainLoop& main_loop = savegame->get_lua_context().get_main_loop();
+      Game* game = new Game(main_loop, savegame);
       main_loop.set_game(game);
     }
 
@@ -279,7 +279,7 @@ int LuaContext::game_api_start(lua_State* l) {
 int LuaContext::game_api_is_started(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
     bool is_started = game != nullptr;
@@ -298,7 +298,7 @@ int LuaContext::game_api_is_started(lua_State* l) {
 int LuaContext::game_api_is_suspended(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
     bool is_suspended = game != nullptr && game->is_suspended();
@@ -317,7 +317,7 @@ int LuaContext::game_api_is_suspended(lua_State* l) {
 int LuaContext::game_api_is_paused(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
     bool is_paused = game != nullptr && game->is_paused();
@@ -336,7 +336,7 @@ int LuaContext::game_api_is_paused(lua_State* l) {
 int LuaContext::game_api_set_paused(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     bool paused = true;
     if (lua_gettop(l) >= 2) {
       paused = lua_toboolean(l, 2);
@@ -360,7 +360,7 @@ int LuaContext::game_api_set_paused(lua_State* l) {
 int LuaContext::game_api_is_pause_allowed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
     bool is_pause_allowed = game != nullptr && game->is_pause_allowed();
@@ -379,7 +379,7 @@ int LuaContext::game_api_is_pause_allowed(lua_State* l) {
 int LuaContext::game_api_set_pause_allowed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     bool pause_allowed = true;
     if (lua_gettop(l) >= 2) {
@@ -404,7 +404,7 @@ int LuaContext::game_api_set_pause_allowed(lua_State* l) {
 int LuaContext::game_api_is_dialog_enabled(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
     if (game == nullptr) {
@@ -426,7 +426,7 @@ int LuaContext::game_api_is_dialog_enabled(lua_State* l) {
 int LuaContext::game_api_start_dialog(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     const std::string& dialog_id = LuaTools::check_string(l, 2);
     ScopedLuaRef info_ref;
     ScopedLuaRef callback_ref;
@@ -472,7 +472,7 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
 int LuaContext::game_api_stop_dialog(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
     if (game == nullptr) {
@@ -505,7 +505,7 @@ int LuaContext::game_api_stop_dialog(lua_State* l) {
 int LuaContext::game_api_is_game_over_enabled(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
     if (game == nullptr) {
@@ -527,7 +527,7 @@ int LuaContext::game_api_is_game_over_enabled(lua_State* l) {
 int LuaContext::game_api_start_game_over(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
     if (game == nullptr) {
@@ -549,7 +549,7 @@ int LuaContext::game_api_start_game_over(lua_State* l) {
 int LuaContext::game_api_stop_game_over(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
     if (game == nullptr) {
@@ -571,7 +571,7 @@ int LuaContext::game_api_stop_game_over(lua_State* l) {
 int LuaContext::game_api_get_map(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
     if (game == nullptr || !game->has_current_map()) {
@@ -593,14 +593,14 @@ int LuaContext::game_api_get_map(lua_State* l) {
 int LuaContext::game_api_get_hero(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
     if (game == nullptr) {
       lua_pushnil(l);
     }
     else {
-      push_hero(l, game->get_hero());
+      push_hero(l, *game->get_hero());
     }
     return 1;
   }
@@ -615,7 +615,7 @@ int LuaContext::game_api_get_hero(lua_State* l) {
 int LuaContext::game_api_get_value(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     const std::string& key = LuaTools::check_string(l, 2);
 
     if (!LuaTools::is_valid_lua_identifier(key)) {
@@ -651,7 +651,7 @@ int LuaContext::game_api_get_value(lua_State* l) {
 int LuaContext::game_api_set_value(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     const std::string& key = LuaTools::check_string(l, 2);
 
     if (key[0] == '_') {
@@ -705,7 +705,7 @@ int LuaContext::game_api_set_value(lua_State* l) {
 int LuaContext::game_api_get_starting_location(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     const std::string& starting_map = savegame.get_string(Savegame::KEY_STARTING_MAP);
     const std::string& starting_point = savegame.get_string(Savegame::KEY_STARTING_POINT);
@@ -735,7 +735,7 @@ int LuaContext::game_api_get_starting_location(lua_State* l) {
 int LuaContext::game_api_set_starting_location(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     const std::string& map_id = LuaTools::check_string(l, 2);
     const std::string& destination_name = LuaTools::opt_string(l, 3, "");
 
@@ -755,7 +755,7 @@ int LuaContext::game_api_set_starting_location(lua_State* l) {
 int LuaContext::game_api_get_life(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     int life = savegame.get_equipment().get_life();
     lua_pushinteger(l, life);
@@ -772,7 +772,7 @@ int LuaContext::game_api_get_life(lua_State* l) {
 int LuaContext::game_api_set_life(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     int life = LuaTools::check_int(l, 2);
 
     savegame.get_equipment().set_life(life);
@@ -790,7 +790,7 @@ int LuaContext::game_api_set_life(lua_State* l) {
 int LuaContext::game_api_add_life(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     int life = LuaTools::check_int(l, 2);
 
     if (life < 0) {
@@ -812,7 +812,7 @@ int LuaContext::game_api_add_life(lua_State* l) {
 int LuaContext::game_api_remove_life(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     int life = LuaTools::check_int(l, 2);
 
     if (life < 0) {
@@ -834,7 +834,7 @@ int LuaContext::game_api_remove_life(lua_State* l) {
 int LuaContext::game_api_get_max_life(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     int life = savegame.get_equipment().get_max_life();
 
@@ -852,7 +852,7 @@ int LuaContext::game_api_get_max_life(lua_State* l) {
 int LuaContext::game_api_set_max_life(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     int life = LuaTools::check_int(l, 2);
 
     if (life <= 0) {
@@ -874,7 +874,7 @@ int LuaContext::game_api_set_max_life(lua_State* l) {
 int LuaContext::game_api_add_max_life(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     int life = LuaTools::check_int(l, 2);
 
     if (life < 0) {
@@ -897,7 +897,7 @@ int LuaContext::game_api_add_max_life(lua_State* l) {
 int LuaContext::game_api_get_money(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     int money = savegame.get_equipment().get_money();
 
@@ -915,7 +915,7 @@ int LuaContext::game_api_get_money(lua_State* l) {
 int LuaContext::game_api_set_money(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     int money = LuaTools::check_int(l, 2);
 
     savegame.get_equipment().set_money(money);
@@ -933,7 +933,7 @@ int LuaContext::game_api_set_money(lua_State* l) {
 int LuaContext::game_api_add_money(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     int money = LuaTools::check_int(l, 2);
 
     if (money < 0) {
@@ -955,7 +955,7 @@ int LuaContext::game_api_add_money(lua_State* l) {
 int LuaContext::game_api_remove_money(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     int money = LuaTools::check_int(l, 2);
 
     if (money < 0) {
@@ -977,7 +977,7 @@ int LuaContext::game_api_remove_money(lua_State* l) {
 int LuaContext::game_api_get_max_money(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     int money = savegame.get_equipment().get_max_money();
 
@@ -995,7 +995,7 @@ int LuaContext::game_api_get_max_money(lua_State* l) {
 int LuaContext::game_api_set_max_money(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     int money = LuaTools::check_int(l, 2);
 
     if (money < 0) {
@@ -1017,7 +1017,7 @@ int LuaContext::game_api_set_max_money(lua_State* l) {
 int LuaContext::game_api_get_magic(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     int magic = savegame.get_equipment().get_magic();
 
@@ -1035,7 +1035,7 @@ int LuaContext::game_api_get_magic(lua_State* l) {
 int LuaContext::game_api_set_magic(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     int magic = LuaTools::check_int(l, 2);
 
     savegame.get_equipment().set_magic(magic);
@@ -1053,7 +1053,7 @@ int LuaContext::game_api_set_magic(lua_State* l) {
 int LuaContext::game_api_add_magic(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     int magic = LuaTools::check_int(l, 2);
 
     if (magic < 0) {
@@ -1075,7 +1075,7 @@ int LuaContext::game_api_add_magic(lua_State* l) {
 int LuaContext::game_api_remove_magic(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     int magic = LuaTools::check_int(l, 2);
 
     if (magic < 0) {
@@ -1097,7 +1097,7 @@ int LuaContext::game_api_remove_magic(lua_State* l) {
 int LuaContext::game_api_get_max_magic(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     int magic = savegame.get_equipment().get_max_magic();
 
@@ -1115,7 +1115,7 @@ int LuaContext::game_api_get_max_magic(lua_State* l) {
 int LuaContext::game_api_set_max_magic(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     int magic = LuaTools::check_int(l, 2);
 
     if (magic < 0) {
@@ -1137,7 +1137,7 @@ int LuaContext::game_api_set_max_magic(lua_State* l) {
 int LuaContext::game_api_has_ability(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
 
     bool has_ability = savegame.get_equipment().has_ability(ability);
@@ -1156,7 +1156,7 @@ int LuaContext::game_api_has_ability(lua_State* l) {
 int LuaContext::game_api_get_ability(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
 
     int ability_level = savegame.get_equipment().get_ability(ability);
@@ -1175,7 +1175,7 @@ int LuaContext::game_api_get_ability(lua_State* l) {
 int LuaContext::game_api_set_ability(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
     int level = LuaTools::check_int(l, 3);
 
@@ -1194,7 +1194,7 @@ int LuaContext::game_api_set_ability(lua_State* l) {
 int LuaContext::game_api_get_item(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     const std::string& item_name = LuaTools::check_string(l, 2);
 
     if (!savegame.get_equipment().item_exists(item_name)) {
@@ -1215,7 +1215,7 @@ int LuaContext::game_api_get_item(lua_State* l) {
 int LuaContext::game_api_has_item(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     const std::string& item_name = LuaTools::check_string(l, 2);
 
     Equipment& equipment = savegame.get_equipment();
@@ -1241,7 +1241,7 @@ int LuaContext::game_api_has_item(lua_State* l) {
 int LuaContext::game_api_get_item_assigned(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     int slot = LuaTools::check_int(l, 2);
 
     if (slot < 1 || slot > 2) {
@@ -1269,7 +1269,7 @@ int LuaContext::game_api_get_item_assigned(lua_State* l) {
 int LuaContext::game_api_set_item_assigned(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     int slot = LuaTools::check_int(l, 2);
     EquipmentItem* item = nullptr;
     if (!lua_isnil(l, 3)) {
@@ -1295,7 +1295,7 @@ int LuaContext::game_api_set_item_assigned(lua_State* l) {
 int LuaContext::game_api_get_command_effect(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
 
@@ -1390,7 +1390,7 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
 int LuaContext::game_api_get_command_keyboard_binding(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
 
@@ -1417,7 +1417,7 @@ int LuaContext::game_api_get_command_keyboard_binding(lua_State* l) {
 int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
     if (lua_gettop(l) <= 3) {
@@ -1446,7 +1446,7 @@ int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
 int LuaContext::game_api_get_command_joypad_binding(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
 
@@ -1472,7 +1472,7 @@ int LuaContext::game_api_get_command_joypad_binding(lua_State* l) {
 int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
     if (lua_gettop(l) <= 3) {
@@ -1500,7 +1500,7 @@ int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
 int LuaContext::game_api_capture_command_binding(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
     const ScopedLuaRef& callback_ref = LuaTools::opt_function(l, 3);
@@ -1521,7 +1521,7 @@ int LuaContext::game_api_capture_command_binding(lua_State* l) {
 int LuaContext::game_api_is_command_pressed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
 
@@ -1541,7 +1541,7 @@ int LuaContext::game_api_is_command_pressed(lua_State* l) {
 int LuaContext::game_api_get_commands_direction(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
 
     GameCommands& commands = savegame.get_game()->get_commands();
     int wanted_direction8 = commands.get_wanted_direction8();
@@ -1565,7 +1565,7 @@ int LuaContext::game_api_get_commands_direction(lua_State* l) {
 int LuaContext::game_api_simulate_command_pressed(lua_State* l){
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
 
@@ -1584,7 +1584,7 @@ int LuaContext::game_api_simulate_command_pressed(lua_State* l){
 int LuaContext::game_api_simulate_command_released(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Savegame& savegame = check_game(l, 1);
+    Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
 

@@ -889,7 +889,7 @@ int LuaContext::map_api_get_hero(lua_State* l) {
     Map& map = check_map(l, 1);
 
     // Return the hero even if he is no longer on this map.
-    push_hero(l, map.get_game().get_hero());
+    push_hero(l, *map.get_game().get_hero());
     return 1;
   }
   SOLARUS_LUA_BOUNDARY_CATCH(l);

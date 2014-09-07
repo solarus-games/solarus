@@ -1096,11 +1096,11 @@ class LuaContext {
     static bool is_pixel_movement(lua_State* l, int index);
     static PixelMovement& check_pixel_movement(lua_State* l, int index);
     static bool is_game(lua_State* l, int index);
-    static Savegame& check_game(lua_State* l, int index);
+    static std::shared_ptr<Savegame> check_game(lua_State* l, int index);
     static bool is_map(lua_State* l, int index);
     static Map& check_map(lua_State* l, int index);
     static bool is_entity(lua_State* l, int index);
-    static MapEntity& check_entity(lua_State* l, int index);
+    static std::shared_ptr<MapEntity> check_entity(lua_State* l, int index);
     static bool is_hero(lua_State* l, int index);
     static Hero& check_hero(lua_State* l, int index);
     static bool is_teletransporter(lua_State* l, int index);

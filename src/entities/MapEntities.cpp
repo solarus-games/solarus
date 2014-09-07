@@ -47,7 +47,7 @@ MapEntities::MapEntities(Game& game, Map& map):
   map_width8(0),
   map_height8(0),
   tiles_grid_size(0),
-  hero(game.get_hero()),
+  hero(*game.get_hero()),
   default_destination(nullptr),
   boomerang(nullptr) {
 

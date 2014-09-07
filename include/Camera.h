@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
+#include <memory>
 
 namespace solarus {
 
@@ -42,7 +43,6 @@ class Camera {
   public:
 
     Camera(Map& map);
-    ~Camera();
 
     void update();
     const Rectangle& get_position() const;
@@ -73,12 +73,14 @@ class Camera {
     int separator_scrolling_dy;             /**< Y increment to the camera position when crossing a separator. */
     uint32_t separator_next_scrolling_date; /**< Next camera position change when crossing a separator. */
     int separator_scrolling_direction4;     /**< Direction when scrolling. */
-    Separator* separator_traversed;         /**< Separator currently being traversed or nullptr. */
+    std::shared_ptr<Separator>
+        separator_traversed;                /**< Separator currently being traversed or nullptr. */
 
     // Camera being moved toward a point or back to the hero.
-    bool restoring;               /**< \c true if the camera is moving back to the hero. */
-    int speed;                    /**< Speed of the next movement. */
-    TargetMovement* movement;     /**< Movement of the camera, or nullptr for no movement. */
+    bool restoring;                         /**< \c true if the camera is moving back to the hero. */
+    int speed;                              /**< Speed of the next movement. */
+    std::shared_ptr<TargetMovement>
+        movement;                           /**< Movement of the camera, or nullptr for no movement. */
 };
 
 /**

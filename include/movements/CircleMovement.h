@@ -34,7 +34,6 @@ class CircleMovement: public Movement {
 
     // creation and destruction
     CircleMovement(bool ignore_obstacles);
-    ~CircleMovement();
 
     // state
     virtual void update() override;
@@ -46,7 +45,11 @@ class CircleMovement: public Movement {
 
     // properties
     void set_center(const Point& center_point);
-    void set_center(MapEntity& center_entity, int x = 0, int y = 0);
+    void set_center(
+        const std::shared_ptr<MapEntity>& center_entity,
+        int x = 0,
+        int y = 0
+    );
     int get_radius() const;
     void set_radius(int radius);
     int get_radius_speed() const;
@@ -71,7 +74,7 @@ class CircleMovement: public Movement {
     void recompute_position();
 
     // center of the circle
-    MapEntity* center_entity;                       /**< the entity to make circles around (nullptr if only a point is used) */
+    std::shared_ptr<MapEntity> center_entity;       /**< the entity to make circles around (nullptr if only a point is used) */
     Point center_point;                             /**< absolute coordinates of the center if only a point is used,
                                                      * or coordinates relative to the center entity otherwise */
 

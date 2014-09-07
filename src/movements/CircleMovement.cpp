@@ -55,14 +55,6 @@ CircleMovement::CircleMovement(bool ignore_obstacles):
 }
 
 /**
- * \brief Destroys this circle movement.
- */
-CircleMovement::~CircleMovement() {
-
-  RefCountable::unref(center_entity);
-}
-
-/**
  * \brief Sets the center of the circles.
  *
  * The movement will make circles around the specified fixed point.
@@ -70,8 +62,6 @@ CircleMovement::~CircleMovement() {
  * \param center_point center of the circles to make
  */
 void CircleMovement::set_center(const Point& center_point) {
-
-  RefCountable::unref(this->center_entity);
 
   this->center_entity = nullptr;
   this->center_point = center_point;
@@ -87,12 +77,12 @@ void CircleMovement::set_center(const Point& center_point) {
  * \param x x coordinate of where the center should be placed relative to the entity's origin
  * \param y y coordinate of where the center should be placed relative to the entity's origin
  */
-void CircleMovement::set_center(MapEntity& center_entity, int x, int y) {
-
-  RefCountable::unref(this->center_entity);
-
-  this->center_entity = &center_entity;
-  RefCountable::ref(this->center_entity);
+void CircleMovement::set_center(
+    const std::shared_ptr<MapEntity>& center_entity,
+    int x,
+    int y
+) {
+  this->center_entity = center_entity;
   this->center_point = { x, y };
   recompute_position();
 }

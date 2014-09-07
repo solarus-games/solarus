@@ -41,8 +41,7 @@ namespace solarus {
  * \param savegame The saved data of this game. Will be deleted in the
  * destructor unless someone is still using it (the refcount info is used).
  */
-Game::Game(MainLoop& main_loop, Savegame* savegame):
-
+Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
   main_loop(main_loop),
   savegame(savegame),
   pause_allowed(true),
@@ -60,13 +59,11 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   crystal_state(false) {
 
   // notify objects
-  RefCountable::ref(savegame);
   savegame->set_game(this);
 
   // initialize members
   commands = new GameCommands(*this);
-  hero = new Hero(get_equipment());
-  RefCountable::ref(hero);
+  hero = RefCountable::make_refcount_ptr(new Hero(get_equipment()));
   keys_effect = new KeysEffect();
   update_keys_effect();
 
@@ -119,11 +116,9 @@ Game::~Game() {
 
   if (savegame != nullptr) {
     savegame->set_game(nullptr);
-    RefCountable::unref(savegame);
   }
 
   current_map->unload();
-  RefCountable::unref(current_map);
 
   Music::stop_playing();
 
@@ -131,7 +126,6 @@ Game::~Game() {
     // The hero was initialized.
     hero->notify_being_removed();
   }
-  RefCountable::unref(hero);
   delete transition;
   delete keys_effect;
   delete commands;
@@ -144,7 +138,8 @@ void Game::start() {
   started = true;
   get_savegame().notify_game_started();
   get_lua_context().game_on_started(*this);
-  get_lua_context().hero_on_state_changed(get_hero(), get_hero().get_state_name());
+  Hero& hero = *get_hero();
+  get_lua_context().hero_on_state_changed(hero, hero.get_state_name());
 }
 
 /**
@@ -180,23 +175,8 @@ LuaContext& Game::get_lua_context() {
  * \brief Returns the hero.
  * \return the hero
  */
-Hero& Game::get_hero() {
-  return *hero;
-}
-
-/**
- * \brief Returns the coordinates of the hero on the current map.
- *
- * The coordinates returned are the coordinates of the hero's origin point on the map.
- * The width and height are not used.
- *
- * \return the position of the hero
- */
-const Point& Game::get_hero_xy() {
-
-  static Point xy;
-  xy = hero->get_xy();
-  return xy;
+const std::shared_ptr<Hero>& Game::get_hero() {
+  return hero;
 }
 
 /**
@@ -422,7 +402,6 @@ void Game::update_transitions() {
     if (restarting) {
       current_map->unload();
       main_loop.set_game(new Game(main_loop, savegame));
-      RefCountable::unref(savegame);
       savegame = nullptr;  // The new game is the owner.
     }
     else if (transition_direction == Transition::TRANSITION_CLOSING) {
@@ -472,7 +451,6 @@ void Game::update_transitions() {
 
         // set the next map
         current_map->unload();
-        RefCountable::unref(current_map);
 
         current_map = next_map;
         next_map = nullptr;
@@ -599,8 +577,7 @@ void Game::set_current_map(
   // prepare the next map
   if (current_map == nullptr || map_id != current_map->get_id()) {
     // another map
-    next_map = new Map(map_id);
-    RefCountable::ref(next_map);
+    next_map = RefCountable::make_refcount_ptr(new Map(map_id));
     next_map->load(*this);
     next_map->check_suspended();
   }

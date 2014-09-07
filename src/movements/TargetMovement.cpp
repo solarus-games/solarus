@@ -35,7 +35,7 @@ const uint32_t TargetMovement::recomputation_delay = 150;
  * \param ignore_obstacles \c true to ignore obstacles (if on a map).
  */
 TargetMovement::TargetMovement(
-    MapEntity* target_entity,
+    const std::shared_ptr<MapEntity>& target_entity,
     int x,
     int y,
     int moving_speed,
@@ -52,18 +52,6 @@ TargetMovement::TargetMovement(
   moving_speed(moving_speed),
   next_recomputation_date(System::now()),
   finished(false) {
-
-  if (this->target_entity != nullptr) {
-    RefCountable::ref(this->target_entity);
-  }
-}
-
-/**
- * \brief Destructor.
- */
-TargetMovement::~TargetMovement() {
-
-  RefCountable::unref(target_entity);
 }
 
 /**
@@ -83,14 +71,14 @@ void TargetMovement::notify_object_controlled() {
  * \param x X of the target point, or X offset in the case of an entity.
  * \param y Y of the target point, or Y offset in the case of an entity.
  */
-void TargetMovement::set_target(MapEntity* target_entity, int x, int y) {
-
-  RefCountable::unref(this->target_entity);
-
+void TargetMovement::set_target(
+    const std::shared_ptr<MapEntity>& target_entity,
+    int x,
+    int y
+) {
   this->target_entity = target_entity;
 
   if (this->target_entity != nullptr) {
-    RefCountable::ref(this->target_entity);
     this->entity_offset_x = x;
     this->entity_offset_y = y;
   }

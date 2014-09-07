@@ -41,13 +41,13 @@ namespace solarus {
  * \param sprite_name animation set id representing the boomerang
  */
 Boomerang::Boomerang(
-    Hero& hero,
+    const std::shared_ptr<Hero>& hero,
     int max_distance,
     int speed,
     double angle,
     const std::string& sprite_name
 ):
-  MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
+  MapEntity("", 0, hero->get_layer(), 0, 0, 0, 0),
   hero(hero),
   has_to_go_back(false),
   going_back(false),
@@ -58,9 +58,9 @@ Boomerang::Boomerang(
   set_size(16, 16);
   set_origin(8, 8);
 
-  int hero_x = hero.get_top_left_x();
-  int hero_y = hero.get_top_left_y();
-  switch (hero.get_animation_direction()) {
+  int hero_x = hero->get_top_left_x();
+  int hero_y = hero->get_top_left_y();
+  switch (hero->get_animation_direction()) {
 
     case 0:
       set_xy(hero_x + 24, hero_y + 8);
@@ -89,13 +89,6 @@ Boomerang::Boomerang(
   set_movement(movement);
 
   next_sound_date = System::now();
-}
-
-/**
- * \brief Destructor.
- */
-Boomerang::~Boomerang() {
-
 }
 
 /**
@@ -278,8 +271,8 @@ void Boomerang::update() {
   if (!going_back && has_to_go_back) {
     going_back = true;
     clear_movement();
-    set_movement(make_refcount_ptr(new TargetMovement(&hero, 0, 0, speed, true)));
-    get_entities().set_entity_layer(*this, hero.get_layer()); // because the hero's layer may have changed
+    set_movement(make_refcount_ptr(new TargetMovement(hero, 0, 0, speed, true)));
+    get_entities().set_entity_layer(*this, hero->get_layer()); // because the hero's layer may have changed
   }
 }
 
@@ -354,7 +347,7 @@ void Boomerang::notify_collision_with_crystal(Crystal& crystal, CollisionMode co
  */
 void Boomerang::notify_collision_with_enemy(Enemy& enemy) {
 
-  if (!overlaps(hero)) {
+  if (!overlaps(*hero)) {
     enemy.try_hurt(ATTACK_BOOMERANG, *this, nullptr);
   }
 }

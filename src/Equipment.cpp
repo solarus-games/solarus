@@ -628,7 +628,7 @@ void Equipment::set_ability(Ability ability, int level) {
         ability == ABILITY_SWORD ||
         ability == ABILITY_SHIELD) {
       // The hero's sprites may depend on these abilities.
-      game->get_hero().rebuild_equipment();
+      game->get_hero()->rebuild_equipment();
     }
   }
 }

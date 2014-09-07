@@ -30,26 +30,17 @@ namespace solarus {
  */
 PathFindingMovement::PathFindingMovement(int speed):
   PathMovement("", speed, false, false, true),
-  target(nullptr),
+  target(),
   next_recomputation_date(0) {
 
 }
 
 /**
- * \brief Destructor.
- */
-PathFindingMovement::~PathFindingMovement() {
-
-  RefCountable::unref(target);
-}
-
-/**
  * \brief Sets the entity to target with this movement.
  */
-void PathFindingMovement::set_target(MapEntity& target) {
+void PathFindingMovement::set_target(const std::shared_ptr<MapEntity>& target) {
 
-  this->target = &target;
-  RefCountable::ref(&target);
+  this->target = target;
   next_recomputation_date = System::now() + 100;
 }
 
@@ -61,10 +52,8 @@ void PathFindingMovement::update() {
   PathMovement::update();
 
   if (target != nullptr && target->is_being_removed()) {
-    RefCountable::unref(target);
     target = nullptr;
   }
-
 
   if (is_suspended()) {
     return;

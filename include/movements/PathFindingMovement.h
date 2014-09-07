@@ -35,9 +35,8 @@ class PathFindingMovement: public PathMovement {
   public:
 
     PathFindingMovement(int speed);
-    ~PathFindingMovement();
 
-    void set_target(MapEntity& target);
+    void set_target(const std::shared_ptr<MapEntity>& target);
     virtual bool is_finished() const override;
 
     virtual const std::string& get_lua_type_name() const override;
@@ -49,7 +48,7 @@ class PathFindingMovement: public PathMovement {
 
   private:
 
-    MapEntity* target;              /**< the entity targeted by this movement (usually the hero) */
+    std::shared_ptr<MapEntity> target;      /**< the entity targeted by this movement (usually the hero) */
     uint32_t next_recomputation_date;
 
 };

@@ -426,14 +426,14 @@ int LuaContext::sprite_api_set_ignore_suspend(lua_State *l) {
 int LuaContext::sprite_api_synchronize(lua_State *l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    const std::shared_ptr<Sprite>& sprite = check_sprite(l, 1);
+    Sprite& sprite = *check_sprite(l, 1);
 
     if (!lua_isnil(l, 2)) {
       const std::shared_ptr<Sprite>& reference_sprite = check_sprite(l, 2);
-      sprite->set_synchronized_to(reference_sprite);
+      sprite.set_synchronized_to(reference_sprite);
     }
     else {
-      sprite->set_synchronized_to(nullptr);
+      sprite.set_synchronized_to(nullptr);
     }
 
     return 0;

@@ -458,7 +458,7 @@ void Game::update_transitions() {
     }
     else {
       current_map->notify_opening_transition_finished();
-      previous_map_surface.reset();
+      previous_map_surface = nullptr;
     }
   }
 

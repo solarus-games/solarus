@@ -90,7 +90,7 @@ void TextSurface::quit() {
 
     if (font.bitmap != nullptr) {
       // It's a bitmap font.
-      font.bitmap.reset();
+      font.bitmap = nullptr;
     }
     else {
       // It's a normal font.

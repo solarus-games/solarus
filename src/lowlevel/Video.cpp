@@ -483,7 +483,7 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
 
   if (!disable_window) {
 
-    scaled_surface.reset();
+    scaled_surface = nullptr;
 
     Size render_size = quest_size;
 

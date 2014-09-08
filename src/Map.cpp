@@ -603,7 +603,7 @@ void Map::draw_background() {
  */
 void Map::build_foreground_surface() {
 
-  foreground_surface.reset();
+  foreground_surface = nullptr;
 
   const int screen_width = visible_surface->get_width();
   const int screen_height = visible_surface->get_height();

@@ -82,7 +82,7 @@ MainLoop::~MainLoop() {
 
   // Destroying the root surface may indirectly trigger Lua operations,
   // so the Lua context must still exist at this point.
-  root_surface.reset();
+  root_surface = nullptr;
 
   delete lua_context;
   QuestResourceList::quit();

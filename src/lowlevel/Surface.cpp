@@ -611,7 +611,7 @@ void Surface::raw_draw_region(
             *this,
             subsurface->dst_rect.get_xy()
         );
-        subsurface.reset();
+        subsurface = nullptr;
       }
       clear_subsurfaces();
     }

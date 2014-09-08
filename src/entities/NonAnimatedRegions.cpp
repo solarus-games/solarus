@@ -121,7 +121,7 @@ void NonAnimatedRegions::build(std::vector<TilePtr>& rejected_tiles) {
 void NonAnimatedRegions::notify_tileset_changed() {
 
   for (unsigned i = 0; i < non_animated_tiles.get_num_cells(); ++i) {
-    optimized_tiles_surfaces[i].reset();
+    optimized_tiles_surfaces[i] = nullptr;
   }
   // Everything will be redrawn when necessary.
 }

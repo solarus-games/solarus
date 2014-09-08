@@ -39,7 +39,7 @@ NonAnimatedRegions::NonAnimatedRegions(Map& map, Layer layer):
 /**
  * \brief Adds a tile to the list of tiles.
  */
-void NonAnimatedRegions::add_tile(const std::shared_ptr<Tile>& tile) {
+void NonAnimatedRegions::add_tile(const TilePtr& tile) {
 
   Debug::check_assertion(optimized_tiles_surfaces.empty(),
       "Tile regions are already built");
@@ -56,7 +56,7 @@ void NonAnimatedRegions::add_tile(const std::shared_ptr<Tile>& tile) {
  * They include all animated tiles plus the static tiles overlapping them.
  * You will have to redraw these tiles at each frame.
  */
-void NonAnimatedRegions::build(std::vector<std::shared_ptr<Tile>>& rejected_tiles) {
+void NonAnimatedRegions::build(std::vector<TilePtr>& rejected_tiles) {
 
   Debug::check_assertion(optimized_tiles_surfaces.empty(),
       "Tile regions are already built");
@@ -99,7 +99,7 @@ void NonAnimatedRegions::build(std::vector<std::shared_ptr<Tile>>& rejected_tile
   }
 
   // Build the list of animated tiles and tiles overlapping them.
-  for (const std::shared_ptr<Tile>& tile: tiles) {
+  for (const TilePtr& tile: tiles) {
     if (!tile->is_animated()) {
       non_animated_tiles.add(tile);
       if (overlaps_animated_tile(*tile)) {
@@ -240,9 +240,9 @@ void NonAnimatedRegions::build_cell(int cell_index) {
   // Let this surface as a software destination because it is built only
   // once (here) and never changes later.
 
-  const std::vector<std::shared_ptr<Tile>>& tiles_in_cell =
+  const std::vector<TilePtr>& tiles_in_cell =
       non_animated_tiles.get_elements(cell_index);
-  for (const std::shared_ptr<Tile>& tile: tiles_in_cell) {
+  for (const TilePtr& tile: tiles_in_cell) {
     tile->draw(cell_surface, cell_xy);
   }
 

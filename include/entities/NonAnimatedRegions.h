@@ -18,15 +18,15 @@
 #define SOLARUS_NON_ANIMATED_REGIONS_H
 
 #include "Common.h"
-#include "entities/Layer.h"
 #include "containers/Grid.h"
+#include "entities/Layer.h"
+#include "entities/TilePtr.h"
 #include "lowlevel/SurfacePtr.h"
 #include <vector>
 
 namespace solarus {
 
 class Map;
-class Tile;
 
 /**
  * \brief Manages the tiles that are in non-animated regions.
@@ -42,8 +42,8 @@ class NonAnimatedRegions {
 
     NonAnimatedRegions(Map& map, Layer layer);
 
-    void add_tile(const std::shared_ptr<Tile>& tile);
-    void build(std::vector<std::shared_ptr<Tile>>& rejected_tiles);
+    void add_tile(const TilePtr& tile);
+    void build(std::vector<TilePtr>& rejected_tiles);
     void notify_tileset_changed();
     void draw_on_map();
 
@@ -54,13 +54,13 @@ class NonAnimatedRegions {
 
     Map& map;                               /**< The map. */
     Layer layer;                            /**< Layer of the map managed by this object. */
-    std::vector<std::shared_ptr<Tile>>
+    std::vector<TilePtr>
         tiles;                              /**< All tiles contained in this layer and candidates to
                                              * be optimized. This list is cleared after build() is called. */
     std::vector<bool> are_squares_animated; /**< Whether each 8x8 square of the map has animated tiles. */
 
     // Handle the lazy drawing.
-    Grid<std::shared_ptr<Tile>>
+    Grid<TilePtr>
         non_animated_tiles;                 /**< All non-animated tiles. Stored in a grid so that
                                              * we can quickly find the ones to draw lazily later when the
                                              * camera moves. */

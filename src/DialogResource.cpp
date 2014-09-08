@@ -103,7 +103,7 @@ const Dialog& DialogResource::get_dialog(const std::string& dialog_id) {
  */
 int DialogResource::l_dialog(lua_State* l) {
 
-  LuaTools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaTools::check_type(l, 1, LUA_TTABLE);
 
     const std::string dialog_id = LuaTools::check_string_field(l, 1, "id");

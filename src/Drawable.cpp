@@ -230,7 +230,7 @@ void Drawable::draw(const SurfacePtr& dst_surface,
     draw_transition(*transition);
   }
 
-  raw_draw(*dst_surface, dst_position + xy);  // TODO shared_ptr
+  raw_draw(*dst_surface, dst_position + xy);
 }
 
 /**
@@ -242,7 +242,7 @@ void Drawable::draw_region(
     const Rectangle& region,
     const SurfacePtr& dst_surface) {
 
-  draw_region(region, dst_surface, Point(0, 0));  // TODO shared_ptr
+  draw_region(region, dst_surface, Point(0, 0));
 }
 
 /**
@@ -261,7 +261,7 @@ void Drawable::draw_region(
     draw_transition(*transition);
   }
 
-  raw_draw_region(region, *dst_surface, dst_position + xy);  // TODO shared_ptr
+  raw_draw_region(region, *dst_surface, dst_position + xy);
 }
 
 }

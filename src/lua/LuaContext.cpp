@@ -1293,7 +1293,7 @@ void LuaContext::on_update() {
 void LuaContext::on_draw(const SurfacePtr& dst_surface) {
 
   if (find_method("on_draw")) {
-    push_surface(l, *dst_surface);  // TODO shared_ptr
+    push_surface(l, *dst_surface);
     call_function(2, 0, "on_draw");
   }
 }
@@ -1305,7 +1305,7 @@ void LuaContext::on_draw(const SurfacePtr& dst_surface) {
 void LuaContext::on_pre_draw(const SurfacePtr& dst_surface) {
 
   if (find_method("on_pre_draw")) {
-    push_surface(l, *dst_surface);  // TODO shared_ptr
+    push_surface(l, *dst_surface);
     call_function(2, 0, "on_pre_draw");
   }
 }
@@ -1317,7 +1317,7 @@ void LuaContext::on_pre_draw(const SurfacePtr& dst_surface) {
 void LuaContext::on_post_draw(const SurfacePtr& dst_surface) {
 
   if (find_method("on_post_draw")) {
-    push_surface(l, *dst_surface);  // TODO shared_ptr
+    push_surface(l, *dst_surface);
     call_function(2, 0, "on_post_draw");
   }
 }

@@ -764,7 +764,7 @@ void MapEntities::remove_marked_entities() {
     }
 
     // remove it from the whole list
-    MapEntityPtr shared_entity = std::static_pointer_cast<MapEntity>(entity->shared_from_this());  // TODO shared_ptr
+    MapEntityPtr shared_entity = std::static_pointer_cast<MapEntity>(entity->shared_from_this());
     all_entities.remove(shared_entity);
     const std::string& name = entity->get_name();
     if (!name.empty()) {

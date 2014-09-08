@@ -70,7 +70,8 @@ class Hero::JumpingState: public Hero::State {
     int direction8;               /**< direction of the jump (0 to 7) */
     bool with_sound;              /**< indicates that a jump sound is played */
     std::shared_ptr<CarriedItem>
-        carried_item;             /**< an item carried by the hero while making this jump, or nullptr */  // TODO shared_ptr
+        carried_item;             /**< an item carried by the hero while making
+                                   * this jump, or nullptr */
 
 };
 

@@ -40,18 +40,9 @@ DialogBoxSystem::DialogBoxSystem(Game& game):
   selected_first_answer(true) {
 
   for (int i = 0; i < nb_visible_lines; i++) {
-    line_surfaces[i] = new TextSurface(0, 0,
-        TextSurface::ALIGN_LEFT, TextSurface::ALIGN_BOTTOM);
-  }
-}
-
-/**
- * \brief Destructor.
- */
-DialogBoxSystem::~DialogBoxSystem() {
-
-  for (int i = 0; i < nb_visible_lines; i++) {
-    delete line_surfaces[i];  // TODO shared_ptr
+    line_surfaces[i] = RefCountable::make_refcount_ptr(new TextSurface(
+        0, 0, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_BOTTOM
+    ));
   }
 }
 

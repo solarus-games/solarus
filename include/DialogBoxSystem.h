@@ -42,7 +42,6 @@ class DialogBoxSystem {
   public:
 
     DialogBoxSystem(Game& game);
-    ~DialogBoxSystem();
 
     Game& get_game();
     bool is_enabled() const;
@@ -72,7 +71,8 @@ class DialogBoxSystem {
     bool built_in;                                  /**< Whether we are using the built-in dialog box. */
     static const int nb_visible_lines = 3;          /**< Maximum number of visible lines. */
     std::list<std::string> remaining_lines;         /**< Text of each line still to be displayed. */
-    TextSurface* line_surfaces[nb_visible_lines];   /**< Text surface of each visible line. */
+    std::shared_ptr<TextSurface>
+        line_surfaces[nb_visible_lines];            /**< Text surface of each visible line. */
     Point text_position;                            /**< Destination position of the first line. */
     bool is_question;                               /**< Whether the dialog is a question with two possible answers. */
     bool selected_first_answer;                     /**< If there is a question: whether the first or second answer is selected. */

@@ -382,7 +382,7 @@ void Game::update_transitions() {
       transition = Transition::create(
           transition_style,
           Transition::TRANSITION_CLOSING,
-          *current_map->get_visible_surface(),  // TODO shared_ptr
+          *current_map->get_visible_surface(),
           this);
       transition->start();
     }
@@ -412,7 +412,7 @@ void Game::update_transitions() {
         transition = Transition::create(
             transition_style,
             Transition::TRANSITION_OPENING,
-            *current_map->get_visible_surface(),  // TODO shared_ptr
+            *current_map->get_visible_surface(),
             this);
         transition->start();
         next_map = nullptr;
@@ -468,12 +468,12 @@ void Game::update_transitions() {
     transition = Transition::create(
         transition_style,
         Transition::TRANSITION_OPENING,
-        *current_map->get_visible_surface(),  // TODO shared_ptr
+        *current_map->get_visible_surface(),
         this);
 
     if (previous_map_surface != nullptr) {
       // some transition effects need to display both maps simultaneously
-      transition->set_previous_surface(previous_map_surface.get());  // TODO shared_ptr
+      transition->set_previous_surface(previous_map_surface.get());
     }
 
     hero->place_on_destination(*current_map, previous_map_location);
@@ -521,7 +521,7 @@ void Game::draw(const SurfacePtr& dst_surface) {
   if (current_map->is_loaded()) {
     current_map->draw();
     if (transition != nullptr) {
-      transition->draw(*current_map->get_visible_surface());  // TODO shared_ptr
+      transition->draw(*current_map->get_visible_surface());
     }
     current_map->get_visible_surface()->draw(dst_surface);
 
@@ -792,7 +792,7 @@ void Game::restart() {
     transition = Transition::create(
         Transition::FADE,
         Transition::TRANSITION_CLOSING,
-        *current_map->get_visible_surface(),  // TODO shared_ptr
+        *current_map->get_visible_surface(),
         this
     );
     transition->start();

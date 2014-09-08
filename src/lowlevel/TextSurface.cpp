@@ -653,7 +653,7 @@ void TextSurface::raw_draw_region(const Rectangle& region,
  * \param transition The transition effect to apply.
  */
 void TextSurface::draw_transition(Transition& transition) {
-  transition.draw(*surface.get());  // TODO shared_ptr
+  transition.draw(*surface);
 }
 
 /**
@@ -662,7 +662,7 @@ void TextSurface::draw_transition(Transition& transition) {
  * \return The surface for transitions.
  */
 Surface& TextSurface::get_transition_surface() {
-  return *surface;  // TODO shared_ptr
+  return *surface;
 }
 
 /**

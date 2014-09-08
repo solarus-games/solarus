@@ -46,13 +46,6 @@ Hero::RunningState::RunningState(Hero& hero, GameCommands::Command command):
 }
 
 /**
- * \brief Destructor.
- */
-Hero::RunningState::~RunningState() {
-
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */
@@ -105,9 +98,8 @@ void Hero::RunningState::update() {
     if (now >= next_phase_date) {
 
       double angle = Geometry::degrees_to_radians(get_sprites().get_animation_direction() * 90);
-      const std::shared_ptr<StraightMovement>& movement = make_refcount_ptr(
-          new StraightMovement(false, true)
-      );
+      std::shared_ptr<StraightMovement> movement =
+          std::make_shared<StraightMovement>(false, true);
       movement->set_max_distance(3000);
       movement->set_speed(300);
       movement->set_angle(angle);
@@ -182,8 +174,8 @@ void Hero::RunningState::notify_obstacle_reached() {
 
   if (phase == 1) {
     int opposite_direction = (get_sprites().get_animation_direction8() + 4) % 8;
-    get_hero().set_movement(make_refcount_ptr(
-        new JumpMovement(opposite_direction, 32, 64, false)
+    get_hero().set_movement(std::make_shared<JumpMovement>(
+        opposite_direction, 32, 64, false
     ));
     get_sprites().set_animation_hurt();
     Sound::play("running_obstacle");

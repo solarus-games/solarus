@@ -18,7 +18,7 @@
 #define SOLARUS_EXPORTABLE_TO_LUA_H
 
 #include "Common.h"
-#include "RefCountable.h"
+#include <memory>
 #include <string>
 
 namespace solarus {
@@ -30,8 +30,7 @@ namespace solarus {
  * no matter which world stops using it first.
  */
 class ExportableToLua:
-    public std::enable_shared_from_this<ExportableToLua>,
-    public RefCountable {
+    public std::enable_shared_from_this<ExportableToLua> {
 
   public:
 

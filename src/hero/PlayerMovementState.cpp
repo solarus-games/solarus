@@ -81,8 +81,8 @@ void Hero::PlayerMovementState::start(const State* previous_state) {
 
   State::start(previous_state);
 
-  player_movement = make_refcount_ptr(
-      new PlayerMovement(get_hero().get_walking_speed())
+  player_movement = std::make_shared<PlayerMovement>(
+      get_hero().get_walking_speed()
   );
   get_hero().set_movement(player_movement);
 

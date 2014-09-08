@@ -55,7 +55,7 @@ ShopTreasure::ShopTreasure(
   price(price),
   dialog_id(dialog_id),
   price_digits(0, 0, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP),
-  rupee_icon_sprite(make_refcount_ptr(new Sprite("entities/rupee_icon"))) {
+  rupee_icon_sprite(std::make_shared<Sprite>("entities/rupee_icon")) {
 
   std::ostringstream oss;
   oss << price;
@@ -90,9 +90,9 @@ std::shared_ptr<ShopTreasure> ShopTreasure::create(
     return nullptr;
   }
 
-  return make_refcount_ptr(new ShopTreasure(
+  return std::make_shared<ShopTreasure>(
       name, layer, x, y, treasure, price, dialog_id
-  ));
+  );
 }
 
 /**

@@ -377,7 +377,7 @@ int LuaContext::timer_api_start(lua_State *l) {
     const ScopedLuaRef& callback_ref = LuaTools::check_function(l, 3);
 
     // Create the timer.
-    TimerPtr timer = RefCountable::make_refcount_ptr(new Timer(delay));
+    TimerPtr timer = std::make_shared<Timer>(delay);
     lua_context.add_timer(timer, 1, callback_ref);
 
     if (delay == 0) {

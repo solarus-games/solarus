@@ -30,7 +30,6 @@ class Hero::RunningState: public Hero::State {
   public:
 
     RunningState(Hero& hero, GameCommands::Command command);
-    ~RunningState();
 
     virtual void start(const State* previous_state) override;
     virtual void stop(const State* next_state) override;

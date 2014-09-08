@@ -104,8 +104,8 @@ void Hero::PushingState::update() {
           std::string path = "  ";
           path[0] = path[1] = '0' + pushing_direction4 * 2;
 
-          pushing_movement = make_refcount_ptr(
-              new PathMovement(path, 40, false, false, false)
+          pushing_movement = std::make_shared<PathMovement>(
+              path, 40, false, false, false
           );
           hero.set_movement(pushing_movement);
           pushed_entity = facing_entity;

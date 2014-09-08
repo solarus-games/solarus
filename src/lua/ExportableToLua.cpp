@@ -23,7 +23,6 @@ namespace solarus {
  * \brief Creates an object exportable to Lua.
  */
 ExportableToLua::ExportableToLua():
-  RefCountable(),
   known_to_lua(false),
   with_lua_table(false) {
 

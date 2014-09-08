@@ -31,7 +31,6 @@ class Hero::HookshotState: public Hero::State {
   public:
 
     HookshotState(Hero& hero);
-    ~HookshotState();
 
     virtual void start(const State* previous_state);
     virtual void stop(const State* next_state);

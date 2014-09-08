@@ -63,7 +63,7 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
 
   // initialize members
   commands = new GameCommands(*this);
-  hero = RefCountable::make_refcount_ptr(new Hero(get_equipment()));
+  hero = std::make_shared<Hero>(get_equipment());
   keys_effect = new KeysEffect();
   update_keys_effect();
 
@@ -577,7 +577,7 @@ void Game::set_current_map(
   // prepare the next map
   if (current_map == nullptr || map_id != current_map->get_id()) {
     // another map
-    next_map = RefCountable::make_refcount_ptr(new Map(map_id));
+    next_map = std::make_shared<Map>(map_id);
     next_map->load(*this);
     next_map->check_suspended();
   }

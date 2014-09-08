@@ -96,15 +96,15 @@ CarriedItem::CarriedItem(
   set_drawn_in_y_order(true);
 
   // create the lift movement and the sprite
-  const std::shared_ptr<PixelMovement>& movement = make_refcount_ptr(
-      new PixelMovement(lifting_trajectories[direction], 100, false, true)
+  std::shared_ptr<PixelMovement> movement = std::make_shared<PixelMovement>(
+      lifting_trajectories[direction], 100, false, true
   );
   create_sprite(animation_set_id);
   get_sprite().set_current_animation("stopped");
   set_movement(movement);
 
   // create the shadow (not visible yet)
-  shadow_sprite = RefCountable::make_refcount_ptr(new Sprite("entities/shadow"));
+  shadow_sprite = std::make_shared<Sprite>("entities/shadow");
   shadow_sprite->set_current_animation("big");
 }
 
@@ -187,9 +187,8 @@ void CarriedItem::throw_item(int direction) {
 
   // set the movement of the item sprite
   set_y(hero.get_y());
-  const std::shared_ptr<StraightMovement>& movement = make_refcount_ptr(
-      new StraightMovement(false, false)
-  );
+  std::shared_ptr<StraightMovement> movement =
+      std::make_shared<StraightMovement>(false, false);
   movement->set_speed(200);
   movement->set_angle(Geometry::degrees_to_radians(direction * 90));
   clear_movement();
@@ -245,8 +244,8 @@ void CarriedItem::break_item() {
     }
   }
   else {
-    get_entities().add_entity(make_refcount_ptr(
-        new Explosion("", get_layer(), get_xy(), true)
+    get_entities().add_entity(std::make_shared<Explosion>(
+        "", get_layer(), get_xy(), true
     ));
     Sound::play("explosion");
     if (is_throwing) {
@@ -367,12 +366,12 @@ void CarriedItem::update() {
 
     // make the item follow the hero
     clear_movement();
-    set_movement(make_refcount_ptr(new FollowMovement(
+    set_movement(std::make_shared<FollowMovement>(
         std::static_pointer_cast<Hero>(hero.shared_from_this()),
         0,
         -18,
         true
-    )));
+    ));
   }
 
   // when the item has finished flying, destroy it

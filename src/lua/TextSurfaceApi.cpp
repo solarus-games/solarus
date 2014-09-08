@@ -136,7 +136,7 @@ int LuaContext::text_surface_api_create(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     std::shared_ptr<TextSurface> text_surface =
-        RefCountable::make_refcount_ptr(new TextSurface(0, 0));
+        std::make_shared<TextSurface>(0, 0);
 
     if (lua_gettop(l) > 0) {
       LuaTools::check_type(l, 1, LUA_TTABLE);

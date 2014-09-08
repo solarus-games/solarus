@@ -1189,9 +1189,7 @@ SpritePtr MapEntity::create_sprite(
     const std::string& animation_set_id,
     bool enable_pixel_collisions
 ) {
-  const SpritePtr& sprite = make_refcount_ptr(
-      new Sprite(animation_set_id)
-  );
+  SpritePtr sprite = std::make_shared<Sprite>(animation_set_id);
 
   if (enable_pixel_collisions) {
     sprite->enable_pixel_collisions();

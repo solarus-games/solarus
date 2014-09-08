@@ -408,7 +408,7 @@ void Equipment::load_items() {
       QuestResourceList::get_elements(QuestResourceList::RESOURCE_ITEM);
   for (const auto& kvp: item_elements) {
     const std::string& item_id = kvp.first;
-    std::shared_ptr<EquipmentItem> item = RefCountable::make_refcount_ptr(new EquipmentItem(*this));
+    std::shared_ptr<EquipmentItem> item = std::make_shared<EquipmentItem>(*this);
     item->set_name(item_id);
     items[item_id] = item;
   }

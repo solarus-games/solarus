@@ -58,9 +58,13 @@ class Surface: public Drawable {
       DIR_LANGUAGE     /**< the language-specific image directory of the data package, for the current language */
     };
 
+    Surface(int width, int height);
+    explicit Surface(SDL_Surface* internal_surface);
     ~Surface();
 
-    // Constructors are private so that surfaces are only created on the heap.
+    // Surfaces should only created with std::make_shared.
+    // This is what create() functions do, so you should call them rather than
+    // constructors.
     // This is because they are always reference-counted with shared_ptr
     // internally for drawing.
     static SurfacePtr create(int width, int height);
@@ -106,9 +110,6 @@ class Surface: public Drawable {
 
     class SubSurfaceNode;
     using SubSurfaceNodePtr = std::shared_ptr<Surface::SubSurfaceNode>;
-
-    Surface(int width, int height);
-    explicit Surface(SDL_Surface* internal_surface);
 
     uint32_t get_pixel(int index) const;
     bool is_pixel_transparent(int index) const;

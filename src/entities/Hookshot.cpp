@@ -43,8 +43,8 @@ Hookshot::Hookshot(const Hero& hero):
     has_to_go_back(false),
     going_back(false),
     entity_reached(nullptr),
-    link_sprite(make_refcount_ptr(new Sprite("entities/hookshot"))
-) {
+    link_sprite(std::make_shared<Sprite>("entities/hookshot")) {
+
   // initialize the entity
   int direction = hero.get_animation_direction();
   create_sprite("entities/hookshot", true);
@@ -58,7 +58,7 @@ Hookshot::Hookshot(const Hero& hero):
 
   std::string path = " ";
   path[0] = '0' + (direction * 2);
-  set_movement(make_refcount_ptr(new PathMovement(path, 192, true, false, false)));
+  set_movement(std::make_shared<PathMovement>(path, 192, true, false, false));
 }
 
 /**
@@ -193,14 +193,12 @@ void Hookshot::update() {
 
       if (has_to_go_back) {
         going_back = true;
-        std::shared_ptr<Movement> movement = make_refcount_ptr(
-            new TargetMovement(
-                std::static_pointer_cast<Hero>(get_hero().shared_from_this()),
-                0,
-                0,
-                192,
-                true
-            )
+        std::shared_ptr<Movement> movement = std::make_shared<TargetMovement>(
+            std::static_pointer_cast<Hero>(get_hero().shared_from_this()),
+            0,
+            0,
+            192,
+            true
         );
         clear_movement();
         set_movement(movement);
@@ -291,9 +289,9 @@ void Hookshot::attach_to(MapEntity& entity_reached) {
   int direction = get_sprite().get_current_direction();
   std::string path = " ";
   path[0] = '0' + (direction * 2);
-  get_hero().set_movement(make_refcount_ptr(
-      new PathMovement(path, 192, true, false, false))
-  );
+  get_hero().set_movement(std::make_shared<PathMovement>(
+      path, 192, true, false, false
+  ));
 }
 
 /**

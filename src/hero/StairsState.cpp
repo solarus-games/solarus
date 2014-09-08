@@ -78,8 +78,8 @@ void Hero::StairsState::start(const State* previous_state) {
   // movement
   int speed = stairs.is_inside_floor() ? 40 : 24;
   std::string path = stairs.get_path(way);
-  const std::shared_ptr<PathMovement>& movement = make_refcount_ptr(
-      new PathMovement(path, speed, false, true, false)
+  std::shared_ptr<PathMovement> movement = std::make_shared<PathMovement>(
+      path, speed, false, true, false
   );
 
   // sprites and sound

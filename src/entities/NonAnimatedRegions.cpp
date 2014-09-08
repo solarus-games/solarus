@@ -19,7 +19,6 @@
 #include "entities/Tile.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
-#include "RefCountable.h"
 #include "Map.h"
 
 namespace solarus {

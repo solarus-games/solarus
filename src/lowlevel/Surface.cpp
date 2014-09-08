@@ -44,7 +44,7 @@ namespace solarus {
  * Each node represents a source surface drawn somewhere, and the list of
  * surfaces drawn on itself.
  */
-class Surface::SubSurfaceNode: public RefCountable {
+class Surface::SubSurfaceNode {
 
   public:
 
@@ -165,7 +165,7 @@ Surface::~Surface() {
  * \return The created surface.
  */
 SurfacePtr Surface::create(int width, int height) {
-  SurfacePtr surface = make_refcount_ptr(new Surface(width, height));
+  SurfacePtr surface = std::make_shared<Surface>(width, height);
   return surface;
 }
 
@@ -175,7 +175,7 @@ SurfacePtr Surface::create(int width, int height) {
  * \return The created surface.
  */
 SurfacePtr Surface::create(const Size& size) {
-  SurfacePtr surface = make_refcount_ptr(new Surface(size.width, size.height));
+  SurfacePtr surface = std::make_shared<Surface>(size.width, size.height);
   return surface;
 }
 
@@ -198,7 +198,7 @@ SurfacePtr Surface::create(const std::string& file_name,
     return nullptr;
   }
 
-  SurfacePtr surface = make_refcount_ptr(new Surface(sdl_surface));
+  SurfacePtr surface = std::make_shared<Surface>(sdl_surface);
   return surface;
 }
 
@@ -662,18 +662,7 @@ void Surface::raw_draw_region(
     // Do not draw anything, just store the operation in the tree instead.
     // The actual drawing will be done at rendering time in GPU.
 
-    SurfacePtr src_surface;
-    try {
-      src_surface = std::static_pointer_cast<Surface>(shared_from_this());
-    }
-    catch (const std::bad_weak_ptr& ex){
-      // No more shared_ptr: this is possible during the transition phase
-      // between the old system (RefCountable) and the new system (shared_ptr),
-      // because not all surfaces use shared_ptr everywhere yet.
-      // TODO When RefCountable is gone, assert that use_count > 0 and remove
-      // this special case.
-      src_surface = make_refcount_ptr(this);
-    }
+    SurfacePtr src_surface = std::static_pointer_cast<Surface>(shared_from_this());
     dst_surface.add_subsurface(src_surface, region, dst_position);
   }
 

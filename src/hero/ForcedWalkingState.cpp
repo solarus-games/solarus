@@ -38,8 +38,8 @@ Hero::ForcedWalkingState::ForcedWalkingState(
 
   State(hero, "forced walking") {
 
-  this->movement = make_refcount_ptr(new PathMovement(
-      path, hero.get_walking_speed(), loop, ignore_obstacles, false)
+  this->movement = std::make_shared<PathMovement>(
+      path, hero.get_walking_speed(), loop, ignore_obstacles, false
   );
 }
 

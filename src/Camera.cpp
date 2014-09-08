@@ -320,8 +320,8 @@ void Camera::move(int target_x, int target_y) {
         map_location.get_height() - get_height() / 2);
   }
 
-  movement = RefCountable::make_refcount_ptr(
-      new TargetMovement(nullptr, target_x, target_y, speed, true)
+  movement = std::make_shared<TargetMovement>(
+      nullptr, target_x, target_y, speed, true
   );
   movement->set_xy(position.get_x() + get_width() / 2, position.get_y() + get_height() / 2);
 

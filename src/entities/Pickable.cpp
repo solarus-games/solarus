@@ -111,8 +111,8 @@ std::shared_ptr<Pickable> Pickable::create(
     return nullptr;
   }
 
-  std::shared_ptr<Pickable> pickable = RefCountable::make_refcount_ptr(
-      new Pickable(name, layer, x, y, treasure)
+  std::shared_ptr<Pickable> pickable = std::make_shared<Pickable>(
+      name, layer, x, y, treasure
   );
 
   // Set the item properties.
@@ -150,7 +150,7 @@ void Pickable::initialize_sprites() {
 
   bool has_shadow = false;
   if (!animation.empty()) {
-    shadow_sprite = make_refcount_ptr(new Sprite("entities/shadow"));
+    shadow_sprite = std::make_shared<Sprite>("entities/shadow");
     has_shadow = shadow_sprite->has_animation(animation);
   }
 
@@ -220,9 +220,7 @@ void Pickable::notify_created() {
 void Pickable::initialize_movement() {
 
   if (is_falling()) {
-    set_movement(make_refcount_ptr(
-        new FallingOnFloorMovement(falling_height)
-    ));
+    set_movement(std::make_shared<FallingOnFloorMovement>(falling_height));
   }
 }
 
@@ -292,8 +290,8 @@ void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode /* 
 
     if (entity_followed != nullptr) {
       clear_movement();
-      set_movement(make_refcount_ptr(
-          new FollowMovement(entity_followed, 0, 0, true)
+      set_movement(std::make_shared<FollowMovement>(
+          entity_followed, 0, 0, true
       ));
       falling_height = FALLING_NONE;
       set_blinking(false);

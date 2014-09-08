@@ -36,12 +36,6 @@ Hero::HookshotState::HookshotState(Hero& hero):
 }
 
 /**
- * \brief Destructor.
- */
-Hero::HookshotState::~HookshotState() {
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */
@@ -50,9 +44,7 @@ void Hero::HookshotState::start(const State* previous_state) {
   State::start(previous_state);
 
   get_sprites().set_animation("hookshot");
-  get_entities().add_entity(make_refcount_ptr(
-      new Hookshot(get_hero())
-  ));
+  get_entities().add_entity(std::make_shared<Hookshot>(get_hero()));
 }
 
 /**

@@ -101,8 +101,8 @@ void Hero::PullingState::update() {
           std::string path = "  ";
           path[0] = path[1] = '0' + opposite_direction8;
 
-          pulling_movement = make_refcount_ptr(
-              new PathMovement(path, 40, false, false, false)
+          pulling_movement = std::make_shared<PathMovement>(
+              path, 40, false, false, false
           );
           hero.set_movement(pulling_movement);
           pulled_entity = facing_entity;

@@ -999,7 +999,7 @@ int LuaContext::map_api_create_tile(lua_State* l) {
 
     for (int current_y = y; current_y < y + height; current_y += pattern.get_height()) {
       for (int current_x = x; current_x < x + width; current_x += pattern.get_width()) {
-        MapEntityPtr entity = RefCountable::make_refcount_ptr(new Tile(
+        MapEntityPtr entity = std::make_shared<Tile>(
             layer,
             current_x,
             current_y,
@@ -1007,7 +1007,7 @@ int LuaContext::map_api_create_tile(lua_State* l) {
             pattern.get_height(),
             map.get_tileset(),
             tile_pattern_id
-        ));
+        );
         map.get_entities().add_entity(entity);
       }
     }
@@ -1035,7 +1035,7 @@ int LuaContext::map_api_create_destination(lua_State* l) {
     const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
     bool is_default = LuaTools::opt_boolean_field(l, 1, "default", false);
 
-    MapEntityPtr entity = RefCountable::make_refcount_ptr(new Destination(
+    MapEntityPtr entity = std::make_shared<Destination>(
         name,
         layer,
         x,
@@ -1043,7 +1043,7 @@ int LuaContext::map_api_create_destination(lua_State* l) {
         direction,
         sprite_name,
         is_default
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {
@@ -1080,7 +1080,7 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
 
     entity_creation_check_size(l, 1, width, height);
 
-    MapEntityPtr entity = RefCountable::make_refcount_ptr(new Teletransporter(
+    MapEntityPtr entity = std::make_shared<Teletransporter>(
         name,
         layer,
         x,
@@ -1092,7 +1092,7 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
         transition_style,
         destination_map_id,
         destination_name
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {
@@ -1202,7 +1202,7 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
       + treasure_savegame_variable + "'");
     }
 
-    std::shared_ptr<Destructible> destructible = RefCountable::make_refcount_ptr(new Destructible(
+    std::shared_ptr<Destructible> destructible = std::make_shared<Destructible>(
         name,
         layer,
         x,
@@ -1210,7 +1210,7 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
         animation_set_id,
         Treasure(map.get_game(), treasure_name, treasure_variant, treasure_savegame_variable),
         modified_ground
-    ));
+    );
     destructible->set_destruction_sound(destruction_sound_id);
     destructible->set_weight(weight);
     destructible->set_can_be_cut(can_be_cut);
@@ -1288,14 +1288,14 @@ int LuaContext::map_api_create_chest(lua_State* l) {
       }
     }
 
-    std::shared_ptr<Chest> chest = RefCountable::make_refcount_ptr(new Chest(
+    std::shared_ptr<Chest> chest = std::make_shared<Chest>(
         name,
         layer,
         x,
         y,
         sprite_name,
         Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable)
-    ));
+    );
     chest->set_opening_method(opening_method);
     chest->set_opening_condition(opening_condition);
     chest->set_opening_condition_consumed(opening_condition_consumed);
@@ -1332,7 +1332,7 @@ int LuaContext::map_api_create_jumper(lua_State* l) {
 
     entity_creation_check_size(l, 1, width, height);
 
-    MapEntityPtr entity = RefCountable::make_refcount_ptr(new Jumper(
+    MapEntityPtr entity = std::make_shared<Jumper>(
         name,
         layer,
         x,
@@ -1341,7 +1341,7 @@ int LuaContext::map_api_create_jumper(lua_State* l) {
         height,
         direction,
         jump_length
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {
@@ -1392,7 +1392,7 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
     }
 
     Game& game = map.get_game();
-    const MapEntityPtr& entity = Enemy::create(
+    MapEntityPtr entity = Enemy::create(
         game,
         breed,
         rank,
@@ -1444,7 +1444,7 @@ int LuaContext::map_api_create_npc(lua_State* l) {
     iss >> subtype;
 
     Game& game = map.get_game();
-    MapEntityPtr entity = RefCountable::make_refcount_ptr(new Npc(
+    MapEntityPtr entity = std::make_shared<Npc>(
         game,
         name,
         layer,
@@ -1454,7 +1454,7 @@ int LuaContext::map_api_create_npc(lua_State* l) {
         sprite_name,
         direction,
         behavior
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {
@@ -1492,7 +1492,7 @@ int LuaContext::map_api_create_block(lua_State* l) {
       LuaTools::arg_error(l, 1, oss.str());
     }
 
-    std::shared_ptr<Block> entity = RefCountable::make_refcount_ptr(new Block(
+    std::shared_ptr<Block> entity = std::make_shared<Block>(
         name,
         layer,
         x,
@@ -1502,7 +1502,7 @@ int LuaContext::map_api_create_block(lua_State* l) {
         pushable,
         pullable,
         maximum_moves
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {
@@ -1535,7 +1535,7 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
 
     entity_creation_check_size(l, 1, width, height);
 
-    MapEntityPtr entity = RefCountable::make_refcount_ptr(new DynamicTile(
+    MapEntityPtr entity = std::make_shared<DynamicTile>(
         name,
         layer,
         x,
@@ -1545,7 +1545,7 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
         map.get_tileset(),
         tile_pattern_id,
         enabled_at_start
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {
@@ -1579,7 +1579,7 @@ int LuaContext::map_api_create_switch(lua_State* l) {
     bool needs_block = LuaTools::check_boolean_field(l, 1, "needs_block");
     bool inactivate_when_leaving = LuaTools::check_boolean_field(l, 1, "inactivate_when_leaving");
 
-    MapEntityPtr entity = RefCountable::make_refcount_ptr(new Switch(
+    MapEntityPtr entity = std::make_shared<Switch>(
         name,
         layer,
         x,
@@ -1589,7 +1589,7 @@ int LuaContext::map_api_create_switch(lua_State* l) {
         sound_id,
         needs_block,
         inactivate_when_leaving
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {
@@ -1625,7 +1625,7 @@ int LuaContext::map_api_create_wall(lua_State* l) {
 
     entity_creation_check_size(l, 1, width, height);
 
-    MapEntityPtr entity = RefCountable::make_refcount_ptr(new Wall(
+    MapEntityPtr entity = std::make_shared<Wall>(
         name,
         layer,
         x,
@@ -1637,7 +1637,7 @@ int LuaContext::map_api_create_wall(lua_State* l) {
         stops_npcs,
         stops_blocks,
         stops_projectiles
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {
@@ -1668,14 +1668,14 @@ int LuaContext::map_api_create_sensor(lua_State* l) {
 
     entity_creation_check_size(l, 1, width, height);
 
-    MapEntityPtr entity = RefCountable::make_refcount_ptr(new Sensor(
+    MapEntityPtr entity = std::make_shared<Sensor>(
         name,
         layer,
         x,
         y,
         width,
         height
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {
@@ -1702,12 +1702,12 @@ int LuaContext::map_api_create_crystal(lua_State* l) {
     int x = LuaTools::check_int_field(l, 1, "x");
     int y = LuaTools::check_int_field(l, 1, "y");
 
-    MapEntityPtr entity = RefCountable::make_refcount_ptr(new Crystal(
+    MapEntityPtr entity = std::make_shared<Crystal>(
         name,
         layer,
         x,
         y
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {
@@ -1744,7 +1744,7 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
     iss >> subtype;
 
     Game& game = map.get_game();
-    MapEntityPtr entity = RefCountable::make_refcount_ptr(new CrystalBlock(
+    MapEntityPtr entity = std::make_shared<CrystalBlock>(
         game,
         name,
         layer,
@@ -1753,7 +1753,7 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
         width,
         height,
         CrystalBlock::Subtype(subtype)
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {
@@ -1841,14 +1841,14 @@ int LuaContext::map_api_create_stream(lua_State* l) {
     bool allow_attack = LuaTools::opt_boolean_field(l, 1, "allow_attack", true);
     bool allow_item = LuaTools::opt_boolean_field(l, 1, "allow_item", true);
 
-    std::shared_ptr<Stream> stream = RefCountable::make_refcount_ptr(new Stream(
+    std::shared_ptr<Stream> stream = std::make_shared<Stream>(
         name,
         layer,
         x,
         y,
         direction,
         sprite_name
-    ));
+    );
     stream->set_speed(speed);
     stream->set_allow_movement(allow_movement);
     stream->set_allow_attack(allow_attack);
@@ -1914,7 +1914,7 @@ int LuaContext::map_api_create_door(lua_State* l) {
       }
     }
 
-    std::shared_ptr<Door> door = RefCountable::make_refcount_ptr(new Door(
+    std::shared_ptr<Door> door = std::make_shared<Door>(
         game,
         name,
         layer,
@@ -1923,7 +1923,7 @@ int LuaContext::map_api_create_door(lua_State* l) {
         direction,
         sprite_name,
         savegame_variable
-    ));
+    );
     door->set_opening_method(opening_method);
     door->set_opening_condition(opening_condition);
     door->set_opening_condition_consumed(opening_condition_consumed);
@@ -1960,14 +1960,14 @@ int LuaContext::map_api_create_stairs(lua_State* l) {
     std::istringstream iss(subtype_name);
     iss >> subtype;
 
-    MapEntityPtr entity = RefCountable::make_refcount_ptr(new Stairs(
+    MapEntityPtr entity = std::make_shared<Stairs>(
         name,
         layer,
         x,
         y,
         direction,
         Stairs::Subtype(subtype)
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {
@@ -1998,14 +1998,14 @@ int LuaContext::map_api_create_separator(lua_State* l) {
 
     entity_creation_check_size(l, 1, width, height);
 
-    MapEntityPtr entity = RefCountable::make_refcount_ptr(new Separator(
+    MapEntityPtr entity = std::make_shared<Separator>(
         name,
         layer,
         x,
         y,
         width,
         height
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {
@@ -2040,7 +2040,7 @@ int LuaContext::map_api_create_custom_entity(lua_State* l) {
     entity_creation_check_size(l, 1, width, height);
 
     Game& game = map.get_game();
-    MapEntityPtr entity = RefCountable::make_refcount_ptr<MapEntity>(new CustomEntity(
+    MapEntityPtr entity = std::make_shared<CustomEntity>(
         game,
         name,
         direction,
@@ -2051,7 +2051,7 @@ int LuaContext::map_api_create_custom_entity(lua_State* l) {
         height,
         sprite_name,
         model
-    ));
+    );
 
     map.get_entities().add_entity(entity);
     if (map.is_started()) {
@@ -2078,12 +2078,12 @@ int LuaContext::map_api_create_bomb(lua_State* l) {
     int x = LuaTools::check_int_field(l, 1, "x");
     int y = LuaTools::check_int_field(l, 1, "y");
 
-    MapEntityPtr entity = RefCountable::make_refcount_ptr(new Bomb(
+    MapEntityPtr entity = std::make_shared<Bomb>(
         name,
         layer,
         x,
         y
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {
@@ -2110,12 +2110,12 @@ int LuaContext::map_api_create_explosion(lua_State* l) {
     int x = LuaTools::check_int_field(l, 1, "x");
     int y = LuaTools::check_int_field(l, 1, "y");
 
-    MapEntityPtr entity = RefCountable::make_refcount_ptr(new Explosion(
+    MapEntityPtr entity = std::make_shared<Explosion>(
         name,
         layer,
         Point(x, y),
         true
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {
@@ -2142,11 +2142,11 @@ int LuaContext::map_api_create_fire(lua_State* l) {
     int x = LuaTools::check_int_field(l, 1, "x");
     int y = LuaTools::check_int_field(l, 1, "y");
 
-    MapEntityPtr entity = RefCountable::make_refcount_ptr(new Fire(
+    MapEntityPtr entity = std::make_shared<Fire>(
         name,
         layer,
         Point(x, y)
-    ));
+    );
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {

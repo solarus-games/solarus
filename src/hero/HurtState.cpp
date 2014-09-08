@@ -49,12 +49,6 @@ Hero::HurtState::HurtState(
 }
 
 /**
- * \brief Destructor.
- */
-Hero::HurtState::~HurtState() {
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state The previous state.
  */
@@ -74,9 +68,8 @@ void Hero::HurtState::start(const State* previous_state) {
 
   if (has_source) {
     double angle = Geometry::get_angle(source_xy, hero.get_xy());
-    const std::shared_ptr<StraightMovement>& movement = make_refcount_ptr(
-        new StraightMovement(false, true)
-    );
+    std::shared_ptr<StraightMovement> movement =
+        std::make_shared<StraightMovement>(false, true);
     movement->set_max_distance(24);
     movement->set_speed(120);
     movement->set_angle(angle);

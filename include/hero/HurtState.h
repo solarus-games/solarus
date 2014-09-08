@@ -31,7 +31,6 @@ class Hero::HurtState: public Hero::State {
     HurtState(Hero& hero,
         const Point* source_xy,
         int damage);
-    ~HurtState();
 
     virtual void start(const State* previous_state) override;
     virtual void stop(const State* next_state) override;

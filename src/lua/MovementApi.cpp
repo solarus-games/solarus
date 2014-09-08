@@ -481,38 +481,38 @@ int LuaContext::movement_api_create(lua_State* l) {
     std::shared_ptr<Movement> movement;
     if (type == "straight") {
       std::shared_ptr<StraightMovement> straight_movement =
-          RefCountable::make_refcount_ptr(new StraightMovement(false, true));
+          std::make_shared<StraightMovement>(false, true);
       straight_movement->set_speed(32);
       movement = straight_movement;
     }
     else if (type == "random") {
-      movement = RefCountable::make_refcount_ptr(new RandomMovement(32));
+      movement = std::make_shared<RandomMovement>(32);
     }
     else if (type == "target") {
       Game* game = lua_context.get_main_loop().get_game();
       if (game != nullptr) {
         // If we are on a map, the default target is the hero.
-        movement = RefCountable::make_refcount_ptr(new TargetMovement(
+        movement = std::make_shared<TargetMovement>(
             game->get_hero(), 0, 0, 96, false
-        ));
+        );
       }
       else {
-        movement = RefCountable::make_refcount_ptr(new TargetMovement(
+        movement = std::make_shared<TargetMovement>(
             nullptr, 0, 0, 32, false
-        ));
+        );
       }
     }
     else if (type == "path") {
-      movement = RefCountable::make_refcount_ptr(new PathMovement(
+      movement = std::make_shared<PathMovement>(
           "", 32, false, false, false
-      ));
+      );
     }
     else if (type == "random_path") {
-      movement = RefCountable::make_refcount_ptr(new RandomPathMovement(32));
+      movement = std::make_shared<RandomPathMovement>(32);
     }
     else if (type == "path_finding") {
-      const std::shared_ptr<PathFindingMovement>& path_finding_movement =
-          RefCountable::make_refcount_ptr(new PathFindingMovement(32));
+      std::shared_ptr<PathFindingMovement> path_finding_movement =
+          std::make_shared<PathFindingMovement>(32);
       Game* game = lua_context.get_main_loop().get_game();
       if (game != nullptr) {
         // If we are on a map, the default target is the hero.
@@ -521,13 +521,13 @@ int LuaContext::movement_api_create(lua_State* l) {
       movement = path_finding_movement;
     }
     else if (type == "circle") {
-      movement = RefCountable::make_refcount_ptr(new CircleMovement(false));
+      movement = std::make_shared<CircleMovement>(false);
     }
     else if (type == "jump") {
-      movement = RefCountable::make_refcount_ptr(new JumpMovement(0, 0, 0, false));
+      movement = std::make_shared<JumpMovement>(0, 0, 0, false);
     }
     else if (type == "pixel") {
-      movement = RefCountable::make_refcount_ptr(new PixelMovement("", 30, false, false));
+      movement = std::make_shared<PixelMovement>("", 30, false, false);
     }
     else {
       LuaTools::arg_error(l, 1, "should be one of: "

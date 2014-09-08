@@ -40,13 +40,6 @@ Hero::SpinAttackState::SpinAttackState(Hero& hero):
 }
 
 /**
- * \brief Destructor.
- */
-Hero::SpinAttackState::~SpinAttackState() {
-
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */
@@ -61,9 +54,8 @@ void Hero::SpinAttackState::start(const State* previous_state) {
   Hero& hero = get_hero();
   if (get_equipment().has_ability(ABILITY_SWORD_KNOWLEDGE)) {
     get_sprites().set_animation_super_spin_attack();
-    const std::shared_ptr<CircleMovement>& movement = make_refcount_ptr(
-        new CircleMovement(false)
-    );
+    std::shared_ptr<CircleMovement> movement =
+        std::make_shared<CircleMovement>(false);
     movement->set_center(hero.get_xy());
     movement->set_radius_speed(128);
     movement->set_radius(24);
@@ -271,9 +263,8 @@ void Hero::SpinAttackState::notify_attacked_enemy(
 
       being_pushed = true;
       double angle = victim.get_angle(hero, victim_sprite, nullptr);
-      const std::shared_ptr<StraightMovement>& movement = make_refcount_ptr(
-          new StraightMovement(false, true)
-      );
+      std::shared_ptr<StraightMovement> movement =
+          std::make_shared<StraightMovement>(false, true);
       movement->set_max_distance(24);
       movement->set_speed(120);
       movement->set_angle(angle);

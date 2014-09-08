@@ -40,9 +40,9 @@ DialogBoxSystem::DialogBoxSystem(Game& game):
   selected_first_answer(true) {
 
   for (int i = 0; i < nb_visible_lines; i++) {
-    line_surfaces[i] = RefCountable::make_refcount_ptr(new TextSurface(
+    line_surfaces[i] = std::make_shared<TextSurface>(
         0, 0, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_BOTTOM
-    ));
+    );
   }
 }
 

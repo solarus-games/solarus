@@ -404,14 +404,14 @@ bool Destructible::notify_action_command_pressed() {
     if (get_equipment().has_ability(ABILITY_LIFT, get_weight())) {
 
       uint32_t explosion_date = get_can_explode() ? System::now() + 6000 : 0;
-      get_hero().start_lifting(make_refcount_ptr(new CarriedItem(
+      get_hero().start_lifting(std::make_shared<CarriedItem>(
           get_hero(),
           *this,
           get_animation_set_id(),
           get_destruction_sound(),
           get_damage_on_enemies(),
           explosion_date)
-      ));
+      );
 
       // Play the sound.
       Sound::play("lift");
@@ -472,8 +472,8 @@ bool Destructible::is_waiting_for_regeneration() const {
  */
 void Destructible::explode() {
 
-  get_entities().add_entity(make_refcount_ptr(
-      new Explosion("", get_layer(), get_xy(), true)
+  get_entities().add_entity(std::make_shared<Explosion>(
+      "", get_layer(), get_xy(), true
   ));
   Sound::play("explosion");
   get_lua_context().destructible_on_exploded(*this);

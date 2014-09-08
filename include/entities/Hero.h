@@ -340,7 +340,7 @@ class Hero: public MapEntity {
     void update_invincibility();
 
     // state
-    State* state;                   /**< the current internal state */
+    State* state;                   /**< the current internal state */  // TODO unique_ptr
     std::list<State*> old_states;   /**< previous state objects to delete as soon as possible */
     bool invincible;                /**< Whether the hero is temporarily invincible. */
     uint32_t end_invincible_date;   /**< When stopping the invincibility (0 means infinite). */

@@ -207,8 +207,8 @@ int LuaContext::game_api_load(lua_State* l) {
       LuaTools::error(l, "Cannot load savegame: no write directory was specified in quest.dat");
     }
 
-    std::shared_ptr<Savegame> savegame = RefCountable::make_refcount_ptr(
-        new Savegame(get_lua_context(l).get_main_loop(), file_name)
+    std::shared_ptr<Savegame> savegame = std::make_shared<Savegame>(
+        get_lua_context(l).get_main_loop(), file_name
     );
 
     savegame->get_equipment().load_items();

@@ -82,11 +82,10 @@ Enemy::Enemy(
     int x,
     int y,
     const std::string& breed,
-    const Treasure& treasure):
-
+    const Treasure& treasure
+):
   Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE,
       name, layer, x, y, 0, 0),
-
   breed(breed),
   damage_on_hero(1),
   life(1),
@@ -117,13 +116,6 @@ Enemy::Enemy(
   set_size(16, 16);
   set_origin(8, 13);
   set_drawn_in_y_order(true);
-}
-
-/**
- * \brief Destructor.
- */
-Enemy::~Enemy() {
-
 }
 
 /**
@@ -172,8 +164,8 @@ MapEntityPtr Enemy::create(
   }
 
   // create the enemy
-  const std::shared_ptr<Enemy>& enemy = make_refcount_ptr(
-      new Enemy(game, name, layer, x, y, breed, treasure)
+  std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(
+      game, name, layer, x, y, breed, treasure
   );
 
   // initialize the fields
@@ -829,8 +821,8 @@ void Enemy::update() {
       Point xy;
       xy.x = get_top_left_x() + Random::get_number(get_width());
       xy.y = get_top_left_y() + Random::get_number(get_height());
-      get_entities().add_entity(make_refcount_ptr(
-          new Explosion("", LAYER_HIGH, xy, false)
+      get_entities().add_entity(std::make_shared<Explosion>(
+          "", LAYER_HIGH, xy, false
       ));
       Sound::play("explosion");
 
@@ -1281,9 +1273,8 @@ void Enemy::hurt(MapEntity& source, Sprite* this_sprite) {
   // push the enemy back
   if (pushed_back_when_hurt) {
     double angle = source.get_angle(*this, nullptr, this_sprite);
-    const std::shared_ptr<StraightMovement>& movement = make_refcount_ptr(
-        new StraightMovement(false, true)
-    );
+    std::shared_ptr<StraightMovement> movement =
+        std::make_shared<StraightMovement>(false, true);
     movement->set_max_distance(24);
     movement->set_speed(120);
     movement->set_angle(angle);

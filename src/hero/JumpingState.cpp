@@ -50,9 +50,9 @@ Hero::JumpingState::JumpingState(
     carried_item = hero.get_carried_item();
   }
 
-  this->movement = make_refcount_ptr(new JumpMovement(
+  this->movement = std::make_shared<JumpMovement>(
       direction8, distance, 0, ignore_obstacles
-  ));
+  );
   this->direction8 = direction8;
   this->with_sound = with_sound;
 }

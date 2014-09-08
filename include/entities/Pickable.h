@@ -35,6 +35,14 @@ class Pickable: public Detector {
   public:
 
     // creation and destruction
+    Pickable(
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        const Treasure& treasure
+    );
+
     static std::shared_ptr<Pickable> create(
         Game& game,
         const std::string& name,
@@ -73,10 +81,7 @@ class Pickable: public Detector {
 
   private:
 
-    // creation and initialization
-    Pickable(const std::string& name, Layer layer, int x, int y,
-        const Treasure& treasure);
-
+    // initialization
     void initialize_sprites();
     void initialize_movement();
 

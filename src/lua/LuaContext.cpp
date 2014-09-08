@@ -967,20 +967,11 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
       shared_userdata = userdata.shared_from_this();
     }
     catch (const std::bad_weak_ptr& ex) {
-      // No existing shared_ptr. This is possible during the transition
-      // between the old system (the RefCountable class) and the new system
-      // (std::shared_ptr).
-
-      // This error message is here to help making the transition to the
-      // new system. If you get it, this is because the object is not stored
-      // in a shared_ptr, it is still managed by the old system.
-      Debug::error(
+      // No existing shared_ptr. This is probably because you forgot to
+      // store your object in a shared_ptr at creation time..
+      Debug::die(
           std::string("No living shared_ptr for ") + userdata.get_lua_type_name()
       );
-      // Create the shared_ptr anyway.
-      // We are late, but this is okay as long as we use the transitional
-      // deleter of RefCountable::make_refcount_ptr().
-      shared_userdata = RefCountable::make_refcount_ptr(&userdata);
     }
 
     ExportableToLuaPtr* block_address = static_cast<ExportableToLuaPtr*>(
@@ -1092,9 +1083,9 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
   // because it is already done: that table is weak on its values and the
   // value was the full userdata.
 
-  if (userdata->unique() &&                // The userdata is not used by other shared_ptrs.
-      (*userdata)->get_refcount() == 1) {  // The userdata is not used by people other than shared_ptrs.
-    // The userdata is not used elsewhere. The object is going to be destroyed from C++ too.
+  if (userdata->unique()) {
+    // The userdata is not used by other people.
+    // The object is going to be destroyed from C++ too.
 
     if ((*userdata)->is_with_lua_table()) {
       // Remove the table associated to this userdata.

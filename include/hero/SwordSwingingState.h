@@ -29,7 +29,6 @@ class Hero::SwordSwingingState: public Hero::State {
   public:
 
     SwordSwingingState(Hero& hero);
-    ~SwordSwingingState();
 
     virtual void start(const State* previous_state) override;
     virtual void stop(const State* next_state) override;

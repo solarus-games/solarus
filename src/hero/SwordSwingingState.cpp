@@ -38,13 +38,6 @@ Hero::SwordSwingingState::SwordSwingingState(Hero& hero):
 }
 
 /**
- * \brief Destructor.
- */
-Hero::SwordSwingingState::~SwordSwingingState() {
-
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */
@@ -243,9 +236,8 @@ void Hero::SwordSwingingState::notify_attacked_enemy(
 
       Hero& hero = get_hero();
       double angle = victim.get_angle(hero, victim_sprite, nullptr);
-      const std::shared_ptr<StraightMovement>& movement = make_refcount_ptr(
-          new StraightMovement(false, true)
-      );
+      std::shared_ptr<StraightMovement> movement =
+          std::make_shared<StraightMovement>(false, true);
       movement->set_max_distance(24);
       movement->set_speed(120);
       movement->set_angle(angle);

@@ -221,12 +221,12 @@ bool Block::start_movement_by_hero() {
   int dx = get_x() - hero.get_x();
   int dy = get_y() - hero.get_y();
 
-  set_movement(make_refcount_ptr(new FollowMovement(
+  set_movement(std::make_shared<FollowMovement>(
       std::static_pointer_cast<Hero>(hero.shared_from_this()),
       dx,
       dy,
       false
-  )));
+  ));
   sound_played = false;
 
   return true;

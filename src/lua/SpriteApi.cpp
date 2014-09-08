@@ -119,7 +119,7 @@ int LuaContext::sprite_api_create(lua_State* l) {
     const std::string& animation_set_id = LuaTools::check_string(l, 1);
 
     // TODO if the file does not exist, make a Lua error instead of an assertion error.
-    const SpritePtr& sprite = RefCountable::make_refcount_ptr(new Sprite(animation_set_id));
+    SpritePtr sprite = std::make_shared<Sprite>(animation_set_id);
     get_lua_context(l).add_drawable(sprite);
 
     push_sprite(l, *sprite);

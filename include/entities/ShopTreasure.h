@@ -39,6 +39,16 @@ class ShopTreasure: public Detector {
 
   public:
 
+    ShopTreasure(
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        const Treasure& treasure,
+        int price,
+        const std::string& dialog_id
+    );
+
     static std::shared_ptr<ShopTreasure> create(
         Game& game,
         const std::string& name,
@@ -64,15 +74,6 @@ class ShopTreasure: public Detector {
     virtual void draw_on_map() override;
 
   private:
-
-    ShopTreasure(
-        const std::string& name,
-        Layer layer,
-        int x,
-        int y,
-        const Treasure& treasure,
-        int price,
-        const std::string& dialog_id);
 
     // data
     Treasure treasure;                /**< the treasure the player can buy */

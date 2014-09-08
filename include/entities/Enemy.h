@@ -79,8 +79,16 @@ class Enemy: public Detector {
 
   public:
 
-    // creation and destruction
-    ~Enemy();
+    // creation
+    Enemy(
+        Game& game,
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        const std::string& breed,
+        const Treasure& treasure
+    );
 
     static MapEntityPtr create(
         Game& game,
@@ -196,16 +204,6 @@ class Enemy: public Detector {
     static const std::vector<std::string> obstacle_behavior_names;    /**< Lua names of the ObstacleBehavior enum. */
 
   private:
-
-    // creation
-    Enemy(
-        Game& game,
-        const std::string& name,
-        Layer layer,
-        int x,
-        int y,
-        const std::string& breed,
-        const Treasure& treasure);
 
     // hurt the enemy
     void play_hurt_sound();

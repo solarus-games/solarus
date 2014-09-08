@@ -611,7 +611,7 @@ void TextSurface::rebuild_ttf() {
       + SDL_GetError()
   );
 
-  surface = make_refcount_ptr(new Surface(internal_surface));
+  surface = std::make_shared<Surface>(internal_surface);
 }
 
 /**

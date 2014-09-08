@@ -176,9 +176,9 @@ void Bomb::notify_collision_with_stream(Stream& stream, int /* dx */, int /* dy 
       std::string path = "  ";
       path[0] = path[1] = '0' + stream.get_direction();
       clear_movement();
-      set_movement(make_refcount_ptr(
-          new PathMovement(path, 64, false, false, false))
-      );
+      set_movement(std::make_shared<PathMovement>(
+          path, 64, false, false, false
+      ));
     }
   }
 }
@@ -209,14 +209,14 @@ bool Bomb::notify_action_command_pressed() {
       && get_hero().get_facing_entity() == this
       && get_hero().is_facing_point_in(get_bounding_box())) {
 
-    get_hero().start_lifting(make_refcount_ptr(new CarriedItem(
+    get_hero().start_lifting(std::make_shared<CarriedItem>(
         get_hero(),
         *this,
         "entities/bomb",
         "",
         0,
         explosion_date)
-    ));
+    );
     Sound::play("lift");
     remove_from_map();
     return true;
@@ -275,8 +275,8 @@ void Bomb::update() {
  */
 void Bomb::explode() {
 
-  get_entities().add_entity(make_refcount_ptr(
-      new Explosion("", get_layer(), get_center_point().get_xy(), true)
+  get_entities().add_entity(std::make_shared<Explosion>(
+      "", get_layer(), get_center_point().get_xy(), true
   ));
   Sound::play("explosion");
   remove_from_map();

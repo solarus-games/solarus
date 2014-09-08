@@ -199,7 +199,7 @@ void Treasure::draw(const SurfacePtr& dst_surface, int x, int y) {
   if (sprite == nullptr) {
     // Create the sprite only if needed (many treasures are actually
     // never drawn).
-    sprite = RefCountable::make_refcount_ptr(new Sprite("entities/items"));
+    sprite = std::make_shared<Sprite>("entities/items");
     sprite->set_current_animation(get_item_name());
     sprite->set_current_direction(get_variant() - 1);
   }

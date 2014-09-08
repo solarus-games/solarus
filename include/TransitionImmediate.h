@@ -33,7 +33,6 @@ class TransitionImmediate: public Transition {
   public:
 
     TransitionImmediate(Direction direction);
-    ~TransitionImmediate();
 
     virtual void start() override;
     virtual bool is_started() const override;

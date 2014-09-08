@@ -33,7 +33,6 @@ class EquipmentItemUsage {
 
     // creation and destruction
     EquipmentItemUsage(Game& game, EquipmentItem& item);
-    ~EquipmentItemUsage();
 
     // item information
     EquipmentItem& get_item();

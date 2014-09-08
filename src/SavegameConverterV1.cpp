@@ -49,12 +49,6 @@ SavegameConverterV1::SavegameConverterV1(const std::string& file_name) {
 }
 
 /**
- * \brief Destructor.
- */
-SavegameConverterV1::~SavegameConverterV1() {
-}
-
-/**
  * \brief Returns a string value saved.
  * \param index index of the value to get, between 0 and 63
  * (see enum StringIndex for their definition)

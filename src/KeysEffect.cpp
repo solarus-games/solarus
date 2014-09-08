@@ -67,12 +67,6 @@ KeysEffect::KeysEffect():
 
 }
 
-/**
- * \brief Destructor.
- */
-KeysEffect::~KeysEffect() {
-}
-
 // action key
 
 /**

@@ -130,7 +130,7 @@ class Drawable: public ExportableToLua {
         movement;                 /**< A movement applied, or nullptr (will be
                                    * deleted then if unused elsewhere). */
     Transition* transition;       /**< A transition applied, or nullptr
-                                   * (will be deleted then). */
+                                   * (will be deleted then). */  // TODO unique_ptr
     ScopedLuaRef transition_callback_ref;
                                   /**< Lua registry ref of a function to call
                                    * when the transition finishes */

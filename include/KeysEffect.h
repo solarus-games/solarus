@@ -81,7 +81,6 @@ class KeysEffect {
     };
 
     KeysEffect();
-    ~KeysEffect();
 
     // action key
 

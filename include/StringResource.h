@@ -45,8 +45,7 @@ class StringResource {
   private:
 
     // we don't need to instantiate this class
-    StringResource();
-    ~StringResource();
+    StringResource() = delete;
 
 };
 

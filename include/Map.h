@@ -184,7 +184,7 @@ class Map: public ExportableToLua {
 
     std::string tileset_id;       /**< Id of the current tileset. */
     Tileset* tileset;             /**< Tileset of the map: every tile of this map
-                                   * is extracted from this tileset. */
+                                   * is extracted from this tileset. */  // TODO unique_ptr
 
     std::string music_id;         /**< Id of the current music of the map:
                                    * can be a valid music, Music::none or Music::unchanged. */
@@ -200,7 +200,7 @@ class Map: public ExportableToLua {
 
     // screen
 
-    Camera* camera;               /**< The visible area of the map. */
+    Camera* camera;               /**< The visible area of the map. */  // TODO unique_ptr
     SurfacePtr visible_surface;   /**< Surface where the map is displayed. This is only the visible part
                                    * of the map, so the coordinates on this surface are relative to the screen,
                                    * not to the map. */
@@ -218,7 +218,7 @@ class Map: public ExportableToLua {
                                    * to place the hero on a side of the map,
                                    * or an empty string to use the one saved. */
 
-    MapEntities* entities;        /**< The entities on the map. */
+    MapEntities* entities;        /**< The entities on the map. */  // TODO unique_ptr
     bool suspended;               /**< Whether the game is suspended. */
 };
 

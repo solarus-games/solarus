@@ -35,13 +35,6 @@ EquipmentItemUsage::EquipmentItemUsage(Game& /* game */, EquipmentItem& item):
 }
 
 /**
- * \brief Destructor.
- */
-EquipmentItemUsage::~EquipmentItemUsage() {
-
-}
-
-/**
  * \brief Returns the equipment item being used.
  */
 EquipmentItem& EquipmentItemUsage::get_item() {

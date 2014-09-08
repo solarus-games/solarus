@@ -61,8 +61,7 @@ class QuestResourceList {
 
   private:
 
-    QuestResourceList();
-    ~QuestResourceList();
+    QuestResourceList() = delete;
 
 };
 

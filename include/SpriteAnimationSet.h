@@ -62,7 +62,7 @@ class SpriteAnimationSet {
 
     std::string id;                          /**< Id of this animation set. */
     std::map<std::string, SpriteAnimation*>
-            animations;                      /**< The animations */
+            animations;                      /**< The animations */  // TODO unique_ptr
     std::string default_animation_name;      /**< Name of the default animation. */
     Size max_size;                           /**< Size of this biggest frame. */
 

@@ -27,12 +27,6 @@ TransitionImmediate::TransitionImmediate(Transition::Direction direction):
 }
 
 /**
- * \brief Destructor.
- */
-TransitionImmediate::~TransitionImmediate() {
-}
-
-/**
  * \brief Starts this transition effect.
  */
 void TransitionImmediate::start() {

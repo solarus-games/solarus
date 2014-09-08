@@ -52,12 +52,6 @@ TransitionFade::TransitionFade(Direction direction, Surface& dst_surface):
 }
 
 /**
- * \brief Destructor.
- */
-TransitionFade::~TransitionFade() {
-}
-
-/**
  * \brief Sets the delay between two frames.
  *
  * The default delay is 20 ms.

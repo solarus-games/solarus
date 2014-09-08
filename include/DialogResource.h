@@ -49,8 +49,7 @@ class DialogResource {
     static std::map<std::string, Dialog> dialogs; /**< all dialogs of the game */
 
     // we don't need to instantiate this class
-    DialogResource();
-    ~DialogResource();
+    DialogResource() = delete;
 
     static int l_dialog(lua_State* l);
 };

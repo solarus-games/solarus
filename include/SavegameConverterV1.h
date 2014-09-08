@@ -38,7 +38,6 @@ class SavegameConverterV1 {
 
     // creation and destruction
     SavegameConverterV1(const std::string& file_name);
-    ~SavegameConverterV1();
 
     // data
     const std::string get_string(int index);

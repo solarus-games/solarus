@@ -28,39 +28,6 @@ Dialog::Dialog():
 }
 
 /**
- * \brief Copy constructor.
- * \param other the dialog to copy
- */
-Dialog::Dialog(const Dialog& other):
-  id(other.id),
-  text(other.text),
-  properties(other.properties) {
-
-}
-
-/**
- * \brief Destructor.
- */
-Dialog::~Dialog() {
-}
-
-/**
- * \brief Assignment operator.
- * \param other The dialog to copy.
- * \return This dialog.
- */
-Dialog& Dialog::operator=(const Dialog& other) {
-
-  if (&other != this) {
-    this->id = other.id;
-    this->text = other.text;
-    this->properties = other.properties;
-  }
-
-  return *this;
-}
-
-/**
  * Returns the id of this dialog.
  * \return The id.
  */

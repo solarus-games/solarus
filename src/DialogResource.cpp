@@ -26,20 +26,6 @@ const std::string DialogResource::file_name = "text/dialogs.dat";
 std::map<std::string, Dialog> DialogResource::dialogs;
 
 /**
- * \brief Constructor.
- */
-DialogResource::DialogResource() {
-
-}
-
-/**
- * \brief Destructor.
- */
-DialogResource::~DialogResource() {
-
-}
-
-/**
  * \brief Loads all dialogs of the game.
  *
  * The dialogs are loaded from the language-specific file "text/dialogs.dat"

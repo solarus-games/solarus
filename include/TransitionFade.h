@@ -33,7 +33,6 @@ class TransitionFade: public Transition {
   public:
 
     TransitionFade(Direction direction, Surface& dst_surface);
-    ~TransitionFade();
 
     void set_delay(uint32_t delay);
 

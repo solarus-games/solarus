@@ -51,18 +51,6 @@ int l_text(lua_State* l) {
 }
 
 /**
- * \brief Constructor.
- */
-StringResource::StringResource() {
-}
-
-/**
- * \brief Destructor.
- */
-StringResource::~StringResource() {
-}
-
-/**
  * \brief Initializes the text resource by loading all strings.
  *
  * The strings are loaded from the language-specific file "text/strings.dat"

@@ -31,9 +31,6 @@ class Dialog {
   public:
 
     Dialog();
-    Dialog(const Dialog& other);
-    ~Dialog();
-    Dialog& operator=(const Dialog& other);
 
     const std::string& get_id() const;
     void set_id(const std::string& id);

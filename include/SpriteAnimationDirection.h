@@ -68,6 +68,7 @@ class SpriteAnimationDirection {
 
     std::vector<PixelBits*> pixel_bits;  /**< bit masks representing the non-transparent pixels of each frame,
                                           * computed only if enable_pixel_collisions() is called */
+                                         // TODO unique_ptr
 };
 
 /**

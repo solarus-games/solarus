@@ -128,7 +128,7 @@ void QuestProperties::load() {
 
 int QuestProperties::l_quest(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     // Retrieve the quest properties from the table parameter.
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& solarus_required_version =
@@ -185,8 +185,7 @@ int QuestProperties::l_quest(lua_State* l) {
         max_quest_size);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 }

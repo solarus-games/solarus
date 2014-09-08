@@ -129,7 +129,7 @@ void LuaContext::update_drawables() {
  */
 int LuaContext::drawable_api_draw(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
     SurfacePtr dst_surface = check_surface(l, 2);
     int x = LuaTools::opt_int(l, 3, 0);
@@ -137,8 +137,7 @@ int LuaContext::drawable_api_draw(lua_State* l) {
     drawable->draw(dst_surface, x, y);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -148,7 +147,7 @@ int LuaContext::drawable_api_draw(lua_State* l) {
  */
 int LuaContext::drawable_api_draw_region(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
     Rectangle region = {
         LuaTools::check_int(l, 2),
@@ -164,8 +163,7 @@ int LuaContext::drawable_api_draw_region(lua_State* l) {
     drawable->draw_region(region, dst_surface, dst_position);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -175,7 +173,7 @@ int LuaContext::drawable_api_draw_region(lua_State* l) {
  */
 int LuaContext::drawable_api_fade_in(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     uint32_t delay = 20;
     ScopedLuaRef callback_ref;
 
@@ -201,8 +199,7 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
     drawable->start_transition(*transition, callback_ref);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -212,7 +209,7 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
  */
 int LuaContext::drawable_api_fade_out(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     uint32_t delay = 20;
     ScopedLuaRef callback_ref;
 
@@ -237,8 +234,7 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
     drawable->start_transition(*transition, callback_ref);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -248,14 +244,13 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
  */
 int LuaContext::drawable_api_get_xy(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
 
     lua_pushinteger(l, drawable->get_xy().x);
     lua_pushinteger(l, drawable->get_xy().y);
     return 2;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -265,7 +260,7 @@ int LuaContext::drawable_api_get_xy(lua_State* l) {
  */
 int LuaContext::drawable_api_set_xy(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
@@ -273,8 +268,7 @@ int LuaContext::drawable_api_set_xy(lua_State* l) {
     drawable->set_xy(Point(x, y));
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -284,7 +278,7 @@ int LuaContext::drawable_api_set_xy(lua_State* l) {
  */
 int LuaContext::drawable_api_get_movement(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
     std::shared_ptr<Movement> movement = drawable->get_movement();
     if (movement == nullptr) {
@@ -295,8 +289,7 @@ int LuaContext::drawable_api_get_movement(lua_State* l) {
     }
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -306,14 +299,13 @@ int LuaContext::drawable_api_get_movement(lua_State* l) {
  */
 int LuaContext::drawable_api_stop_movement(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
 
     drawable->stop_movement();
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -323,7 +315,7 @@ int LuaContext::drawable_api_stop_movement(lua_State* l) {
  */
 int LuaContext::drawable_meta_gc(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
     std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
 
@@ -332,10 +324,9 @@ int LuaContext::drawable_meta_gc(lua_State* l) {
       lua_context.remove_drawable(drawable);
     }
     userdata_meta_gc(l);
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
 
-  return 0;
+    return 0;
+  });
 }
 
 }

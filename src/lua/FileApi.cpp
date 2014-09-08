@@ -60,7 +60,7 @@ void LuaContext::register_file_module() {
  */
 int LuaContext::file_api_open(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
     const std::string& mode = LuaTools::opt_string(l, 2, "r");
 
@@ -129,8 +129,7 @@ int LuaContext::file_api_open(lua_State* l) {
     }
 
     return 2;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -140,14 +139,13 @@ int LuaContext::file_api_open(lua_State* l) {
  */
 int LuaContext::file_api_exists(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
     lua_pushboolean(l, FileTools::data_file_exists(file_name, false));
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -157,7 +155,7 @@ int LuaContext::file_api_exists(lua_State* l) {
  */
 int LuaContext::file_api_remove(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
     bool success = FileTools::data_file_delete(file_name);
@@ -170,8 +168,7 @@ int LuaContext::file_api_remove(lua_State* l) {
 
     lua_pushboolean(l, true);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -181,7 +178,7 @@ int LuaContext::file_api_remove(lua_State* l) {
  */
 int LuaContext::file_api_mkdir(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& dir_name = LuaTools::check_string(l, 1);
 
     bool success = FileTools::data_file_mkdir(dir_name);
@@ -194,8 +191,7 @@ int LuaContext::file_api_mkdir(lua_State* l) {
 
     lua_pushboolean(l, true);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 }

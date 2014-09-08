@@ -114,7 +114,7 @@ void TextSurface::quit() {
  */
 int TextSurface::l_font(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaTools::check_type(l, 1, LUA_TTABLE);
 
     const std::string& font_id = LuaTools::check_string_field(l, 1, "id");
@@ -154,8 +154,7 @@ int TextSurface::l_font(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**

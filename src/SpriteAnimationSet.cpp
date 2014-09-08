@@ -92,7 +92,7 @@ void SpriteAnimationSet::load() {
  */
 int SpriteAnimationSet::l_animation(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     lua_getfield(l, LUA_REGISTRYINDEX, "animation_set");
     SpriteAnimationSet* animation_set = static_cast<SpriteAnimationSet*>(
         lua_touserdata(l, -1));
@@ -200,8 +200,7 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**

@@ -33,11 +33,14 @@ class TimeScrollingTilePattern: public SimpleTilePattern {
   public:
 
     TimeScrollingTilePattern(Ground ground, int x, int y, int width, int height);
-    ~TimeScrollingTilePattern();
 
     static void update();
-    virtual void draw(Surface& dst_surface, const Point& dst_position,
-        Tileset& tileset, const Point& viewport) override;
+    virtual void draw(
+        const SurfacePtr& dst_surface,
+        const Point& dst_position,
+        Tileset& tileset,
+        const Point& viewport
+    ) override;
 
     virtual bool is_animated() const override;
 

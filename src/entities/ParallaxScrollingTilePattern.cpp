@@ -40,13 +40,6 @@ ParallaxScrollingTilePattern::ParallaxScrollingTilePattern(
 }
 
 /**
- * \brief Destructor.
- */
-ParallaxScrollingTilePattern::~ParallaxScrollingTilePattern() {
-
-}
-
-/**
  * \brief Draws the tile image on a surface.
  * \param dst_surface the surface to draw
  * \param dst_position position where tile pattern should be drawn on dst_surface
@@ -54,15 +47,16 @@ ParallaxScrollingTilePattern::~ParallaxScrollingTilePattern() {
  * \param viewport coordinates of the top-left corner of dst_surface relative
  * to the map (may be used for scrolling tiles)
  */
-void ParallaxScrollingTilePattern::draw(Surface& dst_surface,
-    const Point& dst_position, Tileset& tileset,
-    const Point& viewport) {
-
+void ParallaxScrollingTilePattern::draw(
+    const SurfacePtr& dst_surface,
+    const Point& dst_position,
+    Tileset& tileset,
+    const Point& viewport
+) {
   const SurfacePtr& tileset_image = tileset.get_tiles_image();
   Point dst = dst_position;
   dst += viewport / ratio;
-  SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
-  tileset_image->draw_region(position_in_tileset, shared_dst_surface, dst);
+  tileset_image->draw_region(position_in_tileset, dst_surface, dst);
 
   // one day, we can implement several scrolling layers just by changing the ratio
 }

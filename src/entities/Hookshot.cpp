@@ -193,7 +193,7 @@ void Hookshot::update() {
 
       if (has_to_go_back) {
         going_back = true;
-        const std::shared_ptr<Movement> movement = make_refcount_ptr(
+        std::shared_ptr<Movement> movement = make_refcount_ptr(
             new TargetMovement(
                 std::static_pointer_cast<Hero>(get_hero().shared_from_this()),
                 0,

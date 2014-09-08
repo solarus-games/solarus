@@ -79,13 +79,6 @@ AnimatedTilePattern::AnimatedTilePattern(Ground ground,
 }
 
 /**
- * \brief Destructor.
- */
-AnimatedTilePattern::~AnimatedTilePattern() {
-
-}
-
-/**
  * \brief Updates the current frame of all tiles.
  *
  * This function is called repeatedly by the map.
@@ -112,10 +105,12 @@ void AnimatedTilePattern::update() {
  * \param viewport coordinates of the top-left corner of dst_surface relative
  * to the map (may be used for scrolling tiles)
  */
-void AnimatedTilePattern::draw(Surface& dst_surface,
-    const Point& dst_position, Tileset& tileset,
-    const Point& viewport) {
-
+void AnimatedTilePattern::draw(
+    const SurfacePtr& dst_surface,
+    const Point& dst_position,
+    Tileset& tileset,
+    const Point& viewport
+) {
   const SurfacePtr& tileset_image = tileset.get_tiles_image();
   const Rectangle& src = position_in_tileset[current_frames[sequence]];
   Point dst = dst_position;
@@ -124,8 +119,7 @@ void AnimatedTilePattern::draw(Surface& dst_surface,
     dst += viewport / ParallaxScrollingTilePattern::ratio;
   }
 
-  SurfacePtr shared_dst_surface(RefCountable::make_refcount_ptr(&dst_surface));  // TODO shared_ptr
-  tileset_image->draw_region(src, shared_dst_surface, dst);
+  tileset_image->draw_region(src, dst_surface, dst);
 }
 
 /**

@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/Ground.h"
+#include "lowlevel/SurfacePtr.h"
 
 namespace solarus {
 
@@ -45,8 +46,12 @@ class TilePattern {
     Ground get_ground() const;
 
     static void update();
-    void fill_surface(Surface& dst_surface, const Rectangle& dst_position,
-        Tileset& tileset, const Point& viewport);
+    void fill_surface(
+        const SurfacePtr& dst_surface,
+        const Rectangle& dst_position,
+        Tileset& tileset,
+        const Point& viewport
+    );
 
     /**
      * \brief Draws the tile image on a surface.
@@ -56,8 +61,12 @@ class TilePattern {
      * \param viewport Coordinates of the top-left corner of dst_surface
      * relative to the map (may be used for scrolling tiles).
      */
-    virtual void draw(Surface& dst_surface, const Point& dst_position,
-        Tileset& tileset, const Point& viewport) = 0;
+    virtual void draw(
+        const SurfacePtr& dst_surface,
+        const Point& dst_position,
+        Tileset& tileset,
+        const Point& viewport
+    ) = 0;
     virtual bool is_animated() const;
     virtual bool is_drawn_at_its_position() const;
 

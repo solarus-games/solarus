@@ -36,13 +36,6 @@ SimpleTilePattern::SimpleTilePattern(Ground ground, int x, int y, int width, int
 }
 
 /**
- * Destructor.
- */
-SimpleTilePattern::~SimpleTilePattern() {
-
-}
-
-/**
  * \brief Draws the tile image on a surface.
  * \param dst_surface the surface to draw
  * \param dst_position position where tile pattern should be drawn on dst_surface
@@ -50,12 +43,14 @@ SimpleTilePattern::~SimpleTilePattern() {
  * \param viewport coordinates of the top-left corner of dst_surface relative
  * to the map (may be used for scrolling tiles)
  */
-void SimpleTilePattern::draw(Surface& dst_surface, const Point& dst_position,
-    Tileset& tileset, const Point& /* viewport */) {
-
+void SimpleTilePattern::draw(
+    const SurfacePtr& dst_surface,
+    const Point& dst_position,
+    Tileset& tileset,
+    const Point& /* viewport */
+) {
   const SurfacePtr& tileset_image = tileset.get_tiles_image();
-  SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
-  tileset_image->draw_region(position_in_tileset, shared_dst_surface, dst_position);
+  tileset_image->draw_region(position_in_tileset, dst_surface, dst_position);
 }
 
 /**

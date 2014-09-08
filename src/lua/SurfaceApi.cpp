@@ -81,8 +81,8 @@ bool LuaContext::is_surface(lua_State* l, int index) {
  * \param index an index in the stack
  * \return the surface
  */
-Surface& LuaContext::check_surface(lua_State* l, int index) {
-  return static_cast<Surface&>(*check_userdata(
+SurfacePtr LuaContext::check_surface(lua_State* l, int index) {
+  return std::static_pointer_cast<Surface>(check_userdata(
       l, index, surface_module_name
   ));
 }
@@ -147,7 +147,7 @@ int LuaContext::surface_api_create(lua_State* l) {
 int LuaContext::surface_api_get_size(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Surface& surface = check_surface(l, 1);
+    Surface& surface = *check_surface(l, 1);
 
     lua_pushinteger(l, surface.get_width());
     lua_pushinteger(l, surface.get_height());
@@ -164,7 +164,7 @@ int LuaContext::surface_api_get_size(lua_State* l) {
 int LuaContext::surface_api_clear(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Surface& surface = check_surface(l, 1);
+    Surface& surface = *check_surface(l, 1);
 
     surface.clear();
 
@@ -181,7 +181,7 @@ int LuaContext::surface_api_clear(lua_State* l) {
 int LuaContext::surface_api_fill_color(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Surface& surface = check_surface(l, 1);
+    Surface& surface = *check_surface(l, 1);
     Color color = LuaTools::check_color(l, 2);
 
     if (lua_gettop(l) >= 3) {
@@ -209,7 +209,7 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
 int LuaContext::surface_api_set_opacity(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Surface& surface = check_surface(l, 1);
+    Surface& surface = *check_surface(l, 1);
     uint8_t opacity = (uint8_t) LuaTools::check_int(l, 2);
 
     surface.set_opacity(opacity);

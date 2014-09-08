@@ -102,7 +102,7 @@ void Tile::draw(const SurfacePtr& dst_surface, const Point& viewport) {
   );
 
   tile_pattern.fill_surface(
-      *dst_surface,  // TODO shared_ptr
+      dst_surface,
       dst_position,
       get_map().get_tileset(),
       viewport

@@ -678,10 +678,9 @@ void Sprite::raw_draw(
       intermediate_surface->clear();
       current_animation->draw(*intermediate_surface, get_origin(),
           current_direction, current_frame);
-      SurfacePtr shared_dst_surface(RefCountable::make_refcount_ptr(&dst_surface));  // TODO shared_ptr
       intermediate_surface->draw_region(
           Rectangle(get_size()),
-          shared_dst_surface,
+          std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
           dst_position - get_origin()
       );
     }
@@ -744,8 +743,11 @@ void Sprite::raw_draw_region(
     Point dst_position2 = dst_position;
     dst_position2 += src_position.get_xy(); // Let a space for the part outside the region.
     dst_position2 -= origin;                // Input coordinates were relative to the origin.
-    SurfacePtr shared_dst_surface(RefCountable::make_refcount_ptr(&dst_surface));  // TODO shared_ptr
-    get_intermediate_surface().draw_region(src_position, shared_dst_surface, dst_position2);
+    get_intermediate_surface().draw_region(
+        src_position,
+        std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
+        dst_position2
+    );
   }
 }
 

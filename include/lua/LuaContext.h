@@ -1068,7 +1068,7 @@ class LuaContext {
     static bool is_drawable(lua_State* l, int index);
     static std::shared_ptr<Drawable> check_drawable(lua_State* l, int index);
     static bool is_surface(lua_State* l, int index);
-    static Surface& check_surface(lua_State* l, int index);
+    static SurfacePtr check_surface(lua_State* l, int index);
     static bool is_text_surface(lua_State* l, int index);
     static TextSurface& check_text_surface(lua_State* l, int index);
     static bool is_sprite(lua_State* l, int index);

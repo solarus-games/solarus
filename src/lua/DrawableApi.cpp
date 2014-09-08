@@ -131,11 +131,10 @@ int LuaContext::drawable_api_draw(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
-    Surface& dst_surface = check_surface(l, 2);
+    SurfacePtr dst_surface = check_surface(l, 2);
     int x = LuaTools::opt_int(l, 3, 0);
     int y = LuaTools::opt_int(l, 4, 0);
-    SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
-    drawable->draw(shared_dst_surface, x, y);
+    drawable->draw(dst_surface, x, y);
 
     return 0;
   }
@@ -157,13 +156,12 @@ int LuaContext::drawable_api_draw_region(lua_State* l) {
         LuaTools::check_int(l, 4),
         LuaTools::check_int(l, 5)
     };
-    Surface& dst_surface = check_surface(l, 6);
+    SurfacePtr dst_surface = check_surface(l, 6);
     Point dst_position = {
         LuaTools::opt_int(l, 7, 0),
         LuaTools::opt_int(l, 8, 0)
     };
-    SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
-    drawable->draw_region(region, shared_dst_surface, dst_position);
+    drawable->draw_region(region, dst_surface, dst_position);
 
     return 0;
   }

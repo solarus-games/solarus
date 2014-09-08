@@ -34,13 +34,6 @@ SelfScrollingTilePattern::SelfScrollingTilePattern(Ground ground, int x, int y, 
 }
 
 /**
- * \brief Destructor.
- */
-SelfScrollingTilePattern::~SelfScrollingTilePattern() {
-
-}
-
-/**
  * \brief Draws the tile image on a surface.
  * \param dst_surface the surface to draw
  * \param dst_position position where tile pattern should be drawn on dst_surface
@@ -48,7 +41,8 @@ SelfScrollingTilePattern::~SelfScrollingTilePattern() {
  * \param viewport coordinates of the top-left corner of dst_surface relative
  * to the map (may be used for scrolling tiles)
  */
-void SelfScrollingTilePattern::draw(Surface& dst_surface,
+void SelfScrollingTilePattern::draw(
+    const SurfacePtr& dst_surface,
     const Point& dst_position, Tileset& tileset,
     const Point& /* viewport */) {
 
@@ -78,13 +72,12 @@ void SelfScrollingTilePattern::draw(Surface& dst_surface,
 
   // draw the pattern in four steps
   const SurfacePtr& tileset_image = tileset.get_tiles_image();
-  SurfacePtr shared_dst_surface = RefCountable::make_refcount_ptr(&dst_surface);  // TODO shared_ptr
 
   src.add_x(offset_x);
   src.add_width(-offset_x);
   src.add_y(offset_y);
   src.add_height(-offset_y);
-  tileset_image->draw_region(src, shared_dst_surface, dst);
+  tileset_image->draw_region(src, dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -92,7 +85,7 @@ void SelfScrollingTilePattern::draw(Surface& dst_surface,
   src.add_height(-offset_y);
   dst.x += src.get_width() - offset_x;
   src.set_width(offset_x);
-  tileset_image->draw_region(src, shared_dst_surface, dst);
+  tileset_image->draw_region(src, dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -100,7 +93,7 @@ void SelfScrollingTilePattern::draw(Surface& dst_surface,
   src.add_width(-offset_x);
   dst.y += src.get_height() - offset_y;
   src.set_height(offset_y);
-  tileset_image->draw_region(src, shared_dst_surface, dst);
+  tileset_image->draw_region(src, dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -108,7 +101,7 @@ void SelfScrollingTilePattern::draw(Surface& dst_surface,
   src.set_width(offset_x);
   dst.y += src.get_height() - offset_y;
   src.set_height(offset_y);
-  tileset_image->draw_region(src, shared_dst_surface, dst);
+  tileset_image->draw_region(src, dst_surface, dst);
 }
 
 /**

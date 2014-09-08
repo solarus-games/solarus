@@ -189,8 +189,10 @@ void TransitionScrolling::draw(Surface& dst_surface) {
   dst_surface.draw(both_maps_surface, current_map_dst_position.get_xy());
 
   // blit both surfaces
-  SurfacePtr shared_dst_surface(RefCountable::make_refcount_ptr(&dst_surface));  // TODO shared_ptr
-  both_maps_surface->draw_region(current_scrolling_position, shared_dst_surface);
+  both_maps_surface->draw_region(
+      current_scrolling_position,
+      std::static_pointer_cast<Surface>(dst_surface.shared_from_this())
+  );
 }
 
 }

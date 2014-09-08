@@ -134,9 +134,12 @@ bool TilePattern::is_drawn_at_its_position() const {
  * \param viewport Coordinates of the top-left corner of \c dst_surface
  * relative to the map (may be used for scrolling tiles).
  */
-void TilePattern::fill_surface(Surface& dst_surface, const Rectangle& dst_position,
-    Tileset& tileset, const Point& viewport) {
-
+void TilePattern::fill_surface(
+    const SurfacePtr& dst_surface,
+    const Rectangle& dst_position,
+    Tileset& tileset,
+    const Point& viewport
+) {
   Point dst;
 
   int limit_x = dst_position.get_x() + dst_position.get_width();
@@ -146,7 +149,7 @@ void TilePattern::fill_surface(Surface& dst_surface, const Rectangle& dst_positi
       y < limit_y;
       y += get_height()) {
 
-    if ((y <= dst_surface.get_height() && y + get_height() > 0)
+    if ((y <= dst_surface->get_height() && y + get_height() > 0)
         || !is_drawn_at_its_position()) {
       dst.y = y;
 
@@ -154,7 +157,7 @@ void TilePattern::fill_surface(Surface& dst_surface, const Rectangle& dst_positi
           x < limit_x;
           x += get_width()) {
 
-        if ((x <= dst_surface.get_width() && x + get_width() > 0)
+        if ((x <= dst_surface->get_width() && x + get_width() > 0)
             || !is_drawn_at_its_position()) {
           dst.x = x;
           draw(dst_surface, dst, tileset, viewport);

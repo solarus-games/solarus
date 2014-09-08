@@ -97,8 +97,11 @@ void SpriteAnimationDirection::draw(Surface& dst_surface,
   Point position_top_left = dst_position;
   position_top_left -= origin;
 
-  SurfacePtr shared_dst_surface(RefCountable::make_refcount_ptr<Surface>(&dst_surface));
-  src_image.draw_region(current_frame_rect, shared_dst_surface, position_top_left);  // TODO shared_ptr
+  src_image.draw_region(
+      current_frame_rect,
+      std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
+      position_top_left
+  );
 }
 
 /**

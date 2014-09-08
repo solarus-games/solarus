@@ -245,7 +245,9 @@ void CarriedItem::break_item() {
     }
   }
   else {
-    get_entities().add_entity(new Explosion("", get_layer(), get_xy(), true));
+    get_entities().add_entity(make_refcount_ptr(
+        new Explosion("", get_layer(), get_xy(), true)
+    ));
     Sound::play("explosion");
     if (is_throwing) {
       remove_from_map(); // because if the item was still carried by the hero, then the hero class will destroy it

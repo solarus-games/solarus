@@ -548,26 +548,6 @@ void MapEntities::add_tile(const TilePtr& tile) {
  * specified is nullptr (because some entity creation functions
  * may return nullptr), nothing is done.
  *
- * \param entity The entity to add (can be nullptr).
- */
-void MapEntities::add_entity(MapEntity* entity) {
-
-  // TODO shared_ptr: remove this function once all callers use shared_ptrs.
-  if (entity == nullptr) {
-    return;
-  }
-
-  MapEntityPtr shared_entity = RefCountable::make_refcount_ptr(entity);
-  add_entity(shared_entity);
-}
-
-/**
- * \brief Adds an entity to the map.
- *
- * This function is called when loading the map. If the entity
- * specified is nullptr (because some entity creation functions
- * may return nullptr), nothing is done.
- *
  * \param entity The entity to add (can be an empty pointer).
  */
 void MapEntities::add_entity(const MapEntityPtr& entity) {

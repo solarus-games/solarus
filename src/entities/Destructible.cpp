@@ -472,7 +472,9 @@ bool Destructible::is_waiting_for_regeneration() const {
  */
 void Destructible::explode() {
 
-  get_entities().add_entity(new Explosion("", get_layer(), get_xy(), true));
+  get_entities().add_entity(make_refcount_ptr(
+      new Explosion("", get_layer(), get_xy(), true)
+  ));
   Sound::play("explosion");
   get_lua_context().destructible_on_exploded(*this);
 }

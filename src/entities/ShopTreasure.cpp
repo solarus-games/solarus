@@ -75,7 +75,7 @@ ShopTreasure::ShopTreasure(
  * \return the shop treasure created, or nullptr if it is already bought or if it
  * is not obtainable.
  */
-ShopTreasure* ShopTreasure::create(
+std::shared_ptr<ShopTreasure> ShopTreasure::create(
     Game& /* game */,
     const std::string& name,
     Layer layer,
@@ -83,14 +83,16 @@ ShopTreasure* ShopTreasure::create(
     int y,
     const Treasure& treasure,
     int price,
-    const std::string& dialog_id) {
-
+    const std::string& dialog_id
+) {
   // See if the item is not already bought and is obtainable.
   if (treasure.is_found() || !treasure.is_obtainable()) {
     return nullptr;
   }
 
-  return new ShopTreasure(name, layer, x, y, treasure, price, dialog_id);
+  return make_refcount_ptr(new ShopTreasure(
+      name, layer, x, y, treasure, price, dialog_id
+  ));
 }
 
 /**

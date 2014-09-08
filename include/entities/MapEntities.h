@@ -78,7 +78,6 @@ class MapEntities {
     bool has_entity_with_prefix(const std::string& prefix) const;
 
     // handle entities
-    void add_entity(MapEntity* entity);  // TODO shared_ptr: remove
     void add_entity(const MapEntityPtr& entity);
     void remove_entity(MapEntity* entity);
     void remove_entity(const std::string& name);

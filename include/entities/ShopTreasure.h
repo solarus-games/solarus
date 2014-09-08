@@ -39,7 +39,7 @@ class ShopTreasure: public Detector {
 
   public:
 
-    static ShopTreasure* create(
+    static std::shared_ptr<ShopTreasure> create(
         Game& game,
         const std::string& name,
         Layer layer,

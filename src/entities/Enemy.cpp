@@ -829,7 +829,9 @@ void Enemy::update() {
       Point xy;
       xy.x = get_top_left_x() + Random::get_number(get_width());
       xy.y = get_top_left_y() + Random::get_number(get_height());
-      get_entities().add_entity(new Explosion("", LAYER_HIGH, xy, false));
+      get_entities().add_entity(make_refcount_ptr(
+          new Explosion("", LAYER_HIGH, xy, false)
+      ));
       Sound::play("explosion");
 
       next_explosion_date = now + 200;

@@ -50,8 +50,9 @@ void Hero::HookshotState::start(const State* previous_state) {
   State::start(previous_state);
 
   get_sprites().set_animation("hookshot");
-  hookshot = new Hookshot(get_hero());
-  get_entities().add_entity(hookshot);
+  get_entities().add_entity(make_refcount_ptr(
+      new Hookshot(get_hero())
+  ));
 }
 
 /**

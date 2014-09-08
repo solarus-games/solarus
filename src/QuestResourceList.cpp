@@ -49,7 +49,7 @@ namespace {
    */
   int l_resource_element(lua_State* l) {
 
-    SOLARUS_LUA_BOUNDARY_TRY() {
+    return LuaTools::exception_boundary_handle(l, [&] {
       QuestResourceList::ResourceType resource_type =
           LuaTools::check_enum<QuestResourceList::ResourceType>(l, 1, resource_type_names);
       const std::string& id = LuaTools::check_string_field(l, 2, "id");

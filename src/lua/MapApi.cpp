@@ -278,7 +278,7 @@ void LuaContext::set_entity_implicit_creation_map(lua_State* l, Map* map) {
  */
 int LuaContext::l_get_map_entity_or_global(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     lua_pushvalue(l, lua_upvalueindex(1));  // Because check_map does not like pseudo-indexes.
     Map& map = *check_map(l, -1);
     const std::string& name = LuaTools::check_string(l, 2);
@@ -295,8 +295,7 @@ int LuaContext::l_get_map_entity_or_global(lua_State* l) {
       lua_getglobal(l, name.c_str());
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -306,7 +305,7 @@ int LuaContext::l_get_map_entity_or_global(lua_State* l) {
  */
 int LuaContext::l_camera_do_callback(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     // Execute the function.
     lua_settop(l, 0);
     lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_function");
@@ -322,8 +321,7 @@ int LuaContext::l_camera_do_callback(lua_State* l) {
     timer->set_suspended_with_map(false);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -333,14 +331,13 @@ int LuaContext::l_camera_do_callback(lua_State* l) {
  */
 int LuaContext::l_camera_restore(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
 
     lua_context.get_main_loop().get_game()->get_current_map().restore_camera();
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -350,13 +347,12 @@ int LuaContext::l_camera_restore(lua_State* l) {
  */
 int LuaContext::map_api_get_game(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
 
     push_game(l, map.get_game().get_savegame());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -366,13 +362,12 @@ int LuaContext::map_api_get_game(lua_State* l) {
  */
 int LuaContext::map_api_get_id(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Map& map = *check_map(l, 1);
 
     push_string(l, map.get_id());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -382,7 +377,7 @@ int LuaContext::map_api_get_id(lua_State* l) {
  */
 int LuaContext::map_api_get_world(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Map& map = *check_map(l, 1);
 
     const std::string& world = map.get_world();
@@ -394,8 +389,7 @@ int LuaContext::map_api_get_world(lua_State* l) {
       push_string(l, world);
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -405,7 +399,7 @@ int LuaContext::map_api_get_world(lua_State* l) {
  */
 int LuaContext::map_api_get_floor(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Map& map = *check_map(l, 1);
 
     if (!map.has_floor()) {
@@ -415,8 +409,7 @@ int LuaContext::map_api_get_floor(lua_State* l) {
       lua_pushinteger(l, map.get_floor());
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -426,15 +419,14 @@ int LuaContext::map_api_get_floor(lua_State* l) {
  */
 int LuaContext::map_api_get_size(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Map& map = *check_map(l, 1);
 
     lua_pushinteger(l, map.get_width());
     lua_pushinteger(l, map.get_height());
 
     return 2;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -444,15 +436,14 @@ int LuaContext::map_api_get_size(lua_State* l) {
  */
 int LuaContext::map_api_get_location(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Map& map = *check_map(l, 1);
 
     lua_pushinteger(l, map.get_location().get_x());
     lua_pushinteger(l, map.get_location().get_y());
 
     return 2;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -462,13 +453,12 @@ int LuaContext::map_api_get_location(lua_State* l) {
  */
 int LuaContext::map_api_get_tileset(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Map& map = *check_map(l, 1);
 
     push_string(l, map.get_tileset_id());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -478,7 +468,7 @@ int LuaContext::map_api_get_tileset(lua_State* l) {
  */
 int LuaContext::map_api_get_music(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Map& map = *check_map(l, 1);
 
     const std::string& music_id = map.get_music_id();
@@ -494,8 +484,7 @@ int LuaContext::map_api_get_music(lua_State* l) {
       push_string(l, music_id);
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -505,15 +494,14 @@ int LuaContext::map_api_get_music(lua_State* l) {
  */
 int LuaContext::map_api_set_tileset(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     const std::string& tileset_id = LuaTools::check_string(l, 2);
 
     map.set_tileset(tileset_id);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -523,7 +511,7 @@ int LuaContext::map_api_set_tileset(lua_State* l) {
  */
 int LuaContext::map_api_get_camera_position(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Map& map = *check_map(l, 1);
 
     const Rectangle& camera_position = map.get_camera_position();
@@ -533,8 +521,7 @@ int LuaContext::map_api_get_camera_position(lua_State* l) {
     lua_pushinteger(l, camera_position.get_width());
     lua_pushinteger(l, camera_position.get_height());
     return 4;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -544,7 +531,7 @@ int LuaContext::map_api_get_camera_position(lua_State* l) {
  */
 int LuaContext::map_api_move_camera(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
@@ -573,8 +560,7 @@ int LuaContext::map_api_move_camera(lua_State* l) {
     map.move_camera(x, y, speed);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -584,7 +570,7 @@ int LuaContext::map_api_move_camera(lua_State* l) {
  */
 int LuaContext::map_api_get_ground(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Map& map = *check_map(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
@@ -594,8 +580,7 @@ int LuaContext::map_api_get_ground(lua_State* l) {
 
     push_string(l, Tileset::ground_names[ground]);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -605,7 +590,7 @@ int LuaContext::map_api_get_ground(lua_State* l) {
  */
 int LuaContext::map_api_draw_sprite(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     Sprite& sprite = *check_sprite(l, 2);
     int x = LuaTools::check_int(l, 3);
@@ -614,8 +599,7 @@ int LuaContext::map_api_draw_sprite(lua_State* l) {
     map.draw_sprite(sprite, x, y);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -625,13 +609,12 @@ int LuaContext::map_api_draw_sprite(lua_State* l) {
  */
 int LuaContext::map_api_get_crystal_state(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
 
     lua_pushboolean(l, map.get_game().get_crystal_state());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -641,7 +624,7 @@ int LuaContext::map_api_get_crystal_state(lua_State* l) {
  */
 int LuaContext::map_api_set_crystal_state(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     bool state = lua_toboolean(l, 2);
 
@@ -651,8 +634,7 @@ int LuaContext::map_api_set_crystal_state(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -662,14 +644,13 @@ int LuaContext::map_api_set_crystal_state(lua_State* l) {
  */
 int LuaContext::map_api_change_crystal_state(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
 
     map.get_game().change_crystal_state();
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -679,7 +660,7 @@ int LuaContext::map_api_change_crystal_state(lua_State* l) {
  */
 int LuaContext::map_api_open_doors(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
@@ -701,8 +682,7 @@ int LuaContext::map_api_open_doors(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -712,7 +692,7 @@ int LuaContext::map_api_open_doors(lua_State* l) {
  */
 int LuaContext::map_api_close_doors(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
@@ -734,8 +714,7 @@ int LuaContext::map_api_close_doors(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -745,7 +724,7 @@ int LuaContext::map_api_close_doors(lua_State* l) {
  */
 int LuaContext::map_api_set_doors_open(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
     bool open = true;
@@ -761,8 +740,7 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -772,7 +750,7 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
  */
 int LuaContext::map_api_get_entity(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     const std::string& name = LuaTools::check_string(l, 2);
 
@@ -785,8 +763,7 @@ int LuaContext::map_api_get_entity(lua_State* l) {
       lua_pushnil(l);
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -796,7 +773,7 @@ int LuaContext::map_api_get_entity(lua_State* l) {
  */
 int LuaContext::map_api_has_entity(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     const std::string& name = LuaTools::check_string(l, 2);
 
@@ -804,8 +781,7 @@ int LuaContext::map_api_has_entity(lua_State* l) {
 
     lua_pushboolean(l, entity != nullptr);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -815,7 +791,7 @@ int LuaContext::map_api_has_entity(lua_State* l) {
  */
 int LuaContext::map_api_get_entities(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
@@ -837,8 +813,7 @@ int LuaContext::map_api_get_entities(lua_State* l) {
     // with io.open) to be sure it is the original one.
 
     return 3;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -848,7 +823,7 @@ int LuaContext::map_api_get_entities(lua_State* l) {
  */
 int LuaContext::map_api_get_entities_count(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
@@ -857,8 +832,7 @@ int LuaContext::map_api_get_entities_count(lua_State* l) {
 
     lua_pushinteger(l, entities.size());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -868,14 +842,13 @@ int LuaContext::map_api_get_entities_count(lua_State* l) {
  */
 int LuaContext::map_api_has_entities(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
     lua_pushboolean(l, map.get_entities().has_entity_with_prefix(prefix));
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -885,14 +858,13 @@ int LuaContext::map_api_has_entities(lua_State* l) {
  */
 int LuaContext::map_api_get_hero(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
 
     // Return the hero even if he is no longer on this map.
     push_hero(l, *map.get_game().get_hero());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -902,7 +874,7 @@ int LuaContext::map_api_get_hero(lua_State* l) {
  */
 int LuaContext::map_api_set_entities_enabled(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
     bool enabled = true;
@@ -917,8 +889,7 @@ int LuaContext::map_api_set_entities_enabled(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -928,14 +899,13 @@ int LuaContext::map_api_set_entities_enabled(lua_State* l) {
  */
 int LuaContext::map_api_remove_entities(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
     map.get_entities().remove_entities_with_prefix(prefix);
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 namespace {
@@ -978,7 +948,7 @@ void entity_creation_check_size(
  */
 int LuaContext::map_api_create_tile(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
 
     // Should not happen: create_tile is not in the map metatable.
@@ -1013,8 +983,7 @@ int LuaContext::map_api_create_tile(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1024,7 +993,7 @@ int LuaContext::map_api_create_tile(lua_State* l) {
  */
 int LuaContext::map_api_create_destination(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1051,8 +1020,7 @@ int LuaContext::map_api_create_destination(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1062,7 +1030,7 @@ int LuaContext::map_api_create_destination(lua_State* l) {
  */
 int LuaContext::map_api_create_teletransporter(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1100,8 +1068,7 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1111,7 +1078,7 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
  */
 int LuaContext::map_api_create_pickable(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1160,8 +1127,7 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1171,7 +1137,7 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
  */
 int LuaContext::map_api_create_destructible(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1225,8 +1191,7 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1236,7 +1201,7 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
  */
 int LuaContext::map_api_create_chest(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1307,8 +1272,7 @@ int LuaContext::map_api_create_chest(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1318,7 +1282,7 @@ int LuaContext::map_api_create_chest(lua_State* l) {
  */
 int LuaContext::map_api_create_jumper(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1349,8 +1313,7 @@ int LuaContext::map_api_create_jumper(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1360,7 +1323,7 @@ int LuaContext::map_api_create_jumper(lua_State* l) {
  */
 int LuaContext::map_api_create_enemy(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1416,8 +1379,7 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1427,7 +1389,7 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
  */
 int LuaContext::map_api_create_npc(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1462,8 +1424,7 @@ int LuaContext::map_api_create_npc(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1473,7 +1434,7 @@ int LuaContext::map_api_create_npc(lua_State* l) {
  */
 int LuaContext::map_api_create_block(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1510,8 +1471,7 @@ int LuaContext::map_api_create_block(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1521,7 +1481,7 @@ int LuaContext::map_api_create_block(lua_State* l) {
  */
 int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1553,8 +1513,7 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1564,7 +1523,7 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
  */
 int LuaContext::map_api_create_switch(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1597,8 +1556,7 @@ int LuaContext::map_api_create_switch(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1608,7 +1566,7 @@ int LuaContext::map_api_create_switch(lua_State* l) {
  */
 int LuaContext::map_api_create_wall(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1645,8 +1603,7 @@ int LuaContext::map_api_create_wall(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1656,7 +1613,7 @@ int LuaContext::map_api_create_wall(lua_State* l) {
  */
 int LuaContext::map_api_create_sensor(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1683,8 +1640,7 @@ int LuaContext::map_api_create_sensor(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1694,7 +1650,7 @@ int LuaContext::map_api_create_sensor(lua_State* l) {
  */
 int LuaContext::map_api_create_crystal(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1715,8 +1671,7 @@ int LuaContext::map_api_create_crystal(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1726,7 +1681,7 @@ int LuaContext::map_api_create_crystal(lua_State* l) {
  */
 int LuaContext::map_api_create_crystal_block(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1761,8 +1716,7 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1772,7 +1726,7 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
  */
 int LuaContext::map_api_create_shop_treasure(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1816,8 +1770,7 @@ int LuaContext::map_api_create_shop_treasure(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1827,7 +1780,7 @@ int LuaContext::map_api_create_shop_treasure(lua_State* l) {
  */
 int LuaContext::map_api_create_stream(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1860,8 +1813,7 @@ int LuaContext::map_api_create_stream(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1871,7 +1823,7 @@ int LuaContext::map_api_create_stream(lua_State* l) {
  */
 int LuaContext::map_api_create_door(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1935,8 +1887,7 @@ int LuaContext::map_api_create_door(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1946,7 +1897,7 @@ int LuaContext::map_api_create_door(lua_State* l) {
  */
 int LuaContext::map_api_create_stairs(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -1975,8 +1926,7 @@ int LuaContext::map_api_create_stairs(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1986,7 +1936,7 @@ int LuaContext::map_api_create_stairs(lua_State* l) {
  */
 int LuaContext::map_api_create_separator(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -2013,8 +1963,7 @@ int LuaContext::map_api_create_separator(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -2024,7 +1973,7 @@ int LuaContext::map_api_create_separator(lua_State* l) {
  */
 int LuaContext::map_api_create_custom_entity(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -2059,8 +2008,7 @@ int LuaContext::map_api_create_custom_entity(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -2070,7 +2018,7 @@ int LuaContext::map_api_create_custom_entity(lua_State* l) {
  */
 int LuaContext::map_api_create_bomb(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -2091,8 +2039,7 @@ int LuaContext::map_api_create_bomb(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -2102,7 +2049,7 @@ int LuaContext::map_api_create_bomb(lua_State* l) {
  */
 int LuaContext::map_api_create_explosion(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -2123,8 +2070,7 @@ int LuaContext::map_api_create_explosion(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -2134,7 +2080,7 @@ int LuaContext::map_api_create_explosion(lua_State* l) {
  */
 int LuaContext::map_api_create_fire(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = get_entity_creation_map(l);
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
@@ -2154,8 +2100,7 @@ int LuaContext::map_api_create_fire(lua_State* l) {
       return 1;
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**

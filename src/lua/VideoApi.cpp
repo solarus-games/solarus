@@ -59,14 +59,13 @@ void LuaContext::register_video_module() {
  */
 int LuaContext::video_api_get_window_title(lua_State *l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& window_title =
         Video::get_window_title();
 
     push_string(l, window_title);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -76,13 +75,12 @@ int LuaContext::video_api_get_window_title(lua_State *l) {
  */
 int LuaContext::video_api_set_window_title(lua_State *l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& window_title = LuaTools::check_string(l, 1);
 
     Video::set_window_title(window_title);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -92,13 +90,12 @@ int LuaContext::video_api_set_window_title(lua_State *l) {
  */
 int LuaContext::video_api_get_mode(lua_State *l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const VideoMode& mode = Video::get_video_mode();
 
     push_string(l, mode.get_name());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -108,7 +105,7 @@ int LuaContext::video_api_get_mode(lua_State *l) {
  */
 int LuaContext::video_api_set_mode(lua_State *l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::string mode_name = LuaTools::check_string(l, 1);
     const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
@@ -117,8 +114,7 @@ int LuaContext::video_api_set_mode(lua_State *l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -128,12 +124,11 @@ int LuaContext::video_api_set_mode(lua_State *l) {
  */
 int LuaContext::video_api_switch_mode(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Video::switch_video_mode();
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -143,7 +138,7 @@ int LuaContext::video_api_switch_mode(lua_State* l) {
  */
 int LuaContext::video_api_get_modes(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::vector<const VideoMode*>& modes =
         Video::get_video_modes();
 
@@ -157,8 +152,7 @@ int LuaContext::video_api_get_modes(lua_State* l) {
     }
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -168,7 +162,7 @@ int LuaContext::video_api_get_modes(lua_State* l) {
  */
 int LuaContext::video_api_is_mode_supported(lua_State *l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::string mode_name = LuaTools::check_string(l, 1);
     const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
@@ -176,8 +170,7 @@ int LuaContext::video_api_is_mode_supported(lua_State *l) {
 
     lua_pushboolean(l, supported);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -187,13 +180,12 @@ int LuaContext::video_api_is_mode_supported(lua_State *l) {
  */
 int LuaContext::video_api_is_fullscreen(lua_State *l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     bool fullscreen = Video::is_fullscreen();
 
     lua_pushboolean(l, fullscreen);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -203,7 +195,7 @@ int LuaContext::video_api_is_fullscreen(lua_State *l) {
  */
 int LuaContext::video_api_set_fullscreen(lua_State *l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     bool fullscreen = true;  // true if unspecified.
     if (lua_gettop(l) >= 1) {
       fullscreen = lua_toboolean(l, 1);
@@ -212,8 +204,7 @@ int LuaContext::video_api_set_fullscreen(lua_State *l) {
     Video::set_fullscreen(fullscreen);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -223,14 +214,13 @@ int LuaContext::video_api_set_fullscreen(lua_State *l) {
  */
 int LuaContext::video_api_get_quest_size(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Size& quest_size = Video::get_quest_size();
 
     lua_pushinteger(l, quest_size.width);
     lua_pushinteger(l, quest_size.height);
     return 2;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -240,14 +230,13 @@ int LuaContext::video_api_get_quest_size(lua_State* l) {
  */
 int LuaContext::video_api_get_window_size(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Size& window_size = Video::get_window_size();
 
     lua_pushinteger(l, window_size.width);
     lua_pushinteger(l, window_size.height);
     return 2;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -257,7 +246,7 @@ int LuaContext::video_api_get_window_size(lua_State* l) {
  */
 int LuaContext::video_api_set_window_size(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     int width = LuaTools::check_int(l, 1);
     int height = LuaTools::check_int(l, 2);
 
@@ -271,8 +260,7 @@ int LuaContext::video_api_set_window_size(lua_State* l) {
     Video::set_window_size(Size(width, height));
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -282,12 +270,11 @@ int LuaContext::video_api_set_window_size(lua_State* l) {
  */
 int LuaContext::video_api_reset_window_size(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Video::reset_window_size();
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 }

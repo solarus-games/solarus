@@ -177,7 +177,7 @@ void LuaContext::update_menus() {
  */
 int LuaContext::menu_api_start(lua_State *l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     // Parameters: context table.
     if (lua_type(l, 1) != LUA_TTABLE
         && lua_type(l, 1) != LUA_TUSERDATA) {
@@ -195,8 +195,7 @@ int LuaContext::menu_api_start(lua_State *l) {
     lua_context.add_menu(menu_ref, 1, on_top);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -206,7 +205,7 @@ int LuaContext::menu_api_start(lua_State *l) {
  */
 int LuaContext::menu_api_stop(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
 
     LuaTools::check_type(l, 1, LUA_TTABLE);
@@ -226,8 +225,7 @@ int LuaContext::menu_api_stop(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -237,7 +235,7 @@ int LuaContext::menu_api_stop(lua_State* l) {
  */
 int LuaContext::menu_api_stop_all(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     if (lua_type(l, 1) != LUA_TTABLE
         && lua_type(l, 1) != LUA_TUSERDATA) {
       LuaTools::type_error(l, 1, "table, game or map");
@@ -246,8 +244,7 @@ int LuaContext::menu_api_stop_all(lua_State* l) {
     get_lua_context(l).remove_menus(1);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -257,7 +254,7 @@ int LuaContext::menu_api_stop_all(lua_State* l) {
  */
 int LuaContext::menu_api_is_started(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
 
     LuaTools::check_type(l, 1, LUA_TTABLE);
@@ -277,8 +274,7 @@ int LuaContext::menu_api_is_started(lua_State* l) {
     lua_pushboolean(l, found);
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**

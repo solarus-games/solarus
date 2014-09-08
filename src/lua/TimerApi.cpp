@@ -345,7 +345,7 @@ void LuaContext::do_timer_callback(const TimerPtr& timer) {
  */
 int LuaContext::timer_api_start(lua_State *l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     // Parameters: [context] delay callback.
     LuaContext& lua_context = get_lua_context(l);
 
@@ -388,8 +388,7 @@ int LuaContext::timer_api_start(lua_State *l) {
     push_timer(l, timer);
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -399,14 +398,13 @@ int LuaContext::timer_api_start(lua_State *l) {
  */
 int LuaContext::timer_api_stop(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
     const TimerPtr& timer = check_timer(l, 1);
     lua_context.remove_timer(timer);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -416,7 +414,7 @@ int LuaContext::timer_api_stop(lua_State* l) {
  */
 int LuaContext::timer_api_stop_all(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     if (lua_type(l, 1) != LUA_TTABLE
         && lua_type(l, 1) != LUA_TUSERDATA) {
       LuaTools::type_error(l, 1, "table or userdata");
@@ -425,8 +423,7 @@ int LuaContext::timer_api_stop_all(lua_State* l) {
     get_lua_context(l).remove_timers(1);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -436,13 +433,12 @@ int LuaContext::timer_api_stop_all(lua_State* l) {
  */
 int LuaContext::timer_api_is_with_sound(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
 
     lua_pushboolean(l, timer->is_with_sound());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -452,7 +448,7 @@ int LuaContext::timer_api_is_with_sound(lua_State* l) {
  */
 int LuaContext::timer_api_set_with_sound(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
     bool with_sound = true;
     if (lua_gettop(l) >= 2) {
@@ -462,8 +458,7 @@ int LuaContext::timer_api_set_with_sound(lua_State* l) {
     timer->set_with_sound(with_sound);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -473,13 +468,12 @@ int LuaContext::timer_api_set_with_sound(lua_State* l) {
  */
 int LuaContext::timer_api_is_suspended(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
 
     lua_pushboolean(l, timer->is_suspended());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -489,7 +483,7 @@ int LuaContext::timer_api_is_suspended(lua_State* l) {
  */
 int LuaContext::timer_api_set_suspended(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
     bool suspended = true;
     if (lua_gettop(l) >= 2) {
@@ -499,8 +493,7 @@ int LuaContext::timer_api_set_suspended(lua_State* l) {
     timer->set_suspended(suspended);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -510,13 +503,12 @@ int LuaContext::timer_api_set_suspended(lua_State* l) {
  */
 int LuaContext::timer_api_is_suspended_with_map(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
 
     lua_pushboolean(l, timer->is_suspended_with_map());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -526,7 +518,7 @@ int LuaContext::timer_api_is_suspended_with_map(lua_State* l) {
  */
 int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
 
     const TimerPtr& timer = check_timer(l, 1);
@@ -544,8 +536,7 @@ int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -555,7 +546,7 @@ int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
  */
 int LuaContext::timer_api_get_remaining_time(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
 
     LuaContext& lua_context = get_lua_context(l);
@@ -573,8 +564,7 @@ int LuaContext::timer_api_get_remaining_time(lua_State* l) {
       lua_pushinteger(l, remaining_time);
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -584,7 +574,7 @@ int LuaContext::timer_api_get_remaining_time(lua_State* l) {
  */
 int LuaContext::timer_api_set_remaining_time(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
     uint32_t remaining_time = LuaTools::check_int(l, 2);
 
@@ -603,8 +593,7 @@ int LuaContext::timer_api_set_remaining_time(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 }

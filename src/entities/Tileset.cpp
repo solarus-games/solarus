@@ -223,7 +223,7 @@ void Tileset::set_images(const std::string& other_id) {
  */
 int Tileset::l_background_color(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     lua_getfield(l, LUA_REGISTRYINDEX, "tileset");
     Tileset* tileset = static_cast<Tileset*>(lua_touserdata(l, -1));
     lua_pop(l, 1);
@@ -242,8 +242,7 @@ int Tileset::l_background_color(lua_State* l) {
     tileset->background_color = color;
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -256,7 +255,7 @@ int Tileset::l_background_color(lua_State* l) {
  */
 int Tileset::l_tile_pattern(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     lua_getfield(l, LUA_REGISTRYINDEX, "tileset");
     Tileset* tileset = static_cast<Tileset*>(lua_touserdata(l, -1));
     lua_pop(l, 1);
@@ -348,8 +347,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
     tileset->add_tile_pattern(id, tile_pattern);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 }

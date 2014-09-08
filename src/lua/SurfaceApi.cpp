@@ -103,7 +103,7 @@ void LuaContext::push_surface(lua_State* l, Surface& surface) {
  */
 int LuaContext::surface_api_create(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     SurfacePtr surface;
     if (lua_gettop(l) == 0) {
       // create an empty surface with the screen size
@@ -135,8 +135,7 @@ int LuaContext::surface_api_create(lua_State* l) {
       push_surface(l, *surface);
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -146,14 +145,13 @@ int LuaContext::surface_api_create(lua_State* l) {
  */
 int LuaContext::surface_api_get_size(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Surface& surface = *check_surface(l, 1);
 
     lua_pushinteger(l, surface.get_width());
     lua_pushinteger(l, surface.get_height());
     return 2;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -163,14 +161,13 @@ int LuaContext::surface_api_get_size(lua_State* l) {
  */
 int LuaContext::surface_api_clear(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Surface& surface = *check_surface(l, 1);
 
     surface.clear();
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -180,7 +177,7 @@ int LuaContext::surface_api_clear(lua_State* l) {
  */
 int LuaContext::surface_api_fill_color(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Surface& surface = *check_surface(l, 1);
     Color color = LuaTools::check_color(l, 2);
 
@@ -197,8 +194,7 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -208,15 +204,14 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
  */
 int LuaContext::surface_api_set_opacity(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Surface& surface = *check_surface(l, 1);
     uint8_t opacity = (uint8_t) LuaTools::check_int(l, 2);
 
     surface.set_opacity(opacity);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 }

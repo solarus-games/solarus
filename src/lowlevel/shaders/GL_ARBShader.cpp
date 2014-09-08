@@ -185,7 +185,7 @@ void GL_ARBShader::set_rendering_settings() {
  */
 int GL_ARBShader::l_shader(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     if (loading_shader != nullptr) {
 
       GLhandleARB& program = loading_shader->program,
@@ -239,8 +239,7 @@ int GL_ARBShader::l_shader(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**

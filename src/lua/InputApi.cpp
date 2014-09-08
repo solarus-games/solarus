@@ -54,11 +54,10 @@ void LuaContext::register_input_module() {
  */
 int LuaContext::input_api_is_joypad_enabled(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     lua_pushboolean(l, InputEvent::is_joypad_enabled());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -68,7 +67,7 @@ int LuaContext::input_api_is_joypad_enabled(lua_State* l) {
  */
 int LuaContext::input_api_set_joypad_enabled(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     bool joypad_enabled = true;
     if (lua_gettop(l) >= 2) {
       joypad_enabled = lua_toboolean(l, 2);
@@ -77,8 +76,7 @@ int LuaContext::input_api_set_joypad_enabled(lua_State* l) {
     InputEvent::set_joypad_enabled(joypad_enabled);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -88,7 +86,7 @@ int LuaContext::input_api_set_joypad_enabled(lua_State* l) {
  */
 int LuaContext::input_api_is_key_pressed(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& key_name = LuaTools::check_string(l, 1);
     InputEvent::KeyboardKey key = InputEvent::get_keyboard_key_by_name(key_name);
 
@@ -99,8 +97,7 @@ int LuaContext::input_api_is_key_pressed(lua_State* l) {
 
     lua_pushboolean(l, InputEvent::is_key_down(key));
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -110,7 +107,7 @@ int LuaContext::input_api_is_key_pressed(lua_State* l) {
  */
 int LuaContext::input_api_get_key_modifiers(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const bool shift = InputEvent::is_shift_down();
     const bool control = InputEvent::is_control_down();
     const bool alt = InputEvent::is_alt_down();
@@ -140,8 +137,7 @@ int LuaContext::input_api_get_key_modifiers(lua_State* l) {
     }
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -151,13 +147,12 @@ int LuaContext::input_api_get_key_modifiers(lua_State* l) {
  */
 int LuaContext::input_api_is_joypad_button_pressed(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     int button = LuaTools::check_int(l, 1);
 
     lua_pushboolean(l, InputEvent::is_joypad_button_down(button));
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -167,13 +162,12 @@ int LuaContext::input_api_is_joypad_button_pressed(lua_State* l) {
  */
 int LuaContext::input_api_get_joypad_axis_state(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     int axis = LuaTools::check_int(l, 1);
 
     lua_pushinteger(l, InputEvent::get_joypad_axis_state(axis));
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -183,13 +177,12 @@ int LuaContext::input_api_get_joypad_axis_state(lua_State* l) {
  */
 int LuaContext::input_api_get_joypad_hat_direction(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     int hat = LuaTools::check_int(l, 1);
 
     lua_pushinteger(l, InputEvent::get_joypad_hat_direction(hat));
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -199,7 +192,7 @@ int LuaContext::input_api_get_joypad_hat_direction(lua_State* l) {
  */
 int LuaContext::input_api_is_mouse_button_pressed(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& button_name = LuaTools::check_string(l, 1);
     InputEvent::MouseButton button = InputEvent::get_mouse_button_by_name(button_name);
 
@@ -210,8 +203,7 @@ int LuaContext::input_api_is_mouse_button_pressed(lua_State* l) {
 
     lua_pushboolean(l, InputEvent::is_mouse_button_down(button));
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -221,7 +213,7 @@ int LuaContext::input_api_is_mouse_button_pressed(lua_State* l) {
  */
 int LuaContext::input_api_is_mouse_button_released(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& button_name = LuaTools::check_string(l, 1);
     InputEvent::MouseButton button = InputEvent::get_mouse_button_by_name(button_name);
 
@@ -232,8 +224,7 @@ int LuaContext::input_api_is_mouse_button_released(lua_State* l) {
 
     lua_pushboolean(l, !InputEvent::is_mouse_button_down(button));
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -243,7 +234,7 @@ int LuaContext::input_api_is_mouse_button_released(lua_State* l) {
  */
 int LuaContext::input_api_get_mouse_position(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Rectangle& position = InputEvent::get_global_mouse_position();
 
     if (!position.is_flat()) {
@@ -256,8 +247,7 @@ int LuaContext::input_api_get_mouse_position(lua_State* l) {
     }
 
     return 2;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 }

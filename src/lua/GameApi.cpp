@@ -157,7 +157,7 @@ void LuaContext::push_game(lua_State* l, Savegame& game) {
  */
 int LuaContext::game_api_exists(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
     if (FileTools::get_quest_write_dir().empty()) {
@@ -168,8 +168,7 @@ int LuaContext::game_api_exists(lua_State* l) {
 
     lua_pushboolean(l, exists);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -179,7 +178,7 @@ int LuaContext::game_api_exists(lua_State* l) {
  */
 int LuaContext::game_api_delete(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
     if (FileTools::get_quest_write_dir().empty()) {
@@ -189,8 +188,7 @@ int LuaContext::game_api_delete(lua_State* l) {
     FileTools::data_file_delete(file_name);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -200,7 +198,7 @@ int LuaContext::game_api_delete(lua_State* l) {
  */
 int LuaContext::game_api_load(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
     if (FileTools::get_quest_write_dir().empty()) {
@@ -215,8 +213,7 @@ int LuaContext::game_api_load(lua_State* l) {
 
     push_game(l, *savegame);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -226,7 +223,7 @@ int LuaContext::game_api_load(lua_State* l) {
  */
 int LuaContext::game_api_save(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     if (FileTools::get_quest_write_dir().empty()) {
@@ -236,8 +233,7 @@ int LuaContext::game_api_save(lua_State* l) {
     savegame.save();
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -247,7 +243,7 @@ int LuaContext::game_api_save(lua_State* l) {
  */
 int LuaContext::game_api_start(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::shared_ptr<Savegame> savegame = check_game(l, 1);
 
     if (QuestResourceList::get_elements(QuestResourceList::RESOURCE_MAP).empty()) {
@@ -267,8 +263,7 @@ int LuaContext::game_api_start(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -278,7 +273,7 @@ int LuaContext::game_api_start(lua_State* l) {
  */
 int LuaContext::game_api_is_started(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -286,8 +281,7 @@ int LuaContext::game_api_is_started(lua_State* l) {
 
     lua_pushboolean(l, is_started);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -297,7 +291,7 @@ int LuaContext::game_api_is_started(lua_State* l) {
  */
 int LuaContext::game_api_is_suspended(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -305,8 +299,7 @@ int LuaContext::game_api_is_suspended(lua_State* l) {
 
     lua_pushboolean(l, is_suspended);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -316,7 +309,7 @@ int LuaContext::game_api_is_suspended(lua_State* l) {
  */
 int LuaContext::game_api_is_paused(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -324,8 +317,7 @@ int LuaContext::game_api_is_paused(lua_State* l) {
 
     lua_pushboolean(l, is_paused);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -335,7 +327,7 @@ int LuaContext::game_api_is_paused(lua_State* l) {
  */
 int LuaContext::game_api_set_paused(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     bool paused = true;
     if (lua_gettop(l) >= 2) {
@@ -348,8 +340,7 @@ int LuaContext::game_api_set_paused(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -359,7 +350,7 @@ int LuaContext::game_api_set_paused(lua_State* l) {
  */
 int LuaContext::game_api_is_pause_allowed(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -367,8 +358,7 @@ int LuaContext::game_api_is_pause_allowed(lua_State* l) {
 
     lua_pushboolean(l, is_pause_allowed);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -378,7 +368,7 @@ int LuaContext::game_api_is_pause_allowed(lua_State* l) {
  */
 int LuaContext::game_api_set_pause_allowed(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     bool pause_allowed = true;
@@ -392,8 +382,7 @@ int LuaContext::game_api_set_pause_allowed(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -403,7 +392,7 @@ int LuaContext::game_api_set_pause_allowed(lua_State* l) {
  */
 int LuaContext::game_api_is_dialog_enabled(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -414,8 +403,7 @@ int LuaContext::game_api_is_dialog_enabled(lua_State* l) {
       lua_pushboolean(l, game->is_dialog_enabled());
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -425,7 +413,7 @@ int LuaContext::game_api_is_dialog_enabled(lua_State* l) {
  */
 int LuaContext::game_api_start_dialog(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     const std::string& dialog_id = LuaTools::check_string(l, 2);
     ScopedLuaRef info_ref;
@@ -460,8 +448,7 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
     game->start_dialog(dialog_id, info_ref, callback_ref);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -471,7 +458,7 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
  */
 int LuaContext::game_api_stop_dialog(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -493,8 +480,7 @@ int LuaContext::game_api_stop_dialog(lua_State* l) {
     game->stop_dialog(status_ref);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -504,7 +490,7 @@ int LuaContext::game_api_stop_dialog(lua_State* l) {
  */
 int LuaContext::game_api_is_game_over_enabled(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -515,8 +501,7 @@ int LuaContext::game_api_is_game_over_enabled(lua_State* l) {
       lua_pushboolean(l, game->is_showing_game_over());
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -526,7 +511,7 @@ int LuaContext::game_api_is_game_over_enabled(lua_State* l) {
  */
 int LuaContext::game_api_start_game_over(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -537,8 +522,7 @@ int LuaContext::game_api_start_game_over(lua_State* l) {
     game->start_game_over();
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -548,7 +532,7 @@ int LuaContext::game_api_start_game_over(lua_State* l) {
  */
 int LuaContext::game_api_stop_game_over(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -559,8 +543,7 @@ int LuaContext::game_api_stop_game_over(lua_State* l) {
     game->stop_game_over();
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -570,7 +553,7 @@ int LuaContext::game_api_stop_game_over(lua_State* l) {
  */
 int LuaContext::game_api_get_map(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -581,8 +564,7 @@ int LuaContext::game_api_get_map(lua_State* l) {
       push_map(l, game->get_current_map());
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -592,7 +574,7 @@ int LuaContext::game_api_get_map(lua_State* l) {
  */
 int LuaContext::game_api_get_hero(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -603,8 +585,7 @@ int LuaContext::game_api_get_hero(lua_State* l) {
       push_hero(l, *game->get_hero());
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -614,7 +595,7 @@ int LuaContext::game_api_get_hero(lua_State* l) {
  */
 int LuaContext::game_api_get_value(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     const std::string& key = LuaTools::check_string(l, 2);
 
@@ -639,8 +620,7 @@ int LuaContext::game_api_get_value(lua_State* l) {
     }
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -650,7 +630,7 @@ int LuaContext::game_api_get_value(lua_State* l) {
  */
 int LuaContext::game_api_set_value(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     const std::string& key = LuaTools::check_string(l, 2);
 
@@ -693,8 +673,7 @@ int LuaContext::game_api_set_value(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -704,7 +683,7 @@ int LuaContext::game_api_set_value(lua_State* l) {
  */
 int LuaContext::game_api_get_starting_location(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     const std::string& starting_map = savegame.get_string(Savegame::KEY_STARTING_MAP);
@@ -723,8 +702,7 @@ int LuaContext::game_api_get_starting_location(lua_State* l) {
       push_string(l, savegame.get_string(Savegame::KEY_STARTING_POINT));
     }
     return 2;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -734,7 +712,7 @@ int LuaContext::game_api_get_starting_location(lua_State* l) {
  */
 int LuaContext::game_api_set_starting_location(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     const std::string& map_id = LuaTools::check_string(l, 2);
     const std::string& destination_name = LuaTools::opt_string(l, 3, "");
@@ -743,8 +721,7 @@ int LuaContext::game_api_set_starting_location(lua_State* l) {
     savegame.set_string(Savegame::KEY_STARTING_POINT, destination_name);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -754,14 +731,13 @@ int LuaContext::game_api_set_starting_location(lua_State* l) {
  */
 int LuaContext::game_api_get_life(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     int life = savegame.get_equipment().get_life();
     lua_pushinteger(l, life);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -771,15 +747,14 @@ int LuaContext::game_api_get_life(lua_State* l) {
  */
 int LuaContext::game_api_set_life(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     int life = LuaTools::check_int(l, 2);
 
     savegame.get_equipment().set_life(life);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -789,7 +764,7 @@ int LuaContext::game_api_set_life(lua_State* l) {
  */
 int LuaContext::game_api_add_life(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     int life = LuaTools::check_int(l, 2);
 
@@ -800,8 +775,7 @@ int LuaContext::game_api_add_life(lua_State* l) {
     savegame.get_equipment().add_life(life);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -811,7 +785,7 @@ int LuaContext::game_api_add_life(lua_State* l) {
  */
 int LuaContext::game_api_remove_life(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     int life = LuaTools::check_int(l, 2);
 
@@ -822,8 +796,7 @@ int LuaContext::game_api_remove_life(lua_State* l) {
     savegame.get_equipment().remove_life(life);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -833,15 +806,14 @@ int LuaContext::game_api_remove_life(lua_State* l) {
  */
 int LuaContext::game_api_get_max_life(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     int life = savegame.get_equipment().get_max_life();
 
     lua_pushinteger(l, life);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -851,7 +823,7 @@ int LuaContext::game_api_get_max_life(lua_State* l) {
  */
 int LuaContext::game_api_set_max_life(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     int life = LuaTools::check_int(l, 2);
 
@@ -862,8 +834,7 @@ int LuaContext::game_api_set_max_life(lua_State* l) {
     savegame.get_equipment().set_max_life(life);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -873,7 +844,7 @@ int LuaContext::game_api_set_max_life(lua_State* l) {
  */
 int LuaContext::game_api_add_max_life(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     int life = LuaTools::check_int(l, 2);
 
@@ -885,8 +856,7 @@ int LuaContext::game_api_add_max_life(lua_State* l) {
     equipment.set_max_life(equipment.get_max_life() + life);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -896,15 +866,14 @@ int LuaContext::game_api_add_max_life(lua_State* l) {
  */
 int LuaContext::game_api_get_money(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     int money = savegame.get_equipment().get_money();
 
     lua_pushinteger(l, money);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -914,15 +883,14 @@ int LuaContext::game_api_get_money(lua_State* l) {
  */
 int LuaContext::game_api_set_money(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     int money = LuaTools::check_int(l, 2);
 
     savegame.get_equipment().set_money(money);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -932,7 +900,7 @@ int LuaContext::game_api_set_money(lua_State* l) {
  */
 int LuaContext::game_api_add_money(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     int money = LuaTools::check_int(l, 2);
 
@@ -943,8 +911,7 @@ int LuaContext::game_api_add_money(lua_State* l) {
     savegame.get_equipment().add_money(money);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -954,7 +921,7 @@ int LuaContext::game_api_add_money(lua_State* l) {
  */
 int LuaContext::game_api_remove_money(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     int money = LuaTools::check_int(l, 2);
 
@@ -965,8 +932,7 @@ int LuaContext::game_api_remove_money(lua_State* l) {
     savegame.get_equipment().remove_money(money);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -976,15 +942,14 @@ int LuaContext::game_api_remove_money(lua_State* l) {
  */
 int LuaContext::game_api_get_max_money(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     int money = savegame.get_equipment().get_max_money();
 
     lua_pushinteger(l, money);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -994,7 +959,7 @@ int LuaContext::game_api_get_max_money(lua_State* l) {
  */
 int LuaContext::game_api_set_max_money(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     int money = LuaTools::check_int(l, 2);
 
@@ -1005,8 +970,7 @@ int LuaContext::game_api_set_max_money(lua_State* l) {
     savegame.get_equipment().set_max_money(money);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1016,15 +980,14 @@ int LuaContext::game_api_set_max_money(lua_State* l) {
  */
 int LuaContext::game_api_get_magic(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     int magic = savegame.get_equipment().get_magic();
 
     lua_pushinteger(l, magic);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1034,15 +997,14 @@ int LuaContext::game_api_get_magic(lua_State* l) {
  */
 int LuaContext::game_api_set_magic(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     int magic = LuaTools::check_int(l, 2);
 
     savegame.get_equipment().set_magic(magic);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1052,7 +1014,7 @@ int LuaContext::game_api_set_magic(lua_State* l) {
  */
 int LuaContext::game_api_add_magic(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     int magic = LuaTools::check_int(l, 2);
 
@@ -1063,8 +1025,7 @@ int LuaContext::game_api_add_magic(lua_State* l) {
     savegame.get_equipment().add_magic(magic);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1074,7 +1035,7 @@ int LuaContext::game_api_add_magic(lua_State* l) {
  */
 int LuaContext::game_api_remove_magic(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     int magic = LuaTools::check_int(l, 2);
 
@@ -1085,8 +1046,7 @@ int LuaContext::game_api_remove_magic(lua_State* l) {
     savegame.get_equipment().remove_magic(magic);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1096,15 +1056,14 @@ int LuaContext::game_api_remove_magic(lua_State* l) {
  */
 int LuaContext::game_api_get_max_magic(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     int magic = savegame.get_equipment().get_max_magic();
 
     lua_pushinteger(l, magic);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1114,7 +1073,7 @@ int LuaContext::game_api_get_max_magic(lua_State* l) {
  */
 int LuaContext::game_api_set_max_magic(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     int magic = LuaTools::check_int(l, 2);
 
@@ -1125,8 +1084,7 @@ int LuaContext::game_api_set_max_magic(lua_State* l) {
     savegame.get_equipment().set_max_magic(magic);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1136,7 +1094,7 @@ int LuaContext::game_api_set_max_magic(lua_State* l) {
  */
 int LuaContext::game_api_has_ability(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
 
@@ -1144,8 +1102,7 @@ int LuaContext::game_api_has_ability(lua_State* l) {
 
     lua_pushboolean(l, has_ability);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1155,7 +1112,7 @@ int LuaContext::game_api_has_ability(lua_State* l) {
  */
 int LuaContext::game_api_get_ability(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
 
@@ -1163,8 +1120,7 @@ int LuaContext::game_api_get_ability(lua_State* l) {
 
     lua_pushinteger(l, ability_level);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1174,7 +1130,7 @@ int LuaContext::game_api_get_ability(lua_State* l) {
  */
 int LuaContext::game_api_set_ability(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
     int level = LuaTools::check_int(l, 3);
@@ -1182,8 +1138,7 @@ int LuaContext::game_api_set_ability(lua_State* l) {
     savegame.get_equipment().set_ability(ability, level);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1193,7 +1148,7 @@ int LuaContext::game_api_set_ability(lua_State* l) {
  */
 int LuaContext::game_api_get_item(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     const std::string& item_name = LuaTools::check_string(l, 2);
 
@@ -1203,8 +1158,7 @@ int LuaContext::game_api_get_item(lua_State* l) {
 
     push_item(l, savegame.get_equipment().get_item(item_name));
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1214,7 +1168,7 @@ int LuaContext::game_api_get_item(lua_State* l) {
  */
 int LuaContext::game_api_has_item(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     const std::string& item_name = LuaTools::check_string(l, 2);
 
@@ -1229,8 +1183,7 @@ int LuaContext::game_api_has_item(lua_State* l) {
 
     lua_pushboolean(l, equipment.get_item(item_name).get_variant() > 0);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1240,7 +1193,7 @@ int LuaContext::game_api_has_item(lua_State* l) {
  */
 int LuaContext::game_api_get_item_assigned(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     int slot = LuaTools::check_int(l, 2);
 
@@ -1257,8 +1210,7 @@ int LuaContext::game_api_get_item_assigned(lua_State* l) {
       push_item(l, *item);
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1268,7 +1220,7 @@ int LuaContext::game_api_get_item_assigned(lua_State* l) {
  */
 int LuaContext::game_api_set_item_assigned(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     int slot = LuaTools::check_int(l, 2);
     EquipmentItem* item = nullptr;
@@ -1283,8 +1235,7 @@ int LuaContext::game_api_set_item_assigned(lua_State* l) {
     savegame.get_equipment().set_item_assigned(slot, item);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1294,7 +1245,7 @@ int LuaContext::game_api_set_item_assigned(lua_State* l) {
  */
 int LuaContext::game_api_get_command_effect(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
@@ -1378,8 +1329,7 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
     }
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1389,7 +1339,7 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
  */
 int LuaContext::game_api_get_command_keyboard_binding(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
@@ -1405,8 +1355,7 @@ int LuaContext::game_api_get_command_keyboard_binding(lua_State* l) {
       push_string(l, key_name);
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1416,7 +1365,7 @@ int LuaContext::game_api_get_command_keyboard_binding(lua_State* l) {
  */
 int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
@@ -1434,8 +1383,7 @@ int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
     commands.set_keyboard_binding(command, key);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1445,7 +1393,7 @@ int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
  */
 int LuaContext::game_api_get_command_joypad_binding(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
@@ -1460,8 +1408,7 @@ int LuaContext::game_api_get_command_joypad_binding(lua_State* l) {
       push_string(l, joypad_string);
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1471,7 +1418,7 @@ int LuaContext::game_api_get_command_joypad_binding(lua_State* l) {
  */
 int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
@@ -1488,8 +1435,7 @@ int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
     commands.set_joypad_binding(command, joypad_string);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1499,7 +1445,7 @@ int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
  */
 int LuaContext::game_api_capture_command_binding(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
@@ -1509,8 +1455,7 @@ int LuaContext::game_api_capture_command_binding(lua_State* l) {
     commands.customize(command, callback_ref);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1520,7 +1465,7 @@ int LuaContext::game_api_capture_command_binding(lua_State* l) {
  */
 int LuaContext::game_api_is_command_pressed(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
@@ -1529,8 +1474,7 @@ int LuaContext::game_api_is_command_pressed(lua_State* l) {
     lua_pushboolean(l, commands.is_command_pressed(command));
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1540,7 +1484,7 @@ int LuaContext::game_api_is_command_pressed(lua_State* l) {
  */
 int LuaContext::game_api_get_commands_direction(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     GameCommands& commands = savegame.get_game()->get_commands();
@@ -1553,8 +1497,7 @@ int LuaContext::game_api_get_commands_direction(lua_State* l) {
     }
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1564,7 +1507,7 @@ int LuaContext::game_api_get_commands_direction(lua_State* l) {
  */
 int LuaContext::game_api_simulate_command_pressed(lua_State* l){
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
@@ -1572,8 +1515,7 @@ int LuaContext::game_api_simulate_command_pressed(lua_State* l){
     savegame.get_game()->simulate_command_pressed(command);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -1583,7 +1525,7 @@ int LuaContext::game_api_simulate_command_pressed(lua_State* l){
  */
 int LuaContext::game_api_simulate_command_released(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
     GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
@@ -1591,8 +1533,7 @@ int LuaContext::game_api_simulate_command_released(lua_State* l) {
     savegame.get_game()->simulate_command_released(command);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**

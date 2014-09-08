@@ -81,7 +81,7 @@ void LuaContext::register_language_module() {
  */
 int LuaContext::language_api_get_language(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& language = Language::get_language();
 
     if (language.empty()) {  // Return nil if no language is set.
@@ -91,8 +91,7 @@ int LuaContext::language_api_get_language(lua_State* l) {
       push_string(l, language);
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -102,7 +101,7 @@ int LuaContext::language_api_get_language(lua_State* l) {
  */
 int LuaContext::language_api_set_language(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& language_code = LuaTools::check_string(l, 1);
 
     if (!Language::has_language(language_code)) {
@@ -111,8 +110,7 @@ int LuaContext::language_api_set_language(lua_State* l) {
     Language::set_language(language_code);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -122,7 +120,7 @@ int LuaContext::language_api_set_language(lua_State* l) {
  */
 int LuaContext::language_api_get_language_name(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::string language_code;
     if (lua_gettop(l) >= 1) {
       language_code = LuaTools::check_string(l, 1);
@@ -141,8 +139,7 @@ int LuaContext::language_api_get_language_name(lua_State* l) {
     push_string(l, name);
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -152,7 +149,7 @@ int LuaContext::language_api_get_language_name(lua_State* l) {
  */
 int LuaContext::language_api_get_languages(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::vector<QuestResourceList::Element>& languages =
         QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
 
@@ -166,8 +163,7 @@ int LuaContext::language_api_get_languages(lua_State* l) {
     }
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -177,7 +173,7 @@ int LuaContext::language_api_get_languages(lua_State* l) {
  */
 int LuaContext::language_api_get_string(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& key = LuaTools::check_string(l, 1);
 
     if (!StringResource::exists(key)) {
@@ -187,8 +183,7 @@ int LuaContext::language_api_get_string(lua_State* l) {
       push_string(l, StringResource::get_string(key));
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -198,7 +193,7 @@ int LuaContext::language_api_get_string(lua_State* l) {
  */
 int LuaContext::language_api_get_dialog(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& dialog_id = LuaTools::check_string(l, 1);
 
     if (!DialogResource::exists(dialog_id)) {
@@ -208,8 +203,7 @@ int LuaContext::language_api_get_dialog(lua_State* l) {
       push_dialog(l, DialogResource::get_dialog(dialog_id));
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 }

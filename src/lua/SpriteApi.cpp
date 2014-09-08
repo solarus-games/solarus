@@ -115,7 +115,7 @@ void LuaContext::push_sprite(lua_State* l, Sprite& sprite) {
  */
 int LuaContext::sprite_api_create(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& animation_set_id = LuaTools::check_string(l, 1);
 
     // TODO if the file does not exist, make a Lua error instead of an assertion error.
@@ -124,8 +124,7 @@ int LuaContext::sprite_api_create(lua_State* l) {
 
     push_sprite(l, *sprite);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -135,15 +134,14 @@ int LuaContext::sprite_api_create(lua_State* l) {
  */
 int LuaContext::sprite_api_get_animation_set(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
 
     const std::string& animation_set_id = sprite.get_animation_set_id();
 
     push_string(l, animation_set_id);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -153,15 +151,14 @@ int LuaContext::sprite_api_get_animation_set(lua_State* l) {
  */
 int LuaContext::sprite_api_get_animation(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
 
     const std::string& animation_name = sprite.get_current_animation();
 
     push_string(l, animation_name);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -171,7 +168,7 @@ int LuaContext::sprite_api_get_animation(lua_State* l) {
  */
 int LuaContext::sprite_api_set_animation(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
 
     const std::string& animation_name = LuaTools::check_string(l, 2);
@@ -186,8 +183,7 @@ int LuaContext::sprite_api_set_animation(lua_State* l) {
     sprite.restart_animation();
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -197,14 +193,13 @@ int LuaContext::sprite_api_set_animation(lua_State* l) {
  */
 int LuaContext::sprite_api_has_animation(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
     const std::string& animation_name = LuaTools::check_string(l, 2);
 
     lua_pushboolean(l, sprite.has_animation(animation_name));
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -214,13 +209,12 @@ int LuaContext::sprite_api_has_animation(lua_State* l) {
  */
 int LuaContext::sprite_api_get_direction(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
 
     lua_pushinteger(l, sprite.get_current_direction());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -230,7 +224,7 @@ int LuaContext::sprite_api_get_direction(lua_State* l) {
  */
 int LuaContext::sprite_api_set_direction(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
     int direction = LuaTools::check_int(l, 2);
 
@@ -244,8 +238,7 @@ int LuaContext::sprite_api_set_direction(lua_State* l) {
     sprite.set_current_direction(direction);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -255,7 +248,7 @@ int LuaContext::sprite_api_set_direction(lua_State* l) {
  */
 int LuaContext::sprite_api_get_num_directions(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
     const std::string& animation_name = LuaTools::opt_string(l, 2, sprite.get_current_animation());
     if (!sprite.has_animation(animation_name)) {
@@ -269,8 +262,7 @@ int LuaContext::sprite_api_get_num_directions(lua_State* l) {
 
     lua_pushinteger(l, num_directions);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -280,13 +272,12 @@ int LuaContext::sprite_api_get_num_directions(lua_State* l) {
  */
 int LuaContext::sprite_api_get_frame(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
 
     lua_pushinteger(l, sprite.get_current_frame());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -296,7 +287,7 @@ int LuaContext::sprite_api_get_frame(lua_State* l) {
  */
 int LuaContext::sprite_api_set_frame(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
     int frame = LuaTools::check_int(l, 2);
 
@@ -311,8 +302,7 @@ int LuaContext::sprite_api_set_frame(lua_State* l) {
     sprite.set_current_frame(frame);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -322,7 +312,7 @@ int LuaContext::sprite_api_set_frame(lua_State* l) {
  */
 int LuaContext::sprite_api_get_frame_delay(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
 
     uint32_t frame_delay = sprite.get_frame_delay();
@@ -334,8 +324,7 @@ int LuaContext::sprite_api_get_frame_delay(lua_State* l) {
     }
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -345,7 +334,7 @@ int LuaContext::sprite_api_get_frame_delay(lua_State* l) {
  */
 int LuaContext::sprite_api_set_frame_delay(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
     uint32_t delay = 0;
     if (!lua_isnil(l, 2)) {
@@ -355,8 +344,7 @@ int LuaContext::sprite_api_set_frame_delay(lua_State* l) {
     sprite.set_frame_delay(delay);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -366,14 +354,13 @@ int LuaContext::sprite_api_set_frame_delay(lua_State* l) {
  */
 int LuaContext::sprite_api_is_paused(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
 
     lua_pushboolean(l, sprite.is_paused());
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -383,7 +370,7 @@ int LuaContext::sprite_api_is_paused(lua_State* l) {
  */
 int LuaContext::sprite_api_set_paused(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
     bool paused = true;  // true if unspecified.
     if (lua_gettop(l) >= 2) {
@@ -393,8 +380,7 @@ int LuaContext::sprite_api_set_paused(lua_State* l) {
     sprite.set_paused(paused);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -404,7 +390,7 @@ int LuaContext::sprite_api_set_paused(lua_State* l) {
  */
 int LuaContext::sprite_api_set_ignore_suspend(lua_State *l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
     bool ignore_suspend = true;  // true if unspecified.
     if (lua_gettop(l) >= 2) {
@@ -414,8 +400,7 @@ int LuaContext::sprite_api_set_ignore_suspend(lua_State *l) {
     sprite.set_ignore_suspend(ignore_suspend);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -425,7 +410,7 @@ int LuaContext::sprite_api_set_ignore_suspend(lua_State *l) {
  */
 int LuaContext::sprite_api_synchronize(lua_State *l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
 
     if (!lua_isnil(l, 2)) {
@@ -437,8 +422,7 @@ int LuaContext::sprite_api_synchronize(lua_State *l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**

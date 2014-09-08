@@ -2679,7 +2679,7 @@ int LuaContext::l_panic(lua_State* l) {
  */
 int LuaContext::l_loader(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& script_name = luaL_checkstring(l, 1);
     bool exists = load_file_if_exists(l, script_name);
 
@@ -2690,8 +2690,7 @@ int LuaContext::l_loader(lua_State* l) {
       push_string(l, oss.str());
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 }

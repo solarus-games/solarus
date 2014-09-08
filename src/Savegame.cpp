@@ -234,7 +234,7 @@ void Savegame::load() {
  */
 int Savegame::l_newindex(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     lua_getfield(l, LUA_REGISTRYINDEX, "savegame");
     Savegame* savegame = static_cast<Savegame*>(lua_touserdata(l, -1));
     lua_pop(l, 1);
@@ -260,8 +260,7 @@ int Savegame::l_newindex(lua_State* l) {
     }
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**

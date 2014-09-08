@@ -88,7 +88,7 @@ void LuaContext::push_main(lua_State* l) {
  */
 int LuaContext::main_api_load_file(lua_State *l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
     if (!load_file_if_exists(l, file_name)) {
@@ -96,8 +96,7 @@ int LuaContext::main_api_load_file(lua_State *l) {
     }
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -107,14 +106,13 @@ int LuaContext::main_api_load_file(lua_State *l) {
  */
 int LuaContext::main_api_do_file(lua_State *l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
     do_file(l, file_name);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -124,12 +122,11 @@ int LuaContext::main_api_do_file(lua_State *l) {
  */
 int LuaContext::main_api_reset(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     get_lua_context(l).get_main_loop().set_resetting();
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -139,12 +136,11 @@ int LuaContext::main_api_reset(lua_State* l) {
  */
 int LuaContext::main_api_exit(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     get_lua_context(l).get_main_loop().set_exiting();
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -154,13 +150,12 @@ int LuaContext::main_api_exit(lua_State* l) {
  */
 int LuaContext::main_api_get_elapsed_time(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     uint32_t elapsed_time = System::now();
 
     lua_pushinteger(l, elapsed_time);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -170,7 +165,7 @@ int LuaContext::main_api_get_elapsed_time(lua_State* l) {
  */
 int LuaContext::main_api_get_quest_write_dir(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& quest_write_dir = FileTools::get_quest_write_dir();
 
     if (quest_write_dir.empty()) {
@@ -180,8 +175,7 @@ int LuaContext::main_api_get_quest_write_dir(lua_State* l) {
       push_string(l, quest_write_dir);
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -191,14 +185,13 @@ int LuaContext::main_api_get_quest_write_dir(lua_State* l) {
  */
 int LuaContext::main_api_set_quest_write_dir(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& quest_write_dir = LuaTools::opt_string(l, 1, "");
 
     FileTools::set_quest_write_dir(quest_write_dir);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -208,7 +201,7 @@ int LuaContext::main_api_set_quest_write_dir(lua_State* l) {
  */
 int LuaContext::main_api_load_settings(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::string file_name = LuaTools::opt_string(l, 1, "settings.dat");
 
     if (FileTools::get_quest_write_dir().empty()) {
@@ -219,8 +212,7 @@ int LuaContext::main_api_load_settings(lua_State* l) {
 
     lua_pushboolean(l, success);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -230,7 +222,7 @@ int LuaContext::main_api_load_settings(lua_State* l) {
  */
 int LuaContext::main_api_save_settings(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::string file_name = LuaTools::opt_string(l, 1, "settings.dat");
 
     if (FileTools::get_quest_write_dir().empty()) {
@@ -241,8 +233,7 @@ int LuaContext::main_api_save_settings(lua_State* l) {
 
     lua_pushboolean(l, success);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -252,7 +243,7 @@ int LuaContext::main_api_save_settings(lua_State* l) {
  */
 int LuaContext::main_api_get_distance(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     int x1 = LuaTools::check_int(l, 1);
     int y1 = LuaTools::check_int(l, 2);
     int x2 = LuaTools::check_int(l, 3);
@@ -262,8 +253,7 @@ int LuaContext::main_api_get_distance(lua_State* l) {
 
     lua_pushinteger(l, distance);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -273,7 +263,7 @@ int LuaContext::main_api_get_distance(lua_State* l) {
  */
 int LuaContext::main_api_get_angle(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     int x1 = LuaTools::check_int(l, 1);
     int y1 = LuaTools::check_int(l, 2);
     int x2 = LuaTools::check_int(l, 3);
@@ -283,8 +273,7 @@ int LuaContext::main_api_get_angle(lua_State* l) {
 
     lua_pushnumber(l, angle);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -294,13 +283,12 @@ int LuaContext::main_api_get_angle(lua_State* l) {
  */
 int LuaContext::main_api_get_metatable(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& type_name = LuaTools::check_string(l, 1);
 
     luaL_getmetatable(l, (std::string("sol.") + type_name).c_str());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**

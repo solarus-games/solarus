@@ -61,11 +61,10 @@ void LuaContext::register_audio_module() {
  */
 int LuaContext::audio_api_get_sound_volume(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     lua_pushinteger(l, Sound::get_volume());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -75,13 +74,12 @@ int LuaContext::audio_api_get_sound_volume(lua_State* l) {
  */
 int LuaContext::audio_api_set_sound_volume(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     int volume = LuaTools::check_int(l, 1);
     Sound::set_volume(volume);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -91,7 +89,7 @@ int LuaContext::audio_api_set_sound_volume(lua_State* l) {
  */
 int LuaContext::audio_api_play_sound(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& sound_id = LuaTools::check_string(l, 1);
 
     if (!Sound::exists(sound_id)) {
@@ -100,8 +98,7 @@ int LuaContext::audio_api_play_sound(lua_State* l) {
     Sound::play(sound_id);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -111,11 +108,10 @@ int LuaContext::audio_api_play_sound(lua_State* l) {
  */
 int LuaContext::audio_api_preload_sounds(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Sound::load_all();
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -125,11 +121,10 @@ int LuaContext::audio_api_preload_sounds(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_volume(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     lua_pushinteger(l, Music::get_volume());
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -139,14 +134,13 @@ int LuaContext::audio_api_get_music_volume(lua_State* l) {
  */
 int LuaContext::audio_api_set_music_volume(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     int volume = LuaTools::check_int(l, 1);
 
     Music::set_volume(volume);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -156,7 +150,7 @@ int LuaContext::audio_api_set_music_volume(lua_State* l) {
  */
 int LuaContext::audio_api_play_music(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& music_id = LuaTools::opt_string(l, 1, "");
     bool loop = true;  // true by default, unless there is a callback.
     ScopedLuaRef callback_ref;
@@ -186,8 +180,7 @@ int LuaContext::audio_api_play_music(lua_State* l) {
       Music::play(music_id, loop, callback_ref);
     }
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -197,12 +190,11 @@ int LuaContext::audio_api_play_music(lua_State* l) {
  */
 int LuaContext::audio_api_stop_music(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Music::stop_playing();
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -212,7 +204,7 @@ int LuaContext::audio_api_stop_music(lua_State* l) {
  */
 int LuaContext::audio_api_get_music(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& music_id = Music::get_current_music_id();
 
     if (music_id == Music::none) {
@@ -222,8 +214,7 @@ int LuaContext::audio_api_get_music(lua_State* l) {
       push_string(l, music_id);
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -233,7 +224,7 @@ int LuaContext::audio_api_get_music(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_format(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Music::Format format = Music::get_format();
 
     if (format == Music::NO_FORMAT) {
@@ -244,8 +235,7 @@ int LuaContext::audio_api_get_music_format(lua_State* l) {
       push_string(l, Music::format_names[format]);
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -255,7 +245,7 @@ int LuaContext::audio_api_get_music_format(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_num_channels(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     if (Music::get_format() != Music::IT) {
       lua_pushnil(l);
     }
@@ -263,8 +253,7 @@ int LuaContext::audio_api_get_music_num_channels(lua_State* l) {
       lua_pushinteger(l, Music::get_num_channels());
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -274,7 +263,7 @@ int LuaContext::audio_api_get_music_num_channels(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_channel_volume(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     int channel = LuaTools::check_int(l, 1);
 
     if (Music::get_format() != Music::IT) {
@@ -289,8 +278,7 @@ int LuaContext::audio_api_get_music_channel_volume(lua_State* l) {
       lua_pushinteger(l, Music::get_channel_volume(channel));
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -300,7 +288,7 @@ int LuaContext::audio_api_get_music_channel_volume(lua_State* l) {
  */
 int LuaContext::audio_api_set_music_channel_volume(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     int channel = LuaTools::check_int(l, 1);
     int volume = LuaTools::check_int(l, 2);
 
@@ -317,8 +305,7 @@ int LuaContext::audio_api_set_music_channel_volume(lua_State* l) {
       lua_pushboolean(l, true);
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -328,7 +315,7 @@ int LuaContext::audio_api_set_music_channel_volume(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_tempo(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     if (Music::get_format() != Music::IT) {
       lua_pushnil(l);
     }
@@ -336,8 +323,7 @@ int LuaContext::audio_api_get_music_tempo(lua_State* l) {
       lua_pushinteger(l, Music::get_tempo());
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -347,7 +333,7 @@ int LuaContext::audio_api_get_music_tempo(lua_State* l) {
  */
 int LuaContext::audio_api_set_music_tempo(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     int tempo = LuaTools::check_int(l, 1);
 
     if (Music::get_format() != Music::IT) {
@@ -358,8 +344,7 @@ int LuaContext::audio_api_set_music_tempo(lua_State* l) {
       lua_pushboolean(l, true);
     }
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 }

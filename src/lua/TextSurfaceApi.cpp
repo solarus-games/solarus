@@ -134,7 +134,7 @@ void LuaContext::push_text_surface(lua_State* l, TextSurface& text_surface) {
  */
 int LuaContext::text_surface_api_create(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::shared_ptr<TextSurface> text_surface =
         std::make_shared<TextSurface>(0, 0);
 
@@ -198,8 +198,7 @@ int LuaContext::text_surface_api_create(lua_State* l) {
 
     push_text_surface(l, *text_surface);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -209,15 +208,14 @@ int LuaContext::text_surface_api_create(lua_State* l) {
  */
 int LuaContext::text_surface_api_get_horizontal_alignment(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TextSurface& text_surface = *check_text_surface(l, 1);
 
     TextSurface::HorizontalAlignment alignment = text_surface.get_horizontal_alignment();
 
     push_string(l, horizontal_alignment_names[alignment]);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -227,7 +225,7 @@ int LuaContext::text_surface_api_get_horizontal_alignment(lua_State* l) {
  */
 int LuaContext::text_surface_api_set_horizontal_alignment(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
     TextSurface::HorizontalAlignment alignment =
         LuaTools::check_enum<TextSurface::HorizontalAlignment>(
@@ -236,8 +234,7 @@ int LuaContext::text_surface_api_set_horizontal_alignment(lua_State* l) {
     text_surface.set_horizontal_alignment(alignment);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -247,15 +244,14 @@ int LuaContext::text_surface_api_set_horizontal_alignment(lua_State* l) {
  */
 int LuaContext::text_surface_api_get_vertical_alignment(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TextSurface& text_surface = *check_text_surface(l, 1);
 
     TextSurface::VerticalAlignment alignment = text_surface.get_vertical_alignment();
 
     push_string(l, vertical_alignment_names[alignment]);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -265,7 +261,7 @@ int LuaContext::text_surface_api_get_vertical_alignment(lua_State* l) {
  */
 int LuaContext::text_surface_api_set_vertical_alignment(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
     TextSurface::VerticalAlignment alignment =
         LuaTools::check_enum<TextSurface::VerticalAlignment>(
@@ -274,8 +270,7 @@ int LuaContext::text_surface_api_set_vertical_alignment(lua_State* l) {
     text_surface.set_vertical_alignment(alignment);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -285,15 +280,14 @@ int LuaContext::text_surface_api_set_vertical_alignment(lua_State* l) {
  */
 int LuaContext::text_surface_api_get_font(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TextSurface& text_surface = *check_text_surface(l, 1);
 
     const std::string& font_id = text_surface.get_font();
     push_string(l, font_id);
 
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -303,7 +297,7 @@ int LuaContext::text_surface_api_get_font(lua_State* l) {
  */
 int LuaContext::text_surface_api_set_font(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
     const std::string& font_id = LuaTools::check_string(l, 2);
 
@@ -313,8 +307,7 @@ int LuaContext::text_surface_api_set_font(lua_State* l) {
     text_surface.set_font(font_id);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -324,15 +317,14 @@ int LuaContext::text_surface_api_set_font(lua_State* l) {
  */
 int LuaContext::text_surface_api_get_rendering_mode(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TextSurface& text_surface = *check_text_surface(l, 1);
 
     TextSurface::RenderingMode mode = text_surface.get_rendering_mode();
 
     push_string(l, rendering_mode_names[mode]);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -342,7 +334,7 @@ int LuaContext::text_surface_api_get_rendering_mode(lua_State* l) {
  */
 int LuaContext::text_surface_api_set_rendering_mode(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
     TextSurface::RenderingMode mode = LuaTools::check_enum<TextSurface::RenderingMode>(
         l, 1, rendering_mode_names);
@@ -350,8 +342,7 @@ int LuaContext::text_surface_api_set_rendering_mode(lua_State* l) {
     text_surface.set_rendering_mode(mode);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -361,15 +352,14 @@ int LuaContext::text_surface_api_set_rendering_mode(lua_State* l) {
  */
 int LuaContext::text_surface_api_get_color(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TextSurface& text_surface = *check_text_surface(l, 1);
 
     const Color& color = text_surface.get_text_color();
 
     push_color(l, color);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -379,15 +369,14 @@ int LuaContext::text_surface_api_get_color(lua_State* l) {
  */
 int LuaContext::text_surface_api_set_color(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
     const Color& color = LuaTools::check_color(l, 2);
 
     text_surface.set_text_color(color);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -397,15 +386,14 @@ int LuaContext::text_surface_api_set_color(lua_State* l) {
  */
 int LuaContext::text_surface_api_get_text(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TextSurface& text_surface = *check_text_surface(l, 1);
 
     const std::string& text = text_surface.get_text();
 
     push_string(l, text);
     return 1;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -415,7 +403,7 @@ int LuaContext::text_surface_api_get_text(lua_State* l) {
  */
 int LuaContext::text_surface_api_set_text(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
     std::string text;
     if (lua_gettop(l) >= 2 && !lua_isnil(l, 2)) {
@@ -424,8 +412,7 @@ int LuaContext::text_surface_api_set_text(lua_State* l) {
     text_surface.set_text(text);
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -435,7 +422,7 @@ int LuaContext::text_surface_api_set_text(lua_State* l) {
  */
 int LuaContext::text_surface_api_set_text_key(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
     const std::string& key = LuaTools::check_string(l, 2);
 
@@ -449,8 +436,7 @@ int LuaContext::text_surface_api_set_text_key(lua_State* l) {
     text_surface.set_text(StringResource::get_string(key));
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 /**
@@ -460,15 +446,14 @@ int LuaContext::text_surface_api_set_text_key(lua_State* l) {
  */
 int LuaContext::text_surface_api_get_size(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TextSurface& text_surface = *check_text_surface(l, 1);
 
     lua_pushinteger(l, text_surface.get_width());
     lua_pushinteger(l, text_surface.get_height());
 
     return 2;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 }

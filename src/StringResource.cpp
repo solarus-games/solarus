@@ -36,7 +36,7 @@ std::map<std::string, std::string> strings;
  */
 int l_text(lua_State* l) {
 
-  SOLARUS_LUA_BOUNDARY_TRY() {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaTools::check_type(l, 1, LUA_TTABLE);
 
     const std::string key = LuaTools::check_string_field(l, 1, "key");
@@ -45,8 +45,7 @@ int l_text(lua_State* l) {
     strings[key] = value;
 
     return 0;
-  }
-  SOLARUS_LUA_BOUNDARY_CATCH(l);
+  });
 }
 
 }

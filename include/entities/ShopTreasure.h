@@ -81,7 +81,7 @@ class ShopTreasure: public Detector {
 
     // displaying
     TextSurface price_digits;         /**< the digits that show the price */
-    std::shared_ptr<Sprite>
+    SpritePtr
         rupee_icon_sprite;            /**< the rupee icon near the price */
 
 };

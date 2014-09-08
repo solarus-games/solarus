@@ -21,6 +21,7 @@
 #include "entities/Ground.h"
 #include "lowlevel/Rectangle.h"
 #include "lua/ScopedLuaRef.h"
+#include "SpritePtr.h"
 #include <memory>
 #include <string>
 
@@ -160,16 +161,15 @@ class HeroSprites {
     std::string tunic_sprite_id;            /**< Animation set used for the tunic.
                                              * By default, "hero/tunicX" where X is the tunic level. */
     bool has_default_tunic_sprite;          /**< Whether tunic_sprite_id has the defaut value. */
-    std::shared_ptr<Sprite> tunic_sprite;   /**< sprite of the current tunic */
+    SpritePtr tunic_sprite;                 /**< sprite of the current tunic */
 
     // Sword.
     std::string sword_sprite_id;            /**< Animation set used for the sword.
                                              * An empty string means no sword sprite.
                                              * By default, "hero/swordX" where X is the sword level. */
     bool has_default_sword_sprite;          /**< Whether sword_sprite_id has the defaut value. */
-    std::shared_ptr<Sprite> sword_sprite;   /**< Current sword sprite. */
-    std::shared_ptr<Sprite>
-        sword_stars_sprite;                 /**< Stars running along the sword when the sword is loading. */
+    SpritePtr sword_sprite;                 /**< Current sword sprite. */
+    SpritePtr sword_stars_sprite;           /**< Stars running along the sword when the sword is loading. */
 
     std::string sword_sound_id;             /**< Sound played when using the sword.
                                              * By default, "swordX" where X is the sword level. */
@@ -180,13 +180,13 @@ class HeroSprites {
                                              * An empty string means no shield sprite.
                                              * By default, "hero/shieldX" where X is the shield level. */
     bool has_default_shield_sprite;         /**< Whether shield_sprite_id has the defaut value. */
-    std::shared_ptr<Sprite> shield_sprite;                  /**< Current shield sprite. */
+    SpritePtr shield_sprite;                  /**< Current shield sprite. */
 
     // Other sprites.
-    std::shared_ptr<Sprite> shadow_sprite;  /**< shadow of the hero, only in specific states (most of the time
+    SpritePtr shadow_sprite;                /**< shadow of the hero, only in specific states (most of the time
                                              * the shadow is with the tunic sprite) */
-    std::shared_ptr<Sprite> ground_sprite;  /**< ground displayed under the hero (e.g. grass or shallow water) */
-    std::shared_ptr<Sprite> trail_sprite;   /**< trail of dust that the hero lets behind him (e.g. when running) */
+    SpritePtr ground_sprite;                /**< ground displayed under the hero (e.g. grass or shallow water) */
+    SpritePtr trail_sprite;                 /**< trail of dust that the hero lets behind him (e.g. when running) */
 
     std::string ground_sound_id;            /**< sound id of the current ground displayed under the hero */
 

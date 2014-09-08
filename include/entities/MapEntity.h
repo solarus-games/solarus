@@ -26,6 +26,7 @@
 #include "entities/EnemyAttack.h"
 #include "entities/EnemyReaction.h"
 #include "lowlevel/Rectangle.h"
+#include "SpritePtr.h"
 #include <vector>
 
 struct lua_State;
@@ -181,8 +182,8 @@ class MapEntity: public ExportableToLua {
     bool has_sprite() const;
     Sprite& get_sprite();
     const Sprite& get_sprite() const;
-    const std::vector<std::shared_ptr<Sprite>>& get_sprites();
-    std::shared_ptr<Sprite> create_sprite(
+    const std::vector<SpritePtr>& get_sprites();
+    SpritePtr create_sprite(
         const std::string& animation_set_id,
         bool enable_pixel_collisions = false
     );
@@ -378,11 +379,11 @@ class MapEntity: public ExportableToLua {
 
     int direction;                              /**< direction of the entity, not used for all kinds of entities */
 
-    std::vector<std::shared_ptr<Sprite>>
+    std::vector<SpritePtr>
         sprites;                                /**< sprites representing the entity;
                                                  * note that some entities manage their sprites themselves
                                                  * rather than using this field */
-    std::vector<std::shared_ptr<Sprite>>
+    std::vector<SpritePtr>
         old_sprites;                            /**< sprites to remove and destroy as soon as possible */
     bool visible;                               /**< indicates that this entity's sprites are currently displayed */
     bool drawn_in_y_order;                      /**< Whether this entity is drawn in Y order or in Z order. */

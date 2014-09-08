@@ -2133,7 +2133,7 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
     else {
       // hero:start_hurt(source_entity, [source_sprite], damage)
       MapEntity& source_entity = *check_entity(l, 2);
-      std::shared_ptr<Sprite> source_sprite;
+      SpritePtr source_sprite;
       int index = 3;
       if (is_sprite(l, 3)) {
         source_sprite = check_sprite(l, 3);

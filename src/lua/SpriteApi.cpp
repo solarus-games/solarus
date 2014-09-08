@@ -91,7 +91,7 @@ bool LuaContext::is_sprite(lua_State* l, int index) {
  * \param index an index in the stack
  * \return the sprite
  */
-std::shared_ptr<Sprite> LuaContext::check_sprite(lua_State* l, int index) {
+SpritePtr LuaContext::check_sprite(lua_State* l, int index) {
   return std::static_pointer_cast<Sprite>(check_userdata(
       l, index, sprite_module_name
   ));
@@ -119,7 +119,7 @@ int LuaContext::sprite_api_create(lua_State* l) {
     const std::string& animation_set_id = LuaTools::check_string(l, 1);
 
     // TODO if the file does not exist, make a Lua error instead of an assertion error.
-    const std::shared_ptr<Sprite>& sprite = RefCountable::make_refcount_ptr(new Sprite(animation_set_id));
+    const SpritePtr& sprite = RefCountable::make_refcount_ptr(new Sprite(animation_set_id));
     get_lua_context(l).add_drawable(sprite);
 
     push_sprite(l, *sprite);
@@ -426,10 +426,10 @@ int LuaContext::sprite_api_set_ignore_suspend(lua_State *l) {
 int LuaContext::sprite_api_synchronize(lua_State *l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    const std::shared_ptr<Sprite>& sprite = check_sprite(l, 1);
+    const SpritePtr& sprite = check_sprite(l, 1);
 
     if (!lua_isnil(l, 2)) {
-      const std::shared_ptr<Sprite>& reference_sprite = check_sprite(l, 2);
+      const SpritePtr& reference_sprite = check_sprite(l, 2);
       sprite->set_synchronized_to(reference_sprite);
     }
     else {

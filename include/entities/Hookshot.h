@@ -79,7 +79,7 @@ class Hookshot: public MapEntity {
     bool going_back;             /**< indicates that the hookshot is going back towards the hero */
     MapEntity* entity_reached;   /**< the entity the hookshot is attached to (or nullptr) */
 
-    std::shared_ptr<Sprite>
+    SpritePtr
         link_sprite;             /**< sprite of the links */
 
 };

@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "Drawable.h"
+#include "SpritePtr.h"
 #include <map>
 
 namespace solarus {
@@ -80,7 +81,7 @@ class Sprite: public Drawable {
     const Rectangle& get_current_frame_rectangle() const;
     uint32_t get_frame_delay() const;
     void set_frame_delay(uint32_t frame_delay);
-    void set_synchronized_to(const std::shared_ptr<Sprite>& other);
+    void set_synchronized_to(const SpritePtr& other);
 
     bool is_animation_started() const;
     void start_animation();
@@ -146,7 +147,7 @@ class Sprite: public Drawable {
     bool ignore_suspend;               /**< true to continue playing the animation even when the game is suspended */
     bool paused;                       /**< true if the animation is paused */
     bool finished;                     /**< true if the animation has been stopped because the last frame is finished */
-    std::shared_ptr<Sprite>
+    SpritePtr
         synchronize_to;                /**< another sprite to synchronize the frame to
                                         * when they have the same animation name (or nullptr) */
 

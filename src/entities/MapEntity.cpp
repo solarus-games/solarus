@@ -405,7 +405,7 @@ void MapEntity::notify_map_opening_transition_finished() {
  */
 void MapEntity::notify_tileset_changed() {
 
-  for (const std::shared_ptr<Sprite>& sprite: sprites) {
+  for (const SpritePtr& sprite: sprites) {
     sprite->set_tileset(get_map().get_tileset());
   }
 }
@@ -1175,7 +1175,7 @@ const Sprite& MapEntity::get_sprite() const {
  * \brief Returns all sprites of this entity.
  * \return The sprites.
  */
-const std::vector<std::shared_ptr<Sprite>>& MapEntity::get_sprites() {
+const std::vector<SpritePtr>& MapEntity::get_sprites() {
   return sprites;
 }
 
@@ -1185,11 +1185,11 @@ const std::vector<std::shared_ptr<Sprite>>& MapEntity::get_sprites() {
  * \param enable_pixel_collisions true to enable the pixel-perfect collision tests for this sprite
  * \return the sprite created
  */
-std::shared_ptr<Sprite> MapEntity::create_sprite(
+SpritePtr MapEntity::create_sprite(
     const std::string& animation_set_id,
     bool enable_pixel_collisions
 ) {
-  const std::shared_ptr<Sprite>& sprite = make_refcount_ptr(
+  const SpritePtr& sprite = make_refcount_ptr(
       new Sprite(animation_set_id)
   );
 
@@ -1206,7 +1206,7 @@ std::shared_ptr<Sprite> MapEntity::create_sprite(
  */
 void MapEntity::remove_sprite(Sprite& sprite) {
 
-  for (const std::shared_ptr<Sprite>& current_sprite: sprites) {
+  for (const SpritePtr& current_sprite: sprites) {
     if (current_sprite.get() == &sprite) {
       old_sprites.push_back(current_sprite);
       return;
@@ -1223,7 +1223,7 @@ void MapEntity::remove_sprite(Sprite& sprite) {
  */
 void MapEntity::clear_sprites() {
 
-  for (const std::shared_ptr<Sprite>& sprite: sprites) {
+  for (const SpritePtr& sprite: sprites) {
     old_sprites.push_back(sprite);
   }
   sprites.clear();
@@ -1234,7 +1234,7 @@ void MapEntity::clear_sprites() {
  */
 void MapEntity::clear_old_sprites() {
 
-  for (const std::shared_ptr<Sprite>& old_sprite: old_sprites) {
+  for (const SpritePtr& old_sprite: old_sprites) {
     for (auto it = sprites.begin(); it != sprites.end(); ++it) {
       if (it->get() == old_sprite.get()) {
         sprites.erase(it);
@@ -1472,7 +1472,7 @@ void MapEntity::check_collision_with_detectors() {
   get_map().check_collision_with_detectors(*this);
 
   // Detect pixel-precise collisions.
-  for (const std::shared_ptr<Sprite>& sprite: sprites) {
+  for (const SpritePtr& sprite: sprites) {
     if (sprite->are_pixel_collisions_enabled()) {
       get_map().check_collision_with_detectors(*this, *sprite);
     }
@@ -1588,7 +1588,7 @@ void MapEntity::set_enabled(bool enabled) {
         get_movement()->set_suspended(true);
       }
 
-      for (const std::shared_ptr<Sprite>& sprite: sprites) {
+      for (const SpritePtr& sprite: sprites) {
         sprite->set_suspended(true);
       }
 
@@ -1929,7 +1929,7 @@ bool MapEntity::overlaps_camera() const {
     return true;
   }
 
-  for (const std::shared_ptr<Sprite>& sprite: sprites) {
+  for (const SpritePtr& sprite: sprites) {
     const Size& sprite_size = sprite->get_size();
     const Point& sprite_origin = sprite->get_origin();
     const Rectangle sprite_bounding_box(
@@ -2388,7 +2388,7 @@ void MapEntity::set_suspended(bool suspended) {
   }
 
   // suspend/unsuspend the sprites animations
-  for (const std::shared_ptr<Sprite>& sprite: sprites) {
+  for (const SpritePtr& sprite: sprites) {
     sprite->set_suspended(suspended || !is_enabled());
   }
 
@@ -2420,7 +2420,7 @@ uint32_t MapEntity::get_when_suspended() const {
  */
 void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
 
-  for (const std::shared_ptr<Sprite>& sprite: sprites) {
+  for (const SpritePtr& sprite: sprites) {
     sprite->set_ignore_suspend(ignore_suspend);
   }
 }
@@ -2462,7 +2462,7 @@ void MapEntity::update() {
           stream_action->set_suspended(false);
         }
 
-        for (const std::shared_ptr<Sprite>& sprite: sprites) {
+        for (const SpritePtr& sprite: sprites) {
           sprite->set_suspended(false);
         }
 
@@ -2479,7 +2479,7 @@ void MapEntity::update() {
   }
 
   // update the sprites
-  for (const std::shared_ptr<Sprite>& sprite: sprites) {
+  for (const SpritePtr& sprite: sprites) {
 
     sprite->update();
     if (sprite->has_frame_changed()) {
@@ -2567,7 +2567,7 @@ void MapEntity::draw_on_map() {
   }
 
   // Draw the sprites.
-  for (const std::shared_ptr<Sprite>& sprite: sprites) {
+  for (const SpritePtr& sprite: sprites) {
     get_map().draw_sprite(*sprite, get_displayed_xy());
   }
 }

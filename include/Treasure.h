@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/SurfacePtr.h"
+#include "SpritePtr.h"
 #include <string>
 
 namespace solarus {
@@ -71,7 +72,7 @@ class Treasure {
     int variant;                       /**< variant of this content */
     std::string savegame_variable;     /**< name of the savegame boolean variable corresponding to this treasure,
                                         * or an empty string if the treasure state is not saved */
-    std::shared_ptr<Sprite> sprite;    /**< the sprite of the treasure (loaded on demand, nullptr until required) */
+    SpritePtr sprite;                  /**< the sprite of the treasure (loaded on demand, nullptr until required) */
 
 };
 

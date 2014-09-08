@@ -47,7 +47,6 @@ class Teletransporter: public Detector {
         const std::string& destination_map_id,
         const std::string& destination_name
     );
-    ~Teletransporter();
 
     virtual EntityType get_type() const override;
     virtual void notify_creating() override;

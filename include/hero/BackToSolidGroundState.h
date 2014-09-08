@@ -35,7 +35,6 @@ class Hero::BackToSolidGroundState: public Hero::State {
         uint32_t end_delay = 0,
         bool with_sound = true
     );
-    ~BackToSolidGroundState();
 
     virtual void start(const State* previous_state) override;
     virtual void stop(const State* next_state) override;

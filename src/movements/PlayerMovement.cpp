@@ -37,13 +37,6 @@ PlayerMovement::PlayerMovement(int moving_speed):
 }
 
 /**
- * \brief Destructor.
- */
-PlayerMovement::~PlayerMovement() {
-
-}
-
-/**
  * \brief Updates this movement.
  */
 void PlayerMovement::update() {

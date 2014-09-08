@@ -72,12 +72,6 @@ Teletransporter::Teletransporter(
 }
 
 /**
- * \brief Destructor.
- */
-Teletransporter::~Teletransporter() {
-}
-
-/**
  * \copydoc MapEntity::notify_creating
  */
 void Teletransporter::notify_creating() {

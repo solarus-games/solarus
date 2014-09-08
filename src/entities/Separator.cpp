@@ -45,12 +45,6 @@ Separator::Separator(
 }
 
 /**
- * \brief Destructor.
- */
-Separator::~Separator() {
-}
-
-/**
  * \copydoc MapEntity::get_type
  */
 EntityType Separator::get_type() const {

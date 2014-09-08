@@ -30,7 +30,6 @@ class Hero::FreeState: public Hero::PlayerMovementState {
   public:
 
     FreeState(Hero& hero);
-    ~FreeState();
 
     virtual void start(const State* previous_state) override;
     virtual void stop(const State* next_state) override;

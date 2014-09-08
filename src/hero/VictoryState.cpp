@@ -41,13 +41,6 @@ Hero::VictoryState::VictoryState(Hero& hero, const ScopedLuaRef& callback_ref):
 }
 
 /**
- * \brief Destructor.
- */
-Hero::VictoryState::~VictoryState() {
-
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */

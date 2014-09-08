@@ -131,9 +131,9 @@ class Game {
     bool restarting;           /**< true if the game will be restarted */
 
     // controls
-    GameCommands* commands;    /**< this object receives the keyboard and joypad events */
+    GameCommands* commands;    /**< this object receives the keyboard and joypad events */  // TODO unique_ptr
     KeysEffect* keys_effect;   /**< current effect associated to the main game keys
-                                * (represented on the HUD by the action icon, the objects icons, etc.) */
+                                * (represented on the HUD by the action icon, the objects icons, etc.) */  // TODO unique_ptr
 
     // map
     std::shared_ptr<Map>
@@ -144,7 +144,7 @@ class Game {
     SurfacePtr previous_map_surface;  /**< a copy of the previous map surface for transition effects that display two maps */
 
     Transition::Style transition_style; /**< the transition style between the current map and the next one */
-    Transition* transition;             /**< the transition currently shown, or nullptr if no transition is playing */
+    Transition* transition;             /**< the transition currently shown, or nullptr if no transition is playing */  // TODO unique_ptr
 
     // world (i.e. the current set of maps)
     bool crystal_state;        /**< indicates that a crystal has been enabled (i.e. the orange blocks are raised) */

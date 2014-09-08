@@ -47,7 +47,6 @@ class Wall: public MapEntity {
         bool stops_blocks,
         bool stops_projectiles
     );
-    ~Wall();
 
     virtual EntityType get_type() const override;
     virtual bool can_be_drawn() const override;

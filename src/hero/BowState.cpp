@@ -32,12 +32,6 @@ Hero::BowState::BowState(Hero& hero):
 }
 
 /**
- * \brief Destructor.
- */
-Hero::BowState::~BowState() {
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */

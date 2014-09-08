@@ -63,12 +63,6 @@ PathFinding::PathFinding(
 }
 
 /**
- * \brief Destructor.
- */
-PathFinding::~PathFinding() {
-}
-
-/**
  * \brief Tries to find a path between the source point and the target point.
  * \return the path found, or an empty string if no path was found
  * (because there is no path or the target is too far)

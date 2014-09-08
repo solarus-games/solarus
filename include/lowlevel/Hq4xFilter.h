@@ -30,7 +30,6 @@ class Hq4xFilter: public PixelFilter {
   public:
 
     Hq4xFilter();
-    ~Hq4xFilter();
 
     virtual int get_scaling_factor() const override;
     virtual void filter(

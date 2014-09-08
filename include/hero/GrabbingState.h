@@ -29,7 +29,6 @@ class Hero::GrabbingState: public Hero::State {
   public:
 
     GrabbingState(Hero& hero);
-    ~GrabbingState();
 
     virtual void start(const State* previous_state) override;
     virtual void update() override;

@@ -26,12 +26,6 @@ Scale2xFilter::Scale2xFilter():
 }
 
 /**
- * \brief Destructor.
- */
-Scale2xFilter::~Scale2xFilter() {
-}
-
-/**
  * \copydoc PixelFilter::get_scaling_factor
  */
 int Scale2xFilter::get_scaling_factor() const {

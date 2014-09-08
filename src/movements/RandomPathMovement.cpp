@@ -30,13 +30,6 @@ RandomPathMovement::RandomPathMovement(int speed):
 }
 
 /**
- * \brief Destructor.
- */
-RandomPathMovement::~RandomPathMovement() {
-
-}
-
-/**
  * \brief Updates the movements: detects the collisions
  * in order to restart the movement.
  */

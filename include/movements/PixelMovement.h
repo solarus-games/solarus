@@ -33,7 +33,6 @@ class PixelMovement: public Movement {
 
     // creation and destruction
     PixelMovement(const std::string& trajectory_string, uint32_t delay, bool loop, bool ignore_obstacles);
-    virtual ~PixelMovement();
 
     // properties
     const std::list<Point>& get_trajectory() const;

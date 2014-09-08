@@ -49,13 +49,6 @@ Tile::Tile(
 }
 
 /**
- * \brief Destructor.
- */
-Tile::~Tile() {
-
-}
-
-/**
  * \brief Returns the type of entity.
  * \return the type of entity
  */

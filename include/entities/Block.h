@@ -40,8 +40,8 @@ class Block: public Detector {
         const std::string& sprite_name,
         bool can_be_pushed,
         bool can_be_pulled,
-        int maximum_moves);
-    ~Block();
+        int maximum_moves
+    );
 
     virtual EntityType get_type() const override;
     virtual bool is_ground_observer() const override;

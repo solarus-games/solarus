@@ -34,7 +34,6 @@ class RandomPathMovement: public PathMovement {
   public:
 
     RandomPathMovement(int speed);
-    ~RandomPathMovement();
 
     virtual void update() override;
     virtual bool is_finished() const override;

@@ -71,7 +71,6 @@ class Stairs: public Detector {
 
     Stairs(const std::string& name, Layer layer, int x, int y,
        int direction, Subtype subtype);
-    ~Stairs();
 
     virtual EntityType get_type() const override;
     virtual bool can_be_drawn() const override;

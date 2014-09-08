@@ -29,7 +29,6 @@ class Hero::BowState: public Hero::State {
   public:
 
     BowState(Hero& hero);
-    ~BowState();
 
     virtual void start(const State* previous_state) override;
     virtual void update() override;

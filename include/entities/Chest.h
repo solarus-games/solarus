@@ -48,7 +48,6 @@ class Chest: public Detector {
         int y,
         const std::string& sprite_name,
         const Treasure& treasure);
-    ~Chest();
 
     virtual EntityType get_type() const override;
 

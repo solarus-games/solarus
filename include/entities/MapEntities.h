@@ -126,7 +126,7 @@ class MapEntities {
     std::vector<Ground> tiles_ground[LAYER_NB];     /**< array of size tiles_grid_size representing the ground property
                                                      * of each 8x8 square. */
     NonAnimatedRegions*
-        non_animated_regions[LAYER_NB];             /**< All non-animated tiles are managed here for performance. */
+        non_animated_regions[LAYER_NB];             /**< All non-animated tiles are managed here for performance. */  // TODO unique_ptr
     std::vector<TilePtr>
         tiles_in_animated_regions[LAYER_NB];        /**< animated tiles and tiles overlapping them */
 

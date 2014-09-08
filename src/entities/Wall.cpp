@@ -70,13 +70,6 @@ Wall::Wall(
 }
 
 /**
- * \brief Destructor.
- */
-Wall::~Wall() {
-
-}
-
-/**
  * \brief Returns the type of entity.
  * \return the type of entity
  */

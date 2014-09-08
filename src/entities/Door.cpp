@@ -96,13 +96,6 @@ Door::Door(Game& game,
 }
 
 /**
- * \brief Destructor.
- */
-Door::~Door() {
-
-}
-
-/**
  * \brief Returns the type of entity.
  * \return the type of entity
  */

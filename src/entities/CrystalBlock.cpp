@@ -61,13 +61,6 @@ CrystalBlock::CrystalBlock(Game& game, const std::string& name,
 }
 
 /**
- * \brief Destructor.
- */
-CrystalBlock::~CrystalBlock() {
-
-}
-
-/**
  * \brief Returns the type of entity.
  * \return the type of entity
  */

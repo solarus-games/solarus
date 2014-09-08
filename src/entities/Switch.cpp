@@ -88,12 +88,6 @@ Switch::Switch(
 }
 
 /**
- * \brief Destructor.
- */
-Switch::~Switch() {
-}
-
-/**
  * \brief Returns the type of entity.
  * \return the type of entity
  */

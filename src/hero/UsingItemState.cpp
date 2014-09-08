@@ -36,12 +36,6 @@ Hero::UsingItemState::UsingItemState(
 }
 
 /**
- * \brief Destructor.
- */
-Hero::UsingItemState::~UsingItemState() {
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state The previous state.
  */

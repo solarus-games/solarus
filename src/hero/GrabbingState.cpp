@@ -34,13 +34,6 @@ Hero::GrabbingState::GrabbingState(Hero& hero):
 }
 
 /**
- * \brief Destructor.
- */
-Hero::GrabbingState::~GrabbingState() {
-
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */

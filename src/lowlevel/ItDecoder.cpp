@@ -37,12 +37,6 @@ ItDecoder::ItDecoder():
 }
 
 /**
- * \brief Destructor.
- */
-ItDecoder::~ItDecoder() {
-}
-
-/**
  * \brief Loads an IT file from memory.
  * \param sound_data the memory area to read
  * \param sound_size size of the memory area in bytes

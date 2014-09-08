@@ -32,7 +32,6 @@ class Scale2xFilter: public PixelFilter {
   public:
 
     Scale2xFilter();
-    ~Scale2xFilter();
 
     virtual int get_scaling_factor() const override;
     virtual void filter(

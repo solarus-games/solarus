@@ -34,13 +34,6 @@ Hero::FallingState::FallingState(Hero& hero):
 }
 
 /**
- * \brief Destructor.
- */
-Hero::FallingState::~FallingState() {
-
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */

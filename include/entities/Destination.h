@@ -36,8 +36,8 @@ class Destination: public MapEntity {
         int y,
         int hero_direction,
         const std::string& sprite_name,
-        bool is_default);
-    ~Destination();
+        bool is_default
+    );
 
     virtual EntityType get_type() const override;
     virtual bool can_be_obstacle() const override;

@@ -38,7 +38,6 @@ class FallingOnFloorMovement: public PixelMovement {
   public:
 
     FallingOnFloorMovement(FallingHeight height);
-    ~FallingOnFloorMovement();
 
 };
 

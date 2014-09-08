@@ -34,7 +34,6 @@ class ItDecoder {
   public:
 
     ItDecoder();
-    ~ItDecoder();
 
     void load(void* sound_data, size_t sound_size);
     void unload();
@@ -50,7 +49,7 @@ class ItDecoder {
 
   private:
 
-    ModPlugFile* modplug_file;
+    ModPlugFile* modplug_file;  // TODO unique_ptr
 
 };
 

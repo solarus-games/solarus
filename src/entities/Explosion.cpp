@@ -48,13 +48,6 @@ Explosion::Explosion(const std::string& name, Layer layer,
 }
 
 /**
- * \brief Destructor.
- */
-Explosion::~Explosion() {
-
-}
-
-/**
  * \brief Returns the type of entity.
  * \return the type of entity
  */

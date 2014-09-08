@@ -346,7 +346,7 @@ class Hero: public MapEntity {
     uint32_t end_invincible_date;   /**< When stopping the invincibility (0 means infinite). */
 
     // sprites
-    HeroSprites* sprites;           /**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
+    HeroSprites* sprites;           /**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */  // TODO unique_ptr
 
     // position
     int normal_walking_speed;       /**< speed when normally walking */

@@ -49,13 +49,6 @@ Sensor::Sensor(
 }
 
 /**
- * \brief Destructor.
- */
-Sensor::~Sensor() {
-
-}
-
-/**
  * \brief Returns the type of entity.
  * \return the type of entity
  */

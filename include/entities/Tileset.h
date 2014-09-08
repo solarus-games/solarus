@@ -67,7 +67,7 @@ class Tileset {
 
     const std::string id;                             /**< id of the tileset */
     std::map<std::string, TilePattern*>
-        tile_patterns;                                /**< tile patterns in this tileset */
+        tile_patterns;                                /**< tile patterns in this tileset */  // TODO shared_ptr
     Color background_color;                           /**< background color of the tileset */
     SurfacePtr tiles_image;                           /**< image from which the tile patterns are extracted */
     SurfacePtr entities_image;                        /**< image from which the skin-dependent entities are extracted */

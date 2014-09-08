@@ -49,13 +49,6 @@ StraightMovement::StraightMovement(bool ignore_obstacles, bool smooth):
 }
 
 /**
- * \brief Destructor.
- */
-StraightMovement::~StraightMovement() {
-
-}
-
-/**
  * \brief Notifies this movement that the object it controls has changed.
  */
 void StraightMovement::notify_object_controlled() {

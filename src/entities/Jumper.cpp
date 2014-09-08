@@ -63,13 +63,6 @@ Jumper::Jumper(const std::string& name,
 }
 
 /**
- * \brief Destructor.
- */
-Jumper::~Jumper() {
-
-}
-
-/**
  * \brief Returns the type of entity.
  * \return the type of entity
  */

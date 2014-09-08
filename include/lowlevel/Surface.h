@@ -137,9 +137,9 @@ class Surface: public Drawable {
 
     bool software_destination;            /**< indicates that this surface is modified on software side
                                            * (and therefore immediately) when used as a destination */
-    SDL_Surface* internal_surface;        /**< the SDL_Surface encapsulated, if any. */
-    SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
-    Color* internal_color;                /**< the background color to use, if any. */
+    SDL_Surface* internal_surface;        /**< the SDL_Surface encapsulated, if any. */  // TODO unique_ptr
+    SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */  // TODO unique_ptr
+    Color* internal_color;                /**< the background color to use, if any. */  // TODO unique_ptr
     bool is_rendered;                     /**< indicates if the current surface has been rendered. Set to false when drawing a surface on this one. */
     uint8_t internal_opacity;             /**< opacity to apply to all subtextures. */
     int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */

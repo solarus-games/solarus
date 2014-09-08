@@ -84,13 +84,6 @@ Npc::Npc(Game& /* game */, const std::string& name, Layer layer, int x, int y,
 }
 
 /**
- * \brief Destructor.
- */
-Npc::~Npc() {
-
-}
-
-/**
  * \brief Returns the type of entity.
  * \return the type of entity
  */

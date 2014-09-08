@@ -79,12 +79,6 @@ Chest::Chest(
 }
 
 /**
- * \brief Destructor.
- */
-Chest::~Chest() {
-}
-
-/**
  * \brief Returns the type of entity.
  * \return the type of entity
  */

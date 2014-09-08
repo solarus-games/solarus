@@ -47,13 +47,6 @@ PixelMovement::PixelMovement(
 }
 
 /**
- * \brief Destructor.
- */
-PixelMovement::~PixelMovement() {
-
-}
-
-/**
  * \brief Returns the trajectory of this movement.
  * \return the succession of translations that compose this movement
  */

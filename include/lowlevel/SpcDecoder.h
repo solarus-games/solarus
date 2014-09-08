@@ -50,8 +50,8 @@ class SpcDecoder {
   private:
 
     // Snes_SPC specific data
-    SNES_SPC* snes_spc_manager;   /**< the snes_spc object encapsulated */
-    SPC_Filter* snes_spc_filter;  /**< the snes_spc filter object */
+    SNES_SPC* snes_spc_manager;   /**< the snes_spc object encapsulated */  // TODO unique_ptr
+    SPC_Filter* snes_spc_filter;  /**< the snes_spc filter object */  // TODO unique_ptr
 
 };
 

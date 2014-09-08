@@ -58,12 +58,6 @@ Stairs::Stairs(
 }
 
 /**
- * \brief Destructor.
- */
-Stairs::~Stairs() {
-}
-
-/**
  * \brief Returns the type of entity.
  * \return the type of entity
  */

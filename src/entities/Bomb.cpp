@@ -52,13 +52,6 @@ Bomb::Bomb(const std::string& name, Layer layer, int x, int y):
 }
 
 /**
- * \brief Destructor.
- */
-Bomb::~Bomb() {
-
-}
-
-/**
  * \brief Returns the type of entity.
  * \return the type of entity
  */

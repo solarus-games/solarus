@@ -39,12 +39,6 @@ Hero::FreeState::FreeState(Hero& hero):
 }
 
 /**
- * \brief Destructor.
- */
-Hero::FreeState::~FreeState() {
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */

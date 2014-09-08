@@ -31,7 +31,6 @@ class Hero::BoomerangState: public Hero::State {
     BoomerangState(Hero& hero, int max_distance, int speed,
         const std::string& hero_preparing_animation,
         const std::string& sprite_name);
-    ~BoomerangState();
 
     virtual void start(const State* previous_state) override;
     virtual void update() override;

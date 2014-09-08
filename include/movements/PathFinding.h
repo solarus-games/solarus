@@ -43,7 +43,6 @@ class PathFinding {
         Map& map,
         MapEntity& source_entity,
         MapEntity& target_entity);
-    ~PathFinding();
 
     std::string compute_path();
 

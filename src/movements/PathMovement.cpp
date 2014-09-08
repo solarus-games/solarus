@@ -68,13 +68,6 @@ PathMovement::PathMovement(
 }
 
 /**
- * \brief Destructor.
- */
-PathMovement::~PathMovement() {
-
-}
-
-/**
  * \brief Returns the path of this movement.
  * \return the path
  */

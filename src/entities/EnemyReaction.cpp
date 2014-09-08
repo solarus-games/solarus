@@ -38,13 +38,6 @@ EnemyReaction::EnemyReaction() {
 }
 
 /**
- * \brief Destructor.
- */
-EnemyReaction::~EnemyReaction() {
-
-}
-
-/**
  * \brief Resets this reaction to its default value.
  */
 void EnemyReaction::set_default_reaction() {

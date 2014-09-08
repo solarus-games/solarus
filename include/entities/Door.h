@@ -62,7 +62,6 @@ class Door: public Detector {
         int direction,
         const std::string& sprite_name,
         const std::string& savegame_variable);
-    ~Door();
 
     virtual EntityType get_type() const override;
 

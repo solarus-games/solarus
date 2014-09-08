@@ -41,13 +41,6 @@ RandomMovement::RandomMovement(int speed, int max_radius):
 }
 
 /**
- * \brief Destructor.
- */
-RandomMovement::~RandomMovement() {
-
-}
-
-/**
  * \brief Notifies this movement that the object it controls has changed.
  */
 void RandomMovement::notify_object_controlled() {

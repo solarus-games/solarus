@@ -35,7 +35,6 @@ class PlayerMovement: public StraightMovement {
 
     // creation and destruction
     PlayerMovement(int speed);
-    ~PlayerMovement();
 
     virtual void update() override;
 

@@ -263,9 +263,9 @@ void Map::unload() {
   if (is_loaded()) {
     delete tileset;
     tileset = nullptr;
-    visible_surface.reset();
-    background_surface.reset();
-    foreground_surface.reset();
+    visible_surface = nullptr;
+    background_surface = nullptr;
+    foreground_surface = nullptr;
     delete entities;
     entities = nullptr;
     delete camera;

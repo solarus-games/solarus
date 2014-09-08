@@ -38,13 +38,6 @@ Fire::Fire(const std::string& name, Layer layer, const Point& xy):
 }
 
 /**
- * \brief Destructor.
- */
-Fire::~Fire() {
-
-}
-
-/**
  * \brief Returns the type of entity.
  * \return the type of entity
  */

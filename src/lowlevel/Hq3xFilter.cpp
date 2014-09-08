@@ -31,12 +31,6 @@ Hq3xFilter::Hq3xFilter():
 }
 
 /**
- * \brief Destructor.
- */
-Hq3xFilter::~Hq3xFilter() {
-}
-
-/**
  * \copydoc PixelFilter::get_scaling_factor
  */
 int Hq3xFilter::get_scaling_factor() const {

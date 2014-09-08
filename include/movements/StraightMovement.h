@@ -32,7 +32,6 @@ class StraightMovement: public Movement {
   public:
 
     StraightMovement(bool ignore_obstacles, bool smooth);
-    virtual ~StraightMovement();
 
     virtual void notify_object_controlled() override;
     virtual void update() override;

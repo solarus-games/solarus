@@ -54,7 +54,6 @@ class Tile: public MapEntity {
         Tileset& tileset,
         const std::string& tile_pattern_id
     );
-    ~Tile();
 
     virtual EntityType get_type() const override;
     virtual void draw_on_map() override;

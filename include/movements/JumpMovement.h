@@ -32,7 +32,6 @@ class JumpMovement: public PixelMovement {
   public:
 
     JumpMovement(int direction8, int distance, int speed, bool ignore_obstacles);
-    ~JumpMovement();
 
     int get_direction8() const;
     void set_direction8(int direction8);

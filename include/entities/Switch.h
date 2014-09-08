@@ -59,7 +59,6 @@ class Switch: public Detector {
         bool needs_block,
         bool inactivate_when_leaving
     );
-    ~Switch();
 
     virtual EntityType get_type() const override;
     virtual bool is_obstacle_for(MapEntity& other) override;

@@ -201,8 +201,6 @@ class InputEvent {
     static void initialize();
     static void quit();
 
-    ~InputEvent();
-
     // retrieve the current event
     static InputEvent* get_event();
 

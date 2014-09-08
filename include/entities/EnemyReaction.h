@@ -56,7 +56,6 @@ class EnemyReaction {
     };
 
     EnemyReaction();
-    ~EnemyReaction();
 
     void set_default_reaction();
     void set_general_reaction(ReactionType reaction, int life_lost = 0);

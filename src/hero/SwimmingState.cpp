@@ -36,13 +36,6 @@ Hero::SwimmingState::SwimmingState(Hero& hero):
 }
 
 /**
- * \brief Destructor.
- */
-Hero::SwimmingState::~SwimmingState() {
-
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */

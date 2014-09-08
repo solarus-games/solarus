@@ -58,12 +58,6 @@ JumpMovement::JumpMovement(int direction8, int distance, int speed, bool ignore_
 }
 
 /**
- * \brief Destructor.
- */
-JumpMovement::~JumpMovement() {
-}
-
-/**
  * \brief Starts or restarts this movement.
  */
 void JumpMovement::restart() {

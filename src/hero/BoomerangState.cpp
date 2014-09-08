@@ -51,12 +51,6 @@ Hero::BoomerangState::BoomerangState(
 }
 
 /**
- * \brief Destructor.
- */
-Hero::BoomerangState::~BoomerangState() {
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */

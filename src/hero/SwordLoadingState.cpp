@@ -43,13 +43,6 @@ Hero::SwordLoadingState::SwordLoadingState(Hero& hero):
 }
 
 /**
- * \brief Destructor.
- */
-Hero::SwordLoadingState::~SwordLoadingState() {
-
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */

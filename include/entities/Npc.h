@@ -68,7 +68,6 @@ class Npc: public Detector {
     Npc(Game& game, const std::string& name, Layer layer, int x, int y,
         Subtype subtype, const std::string& sprite_name,
         int initial_direction, const std::string& behavior_string);
-    ~Npc();
 
     EntityType get_type() const override;
 

@@ -31,13 +31,6 @@ Hero::FreezedState::FreezedState(Hero& hero):
 }
 
 /**
- * \brief Destructor.
- */
-Hero::FreezedState::~FreezedState() {
-
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */

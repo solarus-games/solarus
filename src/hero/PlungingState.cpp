@@ -35,13 +35,6 @@ Hero::PlungingState::PlungingState(Hero& hero):
 }
 
 /**
- * \brief Destructor.
- */
-Hero::PlungingState::~PlungingState() {
-
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */

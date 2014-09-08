@@ -42,7 +42,6 @@ class Separator: public Detector {
         int width,
         int height
     );
-    ~Separator();
 
     virtual EntityType get_type() const override;
 

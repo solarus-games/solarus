@@ -55,13 +55,6 @@ DynamicTile::DynamicTile(
 }
 
 /**
- * \brief Destructor.
- */
-DynamicTile::~DynamicTile() {
-
-}
-
-/**
  * \brief Returns the type of entity.
  * \return the type of entity
  */

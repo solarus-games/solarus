@@ -42,7 +42,6 @@ class Jumper: public Detector {
         int direction,
         int jump_length
     );
-    ~Jumper();
 
     virtual EntityType get_type() const override;
     virtual bool can_be_drawn() const override;

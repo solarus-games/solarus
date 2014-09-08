@@ -30,7 +30,6 @@ class Hero::UsingItemState: public Hero::State {
   public:
 
     UsingItemState(Hero& hero, EquipmentItem& item);
-    ~UsingItemState();
 
     virtual void start(const State* previous_state) override;
     virtual void update() override;

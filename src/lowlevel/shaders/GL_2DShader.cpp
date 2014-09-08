@@ -43,12 +43,6 @@ bool GL_2DShader::initialize() {
  */
 GL_2DShader::GL_2DShader(const std::string& shader_name): Shader(shader_name) {
 }
-  
-/**
- * \brief Destructor.
- */
-GL_2DShader::~GL_2DShader() {
-}
 
 /**
  * \brief Set up OpenGL rendering parameter.

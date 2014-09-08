@@ -53,7 +53,8 @@ Block::Block(
     const std::string& sprite_name,
     bool can_be_pushed,
     bool can_be_pulled,
-    int maximum_moves):
+    int maximum_moves
+):
   Detector(COLLISION_FACING, name, layer, x, y, 16, 16),
   maximum_moves(maximum_moves),
   sound_played(false),
@@ -70,13 +71,6 @@ Block::Block(
   set_direction(direction);
   create_sprite(sprite_name);
   set_drawn_in_y_order(get_sprite().get_size().height > 16);
-}
-
-/**
- * \brief Destructor.
- */
-Block::~Block() {
-
 }
 
 /**

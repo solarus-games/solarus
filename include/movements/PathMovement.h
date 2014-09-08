@@ -45,7 +45,6 @@ class PathMovement: public PixelMovement {
   public:
 
     PathMovement(const std::string& path, int speed, bool loop, bool ignore_obstacles, bool snap_to_grid);
-    ~PathMovement();
 
     virtual void notify_object_controlled() override;
     virtual void update() override;

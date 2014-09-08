@@ -143,8 +143,8 @@ void Tileset::unload() {
   }
   tile_patterns.clear();
 
-  tiles_image.reset();
-  entities_image.reset();
+  tiles_image = nullptr;
+  entities_image = nullptr;
 }
 
 /**

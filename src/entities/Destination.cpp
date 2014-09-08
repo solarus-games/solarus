@@ -40,7 +40,8 @@ Destination::Destination(
     int y,
     int hero_direction,
     const std::string& sprite_name,
-    bool is_default):
+    bool is_default
+):
   MapEntity(name, hero_direction, layer, x, y, 16, 16),
   is_default_destination(is_default) {
 
@@ -49,12 +50,6 @@ Destination::Destination(
   if (!sprite_name.empty()) {
     create_sprite(sprite_name);
   }
-}
-
-/**
- * \brief Destructor.
- */
-Destination::~Destination() {
 }
 
 /**

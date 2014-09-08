@@ -41,7 +41,6 @@ class Stream: public Detector {
         int direction,
         const std::string& sprite_name
     );
-    ~Stream();
 
     virtual EntityType get_type() const override;
 

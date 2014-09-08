@@ -29,7 +29,6 @@ class Hero::PlungingState: public Hero::State {
   public:
 
     PlungingState(Hero& hero);
-    ~PlungingState();
 
     virtual void start(const State* previous_state) override;
     virtual void update() override;

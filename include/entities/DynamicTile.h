@@ -49,7 +49,6 @@ class DynamicTile: public MapEntity {
         const std::string& tile_pattern_id,
         bool enabled
     );
-    ~DynamicTile();
 
     virtual EntityType get_type() const override;
     virtual bool is_ground_modifier() const override;

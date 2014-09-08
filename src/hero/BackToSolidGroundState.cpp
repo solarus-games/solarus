@@ -53,13 +53,6 @@ Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
 }
 
 /**
- * \brief Destructor.
- */
-Hero::BackToSolidGroundState::~BackToSolidGroundState() {
-
-}
-
-/**
  * \brief Starts this state.
  * \param previous_state the previous state
  */

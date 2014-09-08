@@ -205,13 +205,6 @@ InputEvent::InputEvent(const SDL_Event& event):
 }
 
 /**
- * \brief Destructor.
- */
-InputEvent::~InputEvent() {
-
-}
-
-/**
  * \brief Returns the first event from the event queue, or nullptr
  * if there is no event.
  * \return the current event to handle, or nullptr if there is no event

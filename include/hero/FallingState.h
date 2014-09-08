@@ -29,7 +29,6 @@ class Hero::FallingState: public Hero::State {
   public:
 
     FallingState(Hero& hero);
-    ~FallingState();
 
     virtual void start(const State* previous_state) override;
     virtual void stop(const State* next_state) override;

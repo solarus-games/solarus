@@ -16,7 +16,6 @@
  */
 #include "lowlevel/FileTools.h"
 #include "lowlevel/TextSurface.h"
-#include "lowlevel/TextSurfacePtr.h"
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
 #include "Language.h"
@@ -136,7 +135,8 @@ void LuaContext::push_text_surface(lua_State* l, TextSurface& text_surface) {
 int LuaContext::text_surface_api_create(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TextSurfacePtr text_surface = RefCountable::make_refcount_ptr(new TextSurface(0, 0));
+    std::shared_ptr<TextSurface> text_surface =
+        RefCountable::make_refcount_ptr(new TextSurface(0, 0));
 
     if (lua_gettop(l) > 0) {
       LuaTools::check_type(l, 1, LUA_TTABLE);

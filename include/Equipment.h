@@ -19,8 +19,8 @@
 
 #include "Common.h"
 #include "Ability.h"
-#include "EquipmentItemPtr.h"
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -111,7 +111,7 @@ class Equipment {
     bool suspended;                              /**< Indicates that the game is suspended. */
 
     // items
-    std::map<std::string, EquipmentItemPtr>
+    std::map<std::string, std::shared_ptr<EquipmentItem>>
         items;                                   /**< Each item (properties loaded from item scripts). */
 
     std::string get_ability_savegame_variable(Ability ability) const;

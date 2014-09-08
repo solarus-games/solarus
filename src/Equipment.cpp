@@ -79,8 +79,8 @@ void Equipment::notify_game_finished() {
 
   // The equipment items will disappear: notify them.
   for (const auto& kvp: items) {
-    const EquipmentItemPtr& item = kvp.second;
-    item->exit();
+    EquipmentItem& item = *kvp.second;
+    item.exit();
   }
 }
 
@@ -92,8 +92,8 @@ void Equipment::notify_map_changed(Map& map) {
 
   // Notify the items.
   for (const auto& kvp: items) {
-    const EquipmentItemPtr& item = kvp.second;
-    item->notify_map_changed(map);
+    EquipmentItem& item = *kvp.second;
+    item.notify_map_changed(map);
   }
 }
 
@@ -120,8 +120,8 @@ void Equipment::update() {
 
   // update the item scripts
   for (const auto& kvp: items) {
-    const EquipmentItemPtr& item = kvp.second;
-    item->update();
+    EquipmentItem& item = *kvp.second;
+    item.update();
   }
 }
 
@@ -135,8 +135,8 @@ void Equipment::set_suspended(bool suspended) {
 
   // notify the item scripts
   for (const auto& kvp: items) {
-    const EquipmentItemPtr& item = kvp.second;
-    item->set_suspended(suspended);
+    EquipmentItem& item = *kvp.second;
+    item.set_suspended(suspended);
   }
 }
 
@@ -408,21 +408,21 @@ void Equipment::load_items() {
       QuestResourceList::get_elements(QuestResourceList::RESOURCE_ITEM);
   for (const auto& kvp: item_elements) {
     const std::string& item_id = kvp.first;
-    const EquipmentItemPtr& item = RefCountable::make_refcount_ptr(new EquipmentItem(*this));
+    std::shared_ptr<EquipmentItem> item = RefCountable::make_refcount_ptr(new EquipmentItem(*this));
     item->set_name(item_id);
     items[item_id] = item;
   }
 
   // Load the item scripts.
   for (const auto& kvp: items) {
-    const EquipmentItemPtr& item = kvp.second;
-    item->initialize();
+    EquipmentItem& item = *kvp.second;
+    item.initialize();
   }
 
   // Start the items once they all exist.
   for (const auto& kvp: items) {
-    const EquipmentItemPtr& item = kvp.second;
-    item->start();
+    EquipmentItem& item = *kvp.second;
+    item.start();
   }
 }
 
@@ -643,8 +643,8 @@ void Equipment::set_ability(Ability ability, int level) {
 void Equipment::notify_ability_used(Ability ability) {
 
   for (const auto& kvp: items) {
-    const EquipmentItemPtr& item = kvp.second;
-    item->notify_ability_used(ability);
+    EquipmentItem& item = *kvp.second;
+    item.notify_ability_used(ability);
   }
 }
 

@@ -59,8 +59,7 @@ namespace {
       resource_map[resource_type][id] = description;
 
       return 0;
-    }
-    SOLARUS_LUA_BOUNDARY_CATCH(l);
+    });
   }
 
 }

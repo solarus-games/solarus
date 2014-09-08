@@ -18,6 +18,7 @@
 #define SOLARUS_FOLLOW_MOVEMENT_H
 
 #include "Common.h"
+#include "entities/MapEntityPtr.h"
 #include "movements/Movement.h"
 
 namespace solarus {
@@ -35,7 +36,7 @@ class FollowMovement: public Movement {
   public:
 
     FollowMovement(
-        const std::shared_ptr<MapEntity>& entity_followed,
+        const MapEntityPtr& entity_followed,
         int x,
         int y,
         bool ignore_obstacles
@@ -50,8 +51,7 @@ class FollowMovement: public Movement {
 
   private:
 
-    std::shared_ptr<MapEntity>
-        entity_followed;               /**< The entity followed by this movement or nullptr. */
+    MapEntityPtr entity_followed;      /**< The entity followed by this movement or nullptr. */
     const int x;                       /**< x coordinate of where this entity should be placed,
                                         * relative to the entity followed */
     const int y;                       /**< y coordinate of where this entity should be placed,

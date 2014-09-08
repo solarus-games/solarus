@@ -18,8 +18,8 @@
 #define SOLARUS_STREAM_ACTION_H
 
 #include "Common.h"
+#include "entities/MapEntityPtr.h"
 #include <cstdint>
-#include <memory>
 
 namespace solarus {
 
@@ -56,8 +56,7 @@ class StreamAction {
     std::shared_ptr<Stream>
         stream;                   /**< The stream applied,
                                    * or nullptr if it was destroyed. */
-    std::shared_ptr<MapEntity>
-        entity_moved;             /**< The entity the stream is applied to,
+    MapEntityPtr entity_moved;    /**< The entity the stream is applied to,
                                    * or nullptr if it was destroyed. */
     bool active;                  /**< Whether the stream effect is currently
                                    * applied. */

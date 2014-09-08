@@ -18,6 +18,7 @@
 #define SOLARUS_TARGET_MOVEMENT_H
 
 #include "Common.h"
+#include "entities/MapEntityPtr.h"
 #include "movements/StraightMovement.h"
 
 namespace solarus {
@@ -32,7 +33,7 @@ class TargetMovement: public StraightMovement {
   public:
 
     TargetMovement(
-        const std::shared_ptr<MapEntity>& target_entity,
+        const MapEntityPtr& target_entity,
         int x,
         int y,
         int moving_speed,
@@ -40,7 +41,7 @@ class TargetMovement: public StraightMovement {
     );
 
     void set_target(
-        const std::shared_ptr<MapEntity>& target_entity,
+        const MapEntityPtr& target_entity,
         int x,
         int y
     );
@@ -60,8 +61,7 @@ class TargetMovement: public StraightMovement {
 
     int target_x;                      /**< X coordinate of the point or entity to track. */
     int target_y;                      /**< Y coordinate of the point or entity to track. */
-    std::shared_ptr<MapEntity>
-        target_entity;                 /**< The entity to track (nullptr if only
+    MapEntityPtr target_entity;        /**< The entity to track (nullptr if only
                                         * a point is targeted) */
     int entity_offset_x;               /**< X value to add to the entity's coordinates. */
     int entity_offset_y;               /**< Y value to add to the entity's coordinates. */

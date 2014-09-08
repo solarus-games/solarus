@@ -18,6 +18,7 @@
 #define SOLARUS_PATH_FINDING_MOVEMENT_H
 
 #include "Common.h"
+#include "entities/MapEntityPtr.h"
 #include "movements/PathMovement.h"
 
 namespace solarus {
@@ -36,7 +37,7 @@ class PathFindingMovement: public PathMovement {
 
     PathFindingMovement(int speed);
 
-    void set_target(const std::shared_ptr<MapEntity>& target);
+    void set_target(const MapEntityPtr& target);
     virtual bool is_finished() const override;
 
     virtual const std::string& get_lua_type_name() const override;
@@ -48,7 +49,7 @@ class PathFindingMovement: public PathMovement {
 
   private:
 
-    std::shared_ptr<MapEntity> target;      /**< the entity targeted by this movement (usually the hero) */
+    MapEntityPtr target;               /**< the entity targeted by this movement (usually the hero) */
     uint32_t next_recomputation_date;
 
 };

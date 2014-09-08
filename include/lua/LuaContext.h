@@ -23,6 +23,7 @@
 #include "entities/EnemyAttack.h"
 #include "entities/EntityType.h"
 #include "entities/Ground.h"
+#include "entities/MapEntityPtr.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/SurfacePtr.h"
@@ -1100,7 +1101,7 @@ class LuaContext {
     static bool is_map(lua_State* l, int index);
     static Map& check_map(lua_State* l, int index);
     static bool is_entity(lua_State* l, int index);
-    static std::shared_ptr<MapEntity> check_entity(lua_State* l, int index);
+    static MapEntityPtr check_entity(lua_State* l, int index);
     static bool is_hero(lua_State* l, int index);
     static Hero& check_hero(lua_State* l, int index);
     static bool is_teletransporter(lua_State* l, int index);

@@ -18,10 +18,12 @@
 #define SOLARUS_PICKABLE_H
 
 #include "Common.h"
-#include "Treasure.h"
 #include "entities/Detector.h"
-#include "movements/FallingHeight.h"
+#include "entities/MapEntityPtr.h"
 #include "lowlevel/Point.h"
+#include "movements/FallingHeight.h"
+#include "SpritePtr.h"
+#include "Treasure.h"
 
 namespace solarus {
 
@@ -56,7 +58,7 @@ class Pickable: public Detector {
 
     // item state
     virtual void set_suspended(bool suspended) override;
-    const std::shared_ptr<MapEntity>& get_entity_followed();
+    MapEntityPtr get_entity_followed();
     virtual void notify_collision(
         MapEntity& entity_overlapping,
         CollisionMode collision_mode
@@ -85,7 +87,7 @@ class Pickable: public Detector {
     Treasure treasure;                          /**< the treasure obtained when the player picks this item */
     bool given_to_player;                       /**< indicates that the treasure was given to the player */
 
-    std::shared_ptr<Sprite> shadow_sprite;      /**< sprite of the shadow (if any) */
+    SpritePtr shadow_sprite;                    /**< sprite of the shadow (if any) */
     FallingHeight falling_height;               /**< indicates whether the item is falling when it appears */
     bool will_disappear;                        /**< indicates that the item will disappear after an amount of time
                                                  * (only possible for items not saved) */
@@ -98,7 +100,7 @@ class Pickable: public Detector {
     bool can_be_picked;                         /**< indicates that the item can be picked now (i.e. allow_picked_date is past) */
     uint32_t blink_date;                        /**< date when the item starts blinking */
     uint32_t disappear_date;                    /**< date when the item disappears */
-    std::shared_ptr<MapEntity> entity_followed; /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
+    MapEntityPtr entity_followed;               /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
 };
 
 }

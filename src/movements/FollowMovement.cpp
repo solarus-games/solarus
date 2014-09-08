@@ -28,7 +28,7 @@ namespace solarus {
  * \param ignore_obstacles true to make the movement ignore obstacles
  */
 FollowMovement::FollowMovement(
-    const std::shared_ptr<MapEntity>& entity_followed,
+    const MapEntityPtr& entity_followed,
     int x,
     int y,
     bool ignore_obstacles):

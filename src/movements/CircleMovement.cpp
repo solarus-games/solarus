@@ -78,7 +78,7 @@ void CircleMovement::set_center(const Point& center_point) {
  * \param y y coordinate of where the center should be placed relative to the entity's origin
  */
 void CircleMovement::set_center(
-    const std::shared_ptr<MapEntity>& center_entity,
+    const MapEntityPtr& center_entity,
     int x,
     int y
 ) {

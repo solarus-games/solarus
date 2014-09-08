@@ -18,8 +18,8 @@
 #define SOLARUS_CIRCLE_MOVEMENT_H
 
 #include "Common.h"
+#include "entities/MapEntityPtr.h"
 #include "movements/Movement.h"
-#include "lowlevel/Point.h"
 
 namespace solarus {
 
@@ -46,7 +46,7 @@ class CircleMovement: public Movement {
     // properties
     void set_center(const Point& center_point);
     void set_center(
-        const std::shared_ptr<MapEntity>& center_entity,
+        const MapEntityPtr& center_entity,
         int x = 0,
         int y = 0
     );
@@ -74,7 +74,7 @@ class CircleMovement: public Movement {
     void recompute_position();
 
     // center of the circle
-    std::shared_ptr<MapEntity> center_entity;       /**< the entity to make circles around (nullptr if only a point is used) */
+    MapEntityPtr center_entity;                     /**< the entity to make circles around (nullptr if only a point is used) */
     Point center_point;                             /**< absolute coordinates of the center if only a point is used,
                                                      * or coordinates relative to the center entity otherwise */
 

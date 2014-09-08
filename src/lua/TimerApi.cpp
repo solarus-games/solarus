@@ -169,7 +169,7 @@ void LuaContext::add_timer(
         // Entities are more complex: they also get suspended when disabled
         // and when far from the camera. Therefore, they don't simply follow
         // the map suspended state.
-        std::shared_ptr<MapEntity> entity = check_entity(l, context_index);
+        MapEntityPtr entity = check_entity(l, context_index);
         initially_suspended = entity->is_suspended() || !entity->is_enabled();
       }
 

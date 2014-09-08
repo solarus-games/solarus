@@ -1702,7 +1702,7 @@ int LuaContext::map_api_create_crystal(lua_State* l) {
     int x = LuaTools::check_int_field(l, 1, "x");
     int y = LuaTools::check_int_field(l, 1, "y");
 
-    std::shared_ptr<MapEntity> entity = RefCountable::make_refcount_ptr(new Crystal(
+    MapEntityPtr entity = RefCountable::make_refcount_ptr(new Crystal(
         name,
         layer,
         x,
@@ -1744,7 +1744,7 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
     iss >> subtype;
 
     Game& game = map.get_game();
-    std::shared_ptr<MapEntity> entity = RefCountable::make_refcount_ptr(new CrystalBlock(
+    MapEntityPtr entity = RefCountable::make_refcount_ptr(new CrystalBlock(
         game,
         name,
         layer,
@@ -2078,7 +2078,7 @@ int LuaContext::map_api_create_bomb(lua_State* l) {
     int x = LuaTools::check_int_field(l, 1, "x");
     int y = LuaTools::check_int_field(l, 1, "y");
 
-    std::shared_ptr<MapEntity> entity = RefCountable::make_refcount_ptr(new Bomb(
+    MapEntityPtr entity = RefCountable::make_refcount_ptr(new Bomb(
         name,
         layer,
         x,

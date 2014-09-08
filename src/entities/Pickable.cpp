@@ -254,7 +254,7 @@ const Treasure& Pickable::get_treasure() {
  * \brief Returns the entity (if any) followed by this pickable item.
  * \return the entity followed or nullptr
  */
-const std::shared_ptr<MapEntity>& Pickable::get_entity_followed() {
+MapEntityPtr Pickable::get_entity_followed() {
   return entity_followed;
 }
 
@@ -273,7 +273,7 @@ void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode /* 
   }
   else if (entity_followed == nullptr) {
 
-    std::shared_ptr<MapEntity> shared_entity_overlapping =
+    MapEntityPtr shared_entity_overlapping =
         std::static_pointer_cast<MapEntity>(entity_overlapping.shared_from_this());
     if (entity_overlapping.get_type() == ENTITY_BOOMERANG) {
       Boomerang& boomerang = static_cast<Boomerang&>(entity_overlapping);

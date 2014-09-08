@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/MapEntity.h"
+#include "entities/MapEntityPtr.h"
 
 namespace solarus {
 
@@ -76,7 +77,7 @@ class Arrow: public MapEntity {
     const Hero& hero;          /**< the hero */
     uint32_t disappear_date;   /**< date when the arrow disappears */
     bool stop_now;             /**< true to make the arrow stop now */
-    std::shared_ptr<MapEntity>
+    MapEntityPtr
         entity_reached;        /**< a dynamic entity reached by the arrow
                                 * (i.e. an enemy or a crystal, not a usual wall) */
 

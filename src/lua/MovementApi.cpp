@@ -1033,7 +1033,7 @@ int LuaContext::target_movement_api_set_target(lua_State* l) {
     }
     else {
       // the target is an entity, possibly with an offset.
-      std::shared_ptr<MapEntity> target = check_entity(l, 2);
+      MapEntityPtr target = check_entity(l, 2);
       int x = 0;
       int y = 0;
       if (lua_isnumber(l, 3)) {
@@ -1391,7 +1391,7 @@ int LuaContext::path_finding_movement_api_set_target(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     PathFindingMovement& movement = check_path_finding_movement(l, 1);
-    const std::shared_ptr<MapEntity>& target = check_entity(l, 2);
+    MapEntityPtr target = check_entity(l, 2);
 
     movement.set_target(target);
 
@@ -1472,7 +1472,7 @@ int LuaContext::circle_movement_api_set_center(lua_State* l) {
     else {
       // the center is an entity
 
-      std::shared_ptr<MapEntity> center = check_entity(l, 2);
+      MapEntityPtr center = check_entity(l, 2);
       int dx = LuaTools::opt_int(l, 3, 0);
       int dy = LuaTools::opt_int(l, 4, 0);
       movement.set_center(center, dx, dy);

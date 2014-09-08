@@ -566,7 +566,7 @@ bool LuaContext::is_entity(lua_State* l, int index) {
  * \param index An index in the stack.
  * \return The entity.
  */
-std::shared_ptr<MapEntity> LuaContext::check_entity(lua_State* l, int index) {
+MapEntityPtr LuaContext::check_entity(lua_State* l, int index) {
 
   if (is_entity(l, index)) {
     const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(
@@ -3290,7 +3290,7 @@ int LuaContext::pickable_api_get_followed_entity(lua_State* l) {
   SOLARUS_LUA_BOUNDARY_TRY() {
     Pickable& pickable = check_pickable(l, 1);
 
-    std::shared_ptr<MapEntity> followed_entity = pickable.get_entity_followed();
+    MapEntityPtr followed_entity = pickable.get_entity_followed();
 
     if (followed_entity != nullptr) {
       push_entity(l, *followed_entity);

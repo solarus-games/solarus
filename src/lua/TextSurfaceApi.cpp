@@ -112,8 +112,8 @@ bool LuaContext::is_text_surface(lua_State* l, int index) {
  * \param index an index in the stack
  * \return the text surface
  */
-TextSurface& LuaContext::check_text_surface(lua_State* l, int index) {
-  return static_cast<TextSurface&>(*check_userdata(
+std::shared_ptr<TextSurface> LuaContext::check_text_surface(lua_State* l, int index) {
+  return std::static_pointer_cast<TextSurface>(check_userdata(
       l, index, text_surface_module_name
   ));
 }
@@ -210,7 +210,7 @@ int LuaContext::text_surface_api_create(lua_State* l) {
 int LuaContext::text_surface_api_get_horizontal_alignment(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TextSurface& text_surface = check_text_surface(l, 1);
+    const TextSurface& text_surface = *check_text_surface(l, 1);
 
     TextSurface::HorizontalAlignment alignment = text_surface.get_horizontal_alignment();
 
@@ -228,7 +228,7 @@ int LuaContext::text_surface_api_get_horizontal_alignment(lua_State* l) {
 int LuaContext::text_surface_api_set_horizontal_alignment(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TextSurface& text_surface = check_text_surface(l, 1);
+    TextSurface& text_surface = *check_text_surface(l, 1);
     TextSurface::HorizontalAlignment alignment =
         LuaTools::check_enum<TextSurface::HorizontalAlignment>(
             l, 1, horizontal_alignment_names);
@@ -248,7 +248,7 @@ int LuaContext::text_surface_api_set_horizontal_alignment(lua_State* l) {
 int LuaContext::text_surface_api_get_vertical_alignment(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TextSurface& text_surface = check_text_surface(l, 1);
+    const TextSurface& text_surface = *check_text_surface(l, 1);
 
     TextSurface::VerticalAlignment alignment = text_surface.get_vertical_alignment();
 
@@ -266,7 +266,7 @@ int LuaContext::text_surface_api_get_vertical_alignment(lua_State* l) {
 int LuaContext::text_surface_api_set_vertical_alignment(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TextSurface& text_surface = check_text_surface(l, 1);
+    TextSurface& text_surface = *check_text_surface(l, 1);
     TextSurface::VerticalAlignment alignment =
         LuaTools::check_enum<TextSurface::VerticalAlignment>(
             l, 1, vertical_alignment_names);
@@ -286,7 +286,7 @@ int LuaContext::text_surface_api_set_vertical_alignment(lua_State* l) {
 int LuaContext::text_surface_api_get_font(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TextSurface& text_surface = check_text_surface(l, 1);
+    const TextSurface& text_surface = *check_text_surface(l, 1);
 
     const std::string& font_id = text_surface.get_font();
     push_string(l, font_id);
@@ -304,7 +304,7 @@ int LuaContext::text_surface_api_get_font(lua_State* l) {
 int LuaContext::text_surface_api_set_font(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TextSurface& text_surface = check_text_surface(l, 1);
+    TextSurface& text_surface = *check_text_surface(l, 1);
     const std::string& font_id = LuaTools::check_string(l, 2);
 
     if (!TextSurface::has_font(font_id)) {
@@ -325,7 +325,7 @@ int LuaContext::text_surface_api_set_font(lua_State* l) {
 int LuaContext::text_surface_api_get_rendering_mode(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TextSurface& text_surface = check_text_surface(l, 1);
+    const TextSurface& text_surface = *check_text_surface(l, 1);
 
     TextSurface::RenderingMode mode = text_surface.get_rendering_mode();
 
@@ -343,7 +343,7 @@ int LuaContext::text_surface_api_get_rendering_mode(lua_State* l) {
 int LuaContext::text_surface_api_set_rendering_mode(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TextSurface& text_surface = check_text_surface(l, 1);
+    TextSurface& text_surface = *check_text_surface(l, 1);
     TextSurface::RenderingMode mode = LuaTools::check_enum<TextSurface::RenderingMode>(
         l, 1, rendering_mode_names);
 
@@ -362,7 +362,7 @@ int LuaContext::text_surface_api_set_rendering_mode(lua_State* l) {
 int LuaContext::text_surface_api_get_color(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TextSurface& text_surface = check_text_surface(l, 1);
+    const TextSurface& text_surface = *check_text_surface(l, 1);
 
     const Color& color = text_surface.get_text_color();
 
@@ -380,7 +380,7 @@ int LuaContext::text_surface_api_get_color(lua_State* l) {
 int LuaContext::text_surface_api_set_color(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TextSurface& text_surface = check_text_surface(l, 1);
+    TextSurface& text_surface = *check_text_surface(l, 1);
     const Color& color = LuaTools::check_color(l, 2);
 
     text_surface.set_text_color(color);
@@ -398,7 +398,7 @@ int LuaContext::text_surface_api_set_color(lua_State* l) {
 int LuaContext::text_surface_api_get_text(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TextSurface& text_surface = check_text_surface(l, 1);
+    const TextSurface& text_surface = *check_text_surface(l, 1);
 
     const std::string& text = text_surface.get_text();
 
@@ -416,7 +416,7 @@ int LuaContext::text_surface_api_get_text(lua_State* l) {
 int LuaContext::text_surface_api_set_text(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TextSurface& text_surface = check_text_surface(l, 1);
+    TextSurface& text_surface = *check_text_surface(l, 1);
     std::string text;
     if (lua_gettop(l) >= 2 && !lua_isnil(l, 2)) {
       text = LuaTools::check_string(l, 2);
@@ -436,7 +436,7 @@ int LuaContext::text_surface_api_set_text(lua_State* l) {
 int LuaContext::text_surface_api_set_text_key(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TextSurface& text_surface = check_text_surface(l, 1);
+    TextSurface& text_surface = *check_text_surface(l, 1);
     const std::string& key = LuaTools::check_string(l, 2);
 
     if (!StringResource::exists(key)) {
@@ -461,7 +461,7 @@ int LuaContext::text_surface_api_set_text_key(lua_State* l) {
 int LuaContext::text_surface_api_get_size(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TextSurface& text_surface = check_text_surface(l, 1);
+    const TextSurface& text_surface = *check_text_surface(l, 1);
 
     lua_pushinteger(l, text_surface.get_width());
     lua_pushinteger(l, text_surface.get_height());

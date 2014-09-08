@@ -230,7 +230,7 @@ void Pickable::initialize_movement() {
  * \brief Returns whether the entity is currently falling.
  * \return true if the entity is currently falling
  */
-bool Pickable::is_falling() {
+bool Pickable::is_falling() const {
   return get_falling_height() != FALLING_NONE;
 }
 
@@ -238,7 +238,7 @@ bool Pickable::is_falling() {
  * \brief Returns the height this pickable item falls from when it appears.
  * \return the falling height
  */
-FallingHeight Pickable::get_falling_height() {
+FallingHeight Pickable::get_falling_height() const {
   return falling_height;
 }
 
@@ -246,7 +246,7 @@ FallingHeight Pickable::get_falling_height() {
  * \brief Returns the treasure the player receives if he picks this item.
  * \return the treasure
  */
-const Treasure& Pickable::get_treasure() {
+const Treasure& Pickable::get_treasure() const {
   return treasure;
 }
 

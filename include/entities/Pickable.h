@@ -52,9 +52,9 @@ class Pickable: public Detector {
     virtual void notify_created() override;
 
     // properties
-    bool is_falling();
-    FallingHeight get_falling_height();
-    const Treasure& get_treasure();
+    bool is_falling() const;
+    FallingHeight get_falling_height() const;
+    const Treasure& get_treasure() const;
 
     // item state
     virtual void set_suspended(bool suspended) override;

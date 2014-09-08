@@ -726,9 +726,9 @@ bool LuaContext::is_straight_movement(lua_State* l, int index) {
  * \param index an index in the stack
  * \return the movement
  */
-StraightMovement& LuaContext::check_straight_movement(lua_State* l, int index) {
+std::shared_ptr<StraightMovement> LuaContext::check_straight_movement(lua_State* l, int index) {
 
-  return static_cast<StraightMovement&>(*check_userdata(
+  return std::static_pointer_cast<StraightMovement>(check_userdata(
       l, index, movement_straight_module_name
   ));
 }
@@ -741,7 +741,7 @@ StraightMovement& LuaContext::check_straight_movement(lua_State* l, int index) {
 int LuaContext::straight_movement_api_get_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    StraightMovement& movement = check_straight_movement(l, 1);
+    const StraightMovement& movement = *check_straight_movement(l, 1);
     lua_pushinteger(l, movement.get_speed());
     return 1;
   }
@@ -755,7 +755,7 @@ int LuaContext::straight_movement_api_get_speed(lua_State* l) {
  */
 int LuaContext::straight_movement_api_set_speed(lua_State* l) {
 
-  StraightMovement& movement = check_straight_movement(l, 1);
+  StraightMovement& movement = *check_straight_movement(l, 1);
   int speed = LuaTools::check_int(l, 2);
   movement.set_speed(speed);
   return 0;
@@ -769,7 +769,7 @@ int LuaContext::straight_movement_api_set_speed(lua_State* l) {
 int LuaContext::straight_movement_api_get_angle(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    StraightMovement& movement = check_straight_movement(l, 1);
+    const StraightMovement& movement = *check_straight_movement(l, 1);
     lua_pushnumber(l, movement.get_angle());
     return 1;
   }
@@ -784,7 +784,7 @@ int LuaContext::straight_movement_api_get_angle(lua_State* l) {
 int LuaContext::straight_movement_api_set_angle(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    StraightMovement& movement = check_straight_movement(l, 1);
+    StraightMovement& movement = *check_straight_movement(l, 1);
     double angle = LuaTools::check_number(l, 2);
     movement.set_angle(angle);
     return 0;
@@ -800,7 +800,7 @@ int LuaContext::straight_movement_api_set_angle(lua_State* l) {
 int LuaContext::straight_movement_api_get_max_distance(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    StraightMovement& movement = check_straight_movement(l, 1);
+    const StraightMovement& movement = *check_straight_movement(l, 1);
     lua_pushinteger(l, movement.get_max_distance());
     return 1;
   }
@@ -815,7 +815,7 @@ int LuaContext::straight_movement_api_get_max_distance(lua_State* l) {
 int LuaContext::straight_movement_api_set_max_distance(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    StraightMovement& movement = check_straight_movement(l, 1);
+    StraightMovement& movement = *check_straight_movement(l, 1);
     int max_distance = LuaTools::check_int(l, 2);
     movement.set_max_distance(max_distance);
     return 0;
@@ -831,7 +831,7 @@ int LuaContext::straight_movement_api_set_max_distance(lua_State* l) {
 int LuaContext::straight_movement_api_is_smooth(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    StraightMovement& movement = check_straight_movement(l, 1);
+    const StraightMovement& movement = *check_straight_movement(l, 1);
     lua_pushboolean(l, movement.is_smooth());
     return 1;
   }
@@ -846,7 +846,7 @@ int LuaContext::straight_movement_api_is_smooth(lua_State* l) {
 int LuaContext::straight_movement_api_set_smooth(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    StraightMovement& movement = check_straight_movement(l, 1);
+    StraightMovement& movement = *check_straight_movement(l, 1);
     bool smooth = true; // true if unspecified
     if (lua_gettop(l) >= 2) {
       smooth = lua_toboolean(l, 2);
@@ -875,8 +875,8 @@ bool LuaContext::is_random_movement(lua_State* l, int index) {
  * \param index an index in the stack
  * \return the movement
  */
-RandomMovement& LuaContext::check_random_movement(lua_State* l, int index) {
-  return static_cast<RandomMovement&>(*check_userdata(
+std::shared_ptr<RandomMovement> LuaContext::check_random_movement(lua_State* l, int index) {
+  return std::static_pointer_cast<RandomMovement>(check_userdata(
       l, index, movement_random_module_name
   ));
 }
@@ -889,7 +889,7 @@ RandomMovement& LuaContext::check_random_movement(lua_State* l, int index) {
 int LuaContext::random_movement_api_get_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    RandomMovement& movement = check_random_movement(l, 1);
+    const RandomMovement& movement = *check_random_movement(l, 1);
     lua_pushinteger(l, movement.get_speed());
     return 1;
   }
@@ -904,7 +904,7 @@ int LuaContext::random_movement_api_get_speed(lua_State* l) {
 int LuaContext::random_movement_api_set_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    RandomMovement& movement = check_random_movement(l, 1);
+    RandomMovement& movement = *check_random_movement(l, 1);
     int speed = LuaTools::check_int(l, 2);
     movement.set_normal_speed(speed);
     return 0;
@@ -920,7 +920,7 @@ int LuaContext::random_movement_api_set_speed(lua_State* l) {
 int LuaContext::random_movement_api_get_angle(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    RandomMovement& movement = check_random_movement(l, 1);
+    const RandomMovement& movement = *check_random_movement(l, 1);
     lua_pushnumber(l, movement.get_angle());
     return 1;
   }
@@ -935,7 +935,7 @@ int LuaContext::random_movement_api_get_angle(lua_State* l) {
 int LuaContext::random_movement_api_get_max_distance(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    RandomMovement& movement = check_random_movement(l, 1);
+    const RandomMovement& movement = *check_random_movement(l, 1);
     lua_pushinteger(l, movement.get_max_radius());
     return 1;
   }
@@ -950,7 +950,7 @@ int LuaContext::random_movement_api_get_max_distance(lua_State* l) {
 int LuaContext::random_movement_api_set_max_distance(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    RandomMovement& movement = check_random_movement(l, 1);
+    RandomMovement& movement = *check_random_movement(l, 1);
     int max_radius = LuaTools::check_int(l, 2);
     movement.set_max_radius(max_radius);
     return 0;
@@ -966,7 +966,7 @@ int LuaContext::random_movement_api_set_max_distance(lua_State* l) {
 int LuaContext::random_movement_api_is_smooth(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    RandomMovement& movement = check_random_movement(l, 1);
+    const RandomMovement& movement = *check_random_movement(l, 1);
     lua_pushboolean(l, movement.is_smooth());
     return 1;
   }
@@ -981,7 +981,7 @@ int LuaContext::random_movement_api_is_smooth(lua_State* l) {
 int LuaContext::random_movement_api_set_smooth(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    RandomMovement& movement = check_random_movement(l, 1);
+    RandomMovement& movement = *check_random_movement(l, 1);
     bool smooth = true; // true if unspecified
     if (lua_gettop(l) >= 2) {
       smooth = lua_toboolean(l, 2);
@@ -1010,8 +1010,8 @@ bool LuaContext::is_target_movement(lua_State* l, int index) {
  * \param index an index in the stack
  * \return the movement
  */
-TargetMovement& LuaContext::check_target_movement(lua_State* l, int index) {
-  return static_cast<TargetMovement&>(*check_userdata(
+std::shared_ptr<TargetMovement> LuaContext::check_target_movement(lua_State* l, int index) {
+  return std::static_pointer_cast<TargetMovement>(check_userdata(
       l, index, movement_target_module_name
   ));
 }
@@ -1024,7 +1024,7 @@ TargetMovement& LuaContext::check_target_movement(lua_State* l, int index) {
 int LuaContext::target_movement_api_set_target(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TargetMovement& movement = check_target_movement(l, 1);
+    TargetMovement& movement = *check_target_movement(l, 1);
     if (lua_isnumber(l, 2)) {
       // The target is a fixed point.
       int x = LuaTools::check_int(l, 2);
@@ -1057,7 +1057,7 @@ int LuaContext::target_movement_api_set_target(lua_State* l) {
 int LuaContext::target_movement_api_get_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TargetMovement& movement = check_target_movement(l, 1);
+    const TargetMovement& movement = *check_target_movement(l, 1);
     lua_pushinteger(l, movement.get_speed());
     return 1;
   }
@@ -1072,7 +1072,7 @@ int LuaContext::target_movement_api_get_speed(lua_State* l) {
 int LuaContext::target_movement_api_set_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TargetMovement& movement = check_target_movement(l, 1);
+    TargetMovement& movement = *check_target_movement(l, 1);
     int speed = LuaTools::check_int(l, 2);
     movement.set_moving_speed(speed);
     return 0;
@@ -1088,7 +1088,7 @@ int LuaContext::target_movement_api_set_speed(lua_State* l) {
 int LuaContext::target_movement_api_get_angle(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TargetMovement& movement = check_target_movement(l, 1);
+    const TargetMovement& movement = *check_target_movement(l, 1);
     lua_pushnumber(l, movement.get_angle());
     return 1;
   }
@@ -1103,7 +1103,7 @@ int LuaContext::target_movement_api_get_angle(lua_State* l) {
 int LuaContext::target_movement_api_is_smooth(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TargetMovement& movement = check_target_movement(l, 1);
+    const TargetMovement& movement = *check_target_movement(l, 1);
     lua_pushboolean(l, movement.is_smooth());
     return 1;
   }
@@ -1118,7 +1118,7 @@ int LuaContext::target_movement_api_is_smooth(lua_State* l) {
 int LuaContext::target_movement_api_set_smooth(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    TargetMovement& movement = check_target_movement(l, 1);
+    TargetMovement& movement = *check_target_movement(l, 1);
     bool smooth = true; // true if unspecified
     if (lua_gettop(l) >= 2) {
       smooth = lua_toboolean(l, 2);
@@ -1147,8 +1147,8 @@ bool LuaContext::is_path_movement(lua_State* l, int index) {
  * \param index an index in the stack
  * \return the movement
  */
-PathMovement& LuaContext::check_path_movement(lua_State* l, int index) {
-  return static_cast<PathMovement&>(*check_userdata(
+std::shared_ptr<PathMovement> LuaContext::check_path_movement(lua_State* l, int index) {
+  return std::static_pointer_cast<PathMovement>(check_userdata(
       l, index, movement_path_module_name
   ));
 }
@@ -1161,7 +1161,7 @@ PathMovement& LuaContext::check_path_movement(lua_State* l, int index) {
 int LuaContext::path_movement_api_get_path(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PathMovement& movement = check_path_movement(l, 1);
+    const PathMovement& movement = *check_path_movement(l, 1);
 
     const std::string& path = movement.get_path();
     // build a Lua array containing the path
@@ -1186,7 +1186,7 @@ int LuaContext::path_movement_api_get_path(lua_State* l) {
 int LuaContext::path_movement_api_set_path(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PathMovement& movement = check_path_movement(l, 1);
+    PathMovement& movement = *check_path_movement(l, 1);
     LuaTools::check_type(l, 2, LUA_TTABLE);
 
     // build the path as a string from the Lua table
@@ -1212,7 +1212,7 @@ int LuaContext::path_movement_api_set_path(lua_State* l) {
 int LuaContext::path_movement_api_get_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PathMovement& movement = check_path_movement(l, 1);
+    const PathMovement& movement = *check_path_movement(l, 1);
     lua_pushinteger(l, movement.get_speed());
     return 1;
   }
@@ -1227,7 +1227,7 @@ int LuaContext::path_movement_api_get_speed(lua_State* l) {
 int LuaContext::path_movement_api_set_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PathMovement& movement = check_path_movement(l, 1);
+    PathMovement& movement = *check_path_movement(l, 1);
     int speed = LuaTools::check_int(l, 2);
     movement.set_speed(speed);
     return 0;
@@ -1243,7 +1243,7 @@ int LuaContext::path_movement_api_set_speed(lua_State* l) {
 int LuaContext::path_movement_api_get_loop(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PathMovement& movement = check_path_movement(l, 1);
+    const PathMovement& movement = *check_path_movement(l, 1);
     lua_pushboolean(l, movement.get_loop());
     return 1;
   }
@@ -1258,9 +1258,9 @@ int LuaContext::path_movement_api_get_loop(lua_State* l) {
 int LuaContext::path_movement_api_set_loop(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PathMovement& movement = check_path_movement(l, 1);
+    PathMovement& movement = *check_path_movement(l, 1);
     bool loop = true; // true if unspecified
-    if (lua_gettop(l) >= 2) {
+    if (lua_gettop(l) >= 2) {  // TODO LuaTools::opt_boolean
       loop = lua_toboolean(l, 2);
     }
     movement.set_loop(loop);
@@ -1278,7 +1278,7 @@ int LuaContext::path_movement_api_set_loop(lua_State* l) {
 int LuaContext::path_movement_api_get_snap_to_grid(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PathMovement& movement = check_path_movement(l, 1);
+    const PathMovement& movement = *check_path_movement(l, 1);
     lua_pushboolean(l, movement.get_snap_to_grid());
     return 1;
   }
@@ -1293,9 +1293,9 @@ int LuaContext::path_movement_api_get_snap_to_grid(lua_State* l) {
 int LuaContext::path_movement_api_set_snap_to_grid(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PathMovement& movement = check_path_movement(l, 1);
+    PathMovement& movement = *check_path_movement(l, 1);
     bool snap_to_grid = true; // true if unspecified
-    if (lua_gettop(l) >= 2) {
+    if (lua_gettop(l) >= 2) {  // TODO LuaTools::opt_boolean
       snap_to_grid = lua_toboolean(l, 2);
     }
     movement.set_snap_to_grid(snap_to_grid);
@@ -1312,8 +1312,8 @@ int LuaContext::path_movement_api_set_snap_to_grid(lua_State* l) {
  * \param index an index in the stack
  * \return the movement
  */
-RandomPathMovement& LuaContext::check_random_path_movement(lua_State* l, int index) {
-  return static_cast<RandomPathMovement&>(*check_userdata(
+std::shared_ptr<RandomPathMovement> LuaContext::check_random_path_movement(lua_State* l, int index) {
+  return std::static_pointer_cast<RandomPathMovement>(check_userdata(
       l, index, movement_random_path_module_name
   ));
 }
@@ -1336,7 +1336,7 @@ bool LuaContext::is_random_path_movement(lua_State* l, int index) {
 int LuaContext::random_path_movement_api_get_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    RandomPathMovement& movement = check_random_path_movement(l, 1);
+    const RandomPathMovement& movement = *check_random_path_movement(l, 1);
     lua_pushinteger(l, movement.get_speed());
     return 1;
   }
@@ -1351,7 +1351,7 @@ int LuaContext::random_path_movement_api_get_speed(lua_State* l) {
 int LuaContext::random_path_movement_api_set_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    RandomPathMovement& movement = check_random_path_movement(l, 1);
+    RandomPathMovement& movement = *check_random_path_movement(l, 1);
     int speed = LuaTools::check_int(l, 2);
     movement.set_speed(speed);
     return 0;
@@ -1376,8 +1376,8 @@ bool LuaContext::is_path_finding_movement(lua_State* l, int index) {
  * \param index an index in the stack
  * \return the movement
  */
-PathFindingMovement& LuaContext::check_path_finding_movement(lua_State* l, int index) {
-  return static_cast<PathFindingMovement&>(*check_userdata(
+std::shared_ptr<PathFindingMovement> LuaContext::check_path_finding_movement(lua_State* l, int index) {
+  return std::static_pointer_cast<PathFindingMovement>(check_userdata(
       l, index, movement_path_finding_module_name
   ));
 }
@@ -1390,7 +1390,7 @@ PathFindingMovement& LuaContext::check_path_finding_movement(lua_State* l, int i
 int LuaContext::path_finding_movement_api_set_target(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PathFindingMovement& movement = check_path_finding_movement(l, 1);
+    PathFindingMovement& movement = *check_path_finding_movement(l, 1);
     MapEntityPtr target = check_entity(l, 2);
 
     movement.set_target(target);
@@ -1408,7 +1408,7 @@ int LuaContext::path_finding_movement_api_set_target(lua_State* l) {
 int LuaContext::path_finding_movement_api_get_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PathFindingMovement& movement = check_path_finding_movement(l, 1);
+    const PathFindingMovement& movement = *check_path_finding_movement(l, 1);
     lua_pushinteger(l, movement.get_speed());
     return 1;
   }
@@ -1423,7 +1423,7 @@ int LuaContext::path_finding_movement_api_get_speed(lua_State* l) {
 int LuaContext::path_finding_movement_api_set_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PathFindingMovement& movement = check_path_finding_movement(l, 1);
+    PathFindingMovement& movement = *check_path_finding_movement(l, 1);
     int speed = LuaTools::check_int(l, 2);
     movement.set_speed(speed);
     return 0;
@@ -1448,8 +1448,8 @@ bool LuaContext::is_circle_movement(lua_State* l, int index) {
  * \param index an index in the stack
  * \return the movement
  */
-CircleMovement& LuaContext::check_circle_movement(lua_State* l, int index) {
-  return static_cast<CircleMovement&>(*check_userdata(
+std::shared_ptr<CircleMovement> LuaContext::check_circle_movement(lua_State* l, int index) {
+  return std::static_pointer_cast<CircleMovement>(check_userdata(
       l, index, movement_circle_module_name
   ));
 }
@@ -1462,7 +1462,7 @@ CircleMovement& LuaContext::check_circle_movement(lua_State* l, int index) {
 int LuaContext::circle_movement_api_set_center(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    CircleMovement& movement = *check_circle_movement(l, 1);
     if (lua_isnumber(l, 2)) {
       // the center is a fixed point
       int x = LuaTools::check_int(l, 2);
@@ -1491,7 +1491,7 @@ int LuaContext::circle_movement_api_set_center(lua_State* l) {
 int LuaContext::circle_movement_api_get_radius(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushinteger(l, movement.get_radius());
     return 1;
   }
@@ -1506,7 +1506,7 @@ int LuaContext::circle_movement_api_get_radius(lua_State* l) {
 int LuaContext::circle_movement_api_set_radius(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    CircleMovement& movement = *check_circle_movement(l, 1);
     int radius = LuaTools::check_int(l, 2);
     movement.set_radius(radius);
     return 0;
@@ -1522,7 +1522,7 @@ int LuaContext::circle_movement_api_set_radius(lua_State* l) {
 int LuaContext::circle_movement_api_get_radius_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushinteger(l, movement.get_radius_speed());
     return 1;
   }
@@ -1537,7 +1537,7 @@ int LuaContext::circle_movement_api_get_radius_speed(lua_State* l) {
 int LuaContext::circle_movement_api_set_radius_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    CircleMovement& movement = *check_circle_movement(l, 1);
     int radius_speed = LuaTools::check_int(l, 2);
     movement.set_radius_speed(radius_speed);
     return 0;
@@ -1553,7 +1553,7 @@ int LuaContext::circle_movement_api_set_radius_speed(lua_State* l) {
 int LuaContext::circle_movement_api_is_clockwise(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushboolean(l, movement.is_clockwise());
     return 1;
   }
@@ -1568,7 +1568,7 @@ int LuaContext::circle_movement_api_is_clockwise(lua_State* l) {
 int LuaContext::circle_movement_api_set_clockwise(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    CircleMovement& movement = *check_circle_movement(l, 1);
     bool clockwise = true; // true if unspecified
     if (lua_gettop(l) >= 2) {
       clockwise = lua_toboolean(l, 2);
@@ -1588,7 +1588,7 @@ int LuaContext::circle_movement_api_set_clockwise(lua_State* l) {
 int LuaContext::circle_movement_api_get_initial_angle(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushnumber(l, movement.get_initial_angle());
     return 1;
   }
@@ -1603,7 +1603,7 @@ int LuaContext::circle_movement_api_get_initial_angle(lua_State* l) {
 int LuaContext::circle_movement_api_set_initial_angle(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    CircleMovement& movement = *check_circle_movement(l, 1);
     double initial_angle = LuaTools::check_number(l, 2);
     movement.set_initial_angle(initial_angle);
     return 0;
@@ -1619,7 +1619,7 @@ int LuaContext::circle_movement_api_set_initial_angle(lua_State* l) {
 int LuaContext::circle_movement_api_get_angle_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushinteger(l, movement.get_angle_speed());
     return 1;
   }
@@ -1634,7 +1634,7 @@ int LuaContext::circle_movement_api_get_angle_speed(lua_State* l) {
 int LuaContext::circle_movement_api_set_angle_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    CircleMovement& movement = *check_circle_movement(l, 1);
     int angle_speed = LuaTools::check_int(l, 2);
     movement.set_angle_speed(angle_speed);
     return 0;
@@ -1650,7 +1650,7 @@ int LuaContext::circle_movement_api_set_angle_speed(lua_State* l) {
 int LuaContext::circle_movement_api_get_max_rotations(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushinteger(l, movement.get_max_rotations());
     return 1;
   }
@@ -1665,7 +1665,7 @@ int LuaContext::circle_movement_api_get_max_rotations(lua_State* l) {
 int LuaContext::circle_movement_api_set_max_rotations(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    CircleMovement& movement = *check_circle_movement(l, 1);
     int max_rotations = LuaTools::check_int(l, 2);
     movement.set_max_rotations(max_rotations);
     return 0;
@@ -1681,7 +1681,7 @@ int LuaContext::circle_movement_api_set_max_rotations(lua_State* l) {
 int LuaContext::circle_movement_api_get_duration(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushinteger(l, movement.get_duration());
     return 1;
   }
@@ -1696,7 +1696,7 @@ int LuaContext::circle_movement_api_get_duration(lua_State* l) {
 int LuaContext::circle_movement_api_set_duration(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    CircleMovement& movement = *check_circle_movement(l, 1);
     int duration = LuaTools::check_int(l, 2);
     movement.set_duration(duration);
     return 0;
@@ -1712,7 +1712,7 @@ int LuaContext::circle_movement_api_set_duration(lua_State* l) {
 int LuaContext::circle_movement_api_get_loop_delay(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushinteger(l, movement.get_loop());
     return 1;
   }
@@ -1727,7 +1727,7 @@ int LuaContext::circle_movement_api_get_loop_delay(lua_State* l) {
 int LuaContext::circle_movement_api_set_loop_delay(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    CircleMovement& movement = check_circle_movement(l, 1);
+    CircleMovement& movement = *check_circle_movement(l, 1);
     int loop_delay = LuaTools::check_int(l, 2);
     movement.set_loop(loop_delay);
     return 0;
@@ -1752,8 +1752,8 @@ bool LuaContext::is_jump_movement(lua_State* l, int index) {
  * \param index an index in the stack
  * \return the movement
  */
-JumpMovement& LuaContext::check_jump_movement(lua_State* l, int index) {
-  return static_cast<JumpMovement&>(*check_userdata(
+std::shared_ptr<JumpMovement> LuaContext::check_jump_movement(lua_State* l, int index) {
+  return std::static_pointer_cast<JumpMovement>(check_userdata(
       l, index, movement_jump_module_name
   ));
 }
@@ -1766,7 +1766,7 @@ JumpMovement& LuaContext::check_jump_movement(lua_State* l, int index) {
 int LuaContext::jump_movement_api_get_direction8(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    JumpMovement& movement = check_jump_movement(l, 1);
+    const JumpMovement& movement = *check_jump_movement(l, 1);
     lua_pushinteger(l, movement.get_direction8());
     return 1;
   }
@@ -1781,7 +1781,7 @@ int LuaContext::jump_movement_api_get_direction8(lua_State* l) {
 int LuaContext::jump_movement_api_set_direction8(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    JumpMovement& movement = check_jump_movement(l, 1);
+    JumpMovement& movement = *check_jump_movement(l, 1);
     int direction8 = LuaTools::check_int(l, 2);
     movement.set_direction8(direction8);
     return 0;
@@ -1797,7 +1797,7 @@ int LuaContext::jump_movement_api_set_direction8(lua_State* l) {
 int LuaContext::jump_movement_api_get_distance(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    JumpMovement& movement = check_jump_movement(l, 1);
+    const JumpMovement& movement = *check_jump_movement(l, 1);
     lua_pushinteger(l, movement.get_distance());
     return 1;
   }
@@ -1812,7 +1812,7 @@ int LuaContext::jump_movement_api_get_distance(lua_State* l) {
 int LuaContext::jump_movement_api_set_distance(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    JumpMovement& movement = check_jump_movement(l, 1);
+    JumpMovement& movement = *check_jump_movement(l, 1);
     int distance = LuaTools::check_int(l, 2);
     movement.set_distance(distance);
     return 0;
@@ -1828,7 +1828,7 @@ int LuaContext::jump_movement_api_set_distance(lua_State* l) {
 int LuaContext::jump_movement_api_get_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    JumpMovement& movement = check_jump_movement(l, 1);
+    const JumpMovement& movement = *check_jump_movement(l, 1);
     lua_pushinteger(l, movement.get_speed());
     return 1;
   }
@@ -1843,7 +1843,7 @@ int LuaContext::jump_movement_api_get_speed(lua_State* l) {
 int LuaContext::jump_movement_api_set_speed(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    JumpMovement& movement = check_jump_movement(l, 1);
+    JumpMovement& movement = *check_jump_movement(l, 1);
     int speed = LuaTools::check_int(l, 2);
     movement.set_speed(speed);
     return 0;
@@ -1868,8 +1868,8 @@ bool LuaContext::is_pixel_movement(lua_State* l, int index) {
  * \param index an index in the stack
  * \return the movement
  */
-PixelMovement& LuaContext::check_pixel_movement(lua_State* l, int index) {
-  return static_cast<PixelMovement&>(*check_userdata(
+std::shared_ptr<PixelMovement> LuaContext::check_pixel_movement(lua_State* l, int index) {
+  return std::static_pointer_cast<PixelMovement>(check_userdata(
       l, index, movement_pixel_module_name
   ));
 }
@@ -1882,7 +1882,7 @@ PixelMovement& LuaContext::check_pixel_movement(lua_State* l, int index) {
 int LuaContext::pixel_movement_api_get_trajectory(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PixelMovement& movement = check_pixel_movement(l, 1);
+    const PixelMovement& movement = *check_pixel_movement(l, 1);
 
     const std::list<Point>& trajectory = movement.get_trajectory();
     // build a Lua array containing the trajectory
@@ -1912,7 +1912,7 @@ int LuaContext::pixel_movement_api_get_trajectory(lua_State* l) {
 int LuaContext::pixel_movement_api_set_trajectory(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PixelMovement& movement = check_pixel_movement(l, 1);
+    PixelMovement& movement = *check_pixel_movement(l, 1);
     LuaTools::check_type(l, 2, LUA_TTABLE);
 
     // build the trajectory as a string from the Lua table
@@ -1942,7 +1942,7 @@ int LuaContext::pixel_movement_api_set_trajectory(lua_State* l) {
 int LuaContext::pixel_movement_api_get_loop(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PixelMovement& movement = check_pixel_movement(l, 1);
+    const PixelMovement& movement = *check_pixel_movement(l, 1);
     lua_pushboolean(l, movement.get_loop());
     return 1;
   }
@@ -1957,9 +1957,9 @@ int LuaContext::pixel_movement_api_get_loop(lua_State* l) {
 int LuaContext::pixel_movement_api_set_loop(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PixelMovement& movement = check_pixel_movement(l, 1);
+    PixelMovement& movement = *check_pixel_movement(l, 1);
     bool loop = true; // true if unspecified
-    if (lua_gettop(l) >= 2) {
+    if (lua_gettop(l) >= 2) {  // TODO LuaTools::opt_boolean
       loop = lua_toboolean(l, 2);
     }
     movement.set_loop(loop);
@@ -1977,7 +1977,7 @@ int LuaContext::pixel_movement_api_set_loop(lua_State* l) {
 int LuaContext::pixel_movement_api_get_delay(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PixelMovement& movement = check_pixel_movement(l, 1);
+    const PixelMovement& movement = *check_pixel_movement(l, 1);
     lua_pushinteger(l, movement.get_delay());
     return 1;
   }
@@ -1992,7 +1992,7 @@ int LuaContext::pixel_movement_api_get_delay(lua_State* l) {
 int LuaContext::pixel_movement_api_set_delay(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    PixelMovement& movement = check_pixel_movement(l, 1);
+    PixelMovement& movement = *check_pixel_movement(l, 1);
     uint32_t delay = uint32_t(LuaTools::check_int(l, 2));
     movement.set_delay(delay);
     return 0;

@@ -153,9 +153,9 @@ bool LuaContext::is_map(lua_State* l, int index) {
  * \param index An index in the stack.
  * \return The map.
  */
-Map& LuaContext::check_map(lua_State* l, int index) {
+std::shared_ptr<Map> LuaContext::check_map(lua_State* l, int index) {
 
-  return static_cast<Map&>(*check_userdata(
+  return std::static_pointer_cast<Map>(check_userdata(
       l, index, map_module_name
   ));
 }
@@ -190,7 +190,7 @@ Map& LuaContext::get_entity_creation_map(lua_State* l) {
 
   if (is_map(l, 1)) {
     // The map is passed as a parameter (typically, by the map script).
-    map = &check_map(l, 1);
+    map = check_map(l, 1).get();
     lua_remove(l, 1);
   }
   else {
@@ -280,7 +280,7 @@ int LuaContext::l_get_map_entity_or_global(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
     lua_pushvalue(l, lua_upvalueindex(1));  // Because check_map does not like pseudo-indexes.
-    Map& map = check_map(l, -1);
+    Map& map = *check_map(l, -1);
     const std::string& name = LuaTools::check_string(l, 2);
 
     MapEntity* entity = nullptr;
@@ -351,7 +351,7 @@ int LuaContext::l_camera_restore(lua_State* l) {
 int LuaContext::map_api_get_game(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
 
     push_game(l, map.get_game().get_savegame());
     return 1;
@@ -367,7 +367,7 @@ int LuaContext::map_api_get_game(lua_State* l) {
 int LuaContext::map_api_get_id(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    const Map& map = *check_map(l, 1);
 
     push_string(l, map.get_id());
     return 1;
@@ -383,7 +383,7 @@ int LuaContext::map_api_get_id(lua_State* l) {
 int LuaContext::map_api_get_world(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    const Map& map = *check_map(l, 1);
 
     const std::string& world = map.get_world();
 
@@ -406,7 +406,7 @@ int LuaContext::map_api_get_world(lua_State* l) {
 int LuaContext::map_api_get_floor(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    const Map& map = *check_map(l, 1);
 
     if (!map.has_floor()) {
       lua_pushnil(l);
@@ -427,7 +427,7 @@ int LuaContext::map_api_get_floor(lua_State* l) {
 int LuaContext::map_api_get_size(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    const Map& map = *check_map(l, 1);
 
     lua_pushinteger(l, map.get_width());
     lua_pushinteger(l, map.get_height());
@@ -445,7 +445,7 @@ int LuaContext::map_api_get_size(lua_State* l) {
 int LuaContext::map_api_get_location(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    const Map& map = *check_map(l, 1);
 
     lua_pushinteger(l, map.get_location().get_x());
     lua_pushinteger(l, map.get_location().get_y());
@@ -463,7 +463,7 @@ int LuaContext::map_api_get_location(lua_State* l) {
 int LuaContext::map_api_get_tileset(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    const Map& map = *check_map(l, 1);
 
     push_string(l, map.get_tileset_id());
     return 1;
@@ -479,7 +479,7 @@ int LuaContext::map_api_get_tileset(lua_State* l) {
 int LuaContext::map_api_get_music(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    const Map& map = *check_map(l, 1);
 
     const std::string& music_id = map.get_music_id();
     if (music_id == Music::none) {
@@ -506,7 +506,7 @@ int LuaContext::map_api_get_music(lua_State* l) {
 int LuaContext::map_api_set_tileset(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
     const std::string& tileset_id = LuaTools::check_string(l, 2);
 
     map.set_tileset(tileset_id);
@@ -524,7 +524,7 @@ int LuaContext::map_api_set_tileset(lua_State* l) {
 int LuaContext::map_api_get_camera_position(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    const Map& map = *check_map(l, 1);
 
     const Rectangle& camera_position = map.get_camera_position();
 
@@ -545,7 +545,7 @@ int LuaContext::map_api_get_camera_position(lua_State* l) {
 int LuaContext::map_api_move_camera(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
     int speed = LuaTools::check_int(l, 4);
@@ -585,7 +585,7 @@ int LuaContext::map_api_move_camera(lua_State* l) {
 int LuaContext::map_api_get_ground(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    const Map& map = *check_map(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
     Layer layer = LuaTools::check_layer(l, 4);
@@ -606,7 +606,7 @@ int LuaContext::map_api_get_ground(lua_State* l) {
 int LuaContext::map_api_draw_sprite(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
     Sprite& sprite = *check_sprite(l, 2);
     int x = LuaTools::check_int(l, 3);
     int y = LuaTools::check_int(l, 4);
@@ -626,7 +626,7 @@ int LuaContext::map_api_draw_sprite(lua_State* l) {
 int LuaContext::map_api_get_crystal_state(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
 
     lua_pushboolean(l, map.get_game().get_crystal_state());
     return 1;
@@ -642,7 +642,7 @@ int LuaContext::map_api_get_crystal_state(lua_State* l) {
 int LuaContext::map_api_set_crystal_state(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
     bool state = lua_toboolean(l, 2);
 
     Game& game = map.get_game();
@@ -663,7 +663,7 @@ int LuaContext::map_api_set_crystal_state(lua_State* l) {
 int LuaContext::map_api_change_crystal_state(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
 
     map.get_game().change_crystal_state();
 
@@ -680,7 +680,7 @@ int LuaContext::map_api_change_crystal_state(lua_State* l) {
 int LuaContext::map_api_open_doors(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
     bool done = false;
@@ -713,7 +713,7 @@ int LuaContext::map_api_open_doors(lua_State* l) {
 int LuaContext::map_api_close_doors(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
     bool done = false;
@@ -746,7 +746,7 @@ int LuaContext::map_api_close_doors(lua_State* l) {
 int LuaContext::map_api_set_doors_open(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
     bool open = true;
     if (lua_gettop(l) >= 3) {
@@ -773,7 +773,7 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
 int LuaContext::map_api_get_entity(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
     const std::string& name = LuaTools::check_string(l, 2);
 
     MapEntity* entity = map.get_entities().find_entity(name);
@@ -797,7 +797,7 @@ int LuaContext::map_api_get_entity(lua_State* l) {
 int LuaContext::map_api_has_entity(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
     const std::string& name = LuaTools::check_string(l, 2);
 
     MapEntity* entity = map.get_entities().find_entity(name);
@@ -816,7 +816,7 @@ int LuaContext::map_api_has_entity(lua_State* l) {
 int LuaContext::map_api_get_entities(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
     const std::list<MapEntity*> entities =
@@ -849,7 +849,7 @@ int LuaContext::map_api_get_entities(lua_State* l) {
 int LuaContext::map_api_get_entities_count(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
     const std::list<MapEntity*> entities =
@@ -869,7 +869,7 @@ int LuaContext::map_api_get_entities_count(lua_State* l) {
 int LuaContext::map_api_has_entities(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    const Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
     lua_pushboolean(l, map.get_entities().has_entity_with_prefix(prefix));
@@ -886,7 +886,7 @@ int LuaContext::map_api_has_entities(lua_State* l) {
 int LuaContext::map_api_get_hero(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
 
     // Return the hero even if he is no longer on this map.
     push_hero(l, *map.get_game().get_hero());
@@ -903,7 +903,7 @@ int LuaContext::map_api_get_hero(lua_State* l) {
 int LuaContext::map_api_set_entities_enabled(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
     bool enabled = true;
     if (lua_gettop(l) >= 3) {
@@ -929,7 +929,7 @@ int LuaContext::map_api_set_entities_enabled(lua_State* l) {
 int LuaContext::map_api_remove_entities(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    Map& map = check_map(l, 1);
+    Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
     map.get_entities().remove_entities_with_prefix(prefix);

@@ -1273,7 +1273,7 @@ int LuaContext::game_api_set_item_assigned(lua_State* l) {
     int slot = LuaTools::check_int(l, 2);
     EquipmentItem* item = nullptr;
     if (!lua_isnil(l, 3)) {
-      item = &check_item(l, 3);
+      item = check_item(l, 3).get();
     }
 
     if (slot < 1 || slot > 2) {

@@ -103,8 +103,8 @@ bool LuaContext::is_item(lua_State* l, int index) {
  * \param index An index in the stack.
  * \return The equipment item.
  */
-EquipmentItem& LuaContext::check_item(lua_State* l, int index) {
-  return static_cast<EquipmentItem&>(*check_userdata(
+std::shared_ptr<EquipmentItem> LuaContext::check_item(lua_State* l, int index) {
+  return std::static_pointer_cast<EquipmentItem>(check_userdata(
       l, index, item_module_name
   ));
 }
@@ -127,7 +127,7 @@ void LuaContext::push_item(lua_State* l, EquipmentItem& item) {
 int LuaContext::item_api_get_name(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     push_string(l, item.get_name());
     return 1;
@@ -143,7 +143,7 @@ int LuaContext::item_api_get_name(lua_State* l) {
 int LuaContext::item_api_get_game(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     push_game(l, item.get_savegame());
     return 1;
@@ -159,7 +159,7 @@ int LuaContext::item_api_get_game(lua_State* l) {
 int LuaContext::item_api_get_map(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     Game* game = item.get_game();
     if (game != nullptr) {
@@ -181,7 +181,7 @@ int LuaContext::item_api_get_map(lua_State* l) {
 int LuaContext::item_api_get_savegame_variable(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     const std::string& savegame_variable = item.get_savegame_variable();
     if (savegame_variable.empty()) {
@@ -203,7 +203,7 @@ int LuaContext::item_api_get_savegame_variable(lua_State* l) {
 int LuaContext::item_api_set_savegame_variable(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     std::string savegame_variable;
     if (!lua_isnil(l, 2)) {
       savegame_variable = LuaTools::check_string(l, 2);
@@ -231,7 +231,7 @@ int LuaContext::item_api_set_savegame_variable(lua_State* l) {
 int LuaContext::item_api_get_amount_savegame_variable(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     const std::string& amount_savegame_variable = item.get_amount_savegame_variable();
     if (amount_savegame_variable.empty()) {
@@ -253,7 +253,7 @@ int LuaContext::item_api_get_amount_savegame_variable(lua_State* l) {
 int LuaContext::item_api_set_amount_savegame_variable(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     std::string amount_savegame_variable;
     if (lua_gettop(l) >= 2) {
       amount_savegame_variable = LuaTools::check_string(l, 2);
@@ -281,7 +281,7 @@ int LuaContext::item_api_set_amount_savegame_variable(lua_State* l) {
 int LuaContext::item_api_is_obtainable(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     lua_pushboolean(l, item.is_obtainable());
     return 1;
@@ -297,7 +297,7 @@ int LuaContext::item_api_is_obtainable(lua_State* l) {
 int LuaContext::item_api_set_obtainable(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     bool obtainable = true;
     if (lua_gettop(l) >= 2) {
       obtainable = lua_toboolean(l, 2);
@@ -318,7 +318,7 @@ int LuaContext::item_api_set_obtainable(lua_State* l) {
 int LuaContext::item_api_is_assignable(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     lua_pushboolean(l, item.is_assignable());
     return 1;
@@ -334,7 +334,7 @@ int LuaContext::item_api_is_assignable(lua_State* l) {
 int LuaContext::item_api_set_assignable(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     bool assignable = true;
     if (lua_gettop(l) >= 2) {
       assignable = lua_toboolean(l, 2);
@@ -355,7 +355,7 @@ int LuaContext::item_api_set_assignable(lua_State* l) {
 int LuaContext::item_api_get_can_disappear(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     lua_pushboolean(l, item.get_can_disappear());
     return 1;
@@ -371,7 +371,7 @@ int LuaContext::item_api_get_can_disappear(lua_State* l) {
 int LuaContext::item_api_set_can_disappear(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     bool can_disappear = true;
     if (lua_gettop(l) >= 2) {
       can_disappear = lua_toboolean(l, 2);
@@ -392,7 +392,7 @@ int LuaContext::item_api_set_can_disappear(lua_State* l) {
 int LuaContext::item_api_get_brandish_when_picked(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     lua_pushboolean(l, item.get_brandish_when_picked());
     return 1;
@@ -408,7 +408,7 @@ int LuaContext::item_api_get_brandish_when_picked(lua_State* l) {
 int LuaContext::item_api_set_brandish_when_picked(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     bool brandish_when_picked = true;
     if (lua_gettop(l) >= 2) {
       brandish_when_picked = lua_toboolean(l, 2);
@@ -429,7 +429,7 @@ int LuaContext::item_api_set_brandish_when_picked(lua_State* l) {
 int LuaContext::item_api_get_shadow(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     const std::string& shadow = item.get_shadow();
     if (shadow.empty()) {
@@ -451,7 +451,7 @@ int LuaContext::item_api_get_shadow(lua_State* l) {
 int LuaContext::item_api_set_shadow(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     std::string shadow;
     if (!lua_isnil(l, 2)) {
       shadow = LuaTools::check_string(l, 2);
@@ -472,7 +472,7 @@ int LuaContext::item_api_set_shadow(lua_State* l) {
 int LuaContext::item_api_get_sound_when_picked(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     const std::string& sound_when_picked = item.get_sound_when_picked();
     if (sound_when_picked.empty()) {
@@ -494,7 +494,7 @@ int LuaContext::item_api_get_sound_when_picked(lua_State* l) {
 int LuaContext::item_api_set_sound_when_picked(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     std::string sound_when_picked;
     if (!lua_isnil(l, 2)) {
       sound_when_picked = LuaTools::check_string(l, 2);
@@ -515,7 +515,7 @@ int LuaContext::item_api_set_sound_when_picked(lua_State* l) {
 int LuaContext::item_api_get_sound_when_brandished(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     const std::string& sound_when_brandished = item.get_sound_when_brandished();
     if (sound_when_brandished.empty()) {
@@ -537,7 +537,7 @@ int LuaContext::item_api_get_sound_when_brandished(lua_State* l) {
 int LuaContext::item_api_set_sound_when_brandished(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     std::string sound_when_brandished;
     if (!lua_isnil(l, 2)) {
       sound_when_brandished = LuaTools::check_string(l, 2);
@@ -558,7 +558,7 @@ int LuaContext::item_api_set_sound_when_brandished(lua_State* l) {
 int LuaContext::item_api_has_variant(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     int variant = 1;
     if (lua_gettop(l) >= 2) {
       variant = LuaTools::check_int(l, 2);
@@ -578,7 +578,7 @@ int LuaContext::item_api_has_variant(lua_State* l) {
 int LuaContext::item_api_get_variant(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     if (!item.is_saved()) {
       LuaTools::error(l, std::string("Item '") + item.get_name() + "' is not saved");
@@ -598,7 +598,7 @@ int LuaContext::item_api_get_variant(lua_State* l) {
 int LuaContext::item_api_set_variant(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     int variant = LuaTools::check_int(l, 2);
 
     if (!item.is_saved()) {
@@ -620,7 +620,7 @@ int LuaContext::item_api_set_variant(lua_State* l) {
 int LuaContext::item_api_has_amount(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     if (lua_gettop(l) >= 2) {
       int amount = LuaTools::check_int(l, 2);
       if (!item.has_amount()) {
@@ -644,7 +644,7 @@ int LuaContext::item_api_has_amount(lua_State* l) {
 int LuaContext::item_api_get_amount(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     if (!item.has_amount()) {
       lua_pushnil(l);
@@ -665,7 +665,7 @@ int LuaContext::item_api_get_amount(lua_State* l) {
 int LuaContext::item_api_set_amount(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     int amount = LuaTools::check_int(l, 2);
 
     if (!item.has_amount()) {
@@ -687,7 +687,7 @@ int LuaContext::item_api_set_amount(lua_State* l) {
 int LuaContext::item_api_add_amount(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     int amount = LuaTools::check_int(l, 2);
 
     if (!item.has_amount()) {
@@ -713,7 +713,7 @@ int LuaContext::item_api_add_amount(lua_State* l) {
 int LuaContext::item_api_remove_amount(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     int amount = LuaTools::check_int(l, 2);
 
     if (!item.has_amount()) {
@@ -739,7 +739,7 @@ int LuaContext::item_api_remove_amount(lua_State* l) {
 int LuaContext::item_api_get_max_amount(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     if (!item.has_amount()) {
       LuaTools::error(l, std::string("Item '") + item.get_name() + "' has no amount");
@@ -759,7 +759,7 @@ int LuaContext::item_api_get_max_amount(lua_State* l) {
 int LuaContext::item_api_set_max_amount(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
     int max_amount = LuaTools::check_int(l, 2);
 
     if (!item.has_amount()) {
@@ -785,7 +785,7 @@ int LuaContext::item_api_set_max_amount(lua_State* l) {
 int LuaContext::item_api_set_finished(lua_State* l) {
 
   SOLARUS_LUA_BOUNDARY_TRY() {
-    EquipmentItem& item = check_item(l, 1);
+    EquipmentItem& item = *check_item(l, 1);
 
     // Retrieve the equipment item from the hero.
     Hero& hero = *item.get_game()->get_hero();

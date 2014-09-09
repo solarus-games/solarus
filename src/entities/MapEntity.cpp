@@ -2059,6 +2059,15 @@ int MapEntity::get_distance(int x, int y) const {
 }
 
 /**
+ * \brief Returns the distance between the origin of this entity and a point.
+ * \param point coordinates of the point
+ * \return the distance between this entity and the point in pixels
+ */
+int MapEntity::get_distance(const Point& point) const {
+  return (int) Geometry::get_distance(get_xy(), point);
+}
+
+/**
  * \brief Returns the distance between the origin of this entity
  * and the origin of another entity.
  * \param other the other entity

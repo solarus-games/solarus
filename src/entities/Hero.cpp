@@ -311,7 +311,7 @@ void Hero::update_ground_effects() {
 
         next_ground_date = now + 60;
 
-        if (get_distance(last_solid_ground_coords.x, last_solid_ground_coords.y) >= 8) {
+        if (get_distance(last_solid_ground_coords) >= 8) {
           // too far from the solid ground: make the hero fall
           set_walking_speed(normal_walking_speed);
           set_state(new FallingState(*this));

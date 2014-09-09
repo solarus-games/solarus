@@ -241,6 +241,7 @@ class MapEntity: public ExportableToLua {
         const Sprite* this_sprite,
         const Sprite* other_sprite) const;
     int get_distance(int x, int y) const;
+    int get_distance(const Point& point) const;
     int get_distance(const MapEntity& other) const;
     int get_distance_to_camera() const;
     int get_distance_to_camera2() const;

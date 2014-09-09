@@ -214,7 +214,7 @@ void PixelMovement::make_next_step() {
   bool success = false;
   const Point& dxy = *trajectory_iterator;
 
-  if (!test_collision_with_obstacles(dxy.x, dxy.y)) {
+  if (!test_collision_with_obstacles(dxy)) {
     translate_xy(dxy);
     success = true;
   }

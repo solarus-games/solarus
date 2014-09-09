@@ -277,7 +277,7 @@ bool Jumper::is_jump_diagonal() const {
  */
 bool Jumper::is_point_in_diagonal(const Point& point) const {
 
-  return overlaps(point.x, point.y) &&
+  return overlaps(point) &&
     is_point_in_extended_diagonal(point);
 }
 

@@ -230,9 +230,9 @@ void Arrow::update() {
 
     if (entity_reached != nullptr) {
       // the arrow just hit an entity (typically an enemy) and this entity may have a movement
-      Rectangle dxy(get_x() - entity_reached->get_x(), get_y() - entity_reached->get_y());
+      Point dxy = get_xy() - entity_reached->get_xy();
       set_movement(std::make_shared<FollowMovement>(
-          entity_reached, dxy.get_x(), dxy.get_y(), true
+          entity_reached, dxy.x, dxy.y, true
       ));
     }
   }

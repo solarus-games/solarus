@@ -108,7 +108,7 @@ void RandomMovement::set_next_direction() {
   double angle;
   if (get_entity() == nullptr
       || max_radius == 0 // means no limit
-      || bounds.contains(get_x(), get_y())) {
+      || bounds.contains(get_xy())) {
 
     // we are inside the bounds (or there is no bound): pick a random direction
     angle = Geometry::degrees_to_radians(Random::get_number(8) * 45 + 22.5);

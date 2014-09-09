@@ -188,7 +188,7 @@ void Crystal::draw_on_map() {
 
   // draw the star
   if (is_drawn()) {
-    get_map().draw_sprite(*star_sprite, get_top_left_x() + star_xy.x, get_top_left_y() + star_xy.y);
+    get_map().draw_sprite(*star_sprite, get_top_left_xy() + star_xy);
   }
 }
 

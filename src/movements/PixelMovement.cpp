@@ -176,10 +176,10 @@ void PixelMovement::update() {
       !finished &&
       (get_entity() == nullptr || get_entity()->get_movement().get() == this)
   ) {
-    Point old_xy = { get_x(), get_y() };
+    Point old_xy = get_xy();
     make_next_step();
 
-    bool success = (get_x() != old_xy.x || get_y() != old_xy.y);
+    bool success = (get_xy() != old_xy);
     if (!success) {
       notify_obstacle_reached();
     }
@@ -214,7 +214,7 @@ void PixelMovement::make_next_step() {
   bool success = false;
   const Point& dxy = *trajectory_iterator;
 
-  if (!test_collision_with_obstacles(dxy.x, dxy.y)) {
+  if (!test_collision_with_obstacles(dxy)) {
     translate_xy(dxy);
     success = true;
   }

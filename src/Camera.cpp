@@ -329,6 +329,18 @@ void Camera::move(int target_x, int target_y) {
 }
 
 /**
+ * \brief Makes the camera move towards a destination point.
+ *
+ * The camera will be centered on this point.
+ * If there was already a movement, the new one replaces it.
+ *
+ * \param target target point
+ */
+void Camera::move(const Point& target) {
+  move(target.x, target.y);
+}
+
+/**
  * \brief Makes the camera move towards an entity.
  *
  * The camera will be centered on the entity's center point.
@@ -340,7 +352,7 @@ void Camera::move(int target_x, int target_y) {
 void Camera::move(MapEntity& entity) {
 
   const Rectangle& center = entity.get_center_point();
-  move(center.get_x(), center.get_y());
+  move(center.get_xy());
 }
 
 /**

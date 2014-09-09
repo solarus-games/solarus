@@ -65,7 +65,7 @@ namespace {
 }
 
 /**
- * \brief Reads the quest resource list file data file quest.lua and stores
+ * \brief Reads the quest resource list file data file project_db.dat and stores
  * the list of resources.
  */
 void QuestResourceList::initialize() {
@@ -94,17 +94,6 @@ void QuestResourceList::initialize() {
   }
 
   lua_close(l);
-}
-
-/**
- * \brief Destroys what was created by initialize().
- */
-void QuestResourceList::quit() {
-
-  for (int i = 0; i < RESOURCE_NB; ++i) {
-    resource_vector[i].clear();
-    resource_map[i].clear();
-  }
 }
 
 /**

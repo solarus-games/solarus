@@ -54,7 +54,6 @@ class QuestResourceList {
     };
 
     static void initialize();
-    static void quit();
 
     static bool exists(ResourceType resource_type, const std::string& id);
     static const std::vector<Element>& get_elements(ResourceType resource_type);

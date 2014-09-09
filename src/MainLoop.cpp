@@ -85,7 +85,6 @@ MainLoop::~MainLoop() {
   root_surface = nullptr;
 
   delete lua_context;
-  QuestResourceList::quit();
   System::quit();
 }
 

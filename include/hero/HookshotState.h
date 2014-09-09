@@ -55,7 +55,7 @@ class Hero::HookshotState: public Hero::State {
 
     void finish_movement();
 
-    Hookshot* hookshot;    /**< the hookshot thrown by the hero */
+    std::shared_ptr<Hookshot> hookshot;     /**< the hookshot thrown by the hero */
 };
 
 }

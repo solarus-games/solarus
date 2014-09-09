@@ -44,7 +44,8 @@ void Hero::HookshotState::start(const State* previous_state) {
   State::start(previous_state);
 
   get_sprites().set_animation("hookshot");
-  get_entities().add_entity(std::make_shared<Hookshot>(get_hero()));
+  hookshot = std::make_shared<Hookshot>(get_hero());
+  get_entities().add_entity(hookshot);
 }
 
 /**

@@ -38,8 +38,7 @@ namespace solarus {
 /**
  * \brief Creates a game.
  * \param main_loop The Solarus root object.
- * \param savegame The saved data of this game. Will be deleted in the
- * destructor unless someone is still using it (the refcount info is used).
+ * \param savegame The saved data of this game.
  */
 Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
   main_loop(main_loop),
@@ -50,7 +49,7 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
   showing_game_over(false),
   started(false),
   restarting(false),
-  keys_effect(nullptr),
+  keys_effect(),
   current_map(nullptr),
   next_map(nullptr),
   previous_map_surface(nullptr),
@@ -62,9 +61,8 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
   savegame->set_game(this);
 
   // initialize members
-  commands = new GameCommands(*this);
+  commands = std::unique_ptr<GameCommands>(new GameCommands(*this));
   hero = std::make_shared<Hero>(get_equipment());
-  keys_effect = new KeysEffect();
   update_keys_effect();
 
   // Maybe we are restarting after a game-over sequence.
@@ -107,31 +105,6 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
 }
 
 /**
- * \brief Destroys the game.
- */
-Game::~Game() {
-
-  Debug::check_assertion(!current_map->is_started(),
-      "Deleting a game while a map is still running. Call Game::stop() before.");
-
-  if (savegame != nullptr) {
-    savegame->set_game(nullptr);
-  }
-
-  current_map->unload();
-
-  Music::stop_playing();
-
-  if (hero->is_on_map()) {
-    // The hero was initialized.
-    hero->notify_being_removed();
-  }
-  delete transition;
-  delete keys_effect;
-  delete commands;
-}
-
-/**
  * \brief Starts this game.
  */
 void Game::start() {
@@ -147,11 +120,24 @@ void Game::start() {
  */
 void Game::stop() {
 
-  if (current_map != nullptr && current_map->is_started()) {
-    current_map->leave();
+  if (current_map != nullptr) {
+    if (current_map->is_started()) {
+      current_map->leave();
+    }
+    current_map->unload();
   }
+
+  if (hero->is_on_map()) {
+    // The hero was initialized.
+    hero->notify_being_removed();
+  }
+
   get_lua_context().game_on_finished(*this);
   get_savegame().notify_game_finished();
+  get_savegame().set_game(nullptr);
+
+  Music::stop_playing();
+
   started = false;
 }
 
@@ -379,11 +365,12 @@ void Game::update_transitions() {
       next_map = nullptr;
     }
     else { // normal case: stop the control and play an out transition before leaving the current map
-      transition = Transition::create(
+      transition = std::unique_ptr<Transition>(Transition::create(
           transition_style,
           Transition::TRANSITION_CLOSING,
           *current_map->get_visible_surface(),
-          this);
+          this
+      ));
       transition->start();
     }
   }
@@ -395,7 +382,6 @@ void Game::update_transitions() {
 
     Transition::Direction transition_direction = transition->get_direction();
     bool needs_previous_surface = transition->needs_previous_surface();
-    delete transition;
     transition = nullptr;
 
     MainLoop& main_loop = get_main_loop();
@@ -409,11 +395,12 @@ void Game::update_transitions() {
       if (next_map == current_map) {
         // same map
         hero->place_on_destination(*current_map, previous_map_location);
-        transition = Transition::create(
+        transition = std::unique_ptr<Transition>(Transition::create(
             transition_style,
             Transition::TRANSITION_OPENING,
             *current_map->get_visible_surface(),
-            this);
+            this
+        ));
         transition->start();
         next_map = nullptr;
       }
@@ -465,11 +452,12 @@ void Game::update_transitions() {
   // if a map has just been set as the current map, start it and play the in transition
   if (started && !current_map->is_started()) {
     Debug::check_assertion(current_map->is_loaded(), "This map is not loaded");
-    transition = Transition::create(
+    transition = std::unique_ptr<Transition>(Transition::create(
         transition_style,
         Transition::TRANSITION_OPENING,
         *current_map->get_visible_surface(),
-        this);
+        this
+    ));
 
     if (previous_map_surface != nullptr) {
       // some transition effects need to display both maps simultaneously
@@ -789,12 +777,12 @@ void Game::set_paused(bool paused) {
 void Game::restart() {
 
   if (current_map != nullptr) {
-    transition = Transition::create(
+    transition = std::unique_ptr<Transition>(Transition::create(
         Transition::FADE,
         Transition::TRANSITION_CLOSING,
         *current_map->get_visible_surface(),
         this
-    );
+    ));
     transition->start();
   }
   restarting = true;

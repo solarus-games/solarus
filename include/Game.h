@@ -22,6 +22,7 @@
 #include "lowlevel/SurfacePtr.h"
 #include "DialogBoxSystem.h"
 #include "GameCommands.h"
+#include "KeysEffect.h"
 #include "Transition.h"
 #include <memory>
 
@@ -44,9 +45,12 @@ class Game {
 
   public:
 
-    // creation and destruction
+    // creation
     Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame);
-    ~Game();
+
+    // no copy operations
+    Game(const Game& game) = delete;
+    Game& operator=(const Game& game) = delete;
 
     void start();
     void stop();
@@ -118,33 +122,39 @@ class Game {
     // main objects
     MainLoop& main_loop;       /**< the main loop object */
     std::shared_ptr<Savegame>
-        savegame;        /**< the game data saved */
+        savegame;              /**< the game data saved */
     std::shared_ptr<Hero>
         hero;                  /**< The hero entity.  */
 
     // current game state (elements currently shown)
     bool pause_allowed;        /**< indicates that the player is allowed to use the pause command */
     bool paused;               /**< indicates that the game is paused */
-    DialogBoxSystem dialog_box;    /**< The dialog box manager. */
+    DialogBoxSystem
+        dialog_box;            /**< The dialog box manager. */
     bool showing_game_over;    /**< Whether a game-over sequence is currently active. */
     bool started;              /**< true if this game is running, false if it is not yet started or being closed. */
     bool restarting;           /**< true if the game will be restarted */
 
     // controls
-    GameCommands* commands;    /**< this object receives the keyboard and joypad events */  // TODO unique_ptr
-    KeysEffect* keys_effect;   /**< current effect associated to the main game keys
-                                * (represented on the HUD by the action icon, the objects icons, etc.) */  // TODO unique_ptr
+    std::unique_ptr<GameCommands>
+        commands;              /**< this object receives the keyboard and joypad events */
+    std::unique_ptr<KeysEffect>
+        keys_effect;           /**< current effect associated to the main game keys
+                                * (represented on the HUD by the action icon, the objects icons, etc.) */
 
     // map
     std::shared_ptr<Map>
-        current_map;          /**< the map currently displayed */
+        current_map;           /**< the map currently displayed */
     std::shared_ptr<Map>
-        next_map;             /**< the map where the hero is going to; if not nullptr, it means that the hero
+        next_map;              /**< the map where the hero is going to; if not nullptr, it means that the hero
                                 * is changing from current_map to next_map */
-    SurfacePtr previous_map_surface;  /**< a copy of the previous map surface for transition effects that display two maps */
+    SurfacePtr
+        previous_map_surface;  /**< a copy of the previous map surface for transition effects that display two maps */
 
-    Transition::Style transition_style; /**< the transition style between the current map and the next one */
-    Transition* transition;             /**< the transition currently shown, or nullptr if no transition is playing */  // TODO unique_ptr
+    Transition::Style
+        transition_style;      /**< the transition style between the current map and the next one */
+    std::unique_ptr<Transition>
+        transition;            /**< the transition currently shown, or nullptr if no transition is playing */
 
     // world (i.e. the current set of maps)
     bool crystal_state;        /**< indicates that a crystal has been enabled (i.e. the orange blocks are raised) */

@@ -615,7 +615,7 @@ void StraightMovement::update() {
     while (x_move_now || y_move_now) { // while it's time to move
 
       // save the current coordinates
-      Point old_xy = { get_x(), get_y() };
+      Point old_xy = get_xy();
 
       if (x_move_now) {
         // it's time to make an x move
@@ -650,7 +650,7 @@ void StraightMovement::update() {
 
         // the movement was successful if the entity's coordinates have changed
         // and the movement was not stopped
-        bool success = (get_x() != old_xy.x || get_y() != old_xy.y)
+        bool success = (get_xy() != old_xy)
             && (x_move != 0 || y_move != 0);
 
         if (!success) {
@@ -660,8 +660,8 @@ void StraightMovement::update() {
 
       now = System::now();
 
-      if (!finished && max_distance != 0 && Geometry::get_distance(initial_xy.x,
-          initial_xy.y, get_x(), get_y()) >= max_distance) {
+      if (!finished && max_distance != 0
+          && Geometry::get_distance(initial_xy, get_xy()) >= max_distance) {
         set_finished();
       }
       else {

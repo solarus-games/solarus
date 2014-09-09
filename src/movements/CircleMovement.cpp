@@ -394,7 +394,7 @@ void CircleMovement::recompute_position() {
 
   Point xy = Geometry::get_xy(center, Geometry::degrees_to_radians(current_angle), current_radius);
   if (get_entity() == nullptr
-      || !test_collision_with_obstacles(xy.x - get_entity()->get_x(), xy.y - get_entity()->get_y())) {
+      || !test_collision_with_obstacles(xy - get_entity()->get_xy())) {
     set_xy(xy);
     notify_position_changed();
   }

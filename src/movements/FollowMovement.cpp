@@ -107,10 +107,9 @@ const Point FollowMovement::get_displayed_xy() const {
   const Point& followed_xy = entity_followed->get_xy();
   const Point& followed_displayed_xy = entity_followed->get_displayed_xy();
 
-  int dx = followed_displayed_xy.x - followed_xy.x;
-  int dy = followed_displayed_xy.y - followed_xy.y;
+  Point dxy = followed_displayed_xy - followed_xy;
 
-  return get_xy() + Point(dx, dy);
+  return get_xy() + dxy;
 }
 
 }

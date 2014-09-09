@@ -694,7 +694,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
       else {
         // Normal case.
         set_map(map, destination->get_direction());
-        set_xy(destination->get_x(), destination->get_y());
+        set_xy(destination->get_xy());
         map.get_entities().set_entity_layer(*this, destination->get_layer());
       }
       last_solid_ground_coords = get_xy();
@@ -1136,7 +1136,7 @@ void Hero::check_position() {
       && ground != GROUND_PRICKLE
       && ground != GROUND_EMPTY
       && state->can_come_from_bad_ground()
-      && (get_x() != last_solid_ground_coords.x || get_y() != last_solid_ground_coords.y)) {
+      && (get_xy() != last_solid_ground_coords)) {
 
     last_solid_ground_coords = get_xy();
     last_solid_ground_layer = get_layer();
@@ -2217,7 +2217,7 @@ void Hero::start_hole() {
     // because the wanted movement may be different from the real one
 
     if (last_solid_ground_coords.x == -1 ||
-        (last_solid_ground_coords.x == get_x() && last_solid_ground_coords.y == get_y())) {
+        (last_solid_ground_coords == get_xy())) {
       // fall immediately because the hero was not moving but directly placed on the hole
       set_state(new FallingState(*this));
     }

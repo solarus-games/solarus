@@ -176,10 +176,10 @@ void PixelMovement::update() {
       !finished &&
       (get_entity() == nullptr || get_entity()->get_movement().get() == this)
   ) {
-    Point old_xy = { get_x(), get_y() };
+    Point old_xy = get_xy();
     make_next_step();
 
-    bool success = (get_x() != old_xy.x || get_y() != old_xy.y);
+    bool success = (get_xy() != old_xy);
     if (!success) {
       notify_obstacle_reached();
     }

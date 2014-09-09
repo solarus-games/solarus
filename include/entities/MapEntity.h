@@ -225,6 +225,7 @@ class MapEntity: public ExportableToLua {
 
     // geometry
     bool overlaps(const Rectangle& rectangle) const;
+    bool overlaps(const Point& point) const;
     bool overlaps(int x, int y) const;
     bool overlaps(const MapEntity& other) const;
     bool overlaps_camera() const;
@@ -440,6 +441,15 @@ inline bool MapEntity::is_being_removed() const {
  */
 inline bool MapEntity::overlaps(const Rectangle& rectangle) const {
   return bounding_box.overlaps(rectangle);
+}
+
+/**
+ * \brief Returns whether or not a point overlaps this entity's bounding box.
+ * \param point point to check
+ * \return true if the point is in this entity's bounding box
+ */
+inline bool MapEntity::overlaps(const Point& point) const {
+  return bounding_box.contains(point);
 }
 
 /**

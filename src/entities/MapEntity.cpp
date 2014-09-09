@@ -1951,7 +1951,7 @@ bool MapEntity::overlaps_camera() const {
  * \return true if this entity's origin point is in the specified rectangle
  */
 bool MapEntity::is_origin_point_in(const Rectangle& rectangle) const {
-  return rectangle.contains(get_x(), get_y());
+  return rectangle.contains(get_xy());
 }
 
 /**
@@ -1963,7 +1963,7 @@ bool MapEntity::is_origin_point_in(const Rectangle& rectangle) const {
 bool MapEntity::is_facing_point_in(const Rectangle& rectangle) const {
 
   const Rectangle& facing_point = get_facing_point();
-  return rectangle.contains(facing_point.get_x(), facing_point.get_y());
+  return rectangle.contains(facing_point.get_xy());
 }
 
 /**
@@ -1977,7 +1977,7 @@ bool MapEntity::is_touching_point_in(
     const Rectangle& rectangle, int direction) const {
 
   const Rectangle& touching_point = get_touching_point(direction);
-  return rectangle.contains(touching_point.get_x(), touching_point.get_y());
+  return rectangle.contains(touching_point.get_xy());
 }
 
 /**
@@ -1989,7 +1989,7 @@ bool MapEntity::is_touching_point_in(
 bool MapEntity::is_center_in(const Rectangle& rectangle) const {
 
   const Rectangle& center = get_center_point();
-  return rectangle.contains(center.get_x(), center.get_y());
+  return rectangle.contains(center.get_xy());
 }
 
 /**
@@ -2010,7 +2010,7 @@ double MapEntity::get_angle(int x, int y) const {
  * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
  */
 double MapEntity::get_angle(const MapEntity& other) const {
-  return Geometry::get_angle(get_x(), get_y(), other.get_x(), other.get_y());
+  return Geometry::get_angle(get_xy(), other.get_xy());
 }
 
 /**
@@ -2065,7 +2065,7 @@ int MapEntity::get_distance(int x, int y) const {
  * \return the distance between the two entities in pixels
  */
 int MapEntity::get_distance(const MapEntity& other) const {
-  return (int) Geometry::get_distance(get_x(), get_y(), other.get_x(), other.get_y());
+  return (int) Geometry::get_distance(get_xy(), other.get_xy());
 }
 
 /**

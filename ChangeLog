@@ -13,6 +13,7 @@ Lua API changes
 
 Changes that do not introduce incompatibilities:
 
+* Add a function sol.main.get_os().
 * Fix sprite:on_frame_changed() called twice on animation/direction change.
 
 _________________________________

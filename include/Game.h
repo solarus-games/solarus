@@ -138,8 +138,7 @@ class Game {
     // controls
     std::unique_ptr<GameCommands>
         commands;              /**< this object receives the keyboard and joypad events */
-    std::unique_ptr<KeysEffect>
-        keys_effect;           /**< current effect associated to the main game keys
+    KeysEffect keys_effect;    /**< current effect associated to the main game keys
                                 * (represented on the HUD by the action icon, the objects icons, etc.) */
 
     // map

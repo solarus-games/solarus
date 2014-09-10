@@ -735,8 +735,7 @@ void Surface::render(SDL_Renderer* renderer) {
  * drawn onto it.
  * \param renderer The renderer where to draw.
  * \param src_rect The subrectangle of the texture to draw.
- * \param dst_xy The position where to draw on the renderer.
- * The width and height of this rectangle are ignored.
+ * \param dst_rect The position where to draw on the renderer.
  * \param clip_rect A portion of the renderer where to restrict the drawing.
  * \param opacity The opacity of the parent surface.
  * \param subsurfaces The subsurfaces drawn onto this texture. They will be
@@ -745,7 +744,7 @@ void Surface::render(SDL_Renderer* renderer) {
 void Surface::render(
     SDL_Renderer* renderer,
     const Rectangle& src_rect,
-    const Rectangle& dst_xy,
+    const Rectangle& dst_rect,
     const Rectangle& clip_rect,
     uint8_t opacity,
     const std::vector<SubSurfaceNodePtr>& subsurfaces
@@ -798,7 +797,7 @@ void Surface::render(
         renderer,
         internal_texture,
         src_rect.get_internal_rect(),
-        dst_xy.get_internal_rect()
+        dst_rect.get_internal_rect()
     );
   }
 
@@ -809,8 +808,8 @@ void Surface::render(
 
     // Calculate absolute destination subrectangle position on screen.
     Rectangle subsurface_dst_rect(
-        dst_xy.get_x() + subsurface->dst_rect.get_x() - src_rect.get_x(),
-        dst_xy.get_y() + subsurface->dst_rect.get_y() - src_rect.get_y(),
+        dst_rect.get_x() + subsurface->dst_rect.get_x() - src_rect.get_x(),
+        dst_rect.get_y() + subsurface->dst_rect.get_y() - src_rect.get_y(),
         subsurface->src_rect.get_width(),
         subsurface->src_rect.get_height()
     );

@@ -706,6 +706,8 @@ void MapEntity::set_xy(int x, int y) {
  * \brief Sets the coordinates of the origin point of the entity, relative to the map.
  *
  * This function sets the coordinates of the point as returned by get_x() and get_y().
+ * 
+ * \param xy the new coordinates of the entity on the map.
  */
 void MapEntity::set_xy(const Point& xy) {
   set_xy(xy.x, xy.y);

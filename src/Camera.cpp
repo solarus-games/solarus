@@ -92,9 +92,9 @@ void Camera::update_fixed_on_hero() {
     // Normal case: not traversing a separator.
 
     // First compute the camera coordinates ignoring map borders and separators.
-    const Rectangle& hero_center = map.get_entities().get_hero().get_center_point();
-    const int hero_x = hero_center.get_x();
-    const int hero_y = hero_center.get_y();
+    const Point& hero_center = map.get_entities().get_hero().get_center_point();
+    const int hero_x = hero_center.x;
+    const int hero_y = hero_center.y;
     x = hero_x - get_width() / 2;
     y = hero_y - get_height() / 2;
 
@@ -351,8 +351,7 @@ void Camera::move(const Point& target) {
  */
 void Camera::move(MapEntity& entity) {
 
-  const Rectangle& center = entity.get_center_point();
-  move(center.get_xy());
+  move(entity.get_center_point());
 }
 
 /**
@@ -389,10 +388,10 @@ void Camera::traverse_separator(Separator* separator) {
   separator_scrolling_dy = 0;
   separator_target_position = position;
   Hero& hero = map.get_entities().get_hero();
-  const Rectangle& hero_center = hero.get_center_point();
-  const Rectangle& separator_center = separator->get_center_point();
+  const Point& hero_center = hero.get_center_point();
+  const Point& separator_center = separator->get_center_point();
   if (separator->is_horizontal()) {
-    if (hero_center.get_y() < separator_center.get_y()) {
+    if (hero_center.y < separator_center.y) {
       separator_scrolling_direction4 = 3;
       separator_scrolling_dy = 1;
       separator_target_position.add_y(get_height());
@@ -404,7 +403,7 @@ void Camera::traverse_separator(Separator* separator) {
     }
   }
   else {
-    if (hero_center.get_x() < separator_center.get_x()) {
+    if (hero_center.x < separator_center.x) {
       separator_scrolling_direction4 = 0;
       separator_scrolling_dx = 1;
       separator_target_position.add_x(get_width());

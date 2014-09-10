@@ -117,16 +117,16 @@ void CrystalBlock::notify_collision(MapEntity& entity_overlapping, CollisionMode
       int jump_length = 0;
       bool jumped = false;
 
-      const Rectangle &hero_center = hero.get_center_point();
+      const Point& hero_center = hero.get_center_point();
 
-      if (hero_center.get_y() < y1) {
+      if (hero_center.y < y1) {
         // fall to the north
         collision_box.set_y(y1 - 16);
         jump_direction = 2;
         jump_length = hero.get_top_left_y() + 16 - y1;
         jumped = try_jump(hero, collision_box, jump_direction, jump_length);
       }
-      else if (hero_center.get_y() >= y2) {
+      else if (hero_center.y >= y2) {
         // fall to the south
         collision_box.set_y(y2);
         jump_direction = 6;
@@ -135,14 +135,14 @@ void CrystalBlock::notify_collision(MapEntity& entity_overlapping, CollisionMode
       }
 
       if (!jumped) {
-        if (hero_center.get_x() >= x2) {
+        if (hero_center.x >= x2) {
           // fall to the east
           collision_box.set_x(x2);
           jump_direction = 0;
           jump_length = x2 - hero.get_top_left_x();
           try_jump(hero, collision_box, jump_direction, jump_length);
         }
-        else if (hero_center.get_x() < x1) {
+        else if (hero_center.x < x1) {
           // fall to the west
           collision_box.set_x(x1 - 16);
           jump_direction = 4;

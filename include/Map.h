@@ -112,6 +112,7 @@ class Map: public ExportableToLua {
 
     // collisions with obstacles (checked before a move)
     bool test_collision_with_border(int x, int y) const;
+    bool test_collision_with_border(const Point& point) const;
     bool test_collision_with_border(const Rectangle& collision_box) const;
     bool test_collision_with_ground(
         Layer layer,
@@ -134,6 +135,11 @@ class Map: public ExportableToLua {
         Layer layer,
         int x,
         int y,
+        MapEntity& entity_to_check
+    ) const;
+    bool test_collision_with_obstacles(
+        Layer layer,
+        const Point& point,
         MapEntity& entity_to_check
     ) const;
     bool has_empty_ground(
@@ -224,13 +230,23 @@ class Map: public ExportableToLua {
 
 /**
  * \brief Tests whether a point is outside the map area.
- * \param x x of the point to check
- * \param y y of the point to check
- * \return true if this point is outside the map area
+ * \param x x of the point to check.
+ * \param y y of the point to check.
+ * \return true if this point is outside the map area.
  */
 inline bool Map::test_collision_with_border(int x, int y) const {
 
   return (x < 0 || y < 0 || x >= location.get_width() || y >= location.get_height());
+}
+
+/**
+ * \brief Tests whether a point is outside the map area.
+ * \param point point to check.
+ * \return true if this point is outside the map area.
+ */
+inline bool Map::test_collision_with_border(const Point& point) const {
+
+  return test_collision_with_border(point.x, point.y);
 }
 
 /**

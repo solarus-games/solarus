@@ -871,9 +871,9 @@ int LuaContext::entity_api_get_center_position(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
-    const Rectangle& center_point = entity.get_center_point();
-    lua_pushinteger(l, center_point.get_x());
-    lua_pushinteger(l, center_point.get_y());
+    const Point& center_point = entity.get_center_point();
+    lua_pushinteger(l, center_point.x);
+    lua_pushinteger(l, center_point.y);
     return 2;
   });
 }

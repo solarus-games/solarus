@@ -361,28 +361,28 @@ bool Hero::RunningState::is_cutting_with_sword(Detector& detector) {
 
   // check the distance to the detector
   const int distance = 8;
-  Rectangle tested_point = get_hero().get_facing_point();
+  Point tested_point = get_hero().get_facing_point();
 
   switch (get_sprites().get_animation_direction()) {
 
     case 0: // right
-      tested_point.add_x(distance);
+      tested_point.x += distance;
       break;
 
     case 1: // up
-      tested_point.add_y(-distance);
+      tested_point.y -= distance;
       break;
 
     case 2: // left
-      tested_point.add_x(-distance);
+      tested_point.x -= distance;
       break;
 
     case 3: // down
-      tested_point.add_y(distance);
+      tested_point.y += distance;
       break;
   }
 
-  return detector.overlaps(tested_point.get_xy());
+  return detector.overlaps(tested_point);
 }
 
 /**

@@ -143,7 +143,7 @@ void StreamAction::update() {
   }
 
   // Stop the stream action if the hero escapes a non-blocking stream.
-  const Rectangle& ground_point = entity_moved->get_ground_point();
+  const Point& ground_point = entity_moved->get_ground_point();
   if (
       stream->get_allow_movement() &&
       !stream->overlaps(ground_point)  // We are no longer on the stream.

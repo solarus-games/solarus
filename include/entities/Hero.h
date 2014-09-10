@@ -103,7 +103,7 @@ class Hero: public MapEntity {
      * the hero relative to other entities, and about
      * what is in front of him (we call this the "facing point").
      */
-    virtual const Rectangle get_facing_point() const override;
+    virtual const Point get_facing_point() const override;
     virtual void notify_facing_entity_changed(Detector* facing_entity) override;
     bool is_facing_obstacle();
     bool is_facing_point_on_obstacle();
@@ -146,7 +146,7 @@ class Hero: public MapEntity {
      */
     bool is_ground_visible() const;
     virtual bool is_ground_observer() const override;
-    virtual const Rectangle get_ground_point() const override;
+    virtual const Point get_ground_point() const override;
     virtual void notify_ground_below_changed() override;
     const Point& get_last_solid_ground_coords() const;
     Layer get_last_solid_ground_layer() const;

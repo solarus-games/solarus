@@ -765,7 +765,7 @@ void Hero::notify_map_opening_transition_finished() {
 /**
  * \copydoc MapEntity::get_facing_point
  */
-const Rectangle Hero::get_facing_point() const {
+const Point Hero::get_facing_point() const {
 
   return get_touching_point(get_animation_direction());
 }
@@ -835,9 +835,9 @@ bool Hero::is_facing_obstacle() {
  */
 bool Hero::is_facing_point_on_obstacle() {
 
-  const Rectangle& facing_point = get_facing_point();
+  const Point& facing_point = get_facing_point();
   return get_map().test_collision_with_obstacles(
-      get_layer(), facing_point.get_x(), facing_point.get_y(), *this);
+      get_layer(), facing_point, *this);
 }
 
 /**
@@ -1350,8 +1350,8 @@ bool Hero::is_ground_observer() const {
  * \brief Returns the point that determines the ground below this entity.
  * \return The point used to determine the ground (relative to the map).
  */
-const Rectangle Hero::get_ground_point() const {
-  return Rectangle(get_x(), get_y() - 2, 1, 1);
+const Point Hero::get_ground_point() const {
+  return { get_x(), get_y() };
 }
 
 /**
@@ -1939,22 +1939,22 @@ void Hero::avoid_collision(MapEntity& entity, int direction) {
 
     case 0:
       set_top_left_x(entity.get_top_left_x() + entity.get_width());
-      set_top_left_y(entity.get_center_point().get_y() - 8);
+      set_top_left_y(entity.get_center_point().y - 8);
       break;
 
     case 1:
       set_top_left_y(entity.get_top_left_y() - this->get_height());
-      set_top_left_x(entity.get_center_point().get_x() - 8);
+      set_top_left_x(entity.get_center_point().x - 8);
       break;
 
     case 2:
       set_top_left_x(entity.get_top_left_x() - this->get_width());
-      set_top_left_y(entity.get_center_point().get_y() - 8);
+      set_top_left_y(entity.get_center_point().y - 8);
       break;
 
     case 3:
       set_top_left_y(entity.get_top_left_y() + entity.get_height());
-      set_top_left_x(entity.get_center_point().get_x() - 8);
+      set_top_left_x(entity.get_center_point().x - 8);
       break;
 
     default:

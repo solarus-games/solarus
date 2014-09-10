@@ -96,7 +96,7 @@ class MapEntity: public ExportableToLua {
     virtual bool is_detector() const;
     virtual bool can_be_obstacle() const;
     virtual bool is_ground_observer() const;
-    virtual const Rectangle get_ground_point() const;
+    virtual const Point get_ground_point() const;
     virtual bool is_ground_modifier() const;
     virtual Ground get_modified_ground() const;
     virtual bool can_be_drawn() const;
@@ -151,9 +151,9 @@ class MapEntity: public ExportableToLua {
     void set_top_left_xy(int x, int y);
     void set_top_left_xy(const Point& xy);
 
-    virtual const Rectangle get_facing_point() const;
-    const Rectangle get_touching_point(int direction) const;
-    const Rectangle get_center_point() const;
+    virtual const Point get_facing_point() const;
+    const Point get_touching_point(int direction) const;
+    const Point get_center_point() const;
 
     bool is_aligned_to_grid() const;
     bool is_aligned_to_grid_x() const;

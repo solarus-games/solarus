@@ -77,7 +77,7 @@ class Rectangle {
     bool contains(const Point& point) const;
     bool contains(const Rectangle& other) const;
     bool overlaps(const Rectangle& other) const;
-    Rectangle get_center() const;
+    Point get_center() const;
 
     Rectangle get_intersection(const Rectangle& other) const;
 
@@ -175,15 +175,13 @@ inline Point Rectangle::get_xy() const {
 
 /**
  * \brief Returns the center point of this rectangle.
- * \return The center point, represented as a rectangle of size 1x1.
+ * \return The center point.
  */
-inline Rectangle Rectangle::get_center() const {
+inline Point Rectangle::get_center() const {
 
   return {
       get_x() + get_width() / 2,
       get_y() + get_height() / 2,
-      1,
-      1
   };
 }
 

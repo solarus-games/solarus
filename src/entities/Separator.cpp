@@ -82,31 +82,31 @@ bool Separator::test_collision_custom(MapEntity& entity) {
   // Trigger the collision if the center point crosses the middle of the
   // separator.
 
-  const Rectangle& separator_center = get_center_point();
-  const Rectangle& center = entity.get_center_point();
+  const Point& separator_center = get_center_point();
+  const Point& center = entity.get_center_point();
 
   if (!overlaps(center)) {
     return false;
   }
 
   if (is_horizontal()) {
-    if (center.get_y() < separator_center.get_y()) {
+    if (center.y < separator_center.y) {
       // The entity is above the separator.
-      return center.get_y() == separator_center.get_y() - 1;
+      return center.y == separator_center.y - 1;
     }
     else {
       // The entity is below the separator.
-      return center.get_y() == separator_center.get_y();
+      return center.y == separator_center.y;
     }
   }
   else {
-    if (center.get_x() < separator_center.get_x()) {
+    if (center.x < separator_center.x) {
       // The entity is west of the separator.
-      return center.get_x() == separator_center.get_x() - 1;
+      return center.x == separator_center.x - 1;
     }
     else {
       // The entity is east of the separator.
-      return center.get_x() == separator_center.get_x();
+      return center.x == separator_center.x;
     }
   }
 }

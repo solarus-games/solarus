@@ -159,9 +159,8 @@ void Bomb::notify_collision_with_stream(Stream& stream, int /* dx */, int /* dy 
     // TODO use a StreamAction, since it now works with any entity and not only the hero.
 
     // Check that a significant part of the bomb is on the stream.
-    Rectangle center = get_center_point();
+    Rectangle center(get_center_point(), Size(2, 2));
     center.add_xy(-1, -1);
-    center.set_size(2, 2);
 
     if (stream.overlaps(center)) {
       set_xy(stream.get_xy());
@@ -269,7 +268,7 @@ void Bomb::update() {
 void Bomb::explode() {
 
   get_entities().add_entity(std::make_shared<Explosion>(
-      "", get_layer(), get_center_point().get_xy(), true
+      "", get_layer(), get_center_point(), true
   ));
   Sound::play("explosion");
   remove_from_map();

@@ -1020,6 +1020,22 @@ bool Map::test_collision_with_obstacles(
 }
 
 /**
+ * \brief Tests whether a point collides with the map obstacles.
+ * \param layer Layer of point to check.
+ * \param point Point to check.
+ * \param entity_to_check The entity to check (used to decide what is
+ * considered as obstacle)
+ * \return \c true if the point is overlapping an obstacle.
+ */
+bool Map::test_collision_with_obstacles(
+    Layer layer,
+    const Point& point,
+    MapEntity& entity_to_check) const {
+
+  return test_collision_with_obstacles(layer, point.x, point.y, entity_to_check);
+}
+
+/**
  * \brief Returns whether there is empty ground in the specified rectangle.
  *
  * Only the borders of the rectangle are checked.

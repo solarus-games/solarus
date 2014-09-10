@@ -243,7 +243,7 @@ void MapEntity::update_ground_below() {
 
   Ground previous_ground = this->ground_below;
   this->ground_below = get_map().get_ground(
-      get_layer(), get_ground_point().get_xy()
+      get_layer(), get_ground_point()
   );
   if (this->ground_below != previous_ground) {
     notify_ground_below_changed();
@@ -936,7 +936,7 @@ void MapEntity::set_aligned_to_grid_y() {
  *
  * \return The coordinates of the point the entity is looking at.
  */
-const Rectangle MapEntity::get_facing_point() const {
+const Point MapEntity::get_facing_point() const {
 
   int direction4 = 1;  // North by default.
   if (has_sprite() && get_sprite().get_nb_directions() == 4) {
@@ -958,32 +958,31 @@ const Rectangle MapEntity::get_facing_point() const {
  * if it was looking towards the specified direction.
  * \param direction A direction (0 to 3).
  * \return The point the entity touching this direction.
- * Its size is <tt>1,1</tt>.
  */
-const Rectangle MapEntity::get_touching_point(int direction) const {
+const Point MapEntity::get_touching_point(int direction) const {
 
-  Rectangle touching_point = get_center_point();
+  Point touching_point = get_center_point();
 
   switch (direction) {
 
     // right
     case 0:
-      touching_point.add_x(get_width() / 2);
+      touching_point.x += get_width() / 2;
       break;
 
     // up
     case 1:
-      touching_point.add_y(-get_height() / 2 - 1);
+      touching_point.y += -get_height() / 2 - 1;
       break;
 
     // left
     case 2:
-      touching_point.add_x(-get_width() / 2 - 1);
+      touching_point.x += -get_width() / 2 - 1;
       break;
 
     // down
     case 3:
-      touching_point.add_y(get_height() / 2);
+      touching_point.y += get_height() / 2;
       break;
 
     default:
@@ -1032,23 +1031,19 @@ void MapEntity::notify_facing_entity_changed(Detector* /* facing_entity */) {
  * \brief Returns the point that determines the ground below this entity.
  *
  * By default, returns the coordinates of the entity.
- * The size of the rectangle returned must be 1x1.
  *
  * \return The point used to determine the ground (relative to the map).
  */
-const Rectangle MapEntity::get_ground_point() const {
+const Point MapEntity::get_ground_point() const {
 
-  return Rectangle(get_x(), get_y(), 1, 1);
+  return { get_x(), get_y() };
 }
 
 /**
  * \brief Returns the coordinates of the center point of the entity's rectangle.
- *
- * The size of the rectangle returned is 1x1.
- *
  * \return The coordinates of the center point of the entity.
  */
-const Rectangle MapEntity::get_center_point() const {
+const Point MapEntity::get_center_point() const {
   return bounding_box.get_center();
 }
 
@@ -1962,8 +1957,8 @@ bool MapEntity::is_origin_point_in(const Rectangle& rectangle) const {
  */
 bool MapEntity::is_facing_point_in(const Rectangle& rectangle) const {
 
-  const Rectangle& facing_point = get_facing_point();
-  return rectangle.contains(facing_point.get_xy());
+  const Point& facing_point = get_facing_point();
+  return rectangle.contains(facing_point);
 }
 
 /**
@@ -1976,8 +1971,8 @@ bool MapEntity::is_facing_point_in(const Rectangle& rectangle) const {
 bool MapEntity::is_touching_point_in(
     const Rectangle& rectangle, int direction) const {
 
-  const Rectangle& touching_point = get_touching_point(direction);
-  return rectangle.contains(touching_point.get_xy());
+  const Point& touching_point = get_touching_point(direction);
+  return rectangle.contains(touching_point);
 }
 
 /**
@@ -1988,8 +1983,8 @@ bool MapEntity::is_touching_point_in(
  */
 bool MapEntity::is_center_in(const Rectangle& rectangle) const {
 
-  const Rectangle& center = get_center_point();
-  return rectangle.contains(center.get_xy());
+  const Point& center = get_center_point();
+  return rectangle.contains(center);
 }
 
 /**
@@ -2119,16 +2114,16 @@ int MapEntity::get_distance_to_camera2() const {
  */
 bool MapEntity::is_in_same_region(const MapEntity& other) const {
 
-  const Rectangle& this_center = get_center_point();
-  const Rectangle& other_center = other.get_center_point();
+  const Point& this_center = get_center_point();
+  const Point& other_center = other.get_center_point();
 
   const std::list<const Separator*>& separators = get_entities().get_separators();
   for (const Separator* separator: separators) {
 
     if (separator->is_vertical()) {
       // Vertical separation.
-      if (this_center.get_y() < separator->get_top_left_y() ||
-          this_center.get_y() >= separator->get_top_left_y() + separator->get_height()) {
+      if (this_center.y < separator->get_top_left_y() ||
+          this_center.y >= separator->get_top_left_y() + separator->get_height()) {
         // This separator is irrelevant: the entity is not in either side,
         // it is too much to the north or to the south.
         //
@@ -2141,8 +2136,8 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
         continue;
       }
 
-      if (other_center.get_y() < separator->get_top_left_y() ||
-          other_center.get_y() >= separator->get_top_left_y() + separator->get_height()) {
+      if (other_center.y < separator->get_top_left_y() ||
+          other_center.y >= separator->get_top_left_y() + separator->get_height()) {
         // This separator is irrelevant: the other entity is not in either side.
         // it is too much to the north or to the south.
         continue;
@@ -2150,39 +2145,39 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
 
       // Both entities are in the zone of influence of this separator.
       // See if they are in the same side.
-      const int separation_x = separator->get_center_point().get_x();
-      if (this_center.get_x() < separation_x &&
-          separation_x <= other_center.get_x()) {
+      const int separation_x = separator->get_center_point().x;
+      if (this_center.x < separation_x &&
+          separation_x <= other_center.x) {
         // Different side.
         return false;
       }
 
-      if (other_center.get_x() < separation_x &&
-          separation_x <= this_center.get_x()) {
+      if (other_center.x < separation_x &&
+          separation_x <= this_center.x) {
         // Different side.
         return false;
       }
     }
     else {
       // Horizontal separation.
-      if (this_center.get_x() < separator->get_top_left_x() ||
-          this_center.get_x() >= separator->get_top_left_x() + separator->get_width()) {
+      if (this_center.x < separator->get_top_left_x() ||
+          this_center.x >= separator->get_top_left_x() + separator->get_width()) {
         continue;
       }
 
-      if (other_center.get_x() < separator->get_top_left_x() ||
-          other_center.get_x() >= separator->get_top_left_x() + separator->get_width()) {
+      if (other_center.x < separator->get_top_left_x() ||
+          other_center.x >= separator->get_top_left_x() + separator->get_width()) {
         continue;
       }
 
-      const int separation_y = separator->get_center_point().get_y();
-      if (this_center.get_y() < separation_y &&
-          separation_y <= other_center.get_y()) {
+      const int separation_y = separator->get_center_point().y;
+      if (this_center.y < separation_y &&
+          separation_y <= other_center.y) {
         return false;
       }
 
-      if (other_center.get_y() < separation_y &&
-          separation_y <= this_center.get_y()) {
+      if (other_center.y < separation_y &&
+          separation_y <= this_center.y) {
         return false;
       }
     }

@@ -106,8 +106,15 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
 
 /**
  * \brief Starts this game.
+ *
+ * Does nothing if the game is already started.
  */
 void Game::start() {
+
+  if (started) {
+    return;
+  }
+
   started = true;
   get_savegame().notify_game_started();
   get_lua_context().game_on_started(*this);
@@ -117,8 +124,14 @@ void Game::start() {
 
 /**
  * \brief Ends this game.
+ *
+ * Does nothing if the game is not started.
  */
 void Game::stop() {
+
+  if (!started) {
+    return;
+  }
 
   if (current_map != nullptr) {
     if (current_map->is_started()) {

@@ -73,7 +73,6 @@ class PathFinding {
     };
 
     int get_square_index(const Point& location) const;
-    int get_manhattan_distance(const Point& point1, const Point& point2) const;
     bool is_node_transition_valid(const Node& node, int direction) const;
     void add_index_sorted(Node* node);
     std::string rebuild_path(const Node* final_node);

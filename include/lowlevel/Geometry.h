@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "lowlevel/Point.h"
 #include <cmath>
+#include <cstdlib>
 
 namespace solarus {
 
@@ -45,21 +46,23 @@ class Geometry {
 
     static double get_distance(int x1, int y1, int x2, int y2);
     static int get_distance2(int x1, int y1, int x2, int y2);
-    static double get_distance(const Point& xy1, const Point& xy2);
+    static double get_distance(const Point& point1, const Point& point2);
+    static int get_distance2(const Point& point1, const Point& point2);
+    static int get_manhattan_distance(const Point& point1, const Point& point2);
     static double get_angle(int x1, int y1, int x2, int y2);
     static double get_angle(const Point& point1, const Point& point2);
     static const Point get_xy(double angle, int distance);
-    static const Point get_xy(const Point& xy1, double angle, int distance);
+    static const Point get_xy(const Point& point1, double angle, int distance);
 
 };
 
 /**
  * \brief Returns the distance between two points.
- * \param x1 x coordinate of the first point
- * \param y1 y coordinate of the first point
- * \param x2 x coordinate of the second point
- * \param y2 y coordinate of the second point
- * \return the distance in pixels
+ * \param x1 X coordinate of the first point.
+ * \param y1 Y coordinate of the first point.
+ * \param x2 X coordinate of the second point.
+ * \param y2 Y coordinate of the second point.
+ * \return The distance in pixels
  */
 inline double Geometry::get_distance(int x1, int y1, int x2, int y2) {
 
@@ -85,16 +88,40 @@ inline int Geometry::get_distance2(int x1, int y1, int x2, int y2) {
 
 /**
  * \brief Returns the distance between two points.
- * \param xy1 coordinates of the first point
- * \param xy2 coordinates of the second point
- * \return the distance in pixels
+ * \param point1 First point.
+ * \param point2 Second point.
+ * \return The distance in pixels.
  */
-inline double Geometry::get_distance(const Point& xy1, const Point& xy2) {
+inline double Geometry::get_distance(const Point& point1, const Point& point2) {
 
-  return get_distance(xy1.x, xy1.y, xy2.x, xy2.y);
+  return get_distance(point1.x, point1.y, point2.x, point2.y);
+}
+
+/**
+ * \brief Returns the square of the distance between two points.
+ * \param point1 The first point.
+ * \param point2 The second point.
+ * \return The distance in pixels
+ */
+inline int Geometry::get_distance2(const Point& point1, const Point& point2) {
+
+  return get_distance2(point1.x, point1.y, point2.x, point2.y);
+}
+
+/**
+ * \brief Returns the Manhattan distance of two points, measured in number of pixels.
+ * \param point1 First point
+ * \param point2 Second point
+ * \return The Manhattan distance between these points
+ */
+inline int Geometry::get_manhattan_distance(
+    const Point& point1, const Point& point2) {
+
+  using std::abs;
+  return abs(point2.x - point1.x) +
+         abs(point2.y - point1.y);
 }
 
 }
 
 #endif
-

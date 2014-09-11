@@ -51,8 +51,8 @@ const double Geometry::SQRT_2 = 1.41421356237309504880;
 
 /**
  * \brief Converts an angle in radians into an angle in degrees.
- * \param radians angle in radians
- * \return the degrees value
+ * \param radians Angle in radians.
+ * \return The degrees value.
  */
 int Geometry::radians_to_degrees(double radians) {
   return (int) (radians * 360.0 / TWO_PI);
@@ -60,8 +60,8 @@ int Geometry::radians_to_degrees(double radians) {
 
 /**
  * \brief Converts an angle in degrees into an angle in radians.
- * \param degrees angle in degrees
- * \return the radians value
+ * \param degrees Angle in degrees.
+ * \return The radians value.
  */
 double Geometry::degrees_to_radians(double degrees) {
   return degrees * TWO_PI / 360.0;
@@ -69,10 +69,10 @@ double Geometry::degrees_to_radians(double degrees) {
 
 /**
  * \brief Returns the angle of the vector formed by two points.
- * \param x1 x coordinate of the first point
- * \param y1 y coordinate of the first point
- * \param x2 x coordinate of the second point
- * \param y2 y coordinate of the second point
+ * \param x1 X coordinate of the first point.
+ * \param y1 Y coordinate of the first point.
+ * \param x2 X coordinate of the second point.
+ * \param y2 Y coordinate of the second point.
  * \return The angle in radians, between 0 and TWO_PI.
  */
 double Geometry::get_angle(int x1, int y1, int x2, int y2) {
@@ -97,8 +97,8 @@ double Geometry::get_angle(int x1, int y1, int x2, int y2) {
 
 /**
  * \brief Returns the angle of the vector formed by two points.
- * \param point1 first point
- * \param point2 second point
+ * \param point1 First point.
+ * \param point2 Second point.
  * \return The angle in radians, between 0 and TWO_PI.
  */
 double Geometry::get_angle(const Point& point1, const Point& point2) {
@@ -107,9 +107,9 @@ double Geometry::get_angle(const Point& point1, const Point& point2) {
 
 /**
  * \brief Returns the cartesian coordinates of a vector that starts from the origin, given its angle and distance.
- * \param angle angle of the vector in radians
- * \param distance length of the vector in pixels
- * \return the coordinates of the second point
+ * \param angle Angle of the vector in radians.
+ * \param distance Length of the vector in pixels.
+ * \return The coordinates of the second point.
  */
 const Point Geometry::get_xy(double angle, int distance) {
 
@@ -121,13 +121,13 @@ const Point Geometry::get_xy(double angle, int distance) {
 
 /**
  * \brief Returns the cartesian coordinates of a vector, given its initial point, angle and distance.
- * \param xy1 coordinates of the first point
- * \param angle angle of the vector in radians
- * \param distance length of the vector in pixels
- * \return the coordinates of the second point
+ * \param point1 Coordinates of the first point.
+ * \param angle Angle of the vector in radians.
+ * \param distance Length of the vector in pixels.
+ * \return The coordinates of the second point.
  */
-const Point Geometry::get_xy(const Point& xy1, double angle, int distance) {
-  return xy1 + get_xy(angle, distance);
+const Point Geometry::get_xy(const Point& point1, double angle, int distance) {
+  return point1 + get_xy(angle, distance);
 }
 
 }

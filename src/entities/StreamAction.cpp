@@ -34,8 +34,7 @@ StreamAction::StreamAction(Stream& stream, MapEntity& entity_moved):
   active(true),
   suspended(false),
   when_suspended(0),
-  target_x(0),
-  target_y(0),
+  target(0, 0),
   next_move_date(0),
   delay(0) {
 
@@ -87,21 +86,20 @@ void StreamAction::recompute_movement() {
   const int dy = xy.y;
   delay = (uint32_t) (1000 / stream->get_speed());
 
-  target_x = stream->get_x();
-  target_y = stream->get_y();
+  target = stream->get_xy();
 
   // Stop 16 pixels after the stream.
   if (dx != 0) {
     // Horizontal stream.
-    target_x = stream->get_x() + (dx > 0 ? 16 : -16);
+    target.x = stream->get_x() + (dx > 0 ? 16 : -16);
   }
 
   if (dy != 0) {
     // Vertical stream.
-    target_y = stream->get_y() + (dy > 0 ? 16 : -16);
+    target.y = stream->get_y() + (dy > 0 ? 16 : -16);
   }
 
-  if (target_x != entity_moved->get_x() && target_y != entity_moved->get_y()) {
+  if (target != entity_moved->get_xy()) {
     // Adjust the speed to the diagonal movement.
     delay = (uint32_t) (delay * std::sqrt(2));
   }
@@ -155,7 +153,7 @@ void StreamAction::update() {
     // This is needed to have precise
     // exact diagonal movements of 16 pixels in stream mazes.
 
-    if (entity_moved->get_distance(target_x, target_y) > 8) {
+    if (entity_moved->get_distance(target) > 8) {
       // This last test is to avoid stopping a stream when being close to the target.
       // Indeed, in the last pixels before the target, the entity's ground
       // point is no longer on the stream. We continue anyway until the target.
@@ -178,16 +176,16 @@ void StreamAction::update() {
 
     int dx = 0;
     int dy = 0;
-    if (target_x > entity_moved->get_x()) {
+    if (target.x > entity_moved->get_x()) {
       dx = 1;
     }
-    else if (target_x < entity_moved->get_x()) {
+    else if (target.x < entity_moved->get_x()) {
       dx = -1;
     }
-    if (target_y > entity_moved->get_y()) {
+    if (target.y > entity_moved->get_y()) {
       dy = 1;
     }
-    else if (target_y < entity_moved->get_y()) {
+    else if (target.y < entity_moved->get_y()) {
       dy = -1;
     }
 
@@ -233,8 +231,7 @@ void StreamAction::update() {
  */
 bool StreamAction::has_reached_target() const {
 
-  return entity_moved->get_x() == target_x &&
-    entity_moved->get_y() == target_y;
+  return entity_moved->get_xy() == target;
 }
 
 /**

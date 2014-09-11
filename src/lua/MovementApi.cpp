@@ -1007,7 +1007,7 @@ int LuaContext::target_movement_api_set_target(lua_State* l) {
       // The target is a fixed point.
       int x = LuaTools::check_int(l, 2);
       int y = LuaTools::check_int(l, 3);
-      movement.set_target(nullptr, x, y);
+      movement.set_target(nullptr, Point(x, y));
     }
     else {
       // the target is an entity, possibly with an offset.
@@ -1019,7 +1019,7 @@ int LuaContext::target_movement_api_set_target(lua_State* l) {
         x = LuaTools::check_int(l, 3);
         y = LuaTools::check_int(l, 4);
       }
-      movement.set_target(target, x, y);
+      movement.set_target(target, Point(x, y));
     }
 
     return 0;

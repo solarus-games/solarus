@@ -48,6 +48,7 @@ class Geometry {
     static int get_distance2(int x1, int y1, int x2, int y2);
     static double get_distance(const Point& point1, const Point& point2);
     static int get_distance2(const Point& point1, const Point& point2);
+    static int get_manhattan_distance(const Point& point1, const Point& point2);
     static double get_angle(int x1, int y1, int x2, int y2);
     static double get_angle(const Point& point1, const Point& point2);
     static const Point get_xy(double angle, int distance);
@@ -107,7 +108,20 @@ inline int Geometry::get_distance2(const Point& point1, const Point& point2) {
   return get_distance2(point1.x, point1.y, point2.x, point2.y);
 }
 
+/**
+ * \brief Returns the Manhattan distance of two points, measured in number of pixels.
+ * \param point1 First point
+ * \param point2 Second point
+ * \return The Manhattan distance between these points
+ */
+inline int Geometry::get_manhattan_distance(
+    const Point& point1, const Point& point2) {
+
+  using std::abs;
+  return abs(point2.x - point1.x) +
+         abs(point2.y - point1.y);
+}
+
 }
 
 #endif
-

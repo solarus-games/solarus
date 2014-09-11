@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/MapEntityPtr.h"
+#include "lowlevel/Point.h"
 #include "movements/StraightMovement.h"
 
 namespace solarus {
@@ -42,8 +43,7 @@ class TargetMovement: public StraightMovement {
 
     void set_target(
         const MapEntityPtr& target_entity,
-        int x,
-        int y
+        const Point& xy
     );
 
     int get_moving_speed() const;
@@ -59,12 +59,10 @@ class TargetMovement: public StraightMovement {
 
     void recompute_movement();
 
-    int target_x;                      /**< X coordinate of the point or entity to track. */
-    int target_y;                      /**< Y coordinate of the point or entity to track. */
+    Point target;                      /**< Coordinates of the point or entity to track. */
     MapEntityPtr target_entity;        /**< The entity to track (nullptr if only
                                         * a point is targeted) */
-    int entity_offset_x;               /**< X value to add to the entity's coordinates. */
-    int entity_offset_y;               /**< Y value to add to the entity's coordinates. */
+    Point entity_offset;               /**< Value to add to the entity's coordinates. */
 
     int sign_x;                        /**< Sign of the x movement (1: right, -1: left) */
     int sign_y;                        /**< Sign of the y movement (1: down, -1: up) */

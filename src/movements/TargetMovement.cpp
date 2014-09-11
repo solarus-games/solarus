@@ -42,11 +42,9 @@ TargetMovement::TargetMovement(
     bool ignore_obstacles):
 
   StraightMovement(ignore_obstacles, true),
-  target_x(x),
-  target_y(y),
+  target(x, y),
   target_entity(target_entity),
-  entity_offset_x(x),
-  entity_offset_y(y),
+  entity_offset(x, y),
   sign_x(0),
   sign_y(0),
   moving_speed(moving_speed),
@@ -68,23 +66,19 @@ void TargetMovement::notify_object_controlled() {
 /**
  * \brief Changes the target of this movement.
  * \param target_entity The entity to target or nullptr.
- * \param x X of the target point, or X offset in the case of an entity.
- * \param y Y of the target point, or Y offset in the case of an entity.
+ * \param xy The target point, or offset in the case of an entity.
  */
 void TargetMovement::set_target(
     const MapEntityPtr& target_entity,
-    int x,
-    int y
+    const Point& xy
 ) {
   this->target_entity = target_entity;
 
   if (this->target_entity != nullptr) {
-    this->entity_offset_x = x;
-    this->entity_offset_y = y;
+    this->entity_offset = xy;
   }
   else {
-    this->target_x = x;
-    this->target_y = y;
+    this->target = xy;
   }
 
   recompute_movement();
@@ -114,7 +108,7 @@ void TargetMovement::set_moving_speed(int moving_speed) {
 void TargetMovement::update() {
 
   if (target_entity != nullptr && target_entity->is_being_removed()) {
-    set_target(nullptr, target_x, target_y);
+    set_target(nullptr, target);
   }
 
   if (System::now() >= next_recomputation_date) {
@@ -123,11 +117,10 @@ void TargetMovement::update() {
   }
 
   // see if the target is reached
-  int dx = target_x - get_x();
-  int dy = target_y - get_y();
-  if (dx * sign_x <= 0 && dy * sign_y <= 0) {
-    if (!test_collision_with_obstacles(dx, dy)) {
-      set_xy(target_x, target_y);  // Because the target movement may have not been very precise.
+  Point dxy = target - get_xy();
+  if (dxy.x * sign_x <= 0 && dxy.y * sign_y <= 0) {
+    if (!test_collision_with_obstacles(dxy)) {
+      set_xy(target);  // Because the target movement may have not been very precise.
       stop();
       finished = true;
     }
@@ -144,27 +137,23 @@ void TargetMovement::recompute_movement() {
 
   if (target_entity != nullptr) {
     // the target may be a moving entity
-    target_x = target_entity->get_x() + entity_offset_x;
-    target_y = target_entity->get_y() + entity_offset_y;
+    target = target_entity->get_xy() + entity_offset;
   }
 
-  if (get_x() != target_x || get_y() != target_y) {
+  if (get_xy() != target) {
     finished = false;
 
-    double angle = Geometry::get_angle(get_x(), get_y(), target_x, target_y);
+    double angle = Geometry::get_angle(get_xy(), target);
 
-    int dx = target_x - get_x();
-    int dy = target_y - get_y();
-
-    sign_x = (dx >= 0) ? 1 : -1;
-    sign_y = (dy >= 0) ? 1 : -1;
+    Point dxy = target - get_xy();
+    sign_x = (dxy.x >= 0) ? 1 : -1;
+    sign_y = (dxy.y >= 0) ? 1 : -1;
 
     if (std::fabs(angle - get_angle()) > 1E-6 || get_speed() < 1E-6) {
       // The angle has changed or the movement was stopped.
       set_speed(moving_speed);
       set_angle(angle);
-      set_max_distance((int) Geometry::get_distance(
-            get_x(), get_y(), target_x, target_y));
+      set_max_distance((int) Geometry::get_distance(get_xy(), target));
     }
   }
 }

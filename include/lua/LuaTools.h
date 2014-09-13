@@ -290,6 +290,7 @@ class LuaTools {
  *
  * \param l The Lua state.
  * \param func The lambda wrapping the code.
+ * \return The return value of the wrapped code.
  */
 template<typename Callable>
 int LuaTools::exception_boundary_handle(

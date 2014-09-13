@@ -22,6 +22,10 @@
 namespace solarus {
 
 class Surface;
+
+/**
+ * \brief Alias for shared_ptr of Surface.
+ */
 using SurfacePtr = std::shared_ptr<Surface>;
 
 }

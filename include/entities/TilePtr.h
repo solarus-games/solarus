@@ -22,6 +22,10 @@
 namespace solarus {
 
 class Tile;
+
+/**
+ * \brief Alias for shared_ptr of Tile.
+ */
 using TilePtr = std::shared_ptr<Tile>;
 
 }

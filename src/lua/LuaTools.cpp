@@ -79,7 +79,7 @@ ScopedLuaRef LuaTools::create_ref(lua_State* l) {
 /**
  * \brief Creates a reference to the Lua value at the specified index.
  * \param l A Lua state.
- * \param An index in the Lua stack.
+ * \param index An index in the Lua stack.
  * \return The reference created, wrapped in an object that manages its
  * lifetime.
  */

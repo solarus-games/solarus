@@ -22,6 +22,10 @@
 namespace solarus {
 
 class Timer;
+
+/**
+ * \brief Alias for shared_ptr of Timer.
+ */
 using TimerPtr = std::shared_ptr<Timer>;
 
 }

@@ -22,6 +22,10 @@
 namespace solarus {
 
 class MapEntity;
+
+/**
+ * \brief Alias for shared_ptr of MapEntity.
+ */
 using MapEntityPtr = std::shared_ptr<MapEntity>;
 
 }

@@ -22,6 +22,10 @@
 namespace solarus {
 
 class Sprite;
+
+/**
+ * \brief Alias for shared_ptr of Sprite.
+ */
 using SpritePtr = std::shared_ptr<Sprite>;
 
 }

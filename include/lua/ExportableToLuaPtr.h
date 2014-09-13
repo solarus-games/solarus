@@ -22,6 +22,10 @@
 namespace solarus {
 
 class ExportableToLua;
+
+/**
+ * \brief Alias for shared_ptr of ExportableToLua.
+ */
 using ExportableToLuaPtr = std::shared_ptr<ExportableToLua>;
 
 }

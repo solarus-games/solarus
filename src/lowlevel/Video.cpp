@@ -49,8 +49,7 @@ bool shaders_enabled = false;             /**< True if shaded modes support is e
 bool acceleration_enabled = false;        /**< \c true if 2D GPU acceleration is available and enabled. */
 SurfacePtr scaled_surface = nullptr;      /**< The screen surface used with software-scaled modes. */
 
-std::vector<VideoMode*>
-    all_video_modes;                      /**< Display information for each supported video mode. */
+std::vector<VideoMode> all_video_modes;   /**< Display information for each supported video mode. */
 const VideoMode* video_mode;              /**< Current video mode. */
 const VideoMode* default_video_mode;      /**< Default video mode. */
 
@@ -169,37 +168,37 @@ void initialize_video_modes() {
   shaders_enabled = rendertarget_supported && Video::is_acceleration_enabled() && ShaderContext::initialize();
 
   // Initialize hardcoded video modes.
-  all_video_modes.push_back(new VideoMode(
+  all_video_modes.emplace_back(
       "normal",
       quest_size * 2,
       nullptr,
       nullptr
-  ));
-  all_video_modes.push_back(new VideoMode(
+  );
+  all_video_modes.emplace_back(
       "scale2x",
       quest_size * 2,
       std::unique_ptr<PixelFilter>(new Scale2xFilter()),
       nullptr
-  ));
-  all_video_modes.push_back(new VideoMode(
+  );
+  all_video_modes.emplace_back(
       "hq2x",
       quest_size * 2,
       std::unique_ptr<PixelFilter>(new Hq2xFilter()),
       nullptr
-  ));
-  all_video_modes.push_back(new VideoMode(
+  );
+  all_video_modes.emplace_back(
       "hq3x",
       quest_size * 3,
       std::unique_ptr<PixelFilter>(new Hq3xFilter()),
       nullptr
-  ));
-  all_video_modes.push_back(new VideoMode(
+  );
+  all_video_modes.emplace_back(
       "hq4x",
       quest_size * 4,
       std::unique_ptr<PixelFilter>(new Hq4xFilter()),
       nullptr
-  ));
-  default_video_mode = all_video_modes[0];
+  );
+  default_video_mode = &all_video_modes[0];
   // TODO If shaders are enabled, use a C++ shader version of Scale2x and Hq4x instead.
 
   // Initialize quest custom video modes. These can only include shaded modes.
@@ -234,12 +233,12 @@ void initialize_video_modes() {
         }
 
         const Size scaled_quest_size = quest_size * video_mode_shader->get_default_window_scale();
-        all_video_modes.push_back(new VideoMode(
+        all_video_modes.emplace_back(
               video_mode_shader->get_name(),
               scaled_quest_size,
               nullptr,
               std::unique_ptr<Shader>(video_mode_shader)
-        ));
+        );
       }
     }
   }
@@ -295,9 +294,6 @@ void Video::quit() {
     SDL_SetWindowFullscreen(main_window, 0);
   }
 
-  for (unsigned i = 0; i < all_video_modes.size(); ++i) {
-    delete all_video_modes[i];
-  }
   all_video_modes.clear();
 
   if (pixel_format != nullptr) {
@@ -387,18 +383,16 @@ bool Video::is_acceleration_enabled() {
  */
 bool Video::is_mode_supported(const VideoMode& mode) {
 
-  const auto it = std::find(
-      all_video_modes.begin(), all_video_modes.end(), &mode
-  );
-
-  if (it == all_video_modes.end()) {
-    // The initial detection of this mode failed.
-    return false;
+  bool found = false;
+  for (const VideoMode& current_mode: all_video_modes) {
+    if (current_mode.get_name() == mode.get_name()) {
+      found = true;
+    }
   }
 
-  if ((*it)->get_initial_window_size().is_flat()) {
-    Debug::die(std::string(
-        "Uninitialized size for video mode ") + mode.get_name());
+  if (!found) {
+    // The initial detection of this mode failed.
+    return false;
   }
 
   return true;
@@ -447,10 +441,14 @@ void Video::switch_video_mode() {
   }
 
   // Find the current video mode in the list and traverse the list from there.
-  auto it = std::find(
-      all_video_modes.begin(), all_video_modes.end(), video_mode
-  );
-  VideoMode* mode = nullptr;
+  std::vector<VideoMode>::const_iterator it;
+  for (it = all_video_modes.begin(); it != all_video_modes.end(); ++it) {
+    if (it->get_name() == video_mode->get_name()) {
+      break;
+    }
+  };
+
+  const VideoMode* mode = nullptr;
   do {
     if (it != all_video_modes.end()) {
       ++it;
@@ -458,7 +456,7 @@ void Video::switch_video_mode() {
     if (it == all_video_modes.end()) {
       it = all_video_modes.begin();
     }
-    mode = *it;
+    mode = &(*it);
   } while (mode == nullptr || !is_mode_supported(*mode));
 
   set_video_mode(*mode);
@@ -566,8 +564,8 @@ std::vector<const VideoMode*> Video::get_video_modes() {
 
   // Return a copy of all_video_modes with const elements.
   std::vector<const VideoMode*> result;
-  for (const VideoMode* video_mode: all_video_modes) {
-    result.push_back(video_mode);
+  for (const VideoMode& video_mode: all_video_modes) {
+    result.push_back(&video_mode);
   }
   return result;
 }
@@ -581,9 +579,9 @@ std::vector<const VideoMode*> Video::get_video_modes() {
 const VideoMode* Video::get_video_mode_by_name(
     const std::string& mode_name) {
 
-  for (const VideoMode* video_mode: all_video_modes) {
-    if (video_mode->get_name() == mode_name) {
-      return video_mode;
+  for (const VideoMode& video_mode: all_video_modes) {
+    if (video_mode.get_name() == mode_name) {
+      return &video_mode;
     }
   }
 

@@ -42,8 +42,6 @@ class VideoMode {
         std::unique_ptr<PixelFilter> software_filter,
         std::unique_ptr<Shader> hardware_filter
     );
-    VideoMode(const VideoMode& other) = delete;
-    VideoMode& operator=(const VideoMode& other) = delete;
 
     const std::string& get_name() const;
     const Size& get_initial_window_size() const;

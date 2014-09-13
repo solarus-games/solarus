@@ -306,9 +306,6 @@ void CarriedItem::break_item_on_ground() {
 
 /**
  * \brief Returns whether the item is broken.
- *
- * When this function returns true, the item can be deleted from memory.
- *
  * \return true if the item is broken
  */
 bool CarriedItem::is_broken() const {

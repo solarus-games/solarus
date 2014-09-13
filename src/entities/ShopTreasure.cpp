@@ -38,8 +38,8 @@ namespace solarus {
  * \param layer layer of the entity to create
  * \param x x coordinate of the entity to create
  * \param y y coordinate of the entity to create
- * \param treasure the treasure that the hero can buy (will be deleted automatically)
- * \param price the treasure's price in rupees
+ * \param treasure the treasure that the hero can buy
+ * \param price the treasure's price
  * \param dialog_id id of the dialog describing the item when the player watches it
  */
 ShopTreasure::ShopTreasure(

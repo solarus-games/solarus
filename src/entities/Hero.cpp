@@ -1351,7 +1351,7 @@ bool Hero::is_ground_observer() const {
  * \return The point used to determine the ground (relative to the map).
  */
 const Point Hero::get_ground_point() const {
-  return { get_x(), get_y() };
+  return { get_x(), get_y() - 2 };
 }
 
 /**

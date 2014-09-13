@@ -132,6 +132,9 @@ bool MainLoop::is_resetting() {
 void MainLoop::set_resetting() {
 
   // Reset the program.
+  if (game != nullptr) {
+    game->stop();
+  }
   set_game(nullptr);
 }
 
@@ -148,11 +151,6 @@ Game* MainLoop::get_game() {
  * \param game The new game to start, or nullptr to start no game.
  */
 void MainLoop::set_game(Game* game) {
-
-  if (this->game != nullptr) {
-    this->game->stop();
-  }
-
   this->next_game = game;
 }
 

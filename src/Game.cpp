@@ -134,17 +134,18 @@ void Game::stop() {
   }
 
   if (current_map != nullptr) {
+
+    if (hero->is_on_map()) {
+      // The hero was initialized.
+      hero->notify_being_removed();
+    }
+
     if (current_map->is_started()) {
       current_map->leave();
     }
     if (current_map->is_loaded()) {
       current_map->unload();
     }
-  }
-
-  if (hero->is_on_map()) {
-    // The hero was initialized.
-    hero->notify_being_removed();
   }
 
   get_lua_context().game_on_finished(*this);
@@ -403,8 +404,9 @@ void Game::update_transitions() {
     if (restarting) {
       current_map->leave();
       current_map->unload();
+      stop();
       main_loop.set_game(new Game(main_loop, savegame));
-      savegame = nullptr;  // The new game is the owner.
+      this->savegame = nullptr;  // The new game is the owner.
     }
     else if (transition_direction == Transition::TRANSITION_CLOSING) {
 

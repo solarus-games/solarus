@@ -258,6 +258,10 @@ int LuaContext::game_api_start(lua_State* l) {
     else {
       // Create a new game to run.
       MainLoop& main_loop = savegame->get_lua_context().get_main_loop();
+      if (main_loop.get_game() != nullptr) {
+        // Stop any previous game.
+        main_loop.get_game()->stop();
+      }
       Game* game = new Game(main_loop, savegame);
       main_loop.set_game(game);
     }

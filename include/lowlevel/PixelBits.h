@@ -55,8 +55,7 @@ class PixelBits {
 
     std::vector<std::vector<uint32_t>>
         bits;                /**< A two-dimensional array representing the
-                              * transparency bit of each pixel in the image.
-                              * TODO use an std::vector. */
+                              * transparency bit of each pixel in the image. */
 
 };
 

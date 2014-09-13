@@ -54,11 +54,12 @@ class MainLoop {
 
     void check_input();
 
-    SurfacePtr root_surface;    /**< the surface where everything is drawn */
-    LuaContext* lua_context;    /**< the Lua world where scripts are run */  // TODO unique_ptr
-    bool exiting;               /**< indicates that the program is about to stop */
-    Game* game;                 /**< The current game if any, nullptr otherwise. */  // TODO unique_ptr
-    Game* next_game;            /**< The game to start at next cycle (nullptr means resetting the game). */
+    std::unique_ptr<LuaContext>
+        lua_context;              /**< The Lua world where scripts are run. */
+    SurfacePtr root_surface;      /**< The surface where everything is drawn. */
+    std::unique_ptr<Game> game;   /**< The current game if any, nullptr otherwise. */
+    Game* next_game;              /**< The game to start at next cycle (nullptr means resetting the game). */
+    bool exiting;                 /**< Indicates that the program is about to stop. */
 
     void notify_input(const InputEvent& event);
     void draw();

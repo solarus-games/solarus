@@ -37,11 +37,11 @@ namespace solarus {
  * \param args Command-line arguments.
  */
 MainLoop::MainLoop(const CommandLine& args):
-  root_surface(nullptr),
   lua_context(nullptr),
-  exiting(false),
+  root_surface(nullptr),
   game(nullptr),
-  next_game(nullptr) {
+  next_game(nullptr),
+  exiting(false) {
 
   // Initialize basic features (input, audio, video, files...).
   System::initialize(args);
@@ -62,8 +62,7 @@ MainLoop::MainLoop(const CommandLine& args):
   // Run the Lua world.
   // Do this after the creation of the window, but before showing the window,
   // because Lua might change the video mode initially.
-  lua_context = new LuaContext(*this);
-  lua_context->initialize();
+  lua_context = std::unique_ptr<LuaContext>(new LuaContext(*this));
 
   // Finally show the window.
   Video::show_window();
@@ -74,17 +73,6 @@ MainLoop::MainLoop(const CommandLine& args):
  */
 MainLoop::~MainLoop() {
 
-  if (game != nullptr) {
-    game->stop();
-    delete game;
-    game = nullptr;
-  }
-
-  // Destroying the root surface may indirectly trigger Lua operations,
-  // so the Lua context must still exist at this point.
-  root_surface = nullptr;
-
-  delete lua_context;
   System::quit();
 }
 
@@ -143,7 +131,7 @@ void MainLoop::set_resetting() {
  * \return The game currently running or nullptr.
  */
 Game* MainLoop::get_game() {
-  return game;
+  return game.get();
 }
 
 /**
@@ -162,6 +150,8 @@ void MainLoop::set_game(Game* game) {
 void MainLoop::run() {
 
   // Main loop.
+  lua_context->initialize();
+
   uint32_t last_frame_date = System::get_real_time();
   uint32_t lag = 0;  // Lose time of the simulation to catch up.
   uint32_t time_dropped = 0;  // Time that won't be caught up.
@@ -214,6 +204,8 @@ void MainLoop::run() {
       System::sleep(System::timestep - last_frame_duration);
     }
   }
+
+  lua_context->exit();
 }
 
 /**
@@ -273,10 +265,9 @@ void MainLoop::update() {
   System::update();
 
   // go to another game?
-  if (next_game != game) {
+  if (next_game != game.get()) {
 
-    delete game;
-    game = next_game;
+    game = std::unique_ptr<Game>(next_game);
 
     if (game != nullptr) {
       game->start();

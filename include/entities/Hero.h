@@ -20,6 +20,7 @@
 #include "entities/MapEntity.h"
 #include "entities/EnemyAttack.h"
 #include "entities/Ground.h"
+#include "hero/HeroSprites.h"
 #include "lowlevel/Point.h"
 #include "GameCommands.h"
 #include <list>
@@ -50,7 +51,6 @@ class Hero: public MapEntity {
      * \name Creation and destruction.
      */
     Hero(Equipment& equipment);
-    ~Hero();
 
     /**
      * \name Features.
@@ -340,13 +340,15 @@ class Hero: public MapEntity {
     void update_invincibility();
 
     // state
-    State* state;                   /**< the current internal state */  // TODO unique_ptr
-    std::list<State*> old_states;   /**< previous state objects to delete as soon as possible */
+    std::unique_ptr<State> state;   /**< the current internal state */
+    std::list<std::unique_ptr<State>>
+        old_states;                 /**< previous state objects to delete as soon as possible */
     bool invincible;                /**< Whether the hero is temporarily invincible. */
     uint32_t end_invincible_date;   /**< When stopping the invincibility (0 means infinite). */
 
     // sprites
-    HeroSprites* sprites;           /**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */  // TODO unique_ptr
+    std::unique_ptr<HeroSprites>
+        sprites;                    /**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
 
     // position
     int normal_walking_speed;       /**< speed when normally walking */

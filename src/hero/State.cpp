@@ -71,7 +71,7 @@ const std::string& Hero::State::get_name() const {
  * \return \c true if this state is the current state.
  */
 bool Hero::State::is_current_state() const {
-  return hero.state == this && !hero.state->is_stopping();
+  return hero.state.get() == this && !hero.state->is_stopping();
 }
 
 /**

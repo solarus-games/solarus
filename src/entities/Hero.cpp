@@ -87,23 +87,10 @@ Hero::Hero(Equipment& equipment):
 
   // sprites
   set_drawn_in_y_order(true);
-  sprites = new HeroSprites(*this, equipment);
+  sprites = std::unique_ptr<HeroSprites>(new HeroSprites(*this, equipment));
 
   // state
   set_state(new FreeState(*this));
-}
-
-/**
- * \brief Destructor.
- */
-Hero::~Hero() {
-
-  delete sprites;
-  delete state;
-
-  for (State* state: old_states) {
-    delete state;
-  }
 }
 
 /**
@@ -130,18 +117,19 @@ const std::string& Hero::get_state_name() const {
  * The old state will also be automatically destroyed, but not right now,
  * in order to allow this function to be called by the old state itself safely.
  *
- * \param state the new state of the hero
+ * \param state The new state of the hero. The hero object takes ownership of
+ * this object.
  */
 void Hero::set_state(State* new_state) {
 
   // Stop the previous state.
-  State* old_state = this->state;
+  State* old_state = this->state.get();
   if (old_state != nullptr) {
 
     old_state->stop(new_state);  // Should not change the state again.
 
     // Sanity check.
-    if (old_state != this->state) {
+    if (old_state != this->state.get()) {
       // old_state->stop() called set_state() again in the meantime.
       // This is not a normal situation since we only called stop() to allow
       // new_state to start.
@@ -159,12 +147,12 @@ void Hero::set_state(State* new_state) {
 
   // Don't delete the previous state immediately since it may be the caller
   // of this function.
-  this->old_states.push_back(old_state);
+  this->old_states.emplace_back(std::move(this->state));
 
-  this->state = new_state;
+  this->state = std::unique_ptr<State>(new_state);
   this->state->start(old_state);  // May also change the state again.
 
-  if (this->state == new_state) {
+  if (this->state.get() == new_state) {
     // If the state has not already changed again.
     check_position();
   }
@@ -242,10 +230,7 @@ void Hero::update_state() {
   // update the current state
   state->update();
 
-  // see if there are old states to cleanup
-  for (State* state: old_states) {
-    delete state;
-  }
+  // cleanup old states
   old_states.clear();
 }
 

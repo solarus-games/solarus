@@ -23,6 +23,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/Music.h"
 #include "entities/Layer.h"
+#include "entities/TilePattern.h"
 #include "entities/Tileset.h"
 #include "entities/NonAnimatedRegions.h"
 #include "entities/MapEntities.h"

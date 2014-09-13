@@ -63,15 +63,6 @@ Tileset::Tileset(const std::string& id):
 }
 
 /**
- * \brief Destructor.
- */
-Tileset::~Tileset() {
-  if (is_loaded()) {
-    unload(); // destroy the tiles
-  }
-}
-
-/**
  * \brief Returns the id of this tileset.
  * \return the tileset id
  */
@@ -87,8 +78,11 @@ const std::string& Tileset::get_id() {
  * \param id id of this tile pattern
  * \param tile_pattern the tile pattern to add
  */
-void Tileset::add_tile_pattern(const std::string& id, TilePattern *tile_pattern) {
-  tile_patterns[id] = tile_pattern;
+void Tileset::add_tile_pattern(
+    const std::string& id,
+    std::unique_ptr<TilePattern> tile_pattern
+) {
+  tile_patterns.emplace(std::make_pair(id, std::move(tile_pattern)));
 }
 
 /**
@@ -138,11 +132,7 @@ void Tileset::load() {
  */
 void Tileset::unload() {
 
-  for (const auto& kvp: tile_patterns) {
-    delete kvp.second;
-  }
   tile_patterns.clear();
-
   tiles_image = nullptr;
   entities_image = nullptr;
 }
@@ -186,13 +176,13 @@ const SurfacePtr& Tileset::get_entities_image() {
  */
 TilePattern& Tileset::get_tile_pattern(const std::string& id) {
 
-  TilePattern* tile_pattern =  tile_patterns[id];
-  if (tile_pattern == nullptr) {
+  const auto& it = tile_patterns.find(id);
+  if (it == tile_patterns.end()) {
     std::ostringstream oss;
     oss << "No such tile pattern in tileset '" << get_id() << "': " << id;
     Debug::die(oss.str());
   }
-  return *tile_pattern;
+  return *it->second;
 }
 
 /**
@@ -344,7 +334,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
           x[0], y[0], x[1], y[1], x[2], y[2], parallax);
     }
 
-    tileset->add_tile_pattern(id, tile_pattern);
+    tileset->add_tile_pattern(id, std::unique_ptr<TilePattern>(tile_pattern));
 
     return 0;
   });

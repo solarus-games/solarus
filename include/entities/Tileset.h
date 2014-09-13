@@ -43,7 +43,6 @@ class Tileset {
   public:
 
     Tileset(const std::string& id);
-    ~Tileset();
 
     void load();
     void unload();
@@ -60,14 +59,17 @@ class Tileset {
 
   private:
 
-    void add_tile_pattern(const std::string& id, TilePattern* tile_pattern);
+    void add_tile_pattern(
+        const std::string& id,
+        std::unique_ptr<TilePattern> tile_pattern
+    );
 
     static int l_background_color(lua_State* l);
     static int l_tile_pattern(lua_State* l);
 
     const std::string id;                             /**< id of the tileset */
-    std::map<std::string, TilePattern*>
-        tile_patterns;                                /**< tile patterns in this tileset */  // TODO shared_ptr
+    std::map<std::string, std::unique_ptr<TilePattern>>
+        tile_patterns;                                /**< tile patterns in this tileset */
     Color background_color;                           /**< background color of the tileset */
     SurfacePtr tiles_image;                           /**< image from which the tile patterns are extracted */
     SurfacePtr entities_image;                        /**< image from which the skin-dependent entities are extracted */

@@ -17,6 +17,7 @@
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "entities/NonAnimatedRegions.h"
+#include "entities/TilePattern.h"
 #include "entities/Tileset.h"
 #include "hero/State.h"
 #include "lowlevel/Color.h"

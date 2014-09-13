@@ -59,34 +59,6 @@ MapEntities::MapEntities(Game& game, Map& map):
 }
 
 /**
- * \brief Destructor.
- */
-MapEntities::~MapEntities() {
-
-  // delete tiles and clear lists sorted by layer
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-
-    delete non_animated_regions[layer];
-    entities_drawn_first[layer].clear();
-    entities_drawn_y_order[layer].clear();
-    obstacle_entities[layer].clear();
-    ground_observers[layer].clear();
-    ground_modifiers[layer].clear();
-    stairs[layer].clear();
-    tiles_in_animated_regions[layer].clear();
-  }
-
-  // delete the other entities
-  all_entities.clear();
-  named_entities.clear();
-
-  detectors.clear();
-  entities_to_remove.clear();
-
-  // Don't delete the hero because he continues to live on the next map.
-}
-
-/**
  * \brief Notifies an entity that it is being removed.
  * \param entity The entity being removed.
  */

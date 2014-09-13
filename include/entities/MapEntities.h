@@ -56,7 +56,6 @@ class MapEntities {
 
     // creation and destruction
     MapEntities(Game& game, Map& map);
-    ~MapEntities();
 
     // entities
     Hero& get_hero();
@@ -126,13 +125,13 @@ class MapEntities {
                                                      * (tiles_grid_size = map_width8 * map_height8) */
     std::vector<Ground> tiles_ground[LAYER_NB];     /**< array of size tiles_grid_size representing the ground property
                                                      * of each 8x8 square. */
-    NonAnimatedRegions*
-        non_animated_regions[LAYER_NB];             /**< All non-animated tiles are managed here for performance. */  // TODO unique_ptr
+    std::unique_ptr<NonAnimatedRegions>
+        non_animated_regions[LAYER_NB];             /**< All non-animated tiles are managed here for performance. */
     std::vector<TilePtr>
         tiles_in_animated_regions[LAYER_NB];        /**< animated tiles and tiles overlapping them */
 
     // dynamic entities
-    Hero& hero;                                     /**< the hero (also stored in Game because it is kept when changing maps) */
+    Hero& hero;                                     /**< the hero (stored in Game because it is kept when changing maps) */
 
     std::map<std::string, MapEntity*>
       named_entities;                               /**< entities identified by a name */

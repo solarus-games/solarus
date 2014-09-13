@@ -141,7 +141,9 @@ int MapLoader::l_properties(lua_State* l) {
         entities.tiles_ground[layer].push_back(initial_ground);
       }
 
-      entities.non_animated_regions[layer] = new NonAnimatedRegions(*map, Layer(layer));
+      entities.non_animated_regions[layer] = std::unique_ptr<NonAnimatedRegions>(
+          new NonAnimatedRegions(*map, Layer(layer))
+      );
     }
     entities.boomerang = nullptr;
     map->camera = std::unique_ptr<Camera>(new Camera(*map));

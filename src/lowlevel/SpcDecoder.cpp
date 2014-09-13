@@ -16,28 +16,15 @@
  */
 #include "lowlevel/SpcDecoder.h"
 #include "lowlevel/Debug.h"
-#include "snes_spc/spc.h"
 
 namespace solarus {
 
 /**
  * \brief Creates an SPC decoder.
  */
-SpcDecoder::SpcDecoder() {
-
-  // Initialize the SPC library.
-  snes_spc_manager = spc_new();
-  snes_spc_filter = spc_filter_new();
-}
-
-/**
- * \brief Destructor.
- */
-SpcDecoder::~SpcDecoder() {
-
-  // Uninitialize the SPC library.
-  spc_filter_delete(snes_spc_filter);
-  spc_delete(snes_spc_manager);
+SpcDecoder::SpcDecoder():
+  snes_spc_manager(spc_new(), spc_delete),
+  snes_spc_filter(spc_filter_new(), spc_filter_delete) {
 }
 
 /**
@@ -48,9 +35,9 @@ SpcDecoder::~SpcDecoder() {
 void SpcDecoder::load(int16_t* sound_data, size_t sound_size) {
 
   // Load the SPC data into the SPC library.
-  spc_load_spc(snes_spc_manager, (short int*) sound_data, sound_size);
-  spc_clear_echo(snes_spc_manager);
-  spc_filter_clear(snes_spc_filter);
+  spc_load_spc(snes_spc_manager.get(), (short int*) sound_data, sound_size);
+  spc_clear_echo(snes_spc_manager.get());
+  spc_filter_clear(snes_spc_filter.get());
 }
 
 
@@ -63,11 +50,11 @@ void SpcDecoder::decode(int16_t* decoded_data, int nb_samples) {
 
   // Decode from the SPC data the specified number of PCM samples.
 
-  const char* err = spc_play(snes_spc_manager, nb_samples, (short int*) decoded_data);
+  const char* err = spc_play(snes_spc_manager.get(), nb_samples, (short int*) decoded_data);
   if (err != nullptr) {
       Debug::die(std::string("Failed to decode SPC data: ") + err);
   }
-  spc_filter_run(snes_spc_filter, (short int*) decoded_data, nb_samples);
+  spc_filter_run(snes_spc_filter.get(), (short int*) decoded_data, nb_samples);
 }
 
 }

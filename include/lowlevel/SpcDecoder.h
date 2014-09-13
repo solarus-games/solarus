@@ -18,11 +18,10 @@
 #define SOLARUS_SPC_DECODER_H
 
 #include "Common.h"
+#include "snes_spc/spc.h"
 #include <cstddef>  // size_t
 #include <cstdint>
-
-struct SNES_SPC;
-struct SPC_Filter;
+#include <memory>
 
 namespace solarus {
 
@@ -42,7 +41,6 @@ class SpcDecoder {
   public:
 
     SpcDecoder();
-    ~SpcDecoder();
 
     void load(int16_t* sound_data, size_t sound_size);
     void decode(int16_t* decoded_data, int nb_samples);
@@ -50,8 +48,10 @@ class SpcDecoder {
   private:
 
     // Snes_SPC specific data
-    SNES_SPC* snes_spc_manager;   /**< the snes_spc object encapsulated */  // TODO unique_ptr
-    SPC_Filter* snes_spc_filter;  /**< the snes_spc filter object */  // TODO unique_ptr
+    std::unique_ptr<SNES_SPC, void(*)(SNES_SPC*)>
+        snes_spc_manager;                             /**< the snes_spc object encapsulated */
+    std::unique_ptr<SPC_Filter, void(*)(SPC_Filter*)>
+        snes_spc_filter;                              /**< the snes_spc filter object */
 
 };
 

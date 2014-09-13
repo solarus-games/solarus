@@ -184,38 +184,6 @@ bool FileTools::data_file_exists(const std::string& file_name,
 }
 
 /**
- * \brief Opens in reading a text file in the Solarus data directory.
- *
- * The file name is relative to the Solarus data directory.
- * The program is stopped with an error message if the file cannot be open.
- * Don't forget to close the stream with data_file_close().
- *
- * \param file_name name of the file to open
- * \param language_specific true if the file is specific to the current language
- * \return the input stream
- */
-std::istream& FileTools::data_file_open(const std::string& file_name,
-    bool language_specific) {
-
-  size_t size;
-  char* buffer;
-  data_file_open_buffer(file_name, &buffer, &size, language_specific);
-
-  // create an input stream
-  std::istringstream* is = new std::istringstream(std::string(buffer, size));
-  data_file_close_buffer(buffer);
-  return *is;
-}
-
-/**
- * \brief Closes a text file previously open with data_file_open().
- * \param data_file the input stream to close
- */
-void FileTools::data_file_close(const std::istream& data_file) {
-  delete &data_file;
-}
-
-/**
  * \brief Opens a data file an loads its content into a buffer.
  * \param file_name name of the file to open
  * \param buffer the buffer to load

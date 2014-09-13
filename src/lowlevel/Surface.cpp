@@ -104,8 +104,8 @@ class Surface::SubSurfaceNode {
 Surface::Surface(int width, int height):
   Drawable(),
   software_destination(true),
-  internal_surface(nullptr),
-  internal_texture(nullptr),
+  internal_surface(nullptr, SDL_FreeSurface),
+  internal_texture(nullptr, SDL_DestroyTexture),
   internal_color(nullptr),
   is_rendered(false),
   internal_opacity(255),
@@ -119,17 +119,17 @@ Surface::Surface(int width, int height):
 /**
  * \brief Creates a surface form the specified SDL texture.
  *
- * This constructor must be used only by lowlevel classes that manipulate directly
+ * This constructor must be used only by low-level classes that manipulate directly
  * SDL dependent surfaces.
  *
  * \param internal_surface The internal surface data.
- * The destructor will free it.
+ * The created surface takes ownership of this object.
  */
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
   software_destination(true),
-  internal_surface(internal_surface),
-  internal_texture(nullptr),
+  internal_surface(internal_surface, SDL_FreeSurface),
+  internal_texture(nullptr, SDL_DestroyTexture),
   internal_color(nullptr),
   is_rendered(false),
   internal_opacity(255) {
@@ -142,15 +142,6 @@ Surface::Surface(SDL_Surface* internal_surface):
  * \brief Destructor.
  */
 Surface::~Surface() {
-
-  if (internal_texture != nullptr) {
-    SDL_DestroyTexture(internal_texture);
-  }
-  if (internal_surface != nullptr) {
-    SDL_FreeSurface(internal_surface);
-  }
-
-  delete internal_color;
 
   clear_subsurfaces();
 }
@@ -261,18 +252,20 @@ void Surface::convert_software_surface() {
   if (internal_surface->format->format != pixel_format->format) {
     // Convert to the preferred pixel format.
     uint8_t opacity;
-    SDL_GetSurfaceAlphaMod(internal_surface, &opacity);
+    SDL_GetSurfaceAlphaMod(internal_surface.get(), &opacity);
     SDL_Surface* converted_surface = SDL_ConvertSurface(
-        internal_surface,
+        internal_surface.get(),
         pixel_format,
         0
     );
     Debug::check_assertion(converted_surface != nullptr,
         "Failed to convert software surface");
 
-    SDL_FreeSurface(internal_surface);
-    internal_surface = converted_surface;
-    SDL_SetSurfaceAlphaMod(internal_surface, opacity);  // Re-apply the alpha.
+    internal_surface = std::unique_ptr<SDL_Surface, void (*)(SDL_Surface*)>(
+        converted_surface,
+        SDL_FreeSurface
+    );
+    SDL_SetSurfaceAlphaMod(internal_surface.get(), opacity);  // Re-apply the alpha.
   }
 }
 
@@ -295,18 +288,21 @@ void Surface::create_texture_from_surface() {
     convert_software_surface();
 
     // Create the texture.
-    internal_texture = SDL_CreateTexture(
-        main_renderer,
-        Video::get_pixel_format()->format,
-        SDL_TEXTUREACCESS_STATIC,
-        internal_surface->w,
-        internal_surface->h
+    internal_texture = std::unique_ptr<SDL_Texture, void (*)(SDL_Texture*)>(
+        SDL_CreateTexture(
+            main_renderer,
+            Video::get_pixel_format()->format,
+            SDL_TEXTUREACCESS_STATIC,
+            internal_surface->w,
+            internal_surface->h
+        ),
+        SDL_DestroyTexture
     );
-    SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
+    SDL_SetTextureBlendMode(internal_texture.get(), SDL_BLENDMODE_BLEND);
 
     // Copy the pixels of the software surface to the GPU texture.
-    SDL_UpdateTexture(internal_texture, nullptr, internal_surface->pixels, internal_surface->pitch);
-    SDL_GetSurfaceAlphaMod(internal_surface, &internal_opacity);
+    SDL_UpdateTexture(internal_texture.get(), nullptr, internal_surface->pixels, internal_surface->pitch);
+    SDL_GetSurfaceAlphaMod(internal_surface.get(), &internal_opacity);
   }
 }
 
@@ -350,7 +346,7 @@ void Surface::set_opacity(uint8_t opacity) {
     // The surface must be 32-bit with alpha value for this function to work.
     convert_software_surface();
 
-    int error = SDL_SetSurfaceAlphaMod(internal_surface, opacity);
+    int error = SDL_SetSurfaceAlphaMod(internal_surface.get(), opacity);
     if (error != 0) {
       Debug::error(SDL_GetError());
     }
@@ -417,17 +413,20 @@ void Surface::create_software_surface() {
 
   // Create a surface with the appropriate pixel format.
   SDL_PixelFormat* format = Video::get_pixel_format();
-  internal_surface = SDL_CreateRGBSurface(
-      0,
-      width,
-      height,
-      32,
-      format->Rmask,
-      format->Gmask,
-      format->Bmask,
-      format->Amask
+  internal_surface = std::unique_ptr<SDL_Surface, void(*)(SDL_Surface*)>(
+      SDL_CreateRGBSurface(
+          0,
+          width,
+          height,
+          32,
+          format->Rmask,
+          format->Gmask,
+          format->Bmask,
+          format->Amask
+      ),
+      SDL_FreeSurface
   );
-  SDL_SetSurfaceBlendMode(internal_surface, SDL_BLENDMODE_BLEND);
+  SDL_SetSurfaceBlendMode(internal_surface.get(), SDL_BLENDMODE_BLEND);
   is_rendered = false;
 
   Debug::check_assertion(internal_surface != nullptr,
@@ -444,24 +443,21 @@ void Surface::clear() {
 
   clear_subsurfaces();
 
-  delete internal_color;
   internal_color = nullptr;
 
   if (internal_texture != nullptr) {
-    SDL_DestroyTexture(internal_texture);
     internal_texture = nullptr;
   }
 
   if (internal_surface != nullptr) {
     if (software_destination) {
       SDL_FillRect(
-          internal_surface,
+          internal_surface.get(),
           nullptr,
           Color::get_transparent().get_internal_value()
       );
     }
     else {
-      SDL_FreeSurface(internal_surface);
       internal_surface = nullptr;
     }
   }
@@ -486,7 +482,7 @@ void Surface::clear(const Rectangle& where) {
   }
 
   SDL_FillRect(
-      internal_surface,
+      internal_surface.get(),
       where.get_internal_rect(),
       Color::get_transparent().get_internal_value()
   );
@@ -520,7 +516,7 @@ void Surface::fill_with_color(const Color& color, const Rectangle& where) {
   // Create a surface with the requested size and color and draw it.
   SurfacePtr colored_surface = Surface::create(where.get_size());
   colored_surface->set_software_destination(false);
-  colored_surface->internal_color = new Color(color);
+  colored_surface->internal_color = std::unique_ptr<Color>(new Color(color));
   colored_surface->raw_draw_region(Rectangle(colored_surface->get_size()), *this, where.get_xy());
 }
 
@@ -620,9 +616,9 @@ void Surface::raw_draw_region(
       // The source surface is not empty: draw it onto the destination.
 
       SDL_BlitSurface(
-          this->internal_surface,
+          this->internal_surface.get(),
           region.get_internal_rect(),
-          dst_surface.internal_surface,
+          dst_surface.internal_surface.get(),
           Rectangle(dst_position).get_internal_rect()
       );
     }
@@ -635,7 +631,7 @@ void Surface::raw_draw_region(
             region.get_size()
         );
         SDL_FillRect(
-            dst_surface.internal_surface,
+            dst_surface.internal_surface.get(),
             dst_rect.get_internal_rect(),
             this->internal_color->get_internal_value()
         );
@@ -644,14 +640,14 @@ void Surface::raw_draw_region(
         // Fill with semi-transparent pixels: perform alpha-blending.
         create_software_surface();
         SDL_FillRect(
-            this->internal_surface,
+            this->internal_surface.get(),
             nullptr,
             this->internal_color->get_internal_value()
         );
         SDL_BlitSurface(
-            this->internal_surface,
+            this->internal_surface.get(),
             region.get_internal_rect(),
-            dst_surface.internal_surface,
+            dst_surface.internal_surface.get(),
             Rectangle(dst_position).get_internal_rect()
         );
       }
@@ -693,8 +689,8 @@ void Surface::apply_pixel_filter(
   Debug::check_assertion(dst_surface.get_height() == get_height() * factor,
       "Wrong destination surface size");
 
-  SDL_Surface* src_internal_surface = this->internal_surface;
-  SDL_Surface* dst_internal_surface = dst_surface.internal_surface;
+  SDL_Surface* src_internal_surface = this->internal_surface.get();
+  SDL_Surface* dst_internal_surface = dst_surface.internal_surface.get();
 
   if (src_internal_surface == nullptr) {
     // This is possible if nothing was drawn on the surface yet.
@@ -767,12 +763,12 @@ void Surface::render(
          && !is_rendered) {
       convert_software_surface();
       SDL_UpdateTexture(
-          internal_texture,
+          internal_texture.get(),
           nullptr,
           internal_surface->pixels,
           internal_surface->pitch
       );
-      SDL_GetSurfaceAlphaMod(internal_surface, &internal_opacity);
+      SDL_GetSurfaceAlphaMod(internal_surface.get(), &internal_opacity);
     }
   }
 
@@ -790,12 +786,12 @@ void Surface::render(
 
   // Draw the internal texture.
   if (internal_texture != nullptr) {
-    SDL_SetTextureAlphaMod(internal_texture, current_opacity);
+    SDL_SetTextureAlphaMod(internal_texture.get(), current_opacity);
     //SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect());
 
     SDL_RenderCopy(
         renderer,
-        internal_texture,
+        internal_texture.get(),
         src_rect.get_internal_rect(),
         dst_rect.get_internal_rect()
     );
@@ -908,7 +904,7 @@ bool Surface::is_pixel_transparent(int index) const {
 
   uint32_t pixel = get_pixel(index);
   uint32_t colorkey;
-  bool with_colorkey = SDL_GetColorKey(internal_surface, &colorkey) == 0;
+  bool with_colorkey = SDL_GetColorKey(internal_surface.get(), &colorkey) == 0;
 
   if (with_colorkey && pixel == colorkey) {
     // The pixel has the transparency color.

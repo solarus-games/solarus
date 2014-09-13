@@ -18,14 +18,14 @@
 #define SOLARUS_MUSIC_H
 
 #include "Common.h"
+#include "lowlevel/ItDecoder.h"
+#include "lowlevel/SpcDecoder.h"
 #include "lowlevel/Sound.h"
 #include "lua/ScopedLuaRef.h"
+#include <memory>
 #include <vector>
 
 namespace solarus {
-
-class ItDecoder;
-class SpcDecoder;
 
 /**
  * \brief Represents a music that can be played.
@@ -96,7 +96,6 @@ class Music {
         bool loop,
         const ScopedLuaRef& callback_ref
     );
-    ~Music();
 
     bool start();
     void stop();
@@ -124,11 +123,13 @@ class Music {
     ALuint buffers[nb_buffers];                  /**< multiple buffers used to stream the music */
     ALuint source;                               /**< the OpenAL source streaming the buffers */
 
-    static SpcDecoder* spc_decoder;              /**< the SPC decoder */
-    static ItDecoder* it_decoder;                /**< the IT decoder */
+    static std::unique_ptr<SpcDecoder>
+        spc_decoder;                             /**< the SPC decoder */
+    static std::unique_ptr<ItDecoder>
+        it_decoder;                              /**< the IT decoder */
     static float volume;                         /**< volume of musics (0.0 to 1.0) */
 
-    static Music* current_music;                 /**< the music currently played (if any) */
+    static std::unique_ptr<Music> current_music; /**< the music currently played (if any) */
 
 };
 

@@ -27,10 +27,10 @@
 namespace solarus {
 
 const int Music::nb_buffers;
-SpcDecoder* Music::spc_decoder = nullptr;
-ItDecoder* Music::it_decoder = nullptr;
+std::unique_ptr<SpcDecoder> Music::spc_decoder = nullptr;
+std::unique_ptr<ItDecoder> Music::it_decoder = nullptr;
 float Music::volume = 1.0;
-Music* Music::current_music = nullptr;
+std::unique_ptr<Music> Music::current_music = nullptr;
 
 const std::string Music::none = "none";
 const std::string Music::unchanged = "same";
@@ -88,27 +88,13 @@ Music::Music(
 }
 
 /**
- * \brief Destroys the music.
- */
-Music::~Music() {
-
-  if (!is_initialized()) {
-    return;
-  }
-
-  if (current_music == this) {
-    stop();
-  }
-}
-
-/**
  * \brief Initializes the music system.
  */
 void Music::initialize() {
 
   // initialize the decoding features
-  spc_decoder = new SpcDecoder();
-  it_decoder = new ItDecoder();
+  spc_decoder = std::unique_ptr<SpcDecoder>(new SpcDecoder());
+  it_decoder = std::unique_ptr<ItDecoder>(new ItDecoder());
 
   set_volume(100);
 }
@@ -119,18 +105,15 @@ void Music::initialize() {
 void Music::quit() {
 
   if (is_initialized()) {
-    delete current_music;
     current_music = nullptr;
-    delete spc_decoder;
     spc_decoder = nullptr;
-    delete it_decoder;
     it_decoder = nullptr;
   }
 }
 
 /**
  * \brief Returns whether the music system is initialized.
- * \return true if the music system is initilialized
+ * \return \c true if the music system is initialized.
  */
 bool Music::is_initialized() {
   return spc_decoder != nullptr;
@@ -340,16 +323,17 @@ void Music::play(
 
     if (current_music != nullptr) {
       // Stop the music that was played.
-      delete current_music;
+      current_music->stop();
       current_music = nullptr;
     }
 
     if (music_id != none) {
       // Play another music.
-      current_music = new Music(music_id, loop, callback_ref);
+      current_music = std::unique_ptr<Music>(
+          new Music(music_id, loop, callback_ref)
+      );
       if (!current_music->start()) {
         // Could not play the music.
-        delete current_music;
         current_music = nullptr;
       }
     }
@@ -382,7 +366,6 @@ void Music::update() {
     if (!playing) {
       // Music is finished.
       ScopedLuaRef callback_ref = current_music->callback_ref;
-      delete current_music;
       current_music = nullptr;
       callback_ref.call("music callback");
     }

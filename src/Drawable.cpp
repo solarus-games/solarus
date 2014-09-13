@@ -98,7 +98,6 @@ void Drawable::set_xy(const Point& xy) {
 /**
  * \brief Starts a transition effect on this object.
  *
- * The transition will be automatically deleted when finished or stopped.
  * Any previous transition is stopped.
  *
  * \param transition The transition to start.
@@ -106,15 +105,15 @@ void Drawable::set_xy(const Point& xy) {
  * the transition finishes, or an empty ref.
  */
 void Drawable::start_transition(
-    Transition& transition,
+    std::unique_ptr<Transition> transition,
     const ScopedLuaRef& callback_ref
 ) {
   stop_transition();
 
-  this->transition = &transition;
+  this->transition = std::move(transition);
   this->transition_callback_ref = callback_ref;
-  transition.start();
-  transition.set_suspended(is_suspended());
+  this->transition->start();
+  this->transition->set_suspended(is_suspended());
 }
 
 /**
@@ -124,7 +123,6 @@ void Drawable::start_transition(
  */
 void Drawable::stop_transition() {
 
-  delete transition;
   transition = nullptr;
   transition_callback_ref.clear();
 }
@@ -134,7 +132,7 @@ void Drawable::stop_transition() {
  * \return The object's transition, or nullptr if there is no transition.
  */
 Transition* Drawable::get_transition() {
-  return transition;
+  return transition.get();
 }
 
 /**
@@ -149,7 +147,6 @@ void Drawable::update() {
     transition->update();
     if (transition->is_finished()) {
 
-      delete transition;
       transition = nullptr;
 
       if (!transition_callback_ref.is_empty()) {

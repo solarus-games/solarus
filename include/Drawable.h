@@ -49,7 +49,7 @@ class Drawable: public ExportableToLua {
     void set_xy(const Point& xy);
 
     void start_transition(
-        Transition& transition,
+        std::unique_ptr<Transition> transition,
         const ScopedLuaRef& callback_ref
     );
     void stop_transition();
@@ -127,10 +127,9 @@ class Drawable: public ExportableToLua {
     Point xy;                     /**< Current position of this object
                                    * (result of movements). */
     std::shared_ptr<Movement>
-        movement;                 /**< A movement applied, or nullptr (will be
-                                   * deleted then if unused elsewhere). */
-    Transition* transition;       /**< A transition applied, or nullptr
-                                   * (will be deleted then). */  // TODO unique_ptr
+        movement;                 /**< A movement applied or nullptr. */
+    std::unique_ptr<Transition>
+        transition;               /**< A transition applied or nullptr. */
     ScopedLuaRef transition_callback_ref;
                                   /**< Lua registry ref of a function to call
                                    * when the transition finishes */

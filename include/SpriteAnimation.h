@@ -73,7 +73,6 @@ class SpriteAnimation {
     std::vector<SpriteAnimationDirection>
         directions;               /**< list of directions:
                                    * each direction is a sequence of images */
-                                  // TODO unique_ptr
     const uint32_t frame_delay;   /**< default interval in milliseconds between two frames
                                    * (this delay is the same for all directions) */
     const int loop_on_frame;      /**< number of the frame to loop on, or -1 to make no loop */

@@ -190,13 +190,16 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
       callback_ref = LuaTools::opt_function(l, index);
     }
 
-    TransitionFade* transition = new TransitionFade(
+    TransitionFade* transition(new TransitionFade(
         Transition::TRANSITION_OPENING,
         drawable->get_transition_surface()
-    );
+    ));
     transition->clear_color();
     transition->set_delay(delay);
-    drawable->start_transition(*transition, callback_ref);
+    drawable->start_transition(
+        std::unique_ptr<Transition>(transition),
+        callback_ref
+    );
 
     return 0;
   });
@@ -226,12 +229,16 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
       callback_ref = LuaTools::opt_function(l, index);
     }
 
-    TransitionFade* transition = new TransitionFade(
+    TransitionFade* transition(new TransitionFade(
         Transition::TRANSITION_CLOSING,
-        drawable->get_transition_surface());
+        drawable->get_transition_surface()
+    ));
     transition->clear_color();
     transition->set_delay(delay);
-    drawable->start_transition(*transition, callback_ref);
+    drawable->start_transition(
+        std::unique_ptr<Transition>(transition),
+        callback_ref
+    );
 
     return 0;
   });

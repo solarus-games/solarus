@@ -33,7 +33,7 @@ class ShaderContext {
   
     static bool initialize();
     static void quit();
-    static Shader* create_shader(const std::string& shader_name);
+    static std::unique_ptr<Shader> create_shader(const std::string& shader_name);
 
   private:
   

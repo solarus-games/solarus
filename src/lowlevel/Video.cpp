@@ -222,9 +222,8 @@ void initialize_video_modes() {
     for (unsigned i = 0; i < shader_names.size(); ++i) {
 
       // Load the shader and add the corresponding video mode.
-      std::unique_ptr<Shader> video_mode_shader(
-          ShaderContext::create_shader(shader_names.at(i))
-      );
+      std::unique_ptr<Shader> video_mode_shader =
+          ShaderContext::create_shader(shader_names.at(i));
       if (video_mode_shader != nullptr && video_mode_shader->is_valid()) {
 
         const std::string& video_mode_name = video_mode_shader->get_name();

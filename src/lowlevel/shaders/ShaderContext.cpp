@@ -56,21 +56,20 @@ void ShaderContext::quit() {
  * \param shader_name The name of the shader to load.
  * \return The created shader, or nullptr if the shader fails to compile.
  */
-Shader* ShaderContext::create_shader(const std::string& /* shader_name */) {
+std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& /* shader_name */) {
   
-  Shader* shader = nullptr;
+  std::unique_ptr<Shader> shader;
   
 #if SOLARUS_HAVE_OPENGL == 1
   if (Shader::get_sampler_type() == "sampler2DRect") {
-    shader = new GL_ARBShader(shader_name);
+    shader = std::unique_ptr<Shader>(new GL_ARBShader(shader_name));
   }
   else {
-    shader = new GL_2DShader(shader_name);
+    shader = std::unique_ptr<Shader>(new GL_2DShader(shader_name));
   }
   
   if (shader != nullptr && glGetError() != GL_NO_ERROR) {
     Debug::warning("Can't compile shader '" + shader_name + "'");
-    delete shader;
     shader = nullptr;
   }
 #endif

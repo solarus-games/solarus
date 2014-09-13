@@ -165,8 +165,9 @@ void Stream::notify_collision(MapEntity& entity_overlapping, CollisionMode /* co
  */
 void Stream::activate(MapEntity& target) {
 
-  StreamAction* stream_action = new StreamAction(*this, target);
-  target.start_stream_action(stream_action);
+  target.start_stream_action(std::unique_ptr<StreamAction>(
+      new StreamAction(*this, target)
+  ));
 }
 
 }

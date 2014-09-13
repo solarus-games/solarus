@@ -1376,7 +1376,7 @@ bool MapEntity::has_stream_action() const {
  * \return The stream action of this entity or nullptr.
  */
 const StreamAction* MapEntity::get_stream_action() const {
-  return stream_action;
+  return stream_action.get();
 }
 
 /**
@@ -1384,17 +1384,18 @@ const StreamAction* MapEntity::get_stream_action() const {
  * \return The stream action of this entity or nullptr.
  */
 StreamAction* MapEntity::get_stream_action() {
-  return stream_action;
+  return stream_action.get();
 }
 
 /**
  * \brief Makes this entity follow a stream.
  * \param stream_action The stream action to start.
  */
-void MapEntity::start_stream_action(StreamAction* stream_action) {
-
+void MapEntity::start_stream_action(
+    std::unique_ptr<StreamAction> stream_action
+) {
   stop_stream_action();
-  this->stream_action = stream_action;
+  this->stream_action = std::move(stream_action);
 }
 
 /**
@@ -1402,7 +1403,6 @@ void MapEntity::start_stream_action(StreamAction* stream_action) {
  */
 void MapEntity::stop_stream_action() {
 
-  delete stream_action;
   stream_action = nullptr;
 }
 

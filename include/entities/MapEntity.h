@@ -205,7 +205,7 @@ class MapEntity: public ExportableToLua {
     bool has_stream_action() const;
     const StreamAction* get_stream_action() const;
     StreamAction* get_stream_action();
-    void start_stream_action(StreamAction* stream_action);
+    void start_stream_action(std::unique_ptr<StreamAction> stream_action);
     void stop_stream_action();
 
     virtual void notify_obstacle_reached();
@@ -395,7 +395,8 @@ class MapEntity: public ExportableToLua {
         old_movements;                          /**< old movements to destroy as soon as possible */
     bool movement_events_enabled;               /**< Whether entity:on_position_changed() and friends should be called. */
     Detector* facing_entity;                    /**< The detector in front of this entity if any. */
-    StreamAction* stream_action;                /**< The stream effect currently applied if any. */  // TODO unique_ptr
+    std::unique_ptr<StreamAction>
+        stream_action;                /**< The stream effect currently applied if any. */
 
     // entity state
     bool initialized;                           /**< Whether all initializations were done. */

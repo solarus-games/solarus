@@ -19,8 +19,8 @@
 
 #include "Common.h"
 #include <cstddef>
-
-typedef struct _ModPlugFile ModPlugFile;
+#include <memory>
+#include <modplug.h>
 
 namespace solarus {
 
@@ -49,7 +49,7 @@ class ItDecoder {
 
   private:
 
-    ModPlugFile* modplug_file;  // TODO unique_ptr
+    std::unique_ptr<ModPlugFile, void(*)(ModPlugFile*)> modplug_file;
 
 };
 

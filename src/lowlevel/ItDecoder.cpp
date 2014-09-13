@@ -16,7 +16,6 @@
  */
 #include "lowlevel/ItDecoder.h"
 #include "lowlevel/Debug.h"
-#include <modplug.h>
 #include <stdafx.h>  // These two headers are with the libmodplug ones.
 #include <sndfile.h>
 
@@ -26,7 +25,7 @@ namespace solarus {
  * \brief Creates an Impulse Tracker decoder.
  */
 ItDecoder::ItDecoder():
-  modplug_file(nullptr) {
+  modplug_file(nullptr, ModPlug_Unload) {
 
   ModPlug_Settings settings;
   ModPlug_GetSettings(&settings);
@@ -48,11 +47,14 @@ void ItDecoder::load(void* sound_data, size_t sound_size) {
   );
 
   // Load the IT data into the IT library.
-  modplug_file = ModPlug_Load((const void*) sound_data, int(sound_size));
+  modplug_file = std::unique_ptr<ModPlugFile, void(*)(ModPlugFile*)>(
+      ModPlug_Load((const void*) sound_data, int(sound_size)),
+      ModPlug_Unload
+  );
 }
 
 /**
- * \brief Unloads the IT previously loaded.
+ * \brief Unloads the IT file previously loaded.
  */
 void ItDecoder::unload() {
 
@@ -60,7 +62,6 @@ void ItDecoder::unload() {
       "IT data is not loaded"
   );
 
-  ModPlug_Unload(modplug_file);
   modplug_file = nullptr;
 }
 
@@ -73,7 +74,7 @@ void ItDecoder::unload() {
 int ItDecoder::decode(void* decoded_data, int nb_samples) {
 
   // Decode from the IT data the specified number of PCM samples.
-  return ModPlug_Read(modplug_file, decoded_data, nb_samples);
+  return ModPlug_Read(modplug_file.get(), decoded_data, nb_samples);
 }
 
 /**
@@ -81,7 +82,7 @@ int ItDecoder::decode(void* decoded_data, int nb_samples) {
  * \return The number of channels.
  */
 int ItDecoder::get_num_channels() const {
-  return ModPlug_NumChannels(modplug_file);
+  return ModPlug_NumChannels(modplug_file.get());
 }
 
 /**
@@ -91,7 +92,7 @@ int ItDecoder::get_num_channels() const {
  */
 int ItDecoder::get_channel_volume(int channel) const {
 
-  const int num_patterns = ModPlug_NumPatterns(modplug_file);
+  const int num_patterns = ModPlug_NumPatterns(modplug_file.get());
 
   Debug::check_assertion(channel >= 0 && channel < get_num_channels(),
       "Invalid channel number");
@@ -101,7 +102,7 @@ int ItDecoder::get_channel_volume(int channel) const {
   }
 
   unsigned int num_rows = 0;
-  ModPlugNote* notes = ModPlug_GetPattern(modplug_file, 0, &num_rows);
+  ModPlugNote* notes = ModPlug_GetPattern(modplug_file.get(), 0, &num_rows);
 
   if (num_rows == 0) {
     return 0;
@@ -118,11 +119,11 @@ int ItDecoder::get_channel_volume(int channel) const {
 void ItDecoder::set_channel_volume(int channel, int volume) {
 
   const unsigned int num_channels = get_num_channels();
-  const unsigned int num_patterns = ModPlug_NumPatterns(modplug_file);
+  const unsigned int num_patterns = ModPlug_NumPatterns(modplug_file.get());
 
   for (unsigned int pattern = 0; pattern < num_patterns; ++pattern) {
     unsigned int num_rows;
-    ModPlugNote* notes = ModPlug_GetPattern(modplug_file, pattern, &num_rows);
+    ModPlugNote* notes = ModPlug_GetPattern(modplug_file.get(), pattern, &num_rows);
     for (unsigned int j = channel; j < num_rows * num_channels; j += num_channels) {
       notes[j].Volume = volume;
     }
@@ -135,7 +136,7 @@ void ItDecoder::set_channel_volume(int channel, int volume) {
  */
 int ItDecoder::get_tempo() const {
 
-  return reinterpret_cast<CSoundFile*>(modplug_file)->GetMusicTempo();
+  return reinterpret_cast<CSoundFile*>(modplug_file.get())->GetMusicTempo();
 }
 
 /**
@@ -144,7 +145,7 @@ int ItDecoder::get_tempo() const {
  */
 void ItDecoder::set_tempo(int tempo) {
 
-  reinterpret_cast<CSoundFile*>(modplug_file)->SetTempo(tempo);
+  reinterpret_cast<CSoundFile*>(modplug_file.get())->SetTempo(tempo);
 }
 
 /**

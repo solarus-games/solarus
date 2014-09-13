@@ -42,7 +42,6 @@ class SpriteAnimationSet {
   public:
 
     SpriteAnimationSet(const std::string& id);
-    ~SpriteAnimationSet();
 
     void set_tileset(Tileset& tileset);
 
@@ -61,8 +60,8 @@ class SpriteAnimationSet {
     static int l_animation(lua_State* l);
 
     std::string id;                          /**< Id of this animation set. */
-    std::map<std::string, SpriteAnimation*>
-            animations;                      /**< The animations */  // TODO unique_ptr
+    std::map<std::string, SpriteAnimation>
+            animations;                      /**< The animations */
     std::string default_animation_name;      /**< Name of the default animation. */
     Size max_size;                           /**< Size of this biggest frame. */
 

@@ -36,17 +36,6 @@ SpriteAnimationSet::SpriteAnimationSet(const std::string& id):
 }
 
 /**
- * \brief Destructor.
- */
-SpriteAnimationSet::~SpriteAnimationSet() {
-
-  // delete the animations
-  for (const auto& kvp: animations) {
-    delete kvp.second;
-  }
-}
-
-/**
  * \brief Attempts to load this animation set from its file.
  */
 void SpriteAnimationSet::load() {
@@ -120,7 +109,7 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
     }
 
     // Traverse the directions table.
-    std::vector<SpriteAnimationDirection*> directions;
+    std::vector<SpriteAnimationDirection> directions;
     int i = 1;
     lua_rawgeti(l, -1, i);
     while (!lua_isnil(l, -1)) {
@@ -181,9 +170,10 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
         }
       }
 
-      directions.push_back(new SpriteAnimationDirection(
+      directions.emplace_back(
           positions_in_src,
-          Point(origin_x, origin_y)));
+          Point(origin_x, origin_y)
+      );
     }
 
     if (animation_set->animations.find(animation_name) != animation_set->animations.end()) {
@@ -191,8 +181,9 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
           + "' in sprite '" + animation_set->id + "'");
     }
 
-    animation_set->animations[animation_name] = new SpriteAnimation(
-        src_image, directions, frame_delay, frame_to_loop_on);
+    animation_set->animations.emplace(std::make_pair(animation_name,
+        SpriteAnimation(src_image, directions, frame_delay, frame_to_loop_on)
+    ));
 
     // Set the first animation as the default one.
     if (animation_set->animations.size() == 1) {
@@ -212,8 +203,8 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
  */
 void SpriteAnimationSet::set_tileset(Tileset& tileset) {
 
-  for (const auto& kvp: animations) {
-    kvp.second->set_tileset(tileset);
+  for (auto& kvp: animations) {
+    kvp.second.set_tileset(tileset);
   }
 }
 
@@ -240,7 +231,7 @@ const SpriteAnimation& SpriteAnimationSet::get_animation(
       + "' in animation set '" + id + "'"
   );
 
-  return *animations.find(animation_name)->second; // the [] operator is not const in std::map
+  return animations.find(animation_name)->second;
 }
 
 /**
@@ -256,7 +247,7 @@ SpriteAnimation& SpriteAnimationSet::get_animation(
       + "' in animation set '" + id + "'"
   );
 
-  return *animations[animation_name];
+  return animations.find(animation_name)->second;
 }
 
 /**
@@ -274,8 +265,8 @@ void SpriteAnimationSet::enable_pixel_collisions() {
 
   if (!are_pixel_collisions_enabled()) {
 
-    for (const auto& kvp: animations) {
-      kvp.second->enable_pixel_collisions();
+    for (auto& kvp: animations) {
+      kvp.second.enable_pixel_collisions();
     }
   }
 }
@@ -290,7 +281,7 @@ bool SpriteAnimationSet::are_pixel_collisions_enabled() const {
     return false;
   }
 
-  return animations.begin()->second->are_pixel_collisions_enabled();
+  return animations.begin()->second.are_pixel_collisions_enabled();
 }
 
 /**

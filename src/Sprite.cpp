@@ -163,7 +163,7 @@ bool Sprite::are_pixel_collisions_enabled() const {
  * \return The size of the current frame.
  */
 Size Sprite::get_size() const {
-  return current_animation->get_direction(current_direction)->get_size();
+  return current_animation->get_direction(current_direction).get_size();
 }
 
 /**
@@ -181,7 +181,7 @@ const Size& Sprite::get_max_size() const {
  */
 const Point& Sprite::get_origin() const {
 
-  return current_animation->get_direction(current_direction)->get_origin();
+  return current_animation->get_direction(current_direction).get_origin();
 }
 
 /**
@@ -316,7 +316,7 @@ void Sprite::set_current_direction(int current_direction) {
  * \return The number of frames.
  */
 int Sprite::get_nb_frames() const {
-  return current_animation->get_direction(current_direction)->get_nb_frames();
+  return current_animation->get_direction(current_direction).get_nb_frames();
 }
 
 /**
@@ -361,7 +361,7 @@ void Sprite::set_current_frame(int current_frame, bool notify_script) {
  */
 const Rectangle& Sprite::get_current_frame_rectangle() const {
 
-  return current_animation->get_direction(current_direction)->get_frame(current_frame);
+  return current_animation->get_direction(current_direction).get_frame(current_frame);
 }
 
 /**
@@ -561,17 +561,17 @@ void Sprite::set_blinking(uint32_t blink_delay) {
  */
 bool Sprite::test_collision(const Sprite& other, int x1, int y1, int x2, int y2) const {
 
-  const SpriteAnimationDirection* direction1 = current_animation->get_direction(current_direction);
-  const Point& origin1 = direction1->get_origin();
+  const SpriteAnimationDirection& direction1 = current_animation->get_direction(current_direction);
+  const Point& origin1 = direction1.get_origin();
   Point location1 = { x1 - origin1.x, y1 - origin1.y };
   location1 += get_xy();
-  const PixelBits& pixel_bits1 = direction1->get_pixel_bits(current_frame);
+  const PixelBits& pixel_bits1 = direction1.get_pixel_bits(current_frame);
 
-  const SpriteAnimationDirection* direction2 = other.current_animation->get_direction(other.current_direction);
-  const Point& origin2 = direction2->get_origin();
+  const SpriteAnimationDirection& direction2 = other.current_animation->get_direction(other.current_direction);
+  const Point& origin2 = direction2.get_origin();
   Point location2 = { x2 - origin2.x, y2 - origin2.y };
   location2 += other.get_xy();
-  const PixelBits& pixel_bits2 = direction2->get_pixel_bits(other.current_frame);
+  const PixelBits& pixel_bits2 = direction2.get_pixel_bits(other.current_frame);
 
   return pixel_bits1.test_collision(pixel_bits2, location1, location2);
 }

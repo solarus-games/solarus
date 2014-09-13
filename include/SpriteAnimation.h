@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/SurfacePtr.h"
+#include "SpriteAnimationDirection.h"
 #include <memory>
 #include <string>
 #include <vector>
@@ -27,7 +28,6 @@
 namespace solarus {
 
 class Point;
-class SpriteAnimationDirection;
 class Tileset;
 
 /**
@@ -41,10 +41,10 @@ class SpriteAnimation {
 
     SpriteAnimation(
         const std::string& image_file_name,
-        const std::vector<SpriteAnimationDirection*>& directions,
+        const std::vector<SpriteAnimationDirection>& directions,
         uint32_t frame_interval,
-        int loop_on_frame);
-    ~SpriteAnimation();
+        int loop_on_frame
+    );
 
     void set_tileset(Tileset& tileset);
 
@@ -53,7 +53,7 @@ class SpriteAnimation {
         int current_direction, int current_frame);
 
     int get_nb_directions() const;
-    const SpriteAnimationDirection* get_direction(int direction) const;
+    const SpriteAnimationDirection& get_direction(int direction) const;
     uint32_t get_frame_delay() const;
     bool is_looping() const;
 
@@ -70,7 +70,7 @@ class SpriteAnimation {
                                    * all directions of the sprite's animation */
     const bool
         src_image_is_tileset;     /**< indicates that the image comes from the tileset */
-    std::vector<SpriteAnimationDirection*>
+    std::vector<SpriteAnimationDirection>
         directions;               /**< list of directions:
                                    * each direction is a sequence of images */
                                   // TODO unique_ptr
@@ -86,9 +86,9 @@ class SpriteAnimation {
  * \param direction the direction
  * \return the sequence of images corresponding to this direction
  */
-inline const SpriteAnimationDirection* SpriteAnimation::get_direction(
-    int direction) const {
-
+inline const SpriteAnimationDirection& SpriteAnimation::get_direction(
+    int direction
+) const {
   SOLARUS_ASSERT(direction >= 0 && direction < get_nb_directions(),
       "Invalid sprite direction");
   return directions[direction];

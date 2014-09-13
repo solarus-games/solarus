@@ -33,7 +33,7 @@ namespace solarus {
  */
 SpriteAnimation::SpriteAnimation(
     const std::string& image_file_name,
-    const std::vector<SpriteAnimationDirection*>& directions,
+    const std::vector<SpriteAnimationDirection>& directions,
     uint32_t frame_delay,
     int loop_on_frame):
 
@@ -53,16 +53,6 @@ SpriteAnimation::SpriteAnimation(
     Debug::check_assertion(src_image != nullptr,
         std::string("Cannot load image '" + image_file_name + "'")
     );
-  }
-}
-
-/**
- * \brief Destructor.
- */
-SpriteAnimation::~SpriteAnimation() {
-
-  for (SpriteAnimationDirection* direction: directions) {
-    delete direction;
   }
 }
 
@@ -133,7 +123,7 @@ int SpriteAnimation::get_next_frame(
   int next_frame = current_frame + 1;
 
   // if we are on the last frame
-  if (next_frame == directions[current_direction]->get_nb_frames()) {
+  if (next_frame == directions[current_direction].get_nb_frames()) {
     // we loop on the appropriate frame
     // or -1 if there is no loop
     next_frame = loop_on_frame;
@@ -162,7 +152,7 @@ void SpriteAnimation::draw(Surface& dst_surface,
           << " direction(s)";
       Debug::die(oss.str());
     }
-    directions[current_direction]->draw(dst_surface, dst_position,
+    directions[current_direction].draw(dst_surface, dst_position,
         current_frame, *src_image);
   }
 }
@@ -186,8 +176,8 @@ void SpriteAnimation::enable_pixel_collisions() {
  */
 void SpriteAnimation::do_enable_pixel_collisions() {
 
-  for (SpriteAnimationDirection* direction: directions) {
-    direction->enable_pixel_collisions(*src_image);
+  for (SpriteAnimationDirection& direction: directions) {
+    direction.enable_pixel_collisions(*src_image);
   }
 }
 
@@ -196,8 +186,8 @@ void SpriteAnimation::do_enable_pixel_collisions() {
  */
 void SpriteAnimation::disable_pixel_collisions() {
 
-  for (SpriteAnimationDirection* direction: directions) {
-    direction->disable_pixel_collisions();
+  for (SpriteAnimationDirection& direction: directions) {
+    direction.disable_pixel_collisions();
   }
 }
 
@@ -206,7 +196,7 @@ void SpriteAnimation::disable_pixel_collisions() {
  * \return true if the pixel-perfect collisions are enabled
  */
 bool SpriteAnimation::are_pixel_collisions_enabled() const {
-  return directions[0]->are_pixel_collisions_enabled() || should_enable_pixel_collisions;
+  return directions[0].are_pixel_collisions_enabled() || should_enable_pixel_collisions;
 }
 
 }

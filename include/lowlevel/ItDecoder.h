@@ -35,7 +35,7 @@ class ItDecoder {
 
     ItDecoder();
 
-    void load(void* sound_data, size_t sound_size);
+    void load(const std::string& sound_buffer);
     void unload();
     int decode(void* decoded_data, int nb_samples);
 

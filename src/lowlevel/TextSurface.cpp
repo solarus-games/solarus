@@ -54,11 +54,8 @@ void TextSurface::load_fonts() {
   static const std::string file_name = "text/fonts.dat";
 
   lua_State* l = luaL_newstate();
-  size_t size;
-  char* buffer;
-  FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  int load_result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
-  FileTools::data_file_close_buffer(buffer);
+  const std::string& buffer = FileTools::data_file_read(file_name);
+  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0) {
     Debug::die(std::string("Failed to load the fonts file '")
@@ -96,11 +93,11 @@ void TextSurface::quit() {
       // It's a normal font.
       TTF_CloseFont(font.internal_font);
       SDL_RWclose(font.rw);
-      FileTools::data_file_close_buffer(font.buffer);
     }
   }
 
   TTF_Quit();
+  fonts.clear();
   fonts_loaded = false;
 }
 
@@ -122,8 +119,10 @@ int TextSurface::l_font(lua_State* l) {
     int font_size = LuaTools::opt_int_field(l, 1, "size", 11);
     bool is_default = LuaTools::opt_boolean_field(l, 1, "default", false);
 
-    fonts[font_id].file_name = file_name;
-    fonts[font_id].font_size = font_size;
+    fonts.emplace(std::make_pair(font_id, FontData()));
+    FontData& font = fonts[font_id];
+    font.file_name = file_name;
+    font.font_size = font_size;
 
     if (is_default || default_font_id.empty()) {
       default_font_id = font_id;
@@ -138,15 +137,17 @@ int TextSurface::l_font(lua_State* l) {
 
     if (extension == ".png" || extension == ".PNG") {
       // It's a bitmap font.
-      fonts[font_id].bitmap = Surface::create(file_name, Surface::DIR_DATA);
+      font.bitmap = Surface::create(file_name, Surface::DIR_DATA);
     }
     else {
       // It's a normal font.
-      size_t size;
-      FileTools::data_file_open_buffer(file_name, &fonts[font_id].buffer, &size);
-      fonts[font_id].bitmap = nullptr;
-      fonts[font_id].rw = SDL_RWFromMem(fonts[font_id].buffer, int(size));
-      fonts[font_id].internal_font = TTF_OpenFontRW(fonts[font_id].rw, 0, font_size);
+      font.buffer = FileTools::data_file_read(file_name);
+      font.bitmap = nullptr;
+      font.rw = SDL_RWFromMem(
+          const_cast<char*>(font.buffer.data()),
+          (int) font.buffer.size()
+      );
+      font.internal_font = TTF_OpenFontRW(fonts[font_id].rw, 0, font_size);
       Debug::check_assertion(fonts[font_id].internal_font != nullptr,
           std::string("Cannot load font from file '") + file_name
           + "': " + TTF_GetError()

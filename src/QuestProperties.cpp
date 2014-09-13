@@ -92,10 +92,8 @@ void QuestProperties::load() {
   // Read the quest properties file.
   const std::string file_name("quest.dat");
   lua_State* l = luaL_newstate();
-  size_t size = 0;
-  char* buffer = nullptr;
-  FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  int load_result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  const std::string& buffer = FileTools::data_file_read(file_name);
+  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0) {
     // Syntax error in quest.dat.
@@ -122,7 +120,6 @@ void QuestProperties::load() {
     }
   }
 
-  FileTools::data_file_close_buffer(buffer);
   lua_close(l);
 }
 

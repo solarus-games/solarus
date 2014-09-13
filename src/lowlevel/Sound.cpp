@@ -352,7 +352,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
   SoundFromMemory mem;
   mem.loop = false;
   mem.position = 0;
-  FileTools::data_file_open_buffer(file_name, &mem.data, &mem.size);
+  mem.data = FileTools::data_file_read(file_name);
 
   OggVorbis_File file;
   int error = ov_open_callbacks(&mem, &file, nullptr, 0, ogg_callbacks);
@@ -439,7 +439,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
     ov_clear(&file);
   }
 
-  FileTools::data_file_close_buffer(mem.data);
+  mem.data.clear();
 
   return buffer;
 }
@@ -459,7 +459,8 @@ size_t Sound::cb_read(void* ptr, size_t /* size */, size_t nb_bytes, void* datas
 
   SoundFromMemory* mem = (SoundFromMemory*) datasource;
 
-  if (mem->position >= mem->size) {
+  const size_t total_size = mem->data.size();
+  if (mem->position >= total_size) {
     if (mem->loop) {
       mem->position = 0;
     }
@@ -467,11 +468,11 @@ size_t Sound::cb_read(void* ptr, size_t /* size */, size_t nb_bytes, void* datas
       return 0;
     }
   }
-  else if (mem->position + nb_bytes >= mem->size) {
-    nb_bytes = mem->size - mem->position;
+  else if (mem->position + nb_bytes >= total_size) {
+    nb_bytes = total_size - mem->position;
   }
 
-  memcpy(ptr, mem->data + mem->position, nb_bytes);
+  memcpy(ptr, mem->data.data() + mem->position, nb_bytes);
   mem->position += nb_bytes;
 
   return nb_bytes;

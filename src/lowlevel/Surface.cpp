@@ -223,15 +223,12 @@ SDL_Surface* Surface::get_surface_from_file(
     return nullptr;
   }
 
-  size_t size;
-  char* buffer;
-  FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size, language_specific);
-  SDL_RWops* rw = SDL_RWFromMem(buffer, int(size));
+  const std::string& buffer = FileTools::data_file_read(prefixed_file_name, language_specific);
+  SDL_RWops* rw = SDL_RWFromMem(const_cast<char*>(buffer.data()), (int) buffer.size());
 
   SDL_Surface* software_surface = IMG_Load_RW(rw, 0);
 
   SDL_RWclose(rw);
-  FileTools::data_file_close_buffer(buffer);
 
   Debug::check_assertion(software_surface != nullptr,
       std::string("Cannot load image '") + prefixed_file_name + "'");

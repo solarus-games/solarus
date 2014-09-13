@@ -73,11 +73,8 @@ void QuestResourceList::initialize() {
   // Read the quest resource list file.
   const std::string& file_name = "project_db.dat";
   lua_State* l = luaL_newstate();
-  size_t size;
-  char* buffer;
-  FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  luaL_loadbuffer(l, buffer, size, file_name.c_str());
-  FileTools::data_file_close_buffer(buffer);
+  const std::string& buffer = FileTools::data_file_read(file_name);
+  luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   // We register only one C function for all resource types.
   lua_register(l, "resource", l_resource_element);

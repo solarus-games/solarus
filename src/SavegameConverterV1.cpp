@@ -36,16 +36,12 @@ SavegameConverterV1::SavegameConverterV1(const std::string& file_name) {
   );
 
   // Let's load this obsolete savegame.
-  size_t size;
-  char *buffer;
-
-  FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  Debug::check_assertion(size == sizeof(SavedData),
+  const std::string& buffer = FileTools::data_file_read(file_name);
+  Debug::check_assertion(buffer.size() == sizeof(SavedData),
       std::string("Cannot read savegame file version 1 '")
       + file_name + "': invalid file size"
   );
-  memcpy(&saved_data, buffer, sizeof(SavedData));
-  FileTools::data_file_close_buffer(buffer);
+  memcpy(&saved_data, buffer.data(), sizeof(SavedData));
 }
 
 /**

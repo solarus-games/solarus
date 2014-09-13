@@ -48,8 +48,7 @@ class Sound {
      * \brief Buffer containing an encoded sound file.
      */
     struct SoundFromMemory {
-      char* data;               /**< the buffer */
-      size_t size;              /**< size of the buffer in bytes */
+      std::string data;         /**< the buffer */
       size_t position;          /**< current position in the buffer */
       bool loop;                /**< true to restart the sound when finished */
     };

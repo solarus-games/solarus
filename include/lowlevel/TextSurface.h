@@ -125,7 +125,7 @@ class TextSurface: public Drawable {
     struct FontData {
       std::string file_name;                          /**< name of the font file, relative to the data directory */
       int font_size;                                  /**< size of the characters */
-      char* buffer;                                   /**< the file loaded into memory */
+      std::string buffer;                             /**< the file loaded into memory */
       SDL_RWops* rw;                                  /**< read/write object used to open the font file from memory */
       TTF_Font* internal_font;                        /**< the library-dependent font object */
       SurfacePtr bitmap;                              /**< only used if it's a PNG font */

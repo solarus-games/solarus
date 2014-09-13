@@ -179,11 +179,8 @@ void Savegame::load() {
 
   // Try to parse as Lua first.
   lua_State* l = luaL_newstate();
-  size_t size;
-  char* buffer;
-  FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  const int load_result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
-  FileTools::data_file_close_buffer(buffer);
+  const std::string& buffer = FileTools::data_file_read(file_name);
+  const int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   // Call the Lua savegame file.
   if (load_result == 0) {
@@ -286,7 +283,7 @@ void Savegame::save() {
   }
 
   const std::string& text = oss.str();
-  FileTools::data_file_save_buffer(file_name, text.c_str(), text.size());
+  FileTools::data_file_save(file_name, text);
   empty = false;
 }
 

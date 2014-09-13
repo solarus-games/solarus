@@ -60,13 +60,18 @@ class FileTools {
     static const std::string& get_quest_path();
     static DataFileLocation data_file_get_location(
         const std::string& file_name);
-    static bool data_file_exists(const std::string& file_name,
-        bool language_specific = false);
-    static void data_file_open_buffer(const std::string& file_name,
-        char** buffer, size_t* size, bool language_specific = false);
-    static void data_file_save_buffer(const std::string& file_name,
-        const char* buffer, size_t size);
-    static void data_file_close_buffer(char* buffer);
+    static bool data_file_exists(
+        const std::string& file_name,
+        bool language_specific = false
+    );
+    static std::string data_file_read(
+        const std::string& file_name,
+        bool language_specific = false
+    );
+    static void data_file_save(
+        const std::string& file_name,
+        const std::string& buffer
+    );
     static bool data_file_delete(const std::string& file_name);
     static bool data_file_mkdir(const std::string& dir_name);
     static std::vector<std::string> data_files_enumerate(
@@ -83,7 +88,7 @@ class FileTools {
     static const std::string get_full_quest_write_dir();
 
     // Temporary files.
-    static std::string create_temporary_file(const char* buffer, size_t size);
+    static std::string create_temporary_file(const std::string& content);
     static bool remove_temporary_files();
 
   private:

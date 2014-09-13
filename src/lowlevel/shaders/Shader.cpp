@@ -136,11 +136,10 @@ void Shader::load_lua_file(const std::string& path) {
     
   lua_State* l = luaL_newstate();
   luaL_openlibs(l);  // FIXME don't open the libs
-  size_t size;
-  char* buffer;
+
     
-  FileTools::data_file_open_buffer(path, &buffer, &size);
-  int load_result = luaL_loadbuffer(l, buffer, size, path.c_str());
+  const std::string& buffer = FileTools::data_file_read(path);
+  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), path.c_str());
     
   if (load_result != 0) {
     // Syntax error in the lua file.
@@ -161,7 +160,6 @@ void Shader::load_lua_file(const std::string& path) {
     }
   }
 
-  FileTools::data_file_close_buffer(buffer);
   lua_close(l);
 }
 

@@ -673,11 +673,8 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
 
   if (FileTools::data_file_exists(file_name)) {
     // Load the file.
-    size_t size;
-    char* buffer;
-    FileTools::data_file_open_buffer(file_name, &buffer, &size);
-    int result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
-    FileTools::data_file_close_buffer(buffer);
+    const std::string& buffer = FileTools::data_file_read(file_name);
+    int result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
     if (result != 0) {
       Debug::error(std::string("Failed to load script '")

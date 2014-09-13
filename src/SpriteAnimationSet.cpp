@@ -47,11 +47,8 @@ void SpriteAnimationSet::load() {
   std::string file_name = std::string("sprites/") + id + ".dat";
 
   lua_State* l = luaL_newstate();
-  size_t size;
-  char* buffer;
-  FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  int load_result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
-  FileTools::data_file_close_buffer(buffer);
+  const std::string& buffer = FileTools::data_file_read(file_name);
+  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0) {
     Debug::error(std::string("Failed to load sprite file '") + file_name

@@ -184,16 +184,15 @@ bool FileTools::data_file_exists(const std::string& file_name,
 }
 
 /**
- * \brief Opens a data file an loads its content into a buffer.
- * \param file_name name of the file to open
- * \param buffer the buffer to load
- * \param size number of bytes to read
- * \param language_specific true if the file is specific to the current language
- * TODO pass buffer and size by reference
+ * \brief Opens a data file an loads its content into memory.
+ * \param file_name Name of the file to open.
+ * \param language_specific \c true if the file is specific to the current language.
+ * \return The content of the file.
  */
-void FileTools::data_file_open_buffer(const std::string& file_name, char** buffer,
-    size_t* size, bool language_specific) {
-
+std::string FileTools::data_file_read(
+    const std::string& file_name,
+    bool language_specific
+) {
   std::string full_file_name;
   if (language_specific) {
     Debug::check_assertion(!Language::get_language().empty(),
@@ -216,24 +215,25 @@ void FileTools::data_file_open_buffer(const std::string& file_name, char** buffe
   );
 
   // load it into memory
-  *size = static_cast<size_t>(PHYSFS_fileLength(file));
+  size_t size =  static_cast<size_t>(PHYSFS_fileLength(file));
+  std::vector<char> buffer(size);
 
-  *buffer = new char[*size];
-
-  PHYSFS_read(file, *buffer, 1, PHYSFS_uint32(*size));
+  PHYSFS_read(file, buffer.data(), 1, (PHYSFS_uint32) size);
   PHYSFS_close(file);
+
+  return std::string(buffer.data(), size);
 }
 
 /**
  * \brief Saves a buffer into a data file.
  * \param file_name Name of the file to write, relative to Solarus write directory.
  * \param buffer The buffer to save.
- * \param size Number of bytes to write.
  *
  */
-void FileTools::data_file_save_buffer(const std::string& file_name,
-    const char* buffer, size_t size) {
-
+void FileTools::data_file_save(
+    const std::string& file_name,
+    const std::string& buffer
+) {
   // open the file to write
   PHYSFS_file* file = PHYSFS_openWrite(file_name.c_str());
   if (file == nullptr) {
@@ -243,20 +243,11 @@ void FileTools::data_file_save_buffer(const std::string& file_name,
   }
 
   // save the memory buffer
-  if (PHYSFS_write(file, buffer, PHYSFS_uint32(size), 1) == -1) {
+  if (PHYSFS_write(file, buffer.data(), (PHYSFS_uint32) buffer.size(), 1) == -1) {
     Debug::die(std::string("Cannot write file '") + file_name + "': "
         + PHYSFS_getLastError());
   }
   PHYSFS_close(file);
-}
-
-/**
- * \brief Closes a data buffer previously open with data_file_open_buffer().
- * \param buffer the buffer to close
- */
-void FileTools::data_file_close_buffer(char* buffer) {
-
-  delete[] buffer;
 }
 
 /**
@@ -452,11 +443,10 @@ std::string FileTools::get_base_write_dir() {
 
 /**
  * \brief Creates a temporary file with the specified content and closes it.
- * \param buffer Content of the file to create, or nullptr to create an empty file.
- * \param size Size of the buffer.
- * \return Full name of the file created, or en ampty string in case of failure.
+ * \param content Content of the file to create.
+ * \return Full name of the file created, or an ampty string in case of failure.
  */
-std::string FileTools::create_temporary_file(const char* buffer, size_t size) {
+std::string FileTools::create_temporary_file(const std::string& content) {
 
   // Determine the name of our temporary file.
   std::string file_name;
@@ -484,8 +474,8 @@ std::string FileTools::create_temporary_file(const char* buffer, size_t size) {
   // File successfully created.
   temporary_files.push_back(file_name);
 
-  if (buffer != nullptr) {
-    out.write(buffer, size);
+  if (!content.empty()) {
+    out.write(content.data(), content.size());
     if (!out) {
       file_name = "";
     }

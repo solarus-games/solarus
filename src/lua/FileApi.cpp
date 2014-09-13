@@ -108,11 +108,8 @@ int LuaContext::file_api_open(lua_State* l) {
         // Found in the data archive.
         // To call io.open(), we need a regular file, so let's create
         // a temporary one.
-        char* buffer;
-        size_t size;
-        FileTools::data_file_open_buffer(file_name, &buffer, &size);
-        real_file_name = FileTools::create_temporary_file(buffer, size);
-        FileTools::data_file_close_buffer(buffer);
+        const std::string& buffer = FileTools::data_file_read(file_name);
+        real_file_name = FileTools::create_temporary_file(buffer);
         break;
       }
       }

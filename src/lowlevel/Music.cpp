@@ -577,17 +577,15 @@ bool Music::start() {
   alSourcef(source, AL_GAIN, volume);
 
   // load the music into memory
-  size_t sound_size;
-  char* sound_data;
+  std::string sound_buffer;
   switch (format) {
 
     case SPC:
 
-      FileTools::data_file_open_buffer(file_name, &sound_data, &sound_size);
+      sound_buffer = FileTools::data_file_read(file_name);
 
       // load the SPC data into the SPC decoding library
-      spc_decoder->load((int16_t*) sound_data, sound_size);
-      FileTools::data_file_close_buffer(sound_data);
+      spc_decoder->load((int16_t*) sound_buffer.data(), sound_buffer.size());
 
       for (int i = 0; i < nb_buffers; i++) {
         decode_spc(buffers[i], 4096);
@@ -596,11 +594,10 @@ bool Music::start() {
 
     case IT:
 
-      FileTools::data_file_open_buffer(file_name, &sound_data, &sound_size);
+      sound_buffer = FileTools::data_file_read(file_name);
 
       // load the IT data into the IT decoding library
-      it_decoder->load(sound_data, sound_size);
-      FileTools::data_file_close_buffer(sound_data);
+      it_decoder->load(sound_buffer);
 
       for (int i = 0; i < nb_buffers; i++) {
         decode_it(buffers[i], 4096);
@@ -611,7 +608,7 @@ bool Music::start() {
     {
       ogg_mem.position = 0;
       ogg_mem.loop = this->loop;
-      FileTools::data_file_open_buffer(file_name, &ogg_mem.data, &ogg_mem.size);
+      ogg_mem.data = FileTools::data_file_read(file_name);
       // now, ogg_mem contains the encoded data
 
       int error = ov_open_callbacks(&ogg_mem, &ogg_file, nullptr, 0, Sound::ogg_callbacks);
@@ -694,7 +691,7 @@ void Music::stop() {
 
     case OGG:
       ov_clear(&ogg_file);
-      FileTools::data_file_close_buffer(ogg_mem.data);
+      ogg_mem.data.clear();
       break;
 
     case NO_FORMAT:

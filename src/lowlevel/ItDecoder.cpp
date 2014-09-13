@@ -37,10 +37,9 @@ ItDecoder::ItDecoder():
 
 /**
  * \brief Loads an IT file from memory.
- * \param sound_data the memory area to read
- * \param sound_size size of the memory area in bytes
+ * \param sound_buffer The memory area to read
  */
-void ItDecoder::load(void* sound_data, size_t sound_size) {
+void ItDecoder::load(const std::string& sound_buffer) {
 
   Debug::check_assertion(modplug_file == nullptr,
       "IT data is already loaded"
@@ -48,7 +47,7 @@ void ItDecoder::load(void* sound_data, size_t sound_size) {
 
   // Load the IT data into the IT library.
   modplug_file = std::unique_ptr<ModPlugFile, void(*)(ModPlugFile*)>(
-      ModPlug_Load((const void*) sound_data, int(sound_size)),
+      ModPlug_Load((const void*) sound_buffer.data(), (int) sound_buffer.size()),
       ModPlug_Unload
   );
 }

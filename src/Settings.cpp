@@ -45,11 +45,8 @@ bool Settings::load(const std::string& file_name) {
 
   // Read the settings as a Lua data file.
   lua_State* l = luaL_newstate();
-  size_t size;
-  char* buffer;
-  FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  int load_result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
-  FileTools::data_file_close_buffer(buffer);
+  const std::string& buffer = FileTools::data_file_read(file_name);
+  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0 || lua_pcall(l, 0, 0, 0) != 0) {
     Debug::error(std::string("Cannot read settings file '")
@@ -145,7 +142,7 @@ bool Settings::save(const std::string& file_name) {
   oss << "joypad_enabled = " << (InputEvent::is_joypad_enabled() ? "true" : "false") << "\n";
 
   const std::string& text = oss.str();
-  FileTools::data_file_save_buffer(file_name, text.c_str(), text.size());
+  FileTools::data_file_save(file_name, text);
   return true;
 }
 

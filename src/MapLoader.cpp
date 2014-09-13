@@ -127,7 +127,7 @@ int MapLoader::l_properties(lua_State* l) {
     map->set_floor(floor);
 
     map->tileset_id = tileset_id;
-    map->tileset = new Tileset(tileset_id);
+    map->tileset = std::unique_ptr<Tileset>(new Tileset(tileset_id));
     map->tileset->load();
 
     MapEntities& entities = map->get_entities();
@@ -144,7 +144,7 @@ int MapLoader::l_properties(lua_State* l) {
       entities.non_animated_regions[layer] = new NonAnimatedRegions(*map, Layer(layer));
     }
     entities.boomerang = nullptr;
-    map->camera = new Camera(*map);
+    map->camera = std::unique_ptr<Camera>(new Camera(*map));
 
     // Properties are set: we now allow the data file to declare entities.
     static const luaL_Reg functions[] = {

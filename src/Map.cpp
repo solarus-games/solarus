@@ -62,19 +62,6 @@ Map::Map(const std::string& id):
 }
 
 /**
- * \brief Destructor.
- */
-Map::~Map() {
-
-  Debug::check_assertion(!is_started(),
-      "Deleting a map that is still running. Call Map::leave() before.");
-
-  if (is_loaded()) {
-    unload();
-  }
-}
-
-/**
  * \brief Returns the id of the map.
  * \return the map id
  */
@@ -261,14 +248,11 @@ bool Map::is_loaded() const {
 void Map::unload() {
 
   if (is_loaded()) {
-    delete tileset;
     tileset = nullptr;
     visible_surface = nullptr;
     background_surface = nullptr;
     foreground_surface = nullptr;
-    delete entities;
     entities = nullptr;
-    delete camera;
     camera = nullptr;
 
     loaded = false;
@@ -294,7 +278,7 @@ void Map::load(Game& game) {
   );
   background_surface->set_software_destination(false);
 
-  entities = new MapEntities(game, *this);
+  entities = std::unique_ptr<MapEntities>(new MapEntities(game, *this));
 
   // read the map file
   map_loader.load_map(game, *this);

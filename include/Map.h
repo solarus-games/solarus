@@ -55,7 +55,6 @@ class Map: public ExportableToLua {
 
     // creation and destruction
     Map(const std::string& id);
-    ~Map();
 
     // map properties
     const std::string& get_id() const;
@@ -189,8 +188,9 @@ class Map: public ExportableToLua {
     int height8;                  /**< Map height in 8x8 squares (height8 = get_height() / 8). */
 
     std::string tileset_id;       /**< Id of the current tileset. */
-    Tileset* tileset;             /**< Tileset of the map: every tile of this map
-                                   * is extracted from this tileset. */  // TODO unique_ptr
+    std::unique_ptr<Tileset>
+        tileset;                  /**< Tileset of the map: every tile of this map
+                                   * is extracted from this tileset. */
 
     std::string music_id;         /**< Id of the current music of the map:
                                    * can be a valid music, Music::none or Music::unchanged. */
@@ -206,7 +206,8 @@ class Map: public ExportableToLua {
 
     // screen
 
-    Camera* camera;               /**< The visible area of the map. */  // TODO unique_ptr
+    std::unique_ptr<Camera>
+        camera;                   /**< The visible area of the map. */
     SurfacePtr visible_surface;   /**< Surface where the map is displayed. This is only the visible part
                                    * of the map, so the coordinates on this surface are relative to the screen,
                                    * not to the map. */
@@ -224,7 +225,8 @@ class Map: public ExportableToLua {
                                    * to place the hero on a side of the map,
                                    * or an empty string to use the one saved. */
 
-    MapEntities* entities;        /**< The entities on the map. */  // TODO unique_ptr
+    std::unique_ptr<MapEntities>
+        entities;                 /**< The entities on the map. */  // TODO unique_ptr
     bool suspended;               /**< Whether the game is suspended. */
 };
 

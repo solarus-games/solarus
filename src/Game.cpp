@@ -26,6 +26,8 @@
 #include "TransitionFade.h"
 #include "lua/LuaContext.h"
 #include "entities/Hero.h"
+#include "entities/MapEntities.h"
+#include "entities/Tileset.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"

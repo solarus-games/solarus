@@ -209,7 +209,7 @@ InputEvent::InputEvent(const SDL_Event& event):
  * if there is no event.
  * \return the current event to handle, or nullptr if there is no event
  */
-InputEvent* InputEvent::get_event() {
+std::unique_ptr<InputEvent> InputEvent::get_event() {
 
   InputEvent* result = nullptr;
   SDL_Event internal_event;
@@ -221,8 +221,7 @@ InputEvent* InputEvent::get_event() {
         || std::abs(internal_event.jaxis.value) >= 10000) {
       
       // If this is a joypad axis event
-      if(internal_event.type == SDL_JOYAXISMOTION)
-      {
+      if (internal_event.type == SDL_JOYAXISMOTION) {
         // Determine the current state of the axis
         int axis_state = 0;
         int axis = internal_event.jaxis.axis % 2; // Ensure we only get an index of 0 or 1
@@ -235,34 +234,31 @@ InputEvent* InputEvent::get_event() {
         }        
         
         // and state is same as last event for this axis
-        if(joypad_axis_state[axis] == axis_state)
-        {
+        if(joypad_axis_state[axis] == axis_state) {
           // Ignore repeat joypad axis movement state.  
           // However, an event still needs to be returned so that 
-          // all events will be handled this frame.  Therefore, change
+          // all events will be handled this frame. Therefore, change
           // the type to a invalid event so it will be ignored.
           internal_event.type = SDL_LASTEVENT;
         }
-        else
-        {
+        else {
           // Otherwise store the new axis state
           joypad_axis_state[axis] = axis_state;
         }
       }
     }
-    else
-    {
+    else {
       // In deadzone band, however, an event still needs to be returned so that 
       // all events will be handled this frame.  Therefore, change
       // the type to a invalid event so it will be ignored.
       internal_event.type = SDL_LASTEVENT;
       
     }
-    // Always return an event if one occured, so we will handle all successive events
+    // Always return an event if one occurred, so we will handle all successive events
     result = new InputEvent(internal_event);
   }
 
-  return result;
+  return std::unique_ptr<InputEvent>(result);
 }
 
 // global information

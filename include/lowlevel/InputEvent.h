@@ -18,9 +18,10 @@
 #define SOLARUS_INPUT_EVENT_H
 
 #include "Common.h"
-#include <SDL_events.h>
-#include <string>
 #include <map>
+#include <memory>
+#include <string>
+#include <SDL_events.h>
 
 typedef struct _SDL_Joystick SDL_Joystick;
 
@@ -202,7 +203,7 @@ class InputEvent {
     static void quit();
 
     // retrieve the current event
-    static InputEvent* get_event();
+    static std::unique_ptr<InputEvent> get_event();
 
     // global information
     static void set_key_repeat(bool repeat);

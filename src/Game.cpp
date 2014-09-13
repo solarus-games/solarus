@@ -137,7 +137,9 @@ void Game::stop() {
     if (current_map->is_started()) {
       current_map->leave();
     }
-    current_map->unload();
+    if (current_map->is_loaded()) {
+      current_map->unload();
+    }
   }
 
   if (hero->is_on_map()) {
@@ -399,6 +401,7 @@ void Game::update_transitions() {
 
     MainLoop& main_loop = get_main_loop();
     if (restarting) {
+      current_map->leave();
       current_map->unload();
       main_loop.set_game(new Game(main_loop, savegame));
       savegame = nullptr;  // The new game is the owner.

@@ -98,6 +98,7 @@ class MapEntities {
     void notify_map_started();
     void notify_map_opening_transition_finished();
     void notify_tileset_changed();
+    void notify_map_finished();
 
     // game loop
     void set_suspended(bool suspended);

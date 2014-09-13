@@ -733,6 +733,7 @@ void Map::start() {
  */
 void Map::leave() {
   started = false;
+  this->entities->notify_map_finished();
   get_lua_context().map_on_finished(*this);
 }
 

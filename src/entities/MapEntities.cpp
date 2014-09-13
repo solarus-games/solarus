@@ -77,10 +77,6 @@ MapEntities::~MapEntities() {
   }
 
   // delete the other entities
-
-  for (const MapEntityPtr& entity: all_entities) {
-    notify_entity_removed(entity.get());
-  }
   all_entities.clear();
   named_entities.clear();
 
@@ -379,6 +375,16 @@ void MapEntities::notify_tileset_changed() {
     entity->notify_tileset_changed();
   }
   hero.notify_tileset_changed();
+}
+
+/**
+ * \brief Notifies all entities that the map is being stopped.
+ */
+void MapEntities::notify_map_finished() {
+
+  for (const MapEntityPtr& entity: all_entities) {
+    notify_entity_removed(entity.get());
+  }
 }
 
 /**

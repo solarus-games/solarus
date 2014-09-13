@@ -226,7 +226,7 @@ class Map: public ExportableToLua {
                                    * or an empty string to use the one saved. */
 
     std::unique_ptr<MapEntities>
-        entities;                 /**< The entities on the map. */  // TODO unique_ptr
+        entities;                 /**< The entities on the map. */
     bool suspended;               /**< Whether the game is suspended. */
 };
 

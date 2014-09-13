@@ -222,13 +222,14 @@ void initialize_video_modes() {
     for (unsigned i = 0; i < shader_names.size(); ++i) {
 
       // Load the shader and add the corresponding video mode.
-      Shader* video_mode_shader = ShaderContext::create_shader(shader_names.at(i));
+      std::unique_ptr<Shader> video_mode_shader(
+          ShaderContext::create_shader(shader_names.at(i))
+      );
       if (video_mode_shader != nullptr && video_mode_shader->is_valid()) {
 
         const std::string& video_mode_name = video_mode_shader->get_name();
         if (Video::get_video_mode_by_name(video_mode_name) != nullptr) {
           Debug::error("There is already a video mode with name '" + video_mode_name);
-          delete video_mode_shader;
           continue;
         }
 
@@ -237,7 +238,7 @@ void initialize_video_modes() {
               video_mode_shader->get_name(),
               scaled_quest_size,
               nullptr,
-              std::unique_ptr<Shader>(video_mode_shader)
+              std::move(video_mode_shader)
         );
       }
     }

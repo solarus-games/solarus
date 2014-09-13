@@ -33,7 +33,7 @@ PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position):
   width(0),
   height(0),
   nb_integers_per_row(0),
-  bits(nullptr) {
+  bits() {
 
   // Create a list of boolean values representing the transparency of each pixel.
   // This list is implemented as bit fields.
@@ -60,9 +60,9 @@ PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position):
 
   int pixel_index = clipped_image_position.get_y() * surface.get_width() + clipped_image_position.get_x();
 
-  bits = new uint32_t*[height];
+  bits.resize(height);
   for (int i = 0; i < height; ++i) {
-    bits[i] = new uint32_t[nb_integers_per_row];
+    bits[i].resize(nb_integers_per_row);
 
     // Fill the bits for this row, using nb_integers_per_row sequences of 32 bits.
     int k = -1;
@@ -88,19 +88,6 @@ PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position):
 }
 
 /**
- * \brief Destructor.
- */
-PixelBits::~PixelBits() {
-
-  if (bits != nullptr) {
-    for (int i = 0; i < height; i++) {
-      delete[] bits[i];
-    }
-  }
-  delete[] bits;
-}
-
-/**
  * \brief Detects whether the image represented by these pixel bits is
  * overlapping another image.
  * \param other The other image.
@@ -111,11 +98,11 @@ PixelBits::~PixelBits() {
 bool PixelBits::test_collision(
     const PixelBits& other,
     const Point& location1,
-    const Point& location2) const {
-
+    const Point& location2
+) const {
   const bool debug_pixel_collisions = false;
 
-  if (bits == nullptr) {
+  if (bits.empty()) {
     // No image.
     return false;
   }
@@ -167,11 +154,8 @@ bool PixelBits::test_collision(
   // For each row of the intersection, we will call row 'a' the row coming from the right bounding box
   // and row 'b' the one coming from the left bounding box.
 
-  uint32_t** rows_a;           // for each row: array of masks of the right bounding box
-  uint32_t** rows_b;           // for each row: array of masks of the left bounding box
-
-  uint32_t* bits_a;            // for the current row: array of masks of the right bounding box
-  uint32_t* bits_b;            // for the current row: array of masks of the left bounding box
+  std::vector<std::vector<uint32_t>>::const_iterator rows_a;           // for each row: array of masks of the right bounding box
+  std::vector<std::vector<uint32_t>>::const_iterator rows_b;           // for each row: array of masks of the left bounding box
 
   int nb_masks_per_row_a;    // number of masks on row a that are in the intersection (row b may have one more mask)
   int nb_masks_per_row_b;    // number of masks on row b that are in the intersection
@@ -181,14 +165,14 @@ bool PixelBits::test_collision(
 
   // make sure row a starts after row b
   if (bounding_box1.get_x() > bounding_box2.get_x()) {
-    rows_a = &this->bits[offset_y1];
-    rows_b = &other.bits[offset_y2];
+    rows_a = this->bits.begin() + offset_y1;
+    rows_b = other.bits.begin() + offset_y2;
     nb_unused_masks_row_b = offset_x2 >> 5;
     nb_unused_bits_row_b = offset_x2 & 31;
   }
   else {
-    rows_a = &other.bits[offset_y2];
-    rows_b = &this->bits[offset_y1];
+    rows_a = other.bits.begin() + offset_y2;
+    rows_b = this->bits.begin() + offset_y1;
     nb_unused_masks_row_b = offset_x1 >> 5;
     nb_unused_bits_row_b = offset_x1 & 31;
   }
@@ -210,8 +194,11 @@ bool PixelBits::test_collision(
   for (int i = 0; i < intersection.get_height(); ++i) {
 
     // current row
-    bits_a = rows_a[i];
-    bits_b = rows_b[i];
+    const std::vector<uint32_t>& bits_a = *rows_a;
+    const std::vector<uint32_t>& bits_b = *rows_b;
+
+    ++rows_a;
+    ++rows_b;
 
     if (debug_pixel_collisions) {
       std::cout << "*** checking row " << i << " of the intersection rectangle\n";

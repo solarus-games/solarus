@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <cstdint>
+#include <vector>
 
 namespace solarus {
 
@@ -38,7 +39,6 @@ class PixelBits {
   public:
 
     PixelBits(const Surface& surface, const Rectangle& image_position);
-    ~PixelBits();
 
     bool test_collision(const PixelBits& other,
         const Point& location1, const Point& location2) const;
@@ -53,7 +53,8 @@ class PixelBits {
     int nb_integers_per_row; /**< number of uint32_t necessary to store
                               * the bits of a row of the image */
 
-    uint32_t** bits;         /**< A two-dimensional array representing the
+    std::vector<std::vector<uint32_t>>
+        bits;                /**< A two-dimensional array representing the
                               * transparency bit of each pixel in the image.
                               * TODO use an std::vector. */
 

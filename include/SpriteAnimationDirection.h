@@ -18,13 +18,13 @@
 #define SOLARUS_SPRITE_ANIMATION_DIRECTION
 
 #include "Common.h"
+#include "lowlevel/PixelBits.h"
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/Debug.h"
 #include <vector>
 
 namespace solarus {
 
-class PixelBits;
 class Surface;
 
 /**
@@ -42,7 +42,6 @@ class SpriteAnimationDirection {
         const std::vector<Rectangle>& frames,
         const Point& origin
     );
-    ~SpriteAnimationDirection();
 
     // size and origin point
     Size get_size() const;
@@ -58,17 +57,17 @@ class SpriteAnimationDirection {
     void enable_pixel_collisions(Surface& src_image);
     void disable_pixel_collisions();
     bool are_pixel_collisions_enabled() const;
-    PixelBits& get_pixel_bits(int frame) const;
+    const PixelBits& get_pixel_bits(int frame) const;
 
   private:
 
-    std::vector<Rectangle> frames;       /**< position of each frame of the sequence on the image */
-    Point origin;                        /**< coordinates of the sprite's origin from the
-                                          * upper-left corner of its image. */
+    std::vector<Rectangle> frames;      /**< position of each frame of the sequence on the image */
+    Point origin;                       /**< coordinates of the sprite's origin from the
+                                         * upper-left corner of its image. */
 
-    std::vector<PixelBits*> pixel_bits;  /**< bit masks representing the non-transparent pixels of each frame,
-                                          * computed only if enable_pixel_collisions() is called */
-                                         // TODO unique_ptr
+    std::vector<PixelBits>
+        pixel_bits;                    /**< bit masks representing the non-transparent pixels of each frame,
+                                         * computed only if enable_pixel_collisions() is called */
 };
 
 /**
@@ -89,13 +88,13 @@ inline const Point& SpriteAnimationDirection::get_origin() const {
  * \param frame A frame of the animation.
  * \return The pixel bits object of a frame.
  */
-inline PixelBits& SpriteAnimationDirection::get_pixel_bits(int frame) const {
+inline const PixelBits& SpriteAnimationDirection::get_pixel_bits(int frame) const {
 
   SOLARUS_ASSERT(are_pixel_collisions_enabled(),
       "Pixel-precise collisions are not enabled for this sprite");
   SOLARUS_ASSERT(frame >= 0 && frame < get_nb_frames(), "Invalid frame number");
 
-  return *pixel_bits[frame];
+  return pixel_bits[frame];
 }
 
 }

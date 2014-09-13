@@ -37,16 +37,6 @@ SpriteAnimationDirection::SpriteAnimationDirection(
 }
 
 /**
- * \brief Destructor.
- */
-SpriteAnimationDirection::~SpriteAnimationDirection() {
-
-  for (PixelBits* frame_pixel_bits: pixel_bits) {
-    delete frame_pixel_bits;
-  }
-}
-
-/**
  * \brief Returns the size of a frame.
  * \return The size of a frame.
  */
@@ -118,7 +108,7 @@ void SpriteAnimationDirection::enable_pixel_collisions(Surface& src_image) {
 
   if (!are_pixel_collisions_enabled()) {
     for (int i = 0; i < get_nb_frames(); i++) {
-      pixel_bits.push_back(new PixelBits(src_image, frames[i]));
+      pixel_bits.emplace_back(src_image, frames[i]);
     }
   }
 }
@@ -128,9 +118,6 @@ void SpriteAnimationDirection::enable_pixel_collisions(Surface& src_image) {
  */
 void SpriteAnimationDirection::disable_pixel_collisions() {
 
-  for (PixelBits* frame_pixel_bits: pixel_bits) {
-    delete frame_pixel_bits;
-  }
   pixel_bits.clear();
 }
 

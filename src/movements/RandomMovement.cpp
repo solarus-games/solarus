@@ -126,11 +126,11 @@ void RandomMovement::set_next_direction() {
 }
 
 /**
- * \brief Updates the fairy movement.
+ * \brief Updates the random movement.
  *
  * This function is called repeatedly by the map.
  * This is a redefinition of Movement::update()
- * to change the fairy's direction sometimes.
+ * to change the direction sometimes.
  */
 void RandomMovement::update() {
 

@@ -214,7 +214,7 @@ void MainLoop::run() {
 void MainLoop::check_input() {
 
   InputEvent* event = InputEvent::get_event();
-  while(event != nullptr){
+  while (event != nullptr) {
     notify_input(*event);
     delete event;
     event = InputEvent::get_event();

@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/Size.h"
+#include <memory>
 #include <string>
 
 namespace solarus {
@@ -38,26 +39,26 @@ class VideoMode {
     VideoMode(
         const std::string& name,
         const Size& initial_window_size,
-        PixelFilter* software_filter,
-        Shader* hardware_filter);
-    ~VideoMode();
+        std::unique_ptr<PixelFilter> software_filter,
+        std::unique_ptr<Shader> hardware_filter
+    );
+    VideoMode(const VideoMode& other) = delete;
+    VideoMode& operator=(const VideoMode& other) = delete;
 
     const std::string& get_name() const;
     const Size& get_initial_window_size() const;
-    PixelFilter* get_software_filter() const;
-    Shader* get_hardware_filter() const;
+    const PixelFilter* get_software_filter() const;
+    const Shader* get_hardware_filter() const;
 
   private:
-
-    VideoMode(const VideoMode& other);
 
     const std::string name;              /**< Lua name of this video mode. */
     const Size initial_window_size;      /**< Default size of the window when
                                           * selecting this video mode. */
 
     // Pixel filter (in CPU or GPU).
-    PixelFilter* software_filter;        /**< Software scaling pixel filter to use or nullptr. */  // TODO unique_ptr
-    Shader* hardware_filter;             /**< Scaling shader to use or nullptr. */  // TODO unique_ptr
+    std::unique_ptr<PixelFilter> software_filter;        /**< Software scaling pixel filter to use or nullptr. */
+    std::unique_ptr<Shader> hardware_filter;             /**< Scaling shader to use or nullptr. */
 
 };
 

@@ -34,25 +34,16 @@ namespace solarus {
 VideoMode::VideoMode(
     const std::string& name,
     const Size& initial_window_size,
-    PixelFilter* software_filter,
-    Shader* hardware_filter
+    std::unique_ptr<PixelFilter> software_filter,
+    std::unique_ptr<Shader> hardware_filter
 ):
    name(name),
    initial_window_size(initial_window_size),
-   software_filter(software_filter),
-   hardware_filter(hardware_filter) {
+   software_filter(std::move(software_filter)),
+   hardware_filter(std::move(hardware_filter)) {
 
    Debug::check_assertion(software_filter == nullptr || hardware_filter == nullptr,
        "Video mode can have at most one filter");
-}
-
-/**
- * \brief Destructor.
- */
-VideoMode::~VideoMode() {
-
-  delete software_filter;
-  delete hardware_filter;
 }
 
 /**
@@ -75,16 +66,16 @@ const Size& VideoMode::get_initial_window_size() const {
  * \brief Returns the software filter applied to the quest image in this mode.
  * \return Software filter or nullptr.
  */
-PixelFilter* VideoMode::get_software_filter() const {
-  return software_filter;
+const PixelFilter* VideoMode::get_software_filter() const {
+  return software_filter.get();
 }
 
 /**
  * \brief Returns the hardware filter applied to the quest image in this mode.
  * \return Hardware filter or nullptr.
  */
-Shader* VideoMode::get_hardware_filter() const {
-  return hardware_filter;
+const Shader* VideoMode::get_hardware_filter() const {
+  return hardware_filter.get();
 }
 
 }

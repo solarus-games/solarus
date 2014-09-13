@@ -169,11 +169,36 @@ void initialize_video_modes() {
   shaders_enabled = rendertarget_supported && Video::is_acceleration_enabled() && ShaderContext::initialize();
 
   // Initialize hardcoded video modes.
-  all_video_modes.push_back(new VideoMode("normal", quest_size * 2, nullptr, nullptr));
-  all_video_modes.push_back(new VideoMode("scale2x", quest_size * 2, new Scale2xFilter(), nullptr));
-  all_video_modes.push_back(new VideoMode("hq2x", quest_size * 2, new Hq2xFilter(), nullptr));
-  all_video_modes.push_back(new VideoMode("hq3x", quest_size * 3, new Hq3xFilter(), nullptr));
-  all_video_modes.push_back(new VideoMode("hq4x", quest_size * 4, new Hq4xFilter(), nullptr));
+  all_video_modes.push_back(new VideoMode(
+      "normal",
+      quest_size * 2,
+      nullptr,
+      nullptr
+  ));
+  all_video_modes.push_back(new VideoMode(
+      "scale2x",
+      quest_size * 2,
+      std::unique_ptr<PixelFilter>(new Scale2xFilter()),
+      nullptr
+  ));
+  all_video_modes.push_back(new VideoMode(
+      "hq2x",
+      quest_size * 2,
+      std::unique_ptr<PixelFilter>(new Hq2xFilter()),
+      nullptr
+  ));
+  all_video_modes.push_back(new VideoMode(
+      "hq3x",
+      quest_size * 3,
+      std::unique_ptr<PixelFilter>(new Hq3xFilter()),
+      nullptr
+  ));
+  all_video_modes.push_back(new VideoMode(
+      "hq4x",
+      quest_size * 4,
+      std::unique_ptr<PixelFilter>(new Hq4xFilter()),
+      nullptr
+  ));
   default_video_mode = all_video_modes[0];
   // TODO If shaders are enabled, use a C++ shader version of Scale2x and Hq4x instead.
 
@@ -186,7 +211,8 @@ void initialize_video_modes() {
         pixel_format->format,
         SDL_TEXTUREACCESS_TARGET,
         quest_size.width,
-        quest_size.height);
+        quest_size.height
+    );
     SDL_SetTextureBlendMode(render_target, SDL_BLENDMODE_BLEND);
 
     // Get all shaders of the quest's shader/videomodes folder.
@@ -212,7 +238,7 @@ void initialize_video_modes() {
               video_mode_shader->get_name(),
               scaled_quest_size,
               nullptr,
-              video_mode_shader
+              std::unique_ptr<Shader>(video_mode_shader)
         ));
       }
     }
@@ -578,7 +604,7 @@ void Video::render(const SurfacePtr& quest_surface) {
       "Missing video mode");
 
   // See if there is a filter to apply.
-  Shader* hardware_filter = video_mode->get_hardware_filter();
+  const Shader* hardware_filter = video_mode->get_hardware_filter();
   const PixelFilter* software_filter = video_mode->get_software_filter();
   if (hardware_filter != nullptr) {
     // OpenGL rendering.

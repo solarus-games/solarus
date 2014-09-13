@@ -102,7 +102,7 @@ bool Shader::is_valid() {
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
  */
-void Shader::render(const SurfacePtr& /* quest_surface */) {
+void Shader::render(const SurfacePtr& /* quest_surface */) const {
   
   display_time += System::timestep;
 }

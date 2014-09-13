@@ -43,7 +43,7 @@ class Shader {
     double get_default_window_scale();
     bool is_valid();
 
-    virtual void render(const SurfacePtr& quest_surface);
+    virtual void render(const SurfacePtr& quest_surface) const;
 
   protected:
 

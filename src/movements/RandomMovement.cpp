@@ -116,7 +116,7 @@ void RandomMovement::set_next_direction() {
   else {
 
     // we are outside the bounds: get back into the rectangle to avoid going too far
-    angle = Geometry::get_angle(get_x(), get_y(), bounds.get_x() + bounds.get_width() / 2, bounds.get_y() + bounds.get_height() / 2);
+    angle = Geometry::get_angle(get_xy(), bounds.get_center());
   }
   set_angle(angle);
 

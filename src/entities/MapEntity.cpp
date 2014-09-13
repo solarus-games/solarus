@@ -706,7 +706,7 @@ void MapEntity::set_xy(int x, int y) {
  * \brief Sets the coordinates of the origin point of the entity, relative to the map.
  *
  * This function sets the coordinates of the point as returned by get_x() and get_y().
- * 
+ *
  * \param xy the new coordinates of the entity on the map.
  */
 void MapEntity::set_xy(const Point& xy) {
@@ -2080,12 +2080,7 @@ int MapEntity::get_distance(const MapEntity& other) const {
 int MapEntity::get_distance_to_camera() const {
 
   const Rectangle& camera = get_map().get_camera_position();
-  return (int) Geometry::get_distance(
-      get_x(),
-      get_y(),
-      camera.get_x() + camera.get_width() / 2,
-      camera.get_y() + camera.get_height() / 2
-  );
+  return (int) Geometry::get_distance(get_xy(), camera.get_center());
 }
 
 /**
@@ -2096,12 +2091,7 @@ int MapEntity::get_distance_to_camera() const {
 int MapEntity::get_distance_to_camera2() const {
 
   const Rectangle& camera = get_map().get_camera_position();
-  return Geometry::get_distance2(
-      get_x(),
-      get_y(),
-      camera.get_x() + camera.get_width() / 2,
-      camera.get_y() + camera.get_height() / 2
-  );
+  return Geometry::get_distance2(get_xy(), camera.get_center());
 }
 
 /**

@@ -128,10 +128,18 @@ void Tileset::load() {
   // load the tileset images
   file_name = std::string("tilesets/") + id + ".tiles.png";
   tiles_image = Surface::create(file_name, Surface::DIR_DATA);
+  if (tiles_image == NULL) {
+    Debug::error(std::string("Missing tiles image for tileset '") + id + "': " + file_name);
+    tiles_image = Surface::create(16, 16);
+  }
   RefCountable::ref(tiles_image);
 
   file_name = std::string("tilesets/") + id + ".entities.png";
   entities_image = Surface::create(file_name, Surface::DIR_DATA);
+  if (entities_image == NULL) {
+    Debug::error(std::string("Missing entities image for tileset '") + id + "': " + file_name);
+    entities_image = Surface::create(16, 16);
+  }
   RefCountable::ref(entities_image);
 }
 

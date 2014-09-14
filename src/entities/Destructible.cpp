@@ -361,7 +361,7 @@ void Destructible::notify_collision(
       && other_entity.is_hero()) {
 
     Hero& hero = static_cast<Hero&>(other_entity);
-    if (other_sprite.get_animation_set_id() == hero.get_sprites().get_sword_sprite_id() &&
+    if (other_sprite.get_animation_set_id() == hero.get_hero_sprites().get_sword_sprite_id() &&
         hero.is_striking_with_sword(*this)) {
 
       play_destroy_animation();

@@ -1558,11 +1558,11 @@ void Hero::notify_collision_with_enemy(
     Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) {
 
   const std::string this_sprite_id = this_sprite.get_animation_set_id();
-  if (this_sprite_id == get_sprites().get_sword_sprite_id()) {
+  if (this_sprite_id == get_hero_sprites().get_sword_sprite_id()) {
     // the hero's sword overlaps the enemy
     enemy.try_hurt(ATTACK_SWORD, *this, &enemy_sprite);
   }
-  else if (this_sprite_id == get_sprites().get_tunic_sprite_id()) {
+  else if (this_sprite_id == get_hero_sprites().get_tunic_sprite_id()) {
     // The hero's body sprite overlaps the enemy.
     // Check that the 16x16 rectangle of the hero also overlaps the enemy.
     const Size& enemy_sprite_size = enemy_sprite.get_size();
@@ -1792,7 +1792,7 @@ void Hero::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) 
 
   // it's normally a solid switch
   const std::string& sprite_id = sprite_overlapping.get_animation_set_id();
-  if (sprite_id == get_sprites().get_sword_sprite_id() && // the hero's sword is overlapping the switch
+  if (sprite_id == get_hero_sprites().get_sword_sprite_id() && // the hero's sword is overlapping the switch
       sw.is_solid() &&
       state->can_sword_hit_crystal()) {
     // note that solid switches and crystals have the same rules for the sword
@@ -1829,7 +1829,7 @@ void Hero::notify_collision_with_crystal(Crystal& /* crystal */, CollisionMode c
 void Hero::notify_collision_with_crystal(Crystal& crystal, Sprite& sprite_overlapping) {
 
   const std::string sprite_id = sprite_overlapping.get_animation_set_id();
-  if (sprite_id == get_sprites().get_sword_sprite_id() && // the hero's sword is overlapping the crystal
+  if (sprite_id == get_hero_sprites().get_sword_sprite_id() && // the hero's sword is overlapping the crystal
       state->can_sword_hit_crystal()) {
 
     crystal.activate(*this);
@@ -1905,7 +1905,7 @@ void Hero::notify_collision_with_explosion(
 
   const std::string& sprite_id = sprite_overlapping.get_animation_set_id();
   if (!state->can_avoid_explosion() &&
-      sprite_id == get_sprites().get_tunic_sprite_id() &&
+      sprite_id == get_hero_sprites().get_tunic_sprite_id() &&
       can_be_hurt(&explosion)) {
     hurt(explosion, nullptr, 2);
   }

@@ -314,7 +314,7 @@ void Pickable::notify_collision(
   // taking the item with the sword
   if (other_entity.is_hero()) {
     Hero& hero = static_cast<Hero&>(other_entity);
-    if (other_sprite.get_animation_set_id() == hero.get_sprites().get_sword_sprite_id()) {
+    if (other_sprite.get_animation_set_id() == hero.get_hero_sprites().get_sword_sprite_id()) {
       try_give_item_to_player();
     }
   }

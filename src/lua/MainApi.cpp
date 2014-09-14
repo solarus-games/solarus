@@ -48,6 +48,7 @@ void LuaContext::register_main_module() {
       { "get_distance", main_api_get_distance },
       { "get_angle", main_api_get_angle },
       { "get_metatable", main_api_get_metatable },
+      { "get_os", main_api_get_os },
       { nullptr, nullptr }
   };
 
@@ -289,6 +290,19 @@ int LuaContext::main_api_get_metatable(lua_State* l) {
     luaL_getmetatable(l, (std::string("sol.") + type_name).c_str());
     return 1;
   });
+}
+
+/**
+ * \brief Implementation of sol.main.get_os().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::main_api_get_os(lua_State* l) {
+
+  const std::string& os = System::get_os();
+
+  push_string(l, os);
+  return 1;
 }
 
 /**

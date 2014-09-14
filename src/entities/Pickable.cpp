@@ -18,6 +18,10 @@
 #include "entities/Boomerang.h"
 #include "entities/Hero.h"
 #include "entities/Hookshot.h"
+#include "hero/HeroSprites.h"
+#include "movements/FallingOnFloorMovement.h"
+#include "movements/FollowMovement.h"
+#include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
@@ -308,10 +312,11 @@ void Pickable::notify_collision(
     Sprite& other_sprite
 ) {
   // taking the item with the sword
-  if (other_entity.is_hero()
-      && other_sprite.contains("sword")) {
-
-    try_give_item_to_player();
+  if (other_entity.is_hero()) {
+    Hero& hero = static_cast<Hero&>(other_entity);
+    if (other_sprite.get_animation_set_id() == hero.get_sprites().get_sword_sprite_id()) {
+      try_give_item_to_player();
+    }
   }
 }
 

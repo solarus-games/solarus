@@ -109,16 +109,6 @@ const std::string& Sprite::get_animation_set_id() const {
 }
 
 /**
- * \brief Returns whether the id of the animation set of this sprite
- * contains the specified string.
- * \param sequence the string to check
- * \return true if the animation set id contains this string
- */
-bool Sprite::contains(const std::string& sequence) const {
-  return animation_set_id.find(sequence) != std::string::npos;
-}
-
-/**
  * \brief Returns the animation set of this sprite.
  *
  * If several sprites have the same animation set, they share the same instance of animation set

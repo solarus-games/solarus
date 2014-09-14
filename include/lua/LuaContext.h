@@ -427,6 +427,7 @@ class LuaContext {
       main_api_get_distance,  // TODO remove?
       main_api_get_angle,     // TODO remove?
       main_api_get_metatable,
+      main_api_get_os,
 
       // Audio API.
       audio_api_get_sound_volume,

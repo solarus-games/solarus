@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <cstdint>
+#include <string>
 
 namespace solarus {
 
@@ -36,6 +37,8 @@ class System {
     static void initialize(const CommandLine& args);
     static void quit();
     static void update();
+
+    static std::string get_os();
 
     static uint32_t now();
     static uint32_t get_real_time();

@@ -20,6 +20,7 @@
 #include "entities/Pickable.h"
 #include "entities/CarriedItem.h"
 #include "entities/Explosion.h"
+#include "hero/HeroSprites.h"
 #include "movements/FallingHeight.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
@@ -357,11 +358,11 @@ void Destructible::notify_collision(
       && !is_being_cut
       && !is_waiting_for_regeneration()
       && !is_regenerating
-      && other_entity.is_hero()
-      && other_sprite.contains("sword")) {
+      && other_entity.is_hero()) {
 
     Hero& hero = static_cast<Hero&>(other_entity);
-    if (hero.is_striking_with_sword(*this)) {
+    if (other_sprite.get_animation_set_id() == hero.get_sprites().get_sword_sprite_id() &&
+        hero.is_striking_with_sword(*this)) {
 
       play_destroy_animation();
       hero.check_position();  // To update the ground under the hero.

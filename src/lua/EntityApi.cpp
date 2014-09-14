@@ -40,6 +40,7 @@
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
 #include "movements/Movement.h"
+#include "DialogResource.h"
 #include "Equipment.h"
 #include "EquipmentItem.h"
 #include "Game.h"
@@ -47,7 +48,6 @@
 #include "QuestResourceList.h"
 #include "Savegame.h"
 #include "Sprite.h"
-#include <set>
 #include <sstream>
 
 namespace solarus {
@@ -2103,7 +2103,17 @@ void LuaContext::notify_hero_brandish_treasure(
   lua_pushcclosure(l, l_treasure_dialog_finished, 4);
   const ScopedLuaRef& dialog_callback_ref = create_ref();
 
+<<<<<<< HEAD
   treasure.get_game().start_dialog(dialog_id, ScopedLuaRef(), dialog_callback_ref);
+=======
+  if (!DialogResource::exists(dialog_id)) {
+    Debug::error(std::string("Missing treasure dialog: '") + dialog_id + "'");
+    do_callback(dialog_callback_ref);
+  }
+  else {
+    treasure.get_game().start_dialog(dialog_id, LUA_REFNIL, dialog_callback_ref);
+  }
+>>>>>>> master
 }
 
 /**

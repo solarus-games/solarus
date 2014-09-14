@@ -295,6 +295,18 @@ to access userdata as tables. Therefore, you should never touch any metamethod
 type, in particular \c __index, \c __newindex and \c __gc.
 This may result in unspecified behavior, but most likely crashes.
 
+\subsection lua_api_main_api_get_os sol.main.get_os()
+
+Returns the name of the running OS. Possible values are :
+  \c "Windows",
+  \c "Mac OS X",
+  \c "Linux",
+  \c "iOS",
+  \c "Android".
+If the correct OS name is not available, returns a string
+beginning with the text \c "Unknown".
+- Return value (string): The name of the running OS.
+
 \section lua_api_main_events Events of sol.main
 
 Events are callback methods automatically called by the engine if you define

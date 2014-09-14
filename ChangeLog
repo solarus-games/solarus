@@ -5,6 +5,11 @@ _________________________________
 
 Bug fixes for the 1.3 release.
 
+Engine changes
+--------------
+
+* Fix hero freeze when a treasure's dialog is missing (#595).
+
 Solarus Quest Editor changes
 ----------------------------
 

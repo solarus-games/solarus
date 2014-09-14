@@ -44,6 +44,7 @@
 #include "Sprite.h"
 #include "EquipmentItem.h"
 #include "QuestResourceList.h"
+#include "DialogResource.h"
 #include <sstream>
 #include <set>
 
@@ -1978,7 +1979,13 @@ void LuaContext::notify_hero_brandish_treasure(
   lua_pushcclosure(l, l_treasure_dialog_finished, 4);
   int dialog_callback_ref = create_ref();
 
-  treasure.get_game().start_dialog(dialog_id, LUA_REFNIL, dialog_callback_ref);
+  if (!DialogResource::exists(dialog_id)) {
+    Debug::error(std::string("Missing treasure dialog: '") + dialog_id + "'");
+    do_callback(dialog_callback_ref);
+  }
+  else {
+    treasure.get_game().start_dialog(dialog_id, LUA_REFNIL, dialog_callback_ref);
+  }
 }
 
 /**

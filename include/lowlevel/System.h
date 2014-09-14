@@ -18,6 +18,7 @@
 #define SOLARUS_SYSTEM_H
 
 #include "Common.h"
+#include <string>
 
 namespace solarus {
 

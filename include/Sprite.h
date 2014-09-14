@@ -52,7 +52,6 @@ class Sprite: public Drawable {
 
     // animation set
     const std::string& get_animation_set_id() const;
-    bool contains(const std::string& s) const;
     const SpriteAnimationSet& get_animation_set() const;
     void enable_pixel_collisions();
     bool are_pixel_collisions_enabled() const;

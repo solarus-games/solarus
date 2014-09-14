@@ -9,6 +9,7 @@ Engine changes
 --------------
 
 * Fix hero freeze when a treasure's dialog is missing (#595).
+* Fix tunic and sword collision when their sprite is changed (#617).
 
 Solarus Quest Editor changes
 ----------------------------

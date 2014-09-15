@@ -205,6 +205,11 @@ void MainLoop::run() {
     }
   }
 
+  if (game != nullptr) {
+    // While stopping the game, the Lua world must still exist.
+    game->stop();
+  }
+
   lua_context->exit();
 }
 
@@ -231,7 +236,7 @@ void MainLoop::check_input() {
 void MainLoop::notify_input(const InputEvent& event) {
 
   if (event.is_window_closing()) {
-    exiting = true;
+    set_exiting();
   }
   else if (event.is_keyboard_key_pressed()) {
     // A key was pressed.

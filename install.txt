@@ -41,7 +41,10 @@ Our quests can be found on the development blog: http://www.solarus-games.org.
 ------------------------
 
 The build process of solarus uses cmake.
-To compile Solarus, you obviously need a C++ compiler.
+To compile Solarus, you need a C++ compiler with support of C++11.
+Solarus compiles fine with gcc 4.8 or greater and clang 3.4 or greater,
+and probably with other recent compilers (please let us know).
+
 The following libraries are required to compile and to execute Solarus:
 
 SDL2
@@ -51,7 +54,7 @@ SDL2_ttf
 openal
 vorbisfile
 modplug (0.8.8.4 or greater)
-lua5.1
+lua5.1 (LuaJIT is recommended)
 physfs
 
 Note that another library is directly embedded in the source code:
@@ -67,7 +70,7 @@ Linux developers:
 
 Just install the corresponding packages. For example, with Ubuntu or Debian:
 
-libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev liblua5.1-0-dev
+libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libluajit-5.1-dev
 libphysfs-dev libopenal-dev libvorbis-dev libmodplug-dev
 
 

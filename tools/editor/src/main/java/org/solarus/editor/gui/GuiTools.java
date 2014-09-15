@@ -24,7 +24,7 @@ import javax.swing.*;
 public class GuiTools {
 
     /**
-     * You don't need to instanciate this class.
+     * You don't need to instantiate this class.
      */
     private GuiTools() {
 

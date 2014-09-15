@@ -172,6 +172,7 @@ public class SpriteTree extends JPanel implements Observer, TreeSelectionListene
 
         tree.setModel(null);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        tree.setRowHeight(0);  // To ask the height of each row to the cell renderer.
         tree.setCellRenderer(new SpriteCellRenderer());
 
         DefaultMutableTreeNode root = createSpriteNode();

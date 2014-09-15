@@ -119,7 +119,7 @@ int TextSurface::l_font(lua_State* l) {
     int font_size = LuaTools::opt_int_field(l, 1, "size", 11);
     bool is_default = LuaTools::opt_boolean_field(l, 1, "default", false);
 
-    fonts.emplace(std::make_pair(font_id, FontData()));
+    fonts.insert(std::make_pair(font_id, FontData()));
     FontData& font = fonts[font_id];
     font.file_name = file_name;
     font.font_size = font_size;

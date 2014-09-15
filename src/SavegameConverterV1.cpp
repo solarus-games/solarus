@@ -20,6 +20,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include <sstream>
+#include <cstring>  // memcpy
 
 namespace solarus {
 

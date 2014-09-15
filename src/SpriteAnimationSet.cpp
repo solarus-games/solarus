@@ -178,7 +178,7 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
           + "' in sprite '" + animation_set->id + "'");
     }
 
-    animation_set->animations.emplace(std::make_pair(animation_name,
+    animation_set->animations.insert(std::make_pair(animation_name,
         SpriteAnimation(src_image, directions, frame_delay, frame_to_loop_on)
     ));
 

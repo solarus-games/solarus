@@ -82,7 +82,7 @@ void Tileset::add_tile_pattern(
     const std::string& id,
     std::unique_ptr<TilePattern> tile_pattern
 ) {
-  tile_patterns.emplace(std::make_pair(id, std::move(tile_pattern)));
+  tile_patterns.insert(std::make_pair(id, std::move(tile_pattern)));
 }
 
 /**

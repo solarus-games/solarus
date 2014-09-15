@@ -50,8 +50,8 @@ class VideoMode {
 
   private:
 
-    const std::string name;              /**< Lua name of this video mode. */
-    const Size initial_window_size;      /**< Default size of the window when
+    std::string name;              /**< Lua name of this video mode. */
+    Size initial_window_size;      /**< Default size of the window when
                                           * selecting this video mode. */
 
     // Pixel filter (in CPU or GPU).

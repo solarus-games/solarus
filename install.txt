@@ -42,7 +42,7 @@ Our quests can be found on the development blog: http://www.solarus-games.org.
 
 The build process of solarus uses cmake.
 To compile Solarus, you need a C++ compiler with support of C++11.
-Solarus compiles fine with gcc 4.8 or greater and clang 3.4 or greater,
+Solarus compiles fine with gcc 4.7.1 or greater and clang 3.4 or greater,
 using the -std=c++0x flag (C++11 draft)
 or the -std=c++11 flag (final C++11 specification),
 and probably with other recent compilers (please let us know).
@@ -93,6 +93,9 @@ Install the dynamic library files (the .dll files) in your system32 directory
 The directory libraries/win32 contains some required static and dynamic
 libraries that are not provided as binaries by their authors, but I don't
 guarantee they are up-to-date.
+
+With MinGW32, I had to use the compilation flag -std=gnu++11 instead of
+-std=c++11 due to an issue in vorbisfile.h.
 
 
 Mac OS X developers:

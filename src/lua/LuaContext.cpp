@@ -440,7 +440,7 @@ void LuaContext::notify_dialog_finished(
  */
 ScopedLuaRef LuaContext::create_ref() {
 
-  return LuaTools::create_ref(l);
+  return lua_tools::create_ref(l);
 }
 
 /**
@@ -590,7 +590,7 @@ bool LuaContext::find_method(const char* function_name) {
  */
 bool LuaContext::find_method(int index, const char* function_name) {
 
-  index = LuaTools::get_positive_index(l, index);
+  index = lua_tools::get_positive_index(l, index);
                                   // ... object ...
   lua_getfield(l, index, function_name);
                                   // ... object ... method/?
@@ -633,7 +633,7 @@ bool LuaContext::call_function(
     int nb_results,
     const char* function_name
 ) {
-  return LuaTools::call_function(l, nb_arguments, nb_results, function_name);
+  return lua_tools::call_function(l, nb_arguments, nb_results, function_name);
 }
 
 /**
@@ -698,7 +698,7 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
 void LuaContext::do_file(lua_State* l, const std::string& script_name) {
 
   load_file(l, script_name);
-  LuaTools::call_function(l, 0, 0, script_name.c_str());
+  lua_tools::call_function(l, 0, 0, script_name.c_str());
 }
 
 /**
@@ -715,7 +715,7 @@ void LuaContext::do_file(lua_State* l, const std::string& script_name) {
 bool LuaContext::do_file_if_exists(lua_State* l, const std::string& script_name) {
 
   if (load_file_if_exists(l, script_name)) {
-    LuaTools::call_function(l, 0, 0, script_name.c_str());
+    lua_tools::call_function(l, 0, 0, script_name.c_str());
     return true;
   }
   return false;
@@ -1019,7 +1019,7 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
 bool LuaContext::is_userdata(lua_State* l, int index,
     const std::string& module_name) {
 
-  index = LuaTools::get_positive_index(l, index);
+  index = lua_tools::get_positive_index(l, index);
 
                                   // ... udata ...
   void* udata = lua_touserdata(l, index);
@@ -1053,7 +1053,7 @@ const ExportableToLuaPtr& LuaContext::check_userdata(
     int index,
     const std::string& module_name
 ) {
-  index = LuaTools::get_positive_index(l, index);
+  index = lua_tools::get_positive_index(l, index);
 
   const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(
     luaL_checkudata(l, index, module_name.c_str())
@@ -1124,9 +1124,9 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
  */
 int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
 
-  LuaTools::check_type(l, 1, LUA_TUSERDATA);
-  LuaTools::check_any(l, 2);
-  LuaTools::check_any(l, 3);
+  lua_tools::check_type(l, 1, LUA_TUSERDATA);
+  lua_tools::check_any(l, 2);
+  lua_tools::check_any(l, 3);
 
   const ExportableToLuaPtr& userdata =
       *(static_cast<ExportableToLuaPtr*>(lua_touserdata(l, 1)));
@@ -1198,8 +1198,8 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
    * to the userdata __index metamethod.
    */
 
-  LuaTools::check_type(l, 1, LUA_TUSERDATA);
-  LuaTools::check_any(l, 2);
+  lua_tools::check_type(l, 1, LUA_TUSERDATA);
+  lua_tools::check_any(l, 2);
 
   const ExportableToLuaPtr& userdata =
       *(static_cast<ExportableToLuaPtr*>(lua_touserdata(l, 1)));
@@ -2676,7 +2676,7 @@ int LuaContext::l_panic(lua_State* l) {
  */
 int LuaContext::l_loader(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const std::string& script_name = luaL_checkstring(l, 1);
     bool exists = load_file_if_exists(l, script_name);
 

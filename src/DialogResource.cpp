@@ -100,11 +100,11 @@ const Dialog& DialogResource::get_dialog(const std::string& dialog_id) {
  */
 int DialogResource::l_dialog(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    LuaTools::check_type(l, 1, LUA_TTABLE);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    lua_tools::check_type(l, 1, LUA_TTABLE);
 
-    const std::string dialog_id = LuaTools::check_string_field(l, 1, "id");
-    const std::string text = LuaTools::check_string_field(l, 1, "text");
+    const std::string dialog_id = lua_tools::check_string_field(l, 1, "id");
+    const std::string text = lua_tools::check_string_field(l, 1, "text");
     Dialog dialog;
     dialog.set_id(dialog_id);
     dialog.set_text(text);
@@ -113,7 +113,7 @@ int DialogResource::l_dialog(lua_State* l) {
     lua_pushnil(l); // first key
     while (lua_next(l, 1) != 0) {
 
-      const std::string& key = LuaTools::check_string(l, -2);
+      const std::string& key = lua_tools::check_string(l, -2);
       if (key == "id" || key == "text") {
         lua_pop(l, 1);
         continue;
@@ -129,7 +129,7 @@ int DialogResource::l_dialog(lua_State* l) {
         value = lua_toboolean(l, -1) ? "1" : "0";
       }
       else {
-        LuaTools::error(l, std::string("Invalid value '") + key + "' for dialog '"
+        lua_tools::error(l, std::string("Invalid value '") + key + "' for dialog '"
             + dialog_id + "'");
       }
       dialog.set_property(key, value);
@@ -138,15 +138,15 @@ int DialogResource::l_dialog(lua_State* l) {
 
     dialog.set_id(dialog_id);
     if (dialog.get_id().empty()) {
-      LuaTools::error(l, "Missing value dialog_id");
+      lua_tools::error(l, "Missing value dialog_id");
     }
 
     if (dialog.get_text().empty()) {
-      LuaTools::error(l, std::string("Missing text for dialog '") + dialog_id + "'");
+      lua_tools::error(l, std::string("Missing text for dialog '") + dialog_id + "'");
     }
 
     if (exists(dialog_id)) {
-      LuaTools::error(l, std::string("Duplicate dialog '") + dialog_id + "'");
+      lua_tools::error(l, std::string("Duplicate dialog '") + dialog_id + "'");
     }
     dialogs[dialog_id] = dialog;
 

@@ -97,22 +97,22 @@ void MapLoader::load_map(Game& game, Map& map) {
  */
 int MapLoader::l_properties(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     // Retrieve the map to build.
     Map* map = LuaContext::get_entity_implicit_creation_map(l);
     debug::check_assertion(map != nullptr, "No map has not been set in this Lua state");
 
     // Retrieve the map properties from the table parameter.
-    LuaTools::check_type(l, 1, LUA_TTABLE);
+    lua_tools::check_type(l, 1, LUA_TTABLE);
 
-    const int x = LuaTools::opt_int_field(l, 1, "x", 0);
-    const int y = LuaTools::opt_int_field(l, 1, "y", 0);
-    const int width = LuaTools::check_int_field(l, 1, "width");
-    const int height = LuaTools::check_int_field(l, 1, "height");
-    const std::string& world_name = LuaTools::opt_string_field(l, 1 , "world", "");
-    const int floor = LuaTools::opt_int_field(l, 1, "floor", Map::NO_FLOOR);
-    const std::string& tileset_id = LuaTools::check_string_field(l, 1, "tileset");
-    const std::string& music_id = LuaTools::opt_string_field(l, 1, "music", Music::none);
+    const int x = lua_tools::opt_int_field(l, 1, "x", 0);
+    const int y = lua_tools::opt_int_field(l, 1, "y", 0);
+    const int width = lua_tools::check_int_field(l, 1, "width");
+    const int height = lua_tools::check_int_field(l, 1, "height");
+    const std::string& world_name = lua_tools::opt_string_field(l, 1 , "world", "");
+    const int floor = lua_tools::opt_int_field(l, 1, "floor", Map::NO_FLOOR);
+    const std::string& tileset_id = lua_tools::check_string_field(l, 1, "tileset");
+    const std::string& music_id = lua_tools::opt_string_field(l, 1, "music", Music::none);
 
     // Initialize the map data.
     // TODO implement methods in Map instead to check the values instead of changing directly the fields.

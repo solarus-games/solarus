@@ -115,8 +115,8 @@ void LuaContext::push_sprite(lua_State* l, Sprite& sprite) {
  */
 int LuaContext::sprite_api_create(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    const std::string& animation_set_id = LuaTools::check_string(l, 1);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    const std::string& animation_set_id = lua_tools::check_string(l, 1);
 
     // TODO if the file does not exist, make a Lua error instead of an assertion error.
     SpritePtr sprite = std::make_shared<Sprite>(animation_set_id);
@@ -134,7 +134,7 @@ int LuaContext::sprite_api_create(lua_State* l) {
  */
 int LuaContext::sprite_api_get_animation_set(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
 
     const std::string& animation_set_id = sprite.get_animation_set_id();
@@ -151,7 +151,7 @@ int LuaContext::sprite_api_get_animation_set(lua_State* l) {
  */
 int LuaContext::sprite_api_get_animation(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
 
     const std::string& animation_name = sprite.get_current_animation();
@@ -168,12 +168,12 @@ int LuaContext::sprite_api_get_animation(lua_State* l) {
  */
 int LuaContext::sprite_api_set_animation(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
 
-    const std::string& animation_name = LuaTools::check_string(l, 2);
+    const std::string& animation_name = lua_tools::check_string(l, 2);
     if (!sprite.has_animation(animation_name)) {
-      LuaTools::arg_error(l, 2,
+      lua_tools::arg_error(l, 2,
           std::string("Animation '") + animation_name
           + "' does not exist in sprite '" + sprite.get_animation_set_id() + "'"
       );
@@ -193,9 +193,9 @@ int LuaContext::sprite_api_set_animation(lua_State* l) {
  */
 int LuaContext::sprite_api_has_animation(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
-    const std::string& animation_name = LuaTools::check_string(l, 2);
+    const std::string& animation_name = lua_tools::check_string(l, 2);
 
     lua_pushboolean(l, sprite.has_animation(animation_name));
     return 1;
@@ -209,7 +209,7 @@ int LuaContext::sprite_api_has_animation(lua_State* l) {
  */
 int LuaContext::sprite_api_get_direction(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
 
     lua_pushinteger(l, sprite.get_current_direction());
@@ -224,16 +224,16 @@ int LuaContext::sprite_api_get_direction(lua_State* l) {
  */
 int LuaContext::sprite_api_set_direction(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
-    int direction = LuaTools::check_int(l, 2);
+    int direction = lua_tools::check_int(l, 2);
 
     if (direction < 0 || direction >= sprite.get_nb_directions()) {
       std::ostringstream oss;
       oss << "Illegal direction " << direction
           << " for sprite '" + sprite.get_animation_set_id()
           << "' in animation '" + sprite.get_current_animation() + "'";
-      LuaTools::arg_error(l, 2, oss.str());
+      lua_tools::arg_error(l, 2, oss.str());
     }
     sprite.set_current_direction(direction);
 
@@ -248,11 +248,11 @@ int LuaContext::sprite_api_set_direction(lua_State* l) {
  */
 int LuaContext::sprite_api_get_num_directions(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
-    const std::string& animation_name = LuaTools::opt_string(l, 2, sprite.get_current_animation());
+    const std::string& animation_name = lua_tools::opt_string(l, 2, sprite.get_current_animation());
     if (!sprite.has_animation(animation_name)) {
-      LuaTools::arg_error(l, 2,
+      lua_tools::arg_error(l, 2,
           std::string("Animation '") + animation_name
           + "' does not exist in sprite '" + sprite.get_animation_set_id() + "'"
       );
@@ -272,7 +272,7 @@ int LuaContext::sprite_api_get_num_directions(lua_State* l) {
  */
 int LuaContext::sprite_api_get_frame(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
 
     lua_pushinteger(l, sprite.get_current_frame());
@@ -287,9 +287,9 @@ int LuaContext::sprite_api_get_frame(lua_State* l) {
  */
 int LuaContext::sprite_api_set_frame(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
-    int frame = LuaTools::check_int(l, 2);
+    int frame = lua_tools::check_int(l, 2);
 
     if (frame < 0 || frame >= sprite.get_nb_frames()) {
       std::ostringstream oss;
@@ -297,7 +297,7 @@ int LuaContext::sprite_api_set_frame(lua_State* l) {
           << " for sprite '" << sprite.get_animation_set_id()
           << "' in direction " << sprite.get_current_direction()
           << " of animation '" << sprite.get_current_animation() << "'";
-      LuaTools::arg_error(l, 2, oss.str());
+      lua_tools::arg_error(l, 2, oss.str());
     }
     sprite.set_current_frame(frame);
 
@@ -312,7 +312,7 @@ int LuaContext::sprite_api_set_frame(lua_State* l) {
  */
 int LuaContext::sprite_api_get_frame_delay(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
 
     uint32_t frame_delay = sprite.get_frame_delay();
@@ -334,11 +334,11 @@ int LuaContext::sprite_api_get_frame_delay(lua_State* l) {
  */
 int LuaContext::sprite_api_set_frame_delay(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
     uint32_t delay = 0;
     if (!lua_isnil(l, 2)) {
-      delay = uint32_t(LuaTools::check_int(l, 2));
+      delay = uint32_t(lua_tools::check_int(l, 2));
     }
 
     sprite.set_frame_delay(delay);
@@ -354,7 +354,7 @@ int LuaContext::sprite_api_set_frame_delay(lua_State* l) {
  */
 int LuaContext::sprite_api_is_paused(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
 
     lua_pushboolean(l, sprite.is_paused());
@@ -370,9 +370,9 @@ int LuaContext::sprite_api_is_paused(lua_State* l) {
  */
 int LuaContext::sprite_api_set_paused(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
-    bool paused = LuaTools::opt_boolean(l, 2, true);
+    bool paused = lua_tools::opt_boolean(l, 2, true);
 
     sprite.set_paused(paused);
 
@@ -387,9 +387,9 @@ int LuaContext::sprite_api_set_paused(lua_State* l) {
  */
 int LuaContext::sprite_api_set_ignore_suspend(lua_State *l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
-    bool ignore_suspend = LuaTools::opt_boolean(l, 2, true);
+    bool ignore_suspend = lua_tools::opt_boolean(l, 2, true);
 
     sprite.set_ignore_suspend(ignore_suspend);
 
@@ -404,7 +404,7 @@ int LuaContext::sprite_api_set_ignore_suspend(lua_State *l) {
  */
 int LuaContext::sprite_api_synchronize(lua_State *l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
 
     if (!lua_isnil(l, 2)) {

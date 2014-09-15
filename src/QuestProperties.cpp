@@ -125,22 +125,22 @@ void QuestProperties::load() {
 
 int QuestProperties::l_quest(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     // Retrieve the quest properties from the table parameter.
-    LuaTools::check_type(l, 1, LUA_TTABLE);
+    lua_tools::check_type(l, 1, LUA_TTABLE);
     const std::string& solarus_required_version =
-        LuaTools::opt_string_field(l, 1, "solarus_version", "");
+        lua_tools::opt_string_field(l, 1, "solarus_version", "");
     check_version_compatibility(solarus_required_version);
     const std::string& quest_write_dir =
-        LuaTools::opt_string_field(l, 1, "write_dir", "");
+        lua_tools::opt_string_field(l, 1, "write_dir", "");
     const std::string& title_bar =
-        LuaTools::opt_string_field(l, 1, "title_bar", "");
+        lua_tools::opt_string_field(l, 1, "title_bar", "");
     const std::string& normal_quest_size_string =
-        LuaTools::opt_string_field(l, 1, "normal_quest_size", "320x240");
+        lua_tools::opt_string_field(l, 1, "normal_quest_size", "320x240");
     const std::string& min_quest_size_string =
-        LuaTools::opt_string_field(l, 1, "min_quest_size", normal_quest_size_string);
+        lua_tools::opt_string_field(l, 1, "min_quest_size", normal_quest_size_string);
     const std::string& max_quest_size_string =
-        LuaTools::opt_string_field(l, 1, "max_quest_size", normal_quest_size_string);
+        lua_tools::opt_string_field(l, 1, "max_quest_size", normal_quest_size_string);
 
     FileTools::set_quest_write_dir(quest_write_dir);
     if (!title_bar.empty()) {
@@ -150,21 +150,21 @@ int QuestProperties::l_quest(lua_State* l) {
     Size normal_quest_size, min_quest_size, max_quest_size;
     bool success = Video::parse_size(normal_quest_size_string, normal_quest_size);
     if (!success) {
-      LuaTools::arg_error(l, 1, std::string(
+      lua_tools::arg_error(l, 1, std::string(
           "Bad field 'normal_quest_size' (not a valid size string: '")
       + normal_quest_size_string + "')");
     }
 
     success = Video::parse_size(min_quest_size_string, min_quest_size);
     if (!success) {
-      LuaTools::arg_error(l, 1, std::string(
+      lua_tools::arg_error(l, 1, std::string(
           "Bad field 'min_quest_size' (not a valid size string: '")
       + min_quest_size_string + "')");
     }
 
     success = Video::parse_size(max_quest_size_string, max_quest_size);
     if (!success) {
-      LuaTools::arg_error(l, 1, std::string(
+      lua_tools::arg_error(l, 1, std::string(
           "Bad field 'max_quest_size' (not a valid size string: '")
       + max_quest_size_string + "')");
     }
@@ -173,7 +173,7 @@ int QuestProperties::l_quest(lua_State* l) {
         || normal_quest_size.height < min_quest_size.height
         || normal_quest_size.width > max_quest_size.width
         || normal_quest_size.height > max_quest_size.height) {
-      LuaTools::arg_error(l, 1, "Invalid range of quest sizes");
+      lua_tools::arg_error(l, 1, "Invalid range of quest sizes");
     }
 
     Video::set_quest_size_range(

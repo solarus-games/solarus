@@ -218,19 +218,19 @@ void Tileset::set_images(const std::string& other_id) {
  */
 int Tileset::l_background_color(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     lua_getfield(l, LUA_REGISTRYINDEX, "tileset");
     Tileset* tileset = static_cast<Tileset*>(lua_touserdata(l, -1));
     lua_pop(l, 1);
 
-    LuaTools::check_type(l, 1, LUA_TTABLE);
+    lua_tools::check_type(l, 1, LUA_TTABLE);
     lua_rawgeti(l, 1, 1);
     lua_rawgeti(l, 1, 2);
     lua_rawgeti(l, 1, 3);
     Color color(
-        LuaTools::check_int(l, -3),
-        LuaTools::check_int(l, -2),
-        LuaTools::check_int(l, -1)
+        lua_tools::check_int(l, -3),
+        lua_tools::check_int(l, -2),
+        lua_tools::check_int(l, -1)
     );
     lua_pop(l, 3);
 
@@ -250,7 +250,7 @@ int Tileset::l_background_color(lua_State* l) {
  */
 int Tileset::l_tile_pattern(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     lua_getfield(l, LUA_REGISTRYINDEX, "tileset");
     Tileset* tileset = static_cast<Tileset*>(lua_touserdata(l, -1));
     lua_pop(l, 1);
@@ -258,25 +258,25 @@ int Tileset::l_tile_pattern(lua_State* l) {
     int x[] = { -1, -1, -1, -1 };
     int y[] = { -1, -1, -1, -1 };
 
-    const std::string& id = LuaTools::check_string_field(l, 1, "id");
-    const Ground ground = LuaTools::check_enum_field<Ground>(l, 1, "ground", ground_names);
-    const int width = LuaTools::check_int_field(l, 1, "width");
-    const int height = LuaTools::check_int_field(l, 1, "height");
-    const std::string& scrolling = LuaTools::opt_string_field(l, 1, "scrolling", "");
+    const std::string& id = lua_tools::check_string_field(l, 1, "id");
+    const Ground ground = lua_tools::check_enum_field<Ground>(l, 1, "ground", ground_names);
+    const int width = lua_tools::check_int_field(l, 1, "width");
+    const int height = lua_tools::check_int_field(l, 1, "height");
+    const std::string& scrolling = lua_tools::opt_string_field(l, 1, "scrolling", "");
 
     int i = 0, j = 0;
     lua_settop(l, 1);
     lua_getfield(l, 1, "x");
     if (lua_isnumber(l, 2)) {
       // Single frame.
-      x[0] = LuaTools::check_int(l, 2);
+      x[0] = lua_tools::check_int(l, 2);
       i = 1;
     }
     else {
       // Multi-frame.
       lua_pushnil(l);
       while (lua_next(l, 2) != 0 && i < 4) {
-        x[i] = LuaTools::check_int(l, 4);
+        x[i] = lua_tools::check_int(l, 4);
         ++i;
         lua_pop(l, 1);
       }
@@ -287,14 +287,14 @@ int Tileset::l_tile_pattern(lua_State* l) {
     lua_getfield(l, 1, "y");
     if (lua_isnumber(l, 2)) {
       // Single frame.
-      y[0] = LuaTools::check_int(l, 2);
+      y[0] = lua_tools::check_int(l, 2);
       j = 1;
     }
     else {
       // Multi-frame.
       lua_pushnil(l);
       while (lua_next(l, 2) != 0 && j < 4) {
-        y[j] = LuaTools::check_int(l, 4);
+        y[j] = lua_tools::check_int(l, 4);
         ++j;
         lua_pop(l, 1);
       }
@@ -304,13 +304,13 @@ int Tileset::l_tile_pattern(lua_State* l) {
 
     // Check data.
     if (i != 1 && i != 3 && i != 4) {
-      LuaTools::arg_error(l, 1, "Invalid number of frames for x");
+      lua_tools::arg_error(l, 1, "Invalid number of frames for x");
     }
     if (j != 1 && j != 3 && j != 4) {
-      LuaTools::arg_error(l, 1, "Invalid number of frames for y");
+      lua_tools::arg_error(l, 1, "Invalid number of frames for y");
     }
     if (i != j) {
-      LuaTools::arg_error(l, 1, "The length of x and y must match");
+      lua_tools::arg_error(l, 1, "The length of x and y must match");
     }
 
     // Create the tile pattern.
@@ -330,7 +330,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
     else {
       // Multi-frame.
       if (scrolling == "self") {
-        LuaTools::arg_error(l, 1, "Multi-frame is not supported for self-scrolling tiles");
+        lua_tools::arg_error(l, 1, "Multi-frame is not supported for self-scrolling tiles");
       }
       bool parallax = scrolling == "parallax";
       AnimatedTilePattern::AnimationSequence sequence = (i == 3) ?

@@ -36,11 +36,11 @@ std::map<std::string, std::string> strings;
  */
 int l_text(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    LuaTools::check_type(l, 1, LUA_TTABLE);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    lua_tools::check_type(l, 1, LUA_TTABLE);
 
-    const std::string key = LuaTools::check_string_field(l, 1, "key");
-    const std::string value = LuaTools::check_string_field(l, 1, "value");
+    const std::string key = lua_tools::check_string_field(l, 1, "key");
+    const std::string value = lua_tools::check_string_field(l, 1, "value");
 
     strings[key] = value;
 

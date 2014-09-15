@@ -134,53 +134,53 @@ void LuaContext::push_text_surface(lua_State* l, TextSurface& text_surface) {
  */
 int LuaContext::text_surface_api_create(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     std::shared_ptr<TextSurface> text_surface =
         std::make_shared<TextSurface>(0, 0);
 
     if (lua_gettop(l) > 0) {
-      LuaTools::check_type(l, 1, LUA_TTABLE);
+      lua_tools::check_type(l, 1, LUA_TTABLE);
 
       // Traverse the table, looking for properties.
       lua_pushnil(l); // First key.
       while (lua_next(l, 1) != 0) {
 
-        const std::string& key = LuaTools::check_string(l, 2);
+        const std::string& key = lua_tools::check_string(l, 2);
         if (key == "font") {
-          const std::string& font_id = LuaTools::check_string(l, 3);
+          const std::string& font_id = lua_tools::check_string(l, 3);
           if (!TextSurface::has_font(font_id)) {
-            LuaTools::error(l, std::string("No such font: '") + font_id + "'");
+            lua_tools::error(l, std::string("No such font: '") + font_id + "'");
           }
           text_surface->set_font(font_id);
         }
         else if (key == "rendering_mode") {
           TextSurface::RenderingMode mode =
-              LuaTools::check_enum<TextSurface::RenderingMode>(l, 3, rendering_mode_names);
+              lua_tools::check_enum<TextSurface::RenderingMode>(l, 3, rendering_mode_names);
           text_surface->set_rendering_mode(mode);
         }
         else if (key == "horizontal_alignment") {
           TextSurface::HorizontalAlignment alignment =
-              LuaTools::check_enum<TextSurface::HorizontalAlignment>(l, 3, horizontal_alignment_names);
+              lua_tools::check_enum<TextSurface::HorizontalAlignment>(l, 3, horizontal_alignment_names);
           text_surface->set_horizontal_alignment(alignment);
         }
         else if (key == "vertical_alignment") {
           TextSurface::VerticalAlignment alignment =
-              LuaTools::check_enum<TextSurface::VerticalAlignment>(l, 3, vertical_alignment_names);
+              lua_tools::check_enum<TextSurface::VerticalAlignment>(l, 3, vertical_alignment_names);
           text_surface->set_vertical_alignment(alignment);
         }
         else if (key == "color") {
-          Color color = LuaTools::check_color(l, 3);
+          Color color = lua_tools::check_color(l, 3);
           text_surface->set_text_color(color);
         }
         else if (key == "text") {
-          const std::string& text = LuaTools::check_string(l, 3);
+          const std::string& text = lua_tools::check_string(l, 3);
           text_surface->set_text(text);
         }
         else if (key == "text_key") {
-          const std::string& text_key = LuaTools::check_string(l, 3);
+          const std::string& text_key = lua_tools::check_string(l, 3);
 
           if (!StringResource::exists(text_key)) {
-            LuaTools::error(l, std::string("No value with key '") + text_key
+            lua_tools::error(l, std::string("No value with key '") + text_key
                 + "' in strings.dat for language '"
                 + Language::get_language() + "'"
             );
@@ -188,7 +188,7 @@ int LuaContext::text_surface_api_create(lua_State* l) {
           text_surface->set_text(StringResource::get_string(text_key));
         }
         else {
-          LuaTools::error(l, std::string("Invalid key '") + key
+          lua_tools::error(l, std::string("Invalid key '") + key
               + "' for text surface properties");
         }
         lua_pop(l, 1); // Pop the value, let the key for the iteration.
@@ -208,7 +208,7 @@ int LuaContext::text_surface_api_create(lua_State* l) {
  */
 int LuaContext::text_surface_api_get_horizontal_alignment(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const TextSurface& text_surface = *check_text_surface(l, 1);
 
     TextSurface::HorizontalAlignment alignment = text_surface.get_horizontal_alignment();
@@ -225,10 +225,10 @@ int LuaContext::text_surface_api_get_horizontal_alignment(lua_State* l) {
  */
 int LuaContext::text_surface_api_set_horizontal_alignment(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
     TextSurface::HorizontalAlignment alignment =
-        LuaTools::check_enum<TextSurface::HorizontalAlignment>(
+        lua_tools::check_enum<TextSurface::HorizontalAlignment>(
             l, 1, horizontal_alignment_names);
 
     text_surface.set_horizontal_alignment(alignment);
@@ -244,7 +244,7 @@ int LuaContext::text_surface_api_set_horizontal_alignment(lua_State* l) {
  */
 int LuaContext::text_surface_api_get_vertical_alignment(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const TextSurface& text_surface = *check_text_surface(l, 1);
 
     TextSurface::VerticalAlignment alignment = text_surface.get_vertical_alignment();
@@ -261,10 +261,10 @@ int LuaContext::text_surface_api_get_vertical_alignment(lua_State* l) {
  */
 int LuaContext::text_surface_api_set_vertical_alignment(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
     TextSurface::VerticalAlignment alignment =
-        LuaTools::check_enum<TextSurface::VerticalAlignment>(
+        lua_tools::check_enum<TextSurface::VerticalAlignment>(
             l, 1, vertical_alignment_names);
 
     text_surface.set_vertical_alignment(alignment);
@@ -280,7 +280,7 @@ int LuaContext::text_surface_api_set_vertical_alignment(lua_State* l) {
  */
 int LuaContext::text_surface_api_get_font(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const TextSurface& text_surface = *check_text_surface(l, 1);
 
     const std::string& font_id = text_surface.get_font();
@@ -297,12 +297,12 @@ int LuaContext::text_surface_api_get_font(lua_State* l) {
  */
 int LuaContext::text_surface_api_set_font(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
-    const std::string& font_id = LuaTools::check_string(l, 2);
+    const std::string& font_id = lua_tools::check_string(l, 2);
 
     if (!TextSurface::has_font(font_id)) {
-      LuaTools::arg_error(l, 2, std::string("No such font: '") + font_id + "'");
+      lua_tools::arg_error(l, 2, std::string("No such font: '") + font_id + "'");
     }
     text_surface.set_font(font_id);
 
@@ -317,7 +317,7 @@ int LuaContext::text_surface_api_set_font(lua_State* l) {
  */
 int LuaContext::text_surface_api_get_rendering_mode(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const TextSurface& text_surface = *check_text_surface(l, 1);
 
     TextSurface::RenderingMode mode = text_surface.get_rendering_mode();
@@ -334,9 +334,9 @@ int LuaContext::text_surface_api_get_rendering_mode(lua_State* l) {
  */
 int LuaContext::text_surface_api_set_rendering_mode(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
-    TextSurface::RenderingMode mode = LuaTools::check_enum<TextSurface::RenderingMode>(
+    TextSurface::RenderingMode mode = lua_tools::check_enum<TextSurface::RenderingMode>(
         l, 1, rendering_mode_names);
 
     text_surface.set_rendering_mode(mode);
@@ -352,7 +352,7 @@ int LuaContext::text_surface_api_set_rendering_mode(lua_State* l) {
  */
 int LuaContext::text_surface_api_get_color(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const TextSurface& text_surface = *check_text_surface(l, 1);
 
     const Color& color = text_surface.get_text_color();
@@ -369,9 +369,9 @@ int LuaContext::text_surface_api_get_color(lua_State* l) {
  */
 int LuaContext::text_surface_api_set_color(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
-    const Color& color = LuaTools::check_color(l, 2);
+    const Color& color = lua_tools::check_color(l, 2);
 
     text_surface.set_text_color(color);
 
@@ -386,7 +386,7 @@ int LuaContext::text_surface_api_set_color(lua_State* l) {
  */
 int LuaContext::text_surface_api_get_text(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const TextSurface& text_surface = *check_text_surface(l, 1);
 
     const std::string& text = text_surface.get_text();
@@ -403,11 +403,11 @@ int LuaContext::text_surface_api_get_text(lua_State* l) {
  */
 int LuaContext::text_surface_api_set_text(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
     std::string text;
     if (lua_gettop(l) >= 2 && !lua_isnil(l, 2)) {
-      text = LuaTools::check_string(l, 2);
+      text = lua_tools::check_string(l, 2);
     }
     text_surface.set_text(text);
 
@@ -422,12 +422,12 @@ int LuaContext::text_surface_api_set_text(lua_State* l) {
  */
 int LuaContext::text_surface_api_set_text_key(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
-    const std::string& key = LuaTools::check_string(l, 2);
+    const std::string& key = lua_tools::check_string(l, 2);
 
     if (!StringResource::exists(key)) {
-      LuaTools::arg_error(l, 2, std::string("No value with key '") + key
+      lua_tools::arg_error(l, 2, std::string("No value with key '") + key
           + "' in strings.dat for language '"
           + Language::get_language() + "'"
       );
@@ -446,7 +446,7 @@ int LuaContext::text_surface_api_set_text_key(lua_State* l) {
  */
 int LuaContext::text_surface_api_get_size(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const TextSurface& text_surface = *check_text_surface(l, 1);
 
     lua_pushinteger(l, text_surface.get_width());

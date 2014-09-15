@@ -178,7 +178,7 @@ void ScopedLuaRef::call(const std::string& function_name) const {
 
   if (!is_empty()) {
     push();
-    LuaTools::call_function(l, 0, 0, function_name.c_str());
+    lua_tools::call_function(l, 0, 0, function_name.c_str());
   }
 }
 
@@ -208,7 +208,7 @@ void ScopedLuaRef::clear_and_call(const std::string& function_name) {
   lua_State* l = this->l;
   push();
   clear();  // The function is still alive, onto the stack.
-  LuaTools::call_function(l, 0, 0, function_name.c_str());
+  lua_tools::call_function(l, 0, 0, function_name.c_str());
 }
 
 }

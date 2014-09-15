@@ -111,13 +111,13 @@ void TextSurface::quit() {
  */
 int TextSurface::l_font(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    LuaTools::check_type(l, 1, LUA_TTABLE);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    lua_tools::check_type(l, 1, LUA_TTABLE);
 
-    const std::string& font_id = LuaTools::check_string_field(l, 1, "id");
-    const std::string& file_name = LuaTools::check_string_field(l, 1, "file");
-    int font_size = LuaTools::opt_int_field(l, 1, "size", 11);
-    bool is_default = LuaTools::opt_boolean_field(l, 1, "default", false);
+    const std::string& font_id = lua_tools::check_string_field(l, 1, "id");
+    const std::string& file_name = lua_tools::check_string_field(l, 1, "file");
+    int font_size = lua_tools::opt_int_field(l, 1, "size", 11);
+    bool is_default = lua_tools::opt_boolean_field(l, 1, "default", false);
 
     fonts.insert(std::make_pair(font_id, FontData()));
     FontData& font = fonts[font_id];

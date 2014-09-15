@@ -164,7 +164,7 @@ void LuaContext::update_menus() {
     if (it->ref.is_empty()) {
       // Empty ref on a menu means that we should remove it.
       // In this case, context must also be nullptr.
-      Debug::check_assertion(it->context == nullptr, "Menu with context and no ref");
+      debug::check_assertion(it->context == nullptr, "Menu with context and no ref");
       menus.erase(it--);
     }
   }

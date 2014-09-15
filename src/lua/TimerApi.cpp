@@ -131,12 +131,12 @@ void LuaContext::add_timer(
       std::ostringstream oss;
       oss << "Callback ref " << callback_ref.get()
           << " is already used by a timer (duplicate luaL_unref?)";
-      Debug::die(oss.str());
+      debug::die(oss.str());
     }
   }
 #endif
 
-  Debug::check_assertion(timers.find(timer) == timers.end(),
+  debug::check_assertion(timers.find(timer) == timers.end(),
       "Duplicate timer in the system");
 
   timers[timer].callback_ref = callback_ref;
@@ -253,7 +253,7 @@ void LuaContext::update_timers() {
     if (it != timers.end()) {
       timers.erase(it);
 
-      Debug::check_assertion(timers.find(timer) == timers.end(),
+      debug::check_assertion(timers.find(timer) == timers.end(),
           "Failed to remove timer");
     }
   }
@@ -307,7 +307,7 @@ void LuaContext::set_entity_timers_suspended(
  */
 void LuaContext::do_timer_callback(const TimerPtr& timer) {
 
-  Debug::check_assertion(timer->is_finished(), "This timer is still running");
+  debug::check_assertion(timer->is_finished(), "This timer is still running");
 
   auto it = timers.find(timer);
   if (it != timers.end() &&

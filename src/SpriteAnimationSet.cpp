@@ -40,7 +40,7 @@ SpriteAnimationSet::SpriteAnimationSet(const std::string& id):
  */
 void SpriteAnimationSet::load() {
 
-  Debug::check_assertion(animations.empty(),
+  debug::check_assertion(animations.empty(),
       "Animation set already loaded");
 
   // Compute the file name.
@@ -51,7 +51,7 @@ void SpriteAnimationSet::load() {
   int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0) {
-    Debug::error(std::string("Failed to load sprite file '") + file_name
+    debug::error(std::string("Failed to load sprite file '") + file_name
         + "': " + lua_tostring(l, -1));
     lua_pop(l, 1);
   }
@@ -60,7 +60,7 @@ void SpriteAnimationSet::load() {
     lua_setfield(l, LUA_REGISTRYINDEX, "animation_set");
     lua_register(l, "animation", l_animation);
     if (lua_pcall(l, 0, 0, 0) != 0) {
-      Debug::error(std::string("Failed to load sprite file '") + file_name
+      debug::error(std::string("Failed to load sprite file '") + file_name
           + "': " + lua_tostring(l, -1));
       lua_pop(l, 1);
     }
@@ -223,7 +223,7 @@ bool SpriteAnimationSet::has_animation(
 const SpriteAnimation& SpriteAnimationSet::get_animation(
     const std::string& animation_name) const {
 
-  Debug::check_assertion(has_animation(animation_name),
+  debug::check_assertion(has_animation(animation_name),
       std::string("No animation '") + animation_name
       + "' in animation set '" + id + "'"
   );
@@ -239,7 +239,7 @@ const SpriteAnimation& SpriteAnimationSet::get_animation(
 SpriteAnimation& SpriteAnimationSet::get_animation(
     const std::string& animation_name) {
 
-  Debug::check_assertion(has_animation(animation_name),
+  debug::check_assertion(has_animation(animation_name),
       std::string("No animation '") + animation_name
       + "' in animation set '" + id + "'"
   );

@@ -42,7 +42,7 @@ VideoMode::VideoMode(
    software_filter(std::move(software_filter)),
    hardware_filter(std::move(hardware_filter)) {
 
-   Debug::check_assertion(software_filter == nullptr || hardware_filter == nullptr,
+   debug::check_assertion(software_filter == nullptr || hardware_filter == nullptr,
        "Video mode can have at most one filter");
 }
 

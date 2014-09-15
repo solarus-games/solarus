@@ -41,7 +41,7 @@ std::string solarus_required_version;
 void check_version_compatibility(const std::string& solarus_required_version) {
 
   if (solarus_required_version.empty()) {
-    Debug::die("No Solarus version is specified in your quest.dat file!");
+    debug::die("No Solarus version is specified in your quest.dat file!");
   }
 
   // TODO check the syntax of the version string
@@ -69,7 +69,7 @@ void check_version_compatibility(const std::string& solarus_required_version) {
     oss << "This quest is made for Solarus " << required_major_version << "."
         << required_minor_version << ".x but you are running Solarus "
         << SOLARUS_VERSION;
-    Debug::die(oss.str());
+    debug::die(oss.str());
   }
 }
 
@@ -97,7 +97,7 @@ void QuestProperties::load() {
 
   if (load_result != 0) {
     // Syntax error in quest.dat.
-    Debug::die(std::string("Failed to load quest.dat: ") + lua_tostring(l, -1));
+    debug::die(std::string("Failed to load quest.dat: ") + lua_tostring(l, -1));
   }
   else {
 
@@ -109,12 +109,12 @@ void QuestProperties::load() {
 
       if (std::string(buffer).find("[info]")) {
         // Quest format of Solarus 0.9.
-        Debug::die(std::string("This quest is made for Solarus 0.9 but you are running Solarus ")
+        debug::die(std::string("This quest is made for Solarus 0.9 but you are running Solarus ")
             + SOLARUS_VERSION);
       }
       else {
         // Runtime error in quest.dat.
-        Debug::die(std::string("Failed to parse quest.dat: ") + lua_tostring(l, -1));
+        debug::die(std::string("Failed to parse quest.dat: ") + lua_tostring(l, -1));
       }
       lua_pop(l, 1);
     }

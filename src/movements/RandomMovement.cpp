@@ -88,7 +88,7 @@ void RandomMovement::set_max_radius(int max_radius) {
   if (max_radius < 0) {
     std::ostringstream oss;
     oss << "Invalid max radius: " << max_radius;
-    Debug::die(oss.str());
+    debug::die(oss.str());
   }
   this->max_radius = max_radius;
 

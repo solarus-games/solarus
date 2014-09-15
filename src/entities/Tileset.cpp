@@ -98,7 +98,7 @@ void Tileset::load() {
   int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0) {
-    Debug::die(std::string("Failed to load tileset file '")
+    debug::die(std::string("Failed to load tileset file '")
         + file_name + "': " + lua_tostring(l, -1));
     lua_pop(l, 1);
   }
@@ -108,7 +108,7 @@ void Tileset::load() {
   lua_register(l, "background_color", l_background_color);
   lua_register(l, "tile_pattern", l_tile_pattern);
   if (lua_pcall(l, 0, 0, 0) != 0) {
-    Debug::die(std::string("Failed to load tileset file '")
+    debug::die(std::string("Failed to load tileset file '")
         + file_name + "': " + lua_tostring(l, -1));
     lua_pop(l, 1);
   }
@@ -119,14 +119,14 @@ void Tileset::load() {
   file_name = std::string("tilesets/") + id + ".tiles.png";
   tiles_image = Surface::create(file_name, Surface::DIR_DATA);
   if (tiles_image == nullptr) {
-    Debug::error(std::string("Missing tiles image for tileset '") + id + "': " + file_name);
+    debug::error(std::string("Missing tiles image for tileset '") + id + "': " + file_name);
     tiles_image = Surface::create(16, 16);
   }
 
   file_name = std::string("tilesets/") + id + ".entities.png";
   entities_image = Surface::create(file_name, Surface::DIR_DATA);
   if (entities_image == nullptr) {
-    Debug::error(std::string("Missing entities image for tileset '") + id + "': " + file_name);
+    debug::error(std::string("Missing entities image for tileset '") + id + "': " + file_name);
     entities_image = Surface::create(16, 16);
   }
 }
@@ -185,7 +185,7 @@ TilePattern& Tileset::get_tile_pattern(const std::string& id) {
   if (it == tile_patterns.end()) {
     std::ostringstream oss;
     oss << "No such tile pattern in tileset '" << get_id() << "': " << id;
-    Debug::die(oss.str());
+    debug::die(oss.str());
   }
   return *it->second;
 }
@@ -282,7 +282,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
       }
     }
     lua_pop(l, 1);
-    Debug::check_assertion(lua_gettop(l) == 1, "Invalid stack when parsing tile pattern");
+    debug::check_assertion(lua_gettop(l) == 1, "Invalid stack when parsing tile pattern");
 
     lua_getfield(l, 1, "y");
     if (lua_isnumber(l, 2)) {
@@ -300,7 +300,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
       }
     }
     lua_pop(l, 1);
-    Debug::check_assertion(lua_gettop(l) == 1, "Invalid stack when parsing tile pattern");
+    debug::check_assertion(lua_gettop(l) == 1, "Invalid stack when parsing tile pattern");
 
     // Check data.
     if (i != 1 && i != 3 && i != 4) {

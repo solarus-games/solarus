@@ -651,7 +651,7 @@ void Enemy::set_attack_consequence(
   if (life_lost < 0) {
     std::ostringstream oss;
     oss << "Invalid amount of life: " << life_lost;
-    Debug::die(oss.str());
+    debug::die(oss.str());
   }
   attack_reactions[attack].set_general_reaction(reaction, life_lost);
 }
@@ -672,7 +672,7 @@ void Enemy::set_attack_consequence_sprite(
   if (life_lost < 0) {
     std::ostringstream oss;
     oss << "Invalid amount of life: " << life_lost;
-    Debug::die(oss.str());
+    debug::die(oss.str());
   }
   attack_reactions[attack].set_sprite_reaction(&sprite, reaction, life_lost);
 }
@@ -1081,7 +1081,7 @@ void Enemy::play_hurt_sound() {
       break;
 
     case HURT_NUMBER:
-      Debug::die("Invalid hurt style");
+      debug::die("Invalid hurt style");
       break;
   }
 
@@ -1198,7 +1198,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
         Hero& hero = static_cast<Hero&>(source);
 
         // Sword attacks only use pixel-precise collisions.
-        Debug::check_assertion(this_sprite != nullptr,
+        debug::check_assertion(this_sprite != nullptr,
             "Missing enemy sprite for sword attack"
         );
 
@@ -1229,7 +1229,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
     {
       std::ostringstream oss;
       oss << "Invalid enemy reaction: " << reaction.type;
-      Debug::die(oss.str());
+      debug::die(oss.str());
       break;
     }
   }

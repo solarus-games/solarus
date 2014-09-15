@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -156,7 +156,7 @@ int Equipment::get_max_money() const {
  */
 void Equipment::set_max_money(int max_money) {
 
-  Debug::check_assertion(max_money >= 0, "Invalid money amount to add");
+  debug::check_assertion(max_money >= 0, "Invalid money amount to add");
 
   savegame.set_integer(Savegame::KEY_MAX_MONEY, max_money);
 
@@ -193,13 +193,13 @@ void Equipment::set_money(int money) {
  * \brief Adds some money to the player.
  *
  * If the maximum amount of money is reached, no more money is added.
- * 
+ *
  * \param money_to_add Amount of money to add.
  * Must be positive of zero.
  */
 void Equipment::add_money(int money_to_add) {
 
-  Debug::check_assertion(money_to_add >= 0, "Invalid money amount to add");
+  debug::check_assertion(money_to_add >= 0, "Invalid money amount to add");
 
   set_money(get_money() + money_to_add);
 }
@@ -214,7 +214,7 @@ void Equipment::add_money(int money_to_add) {
  */
 void Equipment::remove_money(int money_to_remove) {
 
-  Debug::check_assertion(money_to_remove >= 0, "Invalid money amount to remove");
+  debug::check_assertion(money_to_remove >= 0, "Invalid money amount to remove");
 
   set_money(get_money() - money_to_remove);
 }
@@ -234,12 +234,12 @@ int Equipment::get_max_life() const {
  *
  * The program exits with an error message if the specified maximum
  * life is not valid.
- * 
+ *
  * \param max_life the player's maximum life
  */
 void Equipment::set_max_life(int max_life) {
 
-  Debug::check_assertion(max_life >= 0, "Invalid life amount");
+  debug::check_assertion(max_life >= 0, "Invalid life amount");
 
   savegame.set_integer(Savegame::KEY_MAX_LIFE, max_life);
 
@@ -282,7 +282,7 @@ void Equipment::set_life(int life) {
  */
 void Equipment::add_life(int life_to_add) {
 
-  Debug::check_assertion(life_to_add >= 0, "Invalid life amount to add");
+  debug::check_assertion(life_to_add >= 0, "Invalid life amount to add");
 
   set_life(get_life() + life_to_add);
 }
@@ -294,7 +294,7 @@ void Equipment::add_life(int life_to_add) {
  */
 void Equipment::remove_life(int life_to_remove) {
 
-  Debug::check_assertion(life_to_remove >= 0, "Invalid life amount to remove");
+  debug::check_assertion(life_to_remove >= 0, "Invalid life amount to remove");
 
   set_life(get_life() - life_to_remove);
 }
@@ -322,12 +322,12 @@ int Equipment::get_max_magic() const {
  *
  * Exits with an error message if the value specified
  * if not valid.
- * 
+ *
  * \param max_magic the maximum level of magic
  */
 void Equipment::set_max_magic(int max_magic) {
 
-  Debug::check_assertion(max_magic >= 0, "Invalid magic amount");
+  debug::check_assertion(max_magic >= 0, "Invalid magic amount");
 
   savegame.set_integer(Savegame::KEY_MAX_MAGIC, max_magic);
 
@@ -361,13 +361,13 @@ void Equipment::set_magic(int magic) {
  * \brief Adds some magic points to the player.
  *
  * If the maximum value is reached, no more magic points are added.
- * 
+ *
  * \param magic_to_add Number of magic points to add.
  * Must be positive of zero.
  */
 void Equipment::add_magic(int magic_to_add) {
 
-  Debug::check_assertion(magic_to_add >= 0, "Invalid magic amount to add");
+  debug::check_assertion(magic_to_add >= 0, "Invalid magic amount to add");
 
   set_magic(get_magic() + magic_to_add);
 }
@@ -383,7 +383,7 @@ void Equipment::add_magic(int magic_to_add) {
  */
 void Equipment::remove_magic(int magic_to_remove) {
 
-  Debug::check_assertion(magic_to_remove >= 0, "Invalid magic amount to remove");
+  debug::check_assertion(magic_to_remove >= 0, "Invalid magic amount to remove");
 
   set_magic(get_magic() - magic_to_remove);
 }
@@ -443,7 +443,7 @@ bool Equipment::item_exists(const std::string& item_name) const {
  */
 EquipmentItem& Equipment::get_item(const std::string& item_name) {
 
-  Debug::check_assertion(item_exists(item_name),
+  debug::check_assertion(item_exists(item_name),
       std::string("No such item: '") + item_name + "'");
 
   return *items.find(item_name)->second;
@@ -456,7 +456,7 @@ EquipmentItem& Equipment::get_item(const std::string& item_name) {
  */
 const EquipmentItem& Equipment::get_item(const std::string& item_name) const {
 
-  Debug::check_assertion(item_exists(item_name),
+  debug::check_assertion(item_exists(item_name),
       std::string("No such item: '") + item_name + "'");
 
   return *items.find(item_name)->second;
@@ -471,7 +471,7 @@ EquipmentItem* Equipment::get_item_assigned(int slot) {
 
   // TODO don't hardcode item slots
 
-  Debug::check_assertion(slot >= 1 && slot <= 2,
+  debug::check_assertion(slot >= 1 && slot <= 2,
       "Invalid item slot");
 
   char savegame_variable[] = "_item_slot_0";
@@ -492,7 +492,7 @@ EquipmentItem* Equipment::get_item_assigned(int slot) {
  */
 const EquipmentItem* Equipment::get_item_assigned(int slot) const {
 
-  Debug::check_assertion(slot >= 1 && slot <= 2,
+  debug::check_assertion(slot >= 1 && slot <= 2,
       "Invalid item slot");
 
   std::ostringstream oss;
@@ -511,23 +511,23 @@ const EquipmentItem* Equipment::get_item_assigned(int slot) const {
  *
  * The program exits with an error message if the specified item
  * cannot be assigned or if the player does not have it.
- * 
+ *
  * \param slot Slot to set (1 or 2).
  * \param item The item to assign to this slot or nullptr to empty the slot.
  */
 void Equipment::set_item_assigned(int slot, EquipmentItem* item) {
 
-  Debug::check_assertion(slot >= 1 && slot <= 2,
+  debug::check_assertion(slot >= 1 && slot <= 2,
       "Invalid item slot");
 
   std::ostringstream oss;
   oss << "_item_slot_" << slot;
 
   if (item != nullptr) {
-    Debug::check_assertion(item->get_variant() > 0,
+    debug::check_assertion(item->get_variant() > 0,
         std::string("Cannot assign item '") + item->get_name()
         + "' because the player does not have it");
-    Debug::check_assertion(item->is_assignable(),
+    debug::check_assertion(item->is_assignable(),
         std::string("The item '") + item->get_name()
         + "' cannot be assigned");
     savegame.set_string(oss.str(), item->get_name());
@@ -570,7 +570,7 @@ std::string Equipment::get_ability_savegame_variable(Ability ability) const {
 
     case ABILITY_SWORD:
       return Savegame::KEY_ABILITY_SWORD;
- 
+
     case ABILITY_SWORD_KNOWLEDGE:
       return Savegame::KEY_ABILITY_SWORD_KNOWLEDGE;
 
@@ -590,7 +590,7 @@ std::string Equipment::get_ability_savegame_variable(Ability ability) const {
       return Savegame::KEY_ABILITY_DETECT_WEAK_WALLS;
   }
 
-  Debug::die("Invalid ability");
+  debug::die("Invalid ability");
   return "";
 }
 

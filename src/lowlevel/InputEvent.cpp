@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,7 +34,7 @@ bool InputEvent::joypad_enabled = false;
 SDL_Joystick* InputEvent::joystick = nullptr;
 bool InputEvent::repeat_keyboard = false;
 // Default the axis states to centered
-int InputEvent::joypad_axis_state[2] = { 0, 0 }; 
+int InputEvent::joypad_axis_state[2] = { 0, 0 };
 
 // Keyboard key names.
 std::map<InputEvent::KeyboardKey, std::string> InputEvent::keyboard_key_names = {
@@ -223,7 +223,7 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
     if (internal_event.type != SDL_JOYAXISMOTION
         || std::abs(internal_event.jaxis.value) <= 1000
         || std::abs(internal_event.jaxis.value) >= 10000) {
-      
+
       // If this is a joypad axis event
       if (internal_event.type == SDL_JOYAXISMOTION) {
         // Determine the current state of the axis
@@ -235,12 +235,12 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
         }
         else {
           axis_state = (value > 0) ? 1 : -1;
-        }        
-        
+        }
+
         // and state is same as last event for this axis
         if(joypad_axis_state[axis] == axis_state) {
-          // Ignore repeat joypad axis movement state.  
-          // However, an event still needs to be returned so that 
+          // Ignore repeat joypad axis movement state.
+          // However, an event still needs to be returned so that
           // all events will be handled this frame. Therefore, change
           // the type to a invalid event so it will be ignored.
           internal_event.type = SDL_LASTEVENT;
@@ -252,11 +252,11 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
       }
     }
     else {
-      // In deadzone band, however, an event still needs to be returned so that 
+      // In deadzone band, however, an event still needs to be returned so that
       // all events will be handled this frame.  Therefore, change
       // the type to a invalid event so it will be ignored.
       internal_event.type = SDL_LASTEVENT;
-      
+
     }
     // Always return an event if one occurred, so we will handle all successive events
     result = new InputEvent(internal_event);
@@ -1067,7 +1067,7 @@ InputEvent::MouseButton InputEvent::get_mouse_button() const {
  */
 Rectangle InputEvent::get_mouse_position() const {
 
-  Debug::check_assertion(is_mouse_event(), "Event is not a mouse event");
+  debug::check_assertion(is_mouse_event(), "Event is not a mouse event");
 
   return Video::get_scaled_position(
       Rectangle(internal_event.button.x, internal_event.button.y, 1, 1));

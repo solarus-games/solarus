@@ -58,7 +58,7 @@ void TextSurface::load_fonts() {
   int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0) {
-    Debug::die(std::string("Failed to load the fonts file '")
+    debug::die(std::string("Failed to load the fonts file '")
         + file_name + "': " + lua_tostring(l, -1)
     );
     lua_pop(l, 1);
@@ -66,7 +66,7 @@ void TextSurface::load_fonts() {
   else {
     lua_register(l, "font", l_font);
     if (lua_pcall(l, 0, 0, 0) != 0) {
-      Debug::die(std::string("Failed to load the fonts file '")
+      debug::die(std::string("Failed to load the fonts file '")
           + file_name + "': " + lua_tostring(l, -1)
       );
       lua_pop(l, 1);
@@ -148,7 +148,7 @@ int TextSurface::l_font(lua_State* l) {
           (int) font.buffer.size()
       );
       font.internal_font = TTF_OpenFontRW(fonts[font_id].rw, 0, font_size);
-      Debug::check_assertion(fonts[font_id].internal_font != nullptr,
+      debug::check_assertion(fonts[font_id].internal_font != nullptr,
           std::string("Cannot load font from file '") + file_name
           + "': " + TTF_GetError()
       );
@@ -490,7 +490,7 @@ void TextSurface::rebuild() {
     return;
   }
 
-  Debug::check_assertion(has_font(font_id),
+  debug::check_assertion(has_font(font_id),
       std::string("No such font: '") + font_id + "'"
   );
 
@@ -606,7 +606,7 @@ void TextSurface::rebuild_ttf() {
     break;
   }
 
-  Debug::check_assertion(internal_surface != nullptr,
+  debug::check_assertion(internal_surface != nullptr,
       std::string("Cannot create the text surface for string '") + text + "': "
       + SDL_GetError()
   );

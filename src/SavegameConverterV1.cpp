@@ -31,14 +31,14 @@ namespace solarus {
  */
 SavegameConverterV1::SavegameConverterV1(const std::string& file_name) {
 
-  Debug::check_assertion(FileTools::data_file_exists(file_name),
+  debug::check_assertion(FileTools::data_file_exists(file_name),
       std::string("Cannot convert savegame '") + file_name
       + "': file does not exist"
   );
 
   // Let's load this obsolete savegame.
   const std::string& buffer = FileTools::data_file_read(file_name);
-  Debug::check_assertion(buffer.size() == sizeof(SavedData),
+  debug::check_assertion(buffer.size() == sizeof(SavedData),
       std::string("Cannot read savegame file version 1 '")
       + file_name + "': invalid file size"
   );

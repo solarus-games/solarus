@@ -59,7 +59,7 @@ PathFinding::PathFinding(
   source_entity(source_entity),
   target_entity(target_entity) {
 
-  Debug::check_assertion(source_entity.is_aligned_to_grid(),
+  debug::check_assertion(source_entity.is_aligned_to_grid(),
       "The source must be aligned on the map grid");
 }
 
@@ -83,7 +83,7 @@ std::string PathFinding::compute_path() {
   target.y += -target.y % 8;
   const int target_index = get_square_index(target);
 
-  Debug::check_assertion(target.x % 8 == 0 && target.y % 8 == 0,
+  debug::check_assertion(target.x % 8 == 0 && target.y % 8 == 0,
       "Could not snap the target to the map grid");
 
   const int total_mdistance = Geometry::get_manhattan_distance(source, target);

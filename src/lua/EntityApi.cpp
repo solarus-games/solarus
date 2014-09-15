@@ -2083,7 +2083,7 @@ void LuaContext::notify_hero_brandish_treasure(
   const ScopedLuaRef& dialog_callback_ref = create_ref();
 
   if (!DialogResource::exists(dialog_id)) {
-    Debug::error(std::string("Missing treasure dialog: '") + dialog_id + "'");
+    debug::error(std::string("Missing treasure dialog: '") + dialog_id + "'");
     dialog_callback_ref.call("dialog callback");
   }
   else {
@@ -2113,10 +2113,10 @@ int LuaContext::l_treasure_dialog_finished(lua_State* l) {
 
     // Check upvalues. Any error here would be the fault of the C++ side
     // because the user cannot call this function.
-    Debug::check_assertion(item.get_game() != nullptr,
+    debug::check_assertion(item.get_game() != nullptr,
         "Equipment item without game");
 
-    Debug::check_assertion(lua_isnil(l, -1) || lua_isfunction(l, -1),
+    debug::check_assertion(lua_isnil(l, -1) || lua_isfunction(l, -1),
         "Expected function or nil for treasure callback");
 
     Game& game = *item.get_game();
@@ -4350,13 +4350,13 @@ bool LuaContext::do_custom_entity_traversable_test_function(
     CustomEntity& custom_entity,
     MapEntity& other_entity) {
 
-  Debug::check_assertion(!traversable_test_ref.is_empty(),
+  debug::check_assertion(!traversable_test_ref.is_empty(),
       "Missing traversable test function ref"
   );
 
   // Call the test function.
   push_ref(l, traversable_test_ref);
-  Debug::check_assertion(lua_isfunction(l, -1),
+  debug::check_assertion(lua_isfunction(l, -1),
       "Traversable test is not a function"
   );
   push_custom_entity(l, custom_entity);
@@ -4382,13 +4382,13 @@ bool LuaContext::do_custom_entity_collision_test_function(
     CustomEntity& custom_entity,
     MapEntity& other_entity
 ) {
-  Debug::check_assertion(!collision_test_ref.is_empty(),
+  debug::check_assertion(!collision_test_ref.is_empty(),
       "Missing collision test function"
   );
 
   // Call the test function.
   push_ref(l, collision_test_ref);
-  Debug::check_assertion(lua_isfunction(l, -1),
+  debug::check_assertion(lua_isfunction(l, -1),
       "Collision test is not a function"
   );
   push_custom_entity(l, custom_entity);
@@ -4413,11 +4413,11 @@ void LuaContext::do_custom_entity_collision_callback(
     CustomEntity& custom_entity,
     MapEntity& other_entity
 ) {
-  Debug::check_assertion(!callback_ref.is_empty(),
+  debug::check_assertion(!callback_ref.is_empty(),
       "Missing collision callback");
 
   push_ref(l, callback_ref);
-  Debug::check_assertion(lua_isfunction(l, -1),
+  debug::check_assertion(lua_isfunction(l, -1),
       "Collision callback is not a function");
   push_custom_entity(l, custom_entity);
   push_entity(l, other_entity);
@@ -4442,12 +4442,12 @@ void LuaContext::do_custom_entity_collision_callback(
     Sprite& custom_entity_sprite,
     Sprite& other_entity_sprite) {
 
-  Debug::check_assertion(!callback_ref.is_empty(),
+  debug::check_assertion(!callback_ref.is_empty(),
       "Missing sprite collision callback"
   );
 
   push_ref(l, callback_ref);
-  Debug::check_assertion(lua_isfunction(l, -1),
+  debug::check_assertion(lua_isfunction(l, -1),
       "Sprite collision callback is not a function");
   push_custom_entity(l, custom_entity);
   push_entity(l, other_entity);

@@ -36,7 +36,7 @@ ScopedLuaRef::ScopedLuaRef():
 ScopedLuaRef::ScopedLuaRef(lua_State* l, int ref):
     l(l),
     ref(ref) {
-  Debug::check_assertion(l != nullptr, "Missing Lua state");
+  debug::check_assertion(l != nullptr, "Missing Lua state");
 }
 
 /**
@@ -160,7 +160,7 @@ void ScopedLuaRef::clear() {
  */
 void ScopedLuaRef::push() const {
 
-  Debug::check_assertion(!is_empty(), "Attempt to push an empty ref");
+  debug::check_assertion(!is_empty(), "Attempt to push an empty ref");
 
   lua_rawgeti(l, LUA_REGISTRYINDEX, ref);
 }

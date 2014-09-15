@@ -133,7 +133,7 @@ void Hero::set_state(State* new_state) {
       // old_state->stop() called set_state() again in the meantime.
       // This is not a normal situation since we only called stop() to allow
       // new_state to start.
-      Debug::error(std::string("Hero state '") + old_state->get_name()
+      debug::error(std::string("Hero state '") + old_state->get_name()
                 + "' did not stop properly to let state '" + new_state->get_name()
                 + "' go, it started state '" + this->state->get_name() + "' instead. "
                 + "State '" + new_state->get_name() + "' will be forced.");
@@ -652,7 +652,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
         break;
 
       default:
-        Debug::die("Invalid destination side");
+        debug::die("Invalid destination side");
       }
       last_solid_ground_coords = get_xy();
       last_solid_ground_layer = get_layer();
@@ -668,7 +668,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
         // This is embarrassing: there is no valid destination that we can use.
         // The map is probably in an early development phase.
         // For now, let's place the hero at the top-left corner of the map.
-        Debug::error(
+        debug::error(
             std::string("No valid destination on map '") + map.get_id()
             + "'. Placing the hero at (0,0) instead."
         );
@@ -738,7 +738,7 @@ void Hero::notify_map_opening_transition_finished() {
       break;
 
     default:
-      Debug::die("Invalid destination side");
+      debug::die("Invalid destination side");
     }
   }
   check_position();
@@ -803,7 +803,7 @@ bool Hero::is_facing_obstacle() {
       break;
 
     default:
-      Debug::die("Invalid animation direction");
+      debug::die("Invalid animation direction");
       break;
   }
 
@@ -1947,7 +1947,7 @@ void Hero::avoid_collision(MapEntity& entity, int direction) {
       break;
 
     default:
-      Debug::die("Invalid direction in Hero::avoid_collision()");
+      debug::die("Invalid direction in Hero::avoid_collision()");
       break;
   }
   reset_movement();
@@ -2576,7 +2576,7 @@ bool Hero::can_start_item(EquipmentItem& item) {
  * \param item The equipment item to use.
  */
 void Hero::start_item(EquipmentItem& item) {
-  Debug::check_assertion(can_start_item(item),
+  debug::check_assertion(can_start_item(item),
       std::string("The hero cannot start using item '")
       + item.get_name() + "' now.");
   set_state(new UsingItemState(*this, item));

@@ -1314,7 +1314,7 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
       }
 
       default:
-        Debug::die("Invalid game command");
+        debug::die("Invalid game command");
       }
 
       if (effect_name.empty()) {

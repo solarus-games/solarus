@@ -234,7 +234,7 @@ int GL_ARBShader::l_shader(lua_State* l) {
         loading_shader = nullptr;
       }
       else {
-        Debug::warning("The shader script '" + loading_shader->shader_name + "' is not compatible with GLSL " + shading_language_version);
+        debug::warning("The shader script '" + loading_shader->shader_name + "' is not compatible with GLSL " + shading_language_version);
       }
     }
 

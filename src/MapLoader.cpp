@@ -57,7 +57,7 @@ void MapLoader::load_map(Game& game, Map& map) {
   const int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0) {
-    Debug::die(std::string("Failed to load map data file '")
+    debug::die(std::string("Failed to load map data file '")
         + file_name + "': " + lua_tostring(l, -1)
     );
     lua_pop(l, 1);
@@ -75,7 +75,7 @@ void MapLoader::load_map(Game& game, Map& map) {
 
   // Execute the Lua code.
   if (lua_pcall(l, 0, 0, 0) != 0) {
-    Debug::die(std::string("Failed to load map data file '")
+    debug::die(std::string("Failed to load map data file '")
         + file_name + "': " + lua_tostring(l, -1)
     );
     lua_pop(l, 1);
@@ -100,7 +100,7 @@ int MapLoader::l_properties(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     // Retrieve the map to build.
     Map* map = LuaContext::get_entity_implicit_creation_map(l);
-    Debug::check_assertion(map != nullptr, "No map has not been set in this Lua state");
+    debug::check_assertion(map != nullptr, "No map has not been set in this Lua state");
 
     // Retrieve the map properties from the table parameter.
     LuaTools::check_type(l, 1, LUA_TTABLE);

@@ -317,7 +317,7 @@ void Teletransporter::transport_hero(Hero& hero) {
       break;
 
     default:
-      Debug::die(std::string("Bad destination side for teletransporter '")
+      debug::die(std::string("Bad destination side for teletransporter '")
           + get_name() + "'");
     }
   }

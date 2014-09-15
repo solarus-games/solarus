@@ -52,7 +52,7 @@ JumpMovement::JumpMovement(int direction8, int distance, int speed, bool ignore_
   if (direction8 < 0 || direction8 >= 8) {
     std::ostringstream oss;
     oss << "Invalid jump direction: " << direction8;
-    Debug::die(oss.str());
+    debug::die(oss.str());
   }
   set_speed(speed);
 }

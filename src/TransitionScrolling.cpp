@@ -179,7 +179,7 @@ void TransitionScrolling::draw(Surface& dst_surface) {
   }
 
   Surface* previous_surface = get_previous_surface();
-  Debug::check_assertion(previous_surface != nullptr,
+  debug::check_assertion(previous_surface != nullptr,
       "No previous surface defined for scrolling");
 
   // draw the old map

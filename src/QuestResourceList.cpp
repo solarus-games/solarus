@@ -86,7 +86,7 @@ void QuestResourceList::initialize() {
   }
 
   if (lua_pcall(l, 0, 0, 0) != 0) {
-    Debug::die(std::string("Failed to load quest resource list 'project_db.dat': ") + lua_tostring(l, -1));
+    debug::die(std::string("Failed to load quest resource list 'project_db.dat': ") + lua_tostring(l, -1));
     lua_pop(l, 1);
   }
 
@@ -102,7 +102,7 @@ void QuestResourceList::initialize() {
  */
 bool QuestResourceList::exists(ResourceType resource_type, const std::string& id) {
 
-  Debug::check_assertion(resource_type >= 0 && resource_type < RESOURCE_NB,
+  debug::check_assertion(resource_type >= 0 && resource_type < RESOURCE_NB,
       "Invalid resource type");
 
   return resource_map[resource_type].find(id) != resource_map[resource_type].end();
@@ -117,7 +117,7 @@ bool QuestResourceList::exists(ResourceType resource_type, const std::string& id
 const std::vector<QuestResourceList::Element>&
     QuestResourceList::get_elements(ResourceType resource_type) {
 
-  Debug::check_assertion(resource_type >= 0 && resource_type < RESOURCE_NB,
+  debug::check_assertion(resource_type >= 0 && resource_type < RESOURCE_NB,
       "Invalid resource type");
   return resource_vector[resource_type];
 }

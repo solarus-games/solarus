@@ -104,7 +104,7 @@ void CircleMovement::set_radius(int radius) {
   if (radius < 0) {
     std::ostringstream oss;
     oss << "Invalid radius: " << radius;
-    Debug::die(oss.str());
+    debug::die(oss.str());
   }
 
   this->wanted_radius = radius;
@@ -144,7 +144,7 @@ void CircleMovement::set_radius_speed(int radius_speed) {
   if (radius_speed < 0) {
     std::ostringstream oss;
     oss << "Invalid radius speed: " << radius_speed;
-    Debug::die(oss.str());
+    debug::die(oss.str());
   }
 
   if (radius_speed == 0) {
@@ -174,7 +174,7 @@ void CircleMovement::set_angle_speed(int angle_speed) {
   if (angle_speed <= 0) {
     std::ostringstream oss;
     oss << "Invalid angle speed: " << angle_speed;
-    Debug::die(oss.str());
+    debug::die(oss.str());
   }
 
   this->angle_change_delay = 1000 / angle_speed;
@@ -200,7 +200,7 @@ void CircleMovement::set_initial_angle(double initial_angle) {
   if (initial_angle < 0 || initial_angle >= Geometry::TWO_PI) {
     std::ostringstream oss;
     oss << "Invalid initial angle: " << initial_angle;
-    Debug::die(oss.str());
+    debug::die(oss.str());
   }
 
   // convert to degrees (everything works in degrees in this class)
@@ -284,7 +284,7 @@ void CircleMovement::set_max_rotations(int max_rotations) {
   if (max_rotations < 0) {
     std::ostringstream oss;
     oss << "Invalid maximum rotations number: " << max_rotations;
-    Debug::die(oss.str());
+    debug::die(oss.str());
   }
 
   this->max_rotations = max_rotations;

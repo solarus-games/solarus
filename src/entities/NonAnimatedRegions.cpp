@@ -40,10 +40,10 @@ NonAnimatedRegions::NonAnimatedRegions(Map& map, Layer layer):
  */
 void NonAnimatedRegions::add_tile(const TilePtr& tile) {
 
-  Debug::check_assertion(optimized_tiles_surfaces.empty(),
+  debug::check_assertion(optimized_tiles_surfaces.empty(),
       "Tile regions are already built");
-  Debug::check_assertion(tile != nullptr, "Missing tile");
-  Debug::check_assertion(tile->get_layer() == layer, "Wrong layer for add tile");
+  debug::check_assertion(tile != nullptr, "Missing tile");
+  debug::check_assertion(tile->get_layer() == layer, "Wrong layer for add tile");
 
   tiles.push_back(tile);
 }
@@ -57,7 +57,7 @@ void NonAnimatedRegions::add_tile(const TilePtr& tile) {
  */
 void NonAnimatedRegions::build(std::vector<TilePtr>& rejected_tiles) {
 
-  Debug::check_assertion(optimized_tiles_surfaces.empty(),
+  debug::check_assertion(optimized_tiles_surfaces.empty(),
       "Tile regions are already built");
 
   const int map_width8 = map.get_width8();
@@ -216,11 +216,11 @@ void NonAnimatedRegions::draw_on_map() {
  */
 void NonAnimatedRegions::build_cell(int cell_index) {
 
-  Debug::check_assertion(
+  debug::check_assertion(
       cell_index >= 0 && (size_t) cell_index < non_animated_tiles.get_num_cells(),
       "Wrong cell index"
   );
-  Debug::check_assertion(optimized_tiles_surfaces[cell_index] == nullptr,
+  debug::check_assertion(optimized_tiles_surfaces[cell_index] == nullptr,
       "This cell is already built"
   );
 

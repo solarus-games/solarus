@@ -337,7 +337,7 @@ E LuaTools::check_enum(
     int index,
     const std::vector<std::string>& names
 ) {
-  Debug::check_assertion(!names[0].empty(), "Invalid list of names");
+  debug::check_assertion(!names[0].empty(), "Invalid list of names");
 
   const std::string& name = LuaTools::check_string(l, index);
   for (int i = 0; !names[i].empty(); ++i) {

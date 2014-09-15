@@ -196,7 +196,7 @@ Map& LuaContext::get_entity_creation_map(lua_State* l) {
   else {
     // The map was is implicit (typically, we are loading its data file).
     map = get_entity_implicit_creation_map(l);
-    Debug::check_assertion(map != nullptr,
+    debug::check_assertion(map != nullptr,
         "No implicit creation was been set in this Lua state");
   }
 
@@ -946,7 +946,7 @@ int LuaContext::map_api_create_tile(lua_State* l) {
     Map& map = get_entity_creation_map(l);
 
     // Should not happen: create_tile is not in the map metatable.
-    Debug::check_assertion(!map.is_started(),
+    debug::check_assertion(!map.is_started(),
         "Cannot create a tile when the map is already started");
 
     LuaTools::check_type(l, 1, LUA_TTABLE);

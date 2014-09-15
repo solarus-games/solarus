@@ -282,7 +282,7 @@ void PathMovement::start_next_elementary_move() {
       // normal case: there is a next trajectory to do
 
       current_direction = remaining_path[0] - '0';
-      Debug::check_assertion(current_direction >= 0 && current_direction < 8,
+      debug::check_assertion(current_direction >= 0 && current_direction < 8,
           std::string("Invalid path '") + initial_path + "' (bad direction '"
           + remaining_path[0] + "')"
       );

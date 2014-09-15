@@ -76,7 +76,7 @@ MapEntity::MapEntity(
   optimization_distance(default_optimization_distance),
   optimization_distance2(default_optimization_distance * default_optimization_distance) {
 
-  Debug::check_assertion(width % 8 == 0 && height % 8 == 0,
+  debug::check_assertion(width % 8 == 0 && height % 8 == 0,
       "Invalid entity size: width and height must be multiple of 8");
 }
 
@@ -350,9 +350,9 @@ void MapEntity::notify_map_started() {
  */
 void MapEntity::finish_initialization() {
 
-  Debug::check_assertion(!initialized, "Entity is already initialized");
-  Debug::check_assertion(is_on_map(), "Missing map");
-  Debug::check_assertion(get_map().is_loaded(), "Map is not ready");
+  debug::check_assertion(!initialized, "Entity is already initialized");
+  debug::check_assertion(is_on_map(), "Missing map");
+  debug::check_assertion(get_map().is_loaded(), "Map is not ready");
 
   initialized = true;
 
@@ -441,7 +441,7 @@ const Game& MapEntity::get_game() const {
  * \return The entities.
  */
 MapEntities& MapEntity::get_entities() {
-  Debug::check_assertion(map != nullptr, "No map was set");
+  debug::check_assertion(map != nullptr, "No map was set");
   return map->get_entities();
 }
 
@@ -450,7 +450,7 @@ MapEntities& MapEntity::get_entities() {
  * \return The entities.
  */
 const MapEntities& MapEntity::get_entities() const {
-  Debug::check_assertion(map != nullptr, "No map was set");
+  debug::check_assertion(map != nullptr, "No map was set");
   return map->get_entities();
 }
 
@@ -460,7 +460,7 @@ const MapEntities& MapEntity::get_entities() const {
  */
 LuaContext& MapEntity::get_lua_context() {
 
-  Debug::check_assertion(main_loop != nullptr,
+  debug::check_assertion(main_loop != nullptr,
       "This entity is not fully constructed yet");
   return main_loop->get_lua_context();
 }
@@ -471,7 +471,7 @@ LuaContext& MapEntity::get_lua_context() {
  */
 const LuaContext& MapEntity::get_lua_context() const {
 
-  Debug::check_assertion(main_loop != nullptr,
+  debug::check_assertion(main_loop != nullptr,
       "This entity is not fully constructed yet");
   return main_loop->get_lua_context();
 }
@@ -823,7 +823,7 @@ Size MapEntity::get_size() const {
  */
 void MapEntity::set_size(int width, int height) {
 
-  Debug::check_assertion(width % 8 == 0 && height % 8 == 0,
+  debug::check_assertion(width % 8 == 0 && height % 8 == 0,
       "Invalid entity size: width and height must be multiple of 8");
   bounding_box.set_size(width, height);
 }
@@ -986,7 +986,7 @@ const Point MapEntity::get_touching_point(int direction) const {
       break;
 
     default:
-      Debug::die("Invalid direction for MapEntity::get_touching_point()");
+      debug::die("Invalid direction for MapEntity::get_touching_point()");
   }
   return touching_point;
 }
@@ -1065,7 +1065,7 @@ const std::string& MapEntity::get_name() const {
  */
 void MapEntity::set_name(const std::string& name) {
 
-  Debug::check_assertion(!is_on_map(),
+  debug::check_assertion(!is_on_map(),
       "Cannot change entity name: this entity is already on a map.");
   this->name = name;
 }
@@ -1206,7 +1206,7 @@ void MapEntity::remove_sprite(Sprite& sprite) {
     }
   }
 
-  Debug::die("This sprite does not belong to this entity");
+  debug::die("This sprite does not belong to this entity");
 }
 
 /**

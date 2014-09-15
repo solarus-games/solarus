@@ -85,7 +85,7 @@ Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
   game(nullptr) {
 
   const std::string& quest_write_dir = FileTools::get_quest_write_dir();
-  Debug::check_assertion(!quest_write_dir.empty(),
+  debug::check_assertion(!quest_write_dir.empty(),
       "The quest write directory for savegames was not set in quest.dat");
 
   if (!FileTools::data_file_exists(file_name)) {
@@ -205,7 +205,7 @@ void Savegame::load() {
                                     // fun
 
     if (lua_pcall(l, 0, 0, 0) != 0) {
-      Debug::die(std::string("Failed to load savegame file '")
+      debug::die(std::string("Failed to load savegame file '")
           + file_name + "': " + lua_tostring(l, -1));
       lua_pop(l, 1);
     }
@@ -407,7 +407,7 @@ const std::string& Savegame::get_string(const std::string& key) const {
  */
 void Savegame::set_string(const std::string& key, const std::string& value) {
 
-  Debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
+  debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   saved_values[key].type = SavedValue::VALUE_STRING;
@@ -461,7 +461,7 @@ int Savegame::get_integer(const std::string& key) const {
  */
 void Savegame::set_integer(const std::string& key, int value) {
 
-  Debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
+  debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   saved_values[key].type = SavedValue::VALUE_INTEGER;
@@ -515,7 +515,7 @@ bool Savegame::get_boolean(const std::string& key) const {
  */
 void Savegame::set_boolean(const std::string& key, bool value) {
 
-  Debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
+  debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   saved_values[key].type = SavedValue::VALUE_BOOLEAN;
@@ -528,7 +528,7 @@ void Savegame::set_boolean(const std::string& key, bool value) {
  */
 void Savegame::unset(const std::string& key) {
 
-  Debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
+  debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   saved_values.erase(key);

@@ -52,7 +52,7 @@ bool Language::has_language(const std::string& language_code) {
  */
 void Language::set_language(const std::string& language_code) {
 
-  Debug::check_assertion(has_language(language_code),
+  debug::check_assertion(has_language(language_code),
       std::string("No such language: '") + language_code + "'");
 
   Language::language_code = language_code;

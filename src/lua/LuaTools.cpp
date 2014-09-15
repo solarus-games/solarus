@@ -115,7 +115,7 @@ bool LuaTools::call_function(
     const char* function_name
 ) {
   if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
-    Debug::error(std::string("In ") + function_name + ": "
+    debug::error(std::string("In ") + function_name + ": "
         + lua_tostring(l, -1)
     );
     lua_pop(l, 1);

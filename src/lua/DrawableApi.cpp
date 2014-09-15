@@ -78,7 +78,7 @@ bool LuaContext::has_drawable(const std::shared_ptr<Drawable>& drawable) {
  */
 void LuaContext::add_drawable(const std::shared_ptr<Drawable>& drawable) {
 
-  Debug::check_assertion(!has_drawable(drawable),
+  debug::check_assertion(!has_drawable(drawable),
       "This drawable object is already registered");
 
   drawables.insert(drawable);
@@ -90,7 +90,7 @@ void LuaContext::add_drawable(const std::shared_ptr<Drawable>& drawable) {
  */
 void LuaContext::remove_drawable(const std::shared_ptr<Drawable>& drawable) {
 
-  Debug::check_assertion(has_drawable(drawable),
+  debug::check_assertion(has_drawable(drawable),
       "This drawable object was not created by Lua");
 
   drawables_to_remove.insert(drawable);

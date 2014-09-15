@@ -27,34 +27,54 @@ namespace solarus {
 /**
  * \brief Provides functions to make mathematic computations.
  */
-class Geometry {
+namespace geometry {
 
-  public:
+// Mathematic constants:
+// we don't use the ones from cmath
+// because they are not ANSI
 
-    // Mathematic constants:
-    // we don't use the ones from cmath
-    // because they are not ANSI
-    static const double PI;
-    static const double TWO_PI;
-    static const double PI_OVER_2;
-    static const double PI_OVER_4;
-    static const double THREE_PI_OVER_2;
-    static const double SQRT_2;
+/**
+ * \brief The pi constant.
+ */
+constexpr double PI = 3.14159265358979323846;
 
-    static int radians_to_degrees(double radians);
-    static double degrees_to_radians(double degrees);
+/**
+ * \brief 2 * pi.
+ */
+constexpr double TWO_PI = 2.0 * PI;
 
-    static double get_distance(int x1, int y1, int x2, int y2);
-    static int get_distance2(int x1, int y1, int x2, int y2);
-    static double get_distance(const Point& point1, const Point& point2);
-    static int get_distance2(const Point& point1, const Point& point2);
-    static int get_manhattan_distance(const Point& point1, const Point& point2);
-    static double get_angle(int x1, int y1, int x2, int y2);
-    static double get_angle(const Point& point1, const Point& point2);
-    static const Point get_xy(double angle, int distance);
-    static const Point get_xy(const Point& point1, double angle, int distance);
+/**
+ * \brief pi / 2.
+ */
+constexpr double PI_OVER_2 = PI / 2.0;
 
-};
+/**
+ * \brief pi / 2.
+ */
+constexpr double PI_OVER_4 = PI / 4.0;
+
+/**
+ * \brief 3 * pi / 2.
+ */
+constexpr double THREE_PI_OVER_2 = 3 * PI_OVER_2;
+
+/**
+ * \brief Square root of 2.
+ */
+constexpr double SQRT_2 = 1.41421356237309504880;
+
+int radians_to_degrees(double radians);
+double degrees_to_radians(double degrees);
+
+double get_distance(int x1, int y1, int x2, int y2);
+int get_distance2(int x1, int y1, int x2, int y2);
+double get_distance(const Point& point1, const Point& point2);
+int get_distance2(const Point& point1, const Point& point2);
+int get_manhattan_distance(const Point& point1, const Point& point2);
+double get_angle(int x1, int y1, int x2, int y2);
+double get_angle(const Point& point1, const Point& point2);
+const Point get_xy(double angle, int distance);
+const Point get_xy(const Point& point1, double angle, int distance);
 
 /**
  * \brief Returns the distance between two points.
@@ -64,7 +84,7 @@ class Geometry {
  * \param y2 Y coordinate of the second point.
  * \return The distance in pixels
  */
-inline double Geometry::get_distance(int x1, int y1, int x2, int y2) {
+inline double get_distance(int x1, int y1, int x2, int y2) {
 
   const int dx = x2 - x1;
   const int dy = y2 - y1;
@@ -79,7 +99,7 @@ inline double Geometry::get_distance(int x1, int y1, int x2, int y2) {
  * \param y2 Y coordinate of the second point.
  * \return Square of the distance.
  */
-inline int Geometry::get_distance2(int x1, int y1, int x2, int y2) {
+inline int get_distance2(int x1, int y1, int x2, int y2) {
 
   const int dx = x2 - x1;
   const int dy = y2 - y1;
@@ -92,7 +112,7 @@ inline int Geometry::get_distance2(int x1, int y1, int x2, int y2) {
  * \param point2 Second point.
  * \return The distance in pixels.
  */
-inline double Geometry::get_distance(const Point& point1, const Point& point2) {
+inline double get_distance(const Point& point1, const Point& point2) {
 
   return get_distance(point1.x, point1.y, point2.x, point2.y);
 }
@@ -103,7 +123,7 @@ inline double Geometry::get_distance(const Point& point1, const Point& point2) {
  * \param point2 The second point.
  * \return The distance in pixels
  */
-inline int Geometry::get_distance2(const Point& point1, const Point& point2) {
+inline int get_distance2(const Point& point1, const Point& point2) {
 
   return get_distance2(point1.x, point1.y, point2.x, point2.y);
 }
@@ -114,12 +134,13 @@ inline int Geometry::get_distance2(const Point& point1, const Point& point2) {
  * \param point2 Second point
  * \return The Manhattan distance between these points
  */
-inline int Geometry::get_manhattan_distance(
-    const Point& point1, const Point& point2) {
+inline int get_manhattan_distance(const Point& point1, const Point& point2) {
 
   using std::abs;
   return abs(point2.x - point1.x) +
          abs(point2.y - point1.y);
+}
+
 }
 
 }

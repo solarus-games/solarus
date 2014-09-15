@@ -1009,7 +1009,7 @@ int LuaContext::entity_api_get_direction4_to(lua_State* l) {
     }
 
     // Convert from radians.
-    int direction4 = (angle + Geometry::PI_OVER_4) / Geometry::PI_OVER_2;
+    int direction4 = (angle + geometry::PI_OVER_4) / geometry::PI_OVER_2;
 
     // Normalize.
     direction4 = (direction4 + 4) % 4;
@@ -1040,7 +1040,7 @@ int LuaContext::entity_api_get_direction8_to(lua_State* l) {
     }
 
     // Convert from radians.
-    int direction8 = (angle + Geometry::PI_OVER_4 / 2) / Geometry::PI_OVER_4;
+    int direction8 = (angle + geometry::PI_OVER_4 / 2) / geometry::PI_OVER_4;
 
     // Normalize.
     direction8 = (direction8 + 8) % 8;

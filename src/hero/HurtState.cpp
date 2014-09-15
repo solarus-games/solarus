@@ -67,7 +67,7 @@ void Hero::HurtState::start(const State* previous_state) {
   get_sprites().blink(invincibility_duration);
 
   if (has_source) {
-    double angle = Geometry::get_angle(source_xy, hero.get_xy());
+    double angle = geometry::get_angle(source_xy, hero.get_xy());
     std::shared_ptr<StraightMovement> movement =
         std::make_shared<StraightMovement>(false, true);
     movement->set_max_distance(24);

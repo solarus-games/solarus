@@ -188,7 +188,7 @@ void CircleMovement::set_angle_speed(int angle_speed) {
  */
 double CircleMovement::get_initial_angle() const {
 
-  return Geometry::degrees_to_radians(initial_angle);
+  return geometry::degrees_to_radians(initial_angle);
 }
 
 /**
@@ -197,14 +197,14 @@ double CircleMovement::get_initial_angle() const {
  */
 void CircleMovement::set_initial_angle(double initial_angle) {
 
-  if (initial_angle < 0 || initial_angle >= Geometry::TWO_PI) {
+  if (initial_angle < 0 || initial_angle >= geometry::TWO_PI) {
     std::ostringstream oss;
     oss << "Invalid initial angle: " << initial_angle;
     debug::die(oss.str());
   }
 
   // convert to degrees (everything works in degrees in this class)
-  this->initial_angle = Geometry::radians_to_degrees(initial_angle);
+  this->initial_angle = geometry::radians_to_degrees(initial_angle);
 }
 
 /**
@@ -392,7 +392,7 @@ void CircleMovement::recompute_position() {
     center += center_entity->get_xy();
   }
 
-  Point xy = Geometry::get_xy(center, Geometry::degrees_to_radians(current_angle), current_radius);
+  Point xy = geometry::get_xy(center, geometry::degrees_to_radians(current_angle), current_radius);
   if (get_entity() == nullptr
       || !test_collision_with_obstacles(xy - get_entity()->get_xy())) {
     set_xy(xy);

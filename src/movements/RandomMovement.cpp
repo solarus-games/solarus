@@ -111,12 +111,12 @@ void RandomMovement::set_next_direction() {
       || bounds.contains(get_xy())) {
 
     // we are inside the bounds (or there is no bound): pick a random direction
-    angle = Geometry::degrees_to_radians(Random::get_number(8) * 45 + 22.5);
+    angle = geometry::degrees_to_radians(Random::get_number(8) * 45 + 22.5);
   }
   else {
 
     // we are outside the bounds: get back into the rectangle to avoid going too far
-    angle = Geometry::get_angle(get_xy(), bounds.get_center());
+    angle = geometry::get_angle(get_xy(), bounds.get_center());
   }
   set_angle(angle);
 

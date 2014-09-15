@@ -90,7 +90,7 @@ void Hero::BoomerangState::update() {
     else {
       boomerang_direction8 = direction_pressed8;
     }
-    double angle = Geometry::degrees_to_radians(boomerang_direction8 * 45);
+    double angle = geometry::degrees_to_radians(boomerang_direction8 * 45);
     get_entities().add_entity(std::make_shared<Boomerang>(
         std::static_pointer_cast<Hero>(get_hero().shared_from_this()),
         max_distance,

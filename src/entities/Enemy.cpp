@@ -1013,7 +1013,7 @@ void Enemy::attack_hero(Hero& hero, Sprite* this_sprite) {
 
       // Compute the direction corresponding to the angle between the enemy and the hero.
       double angle = hero.get_angle(*this, nullptr, this_sprite);
-      int protected_direction4 = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
+      int protected_direction4 = (int) ((angle + geometry::PI_OVER_2 / 2.0) * 4 / geometry::TWO_PI);
       protected_direction4 = (protected_direction4 + 4) % 4;
 
       // Also get the direction of the enemy's sprite.

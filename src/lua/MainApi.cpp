@@ -250,7 +250,7 @@ int LuaContext::main_api_get_distance(lua_State* l) {
     int x2 = LuaTools::check_int(l, 3);
     int y2 = LuaTools::check_int(l, 4);
 
-    int distance = (int) Geometry::get_distance(x1, y1, x2, y2);
+    int distance = (int) geometry::get_distance(x1, y1, x2, y2);
 
     lua_pushinteger(l, distance);
     return 1;
@@ -270,7 +270,7 @@ int LuaContext::main_api_get_angle(lua_State* l) {
     int x2 = LuaTools::check_int(l, 3);
     int y2 = LuaTools::check_int(l, 4);
 
-    double angle = Geometry::get_angle(x1, y1, x2, y2);
+    double angle = geometry::get_angle(x1, y1, x2, y2);
 
     lua_pushnumber(l, angle);
     return 1;

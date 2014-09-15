@@ -190,7 +190,7 @@ void CarriedItem::throw_item(int direction) {
   std::shared_ptr<StraightMovement> movement =
       std::make_shared<StraightMovement>(false, false);
   movement->set_speed(200);
-  movement->set_angle(Geometry::degrees_to_radians(direction * 90));
+  movement->set_angle(geometry::degrees_to_radians(direction * 90));
   clear_movement();
   set_movement(movement);
 

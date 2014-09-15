@@ -1992,20 +1992,20 @@ bool MapEntity::is_center_in(const Rectangle& rectangle) const {
  * and a point.
  * \param x X coordinate of the point.
  * \param y Y coordinate of the point.
- * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
+ * \return The angle of the vector in radians, between 0 and geometry::TWO_PI.
  */
 double MapEntity::get_angle(int x, int y) const {
-  return Geometry::get_angle(get_x(), get_y(), x, y);
+  return geometry::get_angle(get_x(), get_y(), x, y);
 }
 
 /**
  * \brief Returns the angle of the vector between the origin of this entity
  * and the origin of another entity.
  * \param other The other entity.
- * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
+ * \return The angle of the vector in radians, between 0 and geometry::TWO_PI.
  */
 double MapEntity::get_angle(const MapEntity& other) const {
-  return Geometry::get_angle(get_xy(), other.get_xy());
+  return geometry::get_angle(get_xy(), other.get_xy());
 }
 
 /**
@@ -2016,7 +2016,7 @@ double MapEntity::get_angle(const MapEntity& other) const {
  * or nullptr.
  * \param other_sprite Sprite of the other entity to use instead of the entity
  * itself or nullptr.
- * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
+ * \return The angle of the vector in radians, between 0 and geometry::TWO_PI.
  */
 double MapEntity::get_angle(
     const MapEntity& other,
@@ -2035,7 +2035,7 @@ double MapEntity::get_angle(
     other_offset += other_sprite->get_xy();
   }
 
-  return Geometry::get_angle(
+  return geometry::get_angle(
       get_x() + this_offset.x,
       get_y() + this_offset.y,
       other.get_x() + other_offset.x,
@@ -2050,7 +2050,7 @@ double MapEntity::get_angle(
  * \return the distance between this entity and the point in pixels
  */
 int MapEntity::get_distance(int x, int y) const {
-  return (int) Geometry::get_distance(get_x(), get_y(), x, y);
+  return (int) geometry::get_distance(get_x(), get_y(), x, y);
 }
 
 /**
@@ -2059,7 +2059,7 @@ int MapEntity::get_distance(int x, int y) const {
  * \return the distance between this entity and the point in pixels
  */
 int MapEntity::get_distance(const Point& point) const {
-  return (int) Geometry::get_distance(get_xy(), point);
+  return (int) geometry::get_distance(get_xy(), point);
 }
 
 /**
@@ -2069,7 +2069,7 @@ int MapEntity::get_distance(const Point& point) const {
  * \return the distance between the two entities in pixels
  */
 int MapEntity::get_distance(const MapEntity& other) const {
-  return (int) Geometry::get_distance(get_xy(), other.get_xy());
+  return (int) geometry::get_distance(get_xy(), other.get_xy());
 }
 
 /**
@@ -2080,7 +2080,7 @@ int MapEntity::get_distance(const MapEntity& other) const {
 int MapEntity::get_distance_to_camera() const {
 
   const Rectangle& camera = get_map().get_camera_position();
-  return (int) Geometry::get_distance(get_xy(), camera.get_center());
+  return (int) geometry::get_distance(get_xy(), camera.get_center());
 }
 
 /**
@@ -2091,7 +2091,7 @@ int MapEntity::get_distance_to_camera() const {
 int MapEntity::get_distance_to_camera2() const {
 
   const Rectangle& camera = get_map().get_camera_position();
-  return Geometry::get_distance2(get_xy(), camera.get_center());
+  return geometry::get_distance2(get_xy(), camera.get_center());
 }
 
 /**

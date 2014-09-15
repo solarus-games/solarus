@@ -303,7 +303,7 @@ uint32_t PathMovement::speed_to_delay(int speed, int direction) {
 
   uint32_t delay = 1000 / speed; // speed in pixels per second, delay in milliseconds
   if (direction % 2 != 0) {
-    delay = (uint32_t) (delay * Geometry::SQRT_2); // diagonal move
+    delay = (uint32_t) (delay * geometry::SQRT_2); // diagonal move
   }
   return delay;
 }

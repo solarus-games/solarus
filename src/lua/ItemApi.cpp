@@ -290,10 +290,7 @@ int LuaContext::item_api_set_obtainable(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     EquipmentItem& item = *check_item(l, 1);
-    bool obtainable = true;
-    if (lua_gettop(l) >= 2) {
-      obtainable = lua_toboolean(l, 2);
-    }
+    bool obtainable = LuaTools::opt_boolean(l, 2, true);
 
     item.set_obtainable(obtainable);
 
@@ -325,10 +322,7 @@ int LuaContext::item_api_set_assignable(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     EquipmentItem& item = *check_item(l, 1);
-    bool assignable = true;
-    if (lua_gettop(l) >= 2) {
-      assignable = lua_toboolean(l, 2);
-    }
+    bool assignable = LuaTools::opt_boolean(l, 2, true);
 
     item.set_assignable(assignable);
 
@@ -360,10 +354,7 @@ int LuaContext::item_api_set_can_disappear(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     EquipmentItem& item = *check_item(l, 1);
-    bool can_disappear = true;
-    if (lua_gettop(l) >= 2) {
-      can_disappear = lua_toboolean(l, 2);
-    }
+    bool can_disappear = LuaTools::opt_boolean(l, 2, true);
 
     item.set_can_disappear(can_disappear);
 
@@ -395,10 +386,7 @@ int LuaContext::item_api_set_brandish_when_picked(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     EquipmentItem& item = *check_item(l, 1);
-    bool brandish_when_picked = true;
-    if (lua_gettop(l) >= 2) {
-      brandish_when_picked = lua_toboolean(l, 2);
-    }
+    bool brandish_when_picked = LuaTools::opt_boolean(l, 2, true);
 
     item.set_brandish_when_picked(brandish_when_picked);
 

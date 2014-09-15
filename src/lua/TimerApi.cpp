@@ -450,10 +450,7 @@ int LuaContext::timer_api_set_with_sound(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
-    bool with_sound = true;
-    if (lua_gettop(l) >= 2) {
-      with_sound = lua_toboolean(l, 2);
-    }
+    bool with_sound = LuaTools::opt_boolean(l, 2, true);
 
     timer->set_with_sound(with_sound);
 
@@ -485,10 +482,7 @@ int LuaContext::timer_api_set_suspended(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
-    bool suspended = true;
-    if (lua_gettop(l) >= 2) {
-      suspended = lua_toboolean(l, 2);
-    }
+    bool suspended = LuaTools::opt_boolean(l, 2, true);
 
     timer->set_suspended(suspended);
 
@@ -522,10 +516,7 @@ int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
     LuaContext& lua_context = get_lua_context(l);
 
     const TimerPtr& timer = check_timer(l, 1);
-    bool suspended_with_map = true;
-    if (lua_gettop(l) >= 2) {
-      suspended_with_map = lua_toboolean(l, 2);
-    }
+    bool suspended_with_map = LuaTools::opt_boolean(l, 2, true);
 
     timer->set_suspended_with_map(suspended_with_map);
 

@@ -372,10 +372,7 @@ int LuaContext::sprite_api_set_paused(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
-    bool paused = true;  // true if unspecified.
-    if (lua_gettop(l) >= 2) {
-      paused = lua_toboolean(l, 2);
-    }
+    bool paused = LuaTools::opt_boolean(l, 2, true);
 
     sprite.set_paused(paused);
 
@@ -392,10 +389,7 @@ int LuaContext::sprite_api_set_ignore_suspend(lua_State *l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Sprite& sprite = *check_sprite(l, 1);
-    bool ignore_suspend = true;  // true if unspecified.
-    if (lua_gettop(l) >= 2) {
-      ignore_suspend = lua_toboolean(l, 2);
-    }
+    bool ignore_suspend = LuaTools::opt_boolean(l, 2, true);
 
     sprite.set_ignore_suspend(ignore_suspend);
 

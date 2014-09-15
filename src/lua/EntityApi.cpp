@@ -725,10 +725,7 @@ int LuaContext::entity_api_set_enabled(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
-    bool enabled = true;
-    if (lua_gettop(l) >= 2) {
-      enabled = lua_toboolean(l, 2);
-    }
+    bool enabled = LuaTools::opt_boolean(l, 2, true);
 
     entity.set_enabled(enabled);
 
@@ -1174,10 +1171,7 @@ int LuaContext::entity_api_set_visible(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
-    bool visible = true;
-    if (lua_gettop(l) >= 2) {
-      visible = lua_toboolean(l, 2);
-    }
+    bool visible = LuaTools::opt_boolean(l, 2, true);
 
     entity.set_visible(visible);
 
@@ -1255,10 +1249,7 @@ int LuaContext::entity_api_set_layer_independent_collisions(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
-    bool independent = true;
-    if (lua_gettop(l) >= 2) {
-      independent = lua_toboolean(l, 2);
-    }
+    bool independent = LuaTools::opt_boolean(l, 2, true);
 
     if (entity.is_detector()) {
       Detector& detector = static_cast<Detector&>(entity);
@@ -1745,14 +1736,8 @@ int LuaContext::hero_api_set_blinking(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    bool blinking = true;
-    uint32_t duration = 0;
-    if (lua_gettop(l) >= 2) {
-      blinking = lua_toboolean(l, 2);
-      if (lua_gettop(l) >= 3) {
-        duration = LuaTools::check_int(l, 3);
-      }
-    }
+    bool blinking = LuaTools::opt_boolean(l, 2, true);
+    uint32_t duration = LuaTools::opt_int(l, 3, 0);
 
     if (blinking) {
       hero.get_hero_sprites().blink(duration);
@@ -1789,14 +1774,8 @@ int LuaContext::hero_api_set_invincible(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    bool invincible = true;
-    uint32_t duration = 0;
-    if (lua_gettop(l) >= 2) {
-      invincible = lua_toboolean(l, 2);
-      if (lua_gettop(l) >= 3) {
-        duration = LuaTools::check_int(l, 3);
-      }
-    }
+    bool invincible = LuaTools::opt_boolean(l, 2, true);
+    uint32_t duration = LuaTools::opt_int(l, 3, 0);
 
     hero.set_invincible(invincible, duration);
 
@@ -1861,8 +1840,8 @@ int LuaContext::hero_api_walk(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
     const std::string& path = LuaTools::check_string(l, 2);
-    bool loop = lua_toboolean(l, 3) != 0;
-    bool ignore_obstacles = lua_toboolean(l, 4) != 0;
+    bool loop = LuaTools::opt_boolean(l, 3, false);
+    bool ignore_obstacles = LuaTools::opt_boolean(l, 4, false);
 
     hero.start_forced_walking(path, loop, ignore_obstacles);
 
@@ -1881,7 +1860,7 @@ int LuaContext::hero_api_start_jumping(lua_State* l) {
     Hero& hero = *check_hero(l, 1);
     int direction = LuaTools::check_int(l, 2);
     int length = LuaTools::check_int(l, 3);
-    bool ignore_obstacles = lua_toboolean(l, 4) != 0;
+    bool ignore_obstacles = LuaTools::opt_boolean(l, 4, false);
 
     hero.start_jumping(direction, length, ignore_obstacles, false);
 
@@ -2428,10 +2407,7 @@ int LuaContext::chest_api_set_open(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Chest& chest = *check_chest(l, 1);
-    bool open = true;
-    if (lua_gettop(l) >= 2) {
-      open = lua_toboolean(l, 2);
-    }
+    bool open = LuaTools::opt_boolean(l, 2, true);
 
     chest.set_open(open);
 
@@ -2511,10 +2487,7 @@ int LuaContext::block_api_set_pushable(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Block& block = *check_block(l, 1);
-    bool pushable = true;
-    if (lua_gettop(l) >= 2) {
-      pushable = lua_toboolean(l, 2);
-    }
+    bool pushable = LuaTools::opt_boolean(l, 2, true);
 
     block.set_pushable(pushable);
 
@@ -2546,10 +2519,7 @@ int LuaContext::block_api_set_pullable(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Block& block = *check_block(l, 1);
-    bool pullable = true;
-    if (lua_gettop(l) >= 2) {
-      pullable = lua_toboolean(l, 2);
-    }
+    bool pullable = LuaTools::opt_boolean(l, 2, true);
 
     block.set_pullable(pullable);
 
@@ -2666,10 +2636,7 @@ int LuaContext::switch_api_set_activated(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Switch& sw = *check_switch(l, 1);
-    bool activated = true;
-    if (lua_gettop(l) >= 2) {
-      activated = lua_toboolean(l, 2);
-    }
+    bool activated = LuaTools::opt_boolean(l, 2, true);
 
     sw.set_activated(activated);
 
@@ -2686,10 +2653,7 @@ int LuaContext::switch_api_set_locked(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Switch& sw = *check_switch(l, 1);
-    bool locked = true;
-    if (lua_gettop(l) >= 2) {
-      locked = lua_toboolean(l, 2);
-    }
+    bool locked = LuaTools::opt_boolean(l, 2, true);
 
     sw.set_locked(locked);
 
@@ -2821,10 +2785,7 @@ int LuaContext::stream_api_set_allow_movement(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Stream& stream = *check_stream(l, 1);
-    bool allow_movement = true;
-    if (lua_gettop(l) >= 2) {
-      allow_movement = lua_toboolean(l, 2);
-    }
+    bool allow_movement = LuaTools::opt_boolean(l, 2, true);
 
     stream.set_allow_movement(allow_movement);
 
@@ -2856,10 +2817,7 @@ int LuaContext::stream_api_set_allow_attack(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Stream& stream = *check_stream(l, 1);
-    bool allow_attack = true;
-    if (lua_gettop(l) >= 2) {
-      allow_attack = lua_toboolean(l, 2);
-    }
+    bool allow_attack = LuaTools::opt_boolean(l, 2, true);
 
     stream.set_allow_attack(allow_attack);
 
@@ -2891,10 +2849,7 @@ int LuaContext::stream_api_set_allow_item(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Stream& stream = *check_stream(l, 1);
-    bool allow_item = true;
-    if (lua_gettop(l) >= 2) {
-      allow_item = lua_toboolean(l, 2);
-    }
+    bool allow_item = LuaTools::opt_boolean(l, 2, true);
 
     stream.set_allow_item(allow_item);
 
@@ -3435,10 +3390,8 @@ int LuaContext::destructible_api_set_can_be_cut(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Destructible& destructible = *check_destructible(l, 1);
-    bool can_be_cut = true;
-    if (lua_gettop(l) >= 2) {
-      can_be_cut = lua_toboolean(l, 2);
-    }
+    bool can_be_cut = LuaTools::opt_boolean(l, 2, true);
+
     destructible.set_can_be_cut(can_be_cut);
 
     return 0;
@@ -3471,10 +3424,8 @@ int LuaContext::destructible_api_set_can_explode(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Destructible& destructible = *check_destructible(l, 1);
-    bool can_explode = true;
-    if (lua_gettop(l) >= 2) {
-      can_explode = lua_toboolean(l, 2);
-    }
+    bool can_explode = LuaTools::opt_boolean(l, 2, true);
+
     destructible.set_can_explode(can_explode);
 
     return 0;
@@ -3507,10 +3458,8 @@ int LuaContext::destructible_api_set_can_regenerate(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Destructible& destructible = *check_destructible(l, 1);
-    bool can_regenerate = true;
-    if (lua_gettop(l) >= 2) {
-      can_regenerate = lua_toboolean(l, 2);
-    }
+    bool can_regenerate = LuaTools::opt_boolean(l, 2, true);
+
     destructible.set_can_regenerate(can_regenerate);
 
     return 0;
@@ -3737,10 +3686,7 @@ int LuaContext::enemy_api_set_pushed_back_when_hurt(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    bool push_back = true;
-    if (lua_gettop(l) >= 2) {
-      push_back = lua_toboolean(l, 2);
-    }
+    bool push_back = LuaTools::opt_boolean(l, 2, true);
 
     enemy.set_pushed_back_when_hurt(push_back);
 
@@ -3772,10 +3718,7 @@ int LuaContext::enemy_api_set_push_hero_on_sword(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    bool push = true;
-    if (lua_gettop(l) >= 2) {
-      push = lua_toboolean(l, 2);
-    }
+    bool push = LuaTools::opt_boolean(l, 2, true);
 
     enemy.set_push_hero_on_sword(push);
 
@@ -3807,10 +3750,7 @@ int LuaContext::enemy_api_set_can_hurt_hero_running(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    bool can_hurt_hero_running = true;
-    if (lua_gettop(l) >= 2) {
-      can_hurt_hero_running = lua_toboolean(l, 2);
-    }
+    bool can_hurt_hero_running = LuaTools::opt_boolean(l, 2, true);
 
     enemy.set_can_hurt_hero_running(can_hurt_hero_running);
 
@@ -3877,10 +3817,7 @@ int LuaContext::enemy_api_set_can_attack(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    bool can_attack = true;
-    if (lua_gettop(l) >= 2) {
-      can_attack = lua_toboolean(l, 2);
-    }
+    bool can_attack = LuaTools::opt_boolean(l, 2, true);
 
     enemy.set_can_attack(can_attack);
 
@@ -4191,10 +4128,7 @@ int LuaContext::enemy_api_set_traversable(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
 
-    bool traversable = true;
-    if (lua_gettop(l) >= 2) {
-      traversable = lua_toboolean(l, 2);
-    }
+    bool traversable = LuaTools::opt_boolean(l, 2, true);
 
     enemy.set_traversable(traversable);
 
@@ -4593,10 +4527,7 @@ int LuaContext::custom_entity_api_set_drawn_in_y_order(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     CustomEntity& entity = *check_custom_entity(l, 1);
-    bool y_order = true;
-    if (lua_gettop(l) >= 2) {
-      y_order = lua_toboolean(l, 2);
-    }
+    bool y_order = LuaTools::opt_boolean(l, 2, true);
 
     entity.set_drawn_in_y_order(y_order);
 

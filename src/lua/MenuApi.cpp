@@ -184,10 +184,7 @@ int LuaContext::menu_api_start(lua_State *l) {
       LuaTools::type_error(l, 1, "table or userdata");
     }
     LuaTools::check_type(l, 2, LUA_TTABLE);
-    bool on_top = true;
-    if (lua_gettop(l) >= 3) {
-      on_top = lua_toboolean(l, 3);
-    }
+    bool on_top = LuaTools::opt_boolean(l, 3, true);
     lua_settop(l, 2);
 
     LuaContext& lua_context = get_lua_context(l);

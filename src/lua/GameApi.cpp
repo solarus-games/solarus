@@ -333,10 +333,7 @@ int LuaContext::game_api_set_paused(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    bool paused = true;
-    if (lua_gettop(l) >= 2) {
-      paused = lua_toboolean(l, 2);
-    }
+    bool paused = LuaTools::opt_boolean(l, 2, true);
 
     Game* game = savegame.get_game();
     if (game != nullptr) {
@@ -374,11 +371,7 @@ int LuaContext::game_api_set_pause_allowed(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-
-    bool pause_allowed = true;
-    if (lua_gettop(l) >= 2) {
-      pause_allowed = lua_toboolean(l, 2);
-    }
+    bool pause_allowed = LuaTools::opt_boolean(l, 2, true);
 
     Game* game = savegame.get_game();
     if (game != nullptr) {

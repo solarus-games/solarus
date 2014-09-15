@@ -118,7 +118,7 @@ int LuaContext::surface_api_create(lua_State* l) {
     else if (lua_type(l, 1) == LUA_TSTRING) {
       // load from a file
       const std::string& file_name = lua_tostring(l, 1);
-      bool language_specific = lua_toboolean(l, 2); // default is false
+      bool language_specific = LuaTools::opt_boolean(l, 2, false);
       surface = Surface::create(file_name, language_specific ?
           Surface::DIR_LANGUAGE : Surface::DIR_SPRITES);
     }

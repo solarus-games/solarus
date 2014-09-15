@@ -196,10 +196,7 @@ int LuaContext::video_api_is_fullscreen(lua_State *l) {
 int LuaContext::video_api_set_fullscreen(lua_State *l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    bool fullscreen = true;  // true if unspecified.
-    if (lua_gettop(l) >= 1) {
-      fullscreen = lua_toboolean(l, 1);
-    }
+    bool fullscreen = LuaTools::opt_boolean(l, 1, true);
 
     Video::set_fullscreen(fullscreen);
 

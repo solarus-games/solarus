@@ -676,10 +676,7 @@ int LuaContext::movement_api_set_ignore_obstacles(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     std::shared_ptr<Movement> movement = check_movement(l, 1);
-    bool ignore_obstacles = true; // true if unspecified
-    if (lua_gettop(l) >= 2) {
-      ignore_obstacles = lua_toboolean(l, 2);
-    }
+    bool ignore_obstacles = LuaTools::opt_boolean(l, 2, true);
 
     movement->set_ignore_obstacles(ignore_obstacles);
 
@@ -833,10 +830,7 @@ int LuaContext::straight_movement_api_set_smooth(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     StraightMovement& movement = *check_straight_movement(l, 1);
-    bool smooth = true; // true if unspecified
-    if (lua_gettop(l) >= 2) {
-      smooth = lua_toboolean(l, 2);
-    }
+    bool smooth = LuaTools::opt_boolean(l, 2, true);
     movement.set_smooth(smooth);
 
     return 0;
@@ -961,10 +955,7 @@ int LuaContext::random_movement_api_set_smooth(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     RandomMovement& movement = *check_random_movement(l, 1);
-    bool smooth = true; // true if unspecified
-    if (lua_gettop(l) >= 2) {
-      smooth = lua_toboolean(l, 2);
-    }
+    bool smooth = LuaTools::opt_boolean(l, 2, true);
     movement.set_smooth(smooth);
 
     return 0;
@@ -1092,10 +1083,7 @@ int LuaContext::target_movement_api_set_smooth(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     TargetMovement& movement = *check_target_movement(l, 1);
-    bool smooth = true; // true if unspecified
-    if (lua_gettop(l) >= 2) {
-      smooth = lua_toboolean(l, 2);
-    }
+    bool smooth = LuaTools::opt_boolean(l, 2, true);
     movement.set_smooth(smooth);
 
     return 0;
@@ -1226,10 +1214,8 @@ int LuaContext::path_movement_api_set_loop(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     PathMovement& movement = *check_path_movement(l, 1);
-    bool loop = true; // true if unspecified
-    if (lua_gettop(l) >= 2) {  // TODO LuaTools::opt_boolean
-      loop = lua_toboolean(l, 2);
-    }
+    bool loop = LuaTools::opt_boolean(l, 2, true);
+
     movement.set_loop(loop);
 
     return 0;
@@ -1259,10 +1245,8 @@ int LuaContext::path_movement_api_set_snap_to_grid(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     PathMovement& movement = *check_path_movement(l, 1);
-    bool snap_to_grid = true; // true if unspecified
-    if (lua_gettop(l) >= 2) {  // TODO LuaTools::opt_boolean
-      snap_to_grid = lua_toboolean(l, 2);
-    }
+    bool snap_to_grid = LuaTools::opt_boolean(l, 2, true);
+
     movement.set_snap_to_grid(snap_to_grid);
 
     return 0;
@@ -1522,10 +1506,8 @@ int LuaContext::circle_movement_api_set_clockwise(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     CircleMovement& movement = *check_circle_movement(l, 1);
-    bool clockwise = true; // true if unspecified
-    if (lua_gettop(l) >= 2) {
-      clockwise = lua_toboolean(l, 2);
-    }
+    bool clockwise = LuaTools::opt_boolean(l, 2, true);
+
     movement.set_clockwise(clockwise);
 
     return 0;
@@ -1891,10 +1873,8 @@ int LuaContext::pixel_movement_api_set_loop(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     PixelMovement& movement = *check_pixel_movement(l, 1);
-    bool loop = true; // true if unspecified
-    if (lua_gettop(l) >= 2) {  // TODO LuaTools::opt_boolean
-      loop = lua_toboolean(l, 2);
-    }
+    bool loop = LuaTools::opt_boolean(l, 2, true);
+
     movement.set_loop(loop);
 
     return 0;

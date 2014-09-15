@@ -626,7 +626,7 @@ int LuaContext::map_api_set_crystal_state(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
-    bool state = lua_toboolean(l, 2);
+    bool state = LuaTools::check_boolean(l, 2);
 
     Game& game = map.get_game();
     if (game.get_crystal_state() != state) {
@@ -727,10 +727,7 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
-    bool open = true;
-    if (lua_gettop(l) >= 3) {
-      open = lua_toboolean(l, 3);
-    }
+    bool open = LuaTools::opt_boolean(l, 3, true);
 
     MapEntities& entities = map.get_entities();
     std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
@@ -877,10 +874,7 @@ int LuaContext::map_api_set_entities_enabled(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
-    bool enabled = true;
-    if (lua_gettop(l) >= 3) {
-      enabled = lua_toboolean(l, 3);
-    }
+    bool enabled = LuaTools::opt_boolean(l, 3, true);
 
     std::list<MapEntity*> entities =
         map.get_entities().get_entities_with_prefix(prefix);

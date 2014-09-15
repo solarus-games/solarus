@@ -68,10 +68,7 @@ int LuaContext::input_api_is_joypad_enabled(lua_State* l) {
 int LuaContext::input_api_set_joypad_enabled(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    bool joypad_enabled = true;
-    if (lua_gettop(l) >= 2) {
-      joypad_enabled = lua_toboolean(l, 2);
-    }
+    bool joypad_enabled = LuaTools::opt_boolean(l, 2, true);
 
     InputEvent::set_joypad_enabled(joypad_enabled);
 

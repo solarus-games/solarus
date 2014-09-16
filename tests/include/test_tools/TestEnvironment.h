@@ -18,6 +18,7 @@
 #define SOLARUS_TEST_ENVIRONMENT_H
 
 #include "Common.h"
+#include "entities/Layer.h"
 #include "CommandLine.h"
 #include "MainLoop.h"
 #include <cstdint>
@@ -44,7 +45,11 @@ class TestEnvironment {
 
     // Creating entities.
     template<typename T>
-    std::shared_ptr<T> make_entity();
+    std::shared_ptr<T> make_entity(
+        int x = 0,
+        int y = 0,
+        Layer layer = LAYER_LOW
+    );
 
     // Simulation.
     uint32_t now();
@@ -58,7 +63,7 @@ class TestEnvironment {
 
 }
 
-#endif
-
 #include "test_tools/TestEnvironment.inl"
+
+#endif
 

@@ -21,7 +21,11 @@ class CustomEntity;
 // Template specializations.
 
 template<>
-std::shared_ptr<CustomEntity> TestEnvironment::make_entity<CustomEntity>();
+std::shared_ptr<CustomEntity> TestEnvironment::make_entity<CustomEntity>(
+    int x,
+    int y,
+    Layer layer
+);
 
 // TODO specialization for other entity types
 

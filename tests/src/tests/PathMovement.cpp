@@ -14,204 +14,177 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-/* TODO update this test
-#include "Solarus.h"
-#include "movements/PathMovement.h"
-#include "Game.h"
-#include "Savegame.h"
-#include "Map.h"
-#include "entities/MapEntities.h"
-#include "entities/InteractiveEntity.h"
-#include "lowlevel/System.h"
+#include "entities/CustomEntity.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include "movements/PathMovement.h"
+#include "test_tools/TestEnvironment.h"
 
-static void syntax_test(MapEntity &e) {
+using namespace solarus;
 
-  Game &game = e.get_game();
+namespace {
 
-  bool no_error = false;
-  try {
+/**
+ * \brief Tests a path movement composed of one step.
+ */
+void one_step_test(TestEnvironment& env, MapEntity& entity) {
 
-    PathMovement *movement = new PathMovement("abc", 100, false, false, false); // incorrect path
-    e.set_movement(movement);
-    while (!movement->is_finished()) {
-      game.update();
-      System::update();
-    }
+  Point old_xy = entity.get_xy();
 
-    no_error = true;
-  }
-  catch (std::logic_error &e) {
-    // expected behavior
-  }
-
-  e.clear_movement();
-  Debug::check_assertion(!no_error, "'syntax_test' failed to detect a syntax error");
-}
-
-static void one_step_test(MapEntity &e) {
-
-  Game &game = e.get_game();
-  Rectangle old_xy = e.get_xy();
-
-  PathMovement *movement = new PathMovement("0", 100, false, false, false); // 8 pixels to the right
-  e.set_movement(movement);
+  std::shared_ptr<PathMovement> movement = std::make_shared<PathMovement>(
+      "0", 100, false, false, false // 8 pixels to the right.
+  );
+  entity.set_movement(movement);
 
   while (!movement->is_finished()) {
-    game.update();
-    System::update();
+    env.step();
   }
 
-  Debug::check_assertion(e.get_x() - old_xy.get_x() == 8 && e.get_y() - old_xy.get_y() == 0,
-      StringConcat() << "Unexcepted coordinates for 'one_step_test #1': " << e.get_xy());
-  Debug::check_assertion(movement->get_total_distance_covered() == 8,
-      StringConcat() << "Unexpected distance covered for 'one_step_test #1': " << movement->get_total_distance_covered());
+  debug::check_assertion(entity.get_xy() - old_xy == Point(8, 0),
+      "Unexpected coordinates for 'one_step_test #1'");
+  debug::check_assertion(movement->get_total_distance_covered() == 8,
+      "Unexpected distance covered for 'one_step_test #1'");
 
-  movement->set_path("4");
+  movement->set_path("4");  // 8 pixels to the left.
   while (!movement->is_finished()) {
-    game.update();
-    System::update();
+    env.step();
   }
-  Debug::check_assertion(e.get_x() == old_xy.get_x() && e.get_y() == old_xy.get_y(),
-      StringConcat() << "Unexpected coordinates for 'one_step_test #2': " << e.get_xy());
-  Debug::check_assertion(movement->get_total_distance_covered() == 16,
-      StringConcat() << "Unexpected distance covered for 'one_step_test #2': " << movement->get_total_distance_covered());
+  debug::check_assertion(entity.get_xy() == old_xy,
+      "Unexpected coordinates for 'one_step_test #2'");
+  debug::check_assertion(movement->get_total_distance_covered() == 16,
+      "Unexpected distance covered for 'one_step_test #2'");
 
   movement->set_path("3");
   while (!movement->is_finished()) {
-    game.update();
-    System::update();
+    env.step();
   }
-  Debug::check_assertion(e.get_x() - old_xy.get_x() == -8 && e.get_y() - old_xy.get_y() == -8,
-      StringConcat() << "Unexpected coordinates for 'one_step_test #3': " << e.get_xy());
-  Debug::check_assertion(movement->get_total_distance_covered() == 24,
-      StringConcat() << "Unexpected distance covered for 'one_step_test #3': " << movement->get_total_distance_covered());
+  debug::check_assertion(entity.get_xy() - old_xy == Point(-8, -8),
+      "Unexpected coordinates for 'one_step_test #3'");
+  debug::check_assertion(movement->get_total_distance_covered() == 24,
+      "Unexpected distance covered for 'one_step_test #3'");
 
   movement->set_path("7");
   while (!movement->is_finished()) {
-    game.update();
-    System::update();
+    env.step();
   }
-  Debug::check_assertion(e.get_x() == old_xy.get_x() && e.get_y() == old_xy.get_y(),
-      StringConcat() << "Unexpected coordinates for 'one_step_test #4': " << e.get_xy());
-  Debug::check_assertion(movement->get_total_distance_covered() == 32,
-      StringConcat() << "Unexpected distance covered for 'one_step_test #4': " << movement->get_total_distance_covered());
+  debug::check_assertion(entity.get_xy() == old_xy,
+      "Unexpected coordinates for 'one_step_test #4'");
+  debug::check_assertion(movement->get_total_distance_covered() == 32,
+      "Unexpected distance covered for 'one_step_test #4'");
 
-  e.clear_movement();
+  entity.clear_movement();
 }
 
-static void direction_test(MapEntity &e) {
+/**
+ * \brief Tests that a path movement returns the correct current direction.
+ */
+void direction_test(TestEnvironment& env, MapEntity& entity) {
 
-  Game &game = e.get_game();
-  Rectangle old_xy = e.get_xy();
+  std::shared_ptr<PathMovement> movement = std::make_shared<PathMovement>(
+      "5", 100, false, false, false  // 8 pixels to the right.
+  );
+  entity.set_movement(movement);
 
-  PathMovement *movement = new PathMovement("5", 100, false, false, false); // 8 pixels to the right
-  e.set_movement(movement);
-
-  Debug::check_assertion(movement->get_current_direction() == 5,
-      StringConcat() << "Unexcepted current direction for 'direction_test #1': " << movement->get_current_direction());
+  debug::check_assertion(movement->get_current_direction() == 5,
+      "Unexpected current direction for 'direction_test #1'");
 
   while (!movement->is_finished()) {
-    game.update();
-    System::update();
+    env.step();
   }
 
   // when the movement is finished, PathMovement::get_current_direction() must return the last direction
-  Debug::check_assertion(movement->get_current_direction() == 5,
-      StringConcat() << "Unexcepted last direction for 'direction_test #1': " << movement->get_current_direction());
+  debug::check_assertion(movement->get_current_direction() == 5,
+      "Unexpected last direction for 'direction_test #1'");
 }
 
-static void multi_step_test(MapEntity &e) {
+/**
+ * \brief Tests a path movement composed of several 8-pixel steps.
+ */
+void multi_step_test(TestEnvironment& env, MapEntity& entity) {
 
-  Game &game = e.get_game();
-  Rectangle old_xy = e.get_xy();
+  Point old_xy = entity.get_xy();
 
-  PathMovement *movement = new PathMovement("66", 100, false, false, false); // 16 pixels downwards
-  e.set_movement(movement);
+  std::shared_ptr<PathMovement> movement = std::make_shared<PathMovement>(
+      "66", 100, false, false, false  // 16 pixels downwards.
+  );
+  entity.set_movement(movement);
 
   while (!movement->is_finished()) {
-    game.update();
-    System::update();
+    env.step();
   }
 
-  Debug::check_assertion(e.get_x() - old_xy.get_x() == 0 && e.get_y() - old_xy.get_y() == 16,
-      StringConcat() << "Unexcepted coordinates for 'multi_step_test #1': " << e.get_xy());
-  Debug::check_assertion(movement->get_total_distance_covered() == 16,
-      StringConcat() << "Unexpected distance covered for 'multi_step_test #1': " << movement->get_total_distance_covered());
+  debug::check_assertion(entity.get_xy() - old_xy == Point(0, 16),
+      "Unexpected coordinates for 'multi_step_test #1'");
+  debug::check_assertion(movement->get_total_distance_covered() == 16,
+      "Unexpected distance covered for 'multi_step_test #1'");
 
   movement->set_path("220");
 
   while (!movement->is_finished()) {
-    game.update();
-    System::update();
+    env.step();
   }
 
-  Debug::check_assertion(e.get_x() - old_xy.get_x() == 8 && e.get_y() - old_xy.get_y() == 0,
-      StringConcat() << "Unexcepted coordinates for 'multi_step_test #2': " << e.get_xy());
-  Debug::check_assertion(movement->get_total_distance_covered() == 40,
-      StringConcat() << "Unexpected distance covered for 'multi_step_test #2': " << movement->get_total_distance_covered());
+  debug::check_assertion(entity.get_xy() - old_xy == Point(8, 0),
+      "Unexpected coordinates for 'multi_step_test #2'");
+  debug::check_assertion(movement->get_total_distance_covered() == 40,
+      "Unexpected distance covered for 'multi_step_test #2'");
 
-  e.clear_movement();
+  entity.clear_movement();
 }
 
-static void snap_test(MapEntity &e) {
+/**
+ * \brief Checks the snap-to-grid option of PathMovement.
+ */
+void snap_test(TestEnvironment& env, MapEntity& entity) {
 
-  Game &game = e.get_game();
-
-  e.set_top_left_xy(155, 108); // not aligned to the grid
+  entity.set_top_left_xy(155, 108);  // Not aligned to the grid.
+  debug::check_assertion(!entity.is_aligned_to_grid(),
+      "Entity should not be aligned on the grid");
 
   // #1: a path movement that does not require the entity to snap to the grid
-  PathMovement *movement = new PathMovement("56", 100, false, false, false);
-  e.set_movement(movement);
+  std::shared_ptr<PathMovement> movement = std::make_shared<PathMovement>(
+      "56", 100, false, false, false
+  );
+  entity.set_movement(movement);
   while (!movement->is_finished()) {
-    game.update();
-    System::update();
+    env.step();
   }
-  Debug::check_assertion(e.get_top_left_x() == 147 && e.get_top_left_y() == 124,
-      StringConcat() << "Unexcepted coordinates for 'snap_test #1': " << e.get_xy());
-  Debug::check_assertion(movement->get_total_distance_covered() == 16,
-      StringConcat() << "Unexpected distance covered for 'snap_test #1': " << movement->get_total_distance_covered());
-  e.clear_movement();
+  debug::check_assertion(entity.get_top_left_xy() == Point(147, 124),
+      "Unexpected coordinates for 'snap_test #1'");
+  debug::check_assertion(movement->get_total_distance_covered() == 16,
+      "Unexpected distance covered for 'snap_test #1'");
+  entity.clear_movement();
 
   // #2: a path movement that requires the entity to snap to the grid
-  movement = new PathMovement("21", 100, false, false, true);
-  e.set_movement(movement);
+  movement = std::make_shared<PathMovement>(
+      "21", 100, false, false, true
+  );
+  entity.set_movement(movement);
   while (!movement->is_finished()) {
-    game.update();
-    System::update();
+    env.step();
   }
-  Debug::check_assertion(e.get_top_left_x() == 152 && e.get_top_left_y() == 112,
-      StringConcat() << "Unexcepted coordinates for 'snap_test #2': " << e.get_xy());
-  Debug::check_assertion(movement->get_total_distance_covered() == 16,
-      StringConcat() << "Unexpected distance covered for 'snap_test #2': " << movement->get_total_distance_covered());
-
+  debug::check_assertion(entity.get_top_left_xy() == Point(152, 112),
+      "Unexpected coordinates for 'snap_test #2'");
+  debug::check_assertion(movement->get_total_distance_covered() == 16,
+      "Unexpected distance covered for 'snap_test #2'");
 
 }
-*/
 
-/*
- * Test for the path movement.
+}
+
+/**
+ * Tests for the path movement.
  */
-int main(int /* argc */, char** /* argv */) {
+int main(int argc, char** argv) {
 
-  /*
-  Solarus solarus(argc, argv);
-  Savegame savegame("save_initial.dat");
-  Game game(solarus, savegame);
-  game.update();
+  TestEnvironment env(argc, argv);
 
-  Map &map = game.get_current_map();
-  MapEntity *e = new InteractiveEntity(game, "e", LAYER_LOW, 160, 117,
-      InteractiveEntity::CUSTOM, "npc/sahasrahla", 0, "_none");
-  map.get_entities().add_entity(e);
+  CustomEntity& entity = *env.make_entity<CustomEntity>(160, 177);
 
-  syntax_test(*e);
-  one_step_test(*e);
-  multi_step_test(*e);
-  direction_test(*e);
-  snap_test(*e);
-*/
+  one_step_test(env, entity);
+  multi_step_test(env, entity);
+  direction_test(env, entity);
+  snap_test(env, entity);
+
   return 0;
 }
 

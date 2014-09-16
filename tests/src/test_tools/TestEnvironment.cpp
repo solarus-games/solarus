@@ -50,6 +50,7 @@ Game& TestEnvironment::get_game() {
     std::shared_ptr<Savegame> savegame = std::make_shared<Savegame>(
         main_loop, "save_initial.dat"
     );
+    savegame->set_string(Savegame::KEY_STARTING_MAP, "tests/traversable");  // TODO allow tests to choose the map
     Game* game = new Game(main_loop, savegame);
     main_loop.set_game(game);
     step();  // Advance one tick to start the game.
@@ -91,17 +92,24 @@ Hero& TestEnvironment::get_hero() {
 
 /**
  * \brief Creates a custom entity on the map and returns it.
+ * \param x X coordinate of the entity to create.
+ * \param y Y coordinate of the entity to create.
+ * \param layer Layer of the entity to create.
  */
 template<>
-std::shared_ptr<CustomEntity> TestEnvironment::make_entity<CustomEntity>() {
+std::shared_ptr<CustomEntity> TestEnvironment::make_entity<CustomEntity>(
+    int x,
+    int y,
+    Layer layer
+) {
 
   std::shared_ptr<CustomEntity> entity = std::make_shared<CustomEntity>(
      get_game(),
      "",
      0,
-     LAYER_LOW,
-     0,
-     0,
+     layer,
+     x,
+     y,
      16,
      16,
      "",

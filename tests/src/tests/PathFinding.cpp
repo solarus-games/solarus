@@ -26,17 +26,19 @@ using namespace solarus;
 
 namespace {
 
-void basic_test(MapEntity& entity) {
+/**
+ * \brief Checks that a path computed corresponds to the expected result.
+ */
+void basic_test(TestEnvironment& env) {
 
-  Game& game = entity.get_game();
-  Map& map = entity.get_map();
-  Hero& hero = *game.get_hero();
+  Hero& hero = env.get_hero();
+  CustomEntity& entity = *env.make_entity<CustomEntity>();
 
   entity.set_top_left_xy(144, 104);
   hero.set_top_left_xy(200, 144);
 
-  PathFinding pf(map, entity, hero);
-  std::string path = pf.compute_path();
+  PathFinding path_finder(env.get_map(), entity, hero);
+  std::string path = path_finder.compute_path();
 
   debug::check_assertion(path == "7777700", "Unexpected path");
 }
@@ -50,8 +52,7 @@ int main(int argc, char** argv) {
 
   TestEnvironment env(argc, argv);
 
-  MapEntityPtr entity = env.make_entity<CustomEntity>();
-  basic_test(*entity);
+  basic_test(env);
 
   return 0;
 }

@@ -30,8 +30,8 @@ install_manifest.txt
 CMakeFiles/
 Makefile
 cmake_install.cmake
-/tests/CTestTestfile.cmake
-/tests/Testing/
+CTestTestfile.cmake
+/Testing/
 /tests/bin/
 include/config.h
 /solarus

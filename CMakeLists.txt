@@ -47,7 +47,6 @@ file(
   src/*.cpp
   src/third_party/snes_spc/*.cpp
   src/third_party/hqx/*.c
-  src/main/*.cpp
   src/entities/*.cpp
   src/hero/*.cpp
   src/hud/*.cpp
@@ -80,6 +79,9 @@ file(
   include/third_party/snes_spc/*.h
   include/third_party/hqx/*.h
 )
+set(main_source_file
+  src/main/Main.cpp
+)
 
 # Configuration for OSX and iOS build and deployment
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -99,14 +101,18 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   )
 endif()
 
-# build the executable
+# Build the Solarus library.
+add_library(solarus_static
+  STATIC
+  ${source_files}
+)
 
 # Add executable target, into CFBundle form if requested or iOS build
 if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
   include(addCFBundleTarget)
 else()
   add_executable(solarus
-    ${source_files}
+    ${main_source_file}
   )
 endif()
 
@@ -132,6 +138,7 @@ include_directories(SYSTEM
 
 # generate -l flags
 target_link_libraries(solarus
+  solarus_static
   "${SDL2_LIBRARY}"
   "${SDL2_IMAGE_LIBRARY}"
   "${SDL2_TTF_LIBRARY}"
@@ -224,4 +231,8 @@ else()
     RUNTIME DESTINATION ${SOLARUS_INSTALL_DESTINATION}
   )
 endif()
+
+# Unit tests.
+enable_testing()
+add_subdirectory(tests)
 

@@ -78,7 +78,8 @@ endif()
 
 # Add executable target into CFBundle form and rename it as requested
 add_executable(${SOLARUS_BUNDLE_TARGET_NAME} MACOSX_BUNDLE
-  ${source_files}
+  solarus_static
+  ${main_source_file}
   ${SOLARUS_BUNDLE_ICON} 
   ${SOLARUS_BUNDLE_COPIED_LIBRARIES}
 )

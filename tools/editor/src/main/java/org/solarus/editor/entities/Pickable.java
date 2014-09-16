@@ -76,15 +76,7 @@ public class Pickable extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        Integer treasureVariant = getIntegerProperty("treasure_variant");
-        if (treasureVariant != null && treasureVariant < 1) {
-            throw new MapException("Invalid treasure variant: " + treasureVariant);
-        }
-
-        String treasureSavegameVariable = getStringProperty("treasure_savegame_variable");
-        if (treasureSavegameVariable != null && !isValidSavegameVariable(treasureSavegameVariable)) {
-            throw new MapException("Invalid savegame variable");
-        }
+        checkTreasureProperties();
     }
 
     /**

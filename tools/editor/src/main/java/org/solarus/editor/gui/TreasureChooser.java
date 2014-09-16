@@ -175,7 +175,8 @@ public class TreasureChooser extends JPanel {
      */
     private void update() {
 
-        if (treasure.getItemName() == null) {
+        if (treasure.getItemName() == null ||
+                !treasure.isItemNameValid()) {
             itemNameField.setSelectedId("");
             variantField.setEnabled(false);
         }

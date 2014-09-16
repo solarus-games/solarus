@@ -169,6 +169,8 @@ public class QuestTree extends JTree implements ProjectObserver {
 
     /**
      * Rebuilds the whole tree from the data project directory.
+     *
+     * Initially expands the maps directory.
      */
     public void rebuildTree() {
 
@@ -196,6 +198,16 @@ public class QuestTree extends JTree implements ProjectObserver {
             // if the data project directory doesn't exists, can not happen
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * Updates the tree to reflect any change on the filesystem.
+     */
+    public void refreshTree() {
+
+        rebuildTree();
+
+        // TODO Restore the expanded state.
     }
 
     private void buildNode(String prefix, File directory) {
@@ -230,7 +242,7 @@ public class QuestTree extends JTree implements ProjectObserver {
     /**
      * Checks if a path corresponds to an existing resource.
      * @param path the path to check
-     * @return true if the path corresponds to en existing resource, false otherwise
+     * @return true if the path corresponds to an existing resource, false otherwise
      */
     private boolean isResourcePath(String path) {
 
@@ -362,7 +374,7 @@ public class QuestTree extends JTree implements ProjectObserver {
      */
     private void addFileElementToTree(String path) {
 
-        // if the node alreay exists
+        // if the node already exists
         if (getFileElement(path) != null) {
             return;
         }
@@ -805,6 +817,18 @@ public class QuestTree extends JTree implements ProjectObserver {
                     }
                 }
             });
+
+            // Refresh tree.
+            menuItem = new JMenuItem("Refresh tree");
+            menuItem.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent ev) {
+                    refreshTree();
+                }
+            });
+            addSeparator();
+            add(menuItem);
         }
     }
 
@@ -865,7 +889,6 @@ public class QuestTree extends JTree implements ProjectObserver {
                 }
             });
             add(elementItem);
-            addSeparator();
 
             // delete directory (if empty)
             final File file = new File(Project.getDataPath() + "/" + path);
@@ -880,6 +903,19 @@ public class QuestTree extends JTree implements ProjectObserver {
                     }
                 }
             });
+            addSeparator();
+            add(elementItem);
+
+            // Refresh tree.
+            elementItem = new JMenuItem("Refresh tree");
+            elementItem.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent ev) {
+                    refreshTree();
+                }
+            });
+            addSeparator();
             add(elementItem);
         }
     }
@@ -998,6 +1034,18 @@ public class QuestTree extends JTree implements ProjectObserver {
                     editorWindow.deleteResourceElement(element.type, element.id);
                 }
             });
+
+            // Refresh tree.
+            menuItem = new JMenuItem("Refresh tree");
+            menuItem.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent ev) {
+                    refreshTree();
+                }
+            });
+            addSeparator();
+            add(menuItem);
         }
     }
 

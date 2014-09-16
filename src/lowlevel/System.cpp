@@ -14,14 +14,15 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/System.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Video.h"
 #include "lowlevel/Color.h"
-#include "lowlevel/TextSurface.h"
-#include "lowlevel/Sound.h"
-#include "lowlevel/Random.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/FileTools.h"
 #include "lowlevel/InputEvent.h"
+#include "lowlevel/Random.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
+#include "lowlevel/TextSurface.h"
+#include "lowlevel/Video.h"
 #include "Sprite.h"
 #include <SDL.h>
 #ifdef SOLARUS_USE_APPLE_POOL
@@ -41,6 +42,9 @@ uint32_t System::ticks = 0;
  * \param args Command-line arguments.
  */
 void System::initialize(const CommandLine& args) {
+
+  // Debugging features.
+  debug::initialize(args);
 
   // initialize SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
@@ -79,6 +83,7 @@ void System::quit() {
   Color::quit();
   Video::quit();
   FileTools::quit();
+  debug::quit();
 
   SDL_Quit();
 }

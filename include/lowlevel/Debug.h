@@ -28,10 +28,15 @@
 
 namespace solarus {
 
+class CommandLine;
+
 /**
  * \brief Provides features for printing error messages or making runtime checks.
  */
 namespace debug {
+
+void initialize(const CommandLine& args);
+void quit();
 
 void warning(const std::string& message);
 void error(const std::string& message);

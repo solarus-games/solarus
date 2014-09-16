@@ -26,7 +26,7 @@ namespace solarus {
 class CommandLine;
 
 /**
- * \brief Provides lowlevel functions and initialization.
+ * \brief Provides low-level functions and initialization.
  *
  * This class initializes all low-level features.
  */

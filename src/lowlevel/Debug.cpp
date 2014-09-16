@@ -15,19 +15,44 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/Debug.h"
-#include <SDL_messagebox.h>
-#include <string>
+#include "CommandLine.h"
+#include <cstdlib>  // std::abort
 #include <fstream>
 #include <iostream>
-#include <cstdlib>  // std::abort
+#include <string>
+#include <SDL_messagebox.h>
 
 namespace solarus {
 namespace debug {
 
 namespace {
 
+  bool show_popup_on_die = true;
   const std::string error_output_file_name = "error.txt";
   std::ofstream error_output_file;
+}
+
+/**
+ * \brief Sets up the debugging features depending on the command line.
+ *
+ * The debugging features can be used even before this initialization,
+ * but whatever was passed as command-line arguments is not taken into
+ * account yet.
+ *
+ * \param args Command-line arguments.
+ */
+void initialize(const CommandLine& args) {
+
+  if (args.has_argument("-no-video")) {
+    show_popup_on_die = false;
+  }
+}
+
+/**
+ * \brief Cleans the debugging features.
+ */
+void quit() {
+  error_output_file.close();
 }
 
 /**
@@ -99,11 +124,14 @@ void die(const std::string& error_message) {
   error_output_file << "Fatal: " << error_message << std::endl;
   std::cerr << "Fatal: " << error_message << std::endl;
 
-  SDL_ShowSimpleMessageBox(
-      SDL_MESSAGEBOX_ERROR,
-      "Error",
-      error_message.c_str(),
-      nullptr);
+  if (show_popup_on_die) {
+    SDL_ShowSimpleMessageBox(
+        SDL_MESSAGEBOX_ERROR,
+        "Error",
+        error_message.c_str(),
+        nullptr
+    );
+  }
 
   std::abort();
 }

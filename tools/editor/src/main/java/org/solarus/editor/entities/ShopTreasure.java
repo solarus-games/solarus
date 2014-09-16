@@ -60,15 +60,7 @@ public class ShopTreasure extends MapEntity {
             throw new MapException("The treasure of a shop treasure cannot be empty");
         }
 
-        Integer variant = getIntegerProperty("treasure_variant");
-        if (variant != null && variant < 1) {
-            throw new MapException("Invalid treasure variant: " + variant);
-        }
-
-        String savegameVariable = getStringProperty("treasure_savegame_variable");
-        if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
-            throw new MapException("Invalid savegame variable");
-        }
+        checkTreasureProperties();
 
         int price = getIntegerProperty("price");
         if (price <= 0) {

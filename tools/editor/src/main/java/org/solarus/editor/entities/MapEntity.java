@@ -19,6 +19,7 @@ package org.solarus.editor.entities;
 import org.solarus.editor.*;
 import org.solarus.editor.Map;
 import org.luaj.vm2.*;
+
 import java.awt.*;
 import java.io.PrintWriter;
 import java.lang.reflect.*;
@@ -1616,10 +1617,38 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Check that properties "treasure_name", "treasure_variant" and
+     * "treasure_savegame_variable" are valid.
+     *
+     * Call this function from your implementation of checkProperties()
+     * if your entity has a treasure.
+     *
+     * @throws MapException If the treasure is not valid.
+     */
+    public void checkTreasureProperties() throws MapException {
+
+        String treasureName = getStringProperty("treasure_name");
+        if (treasureName != null &&
+                !Project.getResource(ResourceType.ITEM).exists(treasureName)) {
+            throw new MapException("No such item: '" + treasureName + "'");
+        }
+
+        Integer variant = getIntegerProperty("treasure_variant");
+        if (variant != null && variant < 1) {
+            throw new MapException("Invalid treasure variant: " + variant);
+        }
+
+        String savegameVariable = getStringProperty("treasure_savegame_variable");
+        if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
+            throw new MapException("Invalid treasure savegame variable");
+        }
+    }
+
+    /**
      * @brief Returns whether a string is a valid savegame variable,
      * that is, a valid Lua identifier.
      * @param id The savegame variable to check.
-     * @return true if this is a legal Lua identifir.
+     * @return true if this is a legal Lua identifier.
      */
     public static boolean isValidSavegameVariable(String id) {
 

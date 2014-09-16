@@ -35,6 +35,7 @@ Solarus Quest Editor changes
 ----------------------------
 
 * Fix wrong height of icons in the sprite tree with windows (#618).
+* Fix chest editor dialog not opening if the item no longer exists (#594).
 
 _________________________________
 

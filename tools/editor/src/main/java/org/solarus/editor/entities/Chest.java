@@ -123,15 +123,7 @@ public class Chest extends MapEntity {
             }
         }
 
-        Integer variant = getIntegerProperty("treasure_variant");
-        if (variant != null && variant < 1) {
-            throw new MapException("Invalid treasure variant: " + variant);
-        }
-
-        String savegameVariable = getStringProperty("treasure_savegame_variable");
-        if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
-            throw new MapException("Invalid treasure savegame variable");
-        }
+        checkTreasureProperties();
     }
 
     /**

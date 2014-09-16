@@ -56,6 +56,15 @@ public class Treasure {
     }
 
     /**
+     * Returns whether the item of this treasure is valid.
+     * @return \c true if the item exists or is empty.
+     */
+    public boolean isItemNameValid() {
+        return itemName == null ||
+                Project.getResource(ResourceType.ITEM).exists(itemName);
+    }
+
+    /**
      * Returns the variant of the item to give.
      * @return The variant (null means no item).
      */

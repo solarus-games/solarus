@@ -51,7 +51,7 @@ SavegameConverterV1::SavegameConverterV1(const std::string& file_name) {
  * (see enum StringIndex for their definition)
  * \return the string value saved at this index
  */
-const std::string SavegameConverterV1::get_string(int index) {
+std::string SavegameConverterV1::get_string(int index) {
   return saved_data.strings[index];
 }
 

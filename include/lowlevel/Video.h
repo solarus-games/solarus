@@ -68,7 +68,7 @@ class Video {
     static bool is_fullscreen();
     static void set_fullscreen(bool fullscreen);
 
-    static const std::string get_window_title();
+    static std::string get_window_title();
     static void set_window_title(const std::string& window_title);
 
     static bool parse_size(const std::string& size_string, Size& size);

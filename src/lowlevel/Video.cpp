@@ -634,7 +634,7 @@ void Video::render(const SurfacePtr& quest_surface) {
  * \brief Returns the current text of the window title bar.
  * \return The window title.
  */
-const std::string Video::get_window_title() {
+std::string Video::get_window_title() {
 
   return SDL_GetWindowTitle(main_window);
 }

@@ -278,7 +278,7 @@ void Video::initialize(const CommandLine& args) {
   }
 
   if (disable_window) {
-    // Create a pixel format anyway to make surface and color operation work,
+    // Create a pixel format anyway to make surface and color operations work,
     // even though nothing will ever be rendered.
     pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
   }
@@ -314,7 +314,7 @@ void Video::quit() {
 
 /**
  * \brief Returns the main window.
- * \return the main window.
+ * \return The main window, or nullptr if there is no window.
  */
 SDL_Window* Video::get_window() {
   return main_window;
@@ -322,7 +322,7 @@ SDL_Window* Video::get_window() {
 
 /**
  * \brief Returns the main renderer.
- * \return the main renderer.
+ * \return The main renderer, or nullptr if there is no window.
  */
 SDL_Renderer* Video::get_renderer() {
   return main_renderer;
@@ -330,7 +330,7 @@ SDL_Renderer* Video::get_renderer() {
 
 /**
  * \brief Returns the render texture target, if any.
- * \return the render target, or nullptr.
+ * \return The render target, or nullptr.
  */
 SDL_Texture* Video::get_render_target() {
     return render_target;
@@ -338,7 +338,7 @@ SDL_Texture* Video::get_render_target() {
 
 /**
  * \brief Returns the pixel format to use.
- * \return the pixel format to use.
+ * \return The pixel format to use.
  */
 SDL_PixelFormat* Video::get_pixel_format() {
   return pixel_format;

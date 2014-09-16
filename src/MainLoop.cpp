@@ -63,6 +63,7 @@ MainLoop::MainLoop(const CommandLine& args):
   // Do this after the creation of the window, but before showing the window,
   // because Lua might change the video mode initially.
   lua_context = std::unique_ptr<LuaContext>(new LuaContext(*this));
+  lua_context->initialize();
 
   // Finally show the window.
   Video::show_window();
@@ -73,6 +74,7 @@ MainLoop::MainLoop(const CommandLine& args):
  */
 MainLoop::~MainLoop() {
 
+  lua_context->exit();
   System::quit();
 }
 
@@ -150,7 +152,6 @@ void MainLoop::set_game(Game* game) {
 void MainLoop::run() {
 
   // Main loop.
-  lua_context->initialize();
 
   uint32_t last_frame_date = System::get_real_time();
   uint32_t lag = 0;  // Lose time of the simulation to catch up.
@@ -209,8 +210,6 @@ void MainLoop::run() {
     // While stopping the game, the Lua world must still exist.
     game->stop();
   }
-
-  lua_context->exit();
 }
 
 /**

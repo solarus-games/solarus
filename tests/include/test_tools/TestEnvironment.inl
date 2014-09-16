@@ -14,44 +14,16 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_TEST_ENVIRONMENT_H
-#define SOLARUS_TEST_ENVIRONMENT_H
-
-#include "Common.h"
-#include "CommandLine.h"
-#include "MainLoop.h"
-#include <memory>
-
 namespace solarus {
 
-class Hero;
-class Map;
-class MapEntities;
+class CustomEntity;
 
-class TestEnvironment {
+// Template specializations.
 
-  public:
+template<>
+std::shared_ptr<CustomEntity> TestEnvironment::make_entity<CustomEntity>();
 
-    TestEnvironment(int argc, char** argv);
-
-    MainLoop& get_main_loop();
-    Game& get_game();
-    Map& get_map();
-    MapEntities& get_entities();
-    Hero& get_hero();
-
-    template<typename T>
-    std::shared_ptr<T> make_entity();
-
-  private:
-
-    CommandLine command_line;
-    MainLoop main_loop;
-};
+// TODO specialization for other entity types
 
 }
-
-#endif
-
-#include "test_tools/TestEnvironment.inl"
 

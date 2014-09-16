@@ -14,16 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/MapEntities.h"
 #include "entities/CustomEntity.h"
 #include "entities/Hero.h"
+#include "entities/MapEntityPtr.h"
 #include "lowlevel/Debug.h"
 #include "movements/PathFinding.h"
-#include "CommandLine.h"
-#include "MainLoop.h"
+#include "test_tools/TestEnvironment.h"
 #include "Game.h"
-#include "Map.h"
-#include "Savegame.h"
 
 using namespace solarus;
 
@@ -51,29 +48,9 @@ void basic_test(MapEntity& entity) {
  */
 int main(int argc, char** argv) {
 
-  const CommandLine args(argc, argv);
-  MainLoop main_loop(args);
+  TestEnvironment env(argc, argv);
 
-  std::shared_ptr<Savegame> savegame = std::make_shared<Savegame>(main_loop, "save_initial.dat");
-  Game game(main_loop, savegame);
-  game.update();
-
-  Map& map = game.get_current_map();
-  MapEntityPtr entity = std::make_shared<CustomEntity>(
-      game,
-      "",
-      0,
-      LAYER_LOW,
-      0,
-      0,
-      16,
-      16,
-      "",
-      ""
-  );
-
-  map.get_entities().add_entity(entity);
-
+  MapEntityPtr entity = env.make_entity<CustomEntity>();
   basic_test(*entity);
 
   return 0;

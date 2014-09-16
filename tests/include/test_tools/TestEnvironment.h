@@ -30,6 +30,20 @@ class Hero;
 class Map;
 class MapEntities;
 
+/**
+ * \brief Wraps a Solarus main loop and provides features to easily make tests.
+ *
+ * Contrary to the traditional main loop, the test environment does not
+ * automatically advance simulated time.
+ * The simulation is paused at a specific cycle and will only advance if you
+ * decide so.
+ *
+ * If whatever you want to test can be tested in the same cycle, you don't
+ * need to simulate more cycles.
+ * If you want to test timed objects like timers or movements,
+ * you can make the simulation advance by manual steps.
+ * This will also be much faster than real time.
+ */
 class TestEnvironment {
 
   public:

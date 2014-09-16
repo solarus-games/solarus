@@ -14,17 +14,15 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "CommandLine.h"
-#include "MainLoop.h"
+#include "test_tools/TestEnvironment.h"
 
-/**
- * \brief Simple test that does nothing except initializing the engine.
- */
-int main(int argc, char** argv) {
+namespace solarus {
 
-  const solarus::CommandLine args(argc, argv);
-  solarus::MainLoop main_loop(args);
+TestEnvironment::TestEnvironment(int argc, char** argv):
+    command_line(argc, argv),
+    main_loop(command_line) {
 
-  return 0;
+}
+
 }
 

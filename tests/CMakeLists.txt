@@ -1,8 +1,28 @@
-# each .cpp file of the 'tests' directory is a test with a main() function
+# Build the Solarus testing library.
+file(
+  GLOB
+  testing_source_files
+  src/test_tools/*.cpp
+  include/test_tools/*.h
+  include/test_tools/*.inl
+)
+
+include_directories(
+  "${CMAKE_CURRENT_SOURCE_DIR}/include"
+)
+
+add_library(solarus_testing
+  STATIC
+  ${testing_source_files}
+)
+
+# Build individual tests.
+
+# Each .cpp file of the 'src/tests' directory is a test with a main() function
 file(
   GLOB
   tests_main_files
-  *.cpp
+  src/tests/*.cpp
 )
 
 foreach(test_main_file ${tests_main_files})
@@ -12,6 +32,7 @@ foreach(test_main_file ${tests_main_files})
 
   target_link_libraries(${test_bin_file}
     solarus_static
+    solarus_testing
     "${SDL2_LIBRARY}"
     "${SDL2_IMAGE_LIBRARY}"
     "${SDL2_TTF_LIBRARY}"

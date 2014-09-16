@@ -36,6 +36,7 @@ CTestTestfile.cmake
 include/config.h
 /solarus
 libsolarus_static.a
+libsolarus_testing.a
 error.txt
 build/
 gcwbuild/

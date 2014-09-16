@@ -74,6 +74,11 @@ MainLoop::MainLoop(const CommandLine& args):
  */
 MainLoop::~MainLoop() {
 
+  if (game != nullptr) {
+    // While stopping the game, the Lua world must still exist.
+    game->stop();
+  }
+
   lua_context->exit();
   System::quit();
 }
@@ -204,11 +209,6 @@ void MainLoop::run() {
     if (last_frame_duration < System::timestep) {
       System::sleep(System::timestep - last_frame_duration);
     }
-  }
-
-  if (game != nullptr) {
-    // While stopping the game, the Lua world must still exist.
-    game->stop();
   }
 }
 

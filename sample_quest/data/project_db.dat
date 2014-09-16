@@ -1,4 +1,5 @@
 map{ id = "first_map", description = "First map" }
+map{ id = "tests/traversable", description = "Traversable test area" }
 
 tileset{ id = "castle", description = "Castle" }
 
@@ -81,10 +82,11 @@ sound{ id = "victory", description = "victory" }
 sound{ id = "walk_on_grass", description = "walk_on_grass" }
 sound{ id = "walk_on_water", description = "walk_on_water" }
 sound{ id = "wrong", description = "wrong" }
+sound{ id = "running_obstacle", description = "running_obstacle" }
 
 item{ id = "bomb", description = "Bomb" }
 
 
+
 language{ id = "en", description = "English" }
 
-sound{ id = "running_obstacle", description = "running_obstacle" }

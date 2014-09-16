@@ -14,93 +14,96 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-/* TODO update this test
-#include "Solarus.h"
-#include "movements/PixelMovement.h"
-#include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include "movements/PixelMovement.h"
+#include "test_tools/TestEnvironment.h"
 
-static void basic_test() {
+using namespace solarus;
+
+namespace {
+
+/**
+ * \brief Tests that a simple movement results in the expected coordinates.
+ */
+void basic_test(TestEnvironment& env) {
 
   PixelMovement m("1 -2  2 1", 50, false, false);
 
   while (!m.is_finished()) {
 
     m.update();
-    System::update();
+    env.step();
   }
 
-  Debug::check_assertion(m.get_x() == 3 && m.get_y() == -1,
-      StringConcat() << "Unexpected coordinates for 'basic_test': " << m.get_xy());
+  debug::check_assertion(m.get_x() == 3 && m.get_y() == -1,
+      "Unexpected coordinates for 'basic_test'");
 }
 
-static void loop_test() {
+/**
+ * \brief Tests that a pixel movement correctly loops as wanted.
+ */
+void loop_test(TestEnvironment& env) {
 
-  uint32_t start_date = System::now();
+  uint32_t start_date = env.now();
   PixelMovement m("1 -2", 50, true, true);
 
-  while (!m.is_finished() && System::now() < start_date + 200) {
+  while (!m.is_finished() && env.now() < start_date + 200) {
 
     m.update();
-    System::update();
+    env.step();
   }
 
-  Debug::check_assertion(m.get_x() == 3 && m.get_y() == -6,
-      StringConcat() << "Unexpected coordinates for 'loop_test': " << m.get_xy());
+  debug::check_assertion(m.get_x() == 3 && m.get_y() == -6,
+      "Unexpected coordinates for 'loop_test'");
 }
 
-static void syntax_test() {
-
-  bool no_error = false;
-  try {
-    PixelMovement m("1", 50, false, false);
-    no_error = true;
-  }
-  catch (std::logic_error &e) {
-    // expected behavior
-  }
-
-  Debug::check_assertion(!no_error, "'syntax_test' failed to detect a syntax error");
-}
-
-static void empty_test() {
+/**
+ * \brief Tests that a pixel movement with empty trajectory is always finished.
+ */
+void empty_test(TestEnvironment& /* env */) {
 
   PixelMovement m("", 50, true, true);
 
-  Debug::check_assertion(m.is_finished());
+  debug::check_assertion(m.is_finished(),
+      "Movement is not finished as expected in 'empty_test'");
 }
 
-static void restart_test() {
+/**
+ * \brief Tests restarting a pixel movement after use.
+ */
+void restart_test(TestEnvironment& env) {
 
   PixelMovement m("2 1", 50, false, false);
 
   while (!m.is_finished()) {
 
     m.update();
-    System::update();
+    env.step();
   }
 
-  Debug::check_assertion(m.get_x() == 2 && m.get_y() == 1,
-      StringConcat() << "Unexpected coordinates for 'restart_test #1': " << m.get_xy());
+  debug::check_assertion(m.get_x() == 2 && m.get_y() == 1,
+      "Unexpected coordinates for 'restart_test #1'");
 
   m.set_trajectory("0 2");
 
   while (!m.is_finished()) {
 
     m.update();
-    System::update();
+    env.step();
   }
 
-  Debug::check_assertion(m.get_x() == 2 && m.get_y() == 3,
-      StringConcat() << "Unexpected coordinates for 'restart_test #2': " << m.get_xy());
+  debug::check_assertion(m.get_x() == 2 && m.get_y() == 3,
+      "Unexpected coordinates for 'restart_test #2'");
 }
 
-static void list_test() {
+/**
+ * \brief Tests a pixel movement whose trajectory is specified as a list.
+ */
+void list_test(TestEnvironment& env) {
 
-  std::list<Rectangle> trajectory;
-  trajectory.push_back(Rectangle(3, 2));
-  trajectory.push_back(Rectangle(-4, -5));
+  std::list<Point> trajectory;
+  trajectory.push_back({ 3, 2 });
+  trajectory.push_back({ -4, -5 });
 
   PixelMovement m("", 50, false, false);
   m.set_trajectory(trajectory);
@@ -108,28 +111,28 @@ static void list_test() {
   while (!m.is_finished()) {
 
     m.update();
-    System::update();
+    env.step();
   }
 
-  Debug::check_assertion(m.get_x() == -1 && m.get_y() == -3,
-      StringConcat() << "Unexpected coordinates for 'list_test': " << m.get_xy());
+  debug::check_assertion(m.get_x() == -1 && m.get_y() == -3,
+      "Unexpected coordinates for 'list_test'");
 }
-*/
 
-/*
- * Test for the pixel movement.
+}
+
+/**
+ * \brief Tests for the pixel movement.
  */
-int main(int /* argc */, char** /* argv */) {
-/*
-  Solarus solarus(argc, argv);
+int main(int argc, char** argv) {
 
-  basic_test();
-  loop_test();
-  syntax_test();
-  empty_test();
-  restart_test();
-  list_test();
-*/
+  TestEnvironment env(argc, argv);
+
+  basic_test(env);
+  loop_test(env);
+  empty_test(env);
+  restart_test(env);
+  list_test(env);
+
   return 0;
 }
 

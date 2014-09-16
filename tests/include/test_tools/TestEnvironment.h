@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "CommandLine.h"
 #include "MainLoop.h"
+#include <cstdint>
 #include <memory>
 
 namespace solarus {
@@ -34,14 +35,20 @@ class TestEnvironment {
 
     TestEnvironment(int argc, char** argv);
 
+    // Get important objects.
     MainLoop& get_main_loop();
     Game& get_game();
     Map& get_map();
     MapEntities& get_entities();
     Hero& get_hero();
 
+    // Creating entities.
     template<typename T>
     std::shared_ptr<T> make_entity();
+
+    // Simulation.
+    uint32_t now();
+    void step();
 
   private:
 

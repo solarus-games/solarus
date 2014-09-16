@@ -17,6 +17,7 @@
 #include "entities/CustomEntity.h"
 #include "entities/MapEntities.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/System.h"
 #include "test_tools/TestEnvironment.h"
 #include "Map.h"
 #include "Game.h"
@@ -51,7 +52,7 @@ Game& TestEnvironment::get_game() {
     );
     Game* game = new Game(main_loop, savegame);
     main_loop.set_game(game);
-    main_loop.step();  // Advance one tick to start the game.
+    step();  // Advance one tick to start the game.
   }
 
   debug::check_assertion(main_loop.get_game() != nullptr, "Missing game");
@@ -65,7 +66,7 @@ Game& TestEnvironment::get_game() {
 Map& TestEnvironment::get_map() {
 
   if (!get_game().has_current_map()) {
-    main_loop.step();  // Advance one tick to start the map.
+    step();  // Advance one tick to start the map.
     debug::check_assertion(get_game().has_current_map(), "Missing map");
   }
 
@@ -109,6 +110,21 @@ std::shared_ptr<CustomEntity> TestEnvironment::make_entity<CustomEntity>() {
   get_entities().add_entity(entity);
 
   return entity;
+}
+
+/**
+ * \brief Returns the current simulated time.
+ * \return The simulated time in milliseconds.
+ */
+uint32_t TestEnvironment::now() {
+  return System::now();
+}
+
+/**
+ * \brief Simulates one tick of the main loop.
+ */
+void TestEnvironment::step() {
+  get_main_loop().step();
 }
 
 }

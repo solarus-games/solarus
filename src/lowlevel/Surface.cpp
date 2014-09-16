@@ -323,7 +323,7 @@ int Surface::get_height() const {
  * \brief Returns the size of this surface.
  * \return the size of this surface
  */
-const Size Surface::get_size() const {
+Size Surface::get_size() const {
   return { get_width(), get_height() };
 }
 

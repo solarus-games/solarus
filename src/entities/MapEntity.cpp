@@ -685,7 +685,7 @@ void MapEntity::set_y(int y) {
  *
  * \return the coordinates of the entity on the map
  */
-const Point MapEntity::get_xy() const {
+Point MapEntity::get_xy() const {
   return { get_x(), get_y() };
 }
 
@@ -733,7 +733,7 @@ int MapEntity::get_top_left_y() const {
  * \brief Returns the position of the entity's top-left corner.
  * \return The position of the entity's top-left corner.
  */
-const Point MapEntity::get_top_left_xy() const {
+Point MapEntity::get_top_left_xy() const {
   return { get_top_left_x(), get_top_left_y() };
 }
 
@@ -783,7 +783,7 @@ void MapEntity::set_top_left_xy(const Point& xy) {
  *
  * \return the coordinates of the entity on the map
  */
-const Point MapEntity::get_displayed_xy() const {
+ Point MapEntity::get_displayed_xy() const {
 
   if (get_movement() == nullptr) {
     return get_xy();
@@ -936,7 +936,7 @@ void MapEntity::set_aligned_to_grid_y() {
  *
  * \return The coordinates of the point the entity is looking at.
  */
-const Point MapEntity::get_facing_point() const {
+Point MapEntity::get_facing_point() const {
 
   int direction4 = 1;  // North by default.
   if (has_sprite() && get_sprite().get_nb_directions() == 4) {
@@ -959,7 +959,7 @@ const Point MapEntity::get_facing_point() const {
  * \param direction A direction (0 to 3).
  * \return The point the entity touching this direction.
  */
-const Point MapEntity::get_touching_point(int direction) const {
+Point MapEntity::get_touching_point(int direction) const {
 
   Point touching_point = get_center_point();
 
@@ -1034,7 +1034,7 @@ void MapEntity::notify_facing_entity_changed(Detector* /* facing_entity */) {
  *
  * \return The point used to determine the ground (relative to the map).
  */
-const Point MapEntity::get_ground_point() const {
+Point MapEntity::get_ground_point() const {
 
   return { get_x(), get_y() };
 }
@@ -1043,7 +1043,7 @@ const Point MapEntity::get_ground_point() const {
  * \brief Returns the coordinates of the center point of the entity's rectangle.
  * \return The coordinates of the center point of the entity.
  */
-const Point MapEntity::get_center_point() const {
+Point MapEntity::get_center_point() const {
   return bounding_box.get_center();
 }
 

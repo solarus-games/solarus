@@ -96,7 +96,7 @@ class MapEntity: public ExportableToLua {
     virtual bool is_detector() const;
     virtual bool can_be_obstacle() const;
     virtual bool is_ground_observer() const;
-    virtual const Point get_ground_point() const;
+    virtual Point get_ground_point() const;
     virtual bool is_ground_modifier() const;
     virtual Ground get_modified_ground() const;
     virtual bool can_be_drawn() const;
@@ -128,10 +128,10 @@ class MapEntity: public ExportableToLua {
     int get_y() const;
     void set_x(int x);
     void set_y(int y);
-    const Point get_xy() const;
+    Point get_xy() const;
     void set_xy(const Point& xy);
     void set_xy(int x, int y);
-    const Point get_displayed_xy() const;
+    Point get_displayed_xy() const;
 
     int get_width() const;
     int get_height() const;
@@ -145,15 +145,15 @@ class MapEntity: public ExportableToLua {
     void set_origin(const Point& origin);
     int get_top_left_x() const;
     int get_top_left_y() const;
-    const Point get_top_left_xy() const;
+    Point get_top_left_xy() const;
     void set_top_left_x(int x);
     void set_top_left_y(int y);
     void set_top_left_xy(int x, int y);
     void set_top_left_xy(const Point& xy);
 
-    virtual const Point get_facing_point() const;
-    const Point get_touching_point(int direction) const;
-    const Point get_center_point() const;
+    virtual Point get_facing_point() const;
+    Point get_touching_point(int direction) const;
+    Point get_center_point() const;
 
     bool is_aligned_to_grid() const;
     bool is_aligned_to_grid_x() const;

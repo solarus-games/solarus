@@ -41,7 +41,7 @@ class JumpMovement: public PixelMovement {
     void set_speed(int speed);
 
     virtual int get_displayed_direction4() const override;
-    virtual const Point get_displayed_xy() const override;
+    virtual Point get_displayed_xy() const override;
 
     virtual const std::string& get_lua_type_name() const override;
 

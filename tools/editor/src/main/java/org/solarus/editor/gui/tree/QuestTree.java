@@ -869,7 +869,7 @@ public class QuestTree extends JTree implements ProjectObserver {
 
             // delete directory (if empty)
             final File file = new File(Project.getDataPath() + "/" + path);
-            elementItem = new JMenuItem("delete directory");
+            elementItem = new JMenuItem("Delete directory");
             elementItem.setEnabled(file.isDirectory() && file.list().length == 0);
             elementItem.addActionListener(new ActionListener() {
 
@@ -980,7 +980,7 @@ public class QuestTree extends JTree implements ProjectObserver {
             });
 
             // Rename.
-            menuItem = new JMenuItem("Rename");
+            menuItem = new JMenuItem("Change friendly name");
             add(menuItem);
             menuItem.addActionListener(new ActionListener() {
                 @Override

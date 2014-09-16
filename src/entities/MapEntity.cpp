@@ -76,7 +76,7 @@ MapEntity::MapEntity(
   optimization_distance(default_optimization_distance),
   optimization_distance2(default_optimization_distance * default_optimization_distance) {
 
-  Debug::check_assertion(width % 8 == 0 && height % 8 == 0,
+  debug::check_assertion(width % 8 == 0 && height % 8 == 0,
       "Invalid entity size: width and height must be multiple of 8");
 }
 
@@ -350,9 +350,9 @@ void MapEntity::notify_map_started() {
  */
 void MapEntity::finish_initialization() {
 
-  Debug::check_assertion(!initialized, "Entity is already initialized");
-  Debug::check_assertion(is_on_map(), "Missing map");
-  Debug::check_assertion(get_map().is_loaded(), "Map is not ready");
+  debug::check_assertion(!initialized, "Entity is already initialized");
+  debug::check_assertion(is_on_map(), "Missing map");
+  debug::check_assertion(get_map().is_loaded(), "Map is not ready");
 
   initialized = true;
 
@@ -441,7 +441,7 @@ const Game& MapEntity::get_game() const {
  * \return The entities.
  */
 MapEntities& MapEntity::get_entities() {
-  Debug::check_assertion(map != nullptr, "No map was set");
+  debug::check_assertion(map != nullptr, "No map was set");
   return map->get_entities();
 }
 
@@ -450,7 +450,7 @@ MapEntities& MapEntity::get_entities() {
  * \return The entities.
  */
 const MapEntities& MapEntity::get_entities() const {
-  Debug::check_assertion(map != nullptr, "No map was set");
+  debug::check_assertion(map != nullptr, "No map was set");
   return map->get_entities();
 }
 
@@ -460,7 +460,7 @@ const MapEntities& MapEntity::get_entities() const {
  */
 LuaContext& MapEntity::get_lua_context() {
 
-  Debug::check_assertion(main_loop != nullptr,
+  debug::check_assertion(main_loop != nullptr,
       "This entity is not fully constructed yet");
   return main_loop->get_lua_context();
 }
@@ -471,7 +471,7 @@ LuaContext& MapEntity::get_lua_context() {
  */
 const LuaContext& MapEntity::get_lua_context() const {
 
-  Debug::check_assertion(main_loop != nullptr,
+  debug::check_assertion(main_loop != nullptr,
       "This entity is not fully constructed yet");
   return main_loop->get_lua_context();
 }
@@ -823,7 +823,7 @@ Size MapEntity::get_size() const {
  */
 void MapEntity::set_size(int width, int height) {
 
-  Debug::check_assertion(width % 8 == 0 && height % 8 == 0,
+  debug::check_assertion(width % 8 == 0 && height % 8 == 0,
       "Invalid entity size: width and height must be multiple of 8");
   bounding_box.set_size(width, height);
 }
@@ -986,7 +986,7 @@ const Point MapEntity::get_touching_point(int direction) const {
       break;
 
     default:
-      Debug::die("Invalid direction for MapEntity::get_touching_point()");
+      debug::die("Invalid direction for MapEntity::get_touching_point()");
   }
   return touching_point;
 }
@@ -1065,7 +1065,7 @@ const std::string& MapEntity::get_name() const {
  */
 void MapEntity::set_name(const std::string& name) {
 
-  Debug::check_assertion(!is_on_map(),
+  debug::check_assertion(!is_on_map(),
       "Cannot change entity name: this entity is already on a map.");
   this->name = name;
 }
@@ -1206,7 +1206,7 @@ void MapEntity::remove_sprite(Sprite& sprite) {
     }
   }
 
-  Debug::die("This sprite does not belong to this entity");
+  debug::die("This sprite does not belong to this entity");
 }
 
 /**
@@ -1992,20 +1992,20 @@ bool MapEntity::is_center_in(const Rectangle& rectangle) const {
  * and a point.
  * \param x X coordinate of the point.
  * \param y Y coordinate of the point.
- * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
+ * \return The angle of the vector in radians, between 0 and geometry::TWO_PI.
  */
 double MapEntity::get_angle(int x, int y) const {
-  return Geometry::get_angle(get_x(), get_y(), x, y);
+  return geometry::get_angle(get_x(), get_y(), x, y);
 }
 
 /**
  * \brief Returns the angle of the vector between the origin of this entity
  * and the origin of another entity.
  * \param other The other entity.
- * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
+ * \return The angle of the vector in radians, between 0 and geometry::TWO_PI.
  */
 double MapEntity::get_angle(const MapEntity& other) const {
-  return Geometry::get_angle(get_xy(), other.get_xy());
+  return geometry::get_angle(get_xy(), other.get_xy());
 }
 
 /**
@@ -2016,7 +2016,7 @@ double MapEntity::get_angle(const MapEntity& other) const {
  * or nullptr.
  * \param other_sprite Sprite of the other entity to use instead of the entity
  * itself or nullptr.
- * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
+ * \return The angle of the vector in radians, between 0 and geometry::TWO_PI.
  */
 double MapEntity::get_angle(
     const MapEntity& other,
@@ -2035,7 +2035,7 @@ double MapEntity::get_angle(
     other_offset += other_sprite->get_xy();
   }
 
-  return Geometry::get_angle(
+  return geometry::get_angle(
       get_x() + this_offset.x,
       get_y() + this_offset.y,
       other.get_x() + other_offset.x,
@@ -2050,7 +2050,7 @@ double MapEntity::get_angle(
  * \return the distance between this entity and the point in pixels
  */
 int MapEntity::get_distance(int x, int y) const {
-  return (int) Geometry::get_distance(get_x(), get_y(), x, y);
+  return (int) geometry::get_distance(get_x(), get_y(), x, y);
 }
 
 /**
@@ -2059,7 +2059,7 @@ int MapEntity::get_distance(int x, int y) const {
  * \return the distance between this entity and the point in pixels
  */
 int MapEntity::get_distance(const Point& point) const {
-  return (int) Geometry::get_distance(get_xy(), point);
+  return (int) geometry::get_distance(get_xy(), point);
 }
 
 /**
@@ -2069,7 +2069,7 @@ int MapEntity::get_distance(const Point& point) const {
  * \return the distance between the two entities in pixels
  */
 int MapEntity::get_distance(const MapEntity& other) const {
-  return (int) Geometry::get_distance(get_xy(), other.get_xy());
+  return (int) geometry::get_distance(get_xy(), other.get_xy());
 }
 
 /**
@@ -2080,7 +2080,7 @@ int MapEntity::get_distance(const MapEntity& other) const {
 int MapEntity::get_distance_to_camera() const {
 
   const Rectangle& camera = get_map().get_camera_position();
-  return (int) Geometry::get_distance(get_xy(), camera.get_center());
+  return (int) geometry::get_distance(get_xy(), camera.get_center());
 }
 
 /**
@@ -2091,7 +2091,7 @@ int MapEntity::get_distance_to_camera() const {
 int MapEntity::get_distance_to_camera2() const {
 
   const Rectangle& camera = get_map().get_camera_position();
-  return Geometry::get_distance2(get_xy(), camera.get_center());
+  return geometry::get_distance2(get_xy(), camera.get_center());
 }
 
 /**

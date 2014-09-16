@@ -38,7 +38,7 @@ Separator::Separator(
     int height):
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height) {
 
-  Debug::check_assertion((width == 16 && height > 16)
+  debug::check_assertion((width == 16 && height > 16)
       || (width > 16 && height == 16), "Invalid separator size");
 
   set_layer_independent_collisions(true);

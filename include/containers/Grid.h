@@ -74,9 +74,9 @@ Grid<T>::Grid(const Size& grid_size, const Size& cell_size):
     num_rows(0),
     num_columns(0) {
 
-  Debug::check_assertion(grid_size.width > 0 && grid_size.height > 0,
+  debug::check_assertion(grid_size.width > 0 && grid_size.height > 0,
       "Invalid grid size");
-  Debug::check_assertion(cell_size.width > 0 && cell_size.height > 0,
+  debug::check_assertion(cell_size.width > 0 && cell_size.height > 0,
       "Invalid cell size");
 
   num_rows = grid_size.height / cell_size.height;
@@ -144,7 +144,7 @@ size_t Grid<T>::get_num_cells() const {
 template <typename T>
 const std::vector<T>& Grid<T>::get_elements(size_t cell_index) const {
 
-  Debug::check_assertion(cell_index < get_num_cells(),
+  debug::check_assertion(cell_index < get_num_cells(),
       "Invalid index");
 
   return elements[cell_index];

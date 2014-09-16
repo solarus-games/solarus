@@ -379,7 +379,7 @@ Destination* Map::get_destination() {
     return nullptr;
   }
 
-  Debug::check_assertion(is_loaded(), "This map is not loaded");
+  debug::check_assertion(is_loaded(), "This map is not loaded");
 
   Destination* destination = nullptr;
   if (!destination_name.empty()) {
@@ -387,7 +387,7 @@ Destination* Map::get_destination() {
     MapEntity* entity = get_entities().find_entity(destination_name);
 
     if (entity == nullptr || entity->get_type() != ENTITY_DESTINATION) {
-      Debug::error(
+      debug::error(
           std::string("Map '") + get_id() + "': No such destination: '"
           + destination_name + "'"
       );

@@ -75,7 +75,7 @@ MapEntity* Movement::get_entity() const {
  */
 void Movement::set_entity(MapEntity* entity) {
 
-  Debug::check_assertion(drawable == nullptr, "This movement is already assigned to a drawable");
+  debug::check_assertion(drawable == nullptr, "This movement is already assigned to a drawable");
 
   this->entity = entity;
 
@@ -108,7 +108,7 @@ Drawable* Movement::get_drawable() const {
  */
 void Movement::set_drawable(Drawable* drawable) {
 
-  Debug::check_assertion(entity == nullptr, "This movement is already assigned to an entity");
+  debug::check_assertion(entity == nullptr, "This movement is already assigned to an entity");
 
   this->drawable = drawable;
 
@@ -559,7 +559,7 @@ const ScopedLuaRef& Movement::get_finished_callback() const {
  */
 void Movement::set_finished_callback(const ScopedLuaRef& finished_callback_ref) {
 
-  Debug::check_assertion(get_lua_context() != nullptr, "Undefined Lua context");
+  debug::check_assertion(get_lua_context() != nullptr, "Undefined Lua context");
 
   this->finished_callback_ref = finished_callback_ref;
 }

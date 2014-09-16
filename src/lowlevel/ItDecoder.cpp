@@ -41,7 +41,7 @@ ItDecoder::ItDecoder():
  */
 void ItDecoder::load(const std::string& sound_buffer) {
 
-  Debug::check_assertion(modplug_file == nullptr,
+  debug::check_assertion(modplug_file == nullptr,
       "IT data is already loaded"
   );
 
@@ -57,7 +57,7 @@ void ItDecoder::load(const std::string& sound_buffer) {
  */
 void ItDecoder::unload() {
 
-  Debug::check_assertion(modplug_file != nullptr,
+  debug::check_assertion(modplug_file != nullptr,
       "IT data is not loaded"
   );
 
@@ -93,7 +93,7 @@ int ItDecoder::get_channel_volume(int channel) const {
 
   const int num_patterns = ModPlug_NumPatterns(modplug_file.get());
 
-  Debug::check_assertion(channel >= 0 && channel < get_num_channels(),
+  debug::check_assertion(channel >= 0 && channel < get_num_channels(),
       "Invalid channel number");
 
   if (num_patterns == 0) {

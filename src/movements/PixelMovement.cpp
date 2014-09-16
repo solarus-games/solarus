@@ -91,7 +91,7 @@ void PixelMovement::set_trajectory(const std::string& trajectory_string) {
   std::istringstream iss(trajectory_string);
   while (iss >> dx) {
     if (!(iss >> dy)) {
-      Debug::die(std::string("Invalid trajectory string: '")
+      debug::die(std::string("Invalid trajectory string: '")
           + trajectory_string + "'");
     }
     trajectory.emplace_back(dx, dy);

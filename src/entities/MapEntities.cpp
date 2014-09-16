@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -187,7 +187,7 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
   MapEntity* entity = find_entity(name);
 
   if (entity == nullptr) {
-    Debug::die(std::string("Map '") + map.get_id()
+    debug::die(std::string("Map '") + map.get_id()
         + "': Cannot find entity with name '" + name + "'");
   }
 
@@ -375,7 +375,7 @@ void MapEntities::add_tile(const TilePtr& tile) {
   non_animated_regions[layer]->add_tile(tile);
 
   const TilePattern& pattern = tile->get_tile_pattern();
-  Debug::check_assertion(
+  debug::check_assertion(
       tile->get_width() == pattern.get_width()
       && tile->get_height() == pattern.get_height(),
       "Static tile size must match tile pattern size");
@@ -702,7 +702,7 @@ void MapEntities::remove_marked_entities() {
 
   // remove the marked entities
   for (MapEntity* entity: entities_to_remove) {
- 
+
     Layer layer = entity->get_layer();
 
     // remove it from the obstacle entities list if present
@@ -805,7 +805,7 @@ void MapEntities::set_suspended(bool suspended) {
  */
 void MapEntities::update() {
 
-  Debug::check_assertion(map.is_started(), "The map is not started");
+  debug::check_assertion(map.is_started(), "The map is not started");
 
   // First update the hero.
   hero.update();

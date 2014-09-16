@@ -69,7 +69,7 @@ Size window_size;                         /**< Size of the window. The quest siz
  */
 void create_window(const CommandLine& args) {
 
-  Debug::check_assertion(main_window == nullptr, "Window already exists");
+  debug::check_assertion(main_window == nullptr, "Window already exists");
 
 #if SOLARUS_HAVE_OPENGL == 1
   // Set OpenGL as the default renderer driver when available, to avoid using Direct3d.
@@ -90,7 +90,7 @@ void create_window(const CommandLine& args) {
       | SDL_WINDOW_OPENGL
 #endif
   );
-  Debug::check_assertion(main_window != nullptr,
+  debug::check_assertion(main_window != nullptr,
       std::string("Cannot create the window: ") + SDL_GetError());
 
   int acceleration_flag = 0;
@@ -120,7 +120,7 @@ void create_window(const CommandLine& args) {
       }
   }
 
-  Debug::check_assertion(main_renderer != nullptr,
+  debug::check_assertion(main_renderer != nullptr,
       std::string("Cannot create the renderer: ") + SDL_GetError());
 
   // Allow blending mode for direct drawing primitives.
@@ -138,7 +138,7 @@ void create_window(const CommandLine& args) {
     }
   }
 
-  Debug::check_assertion(pixel_format != nullptr, "No compatible pixel format");
+  debug::check_assertion(pixel_format != nullptr, "No compatible pixel format");
 
   // Check renderer's flags
   rendering_driver_name = renderer_info.name;
@@ -228,7 +228,7 @@ void initialize_video_modes() {
 
         const std::string& video_mode_name = video_mode_shader->get_name();
         if (Video::get_video_mode_by_name(video_mode_name) != nullptr) {
-          Debug::error("There is already a video mode with name '" + video_mode_name);
+          debug::error("There is already a video mode with name '" + video_mode_name);
           continue;
         }
 
@@ -273,7 +273,7 @@ void Video::initialize(const CommandLine& args) {
 
   if (!quest_size_string.empty()) {
     if (!parse_size(quest_size_string, wanted_quest_size)) {
-      Debug::error(std::string("Invalid quest size: '") + quest_size_string + "'");
+      debug::error(std::string("Invalid quest size: '") + quest_size_string + "'");
     }
   }
 
@@ -413,7 +413,7 @@ bool Video::is_fullscreen() {
  */
 void Video::set_fullscreen(bool fullscreen) {
 
-  Debug::check_assertion(video_mode != nullptr, "No video mode");
+  debug::check_assertion(video_mode != nullptr, "No video mode");
   set_video_mode(*video_mode, fullscreen);
 }
 
@@ -422,7 +422,7 @@ void Video::set_fullscreen(bool fullscreen) {
  */
 void Video::set_default_video_mode() {
 
-  Debug::check_assertion(default_video_mode != nullptr,
+  debug::check_assertion(default_video_mode != nullptr,
       "Default video mode was not initialized");
 
   set_video_mode(*default_video_mode, false);
@@ -551,7 +551,7 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
  */
 const VideoMode& Video::get_video_mode() {
 
-  Debug::check_assertion(video_mode != nullptr,
+  debug::check_assertion(video_mode != nullptr,
       "Video mode not initialized");
   return *video_mode;
 }
@@ -598,7 +598,7 @@ void Video::render(const SurfacePtr& quest_surface) {
     return;
   }
 
-  Debug::check_assertion(video_mode != nullptr,
+  debug::check_assertion(video_mode != nullptr,
       "Missing video mode");
 
   // See if there is a filter to apply.
@@ -613,7 +613,7 @@ void Video::render(const SurfacePtr& quest_surface) {
     // a software filter.
     Surface* surface_to_render = nullptr;
     if (software_filter != nullptr) {
-      Debug::check_assertion(scaled_surface != nullptr,
+      debug::check_assertion(scaled_surface != nullptr,
           "Missing destination surface for scaling");
       quest_surface->apply_pixel_filter(*software_filter, *scaled_surface);
       surface_to_render = scaled_surface.get();
@@ -721,7 +721,7 @@ void Video::set_quest_size_range(
     const Size& min_size,
     const Size& max_size) {
 
-  Debug::check_assertion(
+  debug::check_assertion(
       normal_size.width >= min_size.width
       && normal_size.height >= min_size.height
       && normal_size.width <= max_size.width
@@ -746,7 +746,7 @@ void Video::set_quest_size_range(
         << ". Using "
         << normal_size.width << "x" << normal_size.height
         << " instead.";
-    Debug::warning(oss.str());
+    debug::warning(oss.str());
     quest_size = normal_size;
   }
   else {
@@ -763,8 +763,8 @@ void Video::set_quest_size_range(
  */
 Size Video::get_window_size() {
 
-  Debug::check_assertion(main_window != nullptr, "No window");
-  Debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
+  debug::check_assertion(main_window != nullptr, "No window");
+  debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
 
   if (is_fullscreen()) {
     // Returns the memorized window size.
@@ -785,9 +785,9 @@ Size Video::get_window_size() {
  */
 void Video::set_window_size(const Size& size) {
 
-  Debug::check_assertion(main_window != nullptr, "No window");
-  Debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
-  Debug::check_assertion(
+  debug::check_assertion(main_window != nullptr, "No window");
+  debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
+  debug::check_assertion(
       size.width > 0 && size.height > 0,
       "Wrong window size"
   );
@@ -820,7 +820,7 @@ void Video::set_window_size(const Size& size) {
  */
 void Video::reset_window_size() {
 
-  Debug::check_assertion(video_mode != nullptr, "No video mode");
+  debug::check_assertion(video_mode != nullptr, "No video mode");
 
   set_window_size(video_mode->get_initial_window_size());
 }
@@ -858,8 +858,8 @@ Rectangle Video::get_scaled_position(const Rectangle& position) {
   const double viewport_width = viewport.get_width();
   const double viewport_height = viewport.get_height();
 
-  Debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
-  Debug::check_assertion(!viewport.is_flat(), "Viewport is not initialized");
+  debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
+  debug::check_assertion(!viewport.is_flat(), "Viewport is not initialized");
 
   if (x_position < 0
       || y_position < 0

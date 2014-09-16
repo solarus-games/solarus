@@ -22,6 +22,7 @@
 #include <cstdlib>  // std::abort
 
 namespace solarus {
+namespace debug {
 
 namespace {
 
@@ -33,7 +34,7 @@ namespace {
  * \brief Prints "Warning: " and a message on both stderr and error.txt.
  * \param message The warning message to print.
  */
-void Debug::warning(const std::string& message) {
+void warning(const std::string& message) {
 
   if (!error_output_file.is_open()) {
     error_output_file.open(error_output_file_name.c_str());
@@ -49,7 +50,7 @@ void Debug::warning(const std::string& message) {
  *
  * \param message The error message to print.
  */
-void Debug::error(const std::string& message) {
+void error(const std::string& message) {
 
   if (!error_output_file.is_open()) {
     error_output_file.open(error_output_file_name.c_str());
@@ -59,10 +60,10 @@ void Debug::error(const std::string& message) {
 }
 
 /**
- * \brief Like Debug::check_assertion(bool, const std::string&), but avoids
+ * \brief Like check_assertion(bool, const std::string&), but avoids
  * a useless conversion to std::string when the assertion is true.
  */
-void Debug::check_assertion(bool assertion, const char* error_message) {
+void check_assertion(bool assertion, const char* error_message) {
 
   // Don't build the std::string when the assertion succeeds.
   if (!assertion) {
@@ -75,7 +76,7 @@ void Debug::check_assertion(bool assertion, const char* error_message) {
  * \param assertion The assertion to check.
  * \param error_message Error message to show in case of failure.
  */
-void Debug::check_assertion(bool assertion, const std::string& error_message) {
+void check_assertion(bool assertion, const std::string& error_message) {
 
   if (!assertion) {
     die(error_message);
@@ -85,12 +86,12 @@ void Debug::check_assertion(bool assertion, const std::string& error_message) {
 /**
  * \brief Aborts the program.
  *
- * This function is equivalent to Debug::check_assertion(false, error_message).
+ * This function is equivalent to check_assertion(false, error_message).
  * The error message is printed on both stderr and error.txt.
  *
  * \param error_message The error message to show.
  */
-void Debug::die(const std::string& error_message) {
+void die(const std::string& error_message) {
 
   if (!error_output_file.is_open()) {
     error_output_file.open(error_output_file_name.c_str());
@@ -107,4 +108,5 @@ void Debug::die(const std::string& error_message) {
   std::abort();
 }
 
+}
 }

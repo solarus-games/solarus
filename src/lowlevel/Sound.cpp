@@ -90,19 +90,19 @@ void Sound::initialize(const CommandLine& args) {
 
   device = alcOpenDevice(nullptr);
   if (!device) {
-    Debug::error("Cannot open audio device");
+    debug::error("Cannot open audio device");
     return;
   }
 
   ALCint attr[] = { ALC_FREQUENCY, 32000, 0 }; // 32 KHz is the SPC output sampling rate
   context = alcCreateContext(device, attr);
   if (!context) {
-    Debug::error("Cannot create audio context");
+    debug::error("Cannot create audio context");
     alcCloseDevice(device);
     return;
   }
   if (!alcMakeContextCurrent(context)) {
-    Debug::error("Cannot activate audio context");
+    debug::error("Cannot activate audio context");
     alcDestroyContext(context);
     alcCloseDevice(device);
     return;
@@ -269,7 +269,7 @@ bool Sound::update_playing() {
 void Sound::load() {
 
   if (alGetError() != AL_NONE) {
-    Debug::error("Previous audio error not cleaned");
+    debug::error("Previous audio error not cleaned");
   }
 
   std::string file_name = std::string("sounds/" + id);
@@ -311,7 +311,7 @@ bool Sound::start() {
         std::ostringstream oss;
         oss << "Cannot attach buffer " << buffer
             << " to the source to play sound '" << id << "': error " << error;
-        Debug::error(oss.str());
+        debug::error(oss.str());
         alDeleteSources(1, &source);
       }
       else {
@@ -323,7 +323,7 @@ bool Sound::start() {
         if (error != AL_NO_ERROR) {
           std::ostringstream oss;
           oss << "Cannot play sound '" << id << "': error " << error;
-          Debug::error(oss.str());
+          debug::error(oss.str());
         }
         else {
           success = true;
@@ -344,7 +344,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
   ALuint buffer = AL_NONE;
 
   if (!FileTools::data_file_exists(file_name)) {
-    Debug::error(std::string("Cannot find sound file '") + file_name + "'");
+    debug::error(std::string("Cannot find sound file '") + file_name + "'");
     return AL_NONE;
   }
 
@@ -361,7 +361,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
     std::ostringstream oss;
     oss << "Cannot load sound file '" << file_name
         << "' from memory: error " << error;
-    Debug::error(oss.str());
+    debug::error(oss.str());
   }
   else {
 
@@ -378,7 +378,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
     }
 
     if (format == AL_NONE) {
-      Debug::error(std::string("Invalid audio format for sound file '")
+      debug::error(std::string("Invalid audio format for sound file '")
           + file_name + "'");
     }
     else {
@@ -395,7 +395,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
           std::ostringstream oss;
           oss << "Error while decoding ogg chunk in sound file '"
               << file_name << "': " << bytes_read;
-          Debug::error(oss.str());
+          debug::error(oss.str());
         }
         else {
           total_bytes_read += bytes_read;
@@ -419,7 +419,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
       // copy the samples into an OpenAL buffer
       alGenBuffers(1, &buffer);
       if (alGetError() != AL_NO_ERROR) {
-          Debug::error("Failed to generate audio buffer");
+          debug::error("Failed to generate audio buffer");
       }
       alBufferData(buffer,
           AL_FORMAT_STEREO16,
@@ -432,7 +432,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
         oss << "Cannot copy the sound samples of '"
             << file_name << "' into buffer " << buffer
             << ": error " << error;
-        Debug::error(oss.str());
+        debug::error(oss.str());
         buffer = AL_NONE;
       }
     }

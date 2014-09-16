@@ -85,7 +85,7 @@ Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
   game(nullptr) {
 
   const std::string& quest_write_dir = FileTools::get_quest_write_dir();
-  Debug::check_assertion(!quest_write_dir.empty(),
+  debug::check_assertion(!quest_write_dir.empty(),
       "The quest write directory for savegames was not set in quest.dat");
 
   if (!FileTools::data_file_exists(file_name)) {
@@ -205,7 +205,7 @@ void Savegame::load() {
                                     // fun
 
     if (lua_pcall(l, 0, 0, 0) != 0) {
-      Debug::die(std::string("Failed to load savegame file '")
+      debug::die(std::string("Failed to load savegame file '")
           + file_name + "': " + lua_tostring(l, -1));
       lua_pop(l, 1);
     }
@@ -231,12 +231,12 @@ void Savegame::load() {
  */
 int Savegame::l_newindex(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     lua_getfield(l, LUA_REGISTRYINDEX, "savegame");
     Savegame* savegame = static_cast<Savegame*>(lua_touserdata(l, -1));
     lua_pop(l, 1);
 
-    const std::string& key = LuaTools::check_string(l, 2);
+    const std::string& key = lua_tools::check_string(l, 2);
 
     switch (lua_type(l, 3)) {
 
@@ -253,7 +253,7 @@ int Savegame::l_newindex(lua_State* l) {
       break;
 
     default:
-      LuaTools::type_error(l, 3, "string, number or boolean");
+      lua_tools::type_error(l, 3, "string, number or boolean");
     }
 
     return 0;
@@ -366,7 +366,7 @@ void Savegame::notify_game_finished() {
  */
 bool Savegame::is_string(const std::string& key) const {
 
-  SOLARUS_ASSERT(LuaTools::is_valid_lua_identifier(key),
+  SOLARUS_ASSERT(lua_tools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
@@ -385,7 +385,7 @@ bool Savegame::is_string(const std::string& key) const {
  */
 const std::string& Savegame::get_string(const std::string& key) const {
 
-  SOLARUS_ASSERT(LuaTools::is_valid_lua_identifier(key),
+  SOLARUS_ASSERT(lua_tools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   const auto& it = saved_values.find(key);
@@ -407,7 +407,7 @@ const std::string& Savegame::get_string(const std::string& key) const {
  */
 void Savegame::set_string(const std::string& key, const std::string& value) {
 
-  Debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
+  debug::check_assertion(lua_tools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   saved_values[key].type = SavedValue::VALUE_STRING;
@@ -421,7 +421,7 @@ void Savegame::set_string(const std::string& key, const std::string& value) {
  */
 bool Savegame::is_integer(const std::string& key) const {
 
-  SOLARUS_ASSERT(LuaTools::is_valid_lua_identifier(key),
+  SOLARUS_ASSERT(lua_tools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
@@ -440,7 +440,7 @@ bool Savegame::is_integer(const std::string& key) const {
  */
 int Savegame::get_integer(const std::string& key) const {
 
-  SOLARUS_ASSERT(LuaTools::is_valid_lua_identifier(key),
+  SOLARUS_ASSERT(lua_tools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   int result = 0;
@@ -461,7 +461,7 @@ int Savegame::get_integer(const std::string& key) const {
  */
 void Savegame::set_integer(const std::string& key, int value) {
 
-  Debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
+  debug::check_assertion(lua_tools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   saved_values[key].type = SavedValue::VALUE_INTEGER;
@@ -475,7 +475,7 @@ void Savegame::set_integer(const std::string& key, int value) {
  */
 bool Savegame::is_boolean(const std::string& key) const {
 
-  SOLARUS_ASSERT(LuaTools::is_valid_lua_identifier(key),
+  SOLARUS_ASSERT(lua_tools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
@@ -494,7 +494,7 @@ bool Savegame::is_boolean(const std::string& key) const {
  */
 bool Savegame::get_boolean(const std::string& key) const {
 
-  SOLARUS_ASSERT(LuaTools::is_valid_lua_identifier(key),
+  SOLARUS_ASSERT(lua_tools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
@@ -515,7 +515,7 @@ bool Savegame::get_boolean(const std::string& key) const {
  */
 void Savegame::set_boolean(const std::string& key, bool value) {
 
-  Debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
+  debug::check_assertion(lua_tools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   saved_values[key].type = SavedValue::VALUE_BOOLEAN;
@@ -528,7 +528,7 @@ void Savegame::set_boolean(const std::string& key, bool value) {
  */
 void Savegame::unset(const std::string& key) {
 
-  Debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
+  debug::check_assertion(lua_tools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   saved_values.erase(key);

@@ -87,7 +87,7 @@ void DialogBoxSystem::open(
     const ScopedLuaRef& info_ref,
     const ScopedLuaRef& callback_ref
 ) {
-  Debug::check_assertion(!is_enabled(), "A dialog is already active");
+  debug::check_assertion(!is_enabled(), "A dialog is already active");
 
   this->dialog_id = dialog_id;
   this->dialog = DialogResource::get_dialog(dialog_id);
@@ -125,7 +125,7 @@ void DialogBoxSystem::open(
       if (index != std::string::npos) {
         // Replace the special sequence '$v' by the price of the shop item.
         info_ref.push();
-        int price = LuaTools::check_int(l, -1);
+        int price = lua_tools::check_int(l, -1);
         lua_pop(l, -1);
         std::ostringstream oss;
         oss << price;
@@ -164,7 +164,7 @@ void DialogBoxSystem::open(
  */
 void DialogBoxSystem::close(const ScopedLuaRef& status_ref) {
 
-  Debug::check_assertion(is_enabled(), "No dialog is active");
+  debug::check_assertion(is_enabled(), "No dialog is active");
 
   ScopedLuaRef callback_ref = this->callback_ref;
   this->callback_ref.clear();
@@ -198,7 +198,7 @@ bool DialogBoxSystem::has_more_lines() const {
 void DialogBoxSystem::show_more_lines() {
 
   // This function is only called in the built-in case.
-  Debug::check_assertion(built_in, "This dialog box is not the built-in one");
+  debug::check_assertion(built_in, "This dialog box is not the built-in one");
 
   if (!has_more_lines()) {
 

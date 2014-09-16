@@ -18,43 +18,14 @@
 #include "lowlevel/Geometry.h"
 
 namespace solarus {
-
-/**
- * \brief The pi constant.
- */
-const double Geometry::PI = 3.14159265358979323846;
-
-/**
- * \brief 2 * pi.
- */
-const double Geometry::TWO_PI = 2.0 * PI;
-
-/**
- * \brief pi / 2.
- */
-const double Geometry::PI_OVER_2 = PI / 2.0;
-
-/**
- * \brief pi / 2.
- */
-const double Geometry::PI_OVER_4 = PI / 4.0;
-
-/**
- * \brief 3 * pi / 2.
- */
-const double Geometry::THREE_PI_OVER_2 = 3 * PI_OVER_2;
-
-/**
- * \brief Square root of 2.
- */
-const double Geometry::SQRT_2 = 1.41421356237309504880;
+namespace geometry {
 
 /**
  * \brief Converts an angle in radians into an angle in degrees.
  * \param radians Angle in radians.
  * \return The degrees value.
  */
-int Geometry::radians_to_degrees(double radians) {
+int radians_to_degrees(double radians) {
   return (int) (radians * 360.0 / TWO_PI);
 }
 
@@ -63,7 +34,7 @@ int Geometry::radians_to_degrees(double radians) {
  * \param degrees Angle in degrees.
  * \return The radians value.
  */
-double Geometry::degrees_to_radians(double degrees) {
+double degrees_to_radians(double degrees) {
   return degrees * TWO_PI / 360.0;
 }
 
@@ -75,7 +46,7 @@ double Geometry::degrees_to_radians(double degrees) {
  * \param y2 Y coordinate of the second point.
  * \return The angle in radians, between 0 and TWO_PI.
  */
-double Geometry::get_angle(int x1, int y1, int x2, int y2) {
+double get_angle(int x1, int y1, int x2, int y2) {
 
   int dx = x2 - x1;
   int dy = y2 - y1;
@@ -101,7 +72,7 @@ double Geometry::get_angle(int x1, int y1, int x2, int y2) {
  * \param point2 Second point.
  * \return The angle in radians, between 0 and TWO_PI.
  */
-double Geometry::get_angle(const Point& point1, const Point& point2) {
+double get_angle(const Point& point1, const Point& point2) {
   return get_angle(point1.x, point1.y, point2.x, point2.y);
 }
 
@@ -111,7 +82,7 @@ double Geometry::get_angle(const Point& point1, const Point& point2) {
  * \param distance Length of the vector in pixels.
  * \return The coordinates of the second point.
  */
-const Point Geometry::get_xy(double angle, int distance) {
+const Point get_xy(double angle, int distance) {
 
   return {
       static_cast<int>(distance * std::cos(angle)),
@@ -126,8 +97,9 @@ const Point Geometry::get_xy(double angle, int distance) {
  * \param distance Length of the vector in pixels.
  * \return The coordinates of the second point.
  */
-const Point Geometry::get_xy(const Point& point1, double angle, int distance) {
+const Point get_xy(const Point& point1, double angle, int distance) {
   return point1 + get_xy(angle, distance);
 }
 
+}
 }

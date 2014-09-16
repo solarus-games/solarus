@@ -89,8 +89,8 @@ void LuaContext::push_main(lua_State* l) {
  */
 int LuaContext::main_api_load_file(lua_State *l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    const std::string& file_name = LuaTools::check_string(l, 1);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    const std::string& file_name = lua_tools::check_string(l, 1);
 
     if (!load_file_if_exists(l, file_name)) {
       lua_pushnil(l);
@@ -107,8 +107,8 @@ int LuaContext::main_api_load_file(lua_State *l) {
  */
 int LuaContext::main_api_do_file(lua_State *l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    const std::string& file_name = LuaTools::check_string(l, 1);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    const std::string& file_name = lua_tools::check_string(l, 1);
 
     do_file(l, file_name);
 
@@ -123,7 +123,7 @@ int LuaContext::main_api_do_file(lua_State *l) {
  */
 int LuaContext::main_api_reset(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     get_lua_context(l).get_main_loop().set_resetting();
 
     return 0;
@@ -137,7 +137,7 @@ int LuaContext::main_api_reset(lua_State* l) {
  */
 int LuaContext::main_api_exit(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     get_lua_context(l).get_main_loop().set_exiting();
 
     return 0;
@@ -151,7 +151,7 @@ int LuaContext::main_api_exit(lua_State* l) {
  */
 int LuaContext::main_api_get_elapsed_time(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     uint32_t elapsed_time = System::now();
 
     lua_pushinteger(l, elapsed_time);
@@ -166,7 +166,7 @@ int LuaContext::main_api_get_elapsed_time(lua_State* l) {
  */
 int LuaContext::main_api_get_quest_write_dir(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const std::string& quest_write_dir = FileTools::get_quest_write_dir();
 
     if (quest_write_dir.empty()) {
@@ -186,8 +186,8 @@ int LuaContext::main_api_get_quest_write_dir(lua_State* l) {
  */
 int LuaContext::main_api_set_quest_write_dir(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    const std::string& quest_write_dir = LuaTools::opt_string(l, 1, "");
+  return lua_tools::exception_boundary_handle(l, [&] {
+    const std::string& quest_write_dir = lua_tools::opt_string(l, 1, "");
 
     FileTools::set_quest_write_dir(quest_write_dir);
 
@@ -202,11 +202,11 @@ int LuaContext::main_api_set_quest_write_dir(lua_State* l) {
  */
 int LuaContext::main_api_load_settings(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    std::string file_name = LuaTools::opt_string(l, 1, "settings.dat");
+  return lua_tools::exception_boundary_handle(l, [&] {
+    std::string file_name = lua_tools::opt_string(l, 1, "settings.dat");
 
     if (FileTools::get_quest_write_dir().empty()) {
-      LuaTools::error(l, "Cannot load settings: no write directory was specified in quest.dat");
+      lua_tools::error(l, "Cannot load settings: no write directory was specified in quest.dat");
     }
 
     bool success = Settings::load(file_name);
@@ -223,11 +223,11 @@ int LuaContext::main_api_load_settings(lua_State* l) {
  */
 int LuaContext::main_api_save_settings(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    std::string file_name = LuaTools::opt_string(l, 1, "settings.dat");
+  return lua_tools::exception_boundary_handle(l, [&] {
+    std::string file_name = lua_tools::opt_string(l, 1, "settings.dat");
 
     if (FileTools::get_quest_write_dir().empty()) {
-      LuaTools::error(l, "Cannot save settings: no write directory was specified in quest.dat");
+      lua_tools::error(l, "Cannot save settings: no write directory was specified in quest.dat");
     }
 
     bool success = Settings::save(file_name);
@@ -244,13 +244,13 @@ int LuaContext::main_api_save_settings(lua_State* l) {
  */
 int LuaContext::main_api_get_distance(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    int x1 = LuaTools::check_int(l, 1);
-    int y1 = LuaTools::check_int(l, 2);
-    int x2 = LuaTools::check_int(l, 3);
-    int y2 = LuaTools::check_int(l, 4);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    int x1 = lua_tools::check_int(l, 1);
+    int y1 = lua_tools::check_int(l, 2);
+    int x2 = lua_tools::check_int(l, 3);
+    int y2 = lua_tools::check_int(l, 4);
 
-    int distance = (int) Geometry::get_distance(x1, y1, x2, y2);
+    int distance = (int) geometry::get_distance(x1, y1, x2, y2);
 
     lua_pushinteger(l, distance);
     return 1;
@@ -264,13 +264,13 @@ int LuaContext::main_api_get_distance(lua_State* l) {
  */
 int LuaContext::main_api_get_angle(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    int x1 = LuaTools::check_int(l, 1);
-    int y1 = LuaTools::check_int(l, 2);
-    int x2 = LuaTools::check_int(l, 3);
-    int y2 = LuaTools::check_int(l, 4);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    int x1 = lua_tools::check_int(l, 1);
+    int y1 = lua_tools::check_int(l, 2);
+    int x2 = lua_tools::check_int(l, 3);
+    int y2 = lua_tools::check_int(l, 4);
 
-    double angle = Geometry::get_angle(x1, y1, x2, y2);
+    double angle = geometry::get_angle(x1, y1, x2, y2);
 
     lua_pushnumber(l, angle);
     return 1;
@@ -284,8 +284,8 @@ int LuaContext::main_api_get_angle(lua_State* l) {
  */
 int LuaContext::main_api_get_metatable(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    const std::string& type_name = LuaTools::check_string(l, 1);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    const std::string& type_name = lua_tools::check_string(l, 1);
 
     luaL_getmetatable(l, (std::string("sol.") + type_name).c_str());
     return 1;

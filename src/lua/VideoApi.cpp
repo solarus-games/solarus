@@ -59,7 +59,7 @@ void LuaContext::register_video_module() {
  */
 int LuaContext::video_api_get_window_title(lua_State *l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const std::string& window_title =
         Video::get_window_title();
 
@@ -75,8 +75,8 @@ int LuaContext::video_api_get_window_title(lua_State *l) {
  */
 int LuaContext::video_api_set_window_title(lua_State *l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    const std::string& window_title = LuaTools::check_string(l, 1);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    const std::string& window_title = lua_tools::check_string(l, 1);
 
     Video::set_window_title(window_title);
     return 1;
@@ -90,7 +90,7 @@ int LuaContext::video_api_set_window_title(lua_State *l) {
  */
 int LuaContext::video_api_get_mode(lua_State *l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const VideoMode& mode = Video::get_video_mode();
 
     push_string(l, mode.get_name());
@@ -105,8 +105,8 @@ int LuaContext::video_api_get_mode(lua_State *l) {
  */
 int LuaContext::video_api_set_mode(lua_State *l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    std::string mode_name = LuaTools::check_string(l, 1);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    std::string mode_name = lua_tools::check_string(l, 1);
     const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
     if (mode != nullptr && Video::get_video_mode().get_name() != mode_name) {
@@ -124,7 +124,7 @@ int LuaContext::video_api_set_mode(lua_State *l) {
  */
 int LuaContext::video_api_switch_mode(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Video::switch_video_mode();
 
     return 0;
@@ -138,7 +138,7 @@ int LuaContext::video_api_switch_mode(lua_State* l) {
  */
 int LuaContext::video_api_get_modes(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const std::vector<const VideoMode*>& modes =
         Video::get_video_modes();
 
@@ -162,8 +162,8 @@ int LuaContext::video_api_get_modes(lua_State* l) {
  */
 int LuaContext::video_api_is_mode_supported(lua_State *l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    std::string mode_name = LuaTools::check_string(l, 1);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    std::string mode_name = lua_tools::check_string(l, 1);
     const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
     bool supported = mode != nullptr && Video::is_mode_supported(*mode);
@@ -180,7 +180,7 @@ int LuaContext::video_api_is_mode_supported(lua_State *l) {
  */
 int LuaContext::video_api_is_fullscreen(lua_State *l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     bool fullscreen = Video::is_fullscreen();
 
     lua_pushboolean(l, fullscreen);
@@ -195,8 +195,8 @@ int LuaContext::video_api_is_fullscreen(lua_State *l) {
  */
 int LuaContext::video_api_set_fullscreen(lua_State *l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    bool fullscreen = LuaTools::opt_boolean(l, 1, true);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    bool fullscreen = lua_tools::opt_boolean(l, 1, true);
 
     Video::set_fullscreen(fullscreen);
 
@@ -211,7 +211,7 @@ int LuaContext::video_api_set_fullscreen(lua_State *l) {
  */
 int LuaContext::video_api_get_quest_size(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const Size& quest_size = Video::get_quest_size();
 
     lua_pushinteger(l, quest_size.width);
@@ -227,7 +227,7 @@ int LuaContext::video_api_get_quest_size(lua_State* l) {
  */
 int LuaContext::video_api_get_window_size(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const Size& window_size = Video::get_window_size();
 
     lua_pushinteger(l, window_size.width);
@@ -243,15 +243,15 @@ int LuaContext::video_api_get_window_size(lua_State* l) {
  */
 int LuaContext::video_api_set_window_size(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    int width = LuaTools::check_int(l, 1);
-    int height = LuaTools::check_int(l, 2);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    int width = lua_tools::check_int(l, 1);
+    int height = lua_tools::check_int(l, 2);
 
     if (width <= 0) {
-      LuaTools::arg_error(l, 1, "Window width must be positive");
+      lua_tools::arg_error(l, 1, "Window width must be positive");
     }
     if (height <= 0) {
-      LuaTools::arg_error(l, 2, "Window height must be positive");
+      lua_tools::arg_error(l, 2, "Window height must be positive");
     }
 
     Video::set_window_size(Size(width, height));
@@ -267,7 +267,7 @@ int LuaContext::video_api_set_window_size(lua_State* l) {
  */
 int LuaContext::video_api_reset_window_size(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Video::reset_window_size();
 
     return 0;

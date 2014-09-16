@@ -178,7 +178,7 @@ void Pickable::initialize_sprites() {
         << " but sprite 'entities/items' only has "
         << item_sprite.get_nb_directions() << " variant(s) in animation '"
         << treasure.get_item_name() << "'";
-    Debug::error(oss.str());
+    debug::error(oss.str());
     direction = 0;  // Fallback.
   }
   item_sprite.set_current_direction(direction);

@@ -70,7 +70,7 @@ LuaContext& LuaContext::get_lua_context(lua_State* l) {
 
   auto it = lua_contexts.find(l);
 
-  Debug::check_assertion(it != lua_contexts.end(),
+  debug::check_assertion(it != lua_contexts.end(),
       "This Lua state does not belong to a LuaContext object");
 
   return *it->second;
@@ -151,7 +151,7 @@ void LuaContext::initialize() {
   lua_pop(l, 1);
                                   // --
 
-  Debug::check_assertion(lua_gettop(l) == 0, "Lua stack is not empty after initialization");
+  debug::check_assertion(lua_gettop(l) == 0, "Lua stack is not empty after initialization");
 
   // Execute the main file.
   do_file_if_exists(l, "main");
@@ -188,7 +188,7 @@ void LuaContext::exit() {
 void LuaContext::update() {
 
   // Make sure the stack does not leak.
-  Debug::check_assertion(lua_gettop(l) == 0,
+  debug::check_assertion(lua_gettop(l) == 0,
       "Non-empty stack before LuaContext::update()"
   );
 
@@ -200,7 +200,7 @@ void LuaContext::update() {
   // Call sol.main.on_update().
   main_on_update();
 
-  Debug::check_assertion(lua_gettop(l) == 0,
+  debug::check_assertion(lua_gettop(l) == 0,
       "Non-empty stack after LuaContext::update()"
   );
 }
@@ -215,14 +215,14 @@ void LuaContext::update() {
  */
 bool LuaContext::notify_input(const InputEvent& event) {
 
-  Debug::check_assertion(lua_gettop(l) == 0,
+  debug::check_assertion(lua_gettop(l) == 0,
       "Non-empty stack before LuaContext::notify_input()"
   );
 
   // Call the appropriate callback in sol.main (if it exists).
   const bool handled = main_on_input(event);
 
-  Debug::check_assertion(lua_gettop(l) == 0,
+  debug::check_assertion(lua_gettop(l) == 0,
       "Non-empty stack after LuaContext::notify_input()"
   );
 
@@ -440,7 +440,7 @@ void LuaContext::notify_dialog_finished(
  */
 ScopedLuaRef LuaContext::create_ref() {
 
-  return LuaTools::create_ref(l);
+  return lua_tools::create_ref(l);
 }
 
 /**
@@ -458,7 +458,7 @@ void LuaContext::push_ref(lua_State* l, const ScopedLuaRef& ref) {
     return;
   }
 
-  Debug::check_assertion(ref.get_lua_state() == l, "Wrong Lua state");
+  debug::check_assertion(ref.get_lua_state() == l, "Wrong Lua state");
   ref.push();
 }
 
@@ -590,7 +590,7 @@ bool LuaContext::find_method(const char* function_name) {
  */
 bool LuaContext::find_method(int index, const char* function_name) {
 
-  index = LuaTools::get_positive_index(l, index);
+  index = lua_tools::get_positive_index(l, index);
                                   // ... object ...
   lua_getfield(l, index, function_name);
                                   // ... object ... method/?
@@ -633,7 +633,7 @@ bool LuaContext::call_function(
     int nb_results,
     const char* function_name
 ) {
-  return LuaTools::call_function(l, nb_arguments, nb_results, function_name);
+  return lua_tools::call_function(l, nb_arguments, nb_results, function_name);
 }
 
 /**
@@ -645,7 +645,7 @@ bool LuaContext::call_function(
 void LuaContext::load_file(lua_State* l, const std::string& script_name) {
 
   if (!load_file_if_exists(l, script_name)) {
-    Debug::die(std::string("Cannot find script file '") + script_name + "'");
+    debug::die(std::string("Cannot find script file '") + script_name + "'");
   }
 }
 
@@ -677,7 +677,7 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
     int result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
     if (result != 0) {
-      Debug::error(std::string("Failed to load script '")
+      debug::error(std::string("Failed to load script '")
           + script_name + "': " + lua_tostring(l, -1));
     }
     return true;
@@ -698,7 +698,7 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
 void LuaContext::do_file(lua_State* l, const std::string& script_name) {
 
   load_file(l, script_name);
-  LuaTools::call_function(l, 0, 0, script_name.c_str());
+  lua_tools::call_function(l, 0, 0, script_name.c_str());
 }
 
 /**
@@ -715,7 +715,7 @@ void LuaContext::do_file(lua_State* l, const std::string& script_name) {
 bool LuaContext::do_file_if_exists(lua_State* l, const std::string& script_name) {
 
   if (load_file_if_exists(l, script_name)) {
-    LuaTools::call_function(l, 0, 0, script_name.c_str());
+    lua_tools::call_function(l, 0, 0, script_name.c_str());
     return true;
   }
   return false;
@@ -809,7 +809,7 @@ void LuaContext::register_type(
 
   // Check that this type does not already exist.
   luaL_getmetatable(l, module_name.c_str());
-  Debug::check_assertion(lua_isnil(l, -1),
+  debug::check_assertion(lua_isnil(l, -1),
       std::string("Type ") + module_name + " already exists");
   lua_pop(l, 1);
 
@@ -870,7 +870,7 @@ void LuaContext::register_type(
  */
 void LuaContext::register_modules() {
 
-  Debug::check_assertion(lua_gettop(l) == 0,
+  debug::check_assertion(lua_gettop(l) == 0,
       "Lua stack is not empty before modules initialization");
 
   register_main_module();
@@ -890,7 +890,7 @@ void LuaContext::register_modules() {
   register_menu_module();
   register_language_module();
 
-  Debug::check_assertion(lua_gettop(l) == 0,
+  debug::check_assertion(lua_gettop(l) == 0,
       "Lua stack is not empty after modules initialization");
 }
 
@@ -966,7 +966,7 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
     catch (const std::bad_weak_ptr& ex) {
       // No existing shared_ptr. This is probably because you forgot to
       // store your object in a shared_ptr at creation time..
-      Debug::die(
+      debug::die(
           std::string("No living shared_ptr for ") + userdata.get_lua_type_name()
       );
     }
@@ -981,13 +981,13 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
                                   // ... all_udata lightudata udata mt
 
 #ifndef NDEBUG
-    Debug::check_assertion(!lua_isnil(l, -1),
+    debug::check_assertion(!lua_isnil(l, -1),
         std::string("Userdata of type '" + userdata.get_lua_type_name()
         + "' has no metatable, this is a memory leak"));
 
     lua_getfield(l, -1, "__gc");
                                   // ... all_udata lightudata udata mt gc
-    Debug::check_assertion(lua_isfunction(l, -1),
+    debug::check_assertion(lua_isfunction(l, -1),
         std::string("Userdata of type '") + userdata.get_lua_type_name()
         + "' must have the __gc function LuaContext::userdata_meta_gc");
                                   // ... all_udata lightudata udata mt gc
@@ -1019,7 +1019,7 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
 bool LuaContext::is_userdata(lua_State* l, int index,
     const std::string& module_name) {
 
-  index = LuaTools::get_positive_index(l, index);
+  index = lua_tools::get_positive_index(l, index);
 
                                   // ... udata ...
   void* udata = lua_touserdata(l, index);
@@ -1053,7 +1053,7 @@ const ExportableToLuaPtr& LuaContext::check_userdata(
     int index,
     const std::string& module_name
 ) {
-  index = LuaTools::get_positive_index(l, index);
+  index = lua_tools::get_positive_index(l, index);
 
   const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(
     luaL_checkudata(l, index, module_name.c_str())
@@ -1124,9 +1124,9 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
  */
 int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
 
-  LuaTools::check_type(l, 1, LUA_TUSERDATA);
-  LuaTools::check_any(l, 2);
-  LuaTools::check_any(l, 3);
+  lua_tools::check_type(l, 1, LUA_TUSERDATA);
+  lua_tools::check_any(l, 2);
+  lua_tools::check_any(l, 3);
 
   const ExportableToLuaPtr& userdata =
       *(static_cast<ExportableToLuaPtr*>(lua_touserdata(l, 1)));
@@ -1198,8 +1198,8 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
    * to the userdata __index metamethod.
    */
 
-  LuaTools::check_type(l, 1, LUA_TUSERDATA);
-  LuaTools::check_any(l, 2);
+  lua_tools::check_type(l, 1, LUA_TUSERDATA);
+  lua_tools::check_any(l, 2);
 
   const ExportableToLuaPtr& userdata =
       *(static_cast<ExportableToLuaPtr*>(lua_touserdata(l, 1)));
@@ -1236,7 +1236,7 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
                                   // ... udata
   lua_getmetatable(l, -1);
                                   // ... udata meta
-  Debug::check_assertion(!lua_isnil(l, -1), "Missing userdata metatable");
+  debug::check_assertion(!lua_isnil(l, -1), "Missing userdata metatable");
   lua_pushvalue(l, 2);
                                   // ... udata meta key
   lua_gettable(l, -2);
@@ -2663,7 +2663,7 @@ int LuaContext::l_panic(lua_State* l) {
 
   const std::string& error = luaL_checkstring(l, 1);
 
-  Debug::die(error);
+  debug::die(error);
 
   return 0;
 }
@@ -2676,7 +2676,7 @@ int LuaContext::l_panic(lua_State* l) {
  */
 int LuaContext::l_loader(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const std::string& script_name = luaL_checkstring(l, 1);
     bool exists = load_file_if_exists(l, script_name);
 

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -387,7 +387,7 @@ void EquipmentItem::notify_pickable_appeared(Pickable& pickable) {
  */
 int EquipmentItem::get_variant() const {
 
-  Debug::check_assertion(is_saved(),
+  debug::check_assertion(is_saved(),
       std::string("The item '") + get_name() + "' is not saved");
 
   return get_savegame().get_integer(get_savegame_variable());
@@ -402,7 +402,7 @@ int EquipmentItem::get_variant() const {
  */
 void EquipmentItem::set_variant(int variant) {
 
-  Debug::check_assertion(is_saved(),
+  debug::check_assertion(is_saved(),
       std::string("The item '") + get_name() + "' is not saved");
 
   // Set the possession state in the savegame.
@@ -426,7 +426,7 @@ void EquipmentItem::set_variant(int variant) {
  */
 int EquipmentItem::get_amount() const {
 
-  Debug::check_assertion(has_amount(),
+  debug::check_assertion(has_amount(),
       std::string("The item '") + get_name() + "' has no amount");
 
   return get_savegame().get_integer(get_amount_savegame_variable());
@@ -438,7 +438,7 @@ int EquipmentItem::get_amount() const {
  */
 void EquipmentItem::set_amount(int amount) {
 
-  Debug::check_assertion(has_amount(),
+  debug::check_assertion(has_amount(),
       std::string("The item '") + get_name() + "' has no amount");
 
   amount = std::max(0, std::min(get_max_amount(), amount));
@@ -453,7 +453,7 @@ void EquipmentItem::set_amount(int amount) {
  */
 int EquipmentItem::get_max_amount() const {
 
-  Debug::check_assertion(has_amount(),
+  debug::check_assertion(has_amount(),
       std::string("The item '") + get_name() + "' has no amount");
 
   return max_amount;
@@ -465,7 +465,7 @@ int EquipmentItem::get_max_amount() const {
  */
 void EquipmentItem::set_max_amount(int max_amount) {
 
-  Debug::check_assertion(has_amount(),
+  debug::check_assertion(has_amount(),
       std::string("The item '") + get_name() + "' has no amount");
 
   this->max_amount = max_amount;

@@ -90,7 +90,7 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
       // The savegame refers to a map that no longer exists.
       // Maybe the quest is in an intermediate development phase.
       // Show an error and fallback to the default map.
-      Debug::error(std::string("The savegame refers to a non-existing map: '") + starting_map_id + "'");
+      debug::error(std::string("The savegame refers to a non-existing map: '") + starting_map_id + "'");
     }
   }
 
@@ -100,7 +100,7 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
     const std::vector<QuestResourceList::Element>& maps =
         QuestResourceList::get_elements(QuestResourceList::RESOURCE_MAP);
     if (maps.empty()) {
-      Debug::die("This quest has no map");
+      debug::die("This quest has no map");
     }
     starting_map_id = maps[0].first;
     starting_destination_name = "";  // Default destination.
@@ -474,7 +474,7 @@ void Game::update_transitions() {
 
   // if a map has just been set as the current map, start it and play the in transition
   if (started && !current_map->is_started()) {
-    Debug::check_assertion(current_map->is_loaded(), "This map is not loaded");
+    debug::check_assertion(current_map->is_loaded(), "This map is not loaded");
     transition = std::unique_ptr<Transition>(Transition::create(
         transition_style,
         Transition::TRANSITION_OPENING,
@@ -700,7 +700,7 @@ void Game::start_dialog(
     const ScopedLuaRef& callback_ref
 ) {
   if (!DialogResource::exists(dialog_id)) {
-    Debug::error(std::string("No such dialog: '") + dialog_id + "'");
+    debug::error(std::string("No such dialog: '") + dialog_id + "'");
   }
   else {
     dialog_box.open(dialog_id, info_ref, callback_ref);
@@ -824,7 +824,7 @@ bool Game::is_showing_game_over() const {
  */
 void Game::start_game_over() {
 
-  Debug::check_assertion(!is_showing_game_over(),
+  debug::check_assertion(!is_showing_game_over(),
       "The game-over sequence is already active");
 
   showing_game_over = true;
@@ -842,7 +842,7 @@ void Game::start_game_over() {
  */
 void Game::stop_game_over() {
 
-  Debug::check_assertion(is_showing_game_over(),
+  debug::check_assertion(is_showing_game_over(),
       "The game-over sequence is not running");
 
   get_lua_context().game_on_game_over_finished(*this);

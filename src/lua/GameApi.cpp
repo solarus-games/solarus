@@ -157,11 +157,11 @@ void LuaContext::push_game(lua_State* l, Savegame& game) {
  */
 int LuaContext::game_api_exists(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    const std::string& file_name = LuaTools::check_string(l, 1);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    const std::string& file_name = lua_tools::check_string(l, 1);
 
     if (FileTools::get_quest_write_dir().empty()) {
-      LuaTools::error(l, "Cannot check savegame: no write directory was specified in quest.dat");
+      lua_tools::error(l, "Cannot check savegame: no write directory was specified in quest.dat");
     }
 
     bool exists = FileTools::data_file_exists(file_name);
@@ -178,11 +178,11 @@ int LuaContext::game_api_exists(lua_State* l) {
  */
 int LuaContext::game_api_delete(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    const std::string& file_name = LuaTools::check_string(l, 1);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    const std::string& file_name = lua_tools::check_string(l, 1);
 
     if (FileTools::get_quest_write_dir().empty()) {
-      LuaTools::error(l, "Cannot delete savegame: no write directory was specified in quest.dat");
+      lua_tools::error(l, "Cannot delete savegame: no write directory was specified in quest.dat");
     }
 
     FileTools::data_file_delete(file_name);
@@ -198,11 +198,11 @@ int LuaContext::game_api_delete(lua_State* l) {
  */
 int LuaContext::game_api_load(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    const std::string& file_name = LuaTools::check_string(l, 1);
+  return lua_tools::exception_boundary_handle(l, [&] {
+    const std::string& file_name = lua_tools::check_string(l, 1);
 
     if (FileTools::get_quest_write_dir().empty()) {
-      LuaTools::error(l, "Cannot load savegame: no write directory was specified in quest.dat");
+      lua_tools::error(l, "Cannot load savegame: no write directory was specified in quest.dat");
     }
 
     std::shared_ptr<Savegame> savegame = std::make_shared<Savegame>(
@@ -223,11 +223,11 @@ int LuaContext::game_api_load(lua_State* l) {
  */
 int LuaContext::game_api_save(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     if (FileTools::get_quest_write_dir().empty()) {
-      LuaTools::error(l, "Cannot save game: no write directory was specified in quest.dat");
+      lua_tools::error(l, "Cannot save game: no write directory was specified in quest.dat");
     }
 
     savegame.save();
@@ -243,11 +243,11 @@ int LuaContext::game_api_save(lua_State* l) {
  */
 int LuaContext::game_api_start(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     std::shared_ptr<Savegame> savegame = check_game(l, 1);
 
     if (QuestResourceList::get_elements(QuestResourceList::RESOURCE_MAP).empty()) {
-      LuaTools::error(l, "Cannot start game: there is no map in this quest");
+      lua_tools::error(l, "Cannot start game: there is no map in this quest");
     }
 
     Game* game = savegame->get_game();
@@ -277,7 +277,7 @@ int LuaContext::game_api_start(lua_State* l) {
  */
 int LuaContext::game_api_is_started(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -295,7 +295,7 @@ int LuaContext::game_api_is_started(lua_State* l) {
  */
 int LuaContext::game_api_is_suspended(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -313,7 +313,7 @@ int LuaContext::game_api_is_suspended(lua_State* l) {
  */
 int LuaContext::game_api_is_paused(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -331,9 +331,9 @@ int LuaContext::game_api_is_paused(lua_State* l) {
  */
 int LuaContext::game_api_set_paused(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    bool paused = LuaTools::opt_boolean(l, 2, true);
+    bool paused = lua_tools::opt_boolean(l, 2, true);
 
     Game* game = savegame.get_game();
     if (game != nullptr) {
@@ -351,7 +351,7 @@ int LuaContext::game_api_set_paused(lua_State* l) {
  */
 int LuaContext::game_api_is_pause_allowed(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -369,9 +369,9 @@ int LuaContext::game_api_is_pause_allowed(lua_State* l) {
  */
 int LuaContext::game_api_set_pause_allowed(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    bool pause_allowed = LuaTools::opt_boolean(l, 2, true);
+    bool pause_allowed = lua_tools::opt_boolean(l, 2, true);
 
     Game* game = savegame.get_game();
     if (game != nullptr) {
@@ -389,7 +389,7 @@ int LuaContext::game_api_set_pause_allowed(lua_State* l) {
  */
 int LuaContext::game_api_is_dialog_enabled(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -410,23 +410,23 @@ int LuaContext::game_api_is_dialog_enabled(lua_State* l) {
  */
 int LuaContext::game_api_start_dialog(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    const std::string& dialog_id = LuaTools::check_string(l, 2);
+    const std::string& dialog_id = lua_tools::check_string(l, 2);
     ScopedLuaRef info_ref;
     ScopedLuaRef callback_ref;
 
     if (!DialogResource::exists(dialog_id)) {
-      LuaTools::arg_error(l, 2, std::string("No such dialog: '") + dialog_id + "'");
+      lua_tools::arg_error(l, 2, std::string("No such dialog: '") + dialog_id + "'");
     }
 
     Game* game = savegame.get_game();
     if (game == nullptr) {
-      LuaTools::error(l, "Cannot start dialog: this game is not running");
+      lua_tools::error(l, "Cannot start dialog: this game is not running");
     }
 
     if (game->is_dialog_enabled()) {
-      LuaTools::error(l, "Cannot start dialog: another dialog is already active");
+      lua_tools::error(l, "Cannot start dialog: another dialog is already active");
     }
 
     if (lua_gettop(l) >= 3) {
@@ -440,7 +440,7 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
         ++callback_index;
       }
 
-      callback_ref = LuaTools::opt_function(l, callback_index);
+      callback_ref = lua_tools::opt_function(l, callback_index);
     }
     game->start_dialog(dialog_id, info_ref, callback_ref);
 
@@ -455,16 +455,16 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
  */
 int LuaContext::game_api_stop_dialog(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
     if (game == nullptr) {
-      LuaTools::error(l, "Cannot stop dialog: this game is not running.");
+      lua_tools::error(l, "Cannot stop dialog: this game is not running.");
     }
 
     if (!game->is_dialog_enabled()) {
-      LuaTools::error(l, "Cannot stop dialog: no dialog is active.");
+      lua_tools::error(l, "Cannot stop dialog: no dialog is active.");
     }
 
     // Optional parameter: status.
@@ -487,7 +487,7 @@ int LuaContext::game_api_stop_dialog(lua_State* l) {
  */
 int LuaContext::game_api_is_game_over_enabled(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -508,12 +508,12 @@ int LuaContext::game_api_is_game_over_enabled(lua_State* l) {
  */
 int LuaContext::game_api_start_game_over(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
     if (game == nullptr) {
-      LuaTools::error(l, "Cannot start game-over: this game is not running");
+      lua_tools::error(l, "Cannot start game-over: this game is not running");
     }
 
     game->start_game_over();
@@ -529,12 +529,12 @@ int LuaContext::game_api_start_game_over(lua_State* l) {
  */
 int LuaContext::game_api_stop_game_over(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
     if (game == nullptr) {
-      LuaTools::error(l, "Cannot stop game-over: this game is not running.");
+      lua_tools::error(l, "Cannot stop game-over: this game is not running.");
     }
 
     game->stop_game_over();
@@ -550,7 +550,7 @@ int LuaContext::game_api_stop_game_over(lua_State* l) {
  */
 int LuaContext::game_api_get_map(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -571,7 +571,7 @@ int LuaContext::game_api_get_map(lua_State* l) {
  */
 int LuaContext::game_api_get_hero(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     Game* game = savegame.get_game();
@@ -592,12 +592,12 @@ int LuaContext::game_api_get_hero(lua_State* l) {
  */
 int LuaContext::game_api_get_value(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    const std::string& key = LuaTools::check_string(l, 2);
+    const std::string& key = lua_tools::check_string(l, 2);
 
-    if (!LuaTools::is_valid_lua_identifier(key)) {
-      LuaTools::arg_error(l, 3,
+    if (!lua_tools::is_valid_lua_identifier(key)) {
+      lua_tools::arg_error(l, 3,
           std::string("Invalid savegame variable '") + key
           + "': the name should only contain alphanumeric characters or '_'"
           + " and cannot start with a digit");
@@ -627,18 +627,18 @@ int LuaContext::game_api_get_value(lua_State* l) {
  */
 int LuaContext::game_api_set_value(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    const std::string& key = LuaTools::check_string(l, 2);
+    const std::string& key = lua_tools::check_string(l, 2);
 
     if (key[0] == '_') {
-      LuaTools::arg_error(l, 3,
+      lua_tools::arg_error(l, 3,
           std::string("Invalid savegame variable '") + key
           + "': names prefixed by '_' are reserved for built-in variables");
     }
 
-    if (!LuaTools::is_valid_lua_identifier(key)) {
-      LuaTools::arg_error(l, 3,
+    if (!lua_tools::is_valid_lua_identifier(key)) {
+      lua_tools::arg_error(l, 3,
           std::string("Invalid savegame variable '") + key
           + "': the name should only contain alphanumeric characters or '_'"
           + " and cannot start with a digit");
@@ -663,7 +663,7 @@ int LuaContext::game_api_set_value(lua_State* l) {
       break;
 
     default:
-      LuaTools::arg_error(l, 3,
+      lua_tools::arg_error(l, 3,
           std::string("Expected string, number or boolean, got ")
       + luaL_typename(l, 3)
       );
@@ -680,7 +680,7 @@ int LuaContext::game_api_set_value(lua_State* l) {
  */
 int LuaContext::game_api_get_starting_location(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     const std::string& starting_map = savegame.get_string(Savegame::KEY_STARTING_MAP);
@@ -709,10 +709,10 @@ int LuaContext::game_api_get_starting_location(lua_State* l) {
  */
 int LuaContext::game_api_set_starting_location(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    const std::string& map_id = LuaTools::check_string(l, 2);
-    const std::string& destination_name = LuaTools::opt_string(l, 3, "");
+    const std::string& map_id = lua_tools::check_string(l, 2);
+    const std::string& destination_name = lua_tools::opt_string(l, 3, "");
 
     savegame.set_string(Savegame::KEY_STARTING_MAP, map_id);
     savegame.set_string(Savegame::KEY_STARTING_POINT, destination_name);
@@ -728,7 +728,7 @@ int LuaContext::game_api_set_starting_location(lua_State* l) {
  */
 int LuaContext::game_api_get_life(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     int life = savegame.get_equipment().get_life();
@@ -744,9 +744,9 @@ int LuaContext::game_api_get_life(lua_State* l) {
  */
 int LuaContext::game_api_set_life(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    int life = LuaTools::check_int(l, 2);
+    int life = lua_tools::check_int(l, 2);
 
     savegame.get_equipment().set_life(life);
 
@@ -761,12 +761,12 @@ int LuaContext::game_api_set_life(lua_State* l) {
  */
 int LuaContext::game_api_add_life(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    int life = LuaTools::check_int(l, 2);
+    int life = lua_tools::check_int(l, 2);
 
     if (life < 0) {
-      LuaTools::arg_error(l, 2, "Invalid life value: must be positive or zero");
+      lua_tools::arg_error(l, 2, "Invalid life value: must be positive or zero");
     }
 
     savegame.get_equipment().add_life(life);
@@ -782,12 +782,12 @@ int LuaContext::game_api_add_life(lua_State* l) {
  */
 int LuaContext::game_api_remove_life(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    int life = LuaTools::check_int(l, 2);
+    int life = lua_tools::check_int(l, 2);
 
     if (life < 0) {
-      LuaTools::arg_error(l, 2, "Invalid life value: must be positive or zero");
+      lua_tools::arg_error(l, 2, "Invalid life value: must be positive or zero");
     }
 
     savegame.get_equipment().remove_life(life);
@@ -803,7 +803,7 @@ int LuaContext::game_api_remove_life(lua_State* l) {
  */
 int LuaContext::game_api_get_max_life(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     int life = savegame.get_equipment().get_max_life();
@@ -820,12 +820,12 @@ int LuaContext::game_api_get_max_life(lua_State* l) {
  */
 int LuaContext::game_api_set_max_life(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    int life = LuaTools::check_int(l, 2);
+    int life = lua_tools::check_int(l, 2);
 
     if (life <= 0) {
-      LuaTools::arg_error(l, 2, "Invalid life value: max life must be strictly positive");
+      lua_tools::arg_error(l, 2, "Invalid life value: max life must be strictly positive");
     }
 
     savegame.get_equipment().set_max_life(life);
@@ -841,12 +841,12 @@ int LuaContext::game_api_set_max_life(lua_State* l) {
  */
 int LuaContext::game_api_add_max_life(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    int life = LuaTools::check_int(l, 2);
+    int life = lua_tools::check_int(l, 2);
 
     if (life < 0) {
-      LuaTools::arg_error(l, 2, "Invalid life value: must be positive or zero");
+      lua_tools::arg_error(l, 2, "Invalid life value: must be positive or zero");
     }
 
     Equipment& equipment = savegame.get_equipment();
@@ -863,7 +863,7 @@ int LuaContext::game_api_add_max_life(lua_State* l) {
  */
 int LuaContext::game_api_get_money(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     int money = savegame.get_equipment().get_money();
@@ -880,9 +880,9 @@ int LuaContext::game_api_get_money(lua_State* l) {
  */
 int LuaContext::game_api_set_money(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    int money = LuaTools::check_int(l, 2);
+    int money = lua_tools::check_int(l, 2);
 
     savegame.get_equipment().set_money(money);
 
@@ -897,12 +897,12 @@ int LuaContext::game_api_set_money(lua_State* l) {
  */
 int LuaContext::game_api_add_money(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    int money = LuaTools::check_int(l, 2);
+    int money = lua_tools::check_int(l, 2);
 
     if (money < 0) {
-      LuaTools::arg_error(l, 2, "Invalid money value: must be positive or zero");
+      lua_tools::arg_error(l, 2, "Invalid money value: must be positive or zero");
     }
 
     savegame.get_equipment().add_money(money);
@@ -918,12 +918,12 @@ int LuaContext::game_api_add_money(lua_State* l) {
  */
 int LuaContext::game_api_remove_money(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    int money = LuaTools::check_int(l, 2);
+    int money = lua_tools::check_int(l, 2);
 
     if (money < 0) {
-      LuaTools::arg_error(l, 2, "Invalid money value: must be positive or zero");
+      lua_tools::arg_error(l, 2, "Invalid money value: must be positive or zero");
     }
 
     savegame.get_equipment().remove_money(money);
@@ -939,7 +939,7 @@ int LuaContext::game_api_remove_money(lua_State* l) {
  */
 int LuaContext::game_api_get_max_money(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     int money = savegame.get_equipment().get_max_money();
@@ -956,12 +956,12 @@ int LuaContext::game_api_get_max_money(lua_State* l) {
  */
 int LuaContext::game_api_set_max_money(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    int money = LuaTools::check_int(l, 2);
+    int money = lua_tools::check_int(l, 2);
 
     if (money < 0) {
-      LuaTools::arg_error(l, 2, "Invalid money value: must be positive or zero");
+      lua_tools::arg_error(l, 2, "Invalid money value: must be positive or zero");
     }
 
     savegame.get_equipment().set_max_money(money);
@@ -977,7 +977,7 @@ int LuaContext::game_api_set_max_money(lua_State* l) {
  */
 int LuaContext::game_api_get_magic(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     int magic = savegame.get_equipment().get_magic();
@@ -994,9 +994,9 @@ int LuaContext::game_api_get_magic(lua_State* l) {
  */
 int LuaContext::game_api_set_magic(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    int magic = LuaTools::check_int(l, 2);
+    int magic = lua_tools::check_int(l, 2);
 
     savegame.get_equipment().set_magic(magic);
 
@@ -1011,12 +1011,12 @@ int LuaContext::game_api_set_magic(lua_State* l) {
  */
 int LuaContext::game_api_add_magic(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    int magic = LuaTools::check_int(l, 2);
+    int magic = lua_tools::check_int(l, 2);
 
     if (magic < 0) {
-      LuaTools::arg_error(l, 2, "Invalid magic points value: must be positive or zero");
+      lua_tools::arg_error(l, 2, "Invalid magic points value: must be positive or zero");
     }
 
     savegame.get_equipment().add_magic(magic);
@@ -1032,12 +1032,12 @@ int LuaContext::game_api_add_magic(lua_State* l) {
  */
 int LuaContext::game_api_remove_magic(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    int magic = LuaTools::check_int(l, 2);
+    int magic = lua_tools::check_int(l, 2);
 
     if (magic < 0) {
-      LuaTools::arg_error(l, 2, "Invalid magic points value: must be positive or zero");
+      lua_tools::arg_error(l, 2, "Invalid magic points value: must be positive or zero");
     }
 
     savegame.get_equipment().remove_magic(magic);
@@ -1053,7 +1053,7 @@ int LuaContext::game_api_remove_magic(lua_State* l) {
  */
 int LuaContext::game_api_get_max_magic(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     int magic = savegame.get_equipment().get_max_magic();
@@ -1070,12 +1070,12 @@ int LuaContext::game_api_get_max_magic(lua_State* l) {
  */
 int LuaContext::game_api_set_max_magic(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    int magic = LuaTools::check_int(l, 2);
+    int magic = lua_tools::check_int(l, 2);
 
     if (magic < 0) {
-      LuaTools::arg_error(l, 2, "Invalid magic points value: must be positive or zero");
+      lua_tools::arg_error(l, 2, "Invalid magic points value: must be positive or zero");
     }
 
     savegame.get_equipment().set_max_magic(magic);
@@ -1091,9 +1091,9 @@ int LuaContext::game_api_set_max_magic(lua_State* l) {
  */
 int LuaContext::game_api_has_ability(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
+    Ability ability = lua_tools::check_enum<Ability>(l, 2, Equipment::ability_names);
 
     bool has_ability = savegame.get_equipment().has_ability(ability);
 
@@ -1109,9 +1109,9 @@ int LuaContext::game_api_has_ability(lua_State* l) {
  */
 int LuaContext::game_api_get_ability(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
+    Ability ability = lua_tools::check_enum<Ability>(l, 2, Equipment::ability_names);
 
     int ability_level = savegame.get_equipment().get_ability(ability);
 
@@ -1127,10 +1127,10 @@ int LuaContext::game_api_get_ability(lua_State* l) {
  */
 int LuaContext::game_api_set_ability(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
-    int level = LuaTools::check_int(l, 3);
+    Ability ability = lua_tools::check_enum<Ability>(l, 2, Equipment::ability_names);
+    int level = lua_tools::check_int(l, 3);
 
     savegame.get_equipment().set_ability(ability, level);
 
@@ -1145,12 +1145,12 @@ int LuaContext::game_api_set_ability(lua_State* l) {
  */
 int LuaContext::game_api_get_item(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    const std::string& item_name = LuaTools::check_string(l, 2);
+    const std::string& item_name = lua_tools::check_string(l, 2);
 
     if (!savegame.get_equipment().item_exists(item_name)) {
-      LuaTools::error(l, std::string("No such item: '") + item_name + "'");
+      lua_tools::error(l, std::string("No such item: '") + item_name + "'");
     }
 
     push_item(l, savegame.get_equipment().get_item(item_name));
@@ -1165,17 +1165,17 @@ int LuaContext::game_api_get_item(lua_State* l) {
  */
 int LuaContext::game_api_has_item(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    const std::string& item_name = LuaTools::check_string(l, 2);
+    const std::string& item_name = lua_tools::check_string(l, 2);
 
     Equipment& equipment = savegame.get_equipment();
     if (!equipment.item_exists(item_name)) {
-      LuaTools::error(l, std::string("No such item: '") + item_name + "'");
+      lua_tools::error(l, std::string("No such item: '") + item_name + "'");
     }
 
     if (!equipment.get_item(item_name).is_saved()) {
-      LuaTools::error(l, std::string("Item '") + item_name + "' is not saved");
+      lua_tools::error(l, std::string("Item '") + item_name + "' is not saved");
     }
 
     lua_pushboolean(l, equipment.get_item(item_name).get_variant() > 0);
@@ -1190,12 +1190,12 @@ int LuaContext::game_api_has_item(lua_State* l) {
  */
 int LuaContext::game_api_get_item_assigned(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    int slot = LuaTools::check_int(l, 2);
+    int slot = lua_tools::check_int(l, 2);
 
     if (slot < 1 || slot > 2) {
-      LuaTools::arg_error(l, 2, "The item slot should be 1 or 2");
+      lua_tools::arg_error(l, 2, "The item slot should be 1 or 2");
     }
 
     EquipmentItem* item = savegame.get_equipment().get_item_assigned(slot);
@@ -1217,16 +1217,16 @@ int LuaContext::game_api_get_item_assigned(lua_State* l) {
  */
 int LuaContext::game_api_set_item_assigned(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    int slot = LuaTools::check_int(l, 2);
+    int slot = lua_tools::check_int(l, 2);
     EquipmentItem* item = nullptr;
     if (!lua_isnil(l, 3)) {
       item = check_item(l, 3).get();
     }
 
     if (slot < 1 || slot > 2) {
-      LuaTools::arg_error(l, 2, "The item slot should be 1 or 2");
+      lua_tools::arg_error(l, 2, "The item slot should be 1 or 2");
     }
 
     savegame.get_equipment().set_item_assigned(slot, item);
@@ -1242,9 +1242,9 @@ int LuaContext::game_api_set_item_assigned(lua_State* l) {
  */
 int LuaContext::game_api_get_command_effect(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommands::Command command = lua_tools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
 
     Game* game = savegame.get_game();
@@ -1314,7 +1314,7 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
       }
 
       default:
-        Debug::die("Invalid game command");
+        debug::die("Invalid game command");
       }
 
       if (effect_name.empty()) {
@@ -1336,9 +1336,9 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
  */
 int LuaContext::game_api_get_command_keyboard_binding(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommands::Command command = lua_tools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
 
     GameCommands& commands = savegame.get_game()->get_commands();
@@ -1362,19 +1362,19 @@ int LuaContext::game_api_get_command_keyboard_binding(lua_State* l) {
  */
 int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommands::Command command = lua_tools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
     if (lua_gettop(l) <= 3) {
-      LuaTools::type_error(l, 3, "string or nil");
+      lua_tools::type_error(l, 3, "string or nil");
     }
-    const std::string& key_name = LuaTools::opt_string(l, 3, "");
+    const std::string& key_name = lua_tools::opt_string(l, 3, "");
 
     GameCommands& commands = savegame.get_game()->get_commands();
     InputEvent::KeyboardKey key = InputEvent::get_keyboard_key_by_name(key_name);
     if (!key_name.empty() && key == InputEvent::KEY_NONE) {
-      LuaTools::arg_error(l, 3,
+      lua_tools::arg_error(l, 3,
           std::string("Invalid keyboard key name: '") + key_name + "'");
     }
     commands.set_keyboard_binding(command, key);
@@ -1390,9 +1390,9 @@ int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
  */
 int LuaContext::game_api_get_command_joypad_binding(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommands::Command command = lua_tools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
 
     GameCommands& commands = savegame.get_game()->get_commands();
@@ -1415,17 +1415,17 @@ int LuaContext::game_api_get_command_joypad_binding(lua_State* l) {
  */
 int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommands::Command command = lua_tools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
     if (lua_gettop(l) <= 3) {
-      LuaTools::type_error(l, 3, "string or nil");
+      lua_tools::type_error(l, 3, "string or nil");
     }
-    const std::string& joypad_string = LuaTools::opt_string(l, 3, "");
+    const std::string& joypad_string = lua_tools::opt_string(l, 3, "");
 
     if (!joypad_string.empty() && !GameCommands::is_joypad_string_valid(joypad_string)) {
-      LuaTools::arg_error(l, 3,
+      lua_tools::arg_error(l, 3,
           std::string("Invalid joypad string: '") + joypad_string + "'");
     }
     GameCommands& commands = savegame.get_game()->get_commands();
@@ -1442,11 +1442,11 @@ int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
  */
 int LuaContext::game_api_capture_command_binding(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommands::Command command = lua_tools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
-    const ScopedLuaRef& callback_ref = LuaTools::opt_function(l, 3);
+    const ScopedLuaRef& callback_ref = lua_tools::opt_function(l, 3);
 
     GameCommands& commands = savegame.get_game()->get_commands();
     commands.customize(command, callback_ref);
@@ -1462,9 +1462,9 @@ int LuaContext::game_api_capture_command_binding(lua_State* l) {
  */
 int LuaContext::game_api_is_command_pressed(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommands::Command command = lua_tools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
 
     GameCommands& commands = savegame.get_game()->get_commands();
@@ -1481,7 +1481,7 @@ int LuaContext::game_api_is_command_pressed(lua_State* l) {
  */
 int LuaContext::game_api_get_commands_direction(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
     GameCommands& commands = savegame.get_game()->get_commands();
@@ -1504,9 +1504,9 @@ int LuaContext::game_api_get_commands_direction(lua_State* l) {
  */
 int LuaContext::game_api_simulate_command_pressed(lua_State* l){
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommands::Command command = lua_tools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
 
     savegame.get_game()->simulate_command_pressed(command);
@@ -1522,9 +1522,9 @@ int LuaContext::game_api_simulate_command_pressed(lua_State* l){
  */
 int LuaContext::game_api_simulate_command_released(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommands::Command command = lua_tools::check_enum<GameCommands::Command>(
         l, 2, GameCommands::command_names);
 
     savegame.get_game()->simulate_command_released(command);

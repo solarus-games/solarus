@@ -131,12 +131,12 @@ void LuaContext::add_timer(
       std::ostringstream oss;
       oss << "Callback ref " << callback_ref.get()
           << " is already used by a timer (duplicate luaL_unref?)";
-      Debug::die(oss.str());
+      debug::die(oss.str());
     }
   }
 #endif
 
-  Debug::check_assertion(timers.find(timer) == timers.end(),
+  debug::check_assertion(timers.find(timer) == timers.end(),
       "Duplicate timer in the system");
 
   timers[timer].callback_ref = callback_ref;
@@ -253,7 +253,7 @@ void LuaContext::update_timers() {
     if (it != timers.end()) {
       timers.erase(it);
 
-      Debug::check_assertion(timers.find(timer) == timers.end(),
+      debug::check_assertion(timers.find(timer) == timers.end(),
           "Failed to remove timer");
     }
   }
@@ -307,7 +307,7 @@ void LuaContext::set_entity_timers_suspended(
  */
 void LuaContext::do_timer_callback(const TimerPtr& timer) {
 
-  Debug::check_assertion(timer->is_finished(), "This timer is still running");
+  debug::check_assertion(timer->is_finished(), "This timer is still running");
 
   auto it = timers.find(timer);
   if (it != timers.end() &&
@@ -345,7 +345,7 @@ void LuaContext::do_timer_callback(const TimerPtr& timer) {
  */
 int LuaContext::timer_api_start(lua_State *l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     // Parameters: [context] delay callback.
     LuaContext& lua_context = get_lua_context(l);
 
@@ -353,7 +353,7 @@ int LuaContext::timer_api_start(lua_State *l) {
       // The first parameter is the context.
       if (lua_type(l, 1) != LUA_TTABLE
           && lua_type(l, 1) != LUA_TUSERDATA) {
-        LuaTools::type_error(l, 1, "table or userdata");
+        lua_tools::type_error(l, 1, "table or userdata");
       }
     }
     else {
@@ -373,8 +373,8 @@ int LuaContext::timer_api_start(lua_State *l) {
     }
     // Now the first parameter is the context.
 
-    uint32_t delay = uint32_t(LuaTools::check_int(l, 2));
-    const ScopedLuaRef& callback_ref = LuaTools::check_function(l, 3);
+    uint32_t delay = uint32_t(lua_tools::check_int(l, 2));
+    const ScopedLuaRef& callback_ref = lua_tools::check_function(l, 3);
 
     // Create the timer.
     TimerPtr timer = std::make_shared<Timer>(delay);
@@ -398,7 +398,7 @@ int LuaContext::timer_api_start(lua_State *l) {
  */
 int LuaContext::timer_api_stop(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
     const TimerPtr& timer = check_timer(l, 1);
     lua_context.remove_timer(timer);
@@ -414,10 +414,10 @@ int LuaContext::timer_api_stop(lua_State* l) {
  */
 int LuaContext::timer_api_stop_all(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     if (lua_type(l, 1) != LUA_TTABLE
         && lua_type(l, 1) != LUA_TUSERDATA) {
-      LuaTools::type_error(l, 1, "table or userdata");
+      lua_tools::type_error(l, 1, "table or userdata");
     }
 
     get_lua_context(l).remove_timers(1);
@@ -433,7 +433,7 @@ int LuaContext::timer_api_stop_all(lua_State* l) {
  */
 int LuaContext::timer_api_is_with_sound(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
 
     lua_pushboolean(l, timer->is_with_sound());
@@ -448,9 +448,9 @@ int LuaContext::timer_api_is_with_sound(lua_State* l) {
  */
 int LuaContext::timer_api_set_with_sound(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
-    bool with_sound = LuaTools::opt_boolean(l, 2, true);
+    bool with_sound = lua_tools::opt_boolean(l, 2, true);
 
     timer->set_with_sound(with_sound);
 
@@ -465,7 +465,7 @@ int LuaContext::timer_api_set_with_sound(lua_State* l) {
  */
 int LuaContext::timer_api_is_suspended(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
 
     lua_pushboolean(l, timer->is_suspended());
@@ -480,9 +480,9 @@ int LuaContext::timer_api_is_suspended(lua_State* l) {
  */
 int LuaContext::timer_api_set_suspended(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
-    bool suspended = LuaTools::opt_boolean(l, 2, true);
+    bool suspended = lua_tools::opt_boolean(l, 2, true);
 
     timer->set_suspended(suspended);
 
@@ -497,7 +497,7 @@ int LuaContext::timer_api_set_suspended(lua_State* l) {
  */
 int LuaContext::timer_api_is_suspended_with_map(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
 
     lua_pushboolean(l, timer->is_suspended_with_map());
@@ -512,11 +512,11 @@ int LuaContext::timer_api_is_suspended_with_map(lua_State* l) {
  */
 int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
 
     const TimerPtr& timer = check_timer(l, 1);
-    bool suspended_with_map = LuaTools::opt_boolean(l, 2, true);
+    bool suspended_with_map = lua_tools::opt_boolean(l, 2, true);
 
     timer->set_suspended_with_map(suspended_with_map);
 
@@ -537,7 +537,7 @@ int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
  */
 int LuaContext::timer_api_get_remaining_time(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
 
     LuaContext& lua_context = get_lua_context(l);
@@ -565,9 +565,9 @@ int LuaContext::timer_api_get_remaining_time(lua_State* l) {
  */
 int LuaContext::timer_api_set_remaining_time(lua_State* l) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
+  return lua_tools::exception_boundary_handle(l, [&] {
     const TimerPtr& timer = check_timer(l, 1);
-    uint32_t remaining_time = LuaTools::check_int(l, 2);
+    uint32_t remaining_time = lua_tools::check_int(l, 2);
 
     LuaContext& lua_context = get_lua_context(l);
     const auto it = lua_context.timers.find(timer);

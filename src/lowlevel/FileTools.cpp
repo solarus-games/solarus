@@ -154,7 +154,7 @@ FileTools::DataFileLocation FileTools::data_file_get_location(
     return LOCATION_DATA_ARCHIVE;
   }
 
-  Debug::die(std::string("Unexpected search path element: " + path));
+  debug::die(std::string("Unexpected search path element: " + path));
   return LOCATION_NONE;
 }
 
@@ -195,7 +195,7 @@ std::string FileTools::data_file_read(
 ) {
   std::string full_file_name;
   if (language_specific) {
-    Debug::check_assertion(!Language::get_language().empty(),
+    debug::check_assertion(!Language::get_language().empty(),
         std::string("Cannot open language-specific file '") + file_name
         + "': no language was set"
     );
@@ -206,11 +206,11 @@ std::string FileTools::data_file_read(
   }
 
   // open the file
-  Debug::check_assertion(PHYSFS_exists(full_file_name.c_str()),
+  debug::check_assertion(PHYSFS_exists(full_file_name.c_str()),
       std::string("Data file '") + full_file_name + "' does not exist"
   );
   PHYSFS_file* file = PHYSFS_openRead(full_file_name.c_str());
-  Debug::check_assertion(file != nullptr,
+  debug::check_assertion(file != nullptr,
       std::string("Cannot open data file '") + full_file_name + "'"
   );
 
@@ -237,14 +237,14 @@ void FileTools::data_file_save(
   // open the file to write
   PHYSFS_file* file = PHYSFS_openWrite(file_name.c_str());
   if (file == nullptr) {
-    Debug::die(std::string("Cannot open file '") + file_name
+    debug::die(std::string("Cannot open file '") + file_name
         + "' for writing: " + PHYSFS_getLastError()
     );
   }
 
   // save the memory buffer
   if (PHYSFS_write(file, buffer.data(), (PHYSFS_uint32) buffer.size(), 1) == -1) {
-    Debug::die(std::string("Cannot write file '") + file_name + "': "
+    debug::die(std::string("Cannot write file '") + file_name + "': "
         + PHYSFS_getLastError());
   }
   PHYSFS_close(file);
@@ -296,15 +296,15 @@ std::vector<std::string> FileTools::data_files_enumerate(
     bool list_files,
     bool list_directories
 ) {
-  
+
   std::vector<std::string> result;
-  
+
   if (data_file_exists(dir_path.c_str())) {
     char** files = PHYSFS_enumerateFiles(dir_path.c_str());
-  
+
     for (char** file = files; *file != nullptr; file++) {
       bool is_directory = PHYSFS_isDirectory((dir_path + "/" + *file).c_str());
-      
+
       if (!PHYSFS_isSymbolicLink(*file)
           && ((list_files && !is_directory)
               || (list_directories && is_directory)))
@@ -341,14 +341,14 @@ void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
 
   // This setting never changes at runtime.
   // Allowing to change it would be complex and we don't need that.
-  Debug::check_assertion(FileTools::solarus_write_dir.empty(),
+  debug::check_assertion(FileTools::solarus_write_dir.empty(),
       "The Solarus write directory is already set");
 
   FileTools::solarus_write_dir = solarus_write_dir;
 
   // First check that we can write in a directory.
   if (!PHYSFS_setWriteDir(get_base_write_dir().c_str())) {
-     Debug::die(std::string("Cannot write in user directory '")
+     debug::die(std::string("Cannot write in user directory '")
          + get_base_write_dir().c_str() + "': " + PHYSFS_getLastError());
   }
 
@@ -357,7 +357,7 @@ void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
 
   const std::string& full_write_dir = get_base_write_dir() + "/" + solarus_write_dir;
   if (!PHYSFS_setWriteDir(full_write_dir.c_str())) {
-    Debug::die(std::string("Cannot set Solarus write directory to '")
+    debug::die(std::string("Cannot set Solarus write directory to '")
         + full_write_dir + "': " + PHYSFS_getLastError());
   }
 
@@ -403,7 +403,7 @@ void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
   // so that we can create the new quest subdirectory.
   std::string full_write_dir = get_base_write_dir() + "/" + solarus_write_dir;
   if (!PHYSFS_setWriteDir(full_write_dir.c_str())) {
-    Debug::die(std::string("Cannot set Solarus write directory to '")
+    debug::die(std::string("Cannot set Solarus write directory to '")
         + full_write_dir + "': " + PHYSFS_getLastError());
   }
 

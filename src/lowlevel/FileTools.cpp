@@ -424,7 +424,7 @@ void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
 /**
  * \brief Returns the absolute path of the quest write directory.
  */
-const std::string FileTools::get_full_quest_write_dir() {
+std::string FileTools::get_full_quest_write_dir() {
   return get_base_write_dir() + "/" + get_solarus_write_dir() + "/" + get_quest_write_dir();
 }
 

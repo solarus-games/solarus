@@ -438,9 +438,9 @@ void PathMovement::set_snapping_trajectory(const Point& src, const Point& dst) {
 
 /**
  * \brief Returns a string describing a path with random length in one of the four main directions.
- * \return a random path
+ * \return A random path.
  */
-const std::string PathMovement::create_random_path() {
+std::string PathMovement::create_random_path() {
 
   char c = '0' + (Random::get_number(4) * 2);
   int length = Random::get_number(5) + 3;

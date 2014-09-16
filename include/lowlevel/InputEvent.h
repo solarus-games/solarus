@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -247,7 +247,7 @@ class InputEvent {
     static InputEvent::KeyboardKey get_keyboard_key_by_name(const std::string& keyboard_key_name);
 
     bool is_character_pressed() const;
-    const std::string get_character() const;
+    std::string get_character() const;
 
     // joypad
     static bool is_joypad_enabled();
@@ -293,7 +293,7 @@ class InputEvent {
     static const KeyboardKey directional_keys[];  /**< array of the keyboard directional keys */
     static bool joypad_enabled;                   /**< true if joypad support is enabled
                                                    * (may be true even without joypad plugged) */
-    static SDL_Joystick* joystick;                /**< the joystick object if enabled and plugged */      
+    static SDL_Joystick* joystick;                /**< the joystick object if enabled and plugged */
     static int joypad_axis_state[2];              /**< keep track of the current horizontal and verticle axis states */
     static std::map<KeyboardKey, std::string>
       keyboard_key_names;                         /**< Names of all existing keyboard keys. */

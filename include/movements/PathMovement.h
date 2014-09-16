@@ -65,7 +65,7 @@ class PathMovement: public PixelMovement {
     int get_total_distance_covered() const;
     virtual int get_displayed_direction4() const override;
 
-    static const std::string create_random_path();
+    static std::string create_random_path();
 
     virtual const std::string& get_lua_type_name() const override;
 

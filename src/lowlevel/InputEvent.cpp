@@ -741,7 +741,7 @@ bool InputEvent::is_character_pressed() const {
  * \brief Returns a UTF-8 representation of the character that was pressed during this text event.
  * \return The UTF-8 string corresponding to the entered character, or an empty string if this is not a text event.
  */
-const std::string InputEvent::get_character() const {
+std::string InputEvent::get_character() const {
 
   return internal_event.text.text;
 }

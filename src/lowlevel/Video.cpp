@@ -277,7 +277,12 @@ void Video::initialize(const CommandLine& args) {
     }
   }
 
-  if (!disable_window) {
+  if (disable_window) {
+    // Create a pixel format anyway to make surface and color operation work,
+    // even though nothing will ever be rendered.
+    pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
+  }
+  else {
     create_window(args);
   }
 }

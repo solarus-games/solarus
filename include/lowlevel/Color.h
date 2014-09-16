@@ -32,6 +32,12 @@ class Color {
 
   public:
 
+    Color();
+    Color(const Color& other);
+    Color(int r, int g, int b, int a = 255);
+
+    void get_components(int& r, int& g, int& b, int& a) const;
+
     static void initialize();
     static void quit();
 
@@ -45,16 +51,14 @@ class Color {
     static Color& get_magenta();
     static Color& get_cyan();
 
-    Color();
-    Color(const Color& other);
-    Color(int r, int g, int b, int a = 255);
-
-    void get_components(int& r, int& g, int& b, int& a) const;
-
   private:
 
-    SDL_Color internal_color;             /**< the SDL color encapsulated. */
-    uint32_t internal_value;              /**< the SDL 32-bit value representing this color. */
+    // low-level classes allowed to manipulate directly the internal SDL objects encapsulated
+    friend class Surface;
+    friend class TextSurface;
+
+    uint32_t get_internal_value() const;
+    SDL_Color* get_internal_color();
 
     // some predefined colors
     static Color transparent;
@@ -67,12 +71,8 @@ class Color {
     static Color magenta;
     static Color cyan;
 
-    uint32_t get_internal_value() const;
-    SDL_Color* get_internal_color();
-
-    // low-level classes allowed to manipulate directly the internal SDL objects encapsulated
-    friend class Surface;
-    friend class TextSurface;
+    SDL_Color internal_color;             /**< the SDL color encapsulated. */
+    uint32_t internal_value;              /**< the SDL 32-bit value representing this color. */
 
 };
 

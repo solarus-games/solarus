@@ -41,6 +41,8 @@ class MainLoop {
     ~MainLoop();
 
     void run();
+    void step();
+
     void set_exiting();
     bool is_exiting();
     void set_resetting();

@@ -150,9 +150,10 @@ void MainLoop::set_game(Game* game) {
 }
 
 /**
- * \brief The main function.
+ * \brief Runs the main loop until the user requests to stop the program.
  *
- * The main loop is executed here.
+ * The main loop controls simulated time and repeatedly updates the world and
+ * redraws the screen.
  */
 void MainLoop::run() {
 
@@ -194,7 +195,7 @@ void MainLoop::run() {
     while (lag >= System::timestep
         && num_updates < 10  // To draw sometimes anyway on very slow systems.
         && !is_exiting()) {
-      update();
+      step();
       lag -= System::timestep;
       ++num_updates;
     }
@@ -213,6 +214,16 @@ void MainLoop::run() {
 }
 
 /**
+ * \brief Advances the simulation of one tick.
+ *
+ * You can use this function if you want to simulate step by step.
+ * Otherwise, use run() to execute the standard main loop.
+ */
+void MainLoop::step() {
+  update();
+}
+
+/**
  * \brief Detects whether there were input events and if yes, handles them.
  */
 void MainLoop::check_input() {
@@ -227,10 +238,8 @@ void MainLoop::check_input() {
 /**
  * \brief This function is called when there is an input event.
  *
- * It handles the events common to all screens:
- * closing the window, pressing F5 or a debug key.
- * The notify_input() method of the current screen
- * is then called.
+ * It forwards the event to Lua, and then to the game if Lua did not
+ * handle it.
  */
 void MainLoop::notify_input(const InputEvent& event) {
 

@@ -74,7 +74,7 @@ class Surface: public Drawable {
 
     int get_width() const;
     int get_height() const;
-    const Size get_size() const;
+    Size get_size() const;
 
     bool is_software_destination() const;
     void set_software_destination(bool software_destination);

@@ -73,8 +73,8 @@ int get_distance2(const Point& point1, const Point& point2);
 int get_manhattan_distance(const Point& point1, const Point& point2);
 double get_angle(int x1, int y1, int x2, int y2);
 double get_angle(const Point& point1, const Point& point2);
-const Point get_xy(double angle, int distance);
-const Point get_xy(const Point& point1, double angle, int distance);
+Point get_xy(double angle, int distance);
+Point get_xy(const Point& point1, double angle, int distance);
 
 /**
  * \brief Returns the distance between two points.

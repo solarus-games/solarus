@@ -82,7 +82,7 @@ double get_angle(const Point& point1, const Point& point2) {
  * \param distance Length of the vector in pixels.
  * \return The coordinates of the second point.
  */
-const Point get_xy(double angle, int distance) {
+Point get_xy(double angle, int distance) {
 
   return {
       static_cast<int>(distance * std::cos(angle)),
@@ -97,7 +97,7 @@ const Point get_xy(double angle, int distance) {
  * \param distance Length of the vector in pixels.
  * \return The coordinates of the second point.
  */
-const Point get_xy(const Point& point1, double angle, int distance) {
+Point get_xy(const Point& point1, double angle, int distance) {
   return point1 + get_xy(angle, distance);
 }
 

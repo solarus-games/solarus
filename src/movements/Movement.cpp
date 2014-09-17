@@ -152,7 +152,7 @@ int Movement::get_y() const {
  * \brief Returns the coordinates of the object controlled by this movement.
  * \return The coordinates of the object controlled by this movement.
  */
-const Point Movement::get_xy() const {
+Point Movement::get_xy() const {
 
   if (entity != nullptr) {
     // The object controlled is a map entity.
@@ -523,7 +523,7 @@ int Movement::get_displayed_direction4() const {
  *
  * \return the coordinates to use to display the object controlled by this movement
  */
-const Point Movement::get_displayed_xy() const {
+Point Movement::get_displayed_xy() const {
   return get_xy();
 }
 

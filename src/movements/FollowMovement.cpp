@@ -95,7 +95,7 @@ void FollowMovement::update() {
  * should be displayed.
  * \return the coordinates to use to display the object controlled by this movement
  */
-const Point FollowMovement::get_displayed_xy() const {
+Point FollowMovement::get_displayed_xy() const {
 
   if (entity_followed == nullptr) {
     return get_xy();

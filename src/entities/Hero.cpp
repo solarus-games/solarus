@@ -750,7 +750,7 @@ void Hero::notify_map_opening_transition_finished() {
 /**
  * \copydoc MapEntity::get_facing_point
  */
-const Point Hero::get_facing_point() const {
+Point Hero::get_facing_point() const {
 
   return get_touching_point(get_animation_direction());
 }
@@ -1335,7 +1335,7 @@ bool Hero::is_ground_observer() const {
  * \brief Returns the point that determines the ground below this entity.
  * \return The point used to determine the ground (relative to the map).
  */
-const Point Hero::get_ground_point() const {
+Point Hero::get_ground_point() const {
   return { get_x(), get_y() - 2 };
 }
 

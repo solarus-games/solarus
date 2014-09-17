@@ -59,7 +59,7 @@ class Movement: public ExportableToLua {
     // position
     int get_x() const;
     int get_y() const;
-    const Point get_xy() const;
+    Point get_xy() const;
     void set_x(int x);
     void set_y(int y);
     void set_xy(int x, int y);
@@ -89,7 +89,7 @@ class Movement: public ExportableToLua {
 
     // displaying moving objects
     virtual int get_displayed_direction4() const;
-    virtual const Point get_displayed_xy() const;
+    virtual Point get_displayed_xy() const;
 
     // Lua
     LuaContext* get_lua_context();

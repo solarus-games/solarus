@@ -1,0 +1,11 @@
+font{
+  id = "8_bit",
+  file = "text/8_bit.png",
+}
+
+font{
+  id = "fixed",
+  file = "text/minecraftia.ttf",
+  size = 8,
+}
+

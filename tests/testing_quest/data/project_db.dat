@@ -1,4 +1,4 @@
-map{ id = "first_map", description = "First map" }
+map{ id = "traversable", description = "Traversable test area" }
 
 tileset{ id = "castle", description = "Castle" }
 
@@ -10,7 +10,7 @@ sprite{ id = "entities/bush", description = "Bush" }
 sprite{ id = "entities/chest", description = "Chest" }
 sprite{ id = "entities/conveyor_belt", description = "Conveyor belt" }
 sprite{ id = "entities/crystal", description = "Crystal" }
-sprite{ id = "entities/explostion", description = "Explosion" }
+sprite{ id = "entities/explosion", description = "Explosion" }
 sprite{ id = "entities/fire", description = "Fire" }
 sprite{ id = "entities/grass", description = "Grass" }
 sprite{ id = "entities/hookshot", description = "Hookshot" }
@@ -33,7 +33,6 @@ sprite{ id = "hero/trail", description = "Hero trail" }
 sprite{ id = "enemies/enemy_killed", description = "Enemy killed" }
 sprite{ id = "menus/solarus_logo", description = "Menu: Solarus logo" }
 
-music{ id = "village", description = "Village" }
 
 sound{ id = "arrow_hit", description = "arrow_hit" }
 sound{ id = "boomerang", description = "boomerang" }
@@ -83,7 +82,6 @@ sound{ id = "walk_on_water", description = "walk_on_water" }
 sound{ id = "wrong", description = "wrong" }
 sound{ id = "running_obstacle", description = "running_obstacle" }
 
-item{ id = "bomb", description = "Bomb" }
 
 
 

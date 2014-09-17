@@ -49,7 +49,7 @@ foreach(test_main_file ${tests_main_files})
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin"
 )
 
-add_test(${test_main_file} "bin/${test_bin_file}" -no-audio -no-video ${SOLARUS_ENGINE_SOURCE_DIR}/sample_quest)
+add_test(${test_main_file} "bin/${test_bin_file}" -no-audio -no-video ${SOLARUS_CURRENT_SOURCE_DIR}/testing_quest)
 
 endforeach(test_main_file ${test_main_files})
 

@@ -133,7 +133,7 @@ The initial behavior is restored: the hero will now get
 back to where he was just before falling, instead going to of a memorized
 position.
 
-\subsection lua_api_hero_get_solid_ground() hero:get_solid_ground_position()
+\subsection lua_api_hero_get_solid_ground hero:get_solid_ground_position()
 
 Returns the position where the hero gets back if he falls into a hole or
 other bad ground now.

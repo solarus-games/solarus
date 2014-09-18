@@ -851,8 +851,10 @@ public class Project {
 
         case SOUND:
         case MUSIC:
+        case FONT:
             // There is nothing to do here.
             break;
+
         }
     }
 
@@ -937,6 +939,13 @@ public class Project {
         case SOUND:
             // TODO
             break;
+
+        case FONT:
+            // TOOD
+            break;
+
+        default:
+            break;
         }
     }
 
@@ -1020,6 +1029,10 @@ public class Project {
             break;
 
         case MUSIC:
+            // TODO
+            break;
+
+        case FONT:
             // TODO
             break;
         }

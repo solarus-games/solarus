@@ -862,6 +862,7 @@ public class EditorWindow extends JFrame
 
             case SOUND:
             case MUSIC:
+            case FONT:
                 // No editor for these kinds of resources.
                 break;
             }
@@ -977,6 +978,7 @@ public class EditorWindow extends JFrame
 
         case SOUND:
         case MUSIC:
+        case FONT:
             // No editor for these kinds of resources.
             break;
         }
@@ -1160,6 +1162,7 @@ public class EditorWindow extends JFrame
         case ENTITY:
         case SOUND:
         case MUSIC:
+        case FONT:
             // No need to refresh title for these kinds of resources.
             break;
         }

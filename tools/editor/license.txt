@@ -36,6 +36,7 @@ icon_remove.png
 icon_rename.png
 icon_resource_enemy.png
 icon_resource_entity.png
+icon_resource_font.png
 icon_resource_item.png
 icon_resource_map.png
 icon_resource_music.png
@@ -50,6 +51,7 @@ icon_stop.png
 
 icon_folder_open_enemy.png
 icon_folder_open_entity.png
+icon_folder_open_font.png
 icon_folder_open_item.png
 icon_folder_open_language.png
 icon_folder_open_map.png

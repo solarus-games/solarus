@@ -13,7 +13,8 @@ public enum ResourceType {
     ITEM("Item", "item", "items"),
     ENEMY("Enemy", "enemy", "enemies"),
     ENTITY("Custom entity", "entity", "entities"),
-    LANGUAGE("Language", "language", "languages");
+    LANGUAGE("Language", "language", "languages"),
+    FONT("Font", "font", "fonts");
 
     /**
      * The human-readable name of the resource type.

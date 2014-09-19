@@ -29,7 +29,7 @@
 #include "Map.h"
 #include "Equipment.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.
@@ -97,7 +97,7 @@ void Hero::RunningState::update() {
 
     if (now >= next_phase_date) {
 
-      double angle = geometry::degrees_to_radians(get_sprites().get_animation_direction() * 90);
+      double angle = Geometry::degrees_to_radians(get_sprites().get_animation_direction() * 90);
       std::shared_ptr<StraightMovement> movement =
           std::make_shared<StraightMovement>(false, true);
       movement->set_max_distance(3000);

@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "movements/PathMovement.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Movement of an entity that walks randomly.

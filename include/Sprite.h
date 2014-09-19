@@ -22,7 +22,7 @@
 #include "SpritePtr.h"
 #include <map>
 
-namespace solarus {
+namespace Solarus {
 
 class LuaContext;
 class Size;

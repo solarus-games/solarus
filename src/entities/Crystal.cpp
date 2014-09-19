@@ -27,7 +27,7 @@
 #include "SpriteAnimationSet.h"
 #include <lua.hpp>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a new crystal.

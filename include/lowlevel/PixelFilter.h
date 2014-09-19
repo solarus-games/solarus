@@ -20,7 +20,7 @@
 #include "Common.h"
 #include <cstdint>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Abstract class for pixel filtering algorithms.

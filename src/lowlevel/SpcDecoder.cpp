@@ -17,7 +17,7 @@
 #include "lowlevel/SpcDecoder.h"
 #include "lowlevel/Debug.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates an SPC decoder.
@@ -52,7 +52,7 @@ void SpcDecoder::decode(int16_t* decoded_data, int nb_samples) {
 
   const char* err = spc_play(snes_spc_manager.get(), nb_samples, (short int*) decoded_data);
   if (err != nullptr) {
-      debug::die(std::string("Failed to decode SPC data: ") + err);
+      Debug::die(std::string("Failed to decode SPC data: ") + err);
   }
   spc_filter_run(snes_spc_filter.get(), (short int*) decoded_data, nb_samples);
 }

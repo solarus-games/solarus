@@ -21,7 +21,7 @@
 #include "lua/ScopedLuaRef.h"
 #include "Treasure.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief The state "Treasure" of the hero.

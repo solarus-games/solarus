@@ -27,7 +27,7 @@
 #include "Camera.h"
 #include "Transition.h"
 
-namespace solarus {
+namespace Solarus {
 
 class Destination;
 class Detector;

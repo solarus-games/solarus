@@ -21,7 +21,7 @@
 #include "entities/MapEntity.h"
 #include "entities/CollisionMode.h"
 
-namespace solarus {
+namespace Solarus {
 
 class EquipmentItem;
 

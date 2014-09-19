@@ -23,7 +23,7 @@
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Represents a shader for a driver and sampler-independant uses.

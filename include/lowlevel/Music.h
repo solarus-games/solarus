@@ -25,7 +25,7 @@
 #include <memory>
 #include <vector>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Represents a music that can be played.

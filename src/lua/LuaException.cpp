@@ -16,7 +16,7 @@
  */
 #include "lua/LuaException.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a Lua exception with the specified error message.

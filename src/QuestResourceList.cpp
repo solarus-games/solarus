@@ -21,7 +21,7 @@
 #include <map>
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 namespace {
 
@@ -47,11 +47,11 @@ namespace {
    */
   int l_resource_element(lua_State* l) {
 
-    return lua_tools::exception_boundary_handle(l, [&] {
+    return LuaTools::exception_boundary_handle(l, [&] {
       QuestResourceList::ResourceType resource_type =
-          lua_tools::check_enum<QuestResourceList::ResourceType>(l, 1, resource_type_names);
-      const std::string& id = lua_tools::check_string_field(l, 2, "id");
-      const std::string& description = lua_tools::check_string_field(l, 2, "description");
+          LuaTools::check_enum<QuestResourceList::ResourceType>(l, 1, resource_type_names);
+      const std::string& id = LuaTools::check_string_field(l, 2, "id");
+      const std::string& description = LuaTools::check_string_field(l, 2, "description");
 
       resource_map[resource_type][id] = description;
 
@@ -83,7 +83,7 @@ void QuestResourceList::initialize() {
   }
 
   if (lua_pcall(l, 0, 0, 0) != 0) {
-    debug::die(std::string("Failed to load quest resource list 'project_db.dat': ") + lua_tostring(l, -1));
+    Debug::die(std::string("Failed to load quest resource list 'project_db.dat': ") + lua_tostring(l, -1));
     lua_pop(l, 1);
   }
 
@@ -99,7 +99,7 @@ void QuestResourceList::initialize() {
  */
 bool QuestResourceList::exists(ResourceType resource_type, const std::string& id) {
 
-  debug::check_assertion(resource_type >= 0 && resource_type < RESOURCE_NB,
+  Debug::check_assertion(resource_type >= 0 && resource_type < RESOURCE_NB,
       "Invalid resource type");
 
   return resource_map[resource_type].find(id) != resource_map[resource_type].end();
@@ -114,7 +114,7 @@ bool QuestResourceList::exists(ResourceType resource_type, const std::string& id
 const std::map<std::string, std::string>&
     QuestResourceList::get_elements(ResourceType resource_type) {
 
-  debug::check_assertion(resource_type >= 0 && resource_type < RESOURCE_NB,
+  Debug::check_assertion(resource_type >= 0 && resource_type < RESOURCE_NB,
       "Invalid resource type");
   return resource_map[resource_type];
 }

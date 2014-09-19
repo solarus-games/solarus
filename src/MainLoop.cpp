@@ -30,7 +30,7 @@
 #include "StringResource.h"
 #include "QuestResourceList.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Initializes the game engine.

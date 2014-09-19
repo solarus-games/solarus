@@ -22,7 +22,7 @@
 #include "Ability.h"
 #include <string>
 
-namespace solarus {
+namespace Solarus {
 
 class Equipment;
 class Game;

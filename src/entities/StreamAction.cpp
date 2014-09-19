@@ -21,7 +21,7 @@
 #include "Map.h"
 #include <cmath>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a stream action.

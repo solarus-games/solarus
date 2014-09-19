@@ -21,7 +21,7 @@
  */
 int main(int argc, char** argv) {
 
-  solarus::TestEnvironment env(argc, argv);
+  Solarus::TestEnvironment env(argc, argv);
 
   return 0;
 }

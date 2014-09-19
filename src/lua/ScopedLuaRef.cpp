@@ -18,7 +18,7 @@
 #include "lua/LuaTools.h"
 #include <lua.hpp>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates an empty scoped Lua ref.
@@ -36,7 +36,7 @@ ScopedLuaRef::ScopedLuaRef():
 ScopedLuaRef::ScopedLuaRef(lua_State* l, int ref):
     l(l),
     ref(ref) {
-  debug::check_assertion(l != nullptr, "Missing Lua state");
+  Debug::check_assertion(l != nullptr, "Missing Lua state");
 }
 
 /**
@@ -160,7 +160,7 @@ void ScopedLuaRef::clear() {
  */
 void ScopedLuaRef::push() const {
 
-  debug::check_assertion(!is_empty(), "Attempt to push an empty ref");
+  Debug::check_assertion(!is_empty(), "Attempt to push an empty ref");
 
   lua_rawgeti(l, LUA_REGISTRYINDEX, ref);
 }
@@ -178,7 +178,7 @@ void ScopedLuaRef::call(const std::string& function_name) const {
 
   if (!is_empty()) {
     push();
-    lua_tools::call_function(l, 0, 0, function_name.c_str());
+    LuaTools::call_function(l, 0, 0, function_name.c_str());
   }
 }
 
@@ -208,7 +208,7 @@ void ScopedLuaRef::clear_and_call(const std::string& function_name) {
   lua_State* l = this->l;
   push();
   clear();  // The function is still alive, onto the stack.
-  lua_tools::call_function(l, 0, 0, function_name.c_str());
+  LuaTools::call_function(l, 0, 0, function_name.c_str());
 }
 
 }

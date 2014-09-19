@@ -22,7 +22,7 @@
 
 struct lua_State;
 
-namespace solarus {
+namespace Solarus {
 
 class MainLoop;
 

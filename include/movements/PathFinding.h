@@ -22,7 +22,7 @@
 #include <list>
 #include <map>
 
-namespace solarus {
+namespace Solarus {
 
 class Map;
 class MapEntity;

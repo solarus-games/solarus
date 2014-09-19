@@ -26,7 +26,7 @@
 #include "lua/LuaTools.h"
 
 
-namespace solarus {
+namespace Solarus {
 
 SDL_GLContext GLContext::gl_context = nullptr;
 
@@ -41,7 +41,7 @@ bool GLContext::initialize() {
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
   if (!(gl_context = SDL_GL_CreateContext(Video::get_window()))) {
-    debug::warning("Unable to create OpenGL context : " + std::string(SDL_GetError()));
+    Debug::warning("Unable to create OpenGL context : " + std::string(SDL_GetError()));
     return false;
   }
 

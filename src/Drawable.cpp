@@ -21,7 +21,7 @@
 #include "lowlevel/Debug.h"
 #include <lua.hpp>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.

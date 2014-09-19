@@ -19,7 +19,7 @@
 
 #include "hero/State.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief The victory state of the hero.

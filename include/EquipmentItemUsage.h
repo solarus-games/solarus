@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "Savegame.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Represents an equipment item being used by the hero.

@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief An invisible entity that triggers something when it is walked on.

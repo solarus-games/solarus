@@ -22,7 +22,7 @@
 #include "test_tools/TestEnvironment.h"
 #include "Game.h"
 
-using namespace solarus;
+using namespace Solarus;
 
 namespace {
 
@@ -40,7 +40,7 @@ void basic_test(TestEnvironment& env) {
   PathFinding path_finder(env.get_map(), entity, hero);
   std::string path = path_finder.compute_path();
 
-  debug::check_assertion(path == "7777700", "Unexpected path");
+  Debug::check_assertion(path == "7777700", "Unexpected path");
 }
 
 }

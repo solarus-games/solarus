@@ -23,7 +23,7 @@
 
 struct lua_State;
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Provides access to dialogs translated in the current language.

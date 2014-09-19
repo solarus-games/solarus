@@ -21,7 +21,7 @@
 #include "Sprite.h"
 #include "lowlevel/Debug.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.
@@ -308,7 +308,7 @@ bool Detector::test_collision_center(MapEntity& entity) {
  */
 bool Detector::test_collision_custom(MapEntity& /* entity */) {
 
-  debug::die("Custom collision mode invoked but not defined");
+  Debug::die("Custom collision mode invoked but not defined");
   return false;
 }
 

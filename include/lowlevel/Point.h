@@ -20,7 +20,7 @@
 #include "Common.h"
 #include <iosfwd>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Represents a 2D point.

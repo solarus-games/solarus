@@ -21,7 +21,7 @@
 #include "lowlevel/Surface.h"
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.
@@ -44,12 +44,12 @@ TilePattern::TilePattern(Ground ground, int width, int height):
     oss << "Invalid tile pattern: the size is ("
         << width << "x" << height <<
         ") but should be positive and multiple of 8 pixels";
-    debug::die(oss.str());
+    Debug::die(oss.str());
   }
 
   // Diagonal obstacle: check that the tile is square.
   if (ground >= GROUND_WALL_TOP_RIGHT && ground <= GROUND_WALL_BOTTOM_RIGHT_WATER) {
-    debug::check_assertion(width == height,
+    Debug::check_assertion(width == height,
         "Invalid tile pattern: a tile pattern with a diagonal wall must be square");
   }
 }

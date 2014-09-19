@@ -22,7 +22,7 @@
 #include <memory>
 #include <modplug.h>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Encapsulates the Impulse Tracker music decoding.

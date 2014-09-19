@@ -20,7 +20,7 @@
 #include "hero/State.h"
 #include "GameCommands.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief The state "Running" of the hero.

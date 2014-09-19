@@ -29,7 +29,7 @@
 #include <map>
 #include <string>
 
-namespace solarus {
+namespace Solarus {
 
 class Boomerang;
 class CrystalBlock;

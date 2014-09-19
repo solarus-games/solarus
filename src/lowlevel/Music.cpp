@@ -24,7 +24,7 @@
 #include <sstream>
 #include <vector>
 
-namespace solarus {
+namespace Solarus {
 
 const int Music::nb_buffers;
 std::unique_ptr<SpcDecoder> Music::spc_decoder = nullptr;
@@ -78,7 +78,7 @@ Music::Music(
   callback_ref(callback_ref),
   source(AL_NONE) {
 
-  debug::check_assertion(!loop || callback_ref.is_empty(),
+  Debug::check_assertion(!loop || callback_ref.is_empty(),
       "Attempt to set both a loop and a callback to music"
   );
 
@@ -164,7 +164,7 @@ void Music::set_volume(int volume) {
  */
 int Music::get_num_channels() {
 
-  debug::check_assertion(get_format() == IT,
+  Debug::check_assertion(get_format() == IT,
       "This function is only supported for .it musics");
 
   return it_decoder->get_num_channels();
@@ -180,7 +180,7 @@ int Music::get_num_channels() {
  */
 int Music::get_channel_volume(int channel) {
 
-  debug::check_assertion(get_format() == IT,
+  Debug::check_assertion(get_format() == IT,
       "This function is only supported for .it musics");
 
   return it_decoder->get_channel_volume(channel);
@@ -196,7 +196,7 @@ int Music::get_channel_volume(int channel) {
  */
 void Music::set_channel_volume(int channel, int volume) {
 
-  debug::check_assertion(get_format() == IT,
+  Debug::check_assertion(get_format() == IT,
       "This function is only supported for .it musics");
 
   it_decoder->set_channel_volume(channel, volume);
@@ -211,7 +211,7 @@ void Music::set_channel_volume(int channel, int volume) {
  */
 int Music::get_tempo() {
 
-  debug::check_assertion(get_format() == IT,
+  Debug::check_assertion(get_format() == IT,
       "This function is only supported for .it musics");
 
   return it_decoder->get_tempo();
@@ -226,7 +226,7 @@ int Music::get_tempo() {
  */
 void Music::set_tempo(int tempo) {
 
-  debug::check_assertion(get_format() == IT,
+  Debug::check_assertion(get_format() == IT,
       "This function is only supported for .it musics");
 
   it_decoder->set_tempo(tempo);
@@ -406,7 +406,7 @@ bool Music::update_playing() {
         break;
 
       case NO_FORMAT:
-        debug::die("Invalid music format");
+        Debug::die("Invalid music format");
         break;
     }
 
@@ -444,7 +444,7 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
     std::ostringstream oss;
     oss << "Failed to fill the audio buffer with decoded SPC data for music file '"
       << file_name << ": error " << error;
-    debug::die(oss.str());
+    Debug::die(oss.str());
   }
 }
 
@@ -468,7 +468,7 @@ void Music::decode_it(ALuint destination_buffer, ALsizei nb_samples) {
       std::ostringstream oss;
       oss << "Failed to fill the audio buffer with decoded IT data for music file '"
           << file_name << ": error " << error;
-      debug::die(oss.str());
+      Debug::die(oss.str());
     }
   }
 }
@@ -504,7 +504,7 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
       if (bytes_read != OV_HOLE) { // OV_HOLE is normal when the music loops
         std::ostringstream oss;
         oss << "Error while decoding ogg chunk: " << bytes_read;
-        debug::error(oss.str());
+        Debug::error(oss.str());
         return;
       }
     }
@@ -523,7 +523,7 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
     std::ostringstream oss;
     oss << "Failed to fill the audio buffer with decoded OGG data for music file '"
         << file_name << "': error " << error;
-    debug::error(oss.str());
+    Debug::error(oss.str());
   }
 }
 
@@ -545,7 +545,7 @@ bool Music::start() {
     find_music_file(id, file_name, format);
 
     if (file_name.empty()) {
-      debug::error(std::string("Cannot find music file 'musics/")
+      Debug::error(std::string("Cannot find music file 'musics/")
           + id + "' (tried with extensions .ogg, .it and .spc)"
       );
       return false;
@@ -599,7 +599,7 @@ bool Music::start() {
         std::ostringstream oss;
         oss << "Cannot load music file '" << file_name
             << "' from memory: error " << error;
-        debug::error(oss.str());
+        Debug::error(oss.str());
       }
       else {
         for (int i = 0; i < nb_buffers; i++) {
@@ -610,7 +610,7 @@ bool Music::start() {
     }
 
     case NO_FORMAT:
-      debug::die("Invalid music format");
+      Debug::die("Invalid music format");
       break;
   }
 
@@ -621,7 +621,7 @@ bool Music::start() {
     std::ostringstream oss;
     oss << "Cannot initialize buffers for music '"
         << file_name << "': error " << error;
-    debug::error(oss.str());
+    Debug::error(oss.str());
     success = false;
   }
 
@@ -678,7 +678,7 @@ void Music::stop() {
       break;
 
     case NO_FORMAT:
-      debug::die("Invalid music format");
+      Debug::die("Invalid music format");
       break;
   }
 }

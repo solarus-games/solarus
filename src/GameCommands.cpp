@@ -25,7 +25,7 @@
 #include <lua.hpp>
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Lua name of each value of the Command enum.
@@ -779,7 +779,7 @@ bool GameCommands::is_customizing() const {
  */
 GameCommands::Command GameCommands::get_command_to_customize() const {
 
-  debug::check_assertion(is_customizing(),
+  Debug::check_assertion(is_customizing(),
       "The player is not customizing a command");
   return command_to_customize;
 }

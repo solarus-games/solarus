@@ -21,7 +21,7 @@
 #include "entities/MapEntityPtr.h"
 #include "movements/PathMovement.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Movement for an entity that looks for a path to another entity.

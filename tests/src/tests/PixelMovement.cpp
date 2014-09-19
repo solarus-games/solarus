@@ -18,7 +18,7 @@
 #include "movements/PixelMovement.h"
 #include "test_tools/TestEnvironment.h"
 
-using namespace solarus;
+using namespace Solarus;
 
 namespace {
 
@@ -35,7 +35,7 @@ void basic_test(TestEnvironment& env) {
     env.step();
   }
 
-  debug::check_assertion(m.get_x() == 3 && m.get_y() == -1,
+  Debug::check_assertion(m.get_x() == 3 && m.get_y() == -1,
       "Unexpected coordinates for 'basic_test'");
 }
 
@@ -53,7 +53,7 @@ void loop_test(TestEnvironment& env) {
     env.step();
   }
 
-  debug::check_assertion(m.get_x() == 3 && m.get_y() == -6,
+  Debug::check_assertion(m.get_x() == 3 && m.get_y() == -6,
       "Unexpected coordinates for 'loop_test'");
 }
 
@@ -64,7 +64,7 @@ void empty_test(TestEnvironment& /* env */) {
 
   PixelMovement m("", 50, true, true);
 
-  debug::check_assertion(m.is_finished(),
+  Debug::check_assertion(m.is_finished(),
       "Movement is not finished as expected in 'empty_test'");
 }
 
@@ -81,7 +81,7 @@ void restart_test(TestEnvironment& env) {
     env.step();
   }
 
-  debug::check_assertion(m.get_x() == 2 && m.get_y() == 1,
+  Debug::check_assertion(m.get_x() == 2 && m.get_y() == 1,
       "Unexpected coordinates for 'restart_test #1'");
 
   m.set_trajectory("0 2");
@@ -92,7 +92,7 @@ void restart_test(TestEnvironment& env) {
     env.step();
   }
 
-  debug::check_assertion(m.get_x() == 2 && m.get_y() == 3,
+  Debug::check_assertion(m.get_x() == 2 && m.get_y() == 3,
       "Unexpected coordinates for 'restart_test #2'");
 }
 
@@ -114,7 +114,7 @@ void list_test(TestEnvironment& env) {
     env.step();
   }
 
-  debug::check_assertion(m.get_x() == -1 && m.get_y() == -3,
+  Debug::check_assertion(m.get_x() == -1 && m.get_y() == -3,
       "Unexpected coordinates for 'list_test'");
 }
 

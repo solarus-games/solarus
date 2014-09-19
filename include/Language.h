@@ -18,7 +18,7 @@
 
 #include <string>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Provide language management features.

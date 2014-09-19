@@ -19,7 +19,7 @@
 
 #include <memory>
 
-namespace solarus {
+namespace Solarus {
 
 class Surface;
 

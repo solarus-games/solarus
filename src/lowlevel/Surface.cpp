@@ -28,7 +28,7 @@
 #include <SDL_image.h>
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Stores the tree of what surfaces have to be drawn on other surfaces.
@@ -112,7 +112,7 @@ Surface::Surface(int width, int height):
   width(width),
   height(height) {
 
-  debug::check_assertion(width > 0 && height > 0,
+  Debug::check_assertion(width > 0 && height > 0,
       "Attempt to create a surface with an empty size");
 }
 
@@ -230,7 +230,7 @@ SDL_Surface* Surface::get_surface_from_file(
 
   SDL_RWclose(rw);
 
-  debug::check_assertion(software_surface != nullptr,
+  Debug::check_assertion(software_surface != nullptr,
       std::string("Cannot load image '") + prefixed_file_name + "'");
 
   return software_surface;
@@ -242,7 +242,7 @@ SDL_Surface* Surface::get_surface_from_file(
  */
 void Surface::convert_software_surface() {
 
-  debug::check_assertion(internal_surface != nullptr,
+  Debug::check_assertion(internal_surface != nullptr,
       "Missing software surface to convert");
 
   SDL_PixelFormat* pixel_format = Video::get_pixel_format();
@@ -255,7 +255,7 @@ void Surface::convert_software_surface() {
         pixel_format,
         0
     );
-    debug::check_assertion(converted_surface != nullptr,
+    Debug::check_assertion(converted_surface != nullptr,
         "Failed to convert software surface");
 
     internal_surface = std::unique_ptr<SDL_Surface, void (*)(SDL_Surface*)>(
@@ -276,7 +276,7 @@ void Surface::create_texture_from_surface() {
   SDL_Renderer* main_renderer = Video::get_renderer();
   if (main_renderer != nullptr) {
 
-    debug::check_assertion(internal_surface != nullptr,
+    Debug::check_assertion(internal_surface != nullptr,
         "Missing software surface to create texture from");
 
     // Make sure the software surface has the same format as the texture.
@@ -345,7 +345,7 @@ void Surface::set_opacity(uint8_t opacity) {
 
     int error = SDL_SetSurfaceAlphaMod(internal_surface.get(), opacity);
     if (error != 0) {
-      debug::error(SDL_GetError());
+      Debug::error(SDL_GetError());
     }
     is_rendered = false;  // The surface has changed.
   }
@@ -405,7 +405,7 @@ void Surface::set_software_destination(bool software_destination) {
  */
 void Surface::create_software_surface() {
 
-  debug::check_assertion(internal_surface == nullptr,
+  Debug::check_assertion(internal_surface == nullptr,
       "Software surface already exists");
 
   // Create a surface with the appropriate pixel format.
@@ -426,7 +426,7 @@ void Surface::create_software_surface() {
   SDL_SetSurfaceBlendMode(internal_surface.get(), SDL_BLENDMODE_BLEND);
   is_rendered = false;
 
-  debug::check_assertion(internal_surface != nullptr,
+  Debug::check_assertion(internal_surface != nullptr,
       "Failed to create software surface");
 }
 
@@ -470,7 +470,7 @@ void Surface::clear() {
  */
 void Surface::clear(const Rectangle& where) {
 
-  debug::check_assertion(software_destination,
+  Debug::check_assertion(software_destination,
       "Partial surface clear is only supported with software surfaces");
 
   if (internal_surface == nullptr) {
@@ -681,9 +681,9 @@ void Surface::apply_pixel_filter(
     const PixelFilter& pixel_filter, Surface& dst_surface) {
 
   const int factor = pixel_filter.get_scaling_factor();
-  debug::check_assertion(dst_surface.get_width() == get_width() * factor,
+  Debug::check_assertion(dst_surface.get_width() == get_width() * factor,
       "Wrong destination surface size");
-  debug::check_assertion(dst_surface.get_height() == get_height() * factor,
+  Debug::check_assertion(dst_surface.get_height() == get_height() * factor,
       "Wrong destination surface size");
 
   SDL_Surface* src_internal_surface = this->internal_surface.get();
@@ -694,7 +694,7 @@ void Surface::apply_pixel_filter(
     return;
   }
 
-  debug::check_assertion(dst_internal_surface != nullptr,
+  Debug::check_assertion(dst_internal_surface != nullptr,
       "Missing software destination surface for pixel filter");
 
   SDL_LockSurface(src_internal_surface);
@@ -884,7 +884,7 @@ uint32_t Surface::get_pixel(int index) const {
 
   std::ostringstream oss;
   oss << "Unknown pixel depth: " << format->BitsPerPixel;
-  debug::die(oss.str());
+  Debug::die(oss.str());
   return 0;
 }
 

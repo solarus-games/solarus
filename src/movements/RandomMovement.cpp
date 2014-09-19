@@ -23,7 +23,7 @@
 #include "lowlevel/Debug.h"
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.
@@ -88,7 +88,7 @@ void RandomMovement::set_max_radius(int max_radius) {
   if (max_radius < 0) {
     std::ostringstream oss;
     oss << "Invalid max radius: " << max_radius;
-    debug::die(oss.str());
+    Debug::die(oss.str());
   }
   this->max_radius = max_radius;
 
@@ -111,12 +111,12 @@ void RandomMovement::set_next_direction() {
       || bounds.contains(get_xy())) {
 
     // we are inside the bounds (or there is no bound): pick a random direction
-    angle = geometry::degrees_to_radians(Random::get_number(8) * 45 + 22.5);
+    angle = Geometry::degrees_to_radians(Random::get_number(8) * 45 + 22.5);
   }
   else {
 
     // we are outside the bounds: get back into the rectangle to avoid going too far
-    angle = geometry::get_angle(get_xy(), bounds.get_center());
+    angle = Geometry::get_angle(get_xy(), bounds.get_center());
   }
   set_angle(angle);
 

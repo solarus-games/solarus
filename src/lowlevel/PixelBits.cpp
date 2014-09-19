@@ -22,7 +22,7 @@
 #include <SDL.h>
 #include <iostream> // print functions
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a pixel bits object.
@@ -38,7 +38,7 @@ PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position):
   // Create a list of boolean values representing the transparency of each pixel.
   // This list is implemented as bit fields.
 
-  debug::check_assertion(surface.internal_surface != nullptr,
+  Debug::check_assertion(surface.internal_surface != nullptr,
     "Attempt to read a surface that doesn't have pixel buffer in RAM.");
 
   // Clip the rectangle passed as parameter.

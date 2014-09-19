@@ -31,7 +31,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates an arrow.
@@ -337,7 +337,7 @@ bool Arrow::is_flying() const {
  */
 void Arrow::attach_to(MapEntity& entity_reached) {
 
-  debug::check_assertion(this->entity_reached == nullptr,
+  Debug::check_assertion(this->entity_reached == nullptr,
       "This arrow is already attached to an entity");
 
   this->entity_reached = std::static_pointer_cast<MapEntity>(

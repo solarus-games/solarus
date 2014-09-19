@@ -24,7 +24,7 @@
 #include <map>
 #include <SDL_ttf.h>
 
-namespace solarus {
+namespace Solarus {
 
 class Size;
 

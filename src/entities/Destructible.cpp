@@ -35,7 +35,7 @@
 #include "Sprite.h"
 #include <lauxlib.h>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a new destructible item with the specified subtype.

@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "lowlevel/PixelFilter.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Implementation of the Scale2x algorithm.

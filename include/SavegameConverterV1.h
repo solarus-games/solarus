@@ -21,7 +21,7 @@
 #include "Common.h"
 #include <string>
 
-namespace solarus {
+namespace Solarus {
 
 class Savegame;
 

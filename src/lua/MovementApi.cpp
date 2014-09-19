@@ -34,7 +34,7 @@
 #include "Map.h"
 #include "Drawable.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * Name of the Lua table representing the movement module.
@@ -349,7 +349,7 @@ std::shared_ptr<Movement> LuaContext::check_movement(lua_State* l, int index) {
     return std::static_pointer_cast<Movement>(userdata);
   }
   else {
-    lua_tools::type_error(l, index, "movement");
+    LuaTools::type_error(l, index, "movement");
     throw;
   }
 }
@@ -399,7 +399,7 @@ void LuaContext::start_movement_on_point(
   }
   else {
                                   // ... movements movement xy x
-    x = lua_tools::check_int(l, -1);
+    x = LuaTools::check_int(l, -1);
     lua_pop(l, 1);
                                   // ... movements movement xy
   }
@@ -417,7 +417,7 @@ void LuaContext::start_movement_on_point(
   }
   else {
                                   // ... movements movement xy y
-    y = lua_tools::check_int(l, -1);
+    y = LuaTools::check_int(l, -1);
     lua_pop(l, 1);
                                   // ... movements movement xy
   }
@@ -474,9 +474,9 @@ void LuaContext::update_movements() {
  */
 int LuaContext::movement_api_create(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
-    const std::string& type = lua_tools::check_string(l, 1);
+    const std::string& type = LuaTools::check_string(l, 1);
 
     std::shared_ptr<Movement> movement;
     if (type == "straight") {
@@ -530,7 +530,7 @@ int LuaContext::movement_api_create(lua_State* l) {
       movement = std::make_shared<PixelMovement>("", 30, false, false);
     }
     else {
-      lua_tools::arg_error(l, 1, "should be one of: "
+      LuaTools::arg_error(l, 1, "should be one of: "
           "\"straight\", "
           "\"random\", "
           "\"target\", "
@@ -554,7 +554,7 @@ int LuaContext::movement_api_create(lua_State* l) {
  */
 int LuaContext::movement_api_get_xy(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Movement& movement = *check_movement(l, 1);
 
     const Point& xy = movement.get_xy();
@@ -571,10 +571,10 @@ int LuaContext::movement_api_get_xy(lua_State* l) {
  */
 int LuaContext::movement_api_set_xy(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Movement& movement = *check_movement(l, 1);
-    int x = lua_tools::check_int(l, 2);
-    int y = lua_tools::check_int(l, 3);
+    int x = LuaTools::check_int(l, 2);
+    int y = LuaTools::check_int(l, 3);
 
     movement.set_xy(x, y);
 
@@ -589,13 +589,13 @@ int LuaContext::movement_api_set_xy(lua_State* l) {
  */
 int LuaContext::movement_api_start(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
 
     std::shared_ptr<Movement> movement = check_movement(l, 1);
     movement_api_stop(l);  // First, stop any previous movement.
 
-    ScopedLuaRef callback_ref = lua_tools::opt_function(l, 3);
+    ScopedLuaRef callback_ref = LuaTools::opt_function(l, 3);
 
     movement->set_lua_context(&lua_context);
     if (lua_type(l, 2) == LUA_TTABLE) {
@@ -611,7 +611,7 @@ int LuaContext::movement_api_start(lua_State* l) {
       drawable.start_movement(movement);
     }
     else {
-      lua_tools::type_error(l, 2, "table, entity or drawable");
+      LuaTools::type_error(l, 2, "table, entity or drawable");
     }
     movement->set_finished_callback(callback_ref);
 
@@ -626,7 +626,7 @@ int LuaContext::movement_api_start(lua_State* l) {
  */
 int LuaContext::movement_api_stop(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
 
     std::shared_ptr<Movement> movement = check_movement(l, 1);
@@ -659,7 +659,7 @@ int LuaContext::movement_api_stop(lua_State* l) {
  */
 int LuaContext::movement_api_get_ignore_obstacles(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::shared_ptr<Movement> movement = check_movement(l, 1);
 
     lua_pushboolean(l, movement->are_obstacles_ignored());
@@ -674,9 +674,9 @@ int LuaContext::movement_api_get_ignore_obstacles(lua_State* l) {
  */
 int LuaContext::movement_api_set_ignore_obstacles(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::shared_ptr<Movement> movement = check_movement(l, 1);
-    bool ignore_obstacles = lua_tools::opt_boolean(l, 2, true);
+    bool ignore_obstacles = LuaTools::opt_boolean(l, 2, true);
 
     movement->set_ignore_obstacles(ignore_obstacles);
 
@@ -691,7 +691,7 @@ int LuaContext::movement_api_set_ignore_obstacles(lua_State* l) {
  */
 int LuaContext::movement_api_get_direction4(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::shared_ptr<Movement> movement = check_movement(l, 1);
     lua_pushinteger(l, movement->get_displayed_direction4());
     return 1;
@@ -729,7 +729,7 @@ std::shared_ptr<StraightMovement> LuaContext::check_straight_movement(lua_State*
  */
 int LuaContext::straight_movement_api_get_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const StraightMovement& movement = *check_straight_movement(l, 1);
     lua_pushinteger(l, movement.get_speed());
     return 1;
@@ -744,7 +744,7 @@ int LuaContext::straight_movement_api_get_speed(lua_State* l) {
 int LuaContext::straight_movement_api_set_speed(lua_State* l) {
 
   StraightMovement& movement = *check_straight_movement(l, 1);
-  int speed = lua_tools::check_int(l, 2);
+  int speed = LuaTools::check_int(l, 2);
   movement.set_speed(speed);
   return 0;
 }
@@ -756,7 +756,7 @@ int LuaContext::straight_movement_api_set_speed(lua_State* l) {
  */
 int LuaContext::straight_movement_api_get_angle(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const StraightMovement& movement = *check_straight_movement(l, 1);
     lua_pushnumber(l, movement.get_angle());
     return 1;
@@ -770,9 +770,9 @@ int LuaContext::straight_movement_api_get_angle(lua_State* l) {
  */
 int LuaContext::straight_movement_api_set_angle(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     StraightMovement& movement = *check_straight_movement(l, 1);
-    double angle = lua_tools::check_number(l, 2);
+    double angle = LuaTools::check_number(l, 2);
     movement.set_angle(angle);
     return 0;
   });
@@ -785,7 +785,7 @@ int LuaContext::straight_movement_api_set_angle(lua_State* l) {
  */
 int LuaContext::straight_movement_api_get_max_distance(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const StraightMovement& movement = *check_straight_movement(l, 1);
     lua_pushinteger(l, movement.get_max_distance());
     return 1;
@@ -799,9 +799,9 @@ int LuaContext::straight_movement_api_get_max_distance(lua_State* l) {
  */
 int LuaContext::straight_movement_api_set_max_distance(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     StraightMovement& movement = *check_straight_movement(l, 1);
-    int max_distance = lua_tools::check_int(l, 2);
+    int max_distance = LuaTools::check_int(l, 2);
     movement.set_max_distance(max_distance);
     return 0;
   });
@@ -814,7 +814,7 @@ int LuaContext::straight_movement_api_set_max_distance(lua_State* l) {
  */
 int LuaContext::straight_movement_api_is_smooth(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const StraightMovement& movement = *check_straight_movement(l, 1);
     lua_pushboolean(l, movement.is_smooth());
     return 1;
@@ -828,9 +828,9 @@ int LuaContext::straight_movement_api_is_smooth(lua_State* l) {
  */
 int LuaContext::straight_movement_api_set_smooth(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     StraightMovement& movement = *check_straight_movement(l, 1);
-    bool smooth = lua_tools::opt_boolean(l, 2, true);
+    bool smooth = LuaTools::opt_boolean(l, 2, true);
     movement.set_smooth(smooth);
 
     return 0;
@@ -867,7 +867,7 @@ std::shared_ptr<RandomMovement> LuaContext::check_random_movement(lua_State* l, 
  */
 int LuaContext::random_movement_api_get_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const RandomMovement& movement = *check_random_movement(l, 1);
     lua_pushinteger(l, movement.get_speed());
     return 1;
@@ -881,9 +881,9 @@ int LuaContext::random_movement_api_get_speed(lua_State* l) {
  */
 int LuaContext::random_movement_api_set_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     RandomMovement& movement = *check_random_movement(l, 1);
-    int speed = lua_tools::check_int(l, 2);
+    int speed = LuaTools::check_int(l, 2);
     movement.set_normal_speed(speed);
     return 0;
   });
@@ -896,7 +896,7 @@ int LuaContext::random_movement_api_set_speed(lua_State* l) {
  */
 int LuaContext::random_movement_api_get_angle(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const RandomMovement& movement = *check_random_movement(l, 1);
     lua_pushnumber(l, movement.get_angle());
     return 1;
@@ -910,7 +910,7 @@ int LuaContext::random_movement_api_get_angle(lua_State* l) {
  */
 int LuaContext::random_movement_api_get_max_distance(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const RandomMovement& movement = *check_random_movement(l, 1);
     lua_pushinteger(l, movement.get_max_radius());
     return 1;
@@ -924,9 +924,9 @@ int LuaContext::random_movement_api_get_max_distance(lua_State* l) {
  */
 int LuaContext::random_movement_api_set_max_distance(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     RandomMovement& movement = *check_random_movement(l, 1);
-    int max_radius = lua_tools::check_int(l, 2);
+    int max_radius = LuaTools::check_int(l, 2);
     movement.set_max_radius(max_radius);
     return 0;
   });
@@ -939,7 +939,7 @@ int LuaContext::random_movement_api_set_max_distance(lua_State* l) {
  */
 int LuaContext::random_movement_api_is_smooth(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const RandomMovement& movement = *check_random_movement(l, 1);
     lua_pushboolean(l, movement.is_smooth());
     return 1;
@@ -953,9 +953,9 @@ int LuaContext::random_movement_api_is_smooth(lua_State* l) {
  */
 int LuaContext::random_movement_api_set_smooth(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     RandomMovement& movement = *check_random_movement(l, 1);
-    bool smooth = lua_tools::opt_boolean(l, 2, true);
+    bool smooth = LuaTools::opt_boolean(l, 2, true);
     movement.set_smooth(smooth);
 
     return 0;
@@ -992,12 +992,12 @@ std::shared_ptr<TargetMovement> LuaContext::check_target_movement(lua_State* l, 
  */
 int LuaContext::target_movement_api_set_target(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     TargetMovement& movement = *check_target_movement(l, 1);
     if (lua_isnumber(l, 2)) {
       // The target is a fixed point.
-      int x = lua_tools::check_int(l, 2);
-      int y = lua_tools::check_int(l, 3);
+      int x = LuaTools::check_int(l, 2);
+      int y = LuaTools::check_int(l, 3);
       movement.set_target(nullptr, Point(x, y));
     }
     else {
@@ -1007,8 +1007,8 @@ int LuaContext::target_movement_api_set_target(lua_State* l) {
       int y = 0;
       if (lua_isnumber(l, 3)) {
         // There is an offset.
-        x = lua_tools::check_int(l, 3);
-        y = lua_tools::check_int(l, 4);
+        x = LuaTools::check_int(l, 3);
+        y = LuaTools::check_int(l, 4);
       }
       movement.set_target(target, Point(x, y));
     }
@@ -1024,7 +1024,7 @@ int LuaContext::target_movement_api_set_target(lua_State* l) {
  */
 int LuaContext::target_movement_api_get_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TargetMovement& movement = *check_target_movement(l, 1);
     lua_pushinteger(l, movement.get_speed());
     return 1;
@@ -1038,9 +1038,9 @@ int LuaContext::target_movement_api_get_speed(lua_State* l) {
  */
 int LuaContext::target_movement_api_set_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     TargetMovement& movement = *check_target_movement(l, 1);
-    int speed = lua_tools::check_int(l, 2);
+    int speed = LuaTools::check_int(l, 2);
     movement.set_moving_speed(speed);
     return 0;
   });
@@ -1053,7 +1053,7 @@ int LuaContext::target_movement_api_set_speed(lua_State* l) {
  */
 int LuaContext::target_movement_api_get_angle(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TargetMovement& movement = *check_target_movement(l, 1);
     lua_pushnumber(l, movement.get_angle());
     return 1;
@@ -1067,7 +1067,7 @@ int LuaContext::target_movement_api_get_angle(lua_State* l) {
  */
 int LuaContext::target_movement_api_is_smooth(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const TargetMovement& movement = *check_target_movement(l, 1);
     lua_pushboolean(l, movement.is_smooth());
     return 1;
@@ -1081,9 +1081,9 @@ int LuaContext::target_movement_api_is_smooth(lua_State* l) {
  */
 int LuaContext::target_movement_api_set_smooth(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     TargetMovement& movement = *check_target_movement(l, 1);
-    bool smooth = lua_tools::opt_boolean(l, 2, true);
+    bool smooth = LuaTools::opt_boolean(l, 2, true);
     movement.set_smooth(smooth);
 
     return 0;
@@ -1120,7 +1120,7 @@ std::shared_ptr<PathMovement> LuaContext::check_path_movement(lua_State* l, int 
  */
 int LuaContext::path_movement_api_get_path(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const PathMovement& movement = *check_path_movement(l, 1);
 
     const std::string& path = movement.get_path();
@@ -1144,15 +1144,15 @@ int LuaContext::path_movement_api_get_path(lua_State* l) {
  */
 int LuaContext::path_movement_api_set_path(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     PathMovement& movement = *check_path_movement(l, 1);
-    lua_tools::check_type(l, 2, LUA_TTABLE);
+    LuaTools::check_type(l, 2, LUA_TTABLE);
 
     // build the path as a string from the Lua table
     std::string path = "";
     lua_pushnil(l); // first key
     while (lua_next(l, 2) != 0) {
-      int direction8 = lua_tools::check_int(l, 4);
+      int direction8 = LuaTools::check_int(l, 4);
       path += ('0' + direction8);
       lua_pop(l, 1); // pop the value, let the key for the iteration
     }
@@ -1169,7 +1169,7 @@ int LuaContext::path_movement_api_set_path(lua_State* l) {
  */
 int LuaContext::path_movement_api_get_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const PathMovement& movement = *check_path_movement(l, 1);
     lua_pushinteger(l, movement.get_speed());
     return 1;
@@ -1183,9 +1183,9 @@ int LuaContext::path_movement_api_get_speed(lua_State* l) {
  */
 int LuaContext::path_movement_api_set_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     PathMovement& movement = *check_path_movement(l, 1);
-    int speed = lua_tools::check_int(l, 2);
+    int speed = LuaTools::check_int(l, 2);
     movement.set_speed(speed);
     return 0;
   });
@@ -1198,7 +1198,7 @@ int LuaContext::path_movement_api_set_speed(lua_State* l) {
  */
 int LuaContext::path_movement_api_get_loop(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const PathMovement& movement = *check_path_movement(l, 1);
     lua_pushboolean(l, movement.get_loop());
     return 1;
@@ -1212,9 +1212,9 @@ int LuaContext::path_movement_api_get_loop(lua_State* l) {
  */
 int LuaContext::path_movement_api_set_loop(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     PathMovement& movement = *check_path_movement(l, 1);
-    bool loop = lua_tools::opt_boolean(l, 2, true);
+    bool loop = LuaTools::opt_boolean(l, 2, true);
 
     movement.set_loop(loop);
 
@@ -1229,7 +1229,7 @@ int LuaContext::path_movement_api_set_loop(lua_State* l) {
  */
 int LuaContext::path_movement_api_get_snap_to_grid(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const PathMovement& movement = *check_path_movement(l, 1);
     lua_pushboolean(l, movement.get_snap_to_grid());
     return 1;
@@ -1243,9 +1243,9 @@ int LuaContext::path_movement_api_get_snap_to_grid(lua_State* l) {
  */
 int LuaContext::path_movement_api_set_snap_to_grid(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     PathMovement& movement = *check_path_movement(l, 1);
-    bool snap_to_grid = lua_tools::opt_boolean(l, 2, true);
+    bool snap_to_grid = LuaTools::opt_boolean(l, 2, true);
 
     movement.set_snap_to_grid(snap_to_grid);
 
@@ -1283,7 +1283,7 @@ bool LuaContext::is_random_path_movement(lua_State* l, int index) {
  */
 int LuaContext::random_path_movement_api_get_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const RandomPathMovement& movement = *check_random_path_movement(l, 1);
     lua_pushinteger(l, movement.get_speed());
     return 1;
@@ -1297,9 +1297,9 @@ int LuaContext::random_path_movement_api_get_speed(lua_State* l) {
  */
 int LuaContext::random_path_movement_api_set_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     RandomPathMovement& movement = *check_random_path_movement(l, 1);
-    int speed = lua_tools::check_int(l, 2);
+    int speed = LuaTools::check_int(l, 2);
     movement.set_speed(speed);
     return 0;
   });
@@ -1335,7 +1335,7 @@ std::shared_ptr<PathFindingMovement> LuaContext::check_path_finding_movement(lua
  */
 int LuaContext::path_finding_movement_api_set_target(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     PathFindingMovement& movement = *check_path_finding_movement(l, 1);
     MapEntityPtr target = check_entity(l, 2);
 
@@ -1352,7 +1352,7 @@ int LuaContext::path_finding_movement_api_set_target(lua_State* l) {
  */
 int LuaContext::path_finding_movement_api_get_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const PathFindingMovement& movement = *check_path_finding_movement(l, 1);
     lua_pushinteger(l, movement.get_speed());
     return 1;
@@ -1366,9 +1366,9 @@ int LuaContext::path_finding_movement_api_get_speed(lua_State* l) {
  */
 int LuaContext::path_finding_movement_api_set_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     PathFindingMovement& movement = *check_path_finding_movement(l, 1);
-    int speed = lua_tools::check_int(l, 2);
+    int speed = LuaTools::check_int(l, 2);
     movement.set_speed(speed);
     return 0;
   });
@@ -1404,20 +1404,20 @@ std::shared_ptr<CircleMovement> LuaContext::check_circle_movement(lua_State* l, 
  */
 int LuaContext::circle_movement_api_set_center(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CircleMovement& movement = *check_circle_movement(l, 1);
     if (lua_isnumber(l, 2)) {
       // the center is a fixed point
-      int x = lua_tools::check_int(l, 2);
-      int y = lua_tools::check_int(l, 3);
+      int x = LuaTools::check_int(l, 2);
+      int y = LuaTools::check_int(l, 3);
       movement.set_center(Point(x, y));
     }
     else {
       // the center is an entity
 
       MapEntityPtr center = check_entity(l, 2);
-      int dx = lua_tools::opt_int(l, 3, 0);
-      int dy = lua_tools::opt_int(l, 4, 0);
+      int dx = LuaTools::opt_int(l, 3, 0);
+      int dy = LuaTools::opt_int(l, 4, 0);
       movement.set_center(center, dx, dy);
     }
 
@@ -1432,7 +1432,7 @@ int LuaContext::circle_movement_api_set_center(lua_State* l) {
  */
 int LuaContext::circle_movement_api_get_radius(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushinteger(l, movement.get_radius());
     return 1;
@@ -1446,9 +1446,9 @@ int LuaContext::circle_movement_api_get_radius(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_radius(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CircleMovement& movement = *check_circle_movement(l, 1);
-    int radius = lua_tools::check_int(l, 2);
+    int radius = LuaTools::check_int(l, 2);
     movement.set_radius(radius);
     return 0;
   });
@@ -1461,7 +1461,7 @@ int LuaContext::circle_movement_api_set_radius(lua_State* l) {
  */
 int LuaContext::circle_movement_api_get_radius_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushinteger(l, movement.get_radius_speed());
     return 1;
@@ -1475,9 +1475,9 @@ int LuaContext::circle_movement_api_get_radius_speed(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_radius_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CircleMovement& movement = *check_circle_movement(l, 1);
-    int radius_speed = lua_tools::check_int(l, 2);
+    int radius_speed = LuaTools::check_int(l, 2);
     movement.set_radius_speed(radius_speed);
     return 0;
   });
@@ -1490,7 +1490,7 @@ int LuaContext::circle_movement_api_set_radius_speed(lua_State* l) {
  */
 int LuaContext::circle_movement_api_is_clockwise(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushboolean(l, movement.is_clockwise());
     return 1;
@@ -1504,9 +1504,9 @@ int LuaContext::circle_movement_api_is_clockwise(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_clockwise(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CircleMovement& movement = *check_circle_movement(l, 1);
-    bool clockwise = lua_tools::opt_boolean(l, 2, true);
+    bool clockwise = LuaTools::opt_boolean(l, 2, true);
 
     movement.set_clockwise(clockwise);
 
@@ -1521,7 +1521,7 @@ int LuaContext::circle_movement_api_set_clockwise(lua_State* l) {
  */
 int LuaContext::circle_movement_api_get_initial_angle(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushnumber(l, movement.get_initial_angle());
     return 1;
@@ -1535,9 +1535,9 @@ int LuaContext::circle_movement_api_get_initial_angle(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_initial_angle(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CircleMovement& movement = *check_circle_movement(l, 1);
-    double initial_angle = lua_tools::check_number(l, 2);
+    double initial_angle = LuaTools::check_number(l, 2);
     movement.set_initial_angle(initial_angle);
     return 0;
   });
@@ -1550,7 +1550,7 @@ int LuaContext::circle_movement_api_set_initial_angle(lua_State* l) {
  */
 int LuaContext::circle_movement_api_get_angle_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushinteger(l, movement.get_angle_speed());
     return 1;
@@ -1564,9 +1564,9 @@ int LuaContext::circle_movement_api_get_angle_speed(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_angle_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CircleMovement& movement = *check_circle_movement(l, 1);
-    int angle_speed = lua_tools::check_int(l, 2);
+    int angle_speed = LuaTools::check_int(l, 2);
     movement.set_angle_speed(angle_speed);
     return 0;
   });
@@ -1579,7 +1579,7 @@ int LuaContext::circle_movement_api_set_angle_speed(lua_State* l) {
  */
 int LuaContext::circle_movement_api_get_max_rotations(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushinteger(l, movement.get_max_rotations());
     return 1;
@@ -1593,9 +1593,9 @@ int LuaContext::circle_movement_api_get_max_rotations(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_max_rotations(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CircleMovement& movement = *check_circle_movement(l, 1);
-    int max_rotations = lua_tools::check_int(l, 2);
+    int max_rotations = LuaTools::check_int(l, 2);
     movement.set_max_rotations(max_rotations);
     return 0;
   });
@@ -1608,7 +1608,7 @@ int LuaContext::circle_movement_api_set_max_rotations(lua_State* l) {
  */
 int LuaContext::circle_movement_api_get_duration(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushinteger(l, movement.get_duration());
     return 1;
@@ -1622,9 +1622,9 @@ int LuaContext::circle_movement_api_get_duration(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_duration(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CircleMovement& movement = *check_circle_movement(l, 1);
-    int duration = lua_tools::check_int(l, 2);
+    int duration = LuaTools::check_int(l, 2);
     movement.set_duration(duration);
     return 0;
   });
@@ -1637,7 +1637,7 @@ int LuaContext::circle_movement_api_set_duration(lua_State* l) {
  */
 int LuaContext::circle_movement_api_get_loop_delay(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const CircleMovement& movement = *check_circle_movement(l, 1);
     lua_pushinteger(l, movement.get_loop());
     return 1;
@@ -1651,9 +1651,9 @@ int LuaContext::circle_movement_api_get_loop_delay(lua_State* l) {
  */
 int LuaContext::circle_movement_api_set_loop_delay(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CircleMovement& movement = *check_circle_movement(l, 1);
-    int loop_delay = lua_tools::check_int(l, 2);
+    int loop_delay = LuaTools::check_int(l, 2);
     movement.set_loop(loop_delay);
     return 0;
   });
@@ -1689,7 +1689,7 @@ std::shared_ptr<JumpMovement> LuaContext::check_jump_movement(lua_State* l, int 
  */
 int LuaContext::jump_movement_api_get_direction8(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const JumpMovement& movement = *check_jump_movement(l, 1);
     lua_pushinteger(l, movement.get_direction8());
     return 1;
@@ -1703,9 +1703,9 @@ int LuaContext::jump_movement_api_get_direction8(lua_State* l) {
  */
 int LuaContext::jump_movement_api_set_direction8(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     JumpMovement& movement = *check_jump_movement(l, 1);
-    int direction8 = lua_tools::check_int(l, 2);
+    int direction8 = LuaTools::check_int(l, 2);
     movement.set_direction8(direction8);
     return 0;
   });
@@ -1718,7 +1718,7 @@ int LuaContext::jump_movement_api_set_direction8(lua_State* l) {
  */
 int LuaContext::jump_movement_api_get_distance(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const JumpMovement& movement = *check_jump_movement(l, 1);
     lua_pushinteger(l, movement.get_distance());
     return 1;
@@ -1732,9 +1732,9 @@ int LuaContext::jump_movement_api_get_distance(lua_State* l) {
  */
 int LuaContext::jump_movement_api_set_distance(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     JumpMovement& movement = *check_jump_movement(l, 1);
-    int distance = lua_tools::check_int(l, 2);
+    int distance = LuaTools::check_int(l, 2);
     movement.set_distance(distance);
     return 0;
   });
@@ -1747,7 +1747,7 @@ int LuaContext::jump_movement_api_set_distance(lua_State* l) {
  */
 int LuaContext::jump_movement_api_get_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const JumpMovement& movement = *check_jump_movement(l, 1);
     lua_pushinteger(l, movement.get_speed());
     return 1;
@@ -1761,9 +1761,9 @@ int LuaContext::jump_movement_api_get_speed(lua_State* l) {
  */
 int LuaContext::jump_movement_api_set_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     JumpMovement& movement = *check_jump_movement(l, 1);
-    int speed = lua_tools::check_int(l, 2);
+    int speed = LuaTools::check_int(l, 2);
     movement.set_speed(speed);
     return 0;
   });
@@ -1799,7 +1799,7 @@ std::shared_ptr<PixelMovement> LuaContext::check_pixel_movement(lua_State* l, in
  */
 int LuaContext::pixel_movement_api_get_trajectory(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const PixelMovement& movement = *check_pixel_movement(l, 1);
 
     const std::list<Point>& trajectory = movement.get_trajectory();
@@ -1828,19 +1828,19 @@ int LuaContext::pixel_movement_api_get_trajectory(lua_State* l) {
  */
 int LuaContext::pixel_movement_api_set_trajectory(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     PixelMovement& movement = *check_pixel_movement(l, 1);
-    lua_tools::check_type(l, 2, LUA_TTABLE);
+    LuaTools::check_type(l, 2, LUA_TTABLE);
 
     // build the trajectory as a string from the Lua table
     std::list<Point> trajectory;
     lua_pushnil(l); // first key
     while (lua_next(l, 2) != 0) {
-      lua_tools::check_type(l, 4, LUA_TTABLE);
+      LuaTools::check_type(l, 4, LUA_TTABLE);
       lua_rawgeti(l, 4, 1);
       lua_rawgeti(l, 4, 2);
-      int x = lua_tools::check_int(l, 5);
-      int y = lua_tools::check_int(l, 6);
+      int x = LuaTools::check_int(l, 5);
+      int y = LuaTools::check_int(l, 6);
       trajectory.emplace_back(x, y);
       lua_settop(l, 3); // let the key for the iteration
     }
@@ -1857,7 +1857,7 @@ int LuaContext::pixel_movement_api_set_trajectory(lua_State* l) {
  */
 int LuaContext::pixel_movement_api_get_loop(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const PixelMovement& movement = *check_pixel_movement(l, 1);
     lua_pushboolean(l, movement.get_loop());
     return 1;
@@ -1871,9 +1871,9 @@ int LuaContext::pixel_movement_api_get_loop(lua_State* l) {
  */
 int LuaContext::pixel_movement_api_set_loop(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     PixelMovement& movement = *check_pixel_movement(l, 1);
-    bool loop = lua_tools::opt_boolean(l, 2, true);
+    bool loop = LuaTools::opt_boolean(l, 2, true);
 
     movement.set_loop(loop);
 
@@ -1888,7 +1888,7 @@ int LuaContext::pixel_movement_api_set_loop(lua_State* l) {
  */
 int LuaContext::pixel_movement_api_get_delay(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const PixelMovement& movement = *check_pixel_movement(l, 1);
     lua_pushinteger(l, movement.get_delay());
     return 1;
@@ -1902,9 +1902,9 @@ int LuaContext::pixel_movement_api_get_delay(lua_State* l) {
  */
 int LuaContext::pixel_movement_api_set_delay(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     PixelMovement& movement = *check_pixel_movement(l, 1);
-    uint32_t delay = uint32_t(lua_tools::check_int(l, 2));
+    uint32_t delay = uint32_t(LuaTools::check_int(l, 2));
     movement.set_delay(delay);
     return 0;
   });

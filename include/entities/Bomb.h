@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief A bomb that will explode soon.

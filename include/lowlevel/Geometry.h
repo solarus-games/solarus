@@ -22,12 +22,12 @@
 #include <cmath>
 #include <cstdlib>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Provides functions to make mathematic computations.
  */
-namespace geometry {
+namespace Geometry {
 
 // Mathematic constants:
 // we don't use the ones from cmath

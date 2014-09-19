@@ -30,7 +30,7 @@
 #include "Sprite.h"
 #include "KeysEffect.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a state.
@@ -226,7 +226,7 @@ void Hero::State::start(const State* /* previous_state */) {
  */
 void Hero::State::stop(const State* /* next_state */) {
 
-  debug::check_assertion(!is_stopping(),
+  Debug::check_assertion(!is_stopping(),
       std::string("This state is already stopping: ") + get_name());
 
   this->stopping = true;
@@ -1065,7 +1065,7 @@ bool Hero::State::is_using_item() const {
  */
 EquipmentItemUsage& Hero::State::get_item_being_used() {
 
-  debug::die("No item is being used in this state");
+  Debug::die("No item is being used in this state");
   throw;
 }
 

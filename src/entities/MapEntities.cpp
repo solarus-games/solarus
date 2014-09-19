@@ -34,7 +34,7 @@
 #include "lowlevel/Debug.h"
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.
@@ -187,7 +187,7 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
   MapEntity* entity = find_entity(name);
 
   if (entity == nullptr) {
-    debug::die(std::string("Map '") + map.get_id()
+    Debug::die(std::string("Map '") + map.get_id()
         + "': Cannot find entity with name '" + name + "'");
   }
 
@@ -375,7 +375,7 @@ void MapEntities::add_tile(const TilePtr& tile) {
   non_animated_regions[layer]->add_tile(tile);
 
   const TilePattern& pattern = tile->get_tile_pattern();
-  debug::check_assertion(
+  Debug::check_assertion(
       tile->get_width() == pattern.get_width()
       && tile->get_height() == pattern.get_height(),
       "Static tile size must match tile pattern size");
@@ -805,7 +805,7 @@ void MapEntities::set_suspended(bool suspended) {
  */
 void MapEntities::update() {
 
-  debug::check_assertion(map.is_started(), "The map is not started");
+  Debug::check_assertion(map.is_started(), "The map is not started");
 
   // First update the hero.
   hero.update();

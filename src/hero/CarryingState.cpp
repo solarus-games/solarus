@@ -24,7 +24,7 @@
 #include "KeysEffect.h"
 #include "Map.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.
@@ -37,7 +37,7 @@ Hero::CarryingState::CarryingState(
   PlayerMovementState(hero, "carrying"),
   carried_item(carried_item) {
 
-  debug::check_assertion(carried_item != nullptr, "Missing carried item");
+  Debug::check_assertion(carried_item != nullptr, "Missing carried item");
 }
 
 /**
@@ -81,7 +81,7 @@ void Hero::CarryingState::stop(const State* next_state) {
       break;
 
     default:
-      debug::die("Invalid carried item behavior");
+      Debug::die("Invalid carried item behavior");
     }
   }
 }

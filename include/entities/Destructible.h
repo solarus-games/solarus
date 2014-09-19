@@ -22,7 +22,7 @@
 #include "entities/Ground.h"
 #include "Treasure.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief An entity that the hero can destroy and that may contain a pickable

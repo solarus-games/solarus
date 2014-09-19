@@ -36,7 +36,7 @@
 #include "Sprite.h"
 #include <lua.hpp>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a custom entity.
@@ -727,8 +727,8 @@ void CustomEntity::add_collision_test(
     CollisionMode collision_test,
     const ScopedLuaRef& callback_ref
 ) {
-  debug::check_assertion(collision_test != COLLISION_NONE, "Invalid collision mode");
-  debug::check_assertion(!callback_ref.is_empty(), "Missing collision callback");
+  Debug::check_assertion(collision_test != COLLISION_NONE, "Invalid collision mode");
+  Debug::check_assertion(!callback_ref.is_empty(), "Missing collision callback");
 
   if (collision_test == COLLISION_SPRITE) {
     add_collision_mode(COLLISION_SPRITE);
@@ -755,7 +755,7 @@ void CustomEntity::add_collision_test(
     const ScopedLuaRef& collision_test_ref,
     const ScopedLuaRef& callback_ref
 ) {
-  debug::check_assertion(!callback_ref.is_empty(), "Missing collision callback");
+  Debug::check_assertion(!callback_ref.is_empty(), "Missing collision callback");
 
   add_collision_mode(COLLISION_CUSTOM);
 
@@ -849,7 +849,7 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
         break;
 
       case COLLISION_NONE:
-        debug::die("Invalid collision mode");
+        Debug::die("Invalid collision mode");
         break;
     }
   }
@@ -873,7 +873,7 @@ void CustomEntity::notify_collision(MapEntity& entity_overlapping, CollisionMode
   // (even a custom Lua collision test function),
   // except COLLISION_SPRITE that is handled separately.
 
-  debug::check_assertion(collision_mode == COLLISION_CUSTOM,
+  Debug::check_assertion(collision_mode == COLLISION_CUSTOM,
       "Unexpected collision mode");
 
   // There is a collision: execute the callbacks.
@@ -1310,7 +1310,7 @@ bool CustomEntity::TraversableInfo::is_traversable(
     MapEntity& other_entity
 ) const {
 
-  debug::check_assertion(!is_empty(), "Empty traversable info");
+  Debug::check_assertion(!is_empty(), "Empty traversable info");
 
   if (traversable_test_ref.is_empty()) {
     // A fixed boolean was set.
@@ -1351,7 +1351,7 @@ CustomEntity::CollisionInfo::CollisionInfo(
     custom_test_ref(),
     callback_ref(callback_ref) {
 
-  debug::check_assertion(!callback_ref.is_empty(), "Missing callback ref");
+  Debug::check_assertion(!callback_ref.is_empty(), "Missing callback ref");
 }
 
 /**
@@ -1371,7 +1371,7 @@ CustomEntity::CollisionInfo::CollisionInfo(
     custom_test_ref(custom_test_ref),
     callback_ref(callback_ref) {
 
-  debug::check_assertion(!callback_ref.is_empty(), "Missing callback ref");
+  Debug::check_assertion(!callback_ref.is_empty(), "Missing callback ref");
 }
 
 /**

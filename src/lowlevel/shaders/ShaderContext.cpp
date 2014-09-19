@@ -20,7 +20,7 @@
 #include "lowlevel/shaders/GL_2DShader.h"
 
 
-namespace solarus {
+namespace Solarus {
 
 bool ShaderContext::shader_supported = false;
 
@@ -69,7 +69,7 @@ std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& /* shade
   }
 
   if (shader != nullptr && glGetError() != GL_NO_ERROR) {
-    debug::warning("Can't compile shader '" + shader_name + "'");
+    Debug::warning("Can't compile shader '" + shader_name + "'");
     shader = nullptr;
   }
 #endif

@@ -34,7 +34,7 @@
 #include "Savegame.h"
 #include "Sprite.h"
 
-namespace solarus {
+namespace Solarus {
 
 MapLoader Map::map_loader;
 
@@ -379,7 +379,7 @@ Destination* Map::get_destination() {
     return nullptr;
   }
 
-  debug::check_assertion(is_loaded(), "This map is not loaded");
+  Debug::check_assertion(is_loaded(), "This map is not loaded");
 
   Destination* destination = nullptr;
   if (!destination_name.empty()) {
@@ -387,7 +387,7 @@ Destination* Map::get_destination() {
     MapEntity* entity = get_entities().find_entity(destination_name);
 
     if (entity == nullptr || entity->get_type() != ENTITY_DESTINATION) {
-      debug::error(
+      Debug::error(
           std::string("Map '") + get_id() + "': No such destination: '"
           + destination_name + "'"
       );

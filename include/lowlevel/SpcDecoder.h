@@ -23,7 +23,7 @@
 #include <cstdint>
 #include <memory>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Encapsulates the SPC music decoding.

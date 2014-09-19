@@ -21,7 +21,7 @@
 #include "entities/MapEntity.h"
 #include "SpritePtr.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief An item carried or thrown by the hero.

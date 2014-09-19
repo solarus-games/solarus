@@ -17,7 +17,7 @@
 #include "Dialog.h"
 #include "lowlevel/Debug.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.
@@ -80,7 +80,7 @@ const std::map<std::string, std::string>& Dialog::get_properties() const {
  */
 bool Dialog::has_property(const std::string& key) const {
 
-  debug::check_assertion(!key.empty() && key != "text" && key != "dialog_id",
+  Debug::check_assertion(!key.empty() && key != "text" && key != "dialog_id",
       "Invalid property key for dialog");
 
   return properties.find(key) != properties.end();
@@ -93,12 +93,12 @@ bool Dialog::has_property(const std::string& key) const {
  */
 const std::string& Dialog::get_property(const std::string& key) const {
 
-  debug::check_assertion(!key.empty() && key != "text" && key != "dialog_id",
+  Debug::check_assertion(!key.empty() && key != "text" && key != "dialog_id",
       "Invalid property key for dialog");
 
   const auto it = properties.find(key);
 
-  debug::check_assertion(it != properties.end(),
+  Debug::check_assertion(it != properties.end(),
       std::string("No such dialog property: '") + key + "'");
 
   return it->second;
@@ -111,7 +111,7 @@ const std::string& Dialog::get_property(const std::string& key) const {
  */
 void Dialog::set_property(const std::string& key, const std::string& value) {
 
-  debug::check_assertion(!key.empty() && key != "text" && key != "dialog_id",
+  Debug::check_assertion(!key.empty() && key != "text" && key != "dialog_id",
       "Invalid property key for dialog");
 
   properties[key] = value;

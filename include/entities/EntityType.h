@@ -17,7 +17,7 @@
 #ifndef SOLARUS_ENTITY_TYPE_H
 #define SOLARUS_ENTITY_TYPE_H
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constants to identify each kind of map entity.

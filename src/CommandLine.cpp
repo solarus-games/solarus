@@ -17,7 +17,7 @@
 #include "CommandLine.h"
 #include <algorithm>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a command-line object from standard main() arguments.

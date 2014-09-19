@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "entities/MapEntity.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief A boomerang thrown on the map.

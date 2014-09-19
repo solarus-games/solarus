@@ -21,7 +21,7 @@
 #include "movements/StraightMovement.h"
 #include "lowlevel/Rectangle.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief A movement that makes successive steps of random directions

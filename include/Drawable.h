@@ -23,7 +23,7 @@
 #include "lua/ExportableToLua.h"
 #include "lua/ScopedLuaRef.h"
 
-namespace solarus {
+namespace Solarus {
 
 class Movement;
 class Transition;

@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "lowlevel/PixelFilter.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Wrapper to the hq2x algorithm.

@@ -19,7 +19,7 @@
 
 #include "Common.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Provides some functions to compute random numbers.

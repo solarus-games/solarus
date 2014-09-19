@@ -21,7 +21,7 @@
 #include "movements/PixelMovement.h"
 #include "movements/FallingHeight.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Movement of something that falls on the floor and slightly bounces.

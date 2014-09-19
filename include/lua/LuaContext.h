@@ -39,7 +39,7 @@
 struct lua_State;
 struct luaL_Reg;
 
-namespace solarus {
+namespace Solarus {
 
 class Block;
 class Chest;

@@ -21,7 +21,7 @@
 #include "entities/Detector.h"
 #include "Transition.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief A detector that sends the hero to a destination.

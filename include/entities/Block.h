@@ -21,7 +21,7 @@
 #include "lowlevel/Point.h"
 #include "entities/Detector.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief A entity that the hero can push or pull.

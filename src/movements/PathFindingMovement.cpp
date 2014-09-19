@@ -22,7 +22,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a chase movement.

@@ -21,7 +21,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/System.h"
 
-namespace solarus {
+namespace Solarus {
 
 const std::vector<std::string> Transition::style_names = {
   "immediate",
@@ -120,7 +120,7 @@ Surface* Transition::get_previous_surface() const {
  */
 void Transition::set_previous_surface(Surface* previous_surface) {
 
-  debug::check_assertion(previous_surface == nullptr
+  Debug::check_assertion(previous_surface == nullptr
       || get_direction() != TRANSITION_CLOSING,
       "Cannot show a previous surface with an closing transition effect");
 

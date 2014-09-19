@@ -18,7 +18,7 @@
 #include "entities/MapEntity.h"
 #include "lowlevel/Debug.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a follow movement.

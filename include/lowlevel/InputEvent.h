@@ -25,7 +25,7 @@
 
 typedef struct _SDL_Joystick SDL_Joystick;
 
-namespace solarus {
+namespace Solarus {
 
 class Rectangle;
 

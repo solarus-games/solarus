@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief An horizontal or vertical separation between two parts of the map.

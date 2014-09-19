@@ -22,7 +22,7 @@
 #include "entities/Detector.h"
 #include <list>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief A switch that can be activated to change the state of the

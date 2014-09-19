@@ -17,7 +17,7 @@
 #ifndef SOLARUS_FALLING_HEIGHT_H
 #define SOLARUS_FALLING_HEIGHT_H
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Indicates from which height an entity falls.

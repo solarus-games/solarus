@@ -18,7 +18,7 @@
 #include "lua/LuaTools.h"
 #include "lowlevel/FileTools.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * Name of the Lua table representing the file module.
@@ -46,7 +46,7 @@ void LuaContext::register_file_module() {
                                   // io
   lua_getfield(l, -1, "open");
                                   // io open
-  debug::check_assertion(lua_isfunction(l, -1), "Could not find io.open");
+  Debug::check_assertion(lua_isfunction(l, -1), "Could not find io.open");
   lua_setfield(l, LUA_REGISTRYINDEX, "io.open");
                                   // io
   lua_pop(l, 1);
@@ -60,9 +60,9 @@ void LuaContext::register_file_module() {
  */
 int LuaContext::file_api_open(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
-    const std::string& file_name = lua_tools::check_string(l, 1);
-    const std::string& mode = lua_tools::opt_string(l, 2, "r");
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const std::string& file_name = LuaTools::check_string(l, 1);
+    const std::string& mode = LuaTools::opt_string(l, 2, "r");
 
     const bool writing = mode != "r" && mode != "rb";
 
@@ -74,7 +74,7 @@ int LuaContext::file_api_open(lua_State* l) {
 
       // Writing a file.
       if (FileTools::get_quest_write_dir().empty()) {
-        lua_tools::error(l,
+        LuaTools::error(l,
             "Cannot open file in writing: no write directory was specified in quest.dat");
       }
 
@@ -120,9 +120,9 @@ int LuaContext::file_api_open(lua_State* l) {
     push_string(l, real_file_name);
     push_string(l, mode);
 
-    bool called = lua_tools::call_function(l, 2, 2, "io.open");
+    bool called = LuaTools::call_function(l, 2, 2, "io.open");
     if (!called) {
-      lua_tools::error(l, "Unexpected error: failed to call io.open()");
+      LuaTools::error(l, "Unexpected error: failed to call io.open()");
     }
 
     return 2;
@@ -136,8 +136,8 @@ int LuaContext::file_api_open(lua_State* l) {
  */
 int LuaContext::file_api_exists(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
-    const std::string& file_name = lua_tools::check_string(l, 1);
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const std::string& file_name = LuaTools::check_string(l, 1);
 
     lua_pushboolean(l, FileTools::data_file_exists(file_name, false));
 
@@ -152,8 +152,8 @@ int LuaContext::file_api_exists(lua_State* l) {
  */
 int LuaContext::file_api_remove(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
-    const std::string& file_name = lua_tools::check_string(l, 1);
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const std::string& file_name = LuaTools::check_string(l, 1);
 
     bool success = FileTools::data_file_delete(file_name);
 
@@ -175,8 +175,8 @@ int LuaContext::file_api_remove(lua_State* l) {
  */
 int LuaContext::file_api_mkdir(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
-    const std::string& dir_name = lua_tools::check_string(l, 1);
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const std::string& dir_name = LuaTools::check_string(l, 1);
 
     bool success = FileTools::data_file_mkdir(dir_name);
 

@@ -30,7 +30,7 @@
 #include "Sprite.h"
 #include <lua.hpp>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Lua name of each value of the OpeningMethod enum.

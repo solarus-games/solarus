@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Stores the command-line options passed to the program.

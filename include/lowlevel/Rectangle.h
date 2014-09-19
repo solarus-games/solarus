@@ -23,7 +23,7 @@
 #include <SDL_rect.h>
 #include <iosfwd>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Represents a rectangle.

@@ -21,7 +21,7 @@
 #include <memory>
 #include <string>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Interface of a C++ type that can also exist as a Lua userdata.

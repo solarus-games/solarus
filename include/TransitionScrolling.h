@@ -23,7 +23,7 @@
 #include "Transition.h"
 #include <memory>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Scrolling transition between two maps.

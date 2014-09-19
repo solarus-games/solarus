@@ -31,7 +31,7 @@
 
 struct lua_State;
 
-namespace solarus {
+namespace Solarus {
 
 class Block;
 class Bomb;

@@ -17,7 +17,7 @@
 #ifndef SOLARUS_GROUND_H
 #define SOLARUS_GROUND_H
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief The possible kinds of grounds on a map.

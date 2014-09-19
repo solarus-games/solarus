@@ -21,7 +21,7 @@
 #include "lowlevel/Rectangle.h"
 #include <memory>
 
-namespace solarus {
+namespace Solarus {
 
 class Map;
 class MapEntity;

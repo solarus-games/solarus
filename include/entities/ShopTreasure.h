@@ -25,7 +25,7 @@
 
 struct lua_State;
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief A treasure the hero can buy in a shop.

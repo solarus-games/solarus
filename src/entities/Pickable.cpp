@@ -36,7 +36,7 @@
 #include <lua.hpp>
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a pickable item with the specified subtype.
@@ -178,7 +178,7 @@ void Pickable::initialize_sprites() {
         << " but sprite 'entities/items' only has "
         << item_sprite.get_nb_directions() << " variant(s) in animation '"
         << treasure.get_item_name() << "'";
-    debug::error(oss.str());
+    Debug::error(oss.str());
     direction = 0;  // Fallback.
   }
   item_sprite.set_current_direction(direction);

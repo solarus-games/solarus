@@ -21,7 +21,7 @@
 #include "lowlevel/Point.h"
 #include "movements/Movement.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief A straight movement represented as a speed vector

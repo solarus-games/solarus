@@ -21,7 +21,7 @@
 #include "entities/MapEntity.h"
 #include "Sprite.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief The hookshot thrown by the hero.

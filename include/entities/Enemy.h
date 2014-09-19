@@ -25,7 +25,7 @@
 #include "entities/Explosion.h"
 #include "entities/MapEntityPtr.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Represents an enemy.

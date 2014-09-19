@@ -26,7 +26,7 @@
 #include <SDL_opengl.h>
 
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Represents a GLSL shader for use with GL rectangle ARB sampler.

@@ -29,7 +29,7 @@ struct SDL_Renderer;
 struct SDL_Texture;
 struct SDL_PixelFormat;
 
-namespace solarus {
+namespace Solarus {
 
 class CommandLine;
 class Rectangle;

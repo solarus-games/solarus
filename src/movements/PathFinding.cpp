@@ -20,7 +20,7 @@
 #include "Map.h"
 #include "lowlevel/Debug.h"
 
-namespace solarus {
+namespace Solarus {
 
 const Point PathFinding::neighbours_locations[] = {
   {  8,  0 },
@@ -59,7 +59,7 @@ PathFinding::PathFinding(
   source_entity(source_entity),
   target_entity(target_entity) {
 
-  debug::check_assertion(source_entity.is_aligned_to_grid(),
+  Debug::check_assertion(source_entity.is_aligned_to_grid(),
       "The source must be aligned on the map grid");
 }
 
@@ -83,10 +83,10 @@ std::string PathFinding::compute_path() {
   target.y += -target.y % 8;
   const int target_index = get_square_index(target);
 
-  debug::check_assertion(target.x % 8 == 0 && target.y % 8 == 0,
+  Debug::check_assertion(target.x % 8 == 0 && target.y % 8 == 0,
       "Could not snap the target to the map grid");
 
-  const int total_mdistance = geometry::get_manhattan_distance(source, target);
+  const int total_mdistance = Geometry::get_manhattan_distance(source, target);
   if (total_mdistance > 200 || target_entity.get_layer() != source_entity.get_layer()) {
     //std::cout << "too far, not computing a path\n";
     return ""; // too far to compute a path
@@ -143,7 +143,7 @@ std::string PathFinding::compute_path() {
         //std::cout << "  node in direction " << i << ": index = " << new_node.index << std::endl;
 
         const bool in_closed_list = (closed_list.find(new_node.index) != closed_list.end());
-        if (!in_closed_list && geometry::get_manhattan_distance(new_node.location, target) < 200
+        if (!in_closed_list && Geometry::get_manhattan_distance(new_node.location, target) < 200
             && is_node_transition_valid(*current_node, i)) {
           //std::cout << "  node in direction " << i << " is not in the closed list\n";
           // not in the closed list: look in the open list
@@ -152,7 +152,7 @@ std::string PathFinding::compute_path() {
 
           if (!in_open_list) {
             // not in the open list: add it
-            new_node.heuristic = geometry::get_manhattan_distance(new_node.location, target);
+            new_node.heuristic = Geometry::get_manhattan_distance(new_node.location, target);
             new_node.total_cost = new_node.previous_cost + new_node.heuristic;
             new_node.parent_index = index;
             new_node.direction = '0' + i;

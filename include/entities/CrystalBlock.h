@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief A block in the ground that can be raised or lowered with the help of a crystal.

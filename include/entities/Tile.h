@@ -21,7 +21,7 @@
 #include "entities/MapEntity.h"
 #include "lowlevel/SurfacePtr.h"
 
-namespace solarus {
+namespace Solarus {
 
 class TilePattern;
 class Tileset;

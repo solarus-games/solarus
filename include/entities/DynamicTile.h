@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "entities/MapEntity.h"
 
-namespace solarus {
+namespace Solarus {
 
 class TilePattern;
 class Tileset;

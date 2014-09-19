@@ -26,7 +26,7 @@
 #include "Transition.h"
 #include <memory>
 
-namespace solarus {
+namespace Solarus {
 
 class Hero;
 class Equipment;

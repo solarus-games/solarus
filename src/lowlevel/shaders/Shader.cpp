@@ -21,7 +21,7 @@
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
 
-namespace solarus {
+namespace Solarus {
 
 std::string Shader::sampler_type = "";
 std::string Shader::shading_language_version = "";
@@ -143,7 +143,7 @@ void Shader::load_lua_file(const std::string& path) {
 
   if (load_result != 0) {
     // Syntax error in the lua file.
-    debug::die(std::string("Failed to load ") + path + " : " + lua_tostring(l, -1));
+    Debug::die(std::string("Failed to load ") + path + " : " + lua_tostring(l, -1));
   }
   else {
     // Register the callback and send string parameters to the lua script.
@@ -155,7 +155,7 @@ void Shader::load_lua_file(const std::string& path) {
     if (lua_pcall(l, 3, 0, 0) != 0) {
 
       // Runtime error.
-      debug::die(std::string("Failed to parse ") + path + " : " + lua_tostring(l, -1));
+      Debug::die(std::string("Failed to parse ") + path + " : " + lua_tostring(l, -1));
       lua_pop(l, 1);
     }
   }

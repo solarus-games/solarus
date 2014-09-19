@@ -16,7 +16,7 @@
  */
 #include "movements/FallingOnFloorMovement.h"
 
-namespace solarus {
+namespace Solarus {
 
 namespace {
 

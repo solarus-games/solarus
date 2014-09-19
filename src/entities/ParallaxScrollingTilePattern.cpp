@@ -18,7 +18,7 @@
 #include "entities/Tileset.h"
 #include "lowlevel/Surface.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Distance made by the viewport to move the tile pattern of 1 pixel.

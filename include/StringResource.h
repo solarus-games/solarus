@@ -20,7 +20,7 @@
 #include "Common.h"
 #include <string>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Provides access to strings translated in the current language.

@@ -21,7 +21,7 @@
 #include "lowlevel/Debug.h"
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.
@@ -50,7 +50,7 @@ SpriteAnimation::SpriteAnimation(
     // However, sprite animation sets are already cached so the gain might
     // not be significant.
     src_image = Surface::create(image_file_name);
-    debug::check_assertion(src_image != nullptr,
+    Debug::check_assertion(src_image != nullptr,
         std::string("Cannot load image '" + image_file_name + "'")
     );
   }
@@ -117,7 +117,7 @@ int SpriteAnimation::get_next_frame(
     oss << "Invalid sprite direction '" << current_direction
         << "': this sprite has " << get_nb_directions()
         << " direction(s)";
-    debug::die(oss.str());
+    Debug::die(oss.str());
   }
 
   int next_frame = current_frame + 1;
@@ -150,7 +150,7 @@ void SpriteAnimation::draw(Surface& dst_surface,
       oss << "Invalid sprite direction "
           << current_direction << ": this sprite has " << get_nb_directions()
           << " direction(s)";
-      debug::die(oss.str());
+      Debug::die(oss.str());
     }
     directions[current_direction].draw(dst_surface, dst_position,
         current_frame, *src_image);

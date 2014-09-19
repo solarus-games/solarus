@@ -27,7 +27,7 @@
 #include "lowlevel/Random.h"
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 const std::vector<std::string> Equipment::ability_names = {
   "tunic",
@@ -156,7 +156,7 @@ int Equipment::get_max_money() const {
  */
 void Equipment::set_max_money(int max_money) {
 
-  debug::check_assertion(max_money >= 0, "Invalid money amount to add");
+  Debug::check_assertion(max_money >= 0, "Invalid money amount to add");
 
   savegame.set_integer(Savegame::KEY_MAX_MONEY, max_money);
 
@@ -199,7 +199,7 @@ void Equipment::set_money(int money) {
  */
 void Equipment::add_money(int money_to_add) {
 
-  debug::check_assertion(money_to_add >= 0, "Invalid money amount to add");
+  Debug::check_assertion(money_to_add >= 0, "Invalid money amount to add");
 
   set_money(get_money() + money_to_add);
 }
@@ -214,7 +214,7 @@ void Equipment::add_money(int money_to_add) {
  */
 void Equipment::remove_money(int money_to_remove) {
 
-  debug::check_assertion(money_to_remove >= 0, "Invalid money amount to remove");
+  Debug::check_assertion(money_to_remove >= 0, "Invalid money amount to remove");
 
   set_money(get_money() - money_to_remove);
 }
@@ -239,7 +239,7 @@ int Equipment::get_max_life() const {
  */
 void Equipment::set_max_life(int max_life) {
 
-  debug::check_assertion(max_life >= 0, "Invalid life amount");
+  Debug::check_assertion(max_life >= 0, "Invalid life amount");
 
   savegame.set_integer(Savegame::KEY_MAX_LIFE, max_life);
 
@@ -282,7 +282,7 @@ void Equipment::set_life(int life) {
  */
 void Equipment::add_life(int life_to_add) {
 
-  debug::check_assertion(life_to_add >= 0, "Invalid life amount to add");
+  Debug::check_assertion(life_to_add >= 0, "Invalid life amount to add");
 
   set_life(get_life() + life_to_add);
 }
@@ -294,7 +294,7 @@ void Equipment::add_life(int life_to_add) {
  */
 void Equipment::remove_life(int life_to_remove) {
 
-  debug::check_assertion(life_to_remove >= 0, "Invalid life amount to remove");
+  Debug::check_assertion(life_to_remove >= 0, "Invalid life amount to remove");
 
   set_life(get_life() - life_to_remove);
 }
@@ -327,7 +327,7 @@ int Equipment::get_max_magic() const {
  */
 void Equipment::set_max_magic(int max_magic) {
 
-  debug::check_assertion(max_magic >= 0, "Invalid magic amount");
+  Debug::check_assertion(max_magic >= 0, "Invalid magic amount");
 
   savegame.set_integer(Savegame::KEY_MAX_MAGIC, max_magic);
 
@@ -367,7 +367,7 @@ void Equipment::set_magic(int magic) {
  */
 void Equipment::add_magic(int magic_to_add) {
 
-  debug::check_assertion(magic_to_add >= 0, "Invalid magic amount to add");
+  Debug::check_assertion(magic_to_add >= 0, "Invalid magic amount to add");
 
   set_magic(get_magic() + magic_to_add);
 }
@@ -383,7 +383,7 @@ void Equipment::add_magic(int magic_to_add) {
  */
 void Equipment::remove_magic(int magic_to_remove) {
 
-  debug::check_assertion(magic_to_remove >= 0, "Invalid magic amount to remove");
+  Debug::check_assertion(magic_to_remove >= 0, "Invalid magic amount to remove");
 
   set_magic(get_magic() - magic_to_remove);
 }
@@ -443,7 +443,7 @@ bool Equipment::item_exists(const std::string& item_name) const {
  */
 EquipmentItem& Equipment::get_item(const std::string& item_name) {
 
-  debug::check_assertion(item_exists(item_name),
+  Debug::check_assertion(item_exists(item_name),
       std::string("No such item: '") + item_name + "'");
 
   return *items.find(item_name)->second;
@@ -456,7 +456,7 @@ EquipmentItem& Equipment::get_item(const std::string& item_name) {
  */
 const EquipmentItem& Equipment::get_item(const std::string& item_name) const {
 
-  debug::check_assertion(item_exists(item_name),
+  Debug::check_assertion(item_exists(item_name),
       std::string("No such item: '") + item_name + "'");
 
   return *items.find(item_name)->second;
@@ -471,7 +471,7 @@ EquipmentItem* Equipment::get_item_assigned(int slot) {
 
   // TODO don't hardcode item slots
 
-  debug::check_assertion(slot >= 1 && slot <= 2,
+  Debug::check_assertion(slot >= 1 && slot <= 2,
       "Invalid item slot");
 
   char savegame_variable[] = "_item_slot_0";
@@ -492,7 +492,7 @@ EquipmentItem* Equipment::get_item_assigned(int slot) {
  */
 const EquipmentItem* Equipment::get_item_assigned(int slot) const {
 
-  debug::check_assertion(slot >= 1 && slot <= 2,
+  Debug::check_assertion(slot >= 1 && slot <= 2,
       "Invalid item slot");
 
   std::ostringstream oss;
@@ -517,17 +517,17 @@ const EquipmentItem* Equipment::get_item_assigned(int slot) const {
  */
 void Equipment::set_item_assigned(int slot, EquipmentItem* item) {
 
-  debug::check_assertion(slot >= 1 && slot <= 2,
+  Debug::check_assertion(slot >= 1 && slot <= 2,
       "Invalid item slot");
 
   std::ostringstream oss;
   oss << "_item_slot_" << slot;
 
   if (item != nullptr) {
-    debug::check_assertion(item->get_variant() > 0,
+    Debug::check_assertion(item->get_variant() > 0,
         std::string("Cannot assign item '") + item->get_name()
         + "' because the player does not have it");
-    debug::check_assertion(item->is_assignable(),
+    Debug::check_assertion(item->is_assignable(),
         std::string("The item '") + item->get_name()
         + "' cannot be assigned");
     savegame.set_string(oss.str(), item->get_name());
@@ -590,7 +590,7 @@ std::string Equipment::get_ability_savegame_variable(Ability ability) const {
       return Savegame::KEY_ABILITY_DETECT_WEAK_WALLS;
   }
 
-  debug::die("Invalid ability");
+  Debug::die("Invalid ability");
   return "";
 }
 

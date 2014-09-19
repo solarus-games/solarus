@@ -23,7 +23,7 @@
 #include "QuestResourceList.h"
 #include <vector>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * Name of the Lua table representing the language module.
@@ -81,7 +81,7 @@ void LuaContext::register_language_module() {
  */
 int LuaContext::language_api_get_language(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& language = Language::get_language();
 
     if (language.empty()) {  // Return nil if no language is set.
@@ -101,11 +101,11 @@ int LuaContext::language_api_get_language(lua_State* l) {
  */
 int LuaContext::language_api_set_language(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
-    const std::string& language_code = lua_tools::check_string(l, 1);
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const std::string& language_code = LuaTools::check_string(l, 1);
 
     if (!Language::has_language(language_code)) {
-      lua_tools::arg_error(l, 1, std::string("No such language: '") + language_code + "'");
+      LuaTools::arg_error(l, 1, std::string("No such language: '") + language_code + "'");
     }
     Language::set_language(language_code);
 
@@ -120,18 +120,18 @@ int LuaContext::language_api_set_language(lua_State* l) {
  */
 int LuaContext::language_api_get_language_name(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     std::string language_code;
     if (lua_gettop(l) >= 1) {
-      language_code = lua_tools::check_string(l, 1);
+      language_code = LuaTools::check_string(l, 1);
       if (!Language::has_language(language_code)) {
-        lua_tools::arg_error(l, 1, std::string("No such language: '") + language_code + "'");
+        LuaTools::arg_error(l, 1, std::string("No such language: '") + language_code + "'");
       }
     }
     else {
       language_code = Language::get_language();
       if (language_code.empty()) {
-        lua_tools::error(l, "No language is set");
+        LuaTools::error(l, "No language is set");
       }
     }
 
@@ -149,7 +149,7 @@ int LuaContext::language_api_get_language_name(lua_State* l) {
  */
 int LuaContext::language_api_get_languages(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::map<std::string, std::string>& languages =
         QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
 
@@ -173,8 +173,8 @@ int LuaContext::language_api_get_languages(lua_State* l) {
  */
 int LuaContext::language_api_get_string(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
-    const std::string& key = lua_tools::check_string(l, 1);
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const std::string& key = LuaTools::check_string(l, 1);
 
     if (!StringResource::exists(key)) {
       lua_pushnil(l);
@@ -193,8 +193,8 @@ int LuaContext::language_api_get_string(lua_State* l) {
  */
 int LuaContext::language_api_get_dialog(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
-    const std::string& dialog_id = lua_tools::check_string(l, 1);
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const std::string& dialog_id = LuaTools::check_string(l, 1);
 
     if (!DialogResource::exists(dialog_id)) {
       lua_pushnil(l);

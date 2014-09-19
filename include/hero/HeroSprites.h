@@ -25,7 +25,7 @@
 #include <memory>
 #include <string>
 
-namespace solarus {
+namespace Solarus {
 
 class CarriedItem;
 class Equipment;

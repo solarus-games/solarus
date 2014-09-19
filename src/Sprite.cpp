@@ -30,7 +30,7 @@
 #include "lowlevel/Size.h"
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 std::map<std::string, SpriteAnimationSet*> Sprite::all_animation_sets;
 
@@ -73,7 +73,7 @@ SpriteAnimationSet& Sprite::get_animation_set(const std::string& id) {
     all_animation_sets[id] = animation_set;
   }
 
-  debug::check_assertion(animation_set != nullptr, "No animation set");
+  Debug::check_assertion(animation_set != nullptr, "No animation set");
 
   return *animation_set;
 }
@@ -286,7 +286,7 @@ void Sprite::set_current_direction(int current_direction) {
       oss << "Invalid direction " << current_direction
           << " for sprite '" << get_animation_set_id()
           << "' in animation '" << current_animation_name << "'";
-      debug::die(oss.str());
+      Debug::die(oss.str());
     }
 
     this->current_direction = current_direction;

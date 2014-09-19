@@ -21,7 +21,7 @@
 #include "entities/Arrow.h"
 #include "lowlevel/Sound.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.

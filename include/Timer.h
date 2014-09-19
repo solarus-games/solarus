@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "lua/ExportableToLua.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Represents a timer that any class can start.

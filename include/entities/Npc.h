@@ -21,7 +21,7 @@
 #include "entities/Detector.h"
 #include "KeysEffect.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief A non-playing character or a more general interactive entity.

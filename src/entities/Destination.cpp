@@ -19,7 +19,7 @@
 #include "Game.h"
 #include "lowlevel/FileTools.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.

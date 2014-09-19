@@ -20,7 +20,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Interval in millisecond between two frames of an animation.

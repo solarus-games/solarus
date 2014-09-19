@@ -24,7 +24,7 @@
 #include "Game.h"
 #include "KeysEffect.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.

@@ -27,7 +27,7 @@
 #include <lua.hpp>
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 const std::vector<std::string> Tileset::ground_names = {
   "empty",
@@ -98,7 +98,7 @@ void Tileset::load() {
   int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0) {
-    debug::die(std::string("Failed to load tileset file '")
+    Debug::die(std::string("Failed to load tileset file '")
         + file_name + "': " + lua_tostring(l, -1));
     lua_pop(l, 1);
   }
@@ -108,7 +108,7 @@ void Tileset::load() {
   lua_register(l, "background_color", l_background_color);
   lua_register(l, "tile_pattern", l_tile_pattern);
   if (lua_pcall(l, 0, 0, 0) != 0) {
-    debug::die(std::string("Failed to load tileset file '")
+    Debug::die(std::string("Failed to load tileset file '")
         + file_name + "': " + lua_tostring(l, -1));
     lua_pop(l, 1);
   }
@@ -119,14 +119,14 @@ void Tileset::load() {
   file_name = std::string("tilesets/") + id + ".tiles.png";
   tiles_image = Surface::create(file_name, Surface::DIR_DATA);
   if (tiles_image == nullptr) {
-    debug::error(std::string("Missing tiles image for tileset '") + id + "': " + file_name);
+    Debug::error(std::string("Missing tiles image for tileset '") + id + "': " + file_name);
     tiles_image = Surface::create(16, 16);
   }
 
   file_name = std::string("tilesets/") + id + ".entities.png";
   entities_image = Surface::create(file_name, Surface::DIR_DATA);
   if (entities_image == nullptr) {
-    debug::error(std::string("Missing entities image for tileset '") + id + "': " + file_name);
+    Debug::error(std::string("Missing entities image for tileset '") + id + "': " + file_name);
     entities_image = Surface::create(16, 16);
   }
 }
@@ -185,7 +185,7 @@ TilePattern& Tileset::get_tile_pattern(const std::string& id) {
   if (it == tile_patterns.end()) {
     std::ostringstream oss;
     oss << "No such tile pattern in tileset '" << get_id() << "': " << id;
-    debug::die(oss.str());
+    Debug::die(oss.str());
   }
   return *it->second;
 }
@@ -218,19 +218,19 @@ void Tileset::set_images(const std::string& other_id) {
  */
 int Tileset::l_background_color(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     lua_getfield(l, LUA_REGISTRYINDEX, "tileset");
     Tileset* tileset = static_cast<Tileset*>(lua_touserdata(l, -1));
     lua_pop(l, 1);
 
-    lua_tools::check_type(l, 1, LUA_TTABLE);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
     lua_rawgeti(l, 1, 1);
     lua_rawgeti(l, 1, 2);
     lua_rawgeti(l, 1, 3);
     Color color(
-        lua_tools::check_int(l, -3),
-        lua_tools::check_int(l, -2),
-        lua_tools::check_int(l, -1)
+        LuaTools::check_int(l, -3),
+        LuaTools::check_int(l, -2),
+        LuaTools::check_int(l, -1)
     );
     lua_pop(l, 3);
 
@@ -250,7 +250,7 @@ int Tileset::l_background_color(lua_State* l) {
  */
 int Tileset::l_tile_pattern(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     lua_getfield(l, LUA_REGISTRYINDEX, "tileset");
     Tileset* tileset = static_cast<Tileset*>(lua_touserdata(l, -1));
     lua_pop(l, 1);
@@ -258,59 +258,59 @@ int Tileset::l_tile_pattern(lua_State* l) {
     int x[] = { -1, -1, -1, -1 };
     int y[] = { -1, -1, -1, -1 };
 
-    const std::string& id = lua_tools::check_string_field(l, 1, "id");
-    const Ground ground = lua_tools::check_enum_field<Ground>(l, 1, "ground", ground_names);
-    const int width = lua_tools::check_int_field(l, 1, "width");
-    const int height = lua_tools::check_int_field(l, 1, "height");
-    const std::string& scrolling = lua_tools::opt_string_field(l, 1, "scrolling", "");
+    const std::string& id = LuaTools::check_string_field(l, 1, "id");
+    const Ground ground = LuaTools::check_enum_field<Ground>(l, 1, "ground", ground_names);
+    const int width = LuaTools::check_int_field(l, 1, "width");
+    const int height = LuaTools::check_int_field(l, 1, "height");
+    const std::string& scrolling = LuaTools::opt_string_field(l, 1, "scrolling", "");
 
     int i = 0, j = 0;
     lua_settop(l, 1);
     lua_getfield(l, 1, "x");
     if (lua_isnumber(l, 2)) {
       // Single frame.
-      x[0] = lua_tools::check_int(l, 2);
+      x[0] = LuaTools::check_int(l, 2);
       i = 1;
     }
     else {
       // Multi-frame.
       lua_pushnil(l);
       while (lua_next(l, 2) != 0 && i < 4) {
-        x[i] = lua_tools::check_int(l, 4);
+        x[i] = LuaTools::check_int(l, 4);
         ++i;
         lua_pop(l, 1);
       }
     }
     lua_pop(l, 1);
-    debug::check_assertion(lua_gettop(l) == 1, "Invalid stack when parsing tile pattern");
+    Debug::check_assertion(lua_gettop(l) == 1, "Invalid stack when parsing tile pattern");
 
     lua_getfield(l, 1, "y");
     if (lua_isnumber(l, 2)) {
       // Single frame.
-      y[0] = lua_tools::check_int(l, 2);
+      y[0] = LuaTools::check_int(l, 2);
       j = 1;
     }
     else {
       // Multi-frame.
       lua_pushnil(l);
       while (lua_next(l, 2) != 0 && j < 4) {
-        y[j] = lua_tools::check_int(l, 4);
+        y[j] = LuaTools::check_int(l, 4);
         ++j;
         lua_pop(l, 1);
       }
     }
     lua_pop(l, 1);
-    debug::check_assertion(lua_gettop(l) == 1, "Invalid stack when parsing tile pattern");
+    Debug::check_assertion(lua_gettop(l) == 1, "Invalid stack when parsing tile pattern");
 
     // Check data.
     if (i != 1 && i != 3 && i != 4) {
-      lua_tools::arg_error(l, 1, "Invalid number of frames for x");
+      LuaTools::arg_error(l, 1, "Invalid number of frames for x");
     }
     if (j != 1 && j != 3 && j != 4) {
-      lua_tools::arg_error(l, 1, "Invalid number of frames for y");
+      LuaTools::arg_error(l, 1, "Invalid number of frames for y");
     }
     if (i != j) {
-      lua_tools::arg_error(l, 1, "The length of x and y must match");
+      LuaTools::arg_error(l, 1, "The length of x and y must match");
     }
 
     // Create the tile pattern.
@@ -330,7 +330,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
     else {
       // Multi-frame.
       if (scrolling == "self") {
-        lua_tools::arg_error(l, 1, "Multi-frame is not supported for self-scrolling tiles");
+        LuaTools::arg_error(l, 1, "Multi-frame is not supported for self-scrolling tiles");
       }
       bool parallax = scrolling == "parallax";
       AnimatedTilePattern::AnimationSequence sequence = (i == 3) ?

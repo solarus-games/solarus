@@ -22,7 +22,7 @@
 
 struct lua_State;
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Holds a Lua ref and does luaL_unref() on destruction.

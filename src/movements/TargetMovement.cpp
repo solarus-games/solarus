@@ -22,7 +22,7 @@
 #include "lowlevel/Debug.h"
 #include <cmath>
 
-namespace solarus {
+namespace Solarus {
 
 const uint32_t TargetMovement::recomputation_delay = 150;
 
@@ -143,7 +143,7 @@ void TargetMovement::recompute_movement() {
   if (get_xy() != target) {
     finished = false;
 
-    double angle = geometry::get_angle(get_xy(), target);
+    double angle = Geometry::get_angle(get_xy(), target);
 
     Point dxy = target - get_xy();
     sign_x = (dxy.x >= 0) ? 1 : -1;
@@ -153,7 +153,7 @@ void TargetMovement::recompute_movement() {
       // The angle has changed or the movement was stopped.
       set_speed(moving_speed);
       set_angle(angle);
-      set_max_distance((int) geometry::get_distance(get_xy(), target));
+      set_max_distance((int) Geometry::get_distance(get_xy(), target));
     }
   }
 }

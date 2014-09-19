@@ -17,7 +17,7 @@
 #ifndef SOLARUS_LAYER_H
 #define SOLARUS_LAYER_H
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Layer of an entity.

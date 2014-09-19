@@ -22,7 +22,7 @@
 #include <memory>
 #include <string>
 
-namespace solarus {
+namespace Solarus {
 
 class PixelFilter;
 class Shader;

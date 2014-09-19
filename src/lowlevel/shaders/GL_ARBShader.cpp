@@ -23,7 +23,7 @@
 #include "lowlevel/Video.h"
 #include "lowlevel/Size.h"
 
-namespace solarus {
+namespace Solarus {
 
 PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
 PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
@@ -185,7 +185,7 @@ void GL_ARBShader::set_rendering_settings() {
  */
 int GL_ARBShader::l_shader(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     if (loading_shader != nullptr) {
 
       GLhandleARB& program = loading_shader->program,
@@ -193,22 +193,22 @@ int GL_ARBShader::l_shader(lua_State* l) {
           fragment_shader = loading_shader->fragment_shader;
 
       // Retrieve the videomode properties from the table parameter.
-      lua_tools::check_type(l, 1, LUA_TTABLE);
+      LuaTools::check_type(l, 1, LUA_TTABLE);
 
       const double& default_window_scale =
-          lua_tools::opt_number_field(l, 1, "default_window_scale", 1.0);
+          LuaTools::opt_number_field(l, 1, "default_window_scale", 1.0);
       const std::string shader_name =
-          lua_tools::opt_string_field(l, 1, "name", loading_shader->shader_name);
+          LuaTools::opt_string_field(l, 1, "name", loading_shader->shader_name);
       const bool is_shader_valid =
-          lua_tools::opt_boolean_field(l, 1, "is_shader_valid", true);
+          LuaTools::opt_boolean_field(l, 1, "is_shader_valid", true);
       const std::string vertex_source =
-          lua_tools::opt_string_field(l, 1, "vertex_source",
+          LuaTools::opt_string_field(l, 1, "vertex_source",
               "void main(){\
                gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\
                gl_TexCoord[0] = gl_MultiTexCoord0;\
              }");
       const std::string fragment_source =
-          lua_tools::check_string_field(l, 1, "fragment_source");
+          LuaTools::check_string_field(l, 1, "fragment_source");
 
       loading_shader->is_shader_valid = is_shader_valid;
 
@@ -234,7 +234,7 @@ int GL_ARBShader::l_shader(lua_State* l) {
         loading_shader = nullptr;
       }
       else {
-        debug::warning("The shader script '" + loading_shader->shader_name + "' is not compatible with GLSL " + shading_language_version);
+        Debug::warning("The shader script '" + loading_shader->shader_name + "' is not compatible with GLSL " + shading_language_version);
       }
     }
 

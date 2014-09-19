@@ -16,7 +16,7 @@
  */
 #include "TransitionImmediate.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates an immediate transition effect.

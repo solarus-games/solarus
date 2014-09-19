@@ -17,7 +17,7 @@
 #ifndef SOLARUS_COLLISION_MODE_H
 #define SOLARUS_COLLISION_MODE_H
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Collisions modes of a detector.

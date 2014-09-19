@@ -25,7 +25,7 @@
 #include <alc.h>
 #include <vorbis/vorbisfile.h>
 
-namespace solarus {
+namespace Solarus {
 
 class CommandLine;
 

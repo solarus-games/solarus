@@ -23,7 +23,7 @@
 #include <string>
 #include <SDL_ttf.h>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Provides access to font files.

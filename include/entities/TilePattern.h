@@ -21,7 +21,7 @@
 #include "entities/Ground.h"
 #include "lowlevel/SurfacePtr.h"
 
-namespace solarus {
+namespace Solarus {
 
 class Point;
 class Rectangle;

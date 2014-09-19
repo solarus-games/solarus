@@ -19,7 +19,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
 
-namespace solarus {
+namespace Solarus {
 
 int TimeScrollingTilePattern::shift = 0;
 uint32_t TimeScrollingTilePattern::next_shift_date = 0;

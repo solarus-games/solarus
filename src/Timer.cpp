@@ -20,7 +20,7 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates and starts a timer.

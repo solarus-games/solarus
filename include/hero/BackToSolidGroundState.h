@@ -20,7 +20,7 @@
 #include "lowlevel/Point.h"
 #include "hero/State.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief The state "back to solid ground" of the hero.

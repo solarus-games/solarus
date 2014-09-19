@@ -18,7 +18,7 @@
 #include "entities/Tileset.h"
 #include "lowlevel/Surface.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a tile pattern with self scrolling.

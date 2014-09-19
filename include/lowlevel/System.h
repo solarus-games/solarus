@@ -21,7 +21,7 @@
 #include <cstdint>
 #include <string>
 
-namespace solarus {
+namespace Solarus {
 
 class CommandLine;
 

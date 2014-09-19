@@ -17,7 +17,7 @@
 #include "lua/ExportableToLua.h"
 #include "lowlevel/Debug.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates an object exportable to Lua.

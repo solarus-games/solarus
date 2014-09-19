@@ -20,7 +20,7 @@
 #include "EquipmentItem.h"
 #include "lowlevel/Debug.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a new item to be used.
@@ -46,7 +46,7 @@ EquipmentItem& EquipmentItemUsage::get_item() {
  */
 void EquipmentItemUsage::start() {
 
-  debug::check_assertion(variant > 0,
+  Debug::check_assertion(variant > 0,
       std::string("Attempt to use equipment item '") + item.get_name()
       + "' without having it");
 

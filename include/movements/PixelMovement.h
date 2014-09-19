@@ -22,7 +22,7 @@
 #include "lowlevel/Point.h"
 #include <list>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Movement of an entity that follows a predetermined sequence of pixel-precise moves.

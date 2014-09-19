@@ -20,7 +20,7 @@
 #include "lua/LuaTools.h"
 #include <map>
 
-namespace solarus {
+namespace Solarus {
 
 namespace {
 
@@ -36,11 +36,11 @@ std::map<std::string, std::string> strings;
  */
 int l_text(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
-    lua_tools::check_type(l, 1, LUA_TTABLE);
+  return LuaTools::exception_boundary_handle(l, [&] {
+    LuaTools::check_type(l, 1, LUA_TTABLE);
 
-    const std::string key = lua_tools::check_string_field(l, 1, "key");
-    const std::string value = lua_tools::check_string_field(l, 1, "value");
+    const std::string key = LuaTools::check_string_field(l, 1, "key");
+    const std::string value = LuaTools::check_string_field(l, 1, "value");
 
     strings[key] = value;
 
@@ -66,7 +66,7 @@ void StringResource::initialize() {
   int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0) {
-    debug::error(std::string("Failed to load strings file '") + file_name
+    Debug::error(std::string("Failed to load strings file '") + file_name
         + "' for language '" + Language::get_language() + "': "
         + lua_tostring(l, -1));
     lua_pop(l, 1);
@@ -74,7 +74,7 @@ void StringResource::initialize() {
   else {
     lua_register(l, "text", l_text);
     if (lua_pcall(l, 0, 0, 0) != 0) {
-      debug::error(std::string("Failed to load strings file '") + file_name
+      Debug::error(std::string("Failed to load strings file '") + file_name
           + "' for language '" + Language::get_language() + "': "
           + lua_tostring(l, -1));
       lua_pop(l, 1);
@@ -110,7 +110,7 @@ bool StringResource::exists(const std::string& key) {
  */
 const std::string& StringResource::get_string(const std::string& key) {
 
-  debug::check_assertion(exists(key),
+  Debug::check_assertion(exists(key),
       std::string("Cannot find string with key '") + key + "'"
   );
   return strings[key];

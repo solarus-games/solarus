@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 
-namespace solarus {
+namespace Solarus {
 
 class Game;
 class Savegame;

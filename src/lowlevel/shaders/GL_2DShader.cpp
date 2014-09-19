@@ -23,7 +23,7 @@
 #include "lowlevel/Video.h"
 
 
-namespace solarus {
+namespace Solarus {
  
 /**
  * \brief Initializes the GL 2D shader system.

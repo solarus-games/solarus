@@ -24,7 +24,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/Sound.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.
@@ -317,7 +317,7 @@ void Teletransporter::transport_hero(Hero& hero) {
       break;
 
     default:
-      debug::die(std::string("Bad destination side for teletransporter '")
+      Debug::die(std::string("Bad destination side for teletransporter '")
           + get_name() + "'");
     }
   }

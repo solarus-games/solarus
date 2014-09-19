@@ -19,7 +19,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a jumper.
@@ -48,18 +48,18 @@ Jumper::Jumper(const std::string& name,
 
   // check the size
   if (direction % 2 != 0) {
-    debug::check_assertion(width == height, "This jumper has a diagonal direction but is not square");
+    Debug::check_assertion(width == height, "This jumper has a diagonal direction but is not square");
   }
   else {
     if (direction % 4 == 0) {
-      debug::check_assertion(width == 8, "This jumper is horizontal but its height is not 8");
+      Debug::check_assertion(width == 8, "This jumper is horizontal but its height is not 8");
     }
     else {
-      debug::check_assertion(height == 8, "This jumper is vertical but its width is not 8");
+      Debug::check_assertion(height == 8, "This jumper is vertical but its width is not 8");
     }
   }
   // check the jump length
-  debug::check_assertion(jump_length >= 16, "The jump length of this jumper is lower than 16");
+  Debug::check_assertion(jump_length >= 16, "The jump length of this jumper is lower than 16");
 }
 
 /**
@@ -182,7 +182,7 @@ bool Jumper::is_in_jump_position(
       break;
 
     default:
-      debug::die("Invalid direction");
+      Debug::die("Invalid direction");
   }
 
   if (is_jump_horizontal()) {
@@ -311,7 +311,7 @@ bool Jumper::is_point_in_extended_diagonal(const Point& point) const {
     return (x + y >= width) && (x + y < width + 8);
 
   default:
-    debug::die("Invalid direction of jumper");
+    Debug::die("Invalid direction of jumper");
   }
 
   return false;

@@ -25,7 +25,7 @@
 #include "SpritePtr.h"
 #include "Treasure.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief An treasure placed on the ground and that the hero can take.

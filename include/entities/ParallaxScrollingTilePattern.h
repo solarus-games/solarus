@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "entities/SimpleTilePattern.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Tile pattern with a parallax scrolling effect.

@@ -25,7 +25,7 @@
 #include "KeysEffect.h"
 #include "Map.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.
@@ -39,7 +39,7 @@ Hero::LiftingState::LiftingState(
   State(hero, "lifting"),
   lifted_item(lifted_item) {
 
-  debug::check_assertion(lifted_item != nullptr, "Missing lifted item");
+  Debug::check_assertion(lifted_item != nullptr, "Missing lifted item");
 }
 
 /**

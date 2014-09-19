@@ -22,7 +22,7 @@
 #include "lowlevel/Point.h"
 #include "movements/StraightMovement.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Movement of an object that goes to a target point.

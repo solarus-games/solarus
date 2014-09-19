@@ -23,7 +23,7 @@
 #include "Game.h"
 #include "Map.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a new dynamic tile on the map.

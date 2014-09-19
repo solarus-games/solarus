@@ -24,7 +24,7 @@
 #include "lowlevel/SurfacePtr.h"
 #include <vector>
 
-namespace solarus {
+namespace Solarus {
 
 class Map;
 

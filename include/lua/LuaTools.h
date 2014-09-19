@@ -25,7 +25,7 @@
 #include <vector>
 #include <lua.hpp>
 
-namespace solarus {
+namespace Solarus {
 
 class Color;
 class ScopedLuaRef;
@@ -38,7 +38,7 @@ class ScopedLuaRef;
  * lua_error(). This guarantees that stack-allocated objects are properly
  * destroyed even in case of error.
  */
-namespace lua_tools {
+namespace LuaTools {
 
 // Helpers.
 int get_positive_index(lua_State* l, int index);

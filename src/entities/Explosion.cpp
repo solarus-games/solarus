@@ -23,7 +23,7 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates an explosion.

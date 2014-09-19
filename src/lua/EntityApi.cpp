@@ -50,7 +50,7 @@
 #include "Sprite.h"
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 namespace {
 
@@ -575,7 +575,7 @@ MapEntityPtr LuaContext::check_entity(lua_State* l, int index) {
     return std::static_pointer_cast<MapEntity>(userdata);
   }
   else {
-    lua_tools::type_error(l, index, "entity");
+    LuaTools::type_error(l, index, "entity");
     throw;
   }
 }
@@ -611,7 +611,7 @@ const std::string& LuaContext::get_entity_internal_type_name(
  */
 int LuaContext::entity_api_get_type(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
     push_string(l, entity_type_names[entity.get_type()]);
@@ -626,7 +626,7 @@ int LuaContext::entity_api_get_type(lua_State* l) {
  */
 int LuaContext::entity_api_get_map(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
 
     push_map(l, entity.get_map());
@@ -641,7 +641,7 @@ int LuaContext::entity_api_get_map(lua_State* l) {
  */
 int LuaContext::entity_api_get_game(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
 
     push_game(l, entity.get_game().get_savegame());
@@ -656,7 +656,7 @@ int LuaContext::entity_api_get_game(lua_State* l) {
  */
 int LuaContext::entity_api_get_name(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
     const std::string& name = entity.get_name();
@@ -677,7 +677,7 @@ int LuaContext::entity_api_get_name(lua_State* l) {
  */
 int LuaContext::entity_api_exists(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
     lua_pushboolean(l, !entity.is_being_removed());
@@ -692,7 +692,7 @@ int LuaContext::entity_api_exists(lua_State* l) {
  */
 int LuaContext::entity_api_remove(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
 
     entity.remove_from_map();
@@ -708,7 +708,7 @@ int LuaContext::entity_api_remove(lua_State* l) {
  */
 int LuaContext::entity_api_is_enabled(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
     lua_pushboolean(l, entity.is_enabled());
@@ -723,9 +723,9 @@ int LuaContext::entity_api_is_enabled(lua_State* l) {
  */
 int LuaContext::entity_api_set_enabled(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
-    bool enabled = lua_tools::opt_boolean(l, 2, true);
+    bool enabled = LuaTools::opt_boolean(l, 2, true);
 
     entity.set_enabled(enabled);
 
@@ -740,7 +740,7 @@ int LuaContext::entity_api_set_enabled(lua_State* l) {
  */
 int LuaContext::entity_api_get_size(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
     lua_pushinteger(l, entity.get_width());
@@ -756,20 +756,20 @@ int LuaContext::entity_api_get_size(lua_State* l) {
  */
 int LuaContext::entity_api_set_size(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
-    int width = lua_tools::check_int(l, 2);
-    int height = lua_tools::check_int(l, 3);
+    int width = LuaTools::check_int(l, 2);
+    int height = LuaTools::check_int(l, 3);
 
     if (width < 0 || width % 8 != 0) {
       std::ostringstream oss;
       oss << "Invalid width: " << width << ": should be a positive multiple of 8";
-      lua_tools::arg_error(l, 2, oss.str());
+      LuaTools::arg_error(l, 2, oss.str());
     }
     if (height < 0 || height % 8 != 0) {
       std::ostringstream oss;
       oss << "Invalid height: " << height << ": should be a positive multiple of 8";
-      lua_tools::arg_error(l, 3, oss.str());
+      LuaTools::arg_error(l, 3, oss.str());
     }
 
     entity.set_size(width, height);
@@ -785,7 +785,7 @@ int LuaContext::entity_api_set_size(lua_State* l) {
  */
 int LuaContext::entity_api_get_origin(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
     const Point& origin = entity.get_origin();
@@ -803,10 +803,10 @@ int LuaContext::entity_api_get_origin(lua_State* l) {
  */
 int LuaContext::entity_api_set_origin(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
-    int x = lua_tools::check_int(l, 2);
-    int y = lua_tools::check_int(l, 3);
+    int x = LuaTools::check_int(l, 2);
+    int y = LuaTools::check_int(l, 3);
 
     entity.set_origin(x, y);
 
@@ -821,7 +821,7 @@ int LuaContext::entity_api_set_origin(lua_State* l) {
  */
 int LuaContext::entity_api_get_position(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
     lua_pushinteger(l, entity.get_x());
@@ -838,13 +838,13 @@ int LuaContext::entity_api_get_position(lua_State* l) {
  */
 int LuaContext::entity_api_set_position(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
-    int x = lua_tools::check_int(l, 2);
-    int y = lua_tools::check_int(l, 3);
+    int x = LuaTools::check_int(l, 2);
+    int y = LuaTools::check_int(l, 3);
     int layer = -1;
     if (lua_gettop(l) >= 4) {
-      layer = lua_tools::check_layer(l, 4);
+      layer = LuaTools::check_layer(l, 4);
     }
 
     entity.set_xy(x, y);
@@ -865,7 +865,7 @@ int LuaContext::entity_api_set_position(lua_State* l) {
  */
 int LuaContext::entity_api_get_center_position(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
     const Point& center_point = entity.get_center_point();
@@ -882,7 +882,7 @@ int LuaContext::entity_api_get_center_position(lua_State* l) {
  */
 int LuaContext::entity_api_get_bounding_box(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
     const Rectangle& bounding_box = entity.get_bounding_box();
@@ -901,7 +901,7 @@ int LuaContext::entity_api_get_bounding_box(lua_State* l) {
  */
 int LuaContext::entity_api_overlaps(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
     bool overlaps = false;
@@ -910,10 +910,10 @@ int LuaContext::entity_api_overlaps(lua_State* l) {
       overlaps = entity.overlaps(other_entity);
     }
     else {
-      int x = lua_tools::check_int(l, 2);
-      int y = lua_tools::check_int(l, 3);
-      int width = lua_tools::opt_int(l, 4, 1);
-      int height = lua_tools::opt_int(l, 5, 1);
+      int x = LuaTools::check_int(l, 2);
+      int y = LuaTools::check_int(l, 3);
+      int width = LuaTools::opt_int(l, 4, 1);
+      int height = LuaTools::opt_int(l, 5, 1);
       overlaps = entity.overlaps(Rectangle(x, y, width, height));
     }
 
@@ -929,7 +929,7 @@ int LuaContext::entity_api_overlaps(lua_State* l) {
  */
 int LuaContext::entity_api_snap_to_grid(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
 
     entity.set_aligned_to_grid();
@@ -945,12 +945,12 @@ int LuaContext::entity_api_snap_to_grid(lua_State* l) {
  */
 int LuaContext::entity_api_get_distance(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
     int distance;
     if (lua_gettop(l) >= 3) {
-      int x = lua_tools::check_number(l, 2);
-      int y = lua_tools::check_number(l, 3);
+      int x = LuaTools::check_number(l, 2);
+      int y = LuaTools::check_number(l, 3);
       distance = entity.get_distance(x, y);
     }
     else {
@@ -970,12 +970,12 @@ int LuaContext::entity_api_get_distance(lua_State* l) {
  */
 int LuaContext::entity_api_get_angle(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
     double angle;
     if (lua_gettop(l) >= 3) {
-      int x = lua_tools::check_number(l, 2);
-      int y = lua_tools::check_number(l, 3);
+      int x = LuaTools::check_number(l, 2);
+      int y = LuaTools::check_number(l, 3);
       angle = entity.get_angle(x, y);
     }
     else {
@@ -995,12 +995,12 @@ int LuaContext::entity_api_get_angle(lua_State* l) {
  */
 int LuaContext::entity_api_get_direction4_to(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
     double angle;
     if (lua_gettop(l) >= 3) {
-      int x = lua_tools::check_number(l, 2);
-      int y = lua_tools::check_number(l, 3);
+      int x = LuaTools::check_number(l, 2);
+      int y = LuaTools::check_number(l, 3);
       angle = entity.get_angle(x, y);
     }
     else {
@@ -1009,7 +1009,7 @@ int LuaContext::entity_api_get_direction4_to(lua_State* l) {
     }
 
     // Convert from radians.
-    int direction4 = (angle + geometry::PI_OVER_4) / geometry::PI_OVER_2;
+    int direction4 = (angle + Geometry::PI_OVER_4) / Geometry::PI_OVER_2;
 
     // Normalize.
     direction4 = (direction4 + 4) % 4;
@@ -1026,12 +1026,12 @@ int LuaContext::entity_api_get_direction4_to(lua_State* l) {
  */
 int LuaContext::entity_api_get_direction8_to(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
     double angle;
     if (lua_gettop(l) >= 3) {
-      int x = lua_tools::check_number(l, 2);
-      int y = lua_tools::check_number(l, 3);
+      int x = LuaTools::check_number(l, 2);
+      int y = LuaTools::check_number(l, 3);
       angle = entity.get_angle(x, y);
     }
     else {
@@ -1040,7 +1040,7 @@ int LuaContext::entity_api_get_direction8_to(lua_State* l) {
     }
 
     // Convert from radians.
-    int direction8 = (angle + geometry::PI_OVER_4 / 2) / geometry::PI_OVER_4;
+    int direction8 = (angle + Geometry::PI_OVER_4 / 2) / Geometry::PI_OVER_4;
 
     // Normalize.
     direction8 = (direction8 + 8) % 8;
@@ -1057,7 +1057,7 @@ int LuaContext::entity_api_get_direction8_to(lua_State* l) {
  */
 int LuaContext::entity_api_bring_to_front(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
 
     entity.get_map().get_entities().bring_to_front(entity);
@@ -1073,7 +1073,7 @@ int LuaContext::entity_api_bring_to_front(lua_State* l) {
  */
 int LuaContext::entity_api_bring_to_back(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
 
     entity.get_map().get_entities().bring_to_back(entity);
@@ -1090,7 +1090,7 @@ int LuaContext::entity_api_bring_to_back(lua_State* l) {
  */
 int LuaContext::entity_api_get_sprite(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
 
     if (entity.has_sprite()) {
@@ -1110,9 +1110,9 @@ int LuaContext::entity_api_get_sprite(lua_State* l) {
  */
 int LuaContext::entity_api_create_sprite(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
-    const std::string& animation_set_id = lua_tools::check_string(l, 2);
+    const std::string& animation_set_id = LuaTools::check_string(l, 2);
 
     Sprite& sprite = *entity.create_sprite(animation_set_id, true);
     if (entity.is_suspended()) {
@@ -1131,7 +1131,7 @@ int LuaContext::entity_api_create_sprite(lua_State* l) {
  */
 int LuaContext::entity_api_remove_sprite(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
 
     if (lua_gettop(l) >= 2) {
@@ -1154,7 +1154,7 @@ int LuaContext::entity_api_remove_sprite(lua_State* l) {
  */
 int LuaContext::entity_api_is_visible(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
     lua_pushboolean(l, entity.is_visible());
@@ -1169,9 +1169,9 @@ int LuaContext::entity_api_is_visible(lua_State* l) {
  */
 int LuaContext::entity_api_set_visible(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
-    bool visible = lua_tools::opt_boolean(l, 2, true);
+    bool visible = LuaTools::opt_boolean(l, 2, true);
 
     entity.set_visible(visible);
 
@@ -1186,7 +1186,7 @@ int LuaContext::entity_api_set_visible(lua_State* l) {
  */
 int LuaContext::entity_api_get_movement(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
 
     const std::shared_ptr<Movement>& movement = entity.get_movement();
@@ -1224,7 +1224,7 @@ int LuaContext::entity_api_stop_movement(lua_State* l) {
  */
 int LuaContext::entity_api_has_layer_independent_collisions(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
     bool independent = false;
@@ -1247,9 +1247,9 @@ int LuaContext::entity_api_has_layer_independent_collisions(lua_State* l) {
  */
 int LuaContext::entity_api_set_layer_independent_collisions(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
-    bool independent = lua_tools::opt_boolean(l, 2, true);
+    bool independent = LuaTools::opt_boolean(l, 2, true);
 
     if (entity.is_detector()) {
       Detector& detector = static_cast<Detector&>(entity);
@@ -1267,13 +1267,13 @@ int LuaContext::entity_api_set_layer_independent_collisions(lua_State* l) {
  */
 int LuaContext::entity_api_test_obstacles(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
-    int dx = lua_tools::check_int(l, 2);
-    int dy = lua_tools::check_int(l, 3);
+    int dx = LuaTools::check_int(l, 2);
+    int dy = LuaTools::check_int(l, 3);
     Layer layer = entity.get_layer();
     if (lua_gettop(l) >= 4) {
-      layer = lua_tools::check_layer(l, 4);
+      layer = LuaTools::check_layer(l, 4);
     }
 
     Rectangle bounding_box = entity.get_bounding_box();
@@ -1292,7 +1292,7 @@ int LuaContext::entity_api_test_obstacles(lua_State* l) {
  */
 int LuaContext::entity_api_get_optimization_distance(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
     lua_pushinteger(l, entity.get_optimization_distance());
@@ -1307,9 +1307,9 @@ int LuaContext::entity_api_get_optimization_distance(lua_State* l) {
  */
 int LuaContext::entity_api_set_optimization_distance(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     MapEntity& entity = *check_entity(l, 1);
-    int distance = lua_tools::check_int(l, 2);
+    int distance = LuaTools::check_int(l, 2);
 
     entity.set_optimization_distance(distance);
 
@@ -1324,7 +1324,7 @@ int LuaContext::entity_api_set_optimization_distance(lua_State* l) {
  */
 int LuaContext::entity_api_is_in_same_region(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
     const MapEntity& other_entity = *check_entity(l, 2);
 
@@ -1372,15 +1372,15 @@ void LuaContext::push_hero(lua_State* l, Hero& hero) {
  */
 int LuaContext::hero_api_teleport(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    const std::string& map_id = lua_tools::check_string(l, 2);
-    const std::string& destination_name = lua_tools::opt_string(l, 3, "");
-    Transition::Style transition_style = lua_tools::opt_enum<Transition::Style>(
+    const std::string& map_id = LuaTools::check_string(l, 2);
+    const std::string& destination_name = LuaTools::opt_string(l, 3, "");
+    Transition::Style transition_style = LuaTools::opt_enum<Transition::Style>(
         l, 4, Transition::style_names, Transition::FADE);
 
     if (!QuestResourceList::exists(QuestResourceList::RESOURCE_MAP, map_id)) {
-      lua_tools::arg_error(l, 2, std::string("No such map: '") + map_id + "'");
+      LuaTools::arg_error(l, 2, std::string("No such map: '") + map_id + "'");
     }
 
     hero.get_game().set_current_map(map_id, destination_name, transition_style);
@@ -1396,7 +1396,7 @@ int LuaContext::hero_api_teleport(lua_State* l) {
  */
 int LuaContext::hero_api_get_direction(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Hero& hero = *check_hero(l, 1);
 
     lua_pushinteger(l, hero.get_animation_direction());
@@ -1411,9 +1411,9 @@ int LuaContext::hero_api_get_direction(lua_State* l) {
  */
 int LuaContext::hero_api_set_direction(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    int direction = lua_tools::check_int(l, 2);
+    int direction = LuaTools::check_int(l, 2);
 
     hero.set_animation_direction(direction);
 
@@ -1428,7 +1428,7 @@ int LuaContext::hero_api_set_direction(lua_State* l) {
  */
 int LuaContext::hero_api_get_walking_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Hero& hero = *check_hero(l, 1);
 
     lua_pushinteger(l, hero.get_normal_walking_speed());
@@ -1443,9 +1443,9 @@ int LuaContext::hero_api_get_walking_speed(lua_State* l) {
  */
 int LuaContext::hero_api_set_walking_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    int normal_walking_speed = lua_tools::check_int(l, 2);
+    int normal_walking_speed = LuaTools::check_int(l, 2);
 
     hero.set_normal_walking_speed(normal_walking_speed);
 
@@ -1460,14 +1460,14 @@ int LuaContext::hero_api_set_walking_speed(lua_State* l) {
  */
 int LuaContext::hero_api_save_solid_ground(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
     int x, y;
     Layer layer;
     if (lua_gettop(l) >= 2) {
-      x = lua_tools::check_int(l, 2);
-      y = lua_tools::check_int(l, 3);
-      layer = lua_tools::check_layer(l, 4);
+      x = LuaTools::check_int(l, 2);
+      y = LuaTools::check_int(l, 3);
+      layer = LuaTools::check_layer(l, 4);
     }
     else {
       x = hero.get_x();
@@ -1488,7 +1488,7 @@ int LuaContext::hero_api_save_solid_ground(lua_State* l) {
  */
 int LuaContext::hero_api_reset_solid_ground(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
     hero.reset_target_solid_ground_coords();
@@ -1504,7 +1504,7 @@ int LuaContext::hero_api_reset_solid_ground(lua_State* l) {
  */
 int LuaContext::hero_api_get_solid_ground_position(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Hero& hero = *check_hero(l, 1);
 
     const Point& target_coords = hero.get_target_solid_ground_coords();
@@ -1539,7 +1539,7 @@ int LuaContext::hero_api_get_solid_ground_position(lua_State* l) {
  */
 int LuaContext::hero_api_get_animation(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
     const std::string& animation = hero.get_hero_sprites().get_tunic_animation();
@@ -1556,14 +1556,14 @@ int LuaContext::hero_api_get_animation(lua_State* l) {
  */
 int LuaContext::hero_api_set_animation(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    const std::string& animation = lua_tools::check_string(l, 2);
-    const ScopedLuaRef& callback_ref = lua_tools::opt_function(l, 3);
+    const std::string& animation = LuaTools::check_string(l, 2);
+    const ScopedLuaRef& callback_ref = LuaTools::opt_function(l, 3);
 
     HeroSprites& sprites = hero.get_hero_sprites();
     if (!sprites.has_tunic_animation(animation)) {
-      lua_tools::arg_error(l, 2,
+      LuaTools::arg_error(l, 2,
           std::string("No such animation in tunic sprite: '") + animation + "'"
       );
     }
@@ -1581,7 +1581,7 @@ int LuaContext::hero_api_set_animation(lua_State* l) {
  */
 int LuaContext::hero_api_get_tunic_sprite_id(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
     const std::string& sprite_id = hero.get_hero_sprites().get_tunic_sprite_id();
@@ -1598,9 +1598,9 @@ int LuaContext::hero_api_get_tunic_sprite_id(lua_State* l) {
  */
 int LuaContext::hero_api_set_tunic_sprite_id(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    const std::string& sprite_id = lua_tools::check_string(l, 2);
+    const std::string& sprite_id = LuaTools::check_string(l, 2);
 
     // TODO check the existence of the sprite animation set
     // (see also sol.sprite.create()).
@@ -1617,7 +1617,7 @@ int LuaContext::hero_api_set_tunic_sprite_id(lua_State* l) {
  */
 int LuaContext::hero_api_get_sword_sprite_id(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
     const std::string& sprite_id = hero.get_hero_sprites().get_sword_sprite_id();
@@ -1634,9 +1634,9 @@ int LuaContext::hero_api_get_sword_sprite_id(lua_State* l) {
  */
 int LuaContext::hero_api_set_sword_sprite_id(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    const std::string& sprite_id = lua_tools::check_string(l, 2);
+    const std::string& sprite_id = LuaTools::check_string(l, 2);
 
     hero.get_hero_sprites().set_sword_sprite_id(sprite_id);
 
@@ -1651,7 +1651,7 @@ int LuaContext::hero_api_set_sword_sprite_id(lua_State* l) {
  */
 int LuaContext::hero_api_get_sword_sound_id(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
     const std::string& sound_id = hero.get_hero_sprites().get_sword_sound_id();
@@ -1668,9 +1668,9 @@ int LuaContext::hero_api_get_sword_sound_id(lua_State* l) {
  */
 int LuaContext::hero_api_set_sword_sound_id(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    const std::string& sound_id = lua_tools::check_string(l, 2);
+    const std::string& sound_id = LuaTools::check_string(l, 2);
 
     hero.get_hero_sprites().set_sword_sound_id(sound_id);
 
@@ -1685,7 +1685,7 @@ int LuaContext::hero_api_set_sword_sound_id(lua_State* l) {
  */
 int LuaContext::hero_api_get_shield_sprite_id(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
     const std::string& sprite_id = hero.get_hero_sprites().get_shield_sprite_id();
@@ -1702,9 +1702,9 @@ int LuaContext::hero_api_get_shield_sprite_id(lua_State* l) {
  */
 int LuaContext::hero_api_set_shield_sprite_id(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    const std::string& sprite_id = lua_tools::check_string(l, 2);
+    const std::string& sprite_id = LuaTools::check_string(l, 2);
 
     hero.get_hero_sprites().set_shield_sprite_id(sprite_id);
 
@@ -1719,7 +1719,7 @@ int LuaContext::hero_api_set_shield_sprite_id(lua_State* l) {
  */
 int LuaContext::hero_api_is_blinking(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
     lua_pushboolean(l, hero.get_hero_sprites().is_blinking());
@@ -1734,10 +1734,10 @@ int LuaContext::hero_api_is_blinking(lua_State* l) {
  */
 int LuaContext::hero_api_set_blinking(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    bool blinking = lua_tools::opt_boolean(l, 2, true);
-    uint32_t duration = lua_tools::opt_int(l, 3, 0);
+    bool blinking = LuaTools::opt_boolean(l, 2, true);
+    uint32_t duration = LuaTools::opt_int(l, 3, 0);
 
     if (blinking) {
       hero.get_hero_sprites().blink(duration);
@@ -1757,7 +1757,7 @@ int LuaContext::hero_api_set_blinking(lua_State* l) {
  */
 int LuaContext::hero_api_is_invincible(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Hero& hero = *check_hero(l, 1);
 
     lua_pushboolean(l, hero.is_invincible());
@@ -1772,10 +1772,10 @@ int LuaContext::hero_api_is_invincible(lua_State* l) {
  */
 int LuaContext::hero_api_set_invincible(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    bool invincible = lua_tools::opt_boolean(l, 2, true);
-    uint32_t duration = lua_tools::opt_int(l, 3, 0);
+    bool invincible = LuaTools::opt_boolean(l, 2, true);
+    uint32_t duration = LuaTools::opt_int(l, 3, 0);
 
     hero.set_invincible(invincible, duration);
 
@@ -1790,7 +1790,7 @@ int LuaContext::hero_api_set_invincible(lua_State* l) {
  */
 int LuaContext::hero_api_get_state(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Hero& hero = *check_hero(l, 1);
 
     push_string(l, hero.get_state_name());
@@ -1805,7 +1805,7 @@ int LuaContext::hero_api_get_state(lua_State* l) {
  */
 int LuaContext::hero_api_freeze(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
     hero.start_freezed();
@@ -1821,7 +1821,7 @@ int LuaContext::hero_api_freeze(lua_State* l) {
  */
 int LuaContext::hero_api_unfreeze(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
     hero.start_free();
@@ -1837,11 +1837,11 @@ int LuaContext::hero_api_unfreeze(lua_State* l) {
  */
 int LuaContext::hero_api_walk(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    const std::string& path = lua_tools::check_string(l, 2);
-    bool loop = lua_tools::opt_boolean(l, 3, false);
-    bool ignore_obstacles = lua_tools::opt_boolean(l, 4, false);
+    const std::string& path = LuaTools::check_string(l, 2);
+    bool loop = LuaTools::opt_boolean(l, 3, false);
+    bool ignore_obstacles = LuaTools::opt_boolean(l, 4, false);
 
     hero.start_forced_walking(path, loop, ignore_obstacles);
 
@@ -1856,11 +1856,11 @@ int LuaContext::hero_api_walk(lua_State* l) {
  */
 int LuaContext::hero_api_start_jumping(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    int direction = lua_tools::check_int(l, 2);
-    int length = lua_tools::check_int(l, 3);
-    bool ignore_obstacles = lua_tools::opt_boolean(l, 4, false);
+    int direction = LuaTools::check_int(l, 2);
+    int length = LuaTools::check_int(l, 3);
+    bool ignore_obstacles = LuaTools::opt_boolean(l, 4, false);
 
     hero.start_jumping(direction, length, ignore_obstacles, false);
 
@@ -1875,32 +1875,32 @@ int LuaContext::hero_api_start_jumping(lua_State* l) {
  */
 int LuaContext::hero_api_start_treasure(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    const std::string& item_name = lua_tools::check_string(l, 2);
-    int variant = lua_tools::opt_int(l, 3, 1);
-    const std::string& savegame_variable = lua_tools::opt_string(l, 4, "");
+    const std::string& item_name = LuaTools::check_string(l, 2);
+    int variant = LuaTools::opt_int(l, 3, 1);
+    const std::string& savegame_variable = LuaTools::opt_string(l, 4, "");
 
     if (!savegame_variable.empty()
-        && !lua_tools::is_valid_lua_identifier(savegame_variable)) {
-      lua_tools::arg_error(l, 4, std::string(
+        && !LuaTools::is_valid_lua_identifier(savegame_variable)) {
+      LuaTools::arg_error(l, 4, std::string(
           "savegame variable identifier expected, got '") +
           savegame_variable + "'");
     }
 
     if (!hero.get_game().get_equipment().item_exists(item_name)) {
-      lua_tools::arg_error(l, 2, std::string("No such item: '") + item_name + "'");
+      LuaTools::arg_error(l, 2, std::string("No such item: '") + item_name + "'");
     }
 
     Treasure treasure(hero.get_game(), item_name, variant, savegame_variable);
     if (treasure.is_found()) {
-      lua_tools::arg_error(l, 4, "This treasure is already found");
+      LuaTools::arg_error(l, 4, "This treasure is already found");
     }
     if (!treasure.is_obtainable()) {
-      lua_tools::arg_error(l, 4, "This treasure is not obtainable");
+      LuaTools::arg_error(l, 4, "This treasure is not obtainable");
     }
 
-    const ScopedLuaRef& callback_ref = lua_tools::opt_function(l, 5);
+    const ScopedLuaRef& callback_ref = LuaTools::opt_function(l, 5);
 
     hero.start_treasure(treasure, callback_ref);
 
@@ -1915,9 +1915,9 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
  */
 int LuaContext::hero_api_start_victory(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    ScopedLuaRef callback_ref = lua_tools::opt_function(l, 2);
+    ScopedLuaRef callback_ref = LuaTools::opt_function(l, 2);
 
     hero.start_victory(callback_ref);
 
@@ -1932,7 +1932,7 @@ int LuaContext::hero_api_start_victory(lua_State* l) {
  */
 int LuaContext::hero_api_start_item(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
     EquipmentItem& item = *check_item(l, 2);
 
@@ -1951,12 +1951,12 @@ int LuaContext::hero_api_start_item(lua_State* l) {
  */
 int LuaContext::hero_api_start_boomerang(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    int max_distance = lua_tools::check_int(l, 2);
-    int speed = lua_tools::check_int(l, 3);
-    const std::string& tunic_preparing_animation = lua_tools::check_string(l, 4);
-    const std::string& sprite_name = lua_tools::check_string(l, 5);
+    int max_distance = LuaTools::check_int(l, 2);
+    int speed = LuaTools::check_int(l, 3);
+    const std::string& tunic_preparing_animation = LuaTools::check_string(l, 4);
+    const std::string& sprite_name = LuaTools::check_string(l, 5);
 
     hero.start_boomerang(max_distance, speed,
         tunic_preparing_animation, sprite_name);
@@ -1972,7 +1972,7 @@ int LuaContext::hero_api_start_boomerang(lua_State* l) {
  */
 int LuaContext::hero_api_start_bow(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
     hero.start_bow();
@@ -1988,7 +1988,7 @@ int LuaContext::hero_api_start_bow(lua_State* l) {
  */
 int LuaContext::hero_api_start_hookshot(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
     hero.start_hookshot();
@@ -2004,7 +2004,7 @@ int LuaContext::hero_api_start_hookshot(lua_State* l) {
  */
 int LuaContext::hero_api_start_running(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
     hero.start_running();
@@ -2020,7 +2020,7 @@ int LuaContext::hero_api_start_running(lua_State* l) {
  */
 int LuaContext::hero_api_start_hurt(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     // There are three possible prototypes:
     // - hero:start_hurt(damage)
     // - hero:start_hurt(source_x, source_y, damage)
@@ -2029,14 +2029,14 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
 
     if (lua_gettop(l) <= 2) {
       // hero:start_hurt(damage)
-      int damage = lua_tools::check_int(l, 2);
+      int damage = LuaTools::check_int(l, 2);
       hero.hurt(damage);
     }
     else if (lua_isnumber(l, 2)) {
       // hero:start_hurt(source_x, source_y, damage)
-      int source_x = lua_tools::check_int(l, 2);
-      int source_y = lua_tools::check_int(l, 3);
-      int damage = lua_tools::check_int(l, 4);
+      int source_x = LuaTools::check_int(l, 2);
+      int source_y = LuaTools::check_int(l, 3);
+      int damage = LuaTools::check_int(l, 4);
       hero.hurt(Point(source_x, source_y), damage);
     }
     else {
@@ -2048,7 +2048,7 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
         source_sprite = check_sprite(l, 3);
         index = 4;
       }
-      int damage = lua_tools::check_int(l, index);
+      int damage = LuaTools::check_int(l, index);
       hero.hurt(source_entity, source_sprite.get(), damage);
     }
 
@@ -2083,7 +2083,7 @@ void LuaContext::notify_hero_brandish_treasure(
   const ScopedLuaRef& dialog_callback_ref = create_ref();
 
   if (!DialogResource::exists(dialog_id)) {
-    debug::error(std::string("Missing treasure dialog: '") + dialog_id + "'");
+    Debug::error(std::string("Missing treasure dialog: '") + dialog_id + "'");
     dialog_callback_ref.call("dialog callback");
   }
   else {
@@ -2101,22 +2101,22 @@ void LuaContext::notify_hero_brandish_treasure(
  */
 int LuaContext::l_treasure_dialog_finished(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
 
     // The treasure's dialog is over.
     EquipmentItem& item = *check_item(l, lua_upvalueindex(1));
-    int treasure_variant = lua_tools::check_int(l, lua_upvalueindex(2));
+    int treasure_variant = LuaTools::check_int(l, lua_upvalueindex(2));
     const std::string& treasure_savegame_variable =
-        lua_tools::check_string(l, lua_upvalueindex(3));
+        LuaTools::check_string(l, lua_upvalueindex(3));
     lua_pushvalue(l, lua_upvalueindex(4));
 
     // Check upvalues. Any error here would be the fault of the C++ side
     // because the user cannot call this function.
-    debug::check_assertion(item.get_game() != nullptr,
+    Debug::check_assertion(item.get_game() != nullptr,
         "Equipment item without game");
 
-    debug::check_assertion(lua_isnil(l, -1) || lua_isfunction(l, -1),
+    Debug::check_assertion(lua_isnil(l, -1) || lua_isfunction(l, -1),
         "Expected function or nil for treasure callback");
 
     Game& game = *item.get_game();
@@ -2180,7 +2180,7 @@ void LuaContext::push_teletransporter(lua_State* l, Teletransporter& teletranspo
  */
 int LuaContext::teletransporter_api_get_sound(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Teletransporter& teletransporter = *check_teletransporter(l, 1);
 
     const std::string& sound_id = teletransporter.get_sound_id();
@@ -2202,12 +2202,12 @@ int LuaContext::teletransporter_api_get_sound(lua_State* l) {
  */
 int LuaContext::teletransporter_api_set_sound(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Teletransporter& teletransporter = *check_teletransporter(l, 1);
 
     std::string sound_id;
     if (lua_gettop(l) > 1) {
-      sound_id = lua_tools::check_string(l, 2);
+      sound_id = LuaTools::check_string(l, 2);
     }
 
     teletransporter.set_sound_id(sound_id);
@@ -2222,7 +2222,7 @@ int LuaContext::teletransporter_api_set_sound(lua_State* l) {
  */
 int LuaContext::teletransporter_api_get_transition(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Teletransporter& teletransporter = *check_teletransporter(l, 1);
 
     Transition::Style transition_style = teletransporter.get_transition_style();
@@ -2239,9 +2239,9 @@ int LuaContext::teletransporter_api_get_transition(lua_State* l) {
  */
 int LuaContext::teletransporter_api_set_transition(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Teletransporter& teletransporter = *check_teletransporter(l, 1);
-    Transition::Style transition_style = lua_tools::check_enum<Transition::Style>(
+    Transition::Style transition_style = LuaTools::check_enum<Transition::Style>(
         l, 2, Transition::style_names
     );
 
@@ -2258,7 +2258,7 @@ int LuaContext::teletransporter_api_set_transition(lua_State* l) {
  */
 int LuaContext::teletransporter_api_get_destination_map(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Teletransporter& teletransporter = *check_teletransporter(l, 1);
 
     const std::string& map_id = teletransporter.get_destination_map_id();
@@ -2275,9 +2275,9 @@ int LuaContext::teletransporter_api_get_destination_map(lua_State* l) {
  */
 int LuaContext::teletransporter_api_set_destination_map(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Teletransporter& teletransporter = *check_teletransporter(l, 1);
-    const std::string& map_id = lua_tools::check_string(l, 2);
+    const std::string& map_id = LuaTools::check_string(l, 2);
 
     teletransporter.set_destination_map_id(map_id);
 
@@ -2292,7 +2292,7 @@ int LuaContext::teletransporter_api_set_destination_map(lua_State* l) {
  */
 int LuaContext::teletransporter_api_get_destination_name(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Teletransporter& teletransporter = *check_teletransporter(l, 1);
 
     const std::string& destination_name = teletransporter.get_destination_name();
@@ -2309,9 +2309,9 @@ int LuaContext::teletransporter_api_get_destination_name(lua_State* l) {
  */
 int LuaContext::teletransporter_api_set_destination_name(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Teletransporter& teletransporter = *check_teletransporter(l, 1);
-    const std::string& destination_name = lua_tools::check_string(l, 2);
+    const std::string& destination_name = LuaTools::check_string(l, 2);
 
     teletransporter.set_destination_name(destination_name);
 
@@ -2390,7 +2390,7 @@ void LuaContext::push_chest(lua_State* l, Chest& chest) {
  */
 int LuaContext::chest_api_is_open(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Chest& chest = *check_chest(l, 1);
 
     lua_pushboolean(l, chest.is_open());
@@ -2405,9 +2405,9 @@ int LuaContext::chest_api_is_open(lua_State* l) {
  */
 int LuaContext::chest_api_set_open(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Chest& chest = *check_chest(l, 1);
-    bool open = lua_tools::opt_boolean(l, 2, true);
+    bool open = LuaTools::opt_boolean(l, 2, true);
 
     chest.set_open(open);
 
@@ -2454,7 +2454,7 @@ void LuaContext::push_block(lua_State* l, Block& block) {
  */
 int LuaContext::block_api_reset(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Block& block = *check_block(l, 1);
 
     block.reset();
@@ -2470,7 +2470,7 @@ int LuaContext::block_api_reset(lua_State* l) {
  */
 int LuaContext::block_api_is_pushable(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Block& block = *check_block(l, 1);
 
     lua_pushboolean(l, block.is_pushable());
@@ -2485,9 +2485,9 @@ int LuaContext::block_api_is_pushable(lua_State* l) {
  */
 int LuaContext::block_api_set_pushable(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Block& block = *check_block(l, 1);
-    bool pushable = lua_tools::opt_boolean(l, 2, true);
+    bool pushable = LuaTools::opt_boolean(l, 2, true);
 
     block.set_pushable(pushable);
 
@@ -2502,7 +2502,7 @@ int LuaContext::block_api_set_pushable(lua_State* l) {
  */
 int LuaContext::block_api_is_pullable(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Block& block = *check_block(l, 1);
 
     lua_pushboolean(l, block.is_pullable());
@@ -2517,9 +2517,9 @@ int LuaContext::block_api_is_pullable(lua_State* l) {
  */
 int LuaContext::block_api_set_pullable(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Block& block = *check_block(l, 1);
-    bool pullable = lua_tools::opt_boolean(l, 2, true);
+    bool pullable = LuaTools::opt_boolean(l, 2, true);
 
     block.set_pullable(pullable);
 
@@ -2534,7 +2534,7 @@ int LuaContext::block_api_set_pullable(lua_State* l) {
  */
 int LuaContext::block_api_get_maximum_moves(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Block& block = *check_block(l, 1);
 
     const int maximum_moves = block.get_maximum_moves();
@@ -2557,17 +2557,17 @@ int LuaContext::block_api_get_maximum_moves(lua_State* l) {
  */
 int LuaContext::block_api_set_maximum_moves(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Block& block = *check_block(l, 1);
     if (lua_type(l, 2) != LUA_TNUMBER && lua_type(l, 2) != LUA_TNIL) {
-      lua_tools::type_error(l, 2, "number or nil");
+      LuaTools::type_error(l, 2, "number or nil");
     }
 
 
     if (lua_isnumber(l, 2)) {
-      const int maximum_moves = lua_tools::check_int(l, 2);
+      const int maximum_moves = LuaTools::check_int(l, 2);
       if (maximum_moves < 0 || maximum_moves > 1) {
-        lua_tools::arg_error(l, 2, "maximum_moves should be 0, 1 or nil");
+        LuaTools::arg_error(l, 2, "maximum_moves should be 0, 1 or nil");
       }
       block.set_maximum_moves(maximum_moves);
     }
@@ -2619,7 +2619,7 @@ void LuaContext::push_switch(lua_State* l, Switch& sw) {
  */
 int LuaContext::switch_api_is_activated(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Switch& sw = *check_switch(l, 1);
 
     lua_pushboolean(l, sw.is_activated());
@@ -2634,9 +2634,9 @@ int LuaContext::switch_api_is_activated(lua_State* l) {
  */
 int LuaContext::switch_api_set_activated(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Switch& sw = *check_switch(l, 1);
-    bool activated = lua_tools::opt_boolean(l, 2, true);
+    bool activated = LuaTools::opt_boolean(l, 2, true);
 
     sw.set_activated(activated);
 
@@ -2651,9 +2651,9 @@ int LuaContext::switch_api_set_activated(lua_State* l) {
  */
 int LuaContext::switch_api_set_locked(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Switch& sw = *check_switch(l, 1);
-    bool locked = lua_tools::opt_boolean(l, 2, true);
+    bool locked = LuaTools::opt_boolean(l, 2, true);
 
     sw.set_locked(locked);
 
@@ -2700,7 +2700,7 @@ void LuaContext::push_stream(lua_State* l, Stream& stream) {
  */
 int LuaContext::stream_api_get_direction(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Stream& stream = *check_stream(l, 1);
 
     lua_pushinteger(l, stream.get_direction());
@@ -2715,12 +2715,12 @@ int LuaContext::stream_api_get_direction(lua_State* l) {
  */
 int LuaContext::stream_api_set_direction(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Stream& stream = *check_stream(l, 1);
-    int direction = lua_tools::check_int(l, 2);
+    int direction = LuaTools::check_int(l, 2);
 
     if (direction < 0 || direction >= 8) {
-      lua_tools::arg_error(l, 2, "Invalid stream direction: must be between 0 and 7");
+      LuaTools::arg_error(l, 2, "Invalid stream direction: must be between 0 and 7");
     }
 
     stream.set_direction(direction);
@@ -2736,7 +2736,7 @@ int LuaContext::stream_api_set_direction(lua_State* l) {
  */
 int LuaContext::stream_api_get_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Stream& stream = *check_stream(l, 1);
 
     lua_pushinteger(l, stream.get_speed());
@@ -2751,9 +2751,9 @@ int LuaContext::stream_api_get_speed(lua_State* l) {
  */
 int LuaContext::stream_api_set_speed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Stream& stream = *check_stream(l, 1);
-    int speed = lua_tools::check_int(l, 2);
+    int speed = LuaTools::check_int(l, 2);
 
     stream.set_speed(speed);
 
@@ -2768,7 +2768,7 @@ int LuaContext::stream_api_set_speed(lua_State* l) {
  */
 int LuaContext::stream_api_get_allow_movement(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Stream& stream = *check_stream(l, 1);
 
     lua_pushboolean(l, stream.get_allow_movement());
@@ -2783,9 +2783,9 @@ int LuaContext::stream_api_get_allow_movement(lua_State* l) {
  */
 int LuaContext::stream_api_set_allow_movement(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Stream& stream = *check_stream(l, 1);
-    bool allow_movement = lua_tools::opt_boolean(l, 2, true);
+    bool allow_movement = LuaTools::opt_boolean(l, 2, true);
 
     stream.set_allow_movement(allow_movement);
 
@@ -2800,7 +2800,7 @@ int LuaContext::stream_api_set_allow_movement(lua_State* l) {
  */
 int LuaContext::stream_api_get_allow_attack(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Stream& stream = *check_stream(l, 1);
 
     lua_pushboolean(l, stream.get_allow_attack());
@@ -2815,9 +2815,9 @@ int LuaContext::stream_api_get_allow_attack(lua_State* l) {
  */
 int LuaContext::stream_api_set_allow_attack(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Stream& stream = *check_stream(l, 1);
-    bool allow_attack = lua_tools::opt_boolean(l, 2, true);
+    bool allow_attack = LuaTools::opt_boolean(l, 2, true);
 
     stream.set_allow_attack(allow_attack);
 
@@ -2832,7 +2832,7 @@ int LuaContext::stream_api_set_allow_attack(lua_State* l) {
  */
 int LuaContext::stream_api_get_allow_item(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Stream& stream = *check_stream(l, 1);
 
     lua_pushboolean(l, stream.get_allow_item());
@@ -2847,9 +2847,9 @@ int LuaContext::stream_api_get_allow_item(lua_State* l) {
  */
 int LuaContext::stream_api_set_allow_item(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Stream& stream = *check_stream(l, 1);
-    bool allow_item = lua_tools::opt_boolean(l, 2, true);
+    bool allow_item = LuaTools::opt_boolean(l, 2, true);
 
     stream.set_allow_item(allow_item);
 
@@ -2896,7 +2896,7 @@ void LuaContext::push_door(lua_State* l, Door& door) {
  */
 int LuaContext::door_api_is_open(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Door& door = *check_door(l, 1);
 
     lua_pushboolean(l, door.is_open());
@@ -2911,7 +2911,7 @@ int LuaContext::door_api_is_open(lua_State* l) {
  */
 int LuaContext::door_api_is_opening(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Door& door = *check_door(l, 1);
 
     lua_pushboolean(l, door.is_opening());
@@ -2926,7 +2926,7 @@ int LuaContext::door_api_is_opening(lua_State* l) {
  */
 int LuaContext::door_api_is_closed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Door& door = *check_door(l, 1);
 
     lua_pushboolean(l, door.is_closed());
@@ -2941,7 +2941,7 @@ int LuaContext::door_api_is_closed(lua_State* l) {
  */
 int LuaContext::door_api_is_closing(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Door& door = *check_door(l, 1);
 
     lua_pushboolean(l, door.is_closing());
@@ -3009,7 +3009,7 @@ void LuaContext::notify_shop_treasure_interaction(ShopTreasure& shop_treasure) {
  */
 int LuaContext::l_shop_treasure_description_dialog_finished(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
 
     // The description message has just finished.
     // The shop treasure is the first upvalue.
@@ -3022,11 +3022,11 @@ int LuaContext::l_shop_treasure_description_dialog_finished(lua_State* l) {
     }
 
     lua_pushinteger(l, shop_treasure.get_price());
-    const ScopedLuaRef& price_ref = lua_tools::create_ref(l);
+    const ScopedLuaRef& price_ref = LuaTools::create_ref(l);
 
     push_shop_treasure(l, shop_treasure);
     lua_pushcclosure(l, l_shop_treasure_question_dialog_finished, 1);
-    ScopedLuaRef callback_ref = lua_tools::create_ref(l);
+    ScopedLuaRef callback_ref = LuaTools::create_ref(l);
 
     game.start_dialog("_shop.question", price_ref, callback_ref);
 
@@ -3042,7 +3042,7 @@ int LuaContext::l_shop_treasure_description_dialog_finished(lua_State* l) {
  */
 int LuaContext::l_shop_treasure_question_dialog_finished(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
 
     // The "do you want to buy?" question has just been displayed.
@@ -3139,7 +3139,7 @@ void LuaContext::push_pickable(lua_State* l, Pickable& pickable) {
  */
 int LuaContext::pickable_api_get_followed_entity(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Pickable& pickable = *check_pickable(l, 1);
 
     MapEntityPtr followed_entity = pickable.get_entity_followed();
@@ -3161,7 +3161,7 @@ int LuaContext::pickable_api_get_followed_entity(lua_State* l) {
  */
 int LuaContext::pickable_api_get_falling_height(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Pickable& pickable = *check_pickable(l, 1);
 
     lua_pushinteger(l, pickable.get_falling_height());
@@ -3176,7 +3176,7 @@ int LuaContext::pickable_api_get_falling_height(lua_State* l) {
  */
 int LuaContext::pickable_api_get_treasure(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Pickable& pickable = *check_pickable(l, 1);
     const Treasure& treasure = pickable.get_treasure();
 
@@ -3231,7 +3231,7 @@ void LuaContext::push_destructible(lua_State* l, Destructible& destructible) {
  */
 int LuaContext::destructible_api_get_treasure(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Destructible& destructible = *check_destructible(l, 1);
     const Treasure& treasure = destructible.get_treasure();
 
@@ -3260,24 +3260,24 @@ int LuaContext::destructible_api_get_treasure(lua_State* l) {
  */
 int LuaContext::destructible_api_set_treasure(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Destructible& destructible = *check_destructible(l, 1);
     std::string item_name, savegame_variable;
     int variant = 1;
 
     if (lua_gettop(l) >= 2 && !lua_isnil(l, 2)) {
-      item_name = lua_tools::check_string(l, 2);
+      item_name = LuaTools::check_string(l, 2);
     }
     if (lua_gettop(l) >= 3 && !lua_isnil(l, 3)) {
-      variant = lua_tools::check_int(l, 3);
+      variant = LuaTools::check_int(l, 3);
     }
     if (lua_gettop(l) >= 4 && !lua_isnil(l, 4)) {
-      savegame_variable = lua_tools::check_string(l, 4);
+      savegame_variable = LuaTools::check_string(l, 4);
     }
 
     if (!savegame_variable.empty()
-        && !lua_tools::is_valid_lua_identifier(savegame_variable)) {
-      lua_tools::arg_error(l, 4,
+        && !LuaTools::is_valid_lua_identifier(savegame_variable)) {
+      LuaTools::arg_error(l, 4,
           std::string("savegame variable identifier expected, got '")
       + savegame_variable + "'");
     }
@@ -3296,7 +3296,7 @@ int LuaContext::destructible_api_set_treasure(lua_State* l) {
  */
 int LuaContext::destructible_api_get_destruction_sound(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Destructible& destructible = *check_destructible(l, 1);
 
     const std::string& destruction_sound_id = destructible.get_destruction_sound();
@@ -3318,11 +3318,11 @@ int LuaContext::destructible_api_get_destruction_sound(lua_State* l) {
  */
 int LuaContext::destructible_api_set_destruction_sound(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Destructible& destructible = *check_destructible(l, 1);
     std::string destruction_sound_id;
     if (!lua_isnil(l, 2)) {
-      destruction_sound_id = lua_tools::check_string(l, 2);
+      destruction_sound_id = LuaTools::check_string(l, 2);
     }
 
     destructible.set_destruction_sound(destruction_sound_id);
@@ -3337,7 +3337,7 @@ int LuaContext::destructible_api_set_destruction_sound(lua_State* l) {
  */
 int LuaContext::destructible_api_get_weight(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Destructible& destructible = *check_destructible(l, 1);
 
     int weight = destructible.get_weight();
@@ -3354,9 +3354,9 @@ int LuaContext::destructible_api_get_weight(lua_State* l) {
  */
 int LuaContext::destructible_api_set_weight(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Destructible& destructible = *check_destructible(l, 1);
-    int weight = lua_tools::check_int(l, 2);
+    int weight = LuaTools::check_int(l, 2);
 
     destructible.set_weight(weight);
 
@@ -3371,7 +3371,7 @@ int LuaContext::destructible_api_set_weight(lua_State* l) {
  */
 int LuaContext::destructible_api_get_can_be_cut(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Destructible& destructible = *check_destructible(l, 1);
 
     bool can_be_cut = destructible.get_can_be_cut();
@@ -3388,9 +3388,9 @@ int LuaContext::destructible_api_get_can_be_cut(lua_State* l) {
  */
 int LuaContext::destructible_api_set_can_be_cut(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Destructible& destructible = *check_destructible(l, 1);
-    bool can_be_cut = lua_tools::opt_boolean(l, 2, true);
+    bool can_be_cut = LuaTools::opt_boolean(l, 2, true);
 
     destructible.set_can_be_cut(can_be_cut);
 
@@ -3405,7 +3405,7 @@ int LuaContext::destructible_api_set_can_be_cut(lua_State* l) {
  */
 int LuaContext::destructible_api_get_can_explode(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Destructible& destructible = *check_destructible(l, 1);
 
     bool can_explode = destructible.get_can_explode();
@@ -3422,9 +3422,9 @@ int LuaContext::destructible_api_get_can_explode(lua_State* l) {
  */
 int LuaContext::destructible_api_set_can_explode(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Destructible& destructible = *check_destructible(l, 1);
-    bool can_explode = lua_tools::opt_boolean(l, 2, true);
+    bool can_explode = LuaTools::opt_boolean(l, 2, true);
 
     destructible.set_can_explode(can_explode);
 
@@ -3439,7 +3439,7 @@ int LuaContext::destructible_api_set_can_explode(lua_State* l) {
  */
 int LuaContext::destructible_api_get_can_regenerate(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Destructible& destructible = *check_destructible(l, 1);
 
     bool can_regenerate = destructible.get_can_regenerate();
@@ -3456,9 +3456,9 @@ int LuaContext::destructible_api_get_can_regenerate(lua_State* l) {
  */
 int LuaContext::destructible_api_set_can_regenerate(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Destructible& destructible = *check_destructible(l, 1);
-    bool can_regenerate = lua_tools::opt_boolean(l, 2, true);
+    bool can_regenerate = LuaTools::opt_boolean(l, 2, true);
 
     destructible.set_can_regenerate(can_regenerate);
 
@@ -3473,7 +3473,7 @@ int LuaContext::destructible_api_set_can_regenerate(lua_State* l) {
  */
 int LuaContext::destructible_api_get_damage_on_enemies(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Destructible& destructible = *check_destructible(l, 1);
 
     int damage_on_enemies = destructible.get_damage_on_enemies();
@@ -3490,9 +3490,9 @@ int LuaContext::destructible_api_get_damage_on_enemies(lua_State* l) {
  */
 int LuaContext::destructible_api_set_damage_on_enemies(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Destructible& destructible = *check_destructible(l, 1);
-    int damage_on_enemies = lua_tools::check_int(l, 2);
+    int damage_on_enemies = LuaTools::check_int(l, 2);
 
     destructible.set_damage_on_enemies(damage_on_enemies);
 
@@ -3507,7 +3507,7 @@ int LuaContext::destructible_api_set_damage_on_enemies(lua_State* l) {
  */
 int LuaContext::destructible_api_get_modified_ground(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Destructible& destructible = *check_destructible(l, 1);
 
     Ground modified_ground = destructible.get_modified_ground();
@@ -3556,7 +3556,7 @@ void LuaContext::push_enemy(lua_State* l, Enemy& enemy) {
  */
 int LuaContext::enemy_api_get_breed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Enemy& enemy = *check_enemy(l, 1);
 
     push_string(l, enemy.get_breed());
@@ -3571,7 +3571,7 @@ int LuaContext::enemy_api_get_breed(lua_State* l) {
  */
 int LuaContext::enemy_api_get_life(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Enemy& enemy = *check_enemy(l, 1);
 
     lua_pushinteger(l, enemy.get_life());
@@ -3586,9 +3586,9 @@ int LuaContext::enemy_api_get_life(lua_State* l) {
  */
 int LuaContext::enemy_api_set_life(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    int life = lua_tools::check_int(l, 2);
+    int life = LuaTools::check_int(l, 2);
 
     enemy.set_life(life);
 
@@ -3603,9 +3603,9 @@ int LuaContext::enemy_api_set_life(lua_State* l) {
  */
 int LuaContext::enemy_api_add_life(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    int points = lua_tools::check_int(l, 2);
+    int points = LuaTools::check_int(l, 2);
 
     enemy.set_life(enemy.get_life() + points);
 
@@ -3620,9 +3620,9 @@ int LuaContext::enemy_api_add_life(lua_State* l) {
  */
 int LuaContext::enemy_api_remove_life(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    int points = lua_tools::check_int(l, 2);
+    int points = LuaTools::check_int(l, 2);
 
     enemy.set_life(enemy.get_life() - points);
 
@@ -3637,7 +3637,7 @@ int LuaContext::enemy_api_remove_life(lua_State* l) {
  */
 int LuaContext::enemy_api_get_damage(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Enemy& enemy = *check_enemy(l, 1);
 
     lua_pushinteger(l, enemy.get_damage());
@@ -3652,9 +3652,9 @@ int LuaContext::enemy_api_get_damage(lua_State* l) {
  */
 int LuaContext::enemy_api_set_damage(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    int damage = lua_tools::check_int(l, 2);
+    int damage = LuaTools::check_int(l, 2);
 
     enemy.set_damage(damage);
 
@@ -3669,7 +3669,7 @@ int LuaContext::enemy_api_set_damage(lua_State* l) {
  */
 int LuaContext::enemy_api_is_pushed_back_when_hurt(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Enemy& enemy = *check_enemy(l, 1);
 
     lua_pushboolean(l, enemy.get_pushed_back_when_hurt());
@@ -3684,9 +3684,9 @@ int LuaContext::enemy_api_is_pushed_back_when_hurt(lua_State* l) {
  */
 int LuaContext::enemy_api_set_pushed_back_when_hurt(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    bool push_back = lua_tools::opt_boolean(l, 2, true);
+    bool push_back = LuaTools::opt_boolean(l, 2, true);
 
     enemy.set_pushed_back_when_hurt(push_back);
 
@@ -3701,7 +3701,7 @@ int LuaContext::enemy_api_set_pushed_back_when_hurt(lua_State* l) {
  */
 int LuaContext::enemy_api_get_push_hero_on_sword(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Enemy& enemy = *check_enemy(l, 1);
 
     lua_pushboolean(l, enemy.get_push_hero_on_sword());
@@ -3716,9 +3716,9 @@ int LuaContext::enemy_api_get_push_hero_on_sword(lua_State* l) {
  */
 int LuaContext::enemy_api_set_push_hero_on_sword(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    bool push = lua_tools::opt_boolean(l, 2, true);
+    bool push = LuaTools::opt_boolean(l, 2, true);
 
     enemy.set_push_hero_on_sword(push);
 
@@ -3733,7 +3733,7 @@ int LuaContext::enemy_api_set_push_hero_on_sword(lua_State* l) {
  */
 int LuaContext::enemy_api_get_can_hurt_hero_running(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Enemy& enemy = *check_enemy(l, 1);
 
     lua_pushboolean(l, enemy.get_can_hurt_hero_running());
@@ -3748,9 +3748,9 @@ int LuaContext::enemy_api_get_can_hurt_hero_running(lua_State* l) {
  */
 int LuaContext::enemy_api_set_can_hurt_hero_running(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    bool can_hurt_hero_running = lua_tools::opt_boolean(l, 2, true);
+    bool can_hurt_hero_running = LuaTools::opt_boolean(l, 2, true);
 
     enemy.set_can_hurt_hero_running(can_hurt_hero_running);
 
@@ -3765,7 +3765,7 @@ int LuaContext::enemy_api_set_can_hurt_hero_running(lua_State* l) {
  */
 int LuaContext::enemy_api_get_hurt_style(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Enemy& enemy = *check_enemy(l, 1);
 
     Enemy::HurtStyle hurt_style = enemy.get_hurt_style();
@@ -3782,9 +3782,9 @@ int LuaContext::enemy_api_get_hurt_style(lua_State* l) {
  */
 int LuaContext::enemy_api_set_hurt_style(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    Enemy::HurtStyle hurt_style = lua_tools::check_enum<Enemy::HurtStyle>(
+    Enemy::HurtStyle hurt_style = LuaTools::check_enum<Enemy::HurtStyle>(
         l, 2, Enemy::hurt_style_names);
 
     enemy.set_hurt_style(hurt_style);
@@ -3800,7 +3800,7 @@ int LuaContext::enemy_api_set_hurt_style(lua_State* l) {
  */
 int LuaContext::enemy_api_get_can_attack(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Enemy& enemy = *check_enemy(l, 1);
 
     lua_pushboolean(l, enemy.get_can_attack());
@@ -3815,9 +3815,9 @@ int LuaContext::enemy_api_get_can_attack(lua_State* l) {
  */
 int LuaContext::enemy_api_set_can_attack(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    bool can_attack = lua_tools::opt_boolean(l, 2, true);
+    bool can_attack = LuaTools::opt_boolean(l, 2, true);
 
     enemy.set_can_attack(can_attack);
 
@@ -3832,7 +3832,7 @@ int LuaContext::enemy_api_set_can_attack(lua_State* l) {
  */
 int LuaContext::enemy_api_get_minimum_shield_needed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Enemy& enemy = *check_enemy(l, 1);
 
     int shield_level = enemy.get_minimum_shield_needed();
@@ -3849,9 +3849,9 @@ int LuaContext::enemy_api_get_minimum_shield_needed(lua_State* l) {
  */
 int LuaContext::enemy_api_set_minimum_shield_needed(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    int shield_level = lua_tools::check_int(l, 2);
+    int shield_level = LuaTools::check_int(l, 2);
 
     enemy.set_minimum_shield_needed(shield_level);
 
@@ -3866,9 +3866,9 @@ int LuaContext::enemy_api_set_minimum_shield_needed(lua_State* l) {
  */
 int LuaContext::enemy_api_get_attack_consequence(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Enemy& enemy = *check_enemy(l, 1);
-    EnemyAttack attack = lua_tools::check_enum<EnemyAttack>(l, 2, Enemy::attack_names);
+    EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 2, Enemy::attack_names);
 
     const EnemyReaction::Reaction& reaction = enemy.get_attack_consequence(attack, nullptr);
     if (reaction.type == EnemyReaction::HURT) {
@@ -3890,22 +3890,22 @@ int LuaContext::enemy_api_get_attack_consequence(lua_State* l) {
  */
 int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    EnemyAttack attack = lua_tools::check_enum<EnemyAttack>(l, 2, Enemy::attack_names);
+    EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 2, Enemy::attack_names);
 
     if (lua_isnumber(l, 3)) {
-      int life_points = lua_tools::check_int(l, 3);
+      int life_points = LuaTools::check_int(l, 3);
       if (life_points < 0) {
         std::ostringstream oss;
         oss << "Invalid life points number for attack consequence: '"
             << life_points << "'";
-        lua_tools::arg_error(l, 3, oss.str());
+        LuaTools::arg_error(l, 3, oss.str());
       }
       enemy.set_attack_consequence(attack, EnemyReaction::HURT, life_points);
     }
     else {
-      EnemyReaction::ReactionType reaction = lua_tools::check_enum<EnemyReaction::ReactionType>(
+      EnemyReaction::ReactionType reaction = LuaTools::check_enum<EnemyReaction::ReactionType>(
           l, 3, EnemyReaction::reaction_names);
       enemy.set_attack_consequence(attack, reaction);
     }
@@ -3921,10 +3921,10 @@ int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
  */
 int LuaContext::enemy_api_get_attack_consequence_sprite(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Enemy& enemy = *check_enemy(l, 1);
     Sprite& sprite = *check_sprite(l, 2);
-    EnemyAttack attack = lua_tools::check_enum<EnemyAttack>(l, 3, Enemy::attack_names);
+    EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 3, Enemy::attack_names);
 
     const EnemyReaction::Reaction& reaction = enemy.get_attack_consequence(attack, &sprite);
     if (reaction.type == EnemyReaction::HURT) {
@@ -3946,23 +3946,23 @@ int LuaContext::enemy_api_get_attack_consequence_sprite(lua_State* l) {
  */
 int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
     Sprite& sprite = *check_sprite(l, 2);
-    EnemyAttack attack = lua_tools::check_enum<EnemyAttack>(l, 3, Enemy::attack_names);
+    EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 3, Enemy::attack_names);
 
     if (lua_isnumber(l, 4)) {
-      int life_points = lua_tools::check_int(l, 4);
+      int life_points = LuaTools::check_int(l, 4);
       if (life_points < 0) {
         std::ostringstream oss;
         oss << "Invalid life points number for attack consequence: '"
             << life_points << "'";
-        lua_tools::arg_error(l, 4, oss.str());
+        LuaTools::arg_error(l, 4, oss.str());
       }
       enemy.set_attack_consequence_sprite(sprite, attack, EnemyReaction::HURT, life_points);
     }
     else {
-      EnemyReaction::ReactionType reaction = lua_tools::check_enum<EnemyReaction::ReactionType>(
+      EnemyReaction::ReactionType reaction = LuaTools::check_enum<EnemyReaction::ReactionType>(
           l, 4, EnemyReaction::reaction_names);
       enemy.set_attack_consequence_sprite(sprite, attack, reaction);
     }
@@ -3978,7 +3978,7 @@ int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
  */
 int LuaContext::enemy_api_set_default_attack_consequences(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
 
     enemy.set_default_attack_consequences();
@@ -3994,7 +3994,7 @@ int LuaContext::enemy_api_set_default_attack_consequences(lua_State* l) {
  */
 int LuaContext::enemy_api_set_default_attack_consequences_sprite(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
     Sprite& sprite = *check_sprite(l, 2);
 
@@ -4011,7 +4011,7 @@ int LuaContext::enemy_api_set_default_attack_consequences_sprite(lua_State* l) {
  */
 int LuaContext::enemy_api_set_invincible(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
 
     enemy.set_no_attack_consequences();
@@ -4027,7 +4027,7 @@ int LuaContext::enemy_api_set_invincible(lua_State* l) {
  */
 int LuaContext::enemy_api_set_invincible_sprite(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
     Sprite& sprite = *check_sprite(l, 2);
 
@@ -4044,7 +4044,7 @@ int LuaContext::enemy_api_set_invincible_sprite(lua_State* l) {
  */
 int LuaContext::enemy_api_get_treasure(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Enemy& enemy = *check_enemy(l, 1);
     const Treasure& treasure = enemy.get_treasure();
 
@@ -4074,24 +4074,24 @@ int LuaContext::enemy_api_get_treasure(lua_State* l) {
  */
 int LuaContext::enemy_api_set_treasure(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
     std::string item_name, savegame_variable;
     int variant = 1;
 
     if (lua_gettop(l) >= 2 && !lua_isnil(l, 2)) {
-      item_name = lua_tools::check_string(l, 2);
+      item_name = LuaTools::check_string(l, 2);
     }
     if (lua_gettop(l) >= 3 && !lua_isnil(l, 3)) {
-      variant = lua_tools::check_int(l, 3);
+      variant = LuaTools::check_int(l, 3);
     }
     if (lua_gettop(l) >= 4 && !lua_isnil(l, 4)) {
-      savegame_variable = lua_tools::check_string(l, 4);
+      savegame_variable = LuaTools::check_string(l, 4);
     }
 
     if (!savegame_variable.empty()
-        && !lua_tools::is_valid_lua_identifier(savegame_variable)) {
-      lua_tools::arg_error(l, 4,
+        && !LuaTools::is_valid_lua_identifier(savegame_variable)) {
+      LuaTools::arg_error(l, 4,
           std::string("savegame variable identifier expected, got '")
       + savegame_variable + "'");
     }
@@ -4110,7 +4110,7 @@ int LuaContext::enemy_api_set_treasure(lua_State* l) {
  */
 int LuaContext::enemy_api_is_traversable(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Enemy& enemy = *check_enemy(l, 1);
 
     lua_pushboolean(l, enemy.is_traversable());
@@ -4125,10 +4125,10 @@ int LuaContext::enemy_api_is_traversable(lua_State* l) {
  */
 int LuaContext::enemy_api_set_traversable(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
 
-    bool traversable = lua_tools::opt_boolean(l, 2, true);
+    bool traversable = LuaTools::opt_boolean(l, 2, true);
 
     enemy.set_traversable(traversable);
 
@@ -4143,7 +4143,7 @@ int LuaContext::enemy_api_set_traversable(lua_State* l) {
  */
 int LuaContext::enemy_api_get_obstacle_behavior(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Enemy& enemy = *check_enemy(l, 1);
 
     Enemy::ObstacleBehavior behavior = enemy.get_obstacle_behavior();
@@ -4160,9 +4160,9 @@ int LuaContext::enemy_api_get_obstacle_behavior(lua_State* l) {
  */
 int LuaContext::enemy_api_set_obstacle_behavior(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    Enemy::ObstacleBehavior behavior = lua_tools::check_enum<Enemy::ObstacleBehavior>(
+    Enemy::ObstacleBehavior behavior = LuaTools::check_enum<Enemy::ObstacleBehavior>(
         l, 2, Enemy::obstacle_behavior_names);
 
     enemy.set_obstacle_behavior(behavior);
@@ -4178,7 +4178,7 @@ int LuaContext::enemy_api_set_obstacle_behavior(lua_State* l) {
  */
 int LuaContext::enemy_api_restart(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
 
     enemy.restart();
@@ -4194,9 +4194,9 @@ int LuaContext::enemy_api_restart(lua_State* l) {
  */
 int LuaContext::enemy_api_hurt(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    int life_points = lua_tools::check_int(l, 2);
+    int life_points = LuaTools::check_int(l, 2);
 
     if (enemy.is_in_normal_state() && !enemy.is_invulnerable()) {
       Hero& hero = enemy.get_map().get_entities().get_hero();
@@ -4215,7 +4215,7 @@ int LuaContext::enemy_api_hurt(lua_State* l) {
  */
 int LuaContext::enemy_api_immobilize(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
 
     if (enemy.is_in_normal_state() && !enemy.is_invulnerable()) {
@@ -4235,31 +4235,31 @@ int LuaContext::enemy_api_immobilize(lua_State* l) {
  */
 int LuaContext::enemy_api_create_enemy(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
-    lua_tools::check_type(l, 2, LUA_TTABLE);
-    const std::string& name = lua_tools::opt_string_field(l, 2, "name", "");
-    Layer layer = lua_tools::opt_layer_field(l, 2, "layer", enemy.get_layer());
-    int x = lua_tools::opt_int_field(l, 2, "x", 0);
-    int y = lua_tools::opt_int_field(l, 2, "y", 0);
-    int direction = lua_tools::opt_int_field(l, 2, "direction", 3);
-    const std::string& breed = lua_tools::check_string_field(l, 2, "breed");
-    Enemy::Rank rank = Enemy::Rank(lua_tools::opt_int_field(l, 2, "rank", 0));
-    const std::string& savegame_variable = lua_tools::opt_string_field(l, 2, "savegame_variable", "");
-    const std::string& treasure_name = lua_tools::opt_string_field(l, 2, "treasure_name", "");
-    int treasure_variant = lua_tools::opt_int_field(l, 2, "treasure_variant", 1);
-    const std::string& treasure_savegame_variable = lua_tools::opt_string_field(l, 2, "treasure_savegame_variable", "");
+    LuaTools::check_type(l, 2, LUA_TTABLE);
+    const std::string& name = LuaTools::opt_string_field(l, 2, "name", "");
+    Layer layer = LuaTools::opt_layer_field(l, 2, "layer", enemy.get_layer());
+    int x = LuaTools::opt_int_field(l, 2, "x", 0);
+    int y = LuaTools::opt_int_field(l, 2, "y", 0);
+    int direction = LuaTools::opt_int_field(l, 2, "direction", 3);
+    const std::string& breed = LuaTools::check_string_field(l, 2, "breed");
+    Enemy::Rank rank = Enemy::Rank(LuaTools::opt_int_field(l, 2, "rank", 0));
+    const std::string& savegame_variable = LuaTools::opt_string_field(l, 2, "savegame_variable", "");
+    const std::string& treasure_name = LuaTools::opt_string_field(l, 2, "treasure_name", "");
+    int treasure_variant = LuaTools::opt_int_field(l, 2, "treasure_variant", 1);
+    const std::string& treasure_savegame_variable = LuaTools::opt_string_field(l, 2, "treasure_savegame_variable", "");
 
     if (!savegame_variable.empty()
-        && !lua_tools::is_valid_lua_identifier(savegame_variable)) {
-      lua_tools::arg_error(l, 2, std::string(
+        && !LuaTools::is_valid_lua_identifier(savegame_variable)) {
+      LuaTools::arg_error(l, 2, std::string(
           "Bad field 'savegame_variable' (invalid savegame variable identifier '")
       + savegame_variable + "'");
     }
 
     if (!treasure_savegame_variable.empty()
-        && !lua_tools::is_valid_lua_identifier(treasure_savegame_variable)) {
-      lua_tools::arg_error(l, 2, std::string(
+        && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
+      LuaTools::arg_error(l, 2, std::string(
           "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '")
       + treasure_savegame_variable + "'");
     }
@@ -4272,7 +4272,7 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
     Map& map = enemy.get_map();
 
     if (!map.is_loaded()) {
-      lua_tools::error(l, "Cannot create enemy: this map is not running");
+      LuaTools::error(l, "Cannot create enemy: this map is not running");
     }
 
     Game& game = map.get_game();
@@ -4350,18 +4350,18 @@ bool LuaContext::do_custom_entity_traversable_test_function(
     CustomEntity& custom_entity,
     MapEntity& other_entity) {
 
-  debug::check_assertion(!traversable_test_ref.is_empty(),
+  Debug::check_assertion(!traversable_test_ref.is_empty(),
       "Missing traversable test function ref"
   );
 
   // Call the test function.
   push_ref(l, traversable_test_ref);
-  debug::check_assertion(lua_isfunction(l, -1),
+  Debug::check_assertion(lua_isfunction(l, -1),
       "Traversable test is not a function"
   );
   push_custom_entity(l, custom_entity);
   push_entity(l, other_entity);
-  lua_tools::call_function(l, 2, 1, "traversable test function");
+  LuaTools::call_function(l, 2, 1, "traversable test function");
 
   // See its result.
   bool traversable = lua_toboolean(l, -1);
@@ -4382,18 +4382,18 @@ bool LuaContext::do_custom_entity_collision_test_function(
     CustomEntity& custom_entity,
     MapEntity& other_entity
 ) {
-  debug::check_assertion(!collision_test_ref.is_empty(),
+  Debug::check_assertion(!collision_test_ref.is_empty(),
       "Missing collision test function"
   );
 
   // Call the test function.
   push_ref(l, collision_test_ref);
-  debug::check_assertion(lua_isfunction(l, -1),
+  Debug::check_assertion(lua_isfunction(l, -1),
       "Collision test is not a function"
   );
   push_custom_entity(l, custom_entity);
   push_entity(l, other_entity);
-  lua_tools::call_function(l, 2, 1, "collision test function");
+  LuaTools::call_function(l, 2, 1, "collision test function");
 
   // See its result.
   bool collision = lua_toboolean(l, -1);
@@ -4413,15 +4413,15 @@ void LuaContext::do_custom_entity_collision_callback(
     CustomEntity& custom_entity,
     MapEntity& other_entity
 ) {
-  debug::check_assertion(!callback_ref.is_empty(),
+  Debug::check_assertion(!callback_ref.is_empty(),
       "Missing collision callback");
 
   push_ref(l, callback_ref);
-  debug::check_assertion(lua_isfunction(l, -1),
+  Debug::check_assertion(lua_isfunction(l, -1),
       "Collision callback is not a function");
   push_custom_entity(l, custom_entity);
   push_entity(l, other_entity);
-  lua_tools::call_function(l, 2, 0, "collision callback");
+  LuaTools::call_function(l, 2, 0, "collision callback");
 }
 
 /**
@@ -4442,18 +4442,18 @@ void LuaContext::do_custom_entity_collision_callback(
     Sprite& custom_entity_sprite,
     Sprite& other_entity_sprite) {
 
-  debug::check_assertion(!callback_ref.is_empty(),
+  Debug::check_assertion(!callback_ref.is_empty(),
       "Missing sprite collision callback"
   );
 
   push_ref(l, callback_ref);
-  debug::check_assertion(lua_isfunction(l, -1),
+  Debug::check_assertion(lua_isfunction(l, -1),
       "Sprite collision callback is not a function");
   push_custom_entity(l, custom_entity);
   push_entity(l, other_entity);
   push_sprite(l, custom_entity_sprite);
   push_sprite(l, other_entity_sprite);
-  lua_tools::call_function(l, 4, 0, "collision callback");
+  LuaTools::call_function(l, 4, 0, "collision callback");
 }
 
 /**
@@ -4463,7 +4463,7 @@ void LuaContext::do_custom_entity_collision_callback(
  */
 int LuaContext::custom_entity_api_get_model(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const CustomEntity& entity = *check_custom_entity(l, 1);
 
     push_string(l, entity.get_model());
@@ -4478,7 +4478,7 @@ int LuaContext::custom_entity_api_get_model(lua_State* l) {
  */
 int LuaContext::custom_entity_api_get_direction(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const CustomEntity& entity = *check_custom_entity(l, 1);
 
     lua_pushinteger(l, entity.get_sprites_direction());
@@ -4493,9 +4493,9 @@ int LuaContext::custom_entity_api_get_direction(lua_State* l) {
  */
 int LuaContext::custom_entity_api_set_direction(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CustomEntity& entity = *check_custom_entity(l, 1);
-    int direction = lua_tools::check_int(l, 2);
+    int direction = LuaTools::check_int(l, 2);
 
     entity.set_sprites_direction(direction);
 
@@ -4510,7 +4510,7 @@ int LuaContext::custom_entity_api_set_direction(lua_State* l) {
  */
 int LuaContext::custom_entity_api_is_drawn_in_y_order(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const CustomEntity& entity = *check_custom_entity(l, 1);
 
     lua_pushboolean(l, entity.is_drawn_in_y_order());
@@ -4525,9 +4525,9 @@ int LuaContext::custom_entity_api_is_drawn_in_y_order(lua_State* l) {
  */
 int LuaContext::custom_entity_api_set_drawn_in_y_order(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CustomEntity& entity = *check_custom_entity(l, 1);
-    bool y_order = lua_tools::opt_boolean(l, 2, true);
+    bool y_order = LuaTools::opt_boolean(l, 2, true);
 
     entity.set_drawn_in_y_order(y_order);
 
@@ -4542,7 +4542,7 @@ int LuaContext::custom_entity_api_set_drawn_in_y_order(lua_State* l) {
  */
 int LuaContext::custom_entity_api_set_traversable_by(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CustomEntity& entity = *check_custom_entity(l, 1);
 
     bool type_specific = false;
@@ -4551,7 +4551,7 @@ int LuaContext::custom_entity_api_set_traversable_by(lua_State* l) {
     if (lua_isstring(l, index)) {
       ++index;
       type_specific = true;
-      type = lua_tools::check_enum<EntityType>(
+      type = LuaTools::check_enum<EntityType>(
           l, 2, entity_type_names
       );
     }
@@ -4578,7 +4578,7 @@ int LuaContext::custom_entity_api_set_traversable_by(lua_State* l) {
     else if (lua_isfunction(l, index)) {
       // Custom boolean function.
 
-      const ScopedLuaRef& traversable_test_ref = lua_tools::check_function(l, index);
+      const ScopedLuaRef& traversable_test_ref = LuaTools::check_function(l, index);
       if (!type_specific) {
         entity.set_traversable_by_entities(traversable_test_ref);
       }
@@ -4587,7 +4587,7 @@ int LuaContext::custom_entity_api_set_traversable_by(lua_State* l) {
       }
     }
     else {
-      lua_tools::type_error(l, index, "boolean, function or nil");
+      LuaTools::type_error(l, index, "boolean, function or nil");
     }
 
     return 0;
@@ -4601,7 +4601,7 @@ int LuaContext::custom_entity_api_set_traversable_by(lua_State* l) {
  */
 int LuaContext::custom_entity_api_set_can_traverse(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CustomEntity& entity = *check_custom_entity(l, 1);
 
     bool type_specific = false;
@@ -4610,7 +4610,7 @@ int LuaContext::custom_entity_api_set_can_traverse(lua_State* l) {
     if (lua_isstring(l, index)) {
       ++index;
       type_specific = true;
-      type = lua_tools::check_enum<EntityType>(
+      type = LuaTools::check_enum<EntityType>(
           l, 2, entity_type_names
       );
     }
@@ -4637,7 +4637,7 @@ int LuaContext::custom_entity_api_set_can_traverse(lua_State* l) {
     else if (lua_isfunction(l, index)) {
       // Custom boolean function.
 
-      const ScopedLuaRef& traversable_test_ref = lua_tools::check_function(l, index);
+      const ScopedLuaRef& traversable_test_ref = LuaTools::check_function(l, index);
       if (!type_specific) {
         entity.set_can_traverse_entities(traversable_test_ref);
       }
@@ -4646,7 +4646,7 @@ int LuaContext::custom_entity_api_set_can_traverse(lua_State* l) {
       }
     }
     else {
-      lua_tools::type_error(l, index, "boolean, function or nil");
+      LuaTools::type_error(l, index, "boolean, function or nil");
     }
 
     return 0;
@@ -4660,9 +4660,9 @@ int LuaContext::custom_entity_api_set_can_traverse(lua_State* l) {
  */
 int LuaContext::custom_entity_api_can_traverse_ground(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const CustomEntity& entity = *check_custom_entity(l, 1);
-    Ground ground = lua_tools::check_enum<Ground>(
+    Ground ground = LuaTools::check_enum<Ground>(
         l, 2, Tileset::ground_names
     );
 
@@ -4680,9 +4680,9 @@ int LuaContext::custom_entity_api_can_traverse_ground(lua_State* l) {
  */
 int LuaContext::custom_entity_api_set_can_traverse_ground(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CustomEntity& entity = *check_custom_entity(l, 1);
-    Ground ground = lua_tools::check_enum<Ground>(
+    Ground ground = LuaTools::check_enum<Ground>(
         l, 2, Tileset::ground_names
     );
     if (lua_isnil(l, 3)) {
@@ -4690,7 +4690,7 @@ int LuaContext::custom_entity_api_set_can_traverse_ground(lua_State* l) {
     }
     else {
       if (!lua_isboolean(l, 3)) {
-        lua_tools::type_error(l, 3, "boolean or nil");
+        LuaTools::type_error(l, 3, "boolean or nil");
       }
       bool traversable = lua_toboolean(l, 3);
 
@@ -4708,17 +4708,17 @@ int LuaContext::custom_entity_api_set_can_traverse_ground(lua_State* l) {
  */
 int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CustomEntity& entity = *check_custom_entity(l, 1);
 
-    const ScopedLuaRef& callback_ref = lua_tools::check_function(l, 3);
+    const ScopedLuaRef& callback_ref = LuaTools::check_function(l, 3);
 
     if (lua_isstring(l, 2)) {
       // Built-in collision test.
       // TODO move string to enum conversion into a function of Detector.
-      // We cannot use lua_tools::check_enum() like always, because this
+      // We cannot use LuaTools::check_enum() like always, because this
       // enum has special numerical values.
-      const std::string& collision_mode_name = lua_tools::check_string(l, 2);
+      const std::string& collision_mode_name = LuaTools::check_string(l, 2);
       CollisionMode collision_mode = COLLISION_NONE;
 
       if (collision_mode_name == "overlapping") {
@@ -4743,7 +4743,7 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
         collision_mode = COLLISION_SPRITE;
       }
       else {
-        lua_tools::arg_error(l, 2,
+        LuaTools::arg_error(l, 2,
             std::string("Invalid name '") + lua_tostring(l, 2) + "'"
         );
       }
@@ -4752,11 +4752,11 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
     }
     else if (lua_isfunction(l, 2)) {
       // Custom collision test.
-      const ScopedLuaRef& collision_test_ref = lua_tools::check_function(l, 2);
+      const ScopedLuaRef& collision_test_ref = LuaTools::check_function(l, 2);
       entity.add_collision_test(collision_test_ref, callback_ref);
     }
     else {
-      lua_tools::type_error(l, 2, "string or function");
+      LuaTools::type_error(l, 2, "string or function");
     }
 
     return 0;
@@ -4770,7 +4770,7 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
  */
 int LuaContext::custom_entity_api_clear_collision_tests(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CustomEntity& entity = *check_custom_entity(l, 1);
 
     entity.clear_collision_tests();
@@ -4786,7 +4786,7 @@ int LuaContext::custom_entity_api_clear_collision_tests(lua_State* l) {
  */
 int LuaContext::custom_entity_api_get_modified_ground(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const CustomEntity& entity = *check_custom_entity(l, 1);
 
     const Ground modified_ground = entity.get_modified_ground();
@@ -4808,12 +4808,12 @@ int LuaContext::custom_entity_api_get_modified_ground(lua_State* l) {
  */
 int LuaContext::custom_entity_api_set_modified_ground(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     CustomEntity& entity = *check_custom_entity(l, 1);
     Ground modified_ground = GROUND_EMPTY;
 
     if (!lua_isnil(l, 2)) {
-      modified_ground = lua_tools::check_enum<Ground>(l, 2,
+      modified_ground = LuaTools::check_enum<Ground>(l, 2,
           Tileset::ground_names
       );
     }

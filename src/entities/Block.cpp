@@ -28,7 +28,7 @@
 #include "lowlevel/Sound.h"
 #include "lua/LuaContext.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a block.
@@ -65,7 +65,7 @@ Block::Block(
   can_be_pushed(can_be_pushed),
   can_be_pulled(can_be_pulled) {
 
-  debug::check_assertion(maximum_moves >= 0 && maximum_moves <= 2,
+  Debug::check_assertion(maximum_moves >= 0 && maximum_moves <= 2,
       "maximum_moves must be between 0 and 2");
   set_origin(8, 13);
   set_direction(direction);
@@ -392,7 +392,7 @@ int Block::get_maximum_moves() const {
  */
 void Block::set_maximum_moves(int maximum_moves) {
 
-  debug::check_assertion(maximum_moves >= 0 && maximum_moves <= 2,
+  Debug::check_assertion(maximum_moves >= 0 && maximum_moves <= 2,
         "maximum_moves must be between 0 and 2");
 
   this->initial_maximum_moves = maximum_moves;

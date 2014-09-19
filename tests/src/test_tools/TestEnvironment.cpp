@@ -23,7 +23,7 @@
 #include "Game.h"
 #include "Savegame.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a test environment.
@@ -56,7 +56,7 @@ Game& TestEnvironment::get_game() {
     step();  // Advance one tick to start the game.
   }
 
-  debug::check_assertion(main_loop.get_game() != nullptr, "Missing game");
+  Debug::check_assertion(main_loop.get_game() != nullptr, "Missing game");
 
   return *main_loop.get_game();
 }
@@ -68,7 +68,7 @@ Map& TestEnvironment::get_map() {
 
   if (!get_game().has_current_map()) {
     step();  // Advance one tick to start the map.
-    debug::check_assertion(get_game().has_current_map(), "Missing map");
+    Debug::check_assertion(get_game().has_current_map(), "Missing map");
   }
 
   return get_game().get_current_map();

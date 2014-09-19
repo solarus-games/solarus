@@ -23,7 +23,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/System.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.

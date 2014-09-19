@@ -21,7 +21,7 @@
 #include "entities/TilePattern.h"
 #include "lowlevel/Rectangle.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Animated tile pattern.

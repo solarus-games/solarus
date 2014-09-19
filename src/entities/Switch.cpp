@@ -26,7 +26,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/Sound.h"
 
-namespace solarus {
+namespace Solarus {
 
 const std::vector<std::string> Switch::subtype_names = {
   "walkable",

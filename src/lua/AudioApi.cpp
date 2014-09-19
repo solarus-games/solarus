@@ -21,7 +21,7 @@
 #include <lua.hpp>
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * Name of the Lua table representing the audio module.
@@ -61,7 +61,7 @@ void LuaContext::register_audio_module() {
  */
 int LuaContext::audio_api_get_sound_volume(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     lua_pushinteger(l, Sound::get_volume());
     return 1;
   });
@@ -74,8 +74,8 @@ int LuaContext::audio_api_get_sound_volume(lua_State* l) {
  */
 int LuaContext::audio_api_set_sound_volume(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
-    int volume = lua_tools::check_int(l, 1);
+  return LuaTools::exception_boundary_handle(l, [&] {
+    int volume = LuaTools::check_int(l, 1);
     Sound::set_volume(volume);
 
     return 0;
@@ -89,11 +89,11 @@ int LuaContext::audio_api_set_sound_volume(lua_State* l) {
  */
 int LuaContext::audio_api_play_sound(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
-    const std::string& sound_id = lua_tools::check_string(l, 1);
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const std::string& sound_id = LuaTools::check_string(l, 1);
 
     if (!Sound::exists(sound_id)) {
-      lua_tools::error(l, std::string("No such sound: '") + sound_id + "'");
+      LuaTools::error(l, std::string("No such sound: '") + sound_id + "'");
     }
     Sound::play(sound_id);
 
@@ -108,7 +108,7 @@ int LuaContext::audio_api_play_sound(lua_State* l) {
  */
 int LuaContext::audio_api_preload_sounds(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Sound::load_all();
     return 0;
   });
@@ -121,7 +121,7 @@ int LuaContext::audio_api_preload_sounds(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_volume(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     lua_pushinteger(l, Music::get_volume());
     return 1;
   });
@@ -134,8 +134,8 @@ int LuaContext::audio_api_get_music_volume(lua_State* l) {
  */
 int LuaContext::audio_api_set_music_volume(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
-    int volume = lua_tools::check_int(l, 1);
+  return LuaTools::exception_boundary_handle(l, [&] {
+    int volume = LuaTools::check_int(l, 1);
 
     Music::set_volume(volume);
 
@@ -150,8 +150,8 @@ int LuaContext::audio_api_set_music_volume(lua_State* l) {
  */
 int LuaContext::audio_api_play_music(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
-    const std::string& music_id = lua_tools::opt_string(l, 1, "");
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const std::string& music_id = LuaTools::opt_string(l, 1, "");
     bool loop = true;  // true by default, unless there is a callback.
     ScopedLuaRef callback_ref;
     if (lua_gettop(l) >= 2) {
@@ -162,7 +162,7 @@ int LuaContext::audio_api_play_music(lua_State* l) {
       else {
         // There is a callback parameter.
         loop = false;  // No loop when there is a callback.
-        callback_ref = lua_tools::check_function(l, 2);
+        callback_ref = LuaTools::check_function(l, 2);
       }
     }
 
@@ -173,7 +173,7 @@ int LuaContext::audio_api_play_music(lua_State* l) {
     else {
       if (!Music::exists(music_id)) {
         // Could not find the specified music.
-        lua_tools::error(l, std::string("No such music: '") + music_id + "'");
+        LuaTools::error(l, std::string("No such music: '") + music_id + "'");
       }
 
       // Valid music file name.
@@ -190,7 +190,7 @@ int LuaContext::audio_api_play_music(lua_State* l) {
  */
 int LuaContext::audio_api_stop_music(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     Music::stop_playing();
 
     return 0;
@@ -204,7 +204,7 @@ int LuaContext::audio_api_stop_music(lua_State* l) {
  */
 int LuaContext::audio_api_get_music(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& music_id = Music::get_current_music_id();
 
     if (music_id == Music::none) {
@@ -224,7 +224,7 @@ int LuaContext::audio_api_get_music(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_format(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     const Music::Format format = Music::get_format();
 
     if (format == Music::NO_FORMAT) {
@@ -245,7 +245,7 @@ int LuaContext::audio_api_get_music_format(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_num_channels(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     if (Music::get_format() != Music::IT) {
       lua_pushnil(l);
     }
@@ -263,8 +263,8 @@ int LuaContext::audio_api_get_music_num_channels(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_channel_volume(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
-    int channel = lua_tools::check_int(l, 1);
+  return LuaTools::exception_boundary_handle(l, [&] {
+    int channel = LuaTools::check_int(l, 1);
 
     if (Music::get_format() != Music::IT) {
       lua_pushnil(l);
@@ -273,7 +273,7 @@ int LuaContext::audio_api_get_music_channel_volume(lua_State* l) {
       if (channel < 0 || channel >= Music::get_num_channels()) {
         std::ostringstream oss;
         oss << "Invalid channel number: " << channel;
-        lua_tools::arg_error(l, 1, oss.str());
+        LuaTools::arg_error(l, 1, oss.str());
       }
       lua_pushinteger(l, Music::get_channel_volume(channel));
     }
@@ -288,9 +288,9 @@ int LuaContext::audio_api_get_music_channel_volume(lua_State* l) {
  */
 int LuaContext::audio_api_set_music_channel_volume(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
-    int channel = lua_tools::check_int(l, 1);
-    int volume = lua_tools::check_int(l, 2);
+  return LuaTools::exception_boundary_handle(l, [&] {
+    int channel = LuaTools::check_int(l, 1);
+    int volume = LuaTools::check_int(l, 2);
 
     if (Music::get_format() != Music::IT) {
       lua_pushboolean(l, false);
@@ -299,7 +299,7 @@ int LuaContext::audio_api_set_music_channel_volume(lua_State* l) {
       if (channel < 0 || channel >= Music::get_num_channels()) {
         std::ostringstream oss;
         oss << "Invalid channel number: " << channel;
-        lua_tools::arg_error(l, 1, oss.str());
+        LuaTools::arg_error(l, 1, oss.str());
       }
       Music::set_channel_volume(channel, volume);
       lua_pushboolean(l, true);
@@ -315,7 +315,7 @@ int LuaContext::audio_api_set_music_channel_volume(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_tempo(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     if (Music::get_format() != Music::IT) {
       lua_pushnil(l);
     }
@@ -333,8 +333,8 @@ int LuaContext::audio_api_get_music_tempo(lua_State* l) {
  */
 int LuaContext::audio_api_set_music_tempo(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
-    int tempo = lua_tools::check_int(l, 1);
+  return LuaTools::exception_boundary_handle(l, [&] {
+    int tempo = LuaTools::check_int(l, 1);
 
     if (Music::get_format() != Music::IT) {
       lua_pushboolean(l, false);

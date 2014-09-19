@@ -17,7 +17,7 @@
 #include "lowlevel/Rectangle.h"
 #include <ostream>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Prints a rectangle to an output stream.

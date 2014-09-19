@@ -30,7 +30,7 @@
 #include "lowlevel/Debug.h"
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a new shop treasure with the specified treasure and price.

@@ -24,7 +24,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Sound.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a new crystal block.

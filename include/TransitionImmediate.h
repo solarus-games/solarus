@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "Transition.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Immediate transition effect.

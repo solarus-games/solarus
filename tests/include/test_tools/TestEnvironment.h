@@ -24,7 +24,7 @@
 #include <cstdint>
 #include <memory>
 
-namespace solarus {
+namespace Solarus {
 
 class Hero;
 class Map;

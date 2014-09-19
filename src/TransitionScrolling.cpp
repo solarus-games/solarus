@@ -23,7 +23,7 @@
 #include "lowlevel/Video.h"
 #include "lowlevel/Debug.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a scrolling transition effect.
@@ -179,7 +179,7 @@ void TransitionScrolling::draw(Surface& dst_surface) {
   }
 
   Surface* previous_surface = get_previous_surface();
-  debug::check_assertion(previous_surface != nullptr,
+  Debug::check_assertion(previous_surface != nullptr,
       "No previous surface defined for scrolling");
 
   // draw the old map

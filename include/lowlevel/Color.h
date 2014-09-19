@@ -20,7 +20,7 @@
 #include "Common.h"
 #include <SDL.h>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Represents a color.

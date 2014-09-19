@@ -22,7 +22,7 @@
 #include <map>
 #include <string>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief This class reads the quest resource list from file project_db.dat

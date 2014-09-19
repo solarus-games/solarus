@@ -22,7 +22,7 @@
 #include "SpritePtr.h"
 #include <string>
 
-namespace solarus {
+namespace Solarus {
 
 class EquipmentItem;
 class Game;

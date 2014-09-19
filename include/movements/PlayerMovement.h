@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "movements/StraightMovement.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Movement of an entity controlled by the player.

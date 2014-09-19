@@ -21,7 +21,7 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/Video.h"
 
-namespace solarus {
+namespace Solarus {
 
 Color Color::transparent;
 Color Color::black;

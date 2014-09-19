@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "lowlevel/shaders/Shader.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Shader context managment.

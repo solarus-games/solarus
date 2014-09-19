@@ -18,7 +18,7 @@
 #include "lowlevel/Debug.h"
 #include "lua/LuaContext.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a new separator.
@@ -38,7 +38,7 @@ Separator::Separator(
     int height):
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height) {
 
-  debug::check_assertion((width == 16 && height > 16)
+  Debug::check_assertion((width == 16 && height > 16)
       || (width > 16 && height == 16), "Invalid separator size");
 
   set_layer_independent_collisions(true);

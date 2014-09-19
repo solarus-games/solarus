@@ -15,8 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace solarus {
-namespace lua_tools {
+namespace Solarus {
+namespace LuaTools {
 
 /**
  * \brief Function to be used at the Lua to C++ boundary.
@@ -75,9 +75,9 @@ E check_enum(
     int index,
     const std::vector<std::string>& names
 ) {
-  debug::check_assertion(!names[0].empty(), "Invalid list of names");
+  Debug::check_assertion(!names[0].empty(), "Invalid list of names");
 
-  const std::string& name = lua_tools::check_string(l, index);
+  const std::string& name = LuaTools::check_string(l, index);
   for (int i = 0; !names[i].empty(); ++i) {
     if (names[i] == name) {
       return E(i);
@@ -132,7 +132,7 @@ E check_enum_field(
 }
 
 /**
- * \brief Like lua_tools::check_enum() but with a default value.
+ * \brief Like LuaTools::check_enum() but with a default value.
  *
  * \param l A Lua state.
  * \param index Index of a string in the Lua stack.
@@ -156,7 +156,7 @@ E opt_enum(
 }
 
 /**
- * \brief Like lua_tools::check_enum_field() but with a default value.
+ * \brief Like LuaTools::check_enum_field() but with a default value.
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
  * \param key Key of the field to get in that table.

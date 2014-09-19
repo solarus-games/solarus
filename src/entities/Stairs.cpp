@@ -23,7 +23,7 @@
 #include "Game.h"
 #include "Map.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a new stairs entity.
@@ -44,7 +44,7 @@ Stairs::Stairs(
   Detector(COLLISION_TOUCHING | COLLISION_OVERLAPPING, name, layer, x, y, 16, 16),
   subtype(subtype) {
 
-  debug::check_assertion(!is_inside_floor() || layer != LAYER_HIGH,
+  Debug::check_assertion(!is_inside_floor() || layer != LAYER_HIGH,
       "Cannot put single floor stairs on the high layer");
 
   set_direction(direction);

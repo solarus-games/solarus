@@ -25,7 +25,7 @@
 #include "lowlevel/System.h"
 #include "lua/LuaContext.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a camera.
@@ -83,7 +83,7 @@ void Camera::update() {
  */
 void Camera::update_fixed_on_hero() {
 
-  debug::check_assertion(fixed_on_hero,
+  Debug::check_assertion(fixed_on_hero,
       "Illegal call to Camera::update_fixed_on_hero()");
 
   int x = 0;
@@ -126,7 +126,7 @@ void Camera::update_fixed_on_hero() {
         }
       }
       else {
-        debug::check_assertion(separator->is_horizontal(), "Invalid separator shape");
+        Debug::check_assertion(separator->is_horizontal(), "Invalid separator shape");
 
         // Horizontal separator.
         int separation_y = separator->get_y() + 8;
@@ -240,7 +240,7 @@ void Camera::update_fixed_on_hero() {
  */
 void Camera::update_moving() {
 
-  debug::check_assertion(!fixed_on_hero,
+  Debug::check_assertion(!fixed_on_hero,
       "Illegal call to Camera::update_moving()");
 
   if (movement == nullptr) {
@@ -375,7 +375,7 @@ void Camera::restore() {
  */
 void Camera::traverse_separator(Separator* separator) {
 
-  debug::check_assertion(separator != nullptr, "Missing parameter separator");
+  Debug::check_assertion(separator != nullptr, "Missing parameter separator");
 
   // Save the current position of the camera.
   separator_scrolling_position = position;

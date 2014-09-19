@@ -31,7 +31,7 @@
 #include "entities/Stairs.h"
 #include "Map.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a hookshot.
@@ -270,7 +270,7 @@ bool Hookshot::is_going_back() const {
  */
 void Hookshot::go_back() {
 
-  debug::check_assertion(!is_going_back(), "The hookshot is already going back");
+  Debug::check_assertion(!is_going_back(), "The hookshot is already going back");
 
   has_to_go_back = true;
 }
@@ -281,7 +281,7 @@ void Hookshot::go_back() {
  */
 void Hookshot::attach_to(MapEntity& entity_reached) {
 
-  debug::check_assertion(this->entity_reached == nullptr,
+  Debug::check_assertion(this->entity_reached == nullptr,
       "The hookshot is already attached to an entity");
 
   this->entity_reached = &entity_reached;

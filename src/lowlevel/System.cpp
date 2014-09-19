@@ -29,7 +29,7 @@
 #  include "lowlevel/apple/AppleInterface.h"
 #endif
 
-namespace solarus {
+namespace Solarus {
 
 uint32_t System::ticks = 0;
 
@@ -44,7 +44,7 @@ uint32_t System::ticks = 0;
 void System::initialize(const CommandLine& args) {
 
   // Debugging features.
-  debug::initialize(args);
+  Debug::initialize(args);
 
   // initialize SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
@@ -83,7 +83,7 @@ void System::quit() {
   Color::quit();
   Video::quit();
   FileTools::quit();
-  debug::quit();
+  Debug::quit();
 
   SDL_Quit();
 }

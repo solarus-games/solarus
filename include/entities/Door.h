@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief A door that may be open or closed.

@@ -18,7 +18,7 @@
 #include "lowlevel/Hq4xFilter.h"
 #include "hqx/hqx.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.

@@ -18,7 +18,7 @@
 #include <ctime>
 #include <cstdlib>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Initializes the random number generator.

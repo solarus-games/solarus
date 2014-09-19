@@ -21,7 +21,7 @@
 #include "Transition.h"
 #include "lowlevel/Color.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Fade in or fade out transition effect.

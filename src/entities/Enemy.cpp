@@ -40,7 +40,7 @@
 #include "lowlevel/Sound.h"
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 const std::vector<std::string> Enemy::attack_names = {
   "sword",
@@ -651,7 +651,7 @@ void Enemy::set_attack_consequence(
   if (life_lost < 0) {
     std::ostringstream oss;
     oss << "Invalid amount of life: " << life_lost;
-    debug::die(oss.str());
+    Debug::die(oss.str());
   }
   attack_reactions[attack].set_general_reaction(reaction, life_lost);
 }
@@ -672,7 +672,7 @@ void Enemy::set_attack_consequence_sprite(
   if (life_lost < 0) {
     std::ostringstream oss;
     oss << "Invalid amount of life: " << life_lost;
-    debug::die(oss.str());
+    Debug::die(oss.str());
   }
   attack_reactions[attack].set_sprite_reaction(&sprite, reaction, life_lost);
 }
@@ -1013,7 +1013,7 @@ void Enemy::attack_hero(Hero& hero, Sprite* this_sprite) {
 
       // Compute the direction corresponding to the angle between the enemy and the hero.
       double angle = hero.get_angle(*this, nullptr, this_sprite);
-      int protected_direction4 = (int) ((angle + geometry::PI_OVER_2 / 2.0) * 4 / geometry::TWO_PI);
+      int protected_direction4 = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
       protected_direction4 = (protected_direction4 + 4) % 4;
 
       // Also get the direction of the enemy's sprite.
@@ -1081,7 +1081,7 @@ void Enemy::play_hurt_sound() {
       break;
 
     case HURT_NUMBER:
-      debug::die("Invalid hurt style");
+      Debug::die("Invalid hurt style");
       break;
   }
 
@@ -1198,7 +1198,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
         Hero& hero = static_cast<Hero&>(source);
 
         // Sword attacks only use pixel-precise collisions.
-        debug::check_assertion(this_sprite != nullptr,
+        Debug::check_assertion(this_sprite != nullptr,
             "Missing enemy sprite for sword attack"
         );
 
@@ -1229,7 +1229,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
     {
       std::ostringstream oss;
       oss << "Invalid enemy reaction: " << reaction.type;
-      debug::die(oss.str());
+      Debug::die(oss.str());
       break;
     }
   }

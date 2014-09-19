@@ -29,7 +29,7 @@
 #include <sstream>
 #include <lua.hpp>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Associates to each movement direction the possible directions of the hero's sprites.
@@ -642,7 +642,7 @@ int HeroSprites::get_animation_direction(
  */
 void HeroSprites::set_animation_direction(int direction) {
 
-  debug::check_assertion(direction >= 0 && direction < 4,
+  Debug::check_assertion(direction >= 0 && direction < 4,
     "Invalid direction for set_animation_direction");
 
   tunic_sprite->set_current_direction(direction);
@@ -1457,7 +1457,7 @@ void HeroSprites::set_animation(
     set_tunic_animation(animation, callback_ref);
   }
   else {
-    debug::error("Sprite '" + tunic_sprite->get_animation_set_id() + "': Animation '" + animation + "' not found.");
+    Debug::error("Sprite '" + tunic_sprite->get_animation_set_id() + "': Animation '" + animation + "' not found.");
   }
 
   if (shield_sprite != nullptr

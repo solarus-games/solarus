@@ -21,7 +21,7 @@
 #include "entities/CarriedItem.h"
 #include "entities/Hero.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Abstract base class for a state of the hero.

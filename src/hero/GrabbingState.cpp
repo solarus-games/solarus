@@ -22,7 +22,7 @@
 #include "Game.h"
 #include "GameCommands.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.

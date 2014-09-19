@@ -20,7 +20,7 @@
 #include "hero/State.h"
 #include "EquipmentItemUsage.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief The state "using equipment item" of the hero.

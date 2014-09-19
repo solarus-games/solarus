@@ -25,7 +25,7 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a new treasure.
@@ -66,7 +66,7 @@ bool Treasure::is_obtainable() const {
 void Treasure::check_obtainable() const {
 
   if (!is_obtainable()) {
-    debug::die(std::string("Treasure '") + item_name
+    Debug::die(std::string("Treasure '") + item_name
       + "' is not allowed, did you call ensure_obtainable()?");
   }
 }
@@ -168,7 +168,7 @@ const std::string& Treasure::get_savegame_variable() const {
  */
 void Treasure::give_to_player() const {
 
-  debug::check_assertion(!is_found(), "This treasure was already found");
+  Debug::check_assertion(!is_found(), "This treasure was already found");
   check_obtainable();
 
   // Mark the treasure as found in the savegame.

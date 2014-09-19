@@ -30,7 +30,7 @@
 #include "Sprite.h"
 #include <lua.hpp>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates an NPC.
@@ -78,7 +78,7 @@ Npc::Npc(Game& /* game */, const std::string& name, Layer layer, int x, int y,
     dialog_to_show = behavior_string.substr(7);
   }
   else {
-    debug::die(std::string("Invalid behavior string for NPC '") + name
+    Debug::die(std::string("Invalid behavior string for NPC '") + name
         + "': '" + behavior_string + "'");
   }
 }

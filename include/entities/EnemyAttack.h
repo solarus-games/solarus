@@ -17,7 +17,7 @@
 #ifndef SOLARUS_ENEMY_ATTACK_H
 #define SOLARUS_ENEMY_ATTACK_H
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Defines the types of attacks an enemy can be victim of.

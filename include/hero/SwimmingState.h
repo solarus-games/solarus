@@ -19,7 +19,7 @@
 
 #include "hero/PlayerMovementState.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief The state "Swimming" of the hero.

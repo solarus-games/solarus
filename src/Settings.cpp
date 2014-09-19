@@ -26,7 +26,7 @@
 #include <lua.hpp>
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Attempts to load the built-in settings from a file.
@@ -36,7 +36,7 @@ namespace solarus {
 bool Settings::load(const std::string& file_name) {
 
   const std::string& quest_write_dir = FileTools::get_quest_write_dir();
-  debug::check_assertion(!quest_write_dir.empty(),
+  Debug::check_assertion(!quest_write_dir.empty(),
       "Cannot load settings: no quest write directory was specified in quest.dat");
 
   if (!FileTools::data_file_exists(file_name)) {
@@ -49,7 +49,7 @@ bool Settings::load(const std::string& file_name) {
   int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0 || lua_pcall(l, 0, 0, 0) != 0) {
-    debug::error(std::string("Cannot read settings file '")
+    Debug::error(std::string("Cannot read settings file '")
         + file_name + "': " + lua_tostring(l, -1)
     );
     lua_pop(l, 1);
@@ -127,7 +127,7 @@ bool Settings::load(const std::string& file_name) {
 bool Settings::save(const std::string& file_name) {
 
   const std::string& quest_write_dir = FileTools::get_quest_write_dir();
-  debug::check_assertion(!quest_write_dir.empty(),
+  Debug::check_assertion(!quest_write_dir.empty(),
       "Cannot save settings: no quest write directory was specified in quest.dat");
 
   std::ostringstream oss;

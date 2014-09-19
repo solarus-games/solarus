@@ -20,7 +20,7 @@
 #include "hero/State.h"
 #include "entities/Stairs.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief The state "Stairs" of the hero.

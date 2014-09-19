@@ -23,7 +23,7 @@
 
 struct lua_State;
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Exception to indicate that a Lua error occurred.

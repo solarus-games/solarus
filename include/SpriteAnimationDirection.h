@@ -23,7 +23,7 @@
 #include "lowlevel/Debug.h"
 #include <vector>
 
-namespace solarus {
+namespace Solarus {
 
 class Surface;
 

@@ -25,7 +25,7 @@
 #include <SDL_opengl.h>
 
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief This class provide initialization and quit functions for the GL driver context.

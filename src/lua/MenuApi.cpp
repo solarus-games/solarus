@@ -21,7 +21,7 @@
 #include <list>
 #include <lua.hpp>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * Name of the Lua table representing the menu module.
@@ -164,7 +164,7 @@ void LuaContext::update_menus() {
     if (it->ref.is_empty()) {
       // Empty ref on a menu means that we should remove it.
       // In this case, context must also be nullptr.
-      debug::check_assertion(it->context == nullptr, "Menu with context and no ref");
+      Debug::check_assertion(it->context == nullptr, "Menu with context and no ref");
       menus.erase(it--);
     }
   }
@@ -177,14 +177,14 @@ void LuaContext::update_menus() {
  */
 int LuaContext::menu_api_start(lua_State *l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     // Parameters: context table.
     if (lua_type(l, 1) != LUA_TTABLE
         && lua_type(l, 1) != LUA_TUSERDATA) {
-      lua_tools::type_error(l, 1, "table or userdata");
+      LuaTools::type_error(l, 1, "table or userdata");
     }
-    lua_tools::check_type(l, 2, LUA_TTABLE);
-    bool on_top = lua_tools::opt_boolean(l, 3, true);
+    LuaTools::check_type(l, 2, LUA_TTABLE);
+    bool on_top = LuaTools::opt_boolean(l, 3, true);
     lua_settop(l, 2);
 
     LuaContext& lua_context = get_lua_context(l);
@@ -202,10 +202,10 @@ int LuaContext::menu_api_start(lua_State *l) {
  */
 int LuaContext::menu_api_stop(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
 
-    lua_tools::check_type(l, 1, LUA_TTABLE);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
 
     std::list<LuaMenuData>& menus = lua_context.menus;
     for (LuaMenuData& menu: menus) {
@@ -232,10 +232,10 @@ int LuaContext::menu_api_stop(lua_State* l) {
  */
 int LuaContext::menu_api_stop_all(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     if (lua_type(l, 1) != LUA_TTABLE
         && lua_type(l, 1) != LUA_TUSERDATA) {
-      lua_tools::type_error(l, 1, "table, game or map");
+      LuaTools::type_error(l, 1, "table, game or map");
     }
 
     get_lua_context(l).remove_menus(1);
@@ -251,10 +251,10 @@ int LuaContext::menu_api_stop_all(lua_State* l) {
  */
 int LuaContext::menu_api_is_started(lua_State* l) {
 
-  return lua_tools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
 
-    lua_tools::check_type(l, 1, LUA_TTABLE);
+    LuaTools::check_type(l, 1, LUA_TTABLE);
 
     bool found = false;
     std::list<LuaMenuData>& menus = lua_context.menus;

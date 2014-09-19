@@ -19,7 +19,7 @@
 #include "lowlevel/Surface.h"
 #include "Map.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a simple tile pattern.

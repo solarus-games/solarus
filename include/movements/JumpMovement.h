@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "movements/PixelMovement.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Movement of an entity that jumps towards a direction.

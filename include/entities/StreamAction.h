@@ -22,7 +22,7 @@
 #include "lowlevel/Point.h"
 #include <cstdint>
 
-namespace solarus {
+namespace Solarus {
 
 class MapEntity;
 class Stream;

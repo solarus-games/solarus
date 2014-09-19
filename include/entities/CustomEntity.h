@@ -22,7 +22,7 @@
 #include "lua/ScopedLuaRef.h"
 #include <map>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief A map entity fully controlled by Lua.

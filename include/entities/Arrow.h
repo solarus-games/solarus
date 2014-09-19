@@ -21,7 +21,7 @@
 #include "entities/MapEntity.h"
 #include "entities/MapEntityPtr.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief An arrow thrown by the bow on the map.

@@ -17,7 +17,7 @@
 #include "lowlevel/Hq4xFilter.h"
 #include "hqx/hqx.h"
 
-namespace solarus {
+namespace Solarus {
 
 namespace {
   bool hqx_initialized = false;   /**< Whether the common hqx initialization was done. */

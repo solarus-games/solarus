@@ -20,7 +20,7 @@
 #include "hero/State.h"
 #include "hero/PlayerMovementState.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief State of the hero where he can walk normally and interact with entities.

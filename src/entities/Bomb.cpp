@@ -27,7 +27,7 @@
 #include "Map.h"
 #include "KeysEffect.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.

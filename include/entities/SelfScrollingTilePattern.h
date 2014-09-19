@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "entities/SimpleTilePattern.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Tile pattern that scrolls on itself when the camera moves.

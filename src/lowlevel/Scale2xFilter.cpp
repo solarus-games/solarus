@@ -16,7 +16,7 @@
  */
 #include "lowlevel/Scale2xFilter.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.

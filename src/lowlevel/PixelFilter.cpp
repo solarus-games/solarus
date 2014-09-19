@@ -16,7 +16,7 @@
  */
 #include "lowlevel/PixelFilter.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.

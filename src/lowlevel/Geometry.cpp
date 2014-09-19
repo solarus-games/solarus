@@ -17,8 +17,8 @@
 
 #include "lowlevel/Geometry.h"
 
-namespace solarus {
-namespace geometry {
+namespace Solarus {
+namespace Geometry {
 
 /**
  * \brief Converts an angle in radians into an angle in degrees.

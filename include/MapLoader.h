@@ -21,7 +21,7 @@
 
 struct lua_State;
 
-namespace solarus {
+namespace Solarus {
 
 class Game;
 class Map;

@@ -21,7 +21,7 @@
 #include "entities/MapEntityPtr.h"
 #include "movements/Movement.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Movement of an entity attached to another entity.

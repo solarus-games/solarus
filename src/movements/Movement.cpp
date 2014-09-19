@@ -23,7 +23,7 @@
 #include "Drawable.h"
 #include <lua.hpp>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.
@@ -75,7 +75,7 @@ MapEntity* Movement::get_entity() const {
  */
 void Movement::set_entity(MapEntity* entity) {
 
-  debug::check_assertion(drawable == nullptr, "This movement is already assigned to a drawable");
+  Debug::check_assertion(drawable == nullptr, "This movement is already assigned to a drawable");
 
   this->entity = entity;
 
@@ -108,7 +108,7 @@ Drawable* Movement::get_drawable() const {
  */
 void Movement::set_drawable(Drawable* drawable) {
 
-  debug::check_assertion(entity == nullptr, "This movement is already assigned to an entity");
+  Debug::check_assertion(entity == nullptr, "This movement is already assigned to an entity");
 
   this->drawable = drawable;
 
@@ -559,7 +559,7 @@ const ScopedLuaRef& Movement::get_finished_callback() const {
  */
 void Movement::set_finished_callback(const ScopedLuaRef& finished_callback_ref) {
 
-  debug::check_assertion(get_lua_context() != nullptr, "Undefined Lua context");
+  Debug::check_assertion(get_lua_context() != nullptr, "Undefined Lua context");
 
   this->finished_callback_ref = finished_callback_ref;
 }

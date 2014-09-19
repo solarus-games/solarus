@@ -23,7 +23,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/Point.h"
 
-namespace solarus {
+namespace Solarus {
 
 const std::string PathMovement::elementary_moves[] = {
     " 1  0   1  0   1  0   1  0   1  0   1  0   1  0   1  0", // 8 pixels right
@@ -282,7 +282,7 @@ void PathMovement::start_next_elementary_move() {
       // normal case: there is a next trajectory to do
 
       current_direction = remaining_path[0] - '0';
-      debug::check_assertion(current_direction >= 0 && current_direction < 8,
+      Debug::check_assertion(current_direction >= 0 && current_direction < 8,
           std::string("Invalid path '") + initial_path + "' (bad direction '"
           + remaining_path[0] + "')"
       );
@@ -303,7 +303,7 @@ uint32_t PathMovement::speed_to_delay(int speed, int direction) {
 
   uint32_t delay = 1000 / speed; // speed in pixels per second, delay in milliseconds
   if (direction % 2 != 0) {
-    delay = (uint32_t) (delay * geometry::SQRT_2); // diagonal move
+    delay = (uint32_t) (delay * Geometry::SQRT_2); // diagonal move
   }
   return delay;
 }

@@ -22,7 +22,7 @@
 #include "Game.h"
 #include "Savegame.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates the description of an item.
@@ -387,7 +387,7 @@ void EquipmentItem::notify_pickable_appeared(Pickable& pickable) {
  */
 int EquipmentItem::get_variant() const {
 
-  debug::check_assertion(is_saved(),
+  Debug::check_assertion(is_saved(),
       std::string("The item '") + get_name() + "' is not saved");
 
   return get_savegame().get_integer(get_savegame_variable());
@@ -402,7 +402,7 @@ int EquipmentItem::get_variant() const {
  */
 void EquipmentItem::set_variant(int variant) {
 
-  debug::check_assertion(is_saved(),
+  Debug::check_assertion(is_saved(),
       std::string("The item '") + get_name() + "' is not saved");
 
   // Set the possession state in the savegame.
@@ -426,7 +426,7 @@ void EquipmentItem::set_variant(int variant) {
  */
 int EquipmentItem::get_amount() const {
 
-  debug::check_assertion(has_amount(),
+  Debug::check_assertion(has_amount(),
       std::string("The item '") + get_name() + "' has no amount");
 
   return get_savegame().get_integer(get_amount_savegame_variable());
@@ -438,7 +438,7 @@ int EquipmentItem::get_amount() const {
  */
 void EquipmentItem::set_amount(int amount) {
 
-  debug::check_assertion(has_amount(),
+  Debug::check_assertion(has_amount(),
       std::string("The item '") + get_name() + "' has no amount");
 
   amount = std::max(0, std::min(get_max_amount(), amount));
@@ -453,7 +453,7 @@ void EquipmentItem::set_amount(int amount) {
  */
 int EquipmentItem::get_max_amount() const {
 
-  debug::check_assertion(has_amount(),
+  Debug::check_assertion(has_amount(),
       std::string("The item '") + get_name() + "' has no amount");
 
   return max_amount;
@@ -465,7 +465,7 @@ int EquipmentItem::get_max_amount() const {
  */
 void EquipmentItem::set_max_amount(int max_amount) {
 
-  debug::check_assertion(has_amount(),
+  Debug::check_assertion(has_amount(),
       std::string("The item '") + get_name() + "' has no amount");
 
   this->max_amount = max_amount;

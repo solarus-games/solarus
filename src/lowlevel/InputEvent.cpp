@@ -21,7 +21,7 @@
 #include <SDL.h>
 #include <cstdlib>  // std::abs
 
-namespace solarus {
+namespace Solarus {
 
 const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
     KEY_RIGHT,
@@ -1067,7 +1067,7 @@ InputEvent::MouseButton InputEvent::get_mouse_button() const {
  */
 Rectangle InputEvent::get_mouse_position() const {
 
-  debug::check_assertion(is_mouse_event(), "Event is not a mouse event");
+  Debug::check_assertion(is_mouse_event(), "Event is not a mouse event");
 
   return Video::get_scaled_position(
       Rectangle(internal_event.button.x, internal_event.button.y, 1, 1));

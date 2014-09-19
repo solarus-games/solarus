@@ -18,7 +18,7 @@
 #include "hero/HeroSprites.h"
 #include "movements/PathMovement.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.

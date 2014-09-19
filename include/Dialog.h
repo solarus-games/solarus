@@ -21,7 +21,7 @@
 #include <string>
 #include <map>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief A dialog that can be displayed during the game in the dialog box.

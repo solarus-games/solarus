@@ -20,7 +20,7 @@
 #include "Sprite.h"
 #include "lowlevel/FileTools.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a new stream.

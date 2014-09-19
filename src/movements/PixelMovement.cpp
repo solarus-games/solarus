@@ -21,7 +21,7 @@
 #include "lowlevel/Debug.h"
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a pixel movement object.
@@ -91,7 +91,7 @@ void PixelMovement::set_trajectory(const std::string& trajectory_string) {
   std::istringstream iss(trajectory_string);
   while (iss >> dx) {
     if (!(iss >> dy)) {
-      debug::die(std::string("Invalid trajectory string: '")
+      Debug::die(std::string("Invalid trajectory string: '")
           + trajectory_string + "'");
     }
     trajectory.emplace_back(dx, dy);

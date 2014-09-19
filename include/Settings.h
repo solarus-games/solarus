@@ -21,7 +21,7 @@
 #include "Common.h"
 #include <string>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Loads and saves the built-in settings of the quest.

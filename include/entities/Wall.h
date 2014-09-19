@@ -21,7 +21,7 @@
 #include "entities/MapEntity.h"
 #include <set>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief An invisible obstacle that stops other types of entities.

@@ -28,7 +28,7 @@
 #include "KeysEffect.h"
 #include "lowlevel/Debug.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.
@@ -99,7 +99,7 @@ void Hero::StairsState::start(const State* previous_state) {
     if (way == Stairs::NORMAL_WAY) {
       // Towards an upper layer: change the layer now
       Layer layer = stairs.get_layer();
-      debug::check_assertion(layer != LAYER_HIGH, "Invalid stairs layer");
+      Debug::check_assertion(layer != LAYER_HIGH, "Invalid stairs layer");
       get_entities().set_entity_layer(hero, Layer(layer + 1));
     }
   }
@@ -145,7 +145,7 @@ void Hero::StairsState::stop(const State* next_state) {
       break;
 
     default:
-      debug::die("Invalid carried item behavior");
+      Debug::die("Invalid carried item behavior");
     }
   }
 }
@@ -210,7 +210,7 @@ void Hero::StairsState::update() {
         // there must be a teletransporter associated with these stairs,
         // otherwise the hero would get stuck into the walls
         Teletransporter* teletransporter = hero.get_delayed_teletransporter();
-        debug::check_assertion(teletransporter != nullptr, "Teletransporter expected with the stairs");
+        Debug::check_assertion(teletransporter != nullptr, "Teletransporter expected with the stairs");
         teletransporter->transport_hero(hero);
       }
       else {

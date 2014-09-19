@@ -22,8 +22,8 @@
 #include <string>
 #include <SDL_messagebox.h>
 
-namespace solarus {
-namespace debug {
+namespace Solarus {
+namespace Debug {
 
 namespace {
 

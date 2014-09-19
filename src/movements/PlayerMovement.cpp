@@ -23,7 +23,7 @@
 #include "Game.h"
 #include "GameCommands.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.
@@ -130,7 +130,7 @@ void PlayerMovement::compute_movement() {
   }
   else { // the directional keys currently pressed define a valid movement
     set_speed(moving_speed);
-    set_angle(geometry::degrees_to_radians(direction8 * 45));
+    set_angle(Geometry::degrees_to_radians(direction8 * 45));
   }
 
   // Notify the entity that the properties of its movement have just changed.

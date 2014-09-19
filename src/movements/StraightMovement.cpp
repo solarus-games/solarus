@@ -22,7 +22,7 @@
 #include "lowlevel/Debug.h"
 #include <cmath>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.
@@ -112,7 +112,7 @@ void StraightMovement::set_x_speed(double x_speed) {
     }
     set_next_move_date_x(now + x_delay);
   }
-  angle = geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
+  angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
   initial_xy = get_xy();
   finished = false;
 
@@ -147,7 +147,7 @@ void StraightMovement::set_y_speed(double y_speed) {
     }
     set_next_move_date_y(now + y_delay);
   }
-  angle = geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
+  angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
   initial_xy = get_xy();
   finished = false;
 
@@ -300,7 +300,7 @@ void StraightMovement::set_finished() {
  */
 int StraightMovement::get_displayed_direction4() const {
 
-  int direction = (geometry::radians_to_degrees(angle) + 45 + 360) / 90;
+  int direction = (Geometry::radians_to_degrees(angle) + 45 + 360) / 90;
   return direction % 4;
 }
 
@@ -395,14 +395,14 @@ void StraightMovement::update_smooth_x() {
                 test_collision_with_obstacles(0, 1))     // or we don't have a choice anyway.
         ) {
           translate_xy(x_move, 1);
-          next_move_date_x_increment = (int) (x_delay * geometry::SQRT_2);  // Fix the speed.
+          next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2);  // Fix the speed.
         }
         else if (!test_collision_with_obstacles(x_move, -1)
             && (test_collision_with_obstacles(0, 1) ||
                 test_collision_with_obstacles(0, -1))
         ) {
           translate_xy(x_move, -1);
-          next_move_date_x_increment = (int) (x_delay * geometry::SQRT_2);
+          next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2);
         }
         else {
 
@@ -483,14 +483,14 @@ void StraightMovement::update_smooth_y() {
                 test_collision_with_obstacles(1, 0))     // or we don't have a choice anyway.
         ) {
           translate_xy(1, y_move);
-          next_move_date_y_increment = (int) (y_delay * geometry::SQRT_2);  // Fix the speed.
+          next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2);  // Fix the speed.
         }
         else if (!test_collision_with_obstacles(-1, y_move)
             && (test_collision_with_obstacles(1, 0) ||
                 test_collision_with_obstacles(-1, 0))
         ) {
           translate_xy(-1, y_move);
-          next_move_date_y_increment = (int) (y_delay * geometry::SQRT_2);
+          next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2);
         }
         else {
           // The diagonal moves didn't work either.
@@ -661,7 +661,7 @@ void StraightMovement::update() {
       now = System::now();
 
       if (!finished && max_distance != 0
-          && geometry::get_distance(initial_xy, get_xy()) >= max_distance) {
+          && Geometry::get_distance(initial_xy, get_xy()) >= max_distance) {
         set_finished();
       }
       else {

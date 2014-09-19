@@ -24,7 +24,7 @@
 #include "Map.h"
 #include <lua.hpp>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.

@@ -20,8 +20,8 @@
 #include "lua/ScopedLuaRef.h"
 #include <sstream>
 
-namespace solarus {
-namespace lua_tools {
+namespace Solarus {
+namespace LuaTools {
 
 /**
  * \brief For an index in the Lua stack, returns an equivalent positive index.
@@ -116,7 +116,7 @@ bool call_function(
     const char* function_name
 ) {
   if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
-    debug::error(std::string("In ") + function_name + ": "
+    Debug::error(std::string("In ") + function_name + ": "
         + lua_tostring(l, -1)
     );
     lua_pop(l, 1);
@@ -253,7 +253,7 @@ int check_int(
 /**
  * \brief Checks that a table field is a number and returns it as an integer.
  *
- * This function acts like lua_getfield() followed by lua_tools::check_int().
+ * This function acts like lua_getfield() followed by LuaTools::check_int().
  *
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
@@ -279,7 +279,7 @@ int check_int_field(
 }
 
 /**
- * \brief Like lua_tools::check_int() but with a default value.
+ * \brief Like LuaTools::check_int() but with a default value.
  *
  * This function acts like luaL_optint() except that it throws a LuaException
  * in case of error.
@@ -301,7 +301,7 @@ int opt_int(
 }
 
 /**
- * \brief Like lua_tools::check_int_field() but with a default value.
+ * \brief Like LuaTools::check_int_field() but with a default value.
  *
  * This function acts like lua_getfield() followed by luaL_optint().
  *
@@ -361,7 +361,7 @@ double check_number(
 /**
  * \brief Checks that a table field is a number and returns it as a double.
  *
- * This function acts like lua_getfield() followed by lua_tools::check_number().
+ * This function acts like lua_getfield() followed by LuaTools::check_number().
  *
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
@@ -387,7 +387,7 @@ double check_number_field(
 }
 
 /**
- * \brief Like lua_tools::check_number() but with a default value.
+ * \brief Like LuaTools::check_number() but with a default value.
  *
  * This function acts like luaL_optnumber() except that it throws a
  * LuaException in case of error.
@@ -409,9 +409,9 @@ double opt_number(
 }
 
 /**
- * \brief Like lua_tools::check_number_field() but with a default value.
+ * \brief Like LuaTools::check_number_field() but with a default value.
  *
- * This function acts like lua_getfield() followed by lua_tools::opt_number().
+ * This function acts like lua_getfield() followed by LuaTools::opt_number().
  *
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
@@ -469,7 +469,7 @@ std::string check_string(
 /**
  * \brief Checks that a table field is a string and returns it.
  *
- * This function acts like lua_getfield() followed by lua_tools::check_string().
+ * This function acts like lua_getfield() followed by LuaTools::check_string().
  *
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
@@ -495,7 +495,7 @@ std::string check_string_field(
 }
 
 /**
- * \brief Like lua_tools::check_string() but with a default value.
+ * \brief Like LuaTools::check_string() but with a default value.
  *
  * This function acts like luaL_optstring() except that it throws a
  * LuaException in case of error.
@@ -517,9 +517,9 @@ std::string opt_string(
 }
 
 /**
- * \brief Like lua_tools::check_string_field() but with a default value.
+ * \brief Like LuaTools::check_string_field() but with a default value.
  *
- * This function acts like lua_getfield() followed by lua_tools::opt_string().
+ * This function acts like lua_getfield() followed by LuaTools::opt_string().
  *
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
@@ -600,7 +600,7 @@ bool check_boolean_field(
 }
 
 /**
- * \brief Like lua_tools::check_boolean() but with a default value.
+ * \brief Like LuaTools::check_boolean() but with a default value.
  * \param l A Lua state.
  * \param index Index of a value in the stack.
  * \param default_value The default value to return if the value is \c nil.
@@ -690,7 +690,7 @@ ScopedLuaRef check_function_field(
 }
 
 /**
- * \brief Like lua_tools::check_function() but the value is optional.
+ * \brief Like LuaTools::check_function() but the value is optional.
  * \param l A Lua state.
  * \param index Index of a value in the stack.
  * \return The wanted value as a Lua ref to the function, or an empty ref.
@@ -706,7 +706,7 @@ ScopedLuaRef opt_function(
 }
 
 /**
- * \brief Like lua_tools::check_function_field() but the field is optional.
+ * \brief Like LuaTools::check_function_field() but the field is optional.
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
  * \param key Key of the field to get in that table.
@@ -776,7 +776,7 @@ Layer check_layer(
 /**
  * \brief Checks that a table field is a valid layer and returns it.
  *
- * This function acts like lua_getfield() followed by lua_tools::check_layer().
+ * This function acts like lua_getfield() followed by LuaTools::check_layer().
  *
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
@@ -802,7 +802,7 @@ Layer check_layer_field(
 }
 
 /**
- * \brief Like lua_tools::check_layer() but with a default value.
+ * \brief Like LuaTools::check_layer() but with a default value.
  * \param l A Lua state.
  * \param index Index of a value in the stack.
  * \param default_value The default value to return if the value is \c nil.
@@ -820,7 +820,7 @@ Layer opt_layer(
 }
 
 /**
- * \brief Like lua_tools::check_layer_field() but with a default value.
+ * \brief Like LuaTools::check_layer_field() but with a default value.
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
  * \param key Key of the field to get in that table.
@@ -908,7 +908,7 @@ Color check_color(lua_State* l, int index) {
 /**
  * \brief Checks that a table field is a color and returns it.
  *
- * This function acts like lua_getfield() followed by lua_tools::check_color().
+ * This function acts like lua_getfield() followed by LuaTools::check_color().
  *
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
@@ -934,7 +934,7 @@ Color check_color_field(
 }
 
 /**
- * \brief Like lua_tools::check_color() but with a default value.
+ * \brief Like LuaTools::check_color() but with a default value.
  * \param l A Lua state.
  * \param index Index of a value in the stack.
  * \param default_value The default value to return if the value is \c nil.
@@ -952,7 +952,7 @@ Color opt_color(
 }
 
 /**
- * \brief Like lua_tools::check_color_field() but with a default value.
+ * \brief Like LuaTools::check_color_field() but with a default value.
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
  * \param key Key of the field to get in that table.

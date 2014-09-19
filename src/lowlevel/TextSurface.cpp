@@ -29,7 +29,7 @@
 #include "Transition.h"
 #include <lua.hpp>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a text to draw with the default properties.
@@ -395,7 +395,7 @@ void TextSurface::rebuild() {
     return;
   }
 
-  debug::check_assertion(FontResource::exists(font_id),
+  Debug::check_assertion(FontResource::exists(font_id),
       std::string("No such font: '") + font_id + "'"
   );
 
@@ -512,7 +512,7 @@ void TextSurface::rebuild_ttf() {
     break;
   }
 
-  debug::check_assertion(internal_surface != nullptr,
+  Debug::check_assertion(internal_surface != nullptr,
       std::string("Cannot create the text surface for string '") + text + "': "
       + SDL_GetError()
   );

@@ -19,7 +19,7 @@
 #include "lowlevel/System.h"
 #include "entities/Stream.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.

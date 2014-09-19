@@ -20,7 +20,7 @@
 #include "lowlevel/Debug.h"
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.
@@ -33,7 +33,7 @@ SpriteAnimationDirection::SpriteAnimationDirection(
   frames(frames),
   origin(origin) {
 
-  debug::check_assertion(!frames.empty(), "Empty sprite direction");
+  Debug::check_assertion(!frames.empty(), "Empty sprite direction");
 }
 
 /**
@@ -42,7 +42,7 @@ SpriteAnimationDirection::SpriteAnimationDirection(
  */
 Size SpriteAnimationDirection::get_size() const {
 
-  debug::check_assertion(get_nb_frames() > 0, "Invalid number of frames");
+  Debug::check_assertion(get_nb_frames() > 0, "Invalid number of frames");
   return { frames[0].get_width(), frames[0].get_height() };
 }
 
@@ -65,7 +65,7 @@ const Rectangle& SpriteAnimationDirection::get_frame(int frame) const {
     std::ostringstream oss;
     oss << "Invalid frame " << frame
         << ": this direction has " << get_nb_frames() << " frames";
-    debug::die(oss.str());
+    Debug::die(oss.str());
   }
   return frames[frame];
 }

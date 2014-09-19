@@ -21,19 +21,19 @@
 #include <string>
 
 #ifndef NDEBUG
-#define SOLARUS_ASSERT(condition, message) debug::check_assertion(condition, message)
+#define SOLARUS_ASSERT(condition, message) Debug::check_assertion(condition, message)
 #else
 #define SOLARUS_ASSERT(condition, message)
 #endif
 
-namespace solarus {
+namespace Solarus {
 
 class CommandLine;
 
 /**
  * \brief Provides features for printing error messages or making runtime checks.
  */
-namespace debug {
+namespace Debug {
 
 void initialize(const CommandLine& args);
 void quit();

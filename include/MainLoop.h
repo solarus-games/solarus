@@ -21,7 +21,7 @@
 #include "lowlevel/SurfacePtr.h"
 #include <memory>
 
-namespace solarus {
+namespace Solarus {
 
 class CommandLine;
 class Game;

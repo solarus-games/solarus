@@ -21,7 +21,7 @@
 #include "entities/Detector.h"
 #include <list>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Represents an explosion on the map.

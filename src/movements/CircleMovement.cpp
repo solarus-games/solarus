@@ -24,7 +24,7 @@
 #include "Map.h"
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a circle movement.
@@ -104,7 +104,7 @@ void CircleMovement::set_radius(int radius) {
   if (radius < 0) {
     std::ostringstream oss;
     oss << "Invalid radius: " << radius;
-    debug::die(oss.str());
+    Debug::die(oss.str());
   }
 
   this->wanted_radius = radius;
@@ -144,7 +144,7 @@ void CircleMovement::set_radius_speed(int radius_speed) {
   if (radius_speed < 0) {
     std::ostringstream oss;
     oss << "Invalid radius speed: " << radius_speed;
-    debug::die(oss.str());
+    Debug::die(oss.str());
   }
 
   if (radius_speed == 0) {
@@ -174,7 +174,7 @@ void CircleMovement::set_angle_speed(int angle_speed) {
   if (angle_speed <= 0) {
     std::ostringstream oss;
     oss << "Invalid angle speed: " << angle_speed;
-    debug::die(oss.str());
+    Debug::die(oss.str());
   }
 
   this->angle_change_delay = 1000 / angle_speed;
@@ -188,7 +188,7 @@ void CircleMovement::set_angle_speed(int angle_speed) {
  */
 double CircleMovement::get_initial_angle() const {
 
-  return geometry::degrees_to_radians(initial_angle);
+  return Geometry::degrees_to_radians(initial_angle);
 }
 
 /**
@@ -197,14 +197,14 @@ double CircleMovement::get_initial_angle() const {
  */
 void CircleMovement::set_initial_angle(double initial_angle) {
 
-  if (initial_angle < 0 || initial_angle >= geometry::TWO_PI) {
+  if (initial_angle < 0 || initial_angle >= Geometry::TWO_PI) {
     std::ostringstream oss;
     oss << "Invalid initial angle: " << initial_angle;
-    debug::die(oss.str());
+    Debug::die(oss.str());
   }
 
   // convert to degrees (everything works in degrees in this class)
-  this->initial_angle = geometry::radians_to_degrees(initial_angle);
+  this->initial_angle = Geometry::radians_to_degrees(initial_angle);
 }
 
 /**
@@ -284,7 +284,7 @@ void CircleMovement::set_max_rotations(int max_rotations) {
   if (max_rotations < 0) {
     std::ostringstream oss;
     oss << "Invalid maximum rotations number: " << max_rotations;
-    debug::die(oss.str());
+    Debug::die(oss.str());
   }
 
   this->max_rotations = max_rotations;
@@ -392,7 +392,7 @@ void CircleMovement::recompute_position() {
     center += center_entity->get_xy();
   }
 
-  Point xy = geometry::get_xy(center, geometry::degrees_to_radians(current_angle), current_radius);
+  Point xy = Geometry::get_xy(center, Geometry::degrees_to_radians(current_angle), current_radius);
   if (get_entity() == nullptr
       || !test_collision_with_obstacles(xy - get_entity()->get_xy())) {
     set_xy(xy);

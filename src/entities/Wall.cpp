@@ -18,7 +18,7 @@
 #include "entities/Hero.h"
 #include "lowlevel/FileTools.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Constructor.

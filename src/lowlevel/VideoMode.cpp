@@ -19,7 +19,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/shaders/ShaderContext.h"
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Creates a video mode with the specified properties.
@@ -42,7 +42,7 @@ VideoMode::VideoMode(
    software_filter(std::move(software_filter)),
    hardware_filter(std::move(hardware_filter)) {
 
-   debug::check_assertion(software_filter == nullptr || hardware_filter == nullptr,
+   Debug::check_assertion(software_filter == nullptr || hardware_filter == nullptr,
        "Video mode can have at most one filter");
 }
 

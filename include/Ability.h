@@ -17,7 +17,7 @@
 #ifndef SOLARUS_ABILITY_H
 #define SOLARUS_ABILITY_H
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief The different built-in abilities managed by the engine.

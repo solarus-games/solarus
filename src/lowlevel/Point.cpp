@@ -17,7 +17,7 @@
 #include "lowlevel/Point.h"
 #include <ostream>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Prints a point to an output stream.

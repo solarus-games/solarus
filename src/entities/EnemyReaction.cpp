@@ -19,7 +19,7 @@
 #include "Sprite.h"
 #include <sstream>
 
-namespace solarus {
+namespace Solarus {
 
 const std::vector<std::string> EnemyReaction::reaction_names = {
   "hurt",
@@ -105,7 +105,7 @@ const std::string& EnemyReaction::get_reaction_name(ReactionType reaction) {
   if (reaction < 0 || reaction >= REACTION_NUMBER) {
     std::ostringstream oss;
     oss << "Invalid reaction number: " << reaction;
-    debug::die(oss.str());
+    Debug::die(oss.str());
   }
 
   return reaction_names[reaction];
@@ -124,7 +124,7 @@ EnemyReaction::ReactionType EnemyReaction::get_reaction_by_name(const std::strin
     }
   }
 
-  debug::die(std::string("Invalid enemy reaction name: '") + name + "'");
+  Debug::die(std::string("Invalid enemy reaction name: '") + name + "'");
   throw;
 }
 

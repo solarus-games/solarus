@@ -25,7 +25,7 @@
 #include "GameCommands.h"
 #include <list>
 
-namespace solarus {
+namespace Solarus {
 
 class CarriedItem;
 class Equipment;

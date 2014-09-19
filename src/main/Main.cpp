@@ -84,8 +84,8 @@ void print_help(int argc, char **argv) {
  */
 int main(int argc, char** argv) {
 
-  using solarus::CommandLine;
-  using solarus::MainLoop;
+  using Solarus::CommandLine;
+  using Solarus::MainLoop;
 
   std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
 

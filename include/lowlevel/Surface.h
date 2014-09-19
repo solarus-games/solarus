@@ -27,7 +27,7 @@ struct SDL_Surface;
 struct SDL_Texture;
 struct SDL_Renderer;
 
-namespace solarus {
+namespace Solarus {
 
 class Color;
 class PixelFilter;

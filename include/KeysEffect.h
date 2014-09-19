@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 
-namespace solarus {
+namespace Solarus {
 
 /**
  * \brief Associate to each game key its current effect on the game.

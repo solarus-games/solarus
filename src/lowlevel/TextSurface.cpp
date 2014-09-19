@@ -14,149 +14,22 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/TextSurface.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/FileTools.h"
+#include "lowlevel/FontResource.h"
+#include "lowlevel/Size.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/System.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
-#include "lowlevel/Video.h"
-#include "lowlevel/Size.h"
 #include "lowlevel/Rectangle.h"
+#include "lowlevel/TextSurface.h"
+#include "lowlevel/Video.h"
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
+#include "QuestResourceList.h"
 #include "Transition.h"
 #include <lua.hpp>
 
 namespace solarus {
-
-bool TextSurface::fonts_loaded = false;
-std::map<std::string, TextSurface::FontData> TextSurface::fonts;
-std::string TextSurface::default_font_id;
-
-/**
- * \brief Initializes the font system.
- */
-void TextSurface::initialize() {
-
-  TTF_Init();
-
-  // At this point, don't assume that data files are ready to be loaded.
-  // We don't even know if the format of the quest is compatible.
-  // This is why we make a lazy loading of the fonts.
-}
-
-/**
- * \brief Loads the fonts.
- */
-void TextSurface::load_fonts() {
-
-  // Load the list of available fonts.
-  static const std::string file_name = "text/fonts.dat";
-
-  lua_State* l = luaL_newstate();
-  const std::string& buffer = FileTools::data_file_read(file_name);
-  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
-
-  if (load_result != 0) {
-    debug::die(std::string("Failed to load the fonts file '")
-        + file_name + "': " + lua_tostring(l, -1)
-    );
-    lua_pop(l, 1);
-  }
-  else {
-    lua_register(l, "font", l_font);
-    if (lua_pcall(l, 0, 0, 0) != 0) {
-      debug::die(std::string("Failed to load the fonts file '")
-          + file_name + "': " + lua_tostring(l, -1)
-      );
-      lua_pop(l, 1);
-    }
-  }
-
-  lua_close(l);
-  fonts_loaded = true;
-}
-
-/**
- * \brief Closes the font system.
- */
-void TextSurface::quit() {
-
-  for (auto& kvp: fonts) {
-    FontData& font = kvp.second;
-
-    if (font.bitmap != nullptr) {
-      // It's a bitmap font.
-      font.bitmap = nullptr;
-    }
-    else {
-      // It's a normal font.
-      TTF_CloseFont(font.internal_font);
-      SDL_RWclose(font.rw);
-    }
-  }
-
-  TTF_Quit();
-  fonts.clear();
-  fonts_loaded = false;
-}
-
-/**
- * \brief Function called by the Lua data file to add a font.
- *
- * - Argument 1 (table): properties of the font.
- *
- * \param l the Lua context that is calling this function
- * \return number of values to return to Lua
- */
-int TextSurface::l_font(lua_State* l) {
-
-  return lua_tools::exception_boundary_handle(l, [&] {
-    lua_tools::check_type(l, 1, LUA_TTABLE);
-
-    const std::string& font_id = lua_tools::check_string_field(l, 1, "id");
-    const std::string& file_name = lua_tools::check_string_field(l, 1, "file");
-    int font_size = lua_tools::opt_int_field(l, 1, "size", 11);
-    bool is_default = lua_tools::opt_boolean_field(l, 1, "default", false);
-
-    fonts.insert(std::make_pair(font_id, FontData()));
-    FontData& font = fonts[font_id];
-    font.file_name = file_name;
-    font.font_size = font_size;
-
-    if (is_default || default_font_id.empty()) {
-      default_font_id = font_id;
-    }
-
-    // Load the font.
-    size_t index = file_name.rfind('.');
-    std::string extension;
-    if (index != std::string::npos) {
-      extension = file_name.substr(index);
-    }
-
-    if (extension == ".png" || extension == ".PNG") {
-      // It's a bitmap font.
-      font.bitmap = Surface::create(file_name, Surface::DIR_DATA);
-    }
-    else {
-      // It's a normal font.
-      font.buffer = FileTools::data_file_read(file_name);
-      font.bitmap = nullptr;
-      font.rw = SDL_RWFromMem(
-          const_cast<char*>(font.buffer.data()),
-          (int) font.buffer.size()
-      );
-      font.internal_font = TTF_OpenFontRW(fonts[font_id].rw, 0, font_size);
-      debug::check_assertion(fonts[font_id].internal_font != nullptr,
-          std::string("Cannot load font from file '") + file_name
-          + "': " + TTF_GetError()
-      );
-    }
-
-    return 0;
-  });
-}
 
 /**
  * \brief Creates a text to draw with the default properties.
@@ -173,7 +46,7 @@ int TextSurface::l_font(lua_State* l) {
  */
 TextSurface::TextSurface(int x, int y):
   Drawable(),
-  font_id(default_font_id),
+  font_id(FontResource::get_default_font_id()),
   horizontal_alignment(ALIGN_LEFT),
   vertical_alignment(ALIGN_MIDDLE),
   rendering_mode(TEXT_SOLID),
@@ -181,6 +54,7 @@ TextSurface::TextSurface(int x, int y):
 
   text = "";
   set_text_color(Color::get_white());
+  set_font_size(11);
   set_position(x, y);
 }
 
@@ -197,7 +71,7 @@ TextSurface::TextSurface(int x, int y,
     TextSurface::HorizontalAlignment horizontal_alignment,
     TextSurface::VerticalAlignment vertical_alignment):
   Drawable(),
-  font_id(default_font_id),
+  font_id(FontResource::get_default_font_id()),
   horizontal_alignment(horizontal_alignment),
   vertical_alignment(vertical_alignment),
   rendering_mode(TEXT_SOLID),
@@ -215,11 +89,11 @@ TextSurface::TextSurface(int x, int y,
  */
 bool TextSurface::has_font(const std::string& font_id) {
 
-  return fonts.find(font_id) != fonts.end();
+  return FontResource::exists(font_id);
 }
 
 /**
- * \brief Returns the font used to draw this text.
+ * \brief Returns the id of the font used to draw this text.
  * \return Id of a font.
  */
 const std::string& TextSurface::get_font() const {
@@ -336,6 +210,24 @@ void TextSurface::set_text_color(const Color &color) {
  */
 void TextSurface::set_text_color(int r, int g, int b) {
   this->text_color = Color(r, g, b);
+  rebuild();
+}
+
+/**
+ * \brief Returns the font size.
+ * \return The font size.
+ */
+int TextSurface::get_font_size() const {
+  return font_size;
+}
+
+/**
+ * \brief Sets the font size.
+ * \param font_size The font size.
+ */
+void TextSurface::set_font_size(int font_size) {
+
+  this->font_size = font_size;
   rebuild();
 }
 
@@ -474,15 +366,11 @@ Size TextSurface::get_size() const {
  */
 void TextSurface::rebuild() {
 
-  if (!fonts_loaded) {
-    // First time: lazy load of the fonts.
-    load_fonts();
-    if (font_id.empty()) {
-      font_id = default_font_id;
-    }
-  }
-
   surface = nullptr;
+
+  if (font_id.empty()) {
+    return;
+  }
 
   if (is_empty()) {
     // Empty string or only whitespaces: no surface to create.
@@ -494,7 +382,7 @@ void TextSurface::rebuild() {
       std::string("No such font: '") + font_id + "'"
   );
 
-  if (fonts[font_id].bitmap) {
+  if (FontResource::is_bitmap_font(font_id)) {
     rebuild_bitmap();
   }
   else {
@@ -556,7 +444,7 @@ void TextSurface::rebuild_bitmap() {
   }
 
   // Determine the letter size from the surface size.
-  const SurfacePtr& bitmap = fonts[font_id].bitmap;
+  const SurfacePtr& bitmap = FontResource::get_bitmap_font(font_id);
   const Size& bitmap_size = bitmap->get_size();
   int char_width = bitmap_size.width / 128;
   int char_height = bitmap_size.height / 16;
@@ -595,14 +483,15 @@ void TextSurface::rebuild_ttf() {
   // create the text surface
 
   SDL_Surface* internal_surface = nullptr;
+  TTF_Font& internal_font = FontResource::get_outline_font(font_id, font_size);
   switch (rendering_mode) {
 
   case TEXT_SOLID:
-    internal_surface = TTF_RenderUTF8_Solid(fonts[font_id].internal_font, text.c_str(), *text_color.get_internal_color());
+    internal_surface = TTF_RenderUTF8_Solid(&internal_font, text.c_str(), *text_color.get_internal_color());
     break;
 
   case TEXT_ANTIALIASING:
-    internal_surface = TTF_RenderUTF8_Blended(fonts[font_id].internal_font, text.c_str(), *text_color.get_internal_color());
+    internal_surface = TTF_RenderUTF8_Blended(&internal_font, text.c_str(), *text_color.get_internal_color());
     break;
   }
 

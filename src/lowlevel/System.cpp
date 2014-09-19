@@ -17,11 +17,11 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/FontResource.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
-#include "lowlevel/TextSurface.h"
 #include "lowlevel/Video.h"
 #include "Sprite.h"
 #include <SDL.h>
@@ -64,7 +64,7 @@ void System::initialize(const CommandLine& args) {
   // video
   Video::initialize(args);
   Color::initialize();
-  TextSurface::initialize();
+  FontResource::initialize();
   Sprite::initialize();
 }
 
@@ -79,7 +79,7 @@ void System::quit() {
   InputEvent::quit();
   Sound::quit();
   Sprite::quit();
-  TextSurface::quit();
+  FontResource::quit();
   Color::quit();
   Video::quit();
   FileTools::quit();

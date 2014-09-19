@@ -24,8 +24,6 @@
 #include <map>
 #include <SDL_ttf.h>
 
-struct lua_State;
-
 namespace solarus {
 
 class Size;
@@ -72,9 +70,6 @@ class TextSurface: public Drawable {
       TEXT_ANTIALIASING                               /**< letters are drawn with a smooth effect (slower) */
     };
 
-    static void initialize();
-    static void quit();
-
     TextSurface(int x, int y);
     TextSurface(int x, int y,
         HorizontalAlignment horizontal_alignment,
@@ -94,6 +89,8 @@ class TextSurface: public Drawable {
     const Color& get_text_color() const;
     void set_text_color(const Color& color);
     void set_text_color(int r, int g, int b);
+    int get_font_size() const;
+    void set_font_size(int font_size);
 
     void set_position(int x, int y);
     int get_x() const;
@@ -117,37 +114,20 @@ class TextSurface: public Drawable {
 
     virtual const std::string& get_lua_type_name() const override;
 
+    static constexpr int default_font_size = 11;
+
   private:
-
-    /**
-     * This structures stores the data of a font.
-     */
-    struct FontData {
-      std::string file_name;                          /**< name of the font file, relative to the data directory */
-      int font_size;                                  /**< size of the characters */
-      std::string buffer;                             /**< the file loaded into memory */
-      SDL_RWops* rw;                                  /**< read/write object used to open the font file from memory */
-      TTF_Font* internal_font;                        /**< the library-dependent font object */
-      SurfacePtr bitmap;                              /**< only used if it's a PNG font */
-    };
-
-    static void load_fonts();
-    static int l_font(lua_State* l);
 
     void rebuild();
     void rebuild_bitmap();
     void rebuild_ttf();
-
-    static bool fonts_loaded;                         /**< Whether fonts.dat was read. */
-    static std::map<std::string, FontData> fonts;     /**< the data of each font, loaded from the file text/fonts.dat
-                                                       * (fond id -> font data) */
-    static std::string default_font_id;               /**< id of the default font to use */
 
     std::string font_id;                              /**< id of the font of the current text surface */
     HorizontalAlignment horizontal_alignment;         /**< horizontal alignment of the current text surface */
     VerticalAlignment vertical_alignment;             /**< vertical alignment of the current text surface */
     RenderingMode rendering_mode;                     /**< rendering mode of the current text surface */
     Color text_color;                                 /**< color of the text */
+    int font_size;                                    /**< size of the font */
 
     int x;                                            /**< x coordinate of where the text is aligned */
     int y;                                            /**< y coordinate of where the text is aligned */

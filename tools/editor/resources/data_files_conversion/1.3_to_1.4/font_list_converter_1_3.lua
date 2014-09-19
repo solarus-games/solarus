@@ -55,7 +55,8 @@ function converter.convert(quest_path)
   -- Move each font file into the 'fonts' directory.
   for old_file_name, _ in pairs(font_file_names) do
     old_file_name = old_file_name:gsub("^text/", "fonts/")
-    local new_file_name = "fonts/" .. file_name_to_id(old_file_name)
+    local old_file_name_extension = old_file_name:gsub("^.*%.", "")
+    local new_file_name = "fonts/" .. file_name_to_id(old_file_name) .. "." .. old_file_name_extension
     if new_file_name ~= old_file_name then
       local success, error_message = os.rename(quest_path .. "/data/" .. old_file_name, quest_path .. "/data/" .. new_file_name)
       if not success then

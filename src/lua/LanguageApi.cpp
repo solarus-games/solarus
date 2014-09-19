@@ -150,7 +150,7 @@ int LuaContext::language_api_get_language_name(lua_State* l) {
 int LuaContext::language_api_get_languages(lua_State* l) {
 
   return lua_tools::exception_boundary_handle(l, [&] {
-    const std::vector<QuestResourceList::Element>& languages =
+    const std::map<std::string, std::string>& languages =
         QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
 
     lua_newtable(l);

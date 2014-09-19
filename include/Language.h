@@ -33,7 +33,7 @@ class Language {
     static bool has_language(const std::string& language_code);
     static void set_language(const std::string& language_code);
     static const std::string& get_language();
-    static const std::string& get_language_name(const std::string& language_code);
+    static std::string get_language_name(const std::string& language_code);
 
   private:
 

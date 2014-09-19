@@ -159,7 +159,7 @@ void Sound::load_all() {
 
   if (is_initialized() && !sounds_preloaded) {
 
-    const std::vector<QuestResourceList::Element>& sound_elements =
+    const std::map<std::string, std::string>& sound_elements =
         QuestResourceList::get_elements(QuestResourceList::RESOURCE_SOUND);
     for (const auto& kvp: sound_elements) {
       const std::string& sound_id = kvp.first;

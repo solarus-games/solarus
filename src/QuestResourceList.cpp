@@ -34,12 +34,10 @@ namespace {
     "item",
     "enemy",
     "entity",
-    "language"
+    "language",
+    "font"
   };
 
-  // Duplicate the data because we need to preserve the insertion order and we
-  // don't want linear searches.
-  std::vector<QuestResourceList::Element> resource_vector[QuestResourceList::RESOURCE_NB];
   std::map<std::string, std::string> resource_map[QuestResourceList::RESOURCE_NB];
 
   /**
@@ -55,7 +53,6 @@ namespace {
       const std::string& id = lua_tools::check_string_field(l, 2, "id");
       const std::string& description = lua_tools::check_string_field(l, 2, "description");
 
-      resource_vector[resource_type].push_back(std::make_pair(id, description));
       resource_map[resource_type][id] = description;
 
       return 0;
@@ -114,12 +111,12 @@ bool QuestResourceList::exists(ResourceType resource_type, const std::string& id
  * \return The IDs of all declared element of this type, in their declaration
  * order.
  */
-const std::vector<QuestResourceList::Element>&
+const std::map<std::string, std::string>&
     QuestResourceList::get_elements(ResourceType resource_type) {
 
   debug::check_assertion(resource_type >= 0 && resource_type < RESOURCE_NB,
       "Invalid resource type");
-  return resource_vector[resource_type];
+  return resource_map[resource_type];
 }
 
 }

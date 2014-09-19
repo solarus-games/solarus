@@ -97,12 +97,12 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
   if (!valid_map_saved) {
     // When no valid starting map is set, use the first one declared in the
     // resource list file.
-    const std::vector<QuestResourceList::Element>& maps =
+    const std::map<std::string, std::string>& maps =
         QuestResourceList::get_elements(QuestResourceList::RESOURCE_MAP);
     if (maps.empty()) {
       debug::die("This quest has no map");
     }
-    starting_map_id = maps[0].first;
+    starting_map_id = maps.begin()->first;
     starting_destination_name = "";  // Default destination.
   }
 

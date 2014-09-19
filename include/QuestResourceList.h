@@ -19,7 +19,7 @@
 #define SOLARUS_QUEST_RESOURCE_LIST_H
 
 #include "Common.h"
-#include <vector>
+#include <map>
 #include <string>
 
 namespace solarus {
@@ -31,11 +31,6 @@ namespace solarus {
 class QuestResourceList {
 
   public:
-
-    /**
-     * \brief A resource element: id and description.
-     */
-    typedef std::pair<std::string, std::string> Element;
 
     /**
      * \brief Types of existing resources in a quest.
@@ -50,13 +45,14 @@ class QuestResourceList {
       RESOURCE_ENEMY,
       RESOURCE_ENTITY,
       RESOURCE_LANGUAGE,
+      RESOURCE_FONT,
       RESOURCE_NB
     };
 
     static void initialize();
 
     static bool exists(ResourceType resource_type, const std::string& id);
-    static const std::vector<Element>& get_elements(ResourceType resource_type);
+    static const std::map<std::string, std::string>& get_elements(ResourceType resource_type);
 
   private:
 

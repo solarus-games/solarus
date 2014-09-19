@@ -404,7 +404,7 @@ void Equipment::restore_all_magic() {
 void Equipment::load_items() {
 
   // Create each equipment item declared in project_db.dat.
-  const std::vector<QuestResourceList::Element>& item_elements =
+  const std::map<std::string, std::string>& item_elements =
       QuestResourceList::get_elements(QuestResourceList::RESOURCE_ITEM);
   for (const auto& kvp: item_elements) {
     const std::string& item_id = kvp.first;

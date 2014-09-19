@@ -24,5 +24,15 @@ write_info("  Converting the quest properties file...")
 local quest_properties_converter = require("quest_properties_converter_1_3")
 quest_properties_converter.convert(quest_path)
 
+-- Remove the font list file text/fonts.dat.
+write_info("  Removing the obsolete font list file...")
+local font_list_converter = require("font_list_converter_1_3")
+local fonts = font_list_converter.convert(quest_path)
+
+-- Convert the resource list file project_db.dat.
+write_info("  Converting the resource list file...")
+local quest_db_converter = require("quest_db_converter_1_3")
+quest_db_converter.convert(quest_path, fonts)
+
 write_info("Update successful!")
 

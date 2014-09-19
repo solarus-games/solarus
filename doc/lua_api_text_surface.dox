@@ -38,7 +38,7 @@ Creates a text surface with the specified properties.
   - \c color (table, default white): Color of the text to draw
     (array of 3 RGB values between 0 and 255).
     No effect on bitmap fonts.
-  - \c size (number, default \c 11): Font size to use.
+  - \c font_size (number, default \c 11): Font size to use.
     No effect on bitmap fonts.
   - \c text (string, default \c ""): The text to show
     (must be valid UTF-8).

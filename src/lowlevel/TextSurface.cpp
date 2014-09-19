@@ -45,17 +45,7 @@ namespace solarus {
  * \param y y position of the text on the destination surface
  */
 TextSurface::TextSurface(int x, int y):
-  Drawable(),
-  font_id(FontResource::get_default_font_id()),
-  horizontal_alignment(ALIGN_LEFT),
-  vertical_alignment(ALIGN_MIDDLE),
-  rendering_mode(TEXT_SOLID),
-  surface(nullptr) {
-
-  text = "";
-  set_text_color(Color::get_white());
-  set_font_size(11);
-  set_position(x, y);
+    TextSurface(x, y, ALIGN_LEFT, ALIGN_MIDDLE) {
 }
 
 /**
@@ -75,11 +65,13 @@ TextSurface::TextSurface(int x, int y,
   horizontal_alignment(horizontal_alignment),
   vertical_alignment(vertical_alignment),
   rendering_mode(TEXT_SOLID),
-  surface(nullptr) {
+  text_color(Color::get_white()),
+  font_size(11),
+  x(x),
+  y(y),
+  surface(nullptr),
+  text() {
 
-  text = "";
-  set_text_color(Color::get_white());
-  set_position(x, y);
 }
 
 /**

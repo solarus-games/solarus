@@ -73,8 +73,8 @@ void LuaContext::register_text_surface_module() {
       { "set_rendering_mode", text_surface_api_set_rendering_mode },
       { "get_color", text_surface_api_get_color },
       { "set_color", text_surface_api_set_color },
-      { "get_size", text_surface_api_get_font_size },
-      { "set_size", text_surface_api_set_font_size },
+      { "get_font_size", text_surface_api_get_font_size },
+      { "set_font_size", text_surface_api_set_font_size },
       { "get_text", text_surface_api_get_text },
       { "set_text", text_surface_api_set_text },
       { "set_text_key", text_surface_api_set_text_key },
@@ -153,13 +153,14 @@ int LuaContext::text_surface_api_create(lua_State* l) {
           );
       TextSurface::HorizontalAlignment horizontal_alignment =
           lua_tools::opt_enum_field<TextSurface::HorizontalAlignment>(
-              l, 1, "horizontal_alignement", horizontal_alignment_names, TextSurface::ALIGN_LEFT
+              l, 1, "horizontal_alignment", horizontal_alignment_names, TextSurface::ALIGN_LEFT
           );
       TextSurface::VerticalAlignment vertical_alignment =
           lua_tools::opt_enum_field<TextSurface::VerticalAlignment>(
-              l, 1, "vertical_alignement", vertical_alignment_names, TextSurface::ALIGN_MIDDLE
+              l, 1, "vertical_alignment", vertical_alignment_names, TextSurface::ALIGN_MIDDLE
           );
       const Color& color = lua_tools::opt_color_field(l, 1, "color", Color::get_white());
+      int font_size = lua_tools::opt_int_field(l, 1, "font_size", 11);
       const std::string& text = lua_tools::opt_string_field(l, 1, "text", "");
       const std::string& text_key = lua_tools::opt_string_field(l, 1, "text_key", "");
 
@@ -171,6 +172,7 @@ int LuaContext::text_surface_api_create(lua_State* l) {
       text_surface->set_horizontal_alignment(horizontal_alignment);
       text_surface->set_vertical_alignment(vertical_alignment);
       text_surface->set_text_color(color);
+      text_surface->set_font_size(font_size);
 
       if (!text.empty()) {
         text_surface->set_text(text);

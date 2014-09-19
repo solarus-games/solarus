@@ -23,8 +23,8 @@ namespace Solarus {
  * \brief Creates an SPC decoder.
  */
 SpcDecoder::SpcDecoder():
-  snes_spc_manager(spc_new(), spc_delete),
-  snes_spc_filter(spc_filter_new(), spc_filter_delete) {
+  snes_spc_manager(spc_new()),
+  snes_spc_filter(spc_filter_new()) {
 }
 
 /**

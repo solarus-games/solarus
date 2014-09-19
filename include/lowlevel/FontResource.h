@@ -48,15 +48,14 @@ class FontResource {
         SDL_FreeRW(rw);
       }
     };
+    using SDL_RWops_UniquePtr = std::unique_ptr<SDL_RWops, SDL_RWops_Deleter>;
 
     struct TTF_Font_Deleter {
       void operator()(TTF_Font* font) {
         TTF_CloseFont(font);
       }
     };
-
-    typedef std::unique_ptr<SDL_RWops, SDL_RWops_Deleter> SDL_RWops_UniquePtr;
-    typedef std::unique_ptr<TTF_Font, TTF_Font_Deleter> TTF_Font_UniquePtr;
+    using TTF_Font_UniquePtr = std::unique_ptr<TTF_Font, TTF_Font_Deleter>;
 
     /**
      * This structure stores in memory the content of a font file.

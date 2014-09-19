@@ -21,11 +21,9 @@
 #include "lowlevel/PixelBits.h"
 #include "lowlevel/SurfacePtr.h"
 #include "Drawable.h"
+#include <SDL.h>
+#include <SDL_image.h>
 #include <vector>
-
-struct SDL_Surface;
-struct SDL_Texture;
-struct SDL_Renderer;
 
 namespace Solarus {
 
@@ -111,6 +109,20 @@ class Surface: public Drawable {
     class SubSurfaceNode;
     using SubSurfaceNodePtr = std::shared_ptr<Surface::SubSurfaceNode>;
 
+    struct SDL_Surface_Deleter {
+        void operator()(SDL_Surface* sdl_surface) {
+          SDL_FreeSurface(sdl_surface);
+        }
+    };
+    using SDL_Surface_UniquePtr = std::unique_ptr<SDL_Surface, SDL_Surface_Deleter>;
+
+    struct SDL_Texture_Deleter {
+        void operator()(SDL_Texture* sdl_texture) {
+          SDL_DestroyTexture(sdl_texture);
+        }
+    };
+    using SDL_Texture_UniquePtr = std::unique_ptr<SDL_Texture, SDL_Texture_Deleter>;
+
     uint32_t get_pixel(int index) const;
     bool is_pixel_transparent(int index) const;
 
@@ -137,11 +149,12 @@ class Surface: public Drawable {
 
     bool software_destination;            /**< indicates that this surface is modified on software side
                                            * (and therefore immediately) when used as a destination */
-    std::unique_ptr<SDL_Surface, void (*)(SDL_Surface*)>
+    SDL_Surface_UniquePtr
         internal_surface;                 /**< the SDL_Surface encapsulated, if any. */
-    std::unique_ptr<SDL_Texture, void (*)(SDL_Texture*)>
+    SDL_Texture_UniquePtr
         internal_texture;                 /**< the SDL_Texture encapsulated, if any. */
-    std::unique_ptr<Color> internal_color;                /**< the background color to use, if any. */
+    std::unique_ptr<Color>
+        internal_color;                   /**< the background color to use, if any. */
     bool is_rendered;                     /**< indicates if the current surface has been rendered. Set to false when drawing a surface on this one. */
     uint8_t internal_opacity;             /**< opacity to apply to all subtextures. */
     int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */

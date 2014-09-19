@@ -137,6 +137,8 @@ std::string FontResource::get_default_font_id() {
 /**
  * \brief Returns whether the specified font exists.
  * \param font_id The id to test.
+ * \return \c true if there is a valid font with this id in the quest resource
+ * list.
  */
 bool FontResource::exists(const std::string& font_id) {
 

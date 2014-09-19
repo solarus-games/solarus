@@ -49,7 +49,14 @@ class ItDecoder {
 
   private:
 
-    std::unique_ptr<ModPlugFile, void(*)(ModPlugFile*)> modplug_file;
+    struct ModPlugFileDeleter {
+      void operator()(ModPlugFile* modplug_file) {
+        ModPlug_Unload(modplug_file);
+      }
+    };
+    using ModPlugFileUniquePtr = std::unique_ptr<ModPlugFile, ModPlugFileDeleter>;
+
+    ModPlugFileUniquePtr modplug_file;
 
 };
 

@@ -25,7 +25,7 @@ namespace Solarus {
  * \brief Creates an Impulse Tracker decoder.
  */
 ItDecoder::ItDecoder():
-  modplug_file(nullptr, ModPlug_Unload) {
+  modplug_file(nullptr) {
 
   ModPlug_Settings settings;
   ModPlug_GetSettings(&settings);
@@ -46,9 +46,8 @@ void ItDecoder::load(const std::string& sound_buffer) {
   );
 
   // Load the IT data into the IT library.
-  modplug_file = std::unique_ptr<ModPlugFile, void(*)(ModPlugFile*)>(
-      ModPlug_Load((const void*) sound_buffer.data(), (int) sound_buffer.size()),
-      ModPlug_Unload
+  modplug_file = ModPlugFileUniquePtr(
+      ModPlug_Load((const void*) sound_buffer.data(), (int) sound_buffer.size())
   );
 }
 

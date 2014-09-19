@@ -24,8 +24,6 @@
 #include "lowlevel/PixelFilter.h"
 #include "lua/LuaContext.h"
 #include "Transition.h"
-#include <SDL.h>
-#include <SDL_image.h>
 #include <sstream>
 
 namespace Solarus {
@@ -104,8 +102,8 @@ class Surface::SubSurfaceNode {
 Surface::Surface(int width, int height):
   Drawable(),
   software_destination(true),
-  internal_surface(nullptr, SDL_FreeSurface),
-  internal_texture(nullptr, SDL_DestroyTexture),
+  internal_surface(nullptr),
+  internal_texture(nullptr),
   internal_color(nullptr),
   is_rendered(false),
   internal_opacity(255),
@@ -128,8 +126,8 @@ Surface::Surface(int width, int height):
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
   software_destination(true),
-  internal_surface(internal_surface, SDL_FreeSurface),
-  internal_texture(nullptr, SDL_DestroyTexture),
+  internal_surface(internal_surface),
+  internal_texture(nullptr),
   internal_color(nullptr),
   is_rendered(false),
   internal_opacity(255) {
@@ -258,10 +256,7 @@ void Surface::convert_software_surface() {
     Debug::check_assertion(converted_surface != nullptr,
         "Failed to convert software surface");
 
-    internal_surface = std::unique_ptr<SDL_Surface, void (*)(SDL_Surface*)>(
-        converted_surface,
-        SDL_FreeSurface
-    );
+    internal_surface = SDL_Surface_UniquePtr(converted_surface);
     SDL_SetSurfaceAlphaMod(internal_surface.get(), opacity);  // Re-apply the alpha.
   }
 }
@@ -285,15 +280,14 @@ void Surface::create_texture_from_surface() {
     convert_software_surface();
 
     // Create the texture.
-    internal_texture = std::unique_ptr<SDL_Texture, void (*)(SDL_Texture*)>(
+    internal_texture = SDL_Texture_UniquePtr(
         SDL_CreateTexture(
             main_renderer,
             Video::get_pixel_format()->format,
             SDL_TEXTUREACCESS_STATIC,
             internal_surface->w,
             internal_surface->h
-        ),
-        SDL_DestroyTexture
+        )
     );
     SDL_SetTextureBlendMode(internal_texture.get(), SDL_BLENDMODE_BLEND);
 
@@ -410,7 +404,7 @@ void Surface::create_software_surface() {
 
   // Create a surface with the appropriate pixel format.
   SDL_PixelFormat* format = Video::get_pixel_format();
-  internal_surface = std::unique_ptr<SDL_Surface, void(*)(SDL_Surface*)>(
+  internal_surface = SDL_Surface_UniquePtr(
       SDL_CreateRGBSurface(
           0,
           width,
@@ -420,8 +414,7 @@ void Surface::create_software_surface() {
           format->Gmask,
           format->Bmask,
           format->Amask
-      ),
-      SDL_FreeSurface
+      )
   );
   SDL_SetSurfaceBlendMode(internal_surface.get(), SDL_BLENDMODE_BLEND);
   is_rendered = false;

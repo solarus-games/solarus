@@ -47,10 +47,22 @@ class SpcDecoder {
 
   private:
 
+    struct SNES_SPC_Deleter {
+      void operator()(SNES_SPC* snes_spc_manager) {
+        spc_delete(snes_spc_manager);
+      }
+    };
+
+    struct SPC_Filter_Deleter {
+      void operator()(SPC_Filter* snes_spc_filter) {
+        spc_filter_delete(snes_spc_filter);
+      }
+    };
+
     // Snes_SPC specific data
-    std::unique_ptr<SNES_SPC, void(*)(SNES_SPC*)>
+    std::unique_ptr<SNES_SPC, SNES_SPC_Deleter>
         snes_spc_manager;                             /**< the snes_spc object encapsulated */
-    std::unique_ptr<SPC_Filter, void(*)(SPC_Filter*)>
+    std::unique_ptr<SPC_Filter, SPC_Filter_Deleter>
         snes_spc_filter;                              /**< the snes_spc filter object */
 
 };

@@ -67,16 +67,6 @@ Color::Color() {
 }
 
 /**
- * \brief Copy constructor.
- * \param other another color
- */
-Color::Color(const Color& other):
-    internal_color(other.internal_color),
-    internal_value(other.internal_value) {
-
-}
-
-/**
  * \brief Creates a color with the specified RGBA values.
  * \param r the red component (from 0 to 255)
  * \param g the green component (from 0 to 255)
@@ -127,6 +117,16 @@ void Color::get_components(int& r, int& g, int& b, int& a) const {
   g = internal_color.g;
   b = internal_color.b;
   a = internal_color.a;
+}
+
+/**
+ * \brief Equality operator.
+ * \param lhs A color.
+ * \param rhs Another color.
+ * \return \c true if both colors are equal.
+ */
+bool operator==(const Color& lhs, const Color& rhs) {
+  return lhs.get_internal_value() == rhs.get_internal_value();
 }
 
 }

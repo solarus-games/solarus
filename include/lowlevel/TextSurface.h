@@ -66,7 +66,7 @@ class TextSurface: public Drawable {
      * Rendering mode of the text.
      */
     enum RenderingMode {
-      TEXT_SOLID,                                     /**< letter are drawn without effect (faster, visible pixels) */
+      TEXT_SOLID,                                     /**< letters are drawn without effect (faster, visible pixels) */
       TEXT_ANTIALIASING                               /**< letters are drawn with a smooth effect (slower) */
     };
 
@@ -75,7 +75,6 @@ class TextSurface: public Drawable {
         HorizontalAlignment horizontal_alignment,
         VerticalAlignment vertical_alignment);
 
-    static bool has_font(const std::string& font_id);
     const std::string& get_font() const;
     void set_font(const std::string& font_id);
     HorizontalAlignment get_horizontal_alignment() const;
@@ -88,7 +87,6 @@ class TextSurface: public Drawable {
     void set_rendering_mode(RenderingMode rendering_mode);
     const Color& get_text_color() const;
     void set_text_color(const Color& color);
-    void set_text_color(int r, int g, int b);
     int get_font_size() const;
     void set_font_size(int font_size);
 

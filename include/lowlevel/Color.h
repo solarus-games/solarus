@@ -33,7 +33,6 @@ class Color {
   public:
 
     Color();
-    Color(const Color& other);
     Color(int r, int g, int b, int a = 255);
 
     void get_components(int& r, int& g, int& b, int& a) const;
@@ -56,6 +55,7 @@ class Color {
     // low-level classes allowed to manipulate directly the internal SDL objects encapsulated
     friend class Surface;
     friend class TextSurface;
+    friend bool operator==(const Color& lhs, const Color& rhs);
 
     uint32_t get_internal_value() const;
     SDL_Color* get_internal_color();
@@ -75,6 +75,8 @@ class Color {
     uint32_t internal_value;              /**< the SDL 32-bit value representing this color. */
 
 };
+
+bool operator==(const Color& lhs, const Color& rhs);
 
 /**
  * \brief Returns the transparent color.

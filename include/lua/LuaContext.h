@@ -537,6 +537,8 @@ class LuaContext {
       text_surface_api_set_rendering_mode,
       text_surface_api_get_color,
       text_surface_api_set_color,
+      text_surface_api_get_font_size,
+      text_surface_api_set_font_size,
       text_surface_api_get_text,
       text_surface_api_set_text,
       text_surface_api_set_text_key,

@@ -83,16 +83,6 @@ TextSurface::TextSurface(int x, int y,
 }
 
 /**
- * \brief Returns whether a font exists.
- * \param font_id Id of a font.
- * \return true if this font exists.
- */
-bool TextSurface::has_font(const std::string& font_id) {
-
-  return FontResource::exists(font_id);
-}
-
-/**
  * \brief Returns the id of the font used to draw this text.
  * \return Id of a font.
  */
@@ -105,6 +95,10 @@ const std::string& TextSurface::get_font() const {
  * \param font_id Id of a font.
  */
 void TextSurface::set_font(const std::string& font_id) {
+
+  if (font_id == this->font_id) {
+    return;
+  }
 
   this->font_id = font_id;
   rebuild();
@@ -125,6 +119,10 @@ TextSurface::HorizontalAlignment TextSurface::get_horizontal_alignment() const {
  * ALIGN_CENTER or ALIGN_RIGHT.
  */
 void TextSurface::set_horizontal_alignment(HorizontalAlignment horizontal_alignment) {
+
+  if (horizontal_alignment == this->horizontal_alignment) {
+    return;
+  }
 
   this->horizontal_alignment = horizontal_alignment;
 
@@ -147,6 +145,10 @@ TextSurface::VerticalAlignment TextSurface::get_vertical_alignment() const {
  */
 void TextSurface::set_vertical_alignment(VerticalAlignment vertical_alignment) {
 
+  if (vertical_alignment == this->vertical_alignment) {
+    return;
+  }
+
   this->vertical_alignment = vertical_alignment;
 
   rebuild();
@@ -161,6 +163,12 @@ void TextSurface::set_vertical_alignment(VerticalAlignment vertical_alignment) {
  */
 void TextSurface::set_alignment(HorizontalAlignment horizontal_alignment,
     VerticalAlignment vertical_alignment) {
+
+  if (horizontal_alignment == this->horizontal_alignment &&
+      vertical_alignment == this->vertical_alignment) {
+    return;
+  }
+
   this->horizontal_alignment = horizontal_alignment;
   this->vertical_alignment = vertical_alignment;
 
@@ -181,6 +189,10 @@ TextSurface::RenderingMode TextSurface::get_rendering_mode() const {
  */
 void TextSurface::set_rendering_mode(TextSurface::RenderingMode rendering_mode) {
 
+  if (rendering_mode == this->rendering_mode) {
+    return;
+  }
+
   this->rendering_mode = rendering_mode;
   rebuild();
 }
@@ -197,19 +209,13 @@ const Color& TextSurface::get_text_color() const {
  * \brief Sets the color of the text.
  * \param color The color to set.
  */
-void TextSurface::set_text_color(const Color &color) {
-  this->text_color = color;
-  rebuild();
-}
+void TextSurface::set_text_color(const Color& color) {
 
-/**
- * \brief Sets the color of the text.
- * \param r red component (0 to 255)
- * \param g green component (0 to 255)
- * \param b blue component (0 to 255)
- */
-void TextSurface::set_text_color(int r, int g, int b) {
-  this->text_color = Color(r, g, b);
+  if (color == this->text_color) {
+    return;
+  }
+
+  this->text_color = color;
   rebuild();
 }
 
@@ -227,6 +233,10 @@ int TextSurface::get_font_size() const {
  */
 void TextSurface::set_font_size(int font_size) {
 
+  if (font_size == this->font_size) {
+    return;
+  }
+
   this->font_size = font_size;
   rebuild();
 }
@@ -237,6 +247,11 @@ void TextSurface::set_font_size(int font_size) {
  * \param y Y position of the text on the destination surface.
  */
 void TextSurface::set_position(int x, int y) {
+
+  if (x == this->x && y == this->y) {
+    return;
+  }
+
   this->x = x;
   this->y = y;
   rebuild();
@@ -255,6 +270,11 @@ int TextSurface::get_x() const {
  * \param x x position of the text
  */
 void TextSurface::set_x(int x) {
+
+  if (x == this->x) {
+    return;
+  }
+
   this->x = x;
   rebuild();
 }
@@ -272,6 +292,11 @@ int TextSurface::get_y() const {
  * \param y y position of the text
  */
 void TextSurface::set_y(int y) {
+
+  if (y == this->y) {
+    return;
+  }
+
   this->y = y;
   rebuild();
 }
@@ -306,12 +331,12 @@ const std::string& TextSurface::get_text() const {
  */
 void TextSurface::set_text(const std::string& text) {
 
-  if (text != this->text) {
-
-    // there is a change
-    this->text = text;
-    rebuild();
+  if (text == this->text) {
+    return;
   }
+
+  this->text = text;
+  rebuild();
 }
 
 /**
@@ -378,7 +403,7 @@ void TextSurface::rebuild() {
     return;
   }
 
-  debug::check_assertion(has_font(font_id),
+  debug::check_assertion(FontResource::exists(font_id),
       std::string("No such font: '") + font_id + "'"
   );
 

@@ -56,8 +56,7 @@ void FontResource::load_fonts() {
 
     const std::string& font_id = kvp.first;
 
-    fonts.insert(std::make_pair(font_id, FontFile()));
-    FontFile& font = fonts[font_id];
+    FontFile font;
 
     // Load the font.
 
@@ -89,6 +88,12 @@ void FontResource::load_fonts() {
     else if (FileTools::data_file_exists(file_name_start + ".FON")) {
       font.file_name = file_name_start + ".FON";
     }
+    else {
+      debug::error(std::string("Cannot find font file 'fonts/")
+          + font_id + "' (tried with extensions .png, .ttf, .ttc and .fon)"
+      );
+      continue;
+    }
 
     if (bitmap_font) {
       // It's a bitmap font.
@@ -104,6 +109,8 @@ void FontResource::load_fonts() {
           (int) font.buffer.size()
       ));
     }
+
+    fonts.insert(std::make_pair(font_id, std::move(font)));
   }
 
   fonts_loaded = true;

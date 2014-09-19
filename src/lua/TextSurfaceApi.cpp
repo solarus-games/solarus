@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/FileTools.h"
+#include "lowlevel/FontResource.h"
 #include "lowlevel/TextSurface.h"
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
@@ -72,6 +73,8 @@ void LuaContext::register_text_surface_module() {
       { "set_rendering_mode", text_surface_api_set_rendering_mode },
       { "get_color", text_surface_api_get_color },
       { "set_color", text_surface_api_set_color },
+      { "get_size", text_surface_api_get_font_size },
+      { "set_size", text_surface_api_set_font_size },
       { "get_text", text_surface_api_get_text },
       { "set_text", text_surface_api_set_text },
       { "set_text_key", text_surface_api_set_text_key },
@@ -141,44 +144,38 @@ int LuaContext::text_surface_api_create(lua_State* l) {
     if (lua_gettop(l) > 0) {
       lua_tools::check_type(l, 1, LUA_TTABLE);
 
-      // Traverse the table, looking for properties.
-      lua_pushnil(l); // First key.
-      while (lua_next(l, 1) != 0) {
+      const std::string& font_id = lua_tools::opt_string_field(
+          l, 1, "font", FontResource::get_default_font_id()
+      );
+      TextSurface::RenderingMode rendering_mode =
+          lua_tools::opt_enum_field<TextSurface::RenderingMode>(
+              l, 1, "rendering_mode", rendering_mode_names, TextSurface::TEXT_SOLID
+          );
+      TextSurface::HorizontalAlignment horizontal_alignment =
+          lua_tools::opt_enum_field<TextSurface::HorizontalAlignment>(
+              l, 1, "horizontal_alignement", horizontal_alignment_names, TextSurface::ALIGN_LEFT
+          );
+      TextSurface::VerticalAlignment vertical_alignment =
+          lua_tools::opt_enum_field<TextSurface::VerticalAlignment>(
+              l, 1, "vertical_alignement", vertical_alignment_names, TextSurface::ALIGN_MIDDLE
+          );
+      const Color& color = lua_tools::opt_color_field(l, 1, "color", Color::get_white());
+      const std::string& text = lua_tools::opt_string_field(l, 1, "text", "");
+      const std::string& text_key = lua_tools::opt_string_field(l, 1, "text_key", "");
 
-        const std::string& key = lua_tools::check_string(l, 2);
-        if (key == "font") {
-          const std::string& font_id = lua_tools::check_string(l, 3);
-          if (!TextSurface::has_font(font_id)) {
-            lua_tools::error(l, std::string("No such font: '") + font_id + "'");
-          }
-          text_surface->set_font(font_id);
-        }
-        else if (key == "rendering_mode") {
-          TextSurface::RenderingMode mode =
-              lua_tools::check_enum<TextSurface::RenderingMode>(l, 3, rendering_mode_names);
-          text_surface->set_rendering_mode(mode);
-        }
-        else if (key == "horizontal_alignment") {
-          TextSurface::HorizontalAlignment alignment =
-              lua_tools::check_enum<TextSurface::HorizontalAlignment>(l, 3, horizontal_alignment_names);
-          text_surface->set_horizontal_alignment(alignment);
-        }
-        else if (key == "vertical_alignment") {
-          TextSurface::VerticalAlignment alignment =
-              lua_tools::check_enum<TextSurface::VerticalAlignment>(l, 3, vertical_alignment_names);
-          text_surface->set_vertical_alignment(alignment);
-        }
-        else if (key == "color") {
-          Color color = lua_tools::check_color(l, 3);
-          text_surface->set_text_color(color);
-        }
-        else if (key == "text") {
-          const std::string& text = lua_tools::check_string(l, 3);
-          text_surface->set_text(text);
-        }
-        else if (key == "text_key") {
-          const std::string& text_key = lua_tools::check_string(l, 3);
+      if (!FontResource::exists(font_id)) {
+        lua_tools::error(l, std::string("No such font: '") + font_id + "'");
+      }
+      text_surface->set_font(font_id);
+      text_surface->set_rendering_mode(rendering_mode);
+      text_surface->set_horizontal_alignment(horizontal_alignment);
+      text_surface->set_vertical_alignment(vertical_alignment);
+      text_surface->set_text_color(color);
 
+      if (!text.empty()) {
+        text_surface->set_text(text);
+      }
+      else if (!text_key.empty()) {
           if (!StringResource::exists(text_key)) {
             lua_tools::error(l, std::string("No value with key '") + text_key
                 + "' in strings.dat for language '"
@@ -186,12 +183,6 @@ int LuaContext::text_surface_api_create(lua_State* l) {
             );
           }
           text_surface->set_text(StringResource::get_string(text_key));
-        }
-        else {
-          lua_tools::error(l, std::string("Invalid key '") + key
-              + "' for text surface properties");
-        }
-        lua_pop(l, 1); // Pop the value, let the key for the iteration.
       }
     }
     get_lua_context(l).add_drawable(text_surface);
@@ -301,7 +292,7 @@ int LuaContext::text_surface_api_set_font(lua_State* l) {
     TextSurface& text_surface = *check_text_surface(l, 1);
     const std::string& font_id = lua_tools::check_string(l, 2);
 
-    if (!TextSurface::has_font(font_id)) {
+    if (!FontResource::exists(font_id)) {
       lua_tools::arg_error(l, 2, std::string("No such font: '") + font_id + "'");
     }
     text_surface.set_font(font_id);
@@ -374,6 +365,38 @@ int LuaContext::text_surface_api_set_color(lua_State* l) {
     const Color& color = lua_tools::check_color(l, 2);
 
     text_surface.set_text_color(color);
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of text_surface:get_font_size().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::text_surface_api_get_font_size(lua_State* l) {
+
+  return lua_tools::exception_boundary_handle(l, [&] {
+    const TextSurface& text_surface = *check_text_surface(l, 1);
+
+    lua_pushinteger(l, text_surface.get_font_size());
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of text_surface:set_font_size().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::text_surface_api_set_font_size(lua_State* l) {
+
+  return lua_tools::exception_boundary_handle(l, [&] {
+    TextSurface& text_surface = *check_text_surface(l, 1);
+    int font_size = lua_tools::check_int(l, 2);
+
+    text_surface.set_font_size(font_size);
 
     return 0;
   });

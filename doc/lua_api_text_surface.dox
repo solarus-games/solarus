@@ -138,19 +138,19 @@ Sets the color used to draw the text.
 This only has an effect for outline fonts.
 - \c color (table): The text color as an array of 3 RGB values (\c 0 to \c 255).
 
-\subsection lua_api_text_surface_get_size text_surface:get_size()
+\subsection lua_api_text_surface_get_font_size text_surface:get_font_size()
 
 Returns the font size used to draw the text.
 
 This only has an effect for outline fonts.
 - Return value (number): The font size.
 
-\subsection lua_api_text_surface_set_size text_surface:set_size(size)
+\subsection lua_api_text_surface_set_font_size text_surface:set_font_size(font_size)
 
 Sets the size used to draw the text.
 
 This only has an effect for outline fonts.
-- \c size (number): The font size.
+- \c font_size (number): The font size.
 
 \subsection lua_api_text_surface_get_text text_surface:get_text()
 

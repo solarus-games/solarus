@@ -16,10 +16,11 @@ Lua API changes
 Changes that introduce incompatibilities:
 
 * Text surfaces: the default font is now the first one in alphabetical order.
-* Text surfaces: the size is now set at runtime instead of in fonts.dat.
+* Text surfaces: the size must now be set at runtime instead of in fonts.dat.
 
 Changes that do not introduce incompatibilities:
 
+* sol.text_surface.create() now accepts a size parameter (default is 11).
 * Add a function sol.main.get_os().
 * Fix sprite:on_frame_changed() called twice on animation/direction change.
 

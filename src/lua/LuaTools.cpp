@@ -858,18 +858,21 @@ Layer opt_layer_field(
  */
 bool is_color(lua_State* l, int index) {
 
-  bool result = false;
+  index = get_positive_index(l, index);
+
   if (lua_type(l, index) != LUA_TTABLE) {
-    lua_rawgeti(l, index, 1);
-    lua_rawgeti(l, index, 2);
-    lua_rawgeti(l, index, 3);
-    lua_rawgeti(l, index, 4);
-    result = lua_isnumber(l, -4)
-      && lua_isnumber(l, -3)
-      && lua_isnumber(l, -2)
-      && (lua_isnumber(l, -1) || lua_isnil(l, -1));
-    lua_pop(l, 4);
+    return false;
   }
+
+  lua_rawgeti(l, index, 1);
+  lua_rawgeti(l, index, 2);
+  lua_rawgeti(l, index, 3);
+  lua_rawgeti(l, index, 4);
+  bool result = lua_isnumber(l, -4) &&
+      lua_isnumber(l, -3) &&
+      lua_isnumber(l, -2) &&
+      (lua_isnumber(l, -1) || lua_isnil(l, -1));
+  lua_pop(l, 4);
   return result;
 }
 

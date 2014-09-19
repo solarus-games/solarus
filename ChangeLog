@@ -13,10 +13,26 @@ Engine changes
 Lua API changes
 ---------------
 
+Changes that introduce incompatibilities:
+
+* Text surfaces: the default font is now the first one in alphabetical order.
+* Text surfaces: the size is now set at runtime instead of in fonts.dat.
+
 Changes that do not introduce incompatibilities:
 
 * Add a function sol.main.get_os().
 * Fix sprite:on_frame_changed() called twice on animation/direction change.
+
+Data files format changes
+-------------------------
+
+You can use the script
+editor/resources/tools/data_files_conversion/1.3_to_1.4/update_quest.lua
+to automatically update your data files.
+Don't forget to make a backup first.
+
+* fonts.dat no longer exists. Fonts are a resource like others now (#611).
+* Fonts are now in a 'fonts' directory instead of 'text'.
 
 _________________________________
 

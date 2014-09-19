@@ -41,10 +41,9 @@ of a quest and the syntax of each file.
   - \c sounds/\asterisk.ogg: your sound files.
 - \subpage quest_musics "musics/": contains all musics.
   - \c musics/\asterisk.{ogg, it, spc}: your music files.
-- \c text/: contains the fonts used to draw text in your quest.
-  - \subpage quest_font_list_file "text/fonts.dat": the list of fonts and
-    their properties.
-  - \c text/\asterisk.{ttf, fon, png, ...}: your font files.
+- \subpage quest_fonts "fonts/": contains the fonts used to draw text in your quest.
+  - \c text/\asterisk.{ttf, ttc, fon, png, ...}:
+    your font files.
 - \c languages/: contains the language-specific files.
   - \subpage quest_language_strings "languages/xx/text/strings.dat": strings of
     language \c "xx".

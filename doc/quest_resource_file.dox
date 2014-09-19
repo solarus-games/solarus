@@ -2,7 +2,7 @@
 \page quest_resource_file Resource list
 
 The \c project_db.dat file declares all resources
-(maps, musics, sprites, items, enemies, etc.) of your quest
+(maps, musics, sprites, items, enemies, fonts, etc.) of your quest
 and their user-friendly names.
 Each resource usually corresponds to a data file.
 
@@ -57,6 +57,8 @@ Each resource must have the following two properties:
     without its extension, relative to the \c enemies directory.
   - For a language: the id is the name of a subdirectory of the \c languages
     directory.
+  - For a font: the id is the font file name without its extension,
+    relative to the \c fonts directory.
 - \c description (string): A human-readable name that describes this element.
   It may contain spaces. It is useful to show to userse something more
   user-friendly than the id.
@@ -88,6 +90,8 @@ enemy{    id = "soldier",      description = "Soldier" }
 enemy{    id = "dragon",       description = "Dragon" }
 
 language{ id = "en",           description = "English" }
+
+font{     id = "8_bit",        description = "8 bit font" }
 \endverbatim
 
 In the quest editor, you can add, remove and change the id and the description

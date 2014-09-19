@@ -1,0 +1,63 @@
+/**
+\page quest_fonts Fonts
+
+The \c fonts directory contains the font files used by the engine and your
+quest.
+Solarus supports both outline fonts and bitmap fonts.
+
+Like maps, musics, languages, etc., fonts are a resource declared in the
+\ref quest_resource_file "quest resource list".
+
+\section quest_fonts_outline Outline fonts
+
+Outline fonts (or vector fonts) are the fonts you commonly use in a word
+processor. They are composed of vector lines and curves,
+and can be scaled to any size without pixellation.
+
+In Solarus, the formats of outline fonts supported are the ones of the
+SDL_ttf library, including \c .ttf, \c .tcc and \c fon.
+At runtime, you can set their size and their color
+(see the
+\ref lua_api_text_surface "text surface API").
+
+\section quest_fonts_bitmap Bitmap fonts
+
+Sometimes, you don't want scalable
+fonts, but you want to define your font pixel by pixel.
+This is especially true for old-school looking games
+when you want small letters.
+
+A bitmap font is a font whose letters directly come from a PNG image file.
+With a bitmap font, you cannot change the size or the color.
+But you can for example add a border to your letters,
+which is impossible with outline fonts.
+
+In Solarus, a bitmap font is a single PNG image that contains characters
+organized in the following specific way.
+
+All characters in the image have the same size (for example 8x12 pixels).
+The characters in the image must be organized in 16 rows and 128 columns.
+It is like a big table of characters. The size of a single character is
+implicit: the engine determines it by dividing the height of your image by
+16 and the width by 128.
+
+Characters are organized in the UTF-8 order.
+The first row of the image corresponds to the 128 characters that are encoded
+in a single byte in UTF-8. This is exactly the ASCII table.
+If you only need ASCII characters, you can leave the rest of your image entirely
+transparent.
+The other 15 rows allow you to put any character that can be encoded in two
+bytes in UTF-8.
+In UTF-8, characters that use two bytes have the form
+<tt>110xxxxx 10xxxxxx</tt>. If you remove the fixed \c 110 in the first byte
+and the fixed \c 10 in the second byte, you obtain a 11-bit number, in other
+words, a number between 128 and 2047 (the Unicode code point of the character).
+This code point gives you the
+index of the rectangle of your character in the image.
+
+All data files that include text are encoded in UTF-8 in Solarus.
+Therefore, unless you have characters that need more than two bytes in
+UTF-8, you can draw your text with a PNG font.
+
+*/
+

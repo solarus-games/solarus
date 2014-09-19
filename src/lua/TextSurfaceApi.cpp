@@ -160,7 +160,7 @@ int LuaContext::text_surface_api_create(lua_State* l) {
               l, 1, "vertical_alignment", vertical_alignment_names, TextSurface::ALIGN_MIDDLE
           );
       const Color& color = LuaTools::opt_color_field(l, 1, "color", Color::get_white());
-      int font_size = LuaTools::opt_int_field(l, 1, "font_size", 11);
+      int font_size = LuaTools::opt_int_field(l, 1, "font_size", TextSurface::default_font_size);
       const std::string& text = LuaTools::opt_string_field(l, 1, "text", "");
       const std::string& text_key = LuaTools::opt_string_field(l, 1, "text_key", "");
 

@@ -112,7 +112,7 @@ class TextSurface: public Drawable {
 
     virtual const std::string& get_lua_type_name() const override;
 
-    static constexpr int default_font_size = 11;
+    static constexpr int default_font_size = 11;      /**< Default font size for outline fonts. */
 
   private:
 

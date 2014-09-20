@@ -58,7 +58,6 @@ class Surface: public Drawable {
 
     Surface(int width, int height);
     explicit Surface(SDL_Surface* internal_surface);
-    ~Surface();
 
     // Surfaces should only created with std::make_shared.
     // This is what create() functions do, so you should call them rather than

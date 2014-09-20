@@ -137,14 +137,6 @@ Surface::Surface(SDL_Surface* internal_surface):
 }
 
 /**
- * \brief Destructor.
- */
-Surface::~Surface() {
-
-  clear_subsurfaces();
-}
-
-/**
  * \brief Creates a surface with the specified size.
  *
  * The surface is initially transparent.

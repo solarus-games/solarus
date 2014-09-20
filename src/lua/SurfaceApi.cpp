@@ -45,6 +45,8 @@ void LuaContext::register_surface_module() {
       { "clear", surface_api_clear },
       { "fill_color", surface_api_fill_color },
       { "set_opacity", surface_api_set_opacity },
+      { "get_pixels", surface_api_get_pixels },
+      { "set_pixels", surface_api_set_pixels },
       { "draw", drawable_api_draw },
       { "draw_region", drawable_api_draw_region },
       { "fade_in", drawable_api_fade_in },
@@ -98,8 +100,8 @@ void LuaContext::push_surface(lua_State* l, Surface& surface) {
 
 /**
  * \brief Implementation of sol.surface.create().
- * \param l the Lua context that is calling this function
- * \return number of values to return to Lua
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::surface_api_create(lua_State* l) {
 
@@ -140,8 +142,8 @@ int LuaContext::surface_api_create(lua_State* l) {
 
 /**
  * \brief Implementation of surface:get_size().
- * \param l the Lua context that is calling this function
- * \return number of values to return to Lua
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::surface_api_get_size(lua_State* l) {
 
@@ -156,8 +158,8 @@ int LuaContext::surface_api_get_size(lua_State* l) {
 
 /**
  * \brief Implementation of surface:clear().
- * \param l the Lua context that is calling this function
- * \return number of values to return to Lua
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::surface_api_clear(lua_State* l) {
 
@@ -172,8 +174,8 @@ int LuaContext::surface_api_clear(lua_State* l) {
 
 /**
  * \brief Implementation of surface:fill_color().
- * \param l the Lua context that is calling this function
- * \return number of values to return to Lua
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::surface_api_fill_color(lua_State* l) {
 
@@ -199,8 +201,8 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
 
 /**
  * \brief Implementation of surface:set_opacity().
- * \param l the Lua context that is calling this function
- * \return number of values to return to Lua
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::surface_api_set_opacity(lua_State* l) {
 
@@ -210,6 +212,35 @@ int LuaContext::surface_api_set_opacity(lua_State* l) {
 
     surface.set_opacity(opacity);
 
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of surface:get_pixels().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::surface_api_get_pixels(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Surface& surface = *check_surface(l, 1);
+    // TODO optional parameters x, y, width, height
+
+    push_string(l, surface.get_pixels());
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of surface:set_pixels().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::surface_api_set_pixels(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    // TODO
     return 0;
   });
 }

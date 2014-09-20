@@ -900,7 +900,7 @@ void LuaContext::register_modules() {
  * \param text A string value.
  */
 void LuaContext::push_string(lua_State* l, const std::string& text) {
-  lua_pushstring(l, text.c_str());
+  lua_pushlstring(l, text.c_str(), text.size());
 }
 
 /**
@@ -910,7 +910,7 @@ void LuaContext::push_string(lua_State* l, const std::string& text) {
  */
 void LuaContext::push_color(lua_State* l, const Color& color) {
 
-  int r, g, b, a;
+  uint8_t r, g, b, a;
   color.get_components(r, g, b, a);
   lua_newtable(l);
   lua_pushinteger(l, r);

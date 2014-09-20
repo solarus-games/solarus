@@ -47,9 +47,9 @@ foreach(test_main_file ${tests_main_files})
   set_target_properties(${test_bin_file}
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin"
-)
+  )
 
-add_test(${test_main_file} "bin/${test_bin_file}" -no-audio -no-video ${SOLARUS_CURRENT_SOURCE_DIR}/testing_quest)
+  add_test(${test_main_file} "bin/${test_bin_file}" -no-audio -no-video ${SOLARUS_CURRENT_SOURCE_DIR}/testing_quest)
 
-endforeach(test_main_file ${test_main_files})
+endforeach()
 

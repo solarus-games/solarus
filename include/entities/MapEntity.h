@@ -411,7 +411,7 @@ class MapEntity: public ExportableToLua {
     int optimization_distance;                  /**< above this distance from the visible area,
                                                  * the entity is suspended (0 means infinite) */
     int optimization_distance2;                 /**< Square of optimization_distance. */
-    static const int
+    static constexpr int
         default_optimization_distance = 400;    /**< default value */
 
 };

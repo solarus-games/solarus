@@ -69,7 +69,7 @@ class DialogBoxSystem {
 
     // Fields only used by the built-in dialog box.
     bool built_in;                                  /**< Whether we are using the built-in dialog box. */
-    static const int nb_visible_lines = 3;          /**< Maximum number of visible lines. */
+    static constexpr int nb_visible_lines = 3;      /**< Maximum number of visible lines. */
     std::list<std::string> remaining_lines;         /**< Text of each line still to be displayed. */
     std::shared_ptr<TextSurface>
         line_surfaces[nb_visible_lines];            /**< Text surface of each visible line. */

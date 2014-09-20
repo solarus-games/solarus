@@ -143,7 +143,7 @@ void JumpMovement::set_speed(int speed) {
  */
 int JumpMovement::get_displayed_direction4() const {
 
-  static const int displayed_directions[] = {0, 0, 1, 2, 2, 2, 3, 0};
+  static constexpr int displayed_directions[] = {0, 0, 1, 2, 2, 2, 3, 0};
   return displayed_directions[direction8];
 }
 

@@ -220,7 +220,7 @@ void Hookshot::update() {
  */
 void Hookshot::draw_on_map() {
 
-  static const int nb_links = 7;
+  static constexpr int nb_links = 7;
   static const Point dxy[] = {
     {  16,  -5 },
     {   0, -13 },

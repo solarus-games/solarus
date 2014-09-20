@@ -104,10 +104,6 @@ void FontResource::load_fonts() {
       // It's an outline font.
       font.buffer = FileTools::data_file_read(font.file_name);
       font.bitmap_font = nullptr;
-      font.rw = SDL_RWops_UniquePtr(SDL_RWFromMem(
-          const_cast<char*>(font.buffer.data()),
-          (int) font.buffer.size()
-      ));
     }
 
     fonts.insert(std::make_pair(font_id, std::move(font)));
@@ -199,21 +195,26 @@ TTF_Font& FontResource::get_outline_font(const std::string& font_id, int size) {
   FontFile& font = kvp->second;
   Debug::check_assertion(font.bitmap_font == nullptr, std::string("This is not an outline font: '") + font_id + "'");
 
-  std::map<int, TTF_Font_UniquePtr>& outline_fonts = kvp->second.outline_fonts;
+  std::map<int, OutlineFontReader>& outline_fonts = kvp->second.outline_fonts;
 
   const auto& kvp2 = outline_fonts.find(size);
   if (kvp2 != outline_fonts.end()) {
-    return *kvp2->second;
+    return *kvp2->second.outline_font;
   }
 
   // First time we want this font with this particular size.
-  TTF_Font_UniquePtr outline_font(TTF_OpenFontRW(font.rw.get(), 0, size));
+  SDL_RWops_UniquePtr rw = SDL_RWops_UniquePtr(SDL_RWFromMem(
+      const_cast<char*>(font.buffer.data()),
+      (int) font.buffer.size()
+  ));
+  TTF_Font_UniquePtr outline_font(TTF_OpenFontRW(rw.get(), 0, size));
   Debug::check_assertion(outline_font != nullptr,
       std::string("Cannot load font from file '") + font.file_name
       + "': " + TTF_GetError()
   );
-  outline_fonts.insert(std::make_pair(size, std::move(outline_font)));
-  return *outline_fonts.at(size);
+  OutlineFontReader reader = { std::move(rw), std::move(outline_font) };
+  outline_fonts.insert(std::make_pair(size, std::move(reader)));
+  return *outline_fonts.at(size).outline_font;
 }
 
 }

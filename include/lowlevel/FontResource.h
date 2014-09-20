@@ -58,15 +58,22 @@ class FontResource {
     using TTF_Font_UniquePtr = std::unique_ptr<TTF_Font, TTF_Font_Deleter>;
 
     /**
+     * Reading an outline font for a given font size.
+     */
+    struct OutlineFontReader {
+        SDL_RWops_UniquePtr rw;
+        TTF_Font_UniquePtr outline_font;
+    };
+
+    /**
      * This structure stores in memory the content of a font file.
      */
     struct FontFile {
       std::string file_name;                          /**< Name of the font file, relative to the data directory. */
       std::string buffer;                             /**< The font file loaded into memory. */
-      SDL_RWops_UniquePtr rw;                         /**< The font file reader. */
 
       SurfacePtr bitmap_font;                         /**< The font bitmap. Only used for bitmap fonts. */
-      std::map<int, TTF_Font_UniquePtr>
+      std::map<int, OutlineFontReader>
           outline_fonts;                              /**< This font in any size it was loaded with.
                                                        * Only used for outline fonts. */
     };

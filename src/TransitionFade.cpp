@@ -187,10 +187,10 @@ void TransitionFade::draw(Surface& dst_surface) {
   }
   else {
     // Add a colored foreground surface with the appropriate opacity.
-    int r, g, b, a;
+    uint8_t r, g, b, a;
     transition_color.get_components(r, g, b, a);
     // A full opaque transition corresponds to a foreground with full alpha.
-    Color fade_color(r, g, b, 255 - std::min(alpha_impl, a));
+    Color fade_color(r, g, b, 255 - std::min(alpha_impl, (int) a));
 
     dst_surface.fill_with_color(fade_color);
   }

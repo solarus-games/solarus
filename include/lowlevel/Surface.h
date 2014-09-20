@@ -82,6 +82,8 @@ class Surface: public Drawable {
     void fill_with_color(const Color& color, const Rectangle& where);
     void set_opacity(uint8_t opacity);
 
+    std::string get_pixels() const;
+
     void apply_pixel_filter(const PixelFilter& pixel_filter, Surface& dst_surface);
 
     void render(SDL_Renderer* renderer);

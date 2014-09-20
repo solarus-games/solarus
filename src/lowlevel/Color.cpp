@@ -87,7 +87,8 @@ Color::Color(int r, int g, int b, int a) {
  *
  * This function must be used only by low-level classes.
  *
- * \return the 32-bit value of this color
+ * \return The 32-bit value of this color, in the preferred pixel format
+ * (Video::get_pixel_format()).
  */
 uint32_t Color::get_internal_value() const {
   return internal_value;
@@ -111,7 +112,7 @@ SDL_Color* Color::get_internal_color() {
  * \param b Blue component to write.
  * \param a Alpha component to write.
  */
-void Color::get_components(int& r, int& g, int& b, int& a) const {
+void Color::get_components(uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) const {
 
   r = internal_color.r;
   g = internal_color.g;

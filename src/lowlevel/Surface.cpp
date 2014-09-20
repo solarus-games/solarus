@@ -341,6 +341,64 @@ void Surface::set_opacity(uint8_t opacity) {
 }
 
 /**
+ * \brief Returns a buffer of the raw pixels of this surface.
+ *
+ * Pixels returned have the RGBA 32-bit format.
+ *
+ * \return The pixel buffer.
+ */
+std::string Surface::get_pixels() const {
+
+  if (!software_destination &&
+      Video::is_acceleration_enabled()) {
+    // The surface is in GPU.
+    return "";  // TODO
+  }
+
+  const int num_pixels = get_width() * get_height();
+  if (internal_surface == nullptr) {
+    // No surface: this may be a color.
+
+    if (internal_color == nullptr) {
+      // No color either: fully transparent surface.
+      return std::string(num_pixels * 4, (size_t) 0);
+    }
+
+    uint8_t r, g, b, a;
+    internal_color->get_components(r, g, b, a);
+    std::string pixel;
+    pixel += r;
+    pixel += g;
+    pixel += b;
+    pixel += a;
+    std::ostringstream oss;
+    for (int i = 0; i < num_pixels; ++i) {
+      oss << pixel;
+    }
+    return oss.str();
+  }
+
+  if (internal_surface->format->format == SDL_PIXELFORMAT_ABGR8888) {
+    // No conversion needed.
+    const char* buffer = static_cast<const char*>(internal_surface->pixels);
+    return std::string(buffer, num_pixels * 4);
+  }
+
+  // Convert to RGBA format.
+  SDL_PixelFormat* format = SDL_AllocFormat(SDL_PIXELFORMAT_ABGR8888);  // TODO keep this object
+  SDL_Surface_UniquePtr converted_surface(SDL_ConvertSurface(
+      internal_surface.get(),
+      format,
+      0
+  ));
+  SDL_FreeFormat(format);
+  Debug::check_assertion(converted_surface != nullptr,
+      "Failed to convert pixels to RGBA format");
+  const char* buffer = static_cast<const char*>(converted_surface->pixels);
+  return std::string(buffer, num_pixels * 4);
+}
+
+/**
  * When this surface is used as the destination of a drawing operation,
  * returns whether the drawing operation is performed in RAM or by the GPU.
  *
@@ -758,7 +816,7 @@ void Surface::render(
 
   // Draw the internal color as background color.
   if (internal_color != nullptr) {
-    int r, g, b, a;
+    uint8_t r, g, b, a;
     internal_color->get_components(r, g, b, a);
 
     SDL_SetRenderDrawColor(renderer, r, g, b, std::min((uint8_t) a, current_opacity));

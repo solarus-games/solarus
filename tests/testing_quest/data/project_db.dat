@@ -87,3 +87,5 @@ sound{ id = "running_obstacle", description = "running_obstacle" }
 
 language{ id = "en", description = "English" }
 
+font{ id = "8_bit", description = "8_bit" }
+font{ id = "minecraftia", description = "minecraftia" }

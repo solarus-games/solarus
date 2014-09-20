@@ -79,3 +79,5 @@ sound{ id = "wrong", description = "wrong" }
 language{ id = "en", description = "English" }
 
 sound{ id = "running_obstacle", description = "running_obstacle" }
+font{ id = "8_bit", description = "8_bit" }
+font{ id = "minecraftia", description = "minecraftia" }

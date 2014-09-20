@@ -25,9 +25,6 @@ namespace Solarus {
  */
 Hq3xFilter::Hq3xFilter():
   PixelFilter() {
-
-  // Make sure hqx is initialized.
-  Hq4xFilter::initialize_hqx();
 }
 
 /**
@@ -45,6 +42,9 @@ void Hq3xFilter::filter(
     int src_width,
     int src_height,
     uint32_t* dst) const {
+
+  // Make sure hqx is initialized.
+  Hq4xFilter::initialize_hqx();
 
   hq3x_32(const_cast<uint32_t*>(src), dst, src_width, src_height);
 }

@@ -28,9 +28,6 @@ namespace {
  */
 Hq4xFilter::Hq4xFilter():
   PixelFilter() {
-
-  // Make sure hqx is initialized.
-  initialize_hqx();
 }
 
 /**
@@ -48,6 +45,9 @@ void Hq4xFilter::filter(
     int src_width,
     int src_height,
     uint32_t* dst) const {
+
+  // Make sure hqx is initialized.
+  initialize_hqx();
 
   hq4x_32(const_cast<uint32_t*>(src), dst, src_width, src_height);
 }

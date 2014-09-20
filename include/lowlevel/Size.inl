@@ -23,7 +23,7 @@ namespace Solarus {
 /**
  * \brief Creates the size <tt>(0,0)</tt>.
  */
-inline Size::Size()
+constexpr Size::Size()
   = default;
 
 /**
@@ -31,7 +31,7 @@ inline Size::Size()
  * \param width The width.
  * \param height The height.
  */
-inline Size::Size(int width, int height):
+constexpr Size::Size(int width, int height):
   width(width),
   height(height) {
 }
@@ -84,7 +84,7 @@ inline Size& Size::operator/=(int divisor) {
  * \brief Returns whether this size is flat.
  * \return \c true if the width or the height are zero.
  */
-inline bool Size::is_flat() const {
+constexpr bool Size::is_flat() const {
   return width == 0 || height == 0;
 }
 

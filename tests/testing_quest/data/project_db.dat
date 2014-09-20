@@ -1,4 +1,5 @@
 map{ id = "traversable", description = "Traversable test area" }
+map{ id = "basic_test", description = "Basic test" }
 
 tileset{ id = "castle", description = "Castle" }
 
@@ -89,3 +90,4 @@ language{ id = "en", description = "English" }
 
 font{ id = "8_bit", description = "8_bit" }
 font{ id = "minecraftia", description = "minecraftia" }
+

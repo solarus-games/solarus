@@ -26,7 +26,7 @@
 
 namespace Solarus {
 
-const int Music::nb_buffers;
+constexpr int Music::nb_buffers;
 std::unique_ptr<SpcDecoder> Music::spc_decoder = nullptr;
 std::unique_ptr<ItDecoder> Music::it_decoder = nullptr;
 float Music::volume = 1.0;

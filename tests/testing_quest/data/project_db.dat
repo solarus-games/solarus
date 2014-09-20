@@ -1,5 +1,6 @@
 map{ id = "traversable", description = "Traversable test area" }
 map{ id = "basic_test", description = "Basic test" }
+map{ id = "surface_tests", description = "Surface tests" }
 
 tileset{ id = "castle", description = "Castle" }
 

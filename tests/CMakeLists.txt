@@ -1,6 +1,7 @@
 # List of maps of the testing quest that are unit tests to be run.
 set(lua_test_maps
   "basic_test"
+  "surface_tests"
 )
 
 # Build the Solarus testing library.
@@ -62,6 +63,7 @@ foreach(test_main_file ${tests_main_files})
   else()
     # Normal C++ test.
     get_filename_component(test_name "${test_main_file}" NAME_WE)
+    string(TOLOWER "${test_name}" test_name)
     add_test("${test_name}" "bin/${test_bin_file}" -no-audio -no-video "${CMAKE_CURRENT_SOURCE_DIR}/testing_quest")
   endif()
 

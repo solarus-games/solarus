@@ -1030,6 +1030,7 @@ class LuaContext {
     void register_game_module();
     void register_map_module();
     void register_entity_module();
+    void register_testing_module();
 
     // Pushing objects to Lua.
     static void push_main(lua_State* l);

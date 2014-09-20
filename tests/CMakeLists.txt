@@ -1,3 +1,8 @@
+# List of maps of the testing quest that are unit tests to be run.
+set(lua_test_maps
+  "basic_test"
+)
+
 # Build the Solarus testing library.
 file(
   GLOB
@@ -49,7 +54,16 @@ foreach(test_main_file ${tests_main_files})
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin"
   )
 
-  add_test(${test_main_file} "bin/${test_bin_file}" -no-audio -no-video ${SOLARUS_CURRENT_SOURCE_DIR}/testing_quest)
+  if (${test_main_file} MATCHES "src/tests/RunLuaTest.cpp")
+    # Lua test runner: add an individual test for each map.
+    foreach(map_id ${lua_test_maps})
+      add_test("lua_${map_id}" "bin/${test_bin_file}" -no-audio -no-video -map=${map_id} "${CMAKE_CURRENT_SOURCE_DIR}/testing_quest")
+    endforeach()
+  else()
+    # Normal C++ test.
+    get_filename_component(test_name "${test_main_file}" NAME_WE)
+    add_test("${test_name}" "bin/${test_bin_file}" -no-audio -no-video "${CMAKE_CURRENT_SOURCE_DIR}/testing_quest")
+  endif()
 
 endforeach()
 

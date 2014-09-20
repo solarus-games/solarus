@@ -27,32 +27,29 @@ namespace Debug {
 
 namespace {
 
+  bool die_on_error = false;
   bool show_popup_on_die = true;
   const std::string error_output_file_name = "error.txt";
   std::ofstream error_output_file;
 }
 
 /**
- * \brief Sets up the debugging features depending on the command line.
+ * \brief Sets whether errors are fatal.
  *
- * The debugging features can be used even before this initialization,
- * but whatever was passed as command-line arguments is not taken into
- * account yet.
- *
- * \param args Command-line arguments.
+ * If \c true, calling to Debug::error() will abort the process.
+ * The default is \c false.
  */
-void initialize(const CommandLine& args) {
-
-  if (args.has_argument("-no-video")) {
-    show_popup_on_die = false;
-  }
+void set_die_on_error(bool die) {
+  die_on_error = die;
 }
 
 /**
- * \brief Cleans the debugging features.
+ * \brief Sets whether a dialog should pop when the program dies.
+ *
+ * The default is \c true.
  */
-void quit() {
-  error_output_file.close();
+void set_show_popup_on_die(bool show) {
+  show_popup_on_die = show;
 }
 
 /**
@@ -77,11 +74,17 @@ void warning(const std::string& message) {
  */
 void error(const std::string& message) {
 
+  if (die_on_error) {
+    // Errors are fatal.
+    die(message);
+  }
+
   if (!error_output_file.is_open()) {
     error_output_file.open(error_output_file_name.c_str());
   }
   error_output_file << "Error: " << message << std::endl;
   std::cerr << "Error: " << message << std::endl;
+
 }
 
 /**

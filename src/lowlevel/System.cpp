@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/Color.h"
-#include "lowlevel/Debug.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/FontResource.h"
 #include "lowlevel/InputEvent.h"
@@ -42,9 +41,6 @@ uint32_t System::ticks = 0;
  * \param args Command-line arguments.
  */
 void System::initialize(const CommandLine& args) {
-
-  // Debugging features.
-  Debug::initialize(args);
 
   // initialize SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
@@ -83,7 +79,6 @@ void System::quit() {
   Color::quit();
   Video::quit();
   FileTools::quit();
-  Debug::quit();
 
   SDL_Quit();
 }

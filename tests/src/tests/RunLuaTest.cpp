@@ -14,39 +14,25 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_DEBUG_H
-#define SOLARUS_DEBUG_H
+#include "lowlevel/Debug.h"
+#include "test_tools/TestEnvironment.h"
 
-#include "Common.h"
-#include <string>
-
-#ifndef NDEBUG
-#define SOLARUS_ASSERT(condition, message) Debug::check_assertion(condition, message)
-#else
-#define SOLARUS_ASSERT(condition, message)
-#endif
-
-namespace Solarus {
-
-class CommandLine;
+using namespace Solarus;
 
 /**
- * \brief Provides features for printing error messages or making runtime checks.
+ * \brief Runs a test written in Lua.
+ *
+ * The Lua test is implemented as a map of the testing quest.
  */
-namespace Debug {
+int main(int argc, char** argv) {
 
-void set_die_on_error(bool die);
-void set_show_popup_on_die(bool show);
+  TestEnvironment env(argc, argv);
 
-void warning(const std::string& message);
-void error(const std::string& message);
-void check_assertion(bool assertion, const char* error_message);
-void check_assertion(bool assertion, const std::string& error_message);
-void die(const std::string& error_message);
+  const std::string& map_id = env.get_command_line().get_argument_value("-map");
+  Debug::check_assertion(!map_id.empty(), "No map specified");
 
+  env.run_map(map_id);
+
+  return 0;
 }
-
-}
-
-#endif
 

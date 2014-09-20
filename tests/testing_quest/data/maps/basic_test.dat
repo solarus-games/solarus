@@ -1,0 +1,16 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  tileset = "castle",
+  music = "same",
+}
+
+destination{
+  layer = 0,
+  x = 160,
+  y = 125,
+  direction = 3,
+}
+

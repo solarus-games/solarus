@@ -30,8 +30,19 @@ namespace Solarus {
  */
 TestEnvironment::TestEnvironment(int argc, char** argv):
     command_line(argc, argv),
-    main_loop(command_line) {
+    main_loop(command_line),
+    map_id("traversable") {
 
+  Debug::set_show_popup_on_die(false);
+  Debug::set_die_on_error(true);
+}
+
+/**
+ * \brief Returns the command line that was passed to the test.
+ * \return The command line.
+ */
+const CommandLine& TestEnvironment::get_command_line() const {
+  return command_line;
 }
 
 /**
@@ -50,7 +61,7 @@ Game& TestEnvironment::get_game() {
     std::shared_ptr<Savegame> savegame = std::make_shared<Savegame>(
         main_loop, "save_initial.dat"
     );
-    savegame->set_string(Savegame::KEY_STARTING_MAP, "tests/traversable");  // TODO allow tests to choose the map
+    savegame->set_string(Savegame::KEY_STARTING_MAP, map_id);
     Game* game = new Game(main_loop, savegame);
     main_loop.set_game(game);
     step();  // Advance one tick to start the game.
@@ -88,6 +99,17 @@ MapEntities& TestEnvironment::get_entities() {
 Hero& TestEnvironment::get_hero() {
 
   return *get_game().get_hero();
+}
+
+/**
+ * \brief Runs the main loop on the specified map.
+ * \param map_id Id of the map to open.
+ */
+void TestEnvironment::run_map(const std::string& map_id) {
+
+  this->map_id = map_id;
+  get_game();  // Create a game and start it on the map.
+  get_main_loop().run();
 }
 
 /**

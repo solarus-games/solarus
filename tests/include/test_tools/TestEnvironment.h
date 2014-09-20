@@ -51,11 +51,14 @@ class TestEnvironment {
     TestEnvironment(int argc, char** argv);
 
     // Get important objects.
+    const CommandLine& get_command_line() const;
     MainLoop& get_main_loop();
     Game& get_game();
     Map& get_map();
     MapEntities& get_entities();
     Hero& get_hero();
+
+    void run_map(const std::string& map_id);
 
     // Creating entities.
     template<typename T>
@@ -73,6 +76,7 @@ class TestEnvironment {
 
     CommandLine command_line;
     MainLoop main_loop;
+    std::string map_id;
 };
 
 }

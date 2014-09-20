@@ -226,7 +226,7 @@ void Hero::StairsState::update() {
         next_phase_date += 350;
 
         // main movement direction corresponding to each animation direction while taking stairs
-        static const int movement_directions[] = { 0, 0, 2, 4, 4, 4, 6, 0 };
+        static constexpr int movement_directions[] = { 0, 0, 2, 4, 4, 4, 6, 0 };
 
         int animation_direction = stairs.get_animation_direction(way);
         if (phase == 2) { // the first phase of the movement is finished

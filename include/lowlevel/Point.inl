@@ -23,7 +23,7 @@ namespace Solarus {
 /**
  * \brief Creates a point with coordinates <tt>(0,0)</tt>.
  */
-inline Point::Point()
+constexpr Point::Point()
   = default;
 
 /**
@@ -31,7 +31,7 @@ inline Point::Point()
  * \param x The x coordinate.
  * \param y The y coordinate.
  */
-inline Point::Point(int x, int y):
+constexpr Point::Point(int x, int y):
   x(x),
   y(y) {
 }

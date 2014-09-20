@@ -21,11 +21,6 @@
 namespace Solarus {
 
 /**
- * \brief Distance made by the viewport to move the tile pattern of 1 pixel.
- */
-const int ParallaxScrollingTilePattern::ratio = 2;
-
-/**
  * \brief Creates a tile pattern with parallax scrolling.
  * \param ground Kind of ground of the tile pattern.
  * \param x x position of the tile pattern in the tileset

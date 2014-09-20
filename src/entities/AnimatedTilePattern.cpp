@@ -25,7 +25,7 @@ namespace Solarus {
 /**
  * \brief Interval in millisecond between two frames of an animation.
  */
-static const uint32_t TILE_FRAME_INTERVAL = 250;
+static constexpr uint32_t TILE_FRAME_INTERVAL = 250;
 
 /**
  * \brief Gives the current frame depending on the sequence type and the frame counter.
@@ -33,7 +33,7 @@ static const uint32_t TILE_FRAME_INTERVAL = 250;
  * This array associates the current frame (0, 1 or 2) to
  * the sequence type and the frame counter (0 to 11).
  */
-static const short frames[2][12] = {
+static constexpr short frames[2][12] = {
   {0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2}, // sequence 0-1-2
   {0, 1, 2, 1, 0, 1, 2, 1, 0, 1, 2, 1}, // sequence 0-1-2-1
 };

@@ -165,7 +165,7 @@ class Map: public ExportableToLua {
     void draw_sprite(Sprite& sprite, int x, int y,
         const Rectangle& clipping_area);
 
-    static const int NO_FLOOR = -9999;  /**< Represents a non-existent floor (nil in data files). */
+    static constexpr int NO_FLOOR = -9999;  /**< Represents a non-existent floor (nil in data files). */
 
   private:
 

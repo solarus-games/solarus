@@ -1542,7 +1542,7 @@ void MapEntity::notify_moved_by(MapEntity& /* entity */) {
  */
 const Point& MapEntity::direction_to_xy_move(int direction8) {
 
-  static const Point directions_to_xy_moves[] = {
+  static constexpr Point directions_to_xy_moves[] = {
     {  1,  0 },
     {  1, -1 },
     {  0, -1 },

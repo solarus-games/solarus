@@ -119,7 +119,7 @@ class Music {
     OggVorbis_File ogg_file;                     /**< the file used by the vorbisfile lib */
     Sound::SoundFromMemory ogg_mem;              /**< the encoded music loaded in memory, passed to the vorbisfile lib as user data */
 
-    static const int nb_buffers = 8;
+    static constexpr int nb_buffers = 8;
     ALuint buffers[nb_buffers];                  /**< multiple buffers used to stream the music */
     ALuint source;                               /**< the OpenAL source streaming the buffers */
 

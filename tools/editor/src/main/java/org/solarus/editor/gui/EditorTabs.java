@@ -190,7 +190,7 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
     }
 
     /**
-     * Refreshs the title of a specified editor.
+     * Refreshes the title of a specified editor.
      * @param id The index of the editor
      */
     public void refreshEditorTitle(String id) {

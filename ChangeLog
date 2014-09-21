@@ -59,6 +59,7 @@ Solarus Quest Editor changes
 ----------------------------
 
 * Allow to reload the quest tree if files have changed (#596).
+* Show keyboard shortcuts in menu items.
 * Fix wrong height of icons in the sprite tree with windows (#618).
 * Fix chest editor dialog not opening if the item no longer exists (#594).
 

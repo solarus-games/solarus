@@ -214,6 +214,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
             popupMenuSelectedTilePattern.addSeparator();
             item = new JMenuItem("Change id");
+            item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
             item.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         String patternId = tileset.getSelectedTilePatternId();
@@ -230,6 +231,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
             popupMenuSelectedTilePattern.addSeparator();
             item = new JMenuItem("Delete");
+            item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
             item.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         tileset.removeTilePattern();

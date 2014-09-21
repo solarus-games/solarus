@@ -17,8 +17,11 @@
 package org.solarus.editor.gui;
 
 import java.awt.event.*;
+
 import javax.swing.*;
+
 import java.util.Collection;
+
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 import org.solarus.editor.map_editor_actions.*;
@@ -73,12 +76,14 @@ public class MapViewPopupMenu extends JPopupMenu {
         if (!selection.isEmpty()) {
             // edit
             item = new JMenuItem("Edit");
+            item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
             item.addActionListener(new ActionListenerEditEntity());
             item.setEnabled(true);
             add(item);
 
             // resize
             item = new JMenuItem("Resize");
+            item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0));
             item.setEnabled(selection.isResizable());
             item.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -115,6 +120,7 @@ public class MapViewPopupMenu extends JPopupMenu {
         if (!selection.isEmpty()) {
             // cut
             item = new JMenuItem("Cut");
+            item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK));
             item.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent ev) {
                     mapView.cutSelectedEntities();
@@ -124,6 +130,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 
             // copy
             item = new JMenuItem("Copy");
+            item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK));
             item.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent ev) {
                     mapView.copySelectedEntities();
@@ -134,6 +141,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 
         // paste
         item = new JMenuItem("Paste");
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
         item.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 mapView.paste();
@@ -154,16 +162,19 @@ public class MapViewPopupMenu extends JPopupMenu {
 
             // bring to front / to back
             item = new JMenuItem("Bring to front");
+            item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, 0));
             item.addActionListener(new ActionListenerBringToFront());
             add(item);
 
             item = new JMenuItem("Bring to back");
+            item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, 0));
             item.addActionListener(new ActionListenerBringToBack());
             add(item);
 
             addSeparator();
 
             item = new JMenuItem("Destroy");
+            item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
             item.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     mapView.destroySelectedEntities();

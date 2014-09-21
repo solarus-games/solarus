@@ -19,7 +19,9 @@ package org.solarus.editor.gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+
 import javax.swing.*;
+
 import org.solarus.editor.Zoom;
 import org.solarus.editor.entities.*;
 
@@ -120,18 +122,26 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
     private Zoom zoom = Zoom.get(2.0);
 
     /**
+     * The main window of the quest editor.
+     */
+    private EditorWindow mainWindow;
+
+    /**
      * Constructor.
+     * @param mainWindow The main window of the quest editor.
      * @param editable true to make the tileset editable, false otherwise
      * (if so, the user can only pick a tile pattern)
      */
-    public TilesetImageView(boolean editable) {
+    public TilesetImageView(final EditorWindow mainWindow, boolean editable) {
         super();
 
+        this.mainWindow = mainWindow;
         this.state = State.NORMAL;
         this.editable = editable;
 
         addMouseListener(new TilesetImageMouseListener());
         addMouseMotionListener(new TilesetImageMouseMotionListener());
+        addKeyListener(new TilesetImageKeyListener());
         MouseMiddleButtonScrollListener.install(this);
 
         if (editable) {
@@ -203,7 +213,22 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
             }
 
             popupMenuSelectedTilePattern.addSeparator();
+            item = new JMenuItem("Change id");
+            item.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        String patternId = tileset.getSelectedTilePatternId();
+                        if (patternId == null) {
+                            return;
+                        }
+                        TilePatternIdRefactoringDialog dialog = new TilePatternIdRefactoringDialog(
+                            mainWindow, tileset, patternId
+                        );
+                        dialog.display();
+                    }
+                });
+            popupMenuSelectedTilePattern.add(item);
 
+            popupMenuSelectedTilePattern.addSeparator();
             item = new JMenuItem("Delete");
             item.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -607,6 +632,8 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
                 return;
             }
 
+            requestFocusInWindow();
+
             // Only consider left clicks.
             if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
@@ -808,6 +835,47 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
                 setCurrentArea(newTilePatternArea);
             }
             break;
+            }
+        }
+    }
+
+    /**
+     * The key listener associated to the tileset image.
+     */
+    private class TilesetImageKeyListener extends KeyAdapter {
+
+        /**
+         * This method is invoked when a key is pressed on the tileset image.
+         */
+        public void keyPressed(KeyEvent keyEvent) {
+
+            if (state != State.NORMAL) {
+                return;
+            }
+
+            String selectedPatternId = tileset.getSelectedTilePatternId();
+
+            int key = keyEvent.getKeyCode();
+            switch (key) {
+
+                case KeyEvent.VK_DELETE:
+                    if (selectedPatternId != null) {
+                        tileset.removeTilePattern();
+                    }
+                    break;
+
+                case KeyEvent.VK_F2:
+                    if (selectedPatternId != null) {
+                        TilePatternIdRefactoringDialog dialog = new TilePatternIdRefactoringDialog(
+                                mainWindow,
+                                tileset,
+                                selectedPatternId
+                                );
+                        dialog.display();
+                    }
+
+                    default:
+                        break;
             }
         }
     }

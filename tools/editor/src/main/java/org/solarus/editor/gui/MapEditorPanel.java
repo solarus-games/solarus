@@ -83,8 +83,10 @@ public class MapEditorPanel extends AbstractEditorPanel {
 
         add(rootPanel);
 
-        if (map.badTiles()) {
-            GuiTools.warningDialog("Some tiles of the map have been removed because they don't exist in the tileset.");
+        if (map.hasBadTiles()) {
+            GuiTools.warningDialog(
+                    "Some tiles of the map have been removed because they don't exist in the tileset: " +
+                            map.getBadTilePatternsToString());
         }
 
         // Notify the children views.

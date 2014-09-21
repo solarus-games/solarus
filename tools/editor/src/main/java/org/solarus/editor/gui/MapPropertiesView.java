@@ -648,8 +648,10 @@ public class MapPropertiesView extends JPanel
                     try {
                         map.setTileset("");
                         map.setTileset(selectedTilesetId);
-                        if (map.badTiles()) {
-                            GuiTools.warningDialog("Some tiles of the map have been removed because they don't exist in this tileset.");
+                        if (map.hasBadTiles()) {
+                            GuiTools.warningDialog(
+                                    "Some tiles of the map have been removed because they don't exist in this tileset: " +
+                                            map.getBadTilePatternsToString());
                         }
                     }
                     catch (QuestEditorException ex) {
@@ -722,8 +724,10 @@ public class MapPropertiesView extends JPanel
                 try {
                     map.getHistory().doAction(new ActionChangeTileset(map, selectedTilesetId));
 
-                    if (map.badTiles()) {
-                        GuiTools.warningDialog("Some tiles of the map have been removed because they don't exist in this tileset.");
+                    if (map.hasBadTiles()) {
+                        GuiTools.warningDialog(
+                                "Some tiles of the map have been removed because they don't exist in this tileset: " +
+                                        map.getBadTilePatternsToString());
                     }
                 }
                 catch (QuestEditorException ex) {

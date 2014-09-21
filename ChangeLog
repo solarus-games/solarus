@@ -36,6 +36,11 @@ Don't forget to make a backup first.
 * fonts.dat no longer exists. Fonts are a resource like others now (#611).
 * Fonts are now in a 'fonts' directory instead of 'text'.
 
+Solarus Quest Editor changes
+----------------------------
+
+* When non-existent tiles are removed, show a more detailed warning.
+
 _________________________________
 
 Solarus 1.3.2 (under development)

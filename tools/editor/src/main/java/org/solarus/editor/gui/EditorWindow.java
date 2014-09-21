@@ -190,7 +190,6 @@ public class EditorWindow extends JFrame
         menuNewMap = new JMenuItem("Map");
         menuNewMap.setMnemonic(KeyEvent.VK_M);
         menuNewMap.getAccessibleContext().setAccessibleDescription("Create a new map");
-        menuNewMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
         menuNewMap.addActionListener(
                 new ActionListenerCreateResourceElement(ResourceType.MAP));
         menuNew.add(menuNewMap);
@@ -210,7 +209,6 @@ public class EditorWindow extends JFrame
 
         menuOpenMap = new JMenuItem("Map");
         menuOpenMap.setMnemonic(KeyEvent.VK_M);
-        menuOpenMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
         menuOpenMap.addActionListener(
                 new ActionListenerOpenResourceElement(ResourceType.MAP));
         menuOpen.add(menuOpenMap);
@@ -218,7 +216,6 @@ public class EditorWindow extends JFrame
         menuOpenTileset = new JMenuItem("Tileset");
         menuOpenTileset.setMnemonic(KeyEvent.VK_T);
         menuOpenTileset.getAccessibleContext().setAccessibleDescription("Open an existing tileset");
-        menuOpenTileset.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
         menuOpenTileset.addActionListener(
                 new ActionListenerOpenResourceElement(ResourceType.TILESET));
         menuOpen.add(menuOpenTileset);

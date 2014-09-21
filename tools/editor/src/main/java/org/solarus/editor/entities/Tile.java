@@ -84,7 +84,7 @@ public class Tile extends MapEntity {
                 }
             }
             catch (NoSuchElementException ex) {
-                throw new NoSuchTilePatternException(ex.getMessage());
+                throw new NoSuchTilePatternException(ex.getMessage(), getTilePatternId());
             }
         }
     }
@@ -120,12 +120,18 @@ public class Tile extends MapEntity {
                 TilePattern oldTilePattern = oldTileset.getTilePattern(tilePatternId);
 
                 if (!newTilePattern.equals(oldTilePattern)) {
-                    throw new NoSuchTilePatternException("Tile pattern '" + tilePatternId + "' is different in this tileset.");
+                    throw new NoSuchTilePatternException(
+                            "Tile pattern '" + tilePatternId + "' is different in this tileset.",
+                            tilePatternId
+                    );
                 }
             }
         }
         catch (NoSuchElementException e) {
-            throw new NoSuchTilePatternException("Tile pattern '" + tilePatternId + "' doesn't exist in this tileset.");
+            throw new NoSuchTilePatternException(
+                    "Tile pattern '" + tilePatternId + "' doesn't exist in this tileset.",
+                    tilePatternId
+            );
         }
     }
 

@@ -20,16 +20,27 @@ import org.solarus.editor.*;
 
 /**
  * Exception thrown if a tile placed on a map references a non-existing
- * tile pattern in the tileset.
+ * tile pattern in the tileset or a tile pattern with unexpected properties.
  */
 public class NoSuchTilePatternException extends MapException {
 
+    private String tilePatternId;
+
     /**
      * Constructor.
-     * @param message error message
+     * @param message Error message.
+     * @param tilePatternId Id of the tile pattern not found or not valid.
      */
-    public NoSuchTilePatternException(String message) {
+    public NoSuchTilePatternException(String message, String tilePatternId) {
         super(message);
+        this.tilePatternId = tilePatternId;
     }
 
+    /**
+     * Returns the id of the tile pattern not found or not valid.
+     * @return tilePatternId;
+     */
+    public String getTilePatternId() {
+        return tilePatternId;
+    }
 }

@@ -21,6 +21,7 @@ import java.io.*;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+
 import org.luaj.vm2.*;
 import org.luaj.vm2.lib.*;
 import org.luaj.vm2.compiler.*;
@@ -91,10 +92,10 @@ public class Map extends Observable {
     private MapEntitySelection entitySelection;
 
     /**
-     * True if some tiles could not be found in the tileset
-     * when the tileset was loaded.
+     * List of ids of tiles patterns that could not be found in the tileset
+     * when the tileset was loaded or changed.
      */
-    private boolean badTiles;
+    private TreeSet<String> badTilePatterns;
 
     /**
      * The history of the actions made by the user on the map.
@@ -135,6 +136,7 @@ public class Map extends Observable {
         this.world = null;
         this.floor = null;
         this.mapId = mapId;
+        this.badTilePatterns = new TreeSet<String>();
         initialize();
 
         load();
@@ -325,13 +327,11 @@ public class Map extends Observable {
     /**
      * Changes the tileset of the map.
      * @param tilesetId id of the new tileset, or an empty string to set no tileset
-     * @return true if the tileset was loaded successfuly, false if some tiles could
-     * not be loaded in this tileset
      * @throws QuestEditorException if this tileset could not be applied
      */
-    public boolean setTileset(String tilesetId) throws QuestEditorException {
+    public void setTileset(String tilesetId) throws QuestEditorException {
 
-        this.badTiles = false;
+        this.badTilePatterns.clear();
 
         // if the tileset is removed
         if (tilesetId.length() == 0 && this.tilesetId.length() != 0) {
@@ -359,7 +359,7 @@ public class Map extends Observable {
                         // the entity is not valid anymore, we should remove it from the map
                         entitiesToRemove.add(entity);
                         getEntitySelection().unselect(entity);
-                        badTiles = true;
+                        badTilePatterns.add(ex.getTilePatternId());
                     }
                 }
 
@@ -374,8 +374,6 @@ public class Map extends Observable {
             setChanged();
             notifyObservers(tileset);
         }
-
-        return !badTiles;
     }
 
     /**
@@ -926,13 +924,53 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns whether or not when the tileset was loaded, some tiles of the map refered
+     * Returns whether or not when the tileset was loaded, some tiles of the map referred
      * to non existent tiles in the tileset. These bad tiles were removed.
      * @return true if there was bad tiles when the tiles was loaded, false if all tiles
-     * were loaded successfuly.
+     * were loaded successfully.
      */
-    public boolean badTiles() {
-        return badTiles;
+    public boolean hasBadTiles() {
+        return !badTilePatterns.isEmpty();
+    }
+
+    /**
+     * Returns the ids of tile patterns that were referred by this map but
+     * not found in the tileset.
+     * These bad tiles were removed.
+     * @return The ids of tile patterns that don't exist but that were present
+     * on this map.
+     */
+    public TreeSet<String> getBadTilePatterns() {
+        return badTilePatterns;
+    }
+
+    /**
+     * Returns a string representing the list getBadTilePatterns().
+     * If the string is too long, it is truncated and the end is replaced
+     * by "...".
+     * This is a convenience function to build an error message for the user.
+     * Use getBadTilePatterns() if you want the full list.
+     * @return A string describing bad tile patterns.
+     */
+    public String getBadTilePatternsToString() {
+
+        StringBuffer buffer = new StringBuffer();
+        int i = 0;
+        for (String tilePatternId: badTilePatterns) {
+            buffer.append("\n");
+            if (i < 10) {
+                buffer.append("  ");
+                buffer.append(tilePatternId);
+            }
+            else {
+                buffer.append("  ... (");
+                buffer.append(badTilePatterns.size() - 10);
+                buffer.append(" more)");
+                break;
+            }
+            i++;
+        }
+        return buffer.toString();
     }
 
     /**
@@ -1116,7 +1154,7 @@ public class Map extends Observable {
                 addEntity(entity);
             }
             catch (NoSuchTilePatternException ex) {
-                badTiles = true;
+                badTilePatterns.add(ex.getTilePatternId());
             }
             catch (QuestEditorException ex) {
                 // Error in the input file.

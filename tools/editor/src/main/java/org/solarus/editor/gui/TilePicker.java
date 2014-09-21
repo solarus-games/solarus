@@ -17,6 +17,7 @@
 package org.solarus.editor.gui;
 
 import java.util.*;
+
 import org.solarus.editor.Map;
 
 /**
@@ -37,11 +38,12 @@ public class TilePicker extends ViewScroller implements Observer {
 
     /**
      * Constructor.
+     * @param mainWindow The main window of the quest editor.
      */
-    public TilePicker() {
+    public TilePicker(EditorWindow mainWindow) {
         super();
 
-        tilesetImageView = new TilesetImageView(false);
+        tilesetImageView = new TilesetImageView(mainWindow, false);
         setObserver(tilesetImageView);
         setViewportView(tilesetImageView);
     }

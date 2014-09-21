@@ -453,7 +453,7 @@ public class Tileset extends Observable {
 
     /**
      * Removes the selected tile pattern.
-     * The oberservers are notified with the removed tile pattern as parameter.
+     * The observers are notified with the removed tile pattern as parameter.
      */
     public void removeTilePattern() {
         String id = getSelectedTilePatternId();

@@ -63,7 +63,7 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
         tilePatternsView.setMinimumSize(new Dimension(0, 0));
 
         // tileset image
-        tilesetImageView = new TilesetImageView(true);
+        tilesetImageView = new TilesetImageView(mainWindow, true);
         JScrollPane tilesetImageScroller = new ViewScroller(tilesetImageView, tilesetImageView);
         tilesetImageScroller.setAlignmentY(Component.TOP_ALIGNMENT);
 

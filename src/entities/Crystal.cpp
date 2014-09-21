@@ -123,7 +123,10 @@ void Crystal::activate(MapEntity& entity_activating) {
 
   bool recently_activated = false;
   for (MapEntity* entity: entities_activating) {
-    recently_activated  = (entity == &entity_activating);
+    if (entity == &entity_activating) {
+      recently_activated = true;
+      break;
+    }
   }
 
   uint32_t now = System::now();

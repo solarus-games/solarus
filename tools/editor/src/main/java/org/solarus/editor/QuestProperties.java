@@ -102,10 +102,8 @@ public class QuestProperties extends Observable {
      */
     public void save() throws QuestEditorException {
 
-        try {
-            File dbFile = project.getQuestPropertiesFile();
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(dbFile)));
-
+    	File dbFile = project.getQuestPropertiesFile();
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(dbFile)))) {
             out.println("quest{");
             // Save each property.
             for (Entry<String, String> property: properties.entrySet()) {
@@ -120,7 +118,6 @@ public class QuestProperties extends Observable {
             }
             out.println("}");
             out.println();
-            out.close();
         }
         catch (IOException ex) {
             throw new QuestEditorException(ex.getMessage());

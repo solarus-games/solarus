@@ -1017,11 +1017,10 @@ public class Sprite extends Observable {
     public void save() throws QuestEditorException {
 
         String lastName = "";
-        try {
 
-            // Open the sprite file.
-            File spriteFile = Project.getSpriteFile(animationSetId);
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(spriteFile)));
+        // Open the sprite file.
+        File spriteFile = Project.getSpriteFile(animationSetId);
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(spriteFile)))) {
 
             if (!defaultAnimationName.isEmpty() && animations.containsKey(defaultAnimationName)) {
 
@@ -1039,8 +1038,6 @@ public class Sprite extends Observable {
                     out.println(animationToString(name, animation));
                 }
             }
-
-            out.close();
 
             setSaved(true);
         }

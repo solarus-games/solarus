@@ -1043,10 +1043,9 @@ public class Map extends Observable {
         // check that the map is valid
         checkValidity();
 
-        try {
-            // Open the map file in writing.
-            File mapFile = Project.getMapFile(mapId);
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mapFile)));
+        // Open the map file in writing.
+        File mapFile = Project.getMapFile(mapId);
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mapFile)))) {
 
             // Print the map general info.
             out.println("properties{");
@@ -1076,8 +1075,6 @@ public class Map extends Observable {
                     entity.saveAsLua(out);
                 }
             }
-
-            out.close();
 
             history.setSaved();
         }

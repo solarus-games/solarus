@@ -50,6 +50,7 @@ public abstract class MapEditorAction {
 
     /**
      * Undoes the action.
+     * TODO don't throw 
      */
     public abstract void undo() throws QuestEditorException;
 

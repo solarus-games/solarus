@@ -1117,7 +1117,7 @@ public class MapView extends JComponent implements Observer {
                     // as one step only, so that it can be undone or redone directly later.
                     // So first, restore entities with their initial shape.
                     finalPositions.put(entity, finalPosition);
-                    map.setEntityPosition(entity, initialPosition);
+                    map.setEntityPositionUnchecked(entity, initialPosition);  // The initial position could be invalid.
                     changed = true;
                 }
             }

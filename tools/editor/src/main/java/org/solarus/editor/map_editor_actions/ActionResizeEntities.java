@@ -63,7 +63,7 @@ public class ActionResizeEntities extends MapEditorAction {
     public void undo() throws MapException {
 
         for (java.util.Map.Entry<MapEntity, Rectangle> entry: positionsBefore.entrySet()) {
-            map.setEntityPosition(entry.getKey(), entry.getValue());
+            map.setEntityPositionUnchecked(entry.getKey(), entry.getValue());
         }
     }
 

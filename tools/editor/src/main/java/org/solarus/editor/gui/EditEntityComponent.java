@@ -294,13 +294,12 @@ public class EditEntityComponent extends JPanel {
         catch (QuestEditorException ex) {
 
             try {
-                action.undo(); // undo the action because it may be partially done
+                action.undo();  // Undo the action because it may be partially done.
             }
             catch (QuestEditorException ex2) {
-                // this is not supposed to happen
+                // The undo also triggered an error: this is a bug of the editor.
                 System.err.println("Unexpected error: could not undo the action: " + ex2.getMessage());
                 ex2.printStackTrace();
-                System.exit(1);
             }
             throw ex; // throw the exception again
         }

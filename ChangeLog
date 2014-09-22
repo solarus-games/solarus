@@ -58,6 +58,7 @@ Solarus Quest Editor changes
 * When non-existent tiles are removed, show a more detailed warning.
 * Fix wrong height of icons in the sprite tree with windows (#618).
 * Fix chest editor dialog not opening if the item no longer exists (#594).
+* Fix custom entity editor dialog not opening if the sprite is invalid.
 
 _________________________________
 

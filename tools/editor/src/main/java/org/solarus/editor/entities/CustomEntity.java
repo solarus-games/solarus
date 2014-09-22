@@ -108,6 +108,11 @@ public class CustomEntity extends MapEntity {
                 && !entityResource.exists(model)) {
             throw new MapException("Unknown custom entity model: '" + model + "'");
         }
+
+        String spriteName = getStringProperty("sprite");
+        if (spriteName != null && !isValidSpriteName(spriteName)) {
+            throw new MapException("Invalid sprite name: '" + spriteName + "'");
+        }
     }
 
     /**

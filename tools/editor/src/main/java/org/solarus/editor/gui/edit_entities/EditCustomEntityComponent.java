@@ -16,6 +16,8 @@
  */
 package org.solarus.editor.gui.edit_entities;
 
+import java.util.NoSuchElementException;
+
 import javax.swing.JCheckBox;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -90,12 +92,20 @@ public class EditCustomEntityComponent extends EditEntityComponent {
         CustomEntity customEntity = (CustomEntity) entity;
 
         String model = customEntity.getStringProperty("model");
-        boolean hasModel = model != null && Project.getResource(ResourceType.ENTITY).exists(model);
+        boolean hasModel = model != null &&
+                Project.getResource(ResourceType.ENTITY).exists(model);
         String sprite = customEntity.getStringProperty("sprite");
-        boolean hasSprite = sprite != null;
+        boolean hasSprite = sprite != null &&
+                Project.getResource(ResourceType.SPRITE).exists(sprite);
 
         withSpriteField.setSelected(hasSprite);
-        spriteField.setSelectedId(hasSprite ? sprite : "");
+
+        try {
+            spriteField.setSelectedId(hasSprite ? sprite : "");
+        }
+        catch (NoSuchElementException ex) {
+          spriteField.setSelectedId("");
+        }
         spriteField.setEnabled(hasSprite);
 
         withModelField.setSelected(hasModel);

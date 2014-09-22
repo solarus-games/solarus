@@ -186,9 +186,9 @@ public class Dialogs extends Observable {
 
     public void save() throws QuestEditorException {
 
-    	File dialogsFile = Project.getDialogsFile(languageId);
+        File dialogsFile = Project.getDialogsFile(languageId);
         try (OutputStreamWriter ost = new OutputStreamWriter(new FileOutputStream(dialogsFile), "UTF-8");
-        	 BufferedWriter out = new BufferedWriter(ost)) {
+            BufferedWriter out = new BufferedWriter(ost)) {
             out.write(description);
             for (DialogSection section : sections) {
                 out.write(section.fileVersion());

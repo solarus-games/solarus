@@ -42,21 +42,21 @@ public class FileTools {
     public static void ensureFileHasLine(String fileName, String lineWanted) throws IOException {
 
         // read the file to determine whether or not the line is already there
-    	boolean found = false;
+        boolean found = false;
         try (BufferedReader in = new BufferedReader(new FileReader(fileName))) {
-	        String line;
-	
-	        line = in.readLine();
-	        while (line != null && !found) {
-	            found = line.equals(lineWanted);
-	            line = in.readLine();
-	        }
+            String line;
+
+            line = in.readLine();
+            while (line != null && !found) {
+                found = line.equals(lineWanted);
+                line = in.readLine();
+            }
         }
 
         if (!found) {
             // the line has not been found: let's add it to the file
             try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)))) {
-            	out.println(lineWanted);
+                out.println(lineWanted);
             }
         }
     }
@@ -223,28 +223,28 @@ public class FileTools {
             throw new IOException("Cannot open zip file '" + zipFile + "'");
         }
         try (ZipInputStream zipStream = new ZipInputStream(input)) {
-	        ZipEntry entry;
-	
-	        int bufferSize = 4096;
-	        while ((entry = zipStream.getNextEntry()) != null) {
-	
-	            File destinationFile = new File(destinationPath, entry.getName());
-	
-	            // Create the parent directories needed.
-	            destinationFile.getParentFile().mkdirs();
-	
-	            if (!entry.isDirectory()) {
-	                int bytesRead;
-	                byte data[] = new byte[bufferSize];
-	                BufferedOutputStream output = new BufferedOutputStream(
-	                        new FileOutputStream(destinationFile));
-	                while ((bytesRead = zipStream.read(data, 0, bufferSize)) != -1) {
+            ZipEntry entry;
+
+            int bufferSize = 4096;
+            while ((entry = zipStream.getNextEntry()) != null) {
+   
+                File destinationFile = new File(destinationPath, entry.getName());
+
+                // Create the parent directories needed.
+                destinationFile.getParentFile().mkdirs();
+
+                if (!entry.isDirectory()) {
+                    int bytesRead;
+                    byte data[] = new byte[bufferSize];
+                    BufferedOutputStream output = new BufferedOutputStream(
+                            new FileOutputStream(destinationFile));
+                    while ((bytesRead = zipStream.read(data, 0, bufferSize)) != -1) {
 	                    output.write(data, 0, bytesRead);
-	                }
-	                output.flush();
-	                output.close();
-	            }
-	        }
+                    }
+                    output.flush();
+                    output.close();
+                }
+            }
         }
     }
 }

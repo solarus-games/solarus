@@ -153,7 +153,7 @@ public class ResourceDatabase extends Observable {
      */
     public void save() throws QuestEditorException {
 
-    	File dbFile = project.getResourceDatabaseFile();
+        File dbFile = project.getResourceDatabaseFile();
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(dbFile)))) {
             Iterator<String> it;
 

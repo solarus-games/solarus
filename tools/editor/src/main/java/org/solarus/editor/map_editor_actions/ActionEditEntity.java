@@ -168,10 +168,12 @@ public class ActionEditEntity extends MapEditorAction {
 
         // size
         if (entity.isResizable()) {
-            map.setEntitySize(entity, positionBefore.width, positionBefore.height);
+            // Restore the size even if it was invalid before.
+            map.setEntitySizeUnchecked(entity, positionBefore.width, positionBefore.height);
         }
 
         // position
+        // Restore the position even if it was invalid before.
         map.setEntityPositionUnchecked(entity, positionBefore.x, positionBefore.y);
 
         // layer

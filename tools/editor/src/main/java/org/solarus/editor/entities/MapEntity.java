@@ -535,6 +535,16 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Changes the position of the entity on the map, by specifying its rectangle.
+     * @param position a rectangle
+     */
+    public void setPositionInMapUnchecked(Rectangle position) {
+
+        setPositionTopLeftUnchecked(position.x, position.y);
+        setSizeUnchecked(position.width, position.height);
+    }
+
+    /**
      * Changes the position of the entity on the map, by specifying two points
      * (the top-left corner and the bottom-right corner).
      * @param x1 x coordinate of the first point
@@ -578,6 +588,8 @@ public abstract class MapEntity extends Observable {
      * Changes the position of the entity on the map, by specifying the
      * coordinates of its origin point.
      * The size of the entity is not changed.
+     * Unchecked version: use checkPositionTopLeft() later to verify if the
+     * position is correct.
      * @param x x coordinate of the origin point.
      * @param y y coordinate of the origin point.
      * @throws MapException if the coordinates of the top-left corner are not divisible by 8
@@ -776,20 +788,24 @@ public abstract class MapEntity extends Observable {
 
     /**
      * Changes the size of the entity.
+     * Unchecked version: use checkSize() later to verify if the
+     * size is correct.
      * @param width width of the entity in pixels
      * @param height height of the entity in pixels
      */
-    protected void setSizeUnchecked(int width, int height) {
+    public void setSizeUnchecked(int width, int height) {
         positionInMap.width = width;
         positionInMap.height = height;
     }
 
     /**
      * Changes the size of the entity.
+     * Unchecked version: use checkSize() later to verify if the
+     * size is correct.
      * @param width width of the entity in pixels
      * @param height height of the entity in pixels
      */
-    protected void setSizeUnchecked(Dimension size) {
+    public void setSizeUnchecked(Dimension size) {
 
         setSizeUnchecked(size.width, size.height);
     }

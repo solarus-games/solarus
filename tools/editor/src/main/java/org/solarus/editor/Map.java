@@ -684,10 +684,10 @@ public class Map extends Observable {
     /**
      * Changes the position of an entity on the map, by specifying the coordinates
      * of its origin point.
+     * Unchecked version: use this if you explicitly want to set an invalid position.
      * @param entity an entity
      * @param x x coordinate of the origin point
      * @param y y coordinate of the origin point
-     * @throws MapException if the coordinates are not multiple of 8
      */
     public void setEntityPositionUnchecked(MapEntity entity, int x, int y) {
         entity.setPositionInMapUnchecked(x, y);
@@ -726,6 +726,35 @@ public class Map extends Observable {
      */
     public void setEntityPosition(MapEntity entity, Rectangle position) throws MapException {
         entity.setPositionInMap(position);
+
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Changes the position of an entity on the map, by specifying its rectangle.
+     * The entity is resized so that it fits exactly in the rectangle.
+     * Unchecked version: use this if you explicitly want to set an invalid position.
+     * @param entity an entity
+     * @param entity an entity
+     * @param position a rectangle
+     */
+    public void setEntityPositionUnchecked(MapEntity entity, Rectangle position) throws MapException {
+        entity.setPositionInMapUnchecked(position);
+
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Changes the size of an entity on the map.
+     * Unchecked version: use this if you explicitly want to set an invalid size.
+     * @param entity an entity
+     * @param width the new width
+     * @param height the new height
+     */
+    public void setEntitySizeUnchecked(MapEntity entity, int width, int height) {
+        entity.setSizeUnchecked(width, height);
 
         setChanged();
         notifyObservers();

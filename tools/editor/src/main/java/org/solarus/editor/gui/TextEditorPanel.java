@@ -170,17 +170,15 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
         }
 
         String text = "";
-        try {
-            BufferedReader br = new BufferedReader(
+        try (BufferedReader br = new BufferedReader(
                new InputStreamReader(
-                     new FileInputStream(file), "UTF-8"));
+                     new FileInputStream(file), "UTF-8"))) {
             String line = br.readLine();
 
             while (line != null) {
                 text += line + System.lineSeparator();
                 line = br.readLine();
             }
-            br.close();
             textArea.setText(text);
         } catch (Exception err) {
             err.printStackTrace();
@@ -201,11 +199,9 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
     @Override
     public void save() {
 
-        try {
-            OutputStreamWriter ost = new OutputStreamWriter(new FileOutputStream(file) , "UTF-8");
-            BufferedWriter out = new BufferedWriter(ost);
+        try (OutputStreamWriter ost = new OutputStreamWriter(new FileOutputStream(file) , "UTF-8");
+             BufferedWriter out = new BufferedWriter(ost)) {
             out.write(textArea.getText());
-            out.close();
             textChanged = false;
         }
         catch (IOException ex) {

@@ -42,22 +42,22 @@ public class FileTools {
     public static void ensureFileHasLine(String fileName, String lineWanted) throws IOException {
 
         // read the file to determine whether or not the line is already there
-        BufferedReader in = new BufferedReader(new FileReader(fileName));
-        String line;
         boolean found = false;
+        try (BufferedReader in = new BufferedReader(new FileReader(fileName))) {
+            String line;
 
-        line = in.readLine();
-        while (line != null && !found) {
-            found = line.equals(lineWanted);
             line = in.readLine();
+            while (line != null && !found) {
+                found = line.equals(lineWanted);
+                line = in.readLine();
+            }
         }
-        in.close();
 
         if (!found) {
             // the line has not been found: let's add it to the file
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)));
-            out.println(lineWanted);
-            out.close();
+            try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)))) {
+                out.println(lineWanted);
+            }
         }
     }
 
@@ -222,30 +222,30 @@ public class FileTools {
         if (input == null) {
             throw new IOException("Cannot open zip file '" + zipFile + "'");
         }
-        ZipInputStream zipStream = new ZipInputStream(input);
-        ZipEntry entry;
+        try (ZipInputStream zipStream = new ZipInputStream(input)) {
+            ZipEntry entry;
 
-        int bufferSize = 4096;
-        while ((entry = zipStream.getNextEntry()) != null) {
+            int bufferSize = 4096;
+            while ((entry = zipStream.getNextEntry()) != null) {
+   
+                File destinationFile = new File(destinationPath, entry.getName());
 
-            File destinationFile = new File(destinationPath, entry.getName());
+                // Create the parent directories needed.
+                destinationFile.getParentFile().mkdirs();
 
-            // Create the parent directories needed.
-            destinationFile.getParentFile().mkdirs();
-
-            if (!entry.isDirectory()) {
-                int bytesRead;
-                byte data[] = new byte[bufferSize];
-                BufferedOutputStream output = new BufferedOutputStream(
-                        new FileOutputStream(destinationFile));
-                while ((bytesRead = zipStream.read(data, 0, bufferSize)) != -1) {
-                    output.write(data, 0, bytesRead);
+                if (!entry.isDirectory()) {
+                    int bytesRead;
+                    byte data[] = new byte[bufferSize];
+                    BufferedOutputStream output = new BufferedOutputStream(
+                            new FileOutputStream(destinationFile));
+                    while ((bytesRead = zipStream.read(data, 0, bufferSize)) != -1) {
+	                    output.write(data, 0, bytesRead);
+                    }
+                    output.flush();
+                    output.close();
                 }
-                output.flush();
-                output.close();
             }
         }
-        zipStream.close();
     }
 }
 

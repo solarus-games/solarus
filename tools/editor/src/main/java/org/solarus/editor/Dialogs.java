@@ -117,10 +117,8 @@ public class Dialogs extends Observable {
      */
     public void load() throws QuestEditorException {
         String line =  "";
-        try {
-            File dialogsFile = Project.getDialogsFile(languageId);
-            BufferedReader in = new BufferedReader(new FileReader(dialogsFile));
-
+        File dialogsFile = Project.getDialogsFile(languageId);
+        try (BufferedReader in = new BufferedReader(new FileReader(dialogsFile))) {
             line = in.readLine();
 
             if (line == null) {
@@ -173,7 +171,6 @@ public class Dialogs extends Observable {
                 line = in.readLine();
             }
 
-            in.close();
             //for the last section
             if(currentSection.getComment().length() > 2)
             currentSection.setComment(currentSection.getComment().substring(0, currentSection.getComment().length() - 1));
@@ -189,16 +186,14 @@ public class Dialogs extends Observable {
 
     public void save() throws QuestEditorException {
 
-        try {
-            File dialogsFile = Project.getDialogsFile(languageId);
-            OutputStreamWriter ost = new OutputStreamWriter(new FileOutputStream(dialogsFile), "UTF-8");
-            BufferedWriter out = new BufferedWriter(ost);
+        File dialogsFile = Project.getDialogsFile(languageId);
+        try (OutputStreamWriter ost = new OutputStreamWriter(new FileOutputStream(dialogsFile), "UTF-8");
+            BufferedWriter out = new BufferedWriter(ost)) {
             out.write(description);
             for (DialogSection section : sections) {
                 out.write(section.fileVersion());
                 out.write("\n\n");
             }
-            out.close();
             saved = true;
         } catch (IOException er) {
             throw new QuestEditorException(er.getMessage());

@@ -584,11 +584,9 @@ public class Tileset extends Observable {
     public void save() throws QuestEditorException {
 
         String lastPatternId = null;
-        try {
-
-            // Open the tileset file.
-            File tilesetFile = Project.getTilesetFile(tilesetId);
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(tilesetFile)));
+        // Open the tileset file.
+        File tilesetFile = Project.getTilesetFile(tilesetId);
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(tilesetFile)))) {
 
             // Background color.
             out.println("background_color{ "
@@ -665,8 +663,6 @@ public class Tileset extends Observable {
                 out.println("}");
                 out.println();
             }
-
-            out.close();
 
             setSaved(true);
         }

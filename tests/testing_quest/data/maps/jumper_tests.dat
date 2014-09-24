@@ -1,0 +1,53 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  tileset = "castle",
+  music = "same",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 160,
+  pattern = "67",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 160,
+  width = 320,
+  height = 80,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 144,
+  width = 320,
+  height = 16,
+  pattern = "34",
+}
+
+destination{
+  layer = 0,
+  x = 160,
+  y = 85,
+  direction = 3,
+}
+
+jumper{
+  layer = 0,
+  x = 0,
+  y = 144,
+  width = 320,
+  height = 8,
+  direction = 6,
+  jump_length = 32,
+}
+

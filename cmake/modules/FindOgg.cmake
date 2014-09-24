@@ -23,7 +23,7 @@ find_package_handle_standard_args(OGG DEFAULT_MSG
     OGG_INCLUDE_DIR OGG_LIBRARY)
 
 if(OGG_FOUND)
-  set(OGG_LIBRARIES ${OGG_LIBRARY})
+  set(OGG_LIBRARIES "${OGG_LIBRARY}")
 else(OGG_FOUND)
   set(OGG_LIBRARIES)
 endif(OGG_FOUND)

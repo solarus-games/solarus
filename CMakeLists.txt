@@ -123,12 +123,28 @@ include_directories(
   "${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party/snes_spc"
 )
 
+function(add_quoting input_var_name output_var_name)
+  list(LENGTH "${input_var_name}" LL)
+
+  if(LL EQUAL 1)
+    set("${output_var_name}" "\"${${input_var_name}}\"" PARENT_SCOPE)
+  elseif(LL GREATER 1)
+    set("${output_var_name}" ${${input_var_name}} PARENT_SCOPE)
+  else()
+    set("${output_var_name}" "" PARENT_SCOPE)
+  endif()
+endfunction()
+
+foreach(name SDL2_TTF SDL2_IMAGE)
+  add_quoting(${name}_INCLUDE_DIRS ${name})
+endforeach()
+
 # Marking include directories as system ones disables warnings with gcc.
 include_directories(SYSTEM  
   "${MODPLUG_INCLUDE_DIR}"  # Before SDL2 because we want the sndfile.h of ModPlug.
   "${SDL2_INCLUDE_DIR}"
-  "${SDL2_TTF_INCLUDE_DIR}"
-  "${SDL2_IMAGE_INCLUDE_DIR}"
+  ${SDL2_TTF}
+  ${SDL2_IMAGE}
   "${OPENAL_INCLUDE_DIR}"
   "${VORBISFILE_INCLUDE_DIR}"
   "${OGG_INCLUDE_DIR}"
@@ -136,19 +152,23 @@ include_directories(SYSTEM
   "${PHYSFS_INCLUDE_DIR}"
 )
 
+foreach(name SDL2_TTF SDL2_IMAGE LUA VORBISFILE OGG MODPLUG)
+  add_quoting(${name}_LIBRARIES ${name})
+endforeach()
+
 # generate -l flags
 target_link_libraries(solarus
   solarus_static
   "${SDL2_LIBRARY}"
-  "${SDL2_IMAGE_LIBRARY}"
-  "${SDL2_TTF_LIBRARY}"
+  ${SDL2_IMAGE}
+  ${SDL2_TTF}
   "${OPENAL_LIBRARY}"
-  "${LUA_LIBRARY}"
+  ${LUA}
   "${DL_LIBRARY}"
   "${PHYSFS_LIBRARY}"
-  "${VORBISFILE_LIBRARY}"
-  "${OGG_LIBRARY}"
-  "${MODPLUG_LIBRARY}"
+  ${VORBISFILE}
+  ${OGG}
+  ${MODPLUG}
 )
 
 # default compilation flags

@@ -85,7 +85,9 @@ EntityType Pickable::get_type() const {
  * or:
  * - the treasure is empty,
  * or:
- * - the item cannot be obtained by the hero yet.
+ * - the item cannot be obtained by the hero yet,
+ * or:
+ * - the animation of the item is missing in sprite 'entities/items'.
  *
  * \param game the current game
  * \param name Name identifying the entity on the map or an empty string.
@@ -94,7 +96,8 @@ EntityType Pickable::get_type() const {
  * \param y y coordinate of the pickable item to create
  * \param treasure the treasure to give
  * \param falling_height to make the item fall when it appears
- * \param force_persistent true to make the item stay forever (otherwise, the properties of the item
+ * \param force_persistent true to make the item stay forever
+ * (otherwise, the properties of the item
  * decide if it disappears after some time)
  * \return the pickable item created, or nullptr
  */
@@ -124,7 +127,9 @@ std::shared_ptr<Pickable> Pickable::create(
   pickable->will_disappear = !force_persistent && treasure.get_item().get_can_disappear();
 
   // Initialize the pickable item.
-  pickable->initialize_sprites();
+  if (!pickable->initialize_sprites()) {
+    return nullptr;  // No valid sprite: don't create the pickable.
+  }
   pickable->initialize_movement();
 
   return pickable;
@@ -139,13 +144,15 @@ bool Pickable::can_be_obstacle() const {
 }
 
 /**
- * \brief Creates the sprite of this pickable item,
- * depending on its subtype.
+ * \brief Creates the sprite of this pickable treasure.
  *
- * Pickable items represented with two sprites:
- * the item itself and, for some items, its shadow.
+ * Pickable treasures are represented with two sprites:
+ * the treasure itself and, for some items, a shadow.
+ *
+ * \return \c true in case of success, \c false if the animation corresponding
+ * to the treasure is missing.
  */
-void Pickable::initialize_sprites() {
+bool Pickable::initialize_sprites() {
 
   // Shadow sprite.
   shadow_sprite = nullptr;
@@ -167,17 +174,28 @@ void Pickable::initialize_sprites() {
   }
 
   // Main sprite.
+  const std::string item_name = treasure.get_item_name();
   create_sprite("entities/items");
   Sprite& item_sprite = get_sprite();
-  item_sprite.set_current_animation(treasure.get_item_name());
+
+  if( !item_sprite.has_animation(item_name)) {
+    std::ostringstream oss;
+    oss << "Cannot create pickable treasure '" << item_name
+        << "': Sprite 'entities/items' has no animation '"
+        << item_name << "'";
+    Debug::error(oss.str());
+    return false;
+  }
+
+  item_sprite.set_current_animation(item_name);
   int direction = treasure.get_variant() - 1;
   if (direction < 0 || direction >= item_sprite.get_nb_directions()) {
     std::ostringstream oss;
-    oss << "Pickable treasure '" << treasure.get_item_name()
+    oss << "Pickable treasure '" << item_name
         << "' has variant " << treasure.get_variant()
         << " but sprite 'entities/items' only has "
         << item_sprite.get_nb_directions() << " variant(s) in animation '"
-        << treasure.get_item_name() << "'";
+        << item_name << "'";
     Debug::error(oss.str());
     direction = 0;  // Fallback.
   }
@@ -203,6 +221,8 @@ void Pickable::initialize_sprites() {
     blink_date = now + 8000;       // The item blinks after 8s.
     disappear_date = now + 10000;  // The item disappears after 10s.
   }
+
+  return true;
 }
 
 /**

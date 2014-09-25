@@ -82,7 +82,7 @@ class Pickable: public Detector {
   private:
 
     // initialization
-    void initialize_sprites();
+    bool initialize_sprites();
     void initialize_movement();
 
     // item

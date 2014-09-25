@@ -301,7 +301,7 @@ Additional properties:
   - \c "scrolling": Scrolling between maps.
   The default value is \c "fade".
 - \c destination_map (string): Id of the map to transport to (can be
-  id of the current map).
+  the id of the current map).
 - \c destination_name (string, optional): Location on the destination map.
   Can be the name of a \ref quest_map_data_file_syntax_destination
   "destination" entity,

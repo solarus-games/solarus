@@ -128,6 +128,10 @@ public class Teletransporter extends MapEntity {
             throw new MapException("You must choose a destination map");
         }
 
+        if (!Project.getResource(ResourceType.MAP).exists(destinationMapId)) {
+            throw new MapException("No such map: '" + destinationMapId + "'");
+        }
+
         if (destinationMapId.equals(getMap().getId()) &&
                 destinationName != null &&
                 destinationName.equals("_same")) {

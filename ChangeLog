@@ -57,6 +57,7 @@ Solarus Quest Editor changes
 * Show keyboard shortcuts in menu items.
 * When non-existent tiles are removed, show a more detailed warning.
 * Better handle tiles with invalid sizes.
+* Better handle teletransporters with invalid destinations.
 * Fix wrong height of icons in the sprite tree with windows (#618).
 * Fix chest editor dialog not opening if the item no longer exists (#594).
 * Fix custom entity editor dialog not opening if the sprite is invalid.

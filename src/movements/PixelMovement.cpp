@@ -219,7 +219,7 @@ void PixelMovement::make_next_step() {
     success = true;
   }
 
-  trajectory_iterator++;
+  ++trajectory_iterator;
 
   if (trajectory_iterator == trajectory.end()) {
     if (loop) {

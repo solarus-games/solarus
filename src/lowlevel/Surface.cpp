@@ -58,7 +58,7 @@ class Surface::SubSurfaceNode {
         SurfacePtr src_surface,
         const Rectangle& src_rect,
         const Rectangle& dst_rect,
-        const std::vector<SubSurfaceNodePtr> subsurfaces
+        const std::vector<SubSurfaceNodePtr>& subsurfaces
     ):
       src_surface(src_surface),
       src_rect(src_rect),

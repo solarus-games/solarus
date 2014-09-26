@@ -299,7 +299,7 @@ std::vector<std::string> FileTools::data_files_enumerate(
 
   std::vector<std::string> result;
 
-  if (data_file_exists(dir_path.c_str())) {
+  if (data_file_exists(dir_path)) {
     char** files = PHYSFS_enumerateFiles(dir_path.c_str());
 
     for (char** file = files; *file != nullptr; file++) {

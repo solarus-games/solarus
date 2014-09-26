@@ -457,7 +457,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
  */
 size_t Sound::cb_read(void* ptr, size_t /* size */, size_t nb_bytes, void* datasource) {
 
-  SoundFromMemory* mem = (SoundFromMemory*) datasource;
+  SoundFromMemory* mem = static_cast<SoundFromMemory*>(datasource);
 
   const size_t total_size = mem->data.size();
   if (mem->position >= total_size) {

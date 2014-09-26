@@ -19,8 +19,7 @@ local function check_sprite(quest_path, sprite_id)
   function env.animation(properties)
 
     if properties.name == nil then
-      report.error("Sprite '" .. sprite_id .. "': animation without name")
-      return
+      error("Animation without name", 2)
     end
 
     animations[properties.name] = properties
@@ -29,15 +28,15 @@ local function check_sprite(quest_path, sprite_id)
   end
 
   local file = quest_path .. "sprites/" .. sprite_id .. ".dat"
-  local chunk = loadfile(file)
+  local chunk, error = loadfile(file)
   if chunk == nil then
-    report.error("Missing sprite sheet file '" .. file .. "'")
+    report.error("Error in sprite '" .. sprite_id .. "': " .. error)
   else
     setfenv(chunk, env)
     local success, error = pcall(chunk)
 
     if not success then
-      report.error(error, file)
+      report.error("Error in sprite '" .. sprite_id .. "': " .. error)
     end
   end
 

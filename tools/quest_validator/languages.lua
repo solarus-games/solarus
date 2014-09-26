@@ -30,19 +30,20 @@ local function check_dialogs(dialogs)
   end
 end
 
--- Returns a table of all dialogs from the specified dialog file
-local function load_dialogs(dialog_file)
+-- Returns a table of all dialogs from the specified language.
+local function load_dialogs(quest_path, language_id)
+
+  local file = quest_path .. "languages/" .. language_id
+      .. "/text/dialogs.dat"
 
   local env = {}
   local dialogs = {}
   function env.dialog(properties)
 
-    local file, line = report.get_file_line(2)
-
     if properties.id == nil then
-      report.error("Dialog without id", file, line)
+      error("Dialog without id", 2)
     elseif type(properties.id) ~= "string" then
-      report.error("Dialog id must be a string", file, line)
+      error("Dialog id must be a string", 2)
     else
       dialogs[properties.id] = properties
       dialogs[properties.id][file_line_key] = {}
@@ -51,14 +52,18 @@ local function load_dialogs(dialog_file)
     end
   end
 
-  local chunk = loadfile(dialog_file)
-  setfenv(chunk, env)
-  local success, error = pcall(chunk)
-
-  if not success then
-    report.error(error, dialog_file)
+  local chunk, error = loadfile(file)
+  if chunk == nil then
+    report.error("Error in dialogs of language '" .. language_id .. "': " .. error)
   else
-    check_dialogs(dialogs)
+    setfenv(chunk, env)
+    local success, error = pcall(chunk)
+
+    if not success then
+      report.error("Error in dialogs of language '" .. language_id .. "': " .. error)
+    else
+      check_dialogs(dialogs)
+    end
   end
 
   return dialogs
@@ -130,9 +135,7 @@ function validator.check(quest_path, resources)
 
     print("Checking language '" .. id .. "'")
 
-    local file = quest_path .. "languages/" .. id
-        .. "/text/dialogs.dat"
-    local dialogs = load_dialogs(file)
+    local dialogs = load_dialogs(quest_path, id)
     dialogs.file = file
 
     if not first_id then

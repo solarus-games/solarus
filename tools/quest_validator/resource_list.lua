@@ -5,6 +5,8 @@
 
 local validator = {}
 
+local report = require("report")
+
 local resource_type_names = {
   "map",
   "tileset",
@@ -35,12 +37,16 @@ function validator.check(quest_path)
   end
 
   local file = quest_path .. "project_db.dat"
-  local chunk = loadfile(file)
-  setfenv(chunk, env)
-  local success, error = pcall(chunk)
+  local chunk, error = loadfile(file)
+  if chunk == nil then
+    report.fatal("Error in resource list file: " .. error)
+  else
+    setfenv(chunk, env)
+    local success, error = pcall(chunk)
 
-  if not success then
-    report.fatal(error, file)
+    if not success then
+      report.fatal("Error in resource list file: " .. error)
+    end
   end
 
   return resources

@@ -86,7 +86,7 @@ Sprites have to take care of this setting to obtain correct results.
   property in Multimedia Fusion, except that in Solarus, it is the same for
   all frames of a direction.
 
-\section quest_sprite_data_file_syntax Syntax of the quest properties file
+\section quest_sprite_data_file_syntax Syntax of a sprite sheet file
 
 Solarus Quest Editor fully supports the edition of sprites.
 You should not have to edit sprite data files by hand unless you know what you

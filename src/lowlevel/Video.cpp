@@ -388,19 +388,14 @@ bool Video::is_acceleration_enabled() {
  */
 bool Video::is_mode_supported(const VideoMode& mode) {
 
-  bool found = false;
   for (const VideoMode& current_mode: all_video_modes) {
     if (current_mode.get_name() == mode.get_name()) {
-      found = true;
+      return true;
     }
   }
 
-  if (!found) {
-    // The initial detection of this mode failed.
-    return false;
-  }
-
-  return true;
+  // The initial detection of this mode failed.
+  return false;
 }
 
 /**

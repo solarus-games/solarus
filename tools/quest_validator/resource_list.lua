@@ -34,9 +34,10 @@ function validator.check(quest_path)
     end
   end
 
-  local file = loadfile(quest_path .. "project_db.dat")
-  setfenv(file, env)
-  local success, error = pcall(file)
+  local file = quest_path .. "project_db.dat"
+  local chunk = loadfile(file)
+  setfenv(chunk, env)
+  local success, error = pcall(chunk)
 
   if not success then
     report.fatal(error, file)

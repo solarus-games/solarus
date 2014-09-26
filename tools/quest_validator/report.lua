@@ -20,7 +20,7 @@ local function log(level, message, file, line)
   end
   log_count[level] = log_count[level] + 1
 
-  io.stderr:write(level)
+  io.stderr:write("[" .. level .. "]")
   if file then
     io.stderr:write(" " .. file .. ":")
     if line then

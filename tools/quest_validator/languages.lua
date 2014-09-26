@@ -114,12 +114,17 @@ local function inspect_dialogs_translation(
 end
 
 -- Loads and checks all language files.
+-- Returns a table language -> dialogs.
 function validator.check(quest_path, resources)
+
+  print("Checking languages")
 
   local language_resource = resources.language
   local first_id, first_dialogs
+  local dialogs_by_language = {}
 
   for _, element in ipairs(language_resource) do
+
     local id = element.id
     local description = element.description
 
@@ -138,7 +143,10 @@ function validator.check(quest_path, resources)
           "' with respect to reference language '" .. first_id .. "'")
       inspect_dialogs_translation(id, dialogs, first_id, first_dialogs)
     end
+    dialogs_by_language[id] = dialogs
   end
+
+  return dialogs_by_language
 end
 
 return validator

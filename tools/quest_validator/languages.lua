@@ -16,12 +16,13 @@ local function check_dialogs(dialogs)
 
   for id, dialog in pairs(dialogs) do
 
+    local file, line = dialog[file_line_key].file, dialog[file_line_key].line
     if dialog.text == nil then
-      report.error("Dialog '" .. id .. ": Missing text", file, line)
+      report.error("Dialog '" .. id .. "': Missing text", file, line)
     elseif type(dialog.text) ~= "string"
       and type(dialog.text) ~= "number"
       and type(dialog.text) ~= "boolean" then
-      report.error("Dialog '" .. id .. ": Wrong field 'text': expected string, number or boolean, got " .. type(dialog.text), 
+      report.error("Dialog '" .. id .. "': Wrong field 'text': expected string, number or boolean, got " .. type(dialog.text), 
           file, line)
     end
 
@@ -46,6 +47,7 @@ local function load_dialogs(quest_path, language_id)
       error("Dialog id must be a string", 2)
     else
       dialogs[properties.id] = properties
+      local file, line = report.get_file_line(2)
       dialogs[properties.id][file_line_key] = {}
       dialogs[properties.id][file_line_key].file = file
       dialogs[properties.id][file_line_key].line = line

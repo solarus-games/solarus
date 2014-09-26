@@ -21,6 +21,15 @@ local function log(level, message, file, line)
   io.stderr:write(" " .. message .. "\n")
 end
 
+-- Returns the current file and line of a stack frame (depth 0 means you)
+function report.get_file_line(depth)
+
+  local info = debug.getinfo(depth + 1, "Sl")
+  local file = info.source:sub(2)
+  local line = info.currentline
+  return file, line
+end
+
 -- Prints a warning message with optional file name and line number.
 function report.warning(message, file, line)
   log("WARNING", message, file, line)

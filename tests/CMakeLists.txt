@@ -19,7 +19,7 @@ include_directories(
 )
 
 add_library(solarus_testing
-  STATIC
+  SHARED
   ${testing_source_files}
 )
 
@@ -38,7 +38,7 @@ foreach(test_main_file ${tests_main_files})
   add_executable(${test_bin_file} ${test_main_file})
 
   target_link_libraries(${test_bin_file}
-    solarus_static
+    solarus
     solarus_testing
     "${SDL2_LIBRARY}"
     "${SDL2_IMAGE_LIBRARY}"

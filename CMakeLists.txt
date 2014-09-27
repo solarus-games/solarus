@@ -6,7 +6,8 @@ if(COMMAND cmake_policy)
 endif()
 
 set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
-set(SOLARUS_INSTALL_DESTINATION "bin" CACHE PATH "binary install destination")
+set(SOLARUS_LIBRARY_INSTALL_DESTINATION "lib" CACHE PATH "Library install destination")
+set(SOLARUS_EXECUTABLE_INSTALL_DESTINATION "bin" CACHE PATH "Binary install destination")
 
 option(SOLARUS_USE_LUAJIT "Use LuaJIT instead of default Lua (recommended)" ON)
 
@@ -102,8 +103,8 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 endif()
 
 # Build the Solarus library.
-add_library(solarus_static
-  STATIC
+add_library(solarus
+  SHARED
   ${source_files}
 )
 
@@ -111,7 +112,7 @@ add_library(solarus_static
 if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
   include(addCFBundleTarget)
 else()
-  add_executable(solarus
+  add_executable(solarus_run
     ${main_source_file}
   )
 endif()
@@ -137,8 +138,8 @@ include_directories(SYSTEM
 )
 
 # generate -l flags
-target_link_libraries(solarus
-  solarus_static
+target_link_libraries(solarus_run
+  solarus
   "${SDL2_LIBRARY}"
   "${SDL2_IMAGE_LIBRARY}"
   "${SDL2_TTF_LIBRARY}"
@@ -221,14 +222,15 @@ if(COLOR_DEPTH)
 endif()
 
 # files to install with make install
-# install the bundle if requested, or only the binary else
+# install the bundle if requested, or only the library and binary else
 if(SOLARUS_BUNDLE)
-  install(TARGETS solarus
-    BUNDLE DESTINATION ${SOLARUS_INSTALL_DESTINATION}
+  install(TARGETS solarus_run
+    BUNDLE DESTINATION ${SOLARUS_EXECUTABLE_INSTALL_DESTINATION}
   )
 else()
-  install(TARGETS solarus
-    RUNTIME DESTINATION ${SOLARUS_INSTALL_DESTINATION}
+  install(TARGETS solarus solarus_run
+    LIBRARY DESTINATION ${SOLARUS_LIBRARY_INSTALL_DESTINATION}
+    RUNTIME DESTINATION ${SOLARUS_EXECUTABLE_INSTALL_DESTINATION}
   )
 endif()
 

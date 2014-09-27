@@ -107,13 +107,17 @@ void FileTools::quit() {
 
   remove_temporary_files();
 
+  quest_path = "";
+  solarus_write_dir = "";
+  quest_write_dir = "";
+
   DialogResource::quit();
   StringResource::quit();
   PHYSFS_deinit();
 }
 
 /**
- * \brief Returns the path of the quest, relative to thecurrent directory.
+ * \brief Returns the path of the quest, relative to the current directory.
  * \return Path of the data/ directory, the data.solarus archive or the
  * data.solarus.zip archive, relative to the current directory.
  */

@@ -303,13 +303,34 @@ void Video::quit() {
 
   if (pixel_format != nullptr) {
     SDL_FreeFormat(pixel_format);
+    pixel_format = nullptr;
   }
   if (main_renderer != nullptr) {
     SDL_DestroyRenderer(main_renderer);
+    main_renderer = nullptr;
   }
   if (main_window != nullptr) {
     SDL_DestroyWindow(main_window);
+    main_window = nullptr;
   }
+
+  // TODO wrap in a class
+  rendering_driver_name = "";
+  disable_window = false;
+  fullscreen_window = false;
+  rendertarget_supported = false;
+  shaders_enabled = false;
+  acceleration_enabled = false;
+  scaled_surface = nullptr;
+  video_mode = nullptr;
+  default_video_mode = nullptr;
+  normal_quest_size = Size();
+  min_quest_size = Size();
+  max_quest_size = Size();
+  quest_size = Size();
+  wanted_quest_size = Size();
+  window_size = Size();
+
 }
 
 /**

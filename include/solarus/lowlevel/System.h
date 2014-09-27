@@ -48,6 +48,7 @@ class System {
 
   private:
 
+    static uint32_t initial_time;         /**< Initial real time in milliseconds. */
     static uint32_t ticks;                /**< Simulated time in milliseconds. */
 
 };

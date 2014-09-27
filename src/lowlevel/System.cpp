@@ -30,10 +30,11 @@
 
 namespace Solarus {
 
+uint32_t System::initial_time = 0;
 uint32_t System::ticks = 0;
 
 /**
- * \brief Initializes the basic lowlevel system.
+ * \brief Initializes the basic low-level system.
  *
  * Initializes the audio system, the video system,
  * the data file system, etc.
@@ -44,6 +45,8 @@ void System::initialize(const CommandLine& args) {
 
   // initialize SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
+  initial_time = get_real_time();
+  ticks = 0;
 
   // files
   FileTools::initialize(args);
@@ -65,7 +68,7 @@ void System::initialize(const CommandLine& args) {
 }
 
 /**
- * \brief Closes the lowlevel system.
+ * \brief Closes the low-level system.
  *
  * This closes all initializations made in initialize().
  */
@@ -111,29 +114,28 @@ std::string System::get_os() {
 
 /**
  * \brief Returns the number of simulated milliseconds elapsed since the
- * beginning of the program.
+ * initialization of the Solarus library.
  *
  * Corresponds to the real time unless the system is too slow to play at
  * normal speed.
  *
- * \return The number of simulated milliseconds elapsed since the beginning
- * of the program.
+ * \return The number of simulated milliseconds elapsed since the
+ * initialization.
  */
 uint32_t System::now() {
   return ticks;
 }
 
 /**
- * \brief Returns the number of real milliseconds elapsed since the beginning of
- * the program.
+ * \brief Returns the number of real milliseconds elapsed since the
+ * initialization of the Solarus library.
  *
  * This function is not deterministic, so use it at your own risks.
  *
- * \return The number of milliseconds elapsed since the beginning of the
- * program.
+ * \return The number of milliseconds elapsed since the initialization.
  */
 uint32_t System::get_real_time() {
-  return SDL_GetTicks();
+  return SDL_GetTicks() - initial_time;
 }
 
 /**

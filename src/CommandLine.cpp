@@ -31,7 +31,9 @@ CommandLine::CommandLine(int argc, char** argv) {
     program_name = argv[0];
   }
   for (int i = 1; i < argc; ++i) {
-    args.push_back(argv[i]);
+    if (argv[i] != NULL) {
+      args.push_back(argv[i]);
+    }
   }
 }
 

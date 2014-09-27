@@ -33,7 +33,7 @@ cmake_install.cmake
 CTestTestfile.cmake
 /Testing/
 /tests/bin/
-include/config.h
+include/solarus/config.h
 /solarus_run
 libsolarus.so
 libsolarus_testing.so

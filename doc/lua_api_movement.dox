@@ -226,7 +226,7 @@ This event can only be called when all of these conditions are met:
   "movement:get_ignore_obstacles()" returns
   \c false).
 
-\remark When the movement attemps to change the coordinates, one of
+\remark When the movement attempts to change the coordinates, one of
   \ref lua_api_movement_on_position_changed "movement:on_position_changed()"
   or \ref lua_api_movement_on_obstacle_reached "movement:on_obstacle_reached()"
   is guaranteed to be called.

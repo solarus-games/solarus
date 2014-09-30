@@ -14,40 +14,26 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_DEBUG_H
-#define SOLARUS_DEBUG_H
-
-#include "Common.h"
-#include <string>
-
-#ifndef NDEBUG
-#define SOLARUS_ASSERT(condition, message) Debug::check_assertion(condition, message)
-#else
-#define SOLARUS_ASSERT(condition, message)
-#endif
+#include "SolarusFatal.h"
 
 namespace Solarus {
 
-class CommandLine;
+/**
+ * \brief Creates a fatal error that should stop Solarus.
+ * \param error_message A message describing the error.
+ */
+SolarusFatal::SolarusFatal(const std::string& error_message):
+    error_message(error_message) {
+
+}
 
 /**
- * \brief Provides features for printing error messages or making runtime checks.
+ * \brief Returns the error message.
+ * \return A message describing the error.
  */
-namespace Debug {
-
-void set_die_on_error(bool die);
-void set_show_popup_on_die(bool show);
-void set_abort_on_die(bool abort);
-
-void warning(const std::string& message);
-void error(const std::string& message);
-void check_assertion(bool assertion, const char* error_message);
-void check_assertion(bool assertion, const std::string& error_message);
-void die(const std::string& error_message);
-
+const char* SolarusFatal::what() const noexcept {
+  return error_message.c_str();
 }
 
 }
-
-#endif
 

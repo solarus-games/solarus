@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MAIN_LOOP_H
-#define MAIN_LOOP_H
+#ifndef SOLARUS_MAIN_LOOP_H
+#define SOLARUS_MAIN_LOOP_H
 
 #include "Common.h"
 #include "lowlevel/SurfacePtr.h"

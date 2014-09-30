@@ -35,6 +35,7 @@ TestEnvironment::TestEnvironment(int argc, char** argv):
 
   Debug::set_show_popup_on_die(false);
   Debug::set_die_on_error(true);
+  Debug::set_abort_on_die(true);
 }
 
 /**

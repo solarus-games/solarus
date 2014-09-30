@@ -16,8 +16,9 @@
  */
 #ifndef SOLARUS_NOMAIN
 
-#include "MainLoop.h"
+#include "lowlevel/Debug.h"
 #include "Arguments.h"
+#include "MainLoop.h"
 #include <iostream>
 #include <string>
 #include <SDL.h>  // Necessary on some systems for SDLMain.
@@ -84,8 +85,9 @@ void print_help(int argc, char **argv) {
  */
 int main(int argc, char** argv) {
 
-  using Solarus::Arguments;
-  using Solarus::MainLoop;
+  using namespace Solarus;
+
+  Debug::set_abort_on_die(true);  // Better for debugging (get a callstack).
 
   std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
 

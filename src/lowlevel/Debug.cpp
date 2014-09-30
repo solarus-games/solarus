@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/Debug.h"
+#include "SolarusFatal.h"
 #include <cstdlib>  // std::abort
 #include <fstream>
 #include <iostream>
@@ -28,14 +29,16 @@ namespace {
 
   bool die_on_error = false;
   bool show_popup_on_die = true;
+  bool abort_on_die = false;
   const std::string error_output_file_name = "error.txt";
   std::ofstream error_output_file;
+
 }
 
 /**
  * \brief Sets whether errors are fatal.
  *
- * If \c true, calling to Debug::error() will abort the process.
+ * If \c true, calling to Debug::error() will stop Solarus.
  * The default is \c false.
  */
 void set_die_on_error(bool die) {
@@ -43,12 +46,25 @@ void set_die_on_error(bool die) {
 }
 
 /**
- * \brief Sets whether a dialog should pop when the program dies.
+ * \brief Sets whether a dialog should pop when Solarus dies.
  *
  * The default is \c true.
  */
 void set_show_popup_on_die(bool show) {
   show_popup_on_die = show;
+}
+
+/**
+ * \brief Sets whether the process should abort when Solarus dies.
+ *
+ * If \c true, std::abort will be called.
+ * If \c false, the main loop will stop and a SolarusFatal exception will
+ * be thrown.
+ * This should be preferred if Solarus is used as a library.
+ * The default is \c false.
+ */
+void set_abort_on_die(bool abort) {
+  abort_on_die = abort;
 }
 
 /**
@@ -135,7 +151,12 @@ void die(const std::string& error_message) {
     );
   }
 
-  std::abort();
+  if (abort_on_die) {
+    std::abort();
+  }
+  else {
+    throw SolarusFatal(error_message);
+  }
 }
 
 }

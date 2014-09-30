@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include "entities/Layer.h"
-#include "CommandLine.h"
+#include "Arguments.h"
 #include "MainLoop.h"
 #include <cstdint>
 #include <memory>
@@ -51,7 +51,7 @@ class TestEnvironment {
     TestEnvironment(int argc, char** argv);
 
     // Get important objects.
-    const CommandLine& get_command_line() const;
+    const Arguments& get_arguments() const;
     MainLoop& get_main_loop();
     Game& get_game();
     Map& get_map();
@@ -74,7 +74,7 @@ class TestEnvironment {
 
   private:
 
-    CommandLine command_line;
+    Arguments arguments;
     MainLoop main_loop;
     std::string map_id;
 };

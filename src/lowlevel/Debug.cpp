@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/Debug.h"
-#include "CommandLine.h"
 #include <cstdlib>  // std::abort
 #include <fstream>
 #include <iostream>

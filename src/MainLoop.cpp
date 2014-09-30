@@ -36,7 +36,7 @@ namespace Solarus {
  * \brief Initializes the game engine.
  * \param args Command-line arguments.
  */
-MainLoop::MainLoop(const CommandLine& args):
+MainLoop::MainLoop(const Arguments& args):
   lua_context(nullptr),
   root_surface(nullptr),
   game(nullptr),

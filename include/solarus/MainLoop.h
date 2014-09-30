@@ -23,7 +23,7 @@
 
 namespace Solarus {
 
-class CommandLine;
+class Arguments;
 class Game;
 class InputEvent;
 class LuaContext;
@@ -37,7 +37,7 @@ class MainLoop {
 
   public:
 
-    MainLoop(const CommandLine& args);
+    MainLoop(const Arguments& args);
     ~MainLoop();
 
     void run();

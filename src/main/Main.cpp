@@ -17,7 +17,7 @@
 #ifndef SOLARUS_NOMAIN
 
 #include "MainLoop.h"
-#include "CommandLine.h"
+#include "Arguments.h"
 #include <iostream>
 #include <string>
 #include <SDL.h>  // Necessary on some systems for SDLMain.
@@ -84,13 +84,13 @@ void print_help(int argc, char **argv) {
  */
 int main(int argc, char** argv) {
 
-  using Solarus::CommandLine;
+  using Solarus::Arguments;
   using Solarus::MainLoop;
 
   std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
 
   // Store the command-line arguments.
-  const CommandLine args(argc, argv);
+  const Arguments args(argc, argv);
 
   // Check the -help option.
   if (args.has_argument("-help")) {

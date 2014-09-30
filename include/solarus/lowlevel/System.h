@@ -23,7 +23,7 @@
 
 namespace Solarus {
 
-class CommandLine;
+class Arguments;
 
 /**
  * \brief Provides low-level functions and initialization.
@@ -34,7 +34,7 @@ class System {
 
   public:
 
-    static void initialize(const CommandLine& args);
+    static void initialize(const Arguments& args);
     static void quit();
     static void update();
 

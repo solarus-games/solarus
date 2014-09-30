@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 
   TestEnvironment env(argc, argv);
 
-  const std::string& map_id = env.get_command_line().get_argument_value("-map");
+  const std::string& map_id = env.get_arguments().get_argument_value("-map");
   Debug::check_assertion(!map_id.empty(), "No map specified");
 
   env.run_map(map_id);

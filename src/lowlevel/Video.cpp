@@ -27,7 +27,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/shaders/ShaderContext.h"
-#include "CommandLine.h"
+#include "Arguments.h"
 #include <algorithm>
 #include <sstream>
 #include <iostream>
@@ -67,7 +67,7 @@ Size window_size;                         /**< Size of the window. The quest siz
  * \brief Creates the window but does not show it.
  * \param args Command-line arguments.
  */
-void create_window(const CommandLine& args) {
+void create_window(const Arguments& args) {
 
   Debug::check_assertion(main_window == nullptr, "Window already exists");
 
@@ -260,7 +260,7 @@ void initialize_video_modes() {
  *
  * \param args Command-line arguments.
  */
-void Video::initialize(const CommandLine& args) {
+void Video::initialize(const Arguments& args) {
 
   // Check the -no-video and the -quest-size options.
   const std::string& quest_size_string = args.get_argument_value("-quest-size");

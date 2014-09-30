@@ -41,7 +41,7 @@ uint32_t System::ticks = 0;
  *
  * \param args Command-line arguments.
  */
-void System::initialize(const CommandLine& args) {
+void System::initialize(const Arguments& args) {
 
   // initialize SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);

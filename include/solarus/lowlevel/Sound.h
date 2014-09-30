@@ -27,7 +27,7 @@
 
 namespace Solarus {
 
-class CommandLine;
+class Arguments;
 
 /**
  * \brief Represents a sound effect that can be played in the program.
@@ -66,7 +66,7 @@ class Sound {
     static bool exists(const std::string& sound_id);
     static void play(const std::string& sound_id);
 
-    static void initialize(const CommandLine& args);
+    static void initialize(const Arguments& args);
     static void quit();
     static bool is_initialized();
     static void update();

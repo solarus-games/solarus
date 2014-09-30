@@ -29,8 +29,8 @@ namespace Solarus {
  * \brief Creates a test environment.
  */
 TestEnvironment::TestEnvironment(int argc, char** argv):
-    command_line(argc, argv),
-    main_loop(command_line),
+    arguments(argc, argv),
+    main_loop(arguments),
     map_id("traversable") {
 
   Debug::set_show_popup_on_die(false);
@@ -38,11 +38,11 @@ TestEnvironment::TestEnvironment(int argc, char** argv):
 }
 
 /**
- * \brief Returns the command line that was passed to the test.
- * \return The command line.
+ * \brief Returns the runtime arguments that were passed to the test.
+ * \return The runtime arguments.
  */
-const CommandLine& TestEnvironment::get_command_line() const {
-  return command_line;
+const Arguments& TestEnvironment::get_arguments() const {
+  return arguments;
 }
 
 /**

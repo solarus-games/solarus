@@ -31,7 +31,7 @@ struct SDL_PixelFormat;
 
 namespace Solarus {
 
-class CommandLine;
+class Arguments;
 class Rectangle;
 class Size;
 class VideoMode;
@@ -43,7 +43,7 @@ class Video {
 
   public:
 
-    static void initialize(const CommandLine& args);
+    static void initialize(const Arguments& args);
     static void quit();
 
     static SDL_Window* get_window();

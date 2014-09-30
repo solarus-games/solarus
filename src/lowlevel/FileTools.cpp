@@ -21,7 +21,7 @@
 #include "StringResource.h"
 #include "DialogResource.h"
 #include "QuestResourceList.h"
-#include "CommandLine.h"
+#include "Arguments.h"
 #include <physfs.h>
 #include <iostream>
 #include <fstream>
@@ -47,7 +47,7 @@ std::vector<std::string> FileTools::temporary_files;
  * \brief Initializes the file tools.
  * \param args Command-line arguments.
  */
-void FileTools::initialize(const CommandLine& args) {
+void FileTools::initialize(const Arguments& args) {
 
   const std::string& program_name = args.get_program_name().c_str();
   if (program_name.empty()) {

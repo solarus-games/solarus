@@ -25,7 +25,7 @@ struct lua_State;
 
 namespace Solarus {
 
-class CommandLine;
+class Arguments;
 
 /**
  * \brief Handles access to data files.
@@ -53,7 +53,7 @@ class FileTools {
     };
 
     // Initialization.
-    static void initialize(const CommandLine& args);
+    static void initialize(const Arguments& args);
     static void quit();
 
     // Reading data files of the quest.

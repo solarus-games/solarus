@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_COMMAND_LINE_H
-#define SOLARUS_COMMAND_LINE_H
+#ifndef SOLARUS_ARGUMENTS_H
+#define SOLARUS_ARGUMENTS_H
 
 #include "Common.h"
 #include <string>
@@ -24,21 +24,26 @@
 namespace Solarus {
 
 /**
- * \brief Stores the command-line options passed to the program.
+ * \brief Stores runtime arguments passed to the program.
  *
+ * Arguments may come from the command-line or be set explicitly.
  * Provides easy access to find whether a particular option was passed,
  * and to get the value of options of the form key=value.
  */
-class CommandLine {
+class Arguments {
 
   public:
 
-    CommandLine(int argc, char** argv);
+    Arguments();
+    Arguments(int argc, char** argv);
 
     const std::string& get_program_name() const;
     const std::vector<std::string>& get_arguments() const;
     bool has_argument(const std::string& option) const;
     std::string get_argument_value(const std::string& key) const;
+
+    void add_argument(const std::string& argument);
+    void add_argument(const std::string& key, const std::string& value);
 
   private:
 

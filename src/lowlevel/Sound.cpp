@@ -22,7 +22,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "QuestResourceList.h"
-#include "CommandLine.h"
+#include "Arguments.h"
 
 namespace Solarus {
 
@@ -78,7 +78,7 @@ Sound::~Sound() {
  *
  * \param args Command-line arguments.
  */
-void Sound::initialize(const CommandLine& args) {
+void Sound::initialize(const Arguments& args) {
 
   // Check the -no-audio option.
   const bool disable = args.has_argument("-no-audio");

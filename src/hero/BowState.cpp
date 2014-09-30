@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "hero/BowState.h"
-#include "hero/FreeState.h"
-#include "hero/HeroSprites.h"
-#include "entities/MapEntities.h"
-#include "entities/Arrow.h"
-#include "lowlevel/Sound.h"
+#include "solarus/hero/BowState.h"
+#include "solarus/hero/FreeState.h"
+#include "solarus/hero/HeroSprites.h"
+#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Arrow.h"
+#include "solarus/lowlevel/Sound.h"
 
 namespace Solarus {
 

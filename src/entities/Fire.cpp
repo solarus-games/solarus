@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/Fire.h"
-#include "lowlevel/Point.h"
-#include "Sprite.h"
-#include "SpriteAnimationSet.h"
+#include "solarus/entities/Fire.h"
+#include "solarus/lowlevel/Point.h"
+#include "solarus/Sprite.h"
+#include "solarus/SpriteAnimationSet.h"
 
 namespace Solarus {
 

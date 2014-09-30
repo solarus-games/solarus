@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/Surface.h"
-#include "lowlevel/Color.h"
-#include "lowlevel/Size.h"
-#include "lowlevel/Rectangle.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
-#include "lowlevel/Video.h"
-#include "lowlevel/PixelFilter.h"
-#include "lua/LuaContext.h"
-#include "Transition.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Color.h"
+#include "solarus/lowlevel/Size.h"
+#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Video.h"
+#include "solarus/lowlevel/PixelFilter.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/Transition.h"
 #include <sstream>
 
 namespace Solarus {

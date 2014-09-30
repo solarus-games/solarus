@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/Explosion.h"
-#include "entities/Switch.h"
-#include "entities/Crystal.h"
-#include "entities/Sensor.h"
-#include "entities/Enemy.h"
-#include "Game.h"
-#include "Sprite.h"
-#include "SpriteAnimationSet.h"
+#include "solarus/entities/Explosion.h"
+#include "solarus/entities/Switch.h"
+#include "solarus/entities/Crystal.h"
+#include "solarus/entities/Sensor.h"
+#include "solarus/entities/Enemy.h"
+#include "solarus/Game.h"
+#include "solarus/Sprite.h"
+#include "solarus/SpriteAnimationSet.h"
 
 namespace Solarus {
 

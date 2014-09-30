@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/Sensor.h"
-#include "entities/Hero.h"
-#include "entities/MapEntities.h"
-#include "lua/LuaContext.h"
-#include "Game.h"
-#include "Map.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
+#include "solarus/entities/Sensor.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/entities/MapEntities.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/Game.h"
+#include "solarus/Map.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Debug.h"
 
 namespace Solarus {
 

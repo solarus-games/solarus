@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/LuaTools.h"
-#include "lowlevel/Color.h"
-#include "lua/LuaException.h"
-#include "lua/ScopedLuaRef.h"
+#include "solarus/lua/LuaTools.h"
+#include "solarus/lowlevel/Color.h"
+#include "solarus/lua/LuaException.h"
+#include "solarus/lua/ScopedLuaRef.h"
 #include <sstream>
 
 namespace Solarus {

@@ -17,8 +17,8 @@
 #ifndef SOLARUS_PLAYER_MOVEMENT_H
 #define SOLARUS_PLAYER_MOVEMENT_H
 
-#include "Common.h"
-#include "movements/StraightMovement.h"
+#include "solarus/Common.h"
+#include "solarus/movements/StraightMovement.h"
 
 namespace Solarus {
 

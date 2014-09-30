@@ -17,8 +17,8 @@
 #ifndef SOLARUS_GEOMETRY_H
 #define SOLARUS_GEOMETRY_H
 
-#include "Common.h"
-#include "lowlevel/Point.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Point.h"
 #include <cmath>
 #include <cstdlib>
 

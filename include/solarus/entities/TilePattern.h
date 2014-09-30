@@ -17,9 +17,9 @@
 #ifndef SOLARUS_TILE_PATTERN_H
 #define SOLARUS_TILE_PATTERN_H
 
-#include "Common.h"
-#include "entities/Ground.h"
-#include "lowlevel/SurfacePtr.h"
+#include "solarus/Common.h"
+#include "solarus/entities/Ground.h"
+#include "solarus/lowlevel/SurfacePtr.h"
 
 namespace Solarus {
 

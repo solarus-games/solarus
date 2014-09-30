@@ -17,9 +17,9 @@
 #ifndef SOLARUS_STRAIGHT_MOVEMENT_H
 #define SOLARUS_STRAIGHT_MOVEMENT_H
 
-#include "Common.h"
-#include "lowlevel/Point.h"
-#include "movements/Movement.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Point.h"
+#include "solarus/movements/Movement.h"
 
 namespace Solarus {
 

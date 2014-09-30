@@ -17,8 +17,8 @@
 #ifndef SOLARUS_VIDEO_H
 #define SOLARUS_VIDEO_H
 
-#include "Common.h"
-#include "lowlevel/SurfacePtr.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/SurfacePtr.h"
 #include <vector>
 #include <string>
 

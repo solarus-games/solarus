@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/TilePattern.h"
-#include "entities/AnimatedTilePattern.h"
-#include "entities/TimeScrollingTilePattern.h"
-#include "lowlevel/Debug.h"
-#include "lowlevel/Surface.h"
+#include "solarus/entities/TilePattern.h"
+#include "solarus/entities/AnimatedTilePattern.h"
+#include "solarus/entities/TimeScrollingTilePattern.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Surface.h"
 #include <sstream>
 
 namespace Solarus {

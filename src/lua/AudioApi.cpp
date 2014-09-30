@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
-#include "lowlevel/Sound.h"
-#include "lowlevel/Music.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lua/LuaTools.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/lowlevel/Music.h"
 #include <lua.hpp>
 #include <sstream>
 

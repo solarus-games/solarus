@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/Debug.h"
-#include "movements/PixelMovement.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/movements/PixelMovement.h"
 #include "test_tools/TestEnvironment.h"
 
 using namespace Solarus;

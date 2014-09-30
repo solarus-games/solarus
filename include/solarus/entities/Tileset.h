@@ -17,9 +17,9 @@
 #ifndef SOLARUS_TILESET_H
 #define SOLARUS_TILESET_H
 
-#include "Common.h"
-#include "lowlevel/Color.h"
-#include "lowlevel/SurfacePtr.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Color.h"
+#include "solarus/lowlevel/SurfacePtr.h"
 #include <map>
 #include <memory>
 #include <string>

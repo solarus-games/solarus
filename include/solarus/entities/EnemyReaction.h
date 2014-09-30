@@ -17,7 +17,7 @@
 #ifndef SOLARUS_ENEMY_REACTION_H
 #define SOLARUS_ENEMY_REACTION_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <map>
 #include <string>
 #include <vector>

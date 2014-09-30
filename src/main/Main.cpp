@@ -16,9 +16,9 @@
  */
 #ifndef SOLARUS_NOMAIN
 
-#include "lowlevel/Debug.h"
-#include "Arguments.h"
-#include "MainLoop.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/Arguments.h"
+#include "solarus/MainLoop.h"
 #include <iostream>
 #include <string>
 #include <SDL.h>  // Necessary on some systems for SDLMain.

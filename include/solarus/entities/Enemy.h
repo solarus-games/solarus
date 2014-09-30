@@ -17,13 +17,13 @@
 #ifndef SOLARUS_ENEMY_H
 #define SOLARUS_ENEMY_H
 
-#include "Common.h"
-#include "Treasure.h"
-#include "entities/Detector.h"
-#include "entities/EnemyAttack.h"
-#include "entities/EnemyReaction.h"
-#include "entities/Explosion.h"
-#include "entities/MapEntityPtr.h"
+#include "solarus/Common.h"
+#include "solarus/Treasure.h"
+#include "solarus/entities/Detector.h"
+#include "solarus/entities/EnemyAttack.h"
+#include "solarus/entities/EnemyReaction.h"
+#include "solarus/entities/Explosion.h"
+#include "solarus/entities/MapEntityPtr.h"
 
 namespace Solarus {
 

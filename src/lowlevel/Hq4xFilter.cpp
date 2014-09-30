@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/Hq4xFilter.h"
-#include "hqx/hqx.h"
+#include "solarus/lowlevel/Hq4xFilter.h"
+#include "solarus/third_party/hqx/hqx.h"
 
 namespace Solarus {
 

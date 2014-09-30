@@ -17,8 +17,8 @@
 #ifndef SOLARUS_HERO_RUNNING_STATE_H
 #define SOLARUS_HERO_RUNNING_STATE_H
 
-#include "hero/State.h"
-#include "GameCommands.h"
+#include "solarus/hero/State.h"
+#include "solarus/GameCommands.h"
 
 namespace Solarus {
 

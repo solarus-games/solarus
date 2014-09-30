@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/Tileset.h"
-#include "entities/SimpleTilePattern.h"
-#include "entities/AnimatedTilePattern.h"
-#include "entities/SelfScrollingTilePattern.h"
-#include "entities/TimeScrollingTilePattern.h"
-#include "entities/ParallaxScrollingTilePattern.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Surface.h"
-#include "lowlevel/Debug.h"
-#include "lua/LuaTools.h"
+#include "solarus/entities/Tileset.h"
+#include "solarus/entities/SimpleTilePattern.h"
+#include "solarus/entities/AnimatedTilePattern.h"
+#include "solarus/entities/SelfScrollingTilePattern.h"
+#include "solarus/entities/TimeScrollingTilePattern.h"
+#include "solarus/entities/ParallaxScrollingTilePattern.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lua/LuaTools.h"
 #include <lua.hpp>
 #include <sstream>
 

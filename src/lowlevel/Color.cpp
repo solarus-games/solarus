@@ -18,8 +18,8 @@
  * This module defines a type for the colors and provides some
  * color related functions.
  */
-#include "lowlevel/Color.h"
-#include "lowlevel/Video.h"
+#include "solarus/lowlevel/Color.h"
+#include "solarus/lowlevel/Video.h"
 
 namespace Solarus {
 

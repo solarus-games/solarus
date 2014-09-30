@@ -17,7 +17,7 @@
 #ifndef SOLARUS_POINT_H
 #define SOLARUS_POINT_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <iosfwd>
 
 namespace Solarus {
@@ -78,7 +78,7 @@ std::ostream& operator<<(std::ostream& stream, const Point& point);
 
 }
 
-#include "Point.inl"
+#include "solarus/lowlevel/Point.inl"
 
 #endif
 

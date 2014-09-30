@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Transition.h"
-#include "TransitionImmediate.h"
-#include "TransitionFade.h"
-#include "TransitionScrolling.h"
-#include "lowlevel/Debug.h"
-#include "lowlevel/System.h"
+#include "solarus/Transition.h"
+#include "solarus/TransitionImmediate.h"
+#include "solarus/TransitionFade.h"
+#include "solarus/TransitionScrolling.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/System.h"
 
 namespace Solarus {
 

@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Camera.h"
-#include "Map.h"
-#include "entities/MapEntity.h"
-#include "entities/MapEntities.h"
-#include "entities/Hero.h"
-#include "entities/Separator.h"
-#include "movements/TargetMovement.h"
-#include "lowlevel/Video.h"
-#include "lowlevel/System.h"
-#include "lua/LuaContext.h"
+#include "solarus/Camera.h"
+#include "solarus/Map.h"
+#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/entities/Separator.h"
+#include "solarus/movements/TargetMovement.h"
+#include "solarus/lowlevel/Video.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lua/LuaContext.h"
 
 namespace Solarus {
 

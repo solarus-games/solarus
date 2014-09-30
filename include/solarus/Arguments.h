@@ -17,7 +17,7 @@
 #ifndef SOLARUS_ARGUMENTS_H
 #define SOLARUS_ARGUMENTS_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <string>
 #include <vector>
 

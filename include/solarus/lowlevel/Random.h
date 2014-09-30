@@ -17,7 +17,7 @@
 #ifndef SOLARUS_RANDOM_H
 #define SOLARUS_RANDOM_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 
 namespace Solarus {
 

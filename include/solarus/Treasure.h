@@ -17,9 +17,9 @@
 #ifndef SOLARUS_TREASURE_H
 #define SOLARUS_TREASURE_H
 
-#include "Common.h"
-#include "lowlevel/SurfacePtr.h"
-#include "SpritePtr.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/SpritePtr.h"
 #include <string>
 
 namespace Solarus {

@@ -17,7 +17,7 @@
 #ifndef SOLARUS_DIALOG_H
 #define SOLARUS_DIALOG_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <string>
 #include <map>
 

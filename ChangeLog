@@ -7,10 +7,11 @@ Engine changes
 --------------
 
 * Solarus now compiles with C++11.
+* Solarus can now be used as a library in other projects.
+* Add unit tests.
 * Fix a crash if an entity has a sprite without animation.
 * Fix crash when using the -no-video command-line option.
 * Don't die if the animation of a pickable treasure is missing.
-* Add unit tests.
 
 Lua API changes
 ---------------

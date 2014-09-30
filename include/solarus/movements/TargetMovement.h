@@ -17,10 +17,10 @@
 #ifndef SOLARUS_TARGET_MOVEMENT_H
 #define SOLARUS_TARGET_MOVEMENT_H
 
-#include "Common.h"
-#include "entities/MapEntityPtr.h"
-#include "lowlevel/Point.h"
-#include "movements/StraightMovement.h"
+#include "solarus/Common.h"
+#include "solarus/entities/MapEntityPtr.h"
+#include "solarus/lowlevel/Point.h"
+#include "solarus/movements/StraightMovement.h"
 
 namespace Solarus {
 

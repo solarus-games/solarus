@@ -17,9 +17,9 @@
 #ifndef SOLARUS_ARROW_H
 #define SOLARUS_ARROW_H
 
-#include "Common.h"
-#include "entities/MapEntity.h"
-#include "entities/MapEntityPtr.h"
+#include "solarus/Common.h"
+#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/MapEntityPtr.h"
 
 namespace Solarus {
 

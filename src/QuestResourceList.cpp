@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "QuestResourceList.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
-#include "lua/LuaTools.h"
+#include "solarus/QuestResourceList.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lua/LuaTools.h"
 #include <map>
 #include <sstream>
 

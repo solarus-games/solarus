@@ -17,12 +17,12 @@
 #ifndef SOLARUS_HERO_H
 #define SOLARUS_HERO_H
 
-#include "entities/MapEntity.h"
-#include "entities/EnemyAttack.h"
-#include "entities/Ground.h"
-#include "hero/HeroSprites.h"
-#include "lowlevel/Point.h"
-#include "GameCommands.h"
+#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/EnemyAttack.h"
+#include "solarus/entities/Ground.h"
+#include "solarus/hero/HeroSprites.h"
+#include "solarus/lowlevel/Point.h"
+#include "solarus/GameCommands.h"
 #include <list>
 
 namespace Solarus {

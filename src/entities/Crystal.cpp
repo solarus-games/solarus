@@ -14,17 +14,17 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/Crystal.h"
-#include "entities/Hero.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Random.h"
-#include "lowlevel/Sound.h"
-#include "lowlevel/System.h"
-#include "Game.h"
-#include "KeysEffect.h"
-#include "Map.h"
-#include "Sprite.h"
-#include "SpriteAnimationSet.h"
+#include "solarus/entities/Crystal.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Random.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/Game.h"
+#include "solarus/KeysEffect.h"
+#include "solarus/Map.h"
+#include "solarus/Sprite.h"
+#include "solarus/SpriteAnimationSet.h"
 #include <lua.hpp>
 
 namespace Solarus {

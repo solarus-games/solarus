@@ -17,10 +17,10 @@
 #ifndef SOLARUS_MOVEMENT_H
 #define SOLARUS_MOVEMENT_H
 
-#include "Common.h"
-#include "lowlevel/Rectangle.h"
-#include "lua/ExportableToLua.h"
-#include "lua/ScopedLuaRef.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lua/ExportableToLua.h"
+#include "solarus/lua/ScopedLuaRef.h"
 
 namespace Solarus {
 

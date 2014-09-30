@@ -17,8 +17,8 @@
 #ifndef SOLARUS_VIDEO_MODE_H
 #define SOLARUS_VIDEO_MODE_H
 
-#include "Common.h"
-#include "lowlevel/Size.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Size.h"
 #include <memory>
 #include <string>
 

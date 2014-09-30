@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/StreamAction.h"
-#include "entities/Stream.h"
-#include "lowlevel/System.h"
-#include "movements/Movement.h"
-#include "Map.h"
+#include "solarus/entities/StreamAction.h"
+#include "solarus/entities/Stream.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/movements/Movement.h"
+#include "solarus/Map.h"
 #include <cmath>
 
 namespace Solarus {

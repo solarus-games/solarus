@@ -14,15 +14,15 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/Enemy.h"
-#include "hero/FreeState.h"
-#include "hero/HeroSprites.h"
-#include "hero/SwordLoadingState.h"
-#include "hero/SwordSwingingState.h"
-#include "movements/StraightMovement.h"
-#include "Equipment.h"
-#include "Game.h"
-#include "GameCommands.h"
+#include "solarus/entities/Enemy.h"
+#include "solarus/hero/FreeState.h"
+#include "solarus/hero/HeroSprites.h"
+#include "solarus/hero/SwordLoadingState.h"
+#include "solarus/hero/SwordSwingingState.h"
+#include "solarus/movements/StraightMovement.h"
+#include "solarus/Equipment.h"
+#include "solarus/Game.h"
+#include "solarus/GameCommands.h"
 
 namespace Solarus {
 

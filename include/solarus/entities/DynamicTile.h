@@ -17,8 +17,8 @@
 #ifndef SOLARUS_DYNAMIC_TILE_H
 #define SOLARUS_DYNAMIC_TILE_H
 
-#include "Common.h"
-#include "entities/MapEntity.h"
+#include "solarus/Common.h"
+#include "solarus/entities/MapEntity.h"
 
 namespace Solarus {
 

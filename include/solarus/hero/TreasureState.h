@@ -17,9 +17,9 @@
 #ifndef SOLARUS_HERO_TREASURE_STATE_H
 #define SOLARUS_HERO_TREASURE_STATE_H
 
-#include "hero/State.h"
-#include "lua/ScopedLuaRef.h"
-#include "Treasure.h"
+#include "solarus/hero/State.h"
+#include "solarus/lua/ScopedLuaRef.h"
+#include "solarus/Treasure.h"
 
 namespace Solarus {
 

@@ -17,7 +17,7 @@
 #ifndef SOLARUS_DEBUG_H
 #define SOLARUS_DEBUG_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <string>
 
 #ifndef NDEBUG

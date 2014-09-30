@@ -14,20 +14,20 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Sprite.h"
-#include "SpriteAnimationSet.h"
-#include "SpriteAnimation.h"
-#include "SpriteAnimationDirection.h"
-#include "Game.h"
-#include "Map.h"
-#include "movements/Movement.h"
-#include "lua/LuaContext.h"
-#include "lowlevel/PixelBits.h"
-#include "lowlevel/Color.h"
-#include "lowlevel/System.h"
-#include "lowlevel/Surface.h"
-#include "lowlevel/Debug.h"
-#include "lowlevel/Size.h"
+#include "solarus/Sprite.h"
+#include "solarus/SpriteAnimationSet.h"
+#include "solarus/SpriteAnimation.h"
+#include "solarus/SpriteAnimationDirection.h"
+#include "solarus/Game.h"
+#include "solarus/Map.h"
+#include "solarus/movements/Movement.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lowlevel/PixelBits.h"
+#include "solarus/lowlevel/Color.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Size.h"
 #include <sstream>
 
 namespace Solarus {

@@ -17,7 +17,7 @@
 #ifndef SOLARUS_FILE_TOOLS_H
 #define SOLARUS_FILE_TOOLS_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <string>
 #include <vector>
 

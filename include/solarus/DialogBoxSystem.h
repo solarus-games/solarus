@@ -17,12 +17,12 @@
 #ifndef SOLARUS_DIALOG_BOX_SYSTEM_H
 #define SOLARUS_DIALOG_BOX_SYSTEM_H
 
-#include "Common.h"
-#include "lowlevel/Point.h"
-#include "lowlevel/SurfacePtr.h"
-#include "lua/ScopedLuaRef.h"
-#include "Dialog.h"
-#include "GameCommands.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Point.h"
+#include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/lua/ScopedLuaRef.h"
+#include "solarus/Dialog.h"
+#include "solarus/GameCommands.h"
 #include <list>
 
 namespace Solarus {

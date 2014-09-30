@@ -17,9 +17,9 @@
 #ifndef SOLARUS_STREAM_ACTION_H
 #define SOLARUS_STREAM_ACTION_H
 
-#include "Common.h"
-#include "entities/MapEntityPtr.h"
-#include "lowlevel/Point.h"
+#include "solarus/Common.h"
+#include "solarus/entities/MapEntityPtr.h"
+#include "solarus/lowlevel/Point.h"
 #include <cstdint>
 
 namespace Solarus {

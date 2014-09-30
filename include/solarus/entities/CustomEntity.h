@@ -17,9 +17,9 @@
 #ifndef SOLARUS_CUSTOM_ENTITY_H
 #define SOLARUS_CUSTOM_ENTITY_H
 
-#include "Common.h"
-#include "entities/Detector.h"
-#include "lua/ScopedLuaRef.h"
+#include "solarus/Common.h"
+#include "solarus/entities/Detector.h"
+#include "solarus/lua/ScopedLuaRef.h"
 #include <map>
 
 namespace Solarus {

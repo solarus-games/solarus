@@ -17,9 +17,9 @@
 #ifndef SOLARUS_TELETRANSPORTER_H
 #define SOLARUS_TELETRANSPORTER_H
 
-#include "Common.h"
-#include "entities/Detector.h"
-#include "Transition.h"
+#include "solarus/Common.h"
+#include "solarus/entities/Detector.h"
+#include "solarus/Transition.h"
 
 namespace Solarus {
 

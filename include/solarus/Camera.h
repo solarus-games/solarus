@@ -17,8 +17,8 @@
 #ifndef SOLARUS_CAMERA_H
 #define SOLARUS_CAMERA_H
 
-#include "Common.h"
-#include "lowlevel/Rectangle.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Rectangle.h"
 #include <memory>
 
 namespace Solarus {

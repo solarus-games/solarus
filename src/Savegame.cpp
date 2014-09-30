@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Savegame.h"
-#include "SavegameConverterV1.h"
-#include "MainLoop.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/InputEvent.h"
-#include "lowlevel/Debug.h"
-#include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
+#include "solarus/Savegame.h"
+#include "solarus/SavegameConverterV1.h"
+#include "solarus/MainLoop.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/InputEvent.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lua/LuaTools.h"
 #include <lua.hpp>
 #include <sstream>
 

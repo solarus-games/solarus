@@ -17,7 +17,7 @@
 #ifndef SOLARUS_SOUND_H
 #define SOLARUS_SOUND_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <string>
 #include <list>
 #include <map>

@@ -17,10 +17,10 @@
 #ifndef SOLARUS_SPRITE_ANIMATION_H
 #define SOLARUS_SPRITE_ANIMATION_H
 
-#include "Common.h"
-#include "lowlevel/Debug.h"
-#include "lowlevel/SurfacePtr.h"
-#include "SpriteAnimationDirection.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/SpriteAnimationDirection.h"
 #include <memory>
 #include <string>
 #include <vector>

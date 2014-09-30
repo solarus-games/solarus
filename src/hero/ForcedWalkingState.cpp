@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "hero/ForcedWalkingState.h"
-#include "hero/HeroSprites.h"
-#include "movements/PathMovement.h"
+#include "solarus/hero/ForcedWalkingState.h"
+#include "solarus/hero/HeroSprites.h"
+#include "solarus/movements/PathMovement.h"
 
 namespace Solarus {
 

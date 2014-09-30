@@ -17,7 +17,7 @@
 #ifndef SOLARUS_INPUT_EVENT_H
 #define SOLARUS_INPUT_EVENT_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <map>
 #include <memory>
 #include <string>

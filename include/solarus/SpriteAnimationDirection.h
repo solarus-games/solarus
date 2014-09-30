@@ -17,10 +17,10 @@
 #ifndef SOLARUS_SPRITE_ANIMATION_DIRECTION
 #define SOLARUS_SPRITE_ANIMATION_DIRECTION
 
-#include "Common.h"
-#include "lowlevel/PixelBits.h"
-#include "lowlevel/Rectangle.h"
-#include "lowlevel/Debug.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/PixelBits.h"
+#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lowlevel/Debug.h"
 #include <vector>
 
 namespace Solarus {

@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/CustomEntity.h"
-#include "entities/Hero.h"
-#include "entities/MapEntityPtr.h"
-#include "lowlevel/Debug.h"
-#include "movements/PathFinding.h"
+#include "solarus/entities/CustomEntity.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/entities/MapEntityPtr.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/movements/PathFinding.h"
+#include "solarus/Game.h"
 #include "test_tools/TestEnvironment.h"
-#include "Game.h"
 
 using namespace Solarus;
 

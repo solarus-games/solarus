@@ -18,7 +18,7 @@
 #ifndef SOLARUS_SAVEGAME_CONVERTER_V1_H
 #define SOLARUS_SAVEGAME_CONVERTER_V1_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <string>
 
 namespace Solarus {

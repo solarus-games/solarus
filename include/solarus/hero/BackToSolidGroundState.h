@@ -17,8 +17,8 @@
 #ifndef SOLARUS_HERO_BACK_TO_SOLID_GROUND_STATE_H
 #define SOLARUS_HERO_BACK_TO_SOLID_GROUND_STATE_H
 
-#include "lowlevel/Point.h"
-#include "hero/State.h"
+#include "solarus/lowlevel/Point.h"
+#include "solarus/hero/State.h"
 
 namespace Solarus {
 

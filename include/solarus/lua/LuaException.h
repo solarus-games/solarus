@@ -17,7 +17,7 @@
 #ifndef SOLARUS_LUA_EXCEPTION_H
 #define SOLARUS_LUA_EXCEPTION_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <exception>
 #include <string>
 

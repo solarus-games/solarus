@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "hero/TreasureState.h"
-#include "hero/FreeState.h"
-#include "hero/HeroSprites.h"
-#include "lowlevel/Sound.h"
-#include "lua/LuaContext.h"
-#include "EquipmentItem.h"
-#include "Game.h"
-#include "Map.h"
+#include "solarus/hero/TreasureState.h"
+#include "solarus/hero/FreeState.h"
+#include "solarus/hero/HeroSprites.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/EquipmentItem.h"
+#include "solarus/Game.h"
+#include "solarus/Map.h"
 #include <lua.hpp>
 
 namespace Solarus {

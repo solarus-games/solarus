@@ -14,15 +14,15 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/Color.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/FontResource.h"
-#include "lowlevel/InputEvent.h"
-#include "lowlevel/Random.h"
-#include "lowlevel/Sound.h"
-#include "lowlevel/System.h"
-#include "lowlevel/Video.h"
-#include "Sprite.h"
+#include "solarus/lowlevel/Color.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/FontResource.h"
+#include "solarus/lowlevel/InputEvent.h"
+#include "solarus/lowlevel/Random.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lowlevel/Video.h"
+#include "solarus/Sprite.h"
 #include <SDL.h>
 #ifdef SOLARUS_USE_APPLE_POOL
 #  include "lowlevel/apple/AppleInterface.h"

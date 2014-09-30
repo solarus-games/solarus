@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
-#include "lua/LuaContext.h"
-#include "Language.h"
-#include "StringResource.h"
-#include "DialogResource.h"
-#include "QuestResourceList.h"
-#include "Arguments.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/Language.h"
+#include "solarus/StringResource.h"
+#include "solarus/DialogResource.h"
+#include "solarus/QuestResourceList.h"
+#include "solarus/Arguments.h"
 #include <physfs.h>
 #include <iostream>
 #include <fstream>

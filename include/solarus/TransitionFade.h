@@ -17,9 +17,9 @@
 #ifndef SOLARUS_TRANSITION_FADE_H
 #define SOLARUS_TRANSITION_FADE_H
 
-#include "Common.h"
-#include "Transition.h"
-#include "lowlevel/Color.h"
+#include "solarus/Common.h"
+#include "solarus/Transition.h"
+#include "solarus/lowlevel/Color.h"
 
 namespace Solarus {
 

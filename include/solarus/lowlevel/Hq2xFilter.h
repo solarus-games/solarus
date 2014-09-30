@@ -17,8 +17,8 @@
 #ifndef SOLARUS_HQ2X_FILTER_H
 #define SOLARUS_HQ2X_FILTER_H
 
-#include "Common.h"
-#include "lowlevel/PixelFilter.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/PixelFilter.h"
 
 namespace Solarus {
 

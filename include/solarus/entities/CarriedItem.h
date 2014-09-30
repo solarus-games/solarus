@@ -17,9 +17,9 @@
 #ifndef SOLARUS_CARRIED_ITEM_H
 #define SOLARUS_CARRIED_ITEM_H
 
-#include "Common.h"
-#include "entities/MapEntity.h"
-#include "SpritePtr.h"
+#include "solarus/Common.h"
+#include "solarus/entities/MapEntity.h"
+#include "solarus/SpritePtr.h"
 
 namespace Solarus {
 

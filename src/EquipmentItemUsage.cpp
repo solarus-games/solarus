@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "EquipmentItemUsage.h"
-#include "Game.h"
-#include "Equipment.h"
-#include "EquipmentItem.h"
-#include "lowlevel/Debug.h"
+#include "solarus/EquipmentItemUsage.h"
+#include "solarus/Game.h"
+#include "solarus/Equipment.h"
+#include "solarus/EquipmentItem.h"
+#include "solarus/lowlevel/Debug.h"
 
 namespace Solarus {
 

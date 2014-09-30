@@ -14,17 +14,17 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Equipment.h"
-#include "Game.h"
-#include "Savegame.h"
-#include "EquipmentItem.h"
-#include "Map.h"
-#include "QuestResourceList.h"
-#include "entities/Hero.h"
-#include "lowlevel/System.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
-#include "lowlevel/Random.h"
+#include "solarus/Equipment.h"
+#include "solarus/Game.h"
+#include "solarus/Savegame.h"
+#include "solarus/EquipmentItem.h"
+#include "solarus/Map.h"
+#include "solarus/QuestResourceList.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Random.h"
 #include <sstream>
 
 namespace Solarus {

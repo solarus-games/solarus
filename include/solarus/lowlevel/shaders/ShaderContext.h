@@ -17,8 +17,8 @@
 #ifndef SOLARUS_SHADERCONTEXT_H
 #define SOLARUS_SHADERCONTEXT_H
 
-#include "Common.h"
-#include "lowlevel/shaders/Shader.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/shaders/Shader.h"
 
 namespace Solarus {
 

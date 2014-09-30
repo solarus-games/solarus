@@ -17,9 +17,9 @@
 #ifndef SOLARUS_CRYSTAL_H
 #define SOLARUS_CRYSTAL_H
 
-#include "Common.h"
-#include "lowlevel/Point.h"
-#include "entities/Detector.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Point.h"
+#include "solarus/entities/Detector.h"
 #include <list>
 
 namespace Solarus {

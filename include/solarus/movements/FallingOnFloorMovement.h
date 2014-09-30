@@ -17,9 +17,9 @@
 #ifndef SOLARUS_FALLING_ON_FLOOR_MOVEMENT_H
 #define SOLARUS_FALLING_ON_FLOOR_MOVEMENT_H
 
-#include "Common.h"
-#include "movements/PixelMovement.h"
-#include "movements/FallingHeight.h"
+#include "solarus/Common.h"
+#include "solarus/movements/PixelMovement.h"
+#include "solarus/movements/FallingHeight.h"
 
 namespace Solarus {
 

@@ -17,8 +17,8 @@
 #ifndef SOLARUS_JUMPER_H
 #define SOLARUS_JUMPER_H
 
-#include "Common.h"
-#include "entities/Detector.h"
+#include "solarus/Common.h"
+#include "solarus/entities/Detector.h"
 
 namespace Solarus {
 

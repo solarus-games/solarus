@@ -17,9 +17,9 @@
 #ifndef SOLARUS_CHEST_H
 #define SOLARUS_CHEST_H
 
-#include "Common.h"
-#include "Treasure.h"
-#include "entities/Detector.h"
+#include "solarus/Common.h"
+#include "solarus/Treasure.h"
+#include "solarus/entities/Detector.h"
 
 namespace Solarus {
 

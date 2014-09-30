@@ -17,11 +17,11 @@
 #ifndef SOLARUS_SHOP_TREASURE_H
 #define SOLARUS_SHOP_TREASURE_H
 
-#include "Common.h"
-#include "Treasure.h"
-#include "Sprite.h"
-#include "entities/Detector.h"
-#include "lowlevel/TextSurface.h"
+#include "solarus/Common.h"
+#include "solarus/Treasure.h"
+#include "solarus/Sprite.h"
+#include "solarus/entities/Detector.h"
+#include "solarus/lowlevel/TextSurface.h"
 
 struct lua_State;
 

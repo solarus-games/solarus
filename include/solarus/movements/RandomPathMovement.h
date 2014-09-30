@@ -17,8 +17,8 @@
 #ifndef SOLARUS_RANDOM_WALK_MOVEMENT_H
 #define SOLARUS_RANDOM_WALK_MOVEMENT_H
 
-#include "Common.h"
-#include "movements/PathMovement.h"
+#include "solarus/Common.h"
+#include "solarus/movements/PathMovement.h"
 
 namespace Solarus {
 

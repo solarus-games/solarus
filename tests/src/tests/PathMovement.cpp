@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/CustomEntity.h"
-#include "lowlevel/Debug.h"
-#include "movements/PathMovement.h"
+#include "solarus/entities/CustomEntity.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/movements/PathMovement.h"
 #include "test_tools/TestEnvironment.h"
 
 using namespace Solarus;

@@ -14,21 +14,21 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "MainLoop.h"
-#include "lowlevel/System.h"
-#include "lowlevel/Video.h"
-#include "lowlevel/Color.h"
-#include "lowlevel/Surface.h"
-#include "lowlevel/Music.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
-#include "lua/LuaContext.h"
-#include "Settings.h"
-#include "QuestProperties.h"
-#include "Game.h"
-#include "Savegame.h"
-#include "StringResource.h"
-#include "QuestResourceList.h"
+#include "solarus/MainLoop.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lowlevel/Video.h"
+#include "solarus/lowlevel/Color.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Music.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/Settings.h"
+#include "solarus/QuestProperties.h"
+#include "solarus/Game.h"
+#include "solarus/Savegame.h"
+#include "solarus/StringResource.h"
+#include "solarus/QuestResourceList.h"
 
 namespace Solarus {
 

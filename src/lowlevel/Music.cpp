@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/Music.h"
-#include "lowlevel/SpcDecoder.h"
-#include "lowlevel/ItDecoder.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
-#include "lua/LuaContext.h"
+#include "solarus/lowlevel/Music.h"
+#include "solarus/lowlevel/SpcDecoder.h"
+#include "solarus/lowlevel/ItDecoder.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lua/LuaContext.h"
 #include <lua.hpp>
 #include <sstream>
 #include <vector>

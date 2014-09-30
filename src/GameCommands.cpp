@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "GameCommands.h"
-#include "Game.h"
-#include "Savegame.h"
-#include "Equipment.h"
-#include "StringResource.h"
-#include "entities/Hero.h"
-#include "lowlevel/Debug.h"
-#include "lua/LuaContext.h"
+#include "solarus/GameCommands.h"
+#include "solarus/Game.h"
+#include "solarus/Savegame.h"
+#include "solarus/Equipment.h"
+#include "solarus/StringResource.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lua/LuaContext.h"
 #include <lua.hpp>
 #include <sstream>
 

@@ -18,7 +18,7 @@
 #ifndef SOLARUS_QUEST_PROPERTIES_H
 #define SOLARUS_QUEST_PROPERTIES_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 
 struct lua_State;
 

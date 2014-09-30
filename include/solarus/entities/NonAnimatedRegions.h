@@ -17,11 +17,11 @@
 #ifndef SOLARUS_NON_ANIMATED_REGIONS_H
 #define SOLARUS_NON_ANIMATED_REGIONS_H
 
-#include "Common.h"
-#include "containers/Grid.h"
-#include "entities/Layer.h"
-#include "entities/TilePtr.h"
-#include "lowlevel/SurfacePtr.h"
+#include "solarus/Common.h"
+#include "solarus/containers/Grid.h"
+#include "solarus/entities/Layer.h"
+#include "solarus/entities/TilePtr.h"
+#include "solarus/lowlevel/SurfacePtr.h"
 #include <vector>
 
 namespace Solarus {

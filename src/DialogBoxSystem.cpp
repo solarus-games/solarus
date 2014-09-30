@@ -14,15 +14,15 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "DialogBoxSystem.h"
-#include "DialogResource.h"
-#include "Game.h"
-#include "Map.h"
-#include "KeysEffect.h"
-#include "entities/Hero.h"
-#include "lowlevel/TextSurface.h"
-#include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
+#include "solarus/DialogBoxSystem.h"
+#include "solarus/DialogResource.h"
+#include "solarus/Game.h"
+#include "solarus/Map.h"
+#include "solarus/KeysEffect.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/lowlevel/TextSurface.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lua/LuaTools.h"
 #include <lua.hpp>
 #include <sstream>
 

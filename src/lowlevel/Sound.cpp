@@ -17,12 +17,12 @@
 #include <algorithm>
 #include <cstring>  // memcpy
 #include <sstream>
-#include "lowlevel/Sound.h"
-#include "lowlevel/Music.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
-#include "QuestResourceList.h"
-#include "Arguments.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/lowlevel/Music.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/QuestResourceList.h"
+#include "solarus/Arguments.h"
 
 namespace Solarus {
 

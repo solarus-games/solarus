@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "SpriteAnimationSet.h"
-#include "SpriteAnimation.h"
-#include "SpriteAnimationDirection.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
-#include "lowlevel/Rectangle.h"
-#include "lua/LuaTools.h"
+#include "solarus/SpriteAnimationSet.h"
+#include "solarus/SpriteAnimation.h"
+#include "solarus/SpriteAnimationDirection.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lua/LuaTools.h"
 
 namespace Solarus {
 

@@ -17,8 +17,8 @@
 #ifndef SOLARUS_PARALLAX_SCROLLING_TILE_PATTERN_H
 #define SOLARUS_PARALLAX_SCROLLING_TILE_PATTERN_H
 
-#include "Common.h"
-#include "entities/SimpleTilePattern.h"
+#include "solarus/Common.h"
+#include "solarus/entities/SimpleTilePattern.h"
 
 namespace Solarus {
 

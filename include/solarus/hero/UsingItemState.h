@@ -17,8 +17,8 @@
 #ifndef SOLARUS_HERO_INVENTORY_ITEM_STATE_H
 #define SOLARUS_HERO_INVENTORY_ITEM_STATE_H
 
-#include "hero/State.h"
-#include "EquipmentItemUsage.h"
+#include "solarus/hero/State.h"
+#include "solarus/EquipmentItemUsage.h"
 
 namespace Solarus {
 

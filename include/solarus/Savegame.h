@@ -17,9 +17,9 @@
 #ifndef SOLARUS_SAVEGAME_H
 #define SOLARUS_SAVEGAME_H
 
-#include "Common.h"
-#include "Equipment.h"
-#include "lua/ExportableToLua.h"
+#include "solarus/Common.h"
+#include "solarus/Equipment.h"
+#include "solarus/lua/ExportableToLua.h"
 
 struct lua_State;
 

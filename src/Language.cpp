@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Language.h"
-#include "DialogResource.h"
-#include "lowlevel/Debug.h"
-#include "StringResource.h"
-#include "QuestResourceList.h"
+#include "solarus/Language.h"
+#include "solarus/DialogResource.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/StringResource.h"
+#include "solarus/QuestResourceList.h"
 
 namespace Solarus {
 

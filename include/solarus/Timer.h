@@ -17,8 +17,8 @@
 #ifndef SOLARUS_TIMER_H
 #define SOLARUS_TIMER_H
 
-#include "Common.h"
-#include "lua/ExportableToLua.h"
+#include "solarus/Common.h"
+#include "solarus/lua/ExportableToLua.h"
 
 namespace Solarus {
 

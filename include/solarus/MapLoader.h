@@ -17,7 +17,7 @@
 #ifndef SOLARUS_MAP_LOADER_H
 #define SOLARUS_MAP_LOADER_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 
 struct lua_State;
 

@@ -23,7 +23,7 @@
 #ifndef SOLARUS_COMMON_H
 #define SOLARUS_COMMON_H
 
-#include "config.h"
+#include "solarus/config.h"
 
 /**
  * \cond doxygen_ignore

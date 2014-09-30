@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "hero/HurtState.h"
-#include "hero/FreeState.h"
-#include "hero/HeroSprites.h"
-#include "lua/LuaContext.h"
-#include "movements/StraightMovement.h"
-#include "lowlevel/Sound.h"
-#include "lowlevel/Geometry.h"
-#include "lowlevel/System.h"
-#include "Game.h"
-#include "Equipment.h"
+#include "solarus/hero/HurtState.h"
+#include "solarus/hero/FreeState.h"
+#include "solarus/hero/HeroSprites.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/movements/StraightMovement.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/lowlevel/Geometry.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/Game.h"
+#include "solarus/Equipment.h"
 
 namespace Solarus {
 

@@ -17,8 +17,8 @@
 #ifndef SOLARUS_MAIN_LOOP_H
 #define SOLARUS_MAIN_LOOP_H
 
-#include "Common.h"
-#include "lowlevel/SurfacePtr.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/SurfacePtr.h"
 #include <memory>
 
 namespace Solarus {

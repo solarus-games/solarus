@@ -17,11 +17,11 @@
 #ifndef SOLARUS_GL_ARB_SHADER_H
 #define SOLARUS_GL_ARB_SHADER_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 
 #if SOLARUS_HAVE_OPENGL == 1
 
-#include "lowlevel/shaders/Shader.h"
+#include "solarus/lowlevel/shaders/Shader.h"
 #include <SDL.h>
 #include <SDL_opengl.h>
 

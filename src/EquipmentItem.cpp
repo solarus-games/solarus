@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "EquipmentItem.h"
-#include "entities/Pickable.h"
-#include "lowlevel/Debug.h"
-#include "lua/LuaContext.h"
-#include "Equipment.h"
-#include "Game.h"
-#include "Savegame.h"
+#include "solarus/EquipmentItem.h"
+#include "solarus/entities/Pickable.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/Equipment.h"
+#include "solarus/Game.h"
+#include "solarus/Savegame.h"
 
 namespace Solarus {
 

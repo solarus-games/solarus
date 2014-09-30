@@ -17,8 +17,8 @@
 #ifndef SOLARUS_HERO_PLAYER_MOVEMENT_STATE_H
 #define SOLARUS_HERO_PLAYER_MOVEMENT_STATE_H
 
-#include "Common.h"
-#include "hero/State.h"
+#include "solarus/Common.h"
+#include "solarus/hero/State.h"
 
 namespace Solarus {
 

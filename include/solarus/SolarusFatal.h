@@ -17,7 +17,7 @@
 #ifndef SOLARUS_SOLARUS_FATAL_H
 #define SOLARUS_SOLARUS_FATAL_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <exception>
 #include <string>
 

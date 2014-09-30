@@ -17,7 +17,7 @@
 #ifndef SOLARUS_GL_CONTEXT_H
 #define SOLARUS_GL_CONTEXT_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 
 #if SOLARUS_HAVE_OPENGL == 1
 

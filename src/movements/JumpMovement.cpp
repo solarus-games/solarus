@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "movements/JumpMovement.h"
-#include "lua/LuaContext.h"
-#include "lowlevel/Debug.h"
+#include "solarus/movements/JumpMovement.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lowlevel/Debug.h"
 #include <sstream>
 
 namespace Solarus {

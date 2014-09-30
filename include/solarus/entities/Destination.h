@@ -17,8 +17,8 @@
 #ifndef SOLARUS_DESTINATION_H
 #define SOLARUS_DESTINATION_H
 
-#include "Common.h"
-#include "entities/MapEntity.h"
+#include "solarus/Common.h"
+#include "solarus/entities/MapEntity.h"
 
 namespace Solarus {
 

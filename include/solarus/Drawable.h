@@ -17,11 +17,11 @@
 #ifndef SOLARUS_DRAWABLE_H
 #define SOLARUS_DRAWABLE_H
 
-#include "Common.h"
-#include "lowlevel/Point.h"
-#include "lowlevel/SurfacePtr.h"
-#include "lua/ExportableToLua.h"
-#include "lua/ScopedLuaRef.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Point.h"
+#include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/lua/ExportableToLua.h"
+#include "solarus/lua/ScopedLuaRef.h"
 
 namespace Solarus {
 

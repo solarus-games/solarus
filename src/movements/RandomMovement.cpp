@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "movements/RandomMovement.h"
-#include "entities/MapEntity.h"
-#include "lua/LuaContext.h"
-#include "lowlevel/System.h"
-#include "lowlevel/Random.h"
-#include "lowlevel/Geometry.h"
-#include "lowlevel/Debug.h"
+#include "solarus/movements/RandomMovement.h"
+#include "solarus/entities/MapEntity.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lowlevel/Random.h"
+#include "solarus/lowlevel/Geometry.h"
+#include "solarus/lowlevel/Debug.h"
 #include <sstream>
 
 namespace Solarus {

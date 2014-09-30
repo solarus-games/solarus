@@ -17,16 +17,16 @@
 #ifndef SOLARUS_MAP_ENTITY_H
 #define SOLARUS_MAP_ENTITY_H
 
-#include "Common.h"
-#include "lua/ExportableToLua.h"
-#include "entities/EntityType.h"
-#include "entities/Layer.h"
-#include "entities/Ground.h"
-#include "entities/CollisionMode.h"
-#include "entities/EnemyAttack.h"
-#include "entities/EnemyReaction.h"
-#include "lowlevel/Rectangle.h"
-#include "SpritePtr.h"
+#include "solarus/Common.h"
+#include "solarus/lua/ExportableToLua.h"
+#include "solarus/entities/EntityType.h"
+#include "solarus/entities/Layer.h"
+#include "solarus/entities/Ground.h"
+#include "solarus/entities/CollisionMode.h"
+#include "solarus/entities/EnemyAttack.h"
+#include "solarus/entities/EnemyReaction.h"
+#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/SpritePtr.h"
 #include <vector>
 
 struct lua_State;

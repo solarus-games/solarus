@@ -17,13 +17,13 @@
 #ifndef SOLARUS_MAP_ENTITIES_H
 #define SOLARUS_MAP_ENTITIES_H
 
-#include "Common.h"
-#include "entities/EntityType.h"
-#include "entities/Ground.h"
-#include "entities/Layer.h"
-#include "entities/MapEntityPtr.h"
-#include "entities/TilePtr.h"
-#include "Transition.h"
+#include "solarus/Common.h"
+#include "solarus/entities/EntityType.h"
+#include "solarus/entities/Ground.h"
+#include "solarus/entities/Layer.h"
+#include "solarus/entities/MapEntityPtr.h"
+#include "solarus/entities/TilePtr.h"
+#include "solarus/Transition.h"
 #include <vector>
 #include <list>
 #include <map>

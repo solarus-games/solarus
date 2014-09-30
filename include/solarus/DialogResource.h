@@ -17,8 +17,8 @@
 #ifndef SOLARUS_DIALOG_RESOURCE_H
 #define SOLARUS_DIALOG_RESOURCE_H
 
-#include "Common.h"
-#include "Dialog.h"
+#include "solarus/Common.h"
+#include "solarus/Dialog.h"
 #include <map>
 
 struct lua_State;

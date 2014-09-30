@@ -17,8 +17,8 @@
 #ifndef SOLARUS_EQUIPMENT_H
 #define SOLARUS_EQUIPMENT_H
 
-#include "Common.h"
-#include "Ability.h"
+#include "solarus/Common.h"
+#include "solarus/Ability.h"
 #include <map>
 #include <memory>
 #include <string>

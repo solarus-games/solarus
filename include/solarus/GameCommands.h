@@ -17,9 +17,9 @@
 #ifndef SOLARUS_GAME_COMMANDS_H
 #define SOLARUS_GAME_COMMANDS_H
 
-#include "Common.h"
-#include "lowlevel/InputEvent.h"
-#include "lua/ScopedLuaRef.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/InputEvent.h"
+#include "solarus/lua/ScopedLuaRef.h"
 #include <map>
 #include <set>
 #include <string>

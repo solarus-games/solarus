@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/shaders/Shader.h"
-#include "lowlevel/System.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Video.h"
-#include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
+#include "solarus/lowlevel/shaders/Shader.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Video.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lua/LuaTools.h"
 
 namespace Solarus {
 

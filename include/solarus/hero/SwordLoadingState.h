@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_SWORD_LOADING_STATE_H
 #define SOLARUS_HERO_SWORD_LOADING_STATE_H
 
-#include "hero/PlayerMovementState.h"
+#include "solarus/hero/PlayerMovementState.h"
 
 namespace Solarus {
 

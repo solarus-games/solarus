@@ -17,8 +17,8 @@
 #ifndef SOLARUS_FONT_RESOURCE_H
 #define SOLARUS_FONT_RESOURCE_H
 
-#include "Common.h"
-#include "lowlevel/SurfacePtr.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/SurfacePtr.h"
 #include <map>
 #include <string>
 #include <SDL_ttf.h>

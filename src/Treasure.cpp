@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Treasure.h"
-#include "Game.h"
-#include "Savegame.h"
-#include "Equipment.h"
-#include "EquipmentItem.h"
-#include "Map.h"
-#include "Sprite.h"
-#include "lua/LuaContext.h"
-#include "lowlevel/Surface.h"
-#include "lowlevel/Debug.h"
+#include "solarus/Treasure.h"
+#include "solarus/Game.h"
+#include "solarus/Savegame.h"
+#include "solarus/Equipment.h"
+#include "solarus/EquipmentItem.h"
+#include "solarus/Map.h"
+#include "solarus/Sprite.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Debug.h"
 
 namespace Solarus {
 

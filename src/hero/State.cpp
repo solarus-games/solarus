@@ -14,21 +14,21 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "hero/State.h"
-#include "hero/SwordSwingingState.h"
-#include "hero/HeroSprites.h"
-#include "entities/Hero.h"
-#include "entities/Jumper.h"
-#include "entities/Stairs.h"
-#include "lowlevel/System.h"
-#include "lowlevel/Debug.h"
-#include "lua/LuaContext.h"
-#include "Game.h"
-#include "Map.h"
-#include "Equipment.h"
-#include "EquipmentItem.h"
-#include "Sprite.h"
-#include "KeysEffect.h"
+#include "solarus/hero/State.h"
+#include "solarus/hero/SwordSwingingState.h"
+#include "solarus/hero/HeroSprites.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/entities/Jumper.h"
+#include "solarus/entities/Stairs.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/Game.h"
+#include "solarus/Map.h"
+#include "solarus/Equipment.h"
+#include "solarus/EquipmentItem.h"
+#include "solarus/Sprite.h"
+#include "solarus/KeysEffect.h"
 
 namespace Solarus {
 

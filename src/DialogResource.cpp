@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "DialogResource.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
-#include "Language.h"
-#include "lua/LuaTools.h"
+#include "solarus/DialogResource.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/Language.h"
+#include "solarus/lua/LuaTools.h"
 
 namespace Solarus {
 

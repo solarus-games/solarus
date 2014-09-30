@@ -17,15 +17,15 @@
 #ifndef SOLARUS_MAP_H
 #define SOLARUS_MAP_H
 
-#include "Common.h"
-#include "entities/Ground.h"
-#include "entities/Layer.h"
-#include "lowlevel/Debug.h"
-#include "lowlevel/Rectangle.h"
-#include "lowlevel/SurfacePtr.h"
-#include "lua/ExportableToLua.h"
-#include "Camera.h"
-#include "Transition.h"
+#include "solarus/Common.h"
+#include "solarus/entities/Ground.h"
+#include "solarus/entities/Layer.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/lua/ExportableToLua.h"
+#include "solarus/Camera.h"
+#include "solarus/Transition.h"
 
 namespace Solarus {
 

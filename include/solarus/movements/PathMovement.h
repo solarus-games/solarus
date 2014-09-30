@@ -17,8 +17,8 @@
 #ifndef SOLARUS_PATH_MOVEMENT_H
 #define SOLARUS_PATH_MOVEMENT_H
 
-#include "Common.h"
-#include "movements/PixelMovement.h"
+#include "solarus/Common.h"
+#include "solarus/movements/PixelMovement.h"
 
 namespace Solarus {
 

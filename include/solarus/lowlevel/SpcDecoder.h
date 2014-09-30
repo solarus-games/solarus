@@ -17,8 +17,8 @@
 #ifndef SOLARUS_SPC_DECODER_H
 #define SOLARUS_SPC_DECODER_H
 
-#include "Common.h"
-#include "snes_spc/spc.h"
+#include "solarus/Common.h"
+#include "solarus/third_party/snes_spc/spc.h"
 #include <cstddef>  // size_t
 #include <cstdint>
 #include <memory>

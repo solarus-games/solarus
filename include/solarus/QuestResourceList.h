@@ -18,7 +18,7 @@
 #ifndef SOLARUS_QUEST_RESOURCE_LIST_H
 #define SOLARUS_QUEST_RESOURCE_LIST_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <map>
 #include <string>
 

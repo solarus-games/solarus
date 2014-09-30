@@ -118,8 +118,8 @@ else()
 endif()
 
 include_directories(
-  "${CMAKE_BINARY_DIR}/include/solarus"
-  "${SOLARUS_ENGINE_SOURCE_DIR}/include/solarus"
+  "${CMAKE_BINARY_DIR}/include"
+  "${SOLARUS_ENGINE_SOURCE_DIR}/include"
   "${SOLARUS_ENGINE_SOURCE_DIR}/include/solarus/third_party"
   "${SOLARUS_ENGINE_SOURCE_DIR}/include/solarus/third_party/snes_spc"
 )

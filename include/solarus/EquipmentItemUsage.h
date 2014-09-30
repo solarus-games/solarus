@@ -17,8 +17,8 @@
 #ifndef SOLARUS_INVENTORY_ITEM_H
 #define SOLARUS_INVENTORY_ITEM_H
 
-#include "Common.h"
-#include "Savegame.h"
+#include "solarus/Common.h"
+#include "solarus/Savegame.h"
 
 namespace Solarus {
 

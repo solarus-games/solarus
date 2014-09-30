@@ -17,7 +17,7 @@
 #ifndef SOLARUS_KEYS_EFFECT_H
 #define SOLARUS_KEYS_EFFECT_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <string>
 #include <vector>
 

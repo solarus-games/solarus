@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/shaders/GL_2DShader.h"
+#include "solarus/lowlevel/shaders/GL_2DShader.h"
 
 #if SOLARUS_HAVE_OPENGL == 1
 
-#include "lowlevel/Surface.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Video.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Video.h"
 
 
 namespace Solarus {

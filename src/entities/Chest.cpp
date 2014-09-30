@@ -14,20 +14,20 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/Chest.h"
-#include "entities/Hero.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/System.h"
-#include "lowlevel/Sound.h"
-#include "lua/LuaContext.h"
-#include "lua/ScopedLuaRef.h"
-#include "Equipment.h"
-#include "EquipmentItem.h"
-#include "KeysEffect.h"
-#include "Map.h"
-#include "Game.h"
-#include "Savegame.h"
-#include "Sprite.h"
+#include "solarus/entities/Chest.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lua/ScopedLuaRef.h"
+#include "solarus/Equipment.h"
+#include "solarus/EquipmentItem.h"
+#include "solarus/KeysEffect.h"
+#include "solarus/Map.h"
+#include "solarus/Game.h"
+#include "solarus/Savegame.h"
+#include "solarus/Sprite.h"
 #include <lua.hpp>
 
 namespace Solarus {

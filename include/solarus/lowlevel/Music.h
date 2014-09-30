@@ -17,11 +17,11 @@
 #ifndef SOLARUS_MUSIC_H
 #define SOLARUS_MUSIC_H
 
-#include "Common.h"
-#include "lowlevel/ItDecoder.h"
-#include "lowlevel/SpcDecoder.h"
-#include "lowlevel/Sound.h"
-#include "lua/ScopedLuaRef.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/ItDecoder.h"
+#include "solarus/lowlevel/SpcDecoder.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/lua/ScopedLuaRef.h"
 #include <memory>
 #include <vector>
 

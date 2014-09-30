@@ -17,10 +17,10 @@
 #ifndef SOLARUS_LUA_TOOLS_H
 #define SOLARUS_LUA_TOOLS_H
 
-#include "Common.h"
-#include "entities/Layer.h"
-#include "lowlevel/Debug.h"
-#include "lua/LuaException.h"
+#include "solarus/Common.h"
+#include "solarus/entities/Layer.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lua/LuaException.h"
 #include <string>
 #include <vector>
 #include <lua.hpp>
@@ -276,6 +276,6 @@ E opt_enum_field(
 
 }
 
-#include "LuaTools.inl"
+#include "solarus/lua/LuaTools.inl"
 
 #endif

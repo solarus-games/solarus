@@ -17,8 +17,8 @@
 #ifndef SOLARUS_SPRITE_ANIMATION_SET_H
 #define SOLARUS_SPRITE_ANIMATION_SET_H
 
-#include "Common.h"
-#include "lowlevel/Size.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Size.h"
 #include <map>
 #include <string>
 

@@ -17,9 +17,9 @@
 #ifndef SOLARUS_RANDOM_MOVEMENT_H
 #define SOLARUS_RANDOM_MOVEMENT_H
 
-#include "Common.h"
-#include "movements/StraightMovement.h"
-#include "lowlevel/Rectangle.h"
+#include "solarus/Common.h"
+#include "solarus/movements/StraightMovement.h"
+#include "solarus/lowlevel/Rectangle.h"
 
 namespace Solarus {
 

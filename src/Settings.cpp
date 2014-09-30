@@ -14,15 +14,15 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Settings.h"
-#include "lowlevel/FileTools.h"
-#include "Language.h"
-#include "lowlevel/Video.h"
-#include "lowlevel/VideoMode.h"
-#include "lowlevel/Sound.h"
-#include "lowlevel/Music.h"
-#include "lowlevel/InputEvent.h"
-#include "lowlevel/Debug.h"
+#include "solarus/Settings.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/Language.h"
+#include "solarus/lowlevel/Video.h"
+#include "solarus/lowlevel/VideoMode.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/lowlevel/Music.h"
+#include "solarus/lowlevel/InputEvent.h"
+#include "solarus/lowlevel/Debug.h"
 #include <lua.hpp>
 #include <sstream>
 

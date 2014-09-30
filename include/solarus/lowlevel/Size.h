@@ -17,7 +17,7 @@
 #ifndef SOLARUS_SIZE_H
 #define SOLARUS_SIZE_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <iosfwd>
 
 namespace Solarus {
@@ -79,7 +79,7 @@ std::ostream& operator<<(std::ostream& stream, const Size& size);
 
 }
 
-#include "Size.inl"
+#include "solarus/lowlevel/Size.inl"
 
 #endif
 

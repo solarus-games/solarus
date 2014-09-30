@@ -17,10 +17,10 @@
 #ifndef SOLARUS_SURFACE_H
 #define SOLARUS_SURFACE_H
 
-#include "Common.h"
-#include "lowlevel/PixelBits.h"
-#include "lowlevel/SurfacePtr.h"
-#include "Drawable.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/PixelBits.h"
+#include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/Drawable.h"
 #include <SDL.h>
 #include <SDL_image.h>
 #include <vector>

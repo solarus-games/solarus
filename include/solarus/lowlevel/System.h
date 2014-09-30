@@ -17,7 +17,7 @@
 #ifndef SOLARUS_SYSTEM_H
 #define SOLARUS_SYSTEM_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <cstdint>
 #include <string>
 

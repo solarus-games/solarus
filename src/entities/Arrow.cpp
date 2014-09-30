@@ -14,22 +14,22 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/Arrow.h"
-#include "entities/Hero.h"
-#include "entities/Enemy.h"
-#include "entities/Stairs.h"
-#include "entities/Switch.h"
-#include "entities/Crystal.h"
-#include "entities/Destructible.h"
-#include "entities/Npc.h"
-#include "movements/PathMovement.h"
-#include "movements/FollowMovement.h"
-#include "Sprite.h"
-#include "Game.h"
-#include "Map.h"
-#include "lowlevel/Sound.h"
-#include "lowlevel/System.h"
-#include "lowlevel/Debug.h"
+#include "solarus/entities/Arrow.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/entities/Enemy.h"
+#include "solarus/entities/Stairs.h"
+#include "solarus/entities/Switch.h"
+#include "solarus/entities/Crystal.h"
+#include "solarus/entities/Destructible.h"
+#include "solarus/entities/Npc.h"
+#include "solarus/movements/PathMovement.h"
+#include "solarus/movements/FollowMovement.h"
+#include "solarus/Sprite.h"
+#include "solarus/Game.h"
+#include "solarus/Map.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lowlevel/Debug.h"
 
 namespace Solarus {
 

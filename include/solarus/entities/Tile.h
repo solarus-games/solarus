@@ -17,9 +17,9 @@
 #ifndef SOLARUS_TILE_H
 #define SOLARUS_TILE_H
 
-#include "Common.h"
-#include "entities/MapEntity.h"
-#include "lowlevel/SurfacePtr.h"
+#include "solarus/Common.h"
+#include "solarus/entities/MapEntity.h"
+#include "solarus/lowlevel/SurfacePtr.h"
 
 namespace Solarus {
 

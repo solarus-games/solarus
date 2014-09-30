@@ -17,7 +17,7 @@
 #ifndef SOLARUS_COLOR_H
 #define SOLARUS_COLOR_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <cstdint>
 #include <SDL.h>
 

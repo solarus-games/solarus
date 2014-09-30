@@ -14,15 +14,15 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/CrystalBlock.h"
-#include "entities/Hero.h"
-#include "entities/MapEntities.h"
-#include "movements/PlayerMovement.h"
-#include "Game.h"
-#include "Map.h"
-#include "Sprite.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Sound.h"
+#include "solarus/entities/CrystalBlock.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/entities/MapEntities.h"
+#include "solarus/movements/PlayerMovement.h"
+#include "solarus/Game.h"
+#include "solarus/Map.h"
+#include "solarus/Sprite.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Sound.h"
 
 namespace Solarus {
 

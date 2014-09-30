@@ -17,9 +17,9 @@
 #ifndef SOLARUS_RECTANGLE_H
 #define SOLARUS_RECTANGLE_H
 
-#include "Common.h"
-#include "lowlevel/Point.h"
-#include "lowlevel/Size.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Point.h"
+#include "solarus/lowlevel/Size.h"
 #include <SDL_rect.h>
 #include <iosfwd>
 

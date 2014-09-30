@@ -14,19 +14,19 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/Debug.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/FontResource.h"
-#include "lowlevel/Size.h"
-#include "lowlevel/Surface.h"
-#include "lowlevel/System.h"
-#include "lowlevel/Rectangle.h"
-#include "lowlevel/TextSurface.h"
-#include "lowlevel/Video.h"
-#include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
-#include "QuestResourceList.h"
-#include "Transition.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/FontResource.h"
+#include "solarus/lowlevel/Size.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lowlevel/TextSurface.h"
+#include "solarus/lowlevel/Video.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lua/LuaTools.h"
+#include "solarus/QuestResourceList.h"
+#include "solarus/Transition.h"
 #include <lua.hpp>
 
 namespace Solarus {

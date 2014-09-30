@@ -17,8 +17,8 @@
 #ifndef SOLARUS_EXPLOSION_H
 #define SOLARUS_EXPLOSION_H
 
-#include "Common.h"
-#include "entities/Detector.h"
+#include "solarus/Common.h"
+#include "solarus/entities/Detector.h"
 #include <list>
 
 namespace Solarus {

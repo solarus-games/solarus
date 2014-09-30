@@ -17,7 +17,7 @@
 #ifndef SOLARUS_PIXEL_BITS_H
 #define SOLARUS_PIXEL_BITS_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <cstdint>
 #include <vector>
 

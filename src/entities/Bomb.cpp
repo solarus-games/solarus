@@ -14,18 +14,18 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/Bomb.h"
-#include "entities/Explosion.h"
-#include "entities/MapEntities.h"
-#include "entities/Hero.h"
-#include "entities/CarriedItem.h"
-#include "entities/Stream.h"
-#include "movements/PathMovement.h"
-#include "lowlevel/System.h"
-#include "lowlevel/Sound.h"
-#include "Sprite.h"
-#include "Map.h"
-#include "KeysEffect.h"
+#include "solarus/entities/Bomb.h"
+#include "solarus/entities/Explosion.h"
+#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/entities/CarriedItem.h"
+#include "solarus/entities/Stream.h"
+#include "solarus/movements/PathMovement.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/Sprite.h"
+#include "solarus/Map.h"
+#include "solarus/KeysEffect.h"
 
 namespace Solarus {
 

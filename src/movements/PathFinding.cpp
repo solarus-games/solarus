@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "movements/PathFinding.h"
-#include "entities/MapEntity.h"
-#include "lowlevel/Geometry.h"
-#include "Map.h"
-#include "lowlevel/Debug.h"
+#include "solarus/movements/PathFinding.h"
+#include "solarus/entities/MapEntity.h"
+#include "solarus/lowlevel/Geometry.h"
+#include "solarus/Map.h"
+#include "solarus/lowlevel/Debug.h"
 
 namespace Solarus {
 

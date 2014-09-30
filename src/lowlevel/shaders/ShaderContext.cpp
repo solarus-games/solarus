@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/shaders/ShaderContext.h"
-#include "lowlevel/shaders/GLContext.h"
-#include "lowlevel/shaders/GL_ARBShader.h"
-#include "lowlevel/shaders/GL_2DShader.h"
+#include "solarus/lowlevel/shaders/ShaderContext.h"
+#include "solarus/lowlevel/shaders/GLContext.h"
+#include "solarus/lowlevel/shaders/GL_ARBShader.h"
+#include "solarus/lowlevel/shaders/GL_2DShader.h"
 
 
 namespace Solarus {

@@ -17,9 +17,9 @@
 #ifndef SOLARUS_SPRITE_H
 #define SOLARUS_SPRITE_H
 
-#include "Common.h"
-#include "Drawable.h"
-#include "SpritePtr.h"
+#include "solarus/Common.h"
+#include "solarus/Drawable.h"
+#include "solarus/SpritePtr.h"
 #include <map>
 
 namespace Solarus {

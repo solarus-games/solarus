@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_FREEZED_STATE_H
 #define SOLARUS_HERO_FREEZED_STATE_H
 
-#include "hero/State.h"
+#include "solarus/hero/State.h"
 
 namespace Solarus {
 

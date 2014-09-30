@@ -18,7 +18,7 @@
 #ifndef SOLARUS_SETTINGS_H
 #define SOLARUS_SETTINGS_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <string>
 
 namespace Solarus {

@@ -17,9 +17,9 @@
 #ifndef SOLARUS_HERO_STATE_H
 #define SOLARUS_HERO_STATE_H
 
-#include "Common.h"
-#include "entities/CarriedItem.h"
-#include "entities/Hero.h"
+#include "solarus/Common.h"
+#include "solarus/entities/CarriedItem.h"
+#include "solarus/entities/Hero.h"
 
 namespace Solarus {
 

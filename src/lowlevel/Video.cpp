@@ -14,20 +14,20 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/Video.h"
-#include "lowlevel/VideoMode.h"
-#include "lowlevel/Rectangle.h"
-#include "lowlevel/Size.h"
-#include "lowlevel/Scale2xFilter.h"
-#include "lowlevel/Hq2xFilter.h"
-#include "lowlevel/Hq3xFilter.h"
-#include "lowlevel/Hq4xFilter.h"
-#include "lowlevel/Surface.h"
-#include "lowlevel/Color.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
-#include "lowlevel/shaders/ShaderContext.h"
-#include "Arguments.h"
+#include "solarus/lowlevel/Video.h"
+#include "solarus/lowlevel/VideoMode.h"
+#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lowlevel/Size.h"
+#include "solarus/lowlevel/Scale2xFilter.h"
+#include "solarus/lowlevel/Hq2xFilter.h"
+#include "solarus/lowlevel/Hq3xFilter.h"
+#include "solarus/lowlevel/Hq4xFilter.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Color.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/shaders/ShaderContext.h"
+#include "solarus/Arguments.h"
 #include <algorithm>
 #include <sstream>
 #include <iostream>

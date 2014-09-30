@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "SavegameConverterV1.h"
-#include "Savegame.h"
-#include "lowlevel/InputEvent.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
+#include "solarus/SavegameConverterV1.h"
+#include "solarus/Savegame.h"
+#include "solarus/lowlevel/InputEvent.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Debug.h"
 #include <sstream>
 #include <cstring>  // memcpy
 

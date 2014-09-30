@@ -17,9 +17,9 @@
 #ifndef SOLARUS_NPC_H
 #define SOLARUS_NPC_H
 
-#include "Common.h"
-#include "entities/Detector.h"
-#include "KeysEffect.h"
+#include "solarus/Common.h"
+#include "solarus/entities/Detector.h"
+#include "solarus/KeysEffect.h"
 
 namespace Solarus {
 

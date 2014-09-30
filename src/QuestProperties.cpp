@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "QuestProperties.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Video.h"
-#include "lowlevel/Size.h"
-#include "lowlevel/Debug.h"
-#include "lua/LuaTools.h"
+#include "solarus/QuestProperties.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Video.h"
+#include "solarus/lowlevel/Size.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lua/LuaTools.h"
 #include <lua.hpp>
 #include <sstream>
 #include <string>

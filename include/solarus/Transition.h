@@ -17,7 +17,7 @@
 #ifndef SOLARUS_TRANSITION_H
 #define SOLARUS_TRANSITION_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <string>
 #include <vector>
 

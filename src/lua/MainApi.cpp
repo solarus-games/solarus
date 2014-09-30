@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
-#include "lowlevel/Geometry.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/System.h"
-#include "MainLoop.h"
-#include "Settings.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lua/LuaTools.h"
+#include "solarus/lowlevel/Geometry.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/MainLoop.h"
+#include "solarus/Settings.h"
 #include <lua.hpp>
 
 namespace Solarus {

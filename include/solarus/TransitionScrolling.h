@@ -17,10 +17,10 @@
 #ifndef SOLARUS_TRANSITION_SCROLLING_H
 #define SOLARUS_TRANSITION_SCROLLING_H
 
-#include "Common.h"
-#include "lowlevel/Rectangle.h"
-#include "lowlevel/SurfacePtr.h"
-#include "Transition.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/Transition.h"
 #include <memory>
 
 namespace Solarus {

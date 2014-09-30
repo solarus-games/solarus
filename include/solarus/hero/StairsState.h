@@ -17,8 +17,8 @@
 #ifndef SOLARUS_HERO_STAIRS_STATE_H
 #define SOLARUS_HERO_STAIRS_STATE_H
 
-#include "hero/State.h"
-#include "entities/Stairs.h"
+#include "solarus/hero/State.h"
+#include "solarus/entities/Stairs.h"
 
 namespace Solarus {
 

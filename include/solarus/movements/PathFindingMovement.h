@@ -17,9 +17,9 @@
 #ifndef SOLARUS_PATH_FINDING_MOVEMENT_H
 #define SOLARUS_PATH_FINDING_MOVEMENT_H
 
-#include "Common.h"
-#include "entities/MapEntityPtr.h"
-#include "movements/PathMovement.h"
+#include "solarus/Common.h"
+#include "solarus/entities/MapEntityPtr.h"
+#include "solarus/movements/PathMovement.h"
 
 namespace Solarus {
 

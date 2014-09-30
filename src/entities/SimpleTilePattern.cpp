@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/SimpleTilePattern.h"
-#include "entities/Tileset.h"
-#include "lowlevel/Surface.h"
-#include "Map.h"
+#include "solarus/entities/SimpleTilePattern.h"
+#include "solarus/entities/Tileset.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/Map.h"
 
 namespace Solarus {
 

@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "SpriteAnimation.h"
-#include "SpriteAnimationDirection.h"
-#include "entities/Tileset.h"
-#include "lowlevel/Surface.h"
-#include "lowlevel/Debug.h"
+#include "solarus/SpriteAnimation.h"
+#include "solarus/SpriteAnimationDirection.h"
+#include "solarus/entities/Tileset.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Debug.h"
 #include <sstream>
 
 namespace Solarus {

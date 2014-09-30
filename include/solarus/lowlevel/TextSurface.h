@@ -17,10 +17,10 @@
 #ifndef SOLARUS_TEXT_SURFACE_H
 #define SOLARUS_TEXT_SURFACE_H
 
-#include "Common.h"
-#include "lowlevel/Color.h"
-#include "lowlevel/Point.h"
-#include "Drawable.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Color.h"
+#include "solarus/lowlevel/Point.h"
+#include "solarus/Drawable.h"
 #include <map>
 #include <SDL_ttf.h>
 

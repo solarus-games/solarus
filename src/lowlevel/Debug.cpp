@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/Debug.h"
-#include "SolarusFatal.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/SolarusFatal.h"
 #include <cstdlib>  // std::abort
 #include <fstream>
 #include <iostream>

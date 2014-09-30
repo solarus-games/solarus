@@ -17,13 +17,13 @@
 #ifndef SOLARUS_GAME_H
 #define SOLARUS_GAME_H
 
-#include "Common.h"
-#include "lowlevel/Point.h"
-#include "lowlevel/SurfacePtr.h"
-#include "DialogBoxSystem.h"
-#include "GameCommands.h"
-#include "KeysEffect.h"
-#include "Transition.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Point.h"
+#include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/DialogBoxSystem.h"
+#include "solarus/GameCommands.h"
+#include "solarus/KeysEffect.h"
+#include "solarus/Transition.h"
 #include <memory>
 
 namespace Solarus {

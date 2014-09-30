@@ -17,8 +17,8 @@
 #ifndef SOLARUS_BOOMERANG_H
 #define SOLARUS_BOOMERANG_H
 
-#include "Common.h"
-#include "entities/MapEntity.h"
+#include "solarus/Common.h"
+#include "solarus/entities/MapEntity.h"
 
 namespace Solarus {
 

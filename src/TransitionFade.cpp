@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "TransitionFade.h"
-#include "lowlevel/Surface.h"
-#include "lowlevel/System.h"
-#include "lowlevel/Debug.h"
-#include "lowlevel/Color.h"
-#include "lowlevel/Video.h"
+#include "solarus/TransitionFade.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Color.h"
+#include "solarus/lowlevel/Video.h"
 
 namespace Solarus {
 

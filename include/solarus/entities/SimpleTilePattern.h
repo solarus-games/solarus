@@ -17,9 +17,9 @@
 #ifndef SOLARUS_SIMPLE_TILE_PATTERN_H
 #define SOLARUS_SIMPLE_TILE_PATTERN_H
 
-#include "Common.h"
-#include "entities/TilePattern.h"
-#include "lowlevel/Rectangle.h"
+#include "solarus/Common.h"
+#include "solarus/entities/TilePattern.h"
+#include "solarus/lowlevel/Rectangle.h"
 
 namespace Solarus {
 

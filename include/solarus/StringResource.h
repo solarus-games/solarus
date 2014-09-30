@@ -17,7 +17,7 @@
 #ifndef SOLARUS_STRING_RESOURCE_H
 #define SOLARUS_STRING_RESOURCE_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <string>
 
 namespace Solarus {

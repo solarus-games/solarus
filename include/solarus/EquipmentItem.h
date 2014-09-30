@@ -17,9 +17,9 @@
 #ifndef SOLARUS_EQUIPMENT_ITEM_H
 #define SOLARUS_EQUIPMENT_ITEM_H
 
-#include "Common.h"
-#include "lua/ExportableToLua.h"
-#include "Ability.h"
+#include "solarus/Common.h"
+#include "solarus/lua/ExportableToLua.h"
+#include "solarus/Ability.h"
 #include <string>
 
 namespace Solarus {

@@ -14,19 +14,19 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "hero/StairsState.h"
-#include "hero/FreeState.h"
-#include "hero/CarryingState.h"
-#include "hero/HeroSprites.h"
-#include "entities/MapEntities.h"
-#include "entities/Teletransporter.h"
-#include "movements/PathMovement.h"
-#include "lowlevel/Point.h"
-#include "lowlevel/System.h"
-#include "Game.h"
-#include "Map.h"
-#include "KeysEffect.h"
-#include "lowlevel/Debug.h"
+#include "solarus/hero/StairsState.h"
+#include "solarus/hero/FreeState.h"
+#include "solarus/hero/CarryingState.h"
+#include "solarus/hero/HeroSprites.h"
+#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Teletransporter.h"
+#include "solarus/movements/PathMovement.h"
+#include "solarus/lowlevel/Point.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/Game.h"
+#include "solarus/Map.h"
+#include "solarus/KeysEffect.h"
+#include "solarus/lowlevel/Debug.h"
 
 namespace Solarus {
 

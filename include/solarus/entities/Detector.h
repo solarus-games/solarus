@@ -17,9 +17,9 @@
 #ifndef SOLARUS_DETECTOR_H
 #define SOLARUS_DETECTOR_H
 
-#include "Common.h"
-#include "entities/MapEntity.h"
-#include "entities/CollisionMode.h"
+#include "solarus/Common.h"
+#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/CollisionMode.h"
 
 namespace Solarus {
 

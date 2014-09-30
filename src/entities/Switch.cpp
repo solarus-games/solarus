@@ -14,17 +14,17 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/Switch.h"
-#include "entities/Arrow.h"
-#include "entities/Block.h"
-#include "entities/Hero.h"
-#include "lua/LuaContext.h"
-#include "Sprite.h"
-#include "Game.h"
-#include "Map.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
-#include "lowlevel/Sound.h"
+#include "solarus/entities/Switch.h"
+#include "solarus/entities/Arrow.h"
+#include "solarus/entities/Block.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/Sprite.h"
+#include "solarus/Game.h"
+#include "solarus/Map.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Sound.h"
 
 namespace Solarus {
 

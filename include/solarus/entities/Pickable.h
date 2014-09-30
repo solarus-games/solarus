@@ -17,13 +17,13 @@
 #ifndef SOLARUS_PICKABLE_H
 #define SOLARUS_PICKABLE_H
 
-#include "Common.h"
-#include "entities/Detector.h"
-#include "entities/MapEntityPtr.h"
-#include "lowlevel/Point.h"
-#include "movements/FallingHeight.h"
-#include "SpritePtr.h"
-#include "Treasure.h"
+#include "solarus/Common.h"
+#include "solarus/entities/Detector.h"
+#include "solarus/entities/MapEntityPtr.h"
+#include "solarus/lowlevel/Point.h"
+#include "solarus/movements/FallingHeight.h"
+#include "solarus/SpritePtr.h"
+#include "solarus/Treasure.h"
 
 namespace Solarus {
 

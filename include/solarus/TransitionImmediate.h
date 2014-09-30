@@ -17,8 +17,8 @@
 #ifndef SOLARUS_TRANSITION_IMMEDIATE_H
 #define SOLARUS_TRANSITION_IMMEDIATE_H
 
-#include "Common.h"
-#include "Transition.h"
+#include "solarus/Common.h"
+#include "solarus/Transition.h"
 
 namespace Solarus {
 

@@ -17,7 +17,7 @@
 #ifndef SOLARUS_IT_DECODER_H
 #define SOLARUS_IT_DECODER_H
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <cstddef>
 #include <memory>
 #include <modplug.h>

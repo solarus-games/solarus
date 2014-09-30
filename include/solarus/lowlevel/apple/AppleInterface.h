@@ -17,7 +17,7 @@
 #ifndef __APPLEINTERFACE_H__
 #define __APPLEINTERFACE_H__
 
-#include "Common.h"
+#include "solarus/Common.h"
 #include <string>
 
 #if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)

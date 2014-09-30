@@ -17,11 +17,11 @@
 #ifndef SOLARUS_SHADER_H
 #define SOLARUS_SHADER_H
 
-#include "Common.h"
-#include "lowlevel/Debug.h"
-#include "lowlevel/SurfacePtr.h"
-#include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
+#include "solarus/Common.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lua/LuaTools.h"
 
 namespace Solarus {
 

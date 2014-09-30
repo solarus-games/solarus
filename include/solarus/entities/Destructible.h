@@ -17,10 +17,10 @@
 #ifndef SOLARUS_DESTRUCTIBLE_H
 #define SOLARUS_DESTRUCTIBLE_H
 
-#include "Common.h"
-#include "entities/Detector.h"
-#include "entities/Ground.h"
-#include "Treasure.h"
+#include "solarus/Common.h"
+#include "solarus/entities/Detector.h"
+#include "solarus/entities/Ground.h"
+#include "solarus/Treasure.h"
 
 namespace Solarus {
 

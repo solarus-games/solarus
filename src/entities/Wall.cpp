@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/Wall.h"
-#include "entities/Hero.h"
-#include "lowlevel/FileTools.h"
+#include "solarus/entities/Wall.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/lowlevel/FileTools.h"
 
 namespace Solarus {
 

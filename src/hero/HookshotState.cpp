@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "hero/HookshotState.h"
-#include "hero/FreeState.h"
-#include "hero/BackToSolidGroundState.h"
-#include "hero/HeroSprites.h"
-#include "entities/MapEntities.h"
-#include "entities/Hookshot.h"
-#include "lowlevel/Sound.h"
-#include "Map.h"
+#include "solarus/hero/HookshotState.h"
+#include "solarus/hero/FreeState.h"
+#include "solarus/hero/BackToSolidGroundState.h"
+#include "solarus/hero/HeroSprites.h"
+#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Hookshot.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/Map.h"
 
 namespace Solarus {
 

@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/ExportableToLuaPtr.h"
-#include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
-#include "lowlevel/Surface.h"
-#include "movements/Movement.h"
-#include "Drawable.h"
-#include "TransitionFade.h"
+#include "solarus/lua/ExportableToLuaPtr.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lua/LuaTools.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/movements/Movement.h"
+#include "solarus/Drawable.h"
+#include "solarus/TransitionFade.h"
 #include <lua.hpp>
 
 /* This file contains common code for all drawable types known by Lua,

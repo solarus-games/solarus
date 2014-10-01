@@ -158,22 +158,28 @@ void QuestResources::clear() {
  */
 bool QuestResources::exists(ResourceType resource_type, const std::string& id) const {
 
-  const auto& it = resource_maps.find(resource_type);
-  if (it == resource_maps.end()) {
-    return false;
-  }
-
-  return it->second.find(id) != it->second.end();
+  const ResourceMap& resource = get_elements(resource_type);
+  return resource.find(id) != resource.end();
 }
 
 /**
  * \brief Returns the list of element IDs of the specified resource type.
  * \param resource_type A type of resource.
- * \return The IDs of all declared element of this type, in their declaration
- * order.
+ * \return The ids of all declared element of this type
  */
-const std::map<std::string, std::string>&
-QuestResources::get_elements(ResourceType resource_type) const {
+const QuestResources::ResourceMap& QuestResources::get_elements(
+    ResourceType resource_type) const {
+
+  return resource_maps.find(resource_type)->second;
+}
+
+/**
+ * \brief Returns the list of element IDs of the specified resource type.
+ * \param resource_type A type of resource.
+ * \return The ids of all declared element of this type
+ */
+QuestResources::ResourceMap& QuestResources::get_elements(
+    ResourceType resource_type) {
 
   return resource_maps.find(resource_type)->second;
 }
@@ -189,9 +195,45 @@ void QuestResources::add(
     const std::string& id,
     const std::string& description
 ) {
-  resource_maps[resource_type].insert(std::make_pair(id, description));
+  ResourceMap& resource = get_elements(resource_type);
+  resource.insert(std::make_pair(id, description));
 }
 
+/**
+ * \brief Returns the description of a resource element.
+ * \param resource_type A type of resource.
+ * \param id Id of the element to get.
+ * \return description The element description.
+ * Returns an empty string if the element does not exist.
+ */
+std::string QuestResources::get_description(
+    ResourceType resource_type,
+    const std::string& id
+) const {
+
+  const ResourceMap& resource = get_elements(resource_type);
+
+  const auto& it = resource.find(id);
+  if (it == resource.end()) {
+    return "";
+  }
+  return it->second;
+}
+
+/**
+ * \brief Sets the description of a resource element.
+ * \param resource_type A type of resource.
+ * \param id Id of the element to modify.
+ * \param description The new description.
+ */
+void QuestResources::set_description(
+    ResourceType resource_type,
+    const std::string& id,
+    const std::string& description
+) {
+  ResourceMap& resource = get_elements(resource_type);
+  resource[id] = description;
+}
 
 /**
  * \brief Returns the name of a resource type.

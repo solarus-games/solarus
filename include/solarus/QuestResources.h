@@ -33,6 +33,8 @@ class QuestResources {
 
   public:
 
+    using ResourceMap = std::map<std::string, std::string>;
+
     QuestResources();
 
     void clear();
@@ -41,11 +43,23 @@ class QuestResources {
     bool load_from_file(const std::string& file_name);
 
     bool exists(ResourceType resource_type, const std::string& id) const;
-    const std::map<std::string, std::string>& get_elements(
+    const ResourceMap& get_elements(
         ResourceType resource_type
     ) const;
+    ResourceMap& get_elements(
+        ResourceType resource_type
+    );
 
     void add(
+        ResourceType resource_type,
+        const std::string& id,
+        const std::string& description
+    );
+    std::string get_description(
+        ResourceType resource_type,
+        const std::string& id
+    ) const;
+    void set_description(
         ResourceType resource_type,
         const std::string& id,
         const std::string& description
@@ -57,8 +71,6 @@ class QuestResources {
   private:
 
     bool parse(lua_State* l);
-
-    using ResourceMap = std::map<std::string, std::string>;
 
     std::map<ResourceType, ResourceMap> resource_maps;
 

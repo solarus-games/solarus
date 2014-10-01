@@ -71,10 +71,13 @@ namespace {
  */
 QuestResources::QuestResources() {
 
+  for (size_t i = 0 ; i < resource_type_names.size(); ++i) {
+    resource_maps.insert(std::make_pair(static_cast<ResourceType>(i), ResourceMap()));
+  }
 }
 
 /**
- * \brief Reads a quest resource list file from memory.
+ * \brief Loads a quest resource list file from memory.
  * \param buffer A memory area with the content of a project_db.dat file.
  * \return \c true in case of success, \c false if the file could not be loaded.
  */
@@ -82,7 +85,38 @@ bool QuestResources::load_from_buffer(const std::string& buffer) {
 
   // Read the quest resource list file.
   lua_State* l = luaL_newstate();
-  luaL_loadbuffer(l, buffer.data(), buffer.size(), "project_db.dat");
+  if (luaL_loadbuffer(l, buffer.data(), buffer.size(), "project_db.dat") != 0) {
+    return false;
+  }
+
+  bool success = parse(l);
+  lua_close(l);
+  return success;
+}
+
+/**
+ * \brief Loads a quest resource list from the filesystem.
+ * \param file_name Path of the file to load.
+ */
+bool QuestResources::load_from_file(const std::string& file_name) {
+
+  lua_State* l = luaL_newstate();
+  if (luaL_loadfile(l, file_name.c_str()) != 0) {
+    return false;
+  }
+
+  bool success = parse(l);
+  lua_close(l);
+  return success;
+}
+
+/**
+ * \brief Loads resources from a project_db.dat chunk.
+ * \param l A Lua state with the chunk loaded.
+ * \return \c true in case of success, \c false if there was a Lua error
+ * while executing the chunk.
+ */
+bool QuestResources::parse(lua_State* l) {
 
   lua_pushlightuserdata(l, this);
   lua_setfield(l, LUA_REGISTRYINDEX, "resources");
@@ -97,11 +131,12 @@ bool QuestResources::load_from_buffer(const std::string& buffer) {
   }
 
   if (lua_pcall(l, 0, 0, 0) != 0) {
-    Debug::die(std::string("Failed to load quest resource list 'project_db.dat': ") + lua_tostring(l, -1));
+    Debug::error(std::string("Failed to load quest resource list 'project_db.dat': ") + lua_tostring(l, -1));
     lua_pop(l, 1);
+    return false;
   }
 
-  lua_close(l);
+  return true;
 }
 
 /**
@@ -109,7 +144,9 @@ bool QuestResources::load_from_buffer(const std::string& buffer) {
  */
 void QuestResources::clear() {
 
-  resource_maps.clear();
+  for (size_t i = 0 ; i < resource_type_names.size(); ++i) {
+    resource_maps[static_cast<ResourceType>(i)].clear();
+  }
 }
 
 /**
@@ -138,12 +175,7 @@ bool QuestResources::exists(ResourceType resource_type, const std::string& id) c
 const std::map<std::string, std::string>&
 QuestResources::get_elements(ResourceType resource_type) const {
 
-  const auto& it = resource_maps.find(resource_type);
-  if (it == resource_maps.end()) {
-    return std::map<std::string, std::string>();
-  }
-
-  return it->second;
+  return resource_maps.find(resource_type)->second;
 }
 
 /**
@@ -188,6 +220,7 @@ ResourceType QuestResources::get_resource_type_by_name(
   }
 
   Debug::die(std::string("Unknown resource type: ") + resource_type_name);
+  return ResourceType();
 }
 
 }

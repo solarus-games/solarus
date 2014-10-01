@@ -22,6 +22,8 @@
 #include <map>
 #include <string>
 
+struct lua_State;
+
 namespace Solarus {
 
 /**
@@ -53,6 +55,8 @@ class QuestResources {
     static ResourceType get_resource_type_by_name(const std::string& resource_type_name);
 
   private:
+
+    bool parse(lua_State* l);
 
     using ResourceMap = std::map<std::string, std::string>;
 

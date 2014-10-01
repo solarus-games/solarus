@@ -405,7 +405,7 @@ void Equipment::load_items() {
 
   // Create each equipment item declared in project_db.dat.
   const std::map<std::string, std::string>& item_elements =
-      QuestResourceList::get_elements(QuestResourceList::RESOURCE_ITEM);
+      QuestResourceList::get_elements(ResourceType::ITEM);
   for (const auto& kvp: item_elements) {
     const std::string& item_id = kvp.first;
     std::shared_ptr<EquipmentItem> item = std::make_shared<EquipmentItem>(*this);

@@ -50,7 +50,7 @@ void FontResource::load_fonts() {
 
   // Get the list of available fonts.
   const std::map<std::string, std::string>& font_resource =
-      QuestResourceList::get_elements(QuestResourceList::RESOURCE_FONT);
+      QuestResourceList::get_elements(ResourceType::FONT);
 
   for (const auto& kvp: font_resource) {
 

@@ -1379,7 +1379,7 @@ int LuaContext::hero_api_teleport(lua_State* l) {
     Transition::Style transition_style = LuaTools::opt_enum<Transition::Style>(
         l, 4, Transition::style_names, Transition::FADE);
 
-    if (!QuestResourceList::exists(QuestResourceList::RESOURCE_MAP, map_id)) {
+    if (!QuestResourceList::exists(ResourceType::MAP, map_id)) {
       LuaTools::arg_error(l, 2, std::string("No such map: '") + map_id + "'");
     }
 

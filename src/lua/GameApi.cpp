@@ -246,7 +246,7 @@ int LuaContext::game_api_start(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     std::shared_ptr<Savegame> savegame = check_game(l, 1);
 
-    if (QuestResourceList::get_elements(QuestResourceList::RESOURCE_MAP).empty()) {
+    if (QuestResourceList::get_elements(ResourceType::MAP).empty()) {
       LuaTools::error(l, "Cannot start game: there is no map in this quest");
     }
 

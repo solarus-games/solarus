@@ -31,10 +31,7 @@ std::string Language::language_code;
  */
 bool Language::has_language(const std::string& language_code) {
 
-  const std::map<std::string, std::string>& languages =
-    QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
-
-  return languages.find(language_code) != languages.end();
+  return QuestResourceList::exists(ResourceType::LANGUAGE, language_code);
 }
 
 /**
@@ -75,7 +72,7 @@ std::string Language::get_language_name(
     const std::string& language_code) {
 
   const std::map<std::string, std::string>& languages =
-    QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
+    QuestResourceList::get_elements(ResourceType::LANGUAGE);
 
   const auto& it = languages.find(language_code);
   if (it != languages.end()) {

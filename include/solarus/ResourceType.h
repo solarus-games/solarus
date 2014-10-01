@@ -15,34 +15,28 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOLARUS_QUEST_RESOURCE_LIST_H
-#define SOLARUS_QUEST_RESOURCE_LIST_H
+#ifndef SOLARUS_RESOURCE_TYPE_H
+#define SOLARUS_RESOURCE_TYPE_H
 
 #include "solarus/Common.h"
-#include "solarus/ResourceType.h"
-#include <map>
-#include <string>
 
 namespace Solarus {
 
 /**
- * \brief This class reads the quest resource list from file project_db.dat
- * and stores them.
+ * \brief Types of existing resources in a quest.
  */
-class QuestResourceList {
-
-  public:
-
-    static void initialize();
-    static void quit();
-
-    static bool exists(ResourceType resource_type, const std::string& id);
-    static const std::map<std::string, std::string>& get_elements(ResourceType resource_type);
-
-  private:
-
-    QuestResourceList() = delete;
-
+enum class ResourceType {
+  MAP,
+  TILESET,
+  SPRITE,
+  MUSIC,
+  SOUND,
+  ITEM,
+  ENEMY,
+  ENTITY,
+  LANGUAGE,
+  FONT,
+  NUM_TYPES
 };
 
 }

@@ -38,7 +38,8 @@ namespace {
     "font"
   };
 
-  std::map<std::string, std::string> resource_map[QuestResourceList::RESOURCE_NB];
+  using ResourceMap = std::map<std::string, std::string>;
+  std::map<ResourceType, ResourceMap> resource_maps;
 
   /**
    * \brief Implementation of the resource() function.
@@ -48,12 +49,12 @@ namespace {
   int l_resource_element(lua_State* l) {
 
     return LuaTools::exception_boundary_handle(l, [&] {
-      QuestResourceList::ResourceType resource_type =
-          LuaTools::check_enum<QuestResourceList::ResourceType>(l, 1, resource_type_names);
+      ResourceType resource_type =
+          LuaTools::check_enum<ResourceType>(l, 1, resource_type_names);
       const std::string& id = LuaTools::check_string_field(l, 2, "id");
       const std::string& description = LuaTools::check_string_field(l, 2, "description");
 
-      resource_map[resource_type][id] = description;
+      resource_maps[resource_type][id] = description;
 
       return 0;
     });
@@ -75,10 +76,10 @@ void QuestResourceList::initialize() {
 
   // We register only one C function for all resource types.
   lua_register(l, "resource", l_resource_element);
-  for (int i = 0; i < RESOURCE_NB; ++i) {
+  for (const std::string& resource_type_name: resource_type_names) {
     std::ostringstream oss;
-    oss << "function " << resource_type_names[i] << "(t) resource('"
-      << resource_type_names[i] << "', t) end";
+    oss << "function " << resource_type_name << "(t) resource('"
+      << resource_type_name << "', t) end";
     luaL_dostring(l, oss.str().c_str());
   }
 
@@ -91,6 +92,14 @@ void QuestResourceList::initialize() {
 }
 
 /**
+ * \brief Clears the loaded quest resource list.
+ */
+void QuestResourceList::quit() {
+
+  resource_maps.clear();
+}
+
+/**
  * \brief Returns whether there exists an element with the specified ID.
  * \param resource_type A type of resource.
  * \param id The ID to look for.
@@ -99,10 +108,7 @@ void QuestResourceList::initialize() {
  */
 bool QuestResourceList::exists(ResourceType resource_type, const std::string& id) {
 
-  Debug::check_assertion(resource_type >= 0 && resource_type < RESOURCE_NB,
-      "Invalid resource type");
-
-  return resource_map[resource_type].find(id) != resource_map[resource_type].end();
+  return resource_maps[resource_type].find(id) != resource_maps[resource_type].end();
 }
 
 /**
@@ -114,9 +120,7 @@ bool QuestResourceList::exists(ResourceType resource_type, const std::string& id
 const std::map<std::string, std::string>&
     QuestResourceList::get_elements(ResourceType resource_type) {
 
-  Debug::check_assertion(resource_type >= 0 && resource_type < RESOURCE_NB,
-      "Invalid resource type");
-  return resource_map[resource_type];
+  return resource_maps[resource_type];
 }
 
 }

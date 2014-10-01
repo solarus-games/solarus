@@ -80,6 +80,7 @@ MainLoop::~MainLoop() {
   }
 
   lua_context->exit();
+  QuestResourceList::quit();
   System::quit();
 }
 

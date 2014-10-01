@@ -38,6 +38,9 @@ class QuestResourceList {
     static bool exists(ResourceType resource_type, const std::string& id);
     static const std::map<std::string, std::string>& get_elements(ResourceType resource_type);
 
+    static const std::string& get_resource_type_name(ResourceType resource_type);
+    static ResourceType get_resource_type_by_name(const std::string& resource_type_name);
+
   private:
 
     QuestResourceList() = delete;

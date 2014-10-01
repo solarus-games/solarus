@@ -123,5 +123,32 @@ const std::map<std::string, std::string>&
   return resource_maps[resource_type];
 }
 
+/**
+ * \brief Returns the name of a resource type.
+ * \param resource_type A resource type.
+ * \return The name of this resource type.
+ */
+const std::string& QuestResourceList::get_resource_type_name(ResourceType resource_type) {
+
+  return resource_type_names[static_cast<int>(resource_type)];
+}
+
+/**
+ * \brief Returns a resource type given its Lua name.
+ * \param resource_type_name Lua name of a resource type. It must be valid.
+ * \return The corresponding resource_type.
+ */
+ResourceType QuestResourceList::get_resource_type_by_name(
+    const std::string& resource_type_name
+) {
+  for (const auto& kvp: resource_maps) {
+    if (get_resource_type_name(kvp.first) == resource_type_name) {
+      return kvp.first;
+    }
+  }
+
+  Debug::die(std::string("Unknown resource type: ") + resource_type_name);
+}
+
 }
 

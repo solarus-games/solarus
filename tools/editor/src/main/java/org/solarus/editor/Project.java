@@ -357,30 +357,6 @@ public class Project {
     }
 
     /**
-     * Returns the path of the text directory.
-     * @return The path of the text directory.
-     */
-    public static String getTextPath() {
-        return getDataPath() + "/text";
-    }
-
-    /**
-     * Returns the text directory.
-     * @return The text directory.
-     */
-    public static File getTextDir() {
-        return new File(getTextPath());
-    }
-
-    /**
-     * Returns the fonts file.
-     * @return The font list file.
-     */
-    public static File getFontsFile() {
-        return new File(getTextPath() + "/fonts.dat");
-    }
-
-    /**
      * Returns the path of the tileset files, determined with the current project root path.
      * @return the path of the tileset files
      */

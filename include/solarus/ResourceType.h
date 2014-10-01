@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 #ifndef SOLARUS_RESOURCE_TYPE_H
 #define SOLARUS_RESOURCE_TYPE_H
 
@@ -35,8 +34,7 @@ enum class ResourceType {
   ENEMY,
   ENTITY,
   LANGUAGE,
-  FONT,
-  NUM_TYPES
+  FONT
 };
 
 }

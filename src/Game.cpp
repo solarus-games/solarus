@@ -32,7 +32,7 @@
 #include "solarus/KeysEffect.h"
 #include "solarus/MainLoop.h"
 #include "solarus/Map.h"
-#include "solarus/QuestResourceList.h"
+#include "solarus/CurrentQuestResources.h"
 #include "solarus/Savegame.h"
 #include "solarus/Treasure.h"
 #include "solarus/TransitionFade.h"
@@ -82,7 +82,7 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
   bool valid_map_saved = false;
   if (!starting_map_id.empty()) {
 
-    if (QuestResourceList::exists(ResourceType::MAP, starting_map_id)) {
+    if (CurrentQuestResources::exists(ResourceType::MAP, starting_map_id)) {
       // We are okay: the savegame file refers to an existing map.
       valid_map_saved = true;
     }
@@ -98,7 +98,7 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
     // When no valid starting map is set, use the first one declared in the
     // resource list file.
     const std::map<std::string, std::string>& maps =
-        QuestResourceList::get_elements(ResourceType::MAP);
+        CurrentQuestResources::get_elements(ResourceType::MAP);
     if (maps.empty()) {
       Debug::die("This quest has no map");
     }

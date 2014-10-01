@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_QUEST_RESOURCE_LIST_H
-#define SOLARUS_QUEST_RESOURCE_LIST_H
+#ifndef SOLARUS_QUEST_RESOURCE_H
+#define SOLARUS_QUEST_RESOURCE_H
 
 #include "solarus/Common.h"
 #include "solarus/ResourceType.h"
@@ -25,25 +25,38 @@
 namespace Solarus {
 
 /**
- * \brief This class reads the quest resource list from file project_db.dat
- * and stores them.
+ * \brief Stores the resource list of a quest.
  */
-class QuestResourceList {
+class QuestResources {
 
   public:
 
-    static void initialize();
-    static void quit();
+    QuestResources();
 
-    static bool exists(ResourceType resource_type, const std::string& id);
-    static const std::map<std::string, std::string>& get_elements(ResourceType resource_type);
+    void clear();
+
+    bool load_from_buffer(const std::string& buffer);
+    bool load_from_file(const std::string& file_name);
+
+    bool exists(ResourceType resource_type, const std::string& id) const;
+    const std::map<std::string, std::string>& get_elements(
+        ResourceType resource_type
+    ) const;
+
+    void add(
+        ResourceType resource_type,
+        const std::string& id,
+        const std::string& description
+    );
 
     static const std::string& get_resource_type_name(ResourceType resource_type);
     static ResourceType get_resource_type_by_name(const std::string& resource_type_name);
 
   private:
 
-    QuestResourceList() = delete;
+    using ResourceMap = std::map<std::string, std::string>;
+
+    std::map<ResourceType, ResourceMap> resource_maps;
 
 };
 

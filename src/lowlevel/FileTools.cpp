@@ -20,7 +20,7 @@
 #include "solarus/Language.h"
 #include "solarus/StringResource.h"
 #include "solarus/DialogResource.h"
-#include "solarus/QuestResourceList.h"
+#include "solarus/CurrentQuestResources.h"
 #include "solarus/Arguments.h"
 #include <physfs.h>
 #include <iostream>

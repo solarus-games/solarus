@@ -17,12 +17,12 @@
 #include <algorithm>
 #include <cstring>  // memcpy
 #include <sstream>
-#include "solarus/lowlevel/Sound.h"
-#include "solarus/lowlevel/Music.h"
-#include "solarus/lowlevel/FileTools.h"
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/QuestResourceList.h"
+#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/Music.h"
+#include "solarus/lowlevel/Sound.h"
 #include "solarus/Arguments.h"
+#include "solarus/CurrentQuestResources.h"
 
 namespace Solarus {
 
@@ -160,7 +160,7 @@ void Sound::load_all() {
   if (is_initialized() && !sounds_preloaded) {
 
     const std::map<std::string, std::string>& sound_elements =
-        QuestResourceList::get_elements(ResourceType::SOUND);
+        CurrentQuestResources::get_elements(ResourceType::SOUND);
     for (const auto& kvp: sound_elements) {
       const std::string& sound_id = kvp.first;
 

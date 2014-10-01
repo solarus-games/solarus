@@ -25,7 +25,6 @@
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/QuestResourceList.h"
 #include "solarus/Transition.h"
 #include <lua.hpp>
 

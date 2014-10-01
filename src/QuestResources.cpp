@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/QuestResourceList.h"
-#include "solarus/lowlevel/FileTools.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/FileTools.h"
 #include "solarus/lua/LuaTools.h"
+#include "solarus/QuestResources.h"
 #include <map>
 #include <sstream>
 
@@ -38,9 +38,6 @@ namespace {
     "font"
   };
 
-  using ResourceMap = std::map<std::string, std::string>;
-  std::map<ResourceType, ResourceMap> resource_maps;
-
   /**
    * \brief Implementation of the resource() function.
    * \param l The Lua state of the quest resource file.
@@ -49,12 +46,19 @@ namespace {
   int l_resource_element(lua_State* l) {
 
     return LuaTools::exception_boundary_handle(l, [&] {
+
+      lua_getfield(l, LUA_REGISTRYINDEX, "resources");
+      QuestResources& resources = *(static_cast<QuestResources*>(
+          lua_touserdata(l, -1)
+      ));
+      lua_pop(l, 1);
+
       ResourceType resource_type =
           LuaTools::check_enum<ResourceType>(l, 1, resource_type_names);
       const std::string& id = LuaTools::check_string_field(l, 2, "id");
       const std::string& description = LuaTools::check_string_field(l, 2, "description");
 
-      resource_maps[resource_type][id] = description;
+      resources.add(resource_type, id, description);
 
       return 0;
     });
@@ -63,16 +67,25 @@ namespace {
 }
 
 /**
- * \brief Reads the quest resource list file data file project_db.dat and stores
- * the list of resources.
+ * \brief Creates an empty quest resources object.
  */
-void QuestResourceList::initialize() {
+QuestResources::QuestResources() {
+
+}
+
+/**
+ * \brief Reads a quest resource list file from memory.
+ * \param buffer A memory area with the content of a project_db.dat file.
+ * \return \c true in case of success, \c false if the file could not be loaded.
+ */
+bool QuestResources::load_from_buffer(const std::string& buffer) {
 
   // Read the quest resource list file.
-  const std::string& file_name = "project_db.dat";
   lua_State* l = luaL_newstate();
-  const std::string& buffer = FileTools::data_file_read(file_name);
-  luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
+  luaL_loadbuffer(l, buffer.data(), buffer.size(), "project_db.dat");
+
+  lua_pushlightuserdata(l, this);
+  lua_setfield(l, LUA_REGISTRYINDEX, "resources");
 
   // We register only one C function for all resource types.
   lua_register(l, "resource", l_resource_element);
@@ -92,23 +105,28 @@ void QuestResourceList::initialize() {
 }
 
 /**
- * \brief Clears the loaded quest resource list.
+ * \brief Removes all resource elements.
  */
-void QuestResourceList::quit() {
+void QuestResources::clear() {
 
   resource_maps.clear();
 }
 
 /**
- * \brief Returns whether there exists an element with the specified ID.
+ * \brief Returns whether there exists an element with the specified id.
  * \param resource_type A type of resource.
- * \param id The ID to look for.
- * \return \c true if there exists an element with the specified ID in this
+ * \param id The id to look for.
+ * \return \c true if there exists an element with the specified id in this
  * resource type.
  */
-bool QuestResourceList::exists(ResourceType resource_type, const std::string& id) {
+bool QuestResources::exists(ResourceType resource_type, const std::string& id) const {
 
-  return resource_maps[resource_type].find(id) != resource_maps[resource_type].end();
+  const auto& it = resource_maps.find(resource_type);
+  if (it == resource_maps.end()) {
+    return false;
+  }
+
+  return it->second.find(id) != it->second.end();
 }
 
 /**
@@ -118,17 +136,37 @@ bool QuestResourceList::exists(ResourceType resource_type, const std::string& id
  * order.
  */
 const std::map<std::string, std::string>&
-    QuestResourceList::get_elements(ResourceType resource_type) {
+QuestResources::get_elements(ResourceType resource_type) const {
 
-  return resource_maps[resource_type];
+  const auto& it = resource_maps.find(resource_type);
+  if (it == resource_maps.end()) {
+    return std::map<std::string, std::string>();
+  }
+
+  return it->second;
 }
+
+/**
+ * \brief Adds a resource element.
+ * \param resource_type A type of resource.
+ * \param id Id of the element to add.
+ * \param description Description the element to add.
+ */
+void QuestResources::add(
+    ResourceType resource_type,
+    const std::string& id,
+    const std::string& description
+) {
+  resource_maps[resource_type].insert(std::make_pair(id, description));
+}
+
 
 /**
  * \brief Returns the name of a resource type.
  * \param resource_type A resource type.
  * \return The name of this resource type.
  */
-const std::string& QuestResourceList::get_resource_type_name(ResourceType resource_type) {
+const std::string& QuestResources::get_resource_type_name(ResourceType resource_type) {
 
   return resource_type_names[static_cast<int>(resource_type)];
 }
@@ -138,13 +176,15 @@ const std::string& QuestResourceList::get_resource_type_name(ResourceType resour
  * \param resource_type_name Lua name of a resource type. It must be valid.
  * \return The corresponding resource_type.
  */
-ResourceType QuestResourceList::get_resource_type_by_name(
+ResourceType QuestResources::get_resource_type_by_name(
     const std::string& resource_type_name
 ) {
-  for (const auto& kvp: resource_maps) {
-    if (get_resource_type_name(kvp.first) == resource_type_name) {
-      return kvp.first;
+  int i = 0;
+  for (const std::string& name: resource_type_names) {
+    if (name == resource_type_name) {
+      return static_cast<ResourceType>(i);
     }
+    ++i;
   }
 
   Debug::die(std::string("Unknown resource type: ") + resource_type_name);

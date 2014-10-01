@@ -18,7 +18,7 @@
 #include "solarus/DialogResource.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/StringResource.h"
-#include "solarus/QuestResourceList.h"
+#include "solarus/CurrentQuestResources.h"
 
 namespace Solarus {
 
@@ -31,7 +31,7 @@ std::string Language::language_code;
  */
 bool Language::has_language(const std::string& language_code) {
 
-  return QuestResourceList::exists(ResourceType::LANGUAGE, language_code);
+  return CurrentQuestResources::exists(ResourceType::LANGUAGE, language_code);
 }
 
 /**
@@ -72,7 +72,7 @@ std::string Language::get_language_name(
     const std::string& language_code) {
 
   const std::map<std::string, std::string>& languages =
-    QuestResourceList::get_elements(ResourceType::LANGUAGE);
+      CurrentQuestResources::get_elements(ResourceType::LANGUAGE);
 
   const auto& it = languages.find(language_code);
   if (it != languages.end()) {

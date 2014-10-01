@@ -17,10 +17,10 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/lowlevel/FileTools.h"
+#include "solarus/CurrentQuestResources.h"
 #include "solarus/Language.h"
 #include "solarus/StringResource.h"
 #include "solarus/DialogResource.h"
-#include "solarus/QuestResourceList.h"
 #include <vector>
 
 namespace Solarus {
@@ -151,7 +151,7 @@ int LuaContext::language_api_get_languages(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::map<std::string, std::string>& languages =
-        QuestResourceList::get_elements(ResourceType::LANGUAGE);
+        CurrentQuestResources::get_elements(ResourceType::LANGUAGE);
 
     lua_newtable(l);
     int i = 1;

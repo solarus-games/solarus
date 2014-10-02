@@ -20,30 +20,39 @@
 
 namespace Solarus {
 
-namespace {
-
-QuestResources resources;  /**< Resource list of the current quest. */
-
-}
+namespace CurrentQuestResources {
 
 /**
  * \brief Reads the resource list file data file project_db.dat of the
  * current quest and stores it.
  */
-void CurrentQuestResources::initialize() {
+void initialize() {
 
   // Read the quest resource list file.
   const std::string& file_name = "project_db.dat";
   const std::string& buffer = FileTools::data_file_read(file_name);
-  resources.load_from_buffer(buffer);
+  get_resources().clear();
+  get_resources().load_from_buffer(buffer);
 }
 
 /**
  * \brief Clears the loaded quest resource list.
  */
-void CurrentQuestResources::quit() {
+void quit() {
 
-  resources.clear();
+  get_resources().clear();
+}
+
+/**
+ * \brief Returns the resource list of the current quest.
+ * \return The current quest resource list.
+ */
+QuestResources& get_resources() {
+
+  // The resources object must be in a function to avoid static initialization
+  // order problems.
+  static QuestResources resources;
+  return resources;
 }
 
 /**
@@ -53,9 +62,9 @@ void CurrentQuestResources::quit() {
  * \return \c true if there exists an element with the specified id in this
  * resource type.
  */
-bool CurrentQuestResources::exists(ResourceType resource_type, const std::string& id) {
+bool exists(ResourceType resource_type, const std::string& id) {
 
-  return resources.exists(resource_type, id);
+  return get_resources().exists(resource_type, id);
 }
 
 /**
@@ -65,10 +74,11 @@ bool CurrentQuestResources::exists(ResourceType resource_type, const std::string
  * order.
  */
 const std::map<std::string, std::string>&
-CurrentQuestResources::get_elements(ResourceType resource_type) {
+get_elements(ResourceType resource_type) {
 
-  return resources.get_elements(resource_type);
+  return get_resources().get_elements(resource_type);
 }
 
 }
 
+}

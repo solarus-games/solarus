@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/ResourceType.h"
+#include "solarus/QuestResources.h"
 #include <map>
 #include <string>
 
@@ -28,21 +29,16 @@ namespace Solarus {
  * \brief Provides access to the resources of the current quest.
  * TODO rename to CurrentQuest and also store global things like strings and dialogs
  */
-class CurrentQuestResources {
+namespace CurrentQuestResources {
 
-  public:
+void initialize();
+void quit();
 
-    static void initialize();
-    static void quit();
+QuestResources& get_resources();
+bool exists(ResourceType resource_type, const std::string& id);
+const std::map<std::string, std::string>& get_elements(ResourceType resource_type);
 
-    static bool exists(ResourceType resource_type, const std::string& id);
-    static const std::map<std::string, std::string>& get_elements(ResourceType resource_type);
-
-  private:
-
-    CurrentQuestResources() = delete;
-
-};
+}
 
 }
 

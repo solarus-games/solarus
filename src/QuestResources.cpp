@@ -86,6 +86,8 @@ bool QuestResources::load_from_buffer(const std::string& buffer) {
   // Read the quest resource list file.
   lua_State* l = luaL_newstate();
   if (luaL_loadbuffer(l, buffer.data(), buffer.size(), "project_db.dat") != 0) {
+    Debug::error(std::string("Failed to load quest resource list 'project_db.dat': ") + lua_tostring(l, -1));
+    lua_pop(l, 1);
     return false;
   }
 
@@ -97,11 +99,14 @@ bool QuestResources::load_from_buffer(const std::string& buffer) {
 /**
  * \brief Loads a quest resource list from the filesystem.
  * \param file_name Path of the file to load.
+ * \return \c true in case of success, \c false if the file could not be loaded.
  */
 bool QuestResources::load_from_file(const std::string& file_name) {
 
   lua_State* l = luaL_newstate();
   if (luaL_loadfile(l, file_name.c_str()) != 0) {
+    Debug::error(std::string("Failed to load quest resource list '") + file_name + "': " + lua_tostring(l, -1));
+    lua_pop(l, 1);
     return false;
   }
 

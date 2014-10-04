@@ -46,7 +46,7 @@ public class GuiTools {
 
     /**
      * Shows a dialog box with an information message.
-     * @param message message the information message to show
+     * @param message the information message to show
      */
     public static void informationDialog(String message) {
 
@@ -58,7 +58,7 @@ public class GuiTools {
 
     /**
      * Shows a dialog box with an error message.
-     * @param message message the error message to show
+     * @param message the error message to show
      */
     public static void errorDialog(String message) {
 
@@ -70,7 +70,7 @@ public class GuiTools {
 
     /**
      * Shows a dialog box with a warning message.
-     * @param message message the warning message to show
+     * @param message the warning message to show
      */
     public static void warningDialog(String message) {
 
@@ -82,7 +82,7 @@ public class GuiTools {
 
     /**
      * Shows a dialog box with a question and the "yes" and "no" options.
-     * @param message message the question to show
+     * @param message the question to show
      * @return true if the user chose "yes"
      */
     public static boolean yesNoDialog(String message) {

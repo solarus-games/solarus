@@ -65,6 +65,7 @@ class QuestResources {
         const std::string& description
     );
 
+    static const std::map<ResourceType, std::string>& get_resource_type_names();
     static const std::string& get_resource_type_name(ResourceType resource_type);
     static ResourceType get_resource_type_by_name(const std::string& resource_type_name);
 

@@ -25,17 +25,17 @@ namespace Solarus {
 
 namespace {
 
-  const std::vector<std::string> resource_type_names = {
-    "map",
-    "tileset",
-    "sprite",
-    "music",
-    "sound",
-    "item",
-    "enemy",
-    "entity",
-    "language",
-    "font"
+  const std::map<ResourceType, std::string> resource_type_names = {
+      { ResourceType::MAP, "map" },
+      { ResourceType::TILESET, "tileset" },
+      { ResourceType::SPRITE, "sprite" },
+      { ResourceType::MUSIC, "music" },
+      { ResourceType::SOUND, "sound" },
+      { ResourceType::ITEM, "item" },
+      { ResourceType::ENEMY, "enemy" },
+      { ResourceType::ENTITY, "entity" },
+      { ResourceType::LANGUAGE, "language" },
+      { ResourceType::FONT, "font" }
   };
 
   /**
@@ -54,7 +54,7 @@ namespace {
       lua_pop(l, 1);
 
       ResourceType resource_type =
-          LuaTools::check_enum<ResourceType>(l, 1, resource_type_names);
+          LuaTools::check_enum(l, 1, resource_type_names);
       const std::string& id = LuaTools::check_string_field(l, 2, "id");
       const std::string& description = LuaTools::check_string_field(l, 2, "description");
 
@@ -128,10 +128,10 @@ bool QuestResources::parse(lua_State* l) {
 
   // We register only one C function for all resource types.
   lua_register(l, "resource", l_resource_element);
-  for (const std::string& resource_type_name: resource_type_names) {
+  for (const auto& kvp: resource_type_names) {
     std::ostringstream oss;
-    oss << "function " << resource_type_name << "(t) resource('"
-      << resource_type_name << "', t) end";
+    oss << "function " << kvp.second << "(t) resource('"
+      << kvp.second << "', t) end";
     luaL_dostring(l, oss.str().c_str());
   }
 
@@ -241,13 +241,21 @@ void QuestResources::set_description(
 }
 
 /**
+ * \brief Returns the list of existing resource types and their names.
+ * \return The resource type names.
+ */
+const std::map<ResourceType, std::string>& QuestResources::get_resource_type_names() {
+  return resource_type_names;
+}
+
+/**
  * \brief Returns the name of a resource type.
  * \param resource_type A resource type.
  * \return The name of this resource type.
  */
 const std::string& QuestResources::get_resource_type_name(ResourceType resource_type) {
 
-  return resource_type_names[static_cast<int>(resource_type)];
+  return resource_type_names.at(resource_type);
 }
 
 /**
@@ -259,9 +267,9 @@ ResourceType QuestResources::get_resource_type_by_name(
     const std::string& resource_type_name
 ) {
   int i = 0;
-  for (const std::string& name: resource_type_names) {
-    if (name == resource_type_name) {
-      return static_cast<ResourceType>(i);
+  for (const auto& kvp: resource_type_names) {
+    if (kvp.second == resource_type_name) {
+      return kvp.first;
     }
     ++i;
   }

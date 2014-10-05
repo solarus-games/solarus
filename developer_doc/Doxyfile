@@ -753,8 +753,8 @@ WARN_LOGFILE           =
 # spaces.
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = ../include/Common.h \
-                         ../include \
+INPUT                  = ../include/solarus/Common.h \
+                         ../include/solarus \
                          ../src \
                          .
 

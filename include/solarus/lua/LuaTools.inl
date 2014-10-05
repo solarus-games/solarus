@@ -55,39 +55,36 @@ int exception_boundary_handle(
  * \brief Checks whether a value is the name of an enumeration value and
  * returns this value.
  *
- * Throws a LuaException if the value is not a string or if the string cannot
- * be found in the array.
- * This is a useful function for mapping strings to C enums.
+ * Throws a LuaException if the value is not a string or if the string is not
+ * a valid name for the enum.
+ * This is a useful function for mapping strings to C or C++ enums.
  *
  * This function is similar to luaL_checkoption() except that it accepts an
- * array of std::string instead of char*, and returns a value of enumerated
- * type E instead of int.
+ * std::map<E, std::string> instead of an array of char*,
+ * and returns a value of enumerated type E instead of int.
  *
  * \param l A Lua state.
  * \param index Index of a string in the Lua stack.
- * \param names A list of strings to search in.
- * \return The index (converted to the enumerated type E) where the string was
- * found in the list.
+ * \param names A mapping of enum values to strings to search in.
+ * \return The enumerated value corresponding to this string.
  */
 template<typename E>
 E check_enum(
     lua_State* l,
     int index,
-    const std::vector<std::string>& names
+    const std::map<E, std::string>& names
 ) {
-  Debug::check_assertion(!names[0].empty(), "Invalid list of names");
-
   const std::string& name = LuaTools::check_string(l, index);
-  for (int i = 0; !names[i].empty(); ++i) {
-    if (names[i] == name) {
-      return E(i);
+  for (const auto& kvp: names) {
+    if (kvp.second == name) {
+      return kvp.first;
     }
   }
 
   // The value was not found. Build an error message with possible values.
   std::string allowed_names;
-  for (int i = 0; !names[i].empty(); ++i) {
-    allowed_names += "\"" + names[i] + "\", ";
+  for (const auto& kvp: names) {
+    allowed_names += "\"" + kvp.second + "\", ";
   }
   allowed_names = allowed_names.substr(0, allowed_names.size() - 2);
 
@@ -95,7 +92,7 @@ E check_enum(
       std::string("Invalid name '") + name + "'. Allowed names are: "
       + allowed_names
   );
-  throw;  // Make sure the compiler is happy.
+  return E();  // Make sure the compiler is happy.
 }
 
 /**
@@ -107,9 +104,127 @@ E check_enum(
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
  * \param key Key of the field to get in that table.
+ * \param names A mapping of enum values to strings to search in.
+ * \return The enumerated value corresponding to this string.
+ */
+template<typename E>
+E check_enum_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    const std::map<E, std::string>& names
+) {
+  lua_getfield(l, table_index, key.c_str());
+  if (!lua_isstring(l, -1)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (string expected, got "
+        + luaL_typename(l, -1)
+    );
+  }
+
+  E value = check_enum<E>(l, -1, names);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * \brief Like LuaTools::check_enum() but with a default value.
+ *
+ * \param l A Lua state.
+ * \param index Index of a string in the Lua stack.
+ * \param names A mapping of enum values to strings to search in.
+ * \param default_value The default value to return.
+ * \return The enumerated value corresponding to this string.
+ */
+template<typename E>
+E opt_enum(
+    lua_State* l,
+    int index,
+    const std::map<E, std::string>& names,
+    E default_value
+) {
+  if (lua_isnoneornil(l, index)) {
+    return default_value;
+  }
+
+  return check_enum<E>(l, index, names);
+}
+
+/**
+ * \brief Like LuaTools::check_enum_field() but with a default value.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param names A mapping of enum values to strings to search in.
+ * \param default_value The default value to return.
+ * \return The enumerated value corresponding to this string.
+ */
+template<typename E>
+E opt_enum_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    const std::map<E, std::string>& names,
+    E default_value
+) {
+  lua_getfield(l, table_index, key.c_str());
+  if (lua_isnil(l, -1)) {
+    lua_pop(l, 1);
+    return default_value;
+  }
+
+  if (!lua_isstring(l, -1)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (string expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+  E value = check_enum<E>(l, -1, names);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * \brief Checks whether a value is the name of an enumeration value and
+ * returns this value.
+ *
+ * It is recommended to use the std::map overload of this function instead.
+ *
+ * \param l A Lua state.
+ * \param index Index of a string in the Lua stack.
  * \param names A list of strings to search in.
  * \return The index (converted to the enumerated type E) where the string was
  * found in the list.
+ * \deprecated
+ */
+template<typename E>
+E check_enum(
+    lua_State* l,
+    int index,
+    const std::vector<std::string>& names
+) {
+  std::map<E, std::string> names_map;
+  int i = 0;
+  for (const std::string& name: names) {
+    names_map[static_cast<E>(i)] = name;
+    ++i;
+  }
+  return check_enum(l, index, names_map);
+}
+
+/**
+ * \brief Checks that a table field is the name of an enumeration value and
+ * returns this value.
+ *
+ * It is recommended to use the std::map overload of this function instead.
+ *
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param names A list of strings to search in.
+ * \return The index (converted to the enumerated type E) where the string was
+ * found in the list.
+ * \deprecated
  */
 template<typename E>
 E check_enum_field(
@@ -134,6 +249,8 @@ E check_enum_field(
 /**
  * \brief Like LuaTools::check_enum() but with a default value.
  *
+ * It is recommended to use the std::map overload of this function instead.
+ *
  * \param l A Lua state.
  * \param index Index of a string in the Lua stack.
  * \param names A list of strings to search in.
@@ -157,6 +274,9 @@ E opt_enum(
 
 /**
  * \brief Like LuaTools::check_enum_field() but with a default value.
+ *
+ * \deprecated It is recommended to use the std::map overload of this function instead.
+ *
  * \param l A Lua state.
  * \param table_index Index of a table in the stack.
  * \param key Key of the field to get in that table.
@@ -184,7 +304,9 @@ E opt_enum_field(
         + luaL_typename(l, -1) + ")"
     );
   }
-  return check_enum<E>(l, -1, names);
+  E value = check_enum<E>(l, -1, names);
+  lua_pop(l, 1);
+  return value;
 }
 
 }

@@ -22,6 +22,7 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaException.h"
 #include <string>
+#include <map>
 #include <vector>
 #include <lua.hpp>
 
@@ -243,6 +244,36 @@ Color opt_color_field(
 );
 
 // enum
+template<typename E>
+E check_enum(
+    lua_State* l,
+    int index,
+    const std::map<E, std::string>& names
+);
+template<typename E>
+E check_enum_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    const std::map<E, std::string>& names
+);
+template<typename E>
+E opt_enum(
+    lua_State* l,
+    int index,
+    const std::map<E, std::string>& names,
+    E default_value
+);
+template<typename E>
+E opt_enum_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    const std::map<E, std::string>& names,
+    E default_value
+);
+
+// enum (vector version, deprecated)
 template<typename E>
 E check_enum(
     lua_State* l,

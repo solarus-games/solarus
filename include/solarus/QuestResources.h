@@ -28,6 +28,10 @@ namespace Solarus {
 
 /**
  * \brief Stores the resource list of a quest.
+ *
+ * This class basically stores the content of a resource list file
+ * project_db.dat.
+ * It does not create, remove or rename any file.
  */
 class QuestResources {
 
@@ -50,16 +54,25 @@ class QuestResources {
         ResourceType resource_type
     );
 
-    void add(
+    bool add(
         ResourceType resource_type,
         const std::string& id,
         const std::string& description
+    );
+    bool remove(
+        ResourceType resource_type,
+        const std::string& id
+    );
+    bool rename(
+        ResourceType resource_type,
+        const std::string& old_id,
+        const std::string& new_id
     );
     std::string get_description(
         ResourceType resource_type,
         const std::string& id
     ) const;
-    void set_description(
+    bool set_description(
         ResourceType resource_type,
         const std::string& id,
         const std::string& description

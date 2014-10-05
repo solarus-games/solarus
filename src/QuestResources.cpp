@@ -190,18 +190,58 @@ QuestResources::ResourceMap& QuestResources::get_elements(
 }
 
 /**
- * \brief Adds a resource element.
+ * \brief Adds a resource element to the list.
  * \param resource_type A type of resource.
  * \param id Id of the element to add.
  * \param description Description the element to add.
+ * \return \c true if the element was added, \c false if an element with
+ * this id already exists.
  */
-void QuestResources::add(
+bool QuestResources::add(
     ResourceType resource_type,
     const std::string& id,
     const std::string& description
 ) {
   ResourceMap& resource = get_elements(resource_type);
-  resource.insert(std::make_pair(id, description));
+  auto result = resource.insert(std::make_pair(id, description));
+  return result.second;
+}
+
+/**
+ * \brief Removes a resource element from the list.
+ * \param resource_type A type of resource.
+ * \param id Id of the element to remove.
+ * \return \c true if the element was removed, \c false if such an element
+ * did not exist.
+ */
+bool QuestResources::remove(
+    ResourceType resource_type,
+    const std::string& id
+) {
+  ResourceMap& resource = get_elements(resource_type);
+  return resource.erase(id) > 0;
+}
+
+/**
+ * \brief Changes the id of a resource element from the list.
+ * \param resource_ A type of resource.
+ * \param old_id Id of the element to change.
+ * \param new_id The new id to set.
+ * \return \c true in case of success, \c false if such an element does not
+ * exist.
+ */
+bool QuestResources::rename(
+    ResourceType resource_type,
+    const std::string& old_id,
+    const std::string& new_id
+) {
+  if (!exists(resource_type, old_id)) {
+    return false;
+  }
+  const std::string& description = get_description(resource_type, old_id);
+  remove(resource_type, old_id);
+  add(resource_type, new_id, description);
+  return true;
 }
 
 /**
@@ -230,14 +270,21 @@ std::string QuestResources::get_description(
  * \param resource_type A type of resource.
  * \param id Id of the element to modify.
  * \param description The new description.
+ * \return \c true in case of success, \c false if such an element does not
+ * exist.
  */
-void QuestResources::set_description(
+bool QuestResources::set_description(
     ResourceType resource_type,
     const std::string& id,
     const std::string& description
 ) {
+  if (!exists(resource_type, id)) {
+    return false;
+  }
+
   ResourceMap& resource = get_elements(resource_type);
   resource[id] = description;
+  return true;
 }
 
 /**

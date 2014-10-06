@@ -227,8 +227,8 @@ bool QuestResources::remove(
  * \param resource_ A type of resource.
  * \param old_id Id of the element to change.
  * \param new_id The new id to set.
- * \return \c true in case of success, \c false if such an element does not
- * exist.
+ * \return \c true in case of success, \c false if the old id does not
+ * exist or if the new id already exists.
  */
 bool QuestResources::rename(
     ResourceType resource_type,
@@ -236,6 +236,9 @@ bool QuestResources::rename(
     const std::string& new_id
 ) {
   if (!exists(resource_type, old_id)) {
+    return false;
+  }
+  if (exists(resource_type, new_id)) {
     return false;
   }
   const std::string& description = get_description(resource_type, old_id);

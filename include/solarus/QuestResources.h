@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/ResourceType.h"
+#include <iosfwd>
 #include <map>
 #include <string>
 
@@ -31,7 +32,7 @@ namespace Solarus {
  *
  * This class basically stores the content of a resource list file
  * project_db.dat.
- * It does not create, remove or rename any file.
+ * It does not create, remove or rename any resource file.
  */
 class QuestResources {
 
@@ -43,8 +44,10 @@ class QuestResources {
 
     void clear();
 
-    bool load_from_buffer(const std::string& buffer);
-    bool load_from_file(const std::string& file_name);
+    bool import_from_buffer(const std::string& buffer);
+    bool import_from_file(const std::string& file_name);
+    bool export_to_buffer(std::string& buffer) const;
+    bool export_to_file(const std::string& file_name) const;
 
     bool exists(ResourceType resource_type, const std::string& id) const;
     const ResourceMap& get_elements(
@@ -85,6 +88,7 @@ class QuestResources {
   private:
 
     bool parse(lua_State* l);
+    bool export_to_stream(std::ostream& out) const;
 
     std::map<ResourceType, ResourceMap> resource_maps;
 

@@ -32,7 +32,7 @@ void initialize() {
   const std::string& file_name = "project_db.dat";
   const std::string& buffer = FileTools::data_file_read(file_name);
   get_resources().clear();
-  get_resources().load_from_buffer(buffer);
+  get_resources().import_from_buffer(buffer);
 }
 
 /**

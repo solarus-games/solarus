@@ -19,6 +19,7 @@
 #include "solarus/lua/LuaTools.h"
 #include "solarus/QuestResources.h"
 #include <map>
+#include <fstream>
 #include <sstream>
 
 namespace Solarus {
@@ -81,7 +82,7 @@ QuestResources::QuestResources() {
  * \param buffer A memory area with the content of a project_db.dat file.
  * \return \c true in case of success, \c false if the file could not be loaded.
  */
-bool QuestResources::load_from_buffer(const std::string& buffer) {
+bool QuestResources::import_from_buffer(const std::string& buffer) {
 
   // Read the quest resource list file.
   lua_State* l = luaL_newstate();
@@ -101,7 +102,7 @@ bool QuestResources::load_from_buffer(const std::string& buffer) {
  * \param file_name Path of the file to load.
  * \return \c true in case of success, \c false if the file could not be loaded.
  */
-bool QuestResources::load_from_file(const std::string& file_name) {
+bool QuestResources::import_from_file(const std::string& file_name) {
 
   lua_State* l = luaL_newstate();
   if (luaL_loadfile(l, file_name.c_str()) != 0) {
@@ -139,6 +140,73 @@ bool QuestResources::parse(lua_State* l) {
     Debug::error(std::string("Failed to load quest resource list 'project_db.dat': ") + lua_tostring(l, -1));
     lua_pop(l, 1);
     return false;
+  }
+
+  return true;
+}
+
+/**
+ * \brief Saves this quest resource list into a file.
+ * \param file_name Path of the file to save.
+ * \return \c true in case of success, \c false if the resource list
+ * could not be exported.
+ */
+bool QuestResources::export_to_file(const std::string& file_name) const {
+
+  std::ofstream out(file_name);
+  if (!out) {
+    return false;
+  }
+
+  if (!export_to_stream(out)) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * \brief Saves this quest resource list into memory.
+ * \param buffer The buffer to write.
+ * \return \c true in case of success, \c false if the resource list
+ * could not be exported.
+ */
+bool QuestResources::export_to_buffer(std::string& buffer) const {
+
+  std::ostringstream oss;
+  if (!export_to_stream(oss)) {
+    return false;
+  }
+
+  buffer = oss.str();
+  return true;
+}
+
+/**
+ * \brief Saves this quest resource list into a stream.
+ * \param out The stream to write.
+ * \return \c true in case of success, \c false if the resource list
+ * could not be exported.
+ */
+bool QuestResources::export_to_stream(std::ostream& out) const {
+
+  // Save each resource.
+  for (const auto& kvp: resource_type_names) {
+
+    const ResourceMap& resource = get_elements(kvp.first);
+    for (const auto& element: resource) {
+
+      const std::string& id = element.first;
+      const std::string& description = element.second;
+
+      out << kvp.second
+          << "{ id = \""
+          << id
+          << "\", description = \""
+          << description
+          << "\" }\n";
+    }
+    out << "\n";
   }
 
   return true;

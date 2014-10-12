@@ -223,7 +223,7 @@ void DialogBoxSystem::show_more_lines() {
     text_y += 16;
     line_surfaces[i]->set_x(text_x);
     line_surfaces[i]->set_y(text_y);
-    line_surfaces[i]->set_text_color(Color::get_white());
+    line_surfaces[i]->set_text_color(Color::white);
 
     if (has_more_lines()) {
       line_surfaces[i]->set_text(*remaining_lines.begin());
@@ -241,7 +241,7 @@ void DialogBoxSystem::show_more_lines() {
     // if the user needs something more elaborate, he should make his own
     // dialog box in Lua.
     this->selected_first_answer = true;
-    line_surfaces[nb_visible_lines - 2]->set_text_color(Color::get_yellow());
+    line_surfaces[nb_visible_lines - 2]->set_text_color(Color::yellow);
   }
 }
 
@@ -275,9 +275,9 @@ bool DialogBoxSystem::notify_command_pressed(GameCommands::Command command) {
       selected_first_answer = !selected_first_answer;
       int selected_line_index = selected_first_answer ? 1 : 2;
       for (int i = 0; i < nb_visible_lines; i++) {
-        line_surfaces[i]->set_text_color(Color::get_white());
+        line_surfaces[i]->set_text_color(Color::white);
       }
-      line_surfaces[selected_line_index]->set_text_color(Color::get_yellow());
+      line_surfaces[selected_line_index]->set_text_color(Color::yellow);
     }
   }
 

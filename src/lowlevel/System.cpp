@@ -62,7 +62,6 @@ void System::initialize(const Arguments& args) {
 
   // video
   Video::initialize(args);
-  Color::initialize();
   FontResource::initialize();
   Sprite::initialize();
 }
@@ -79,7 +78,6 @@ void System::quit() {
   Sound::quit();
   Sprite::quit();
   FontResource::quit();
-  Color::quit();
   Video::quit();
   FileTools::quit();
 

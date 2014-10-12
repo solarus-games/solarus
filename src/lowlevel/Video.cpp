@@ -537,7 +537,7 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
       int factor = software_filter->get_scaling_factor();
       render_size = quest_size * factor;
       scaled_surface = Surface::create(render_size);
-      scaled_surface->fill_with_color(Color::get_black());  // To initialize the internal surface.
+      scaled_surface->fill_with_color(Color::black);  // To initialize the internal surface.
     }
 
     // Initialize the window.

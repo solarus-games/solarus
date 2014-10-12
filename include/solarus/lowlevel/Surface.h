@@ -126,6 +126,7 @@ class Surface: public Drawable {
 
     uint32_t get_pixel(int index) const;
     bool is_pixel_transparent(int index) const;
+    uint32_t get_color_value(const Color& color) const;
 
     static SDL_Surface* get_surface_from_file(
         const std::string& file_name,

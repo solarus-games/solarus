@@ -14,110 +14,89 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This module defines a type for the colors and provides some
- * color related functions.
- */
 #include "solarus/lowlevel/Color.h"
-#include "solarus/lowlevel/Video.h"
 
 namespace Solarus {
 
-Color Color::transparent;
-Color Color::black;
-Color Color::white;
-Color Color::red;
-Color Color::green;
-Color Color::blue;
-Color Color::yellow;
-Color Color::magenta;
-Color Color::cyan;
-
-/**
- * \brief Initializes the color static fields.
- */
-void Color::initialize() {
-
-  transparent = Color(  0,   0,   0,   0);
-  black =       Color(  0,   0,   0);
-  white =       Color(255, 255, 255);
-  red =         Color(255,   0,   0);
-  green =       Color(  0, 255,   0);
-  blue =        Color(  0,   0, 255);
-  yellow =      Color(255, 255,   0);
-  magenta =     Color(255,   0, 255);
-  cyan =        Color(  0, 255, 255);
-}
-
-/**
- * \brief Uninitializes the color system.
- */
-void Color::quit() {
-}
+const Color Color::transparent = Color(  0,   0,   0,   0);
+const Color Color::black =       Color(  0,   0,   0);
+const Color Color::white =       Color(255, 255, 255);
+const Color Color::red =         Color(255,   0,   0);
+const Color Color::green =       Color(  0, 255,   0);
+const Color Color::blue =        Color(  0,   0, 255);
+const Color Color::yellow =      Color(255, 255,   0);
+const Color Color::magenta =     Color(255,   0, 255);
+const Color Color::cyan =        Color(  0, 255, 255);
 
 /**
  * \brief Creates a transparent color with black RGB values.
  */
-Color::Color() {
-  internal_color.r = 0;
-  internal_color.g = 0;
-  internal_color.b = 0;
-  internal_color.a = 0;
-  internal_value = 0;
+Color::Color():
+    r(0),
+    g(0),
+    b(0),
+    a(0) {
 }
 
 /**
  * \brief Creates a color with the specified RGBA values.
- * \param r the red component (from 0 to 255)
- * \param g the green component (from 0 to 255)
- * \param b the blue component (from 0 to 255)
- * \param a the alpha component (from 0 to 255)
+ * \param r The red component (0 to 255)
+ * \param g The green component (0 to 255)
+ * \param b The blue component (0 to 255)
+ * \param a The alpha component (0 to 255, 255 is opaque).
  */
-Color::Color(int r, int g, int b, int a) {
-  internal_color.r = r;
-  internal_color.g = g;
-  internal_color.b = b;
-  internal_color.a = a;
-
-  internal_value = SDL_MapRGBA(Video::get_pixel_format(), r, g, b, a);
+Color::Color(int r, int g, int b, int a):
+    r(r),
+    g(g),
+    b(b),
+    a(a) {
 }
 
 /**
- * \brief Returns the 32-bit value representing this color.
- *
- * This function must be used only by low-level classes.
- *
- * \return The 32-bit value of this color, in the preferred pixel format
- * (Video::get_pixel_format()).
+ * \brief Returns the alpha component of this color.
+ * \return The alpha component. 255 is opaque.
  */
-uint32_t Color::get_internal_value() const {
-  return internal_value;
+uint8_t Color::get_alpha() const {
+  return a;
 }
 
 /**
- * \brief Returns the internal color encapsulated by this object.
- *
- * This function must be used only by low-level classes.
- *
- * \return the SDL color encapsulated
+ * \brief Sets the alpha component of this color.
+ * \param alpha The alpha component. 255 is opaque.
  */
-SDL_Color* Color::get_internal_color() {
-  return &internal_color;
+void Color::set_alpha(uint8_t alpha) {
+  this->a = alpha;
 }
 
 /**
- * \brief Returns the red, green, blue and alpha values of this color.
+ * \brief Gets the red, green, blue and alpha values of this color.
+ * \param[out] r Red component.
+ * \param[out] g Green component.
+ * \param[out] b Blue component.
+ * \param[out] a Alpha component.
+ */
+void Color::get_components(
+    uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) const {
+
+  r = this->r;
+  g = this->g;
+  b = this->b;
+  a = this->a;
+}
+
+/**
+ * \brief Sets the red, green, blue and alpha values of this color.
  * \param r Red component to write.
  * \param g Green component to write.
  * \param b Blue component to write.
  * \param a Alpha component to write.
  */
-void Color::get_components(uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) const {
+void Color::set_components(int r, int g, int b, int a) {
 
-  r = internal_color.r;
-  g = internal_color.g;
-  b = internal_color.b;
-  a = internal_color.a;
+  this->r = r;
+  this->g = g;
+  this->b = b;
+  this->a = a;
 }
 
 /**
@@ -127,7 +106,11 @@ void Color::get_components(uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) const
  * \return \c true if both colors are equal.
  */
 bool operator==(const Color& lhs, const Color& rhs) {
-  return lhs.get_internal_value() == rhs.get_internal_value();
+
+  return lhs.r == rhs.r &&
+      lhs.g == rhs.g &&
+      lhs.b == rhs.b &&
+      lhs.a == rhs.a;
 }
 
 }

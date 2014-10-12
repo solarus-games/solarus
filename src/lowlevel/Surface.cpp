@@ -494,7 +494,7 @@ void Surface::clear() {
       SDL_FillRect(
           internal_surface.get(),
           nullptr,
-          Color::get_transparent().get_internal_value()
+          get_color_value(Color::transparent)
       );
     }
     else {
@@ -524,7 +524,7 @@ void Surface::clear(const Rectangle& where) {
   SDL_FillRect(
       internal_surface.get(),
       where.get_internal_rect(),
-      Color::get_transparent().get_internal_value()
+      get_color_value(Color::transparent)
   );
   is_rendered = false;  // The surface has changed.
 }
@@ -664,7 +664,7 @@ void Surface::raw_draw_region(
     }
     else if (internal_color != nullptr) { // No internal surface to draw: this may be a color.
 
-      if (internal_color->get_internal_color()->a == 255) {
+      if (internal_color->get_alpha() == 255) {
         // Fill with opaque color: we can directly modify the destination pixels.
         Rectangle dst_rect(
             dst_position,
@@ -673,7 +673,7 @@ void Surface::raw_draw_region(
         SDL_FillRect(
             dst_surface.internal_surface.get(),
             dst_rect.get_internal_rect(),
-            this->internal_color->get_internal_value()
+            get_color_value(*internal_color)
         );
       }
       else {
@@ -682,7 +682,7 @@ void Surface::raw_draw_region(
         SDL_FillRect(
             this->internal_surface.get(),
             nullptr,
-            this->internal_color->get_internal_value()
+            get_color_value(*internal_color)
         );
         SDL_BlitSurface(
             this->internal_surface.get(),
@@ -958,6 +958,17 @@ bool Surface::is_pixel_transparent(int index) const {
   }
 
   return false;
+}
+
+/**
+ * \brief Converts a color to a 32-bit value in the current video format.
+ * \param color The color to convert.
+ * \return The pixel value of this color in the current format.
+ */
+uint32_t Surface::get_color_value(const Color& color) const {
+  uint8_t r, g, b, a;
+  color.get_components(r, g, b, a);
+  return SDL_MapRGBA(Video::get_pixel_format(), r, g, b, a);
 }
 
 /**

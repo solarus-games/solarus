@@ -26,8 +26,7 @@ namespace Solarus {
 /**
  * \brief Represents a color.
  *
- * This module defines a type for the colors and provides some color related functions.
- * It encapsulates a library-dependent color.
+ * This class simply wraps the RGBA components of a color.
  */
 class Color {
 
@@ -36,120 +35,33 @@ class Color {
     Color();
     Color(int r, int g, int b, int a = 255);
 
+    uint8_t get_alpha() const;
+    void set_alpha(uint8_t alpha);
     void get_components(uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) const;
+    void set_components(int r, int g, int b, int a = 255);
 
-    static void initialize();
-    static void quit();
-
-    static Color& get_transparent();
-    static Color& get_black();
-    static Color& get_white();
-    static Color& get_red();
-    static Color& get_green();
-    static Color& get_blue();
-    static Color& get_yellow();
-    static Color& get_magenta();
-    static Color& get_cyan();
+    // Some predefined colors.
+    static const Color transparent;
+    static const Color black;
+    static const Color white;
+    static const Color red;
+    static const Color green;
+    static const Color blue;
+    static const Color yellow;
+    static const Color magenta;
+    static const Color cyan;
 
   private:
 
-    // low-level classes allowed to manipulate directly the internal SDL objects encapsulated
-    friend class Surface;
-    friend class TextSurface;
     friend bool operator==(const Color& lhs, const Color& rhs);
 
-    uint32_t get_internal_value() const;
-    SDL_Color* get_internal_color();
-
-    // some predefined colors
-    static Color transparent;
-    static Color black;
-    static Color white;
-    static Color red;
-    static Color green;
-    static Color blue;
-    static Color yellow;
-    static Color magenta;
-    static Color cyan;
-
-    SDL_Color internal_color;             /**< the SDL color encapsulated. */
-    uint32_t internal_value;              /**< the SDL 32-bit value representing this color. */
-
+    uint8_t r;     /**< The red component. */
+    uint8_t g;     /**< The green component. */
+    uint8_t b;     /**< The blue component. */
+    uint8_t a;     /**< The alpha (opacity) component. 255 is opaque. */
 };
 
 bool operator==(const Color& lhs, const Color& rhs);
-
-/**
- * \brief Returns the transparent color.
- * \return the transparent color
- */
-inline Color& Color::get_transparent() {
-  return transparent;
-}
-
-/**
- * \brief Returns the black color.
- * \return the black color
- */
-inline Color& Color::get_black() {
-  return black;
-}
-
-/**
- * \brief Returns the white color.
- * \return the white color
- */
-inline Color& Color::get_white() {
-  return white;
-}
-
-/**
- * \brief Returns the red color.
- * \return the red color
- */
-inline Color& Color::get_red() {
-  return red;
-}
-
-/**
- * \brief Returns the green color.
- * \return the green color
- */
-inline Color& Color::get_green() {
-  return green;
-}
-
-/**
- * \brief Returns the blue color.
- * \return the blue color
- */
-inline Color& Color::get_blue() {
-  return blue;
-}
-
-/**
- * \brief Returns the yellow color.
- * \return the yellow color
- */
-inline Color& Color::get_yellow() {
-  return yellow;
-}
-
-/**
- * \brief Returns the magenta color.
- * \return the magenta color
- */
-inline Color& Color::get_magenta() {
-  return magenta;
-}
-
-/**
- * \brief Returns the cyan color.
- * \return the cyan color
- */
-inline Color& Color::get_cyan() {
-  return cyan;
-}
 
 }
 

@@ -64,7 +64,7 @@ TextSurface::TextSurface(int x, int y,
   horizontal_alignment(horizontal_alignment),
   vertical_alignment(vertical_alignment),
   rendering_mode(TEXT_SOLID),
-  text_color(Color::get_white()),
+  text_color(Color::white),
   font_size(11),
   x(x),
   y(y),
@@ -500,14 +500,18 @@ void TextSurface::rebuild_ttf() {
 
   SDL_Surface* internal_surface = nullptr;
   TTF_Font& internal_font = FontResource::get_outline_font(font_id, font_size);
+  SDL_Color internal_color;
+  text_color.get_components(
+      internal_color.r, internal_color.g, internal_color.b, internal_color.a);
+
   switch (rendering_mode) {
 
   case TEXT_SOLID:
-    internal_surface = TTF_RenderUTF8_Solid(&internal_font, text.c_str(), *text_color.get_internal_color());
+    internal_surface = TTF_RenderUTF8_Solid(&internal_font, text.c_str(), internal_color);
     break;
 
   case TEXT_ANTIALIASING:
-    internal_surface = TTF_RenderUTF8_Blended(&internal_font, text.c_str(), *text_color.get_internal_color());
+    internal_surface = TTF_RenderUTF8_Blended(&internal_font, text.c_str(), internal_color);
     break;
   }
 

@@ -609,17 +609,17 @@ void Map::build_foreground_surface() {
   if (map_width < screen_width) {
     int bar_width = (screen_width - map_width) / 2;
     Rectangle dst_position(0, 0, bar_width, screen_height);
-    foreground_surface->fill_with_color(Color::get_black(), dst_position);
+    foreground_surface->fill_with_color(Color::black, dst_position);
     dst_position.set_x(bar_width + map_width);
-    foreground_surface->fill_with_color(Color::get_black(), dst_position);
+    foreground_surface->fill_with_color(Color::black, dst_position);
   }
 
   if (map_height < screen_height) {
     int bar_height = (screen_height - map_height) / 2;
     Rectangle dst_position(0, 0, screen_width, bar_height);
-    foreground_surface->fill_with_color(Color::get_black(), dst_position);
+    foreground_surface->fill_with_color(Color::black, dst_position);
     dst_position.set_y(bar_height + map_height);
-    foreground_surface->fill_with_color(Color::get_black(), dst_position);
+    foreground_surface->fill_with_color(Color::black, dst_position);
   }
 }
 

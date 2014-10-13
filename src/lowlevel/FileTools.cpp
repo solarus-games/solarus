@@ -448,7 +448,7 @@ std::string FileTools::get_base_write_dir() {
 /**
  * \brief Creates a temporary file with the specified content and closes it.
  * \param content Content of the file to create.
- * \return Full name of the file created, or an ampty string in case of failure.
+ * \return Full name of the file created, or an empty string in case of failure.
  */
 std::string FileTools::create_temporary_file(const std::string& content) {
 

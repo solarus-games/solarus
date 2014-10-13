@@ -125,12 +125,19 @@ bool LuaData::export_to_buffer(std::string& buffer) const {
  */
 bool LuaData::export_to_file(const std::string& file_name) const {
 
-  std::ofstream out(file_name);
+  // Work on a temporary file to keep the initial one intact in case of failure.
+  std::string tmp_file_name = file_name + ".solarus_tmp";
+  std::ofstream out(tmp_file_name);
   if (!out) {
     return false;
   }
 
   if (!export_to_lua(out)) {
+    std::remove(tmp_file_name.c_str());
+    return false;
+  }
+
+  if (!std::rename(tmp_file_name.c_str(), file_name.c_str())) {
     return false;
   }
 

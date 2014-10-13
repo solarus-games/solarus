@@ -137,7 +137,7 @@ bool LuaData::export_to_file(const std::string& file_name) const {
     return false;
   }
 
-  if (!std::rename(tmp_file_name.c_str(), file_name.c_str())) {
+  if (std::rename(tmp_file_name.c_str(), file_name.c_str()) != 0) {
     return false;
   }
 

@@ -30,10 +30,8 @@ namespace CurrentQuestResources {
 void initialize() {
 
   // Read the quest resource list file.
-  const std::string& file_name = "project_db.dat";
-  const std::string& buffer = FileTools::data_file_read(file_name);
   QuestResources& resources = get_resources();
-  LuaData::import_from_buffer(resources, buffer);
+  LuaData::import_from_quest_file(resources, "project_db.dat");
 }
 
 /**

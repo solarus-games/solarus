@@ -28,12 +28,12 @@ namespace Solarus {
 class Arguments;
 
 /**
- * \brief Handles access to data files.
+ * \brief Handles access to data files of the current quest.
  *
  * This class provides some functions to open and analyze a data file.
  * It encapsulates how the access to data files is done.
- * This class is the only one that knows how to access a data file
- * (including the language-specific ones)
+ * This class is the only one that knows how to access a data file of the
+ * current quest (including the language-specific ones)
  * and is the only one that calls the PHYSFS library to get data files from
  * the data archive when necessary.
  */

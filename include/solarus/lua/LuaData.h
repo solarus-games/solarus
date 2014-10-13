@@ -40,6 +40,13 @@ template<typename Data>
 bool import_from_file(Data& data, const std::string& file_name);
 
 template<typename Data>
+bool import_from_quest_file(
+    Data& data,
+    const std::string& quest_file_name,
+    bool language_specific = false
+);
+
+template<typename Data>
 bool export_to_buffer(const Data& data, std::string& buffer);
 
 template<typename Data>

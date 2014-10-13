@@ -23,7 +23,6 @@
 #include "solarus/entities/TilesetData.h"
 #include "solarus/entities/TimeScrollingTilePattern.h"
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/FileTools.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lua/LuaData.h"
 #include "solarus/lua/LuaTools.h"
@@ -129,9 +128,8 @@ void Tileset::load() {
 
   // Load the tileset data file.
   std::string file_name = std::string("tilesets/") + id + ".dat";
-  const std::string& buffer = FileTools::data_file_read(file_name);
   TilesetData data;
-  bool success = LuaData::import_from_buffer(data, buffer);
+  bool success = LuaData::import_from_quest_file(data, file_name);
   if (success) {
     // Get the imported data.
     this->background_color = data.get_background_color();

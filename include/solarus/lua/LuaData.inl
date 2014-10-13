@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/FileTools.h"
 #include "solarus/lua/LuaData.h"
 #include <lua.hpp>
 #include <fstream>
@@ -50,6 +51,10 @@ bool import_from_buffer(Data& data, const std::string& buffer) {
 
 /**
  * \brief Loads a data file from the filesystem.
+ *
+ * Unlike import_from_quest_file(), this function acts on a regular file on the
+ * filesystem, independently of any notion of quest search path.
+ *
  * \tparam Type of data.
  * It must have a method <tt>import_from_lua(lua_State* l)</tt>.
  * \param[out] data The data to fill.
@@ -70,6 +75,41 @@ bool import_from_file(Data& data, const std::string& file_name) {
   bool success = data.import_from_lua(l);
   lua_close(l);
   return success;
+}
+
+/**
+ * \brief Loads a data file from the current quest.
+ *
+ * This function loads a file in the search path of the current quest.
+ * The actual file might be located in the physical quest data directory,
+ * in the quest write directory or in the quest data archive (see FileTools).
+ * This function does the search for you.
+ *
+ * \tparam Type of data.
+ * It must have a method <tt>import_from_lua(lua_State* l)</tt>.
+ * \param[out] data The data to fill.
+ * \param[in] file_name Path of the file to load, relative to the quest data
+ * path.
+ * \param[in] language_specific \c true to search in the language-specific
+ * directory of the current language.
+ * The file must be encoded in UTF-8.
+ * \return \c true in case of success, \c false if the file could not be loaded.
+ */
+template<typename Data>
+bool import_from_quest_file(
+    Data& data,
+    const std::string& quest_file_name,
+    bool language_specific
+) {
+  if (!FileTools::data_file_exists(quest_file_name, language_specific)) {
+    Debug::error(std::string("Cannot find quest file '") + quest_file_name + "'");
+    return false;
+  }
+
+  const std::string& buffer = FileTools::data_file_read(
+      quest_file_name, language_specific
+  );
+  return import_from_buffer(data, buffer);
 }
 
 /**

@@ -181,6 +181,14 @@ void TilesetData::set_background_color(const Color& background_color) {
 }
 
 /**
+ * \brief Returns the number of patterns in this tileset.
+ * \return The number of patterns.
+ */
+int TilesetData::get_num_patterns() const {
+  return patterns.size();
+}
+
+/**
  * \brief Returns all tile patterns of this tileset.
  * \return The tile pattern indexed by their id.
  */

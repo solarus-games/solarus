@@ -90,6 +90,7 @@ class TilesetData : public LuaData {
     Color get_background_color() const;
     void set_background_color(const Color& background_color);
 
+    int get_num_patterns() const;
     const std::map<std::string, TilePatternData>& get_patterns() const;
     bool exists(const std::string& pattern_id) const;
     const TilePatternData& get_pattern(const std::string& pattern_id) const;

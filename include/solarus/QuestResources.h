@@ -44,11 +44,6 @@ class QuestResources {
 
     void clear();
 
-    bool import_from_buffer(const std::string& buffer);
-    bool import_from_file(const std::string& file_name);
-    bool export_to_buffer(std::string& buffer) const;
-    bool export_to_file(const std::string& file_name) const;
-
     bool exists(ResourceType resource_type, const std::string& id) const;
     const ResourceMap& get_elements(
         ResourceType resource_type
@@ -85,10 +80,10 @@ class QuestResources {
     static const std::string& get_resource_type_name(ResourceType resource_type);
     static ResourceType get_resource_type_by_name(const std::string& resource_type_name);
 
-  private:
+    bool import_from_lua(lua_State* l);
+    bool export_to_lua(std::ostream& out) const;
 
-    bool parse(lua_State* l);
-    bool export_to_stream(std::ostream& out) const;
+  private:
 
     std::map<ResourceType, ResourceMap> resource_maps;
 

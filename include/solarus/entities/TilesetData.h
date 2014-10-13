@@ -89,11 +89,6 @@ class TilesetData {
 
     TilesetData();
 
-    bool import_from_buffer(const std::string& buffer);  // TODO factorize
-    bool import_from_file(const std::string& file_name);
-    bool export_to_buffer(std::string& buffer) const;
-    bool export_to_file(const std::string& file_name) const;
-
     Color get_background_color() const;
     void set_background_color(const Color& background_color);
 
@@ -107,10 +102,10 @@ class TilesetData {
     bool set_pattern_id(
         const std::string& old_pattern_id, const std::string& new_pattern_id);
 
-  private:
+    bool import_from_lua(lua_State* l);
+    bool export_to_lua(std::ostream& out) const;
 
-    bool parse(lua_State* l);
-    bool export_to_stream(std::ostream& out) const;
+  private:
 
     Color background_color;       /**< Background color of the tileset. */
     std::map<std::string, TilePatternData>

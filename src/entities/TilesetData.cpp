@@ -165,82 +165,6 @@ TilesetData::TilesetData() :
 }
 
 /**
- * \brief Loads a tileset data file from memory.
- * \param buffer A memory area with the content of a tileset data file.
- * \return \c true in case of success, \c false if the file could not be loaded.
- */
-bool TilesetData::import_from_buffer(const std::string& buffer) {
-
-  // Read the file.
-  lua_State* l = luaL_newstate();
-  if (luaL_loadbuffer(l, buffer.data(), buffer.size(), "tileset") != 0) {
-    Debug::error(std::string("Failed to load tileset: ") + lua_tostring(l, -1));
-    lua_pop(l, 1);
-    return false;
-  }
-
-  bool success = parse(l);
-  lua_close(l);
-  return success;
-}
-
-/**
- * \brief Loads a tileset data file from the filesystem.
- * \param file_name Path of the file to load.
- * \return \c true in case of success, \c false if the file could not be loaded.
- */
-bool TilesetData::import_from_file(const std::string& file_name) {
-
-  lua_State* l = luaL_newstate();
-  if (luaL_loadfile(l, file_name.c_str()) != 0) {
-    Debug::error(std::string("Failed to load tileset '") + file_name + "': " + lua_tostring(l, -1));
-    lua_pop(l, 1);
-    return false;
-  }
-
-  bool success = parse(l);
-  lua_close(l);
-  return success;
-}
-
-/**
- * \brief Saves this tileset data file into memory.
- * \param buffer The buffer to write.
- * \return \c true in case of success, \c false if the data
- * could not be exported.
- */
-bool TilesetData::export_to_buffer(std::string& buffer) const {
-
-  std::ostringstream oss;
-  if (!export_to_stream(oss)) {
-    return false;
-  }
-
-  buffer = oss.str();
-  return true;
-}
-
-/**
- * \brief Saves the tileset data into a file.
- * \param file_name Path of the file to save.
- * \return \c true in case of success, \c false if the data
- * could not be exported.
- */
-bool TilesetData::export_to_file(const std::string& file_name) const {
-
-  std::ofstream out(file_name);
-  if (!out) {
-    return false;
-  }
-
-  if (!export_to_stream(out)) {
-    return false;
-  }
-
-  return true;
-}
-
-/**
  * \brief Returns the tileset's background color.
  * \return The background color.
  */
@@ -497,7 +421,7 @@ int l_tile_pattern(lua_State* l) {
  * \return \c true in case of success, \c false if there was a Lua error
  * while executing the chunk.
  */
-bool TilesetData::parse(lua_State* l) {
+bool TilesetData::import_from_lua(lua_State* l) {
 
   lua_pushlightuserdata(l, this);
   lua_setfield(l, LUA_REGISTRYINDEX, "tileset");
@@ -518,7 +442,7 @@ bool TilesetData::parse(lua_State* l) {
  * \return \c true in case of success, \c false if the data
  * could not be exported.
  */
-bool TilesetData::export_to_stream(std::ostream& /* out */) const {
+bool TilesetData::export_to_lua(std::ostream& /* out */) const {
 
   // TODO
   return false;

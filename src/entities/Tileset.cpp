@@ -25,6 +25,7 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/FileTools.h"
 #include "solarus/lowlevel/Surface.h"
+#include "solarus/lua/LuaData.h"
 #include "solarus/lua/LuaTools.h"
 #include <lua.hpp>
 #include <sstream>
@@ -130,7 +131,7 @@ void Tileset::load() {
   std::string file_name = std::string("tilesets/") + id + ".dat";
   const std::string& buffer = FileTools::data_file_read(file_name);
   TilesetData data;
-  bool success = data.import_from_buffer(buffer);
+  bool success = LuaData::import_from_buffer(data, buffer);
   if (success) {
     // Get the imported data.
     this->background_color = data.get_background_color();

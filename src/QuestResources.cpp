@@ -78,141 +78,6 @@ QuestResources::QuestResources() {
 }
 
 /**
- * \brief Loads a quest resource list file from memory.
- * \param buffer A memory area with the content of a project_db.dat file.
- * \return \c true in case of success, \c false if the file could not be loaded.
- */
-bool QuestResources::import_from_buffer(const std::string& buffer) {
-
-  // Read the quest resource list file.
-  lua_State* l = luaL_newstate();
-  if (luaL_loadbuffer(l, buffer.data(), buffer.size(), "project_db.dat") != 0) {
-    Debug::error(std::string("Failed to load quest resource list 'project_db.dat': ") + lua_tostring(l, -1));
-    lua_pop(l, 1);
-    return false;
-  }
-
-  bool success = parse(l);
-  lua_close(l);
-  return success;
-}
-
-/**
- * \brief Loads a quest resource list from the filesystem.
- * \param file_name Path of the file to load.
- * \return \c true in case of success, \c false if the file could not be loaded.
- */
-bool QuestResources::import_from_file(const std::string& file_name) {
-
-  lua_State* l = luaL_newstate();
-  if (luaL_loadfile(l, file_name.c_str()) != 0) {
-    Debug::error(std::string("Failed to load quest resource list '") + file_name + "': " + lua_tostring(l, -1));
-    lua_pop(l, 1);
-    return false;
-  }
-
-  bool success = parse(l);
-  lua_close(l);
-  return success;
-}
-
-/**
- * \brief Loads resources from a project_db.dat chunk.
- * \param l A Lua state with the chunk loaded.
- * \return \c true in case of success, \c false if there was a Lua error
- * while executing the chunk.
- */
-bool QuestResources::parse(lua_State* l) {
-
-  lua_pushlightuserdata(l, this);
-  lua_setfield(l, LUA_REGISTRYINDEX, "resources");
-
-  // We register only one C function for all resource types.
-  lua_register(l, "resource", l_resource_element);
-  for (const auto& kvp: resource_type_names) {
-    std::ostringstream oss;
-    oss << "function " << kvp.second << "(t) resource('"
-      << kvp.second << "', t) end";
-    luaL_dostring(l, oss.str().c_str());
-  }
-
-  if (lua_pcall(l, 0, 0, 0) != 0) {
-    Debug::error(std::string("Failed to load quest resource list 'project_db.dat': ") + lua_tostring(l, -1));
-    lua_pop(l, 1);
-    return false;
-  }
-
-  return true;
-}
-
-/**
- * \brief Saves this quest resource list into memory.
- * \param buffer The buffer to write.
- * \return \c true in case of success, \c false if the data
- * could not be exported.
- */
-bool QuestResources::export_to_buffer(std::string& buffer) const {
-
-  std::ostringstream oss;
-  if (!export_to_stream(oss)) {
-    return false;
-  }
-
-  buffer = oss.str();
-  return true;
-}
-
-/**
- * \brief Saves this quest resource list into a file.
- * \param file_name Path of the file to save.
- * \return \c true in case of success, \c false if the data
- * could not be exported.
- */
-bool QuestResources::export_to_file(const std::string& file_name) const {
-
-  std::ofstream out(file_name);
-  if (!out) {
-    return false;
-  }
-
-  if (!export_to_stream(out)) {
-    return false;
-  }
-
-  return true;
-}
-
-/**
- * \brief Saves this quest resource list into a stream.
- * \param out The stream to write.
- * \return \c true in case of success, \c false if the resource list
- * could not be exported.
- */
-bool QuestResources::export_to_stream(std::ostream& out) const {
-
-  // Save each resource.
-  for (const auto& kvp: resource_type_names) {
-
-    const ResourceMap& resource = get_elements(kvp.first);
-    for (const auto& element: resource) {
-
-      const std::string& id = element.first;
-      const std::string& description = element.second;
-
-      out << kvp.second
-          << "{ id = \""
-          << id
-          << "\", description = \""
-          << description
-          << "\" }\n";
-    }
-    out << "\n";
-  }
-
-  return true;
-}
-
-/**
  * \brief Removes all resource elements.
  */
 void QuestResources::clear() {
@@ -394,6 +259,141 @@ ResourceType QuestResources::get_resource_type_by_name(
 
   Debug::die(std::string("Unknown resource type: ") + resource_type_name);
   return ResourceType();
+}
+
+/**
+ * \brief Loads a quest resource list file from memory.
+ * \param buffer A memory area with the content of a project_db.dat file.
+ * \return \c true in case of success, \c false if the file could not be loaded.
+ */
+bool QuestResources::import_from_buffer(const std::string& buffer) {
+
+  // Read the quest resource list file.
+  lua_State* l = luaL_newstate();
+  if (luaL_loadbuffer(l, buffer.data(), buffer.size(), "project_db.dat") != 0) {
+    Debug::error(std::string("Failed to load quest resource list 'project_db.dat': ") + lua_tostring(l, -1));
+    lua_pop(l, 1);
+    return false;
+  }
+
+  bool success = parse(l);
+  lua_close(l);
+  return success;
+}
+
+/**
+ * \brief Loads a quest resource list from the filesystem.
+ * \param file_name Path of the file to load.
+ * \return \c true in case of success, \c false if the file could not be loaded.
+ */
+bool QuestResources::import_from_file(const std::string& file_name) {
+
+  lua_State* l = luaL_newstate();
+  if (luaL_loadfile(l, file_name.c_str()) != 0) {
+    Debug::error(std::string("Failed to load quest resource list '") + file_name + "': " + lua_tostring(l, -1));
+    lua_pop(l, 1);
+    return false;
+  }
+
+  bool success = parse(l);
+  lua_close(l);
+  return success;
+}
+
+/**
+ * \brief Saves this quest resource list into memory.
+ * \param buffer The buffer to write.
+ * \return \c true in case of success, \c false if the data
+ * could not be exported.
+ */
+bool QuestResources::export_to_buffer(std::string& buffer) const {
+
+  std::ostringstream oss;
+  if (!export_to_stream(oss)) {
+    return false;
+  }
+
+  buffer = oss.str();
+  return true;
+}
+
+/**
+ * \brief Saves this quest resource list into a file.
+ * \param file_name Path of the file to save.
+ * \return \c true in case of success, \c false if the data
+ * could not be exported.
+ */
+bool QuestResources::export_to_file(const std::string& file_name) const {
+
+  std::ofstream out(file_name);
+  if (!out) {
+    return false;
+  }
+
+  if (!export_to_stream(out)) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * \brief Loads resources from a project_db.dat chunk.
+ * \param l A Lua state with the chunk loaded.
+ * \return \c true in case of success, \c false if there was a Lua error
+ * while executing the chunk.
+ */
+bool QuestResources::parse(lua_State* l) {
+
+  lua_pushlightuserdata(l, this);
+  lua_setfield(l, LUA_REGISTRYINDEX, "resources");
+
+  // We register only one C function for all resource types.
+  lua_register(l, "resource", l_resource_element);
+  for (const auto& kvp: resource_type_names) {
+    std::ostringstream oss;
+    oss << "function " << kvp.second << "(t) resource('"
+      << kvp.second << "', t) end";
+    luaL_dostring(l, oss.str().c_str());
+  }
+
+  if (lua_pcall(l, 0, 0, 0) != 0) {
+    Debug::error(std::string("Failed to load quest resource list 'project_db.dat': ") + lua_tostring(l, -1));
+    lua_pop(l, 1);
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * \brief Saves this quest resource list into a stream.
+ * \param out The stream to write.
+ * \return \c true in case of success, \c false if the data
+ * could not be exported.
+ */
+bool QuestResources::export_to_stream(std::ostream& out) const {
+
+  // Save each resource.
+  for (const auto& kvp: resource_type_names) {
+
+    const ResourceMap& resource = get_elements(kvp.first);
+    for (const auto& element: resource) {
+
+      const std::string& id = element.first;
+      const std::string& description = element.second;
+
+      out << kvp.second
+          << "{ id = \""
+          << id
+          << "\", description = \""
+          << description
+          << "\" }\n";
+    }
+    out << "\n";
+  }
+
+  return true;
 }
 
 }

@@ -29,13 +29,12 @@ struct lua_State;
 namespace Solarus {
 
 class TilePattern;
+class TilePatternData;
 
 /**
- * \brief An image containing all tile patterns.
+ * \brief A set of tile patterns that are used to compose a map.
  *
- * A tileset is an image containing a set of elements (tile patterns)
- * that one can use to compose a map.
- * See the directory images/tilesets of the data package.
+ * A tileset represents the skin of a map.
  */
 class Tileset {
 
@@ -58,11 +57,8 @@ class Tileset {
 
     void add_tile_pattern(
         const std::string& id,
-        std::unique_ptr<TilePattern> tile_pattern
+        const TilePatternData& pattern_data
     );
-
-    static int l_background_color(lua_State* l);
-    static int l_tile_pattern(lua_State* l);
 
     const std::string id;                             /**< id of the tileset */
     std::map<std::string, std::unique_ptr<TilePattern>>

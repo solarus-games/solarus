@@ -27,13 +27,14 @@
 #include <string>
 #include <vector>
 
+struct lua_State;
+
 namespace Solarus {
 
 /**
  * \brief Kind of scrolling applied to a tile pattern.
  */
 enum class TileScrolling {
-
     NONE,               /**< No scrolling. */
     PARALLAX,           /**< Parallax scrolling. */
     SELF                /**< Scrolling on itself. */
@@ -73,7 +74,7 @@ class TilePatternData {
     Layer default_layer;               /**< Initial layer when creating a tile. */
     TileScrolling scrolling;           /**< Kind of scrolling if any. */
     std::vector<Rectangle> frames;     /**< Coordinates of the pattern's frame(s).
-                                        * - 1 element: single-frame.
+                                        * - 1 element: one frame (no animation).
                                         * - 3 elements: three frames, animated with 0-1-2-0.
                                         * - 4 elements: three frames, animated with 0-1-2-1-0. */
 
@@ -88,7 +89,7 @@ class TilesetData {
 
     TilesetData();
 
-    bool import_from_buffer(const std::string& buffer);
+    bool import_from_buffer(const std::string& buffer);  // TODO factorize
     bool import_from_file(const std::string& file_name);
     bool export_to_buffer(std::string& buffer) const;
     bool export_to_file(const std::string& file_name) const;
@@ -107,6 +108,9 @@ class TilesetData {
         const std::string& old_pattern_id, const std::string& new_pattern_id);
 
   private:
+
+    bool parse(lua_State* l);
+    bool export_to_stream(std::ostream& out) const;
 
     Color background_color;       /**< Background color of the tileset. */
     std::map<std::string, TilePatternData>

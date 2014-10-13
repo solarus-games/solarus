@@ -14,10 +14,24 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/GroundInfo.h"
 #include "solarus/entities/TilesetData.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lua/LuaTools.h"
+#include <fstream>
+#include <sstream>
 
 namespace Solarus {
+
+namespace {
+
+const std::map<TileScrolling, std::string> scrolling_names = {
+    { TileScrolling::NONE, "" },
+    { TileScrolling::PARALLAX, "parallax" },
+    { TileScrolling::SELF, "self" },
+};
+
+}
 
 /**
  * \brief Creates a default single-frame tile pattern.
@@ -155,9 +169,19 @@ TilesetData::TilesetData() :
  * \param buffer A memory area with the content of a tileset data file.
  * \return \c true in case of success, \c false if the file could not be loaded.
  */
-bool TilesetData::import_from_buffer(const std::string& /* buffer */) {
-  // TODO
-  return false;
+bool TilesetData::import_from_buffer(const std::string& buffer) {
+
+  // Read the file.
+  lua_State* l = luaL_newstate();
+  if (luaL_loadbuffer(l, buffer.data(), buffer.size(), "tileset") != 0) {
+    Debug::error(std::string("Failed to load tileset: ") + lua_tostring(l, -1));
+    lua_pop(l, 1);
+    return false;
+  }
+
+  bool success = parse(l);
+  lua_close(l);
+  return success;
 }
 
 /**
@@ -165,9 +189,18 @@ bool TilesetData::import_from_buffer(const std::string& /* buffer */) {
  * \param file_name Path of the file to load.
  * \return \c true in case of success, \c false if the file could not be loaded.
  */
-bool TilesetData::import_from_file(const std::string& /* file_name */) {
-  // TODO
-  return false;
+bool TilesetData::import_from_file(const std::string& file_name) {
+
+  lua_State* l = luaL_newstate();
+  if (luaL_loadfile(l, file_name.c_str()) != 0) {
+    Debug::error(std::string("Failed to load tileset '") + file_name + "': " + lua_tostring(l, -1));
+    lua_pop(l, 1);
+    return false;
+  }
+
+  bool success = parse(l);
+  lua_close(l);
+  return success;
 }
 
 /**
@@ -176,9 +209,15 @@ bool TilesetData::import_from_file(const std::string& /* file_name */) {
  * \return \c true in case of success, \c false if the data
  * could not be exported.
  */
-bool TilesetData::export_to_buffer(std::string& /* buffer */) const {
-  // TODO
-  return false;
+bool TilesetData::export_to_buffer(std::string& buffer) const {
+
+  std::ostringstream oss;
+  if (!export_to_stream(oss)) {
+    return false;
+  }
+
+  buffer = oss.str();
+  return true;
 }
 
 /**
@@ -187,9 +226,18 @@ bool TilesetData::export_to_buffer(std::string& /* buffer */) const {
  * \return \c true in case of success, \c false if the data
  * could not be exported.
  */
-bool TilesetData::export_to_file(const std::string& /* file_name */) const {
-  // TODO
-  return false;
+bool TilesetData::export_to_file(const std::string& file_name) const {
+
+  std::ofstream out(file_name);
+  if (!out) {
+    return false;
+  }
+
+  if (!export_to_stream(out)) {
+    return false;
+  }
+
+  return true;
 }
 
 /**
@@ -311,5 +359,170 @@ bool TilesetData::set_pattern_id(
   return true;
 }
 
+namespace {
+
+/**
+ * \brief Function called by Lua to set the background color of the tileset.
+ *
+ * - Argument 1 (table): background color (must be an array of 3 integers).
+ *
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int l_background_color(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    lua_getfield(l, LUA_REGISTRYINDEX, "tileset");
+    TilesetData& tileset = *static_cast<TilesetData*>(lua_touserdata(l, -1));
+    lua_pop(l, 1);
+
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+    lua_rawgeti(l, 1, 1);
+    lua_rawgeti(l, 1, 2);
+    lua_rawgeti(l, 1, 3);
+    Color color(
+        LuaTools::check_int(l, -3),
+        LuaTools::check_int(l, -2),
+        LuaTools::check_int(l, -1)
+    );
+    lua_pop(l, 3);
+
+    tileset.set_background_color(color);
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Function called by Lua to add a tile pattern to the tileset.
+ *
+ * - Argument 1 (table): A table describing the tile pattern to create.
+ *
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int l_tile_pattern(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    lua_getfield(l, LUA_REGISTRYINDEX, "tileset");
+    TilesetData& tileset_data = *static_cast<TilesetData*>(lua_touserdata(l, -1));
+    lua_pop(l, 1);
+
+    TilePatternData pattern_data;
+
+    const std::string& id = LuaTools::check_string_field(l, 1, "id");
+
+    const Ground ground = LuaTools::check_enum_field<Ground>(
+        l, 1, "ground", GroundInfo::get_ground_names()
+    );
+    pattern_data.set_ground(ground);
+
+    const Layer default_layer = LuaTools::check_layer_field(
+        l, 1, "default_layer"
+    );
+    pattern_data.set_default_layer(default_layer);
+
+    const TileScrolling scrolling = LuaTools::opt_enum_field<TileScrolling>(
+        l, 1, "scrolling", scrolling_names, TileScrolling::NONE
+    );
+    pattern_data.set_scrolling(scrolling);
+
+    const int width = LuaTools::check_int_field(l, 1, "width");
+    const int height = LuaTools::check_int_field(l, 1, "height");
+    // Start with the maximum number of frames.
+    std::vector<Rectangle> frames(4, Rectangle(0, 0, width, height));
+
+    int i = 0, j = 0;
+    lua_settop(l, 1);
+    lua_getfield(l, 1, "x");
+    if (lua_isnumber(l, 2)) {
+      // Single frame.
+      frames[0].set_x(LuaTools::check_int(l, 2));
+      i = 1;
+    }
+    else {
+      // Multi-frame.
+      lua_pushnil(l);
+      while (lua_next(l, 2) != 0 && i < 4) {
+        frames[i].set_x(LuaTools::check_int(l, 4));
+        ++i;
+        lua_pop(l, 1);
+      }
+    }
+    lua_pop(l, 1);
+    Debug::check_assertion(lua_gettop(l) == 1, "Invalid stack when parsing tile pattern");
+
+    lua_getfield(l, 1, "y");
+    if (lua_isnumber(l, 2)) {
+      // Single frame.
+      frames[0].set_y(LuaTools::check_int(l, 2));
+      j = 1;
+    }
+    else {
+      // Multi-frame.
+      lua_pushnil(l);
+      while (lua_next(l, 2) != 0 && j < 4) {
+        frames[j].set_y(LuaTools::check_int(l, 4));
+        ++j;
+        lua_pop(l, 1);
+      }
+    }
+    lua_pop(l, 1);
+    Debug::check_assertion(lua_gettop(l) == 1, "Invalid stack when parsing tile pattern");
+
+    // Check data.
+    if (i != 1 && i != 3 && i != 4) {
+      LuaTools::arg_error(l, 1, "Invalid number of frames for x");
+    }
+    if (j != 1 && j != 3 && j != 4) {
+      LuaTools::arg_error(l, 1, "Invalid number of frames for y");
+    }
+    if (i != j) {
+      LuaTools::arg_error(l, 1, "The length of x and y must match");
+    }
+    frames.resize(i);
+    pattern_data.set_frames(frames);
+
+    tileset_data.add_pattern(id, pattern_data);
+
+    return 0;
+  });
+}
+
+}  // Anonymous namespace.
+
+/**
+ * \brief Loads resources from a project_db.dat chunk.
+ * \param l A Lua state with the chunk loaded.
+ * \return \c true in case of success, \c false if there was a Lua error
+ * while executing the chunk.
+ */
+bool TilesetData::parse(lua_State* l) {
+
+  lua_pushlightuserdata(l, this);
+  lua_setfield(l, LUA_REGISTRYINDEX, "tileset");
+  lua_register(l, "background_color", l_background_color);
+  lua_register(l, "tile_pattern", l_tile_pattern);
+  if (lua_pcall(l, 0, 0, 0) != 0) {
+    Debug::error(std::string("Failed to load tileset: ") + lua_tostring(l, -1));
+    lua_pop(l, 1);
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * \brief Saves this tileset data into a stream.
+ * \param out The stream to write.
+ * \return \c true in case of success, \c false if the data
+ * could not be exported.
+ */
+bool TilesetData::export_to_stream(std::ostream& /* out */) const {
+
+  // TODO
+  return false;
+}
 
 }
+

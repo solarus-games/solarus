@@ -129,7 +129,7 @@ void Tileset::load() {
   // Load the tileset data file.
   std::string file_name = std::string("tilesets/") + id + ".dat";
   TilesetData data;
-  bool success = LuaData::import_from_quest_file(data, file_name);
+  bool success = data.import_from_quest_file(file_name);
   if (success) {
     // Get the imported data.
     this->background_color = data.get_background_color();

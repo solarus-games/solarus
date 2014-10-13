@@ -18,12 +18,10 @@
 #define SOLARUS_QUEST_RESOURCE_H
 
 #include "solarus/Common.h"
+#include "solarus/lua/LuaData.h"
 #include "solarus/ResourceType.h"
-#include <iosfwd>
 #include <map>
 #include <string>
-
-struct lua_State;
 
 namespace Solarus {
 
@@ -34,7 +32,7 @@ namespace Solarus {
  * project_db.dat.
  * It does not create, remove or rename any resource file.
  */
-class QuestResources {
+class QuestResources : public LuaData {
 
   public:
 
@@ -80,8 +78,8 @@ class QuestResources {
     static const std::string& get_resource_type_name(ResourceType resource_type);
     static ResourceType get_resource_type_by_name(const std::string& resource_type_name);
 
-    bool import_from_lua(lua_State* l);
-    bool export_to_lua(std::ostream& out) const;
+    virtual bool import_from_lua(lua_State* l) override;
+    virtual bool export_to_lua(std::ostream& out) const override;
 
   private:
 

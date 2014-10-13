@@ -18,44 +18,39 @@
 #define SOLARUS_LUA_DATA_FILE_H
 
 #include "solarus/Common.h"
+#include <iosfwd>
 #include <string>
+
+struct lua_State;
 
 namespace Solarus {
 
 /**
- * \brief Helper functions to load and save Lua data files.
- *
- * Data can be loaded from Lua to any object whose type provides
- * <tt>import_from_lua(lua_State* l)</tt>.
- *
- * Data can be saved as Lua for any object whose type provides
- * <tt>export_to_lua(std::ostream& out)</tt>.
+ * \brief Abstract class for data the can be loaded and optionally saved as Lua.
  */
-namespace LuaData {
+class LuaData {
 
-template<typename Data>
-bool import_from_buffer(Data& data, const std::string& buffer);
+  public:
 
-template<typename Data>
-bool import_from_file(Data& data, const std::string& file_name);
+    LuaData() = default;
+    virtual ~LuaData() = default;
 
-template<typename Data>
-bool import_from_quest_file(
-    Data& data,
-    const std::string& quest_file_name,
-    bool language_specific = false
-);
+    virtual bool import_from_lua(lua_State* l) = 0;
+    virtual bool export_to_lua(std::ostream& out) const;  // Optional.
 
-template<typename Data>
-bool export_to_buffer(const Data& data, std::string& buffer);
+    bool import_from_buffer(const std::string& buffer);
+    bool import_from_file(const std::string& file_name);
+    bool import_from_quest_file(
+        const std::string& quest_file_name,
+        bool language_specific = false
+    );
 
-template<typename Data>
-bool export_to_file(const Data& data, const std::string& file_name);
+    bool export_to_buffer(std::string& buffer) const;
+    bool export_to_file(const std::string& file_name) const;
+
+};
 
 }
-}
-
-#include "solarus/lua/LuaData.inl"
 
 #endif
 

@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/FileTools.h"
-#include "solarus/lua/LuaData.h"
 #include "solarus/CurrentQuestResources.h"
 #include "solarus/QuestResources.h"
 
@@ -31,7 +30,7 @@ void initialize() {
 
   // Read the quest resource list file.
   QuestResources& resources = get_resources();
-  LuaData::import_from_quest_file(resources, "project_db.dat");
+  resources.import_from_quest_file("project_db.dat");
 }
 
 /**

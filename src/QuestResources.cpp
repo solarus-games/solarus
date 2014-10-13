@@ -262,10 +262,7 @@ ResourceType QuestResources::get_resource_type_by_name(
 }
 
 /**
- * \brief Loads resources from a project_db.dat chunk.
- * \param l A Lua state with the chunk loaded.
- * \return \c true in case of success, \c false if there was a Lua error
- * while executing the chunk.
+ * \copydoc LuaData::import_from_lua
  */
 bool QuestResources::import_from_lua(lua_State* l) {
 
@@ -291,10 +288,7 @@ bool QuestResources::import_from_lua(lua_State* l) {
 }
 
 /**
- * \brief Saves this quest resource list into a stream.
- * \param out The stream to write.
- * \return \c true in case of success, \c false if the data
- * could not be exported.
+ * \copydoc LuaData::export_to_lua
  */
 bool QuestResources::export_to_lua(std::ostream& out) const {
 

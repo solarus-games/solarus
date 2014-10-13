@@ -22,12 +22,10 @@
 #include "solarus/entities/Layer.h"
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Rectangle.h"
-#include <iosfwd>
+#include "solarus/lua/LuaData.h"
 #include <map>
 #include <string>
 #include <vector>
-
-struct lua_State;
 
 namespace Solarus {
 
@@ -83,7 +81,7 @@ class TilePatternData {
 /**
  * \brief Stores the content of a tileset data file.
  */
-class TilesetData {
+class TilesetData : public LuaData {
 
   public:
 
@@ -102,8 +100,8 @@ class TilesetData {
     bool set_pattern_id(
         const std::string& old_pattern_id, const std::string& new_pattern_id);
 
-    bool import_from_lua(lua_State* l);
-    bool export_to_lua(std::ostream& out) const;
+    virtual bool import_from_lua(lua_State* l) override;
+    virtual bool export_to_lua(std::ostream& out) const override;
 
   private:
 

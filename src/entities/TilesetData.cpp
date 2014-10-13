@@ -416,10 +416,7 @@ int l_tile_pattern(lua_State* l) {
 }  // Anonymous namespace.
 
 /**
- * \brief Loads resources from a project_db.dat chunk.
- * \param l A Lua state with the chunk loaded.
- * \return \c true in case of success, \c false if there was a Lua error
- * while executing the chunk.
+ * \copydoc LuaData::import_from_lua
  */
 bool TilesetData::import_from_lua(lua_State* l) {
 
@@ -437,10 +434,7 @@ bool TilesetData::import_from_lua(lua_State* l) {
 }
 
 /**
- * \brief Saves this tileset data into a stream.
- * \param out The stream to write.
- * \return \c true in case of success, \c false if the data
- * could not be exported.
+ * \copydoc LuaData::export_to_lua
  */
 bool TilesetData::export_to_lua(std::ostream& /* out */) const {
 

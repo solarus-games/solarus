@@ -45,7 +45,7 @@ namespace Solarus {
  * \param y Y coordinate where to create the entity.
  * \param animation_set_id Sprite animation set id for this destructible object.
  * \param treasure The treasure contained in this object.
- * \param modified_ground Ground defined by this entity (usually GROUND_WALL).
+ * \param modified_ground Ground defined by this entity (usually Ground::WALL).
  */
 Destructible::Destructible(
     const std::string& name,
@@ -91,9 +91,9 @@ EntityType Destructible::get_type() const {
  */
 bool Destructible::is_ground_modifier() const {
   // Some kinds of destructibles (like grass) can set a special ground.
-  return modified_ground != GROUND_WALL
-      && modified_ground != GROUND_EMPTY
-      && modified_ground != GROUND_TRAVERSABLE;
+  return modified_ground != Ground::WALL
+      && modified_ground != Ground::EMPTY
+      && modified_ground != Ground::TRAVERSABLE;
 }
 
 /**
@@ -104,7 +104,7 @@ bool Destructible::is_ground_modifier() const {
 Ground Destructible::get_modified_ground() const {
 
   if (is_waiting_for_regeneration()) {
-    return GROUND_EMPTY;
+    return Ground::EMPTY;
   }
 
   return modified_ground;
@@ -257,7 +257,7 @@ void Destructible::set_damage_on_enemies(int damage_on_enemies) {
  */
 bool Destructible::is_obstacle_for(MapEntity& other) {
 
-  return get_modified_ground() == GROUND_WALL
+  return get_modified_ground() == Ground::WALL
       && !is_being_cut
       && other.is_destructible_obstacle(*this);
 }
@@ -274,7 +274,7 @@ void Destructible::update_collision_modes() {
   set_collision_modes(0);
 
   // Sets the new ones.
-  if (get_modified_ground() == GROUND_WALL) {
+  if (get_modified_ground() == Ground::WALL) {
     // The object is an obstacle.
     // Set the facing collision mode to allow the hero to look at it.
     add_collision_mode(COLLISION_FACING);

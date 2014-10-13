@@ -17,6 +17,8 @@
 #ifndef SOLARUS_GROUND_H
 #define SOLARUS_GROUND_H
 
+#include "solarus/Common.h"
+
 namespace Solarus {
 
 /**
@@ -28,33 +30,33 @@ namespace Solarus {
  * tile over a hole tile),
  * the highest one whose ground is not GROUND_EMPTY wins.
  */
-enum Ground {
+enum class Ground {
 
-  GROUND_EMPTY,                   /**< Keep unchanged the ground of entities below. */
-  GROUND_TRAVERSABLE,             /**< Normal travserable ground. */
-  GROUND_WALL,                    /**< Obstacle entity. */
-  GROUND_LOW_WALL,                /**< Can only be traversed by projectiles like arrows,
-                                   * boomerang, thrown items, etc. */
-  GROUND_WALL_TOP_RIGHT,          /**< The upper-right half of the entity is an obstacle. */
-  GROUND_WALL_TOP_LEFT,           /**< The upper-left half of the entity is an obstacle. */
-  GROUND_WALL_BOTTOM_LEFT,        /**< The lower-left half of the entity is an obstacle. */
-  GROUND_WALL_BOTTOM_RIGHT,       /**< The lower-right half of the entity is an obstacle. */
-  GROUND_WALL_TOP_RIGHT_WATER,    /**< The upper-right half of the entity is an obstacle
-                                   * and the rest is deep water. */
-  GROUND_WALL_TOP_LEFT_WATER,     /**< The upper-left half of the entity is an obstacle
-                                   * and the rest is deep water. */
-  GROUND_WALL_BOTTOM_LEFT_WATER,  /**< The lower-left half of the entity is an obstacle
-                                   * and the rest is deep water. */
-  GROUND_WALL_BOTTOM_RIGHT_WATER, /**< The lower-right half of the entity is an obstacle
-                                   * and the rest is deep water. */
-  GROUND_DEEP_WATER,              /**< Deep water where the hero drowns or swims. */
-  GROUND_SHALLOW_WATER,           /**< Shallow water where the hero can walk but slower. */
-  GROUND_GRASS,                   /**< Grass where the hero walks slower. */
-  GROUND_HOLE,                    /**< A hole where the hero can fall. */
-  GROUND_ICE,                     /**< Ice terrain where the hero slides. */
-  GROUND_LADDER,                  /**< A ladder that slows down the hero. */
-  GROUND_PRICKLE,                 /**< Some untraversable prickles that hurt the hero. */
-  GROUND_LAVA,                    /**< Some lava where the hero drowns and gets hurt. */
+  EMPTY,                   /**< Keep unchanged the ground of entities below. */
+  TRAVERSABLE,             /**< Normal travsersable ground. */
+  WALL,                    /**< Obstacle entity. */
+  LOW_WALL,                /**< Can only be traversed by projectiles like arrows,
+                            * boomerang, thrown items, etc. */
+  WALL_TOP_RIGHT,          /**< The upper-right half of the entity is an obstacle. */
+  WALL_TOP_LEFT,           /**< The upper-left half of the entity is an obstacle. */
+  WALL_BOTTOM_LEFT,        /**< The lower-left half of the entity is an obstacle. */
+  WALL_BOTTOM_RIGHT,       /**< The lower-right half of the entity is an obstacle. */
+  WALL_TOP_RIGHT_WATER,    /**< The upper-right half of the entity is an obstacle
+                            * and the rest is deep water. */
+  WALL_TOP_LEFT_WATER,     /**< The upper-left half of the entity is an obstacle
+                            * and the rest is deep water. */
+  WALL_BOTTOM_LEFT_WATER,  /**< The lower-left half of the entity is an obstacle
+                            * and the rest is deep water. */
+  WALL_BOTTOM_RIGHT_WATER, /**< The lower-right half of the entity is an obstacle
+                            * and the rest is deep water. */
+  DEEP_WATER,              /**< Deep water where the hero drowns or swims. */
+  SHALLOW_WATER,           /**< Shallow water where the hero can walk but slower. */
+  GRASS,                   /**< Grass where the hero walks slower. */
+  HOLE,                    /**< A hole where the hero can fall. */
+  ICE,                     /**< Ice terrain where the hero slides. */
+  LADDER,                  /**< A ladder that slows down the hero. */
+  PRICKLE,                 /**< Some untraversable prickles that hurt the hero. */
+  LAVA,                    /**< Some lava where the hero drowns and gets hurt. */
 };
 
 }

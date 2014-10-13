@@ -169,7 +169,7 @@ bool Hero::FreeState::can_start_sword() const {
  */
 bool Hero::FreeState::can_start_item(EquipmentItem& /* item */) const {
 
-  return get_hero().get_ground_below() != GROUND_HOLE;
+  return get_hero().get_ground_below() != Ground::HOLE;
 }
 
 /**

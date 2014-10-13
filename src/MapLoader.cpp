@@ -134,7 +134,7 @@ int MapLoader::l_properties(lua_State* l) {
     entities.tiles_grid_size = map->width8 * map->height8;
     for (int layer = 0; layer < LAYER_NB; ++layer) {
 
-      Ground initial_ground = (layer == LAYER_LOW) ? GROUND_TRAVERSABLE : GROUND_EMPTY;
+      Ground initial_ground = (layer == LAYER_LOW) ? Ground::TRAVERSABLE : Ground::EMPTY;
       for (int i = 0; i < entities.tiles_grid_size; ++i) {
         entities.tiles_ground[layer].push_back(initial_ground);
       }

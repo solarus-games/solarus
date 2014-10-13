@@ -266,13 +266,13 @@ void Block::notify_ground_below_changed() {
   Ground ground = get_ground_below();
   switch (ground) {
 
-    case GROUND_HOLE:
+    case Ground::HOLE:
       Sound::play("jump");
       remove_from_map();
       break;
 
-    case GROUND_LAVA:
-    case GROUND_DEEP_WATER:
+    case Ground::LAVA:
+    case Ground::DEEP_WATER:
       Sound::play("splash");
       remove_from_map();
       break;

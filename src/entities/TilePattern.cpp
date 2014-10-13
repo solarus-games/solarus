@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/TilePattern.h"
 #include "solarus/entities/AnimatedTilePattern.h"
+#include "solarus/entities/GroundInfo.h"
+#include "solarus/entities/TilePattern.h"
 #include "solarus/entities/TimeScrollingTilePattern.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Surface.h"
@@ -48,7 +49,7 @@ TilePattern::TilePattern(Ground ground, int width, int height):
   }
 
   // Diagonal obstacle: check that the tile is square.
-  if (ground >= GROUND_WALL_TOP_RIGHT && ground <= GROUND_WALL_BOTTOM_RIGHT_WATER) {
+  if (GroundInfo::is_ground_diagonal(ground)) {
     Debug::check_assertion(width == height,
         "Invalid tile pattern: a tile pattern with a diagonal wall must be square");
   }

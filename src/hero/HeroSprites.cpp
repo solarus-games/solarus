@@ -943,7 +943,7 @@ void HeroSprites::set_ignore_suspend(bool ignore_suspend) {
 void HeroSprites::set_animation_stopped_common() {
 
   if (is_ground_visible()
-      && hero.get_ground_below() != GROUND_SHALLOW_WATER) {
+      && hero.get_ground_below() != Ground::SHALLOW_WATER) {
     ground_sprite->set_current_animation("stopped");
   }
   walking = false;
@@ -1030,7 +1030,7 @@ void HeroSprites::set_animation_stopped_swimming() {
  */
 void HeroSprites::set_animation_walking_common() {
 
-  if (is_ground_visible() && hero.get_ground_below() != GROUND_SHALLOW_WATER) {
+  if (is_ground_visible() && hero.get_ground_below() != Ground::SHALLOW_WATER) {
     ground_sprite->set_current_animation("walking");
   }
 
@@ -1503,11 +1503,11 @@ void HeroSprites::create_ground(Ground ground) {
   ground_sprite = nullptr;
 
   std::string sprite_id;
-  if (ground == GROUND_GRASS) {
+  if (ground == Ground::GRASS) {
     sprite_id = "hero/ground1";
     ground_sound_id = "walk_on_grass";
   }
-  else if (ground == GROUND_SHALLOW_WATER) {
+  else if (ground == Ground::SHALLOW_WATER) {
     sprite_id = "hero/ground2";
     ground_sound_id = "walk_on_water";
   }
@@ -1515,7 +1515,7 @@ void HeroSprites::create_ground(Ground ground) {
   if (!sprite_id.empty()) {
     ground_sprite = std::make_shared<Sprite>(sprite_id);
     ground_sprite->set_tileset(hero.get_map().get_tileset());
-    if (ground != GROUND_SHALLOW_WATER) {
+    if (ground != Ground::SHALLOW_WATER) {
       ground_sprite->set_current_animation(walking ? "walking" : "stopped");
     }
   }

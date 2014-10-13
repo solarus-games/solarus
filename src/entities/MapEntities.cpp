@@ -396,17 +396,17 @@ void MapEntities::add_tile(const TilePtr& tile) {
     // If the obstacle property is the same for all points inside the tile
     // pattern, then all 8x8 squares of the extended tile have the same
     // property.
-  case GROUND_TRAVERSABLE:
-  case GROUND_LOW_WALL:
-  case GROUND_SHALLOW_WATER:
-  case GROUND_DEEP_WATER:
-  case GROUND_GRASS:
-  case GROUND_HOLE:
-  case GROUND_ICE:
-  case GROUND_LAVA:
-  case GROUND_PRICKLE:
-  case GROUND_LADDER:
-  case GROUND_WALL:
+  case Ground::TRAVERSABLE:
+  case Ground::LOW_WALL:
+  case Ground::SHALLOW_WATER:
+  case Ground::DEEP_WATER:
+  case Ground::GRASS:
+  case Ground::HOLE:
+  case Ground::ICE:
+  case Ground::LAVA:
+  case Ground::PRICKLE:
+  case Ground::LADDER:
+  case Ground::WALL:
     for (i = 0; i < tile_height8; i++) {
       for (j = 0; j < tile_width8; j++) {
         set_tile_ground(layer, tile_x8 + j, tile_y8 + i, ground);
@@ -415,20 +415,20 @@ void MapEntities::add_tile(const TilePtr& tile) {
     break;
 
     // If the top right corner of the tile is an obstacle,
-    // then the top right 8x8 squares are GROUND_WALL, the bottom left 8x8
-    // squares are GROUND_TRAVERSABLE or GROUND_DEEP_WATER and the 8x8 squares
-    // on the diagonal are GROUND_WALL_TOP_RIGHT.
-  case GROUND_WALL_TOP_RIGHT:
-  case GROUND_WALL_TOP_RIGHT_WATER:
+    // then the top right 8x8 squares are Ground::WALL, the bottom left 8x8
+    // squares are Ground::TRAVERSABLE or Ground::DEEP_WATER and the 8x8 squares
+    // on the diagonal are Ground::WALL_TOP_RIGHT.
+  case Ground::WALL_TOP_RIGHT:
+  case Ground::WALL_TOP_RIGHT_WATER:
 
-    non_obstacle_triangle = (ground == GROUND_WALL_TOP_RIGHT) ?
-        GROUND_TRAVERSABLE : GROUND_DEEP_WATER;
+    non_obstacle_triangle = (ground == Ground::WALL_TOP_RIGHT) ?
+        Ground::TRAVERSABLE : Ground::DEEP_WATER;
 
     // We traverse each row of 8x8 squares on the tile.
     for (i = 0; i < tile_height8; i++) {
 
       // 8x8 square on the diagonal.
-      set_tile_ground(layer, tile_x8 + i, tile_y8 + i, GROUND_WALL_TOP_RIGHT);
+      set_tile_ground(layer, tile_x8 + i, tile_y8 + i, Ground::WALL_TOP_RIGHT);
 
       // Left part of the row: we are in the bottom-left corner.
       for (j = 0; j < i; j++) {
@@ -437,16 +437,16 @@ void MapEntities::add_tile(const TilePtr& tile) {
 
       // Right part of the row: we are in the top-right corner.
       for (j = i + 1; j < tile_width8; j++) {
-        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, GROUND_WALL);
+        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, Ground::WALL);
       }
     }
     break;
 
-  case GROUND_WALL_TOP_LEFT:
-  case GROUND_WALL_TOP_LEFT_WATER:
+  case Ground::WALL_TOP_LEFT:
+  case Ground::WALL_TOP_LEFT_WATER:
 
-    non_obstacle_triangle = (ground == GROUND_WALL_TOP_LEFT) ?
-        GROUND_TRAVERSABLE : GROUND_DEEP_WATER;
+    non_obstacle_triangle = (ground == Ground::WALL_TOP_LEFT) ?
+        Ground::TRAVERSABLE : Ground::DEEP_WATER;
 
     // We traverse each row of 8x8 squares on the tile.
     for (i = 0; i < tile_height8; i++) {
@@ -458,19 +458,19 @@ void MapEntities::add_tile(const TilePtr& tile) {
 
       // Left part of the row: we are in the top-left corner.
       for (j = 0; j < tile_width8 - i - 1; j++) {
-        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, GROUND_WALL);
+        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, Ground::WALL);
       }
 
       // 8x8 square on the diagonal.
-      set_tile_ground(layer, tile_x8 + j, tile_y8 + i, GROUND_WALL_TOP_LEFT);
+      set_tile_ground(layer, tile_x8 + j, tile_y8 + i, Ground::WALL_TOP_LEFT);
     }
     break;
 
-  case GROUND_WALL_BOTTOM_LEFT:
-  case GROUND_WALL_BOTTOM_LEFT_WATER:
+  case Ground::WALL_BOTTOM_LEFT:
+  case Ground::WALL_BOTTOM_LEFT_WATER:
 
-    non_obstacle_triangle = (ground == GROUND_WALL_BOTTOM_LEFT) ?
-        GROUND_TRAVERSABLE : GROUND_DEEP_WATER;
+    non_obstacle_triangle = (ground == Ground::WALL_BOTTOM_LEFT) ?
+        Ground::TRAVERSABLE : Ground::DEEP_WATER;
 
     // We traverse each row of 8x8 squares on the tile.
     for (i = 0; i < tile_height8; i++) {
@@ -481,25 +481,25 @@ void MapEntities::add_tile(const TilePtr& tile) {
       }
       // Left part of the row: we are in the bottom-left corner.
       for (j = 0; j < i; j++) {
-        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, GROUND_WALL);
+        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, Ground::WALL);
       }
 
       // 8x8 square on the diagonal.
-      set_tile_ground(layer, tile_x8 + j, tile_y8 + i, GROUND_WALL_BOTTOM_LEFT);
+      set_tile_ground(layer, tile_x8 + j, tile_y8 + i, Ground::WALL_BOTTOM_LEFT);
     }
     break;
 
-  case GROUND_WALL_BOTTOM_RIGHT:
-  case GROUND_WALL_BOTTOM_RIGHT_WATER:
+  case Ground::WALL_BOTTOM_RIGHT:
+  case Ground::WALL_BOTTOM_RIGHT_WATER:
 
-    non_obstacle_triangle = (ground == GROUND_WALL_BOTTOM_RIGHT) ?
-        GROUND_TRAVERSABLE : GROUND_DEEP_WATER;
+    non_obstacle_triangle = (ground == Ground::WALL_BOTTOM_RIGHT) ?
+        Ground::TRAVERSABLE : Ground::DEEP_WATER;
 
     // We traverse each row of 8x8 squares on the tile.
     for (i = 0; i < tile_height8; i++) {
 
       // 8x8 square on the diagonal
-      set_tile_ground(layer, tile_x8 + tile_width8 - i - 1, tile_y8 + i, GROUND_WALL_BOTTOM_RIGHT);
+      set_tile_ground(layer, tile_x8 + tile_width8 - i - 1, tile_y8 + i, Ground::WALL_BOTTOM_RIGHT);
 
       // Left part of the row: we are in the top-left corner.
       for (j = 0; j < tile_width8 - i - 1; j++) {
@@ -508,12 +508,12 @@ void MapEntities::add_tile(const TilePtr& tile) {
 
       // Right part of the row: we are in the bottom-right corner.
       for (j = tile_width8 - i; j < tile_width8; j++) {
-        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, GROUND_WALL);
+        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, Ground::WALL);
       }
     }
     break;
 
-  case GROUND_EMPTY:
+  case Ground::EMPTY:
     // Keep the ground property from any tile placed before.
     break;
   }

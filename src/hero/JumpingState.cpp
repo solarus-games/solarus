@@ -266,7 +266,7 @@ bool Hero::JumpingState::can_avoid_stream(const Stream& /* stream */) const {
  */
 bool Hero::JumpingState::is_stairs_obstacle(const Stairs& /* stairs */) const {
   // allow to jump over stairs covered by water
-  return get_hero().get_ground_below() != GROUND_DEEP_WATER;
+  return get_hero().get_ground_below() != Ground::DEEP_WATER;
 }
 
 /**

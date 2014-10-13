@@ -93,7 +93,7 @@ bool Stairs::can_change_ground() const {
  * \return The ground defined by this entity.
  */
 Ground Stairs::get_ground() const {
-  return GROUND_TRAVERSABLE;
+  return Ground::TRAVERSABLE;
 }
 
 /**

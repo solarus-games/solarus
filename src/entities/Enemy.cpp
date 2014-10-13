@@ -359,10 +359,10 @@ bool Enemy::is_deep_water_obstacle() const {
   const Layer layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
-  if (get_map().get_ground(layer, x, y) == GROUND_DEEP_WATER
-      || get_map().get_ground(layer, x + get_width() - 1, y) == GROUND_DEEP_WATER
-      || get_map().get_ground(layer, x, y + get_height() - 1) == GROUND_DEEP_WATER
-      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_DEEP_WATER) {
+  if (get_map().get_ground(layer, x, y) == Ground::DEEP_WATER
+      || get_map().get_ground(layer, x + get_width() - 1, y) == Ground::DEEP_WATER
+      || get_map().get_ground(layer, x, y + get_height() - 1) == Ground::DEEP_WATER
+      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == Ground::DEEP_WATER) {
     return false;
   }
 
@@ -394,10 +394,10 @@ bool Enemy::is_hole_obstacle() const {
   const Layer layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
-  if (get_map().get_ground(layer, x, y) == GROUND_HOLE
-      || get_map().get_ground(layer, x + get_width() - 1, y) == GROUND_HOLE
-      || get_map().get_ground(layer, x, y + get_height() - 1) == GROUND_HOLE
-      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_HOLE) {
+  if (get_map().get_ground(layer, x, y) == Ground::HOLE
+      || get_map().get_ground(layer, x + get_width() - 1, y) == Ground::HOLE
+      || get_map().get_ground(layer, x, y + get_height() - 1) == Ground::HOLE
+      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == Ground::HOLE) {
     return false;
   }
 
@@ -429,10 +429,10 @@ bool Enemy::is_lava_obstacle() const {
   const Layer layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
-  if (get_map().get_ground(layer, x, y) == GROUND_LAVA
-      || get_map().get_ground(layer, x + get_width() - 1, y) == GROUND_LAVA
-      || get_map().get_ground(layer, x, y + get_height() - 1) == GROUND_LAVA
-      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_LAVA) {
+  if (get_map().get_ground(layer, x, y) == Ground::LAVA
+      || get_map().get_ground(layer, x + get_width() - 1, y) == Ground::LAVA
+      || get_map().get_ground(layer, x, y + get_height() - 1) == Ground::LAVA
+      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == Ground::LAVA) {
     return false;
   }
 
@@ -924,9 +924,9 @@ void Enemy::notify_ground_below_changed() {
   Ground ground = get_ground_below();
   switch (ground) {
 
-    case GROUND_HOLE:
-    case GROUND_LAVA:
-    case GROUND_DEEP_WATER:
+    case Ground::HOLE:
+    case Ground::LAVA:
+    case Ground::DEEP_WATER:
       // Kill the enemy.
       set_life(0);
       break;
@@ -1340,17 +1340,17 @@ void Enemy::kill() {
     clear_sprites();
     switch (get_ground_below()) {
 
-      case GROUND_HOLE:
+      case Ground::HOLE:
         // TODO animation of falling into a hole.
         Sound::play("jump");
         break;
 
-      case GROUND_DEEP_WATER:
+      case Ground::DEEP_WATER:
         // TODO water animation.
         Sound::play("splash");
         break;
 
-      case GROUND_LAVA:
+      case Ground::LAVA:
         // TODO lava animation.
         Sound::play("splash");
         break;

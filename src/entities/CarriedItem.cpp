@@ -268,7 +268,7 @@ void CarriedItem::break_item_on_ground() {
   Ground ground = get_ground_below();
   switch (ground) {
 
-    case GROUND_EMPTY:
+    case Ground::EMPTY:
       // Nothing here: fall one layer below.
     {
       int layer = get_layer();
@@ -283,13 +283,13 @@ void CarriedItem::break_item_on_ground() {
       break;
     }
 
-    case GROUND_HOLE:
+    case Ground::HOLE:
       Sound::play("jump");
       remove_from_map();
       break;
 
-    case GROUND_DEEP_WATER:
-    case GROUND_LAVA:
+    case Ground::DEEP_WATER:
+    case Ground::LAVA:
       Sound::play("walk_on_water");
       remove_from_map();
       break;

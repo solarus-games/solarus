@@ -14,43 +14,21 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/Tileset.h"
-#include "solarus/entities/SimpleTilePattern.h"
 #include "solarus/entities/AnimatedTilePattern.h"
-#include "solarus/entities/SelfScrollingTilePattern.h"
-#include "solarus/entities/TimeScrollingTilePattern.h"
+#include "solarus/entities/GroundInfo.h"
 #include "solarus/entities/ParallaxScrollingTilePattern.h"
+#include "solarus/entities/SelfScrollingTilePattern.h"
+#include "solarus/entities/SimpleTilePattern.h"
+#include "solarus/entities/Tileset.h"
+#include "solarus/entities/TimeScrollingTilePattern.h"
+#include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/FileTools.h"
 #include "solarus/lowlevel/Surface.h"
-#include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaTools.h"
 #include <lua.hpp>
 #include <sstream>
 
 namespace Solarus {
-
-const std::vector<std::string> Tileset::ground_names = {
-  "empty",
-  "traversable",
-  "wall",
-  "low_wall",
-  "wall_top_right",
-  "wall_top_left",
-  "wall_bottom_left",
-  "wall_bottom_right",
-  "wall_top_right_water",
-  "wall_top_left_water",
-  "wall_bottom_left_water",
-  "wall_bottom_right_water",
-  "deep_water",
-  "shallow_water",
-  "grass",
-  "hole",
-  "ice",
-  "ladder",
-  "prickles",
-  "lava"
-};
 
 /**
  * \brief Constructor.
@@ -259,7 +237,9 @@ int Tileset::l_tile_pattern(lua_State* l) {
     int y[] = { -1, -1, -1, -1 };
 
     const std::string& id = LuaTools::check_string_field(l, 1, "id");
-    const Ground ground = LuaTools::check_enum_field<Ground>(l, 1, "ground", ground_names);
+    const Ground ground = LuaTools::check_enum_field<Ground>(
+        l, 1, "ground", GroundInfo::get_ground_names()
+    );
     const int width = LuaTools::check_int_field(l, 1, "width");
     const int height = LuaTools::check_int_field(l, 1, "height");
     const std::string& scrolling = LuaTools::opt_string_field(l, 1, "scrolling", "");

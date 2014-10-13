@@ -69,7 +69,7 @@ CustomEntity::CustomEntity(
   ),
   model(model),
   ground_modifier(true),
-  modified_ground(GROUND_EMPTY) {
+  modified_ground(Ground::EMPTY) {
 
   set_origin(8, 13);
 
@@ -608,28 +608,28 @@ bool CustomEntity::can_traverse_ground(Ground ground) const {
   // Return a default value.
   switch (ground) {
 
-    case GROUND_EMPTY:
-    case GROUND_TRAVERSABLE:
-    case GROUND_GRASS:
-    case GROUND_ICE:
-    case GROUND_LADDER:
+    case Ground::EMPTY:
+    case Ground::TRAVERSABLE:
+    case Ground::GRASS:
+    case Ground::ICE:
+    case Ground::LADDER:
       return true;
 
-    case GROUND_WALL:
-    case GROUND_LOW_WALL:
-    case GROUND_WALL_TOP_RIGHT:
-    case GROUND_WALL_TOP_LEFT:
-    case GROUND_WALL_BOTTOM_LEFT:
-    case GROUND_WALL_BOTTOM_RIGHT:
-    case GROUND_WALL_TOP_RIGHT_WATER:
-    case GROUND_WALL_TOP_LEFT_WATER:
-    case GROUND_WALL_BOTTOM_LEFT_WATER:
-    case GROUND_WALL_BOTTOM_RIGHT_WATER:
-    case GROUND_DEEP_WATER:
-    case GROUND_SHALLOW_WATER:
-    case GROUND_HOLE:
-    case GROUND_PRICKLE:
-    case GROUND_LAVA:
+    case Ground::WALL:
+    case Ground::LOW_WALL:
+    case Ground::WALL_TOP_RIGHT:
+    case Ground::WALL_TOP_LEFT:
+    case Ground::WALL_BOTTOM_LEFT:
+    case Ground::WALL_BOTTOM_RIGHT:
+    case Ground::WALL_TOP_RIGHT_WATER:
+    case Ground::WALL_TOP_LEFT_WATER:
+    case Ground::WALL_BOTTOM_LEFT_WATER:
+    case Ground::WALL_BOTTOM_RIGHT_WATER:
+    case Ground::DEEP_WATER:
+    case Ground::SHALLOW_WATER:
+    case Ground::HOLE:
+    case Ground::PRICKLE:
+    case Ground::LAVA:
       return false;
   }
 
@@ -665,7 +665,7 @@ void CustomEntity::reset_can_traverse_ground(Ground ground) {
  */
 bool CustomEntity::is_low_wall_obstacle() const {
 
-  return can_traverse_ground(GROUND_LOW_WALL);
+  return can_traverse_ground(Ground::LOW_WALL);
 }
 
 /**
@@ -673,7 +673,7 @@ bool CustomEntity::is_low_wall_obstacle() const {
  */
 bool CustomEntity::is_shallow_water_obstacle() const {
 
-  return can_traverse_ground(GROUND_SHALLOW_WATER);
+  return can_traverse_ground(Ground::SHALLOW_WATER);
 }
 
 /**
@@ -681,7 +681,7 @@ bool CustomEntity::is_shallow_water_obstacle() const {
  */
 bool CustomEntity::is_deep_water_obstacle() const {
 
-  return can_traverse_ground(GROUND_DEEP_WATER);
+  return can_traverse_ground(Ground::DEEP_WATER);
 }
 
 /**
@@ -689,7 +689,7 @@ bool CustomEntity::is_deep_water_obstacle() const {
  */
 bool CustomEntity::is_hole_obstacle() const {
 
-  return can_traverse_ground(GROUND_HOLE);
+  return can_traverse_ground(Ground::HOLE);
 }
 
 /**
@@ -697,7 +697,7 @@ bool CustomEntity::is_hole_obstacle() const {
  */
 bool CustomEntity::is_lava_obstacle() const {
 
-  return can_traverse_ground(GROUND_LAVA);
+  return can_traverse_ground(Ground::LAVA);
 }
 
 /**
@@ -705,7 +705,7 @@ bool CustomEntity::is_lava_obstacle() const {
  */
 bool CustomEntity::is_prickle_obstacle() const {
 
-  return can_traverse_ground(GROUND_PRICKLE);
+  return can_traverse_ground(Ground::PRICKLE);
 }
 
 /**
@@ -713,7 +713,7 @@ bool CustomEntity::is_prickle_obstacle() const {
  */
 bool CustomEntity::is_ladder_obstacle() const {
 
-  return can_traverse_ground(GROUND_LADDER);
+  return can_traverse_ground(Ground::LADDER);
 }
 
 /**
@@ -1165,7 +1165,7 @@ Ground CustomEntity::get_modified_ground() const {
 
 /**
  * \brief Changes the ground defined by this entity.
- * \param modified_ground The new ground to set, or GROUND_EMPTY to clear it.
+ * \param modified_ground The new ground to set, or Ground::EMPTY to clear it.
  */
 void CustomEntity::set_modified_ground(Ground modified_ground) {
 
@@ -1173,14 +1173,14 @@ void CustomEntity::set_modified_ground(Ground modified_ground) {
     return;
   }
 
-  // The ground changes, notify observers even if it changes to GROUND_EMPTY.
+  // The ground changes, notify observers even if it changes to Ground::EMPTY.
   ground_modifier = true;
 
   this->modified_ground = modified_ground;
   update_ground_observers();
 
-  // Now, continue notifications only if not GROUND_EMPTY.
-  ground_modifier = modified_ground != GROUND_EMPTY;
+  // Now, continue notifications only if not Ground::EMPTY.
+  ground_modifier = modified_ground != Ground::EMPTY;
 }
 
 /**

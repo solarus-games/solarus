@@ -291,7 +291,7 @@ void Hero::update_ground_effects() {
     else {
 
       Ground ground = get_ground_below();
-      if (ground == GROUND_HOLE && !state->can_avoid_hole()) {
+      if (ground == Ground::HOLE && !state->can_avoid_hole()) {
         // the hero is being attracted by a hole and it's time to move one more pixel into the hole
 
         next_ground_date = now + 60;
@@ -306,7 +306,7 @@ void Hero::update_ground_effects() {
           apply_additional_ground_movement();
         }
       }
-      else if (ground == GROUND_ICE) {
+      else if (ground == Ground::ICE) {
 
         // Slide on ice.
         if (!state->can_avoid_ice()) {
@@ -414,7 +414,7 @@ void Hero::apply_additional_ground_movement() {
   }
 
   if (!moved) {
-    if (get_ground_below() == GROUND_HOLE) {
+    if (get_ground_below() == Ground::HOLE) {
       // the hero cannot be moved towards the direction previously calculated
       set_walking_speed(normal_walking_speed);
       set_state(new FallingState(*this));
@@ -609,7 +609,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
 
     // TODO try LAYER_HIGH first
     Layer layer = LAYER_INTERMEDIATE;
-    if (map.get_ground(LAYER_INTERMEDIATE, x, y) == GROUND_EMPTY) {
+    if (map.get_ground(LAYER_INTERMEDIATE, x, y) == Ground::EMPTY) {
       layer = LAYER_LOW;
     }
     set_map(map, -1);
@@ -1062,7 +1062,7 @@ void Hero::notify_obstacle_reached() {
 
   state->notify_obstacle_reached();
 
-  if (get_ground_below() == GROUND_ICE) {
+  if (get_ground_below() == Ground::ICE) {
     ground_dxy = { 0, 0 };
     ice_movement_direction8 = -1;
   }
@@ -1115,11 +1115,11 @@ void Hero::check_position() {
 
   // Save the hero's last valid position.
   Ground ground = get_ground_below();
-  if (ground != GROUND_DEEP_WATER
-      && ground != GROUND_HOLE
-      && ground != GROUND_LAVA
-      && ground != GROUND_PRICKLE
-      && ground != GROUND_EMPTY
+  if (ground != Ground::DEEP_WATER
+      && ground != Ground::HOLE
+      && ground != Ground::LAVA
+      && ground != Ground::PRICKLE
+      && ground != Ground::EMPTY
       && state->can_come_from_bad_ground()
       && (get_xy() != last_solid_ground_coords)) {
 
@@ -1128,24 +1128,24 @@ void Hero::check_position() {
   }
 
   // With empty ground, possibly go to the lower layer.
-  if (ground == GROUND_EMPTY && state->is_touching_ground()) {
+  if (ground == Ground::EMPTY && state->is_touching_ground()) {
 
     int x = get_top_left_x();
     int y = get_top_left_y();
     Layer layer = get_layer();
 
     if (layer > LAYER_LOW
-        && get_map().get_ground(layer, x, y) == GROUND_EMPTY
-        && get_map().get_ground(layer, x + 15, y) == GROUND_EMPTY
-        && get_map().get_ground(layer, x, y + 15) == GROUND_EMPTY
-        && get_map().get_ground(layer, x + 15, y + 15) == GROUND_EMPTY) {
+        && get_map().get_ground(layer, x, y) == Ground::EMPTY
+        && get_map().get_ground(layer, x + 15, y) == Ground::EMPTY
+        && get_map().get_ground(layer, x, y + 15) == Ground::EMPTY
+        && get_map().get_ground(layer, x + 15, y + 15) == Ground::EMPTY) {
 
       get_entities().set_entity_layer(*this, Layer(layer - 1));
       Ground new_ground = get_map().get_ground(get_layer(), x, y);
       if (state->is_free() &&
-          (new_ground == GROUND_TRAVERSABLE
-           || new_ground == GROUND_GRASS
-           || new_ground == GROUND_LADDER)) {
+          (new_ground == Ground::TRAVERSABLE
+           || new_ground == Ground::GRASS
+           || new_ground == Ground::LADDER)) {
         Sound::play("hero_lands");
       }
     }
@@ -1189,7 +1189,7 @@ void Hero::notify_movement_changed() {
   state->notify_movement_changed();
   check_position();
 
-  if (get_ground_below() == GROUND_ICE) {
+  if (get_ground_below() == Ground::ICE) {
     update_ice();
   }
 }
@@ -1221,13 +1221,13 @@ void Hero::notify_ground_below_changed() {
 
   switch (get_ground_below()) {
 
-  case GROUND_TRAVERSABLE:
+  case Ground::TRAVERSABLE:
     // Traversable ground: remove any special sprite displayed under the hero.
     sprites->destroy_ground();
     set_walking_speed(normal_walking_speed);
     break;
 
-  case GROUND_DEEP_WATER:
+  case Ground::DEEP_WATER:
     // Deep water: plunge if the hero is not jumping.
     if (!state->can_avoid_deep_water()) {
 
@@ -1244,7 +1244,7 @@ void Hero::notify_ground_below_changed() {
     }
     break;
 
-  case GROUND_HOLE:
+  case Ground::HOLE:
     // Hole: fall into the hole or get attracted to it.
     // But wait for the teletransporter opening transition to finish if any.
     if (!suspended
@@ -1253,14 +1253,14 @@ void Hero::notify_ground_below_changed() {
     }
     break;
 
-  case GROUND_ICE:
+  case Ground::ICE:
     // Ice: make the hero slide.
     if (!state->can_avoid_ice()) {
       start_ice();
     }
     break;
 
-  case GROUND_LAVA:
+  case Ground::LAVA:
     // Lava: plunge into lava.
     if (!suspended
         && !state->can_avoid_lava()) {
@@ -1268,7 +1268,7 @@ void Hero::notify_ground_below_changed() {
     }
     break;
 
-  case GROUND_PRICKLE:
+  case Ground::PRICKLE:
     // Prickles.
     if (!suspended
         && !state->can_avoid_prickle()) {
@@ -1276,35 +1276,35 @@ void Hero::notify_ground_below_changed() {
     }
     break;
 
-  case GROUND_SHALLOW_WATER:
+  case Ground::SHALLOW_WATER:
     start_shallow_water();
     break;
 
-  case GROUND_GRASS:
+  case Ground::GRASS:
     start_grass();
     break;
 
-  case GROUND_LADDER:
+  case Ground::LADDER:
     set_walking_speed(normal_walking_speed * 3 / 5);
     break;
 
-  case GROUND_WALL:
-  case GROUND_LOW_WALL:
-  case GROUND_WALL_TOP_RIGHT:
-  case GROUND_WALL_TOP_LEFT:
-  case GROUND_WALL_BOTTOM_LEFT:
-  case GROUND_WALL_BOTTOM_RIGHT:
-  case GROUND_WALL_TOP_RIGHT_WATER:
-  case GROUND_WALL_TOP_LEFT_WATER:
-  case GROUND_WALL_BOTTOM_LEFT_WATER:
-  case GROUND_WALL_BOTTOM_RIGHT_WATER:
+  case Ground::WALL:
+  case Ground::LOW_WALL:
+  case Ground::WALL_TOP_RIGHT:
+  case Ground::WALL_TOP_LEFT:
+  case Ground::WALL_BOTTOM_LEFT:
+  case Ground::WALL_BOTTOM_RIGHT:
+  case Ground::WALL_TOP_RIGHT_WATER:
+  case Ground::WALL_TOP_LEFT_WATER:
+  case Ground::WALL_BOTTOM_LEFT_WATER:
+  case Ground::WALL_BOTTOM_RIGHT_WATER:
     // The hero is stuck in a wall. Damn.
     // This is the fault of the quest maker, unless there is a bug in Solarus.
     // The user will have to save and quit his game.
     // TODO maybe we could use the back to solid ground mechanism here?
     break;
 
-  case GROUND_EMPTY:
+  case Ground::EMPTY:
     break;
   }
 
@@ -1319,7 +1319,7 @@ void Hero::notify_ground_below_changed() {
 bool Hero::is_ground_visible() const {
 
   Ground ground = get_ground_below();
-  return (ground == GROUND_GRASS || ground == GROUND_SHALLOW_WATER)
+  return (ground == Ground::GRASS || ground == Ground::SHALLOW_WATER)
     && state->is_touching_ground();
 }
 
@@ -1592,7 +1592,7 @@ void Hero::notify_collision_with_teletransporter(
   if (!can_avoid_teletransporter(teletransporter)) {
 
     update_ground_below();  // Make sure the ground is up-to-date.
-    bool on_hole = get_ground_below() == GROUND_HOLE;
+    bool on_hole = get_ground_below() == Ground::HOLE;
     if (on_hole || state->is_teletransporter_delayed()) {
       this->delayed_teletransporter = &teletransporter; // fall into the hole (or do something else) first, transport later
     }
@@ -2128,7 +2128,7 @@ void Hero::hurt(int damage) {
 void Hero::start_grass() {
 
   // display a special sprite below the hero
-  sprites->create_ground(GROUND_GRASS);
+  sprites->create_ground(Ground::GRASS);
 
   uint32_t now = System::now();
   next_ground_date = std::max(next_ground_date, now);
@@ -2143,7 +2143,7 @@ void Hero::start_grass() {
 void Hero::start_shallow_water() {
 
   // display a special sprite below the hero
-  sprites->create_ground(GROUND_SHALLOW_WATER);
+  sprites->create_ground(Ground::SHALLOW_WATER);
 
   uint32_t now = System::now();
   next_ground_date = std::max(next_ground_date, now);
@@ -2643,7 +2643,7 @@ void Hero::start_state_from_ground() {
 
   switch (get_ground_below()) {
 
-  case GROUND_DEEP_WATER:
+  case Ground::DEEP_WATER:
     if (state->is_touching_ground()
         && get_equipment().has_ability(ABILITY_SWIM)) {
       set_state(new SwimmingState(*this));
@@ -2653,47 +2653,47 @@ void Hero::start_state_from_ground() {
     }
     break;
 
-  case GROUND_HOLE:
+  case Ground::HOLE:
     set_state(new FallingState(*this));
     break;
 
-  case GROUND_LAVA:
+  case Ground::LAVA:
     set_state(new PlungingState(*this));
     break;
 
-  case GROUND_PRICKLE:
+  case Ground::PRICKLE:
     // There is no specific state for prickles (yet?).
     set_state(new FreeState(*this));
     start_prickle(0);
     break;
 
-  case GROUND_SHALLOW_WATER:
+  case Ground::SHALLOW_WATER:
     start_shallow_water();
     start_free_carrying_loading_or_running();
     break;
 
-  case GROUND_GRASS:
+  case Ground::GRASS:
     start_grass();
     start_free_carrying_loading_or_running();
     break;
 
-  case GROUND_TRAVERSABLE:
-  case GROUND_EMPTY:
-  case GROUND_LADDER:
-  case GROUND_ICE:
+  case Ground::TRAVERSABLE:
+  case Ground::EMPTY:
+  case Ground::LADDER:
+  case Ground::ICE:
     start_free_carrying_loading_or_running();
     break;
 
-  case GROUND_WALL:
-  case GROUND_LOW_WALL:
-  case GROUND_WALL_TOP_RIGHT:
-  case GROUND_WALL_TOP_LEFT:
-  case GROUND_WALL_BOTTOM_LEFT:
-  case GROUND_WALL_BOTTOM_RIGHT:
-  case GROUND_WALL_TOP_RIGHT_WATER:
-  case GROUND_WALL_TOP_LEFT_WATER:
-  case GROUND_WALL_BOTTOM_LEFT_WATER:
-  case GROUND_WALL_BOTTOM_RIGHT_WATER:
+  case Ground::WALL:
+  case Ground::LOW_WALL:
+  case Ground::WALL_TOP_RIGHT:
+  case Ground::WALL_TOP_LEFT:
+  case Ground::WALL_BOTTOM_LEFT:
+  case Ground::WALL_BOTTOM_RIGHT:
+  case Ground::WALL_TOP_RIGHT_WATER:
+  case Ground::WALL_TOP_LEFT_WATER:
+  case Ground::WALL_BOTTOM_LEFT_WATER:
+  case Ground::WALL_BOTTOM_RIGHT_WATER:
     // The hero is stuck in a wall,
     // possibly because a teletransporter sent him here.
     // It is the fault of the quest maker and there is not much we can do.

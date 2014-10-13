@@ -23,7 +23,6 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <vector>
 
 struct lua_State;
 
@@ -54,8 +53,6 @@ class Tileset {
     const SurfacePtr& get_entities_image();
     TilePattern& get_tile_pattern(const std::string& id);
     void set_images(const std::string& other_id);
-
-    static const std::vector<std::string> ground_names;  /**< Lua name of each ground type. */
 
   private:
 

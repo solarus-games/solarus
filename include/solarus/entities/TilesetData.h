@@ -52,7 +52,7 @@ class TilePatternData {
     void set_ground(Ground ground);
 
     Layer get_default_layer() const;
-    void set_default_layer(Layer default_layer) const;
+    void set_default_layer(Layer default_layer);
 
     TileScrolling get_scrolling() const;
     void set_scrolling(TileScrolling scrolling);
@@ -65,8 +65,8 @@ class TilePatternData {
 
   private:
 
-    std::string id;                    /**< Id of this pattern. */
     Ground ground;                     /**< Terrain of this pattern. */
+    Layer default_layer;               /**< Initial layer when creating a tile. */
     TileScrolling scrolling;           /**< Kind of scrolling if any. */
     std::vector<Rectangle> frames;     /**< Coordinates of the pattern's frame(s).
                                         * - 1 element: single-frame.

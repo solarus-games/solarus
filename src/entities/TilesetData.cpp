@@ -18,4 +18,57 @@
 
 namespace Solarus {
 
+/**
+ * \brief Creates a default tile pattern.
+ */
+TilePatternData::TilePatternData():
+  ground(Ground::TRAVERSABLE),
+  scrolling(TileScrolling::NONE),
+  frames() {
+
+  set_frame(Rectangle(0, 0, 16, 16));
+}
+
+Ground TilePatternData::get_ground() const {
+  return ground;
+}
+
+void TilePatternData::set_ground(Ground ground) {
+  this->ground = ground;
+}
+
+Layer TilePatternData::get_default_layer() const {
+  return default_layer;
+}
+
+void TilePatternData::set_default_layer(Layer default_layer) {
+  this->default_layer = default_layer;
+}
+
+TileScrolling TilePatternData::get_scrolling() const {
+  return scrolling;
+}
+
+void TilePatternData::set_scrolling(TileScrolling scrolling) {
+  this->scrolling = scrolling;
+}
+
+const Rectangle& TilePatternData::get_frame() const {
+  return frames[0];
+}
+
+void TilePatternData::set_frame(const Rectangle& frame) {
+  this->frames.clear();
+  this->frames.push_back(frame);
+}
+
+const std::vector<Rectangle>& TilePatternData::get_frames() const {
+  return frames;
+}
+
+void TilePatternData::set_frames(const std::vector<Rectangle>& frames) {
+  // TODO check size
+  this->frames = frames;
+}
+
 }

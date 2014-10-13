@@ -134,7 +134,7 @@ bool Hero::HookshotState::can_avoid_stream(const Stream& /* stream */) const {
 bool Hero::HookshotState::is_stairs_obstacle(const Stairs& /* stairs */) const {
 
   // allow to fly over stairs covered by water
-  return get_hero().get_ground_below() != GROUND_DEEP_WATER;
+  return get_hero().get_ground_below() != Ground::DEEP_WATER;
 }
 
 /**

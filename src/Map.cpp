@@ -794,21 +794,21 @@ bool Map::test_collision_with_ground(
   Ground ground = get_ground(layer, x, y);
   switch (ground) {
 
-  case GROUND_EMPTY:
-  case GROUND_TRAVERSABLE:
-  case GROUND_GRASS:
-  case GROUND_ICE:
+  case Ground::EMPTY:
+  case Ground::TRAVERSABLE:
+  case Ground::GRASS:
+  case Ground::ICE:
     // The square is not an obstacle.
     on_obstacle = false;
     break;
 
-  case GROUND_WALL:
+  case Ground::WALL:
     // The square is entirely an obstacle.
     on_obstacle = true;
     break;
 
-  case GROUND_WALL_TOP_RIGHT:
-  case GROUND_WALL_TOP_RIGHT_WATER:
+  case Ground::WALL_TOP_RIGHT:
+  case Ground::WALL_TOP_RIGHT_WATER:
     // The upper right half of the square is an obstacle
     // so we have to test the position of the point in the square.
     x_in_tile = x & 7;
@@ -817,8 +817,8 @@ bool Map::test_collision_with_ground(
     found_diagonal_wall = true;
     break;
 
-  case GROUND_WALL_TOP_LEFT:
-  case GROUND_WALL_TOP_LEFT_WATER:
+  case Ground::WALL_TOP_LEFT:
+  case Ground::WALL_TOP_LEFT_WATER:
     // Same thing.
     x_in_tile = x & 7;
     y_in_tile = y & 7;
@@ -826,47 +826,47 @@ bool Map::test_collision_with_ground(
     found_diagonal_wall = true;
     break;
 
-  case GROUND_WALL_BOTTOM_LEFT:
-  case GROUND_WALL_BOTTOM_LEFT_WATER:
+  case Ground::WALL_BOTTOM_LEFT:
+  case Ground::WALL_BOTTOM_LEFT_WATER:
     x_in_tile = x & 7;
     y_in_tile = y & 7;
     on_obstacle = y_in_tile >= x_in_tile;
     found_diagonal_wall = true;
     break;
 
-  case GROUND_WALL_BOTTOM_RIGHT:
-  case GROUND_WALL_BOTTOM_RIGHT_WATER:
+  case Ground::WALL_BOTTOM_RIGHT:
+  case Ground::WALL_BOTTOM_RIGHT_WATER:
     x_in_tile = x & 7;
     y_in_tile = y & 7;
     on_obstacle = y_in_tile >= 7 - x_in_tile;
     found_diagonal_wall = true;
     break;
 
-  case GROUND_LOW_WALL:
+  case Ground::LOW_WALL:
     on_obstacle = entity_to_check.is_low_wall_obstacle();
     break;
 
-  case GROUND_SHALLOW_WATER:
+  case Ground::SHALLOW_WATER:
     on_obstacle = entity_to_check.is_shallow_water_obstacle();
     break;
 
-  case GROUND_DEEP_WATER:
+  case Ground::DEEP_WATER:
     on_obstacle = entity_to_check.is_deep_water_obstacle();
     break;
 
-  case GROUND_HOLE:
+  case Ground::HOLE:
     on_obstacle = entity_to_check.is_hole_obstacle();
     break;
 
-  case GROUND_LAVA:
+  case Ground::LAVA:
     on_obstacle = entity_to_check.is_lava_obstacle();
     break;
 
-  case GROUND_PRICKLE:
+  case Ground::PRICKLE:
     on_obstacle = entity_to_check.is_prickle_obstacle();
     break;
 
-  case GROUND_LADDER:
+  case Ground::LADDER:
     on_obstacle = entity_to_check.is_ladder_obstacle();
     break;
   }
@@ -1041,13 +1041,13 @@ bool Map::has_empty_ground(Layer layer, const Rectangle& collision_box) const {
   int x2 = x1 + collision_box.get_width() - 1;
 
   for (int x = x1; x <= x2 && !empty_tile; x++) {
-    empty_tile = get_ground(layer, x, y1) == GROUND_EMPTY
-        || get_ground(layer, x, y2) == GROUND_EMPTY;
+    empty_tile = get_ground(layer, x, y1) == Ground::EMPTY
+        || get_ground(layer, x, y2) == Ground::EMPTY;
   }
 
   for (int y = y1; y <= y2 && !empty_tile; y++) {
-    empty_tile = get_ground(layer, x1, y) == GROUND_EMPTY
-        || get_ground(layer, x2, y) == GROUND_EMPTY;
+    empty_tile = get_ground(layer, x1, y) == Ground::EMPTY
+        || get_ground(layer, x2, y) == Ground::EMPTY;
   }
 
   return empty_tile;
@@ -1077,7 +1077,7 @@ Ground Map::get_ground(Layer layer, int x, int y) const {
   for (it = ground_modifiers.rbegin(); it != rend; ++it) {
     const MapEntity& ground_modifier = *(*it);
     if (ground_modifier.overlaps(x, y)
-        && ground_modifier.get_modified_ground() != GROUND_EMPTY
+        && ground_modifier.get_modified_ground() != Ground::EMPTY
         && ground_modifier.is_enabled()
         && !ground_modifier.is_being_removed()) {
       return ground_modifier.get_modified_ground();

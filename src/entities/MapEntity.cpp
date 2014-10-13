@@ -57,7 +57,7 @@ MapEntity::MapEntity(
   map(nullptr),
   layer(layer),
   bounding_box(x, y, width, height),
-  ground_below(GROUND_EMPTY),
+  ground_below(Ground::EMPTY),
   origin(0, 0),
   name(name),
   direction(direction),
@@ -180,7 +180,7 @@ bool MapEntity::is_ground_modifier() const {
  * \return The ground defined by this entity.
  */
 Ground MapEntity::get_modified_ground() const {
-  return GROUND_EMPTY;
+  return Ground::EMPTY;
 }
 
 /**
@@ -211,7 +211,7 @@ void MapEntity::update_ground_observers() {
 /**
  * \brief Returns the ground where this entity is.
  *
- * If the entity is not sensible to its ground, always returns GROUND_EMPTY.
+ * If the entity is not sensible to its ground, always returns Ground::EMPTY.
  *
  * \return The ground under this entity.
  */
@@ -319,7 +319,7 @@ void MapEntity::set_map(Map& map) {
     notify_tileset_changed();
   }
 
-  this->ground_below = GROUND_EMPTY;
+  this->ground_below = Ground::EMPTY;
 
   if (!initialized && map.is_loaded()) {
     // The entity is being created on a map already running.

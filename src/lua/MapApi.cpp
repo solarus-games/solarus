@@ -27,6 +27,7 @@
 #include "solarus/entities/Enemy.h"
 #include "solarus/entities/Explosion.h"
 #include "solarus/entities/Fire.h"
+#include "solarus/entities/GroundInfo.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Jumper.h"
 #include "solarus/entities/MapEntities.h"
@@ -578,7 +579,7 @@ int LuaContext::map_api_get_ground(lua_State* l) {
 
     Ground ground = map.get_ground(layer, x, y);
 
-    push_string(l, Tileset::ground_names[ground]);
+    push_string(l, GroundInfo::get_ground_name(ground));
     return 1;
   });
 }
@@ -1144,7 +1145,7 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
         LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
     const std::string& animation_set_id = LuaTools::check_string_field(l, 1, "sprite");
     Ground modified_ground = LuaTools::opt_enum_field<Ground>(
-        l, 1, "ground", Tileset::ground_names, GROUND_WALL
+        l, 1, "ground", GroundInfo::get_ground_names(), Ground::WALL
     );
     const std::string& destruction_sound_id = LuaTools::opt_string_field(
         l, 1, "destruction_sound", ""

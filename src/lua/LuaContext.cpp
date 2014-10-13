@@ -14,28 +14,29 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/Block.h"
+#include "solarus/entities/Chest.h"
+#include "solarus/entities/CustomEntity.h"
+#include "solarus/entities/Destination.h"
+#include "solarus/entities/Door.h"
+#include "solarus/entities/Enemy.h"
+#include "solarus/entities/GroundInfo.h"
+#include "solarus/entities/Npc.h"
+#include "solarus/entities/Pickable.h"
+#include "solarus/entities/Sensor.h"
+#include "solarus/entities/ShopTreasure.h"
+#include "solarus/entities/Switch.h"
+#include "solarus/entities/Tileset.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/FileTools.h"
 #include "solarus/lua/ExportableToLuaPtr.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/entities/Destination.h"
-#include "solarus/entities/Pickable.h"
-#include "solarus/entities/Switch.h"
-#include "solarus/entities/Sensor.h"
-#include "solarus/entities/Npc.h"
-#include "solarus/entities/Chest.h"
-#include "solarus/entities/ShopTreasure.h"
-#include "solarus/entities/Door.h"
-#include "solarus/entities/Block.h"
-#include "solarus/entities/Enemy.h"
-#include "solarus/entities/CustomEntity.h"
-#include "solarus/entities/Tileset.h"
-#include "solarus/lowlevel/FileTools.h"
-#include "solarus/lowlevel/Debug.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
-#include "solarus/Treasure.h"
 #include "solarus/Map.h"
 #include "solarus/Timer.h"
+#include "solarus/Treasure.h"
 #include <sstream>
 #include <iostream>
 
@@ -2644,11 +2645,11 @@ bool LuaContext::on_attacking_hero(Hero& hero, Sprite* attacker_sprite) {
 void LuaContext::on_ground_below_changed(Ground ground_below) {
 
   if (find_method("on_ground_below_changed")) {
-    if (ground_below == GROUND_EMPTY) {
+    if (ground_below == Ground::EMPTY) {
       lua_pushnil(l);
     }
     else {
-      push_string(l, Tileset::ground_names[ground_below]);
+      push_string(l, GroundInfo::get_ground_name(ground_below));
     }
     call_function(2, 0, "on_ground_below_changed");
   }

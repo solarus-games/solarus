@@ -21,6 +21,7 @@
 #include "solarus/entities/Destructible.h"
 #include "solarus/entities/Door.h"
 #include "solarus/entities/Enemy.h"
+#include "solarus/entities/GroundInfo.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Npc.h"
@@ -3512,7 +3513,7 @@ int LuaContext::destructible_api_get_modified_ground(lua_State* l) {
 
     Ground modified_ground = destructible.get_modified_ground();
 
-    push_string(l, Tileset::ground_names[modified_ground]);
+    push_string(l, GroundInfo::get_ground_name(modified_ground));
     return 1;
   });
 }
@@ -4663,7 +4664,7 @@ int LuaContext::custom_entity_api_can_traverse_ground(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const CustomEntity& entity = *check_custom_entity(l, 1);
     Ground ground = LuaTools::check_enum<Ground>(
-        l, 2, Tileset::ground_names
+        l, 2, GroundInfo::get_ground_names()
     );
 
     bool traversable = entity.can_traverse_ground(ground);
@@ -4683,7 +4684,7 @@ int LuaContext::custom_entity_api_set_can_traverse_ground(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     CustomEntity& entity = *check_custom_entity(l, 1);
     Ground ground = LuaTools::check_enum<Ground>(
-        l, 2, Tileset::ground_names
+        l, 2, GroundInfo::get_ground_names()
     );
     if (lua_isnil(l, 3)) {
       entity.reset_can_traverse_ground(ground);
@@ -4791,11 +4792,11 @@ int LuaContext::custom_entity_api_get_modified_ground(lua_State* l) {
 
     const Ground modified_ground = entity.get_modified_ground();
 
-    if (modified_ground == GROUND_EMPTY) {
+    if (modified_ground == Ground::EMPTY) {
       lua_pushnil(l);
     }
     else {
-      push_string(l, Tileset::ground_names[modified_ground]);
+      push_string(l, GroundInfo::get_ground_name(modified_ground));
     }
     return 0;
   });
@@ -4810,11 +4811,11 @@ int LuaContext::custom_entity_api_set_modified_ground(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     CustomEntity& entity = *check_custom_entity(l, 1);
-    Ground modified_ground = GROUND_EMPTY;
+    Ground modified_ground = Ground::EMPTY;
 
     if (!lua_isnil(l, 2)) {
       modified_ground = LuaTools::check_enum<Ground>(l, 2,
-          Tileset::ground_names
+          GroundInfo::get_ground_names()
       );
     }
 

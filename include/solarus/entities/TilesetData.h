@@ -47,6 +47,9 @@ class TilePatternData {
   public:
 
     TilePatternData();
+    explicit TilePatternData(const Rectangle& frame);
+
+    bool is_nil() const;
 
     Ground get_ground() const;
     void set_ground(Ground ground);
@@ -57,7 +60,8 @@ class TilePatternData {
     TileScrolling get_scrolling() const;
     void set_scrolling(TileScrolling scrolling);
 
-    const Rectangle& get_frame() const;
+    bool is_single_frame() const;
+    Rectangle get_frame() const;
     void set_frame(const Rectangle& frame);
 
     const std::vector<Rectangle>& get_frames() const;
@@ -86,19 +90,20 @@ class TilesetData {
 
     bool import_from_buffer(const std::string& buffer);
     bool import_from_file(const std::string& file_name);
-    bool export_to_buffer(std::string& buffer);
-    bool export_to_file(const std::string& file_name);
+    bool export_to_buffer(std::string& buffer) const;
+    bool export_to_file(const std::string& file_name) const;
 
-    const Color& get_background_color() const;
+    Color get_background_color() const;
     void set_background_color(const Color& background_color);
 
     const std::map<std::string, TilePatternData>& get_patterns() const;
-    bool exists(const std::string& pattern_id);
-    const TilePatternData& get_pattern(const std::string& pattern_id);
-    void add_pattern(
+    bool exists(const std::string& pattern_id) const;
+    const TilePatternData& get_pattern(const std::string& pattern_id) const;
+    TilePatternData& get_pattern(const std::string& pattern_id);
+    bool add_pattern(
         const std::string& pattern_id, const TilePatternData& pattern);
-    void remove_pattern(const std::string& pattern_id);
-    void set_pattern_id(
+    bool remove_pattern(const std::string& pattern_id);
+    bool set_pattern_id(
         const std::string& old_pattern_id, const std::string& new_pattern_id);
 
   private:

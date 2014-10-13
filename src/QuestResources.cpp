@@ -146,9 +146,26 @@ bool QuestResources::parse(lua_State* l) {
 }
 
 /**
+ * \brief Saves this quest resource list into memory.
+ * \param buffer The buffer to write.
+ * \return \c true in case of success, \c false if the data
+ * could not be exported.
+ */
+bool QuestResources::export_to_buffer(std::string& buffer) const {
+
+  std::ostringstream oss;
+  if (!export_to_stream(oss)) {
+    return false;
+  }
+
+  buffer = oss.str();
+  return true;
+}
+
+/**
  * \brief Saves this quest resource list into a file.
  * \param file_name Path of the file to save.
- * \return \c true in case of success, \c false if the resource list
+ * \return \c true in case of success, \c false if the data
  * could not be exported.
  */
 bool QuestResources::export_to_file(const std::string& file_name) const {
@@ -162,23 +179,6 @@ bool QuestResources::export_to_file(const std::string& file_name) const {
     return false;
   }
 
-  return true;
-}
-
-/**
- * \brief Saves this quest resource list into memory.
- * \param buffer The buffer to write.
- * \return \c true in case of success, \c false if the resource list
- * could not be exported.
- */
-bool QuestResources::export_to_buffer(std::string& buffer) const {
-
-  std::ostringstream oss;
-  if (!export_to_stream(oss)) {
-    return false;
-  }
-
-  buffer = oss.str();
   return true;
 }
 

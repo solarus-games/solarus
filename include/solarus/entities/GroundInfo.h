@@ -20,6 +20,7 @@
 #include "solarus/Common.h"
 #include "solarus/entities/Ground.h"
 #include <map>
+#include <string>
 
 namespace Solarus {
 

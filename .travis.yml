@@ -8,5 +8,5 @@ install:
   - sudo apt-get update -qq
   - sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libluajit-5.1-dev libphysfs-dev libopenal-dev libmodplug-dev libvorbis-dev
 
-script: cd build && cmake .. && make && make test
+script: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make && make test
 

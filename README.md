@@ -1,4 +1,6 @@
-![alt text](/images/solaruslogo.png)
+![Solarus logo](/images/solaruslogo.png)
+
+[![Build Status](https://travis-ci.org/christopho/solarus.svg?branch=master)](https://travis-ci.org/christopho/solarus)
 ====================================
 Solarus is an open-source Zelda-like game engine written in C++.
 This engine is used by our Zelda fangames.
@@ -20,3 +22,4 @@ See our [development blog](http://www.solarus-games.org) to get more
 information and documentation about using the Solarus engine.
 The compilation and installation instructions can be found
 in the install.txt file or on our [website](http://www.solarus-games.org/source-code/compilation-instructions).
+

@@ -5,6 +5,7 @@ compiler:
 
 install:
   - sudo apt-add-repository ppa:zoogie/sdl2-snapshots -y
+  - sudo apt-add-repository ppa:kalakris/cmake -y
   - sudo apt-get update -qq
   - sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libluajit-5.1-dev libphysfs-dev libopenal-dev libmodplug-dev libvorbis-dev
 

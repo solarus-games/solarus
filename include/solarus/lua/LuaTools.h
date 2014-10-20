@@ -21,6 +21,7 @@
 #include "solarus/entities/Layer.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaException.h"
+#include "solarus/SolarusFatal.h"
 #include <string>
 #include <map>
 #include <vector>

@@ -308,18 +308,9 @@ int l_background_color(lua_State* l) {
     TilesetData& tileset = *static_cast<TilesetData*>(lua_touserdata(l, -1));
     lua_pop(l, 1);
 
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    lua_rawgeti(l, 1, 1);
-    lua_rawgeti(l, 1, 2);
-    lua_rawgeti(l, 1, 3);
-    Color color(
-        LuaTools::check_int(l, -3),
-        LuaTools::check_int(l, -2),
-        LuaTools::check_int(l, -1)
-    );
-    lua_pop(l, 3);
+    const Color& background_color = LuaTools::check_color(l, 1);
 
-    tileset.set_background_color(color);
+    tileset.set_background_color(background_color);
 
     return 0;
   });
@@ -444,10 +435,73 @@ bool TilesetData::import_from_lua(lua_State* l) {
 /**
  * \copydoc LuaData::export_to_lua
  */
-bool TilesetData::export_to_lua(std::ostream& /* out */) const {
+bool TilesetData::export_to_lua(std::ostream& out) const {
 
-  // TODO
-  return false;
+  std::string last_pattern_id;
+  // Background color.
+  uint8_t r, g, b, a;
+  background_color.get_components(r, g, b, a);
+  out << "background_color{ "
+      << static_cast<int>(r)
+      << ", "
+      << static_cast<int>(g)
+      << ", "
+      << static_cast<int>(b)
+      << " }\n";
+
+  // Tile patterns.
+  for (const auto kvp : patterns) {
+    const std::string& id = kvp.first;
+    const TilePatternData& pattern = kvp.second;
+    last_pattern_id = id;
+
+    const Rectangle& first_frame = pattern.get_frame();
+    int width = first_frame.get_width();
+    int height = first_frame.get_height();
+    std::ostringstream x;
+    std::ostringstream y;
+    if (pattern.is_single_frame()) {
+      x << first_frame.get_x();
+      y << first_frame.get_y();
+    }
+    else {
+      x << "{ ";
+      y << "{ ";
+      bool first = true;
+      for (const Rectangle& frame : pattern.get_frames()) {
+        if (first) {
+          first = false;
+        }
+        else {
+          x << ", ";
+          y << ", ";
+        }
+        x << frame.get_x();
+        y << frame.get_y();
+      }
+      x << " }";
+      y << " }";
+    }
+
+    const std::string& ground_name = GroundInfo::get_ground_name(pattern.get_ground());
+    int layer_index = static_cast<int>(pattern.get_default_layer());
+
+    out << "tile_pattern{\n"
+        << "  id = \"" << id << "\",\n"
+        << "  ground = \"" << ground_name << "\",\n"
+        << "  default_layer = " << layer_index << ",\n"
+        << "  x = " << x.str() << ",\n"
+        << "  y = " << y.str() << ",\n"
+        << "  width = " << width << ",\n"
+        << "  height = " << height << ",\n";
+    if (pattern.get_scrolling() != TileScrolling::NONE) {
+      const std::string& scolling_name = scrolling_names.at(pattern.get_scrolling());
+      out << "  scrolling = \"" << scolling_name << "\",\n";
+    }
+    out << "}\n\n";
+  }
+
+  return true;
 }
 
 }

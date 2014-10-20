@@ -42,6 +42,9 @@ int exception_boundary_handle(
   catch (const LuaException& ex) {
     luaL_error(l, ex.what());
   }
+  catch (const SolarusFatal& ex) {
+    luaL_error(l, (std::string("Internal error: ") + ex.what()).c_str());
+  }
   catch (const std::exception& ex) {
     luaL_error(l, (std::string("Unexpected exception: ") + ex.what()).c_str());
   }

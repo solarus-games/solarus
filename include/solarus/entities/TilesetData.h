@@ -59,7 +59,7 @@ class TilePatternData {
     TileScrolling get_scrolling() const;
     void set_scrolling(TileScrolling scrolling);
 
-    bool is_single_frame() const;
+    bool is_multi_frame() const;
     int get_num_frames() const;
     Rectangle get_frame() const;
     void set_frame(const Rectangle& frame);

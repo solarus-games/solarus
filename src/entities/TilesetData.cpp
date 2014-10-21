@@ -102,11 +102,11 @@ void TilePatternData::set_scrolling(TileScrolling scrolling) {
 }
 
 /**
- * \brief Returns whether this is a single-frame pattern.
- * \return \c true if the pattern has only one frame.
+ * \brief Returns whether this is a multi-frame pattern.
+ * \return \c true if the pattern has more than one frame.
  */
-bool TilePatternData::is_single_frame() const {
-  return get_num_frames() <= 1;
+bool TilePatternData::is_multi_frame() const {
+  return get_num_frames() > 1;
 }
 
 /**
@@ -468,7 +468,7 @@ bool TilesetData::export_to_lua(std::ostream& out) const {
     int height = first_frame.get_height();
     std::ostringstream x;
     std::ostringstream y;
-    if (pattern.is_single_frame()) {
+    if (!pattern.is_multi_frame()) {
       x << first_frame.get_x();
       y << first_frame.get_y();
     }

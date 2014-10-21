@@ -106,7 +106,15 @@ void TilePatternData::set_scrolling(TileScrolling scrolling) {
  * \return \c true if the pattern has only one frame.
  */
 bool TilePatternData::is_single_frame() const {
-  return frames.size() <= 1;
+  return get_num_frames() <= 1;
+}
+
+/**
+ * \brief Returns the number of frames of this pattern.
+ * \return The number of frames: 1, 3 or 4.
+ */
+int TilePatternData::get_num_frames() const {
+  return (int) frames.size();
 }
 
 /**

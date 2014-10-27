@@ -82,7 +82,7 @@ class SOLARUS_API TilePatternData {
 /**
  * \brief Stores the content of a tileset data file.
  */
-class TilesetData : public LuaData {
+class SOLARUS_API TilesetData : public LuaData {
 
   public:
 

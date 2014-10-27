@@ -33,7 +33,7 @@ class LuaContext;
  *
  * It starts the program and handles the succession of its screens.
  */
-class MainLoop {
+class SOLARUS_API MainLoop {
 
   public:
 

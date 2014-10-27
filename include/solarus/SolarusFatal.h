@@ -26,7 +26,7 @@ namespace Solarus {
 /**
  * \brief Exception representing a fatal error that stops Solarus.
  */
-class SolarusFatal : public std::exception {
+class SOLARUS_API SolarusFatal : public std::exception {
 
   public:
 

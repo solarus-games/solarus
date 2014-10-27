@@ -32,7 +32,7 @@ namespace Solarus {
  * project_db.dat.
  * It does not create, remove or rename any resource file.
  */
-class QuestResources : public LuaData {
+class SOLARUS_API QuestResources : public LuaData {
 
   public:
 

@@ -40,7 +40,7 @@ namespace Solarus {
  *
  * TODO don't inherit PixelMovement
  */
-class PathMovement: public PixelMovement {
+class SOLARUS_API PathMovement: public PixelMovement {
 
   public:
 

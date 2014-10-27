@@ -28,7 +28,7 @@ namespace Solarus {
 /**
  * \brief Abstract class for data the can be loaded and optionally saved as Lua.
  */
-class LuaData {
+class SOLARUS_API LuaData {
 
   public:
 

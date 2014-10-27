@@ -35,7 +35,7 @@ class Rectangle;
  * shape of 16*16. If the entity to move is bigger, some obstacles may prevent
  * it from following the computed path.
  */
-class PathFinding {
+class SOLARUS_API PathFinding {
 
   public:
 

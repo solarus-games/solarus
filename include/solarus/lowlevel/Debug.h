@@ -35,15 +35,15 @@ class CommandLine;
  */
 namespace Debug {
 
-void set_die_on_error(bool die);
-void set_show_popup_on_die(bool show);
-void set_abort_on_die(bool abort);
+void SOLARUS_API set_die_on_error(bool die);
+void SOLARUS_API set_show_popup_on_die(bool show);
+void SOLARUS_API set_abort_on_die(bool abort);
 
-void warning(const std::string& message);
-void error(const std::string& message);
-void check_assertion(bool assertion, const char* error_message);
-void check_assertion(bool assertion, const std::string& error_message);
-void die(const std::string& error_message);
+void SOLARUS_API warning(const std::string& message);
+void SOLARUS_API error(const std::string& message);
+void SOLARUS_API check_assertion(bool assertion, const char* error_message);
+void SOLARUS_API check_assertion(bool assertion, const std::string& error_message);
+void SOLARUS_API die(const std::string& error_message);
 
 }
 

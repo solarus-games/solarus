@@ -38,7 +38,7 @@ class MapEntity;
  * TODO: generalize this and allow to apply a movement to any Lua object that
  * has a set_xy method()?
  */
-class Movement: public ExportableToLua {
+class SOLARUS_API Movement: public ExportableToLua {
 
   public:
 

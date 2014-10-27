@@ -93,7 +93,7 @@ class Rectangle {
 bool operator==(const Rectangle& lhs, const Rectangle& rhs);
 bool operator!=(const Rectangle& lhs, const Rectangle& rhs);
 
-std::ostream& operator<<(std::ostream& stream, const Rectangle& rectangle);
+SOLARUS_API std::ostream& operator<<(std::ostream& stream, const Rectangle& rectangle);
 
 /**
  * \brief Creates a rectangle, without specifying its properties.

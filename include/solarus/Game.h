@@ -41,7 +41,7 @@ class Savegame;
  *
  * The game shows the current map and handles all game elements.
  */
-class Game {
+class SOLARUS_API Game {
 
   public:
 

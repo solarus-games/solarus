@@ -30,7 +30,7 @@ class Arguments;
  *
  * This class initializes all low-level features.
  */
-class System {
+class SOLARUS_API System {
 
   public:
 

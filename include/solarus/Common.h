@@ -64,6 +64,17 @@
  */
 #define SOLARUS_PATCH_VERSION 0
 
+// Windows specific.
+#ifdef _WIN32
+#  ifdef solarus_EXPORTS  // Define automatically added by cmake.
+#    define SOLARUS_API __declspec(dllexport)
+#  else
+#    define SOLARUS_API __declspec(dllimport)
+#  endif
+#else
+#  define SOLARUS_API
+#endif
+
 /**
  * \brief The Solarus version as a string.
  *

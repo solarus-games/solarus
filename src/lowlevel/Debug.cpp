@@ -41,7 +41,7 @@ namespace {
  * If \c true, calling to Debug::error() will stop Solarus.
  * The default is \c false.
  */
-void set_die_on_error(bool die) {
+void SOLARUS_API set_die_on_error(bool die) {
   die_on_error = die;
 }
 
@@ -50,7 +50,7 @@ void set_die_on_error(bool die) {
  *
  * The default is \c true.
  */
-void set_show_popup_on_die(bool show) {
+void SOLARUS_API set_show_popup_on_die(bool show) {
   show_popup_on_die = show;
 }
 
@@ -63,7 +63,7 @@ void set_show_popup_on_die(bool show) {
  * This should be preferred if Solarus is used as a library.
  * The default is \c false.
  */
-void set_abort_on_die(bool abort) {
+void SOLARUS_API set_abort_on_die(bool abort) {
   abort_on_die = abort;
 }
 
@@ -71,7 +71,7 @@ void set_abort_on_die(bool abort) {
  * \brief Prints "Warning: " and a message on both stderr and error.txt.
  * \param message The warning message to print.
  */
-void warning(const std::string& message) {
+void SOLARUS_API warning(const std::string& message) {
 
   if (!error_output_file.is_open()) {
     error_output_file.open(error_output_file_name.c_str());
@@ -87,7 +87,7 @@ void warning(const std::string& message) {
  *
  * \param message The error message to print.
  */
-void error(const std::string& message) {
+void SOLARUS_API error(const std::string& message) {
 
   if (die_on_error) {
     // Errors are fatal.
@@ -106,7 +106,7 @@ void error(const std::string& message) {
  * \brief Like check_assertion(bool, const std::string&), but avoids
  * a useless conversion to std::string when the assertion is true.
  */
-void check_assertion(bool assertion, const char* error_message) {
+void SOLARUS_API check_assertion(bool assertion, const char* error_message) {
 
   // Don't build the std::string when the assertion succeeds.
   if (!assertion) {
@@ -119,7 +119,7 @@ void check_assertion(bool assertion, const char* error_message) {
  * \param assertion The assertion to check.
  * \param error_message Error message to show in case of failure.
  */
-void check_assertion(bool assertion, const std::string& error_message) {
+void SOLARUS_API check_assertion(bool assertion, const std::string& error_message) {
 
   if (!assertion) {
     die(error_message);
@@ -134,7 +134,7 @@ void check_assertion(bool assertion, const std::string& error_message) {
  *
  * \param error_message The error message to show.
  */
-void die(const std::string& error_message) {
+void SOLARUS_API die(const std::string& error_message) {
 
   if (!error_output_file.is_open()) {
     error_output_file.open(error_output_file_name.c_str());

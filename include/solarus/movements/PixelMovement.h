@@ -27,7 +27,7 @@ namespace Solarus {
 /**
  * \brief Movement of an entity that follows a predetermined sequence of pixel-precise moves.
  */
-class PixelMovement: public Movement {
+class SOLARUS_API PixelMovement: public Movement {
 
   public:
 

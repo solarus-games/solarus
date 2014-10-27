@@ -76,7 +76,7 @@ class Teletransporter;
  * - an origin point, relative to the rectangle's top-left corner
  * Some entities can also have a name, a movement and some sprites.
  */
-class MapEntity: public ExportableToLua {
+class SOLARUS_API MapEntity: public ExportableToLua {
 
   public:
 

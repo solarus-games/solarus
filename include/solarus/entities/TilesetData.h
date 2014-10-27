@@ -41,7 +41,7 @@ enum class TileScrolling {
 /**
  * \brief Stores the properties of a tile pattern.
  */
-class TilePatternData {
+class SOLARUS_API TilePatternData {
 
   public:
 

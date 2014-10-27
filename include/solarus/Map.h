@@ -49,7 +49,7 @@ class Sprite;
  * - the background music,
  * - the position of the camera.
  */
-class Map: public ExportableToLua {
+class SOLARUS_API Map: public ExportableToLua {
 
   public:
 

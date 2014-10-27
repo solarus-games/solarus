@@ -26,11 +26,11 @@ namespace Solarus {
 
 namespace GroundInfo {
 
-bool is_ground_diagonal(Ground ground);
+SOLARUS_API bool is_ground_diagonal(Ground ground);
 
-const std::map<Ground, std::string>& get_ground_names();
-const std::string& get_ground_name(Ground ground);
-Ground get_ground_by_name(const std::string& ground_name);
+SOLARUS_API const std::map<Ground, std::string>& get_ground_names();
+SOLARUS_API const std::string& get_ground_name(Ground ground);
+SOLARUS_API Ground get_ground_by_name(const std::string& ground_name);
 
 }
 

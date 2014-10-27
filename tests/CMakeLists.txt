@@ -23,6 +23,21 @@ add_library(solarus_testing
   ${testing_source_files}
 )
 
+target_link_libraries(solarus_testing
+  solarus
+  "${SDL2MAIN_LIBRARY}"
+  "${SDL2_LIBRARY}"
+  "${SDL2_IMAGE_LIBRARY}"
+  "${SDL2_TTF_LIBRARY}"
+  "${OPENAL_LIBRARY}"
+  "${LUA_LIBRARY}"
+  "${DL_LIBRARY}"
+  "${PHYSFS_LIBRARY}"
+  "${VORBISFILE_LIBRARY}"
+  "${OGG_LIBRARY}"
+  "${MODPLUG_LIBRARY}"
+)
+
 # Build individual tests.
 
 # Each .cpp file of the 'src/tests' directory is a test with a main() function

@@ -27,8 +27,8 @@ double quotes.
 The properties must be:
 - \c solarus_version (string): Version of the engine your data files are
   compatible with. This string should be a major and minor version, for
-  example "1.1". You can also indicate a full version string, including
-  the patch number (like "1.1.0") but the patch number will be ignored.
+  example "1.4". You can also indicate a full version string, including
+  the patch number (like "1.4.0") but the patch number will be ignored.
   Patch versions are ignored since they don't break compatibility.
 - \c write_dir (string, optional): Directory where your quest will write its
   savegames and setting files. It will be a subdirectory of
@@ -52,26 +52,28 @@ The properties must be:
 
 \c normal_quest_size, \c min_quest_size and \c max_quest_size define the
 range of possible sizes of the game screen.
-That size represents how much content the user can see on the map when playing
+This is the logical size of the game area.
+It represents how much content the user can see on the map when playing
 your quest.
-Allowing a range of sizes instead of only one size is a good idea because it
-allows maximum portability: each system and each user can pick one.
-For example, 320x240 is a good quest size to play on a PC, while 400x240 is
-great to play on Android and OpenPandora. Yes, it means that Android
-players will see more content than PC players on their screen when playing
-your game.
+Allowing a range of sizes instead of only one size improves the portability:
+each system and each user can choose a size that occupies the full ratio of
+the screen instead of having black bars.
+However, be aware that some users will be able to see more content than others.
 
 At compilation time, systems can specify their preferred quest size.
-It will be used if it fits in the range of quest sizes of your quests.
+It will be used if it is in the range of sizes allowed by your quest.
 And the quest size can also be overriden at runtime with a command-line option.
 
 At runtime, you are guaranteed that the actual quest size will be in the range
-that you specified in this quest properties file.
+that you allowed in this quest properties file.
 
-\remark In fullscreen mode, Solarus will automatically choose an appropriate
-resolution to display that quest size as best as possible, possibly by adding
-black horizontal or vertical bars if necessary, and by stretching the image
-if the available resolutions of the system are too high.
+\remark The quest size is the logical size of your quest and it never changes
+at runtime. Don't confuse it with the size of the window.
+The actual window shown to the user may be bigger or smaller than that.
+It can resized and it can also be in fullscreen mode.
+When the window size is different from the quest size, the quest image
+is scaled to fit the window.
+Black bars are added if necessary to keep the correct ratio.
 
 \section quest_properties_file_example Example
 
@@ -79,7 +81,7 @@ Example of \c quest.dat file:
 
 \verbatim
 quest{
-  solarus_version = "1.3",
+  solarus_version = "1.4",
   write_dir = "my_quest",
   title_bar = "My incredible quest",
   normal_quest_size = "320x240",  -- Works on most configurations.

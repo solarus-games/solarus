@@ -27,7 +27,7 @@ tilesets/castle.tiles.png                           Christopho, adapted from Cha
 sprites/hero/stopped.tunic.png                      Christopho, adapted from Arikel: http://opengameart.org/content/2d-rpg-character-walk-spritesheet
 sprites/hero/walking.tunic.png                      Christopho, adapted from Arikel: http://opengameart.org/content/2d-rpg-character-walk-spritesheet
 musics/village.ogg                                  Eduardo Dueñas
-text/minecraftia.png                                Andrew Tyler: http://www.andrewtyler.net
+text/minecraftia.ttf                                Andrew Tyler: http://www.andrewtyler.net
 
 Data files under public domain:                     Author/Origin (if known)
 -------------------------------                     ------------------------

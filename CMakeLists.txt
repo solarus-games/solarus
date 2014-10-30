@@ -248,6 +248,15 @@ else()
   )
 endif()
 
+# Windows: disable the console.
+if(WIN32)
+  if(MSVC)
+    set_target_properties(SOLARUS_ENGINE PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
+  elseif(CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "-mwindows ${CMAKE_CXX_FLAGS}")
+  endif()
+endif()
+
 # Unit tests.
 enable_testing()
 add_subdirectory(tests)

@@ -21,7 +21,6 @@
 #include "solarus/MainLoop.h"
 #include <iostream>
 #include <string>
-#include <SDL.h>  // Necessary on some systems for SDLMain.
 
 namespace {
 

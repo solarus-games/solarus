@@ -20,6 +20,6 @@ You might be interested in our fangames created with Solarus:
 
 See our [development blog](http://www.solarus-games.org) to get more
 information and documentation about using the Solarus engine.
-The compilation and installation instructions can be found
-in the install.txt file or on our [website](http://www.solarus-games.org/source-code/compilation-instructions).
+The compilation instructions can be found
+in the compilation.txt file or on our [website](http://www.solarus-games.org/source-code/compilation-instructions).
 

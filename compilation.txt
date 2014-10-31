@@ -1,6 +1,6 @@
 Solarus is an open-source Zelda-like 2D game engine written in C++ and licensed
 under GPL v3.
-This file explains how to compile and install Solarus.
+This file explains how to compile Solarus.
 
 
 --------
@@ -9,14 +9,18 @@ Contents
 
 1  Overview
 2  External dependencies
+  2.1  Linux users
+  2.2  Windows users
+  2.3  Mac OS X users
 3  Compilation instructions
-  3.1  Default settings
-  3.2  Change the install directory
-  3.3  More about the quest path
-  3.4  SDL2 warning and luajit
-  3.5  Windows developers
-  3.6  Mac OS X developers
-  3.7  OpenPandora
+  3.1  Configure
+  3.2  Build
+  3.3  Run
+  3.4  Install
+4  Platform-specific information
+  4.1  Mac OS X
+  4.2  OpenPandora
+  4.3  GCW-Zero
 
 
 -----------
@@ -24,8 +28,8 @@ Contents
 -----------
 
 When it is installed, the project is divided in two parts:
-- Solarus (the engine), which is an executable file written in C++ and called
-  solarus.
+- Solarus (the engine), which is an executable file called solarus_run and
+  a dynamic library called solarus.
 - One (or several) quests, each quest corresponding to a game, represented as a
   directory called "data" or a zip archive called "data.solarus" or
   "data.solarus.zip" and containing all the data of the quest.
@@ -33,24 +37,24 @@ This readme is about compiling and installing solarus (the engine).
 To execute it, you will also need a quest with all its game data files
 (graphics, musics, sounds, scripts, dialogs, etc.).
 A short sample quest is provided in the directory "sample_quest".
-Our quests can be found on the development blog: http://www.solarus-games.org.
+
+Our quests can be found on the website: http://www.solarus-games.org.
 
 
 ------------------------
 2  External dependencies
 ------------------------
 
-The build process of solarus uses cmake.
+The build process of solarus uses CMake.
+
 To compile Solarus, you need a C++ compiler with support of C++11.
 Solarus compiles fine with gcc 4.7.1 or greater and clang 3.4 or greater,
-using the -std=c++0x flag (C++11 draft)
-or the -std=c++11 flag (final C++11 specification),
 and probably with other recent compilers (please let us know).
 
 
 The following libraries are required to compile and to execute Solarus:
 
-SDL2
+SDL2 (2.0.1 or greater)
 SDL2main
 SDL2_image
 SDL2_ttf
@@ -63,50 +67,73 @@ physfs
 Note that another library is directly embedded in the source code:
 snes_spc, an SPC music decoding library.
 
+- About SDL2:
+
+SDL 2.0.0 is buggy (you will get broken graphics or even a black screen).
+You need at least SDL 2.0.1.
+Ubuntu 14.04 provides SDL 2.0.2, so you will be okay, but Ubuntu 13.10 only
+provides SDL 2.0.0.
+
+- About Lua:
+
+Solarus uses the Lua scripting language.
+LuaJIT, a just-in-time implementation of Lua, is used by default for optimal
+performance.
+But if you want to use vanilla Lua rather than LuaJIT,
+set the CMake variable SOLARUS_USE_LUAJIT to OFF at the configuration step.
+
+- About ModPlug:
+
 We maintain a fork of libmodplug 0.8.8.4 here:
 https://github.com/christopho/libmodplug
 Previous versions of libmodplug cause compilation problems as well as issues
 like .it musics that do not correctly loop.
 
 
-Linux developers:
+2.1  Linux users:
+-----------------
 
 Just install the corresponding packages. For example, with Ubuntu or Debian:
 
+build-essential cmake
 libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libluajit-5.1-dev
 libphysfs-dev libopenal-dev libvorbis-dev libmodplug-dev
 
 
-Windows developers:
+2.2  Windows users:
+-------------------
+
+Install a C++ compiler if you don't have one.
+Solarus compiles fine with the MinGW compiler: http://www.mingw.org/
+and probably other compilers too.
 
 Download the binary version of each one of the development libraries listed
 above, on their official websites.
 Install the header files (the .h files) in your compiler's include directory.
-This may be something like
-C:\Program Files\Microsoft Visual Studio 9.0\VC\include.
-Similarly, install the library files (the .lib files) in your compiler's lib
-directory.
-This may be something like C:\Program Files\Microsoft Visual Studio 9.0\VC\lib.
-Install the dynamic library files (the .dll files) in your system32 directory
-(which may be C:\WINDOWS\system32).
+With the MinGW compiler for example, this may be something like
+C:\MinGW\include.
+Similarly, install the static library files (the .lib or .a files)
+in your compiler's lib directory.
+This may be something like C:\MinGW\lib.
+Install the dynamic library files (the .dll files) in your compiler's bin
+directory
+This may be something like C:\MinGW\bin.
 
-The directory libraries/win32 contains some required static and dynamic
-libraries that are not provided as binaries by their authors, but I don't
-guarantee they are up-to-date.
-
-With MinGW32, I had to use the compilation flag -std=gnu++11 instead of
--std=c++11 due to an issue in vorbisfile.h.
+The directory libraries/win32 of Solarus contains some required static and
+dynamic libraries that might be hard to find as binaries on websites
+(especially ModPlug). They all work at least with the MinGW compiler.
 
 
-Mac OS X developers:
+2.3  Mac OS X users:
+--------------------
 
 The directory libraries/macosx contains some required static and dynamic
 libraries that are not provided as binaries by their authors, but I don't
-guarantee they are up-to-date.
-The lua readme recommends to link statically against lua, so you shouldn't
+guarantee that they are up-to-date.
+The Lua readme recommends to link statically against Lua, so you shouldn't
 embed it.
 Also, the OpenAL framework is already part of the OSX system since 10.4, so you
-don't have to embed this one too.
+don't have to embed this one either.
 You can use both .dylib or .framework for the other ones, but just remember
 that you have to check the version number, runpath search, architecture and
 backward compatibility if you want to deploy your application.
@@ -117,119 +144,139 @@ backward compatibility if you want to deploy your application.
 ---------------------------
 
 
-3.1  Default settings
-----------------------
+3.1  Configure
+--------------
 
-To compile solarus with cmake, go to the solarus directory and type:
+Use CMake to generate Makefiles or a project for your favorite IDE,
+from the CMake GUI of from the command line.
 
-$ cmake .
+- Graphically:
 
-This generates the appropriate Makefiles for your system.
+Run the CMake GUI. Select the source directory of Solarus (like C:/solarus)
+and choose a build directory of your choice (like C:/solarus/build).
 
-Then you can compile the engine with:
+Click "Configure" and choose what kind of project you want CMake to generate:
+Makefiles, a Code::Blocks project, a Visual Studio project, etc.
+
+- Or from the command-line:
+
+Go to the solarus directory and type:
+
+$ mkdir build
+$ cd build
+$ cmake ..
+
+This generates appropriate Makefiles for your system in a build directory.
+If you prefer, you can also generate other kinds of projects with the
+appropriate -G option (see the documentation of CMake for more information).
+
+
+3.2  Build
+----------
+
+Then, you can compile the Solarus project that was generated by CMake.
+
+- Graphically:
+
+If you chose to generate a project for an IDE (like Code::Blocks),
+open the generated project an compile it from your IDE.
+
+- Or from the command-line:
+
+If you chose to generate Makefiles, you can compile from the command-line:
 
 $ make
 
-and install it with (as root):
+The build error messages will tell you which headers
+and libraries are missing (it is hard to get them right in one try!).
 
-# make install
+Once the compilation is finished, you obtain a dynamic library called solarus
+and an executable called solarus_run.
 
-This installs the solarus binary in /usr/local/bin
-(assuming that the install directory is /usr/local).
 
-Then, to execute a quest, type
+3.3.  Run
+---------
 
-$ solarus path/to/your/quest
+To execute a quest with the Solarus engine, execute the solarus_run
+executable.
+The quest path must be specified on the command line.
+If you don't specify it, it will be the current directory by default.
 
-The argument must be a directory containing the "data" subdirectory of your
+The quest path is a directory containing the "data" subdirectory of your
 quest, or containing the "data.solarus" or "data.solarus.zip" archive of
 your quest.
 
+It means that if you run solarus_run without parameters, a quest must
+exist in the current directory.
 
-3.2  Change the install directory
----------------------------------
+- Graphically:
 
-You may want to install solarus in another directory
-(e.g. so that no root access is necessary). You can specify this directory
-as a parameter of cmake:
+Make a shortcut that runs the solarus_run executable with your quest path as
+parameter.
+Or place the quest in the same directory as the solarus_run executable
+and run it wihout parameter.
 
-$ cmake -DCMAKE_INSTALL_PREFIX=/home/your_directory .
-$ make
+- Or from the command line:
+
+Type from your build directory:
+
+$ ./solarus_run path/to/your/quest
+
+
+3.4.  Install
+-------------
+
+Installing Solarus is optional.
+
+But this can be useful in some cases: if your want it in your PATH (on Unix),
+if you want to remove the build directory, or if you want to use the Solarus
+library in another project.
+
+- Graphically:
+
+Copy the solarus_run executable and the solarus library where you want them
+to be installed.
+
+If you intend to use the Solarus library from another project, you need to
+copy the whole include/solarus directory somewhere too.
+Important: also copy the build/include/solarus/config.h and put it with the
+other installed headers, next to config.h.in.
+(config.h is a header generated at configuration step, this is why it was in
+the build directory and not with the rest of source files.)
+
+- Or from the command line:
+
+If you generated Makefiles with CMake, an appropriate install rule is
+available:
+
 $ make install
 
-This installs the solarus binary like above, with the /usr/local prefix
-replaced by the one you specified.
+This will correctly install the solarus_run executable, the solarus library
+and the solarus headers (including the generated one config.h).
+The default installation directory probably requires administrative
+privileges.
+
+To change the installation directory, change the CMake variable
+CMAKE_INSTALL_PREFIX at the configuration step.
+The executable, the library and the headers will be installed in
+bin/, lib/ and include/ subdirectories of this install prefix.
+
+If you need even finer customization, the name of these three subdirectories
+can also be changed in CMake: they are set in variables
+SOLARUS_EXECUTABLE_INSTALL_DESTINATION, SOLARUS_LIBRARY_INSTALL_DESTINATION
+and SOLARUS_HEADERS_INSTALL_DESTINATION.
 
 
-3.3  More about the quest path
-------------------------------
-
-There are several ways to make the engine find the data of a quest.
-If the command-line argument is set (see above), then the engine looks into
-the directory specified (and expects a "data" subdirectory or a "data.solarus"
-or "data.solarus.zip" zip archive).
-If the command-line argument is not specified, the preprocessor constant
-DEFAULT_QUEST is used.
-The DEFAULT_QUEST constant can be configured from your cmake command by using:
-
-$ cmake -DDEFAULT_QUEST=/path/to/your/quest .
-
-Finally, if the DEFAULT_QUEST constant is not set either, then the engine looks
-into the current directory.
-
-This DEFAULT_QUEST constant may be used if you want the engine to launch a
-default quest when it is called without command-line arguments.
-You can still launch another quest by using the command-line argument,
-which overwrites the DEFAULT_QUEST constant.
+--------------------------------
+4  Platform-specific information
+--------------------------------
 
 
-3.4  SDL2 warning and luajit
-----------------------------
+4.1  Mac OS X
+-------------
 
-Various developers have had trouble with SDL2 vesion 2.0.0.
-If you are having trouble, use a later version.
-  Debian developers:
-    If you want SDL Debian packages for stable (wheezy) go to
-    http://forum.solarus-games.org/index.php/topic,45.msg166.html#msg166.
+- Compile on OSX
 
-Solarus requires, by default luajit.  Use of luajit is determined by the preprocessor constant
-SOLARUS_USE_LUAJIT.
-If you would like to turn off luajit, configure the constant from your cmake command by using:
-
-$ cmake -DSOLARUS_USE_LUAJIT=0 .
-
-3.5  Windows developers
------------------------
-
-I have managed to compile Solarus with Code::Blocks, without using CMake.
-It is necessary to additionally link with libz.
-
-If you compile with Visual C++, it should also work. You may need to add the
-\Za flag to make Visual C++ respect the C++ standards: otherwise, you may
-have a linker error with Music.h.
-
-Here is my procedure with Code::Blocks:
-- Create a C++ project.
-- Add recursively the files from include and src to your project.
-- Create an empty file include/config.h.
-- In Build options > Compiler settings > defines, for the Release mode,
-  add NDEBUG (very important for performance).
-- Also in Build options, link to the following libraries in this order:
-  mingw32, SDL2main, SDL2, SDL2_image, SDL2_ttf, lua5.1, physfs, OpenAL32,
-  modplug, vorbis, vorbisfile. Some of them may be specified as relative
-  file names of their DLL (in particular the ones I provide in the git
-  repository). You are supposed to have installed the other ones in the
-  compiler's environment.
-- Build the game with Code::Blocks. I recommend to compile in Release mode
-  for performance (because NDEBUG is set) and for executable size, unless
-  you are a developer. The build error messages will tell you which headers
-  and libraries are missing (it’s hard to get them right in one try!).
-
-
-3.6  Mac OS X developers
----------------------
-
-* Compile on OSX
 You can compile solarus just by doing the default setting with cmake, or generate the XCode project. 
 Note that you probably want to pass the SOLARUS_BUNDLE flag too, which build the entire bundle instead of 
 just the binary.
@@ -242,7 +289,8 @@ cmake to overload default settings, just like the following example :
 $ cmake -DSOLARUS_SYSROOT="/Developer/SDKs/MacOSX10.5.sdk" -DSOLARUS_ARCH="ppc;i386;x86_64" -DSOLARUS_DEPLOYMENT=10.5 .
 
 
-* Deploy on OSX
+- Deploy on OSX
+
 You will only build the executable with the default command.
 To build the entire bundle, pass the following flag to cmake
 
@@ -281,11 +329,12 @@ Finally, see https://developer.apple.com/library/mac/#releasenotes/General/Submi
 to make sure you have a fully 10.8+ and Mac App Store compatible application.
 
 
-* Add a quest into the OSX Bundle
+- Add a quest into the OSX Bundle
+
 Just copy the quest file (data.solarus, data.solarus.zip or data/) into ${your_bundle_name}.app/Contents/Resources/
 
 
-3.7  OpenPandora
+4.2  OpenPandora
 ----------------
 
 First, you need a working OpenPandora cross-compiling environment.
@@ -306,7 +355,7 @@ $ cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/pandora/PandoraToolchain.cmake ..
 $ make
 
 
-3.8 GCW-Zero
+4.2 GCW-Zero
 ------------
 
 First, you need a working GCW-Zero toolchain.  See the GCW-Zero development page at:
@@ -325,3 +374,4 @@ $ mkdir gcw-zero-build
 $ cd gcw-zero-build
 $ cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/gcw-zero/.cmake ..
 $ make
+

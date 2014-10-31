@@ -158,6 +158,16 @@ and choose a build directory of your choice (like C:/solarus/build).
 Click "Configure" and choose what kind of project you want CMake to generate:
 Makefiles, a Code::Blocks project, a Visual Studio project, etc.
 
+If CMake does not automatically find a compiler, indicate its installation path
+by creating a variable CMAKE_PREFIX_PATH with the appropriate value
+(for example C:/MinGW). This prefix path should be a directory that contains
+include, lib and bin directories with all dependencies in them.
+After that, click "Configure" again. CMake should be able to find all
+includes and libraries. If it does not, check that you have correctly
+installed them.
+
+Then click "Generate" to generate the project files.
+
 - Or from the command-line:
 
 Go to the solarus directory and type:

@@ -50,6 +50,30 @@ if(COLOR_DEPTH)
   add_definitions(-DSOLARUS_COLOR_DEPTH=${COLOR_DEPTH})
 endif()
 
+# Default compilation flags.
+set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING
+      "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
+      FORCE)
+endif()
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+  # Force to be the less pedantic possible with the Release build
+  set(CMAKE_CXX_FLAGS "-Wno-error -Wno-all -Wno-unknown-pragmas -Wno-fatal-errors -Wno-extra ${CMAKE_CXX_FLAGS}")
+else()
+  set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
+  set(CMAKE_CXX_FLAGS_DEBUG "-Werror -Wextra -pedantic ${CMAKE_CXX_FLAGS_DEBUG}")
+endif()
+
+# Windows: disable the console.
+if(WIN32)
+  if(MSVC)
+    set_target_properties(SOLARUS_ENGINE PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
+  elseif(CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "-mwindows ${CMAKE_CXX_FLAGS}")
+  endif()
+endif()
+
 # Find headers and libraries of dependencies.
 set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
 #find_package(OpenGL)
@@ -205,41 +229,6 @@ target_link_libraries(solarus_run
   "${OGG_LIBRARY}"
   "${MODPLUG_LIBRARY}"
 )
-
-# Default compilation flags.
-set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release CACHE STRING
-      "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
-      FORCE)
-endif()
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-  # Force to be the less pedantic possible with the Release build
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error -Wno-all -Wno-unknown-pragmas")
-
-  # Some "no-warning" flags are not supported with gcc < 4.0
-  if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-    exec_program(gcc ARGS --version OUTPUT_VARIABLE CMAKE_C_COMPILER_VERSION)
-    if(NOT CMAKE_C_COMPILER_VERSION MATCHES "(^|[^\\.])[0-3]\\.[0-9]")
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-fatal-errors -Wno-extra")
-    endif()
-  else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-fatal-errors -Wno-extra")
-  endif()
-
-else()
-  set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
-  set(CMAKE_CXX_FLAGS_DEBUG "-Werror -Wextra -pedantic ${CMAKE_CXX_FLAGS_DEBUG}")
-endif()
-
-# Windows: disable the console.
-if(WIN32)
-  if(MSVC)
-    set_target_properties(SOLARUS_ENGINE PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
-  elseif(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "-mwindows ${CMAKE_CXX_FLAGS}")
-  endif()
-endif()
 
 # Files to install with make install.
 # install the bundle if requested, or only the library and binary else

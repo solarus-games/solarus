@@ -7,6 +7,39 @@ set(SOLARUS_LIBRARY_INSTALL_DESTINATION "lib" CACHE PATH "Library install destin
 set(SOLARUS_EXECUTABLE_INSTALL_DESTINATION "bin" CACHE PATH "Binary install destination")
 set(SOLARUS_HEADERS_INSTALL_DESTINATION "include" CACHE PATH "Headers install destination")
 
+# Default compilation flags.
+
+# Compile as C++11.
+if(MINGW)
+  # To avoid a compilation error in vorbisfile.h with fseeko64.
+  set(CMAKE_CXX_FLAGS "-std=gnu++11 ${CMAKE_CXX_FLAGS}")
+else()
+  set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
+endif()
+
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING
+      "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
+      FORCE)
+endif()
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+  # Force to be the less pedantic possible with the Release build
+  set(CMAKE_CXX_FLAGS "-Wno-error -Wno-all -Wno-unknown-pragmas -Wno-fatal-errors -Wno-extra ${CMAKE_CXX_FLAGS}")
+else()
+  set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
+  set(CMAKE_CXX_FLAGS_DEBUG "-Werror -Wextra -pedantic ${CMAKE_CXX_FLAGS_DEBUG}")
+endif()
+
+if(WIN32)
+  # Windows: disable the console by default.
+  if(MSVC)
+    set_target_properties(SOLARUS_ENGINE PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
+  elseif(CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "-mwindows ${CMAKE_CXX_FLAGS}")
+  endif()
+endif()
+
+# Solarus default settings.
 set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
 if(DEFAULT_QUEST)
   add_definitions(-DSOLARUS_DEFAULT_QUEST=\"${DEFAULT_QUEST}\")
@@ -50,31 +83,7 @@ if(COLOR_DEPTH)
   add_definitions(-DSOLARUS_COLOR_DEPTH=${COLOR_DEPTH})
 endif()
 
-# Default compilation flags.
-set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release CACHE STRING
-      "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
-      FORCE)
-endif()
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-  # Force to be the less pedantic possible with the Release build
-  set(CMAKE_CXX_FLAGS "-Wno-error -Wno-all -Wno-unknown-pragmas -Wno-fatal-errors -Wno-extra ${CMAKE_CXX_FLAGS}")
-else()
-  set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
-  set(CMAKE_CXX_FLAGS_DEBUG "-Werror -Wextra -pedantic ${CMAKE_CXX_FLAGS_DEBUG}")
-endif()
-
-# Windows: disable the console.
-if(WIN32)
-  if(MSVC)
-    set_target_properties(SOLARUS_ENGINE PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
-  elseif(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "-mwindows ${CMAKE_CXX_FLAGS}")
-  endif()
-endif()
-
-# Find headers and libraries of dependencies.
+# Find dependencies.
 set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
 #find_package(OpenGL)
 find_package(SDL2 REQUIRED)

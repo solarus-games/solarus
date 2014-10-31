@@ -105,7 +105,7 @@ libphysfs-dev libopenal-dev libvorbis-dev libmodplug-dev
 
 Install a C++ compiler if you don't have one.
 Solarus compiles fine with the MinGW compiler: http://www.mingw.org/
-and probably other compilers too.
+and probably with other compilers too.
 
 Download the binary version of each one of the development libraries listed
 above, on their official websites.

@@ -35,7 +35,6 @@ endif()
 
 include(CheckFunctionExists)
 check_function_exists(mkstemp HAVE_MKSTEMP)
-configure_file("${CMAKE_SOURCE_DIR}/include/solarus/config.h.in" "${CMAKE_BINARY_DIR}/include/solarus/config.h")
 
 include(CheckIncludeFiles)
 check_include_files(unistd.h HAVE_UNISTD_H)

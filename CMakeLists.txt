@@ -1,192 +1,11 @@
 cmake_minimum_required(VERSION 2.8.11)
 project(SOLARUS_ENGINE)
 
-set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
+# Default settings.
+option(SOLARUS_USE_LUAJIT "Use LuaJIT instead of default Lua (recommended)" ON)
 set(SOLARUS_LIBRARY_INSTALL_DESTINATION "lib" CACHE PATH "Library install destination")
 set(SOLARUS_EXECUTABLE_INSTALL_DESTINATION "bin" CACHE PATH "Binary install destination")
 set(SOLARUS_HEADERS_INSTALL_DESTINATION "include" CACHE PATH "Headers install destination")
-
-option(SOLARUS_USE_LUAJIT "Use LuaJIT instead of default Lua (recommended)" ON)
-
-# find the headers and the libraries of dependencies
-#find_package(OpenGL)
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
-find_package(SDL2_ttf REQUIRED)
-find_package(OpenAL REQUIRED)
-find_package(VorbisFile REQUIRED)
-find_package(Ogg REQUIRED)
-find_package(ModPlug REQUIRED)
-find_package(PhysFS REQUIRED)
-if(SOLARUS_USE_LUAJIT)
-  find_package(LuaJit REQUIRED)
-else()
-  find_package(Lua51 REQUIRED)
-endif()
-
-# Explicit link to libdl is needed for Lua on some systems.
-find_library(DL_LIBRARY dl)
-if("${DL_LIBRARY}" MATCHES DL_LIBRARY-NOTFOUND)
-  set(DL_LIBRARY "")
-endif()
-
-include(CheckFunctionExists)
-check_function_exists(mkstemp HAVE_MKSTEMP)
-
-include(CheckIncludeFiles)
-check_include_files(unistd.h HAVE_UNISTD_H)
-configure_file("${CMAKE_SOURCE_DIR}/include/solarus/config.h.in" "${CMAKE_BINARY_DIR}/include/solarus/config.h")
-
-# source files
-file(
-  GLOB
-  source_files
-  src/*.cpp
-  src/third_party/snes_spc/*.cpp
-  src/third_party/hqx/*.c
-  src/entities/*.cpp
-  src/hero/*.cpp
-  src/hud/*.cpp
-  src/lowlevel/*.cpp
-  src/lowlevel/shaders/*.cpp
-  src/lua/*.cpp
-  src/menus/*.cpp
-  src/movements/*.cpp
-  src/containers/*.cpp
-  include/*.h
-  include/*.inl
-  include/entities/*.h
-  include/entities/*.inl
-  include/hero/*.h
-  include/hero/*.inl
-  include/hud/*.h
-  include/hud/*.inl
-  include/lowlevel/*.h
-  include/lowlevel/*.inl
-  include/lowlevel/shaders*.h
-  include/lowlevel/shaders*.inl
-  include/lua/*.h
-  include/lua/*.inl
-  include/menus/*.h
-  include/menus/*.inl
-  include/movements/*.h
-  include/movements/*.inl
-  include/containers/*.h
-  include/containers/*.inl
-  include/third_party/snes_spc/*.h
-  include/third_party/hqx/*.h
-)
-set(main_source_file
-  src/main/Main.cpp
-)
-
-# Configuration for OSX and iOS build and deployment
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  if(NOT SOLARUS_IOS_BUILD)
-    include(OSX)
-  else()
-    include(iOS)
-  endif()
-endif()
-
-# Additional source files for Apple systems
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(source_files
-    ${source_files}
-    src/lowlevel/apple/AppleInterface.mm
-    include/lowlevel/apple/AppleInterface.h
-  )
-endif()
-
-# Build the Solarus library.
-add_library(solarus
-  SHARED
-  ${source_files}
-)
-
-# Add executable target, into CFBundle form if requested or iOS build
-if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
-  include(addCFBundleTarget)
-else()
-  add_executable(solarus_run
-    ${main_source_file}
-  )
-endif()
-
-include_directories(
-  "${CMAKE_BINARY_DIR}/include"
-  "${SOLARUS_ENGINE_SOURCE_DIR}/include"
-  "${SOLARUS_ENGINE_SOURCE_DIR}/include/solarus/third_party"
-  "${SOLARUS_ENGINE_SOURCE_DIR}/include/solarus/third_party/snes_spc"
-)
-
-# Marking include directories as system ones disables warnings with gcc.
-include_directories(SYSTEM  
-  "${MODPLUG_INCLUDE_DIR}"  # Before SDL2 because we want the sndfile.h of ModPlug.
-  "${SDL2_INCLUDE_DIR}"
-  "${SDL2_TTF_INCLUDE_DIR}"
-  "${SDL2_IMAGE_INCLUDE_DIR}"
-  "${OPENAL_INCLUDE_DIR}"
-  "${VORBISFILE_INCLUDE_DIR}"
-  "${OGG_INCLUDE_DIR}"
-  "${LUA_INCLUDE_DIR}"
-  "${PHYSFS_INCLUDE_DIR}"
-)
-
-# generate -l flags
-target_link_libraries(solarus
-  "${SDL2MAIN_LIBRARY}"
-  "${SDL2_LIBRARY}"
-  "${SDL2_IMAGE_LIBRARY}"
-  "${SDL2_TTF_LIBRARY}"
-  "${OPENAL_LIBRARY}"
-  "${LUA_LIBRARY}"
-  "${DL_LIBRARY}"
-  "${PHYSFS_LIBRARY}"
-  "${VORBISFILE_LIBRARY}"
-  "${OGG_LIBRARY}"
-  "${MODPLUG_LIBRARY}"
-)
-
-target_link_libraries(solarus_run
-  solarus
-  "${SDL2_LIBRARY}"
-  "${SDL2_IMAGE_LIBRARY}"
-  "${SDL2_TTF_LIBRARY}"
-  "${OPENAL_LIBRARY}"
-  "${LUA_LIBRARY}"
-  "${DL_LIBRARY}"
-  "${PHYSFS_LIBRARY}"
-  "${VORBISFILE_LIBRARY}"
-  "${OGG_LIBRARY}"
-  "${MODPLUG_LIBRARY}"
-)
-
-# default compilation flags
-set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release CACHE STRING
-      "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
-      FORCE)
-endif()
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-  # Force to be the less pedantic possible with the Release build
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error -Wno-all -Wno-unknown-pragmas")
-
-  # Some "no-warning" flags are not supported with gcc < 4.0
-  if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-    exec_program(gcc ARGS --version OUTPUT_VARIABLE CMAKE_C_COMPILER_VERSION)
-    if(NOT CMAKE_C_COMPILER_VERSION MATCHES "(^|[^\\.])[0-3]\\.[0-9]")
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-fatal-errors -Wno-extra")
-    endif()
-  else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-fatal-errors -Wno-extra")
-  endif()
-
-else()
-  set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
-  set(CMAKE_CXX_FLAGS_DEBUG "-Werror -Wextra -pedantic ${CMAKE_CXX_FLAGS_DEBUG}")
-endif()
 
 set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
 if(DEFAULT_QUEST)
@@ -231,7 +50,198 @@ if(COLOR_DEPTH)
   add_definitions(-DSOLARUS_COLOR_DEPTH=${COLOR_DEPTH})
 endif()
 
-# files to install with make install
+# Find headers and libraries of dependencies.
+set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
+#find_package(OpenGL)
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_ttf REQUIRED)
+find_package(OpenAL REQUIRED)
+find_package(VorbisFile REQUIRED)
+find_package(Ogg REQUIRED)
+find_package(ModPlug REQUIRED)
+find_package(PhysFS REQUIRED)
+if(SOLARUS_USE_LUAJIT)
+  find_package(LuaJit REQUIRED)
+else()
+  find_package(Lua51 REQUIRED)
+endif()
+
+# Explicit link to libdl is needed for Lua on some systems.
+find_library(DL_LIBRARY dl)
+if("${DL_LIBRARY}" MATCHES DL_LIBRARY-NOTFOUND)
+  set(DL_LIBRARY "")
+endif()
+
+# Generate config.h with useful configuration info.
+include(CheckFunctionExists)
+check_function_exists(mkstemp HAVE_MKSTEMP)
+
+include(CheckIncludeFiles)
+check_include_files(unistd.h HAVE_UNISTD_H)
+configure_file("${CMAKE_SOURCE_DIR}/include/solarus/config.h.in" "${CMAKE_BINARY_DIR}/include/solarus/config.h")
+
+# Source files.
+file(
+  GLOB
+  source_files
+  src/*.cpp
+  src/third_party/snes_spc/*.cpp
+  src/third_party/hqx/*.c
+  src/entities/*.cpp
+  src/hero/*.cpp
+  src/hud/*.cpp
+  src/lowlevel/*.cpp
+  src/lowlevel/shaders/*.cpp
+  src/lua/*.cpp
+  src/menus/*.cpp
+  src/movements/*.cpp
+  src/containers/*.cpp
+  include/*.h
+  include/*.inl
+  include/entities/*.h
+  include/entities/*.inl
+  include/hero/*.h
+  include/hero/*.inl
+  include/hud/*.h
+  include/hud/*.inl
+  include/lowlevel/*.h
+  include/lowlevel/*.inl
+  include/lowlevel/shaders*.h
+  include/lowlevel/shaders*.inl
+  include/lua/*.h
+  include/lua/*.inl
+  include/menus/*.h
+  include/menus/*.inl
+  include/movements/*.h
+  include/movements/*.inl
+  include/containers/*.h
+  include/containers/*.inl
+  include/third_party/snes_spc/*.h
+  include/third_party/hqx/*.h
+)
+set(main_source_file
+  src/main/Main.cpp
+)
+
+# Configuration for OSX and iOS build and deployment.
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  if(NOT SOLARUS_IOS_BUILD)
+    include(OSX)
+  else()
+    include(iOS)
+  endif()
+endif()
+
+# Additional source files for Apple systems.
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  set(source_files
+    ${source_files}
+    src/lowlevel/apple/AppleInterface.mm
+    include/lowlevel/apple/AppleInterface.h
+  )
+endif()
+
+# Build the Solarus library.
+add_library(solarus
+  SHARED
+  ${source_files}
+)
+# Add executable target, into CFBundle form if requested or iOS build.
+if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
+  include(addCFBundleTarget)
+else()
+  add_executable(solarus_run
+    ${main_source_file}
+  )
+endif()
+
+# Include paths.
+include_directories(
+  "${CMAKE_BINARY_DIR}/include"
+  "${SOLARUS_ENGINE_SOURCE_DIR}/include"
+  "${SOLARUS_ENGINE_SOURCE_DIR}/include/solarus/third_party"
+  "${SOLARUS_ENGINE_SOURCE_DIR}/include/solarus/third_party/snes_spc"
+)
+
+# External include paths, marked as system ones to disable their warnings.
+include_directories(SYSTEM  
+  "${MODPLUG_INCLUDE_DIR}"  # Before SDL2 because we want the sndfile.h of ModPlug.
+  "${SDL2_INCLUDE_DIR}"
+  "${SDL2_TTF_INCLUDE_DIR}"
+  "${SDL2_IMAGE_INCLUDE_DIR}"
+  "${OPENAL_INCLUDE_DIR}"
+  "${VORBISFILE_INCLUDE_DIR}"
+  "${OGG_INCLUDE_DIR}"
+  "${LUA_INCLUDE_DIR}"
+  "${PHYSFS_INCLUDE_DIR}"
+)
+
+# Libraries.
+target_link_libraries(solarus
+  "${SDL2MAIN_LIBRARY}"
+  "${SDL2_LIBRARY}"
+  "${SDL2_IMAGE_LIBRARY}"
+  "${SDL2_TTF_LIBRARY}"
+  "${OPENAL_LIBRARY}"
+  "${LUA_LIBRARY}"
+  "${DL_LIBRARY}"
+  "${PHYSFS_LIBRARY}"
+  "${VORBISFILE_LIBRARY}"
+  "${OGG_LIBRARY}"
+  "${MODPLUG_LIBRARY}"
+)
+
+target_link_libraries(solarus_run
+  solarus
+  "${SDL2_LIBRARY}"
+  "${SDL2_IMAGE_LIBRARY}"
+  "${SDL2_TTF_LIBRARY}"
+  "${OPENAL_LIBRARY}"
+  "${LUA_LIBRARY}"
+  "${DL_LIBRARY}"
+  "${PHYSFS_LIBRARY}"
+  "${VORBISFILE_LIBRARY}"
+  "${OGG_LIBRARY}"
+  "${MODPLUG_LIBRARY}"
+)
+
+# Default compilation flags.
+set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING
+      "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
+      FORCE)
+endif()
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+  # Force to be the less pedantic possible with the Release build
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error -Wno-all -Wno-unknown-pragmas")
+
+  # Some "no-warning" flags are not supported with gcc < 4.0
+  if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+    exec_program(gcc ARGS --version OUTPUT_VARIABLE CMAKE_C_COMPILER_VERSION)
+    if(NOT CMAKE_C_COMPILER_VERSION MATCHES "(^|[^\\.])[0-3]\\.[0-9]")
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-fatal-errors -Wno-extra")
+    endif()
+  else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-fatal-errors -Wno-extra")
+  endif()
+
+else()
+  set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
+  set(CMAKE_CXX_FLAGS_DEBUG "-Werror -Wextra -pedantic ${CMAKE_CXX_FLAGS_DEBUG}")
+endif()
+
+# Windows: disable the console.
+if(WIN32)
+  if(MSVC)
+    set_target_properties(SOLARUS_ENGINE PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
+  elseif(CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "-mwindows ${CMAKE_CXX_FLAGS}")
+  endif()
+endif()
+
+# Files to install with make install.
 # install the bundle if requested, or only the library and binary else
 if(SOLARUS_BUNDLE)
   install(TARGETS solarus_run
@@ -249,16 +259,6 @@ else()
     "${SOLARUS_ENGINE_SOURCE_DIR}/include/solarus"
     DESTINATION ${SOLARUS_HEADERS_INSTALL_DESTINATION}
   )
-endif()
-
-
-# Windows: disable the console.
-if(WIN32)
-  if(MSVC)
-    set_target_properties(SOLARUS_ENGINE PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
-  elseif(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "-mwindows ${CMAKE_CXX_FLAGS}")
-  endif()
 endif()
 
 # Unit tests.

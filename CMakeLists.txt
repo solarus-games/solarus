@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 2.8.11)
 project(SOLARUS_ENGINE)
 
-if(COMMAND cmake_policy)
-  cmake_policy(SET CMP0003 NEW)
-endif()
-
 set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
 set(SOLARUS_LIBRARY_INSTALL_DESTINATION "lib" CACHE PATH "Library install destination")
 set(SOLARUS_EXECUTABLE_INSTALL_DESTINATION "bin" CACHE PATH "Binary install destination")

@@ -29,6 +29,7 @@
 #include "solarus/Savegame.h"
 #include "solarus/StringResource.h"
 #include "solarus/CurrentQuest.h"
+#include <lua.hpp>
 #include <sstream>
 
 namespace Solarus {
@@ -358,8 +359,31 @@ void MainLoop::draw() {
  */
 void MainLoop::load_quest_properties() {
 
+  // Read the quest properties file.
+  const std::string file_name("quest.dat");
+  lua_State* l = luaL_newstate();
+  const std::string& buffer = FileTools::data_file_read(file_name);
+  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
+
+  if (load_result != 0) {
+    // Syntax error in quest.dat.
+    // Loading quest.dat failed.
+    // There may be a syntax error, or this is a quest for Solarus 0.9.
+    // There was no version number at that time.
+
+    if (std::string(buffer).find("[info]")) {
+      // Quest format of Solarus 0.9.
+      Debug::die(std::string("This quest is made for Solarus 0.9 but you are running Solarus ")
+          + SOLARUS_VERSION);
+    }
+    else {
+      Debug::die(std::string("Failed to load quest.dat: ") + lua_tostring(l, -1));
+    }
+  }
+
   QuestProperties properties;
-  properties.load();
+  properties.import_from_lua(l);
+  lua_close(l);
 
   check_version_compatibility(properties.get_solarus_version());
   FileTools::set_quest_write_dir(properties.get_quest_write_dir());
@@ -376,4 +400,3 @@ void MainLoop::load_quest_properties() {
 }
 
 }
-

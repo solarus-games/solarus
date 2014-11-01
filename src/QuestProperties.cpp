@@ -100,43 +100,29 @@ QuestProperties::QuestProperties() {
 }
 
 /**
- * \brief Load properties from a quest.dat.
+ * \copydoc LuaData::import_from_lua
  */
-void QuestProperties::load() {
+bool QuestProperties::import_from_lua(lua_State* l) {
 
-  // Read the quest properties file.
-  const std::string file_name("quest.dat");
-  lua_State* l = luaL_newstate();
-  const std::string& buffer = FileTools::data_file_read(file_name);
-  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
-
-  if (load_result != 0) {
-    // Syntax error in quest.dat.
-    // Loading quest.dat failed.
-    // There may be a syntax error, or this is a quest for Solarus 0.9.
-    // There was no version number at that time.
-
-    if (std::string(buffer).find("[info]")) {
-      // Quest format of Solarus 0.9.
-      Debug::die(std::string("This quest is made for Solarus 0.9 but you are running Solarus ")
-          + SOLARUS_VERSION);
-    }
-    else {
-      Debug::die(std::string("Failed to load quest.dat: ") + lua_tostring(l, -1));
-    }
-  }
-  else {
-    lua_pushlightuserdata(l, this);
-    lua_pushcclosure(l, l_quest, 1);
-    lua_setglobal(l, "quest");
-    if (lua_pcall(l, 0, 0, 0) != 0) {
-      // Runtime error in quest.dat.
-      Debug::die(std::string("Failed to parse quest.dat: ") + lua_tostring(l, -1));
-    }
-    lua_pop(l, 1);
+  lua_pushlightuserdata(l, this);
+  lua_pushcclosure(l, l_quest, 1);
+  lua_setglobal(l, "quest");
+  if (lua_pcall(l, 0, 0, 0) != 0) {
+    // Runtime error in quest.dat.
+    Debug::error(std::string("Failed to parse quest.dat: ") + lua_tostring(l, -1));
+    return false;
   }
 
-  lua_close(l);
+  return true;
+}
+
+/**
+ * \copydoc LuaData::export_to_lua
+ */
+bool QuestProperties::export_to_lua(std::ostream& /* out */) const {
+
+  // TODO
+  return false;
 }
 
 /**

@@ -20,6 +20,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/lowlevel/Size.h"
+#include "solarus/lua/LuaData.h"
 #include <string>
 
 struct lua_State;
@@ -41,13 +42,14 @@ class MainLoop;
  * (even if they are also available through the Solarus scripting API)
  * is to make them easily editable in quest editors.
  */
-class QuestProperties {
+class SOLARUS_API QuestProperties : public LuaData {
 
   public:
 
     QuestProperties();
 
-    void load();
+    virtual bool import_from_lua(lua_State* l) override;
+    virtual bool export_to_lua(std::ostream& out) const override;
 
     std::string get_solarus_version();
     void set_solarus_version(const std::string& solarus_version);

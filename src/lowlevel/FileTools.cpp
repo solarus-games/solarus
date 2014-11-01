@@ -433,7 +433,7 @@ std::string FileTools::get_full_quest_write_dir() {
 }
 
 /**
- * \brief Returns the privilegied base write directory, depending on the OS.
+ * \brief Returns the privileged base write directory, depending on the OS.
  * \return The base write directory.
  */
 std::string FileTools::get_base_write_dir() {

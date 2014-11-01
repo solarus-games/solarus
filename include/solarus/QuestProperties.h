@@ -19,6 +19,8 @@
 #define SOLARUS_QUEST_PROPERTIES_H
 
 #include "solarus/Common.h"
+#include "solarus/lowlevel/Size.h"
+#include <string>
 
 struct lua_State;
 
@@ -27,10 +29,9 @@ namespace Solarus {
 class MainLoop;
 
 /**
- * \brief This class reads the quest properties from file quest.dat
- * and applies them.
+ * \brief This class stores properties of a quest (the quest.dat file).
  *
- * These properties are general information about the quest. They include:
+ * These properties are general information about a quest. They include:
  * - the Solarus compatibility version,
  * - the writing directory for savegames of this quest,
  * - the window title bar.
@@ -44,13 +45,40 @@ class QuestProperties {
 
   public:
 
-    QuestProperties(MainLoop& main_loop);
+    QuestProperties();
 
     void load();
 
+    std::string get_solarus_version();
+    void set_solarus_version(const std::string& solarus_version);
+
+    std::string get_quest_write_dir();
+    void set_quest_write_dir(const std::string& quest_write_dir);
+
+    std::string get_title_bar();
+    void set_title_bar(const std::string& title_bar);
+
+    Size get_normal_quest_size();
+    void set_normal_quest_size(const Size& normal_quest_size);
+
+    Size get_min_quest_size();
+    void set_min_quest_size(const Size& min_quest_size);
+
+    Size get_max_quest_size();
+    void set_max_quest_size(const Size& max_quest_size);
+
   private:
 
-    static int l_quest(lua_State* l);
+    std::string solarus_version;       /**< Version of Solarus the quest is
+                                        * compatible with. */
+    std::string quest_write_dir;       /**< Directory where to save files of
+                                        * the quest, relative to
+                                        * FileTools::get_base_write_dir(). */
+    std::string title_bar;             /**< Title of the game window. */
+    Size normal_quest_size;            /**< Default quest size. */
+    Size min_quest_size;               /**< Minimum quest size. */
+    Size max_quest_size;               /**< Maximum quest size. */
+
 };
 
 }

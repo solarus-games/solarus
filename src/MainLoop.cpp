@@ -29,8 +29,53 @@
 #include "solarus/Savegame.h"
 #include "solarus/StringResource.h"
 #include "solarus/CurrentQuest.h"
+#include <sstream>
 
 namespace Solarus {
+
+namespace {
+
+/**
+ * \brief Checks that the quest is compatible with the current version of
+ * Solarus.
+ * \param solarus_required_version Version of the quest.
+ */
+void check_version_compatibility(const std::string& solarus_required_version) {
+
+  if (solarus_required_version.empty()) {
+    Debug::die("No Solarus version is specified in your quest.dat file!");
+  }
+
+  // TODO check the syntax of the version string
+
+  int dot_index_1 = solarus_required_version.find('.');
+  std::istringstream iss(solarus_required_version.substr(0, dot_index_1));
+  int required_major_version = 0;
+  iss >> required_major_version;
+
+  int dot_index_2 = solarus_required_version.find('.', dot_index_1 + 1);
+  std::istringstream iss2(solarus_required_version.substr(dot_index_1 + 1, dot_index_2));
+  int required_minor_version = 0;
+  iss2 >> required_minor_version;
+
+  // The third digit of the version (patch) is ignored because compatibility
+  // is not broken by patches.
+
+  // For now, we assume that any mismatch of major or minor version (first
+  // and second digits) breaks compatibility and we just die.
+  // This may change in the future, because all minor versions won't
+  // necessarily break compatibility.
+  if (required_major_version != SOLARUS_MAJOR_VERSION ||
+      required_minor_version != SOLARUS_MINOR_VERSION) {
+    std::ostringstream oss;
+    oss << "This quest is made for Solarus " << required_major_version << "."
+        << required_minor_version << ".x but you are running Solarus "
+        << SOLARUS_VERSION;
+    Debug::die(oss.str());
+  }
+}
+
+}
 
 /**
  * \brief Initializes the game engine.
@@ -47,8 +92,7 @@ MainLoop::MainLoop(const Arguments& args):
   System::initialize(args);
 
   // Read the quest general properties.
-  QuestProperties quest_properties(*this);
-  quest_properties.load();
+  load_quest_properties();
 
   // Read the quest resource list from data.
   CurrentQuest::initialize();
@@ -307,6 +351,28 @@ void MainLoop::draw() {
   }
   lua_context->main_on_draw(root_surface);
   Video::render(root_surface);
+}
+
+/**
+ * \brief Reads the quest properties file quest.dat and applies its settings.
+ */
+void MainLoop::load_quest_properties() {
+
+  QuestProperties properties;
+  properties.load();
+
+  check_version_compatibility(properties.get_solarus_version());
+  FileTools::set_quest_write_dir(properties.get_quest_write_dir());
+  if (!properties.get_title_bar().empty()) {
+    Video::set_window_title(properties.get_title_bar());
+  }
+
+  Video::set_quest_size_range(
+      properties.get_normal_quest_size(),
+      properties.get_min_quest_size(),
+      properties.get_max_quest_size()
+  );
+
 }
 
 }

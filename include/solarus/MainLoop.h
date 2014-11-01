@@ -54,6 +54,7 @@ class SOLARUS_API MainLoop {
 
   private:
 
+    void load_quest_properties();
     void check_input();
 
     std::unique_ptr<LuaContext>

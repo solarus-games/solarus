@@ -22,7 +22,7 @@
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
 #include "solarus/DialogResource.h"
-#include "solarus/CurrentQuestResources.h"
+#include "solarus/CurrentQuest.h"
 #include "solarus/KeysEffect.h"
 #include "solarus/lowlevel/FileTools.h"
 #include "solarus/lowlevel/Debug.h"
@@ -246,7 +246,7 @@ int LuaContext::game_api_start(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     std::shared_ptr<Savegame> savegame = check_game(l, 1);
 
-    if (CurrentQuestResources::get_elements(ResourceType::MAP).empty()) {
+    if (CurrentQuest::get_resources(ResourceType::MAP).empty()) {
       LuaTools::error(l, "Cannot start game: there is no map in this quest");
     }
 

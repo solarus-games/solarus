@@ -28,7 +28,7 @@
 #include "solarus/Game.h"
 #include "solarus/Savegame.h"
 #include "solarus/StringResource.h"
-#include "solarus/CurrentQuestResources.h"
+#include "solarus/CurrentQuest.h"
 
 namespace Solarus {
 
@@ -51,7 +51,7 @@ MainLoop::MainLoop(const Arguments& args):
   quest_properties.load();
 
   // Read the quest resource list from data.
-  CurrentQuestResources::initialize();
+  CurrentQuest::initialize();
 
   // Create the quest surface.
   root_surface = Surface::create(
@@ -80,7 +80,7 @@ MainLoop::~MainLoop() {
   }
 
   lua_context->exit();
-  CurrentQuestResources::quit();
+  CurrentQuest::quit();
   System::quit();
 }
 

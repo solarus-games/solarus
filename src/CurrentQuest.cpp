@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/FileTools.h"
-#include "solarus/CurrentQuestResources.h"
+#include "solarus/CurrentQuest.h"
 #include "solarus/QuestResources.h"
 
 namespace Solarus {
 
-namespace CurrentQuestResources {
+namespace CurrentQuest {
 
 /**
  * \brief Reads the resource list file data file project_db.dat of the
@@ -57,10 +57,10 @@ QuestResources& get_resources() {
  * \brief Returns whether there exists an element with the specified id.
  * \param resource_type A type of resource.
  * \param id The id to look for.
- * \return \c true if there exists an element with the specified id in this
+ * \return \c true if there resource_exists an element with the specified id in this
  * resource type.
  */
-bool exists(ResourceType resource_type, const std::string& id) {
+bool resource_exists(ResourceType resource_type, const std::string& id) {
 
   return get_resources().exists(resource_type, id);
 }
@@ -72,7 +72,7 @@ bool exists(ResourceType resource_type, const std::string& id) {
  * order.
  */
 const std::map<std::string, std::string>&
-get_elements(ResourceType resource_type) {
+get_resources(ResourceType resource_type) {
 
   return get_resources().get_elements(resource_type);
 }

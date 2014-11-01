@@ -41,7 +41,7 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/movements/Movement.h"
-#include "solarus/CurrentQuestResources.h"
+#include "solarus/CurrentQuest.h"
 #include "solarus/DialogResource.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
@@ -1380,7 +1380,7 @@ int LuaContext::hero_api_teleport(lua_State* l) {
     Transition::Style transition_style = LuaTools::opt_enum<Transition::Style>(
         l, 4, Transition::style_names, Transition::FADE);
 
-    if (!CurrentQuestResources::exists(ResourceType::MAP, map_id)) {
+    if (!CurrentQuest::resource_exists(ResourceType::MAP, map_id)) {
       LuaTools::arg_error(l, 2, std::string("No such map: '") + map_id + "'");
     }
 

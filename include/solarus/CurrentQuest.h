@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_CURRENT_QUEST_RESOURCE_H
-#define SOLARUS_CURRENT_QUEST_RESOURCE_H
+#ifndef SOLARUS_CURRENT_QUEST_H
+#define SOLARUS_CURRENT_QUEST_H
 
 #include "solarus/Common.h"
 #include "solarus/ResourceType.h"
@@ -26,17 +26,17 @@
 namespace Solarus {
 
 /**
- * \brief Provides access to the resources of the current quest.
- * TODO rename to CurrentQuest and also store global things like strings and dialogs
+ * \brief Provides access to data of the current quest.
+ * TODO and also store global things like strings and dialogs
  */
-namespace CurrentQuestResources {
+namespace CurrentQuest {
 
 void initialize();
 void quit();
 
 QuestResources& get_resources();
-bool exists(ResourceType resource_type, const std::string& id);
-const std::map<std::string, std::string>& get_elements(ResourceType resource_type);
+bool resource_exists(ResourceType resource_type, const std::string& id);
+const std::map<std::string, std::string>& get_resources(ResourceType resource_type);
 
 }
 

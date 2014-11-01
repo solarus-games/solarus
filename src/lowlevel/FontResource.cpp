@@ -18,7 +18,7 @@
 #include "solarus/lowlevel/FileTools.h"
 #include "solarus/lowlevel/FontResource.h"
 #include "solarus/lowlevel/Surface.h"
-#include "solarus/CurrentQuestResources.h"
+#include "solarus/CurrentQuest.h"
 
 namespace Solarus {
 
@@ -50,7 +50,7 @@ void FontResource::load_fonts() {
 
   // Get the list of available fonts.
   const std::map<std::string, std::string>& font_resource =
-      CurrentQuestResources::get_elements(ResourceType::FONT);
+      CurrentQuest::get_resources(ResourceType::FONT);
 
   for (const auto& kvp: font_resource) {
 

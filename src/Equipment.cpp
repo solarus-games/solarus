@@ -19,7 +19,7 @@
 #include "solarus/Savegame.h"
 #include "solarus/EquipmentItem.h"
 #include "solarus/Map.h"
-#include "solarus/CurrentQuestResources.h"
+#include "solarus/CurrentQuest.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/FileTools.h"
@@ -405,7 +405,7 @@ void Equipment::load_items() {
 
   // Create each equipment item declared in project_db.dat.
   const std::map<std::string, std::string>& item_elements =
-      CurrentQuestResources::get_elements(ResourceType::ITEM);
+      CurrentQuest::get_resources(ResourceType::ITEM);
   for (const auto& kvp: item_elements) {
     const std::string& item_id = kvp.first;
     std::shared_ptr<EquipmentItem> item = std::make_shared<EquipmentItem>(*this);

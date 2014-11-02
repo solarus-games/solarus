@@ -138,7 +138,7 @@ bool QuestProperties::export_to_lua(std::ostream& out) const {
  * \brief Returns the Solarus compatibility version of the quest.
  * \return The "solarus_version" value.
  */
-std::string QuestProperties::get_solarus_version() {
+std::string QuestProperties::get_solarus_version() const {
   return solarus_version;
 }
 
@@ -154,7 +154,7 @@ void QuestProperties::set_solarus_version(const std::string& solarus_version) {
  * \brief Returns the quest write directory.
  * \return The "write_dir" value.
  */
-std::string QuestProperties::get_quest_write_dir() {
+std::string QuestProperties::get_quest_write_dir() const {
   return quest_write_dir;
 }
 
@@ -170,7 +170,7 @@ void QuestProperties::set_quest_write_dir(const std::string& quest_write_dir) {
  * \brief Returns the title of the game window.
  * \return The "title_bar" value.
  */
-std::string QuestProperties::get_title_bar() {
+std::string QuestProperties::get_title_bar() const {
   return title_bar;
 }
 
@@ -186,7 +186,7 @@ void QuestProperties::set_title_bar(const std::string& title_bar) {
  * \brief Returns the default quest size.
  * \return The "normal_quest_size" value.
  */
-Size QuestProperties::get_normal_quest_size() {
+Size QuestProperties::get_normal_quest_size() const {
   return normal_quest_size;
 }
 
@@ -202,7 +202,7 @@ void QuestProperties::set_normal_quest_size(const Size& normal_quest_size) {
  * \brief Returns the minimum quest size.
  * \return The "min_quest_size" value.
  */
-Size QuestProperties::get_min_quest_size() {
+Size QuestProperties::get_min_quest_size() const {
   return min_quest_size;
 }
 
@@ -218,7 +218,7 @@ void QuestProperties::set_min_quest_size(const Size& min_quest_size) {
  * \brief Returns the maximum quest size.
  * \return The "max_quest_size" value.
  */
-Size QuestProperties::get_max_quest_size() {
+Size QuestProperties::get_max_quest_size() const {
   return max_quest_size;
 }
 

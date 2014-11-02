@@ -64,6 +64,14 @@
  */
 #define SOLARUS_PATCH_VERSION 0
 
+/**
+ * \brief The Solarus version as a string.
+ *
+ * This string has the form "x.y.z" where x is the major version, y is the
+ * minor version and z is the patch version.
+ */
+#define SOLARUS_VERSION (SOLARUS_STRINGIFY(SOLARUS_MAJOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_MINOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_PATCH_VERSION))
+
 // Windows specific.
 #ifdef _WIN32
 #  ifdef solarus_EXPORTS  // Define automatically added by cmake.
@@ -74,14 +82,6 @@
 #else
 #  define SOLARUS_API
 #endif
-
-/**
- * \brief The Solarus version as a string.
- *
- * This string has the form "x.y.z" where x is the major version, y is the
- * minor version and z is the patch version.
- */
-#define SOLARUS_VERSION (SOLARUS_STRINGIFY(SOLARUS_MAJOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_MINOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_PATCH_VERSION))
 
 // Define the current platform constants on Apple Systems.
 

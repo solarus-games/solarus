@@ -51,22 +51,22 @@ class SOLARUS_API QuestProperties : public LuaData {
     virtual bool import_from_lua(lua_State* l) override;
     virtual bool export_to_lua(std::ostream& out) const override;
 
-    std::string get_solarus_version();
+    std::string get_solarus_version() const;
     void set_solarus_version(const std::string& solarus_version);
 
-    std::string get_quest_write_dir();
+    std::string get_quest_write_dir() const;
     void set_quest_write_dir(const std::string& quest_write_dir);
 
-    std::string get_title_bar();
+    std::string get_title_bar() const;
     void set_title_bar(const std::string& title_bar);
 
-    Size get_normal_quest_size();
+    Size get_normal_quest_size() const;
     void set_normal_quest_size(const Size& normal_quest_size);
 
-    Size get_min_quest_size();
+    Size get_min_quest_size() const;
     void set_min_quest_size(const Size& min_quest_size);
 
-    Size get_max_quest_size();
+    Size get_max_quest_size() const;
     void set_max_quest_size(const Size& max_quest_size);
 
   private:

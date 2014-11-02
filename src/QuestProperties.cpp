@@ -21,6 +21,7 @@
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaTools.h"
 #include <lua.hpp>
+#include <sstream>
 #include <string>
 
 namespace Solarus {
@@ -119,10 +120,18 @@ bool QuestProperties::import_from_lua(lua_State* l) {
 /**
  * \copydoc LuaData::export_to_lua
  */
-bool QuestProperties::export_to_lua(std::ostream& /* out */) const {
+bool QuestProperties::export_to_lua(std::ostream& out) const {
 
-  // TODO
-  return false;
+  out << "quest{\n"
+      << "  solarus_version = \"" << solarus_version << "\",\n"
+      << "  write_dir = \"" << quest_write_dir << "\",\n"
+      << "  title_bar = \"" << title_bar << "\",\n"
+      << "  normal_quest_size = \"" << normal_quest_size.width << 'x' << normal_quest_size.height << "\",\n"
+      << "  min_quest_size = \"" << min_quest_size.width << 'x' << min_quest_size.height << "\",\n"
+      << "  max_quest_size = \"" << max_quest_size.width << 'x' << max_quest_size.height << "\",\n"
+      << "}\n";
+
+  return true;
 }
 
 /**

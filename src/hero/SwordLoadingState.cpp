@@ -20,7 +20,7 @@
 #include "solarus/hero/SpinAttackState.h"
 #include "solarus/hero/SwordLoadingState.h"
 #include "solarus/hero/SwordTappingState.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/System.h"

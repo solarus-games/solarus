@@ -16,7 +16,7 @@
  */
 #include "solarus/entities/Crystal.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Random.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/System.h"

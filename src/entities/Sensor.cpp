@@ -20,7 +20,7 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 
 namespace Solarus {

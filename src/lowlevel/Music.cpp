@@ -17,7 +17,7 @@
 #include "solarus/lowlevel/Music.h"
 #include "solarus/lowlevel/SpcDecoder.h"
 #include "solarus/lowlevel/ItDecoder.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaContext.h"
 #include <lua.hpp>
@@ -255,15 +255,15 @@ void Music::find_music_file(const std::string& music_id,
   format = OGG;
 
   std::string file_name_start = std::string("musics/" + music_id);
-  if (FileTools::data_file_exists(file_name_start + ".ogg")) {
+  if (QuestFiles::data_file_exists(file_name_start + ".ogg")) {
     format = OGG;
     file_name = file_name_start + ".ogg";
   }
-  else if (FileTools::data_file_exists(file_name_start + ".it")) {
+  else if (QuestFiles::data_file_exists(file_name_start + ".it")) {
     format = IT;
     file_name = file_name_start + ".it";
   }
-  else if (FileTools::data_file_exists(file_name_start + ".spc")) {
+  else if (QuestFiles::data_file_exists(file_name_start + ".spc")) {
     format = SPC;
     file_name = file_name_start + ".spc";
   }
@@ -565,7 +565,7 @@ bool Music::start() {
 
     case SPC:
 
-      sound_buffer = FileTools::data_file_read(file_name);
+      sound_buffer = QuestFiles::data_file_read(file_name);
 
       // load the SPC data into the SPC decoding library
       spc_decoder->load((int16_t*) sound_buffer.data(), sound_buffer.size());
@@ -577,7 +577,7 @@ bool Music::start() {
 
     case IT:
 
-      sound_buffer = FileTools::data_file_read(file_name);
+      sound_buffer = QuestFiles::data_file_read(file_name);
 
       // load the IT data into the IT decoding library
       it_decoder->load(sound_buffer);
@@ -591,7 +591,7 @@ bool Music::start() {
     {
       ogg_mem.position = 0;
       ogg_mem.loop = this->loop;
-      ogg_mem.data = FileTools::data_file_read(file_name);
+      ogg_mem.data = QuestFiles::data_file_read(file_name);
       // now, ogg_mem contains the encoded data
 
       int error = ov_open_callbacks(&ogg_mem, &ogg_file, nullptr, 0, Sound::ogg_callbacks);

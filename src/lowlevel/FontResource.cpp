@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/FontResource.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/CurrentQuest.h"
@@ -62,30 +62,30 @@ void FontResource::load_fonts() {
 
     bool bitmap_font = false;
     const std::string file_name_start = std::string("fonts/") + font_id;
-    if (FileTools::data_file_exists(file_name_start + ".png")) {
+    if (QuestFiles::data_file_exists(file_name_start + ".png")) {
       font.file_name = file_name_start + ".png";
       bitmap_font = true;
     }
-    else if (FileTools::data_file_exists(file_name_start + ".PNG")) {
+    else if (QuestFiles::data_file_exists(file_name_start + ".PNG")) {
       font.file_name = file_name_start + ".PNG";
       bitmap_font = true;
     }
-    else if (FileTools::data_file_exists(file_name_start + ".ttf")) {
+    else if (QuestFiles::data_file_exists(file_name_start + ".ttf")) {
       font.file_name = file_name_start + ".ttf";
     }
-    else if (FileTools::data_file_exists(file_name_start + ".TTF")) {
+    else if (QuestFiles::data_file_exists(file_name_start + ".TTF")) {
       font.file_name = file_name_start + ".TTF";
     }
-    else if (FileTools::data_file_exists(file_name_start + ".ttc")) {
+    else if (QuestFiles::data_file_exists(file_name_start + ".ttc")) {
       font.file_name = file_name_start + ".ttc";
     }
-    else if (FileTools::data_file_exists(file_name_start + ".TTC")) {
+    else if (QuestFiles::data_file_exists(file_name_start + ".TTC")) {
       font.file_name = file_name_start + ".TTC";
     }
-    else if (FileTools::data_file_exists(file_name_start + ".fon")) {
+    else if (QuestFiles::data_file_exists(file_name_start + ".fon")) {
       font.file_name = file_name_start + ".fon";
     }
-    else if (FileTools::data_file_exists(file_name_start + ".FON")) {
+    else if (QuestFiles::data_file_exists(file_name_start + ".FON")) {
       font.file_name = file_name_start + ".FON";
     }
     else {
@@ -102,7 +102,7 @@ void FontResource::load_fonts() {
 
     else {
       // It's an outline font.
-      font.buffer = FileTools::data_file_read(font.file_name);
+      font.buffer = QuestFiles::data_file_read(font.file_name);
       font.bitmap_font = nullptr;
     }
 

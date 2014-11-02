@@ -16,7 +16,7 @@
  */
 #include "solarus/StringResource.h"
 #include "solarus/Language.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/LuaTools.h"
 #include <map>
 
@@ -62,7 +62,7 @@ void StringResource::initialize() {
 
   const std::string file_name("text/strings.dat");
   lua_State* l = luaL_newstate();
-  const std::string& buffer = FileTools::data_file_read(file_name, true);
+  const std::string& buffer = QuestFiles::data_file_read(file_name, true);
   int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0) {

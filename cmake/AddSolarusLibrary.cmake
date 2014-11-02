@@ -91,7 +91,6 @@ file(
   include/solarus/lowlevel/apple/AppleInterface.h
   include/solarus/lowlevel/Color.h
   include/solarus/lowlevel/Debug.h
-  include/solarus/lowlevel/FileTools.h
   include/solarus/lowlevel/FontResource.h
   include/solarus/lowlevel/Geometry.h
   include/solarus/lowlevel/Hq2xFilter.h
@@ -104,6 +103,7 @@ file(
   include/solarus/lowlevel/PixelFilter.h
   include/solarus/lowlevel/Point.h
   include/solarus/lowlevel/Point.inl
+  include/solarus/lowlevel/QuestFiles.h
   include/solarus/lowlevel/Random.h
   include/solarus/lowlevel/Rectangle.h
   include/solarus/lowlevel/Scale2xFilter.h
@@ -280,7 +280,6 @@ file(
 
   src/lowlevel/Color.cpp
   src/lowlevel/Debug.cpp
-  src/lowlevel/FileTools.cpp
   src/lowlevel/FontResource.cpp
   src/lowlevel/Geometry.cpp
   src/lowlevel/Hq2xFilter.cpp
@@ -292,6 +291,7 @@ file(
   src/lowlevel/PixelBits.cpp
   src/lowlevel/PixelFilter.cpp
   src/lowlevel/Point.cpp
+  src/lowlevel/QuestFiles.cpp
   src/lowlevel/Random.cpp
   src/lowlevel/Rectangle.cpp
   src/lowlevel/Scale2xFilter.cpp

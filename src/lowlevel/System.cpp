@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/Color.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/FontResource.h"
 #include "solarus/lowlevel/InputEvent.h"
 #include "solarus/lowlevel/Random.h"
@@ -49,7 +49,7 @@ void System::initialize(const Arguments& args) {
   ticks = 0;
 
   // files
-  FileTools::initialize(args);
+  QuestFiles::initialize(args);
 
   // audio
   Sound::initialize(args);
@@ -79,7 +79,7 @@ void System::quit() {
   Sprite::quit();
   FontResource::quit();
   Video::quit();
-  FileTools::quit();
+  QuestFiles::quit();
 
   SDL_Quit();
 }

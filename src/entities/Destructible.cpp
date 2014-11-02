@@ -23,7 +23,7 @@
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/movements/FallingHeight.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/Debug.h"

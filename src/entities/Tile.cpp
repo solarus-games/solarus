@@ -18,7 +18,7 @@
 #include "solarus/entities/Tileset.h"
 #include "solarus/entities/TilePattern.h"
 #include "solarus/lowlevel/Surface.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/Map.h"
 
 namespace Solarus {

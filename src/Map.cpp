@@ -24,7 +24,7 @@
 #include "solarus/entities/NonAnimatedRegions.h"
 #include "solarus/entities/TilePattern.h"
 #include "solarus/entities/Tileset.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"

@@ -18,7 +18,7 @@
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Size.h"
 #include "solarus/lowlevel/Rectangle.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lowlevel/PixelFilter.h"
@@ -208,12 +208,12 @@ SDL_Surface* Surface::get_surface_from_file(
   }
   std::string prefixed_file_name = prefix + file_name;
 
-  if (!FileTools::data_file_exists(prefixed_file_name, language_specific)) {
+  if (!QuestFiles::data_file_exists(prefixed_file_name, language_specific)) {
     // File not found.
     return nullptr;
   }
 
-  const std::string& buffer = FileTools::data_file_read(prefixed_file_name, language_specific);
+  const std::string& buffer = QuestFiles::data_file_read(prefixed_file_name, language_specific);
   SDL_RWops* rw = SDL_RWFromMem(const_cast<char*>(buffer.data()), (int) buffer.size());
 
   SDL_Surface* software_surface = IMG_Load_RW(rw, 0);

@@ -24,7 +24,7 @@
 #include "solarus/DialogResource.h"
 #include "solarus/CurrentQuest.h"
 #include "solarus/KeysEffect.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 
 namespace Solarus {
@@ -160,11 +160,11 @@ int LuaContext::game_api_exists(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
-    if (FileTools::get_quest_write_dir().empty()) {
+    if (QuestFiles::get_quest_write_dir().empty()) {
       LuaTools::error(l, "Cannot check savegame: no write directory was specified in quest.dat");
     }
 
-    bool exists = FileTools::data_file_exists(file_name);
+    bool exists = QuestFiles::data_file_exists(file_name);
 
     lua_pushboolean(l, exists);
     return 1;
@@ -181,11 +181,11 @@ int LuaContext::game_api_delete(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
-    if (FileTools::get_quest_write_dir().empty()) {
+    if (QuestFiles::get_quest_write_dir().empty()) {
       LuaTools::error(l, "Cannot delete savegame: no write directory was specified in quest.dat");
     }
 
-    FileTools::data_file_delete(file_name);
+    QuestFiles::data_file_delete(file_name);
 
     return 0;
   });
@@ -201,7 +201,7 @@ int LuaContext::game_api_load(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
-    if (FileTools::get_quest_write_dir().empty()) {
+    if (QuestFiles::get_quest_write_dir().empty()) {
       LuaTools::error(l, "Cannot load savegame: no write directory was specified in quest.dat");
     }
 
@@ -226,7 +226,7 @@ int LuaContext::game_api_save(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
-    if (FileTools::get_quest_write_dir().empty()) {
+    if (QuestFiles::get_quest_write_dir().empty()) {
       LuaTools::error(l, "Cannot save game: no write directory was specified in quest.dat");
     }
 

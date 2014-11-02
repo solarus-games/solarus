@@ -17,7 +17,7 @@
 #include "solarus/entities/Stairs.h"
 #include "solarus/entities/DynamicTile.h"
 #include "solarus/entities/MapEntities.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/Game.h"

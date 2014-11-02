@@ -18,7 +18,7 @@
 #include "solarus/Map.h"
 #include "solarus/Game.h"
 #include "solarus/Camera.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Music.h"
@@ -53,7 +53,7 @@ void MapLoader::load_map(Game& game, Map& map) {
   // Open the map data file in an independent Lua world.
   const std::string& file_name = std::string("maps/") + map.get_id() + ".dat";
   lua_State* l = luaL_newstate();
-  const std::string& buffer = FileTools::data_file_read(file_name);
+  const std::string& buffer = QuestFiles::data_file_read(file_name);
   const int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0) {

@@ -17,7 +17,7 @@
 #include "solarus/SpriteAnimationSet.h"
 #include "solarus/SpriteAnimation.h"
 #include "solarus/SpriteAnimationDirection.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lua/LuaTools.h"
@@ -47,7 +47,7 @@ void SpriteAnimationSet::load() {
   std::string file_name = std::string("sprites/") + id + ".dat";
 
   lua_State* l = luaL_newstate();
-  const std::string& buffer = FileTools::data_file_read(file_name);
+  const std::string& buffer = QuestFiles::data_file_read(file_name);
   int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0) {

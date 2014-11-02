@@ -22,7 +22,7 @@
 #include "solarus/movements/FallingOnFloorMovement.h"
 #include "solarus/movements/FollowMovement.h"
 #include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lua/LuaContext.h"

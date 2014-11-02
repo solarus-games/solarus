@@ -20,7 +20,7 @@
 
 #include "solarus/lowlevel/shaders/GL_ARBShader.h"
 #include "solarus/lowlevel/shaders/GL_2DShader.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"

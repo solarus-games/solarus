@@ -18,7 +18,7 @@
 #include "solarus/entities/Tileset.h"
 #include "solarus/entities/TilePattern.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"

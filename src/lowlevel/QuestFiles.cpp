@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Language.h"
@@ -38,16 +38,16 @@
 
 namespace Solarus {
 
-std::string FileTools::quest_path;
-std::string FileTools::solarus_write_dir;
-std::string FileTools::quest_write_dir;
-std::vector<std::string> FileTools::temporary_files;
+std::string QuestFiles::quest_path;
+std::string QuestFiles::solarus_write_dir;
+std::string QuestFiles::quest_write_dir;
+std::vector<std::string> QuestFiles::temporary_files;
 
 /**
  * \brief Initializes the file tools.
  * \param args Command-line arguments.
  */
-void FileTools::initialize(const Arguments& args) {
+void QuestFiles::initialize(const Arguments& args) {
 
   const std::string& program_name = args.get_program_name().c_str();
   if (program_name.empty()) {
@@ -88,7 +88,7 @@ void FileTools::initialize(const Arguments& args) {
   PHYSFS_addToSearchPath((base_dir + "/" + archive_quest_path_2).c_str(), 1);
 
   // Check the existence of a quest at this location.
-  if (!FileTools::data_file_exists("quest.dat")) {
+  if (!QuestFiles::data_file_exists("quest.dat")) {
     std::cout << "Fatal: No quest was found in the directory '" << quest_path
         << "'.\n" << "To specify your quest's path, run: "
         << (program_name.empty() ? std::string("solarus") : program_name)
@@ -103,7 +103,7 @@ void FileTools::initialize(const Arguments& args) {
 /**
  * \brief Quits the file tools.
  */
-void FileTools::quit() {
+void QuestFiles::quit() {
 
   remove_temporary_files();
 
@@ -121,7 +121,7 @@ void FileTools::quit() {
  * \return Path of the data/ directory, the data.solarus archive or the
  * data.solarus.zip archive, relative to the current directory.
  */
-const std::string& FileTools::get_quest_path() {
+const std::string& QuestFiles::get_quest_path() {
   return quest_path;
 }
 
@@ -135,7 +135,7 @@ const std::string& FileTools::get_quest_path() {
  * \param file_name The file to look for.
  * \return Where it is actually located, or LOCATION_NONE if not found.
  */
-FileTools::DataFileLocation FileTools::data_file_get_location(
+QuestFiles::DataFileLocation QuestFiles::data_file_get_location(
     const std::string& file_name) {
 
   const char* path_ptr = PHYSFS_getRealDir(file_name.c_str());
@@ -171,7 +171,7 @@ FileTools::DataFileLocation FileTools::data_file_get_location(
  * language directory.
  * \return true if this file exists.
  */
-bool FileTools::data_file_exists(const std::string& file_name,
+bool QuestFiles::data_file_exists(const std::string& file_name,
     bool language_specific) {
 
   std::string full_file_name;
@@ -193,7 +193,7 @@ bool FileTools::data_file_exists(const std::string& file_name,
  * \param language_specific \c true if the file is specific to the current language.
  * \return The content of the file.
  */
-std::string FileTools::data_file_read(
+std::string QuestFiles::data_file_read(
     const std::string& file_name,
     bool language_specific
 ) {
@@ -234,7 +234,7 @@ std::string FileTools::data_file_read(
  * \param buffer The buffer to save.
  *
  */
-void FileTools::data_file_save(
+void QuestFiles::data_file_save(
     const std::string& file_name,
     const std::string& buffer
 ) {
@@ -260,7 +260,7 @@ void FileTools::data_file_save(
  * write directory.
  * \return \c true in case of success.
  */
-bool FileTools::data_file_delete(const std::string& file_name) {
+bool QuestFiles::data_file_delete(const std::string& file_name) {
 
   if (!PHYSFS_delete(file_name.c_str())) {
     return false;
@@ -275,7 +275,7 @@ bool FileTools::data_file_delete(const std::string& file_name) {
  * write directory.
  * \return \c true in case of success.
  */
-bool FileTools::data_file_mkdir(const std::string& dir_name) {
+bool QuestFiles::data_file_mkdir(const std::string& dir_name) {
 
   if (!PHYSFS_mkdir(dir_name.c_str())) {
     return false;
@@ -295,7 +295,7 @@ bool FileTools::data_file_mkdir(const std::string& dir_name) {
  * \param list_directories Whether directories should be included in the result.
  * \return The files in this directory.
  */
-std::vector<std::string> FileTools::data_files_enumerate(
+std::vector<std::string> QuestFiles::data_files_enumerate(
     const std::string& dir_path,
     bool list_files,
     bool list_directories
@@ -326,7 +326,7 @@ std::vector<std::string> FileTools::data_files_enumerate(
  * \returns The directory where the engine can write files, relative to the
  * base write directory.
  */
-const std::string& FileTools::get_solarus_write_dir() {
+const std::string& QuestFiles::get_solarus_write_dir() {
   return solarus_write_dir;
 }
 
@@ -341,14 +341,14 @@ const std::string& FileTools::get_solarus_write_dir() {
  * \param solarus_write_dir The directory where the engine can write files,
  * relative to the base write directory.
  */
-void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
+void QuestFiles::set_solarus_write_dir(const std::string& solarus_write_dir) {
 
   // This setting never changes at runtime.
   // Allowing to change it would be complex and we don't need that.
-  Debug::check_assertion(FileTools::solarus_write_dir.empty(),
+  Debug::check_assertion(QuestFiles::solarus_write_dir.empty(),
       "The Solarus write directory is already set");
 
-  FileTools::solarus_write_dir = solarus_write_dir;
+  QuestFiles::solarus_write_dir = solarus_write_dir;
 
   // First check that we can write in a directory.
   if (!PHYSFS_setWriteDir(get_base_write_dir().c_str())) {
@@ -377,7 +377,7 @@ void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
  * \return The quest write directory, relative to the Solarus write directory,
  * or an empty string if it has not been set yet.
  */
-const std::string& FileTools::get_quest_write_dir() {
+const std::string& QuestFiles::get_quest_write_dir() {
   return quest_write_dir;
 }
 
@@ -393,15 +393,15 @@ const std::string& FileTools::get_quest_write_dir() {
  * \param quest_write_dir The quest write directory, relative to the Solarus
  * write directory.
  */
-void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
+void QuestFiles::set_quest_write_dir(const std::string& quest_write_dir) {
 
-  if (!FileTools::quest_write_dir.empty()) {
+  if (!QuestFiles::quest_write_dir.empty()) {
     // There was already a previous quest subdirectory: remove it from the
     // search path.
     PHYSFS_removeFromSearchPath(PHYSFS_getWriteDir());
   }
 
-  FileTools::quest_write_dir = quest_write_dir;
+  QuestFiles::quest_write_dir = quest_write_dir;
 
   // Reset the write directory to the Solarus directory
   // so that we can create the new quest subdirectory.
@@ -428,7 +428,7 @@ void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
 /**
  * \brief Returns the absolute path of the quest write directory.
  */
-std::string FileTools::get_full_quest_write_dir() {
+std::string QuestFiles::get_full_quest_write_dir() {
   return get_base_write_dir() + "/" + get_solarus_write_dir() + "/" + get_quest_write_dir();
 }
 
@@ -436,7 +436,7 @@ std::string FileTools::get_full_quest_write_dir() {
  * \brief Returns the privileged base write directory, depending on the OS.
  * \return The base write directory.
  */
-std::string FileTools::get_base_write_dir() {
+std::string QuestFiles::get_base_write_dir() {
 
 #if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
   return std::string(get_user_application_support_directory());
@@ -450,7 +450,7 @@ std::string FileTools::get_base_write_dir() {
  * \param content Content of the file to create.
  * \return Full name of the file created, or an empty string in case of failure.
  */
-std::string FileTools::create_temporary_file(const std::string& content) {
+std::string QuestFiles::create_temporary_file(const std::string& content) {
 
   // Determine the name of our temporary file.
   std::string file_name;
@@ -495,7 +495,7 @@ std::string FileTools::create_temporary_file(const std::string& content) {
  * \return \c true in case of success, \c false if at least one file could not
  * be deleted.
  */
-bool FileTools::remove_temporary_files() {
+bool QuestFiles::remove_temporary_files() {
 
   bool success = true;
   for (const std::string& file_name: temporary_files) {

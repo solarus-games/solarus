@@ -17,7 +17,7 @@
 #include "solarus/Savegame.h"
 #include "solarus/SavegameConverterV1.h"
 #include "solarus/MainLoop.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/InputEvent.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaContext.h"
@@ -84,11 +84,11 @@ Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
   equipment(*this),
   game(nullptr) {
 
-  const std::string& quest_write_dir = FileTools::get_quest_write_dir();
+  const std::string& quest_write_dir = QuestFiles::get_quest_write_dir();
   Debug::check_assertion(!quest_write_dir.empty(),
       "The quest write directory for savegames was not set in quest.dat");
 
-  if (!FileTools::data_file_exists(file_name)) {
+  if (!QuestFiles::data_file_exists(file_name)) {
     // This save does not exist yet.
     empty = true;
     set_initial_values();
@@ -179,7 +179,7 @@ void Savegame::load() {
 
   // Try to parse as Lua first.
   lua_State* l = luaL_newstate();
-  const std::string& buffer = FileTools::data_file_read(file_name);
+  const std::string& buffer = QuestFiles::data_file_read(file_name);
   const int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   // Call the Lua savegame file.
@@ -283,7 +283,7 @@ void Savegame::save() {
   }
 
   const std::string& text = oss.str();
-  FileTools::data_file_save(file_name, text);
+  QuestFiles::data_file_save(file_name, text);
   empty = false;
 }
 

@@ -18,7 +18,7 @@
 #include "solarus/entities/StreamAction.h"
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 
 namespace Solarus {
 

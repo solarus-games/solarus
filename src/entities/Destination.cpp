@@ -17,7 +17,7 @@
 #include "solarus/entities/Destination.h"
 #include "solarus/Sprite.h"
 #include "solarus/Game.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 
 namespace Solarus {
 

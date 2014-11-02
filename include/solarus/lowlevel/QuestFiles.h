@@ -37,7 +37,7 @@ class Arguments;
  * and is the only one that calls the PHYSFS library to get data files from
  * the data archive when necessary.
  */
-class FileTools {
+class QuestFiles {
 
   public:
 

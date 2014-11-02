@@ -33,7 +33,7 @@
 #include "solarus/movements/StraightMovement.h"
 #include "solarus/movements/FallingHeight.h"
 #include "solarus/lowlevel/Geometry.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Random.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Debug.h"

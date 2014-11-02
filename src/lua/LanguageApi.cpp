@@ -16,7 +16,7 @@
  */
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/CurrentQuest.h"
 #include "solarus/Language.h"
 #include "solarus/StringResource.h"

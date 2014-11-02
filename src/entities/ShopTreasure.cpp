@@ -25,7 +25,7 @@
 #include "solarus/EquipmentItem.h"
 #include "solarus/Savegame.h"
 #include "solarus/lowlevel/TextSurface.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/Debug.h"
 #include <sstream>

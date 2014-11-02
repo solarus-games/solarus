@@ -24,7 +24,7 @@
 #include "solarus/lowlevel/Hq4xFilter.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Color.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/shaders/ShaderContext.h"
 #include "solarus/Arguments.h"
@@ -216,7 +216,7 @@ void initialize_video_modes() {
 
     // Get all shaders of the quest's shader/videomodes folder.
     std::vector<std::string> shader_names =
-        FileTools::data_files_enumerate("shaders/videomodes/", true, false);
+        QuestFiles::data_files_enumerate("shaders/videomodes/", true, false);
     // FIXME don't enumerate data files, use the quest resource system like always.
 
     for (unsigned i = 0; i < shader_names.size(); ++i) {

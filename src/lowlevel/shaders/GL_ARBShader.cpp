@@ -19,7 +19,7 @@
 #if SOLARUS_HAVE_OPENGL == 1
 
 #include "solarus/lowlevel/Surface.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lowlevel/Size.h"
 

@@ -16,7 +16,7 @@
  */
 #include "solarus/QuestProperties.h"
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Size.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaTools.h"

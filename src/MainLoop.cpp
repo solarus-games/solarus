@@ -20,7 +20,7 @@
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Music.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Settings.h"
@@ -362,7 +362,7 @@ void MainLoop::load_quest_properties() {
   // Read the quest properties file.
   const std::string file_name("quest.dat");
   lua_State* l = luaL_newstate();
-  const std::string& buffer = FileTools::data_file_read(file_name);
+  const std::string& buffer = QuestFiles::data_file_read(file_name);
   int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0) {
@@ -386,7 +386,7 @@ void MainLoop::load_quest_properties() {
   lua_close(l);
 
   check_version_compatibility(properties.get_solarus_version());
-  FileTools::set_quest_write_dir(properties.get_quest_write_dir());
+  QuestFiles::set_quest_write_dir(properties.get_quest_write_dir());
   if (!properties.get_title_bar().empty()) {
     Video::set_window_title(properties.get_title_bar());
   }

@@ -16,7 +16,7 @@
  */
 #include "solarus/entities/Wall.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 
 namespace Solarus {
 

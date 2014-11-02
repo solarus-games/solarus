@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/LuaData.h"
 #include <lua.hpp>
 #include <fstream>
@@ -73,7 +73,7 @@ bool LuaData::import_from_file(const std::string& file_name) {
  *
  * This function loads a file in the search path of the current quest.
  * The actual file might be located in the physical quest data directory,
- * in the quest write directory or in the quest data archive (see FileTools).
+ * in the quest write directory or in the quest data archive (see QuestFiles).
  * This function does the search for you.
  *
  * \param[in] file_name Path of the file to load, relative to the quest data
@@ -87,12 +87,12 @@ bool LuaData::import_from_quest_file(
     const std::string& quest_file_name,
     bool language_specific
 ) {
-  if (!FileTools::data_file_exists(quest_file_name, language_specific)) {
+  if (!QuestFiles::data_file_exists(quest_file_name, language_specific)) {
     Debug::error(std::string("Cannot find quest file '") + quest_file_name + "'");
     return false;
   }
 
-  const std::string& buffer = FileTools::data_file_read(
+  const std::string& buffer = QuestFiles::data_file_read(
       quest_file_name, language_specific
   );
   return import_from_buffer(buffer);

@@ -28,7 +28,7 @@
 #include "solarus/entities/Switch.h"
 #include "solarus/entities/Tileset.h"
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/ExportableToLuaPtr.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
@@ -666,15 +666,15 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
   // Determine the file name (possibly adding ".lua").
   std::string file_name(script_name);
 
-  if (!FileTools::data_file_exists(file_name)) {
+  if (!QuestFiles::data_file_exists(file_name)) {
     std::ostringstream oss;
     oss << script_name << ".lua";
     file_name = oss.str();
   }
 
-  if (FileTools::data_file_exists(file_name)) {
+  if (QuestFiles::data_file_exists(file_name)) {
     // Load the file.
-    const std::string& buffer = FileTools::data_file_read(file_name);
+    const std::string& buffer = QuestFiles::data_file_read(file_name);
     int result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
     if (result != 0) {

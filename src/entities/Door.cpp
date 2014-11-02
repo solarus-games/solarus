@@ -20,7 +20,7 @@
 #include "solarus/entities/Explosion.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/System.h"

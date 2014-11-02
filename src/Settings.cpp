@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/Settings.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/Language.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lowlevel/VideoMode.h"
@@ -35,17 +35,17 @@ namespace Solarus {
  */
 bool Settings::load(const std::string& file_name) {
 
-  const std::string& quest_write_dir = FileTools::get_quest_write_dir();
+  const std::string& quest_write_dir = QuestFiles::get_quest_write_dir();
   Debug::check_assertion(!quest_write_dir.empty(),
       "Cannot load settings: no quest write directory was specified in quest.dat");
 
-  if (!FileTools::data_file_exists(file_name)) {
+  if (!QuestFiles::data_file_exists(file_name)) {
     return false;
   }
 
   // Read the settings as a Lua data file.
   lua_State* l = luaL_newstate();
-  const std::string& buffer = FileTools::data_file_read(file_name);
+  const std::string& buffer = QuestFiles::data_file_read(file_name);
   int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0 || lua_pcall(l, 0, 0, 0) != 0) {
@@ -126,7 +126,7 @@ bool Settings::load(const std::string& file_name) {
  */
 bool Settings::save(const std::string& file_name) {
 
-  const std::string& quest_write_dir = FileTools::get_quest_write_dir();
+  const std::string& quest_write_dir = QuestFiles::get_quest_write_dir();
   Debug::check_assertion(!quest_write_dir.empty(),
       "Cannot save settings: no quest write directory was specified in quest.dat");
 
@@ -142,7 +142,7 @@ bool Settings::save(const std::string& file_name) {
   oss << "joypad_enabled = " << (InputEvent::is_joypad_enabled() ? "true" : "false") << "\n";
 
   const std::string& text = oss.str();
-  FileTools::data_file_save(file_name, text);
+  QuestFiles::data_file_save(file_name, text);
   return true;
 }
 

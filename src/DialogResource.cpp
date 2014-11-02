@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/DialogResource.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/Language.h"
 #include "solarus/lua/LuaTools.h"
@@ -37,7 +37,7 @@ void DialogResource::initialize() {
 
   // Read the dialogs file.
   lua_State* l = luaL_newstate();
-  const std::string& buffer = FileTools::data_file_read(file_name, true);
+  const std::string& buffer = QuestFiles::data_file_read(file_name, true);
   int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0) {

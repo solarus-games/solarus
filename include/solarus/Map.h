@@ -25,6 +25,7 @@
 #include "solarus/lowlevel/SurfacePtr.h"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/Camera.h"
+#include "solarus/MapData.h"
 #include "solarus/Transition.h"
 
 namespace Solarus {
@@ -165,8 +166,6 @@ class SOLARUS_API Map: public ExportableToLua {
     void draw_sprite(Sprite& sprite, int x, int y,
         const Rectangle& clipping_area);
 
-    static constexpr int NO_FLOOR = -9999;  /**< Represents a non-existent floor (nil in data files). */
-
   private:
 
     friend class MapLoader; // the map loader modifies the private fields of Map
@@ -198,7 +197,7 @@ class SOLARUS_API Map: public ExportableToLua {
     std::string world;            /**< Name of the context where this map is. When changing context,
                                    * the savegame starting position is set and crystal switches are reset. */
 
-    int floor;                    /**< The floor where this map is (possibly NO_FLOOR). */
+    int floor;                    /**< The floor where this map is (possibly MapData::NO_FLOOR). */
 
     Rectangle location;           /**< Location of the map in its context: the width and height fields
                                    * indicate the map size in pixel, and the x and y field indicate the position.

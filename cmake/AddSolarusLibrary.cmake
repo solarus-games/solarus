@@ -180,6 +180,7 @@ file(
   include/solarus/KeysEffect.h
   include/solarus/MainLoop.h
   include/solarus/Map.h
+  include/solarus/MapData.h
   include/solarus/MapLoader.h
   include/solarus/QuestProperties.h
   include/solarus/QuestResources.h
@@ -365,6 +366,7 @@ file(
   src/MainLoop.cpp
   src/main/Main.cpp
   src/Map.cpp
+  src/MapData.cpp
   src/MapLoader.cpp
   src/QuestProperties.cpp
   src/QuestResources.cpp

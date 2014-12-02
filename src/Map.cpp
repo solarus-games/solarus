@@ -49,7 +49,7 @@ Map::Map(const std::string& id):
   width8(0),
   height8(0),
   tileset(nullptr),
-  floor(NO_FLOOR),
+  floor(MapData::NO_FLOOR),
   camera(nullptr),
   visible_surface(nullptr),
   background_surface(nullptr),
@@ -148,12 +148,12 @@ void Map::set_world(const std::string& world) {
 /**
  * \brief Returns whether this map has a floor.
  *
- * This function returns true if the floor is not NO_FLOOR.
+ * This function returns true if the floor is not MapData::NO_FLOOR.
  *
  * \return true if there is a floor.
  */
 bool Map::has_floor() const {
-  return get_floor() != NO_FLOOR;
+  return get_floor() != MapData::NO_FLOOR;
 }
 
 /**

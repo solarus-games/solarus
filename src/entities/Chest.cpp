@@ -35,10 +35,10 @@ namespace Solarus {
 /**
  * \brief Lua name of each value of the OpeningMethod enum.
  */
-const std::vector<std::string> Chest::opening_method_names = {
-  "interaction",
-  "interaction_if_savegame_variable",
-  "interaction_if_item"
+const std::map<Chest::OpeningMethod, std::string> Chest::opening_method_names = {
+    { OpeningMethod::BY_INTERACTION, "interaction" },
+    { OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE, "interaction_if_savegame_variable" },
+    { OpeningMethod::BY_INTERACTION_IF_ITEM, "interaction_if_item" }
 };
 
 /**
@@ -64,7 +64,7 @@ Chest::Chest(
   open(treasure.is_found()),
   treasure_given(open),
   treasure_date(0),
-  opening_method(OPENING_BY_INTERACTION),
+  opening_method(OpeningMethod::BY_INTERACTION),
   opening_condition_consumed(false) {
 
   // Create the sprite.
@@ -145,11 +145,11 @@ bool Chest::can_open() {
 
   switch (get_opening_method()) {
 
-    case OPENING_BY_INTERACTION:
+    case OpeningMethod::BY_INTERACTION:
       // No condition: the hero can always open the chest.
       return true;
 
-    case OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE:
+    case OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE:
     {
       // The hero can open the chest if a savegame variable is set.
       const std::string& required_savegame_variable = get_opening_condition();
@@ -173,7 +173,7 @@ bool Chest::can_open() {
       return false;
     }
 
-    case OPENING_BY_INTERACTION_IF_ITEM:
+    case OpeningMethod::BY_INTERACTION_IF_ITEM:
     {
       // The hero can open the chest if he has an item.
       const std::string& required_item_name = get_opening_condition();

@@ -35,10 +35,10 @@ class Chest: public Detector {
     /**
      * \brief The different possible ways of opening a chest.
      */
-    enum OpeningMethod {
-      OPENING_BY_INTERACTION,                       /**< Can be opened by pressing the action command. */
-      OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,  /**< Can be opened by pressing the action command, provided that a savegame variable has the correct value. */
-      OPENING_BY_INTERACTION_IF_ITEM,               /**< Can be opened by pressing the action command, provided that the player has a specific equipment item. */
+    enum class OpeningMethod {
+      BY_INTERACTION,                       /**< Can be opened by pressing the action command. */
+      BY_INTERACTION_IF_SAVEGAME_VARIABLE,  /**< Can be opened by pressing the action command, provided that a savegame variable has the correct value. */
+      BY_INTERACTION_IF_ITEM,               /**< Can be opened by pressing the action command, provided that the player has a specific equipment item. */
     };
 
     Chest(
@@ -71,7 +71,7 @@ class Chest: public Detector {
     virtual bool notify_action_command_pressed() override;
     virtual void set_suspended(bool suspended) override;
 
-    static const std::vector<std::string> opening_method_names;
+    static const std::map<OpeningMethod, std::string> opening_method_names;
 
   private:
 

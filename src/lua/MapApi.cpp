@@ -1208,7 +1208,7 @@ int LuaContext::map_api_create_chest(lua_State* l) {
     const std::string& treasure_savegame_variable = LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
     const std::string& sprite_name = LuaTools::check_string_field(l, 1, "sprite");
     Chest::OpeningMethod opening_method = LuaTools::opt_enum_field<Chest::OpeningMethod>(l, 1, "opening_method",
-        Chest::opening_method_names, Chest::OPENING_BY_INTERACTION);
+        Chest::opening_method_names, Chest::OpeningMethod::BY_INTERACTION);
     const std::string& opening_condition = LuaTools::opt_string_field(l, 1, "opening_condition", "");
     bool opening_condition_consumed = LuaTools::opt_boolean_field(l, 1, "opening_condition_consumed", false);
     const std::string& cannot_open_dialog_id = LuaTools::opt_string_field(l, 1, "cannot_open_dialog", "");
@@ -1223,7 +1223,7 @@ int LuaContext::map_api_create_chest(lua_State* l) {
 
     Game& game = map.get_game();
 
-    if (opening_method == Chest::OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
+    if (opening_method == Chest::OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
       if (!LuaTools::is_valid_lua_identifier(opening_condition)) {
         LuaTools::arg_error(l, 1, std::string(
             "Bad field 'opening_condition' (invalid valid savegame variable identifier: '")
@@ -1232,7 +1232,7 @@ int LuaContext::map_api_create_chest(lua_State* l) {
       }
     }
 
-    else if (opening_method == Chest::OPENING_BY_INTERACTION_IF_ITEM) {
+    else if (opening_method == Chest::OpeningMethod::BY_INTERACTION_IF_ITEM) {
       if (!opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
         LuaTools::arg_error(l, 1, std::string(
             "Bad field 'opening_condition' (no such equipment item: '")

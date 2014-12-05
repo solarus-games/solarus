@@ -23,10 +23,10 @@
 
 namespace Solarus {
 
-const std::vector<std::string> Transition::style_names = {
-  "immediate",
-  "fade",
-  "scrolling"
+const std::map<Transition::Style, std::string> Transition::style_names = {
+    { Transition::Style::IMMEDIATE, "immediate" },
+    { Transition::Style::FADE, "fade" },
+    { Transition::Style::SCROLLING, "scrolling" }
 };
 
 /**
@@ -67,15 +67,15 @@ Transition* Transition::create(
 
   switch (style) {
 
-  case Transition::IMMEDIATE:
+  case Style::IMMEDIATE:
     transition = new TransitionImmediate(direction);
     break;
 
-  case Transition::FADE:
+  case Style::FADE:
     transition = new TransitionFade(direction, dst_surface);
     break;
 
-  case Transition::SCROLLING:
+  case Style::SCROLLING:
     transition = new TransitionScrolling(direction);
     break;
   }
@@ -121,7 +121,7 @@ Surface* Transition::get_previous_surface() const {
 void Transition::set_previous_surface(Surface* previous_surface) {
 
   Debug::check_assertion(previous_surface == nullptr
-      || get_direction() != TRANSITION_CLOSING,
+      || get_direction() != Direction::CLOSING,
       "Cannot show a previous surface with an closing transition effect");
 
   this->previous_surface = previous_surface;

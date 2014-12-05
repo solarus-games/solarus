@@ -58,7 +58,7 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
   current_map(nullptr),
   next_map(nullptr),
   previous_map_surface(nullptr),
-  transition_style(Transition::IMMEDIATE),
+  transition_style(Transition::Style::IMMEDIATE),
   transition(nullptr),
   crystal_state(false) {
 
@@ -106,7 +106,7 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
     starting_destination_name = "";  // Default destination.
   }
 
-  set_current_map(starting_map_id, starting_destination_name, Transition::FADE);
+  set_current_map(starting_map_id, starting_destination_name, Transition::Style::FADE);
 }
 
 /**
@@ -388,7 +388,7 @@ void Game::update_transitions() {
     else { // normal case: stop the control and play an out transition before leaving the current map
       transition = std::unique_ptr<Transition>(Transition::create(
           transition_style,
-          Transition::TRANSITION_CLOSING,
+          Transition::Direction::CLOSING,
           *current_map->get_visible_surface(),
           this
       ));
@@ -413,14 +413,14 @@ void Game::update_transitions() {
       main_loop.set_game(new Game(main_loop, savegame));
       this->savegame = nullptr;  // The new game is the owner.
     }
-    else if (transition_direction == Transition::TRANSITION_CLOSING) {
+    else if (transition_direction == Transition::Direction::CLOSING) {
 
       if (next_map == current_map) {
         // same map
         hero->place_on_destination(*current_map, previous_map_location);
         transition = std::unique_ptr<Transition>(Transition::create(
             transition_style,
-            Transition::TRANSITION_OPENING,
+            Transition::Direction::OPENING,
             *current_map->get_visible_surface(),
             this
         ));
@@ -477,7 +477,7 @@ void Game::update_transitions() {
     Debug::check_assertion(current_map->is_loaded(), "This map is not loaded");
     transition = std::unique_ptr<Transition>(Transition::create(
         transition_style,
-        Transition::TRANSITION_OPENING,
+        Transition::Direction::OPENING,
         *current_map->get_visible_surface(),
         this
     ));
@@ -801,8 +801,8 @@ void Game::restart() {
 
   if (current_map != nullptr) {
     transition = std::unique_ptr<Transition>(Transition::create(
-        Transition::FADE,
-        Transition::TRANSITION_CLOSING,
+        Transition::Style::FADE,
+        Transition::Direction::CLOSING,
         *current_map->get_visible_surface(),
         this
     ));

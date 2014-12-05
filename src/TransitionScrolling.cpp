@@ -66,7 +66,7 @@ Rectangle TransitionScrolling::get_previous_map_dst_position(
  */
 void TransitionScrolling::start() {
 
-  if (get_direction() == TRANSITION_CLOSING) {
+  if (get_direction() == Direction::CLOSING) {
     return;
   }
 
@@ -123,7 +123,7 @@ bool TransitionScrolling::is_started() const {
  */
 bool TransitionScrolling::is_finished() const {
 
-  if (get_direction() == TRANSITION_CLOSING) {
+  if (get_direction() == Direction::CLOSING) {
     return true;
   }
 
@@ -174,7 +174,7 @@ void TransitionScrolling::update() {
  */
 void TransitionScrolling::draw(Surface& dst_surface) {
 
-  if (get_direction() == TRANSITION_CLOSING) {
+  if (get_direction() == Direction::CLOSING) {
     return;
   }
 

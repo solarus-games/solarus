@@ -191,7 +191,7 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
     }
 
     TransitionFade* transition(new TransitionFade(
-        Transition::TRANSITION_OPENING,
+        Transition::Direction::OPENING,
         drawable->get_transition_surface()
     ));
     transition->clear_color();
@@ -230,7 +230,7 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
     }
 
     TransitionFade* transition(new TransitionFade(
-        Transition::TRANSITION_CLOSING,
+        Transition::Direction::CLOSING,
         drawable->get_transition_surface()
     ));
     transition->clear_color();

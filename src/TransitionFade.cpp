@@ -37,7 +37,7 @@ TransitionFade::TransitionFade(Direction direction, Surface& dst_surface):
   colored(true),
   transition_color(Color::black) {
 
-  if (direction == TRANSITION_CLOSING) {
+  if (direction == Direction::CLOSING) {
     alpha_start = 256;
     alpha_limit = 0;
     alpha_increment = -8;

@@ -1386,7 +1386,7 @@ int LuaContext::hero_api_teleport(lua_State* l) {
     const std::string& map_id = LuaTools::check_string(l, 2);
     const std::string& destination_name = LuaTools::opt_string(l, 3, "");
     Transition::Style transition_style = LuaTools::opt_enum<Transition::Style>(
-        l, 4, Transition::style_names, Transition::FADE);
+        l, 4, Transition::style_names, Transition::Style::FADE);
 
     if (!CurrentQuest::resource_exists(ResourceType::MAP, map_id)) {
       LuaTools::arg_error(l, 2, std::string("No such map: '") + map_id + "'");
@@ -2236,7 +2236,7 @@ int LuaContext::teletransporter_api_get_transition(lua_State* l) {
 
     Transition::Style transition_style = teletransporter.get_transition_style();
 
-    push_string(l, Transition::style_names[transition_style]);
+    push_string(l, Transition::style_names.find(transition_style)->second);
     return 1;
   });
 }

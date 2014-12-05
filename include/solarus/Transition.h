@@ -18,8 +18,8 @@
 #define SOLARUS_TRANSITION_H
 
 #include "solarus/Common.h"
+#include <map>
 #include <string>
-#include <vector>
 
 namespace Solarus {
 
@@ -38,7 +38,7 @@ class Transition {
     /**
      * \brief Styles of transitions.
      */
-    enum Style {
+    enum class Style {
       IMMEDIATE = 0,  /**< No transition between the two surfaces. */
       FADE      = 1,  /**< Fade-out and fade-in effect. */
       SCROLLING = 2   /**< Scrolling between two maps. */
@@ -47,9 +47,9 @@ class Transition {
     /**
      * \brief Possible directions of a transition.
      */
-    enum Direction {
-      TRANSITION_OPENING  = 0,
-      TRANSITION_CLOSING = 1
+    enum class Direction {
+      OPENING  = 0,
+      CLOSING = 1
     };
 
     virtual ~Transition();
@@ -95,7 +95,7 @@ class Transition {
      */
     virtual void draw(Surface& dst_surface) = 0;
 
-    static const std::vector<std::string> style_names;  /**< Lua name of each style. */
+    static const std::map<Style, std::string> style_names;  /**< Lua name of each style. */
 
   protected:
 

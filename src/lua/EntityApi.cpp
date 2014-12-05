@@ -58,49 +58,50 @@ namespace {
 /**
  * \brief Lua name of each map entity type.
  */
-const std::vector<std::string> entity_type_names = {
-    "tile",
-    "destination",
-    "teletransporter",
-    "pickable",
-    "destructible",
-    "chest",
-    "jumper",
-    "enemy",
-    "npc",
-    "block",
-    "dynamic_tile",
-    "switch",
-    "wall",
-    "sensor",
-    "crystal",
-    "crystal_block",
-    "shop_treasure",
-    "stream",
-    "door",
-    "stairs",
-    "separator",
-    "custom_entity",
-    "hero",
-    "carried_object",
-    "boomerang",
-    "explosion",
-    "arrow",
-    "bomb",
-    "fire",
-    "hookshot"
+const std::map<EntityType, std::string> entity_type_names = {
+    { EntityType::TILE, "tile" },
+    { EntityType::DESTINATION, "destination" },
+    { EntityType::TELETRANSPORTER, "teletransporter" },
+    { EntityType::PICKABLE, "pickable" },
+    { EntityType::DESTRUCTIBLE, "destructible" },
+    { EntityType::CHEST, "chest" },
+    { EntityType::JUMPER, "jumper" },
+    { EntityType::ENEMY, "enemy" },
+    { EntityType::NPC, "npc" },
+    { EntityType::BLOCK, "block" },
+    { EntityType::DYNAMIC_TILE, "dynamic_tile" },
+    { EntityType::SWITCH, "switch" },
+    { EntityType::WALL, "wall" },
+    { EntityType::SENSOR, "sensor" },
+    { EntityType::CRYSTAL, "crystal" },
+    { EntityType::CRYSTAL_BLOCK, "crystal_block" },
+    { EntityType::SHOP_TREASURE, "shop_treasure" },
+    { EntityType::STREAM, "stream" },
+    { EntityType::DOOR, "door" },
+    { EntityType::STAIRS, "stairs" },
+    { EntityType::SEPARATOR, "separator" },
+    { EntityType::CUSTOM, "custom_entity" },
+    { EntityType::HERO, "hero" },
+    { EntityType::CARRIED_ITEM, "carried_object" },
+    { EntityType::BOOMERANG, "boomerang" },
+    { EntityType::EXPLOSION, "explosion" },
+    { EntityType::ARROW, "arrow" },
+    { EntityType::BOMB, "bomb" },
+    { EntityType::FIRE, "fire" },
+    { EntityType::HOOKSHOT, "hookshot" }
 };
 
 /**
- * \brief Returns a vector of the Lua metatable names of all entity types.
- * \return The Lua metatable name of all entity types.
+ * \brief Returns the Lua metatable names of each entity type.
+ * \return The Lua metatable name of each entity types.
  */
-const std::vector<std::string>& get_entity_internal_type_names() {
+const std::map<EntityType, std::string>& get_entity_internal_type_names() {
 
-  static std::vector<std::string> result;
+  static std::map<EntityType, std::string> result;
   if (result.empty()) {
-    for (const std::string& entity_type_name : entity_type_names) {
-      result.push_back(std::string("sol.") + entity_type_name);
+    for (const auto& kvp : entity_type_names) {
+      std::string internal_type_name = std::string("sol.") + kvp.second;
+      result.insert(std::make_pair(kvp.first, internal_type_name));
     }
   }
 
@@ -602,8 +603,11 @@ void LuaContext::push_entity(lua_State* l, MapEntity& entity) {
 const std::string& LuaContext::get_entity_internal_type_name(
     EntityType entity_type) {
 
-  int index = static_cast<int>(entity_type);
-  return get_entity_internal_type_names()[index];
+  const std::map<EntityType, std::string>& names = get_entity_internal_type_names();
+  const auto& it = names.find(entity_type);
+  SOLARUS_ASSERT(it != names.end(), "Missing entity internal type name");
+
+  return it->second;
 }
 
 /**
@@ -616,8 +620,10 @@ int LuaContext::entity_api_get_type(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
-    int index = static_cast<int>(entity.get_type());
-    push_string(l, entity_type_names[index]);
+    const auto& it = entity_type_names.find(entity.get_type());
+    SOLARUS_ASSERT(it != entity_type_names.end(), "Missing entity type name");
+
+    push_string(l, it->second);
     return 1;
   });
 }

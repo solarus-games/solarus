@@ -28,10 +28,10 @@
 
 namespace Solarus {
 
-const std::vector<std::string> Switch::subtype_names = {
-  "walkable",
-  "arrow_target",
-  "solid"
+const std::map<Switch::Subtype, std::string> Switch::subtype_names = {
+    { Subtype::WALKABLE, "walkable" },
+    { Subtype::ARROW_TARGET, "arrow_target" },
+    { Subtype::SOLID, "solid" }
 };
 
 /**
@@ -78,10 +78,10 @@ Switch::Switch(
   if (is_walkable()) {
     set_collision_modes(COLLISION_CUSTOM);
   }
-  else if (subtype == ARROW_TARGET) {
+  else if (subtype == Subtype::ARROW_TARGET) {
     set_collision_modes(COLLISION_FACING);
   }
-  else if (subtype == SOLID) {
+  else if (subtype == Subtype::SOLID) {
     set_collision_modes(COLLISION_SPRITE | COLLISION_OVERLAPPING);
     set_optimization_distance(2000);  // Because of bombs and arrows on the switch.
   }
@@ -110,7 +110,7 @@ bool Switch::is_obstacle_for(MapEntity& other) {
  * \return \c true if the subtype of this switch is WALKABLE.
  */
 bool Switch::is_walkable() const {
-  return subtype == WALKABLE;
+  return subtype == Subtype::WALKABLE;
 }
 
 /**
@@ -118,7 +118,7 @@ bool Switch::is_walkable() const {
  * \return \c true if the subtype of this switch is ARROW_TARGET.
  */
 bool Switch::is_arrow_target() const {
-  return subtype == ARROW_TARGET;
+  return subtype == Subtype::ARROW_TARGET;
 }
 
 /**
@@ -126,7 +126,7 @@ bool Switch::is_arrow_target() const {
  * \return \c true if the subtype of this switch is SOLID.
  */
 bool Switch::is_solid() const {
-  return subtype == SOLID;
+  return subtype == Subtype::SOLID;
 }
 
 /**
@@ -316,7 +316,7 @@ void Switch::try_activate(Block& block) {
  */
 void Switch::try_activate(Arrow& /* arrow */) {
 
-  if ((subtype == ARROW_TARGET || subtype == SOLID)
+  if ((subtype == Subtype::ARROW_TARGET || subtype == Subtype::SOLID)
       && !is_activated()) {
     // arrows can only activate arrow targets and solid switches
     activate();
@@ -332,7 +332,7 @@ void Switch::try_activate(Arrow& /* arrow */) {
 void Switch::try_activate() {
 
   // arbitrary entities can activate solid switches
-  if (subtype == SOLID && !is_activated()) {
+  if (subtype == Subtype::SOLID && !is_activated()) {
     activate();
   }
 }

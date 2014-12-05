@@ -40,7 +40,7 @@ class Switch: public Detector {
     /**
      * Subtypes of switches.
      */
-    enum Subtype {
+    enum class Subtype {
       WALKABLE,         /**< A button the hero can walk on. */
       ARROW_TARGET,     /**< A switch that can be triggered by shooting an
                          * arrow on it. */
@@ -88,7 +88,7 @@ class Switch: public Detector {
         Sprite& other_sprite
     ) override;
 
-    static const std::vector<std::string> subtype_names;  /**< Lua names of the Subtype enum. */
+    static const std::map<Subtype, std::string> subtype_names;  /**< Lua names of the Subtype enum. */
 
   private:
 

@@ -48,12 +48,12 @@ class Door: public Detector {
      *
      * Note that any kind door can always be opened manually from Lua.
      */
-    enum OpeningMethod {
-      OPENING_NONE,                                 /**< Can only be opened from Lua. */
-      OPENING_BY_INTERACTION,                       /**< Can be opened by pressing the action command. */
-      OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,  /**< Can be opened by pressing the action command, provided that a savegame variable has the correct value. */
-      OPENING_BY_INTERACTION_IF_ITEM,               /**< Can be opened by pressing the action command, provided that the player has a specific equipment item. */
-      OPENING_BY_EXPLOSION                          /**< Can be opened by an explosion. */
+    enum class OpeningMethod {
+      NONE,                                 /**< Can only be opened from Lua. */
+      BY_INTERACTION,                       /**< Can be opened by pressing the action command. */
+      BY_INTERACTION_IF_SAVEGAME_VARIABLE,  /**< Can be opened by pressing the action command, provided that a savegame variable has the correct value. */
+      BY_INTERACTION_IF_ITEM,               /**< Can be opened by pressing the action command, provided that the player has a specific equipment item. */
+      BY_EXPLOSION                          /**< Can be opened by an explosion. */
     };
 
     Door(Game& game,
@@ -99,7 +99,7 @@ class Door: public Detector {
     void close();
     void set_open(bool open);
 
-    static const std::vector<std::string> opening_method_names;
+    static const std::map<OpeningMethod, std::string> opening_method_names;
 
   private:
 

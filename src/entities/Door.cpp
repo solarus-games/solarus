@@ -40,12 +40,12 @@ namespace Solarus {
 /**
  * \brief Lua name of each value of the OpeningMethod enum.
  */
-const std::vector<std::string> Door::opening_method_names = {
-  "none",
-  "interaction",
-  "interaction_if_savegame_variable",
-  "interaction_if_item",
-  "explosion"
+const std::map<Door::OpeningMethod, std::string> Door::opening_method_names = {
+    { OpeningMethod::NONE, "none" },
+    { OpeningMethod::BY_INTERACTION, "interaction" },
+    { OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE, "interaction_if_savegame_variable" },
+    { OpeningMethod::BY_INTERACTION_IF_ITEM, "interaction_if_item" },
+    { OpeningMethod::BY_EXPLOSION, "explosion" }
 };
 
 /**
@@ -74,7 +74,7 @@ Door::Door(Game& game,
     const std::string& savegame_variable):
   Detector(COLLISION_FACING | COLLISION_SPRITE, name, layer, x, y, 16, 16),
   savegame_variable(savegame_variable),
-  opening_method(OPENING_NONE),
+  opening_method(OpeningMethod::NONE),
   opening_condition(),
   opening_condition_consumed(false),
   cannot_open_dialog_id(),
@@ -257,7 +257,7 @@ void Door::notify_collision(MapEntity& other_entity, Sprite& /* this_sprite */, 
  */
 void Door::notify_collision_with_explosion(Explosion& /* explosion */, Sprite& /* sprite_overlapping */) {
 
-  if (get_opening_method() == OPENING_BY_EXPLOSION
+  if (get_opening_method() == OpeningMethod::BY_EXPLOSION
       && is_closed()) {
     set_opening();
   }
@@ -291,15 +291,15 @@ Door::OpeningMethod Door::get_opening_method() const {
 /**
  * \brief Returns whether this door should be opened by pressing the action
  * command in front of it.
- * \return \c true if the opening method is one of OPENING_BY_INTERACTION,
- * OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE or
- * OPENING_BY_INTERACTION_IF_ITEM.
+ * \return \c true if the opening method is one of OpeningMethod::BY_INTERACTION,
+ * OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE or
+ * OpeningMethod::BY_INTERACTION_IF_ITEM.
  */
 bool Door::is_interaction_required() const {
 
-  return opening_method == OPENING_BY_INTERACTION
-    || opening_method == OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE
-    || opening_method == OPENING_BY_INTERACTION_IF_ITEM;
+  return opening_method == OpeningMethod::BY_INTERACTION
+    || opening_method == OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE
+    || opening_method == OpeningMethod::BY_INTERACTION_IF_ITEM;
 }
 
 /**
@@ -315,12 +315,12 @@ void Door::set_opening_method(OpeningMethod opening_method) {
  * open this door.
  *
  * A savegame variable is returned if the opening mode is
- * OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE.
+ * OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE.
  * The hero is allowed to open the door if this saved value is either
  * \c true, an integer greater than zero or a non-empty string.
  *
  * An equipment item's name is returned if the opening mode is
- * OPENING_BY_INTERACTION_IF_ITEM.
+ * OpeningMethod::BY_INTERACTION_IF_ITEM.
  * The hero is allowed to open the door if he has that item and,
  * for items with an amount, if the amount is greater than zero.
  *
@@ -337,12 +337,12 @@ const std::string& Door::get_opening_condition() const {
  * open this door.
  *
  * You must set a savegame variable if the opening mode is
- * OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE.
+ * OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE.
  * The hero will be allowed to open the door if this saved value is either
  * \c true, an integer greater than zero or a non-empty string.
  *
  * You must set an equipment item's name if the opening mode is
- * OPENING_BY_INTERACTION_IF_ITEM.
+ * OpeningMethod::BY_INTERACTION_IF_ITEM.
  * The hero will be allowed to open the door if he has that item and,
  * for items with an amount, if the amount is greater than zero.
  *
@@ -361,12 +361,12 @@ void Door::set_opening_condition(const std::string& opening_condition) {
  *
  * If this setting is \c true, here is the behavior when the hero opens
  * the door:
- * - If the opening method is OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
+ * - If the opening method is OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE,
  *   then the required savegame variable is either:
  *   - set to \c false if it is a boolean,
  *   - decremented if it is an integer,
  *   - set to an empty string if it is a string.
- * - If the opening method is OPENING_BY_INTERACTION_IF_ITEM, then:
+ * - If the opening method is OpeningMethod::BY_INTERACTION_IF_ITEM, then:
  *   - if the required item has an amount, the amount is decremented.
  *   - if the required item has no amount, its possession state is set to zero.
  * - With other opening methods, this setting has no effect.
@@ -384,12 +384,12 @@ bool Door::is_opening_condition_consumed() const {
  *
  * If this setting is \c true, here is the behavior when the hero opens
  * the door:
- * - If the opening method is OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
+ * - If the opening method is OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE,
  *   then the required savegame variable is either:
  *   - set to \c false if it is a boolean,
  *   - decremented if it is an integer,
  *   - set to an empty string if it is a string.
- * - If the opening method is OPENING_BY_INTERACTION_IF_ITEM, then:
+ * - If the opening method is OpeningMethod::BY_INTERACTION_IF_ITEM, then:
  *   - if the required item has an amount, the amount is decremented.
  *   - if the required item has no amount, its possession state is set to zero.
  * - With other opening methods, this setting has no effect.
@@ -410,11 +410,11 @@ bool Door::can_open() const {
 
   switch (get_opening_method()) {
 
-    case OPENING_BY_INTERACTION:
+    case OpeningMethod::BY_INTERACTION:
       // No condition: the hero can always open the door.
       return true;
 
-    case OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE:
+    case OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE:
     {
       // The hero can open the door if a savegame variable is set.
       const std::string& required_savegame_variable = get_opening_condition();
@@ -438,7 +438,7 @@ bool Door::can_open() const {
       return false;
     }
 
-    case OPENING_BY_INTERACTION_IF_ITEM:
+    case OpeningMethod::BY_INTERACTION_IF_ITEM:
     {
       // The hero can open the door if he has an item.
       const std::string& required_item_name = get_opening_condition();
@@ -503,7 +503,7 @@ void Door::update() {
   }
 
   if (is_closed()
-      && get_opening_method() == OPENING_BY_EXPLOSION
+      && get_opening_method() == OpeningMethod::BY_EXPLOSION
       && get_equipment().has_ability(ABILITY_DETECT_WEAK_WALLS)
       && Geometry::get_distance(get_center_point(), get_hero().get_center_point()) < 40
       && !is_suspended()
@@ -587,7 +587,7 @@ void Door::consume_opening_condition() {
 
   switch (get_opening_method()) {
 
-    case OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE:
+    case OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE:
     {
       // Reset or decrement the savegame variable that was required.
       const std::string& required_savegame_variable = get_opening_condition();
@@ -607,7 +607,7 @@ void Door::consume_opening_condition() {
       break;
     }
 
-    case OPENING_BY_INTERACTION_IF_ITEM:
+    case OpeningMethod::BY_INTERACTION_IF_ITEM:
     {
       // Remove the equipment item that was required.
       if (!opening_condition.empty()) {
@@ -636,7 +636,7 @@ void Door::consume_opening_condition() {
  */
 std::string Door::get_sword_tapping_sound() {
 
-  return get_opening_method() == OPENING_BY_EXPLOSION ?
+  return get_opening_method() == OpeningMethod::BY_EXPLOSION ?
     "sword_tapping_weak_wall" : "sword_tapping";
 }
 

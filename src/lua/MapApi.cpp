@@ -1829,14 +1829,14 @@ int LuaContext::map_api_create_door(lua_State* l) {
     const std::string& sprite_name = LuaTools::check_string_field(l, 1, "sprite");
     const std::string& savegame_variable = LuaTools::opt_string_field(l, 1, "savegame_variable", "");
     Door::OpeningMethod opening_method = LuaTools::opt_enum_field<Door::OpeningMethod>(l, 1, "opening_method",
-        Door::opening_method_names, Door::OPENING_NONE);
+        Door::opening_method_names, Door::OpeningMethod::NONE);
     const std::string& opening_condition = LuaTools::opt_string_field(l, 1, "opening_condition", "");
     bool opening_condition_consumed = LuaTools::opt_boolean_field(l, 1, "opening_condition_consumed", false);
     const std::string& cannot_open_dialog_id = LuaTools::opt_string_field(l, 1, "cannot_open_dialog", "");
 
     Game& game = map.get_game();
 
-    if (opening_method == Door::OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
+    if (opening_method == Door::OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
       if (!LuaTools::is_valid_lua_identifier(opening_condition)) {
         LuaTools::arg_error(l, 1, std::string(
             "Bad field 'opening_condition' (invalid savegame variable identifier: '")
@@ -1845,7 +1845,7 @@ int LuaContext::map_api_create_door(lua_State* l) {
       }
     }
 
-    else if (opening_method == Door::OPENING_BY_INTERACTION_IF_ITEM) {
+    else if (opening_method == Door::OpeningMethod::BY_INTERACTION_IF_ITEM) {
       if (opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
         LuaTools::arg_error(l, 1, std::string(
             "Bad field 'opening_condition' (no such equipment item: '")

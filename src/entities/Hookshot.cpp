@@ -320,7 +320,7 @@ void Hookshot::notify_collision_with_enemy(
     Enemy& enemy, Sprite& enemy_sprite, Sprite& /* this_sprite */) {
 
   if (!overlaps(get_hero())) {
-    enemy.try_hurt(ATTACK_HOOKSHOT, *this, &enemy_sprite);
+    enemy.try_hurt(EnemyAttack::HOOKSHOT, *this, &enemy_sprite);
   }
 }
 

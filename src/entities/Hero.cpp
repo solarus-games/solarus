@@ -1560,7 +1560,7 @@ void Hero::notify_collision_with_enemy(
   const std::string this_sprite_id = this_sprite.get_animation_set_id();
   if (this_sprite_id == get_hero_sprites().get_sword_sprite_id()) {
     // the hero's sword overlaps the enemy
-    enemy.try_hurt(ATTACK_SWORD, *this, &enemy_sprite);
+    enemy.try_hurt(EnemyAttack::SWORD, *this, &enemy_sprite);
   }
   else if (this_sprite_id == get_hero_sprites().get_tunic_sprite_id()) {
     // The hero's body sprite overlaps the enemy.

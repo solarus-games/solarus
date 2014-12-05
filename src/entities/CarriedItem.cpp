@@ -464,7 +464,7 @@ void CarriedItem::notify_collision_with_enemy(Enemy &enemy) {
   if (is_throwing
       && !can_explode()
       && get_damage_on_enemies() > 0) {
-    enemy.try_hurt(ATTACK_THROWN_ITEM, *this, nullptr);
+    enemy.try_hurt(EnemyAttack::THROWN_ITEM, *this, nullptr);
   }
 }
 

@@ -50,31 +50,29 @@ class Enemy: public Detector {
     /**
      * \brief Enemy ranks.
      */
-    enum Rank {
-      RANK_NORMAL,
-      RANK_MINIBOSS,
-      RANK_BOSS
+    enum class Rank {
+      NORMAL,
+      MINIBOSS,
+      BOSS
     };
 
     /**
      * \brief Defines the style of sounds and animations played when an enemy
      * is hurt or killed.
      */
-    enum HurtStyle {
-      HURT_NORMAL,   /**< "enemy_hurt" (and if necessary "enemy_killed") is played */
-      HURT_MONSTER,  /**< "monster_hurt" (and if necessary "enemy_killed") is played */
-      HURT_BOSS,     /**< "boss_hurt" or "boss_killed" is played and explosions are created */
-      HURT_NUMBER
+    enum class HurtStyle {
+      NORMAL,   /**< "enemy_hurt" (and if necessary "enemy_killed") is played */
+      MONSTER,  /**< "monster_hurt" (and if necessary "enemy_killed") is played */
+      BOSS,     /**< "boss_hurt" or "boss_killed" is played and explosions are created */
     };
 
     /**
      * \brief Defines how an enemy behaves with obstacles.
      */
-    enum ObstacleBehavior {
-      OBSTACLE_BEHAVIOR_NORMAL,   /**< the enemy is on the ground and stops on normal obstacles */
-      OBSTACLE_BEHAVIOR_FLYING,   /**< the enemy ignores holes, lava, water, etc. */
-      OBSTACLE_BEHAVIOR_SWIMMING, /**< the enemy can move in water */
-      OBSTACLE_BEHAVIOR_NUMBER
+    enum class ObstacleBehavior {
+      NORMAL,   /**< the enemy is on the ground and stops on normal obstacles */
+      FLYING,   /**< the enemy ignores holes, lava, water, etc. */
+      SWIMMING  /**< the enemy can move in water */
     };
 
   public:
@@ -133,7 +131,7 @@ class Enemy: public Detector {
     void set_can_hurt_hero_running(bool can_hurt_hero_running);
     int get_minimum_shield_needed() const;
     void set_minimum_shield_needed(int minimum_shield_needed);
-    const EnemyReaction::Reaction& get_attack_consequence(
+    EnemyReaction::Reaction get_attack_consequence(
         EnemyAttack attack,
         const Sprite* this_sprite) const;
     void set_attack_consequence(
@@ -199,9 +197,9 @@ class Enemy: public Detector {
     const Treasure& get_treasure() const;
     void set_treasure(const Treasure& treasure);
 
-    static const std::vector<std::string> attack_names;               /**< Lua names of the EnemyAttack enum. */
-    static const std::vector<std::string> hurt_style_names;           /**< Lua names of the HurtStyle enum. */
-    static const std::vector<std::string> obstacle_behavior_names;    /**< Lua names of the ObstacleBehavior enum. */
+    static const std::map<EnemyAttack, std::string> attack_names;                   /**< Lua names of the EnemyAttack enum. */
+    static const std::map<HurtStyle, std::string> hurt_style_names;                 /**< Lua names of the HurtStyle enum. */
+    static const std::map<ObstacleBehavior, std::string> obstacle_behavior_names;   /**< Lua names of the ObstacleBehavior enum. */
 
   private:
 
@@ -231,8 +229,8 @@ class Enemy: public Detector {
     bool can_hurt_hero_running;        /**< indicates that the enemy can attack the hero even when the hero is running */
     int minimum_shield_needed;         /**< shield number needed by the hero to avoid the attack of this enemy,
                                         * or 0 to make the attack unavoidable (default: 0) */
-    EnemyReaction
-        attack_reactions[ATTACK_NUMBER];  /**< indicates how the enemy reacts to each attack
+    std::map<EnemyAttack, EnemyReaction>
+        attack_reactions;              /**< how the enemy reacts to each attack
                                            * (by default, it depends on the attacks) */
     Rank rank;                         /**< is this enemy a normal enemy, a miniboss or a boss? */
     std::string savegame_variable;     /**< name of the boolean variable indicating whether this enemy is killed,

@@ -3779,7 +3779,7 @@ int LuaContext::enemy_api_get_hurt_style(lua_State* l) {
 
     Enemy::HurtStyle hurt_style = enemy.get_hurt_style();
 
-    push_string(l, Enemy::hurt_style_names[hurt_style]);
+    push_string(l, Enemy::hurt_style_names.find(hurt_style)->second);
     return 1;
   });
 }
@@ -4157,7 +4157,7 @@ int LuaContext::enemy_api_get_obstacle_behavior(lua_State* l) {
 
     Enemy::ObstacleBehavior behavior = enemy.get_obstacle_behavior();
 
-    push_string(l, Enemy::obstacle_behavior_names[behavior]);
+    push_string(l, Enemy::obstacle_behavior_names.find(behavior)->second);
     return 1;
   });
 }
@@ -4209,8 +4209,8 @@ int LuaContext::enemy_api_hurt(lua_State* l) {
 
     if (enemy.is_in_normal_state() && !enemy.is_invulnerable()) {
       Hero& hero = enemy.get_map().get_entities().get_hero();
-      enemy.set_attack_consequence(ATTACK_SCRIPT, EnemyReaction::HURT, life_points);
-      enemy.try_hurt(ATTACK_SCRIPT, hero, nullptr);
+      enemy.set_attack_consequence(EnemyAttack::SCRIPT, EnemyReaction::HURT, life_points);
+      enemy.try_hurt(EnemyAttack::SCRIPT, hero, nullptr);
     }
 
     return 0;
@@ -4229,8 +4229,8 @@ int LuaContext::enemy_api_immobilize(lua_State* l) {
 
     if (enemy.is_in_normal_state() && !enemy.is_invulnerable()) {
       Hero& hero = enemy.get_map().get_entities().get_hero();
-      enemy.set_attack_consequence(ATTACK_SCRIPT, EnemyReaction::IMMOBILIZED, 0);
-      enemy.try_hurt(ATTACK_SCRIPT, hero, nullptr);
+      enemy.set_attack_consequence(EnemyAttack::SCRIPT, EnemyReaction::IMMOBILIZED, 0);
+      enemy.try_hurt(EnemyAttack::SCRIPT, hero, nullptr);
     }
 
     return 0;

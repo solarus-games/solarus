@@ -53,6 +53,11 @@ class EnemyReaction {
     struct Reaction {
       ReactionType type; /**< type of reaction */
       int life_lost;     /**< number of life points lost (possibly zero) */
+
+      Reaction() :
+        type(IGNORED),
+        life_lost(0) {
+      }
     };
 
     EnemyReaction();

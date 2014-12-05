@@ -167,7 +167,7 @@ void Explosion::try_attack_enemy(Enemy& enemy, Sprite& enemy_sprite) {
     }
   }
 
-  enemy.try_hurt(ATTACK_EXPLOSION, *this, &enemy_sprite);
+  enemy.try_hurt(EnemyAttack::EXPLOSION, *this, &enemy_sprite);
 }
 
 /**

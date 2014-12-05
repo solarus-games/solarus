@@ -347,7 +347,7 @@ void Boomerang::notify_collision_with_crystal(Crystal& crystal, CollisionMode co
 void Boomerang::notify_collision_with_enemy(Enemy& enemy) {
 
   if (!overlaps(*hero)) {
-    enemy.try_hurt(ATTACK_BOOMERANG, *this, nullptr);
+    enemy.try_hurt(EnemyAttack::BOOMERANG, *this, nullptr);
   }
 }
 

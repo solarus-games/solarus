@@ -229,7 +229,7 @@ void Hero::SwordSwingingState::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool /* killed */) {
 
-  if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
+  if (result.type != EnemyReaction::IGNORED && attack == EnemyAttack::SWORD) {
     attacked = true;
 
     if (victim.get_push_hero_on_sword()) {

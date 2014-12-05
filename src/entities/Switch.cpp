@@ -92,7 +92,7 @@ Switch::Switch(
  * \return the type of entity
  */
 EntityType Switch::get_type() const {
-  return ENTITY_SWITCH;
+  return EntityType::SWITCH;
 }
 
 /**

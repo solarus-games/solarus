@@ -77,7 +77,7 @@ Arrow::Arrow(const Hero& hero):
  * \return the type of entity
  */
 EntityType Arrow::get_type() const {
-  return ENTITY_ARROW;
+  return EntityType::ARROW;
 }
 
 /**
@@ -244,10 +244,10 @@ void Arrow::update() {
       // the arrow is stopped because the entity that was reached just disappeared
       disappear_date = now;
     }
-    else if (entity_reached->get_type() == ENTITY_DESTRUCTIBLE && !entity_reached->is_obstacle_for(*this)) {
+    else if (entity_reached->get_type() == EntityType::DESTRUCTIBLE && !entity_reached->is_obstacle_for(*this)) {
       disappear_date = now;
     }
-    else if (entity_reached->get_type() == ENTITY_ENEMY &&
+    else if (entity_reached->get_type() == EntityType::ENEMY &&
         (std::static_pointer_cast<Enemy>(entity_reached)->is_dying())) {
       // the enemy is dying
       disappear_date = now;

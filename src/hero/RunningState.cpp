@@ -245,7 +245,7 @@ bool Hero::RunningState::can_be_hurt(MapEntity* attacker) const {
     return true;
   }
 
-  if (attacker != nullptr && attacker->get_type() == ENTITY_ENEMY) {
+  if (attacker != nullptr && attacker->get_type() == EntityType::ENEMY) {
     // TODO move get_can_hurt_hero_running to MapEntity.
     Enemy* enemy = static_cast<Enemy*>(attacker);
     return enemy->get_can_hurt_hero_running();

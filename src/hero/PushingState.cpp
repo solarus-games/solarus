@@ -95,7 +95,7 @@ void Hero::PushingState::update() {
       Detector* facing_entity = hero.get_facing_entity();
       if (facing_entity != nullptr) { // the obstacle pushed is an entity
 
-        if (facing_entity->get_type() == ENTITY_BLOCK) { // it can be moved by the hero (TODO dynamic binding)
+        if (facing_entity->get_type() == EntityType::BLOCK) { // it can be moved by the hero (TODO dynamic binding)
           hero.try_snap_to_facing_entity();
         }
 

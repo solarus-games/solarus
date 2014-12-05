@@ -53,7 +53,7 @@ Tile::Tile(
  * \return the type of entity
  */
 EntityType Tile::get_type() const {
-  return ENTITY_TILE;
+  return EntityType::TILE;
 }
 
 /**

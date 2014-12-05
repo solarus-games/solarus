@@ -66,7 +66,7 @@ Hookshot::Hookshot(const Hero& hero):
  * \return the type of entity
  */
 EntityType Hookshot::get_type() const {
-  return ENTITY_HOOKSHOT;
+  return EntityType::HOOKSHOT;
 }
 
 /**

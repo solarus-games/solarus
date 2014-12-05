@@ -108,7 +108,7 @@ const std::string& MapEntity::get_lua_type_name() const {
  * \return true if this entity is the hero
  */
 bool MapEntity::is_hero() const {
-  return get_type() == ENTITY_HERO;
+  return get_type() == EntityType::HERO;
 }
 
 /**
@@ -2432,7 +2432,7 @@ void MapEntity::update() {
 
   // Static tiles are optimized and should never be used individually
   // once the map is created.
-  SOLARUS_ASSERT(get_type() != ENTITY_TILE,
+  SOLARUS_ASSERT(get_type() != EntityType::TILE,
       "Attempt to update a static tile");
 
   // enable if necessary

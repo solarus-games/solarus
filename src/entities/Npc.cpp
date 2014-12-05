@@ -88,7 +88,7 @@ Npc::Npc(Game& /* game */, const std::string& name, Layer layer, int x, int y,
  * \return the type of entity
  */
 EntityType Npc::get_type() const {
-  return ENTITY_NPC;
+  return EntityType::NPC;
 }
 
 /**
@@ -205,7 +205,7 @@ void Npc::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
       }
     }
   }
-  else if (collision_mode == COLLISION_OVERLAPPING && entity_overlapping.get_type() == ENTITY_FIRE) {
+  else if (collision_mode == COLLISION_OVERLAPPING && entity_overlapping.get_type() == EntityType::FIRE) {
 
     if (behavior == BEHAVIOR_ITEM_SCRIPT) {
       EquipmentItem& item = get_equipment().get_item(item_name);

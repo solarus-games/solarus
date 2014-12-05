@@ -58,7 +58,7 @@ Stream::Stream(
  * \return the type of entity
  */
 EntityType Stream::get_type() const {
-  return ENTITY_STREAM;
+  return EntityType::STREAM;
 }
 
 /**

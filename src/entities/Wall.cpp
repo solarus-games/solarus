@@ -50,22 +50,22 @@ Wall::Wall(
   MapEntity(name, 0, layer, x, y, width, height) {
 
   if (stops_hero) {
-    entity_types_stopped.insert(ENTITY_HERO);
+    entity_types_stopped.insert(EntityType::HERO);
   }
   if (stops_enemies) {
-    entity_types_stopped.insert(ENTITY_ENEMY);
+    entity_types_stopped.insert(EntityType::ENEMY);
   }
   if (stops_npcs) {
-    entity_types_stopped.insert(ENTITY_NPC);
+    entity_types_stopped.insert(EntityType::NPC);
   }
   if (stops_blocks) {
-    entity_types_stopped.insert(ENTITY_BLOCK);
+    entity_types_stopped.insert(EntityType::BLOCK);
   }
   if (stops_projectiles) {
-    entity_types_stopped.insert(ENTITY_CARRIED_ITEM);
-    entity_types_stopped.insert(ENTITY_ARROW);
-    entity_types_stopped.insert(ENTITY_HOOKSHOT);
-    entity_types_stopped.insert(ENTITY_BOOMERANG);
+    entity_types_stopped.insert(EntityType::CARRIED_ITEM);
+    entity_types_stopped.insert(EntityType::ARROW);
+    entity_types_stopped.insert(EntityType::HOOKSHOT);
+    entity_types_stopped.insert(EntityType::BOOMERANG);
   }
 }
 
@@ -74,7 +74,7 @@ Wall::Wall(
  * \return the type of entity
  */
 EntityType Wall::get_type() const {
-  return ENTITY_WALL;
+  return EntityType::WALL;
 }
 
 /**

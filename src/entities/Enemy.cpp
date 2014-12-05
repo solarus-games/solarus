@@ -187,7 +187,7 @@ MapEntityPtr Enemy::create(
  * \return the type of entity
  */
 EntityType Enemy::get_type() const {
-  return ENTITY_ENEMY;
+  return EntityType::ENEMY;
 }
 
 /**

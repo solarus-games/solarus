@@ -667,7 +667,7 @@ int LuaContext::map_api_open_doors(lua_State* l) {
 
     bool done = false;
     MapEntities& entities = map.get_entities();
-    std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
+    std::list<MapEntity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
     for (auto it = doors.begin(); it != doors.end(); ++it) {
       Door* door = static_cast<Door*>(*it);
       if (!door->is_open() || door->is_closing()) {
@@ -699,7 +699,7 @@ int LuaContext::map_api_close_doors(lua_State* l) {
 
     bool done = false;
     MapEntities& entities = map.get_entities();
-    std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
+    std::list<MapEntity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
     for (auto it = doors.begin(); it != doors.end(); ++it) {
       Door* door = static_cast<Door*>(*it);
       if (door->is_open() || door->is_opening()) {
@@ -731,7 +731,7 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
     bool open = LuaTools::opt_boolean(l, 3, true);
 
     MapEntities& entities = map.get_entities();
-    std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
+    std::list<MapEntity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
     for (auto it = doors.begin(); it != doors.end(); ++it) {
       Door* door = static_cast<Door*>(*it);
       door->set_open(open);

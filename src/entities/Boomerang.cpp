@@ -95,7 +95,7 @@ Boomerang::Boomerang(
  * \return the type of entity
  */
 EntityType Boomerang::get_type() const {
-  return ENTITY_BOOMERANG;
+  return EntityType::BOOMERANG;
 }
 
 /**

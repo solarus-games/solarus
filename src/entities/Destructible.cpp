@@ -81,7 +81,7 @@ Destructible::Destructible(
  * \return the type of entity
  */
 EntityType Destructible::get_type() const {
-  return ENTITY_DESTRUCTIBLE;
+  return EntityType::DESTRUCTIBLE;
 }
 
 /**
@@ -377,7 +377,7 @@ void Destructible::notify_collision(
   }
 
   // TODO use dynamic dispatch
-  if (other_entity.get_type() == ENTITY_EXPLOSION
+  if (other_entity.get_type() == EntityType::EXPLOSION
       && get_can_explode()
       && !is_being_cut
       && !is_waiting_for_regeneration()

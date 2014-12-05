@@ -386,7 +386,7 @@ Destination* Map::get_destination() {
     // Use the destination whose name was specified.
     MapEntity* entity = get_entities().find_entity(destination_name);
 
-    if (entity == nullptr || entity->get_type() != ENTITY_DESTINATION) {
+    if (entity == nullptr || entity->get_type() != EntityType::DESTINATION) {
       Debug::error(
           std::string("Map '") + get_id() + "': No such destination: '"
           + destination_name + "'"

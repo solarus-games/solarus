@@ -42,7 +42,7 @@ Fire::Fire(const std::string& name, Layer layer, const Point& xy):
  * \return the type of entity
  */
 EntityType Fire::get_type() const {
-  return ENTITY_FIRE;
+  return EntityType::FIRE;
 }
 
 /**

@@ -92,7 +92,7 @@ void Hero::PullingState::update() {
       Detector* facing_entity = hero.get_facing_entity();
       if (facing_entity != nullptr) {
 
-        if (facing_entity->get_type() == ENTITY_BLOCK) { // TODO use dynamic binding
+        if (facing_entity->get_type() == EntityType::BLOCK) { // TODO use dynamic binding
           hero.try_snap_to_facing_entity();
         }
 

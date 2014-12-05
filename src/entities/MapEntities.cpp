@@ -534,7 +534,7 @@ void MapEntities::add_entity(const MapEntityPtr& entity) {
     return;
   }
 
-  if (entity->get_type() == ENTITY_TILE) {
+  if (entity->get_type() == EntityType::TILE) {
     // Tiles are optimized specifically for obstacle checks and rendering.
     add_tile(std::static_pointer_cast<Tile>(entity));
   }
@@ -582,23 +582,23 @@ void MapEntities::add_entity(const MapEntityPtr& entity) {
     // update the specific entities lists
     switch (entity->get_type()) {
 
-      case ENTITY_STAIRS:
+      case EntityType::STAIRS:
         stairs[layer].push_back(static_cast<Stairs*>(entity.get()));
         break;
 
-      case ENTITY_CRYSTAL_BLOCK:
+      case EntityType::CRYSTAL_BLOCK:
         crystal_blocks[layer].push_back(static_cast<CrystalBlock*>(entity.get()));
         break;
 
-      case ENTITY_SEPARATOR:
+      case EntityType::SEPARATOR:
         separators.push_back(static_cast<Separator*>(entity.get()));
         break;
 
-      case ENTITY_BOOMERANG:
+      case EntityType::BOOMERANG:
         this->boomerang = static_cast<Boomerang*>(entity.get());
         break;
 
-      case ENTITY_DESTINATION:
+      case EntityType::DESTINATION:
         {
           Destination* destination = static_cast<Destination*>(entity.get());
           if (this->default_destination == nullptr || destination->is_default()) {
@@ -752,19 +752,19 @@ void MapEntities::remove_marked_entities() {
     // update the specific entities lists
     switch (entity->get_type()) {
 
-      case ENTITY_STAIRS:
+      case EntityType::STAIRS:
         stairs[layer].remove(static_cast<Stairs*>(entity));
         break;
 
-      case ENTITY_CRYSTAL_BLOCK:
+      case EntityType::CRYSTAL_BLOCK:
         crystal_blocks[layer].remove(static_cast<CrystalBlock*>(entity));
         break;
 
-      case ENTITY_SEPARATOR:
+      case EntityType::SEPARATOR:
         separators.remove(static_cast<Separator*>(entity));
         break;
 
-      case ENTITY_BOOMERANG:
+      case EntityType::BOOMERANG:
         this->boomerang = nullptr;
         break;
 
@@ -991,7 +991,7 @@ void MapEntities::remove_arrows() {
 
   // TODO this function may be slow if there are a lot of entities: store the arrows?
   for (const MapEntityPtr& entity: all_entities) {
-    if (entity->get_type() == ENTITY_ARROW) {
+    if (entity->get_type() == EntityType::ARROW) {
       remove_entity(entity.get());
     }
   }

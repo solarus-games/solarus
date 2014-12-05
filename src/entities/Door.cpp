@@ -100,7 +100,7 @@ Door::Door(Game& game,
  * \return the type of entity
  */
 EntityType Door::get_type() const {
-  return ENTITY_DOOR;
+  return EntityType::DOOR;
 }
 
 /**
@@ -199,12 +199,12 @@ void Door::set_open(bool door_open) {
  */
 void Door::update_dynamic_tiles() {
 
-  std::list<MapEntity*> tiles = get_entities().get_entities_with_prefix(ENTITY_DYNAMIC_TILE, get_name() + "_closed");
+  std::list<MapEntity*> tiles = get_entities().get_entities_with_prefix(EntityType::DYNAMIC_TILE, get_name() + "_closed");
   for (MapEntity* tile: tiles) {
     tile->set_enabled(is_closed() || is_opening());
   }
 
-  tiles = get_entities().get_entities_with_prefix(ENTITY_DYNAMIC_TILE, get_name() + "_open");
+  tiles = get_entities().get_entities_with_prefix(EntityType::DYNAMIC_TILE, get_name() + "_open");
   for (MapEntity* tile: tiles) {
     tile->set_enabled(is_open() || is_closing());
   }
@@ -244,7 +244,7 @@ void Door::notify_collision(MapEntity& entity_overlapping, CollisionMode /* coll
  */
 void Door::notify_collision(MapEntity& other_entity, Sprite& /* this_sprite */, Sprite& other_sprite) {
 
-  if (other_entity.get_type() == ENTITY_EXPLOSION) {
+  if (other_entity.get_type() == EntityType::EXPLOSION) {
     notify_collision_with_explosion(static_cast<Explosion&>(other_entity), other_sprite);
   }
 }

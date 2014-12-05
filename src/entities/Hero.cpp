@@ -98,7 +98,7 @@ Hero::Hero(Equipment& equipment):
  * \return the type of entity
  */
 EntityType Hero::get_type() const {
-  return ENTITY_HERO;
+  return EntityType::HERO;
 }
 
 /**

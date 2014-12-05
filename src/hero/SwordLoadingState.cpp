@@ -131,7 +131,7 @@ void Hero::SwordLoadingState::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool killed) {
 
-  if (result.type != EnemyReaction::IGNORED && attack == EnemyAttack::SWORD) {
+  if (result.type != EnemyReaction::ReactionType::IGNORED && attack == EnemyAttack::SWORD) {
 
     Hero& hero = get_hero();
     if (victim.get_push_hero_on_sword()) {

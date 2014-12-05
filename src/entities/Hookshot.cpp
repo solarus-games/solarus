@@ -334,7 +334,7 @@ void Hookshot::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool /* killed */) {
 
-  if (result.type != EnemyReaction::IGNORED && !is_going_back()) {
+  if (result.type != EnemyReaction::ReactionType::IGNORED && !is_going_back()) {
     go_back();
   }
 }

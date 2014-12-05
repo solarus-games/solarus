@@ -251,7 +251,7 @@ void Hero::SpinAttackState::notify_attacked_enemy(
     bool /* killed */) {
 
   Hero& hero = get_hero();
-  if (result.type != EnemyReaction::IGNORED && attack == EnemyAttack::SWORD) {
+  if (result.type != EnemyReaction::ReactionType::IGNORED && attack == EnemyAttack::SWORD) {
 
     if (victim.get_push_hero_on_sword()) {
 

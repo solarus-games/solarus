@@ -38,13 +38,12 @@ class EnemyReaction {
     /**
      * \brief Types of reactions to an attack.
      */
-    enum ReactionType {
+    enum class ReactionType {
       HURT,              /**< the enemy is hurt and loses some life points */
       IGNORED,           /**< nothing happens */
       PROTECTED,         /**< the attack is stopped */
       IMMOBILIZED,       /**< the enemy is temporarily immobilized */
-      CUSTOM,            /**< the enemy's script decides what to do */
-      REACTION_NUMBER
+      CUSTOM             /**< the enemy's script decides what to do */
     };
 
     /**
@@ -55,7 +54,7 @@ class EnemyReaction {
       int life_lost;     /**< number of life points lost (possibly zero) */
 
       Reaction() :
-        type(IGNORED),
+        type(ReactionType::IGNORED),
         life_lost(0) {
       }
     };
@@ -70,7 +69,8 @@ class EnemyReaction {
     static const std::string& get_reaction_name(ReactionType reaction);
     static ReactionType get_reaction_by_name(const std::string& name);
 
-    static const std::vector<std::string> reaction_names;  /**< Lua name of each reaction type */
+    static const std::map<EnemyReaction::ReactionType, std::string>
+        reaction_names;                                    /**< Lua name of each reaction type */
 
   private:
 

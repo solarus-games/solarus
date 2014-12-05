@@ -688,7 +688,7 @@ void Enemy::set_attack_consequence_sprite(
 void Enemy::set_no_attack_consequences() {
 
   for (const auto& kvp : attack_names) {
-    set_attack_consequence(kvp.first, EnemyReaction::IGNORED);
+    set_attack_consequence(kvp.first, EnemyReaction::ReactionType::IGNORED);
   }
 }
 
@@ -700,7 +700,7 @@ void Enemy::set_no_attack_consequences_sprite(const Sprite& sprite) {
 
   for (const auto& kvp : attack_names) {
     EnemyAttack attack = kvp.first;
-    set_attack_consequence_sprite(sprite, attack, EnemyReaction::IGNORED);
+    set_attack_consequence_sprite(sprite, attack, EnemyReaction::ReactionType::IGNORED);
   }
 }
 
@@ -713,13 +713,13 @@ void Enemy::set_default_attack_consequences() {
     EnemyAttack attack = kvp.first;
     attack_reactions[attack].set_default_reaction();
   }
-  set_attack_consequence(EnemyAttack::SWORD, EnemyReaction::HURT, 1); // multiplied by the sword strength
-  set_attack_consequence(EnemyAttack::THROWN_ITEM, EnemyReaction::HURT, 1); // multiplied depending on the item
-  set_attack_consequence(EnemyAttack::EXPLOSION, EnemyReaction::HURT, 2);
-  set_attack_consequence(EnemyAttack::ARROW, EnemyReaction::HURT, 2);
-  set_attack_consequence(EnemyAttack::HOOKSHOT, EnemyReaction::IMMOBILIZED);
-  set_attack_consequence(EnemyAttack::BOOMERANG, EnemyReaction::IMMOBILIZED);
-  set_attack_consequence(EnemyAttack::FIRE, EnemyReaction::HURT, 3);
+  set_attack_consequence(EnemyAttack::SWORD, EnemyReaction::ReactionType::HURT, 1); // multiplied by the sword strength
+  set_attack_consequence(EnemyAttack::THROWN_ITEM, EnemyReaction::ReactionType::HURT, 1); // multiplied depending on the item
+  set_attack_consequence(EnemyAttack::EXPLOSION, EnemyReaction::ReactionType::HURT, 2);
+  set_attack_consequence(EnemyAttack::ARROW, EnemyReaction::ReactionType::HURT, 2);
+  set_attack_consequence(EnemyAttack::HOOKSHOT, EnemyReaction::ReactionType::IMMOBILIZED);
+  set_attack_consequence(EnemyAttack::BOOMERANG, EnemyReaction::ReactionType::IMMOBILIZED);
+  set_attack_consequence(EnemyAttack::FIRE, EnemyReaction::ReactionType::HURT, 3);
 }
 
 /**
@@ -731,11 +731,11 @@ void Enemy::set_default_attack_consequences_sprite(const Sprite& sprite) {
 
   for (const auto& kvp : attack_names) {
     EnemyAttack attack = kvp.first;
-    set_attack_consequence_sprite(sprite, attack, EnemyReaction::HURT, 1);
+    set_attack_consequence_sprite(sprite, attack, EnemyReaction::ReactionType::HURT, 1);
   }
-  set_attack_consequence_sprite(sprite, EnemyAttack::EXPLOSION, EnemyReaction::HURT, 2);
-  set_attack_consequence_sprite(sprite, EnemyAttack::HOOKSHOT, EnemyReaction::IMMOBILIZED);
-  set_attack_consequence_sprite(sprite, EnemyAttack::BOOMERANG, EnemyReaction::IMMOBILIZED);
+  set_attack_consequence_sprite(sprite, EnemyAttack::EXPLOSION, EnemyReaction::ReactionType::HURT, 2);
+  set_attack_consequence_sprite(sprite, EnemyAttack::HOOKSHOT, EnemyReaction::ReactionType::IMMOBILIZED);
+  set_attack_consequence_sprite(sprite, EnemyAttack::BOOMERANG, EnemyReaction::ReactionType::IMMOBILIZED);
 }
 
 /**
@@ -1155,7 +1155,7 @@ bool Enemy::is_invulnerable() const {
 void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite) {
 
   EnemyReaction::Reaction reaction = get_attack_consequence(attack, this_sprite);
-  if (invulnerable || reaction.type == EnemyReaction::IGNORED) {
+  if (invulnerable || reaction.type == EnemyReaction::ReactionType::IGNORED) {
     // ignore the attack
     return;
   }
@@ -1165,31 +1165,31 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
 
   switch (reaction.type) {
 
-    case EnemyReaction::PROTECTED:
+    case EnemyReaction::ReactionType::PROTECTED:
       // attack failure sound
       Sound::play("sword_tapping");
       break;
 
-    case EnemyReaction::IMMOBILIZED:
+    case EnemyReaction::ReactionType::IMMOBILIZED:
       // get immobilized
       being_hurt = true;
       hurt(source, this_sprite);
       immobilize();
       break;
 
-    case EnemyReaction::CUSTOM:
+    case EnemyReaction::ReactionType::CUSTOM:
       // custom attack (defined in the script)
       if (is_in_normal_state()) {
         custom_attack(attack, this_sprite);
       }
       else {
         // no attack was made: notify the source correctly
-        reaction.type = EnemyReaction::IGNORED;
+        reaction.type = EnemyReaction::ReactionType::IGNORED;
         invulnerable = false;
       }
       break;
 
-    case EnemyReaction::HURT:
+    case EnemyReaction::ReactionType::HURT:
 
       if (is_immobilized() && get_sprite().get_current_animation() == "shaking") {
         stop_immobilized();
@@ -1229,14 +1229,8 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
       notify_hurt(source, attack);
       break;
 
-    case EnemyReaction::IGNORED:
-    case EnemyReaction::REACTION_NUMBER:
-    {
-      std::ostringstream oss;
-      oss << "Invalid enemy reaction: " << reaction.type;
-      Debug::die(oss.str());
-      break;
-    }
+    case EnemyReaction::ReactionType::IGNORED:
+      return;
   }
 
   // notify the source

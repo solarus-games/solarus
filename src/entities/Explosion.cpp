@@ -180,7 +180,7 @@ void Explosion::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool /* killed */) {
 
-  if (result.type != EnemyReaction::IGNORED) {
+  if (result.type != EnemyReaction::ReactionType::IGNORED) {
     victims.push_back(&victim);
   }
 }

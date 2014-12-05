@@ -3880,7 +3880,7 @@ int LuaContext::enemy_api_get_attack_consequence(lua_State* l) {
     EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 2, Enemy::attack_names);
 
     const EnemyReaction::Reaction& reaction = enemy.get_attack_consequence(attack, nullptr);
-    if (reaction.type == EnemyReaction::HURT) {
+    if (reaction.type == EnemyReaction::ReactionType::HURT) {
       // Return the life damage.
       lua_pushinteger(l, reaction.life_lost);
     }
@@ -3911,7 +3911,7 @@ int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
             << life_points << "'";
         LuaTools::arg_error(l, 3, oss.str());
       }
-      enemy.set_attack_consequence(attack, EnemyReaction::HURT, life_points);
+      enemy.set_attack_consequence(attack, EnemyReaction::ReactionType::HURT, life_points);
     }
     else {
       EnemyReaction::ReactionType reaction = LuaTools::check_enum<EnemyReaction::ReactionType>(
@@ -3936,7 +3936,7 @@ int LuaContext::enemy_api_get_attack_consequence_sprite(lua_State* l) {
     EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 3, Enemy::attack_names);
 
     const EnemyReaction::Reaction& reaction = enemy.get_attack_consequence(attack, &sprite);
-    if (reaction.type == EnemyReaction::HURT) {
+    if (reaction.type == EnemyReaction::ReactionType::HURT) {
       // Return the life damage.
       lua_pushinteger(l, reaction.life_lost);
     }
@@ -3968,7 +3968,7 @@ int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
             << life_points << "'";
         LuaTools::arg_error(l, 4, oss.str());
       }
-      enemy.set_attack_consequence_sprite(sprite, attack, EnemyReaction::HURT, life_points);
+      enemy.set_attack_consequence_sprite(sprite, attack, EnemyReaction::ReactionType::HURT, life_points);
     }
     else {
       EnemyReaction::ReactionType reaction = LuaTools::check_enum<EnemyReaction::ReactionType>(
@@ -4209,7 +4209,7 @@ int LuaContext::enemy_api_hurt(lua_State* l) {
 
     if (enemy.is_in_normal_state() && !enemy.is_invulnerable()) {
       Hero& hero = enemy.get_map().get_entities().get_hero();
-      enemy.set_attack_consequence(EnemyAttack::SCRIPT, EnemyReaction::HURT, life_points);
+      enemy.set_attack_consequence(EnemyAttack::SCRIPT, EnemyReaction::ReactionType::HURT, life_points);
       enemy.try_hurt(EnemyAttack::SCRIPT, hero, nullptr);
     }
 
@@ -4229,7 +4229,7 @@ int LuaContext::enemy_api_immobilize(lua_State* l) {
 
     if (enemy.is_in_normal_state() && !enemy.is_invulnerable()) {
       Hero& hero = enemy.get_map().get_entities().get_hero();
-      enemy.set_attack_consequence(EnemyAttack::SCRIPT, EnemyReaction::IMMOBILIZED, 0);
+      enemy.set_attack_consequence(EnemyAttack::SCRIPT, EnemyReaction::ReactionType::IMMOBILIZED, 0);
       enemy.try_hurt(EnemyAttack::SCRIPT, hero, nullptr);
     }
 

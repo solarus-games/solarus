@@ -420,11 +420,11 @@ void Arrow::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool killed) {
 
-  if (result.type == EnemyReaction::PROTECTED) {
+  if (result.type == EnemyReaction::ReactionType::PROTECTED) {
     stop();
     attach_to(victim);
   }
-  else if (result.type != EnemyReaction::IGNORED) {
+  else if (result.type != EnemyReaction::ReactionType::IGNORED) {
     if (killed) {
       remove_from_map();
     }

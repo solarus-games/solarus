@@ -21,12 +21,12 @@
 
 namespace Solarus {
 
-const std::vector<std::string> EnemyReaction::reaction_names = {
-  "hurt",
-  "ignored",
-  "protected",
-  "immobilized",
-  "custom"
+const std::map<EnemyReaction::ReactionType, std::string> EnemyReaction::reaction_names = {
+  { EnemyReaction::ReactionType::HURT, "hurt" },
+  { EnemyReaction::ReactionType::IGNORED, "ignored" },
+  { EnemyReaction::ReactionType::PROTECTED, "protected" },
+  { EnemyReaction::ReactionType::IMMOBILIZED, "immobilized" },
+  { EnemyReaction::ReactionType::CUSTOM, "custom" }
 };
 
 /**
@@ -42,7 +42,7 @@ EnemyReaction::EnemyReaction() {
  */
 void EnemyReaction::set_default_reaction() {
 
-  general_reaction.type = IGNORED;
+  general_reaction.type = ReactionType::IGNORED;
   general_reaction.life_lost = 0;
   sprite_reactions.clear();
 }
@@ -56,7 +56,7 @@ void EnemyReaction::set_default_reaction() {
 void EnemyReaction::set_general_reaction(ReactionType reaction, int life_lost) {
 
   general_reaction.type = reaction;
-  if (reaction == HURT) {
+  if (reaction == ReactionType::HURT) {
     general_reaction.life_lost = life_lost;
   }
 }
@@ -102,13 +102,12 @@ const EnemyReaction::Reaction& EnemyReaction::get_reaction(
  */
 const std::string& EnemyReaction::get_reaction_name(ReactionType reaction) {
 
-  if (reaction < 0 || reaction >= REACTION_NUMBER) {
-    std::ostringstream oss;
-    oss << "Invalid reaction number: " << reaction;
-    Debug::die(oss.str());
+  const auto& it = reaction_names.find(reaction);
+  if (it == reaction_names.end()) {
+    Debug::die("Missing reaction name");
   }
 
-  return reaction_names[reaction];
+  return it->second;
 }
 
 /**
@@ -118,9 +117,9 @@ const std::string& EnemyReaction::get_reaction_name(ReactionType reaction) {
  */
 EnemyReaction::ReactionType EnemyReaction::get_reaction_by_name(const std::string& name) {
 
-  for (int i = 0; i < REACTION_NUMBER; i++) {
-    if (reaction_names[i] == name) {
-      return ReactionType(i);
+  for (const auto& kvp : reaction_names) {
+    if (kvp.second == name) {
+      return kvp.first;
     }
   }
 

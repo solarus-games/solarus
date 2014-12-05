@@ -54,7 +54,7 @@ ShopTreasure::ShopTreasure(
   treasure(treasure),
   price(price),
   dialog_id(dialog_id),
-  price_digits(0, 0, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP),
+  price_digits(0, 0, TextSurface::HorizontalAlignment::LEFT, TextSurface::VerticalAlignment::TOP),
   rupee_icon_sprite(std::make_shared<Sprite>("entities/rupee_icon")) {
 
   std::ostringstream oss;

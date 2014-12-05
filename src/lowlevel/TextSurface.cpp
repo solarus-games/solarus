@@ -44,7 +44,7 @@ namespace Solarus {
  * \param y y position of the text on the destination surface
  */
 TextSurface::TextSurface(int x, int y):
-    TextSurface(x, y, ALIGN_LEFT, ALIGN_MIDDLE) {
+    TextSurface(x, y, HorizontalAlignment::LEFT, VerticalAlignment::MIDDLE) {
 }
 
 /**
@@ -63,7 +63,7 @@ TextSurface::TextSurface(int x, int y,
   font_id(FontResource::get_default_font_id()),
   horizontal_alignment(horizontal_alignment),
   vertical_alignment(vertical_alignment),
-  rendering_mode(TEXT_SOLID),
+  rendering_mode(RenderingMode::SOLID),
   text_color(Color::white),
   font_size(11),
   x(x),
@@ -410,30 +410,30 @@ void TextSurface::rebuild() {
 
   switch (horizontal_alignment) {
 
-  case ALIGN_LEFT:
+  case HorizontalAlignment::LEFT:
     x_left = x;
     break;
 
-  case ALIGN_CENTER:
+  case HorizontalAlignment::CENTER:
     x_left = x - surface->get_width() / 2;
     break;
 
-  case ALIGN_RIGHT:
+  case HorizontalAlignment::RIGHT:
     x_left = x - surface->get_width();
     break;
   }
 
   switch (vertical_alignment) {
 
-  case ALIGN_TOP:
+  case VerticalAlignment::TOP:
     y_top = y;
     break;
 
-  case ALIGN_MIDDLE:
+  case VerticalAlignment::MIDDLE:
     y_top = y - surface->get_height() / 2;
     break;
 
-  case ALIGN_BOTTOM:
+  case VerticalAlignment::BOTTOM:
     y_top = y - surface->get_height();
     break;
   }
@@ -506,11 +506,11 @@ void TextSurface::rebuild_ttf() {
 
   switch (rendering_mode) {
 
-  case TEXT_SOLID:
+  case RenderingMode::SOLID:
     internal_surface = TTF_RenderUTF8_Solid(&internal_font, text.c_str(), internal_color);
     break;
 
-  case TEXT_ANTIALIASING:
+  case RenderingMode::ANTIALIASING:
     internal_surface = TTF_RenderUTF8_Blended(&internal_font, text.c_str(), internal_color);
     break;
   }

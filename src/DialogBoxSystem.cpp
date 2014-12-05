@@ -41,7 +41,10 @@ DialogBoxSystem::DialogBoxSystem(Game& game):
 
   for (int i = 0; i < nb_visible_lines; i++) {
     line_surfaces[i] = std::make_shared<TextSurface>(
-        0, 0, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_BOTTOM
+        0,
+        0,
+        TextSurface::HorizontalAlignment::LEFT,
+        TextSurface::VerticalAlignment::BOTTOM
     );
   }
 }

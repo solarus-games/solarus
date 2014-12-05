@@ -24,6 +24,10 @@
 
 namespace Solarus {
 
+using RenderingMode = TextSurface::RenderingMode;
+using HorizontalAlignment = TextSurface::HorizontalAlignment;
+using VerticalAlignment = TextSurface::VerticalAlignment;
+
 /**
  * Name of the Lua table representing the text surface module.
  */
@@ -31,21 +35,21 @@ const std::string LuaContext::text_surface_module_name = "sol.text_surface";
 
 namespace {
 
-const std::vector<std::string> rendering_mode_names = {
-    "solid",
-    "antialiasing"
+const std::map<RenderingMode, std::string> rendering_mode_names = {
+    { RenderingMode::SOLID, "solid" },
+    { RenderingMode::ANTIALIASING, "antialiasing" }
 };
 
-const std::vector<std::string> horizontal_alignment_names = {
-    "left",
-    "center",
-    "right"
+const std::map<HorizontalAlignment, std::string> horizontal_alignment_names = {
+    { HorizontalAlignment::LEFT, "left" },
+    { HorizontalAlignment::CENTER, "center" },
+    { HorizontalAlignment::RIGHT, "right" }
 };
 
-const std::vector<std::string> vertical_alignment_names = {
-    "top",
-    "middle",
-    "bottom"
+const std::map<VerticalAlignment, std::string> vertical_alignment_names = {
+    { VerticalAlignment::TOP, "top" },
+    { VerticalAlignment::MIDDLE, "middle" },
+    { VerticalAlignment::BOTTOM, "bottom" }
 };
 
 }
@@ -147,17 +151,17 @@ int LuaContext::text_surface_api_create(lua_State* l) {
       const std::string& font_id = LuaTools::opt_string_field(
           l, 1, "font", FontResource::get_default_font_id()
       );
-      TextSurface::RenderingMode rendering_mode =
-          LuaTools::opt_enum_field<TextSurface::RenderingMode>(
-              l, 1, "rendering_mode", rendering_mode_names, TextSurface::TEXT_SOLID
+      RenderingMode rendering_mode =
+          LuaTools::opt_enum_field<RenderingMode>(
+              l, 1, "rendering_mode", rendering_mode_names, RenderingMode::SOLID
           );
-      TextSurface::HorizontalAlignment horizontal_alignment =
-          LuaTools::opt_enum_field<TextSurface::HorizontalAlignment>(
-              l, 1, "horizontal_alignment", horizontal_alignment_names, TextSurface::ALIGN_LEFT
+      HorizontalAlignment horizontal_alignment =
+          LuaTools::opt_enum_field<HorizontalAlignment>(
+              l, 1, "horizontal_alignment", horizontal_alignment_names, HorizontalAlignment::LEFT
           );
-      TextSurface::VerticalAlignment vertical_alignment =
-          LuaTools::opt_enum_field<TextSurface::VerticalAlignment>(
-              l, 1, "vertical_alignment", vertical_alignment_names, TextSurface::ALIGN_MIDDLE
+      VerticalAlignment vertical_alignment =
+          LuaTools::opt_enum_field<VerticalAlignment>(
+              l, 1, "vertical_alignment", vertical_alignment_names, VerticalAlignment::MIDDLE
           );
       const Color& color = LuaTools::opt_color_field(l, 1, "color", Color::white);
       int font_size = LuaTools::opt_int_field(l, 1, "font_size", TextSurface::default_font_size);
@@ -204,9 +208,9 @@ int LuaContext::text_surface_api_get_horizontal_alignment(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const TextSurface& text_surface = *check_text_surface(l, 1);
 
-    TextSurface::HorizontalAlignment alignment = text_surface.get_horizontal_alignment();
+    HorizontalAlignment alignment = text_surface.get_horizontal_alignment();
 
-    push_string(l, horizontal_alignment_names[alignment]);
+    push_string(l, horizontal_alignment_names.find(alignment)->second);
     return 1;
   });
 }
@@ -242,7 +246,7 @@ int LuaContext::text_surface_api_get_vertical_alignment(lua_State* l) {
 
     TextSurface::VerticalAlignment alignment = text_surface.get_vertical_alignment();
 
-    push_string(l, vertical_alignment_names[alignment]);
+    push_string(l, vertical_alignment_names.find(alignment)->second);
     return 1;
   });
 }
@@ -315,7 +319,7 @@ int LuaContext::text_surface_api_get_rendering_mode(lua_State* l) {
 
     TextSurface::RenderingMode mode = text_surface.get_rendering_mode();
 
-    push_string(l, rendering_mode_names[mode]);
+    push_string(l, rendering_mode_names.find(mode)->second);
     return 1;
   });
 }

@@ -281,29 +281,6 @@ E check_enum(
     int index,
     const std::vector<std::string>& names
 );
-template<typename E>
-E check_enum_field(
-    lua_State* l,
-    int table_index,
-    const std::string& key,
-    const std::vector<std::string>& names
-);
-template<typename E>
-E opt_enum(
-    lua_State* l,
-    int index,
-    const std::vector<std::string>& names,
-    E default_value
-);
-template<typename E>
-E opt_enum_field(
-    lua_State* l,
-    int table_index,
-    const std::string& key,
-    const std::vector<std::string>& names,
-    E default_value
-);
-
 }
 
 }

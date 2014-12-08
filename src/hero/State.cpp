@@ -1020,7 +1020,7 @@ void Hero::State::notify_attacked_enemy(
  */
 int Hero::State::get_sword_damage_factor() const {
 
-  return get_equipment().get_ability(ABILITY_SWORD);
+  return get_equipment().get_ability(Ability::SWORD);
 }
 
 /**

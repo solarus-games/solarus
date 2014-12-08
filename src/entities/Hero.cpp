@@ -2174,7 +2174,7 @@ void Hero::start_deep_water() {
   }
   else {
     // move to state swimming or jumping
-    if (get_equipment().has_ability(ABILITY_SWIM)) {
+    if (get_equipment().has_ability(Ability::SWIM)) {
       set_state(new SwimmingState(*this));
     }
     else {
@@ -2505,7 +2505,7 @@ bool Hero::can_avoid_teletransporter(const Teletransporter& teletransporter) con
  */
 bool Hero::can_run() const {
 
-  if (!get_equipment().has_ability(ABILITY_RUN)) {
+  if (!get_equipment().has_ability(Ability::RUN)) {
     return false;
   }
 
@@ -2645,7 +2645,7 @@ void Hero::start_state_from_ground() {
 
   case Ground::DEEP_WATER:
     if (state->is_touching_ground()
-        && get_equipment().has_ability(ABILITY_SWIM)) {
+        && get_equipment().has_ability(Ability::SWIM)) {
       set_state(new SwimmingState(*this));
     }
     else {

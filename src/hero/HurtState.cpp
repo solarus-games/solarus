@@ -84,11 +84,11 @@ void Hero::HurtState::start(const State* previous_state) {
     // No customized damage: perform the default calculation.
     // The level of the tunic reduces the damage,
     // but we remove at least 1 life point.
-    int life_points = std::max(1, damage / (equipment.get_ability(ABILITY_TUNIC)));
+    int life_points = std::max(1, damage / (equipment.get_ability(Ability::TUNIC)));
 
     equipment.remove_life(life_points);
-    if (equipment.has_ability(ABILITY_TUNIC)) {
-      equipment.notify_ability_used(ABILITY_TUNIC);
+    if (equipment.has_ability(Ability::TUNIC)) {
+      equipment.notify_ability_used(Ability::TUNIC);
     }
   }
 }

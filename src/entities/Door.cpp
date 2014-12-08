@@ -504,7 +504,7 @@ void Door::update() {
 
   if (is_closed()
       && get_opening_method() == OpeningMethod::BY_EXPLOSION
-      && get_equipment().has_ability(ABILITY_DETECT_WEAK_WALLS)
+      && get_equipment().has_ability(Ability::DETECT_WEAK_WALLS)
       && Geometry::get_distance(get_center_point(), get_hero().get_center_point()) < 40
       && !is_suspended()
       && System::now() >= next_hint_sound_date) {

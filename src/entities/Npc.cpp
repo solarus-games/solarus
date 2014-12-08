@@ -200,7 +200,7 @@ void Npc::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
         get_keys_effect().set_action_key_effect(subtype == USUAL_NPC ?
             KeysEffect::ACTION_KEY_SPEAK : KeysEffect::ACTION_KEY_LOOK);
       }
-      else if (can_be_lifted() && get_equipment().has_ability(ABILITY_LIFT)) {
+      else if (can_be_lifted() && get_equipment().has_ability(Ability::LIFT)) {
         get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
       }
     }
@@ -248,7 +248,7 @@ bool Npc::notify_action_command_pressed() {
     }
     else {
       // lift the entity
-      if (get_equipment().has_ability(ABILITY_LIFT)) {
+      if (get_equipment().has_ability(Ability::LIFT)) {
 
         hero.start_lifting(std::make_shared<CarriedItem>(
             hero,

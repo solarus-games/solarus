@@ -200,7 +200,7 @@ void Hero::SwordLoadingState::set_animation_walking() {
 void Hero::SwordLoadingState::play_load_sound() {
 
   std::ostringstream oss;
-  oss << "sword_spin_attack_load_" << get_equipment().get_ability(ABILITY_SWORD);
+  oss << "sword_spin_attack_load_" << get_equipment().get_ability(Ability::SWORD);
   std::string custom_sound_name = oss.str();
   if (Sound::exists(custom_sound_name)) {
     Sound::play(custom_sound_name); // this particular sword has a custom loading sound effect

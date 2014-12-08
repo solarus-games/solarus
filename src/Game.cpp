@@ -505,12 +505,12 @@ void Game::update_keys_effect() {
   }
 
   // make sure the sword key is coherent with having a sword
-  if (get_equipment().has_ability(ABILITY_SWORD)
+  if (get_equipment().has_ability(Ability::SWORD)
       && keys_effect.get_sword_key_effect() != KeysEffect::SWORD_KEY_SWORD) {
 
     keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_SWORD);
   }
-  else if (!get_equipment().has_ability(ABILITY_SWORD)
+  else if (!get_equipment().has_ability(Ability::SWORD)
       && keys_effect.get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD) {
 
     keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);

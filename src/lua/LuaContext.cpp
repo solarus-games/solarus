@@ -2347,7 +2347,7 @@ void LuaContext::on_using() {
 void LuaContext::on_ability_used(Ability ability) {
 
   if (find_method("on_ability_used")) {
-    push_string(l, Equipment::ability_names[ability]);
+    push_string(l, Equipment::ability_names.find(ability)->second);
     call_function(2, 0, "on_ability_used");
   }
 }

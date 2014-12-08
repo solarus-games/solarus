@@ -52,7 +52,7 @@ void Hero::SpinAttackState::start(const State* previous_state) {
 
   // start the animation
   Hero& hero = get_hero();
-  if (get_equipment().has_ability(ABILITY_SWORD_KNOWLEDGE)) {
+  if (get_equipment().has_ability(Ability::SWORD_KNOWLEDGE)) {
     get_sprites().set_animation_super_spin_attack();
     std::shared_ptr<CircleMovement> movement =
         std::make_shared<CircleMovement>(false);
@@ -161,7 +161,7 @@ int Hero::SpinAttackState::get_sword_damage_factor() const {
 void Hero::SpinAttackState::play_spin_attack_sound() {
 
   std::ostringstream oss;
-  oss << "sword_spin_attack_release_" << get_equipment().get_ability(ABILITY_SWORD);
+  oss << "sword_spin_attack_release_" << get_equipment().get_ability(Ability::SWORD);
   std::string custom_sound_name = oss.str();
   if (Sound::exists(custom_sound_name)) {
     Sound::play(custom_sound_name); // this particular sword has a spin attack sound effect

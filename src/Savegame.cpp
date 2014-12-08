@@ -123,7 +123,7 @@ void Savegame::set_initial_values() {
   // Set the initial equipment.
   equipment.set_max_life(1);
   equipment.set_life(1);
-  equipment.set_ability(ABILITY_TUNIC, 1);  // Mandatory to have a valid hero sprite.
+  equipment.set_ability(Ability::TUNIC, 1);  // Mandatory to have a valid hero sprite.
 }
 
 /**

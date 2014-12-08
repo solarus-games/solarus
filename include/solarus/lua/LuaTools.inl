@@ -187,33 +187,5 @@ E opt_enum_field(
   return value;
 }
 
-/**
- * \brief Checks whether a value is the name of an enumeration value and
- * returns this value.
- *
- * It is recommended to use the std::map overload of this function instead.
- *
- * \param l A Lua state.
- * \param index Index of a string in the Lua stack.
- * \param names A list of strings to search in.
- * \return The index (converted to the enumerated type E) where the string was
- * found in the list.
- * \deprecated
- */
-template<typename E>
-E check_enum(
-    lua_State* l,
-    int index,
-    const std::vector<std::string>& names
-) {
-  std::map<E, std::string> names_map;
-  int i = 0;
-  for (const std::string& name: names) {
-    names_map[static_cast<E>(i)] = name;
-    ++i;
-  }
-  return check_enum(l, index, names_map);
-}
-
 }
 }

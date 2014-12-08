@@ -274,13 +274,6 @@ E opt_enum_field(
     E default_value
 );
 
-// enum (vector version, deprecated)
-template<typename E>
-E check_enum(
-    lua_State* l,
-    int index,
-    const std::vector<std::string>& names
-);
 }
 
 }

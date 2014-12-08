@@ -60,7 +60,7 @@ void Hero::GrabbingState::update() {
 
   // release the obstacle
   Hero& hero = get_hero();
-  if (!get_commands().is_command_pressed(GameCommands::ACTION)) {
+  if (!get_commands().is_command_pressed(GameCommand::ACTION)) {
     hero.set_state(new FreeState(hero));
   }
 

@@ -22,7 +22,7 @@
 #include "solarus/lowlevel/SurfacePtr.h"
 #include "solarus/lua/ScopedLuaRef.h"
 #include "solarus/Dialog.h"
-#include "solarus/GameCommands.h"
+#include "solarus/GameCommand.h"
 #include <list>
 
 namespace Solarus {
@@ -52,7 +52,7 @@ class DialogBoxSystem {
         const ScopedLuaRef& callback_ref
     );
     void close(const ScopedLuaRef& status_ref);
-    bool notify_command_pressed(GameCommands::Command command);
+    bool notify_command_pressed(GameCommand command);
     const std::string& get_dialog_id() const;
 
     void draw(const SurfacePtr& dst_surface);

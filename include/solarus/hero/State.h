@@ -47,8 +47,8 @@ class Hero::State {
     bool is_suspended() const;
     virtual void set_suspended(bool suspended);
     uint32_t get_when_suspended() const;
-    void notify_command_pressed(GameCommands::Command command);
-    void notify_command_released(GameCommands::Command command);
+    void notify_command_pressed(GameCommand command);
+    void notify_command_released(GameCommand command);
     virtual void notify_action_command_pressed();
     virtual void notify_action_command_released();
     virtual void notify_attack_command_pressed();

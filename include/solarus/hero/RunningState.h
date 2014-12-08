@@ -18,7 +18,6 @@
 #define SOLARUS_HERO_RUNNING_STATE_H
 
 #include "solarus/hero/State.h"
-#include "solarus/GameCommands.h"
 
 namespace Solarus {
 
@@ -29,7 +28,7 @@ class Hero::RunningState: public Hero::State {
 
   public:
 
-    RunningState(Hero& hero, GameCommands::Command command);
+    RunningState(Hero& hero, GameCommand command);
 
     virtual void start(const State* previous_state) override;
     virtual void stop(const State* next_state) override;
@@ -66,7 +65,7 @@ class Hero::RunningState: public Hero::State {
     int phase;                      /**< current phase of the run */
     uint32_t next_phase_date;       /**< date of the next phase */
     uint32_t next_sound_date;       /**< date of the next time a sound is played during the run */
-    GameCommands::Command command;  /**< the command pressed to make the hero run */
+    GameCommand command;            /**< the command pressed to make the hero run */
 
 };
 

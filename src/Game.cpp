@@ -277,7 +277,7 @@ bool Game::notify_input(const InputEvent& event) {
  * \brief This function is called when a game command is pressed.
  * \param command A game command.
  */
-void Game::notify_command_pressed(GameCommands::Command command) {
+void Game::notify_command_pressed(GameCommand command) {
 
   // Is a built-in dialog box being shown?
   if (is_dialog_enabled()) {
@@ -297,7 +297,7 @@ void Game::notify_command_pressed(GameCommands::Command command) {
   }
 
   // Lua scripts did not override the command: do the built-in behavior.
-  if (command == GameCommands::PAUSE) {
+  if (command == GameCommand::PAUSE) {
     if (is_paused()) {
       if (can_unpause()) {
         set_paused(false);
@@ -320,7 +320,7 @@ void Game::notify_command_pressed(GameCommands::Command command) {
  * \brief This function is called when a game command is released.
  * \param command A game command.
  */
-void Game::notify_command_released(GameCommands::Command command) {
+void Game::notify_command_released(GameCommand command) {
 
   bool handled = get_lua_context().game_on_command_released(*this, command);
 
@@ -857,14 +857,14 @@ void Game::stop_game_over() {
 /**
  * \brief Simulates pressing a game command.
  */
-void Game::simulate_command_pressed(GameCommands::Command command){
+void Game::simulate_command_pressed(GameCommand command){
   commands->game_command_pressed(command);
 }
 
 /**
  * \brief Simulates releasing a game command.
  */
-void Game::simulate_command_released(GameCommands::Command command){
+void Game::simulate_command_released(GameCommand command){
   commands->game_command_released(command);
 }
 

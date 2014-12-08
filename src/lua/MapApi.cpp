@@ -2205,7 +2205,7 @@ bool LuaContext::map_on_input(Map& map, const InputEvent& event) {
  * \param command The command pressed.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::map_on_command_pressed(Map& map, GameCommands::Command command) {
+bool LuaContext::map_on_command_pressed(Map& map, GameCommand command) {
 
   bool handled = false;
   push_map(l, map);
@@ -2229,7 +2229,7 @@ bool LuaContext::map_on_command_pressed(Map& map, GameCommands::Command command)
  * \param command The command released.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::map_on_command_released(Map& map, GameCommands::Command command) {
+bool LuaContext::map_on_command_released(Map& map, GameCommand command) {
 
   bool handled = false;
   push_map(l, map);

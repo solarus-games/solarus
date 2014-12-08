@@ -267,17 +267,17 @@ class LuaContext {
     bool menu_on_input(const ScopedLuaRef& menu_ref, const InputEvent& event);
     bool menu_on_command_pressed(
         const ScopedLuaRef& menu_ref,
-        GameCommands::Command command
+        GameCommand command
     );
     bool menu_on_command_released(
         const ScopedLuaRef& menu_ref,
-        GameCommands::Command command
+        GameCommand command
     );
     void menus_on_update(int context_index);
     void menus_on_draw(int context_index, const SurfacePtr& dst_surface);
     bool menus_on_input(int context_index, const InputEvent& event);
-    bool menus_on_command_pressed(int context_index, GameCommands::Command command);
-    bool menus_on_command_released(int context_index, GameCommands::Command command);
+    bool menus_on_command_pressed(int context_index, GameCommand command);
+    bool menus_on_command_released(int context_index, GameCommand command);
 
     // Sprite events.
     void sprite_on_animation_finished(
@@ -331,8 +331,8 @@ class LuaContext {
     bool game_on_game_over_started(Game& game);
     void game_on_game_over_finished(Game& game);
     bool game_on_input(Game& game, const InputEvent& event);
-    bool game_on_command_pressed(Game& game, GameCommands::Command command);
-    bool game_on_command_released(Game& game, GameCommands::Command command);
+    bool game_on_command_pressed(Game& game, GameCommand command);
+    bool game_on_command_released(Game& game, GameCommand command);
 
     // Map events.
     void map_on_started(Map& map, Destination* destination);
@@ -346,8 +346,8 @@ class LuaContext {
     void map_on_obtaining_treasure(Map& map, const Treasure& treasure);
     void map_on_obtained_treasure(Map& map, const Treasure& treasure);
     bool map_on_input(Map& map, const InputEvent& event);
-    bool map_on_command_pressed(Map& map, GameCommands::Command command);
-    bool map_on_command_released(Map& map, GameCommands::Command command);
+    bool map_on_command_pressed(Map& map, GameCommand command);
+    bool map_on_command_released(Map& map, GameCommand command);
 
     // Map entity events.
     void entity_on_update(MapEntity& entity);
@@ -1160,8 +1160,8 @@ class LuaContext {
     bool on_joypad_hat_moved(const InputEvent& event);
     bool on_mouse_button_pressed(const InputEvent& event);
     bool on_mouse_button_released(const InputEvent& event);
-    bool on_command_pressed(GameCommands::Command command);
-    bool on_command_released(GameCommands::Command command);
+    bool on_command_pressed(GameCommand command);
+    bool on_command_released(GameCommand command);
     void on_animation_finished(const std::string& animation);
     void on_animation_changed(const std::string& animation);
     void on_direction_changed(const std::string& animation, int direction);

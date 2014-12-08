@@ -174,6 +174,7 @@ file(
   include/solarus/Equipment.h
   include/solarus/EquipmentItem.h
   include/solarus/EquipmentItemUsage.h
+  include/solarus/GameCommand.h
   include/solarus/GameCommands.h
   include/solarus/Game.h
   include/solarus/Language.h

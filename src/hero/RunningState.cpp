@@ -26,6 +26,7 @@
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/Game.h"
+#include "solarus/GameCommands.h"
 #include "solarus/Map.h"
 #include "solarus/Equipment.h"
 
@@ -36,7 +37,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  * \param command The game command that triggers running.
  */
-Hero::RunningState::RunningState(Hero& hero, GameCommands::Command command):
+Hero::RunningState::RunningState(Hero& hero, GameCommand command):
   State(hero, "running"),
   phase(0),
   next_phase_date(0),

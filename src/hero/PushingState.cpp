@@ -81,7 +81,7 @@ void Hero::PushingState::update() {
     // stop pushing if the player changes his direction
     else if (get_commands().get_wanted_direction8() != pushing_direction4 * 2) {
 
-      if (get_commands().is_command_pressed(GameCommands::ACTION)) {
+      if (get_commands().is_command_pressed(GameCommand::ACTION)) {
         hero.set_state(new GrabbingState(hero));
       }
       else {
@@ -241,7 +241,7 @@ void Hero::PushingState::stop_moving_pushed_entity() {
     return;
   }
 
-  if (!get_commands().is_command_pressed(GameCommands::ACTION)) {
+  if (!get_commands().is_command_pressed(GameCommand::ACTION)) {
     // The hero was pushing an entity without grabbing it.
 
     // Stop the animation pushing if his direction changed.

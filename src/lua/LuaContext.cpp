@@ -1748,7 +1748,7 @@ bool LuaContext::on_mouse_button_released(const InputEvent& event) {
  * \brief Calls the on_command_pressed() method of the object on top of the stack.
  * \param command The game command just pressed.
  */
-bool LuaContext::on_command_pressed(GameCommands::Command command) {
+bool LuaContext::on_command_pressed(GameCommand command) {
 
   bool handled = false;
   if (find_method("on_command_pressed")) {
@@ -1770,7 +1770,7 @@ bool LuaContext::on_command_pressed(GameCommands::Command command) {
  * \brief Calls the on_command_released() method of the object on top of the stack.
  * \param command The game command just pressed.
  */
-bool LuaContext::on_command_released(GameCommands::Command command) {
+bool LuaContext::on_command_released(GameCommand command) {
 
   bool handled = false;
   if (find_method("on_command_released")) {

@@ -33,8 +33,20 @@ namespace Solarus {
  */
 class SOLARUS_API EntityData {
 
-    // TODO
+  public:
+
+    EntityData();
+
+    Point get_xy() const;
+    void set_xy(const Point& xy);
+
+
+  private:
+
+    Point xy;           /**< Entity position on the map. */
 };
+
+using EntityList = std::deque<EntityData>;
 
 /**
  * \brief Stores the contents of a map data file.
@@ -56,6 +68,22 @@ class SOLARUS_API MapData : public LuaData {
     const std::string& get_music_id() const;
     void set_music_id(const std::string& music_id);
 
+    int get_num_entities() const;
+    int get_num_entities(Layer layer) const;
+
+    bool entity_has_name(Layer layer, int index) const;
+    std::string get_entity_name(Layer layer, int index) const;
+    void set_entity_name(Layer layer, int index, const std::string& name);
+
+    void set_entity_layer(Layer layer, int index, Layer new_layer);
+    void bring_entity_to_front(Layer layer, int index);
+    void bring_entity_to_back(Layer layer, int index);
+
+    const EntityData& get_entity(Layer layer, int index) const;
+    EntityData& get_entity(Layer layer, int index);
+    const EntityData& get_entity_by_name(const std::string& name) const;
+    EntityData& get_entity_by_name(const std::string& name);
+
     virtual bool import_from_lua(lua_State* l) override;
     virtual bool export_to_lua(std::ostream& out) const override;
 
@@ -70,8 +98,10 @@ class SOLARUS_API MapData : public LuaData {
     std::string tileset_id;       /**< Tileset to use as skin for the map. */
     std::string music_id;         /**< Background music id or "none" or "same". */
 
-    std::array<std::deque<EntityData>, LAYER_NB>
+    std::array<EntityList, LAYER_NB>
         entities;                 /**< The entities on each layer. */
+    std::map<std::string, EntityData*>
+        named_entities;           /**< Entities indexed by their name. */
 };
 
 }

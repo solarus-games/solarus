@@ -23,6 +23,7 @@
 #include "solarus/lowlevel/Size.h"
 #include "solarus/lua/LuaData.h"
 #include <array>
+#include <map>
 #include <deque>
 #include <string>
 

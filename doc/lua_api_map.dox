@@ -949,7 +949,7 @@ on the map.
       item that was required is removed. This means setting its
       \ref lua_api_item_set_variant "possessed variant" to \c 0, unless it has
       an associated amount: in this case, the amount is decremented.
-  - \c cannot_open_dialog_id (string, optional): Id of the dialog to show
+  - \c cannot_open_dialog (string, optional): Id of the dialog to show
     if the hero fails to open the chest.
     If you don't set this value, no dialog is shown.
 - Return value (\ref lua_api_chest "chest"): The treasure chest created.
@@ -1425,7 +1425,7 @@ on the map.
       \ref lua_api_item_set_variant "possessed variant" to \c 0, unless it has
       an associated amount: in this case, the amount is decremented.
     - With other opening methods, this setting has no effect.
-  - \c cannot_open_dialog_id (string, optional): Id of the dialog to show
+  - \c cannot_open_dialog (string, optional): Id of the dialog to show
     if the hero fails to open the door.
     If you don't set this value, no dialog is shown.
 - Return value (\ref lua_api_door "door"): The \ref lua_api_door

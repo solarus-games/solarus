@@ -32,24 +32,24 @@
 namespace Solarus {
 
 /**
- * \brief Type of a property value of an entity in the map data file.
+ * \brief Type of a field of an entity in the map data file.
  */
-enum class EntityPropertyType {
+enum class EntityFieldType {
     STRING,
     INTEGER,
     BOOLEAN
 };
 
 /**
- * \brief Stores one property of the entity.
+ * \brief Stores the value of one field of the entity.
  */
-struct PropertyValue {
+struct FieldValue {
 
-    explicit PropertyValue(const std::string& value);
-    explicit PropertyValue(int value);
-    explicit PropertyValue(bool value);
+    explicit FieldValue(const std::string& value);
+    explicit FieldValue(int value);
+    explicit FieldValue(bool value);
 
-    const EntityPropertyType value_type;
+    const EntityFieldType value_type;
     std::string string_value;
     int int_value;  // Also used for boolean.
 };
@@ -91,7 +91,7 @@ class SOLARUS_API EntityData {
     Point xy;           /**< Entity position on the map. */
 
     EntityType type;    /**< Type of entity. */
-    std::map<std::string, PropertyValue>
+    std::map<std::string, FieldValue>
         properties;     /**< Properties specific to the entity type. */
 
 };

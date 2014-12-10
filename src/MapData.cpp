@@ -22,7 +22,7 @@ namespace Solarus {
 namespace {
 
 /**
- * \brief Whether a property is optional for an entity of some type.
+ * \brief Whether a field is optional for an entity of some type.
  */
 enum class OptionalFlag {
     MANDATORY,
@@ -39,17 +39,17 @@ enum class InDataFileFlag {
 };
 
 /**
- * \brief Describes a property of an entity type.
+ * \brief Describes a field of an entity type.
  */
-struct EntityPropertyDescription {
+struct EntityFieldDescription {
 
-    std::string key;              /**< Name of the property. */
-    OptionalFlag optional;        /**< Whether the property is optional. */
-    PropertyValue default_value;  /**< Default value (also determines the value type). */
+    std::string key;              /**< Name of the field. */
+    OptionalFlag optional;        /**< Whether the field is optional. */
+    FieldValue default_value;  /**< Default value (also determines the value type). */
 
 };
 
-using EntityTypeDescription = std::vector<EntityPropertyDescription>;
+using EntityTypeDescription = std::vector<EntityFieldDescription>;
 
 /**
  * \brief Definition of the format of all entity types in map data files.
@@ -58,135 +58,135 @@ const std::map<EntityType, EntityTypeDescription> entity_type_descriptions = {
 
     {
         EntityType::TILE, {
-            { "pattern", OptionalFlag::MANDATORY, PropertyValue("") },
-            { "width", OptionalFlag::MANDATORY, PropertyValue(0) },
-            { "height", OptionalFlag::MANDATORY, PropertyValue(0) }
+            { "pattern", OptionalFlag::MANDATORY, FieldValue("") },
+            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(0) }
         }
     },
 
     {
         EntityType::DYNAMIC_TILE, {
-            { "pattern", OptionalFlag::MANDATORY, PropertyValue("") },
-            { "width", OptionalFlag::MANDATORY, PropertyValue(0) },
-            { "height", OptionalFlag::MANDATORY, PropertyValue(0) },
-            { "enabled_at_start", OptionalFlag::MANDATORY, PropertyValue(true) }
+            { "pattern", OptionalFlag::MANDATORY, FieldValue("") },
+            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "enabled_at_start", OptionalFlag::MANDATORY, FieldValue(true) }
         }
     },
 
     {
         EntityType::TELETRANSPORTER, {
-            { "width", OptionalFlag::MANDATORY, PropertyValue(0) },
-            { "height", OptionalFlag::MANDATORY, PropertyValue(0) },
-            { "transition", OptionalFlag::OPTIONAL, PropertyValue("fade") },
-            { "destination_map", OptionalFlag::MANDATORY, PropertyValue("") },
-            { "destination", OptionalFlag::OPTIONAL, PropertyValue("") },
-            { "sprite", OptionalFlag::OPTIONAL, PropertyValue("") },
-            { "sound", OptionalFlag::OPTIONAL, PropertyValue("") }
+            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "transition", OptionalFlag::OPTIONAL, FieldValue("fade") },
+            { "destination_map", OptionalFlag::MANDATORY, FieldValue("") },
+            { "destination", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "sprite", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "sound", OptionalFlag::OPTIONAL, FieldValue("") }
         }
     },
 
     {
         EntityType::DESTINATION, {
-            { "direction", OptionalFlag::MANDATORY, PropertyValue(0) },
-            { "sprite", OptionalFlag::OPTIONAL, PropertyValue("") },
-            { "default", OptionalFlag::OPTIONAL, PropertyValue(false) }
+            { "direction", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "sprite", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "default", OptionalFlag::OPTIONAL, FieldValue(false) }
         }
     },
 
     {
         EntityType::PICKABLE, {
-            { "treasure_name", OptionalFlag::OPTIONAL, PropertyValue("") },
-            { "treasure_variant", OptionalFlag::OPTIONAL, PropertyValue(1) },
-            { "treasure_savegame_variable", OptionalFlag::OPTIONAL, PropertyValue("") }
+            { "treasure_name", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "treasure_variant", OptionalFlag::OPTIONAL, FieldValue(1) },
+            { "treasure_savegame_variable", OptionalFlag::OPTIONAL, FieldValue("") }
         }
     },
 
     {
         EntityType::DESTRUCTIBLE, {
-            { "treasure_name", OptionalFlag::OPTIONAL, PropertyValue("") },
-            { "treasure_variant", OptionalFlag::OPTIONAL, PropertyValue(1) },
-            { "treasure_savegame_variable", OptionalFlag::OPTIONAL, PropertyValue("") },
-            { "sprite", OptionalFlag::MANDATORY, PropertyValue("") },
-            { "destruction_sound", OptionalFlag::OPTIONAL, PropertyValue("") },
-            { "weight", OptionalFlag::OPTIONAL, PropertyValue(0) },
-            { "can_be_cut", OptionalFlag::OPTIONAL, PropertyValue(false) },
-            { "can_explode", OptionalFlag::OPTIONAL, PropertyValue(false) },
-            { "can_regenerate", OptionalFlag::OPTIONAL, PropertyValue(false) },
-            { "damage_on_enemies", OptionalFlag::OPTIONAL, PropertyValue(1) },
-            { "ground", OptionalFlag::OPTIONAL, PropertyValue("wall") }
+            { "treasure_name", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "treasure_variant", OptionalFlag::OPTIONAL, FieldValue(1) },
+            { "treasure_savegame_variable", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "sprite", OptionalFlag::MANDATORY, FieldValue("") },
+            { "destruction_sound", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "weight", OptionalFlag::OPTIONAL, FieldValue(0) },
+            { "can_be_cut", OptionalFlag::OPTIONAL, FieldValue(false) },
+            { "can_explode", OptionalFlag::OPTIONAL, FieldValue(false) },
+            { "can_regenerate", OptionalFlag::OPTIONAL, FieldValue(false) },
+            { "damage_on_enemies", OptionalFlag::OPTIONAL, FieldValue(1) },
+            { "ground", OptionalFlag::OPTIONAL, FieldValue("wall") }
         }
     },
 
     {
         EntityType::CHEST, {
-            { "treasure_name", OptionalFlag::OPTIONAL, PropertyValue("") },
-            { "treasure_variant", OptionalFlag::OPTIONAL, PropertyValue(1) },
-            { "treasure_savegame_variable", OptionalFlag::OPTIONAL, PropertyValue("") },
-            { "sprite", OptionalFlag::MANDATORY, PropertyValue("") },
-            { "opening_method", OptionalFlag::OPTIONAL, PropertyValue("interaction") },
-            { "opening_condition", OptionalFlag::OPTIONAL, PropertyValue("") },
-            { "opening_condition_consumed", OptionalFlag::OPTIONAL, PropertyValue(false) },
-            { "cannot_open_dialog", OptionalFlag::OPTIONAL, PropertyValue("") },
+            { "treasure_name", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "treasure_variant", OptionalFlag::OPTIONAL, FieldValue(1) },
+            { "treasure_savegame_variable", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "sprite", OptionalFlag::MANDATORY, FieldValue("") },
+            { "opening_method", OptionalFlag::OPTIONAL, FieldValue("interaction") },
+            { "opening_condition", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "opening_condition_consumed", OptionalFlag::OPTIONAL, FieldValue(false) },
+            { "cannot_open_dialog", OptionalFlag::OPTIONAL, FieldValue("") },
         }
     },
 
     {
         EntityType::SHOP_TREASURE, {
-            { "treasure_name", OptionalFlag::MANDATORY, PropertyValue("") },
-            { "treasure_variant", OptionalFlag::OPTIONAL, PropertyValue(1) },
-            { "treasure_savegame_variable", OptionalFlag::OPTIONAL, PropertyValue("") },
-            { "price", OptionalFlag::MANDATORY, PropertyValue(0) },
-            { "dialog", OptionalFlag::MANDATORY, PropertyValue("") }
+            { "treasure_name", OptionalFlag::MANDATORY, FieldValue("") },
+            { "treasure_variant", OptionalFlag::OPTIONAL, FieldValue(1) },
+            { "treasure_savegame_variable", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "price", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "dialog", OptionalFlag::MANDATORY, FieldValue("") }
         }
     },
 
     {
         EntityType::ENEMY, {
-            { "direction", OptionalFlag::MANDATORY, PropertyValue(0) },
-            { "breed", OptionalFlag::MANDATORY, PropertyValue("") },
-            { "rank", OptionalFlag::OPTIONAL, PropertyValue(0) },
-            { "savegame_variable", OptionalFlag::OPTIONAL, PropertyValue("") },
-            { "treasure_name", OptionalFlag::OPTIONAL, PropertyValue("") },
-            { "treasure_variant", OptionalFlag::OPTIONAL, PropertyValue(1) },
-            { "treasure_savegame_variable", OptionalFlag::OPTIONAL, PropertyValue("") },
+            { "direction", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "breed", OptionalFlag::MANDATORY, FieldValue("") },
+            { "rank", OptionalFlag::OPTIONAL, FieldValue(0) },
+            { "savegame_variable", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "treasure_name", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "treasure_variant", OptionalFlag::OPTIONAL, FieldValue(1) },
+            { "treasure_savegame_variable", OptionalFlag::OPTIONAL, FieldValue("") },
         }
     },
 
     {
         EntityType::NPC, {
-            { "direction", OptionalFlag::MANDATORY, PropertyValue(3) },
-            { "subtype", OptionalFlag::MANDATORY, PropertyValue(1) },
-            { "sprite", OptionalFlag::OPTIONAL, PropertyValue("") },
-            { "behavior", OptionalFlag::OPTIONAL, PropertyValue("map") },
+            { "direction", OptionalFlag::MANDATORY, FieldValue(3) },
+            { "subtype", OptionalFlag::MANDATORY, FieldValue(1) },
+            { "sprite", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "behavior", OptionalFlag::OPTIONAL, FieldValue("map") },
         }
     },
 
     {
         EntityType::BLOCK, {
-            { "direction", OptionalFlag::OPTIONAL, PropertyValue(-1) },
-            { "sprite", OptionalFlag::MANDATORY, PropertyValue("entities/block") },
-            { "pushable", OptionalFlag::MANDATORY, PropertyValue(true) },
-            { "pullable", OptionalFlag::MANDATORY, PropertyValue(false) },
-            { "maximum_moves", OptionalFlag::MANDATORY, PropertyValue(1) },
+            { "direction", OptionalFlag::OPTIONAL, FieldValue(-1) },
+            { "sprite", OptionalFlag::MANDATORY, FieldValue("entities/block") },
+            { "pushable", OptionalFlag::MANDATORY, FieldValue(true) },
+            { "pullable", OptionalFlag::MANDATORY, FieldValue(false) },
+            { "maximum_moves", OptionalFlag::MANDATORY, FieldValue(1) },
         }
     },
 
     {
         EntityType::JUMPER, {
-            { "direction", OptionalFlag::MANDATORY, PropertyValue(6) },
-            { "width", OptionalFlag::MANDATORY, PropertyValue(0) },
-            { "height", OptionalFlag::MANDATORY, PropertyValue(0) },
-            { "jump_length", OptionalFlag::MANDATORY, PropertyValue(40) }
+            { "direction", OptionalFlag::MANDATORY, FieldValue(6) },
+            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "jump_length", OptionalFlag::MANDATORY, FieldValue(40) }
         }
     },
 
     {
         EntityType::SWITCH, {
-            { "subtype", OptionalFlag::MANDATORY, PropertyValue("walkable") },
-            { "sprite", OptionalFlag::MANDATORY, PropertyValue("entities/switch") },
-            { "sound", OptionalFlag::OPTIONAL, PropertyValue("") },
-            { "needs_block", OptionalFlag::MANDATORY, PropertyValue(false) },
-            { "inactivate_when_leaving", OptionalFlag::MANDATORY, PropertyValue(false) },
+            { "subtype", OptionalFlag::MANDATORY, FieldValue("walkable") },
+            { "sprite", OptionalFlag::MANDATORY, FieldValue("entities/switch") },
+            { "sound", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "needs_block", OptionalFlag::MANDATORY, FieldValue(false) },
+            { "inactivate_when_leaving", OptionalFlag::MANDATORY, FieldValue(false) },
         }
     }
 
@@ -197,23 +197,23 @@ const std::map<EntityType, EntityTypeDescription> entity_type_descriptions = {
 }  // Anonymous namespace.
 
 
-PropertyValue::PropertyValue(const std::string& value):
-    value_type(EntityPropertyType::STRING),
+FieldValue::FieldValue(const std::string& value):
+    value_type(EntityFieldType::STRING),
     string_value(value),
     int_value(0) {
 
 }
 
-PropertyValue::PropertyValue(int value):
-    value_type(EntityPropertyType::INTEGER),
+FieldValue::FieldValue(int value):
+    value_type(EntityFieldType::INTEGER),
     string_value(),
     int_value(value) {
 
 
 }
 
-PropertyValue::PropertyValue(bool value):
-    value_type(EntityPropertyType::BOOLEAN),
+FieldValue::FieldValue(bool value):
+    value_type(EntityFieldType::BOOLEAN),
     string_value(),
     int_value(value ? 1 : 0) {
 

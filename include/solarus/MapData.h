@@ -18,6 +18,7 @@
 #define SOLARUS_MAP_DATA_H
 
 #include "solarus/Common.h"
+#include "solarus/entities/EntityType.h"
 #include "solarus/entities/Layer.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/lowlevel/Size.h"
@@ -25,12 +26,39 @@
 #include <array>
 #include <map>
 #include <deque>
+#include <map>
 #include <string>
 
 namespace Solarus {
 
 /**
+ * \brief Type of a property value of an entity in the map data file.
+ */
+enum class EntityPropertyType {
+    STRING,
+    INTEGER,
+    BOOLEAN
+};
+
+/**
+ * \brief Stores one property of the entity.
+ */
+struct PropertyValue {
+
+    explicit PropertyValue(const std::string& value);
+    explicit PropertyValue(int value);
+    explicit PropertyValue(bool value);
+
+    const EntityPropertyType value_type;
+    std::string string_value;
+    int int_value;  // Also used for boolean.
+};
+
+/**
  * \brief Stores the properties of a map entity.
+ *
+ * Properties includes its name, layer, coordinates and properties specific
+ * to each entity type.
  */
 class SOLARUS_API EntityData {
 
@@ -38,13 +66,34 @@ class SOLARUS_API EntityData {
 
     EntityData();
 
+    std::string get_name() const;
+    Layer get_layer() const;
+
     Point get_xy() const;
     void set_xy(const Point& xy);
 
+    const std::string& get_string(const std::string& key) const;
+    void set_string(const std::string& key, const std::string& value);
+    int get_integer(const std::string& key) const;
+    void set_integer(const std::string& key, int value);
+    bool get_boolean(const std::string& key) const;
+    void set_boolean(const std::string& key, bool value);
 
   private:
 
+    friend class MapData;  // Only MapData is allowed to change the name and layer.
+
+    void set_name(const std::string& name);
+    void set_layer(Layer layer);
+
+    std::string name;   /**< Unique name of the entity on the map. */
+    Layer layer;        /**< Layer of the entity on the map. */
     Point xy;           /**< Entity position on the map. */
+
+    EntityType type;    /**< Type of entity. */
+    std::map<std::string, PropertyValue>
+        properties;     /**< Properties specific to the entity type. */
+
 };
 
 using EntityList = std::deque<EntityData>;

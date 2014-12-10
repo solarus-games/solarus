@@ -218,7 +218,7 @@ A tile must be declared in the map data file with
 <tt>tile{ ... }</tt>.
 
 Additional properties:
-- \c pattern (number): Id of the
+- \c pattern (string): Id of the
   \ref quest_tileset_data_file_syntax_tile_patterns
   "tile pattern" to use.
 - \c width (number): Width of the tile in pixels.
@@ -236,7 +236,7 @@ tile{
   y = 104,
   width = 96,
   height = 16,
-  pattern = 18,
+  pattern = "dark_wall",
 }
 \endverbatim
 
@@ -251,7 +251,7 @@ A dynamic tile can be declared in the map data file with
 <tt>dynamic_tile{ ... }</tt>.
 
 Additional properties:
-- \c pattern (number): Id of the
+- \c pattern (string): Id of the
   \ref quest_tileset_data_file_syntax_tile_patterns
   "tile pattern" to use.
 - \c width (number): Width of the tile in pixels.
@@ -272,7 +272,7 @@ dynamic_tile{
   width = 48,
   height = 8,
   name = "bridge",
-  pattern = 1030,
+  pattern = "bridge_path",
   enabled_at_start = false,
 }
 \endverbatim

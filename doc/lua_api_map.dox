@@ -1130,7 +1130,7 @@ on the map.
     will be repeated horizontally to fit to this width.
   - \c height (number): Height of the entity in pixels. The tile pattern
     will be repeated vertically to fit to this height.
-  - \c tile_pattern_id (number): Id of the tile pattern to use from the tileset.
+  - \c tile_pattern_id (string): Id of the tile pattern to use from the tileset.
   - \c enabled_at_start (boolean): \c true to make the dynamic tile initially
     enabled, \c false to make it initially disabled.
     \c false to make it disabled.

@@ -25,9 +25,10 @@
 #include "solarus/lua/LuaData.h"
 #include <array>
 #include <map>
+#include <memory>
 #include <deque>
-#include <map>
 #include <string>
+#include <utility>
 
 namespace Solarus {
 
@@ -49,9 +50,18 @@ struct FieldValue {
     explicit FieldValue(int value);
     explicit FieldValue(bool value);
 
+    FieldValue(const FieldValue& other);
+    FieldValue(FieldValue&& other);
+
+    ~FieldValue();
+
     const EntityFieldType value_type;
-    std::string string_value;
-    int int_value;  // Also used for boolean.
+    union
+    {
+        std::string string_value;
+        int int_value;
+        bool bool_value;
+    };
 };
 
 /**

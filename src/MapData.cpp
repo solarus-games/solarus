@@ -199,25 +199,65 @@ const std::map<EntityType, EntityTypeDescription> entity_type_descriptions = {
 
 FieldValue::FieldValue(const std::string& value):
     value_type(EntityFieldType::STRING),
-    string_value(value),
-    int_value(0) {
+    string_value(value) {
 
 }
 
 FieldValue::FieldValue(int value):
     value_type(EntityFieldType::INTEGER),
-    string_value(),
     int_value(value) {
-
 
 }
 
 FieldValue::FieldValue(bool value):
     value_type(EntityFieldType::BOOLEAN),
-    string_value(),
-    int_value(value ? 1 : 0) {
+    bool_value(value) {
 
+}
 
+FieldValue::FieldValue(const FieldValue& other):
+    value_type(other.value_type) {
+
+    switch (value_type) {
+
+        case EntityFieldType::STRING:
+            new (&string_value) std::string(other.string_value);
+            break;
+
+        case EntityFieldType::INTEGER:
+            int_value = other.int_value;
+            break;
+
+        case EntityFieldType::BOOLEAN:
+            bool_value = other.bool_value;
+            break;
+    }
+}
+
+FieldValue::FieldValue(FieldValue&& other):
+    value_type(other.value_type) {
+
+    switch (value_type) {
+
+        case EntityFieldType::STRING:
+            new (&string_value) std::string(std::move(other.string_value));
+            break;
+
+        case EntityFieldType::INTEGER:
+            int_value = other.int_value;
+            break;
+
+        case EntityFieldType::BOOLEAN:
+            bool_value = other.bool_value;
+            break;
+    }
+}
+
+FieldValue::~FieldValue() {
+    using std::string;
+    if (value_type == EntityFieldType::STRING) {
+        string_value.~string();
+    }
 }
 
 

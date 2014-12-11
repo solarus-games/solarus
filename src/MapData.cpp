@@ -30,22 +30,13 @@ enum class OptionalFlag {
 };
 
 /**
- * \brief Whether an entity of some type can be created in the map data file
- * or only dynamically.
- */
-enum class InDataFileFlag {
-    YES,
-    NO
-};
-
-/**
  * \brief Describes a field of an entity type.
  */
 struct EntityFieldDescription {
 
     std::string key;              /**< Name of the field. */
     OptionalFlag optional;        /**< Whether the field is optional. */
-    FieldValue default_value;  /**< Default value (also determines the value type). */
+    FieldValue default_value;     /**< Default value (also determines the value type). */
 
 };
 
@@ -53,8 +44,14 @@ using EntityTypeDescription = std::vector<EntityFieldDescription>;
 
 /**
  * \brief Definition of the format of all entity types in map data files.
+ *
+ * Note: entities whose type is not in this map can only be created
+ * by the engine.
+ * This is the case of HERO, CARRIED_ITEM, BOOMERANG, ARROW and HOOKHOT.
+ * The ones in the map can be created either by declaring them in a map
+ * data file or by the Lua API, or both.
  */
-const std::map<EntityType, EntityTypeDescription> entity_type_descriptions = {
+const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions = {
 
     {
         EntityType::TILE, {
@@ -188,10 +185,106 @@ const std::map<EntityType, EntityTypeDescription> entity_type_descriptions = {
             { "needs_block", OptionalFlag::MANDATORY, FieldValue(false) },
             { "inactivate_when_leaving", OptionalFlag::MANDATORY, FieldValue(false) },
         }
+    },
+
+    {
+        EntityType::SENSOR, {
+            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+        }
+    },
+
+    {
+        EntityType::WALL, {
+            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "stops_hero", OptionalFlag::MANDATORY, FieldValue(false) },
+            { "stops_npcs", OptionalFlag::MANDATORY, FieldValue(false) },
+            { "stops_enemies", OptionalFlag::MANDATORY, FieldValue(false) },
+            { "stops_blocks", OptionalFlag::MANDATORY, FieldValue(false) },
+            { "stops_projectiles", OptionalFlag::MANDATORY, FieldValue(false) },
+        }
+    },
+
+    {
+        EntityType::CRYSTAL, {
+            // No additional fields.
+        }
+    },
+
+    {
+        EntityType::CRYSTAL_BLOCK, {
+            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "subtype", OptionalFlag::MANDATORY, FieldValue(0) },
+        }
+    },
+
+    {
+        EntityType::STREAM, {
+            { "direction", OptionalFlag::MANDATORY, FieldValue(6) },
+            { "sprite", OptionalFlag::OPTIONAL, FieldValue("entities/block") },
+            { "speed", OptionalFlag::OPTIONAL, FieldValue(64) },
+            { "allow_movement", OptionalFlag::OPTIONAL, FieldValue(true) },
+            { "allow_attack", OptionalFlag::OPTIONAL, FieldValue(true) },
+            { "allow_item", OptionalFlag::OPTIONAL, FieldValue(true) },
+        }
+    },
+
+    {
+        EntityType::DOOR, {
+            { "direction", OptionalFlag::MANDATORY, FieldValue(6) },
+            { "sprite", OptionalFlag::MANDATORY, FieldValue("") },
+            { "opening_method", OptionalFlag::OPTIONAL, FieldValue("none") },
+            { "opening_condition", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "opening_condition_consumed", OptionalFlag::OPTIONAL, FieldValue(false) },
+            { "cannot_open_dialog", OptionalFlag::OPTIONAL, FieldValue("") },
+        }
+    },
+
+    {
+        EntityType::STAIRS, {
+            { "direction", OptionalFlag::MANDATORY, FieldValue(1) },
+            { "subtype", OptionalFlag::MANDATORY, FieldValue(0) },
+        }
+    },
+
+    {
+        EntityType::SEPARATOR, {
+            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+        }
+    },
+
+    {
+        EntityType::CUSTOM, {
+            { "direction", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "sprite", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "model", OptionalFlag::OPTIONAL, FieldValue("") },
+        }
+    },
+
+    {
+        EntityType::EXPLOSION, {
+            // No additional fields.
+        }
+    },
+
+    {
+        EntityType::BOMB, {
+            // No additional fields.
+        }
+    },
+
+    {
+        EntityType::FIRE, {
+            // No additional fields.
+        }
     }
 
-    // TODO direction, width, height should be with common properties?
-    // TODO other types of entities
+    // TODO put direction, width, height with common properties?
 };
 
 }  // Anonymous namespace.

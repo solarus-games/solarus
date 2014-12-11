@@ -111,8 +111,12 @@ class SOLARUS_API MapData : public LuaData {
     void set_size(const Size& size);
     Point get_location() const;
     void set_location(const Point& point);
+    bool has_world() const;
     const std::string& get_world() const;
     void set_world(const std::string& world);
+    bool has_floor() const;
+    int get_floor() const;
+    void set_floor(int floor);
     const std::string& get_tileset_id() const;
     void set_tileset_id(const std::string& tileset_id);
     const std::string& get_music_id() const;
@@ -152,9 +156,11 @@ class SOLARUS_API MapData : public LuaData {
         entities;                 /**< The entities on each layer. */
     std::map<std::string, EntityData*>
         named_entities;           /**< Entities indexed by their name. */
+
 };
 
 }
 
 #endif
+
 

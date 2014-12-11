@@ -64,11 +64,15 @@ class SOLARUS_API EntityData {
 
   public:
 
-    EntityData();
+    EntityData(EntityType type);
 
+    EntityType get_type() const;
+
+    bool has_name() const;
     std::string get_name() const;
+    void set_name(const std::string& name);
     Layer get_layer() const;
-
+    void set_layer(Layer layer);
     Point get_xy() const;
     void set_xy(const Point& xy);
 
@@ -81,18 +85,13 @@ class SOLARUS_API EntityData {
 
   private:
 
-    friend class MapData;  // Only MapData is allowed to change the name and layer.
-
-    void set_name(const std::string& name);
-    void set_layer(Layer layer);
-
+    EntityType type;    /**< Type of entity. */
     std::string name;   /**< Unique name of the entity on the map. */
     Layer layer;        /**< Layer of the entity on the map. */
     Point xy;           /**< Entity position on the map. */
 
-    EntityType type;    /**< Type of entity. */
     std::map<std::string, FieldValue>
-        properties;     /**< Properties specific to the entity type. */
+        fields;         /**< Fields specific to the entity type. */
 
 };
 
@@ -125,18 +124,21 @@ class SOLARUS_API MapData : public LuaData {
     int get_num_entities() const;
     int get_num_entities(Layer layer) const;
 
-    bool entity_has_name(Layer layer, int index) const;
-    std::string get_entity_name(Layer layer, int index) const;
-    void set_entity_name(Layer layer, int index, const std::string& name);
-
     void set_entity_layer(Layer layer, int index, Layer new_layer);
     void bring_entity_to_front(Layer layer, int index);
     void bring_entity_to_back(Layer layer, int index);
 
     const EntityData& get_entity(Layer layer, int index) const;
     EntityData& get_entity(Layer layer, int index);
-    const EntityData& get_entity_by_name(const std::string& name) const;
-    EntityData& get_entity_by_name(const std::string& name);
+    const EntityData* get_entity_by_name(const std::string& name) const;
+    EntityData* get_entity_by_name(const std::string& name);
+    bool entity_exists(const std::string& name) const;
+    bool set_entity_name(Layer layer, int index, const std::string& name);
+    int get_entity_index(const EntityData& entity);
+
+    void add_entity(const EntityData& entity);
+    void remove_entity(Layer layer, int index);
+    void remove_entity(const EntityData& entity);
 
     virtual bool import_from_lua(lua_State* l) override;
     virtual bool export_to_lua(std::ostream& out) const override;

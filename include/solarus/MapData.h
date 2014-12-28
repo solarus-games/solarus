@@ -109,7 +109,7 @@ class SOLARUS_API MapData : public LuaData {
     Size get_size() const;
     void set_size(const Size& size);
     Point get_location() const;
-    void set_location(const Point& point);
+    void set_location(const Point& location);
     bool has_world() const;
     const std::string& get_world() const;
     void set_world(const std::string& world);

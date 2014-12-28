@@ -355,8 +355,8 @@ Point MapData::get_location() const {
   return location;
 }
 
-void MapData::set_location(const Point& point) {
-
+void MapData::set_location(const Point& location) {
+  this->location = location;
 }
 
 bool MapData::has_world() const {
@@ -368,7 +368,7 @@ const std::string& MapData::get_world() const {
 }
 
 void MapData::set_world(const std::string& world) {
-
+  this->world = world;
 }
 
 bool MapData::has_floor() const {
@@ -380,7 +380,7 @@ int MapData::get_floor() const {
 }
 
 void MapData::set_floor(int floor) {
-
+  this->floor = floor;
 }
 
 const std::string& MapData::get_tileset_id() const {
@@ -388,7 +388,7 @@ const std::string& MapData::get_tileset_id() const {
 }
 
 void MapData::set_tileset_id(const std::string& tileset_id) {
-
+  this->tileset_id = tileset_id;
 }
 
 const std::string& MapData::get_music_id() const {
@@ -396,26 +396,33 @@ const std::string& MapData::get_music_id() const {
 }
 
 void MapData::set_music_id(const std::string& music_id) {
-
+  this->music_id = music_id;
 }
 
 int MapData::get_num_entities() const {
-  return 0;
+
+  int num_entities = 0;
+  for (const EntityList& entities : entities) {
+    num_entities += entities.size();
+  }
+
+  return num_entities;
 }
 
 int MapData::get_num_entities(Layer layer) const {
-  return 0;
+  return entities[layer].size();
 }
 
-void MapData::set_entity_layer(Layer layer, int index, Layer new_layer) {
-
-}
-void MapData::bring_entity_to_front(Layer layer, int index) {
-
+void MapData::set_entity_layer(Layer /* layer */, int /* index */, Layer /* new_layer */) {
+  // TODO
 }
 
-void MapData::bring_entity_to_back(Layer layer, int index) {
+void MapData::bring_entity_to_front(Layer /* layer */, int /* index */) {
+  // TODO
+}
 
+void MapData::bring_entity_to_back(Layer /* layer */, int /* index */) {
+  // TODO
 }
 
 const EntityData& MapData::get_entity(Layer layer, int index) const {
@@ -426,43 +433,50 @@ EntityData& MapData::get_entity(Layer layer, int index) {
   return entities[layer][index];
 }
 
-const EntityData* MapData::get_entity_by_name(const std::string& name) const {
+const EntityData* MapData::get_entity_by_name(const std::string& /* name */) const {
+  // TODO
   return nullptr;
 }
 
-EntityData* MapData::get_entity_by_name(const std::string& name) {
+EntityData* MapData::get_entity_by_name(const std::string& /* name */) {
+  // TODO
   return nullptr;
 }
 
-bool MapData::entity_exists(const std::string& name) const {
+bool MapData::entity_exists(const std::string& /* name */) const {
+  // TODO
   return false;
 }
 
-bool MapData::set_entity_name(Layer layer, int index, const std::string& name) {
+bool MapData::set_entity_name(Layer /* layer */, int /* index */, const std::string& /* name */) {
+  // TODO
   return false;
 }
 
-int MapData::get_entity_index(const EntityData& entity) {
+int MapData::get_entity_index(const EntityData& /* entity */) {
+  // TODO
   return 0;
 }
 
-void MapData::add_entity(const EntityData& entity) {
-
+void MapData::add_entity(const EntityData& /* entity */) {
+  // TODO
 }
 
-void MapData::remove_entity(Layer layer, int index) {
-
+void MapData::remove_entity(Layer /* layer */, int /* index */) {
+  // TODO
 }
 
-void MapData::remove_entity(const EntityData& entity) {
-
+void MapData::remove_entity(const EntityData& /* entity */) {
+  // TODO
 }
 
-bool MapData::import_from_lua(lua_State* l) {
+bool MapData::import_from_lua(lua_State* /* l */) {
+  // TODO
   return false;
 }
 
-bool MapData::export_to_lua(std::ostream& out) const {
+bool MapData::export_to_lua(std::ostream& /* out */) const {
+  // TODO
   return false;
 }
 

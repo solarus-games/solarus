@@ -289,7 +289,10 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
 
 }  // Anonymous namespace.
 
-
+/**
+ * \brief Creates a value of type string.
+ * \param value The value.
+ */
 FieldValue::FieldValue(const std::string& value):
     value_type(EntityFieldType::STRING),
     string_value(value),
@@ -297,6 +300,10 @@ FieldValue::FieldValue(const std::string& value):
 
 }
 
+/**
+ * \brief Creates a value of type integer.
+ * \param value The value.
+ */
 FieldValue::FieldValue(int value):
     value_type(EntityFieldType::INTEGER),
     string_value(),
@@ -305,6 +312,10 @@ FieldValue::FieldValue(int value):
 
 }
 
+/**
+ * \brief Creates a value of type boolean.
+ * \param value The value.
+ */
 FieldValue::FieldValue(bool value):
     value_type(EntityFieldType::BOOLEAN),
     string_value(),
@@ -313,5 +324,147 @@ FieldValue::FieldValue(bool value):
 
 }
 
+/**
+ * \brief Creates an empty map data object.
+ */
+MapData::MapData():
+    size(0, 0),
+    world(),
+    location(0, 0),
+    floor(NO_FLOOR),
+    tileset_id(),
+    music_id(),
+    entities(),
+    named_entities() {
 
-}  // namespace Solarus.
+}
+
+/**
+ * \brief Returns the size of the map in pixels.
+ * \return The map size.
+ */
+Size MapData::get_size() const {
+  return size;
+}
+
+void MapData::set_size(const Size& size) {
+  this->size = size;
+}
+
+Point MapData::get_location() const {
+  return location;
+}
+
+void MapData::set_location(const Point& point) {
+
+}
+
+bool MapData::has_world() const {
+  return !world.empty();
+}
+
+const std::string& MapData::get_world() const {
+  return world;
+}
+
+void MapData::set_world(const std::string& world) {
+
+}
+
+bool MapData::has_floor() const {
+  return floor != NO_FLOOR;
+}
+
+int MapData::get_floor() const {
+  return floor;
+}
+
+void MapData::set_floor(int floor) {
+
+}
+
+const std::string& MapData::get_tileset_id() const {
+  return tileset_id;
+}
+
+void MapData::set_tileset_id(const std::string& tileset_id) {
+
+}
+
+const std::string& MapData::get_music_id() const {
+  return music_id;
+}
+
+void MapData::set_music_id(const std::string& music_id) {
+
+}
+
+int MapData::get_num_entities() const {
+  return 0;
+}
+
+int MapData::get_num_entities(Layer layer) const {
+  return 0;
+}
+
+void MapData::set_entity_layer(Layer layer, int index, Layer new_layer) {
+
+}
+void MapData::bring_entity_to_front(Layer layer, int index) {
+
+}
+
+void MapData::bring_entity_to_back(Layer layer, int index) {
+
+}
+
+const EntityData& MapData::get_entity(Layer layer, int index) const {
+  return entities[layer][index];
+}
+
+EntityData& MapData::get_entity(Layer layer, int index) {
+  return entities[layer][index];
+}
+
+const EntityData* MapData::get_entity_by_name(const std::string& name) const {
+  return nullptr;
+}
+
+EntityData* MapData::get_entity_by_name(const std::string& name) {
+  return nullptr;
+}
+
+bool MapData::entity_exists(const std::string& name) const {
+  return false;
+}
+
+bool MapData::set_entity_name(Layer layer, int index, const std::string& name) {
+  return false;
+}
+
+int MapData::get_entity_index(const EntityData& entity) {
+  return 0;
+}
+
+void MapData::add_entity(const EntityData& entity) {
+
+}
+
+void MapData::remove_entity(Layer layer, int index) {
+
+}
+
+void MapData::remove_entity(const EntityData& entity) {
+
+}
+
+bool MapData::import_from_lua(lua_State* l) {
+  return false;
+}
+
+bool MapData::export_to_lua(std::ostream& out) const {
+  return false;
+}
+
+
+}  // namespace Solarus

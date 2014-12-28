@@ -52,7 +52,7 @@ class ParallaxScrollingTilePattern: public SimpleTilePattern {
     virtual bool is_animated() const override;
     virtual bool is_drawn_at_its_position() const override;
 
-    static constexpr int ratio = 2; /** Distance made by the viewport to move the tile pattern of 1 pixel. */
+    static constexpr int ratio = 2;  /**< Distance made by the viewport to move the tile pattern of 1 pixel. */
 
 };
 

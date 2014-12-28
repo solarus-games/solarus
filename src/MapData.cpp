@@ -430,7 +430,7 @@ const std::string& MapData::get_tileset_id() const {
 
 /**
  * \brief Sets the tileset used to draw this map.
- * \param The tileset id.
+ * \param tileset_id The tileset id.
  * An empty string means that the tileset is not set yet.
  */
 void MapData::set_tileset_id(const std::string& tileset_id) {

@@ -95,6 +95,9 @@ class SOLARUS_API EntityData {
 
 };
 
+/**
+ * \brief A list of entities on a layer of the map.
+ */
 using EntityList = std::deque<EntityData>;
 
 /**

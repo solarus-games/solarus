@@ -81,6 +81,10 @@
 #define SOLARUS_VERSION_WITHOUT_PATCH (SOLARUS_STRINGIFY(SOLARUS_MAJOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_MINOR_VERSION))
 
 // Windows specific.
+/**
+ * \def SOLARUS_API
+ * \brief Windows DLL import/export specifications for the Solarus library symbols.
+ */
 #ifdef _WIN32
 #  ifdef solarus_EXPORTS  // Define automatically added by cmake.
 #    define SOLARUS_API __declspec(dllexport)

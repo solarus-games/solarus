@@ -76,10 +76,13 @@ class SOLARUS_API EntityData {
     Point get_xy() const;
     void set_xy(const Point& xy);
 
+    bool is_string(const std::string& key) const;
     const std::string& get_string(const std::string& key) const;
     void set_string(const std::string& key, const std::string& value);
+    bool is_integer(const std::string& key) const;
     int get_integer(const std::string& key) const;
     void set_integer(const std::string& key, int value);
+    bool is_boolean(const std::string& key) const;
     bool get_boolean(const std::string& key) const;
     void set_boolean(const std::string& key, bool value);
 

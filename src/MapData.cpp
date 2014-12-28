@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/lowlevel/Debug.h"
 #include "solarus/MapData.h"
 #include <vector>
 
@@ -322,6 +323,186 @@ FieldValue::FieldValue(bool value):
     int_value(value ? 1 : 0) {
 
 
+}
+
+/**
+ * \brief Creates data for an entity of the given type.
+ * \param type A type of entity.
+ */
+EntityData::EntityData(EntityType type) :
+    type(type),
+    name(),
+    layer(LAYER_LOW),
+    xy(),
+    fields() {
+
+  // Initialize fields with their default values.
+  const EntityTypeDescription& type_description = entity_type_descriptions.at(type);
+  for (const EntityFieldDescription& field_description : type_description) {
+    fields.insert(std::make_pair(field_description.key, field_description.default_value));
+  }
+}
+
+/**
+ * \brief Returns the type of entity.
+ * \return The type of entity.
+ */
+EntityType EntityData::get_type() const {
+  return type;
+}
+
+/**
+ * \brief Returns whether the entity has a name.
+ */
+bool EntityData::has_name() const {
+  return !name.empty();
+}
+
+/**
+ * \brief Returns the name of this entity.
+ * \return The entity name or an empty string.
+ */
+std::string EntityData::get_name() const {
+  return name;
+}
+
+/**
+ * \brief Changes the name of this entity.
+ * \param name The entity name or an empty string.
+ */
+void EntityData::set_name(const std::string& name) {
+  this->name = name;
+}
+
+/**
+ * \brief Returns the layer of this entity on the map.
+ * \return The layer.
+ */
+Layer EntityData::get_layer() const {
+  return layer;
+}
+
+/**
+ * \brief Sets the layer of this entity on the map.
+ * \param layer The layer.
+ */
+void EntityData::set_layer(Layer layer) {
+  this->layer = layer;
+}
+
+/**
+ * \brief Returns the coordinates of this entity on the map.
+ * \return The coordinates of the entity.
+ */
+Point EntityData::get_xy() const {
+  return xy;
+}
+
+/**
+ * \brief Sets the coordinates of this entity on the map.
+ * \param xy The coordinates of the entity.
+ */
+void EntityData::set_xy(const Point& xy) {
+  this->xy = xy;
+}
+
+bool EntityData::is_string(const std::string& key) const {
+
+  const auto& it = fields.find(key);
+  if (it == fields.end()) {
+    return false;
+  }
+  return it->second.value_type == EntityFieldType::STRING;
+}
+
+const std::string& EntityData::get_string(const std::string& key) const {
+
+  const auto& it = fields.find(key);
+  Debug::check_assertion(it != fields.end(),
+      "No such entity field: '" + key + "'");
+
+  Debug::check_assertion(it->second.value_type == EntityFieldType::STRING,
+      "Field '" + key + "' is not a string");
+
+  return it->second.string_value;
+}
+
+void EntityData::set_string(const std::string& key, const std::string& value) {
+
+  const auto& it = fields.find(key);
+  Debug::check_assertion(it != fields.end(),
+      "No such entity field: '" + key + "'");
+
+  Debug::check_assertion(it->second.value_type == EntityFieldType::STRING,
+      "Field '" + key + "' is not a string");
+
+  it->second.string_value = value;
+}
+
+bool EntityData::is_integer(const std::string& key) const {
+
+  const auto& it = fields.find(key);
+  if (it == fields.end()) {
+    return false;
+  }
+  return it->second.value_type == EntityFieldType::INTEGER;
+}
+
+int EntityData::get_integer(const std::string& key) const {
+
+  const auto& it = fields.find(key);
+  Debug::check_assertion(it != fields.end(),
+      "No such entity field: '" + key + "'");
+
+  Debug::check_assertion(it->second.value_type == EntityFieldType::INTEGER,
+      "Field '" + key + "' is not a string");
+
+  return it->second.int_value;
+}
+
+void EntityData::set_integer(const std::string& key, int value) {
+
+  const auto& it = fields.find(key);
+  Debug::check_assertion(it != fields.end(),
+      "No such entity field: '" + key + "'");
+
+  Debug::check_assertion(it->second.value_type == EntityFieldType::INTEGER,
+      "Field '" + key + "' is not an integer");
+
+  it->second.int_value = value;
+}
+
+bool EntityData::is_boolean(const std::string& key) const {
+
+  const auto& it = fields.find(key);
+  if (it == fields.end()) {
+    return false;
+  }
+  return it->second.value_type == EntityFieldType::BOOLEAN;
+}
+
+bool EntityData::get_boolean(const std::string& key) const {
+
+  const auto& it = fields.find(key);
+  Debug::check_assertion(it != fields.end(),
+      "No such entity field: '" + key + "'");
+
+  Debug::check_assertion(it->second.value_type == EntityFieldType::BOOLEAN,
+      "Field '" + key + "' is not a boolean");
+
+  return it->second.int_value != 0;
+}
+
+void EntityData::set_boolean(const std::string& key, bool value) {
+
+  const auto& it = fields.find(key);
+  Debug::check_assertion(it != fields.end(),
+      "No such entity field: '" + key + "'");
+
+  Debug::check_assertion(it->second.value_type == EntityFieldType::BOOLEAN,
+      "Field '" + key + "' is not an boolean");
+
+  it->second.int_value = value ? 1 : 0;
 }
 
 /**

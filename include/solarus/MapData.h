@@ -136,7 +136,7 @@ class SOLARUS_API MapData : public LuaData {
     bool set_entity_name(Layer layer, int index, const std::string& name);
     int get_entity_index(const EntityData& entity);
 
-    void add_entity(const EntityData& entity);
+    bool add_entity(const EntityData& entity);
     void remove_entity(Layer layer, int index);
     void remove_entity(const EntityData& entity);
 

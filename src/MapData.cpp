@@ -333,72 +333,130 @@ MapData::MapData():
     location(0, 0),
     floor(NO_FLOOR),
     tileset_id(),
-    music_id(),
+    music_id("none"),
     entities(),
     named_entities() {
 
 }
 
 /**
- * \brief Returns the size of the map in pixels.
- * \return The map size.
+ * \brief Returns the size of the map.
+ * \return The map size in pixels.
  */
 Size MapData::get_size() const {
   return size;
 }
 
+/**
+ * \brief Sets the size of the map.
+ * \param size The map size in pixels.
+ */
 void MapData::set_size(const Size& size) {
   this->size = size;
 }
 
+/**
+ * \brief Returns the location of this map in its world.
+ * \return The location of the upper-left corner of the map in pixels.
+ */
 Point MapData::get_location() const {
   return location;
 }
 
+/**
+ * \brief Sets the location of this map in its world.
+ * \param location The location of the upper-left corner of the map in pixels.
+ */
 void MapData::set_location(const Point& location) {
   this->location = location;
 }
 
+/**
+ * \brief Returns whether this map is in a world.
+ * \return \c true if the map is in a world.
+ */
 bool MapData::has_world() const {
   return !world.empty();
 }
 
+/**
+ * \brief Returns the world this maps belongs to.
+ * \return The world or an empty string.
+ */
 const std::string& MapData::get_world() const {
   return world;
 }
 
+/**
+ * \brief Sets the world this maps belongs to.
+ * \param world The world or an empty string.
+ */
 void MapData::set_world(const std::string& world) {
   this->world = world;
 }
 
+/**
+ * \brief Returns whether this map has a floor number.
+ * \return \c true if the map has a floor number.
+ */
 bool MapData::has_floor() const {
   return floor != NO_FLOOR;
 }
 
+/**
+ * \brief Returns the floor number of this map.
+ * \return The floor number or Map::NO_FLOOR.
+ */
 int MapData::get_floor() const {
   return floor;
 }
 
+/**
+ * \brief Sets the floor number of this map.
+ * \param floor The floor number or Map::NO_FLOOR.
+ */
 void MapData::set_floor(int floor) {
   this->floor = floor;
 }
 
+/**
+ * \brief Returns the tileset used to draw this map.
+ * \return The tileset id.
+ * An empty string means that the tileset is not set yet.
+ */
 const std::string& MapData::get_tileset_id() const {
   return tileset_id;
 }
 
+/**
+ * \brief Sets the tileset used to draw this map.
+ * \param The tileset id.
+ * An empty string means that the tileset is not set yet.
+ */
 void MapData::set_tileset_id(const std::string& tileset_id) {
   this->tileset_id = tileset_id;
 }
 
+/**
+ * \brief Returns the music played on this map.
+ * \return The music id or "none" or "same".
+ */
 const std::string& MapData::get_music_id() const {
   return music_id;
 }
 
+/**
+ * \brief Sets the music played on this map.
+ * \param music_id The music id or "none" or "same".
+ */
 void MapData::set_music_id(const std::string& music_id) {
   this->music_id = music_id;
 }
 
+/**
+ * \brief Returns the total number of entities on this map.
+ * \return The number of entities.
+ */
 int MapData::get_num_entities() const {
 
   int num_entities = 0;
@@ -409,72 +467,163 @@ int MapData::get_num_entities() const {
   return num_entities;
 }
 
+/**
+ * \brief Returns the number of entities on a layer of this map.
+ * \param layer A layer.
+ * \return The number of entities on that layer.
+ */
 int MapData::get_num_entities(Layer layer) const {
   return entities[layer].size();
 }
 
+/**
+ * \brief Changes the layer of an entity.
+ * \param layer The current layer.
+ * \param index Index of the entity to change in that layer.
+ * \param new_layer The new layer to set.
+ */
 void MapData::set_entity_layer(Layer /* layer */, int /* index */, Layer /* new_layer */) {
   // TODO
 }
 
+/**
+ * \brief Brings an entity to front on its layer.
+ * \param layer The layer of the entity to change.
+ * \param index Index of the entity in that layer.
+ */
 void MapData::bring_entity_to_front(Layer /* layer */, int /* index */) {
   // TODO
 }
 
+/**
+ * \brief Brings an entity to back on its layer.
+ * \param layer The layer of the entity to change.
+ * \param index Index of the entity in that layer.
+ */
 void MapData::bring_entity_to_back(Layer /* layer */, int /* index */) {
   // TODO
 }
 
+/**
+ * \brief Returns the entity at the given layer and index.
+ * \param layer The layer of the entity to get.
+ * \param index Index of the entity in that layer.
+ * \return The entity data.
+ */
 const EntityData& MapData::get_entity(Layer layer, int index) const {
   return entities[layer][index];
 }
 
+/**
+ * \brief Returns the entity at the given layer and index.
+ *
+ * Non-const version.
+ *
+ * \param layer The layer of the entity to get.
+ * \param index Index of the entity in that layer.
+ * \return The entity data.
+ */
 EntityData& MapData::get_entity(Layer layer, int index) {
   return entities[layer][index];
 }
 
+/**
+ * \brief Returns an entity given its name.
+ * \param name Name of the entity to get.
+ * \return The entity or nullptr if there is no such entity.
+ */
 const EntityData* MapData::get_entity_by_name(const std::string& /* name */) const {
   // TODO
   return nullptr;
 }
 
+/**
+ * \brief Returns an entity given its name.
+ *
+ * Non-const version. Ownership of the pointer remains to MapData.
+ *
+ * \param name Name of the entity to get.
+ * \return The entity or nullptr if there is no such entity.
+ */
 EntityData* MapData::get_entity_by_name(const std::string& /* name */) {
   // TODO
   return nullptr;
 }
 
+/**
+ * \brief Returns whether there exists an entity with the specified name.
+ * \param name The name to check.
+ * \return \c true if there exists an entity with this name on the map.
+ */
 bool MapData::entity_exists(const std::string& /* name */) const {
   // TODO
   return false;
 }
 
+/**
+ * \brief Changes the name of an entity.
+ * \param layer Layer of the entity to change.
+ * \param index Index of the entity in that layer.
+ * \param name The new name. An empty string means no name.
+ * \return \c true in case of success, \c false if the name was already used.
+ */
 bool MapData::set_entity_name(Layer /* layer */, int /* index */, const std::string& /* name */) {
   // TODO
   return false;
 }
 
+/**
+ * \brief Returns the index of an entity in its layer.
+ * \param entity The information of an entity.
+ * \return The index of this entity in its layer.
+ * Returns -1 if the entity is not on this map.
+ */
 int MapData::get_entity_index(const EntityData& /* entity */) {
   // TODO
   return 0;
 }
 
-void MapData::add_entity(const EntityData& /* entity */) {
+/**
+ * \brief Adds an entity to the map.
+ *
+ * If the new entity has a name, it should be unique on the map.
+ *
+ * \param entity The information of an entity.
+ * \return The index of this entity in its layer.
+ */
+bool MapData::add_entity(const EntityData& /* entity */) {
   // TODO
+  return false;
 }
 
+/**
+ * \brief Removes an entity from the map.
+ * \param layer Layer of the entity to remove.
+ * \param index Index of the entity in its layer.
+ */
 void MapData::remove_entity(Layer /* layer */, int /* index */) {
   // TODO
 }
 
+/**
+ * \brief Removes an entity from the map.
+ * \param entity The entity information.
+ */
 void MapData::remove_entity(const EntityData& /* entity */) {
   // TODO
 }
 
+/**
+ * \copydoc LuaData::import_from_lua
+ */
 bool MapData::import_from_lua(lua_State* /* l */) {
   // TODO
   return false;
 }
 
+/**
+ * \copydoc LuaData::export_to_lua
+ */
 bool MapData::export_to_lua(std::ostream& /* out */) const {
   // TODO
   return false;

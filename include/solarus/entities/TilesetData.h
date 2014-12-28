@@ -48,8 +48,6 @@ class SOLARUS_API TilePatternData {
     TilePatternData();
     explicit TilePatternData(const Rectangle& frame);
 
-    bool is_nil() const;
-
     Ground get_ground() const;
     void set_ground(Ground ground);
 

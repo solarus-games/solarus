@@ -157,7 +157,7 @@ bool QuestResources::remove(
 
 /**
  * \brief Changes the id of a resource element from the list.
- * \param resource_ A type of resource.
+ * \param resource_type A type of resource.
  * \param old_id Id of the element to change.
  * \param new_id The new id to set.
  * \return \c true in case of success, \c false if the old id does not

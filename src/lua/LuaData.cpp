@@ -76,8 +76,8 @@ bool LuaData::import_from_file(const std::string& file_name) {
  * in the quest write directory or in the quest data archive (see QuestFiles).
  * This function does the search for you.
  *
- * \param[in] file_name Path of the file to load, relative to the quest data
- * path.
+ * \param[in] quest_file_name Path of the file to load, relative to the quest
+ * data path.
  * \param[in] language_specific \c true to search in the language-specific
  * directory of the current language.
  * The file must be encoded in UTF-8.

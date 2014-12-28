@@ -402,8 +402,8 @@ void MapData::set_music_id(const std::string& music_id) {
 int MapData::get_num_entities() const {
 
   int num_entities = 0;
-  for (const EntityList& entities : entities) {
-    num_entities += entities.size();
+  for (const EntityList& layer_entities : entities) {
+    num_entities += layer_entities.size();
   }
 
   return num_entities;

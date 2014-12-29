@@ -217,6 +217,7 @@ bool TilesetData::exists(const std::string& pattern_id) const {
  * \brief Returns the pattern with the specified id.
  * \param pattern_id A tile pattern id. It must exist.
  * \return The pattern with this id.
+ * The object remains valid until tile patterns are added or removed.
  */
 const TilePatternData& TilesetData::get_pattern(const std::string& pattern_id) const {
 
@@ -234,6 +235,7 @@ const TilePatternData& TilesetData::get_pattern(const std::string& pattern_id) c
  *
  * \param pattern_id A tile pattern id. It must exist.
  * \return The pattern with this id.
+ * The object remains valid until tile patterns are added or removed.
  */
 TilePatternData& TilesetData::get_pattern(const std::string& pattern_id) {
 

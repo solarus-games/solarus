@@ -810,6 +810,7 @@ void MapData::bring_entity_to_back(Layer layer, int index) {
  * \param layer The layer of the entity to get.
  * \param index Index of the entity in that layer.
  * \return The entity data.
+ * The object remains valid until entities are added or removed.
  */
 const EntityData& MapData::get_entity(Layer layer, int index) const {
   return entities[layer][index];
@@ -823,6 +824,7 @@ const EntityData& MapData::get_entity(Layer layer, int index) const {
  * \param layer The layer of the entity to get.
  * \param index Index of the entity in that layer.
  * \return The entity data.
+ * The object remains valid until entities are added or removed.
  */
 EntityData& MapData::get_entity(Layer layer, int index) {
   return entities[layer][index];
@@ -832,10 +834,18 @@ EntityData& MapData::get_entity(Layer layer, int index) {
  * \brief Returns an entity given its name.
  * \param name Name of the entity to get.
  * \return The entity or nullptr if there is no such entity.
+ * The object remains valid until entities are added or removed.
  */
-const EntityData* MapData::get_entity_by_name(const std::string& /* name */) const {
-  // TODO
-  return nullptr;
+const EntityData* MapData::get_entity_by_name(const std::string& name) const {
+
+  const auto& it = named_entities.find(name);
+
+  if (it == named_entities.end()) {
+    return nullptr;
+  }
+
+  const std::pair<Layer, int>& position = it->second;
+  return &entities[position.first][position.second];
 }
 
 /**
@@ -845,10 +855,18 @@ const EntityData* MapData::get_entity_by_name(const std::string& /* name */) con
  *
  * \param name Name of the entity to get.
  * \return The entity or nullptr if there is no such entity.
+ * The object remains valid until entities are added or removed.
  */
-EntityData* MapData::get_entity_by_name(const std::string& /* name */) {
-  // TODO
-  return nullptr;
+EntityData* MapData::get_entity_by_name(const std::string& name) {
+
+  const auto& it = named_entities.find(name);
+
+  if (it == named_entities.end()) {
+    return nullptr;
+  }
+
+  const std::pair<Layer, int>& position = it->second;
+  return &entities[position.first][position.second];
 }
 
 /**
@@ -856,9 +874,9 @@ EntityData* MapData::get_entity_by_name(const std::string& /* name */) {
  * \param name The name to check.
  * \return \c true if there exists an entity with this name on the map.
  */
-bool MapData::entity_exists(const std::string& /* name */) const {
-  // TODO
-  return false;
+bool MapData::entity_exists(const std::string& name) const {
+
+  return named_entities.find(name) != named_entities.end();
 }
 
 /**

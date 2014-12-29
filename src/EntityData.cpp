@@ -176,11 +176,11 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
         EntityType::WALL, {
             { "width", OptionalFlag::MANDATORY, FieldValue(0) },
             { "height", OptionalFlag::MANDATORY, FieldValue(0) },
-            { "stops_hero", OptionalFlag::MANDATORY, FieldValue(false) },
-            { "stops_npcs", OptionalFlag::MANDATORY, FieldValue(false) },
-            { "stops_enemies", OptionalFlag::MANDATORY, FieldValue(false) },
-            { "stops_blocks", OptionalFlag::MANDATORY, FieldValue(false) },
-            { "stops_projectiles", OptionalFlag::MANDATORY, FieldValue(false) },
+            { "stops_hero", OptionalFlag::OPTIONAL, FieldValue(false) },
+            { "stops_npcs", OptionalFlag::OPTIONAL, FieldValue(false) },
+            { "stops_enemies", OptionalFlag::OPTIONAL, FieldValue(false) },
+            { "stops_blocks", OptionalFlag::OPTIONAL, FieldValue(false) },
+            { "stops_projectiles", OptionalFlag::OPTIONAL, FieldValue(false) },
         }
     },
 

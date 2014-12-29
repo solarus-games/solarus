@@ -18,89 +18,12 @@
 #define SOLARUS_MAP_DATA_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/EntityType.h"
-#include "solarus/entities/Layer.h"
-#include "solarus/lowlevel/Point.h"
 #include "solarus/lowlevel/Size.h"
-#include "solarus/lua/LuaData.h"
+#include "solarus/EntityData.h"
 #include <array>
-#include <map>
 #include <deque>
-#include <map>
-#include <string>
 
 namespace Solarus {
-
-/**
- * \brief Type of a field of an entity in the map data file.
- */
-enum class EntityFieldType {
-    NIL,      /**< A field that does not exist. */
-    STRING,
-    INTEGER,
-    BOOLEAN
-};
-
-/**
- * \brief Stores the value of one field of the entity.
- */
-struct FieldValue {
-
-    FieldValue();
-    explicit FieldValue(const std::string& value);
-    explicit FieldValue(int value);
-    explicit FieldValue(bool value);
-
-    const EntityFieldType value_type;
-    std::string string_value;
-    int int_value;  // Also used for boolean.
-};
-
-/**
- * \brief Stores the properties of a map entity.
- *
- * Properties includes its name, layer, coordinates and properties specific
- * to each entity type.
- */
-class SOLARUS_API EntityData {
-
-  public:
-
-    EntityData(EntityType type);
-
-    EntityType get_type() const;
-
-    bool has_name() const;
-    std::string get_name() const;
-    void set_name(const std::string& name);
-    Layer get_layer() const;
-    void set_layer(Layer layer);
-    Point get_xy() const;
-    void set_xy(const Point& xy);
-
-    const std::map<std::string, FieldValue>& get_fields() const;
-    FieldValue get_field(const std::string& key) const;
-    bool is_string(const std::string& key) const;
-    const std::string& get_string(const std::string& key) const;
-    void set_string(const std::string& key, const std::string& value);
-    bool is_integer(const std::string& key) const;
-    int get_integer(const std::string& key) const;
-    void set_integer(const std::string& key, int value);
-    bool is_boolean(const std::string& key) const;
-    bool get_boolean(const std::string& key) const;
-    void set_boolean(const std::string& key, bool value);
-
-  private:
-
-    EntityType type;    /**< Type of entity. */
-    std::string name;   /**< Unique name of the entity on the map. */
-    Layer layer;        /**< Layer of the entity on the map. */
-    Point xy;           /**< Entity position on the map. */
-
-    std::map<std::string, FieldValue>
-        fields;         /**< Fields specific to the entity type. */
-
-};
 
 /**
  * \brief A list of entities on a layer of the map.

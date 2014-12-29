@@ -171,6 +171,7 @@ file(
   include/solarus/Dialog.h
   include/solarus/DialogResource.h
   include/solarus/Drawable.h
+  include/solarus/EntityData.h
   include/solarus/Equipment.h
   include/solarus/EquipmentItem.h
   include/solarus/EquipmentItemUsage.h
@@ -357,6 +358,7 @@ file(
   src/Dialog.cpp
   src/DialogResource.cpp
   src/Drawable.cpp
+  src/EntityData.cpp
   src/Equipment.cpp
   src/EquipmentItem.cpp
   src/EquipmentItemUsage.cpp

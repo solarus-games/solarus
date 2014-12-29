@@ -579,7 +579,59 @@ EntityData EntityData::check_entity_data(lua_State* l, int index, EntityType typ
   entity.set_name(name);
   entity.set_layer(layer);
   entity.set_xy({ x, y });
-  // TODO fields
+
+  // Additional fields for this type.
+  const EntityTypeDescription& type_description = entity_type_descriptions.at(type);
+  for (const EntityFieldDescription& field_description : type_description) {
+
+    const std::string& key = field_description.key;
+    const FieldValue& default_value = field_description.default_value;
+    switch (default_value.value_type) {
+
+      case EntityFieldType::STRING:
+      {
+        std::string value;
+        if (field_description.optional == OptionalFlag::OPTIONAL) {
+          value = LuaTools::opt_string_field(l, 1, key, default_value.string_value);
+        }
+        else {
+          value = LuaTools::check_string_field(l, 1, key);
+        }
+        entity.set_string(key, value);
+        break;
+      }
+
+      case EntityFieldType::INTEGER:
+      {
+        int value;
+        if (field_description.optional == OptionalFlag::OPTIONAL) {
+          value = LuaTools::opt_int_field(l, 1, key, default_value.int_value);
+        }
+        else {
+          value = LuaTools::check_int_field(l, 1, key);
+        }
+        entity.set_integer(key, value);
+        break;
+      }
+
+      case EntityFieldType::BOOLEAN:
+      {
+        bool value;
+        if (field_description.optional == OptionalFlag::OPTIONAL) {
+          value = LuaTools::opt_boolean_field(l, 1, key, default_value.int_value != 0);
+        }
+        else {
+          value = LuaTools::check_boolean_field(l, 1, key);
+        }
+        entity.set_boolean(key, value);
+        break;
+      }
+
+      case EntityFieldType::NIL:
+        Debug::die("Nil entity field");
+        break;
+    }
+  }
 
   return entity;
 }

@@ -56,42 +56,6 @@ namespace Solarus {
 namespace {
 
 /**
- * \brief Lua name of each map entity type.
- */
-const std::map<EntityType, std::string> entity_type_names = {
-    { EntityType::TILE, "tile" },
-    { EntityType::DESTINATION, "destination" },
-    { EntityType::TELETRANSPORTER, "teletransporter" },
-    { EntityType::PICKABLE, "pickable" },
-    { EntityType::DESTRUCTIBLE, "destructible" },
-    { EntityType::CHEST, "chest" },
-    { EntityType::JUMPER, "jumper" },
-    { EntityType::ENEMY, "enemy" },
-    { EntityType::NPC, "npc" },
-    { EntityType::BLOCK, "block" },
-    { EntityType::DYNAMIC_TILE, "dynamic_tile" },
-    { EntityType::SWITCH, "switch" },
-    { EntityType::WALL, "wall" },
-    { EntityType::SENSOR, "sensor" },
-    { EntityType::CRYSTAL, "crystal" },
-    { EntityType::CRYSTAL_BLOCK, "crystal_block" },
-    { EntityType::SHOP_TREASURE, "shop_treasure" },
-    { EntityType::STREAM, "stream" },
-    { EntityType::DOOR, "door" },
-    { EntityType::STAIRS, "stairs" },
-    { EntityType::SEPARATOR, "separator" },
-    { EntityType::CUSTOM, "custom_entity" },
-    { EntityType::HERO, "hero" },
-    { EntityType::CARRIED_ITEM, "carried_object" },
-    { EntityType::BOOMERANG, "boomerang" },
-    { EntityType::EXPLOSION, "explosion" },
-    { EntityType::ARROW, "arrow" },
-    { EntityType::BOMB, "bomb" },
-    { EntityType::FIRE, "fire" },
-    { EntityType::HOOKSHOT, "hookshot" }
-};
-
-/**
  * \brief Returns the Lua metatable names of each entity type.
  * \return The Lua metatable name of each entity types.
  */
@@ -99,7 +63,7 @@ const std::map<EntityType, std::string>& get_entity_internal_type_names() {
 
   static std::map<EntityType, std::string> result;
   if (result.empty()) {
-    for (const auto& kvp : entity_type_names) {
+    for (const auto& kvp : MapEntity::entity_type_names) {
       std::string internal_type_name = std::string("sol.") + kvp.second;
       result.insert(std::make_pair(kvp.first, internal_type_name));
     }
@@ -115,8 +79,8 @@ const std::set<std::string>& get_entity_internal_type_names_set() {
 
   static std::set<std::string> result;
   if (result.empty()) {
-    for (size_t i = 0; i < entity_type_names.size(); ++i) {
-      result.insert(LuaContext::get_entity_internal_type_name(EntityType(i)));
+    for (const auto& kvp : MapEntity::entity_type_names) {
+      result.insert(LuaContext::get_entity_internal_type_name(kvp.first));
     }
   }
 
@@ -620,10 +584,8 @@ int LuaContext::entity_api_get_type(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const MapEntity& entity = *check_entity(l, 1);
 
-    const auto& it = entity_type_names.find(entity.get_type());
-    SOLARUS_ASSERT(it != entity_type_names.end(), "Missing entity type name");
-
-    push_string(l, it->second);
+    const std::string& type_name = MapEntity::get_entity_type_name(entity.get_type());
+    push_string(l, type_name);
     return 1;
   });
 }
@@ -4561,7 +4523,7 @@ int LuaContext::custom_entity_api_set_traversable_by(lua_State* l) {
       ++index;
       type_specific = true;
       type = LuaTools::check_enum<EntityType>(
-          l, 2, entity_type_names
+          l, 2, MapEntity::entity_type_names
       );
     }
 
@@ -4620,7 +4582,7 @@ int LuaContext::custom_entity_api_set_can_traverse(lua_State* l) {
       ++index;
       type_specific = true;
       type = LuaTools::check_enum<EntityType>(
-          l, 2, entity_type_names
+          l, 2, MapEntity::entity_type_names
       );
     }
 

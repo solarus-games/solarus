@@ -310,6 +310,11 @@ class SOLARUS_API MapEntity: public ExportableToLua {
     virtual void update();
     virtual void draw_on_map();
 
+    static const std::string& get_entity_type_name(EntityType type);
+    static EntityType get_entity_type_by_name(const std::string& type_name);
+
+    static const std::map<EntityType, std::string> entity_type_names;
+
   protected:
 
     // creation

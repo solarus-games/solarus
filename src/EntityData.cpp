@@ -16,41 +16,18 @@
  */
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/EntityData.h"
-#include <vector>
+#include "solarus/lua/LuaTools.h"
 
 namespace Solarus {
 
 namespace {
 
-/**
- * \brief Whether a field is optional for an entity of some type.
- */
-enum class OptionalFlag {
-    MANDATORY,
-    OPTIONAL
-};
-
-/**
- * \brief Describes a field of an entity type.
- */
-struct EntityFieldDescription {
-
-    std::string key;              /**< Name of the field. */
-    OptionalFlag optional;        /**< Whether the field is optional. */
-    FieldValue default_value;     /**< Default value (also determines the value type). */
-
-};
-
-using EntityTypeDescription = std::vector<EntityFieldDescription>;
+using EntityTypeDescription = EntityData::EntityTypeDescription;
+using OptionalFlag = EntityData::OptionalFlag;
+using FieldValue = EntityData::FieldValue;
 
 /**
  * \brief Definition of the format of all entity types in map data files.
- *
- * Note: entities whose type is not in this map can only be created
- * by the engine.
- * This is the case of HERO, CARRIED_ITEM, BOOMERANG, ARROW and HOOKHOT.
- * The ones in the map can be created either by declaring them in a map
- * data file or by the Lua API, or both.
  */
 const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions = {
 
@@ -581,6 +558,43 @@ void EntityData::set_boolean(const std::string& key, bool value) {
       "Field '" + key + "' is not an boolean");
 
   it->second.int_value = value ? 1 : 0;
+}
+
+/**
+ * \brief Reads an EntityData from the Lua table at the specified index.
+ * \param l A Lua state.
+ * \param index Index of the table in the Lua stack.
+ * \param type Type of entity to read.
+ * \return The EntityData created.
+ */
+EntityData EntityData::check_entity_data(lua_State* l, int index, EntityType type) {
+
+  LuaTools::check_type(l, index, LUA_TTABLE);
+  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
+  int x = LuaTools::check_int_field(l, 1, "x");
+  int y = LuaTools::check_int_field(l, 1, "y");
+
+  EntityData entity(type);
+  entity.set_name(name);
+  entity.set_layer(layer);
+  entity.set_xy({ x, y });
+  // TODO fields
+
+  return entity;
+}
+
+/**
+ * \brief Returns the definition of the format of all entity types in map data files.
+ *
+ * Note: entities whose type is not in this map can only be created
+ * by the engine.
+ * This is the case of HERO, CARRIED_ITEM, BOOMERANG, ARROW and HOOKHOT.
+ * The ones in the map can be created either by declaring them in a map
+ * data file or by the Lua API, or both.
+ */
+const std::map<EntityType, const EntityTypeDescription> EntityData::get_entity_type_descriptions() {
+  return entity_type_descriptions;
 }
 
 }  // namespace Solarus

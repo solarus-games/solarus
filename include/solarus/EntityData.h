@@ -24,33 +24,9 @@
 #include "solarus/lua/LuaData.h"
 #include <map>
 #include <string>
+#include <vector>
 
 namespace Solarus {
-
-/**
- * \brief Type of a field of an entity in the map data file.
- */
-enum class EntityFieldType {
-    NIL,      /**< A field that does not exist. */
-    STRING,
-    INTEGER,
-    BOOLEAN
-};
-
-/**
- * \brief Stores the value of one field of the entity.
- */
-struct FieldValue {
-
-    FieldValue();
-    explicit FieldValue(const std::string& value);
-    explicit FieldValue(int value);
-    explicit FieldValue(bool value);
-
-    const EntityFieldType value_type;
-    std::string string_value;
-    int int_value;  // Also used for boolean.
-};
 
 /**
  * \brief Stores the properties of a map entity.
@@ -62,7 +38,53 @@ class SOLARUS_API EntityData {
 
   public:
 
-    EntityData(EntityType type);
+    /**
+     * \brief Type of a field of an entity in the map data file.
+     */
+    enum class EntityFieldType {
+        NIL,      /**< A field that does not exist. */
+        STRING,
+        INTEGER,
+        BOOLEAN
+    };
+
+    /**
+     * \brief Stores the value of one field of the entity.
+     */
+    struct FieldValue {
+
+        FieldValue();
+        explicit FieldValue(const std::string& value);
+        explicit FieldValue(int value);
+        explicit FieldValue(bool value);
+
+        const EntityFieldType value_type;
+        std::string string_value;
+        int int_value;  // Also used for boolean.
+    };
+
+    /**
+     * \brief Whether a field is optional for an entity of some type.
+     */
+    enum class OptionalFlag {
+        MANDATORY,
+        OPTIONAL
+    };
+
+    /**
+     * \brief Describes a field of an entity type.
+     */
+    struct EntityFieldDescription {
+
+        std::string key;              /**< Name of the field. */
+        OptionalFlag optional;        /**< Whether the field is optional. */
+        FieldValue default_value;     /**< Default value (also determines the value type). */
+
+    };
+
+    using EntityTypeDescription = std::vector<EntityFieldDescription>;
+
+    explicit EntityData(EntityType type);
 
     EntityType get_type() const;
 
@@ -85,6 +107,9 @@ class SOLARUS_API EntityData {
     bool is_boolean(const std::string& key) const;
     bool get_boolean(const std::string& key) const;
     void set_boolean(const std::string& key, bool value);
+
+    static EntityData check_entity_data(lua_State* l, int index, EntityType type);
+    static const std::map<EntityType, const EntityTypeDescription> get_entity_type_descriptions();
 
   private:
 

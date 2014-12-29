@@ -14,7 +14,9 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/MapEntity.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lua/LuaTools.h"
 #include "solarus/MapData.h"
 
 namespace Solarus {
@@ -410,12 +412,102 @@ void MapData::remove_entity(const EntityIndex& index) {
   entities[layer].erase(it);
 }
 
+namespace {
+
+/**
+ * \brief Implementation of all entity creation functions for the map data file.
+ *
+ * The type of entity to create is indicated by the first upvalue.
+ * It will be added to the MapData.
+ */
+int l_add_entity(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+
+    // Retrieve the map data to build.
+    lua_getfield(l, LUA_REGISTRYINDEX, "map");
+    MapData& map = *static_cast<MapData*>(lua_touserdata(l, -1));
+    lua_pop(l, 1);
+
+    // Get the type of entity to create.
+    EntityType type = LuaTools::check_enum(
+        l, lua_upvalueindex(1), MapEntity::entity_type_names
+    );
+    const EntityData& entity = EntityData::check_entity_data(l, -1, type);
+
+    map.add_entity(entity);
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of the properties() function of the Lua map data file.
+ *
+ * Reads the properties of the map: location, size, tileset, music, etc.
+ *
+ * \param l The Lua state that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int l_properties(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+
+    // Retrieve the map data to build.
+    lua_getfield(l, LUA_REGISTRYINDEX, "map");
+    MapData& map = *static_cast<MapData*>(lua_touserdata(l, -1));
+    lua_pop(l, 1);
+
+    // Retrieve the map properties from the table parameter.
+    LuaTools::check_type(l, 1, LUA_TTABLE);
+
+    const int x = LuaTools::opt_int_field(l, 1, "x", 0);
+    const int y = LuaTools::opt_int_field(l, 1, "y", 0);
+    const int width = LuaTools::check_int_field(l, 1, "width");
+    const int height = LuaTools::check_int_field(l, 1, "height");
+    const std::string& world = LuaTools::opt_string_field(l, 1 , "world", "");
+    const int floor = LuaTools::opt_int_field(l, 1, "floor", MapData::NO_FLOOR);
+    const std::string& tileset_id = LuaTools::check_string_field(l, 1, "tileset");
+    const std::string& music_id = LuaTools::opt_string_field(l, 1, "music", "none");
+
+    // Initialize the map data.
+    map.set_location({ x, y });
+    map.set_size({ width, height });
+    map.set_music_id(music_id);
+    map.set_world(world);
+    map.set_floor(floor);
+    map.set_tileset_id(tileset_id);
+
+    // Properties are set: we now allow the data file to declare entities.
+
+    for (const auto& kvp : EntityData::get_entity_type_descriptions()) {
+      const std::string& type_name = MapEntity::get_entity_type_name(kvp.first);
+      lua_pushstring(l, type_name.c_str());
+      lua_pushcclosure(l, l_add_entity, 1);
+      lua_setglobal(l, type_name.c_str());
+    }
+
+    return 0;
+  });
+}
+
+}  // Anonymous namespace
+
 /**
  * \copydoc LuaData::import_from_lua
  */
-bool MapData::import_from_lua(lua_State* /* l */) {
-  // TODO
-  return false;
+bool MapData::import_from_lua(lua_State* l) {
+
+  lua_pushlightuserdata(l, this);
+  lua_setfield(l, LUA_REGISTRYINDEX, "map");
+  lua_register(l, "properties", l_properties);
+  if (lua_pcall(l, 0, 0, 0) != 0) {
+    Debug::error(std::string("Failed to load map: ") + lua_tostring(l, -1));
+    lua_pop(l, 1);
+    return false;
+  }
+
+  return true;
 }
 
 /**

@@ -104,6 +104,8 @@ class SOLARUS_API EntityData {
 
 /**
  * \brief A list of entities on a layer of the map.
+ *
+ * The entity at index 0 is the most to the back.
  */
 using EntityList = std::deque<EntityData>;
 
@@ -134,7 +136,7 @@ class SOLARUS_API MapData : public LuaData {
     int get_num_entities() const;
     int get_num_entities(Layer layer) const;
 
-    void set_entity_layer(Layer layer, int index, Layer new_layer);
+    void set_entity_layer(Layer src_layer, int src_index, Layer dst_layer);
     void bring_entity_to_front(Layer layer, int index);
     void bring_entity_to_back(Layer layer, int index);
 
@@ -166,7 +168,7 @@ class SOLARUS_API MapData : public LuaData {
 
     std::array<EntityList, LAYER_NB>
         entities;                 /**< The entities on each layer. */
-    std::map<std::string, EntityData*>
+    std::map<std::string, std::pair<Layer, int>>
         named_entities;           /**< Entities indexed by their name. */
 
 };

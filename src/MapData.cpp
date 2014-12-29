@@ -737,12 +737,24 @@ int MapData::get_num_entities(Layer layer) const {
 
 /**
  * \brief Changes the layer of an entity.
- * \param layer The current layer.
+ * \param src_layer The current layer.
  * \param index Index of the entity to change in that layer.
- * \param new_layer The new layer to set.
+ * \param dst_layer The new layer to set.
  */
-void MapData::set_entity_layer(Layer /* layer */, int /* index */, Layer /* new_layer */) {
-  // TODO
+void MapData::set_entity_layer(Layer src_layer, int src_index, Layer dst_layer) {
+
+  // Update the entity itself, but also entities and named_entities.
+  const auto& it = entities[src_layer].begin() + src_index;
+  EntityData& entity = *it;
+  entity.set_layer(dst_layer);
+
+  if (entity.has_name()) {
+    int dst_index = entities[dst_layer].size();
+    named_entities[entity.get_name()] = { dst_layer, dst_index };
+  }
+
+  entities[dst_layer].push_back(*it);  // Insert after existing entities on the destination layer.
+  entities[src_layer].erase(it);
 }
 
 /**
@@ -750,8 +762,23 @@ void MapData::set_entity_layer(Layer /* layer */, int /* index */, Layer /* new_
  * \param layer The layer of the entity to change.
  * \param index Index of the entity in that layer.
  */
-void MapData::bring_entity_to_front(Layer /* layer */, int /* index */) {
-  // TODO
+void MapData::bring_entity_to_front(Layer layer, int index) {
+
+  if (index == (int) (entities[layer].size() - 1)) {
+    // Already to the front.
+    return;
+  }
+
+  const auto& it = entities[layer].begin() + index;
+  const EntityData& entity = *it;
+
+  if (entity.has_name()) {
+    int index = entities[layer].size() - 1;
+    named_entities[entity.get_name()] = { layer, index };
+  }
+
+  entities[layer].push_back(*it);
+  entities[layer].erase(it);
 }
 
 /**
@@ -759,8 +786,23 @@ void MapData::bring_entity_to_front(Layer /* layer */, int /* index */) {
  * \param layer The layer of the entity to change.
  * \param index Index of the entity in that layer.
  */
-void MapData::bring_entity_to_back(Layer /* layer */, int /* index */) {
-  // TODO
+void MapData::bring_entity_to_back(Layer layer, int index) {
+
+  if (index == 0) {
+    // Already to the back.
+    return;
+  }
+
+  const auto& it = entities[layer].begin() + index;
+  const EntityData& entity = *it;
+
+  if (entity.has_name()) {
+    int index = 0;
+    named_entities[entity.get_name()] = { layer, index };
+  }
+
+  entities[layer].push_front(*it);
+  entities[layer].erase(it);
 }
 
 /**

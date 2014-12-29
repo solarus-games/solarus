@@ -737,14 +737,13 @@ int MapData::get_num_entities(Layer layer) const {
 
 /**
  * \brief Changes the layer of an entity.
- * \param src_layer The current layer.
- * \param index Index of the entity to change in that layer.
+ * \param src_index The current index of the entity to change.
  * \param dst_layer The new layer to set.
  */
-void MapData::set_entity_layer(Layer src_layer, int src_index, Layer dst_layer) {
+void MapData::set_entity_layer(const EntityIndex& src_index, Layer dst_layer) {
 
   // Update the entity itself, but also entities and named_entities.
-  const auto& it = entities[src_layer].begin() + src_index;
+  const auto& it = entities[src_index.layer].begin() + src_index.index;
   EntityData& entity = *it;
   entity.set_layer(dst_layer);
 
@@ -754,27 +753,29 @@ void MapData::set_entity_layer(Layer src_layer, int src_index, Layer dst_layer) 
   }
 
   entities[dst_layer].push_back(*it);  // Insert after existing entities on the destination layer.
-  entities[src_layer].erase(it);
+  entities[src_index.layer].erase(it);
 }
 
 /**
  * \brief Brings an entity to front on its layer.
- * \param layer The layer of the entity to change.
- * \param index Index of the entity in that layer.
+ * \param index Index of the entity on the map.
  */
-void MapData::bring_entity_to_front(Layer layer, int index) {
+void MapData::bring_entity_to_front(const EntityIndex& index) {
 
-  if (index == (int) (entities[layer].size() - 1)) {
+  Layer layer = index.layer;
+  if (index.index == (int) (entities[layer].size() - 1)) {
     // Already to the front.
     return;
   }
 
-  const auto& it = entities[layer].begin() + index;
+  const auto& it = entities[layer].begin() + index.index;
   const EntityData& entity = *it;
 
   if (entity.has_name()) {
-    int index = entities[layer].size() - 1;
-    named_entities[entity.get_name()] = { layer, index };
+    named_entities[entity.get_name()] = {
+        layer,
+        (int) (entities[layer].size() - 1)
+    };
   }
 
   entities[layer].push_back(*it);
@@ -783,22 +784,21 @@ void MapData::bring_entity_to_front(Layer layer, int index) {
 
 /**
  * \brief Brings an entity to back on its layer.
- * \param layer The layer of the entity to change.
- * \param index Index of the entity in that layer.
+ * \param index Index of the entity on the map.
  */
-void MapData::bring_entity_to_back(Layer layer, int index) {
+void MapData::bring_entity_to_back(const EntityIndex& index) {
 
-  if (index == 0) {
+  Layer layer = index.layer;
+  if (index.index == 0) {
     // Already to the back.
     return;
   }
 
-  const auto& it = entities[layer].begin() + index;
+  const auto& it = entities[layer].begin() + index.index;
   const EntityData& entity = *it;
 
   if (entity.has_name()) {
-    int index = 0;
-    named_entities[entity.get_name()] = { layer, index };
+    named_entities[entity.get_name()] = { layer, 0 };
   }
 
   entities[layer].push_front(*it);
@@ -806,14 +806,13 @@ void MapData::bring_entity_to_back(Layer layer, int index) {
 }
 
 /**
- * \brief Returns the entity at the given layer and index.
- * \param layer The layer of the entity to get.
- * \param index Index of the entity in that layer.
+ * \brief Returns the entity at the given index.
+ * \param index Index of the entity to get on the map.
  * \return The entity data.
  * The object remains valid until entities are added or removed.
  */
-const EntityData& MapData::get_entity(Layer layer, int index) const {
-  return entities[layer][index];
+const EntityData& MapData::get_entity(const EntityIndex& index) const {
+  return entities[index.layer][index.index];
 }
 
 /**
@@ -826,8 +825,25 @@ const EntityData& MapData::get_entity(Layer layer, int index) const {
  * \return The entity data.
  * The object remains valid until entities are added or removed.
  */
-EntityData& MapData::get_entity(Layer layer, int index) {
-  return entities[layer][index];
+EntityData& MapData::get_entity(const EntityIndex& index) {
+  return entities[index.layer][index.index];
+}
+
+/**
+ * \brief Returns the layer and index of an entity given its name.
+ * \param name Name of the entity to get.
+ * \return The layer and index of this entity.
+ * Returns an invalid index if there is no such entity.
+ */
+EntityIndex MapData::get_entity_index(const std::string& name) const {
+
+  const auto& it = named_entities.find(name);
+
+  if (it == named_entities.end()) {
+    return EntityIndex();
+  }
+
+  return it->second;
 }
 
 /**
@@ -838,14 +854,12 @@ EntityData& MapData::get_entity(Layer layer, int index) {
  */
 const EntityData* MapData::get_entity_by_name(const std::string& name) const {
 
-  const auto& it = named_entities.find(name);
-
-  if (it == named_entities.end()) {
+  const EntityIndex& index = get_entity_index(name);
+  if (!index.is_valid()) {
+    // No such entity.
     return nullptr;
   }
-
-  const std::pair<Layer, int>& position = it->second;
-  return &entities[position.first][position.second];
+  return &get_entity(index);
 }
 
 /**
@@ -859,14 +873,12 @@ const EntityData* MapData::get_entity_by_name(const std::string& name) const {
  */
 EntityData* MapData::get_entity_by_name(const std::string& name) {
 
-  const auto& it = named_entities.find(name);
-
-  if (it == named_entities.end()) {
+  const EntityIndex& index = get_entity_index(name);
+  if (!index.is_valid()) {
+    // No such entity.
     return nullptr;
   }
-
-  const std::pair<Layer, int>& position = it->second;
-  return &entities[position.first][position.second];
+  return &get_entity(index);
 }
 
 /**
@@ -881,25 +893,39 @@ bool MapData::entity_exists(const std::string& name) const {
 
 /**
  * \brief Changes the name of an entity.
- * \param layer Layer of the entity to change.
- * \param index Index of the entity in that layer.
+ * \param index Index of the entity on the map.
  * \param name The new name. An empty string means no name.
  * \return \c true in case of success, \c false if the name was already used.
  */
-bool MapData::set_entity_name(Layer /* layer */, int /* index */, const std::string& /* name */) {
-  // TODO
-  return false;
-}
+bool MapData::set_entity_name(const EntityIndex& index, const std::string& name) {
 
-/**
- * \brief Returns the index of an entity in its layer.
- * \param entity The information of an entity.
- * \return The index of this entity in its layer.
- * Returns -1 if the entity is not on this map.
- */
-int MapData::get_entity_index(const EntityData& /* entity */) {
-  // TODO
-  return 0;
+  EntityData& entity = get_entity(index);
+  const std::string& old_name = entity.get_name();
+
+  if (name == old_name) {
+    // Nothing to do.
+    return true;
+  }
+
+  if (!name.empty()) {
+    if (entity_exists(name)) {
+      // This name is already used by another entity.
+      return false;
+    }
+  }
+
+  // Do the change.
+  entity.set_name(name);
+
+  if (!old_name.empty()) {
+    named_entities.erase(old_name);
+  }
+
+  if (!name.empty()) {
+    named_entities[name] = index;
+  }
+
+  return false;
 }
 
 /**
@@ -908,28 +934,44 @@ int MapData::get_entity_index(const EntityData& /* entity */) {
  * If the new entity has a name, it should be unique on the map.
  *
  * \param entity The information of an entity.
- * \return The index of this entity in its layer.
+ * \return The index of this entity on the map.
+ * Returns an invalid index in case of failure, that is,
+ * if the name was already in use.
  */
-bool MapData::add_entity(const EntityData& /* entity */) {
-  // TODO
-  return false;
+EntityIndex MapData::add_entity(const EntityData& entity) {
+
+  Layer layer = entity.get_layer();
+  EntityIndex index = { layer, (int) entities[layer].size() };
+
+  if (entity.has_name()) {
+    if (entity_exists(entity.get_name())) {
+      // This name is already used by another entity.
+      return EntityIndex();
+    }
+
+    named_entities.insert(std::make_pair(entity.get_name(), index));
+  }
+
+  entities[layer].push_back(entity);
+
+  return index;
 }
 
 /**
  * \brief Removes an entity from the map.
- * \param layer Layer of the entity to remove.
- * \param index Index of the entity in its layer.
+ * \param index Index of the entity on the map.
  */
-void MapData::remove_entity(Layer /* layer */, int /* index */) {
-  // TODO
-}
+void MapData::remove_entity(const EntityIndex& index) {
 
-/**
- * \brief Removes an entity from the map.
- * \param entity The entity information.
- */
-void MapData::remove_entity(const EntityData& /* entity */) {
-  // TODO
+  const EntityData& entity = get_entity(index);
+
+  if (entity.has_name()) {
+    named_entities.erase(entity.get_name());
+  }
+
+  Layer layer = index.layer;
+  const auto& it = entities[layer].begin() + index.index;
+  entities[layer].erase(it);
 }
 
 /**

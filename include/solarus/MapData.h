@@ -110,6 +110,48 @@ class SOLARUS_API EntityData {
 using EntityList = std::deque<EntityData>;
 
 /**
+ * \brief The layer and index of an entity in the map.
+ *
+ * This is how entities are identified on a map.
+ * There is also an additional index on the name for
+ * entities that have a name.
+ */
+struct EntityIndex {
+
+  public:
+
+    /**
+     * \brief Creates an invalid index.
+     */
+    EntityIndex():
+      layer(LAYER_LOW),
+      index(-1) {
+    }
+
+    /**
+     * \brief Creates an index.
+     * \param layer The layer.
+     * \param index The index in that layer.
+     */
+    EntityIndex(Layer layer, int index):
+      layer(layer),
+      index(index) {
+    }
+
+    /**
+     * \brief Returns whether this is a valid index.
+     */
+    bool is_valid() const {
+      return index != -1;
+    }
+
+    Layer layer;     /**< Layer of the entity on the map. */
+    int index;       /**< Index of the entity in that layer.
+                      * -1 means an invalid index. */
+
+};
+
+/**
  * \brief Stores the contents of a map data file.
  */
 class SOLARUS_API MapData : public LuaData {
@@ -136,21 +178,20 @@ class SOLARUS_API MapData : public LuaData {
     int get_num_entities() const;
     int get_num_entities(Layer layer) const;
 
-    void set_entity_layer(Layer src_layer, int src_index, Layer dst_layer);
-    void bring_entity_to_front(Layer layer, int index);
-    void bring_entity_to_back(Layer layer, int index);
+    void set_entity_layer(const EntityIndex& src_index, Layer dst_layer);
+    void bring_entity_to_front(const EntityIndex& index);
+    void bring_entity_to_back(const EntityIndex& index);
 
-    const EntityData& get_entity(Layer layer, int index) const;
-    EntityData& get_entity(Layer layer, int index);
+    const EntityData& get_entity(const EntityIndex& index) const;
+    EntityData& get_entity(const EntityIndex& index);
+    EntityIndex get_entity_index(const std::string& name) const;
     const EntityData* get_entity_by_name(const std::string& name) const;
     EntityData* get_entity_by_name(const std::string& name);
     bool entity_exists(const std::string& name) const;
-    bool set_entity_name(Layer layer, int index, const std::string& name);
-    int get_entity_index(const EntityData& entity);
+    bool set_entity_name(const EntityIndex& index, const std::string& name);
 
-    bool add_entity(const EntityData& entity);
-    void remove_entity(Layer layer, int index);
-    void remove_entity(const EntityData& entity);
+    EntityIndex add_entity(const EntityData& entity);
+    void remove_entity(const EntityIndex& index);
 
     virtual bool import_from_lua(lua_State* l) override;
     virtual bool export_to_lua(std::ostream& out) const override;
@@ -168,7 +209,7 @@ class SOLARUS_API MapData : public LuaData {
 
     std::array<EntityList, LAYER_NB>
         entities;                 /**< The entities on each layer. */
-    std::map<std::string, std::pair<Layer, int>>
+    std::map<std::string, EntityIndex>
         named_entities;           /**< Entities indexed by their name. */
 
 };

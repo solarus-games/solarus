@@ -55,6 +55,7 @@ class SOLARUS_API EntityData {
 
         FieldValue();
         explicit FieldValue(const std::string& value);
+        explicit FieldValue(const char* value);
         explicit FieldValue(int value);
         explicit FieldValue(bool value);
 

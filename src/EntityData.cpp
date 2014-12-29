@@ -289,6 +289,19 @@ FieldValue::FieldValue(const std::string& value):
 }
 
 /**
+ * \brief Creates a value of type string.
+ *
+ * This overload makes sure that string literal parameters
+ * won't get converted to bool.
+ *
+ * \param value The value.
+ */
+FieldValue::FieldValue(const char* value):
+    FieldValue(std::string(value)) {
+
+}
+
+/**
  * \brief Creates a value of type integer.
  * \param value The value.
  */

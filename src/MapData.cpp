@@ -291,6 +291,16 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
 }  // Anonymous namespace.
 
 /**
+ * \brief Creates a nil value.
+ */
+FieldValue::FieldValue():
+    value_type(EntityFieldType::NIL),
+    string_value(),
+    int_value(0) {
+
+}
+
+/**
  * \brief Creates a value of type string.
  * \param value The value.
  */
@@ -406,6 +416,34 @@ void EntityData::set_xy(const Point& xy) {
   this->xy = xy;
 }
 
+/**
+ * \brief Returns all fields of this entity.
+ * \return The fields.
+ */
+const std::map<std::string, FieldValue>& EntityData::get_fields() const {
+  return fields;
+}
+
+/**
+ * \brief Returns a field of this entity if it exists.
+ * \param key Key of the field to get.
+ * \return The corresponding field or a nil field.
+ */
+FieldValue EntityData::get_field(const std::string& key) const {
+
+  const auto& it = fields.find(key);
+  if (it == fields.end()) {
+    return FieldValue();
+  }
+
+  return it->second;
+}
+
+/**
+ * \brief Returns whether a field of this entity is a string.
+ * \param key Key of the field to get.
+ * \return \c true if the field exists and is a string.
+ */
 bool EntityData::is_string(const std::string& key) const {
 
   const auto& it = fields.find(key);
@@ -415,6 +453,11 @@ bool EntityData::is_string(const std::string& key) const {
   return it->second.value_type == EntityFieldType::STRING;
 }
 
+/**
+ * \brief Returns the value of a string field of this entity.
+ * \param key Key of the field to get. It must exist and be a string.
+ * \return The string value.
+ */
 const std::string& EntityData::get_string(const std::string& key) const {
 
   const auto& it = fields.find(key);
@@ -427,6 +470,11 @@ const std::string& EntityData::get_string(const std::string& key) const {
   return it->second.string_value;
 }
 
+/**
+ * \brief Sets the value of a string field of this entity.
+ * \param key Key of the field to set. It must exist and be a string.
+ * \param value The string value.
+ */
 void EntityData::set_string(const std::string& key, const std::string& value) {
 
   const auto& it = fields.find(key);
@@ -439,6 +487,11 @@ void EntityData::set_string(const std::string& key, const std::string& value) {
   it->second.string_value = value;
 }
 
+/**
+ * \brief Returns whether a field of this entity is an integer.
+ * \param key Key of the field to get.
+ * \return \c true if the field exists and is an integer.
+ */
 bool EntityData::is_integer(const std::string& key) const {
 
   const auto& it = fields.find(key);
@@ -448,6 +501,11 @@ bool EntityData::is_integer(const std::string& key) const {
   return it->second.value_type == EntityFieldType::INTEGER;
 }
 
+/**
+ * \brief Returns the value of an integer field of this entity.
+ * \param key Key of the field to get. It must exist and be an integer.
+ * \return The integer value.
+ */
 int EntityData::get_integer(const std::string& key) const {
 
   const auto& it = fields.find(key);
@@ -460,6 +518,11 @@ int EntityData::get_integer(const std::string& key) const {
   return it->second.int_value;
 }
 
+/**
+ * \brief Sets the value of an integer field of this entity.
+ * \param key Key of the field to set. It must exist and be an integer.
+ * \param value The integer value.
+ */
 void EntityData::set_integer(const std::string& key, int value) {
 
   const auto& it = fields.find(key);
@@ -472,6 +535,11 @@ void EntityData::set_integer(const std::string& key, int value) {
   it->second.int_value = value;
 }
 
+/**
+ * \brief Returns whether a field of this entity is a boolean.
+ * \param key Key of the field to get.
+ * \return \c true if the field exists and is a boolean.
+ */
 bool EntityData::is_boolean(const std::string& key) const {
 
   const auto& it = fields.find(key);
@@ -481,6 +549,11 @@ bool EntityData::is_boolean(const std::string& key) const {
   return it->second.value_type == EntityFieldType::BOOLEAN;
 }
 
+/**
+ * \brief Returns the value of a boolean field of this entity.
+ * \param key Key of the field to get. It must exist and be a boolean.
+ * \return The boolean value.
+ */
 bool EntityData::get_boolean(const std::string& key) const {
 
   const auto& it = fields.find(key);
@@ -493,6 +566,11 @@ bool EntityData::get_boolean(const std::string& key) const {
   return it->second.int_value != 0;
 }
 
+/**
+ * \brief Sets the value of a boolean field of this entity.
+ * \param key Key of the field to set. It must exist and be a boolean.
+ * \param value The boolean value.
+ */
 void EntityData::set_boolean(const std::string& key, bool value) {
 
   const auto& it = fields.find(key);

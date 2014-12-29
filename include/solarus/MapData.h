@@ -35,6 +35,7 @@ namespace Solarus {
  * \brief Type of a field of an entity in the map data file.
  */
 enum class EntityFieldType {
+    NIL,      /**< A field that does not exist. */
     STRING,
     INTEGER,
     BOOLEAN
@@ -45,6 +46,7 @@ enum class EntityFieldType {
  */
 struct FieldValue {
 
+    FieldValue();
     explicit FieldValue(const std::string& value);
     explicit FieldValue(int value);
     explicit FieldValue(bool value);
@@ -76,6 +78,8 @@ class SOLARUS_API EntityData {
     Point get_xy() const;
     void set_xy(const Point& xy);
 
+    const std::map<std::string, FieldValue>& get_fields() const;
+    FieldValue get_field(const std::string& key) const;
     bool is_string(const std::string& key) const;
     const std::string& get_string(const std::string& key) const;
     void set_string(const std::string& key, const std::string& value);

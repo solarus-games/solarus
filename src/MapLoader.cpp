@@ -89,7 +89,7 @@ void MapLoader::load_map(Game& game, Map& map) {
   entities.boomerang = nullptr;
   map.camera = std::unique_ptr<Camera>(new Camera(map));
 
-  // TODO create entities
+  // TODO create entities by calling the Lua API functions?
 }
 
 }

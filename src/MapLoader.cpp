@@ -89,7 +89,15 @@ void MapLoader::load_map(Game& game, Map& map) {
   entities.boomerang = nullptr;
   map.camera = std::unique_ptr<Camera>(new Camera(map));
 
-  // TODO create entities by calling the Lua API functions?
+  // Create entities by calling the Lua API functions.
+  LuaContext& lua_context = map.get_lua_context();
+  for (int k = LAYER_LOW; k < LAYER_NB; ++k) {
+    Layer layer = (Layer) k;
+    for (int i = 0; i < (int) data.get_num_entities(); ++i) {
+      const EntityData& entity_data = data.get_entity({ layer, i });
+      lua_context.create_map_entity_from_data(map, entity_data);
+    }
+  }
 }
 
 }

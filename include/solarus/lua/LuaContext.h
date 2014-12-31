@@ -38,6 +38,7 @@
 
 struct lua_State;
 struct luaL_Reg;
+typedef int (*lua_CFunction) (lua_State* l);
 
 namespace Solarus {
 
@@ -52,6 +53,7 @@ class Dialog;
 class Door;
 class Drawable;
 class Enemy;
+class EntityData;
 class ExportableToLua;
 class EquipmentItem;
 class Hero;
@@ -225,9 +227,7 @@ class LuaContext {
 
     // Entities.
     static const std::string& get_entity_internal_type_name(EntityType entity_type);
-    static Map& get_entity_creation_map(lua_State* l);
-    static Map* get_entity_implicit_creation_map(lua_State* l);
-    static void set_entity_implicit_creation_map(lua_State* l, Map* map);
+    void create_map_entity_from_data(Map& map, const EntityData& entity_data);
 
     bool do_custom_entity_traversable_test_function(
         const ScopedLuaRef& traversable_test_ref,
@@ -760,31 +760,7 @@ class LuaContext {
       map_api_get_hero,
       map_api_set_entities_enabled,
       map_api_remove_entities,
-      map_api_create_tile,
-      map_api_create_destination,
-      map_api_create_teletransporter,
-      map_api_create_pickable,
-      map_api_create_destructible,
-      map_api_create_chest,
-      map_api_create_jumper,
-      map_api_create_enemy,
-      map_api_create_npc,  // TODO use a real string for the subtype, improve the behavior syntax
-      map_api_create_block,  // TODO make maximum_moves really be the limit (nil means no limit)
-      map_api_create_dynamic_tile,
-      map_api_create_switch,
-      map_api_create_wall,
-      map_api_create_sensor,
-      map_api_create_crystal,
-      map_api_create_crystal_block,
-      map_api_create_shop_treasure,
-      map_api_create_stream,
-      map_api_create_door,
-      map_api_create_stairs,
-      map_api_create_separator,
-      map_api_create_custom_entity,
-      map_api_create_bomb,
-      map_api_create_explosion,
-      map_api_create_fire,
+      map_api_create_entity,  // Same function used for all entity types.
 
       // Map entity API.
       entity_api_get_type,
@@ -1240,8 +1216,10 @@ class LuaContext {
       l_camera_restore,
       l_treasure_dialog_finished,
       l_shop_treasure_description_dialog_finished,
-      l_shop_treasure_question_dialog_finished;
-
+      l_shop_treasure_question_dialog_finished,
+      l_create_tile,
+      l_create_destination;
+      // TODO
 
     // Script data.
     lua_State* l;                   /**< The Lua state encapsulated. */
@@ -1267,6 +1245,8 @@ class LuaContext {
                                      * only for performance, to avoid Lua
                                      * lookups for callbacks like on_update. */
 
+    static const std::map<EntityType, lua_CFunction>
+        entity_creation_functions;  /**< Creation function of each entity type. */
     static std::map<lua_State*, LuaContext*>
         lua_contexts;               /**< Mapping to get the encapsulating object
                                      * from the lua_State pointer. */

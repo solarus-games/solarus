@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/apple/AppleInterface.h"
+#include "solarus/lowlevel/apple/AppleInterface.h"
 
 #if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
 

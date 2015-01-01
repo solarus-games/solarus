@@ -1,4 +1,8 @@
-cmake_minimum_required(VERSION 2.8.11)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  cmake_minimum_required(VERSION 3.0.2)
+else()
+  cmake_minimum_required(VERSION 2.8.11)
+endif()
 project(SOLARUS_ENGINE)
 
 include(cmake/AddDefines.cmake)

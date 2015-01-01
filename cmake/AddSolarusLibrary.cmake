@@ -403,7 +403,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(source_files
     ${source_files}
     src/lowlevel/apple/AppleInterface.mm
-    include/lowlevel/apple/AppleInterface.h
+    include/solarus/lowlevel/apple/AppleInterface.h
   )
 endif()
 
@@ -416,9 +416,9 @@ add_library(solarus
 # Configuration for OSX and iOS build and deployment.
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   if(NOT SOLARUS_IOS_BUILD)
-    include(OSX)
+    include(cmake/apple/OSXBuild.cmake)
   else()
-    include(iOS)
+    include(cmake/apple/iOSBuild.cmake)
   endif()
 endif()
 

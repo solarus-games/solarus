@@ -12,14 +12,14 @@
 # Exportable to XCode.
 ####
 
-# Get the current OSX version as X.X.X and X.X form
+# Get the current OSX version as X.X.X and X.X form.
 execute_process(COMMAND sw_vers -productVersion
   OUTPUT_VARIABLE SOLARUS_CURRENT_OSX_VERSION
   OUTPUT_STRIP_TRAILING_WHITESPACE)
 string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.([0-9]+)\\[ \t\r\n]*" "\\1.\\2.\\3" SOLARUS_CURRENT_OSX_VERSION_LONG ${SOLARUS_CURRENT_OSX_VERSION})
 string(REGEX REPLACE "([0-9]+)\\.([0-9]+).*" "\\1.\\2" SOLARUS_CURRENT_OSX_VERSION_SHORT ${SOLARUS_CURRENT_OSX_VERSION_LONG})
 
-# Build architectures
+# Build architectures.
 if(NOT SOLARUS_ARCH)
   if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.4.4")
     set(SOLARUS_ARCH "${SOLARUS_ARCH}i386;")
@@ -35,7 +35,7 @@ if(NOT SOLARUS_ARCH)
 endif()
 set(CMAKE_OSX_ARCHITECTURES "${SOLARUS_ARCH}" CACHE STRING "Build architecture" FORCE)
 
-# SDK version
+# SDK version.
 if(NOT SOLARUS_SYSROOT)
   # Default SDKs, in order from the earlier naming convention to the older one
   if(EXISTS /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION_SHORT}.sdk)
@@ -52,26 +52,16 @@ if(NOT SOLARUS_SYSROOT)
 endif()
 set(CMAKE_OSX_SYSROOT "${SOLARUS_SYSROOT}" CACHE STRING "Build SDK" FORCE)
 
-# Deployment version
+# Deployment version.
 if(NOT SOLARUS_DEPLOYMENT AND DEFINED SOLARUS_SYSROOT)
-  if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.6")
-    set(SOLARUS_DEPLOYMENT "10.6")
-  else()
-    set(SOLARUS_DEPLOYMENT "10.2")
-  endif()
+  set(SOLARUS_DEPLOYMENT "10.7")
 endif()
 set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Oldest OS version supported" FORCE)
 
-# Compatibility options
-if(NOT SOLARUS_CURRENT_OSX_VERSION_SHORT VERSION_LESS "10.6" AND SOLARUS_DEPLOYMENT VERSION_LESS "10.6")
-  if(NOT CMAKE_EXE_LINKER_FLAGS MATCHES "-Wl,-no_compact_linkedit")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
-  endif()
-endif()
-
-if(NOT CMAKE_CXX_FLAGS MATCHES "-force_cpusubtype_ALL")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -force_cpusubtype_ALL" CACHE STRING "Force all cpu subtypes, to avoid trouble with some old architectures" FORCE)
-endif()
+# Root path.
+### TODO dispatch
+set(CMAKE_MACOSX_RPATH ON)
+set_target_properties(solarus PROPERTIES MACOSX_RPATH ON)
 
 # LuaJIT workaround.
 if(SOLARUS_USE_LUAJIT AND SOLARUS_ARCH MATCHES "x86_64")
@@ -83,8 +73,3 @@ if(SOLARUS_USE_LUAJIT AND SOLARUS_ARCH MATCHES "x86_64")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pagezero_size 10000 -image_base 100000000" CACHE STRING "According to LuaJit doc, OSX needs to link with additional flags if 64bit build is requested" FORCE)
   endif()
 endif()
-
-# TODO try to build on 10.6+ with following flags and run on 10.5
-# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-syslibroot,${CMAKE_OSX_SYSROOT}" CACHE STRING "Link with SDK")
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector" CACHE STRING "Emit extra code to check for buffer overflows on function with vulnerable objects")
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-all" CACHE STRING "Emit extra code to check for buffer overflows on all functions")

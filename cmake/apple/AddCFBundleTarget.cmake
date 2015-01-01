@@ -24,7 +24,7 @@ if(NOT SOLARUS_BUNDLE)
 endif()
 
 # Configuration variable
-set(SOLARUS_BUNDLE_TARGET_NAME        "solarus")
+set(SOLARUS_BUNDLE_TARGET_NAME        "solarus_run")
 if(SOLARUS_BUNDLE_CODESIGN)
   set(SOLARUS_BUNDLE_GUI_IDENTIFIER "${SOLARUS_BUNDLE_CODESIGN}")
 else()
@@ -36,7 +36,7 @@ if(SOLARUS_IOS_BUILD)
   set(SOLARUS_OS_NAME                 "iOS")
   set(SOLARUS_INSTALL_DESTINATION     "local/share")
   if(NOT SOLARUS_BUNDLE_INFOPLIST)
-    set(SOLARUS_BUNDLE_INFOPLIST      "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/apple/iOS-Info.plist")
+    set(SOLARUS_BUNDLE_INFOPLIST      "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/apple/bundle_content/iOS-Info.plist")
   endif()
   set(SOLARUS_BUNDLE_COPIED_LIBRARIES "")
 
@@ -44,7 +44,7 @@ else()
   set(SOLARUS_OS_NAME                 "OSX")
   set(SOLARUS_INSTALL_DESTINATION     "/Applications")
   if(NOT SOLARUS_BUNDLE_INFOPLIST)
-    set(SOLARUS_BUNDLE_INFOPLIST      "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/apple/OSX-Info.plist")
+    set(SOLARUS_BUNDLE_INFOPLIST      "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/apple/bundle_content/OSX-Info.plist")
   endif()
 
   # Remove the hardcoded additional link on SDL2 path
@@ -78,7 +78,6 @@ endif()
 
 # Add executable target into CFBundle form and rename it as requested
 add_executable(${SOLARUS_BUNDLE_TARGET_NAME} MACOSX_BUNDLE
-  solarus_static
   ${main_source_file}
   ${SOLARUS_BUNDLE_ICON} 
   ${SOLARUS_BUNDLE_COPIED_LIBRARIES}
@@ -172,7 +171,7 @@ endif()
 # Code signing
 if(XCODE)
   set_target_properties(${SOLARUS_BUNDLE_TARGET_NAME} PROPERTIES XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "${SOLARUS_OS_NAME} Developer: ${SOLARUS_BUNDLE_GUI_IDENTIFIER}")
-elif(SOLARUS_BUNDLE_CODESIGN)
+elseif(SOLARUS_BUNDLE_CODESIGN)
   add_custom_command(
     TARGET ${SOLARUS_BUNDLE_TARGET_NAME}
     POST_BUILD
@@ -189,7 +188,7 @@ add_custom_command(
   COMMAND mv 
   ARGS "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/Resources/solarus"
   COMMAND cp 
-  ARGS "${PROJECT_BINARY_DIR}/cmake/apple/OSX-wrapper.sh" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}"
+  ARGS "${PROJECT_BINARY_DIR}/cmake/apple/bundle_content/OSX-wrapper.sh" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}"
 )
 
 # Copy the PkgInfo file
@@ -198,6 +197,6 @@ if(NOT XCODE)
     TARGET ${SOLARUS_BUNDLE_TARGET_NAME}
     POST_BUILD
     COMMAND cp
-    ARGS "${PROJECT_BINARY_DIR}/cmake/apple/PkgInfo" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/"
+    ARGS "${PROJECT_BINARY_DIR}/cmake/apple/bundle_content/PkgInfo" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/"
   )
 endif()

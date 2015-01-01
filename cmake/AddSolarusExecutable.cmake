@@ -6,7 +6,7 @@ set(main_source_file
 # Build the executable,
 if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
   # Build into CFBundle form if requested or iOS build.
-  include(addCFBundleTarget)
+  include(cmake/apple/AddCFBundleTarget.cmake)
 else()
   add_executable(solarus_run
     ${main_source_file}

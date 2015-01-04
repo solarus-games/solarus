@@ -93,7 +93,7 @@ void MapLoader::load_map(Game& game, Map& map) {
   LuaContext& lua_context = map.get_lua_context();
   for (int k = LAYER_LOW; k < LAYER_NB; ++k) {
     Layer layer = (Layer) k;
-    for (int i = 0; i < (int) data.get_num_entities(); ++i) {
+    for (int i = 0; i < (int) data.get_num_entities(layer); ++i) {
       const EntityData& entity_data = data.get_entity({ layer, i });
       lua_context.create_map_entity_from_data(map, entity_data);
     }

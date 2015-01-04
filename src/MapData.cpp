@@ -250,6 +250,12 @@ void MapData::bring_entity_to_back(const EntityIndex& index) {
  * The object remains valid until entities are added or removed.
  */
 const EntityData& MapData::get_entity(const EntityIndex& index) const {
+
+  Debug::check_assertion(
+      index.index >= 0 && index.index < get_num_entities(index.layer),
+      "Entity index out of range"
+  );
+
   return entities[index.layer][index.index];
 }
 
@@ -264,6 +270,12 @@ const EntityData& MapData::get_entity(const EntityIndex& index) const {
  * The object remains valid until entities are added or removed.
  */
 EntityData& MapData::get_entity(const EntityIndex& index) {
+
+  Debug::check_assertion(
+      index.index >= 0 && index.index < get_num_entities(index.layer),
+      "Entity index out of range"
+  );
+
   return entities[index.layer][index.index];
 }
 

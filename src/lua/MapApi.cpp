@@ -279,10 +279,37 @@ int LuaContext::l_create_destination(lua_State* l) {
   });
 }
 
+// TODO implement missing functions and remove this one
+int LuaContext::l_create_todo(lua_State* /* l */) {
+  return 0;
+}
+
 const std::map<EntityType, lua_CFunction> LuaContext::entity_creation_functions = {
     { EntityType::TILE, LuaContext::l_create_tile },
-    { EntityType::DESTINATION, LuaContext::l_create_destination }
-    // TODO
+    { EntityType::DESTINATION, LuaContext::l_create_destination },
+    { EntityType::TELETRANSPORTER, LuaContext::l_create_todo },
+    { EntityType::PICKABLE, LuaContext::l_create_todo },
+    { EntityType::DESTRUCTIBLE, LuaContext::l_create_todo },
+    { EntityType::CHEST, LuaContext::l_create_todo },
+    { EntityType::JUMPER, LuaContext::l_create_todo },
+    { EntityType::ENEMY, LuaContext::l_create_todo },
+    { EntityType::NPC, LuaContext::l_create_todo },
+    { EntityType::BLOCK, LuaContext::l_create_todo },
+    { EntityType::DYNAMIC_TILE, LuaContext::l_create_todo },
+    { EntityType::SWITCH, LuaContext::l_create_todo },
+    { EntityType::WALL, LuaContext::l_create_todo },
+    { EntityType::SENSOR, LuaContext::l_create_todo },
+    { EntityType::CRYSTAL, LuaContext::l_create_todo },
+    { EntityType::CRYSTAL_BLOCK, LuaContext::l_create_todo },
+    { EntityType::SHOP_TREASURE, LuaContext::l_create_todo },
+    { EntityType::STREAM, LuaContext::l_create_todo },
+    { EntityType::DOOR, LuaContext::l_create_todo },
+    { EntityType::STAIRS, LuaContext::l_create_todo },
+    { EntityType::SEPARATOR, LuaContext::l_create_todo },
+    { EntityType::CUSTOM, LuaContext::l_create_todo },
+    { EntityType::EXPLOSION, LuaContext::l_create_todo },
+    { EntityType::BOMB, LuaContext::l_create_todo },
+    { EntityType::FIRE, LuaContext::l_create_todo },
 };
 
 /**
@@ -295,9 +322,9 @@ void LuaContext::create_map_entity_from_data(Map& map, const EntityData& entity_
   const std::string& type_name = MapEntity::get_entity_type_name(entity_data.get_type());
   std::string function_name = "create_" + type_name;
   const auto& it = entity_creation_functions.find(entity_data.get_type());
-  if (it == entity_creation_functions.end()) {
-    LuaTools::error(l, "Missing entity creation function for type '" + type_name + "'");
-  }
+  Debug::check_assertion(it != entity_creation_functions.end(),
+      "Missing entity creation function for type '" + type_name + "'"
+  );
   lua_CFunction function = it->second;
 
   lua_pushcfunction(l, function);

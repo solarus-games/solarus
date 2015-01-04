@@ -1218,7 +1218,8 @@ class LuaContext {
       l_shop_treasure_description_dialog_finished,
       l_shop_treasure_question_dialog_finished,
       l_create_tile,
-      l_create_destination;
+      l_create_destination,
+      l_create_todo;
       // TODO
 
     // Script data.

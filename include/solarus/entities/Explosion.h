@@ -32,8 +32,12 @@ class Explosion: public Detector {
 
   public:
 
-    Explosion(const std::string& name, Layer layer, const Point& xy,
-        bool with_damages);
+    Explosion(
+        const std::string& name,
+        Layer layer,
+        const Point& xy,
+        bool with_damage
+    );
 
     virtual EntityType get_type() const override;
     virtual bool can_be_obstacle() const override;

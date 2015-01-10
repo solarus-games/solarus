@@ -21,6 +21,7 @@
 #include "solarus/entities/Layer.h"
 #include "solarus/Arguments.h"
 #include "solarus/MainLoop.h"
+#include "solarus/lowlevel/Point.h"
 #include <cstdint>
 #include <memory>
 

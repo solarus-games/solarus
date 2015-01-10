@@ -178,7 +178,7 @@ int main(int argc, char** argv) {
 
   TestEnvironment env(argc, argv);
 
-  CustomEntity& entity = *env.make_entity<CustomEntity>(160, 177);
+  CustomEntity& entity = *env.make_entity<CustomEntity>({ 160, 177 });
 
   one_step_test(env, entity);
   multi_step_test(env, entity);

@@ -30,10 +30,10 @@ namespace Solarus {
  * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the explosion
  * \param xy coordinates of the center of the explosion
- * \param with_damages true to hurt the hero and the enemies
+ * \param with_damage true to hurt the hero and the enemies
  */
 Explosion::Explosion(const std::string& name, Layer layer,
-    const Point& xy, bool with_damages):
+    const Point& xy, bool with_damage):
   Detector(COLLISION_SPRITE | COLLISION_OVERLAPPING, name, layer, xy, Size(48, 48)) {
 
   // initialize the entity
@@ -41,7 +41,7 @@ Explosion::Explosion(const std::string& name, Layer layer,
 
   set_optimization_distance(2000); // because of placing a bomb on a switch
   get_sprite().enable_pixel_collisions();
-  if (with_damages) {
+  if (with_damage) {
     set_size(48, 48);
     set_origin(24, 24);
   }

@@ -4254,8 +4254,7 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
         savegame_variable,
         name,
         layer,
-        x,
-        y,
+        { x, y },
         direction,
         Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable)
     );

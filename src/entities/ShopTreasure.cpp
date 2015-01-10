@@ -36,8 +36,7 @@ namespace Solarus {
  * \brief Creates a new shop treasure with the specified treasure and price.
  * \param name the name identifying this entity
  * \param layer layer of the entity to create
- * \param x x coordinate of the entity to create
- * \param y y coordinate of the entity to create
+ * \param xy Coordinate of the entity to create.
  * \param treasure the treasure that the hero can buy
  * \param price the treasure's price
  * \param dialog_id id of the dialog describing the item when the player watches it
@@ -45,12 +44,11 @@ namespace Solarus {
 ShopTreasure::ShopTreasure(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     const Treasure& treasure,
     int price,
     const std::string& dialog_id):
-  Detector(COLLISION_FACING, name, layer, x, y, 32, 32),
+  Detector(COLLISION_FACING, name, layer, xy, Size(32, 32)),
   treasure(treasure),
   price(price),
   dialog_id(dialog_id),
@@ -67,8 +65,7 @@ ShopTreasure::ShopTreasure(
  * \param game the current game
  * \param name the name identifying this entity
  * \param layer layer of the entity to create
- * \param x x coordinate of the entity to create
- * \param y y coordinate of the entity to create
+ * \param xy Coordinates of the entity to create.
  * \param treasure the treasure that the hero can buy
  * \param price the treasure's price in rupees
  * \param dialog_id id of the dialog describing the item when the player watches it
@@ -79,8 +76,7 @@ std::shared_ptr<ShopTreasure> ShopTreasure::create(
     Game& /* game */,
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     const Treasure& treasure,
     int price,
     const std::string& dialog_id
@@ -91,7 +87,7 @@ std::shared_ptr<ShopTreasure> ShopTreasure::create(
   }
 
   return std::make_shared<ShopTreasure>(
-      name, layer, x, y, treasure, price, dialog_id
+      name, layer, xy, treasure, price, dialog_id
   );
 }
 

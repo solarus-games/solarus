@@ -58,10 +58,12 @@ class Door: public Detector {
 
     Door(Game& game,
         const std::string& name,
-        Layer layer, int x, int y,
+        Layer layer,
+        const Point& xy,
         int direction,
         const std::string& sprite_name,
-        const std::string& savegame_variable);
+        const std::string& savegame_variable
+    );
 
     virtual EntityType get_type() const override;
 

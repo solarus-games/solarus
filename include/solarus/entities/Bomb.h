@@ -29,7 +29,7 @@ class Bomb: public Detector {
 
   public:
 
-    Bomb(const std::string& name, Layer layer, int x, int y);
+    Bomb(const std::string& name, Layer layer, const Point& xy);
 
     virtual EntityType get_type() const override;
 

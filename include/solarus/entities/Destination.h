@@ -32,8 +32,7 @@ class Destination: public MapEntity {
     Destination(
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
+        const Point& xy,
         int hero_direction,
         const std::string& sprite_name,
         bool is_default

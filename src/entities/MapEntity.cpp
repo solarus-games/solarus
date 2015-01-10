@@ -76,23 +76,20 @@ const std::map<EntityType, std::string> MapEntity::entity_type_names = {
  * \param name Name identifying the entity on the map or an empty string.
  * \param direction direction of the entity
  * \param layer layer of the entity
- * \param x x position of the entity
- * \param y y position of the entity
- * \param width width of the entity
- * \param height height of the entity
+ * \param xx Coordinates where to create the entity.
+ * \param size Size of the entity.
  */
 MapEntity::MapEntity(
     const std::string& name,
     int direction,
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height):
+    const Point& xy,
+    const Size& size
+):
   main_loop(nullptr),
   map(nullptr),
   layer(layer),
-  bounding_box(x, y, width, height),
+  bounding_box(xy, size),
   ground_below(Ground::EMPTY),
   origin(0, 0),
   name(name),
@@ -112,7 +109,7 @@ MapEntity::MapEntity(
   optimization_distance(default_optimization_distance),
   optimization_distance2(default_optimization_distance * default_optimization_distance) {
 
-  Debug::check_assertion(width % 8 == 0 && height % 8 == 0,
+  Debug::check_assertion(size.width % 8 == 0 && size.height % 8 == 0,
       "Invalid entity size: width and height must be multiple of 8");
 }
 

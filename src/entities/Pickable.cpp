@@ -42,24 +42,22 @@ namespace Solarus {
  * \brief Creates a pickable item with the specified subtype.
  * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the pickable item to create on the map
- * \param x x coordinate of the pickable item to create
- * \param y y coordinate of the pickable item to create
+ * \param xy Coordinates of the pickable item to create.
  * \param treasure the treasure to give when the item is picked
  */
 Pickable::Pickable(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     const Treasure& treasure
 ):
-  Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE, name, layer, x, y, 0, 0),
+  Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE, name, layer, xy, Size(0, 0)),
   treasure(treasure),
   given_to_player(false),
   shadow_sprite(),
   falling_height(FALLING_NONE),
   will_disappear(false),
-  shadow_xy(Point(x, y)),
+  shadow_xy(xy),
   appear_date(System::now()),
   allow_pick_date(0),
   can_be_picked(true),
@@ -91,13 +89,12 @@ EntityType Pickable::get_type() const {
  *
  * \param game the current game
  * \param name Name identifying the entity on the map or an empty string.
- * \param layer layer of the pickable item to create on the map
- * \param x x coordinate of the pickable item to create
- * \param y y coordinate of the pickable item to create
+ * \param layer layer of the pickable treasure to create on the map
+ * \param xy Coordinates of the pickable treasure to create
  * \param treasure the treasure to give
- * \param falling_height to make the item fall when it appears
- * \param force_persistent true to make the item stay forever
- * (otherwise, the properties of the item
+ * \param falling_height to make the treasure fall when it appears
+ * \param force_persistent true to make the treasure stay forever
+ * (otherwise, the properties of the treasure
  * decide if it disappears after some time)
  * \return the pickable item created, or nullptr
  */
@@ -105,8 +102,7 @@ std::shared_ptr<Pickable> Pickable::create(
     Game& /* game */,
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     Treasure treasure,
     FallingHeight falling_height,
     bool force_persistent
@@ -119,7 +115,7 @@ std::shared_ptr<Pickable> Pickable::create(
   }
 
   std::shared_ptr<Pickable> pickable = std::make_shared<Pickable>(
-      name, layer, x, y, treasure
+      name, layer, xy, treasure
   );
 
   // Set the item properties.

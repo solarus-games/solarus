@@ -30,10 +30,8 @@ namespace Solarus {
  * \brief Constructor.
  * \param name Name of the teletransporter.
  * \param layer Layer of the teletransporter.
- * \param x X position of the teletransporter's rectangle.
- * \param y Y position of the teletransporter's rectangle.
- * \param width Width of the teletransporter's rectangle.
- * \param height Height of the teletransporter's rectangle.
+ * \param xy Coordinates where to create the entity.
+ * \param size Size of the teletransporter's rectangle.
  * \param sprite_name Sprite animation set id to use, or an empty string.
  * \param sound_id Sound to play when using the teletransporter,
  * or an empty string.
@@ -47,17 +45,15 @@ namespace Solarus {
 Teletransporter::Teletransporter(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height,
+    const Point& xy,
+    const Size& size,
     const std::string& sprite_name,
     const std::string& sound_id,
     Transition::Style transition_style,
     const std::string& destination_map_id,
     const std::string& destination_name):
 
-  Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
+  Detector(COLLISION_CUSTOM, name, layer, xy, size),
   sound_id(sound_id),
   transition_style(transition_style),
   destination_map_id(destination_map_id),

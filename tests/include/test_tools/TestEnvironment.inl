@@ -22,8 +22,7 @@ class CustomEntity;
 
 template<>
 std::shared_ptr<CustomEntity> TestEnvironment::make_entity<CustomEntity>(
-    int x,
-    int y,
+    const Point& xy,
     Layer layer
 );
 

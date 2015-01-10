@@ -50,6 +50,7 @@ class Size {
     // Miscellaneous functions
 
     constexpr bool is_flat() const;
+    constexpr bool is_square() const;
 
     ////////////////////////////////////////////////////////////
     // Member data

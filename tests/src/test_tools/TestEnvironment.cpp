@@ -115,14 +115,12 @@ void TestEnvironment::run_map(const std::string& map_id) {
 
 /**
  * \brief Creates a custom entity on the map and returns it.
- * \param x X coordinate of the entity to create.
- * \param y Y coordinate of the entity to create.
+ * \param xy Coordinates of the entity to create.
  * \param layer Layer of the entity to create.
  */
 template<>
 std::shared_ptr<CustomEntity> TestEnvironment::make_entity<CustomEntity>(
-    int x,
-    int y,
+    const Point& xy,
     Layer layer
 ) {
 
@@ -131,10 +129,8 @@ std::shared_ptr<CustomEntity> TestEnvironment::make_entity<CustomEntity>(
      "",
      0,
      layer,
-     x,
-     y,
-     16,
-     16,
+     xy,
+     Size(16, 16),
      "",
      ""
   );

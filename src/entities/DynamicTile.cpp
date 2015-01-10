@@ -29,10 +29,8 @@ namespace Solarus {
  * \brief Creates a new dynamic tile on the map.
  * \param name a name to identify this tile
  * \param layer layer of the tile
- * \param x x position of the tile on the map
- * \param y y position of the tile on the map
- * \param width width of the tile (the pattern can be repeated)
- * \param height height of the tile (the pattern can be repeated)
+ * \param xy Coordinates of the tile on the map
+ * \param size Size of the tile (the pattern can be repeated)
  * \param tileset The tileset to use.
  * \param tile_pattern_id id of the tile pattern in the tileset
  * \param enabled true to make the tile initially enabled.
@@ -40,14 +38,13 @@ namespace Solarus {
 DynamicTile::DynamicTile(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height,
+    const Point& xy,
+    const Size& size,
     Tileset& tileset,
     const std::string& tile_pattern_id,
-    bool enabled):
-  MapEntity(name, 0, layer, x, y, width, height),
+    bool enabled
+) :
+  MapEntity(name, 0, layer, xy, size),
   tile_pattern_id(tile_pattern_id),
   tile_pattern(tileset.get_tile_pattern(tile_pattern_id)) {
 

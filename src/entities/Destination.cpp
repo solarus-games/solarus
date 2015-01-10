@@ -36,13 +36,12 @@ namespace Solarus {
 Destination::Destination(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     int hero_direction,
     const std::string& sprite_name,
     bool is_default
 ):
-  MapEntity(name, hero_direction, layer, x, y, 16, 16),
+  MapEntity(name, hero_direction, layer, xy, Size(16, 16)),
   is_default_destination(is_default) {
 
   set_origin(8, 13);

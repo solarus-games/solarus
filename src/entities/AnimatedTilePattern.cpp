@@ -48,8 +48,7 @@ uint32_t AnimatedTilePattern::next_frame_date = 0;
  * \brief Constructor.
  * \param ground Kind of ground of the tile pattern.
  * \param sequence animation sequence type
- * \param width width of the tile (the same for each frame of the animation)
- * \param height height of the tile (the same for each frame of the animation)
+ * \param size Size of the pattern (the same for each frame of the animation)
  * \param x1 x position of the first frame in the tileset
  * \param y1 y position of the first frame in the tileset
  * \param x2 x position of the second frame in the tileset
@@ -60,12 +59,12 @@ uint32_t AnimatedTilePattern::next_frame_date = 0;
  */
 AnimatedTilePattern::AnimatedTilePattern(Ground ground,
     AnimationSequence sequence,
-    int width, int height,
+    const Size& size,
     int x1, int y1,
     int x2, int y2,
     int x3, int y3,
     bool parallax):
-  TilePattern(ground, width, height),
+  TilePattern(ground, size),
   sequence(sequence),
   parallax(parallax) {
 
@@ -74,7 +73,7 @@ AnimatedTilePattern::AnimatedTilePattern(Ground ground,
   this->position_in_tileset[2] = Rectangle(x3, y3);
 
   for (int i = 0; i < 3; i++) {
-    this->position_in_tileset[i].set_size(width, height);
+    this->position_in_tileset[i].set_size(size);
   }
 }
 

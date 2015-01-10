@@ -69,7 +69,7 @@ class Stairs: public Detector {
                       * for stairs between two floors, indicates that the entity is arriving on this floor */
     };
 
-    Stairs(const std::string& name, Layer layer, int x, int y,
+    Stairs(const std::string& name, Layer layer, const Point& xy,
        int direction, Subtype subtype);
 
     virtual EntityType get_type() const override;

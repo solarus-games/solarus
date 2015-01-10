@@ -68,7 +68,7 @@ CarriedItem::CarriedItem(
     int damage_on_enemies,
     uint32_t explosion_date
 ):
-  MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
+  MapEntity("", 0, hero.get_layer(), Point(0, 0), Size(0, 0)),
   hero(hero),
   is_lifting(true),
   is_throwing(false),

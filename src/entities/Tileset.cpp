@@ -76,19 +76,19 @@ void Tileset::add_tile_pattern(
 
     case TileScrolling::NONE:
       tile_pattern = new SimpleTilePattern(
-          ground, frame.get_x(), frame.get_y(), frame.get_width(), frame.get_height()
+          ground, frame.get_xy(), frame.get_size()
       );
       break;
 
     case TileScrolling::PARALLAX:
       tile_pattern = new ParallaxScrollingTilePattern(
-          ground, frame.get_x(), frame.get_y(), frame.get_width(), frame.get_height()
+          ground, frame.get_xy(), frame.get_size()
       );
       break;
 
     case TileScrolling::SELF:
       tile_pattern = new SelfScrollingTilePattern(
-          ground, frame.get_x(), frame.get_y(), frame.get_width(), frame.get_height()
+          ground, frame.get_xy(), frame.get_size()
       );
       break;
     }
@@ -106,8 +106,7 @@ void Tileset::add_tile_pattern(
     tile_pattern = new AnimatedTilePattern(
         ground,
         sequence,
-        frames[0].get_width(),
-        frames[0].get_height(),
+        frames[0].get_size(),
         frames[0].get_x(),
         frames[0].get_y(),
         frames[1].get_x(),

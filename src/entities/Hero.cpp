@@ -70,7 +70,7 @@ namespace Solarus {
  * \param equipment the equipment (needed to build the sprites even outside a game)
  */
 Hero::Hero(Equipment& equipment):
-  MapEntity("hero", 0, LAYER_LOW, 0, 0, 16, 16),
+  MapEntity("hero", 0, LAYER_LOW, Point(0, 0), Size(16, 16)),
   state(nullptr),
   invincible(false),
   end_invincible_date(0),

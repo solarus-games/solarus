@@ -38,8 +38,7 @@ const std::map<Switch::Subtype, std::string> Switch::subtype_names = {
  * \brief Constructor.
  * \param name Name of the entity.
  * \param layer Layer of the entity.
- * \param x X position of the entity.
- * \param y X position of the entity.
+ * \param xy Coordinates the entity.
  * \param subtype The subtype of switch.
  * \param sprite_name Sprite animation set id to use, or an empty string.
  * \param sound_id Sound to play when activating the switch,
@@ -51,14 +50,13 @@ const std::map<Switch::Subtype, std::string> Switch::subtype_names = {
 Switch::Switch(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     Subtype subtype,
     const std::string& sprite_name,
     const std::string& sound_id,
     bool needs_block,
     bool inactivate_when_leaving):
-  Detector(COLLISION_NONE, name, layer, x, y, 16, 16),
+  Detector(COLLISION_NONE, name, layer, xy, Size(16, 16)),
   subtype(subtype),
   sound_id(sound_id),
   activated(false),

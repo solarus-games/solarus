@@ -24,10 +24,8 @@ namespace Solarus {
  * \brief Constructor.
  * \param name name of the wall to create
  * \param layer layer of the Wall to create
- * \param x x position of the Wall to create
- * \param y y position of the Wall to create
- * \param width width of the Wall to create
- * \param height height of the Wall to create
+ * \param xy Coordinates where to create the wall.
+ * \param size Size of the Wall to create.
  * \param stops_hero true to make this entity an obstacle for the hero
  * \param stops_enemies true to make this entity an obstacle for enemies
  * \param stops_npcs true to make this entity an obstacle for NPCs
@@ -38,16 +36,15 @@ namespace Solarus {
 Wall::Wall(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height,
+    const Point& xy,
+    const Size& size,
     bool stops_hero,
     bool stops_enemies,
     bool stops_npcs,
     bool stops_blocks,
-    bool stops_projectiles):
-  MapEntity(name, 0, layer, x, y, width, height) {
+    bool stops_projectiles
+):
+  MapEntity(name, 0, layer, xy, size) {
 
   if (stops_hero) {
     entity_types_stopped.insert(EntityType::HERO);

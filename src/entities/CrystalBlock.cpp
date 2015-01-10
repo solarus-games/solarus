@@ -31,15 +31,13 @@ namespace Solarus {
  * \param game the current game
  * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the entity to create on the map
- * \param x x coordinate of the entity to create
- * \param y y coordinate of the entity to create
- * \param width width of the block (the pattern can be repeated)
- * \param height height of the block (the pattern can be repeated)
+ * \param xy Coordinates of the entity to create.
+ * \param size Size of the block (the pattern can be repeated).
  * \param subtype subtype of raised block
  */
 CrystalBlock::CrystalBlock(Game& game, const std::string& name,
-    Layer layer, int x, int y, int width, int height, Subtype subtype):
-  Detector(COLLISION_OVERLAPPING, name, layer, x, y, width, height),
+    Layer layer, const Point& xy, const Size& size, Subtype subtype):
+  Detector(COLLISION_OVERLAPPING, name, layer, xy, size),
   subtype(subtype) {
 
   create_sprite("entities/crystal_block");

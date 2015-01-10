@@ -34,7 +34,7 @@ namespace Solarus {
  */
 Explosion::Explosion(const std::string& name, Layer layer,
     const Point& xy, bool with_damages):
-  Detector(COLLISION_SPRITE | COLLISION_OVERLAPPING, name, layer, xy.x, xy.y, 48, 48) {
+  Detector(COLLISION_SPRITE | COLLISION_OVERLAPPING, name, layer, xy, Size(48, 48)) {
 
   // initialize the entity
   create_sprite("entities/explosion");

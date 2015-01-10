@@ -37,10 +37,8 @@ class Wall: public MapEntity {
     Wall(
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
-        int width,
-        int height,
+        const Point& xy,
+        const Size& size,
         bool stops_hero,
         bool stops_enemies,
         bool stops_npcs,

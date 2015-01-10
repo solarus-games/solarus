@@ -26,23 +26,19 @@ namespace Solarus {
 /**
  * \brief Creates a new tile.
  * \param layer layer of the tile
- * \param x x position of the tile on the map
- * \param y y position of the tile on the map
- * \param width width of the tile (the pattern can be repeated)
- * \param height height of the tile (the pattern can be repeated)
+ * \param xy Coordinates of the tile on the map
+ * \param size Size of the tile (the pattern can be repeated).
  * \param tileset The tileset to use.
  * \param tile_pattern_id Id of the tile pattern in the tileset.
  */
 Tile::Tile(
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height,
+    const Point& xy,
+    const Size& size,
     Tileset& tileset,
     const std::string& tile_pattern_id
 ):
-  MapEntity("", 0, layer, x, y, width, height),
+  MapEntity("", 0, layer, xy, size),
   tile_pattern_id(tile_pattern_id),
   tile_pattern(tileset.get_tile_pattern(tile_pattern_id)) {
 

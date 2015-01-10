@@ -34,8 +34,7 @@ class Block: public Detector {
 
     Block(const std::string& name,
         Layer layer,
-        int x,
-        int y,
+        const Point& xy,
         int direction,
         const std::string& sprite_name,
         bool can_be_pushed,

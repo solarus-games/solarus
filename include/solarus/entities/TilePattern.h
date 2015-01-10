@@ -20,6 +20,7 @@
 #include "solarus/Common.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/lowlevel/Size.h"
 
 namespace Solarus {
 
@@ -43,6 +44,7 @@ class TilePattern {
 
     int get_width() const;
     int get_height() const;
+    const Size& get_size() const;
     Ground get_ground() const;
 
     static void update();
@@ -72,12 +74,11 @@ class TilePattern {
 
   protected:
 
-    TilePattern(Ground ground, int width, int height);
+    TilePattern(Ground ground, const Size& size);
 
     const Ground ground;     /**< Kind of tile. */
 
-    const int width;         /**< Pattern width (multiple of 8). */
-    const int height;        /**< Pattern height (multiple of 8). */
+    const Size size;         /**< Pattern size (multiple of 8). */
 
 };
 

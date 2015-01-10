@@ -88,6 +88,14 @@ constexpr bool Size::is_flat() const {
   return width == 0 || height == 0;
 }
 
+/**
+ * \brief Returns whether this width and height are the same.
+ * \return \c true if the width and height are equal.
+ */
+constexpr bool Size::is_square() const {
+  return width == height;
+}
+
 ////////////////////////////////////////////////////////////
 // Free functions
 

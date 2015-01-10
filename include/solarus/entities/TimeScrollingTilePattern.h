@@ -32,7 +32,7 @@ class TimeScrollingTilePattern: public SimpleTilePattern {
 
   public:
 
-    TimeScrollingTilePattern(Ground ground, int x, int y, int width, int height);
+    TimeScrollingTilePattern(Ground ground, const Point& xy, const Size& size);
 
     static void update();
     virtual void draw(

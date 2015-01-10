@@ -53,8 +53,7 @@ const std::map<Door::OpeningMethod, std::string> Door::opening_method_names = {
  * \param game The game.
  * \param name Name identifying this entity.
  * \param layer Layer of the entity to create.
- * \param x X coordinate of the entity to create.
- * \param y Y coordinate of the entity to create.
+ * \param xy Coordinates of the entity to create.
  * \param direction Direction of the door.
  * \param sprite_name Name of the animation set of the
  * sprite to create for the door.
@@ -68,11 +67,11 @@ const std::map<Door::OpeningMethod, std::string> Door::opening_method_names = {
  */
 Door::Door(Game& game,
     const std::string& name,
-    Layer layer, int x, int y,
+    Layer layer, const Point& xy,
     int direction,
     const std::string& sprite_name,
     const std::string& savegame_variable):
-  Detector(COLLISION_FACING | COLLISION_SPRITE, name, layer, x, y, 16, 16),
+  Detector(COLLISION_FACING | COLLISION_SPRITE, name, layer, xy, Size(16, 16)),
   savegame_variable(savegame_variable),
   opening_method(OpeningMethod::NONE),
   opening_condition(),

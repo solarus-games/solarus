@@ -24,14 +24,12 @@ namespace Solarus {
 /**
  * \brief Creates a simple tile pattern.
  * \param ground Kind of the of the tile pattern.
- * \param x x position of the tile pattern in the tileset
- * \param y y position of the tile pattern in the tileset
- * \param width width of the tile pattern in the tileset
- * \param height height of the tile pattern in the tileset
+ * \param xy Coordinates of the tile pattern in the tileset.
+ * \param size Size of the tile pattern in the tileset.
  */
-SimpleTilePattern::SimpleTilePattern(Ground ground, int x, int y, int width, int height):
-  TilePattern(ground, width, height),
-  position_in_tileset(x, y, width, height) {
+SimpleTilePattern::SimpleTilePattern(Ground ground, const Point& xy, const Size& size):
+  TilePattern(ground, size),
+  position_in_tileset(xy, size) {
 
 }
 

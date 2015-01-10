@@ -63,7 +63,7 @@ class Detector: public MapEntity {
 
     // construction
     Detector(int collision_mode, const std::string& name, Layer layer,
-        int x, int y, int width, int height);
+        const Point& xy, const Size& size);
     virtual bool is_detector() const override;
 
     // properties of the detector

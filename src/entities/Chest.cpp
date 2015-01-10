@@ -54,12 +54,11 @@ const std::map<Chest::OpeningMethod, std::string> Chest::opening_method_names = 
 Chest::Chest(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     const std::string& sprite_name,
     const Treasure& treasure):
 
-  Detector(COLLISION_FACING, name, layer, x, y, 16, 16),
+  Detector(COLLISION_FACING, name, layer, xy, Size(16, 16)),
   treasure(treasure),
   open(treasure.is_found()),
   treasure_given(open),

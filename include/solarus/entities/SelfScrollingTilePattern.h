@@ -38,7 +38,7 @@ class SelfScrollingTilePattern: public SimpleTilePattern {
 
   public:
 
-    SelfScrollingTilePattern(Ground ground, int x, int y, int width, int height);
+    SelfScrollingTilePattern(Ground ground, const Point& xy, const Size& size);
 
     virtual void draw(
         const SurfacePtr& dst_surface,

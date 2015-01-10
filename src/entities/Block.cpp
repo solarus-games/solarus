@@ -34,8 +34,7 @@ namespace Solarus {
  * \brief Creates a block.
  * \param name name identifying this block
  * \param layer layer of the entity to create
- * \param x x coordinate of the entity to create
- * \param y y coordinate of the entity to create
+ * \param xy Coordinate of the entity to create.
  * \param direction the only direction where the block can be moved
  * or -1 to allow it to be pushed in any direction
  * \param sprite_name animation set id of the sprite for this block
@@ -47,20 +46,19 @@ namespace Solarus {
 Block::Block(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     int direction,
     const std::string& sprite_name,
     bool can_be_pushed,
     bool can_be_pulled,
     int maximum_moves
 ):
-  Detector(COLLISION_FACING, name, layer, x, y, 16, 16),
+  Detector(COLLISION_FACING, name, layer, xy, Size(16, 16)),
   maximum_moves(maximum_moves),
   sound_played(false),
   when_can_move(System::now()),
-  last_position(x, y),
-  initial_position(x, y),
+  last_position(xy),
+  initial_position(xy),
   initial_maximum_moves(maximum_moves),
   can_be_pushed(can_be_pushed),
   can_be_pulled(can_be_pulled) {

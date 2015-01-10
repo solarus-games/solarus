@@ -47,10 +47,8 @@ class Tile: public MapEntity {
 
     Tile(
         Layer layer,
-        int x,
-        int y,
-        int width,
-        int height,
+        const Point& xy,
+        const Size& size,
         Tileset& tileset,
         const std::string& tile_pattern_id
     );

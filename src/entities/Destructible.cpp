@@ -41,8 +41,7 @@ namespace Solarus {
  * \brief Creates a new destructible item with the specified subtype.
  * \param name Name identifying the entity on the map or an empty string.
  * \param layer Layer where to create the entity.
- * \param x X coordinate where to create the entity.
- * \param y Y coordinate where to create the entity.
+ * \param xy Coordinates where to create the entity.
  * \param animation_set_id Sprite animation set id for this destructible object.
  * \param treasure The treasure contained in this object.
  * \param modified_ground Ground defined by this entity (usually Ground::WALL).
@@ -50,13 +49,12 @@ namespace Solarus {
 Destructible::Destructible(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     const std::string& animation_set_id,
     const Treasure& treasure,
     Ground modified_ground
 ):
-  Detector(COLLISION_NONE, name, layer, x, y, 16, 16),
+  Detector(COLLISION_NONE, name, layer, xy, Size(16, 16)),
   modified_ground(modified_ground),
   treasure(treasure),
   animation_set_id(animation_set_id),
@@ -303,10 +301,15 @@ bool Destructible::test_collision_custom(MapEntity& entity) {
  */
 void Destructible::create_treasure() {
 
-  get_entities().add_entity(Pickable::create(get_game(),
-      "", get_layer(), get_x(), get_y(),
-      treasure, FALLING_MEDIUM, false)
-  );
+  get_entities().add_entity(Pickable::create(
+      get_game(),
+      "",
+      get_layer(),
+      get_xy(),
+      treasure,
+      FALLING_MEDIUM,
+      false
+  ));
 }
 
 /**

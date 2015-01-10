@@ -70,8 +70,7 @@ const std::map<Enemy::ObstacleBehavior, std::string> Enemy::obstacle_behavior_na
  * \param game The game.
  * \param name Name identifying the enemy or an empty string.
  * \param layer The layer on the map.
- * \param x X position on the map.
- * \param y Y position on the map.
+ * \param xy Coordinates on the map.
  * \param breed Breed of the enemy.
  * \param treasure Treasure dropped when the enemy is killed.
  */
@@ -79,13 +78,12 @@ Enemy::Enemy(
     Game& /* game */,
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     const std::string& breed,
     const Treasure& treasure
 ):
   Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE,
-      name, layer, x, y, 0, 0),
+      name, layer, xy, Size(0, 0)),
   breed(breed),
   damage_on_hero(1),
   life(1),
@@ -133,8 +131,7 @@ Enemy::Enemy(
  * \param rank rank of the enemy: normal, miniboss or boss
  * \param savegame_variable name of the boolean variable indicating that the enemy is dead
  * \param layer layer of the enemy on the map
- * \param x x position of the enemy on the map
- * \param y y position of the enemy on the map
+ * \param xy Coordinates of the enemy on the map.
  * \param direction initial direction of the enemy on the map (0 to 3)
  * this enemy is killed, or -1 if this enemy is not saved
  * \param treasure the pickable item that the enemy drops
@@ -147,8 +144,7 @@ MapEntityPtr Enemy::create(
     const std::string& savegame_variable,
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     int direction,
     const Treasure& treasure
 ) {
@@ -158,14 +154,14 @@ MapEntityPtr Enemy::create(
 
     // the enemy is dead: create its pickable treasure (if any) instead
     if (treasure.is_saved() && !game.get_savegame().get_boolean(treasure.get_savegame_variable())) {
-      return Pickable::create(game, "", layer, x, y, treasure, FALLING_NONE, true);
+      return Pickable::create(game, "", layer, xy, treasure, FALLING_NONE, true);
     }
     return nullptr;
   }
 
   // create the enemy
   std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(
-      game, name, layer, x, y, breed, treasure
+      game, name, layer, xy, breed, treasure
   );
 
   // initialize the fields
@@ -846,9 +842,15 @@ void Enemy::update() {
   if (is_killed() && is_dying_animation_finished()) {
 
     // Create the pickable treasure if any.
-    get_entities().add_entity(Pickable::create(get_game(),
-        "", get_layer(), get_x(), get_y(),
-        treasure, FALLING_HIGH, false));
+    get_entities().add_entity(Pickable::create(
+        get_game(),
+        "",
+        get_layer(),
+        get_xy(),
+        treasure,
+        FALLING_HIGH,
+        false
+    ));
 
     // Remove the enemy.
     remove_from_map();

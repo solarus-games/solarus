@@ -44,8 +44,7 @@ class Chest: public Detector {
     Chest(
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
+        const Point& xy,
         const std::string& sprite_name,
         const Treasure& treasure);
 

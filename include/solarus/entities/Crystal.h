@@ -32,7 +32,7 @@ class Crystal: public Detector {
 
   public:
 
-    Crystal(const std::string& name, Layer layer, int x, int y);
+    Crystal(const std::string& name, Layer layer, const Point& xy);
 
     virtual EntityType get_type() const override;
 

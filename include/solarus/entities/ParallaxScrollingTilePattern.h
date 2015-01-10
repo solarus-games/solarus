@@ -40,7 +40,7 @@ class ParallaxScrollingTilePattern: public SimpleTilePattern {
 
   public:
 
-    ParallaxScrollingTilePattern(Ground ground, int x, int y, int width, int height);
+    ParallaxScrollingTilePattern(Ground ground, const Point& xy, const Size& size);
 
     virtual void draw(
         const SurfacePtr& dst_surface,

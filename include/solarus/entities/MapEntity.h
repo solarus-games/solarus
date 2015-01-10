@@ -322,10 +322,8 @@ class SOLARUS_API MapEntity: public ExportableToLua {
         const std::string& name,
         int direction,
         Layer layer,
-        int x,
-        int y,
-        int width,
-        int height
+        const Point& xy,
+        const Size& size
     );
 
     // No copy constructor or assignment operator.

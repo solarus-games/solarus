@@ -56,16 +56,14 @@ CustomEntity::CustomEntity(
     const std::string& name,
     int direction,
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height,
+    const Point& xy,
+    const Size& size,
     const std::string& sprite_name,
     const std::string& model
 ):
   Detector(
       COLLISION_FACING,
-      name, layer, x, y, width, height
+      name, layer, xy, size
   ),
   model(model),
   ground_modifier(true),

@@ -29,19 +29,17 @@ namespace Solarus {
  * \brief Creates a new stairs entity.
  * \param name Name of the entity to create.
  * \param layer Layer of the entity to create on the map.
- * \param x X coordinate of the entity to create.
- * \param y Y coordinate of the entity to create.
+ * \param xy Coordinates of the entity to create.
  * \param direction Direction of the stairs (0 to 3).
  * \param subtype The subtype of stairs.
  */
 Stairs::Stairs(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     int direction,
     Subtype subtype):
-  Detector(COLLISION_TOUCHING | COLLISION_OVERLAPPING, name, layer, x, y, 16, 16),
+  Detector(COLLISION_TOUCHING | COLLISION_OVERLAPPING, name, layer, xy, Size(16, 16)),
   subtype(subtype) {
 
   Debug::check_assertion(!is_inside_floor() || layer != LAYER_HIGH,

@@ -27,14 +27,12 @@ uint32_t TimeScrollingTilePattern::next_shift_date = 0;
 /**
  * \brief Creates a tile pattern with scrolling.
  * \param ground Kind of ground of the tile pattern.
- * \param x x position of the tile pattern in the tileset
- * \param y y position of the tile pattern in the tileset
- * \param width width of the tile pattern in the tileset
- * \param height height of the tile pattern in the tileset
+ * \param xy Coordinates of the tile pattern in the tileset.
+ * \param size Size of the tile pattern in the tileset.
  */
 TimeScrollingTilePattern::TimeScrollingTilePattern(Ground ground,
-    int x, int y, int width, int height):
-  SimpleTilePattern(ground, x, y, width, height) {
+    const Point& xy, const Size& size):
+  SimpleTilePattern(ground, xy, size) {
 
 }
 

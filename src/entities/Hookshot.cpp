@@ -38,7 +38,7 @@ namespace Solarus {
  * \param hero the hero
  */
 Hookshot::Hookshot(const Hero& hero):
-    MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
+    MapEntity("", 0, hero.get_layer(), Point(0, 0), Size(0, 0)),
     next_sound_date(System::now()),
     has_to_go_back(false),
     going_back(false),

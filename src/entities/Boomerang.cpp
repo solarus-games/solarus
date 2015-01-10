@@ -47,7 +47,7 @@ Boomerang::Boomerang(
     double angle,
     const std::string& sprite_name
 ):
-  MapEntity("", 0, hero->get_layer(), 0, 0, 0, 0),
+  MapEntity("", 0, hero->get_layer(), Point(0, 0), Size(0, 0)),
   hero(hero),
   has_to_go_back(false),
   going_back(false),

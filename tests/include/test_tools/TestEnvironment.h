@@ -63,8 +63,7 @@ class TestEnvironment {
     // Creating entities.
     template<typename T>
     std::shared_ptr<T> make_entity(
-        int x = 0,
-        int y = 0,
+        const Point& xy = Point(0, 0),
         Layer layer = LAYER_LOW
     );
 

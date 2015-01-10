@@ -34,28 +34,26 @@ namespace Solarus {
  */
 Jumper::Jumper(const std::string& name,
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height,
+    const Point& xy,
+    const Size& size,
     int direction,
     int jump_length):
   Detector(COLLISION_CUSTOM | COLLISION_FACING, // Facing point detection is necessary to avoid sword tapping.
-      name, layer, x, y, width, height),
+      name, layer, xy, size),
   jump_length(jump_length) {
 
   set_direction(direction);
 
   // check the size
   if (direction % 2 != 0) {
-    Debug::check_assertion(width == height, "This jumper has a diagonal direction but is not square");
+    Debug::check_assertion(size.is_square(), "This jumper has a diagonal direction but is not square");
   }
   else {
     if (direction % 4 == 0) {
-      Debug::check_assertion(width == 8, "This jumper is horizontal but its height is not 8");
+      Debug::check_assertion(size.width == 8, "This jumper is horizontal but its height is not 8");
     }
     else {
-      Debug::check_assertion(height == 8, "This jumper is vertical but its width is not 8");
+      Debug::check_assertion(size.height == 8, "This jumper is vertical but its width is not 8");
     }
   }
   // check the jump length

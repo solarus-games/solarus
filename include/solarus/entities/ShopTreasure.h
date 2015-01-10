@@ -42,8 +42,7 @@ class ShopTreasure: public Detector {
     ShopTreasure(
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
+        const Point& xy,
         const Treasure& treasure,
         int price,
         const std::string& dialog_id
@@ -53,8 +52,7 @@ class ShopTreasure: public Detector {
         Game& game,
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
+        const Point& xy,
         const Treasure& treasure,
         int price,
         const std::string& dialog_id

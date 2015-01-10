@@ -35,10 +35,8 @@ class Jumper: public Detector {
     Jumper(
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
-        int width,
-        int height,
+        const Point& xy,
+        const Size& size,
         int direction,
         int jump_length
     );

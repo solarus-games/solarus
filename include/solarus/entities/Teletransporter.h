@@ -37,10 +37,8 @@ class Teletransporter: public Detector {
     Teletransporter(
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
-        int width,
-        int height,
+        const Point& xy,
+        const Size& size,
         const std::string& sprite_name,
         const std::string& sound_id,
         Transition::Style transition_style,

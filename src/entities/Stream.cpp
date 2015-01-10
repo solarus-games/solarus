@@ -26,20 +26,18 @@ namespace Solarus {
  * \brief Creates a new stream.
  * \param name Name identifying the entity on the map or an empty string.
  * \param layer Layer of the entity to create.
- * \param x X coordinate of the entity to create.
- * \param y Y coordinate of the entity to create.
+ * \param xy Coordinates of the entity to create.
  * \param direction Direction of the stream (0 to 7).
  * \param sprite_name Animation set id of a sprite or an empty string.
  */
 Stream::Stream(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     int direction,
     const std::string& sprite_name
 ):
-  Detector(COLLISION_OVERLAPPING, name, layer, x, y, 16, 16),
+  Detector(COLLISION_OVERLAPPING, name, layer, xy, Size(16, 16)),
   speed(64),
   allow_movement(true),
   allow_attack(true),

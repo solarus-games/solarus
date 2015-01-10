@@ -187,5 +187,5 @@ E opt_enum_field(
   return value;
 }
 
-}
-}
+}  // namespace LuaTools
+}  // namespace Solarus

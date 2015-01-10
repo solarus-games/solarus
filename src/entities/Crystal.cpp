@@ -33,12 +33,11 @@ namespace Solarus {
  * \brief Creates a new crystal.
  * \param name name of the entity to create
  * \param layer layer of the entity to create on the map
- * \param x x coordinate of the entity to create
- * \param y y coordinate of the entity to create
+ * \param xy Coordinates of the entity to create.
  */
-Crystal::Crystal(const std::string& name, Layer layer, int x, int y):
+Crystal::Crystal(const std::string& name, Layer layer, const Point& xy):
   Detector(COLLISION_SPRITE | COLLISION_OVERLAPPING | COLLISION_FACING,
-      name, layer, x, y, 16, 16),
+      name, layer, xy, Size(16, 16)),
   state(false),
   next_possible_hit_date(System::now()) {
 

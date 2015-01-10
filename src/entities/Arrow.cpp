@@ -38,7 +38,7 @@ namespace Solarus {
  * \param hero The hero.
  */
 Arrow::Arrow(const Hero& hero):
-  MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
+  MapEntity("", 0, hero.get_layer(), Point(0, 0), Size(0, 0)),
   hero(hero) {
 
   // initialize the entity

@@ -28,20 +28,17 @@ namespace Solarus {
  * \param collision_modes the detector's collision mode(s)
  * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the detector
- * \param x x position of the detector's rectangle
- * \param y y position of the detector's rectangle
- * \param width width of the detector's rectangle
- * \param height height of the detector's rectangle
+ * \param xy Coordinates where to create the detector.
+ * \param size Size of the detector's rectangle.
  */
 Detector::Detector(
     int collision_modes,
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height):
-  MapEntity(name, 0, layer, x, y, width, height),
+    const Point& xy,
+    const Size& size
+):
+  MapEntity(name, 0, layer, xy, size),
   collision_modes(collision_modes),
   layer_independent_collisions(false) {
 

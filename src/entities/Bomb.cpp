@@ -36,11 +36,10 @@ namespace Solarus {
  *
  * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the entity to create
- * \param x x coordinate of the entity to create
- * \param y y coordinate of the entity to create
+ * \param xy Coordinates of the entity to create.
  */
-Bomb::Bomb(const std::string& name, Layer layer, int x, int y):
-  Detector(COLLISION_FACING, name, layer, x, y, 16, 16),
+Bomb::Bomb(const std::string& name, Layer layer, const Point& xy):
+  Detector(COLLISION_FACING, name, layer, xy, Size(16, 16)),
   explosion_date(System::now() + 6000) {
 
   create_sprite("entities/bomb");

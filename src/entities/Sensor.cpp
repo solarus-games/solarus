@@ -29,19 +29,15 @@ namespace Solarus {
  * \brief Constructor.
  * \param name name of the entity
  * \param layer layer of the entity
- * \param x x position of the entity's rectangle
- * \param y y position of the entity's rectangle
- * \param width width of the entity's rectangle
- * \param height height of the entity's rectangle
+ * \param xy Coordinates where to create the entity.
+ * \param size Size of the entity.
  */
 Sensor::Sensor(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height):
-  Detector(COLLISION_CONTAINING | COLLISION_OVERLAPPING, name, layer, x, y, width, height),
+    const Point& xy,
+    const Size& size):
+  Detector(COLLISION_CONTAINING | COLLISION_OVERLAPPING, name, layer, xy, size),
   activated_by_hero(false),
   notifying_script(false) {
 

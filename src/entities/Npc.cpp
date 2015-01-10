@@ -48,10 +48,17 @@ namespace Solarus {
  * (with an event_hero_interaction() call) or "item#XXX" to call the script
  * of item XXX  (with an event_hero_interaction() call)
  */
-Npc::Npc(Game& /* game */, const std::string& name, Layer layer, int x, int y,
-    Subtype subtype, const std::string& sprite_name,
-    int direction, const std::string& behavior_string):
-  Detector(COLLISION_FACING | COLLISION_OVERLAPPING, name, layer, x, y, 0, 0),
+Npc::Npc(
+    Game& /* game */,
+    const std::string& name,
+    Layer layer,
+    const Point& xy,
+    Subtype subtype,
+    const std::string& sprite_name,
+    int direction,
+    const std::string& behavior_string
+):
+  Detector(COLLISION_FACING | COLLISION_OVERLAPPING, name, layer, xy, Size(0, 0)),
   subtype(subtype),
   dialog_to_show(""),
   item_name("") {

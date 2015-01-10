@@ -1219,8 +1219,29 @@ class LuaContext {
       l_shop_treasure_question_dialog_finished,
       l_create_tile,
       l_create_destination,
-      l_create_todo;
-      // TODO
+      l_create_teletransporter,
+      l_create_pickable,
+      l_create_destructible,
+      l_create_chest,
+      l_create_jumper,
+      l_create_enemy,
+      l_create_npc,
+      l_create_block,
+      l_create_dynamic_tile,
+      l_create_switch,
+      l_create_wall,
+      l_create_sensor,
+      l_create_crystal,
+      l_create_crystal_block,
+      l_create_shop_treasure,
+      l_create_stream,
+      l_create_door,
+      l_create_stairs,
+      l_create_separator,
+      l_create_custom_entity,
+      l_create_bomb,
+      l_create_explosion,
+      l_create_fire;
 
     // Script data.
     lua_State* l;                   /**< The Lua state encapsulated. */

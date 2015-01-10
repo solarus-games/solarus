@@ -40,10 +40,8 @@ class SOLARUS_API CustomEntity: public Detector {
         const std::string& name,
         int direction,
         Layer layer,
-        int x,
-        int y,
-        int width,
-        int height,
+        const Point& xy,
+        const Size& size,
         const std::string& sprite_name,
         const std::string& model
     );

@@ -38,8 +38,7 @@ class Pickable: public Detector {
     Pickable(
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
+        const Point& xy,
         const Treasure& treasure
     );
 
@@ -47,8 +46,7 @@ class Pickable: public Detector {
         Game& game,
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
+        const Point& xy,
         Treasure treasure,
         FallingHeight falling_height,
         bool force_persistent

@@ -37,10 +37,8 @@ class Separator: public Detector {
     Separator(
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
-        int width,
-        int height
+        const Point& xy,
+        const Size& size
     );
 
     virtual EntityType get_type() const override;

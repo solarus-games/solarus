@@ -32,14 +32,13 @@ namespace Solarus {
 Separator::Separator(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height):
-  Detector(COLLISION_CUSTOM, name, layer, x, y, width, height) {
+    const Point& xy,
+    const Size& size
+):
+  Detector(COLLISION_CUSTOM, name, layer, xy, size) {
 
-  Debug::check_assertion((width == 16 && height > 16)
-      || (width > 16 && height == 16), "Invalid separator size");
+  Debug::check_assertion((size.width == 16 && size.height > 16)
+      || (size.width > 16 && size.height == 16), "Invalid separator size");
 
   set_layer_independent_collisions(true);
 }

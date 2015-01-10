@@ -65,9 +65,16 @@ class Npc: public Detector {
        BEHAVIOR_ITEM_SCRIPT             /**< notify an equipment item in Lua */
     };
 
-    Npc(Game& game, const std::string& name, Layer layer, int x, int y,
-        Subtype subtype, const std::string& sprite_name,
-        int initial_direction, const std::string& behavior_string);
+    Npc(
+        Game& game,
+        const std::string& name,
+        Layer layer,
+        const Point& xy,
+        Subtype subtype,
+        const std::string& sprite_name,
+        int initial_direction,
+        const std::string& behavior_string
+    );
 
     EntityType get_type() const override;
 

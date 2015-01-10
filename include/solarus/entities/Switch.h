@@ -51,8 +51,7 @@ class Switch: public Detector {
     Switch(
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
+        const Point& xy,
         Subtype subtype,
         const std::string& sprite_name,
         const std::string& sound_id,

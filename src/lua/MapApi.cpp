@@ -485,16 +485,16 @@ int LuaContext::l_create_destructible(lua_State* l) {
         data.get_name(),
         data.get_layer(),
         data.get_xy(),
-        data.get_string("animation_set_id"),
+        data.get_string("sprite"),
         Treasure(
             map.get_game(),
             data.get_string("treasure_name"),
             data.get_integer("treasure_variant"),
             entity_creation_check_savegame_variable_optional(l, 1, data, "treasure_savegame_variable")
         ),
-        entity_creation_check_enum<Ground>(l, 1, data, "modified_ground", GroundInfo::get_ground_names())
+        entity_creation_check_enum<Ground>(l, 1, data, "ground", GroundInfo::get_ground_names())
     );
-    destructible->set_destruction_sound(data.get_string("destruction_sound_id"));
+    destructible->set_destruction_sound(data.get_string("destruction_sound"));
     destructible->set_weight(data.get_integer("weight"));
     destructible->set_can_be_cut(data.get_boolean("can_be_cut"));
     destructible->set_can_explode(data.get_boolean("can_explode"));

@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/Debug.h"
 #include "solarus/EntityData.h"
+#include "solarus/entities/MapEntity.h"
+#include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaTools.h"
 
 namespace Solarus {
@@ -352,6 +353,14 @@ EntityType EntityData::get_type() const {
 }
 
 /**
+ * \brief Returns the name of the type of entity.
+ * \return The type name of entity.
+ */
+const std::string& EntityData::get_type_name() const {
+  return MapEntity::get_entity_type_name(get_type());
+}
+
+/**
  * \brief Returns whether the entity has a name.
  */
 bool EntityData::has_name() const {
@@ -452,7 +461,7 @@ const std::string& EntityData::get_string(const std::string& key) const {
 
   const auto& it = fields.find(key);
   Debug::check_assertion(it != fields.end(),
-      "No such entity field: '" + key + "'");
+      "No such entity field in " + get_type_name() + ": '" + key + "'");
 
   Debug::check_assertion(it->second.value_type == EntityFieldType::STRING,
       "Field '" + key + "' is not a string");
@@ -469,7 +478,7 @@ void EntityData::set_string(const std::string& key, const std::string& value) {
 
   const auto& it = fields.find(key);
   Debug::check_assertion(it != fields.end(),
-      "No such entity field: '" + key + "'");
+      "No such entity field in " + get_type_name() + ": '" + key + "'");
 
   Debug::check_assertion(it->second.value_type == EntityFieldType::STRING,
       "Field '" + key + "' is not a string");
@@ -500,7 +509,7 @@ int EntityData::get_integer(const std::string& key) const {
 
   const auto& it = fields.find(key);
   Debug::check_assertion(it != fields.end(),
-      "No such entity field: '" + key + "'");
+      "No such entity field in " + get_type_name() + ": '" + key + "'");
 
   Debug::check_assertion(it->second.value_type == EntityFieldType::INTEGER,
       "Field '" + key + "' is not a string");
@@ -517,7 +526,7 @@ void EntityData::set_integer(const std::string& key, int value) {
 
   const auto& it = fields.find(key);
   Debug::check_assertion(it != fields.end(),
-      "No such entity field: '" + key + "'");
+      "No such entity field in " + get_type_name() + ": '" + key + "'");
 
   Debug::check_assertion(it->second.value_type == EntityFieldType::INTEGER,
       "Field '" + key + "' is not an integer");
@@ -548,7 +557,7 @@ bool EntityData::get_boolean(const std::string& key) const {
 
   const auto& it = fields.find(key);
   Debug::check_assertion(it != fields.end(),
-      "No such entity field: '" + key + "'");
+      "No such entity field in " + get_type_name() + ": '" + key + "'");
 
   Debug::check_assertion(it->second.value_type == EntityFieldType::BOOLEAN,
       "Field '" + key + "' is not a boolean");
@@ -565,7 +574,7 @@ void EntityData::set_boolean(const std::string& key, bool value) {
 
   const auto& it = fields.find(key);
   Debug::check_assertion(it != fields.end(),
-      "No such entity field: '" + key + "'");
+      "No such entity field in " + get_type_name() + ": '" + key + "'");
 
   Debug::check_assertion(it->second.value_type == EntityFieldType::BOOLEAN,
       "Field '" + key + "' is not an boolean");

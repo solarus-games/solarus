@@ -88,6 +88,7 @@ class SOLARUS_API EntityData {
     explicit EntityData(EntityType type);
 
     EntityType get_type() const;
+    const std::string& get_type_name() const;
 
     bool has_name() const;
     std::string get_name() const;

@@ -1202,7 +1202,7 @@ const std::map<EntityType, lua_CFunction> LuaContext::entity_creation_functions 
 /**
  * \brief Creates on the current map an entity from the specified data.
  * \param map The map where to create an entity.
- * \param Description of the entity to create.
+ * \param entity_data Description of the entity to create.
  */
 void LuaContext::create_map_entity_from_data(Map& map, const EntityData& entity_data) {
 

@@ -37,9 +37,8 @@ namespace Solarus {
  * \param game the game
  * \param name name identifying this NPC
  * \param layer layer of the entity to create
- * \param x x coordinate of the entity to create
+ * \param xy Coordinates of the entity to create.
  * \param subtype the subtype of interaction
- * \param y y coordinate of the entity to create
  * \param sprite_name sprite animation set of the entity, or an empty string to create no sprite
  * \param direction for a generalized NPC: direction for which the interactions are allowed
  * (0 to 4, or -1 for any direction), for a usual NPC: initial direction of the NPC's sprite

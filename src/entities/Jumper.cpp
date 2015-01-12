@@ -25,10 +25,8 @@ namespace Solarus {
  * \brief Creates a jumper.
  * \param name Name identifying this entity.
  * \param layer layer of the entity on the map
- * \param x x coordinate of the top-left corner of the entity's rectangle
- * \param y y coordinate of the top-left corner of the entity's rectangle
- * \param width width of the entity's rectangle
- * \param height height of the entity's rectangle
+ * \param xy Coordinates of the top-left corner of the entity's rectangle.
+ * \param size Size of the entity's rectangle.
  * \param direction direction of the jump (0 to 7 as the jump may be diagonal)
  * \param jump_length length of the jump in pixels (usually a multiple of 8)
  */

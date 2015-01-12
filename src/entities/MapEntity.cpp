@@ -76,7 +76,7 @@ const std::map<EntityType, std::string> MapEntity::entity_type_names = {
  * \param name Name identifying the entity on the map or an empty string.
  * \param direction direction of the entity
  * \param layer layer of the entity
- * \param xx Coordinates where to create the entity.
+ * \param xy Coordinates where to create the entity.
  * \param size Size of the entity.
  */
 MapEntity::MapEntity(
@@ -158,7 +158,7 @@ const std::string& MapEntity::get_entity_type_name(EntityType type) {
  * This is the name used in data files and return by the Lua function
  * entity:get_type().
  *
- * \param type The name of an entity type. It must exist.
+ * \param type_name The name of an entity type. It must exist.
  * \return The corresponding type.
  */
 EntityType MapEntity::get_entity_type_by_name(const std::string& type_name) {

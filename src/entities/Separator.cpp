@@ -24,10 +24,10 @@ namespace Solarus {
  * \brief Creates a new separator.
  * \param name Name of the entity to create.
  * \param layer Layer of the entity to create on the map.
- * \param x X coordinate of the entity to create.
- * \param y Y coordinate of the entity to create.
- * \param width Width of the separator (16 means a vertical separator).
- * \param height Height of the separator (16 means an horizontal separator).
+ * \param xy Coordinate of the entity to create.
+ * \param size Size of the separator.
+ * A width of 16 means a vertical separator and a height of 16 means a
+ * horizontal one.
  */
 Separator::Separator(
     const std::string& name,

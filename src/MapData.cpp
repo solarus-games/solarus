@@ -264,8 +264,7 @@ const EntityData& MapData::get_entity(const EntityIndex& index) const {
  *
  * Non-const version.
  *
- * \param layer The layer of the entity to get.
- * \param index Index of the entity in that layer.
+ * \param index Index of the entity to get on the map.
  * \return The entity data.
  * The object remains valid until entities are added or removed.
  */

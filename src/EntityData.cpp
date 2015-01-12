@@ -667,6 +667,8 @@ EntityData EntityData::check_entity_data(lua_State* l, int index, EntityType typ
  * This is the case of HERO, CARRIED_ITEM, BOOMERANG, ARROW and HOOKHOT.
  * The ones in the map can be created either by declaring them in a map
  * data file or by the Lua API, or both.
+ *
+ * \return The format description of entity types.
  */
 const std::map<EntityType, const EntityTypeDescription> EntityData::get_entity_type_descriptions() {
   return entity_type_descriptions;

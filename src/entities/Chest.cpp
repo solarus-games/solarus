@@ -45,8 +45,7 @@ const std::map<Chest::OpeningMethod, std::string> Chest::opening_method_names = 
  * \brief Creates a new chest with the specified treasure.
  * \param name Name identifying this chest.
  * \param layer Layer of the chest to create on the map.
- * \param x X coordinate of the chest to create.
- * \param y Y coordinate of the chest to create.
+ * \param xy Coordinates of the chest to create.
  * \param sprite_name Name of the animation set of the
  * sprite to create for the chest. It must have animations "open" and "closed".
  * \param treasure The treasure in the chest.

@@ -44,10 +44,8 @@ namespace Solarus {
  * \param name Name of the entity or an empty string.
  * \param direction Direction of the entity (0 to 3).
  * \param layer The layer on the map.
- * \param x X position on the map.
- * \param y Y position on the map.
- * \param width Width of the entity.
- * \param height Height of the entity.
+ * \param xy Coordinates on the map.
+ * \param size Size of the entity.
  * \param sprite_name Animation set id of a sprite or an empty string.
  * \param model Model of custom entity or an empty string.
  */

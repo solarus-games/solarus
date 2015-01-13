@@ -209,8 +209,6 @@ int LuaContext::game_api_load(lua_State* l) {
         get_lua_context(l).get_main_loop(), file_name
     );
 
-    savegame->get_equipment().load_items();
-
     push_game(l, *savegame);
     return 1;
   });

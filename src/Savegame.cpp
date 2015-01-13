@@ -98,6 +98,8 @@ Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
     empty = false;
     load();
   }
+
+  get_equipment().load_items();
 }
 
 /**

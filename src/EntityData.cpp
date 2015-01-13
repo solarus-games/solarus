@@ -159,7 +159,7 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
     {
         EntityType::SWITCH, {
             { "subtype", OptionalFlag::MANDATORY, FieldValue("walkable") },
-            { "sprite", OptionalFlag::MANDATORY, FieldValue("entities/switch") },
+            { "sprite", OptionalFlag::OPTIONAL, FieldValue("entities/switch") },
             { "sound", OptionalFlag::OPTIONAL, FieldValue("") },
             { "needs_block", OptionalFlag::MANDATORY, FieldValue(false) },
             { "inactivate_when_leaving", OptionalFlag::MANDATORY, FieldValue(false) },

@@ -11,6 +11,7 @@ Engine changes
 * Add unit tests.
 * Fix a crash if an entity has a sprite without animation.
 * Fix crash when using the -no-video command-line option.
+* Fix assertion when a crystal block has less than 4 frames.
 * Don't die if the animation of a pickable treasure is missing.
 
 Lua API changes

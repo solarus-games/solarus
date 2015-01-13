@@ -55,7 +55,7 @@ CrystalBlock::CrystalBlock(Game& game, const std::string& name,
   else {
     get_sprite().set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
   }
-  get_sprite().set_current_frame(3); // to avoid the animations at the map beginning
+  get_sprite().set_current_frame(get_sprite().get_nb_frames() - 1); // to avoid the animations at the map beginning
 }
 
 /**

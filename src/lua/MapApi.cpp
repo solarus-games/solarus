@@ -902,7 +902,7 @@ int LuaContext::l_create_shop_treasure(lua_State* l) {
             entity_creation_check_savegame_variable_optional(l, 1, data, "treasure_savegame_variable")
         ),
         data.get_integer("price"),
-        data.get_string("dialog_id")
+        data.get_string("dialog")
     );
     if (entity == nullptr) {
       lua_pushnil(l);

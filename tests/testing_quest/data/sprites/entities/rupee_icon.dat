@@ -1,0 +1,8 @@
+animation{
+  name = "normal",
+  src_image = "todo.png",
+  directions = {
+    { x = 0, y = 0, frame_width = 16, frame_height = 16 },
+  },
+}
+

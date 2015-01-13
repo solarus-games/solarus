@@ -2,6 +2,7 @@ map{ id = "traversable", description = "Traversable test area" }
 map{ id = "basic_test", description = "Basic test" }
 map{ id = "surface_tests", description = "Surface tests" }
 map{ id = "jumper_tests", description = "Jumper tests" }
+map{ id = "all_entities", description = "All entities" }
 
 tileset{ id = "castle", description = "Castle" }
 
@@ -13,6 +14,7 @@ sprite{ id = "entities/bush", description = "Bush" }
 sprite{ id = "entities/chest", description = "Chest" }
 sprite{ id = "entities/conveyor_belt", description = "Conveyor belt" }
 sprite{ id = "entities/crystal", description = "Crystal" }
+sprite{ id = "entities/door", description = "Door" }
 sprite{ id = "entities/explosion", description = "Explosion" }
 sprite{ id = "entities/fire", description = "Fire" }
 sprite{ id = "entities/grass", description = "Grass" }
@@ -35,6 +37,8 @@ sprite{ id = "hero/ground2", description = "Shallow water under hero" }
 sprite{ id = "hero/trail", description = "Hero trail" }
 sprite{ id = "enemies/enemy_killed", description = "Enemy killed" }
 sprite{ id = "menus/solarus_logo", description = "Menu: Solarus logo" }
+sprite{ id = "todo", description = "TODO image" }
+sprite{ id = "enemies/test_enemy", description = "Test enemy" }
 
 
 sound{ id = "arrow_hit", description = "arrow_hit" }
@@ -85,7 +89,9 @@ sound{ id = "walk_on_water", description = "walk_on_water" }
 sound{ id = "wrong", description = "wrong" }
 sound{ id = "running_obstacle", description = "running_obstacle" }
 
+item{ id = "bomb", description = "Bomb" }
 
+enemy{ id = "test_enemy", description = "Test enemy" }
 
 
 language{ id = "en", description = "English" }

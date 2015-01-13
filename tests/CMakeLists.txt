@@ -3,6 +3,7 @@ set(lua_test_maps
   "basic_test"
   "jumper_tests"
   "surface_tests"
+  "all_entities"
 )
 
 # Build the Solarus testing library.

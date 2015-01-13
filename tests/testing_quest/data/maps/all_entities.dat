@@ -1,0 +1,181 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 720,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 720,
+  pattern = "3",
+}
+
+destination{
+  layer = 0,
+  x = 24,
+  y = 29,
+  direction = 3,
+}
+
+teletransporter{
+  layer = 0,
+  x = 16,
+  y = 48,
+  width = 16,
+  height = 16,
+  destination_map = "all_entities",
+}
+
+pickable{
+  layer = 0,
+  x = 24,
+  y = 93,
+  treasure_name = "bomb",
+}
+
+destructible{
+  layer = 0,
+  x = 24,
+  y = 125,
+  sprite = "entities/pot",
+}
+
+chest{
+  layer = 0,
+  x = 24,
+  y = 157,
+  sprite = "entities/chest",
+}
+
+jumper{
+  layer = 0,
+  x = 16,
+  y = 176,
+  width = 32,
+  height = 8,
+  direction = 6,
+  jump_length = 40,
+}
+
+enemy{
+  layer = 0,
+  x = 24,
+  y = 237,
+  direction = 3,
+  breed = "test_enemy",
+}
+
+npc{
+  layer = 0,
+  x = 24,
+  y = 253,
+  direction = 3,
+  subtype = "1",
+  sprite = "entities/sign",
+}
+
+block{
+  layer = 0,
+  x = 24,
+  y = 285,
+  direction = -1,
+  sprite = "entities/block",
+  pushable = true,
+  pullable = false,
+  maximum_moves = 1,
+}
+
+switch{
+  layer = 0,
+  x = 16,
+  y = 304,
+  subtype = "walkable",
+  needs_block = false,
+  inactivate_when_leaving = false,
+}
+
+wall{
+  layer = 0,
+  x = 16,
+  y = 368,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 24,
+  y = 413,
+  width = 16,
+  height = 16,
+}
+
+crystal{
+  layer = 0,
+  x = 24,
+  y = 445,
+}
+
+crystal_block{
+  layer = 0,
+  x = 16,
+  y = 464,
+  width = 16,
+  height = 16,
+  subtype = "0",
+}
+
+shop_treasure{
+  layer = 0,
+  x = 16,
+  y = 496,
+  treasure_name = "bomb",
+  price = 1,
+  dialog = "shop_test_item",
+}
+
+stream{
+  layer = 0,
+  x = 24,
+  y = 557,
+  direction = 0,
+}
+
+door{
+  layer = 0,
+  x = 16,
+  y = 576,
+  direction = 1,
+  sprite = "entities/door",
+}
+
+stairs{
+  layer = 0,
+  x = 16,
+  y = 608,
+  direction = 1,
+  subtype = "0",
+}
+
+separator{
+  layer = 0,
+  x = 0,
+  y = 336,
+  width = 320,
+  height = 16,
+}
+
+custom_entity{
+  layer = 0,
+  x = 24,
+  y = 653,
+  width = 16,
+  height = 16,
+  direction = 3,
+}
+

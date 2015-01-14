@@ -45,6 +45,7 @@ target_link_libraries(solarus_testing
 set(
   tests_main_files
   src/tests/Initialization.cpp
+  src/tests/MapData.cpp
   src/tests/PathFinding.cpp
   src/tests/PathMovement.cpp
   src/tests/PixelMovement.cpp

@@ -18,6 +18,7 @@
 #include "solarus/entities/MapEntity.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaTools.h"
+#include <ostream>
 
 namespace Solarus {
 
@@ -672,6 +673,83 @@ EntityData EntityData::check_entity_data(lua_State* l, int index, EntityType typ
  */
 const std::map<EntityType, const EntityTypeDescription> EntityData::get_entity_type_descriptions() {
   return entity_type_descriptions;
+}
+
+/**
+ * \brief Saves this data as Lua into a stream.
+ * \param out The stream to write.
+ * \return \c true in case of success, \c false if the data
+ * could not be exported.
+ */
+bool EntityData::export_to_lua(std::ostream& out) const {
+
+  // Entity type.
+  out << get_type_name() << "{\n";
+
+  // Name.
+  if (has_name()) {
+    out << "  name = \"" << get_name() << "\",\n";
+  }
+
+  // Position on the map.
+  out << "  layer = " << static_cast<int>(get_layer()) << ",\n"
+      << "  x = " << get_xy().x << ",\n"
+      << "  y = " << get_xy().y << ",\n";
+
+  // Properties specific to a type of entity.
+  const EntityTypeDescription& type_description = entity_type_descriptions.at(get_type());
+
+  for (const EntityFieldDescription& field_description : type_description) {
+
+    const std::string& key = field_description.key;
+    const bool optional = field_description.optional == OptionalFlag::OPTIONAL;
+    switch (field_description.default_value.value_type) {
+
+      case EntityFieldType::STRING:
+      {
+        const std::string& value = get_string(key);
+        const std::string& default_value = field_description.default_value.string_value;
+        if (optional && value == default_value) {
+          // No need to write the value.
+          continue;
+        }
+        out << "  " << key << " = \"" << value << "\",\n";
+        break;
+      }
+
+      case EntityFieldType::INTEGER:
+      {
+        int value = get_integer(key);
+        int default_value = field_description.default_value.int_value;
+        if (optional && value == default_value) {
+          // No need to write the value.
+          continue;
+        }
+        out << "  " << key << " = " << value << ",\n";
+        break;
+      }
+
+      case EntityFieldType::BOOLEAN:
+      {
+        bool value = get_boolean(key);
+        bool default_value = field_description.default_value.int_value != 0;
+        if (optional && value == default_value) {
+          // No need to write the value.
+          continue;
+        }
+        out << "  " << key << " = " << (value ? "true" : "false") << ",\n";
+
+        break;
+      }
+
+      case EntityFieldType::NIL:
+        Debug::die("Nil entity field");
+        break;
+    }
+  }
+  out << "}\n\n";
+
+  return true;
 }
 
 }  // namespace Solarus

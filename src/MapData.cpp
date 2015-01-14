@@ -18,6 +18,7 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/MapData.h"
+#include <fstream>
 
 namespace Solarus {
 
@@ -132,6 +133,14 @@ const std::string& MapData::get_tileset_id() const {
  */
 void MapData::set_tileset_id(const std::string& tileset_id) {
   this->tileset_id = tileset_id;
+}
+
+/**
+ * \brief Returns whether a music is set.
+ * \return \c true if the music id is not "none".
+ */
+bool MapData::has_music() const {
+  return music_id != "none";
 }
 
 /**
@@ -524,9 +533,34 @@ bool MapData::import_from_lua(lua_State* l) {
 /**
  * \copydoc LuaData::export_to_lua
  */
-bool MapData::export_to_lua(std::ostream& /* out */) const {
-  // TODO
-  return false;
+bool MapData::export_to_lua(std::ostream& out) const {
+
+  // Write map properties.
+  out << "properties{\n"
+      << "  x = " << get_location().x << ",\n"
+      << "  y = " << get_location().y << ",\n"
+      << "  width = " << get_size().width << ",\n"
+      << "  height = " << get_size().height << ",\n";
+  if (has_world()) {
+    out << "  world = \"" << get_world() << "\",\n";
+  }
+  if (has_floor()) {
+    out << "  floor = " << get_floor() << ",\n";
+  }
+  out << "  tileset = \"" << get_tileset_id() << "\",\n";
+  if (has_music()) {
+    out << "  music = \"" << get_music_id() << "\",\n";
+  }
+  out << "}\n\n";
+
+  for (const EntityList& layer_entities : entities) {
+    for (const EntityData& entity_data : layer_entities) {
+      bool success = entity_data.export_to_lua(out);
+      Debug::check_assertion(success, "Entity export failed");
+    }
+  }
+
+  return true;
 }
 
 }  // namespace Solarus

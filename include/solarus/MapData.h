@@ -95,6 +95,7 @@ class SOLARUS_API MapData : public LuaData {
     void set_floor(int floor);
     const std::string& get_tileset_id() const;
     void set_tileset_id(const std::string& tileset_id);
+    bool has_music() const;
     const std::string& get_music_id() const;
     void set_music_id(const std::string& music_id);
 

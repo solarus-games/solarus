@@ -110,6 +110,8 @@ class SOLARUS_API EntityData {
     bool get_boolean(const std::string& key) const;
     void set_boolean(const std::string& key, bool value);
 
+    bool export_to_lua(std::ostream& out) const;
+
     static EntityData check_entity_data(lua_State* l, int index, EntityType type);
     static const std::map<EntityType, const EntityTypeDescription> get_entity_type_descriptions();
 

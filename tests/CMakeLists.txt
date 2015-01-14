@@ -10,9 +10,9 @@ set(lua_test_maps
 file(
   GLOB
   testing_source_files
-  src/test_tools/*.cpp
-  include/test_tools/*.h
-  include/test_tools/*.inl
+  src/test_tools/TestEnvironment.cpp
+  include/test_tools/TestEnvironment.h
+  include/test_tools/TestEnvironment.inl
 )
 
 include_directories(
@@ -41,11 +41,14 @@ target_link_libraries(solarus_testing
 
 # Build individual tests.
 
-# Each .cpp file of the 'src/tests' directory is a test with a main() function
-file(
-  GLOB
+# Source files of the 'src/tests' directory that are a test with a main() function.
+set(
   tests_main_files
-  src/tests/*.cpp
+  src/tests/Initialization.cpp
+  src/tests/PathFinding.cpp
+  src/tests/PathMovement.cpp
+  src/tests/PixelMovement.cpp
+  src/tests/RunLuaTest.cpp
 )
 
 foreach(test_main_file ${tests_main_files})

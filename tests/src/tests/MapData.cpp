@@ -16,8 +16,10 @@
  */
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/CurrentQuest.h"
 #include "solarus/MapData.h"
 #include "test_tools/TestEnvironment.h"
+#include <iostream>
 
 using namespace Solarus;
 
@@ -43,9 +45,12 @@ void check_map(TestEnvironment& /* env */, const std::string& map_id) {
   Debug::check_assertion(success, "Map export failed");
 
   // Check that the file is identical after import/export.
-  Debug::check_assertion(exported_map_buffer == imported_map_buffer,
-      "Exported map differs from the original one");
-
+  if (exported_map_buffer != imported_map_buffer) {
+    std::cerr << "Map '" << map_id << "' differs from the original one after export." << std::endl
+        << "*** Original map file:" << std::endl << imported_map_buffer << std::endl
+        << "*** Exported map file:" << std::endl << exported_map_buffer << std::endl;
+    Debug::die("Map '" + map_id + "': exported file differs from the original one");
+  }
 }
 
 }
@@ -56,7 +61,13 @@ void check_map(TestEnvironment& /* env */, const std::string& map_id) {
 int main(int argc, char** argv) {
 
   TestEnvironment env(argc, argv);
-  check_map(env, "basic_test");
+
+  const std::map<std::string, std::string>& map_elements =
+      CurrentQuest::get_resources().get_elements(ResourceType::MAP);
+  for( const auto& kvp : map_elements ) {
+    const std::string& map_id = kvp.first;
+    check_map(env, map_id);
+  }
 
   return 0;
 }

@@ -35,9 +35,9 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
 
     {
         EntityType::TILE, {
-            { "pattern", OptionalFlag::MANDATORY, FieldValue("") },
             { "width", OptionalFlag::MANDATORY, FieldValue(0) },
-            { "height", OptionalFlag::MANDATORY, FieldValue(0) }
+            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "pattern", OptionalFlag::MANDATORY, FieldValue("") }
         }
     },
 
@@ -150,9 +150,9 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
 
     {
         EntityType::JUMPER, {
-            { "direction", OptionalFlag::MANDATORY, FieldValue(6) },
             { "width", OptionalFlag::MANDATORY, FieldValue(0) },
             { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "direction", OptionalFlag::MANDATORY, FieldValue(6) },
             { "jump_length", OptionalFlag::MANDATORY, FieldValue(40) }
         }
     },
@@ -239,9 +239,9 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
 
     {
         EntityType::CUSTOM, {
-            { "direction", OptionalFlag::MANDATORY, FieldValue(0) },
             { "width", OptionalFlag::MANDATORY, FieldValue(0) },
             { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "direction", OptionalFlag::MANDATORY, FieldValue(0) },
             { "sprite", OptionalFlag::OPTIONAL, FieldValue("") },
             { "model", OptionalFlag::OPTIONAL, FieldValue("") },
         }

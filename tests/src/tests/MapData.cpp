@@ -21,17 +21,19 @@
 
 using namespace Solarus;
 
-/**
- * Tests reading and writing map data files.
- */
-int main(int argc, char** argv) {
+namespace {
 
-  TestEnvironment env(argc, argv);
+/**
+ * \brief Checks reading and writing a map data file.
+ */
+void check_map(TestEnvironment& /* env */, const std::string& map_id) {
+
   MapData map_data;
   bool success = false;
 
-  // Import a map data file.
-  std::string imported_map_buffer = QuestFiles::data_file_read("maps/basic_test.dat");  // TODO do it automatically for all maps
+  // Import the map data file.
+  std::string file_name = "maps/" + map_id + ".dat";
+  std::string imported_map_buffer = QuestFiles::data_file_read(file_name);
   success = map_data.import_from_buffer(imported_map_buffer);
   Debug::check_assertion(success, "Map import failed");
 
@@ -43,6 +45,18 @@ int main(int argc, char** argv) {
   // Check that the file is identical after import/export.
   Debug::check_assertion(exported_map_buffer == imported_map_buffer,
       "Exported map differs from the original one");
+
+}
+
+}
+
+/**
+ * \brief Tests reading and writing map data files.
+ */
+int main(int argc, char** argv) {
+
+  TestEnvironment env(argc, argv);
+  check_map(env, "basic_test");
 
   return 0;
 }

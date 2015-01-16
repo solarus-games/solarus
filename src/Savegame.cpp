@@ -79,10 +79,25 @@ const std::string Savegame::KEY_ABILITY_GET_BACK_FROM_DEATH =
  */
 Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
   ExportableToLua(),
+  empty(true),
   file_name(file_name),
   main_loop(main_loop),
   equipment(*this),
   game(nullptr) {
+
+  // Don't call initialize() manually because the shared_ptr does not exist
+  // at this point, but is needed by initialize() when calling item scripts.
+}
+
+/**
+ * \brief Initializes the data from the file or from initial values if the file
+ * does not exist.
+ *
+ * This function should be called before using the object.
+ * The constructor does not call it because it involves Lua calls to initialize
+ * the equipment.
+ */
+void Savegame::initialize() {
 
   const std::string& quest_write_dir = QuestFiles::get_quest_write_dir();
   Debug::check_assertion(!quest_write_dir.empty(),
@@ -96,7 +111,7 @@ Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
   else {
     // A save already exists, let's load it.
     empty = false;
-    load();
+    import_from_file();
   }
 
   get_equipment().load_items();
@@ -175,9 +190,9 @@ void Savegame::set_default_joypad_controls() {
 }
 
 /**
- * \brief Reads the data from the savegame file.
+ * \brief Import the savegame data from the file.
  */
-void Savegame::load() {
+void Savegame::import_from_file() {
 
   // Try to parse as Lua first.
   lua_State* l = luaL_newstate();

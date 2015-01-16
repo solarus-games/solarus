@@ -208,6 +208,7 @@ int LuaContext::game_api_load(lua_State* l) {
     std::shared_ptr<Savegame> savegame = std::make_shared<Savegame>(
         get_lua_context(l).get_main_loop(), file_name
     );
+    savegame->initialize();
 
     push_game(l, *savegame);
     return 1;

@@ -62,6 +62,7 @@ Game& TestEnvironment::get_game() {
     std::shared_ptr<Savegame> savegame = std::make_shared<Savegame>(
         main_loop, "save_initial.dat"
     );
+    savegame->initialize();
     savegame->set_string(Savegame::KEY_STARTING_MAP, map_id);
     Game* game = new Game(main_loop, savegame);
     main_loop.set_game(game);

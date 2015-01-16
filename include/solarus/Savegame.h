@@ -84,6 +84,7 @@ class SOLARUS_API Savegame: public ExportableToLua {
 
     // file state
     bool is_empty() const;
+    void initialize();
     void save();
     const std::string& get_file_name() const;
 
@@ -128,12 +129,12 @@ class SOLARUS_API Savegame: public ExportableToLua {
     std::map<std::string, SavedValue> saved_values;
 
     bool empty;
-    std::string file_name;           /**< Savegame file name relative to the quest write directory. */
+    std::string file_name;   /**< Savegame file name relative to the quest write directory. */
     MainLoop& main_loop;
     Equipment equipment;
-    Game* game;             /**< nullptr if this savegame is not currently running */
+    Game* game;              /**< nullptr if this savegame is not currently running */
 
-    void load();
+    void import_from_file();
     static int l_newindex(lua_State* l);
 
     void set_initial_values();

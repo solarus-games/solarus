@@ -25,6 +25,7 @@
 #include "solarus/entities/Door.h"
 #include "solarus/entities/DynamicTile.h"
 #include "solarus/entities/Enemy.h"
+#include "solarus/entities/EntityTypeInfo.h"
 #include "solarus/entities/Explosion.h"
 #include "solarus/entities/Fire.h"
 #include "solarus/entities/GroundInfo.h"
@@ -141,7 +142,7 @@ void LuaContext::register_map_module() {
       EntityType::FIRE
   };
   for (EntityType type : entity_types_in_api) {
-    const std::string& type_name = MapEntity::get_entity_type_name(type);
+    const std::string& type_name = EntityTypeInfo::get_entity_type_name(type);
     std::string function_name = "create_" + type_name;
     push_string(l, type_name);
     lua_pushcclosure(l, map_api_create_entity, 1);
@@ -1206,7 +1207,7 @@ const std::map<EntityType, lua_CFunction> LuaContext::entity_creation_functions 
  */
 void LuaContext::create_map_entity_from_data(Map& map, const EntityData& entity_data) {
 
-  const std::string& type_name = MapEntity::get_entity_type_name(entity_data.get_type());
+  const std::string& type_name = EntityTypeInfo::get_entity_type_name(entity_data.get_type());
   std::string function_name = "create_" + type_name;
   const auto& it = entity_creation_functions.find(entity_data.get_type());
   Debug::check_assertion(it != entity_creation_functions.end(),
@@ -1869,7 +1870,7 @@ int LuaContext::map_api_create_entity(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
 
     EntityType type = LuaTools::check_enum<EntityType>(
-        l, lua_upvalueindex(1), MapEntity::entity_type_names
+        l, lua_upvalueindex(1), EntityTypeInfo::get_entity_type_names()
     );
     Map& map = *check_map(l, 1);
     const EntityData& data = EntityData::check_entity_data(l, 2, type);

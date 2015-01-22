@@ -25,6 +25,7 @@ file(
   include/solarus/entities/Enemy.h
   include/solarus/entities/EnemyReaction.h
   include/solarus/entities/EntityType.h
+  include/solarus/entities/EntityTypeInfo.h
   include/solarus/entities/Explosion.h
   include/solarus/entities/Fire.h
   include/solarus/entities/Ground.h
@@ -222,6 +223,7 @@ file(
   src/entities/DynamicTile.cpp
   src/entities/Enemy.cpp
   src/entities/EnemyReaction.cpp
+  src/entities/EntityTypeInfo.cpp
   src/entities/Explosion.cpp
   src/entities/Fire.cpp
   src/entities/GroundInfo.cpp

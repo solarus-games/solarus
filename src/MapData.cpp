@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/EntityTypeInfo.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/MapData.h"
@@ -451,7 +451,7 @@ int l_add_entity(lua_State* l) {
 
     // Get the type of entity to create.
     EntityType type = LuaTools::check_enum(
-        l, lua_upvalueindex(1), MapEntity::entity_type_names
+        l, lua_upvalueindex(1), EntityTypeInfo::get_entity_type_names()
     );
     const EntityData& entity = EntityData::check_entity_data(l, -1, type);
 
@@ -501,7 +501,7 @@ int l_properties(lua_State* l) {
     // Properties are set: we now allow the data file to declare entities.
 
     for (const auto& kvp : EntityData::get_entity_type_descriptions()) {
-      const std::string& type_name = MapEntity::get_entity_type_name(kvp.first);
+      const std::string& type_name = EntityTypeInfo::get_entity_type_name(kvp.first);
       lua_pushstring(l, type_name.c_str());
       lua_pushcclosure(l, l_add_entity, 1);
       lua_setglobal(l, type_name.c_str());

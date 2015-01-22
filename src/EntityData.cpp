@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/EntityData.h"
-#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/EntityTypeInfo.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaTools.h"
 #include <ostream>
@@ -359,7 +359,7 @@ EntityType EntityData::get_type() const {
  * \return The type name of entity.
  */
 const std::string& EntityData::get_type_name() const {
-  return MapEntity::get_entity_type_name(get_type());
+  return EntityTypeInfo::get_entity_type_name(get_type());
 }
 
 /**

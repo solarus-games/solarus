@@ -14,62 +14,26 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/MapEntity.h"
-#include "solarus/entities/MapEntities.h"
-#include "solarus/entities/Tileset.h"
-#include "solarus/entities/Switch.h"
 #include "solarus/entities/Destructible.h"
-#include "solarus/entities/Separator.h"
 #include "solarus/entities/Hero.h"
+#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/Separator.h"
 #include "solarus/entities/StreamAction.h"
-#include "solarus/movements/Movement.h"
-#include "solarus/lua/LuaContext.h"
+#include "solarus/entities/Switch.h"
+#include "solarus/entities/Tileset.h"
+#include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/MainLoop.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/movements/Movement.h"
 #include "solarus/Game.h"
+#include "solarus/MainLoop.h"
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
 #include "solarus/SpriteAnimationSet.h"
 
 namespace Solarus {
-
-/**
- * \brief Lua name of each map entity type.
- */
-const std::map<EntityType, std::string> MapEntity::entity_type_names = {
-    { EntityType::TILE, "tile" },
-    { EntityType::DESTINATION, "destination" },
-    { EntityType::TELETRANSPORTER, "teletransporter" },
-    { EntityType::PICKABLE, "pickable" },
-    { EntityType::DESTRUCTIBLE, "destructible" },
-    { EntityType::CHEST, "chest" },
-    { EntityType::JUMPER, "jumper" },
-    { EntityType::ENEMY, "enemy" },
-    { EntityType::NPC, "npc" },
-    { EntityType::BLOCK, "block" },
-    { EntityType::DYNAMIC_TILE, "dynamic_tile" },
-    { EntityType::SWITCH, "switch" },
-    { EntityType::WALL, "wall" },
-    { EntityType::SENSOR, "sensor" },
-    { EntityType::CRYSTAL, "crystal" },
-    { EntityType::CRYSTAL_BLOCK, "crystal_block" },
-    { EntityType::SHOP_TREASURE, "shop_treasure" },
-    { EntityType::STREAM, "stream" },
-    { EntityType::DOOR, "door" },
-    { EntityType::STAIRS, "stairs" },
-    { EntityType::SEPARATOR, "separator" },
-    { EntityType::CUSTOM, "custom_entity" },
-    { EntityType::HERO, "hero" },
-    { EntityType::CARRIED_ITEM, "carried_object" },
-    { EntityType::BOOMERANG, "boomerang" },
-    { EntityType::EXPLOSION, "explosion" },
-    { EntityType::ARROW, "arrow" },
-    { EntityType::BOMB, "bomb" },
-    { EntityType::FIRE, "fire" },
-    { EntityType::HOOKSHOT, "hookshot" }
-};
 
 /**
  * \brief Creates an entity, specifying its position, its name and its direction.
@@ -137,40 +101,6 @@ MapEntity::~MapEntity() {
  */
 const std::string& MapEntity::get_lua_type_name() const {
   return LuaContext::get_entity_internal_type_name(get_type());
-}
-
-/**
- * \brief Returns the name of an entity type.
- *
- * This is the name used in data files and return by the Lua function
- * entity:get_type().
- *
- * \param type A type of entity.
- * \return The corresponding name.
- */
-const std::string& MapEntity::get_entity_type_name(EntityType type) {
-  return entity_type_names.at(type);
-}
-
-/**
- * \brief Returns the entity type with the given name.
- *
- * This is the name used in data files and return by the Lua function
- * entity:get_type().
- *
- * \param type_name The name of an entity type. It must exist.
- * \return The corresponding type.
- */
-EntityType MapEntity::get_entity_type_by_name(const std::string& type_name) {
-
-  for (const auto& kvp : entity_type_names) {
-    if (kvp.second == type_name) {
-      return kvp.first;
-    }
-  }
-
-  Debug::die("No such entity type: '" + type_name + "'");
-  return EntityType();
 }
 
 /**

@@ -14,23 +14,24 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/EntityType.h"
+#include "solarus/entities/EntityTypeInfo.h"
+#include "solarus/entities/Layer.h"
+#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/NonAnimatedRegions.h"
+#include "solarus/entities/TilePattern.h"
+#include "solarus/entities/Tileset.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/Music.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lua/LuaTools.h"
 #include "solarus/MapLoader.h"
 #include "solarus/Map.h"
 #include "solarus/Game.h"
 #include "solarus/Camera.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/Surface.h"
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/Music.h"
-#include "solarus/entities/Layer.h"
-#include "solarus/entities/TilePattern.h"
-#include "solarus/entities/Tileset.h"
-#include "solarus/entities/NonAnimatedRegions.h"
-#include "solarus/entities/MapEntities.h"
-#include "solarus/entities/EntityType.h"
-#include "solarus/entities/MapEntity.h"
-#include "solarus/lua/LuaTools.h"
-#include "solarus/lua/LuaContext.h"
 
 namespace Solarus {
 
@@ -95,9 +96,14 @@ void MapLoader::load_map(Game& game, Map& map) {
     Layer layer = (Layer) k;
     for (int i = 0; i < (int) data.get_num_entities(layer); ++i) {
       const EntityData& entity_data = data.get_entity({ layer, i });
+      EntityType type = entity_data.get_type();
+      if (!EntityTypeInfo::can_be_stored_in_map_file(type)) {
+        Debug::error("Illegal entity type in map file: " + EntityTypeInfo::get_entity_type_name(type));
+      }
       lua_context.create_map_entity_from_data(map, entity_data);
     }
   }
 }
 
 }
+

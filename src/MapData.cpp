@@ -394,12 +394,17 @@ bool MapData::set_entity_name(const EntityIndex& index, const std::string& name)
  * \param entity The information of an entity.
  * \return The index of this entity on the map.
  * Returns an invalid index in case of failure, that is,
- * if the name was already in use.
+ * if the name was already in use or if the entity type is illegal.
  */
 EntityIndex MapData::add_entity(const EntityData& entity) {
 
   Layer layer = entity.get_layer();
   EntityIndex index = { layer, (int) entities[layer].size() };
+
+  if (!EntityTypeInfo::can_be_stored_in_map_file(entity.get_type())) {
+    // Illegal type of entity in a map file.
+    return EntityIndex();
+  }
 
   if (entity.has_name()) {
     if (entity_exists(entity.get_name())) {
@@ -564,3 +569,4 @@ bool MapData::export_to_lua(std::ostream& out) const {
 }
 
 }  // namespace Solarus
+

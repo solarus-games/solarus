@@ -29,7 +29,7 @@ using OptionalFlag = EntityData::OptionalFlag;
 using FieldValue = EntityData::FieldValue;
 
 /**
- * \brief Definition of the format of all entity types in map data files.
+ * \brief Definition of the format of entity types in map data files and Lua API.
  */
 const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions = {
 
@@ -313,7 +313,6 @@ FieldValue::FieldValue(int value):
     string_value(),
     int_value(value) {
 
-
 }
 
 /**
@@ -324,7 +323,6 @@ FieldValue::FieldValue(bool value):
     value_type(EntityFieldType::BOOLEAN),
     string_value(),
     int_value(value ? 1 : 0) {
-
 
 }
 
@@ -753,3 +751,4 @@ bool EntityData::export_to_lua(std::ostream& out) const {
 }
 
 }  // namespace Solarus
+

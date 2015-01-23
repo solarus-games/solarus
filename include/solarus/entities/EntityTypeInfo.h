@@ -30,7 +30,8 @@ SOLARUS_API const std::map<EntityType, std::string>& get_entity_type_names();
 SOLARUS_API const std::string& get_entity_type_name(EntityType type);
 SOLARUS_API EntityType get_entity_type_by_name(const std::string& type_name);
 
-// TODO whether a type can be used in the map file, created from the API or none
+SOLARUS_API bool can_be_stored_in_map_file(EntityType type);
+SOLARUS_API bool can_be_created_from_lua_api(EntityType type);
 
 }  // namespace EntityTypeInfo
 

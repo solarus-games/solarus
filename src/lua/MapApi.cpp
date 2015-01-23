@@ -115,34 +115,12 @@ void LuaContext::register_map_module() {
 
   // Add map:create_* functions as closures because we pass the entity type as upvalue.
   luaL_getmetatable(l, map_module_name.c_str());
-  const std::vector<EntityType> entity_types_in_api = {
-      EntityType::DESTINATION,
-      EntityType::TELETRANSPORTER,
-      EntityType::PICKABLE,
-      EntityType::DESTRUCTIBLE,
-      EntityType::CHEST,
-      EntityType::JUMPER,
-      EntityType::ENEMY,
-      EntityType::NPC,
-      EntityType::BLOCK,
-      EntityType::DYNAMIC_TILE,
-      EntityType::SWITCH,
-      EntityType::WALL,
-      EntityType::SENSOR,
-      EntityType::CRYSTAL,
-      EntityType::CRYSTAL_BLOCK,
-      EntityType::SHOP_TREASURE,
-      EntityType::STREAM,
-      EntityType::DOOR,
-      EntityType::STAIRS,
-      EntityType::SEPARATOR,
-      EntityType::CUSTOM,
-      EntityType::BOMB,
-      EntityType::EXPLOSION,
-      EntityType::FIRE
-  };
-  for (EntityType type : entity_types_in_api) {
-    const std::string& type_name = EntityTypeInfo::get_entity_type_name(type);
+  for (const auto& kvp : EntityTypeInfo::get_entity_type_names()) {
+    EntityType type = kvp.first;
+    const std::string& type_name = kvp.second;
+    if (!EntityTypeInfo::can_be_created_from_lua_api(type)) {
+      continue;
+    }
     std::string function_name = "create_" + type_name;
     push_string(l, type_name);
     lua_pushcclosure(l, map_api_create_entity, 1);

@@ -12,6 +12,9 @@ Engine changes
 * Fix a crash if an entity has a sprite without animation.
 * Fix crash when using the -no-video command-line option.
 * Fix assertion when a crystal block has less than 4 frames.
+* Fix hero freeze when a treasure's dialog is missing (#595).
+* Fix tunic and sword collision when their sprite is changed (#617).
+* Fix crash when a tileset image is missing (#590).
 * Don't die if the animation of a pickable treasure is missing.
 
 Lua API changes
@@ -39,31 +42,6 @@ Don't forget to make a backup first.
 * fonts.dat no longer exists. Fonts are a resource like others now (#611).
 * Fonts are now in a 'fonts' directory instead of 'text'.
 
-_________________________________
-
-Solarus 1.3.2 (under development)
-_________________________________
-
-Bug fixes for the 1.3 release.
-
-Engine changes
---------------
-
-* Fix hero freeze when a treasure's dialog is missing (#595).
-* Fix tunic and sword collision when their sprite is changed (#617).
-* Fix crash when a tileset image is missing (#590).
-
-Solarus Quest Editor changes
-----------------------------
-
-* Allow to reload the quest tree if files have changed (#596).
-* Show keyboard shortcuts in menu items.
-* When non-existent tiles are removed, show a more detailed warning.
-* Better handle tiles with invalid sizes.
-* Better handle teletransporters with invalid destinations.
-* Fix wrong height of icons in the sprite tree with windows (#618).
-* Fix chest editor dialog not opening if the item no longer exists (#594).
-* Fix custom entity editor dialog not opening if the sprite is invalid.
 
 _________________________________
 

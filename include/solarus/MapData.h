@@ -106,6 +106,7 @@ class SOLARUS_API MapData : public LuaData {
     void bring_entity_to_front(const EntityIndex& index);
     void bring_entity_to_back(const EntityIndex& index);
 
+    bool entity_exists(const EntityIndex& index) const;
     const EntityData& get_entity(const EntityIndex& index) const;
     EntityData& get_entity(const EntityIndex& index);
     EntityIndex get_entity_index(const std::string& name) const;

@@ -253,6 +253,17 @@ void MapData::bring_entity_to_back(const EntityIndex& index) {
 }
 
 /**
+ * \brief Returns whether there is an entity at the given index.
+ * \param index An index.
+ * \return \c true if there is an entity at this index.
+ */
+bool MapData::entity_exists(const EntityIndex& index) const {
+
+  return index.index >= 0 &&
+      index.index < get_num_entities(index.layer);
+}
+
+/**
  * \brief Returns the entity at the given index.
  * \param index Index of the entity to get on the map.
  * \return The entity data.
@@ -260,8 +271,7 @@ void MapData::bring_entity_to_back(const EntityIndex& index) {
  */
 const EntityData& MapData::get_entity(const EntityIndex& index) const {
 
-  Debug::check_assertion(
-      index.index >= 0 && index.index < get_num_entities(index.layer),
+  Debug::check_assertion(entity_exists(index),
       "Entity index out of range"
   );
 
@@ -279,8 +289,7 @@ const EntityData& MapData::get_entity(const EntityIndex& index) const {
  */
 EntityData& MapData::get_entity(const EntityIndex& index) {
 
-  Debug::check_assertion(
-      index.index >= 0 && index.index < get_num_entities(index.layer),
+  Debug::check_assertion(entity_exists(index),
       "Entity index out of range"
   );
 

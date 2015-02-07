@@ -359,14 +359,14 @@ bool SpriteAnimationData::move_direction(int direction_nb, int new_direction_nb)
   }
 
   // insert to new position
-  const auto& new_pos = directions.cbegin() + new_direction_nb;
+  auto new_pos = directions.cbegin() + new_direction_nb;
   if (direction_nb < new_direction_nb) {
     new_pos++;
   }
   directions.insert(new_pos, directions[direction_nb]);
 
   // remove from last position
-  const auto& last_pos = directions.cbegin() + direction_nb;
+  auto last_pos = directions.cbegin() + direction_nb;
   if (direction_nb > new_direction_nb) {
     last_pos++;
   }

@@ -290,7 +290,8 @@ int SpriteAnimationData::get_num_directions() const {
 const SpriteAnimationDirectionData&
   SpriteAnimationData::get_direction(int direction_nb) const {
 
-  Debug::check_assertion(direction_nb >= 0 && direction_nb < directions.size(),
+  int size = directions.size();
+  Debug::check_assertion(direction_nb >= 0 && direction_nb < size,
     std::string("No such direction: ") + std::to_string(direction_nb));
 
   return directions[direction_nb];
@@ -330,7 +331,8 @@ void SpriteAnimationData::add_direction(
  */
 bool SpriteAnimationData::remove_direction(int direction_nb) {
 
-  if (direction_nb >= directions.size()) {
+  int size = directions.size();
+  if (direction_nb >= size) {
     return false;
   }
 
@@ -532,6 +534,7 @@ bool SpriteData::set_default_animation_name(const std::string& animation_name) {
   }
 
   default_animation_name = animation_name;
+  return true;
 }
 
 /**

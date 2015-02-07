@@ -21,6 +21,7 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lua/LuaTools.h"
+#include "solarus/SpriteData.h"
 
 namespace Solarus {
 
@@ -43,152 +44,49 @@ void SpriteAnimationSet::load() {
   Debug::check_assertion(animations.empty(),
       "Animation set already loaded");
 
-  // Compute the file name.
+  // Load the sprite data file.
   std::string file_name = std::string("sprites/") + id + ".dat";
-
-  lua_State* l = luaL_newstate();
-  const std::string& buffer = QuestFiles::data_file_read(file_name);
-  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
-
-  if (load_result != 0) {
-    Debug::error(std::string("Failed to load sprite file '") + file_name
-        + "': " + lua_tostring(l, -1));
-    lua_pop(l, 1);
-  }
-  else {
-    lua_pushlightuserdata(l, this);
-    lua_setfield(l, LUA_REGISTRYINDEX, "animation_set");
-    lua_register(l, "animation", l_animation);
-    if (lua_pcall(l, 0, 0, 0) != 0) {
-      Debug::error(std::string("Failed to load sprite file '") + file_name
-          + "': " + lua_tostring(l, -1));
-      lua_pop(l, 1);
+  SpriteData data;
+  bool success = data.import_from_quest_file(file_name);
+  if (success) {
+    // Get the imported data.
+    default_animation_name = data.get_default_animation_name();
+    for (const auto& kvp : data.get_animations()) {
+      add_animation(kvp.first, kvp.second);
     }
   }
-  lua_close(l);
 }
 
 /**
- * \brief Function called by the Lua data file to define an animation.
+ * \brief Adds a new animation to this animation set.
  *
- * - Argument 1 (table): properties of the animation.
+ * This function is called while loading the animation set.
  *
- * \param l the Lua context that is calling this function
- * \return Number of values to return to Lua.
+ * \param animation_name Name of this animation.
+ * \param animation_data Properties of the animation to create.
  */
-int SpriteAnimationSet::l_animation(lua_State* l) {
+void SpriteAnimationSet::add_animation(
+    const std::string &animation_name,
+    const SpriteAnimationData &animation_data) {
 
-  return LuaTools::exception_boundary_handle(l, [&] {
-    lua_getfield(l, LUA_REGISTRYINDEX, "animation_set");
-    SpriteAnimationSet* animation_set = static_cast<SpriteAnimationSet*>(
-        lua_touserdata(l, -1));
-    lua_pop(l, 1);
+  std::string src_image = animation_data.get_src_image();
+  uint32_t frame_delay = animation_data.get_frame_delay();
+  int frame_to_loop_on = animation_data.get_loop_on_frame();
+  std::vector<SpriteAnimationDirection> directions;
 
-    LuaTools::check_type(l, 1, LUA_TTABLE);
+  // Create directions
+  for (const auto &direction: animation_data.get_directions()) {
 
-    std::string animation_name = LuaTools::check_string_field(l, 1, "name");
-    std::string src_image = LuaTools::check_string_field(l, 1, "src_image");
-    uint32_t frame_delay = (uint32_t) LuaTools::opt_int_field(l, 1, "frame_delay", 0);
-    int frame_to_loop_on = LuaTools::opt_int_field(l, 1, "frame_to_loop_on", -1);
+    Size size = direction.get_size();
+    max_size.width = std::max(size.width, max_size.width);
+    max_size.height = std::max(size.height, max_size.height);
 
-    if (frame_to_loop_on < -1) {
-      LuaTools::arg_error(l, 1,
-          "Bad field 'frame_to_loop_on' (must be a positive number or -1)"
-      );
-    }
+    directions.emplace_back(direction.get_all_frames(), direction.get_origin());
+  }
 
-    lua_settop(l, 1);
-    lua_getfield(l, 1, "directions");
-    if (lua_type(l, 2) != LUA_TTABLE) {
-      LuaTools::arg_error(l, 1,
-          std::string("Bad field 'directions' (table expected, got ")
-      + luaL_typename(l, -1) + ")");
-    }
-
-    // Traverse the directions table.
-    std::vector<SpriteAnimationDirection> directions;
-    int i = 1;
-    lua_rawgeti(l, -1, i);
-    while (!lua_isnil(l, -1)) {
-      ++i;
-
-      if (lua_type(l, -1) != LUA_TTABLE) {
-        LuaTools::arg_error(l, 1,
-            std::string("Bad field 'directions' (expected table, got ")
-                + luaL_typename(l, -1)
-        );
-      }
-
-      int x = LuaTools::check_int_field(l, -1, "x");
-      int y = LuaTools::check_int_field(l, -1, "y");
-      int frame_width = LuaTools::check_int_field(l, -1, "frame_width");
-      int frame_height = LuaTools::check_int_field(l, -1, "frame_height");
-      int origin_x = LuaTools::opt_int_field(l, -1, "origin_x", 0);
-      int origin_y = LuaTools::opt_int_field(l, -1, "origin_y", 0);
-      int num_frames = LuaTools::opt_int_field(l, -1, "num_frames", 1);
-      int num_columns = LuaTools::opt_int_field(l, -1, "num_columns", num_frames);
-
-      if (num_columns < 1 || num_columns > num_frames) {
-        LuaTools::arg_error(l, 1,
-            "Bad field 'num_columns': must be between 1 and the number of frames");
-      }
-
-      if (frame_to_loop_on >= num_frames) {
-        LuaTools::arg_error(l, 1,
-            "Bad field 'frame_to_loop_on': exceeds the number of frames");
-      }
-
-      lua_pop(l, 1);
-      lua_rawgeti(l, -1, i);
-
-      animation_set->max_size.width = std::max(frame_width, animation_set->max_size.width);
-      animation_set->max_size.height = std::max(frame_height, animation_set->max_size.height);
-
-      int num_rows;
-      if (num_frames % num_columns == 0) {
-        num_rows = num_frames / num_columns;
-      }
-      else {
-        num_rows = (num_frames / num_columns) + 1;
-      }
-
-      std::vector<Rectangle> positions_in_src;
-      int j = 0;  // Frame number.
-      for (int r = 0; r < num_rows && j < num_frames; ++r) {
-        for (int c = 0; c < num_columns && j < num_frames; ++c) {
-
-          Rectangle position_in_src(
-              x + c * frame_width,
-              y + r * frame_height,
-              frame_width,
-              frame_height);
-          positions_in_src.push_back(position_in_src);
-          ++j;
-        }
-      }
-
-      directions.emplace_back(
-          positions_in_src,
-          Point(origin_x, origin_y)
-      );
-    }
-
-    if (animation_set->animations.find(animation_name) != animation_set->animations.end()) {
-      LuaTools::error(l, std::string("Duplicate animation '") + animation_name
-          + "' in sprite '" + animation_set->id + "'");
-    }
-
-    animation_set->animations.insert(std::make_pair(animation_name,
-        SpriteAnimation(src_image, directions, frame_delay, frame_to_loop_on)
-    ));
-
-    // Set the first animation as the default one.
-    if (animation_set->animations.size() == 1) {
-      animation_set->default_animation_name = animation_name;
-    }
-
-    return 0;
-  });
+  animations.insert(std::make_pair(animation_name,
+    SpriteAnimation(src_image, directions, frame_delay, frame_to_loop_on)
+  ));
 }
 
 /**

@@ -196,6 +196,7 @@ file(
   include/solarus/SpriteAnimation.h
   include/solarus/SpriteAnimationSet.h
   include/solarus/Sprite.h
+  include/solarus/SpriteData.h
   include/solarus/SpritePtr.h
   include/solarus/StringResource.h
   include/solarus/Timer.h
@@ -383,6 +384,7 @@ file(
   src/SpriteAnimationDirection.cpp
   src/SpriteAnimationSet.cpp
   src/Sprite.cpp
+  src/SpriteData.cpp
   src/StringResource.cpp
   src/Timer.cpp
   src/Transition.cpp

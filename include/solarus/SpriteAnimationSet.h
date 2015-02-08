@@ -27,6 +27,7 @@ struct lua_State;
 namespace Solarus {
 
 class SpriteAnimation;
+class SpriteAnimationData;
 class Tileset;
 
 /**
@@ -57,7 +58,9 @@ class SpriteAnimationSet {
   private:
 
     void load();
-    static int l_animation(lua_State* l);
+
+    void add_animation(const std::string &animation_name,
+        const SpriteAnimationData &animation_data);
 
     std::string id;                          /**< Id of this animation set. */
     std::map<std::string, SpriteAnimation>

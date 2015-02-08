@@ -50,6 +50,7 @@ set(
   src/tests/PathMovement.cpp
   src/tests/PixelMovement.cpp
   src/tests/RunLuaTest.cpp
+  src/tests/SpriteData.cpp
 )
 
 foreach(test_main_file ${tests_main_files})

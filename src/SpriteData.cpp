@@ -720,24 +720,25 @@ void SpriteData::export_animation_to_lua(
     int num_frames = direction.get_num_frames();
     int num_columns = direction.get_num_columns();
 
-    out << "  { "
+    out << "    { "
         << "x = " << xy.x << ", "
         << "y = " << xy.y << ", "
         << "frame_width = " << size.width << ", "
         << "frame_height = " << size.height << ", "
         << "origin_x = " << origin.x << ", "
-        << "origin_y = " << origin.y << ", ";
+        << "origin_y = " << origin.y;
 
     if (num_frames > 1) {
-      out << "num_frames = " << num_frames << ", ";
+      out << ", num_frames = " << num_frames;
       if (num_columns > 0 && num_columns < num_frames) {
-        out << "num_columns = " << num_columns << ", ";
+        out << ", num_columns = " << num_columns;
       }
     }
 
-    out << "},\n";
+    out << " },\n";
   }
-  out << "  }\n}\n\n";
+  out << "  },\n";
+  out << "}\n";
 }
 
 }

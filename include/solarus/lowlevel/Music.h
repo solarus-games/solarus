@@ -23,6 +23,7 @@
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lua/ScopedLuaRef.h"
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace Solarus {

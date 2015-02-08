@@ -62,6 +62,8 @@
 #include "solarus/EquipmentItem.h"
 #include "solarus/KeysEffect.h"
 #include "solarus/Sprite.h"
+#include <algorithm>
+#include <utility>
 
 namespace Solarus {
 

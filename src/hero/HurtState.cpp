@@ -24,6 +24,8 @@
 #include "solarus/lowlevel/System.h"
 #include "solarus/Game.h"
 #include "solarus/Equipment.h"
+#include <algorithm>
+#include <memory>
 
 namespace Solarus {
 

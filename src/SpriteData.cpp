@@ -271,7 +271,7 @@ int SpriteAnimationData::get_loop_on_frame() const {
  * \param loop_on_frame The number of frame to loop on (or -1 to make no loop).
  */
 void SpriteAnimationData::set_loop_on_frame(int loop_on_frame) {
-  this->loop_on_frame = std::max(0, loop_on_frame);
+  this->loop_on_frame = std::max(loop_on_frame, -1);
 }
 
 /**

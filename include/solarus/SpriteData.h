@@ -96,6 +96,7 @@ class SOLARUS_API SpriteAnimationData {
 
     int get_num_directions() const;
     const SpriteAnimationDirectionData& get_direction(int direction_nb) const;
+    SpriteAnimationDirectionData& get_direction(int direction_nb);
     const std::deque<SpriteAnimationDirectionData>& get_directions() const;
     void set_directions(const std::deque<SpriteAnimationDirectionData>& directions);
     void add_direction(const SpriteAnimationDirectionData& direction);

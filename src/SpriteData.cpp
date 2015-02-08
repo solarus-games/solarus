@@ -286,9 +286,29 @@ int SpriteAnimationData::get_num_directions() const {
  * \brief Returns a direction.
  * \param direction_nb The number of a direction.
  * \return The direction at the specified number.
+ * The object remains valid until directions are added, removed or moved.
  */
 const SpriteAnimationDirectionData&
   SpriteAnimationData::get_direction(int direction_nb) const {
+
+  int size = directions.size();
+  Debug::check_assertion(direction_nb >= 0 && direction_nb < size,
+    std::string("No such direction: ") + std::to_string(direction_nb));
+
+  return directions[direction_nb];
+}
+
+/**
+ * \brief Returns a direction.
+ *
+ * Non-const version.
+ *
+ * \param direction_nb The number of a direction.
+ * \return The direction at the specified number.
+ * The object remains valid until directions are added, removed or moved.
+ */
+SpriteAnimationDirectionData&
+  SpriteAnimationData::get_direction(int direction_nb) {
 
   int size = directions.size();
   Debug::check_assertion(direction_nb >= 0 && direction_nb < size,

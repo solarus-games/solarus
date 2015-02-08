@@ -22,6 +22,9 @@
 #include "solarus/EntityData.h"
 #include <array>
 #include <deque>
+#include <iosfwd>
+#include <map>
+#include <string>
 
 namespace Solarus {
 

@@ -21,6 +21,7 @@
 #include "solarus/Common.h"
 #include "solarus/lowlevel/Size.h"
 #include "solarus/lua/LuaData.h"
+#include <iosfwd>
 #include <string>
 
 struct lua_State;

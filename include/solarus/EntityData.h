@@ -22,6 +22,7 @@
 #include "solarus/entities/Layer.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/lua/LuaData.h"
+#include <iosfwd>
 #include <map>
 #include <string>
 #include <vector>

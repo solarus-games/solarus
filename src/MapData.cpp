@@ -18,7 +18,8 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/MapData.h"
-#include <fstream>
+#include <ostream>
+#include <utility>
 
 namespace Solarus {
 

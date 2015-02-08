@@ -24,6 +24,7 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Debug.h"
+#include <memory>
 
 namespace Solarus {
 

@@ -32,6 +32,8 @@
 #include "solarus/Map.h"
 #include "solarus/Game.h"
 #include "solarus/Camera.h"
+#include <memory>
+#include <string>
 
 namespace Solarus {
 

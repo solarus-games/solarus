@@ -21,6 +21,7 @@
 #include "solarus/Drawable.h"
 #include "solarus/SpritePtr.h"
 #include <map>
+#include <string>
 
 namespace Solarus {
 

@@ -27,6 +27,8 @@
 #include "solarus/Camera.h"
 #include "solarus/MapData.h"
 #include "solarus/Transition.h"
+#include <memory>
+#include <string>
 
 namespace Solarus {
 

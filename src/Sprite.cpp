@@ -28,6 +28,7 @@
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Size.h"
+#include <memory>
 #include <sstream>
 
 namespace Solarus {

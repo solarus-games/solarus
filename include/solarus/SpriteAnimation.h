@@ -21,7 +21,6 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include "solarus/SpriteAnimationDirection.h"
-#include <memory>
 #include <string>
 #include <vector>
 

@@ -19,6 +19,7 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaTools.h"
 #include <ostream>
+#include <utility>
 
 namespace Solarus {
 

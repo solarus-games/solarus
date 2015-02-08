@@ -20,9 +20,10 @@
 #include "solarus/Common.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lua/LuaData.h"
+#include <deque>
+#include <iosfwd>
 #include <map>
 #include <string>
-#include <deque>
 #include <vector>
 
 namespace Solarus {

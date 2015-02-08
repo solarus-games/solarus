@@ -36,7 +36,7 @@
 #include "solarus/Savegame.h"
 #include "solarus/Treasure.h"
 #include "solarus/TransitionFade.h"
-#include <vector>
+#include <map>
 
 namespace Solarus {
 

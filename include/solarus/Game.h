@@ -25,6 +25,7 @@
 #include "solarus/KeysEffect.h"
 #include "solarus/Transition.h"
 #include <memory>
+#include <string>
 
 namespace Solarus {
 

@@ -22,6 +22,7 @@
 #include "solarus/lowlevel/SurfacePtr.h"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/ScopedLuaRef.h"
+#include <memory>
 
 namespace Solarus {
 

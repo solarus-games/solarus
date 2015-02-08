@@ -18,6 +18,7 @@
 #include "solarus/lowlevel/PixelBits.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Debug.h"
+#include <memory>
 #include <sstream>
 
 namespace Solarus {

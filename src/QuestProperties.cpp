@@ -21,8 +21,7 @@
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaTools.h"
 #include <lua.hpp>
-#include <sstream>
-#include <string>
+#include <ostream>
 
 namespace Solarus {
 

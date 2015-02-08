@@ -59,8 +59,8 @@ class SpriteAnimationSet {
 
     void load();
 
-    void add_animation(const std::string &animation_name,
-        const SpriteAnimationData &animation_data);
+    void add_animation(const std::string& animation_name,
+        const SpriteAnimationData& animation_data);
 
     std::string id;                          /**< Id of this animation set. */
     std::map<std::string, SpriteAnimation>

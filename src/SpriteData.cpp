@@ -336,7 +336,7 @@ bool SpriteAnimationData::remove_direction(int direction_nb) {
     return false;
   }
 
-  directions.erase(directions.cbegin() + direction_nb);
+  directions.erase(directions.begin() + direction_nb);
   return true;
 }
 
@@ -361,14 +361,14 @@ bool SpriteAnimationData::move_direction(int direction_nb, int new_direction_nb)
   }
 
   // insert to new position
-  auto new_pos = directions.cbegin() + new_direction_nb;
+  auto new_pos = directions.begin() + new_direction_nb;
   if (direction_nb < new_direction_nb) {
     new_pos++;
   }
   directions.insert(new_pos, directions[direction_nb]);
 
   // remove from last position
-  auto last_pos = directions.cbegin() + direction_nb;
+  auto last_pos = directions.begin() + direction_nb;
   if (direction_nb > new_direction_nb) {
     last_pos++;
   }

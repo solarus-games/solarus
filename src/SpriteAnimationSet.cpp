@@ -66,8 +66,8 @@ void SpriteAnimationSet::load() {
  * \param animation_data Properties of the animation to create.
  */
 void SpriteAnimationSet::add_animation(
-    const std::string &animation_name,
-    const SpriteAnimationData &animation_data) {
+    const std::string& animation_name,
+    const SpriteAnimationData& animation_data) {
 
   std::string src_image = animation_data.get_src_image();
   uint32_t frame_delay = animation_data.get_frame_delay();
@@ -75,7 +75,7 @@ void SpriteAnimationSet::add_animation(
   std::vector<SpriteAnimationDirection> directions;
 
   // Create directions
-  for (const auto &direction: animation_data.get_directions()) {
+  for (const SpriteAnimationDirectionData& direction: animation_data.get_directions()) {
 
     Size size = direction.get_size();
     max_size.width = std::max(size.width, max_size.width);

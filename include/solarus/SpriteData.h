@@ -27,6 +27,9 @@
 
 namespace Solarus {
 
+class Point;
+class Size;
+
 /**
  * \brief Stores the properties of a sprite animation direction.
  */
@@ -60,11 +63,13 @@ class SOLARUS_API SpriteAnimationDirectionData {
     std::vector<Rectangle> get_all_frames() const;
 
   private:
+
     Point xy;         /**< Coordinates of the first frame. */
     Size size;        /**< Size of frames. */
-    Point origin;     /**< Coodfinates of the origin of frames. */
+    Point origin;     /**< Coordinates of the origin of frames. */
     int num_frames;   /**< Number of frames. */
     int num_columns;  /**< Number of columns. */
+
 };
 
 /**
@@ -103,7 +108,9 @@ class SOLARUS_API SpriteAnimationData {
     uint32_t frame_delay;   /**< Delay in milliseconds between each frame. */
     int loop_on_frame;      /**< Number of the frame to loop on. */
 
-    std::deque<SpriteAnimationDirectionData> directions; /**< Directions. */
+    std::deque<SpriteAnimationDirectionData>
+        directions;         /**< List of directions. */
+
 };
 
 /**
@@ -140,8 +147,8 @@ class SOLARUS_API SpriteData : public LuaData {
         const std::string &animation_name, std::ostream& out) const;
 
     std::map<std::string, SpriteAnimationData>
-        animations;         /**< The sprite animations indexed by their name. */
-    std::string default_animation_name; /**< Name of the default animtion. */
+        animations;                      /**< The sprite animations indexed by their name. */
+    std::string default_animation_name;  /**< Name of the default animation. */
 
 };
 

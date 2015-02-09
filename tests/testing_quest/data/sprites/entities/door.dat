@@ -2,10 +2,9 @@ animation{
   name = "closed",
   src_image = "todo.png",
   directions = {
-    { x = 0, y = 0, frame_width = 16, frame_height = 16 },
-    { x = 0, y = 0, frame_width = 16, frame_height = 16 },
-    { x = 0, y = 0, frame_width = 16, frame_height = 16 },
-    { x = 0, y = 0, frame_width = 16, frame_height = 16 },
+    { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 0 },
+    { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 0 },
+    { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 0 },
+    { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 0 },
   },
 }
-

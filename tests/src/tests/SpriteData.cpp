@@ -63,17 +63,16 @@ int main(int argc, char** argv) {
 
   TestEnvironment env(argc, argv);
 
-  /* TODO update reference files of all sprites
   const std::map<std::string, std::string>& sprite_elements =
       CurrentQuest::get_resources().get_elements(ResourceType::SPRITE);
   Debug::check_assertion(!sprite_elements.empty(), "No sprites");
   for (const auto& kvp : sprite_elements) {
     const std::string& sprite_id = kvp.first;
-    check_sprite(env, sprite_id);
+    std::string file_name = "sprites/" + sprite_id + ".dat";
+    if (QuestFiles::data_file_exists(file_name)) {
+      check_sprite(env, sprite_id);
+    }
   }
-  */
-
-  check_sprite(env, "enemies/test_enemy");
 
   return 0;
 }

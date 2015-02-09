@@ -705,7 +705,7 @@ void SpriteData::export_animation_to_lua(
 
   if (animation.get_frame_delay() > 0) {
     out << "  frame_delay = " << animation.get_frame_delay() << ",\n";
-    if (animation.get_loop_on_frame() > 0) {
+    if (animation.get_loop_on_frame() >= 0) {
       out << "  frame_to_loop_on = " << animation.get_loop_on_frame() << ",\n";
     }
   }

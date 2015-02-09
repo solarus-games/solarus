@@ -20,6 +20,7 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lowlevel/Debug.h"
 #include <lua.hpp>
+#include <utility>
 
 namespace Solarus {
 

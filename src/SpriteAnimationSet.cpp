@@ -22,6 +22,9 @@
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/SpriteData.h"
+#include <algorithm>
+#include <utility>
+#include <vector>
 
 namespace Solarus {
 

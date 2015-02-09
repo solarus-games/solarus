@@ -31,6 +31,7 @@
 #include "solarus/CurrentQuest.h"
 #include <lua.hpp>
 #include <sstream>
+#include <string>
 
 namespace Solarus {
 

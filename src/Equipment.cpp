@@ -25,6 +25,7 @@
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Random.h"
+#include <algorithm>
 #include <sstream>
 
 namespace Solarus {

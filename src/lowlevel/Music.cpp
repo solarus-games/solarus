@@ -21,8 +21,8 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaContext.h"
 #include <lua.hpp>
+#include <algorithm>
 #include <sstream>
-#include <vector>
 
 namespace Solarus {
 

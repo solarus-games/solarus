@@ -20,6 +20,8 @@
 #include "solarus/Common.h"
 #include "solarus/Equipment.h"
 #include "solarus/lua/ExportableToLua.h"
+#include <map>
+#include <string>
 
 struct lua_State;
 

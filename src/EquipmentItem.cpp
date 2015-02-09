@@ -21,6 +21,7 @@
 #include "solarus/Equipment.h"
 #include "solarus/Game.h"
 #include "solarus/Savegame.h"
+#include <algorithm>
 
 namespace Solarus {
 

@@ -20,6 +20,7 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Video.h"
+#include <algorithm>
 
 namespace Solarus {
 

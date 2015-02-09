@@ -17,6 +17,7 @@
 #include "solarus/movements/JumpMovement.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lowlevel/Debug.h"
+#include <algorithm>
 #include <sstream>
 
 namespace Solarus {

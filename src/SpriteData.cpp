@@ -17,8 +17,9 @@
 #include "solarus/SpriteData.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaTools.h"
-#include <fstream>
-#include <sstream>
+#include <algorithm>
+#include <ostream>
+#include <utility>
 
 namespace Solarus {
 

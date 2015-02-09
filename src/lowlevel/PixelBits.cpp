@@ -20,6 +20,7 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/System.h"
 #include <SDL.h>
+#include <algorithm>
 #include <iostream> // print functions
 
 namespace Solarus {

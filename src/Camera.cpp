@@ -25,6 +25,9 @@
 #include "solarus/lowlevel/System.h"
 #include "solarus/lua/LuaContext.h"
 
+#include <algorithm>
+#include <list>
+
 namespace Solarus {
 
 /**

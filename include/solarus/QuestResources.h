@@ -20,6 +20,7 @@
 #include "solarus/Common.h"
 #include "solarus/lua/LuaData.h"
 #include "solarus/ResourceType.h"
+#include <iosfwd>
 #include <map>
 #include <string>
 

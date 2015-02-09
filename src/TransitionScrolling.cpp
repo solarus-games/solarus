@@ -22,6 +22,7 @@
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lowlevel/Debug.h"
+#include <memory>
 
 namespace Solarus {
 

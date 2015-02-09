@@ -24,6 +24,8 @@
 #include "solarus/Dialog.h"
 #include "solarus/GameCommand.h"
 #include <list>
+#include <memory>
+#include <string>
 
 namespace Solarus {
 

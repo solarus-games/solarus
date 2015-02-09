@@ -19,6 +19,7 @@
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
 #include "solarus/lowlevel/Debug.h"
+#include <string>
 
 namespace Solarus {
 

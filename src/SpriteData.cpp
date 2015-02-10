@@ -527,6 +527,10 @@ bool SpriteData::set_animation_name(
     return false;
   }
 
+  if (default_animation_name == old_animation_name) {
+    default_animation_name = new_animation_name;
+  }
+
   SpriteAnimationData animation = get_animation(old_animation_name);
   remove_animation(old_animation_name);
   add_animation(new_animation_name, animation);

@@ -19,6 +19,8 @@
 
 #include "solarus/Common.h"
 #include "solarus/entities/MapEntity.h"
+#include <memory>
+#include <string>
 
 namespace Solarus {
 

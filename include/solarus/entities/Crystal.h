@@ -21,6 +21,7 @@
 #include "solarus/lowlevel/Point.h"
 #include "solarus/entities/Detector.h"
 #include <list>
+#include <string>
 
 namespace Solarus {
 

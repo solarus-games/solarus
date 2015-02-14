@@ -22,9 +22,8 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaException.h"
 #include "solarus/SolarusFatal.h"
-#include <string>
 #include <map>
-#include <vector>
+#include <string>
 #include <lua.hpp>
 
 namespace Solarus {

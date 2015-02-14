@@ -21,6 +21,7 @@
 #include "solarus/entities/MapEntityPtr.h"
 #include "solarus/lowlevel/Point.h"
 #include <cstdint>
+#include <memory>
 
 namespace Solarus {
 

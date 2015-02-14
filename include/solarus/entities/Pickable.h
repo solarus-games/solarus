@@ -24,6 +24,8 @@
 #include "solarus/movements/FallingHeight.h"
 #include "solarus/SpritePtr.h"
 #include "solarus/Treasure.h"
+#include <memory>
+#include <string>
 
 namespace Solarus {
 

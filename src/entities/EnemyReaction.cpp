@@ -17,7 +17,6 @@
 #include "solarus/entities/EnemyReaction.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/Sprite.h"
-#include <sstream>
 
 namespace Solarus {
 

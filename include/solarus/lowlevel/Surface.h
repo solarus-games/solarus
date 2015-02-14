@@ -23,6 +23,9 @@
 #include "solarus/Drawable.h"
 #include <SDL.h>
 #include <SDL_image.h>
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <vector>
 
 namespace Solarus {

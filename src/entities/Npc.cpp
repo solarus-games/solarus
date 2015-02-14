@@ -29,6 +29,7 @@
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
 #include <lua.hpp>
+#include <memory>
 
 namespace Solarus {
 

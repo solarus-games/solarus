@@ -30,6 +30,8 @@
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Stairs.h"
 #include "solarus/Map.h"
+#include <memory>
+#include <string>
 
 namespace Solarus {
 

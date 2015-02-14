@@ -27,6 +27,8 @@
 #include "solarus/entities/EnemyReaction.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/SpritePtr.h"
+#include <memory>
+#include <string>
 #include <vector>
 
 struct lua_State;

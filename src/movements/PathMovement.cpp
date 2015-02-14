@@ -22,6 +22,7 @@
 #include "solarus/lowlevel/Random.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Point.h"
+#include <list>
 
 namespace Solarus {
 

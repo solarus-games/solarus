@@ -32,6 +32,8 @@
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
 #include "solarus/SpriteAnimationSet.h"
+#include <list>
+#include <utility>
 
 namespace Solarus {
 

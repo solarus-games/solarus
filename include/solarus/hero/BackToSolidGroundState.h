@@ -19,6 +19,7 @@
 
 #include "solarus/lowlevel/Point.h"
 #include "solarus/hero/State.h"
+#include <cstdint>
 
 namespace Solarus {
 

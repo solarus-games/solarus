@@ -30,6 +30,8 @@
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Debug.h"
+#include <memory>
+#include <string>
 
 namespace Solarus {
 

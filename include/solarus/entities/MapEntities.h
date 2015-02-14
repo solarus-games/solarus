@@ -24,10 +24,11 @@
 #include "solarus/entities/MapEntityPtr.h"
 #include "solarus/entities/TilePtr.h"
 #include "solarus/Transition.h"
-#include <vector>
 #include <list>
 #include <map>
+#include <memory>
 #include <string>
+#include <vector>
 
 namespace Solarus {
 

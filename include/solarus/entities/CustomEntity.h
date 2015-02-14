@@ -21,6 +21,8 @@
 #include "solarus/entities/Detector.h"
 #include "solarus/lua/ScopedLuaRef.h"
 #include <map>
+#include <string>
+#include <vector>
 
 namespace Solarus {
 

@@ -23,6 +23,7 @@
 #include "solarus/Equipment.h"
 #include "solarus/Game.h"
 #include "solarus/GameCommands.h"
+#include <memory>
 
 namespace Solarus {
 

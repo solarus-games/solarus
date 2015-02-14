@@ -32,9 +32,11 @@
 #include "solarus/Ability.h"
 #include "solarus/SpritePtr.h"
 #include "solarus/TimerPtr.h"
-#include <map>
-#include <set>
 #include <list>
+#include <map>
+#include <memory>
+#include <set>
+#include <string>
 
 struct lua_State;
 struct luaL_Reg;

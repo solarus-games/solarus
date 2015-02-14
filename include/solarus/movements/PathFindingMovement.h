@@ -20,6 +20,8 @@
 #include "solarus/Common.h"
 #include "solarus/entities/MapEntityPtr.h"
 #include "solarus/movements/PathMovement.h"
+#include <cstdint>
+#include <string>
 
 namespace Solarus {
 

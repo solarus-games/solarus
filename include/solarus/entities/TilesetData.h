@@ -23,6 +23,7 @@
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lua/LuaData.h"
+#include <iosfwd>
 #include <map>
 #include <string>
 #include <vector>

@@ -18,7 +18,9 @@
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/LuaData.h"
 #include <lua.hpp>
+#include <cstdlib>
 #include <fstream>
+#include <ostream>
 #include <sstream>
 
 namespace Solarus {

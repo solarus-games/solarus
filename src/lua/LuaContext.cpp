@@ -300,7 +300,7 @@ void LuaContext::notify_map_suspended(Map& map, bool suspended) {
 void LuaContext::run_item(EquipmentItem& item) {
 
   // Compute the file name, depending on the id of the equipment item.
-  std::string file_name = (std::string) "items/" + item.get_name();
+  std::string file_name = std::string("items/") + item.get_name();
 
   // Load the item's code.
   if (load_file_if_exists(l, file_name)) {

@@ -25,13 +25,13 @@
 namespace Solarus {
 
 /**
- * \brief Provides functions to make mathematic computations.
+ * \brief Provides functions to make mathematical computations.
  */
 namespace Geometry {
 
 // Mathematic constants:
 // we don't use the ones from cmath
-// because they are not ANSI
+// because they are not ISO
 
 /**
  * \brief The pi constant.

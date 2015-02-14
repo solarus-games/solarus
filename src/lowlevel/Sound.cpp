@@ -472,7 +472,7 @@ size_t Sound::cb_read(void* ptr, size_t /* size */, size_t nb_bytes, void* datas
     nb_bytes = total_size - mem->position;
   }
 
-  memcpy(ptr, mem->data.data() + mem->position, nb_bytes);
+  std::memcpy(ptr, mem->data.data() + mem->position, nb_bytes);
   mem->position += nb_bytes;
 
   return nb_bytes;

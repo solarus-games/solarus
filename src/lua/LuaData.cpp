@@ -18,7 +18,7 @@
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/LuaData.h"
 #include <lua.hpp>
-#include <cstdlib>
+#include <cstdio>
 #include <fstream>
 #include <ostream>
 #include <sstream>

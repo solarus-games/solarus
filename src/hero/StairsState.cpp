@@ -27,6 +27,7 @@
 #include "solarus/Map.h"
 #include "solarus/KeysEffect.h"
 #include "solarus/lowlevel/Debug.h"
+#include <string>
 
 namespace Solarus {
 

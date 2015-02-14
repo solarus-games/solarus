@@ -22,6 +22,7 @@
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/Map.h"
+#include <memory>
 
 namespace Solarus {
 

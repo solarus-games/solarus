@@ -22,6 +22,7 @@
 #include "solarus/movements/PathMovement.h"
 #include "solarus/Game.h"
 #include "solarus/GameCommands.h"
+#include <string>
 
 namespace Solarus {
 

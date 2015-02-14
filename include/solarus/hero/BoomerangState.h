@@ -18,6 +18,7 @@
 #define SOLARUS_HERO_BOOMERANG_STATE_H
 
 #include "solarus/hero/State.h"
+#include <string>
 
 namespace Solarus {
 

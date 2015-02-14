@@ -18,6 +18,7 @@
 #define SOLARUS_HERO_HOOKSHOT_STATE_H
 
 #include "solarus/hero/State.h"
+#include <memory>
 
 namespace Solarus {
 

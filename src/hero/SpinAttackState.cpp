@@ -25,7 +25,9 @@
 #include "solarus/movements/StraightMovement.h"
 #include "solarus/Equipment.h"
 #include "solarus/Game.h"
+#include <memory>
 #include <sstream>
+#include <string>
 
 namespace Solarus {
 

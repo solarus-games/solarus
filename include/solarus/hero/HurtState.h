@@ -18,6 +18,7 @@
 #define SOLARUS_HERO_HURT_STATE_H
 
 #include "solarus/hero/State.h"
+#include <cstdint>
 
 namespace Solarus {
 

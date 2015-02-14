@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/entities/SimpleTilePattern.h"
+#include <cstdint>
 
 namespace Solarus {
 

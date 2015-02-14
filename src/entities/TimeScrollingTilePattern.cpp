@@ -68,39 +68,39 @@ void TimeScrollingTilePattern::draw(
   Rectangle src = position_in_tileset;
   Point dst = dst_position;
 
-  int offset_x, offset_y; // draw the tile with an offset that depends on the time
+  Point offset; // draw the tile with an offset that depends on the time
 
-  offset_x = src.get_width() - (shift % src.get_width());
-  offset_y = shift % src.get_height();
+  offset.x = src.get_width() - (shift % src.get_width());
+  offset.y = shift % src.get_height();
 
-  src.add_x(offset_x);
-  src.add_width(-offset_x);
-  src.add_y(offset_y);
-  src.add_height(-offset_y);
+  src.add_x(offset.x);
+  src.add_width(-offset.x);
+  src.add_y(offset.y);
+  src.add_height(-offset.y);
   tileset.get_tiles_image()->draw_region(src, dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
-  src.add_y(offset_y);
-  src.add_height(-offset_y);
-  dst.x += src.get_width() - offset_x;
-  src.set_width(offset_x);
+  src.add_y(offset.y);
+  src.add_height(-offset.y);
+  dst.x += src.get_width() - offset.x;
+  src.set_width(offset.x);
   tileset.get_tiles_image()->draw_region(src, dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
-  src.add_x(offset_x);
-  src.add_width(-offset_x);
-  dst.y += src.get_height() - offset_y;
-  src.set_height(offset_y);
+  src.add_x(offset.x);
+  src.add_width(-offset.x);
+  dst.y += src.get_height() - offset.y;
+  src.set_height(offset.y);
   tileset.get_tiles_image()->draw_region(src, dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
-  dst.x += src.get_width() - offset_x;
-  src.set_width(offset_x);
-  dst.y += src.get_height() - offset_y;
-  src.set_height(offset_y);
+  dst.x += src.get_width() - offset.x;
+  src.set_width(offset.x);
+  dst.y += src.get_height() - offset.y;
+  src.set_height(offset.y);
   tileset.get_tiles_image()->draw_region(src, dst_surface, dst);
 }
 

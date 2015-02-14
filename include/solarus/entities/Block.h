@@ -20,6 +20,7 @@
 #include "solarus/Common.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/entities/Detector.h"
+#include <string>
 
 namespace Solarus {
 

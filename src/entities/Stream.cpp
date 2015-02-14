@@ -19,6 +19,7 @@
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
 #include "solarus/lowlevel/QuestFiles.h"
+#include <memory>
 
 namespace Solarus {
 

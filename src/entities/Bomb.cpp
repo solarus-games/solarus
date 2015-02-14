@@ -26,6 +26,7 @@
 #include "solarus/Sprite.h"
 #include "solarus/Map.h"
 #include "solarus/KeysEffect.h"
+#include <memory>
 
 namespace Solarus {
 

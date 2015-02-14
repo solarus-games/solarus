@@ -28,6 +28,8 @@
 #include "solarus/lua/LuaTools.h"
 #include <lua.hpp>
 #include <sstream>
+#include <utility>
+#include <vector>
 
 namespace Solarus {
 

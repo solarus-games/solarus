@@ -27,6 +27,7 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lua/LuaContext.h"
+#include <memory>
 
 namespace Solarus {
 

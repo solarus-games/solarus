@@ -38,6 +38,7 @@
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Sound.h"
+#include <memory>
 #include <sstream>
 
 namespace Solarus {

@@ -18,8 +18,9 @@
 #include "solarus/entities/TilesetData.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaTools.h"
-#include <fstream>
+#include <ostream>
 #include <sstream>
+#include <utility>
 
 namespace Solarus {
 

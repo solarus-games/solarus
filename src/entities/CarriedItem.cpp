@@ -34,6 +34,7 @@
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/Geometry.h"
+#include <memory>
 
 namespace Solarus {
 

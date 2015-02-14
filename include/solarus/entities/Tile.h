@@ -20,6 +20,7 @@
 #include "solarus/Common.h"
 #include "solarus/entities/MapEntity.h"
 #include "solarus/lowlevel/SurfacePtr.h"
+#include <string>
 
 namespace Solarus {
 

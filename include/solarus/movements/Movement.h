@@ -21,6 +21,8 @@
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/ScopedLuaRef.h"
+#include <cstdint>
+#include <string>
 
 namespace Solarus {
 

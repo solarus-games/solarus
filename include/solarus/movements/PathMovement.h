@@ -19,6 +19,8 @@
 
 #include "solarus/Common.h"
 #include "solarus/movements/PixelMovement.h"
+#include <cstdint>
+#include <string>
 
 namespace Solarus {
 

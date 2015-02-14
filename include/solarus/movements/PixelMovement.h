@@ -20,7 +20,9 @@
 #include "solarus/Common.h"
 #include "solarus/movements/Movement.h"
 #include "solarus/lowlevel/Point.h"
+#include <cstdint>
 #include <list>
+#include <string>
 
 namespace Solarus {
 

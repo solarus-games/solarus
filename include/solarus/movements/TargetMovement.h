@@ -21,6 +21,8 @@
 #include "solarus/entities/MapEntityPtr.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/movements/StraightMovement.h"
+#include <cstdint>
+#include <string>
 
 namespace Solarus {
 

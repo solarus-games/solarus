@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/movements/PathMovement.h"
+#include <string>
 
 namespace Solarus {
 

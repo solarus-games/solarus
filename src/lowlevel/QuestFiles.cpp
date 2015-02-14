@@ -25,8 +25,7 @@
 #include <physfs.h>
 #include <iostream>
 #include <fstream>
-#include <sstream>
-#include <cstdlib>  // mkstemp(), tmpnam()
+#include <cstdlib>  // exit(), mkstemp(), tmpnam()
 #include <cstdio>   // remove()
 #ifdef HAVE_UNISTD_H
 #  include <unistd.h>

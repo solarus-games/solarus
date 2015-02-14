@@ -24,6 +24,7 @@
 #include "solarus/lowlevel/PixelFilter.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Transition.h"
+#include <algorithm>
 #include <sstream>
 
 namespace Solarus {

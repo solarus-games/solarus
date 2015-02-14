@@ -19,7 +19,6 @@
 #include <cstdlib>  // std::abort
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <SDL_messagebox.h>
 
 namespace Solarus {

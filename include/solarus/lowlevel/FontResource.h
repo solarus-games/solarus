@@ -20,6 +20,7 @@
 #include "solarus/Common.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include <map>
+#include <memory>
 #include <string>
 #include <SDL_ttf.h>
 

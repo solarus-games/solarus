@@ -16,6 +16,7 @@
  */
 #include "solarus/lowlevel/SpcDecoder.h"
 #include "solarus/lowlevel/Debug.h"
+#include <string>
 
 namespace Solarus {
 

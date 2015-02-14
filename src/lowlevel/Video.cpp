@@ -28,9 +28,10 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/shaders/ShaderContext.h"
 #include "solarus/Arguments.h"
-#include <algorithm>
-#include <sstream>
 #include <iostream>
+#include <memory>
+#include <sstream>
+#include <utility>
 #include <SDL_render.h>
 
 namespace Solarus {

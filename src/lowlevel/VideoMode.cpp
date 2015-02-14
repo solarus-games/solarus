@@ -18,6 +18,7 @@
 #include "solarus/lowlevel/PixelFilter.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/shaders/ShaderContext.h"
+#include <utility>
 
 namespace Solarus {
 

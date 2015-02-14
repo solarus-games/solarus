@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/lowlevel/PixelFilter.h"
+#include <cstdint>
 
 namespace Solarus {
 

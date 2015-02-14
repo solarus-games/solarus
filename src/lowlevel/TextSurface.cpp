@@ -27,6 +27,7 @@
 #include "solarus/lua/LuaTools.h"
 #include "solarus/Transition.h"
 #include <lua.hpp>
+#include <memory>
 
 namespace Solarus {
 

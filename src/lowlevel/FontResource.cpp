@@ -19,6 +19,7 @@
 #include "solarus/lowlevel/FontResource.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/CurrentQuest.h"
+#include <utility>
 
 namespace Solarus {
 

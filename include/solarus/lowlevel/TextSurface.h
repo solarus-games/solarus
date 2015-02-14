@@ -22,6 +22,7 @@
 #include "solarus/lowlevel/Point.h"
 #include "solarus/Drawable.h"
 #include <map>
+#include <string>
 #include <SDL_ttf.h>
 
 namespace Solarus {

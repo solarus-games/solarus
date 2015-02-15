@@ -42,7 +42,7 @@ SavegameConverterV1::SavegameConverterV1(const std::string& file_name) {
       std::string("Cannot read savegame file version 1 '")
       + file_name + "': invalid file size"
   );
-  memcpy(&saved_data, buffer.data(), sizeof(SavedData));
+  std::memcpy(&saved_data, buffer.data(), sizeof(SavedData));
 }
 
 /**

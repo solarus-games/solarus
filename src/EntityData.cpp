@@ -204,7 +204,7 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
     {
         EntityType::STREAM, {
             { "direction", OptionalFlag::MANDATORY, FieldValue(6) },
-            { "sprite", OptionalFlag::OPTIONAL, FieldValue("entities/block") },
+            { "sprite", OptionalFlag::OPTIONAL, FieldValue("") },
             { "speed", OptionalFlag::OPTIONAL, FieldValue(64) },
             { "allow_movement", OptionalFlag::OPTIONAL, FieldValue(true) },
             { "allow_attack", OptionalFlag::OPTIONAL, FieldValue(true) },

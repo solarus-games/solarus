@@ -306,7 +306,13 @@ public abstract class MapEntity extends Observable {
         }
 
         if (hasDirectionProperty()) {
-            int direction = table.get("direction").checkint();
+            int direction = -1;
+            if (canHaveNoDirection()) {
+                direction = table.get("direction").optint(-1);
+            }
+            else {
+                direction = table.get("direction").checkint();
+            }
             setDirection(direction);
         }
 

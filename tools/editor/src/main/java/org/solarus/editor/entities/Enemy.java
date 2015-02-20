@@ -68,7 +68,7 @@ public class Enemy extends MapEntity {
 
         Sprite sprite = getSprite();
         if (sprite == null) {
-            return new Point(8, 29);
+            return new Point(8, 13);
         }
         return sprite.getOrigin(null, getDirection());
     }

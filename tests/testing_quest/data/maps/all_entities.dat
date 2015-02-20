@@ -65,7 +65,7 @@ jumper{
 enemy{
   layer = 0,
   x = 24,
-  y = 237,
+  y = 221,
   direction = 3,
   breed = "test_enemy",
 }

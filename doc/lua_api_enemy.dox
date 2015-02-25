@@ -51,7 +51,7 @@ function enemy:on_restarted()
   -- Create a movement that walks toward the hero.
   local m = sol.movement.create("target")
   m:set_speed(32)
-  self:start_movement(m)
+  m:start(self)
 end
 \endverbatim
 

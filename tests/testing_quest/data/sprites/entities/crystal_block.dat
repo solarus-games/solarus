@@ -2,31 +2,27 @@ animation{
   name = "orange_lowered",
   src_image = "todo.png",
   directions = {
-    { x = 0, y = 0, frame_width = 16, frame_height = 16, num_frames = 1 },
+    { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 0 },
   },
 }
-
-animation{
-  name = "orange_raised",
-  src_image = "todo.png",
-  directions = {
-    { x = 0, y = 0, frame_width = 16, frame_height = 16, num_frames = 1 },
-  },
-}
-
 animation{
   name = "blue_lowered",
   src_image = "todo.png",
   directions = {
-    { x = 0, y = 0, frame_width = 16, frame_height = 16, num_frames = 1 },
+    { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 0 },
   },
 }
-
 animation{
   name = "blue_raised",
   src_image = "todo.png",
   directions = {
-    { x = 0, y = 0, frame_width = 16, frame_height = 16, num_frames = 1 },
+    { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 0 },
   },
 }
-
+animation{
+  name = "orange_raised",
+  src_image = "todo.png",
+  directions = {
+    { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 0 },
+  },
+}

@@ -71,6 +71,7 @@ sprites/
     bomb.dat
     chest.dat
     crystal.dat
+    crystal_block.dat
     explosion.dat
     fire.dat
     hookshot.dat

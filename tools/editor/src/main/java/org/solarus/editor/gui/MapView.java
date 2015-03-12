@@ -684,7 +684,7 @@ public class MapView extends JComponent implements Observer {
     /**
      * Moves to the state State.ADDING_ENTITIES.
      * Allows the user to place on the map some new entities.
-     * These entities is displayed under the cursor, keeping their relative position.
+     * These entities are displayed under the cursor, keeping their relative position.
      * The user can place them by pressing the mouse at the location he wants.
      * If the user was already adding an entity of the same kind,
      * we get back to the normal state.

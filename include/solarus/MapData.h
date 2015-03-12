@@ -71,6 +71,15 @@ struct EntityIndex {
       return index != -1;
     }
 
+    bool operator==(const EntityIndex& other) const {
+        return other.layer == layer &&
+            other.index == index;
+    }
+
+    bool operator!=(const EntityIndex& other) const {
+        return !(*this == other);
+    }
+
     Layer layer;     /**< Layer of the entity on the map. */
     int index;       /**< Index of the entity in that layer.
                       * -1 means an invalid index. */

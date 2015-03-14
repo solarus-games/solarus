@@ -20,7 +20,6 @@
 #include "solarus/lua/LuaTools.h"
 #include <ostream>
 #include <sstream>
-#include <utility>
 
 namespace Solarus {
 
@@ -256,7 +255,7 @@ TilePatternData& TilesetData::get_pattern(const std::string& pattern_id) {
 bool TilesetData::add_pattern(
     const std::string& pattern_id, const TilePatternData& pattern) {
 
-  const auto& result = patterns.insert(std::make_pair(pattern_id, pattern));
+  const auto& result = patterns.emplace(pattern_id, pattern);
   if (!result.second) {
     // Insertion failed: the id already exists.
     return false;

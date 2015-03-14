@@ -66,7 +66,7 @@ const std::map<EntityType, std::string>& get_entity_internal_type_names() {
   if (result.empty()) {
     for (const auto& kvp : EntityTypeInfo::get_entity_type_names()) {
       std::string internal_type_name = std::string("sol.") + kvp.second;
-      result.insert(std::make_pair(kvp.first, internal_type_name));
+      result.emplace(kvp.first, internal_type_name);
     }
   }
 

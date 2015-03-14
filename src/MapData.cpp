@@ -19,7 +19,6 @@
 #include "solarus/lua/LuaTools.h"
 #include "solarus/MapData.h"
 #include <ostream>
-#include <utility>
 
 namespace Solarus {
 
@@ -422,7 +421,7 @@ EntityIndex MapData::add_entity(const EntityData& entity) {
       return EntityIndex();
     }
 
-    named_entities.insert(std::make_pair(entity.get_name(), index));
+    named_entities.emplace(entity.get_name(), index);
   }
 
   entities[layer].push_back(entity);

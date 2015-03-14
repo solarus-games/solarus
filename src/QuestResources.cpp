@@ -77,7 +77,7 @@ namespace {
 QuestResources::QuestResources() {
 
   for (size_t i = 0 ; i < resource_type_names.size(); ++i) {
-    resource_maps.insert(std::make_pair(static_cast<ResourceType>(i), ResourceMap()));
+    resource_maps.emplace(static_cast<ResourceType>(i), ResourceMap());
   }
 }
 
@@ -140,7 +140,7 @@ bool QuestResources::add(
     const std::string& description
 ) {
   ResourceMap& resource = get_elements(resource_type);
-  auto result = resource.insert(std::make_pair(id, description));
+  auto result = resource.emplace(id, description);
   return result.second;
 }
 

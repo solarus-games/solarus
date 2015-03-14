@@ -19,7 +19,6 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaTools.h"
 #include <ostream>
-#include <utility>
 
 namespace Solarus {
 
@@ -341,7 +340,7 @@ EntityData::EntityData(EntityType type) :
   // Initialize fields with their default values.
   const EntityTypeDescription& type_description = entity_type_descriptions.at(type);
   for (const EntityFieldDescription& field_description : type_description) {
-    fields.insert(std::make_pair(field_description.key, field_description.default_value));
+    fields.emplace(field_description.key, field_description.default_value);
   }
 }
 

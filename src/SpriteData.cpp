@@ -180,12 +180,12 @@ std::vector<Rectangle> SpriteAnimationDirectionData::get_all_frames() const {
   for (int row = 0; row < num_rows && frame_number < num_frames; ++row) {
     for (int col = 0; col < num_columns && frame_number < num_frames; ++col) {
 
-      Rectangle frame(
-          xy.x + col * size.width,
-          xy.y + row * size.height,
-          size.width,
-          size.height);
-      frames.push_back(frame);
+      frames.emplace_back(
+        xy.x + col * size.width,
+        xy.y + row * size.height,
+        size.width,
+        size.height
+      );
       ++frame_number;
     }
   }
@@ -474,7 +474,7 @@ SpriteAnimationData& SpriteData::get_animation(
 bool SpriteData::add_animation(
     const std::string& animation_name, const SpriteAnimationData& animation)  {
 
-  const auto& result = animations.insert(std::make_pair(animation_name, animation));
+  const auto& result = animations.emplace(animation_name, animation);
   if (!result.second) {
     // Insertion failed: the name already exists.
     return false;
@@ -644,9 +644,9 @@ int SpriteData::l_animation(lua_State* l) {
       LuaTools::error(l, std::string("Duplicate animation '") + animation_name);
     }
 
-    sprite->animations.insert(std::make_pair(animation_name,
+    sprite->animations.emplace(animation_name,
       SpriteAnimationData(src_image, directions, frame_delay, frame_to_loop_on)
-    ));
+    );
 
     // Set the first animation as the default one.
     if (sprite->animations.size() == 1) {

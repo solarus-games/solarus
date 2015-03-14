@@ -56,8 +56,16 @@ int get_number(unsigned int x) {
 int get_number(int x, int y) {
 
   // Initialize the engine and the distribution
-  thread_local std::mt19937 engine(std::time(nullptr));
-  thread_local std::uniform_int_distribution<int> dist{};
+  //
+  // The engine is not initialized with std::random_device
+  // because not every main platform support non-deterministic
+  // random numbers generation yet.
+  //
+  // The variables are thread_local so that every thread has
+  // its own to avoid thread-safety problems while still being
+  // more efficient than a mutex-based solution
+  static thread_local std::mt19937 engine(std::time(nullptr));
+  static thread_local std::uniform_int_distribution<int> dist{};
 
   // Type of the parameters of the distribution
   using param_type = std::uniform_int_distribution<int>::param_type;

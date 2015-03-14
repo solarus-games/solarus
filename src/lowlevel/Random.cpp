@@ -16,21 +16,22 @@
  */
 #include "solarus/lowlevel/Random.h"
 #include <ctime>
-#include <cstdlib>
+#include <random>
 
 namespace Solarus {
+namespace Random {
 
 /**
  * \brief Initializes the random number generator.
  */
-void Random::initialize() {
-  std::srand((int) std::time(nullptr));
+void initialize() {
+  // nothing to do
 }
 
 /**
  * \brief Uninitializes the random number generator.
  */
-void Random::quit() {
+void quit() {
   // nothing to do
 }
 
@@ -42,8 +43,8 @@ void Random::quit() {
  * \param x the superior bound
  * \return a random integer number in [0, x[
  */
-int Random::get_number(unsigned int x) {
-  return (int) ((double) x * std::rand() / (RAND_MAX + 1.0));
+int get_number(unsigned int x) {
+  return get_number(0, x);
 }
 
 /**
@@ -52,9 +53,18 @@ int Random::get_number(unsigned int x) {
  * \param y the superior bound
  * \return a random integer number in [x, y[
  */
-int Random::get_number(unsigned int x, unsigned int y) {
-  return x + get_number(y - x);
+int get_number(int x, int y) {
+
+  // Initialize the engine and the distribution
+  thread_local std::mt19937 engine(std::time(nullptr));
+  thread_local std::uniform_int_distribution<int> dist{};
+
+  // Type of the parameters of the distribution
+  using param_type = std::uniform_int_distribution<int>::param_type;
+
+  // Get a random number in [x, y[
+  return dist(engine, param_type{x, y-1});
 }
 
 }
-
+}

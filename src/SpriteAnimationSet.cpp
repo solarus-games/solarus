@@ -87,9 +87,10 @@ void SpriteAnimationSet::add_animation(
     directions.emplace_back(direction.get_all_frames(), direction.get_origin());
   }
 
-  animations.insert(std::make_pair(animation_name,
+  animations.emplace(
+    animation_name,
     SpriteAnimation(src_image, directions, frame_delay, frame_to_loop_on)
-  ));
+  );
 }
 
 /**

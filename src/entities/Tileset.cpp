@@ -28,7 +28,6 @@
 #include "solarus/lua/LuaTools.h"
 #include <lua.hpp>
 #include <sstream>
-#include <utility>
 #include <vector>
 
 namespace Solarus {
@@ -119,7 +118,7 @@ void Tileset::add_tile_pattern(
     );
   }
 
-  tile_patterns.insert(std::make_pair(id, std::unique_ptr<TilePattern>(tile_pattern)));
+  tile_patterns.emplace(id, std::unique_ptr<TilePattern>(tile_pattern));
 }
 
 /**

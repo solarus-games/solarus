@@ -107,7 +107,7 @@ void FontResource::load_fonts() {
       font.bitmap_font = nullptr;
     }
 
-    fonts.insert(std::make_pair(font_id, std::move(font)));
+    fonts.emplace(font_id, std::move(font));
   }
 
   fonts_loaded = true;
@@ -214,7 +214,7 @@ TTF_Font& FontResource::get_outline_font(const std::string& font_id, int size) {
       + "': " + TTF_GetError()
   );
   OutlineFontReader reader = { std::move(rw), std::move(outline_font) };
-  outline_fonts.insert(std::make_pair(size, std::move(reader)));
+  outline_fonts.emplace(size, std::move(reader));
   return *outline_fonts.at(size).outline_font;
 }
 

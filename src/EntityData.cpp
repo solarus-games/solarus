@@ -52,8 +52,8 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
 
     {
         EntityType::TELETRANSPORTER, {
-            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
-            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "width", OptionalFlag::MANDATORY, FieldValue(16) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(16) },
             { "transition", OptionalFlag::OPTIONAL, FieldValue("fade") },
             { "destination_map", OptionalFlag::MANDATORY, FieldValue("") },
             { "destination", OptionalFlag::OPTIONAL, FieldValue("") },
@@ -64,7 +64,7 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
 
     {
         EntityType::DESTINATION, {
-            { "direction", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "direction", OptionalFlag::MANDATORY, FieldValue(1) },
             { "sprite", OptionalFlag::OPTIONAL, FieldValue("") },
             { "default", OptionalFlag::OPTIONAL, FieldValue(false) }
         }
@@ -150,8 +150,8 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
 
     {
         EntityType::JUMPER, {
-            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
-            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "width", OptionalFlag::MANDATORY, FieldValue(32) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(8) },
             { "direction", OptionalFlag::MANDATORY, FieldValue(6) },
             { "jump_length", OptionalFlag::MANDATORY, FieldValue(40) }
         }
@@ -169,15 +169,15 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
 
     {
         EntityType::SENSOR, {
-            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
-            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "width", OptionalFlag::MANDATORY, FieldValue(16) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(16) },
         }
     },
 
     {
         EntityType::WALL, {
-            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
-            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "width", OptionalFlag::MANDATORY, FieldValue(16) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(16) },
             { "stops_hero", OptionalFlag::OPTIONAL, FieldValue(false) },
             { "stops_npcs", OptionalFlag::OPTIONAL, FieldValue(false) },
             { "stops_enemies", OptionalFlag::OPTIONAL, FieldValue(false) },
@@ -194,8 +194,8 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
 
     {
         EntityType::CRYSTAL_BLOCK, {
-            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
-            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "width", OptionalFlag::MANDATORY, FieldValue(16) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(16) },
             { "subtype", OptionalFlag::MANDATORY, FieldValue(0) },
         }
     },
@@ -232,15 +232,15 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
 
     {
         EntityType::SEPARATOR, {
-            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
-            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "width", OptionalFlag::MANDATORY, FieldValue(16) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(16) },
         }
     },
 
     {
         EntityType::CUSTOM, {
-            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
-            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "width", OptionalFlag::MANDATORY, FieldValue(16) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(16) },
             { "direction", OptionalFlag::MANDATORY, FieldValue(0) },
             { "sprite", OptionalFlag::OPTIONAL, FieldValue("") },
             { "model", OptionalFlag::OPTIONAL, FieldValue("") },

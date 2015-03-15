@@ -35,8 +35,8 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
 
     {
         EntityType::TILE, {
-            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
-            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "width", OptionalFlag::MANDATORY, FieldValue(16) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(16) },
             { "pattern", OptionalFlag::MANDATORY, FieldValue("") }
         }
     },
@@ -44,8 +44,8 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
     {
         EntityType::DYNAMIC_TILE, {
             { "pattern", OptionalFlag::MANDATORY, FieldValue("") },
-            { "width", OptionalFlag::MANDATORY, FieldValue(0) },
-            { "height", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "width", OptionalFlag::MANDATORY, FieldValue(16) },
+            { "height", OptionalFlag::MANDATORY, FieldValue(16) },
             { "enabled_at_start", OptionalFlag::MANDATORY, FieldValue(true) }
         }
     },

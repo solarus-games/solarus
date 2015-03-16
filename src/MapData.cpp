@@ -215,7 +215,7 @@ void MapData::bring_entity_to_front(const EntityIndex& index) {
     return;
   }
 
-  const auto& it = entities[layer].begin() + index.index;
+  auto it = entities[layer].begin() + index.index;
   const EntityData& entity = *it;
 
   if (entity.has_name()) {
@@ -227,6 +227,18 @@ void MapData::bring_entity_to_front(const EntityIndex& index) {
 
   entities[layer].push_back(*it);
   entities[layer].erase(it);
+
+  // Indexes after the old one get shifted.
+  for (it = entities[layer].begin() + index.index;
+      it != entities[layer].end();
+      ++it) {
+    const EntityData& current_entity = *it;
+    const std::string& name = current_entity.get_name();
+    if (!name.empty() && name != entity.get_name()) {
+      EntityIndex& index = named_entities[name];
+      --index.index;
+    }
+  }
 }
 
 /**
@@ -250,6 +262,18 @@ void MapData::bring_entity_to_back(const EntityIndex& index) {
 
   entities[layer].push_front(*it);
   entities[layer].erase(it);
+
+  // All indexes get shifted.
+  for (auto it = entities[layer].begin() + 1;
+      it != entities[layer].end();
+      ++it) {
+    const EntityData& current_entity = *it;
+    const std::string& name = current_entity.get_name();
+    if (!name.empty()) {
+      EntityIndex& index = named_entities[name];
+      ++index.index;
+    }
+  }
 }
 
 /**

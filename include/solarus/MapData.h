@@ -80,6 +80,46 @@ struct EntityIndex {
         return !(*this == other);
     }
 
+    bool operator<=(const EntityIndex& other) const {
+      if (layer < other.layer) {
+        return true;
+      }
+      if (layer > other.layer) {
+        return false;
+      }
+      return index <= other.index;
+    }
+
+    bool operator<(const EntityIndex& other) const {
+      if (layer < other.layer) {
+        return true;
+      }
+      if (layer > other.layer) {
+        return false;
+      }
+      return index < other.index;
+    }
+
+    bool operator>=(const EntityIndex& other) const {
+      if (layer > other.layer) {
+        return true;
+      }
+      if (layer < other.layer) {
+        return false;
+      }
+      return index >= other.index;
+    }
+
+    bool operator>(const EntityIndex& other) const {
+      if (layer > other.layer) {
+        return true;
+      }
+      if (layer < other.layer) {
+        return false;
+      }
+      return index > other.index;
+    }
+
     Layer layer;     /**< Layer of the entity on the map. */
     int index;       /**< Index of the entity in that layer.
                       * -1 means an invalid index. */

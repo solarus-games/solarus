@@ -64,8 +64,15 @@ int get_number(int x, int y) {
   // The variables are thread_local so that every thread has
   // its own to avoid thread-safety problems while still being
   // more efficient than a mutex-based solution
-  static thread_local std::mt19937 engine(std::time(nullptr));
-  static thread_local std::uniform_int_distribution<int> dist{};
+  //
+  // These variables need to be known in the function but not
+  // needed outside of it, so it is easier to have them as
+  // thread_local function-local variables (one instance per
+  // thread, initialized once, like a static variable) rather
+  // than maintaining them in the body of a class.
+  //
+  thread_local std::mt19937 engine(std::time(nullptr));
+  thread_local std::uniform_int_distribution<int> dist{};
 
   // Type of the parameters of the distribution
   using param_type = std::uniform_int_distribution<int>::param_type;

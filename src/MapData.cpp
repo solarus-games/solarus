@@ -442,8 +442,20 @@ void MapData::remove_entity(const EntityIndex& index) {
   }
 
   Layer layer = index.layer;
-  const auto& it = entities[layer].begin() + index.index;
+  auto it = entities[layer].begin() + index.index;
   entities[layer].erase(it);
+
+  // Indexes after this one get shifted.
+  for (it = entities[layer].begin() + index.index;
+      it != entities[layer].end();
+      ++it) {
+    const EntityData& current_entity = *it;
+    const std::string& name = current_entity.get_name();
+    if (!name.empty()) {
+      EntityIndex& index = named_entities[name];
+      --index.index;
+    }
+  }
 }
 
 namespace {

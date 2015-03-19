@@ -168,7 +168,8 @@ class SOLARUS_API MapData : public LuaData {
     bool set_entity_name(const EntityIndex& index, const std::string& name);
 
     EntityIndex add_entity(const EntityData& entity);
-    void remove_entity(const EntityIndex& index);
+    bool insert_entity(const EntityData& entity, const EntityIndex& index);
+    bool remove_entity(const EntityIndex& index);
 
     virtual bool import_from_lua(lua_State* l) override;
     virtual bool export_to_lua(std::ostream& out) const override;

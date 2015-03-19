@@ -422,6 +422,9 @@ bool MapData::set_entity_name(const EntityIndex& index, const std::string& name)
 /**
  * \brief Adds an entity to the map.
  *
+ * The entity will be added in front of other ones that are on the same layer.
+ * Use insert_entity() if you want to insert it at a specific index.
+ *
  * If the new entity has a name, it should be unique on the map.
  *
  * \param entity The information of an entity.
@@ -454,10 +457,68 @@ EntityIndex MapData::add_entity(const EntityData& entity) {
 }
 
 /**
+ * \brief Adds an entity to the map at the specified index.
+ *
+ * If the new entity has a name, it should be unique on the map.
+ *
+ * \param entity The information of an entity.
+ * \param index The index this entity should have on the map.
+ * \return \c false in case of failure, that is,
+ * if the name was already in use, if the entity type is illegal
+ * or if the index was out of range.
+ */
+bool MapData::insert_entity(const EntityData& entity, const EntityIndex& index) {
+
+  if (!EntityTypeInfo::can_be_stored_in_map_file(entity.get_type())) {
+    // Illegal type of entity in a map file.
+    return false;
+  }
+
+  if (entity.has_name()) {
+    if (entity_exists(entity.get_name())) {
+      // This name is already used by another entity.
+      return false;
+    }
+
+    named_entities.emplace(entity.get_name(), index);
+  }
+
+  const Layer layer = index.layer;
+
+  if (index.index < 0 || index.index > (int) entities[layer].size()) {
+    // Index out of range.
+    return false;
+  }
+
+  auto it = entities[layer].begin() + index.index;
+  entities[layer].emplace(it, entity);
+
+  // Indexes after this one get shifted.
+  for (it = entities[layer].begin() + index.index + 1;
+      it != entities[layer].end();
+      ++it) {
+    const EntityData& current_entity = *it;
+    const std::string& name = current_entity.get_name();
+    if (!name.empty()) {
+      EntityIndex& index = named_entities[name];
+      ++index.index;
+    }
+  }
+
+  return true;
+}
+
+/**
  * \brief Removes an entity from the map.
  * \param index Index of the entity on the map.
+ * \return \c false in case of failure, that is,
+ * if the index is out of range.
  */
-void MapData::remove_entity(const EntityIndex& index) {
+bool MapData::remove_entity(const EntityIndex& index) {
+
+  if (!entity_exists(index)) {
+    return false;
+  }
 
   const EntityData& entity = get_entity(index);
 
@@ -480,6 +541,7 @@ void MapData::remove_entity(const EntityIndex& index) {
       --index.index;
     }
   }
+  return true;
 }
 
 namespace {

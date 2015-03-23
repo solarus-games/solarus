@@ -223,6 +223,7 @@ local map = ...
 
 function map:on_started()
   map.next_switch_index = 1
+  map.nb_switches = map:get_entities_count("puzzle_switch_")
 end
 
 local function puzzle_switch_activated(switch)
@@ -236,7 +237,7 @@ for switch in map:get_entities("puzzle_switch_") do
 end
 
 function map:check_switch(switch)
-  if switch:get_name() == "switch_" .. map.next_switch_index then
+  if switch:get_name() == "puzzle_switch_" .. map.next_switch_index then
     -- Okay so far.
     map.next_switch_index = map.next_switch_index + 1
     if map.next_switch_index > map.nb_switches then

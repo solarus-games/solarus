@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,23 +24,16 @@ namespace Solarus {
 /**
  * \brief Provides some functions to compute random numbers.
  */
-class Random {
+namespace Random {
 
-  public:
+void initialize();
+void quit();
 
-    static void initialize();
-    static void quit();
+int get_number(unsigned int x);
+int get_number(int x, int y);
 
-    static int get_number(unsigned int x);
-    static int get_number(unsigned int x, unsigned int y);
-
-  private:
-
-    Random();
-
-};
+}
 
 }
 
 #endif
-

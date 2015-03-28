@@ -19,11 +19,35 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/Language.h"
 #include "solarus/lua/LuaTools.h"
+#include "solarus/DialogResourceData.h"
 
 namespace Solarus {
 
 const std::string DialogResource::file_name = "text/dialogs.dat";
 std::map<std::string, Dialog> DialogResource::dialogs;
+
+/**
+ * \brief Adds a new dialog.
+ *
+ * This function is called while loading the dialog data file.
+ *
+ * \param id Id of this dialog.
+ * \param dialog_data Properties of the dialog to create.
+ */
+void DialogResource::add_dialog(
+    const std::string& id, const DialogData& dialog_data) {
+
+  // Create the dialog.
+  Dialog dialog;
+  dialog.set_id(id);
+  dialog.set_text(dialog_data.get_text());
+
+  for (const auto kvp : dialog_data.get_properties()) {
+    dialog.set_property(kvp.first, kvp.second);
+  }
+
+  dialogs.emplace(id, dialog);
+}
 
 /**
  * \brief Loads all dialogs of the game.
@@ -36,27 +60,18 @@ void DialogResource::initialize() {
   dialogs.clear();
 
   // Read the dialogs file.
-  lua_State* l = luaL_newstate();
+  DialogResourceData data;
   const std::string& buffer = QuestFiles::data_file_read(file_name, true);
-  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
-
-  if (load_result != 0) {
-    Debug::error(std::string("Failed to load dialog file '") + file_name
-        + "' for language '" + Language::get_language() + "': "
-        + lua_tostring(l, -1));
-    lua_pop(l, 1);
-  }
-  else {
-    lua_register(l, "dialog", l_dialog);
-    if (lua_pcall(l, 0, 0, 0) != 0) {
-      Debug::error(std::string("Failed to load dialog file '") + file_name
-          + "' for language '" + Language::get_language() + "': "
-          + lua_tostring(l, -1));
-      lua_pop(l, 1);
+  bool success = data.import_from_buffer(buffer);
+  if (success) {
+    // Get the imported data.
+    for (const auto& kvp : data.get_dialogs()) {
+      add_dialog(kvp.first, kvp.second);
     }
+  } else {
+    Debug::error(std::string("Failed to load dialog file '") + file_name
+        + "' for language '" + Language::get_language());
   }
-
-  lua_close(l);
 }
 
 /**
@@ -88,70 +103,6 @@ const Dialog& DialogResource::get_dialog(const std::string& dialog_id) {
   Debug::check_assertion(exists(dialog_id), std::string(
       "No such dialog: '") + dialog_id + "'");
   return dialogs[dialog_id];
-}
-
-/**
- * \brief Function called by Lua to add a dialog to the resource.
- *
- * - Argument 1 (table): properties of the dialog.
- *
- * \param l the Lua context that is calling this function
- * \return Number of values to return to Lua.
- */
-int DialogResource::l_dialog(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-
-    const std::string dialog_id = LuaTools::check_string_field(l, 1, "id");
-    const std::string text = LuaTools::check_string_field(l, 1, "text");
-    Dialog dialog;
-    dialog.set_id(dialog_id);
-    dialog.set_text(text);
-
-    // Traverse the table, looking for custom properties.
-    lua_pushnil(l); // first key
-    while (lua_next(l, 1) != 0) {
-
-      const std::string& key = LuaTools::check_string(l, -2);
-      if (key == "id" || key == "text") {
-        lua_pop(l, 1);
-        continue;
-      }
-
-      // Custom property.
-      std::string value;
-      int type = lua_type(l, -1);
-      if (type == LUA_TSTRING || type == LUA_TNUMBER) {
-        value = lua_tostring(l, -1);
-      }
-      else if (type == LUA_TBOOLEAN) {
-        value = lua_toboolean(l, -1) ? "1" : "0";
-      }
-      else {
-        LuaTools::error(l, std::string("Invalid value '") + key + "' for dialog '"
-            + dialog_id + "'");
-      }
-      dialog.set_property(key, value);
-      lua_pop(l, 1);
-    }
-
-    dialog.set_id(dialog_id);
-    if (dialog.get_id().empty()) {
-      LuaTools::error(l, "Missing value dialog_id");
-    }
-
-    if (dialog.get_text().empty()) {
-      LuaTools::error(l, std::string("Missing text for dialog '") + dialog_id + "'");
-    }
-
-    if (exists(dialog_id)) {
-      LuaTools::error(l, std::string("Duplicate dialog '") + dialog_id + "'");
-    }
-    dialogs[dialog_id] = dialog;
-
-    return 0;
-  });
 }
 
 }

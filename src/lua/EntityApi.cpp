@@ -43,7 +43,6 @@
 #include "solarus/lua/LuaTools.h"
 #include "solarus/movements/Movement.h"
 #include "solarus/CurrentQuest.h"
-#include "solarus/DialogResource.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
 #include "solarus/Game.h"
@@ -2054,7 +2053,7 @@ void LuaContext::notify_hero_brandish_treasure(
   lua_pushcclosure(l, l_treasure_dialog_finished, 4);
   const ScopedLuaRef& dialog_callback_ref = create_ref();
 
-  if (!DialogResource::exists(dialog_id)) {
+  if (!CurrentQuest::dialog_exists(dialog_id)) {
     Debug::error(std::string("Missing treasure dialog: '") + dialog_id + "'");
     dialog_callback_ref.call("dialog callback");
   }

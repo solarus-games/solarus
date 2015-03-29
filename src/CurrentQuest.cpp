@@ -15,12 +15,28 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/Debug.h"
 #include "solarus/CurrentQuest.h"
 #include "solarus/QuestResources.h"
+#include "solarus/StringResourceData.h"
+#include "solarus/DialogResourceData.h"
 
 namespace Solarus {
 
 namespace CurrentQuest {
+
+/** Code of the current language (e.g. "en", "fr", etc.). */
+std::string language_code;
+
+const std::string strings_file_name = "text/strings.dat";
+std::map<std::string, std::string> strings;
+
+const std::string dialogs_file_name = "text/dialogs.dat";
+std::map<std::string, Dialog> dialogs;
+
+void initialize_strings();
+void initialize_dialogs();
+void add_dialog(const std::string& id, const DialogData& dialog_data);
 
 /**
  * \brief Reads the resource list file data file project_db.dat of the
@@ -39,6 +55,8 @@ void initialize() {
 void quit() {
 
   get_resources().clear();
+  strings.clear();
+  dialogs.clear();
 }
 
 /**
@@ -75,6 +93,182 @@ const std::map<std::string, std::string>&
 get_resources(ResourceType resource_type) {
 
   return get_resources().get_elements(resource_type);
+}
+
+/**
+ * \brief Returns whether a language exists for the current quest.
+ * \param language_code Code of the language to test.
+ * \return \c true if this language exists.
+ */
+bool has_language(const std::string& language_code) {
+
+  return resource_exists(ResourceType::LANGUAGE, language_code);
+}
+
+/**
+ * \brief Sets the current language.
+ *
+ * The language-specific data will be loaded from the directory of this language.
+ * This function must be called before the first language-specific file is loaded.
+ *
+ * \param language_code Code of the language to set.
+ */
+void set_language(const std::string& language_code) {
+
+  Debug::check_assertion(has_language(language_code),
+      std::string("No such language: '") + language_code + "'");
+
+  CurrentQuest::language_code = language_code;
+  initialize_strings();
+  initialize_dialogs();
+}
+
+/**
+ * \brief Returns the current language.
+ *
+ * The language-specific data are be loaded from the directory of this language.
+ *
+ * \return code of the language, or an empty string if no language is set
+ */
+const std::string& get_language() {
+  return language_code;
+}
+
+/**
+ * \brief Returns the user-friendly name of a language for this quest.
+ * \param language_code Code of a language.
+ * \return Name of this language of an empty string.
+ */
+std::string get_language_name(const std::string& language_code) {
+
+  const std::map<std::string, std::string>& languages =
+      get_resources(ResourceType::LANGUAGE);
+
+  const auto& it = languages.find(language_code);
+  if (it != languages.end()) {
+    return it->second;
+  }
+
+  return "";
+}
+
+/**
+ * \brief Returns whether a string exists in the language-specific file
+ * "text/strings.dat" for the current language.
+ * \param key Id of a string.
+ * \return true if the string exists.
+ */
+bool string_exists(const std::string& key) {
+
+  return strings.find(key) != strings.end();
+}
+
+/**
+ * \brief Returns a string stored in the language-specific file
+ * "text/strings.dat" for the current language.
+ * \param key Id of the string to retrieve. It must exist.
+ * \return The corresponding localized string.
+ */
+const std::string& get_string(const std::string& key) {
+
+  Debug::check_assertion(string_exists(key),
+      std::string("Cannot find string with key '") + key + "'"
+  );
+  return strings[key];
+}
+
+/**
+ * \brief Returns whether the specified dialog exists.
+ * \param dialog_id Id of the dialog to test.
+ * \return true if such a dialog exists.
+ */
+bool dialog_exists(const std::string& dialog_id) {
+
+  return dialogs.find(dialog_id) != dialogs.end();
+}
+
+/**
+ * \brief Returns a dialog stored in the language-specific file
+ * "text/dialogs.dat".
+ * \param dialog_id id of the dialog to retrieve
+ * \return the corresponding localized dialog
+ */
+const Dialog& get_dialog(const std::string& dialog_id) {
+
+  Debug::check_assertion(dialog_exists(dialog_id), std::string(
+      "No such dialog: '") + dialog_id + "'");
+  return dialogs[dialog_id];
+}
+
+/**
+ * \brief Initializes the text resource by loading all strings.
+ *
+ * The strings are loaded from the language-specific file "text/strings.dat"
+ * and stored into memory for future access by get_string().
+ */
+void initialize_strings() {
+
+  strings.clear();
+
+  StringResourceData data;
+  const std::string& buffer = QuestFiles::data_file_read(strings_file_name, true);
+  bool success = data.import_from_buffer(buffer);
+  if (success) {
+    // Get the imported data.
+    for (const auto& kvp : data.get_strings()) {
+      strings.emplace(kvp.first, kvp.second);
+    }
+  } else {
+    Debug::error(std::string("Failed to load strings file '") + strings_file_name
+        + "' for language '" + get_language());
+  }
+}
+
+/**
+ * \brief Loads all dialogs of the game.
+ *
+ * The dialogs are loaded from the language-specific file "text/dialogs.dat"
+ * and stored into memory for future access by get_dialog().
+ */
+void initialize_dialogs() {
+
+  dialogs.clear();
+
+  // Read the dialogs file.
+  DialogResourceData data;
+  const std::string& buffer = QuestFiles::data_file_read(dialogs_file_name, true);
+  bool success = data.import_from_buffer(buffer);
+  if (success) {
+    // Get the imported data.
+    for (const auto& kvp : data.get_dialogs()) {
+      add_dialog(kvp.first, kvp.second);
+    }
+  } else {
+    Debug::error(std::string("Failed to load dialog file '") + dialogs_file_name
+        + "' for language '" + get_language());
+  }
+}
+
+/**
+ * \brief Adds a new dialog.
+ *
+ * This function is called while loading the dialog data file.
+ *
+ * \param id Id of this dialog.
+ * \param dialog_data Properties of the dialog to create.
+ */
+void add_dialog(const std::string& id, const DialogData& dialog_data) {
+
+  // Create the dialog.
+  Dialog dialog;
+  dialog.set_id(id);
+  dialog.set_text(dialog_data.get_text());
+
+  for (const auto kvp : dialog_data.get_properties()) {
+    dialog.set_property(kvp.first, kvp.second);
+  }
+
+  dialogs.emplace(id, dialog);
 }
 
 }

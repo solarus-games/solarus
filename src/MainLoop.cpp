@@ -27,7 +27,6 @@
 #include "solarus/QuestProperties.h"
 #include "solarus/Game.h"
 #include "solarus/Savegame.h"
-#include "solarus/StringResource.h"
 #include "solarus/CurrentQuest.h"
 #include <lua.hpp>
 #include <sstream>

@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/DialogBoxSystem.h"
-#include "solarus/DialogResource.h"
+#include "solarus/CurrentQuest.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
 #include "solarus/KeysEffect.h"
@@ -93,7 +93,7 @@ void DialogBoxSystem::open(
   Debug::check_assertion(!is_enabled(), "A dialog is already active");
 
   this->dialog_id = dialog_id;
-  this->dialog = DialogResource::get_dialog(dialog_id);
+  this->dialog = CurrentQuest::get_dialog(dialog_id);
   this->callback_ref = callback_ref;
 
   // Save commands.

@@ -17,9 +17,6 @@
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/Language.h"
-#include "solarus/StringResource.h"
-#include "solarus/DialogResource.h"
 #include "solarus/CurrentQuest.h"
 #include "solarus/Arguments.h"
 #include <physfs.h>
@@ -110,8 +107,6 @@ void QuestFiles::quit() {
   solarus_write_dir = "";
   quest_write_dir = "";
 
-  DialogResource::quit();
-  StringResource::quit();
   PHYSFS_deinit();
 }
 
@@ -175,10 +170,11 @@ bool QuestFiles::data_file_exists(const std::string& file_name,
 
   std::string full_file_name;
   if (language_specific) {
-    if (Language::get_language().empty()) {
+    if (CurrentQuest::get_language().empty()) {
       return false;
     }
-    full_file_name = std::string("languages/") + Language::get_language() + "/" + file_name;
+    full_file_name = std::string("languages/") +
+        CurrentQuest::get_language() + "/" + file_name;
   }
   else {
     full_file_name = file_name;
@@ -198,11 +194,12 @@ std::string QuestFiles::data_file_read(
 ) {
   std::string full_file_name;
   if (language_specific) {
-    Debug::check_assertion(!Language::get_language().empty(),
+    Debug::check_assertion(!CurrentQuest::get_language().empty(),
         std::string("Cannot open language-specific file '") + file_name
         + "': no language was set"
     );
-    full_file_name = std::string("languages/") + Language::get_language() + "/" + file_name;
+    full_file_name = std::string("languages/") +
+        CurrentQuest::get_language() + "/" + file_name;
   }
   else {
     full_file_name = file_name;

@@ -170,7 +170,6 @@ file(
   include/solarus/CurrentQuest.h
   include/solarus/DialogBoxSystem.h
   include/solarus/Dialog.h
-  include/solarus/DialogResource.h
   include/solarus/DialogResourceData.h
   include/solarus/Drawable.h
   include/solarus/EntityData.h
@@ -180,7 +179,6 @@ file(
   include/solarus/GameCommand.h
   include/solarus/GameCommands.h
   include/solarus/Game.h
-  include/solarus/Language.h
   include/solarus/KeysEffect.h
   include/solarus/MainLoop.h
   include/solarus/Map.h
@@ -199,7 +197,6 @@ file(
   include/solarus/Sprite.h
   include/solarus/SpriteData.h
   include/solarus/SpritePtr.h
-  include/solarus/StringResource.h
   include/solarus/StringResourceData.h
   include/solarus/Timer.h
   include/solarus/TimerPtr.h
@@ -361,7 +358,6 @@ file(
   src/CurrentQuest.cpp
   src/DialogBoxSystem.cpp
   src/Dialog.cpp
-  src/DialogResource.cpp
   src/DialogResourceData.cpp
   src/Drawable.cpp
   src/EntityData.cpp
@@ -371,7 +367,6 @@ file(
   src/GameCommands.cpp
   src/Game.cpp
   src/KeysEffect.cpp
-  src/Language.cpp
   src/MainLoop.cpp
   src/main/Main.cpp
   src/Map.cpp
@@ -388,7 +383,6 @@ file(
   src/SpriteAnimationSet.cpp
   src/Sprite.cpp
   src/SpriteData.cpp
-  src/StringResource.cpp
   src/StringResourceData.cpp
   src/Timer.cpp
   src/Transition.cpp

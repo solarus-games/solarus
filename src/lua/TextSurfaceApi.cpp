@@ -19,8 +19,7 @@
 #include "solarus/lowlevel/TextSurface.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/Language.h"
-#include "solarus/StringResource.h"
+#include "solarus/CurrentQuest.h"
 
 namespace Solarus {
 
@@ -182,13 +181,13 @@ int LuaContext::text_surface_api_create(lua_State* l) {
         text_surface->set_text(text);
       }
       else if (!text_key.empty()) {
-          if (!StringResource::exists(text_key)) {
+          if (!CurrentQuest::string_exists(text_key)) {
             LuaTools::error(l, std::string("No value with key '") + text_key
                 + "' in strings.dat for language '"
-                + Language::get_language() + "'"
+                + CurrentQuest::get_language() + "'"
             );
           }
-          text_surface->set_text(StringResource::get_string(text_key));
+          text_surface->set_text(CurrentQuest::get_string(text_key));
       }
     }
     get_lua_context(l).add_drawable(text_surface);
@@ -455,14 +454,14 @@ int LuaContext::text_surface_api_set_text_key(lua_State* l) {
     TextSurface& text_surface = *check_text_surface(l, 1);
     const std::string& key = LuaTools::check_string(l, 2);
 
-    if (!StringResource::exists(key)) {
+    if (!CurrentQuest::string_exists(key)) {
       LuaTools::arg_error(l, 2, std::string("No value with key '") + key
           + "' in strings.dat for language '"
-          + Language::get_language() + "'"
+          + CurrentQuest::get_language() + "'"
       );
     }
 
-    text_surface.set_text(StringResource::get_string(key));
+    text_surface.set_text(CurrentQuest::get_string(key));
 
     return 0;
   });

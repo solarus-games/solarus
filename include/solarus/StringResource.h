@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include <string>
+#include <map>
 
 namespace Solarus {
 
@@ -44,9 +45,11 @@ class StringResource {
 
   private:
 
+    static const std::string file_name;                /**< the strings file */
+    static std::map<std::string, std::string> strings; /**< all strings */
+
     // we don't need to instantiate this class
     StringResource() = delete;
-
 };
 
 }

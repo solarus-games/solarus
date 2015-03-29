@@ -18,37 +18,13 @@
 #include "solarus/Language.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/LuaTools.h"
+#include "solarus/StringResourceData.h"
 #include <map>
 
 namespace Solarus {
 
-namespace {
-
-std::map<std::string, std::string> strings;
-
-/**
- * \brief Function called by Lua to add a dialog to the resource.
- *
- * - Argument 1 (table): properties of the dialog.
- *
- * \param l the Lua context that is calling this function
- * \return Number of values to return to Lua.
- */
-int l_text(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-
-    const std::string key = LuaTools::check_string_field(l, 1, "key");
-    const std::string value = LuaTools::check_string_field(l, 1, "value");
-
-    strings[key] = value;
-
-    return 0;
-  });
-}
-
-}
+const std::string StringResource::file_name = "text/strings.dat";
+std::map<std::string, std::string> StringResource::strings;
 
 /**
  * \brief Initializes the text resource by loading all strings.
@@ -60,28 +36,18 @@ void StringResource::initialize() {
 
   strings.clear();
 
-  const std::string file_name("text/strings.dat");
-  lua_State* l = luaL_newstate();
+  StringResourceData data;
   const std::string& buffer = QuestFiles::data_file_read(file_name, true);
-  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
-
-  if (load_result != 0) {
-    Debug::error(std::string("Failed to load strings file '") + file_name
-        + "' for language '" + Language::get_language() + "': "
-        + lua_tostring(l, -1));
-    lua_pop(l, 1);
-  }
-  else {
-    lua_register(l, "text", l_text);
-    if (lua_pcall(l, 0, 0, 0) != 0) {
-      Debug::error(std::string("Failed to load strings file '") + file_name
-          + "' for language '" + Language::get_language() + "': "
-          + lua_tostring(l, -1));
-      lua_pop(l, 1);
+  bool success = data.import_from_buffer(buffer);
+  if (success) {
+    // Get the imported data.
+    for (const auto& kvp : data.get_strings()) {
+      strings.emplace(kvp.first, kvp.second);
     }
+  } else {
+    Debug::error(std::string("Failed to load strings file '") + file_name
+        + "' for language '" + Language::get_language());
   }
-
-  lua_close(l);
 }
 
 /**

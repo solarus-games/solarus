@@ -200,6 +200,7 @@ file(
   include/solarus/SpriteData.h
   include/solarus/SpritePtr.h
   include/solarus/StringResource.h
+  include/solarus/StringResourceData.h
   include/solarus/Timer.h
   include/solarus/TimerPtr.h
   include/solarus/TransitionFade.h
@@ -388,6 +389,7 @@ file(
   src/Sprite.cpp
   src/SpriteData.cpp
   src/StringResource.cpp
+  src/StringResourceData.cpp
   src/Timer.cpp
   src/Transition.cpp
   src/TransitionFade.cpp

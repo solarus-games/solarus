@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/StringResourceData.h"
+#include "solarus/StringResources.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaTools.h"
 #include <ostream>
@@ -25,14 +25,21 @@ namespace Solarus {
 /**
  * \brief Creates an empty string resources.
  */
-StringResourceData::StringResourceData() {
+StringResources::StringResources() {
+}
+
+/**
+ * \brief Clears all strings.
+ */
+void StringResources::clear() {
+  strings.clear();
 }
 
 /**
  * \brief Returns all strings.
  * \return The strings indexed by their key.
  */
-const std::map<std::string, std::string>& StringResourceData::get_strings() const {
+const std::map<std::string, std::string>& StringResources::get_strings() const {
   return strings;
 }
 
@@ -41,7 +48,7 @@ const std::map<std::string, std::string>& StringResourceData::get_strings() cons
  * \param key The key to test.
  * \return \c true if a string exists with this key.
  */
-bool StringResourceData::has_string(const std::string& key) const {
+bool StringResources::has_string(const std::string& key) const {
   return strings.find(key) != strings.end();
 }
 
@@ -50,7 +57,7 @@ bool StringResourceData::has_string(const std::string& key) const {
  * \param key A string key. It must exist.
  * \return The string with this key.
  */
-const std::string& StringResourceData::get_string(
+const std::string& StringResources::get_string(
     const std::string& key) const {
 
   const auto& it = strings.find(key);
@@ -68,7 +75,7 @@ const std::string& StringResourceData::get_string(
  * \param key A string key. It must exist.
  * \return The string with this key.
  */
-std::string& StringResourceData::get_string(const std::string& key) {
+std::string& StringResources::get_string(const std::string& key) {
 
   const auto& it = strings.find(key);
   Debug::check_assertion(it != strings.end(),
@@ -83,7 +90,7 @@ std::string& StringResourceData::get_string(const std::string& key) {
  * \param string The string to add.
  * \return \c true in case of success.
  */
-bool StringResourceData::add_string(
+bool StringResources::add_string(
     const std::string& key, const std::string& string) {
 
   const auto& result = strings.emplace(key, string);
@@ -100,7 +107,7 @@ bool StringResourceData::add_string(
  * \param key Key of the string to remove.
  * \return \c true in case of success.
  */
-bool StringResourceData::remove_string(const std::string& key) {
+bool StringResources::remove_string(const std::string& key) {
   return strings.erase(key) > 0;
 }
 
@@ -111,7 +118,7 @@ bool StringResourceData::remove_string(const std::string& key) {
  * \return \c true in case of success.
  * In case of failure, the old string is unchanged.
  */
-bool StringResourceData::set_string_key(
+bool StringResources::set_string_key(
     const std::string& old_key, const std::string& new_key) {
 
   if (!has_string(old_key)) {
@@ -139,11 +146,11 @@ bool StringResourceData::set_string_key(
  * \param l the Lua context that is calling this function
  * \return Number of values to return to Lua.
  */
-int StringResourceData::l_text(lua_State* l) {
+int StringResources::l_text(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     lua_getfield(l, LUA_REGISTRYINDEX, "strings");
-    StringResourceData& strings = *static_cast<StringResourceData*>(
+    StringResources& strings = *static_cast<StringResources*>(
           lua_touserdata(l, -1));
     lua_pop(l, 1);
 
@@ -161,7 +168,7 @@ int StringResourceData::l_text(lua_State* l) {
 /**
  * \copydoc LuaData::import_from_lua
  */
-bool StringResourceData::import_from_lua(lua_State* l) {
+bool StringResources::import_from_lua(lua_State* l) {
 
   lua_pushlightuserdata(l, this);
   lua_setfield(l, LUA_REGISTRYINDEX, "strings");
@@ -179,7 +186,7 @@ bool StringResourceData::import_from_lua(lua_State* l) {
 /**
  * \copydoc LuaData::export_to_lua
  */
-bool StringResourceData::export_to_lua(std::ostream& out) const {
+bool StringResources::export_to_lua(std::ostream& out) const {
 
   for (const auto kvp : strings) {
     const std::string& key = kvp.first;

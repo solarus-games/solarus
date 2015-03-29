@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_STRING_RESOURCE_DATA_H
-#define SOLARUS_STRING_RESOURCE_DATA_H
+#ifndef SOLARUS_STRING_RESOURCES_H
+#define SOLARUS_STRING_RESOURCES_H
 
 #include "solarus/Common.h"
 #include "solarus/lua/LuaData.h"
@@ -26,11 +26,13 @@ namespace Solarus {
 /**
  * \brief Stores the content of a string data file.
  */
-class SOLARUS_API StringResourceData : public LuaData {
+class SOLARUS_API StringResources : public LuaData {
 
   public:
 
-    StringResourceData();
+    StringResources();
+
+    void clear();
 
     const std::map<std::string, std::string>& get_strings() const;
     bool has_string(const std::string& key) const;

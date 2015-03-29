@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/DialogResourceData.h"
+#include "solarus/DialogResources.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaTools.h"
 #include <ostream>
@@ -102,14 +102,21 @@ bool DialogData::remove_property(const std::string& key) {
 /**
  * \brief Creates an empty dialog resources.
  */
-DialogResourceData::DialogResourceData() {
+DialogResources::DialogResources() {
+}
+
+/**
+ * \brief Clears all dialogs.
+ */
+void DialogResources::clear() {
+  dialogs.clear();
 }
 
 /**
  * \brief Returns all dialogs.
  * \return The dialogs indexed by their id.
  */
-const std::map<std::string, DialogData>& DialogResourceData::get_dialogs() const {
+const std::map<std::string, DialogData>& DialogResources::get_dialogs() const {
   return dialogs;
 }
 
@@ -118,7 +125,7 @@ const std::map<std::string, DialogData>& DialogResourceData::get_dialogs() const
  * \param dialog_id The id to test.
  * \return \c true if a dialog exists with this id.
  */
-bool DialogResourceData::has_dialog(const std::string& dialog_id) const {
+bool DialogResources::has_dialog(const std::string& dialog_id) const {
   return dialogs.find(dialog_id) != dialogs.end();
 }
 
@@ -127,7 +134,7 @@ bool DialogResourceData::has_dialog(const std::string& dialog_id) const {
  * \param dialog_id A dialog id. It must exist.
  * \return The dialog with this id.
  */
-const DialogData& DialogResourceData::get_dialog(
+const DialogData& DialogResources::get_dialog(
     const std::string& dialog_id) const {
 
   const auto& it = dialogs.find(dialog_id);
@@ -145,7 +152,7 @@ const DialogData& DialogResourceData::get_dialog(
  * \param dialog_id A dialog id. It must exist.
  * \return The dialog with this id.
  */
-DialogData& DialogResourceData::get_dialog(
+DialogData& DialogResources::get_dialog(
     const std::string& dialog_id) {
 
   const auto& it = dialogs.find(dialog_id);
@@ -161,7 +168,7 @@ DialogData& DialogResourceData::get_dialog(
  * \param dialog The dialog to add.
  * \return \c true in case of success.
  */
-bool DialogResourceData::add_dialog(
+bool DialogResources::add_dialog(
     const std::string& dialog_id, const DialogData& dialog) {
 
   const auto& result = dialogs.emplace(dialog_id, dialog);
@@ -178,7 +185,7 @@ bool DialogResourceData::add_dialog(
  * \param dialog_id Id of the dialog to remove.
  * \return \c true in case of success.
  */
-bool DialogResourceData::remove_dialog(const std::string& dialog_id) {
+bool DialogResources::remove_dialog(const std::string& dialog_id) {
 
   return dialogs.erase(dialog_id) > 0;
 }
@@ -190,7 +197,7 @@ bool DialogResourceData::remove_dialog(const std::string& dialog_id) {
  * \return \c true in case of success.
  * In case of failure, the old dialog is unchanged.
  */
-bool DialogResourceData::set_dialog_id(
+bool DialogResources::set_dialog_id(
     const std::string& old_dialog_id, const std::string& new_dialog_id) {
 
   if (!has_dialog(old_dialog_id)) {
@@ -218,11 +225,11 @@ bool DialogResourceData::set_dialog_id(
  * \param l the Lua context that is calling this function
  * \return Number of values to return to Lua.
  */
-int DialogResourceData::l_dialog(lua_State* l) {
+int DialogResources::l_dialog(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     lua_getfield(l, LUA_REGISTRYINDEX, "dialogs");
-    DialogResourceData& dialogs = *static_cast<DialogResourceData*>(
+    DialogResources& dialogs = *static_cast<DialogResources*>(
           lua_touserdata(l, -1));
     lua_pop(l, 1);
 
@@ -281,7 +288,7 @@ int DialogResourceData::l_dialog(lua_State* l) {
 /**
  * \copydoc LuaData::import_from_lua
  */
-bool DialogResourceData::import_from_lua(lua_State* l) {
+bool DialogResources::import_from_lua(lua_State* l) {
 
   lua_pushlightuserdata(l, this);
   lua_setfield(l, LUA_REGISTRYINDEX, "dialogs");
@@ -299,7 +306,7 @@ bool DialogResourceData::import_from_lua(lua_State* l) {
 /**
  * \copydoc LuaData::export_to_lua
  */
-bool DialogResourceData::export_to_lua(std::ostream& out) const {
+bool DialogResources::export_to_lua(std::ostream& out) const {
 
   for (const auto kvp : dialogs) {
     const std::string& id = kvp.first;

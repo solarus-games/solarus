@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_DIALOG_RESOURCE_DATA_H
-#define SOLARUS_DIALOG_RESOURCE_DATA_H
+#ifndef SOLARUS_DIALOG_RESOURCES_H
+#define SOLARUS_DIALOG_RESOURCES_H
 
 #include "solarus/Common.h"
 #include "solarus/lua/LuaData.h"
@@ -51,11 +51,13 @@ class SOLARUS_API DialogData {
 /**
  * \brief Stores the content of a dialog data file.
  */
-class SOLARUS_API DialogResourceData : public LuaData {
+class SOLARUS_API DialogResources : public LuaData {
 
   public:
 
-    DialogResourceData();
+    DialogResources();
+
+    void clear();
 
     const std::map<std::string, DialogData>& get_dialogs() const;
     bool has_dialog(const std::string& dialog_id) const;

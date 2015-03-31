@@ -316,7 +316,7 @@ bool DialogResources::export_to_lua(std::ostream& out) const {
     for (const auto pkvp : dialog.get_properties()) {
       out << "  " << pkvp.first << " = \"" << pkvp.second << "\",\n";
     }
-    out << "  text = \"" << dialog.get_text() << "\"\n}\n\n";
+    out << "  text = [[\n" << dialog.get_text() << "\n]]\n}\n\n";
   }
   return true;
 }

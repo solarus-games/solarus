@@ -35,7 +35,7 @@ namespace Solarus {
  * Properties includes its name, layer, coordinates and properties specific
  * to each entity type.
  */
-class SOLARUS_API EntityData {
+class SOLARUS_API EntityData : public LuaData {
 
   public:
 
@@ -59,6 +59,9 @@ class SOLARUS_API EntityData {
         explicit FieldValue(const char* value);
         explicit FieldValue(int value);
         explicit FieldValue(bool value);
+
+        bool operator==(const FieldValue& other) const;
+        bool operator!=(const FieldValue& other) const;
 
         const EntityFieldType value_type;
         std::string string_value;
@@ -86,9 +89,11 @@ class SOLARUS_API EntityData {
 
     using EntityTypeDescription = std::vector<EntityFieldDescription>;
 
+    EntityData();
     explicit EntityData(EntityType type);
 
     EntityType get_type() const;
+    void set_type(EntityType type);
     const std::string& get_type_name() const;
 
     bool has_name() const;
@@ -99,6 +104,7 @@ class SOLARUS_API EntityData {
     Point get_xy() const;
     void set_xy(const Point& xy);
 
+    void initialize_fields();
     const std::map<std::string, FieldValue>& get_fields() const;
     FieldValue get_field(const std::string& key) const;
     bool is_string(const std::string& key) const;
@@ -111,7 +117,8 @@ class SOLARUS_API EntityData {
     bool get_boolean(const std::string& key) const;
     void set_boolean(const std::string& key, bool value);
 
-    bool export_to_lua(std::ostream& out) const;
+    bool import_from_lua(lua_State* l) override;
+    bool export_to_lua(std::ostream& out) const override;
 
     static EntityData check_entity_data(lua_State* l, int index, EntityType type);
     static const std::map<EntityType, const EntityTypeDescription> get_entity_type_descriptions();

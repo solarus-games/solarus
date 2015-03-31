@@ -268,6 +268,33 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
     // TODO put direction, width, height with common properties?
 };
 
+
+/**
+ * \brief Implementation of all entity data creation functions.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int l_create_entity_data(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+
+    // Retrieve the entity data instance to build.
+    lua_getfield(l, LUA_REGISTRYINDEX, "entity");
+    EntityData& entity = *static_cast<EntityData*>(lua_touserdata(l, -1));
+    lua_pop(l, 1);
+
+    // Get the type of entity, it should have been passed as an upvalue.
+    EntityType type = LuaTools::check_enum<EntityType>(
+        l, lua_upvalueindex(1), EntityTypeInfo::get_entity_type_names()
+    );
+
+    entity = EntityData::check_entity_data(l, 1, type);
+
+    return 0;
+  });
+}
+
+
 }  // Anonymous namespace.
 
 /**
@@ -327,6 +354,37 @@ FieldValue::FieldValue(bool value):
 }
 
 /**
+ * \brief Returns whether two values are equal.
+ */
+bool FieldValue::operator==(const FieldValue& other) const {
+
+  return value_type == other.value_type &&
+      string_value == other.string_value &&
+      int_value == other.int_value;
+}
+
+/**
+ * \brief Returns whether two values are different.
+ */
+bool FieldValue::operator!=(const FieldValue& other) const {
+
+  return !(*this == other);
+}
+
+/**
+ * \brief Creates data for an entity of a default-constructed type.
+ */
+EntityData::EntityData() :
+    type(),
+    name(),
+    layer(LAYER_LOW),
+    xy(),
+    fields() {
+
+  initialize_fields();
+}
+
+/**
  * \brief Creates data for an entity of the given type.
  * \param type A type of entity.
  */
@@ -337,11 +395,7 @@ EntityData::EntityData(EntityType type) :
     xy(),
     fields() {
 
-  // Initialize fields with their default values.
-  const EntityTypeDescription& type_description = entity_type_descriptions.at(type);
-  for (const EntityFieldDescription& field_description : type_description) {
-    fields.emplace(field_description.key, field_description.default_value);
-  }
+  initialize_fields();
 }
 
 /**
@@ -350,6 +404,23 @@ EntityData::EntityData(EntityType type) :
  */
 EntityType EntityData::get_type() const {
   return type;
+}
+
+/**
+ * \brief Sets the type of this entity.
+ *
+ * When the type changes, all fields are reset to their default value.
+ *
+ * \param type The new type.
+ */
+void EntityData::set_type(EntityType type) {
+
+  if (type == this->type) {
+    return;
+  }
+
+  this->type = type;
+  initialize_fields();
 }
 
 /**
@@ -413,6 +484,18 @@ Point EntityData::get_xy() const {
  */
 void EntityData::set_xy(const Point& xy) {
   this->xy = xy;
+}
+
+/**
+ * \brief Initializes fields with their default values for the type.
+ */
+void EntityData::initialize_fields() {
+
+  fields.clear();
+  const EntityTypeDescription& type_description = entity_type_descriptions.at(type);
+  for (const EntityFieldDescription& field_description : type_description) {
+    fields.emplace(field_description.key, field_description.default_value);
+  }
 }
 
 /**
@@ -674,10 +757,35 @@ const std::map<EntityType, const EntityTypeDescription> EntityData::get_entity_t
 }
 
 /**
- * \brief Saves this data as Lua into a stream.
- * \param out The stream to write.
- * \return \c true in case of success, \c false if the data
- * could not be exported.
+ * \copydoc LuaData::import_from_lua
+ */
+bool EntityData::import_from_lua(lua_State* l) {
+
+  lua_pushlightuserdata(l, this);
+  lua_setfield(l, LUA_REGISTRYINDEX, "entity");
+  for (const auto& kvp : EntityTypeInfo::get_entity_type_names()) {
+    EntityType type = kvp.first;
+    const std::string& type_name = kvp.second;
+    if (!EntityTypeInfo::can_be_stored_in_map_file(type)) {
+      continue;
+    }
+    std::string function_name = type_name;
+    lua_pushstring(l, function_name.c_str());
+    lua_pushcclosure(l, l_create_entity_data, 1);
+    lua_setglobal(l, function_name.c_str());
+  }
+
+  if (lua_pcall(l, 0, 0, 0) != 0) {
+    Debug::error(std::string("Failed to load entity: ") + lua_tostring(l, -1));
+    lua_pop(l, 1);
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * \copydoc LuaData::export_to_lua
  */
 bool EntityData::export_to_lua(std::ostream& out) const {
 

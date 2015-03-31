@@ -26,6 +26,28 @@ using namespace Solarus;
 namespace {
 
 /**
+ * Checks writing to text and reading again some existing entity data.
+ */
+void check_entity(const EntityData& entity) {
+
+  // Export the entity to a string and import it again.
+  std::string exported_entity_buffer;
+  bool success = entity.export_to_buffer(exported_entity_buffer);
+  Debug::check_assertion(success, "Entity export failed");
+
+  EntityData imported_entity;
+  success = imported_entity.import_from_buffer(exported_entity_buffer);
+  Debug::check_assertion(success, "Entity import failed");
+
+  Debug::check_assertion(imported_entity.get_type() == entity.get_type(), "Entity type differs");
+  Debug::check_assertion(imported_entity.get_name() == entity.get_name(), "Entity name differs");
+  Debug::check_assertion(imported_entity.get_layer() == entity.get_layer(), "Entity layer differs");
+  Debug::check_assertion(imported_entity.get_xy() == entity.get_xy(), "Entity xy differs");
+  Debug::check_assertion(imported_entity.get_fields() == entity.get_fields(), "Entity fields differ");
+
+}
+
+/**
  * \brief Checks reading and writing a map data file.
  */
 void check_map(TestEnvironment& /* env */, const std::string& map_id) {
@@ -50,6 +72,16 @@ void check_map(TestEnvironment& /* env */, const std::string& map_id) {
         << "*** Original map file:" << std::endl << imported_map_buffer << std::endl
         << "*** Exported map file:" << std::endl << exported_map_buffer << std::endl;
     Debug::die("Map '" + map_id + "': exported file differs from the original one");
+  }
+
+  // Then export and import every entity of the map.
+  for (int i = Layer::LAYER_LOW; i < Layer::LAYER_NB; ++i) {
+    Layer layer = static_cast<Layer>(i);
+    for (int j = 0; j < map_data.get_num_entities(layer); ++j) {
+      EntityIndex index = { layer, j };
+      const EntityData& entity = map_data.get_entity(index);
+      check_entity(entity);
+    }
   }
 }
 

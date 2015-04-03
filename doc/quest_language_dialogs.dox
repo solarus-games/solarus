@@ -50,9 +50,11 @@ Each dialog must have at least the following two properties:
 Only \c id and \c text are mandatory
 (because the default minimal built-in dialog box use them),
 but you can add any other property depending on your dialog box implementation.
-Properties of a dialog are always of type string
-(numbers and booleans are also accepted, but they will be converted to
-strings).
+Properties of a dialog are always of type string.
+Numbers and booleans are also accepted, but they will be converted to
+strings.
+For booleans, \c true is replaced by the string "1"
+and \c false is replaced by the string "0".
 
 The dialog box system is entirely customizable, so you it is up to you to
 put the properties that fit your needs.

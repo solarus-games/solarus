@@ -21,7 +21,6 @@
 #include "solarus/Savegame.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
-#include "solarus/DialogResource.h"
 #include "solarus/CurrentQuest.h"
 #include "solarus/KeysEffect.h"
 #include "solarus/lowlevel/QuestFiles.h"
@@ -415,7 +414,7 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
     ScopedLuaRef info_ref;
     ScopedLuaRef callback_ref;
 
-    if (!DialogResource::exists(dialog_id)) {
+    if (!CurrentQuest::dialog_exists(dialog_id)) {
       LuaTools::arg_error(l, 2, std::string("No such dialog: '") + dialog_id + "'");
     }
 

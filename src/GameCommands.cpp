@@ -18,7 +18,6 @@
 #include "solarus/Game.h"
 #include "solarus/Savegame.h"
 #include "solarus/Equipment.h"
-#include "solarus/StringResource.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaContext.h"

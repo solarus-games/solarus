@@ -26,7 +26,6 @@
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/DialogResource.h"
 #include "solarus/Equipment.h"
 #include "solarus/Game.h"
 #include "solarus/KeysEffect.h"
@@ -699,7 +698,7 @@ void Game::start_dialog(
     const ScopedLuaRef& info_ref,
     const ScopedLuaRef& callback_ref
 ) {
-  if (!DialogResource::exists(dialog_id)) {
+  if (!CurrentQuest::dialog_exists(dialog_id)) {
     Debug::error(std::string("No such dialog: '") + dialog_id + "'");
   }
   else {

@@ -20,6 +20,9 @@
 #include "solarus/Common.h"
 #include "solarus/ResourceType.h"
 #include "solarus/QuestResources.h"
+#include "solarus/StringResources.h"
+#include "solarus/DialogResources.h"
+#include "solarus/Dialog.h"
 #include <map>
 #include <string>
 
@@ -27,7 +30,6 @@ namespace Solarus {
 
 /**
  * \brief Provides access to data of the current quest.
- * TODO and also store global things like strings and dialogs
  */
 namespace CurrentQuest {
 
@@ -37,6 +39,19 @@ void quit();
 QuestResources& get_resources();
 bool resource_exists(ResourceType resource_type, const std::string& id);
 const std::map<std::string, std::string>& get_resources(ResourceType resource_type);
+
+bool has_language(const std::string& language_code);
+void set_language(const std::string& language_code);
+std::string& get_language();
+std::string get_language_name(const std::string& language_code);
+
+StringResources& get_strings();
+bool string_exists(const std::string& key);
+const std::string& get_string(const std::string& key);
+
+std::map<std::string, Dialog>& get_dialogs();
+bool dialog_exists(const std::string& dialog_id);
+const Dialog& get_dialog(const std::string& dialog_id);
 
 }
 

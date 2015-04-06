@@ -16,7 +16,7 @@
  */
 #include "solarus/Settings.h"
 #include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/Language.h"
+#include "solarus/CurrentQuest.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lowlevel/VideoMode.h"
 #include "solarus/lowlevel/Sound.h"
@@ -100,8 +100,8 @@ bool Settings::load(const std::string& file_name) {
   lua_getglobal(l, "language");
   if (lua_isstring(l, 1)) {
     const std::string& language = lua_tostring(l, 1);
-    if (Language::has_language(language)) {
-      Language::set_language(language);
+    if (CurrentQuest::has_language(language)) {
+      CurrentQuest::set_language(language);
     }
   }
   lua_pop(l, 1);
@@ -136,8 +136,8 @@ bool Settings::save(const std::string& file_name) {
   oss << "fullscreen = " << (Video::is_fullscreen() ? "true" : "false") << "\n";
   oss << "sound_volume = " << Sound::get_volume() << "\n";
   oss << "music_volume = " << Music::get_volume() << "\n";
-  if (!Language::get_language().empty()) {
-    oss << "language = \"" << Language::get_language() << "\"\n";
+  if (!CurrentQuest::get_language().empty()) {
+    oss << "language = \"" << CurrentQuest::get_language() << "\"\n";
   }
   oss << "joypad_enabled = " << (InputEvent::is_joypad_enabled() ? "true" : "false") << "\n";
 

@@ -155,6 +155,7 @@ class SOLARUS_API MapData : public LuaData {
     int get_num_entities(Layer layer) const;
 
     void set_entity_layer(const EntityIndex& src_index, Layer dst_layer);
+    void set_entity_order(const EntityIndex& src_index, int dst_order);
     void bring_entity_to_front(const EntityIndex& index);
     void bring_entity_to_back(const EntityIndex& index);
 

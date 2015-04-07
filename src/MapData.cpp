@@ -204,41 +204,73 @@ void MapData::set_entity_layer(const EntityIndex& src_index, Layer dst_layer) {
 }
 
 /**
+ * \brief Changes the order of an entity in its layer.
+ * \param src_index The current index of the entity to change.
+ * \param dst_order The new order to set.
+ */
+void MapData::set_entity_order(const EntityIndex& src_index, int dst_order) {
+
+  Layer layer = src_index.layer;
+  int src_order = src_index.index;
+
+  if (dst_order == src_order) {
+    // No change.
+    return;
+  }
+
+  EntityList& entities = this->entities[layer];
+
+  // Update entities and named_entities.
+  auto src_it = entities.begin() + src_order;
+  const EntityData& entity = *src_it;
+
+  if (entity.has_name()) {
+    named_entities[entity.get_name()] = { layer, dst_order };
+  }
+
+  entities.erase(src_it);
+  auto dst_it = entities.begin() + dst_order;
+  entities.insert(dst_it, entity);
+
+  if (dst_order < src_order) {
+    // Moving downwards.
+    // Indexes between dst_order exclusive and src_order inclusive get incremented.
+    for (int i = dst_order + 1;
+        i <= src_order;
+        ++i
+    ) {
+      const EntityData& current_entity = get_entity({ layer, i });
+      const std::string& name = current_entity.get_name();
+      if (!name.empty() && name != entity.get_name()) {
+        EntityIndex& index = named_entities[name];
+        ++index.index;
+      }
+    }
+  }
+  else {
+    // Moving upwards.
+    // Indexes between src_order inclusive and dst_order exclusive get decremented.
+    for (int i = src_order;
+        i < dst_order;
+        ++i
+    ) {
+      const EntityData& current_entity = get_entity({ layer, i });
+      const std::string& name = current_entity.get_name();
+      if (!name.empty() && name != entity.get_name()) {
+        EntityIndex& index = named_entities[name];
+        --index.index;
+      }
+    }
+  }
+}
+
+/**
  * \brief Brings an entity to front on its layer.
  * \param index Index of the entity on the map.
  */
 void MapData::bring_entity_to_front(const EntityIndex& index) {
 
-  Layer layer = index.layer;
-  if (index.index == (int) (entities[layer].size() - 1)) {
-    // Already to the front.
-    return;
-  }
-
-  auto it = entities[layer].begin() + index.index;
-  const EntityData& entity = *it;
-
-  if (entity.has_name()) {
-    named_entities[entity.get_name()] = {
-        layer,
-        (int) (entities[layer].size() - 1)
-    };
-  }
-
-  entities[layer].push_back(*it);
-  entities[layer].erase(it);
-
-  // Indexes after the old one get shifted.
-  for (it = entities[layer].begin() + index.index;
-      it != entities[layer].end();
-      ++it) {
-    const EntityData& current_entity = *it;
-    const std::string& name = current_entity.get_name();
-    if (!name.empty() && name != entity.get_name()) {
-      EntityIndex& index = named_entities[name];
-      --index.index;
-    }
-  }
+  set_entity_order(index, get_num_entities(index.layer) - 1);
 }
 
 /**
@@ -247,33 +279,7 @@ void MapData::bring_entity_to_front(const EntityIndex& index) {
  */
 void MapData::bring_entity_to_back(const EntityIndex& index) {
 
-  Layer layer = index.layer;
-  if (index.index == 0) {
-    // Already to the back.
-    return;
-  }
-
-  const auto& it = entities[layer].begin() + index.index;
-  const EntityData& entity = *it;
-
-  if (entity.has_name()) {
-    named_entities[entity.get_name()] = { layer, 0 };
-  }
-
-  entities[layer].push_front(*it);
-  entities[layer].erase(it);
-
-  // All indexes get shifted.
-  for (auto it = entities[layer].begin() + 1;
-      it != entities[layer].end();
-      ++it) {
-    const EntityData& current_entity = *it;
-    const std::string& name = current_entity.get_name();
-    if (!name.empty()) {
-      EntityIndex& index = named_entities[name];
-      ++index.index;
-    }
-  }
+  set_entity_order(index, 0);
 }
 
 /**

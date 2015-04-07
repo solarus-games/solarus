@@ -51,29 +51,29 @@ struct EntityIndex {
      */
     EntityIndex():
       layer(LAYER_LOW),
-      index(-1) {
+      order(-1) {
     }
 
     /**
      * \brief Creates an index.
      * \param layer The layer.
-     * \param index The index in that layer.
+     * \param order The order in that layer.
      */
-    EntityIndex(Layer layer, int index):
+    EntityIndex(Layer layer, int order):
       layer(layer),
-      index(index) {
+      order(order) {
     }
 
     /**
      * \brief Returns whether this is a valid index.
      */
     bool is_valid() const {
-      return index != -1;
+      return order != -1;
     }
 
     bool operator==(const EntityIndex& other) const {
         return other.layer == layer &&
-            other.index == index;
+            other.order == order;
     }
 
     bool operator!=(const EntityIndex& other) const {
@@ -87,7 +87,7 @@ struct EntityIndex {
       if (layer > other.layer) {
         return false;
       }
-      return index <= other.index;
+      return order <= other.order;
     }
 
     bool operator<(const EntityIndex& other) const {
@@ -97,7 +97,7 @@ struct EntityIndex {
       if (layer > other.layer) {
         return false;
       }
-      return index < other.index;
+      return order < other.order;
     }
 
     bool operator>=(const EntityIndex& other) const {
@@ -107,7 +107,7 @@ struct EntityIndex {
       if (layer < other.layer) {
         return false;
       }
-      return index >= other.index;
+      return order >= other.order;
     }
 
     bool operator>(const EntityIndex& other) const {
@@ -117,11 +117,11 @@ struct EntityIndex {
       if (layer < other.layer) {
         return false;
       }
-      return index > other.index;
+      return order > other.order;
     }
 
     Layer layer;     /**< Layer of the entity on the map. */
-    int index;       /**< Index of the entity in that layer.
+    int order;       /**< Z order of the entity in that layer.
                       * -1 means an invalid index. */
 
 };

@@ -190,7 +190,7 @@ int MapData::get_num_entities(Layer layer) const {
 void MapData::set_entity_layer(const EntityIndex& src_index, Layer dst_layer) {
 
   // Update the entity itself, but also entities and named_entities.
-  const auto& it = entities[src_index.layer].begin() + src_index.index;
+  const auto& it = entities[src_index.layer].begin() + src_index.order;
   EntityData& entity = *it;
   entity.set_layer(dst_layer);
 
@@ -211,7 +211,7 @@ void MapData::set_entity_layer(const EntityIndex& src_index, Layer dst_layer) {
 void MapData::set_entity_order(const EntityIndex& src_index, int dst_order) {
 
   Layer layer = src_index.layer;
-  int src_order = src_index.index;
+  int src_order = src_index.order;
 
   if (dst_order == src_order) {
     // No change.
@@ -243,7 +243,7 @@ void MapData::set_entity_order(const EntityIndex& src_index, int dst_order) {
       const std::string& name = current_entity.get_name();
       if (!name.empty() && name != entity.get_name()) {
         EntityIndex& index = named_entities[name];
-        ++index.index;
+        ++index.order;
       }
     }
   }
@@ -258,7 +258,7 @@ void MapData::set_entity_order(const EntityIndex& src_index, int dst_order) {
       const std::string& name = current_entity.get_name();
       if (!name.empty() && name != entity.get_name()) {
         EntityIndex& index = named_entities[name];
-        --index.index;
+        --index.order;
       }
     }
   }
@@ -289,8 +289,8 @@ void MapData::bring_entity_to_back(const EntityIndex& index) {
  */
 bool MapData::entity_exists(const EntityIndex& index) const {
 
-  return index.index >= 0 &&
-      index.index < get_num_entities(index.layer);
+  return index.order >= 0 &&
+      index.order < get_num_entities(index.layer);
 }
 
 /**
@@ -305,7 +305,7 @@ const EntityData& MapData::get_entity(const EntityIndex& index) const {
       "Entity index out of range"
   );
 
-  return entities[index.layer][index.index];
+  return entities[index.layer][index.order];
 }
 
 /**
@@ -323,7 +323,7 @@ EntityData& MapData::get_entity(const EntityIndex& index) {
       "Entity index out of range"
   );
 
-  return entities[index.layer][index.index];
+  return entities[index.layer][index.order];
 }
 
 /**
@@ -491,23 +491,23 @@ bool MapData::insert_entity(const EntityData& entity, const EntityIndex& index) 
 
   const Layer layer = index.layer;
 
-  if (index.index < 0 || index.index > (int) entities[layer].size()) {
+  if (index.order < 0 || index.order > (int) entities[layer].size()) {
     // Index out of range.
     return false;
   }
 
-  auto it = entities[layer].begin() + index.index;
+  auto it = entities[layer].begin() + index.order;
   entities[layer].emplace(it, entity);
 
   // Indexes after this one get shifted.
-  for (it = entities[layer].begin() + index.index + 1;
+  for (it = entities[layer].begin() + index.order + 1;
       it != entities[layer].end();
       ++it) {
     const EntityData& current_entity = *it;
     const std::string& name = current_entity.get_name();
     if (!name.empty()) {
       EntityIndex& index = named_entities[name];
-      ++index.index;
+      ++index.order;
     }
   }
 
@@ -533,18 +533,18 @@ bool MapData::remove_entity(const EntityIndex& index) {
   }
 
   Layer layer = index.layer;
-  auto it = entities[layer].begin() + index.index;
+  auto it = entities[layer].begin() + index.order;
   entities[layer].erase(it);
 
   // Indexes after this one get shifted.
-  for (it = entities[layer].begin() + index.index;
+  for (it = entities[layer].begin() + index.order;
       it != entities[layer].end();
       ++it) {
     const EntityData& current_entity = *it;
     const std::string& name = current_entity.get_name();
     if (!name.empty()) {
       EntityIndex& index = named_entities[name];
-      --index.index;
+      --index.order;
     }
   }
   return true;

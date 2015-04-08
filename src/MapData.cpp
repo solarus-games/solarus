@@ -166,8 +166,9 @@ void MapData::set_music_id(const std::string& music_id) {
 int MapData::get_num_entities() const {
 
   int num_entities = 0;
-  for (const EntityList& layer_entities : entities) {
-    num_entities += layer_entities.size();
+  for (int i = 0; i < Layer::LAYER_NB; ++i) {
+    Layer layer = static_cast<Layer>(i);
+    num_entities += get_num_entities(layer);
   }
 
   return num_entities;
@@ -179,34 +180,91 @@ int MapData::get_num_entities() const {
  * \return The number of entities on that layer.
  */
 int MapData::get_num_entities(Layer layer) const {
-  return entities[layer].size();
+  return get_entities(layer).size();
+}
+
+/**
+ * \brief Returns the number of tiles on a layer of this map.
+ * \param layer A layer.
+ * \return The number of tiles on that layer.
+ */
+int MapData::get_num_tiles(Layer layer) const {
+  return entities[layer].num_tiles;
+}
+
+/**
+ * \brief Returns the number of dynamic entities on a layer of this map.
+ * \param layer A layer.
+ * \return The number of dynamic entities on that layer.
+ */
+int MapData::get_num_dynamic_entities(Layer layer) const {
+  return get_num_entities(layer) - get_num_tiles(layer);
+}
+
+/**
+ * \brief Returns the entities on a layer of this map.
+ * \param layer A layer.
+ * \return The entities on that layer.
+ */
+const std::deque<EntityData>& MapData::get_entities(Layer layer) const {
+  return entities[layer].entities;
+}
+
+/**
+ * \overload
+ *
+ * Non-const version.
+ */
+std::deque<EntityData>& MapData::get_entities(Layer layer) {
+  return entities[layer].entities;
 }
 
 /**
  * \brief Changes the layer of an entity.
  * \param src_index The current index of the entity to change.
  * \param dst_layer The new layer to set.
+ * \return The new index of the entity.
  */
-void MapData::set_entity_layer(const EntityIndex& src_index, Layer dst_layer) {
+EntityIndex MapData::set_entity_layer(const EntityIndex& src_index, Layer dst_layer) {
 
-  // Update the entity itself, but also entities and named_entities.
-  const auto& it = entities[src_index.layer].begin() + src_index.order;
-  EntityData& entity = *it;
-  entity.set_layer(dst_layer);
-
-  if (entity.has_name()) {
-    int dst_index = entities[dst_layer].size();
-    named_entities[entity.get_name()] = { dst_layer, dst_index };
+  Layer src_layer = src_index.layer;
+  if (dst_layer == src_index.layer) {
+    // No change.
+    return src_index;
   }
 
-  entities[dst_layer].push_back(*it);  // Insert after existing entities on the destination layer.
-  entities[src_index.layer].erase(it);
+  // Update the entity itself, but also entities and named_entities.
+  const auto& src_it = get_entities(src_layer).begin() + src_index.order;
+  EntityData& entity = *src_it;
+  entity.set_layer(dst_layer);
+
+  // Insert on top of existing entities in the destination layer.
+  const bool dynamic = entity.is_dynamic();
+  int dst_order = dynamic ? get_num_entities(dst_layer) : get_num_tiles(dst_layer);
+  EntityIndex dst_index(dst_layer, dst_order);
+
+  if (entity.has_name()) {
+    named_entities[entity.get_name()] = dst_index;
+  }
+
+  auto dst_it = get_entities(dst_layer).begin() + dst_order;
+  get_entities(dst_layer).insert(dst_it, entity);
+  get_entities(src_layer).erase(src_it);  // Erase after insert because entity is a ref.
+
+  if (!dynamic) {
+    // The tile count has changed.
+    ++entities[dst_layer].num_tiles;
+    --entities[src_layer].num_tiles;
+  }
+
+  return dst_index;
 }
 
 /**
  * \brief Changes the order of an entity in its layer.
  * \param src_index The current index of the entity to change.
  * \param dst_order The new order to set.
+ * It must be valid: in particular, tiles must remain before dynamic entities.
  */
 void MapData::set_entity_order(const EntityIndex& src_index, int dst_order) {
 
@@ -218,11 +276,18 @@ void MapData::set_entity_order(const EntityIndex& src_index, int dst_order) {
     return;
   }
 
-  EntityList& entities = this->entities[layer];
+  EntityData& entity = get_entity(src_index);
+  bool dynamic = entity.is_dynamic();
+  int min_order = dynamic ? get_num_tiles(layer) : 0;
+  int max_order = dynamic ? (get_num_entities(layer) - 1) : (get_num_tiles(layer) - 1);
+
+  Debug::check_assertion(dst_order >= min_order, "Entity order out of range (lower than min)");
+  Debug::check_assertion(dst_order <= max_order, "Entity order out of range (higher than max)");
+
+  std::deque<EntityData>& entities = get_entities(layer);
 
   // Update entities and named_entities.
   auto src_it = entities.begin() + src_order;
-  const EntityData& entity = *src_it;
 
   if (entity.has_name()) {
     named_entities[entity.get_name()] = { layer, dst_order };
@@ -265,21 +330,51 @@ void MapData::set_entity_order(const EntityIndex& src_index, int dst_order) {
 }
 
 /**
- * \brief Brings an entity to front on its layer.
+ * \brief Brings an entity to the front on its layer.
+ *
+ * If it is a tile, it will still be below all dynamic entities.
+ *
  * \param index Index of the entity on the map.
+ * \return The new index of the entity.
  */
-void MapData::bring_entity_to_front(const EntityIndex& index) {
+EntityIndex MapData::bring_entity_to_front(const EntityIndex& index) {
 
-  set_entity_order(index, get_num_entities(index.layer) - 1);
+  const EntityData& entity = get_entity(index);
+  int bound = entity.is_dynamic() ? get_num_entities(index.layer) : get_num_tiles(index.layer);
+
+  EntityIndex dst_index(index.layer, bound - 1);
+  Debug::check_assertion(index.order <= dst_index.order, "Entity index out of range");
+  if (dst_index.order == index.order) {
+    // Already to the front.
+    return index;
+  }
+
+  set_entity_order(index, dst_index.order);
+  return dst_index;
 }
 
 /**
- * \brief Brings an entity to back on its layer.
+ * \brief Brings an entity to the back on its layer.
+ *
+ * If it is a dynamic entity, it will still be above all tiles.
+ *
  * \param index Index of the entity on the map.
+ * \return The new index of the entity.
  */
-void MapData::bring_entity_to_back(const EntityIndex& index) {
+EntityIndex MapData::bring_entity_to_back(const EntityIndex& index) {
 
-  set_entity_order(index, 0);
+  const EntityData& entity = get_entity(index);
+  int bound = entity.is_dynamic() ? get_num_tiles(index.layer) : 0;
+
+  EntityIndex dst_index(index.layer, bound);
+  Debug::check_assertion(index.order >= dst_index.order, "Entity index out of range");
+  if (dst_index.order == index.order) {
+    // Already to the back.
+    return index;
+  }
+
+  set_entity_order(index, dst_index.order);
+  return dst_index;
 }
 
 /**
@@ -305,7 +400,7 @@ const EntityData& MapData::get_entity(const EntityIndex& index) const {
       "Entity index out of range"
   );
 
-  return entities[index.layer][index.order];
+  return get_entities(index.layer)[index.order];
 }
 
 /**
@@ -323,7 +418,7 @@ EntityData& MapData::get_entity(const EntityIndex& index) {
       "Entity index out of range"
   );
 
-  return entities[index.layer][index.order];
+  return get_entities(index.layer)[index.order];
 }
 
 /**
@@ -440,25 +535,16 @@ bool MapData::set_entity_name(const EntityIndex& index, const std::string& name)
  */
 EntityIndex MapData::add_entity(const EntityData& entity) {
 
+  // Compute the appropriate index.
   Layer layer = entity.get_layer();
-  EntityIndex index = { layer, (int) entities[layer].size() };
+  int bound = entity.is_dynamic() ? get_num_entities(layer) : get_num_tiles(layer);
+  EntityIndex index = { layer, bound };
 
-  if (!EntityTypeInfo::can_be_stored_in_map_file(entity.get_type())) {
-    // Illegal type of entity in a map file.
+  // Insert the entity there.
+  if (!insert_entity(entity, index)) {
+    // Failure.
     return EntityIndex();
   }
-
-  if (entity.has_name()) {
-    if (entity_exists(entity.get_name())) {
-      // This name is already used by another entity.
-      return EntityIndex();
-    }
-
-    named_entities.emplace(entity.get_name(), index);
-  }
-
-  entities[layer].push_back(entity);
-
   return index;
 }
 
@@ -480,6 +566,17 @@ bool MapData::insert_entity(const EntityData& entity, const EntityIndex& index) 
     return false;
   }
 
+  const Layer layer = index.layer;
+  int order = index.order;
+  bool dynamic = entity.is_dynamic();
+  int min_order = dynamic ? get_num_tiles(layer) : 0;
+  int max_order = dynamic ? get_num_entities(layer) : get_num_tiles(layer);
+
+  if (order < min_order || order > max_order) {
+    // Index out of range.
+    return false;
+  }
+
   if (entity.has_name()) {
     if (entity_exists(entity.get_name())) {
       // This name is already used by another entity.
@@ -489,20 +586,19 @@ bool MapData::insert_entity(const EntityData& entity, const EntityIndex& index) 
     named_entities.emplace(entity.get_name(), index);
   }
 
-  const Layer layer = index.layer;
-
-  if (index.order < 0 || index.order > (int) entities[layer].size()) {
-    // Index out of range.
-    return false;
+  if (!dynamic) {
+    ++this->entities[layer].num_tiles;
   }
 
-  auto it = entities[layer].begin() + index.order;
-  entities[layer].emplace(it, entity);
+  std::deque<EntityData>& entities = get_entities(layer);
+  auto it = entities.begin() + order;
+  entities.emplace(it, entity);
 
   // Indexes after this one get shifted.
-  for (it = entities[layer].begin() + index.order + 1;
-      it != entities[layer].end();
-      ++it) {
+  for (it = entities.begin() + order + 1;
+      it != entities.end();
+      ++it
+  ) {
     const EntityData& current_entity = *it;
     const std::string& name = current_entity.get_name();
     if (!name.empty()) {
@@ -526,19 +622,26 @@ bool MapData::remove_entity(const EntityIndex& index) {
     return false;
   }
 
+  Layer layer = index.layer;
+  int order = index.order;
   const EntityData& entity = get_entity(index);
+  bool dynamic = entity.is_dynamic();
 
   if (entity.has_name()) {
     named_entities.erase(entity.get_name());
   }
 
-  Layer layer = index.layer;
-  auto it = entities[layer].begin() + index.order;
-  entities[layer].erase(it);
+  if (!dynamic) {
+    --this->entities[layer].num_tiles;
+  }
+
+  std::deque<EntityData>& entities = get_entities(layer);
+  auto it = entities.begin() + order;
+  entities.erase(it);
 
   // Indexes after this one get shifted.
-  for (it = entities[layer].begin() + index.order;
-      it != entities[layer].end();
+  for (it = entities.begin() + order;
+      it != entities.end();
       ++it) {
     const EntityData& current_entity = *it;
     const std::string& name = current_entity.get_name();
@@ -573,7 +676,10 @@ int l_add_entity(lua_State* l) {
     );
     const EntityData& entity = EntityData::check_entity_data(l, -1, type);
 
-    map.add_entity(entity);
+    EntityIndex index = map.add_entity(entity);
+    if (!index.is_valid()) {
+      LuaTools::error(l, "Failed to add entity");
+    }
 
     return 0;
   });
@@ -672,7 +778,7 @@ bool MapData::export_to_lua(std::ostream& out) const {
   out << "}\n\n";
 
   for (const EntityList& layer_entities : entities) {
-    for (const EntityData& entity_data : layer_entities) {
+    for (const EntityData& entity_data : layer_entities.entities) {
       bool success = entity_data.export_to_lua(out);
       Debug::check_assertion(success, "Entity export failed");
     }

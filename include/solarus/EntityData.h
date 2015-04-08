@@ -95,6 +95,7 @@ class SOLARUS_API EntityData : public LuaData {
     EntityType get_type() const;
     void set_type(EntityType type);
     const std::string& get_type_name() const;
+    bool is_dynamic() const;
 
     bool has_name() const;
     std::string get_name() const;

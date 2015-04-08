@@ -32,8 +32,12 @@ namespace Solarus {
  * \brief A list of entities on a layer of the map.
  *
  * The entity at index 0 is the most to the back.
+ * Tiles are always before all other entities in the list.
  */
-using EntityList = std::deque<EntityData>;
+struct EntityList {
+    std::deque<EntityData> entities;
+    int num_tiles;
+};
 
 /**
  * \brief The layer and index of an entity in the map.
@@ -153,11 +157,13 @@ class SOLARUS_API MapData : public LuaData {
 
     int get_num_entities() const;
     int get_num_entities(Layer layer) const;
+    int get_num_tiles(Layer layer) const;
+    int get_num_dynamic_entities(Layer layer) const;
 
-    void set_entity_layer(const EntityIndex& src_index, Layer dst_layer);
+    EntityIndex set_entity_layer(const EntityIndex& src_index, Layer dst_layer);
     void set_entity_order(const EntityIndex& src_index, int dst_order);
-    void bring_entity_to_front(const EntityIndex& index);
-    void bring_entity_to_back(const EntityIndex& index);
+    EntityIndex bring_entity_to_front(const EntityIndex& index);
+    EntityIndex bring_entity_to_back(const EntityIndex& index);
 
     bool entity_exists(const EntityIndex& index) const;
     const EntityData& get_entity(const EntityIndex& index) const;
@@ -178,6 +184,9 @@ class SOLARUS_API MapData : public LuaData {
     static constexpr int NO_FLOOR = -9999;  /**< Represents a non-existent floor (nil in Lua data files). */
 
   private:
+
+    const std::deque<EntityData>& get_entities(Layer layer) const;
+    std::deque<EntityData>& get_entities(Layer layer);
 
     Size size;                    /**< Size of the map in pixels. */
     std::string world;            /**< World of the map or an empty string. */

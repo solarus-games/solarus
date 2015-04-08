@@ -175,6 +175,13 @@ separated with commas. It is allowed to have an extra comma after
 the last property. String values should be enclosed within
 double quotes.
 
+Entities are ordered like they are declared in the map data file:
+the first entity in the map data file is the most to the back,
+the last one is the most to the front.
+But \ref quest_map_data_file_syntax_tile "tiles" are always below all other
+types of entities because they are optimized at runtime.
+Therefore, tiles are always declared first in the map data file for each layer.
+
 \subsubsection quest_map_data_file_syntax_common Common properties
 
 The following properties exist for all types of entities:

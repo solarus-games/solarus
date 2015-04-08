@@ -424,6 +424,14 @@ void EntityData::set_type(EntityType type) {
 }
 
 /**
+ * \brief Returns whether this entity is a dynamic one.
+ * \return \c true if this is a dynamic entity, \c false if this is a tile.
+ */
+bool EntityData::is_dynamic() const {
+  return type != EntityType::TILE;
+}
+
+/**
  * \brief Returns the name of the type of entity.
  * \return The type name of entity.
  */

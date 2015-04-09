@@ -276,7 +276,7 @@ void MapData::set_entity_order(const EntityIndex& src_index, int dst_order) {
     return;
   }
 
-  EntityData& entity = get_entity(src_index);
+  EntityData entity = get_entity(src_index);  // Make a copy.
   bool dynamic = entity.is_dynamic();
   int min_order = dynamic ? get_num_tiles(layer) : 0;
   int max_order = dynamic ? (get_num_entities(layer) - 1) : (get_num_tiles(layer) - 1);

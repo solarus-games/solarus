@@ -31,7 +31,7 @@ class Surface;
  *
  * The transitions may be applied to maps or any surface.
  */
-class Transition {
+class SOLARUS_API Transition {
 
   public:
 
@@ -95,7 +95,9 @@ class Transition {
      */
     virtual void draw(Surface& dst_surface) = 0;
 
-    static const std::map<Style, std::string> style_names;  /**< Lua name of each style. */
+    static const std::map<Style, std::string>& get_style_names();
+    static const std::string& get_style_name(Style style);
+    static Style get_style_by_name(const std::string& style_name);
 
   protected:
 

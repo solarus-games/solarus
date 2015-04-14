@@ -385,7 +385,7 @@ int LuaContext::l_create_teletransporter(lua_State* l) {
         entity_creation_check_size(l, 1, data),
         data.get_string("sprite"),
         data.get_string("sound"),
-        entity_creation_check_enum(l, 1, data, "transition", Transition::style_names),
+        entity_creation_check_enum(l, 1, data, "transition", Transition::get_style_names()),
         data.get_string("destination_map"),
         data.get_string("destination")
     );

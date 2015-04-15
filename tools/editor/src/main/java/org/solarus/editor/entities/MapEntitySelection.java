@@ -330,7 +330,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * (i.e. when canHaveNoDirection() returns true),
      * this method returns the text that will be displayed in the direction chooser.
      * If at least one of the selected entities cannot have a 'no direction' property,
-     * null is returned. If the text differs between the seleted entities, a default text
+     * null is returned. If the text differs between the selected entities, a default text
      * is returned.
      * @return the text that will be displayed in the direction chooser
      * for the 'no direction' option if any

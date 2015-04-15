@@ -674,6 +674,77 @@ void EntityData::set_boolean(const std::string& key, bool value) {
 }
 
 /**
+ * \brief Returns whether a field exists for this type of entity.
+ * \param key Key of the field to check.
+ * \return \c true if such a field exists.
+ */
+bool EntityData::has_field(const std::string& key) const {
+
+  return get_field(key).value_type != EntityData::EntityFieldType::NIL;
+}
+
+/**
+ * \brief Returns whether a field is optional.
+ * \param key Key of the field to check.
+ * \return \c true if the field exists and is optional.
+ */
+bool EntityData::is_field_optional(const std::string& key) const {
+
+  const EntityTypeDescription& type_description = entity_type_descriptions.at(type);
+  for (const EntityFieldDescription& field_description : type_description) {
+    if (field_description.key == key) {
+      return field_description.optional == OptionalFlag::OPTIONAL;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * \brief Returns whether a field is unset.
+ *
+ * A field can only be unset if it is optional.
+ *
+ * \param key Key of the field to check.
+ * \return \c true if the field exists, is optional and is equal to its
+ * default value.
+ */
+bool EntityData::is_field_unset(const std::string& key) const {
+
+  const EntityTypeDescription& type_description = entity_type_descriptions.at(type);
+  for (const EntityFieldDescription& field_description : type_description) {
+    if (field_description.key != key) {
+      continue;
+    }
+
+    if (field_description.optional != OptionalFlag::OPTIONAL) {
+      // Mandatory field: always set.
+      return false;
+    }
+
+    const FieldValue& default_value = field_description.default_value;
+    switch (default_value.value_type) {
+
+    case EntityFieldType::STRING:
+      return get_string(key) == default_value.string_value;
+
+    case EntityFieldType::INTEGER:
+      return get_integer(key) == default_value.int_value;
+
+    case EntityFieldType::BOOLEAN:
+      return get_boolean(key) == (default_value.int_value != 0);
+
+    case EntityFieldType::NIL:
+      Debug::die("Nil entity field");
+      break;
+    }
+  }
+
+  // The field does not exist.
+  return false;
+}
+
+/**
  * \brief Reads an EntityData from the Lua table at the specified index.
  * \param l A Lua state.
  * \param index Index of the table in the Lua stack.

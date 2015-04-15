@@ -117,6 +117,9 @@ class SOLARUS_API EntityData : public LuaData {
     bool is_boolean(const std::string& key) const;
     bool get_boolean(const std::string& key) const;
     void set_boolean(const std::string& key, bool value);
+    bool has_field(const std::string& key) const;
+    bool is_field_optional(const std::string& key) const;
+    bool is_field_unset(const std::string& key) const;
 
     bool import_from_lua(lua_State* l) override;
     bool export_to_lua(std::ostream& out) const override;

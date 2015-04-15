@@ -40,7 +40,7 @@ class Savegame;
  * You should call this class to get information about the current equipment
  * (sword, money, items...) and to modify it.
  */
-class Equipment {
+class SOLARUS_API Equipment {
 
   public:
 
@@ -101,8 +101,6 @@ class Equipment {
     int get_ability(Ability ability) const;
     void set_ability(Ability ability, int level);
     void notify_ability_used(Ability ability);
-
-    static const std::map<Ability, std::string> ability_names;    /**< Lua name of each ability. */
 
   private:
 

@@ -30,17 +30,6 @@
 
 namespace Solarus {
 
-const std::map<Ability, std::string> Equipment::ability_names = {
-    { Ability::TUNIC, "tunic" },
-    { Ability::SWORD, "sword" },
-    { Ability::SWORD_KNOWLEDGE, "sword_knowledge" },
-    { Ability::SHIELD, "shield" },
-    { Ability::LIFT, "lift" },
-    { Ability::SWIM, "swim" },
-    { Ability::RUN, "run" },
-    { Ability::DETECT_WEAK_WALLS, "detect_weak_walls" }
-};
-
 /**
  * \brief Constructor.
  * \param savegame The savegame to encapsulate.

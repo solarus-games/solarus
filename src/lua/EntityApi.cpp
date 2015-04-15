@@ -3877,7 +3877,7 @@ int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
     }
     else {
       EnemyReaction::ReactionType reaction = LuaTools::check_enum<EnemyReaction::ReactionType>(
-          l, 3, EnemyReaction::reaction_names);
+          l, 3, EnemyReaction::get_reaction_names());
       enemy.set_attack_consequence(attack, reaction);
     }
 
@@ -3934,7 +3934,7 @@ int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
     }
     else {
       EnemyReaction::ReactionType reaction = LuaTools::check_enum<EnemyReaction::ReactionType>(
-          l, 4, EnemyReaction::reaction_names);
+          l, 4, EnemyReaction::get_reaction_names());
       enemy.set_attack_consequence_sprite(sprite, attack, reaction);
     }
 

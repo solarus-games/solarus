@@ -32,6 +32,7 @@
 #include "solarus/lua/ExportableToLuaPtr.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
+#include "solarus/AbilityInfo.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
 #include "solarus/Map.h"
@@ -2347,7 +2348,7 @@ void LuaContext::on_using() {
 void LuaContext::on_ability_used(Ability ability) {
 
   if (find_method("on_ability_used")) {
-    push_string(l, Equipment::ability_names.find(ability)->second);
+    push_string(l, AbilityInfo::get_ability_name(ability));
     call_function(2, 0, "on_ability_used");
   }
 }

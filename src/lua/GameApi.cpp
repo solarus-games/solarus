@@ -14,17 +14,18 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/MainLoop.h"
-#include "solarus/Game.h"
-#include "solarus/Savegame.h"
+#include "solarus/AbilityInfo.h"
+#include "solarus/CurrentQuest.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
-#include "solarus/CurrentQuest.h"
+#include "solarus/Game.h"
 #include "solarus/KeysEffect.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/Debug.h"
+#include "solarus/MainLoop.h"
+#include "solarus/Savegame.h"
 
 namespace Solarus {
 
@@ -1091,7 +1092,7 @@ int LuaContext::game_api_has_ability(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
+    Ability ability = LuaTools::check_enum<Ability>(l, 2, AbilityInfo::get_ability_names());
 
     bool has_ability = savegame.get_equipment().has_ability(ability);
 
@@ -1109,7 +1110,7 @@ int LuaContext::game_api_get_ability(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
+    Ability ability = LuaTools::check_enum<Ability>(l, 2, AbilityInfo::get_ability_names());
 
     int ability_level = savegame.get_equipment().get_ability(ability);
 
@@ -1127,7 +1128,7 @@ int LuaContext::game_api_set_ability(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
+    Ability ability = LuaTools::check_enum<Ability>(l, 2, AbilityInfo::get_ability_names());
     int level = LuaTools::check_int(l, 3);
 
     savegame.get_equipment().set_ability(ability, level);

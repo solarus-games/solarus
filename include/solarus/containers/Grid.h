@@ -18,11 +18,11 @@
 #define SOLARUS_GRID_H
 
 #include "solarus/Common.h"
-#include "solarus/lowlevel/Size.h"
-#include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lowlevel/Debug.h"
-#include <vector>
+#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lowlevel/Size.h"
 #include <set>
+#include <vector>
 
 namespace Solarus {
 

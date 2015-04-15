@@ -30,7 +30,7 @@ class Sprite;
  *
  * The reaction may be different between different sprites of the enemy.
  */
-class EnemyReaction {
+class SOLARUS_API EnemyReaction {
 
   public:
 
@@ -65,11 +65,9 @@ class EnemyReaction {
     void set_sprite_reaction(const Sprite* sprite, ReactionType reaction, int life_lost = 0);
     const Reaction& get_reaction(const Sprite* sprite) const;
 
+    static const std::map<EnemyReaction::ReactionType, std::string>& get_reaction_names();
     static const std::string& get_reaction_name(ReactionType reaction);
     static ReactionType get_reaction_by_name(const std::string& name);
-
-    static const std::map<EnemyReaction::ReactionType, std::string>
-        reaction_names;                                    /**< Lua name of each reaction type */
 
   private:
 

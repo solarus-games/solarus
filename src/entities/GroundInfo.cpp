@@ -44,7 +44,7 @@ const std::map<Ground, std::string> ground_names = {
     { Ground::LAVA, "lava" }
 };
 
-}
+}  // Anonymous namespace.
 
 namespace GroundInfo {
 

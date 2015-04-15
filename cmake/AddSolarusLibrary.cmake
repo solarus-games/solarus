@@ -163,6 +163,7 @@ file(
   include/solarus/third_party/snes_spc/spc.h
 
   include/solarus/Ability.h
+  include/solarus/AbilityInfo.h
   include/solarus/Arguments.h
   include/solarus/Camera.h
   include/solarus/Common.h
@@ -353,6 +354,7 @@ file(
   src/movements/StraightMovement.cpp
   src/movements/TargetMovement.cpp
 
+  src/AbilityInfo.cpp
   src/Arguments.cpp
   src/Camera.cpp
   src/CurrentQuest.cpp

@@ -484,6 +484,14 @@ bool MapData::entity_exists(const std::string& name) const {
 }
 
 /**
+ * \brief Returns all entities that have a name on the map.
+ * \return The named entities.
+ */
+const std::map<std::string, EntityIndex>& MapData::get_named_entities_indexes() const {
+  return named_entities;
+}
+
+/**
  * \brief Changes the name of an entity.
  * \param index Index of the entity on the map.
  * \param name The new name. An empty string means no name.

@@ -172,6 +172,7 @@ class SOLARUS_API MapData : public LuaData {
     const EntityData* get_entity_by_name(const std::string& name) const;
     EntityData* get_entity_by_name(const std::string& name);
     bool entity_exists(const std::string& name) const;
+    const std::map<std::string, EntityIndex>& get_named_entities_indexes() const;
     bool set_entity_name(const EntityIndex& index, const std::string& name);
 
     EntityIndex add_entity(const EntityData& entity);

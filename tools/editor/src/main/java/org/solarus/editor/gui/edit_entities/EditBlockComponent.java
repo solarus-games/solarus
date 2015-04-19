@@ -56,7 +56,7 @@ public class EditBlockComponent extends EditEntityComponent {
         canBePushedField = new JCheckBox("Can be pushed");
         addField("Interactions", canBePushedField);
 
-        // can be pushed?
+        // can be pulled?
         canBePulledField = new JCheckBox("Can be pulled");
         addField("", canBePulledField);
 

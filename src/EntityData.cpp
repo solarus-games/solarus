@@ -213,7 +213,7 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
 
     {
         EntityType::DOOR, {
-            { "direction", OptionalFlag::MANDATORY, FieldValue(6) },
+            { "direction", OptionalFlag::MANDATORY, FieldValue(3) },
             { "sprite", OptionalFlag::MANDATORY, FieldValue("") },
             { "savegame_variable", OptionalFlag::OPTIONAL, FieldValue("") },
             { "opening_method", OptionalFlag::OPTIONAL, FieldValue("none") },

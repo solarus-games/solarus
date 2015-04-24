@@ -682,7 +682,7 @@ int l_add_entity(lua_State* l) {
     EntityType type = LuaTools::check_enum(
         l, lua_upvalueindex(1), EntityTypeInfo::get_entity_type_names()
     );
-    const EntityData& entity = EntityData::check_entity_data(l, -1, type);
+    const EntityData& entity = EntityData::check_entity_data(l, 1, type);
 
     EntityIndex index = map.add_entity(entity);
     if (!index.is_valid()) {

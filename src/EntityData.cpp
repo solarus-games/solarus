@@ -754,10 +754,10 @@ bool EntityData::is_field_unset(const std::string& key) const {
 EntityData EntityData::check_entity_data(lua_State* l, int index, EntityType type) {
 
   LuaTools::check_type(l, index, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-  int x = LuaTools::check_int_field(l, 1, "x");
-  int y = LuaTools::check_int_field(l, 1, "y");
+  const std::string& name = LuaTools::opt_string_field(l, index, "name", "");
+  Layer layer = LuaTools::check_layer_field(l, index, "layer");
+  int x = LuaTools::check_int_field(l, index, "x");
+  int y = LuaTools::check_int_field(l, index, "y");
 
   EntityData entity(type);
   entity.set_name(name);
@@ -776,10 +776,10 @@ EntityData EntityData::check_entity_data(lua_State* l, int index, EntityType typ
       {
         std::string value;
         if (field_description.optional == OptionalFlag::OPTIONAL) {
-          value = LuaTools::opt_string_field(l, 1, key, default_value.string_value);
+          value = LuaTools::opt_string_field(l, index, key, default_value.string_value);
         }
         else {
-          value = LuaTools::check_string_field(l, 1, key);
+          value = LuaTools::check_string_field(l, index, key);
         }
         entity.set_string(key, value);
         break;
@@ -789,10 +789,10 @@ EntityData EntityData::check_entity_data(lua_State* l, int index, EntityType typ
       {
         int value;
         if (field_description.optional == OptionalFlag::OPTIONAL) {
-          value = LuaTools::opt_int_field(l, 1, key, default_value.int_value);
+          value = LuaTools::opt_int_field(l, index, key, default_value.int_value);
         }
         else {
-          value = LuaTools::check_int_field(l, 1, key);
+          value = LuaTools::check_int_field(l, index, key);
         }
         entity.set_integer(key, value);
         break;
@@ -802,10 +802,10 @@ EntityData EntityData::check_entity_data(lua_State* l, int index, EntityType typ
       {
         bool value;
         if (field_description.optional == OptionalFlag::OPTIONAL) {
-          value = LuaTools::opt_boolean_field(l, 1, key, default_value.int_value != 0);
+          value = LuaTools::opt_boolean_field(l, index, key, default_value.int_value != 0);
         }
         else {
-          value = LuaTools::check_boolean_field(l, 1, key);
+          value = LuaTools::check_boolean_field(l, index, key);
         }
         entity.set_boolean(key, value);
         break;

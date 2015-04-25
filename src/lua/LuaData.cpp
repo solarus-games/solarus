@@ -138,6 +138,8 @@ bool LuaData::export_to_file(const std::string& file_name) const {
     std::remove(tmp_file_name.c_str());
     return false;
   }
+  tmp_out.flush();
+  tmp_out.close();
 
   std::ifstream in(tmp_file_name);
   std::ofstream out(file_name);
@@ -146,7 +148,9 @@ bool LuaData::export_to_file(const std::string& file_name) const {
     return false;
   }
 
+  in.close();
   std::remove(tmp_file_name.c_str());
+  out.flush();
   return true;
 }
 

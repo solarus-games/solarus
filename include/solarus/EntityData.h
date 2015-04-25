@@ -52,7 +52,7 @@ class SOLARUS_API EntityData : public LuaData {
     /**
      * \brief Stores the value of one field of the entity.
      */
-    struct FieldValue {
+    struct SOLARUS_API FieldValue {
 
         FieldValue();
         explicit FieldValue(const std::string& value);

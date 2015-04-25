@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_FILE_TOOLS_H
-#define SOLARUS_FILE_TOOLS_H
+#ifndef SOLARUS_QUEST_FILES_H
+#define SOLARUS_QUEST_FILES_H
 
 #include "solarus/Common.h"
 #include <string>
@@ -37,7 +37,7 @@ class Arguments;
  * and is the only one that calls the PHYSFS library to get data files from
  * the data archive when necessary.
  */
-class QuestFiles {
+class SOLARUS_API QuestFiles {
 
   public:
 

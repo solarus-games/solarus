@@ -422,6 +422,19 @@ add_library(solarus
   ${source_files}
 )
 
+target_link_libraries(solarus
+  "${SDL2_LIBRARY}"
+  "${SDL2_IMAGE_LIBRARY}"
+  "${SDL2_TTF_LIBRARY}"
+  "${OPENAL_LIBRARY}"
+  "${LUA_LIBRARY}"
+  "${DL_LIBRARY}"
+  "${PHYSFS_LIBRARY}"
+  "${VORBISFILE_LIBRARY}"
+  "${OGG_LIBRARY}"
+  "${MODPLUG_LIBRARY}"
+)
+
 # Configuration for OSX and iOS build and deployment.
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   if(NOT SOLARUS_IOS_BUILD)

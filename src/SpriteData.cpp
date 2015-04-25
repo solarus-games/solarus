@@ -294,7 +294,7 @@ const SpriteAnimationDirectionData&
 
   int size = directions.size();
   Debug::check_assertion(direction_nb >= 0 && direction_nb < size,
-    std::string("No such direction: ") + std::to_string(direction_nb));
+    "No such direction");
 
   return directions[direction_nb];
 }
@@ -313,7 +313,7 @@ SpriteAnimationDirectionData&
 
   int size = directions.size();
   Debug::check_assertion(direction_nb >= 0 && direction_nb < size,
-    std::string("No such direction: ") + std::to_string(direction_nb));
+    "No such direction");
 
   return directions[direction_nb];
 }

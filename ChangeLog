@@ -8,6 +8,7 @@ Engine changes
 
 * Solarus now compiles with C++11.
 * Solarus can now be used as a library in other projects.
+* Add a command-line flag -win-console=yes to see output on Windows (#550).
 * Add unit tests.
 * Fix a crash if an entity has a sprite without animation.
 * Fix crash when using the -no-video command-line option.

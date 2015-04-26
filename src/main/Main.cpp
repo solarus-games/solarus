@@ -22,6 +22,11 @@
 #include <iostream>
 #include <string>
 
+#ifdef WIN32  // For the -win-console flag.
+#  include <windows.h>
+#  include <cstdio>
+#endif
+
 namespace {
 
 /**
@@ -53,7 +58,23 @@ void print_help(int argc, char **argv) {
     << "  -video-acceleration=yes|no    enables or disables accelerated graphics (default yes)"
     << std::endl
     << "  -quest-size=<width>x<height>  sets the size of the drawing area (if compatible with the quest)"
+    << std::endl
+    << "  -win-console=yes|no           allows to see output in a console, only needed on Windows (default no)"
     << std::endl;
+}
+
+void initialize_output(const Solarus::Arguments& args) {
+
+  if (args.get_argument_value("-win-console") == "yes") {
+#ifdef WIN32
+    // Open a console and redirect output there.
+    // This is only needed on Windows: other systems
+    // use their existing console if any.
+    AllocConsole();
+    freopen("CONOUT$", "w", stdout);
+    freopen("CONOUT$", "w", stderr);
+#endif
+  }
 }
 
 }
@@ -78,6 +99,8 @@ void print_help(int argc, char **argv) {
  *   -no-video                         Disables displaying (used for unit tests).
  *   -video-acceleration=yes|no        Enables or disables 2D accelerated graphics if available (default yes).
  *   -quest-size=<width>x<height>      Sets the size of the drawing area (if compatible with the quest).
+ *   -win-console=yes|no               Opens a console to see debug output (default: no).
+ *                                     Windows only (other systems use their existing console if any).
  *
  * \param argc Number of command-line arguments.
  * \param argv Command-line arguments.
@@ -88,10 +111,12 @@ int main(int argc, char** argv) {
 
   Debug::set_abort_on_die(true);  // Better for debugging (get a callstack).
 
-  std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
-
   // Store the command-line arguments.
   const Arguments args(argc, argv);
+
+  initialize_output(args);
+
+  std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
 
   // Check the -help option.
   if (args.has_argument("-help")) {

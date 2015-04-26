@@ -48,7 +48,7 @@ Our quests can be found on the website: http://www.solarus-games.org.
 The build process of solarus uses CMake.
 
 To compile Solarus, you need a C++ compiler with support of C++11.
-Solarus compiles fine with gcc 4.7.1 or greater and clang 3.4 or greater,
+Solarus compiles fine with gcc 4.8.1 or greater and clang 3.4 or greater,
 and probably with other recent compilers (please let us know).
 
 

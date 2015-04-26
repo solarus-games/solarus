@@ -32,6 +32,7 @@
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Music.h"
 #include "solarus/lowlevel/Debug.h"
+#include <algorithm>
 #include <sstream>
 
 namespace Solarus {
@@ -955,14 +956,12 @@ void MapEntities::set_entity_layer(MapEntity& entity, Layer layer) {
 bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle& rectangle) {
 
   std::list<CrystalBlock*> blocks = get_crystal_blocks(layer);
-
-  for (const CrystalBlock* block: blocks) {
-    if (block->overlaps(rectangle) && block->is_raised()) {
-      return true;
+  return std::any_of(
+    blocks.begin(), blocks.end(),
+    [&](const CrystalBlock* block) {
+      return block->overlaps(rectangle) && block->is_raised();
     }
-  }
-
-  return false;
+  );
 }
 
 /**

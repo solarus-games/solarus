@@ -33,6 +33,7 @@
 #include "solarus/MapLoader.h"
 #include "solarus/Savegame.h"
 #include "solarus/Sprite.h"
+#include <algorithm>
 #include <list>
 
 namespace Solarus {
@@ -891,16 +892,15 @@ bool Map::test_collision_with_entities(
   const std::list<MapEntity*>& obstacle_entities =
       entities->get_obstacle_entities(layer);
 
-  for (MapEntity* entity: obstacle_entities) {
-
-    if (entity->overlaps(collision_box)
-        && entity->is_obstacle_for(entity_to_check, collision_box)
-        && entity->is_enabled()
-        && entity != &entity_to_check)
-      return true;
-  }
-
-  return false;
+  return std::any_of(
+    obstacle_entities.begin(), obstacle_entities.end(),
+    [&](MapEntity* entity) {
+      return entity->overlaps(collision_box)
+          && entity->is_obstacle_for(entity_to_check, collision_box)
+          && entity->is_enabled()
+          && entity != &entity_to_check;
+    }
+  );
 }
 
 /**

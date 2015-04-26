@@ -16,6 +16,7 @@
  */
 #include <algorithm>
 #include <cstring>  // memcpy
+#include <iterator>
 #include <sstream>
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/QuestFiles.h"
@@ -225,11 +226,11 @@ void Sound::update() {
 
   // update the playing sounds
   std::list<Sound*> sounds_to_remove;
-  for (Sound* sound: current_sounds) {
-    if (!sound->update_playing()) {
-      sounds_to_remove.push_back(sound);
-    }
-  }
+  std::copy_if(current_sounds.begin(), current_sounds.end(),
+               std::back_inserter(sounds_to_remove),
+               [&](Sound* sound) {
+                 return !sound->update_playing();
+               });
 
   for (Sound* sound: sounds_to_remove) {
     current_sounds.remove(sound);

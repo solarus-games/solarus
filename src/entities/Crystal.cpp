@@ -26,6 +26,7 @@
 #include "solarus/Sprite.h"
 #include "solarus/SpriteAnimationSet.h"
 #include <lua.hpp>
+#include <algorithm>
 #include <memory>
 
 namespace Solarus {
@@ -121,13 +122,12 @@ bool Crystal::notify_action_command_pressed() {
  */
 void Crystal::activate(MapEntity& entity_activating) {
 
-  bool recently_activated = false;
-  for (MapEntity* entity: entities_activating) {
-    if (entity == &entity_activating) {
-      recently_activated = true;
-      break;
+  bool recently_activated = std::any_of(
+    entities_activating.begin(), entities_activating.end(),
+    [&](MapEntity* entity) {
+      return entity == &entity_activating;
     }
-  }
+  );
 
   uint32_t now = System::now();
   if (!recently_activated || now >= next_possible_hit_date) {

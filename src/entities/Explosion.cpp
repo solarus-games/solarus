@@ -22,6 +22,7 @@
 #include "solarus/Game.h"
 #include "solarus/Sprite.h"
 #include "solarus/SpriteAnimationSet.h"
+#include <algorithm>
 
 namespace Solarus {
 
@@ -161,13 +162,10 @@ void Explosion::notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, 
 void Explosion::try_attack_enemy(Enemy& enemy, Sprite& enemy_sprite) {
 
   // see if the enemy was already hurt by this explosion
-  for (Enemy* victim: victims) {
-    if (victim == &enemy) {
-      return;
-    }
+  auto it = std::find(victims.begin(), victims.end(), &enemy);
+  if (it == victims.end()) {
+    enemy.try_hurt(EnemyAttack::EXPLOSION, *this, &enemy_sprite);
   }
-
-  enemy.try_hurt(EnemyAttack::EXPLOSION, *this, &enemy_sprite);
 }
 
 /**

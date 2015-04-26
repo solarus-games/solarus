@@ -28,6 +28,7 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/shaders/ShaderContext.h"
 #include "solarus/Arguments.h"
+#include <algorithm>
 #include <iostream>
 #include <memory>
 #include <sstream>
@@ -410,14 +411,13 @@ bool Video::is_acceleration_enabled() {
  */
 bool Video::is_mode_supported(const VideoMode& mode) {
 
-  for (const VideoMode& current_mode: all_video_modes) {
-    if (current_mode.get_name() == mode.get_name()) {
-      return true;
+  // Return false if the initial detection of this mode failed.
+  return std::any_of(
+    all_video_modes.begin(), all_video_modes.end(),
+    [&](const VideoMode& current_mode) {
+      return current_mode.get_name() == mode.get_name();
     }
-  }
-
-  // The initial detection of this mode failed.
-  return false;
+  );
 }
 
 /**
@@ -463,12 +463,12 @@ void Video::switch_video_mode() {
   }
 
   // Find the current video mode in the list and traverse the list from there.
-  std::vector<VideoMode>::const_iterator it;
-  for (it = all_video_modes.begin(); it != all_video_modes.end(); ++it) {
-    if (it->get_name() == video_mode->get_name()) {
-      break;
+  auto it = std::find_if(
+    all_video_modes.begin(), all_video_modes.end(),
+    [&](const VideoMode& mode) {
+      return mode.get_name() == video_mode->get_name();
     }
-  };
+  );
 
   const VideoMode* mode = nullptr;
   do {

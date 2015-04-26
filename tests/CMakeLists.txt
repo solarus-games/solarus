@@ -26,7 +26,6 @@ add_library(solarus_testing
 
 target_link_libraries(solarus_testing
   solarus
-  "${SDL2MAIN_LIBRARY}"
   "${SDL2_LIBRARY}"
   "${SDL2_IMAGE_LIBRARY}"
   "${SDL2_TTF_LIBRARY}"

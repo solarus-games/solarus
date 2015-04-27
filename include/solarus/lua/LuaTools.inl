@@ -39,17 +39,22 @@ int exception_boundary_handle(
     return func();
   }
   catch (const LuaException& ex) {
+    // Error in user script, detected by Solarus.
     luaL_error(l, ex.what());
   }
   catch (const SolarusFatal& ex) {
+    // Internal Solarus bug.
     luaL_error(l, (std::string("Internal error: ") + ex.what()).c_str());
   }
   catch (const std::exception& ex) {
-    luaL_error(l, (std::string("Unexpected exception: ") + ex.what()).c_str());
+    // Probably also a Solarus bug.
+    luaL_error(l, (std::string("Internal error: ") + ex.what()).c_str());
   }
-  catch (...) {
-    luaL_error(l, "Unexpected exception");
-  }
+  // If we get another exception type, just don't catch it.
+  // Because with LuaJIT, it can already be a Lua error properly wrapped in a
+  // C++ exception. Generating a new Lua error from it would repeat the
+  // file and line number in the error message.
+
   return 0;
 }
 

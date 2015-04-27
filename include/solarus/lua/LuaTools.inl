@@ -35,8 +35,7 @@ int exception_boundary_handle(
     lua_State* l,
     Callable&& func
 ) {
-  try
-  {
+  try {
     return func();
   }
   catch (const LuaException& ex) {

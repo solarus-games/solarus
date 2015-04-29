@@ -15,6 +15,7 @@ Engine changes
 * Fix assertion when a crystal block has less than 4 frames.
 * Fix hero freeze when a treasure's dialog is missing (#595).
 * Fix tunic and sword collision when their sprite is changed (#617).
+* Fix slightly incorrect position of carried item sometimes (#660).
 * Fix crash when a tileset image is missing (#590).
 * Don't die if the animation of a pickable treasure is missing.
 

@@ -101,6 +101,19 @@ void Hero::CarryingState::set_map(Map& map) {
 }
 
 /**
+ * \copydoc Hero::PlayerMovementState::notify_position_changed
+ */
+void Hero::CarryingState::notify_position_changed() {
+
+  PlayerMovementState::notify_position_changed();
+
+  if (carried_item != nullptr) {
+    // Update the position of the carried item too.
+    carried_item->update();
+  }
+}
+
+/**
  * \brief Notifies this state that the layer has changed.
  */
 void Hero::CarryingState::notify_layer_changed() {

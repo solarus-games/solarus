@@ -120,8 +120,8 @@ MainLoop::MainLoop(const Arguments& args):
 MainLoop::~MainLoop() {
 
   if (game != nullptr) {
-    // While stopping the game, the Lua world must still exist.
     game->stop();
+    game.reset();  // While deleting the game, the Lua world must still exist.
   }
 
   lua_context->exit();

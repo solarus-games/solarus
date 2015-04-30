@@ -33,6 +33,7 @@ const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
 bool InputEvent::joypad_enabled = false;
 SDL_Joystick* InputEvent::joystick = nullptr;
 bool InputEvent::repeat_keyboard = false;
+std::set<InputEvent::KeyboardKey> InputEvent::keys_pressed;
 // Default the axis states to centered
 int InputEvent::joypad_axis_state[2] = { 0, 0 };
 
@@ -211,7 +212,10 @@ InputEvent::InputEvent(const SDL_Event& event):
 /**
  * \brief Returns the first event from the event queue, or nullptr
  * if there is no event.
- * \return the current event to handle, or nullptr if there is no event
+ * \return The current event to handle.
+ * If it is invalid, the event was suppressed but there may be more events
+ * in the queue.
+ * Returns nullptr if there is no more event in the queue.
  */
 std::unique_ptr<InputEvent> InputEvent::get_event() {
 
@@ -238,7 +242,7 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
         }
 
         // and state is same as last event for this axis
-        if(joypad_axis_state[axis] == axis_state) {
+        if (joypad_axis_state[axis] == axis_state) {
           // Ignore repeat joypad axis movement state.
           // However, an event still needs to be returned so that
           // all events will be handled this frame. Therefore, change
@@ -253,12 +257,42 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
     }
     else {
       // In deadzone band, however, an event still needs to be returned so that
-      // all events will be handled this frame.  Therefore, change
+      // all events will be handled this frame. Therefore, change
       // the type to a invalid event so it will be ignored.
       internal_event.type = SDL_LASTEVENT;
-
     }
-    // Always return an event if one occurred, so we will handle all successive events
+
+    // Check if keyboard events are correct.
+    // For some reason, when running Solarus from the quest editor,
+    // multiple SDL_KEYUP events are generated when a key remains pressed
+    // (Qt/SDL conflict?).
+    if (internal_event.type == SDL_KEYDOWN) {
+      KeyboardKey key = static_cast<KeyboardKey>(internal_event.key.keysym.sym);
+      if (!is_key_down(key)) {
+        // The key is actually not pressed, don't create the event.
+        internal_event.type = SDL_LASTEVENT;
+      }
+
+      else if (!keys_pressed.insert(key).second) {
+        // Already known as pressed: mark repeated.
+        internal_event.key.repeat = 1;
+      }
+    }
+    else if (internal_event.type == SDL_KEYUP) {
+      KeyboardKey key = static_cast<KeyboardKey>(internal_event.key.keysym.sym);
+      if (is_key_down(key)) {
+        // The key is actually pressed, don't create the event.
+        internal_event.type = SDL_LASTEVENT;
+      }
+
+      else if (keys_pressed.erase(key) == 0) {
+        // Already known as not pressed: mark repeated.
+        internal_event.key.repeat = 1;
+      }
+    }
+
+    // Always return a Solarus event if an SDL event occurred, so that
+    // multiple SDL events in the same frame are all treated.
     result = new InputEvent(internal_event);
   }
 
@@ -470,6 +504,14 @@ Rectangle InputEvent::get_global_mouse_position() {
 
 
 // event type
+
+/**
+ * \brief Returns whether this is a valid event.
+ * \return \c false if this object represents no event.
+ */
+bool InputEvent::is_valid() const {
+  return internal_event.type == SDL_LASTEVENT;
+}
 
 /**
  * \brief Returns whether this event is a keyboard event.

@@ -1618,7 +1618,62 @@ void MapEntity::notify_enabled(bool /* enabled */) {
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool MapEntity::is_obstacle_for(MapEntity& /* other */) {
+bool MapEntity::is_obstacle_for(MapEntity& other) {
+
+  if (!can_be_obstacle()) {
+    // This type of entity can never be an obstacle for others.
+    return false;
+  }
+
+  if (!is_ground_modifier()) {
+    // Return false by default.
+    return false;
+  }
+
+  // This entity modifies the ground of the map.
+  // Return the appropriate obstacle property.
+  switch (get_modified_ground()) {
+
+    case Ground::WALL:
+    case Ground::WALL_TOP_RIGHT:
+    case Ground::WALL_TOP_LEFT:
+    case Ground::WALL_BOTTOM_LEFT:
+    case Ground::WALL_BOTTOM_RIGHT:
+    case Ground::WALL_TOP_RIGHT_WATER:
+    case Ground::WALL_TOP_LEFT_WATER:
+    case Ground::WALL_BOTTOM_LEFT_WATER:
+    case Ground::WALL_BOTTOM_RIGHT_WATER:
+      return true;
+
+    case Ground::LOW_WALL:
+      return other.is_low_wall_obstacle();
+
+    case Ground::EMPTY:
+    case Ground::TRAVERSABLE:
+    case Ground::GRASS:
+    case Ground::ICE:
+      return false;
+
+    case Ground::SHALLOW_WATER:
+      return other.is_shallow_water_obstacle();
+
+    case Ground::DEEP_WATER:
+      return other.is_deep_water_obstacle();
+
+    case Ground::HOLE:
+      return other.is_hole_obstacle();
+
+    case Ground::LAVA:
+      return other.is_lava_obstacle();
+
+    case Ground::PRICKLE:
+      return other.is_prickle_obstacle();
+
+    case Ground::LADDER:
+      return other.is_ladder_obstacle();
+
+  }
+
   return false;
 }
 

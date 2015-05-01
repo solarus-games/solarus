@@ -103,6 +103,7 @@ void MapLoader::load_map(Game& game, Map& map) {
         Debug::error("Illegal entity type in map file: " + EntityTypeInfo::get_entity_type_name(type));
       }
       lua_context.create_map_entity_from_data(map, entity_data);
+      lua_pop(lua_context.get_internal_state(), 1);  // Discard the created entity on the stack.
     }
   }
 }

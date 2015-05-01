@@ -78,6 +78,7 @@ Hero::Hero(Equipment& equipment):
   end_invincible_date(0),
   normal_walking_speed(88),
   walking_speed(normal_walking_speed),
+  delayed_teletransporter(nullptr),
   on_raised_blocks(false),
   next_ground_date(0),
   next_ice_date(0) {

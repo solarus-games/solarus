@@ -569,9 +569,7 @@ bool check_boolean(
             + luaL_typename(l, index) + ")"
     );
   }
-  bool value = lua_toboolean(l, index);
-  lua_pop(l, 1);
-  return value;
+  return lua_toboolean(l, index);
 }
 
 /**

@@ -558,7 +558,9 @@ void MapEntity::notify_being_removed() {
   this->being_removed = true;
 
   // If this entity defines a ground, tell people that it is disappearing.
-  update_ground_observers();
+  if (is_on_map() && map->is_started()) {
+    update_ground_observers();
+  }
 }
 
 /**

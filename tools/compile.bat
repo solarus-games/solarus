@@ -1,2 +1,0 @@
-cd editor
-mvn package

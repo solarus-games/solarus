@@ -1197,8 +1197,7 @@ void LuaContext::create_map_entity_from_data(Map& map, const EntityData& entity_
   lua_pushcfunction(l, function);
   push_map(l, map);
   lua_pushlightuserdata(l, const_cast<EntityData*>(&entity_data));
-  call_function(2, 0, function_name.c_str());
-
+  call_function(2, 1, function_name.c_str());
 }
 
 /**

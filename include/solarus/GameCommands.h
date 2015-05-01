@@ -103,8 +103,6 @@ class GameCommands {
     std::map<std::string, GameCommand>
         joypad_mapping;                  /**< Associates each game command to the
                                           * joypad action that triggers it. */
-    std::set<GameCommand>
-        commands_pressed;                /**< Memorizes the state of each game command. */
 
     bool customizing;                    /**< Indicates that the next keyboard or
                                           * joypad event will be considered as the

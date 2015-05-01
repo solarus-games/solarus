@@ -26,8 +26,8 @@ Lua API changes
 
 Changes that introduce incompatibilities:
 
-* Text surfaces: the default font is now the first one in alphabetical order.
 * Text surfaces: the size must now be set at runtime instead of in fonts.dat.
+* Text surfaces: the default font is now the first one in alphabetical order.
 
 Changes that do not introduce incompatibilities:
 
@@ -44,7 +44,8 @@ to automatically update your data files.
 Don't forget to make a backup first.
 
 * fonts.dat no longer exists. Fonts are a resource like others now (#611).
-* Fonts are now in a 'fonts' directory instead of 'text'.
+* Fonts are now in a "fonts" directory instead of "text".
+* Maps: shop treasures have a new property "font".
 
 
 _________________________________

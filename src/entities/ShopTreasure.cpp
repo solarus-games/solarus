@@ -14,32 +14,36 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/ShopTreasure.h"
 #include "solarus/entities/Hero.h"
+#include "solarus/entities/ShopTreasure.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/FontResource.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/lowlevel/TextSurface.h"
 #include "solarus/lua/LuaContext.h"
+#include "solarus/Equipment.h"
+#include "solarus/EquipmentItem.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
 #include "solarus/KeysEffect.h"
-#include "solarus/Sprite.h"
-#include "solarus/Equipment.h"
-#include "solarus/EquipmentItem.h"
 #include "solarus/Savegame.h"
-#include "solarus/lowlevel/TextSurface.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/Sound.h"
-#include "solarus/lowlevel/Debug.h"
+#include "solarus/Sprite.h"
 #include <sstream>
 
 namespace Solarus {
 
 /**
  * \brief Creates a new shop treasure with the specified treasure and price.
- * \param name the name identifying this entity
- * \param layer layer of the entity to create
- * \param xy Coordinate of the entity to create.
- * \param treasure the treasure that the hero can buy
- * \param price the treasure's price
- * \param dialog_id id of the dialog describing the item when the player watches it
+ * \param name The name identifying this entity.
+ * \param layer Layer of the entity to create.
+ * \param xy Coordinates of the entity to create.
+ * \param treasure The treasure that the hero can buy.
+ * \param price The treasure's price.
+ * \param font_id Id of the font to use to display the price or an empty
+ * string for the default font.
+ * \param dialog_id Id of the dialog describing the treasure when the hero
+ * watches it.
  */
 ShopTreasure::ShopTreasure(
     const std::string& name,
@@ -47,6 +51,7 @@ ShopTreasure::ShopTreasure(
     const Point& xy,
     const Treasure& treasure,
     int price,
+    const std::string& font_id,
     const std::string& dialog_id):
   Detector(COLLISION_FACING, name, layer, xy, Size(32, 32)),
   treasure(treasure),
@@ -58,18 +63,22 @@ ShopTreasure::ShopTreasure(
   std::ostringstream oss;
   oss << price;
   price_digits.set_text(oss.str());
+  if (FontResource::exists(font_id)) {
+    price_digits.set_font(font_id);
+  }
 }
 
 /**
  * \brief Creates a new shop treasure with the specified treasure and price.
- * \param game the current game
- * \param name the name identifying this entity
- * \param layer layer of the entity to create
+ * \param game The current game.
+ * \param name The name identifying this entity.
+ * \param layer Layer of the entity to create.
  * \param xy Coordinates of the entity to create.
- * \param treasure the treasure that the hero can buy
- * \param price the treasure's price in rupees
- * \param dialog_id id of the dialog describing the item when the player watches it
- * \return the shop treasure created, or nullptr if it is already bought or if it
+ * \param treasure The treasure that the hero can buy.
+ * \param price The treasure's price.
+ * \param font_id Id of the font to use to display the price.
+ * \param dialog_id Id of the dialog describing the treasure when the hero watches it.
+ * \return The shop treasure created, or nullptr if it is already bought or if it
  * is not obtainable.
  */
 std::shared_ptr<ShopTreasure> ShopTreasure::create(
@@ -79,6 +88,7 @@ std::shared_ptr<ShopTreasure> ShopTreasure::create(
     const Point& xy,
     const Treasure& treasure,
     int price,
+    const std::string& font_id,
     const std::string& dialog_id
 ) {
   // See if the item is not already bought and is obtainable.
@@ -87,7 +97,7 @@ std::shared_ptr<ShopTreasure> ShopTreasure::create(
   }
 
   return std::make_shared<ShopTreasure>(
-      name, layer, xy, treasure, price, dialog_id
+      name, layer, xy, treasure, price, font_id, dialog_id
   );
 }
 

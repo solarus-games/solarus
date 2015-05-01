@@ -47,6 +47,7 @@ class ShopTreasure: public Detector {
         const Point& xy,
         const Treasure& treasure,
         int price,
+        const std::string& font_id,
         const std::string& dialog_id
     );
 
@@ -57,6 +58,7 @@ class ShopTreasure: public Detector {
         const Point& xy,
         const Treasure& treasure,
         int price,
+        const std::string& font_id,
         const std::string& dialog_id
     );
 
@@ -76,14 +78,14 @@ class ShopTreasure: public Detector {
   private:
 
     // data
-    Treasure treasure;                /**< the treasure the player can buy */
-    int price;                        /**< the treasure's price */
-    std::string dialog_id;            /**< id of the dialog describing the shop item */
+    Treasure treasure;                /**< The treasure the player can buy. */
+    int price;                        /**< The treasure's price. */
+    std::string dialog_id;            /**< Id of the dialog describing the treasure. */
 
     // displaying
-    TextSurface price_digits;         /**< the digits that show the price */
+    TextSurface price_digits;         /**< The digits that show the price. */
     SpritePtr
-        rupee_icon_sprite;            /**< the rupee icon near the price */
+        rupee_icon_sprite;            /**< The rupee icon near the price. */
 
 };
 

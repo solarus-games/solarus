@@ -113,6 +113,7 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
             { "treasure_variant", OptionalFlag::OPTIONAL, FieldValue(1) },
             { "treasure_savegame_variable", OptionalFlag::OPTIONAL, FieldValue("") },
             { "price", OptionalFlag::MANDATORY, FieldValue(0) },
+            { "font", OptionalFlag::OPTIONAL, FieldValue("") },
             { "dialog", OptionalFlag::MANDATORY, FieldValue("") }
         }
     },

@@ -104,6 +104,7 @@ file(
   include/solarus/lowlevel/PixelFilter.h
   include/solarus/lowlevel/Point.h
   include/solarus/lowlevel/Point.inl
+  include/solarus/lowlevel/Output.h
   include/solarus/lowlevel/QuestFiles.h
   include/solarus/lowlevel/Random.h
   include/solarus/lowlevel/Rectangle.h
@@ -294,6 +295,7 @@ file(
   src/lowlevel/InputEvent.cpp
   src/lowlevel/ItDecoder.cpp
   src/lowlevel/Music.cpp
+  src/lowlevel/Output.cpp
   src/lowlevel/PixelBits.cpp
   src/lowlevel/PixelFilter.cpp
   src/lowlevel/Point.cpp

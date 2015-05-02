@@ -17,15 +17,11 @@
 #ifndef SOLARUS_NOMAIN
 
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Output.h"
 #include "solarus/Arguments.h"
 #include "solarus/MainLoop.h"
 #include <iostream>
 #include <string>
-
-#ifdef WIN32  // For the -win-console flag.
-#  include <windows.h>
-#  include <cstdio>
-#endif
 
 namespace {
 
@@ -34,9 +30,13 @@ namespace {
  * \param argc number of command-line arguments
  * \param argv command-line arguments
  */
-void print_help(int argc, char **argv) {
+void print_help(const Solarus::Arguments& args) {
 
-  const std::string& binary_name = (argc > 0) ? argv[0] : "solarus";
+  Solarus::Output::initialize(args);
+  std::string binary_name = args.get_program_name();
+  if (binary_name.empty()) {
+    binary_name = "solarus";
+  }
   std::cout << "Usage: " << binary_name << " [options] [quest_path]"
     << std::endl << std::endl
     << "The quest path is the name of a directory that contains either the data"
@@ -61,20 +61,6 @@ void print_help(int argc, char **argv) {
     << std::endl
     << "  -win-console=yes|no           allows to see output in a console, only needed on Windows (default no)"
     << std::endl;
-}
-
-void initialize_output(const Solarus::Arguments& args) {
-
-  if (args.get_argument_value("-win-console") == "yes") {
-#ifdef WIN32
-    // Open a console and redirect output there.
-    // This is only needed on Windows: other systems
-    // use their existing console if any.
-    AllocConsole();
-    freopen("CONOUT$", "w", stdout);
-    freopen("CONOUT$", "w", stderr);
-#endif
-  }
 }
 
 }
@@ -114,14 +100,10 @@ int main(int argc, char** argv) {
   // Store the command-line arguments.
   const Arguments args(argc, argv);
 
-  initialize_output(args);
-
-  std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
-
   // Check the -help option.
   if (args.has_argument("-help")) {
     // Print a help message.
-    print_help(argc, argv);
+    print_help(args);
   }
   else {
     // Run the main loop.

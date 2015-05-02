@@ -14,21 +14,23 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/MainLoop.h"
+#include "solarus/lowlevel/Color.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Music.h"
+#include "solarus/lowlevel/Output.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Video.h"
-#include "solarus/lowlevel/Color.h"
-#include "solarus/lowlevel/Surface.h"
-#include "solarus/lowlevel/Music.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/Settings.h"
-#include "solarus/QuestProperties.h"
-#include "solarus/Game.h"
-#include "solarus/Savegame.h"
 #include "solarus/CurrentQuest.h"
+#include "solarus/Game.h"
+#include "solarus/QuestProperties.h"
+#include "solarus/MainLoop.h"
+#include "solarus/Savegame.h"
+#include "solarus/Settings.h"
 #include <lua.hpp>
+#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -89,6 +91,9 @@ MainLoop::MainLoop(const Arguments& args):
   next_game(nullptr),
   exiting(false) {
 
+  Output::initialize(args);
+  std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
+
   // Initialize basic features (input, audio, video, files...).
   System::initialize(args);
 
@@ -127,6 +132,7 @@ MainLoop::~MainLoop() {
   lua_context->exit();
   CurrentQuest::quit();
   System::quit();
+  Output::quit();
 }
 
 /**

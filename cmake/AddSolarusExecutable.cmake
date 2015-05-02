@@ -1,7 +1,15 @@
 # Source file of the solarus_run executable.
-set(main_source_file
+set(source_files
   src/main/Main.cpp
 )
+
+# Add the Solarus icon in Windows.
+if(WIN32)
+  set(source_files
+    ${source_files}
+    cmake/win32/resources.rc
+  )
+endif()
 
 # Build the executable,
 if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
@@ -9,7 +17,7 @@ if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
   include(addCFBundleTarget)
 else()
   add_executable(solarus_run
-    ${main_source_file}
+    ${source_files}
   )
 endif()
 

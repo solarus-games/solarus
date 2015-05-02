@@ -20,5 +20,5 @@ install:
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
   - sudo apt-get install -y cmake libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libluajit-5.1-dev libphysfs-dev libopenal-dev libmodplug-dev libvorbis-dev
 
-script: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make && make test
+script: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make && ctest -V
 

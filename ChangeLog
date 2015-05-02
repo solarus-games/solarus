@@ -1,12 +1,13 @@
 _______________________________
 
-Solarus 1.4.0 (under development)
+Solarus 1.4.0 (2015-05-02)
 _______________________________
 
 Engine changes
 --------------
 
 * Solarus now compiles with C++11.
+* Solarus Quest Editor was rewritten and is now in a separate repository.
 * Solarus can now be used as a library in other projects.
 * Add a command-line flag -win-console=yes to see output on Windows (#550).
 * Add unit tests.

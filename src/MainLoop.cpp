@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/TilePattern.h"
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Music.h"
@@ -102,6 +103,7 @@ MainLoop::MainLoop(const Arguments& args):
 
   // Read the quest resource list from data.
   CurrentQuest::initialize();
+  TilePattern::initialize();
 
   // Create the quest surface.
   root_surface = Surface::create(
@@ -130,6 +132,7 @@ MainLoop::~MainLoop() {
   }
 
   lua_context->exit();
+  TilePattern::quit();
   CurrentQuest::quit();
   System::quit();
   Output::quit();

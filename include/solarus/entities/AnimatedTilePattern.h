@@ -45,7 +45,10 @@ class AnimatedTilePattern: public TilePattern {
         const Size& size, int x1, int y1, int x2, int y2, int x3, int y3,
         bool parallax);
 
+    static void initialize();
     static void update();
+    static void quit();
+
     virtual void draw(
         const SurfacePtr& dst_surface,
         const Point& dst_position,

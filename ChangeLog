@@ -8,6 +8,7 @@ Engine changes
 
 * Fix the size of custom entities supposed to be optional (#680).
 * Fix the hero's sprite reset to default ones when changing equipment (#681).
+* Fix animated tiles freezed when running a quest a second time (#679).
 
 _______________________________
 

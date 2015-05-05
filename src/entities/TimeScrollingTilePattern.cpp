@@ -37,6 +37,22 @@ TimeScrollingTilePattern::TimeScrollingTilePattern(Ground ground,
 }
 
 /**
+ * \brief Initializes the time-scrolling tile pattern system.
+ */
+void TimeScrollingTilePattern::initialize() {
+  shift = System::now();
+  next_shift_date = System::now();
+}
+
+/**
+ * \brief Cleans the animated time-scrolling tile pattern system.
+ */
+void TimeScrollingTilePattern::quit() {
+  shift = 0;
+  next_shift_date = 0;
+}
+
+/**
  * \brief Updates all scrolling tiles patterns.
  *
  * This function is called repeatedly by the map.

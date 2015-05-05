@@ -191,9 +191,7 @@ void HeroSprites::set_tunic_sprite_id(const std::string& sprite_id) {
     tunic_sprite->set_current_direction(direction);
   }
 
-  if (sprite_id == get_default_tunic_sprite_id()) {
-    has_default_tunic_sprite = true;
-  }
+  has_default_tunic_sprite = (sprite_id == get_default_tunic_sprite_id());
 
   // Synchronize other sprites to the new tunic sprite.
   if (sword_sprite != nullptr) {
@@ -266,9 +264,7 @@ void HeroSprites::set_sword_sprite_id(const std::string& sprite_id) {
     }
   }
 
-  if (sprite_id == get_default_sword_sprite_id()) {
-    has_default_sword_sprite = true;
-  }
+  has_default_sword_sprite = (sprite_id == get_default_sword_sprite_id());
 }
 
 /**
@@ -313,9 +309,7 @@ void HeroSprites::set_sword_sound_id(const std::string& sound_id) {
 
   this->sword_sound_id = sound_id;
 
-  if (sound_id == get_default_sword_sound_id()) {
-    has_default_sword_sound = true;
-  }
+  has_default_sword_sound = (sound_id == get_default_sword_sound_id());
 }
 
 /**
@@ -384,9 +378,7 @@ void HeroSprites::set_shield_sprite_id(const std::string& sprite_id) {
     }
   }
 
-  if (sprite_id == get_default_shield_sprite_id()) {
-    has_default_shield_sprite = true;
-  }
+  has_default_shield_sprite = (sprite_id == get_default_shield_sprite_id());
 }
 
 /**

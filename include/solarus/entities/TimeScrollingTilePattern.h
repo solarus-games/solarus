@@ -35,6 +35,8 @@ class TimeScrollingTilePattern: public SimpleTilePattern {
 
     TimeScrollingTilePattern(Ground ground, const Point& xy, const Size& size);
 
+    static void initialize();
+    static void quit();
     static void update();
     virtual void draw(
         const SurfacePtr& dst_surface,

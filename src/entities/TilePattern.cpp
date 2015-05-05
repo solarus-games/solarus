@@ -92,9 +92,25 @@ Ground TilePattern::get_ground() const {
 }
 
 /**
- * \brief Updates the current frame of all tile patterns.
+ * \brief Initializes the tile pattern system.
+ */
+void TilePattern::initialize() {
+  AnimatedTilePattern::initialize();
+  TimeScrollingTilePattern::initialize();
+}
+
+/**
+ * \brief Cleans the tile pattern system.
+ */
+void TilePattern::quit() {
+  AnimatedTilePattern::quit();
+  TimeScrollingTilePattern::quit();
+}
+
+/**
+ * \brief Updates the tile pattern system.
  *
- * This function is called repeatedly by the map.
+ * This function is called repeatedly by the main loop.
  */
 void TilePattern::update() {
   AnimatedTilePattern::update();

@@ -78,6 +78,28 @@ AnimatedTilePattern::AnimatedTilePattern(Ground ground,
 }
 
 /**
+ * \brief Initializes the animated tile pattern system.
+ */
+void AnimatedTilePattern::initialize() {
+  next_frame_date = System::now();
+  frame_counter = 0;
+  for (int i = 0; i < 3; ++i) {
+    current_frames[i] = 0;
+  }
+}
+
+/**
+ * \brief Cleans the animated tile pattern system.
+ */
+void AnimatedTilePattern::quit() {
+  next_frame_date = 0;
+  frame_counter = 0;
+  for (int i = 0; i < 3; ++i) {
+    current_frames[i] = 0;
+  }
+}
+
+/**
  * \brief Updates the current frame of all tiles.
  *
  * This function is called repeatedly by the map.
@@ -125,7 +147,7 @@ void AnimatedTilePattern::draw(
  * \brief Returns whether tiles having this tile pattern are drawn at their
  * position.
  *
- * Usually, this function returns true, and when it is the case, drawn() is
+ * Usually, this function returns true, and when it is the case, draw() is
  * called only for tiles that are located in the current viewport.
  *
  * However, some tile patterns may want to be drawn even when they are not

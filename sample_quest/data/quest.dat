@@ -1,7 +1,7 @@
 quest{
   -- Format of your quest data files. You should not change this unless you
   -- know what you are doing.
-  solarus_version = "1.4",
+  solarus_version = "1.5",
 
   -- Directory where your quest will write its savegames and setting files.
   -- It will be a subdirectory of '$HOME/.solarus/', automatically created by

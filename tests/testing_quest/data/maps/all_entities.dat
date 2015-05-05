@@ -173,8 +173,6 @@ custom_entity{
   layer = 0,
   x = 24,
   y = 653,
-  width = 16,
-  height = 16,
   direction = 3,
 }
 

@@ -142,11 +142,14 @@ bool LuaData::export_to_file(const std::string& file_name) const {
   tmp_out.close();
 
   std::ifstream in(tmp_file_name);
+  if (!in) {
+    return false;
+  }
   std::ofstream out(file_name);
-  out << in.rdbuf();
   if (!out) {
     return false;
   }
+  out << in.rdbuf();
 
   in.close();
   std::remove(tmp_file_name.c_str());

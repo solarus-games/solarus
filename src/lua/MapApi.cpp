@@ -514,7 +514,7 @@ int LuaContext::l_create_chest(lua_State* l) {
       entity_creation_check_savegame_variable_mandatory(l, 1, data, "opening_condition");
     }
     else if (opening_method == Chest::OpeningMethod::BY_INTERACTION_IF_ITEM) {
-      if (!opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
+      if (!game.get_equipment().item_exists(opening_condition)) {
         LuaTools::arg_error(l, 1, "Bad field 'opening_condition' (no such equipment item: '"
             + opening_condition + "')"
         );
@@ -956,7 +956,7 @@ int LuaContext::l_create_door(lua_State* l) {
       entity_creation_check_savegame_variable_mandatory(l, 1, data, "opening_condition");
     }
     else if (opening_method == Door::OpeningMethod::BY_INTERACTION_IF_ITEM) {
-      if (!opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
+      if (!game.get_equipment().item_exists(opening_condition)) {
         LuaTools::arg_error(l, 1, "Bad field 'opening_condition' (no such equipment item: '"
             + opening_condition + "')"
         );
@@ -1183,11 +1183,13 @@ const std::map<EntityType, lua_CFunction> LuaContext::entity_creation_functions 
  * \brief Creates on the current map an entity from the specified data.
  *
  * Pushes onto the Lua stack the created entity.
+ * In case of error, pushes nothing and returns \c false.
  *
  * \param map The map where to create an entity.
  * \param entity_data Description of the entity to create.
+ * \return \c true if the entity was successfully created.
  */
-void LuaContext::create_map_entity_from_data(Map& map, const EntityData& entity_data) {
+bool LuaContext::create_map_entity_from_data(Map& map, const EntityData& entity_data) {
 
   const std::string& type_name = EntityTypeInfo::get_entity_type_name(entity_data.get_type());
   std::string function_name = "create_" + type_name;
@@ -1200,7 +1202,7 @@ void LuaContext::create_map_entity_from_data(Map& map, const EntityData& entity_
   lua_pushcfunction(l, function);
   push_map(l, map);
   lua_pushlightuserdata(l, const_cast<EntityData*>(&entity_data));
-  call_function(2, 1, function_name.c_str());
+  return call_function(2, 1, function_name.c_str());
 }
 
 /**

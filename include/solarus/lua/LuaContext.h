@@ -229,7 +229,7 @@ class LuaContext {
 
     // Entities.
     static const std::string& get_entity_internal_type_name(EntityType entity_type);
-    void create_map_entity_from_data(Map& map, const EntityData& entity_data);
+    bool create_map_entity_from_data(Map& map, const EntityData& entity_data);
 
     bool do_custom_entity_traversable_test_function(
         const ScopedLuaRef& traversable_test_ref,

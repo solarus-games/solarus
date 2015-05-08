@@ -32,6 +32,8 @@
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
 #include "solarus/SpriteAnimationSet.h"
+#include <algorithm>
+#include <iterator>
 #include <list>
 #include <utility>
 
@@ -1220,9 +1222,8 @@ void MapEntity::remove_sprite(Sprite& sprite) {
  */
 void MapEntity::clear_sprites() {
 
-  for (const SpritePtr& sprite: sprites) {
-    old_sprites.push_back(sprite);
-  }
+  std::copy(sprites.begin(), sprites.end(),
+            std::back_inserter(old_sprites));
   sprites.clear();
 }
 
@@ -1232,11 +1233,9 @@ void MapEntity::clear_sprites() {
 void MapEntity::clear_old_sprites() {
 
   for (const SpritePtr& old_sprite: old_sprites) {
-    for (auto it = sprites.begin(); it != sprites.end(); ++it) {
-      if (it->get() == old_sprite.get()) {
-        sprites.erase(it);
-        break;
-      }
+    auto it = std::find(sprites.begin(), sprites.end(), old_sprite);
+    if (it != sprites.end()) {
+      sprites.erase(it);
     }
   }
   old_sprites.clear();

@@ -16,6 +16,7 @@ Engine changes
 * Fix the hero's sprite reset to default ones when changing equipment (#681).
 * Fix animated tiles freezed when running a quest a second time (#679).
 * Fix saving empty files.
+* Print an error message when there is no font in the quest.
 
 _______________________________
 

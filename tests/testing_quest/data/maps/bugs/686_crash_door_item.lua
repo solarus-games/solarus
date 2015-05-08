@@ -1,0 +1,3 @@
+local map = ...
+
+sol.main.exit()

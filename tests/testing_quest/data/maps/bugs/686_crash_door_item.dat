@@ -1,0 +1,43 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  pattern = "3",
+}
+
+destination{
+  layer = 0,
+  x = 24,
+  y = 29,
+  direction = 1,
+}
+
+door{
+  layer = 0,
+  x = 16,
+  y = 48,
+  direction = 3,
+  sprite = "entities/door",
+  opening_method = "interaction_if_item",
+  opening_condition = "sword",
+}
+
+chest{
+  layer = 0,
+  x = 56,
+  y = 61,
+  sprite = "entities/chest",
+  opening_method = "interaction_if_item",
+  opening_condition = "sword",
+}
+

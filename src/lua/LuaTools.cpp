@@ -18,6 +18,7 @@
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lua/LuaException.h"
 #include "solarus/lua/ScopedLuaRef.h"
+#include <cctype>
 #include <sstream>
 
 namespace Solarus {
@@ -50,15 +51,12 @@ int get_positive_index(lua_State* l, int index) {
  */
 bool is_valid_lua_identifier(const std::string& name) {
 
-  if (name.empty() || (name[0] >= '0' && name[0] <= '9')) {
+  if (name.empty() || std::isdigit(name[0])) {
     return false;
   }
 
   for (char character: name) {
-    if (character != '_' &&
-        !(character >= 'a' && character <= 'z') &&
-        !(character >= 'A' && character <= 'Z') &&
-        !(character >= '0' && character <= '9')) {
+    if (!std::isalnum(character) && character != '_') {
       return false;
     }
   }

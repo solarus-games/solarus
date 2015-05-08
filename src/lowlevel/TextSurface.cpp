@@ -72,6 +72,9 @@ TextSurface::TextSurface(int x, int y,
   surface(nullptr),
   text() {
 
+  if (font_id.empty()) {
+    Debug::error("This quest has no fonts");
+  }
 }
 
 /**

@@ -414,7 +414,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(source_files
     ${source_files}
     src/lowlevel/apple/AppleInterface.mm
-    include/lowlevel/apple/AppleInterface.h
+    include/solarus/lowlevel/apple/AppleInterface.h
   )
 endif()
 

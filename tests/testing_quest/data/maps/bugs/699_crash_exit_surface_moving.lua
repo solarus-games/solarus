@@ -12,8 +12,7 @@ end
 
 function map:on_draw(dst_surface)
 
-  print("map on draw")
   moving_surface:draw(dst_surface)
 end
 
-sol.timer.start(1000, sol.main.exit)
+sol.timer.start(10, sol.main.exit)

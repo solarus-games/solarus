@@ -68,7 +68,7 @@ Size window_size;                         /**< Size of the window. The quest siz
  * \brief Creates the window but does not show it.
  * \param args Command-line arguments.
  */
-void create_window(const Arguments& args) {
+void create_window() {
 
   Debug::check_assertion(main_window == nullptr, "Window already exists");
 
@@ -94,16 +94,9 @@ void create_window(const Arguments& args) {
   Debug::check_assertion(main_window != nullptr,
       std::string("Cannot create the window: ") + SDL_GetError());
 
-  int acceleration_flag = 0;
-  if (args.get_argument_value("-video-acceleration") == "no") {
-    acceleration_enabled = false;
-    acceleration_flag = SDL_RENDERER_SOFTWARE;
-  }
-  else {
-    // Accelerated by default.
-    acceleration_enabled = true;
-    acceleration_flag = SDL_RENDERER_ACCELERATED;
-  }
+  int acceleration_flag = acceleration_enabled ?
+      SDL_RENDERER_ACCELERATED : SDL_RENDERER_SOFTWARE;
+
   main_renderer = SDL_CreateRenderer(main_window, -1, acceleration_flag
 #if SOLARUS_HAVE_OPENGL != 1
       | SDL_RENDERER_PRESENTVSYNC
@@ -278,13 +271,21 @@ void Video::initialize(const Arguments& args) {
     }
   }
 
+  if (args.get_argument_value("-video-acceleration") == "no") {
+    acceleration_enabled = false;
+  }
+  else {
+    // Accelerated by default.
+    acceleration_enabled = true;
+  }
+
   if (disable_window) {
     // Create a pixel format anyway to make surface and color operations work,
     // even though nothing will ever be rendered.
     pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ABGR8888);
   }
   else {
-    create_window(args);
+    create_window();
   }
 }
 

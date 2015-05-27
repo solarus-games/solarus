@@ -12,6 +12,7 @@ _______________________________
 Bug fixes for the 1.4 release.
 
 * Fix a compilation error with Mac OS X.
+* Fix crash at exit when a surface has a movement with callback (#699).
 
 _______________________________
 

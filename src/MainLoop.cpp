@@ -131,6 +131,10 @@ MainLoop::~MainLoop() {
     game.reset();  // While deleting the game, the Lua world must still exist.
   }
 
+  // Clear the surface while Lua still exists,
+  // because it may point to other surfaces that have Lua movements.
+  root_surface = nullptr;
+
   lua_context->exit();
   TilePattern::quit();
   CurrentQuest::quit();

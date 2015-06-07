@@ -723,7 +723,7 @@ void MapEntities::remove_marked_entities() {
       detectors.remove(static_cast<Detector*>(entity));
     }
 
-    // remove it from the ground obsevers list if present
+    // remove it from the ground observers list if present
     if (entity->is_ground_observer()) {
       ground_observers[layer].remove(entity);
     }
@@ -943,6 +943,34 @@ void MapEntities::set_entity_layer(MapEntity& entity, Layer layer) {
 
     // update the entity after the lists because this function might be called again
     entity.set_layer(layer);
+  }
+}
+
+/**
+ * \brief This function should be called when an entity becomes a ground
+ * observer or when it stops being one.
+ * \param entity The entity whose ground observer property has changed.
+ */
+void MapEntities::notify_entity_ground_observer_changed(MapEntity& entity) {
+
+  Layer layer = entity.get_layer();
+  ground_observers[layer].remove(&entity);
+  if (entity.is_ground_observer()) {
+    ground_observers[layer].push_back(&entity);
+  }
+}
+
+/**
+ * \brief This function should be called when an entity becomes a ground
+ * modifier or when it stops being one.
+ * \param entity The entity whose ground modifier property has changed.
+ */
+void MapEntities::notify_entity_ground_modifier_changed(MapEntity& entity) {
+
+  Layer layer = entity.get_layer();
+  ground_modifiers[layer].remove(&entity);
+  if (entity.is_ground_modifier()) {
+    ground_modifiers[layer].push_back(&entity);
   }
 }
 

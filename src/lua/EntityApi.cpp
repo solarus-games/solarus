@@ -4802,7 +4802,7 @@ int LuaContext::custom_entity_api_set_modified_ground(lua_State* l) {
  */
 void LuaContext::entity_on_update(MapEntity& entity) {
 
-  // This particular method is tried so often that we want to save optimize
+  // This particular method is tried so often that we want to optimize
   // the std::string construction.
   static const std::string method_name = "on_update";
   if (!userdata_has_field(entity, method_name)) {

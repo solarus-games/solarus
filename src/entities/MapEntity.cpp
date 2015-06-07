@@ -147,7 +147,7 @@ bool MapEntity::can_be_obstacle() const {
  * \brief Returns whether this entity is sensible to the ground below it.
  *
  * This function returns \c false by default.
- * If this function returns \c true when it is added to a map,
+ * If this function returns \c true,
  * get_ground_below() will then return the ground below it
  * and notify_ground_below_changed() will be called when it changes.
  *
@@ -163,7 +163,7 @@ bool MapEntity::is_ground_observer() const {
  *
  * The ground of a point is computed as the ground of the tile below it,
  * possibly modified by entities overlapping the point and who redefine
- * can_change_ground() to \c true.
+ * is_ground_modifier() to \c true.
  *
  * This function returns \c false by default.
  * If this function returns \c true, the entity is added to the list of

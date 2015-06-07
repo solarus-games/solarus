@@ -26,6 +26,7 @@
 #include "solarus/entities/Fire.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Jumper.h"
+#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Npc.h"
 #include "solarus/entities/Sensor.h"
 #include "solarus/entities/Separator.h"
@@ -64,7 +65,8 @@ CustomEntity::CustomEntity(
       name, layer, xy, size
   ),
   model(model),
-  ground_modifier(true),
+  ground_observer(false),
+  ground_modifier(false),
   modified_ground(Ground::EMPTY) {
 
   set_origin(8, 13);
@@ -1121,18 +1123,24 @@ bool CustomEntity::interaction_with_item(EquipmentItem& item) {
  * \copydoc MapEntity::is_ground_observer
  */
 bool CustomEntity::is_ground_observer() const {
+  return ground_observer;
+}
 
-  if (!is_on_map()) {
-    // At initialization time, assume we are a ground observer,
-    // otherwise we would never get notified of ground changes later.
-    return true;
-  }
+/**
+ * \brief Checks if this entity becomes a ground observer or stops being one.
+ */
+void CustomEntity::update_ground_observer() {
 
   // If there is no on_ground_below_changed() event, don't bother
   // determine the ground below.
-  return get_lua_context().userdata_has_field(
-      *this, "on_ground_below_changed"
+  static const std::string field_name = "on_ground_below_changed";
+  bool ground_observer = get_lua_context().userdata_has_field(
+      *this, "field_name"
   );
+  if (ground_observer != this->ground_observer) {
+    this->ground_observer = ground_observer;
+    get_entities().notify_entity_ground_observer_changed(*this);
+  }
 }
 
 /**
@@ -1176,7 +1184,11 @@ void CustomEntity::set_modified_ground(Ground modified_ground) {
   update_ground_observers();
 
   // Now, continue notifications only if not Ground::EMPTY.
-  ground_modifier = modified_ground != Ground::EMPTY;
+  bool ground_modifier = modified_ground != Ground::EMPTY;
+  if (ground_modifier != this->ground_modifier) {
+    this->ground_modifier = ground_modifier;
+    get_entities().notify_entity_ground_modifier_changed(*this);
+  }
 }
 
 /**
@@ -1196,6 +1208,7 @@ void CustomEntity::notify_creating() {
 void CustomEntity::update() {
 
   Detector::update();
+  update_ground_observer();
 
   if (is_suspended() || !is_enabled()) {
     return;

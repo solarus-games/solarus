@@ -243,6 +243,8 @@ class SOLARUS_API CustomEntity: public Detector {
     void notify_collision_from(MapEntity& other_entity);
     void notify_collision_from(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
 
+    void update_ground_observer();
+
     std::string model;                                /**< Model of this custom entity or an empty string. */
 
     // Obstacles.
@@ -265,6 +267,7 @@ class SOLARUS_API CustomEntity: public Detector {
                                         * collisions other than
                                         * COLLISION_SPRITE. */
 
+    bool ground_observer;              /**< Whether this custom entity is a ground observer. */
     bool ground_modifier;              /**< Whether this custom entity is a ground modifier. */
     Ground modified_ground;            /**< The ground defined by this custom
                                         * entity or GROUND_EMPTY. */

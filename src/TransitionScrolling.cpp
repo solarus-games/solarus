@@ -136,7 +136,34 @@ bool TransitionScrolling::is_finished() const {
  * \brief Makes a scrolling step.
  */
 void TransitionScrolling::scroll() {
-  current_scrolling_position.add_xy(dx, dy);
+
+  // Add dx,dy to current_scrolling_position, but don't exceed the final position.
+
+  if (dx > 0) {
+    current_scrolling_position.set_x(std::min(
+        current_scrolling_position.get_x() + dx,
+        current_map_dst_position.get_x())
+    );
+  }
+  else {
+    current_scrolling_position.set_x(std::max(
+        current_scrolling_position.get_x() + dx,
+        current_map_dst_position.get_x())
+    );
+  }
+
+  if (dy > 0) {
+    current_scrolling_position.set_y(std::min(
+        current_scrolling_position.get_y() + dy,
+        current_map_dst_position.get_y())
+    );
+  }
+  else {
+    current_scrolling_position.set_y(std::max(
+        current_scrolling_position.get_y() + dy,
+        current_map_dst_position.get_y())
+    );
+  }
 }
 
 /**

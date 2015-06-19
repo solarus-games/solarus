@@ -66,7 +66,7 @@ class Sprite: public Drawable {
     // size and origin point
     Size get_size() const;
     const Size& get_max_size() const;
-    const Point& get_origin() const;
+    Point get_origin() const;
 
     // animation state
     const std::string& get_current_animation() const;
@@ -78,7 +78,7 @@ class Sprite: public Drawable {
     int get_nb_frames() const;
     int get_current_frame() const;
     void set_current_frame(int current_frame, bool notify_script = true);
-    const Rectangle& get_current_frame_rectangle() const;
+    Rectangle get_current_frame_rectangle() const;
     uint32_t get_frame_delay() const;
     void set_frame_delay(uint32_t frame_delay);
     void set_synchronized_to(const SpritePtr& other);
@@ -133,7 +133,7 @@ class Sprite: public Drawable {
     // current state of the sprite
 
     std::string current_animation_name;  /**< name of the current animation */
-    SpriteAnimation* current_animation;  /**< the current animation */
+    SpriteAnimation* current_animation;  /**< the current animation or nullptr if the sprite sheet has no animation */
     int current_direction;             /**< current direction of the animation (the first one is number 0);
                                         * it can be different from the movement direction
                                         * of the entity, because sometimes a sprite can

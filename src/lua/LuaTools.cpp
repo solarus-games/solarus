@@ -458,7 +458,7 @@ std::string check_string(
 ) {
   if (!lua_isstring(l, index)) {
     arg_error(l, index,
-        std::string("number expected, got ")
+        std::string("string expected, got ")
             + luaL_typename(l, index) + ")"
     );
   }

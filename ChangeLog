@@ -15,6 +15,7 @@ Bug fixes for the 1.4 release.
 * Fix crash at exit when a surface has a movement with callback (#699).
 * Fix crash when removing a custom entity (#690).
 * Fix crash when a sprite file is missing or has no animation (#700).
+* Fix Lua error message saying "number expected" instead of "string expected".
 
 _______________________________
 

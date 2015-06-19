@@ -154,6 +154,10 @@ bool Sprite::are_pixel_collisions_enabled() const {
  * \return The size of the current frame.
  */
 Size Sprite::get_size() const {
+
+  if (current_animation == nullptr) {
+    return Size();
+  }
   return current_animation->get_direction(current_direction).get_size();
 }
 
@@ -168,9 +172,13 @@ const Size& Sprite::get_max_size() const {
 /**
  * \brief Returns the origin point of a frame for the current animation and
  * the current direction.
- * \return the origin point of a frame
+ * \return The origin point of a frame.
  */
-const Point& Sprite::get_origin() const {
+Point Sprite::get_origin() const {
+
+  if (current_animation == nullptr) {
+    return Point();
+  }
 
   return current_animation->get_direction(current_direction).get_origin();
 }
@@ -196,7 +204,7 @@ uint32_t Sprite::get_frame_delay() const {
  * animation will continue to be drawn.
  *
  * \param frame_delay The delay between two frames for the current animation
- * in miliseconds.
+ * in milliseconds.
  */
 void Sprite::set_frame_delay(uint32_t frame_delay) {
   this->frame_delay = frame_delay;
@@ -208,6 +216,11 @@ void Sprite::set_frame_delay(uint32_t frame_delay) {
  * finished.
  */
 int Sprite::get_next_frame() const {
+
+  if (current_animation == nullptr) {
+    return -1;
+  }
+
   return current_animation->get_next_frame(current_direction, current_frame);
 }
 
@@ -232,8 +245,13 @@ void Sprite::set_current_animation(const std::string& animation_name) {
   if (animation_name != this->current_animation_name || !is_animation_started()) {
 
     this->current_animation_name = animation_name;
-    this->current_animation = &animation_set.get_animation(animation_name);
-    set_frame_delay(current_animation->get_frame_delay());
+    if (animation_set.has_animation(animation_name)) {
+      this->current_animation = &animation_set.get_animation(animation_name);
+      set_frame_delay(current_animation->get_frame_delay());
+    }
+    else {
+      this->current_animation = nullptr;
+    }
 
     set_current_frame(0, false);
 
@@ -259,6 +277,10 @@ bool Sprite::has_animation(const std::string& animation_name) const {
  * \return The number of directions.
  */
 int Sprite::get_nb_directions() const {
+
+  if (current_animation == nullptr) {
+    return 0;
+  }
   return current_animation->get_nb_directions();
 }
 
@@ -307,6 +329,10 @@ void Sprite::set_current_direction(int current_direction) {
  * \return The number of frames.
  */
 int Sprite::get_nb_frames() const {
+
+  if (current_animation == nullptr) {
+    return 0;
+  }
   return current_animation->get_direction(current_direction).get_nb_frames();
 }
 
@@ -350,7 +376,11 @@ void Sprite::set_current_frame(int current_frame, bool notify_script) {
  * \brief Returns the rectangle of the current frame.
  * \return The current frame's rectangle.
  */
-const Rectangle& Sprite::get_current_frame_rectangle() const {
+Rectangle Sprite::get_current_frame_rectangle() const {
+
+  if (current_animation == nullptr) {
+    return Rectangle();
+  }
 
   return current_animation->get_direction(current_direction).get_frame(current_frame);
 }
@@ -490,6 +520,10 @@ void Sprite::set_paused(bool paused) {
  * \return true if the animation is looping
  */
 bool Sprite::is_animation_looping() const {
+
+  if (current_animation == nullptr) {
+    return false;
+  }
   return current_animation->is_looping();
 }
 
@@ -551,6 +585,10 @@ void Sprite::set_blinking(uint32_t blink_delay) {
  * \return \c true if the sprites are overlapping.
  */
 bool Sprite::test_collision(const Sprite& other, int x1, int y1, int x2, int y2) const {
+
+  if (current_animation == nullptr) {
+    return false;
+  }
 
   const SpriteAnimationDirection& direction1 = current_animation->get_direction(current_direction);
   const Point& origin1 = direction1.get_origin();
@@ -658,6 +696,10 @@ void Sprite::raw_draw(
     Surface& dst_surface,
     const Point& dst_position) {
 
+  if (current_animation == nullptr) {
+    return;
+  }
+
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
@@ -690,6 +732,10 @@ void Sprite::raw_draw_region(
     const Rectangle& region,
     Surface& dst_surface,
     const Point& dst_position) {
+
+  if (current_animation == nullptr) {
+    return;
+  }
 
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {

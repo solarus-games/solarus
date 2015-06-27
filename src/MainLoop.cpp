@@ -217,6 +217,7 @@ void MainLoop::set_game(Game* game) {
 void MainLoop::run() {
 
   // Main loop.
+  std::cout << "Simulation started" << std::endl;
 
   uint32_t last_frame_date = System::get_real_time();
   uint32_t lag = 0;  // Lose time of the simulation to catch up.
@@ -270,6 +271,7 @@ void MainLoop::run() {
       System::sleep(System::timestep - last_frame_duration);
     }
   }
+  std::cout << "Simulation finished" << std::endl;
 }
 
 /**

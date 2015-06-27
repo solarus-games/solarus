@@ -981,6 +981,7 @@ class LuaContext {
     static void do_file(lua_State* l, const std::string& script_name);
     static bool do_file_if_exists(lua_State* l, const std::string& script_name);
     void print_stack(lua_State* l);
+    void print_lua_version();
 
     // Initialization of modules.
     void register_functions(

@@ -104,6 +104,8 @@ void LuaContext::initialize() {
   lua_atpanic(l, l_panic);
   luaL_openlibs(l);
 
+  print_lua_version();
+
   // Associate this LuaContext object to the lua_State pointer.
   lua_contexts[l] = this;
 
@@ -770,6 +772,45 @@ void LuaContext::print_stack(lua_State* l) {
     std::cout << " ";
   }
   std::cout << std::endl;
+}
+
+/**
+ * \brief Prints the version of Lua.
+ *
+ * This detects if LuaJIT is being used.
+ */
+void LuaContext::print_lua_version() {
+
+  Debug::check_assertion(lua_gettop(l) == 0, "Non-empty Lua stack before print_lua_version()");
+
+  // _VERSION is the Lua language version, giving the same
+  // result for vanilla Lua and LuaJIT.
+  // But we want to tell the user if LuaJIT is being used.
+  // To detect this, we can check the presence of the jit table.
+  std::string version;
+                                  // -
+  lua_getglobal(l, "jit");
+                                  // jit/nil
+  if (lua_isnil(l, -1)) {
+    // Vanilla Lua.
+                                  // nil
+    lua_getglobal(l, "_VERSION");
+                                  // nil version
+    version = LuaTools::check_string(l, -1);
+    lua_pop(l, 2);
+                                  // -
+    std::cout << "LuaJIT: no (" << version << ")" << std::endl;
+  }
+  else {
+    // LuaJIT.
+                                  // jit
+    version = LuaTools::check_string_field(l, -1, "version");
+    lua_pop(l, 1);
+                                  // -
+    std::cout << "LuaJIT: yes (" << version << ")" << std::endl;
+  }
+
+  Debug::check_assertion(lua_gettop(l) == 0, "Non-empty Lua stack after print_lua_version()");
 }
 
 /**

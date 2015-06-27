@@ -4,6 +4,7 @@ Solarus 1.5.0 (in progress)
 _______________________________
 
 * Print when the main loop starts and stops.
+* Print the Lua version at startup (#692).
 
 _______________________________
 

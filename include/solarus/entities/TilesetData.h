@@ -40,6 +40,16 @@ enum class TileScrolling {
 };
 
 /**
+ * \brief Kind of scrolling applied to a tile pattern.
+ */
+enum class TilePatternRepeatMode {
+    ALL,                /**< Repeatable in both directions. */
+    HORIZONTAL,         /**< Repeatable only horizontally. */
+    VERTICAL,           /**< Repeatable only vertically. */
+    NONE                /**< Not repeatable. */
+};
+
+/**
  * \brief Stores the properties of a tile pattern.
  */
 class SOLARUS_API TilePatternData {
@@ -58,6 +68,9 @@ class SOLARUS_API TilePatternData {
     TileScrolling get_scrolling() const;
     void set_scrolling(TileScrolling scrolling);
 
+    TilePatternRepeatMode get_repeat_mode() const;
+    void set_repeat_mode(TilePatternRepeatMode repeat_mode);
+
     bool is_multi_frame() const;
     int get_num_frames() const;
     Rectangle get_frame() const;
@@ -71,6 +84,7 @@ class SOLARUS_API TilePatternData {
     Ground ground;                     /**< Terrain of this pattern. */
     Layer default_layer;               /**< Initial layer when creating a tile. */
     TileScrolling scrolling;           /**< Kind of scrolling if any. */
+    TilePatternRepeatMode repeat_mode; /**< How this patterns intends to be repeated. */
     std::vector<Rectangle> frames;     /**< Coordinates of the pattern's frame(s).
                                         * - 1 element: one frame (no animation).
                                         * - 3 elements: three frames, animated with 0-1-2-0.

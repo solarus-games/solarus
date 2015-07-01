@@ -31,6 +31,13 @@ const std::map<TileScrolling, std::string> scrolling_names = {
     { TileScrolling::SELF, "self" },
 };
 
+const std::map<TilePatternRepeatMode, std::string> repeat_mode_names = {
+    { TilePatternRepeatMode::ALL, "all" },
+    { TilePatternRepeatMode::HORIZONTAL, "horizontal" },
+    { TilePatternRepeatMode::VERTICAL, "vertical" },
+    { TilePatternRepeatMode::NONE, "none" },
+};
+
 }
 
 /**
@@ -99,6 +106,20 @@ TileScrolling TilePatternData::get_scrolling() const {
  */
 void TilePatternData::set_scrolling(TileScrolling scrolling) {
   this->scrolling = scrolling;
+}
+
+/**
+ * \brief Returns how this pattern is intended to be repeated.
+ */
+TilePatternRepeatMode TilePatternData::get_repeat_mode() const {
+  return repeat_mode;
+}
+
+/**
+ * \brief Sets how this pattern is intended to be repeated.
+ */
+void TilePatternData::set_repeat_mode(TilePatternRepeatMode repeat_mode) {
+  this->repeat_mode = repeat_mode;
 }
 
 /**
@@ -359,6 +380,11 @@ int l_tile_pattern(lua_State* l) {
         l, 1, "scrolling", scrolling_names, TileScrolling::NONE
     );
     pattern_data.set_scrolling(scrolling);
+
+    const TilePatternRepeatMode repeat_mode = LuaTools::opt_enum_field<TilePatternRepeatMode>(
+        l, 1, "repeat_mode", repeat_mode_names, TilePatternRepeatMode::ALL
+    );
+    pattern_data.set_repeat_mode(repeat_mode);
 
     const int width = LuaTools::check_int_field(l, 1, "width");
     const int height = LuaTools::check_int_field(l, 1, "height");

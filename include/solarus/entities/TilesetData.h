@@ -71,6 +71,9 @@ class SOLARUS_API TilePatternData {
     TilePatternRepeatMode get_repeat_mode() const;
     void set_repeat_mode(TilePatternRepeatMode repeat_mode);
 
+    static const std::string& get_repeat_mode_name(TilePatternRepeatMode repeat_mode);
+    static TilePatternRepeatMode get_repeat_mode_by_name(const std::string& repeat_mode_name);
+
     bool is_multi_frame() const;
     int get_num_frames() const;
     Rectangle get_frame() const;

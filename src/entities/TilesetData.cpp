@@ -123,6 +123,33 @@ void TilePatternData::set_repeat_mode(TilePatternRepeatMode repeat_mode) {
 }
 
 /**
+ * \brief Returns the name of a tile pattern repeat mode.
+ * \param type A repeat mode.
+ * \return The corresponding name.
+ */
+const std::string& TilePatternData::get_repeat_mode_name(TilePatternRepeatMode repeat_mode) {
+
+  return repeat_mode_names.at(repeat_mode);
+}
+
+/**
+ * \brief Returns the tile pattern repeat mode value with the given name.
+ * \param repeat_mode_name The name of a repeat mode. It must exist.
+ * \return The corresponding repeat mode value.
+ */
+TilePatternRepeatMode TilePatternData::get_repeat_mode_by_name(const std::string& repeat_mode_name) {
+
+  for (const auto& kvp: repeat_mode_names) {
+    if (kvp.second == repeat_mode_name) {
+      return kvp.first;
+    }
+  }
+
+  Debug::die(std::string("Unknown repeat mode: ") + repeat_mode_name);
+  return TilePatternRepeatMode();
+}
+
+/**
  * \brief Returns whether this is a multi-frame pattern.
  * \return \c true if the pattern has more than one frame.
  */
@@ -533,6 +560,10 @@ bool TilesetData::export_to_lua(std::ostream& out) const {
     if (pattern.get_scrolling() != TileScrolling::NONE) {
       const std::string& scolling_name = scrolling_names.at(pattern.get_scrolling());
       out << "  scrolling = \"" << scolling_name << "\",\n";
+    }
+    if (pattern.get_repeat_mode() != TilePatternRepeatMode::ALL) {
+      const std::string& repeat_mode_name = TilePatternData::get_repeat_mode_name(pattern.get_repeat_mode());
+      out << "  repeat_mode = \"" << repeat_mode_name << "\",\n";
     }
     out << "}\n\n";
   }

@@ -3,8 +3,16 @@ _______________________________
 Solarus 1.5.0 (in progress)
 _______________________________
 
+Engine changes
+--------------
+
 * Print when the main loop starts and stops.
 * Print the Lua version at startup (#692).
+
+Data files format changes
+-------------------------
+
+* Dialogs: Allow empty texts.
 
 _______________________________
 

@@ -9,6 +9,13 @@ Engine changes
 * Print when the main loop starts and stops.
 * Print the Lua version at startup (#692).
 
+Lua API changes
+---------------
+
+Changes that introduce incompatibilities:
+
+* Items with amount now have a default max amount of 1000 (#688).
+
 Data files format changes
 -------------------------
 

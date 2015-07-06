@@ -271,10 +271,6 @@ int DialogResources::l_dialog(lua_State* l) {
       LuaTools::error(l, "Missing value id");
     }
 
-    if (dialog.get_text().empty()) {
-      LuaTools::error(l, std::string("Missing text for dialog '") + dialog_id + "'");
-    }
-
     if (dialogs.has_dialog(dialog_id)) {
       LuaTools::error(l, std::string("Duplicate dialog '") + dialog_id + "'");
     }

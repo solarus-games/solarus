@@ -16,6 +16,10 @@ Changes that introduce incompatibilities:
 
 * Items with amount now have a default max amount of 1000 (#688).
 
+Changes that do not introduce incompatibilities:
+
+* Add a method block:get_sprite().
+
 Data files format changes
 -------------------------
 

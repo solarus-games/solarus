@@ -237,6 +237,7 @@ void LuaContext::register_entity_module() {
   // Block.
   static const luaL_Reg block_methods[] = {
       ENTITY_COMMON_METHODS,
+      { "get_sprite", entity_api_get_sprite },
       { "reset", block_api_reset },
       { "is_pushable", block_api_is_pushable },
       { "set_pushable", block_api_set_pushable },

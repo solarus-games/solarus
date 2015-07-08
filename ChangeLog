@@ -35,6 +35,7 @@ Bug fixes for the 1.4 release.
 * Fix Lua error message saying "number expected" instead of "string expected".
 * Fix map scrolling not working if quest size is not a multiple of 5 (#701).
 * Fix entities already destroyed when map:on_finished() is called (#691).
+* Fix entity:bring_to_front()/back() ignoring the order of obstacles.
 
 _______________________________
 

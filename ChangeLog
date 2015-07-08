@@ -13,6 +13,7 @@ Bug fixes for the 1.4 release.
 * Fix map scrolling not working if quest size is not a multiple of 5 (#701).
 * Fix entities already destroyed when map:on_finished() is called (#691).
 * Fix entity:bring_to_front()/back() ignoring the order of obstacles.
+* Fix hero stuck on blocks.
 
 _______________________________
 

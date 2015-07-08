@@ -1465,9 +1465,7 @@ bool Hero::is_ladder_obstacle() const {
 }
 
 /**
- * \brief Returns whether a block is currently considered as an obstacle by this entity.
- * \param block a block
- * \return true if the teletransporter is currently an obstacle for this entity
+ * \copydoc MapEntity::is_block_obstacle
  */
 bool Hero::is_block_obstacle(Block& block) {
   return block.is_hero_obstacle(*this);

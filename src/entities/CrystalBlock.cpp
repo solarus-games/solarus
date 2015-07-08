@@ -101,7 +101,7 @@ void CrystalBlock::notify_collision(MapEntity& entity_overlapping, CollisionMode
 
   if (entity_overlapping.is_hero() && is_raised()) {
 
-    // see if we have to make fim fall
+    // see if we have to make him fall
 
     Hero& hero = static_cast<Hero&>(entity_overlapping);
     if (hero.can_control_movement()) {

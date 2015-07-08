@@ -121,7 +121,15 @@ bool Block::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) 
  * \param hero the hero
  * \return true if the hero is an obstacle for this entity.
  */
-bool Block::is_hero_obstacle(Hero& /* hero */) {
+bool Block::is_hero_obstacle(Hero& hero) {
+
+  // The block is not an obstacle when the hero is already overlapping it,
+  // which is easily possible with blocks created dynamically.
+  if (hero.overlaps(*this)) {
+    return false;
+  }
+
+  // When the block is moved by the hero, one pixel can overlap.
   return get_movement() == nullptr;
 }
 

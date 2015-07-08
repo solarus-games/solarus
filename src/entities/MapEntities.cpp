@@ -283,7 +283,22 @@ void MapEntities::bring_to_front(MapEntity& entity) {
     entities_drawn_first[layer].push_back(&entity);  // Displayed last.
   }
 
-  // TODO also update the obstacle_entities, ground_modifiers and ground_observers.
+  if (entity.can_be_obstacle()) {
+    if (entity.has_layer_independent_collisions()) {
+      obstacle_entities[LAYER_LOW].remove(&entity);
+      obstacle_entities[LAYER_LOW].push_back(&entity);
+      obstacle_entities[LAYER_INTERMEDIATE].remove(&entity);
+      obstacle_entities[LAYER_INTERMEDIATE].push_back(&entity);
+      obstacle_entities[LAYER_HIGH].remove(&entity);
+      obstacle_entities[LAYER_HIGH].push_back(&entity);
+    }
+    else {
+      obstacle_entities[layer].remove(&entity);
+      obstacle_entities[layer].push_back(&entity);
+    }
+  }
+
+  // TODO also update ground_modifiers and ground_observers.
 }
 
 /**
@@ -298,7 +313,22 @@ void MapEntities::bring_to_back(MapEntity& entity) {
     entities_drawn_first[layer].push_front(&entity);  // Displayed first.
   }
 
-  // TODO also update the obstacle_entities, ground_modifiers and ground_observers.
+  if (entity.can_be_obstacle()) {
+    if (entity.has_layer_independent_collisions()) {
+      obstacle_entities[LAYER_LOW].remove(&entity);
+      obstacle_entities[LAYER_LOW].push_front(&entity);
+      obstacle_entities[LAYER_INTERMEDIATE].remove(&entity);
+      obstacle_entities[LAYER_INTERMEDIATE].push_front(&entity);
+      obstacle_entities[LAYER_HIGH].remove(&entity);
+      obstacle_entities[LAYER_HIGH].push_front(&entity);
+    }
+    else {
+      obstacle_entities[layer].remove(&entity);
+      obstacle_entities[layer].push_front(&entity);
+    }
+  }
+
+  // TODO also update ground_modifiers and ground_observers.
 }
 
 /**

@@ -43,7 +43,7 @@ class FollowMovement: public Movement {
     );
 
     virtual bool is_finished() const override;
-    virtual  Point get_displayed_xy() const override;
+    virtual Point get_displayed_xy() const override;
 
   protected:
 

@@ -1107,11 +1107,17 @@ int LuaContext::entity_api_remove_sprite(lua_State* l) {
 
     if (lua_gettop(l) >= 2) {
       Sprite& sprite = *check_sprite(l, 2);
-      entity.remove_sprite(sprite);
+      bool success = entity.remove_sprite(sprite);
+      if (!success) {
+        LuaTools::arg_error(l, 2, "This sprite does not belong to this entity");
+      }
     }
     else if (entity.has_sprite()) {
       Sprite& sprite = entity.get_sprite();
       entity.remove_sprite(sprite);
+    }
+    else {
+      LuaTools::error(l, "This entity has no sprite");
     }
 
     return 0;

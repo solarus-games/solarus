@@ -1202,17 +1202,19 @@ SpritePtr MapEntity::create_sprite(
 
 /**
  * \brief Marks a sprite of this entity to be removed as soon as possible.
+ * \return \c true in case of success, \c false if this entity has no such
+ * sprite.
  */
-void MapEntity::remove_sprite(Sprite& sprite) {
+bool MapEntity::remove_sprite(Sprite& sprite) {
 
   for (const SpritePtr& current_sprite: sprites) {
     if (current_sprite.get() == &sprite) {
       old_sprites.push_back(current_sprite);
-      return;
+      return true;
     }
   }
 
-  Debug::die("This sprite does not belong to this entity");
+  return false;
 }
 
 /**

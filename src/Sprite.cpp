@@ -586,7 +586,7 @@ void Sprite::set_blinking(uint32_t blink_delay) {
  */
 bool Sprite::test_collision(const Sprite& other, int x1, int y1, int x2, int y2) const {
 
-  if (current_animation == nullptr) {
+  if (current_animation == nullptr || other.current_animation == nullptr) {
     return false;
   }
 

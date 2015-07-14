@@ -189,7 +189,7 @@ class SOLARUS_API MapEntity: public ExportableToLua {
         const std::string& animation_set_id,
         bool enable_pixel_collisions = false
     );
-    void remove_sprite(Sprite& sprite);
+    bool remove_sprite(Sprite& sprite);
     void clear_sprites();
     virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     virtual void notify_sprite_animation_finished(Sprite& sprite, const std::string& animation);

@@ -663,7 +663,7 @@ void CustomEntity::reset_can_traverse_ground(Ground ground) {
  */
 bool CustomEntity::is_low_wall_obstacle() const {
 
-  return can_traverse_ground(Ground::LOW_WALL);
+  return !can_traverse_ground(Ground::LOW_WALL);
 }
 
 /**
@@ -671,7 +671,7 @@ bool CustomEntity::is_low_wall_obstacle() const {
  */
 bool CustomEntity::is_shallow_water_obstacle() const {
 
-  return can_traverse_ground(Ground::SHALLOW_WATER);
+  return !can_traverse_ground(Ground::SHALLOW_WATER);
 }
 
 /**
@@ -679,7 +679,7 @@ bool CustomEntity::is_shallow_water_obstacle() const {
  */
 bool CustomEntity::is_deep_water_obstacle() const {
 
-  return can_traverse_ground(Ground::DEEP_WATER);
+  return !can_traverse_ground(Ground::DEEP_WATER);
 }
 
 /**
@@ -687,7 +687,7 @@ bool CustomEntity::is_deep_water_obstacle() const {
  */
 bool CustomEntity::is_hole_obstacle() const {
 
-  return can_traverse_ground(Ground::HOLE);
+  return !can_traverse_ground(Ground::HOLE);
 }
 
 /**
@@ -695,7 +695,7 @@ bool CustomEntity::is_hole_obstacle() const {
  */
 bool CustomEntity::is_lava_obstacle() const {
 
-  return can_traverse_ground(Ground::LAVA);
+  return !can_traverse_ground(Ground::LAVA);
 }
 
 /**
@@ -703,7 +703,7 @@ bool CustomEntity::is_lava_obstacle() const {
  */
 bool CustomEntity::is_prickle_obstacle() const {
 
-  return can_traverse_ground(Ground::PRICKLE);
+  return !can_traverse_ground(Ground::PRICKLE);
 }
 
 /**
@@ -711,7 +711,7 @@ bool CustomEntity::is_prickle_obstacle() const {
  */
 bool CustomEntity::is_ladder_obstacle() const {
 
-  return can_traverse_ground(Ground::LADDER);
+  return !can_traverse_ground(Ground::LADDER);
 }
 
 /**

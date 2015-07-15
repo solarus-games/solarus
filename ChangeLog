@@ -42,6 +42,7 @@ Bug fixes for the 1.4 release.
 * Fix entities already destroyed when map:on_finished() is called (#691).
 * Fix entity:bring_to_front()/back() ignoring the order of obstacles.
 * Fix hero stuck on blocks.
+* Fix custom_entity:set_can_traverse_ground() giving opposite result (#668).
 
 _______________________________
 

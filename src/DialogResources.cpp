@@ -316,7 +316,13 @@ bool DialogResources::export_to_lua(std::ostream& out) const {
     for (const auto pkvp : dialog.get_properties()) {
       out << "  " << pkvp.first << " = \"" << pkvp.second << "\",\n";
     }
-    out << "  text = [[\n" << dialog.get_text() << "]]\n}\n\n";
+    const std::string& text = dialog.get_text();
+    out << "  text = [[\n" << dialog.get_text();
+    if (!text.empty() && text[text.size() - 1] != '\n') {
+      // Make sure that the closing ]] is always on a new line.
+      out << '\n';
+    }
+    out << "]]\n}\n\n";
   }
   return true;
 }

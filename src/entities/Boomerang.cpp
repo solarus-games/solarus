@@ -41,7 +41,7 @@ namespace Solarus {
  * \param sprite_name animation set id representing the boomerang
  */
 Boomerang::Boomerang(
-    const std::shared_ptr<Hero>& hero,
+    const HeroPtr& hero,
     int max_distance,
     int speed,
     double angle,

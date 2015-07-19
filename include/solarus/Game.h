@@ -18,6 +18,7 @@
 #define SOLARUS_GAME_H
 
 #include "solarus/Common.h"
+#include "solarus/entities/HeroPtr.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include "solarus/DialogBoxSystem.h"
@@ -29,7 +30,6 @@
 
 namespace Solarus {
 
-class Hero;
 class Equipment;
 class GameCommands;
 class InputEvent;
@@ -62,7 +62,7 @@ class SOLARUS_API Game {
     // global objects
     MainLoop& get_main_loop();
     LuaContext& get_lua_context();
-    const std::shared_ptr<Hero>& get_hero();
+    const HeroPtr& get_hero();
     GameCommands& get_commands();
     const GameCommands& get_commands() const;
     KeysEffect& get_keys_effect();
@@ -126,8 +126,7 @@ class SOLARUS_API Game {
     MainLoop& main_loop;       /**< the main loop object */
     std::shared_ptr<Savegame>
         savegame;              /**< the game data saved */
-    std::shared_ptr<Hero>
-        hero;                  /**< The hero entity.  */
+    HeroPtr hero;              /**< The hero entity.  */
 
     // current game state (elements currently shown)
     bool pause_allowed;        /**< indicates that the player is allowed to use the pause command */

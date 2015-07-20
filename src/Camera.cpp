@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/Camera.h"
+#include "solarus/Game.h"
 #include "solarus/Map.h"
 #include "solarus/entities/MapEntity.h"
 #include "solarus/entities/MapEntities.h"
@@ -37,7 +38,7 @@ namespace Solarus {
 Camera::Camera(Map& map):
   position(Video::get_quest_size()),
   map(map),
-  fixed_on_hero(true),
+  fixed_on(map.get_game().get_hero()),
   separator_scrolling_dx(0),
   separator_scrolling_dy(0),
   separator_next_scrolling_date(0),
@@ -71,9 +72,9 @@ int Camera::get_height() const {
  */
 void Camera::update() {
 
-  if (fixed_on_hero) {
+  if (fixed_on != nullptr) {
     // If the camera is not moving towards a target, center it on the hero.
-    update_fixed_on_hero();
+    update_fixed_on();
   }
   else if (movement != nullptr) {
     update_moving();
@@ -84,9 +85,9 @@ void Camera::update() {
  * \brief Updates the position of the camera when the camera is fixed
  * on the hero.
  */
-void Camera::update_fixed_on_hero() {
+void Camera::update_fixed_on() {
 
-  Debug::check_assertion(fixed_on_hero,
+  Debug::check_assertion(fixed_on != nullptr,
       "Illegal call to Camera::update_fixed_on_hero()");
 
   int x = 0;
@@ -95,7 +96,7 @@ void Camera::update_fixed_on_hero() {
     // Normal case: not traversing a separator.
 
     // First compute camera coordinates ignoring map limits and separators.
-    const Point& hero_center = map.get_entities().get_hero().get_center_point();
+    const Point& hero_center = fixed_on->get_center_point();
     const int hero_x = hero_center.x;
     const int hero_y = hero_center.y;
     x = hero_x - get_width() / 2;
@@ -144,7 +145,7 @@ void Camera::update_fixed_on_hero() {
  */
 void Camera::update_moving() {
 
-  Debug::check_assertion(!fixed_on_hero,
+  Debug::check_assertion(fixed_on == nullptr,
       "Illegal call to Camera::update_moving()");
 
   if (movement == nullptr) {
@@ -159,7 +160,7 @@ void Camera::update_moving() {
 
     if (restoring) {
       restoring = false;
-      fixed_on_hero = true;
+      fixed_on = map.get_game().get_hero();
       map.get_lua_context().map_on_camera_back(map);
     }
     else {
@@ -179,7 +180,7 @@ void Camera::update_moving() {
  * \return \c true if the camera is moving.
  */
 bool Camera::is_moving() const {
-  return !fixed_on_hero                       // Moving to a point.
+  return fixed_on == nullptr                  // Moving to a point.
       || separator_next_scrolling_date != 0;  // Traversing a separator.
 }
 
@@ -206,7 +207,7 @@ void Camera::set_speed(int speed) {
 void Camera::move(int target_x, int target_y) {
 
   movement = nullptr;
-  fixed_on_hero = false;
+  fixed_on = nullptr;
 
   // Take care of the limits of the map and of separators.
   target_x = target_x - get_width() / 2;

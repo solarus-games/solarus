@@ -18,6 +18,7 @@
 #define SOLARUS_CAMERA_H
 
 #include "solarus/Common.h"
+#include "solarus/entities/MapEntityPtr.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include <memory>
 
@@ -64,14 +65,14 @@ class Camera {
     int get_width() const;
     int get_height() const;
 
-    void update_fixed_on_hero();
+    void update_fixed_on();
     void update_moving();
 
     Rectangle position;           /**< Visible area of the camera on the map. */
     Map& map;                     /**< The map. */
 
     // Camera centered on the hero.
-    bool fixed_on_hero;                     /**< \c true if the camera is fixed on the hero. */
+    MapEntityPtr fixed_on;                  /**< \c true if the camera is fixed on the hero. */
     Rectangle separator_scrolling_position; /**< Current camera position while crossing a separator. */
     Rectangle separator_target_position;    /**< Target camera position when crossing a separator. */
     int separator_scrolling_dx;             /**< X increment to the camera position when crossing a separator. */

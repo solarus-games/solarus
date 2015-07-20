@@ -55,6 +55,7 @@ class Rectangle {
     int get_height() const;
     Size get_size() const;
     bool is_flat() const;
+    Point get_center() const;
 
     void set_x(int x);
     void set_y(int y);
@@ -65,6 +66,8 @@ class Rectangle {
     void set_xy(const Point& xy);
     void set_size(int width, int height);
     void set_size(const Size& other);
+    void set_center(int x, int y);
+    void set_center(const Point& xy);
 
     void add_x(int dx);
     void add_y(int dy);
@@ -77,7 +80,6 @@ class Rectangle {
     bool contains(const Point& point) const;
     bool contains(const Rectangle& other) const;
     bool overlaps(const Rectangle& other) const;
-    Point get_center() const;
 
     Rectangle get_intersection(const Rectangle& other) const;
 
@@ -265,6 +267,23 @@ inline void Rectangle::set_xy(int x, int y) {
  */
 inline void Rectangle::set_xy(const Point& xy) {
   set_xy(xy.x, xy.y);
+}
+
+/**
+ * \brief Creates a rectangle, specifying its center.
+ * \param x x coordinate of the center
+ * \param y y coordinate of the center
+ */
+inline void Rectangle::set_center(int x, int y) {
+  set_xy(x - rect.w/2, y - rect.h/2);
+}
+
+/**
+ * \brief Creates a rectangle, specifying its center and size.
+ * \param center coordinate of the rectangle center.
+ */
+inline void Rectangle::set_center(const Point &xy) {
+  return set_center(xy.x, xy.y);
 }
 
 /**

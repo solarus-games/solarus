@@ -4195,7 +4195,11 @@ int LuaContext::enemy_api_immobilize(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Enemy& enemy = *check_enemy(l, 1);
 
-    if (enemy.is_in_normal_state() && !enemy.is_invulnerable()) {
+    if (enemy.is_invulnerable()) {
+      return 0;
+    }
+
+    if (enemy.is_in_normal_state() || enemy.is_immobilized()) {
       Hero& hero = enemy.get_map().get_entities().get_hero();
       enemy.set_attack_consequence(EnemyAttack::SCRIPT, EnemyReaction::ReactionType::IMMOBILIZED, 0);
       enemy.try_hurt(EnemyAttack::SCRIPT, hero, nullptr);

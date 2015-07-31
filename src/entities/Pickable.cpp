@@ -470,6 +470,7 @@ void Pickable::update() {
     // wait 0.7 second before allowing the hero to take the item
     if (!can_be_picked && now >= allow_pick_date) {
       can_be_picked = true;
+      falling_height = FALLING_NONE;
       get_hero().check_collision_with_detectors();
     }
     else {

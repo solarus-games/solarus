@@ -70,7 +70,7 @@
  * This string has the form "x.y.z" where x is the major version, y is the
  * minor version and z is the patch version.
  */
-#define SOLARUS_VERSION (SOLARUS_STRINGIFY(SOLARUS_MAJOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_MINOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_PATCH_VERSION))
+#define SOLARUS_VERSION SOLARUS_STRINGIFY(SOLARUS_MAJOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_MINOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_PATCH_VERSION)
 
 /**
  * \brief The Solarus version as a string, without patch number.
@@ -78,7 +78,7 @@
  * This string has the form "x.y" where x is the major version and y is the
  * minor version.
  */
-#define SOLARUS_VERSION_WITHOUT_PATCH (SOLARUS_STRINGIFY(SOLARUS_MAJOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_MINOR_VERSION))
+#define SOLARUS_VERSION_WITHOUT_PATCH SOLARUS_STRINGIFY(SOLARUS_MAJOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_MINOR_VERSION)
 
 // Windows specific.
 /**

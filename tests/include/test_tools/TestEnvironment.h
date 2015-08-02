@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #include "solarus/entities/Layer.h"
 #include "solarus/Arguments.h"
 #include "solarus/MainLoop.h"
+#include "solarus/lowlevel/Point.h"
 #include <cstdint>
 #include <memory>
 
@@ -63,8 +64,7 @@ class TestEnvironment {
     // Creating entities.
     template<typename T>
     std::shared_ptr<T> make_entity(
-        int x = 0,
-        int y = 0,
+        const Point& xy = Point(0, 0),
         Layer layer = LAYER_LOW
     );
 

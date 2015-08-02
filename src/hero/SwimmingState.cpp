@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ void Hero::SwimmingState::start(const State* previous_state) {
 
   PlayerMovementState::start(previous_state);
 
-  get_equipment().notify_ability_used(ABILITY_SWIM);
+  get_equipment().notify_ability_used(Ability::SWIM);
   get_hero().set_walking_speed(get_slow_swimming_speed());
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_SWIM);
 }

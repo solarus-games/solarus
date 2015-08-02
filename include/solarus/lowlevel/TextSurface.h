@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include "solarus/lowlevel/Point.h"
 #include "solarus/Drawable.h"
 #include <map>
+#include <string>
 #include <SDL_ttf.h>
 
 namespace Solarus {
@@ -46,28 +47,28 @@ class TextSurface: public Drawable {
     /**
      * Horizontal alignment of the text.
      */
-    enum HorizontalAlignment {
-      ALIGN_LEFT,                                     /**< the text is aligned to the left */
-      ALIGN_CENTER,                                   /**< the text is centered */
-      ALIGN_RIGHT                                     /**< the text is aligned to the right */
+    enum class HorizontalAlignment {
+      LEFT,                                      /**< the text is aligned to the left */
+      CENTER,                                    /**< the text is centered */
+      RIGHT                                      /**< the text is aligned to the right */
     };
 
     /**
      * Vertical alignment of the text.
      *
      */
-    enum VerticalAlignment {
-      ALIGN_TOP,                                      /**< the text is aligned to the top */
-      ALIGN_MIDDLE,                                   /**< the text is aligned in the middle */
-      ALIGN_BOTTOM                                    /**< the text is aligned to the bottom */
+    enum class VerticalAlignment {
+      TOP,                                       /**< the text is aligned to the top */
+      MIDDLE,                                    /**< the text is aligned in the middle */
+      BOTTOM                                     /**< the text is aligned to the bottom */
     };
 
     /**
      * Rendering mode of the text.
      */
-    enum RenderingMode {
-      TEXT_SOLID,                                     /**< letters are drawn without effect (faster, visible pixels) */
-      TEXT_ANTIALIASING                               /**< letters are drawn with a smooth effect (slower) */
+    enum class RenderingMode {
+      SOLID,                                     /**< letters are drawn without effect (faster, visible pixels) */
+      ANTIALIASING                               /**< letters are drawn with a smooth effect (slower) */
     };
 
     TextSurface(int x, int y);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,8 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaException.h"
 #include "solarus/SolarusFatal.h"
-#include <string>
 #include <map>
-#include <vector>
+#include <string>
 #include <lua.hpp>
 
 namespace Solarus {
@@ -271,36 +270,6 @@ E opt_enum_field(
     int table_index,
     const std::string& key,
     const std::map<E, std::string>& names,
-    E default_value
-);
-
-// enum (vector version, deprecated)
-template<typename E>
-E check_enum(
-    lua_State* l,
-    int index,
-    const std::vector<std::string>& names
-);
-template<typename E>
-E check_enum_field(
-    lua_State* l,
-    int table_index,
-    const std::string& key,
-    const std::vector<std::string>& names
-);
-template<typename E>
-E opt_enum(
-    lua_State* l,
-    int index,
-    const std::vector<std::string>& names,
-    E default_value
-);
-template<typename E>
-E opt_enum_field(
-    lua_State* l,
-    int table_index,
-    const std::string& key,
-    const std::vector<std::string>& names,
     E default_value
 );
 

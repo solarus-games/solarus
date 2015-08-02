@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ void Hero::LiftingState::start(const State* previous_state) {
   get_sprites().set_lifted_item(lifted_item);
   get_hero().set_facing_entity(nullptr);
 
-  get_equipment().notify_ability_used(ABILITY_LIFT);
+  get_equipment().notify_ability_used(Ability::LIFT);
 }
 
 /**

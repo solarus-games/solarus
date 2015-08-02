@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/DialogResource.h"
 #include "solarus/Equipment.h"
 #include "solarus/Game.h"
 #include "solarus/KeysEffect.h"
@@ -36,7 +35,7 @@
 #include "solarus/Savegame.h"
 #include "solarus/Treasure.h"
 #include "solarus/TransitionFade.h"
-#include <vector>
+#include <map>
 
 namespace Solarus {
 
@@ -58,7 +57,7 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
   current_map(nullptr),
   next_map(nullptr),
   previous_map_surface(nullptr),
-  transition_style(Transition::IMMEDIATE),
+  transition_style(Transition::Style::IMMEDIATE),
   transition(nullptr),
   crystal_state(false) {
 
@@ -106,7 +105,7 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
     starting_destination_name = "";  // Default destination.
   }
 
-  set_current_map(starting_map_id, starting_destination_name, Transition::FADE);
+  set_current_map(starting_map_id, starting_destination_name, Transition::Style::FADE);
 }
 
 /**
@@ -277,7 +276,7 @@ bool Game::notify_input(const InputEvent& event) {
  * \brief This function is called when a game command is pressed.
  * \param command A game command.
  */
-void Game::notify_command_pressed(GameCommands::Command command) {
+void Game::notify_command_pressed(GameCommand command) {
 
   // Is a built-in dialog box being shown?
   if (is_dialog_enabled()) {
@@ -297,7 +296,7 @@ void Game::notify_command_pressed(GameCommands::Command command) {
   }
 
   // Lua scripts did not override the command: do the built-in behavior.
-  if (command == GameCommands::PAUSE) {
+  if (command == GameCommand::PAUSE) {
     if (is_paused()) {
       if (can_unpause()) {
         set_paused(false);
@@ -320,7 +319,7 @@ void Game::notify_command_pressed(GameCommands::Command command) {
  * \brief This function is called when a game command is released.
  * \param command A game command.
  */
-void Game::notify_command_released(GameCommands::Command command) {
+void Game::notify_command_released(GameCommand command) {
 
   bool handled = get_lua_context().game_on_command_released(*this, command);
 
@@ -388,7 +387,7 @@ void Game::update_transitions() {
     else { // normal case: stop the control and play an out transition before leaving the current map
       transition = std::unique_ptr<Transition>(Transition::create(
           transition_style,
-          Transition::TRANSITION_CLOSING,
+          Transition::Direction::CLOSING,
           *current_map->get_visible_surface(),
           this
       ));
@@ -413,14 +412,14 @@ void Game::update_transitions() {
       main_loop.set_game(new Game(main_loop, savegame));
       this->savegame = nullptr;  // The new game is the owner.
     }
-    else if (transition_direction == Transition::TRANSITION_CLOSING) {
+    else if (transition_direction == Transition::Direction::CLOSING) {
 
       if (next_map == current_map) {
         // same map
         hero->place_on_destination(*current_map, previous_map_location);
         transition = std::unique_ptr<Transition>(Transition::create(
             transition_style,
-            Transition::TRANSITION_OPENING,
+            Transition::Direction::OPENING,
             *current_map->get_visible_surface(),
             this
         ));
@@ -477,7 +476,7 @@ void Game::update_transitions() {
     Debug::check_assertion(current_map->is_loaded(), "This map is not loaded");
     transition = std::unique_ptr<Transition>(Transition::create(
         transition_style,
-        Transition::TRANSITION_OPENING,
+        Transition::Direction::OPENING,
         *current_map->get_visible_surface(),
         this
     ));
@@ -505,12 +504,12 @@ void Game::update_keys_effect() {
   }
 
   // make sure the sword key is coherent with having a sword
-  if (get_equipment().has_ability(ABILITY_SWORD)
+  if (get_equipment().has_ability(Ability::SWORD)
       && keys_effect.get_sword_key_effect() != KeysEffect::SWORD_KEY_SWORD) {
 
     keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_SWORD);
   }
-  else if (!get_equipment().has_ability(ABILITY_SWORD)
+  else if (!get_equipment().has_ability(Ability::SWORD)
       && keys_effect.get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD) {
 
     keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
@@ -699,7 +698,7 @@ void Game::start_dialog(
     const ScopedLuaRef& info_ref,
     const ScopedLuaRef& callback_ref
 ) {
-  if (!DialogResource::exists(dialog_id)) {
+  if (!CurrentQuest::dialog_exists(dialog_id)) {
     Debug::error(std::string("No such dialog: '") + dialog_id + "'");
   }
   else {
@@ -801,8 +800,8 @@ void Game::restart() {
 
   if (current_map != nullptr) {
     transition = std::unique_ptr<Transition>(Transition::create(
-        Transition::FADE,
-        Transition::TRANSITION_CLOSING,
+        Transition::Style::FADE,
+        Transition::Direction::CLOSING,
         *current_map->get_visible_surface(),
         this
     ));
@@ -857,14 +856,14 @@ void Game::stop_game_over() {
 /**
  * \brief Simulates pressing a game command.
  */
-void Game::simulate_command_pressed(GameCommands::Command command){
+void Game::simulate_command_pressed(GameCommand command){
   commands->game_command_pressed(command);
 }
 
 /**
  * \brief Simulates releasing a game command.
  */
-void Game::simulate_command_released(GameCommands::Command command){
+void Game::simulate_command_released(GameCommand command){
   commands->game_command_released(command);
 }
 

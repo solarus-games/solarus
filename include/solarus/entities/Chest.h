@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,6 +20,8 @@
 #include "solarus/Common.h"
 #include "solarus/Treasure.h"
 #include "solarus/entities/Detector.h"
+#include <map>
+#include <string>
 
 namespace Solarus {
 
@@ -35,17 +37,16 @@ class Chest: public Detector {
     /**
      * \brief The different possible ways of opening a chest.
      */
-    enum OpeningMethod {
-      OPENING_BY_INTERACTION,                       /**< Can be opened by pressing the action command. */
-      OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,  /**< Can be opened by pressing the action command, provided that a savegame variable has the correct value. */
-      OPENING_BY_INTERACTION_IF_ITEM,               /**< Can be opened by pressing the action command, provided that the player has a specific equipment item. */
+    enum class OpeningMethod {
+      BY_INTERACTION,                       /**< Can be opened by pressing the action command. */
+      BY_INTERACTION_IF_SAVEGAME_VARIABLE,  /**< Can be opened by pressing the action command, provided that a savegame variable has the correct value. */
+      BY_INTERACTION_IF_ITEM,               /**< Can be opened by pressing the action command, provided that the player has a specific equipment item. */
     };
 
     Chest(
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
+        const Point& xy,
         const std::string& sprite_name,
         const Treasure& treasure);
 
@@ -71,7 +72,7 @@ class Chest: public Detector {
     virtual bool notify_action_command_pressed() override;
     virtual void set_suspended(bool suspended) override;
 
-    static const std::vector<std::string> opening_method_names;
+    static const std::map<OpeningMethod, std::string> opening_method_names;
 
   private:
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -191,7 +191,7 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
     }
 
     TransitionFade* transition(new TransitionFade(
-        Transition::TRANSITION_OPENING,
+        Transition::Direction::OPENING,
         drawable->get_transition_surface()
     ));
     transition->clear_color();
@@ -230,7 +230,7 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
     }
 
     TransitionFade* transition(new TransitionFade(
-        Transition::TRANSITION_CLOSING,
+        Transition::Direction::CLOSING,
         drawable->get_transition_surface()
     ));
     transition->clear_color();

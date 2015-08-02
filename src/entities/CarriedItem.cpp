@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/Geometry.h"
+#include <memory>
 
 namespace Solarus {
 
@@ -68,7 +69,7 @@ CarriedItem::CarriedItem(
     int damage_on_enemies,
     uint32_t explosion_date
 ):
-  MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
+  MapEntity("", 0, hero.get_layer(), Point(0, 0), Size(0, 0)),
   hero(hero),
   is_lifting(true),
   is_throwing(false),
@@ -113,7 +114,7 @@ CarriedItem::CarriedItem(
  * \return the type of entity
  */
 EntityType CarriedItem::get_type() const {
-  return ENTITY_CARRIED_ITEM;
+  return EntityType::CARRIED_ITEM;
 }
 
 /**
@@ -464,7 +465,7 @@ void CarriedItem::notify_collision_with_enemy(Enemy &enemy) {
   if (is_throwing
       && !can_explode()
       && get_damage_on_enemies() > 0) {
-    enemy.try_hurt(ATTACK_THROWN_ITEM, *this, nullptr);
+    enemy.try_hurt(EnemyAttack::THROWN_ITEM, *this, nullptr);
   }
 }
 
@@ -478,7 +479,7 @@ void CarriedItem::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool /* killed */) {
 
-  if (result.type != EnemyReaction::IGNORED) {
+  if (result.type != EnemyReaction::ReactionType::IGNORED) {
     break_item();
   }
 }

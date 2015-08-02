@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,6 +56,9 @@ class SOLARUS_API MainLoop {
 
     void load_quest_properties();
     void check_input();
+    void notify_input(const InputEvent& event);
+    void draw();
+    void update();
 
     std::unique_ptr<LuaContext>
         lua_context;              /**< The Lua world where scripts are run. */
@@ -63,10 +66,6 @@ class SOLARUS_API MainLoop {
     std::unique_ptr<Game> game;   /**< The current game if any, nullptr otherwise. */
     Game* next_game;              /**< The game to start at next cycle (nullptr means resetting the game). */
     bool exiting;                 /**< Indicates that the program is about to stop. */
-
-    void notify_input(const InputEvent& event);
-    void draw();
-    void update();
 
 };
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lowlevel/Debug.h"
+#include <memory>
 
 namespace Solarus {
 
@@ -66,7 +67,7 @@ Rectangle TransitionScrolling::get_previous_map_dst_position(
  */
 void TransitionScrolling::start() {
 
-  if (get_direction() == TRANSITION_CLOSING) {
+  if (get_direction() == Direction::CLOSING) {
     return;
   }
 
@@ -123,7 +124,7 @@ bool TransitionScrolling::is_started() const {
  */
 bool TransitionScrolling::is_finished() const {
 
-  if (get_direction() == TRANSITION_CLOSING) {
+  if (get_direction() == Direction::CLOSING) {
     return true;
   }
 
@@ -135,7 +136,34 @@ bool TransitionScrolling::is_finished() const {
  * \brief Makes a scrolling step.
  */
 void TransitionScrolling::scroll() {
-  current_scrolling_position.add_xy(dx, dy);
+
+  // Add dx,dy to current_scrolling_position, but don't exceed the final position.
+
+  if (dx > 0) {
+    current_scrolling_position.set_x(std::min(
+        current_scrolling_position.get_x() + dx,
+        current_map_dst_position.get_x())
+    );
+  }
+  else {
+    current_scrolling_position.set_x(std::max(
+        current_scrolling_position.get_x() + dx,
+        current_map_dst_position.get_x())
+    );
+  }
+
+  if (dy > 0) {
+    current_scrolling_position.set_y(std::min(
+        current_scrolling_position.get_y() + dy,
+        current_map_dst_position.get_y())
+    );
+  }
+  else {
+    current_scrolling_position.set_y(std::max(
+        current_scrolling_position.get_y() + dy,
+        current_map_dst_position.get_y())
+    );
+  }
 }
 
 /**
@@ -174,7 +202,7 @@ void TransitionScrolling::update() {
  */
 void TransitionScrolling::draw(Surface& dst_surface) {
 
-  if (get_direction() == TRANSITION_CLOSING) {
+  if (get_direction() == Direction::CLOSING) {
     return;
   }
 

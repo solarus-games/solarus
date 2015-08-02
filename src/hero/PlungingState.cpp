@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ void Hero::PlungingState::update() {
     int drown = 0;
     if (hero.get_ground_below() == Ground::DEEP_WATER) {
 
-      if (get_equipment().has_ability(ABILITY_SWIM)) {
+      if (get_equipment().has_ability(Ability::SWIM)) {
         hero.set_state(new SwimmingState(hero));
       }
       else {

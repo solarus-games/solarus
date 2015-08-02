@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ class FollowMovement: public Movement {
     );
 
     virtual bool is_finished() const override;
-    virtual  Point get_displayed_xy() const override;
+    virtual Point get_displayed_xy() const override;
 
   protected:
 

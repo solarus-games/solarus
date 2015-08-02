@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,15 +21,18 @@
 #include "solarus/lowlevel/Point.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include "solarus/DialogBoxSystem.h"
-#include "solarus/GameCommands.h"
+#include "solarus/GameCommand.h"
 #include "solarus/KeysEffect.h"
 #include "solarus/Transition.h"
 #include <memory>
+#include <string>
 
 namespace Solarus {
 
 class Hero;
 class Equipment;
+class GameCommands;
+class InputEvent;
 class KeysEffect;
 class LuaContext;
 class MainLoop;
@@ -74,12 +77,12 @@ class SOLARUS_API Game {
     void draw(const SurfacePtr& dst_surface);
 
     // game controls
-    void notify_command_pressed(GameCommands::Command command);
-    void notify_command_released(GameCommands::Command command);
+    void notify_command_pressed(GameCommand command);
+    void notify_command_released(GameCommand command);
 
     // simulate commands
-    void simulate_command_pressed(GameCommands::Command command);
-    void simulate_command_released(GameCommands::Command command);
+    void simulate_command_pressed(GameCommand command);
+    void simulate_command_released(GameCommand command);
 
     // map
     bool has_current_map() const;

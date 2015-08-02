@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,7 +90,7 @@ double StraightMovement::get_speed() const {
  */
 void StraightMovement::set_x_speed(double x_speed) {
 
-  if (std::fabs(x_speed) <= 1E-6) {
+  if (std::abs(x_speed) <= 1E-6) {
     x_speed = 0;
   }
 
@@ -125,7 +125,7 @@ void StraightMovement::set_x_speed(double x_speed) {
  */
 void StraightMovement::set_y_speed(double y_speed) {
 
-  if (std::fabs(y_speed) <= 1E-6) {
+  if (std::abs(y_speed) <= 1E-6) {
     y_speed = 0;
   }
 

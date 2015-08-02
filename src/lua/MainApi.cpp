@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/lowlevel/Geometry.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/MainLoop.h"
 #include "solarus/Settings.h"
@@ -167,7 +167,7 @@ int LuaContext::main_api_get_elapsed_time(lua_State* l) {
 int LuaContext::main_api_get_quest_write_dir(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const std::string& quest_write_dir = FileTools::get_quest_write_dir();
+    const std::string& quest_write_dir = QuestFiles::get_quest_write_dir();
 
     if (quest_write_dir.empty()) {
       lua_pushnil(l);
@@ -189,7 +189,7 @@ int LuaContext::main_api_set_quest_write_dir(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& quest_write_dir = LuaTools::opt_string(l, 1, "");
 
-    FileTools::set_quest_write_dir(quest_write_dir);
+    QuestFiles::set_quest_write_dir(quest_write_dir);
 
     return 0;
   });
@@ -205,7 +205,7 @@ int LuaContext::main_api_load_settings(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     std::string file_name = LuaTools::opt_string(l, 1, "settings.dat");
 
-    if (FileTools::get_quest_write_dir().empty()) {
+    if (QuestFiles::get_quest_write_dir().empty()) {
       LuaTools::error(l, "Cannot load settings: no write directory was specified in quest.dat");
     }
 
@@ -226,7 +226,7 @@ int LuaContext::main_api_save_settings(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     std::string file_name = LuaTools::opt_string(l, 1, "settings.dat");
 
-    if (FileTools::get_quest_write_dir().empty()) {
+    if (QuestFiles::get_quest_write_dir().empty()) {
       LuaTools::error(l, "Cannot save settings: no write directory was specified in quest.dat");
     }
 

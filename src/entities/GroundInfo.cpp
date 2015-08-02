@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ const std::map<Ground, std::string> ground_names = {
     { Ground::LAVA, "lava" }
 };
 
-}
+}  // Anonymous namespace.
 
 namespace GroundInfo {
 
@@ -86,23 +86,35 @@ bool is_ground_diagonal(Ground ground) {
   return false;
 }
 
+/**
+ * \brief Returns the ground values and their Lua name.
+ * \return The name of each ground.
+ */
 const std::map<Ground, std::string>& get_ground_names() {
   return ground_names;
 }
 
+/**
+ * \brief Returns the name of a ground.
+ * \param type A ground value.
+ * \return The corresponding name.
+ */
 const std::string& get_ground_name(Ground ground) {
 
   return ground_names.at(ground);
 }
 
+/**
+ * \brief Returns the ground value with the given name.
+ * \param ground_name The name of a ground. It must exist.
+ * \return The corresponding ground value.
+ */
 Ground get_ground_by_name(const std::string& ground_name) {
 
-  int i = 0;
   for (const auto& kvp: ground_names) {
     if (kvp.second == ground_name) {
       return kvp.first;
     }
-    ++i;
   }
 
   Debug::die(std::string("Unknown ground: ") + ground_name);

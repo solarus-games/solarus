@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  */
 #include "solarus/entities/Crystal.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Random.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/System.h"
@@ -26,6 +26,7 @@
 #include "solarus/Sprite.h"
 #include "solarus/SpriteAnimationSet.h"
 #include <lua.hpp>
+#include <memory>
 
 namespace Solarus {
 
@@ -33,12 +34,11 @@ namespace Solarus {
  * \brief Creates a new crystal.
  * \param name name of the entity to create
  * \param layer layer of the entity to create on the map
- * \param x x coordinate of the entity to create
- * \param y y coordinate of the entity to create
+ * \param xy Coordinates of the entity to create.
  */
-Crystal::Crystal(const std::string& name, Layer layer, int x, int y):
+Crystal::Crystal(const std::string& name, Layer layer, const Point& xy):
   Detector(COLLISION_SPRITE | COLLISION_OVERLAPPING | COLLISION_FACING,
-      name, layer, x, y, 16, 16),
+      name, layer, xy, Size(16, 16)),
   state(false),
   next_possible_hit_date(System::now()) {
 
@@ -54,7 +54,7 @@ Crystal::Crystal(const std::string& name, Layer layer, int x, int y):
  * \return the type of entity
  */
 EntityType Crystal::get_type() const {
-  return ENTITY_CRYSTAL;
+  return EntityType::CRYSTAL;
 }
 
 /**

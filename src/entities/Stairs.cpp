@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,11 +17,12 @@
 #include "solarus/entities/Stairs.h"
 #include "solarus/entities/DynamicTile.h"
 #include "solarus/entities/MapEntities.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
+#include <list>
 
 namespace Solarus {
 
@@ -29,19 +30,17 @@ namespace Solarus {
  * \brief Creates a new stairs entity.
  * \param name Name of the entity to create.
  * \param layer Layer of the entity to create on the map.
- * \param x X coordinate of the entity to create.
- * \param y Y coordinate of the entity to create.
+ * \param xy Coordinates of the entity to create.
  * \param direction Direction of the stairs (0 to 3).
  * \param subtype The subtype of stairs.
  */
 Stairs::Stairs(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     int direction,
     Subtype subtype):
-  Detector(COLLISION_TOUCHING | COLLISION_OVERLAPPING, name, layer, x, y, 16, 16),
+  Detector(COLLISION_TOUCHING | COLLISION_OVERLAPPING, name, layer, xy, Size(16, 16)),
   subtype(subtype) {
 
   Debug::check_assertion(!is_inside_floor() || layer != LAYER_HIGH,
@@ -62,7 +61,7 @@ Stairs::Stairs(
  * \return the type of entity
  */
 EntityType Stairs::get_type() const {
-  return ENTITY_STAIRS;
+  return EntityType::STAIRS;
 }
 
 /**
@@ -364,13 +363,13 @@ void Stairs::notify_enabled(bool enabled) {
 void Stairs::update_dynamic_tiles() {
 
   std::list<MapEntity*> tiles = get_entities().get_entities_with_prefix(
-      ENTITY_DYNAMIC_TILE, get_name() + "_enabled");
+      EntityType::DYNAMIC_TILE, get_name() + "_enabled");
   for (MapEntity* tile: tiles) {
     tile->set_enabled(is_enabled());
   }
 
   tiles = get_entities().get_entities_with_prefix(
-      ENTITY_DYNAMIC_TILE, get_name() + "_disabled");
+      EntityType::DYNAMIC_TILE, get_name() + "_disabled");
   for (MapEntity* tile: tiles) {
     tile->set_enabled(!is_enabled());
   }

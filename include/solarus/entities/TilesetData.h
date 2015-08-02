@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lua/LuaData.h"
+#include <iosfwd>
 #include <map>
 #include <string>
 #include <vector>
@@ -39,6 +40,16 @@ enum class TileScrolling {
 };
 
 /**
+ * \brief Kind of scrolling applied to a tile pattern.
+ */
+enum class TilePatternRepeatMode {
+    ALL,                /**< Repeatable in both directions. */
+    HORIZONTAL,         /**< Repeatable only horizontally. */
+    VERTICAL,           /**< Repeatable only vertically. */
+    NONE                /**< Not repeatable. */
+};
+
+/**
  * \brief Stores the properties of a tile pattern.
  */
 class SOLARUS_API TilePatternData {
@@ -48,8 +59,6 @@ class SOLARUS_API TilePatternData {
     TilePatternData();
     explicit TilePatternData(const Rectangle& frame);
 
-    bool is_nil() const;
-
     Ground get_ground() const;
     void set_ground(Ground ground);
 
@@ -58,6 +67,12 @@ class SOLARUS_API TilePatternData {
 
     TileScrolling get_scrolling() const;
     void set_scrolling(TileScrolling scrolling);
+
+    TilePatternRepeatMode get_repeat_mode() const;
+    void set_repeat_mode(TilePatternRepeatMode repeat_mode);
+
+    static const std::string& get_repeat_mode_name(TilePatternRepeatMode repeat_mode);
+    static TilePatternRepeatMode get_repeat_mode_by_name(const std::string& repeat_mode_name);
 
     bool is_multi_frame() const;
     int get_num_frames() const;
@@ -72,6 +87,7 @@ class SOLARUS_API TilePatternData {
     Ground ground;                     /**< Terrain of this pattern. */
     Layer default_layer;               /**< Initial layer when creating a tile. */
     TileScrolling scrolling;           /**< Kind of scrolling if any. */
+    TilePatternRepeatMode repeat_mode; /**< How this patterns intends to be repeated. */
     std::vector<Rectangle> frames;     /**< Coordinates of the pattern's frame(s).
                                         * - 1 element: one frame (no animation).
                                         * - 3 elements: three frames, animated with 0-1-2-0.

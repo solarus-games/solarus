@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,12 +32,15 @@
 #include "solarus/Ability.h"
 #include "solarus/SpritePtr.h"
 #include "solarus/TimerPtr.h"
-#include <map>
-#include <set>
 #include <list>
+#include <map>
+#include <memory>
+#include <set>
+#include <string>
 
 struct lua_State;
 struct luaL_Reg;
+typedef int (*lua_CFunction) (lua_State* l);
 
 namespace Solarus {
 
@@ -52,6 +55,7 @@ class Dialog;
 class Door;
 class Drawable;
 class Enemy;
+class EntityData;
 class ExportableToLua;
 class EquipmentItem;
 class Hero;
@@ -225,9 +229,7 @@ class LuaContext {
 
     // Entities.
     static const std::string& get_entity_internal_type_name(EntityType entity_type);
-    static Map& get_entity_creation_map(lua_State* l);
-    static Map* get_entity_implicit_creation_map(lua_State* l);
-    static void set_entity_implicit_creation_map(lua_State* l, Map* map);
+    bool create_map_entity_from_data(Map& map, const EntityData& entity_data);
 
     bool do_custom_entity_traversable_test_function(
         const ScopedLuaRef& traversable_test_ref,
@@ -267,17 +269,17 @@ class LuaContext {
     bool menu_on_input(const ScopedLuaRef& menu_ref, const InputEvent& event);
     bool menu_on_command_pressed(
         const ScopedLuaRef& menu_ref,
-        GameCommands::Command command
+        GameCommand command
     );
     bool menu_on_command_released(
         const ScopedLuaRef& menu_ref,
-        GameCommands::Command command
+        GameCommand command
     );
     void menus_on_update(int context_index);
     void menus_on_draw(int context_index, const SurfacePtr& dst_surface);
     bool menus_on_input(int context_index, const InputEvent& event);
-    bool menus_on_command_pressed(int context_index, GameCommands::Command command);
-    bool menus_on_command_released(int context_index, GameCommands::Command command);
+    bool menus_on_command_pressed(int context_index, GameCommand command);
+    bool menus_on_command_released(int context_index, GameCommand command);
 
     // Sprite events.
     void sprite_on_animation_finished(
@@ -331,8 +333,8 @@ class LuaContext {
     bool game_on_game_over_started(Game& game);
     void game_on_game_over_finished(Game& game);
     bool game_on_input(Game& game, const InputEvent& event);
-    bool game_on_command_pressed(Game& game, GameCommands::Command command);
-    bool game_on_command_released(Game& game, GameCommands::Command command);
+    bool game_on_command_pressed(Game& game, GameCommand command);
+    bool game_on_command_released(Game& game, GameCommand command);
 
     // Map events.
     void map_on_started(Map& map, Destination* destination);
@@ -346,8 +348,8 @@ class LuaContext {
     void map_on_obtaining_treasure(Map& map, const Treasure& treasure);
     void map_on_obtained_treasure(Map& map, const Treasure& treasure);
     bool map_on_input(Map& map, const InputEvent& event);
-    bool map_on_command_pressed(Map& map, GameCommands::Command command);
-    bool map_on_command_released(Map& map, GameCommands::Command command);
+    bool map_on_command_pressed(Map& map, GameCommand command);
+    bool map_on_command_released(Map& map, GameCommand command);
 
     // Map entity events.
     void entity_on_update(MapEntity& entity);
@@ -760,31 +762,7 @@ class LuaContext {
       map_api_get_hero,
       map_api_set_entities_enabled,
       map_api_remove_entities,
-      map_api_create_tile,
-      map_api_create_destination,
-      map_api_create_teletransporter,
-      map_api_create_pickable,
-      map_api_create_destructible,
-      map_api_create_chest,
-      map_api_create_jumper,
-      map_api_create_enemy,
-      map_api_create_npc,  // TODO use a real string for the subtype, improve the behavior syntax
-      map_api_create_block,  // TODO make maximum_moves really be the limit (nil means no limit)
-      map_api_create_dynamic_tile,
-      map_api_create_switch,
-      map_api_create_wall,
-      map_api_create_sensor,
-      map_api_create_crystal,
-      map_api_create_crystal_block,
-      map_api_create_shop_treasure,
-      map_api_create_stream,
-      map_api_create_door,
-      map_api_create_stairs,
-      map_api_create_separator,
-      map_api_create_custom_entity,
-      map_api_create_bomb,
-      map_api_create_explosion,
-      map_api_create_fire,
+      map_api_create_entity,  // Same function used for all entity types.
 
       // Map entity API.
       entity_api_get_type,
@@ -1003,6 +981,7 @@ class LuaContext {
     static void do_file(lua_State* l, const std::string& script_name);
     static bool do_file_if_exists(lua_State* l, const std::string& script_name);
     void print_stack(lua_State* l);
+    void print_lua_version();
 
     // Initialization of modules.
     void register_functions(
@@ -1160,8 +1139,8 @@ class LuaContext {
     bool on_joypad_hat_moved(const InputEvent& event);
     bool on_mouse_button_pressed(const InputEvent& event);
     bool on_mouse_button_released(const InputEvent& event);
-    bool on_command_pressed(GameCommands::Command command);
-    bool on_command_released(GameCommands::Command command);
+    bool on_command_pressed(GameCommand command);
+    bool on_command_released(GameCommand command);
     void on_animation_finished(const std::string& animation);
     void on_animation_changed(const std::string& animation);
     void on_direction_changed(const std::string& animation, int direction);
@@ -1240,8 +1219,32 @@ class LuaContext {
       l_camera_restore,
       l_treasure_dialog_finished,
       l_shop_treasure_description_dialog_finished,
-      l_shop_treasure_question_dialog_finished;
-
+      l_shop_treasure_question_dialog_finished,
+      l_create_tile,
+      l_create_destination,
+      l_create_teletransporter,
+      l_create_pickable,
+      l_create_destructible,
+      l_create_chest,
+      l_create_jumper,
+      l_create_enemy,
+      l_create_npc,
+      l_create_block,
+      l_create_dynamic_tile,
+      l_create_switch,
+      l_create_wall,
+      l_create_sensor,
+      l_create_crystal,
+      l_create_crystal_block,
+      l_create_shop_treasure,
+      l_create_stream,
+      l_create_door,
+      l_create_stairs,
+      l_create_separator,
+      l_create_custom_entity,
+      l_create_bomb,
+      l_create_explosion,
+      l_create_fire;
 
     // Script data.
     lua_State* l;                   /**< The Lua state encapsulated. */
@@ -1267,6 +1270,8 @@ class LuaContext {
                                      * only for performance, to avoid Lua
                                      * lookups for callbacks like on_update. */
 
+    static const std::map<EntityType, lua_CFunction>
+        entity_creation_functions;  /**< Creation function of each entity type. */
     static std::map<lua_State*, LuaContext*>
         lua_contexts;               /**< Mapping to get the encapsulating object
                                      * from the lua_State pointer. */

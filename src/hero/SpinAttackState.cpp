@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,16 @@
 #include "solarus/hero/FreeState.h"
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/hero/SpinAttackState.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/movements/CircleMovement.h"
 #include "solarus/movements/StraightMovement.h"
 #include "solarus/Equipment.h"
 #include "solarus/Game.h"
+#include <memory>
 #include <sstream>
+#include <string>
 
 namespace Solarus {
 
@@ -52,7 +54,7 @@ void Hero::SpinAttackState::start(const State* previous_state) {
 
   // start the animation
   Hero& hero = get_hero();
-  if (get_equipment().has_ability(ABILITY_SWORD_KNOWLEDGE)) {
+  if (get_equipment().has_ability(Ability::SWORD_KNOWLEDGE)) {
     get_sprites().set_animation_super_spin_attack();
     std::shared_ptr<CircleMovement> movement =
         std::make_shared<CircleMovement>(false);
@@ -161,7 +163,7 @@ int Hero::SpinAttackState::get_sword_damage_factor() const {
 void Hero::SpinAttackState::play_spin_attack_sound() {
 
   std::ostringstream oss;
-  oss << "sword_spin_attack_release_" << get_equipment().get_ability(ABILITY_SWORD);
+  oss << "sword_spin_attack_release_" << get_equipment().get_ability(Ability::SWORD);
   std::string custom_sound_name = oss.str();
   if (Sound::exists(custom_sound_name)) {
     Sound::play(custom_sound_name); // this particular sword has a spin attack sound effect
@@ -251,7 +253,7 @@ void Hero::SpinAttackState::notify_attacked_enemy(
     bool /* killed */) {
 
   Hero& hero = get_hero();
-  if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
+  if (result.type != EnemyReaction::ReactionType::IGNORED && attack == EnemyAttack::SWORD) {
 
     if (victim.get_push_hero_on_sword()) {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,16 +22,15 @@ namespace Solarus {
 /**
  * \brief Defines the types of attacks an enemy can be victim of.
  */
-enum EnemyAttack {
-  ATTACK_SWORD,       /**< attacked by the sword (for a spin attack, the life lost is multiplied by 2) */
-  ATTACK_THROWN_ITEM, /**< hit by an item thrown (bush, pot, stone...) */
-  ATTACK_EXPLOSION,   /**< explosion of a bomb or something else */
-  ATTACK_ARROW,       /**< hit by an arrow */
-  ATTACK_HOOKSHOT,    /**< hit by the hookshot */
-  ATTACK_BOOMERANG,   /**< hit by the boomerang */
-  ATTACK_FIRE,        /**< burned by fire */
-  ATTACK_SCRIPT,      /**< a script decided to hurt the enemy */
-  ATTACK_NUMBER
+enum class EnemyAttack {
+  SWORD,       /**< attacked by the sword (for a spin attack, the life lost is multiplied by 2) */
+  THROWN_ITEM, /**< hit by an item thrown (bush, pot, stone...) */
+  EXPLOSION,   /**< explosion of a bomb or something else */
+  ARROW,       /**< hit by an arrow */
+  HOOKSHOT,    /**< hit by the hookshot */
+  BOOMERANG,   /**< hit by the boomerang */
+  FIRE,        /**< burned by fire */
+  SCRIPT       /**< a script decided to hurt the enemy */
 };
 
 }

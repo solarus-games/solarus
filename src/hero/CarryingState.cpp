@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,6 +97,19 @@ void Hero::CarryingState::set_map(Map& map) {
   // the hero may go to another map while carrying an item
   if (carried_item != nullptr) {
     carried_item->set_map(map);
+  }
+}
+
+/**
+ * \copydoc Hero::PlayerMovementState::notify_position_changed
+ */
+void Hero::CarryingState::notify_position_changed() {
+
+  PlayerMovementState::notify_position_changed();
+
+  if (carried_item != nullptr) {
+    // Update the position of the carried item too.
+    carried_item->update();
   }
 }
 

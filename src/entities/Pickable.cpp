@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #include "solarus/movements/FallingOnFloorMovement.h"
 #include "solarus/movements/FollowMovement.h"
 #include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lua/LuaContext.h"
@@ -42,24 +42,22 @@ namespace Solarus {
  * \brief Creates a pickable item with the specified subtype.
  * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the pickable item to create on the map
- * \param x x coordinate of the pickable item to create
- * \param y y coordinate of the pickable item to create
+ * \param xy Coordinates of the pickable item to create.
  * \param treasure the treasure to give when the item is picked
  */
 Pickable::Pickable(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     const Treasure& treasure
 ):
-  Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE, name, layer, x, y, 0, 0),
+  Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE, name, layer, xy, Size(0, 0)),
   treasure(treasure),
   given_to_player(false),
   shadow_sprite(),
   falling_height(FALLING_NONE),
   will_disappear(false),
-  shadow_xy(Point(x, y)),
+  shadow_xy(xy),
   appear_date(System::now()),
   allow_pick_date(0),
   can_be_picked(true),
@@ -74,7 +72,7 @@ Pickable::Pickable(
  * \return the type of entity
  */
 EntityType Pickable::get_type() const {
-  return ENTITY_PICKABLE;
+  return EntityType::PICKABLE;
 }
 
 /**
@@ -91,13 +89,12 @@ EntityType Pickable::get_type() const {
  *
  * \param game the current game
  * \param name Name identifying the entity on the map or an empty string.
- * \param layer layer of the pickable item to create on the map
- * \param x x coordinate of the pickable item to create
- * \param y y coordinate of the pickable item to create
+ * \param layer layer of the pickable treasure to create on the map
+ * \param xy Coordinates of the pickable treasure to create
  * \param treasure the treasure to give
- * \param falling_height to make the item fall when it appears
- * \param force_persistent true to make the item stay forever
- * (otherwise, the properties of the item
+ * \param falling_height to make the treasure fall when it appears
+ * \param force_persistent true to make the treasure stay forever
+ * (otherwise, the properties of the treasure
  * decide if it disappears after some time)
  * \return the pickable item created, or nullptr
  */
@@ -105,8 +102,7 @@ std::shared_ptr<Pickable> Pickable::create(
     Game& /* game */,
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     Treasure treasure,
     FallingHeight falling_height,
     bool force_persistent
@@ -119,7 +115,7 @@ std::shared_ptr<Pickable> Pickable::create(
   }
 
   std::shared_ptr<Pickable> pickable = std::make_shared<Pickable>(
-      name, layer, x, y, treasure
+      name, layer, xy, treasure
   );
 
   // Set the item properties.
@@ -297,14 +293,14 @@ void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode /* 
 
     MapEntityPtr shared_entity_overlapping =
         std::static_pointer_cast<MapEntity>(entity_overlapping.shared_from_this());
-    if (entity_overlapping.get_type() == ENTITY_BOOMERANG) {
+    if (entity_overlapping.get_type() == EntityType::BOOMERANG) {
       Boomerang& boomerang = static_cast<Boomerang&>(entity_overlapping);
       if (!boomerang.is_going_back()) {
         boomerang.go_back();
       }
       entity_followed = shared_entity_overlapping;
     }
-    else if (entity_overlapping.get_type() == ENTITY_HOOKSHOT) {
+    else if (entity_overlapping.get_type() == EntityType::HOOKSHOT) {
       Hookshot& hookshot = static_cast<Hookshot&>(entity_overlapping);
       if (!hookshot.is_going_back()) {
         hookshot.go_back();
@@ -455,8 +451,8 @@ void Pickable::update() {
 
   if (entity_followed != nullptr && entity_followed->is_being_removed()) {
 
-    if (entity_followed->get_type() == ENTITY_BOOMERANG ||
-        entity_followed->get_type() == ENTITY_HOOKSHOT) {
+    if (entity_followed->get_type() == EntityType::BOOMERANG ||
+        entity_followed->get_type() == EntityType::HOOKSHOT) {
       // The pickable may have been dropped by the boomerang/hookshot
       // not exactly on the hero so let's fix this.
       if (get_distance(get_hero()) < 16) {
@@ -474,6 +470,7 @@ void Pickable::update() {
     // wait 0.7 second before allowing the hero to take the item
     if (!can_be_picked && now >= allow_pick_date) {
       can_be_picked = true;
+      falling_height = FALLING_NONE;
       get_hero().check_collision_with_detectors();
     }
     else {

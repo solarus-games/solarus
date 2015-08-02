@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,7 +23,7 @@
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/movements/FallingHeight.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/Debug.h"
@@ -34,6 +34,7 @@
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
 #include <lauxlib.h>
+#include <memory>
 
 namespace Solarus {
 
@@ -41,8 +42,7 @@ namespace Solarus {
  * \brief Creates a new destructible item with the specified subtype.
  * \param name Name identifying the entity on the map or an empty string.
  * \param layer Layer where to create the entity.
- * \param x X coordinate where to create the entity.
- * \param y Y coordinate where to create the entity.
+ * \param xy Coordinates where to create the entity.
  * \param animation_set_id Sprite animation set id for this destructible object.
  * \param treasure The treasure contained in this object.
  * \param modified_ground Ground defined by this entity (usually Ground::WALL).
@@ -50,13 +50,12 @@ namespace Solarus {
 Destructible::Destructible(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     const std::string& animation_set_id,
     const Treasure& treasure,
     Ground modified_ground
 ):
-  Detector(COLLISION_NONE, name, layer, x, y, 16, 16),
+  Detector(COLLISION_NONE, name, layer, xy, Size(16, 16)),
   modified_ground(modified_ground),
   treasure(treasure),
   animation_set_id(animation_set_id),
@@ -81,7 +80,7 @@ Destructible::Destructible(
  * \return the type of entity
  */
 EntityType Destructible::get_type() const {
-  return ENTITY_DESTRUCTIBLE;
+  return EntityType::DESTRUCTIBLE;
 }
 
 /**
@@ -303,10 +302,15 @@ bool Destructible::test_collision_custom(MapEntity& entity) {
  */
 void Destructible::create_treasure() {
 
-  get_entities().add_entity(Pickable::create(get_game(),
-      "", get_layer(), get_x(), get_y(),
-      treasure, FALLING_MEDIUM, false)
-  );
+  get_entities().add_entity(Pickable::create(
+      get_game(),
+      "",
+      get_layer(),
+      get_xy(),
+      treasure,
+      FALLING_MEDIUM,
+      false
+  ));
 }
 
 /**
@@ -337,7 +341,7 @@ void Destructible::notify_collision_with_hero(Hero& hero, CollisionMode /* colli
       && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
       && hero.is_free()) {
 
-    if (get_equipment().has_ability(ABILITY_LIFT, get_weight())) {
+    if (get_equipment().has_ability(Ability::LIFT, get_weight())) {
       get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
     }
     else {
@@ -377,7 +381,7 @@ void Destructible::notify_collision(
   }
 
   // TODO use dynamic dispatch
-  if (other_entity.get_type() == ENTITY_EXPLOSION
+  if (other_entity.get_type() == EntityType::EXPLOSION
       && get_can_explode()
       && !is_being_cut
       && !is_waiting_for_regeneration()
@@ -402,7 +406,7 @@ bool Destructible::notify_action_command_pressed() {
       && !is_waiting_for_regeneration()
       && !is_regenerating) {
 
-    if (get_equipment().has_ability(ABILITY_LIFT, get_weight())) {
+    if (get_equipment().has_ability(Ability::LIFT, get_weight())) {
 
       uint32_t explosion_date = get_can_explode() ? System::now() + 6000 : 0;
       get_hero().start_lifting(std::make_shared<CarriedItem>(

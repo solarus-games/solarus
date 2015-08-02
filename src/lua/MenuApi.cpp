@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -360,7 +360,7 @@ bool LuaContext::menu_on_input(
  */
 bool LuaContext::menu_on_command_pressed(
     const ScopedLuaRef& menu_ref,
-    GameCommands::Command command
+    GameCommand command
 ) {
   push_ref(l, menu_ref);
 
@@ -385,7 +385,7 @@ bool LuaContext::menu_on_command_pressed(
  */
 bool LuaContext::menu_on_command_released(
     const ScopedLuaRef& menu_ref,
-    GameCommands::Command command
+    GameCommand command
 ) {
   push_ref(l, menu_ref);
 
@@ -486,7 +486,7 @@ bool LuaContext::menus_on_input(int context_index, const InputEvent& event) {
  * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::menus_on_command_pressed(int context_index,
-    GameCommands::Command command) {
+    GameCommand command) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
@@ -517,7 +517,7 @@ bool LuaContext::menus_on_command_pressed(int context_index,
  * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::menus_on_command_released(int context_index,
-    GameCommands::Command command) {
+    GameCommand command) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {

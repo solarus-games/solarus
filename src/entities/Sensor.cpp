@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 
 namespace Solarus {
@@ -29,19 +29,15 @@ namespace Solarus {
  * \brief Constructor.
  * \param name name of the entity
  * \param layer layer of the entity
- * \param x x position of the entity's rectangle
- * \param y y position of the entity's rectangle
- * \param width width of the entity's rectangle
- * \param height height of the entity's rectangle
+ * \param xy Coordinates where to create the entity.
+ * \param size Size of the entity.
  */
 Sensor::Sensor(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height):
-  Detector(COLLISION_CONTAINING | COLLISION_OVERLAPPING, name, layer, x, y, width, height),
+    const Point& xy,
+    const Size& size):
+  Detector(COLLISION_CONTAINING | COLLISION_OVERLAPPING, name, layer, xy, size),
   activated_by_hero(false),
   notifying_script(false) {
 
@@ -53,7 +49,7 @@ Sensor::Sensor(
  * \return the type of entity
  */
 EntityType Sensor::get_type() const {
-  return ENTITY_SENSOR;
+  return EntityType::SENSOR;
 }
 
 /**

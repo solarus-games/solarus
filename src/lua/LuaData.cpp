@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,10 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/LuaData.h"
 #include <lua.hpp>
+#include <cstdio>
 #include <fstream>
+#include <ostream>
 #include <sstream>
 
 namespace Solarus {
@@ -73,11 +75,11 @@ bool LuaData::import_from_file(const std::string& file_name) {
  *
  * This function loads a file in the search path of the current quest.
  * The actual file might be located in the physical quest data directory,
- * in the quest write directory or in the quest data archive (see FileTools).
+ * in the quest write directory or in the quest data archive (see QuestFiles).
  * This function does the search for you.
  *
- * \param[in] file_name Path of the file to load, relative to the quest data
- * path.
+ * \param[in] quest_file_name Path of the file to load, relative to the quest
+ * data path.
  * \param[in] language_specific \c true to search in the language-specific
  * directory of the current language.
  * The file must be encoded in UTF-8.
@@ -87,12 +89,12 @@ bool LuaData::import_from_quest_file(
     const std::string& quest_file_name,
     bool language_specific
 ) {
-  if (!FileTools::data_file_exists(quest_file_name, language_specific)) {
+  if (!QuestFiles::data_file_exists(quest_file_name, language_specific)) {
     Debug::error(std::string("Cannot find quest file '") + quest_file_name + "'");
     return false;
   }
 
-  const std::string& buffer = FileTools::data_file_read(
+  const std::string& buffer = QuestFiles::data_file_read(
       quest_file_name, language_specific
   );
   return import_from_buffer(buffer);
@@ -127,20 +129,31 @@ bool LuaData::export_to_file(const std::string& file_name) const {
 
   // Work on a temporary file to keep the initial one intact in case of failure.
   std::string tmp_file_name = file_name + ".solarus_tmp";
-  std::ofstream out(tmp_file_name);
-  if (!out) {
+  std::ofstream tmp_out(tmp_file_name);
+  if (!tmp_out) {
     return false;
   }
 
-  if (!export_to_lua(out)) {
+  if (!export_to_lua(tmp_out)) {
     std::remove(tmp_file_name.c_str());
     return false;
   }
+  tmp_out.flush();
+  tmp_out.close();
 
-  if (std::rename(tmp_file_name.c_str(), file_name.c_str()) != 0) {
+  std::ifstream in(tmp_file_name);
+  if (!in) {
     return false;
   }
+  std::ofstream out(file_name);
+  if (!out) {
+    return false;
+  }
+  out << in.rdbuf();
 
+  in.close();
+  std::remove(tmp_file_name.c_str());
+  out.flush();
   return true;
 }
 

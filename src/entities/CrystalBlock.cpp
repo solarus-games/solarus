@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #include "solarus/Game.h"
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Sound.h"
 
 namespace Solarus {
@@ -31,15 +31,13 @@ namespace Solarus {
  * \param game the current game
  * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the entity to create on the map
- * \param x x coordinate of the entity to create
- * \param y y coordinate of the entity to create
- * \param width width of the block (the pattern can be repeated)
- * \param height height of the block (the pattern can be repeated)
+ * \param xy Coordinates of the entity to create.
+ * \param size Size of the block (the pattern can be repeated).
  * \param subtype subtype of raised block
  */
 CrystalBlock::CrystalBlock(Game& game, const std::string& name,
-    Layer layer, int x, int y, int width, int height, Subtype subtype):
-  Detector(COLLISION_OVERLAPPING, name, layer, x, y, width, height),
+    Layer layer, const Point& xy, const Size& size, Subtype subtype):
+  Detector(COLLISION_OVERLAPPING, name, layer, xy, size),
   subtype(subtype) {
 
   create_sprite("entities/crystal_block");
@@ -57,7 +55,7 @@ CrystalBlock::CrystalBlock(Game& game, const std::string& name,
   else {
     get_sprite().set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
   }
-  get_sprite().set_current_frame(3); // to avoid the animations at the map beginning
+  get_sprite().set_current_frame(get_sprite().get_nb_frames() - 1); // to avoid the animations at the map beginning
 }
 
 /**
@@ -65,7 +63,7 @@ CrystalBlock::CrystalBlock(Game& game, const std::string& name,
  * \return the type of entity
  */
 EntityType CrystalBlock::get_type() const {
-  return ENTITY_CRYSTAL_BLOCK;
+  return EntityType::CRYSTAL_BLOCK;
 }
 
 /**
@@ -103,7 +101,7 @@ void CrystalBlock::notify_collision(MapEntity& entity_overlapping, CollisionMode
 
   if (entity_overlapping.is_hero() && is_raised()) {
 
-    // see if we have to make fim fall
+    // see if we have to make him fall
 
     Hero& hero = static_cast<Hero&>(entity_overlapping);
     if (hero.can_control_movement()) {

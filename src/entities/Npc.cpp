@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #include "solarus/entities/CarriedItem.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/ScopedLuaRef.h"
@@ -29,6 +29,7 @@
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
 #include <lua.hpp>
+#include <memory>
 
 namespace Solarus {
 
@@ -37,9 +38,8 @@ namespace Solarus {
  * \param game the game
  * \param name name identifying this NPC
  * \param layer layer of the entity to create
- * \param x x coordinate of the entity to create
+ * \param xy Coordinates of the entity to create.
  * \param subtype the subtype of interaction
- * \param y y coordinate of the entity to create
  * \param sprite_name sprite animation set of the entity, or an empty string to create no sprite
  * \param direction for a generalized NPC: direction for which the interactions are allowed
  * (0 to 4, or -1 for any direction), for a usual NPC: initial direction of the NPC's sprite
@@ -48,10 +48,17 @@ namespace Solarus {
  * (with an event_hero_interaction() call) or "item#XXX" to call the script
  * of item XXX  (with an event_hero_interaction() call)
  */
-Npc::Npc(Game& /* game */, const std::string& name, Layer layer, int x, int y,
-    Subtype subtype, const std::string& sprite_name,
-    int direction, const std::string& behavior_string):
-  Detector(COLLISION_FACING | COLLISION_OVERLAPPING, name, layer, x, y, 0, 0),
+Npc::Npc(
+    Game& /* game */,
+    const std::string& name,
+    Layer layer,
+    const Point& xy,
+    Subtype subtype,
+    const std::string& sprite_name,
+    int direction,
+    const std::string& behavior_string
+):
+  Detector(COLLISION_FACING | COLLISION_OVERLAPPING, name, layer, xy, Size(0, 0)),
   subtype(subtype),
   dialog_to_show(""),
   item_name("") {
@@ -88,7 +95,7 @@ Npc::Npc(Game& /* game */, const std::string& name, Layer layer, int x, int y,
  * \return the type of entity
  */
 EntityType Npc::get_type() const {
-  return ENTITY_NPC;
+  return EntityType::NPC;
 }
 
 /**
@@ -200,12 +207,12 @@ void Npc::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
         get_keys_effect().set_action_key_effect(subtype == USUAL_NPC ?
             KeysEffect::ACTION_KEY_SPEAK : KeysEffect::ACTION_KEY_LOOK);
       }
-      else if (can_be_lifted() && get_equipment().has_ability(ABILITY_LIFT)) {
+      else if (can_be_lifted() && get_equipment().has_ability(Ability::LIFT)) {
         get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
       }
     }
   }
-  else if (collision_mode == COLLISION_OVERLAPPING && entity_overlapping.get_type() == ENTITY_FIRE) {
+  else if (collision_mode == COLLISION_OVERLAPPING && entity_overlapping.get_type() == EntityType::FIRE) {
 
     if (behavior == BEHAVIOR_ITEM_SCRIPT) {
       EquipmentItem& item = get_equipment().get_item(item_name);
@@ -248,7 +255,7 @@ bool Npc::notify_action_command_pressed() {
     }
     else {
       // lift the entity
-      if (get_equipment().has_ability(ABILITY_LIFT)) {
+      if (get_equipment().has_ability(Ability::LIFT)) {
 
         hero.start_lifting(std::make_shared<CarriedItem>(
             hero,

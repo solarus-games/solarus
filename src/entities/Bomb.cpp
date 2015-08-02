@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include "solarus/Sprite.h"
 #include "solarus/Map.h"
 #include "solarus/KeysEffect.h"
+#include <memory>
 
 namespace Solarus {
 
@@ -36,11 +37,10 @@ namespace Solarus {
  *
  * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the entity to create
- * \param x x coordinate of the entity to create
- * \param y y coordinate of the entity to create
+ * \param xy Coordinates of the entity to create.
  */
-Bomb::Bomb(const std::string& name, Layer layer, int x, int y):
-  Detector(COLLISION_FACING, name, layer, x, y, 16, 16),
+Bomb::Bomb(const std::string& name, Layer layer, const Point& xy):
+  Detector(COLLISION_FACING, name, layer, xy, Size(16, 16)),
   explosion_date(System::now() + 6000) {
 
   create_sprite("entities/bomb");
@@ -56,7 +56,7 @@ Bomb::Bomb(const std::string& name, Layer layer, int x, int y):
  * \return the type of entity
  */
 EntityType Bomb::get_type() const {
-  return ENTITY_BOMB;
+  return EntityType::BOMB;
 }
 
 /**

@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -22,6 +22,7 @@
 #include "solarus/movements/PathMovement.h"
 #include "solarus/Game.h"
 #include "solarus/GameCommands.h"
+#include <string>
 
 namespace Solarus {
 
@@ -76,7 +77,7 @@ void Hero::PullingState::update() {
     int opposite_direction8 = (get_sprites().get_animation_direction8() + 4) % 8;
 
     // stop pulling if the action key is released or if there is no more obstacle
-    if (!get_commands().is_command_pressed(GameCommands::ACTION)
+    if (!get_commands().is_command_pressed(GameCommand::ACTION)
         || !hero.is_facing_obstacle()) {
       hero.set_state(new FreeState(hero));
     }
@@ -92,7 +93,7 @@ void Hero::PullingState::update() {
       Detector* facing_entity = hero.get_facing_entity();
       if (facing_entity != nullptr) {
 
-        if (facing_entity->get_type() == ENTITY_BLOCK) { // TODO use dynamic binding
+        if (facing_entity->get_type() == EntityType::BLOCK) { // TODO use dynamic binding
           hero.try_snap_to_facing_entity();
         }
 

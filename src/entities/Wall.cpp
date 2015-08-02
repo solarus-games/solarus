@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  */
 #include "solarus/entities/Wall.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 
 namespace Solarus {
 
@@ -24,10 +24,8 @@ namespace Solarus {
  * \brief Constructor.
  * \param name name of the wall to create
  * \param layer layer of the Wall to create
- * \param x x position of the Wall to create
- * \param y y position of the Wall to create
- * \param width width of the Wall to create
- * \param height height of the Wall to create
+ * \param xy Coordinates where to create the wall.
+ * \param size Size of the Wall to create.
  * \param stops_hero true to make this entity an obstacle for the hero
  * \param stops_enemies true to make this entity an obstacle for enemies
  * \param stops_npcs true to make this entity an obstacle for NPCs
@@ -38,34 +36,33 @@ namespace Solarus {
 Wall::Wall(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height,
+    const Point& xy,
+    const Size& size,
     bool stops_hero,
     bool stops_enemies,
     bool stops_npcs,
     bool stops_blocks,
-    bool stops_projectiles):
-  MapEntity(name, 0, layer, x, y, width, height) {
+    bool stops_projectiles
+):
+  MapEntity(name, 0, layer, xy, size) {
 
   if (stops_hero) {
-    entity_types_stopped.insert(ENTITY_HERO);
+    entity_types_stopped.insert(EntityType::HERO);
   }
   if (stops_enemies) {
-    entity_types_stopped.insert(ENTITY_ENEMY);
+    entity_types_stopped.insert(EntityType::ENEMY);
   }
   if (stops_npcs) {
-    entity_types_stopped.insert(ENTITY_NPC);
+    entity_types_stopped.insert(EntityType::NPC);
   }
   if (stops_blocks) {
-    entity_types_stopped.insert(ENTITY_BLOCK);
+    entity_types_stopped.insert(EntityType::BLOCK);
   }
   if (stops_projectiles) {
-    entity_types_stopped.insert(ENTITY_CARRIED_ITEM);
-    entity_types_stopped.insert(ENTITY_ARROW);
-    entity_types_stopped.insert(ENTITY_HOOKSHOT);
-    entity_types_stopped.insert(ENTITY_BOOMERANG);
+    entity_types_stopped.insert(EntityType::CARRIED_ITEM);
+    entity_types_stopped.insert(EntityType::ARROW);
+    entity_types_stopped.insert(EntityType::HOOKSHOT);
+    entity_types_stopped.insert(EntityType::BOOMERANG);
   }
 }
 
@@ -74,7 +71,7 @@ Wall::Wall(
  * \return the type of entity
  */
 EntityType Wall::get_type() const {
-  return ENTITY_WALL;
+  return EntityType::WALL;
 }
 
 /**

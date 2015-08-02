@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,11 +23,15 @@
 
 namespace Solarus {
 
-const std::vector<std::string> Transition::style_names = {
-  "immediate",
-  "fade",
-  "scrolling"
+namespace {
+
+const std::map<Transition::Style, std::string> style_names = {
+    { Transition::Style::IMMEDIATE, "immediate" },
+    { Transition::Style::FADE, "fade" },
+    { Transition::Style::SCROLLING, "scrolling" }
 };
+
+}
 
 /**
  * \brief Creates a transition effect.
@@ -67,15 +71,15 @@ Transition* Transition::create(
 
   switch (style) {
 
-  case Transition::IMMEDIATE:
+  case Style::IMMEDIATE:
     transition = new TransitionImmediate(direction);
     break;
 
-  case Transition::FADE:
+  case Style::FADE:
     transition = new TransitionFade(direction, dst_surface);
     break;
 
-  case Transition::SCROLLING:
+  case Style::SCROLLING:
     transition = new TransitionScrolling(direction);
     break;
   }
@@ -121,7 +125,7 @@ Surface* Transition::get_previous_surface() const {
 void Transition::set_previous_surface(Surface* previous_surface) {
 
   Debug::check_assertion(previous_surface == nullptr
-      || get_direction() != TRANSITION_CLOSING,
+      || get_direction() != Direction::CLOSING,
       "Cannot show a previous surface with an closing transition effect");
 
   this->previous_surface = previous_surface;
@@ -164,6 +168,40 @@ void Transition::set_suspended(bool suspended) {
  */
 uint32_t Transition::get_when_suspended() const {
   return when_suspended;
+}
+
+/**
+ * \brief Returns the transition style values and their Lua name.
+ * \return The name of each transition style.
+ */
+const std::map<Transition::Style, std::string>& Transition::get_style_names() {
+  return style_names;
+}
+
+/**
+ * \brief Returns the name of a transition style.
+ * \param style A transition style value.
+ * \return The corresponding name.
+ */
+const std::string& Transition::get_style_name(Style style) {
+  return style_names.at(style);
+}
+
+/**
+ * \brief Returns the transition style value with the given name.
+ * \param style_name The name of a transition style. It must exist.
+ * \return The corresponding transition style value.
+ */
+Transition::Style Transition::get_style_by_name(const std::string& style_name) {
+
+  for (const auto& kvp: style_names) {
+    if (kvp.second == style_name) {
+      return kvp.first;
+    }
+  }
+
+  Debug::die(std::string("Unknown transition style name: ") + style_name);
+  return Style();
 }
 
 }

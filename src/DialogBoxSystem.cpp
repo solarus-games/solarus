@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/DialogBoxSystem.h"
-#include "solarus/DialogResource.h"
+#include "solarus/CurrentQuest.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
 #include "solarus/KeysEffect.h"
@@ -41,7 +41,10 @@ DialogBoxSystem::DialogBoxSystem(Game& game):
 
   for (int i = 0; i < nb_visible_lines; i++) {
     line_surfaces[i] = std::make_shared<TextSurface>(
-        0, 0, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_BOTTOM
+        0,
+        0,
+        TextSurface::HorizontalAlignment::LEFT,
+        TextSurface::VerticalAlignment::BOTTOM
     );
   }
 }
@@ -90,7 +93,7 @@ void DialogBoxSystem::open(
   Debug::check_assertion(!is_enabled(), "A dialog is already active");
 
   this->dialog_id = dialog_id;
-  this->dialog = DialogResource::get_dialog(dialog_id);
+  this->dialog = CurrentQuest::get_dialog(dialog_id);
   this->callback_ref = callback_ref;
 
   // Save commands.
@@ -255,7 +258,7 @@ void DialogBoxSystem::show_more_lines() {
  * \return \c true if the command was handled (that is, if the dialog box
  * is active and is the built-in one).
  */
-bool DialogBoxSystem::notify_command_pressed(GameCommands::Command command) {
+bool DialogBoxSystem::notify_command_pressed(GameCommand command) {
 
   if (!is_enabled()) {
     return false;
@@ -266,10 +269,10 @@ bool DialogBoxSystem::notify_command_pressed(GameCommands::Command command) {
     return false;
   }
 
-  if (command == GameCommands::ACTION) {
+  if (command == GameCommand::ACTION) {
     show_more_lines();
   }
-  else if (command == GameCommands::UP || command == GameCommands::DOWN) {
+  else if (command == GameCommand::UP || command == GameCommand::DOWN) {
     if (is_question && !has_more_lines()) {
       // Switch the selected answer.
       selected_first_answer = !selected_first_answer;

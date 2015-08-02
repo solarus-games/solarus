@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 #include "solarus/entities/NonAnimatedRegions.h"
 #include "solarus/entities/TilePattern.h"
 #include "solarus/entities/Tileset.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
@@ -33,6 +33,7 @@
 #include "solarus/MapLoader.h"
 #include "solarus/Savegame.h"
 #include "solarus/Sprite.h"
+#include <list>
 
 namespace Solarus {
 
@@ -49,7 +50,7 @@ Map::Map(const std::string& id):
   width8(0),
   height8(0),
   tileset(nullptr),
-  floor(NO_FLOOR),
+  floor(MapData::NO_FLOOR),
   camera(nullptr),
   visible_surface(nullptr),
   background_surface(nullptr),
@@ -148,12 +149,12 @@ void Map::set_world(const std::string& world) {
 /**
  * \brief Returns whether this map has a floor.
  *
- * This function returns true if the floor is not NO_FLOOR.
+ * This function returns true if the floor is not MapData::NO_FLOOR.
  *
  * \return true if there is a floor.
  */
 bool Map::has_floor() const {
-  return get_floor() != NO_FLOOR;
+  return get_floor() != MapData::NO_FLOOR;
 }
 
 /**
@@ -386,7 +387,7 @@ Destination* Map::get_destination() {
     // Use the destination whose name was specified.
     MapEntity* entity = get_entities().find_entity(destination_name);
 
-    if (entity == nullptr || entity->get_type() != ENTITY_DESTINATION) {
+    if (entity == nullptr || entity->get_type() != EntityType::DESTINATION) {
       Debug::error(
           std::string("Map '") + get_id() + "': No such destination: '"
           + destination_name + "'"
@@ -718,8 +719,8 @@ void Map::start() {
  */
 void Map::leave() {
   started = false;
-  this->entities->notify_map_finished();
   get_lua_context().map_on_finished(*this);
+  this->entities->notify_map_finished();
 }
 
 /**

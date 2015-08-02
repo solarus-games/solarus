@@ -5,7 +5,6 @@ animation{
     { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13 },
   },
 }
-
 animation{
   name = "stopped_explosion_soon",
   src_image = "entities/bomb.png",
@@ -15,7 +14,6 @@ animation{
     { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 4 },
   },
 }
-
 animation{
   name = "walking",
   src_image = "entities/bomb.png",
@@ -25,7 +23,6 @@ animation{
     { x = 0, y = 16, frame_width = 16, frame_height = 24, origin_x = 8, origin_y = 13, num_frames = 3 },
   },
 }
-
 animation{
   name = "walking_explosion_soon",
   src_image = "entities/bomb.png",
@@ -35,4 +32,3 @@ animation{
     { x = 48, y = 16, frame_width = 16, frame_height = 24, origin_x = 8, origin_y = 13, num_frames = 3 },
   },
 }
-

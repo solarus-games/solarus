@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #include "solarus/Equipment.h"
 #include "solarus/Game.h"
 #include "solarus/GameCommands.h"
+#include <memory>
 
 namespace Solarus {
 
@@ -47,7 +48,7 @@ void Hero::SwordSwingingState::start(const State* previous_state) {
 
   get_sprites().play_sword_sound();
   get_sprites().set_animation_sword();
-  get_equipment().notify_ability_used(ABILITY_SWORD);
+  get_equipment().notify_ability_used(Ability::SWORD);
 }
 
 /**
@@ -80,7 +81,7 @@ void Hero::SwordSwingingState::update() {
     if (hero.get_movement() == nullptr) {
 
       // if the player is still pressing the sword key, start loading the sword
-      if (get_commands().is_command_pressed(GameCommands::ATTACK)
+      if (get_commands().is_command_pressed(GameCommand::ATTACK)
           && !attacked) {
         hero.set_state(new SwordLoadingState(hero));
       }
@@ -229,7 +230,7 @@ void Hero::SwordSwingingState::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool /* killed */) {
 
-  if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
+  if (result.type != EnemyReaction::ReactionType::IGNORED && attack == EnemyAttack::SWORD) {
     attacked = true;
 
     if (victim.get_push_hero_on_sword()) {

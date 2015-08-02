@@ -1,5 +1,12 @@
 # Default installation directories.
-set(SOLARUS_LIBRARY_INSTALL_DESTINATION "lib" CACHE PATH "Library install destination")
+if(CMAKE_LIBRARY_ARCHITECTURE)
+  # Handle standard multi-architecture library directory names like x86_64-linux-gnu
+  set(SOLARUS_LIBRARY_DIRECTORY_NAME "lib/${CMAKE_LIBRARY_ARCHITECTURE}")
+else()
+  set(SOLARUS_LIBRARY_DIRECTORY_NAME "lib")
+endif()
+
+set(SOLARUS_LIBRARY_INSTALL_DESTINATION "${SOLARUS_LIBRARY_DIRECTORY_NAME}" CACHE PATH "Library install destination")
 set(SOLARUS_EXECUTABLE_INSTALL_DESTINATION "bin" CACHE PATH "Binary install destination")
 set(SOLARUS_HEADERS_INSTALL_DESTINATION "include" CACHE PATH "Headers install destination")
 

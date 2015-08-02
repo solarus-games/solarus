@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ class ParallaxScrollingTilePattern: public SimpleTilePattern {
 
   public:
 
-    ParallaxScrollingTilePattern(Ground ground, int x, int y, int width, int height);
+    ParallaxScrollingTilePattern(Ground ground, const Point& xy, const Size& size);
 
     virtual void draw(
         const SurfacePtr& dst_surface,
@@ -52,7 +52,7 @@ class ParallaxScrollingTilePattern: public SimpleTilePattern {
     virtual bool is_animated() const override;
     virtual bool is_drawn_at_its_position() const override;
 
-    static constexpr int ratio = 2; /** Distance made by the viewport to move the tile pattern of 1 pixel. */
+    static constexpr int ratio = 2;  /**< Distance made by the viewport to move the tile pattern of 1 pixel. */
 
 };
 

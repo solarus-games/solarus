@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ struct lua_State;
 namespace Solarus {
 
 class SpriteAnimation;
+class SpriteAnimationData;
 class Tileset;
 
 /**
@@ -57,7 +58,9 @@ class SpriteAnimationSet {
   private:
 
     void load();
-    static int l_animation(lua_State* l);
+
+    void add_animation(const std::string& animation_name,
+        const SpriteAnimationData& animation_data);
 
     std::string id;                          /**< Id of this animation set. */
     std::map<std::string, SpriteAnimation>

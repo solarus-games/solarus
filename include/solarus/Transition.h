@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
 #define SOLARUS_TRANSITION_H
 
 #include "solarus/Common.h"
+#include <map>
 #include <string>
-#include <vector>
 
 namespace Solarus {
 
@@ -31,14 +31,14 @@ class Surface;
  *
  * The transitions may be applied to maps or any surface.
  */
-class Transition {
+class SOLARUS_API Transition {
 
   public:
 
     /**
      * \brief Styles of transitions.
      */
-    enum Style {
+    enum class Style {
       IMMEDIATE = 0,  /**< No transition between the two surfaces. */
       FADE      = 1,  /**< Fade-out and fade-in effect. */
       SCROLLING = 2   /**< Scrolling between two maps. */
@@ -47,9 +47,9 @@ class Transition {
     /**
      * \brief Possible directions of a transition.
      */
-    enum Direction {
-      TRANSITION_OPENING  = 0,
-      TRANSITION_CLOSING = 1
+    enum class Direction {
+      OPENING  = 0,
+      CLOSING = 1
     };
 
     virtual ~Transition();
@@ -95,7 +95,9 @@ class Transition {
      */
     virtual void draw(Surface& dst_surface) = 0;
 
-    static const std::vector<std::string> style_names;  /**< Lua name of each style. */
+    static const std::map<Style, std::string>& get_style_names();
+    static const std::string& get_style_name(Style style);
+    static Style get_style_by_name(const std::string& style_name);
 
   protected:
 

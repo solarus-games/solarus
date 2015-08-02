@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,11 +22,12 @@
 #include "solarus/Map.h"
 #include "solarus/KeysEffect.h"
 #include "solarus/Sprite.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lua/LuaContext.h"
+#include <memory>
 
 namespace Solarus {
 
@@ -34,8 +35,7 @@ namespace Solarus {
  * \brief Creates a block.
  * \param name name identifying this block
  * \param layer layer of the entity to create
- * \param x x coordinate of the entity to create
- * \param y y coordinate of the entity to create
+ * \param xy Coordinate of the entity to create.
  * \param direction the only direction where the block can be moved
  * or -1 to allow it to be pushed in any direction
  * \param sprite_name animation set id of the sprite for this block
@@ -47,20 +47,19 @@ namespace Solarus {
 Block::Block(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     int direction,
     const std::string& sprite_name,
     bool can_be_pushed,
     bool can_be_pulled,
     int maximum_moves
 ):
-  Detector(COLLISION_FACING, name, layer, x, y, 16, 16),
+  Detector(COLLISION_FACING, name, layer, xy, Size(16, 16)),
   maximum_moves(maximum_moves),
   sound_played(false),
   when_can_move(System::now()),
-  last_position(x, y),
-  initial_position(x, y),
+  last_position(xy),
+  initial_position(xy),
   initial_maximum_moves(maximum_moves),
   can_be_pushed(can_be_pushed),
   can_be_pulled(can_be_pulled) {
@@ -78,7 +77,7 @@ Block::Block(
  * \return the type of entity
  */
 EntityType Block::get_type() const {
-  return ENTITY_BLOCK;
+  return EntityType::BLOCK;
 }
 
 /**
@@ -122,7 +121,15 @@ bool Block::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) 
  * \param hero the hero
  * \return true if the hero is an obstacle for this entity.
  */
-bool Block::is_hero_obstacle(Hero& /* hero */) {
+bool Block::is_hero_obstacle(Hero& hero) {
+
+  // The block is not an obstacle when the hero is already overlapping it,
+  // which is easily possible with blocks created dynamically.
+  if (hero.overlaps(*this)) {
+    return false;
+  }
+
+  // When the block is moved by the hero, one pixel can overlap.
   return get_movement() == nullptr;
 }
 

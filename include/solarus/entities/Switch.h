@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -19,6 +19,8 @@
 
 #include "solarus/Common.h"
 #include "solarus/entities/Detector.h"
+#include <map>
+#include <string>
 
 namespace Solarus {
 
@@ -40,7 +42,7 @@ class Switch: public Detector {
     /**
      * Subtypes of switches.
      */
-    enum Subtype {
+    enum class Subtype {
       WALKABLE,         /**< A button the hero can walk on. */
       ARROW_TARGET,     /**< A switch that can be triggered by shooting an
                          * arrow on it. */
@@ -51,8 +53,7 @@ class Switch: public Detector {
     Switch(
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
+        const Point& xy,
         Subtype subtype,
         const std::string& sprite_name,
         const std::string& sound_id,
@@ -88,7 +89,7 @@ class Switch: public Detector {
         Sprite& other_sprite
     ) override;
 
-    static const std::vector<std::string> subtype_names;  /**< Lua names of the Subtype enum. */
+    static const std::map<Subtype, std::string> subtype_names;  /**< Lua names of the Subtype enum. */
 
   private:
 

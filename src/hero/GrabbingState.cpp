@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ void Hero::GrabbingState::update() {
 
   // release the obstacle
   Hero& hero = get_hero();
-  if (!get_commands().is_command_pressed(GameCommands::ACTION)) {
+  if (!get_commands().is_command_pressed(GameCommand::ACTION)) {
     hero.set_state(new FreeState(hero));
   }
 

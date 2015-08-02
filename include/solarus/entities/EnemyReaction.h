@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 #include "solarus/Common.h"
 #include <map>
 #include <string>
-#include <vector>
 
 namespace Solarus {
 
@@ -31,20 +30,19 @@ class Sprite;
  *
  * The reaction may be different between different sprites of the enemy.
  */
-class EnemyReaction {
+class SOLARUS_API EnemyReaction {
 
   public:
 
     /**
      * \brief Types of reactions to an attack.
      */
-    enum ReactionType {
+    enum class ReactionType {
       HURT,              /**< the enemy is hurt and loses some life points */
       IGNORED,           /**< nothing happens */
       PROTECTED,         /**< the attack is stopped */
       IMMOBILIZED,       /**< the enemy is temporarily immobilized */
-      CUSTOM,            /**< the enemy's script decides what to do */
-      REACTION_NUMBER
+      CUSTOM             /**< the enemy's script decides what to do */
     };
 
     /**
@@ -53,6 +51,11 @@ class EnemyReaction {
     struct Reaction {
       ReactionType type; /**< type of reaction */
       int life_lost;     /**< number of life points lost (possibly zero) */
+
+      Reaction() :
+        type(ReactionType::IGNORED),
+        life_lost(0) {
+      }
     };
 
     EnemyReaction();
@@ -62,10 +65,9 @@ class EnemyReaction {
     void set_sprite_reaction(const Sprite* sprite, ReactionType reaction, int life_lost = 0);
     const Reaction& get_reaction(const Sprite* sprite) const;
 
+    static const std::map<EnemyReaction::ReactionType, std::string>& get_reaction_names();
     static const std::string& get_reaction_name(ReactionType reaction);
     static ReactionType get_reaction_by_name(const std::string& name);
-
-    static const std::vector<std::string> reaction_names;  /**< Lua name of each reaction type */
 
   private:
 

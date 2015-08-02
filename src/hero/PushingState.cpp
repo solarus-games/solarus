@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include "solarus/movements/PathMovement.h"
 #include "solarus/Game.h"
 #include "solarus/GameCommands.h"
+#include <string>
 
 namespace Solarus {
 
@@ -81,7 +82,7 @@ void Hero::PushingState::update() {
     // stop pushing if the player changes his direction
     else if (get_commands().get_wanted_direction8() != pushing_direction4 * 2) {
 
-      if (get_commands().is_command_pressed(GameCommands::ACTION)) {
+      if (get_commands().is_command_pressed(GameCommand::ACTION)) {
         hero.set_state(new GrabbingState(hero));
       }
       else {
@@ -95,7 +96,7 @@ void Hero::PushingState::update() {
       Detector* facing_entity = hero.get_facing_entity();
       if (facing_entity != nullptr) { // the obstacle pushed is an entity
 
-        if (facing_entity->get_type() == ENTITY_BLOCK) { // it can be moved by the hero (TODO dynamic binding)
+        if (facing_entity->get_type() == EntityType::BLOCK) { // it can be moved by the hero (TODO dynamic binding)
           hero.try_snap_to_facing_entity();
         }
 
@@ -241,7 +242,7 @@ void Hero::PushingState::stop_moving_pushed_entity() {
     return;
   }
 
-  if (!get_commands().is_command_pressed(GameCommands::ACTION)) {
+  if (!get_commands().is_command_pressed(GameCommand::ACTION)) {
     // The hero was pushing an entity without grabbing it.
 
     // Stop the animation pushing if his direction changed.

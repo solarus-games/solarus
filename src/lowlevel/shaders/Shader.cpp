@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  */
 #include "solarus/lowlevel/shaders/Shader.h"
 #include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
@@ -138,7 +138,7 @@ void Shader::load_lua_file(const std::string& path) {
   luaL_openlibs(l);  // FIXME don't open the libs
 
 
-  const std::string& buffer = FileTools::data_file_read(path);
+  const std::string& buffer = QuestFiles::data_file_read(path);
   int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), path.c_str());
 
   if (load_result != 0) {

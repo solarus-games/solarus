@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/entities/SimpleTilePattern.h"
+#include <cstdint>
 
 namespace Solarus {
 
@@ -32,8 +33,10 @@ class TimeScrollingTilePattern: public SimpleTilePattern {
 
   public:
 
-    TimeScrollingTilePattern(Ground ground, int x, int y, int width, int height);
+    TimeScrollingTilePattern(Ground ground, const Point& xy, const Size& size);
 
+    static void initialize();
+    static void quit();
     static void update();
     virtual void draw(
         const SurfacePtr& dst_surface,

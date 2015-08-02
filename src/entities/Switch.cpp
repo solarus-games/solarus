@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,24 +22,23 @@
 #include "solarus/Sprite.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Sound.h"
 
 namespace Solarus {
 
-const std::vector<std::string> Switch::subtype_names = {
-  "walkable",
-  "arrow_target",
-  "solid"
+const std::map<Switch::Subtype, std::string> Switch::subtype_names = {
+    { Subtype::WALKABLE, "walkable" },
+    { Subtype::ARROW_TARGET, "arrow_target" },
+    { Subtype::SOLID, "solid" }
 };
 
 /**
  * \brief Constructor.
  * \param name Name of the entity.
  * \param layer Layer of the entity.
- * \param x X position of the entity.
- * \param y X position of the entity.
+ * \param xy Coordinates the entity.
  * \param subtype The subtype of switch.
  * \param sprite_name Sprite animation set id to use, or an empty string.
  * \param sound_id Sound to play when activating the switch,
@@ -51,14 +50,13 @@ const std::vector<std::string> Switch::subtype_names = {
 Switch::Switch(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     Subtype subtype,
     const std::string& sprite_name,
     const std::string& sound_id,
     bool needs_block,
     bool inactivate_when_leaving):
-  Detector(COLLISION_NONE, name, layer, x, y, 16, 16),
+  Detector(COLLISION_NONE, name, layer, xy, Size(16, 16)),
   subtype(subtype),
   sound_id(sound_id),
   activated(false),
@@ -78,10 +76,10 @@ Switch::Switch(
   if (is_walkable()) {
     set_collision_modes(COLLISION_CUSTOM);
   }
-  else if (subtype == ARROW_TARGET) {
+  else if (subtype == Subtype::ARROW_TARGET) {
     set_collision_modes(COLLISION_FACING);
   }
-  else if (subtype == SOLID) {
+  else if (subtype == Subtype::SOLID) {
     set_collision_modes(COLLISION_SPRITE | COLLISION_OVERLAPPING);
     set_optimization_distance(2000);  // Because of bombs and arrows on the switch.
   }
@@ -92,7 +90,7 @@ Switch::Switch(
  * \return the type of entity
  */
 EntityType Switch::get_type() const {
-  return ENTITY_SWITCH;
+  return EntityType::SWITCH;
 }
 
 /**
@@ -110,7 +108,7 @@ bool Switch::is_obstacle_for(MapEntity& other) {
  * \return \c true if the subtype of this switch is WALKABLE.
  */
 bool Switch::is_walkable() const {
-  return subtype == WALKABLE;
+  return subtype == Subtype::WALKABLE;
 }
 
 /**
@@ -118,7 +116,7 @@ bool Switch::is_walkable() const {
  * \return \c true if the subtype of this switch is ARROW_TARGET.
  */
 bool Switch::is_arrow_target() const {
-  return subtype == ARROW_TARGET;
+  return subtype == Subtype::ARROW_TARGET;
 }
 
 /**
@@ -126,7 +124,7 @@ bool Switch::is_arrow_target() const {
  * \return \c true if the subtype of this switch is SOLID.
  */
 bool Switch::is_solid() const {
-  return subtype == SOLID;
+  return subtype == Subtype::SOLID;
 }
 
 /**
@@ -316,7 +314,7 @@ void Switch::try_activate(Block& block) {
  */
 void Switch::try_activate(Arrow& /* arrow */) {
 
-  if ((subtype == ARROW_TARGET || subtype == SOLID)
+  if ((subtype == Subtype::ARROW_TARGET || subtype == Subtype::SOLID)
       && !is_activated()) {
     // arrows can only activate arrow targets and solid switches
     activate();
@@ -332,7 +330,7 @@ void Switch::try_activate(Arrow& /* arrow */) {
 void Switch::try_activate() {
 
   // arbitrary entities can activate solid switches
-  if (subtype == SOLID && !is_activated()) {
+  if (subtype == Subtype::SOLID && !is_activated()) {
     activate();
   }
 }

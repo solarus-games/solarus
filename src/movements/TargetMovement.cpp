@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -149,7 +149,7 @@ void TargetMovement::recompute_movement() {
     sign_x = (dxy.x >= 0) ? 1 : -1;
     sign_y = (dxy.y >= 0) ? 1 : -1;
 
-    if (std::fabs(angle - get_angle()) > 1E-6 || get_speed() < 1E-6) {
+    if (std::abs(angle - get_angle()) > 1E-6 || get_speed() < 1E-6) {
       // The angle has changed or the movement was stopped.
       set_speed(moving_speed);
       set_angle(angle);

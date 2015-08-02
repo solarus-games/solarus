@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,10 +24,11 @@
 #include "solarus/entities/MapEntityPtr.h"
 #include "solarus/entities/TilePtr.h"
 #include "solarus/Transition.h"
-#include <vector>
 #include <list>
 #include <map>
+#include <memory>
 #include <string>
+#include <vector>
 
 namespace Solarus {
 
@@ -86,6 +87,8 @@ class SOLARUS_API MapEntities {
     static bool compare_y(MapEntity* first, MapEntity* second);
     void set_entity_drawn_in_y_order(MapEntity& entity, bool drawn_in_y_order);
     void set_entity_layer(MapEntity& entity, Layer layer);
+    void notify_entity_ground_observer_changed(MapEntity& entity);
+    void notify_entity_ground_modifier_changed(MapEntity& entity);
 
     // specific to some entity types
     bool overlaps_raised_blocks(Layer layer, const Rectangle& rectangle);

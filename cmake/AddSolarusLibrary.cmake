@@ -25,6 +25,7 @@ file(
   include/solarus/entities/Enemy.h
   include/solarus/entities/EnemyReaction.h
   include/solarus/entities/EntityType.h
+  include/solarus/entities/EntityTypeInfo.h
   include/solarus/entities/Explosion.h
   include/solarus/entities/Fire.h
   include/solarus/entities/Ground.h
@@ -91,7 +92,6 @@ file(
   include/solarus/lowlevel/apple/AppleInterface.h
   include/solarus/lowlevel/Color.h
   include/solarus/lowlevel/Debug.h
-  include/solarus/lowlevel/FileTools.h
   include/solarus/lowlevel/FontResource.h
   include/solarus/lowlevel/Geometry.h
   include/solarus/lowlevel/Hq2xFilter.h
@@ -104,6 +104,8 @@ file(
   include/solarus/lowlevel/PixelFilter.h
   include/solarus/lowlevel/Point.h
   include/solarus/lowlevel/Point.inl
+  include/solarus/lowlevel/Output.h
+  include/solarus/lowlevel/QuestFiles.h
   include/solarus/lowlevel/Random.h
   include/solarus/lowlevel/Rectangle.h
   include/solarus/lowlevel/Scale2xFilter.h
@@ -162,6 +164,7 @@ file(
   include/solarus/third_party/snes_spc/spc.h
 
   include/solarus/Ability.h
+  include/solarus/AbilityInfo.h
   include/solarus/Arguments.h
   include/solarus/Camera.h
   include/solarus/Common.h
@@ -169,17 +172,19 @@ file(
   include/solarus/CurrentQuest.h
   include/solarus/DialogBoxSystem.h
   include/solarus/Dialog.h
-  include/solarus/DialogResource.h
+  include/solarus/DialogResources.h
   include/solarus/Drawable.h
+  include/solarus/EntityData.h
   include/solarus/Equipment.h
   include/solarus/EquipmentItem.h
   include/solarus/EquipmentItemUsage.h
+  include/solarus/GameCommand.h
   include/solarus/GameCommands.h
   include/solarus/Game.h
-  include/solarus/Language.h
   include/solarus/KeysEffect.h
   include/solarus/MainLoop.h
   include/solarus/Map.h
+  include/solarus/MapData.h
   include/solarus/MapLoader.h
   include/solarus/QuestProperties.h
   include/solarus/QuestResources.h
@@ -192,8 +197,9 @@ file(
   include/solarus/SpriteAnimation.h
   include/solarus/SpriteAnimationSet.h
   include/solarus/Sprite.h
+  include/solarus/SpriteData.h
   include/solarus/SpritePtr.h
-  include/solarus/StringResource.h
+  include/solarus/StringResources.h
   include/solarus/Timer.h
   include/solarus/TimerPtr.h
   include/solarus/TransitionFade.h
@@ -219,6 +225,7 @@ file(
   src/entities/DynamicTile.cpp
   src/entities/Enemy.cpp
   src/entities/EnemyReaction.cpp
+  src/entities/EntityTypeInfo.cpp
   src/entities/Explosion.cpp
   src/entities/Fire.cpp
   src/entities/GroundInfo.cpp
@@ -280,7 +287,6 @@ file(
 
   src/lowlevel/Color.cpp
   src/lowlevel/Debug.cpp
-  src/lowlevel/FileTools.cpp
   src/lowlevel/FontResource.cpp
   src/lowlevel/Geometry.cpp
   src/lowlevel/Hq2xFilter.cpp
@@ -289,9 +295,11 @@ file(
   src/lowlevel/InputEvent.cpp
   src/lowlevel/ItDecoder.cpp
   src/lowlevel/Music.cpp
+  src/lowlevel/Output.cpp
   src/lowlevel/PixelBits.cpp
   src/lowlevel/PixelFilter.cpp
   src/lowlevel/Point.cpp
+  src/lowlevel/QuestFiles.cpp
   src/lowlevel/Random.cpp
   src/lowlevel/Rectangle.cpp
   src/lowlevel/Scale2xFilter.cpp
@@ -348,23 +356,25 @@ file(
   src/movements/StraightMovement.cpp
   src/movements/TargetMovement.cpp
 
+  src/AbilityInfo.cpp
   src/Arguments.cpp
   src/Camera.cpp
   src/CurrentQuest.cpp
   src/DialogBoxSystem.cpp
   src/Dialog.cpp
-  src/DialogResource.cpp
+  src/DialogResources.cpp
   src/Drawable.cpp
+  src/EntityData.cpp
   src/Equipment.cpp
   src/EquipmentItem.cpp
   src/EquipmentItemUsage.cpp
   src/GameCommands.cpp
   src/Game.cpp
   src/KeysEffect.cpp
-  src/Language.cpp
   src/MainLoop.cpp
   src/main/Main.cpp
   src/Map.cpp
+  src/MapData.cpp
   src/MapLoader.cpp
   src/QuestProperties.cpp
   src/QuestResources.cpp
@@ -376,7 +386,8 @@ file(
   src/SpriteAnimationDirection.cpp
   src/SpriteAnimationSet.cpp
   src/Sprite.cpp
-  src/StringResource.cpp
+  src/SpriteData.cpp
+  src/StringResources.cpp
   src/Timer.cpp
   src/Transition.cpp
   src/TransitionFade.cpp
@@ -411,6 +422,19 @@ endif()
 add_library(solarus
   SHARED
   ${source_files}
+)
+
+target_link_libraries(solarus
+  "${SDL2_LIBRARY}"
+  "${SDL2_IMAGE_LIBRARY}"
+  "${SDL2_TTF_LIBRARY}"
+  "${OPENAL_LIBRARY}"
+  "${LUA_LIBRARY}"
+  "${DL_LIBRARY}"
+  "${PHYSFS_LIBRARY}"
+  "${VORBISFILE_LIBRARY}"
+  "${OGG_LIBRARY}"
+  "${MODPLUG_LIBRARY}"
 )
 
 # Configuration for OSX and iOS build and deployment.

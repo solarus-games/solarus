@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #include <cstdlib>  // std::abort
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <SDL_messagebox.h>
 
 namespace Solarus {
@@ -38,7 +37,7 @@ namespace {
 /**
  * \brief Sets whether errors are fatal.
  *
- * If \c true, calling to Debug::error() will stop Solarus.
+ * \param die If \c true, calling Debug::error() will stop Solarus.
  * The default is \c false.
  */
 void SOLARUS_API set_die_on_error(bool die) {
@@ -48,6 +47,7 @@ void SOLARUS_API set_die_on_error(bool die) {
 /**
  * \brief Sets whether a dialog should pop when Solarus dies.
  *
+ * \param show Whether a dialog should pop when Solarus dies.
  * The default is \c true.
  */
 void SOLARUS_API set_show_popup_on_die(bool show) {
@@ -57,7 +57,7 @@ void SOLARUS_API set_show_popup_on_die(bool show) {
 /**
  * \brief Sets whether the process should abort when Solarus dies.
  *
- * If \c true, std::abort will be called.
+ * \param abort Whether std::abort should be called.
  * If \c false, the main loop will stop and a SolarusFatal exception will
  * be thrown.
  * This should be preferred if Solarus is used as a library.

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 #include "solarus/Savegame.h"
 #include "solarus/SavegameConverterV1.h"
 #include "solarus/MainLoop.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/InputEvent.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaContext.h"
@@ -79,16 +79,31 @@ const std::string Savegame::KEY_ABILITY_GET_BACK_FROM_DEATH =
  */
 Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
   ExportableToLua(),
+  empty(true),
   file_name(file_name),
   main_loop(main_loop),
   equipment(*this),
   game(nullptr) {
 
-  const std::string& quest_write_dir = FileTools::get_quest_write_dir();
+  // Don't call initialize() manually because the shared_ptr does not exist
+  // at this point, but is needed by initialize() when calling item scripts.
+}
+
+/**
+ * \brief Initializes the data from the file or from initial values if the file
+ * does not exist.
+ *
+ * This function should be called before using the object.
+ * The constructor does not call it because it involves Lua calls to initialize
+ * the equipment.
+ */
+void Savegame::initialize() {
+
+  const std::string& quest_write_dir = QuestFiles::get_quest_write_dir();
   Debug::check_assertion(!quest_write_dir.empty(),
       "The quest write directory for savegames was not set in quest.dat");
 
-  if (!FileTools::data_file_exists(file_name)) {
+  if (!QuestFiles::data_file_exists(file_name)) {
     // This save does not exist yet.
     empty = true;
     set_initial_values();
@@ -96,8 +111,10 @@ Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
   else {
     // A save already exists, let's load it.
     empty = false;
-    load();
+    import_from_file();
   }
+
+  get_equipment().load_items();
 }
 
 /**
@@ -123,7 +140,7 @@ void Savegame::set_initial_values() {
   // Set the initial equipment.
   equipment.set_max_life(1);
   equipment.set_life(1);
-  equipment.set_ability(ABILITY_TUNIC, 1);  // Mandatory to have a valid hero sprite.
+  equipment.set_ability(Ability::TUNIC, 1);  // Mandatory to have a valid hero sprite.
 }
 
 /**
@@ -173,13 +190,13 @@ void Savegame::set_default_joypad_controls() {
 }
 
 /**
- * \brief Reads the data from the savegame file.
+ * \brief Import the savegame data from the file.
  */
-void Savegame::load() {
+void Savegame::import_from_file() {
 
   // Try to parse as Lua first.
   lua_State* l = luaL_newstate();
-  const std::string& buffer = FileTools::data_file_read(file_name);
+  const std::string& buffer = QuestFiles::data_file_read(file_name);
   const int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   // Call the Lua savegame file.
@@ -283,7 +300,7 @@ void Savegame::save() {
   }
 
   const std::string& text = oss.str();
-  FileTools::data_file_save(file_name, text);
+  QuestFiles::data_file_save(file_name, text);
   empty = false;
 }
 

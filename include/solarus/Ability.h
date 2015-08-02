@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,17 +22,17 @@ namespace Solarus {
 /**
  * \brief The different built-in abilities managed by the engine.
  */
-enum Ability {
+enum class Ability {
 
-  ABILITY_TUNIC,                  /**< Tunic of the hero. Determines his sprite. */
-  ABILITY_SWORD,                  /**< Sword of the hero. 0 means no sword, a
-                                   * greater values determine the sword sprite. */
-  ABILITY_SWORD_KNOWLEDGE,        /**< Allows to do the super spin attack. */
-  ABILITY_SHIELD,                 /**< Allows to stop attacks from enemies. */
-  ABILITY_LIFT,                   /**< Lifting destructible objects. */
-  ABILITY_SWIM,                   /**< Swimming in deep water. */
-  ABILITY_RUN,                    /**< Running faster. */
-  ABILITY_DETECT_WEAK_WALLS,      /**< Be notified of weak walls nearby. */
+  TUNIC,                  /**< Tunic of the hero. Determines his sprite. */
+  SWORD,                  /**< Sword of the hero. 0 means no sword, a
+                           * greater values determine the sword sprite. */
+  SWORD_KNOWLEDGE,        /**< Allows to do the super spin attack. */
+  SHIELD,                 /**< Allows to stop attacks from enemies. */
+  LIFT,                   /**< Lifting destructible objects. */
+  SWIM,                   /**< Swimming in deep water. */
+  RUN,                    /**< Running faster. */
+  DETECT_WEAK_WALLS,      /**< Be notified of weak walls nearby. */
 };
 
 }

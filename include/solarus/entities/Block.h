@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 #include "solarus/Common.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/entities/Detector.h"
+#include <string>
 
 namespace Solarus {
 
@@ -34,8 +35,7 @@ class Block: public Detector {
 
     Block(const std::string& name,
         Layer layer,
-        int x,
-        int y,
+        const Point& xy,
         int direction,
         const std::string& sprite_name,
         bool can_be_pushed,

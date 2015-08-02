@@ -1,0 +1,44 @@
+dialog{
+  id = "a",
+  text = [[
+Simple test dialog.
+]]
+}
+
+dialog{
+  id = "a.1",
+  text = [[
+Simple test dialog.
+]]
+}
+
+dialog{
+  id = "b.1",
+  property_a = "value_a",
+  text = [[
+Property test dialog.
+]]
+}
+
+dialog{
+  id = "b.2",
+  property_a = "value_a",
+  property_b = "value_b",
+  property_c = "42",
+  property_d = "-1",
+  text = [[
+Properties test dialog.
+]]
+}
+
+dialog{
+  id = "c",
+  property = "value",
+  text = [[
+Multi-
+lines
+test
+dialog.
+]]
+}
+

@@ -3,15 +3,18 @@ set(lua_test_maps
   "basic_test"
   "jumper_tests"
   "surface_tests"
+  "all_entities"
+  "bugs/686_crash_door_item"
+  "bugs/699_crash_exit_surface_moving"
 )
 
 # Build the Solarus testing library.
 file(
   GLOB
   testing_source_files
-  src/test_tools/*.cpp
-  include/test_tools/*.h
-  include/test_tools/*.inl
+  src/test_tools/TestEnvironment.cpp
+  include/test_tools/TestEnvironment.h
+  include/test_tools/TestEnvironment.inl
 )
 
 include_directories(
@@ -25,7 +28,6 @@ add_library(solarus_testing
 
 target_link_libraries(solarus_testing
   solarus
-  "${SDL2MAIN_LIBRARY}"
   "${SDL2_LIBRARY}"
   "${SDL2_IMAGE_LIBRARY}"
   "${SDL2_TTF_LIBRARY}"
@@ -40,11 +42,17 @@ target_link_libraries(solarus_testing
 
 # Build individual tests.
 
-# Each .cpp file of the 'src/tests' directory is a test with a main() function
-file(
-  GLOB
+# Source files of the 'src/tests' directory that are a test with a main() function.
+set(
   tests_main_files
-  src/tests/*.cpp
+  src/tests/Initialization.cpp
+  src/tests/MapData.cpp
+  src/tests/PathFinding.cpp
+  src/tests/PathMovement.cpp
+  src/tests/PixelMovement.cpp
+  src/tests/RunLuaTest.cpp
+  src/tests/SpriteData.cpp
+  src/tests/LanguageData.cpp
 )
 
 foreach(test_main_file ${tests_main_files})
@@ -74,7 +82,7 @@ foreach(test_main_file ${tests_main_files})
   if (${test_main_file} MATCHES "src/tests/RunLuaTest.cpp")
     # Lua test runner: add an individual test for each map.
     foreach(map_id ${lua_test_maps})
-      add_test("lua_${map_id}" "bin/${test_bin_file}" -no-audio -no-video -map=${map_id} "${CMAKE_CURRENT_SOURCE_DIR}/testing_quest")
+      add_test("lua/${map_id}" "bin/${test_bin_file}" -no-audio -no-video -map=${map_id} "${CMAKE_CURRENT_SOURCE_DIR}/testing_quest")
     endforeach()
   else()
     # Normal C++ test.

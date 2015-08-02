@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ Boomerang::Boomerang(
     double angle,
     const std::string& sprite_name
 ):
-  MapEntity("", 0, hero->get_layer(), 0, 0, 0, 0),
+  MapEntity("", 0, hero->get_layer(), Point(0, 0), Size(0, 0)),
   hero(hero),
   has_to_go_back(false),
   going_back(false),
@@ -95,7 +95,7 @@ Boomerang::Boomerang(
  * \return the type of entity
  */
 EntityType Boomerang::get_type() const {
-  return ENTITY_BOOMERANG;
+  return EntityType::BOOMERANG;
 }
 
 /**
@@ -347,7 +347,7 @@ void Boomerang::notify_collision_with_crystal(Crystal& crystal, CollisionMode co
 void Boomerang::notify_collision_with_enemy(Enemy& enemy) {
 
   if (!overlaps(*hero)) {
-    enemy.try_hurt(ATTACK_BOOMERANG, *this, nullptr);
+    enemy.try_hurt(EnemyAttack::BOOMERANG, *this, nullptr);
   }
 }
 
@@ -361,7 +361,7 @@ void Boomerang::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool /* killed */) {
 
-  if (result.type != EnemyReaction::IGNORED && !is_going_back()) {
+  if (result.type != EnemyReaction::ReactionType::IGNORED && !is_going_back()) {
     go_back();
   }
 }

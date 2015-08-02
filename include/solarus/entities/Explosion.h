@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 #include "solarus/Common.h"
 #include "solarus/entities/Detector.h"
 #include <list>
+#include <string>
 
 namespace Solarus {
 
@@ -32,8 +33,12 @@ class Explosion: public Detector {
 
   public:
 
-    Explosion(const std::string& name, Layer layer, const Point& xy,
-        bool with_damages);
+    Explosion(
+        const std::string& name,
+        Layer layer,
+        const Point& xy,
+        bool with_damage
+    );
 
     virtual EntityType get_type() const override;
     virtual bool can_be_obstacle() const override;

@@ -1,16 +1,101 @@
 _______________________________
 
-Solarus 1.4.0 (under development)
+Solarus 1.5.0 (in progress)
 _______________________________
 
 Engine changes
 --------------
 
+* Print when the main loop starts and stops.
+* Print the Lua version at startup (#692).
+
+Lua API changes
+---------------
+
+Changes that introduce incompatibilities:
+
+* Items with amount now have a default max amount of 1000 (#688).
+
+Changes that do not introduce incompatibilities:
+
+* Add a method block:get_sprite().
+
+Data files format changes
+-------------------------
+
+* Dialogs: Allow empty texts.
+
+_______________________________
+
+Solarus 1.4.3 (in progress)
+_______________________________
+
+Bug fixes for the 1.4 release.
+
+* Fix a compilation error with Mac OS X.
+* Fix crash at exit when a surface has a movement with callback (#699).
+* Fix crash when removing a custom entity (#690).
+* Fix crash when a sprite file is missing or has no animation (#700).
+* Fix crash when trying to remove a sprite already removed (#705).
+* Fix crash when a custom entity collision or traversable test errors.
+* Fix Lua error message saying "number expected" instead of "string expected".
+* Fix map scrolling not working if quest size is not a multiple of 5 (#701).
+* Fix entities already destroyed when map:on_finished() is called (#691).
+* Fix entity:bring_to_front()/back() ignoring the order of obstacles.
+* Fix hero stuck on blocks.
+* Fix custom_entity:set_can_traverse_ground() giving opposite result (#668).
+* Fix enemy:immobilize() having no effect when already immobilized.
+* Fix the position of the shadow of pickables when they move.
+
+_______________________________
+
+Solarus 1.4.2 (2015-05-09)
+_______________________________
+
+Bug fixes for the 1.4 release.
+No change in the engine (changes in Solarus Quest Editor only).
+
+_______________________________
+
+Solarus 1.4.1 (2015-05-09)
+_______________________________
+
+Bug fixes for the 1.4 release.
+
+Engine changes
+--------------
+
+* Fix crash with doors whose opening condition is an item (#686).
+* Fix the size of custom entities supposed to be optional (#680).
+* Fix the hero's sprite reset to default ones when changing equipment (#681).
+* Fix animated tiles freezed when running a quest a second time (#679).
+* Fix saving empty files.
+* Print an error message when there is no font in the quest.
+
+_______________________________
+
+Solarus 1.4.0 (2015-05-02)
+_______________________________
+
+The new quest editor release!
+
+Engine changes
+--------------
+
 * Solarus now compiles with C++11.
+* Solarus Quest Editor was rewritten and is now in a separate repository.
 * Solarus can now be used as a library in other projects.
+* Add a command-line flag -win-console=yes to see output on Windows (#550).
 * Add unit tests.
 * Fix a crash if an entity has a sprite without animation.
 * Fix crash when using the -no-video command-line option.
+* Fix assertion when a crystal block has less than 4 frames.
+* Fix hero freeze when a treasure's dialog is missing (#595).
+* Fix hero stuck in dynamic tiles just enabled on him (#89).
+* Fix hero sometimes moving in wrong directions (#677).
+* Fix tunic and sword collision when their sprite is changed (#617).
+* Fix slightly incorrect position of carried item sometimes (#660).
+* Fix crash when a tileset image is missing (#590).
 * Don't die if the animation of a pickable treasure is missing.
 
 Lua API changes
@@ -18,8 +103,8 @@ Lua API changes
 
 Changes that introduce incompatibilities:
 
-* Text surfaces: the default font is now the first one in alphabetical order.
 * Text surfaces: the size must now be set at runtime instead of in fonts.dat.
+* Text surfaces: the default font is now the first one in alphabetical order.
 
 Changes that do not introduce incompatibilities:
 
@@ -36,33 +121,9 @@ to automatically update your data files.
 Don't forget to make a backup first.
 
 * fonts.dat no longer exists. Fonts are a resource like others now (#611).
-* Fonts are now in a 'fonts' directory instead of 'text'.
+* Fonts are now in a "fonts" directory instead of "text".
+* Maps: shop treasures have a new property "font".
 
-_________________________________
-
-Solarus 1.3.2 (under development)
-_________________________________
-
-Bug fixes for the 1.3 release.
-
-Engine changes
---------------
-
-* Fix hero freeze when a treasure's dialog is missing (#595).
-* Fix tunic and sword collision when their sprite is changed (#617).
-* Fix crash when a tileset image is missing (#590).
-
-Solarus Quest Editor changes
-----------------------------
-
-* Allow to reload the quest tree if files have changed (#596).
-* Show keyboard shortcuts in menu items.
-* When non-existent tiles are removed, show a more detailed warning.
-* Better handle tiles with invalid sizes.
-* Better handle teletransporters with invalid destinations.
-* Fix wrong height of icons in the sprite tree with windows (#618).
-* Fix chest editor dialog not opening if the item no longer exists (#594).
-* Fix custom entity editor dialog not opening if the sprite is invalid.
 
 _________________________________
 

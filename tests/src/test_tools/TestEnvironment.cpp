@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,6 +62,7 @@ Game& TestEnvironment::get_game() {
     std::shared_ptr<Savegame> savegame = std::make_shared<Savegame>(
         main_loop, "save_initial.dat"
     );
+    savegame->initialize();
     savegame->set_string(Savegame::KEY_STARTING_MAP, map_id);
     Game* game = new Game(main_loop, savegame);
     main_loop.set_game(game);
@@ -115,14 +116,12 @@ void TestEnvironment::run_map(const std::string& map_id) {
 
 /**
  * \brief Creates a custom entity on the map and returns it.
- * \param x X coordinate of the entity to create.
- * \param y Y coordinate of the entity to create.
+ * \param xy Coordinates of the entity to create.
  * \param layer Layer of the entity to create.
  */
 template<>
 std::shared_ptr<CustomEntity> TestEnvironment::make_entity<CustomEntity>(
-    int x,
-    int y,
+    const Point& xy,
     Layer layer
 ) {
 
@@ -131,10 +130,8 @@ std::shared_ptr<CustomEntity> TestEnvironment::make_entity<CustomEntity>(
      "",
      0,
      layer,
-     x,
-     y,
-     16,
-     16,
+     xy,
+     Size(16, 16),
      "",
      ""
   );

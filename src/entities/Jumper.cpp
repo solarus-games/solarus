@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  */
 #include "solarus/entities/Jumper.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 
 namespace Solarus {
@@ -25,37 +25,33 @@ namespace Solarus {
  * \brief Creates a jumper.
  * \param name Name identifying this entity.
  * \param layer layer of the entity on the map
- * \param x x coordinate of the top-left corner of the entity's rectangle
- * \param y y coordinate of the top-left corner of the entity's rectangle
- * \param width width of the entity's rectangle
- * \param height height of the entity's rectangle
+ * \param xy Coordinates of the top-left corner of the entity's rectangle.
+ * \param size Size of the entity's rectangle.
  * \param direction direction of the jump (0 to 7 as the jump may be diagonal)
  * \param jump_length length of the jump in pixels (usually a multiple of 8)
  */
 Jumper::Jumper(const std::string& name,
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height,
+    const Point& xy,
+    const Size& size,
     int direction,
     int jump_length):
   Detector(COLLISION_CUSTOM | COLLISION_FACING, // Facing point detection is necessary to avoid sword tapping.
-      name, layer, x, y, width, height),
+      name, layer, xy, size),
   jump_length(jump_length) {
 
   set_direction(direction);
 
   // check the size
   if (direction % 2 != 0) {
-    Debug::check_assertion(width == height, "This jumper has a diagonal direction but is not square");
+    Debug::check_assertion(size.is_square(), "This jumper has a diagonal direction but is not square");
   }
   else {
     if (direction % 4 == 0) {
-      Debug::check_assertion(width == 8, "This jumper is horizontal but its height is not 8");
+      Debug::check_assertion(size.width == 8, "This jumper is horizontal but its height is not 8");
     }
     else {
-      Debug::check_assertion(height == 8, "This jumper is vertical but its width is not 8");
+      Debug::check_assertion(size.height == 8, "This jumper is vertical but its width is not 8");
     }
   }
   // check the jump length
@@ -67,7 +63,7 @@ Jumper::Jumper(const std::string& name,
  * \return the type of entity
  */
 EntityType Jumper::get_type() const {
-  return ENTITY_JUMPER;
+  return EntityType::JUMPER;
 }
 
 /**

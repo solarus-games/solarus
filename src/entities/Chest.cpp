@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  */
 #include "solarus/entities/Chest.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lua/LuaContext.h"
@@ -35,18 +35,17 @@ namespace Solarus {
 /**
  * \brief Lua name of each value of the OpeningMethod enum.
  */
-const std::vector<std::string> Chest::opening_method_names = {
-  "interaction",
-  "interaction_if_savegame_variable",
-  "interaction_if_item"
+const std::map<Chest::OpeningMethod, std::string> Chest::opening_method_names = {
+    { OpeningMethod::BY_INTERACTION, "interaction" },
+    { OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE, "interaction_if_savegame_variable" },
+    { OpeningMethod::BY_INTERACTION_IF_ITEM, "interaction_if_item" }
 };
 
 /**
  * \brief Creates a new chest with the specified treasure.
  * \param name Name identifying this chest.
  * \param layer Layer of the chest to create on the map.
- * \param x X coordinate of the chest to create.
- * \param y Y coordinate of the chest to create.
+ * \param xy Coordinates of the chest to create.
  * \param sprite_name Name of the animation set of the
  * sprite to create for the chest. It must have animations "open" and "closed".
  * \param treasure The treasure in the chest.
@@ -54,17 +53,16 @@ const std::vector<std::string> Chest::opening_method_names = {
 Chest::Chest(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     const std::string& sprite_name,
     const Treasure& treasure):
 
-  Detector(COLLISION_FACING, name, layer, x, y, 16, 16),
+  Detector(COLLISION_FACING, name, layer, xy, Size(16, 16)),
   treasure(treasure),
   open(treasure.is_found()),
   treasure_given(open),
   treasure_date(0),
-  opening_method(OPENING_BY_INTERACTION),
+  opening_method(OpeningMethod::BY_INTERACTION),
   opening_condition_consumed(false) {
 
   // Create the sprite.
@@ -83,7 +81,7 @@ Chest::Chest(
  * \return the type of entity
  */
 EntityType Chest::get_type() const {
-  return ENTITY_CHEST;
+  return EntityType::CHEST;
 }
 
 /**
@@ -145,11 +143,11 @@ bool Chest::can_open() {
 
   switch (get_opening_method()) {
 
-    case OPENING_BY_INTERACTION:
+    case OpeningMethod::BY_INTERACTION:
       // No condition: the hero can always open the chest.
       return true;
 
-    case OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE:
+    case OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE:
     {
       // The hero can open the chest if a savegame variable is set.
       const std::string& required_savegame_variable = get_opening_condition();
@@ -173,7 +171,7 @@ bool Chest::can_open() {
       return false;
     }
 
-    case OPENING_BY_INTERACTION_IF_ITEM:
+    case OpeningMethod::BY_INTERACTION_IF_ITEM:
     {
       // The hero can open the chest if he has an item.
       const std::string& required_item_name = get_opening_condition();

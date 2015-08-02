@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #include "solarus/Equipment.h"
 #include "solarus/Game.h"
 #include "solarus/Savegame.h"
+#include <algorithm>
 
 namespace Solarus {
 
@@ -32,7 +33,7 @@ EquipmentItem::EquipmentItem(Equipment& equipment):
   equipment(equipment),
   name(""),
   savegame_variable(""),
-  max_amount(0),
+  max_amount(1000),
   obtainable(true),
   assignable(false),
   can_disappear(false),

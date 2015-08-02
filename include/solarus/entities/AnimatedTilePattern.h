@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,10 +42,13 @@ class AnimatedTilePattern: public TilePattern {
     };
 
     AnimatedTilePattern(Ground ground, AnimationSequence sequence,
-        int width, int height, int x1, int y1, int x2, int y2, int x3, int y3,
+        const Size& size, int x1, int y1, int x2, int y2, int x3, int y3,
         bool parallax);
 
+    static void initialize();
     static void update();
+    static void quit();
+
     virtual void draw(
         const SurfacePtr& dst_surface,
         const Point& dst_position,

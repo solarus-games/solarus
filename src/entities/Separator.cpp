@@ -24,22 +24,21 @@ namespace Solarus {
  * \brief Creates a new separator.
  * \param name Name of the entity to create.
  * \param layer Layer of the entity to create on the map.
- * \param x X coordinate of the entity to create.
- * \param y Y coordinate of the entity to create.
- * \param width Width of the separator (16 means a vertical separator).
- * \param height Height of the separator (16 means an horizontal separator).
+ * \param xy Coordinate of the entity to create.
+ * \param size Size of the separator.
+ * A width of 16 means a vertical separator and a height of 16 means a
+ * horizontal one.
  */
 Separator::Separator(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height):
-  Detector(COLLISION_CUSTOM, name, layer, x, y, width, height) {
+    const Point& xy,
+    const Size& size
+):
+  Detector(COLLISION_CUSTOM, name, layer, xy, size) {
 
-  Debug::check_assertion((width == 16 && height > 16)
-      || (width > 16 && height == 16), "Invalid separator size");
+  Debug::check_assertion((size.width == 16 && size.height > 16)
+      || (size.width > 16 && size.height == 16), "Invalid separator size");
 
   set_layer_independent_collisions(true);
 }
@@ -48,7 +47,7 @@ Separator::Separator(
  * \copydoc MapEntity::get_type
  */
 EntityType Separator::get_type() const {
-  return ENTITY_SEPARATOR;
+  return EntityType::SEPARATOR;
 }
 
 /**

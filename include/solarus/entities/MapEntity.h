@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@
 #include "solarus/entities/EnemyReaction.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/SpritePtr.h"
+#include <memory>
+#include <string>
 #include <vector>
 
 struct lua_State;
@@ -187,7 +189,7 @@ class SOLARUS_API MapEntity: public ExportableToLua {
         const std::string& animation_set_id,
         bool enable_pixel_collisions = false
     );
-    void remove_sprite(Sprite& sprite);
+    bool remove_sprite(Sprite& sprite);
     void clear_sprites();
     virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     virtual void notify_sprite_animation_finished(Sprite& sprite, const std::string& animation);
@@ -317,10 +319,8 @@ class SOLARUS_API MapEntity: public ExportableToLua {
         const std::string& name,
         int direction,
         Layer layer,
-        int x,
-        int y,
-        int width,
-        int height
+        const Point& xy,
+        const Size& size
     );
 
     // No copy constructor or assignment operator.

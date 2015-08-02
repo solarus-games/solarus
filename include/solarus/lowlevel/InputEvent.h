@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 #include "solarus/Common.h"
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 #include <SDL_events.h>
 
@@ -220,6 +221,7 @@ class InputEvent {
     static Rectangle get_global_mouse_position();
 
     // event type
+    bool is_valid() const;
     bool is_keyboard_event() const;
     bool is_joypad_event() const;
     bool is_mouse_event() const;
@@ -300,6 +302,8 @@ class InputEvent {
     static std::map<MouseButton, std::string>
       mouse_button_names;                         /**< Names of all existing mouse buttons. */
     static bool repeat_keyboard;                  /**< True to handle repeat KEYDOWN and KEYUP events. */
+    static std::set<KeyboardKey> keys_pressed;    /**< Keys currently down, only according to SDL_KEYDOWN and SDL_KEYUP events
+                                                   * (i.e. independently of the real current state SDL_GetKeyboardState()). */
 
     const SDL_Event internal_event;               /**< the internal event encapsulated */
 

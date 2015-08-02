@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,14 +23,12 @@ namespace Solarus {
 /**
  * \brief Creates a tile pattern with parallax scrolling.
  * \param ground Kind of ground of the tile pattern.
- * \param x x position of the tile pattern in the tileset
- * \param y y position of the tile pattern in the tileset
- * \param width width of the tile pattern in the tileset
- * \param height height of the tile pattern in the tileset
+ * \param xy Coordinates of the tile pattern in the tileset.
+ * \param size Size of the tile pattern in the tileset.
  */
 ParallaxScrollingTilePattern::ParallaxScrollingTilePattern(
-    Ground ground, int x, int y, int width, int height):
-  SimpleTilePattern(ground, x, y, width, height) {
+    Ground ground, const Point& xy, const Size& size):
+  SimpleTilePattern(ground, xy, size) {
 
 }
 

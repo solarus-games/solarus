@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@
 #include "solarus/movements/FallingHeight.h"
 #include "solarus/SpritePtr.h"
 #include "solarus/Treasure.h"
+#include <memory>
+#include <string>
 
 namespace Solarus {
 
@@ -38,8 +40,7 @@ class Pickable: public Detector {
     Pickable(
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
+        const Point& xy,
         const Treasure& treasure
     );
 
@@ -47,8 +48,7 @@ class Pickable: public Detector {
         Game& game,
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
+        const Point& xy,
         Treasure treasure,
         FallingHeight falling_height,
         bool force_persistent

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,27 +30,25 @@ namespace Solarus {
  * It is called by the subclasses.
  *
  * \param ground Kind of ground.
- * \param width Width of the pattern in pixels (must be a multiple of 8).
- * \param height Height of the pattern in pixels (must be a multiple of 8).
+ * \param size Size of the pattern in pixels (must be a multiple of 8).
  */
-TilePattern::TilePattern(Ground ground, int width, int height):
+TilePattern::TilePattern(Ground ground, const Size& size):
   ground(ground),
-  width(width),
-  height(height) {
+  size(size) {
 
   // Check the width and the height.
-  if (width <= 0 || height <= 0
-      || width % 8 != 0 || height % 8 != 0) {
+  if (size.width <= 0 || size.height <= 0
+      || size.width % 8 != 0 || size.height % 8 != 0) {
     std::ostringstream oss;
     oss << "Invalid tile pattern: the size is ("
-        << width << "x" << height <<
+        << size.width << "x" << size.height <<
         ") but should be positive and multiple of 8 pixels";
     Debug::die(oss.str());
   }
 
   // Diagonal obstacle: check that the tile is square.
   if (GroundInfo::is_ground_diagonal(ground)) {
-    Debug::check_assertion(width == height,
+    Debug::check_assertion(size.is_square(),
         "Invalid tile pattern: a tile pattern with a diagonal wall must be square");
   }
 }
@@ -63,18 +61,26 @@ TilePattern::~TilePattern() {
 
 /**
  * \brief Returns the width of the tile pattern.
- * \return the width of the tile
+ * \return The width of the pattern.
  */
 int TilePattern::get_width() const {
-  return width;
+  return size.width;
 }
 
 /**
  * \brief Returns the height of the tile pattern.
- * \return the height of the tile
+ * \return The height of the pattern.
  */
 int TilePattern::get_height() const {
-  return height;
+  return size.height;
+}
+
+/**
+ * \brief Returns the size of the tile pattern.
+ * \return The size of the pattern.
+ */
+const Size& TilePattern::get_size() const {
+  return size;
 }
 
 /**
@@ -86,9 +92,25 @@ Ground TilePattern::get_ground() const {
 }
 
 /**
- * \brief Updates the current frame of all tile patterns.
+ * \brief Initializes the tile pattern system.
+ */
+void TilePattern::initialize() {
+  AnimatedTilePattern::initialize();
+  TimeScrollingTilePattern::initialize();
+}
+
+/**
+ * \brief Cleans the tile pattern system.
+ */
+void TilePattern::quit() {
+  AnimatedTilePattern::quit();
+  TimeScrollingTilePattern::quit();
+}
+
+/**
+ * \brief Updates the tile pattern system.
  *
- * This function is called repeatedly by the map.
+ * This function is called repeatedly by the main loop.
  */
 void TilePattern::update() {
   AnimatedTilePattern::update();

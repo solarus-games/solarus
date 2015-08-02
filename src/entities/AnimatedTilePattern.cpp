@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,8 +48,7 @@ uint32_t AnimatedTilePattern::next_frame_date = 0;
  * \brief Constructor.
  * \param ground Kind of ground of the tile pattern.
  * \param sequence animation sequence type
- * \param width width of the tile (the same for each frame of the animation)
- * \param height height of the tile (the same for each frame of the animation)
+ * \param size Size of the pattern (the same for each frame of the animation)
  * \param x1 x position of the first frame in the tileset
  * \param y1 y position of the first frame in the tileset
  * \param x2 x position of the second frame in the tileset
@@ -60,12 +59,12 @@ uint32_t AnimatedTilePattern::next_frame_date = 0;
  */
 AnimatedTilePattern::AnimatedTilePattern(Ground ground,
     AnimationSequence sequence,
-    int width, int height,
+    const Size& size,
     int x1, int y1,
     int x2, int y2,
     int x3, int y3,
     bool parallax):
-  TilePattern(ground, width, height),
+  TilePattern(ground, size),
   sequence(sequence),
   parallax(parallax) {
 
@@ -74,7 +73,29 @@ AnimatedTilePattern::AnimatedTilePattern(Ground ground,
   this->position_in_tileset[2] = Rectangle(x3, y3);
 
   for (int i = 0; i < 3; i++) {
-    this->position_in_tileset[i].set_size(width, height);
+    this->position_in_tileset[i].set_size(size);
+  }
+}
+
+/**
+ * \brief Initializes the animated tile pattern system.
+ */
+void AnimatedTilePattern::initialize() {
+  next_frame_date = System::now();
+  frame_counter = 0;
+  for (int i = 0; i < 3; ++i) {
+    current_frames[i] = 0;
+  }
+}
+
+/**
+ * \brief Cleans the animated tile pattern system.
+ */
+void AnimatedTilePattern::quit() {
+  next_frame_date = 0;
+  frame_counter = 0;
+  for (int i = 0; i < 3; ++i) {
+    current_frames[i] = 0;
   }
 }
 
@@ -126,7 +147,7 @@ void AnimatedTilePattern::draw(
  * \brief Returns whether tiles having this tile pattern are drawn at their
  * position.
  *
- * Usually, this function returns true, and when it is the case, drawn() is
+ * Usually, this function returns true, and when it is the case, draw() is
  * called only for tiles that are located in the current viewport.
  *
  * However, some tile patterns may want to be drawn even when they are not

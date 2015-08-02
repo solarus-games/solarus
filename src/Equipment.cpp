@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,23 +22,13 @@
 #include "solarus/CurrentQuest.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Random.h"
+#include <algorithm>
 #include <sstream>
 
 namespace Solarus {
-
-const std::vector<std::string> Equipment::ability_names = {
-  "tunic",
-  "sword",
-  "sword_knowledge",
-  "shield",
-  "lift",
-  "swim",
-  "run",
-  "detect_weak_walls"
-};
 
 /**
  * \brief Constructor.
@@ -565,28 +555,28 @@ std::string Equipment::get_ability_savegame_variable(Ability ability) const {
 
   switch (ability) {
 
-    case ABILITY_TUNIC:
+    case Ability::TUNIC:
       return Savegame::KEY_ABILITY_TUNIC;
 
-    case ABILITY_SWORD:
+    case Ability::SWORD:
       return Savegame::KEY_ABILITY_SWORD;
 
-    case ABILITY_SWORD_KNOWLEDGE:
+    case Ability::SWORD_KNOWLEDGE:
       return Savegame::KEY_ABILITY_SWORD_KNOWLEDGE;
 
-    case ABILITY_SHIELD:
+    case Ability::SHIELD:
       return Savegame::KEY_ABILITY_SHIELD;
 
-    case ABILITY_LIFT:
+    case Ability::LIFT:
       return Savegame::KEY_ABILITY_LIFT;
 
-    case ABILITY_SWIM:
+    case Ability::SWIM:
       return Savegame::KEY_ABILITY_SWIM;
 
-    case ABILITY_RUN:
+    case Ability::RUN:
       return Savegame::KEY_ABILITY_RUN;
 
-    case ABILITY_DETECT_WEAK_WALLS:
+    case Ability::DETECT_WEAK_WALLS:
       return Savegame::KEY_ABILITY_DETECT_WEAK_WALLS;
   }
 
@@ -624,9 +614,9 @@ void Equipment::set_ability(Ability ability, int level) {
 
   Game* game = get_game();
   if (game != nullptr) {
-    if (ability == ABILITY_TUNIC ||
-        ability == ABILITY_SWORD ||
-        ability == ABILITY_SHIELD) {
+    if (ability == Ability::TUNIC ||
+        ability == Ability::SWORD ||
+        ability == Ability::SHIELD) {
       // The hero's sprites may depend on these abilities.
       game->get_hero()->rebuild_equipment();
     }

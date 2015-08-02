@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,8 @@
 #include "solarus/entities/StreamAction.h"
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include <memory>
 
 namespace Solarus {
 
@@ -26,20 +27,18 @@ namespace Solarus {
  * \brief Creates a new stream.
  * \param name Name identifying the entity on the map or an empty string.
  * \param layer Layer of the entity to create.
- * \param x X coordinate of the entity to create.
- * \param y Y coordinate of the entity to create.
+ * \param xy Coordinates of the entity to create.
  * \param direction Direction of the stream (0 to 7).
  * \param sprite_name Animation set id of a sprite or an empty string.
  */
 Stream::Stream(
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     int direction,
     const std::string& sprite_name
 ):
-  Detector(COLLISION_OVERLAPPING, name, layer, x, y, 16, 16),
+  Detector(COLLISION_OVERLAPPING, name, layer, xy, Size(16, 16)),
   speed(64),
   allow_movement(true),
   allow_attack(true),
@@ -58,7 +57,7 @@ Stream::Stream(
  * \return the type of entity
  */
 EntityType Stream::get_type() const {
-  return ENTITY_STREAM;
+  return EntityType::STREAM;
 }
 
 /**

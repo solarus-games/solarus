@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -283,7 +283,22 @@ void MapEntities::bring_to_front(MapEntity& entity) {
     entities_drawn_first[layer].push_back(&entity);  // Displayed last.
   }
 
-  // TODO also update the obstacle_entities, ground_modifiers and ground_observers.
+  if (entity.can_be_obstacle()) {
+    if (entity.has_layer_independent_collisions()) {
+      obstacle_entities[LAYER_LOW].remove(&entity);
+      obstacle_entities[LAYER_LOW].push_back(&entity);
+      obstacle_entities[LAYER_INTERMEDIATE].remove(&entity);
+      obstacle_entities[LAYER_INTERMEDIATE].push_back(&entity);
+      obstacle_entities[LAYER_HIGH].remove(&entity);
+      obstacle_entities[LAYER_HIGH].push_back(&entity);
+    }
+    else {
+      obstacle_entities[layer].remove(&entity);
+      obstacle_entities[layer].push_back(&entity);
+    }
+  }
+
+  // TODO also update ground_modifiers and ground_observers.
 }
 
 /**
@@ -298,7 +313,22 @@ void MapEntities::bring_to_back(MapEntity& entity) {
     entities_drawn_first[layer].push_front(&entity);  // Displayed first.
   }
 
-  // TODO also update the obstacle_entities, ground_modifiers and ground_observers.
+  if (entity.can_be_obstacle()) {
+    if (entity.has_layer_independent_collisions()) {
+      obstacle_entities[LAYER_LOW].remove(&entity);
+      obstacle_entities[LAYER_LOW].push_front(&entity);
+      obstacle_entities[LAYER_INTERMEDIATE].remove(&entity);
+      obstacle_entities[LAYER_INTERMEDIATE].push_front(&entity);
+      obstacle_entities[LAYER_HIGH].remove(&entity);
+      obstacle_entities[LAYER_HIGH].push_front(&entity);
+    }
+    else {
+      obstacle_entities[layer].remove(&entity);
+      obstacle_entities[layer].push_front(&entity);
+    }
+  }
+
+  // TODO also update ground_modifiers and ground_observers.
 }
 
 /**
@@ -534,7 +564,7 @@ void MapEntities::add_entity(const MapEntityPtr& entity) {
     return;
   }
 
-  if (entity->get_type() == ENTITY_TILE) {
+  if (entity->get_type() == EntityType::TILE) {
     // Tiles are optimized specifically for obstacle checks and rendering.
     add_tile(std::static_pointer_cast<Tile>(entity));
   }
@@ -582,23 +612,23 @@ void MapEntities::add_entity(const MapEntityPtr& entity) {
     // update the specific entities lists
     switch (entity->get_type()) {
 
-      case ENTITY_STAIRS:
+      case EntityType::STAIRS:
         stairs[layer].push_back(static_cast<Stairs*>(entity.get()));
         break;
 
-      case ENTITY_CRYSTAL_BLOCK:
+      case EntityType::CRYSTAL_BLOCK:
         crystal_blocks[layer].push_back(static_cast<CrystalBlock*>(entity.get()));
         break;
 
-      case ENTITY_SEPARATOR:
+      case EntityType::SEPARATOR:
         separators.push_back(static_cast<Separator*>(entity.get()));
         break;
 
-      case ENTITY_BOOMERANG:
+      case EntityType::BOOMERANG:
         this->boomerang = static_cast<Boomerang*>(entity.get());
         break;
 
-      case ENTITY_DESTINATION:
+      case EntityType::DESTINATION:
         {
           Destination* destination = static_cast<Destination*>(entity.get());
           if (this->default_destination == nullptr || destination->is_default()) {
@@ -723,7 +753,7 @@ void MapEntities::remove_marked_entities() {
       detectors.remove(static_cast<Detector*>(entity));
     }
 
-    // remove it from the ground obsevers list if present
+    // remove it from the ground observers list if present
     if (entity->is_ground_observer()) {
       ground_observers[layer].remove(entity);
     }
@@ -752,19 +782,19 @@ void MapEntities::remove_marked_entities() {
     // update the specific entities lists
     switch (entity->get_type()) {
 
-      case ENTITY_STAIRS:
+      case EntityType::STAIRS:
         stairs[layer].remove(static_cast<Stairs*>(entity));
         break;
 
-      case ENTITY_CRYSTAL_BLOCK:
+      case EntityType::CRYSTAL_BLOCK:
         crystal_blocks[layer].remove(static_cast<CrystalBlock*>(entity));
         break;
 
-      case ENTITY_SEPARATOR:
+      case EntityType::SEPARATOR:
         separators.remove(static_cast<Separator*>(entity));
         break;
 
-      case ENTITY_BOOMERANG:
+      case EntityType::BOOMERANG:
         this->boomerang = nullptr;
         break;
 
@@ -947,6 +977,34 @@ void MapEntities::set_entity_layer(MapEntity& entity, Layer layer) {
 }
 
 /**
+ * \brief This function should be called when an entity becomes a ground
+ * observer or when it stops being one.
+ * \param entity The entity whose ground observer property has changed.
+ */
+void MapEntities::notify_entity_ground_observer_changed(MapEntity& entity) {
+
+  Layer layer = entity.get_layer();
+  ground_observers[layer].remove(&entity);
+  if (entity.is_ground_observer()) {
+    ground_observers[layer].push_back(&entity);
+  }
+}
+
+/**
+ * \brief This function should be called when an entity becomes a ground
+ * modifier or when it stops being one.
+ * \param entity The entity whose ground modifier property has changed.
+ */
+void MapEntities::notify_entity_ground_modifier_changed(MapEntity& entity) {
+
+  Layer layer = entity.get_layer();
+  ground_modifiers[layer].remove(&entity);
+  if (entity.is_ground_modifier()) {
+    ground_modifiers[layer].push_back(&entity);
+  }
+}
+
+/**
  * \brief Returns whether a rectangle overlaps with a raised crystal block.
  * \param layer the layer to check
  * \param rectangle a rectangle
@@ -991,7 +1049,7 @@ void MapEntities::remove_arrows() {
 
   // TODO this function may be slow if there are a lot of entities: store the arrows?
   for (const MapEntityPtr& entity: all_entities) {
-    if (entity->get_type() == ENTITY_ARROW) {
+    if (entity->get_type() == EntityType::ARROW) {
       remove_entity(entity.get());
     }
   }

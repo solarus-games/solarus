@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,36 +33,37 @@
 #include "solarus/movements/StraightMovement.h"
 #include "solarus/movements/FallingHeight.h"
 #include "solarus/lowlevel/Geometry.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Random.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Sound.h"
+#include <memory>
 #include <sstream>
 
 namespace Solarus {
 
-const std::vector<std::string> Enemy::attack_names = {
-  "sword",
-  "thrown_item",
-  "explosion",
-  "arrow",
-  "hookshot",
-  "boomerang",
-  "fire",
-  "script"
+const std::map<EnemyAttack, std::string> Enemy::attack_names = {
+    { EnemyAttack::SWORD, "sword" },
+    { EnemyAttack::THROWN_ITEM, "thrown_item" },
+    { EnemyAttack::EXPLOSION, "explosion" },
+    { EnemyAttack::ARROW, "arrow" },
+    { EnemyAttack::HOOKSHOT, "hookshot" },
+    { EnemyAttack::BOOMERANG, "boomerang" },
+    { EnemyAttack::FIRE, "fire" },
+    { EnemyAttack::SCRIPT, "script" }
 };
 
-const std::vector<std::string> Enemy::hurt_style_names = {
-  "normal",
-  "monster",
-  "boss"
+const std::map<Enemy::HurtStyle, std::string> Enemy::hurt_style_names = {
+    { HurtStyle::NORMAL, "normal" },
+    { HurtStyle::MONSTER, "monster" },
+    { HurtStyle::BOSS, "boss" }
 };
 
-const std::vector<std::string> Enemy::obstacle_behavior_names = {
-  "normal",
-  "flying",
-  "swimming"
+const std::map<Enemy::ObstacleBehavior, std::string> Enemy::obstacle_behavior_names = {
+    { ObstacleBehavior::NORMAL, "normal" },
+    { ObstacleBehavior::FLYING, "flying" },
+    { ObstacleBehavior::SWIMMING, "swimming" }
 };
 
 /**
@@ -70,8 +71,7 @@ const std::vector<std::string> Enemy::obstacle_behavior_names = {
  * \param game The game.
  * \param name Name identifying the enemy or an empty string.
  * \param layer The layer on the map.
- * \param x X position on the map.
- * \param y Y position on the map.
+ * \param xy Coordinates on the map.
  * \param breed Breed of the enemy.
  * \param treasure Treasure dropped when the enemy is killed.
  */
@@ -79,25 +79,24 @@ Enemy::Enemy(
     Game& /* game */,
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     const std::string& breed,
     const Treasure& treasure
 ):
   Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE,
-      name, layer, x, y, 0, 0),
+      name, layer, xy, Size(0, 0)),
   breed(breed),
   damage_on_hero(1),
   life(1),
-  hurt_style(HURT_NORMAL),
+  hurt_style(HurtStyle::NORMAL),
   pushed_back_when_hurt(true),
   push_hero_on_sword(false),
   can_hurt_hero_running(false),
   minimum_shield_needed(0),
-  rank(RANK_NORMAL),
+  rank(Rank::NORMAL),
   savegame_variable(),
   traversable(true),
-  obstacle_behavior(OBSTACLE_BEHAVIOR_NORMAL),
+  obstacle_behavior(ObstacleBehavior::NORMAL),
   being_hurt(false),
   stop_hurt_date(0),
   invulnerable(false),
@@ -133,8 +132,7 @@ Enemy::Enemy(
  * \param rank rank of the enemy: normal, miniboss or boss
  * \param savegame_variable name of the boolean variable indicating that the enemy is dead
  * \param layer layer of the enemy on the map
- * \param x x position of the enemy on the map
- * \param y y position of the enemy on the map
+ * \param xy Coordinates of the enemy on the map.
  * \param direction initial direction of the enemy on the map (0 to 3)
  * this enemy is killed, or -1 if this enemy is not saved
  * \param treasure the pickable item that the enemy drops
@@ -147,8 +145,7 @@ MapEntityPtr Enemy::create(
     const std::string& savegame_variable,
     const std::string& name,
     Layer layer,
-    int x,
-    int y,
+    const Point& xy,
     int direction,
     const Treasure& treasure
 ) {
@@ -158,14 +155,14 @@ MapEntityPtr Enemy::create(
 
     // the enemy is dead: create its pickable treasure (if any) instead
     if (treasure.is_saved() && !game.get_savegame().get_boolean(treasure.get_savegame_variable())) {
-      return Pickable::create(game, "", layer, x, y, treasure, FALLING_NONE, true);
+      return Pickable::create(game, "", layer, xy, treasure, FALLING_NONE, true);
     }
     return nullptr;
   }
 
   // create the enemy
   std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(
-      game, name, layer, x, y, breed, treasure
+      game, name, layer, xy, breed, treasure
   );
 
   // initialize the fields
@@ -173,8 +170,8 @@ MapEntityPtr Enemy::create(
   enemy->rank = rank;
   enemy->savegame_variable = savegame_variable;
 
-  if (rank != RANK_NORMAL) {
-    enemy->hurt_style = HURT_BOSS;
+  if (rank != Rank::NORMAL) {
+    enemy->hurt_style = HurtStyle::BOSS;
   }
 
   enemy->set_default_attack_consequences();
@@ -187,7 +184,7 @@ MapEntityPtr Enemy::create(
  * \return the type of entity
  */
 EntityType Enemy::get_type() const {
-  return ENTITY_ENEMY;
+  return EntityType::ENEMY;
 }
 
 /**
@@ -285,7 +282,7 @@ bool Enemy::is_obstacle_for(MapEntity& other) {
 bool Enemy::is_low_wall_obstacle() const {
 
   // Flying enemies can traverse low walls.
-  return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
+  return obstacle_behavior != ObstacleBehavior::FLYING;
 }
 
 /**
@@ -300,7 +297,7 @@ bool Enemy::is_destructible_obstacle(Destructible& destructible) {
   if (this->overlaps(destructible)) {
     return false;
   }
-  return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
+  return obstacle_behavior != ObstacleBehavior::FLYING;
 }
 
 /**
@@ -347,8 +344,8 @@ bool Enemy::is_raised_block_obstacle(CrystalBlock& raised_block) {
  */
 bool Enemy::is_deep_water_obstacle() const {
 
-  if (obstacle_behavior == OBSTACLE_BEHAVIOR_FLYING
-      || obstacle_behavior == OBSTACLE_BEHAVIOR_SWIMMING) {
+  if (obstacle_behavior == ObstacleBehavior::FLYING
+      || obstacle_behavior == ObstacleBehavior::SWIMMING) {
     return false;
   }
 
@@ -383,7 +380,7 @@ bool Enemy::is_shallow_water_obstacle() const {
  */
 bool Enemy::is_hole_obstacle() const {
 
-  if (obstacle_behavior == OBSTACLE_BEHAVIOR_FLYING) {
+  if (obstacle_behavior == ObstacleBehavior::FLYING) {
     return false;
   }
 
@@ -418,7 +415,7 @@ bool Enemy::is_prickle_obstacle() const {
  */
 bool Enemy::is_lava_obstacle() const {
 
-  if (obstacle_behavior == OBSTACLE_BEHAVIOR_FLYING) {
+  if (obstacle_behavior == ObstacleBehavior::FLYING) {
     return false;
   }
 
@@ -626,11 +623,16 @@ void Enemy::set_minimum_shield_needed(int minimum_shield_needed) {
  * a pixel-precise collision test
  * \return the corresponding reaction
  */
-const EnemyReaction::Reaction& Enemy::get_attack_consequence(
+EnemyReaction::Reaction Enemy::get_attack_consequence(
     EnemyAttack attack,
     const Sprite* this_sprite) const {
 
-  return attack_reactions[attack].get_reaction(this_sprite);
+  const auto& it = attack_reactions.find(attack);
+  if (it == attack_reactions.end()) {
+    // Attack consequence was not initialized. Return a default value.
+    return EnemyReaction::Reaction();
+  }
+  return it->second.get_reaction(this_sprite);
 }
 
 /**
@@ -682,8 +684,8 @@ void Enemy::set_attack_consequence_sprite(
  */
 void Enemy::set_no_attack_consequences() {
 
-  for (int i = 0; i < ATTACK_NUMBER; i++) {
-    set_attack_consequence(EnemyAttack(i), EnemyReaction::IGNORED);
+  for (const auto& kvp : attack_names) {
+    set_attack_consequence(kvp.first, EnemyReaction::ReactionType::IGNORED);
   }
 }
 
@@ -693,26 +695,28 @@ void Enemy::set_no_attack_consequences() {
  */
 void Enemy::set_no_attack_consequences_sprite(const Sprite& sprite) {
 
-  for (int i = 0; i < ATTACK_NUMBER; i++) {
-    set_attack_consequence_sprite(sprite, EnemyAttack(i), EnemyReaction::IGNORED);
+  for (const auto& kvp : attack_names) {
+    EnemyAttack attack = kvp.first;
+    set_attack_consequence_sprite(sprite, attack, EnemyReaction::ReactionType::IGNORED);
   }
 }
 
 /**
- * \brief Set some default values for the reactions of the attacks.
+ * \brief Sets some default values for the reactions of the attacks.
  */
 void Enemy::set_default_attack_consequences() {
 
-  for (int i = 0; i < ATTACK_NUMBER; i++) {
-    attack_reactions[i].set_default_reaction();
+  for (const auto& kvp : attack_names) {
+    EnemyAttack attack = kvp.first;
+    attack_reactions[attack].set_default_reaction();
   }
-  set_attack_consequence(ATTACK_SWORD, EnemyReaction::HURT, 1); // multiplied by the sword strength
-  set_attack_consequence(ATTACK_THROWN_ITEM, EnemyReaction::HURT, 1); // multiplied depending on the item
-  set_attack_consequence(ATTACK_EXPLOSION, EnemyReaction::HURT, 2);
-  set_attack_consequence(ATTACK_ARROW, EnemyReaction::HURT, 2);
-  set_attack_consequence(ATTACK_HOOKSHOT, EnemyReaction::IMMOBILIZED);
-  set_attack_consequence(ATTACK_BOOMERANG, EnemyReaction::IMMOBILIZED);
-  set_attack_consequence(ATTACK_FIRE, EnemyReaction::HURT, 3);
+  set_attack_consequence(EnemyAttack::SWORD, EnemyReaction::ReactionType::HURT, 1); // multiplied by the sword strength
+  set_attack_consequence(EnemyAttack::THROWN_ITEM, EnemyReaction::ReactionType::HURT, 1); // multiplied depending on the item
+  set_attack_consequence(EnemyAttack::EXPLOSION, EnemyReaction::ReactionType::HURT, 2);
+  set_attack_consequence(EnemyAttack::ARROW, EnemyReaction::ReactionType::HURT, 2);
+  set_attack_consequence(EnemyAttack::HOOKSHOT, EnemyReaction::ReactionType::IMMOBILIZED);
+  set_attack_consequence(EnemyAttack::BOOMERANG, EnemyReaction::ReactionType::IMMOBILIZED);
+  set_attack_consequence(EnemyAttack::FIRE, EnemyReaction::ReactionType::HURT, 3);
 }
 
 /**
@@ -722,12 +726,13 @@ void Enemy::set_default_attack_consequences() {
  */
 void Enemy::set_default_attack_consequences_sprite(const Sprite& sprite) {
 
-  for (int i = 0; i < ATTACK_NUMBER; i++) {
-    set_attack_consequence_sprite(sprite, EnemyAttack(i), EnemyReaction::HURT, 1);
+  for (const auto& kvp : attack_names) {
+    EnemyAttack attack = kvp.first;
+    set_attack_consequence_sprite(sprite, attack, EnemyReaction::ReactionType::HURT, 1);
   }
-  set_attack_consequence_sprite(sprite, ATTACK_EXPLOSION, EnemyReaction::HURT, 2);
-  set_attack_consequence_sprite(sprite, ATTACK_HOOKSHOT, EnemyReaction::IMMOBILIZED);
-  set_attack_consequence_sprite(sprite, ATTACK_BOOMERANG, EnemyReaction::IMMOBILIZED);
+  set_attack_consequence_sprite(sprite, EnemyAttack::EXPLOSION, EnemyReaction::ReactionType::HURT, 2);
+  set_attack_consequence_sprite(sprite, EnemyAttack::HOOKSHOT, EnemyReaction::ReactionType::IMMOBILIZED);
+  set_attack_consequence_sprite(sprite, EnemyAttack::BOOMERANG, EnemyReaction::ReactionType::IMMOBILIZED);
 }
 
 /**
@@ -838,9 +843,15 @@ void Enemy::update() {
   if (is_killed() && is_dying_animation_finished()) {
 
     // Create the pickable treasure if any.
-    get_entities().add_entity(Pickable::create(get_game(),
-        "", get_layer(), get_x(), get_y(),
-        treasure, FALLING_HIGH, false));
+    get_entities().add_entity(Pickable::create(
+        get_game(),
+        "",
+        get_layer(),
+        get_xy(),
+        treasure,
+        FALLING_HIGH,
+        false
+    ));
 
     // Remove the enemy.
     remove_from_map();
@@ -916,7 +927,7 @@ void Enemy::notify_enabled(bool enabled) {
  */
 void Enemy::notify_ground_below_changed() {
 
-  if (get_obstacle_behavior() != OBSTACLE_BEHAVIOR_NORMAL
+  if (get_obstacle_behavior() != ObstacleBehavior::NORMAL
       || get_life() <= 0) {
     return;
   }
@@ -973,7 +984,7 @@ void Enemy::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite
  */
 void Enemy::notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) {
 
-  try_hurt(ATTACK_FIRE, fire, &sprite_overlapping);
+  try_hurt(EnemyAttack::FIRE, fire, &sprite_overlapping);
 }
 
 /**
@@ -1008,7 +1019,7 @@ void Enemy::attack_hero(Hero& hero, Sprite* this_sprite) {
 
     bool hero_protected = false;
     if (minimum_shield_needed != 0
-        && get_equipment().has_ability(ABILITY_SHIELD, minimum_shield_needed)
+        && get_equipment().has_ability(Ability::SHIELD, minimum_shield_needed)
         && hero.can_use_shield()) {
 
       // Compute the direction corresponding to the angle between the enemy and the hero.
@@ -1057,7 +1068,7 @@ void Enemy::attack_stopped_by_hero_shield() {
   can_attack = false;
   can_attack_again_date = now + 1000;
 
-  get_equipment().notify_ability_used(ABILITY_SHIELD);
+  get_equipment().notify_ability_used(Ability::SHIELD);
 }
 
 /**
@@ -1068,21 +1079,18 @@ void Enemy::play_hurt_sound() {
   std::string sound_id = "";
   switch (hurt_style) {
 
-    case HURT_NORMAL:
+    case HurtStyle::NORMAL:
       sound_id = "enemy_hurt";
       break;
 
-    case HURT_MONSTER:
+    case HurtStyle::MONSTER:
       sound_id = "monster_hurt";
       break;
 
-    case HURT_BOSS:
+    case HurtStyle::BOSS:
       sound_id = (life > 0) ? "boss_hurt" : "boss_killed";
       break;
 
-    case HURT_NUMBER:
-      Debug::die("Invalid hurt style");
-      break;
   }
 
   Sound::play(sound_id);
@@ -1150,7 +1158,7 @@ bool Enemy::is_invulnerable() const {
 void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite) {
 
   EnemyReaction::Reaction reaction = get_attack_consequence(attack, this_sprite);
-  if (invulnerable || reaction.type == EnemyReaction::IGNORED) {
+  if (invulnerable || reaction.type == EnemyReaction::ReactionType::IGNORED) {
     // ignore the attack
     return;
   }
@@ -1160,31 +1168,31 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
 
   switch (reaction.type) {
 
-    case EnemyReaction::PROTECTED:
+    case EnemyReaction::ReactionType::PROTECTED:
       // attack failure sound
       Sound::play("sword_tapping");
       break;
 
-    case EnemyReaction::IMMOBILIZED:
+    case EnemyReaction::ReactionType::IMMOBILIZED:
       // get immobilized
       being_hurt = true;
       hurt(source, this_sprite);
       immobilize();
       break;
 
-    case EnemyReaction::CUSTOM:
+    case EnemyReaction::ReactionType::CUSTOM:
       // custom attack (defined in the script)
       if (is_in_normal_state()) {
         custom_attack(attack, this_sprite);
       }
       else {
         // no attack was made: notify the source correctly
-        reaction.type = EnemyReaction::IGNORED;
+        reaction.type = EnemyReaction::ReactionType::IGNORED;
         invulnerable = false;
       }
       break;
 
-    case EnemyReaction::HURT:
+    case EnemyReaction::ReactionType::HURT:
 
       if (is_immobilized() && get_sprite().get_current_animation() == "shaking") {
         stop_immobilized();
@@ -1193,7 +1201,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
       // Compute the number of health points lost by the enemy.
 
       being_hurt = true;
-      if (attack == ATTACK_SWORD) {
+      if (attack == EnemyAttack::SWORD) {
 
         Hero& hero = static_cast<Hero&>(source);
 
@@ -1215,7 +1223,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
           reaction.life_lost *= hero.get_sword_damage_factor();
         }
       }
-      else if (attack == ATTACK_THROWN_ITEM) {
+      else if (attack == EnemyAttack::THROWN_ITEM) {
         reaction.life_lost *= static_cast<CarriedItem&>(source).get_damage_on_enemies();
       }
       life -= reaction.life_lost;
@@ -1224,14 +1232,8 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
       notify_hurt(source, attack);
       break;
 
-    case EnemyReaction::IGNORED:
-    case EnemyReaction::REACTION_NUMBER:
-    {
-      std::ostringstream oss;
-      oss << "Invalid enemy reaction: " << reaction.type;
-      Debug::die(oss.str());
-      break;
-    }
+    case EnemyReaction::ReactionType::IGNORED:
+      return;
   }
 
   // notify the source
@@ -1329,7 +1331,7 @@ void Enemy::kill() {
   can_attack_again_date = 0;
   dying_animation_started = true;
 
-  if (hurt_style == HURT_BOSS) {
+  if (hurt_style == HurtStyle::BOSS) {
     // A boss: create some explosions.
     exploding = true;
     nb_explosions = 0;

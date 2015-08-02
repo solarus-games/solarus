@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,18 +14,18 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/MainLoop.h"
-#include "solarus/Game.h"
-#include "solarus/Savegame.h"
+#include "solarus/AbilityInfo.h"
+#include "solarus/CurrentQuest.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
-#include "solarus/DialogResource.h"
-#include "solarus/CurrentQuest.h"
+#include "solarus/Game.h"
 #include "solarus/KeysEffect.h"
-#include "solarus/lowlevel/FileTools.h"
-#include "solarus/lowlevel/Debug.h"
+#include "solarus/MainLoop.h"
+#include "solarus/Savegame.h"
 
 namespace Solarus {
 
@@ -160,11 +160,11 @@ int LuaContext::game_api_exists(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
-    if (FileTools::get_quest_write_dir().empty()) {
+    if (QuestFiles::get_quest_write_dir().empty()) {
       LuaTools::error(l, "Cannot check savegame: no write directory was specified in quest.dat");
     }
 
-    bool exists = FileTools::data_file_exists(file_name);
+    bool exists = QuestFiles::data_file_exists(file_name);
 
     lua_pushboolean(l, exists);
     return 1;
@@ -181,11 +181,11 @@ int LuaContext::game_api_delete(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
-    if (FileTools::get_quest_write_dir().empty()) {
+    if (QuestFiles::get_quest_write_dir().empty()) {
       LuaTools::error(l, "Cannot delete savegame: no write directory was specified in quest.dat");
     }
 
-    FileTools::data_file_delete(file_name);
+    QuestFiles::data_file_delete(file_name);
 
     return 0;
   });
@@ -201,15 +201,14 @@ int LuaContext::game_api_load(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
-    if (FileTools::get_quest_write_dir().empty()) {
+    if (QuestFiles::get_quest_write_dir().empty()) {
       LuaTools::error(l, "Cannot load savegame: no write directory was specified in quest.dat");
     }
 
     std::shared_ptr<Savegame> savegame = std::make_shared<Savegame>(
         get_lua_context(l).get_main_loop(), file_name
     );
-
-    savegame->get_equipment().load_items();
+    savegame->initialize();
 
     push_game(l, *savegame);
     return 1;
@@ -226,7 +225,7 @@ int LuaContext::game_api_save(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
 
-    if (FileTools::get_quest_write_dir().empty()) {
+    if (QuestFiles::get_quest_write_dir().empty()) {
       LuaTools::error(l, "Cannot save game: no write directory was specified in quest.dat");
     }
 
@@ -416,7 +415,7 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
     ScopedLuaRef info_ref;
     ScopedLuaRef callback_ref;
 
-    if (!DialogResource::exists(dialog_id)) {
+    if (!CurrentQuest::dialog_exists(dialog_id)) {
       LuaTools::arg_error(l, 2, std::string("No such dialog: '") + dialog_id + "'");
     }
 
@@ -1093,7 +1092,7 @@ int LuaContext::game_api_has_ability(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
+    Ability ability = LuaTools::check_enum<Ability>(l, 2, AbilityInfo::get_ability_names());
 
     bool has_ability = savegame.get_equipment().has_ability(ability);
 
@@ -1111,7 +1110,7 @@ int LuaContext::game_api_get_ability(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
+    Ability ability = LuaTools::check_enum<Ability>(l, 2, AbilityInfo::get_ability_names());
 
     int ability_level = savegame.get_equipment().get_ability(ability);
 
@@ -1129,7 +1128,7 @@ int LuaContext::game_api_set_ability(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
+    Ability ability = LuaTools::check_enum<Ability>(l, 2, AbilityInfo::get_ability_names());
     int level = LuaTools::check_int(l, 3);
 
     savegame.get_equipment().set_ability(ability, level);
@@ -1244,7 +1243,7 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommand command = LuaTools::check_enum<GameCommand>(
         l, 2, GameCommands::command_names);
 
     Game* game = savegame.get_game();
@@ -1256,58 +1255,58 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
       std::string effect_name;
       switch (command) {
 
-      case GameCommands::ACTION:
+      case GameCommand::ACTION:
       {
         KeysEffect::ActionKeyEffect effect = game->get_keys_effect().get_action_key_effect();
         effect_name = KeysEffect::get_action_key_effect_name(effect);
         break;
       }
 
-      case GameCommands::ATTACK:
+      case GameCommand::ATTACK:
       {
         KeysEffect::SwordKeyEffect effect = game->get_keys_effect().get_sword_key_effect();
         effect_name = KeysEffect::get_sword_key_effect_name(effect);
         break;
       }
 
-      case GameCommands::ITEM_1:
+      case GameCommand::ITEM_1:
       {
         effect_name = game->is_suspended() ? "" : "use_item_1";
         break;
       }
 
-      case GameCommands::ITEM_2:
+      case GameCommand::ITEM_2:
       {
         effect_name = game->is_suspended() ? "" : "use_item_2";
         break;
       }
 
-      case GameCommands::PAUSE:
+      case GameCommand::PAUSE:
       {
         KeysEffect::PauseKeyEffect effect = game->get_keys_effect().get_pause_key_effect();
         effect_name = KeysEffect::get_pause_key_effect_name(effect);
         break;
       }
 
-      case GameCommands::RIGHT:
+      case GameCommand::RIGHT:
       {
         effect_name = game->is_suspended() ? "" : "move_right";
         break;
       }
 
-      case GameCommands::UP:
+      case GameCommand::UP:
       {
         effect_name = game->is_suspended() ? "" : "move_up";
         break;
       }
 
-      case GameCommands::LEFT:
+      case GameCommand::LEFT:
       {
         effect_name = game->is_suspended() ? "" : "move_left";
         break;
       }
 
-      case GameCommands::DOWN:
+      case GameCommand::DOWN:
       {
         effect_name = game->is_suspended() ? "" : "move_down";
         break;
@@ -1338,7 +1337,7 @@ int LuaContext::game_api_get_command_keyboard_binding(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommand command = LuaTools::check_enum<GameCommand>(
         l, 2, GameCommands::command_names);
 
     GameCommands& commands = savegame.get_game()->get_commands();
@@ -1364,7 +1363,7 @@ int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommand command = LuaTools::check_enum<GameCommand>(
         l, 2, GameCommands::command_names);
     if (lua_gettop(l) <= 3) {
       LuaTools::type_error(l, 3, "string or nil");
@@ -1392,7 +1391,7 @@ int LuaContext::game_api_get_command_joypad_binding(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommand command = LuaTools::check_enum<GameCommand>(
         l, 2, GameCommands::command_names);
 
     GameCommands& commands = savegame.get_game()->get_commands();
@@ -1417,7 +1416,7 @@ int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommand command = LuaTools::check_enum<GameCommand>(
         l, 2, GameCommands::command_names);
     if (lua_gettop(l) <= 3) {
       LuaTools::type_error(l, 3, "string or nil");
@@ -1444,7 +1443,7 @@ int LuaContext::game_api_capture_command_binding(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommand command = LuaTools::check_enum<GameCommand>(
         l, 2, GameCommands::command_names);
     const ScopedLuaRef& callback_ref = LuaTools::opt_function(l, 3);
 
@@ -1464,7 +1463,7 @@ int LuaContext::game_api_is_command_pressed(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommand command = LuaTools::check_enum<GameCommand>(
         l, 2, GameCommands::command_names);
 
     GameCommands& commands = savegame.get_game()->get_commands();
@@ -1506,7 +1505,7 @@ int LuaContext::game_api_simulate_command_pressed(lua_State* l){
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommand command = LuaTools::check_enum<GameCommand>(
         l, 2, GameCommands::command_names);
 
     savegame.get_game()->simulate_command_pressed(command);
@@ -1524,7 +1523,7 @@ int LuaContext::game_api_simulate_command_released(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+    GameCommand command = LuaTools::check_enum<GameCommand>(
         l, 2, GameCommands::command_names);
 
     savegame.get_game()->simulate_command_released(command);
@@ -1780,7 +1779,7 @@ bool LuaContext::game_on_input(Game& game, const InputEvent& event) {
  * \param command The command pressed.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::game_on_command_pressed(Game& game, GameCommands::Command command) {
+bool LuaContext::game_on_command_pressed(Game& game, GameCommand command) {
 
   bool handled = false;
   push_game(l, game.get_savegame());
@@ -1804,7 +1803,7 @@ bool LuaContext::game_on_command_pressed(Game& game, GameCommands::Command comma
  * \param command The command released.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::game_on_command_released(Game& game, GameCommands::Command command) {
+bool LuaContext::game_on_command_released(Game& game, GameCommand command) {
 
   bool handled = false;
   push_game(l, game.get_savegame());

@@ -1,24 +1,31 @@
-map{ id = "traversable", description = "Traversable test area" }
+map{ id = "all_entities", description = "All entities" }
 map{ id = "basic_test", description = "Basic test" }
-map{ id = "surface_tests", description = "Surface tests" }
+map{ id = "bugs/686_crash_door_item", description = "#686: Crash with doors whose opening condition is an item" }
+map{ id = "bugs/699_crash_exit_surface_moving", description = "#699: Crash at exit when a surface was moving" }
 map{ id = "jumper_tests", description = "Jumper tests" }
+map{ id = "surface_tests", description = "Surface tests" }
+map{ id = "traversable", description = "Traversable test area" }
 
 tileset{ id = "castle", description = "Castle" }
 
+sprite{ id = "enemies/enemy_killed", description = "Enemy killed" }
+sprite{ id = "enemies/test_enemy", description = "Test enemy" }
 sprite{ id = "entities/arrow", description = "Arrow" }
 sprite{ id = "entities/block", description = "Block" }
 sprite{ id = "entities/bomb", description = "Bomb" }
 sprite{ id = "entities/bomb_flower", description = "Bomb flower" }
 sprite{ id = "entities/bush", description = "Bush" }
 sprite{ id = "entities/chest", description = "Chest" }
-sprite{ id = "entities/conveyor_belt", description = "Conveyor belt" }
 sprite{ id = "entities/crystal", description = "Crystal" }
+sprite{ id = "entities/crystal_block", description = "Crystal block" }
+sprite{ id = "entities/door", description = "Door" }
 sprite{ id = "entities/explosion", description = "Explosion" }
 sprite{ id = "entities/fire", description = "Fire" }
 sprite{ id = "entities/grass", description = "Grass" }
 sprite{ id = "entities/hookshot", description = "Hookshot" }
 sprite{ id = "entities/items", description = "Items" }
 sprite{ id = "entities/pot", description = "Pot" }
+sprite{ id = "entities/rupee_icon", description = "Money icon" }
 sprite{ id = "entities/shadow", description = "Shadow" }
 sprite{ id = "entities/sign", description = "Sign" }
 sprite{ id = "entities/solid_switch", description = "Solid switch" }
@@ -26,15 +33,15 @@ sprite{ id = "entities/star", description = "Star" }
 sprite{ id = "entities/stone_small_black", description = "Stone (black)" }
 sprite{ id = "entities/stone_small_white", description = "Stone (white)" }
 sprite{ id = "entities/switch", description = "Switch" }
-sprite{ id = "hero/tunic1", description = "Hero tunic 1" }
-sprite{ id = "hero/sword1", description = "Hero sword 1" }
-sprite{ id = "hero/sword_stars1", description = "Hero sword stars 1" }
-sprite{ id = "hero/shield1", description = "Hero shield 1" }
 sprite{ id = "hero/ground1", description = "Grass under hero" }
 sprite{ id = "hero/ground2", description = "Shallow water under hero" }
+sprite{ id = "hero/shield1", description = "Hero shield 1" }
+sprite{ id = "hero/sword1", description = "Hero sword 1" }
+sprite{ id = "hero/sword_stars1", description = "Hero sword stars 1" }
 sprite{ id = "hero/trail", description = "Hero trail" }
-sprite{ id = "enemies/enemy_killed", description = "Enemy killed" }
+sprite{ id = "hero/tunic1", description = "Hero tunic 1" }
 sprite{ id = "menus/solarus_logo", description = "Menu: Solarus logo" }
+sprite{ id = "todo", description = "TODO image" }
 
 
 sound{ id = "arrow_hit", description = "arrow_hit" }
@@ -62,6 +69,7 @@ sound{ id = "message_end", description = "message_end" }
 sound{ id = "monster_hurt", description = "monster_hurt" }
 sound{ id = "picked_item", description = "picked_item" }
 sound{ id = "running", description = "running" }
+sound{ id = "running_obstacle", description = "running_obstacle" }
 sound{ id = "shield", description = "shield" }
 sound{ id = "splash", description = "splash" }
 sound{ id = "stairs_down_end", description = "stairs_down_end" }
@@ -76,16 +84,18 @@ sound{ id = "sword_spin_attack_release", description = "sword_spin_attack_releas
 sound{ id = "sword_tapping", description = "sword_tapping" }
 sound{ id = "sword_tapping_weak_wall", description = "sword_tapping_weak_wall" }
 sound{ id = "throw", description = "throw" }
-sound{ id = "timer_hurry", description = "timer_hurry" }
 sound{ id = "timer", description = "timer" }
+sound{ id = "timer_hurry", description = "timer_hurry" }
 sound{ id = "treasure", description = "treasure" }
 sound{ id = "victory", description = "victory" }
 sound{ id = "walk_on_grass", description = "walk_on_grass" }
 sound{ id = "walk_on_water", description = "walk_on_water" }
 sound{ id = "wrong", description = "wrong" }
-sound{ id = "running_obstacle", description = "running_obstacle" }
 
+item{ id = "bomb", description = "Bomb" }
+item{ id = "sword", description = "Sword" }
 
+enemy{ id = "test_enemy", description = "Test enemy" }
 
 
 language{ id = "en", description = "English" }

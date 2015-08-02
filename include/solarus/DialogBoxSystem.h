@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,10 @@
 #include "solarus/lowlevel/SurfacePtr.h"
 #include "solarus/lua/ScopedLuaRef.h"
 #include "solarus/Dialog.h"
-#include "solarus/GameCommands.h"
+#include "solarus/GameCommand.h"
 #include <list>
+#include <memory>
+#include <string>
 
 namespace Solarus {
 
@@ -52,7 +54,7 @@ class DialogBoxSystem {
         const ScopedLuaRef& callback_ref
     );
     void close(const ScopedLuaRef& status_ref);
-    bool notify_command_pressed(GameCommands::Command command);
+    bool notify_command_pressed(GameCommand command);
     const std::string& get_dialog_id() const;
 
     void draw(const SurfacePtr& dst_surface);

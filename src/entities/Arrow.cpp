@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,8 @@
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Debug.h"
+#include <memory>
+#include <string>
 
 namespace Solarus {
 
@@ -38,7 +40,7 @@ namespace Solarus {
  * \param hero The hero.
  */
 Arrow::Arrow(const Hero& hero):
-  MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
+  MapEntity("", 0, hero.get_layer(), Point(0, 0), Size(0, 0)),
   hero(hero) {
 
   // initialize the entity
@@ -77,7 +79,7 @@ Arrow::Arrow(const Hero& hero):
  * \return the type of entity
  */
 EntityType Arrow::get_type() const {
-  return ENTITY_ARROW;
+  return EntityType::ARROW;
 }
 
 /**
@@ -244,10 +246,10 @@ void Arrow::update() {
       // the arrow is stopped because the entity that was reached just disappeared
       disappear_date = now;
     }
-    else if (entity_reached->get_type() == ENTITY_DESTRUCTIBLE && !entity_reached->is_obstacle_for(*this)) {
+    else if (entity_reached->get_type() == EntityType::DESTRUCTIBLE && !entity_reached->is_obstacle_for(*this)) {
       disappear_date = now;
     }
-    else if (entity_reached->get_type() == ENTITY_ENEMY &&
+    else if (entity_reached->get_type() == EntityType::ENEMY &&
         (std::static_pointer_cast<Enemy>(entity_reached)->is_dying())) {
       // the enemy is dying
       disappear_date = now;
@@ -406,7 +408,7 @@ void Arrow::notify_collision_with_enemy(
     Enemy& enemy, Sprite& enemy_sprite, Sprite& /* this_sprite */) {
 
   if (!overlaps(hero) && is_flying()) {
-    enemy.try_hurt(ATTACK_ARROW, *this, &enemy_sprite);
+    enemy.try_hurt(EnemyAttack::ARROW, *this, &enemy_sprite);
   }
 }
 
@@ -420,11 +422,11 @@ void Arrow::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool killed) {
 
-  if (result.type == EnemyReaction::PROTECTED) {
+  if (result.type == EnemyReaction::ReactionType::PROTECTED) {
     stop();
     attach_to(victim);
   }
-  else if (result.type != EnemyReaction::IGNORED) {
+  else if (result.type != EnemyReaction::ReactionType::IGNORED) {
     if (killed) {
       remove_from_map();
     }

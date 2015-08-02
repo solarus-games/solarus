@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/System.h"
 #include <SDL.h>
+#include <algorithm>
 #include <iostream> // print functions
 
 namespace Solarus {
@@ -140,15 +141,12 @@ bool PixelBits::test_collision(
   }
 
   // compute the relative position of the intersection rectangle for each bounding_box
-  const int offset_x1 = intersection.get_x() - bounding_box1.get_x();
-  const int offset_y1 = intersection.get_y() - bounding_box1.get_y();
-
-  const int offset_x2 = intersection.get_x() - bounding_box2.get_x();
-  const int offset_y2 = intersection.get_y() - bounding_box2.get_y();
+  Point offset1 = intersection.get_xy() - bounding_box1.get_xy();
+  Point offset2 = intersection.get_xy() - bounding_box2.get_xy();
 
   if (debug_pixel_collisions) {
-    std::cout << "offset_x1 = " << offset_x1 << ", offset_y1 = " << offset_y1;
-    std::cout << ", offset_x2 = " << offset_x2 << ", offset_y2 = " << offset_y2 << std::endl;
+    std::cout << "offset1.x = " << offset1.x << ", offset1.y = " << offset1.y;
+    std::cout << ", offset2.x = " << offset2.x << ", offset2.y = " << offset2.y << std::endl;
   }
 
   // For each row of the intersection, we will call row 'a' the row coming from the right bounding box
@@ -165,16 +163,16 @@ bool PixelBits::test_collision(
 
   // make sure row a starts after row b
   if (bounding_box1.get_x() > bounding_box2.get_x()) {
-    rows_a = this->bits.begin() + offset_y1;
-    rows_b = other.bits.begin() + offset_y2;
-    nb_unused_masks_row_b = offset_x2 >> 5;
-    nb_unused_bits_row_b = offset_x2 & 31;
+    rows_a = this->bits.begin() + offset1.y;
+    rows_b = other.bits.begin() + offset2.y;
+    nb_unused_masks_row_b = offset2.x >> 5;
+    nb_unused_bits_row_b = offset2.x & 31;
   }
   else {
-    rows_a = other.bits.begin() + offset_y2;
-    rows_b = this->bits.begin() + offset_y1;
-    nb_unused_masks_row_b = offset_x1 >> 5;
-    nb_unused_bits_row_b = offset_x1 & 31;
+    rows_a = other.bits.begin() + offset2.y;
+    rows_b = this->bits.begin() + offset1.y;
+    nb_unused_masks_row_b = offset1.x >> 5;
+    nb_unused_bits_row_b = offset1.x & 31;
   }
   nb_used_bits_row_b = 32 - nb_unused_bits_row_b;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,13 +16,12 @@
  */
 #include "solarus/QuestProperties.h"
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Size.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaTools.h"
 #include <lua.hpp>
-#include <sstream>
-#include <string>
+#include <ostream>
 
 namespace Solarus {
 

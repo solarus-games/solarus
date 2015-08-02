@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,7 +20,7 @@
 #include "solarus/hero/SpinAttackState.h"
 #include "solarus/hero/SwordLoadingState.h"
 #include "solarus/hero/SwordTappingState.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/System.h"
@@ -28,6 +28,7 @@
 #include "solarus/Game.h"
 #include "solarus/GameCommands.h"
 #include <sstream>
+#include <string>
 
 namespace Solarus {
 
@@ -73,7 +74,7 @@ void Hero::SwordLoadingState::update() {
     sword_loaded = true;
   }
 
-  if (!get_commands().is_command_pressed(GameCommands::ATTACK)) {
+  if (!get_commands().is_command_pressed(GameCommand::ATTACK)) {
     // the player has just released the sword key
 
     // stop loading the sword, go to the normal state or make a spin attack
@@ -131,7 +132,7 @@ void Hero::SwordLoadingState::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool killed) {
 
-  if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
+  if (result.type != EnemyReaction::ReactionType::IGNORED && attack == EnemyAttack::SWORD) {
 
     Hero& hero = get_hero();
     if (victim.get_push_hero_on_sword()) {
@@ -200,7 +201,7 @@ void Hero::SwordLoadingState::set_animation_walking() {
 void Hero::SwordLoadingState::play_load_sound() {
 
   std::ostringstream oss;
-  oss << "sword_spin_attack_load_" << get_equipment().get_ability(ABILITY_SWORD);
+  oss << "sword_spin_attack_load_" << get_equipment().get_ability(Ability::SWORD);
   std::string custom_sound_name = oss.str();
   if (Sound::exists(custom_sound_name)) {
     Sound::play(custom_sound_name); // this particular sword has a custom loading sound effect

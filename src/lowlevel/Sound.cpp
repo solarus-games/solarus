@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #include <cstring>  // memcpy
 #include <sstream>
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Music.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/Arguments.h"
@@ -181,7 +181,7 @@ bool Sound::exists(const std::string& sound_id) {
 
   std::ostringstream oss;
   oss << "sounds/" << sound_id << ".ogg";
-  return FileTools::data_file_exists(oss.str());
+  return QuestFiles::data_file_exists(oss.str());
 }
 
 /**
@@ -343,7 +343,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
 
   ALuint buffer = AL_NONE;
 
-  if (!FileTools::data_file_exists(file_name)) {
+  if (!QuestFiles::data_file_exists(file_name)) {
     Debug::error(std::string("Cannot find sound file '") + file_name + "'");
     return AL_NONE;
   }
@@ -352,7 +352,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
   SoundFromMemory mem;
   mem.loop = false;
   mem.position = 0;
-  mem.data = FileTools::data_file_read(file_name);
+  mem.data = QuestFiles::data_file_read(file_name);
 
   OggVorbis_File file;
   int error = ov_open_callbacks(&mem, &file, nullptr, 0, ogg_callbacks);
@@ -472,7 +472,7 @@ size_t Sound::cb_read(void* ptr, size_t /* size */, size_t nb_bytes, void* datas
     nb_bytes = total_size - mem->position;
   }
 
-  memcpy(ptr, mem->data.data() + mem->position, nb_bytes);
+  std::memcpy(ptr, mem->data.data() + mem->position, nb_bytes);
   mem->position += nb_bytes;
 
   return nb_bytes;

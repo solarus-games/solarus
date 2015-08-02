@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/QuestResources.h"
-#include <map>
-#include <fstream>
+#include <ostream>
 #include <sstream>
 
 namespace Solarus {
@@ -68,12 +67,17 @@ namespace {
 }
 
 /**
+ * \typedef std::map<std::string, std::string> QuestResources::ResourceMap
+ * \brief Mapping of resource element ids to their description.
+ */
+
+/**
  * \brief Creates an empty quest resources object.
  */
 QuestResources::QuestResources() {
 
   for (size_t i = 0 ; i < resource_type_names.size(); ++i) {
-    resource_maps.insert(std::make_pair(static_cast<ResourceType>(i), ResourceMap()));
+    resource_maps.emplace(static_cast<ResourceType>(i), ResourceMap());
   }
 }
 
@@ -136,7 +140,7 @@ bool QuestResources::add(
     const std::string& description
 ) {
   ResourceMap& resource = get_elements(resource_type);
-  auto result = resource.insert(std::make_pair(id, description));
+  auto result = resource.emplace(id, description);
   return result.second;
 }
 
@@ -157,7 +161,7 @@ bool QuestResources::remove(
 
 /**
  * \brief Changes the id of a resource element from the list.
- * \param resource_ A type of resource.
+ * \param resource_type A type of resource.
  * \param old_id Id of the element to change.
  * \param new_id The new id to set.
  * \return \c true in case of success, \c false if the old id does not

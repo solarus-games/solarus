@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,8 @@
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Stairs.h"
 #include "solarus/Map.h"
+#include <memory>
+#include <string>
 
 namespace Solarus {
 
@@ -38,7 +40,7 @@ namespace Solarus {
  * \param hero the hero
  */
 Hookshot::Hookshot(const Hero& hero):
-    MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
+    MapEntity("", 0, hero.get_layer(), Point(0, 0), Size(0, 0)),
     next_sound_date(System::now()),
     has_to_go_back(false),
     going_back(false),
@@ -66,7 +68,7 @@ Hookshot::Hookshot(const Hero& hero):
  * \return the type of entity
  */
 EntityType Hookshot::get_type() const {
-  return ENTITY_HOOKSHOT;
+  return EntityType::HOOKSHOT;
 }
 
 /**
@@ -320,7 +322,7 @@ void Hookshot::notify_collision_with_enemy(
     Enemy& enemy, Sprite& enemy_sprite, Sprite& /* this_sprite */) {
 
   if (!overlaps(get_hero())) {
-    enemy.try_hurt(ATTACK_HOOKSHOT, *this, &enemy_sprite);
+    enemy.try_hurt(EnemyAttack::HOOKSHOT, *this, &enemy_sprite);
   }
 }
 
@@ -334,7 +336,7 @@ void Hookshot::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool /* killed */) {
 
-  if (result.type != EnemyReaction::IGNORED && !is_going_back()) {
+  if (result.type != EnemyReaction::ReactionType::IGNORED && !is_going_back()) {
     go_back();
   }
 }

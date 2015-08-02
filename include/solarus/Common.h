@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@
  * Lua API changes may sometimes break compatibility, so check the ChangeLog
  * before upgrading.
  */
-#define SOLARUS_MINOR_VERSION 4
+#define SOLARUS_MINOR_VERSION 5
 
 /**
  * \brief Solarus patch version.
@@ -70,9 +70,21 @@
  * This string has the form "x.y.z" where x is the major version, y is the
  * minor version and z is the patch version.
  */
-#define SOLARUS_VERSION (SOLARUS_STRINGIFY(SOLARUS_MAJOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_MINOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_PATCH_VERSION))
+#define SOLARUS_VERSION SOLARUS_STRINGIFY(SOLARUS_MAJOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_MINOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_PATCH_VERSION)
+
+/**
+ * \brief The Solarus version as a string, without patch number.
+ *
+ * This string has the form "x.y" where x is the major version and y is the
+ * minor version.
+ */
+#define SOLARUS_VERSION_WITHOUT_PATCH SOLARUS_STRINGIFY(SOLARUS_MAJOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_MINOR_VERSION)
 
 // Windows specific.
+/**
+ * \def SOLARUS_API
+ * \brief Windows DLL import/export specifications for the Solarus library symbols.
+ */
 #ifdef _WIN32
 #  ifdef solarus_EXPORTS  // Define automatically added by cmake.
 #    define SOLARUS_API __declspec(dllexport)

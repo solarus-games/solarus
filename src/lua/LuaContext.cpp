@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,10 +28,11 @@
 #include "solarus/entities/Switch.h"
 #include "solarus/entities/Tileset.h"
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/ExportableToLuaPtr.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
+#include "solarus/AbilityInfo.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
 #include "solarus/Map.h"
@@ -102,6 +103,8 @@ void LuaContext::initialize() {
   l = luaL_newstate();
   lua_atpanic(l, l_panic);
   luaL_openlibs(l);
+
+  print_lua_version();
 
   // Associate this LuaContext object to the lua_State pointer.
   lua_contexts[l] = this;
@@ -300,7 +303,7 @@ void LuaContext::notify_map_suspended(Map& map, bool suspended) {
 void LuaContext::run_item(EquipmentItem& item) {
 
   // Compute the file name, depending on the id of the equipment item.
-  std::string file_name = (std::string) "items/" + item.get_name();
+  std::string file_name = std::string("items/") + item.get_name();
 
   // Load the item's code.
   if (load_file_if_exists(l, file_name)) {
@@ -666,15 +669,15 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
   // Determine the file name (possibly adding ".lua").
   std::string file_name(script_name);
 
-  if (!FileTools::data_file_exists(file_name)) {
+  if (!QuestFiles::data_file_exists(file_name)) {
     std::ostringstream oss;
     oss << script_name << ".lua";
     file_name = oss.str();
   }
 
-  if (FileTools::data_file_exists(file_name)) {
+  if (QuestFiles::data_file_exists(file_name)) {
     // Load the file.
-    const std::string& buffer = FileTools::data_file_read(file_name);
+    const std::string& buffer = QuestFiles::data_file_read(file_name);
     int result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
     if (result != 0) {
@@ -769,6 +772,45 @@ void LuaContext::print_stack(lua_State* l) {
     std::cout << " ";
   }
   std::cout << std::endl;
+}
+
+/**
+ * \brief Prints the version of Lua.
+ *
+ * This detects if LuaJIT is being used.
+ */
+void LuaContext::print_lua_version() {
+
+  Debug::check_assertion(lua_gettop(l) == 0, "Non-empty Lua stack before print_lua_version()");
+
+  // _VERSION is the Lua language version, giving the same
+  // result for vanilla Lua and LuaJIT.
+  // But we want to tell the user if LuaJIT is being used.
+  // To detect this, we can check the presence of the jit table.
+  std::string version;
+                                  // -
+  lua_getglobal(l, "jit");
+                                  // jit/nil
+  if (lua_isnil(l, -1)) {
+    // Vanilla Lua.
+                                  // nil
+    lua_getglobal(l, "_VERSION");
+                                  // nil version
+    version = LuaTools::check_string(l, -1);
+    lua_pop(l, 2);
+                                  // -
+    std::cout << "LuaJIT: no (" << version << ")" << std::endl;
+  }
+  else {
+    // LuaJIT.
+                                  // jit
+    version = LuaTools::check_string_field(l, -1, "version");
+    lua_pop(l, 1);
+                                  // -
+    std::cout << "LuaJIT: yes (" << version << ")" << std::endl;
+  }
+
+  Debug::check_assertion(lua_gettop(l) == 0, "Non-empty Lua stack after print_lua_version()");
 }
 
 /**
@@ -1748,7 +1790,7 @@ bool LuaContext::on_mouse_button_released(const InputEvent& event) {
  * \brief Calls the on_command_pressed() method of the object on top of the stack.
  * \param command The game command just pressed.
  */
-bool LuaContext::on_command_pressed(GameCommands::Command command) {
+bool LuaContext::on_command_pressed(GameCommand command) {
 
   bool handled = false;
   if (find_method("on_command_pressed")) {
@@ -1770,7 +1812,7 @@ bool LuaContext::on_command_pressed(GameCommands::Command command) {
  * \brief Calls the on_command_released() method of the object on top of the stack.
  * \param command The game command just pressed.
  */
-bool LuaContext::on_command_released(GameCommands::Command command) {
+bool LuaContext::on_command_released(GameCommand command) {
 
   bool handled = false;
   if (find_method("on_command_released")) {
@@ -2347,7 +2389,7 @@ void LuaContext::on_using() {
 void LuaContext::on_ability_used(Ability ability) {
 
   if (find_method("on_ability_used")) {
-    push_string(l, Equipment::ability_names[ability]);
+    push_string(l, AbilityInfo::get_ability_name(ability));
     call_function(2, 0, "on_ability_used");
   }
 }
@@ -2545,7 +2587,7 @@ void LuaContext::on_regenerating() {
 void LuaContext::on_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
 
   if (find_method("on_custom_attack_received")) {
-    push_string(l, Enemy::attack_names[attack]);
+    push_string(l, Enemy::attack_names.find(attack)->second);
     if (sprite != nullptr) {
       // Pixel-precise collision.
       push_sprite(l, *sprite);
@@ -2581,7 +2623,7 @@ bool LuaContext::on_hurt_by_sword(Hero& hero, Sprite& enemy_sprite) {
 void LuaContext::on_hurt(EnemyAttack attack) {
 
   if (find_method("on_hurt")) {
-    push_string(l, Enemy::attack_names[attack]);
+    push_string(l, Enemy::attack_names.find(attack)->second);
     call_function(2, 0, "on_hurt");
   }
 }

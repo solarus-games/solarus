@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 #include "solarus/SavegameConverterV1.h"
 #include "solarus/Savegame.h"
 #include "solarus/lowlevel/InputEvent.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include <sstream>
 #include <cstring>  // memcpy
@@ -31,18 +31,18 @@ namespace Solarus {
  */
 SavegameConverterV1::SavegameConverterV1(const std::string& file_name) {
 
-  Debug::check_assertion(FileTools::data_file_exists(file_name),
+  Debug::check_assertion(QuestFiles::data_file_exists(file_name),
       std::string("Cannot convert savegame '") + file_name
       + "': file does not exist"
   );
 
   // Let's load this obsolete savegame.
-  const std::string& buffer = FileTools::data_file_read(file_name);
+  const std::string& buffer = QuestFiles::data_file_read(file_name);
   Debug::check_assertion(buffer.size() == sizeof(SavedData),
       std::string("Cannot read savegame file version 1 '")
       + file_name + "': invalid file size"
   );
-  memcpy(&saved_data, buffer.data(), sizeof(SavedData));
+  std::memcpy(&saved_data, buffer.data(), sizeof(SavedData));
 }
 
 /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "solarus/entities/Detector.h"
 #include "solarus/lua/ScopedLuaRef.h"
 #include <map>
+#include <string>
+#include <vector>
 
 namespace Solarus {
 
@@ -40,10 +42,8 @@ class SOLARUS_API CustomEntity: public Detector {
         const std::string& name,
         int direction,
         Layer layer,
-        int x,
-        int y,
-        int width,
-        int height,
+        const Point& xy,
+        const Size& size,
         const std::string& sprite_name,
         const std::string& model
     );
@@ -243,6 +243,8 @@ class SOLARUS_API CustomEntity: public Detector {
     void notify_collision_from(MapEntity& other_entity);
     void notify_collision_from(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
 
+    void update_ground_observer();
+
     std::string model;                                /**< Model of this custom entity or an empty string. */
 
     // Obstacles.
@@ -265,6 +267,7 @@ class SOLARUS_API CustomEntity: public Detector {
                                         * collisions other than
                                         * COLLISION_SPRITE. */
 
+    bool ground_observer;              /**< Whether this custom entity is a ground observer. */
     bool ground_modifier;              /**< Whether this custom entity is a ground modifier. */
     Ground modified_ground;            /**< The ground defined by this custom
                                         * entity or GROUND_EMPTY. */

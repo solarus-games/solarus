@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #include "solarus/entities/Tileset.h"
 #include "solarus/entities/TilePattern.h"
 #include "solarus/lowlevel/Surface.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/Map.h"
 
 namespace Solarus {
@@ -26,23 +26,19 @@ namespace Solarus {
 /**
  * \brief Creates a new tile.
  * \param layer layer of the tile
- * \param x x position of the tile on the map
- * \param y y position of the tile on the map
- * \param width width of the tile (the pattern can be repeated)
- * \param height height of the tile (the pattern can be repeated)
+ * \param xy Coordinates of the tile on the map
+ * \param size Size of the tile (the pattern can be repeated).
  * \param tileset The tileset to use.
  * \param tile_pattern_id Id of the tile pattern in the tileset.
  */
 Tile::Tile(
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height,
+    const Point& xy,
+    const Size& size,
     Tileset& tileset,
     const std::string& tile_pattern_id
 ):
-  MapEntity("", 0, layer, x, y, width, height),
+  MapEntity("", 0, layer, xy, size),
   tile_pattern_id(tile_pattern_id),
   tile_pattern(tileset.get_tile_pattern(tile_pattern_id)) {
 
@@ -53,7 +49,7 @@ Tile::Tile(
  * \return the type of entity
  */
 EntityType Tile::get_type() const {
-  return ENTITY_TILE;
+  return EntityType::TILE;
 }
 
 /**

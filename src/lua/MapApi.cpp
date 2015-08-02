@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include "solarus/entities/Door.h"
 #include "solarus/entities/DynamicTile.h"
 #include "solarus/entities/Enemy.h"
+#include "solarus/entities/EntityTypeInfo.h"
 #include "solarus/entities/Explosion.h"
 #include "solarus/entities/Fire.h"
 #include "solarus/entities/GroundInfo.h"
@@ -100,30 +101,6 @@ void LuaContext::register_map_module() {
       { "get_hero", map_api_get_hero },
       { "set_entities_enabled", map_api_set_entities_enabled },
       { "remove_entities", map_api_remove_entities },
-      { "create_destination", map_api_create_destination },
-      { "create_teletransporter", map_api_create_teletransporter },
-      { "create_pickable", map_api_create_pickable },
-      { "create_destructible", map_api_create_destructible },
-      { "create_chest", map_api_create_chest },
-      { "create_jumper", map_api_create_jumper },
-      { "create_enemy", map_api_create_enemy },
-      { "create_npc", map_api_create_npc },
-      { "create_block", map_api_create_block },
-      { "create_dynamic_tile", map_api_create_dynamic_tile },
-      { "create_switch", map_api_create_switch },
-      { "create_wall", map_api_create_wall },
-      { "create_sensor", map_api_create_sensor },
-      { "create_crystal", map_api_create_crystal },
-      { "create_crystal_block", map_api_create_crystal_block },
-      { "create_shop_treasure", map_api_create_shop_treasure },
-      { "create_stream", map_api_create_stream },
-      { "create_door", map_api_create_door },
-      { "create_stairs", map_api_create_stairs },
-      { "create_separator", map_api_create_separator },
-      { "create_custom_entity", map_api_create_custom_entity },
-      { "create_bomb", map_api_create_bomb },
-      { "create_explosion", map_api_create_explosion },
-      { "create_fire", map_api_create_fire },
       { nullptr, nullptr }
   };
 
@@ -135,6 +112,20 @@ void LuaContext::register_map_module() {
   };
 
   register_type(map_module_name, nullptr, methods, metamethods);
+
+  // Add map:create_* functions as closures because we pass the entity type as upvalue.
+  luaL_getmetatable(l, map_module_name.c_str());
+  for (const auto& kvp : EntityTypeInfo::get_entity_type_names()) {
+    EntityType type = kvp.first;
+    const std::string& type_name = kvp.second;
+    if (!EntityTypeInfo::can_be_created_from_lua_api(type)) {
+      continue;
+    }
+    std::string function_name = "create_" + type_name;
+    push_string(l, type_name);
+    lua_pushcclosure(l, map_api_create_entity, 1);
+    lua_setfield(l, -2, function_name.c_str());
+  }
 }
 
 /**
@@ -171,98 +162,1047 @@ void LuaContext::push_map(lua_State* l, Map& map) {
   push_userdata(l, map);
 }
 
+namespace {
+
 /**
- * \brief Returns the map to be used when creating an entity.
+ * \brief Checks and returns the size of an entity to be created.
  *
- * This function is meant to be called from entity creation functions.
- * If the first Lua parameter is a map, returns that map and removes it
- * from the Lua stack.
- * Otherwise, an implicit map must have been previously set (by calling
- * set_entity_implicit_creation_map()) and that map is returned.
- * Therefore, after calling this function; you will have the same Lua stack
- * in both cases, without worrying about how the map was passed.
+ * The size is assumed to be specified in fields "width" and "height".
+ * Throws a LuaException if the size is invalid.
  *
- * \param l A Lua context.
- * \return The map where an entity will be created.
+ * \param l A Lua state.
+ * \param index Index of the argument in the Lua stack.
+ * \param entity_data Description of the entity to create.
+ * \return The size.
  */
-Map& LuaContext::get_entity_creation_map(lua_State* l) {
+Size entity_creation_check_size(
+    lua_State* l,
+    int index,
+    const EntityData& entity_data) {
 
-  Map* map = nullptr;
+  const Size size = {
+      entity_data.get_integer("width"),
+      entity_data.get_integer("height")
+  };
 
-  if (is_map(l, 1)) {
-    // The map is passed as a parameter (typically, by the map script).
-    map = check_map(l, 1).get();
-    lua_remove(l, 1);
+  if (size.width < 0 || size.width % 8 != 0) {
+    std::ostringstream oss;
+    oss << "Invalid width " << size.width << ": should be a positive multiple of 8";
+    LuaTools::arg_error(l, index, oss.str());
   }
-  else {
-    // The map was is implicit (typically, we are loading its data file).
-    map = get_entity_implicit_creation_map(l);
-    Debug::check_assertion(map != nullptr,
-        "No implicit creation was been set in this Lua state");
+  if (size.height < 0 || size.height % 8 != 0) {
+    std::ostringstream oss;
+    oss << "Invalid height " << size.height << ": should be a positive multiple of 8";
+    LuaTools::arg_error(l, index, oss.str());
   }
 
-  return *map;
+  return size;
 }
 
 /**
- * \brief Returns the map previously stored by
- * set_entity_implicit_creation_map().
- * \param l A Lua context.
- * \return The map stored in this Lua context or nullptr.
+ * \brief Checks and returns a mandatory savegame variable field for an
+ * entity to be created.
+ *
+ * Throws a LuaException if the savegame variable name is invalid or empty.
+ *
+ * \param l A Lua state.
+ * \param index Index of the argument in the Lua stack.
+ * \param entity_data Description of the entity to create.
+ * \param field_name Name of the savegame variable field to check.
+ * \return The savegame variable name.
  */
-Map* LuaContext::get_entity_implicit_creation_map(lua_State* l) {
+std::string entity_creation_check_savegame_variable_mandatory(
+    lua_State* l,
+    int index,
+    const EntityData& entity_data,
+    const std::string& field_name
+) {
 
-  lua_getfield(l, LUA_REGISTRYINDEX, "map");
-  if (lua_isnil(l, -1)) {
-    return nullptr;
+  const std::string& savegame_variable = entity_data.get_string(field_name);
+
+  if (!LuaTools::is_valid_lua_identifier(savegame_variable)) {
+    LuaTools::arg_error(l, index,
+        "Bad field '" + field_name + "' (invalid savegame variable identifier: '"
+        + savegame_variable + "')"
+    );
   }
 
-  Map* map = static_cast<Map*>(lua_touserdata(l, -1));
-  lua_pop(l, 1);
-
-  return map;
+  return savegame_variable;
 }
 
 /**
- * \brief Stores into the Lua state the map that will be used to create entities.
+ * \brief Checks and returns an optional savegame variable field for an
+ * entity to be created.
  *
- * There are two ways to create a entity on the map:
- * - Declare the entity in the map data file.
- * - Create the entity dynamically from a Lua script.
+ * Throws a LuaException if the savegame variable name is invalid.
  *
- * As the map data file is in Lua, both approaches actually call the same
- * function: map_api_create_enemy or map_api_create_npc, map_api_create_block,
- * etc. depending on your type of entity.
- *
- * In the second case, the map is always passed explicitly as the first
- * parameter of the entity creation function. For instance:
- * \verbatim
- * map:create_enemy{ x = 160, y = 117, name = "my_enemy", breed = "soldier" }
- * \endverbatim
- *
- * In the first case, the map is never passed:
- * \verbatim
- * enemy{ x = 160, y = 117, name = "my_enemy", breed = "soldier" }
- * \endverbatim
- * To make Lua know the map anyway, call this function before your create
- * your first entity.
- * Then, all entity creation functions will accept to be called without the
- * map as first parameter.
- *
- * \param l A Lua context.
- * \param map The map where future entities should be created.
- * nullptr forces the map to be explicitly passed (this is the default
- * behavior).
+ * \param l A Lua state.
+ * \param index Index of the argument in the Lua stack.
+ * \param entity_data Description of the entity to create.
+ * \param field_name Name of the savegame variable field to check.
+ * \return The savegame variable name.
+ * An empty string means no savegame variable.
  */
-void LuaContext::set_entity_implicit_creation_map(lua_State* l, Map* map) {
+std::string entity_creation_check_savegame_variable_optional(
+    lua_State* l,
+    int index,
+    const EntityData& entity_data,
+    const std::string& field_name
+) {
+  const std::string& savegame_variable = entity_data.get_string(field_name);
 
-  if (map == nullptr) {
-    lua_pushnil(l);
+  if (savegame_variable.empty()) {
+    return savegame_variable;
   }
-  else {
-    lua_pushlightuserdata(l, map);
+
+  return entity_creation_check_savegame_variable_mandatory(l, index, entity_data, field_name);
+}
+
+/**
+ * \brief Checks an enum field for an entity to be created.
+ *
+ * Throws a LuaException if the value is not a string or if the string is not
+ * a valid name for the enum.
+ * This is a useful function for mapping strings to C or C++ enums.
+ *
+ * \param l A Lua state.
+ * \param index Index of the argument in the Lua stack.
+ * \param entity_data Description of the entity to
+ * \param field_name Name of the field to check.
+ * \param names A mapping of enum values to strings to search in.
+ * \return The enumerated value corresponding to this string.
+ */
+template<typename E>
+E entity_creation_check_enum(
+    lua_State* l,
+    int index,
+    const EntityData& entity_data,
+    const std::string& field_name,
+    const std::map<E, std::string>& names
+) {
+  const std::string& name = entity_data.get_string(field_name);
+  for (const auto& kvp: names) {
+    if (kvp.second == name) {
+      return kvp.first;
+    }
   }
-  lua_setfield(l, LUA_REGISTRYINDEX, "map");
+
+  // The value was not found. Build an error message with possible values.
+  std::string allowed_names;
+  for (const auto& kvp: names) {
+    allowed_names += "\"" + kvp.second + "\", ";
+  }
+  allowed_names = allowed_names.substr(0, allowed_names.size() - 2);
+
+  LuaTools::arg_error(l, index,
+      std::string("Invalid name '") + name + "'. Allowed names are: "
+      + allowed_names
+  );
+  return E();  // Make sure the compiler is happy.
+}
+
+}
+
+/**
+ * \brief Creates a tile on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_tile(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+    const int x = data.get_xy().x;
+    const int y = data.get_xy().y;
+    const Size size =  entity_creation_check_size(l, 1, data);
+    const std::string& tile_pattern_id = data.get_string("pattern");
+
+    const TilePattern& pattern = map.get_tileset().get_tile_pattern(tile_pattern_id);
+
+    for (int current_y = y; current_y < y + size.height; current_y += pattern.get_height()) {
+      for (int current_x = x; current_x < x + size.width; current_x += pattern.get_width()) {
+        MapEntityPtr entity = std::make_shared<Tile>(
+            data.get_layer(),
+            Point(current_x, current_y),
+            pattern.get_size(),
+            map.get_tileset(),
+            tile_pattern_id
+        );
+        map.get_entities().add_entity(entity);
+      }
+    }
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a destination on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_destination(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    MapEntityPtr entity = std::make_shared<Destination>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        data.get_integer("direction"),
+        data.get_string("sprite"),
+        data.get_boolean("default")
+    );
+    map.get_entities().add_entity(entity);
+
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a teletransporter on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_teletransporter(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+
+    MapEntityPtr entity = std::make_shared<Teletransporter>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        entity_creation_check_size(l, 1, data),
+        data.get_string("sprite"),
+        data.get_string("sound"),
+        entity_creation_check_enum(l, 1, data, "transition", Transition::get_style_names()),
+        data.get_string("destination_map"),
+        data.get_string("destination")
+    );
+    map.get_entities().add_entity(entity);
+
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a pickable treasure on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_pickable(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    Game& game = map.get_game();
+    bool force_persistent = false;
+    FallingHeight falling_height = FALLING_MEDIUM;
+    if (!map.is_loaded()) {
+      // Different behavior when the pickable is already placed on the map.
+      falling_height = FALLING_NONE;
+      force_persistent = true;
+    }
+
+    const std::shared_ptr<Pickable>& entity = Pickable::create(
+        game,
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        Treasure(
+            game,
+            data.get_string("treasure_name"),
+            data.get_integer("treasure_variant"),
+            entity_creation_check_savegame_variable_optional(l, 1, data, "treasure_savegame_variable")
+        ),
+        falling_height,
+        force_persistent
+    );
+
+    if (entity == nullptr) {
+      lua_pushnil(l);
+      return 1;
+    }
+
+    map.get_entities().add_entity(entity);
+
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a destructible object on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_destructible(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    std::shared_ptr<Destructible> destructible = std::make_shared<Destructible>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        data.get_string("sprite"),
+        Treasure(
+            map.get_game(),
+            data.get_string("treasure_name"),
+            data.get_integer("treasure_variant"),
+            entity_creation_check_savegame_variable_optional(l, 1, data, "treasure_savegame_variable")
+        ),
+        entity_creation_check_enum<Ground>(l, 1, data, "ground", GroundInfo::get_ground_names())
+    );
+    destructible->set_destruction_sound(data.get_string("destruction_sound"));
+    destructible->set_weight(data.get_integer("weight"));
+    destructible->set_can_be_cut(data.get_boolean("can_be_cut"));
+    destructible->set_can_explode(data.get_boolean("can_explode"));
+    destructible->set_can_regenerate(data.get_boolean("can_regenerate"));
+    destructible->set_damage_on_enemies(data.get_integer("damage_on_enemies"));
+    map.get_entities().add_entity(destructible);
+    if (map.is_started()) {
+      push_entity(l, *destructible);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a chest on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_chest(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    Chest::OpeningMethod opening_method = entity_creation_check_enum<Chest::OpeningMethod>(
+        l,
+        1,
+        data,
+        "opening_method",
+        Chest::opening_method_names
+    );
+
+    // Check the value of opening_condition depending on the opening method.
+    Game& game = map.get_game();
+    const std::string& opening_condition = data.get_string("opening_condition");
+    if (opening_method == Chest::OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
+      entity_creation_check_savegame_variable_mandatory(l, 1, data, "opening_condition");
+    }
+    else if (opening_method == Chest::OpeningMethod::BY_INTERACTION_IF_ITEM) {
+      if (!game.get_equipment().item_exists(opening_condition)) {
+        LuaTools::arg_error(l, 1, "Bad field 'opening_condition' (no such equipment item: '"
+            + opening_condition + "')"
+        );
+      }
+      EquipmentItem& item = game.get_equipment().get_item(opening_condition);
+      if (!item.is_saved()) {
+        LuaTools::arg_error(l, 1, "Bad field 'opening_condition' (equipment item '"
+            + opening_condition + "' is not saved)"
+        );
+      }
+    }
+
+    std::shared_ptr<Chest> chest = std::make_shared<Chest>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        data.get_string("sprite"),
+        Treasure(
+            game,
+            data.get_string("treasure_name"),
+            data.get_integer("treasure_variant"),
+            entity_creation_check_savegame_variable_optional(l, 1, data, "treasure_savegame_variable")
+        )
+    );
+    chest->set_opening_method(opening_method);
+    chest->set_opening_condition(opening_condition);
+    chest->set_opening_condition_consumed(data.get_boolean("opening_condition_consumed"));
+    chest->set_cannot_open_dialog_id(data.get_string("cannot_open_dialog"));
+    map.get_entities().add_entity(chest);
+    if (map.is_started()) {
+      push_entity(l, *chest);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a jumper on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_jumper(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    MapEntityPtr entity = std::make_shared<Jumper>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        entity_creation_check_size(l, 1, data),
+        data.get_integer("direction"),
+        data.get_integer("jump_length")
+    );
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates an enemy on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_enemy(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+    Game& game = map.get_game();
+    MapEntityPtr entity = Enemy::create(
+        game,
+        data.get_string("breed"),
+        Enemy::Rank(data.get_integer("rank")),
+        entity_creation_check_savegame_variable_optional(l, 1, data, "savegame_variable"),
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        data.get_integer("direction"),
+        Treasure(
+            game,
+            data.get_string("treasure_name"),
+            data.get_integer("treasure_variant"),
+            entity_creation_check_savegame_variable_optional(l, 1, data, "treasure_savegame_variable")
+        )
+    );
+    if (entity == nullptr) {
+      lua_pushnil(l);
+      return 1;
+    }
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates an NPC on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_npc(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    Game& game = map.get_game();
+    MapEntityPtr entity = std::make_shared<Npc>(
+        game,
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        Npc::Subtype(data.get_integer("subtype")),
+        data.get_string("sprite"),
+        data.get_integer("direction"),
+        data.get_string("behavior")
+    );
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a block on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_block(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    int maximum_moves = data.get_integer("maximum_moves");
+    if (maximum_moves < 0 || maximum_moves > 2) {
+      std::ostringstream oss;
+      oss << "Invalid maximum_moves: " << maximum_moves;
+      LuaTools::arg_error(l, 1, oss.str());
+    }
+    std::shared_ptr<Block> entity = std::make_shared<Block>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        data.get_integer("direction"),
+        data.get_string("sprite"),
+        data.get_boolean("pushable"),
+        data.get_boolean("pullable"),
+        maximum_moves
+    );
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a dynamic tile on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_dynamic_tile(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    MapEntityPtr entity = std::make_shared<DynamicTile>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        entity_creation_check_size(l, 1, data),
+        map.get_tileset(),
+        data.get_string("pattern"),
+        data.get_boolean("enabled_at_start")
+    );
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a switch on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_switch(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    MapEntityPtr entity = std::make_shared<Switch>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        entity_creation_check_enum<Switch::Subtype>(l, 1, data, "subtype", Switch::subtype_names),
+        data.get_string("sprite"),
+        data.get_string("sound"),
+        data.get_boolean("needs_block"),
+        data.get_boolean("inactivate_when_leaving")
+    );
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a wall on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_wall(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    MapEntityPtr entity = std::make_shared<Wall>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        entity_creation_check_size(l, 1, data),
+        data.get_boolean("stops_hero"),
+        data.get_boolean("stops_enemies"),
+        data.get_boolean("stops_npcs"),
+        data.get_boolean("stops_blocks"),
+        data.get_boolean("stops_projectiles")
+    );
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a sensor on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_sensor(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    MapEntityPtr entity = std::make_shared<Sensor>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        entity_creation_check_size(l, 1, data)
+    );
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a crystal on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_crystal(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    MapEntityPtr entity = std::make_shared<Crystal>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy()
+    );
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a crystal block on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_crystal_block(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    Game& game = map.get_game();
+    MapEntityPtr entity = std::make_shared<CrystalBlock>(
+        game,
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        entity_creation_check_size(l, 1, data),
+        CrystalBlock::Subtype(data.get_integer("subtype"))
+    );
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a shop treasure on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_shop_treasure(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    Game& game = map.get_game();
+    MapEntityPtr entity = ShopTreasure::create(
+        game,
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        Treasure(
+            game,
+            data.get_string("treasure_name"),
+            data.get_integer("treasure_variant"),
+            entity_creation_check_savegame_variable_optional(l, 1, data, "treasure_savegame_variable")
+        ),
+        data.get_integer("price"),
+        data.get_string("font"),
+        data.get_string("dialog")
+    );
+    if (entity == nullptr) {
+      lua_pushnil(l);
+      return 1;
+    }
+
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a stream on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_stream(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    std::shared_ptr<Stream> stream = std::make_shared<Stream>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        data.get_integer("direction"),
+        data.get_string("sprite")
+    );
+    stream->set_speed(data.get_integer("speed"));
+    stream->set_allow_movement(data.get_boolean("allow_movement"));
+    stream->set_allow_attack(data.get_boolean("allow_attack"));
+    stream->set_allow_item(data.get_boolean("allow_item"));
+
+    map.get_entities().add_entity(stream);
+    if (map.is_started()) {
+      push_stream(l, *stream);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a door on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_door(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    Door::OpeningMethod opening_method = entity_creation_check_enum<Door::OpeningMethod>(
+        l,
+        1,
+        data,
+        "opening_method",
+        Door::opening_method_names
+    );
+
+    // Check the value of opening_condition depending on the opening method.
+    Game& game = map.get_game();
+    const std::string& opening_condition = data.get_string("opening_condition");
+    if (opening_method == Door::OpeningMethod::BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
+      entity_creation_check_savegame_variable_mandatory(l, 1, data, "opening_condition");
+    }
+    else if (opening_method == Door::OpeningMethod::BY_INTERACTION_IF_ITEM) {
+      if (!game.get_equipment().item_exists(opening_condition)) {
+        LuaTools::arg_error(l, 1, "Bad field 'opening_condition' (no such equipment item: '"
+            + opening_condition + "')"
+        );
+      }
+      EquipmentItem& item = game.get_equipment().get_item(opening_condition);
+      if (!item.is_saved()) {
+        LuaTools::arg_error(l, 1, "Bad field 'opening_condition' (equipment item '"
+            + opening_condition + "' is not saved)"
+        );
+      }
+    }
+    std::shared_ptr<Door> door = std::make_shared<Door>(
+        game,
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        data.get_integer("direction"),
+        data.get_string("sprite"),
+        entity_creation_check_savegame_variable_optional(l, 1, data, "savegame_variable")
+    );
+    door->set_opening_method(opening_method);
+    door->set_opening_condition(opening_condition);
+    door->set_opening_condition_consumed(data.get_boolean("opening_condition_consumed"));
+    door->set_cannot_open_dialog_id(data.get_string("cannot_open_dialog"));
+    map.get_entities().add_entity(door);
+    if (map.is_started()) {
+      push_entity(l, *door);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates stairs on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_stairs(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    MapEntityPtr entity = std::make_shared<Stairs>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        data.get_integer("direction"),
+        Stairs::Subtype(data.get_integer("subtype"))
+    );
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a separator on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_separator(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    MapEntityPtr entity = std::make_shared<Separator>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        entity_creation_check_size(l, 1, data)
+    );
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a custom entity on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_custom_entity(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    Game& game = map.get_game();
+    MapEntityPtr entity = std::make_shared<CustomEntity>(
+        game,
+        data.get_name(),
+        data.get_integer("direction"),
+        data.get_layer(),
+        data.get_xy(),
+        entity_creation_check_size(l, 1, data),
+        data.get_string("sprite"),
+        data.get_string("model")
+    );
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a bomb on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_bomb(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    MapEntityPtr entity = std::make_shared<Bomb>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy()
+    );
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates an explosion on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_explosion(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    const bool with_damage = true;
+    MapEntityPtr entity = std::make_shared<Explosion>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy(),
+        with_damage
+    );
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * \brief Creates a fire entity on the map.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_create_fire(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+
+    MapEntityPtr entity = std::make_shared<Fire>(
+        data.get_name(),
+        data.get_layer(),
+        data.get_xy()
+    );
+    map.get_entities().add_entity(entity);
+    if (map.is_started()) {
+      push_entity(l, *entity);
+      return 1;
+    }
+    return 0;
+  });
+}
+
+const std::map<EntityType, lua_CFunction> LuaContext::entity_creation_functions = {
+    { EntityType::TILE, LuaContext::l_create_tile },
+    { EntityType::DESTINATION, LuaContext::l_create_destination },
+    { EntityType::TELETRANSPORTER, LuaContext::l_create_teletransporter },
+    { EntityType::PICKABLE, LuaContext::l_create_pickable },
+    { EntityType::DESTRUCTIBLE, LuaContext::l_create_destructible },
+    { EntityType::CHEST, LuaContext::l_create_chest },
+    { EntityType::JUMPER, LuaContext::l_create_jumper },
+    { EntityType::ENEMY, LuaContext::l_create_enemy },
+    { EntityType::NPC, LuaContext::l_create_npc },
+    { EntityType::BLOCK, LuaContext::l_create_block },
+    { EntityType::DYNAMIC_TILE, LuaContext::l_create_dynamic_tile },
+    { EntityType::SWITCH, LuaContext::l_create_switch },
+    { EntityType::WALL, LuaContext::l_create_wall },
+    { EntityType::SENSOR, LuaContext::l_create_sensor },
+    { EntityType::CRYSTAL, LuaContext::l_create_crystal },
+    { EntityType::CRYSTAL_BLOCK, LuaContext::l_create_crystal_block },
+    { EntityType::SHOP_TREASURE, LuaContext::l_create_shop_treasure },
+    { EntityType::STREAM, LuaContext::l_create_stream },
+    { EntityType::DOOR, LuaContext::l_create_door },
+    { EntityType::STAIRS, LuaContext::l_create_stairs },
+    { EntityType::SEPARATOR, LuaContext::l_create_separator },
+    { EntityType::CUSTOM, LuaContext::l_create_custom_entity },
+    { EntityType::EXPLOSION, LuaContext::l_create_explosion },
+    { EntityType::BOMB, LuaContext::l_create_bomb },
+    { EntityType::FIRE, LuaContext::l_create_fire },
+};
+
+/**
+ * \brief Creates on the current map an entity from the specified data.
+ *
+ * Pushes onto the Lua stack the created entity.
+ * In case of error, pushes nothing and returns \c false.
+ *
+ * \param map The map where to create an entity.
+ * \param entity_data Description of the entity to create.
+ * \return \c true if the entity was successfully created.
+ */
+bool LuaContext::create_map_entity_from_data(Map& map, const EntityData& entity_data) {
+
+  const std::string& type_name = EntityTypeInfo::get_entity_type_name(entity_data.get_type());
+  std::string function_name = "create_" + type_name;
+  const auto& it = entity_creation_functions.find(entity_data.get_type());
+  Debug::check_assertion(it != entity_creation_functions.end(),
+      "Missing entity creation function for type '" + type_name + "'"
+  );
+  lua_CFunction function = it->second;
+
+  lua_pushcfunction(l, function);
+  push_map(l, map);
+  lua_pushlightuserdata(l, const_cast<EntityData*>(&entity_data));
+  return call_function(2, 1, function_name.c_str());
 }
 
 /**
@@ -667,7 +1607,7 @@ int LuaContext::map_api_open_doors(lua_State* l) {
 
     bool done = false;
     MapEntities& entities = map.get_entities();
-    std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
+    std::list<MapEntity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
     for (auto it = doors.begin(); it != doors.end(); ++it) {
       Door* door = static_cast<Door*>(*it);
       if (!door->is_open() || door->is_closing()) {
@@ -699,7 +1639,7 @@ int LuaContext::map_api_close_doors(lua_State* l) {
 
     bool done = false;
     MapEntities& entities = map.get_entities();
-    std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
+    std::list<MapEntity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
     for (auto it = doors.begin(); it != doors.end(); ++it) {
       Door* door = static_cast<Door*>(*it);
       if (door->is_open() || door->is_opening()) {
@@ -731,7 +1671,7 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
     bool open = LuaTools::opt_boolean(l, 3, true);
 
     MapEntities& entities = map.get_entities();
-    std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
+    std::list<MapEntity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
     for (auto it = doors.begin(); it != doors.end(); ++it) {
       Door* door = static_cast<Door*>(*it);
       door->set_open(open);
@@ -903,1198 +1843,24 @@ int LuaContext::map_api_remove_entities(lua_State* l) {
   });
 }
 
-namespace {
-
 /**
- * \brief Utility function to check the size of an entity to be created.
- * \param l A Lua state.
- * \param index Index of the argument in the Lua stack.
- * \param width Width to check.
- * \param height Height to check.
- */
-void entity_creation_check_size(
-    lua_State* l,
-    int index,
-    int width,
-    int height) {
-
-  if (width < 0 || width % 8 != 0) {
-    std::ostringstream oss;
-    oss << "Invalid width " << width << ": should be a positive multiple of 8";
-    LuaTools::arg_error(l, index, oss.str());
-  }
-  if (height < 0 || height % 8 != 0) {
-    std::ostringstream oss;
-    oss << "Invalid height " << height << ": should be a positive multiple of 8";
-    LuaTools::arg_error(l, index, oss.str());
-  }
-}
-
-}
-
-/**
- * \brief Implementation of the tile creation function.
- *
- * Tiles cannot be created dynamically:
- * they can only be declared in the map data file.
- *
+ * \brief Implementation of all entity creation functions: map_api_create_*.
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
-int LuaContext::map_api_create_tile(lua_State* l) {
+int LuaContext::map_api_create_entity(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
 
-    // Should not happen: create_tile is not in the map metatable.
-    Debug::check_assertion(!map.is_started(),
-        "Cannot create a tile when the map is already started");
-
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    const int x = LuaTools::check_int_field(l, 1, "x");
-    const int y = LuaTools::check_int_field(l, 1, "y");
-    const int width = LuaTools::check_int_field(l, 1, "width");
-    const int height = LuaTools::check_int_field(l, 1, "height");
-    const std::string& tile_pattern_id = LuaTools::check_string_field(l, 1, "pattern");
-
-    entity_creation_check_size(l, 1, width, height);
-
-    const TilePattern& pattern = map.get_tileset().get_tile_pattern(tile_pattern_id);
-
-    for (int current_y = y; current_y < y + height; current_y += pattern.get_height()) {
-      for (int current_x = x; current_x < x + width; current_x += pattern.get_width()) {
-        MapEntityPtr entity = std::make_shared<Tile>(
-            layer,
-            current_x,
-            current_y,
-            pattern.get_width(),
-            pattern.get_height(),
-            map.get_tileset(),
-            tile_pattern_id
-        );
-        map.get_entities().add_entity(entity);
-      }
-    }
-
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_destination().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_destination(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    int direction = LuaTools::check_int_field(l, 1, "direction");
-    const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
-    bool is_default = LuaTools::opt_boolean_field(l, 1, "default", false);
-
-    MapEntityPtr entity = std::make_shared<Destination>(
-        name,
-        layer,
-        x,
-        y,
-        direction,
-        sprite_name,
-        is_default
+    EntityType type = LuaTools::check_enum<EntityType>(
+        l, lua_upvalueindex(1), EntityTypeInfo::get_entity_type_names()
     );
-    map.get_entities().add_entity(entity);
+    Map& map = *check_map(l, 1);
+    const EntityData& data = EntityData::check_entity_data(l, 2, type);
 
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
+    get_lua_context(l).create_map_entity_from_data(map, data);
 
-/**
- * \brief Implementation of map:create_teletransporter().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_teletransporter(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    int width = LuaTools::check_int_field(l, 1, "width");
-    int height = LuaTools::check_int_field(l, 1, "height");
-    const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
-    const std::string& sound_id = LuaTools::opt_string_field(l, 1, "sound", "");
-    Transition::Style transition_style = LuaTools::opt_enum_field<Transition::Style>(
-        l, 1, "transition", Transition::style_names, Transition::FADE);
-    const std::string& destination_map_id = LuaTools::check_string_field(l, 1, "destination_map");
-    const std::string& destination_name = LuaTools::opt_string_field(l, 1, "destination", "");
-
-    entity_creation_check_size(l, 1, width, height);
-
-    MapEntityPtr entity = std::make_shared<Teletransporter>(
-        name,
-        layer,
-        x,
-        y,
-        width,
-        height,
-        sprite_name,
-        sound_id,
-        transition_style,
-        destination_map_id,
-        destination_name
-    );
-    map.get_entities().add_entity(entity);
-
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_pickable().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_pickable(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    const std::string& treasure_name = LuaTools::opt_string_field(l, 1, "treasure_name", "");
-    int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
-    const std::string& treasure_savegame_variable = LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
-
-    if (!treasure_savegame_variable.empty()
-        && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
-      LuaTools::arg_error(l, 1, std::string(
-          "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier: '")
-      + treasure_savegame_variable + "')"
-      );
-    }
-
-    bool force_persistent = false;
-    FallingHeight falling_height = FALLING_MEDIUM;
-    if (!map.is_loaded()) {
-      // Different behavior when the pickable is already placed on the map.
-      falling_height = FALLING_NONE;
-      force_persistent = true;
-    }
-
-    Game& game = map.get_game();
-    const std::shared_ptr<Pickable>& entity = Pickable::create(
-        game,
-        name,
-        layer,
-        x,
-        y,
-        Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
-        falling_height, force_persistent
-    );
-
-    if (entity == nullptr) {
-      lua_pushnil(l);
-      return 1;
-    }
-
-    map.get_entities().add_entity(entity);
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_destructible().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_destructible(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    const std::string& treasure_name = LuaTools::opt_string_field(l, 1, "treasure_name", "");
-    int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
-    const std::string& treasure_savegame_variable =
-        LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
-    const std::string& animation_set_id = LuaTools::check_string_field(l, 1, "sprite");
-    Ground modified_ground = LuaTools::opt_enum_field<Ground>(
-        l, 1, "ground", GroundInfo::get_ground_names(), Ground::WALL
-    );
-    const std::string& destruction_sound_id = LuaTools::opt_string_field(
-        l, 1, "destruction_sound", ""
-    );
-    int weight = LuaTools::opt_int_field(l, 1, "weight", 0);
-    int damage_on_enemies = LuaTools::opt_int_field(l, 1, "damage_on_enemies", 1);
-    bool can_be_cut = LuaTools::opt_boolean_field(l, 1, "can_be_cut", false);
-    bool can_explode = LuaTools::opt_boolean_field(l, 1, "can_explode", false);
-    bool can_regenerate = LuaTools::opt_boolean_field(l, 1, "can_regenerate", false);
-
-    if (!treasure_savegame_variable.empty()
-        && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
-      LuaTools::arg_error(l, 1, std::string(
-          "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier: '")
-      + treasure_savegame_variable + "'");
-    }
-
-    std::shared_ptr<Destructible> destructible = std::make_shared<Destructible>(
-        name,
-        layer,
-        x,
-        y,
-        animation_set_id,
-        Treasure(map.get_game(), treasure_name, treasure_variant, treasure_savegame_variable),
-        modified_ground
-    );
-    destructible->set_destruction_sound(destruction_sound_id);
-    destructible->set_weight(weight);
-    destructible->set_can_be_cut(can_be_cut);
-    destructible->set_can_explode(can_explode);
-    destructible->set_can_regenerate(can_regenerate);
-    destructible->set_damage_on_enemies(damage_on_enemies);
-
-    map.get_entities().add_entity(destructible);
-
-    if (map.is_started()) {
-      push_entity(l, *destructible);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_chest().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_chest(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    const std::string& treasure_name = LuaTools::opt_string_field(l, 1, "treasure_name", "");
-    int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
-    const std::string& treasure_savegame_variable = LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
-    const std::string& sprite_name = LuaTools::check_string_field(l, 1, "sprite");
-    Chest::OpeningMethod opening_method = LuaTools::opt_enum_field<Chest::OpeningMethod>(l, 1, "opening_method",
-        Chest::opening_method_names, Chest::OPENING_BY_INTERACTION);
-    const std::string& opening_condition = LuaTools::opt_string_field(l, 1, "opening_condition", "");
-    bool opening_condition_consumed = LuaTools::opt_boolean_field(l, 1, "opening_condition_consumed", false);
-    const std::string& cannot_open_dialog_id = LuaTools::opt_string_field(l, 1, "cannot_open_dialog", "");
-
-    if (!treasure_savegame_variable.empty()
-        && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
-      LuaTools::arg_error(l, 1, std::string(
-          "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '")
-      + treasure_savegame_variable + "')"
-      );
-    }
-
-    Game& game = map.get_game();
-
-    if (opening_method == Chest::OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
-      if (!LuaTools::is_valid_lua_identifier(opening_condition)) {
-        LuaTools::arg_error(l, 1, std::string(
-            "Bad field 'opening_condition' (invalid valid savegame variable identifier: '")
-        + opening_condition + "')"
-        );
-      }
-    }
-
-    else if (opening_method == Chest::OPENING_BY_INTERACTION_IF_ITEM) {
-      if (!opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
-        LuaTools::arg_error(l, 1, std::string(
-            "Bad field 'opening_condition' (no such equipment item: '")
-        + opening_condition + "')"
-        );
-      }
-      EquipmentItem& item = game.get_equipment().get_item(opening_condition);
-      if (!item.is_saved()) {
-        LuaTools::arg_error(l, 1, std::string(
-            "Bad field 'opening_condition' (equipment item '")
-        + opening_condition + "' is not saved)"
-        );
-      }
-    }
-
-    std::shared_ptr<Chest> chest = std::make_shared<Chest>(
-        name,
-        layer,
-        x,
-        y,
-        sprite_name,
-        Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable)
-    );
-    chest->set_opening_method(opening_method);
-    chest->set_opening_condition(opening_condition);
-    chest->set_opening_condition_consumed(opening_condition_consumed);
-    chest->set_cannot_open_dialog_id(cannot_open_dialog_id);
-    map.get_entities().add_entity(chest);
-
-    if (map.is_started()) {
-      push_entity(l, *chest);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_jumper().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_jumper(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    int width = LuaTools::check_int_field(l, 1, "width");
-    int height = LuaTools::check_int_field(l, 1, "height");
-    int direction = LuaTools::check_int_field(l, 1, "direction");
-    int jump_length = LuaTools::check_int_field(l, 1, "jump_length");
-
-    entity_creation_check_size(l, 1, width, height);
-
-    MapEntityPtr entity = std::make_shared<Jumper>(
-        name,
-        layer,
-        x,
-        y,
-        width,
-        height,
-        direction,
-        jump_length
-    );
-    map.get_entities().add_entity(entity);
-
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_enemy().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_enemy(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    int direction = LuaTools::check_int_field(l, 1, "direction");
-    const std::string& breed = LuaTools::check_string_field(l, 1, "breed");
-    Enemy::Rank rank = Enemy::Rank(LuaTools::opt_int_field(l, 1, "rank", 0));
-    const std::string& savegame_variable = LuaTools::opt_string_field(l, 1, "savegame_variable", "");
-    const std::string& treasure_name = LuaTools::opt_string_field(l, 1, "treasure_name", "");
-    int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
-    const std::string& treasure_savegame_variable = LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
-
-    if (!savegame_variable.empty()
-        && !LuaTools::is_valid_lua_identifier(savegame_variable)) {
-      LuaTools::arg_error(l, 1, std::string(
-          "Bad field 'savegame_variable' (invalid savegame variable identifier: '")
-      + savegame_variable + "')"
-      );
-    }
-
-    if (!treasure_savegame_variable.empty()
-        && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
-      LuaTools::arg_error(l, 1, std::string(
-          "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '")
-      + treasure_savegame_variable + "')"
-      );
-    }
-
-    Game& game = map.get_game();
-    MapEntityPtr entity = Enemy::create(
-        game,
-        breed,
-        rank,
-        savegame_variable,
-        name,
-        layer,
-        x,
-        y,
-        direction,
-        Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable)
-    );
-
-    if (entity == nullptr) {
-      lua_pushnil(l);
-      return 1;
-    }
-
-    map.get_entities().add_entity(entity);
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_npc().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_npc(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    int direction = LuaTools::check_int_field(l, 1, "direction");
-    const std::string& subtype_name = LuaTools::check_string_field(l, 1, "subtype");
-    const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
-    const std::string& behavior = LuaTools::opt_string_field(l, 1, "behavior", "map");
-
-    int subtype;
-    std::istringstream iss(subtype_name);
-    iss >> subtype;
-
-    Game& game = map.get_game();
-    MapEntityPtr entity = std::make_shared<Npc>(
-        game,
-        name,
-        layer,
-        x,
-        y,
-        Npc::Subtype(subtype),
-        sprite_name,
-        direction,
-        behavior
-    );
-    map.get_entities().add_entity(entity);
-
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_block().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_block(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    int direction = LuaTools::opt_int_field(l, 1, "direction", -1);
-    const std::string& sprite_name = LuaTools::check_string_field(l, 1, "sprite");
-    bool pushable = LuaTools::check_boolean_field(l, 1, "pushable");
-    bool pullable = LuaTools::check_boolean_field(l, 1, "pullable");
-    int maximum_moves = LuaTools::check_int_field(l, 1, "maximum_moves");
-
-    if (maximum_moves < 0 || maximum_moves > 2) {
-      std::ostringstream oss;
-      oss << "Invalid maximum_moves: " << maximum_moves;
-      LuaTools::arg_error(l, 1, oss.str());
-    }
-
-    std::shared_ptr<Block> entity = std::make_shared<Block>(
-        name,
-        layer,
-        x,
-        y,
-        direction,
-        sprite_name,
-        pushable,
-        pullable,
-        maximum_moves
-    );
-    map.get_entities().add_entity(entity);
-
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_dynamic_tile().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    int width = LuaTools::check_int_field(l, 1, "width");
-    int height = LuaTools::check_int_field(l, 1, "height");
-    const std::string& tile_pattern_id = LuaTools::check_string_field(l, 1, "pattern");
-    bool enabled_at_start = LuaTools::check_boolean_field(l, 1, "enabled_at_start");
-
-    entity_creation_check_size(l, 1, width, height);
-
-    MapEntityPtr entity = std::make_shared<DynamicTile>(
-        name,
-        layer,
-        x,
-        y,
-        width,
-        height,
-        map.get_tileset(),
-        tile_pattern_id,
-        enabled_at_start
-    );
-    map.get_entities().add_entity(entity);
-
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_switch().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_switch(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    Switch::Subtype subtype = LuaTools::check_enum_field<Switch::Subtype>(
-        l, 1, "subtype", Switch::subtype_names
-    );
-    const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
-    const std::string& sound_id = LuaTools::opt_string_field(l, 1, "sound", "");
-    bool needs_block = LuaTools::check_boolean_field(l, 1, "needs_block");
-    bool inactivate_when_leaving = LuaTools::check_boolean_field(l, 1, "inactivate_when_leaving");
-
-    MapEntityPtr entity = std::make_shared<Switch>(
-        name,
-        layer,
-        x,
-        y,
-        subtype,
-        sprite_name,
-        sound_id,
-        needs_block,
-        inactivate_when_leaving
-    );
-    map.get_entities().add_entity(entity);
-
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_wall().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_wall(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    int width = LuaTools::check_int_field(l, 1, "width");
-    int height = LuaTools::check_int_field(l, 1, "height");
-    bool stops_hero = LuaTools::opt_boolean_field(l, 1, "stops_hero", false);
-    bool stops_enemies = LuaTools::opt_boolean_field(l, 1, "stops_enemies", false);
-    bool stops_npcs = LuaTools::opt_boolean_field(l, 1, "stops_npcs", false);
-    bool stops_blocks = LuaTools::opt_boolean_field(l, 1, "stops_blocks", false);
-    bool stops_projectiles = LuaTools::opt_boolean_field(l, 1, "stops_projectiles", false);
-
-    entity_creation_check_size(l, 1, width, height);
-
-    MapEntityPtr entity = std::make_shared<Wall>(
-        name,
-        layer,
-        x,
-        y,
-        width,
-        height,
-        stops_hero,
-        stops_enemies,
-        stops_npcs,
-        stops_blocks,
-        stops_projectiles
-    );
-    map.get_entities().add_entity(entity);
-
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_sensor().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_sensor(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    int width = LuaTools::check_int_field(l, 1, "width");
-    int height = LuaTools::check_int_field(l, 1, "height");
-
-    entity_creation_check_size(l, 1, width, height);
-
-    MapEntityPtr entity = std::make_shared<Sensor>(
-        name,
-        layer,
-        x,
-        y,
-        width,
-        height
-    );
-    map.get_entities().add_entity(entity);
-
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_crystal().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_crystal(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-
-    MapEntityPtr entity = std::make_shared<Crystal>(
-        name,
-        layer,
-        x,
-        y
-    );
-    map.get_entities().add_entity(entity);
-
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_crystal_block().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_crystal_block(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    int width = LuaTools::check_int_field(l, 1, "width");
-    int height = LuaTools::check_int_field(l, 1, "height");
-    const std::string& subtype_name = LuaTools::check_string_field(l, 1, "subtype");
-
-    entity_creation_check_size(l, 1, width, height);
-
-    int subtype;
-    std::istringstream iss(subtype_name);
-    iss >> subtype;
-
-    Game& game = map.get_game();
-    MapEntityPtr entity = std::make_shared<CrystalBlock>(
-        game,
-        name,
-        layer,
-        x,
-        y,
-        width,
-        height,
-        CrystalBlock::Subtype(subtype)
-    );
-    map.get_entities().add_entity(entity);
-
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_shop_treasure().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_shop_treasure(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    const std::string& treasure_name = LuaTools::check_string_field(l, 1, "treasure_name");
-    int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
-    const std::string& treasure_savegame_variable = LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
-    int price = LuaTools::check_int_field(l, 1, "price");
-    const std::string& dialog_id = LuaTools::check_string_field(l, 1, "dialog");
-
-    if (!treasure_savegame_variable.empty()
-        && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
-      LuaTools::arg_error(l, 1, std::string(
-          "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier: '")
-      + treasure_savegame_variable + "')"
-      );
-    }
-
-    Game& game = map.get_game();
-    MapEntityPtr entity = ShopTreasure::create(
-        game,
-        name,
-        layer,
-        x,
-        y,
-        Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
-        price,
-        dialog_id
-    );
-
-    if (entity == nullptr) {
-      lua_pushnil(l);
-      return 1;
-    }
-
-    map.get_entities().add_entity(entity);
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_stream().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_stream(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    int direction = LuaTools::check_int_field(l, 1, "direction");
-    const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
-    int speed = LuaTools::opt_int_field(l, 1, "speed", 64);
-    bool allow_movement = LuaTools::opt_boolean_field(l, 1, "allow_movement", true);
-    bool allow_attack = LuaTools::opt_boolean_field(l, 1, "allow_attack", true);
-    bool allow_item = LuaTools::opt_boolean_field(l, 1, "allow_item", true);
-
-    std::shared_ptr<Stream> stream = std::make_shared<Stream>(
-        name,
-        layer,
-        x,
-        y,
-        direction,
-        sprite_name
-    );
-    stream->set_speed(speed);
-    stream->set_allow_movement(allow_movement);
-    stream->set_allow_attack(allow_attack);
-    stream->set_allow_item(allow_item);
-    map.get_entities().add_entity(stream);
-
-    if (map.is_started()) {
-      push_stream(l, *stream);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_door().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_door(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    int direction = LuaTools::check_int_field(l, 1, "direction");
-    const std::string& sprite_name = LuaTools::check_string_field(l, 1, "sprite");
-    const std::string& savegame_variable = LuaTools::opt_string_field(l, 1, "savegame_variable", "");
-    Door::OpeningMethod opening_method = LuaTools::opt_enum_field<Door::OpeningMethod>(l, 1, "opening_method",
-        Door::opening_method_names, Door::OPENING_NONE);
-    const std::string& opening_condition = LuaTools::opt_string_field(l, 1, "opening_condition", "");
-    bool opening_condition_consumed = LuaTools::opt_boolean_field(l, 1, "opening_condition_consumed", false);
-    const std::string& cannot_open_dialog_id = LuaTools::opt_string_field(l, 1, "cannot_open_dialog", "");
-
-    Game& game = map.get_game();
-
-    if (opening_method == Door::OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
-      if (!LuaTools::is_valid_lua_identifier(opening_condition)) {
-        LuaTools::arg_error(l, 1, std::string(
-            "Bad field 'opening_condition' (invalid savegame variable identifier: '")
-        + opening_condition + "')"
-        );
-      }
-    }
-
-    else if (opening_method == Door::OPENING_BY_INTERACTION_IF_ITEM) {
-      if (opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
-        LuaTools::arg_error(l, 1, std::string(
-            "Bad field 'opening_condition' (no such equipment item: '")
-        + opening_condition + "')"
-        );
-      }
-      EquipmentItem& item = game.get_equipment().get_item(opening_condition);
-      if (!item.is_saved()) {
-        LuaTools::arg_error(l, 1, std::string(
-            "Bad field 'opening_condition' (equipment item '")
-        + opening_condition + "' is not saved)"
-        );
-      }
-    }
-
-    std::shared_ptr<Door> door = std::make_shared<Door>(
-        game,
-        name,
-        layer,
-        x,
-        y,
-        direction,
-        sprite_name,
-        savegame_variable
-    );
-    door->set_opening_method(opening_method);
-    door->set_opening_condition(opening_condition);
-    door->set_opening_condition_consumed(opening_condition_consumed);
-    door->set_cannot_open_dialog_id(cannot_open_dialog_id);
-    map.get_entities().add_entity(door);
-
-    if (map.is_started()) {
-      push_entity(l, *door);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_stairs().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_stairs(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    int direction = LuaTools::check_int_field(l, 1, "direction");
-    const std::string& subtype_name = LuaTools::check_string_field(l, 1, "subtype");
-
-    int subtype;
-    std::istringstream iss(subtype_name);
-    iss >> subtype;
-
-    MapEntityPtr entity = std::make_shared<Stairs>(
-        name,
-        layer,
-        x,
-        y,
-        direction,
-        Stairs::Subtype(subtype)
-    );
-    map.get_entities().add_entity(entity);
-
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_separator().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_separator(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    int width = LuaTools::check_int_field(l, 1, "width");
-    int height = LuaTools::check_int_field(l, 1, "height");
-
-    entity_creation_check_size(l, 1, width, height);
-
-    MapEntityPtr entity = std::make_shared<Separator>(
-        name,
-        layer,
-        x,
-        y,
-        width,
-        height
-    );
-    map.get_entities().add_entity(entity);
-
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_custom_entity().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_custom_entity(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    int direction = LuaTools::check_int_field(l, 1, "direction");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-    int width = LuaTools::opt_int_field(l, 1, "width", 16);
-    int height = LuaTools::opt_int_field(l, 1, "height", 16);
-    const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
-    const std::string& model = LuaTools::opt_string_field(l, 1, "model", "");
-
-    entity_creation_check_size(l, 1, width, height);
-
-    Game& game = map.get_game();
-    MapEntityPtr entity = std::make_shared<CustomEntity>(
-        game,
-        name,
-        direction,
-        layer,
-        x,
-        y,
-        width,
-        height,
-        sprite_name,
-        model
-    );
-
-    map.get_entities().add_entity(entity);
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_bomb().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_bomb(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-
-    MapEntityPtr entity = std::make_shared<Bomb>(
-        name,
-        layer,
-        x,
-        y
-    );
-    map.get_entities().add_entity(entity);
-
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_explosion().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_explosion(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-
-    MapEntityPtr entity = std::make_shared<Explosion>(
-        name,
-        layer,
-        Point(x, y),
-        true
-    );
-    map.get_entities().add_entity(entity);
-
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of map:create_fire().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_fire(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Map& map = get_entity_creation_map(l);
-    LuaTools::check_type(l, 1, LUA_TTABLE);
-    const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
-    Layer layer = LuaTools::check_layer_field(l, 1, "layer");
-    int x = LuaTools::check_int_field(l, 1, "x");
-    int y = LuaTools::check_int_field(l, 1, "y");
-
-    MapEntityPtr entity = std::make_shared<Fire>(
-        name,
-        layer,
-        Point(x, y)
-    );
-    map.get_entities().add_entity(entity);
-
-    if (map.is_started()) {
-      push_entity(l, *entity);
-      return 1;
-    }
-    return 0;
+    return 1;
   });
 }
 
@@ -2205,7 +1971,7 @@ bool LuaContext::map_on_input(Map& map, const InputEvent& event) {
  * \param command The command pressed.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::map_on_command_pressed(Map& map, GameCommands::Command command) {
+bool LuaContext::map_on_command_pressed(Map& map, GameCommand command) {
 
   bool handled = false;
   push_map(l, map);
@@ -2229,7 +1995,7 @@ bool LuaContext::map_on_command_pressed(Map& map, GameCommands::Command command)
  * \param command The command released.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::map_on_command_released(Map& map, GameCommands::Command command) {
+bool LuaContext::map_on_command_released(Map& map, GameCommand command) {
 
   bool handled = false;
   push_map(l, map);

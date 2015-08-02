@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,8 @@
 #include "solarus/Game.h"
 #include "solarus/GameCommands.h"
 #include "solarus/Map.h"
+#include <memory>
+#include <string>
 
 namespace Solarus {
 
@@ -79,7 +81,7 @@ void Hero::SwordTappingState::update() {
 
     const Point& facing_point = hero.get_facing_point();
 
-    if (!get_commands().is_command_pressed(GameCommands::ATTACK)
+    if (!get_commands().is_command_pressed(GameCommand::ATTACK)
         || get_commands().get_wanted_direction8() != get_sprites().get_animation_direction8()
         || !get_map().test_collision_with_obstacles(hero.get_layer(), facing_point, hero)) {
       // the sword key has been released, the player has moved or the obstacle is gone
@@ -199,7 +201,7 @@ void Hero::SwordTappingState::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool /* killed */) {
 
-  if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
+  if (result.type != EnemyReaction::ReactionType::IGNORED && attack == EnemyAttack::SWORD) {
 
     if (victim.get_push_hero_on_sword()) {
 

@@ -1,3 +1,0 @@
-#!/bin/bash
-./make_editor_jar
-scp solarus-editor.jar solarus@solarus-games.org:www/editor/

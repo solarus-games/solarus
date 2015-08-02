@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,11 +16,8 @@
  */
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/CurrentQuest.h"
-#include "solarus/Language.h"
-#include "solarus/StringResource.h"
-#include "solarus/DialogResource.h"
 #include <vector>
 
 namespace Solarus {
@@ -82,7 +79,7 @@ void LuaContext::register_language_module() {
 int LuaContext::language_api_get_language(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const std::string& language = Language::get_language();
+    const std::string& language = CurrentQuest::get_language();
 
     if (language.empty()) {  // Return nil if no language is set.
       lua_pushnil(l);
@@ -104,10 +101,10 @@ int LuaContext::language_api_set_language(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& language_code = LuaTools::check_string(l, 1);
 
-    if (!Language::has_language(language_code)) {
+    if (!CurrentQuest::has_language(language_code)) {
       LuaTools::arg_error(l, 1, std::string("No such language: '") + language_code + "'");
     }
-    Language::set_language(language_code);
+    CurrentQuest::set_language(language_code);
 
     return 0;
   });
@@ -124,18 +121,18 @@ int LuaContext::language_api_get_language_name(lua_State* l) {
     std::string language_code;
     if (lua_gettop(l) >= 1) {
       language_code = LuaTools::check_string(l, 1);
-      if (!Language::has_language(language_code)) {
+      if (!CurrentQuest::has_language(language_code)) {
         LuaTools::arg_error(l, 1, std::string("No such language: '") + language_code + "'");
       }
     }
     else {
-      language_code = Language::get_language();
+      language_code = CurrentQuest::get_language();
       if (language_code.empty()) {
         LuaTools::error(l, "No language is set");
       }
     }
 
-    const std::string& name = Language::get_language_name(language_code);
+    const std::string& name = CurrentQuest::get_language_name(language_code);
     push_string(l, name);
 
     return 1;
@@ -176,11 +173,11 @@ int LuaContext::language_api_get_string(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& key = LuaTools::check_string(l, 1);
 
-    if (!StringResource::exists(key)) {
+    if (!CurrentQuest::string_exists(key)) {
       lua_pushnil(l);
     }
     else {
-      push_string(l, StringResource::get_string(key));
+      push_string(l, CurrentQuest::get_string(key));
     }
     return 1;
   });
@@ -196,11 +193,11 @@ int LuaContext::language_api_get_dialog(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& dialog_id = LuaTools::check_string(l, 1);
 
-    if (!DialogResource::exists(dialog_id)) {
+    if (!CurrentQuest::dialog_exists(dialog_id)) {
       lua_pushnil(l);
     }
     else {
-      push_dialog(l, DialogResource::get_dialog(dialog_id));
+      push_dialog(l, CurrentQuest::get_dialog(dialog_id));
     }
     return 1;
   });

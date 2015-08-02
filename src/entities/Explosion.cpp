@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include "solarus/Game.h"
 #include "solarus/Sprite.h"
 #include "solarus/SpriteAnimationSet.h"
+#include <algorithm>
 
 namespace Solarus {
 
@@ -30,18 +31,18 @@ namespace Solarus {
  * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the explosion
  * \param xy coordinates of the center of the explosion
- * \param with_damages true to hurt the hero and the enemies
+ * \param with_damage true to hurt the hero and the enemies
  */
 Explosion::Explosion(const std::string& name, Layer layer,
-    const Point& xy, bool with_damages):
-  Detector(COLLISION_SPRITE | COLLISION_OVERLAPPING, name, layer, xy.x, xy.y, 48, 48) {
+    const Point& xy, bool with_damage):
+  Detector(COLLISION_SPRITE | COLLISION_OVERLAPPING, name, layer, xy, Size(48, 48)) {
 
   // initialize the entity
   create_sprite("entities/explosion");
 
   set_optimization_distance(2000); // because of placing a bomb on a switch
   get_sprite().enable_pixel_collisions();
-  if (with_damages) {
+  if (with_damage) {
     set_size(48, 48);
     set_origin(24, 24);
   }
@@ -52,7 +53,7 @@ Explosion::Explosion(const std::string& name, Layer layer,
  * \return the type of entity
  */
 EntityType Explosion::get_type() const {
-  return ENTITY_EXPLOSION;
+  return EntityType::EXPLOSION;
 }
 
 /**
@@ -161,13 +162,10 @@ void Explosion::notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, 
 void Explosion::try_attack_enemy(Enemy& enemy, Sprite& enemy_sprite) {
 
   // see if the enemy was already hurt by this explosion
-  for (Enemy* victim: victims) {
-    if (victim == &enemy) {
-      return;
-    }
+  auto it = std::find(victims.begin(), victims.end(), &enemy);
+  if (it == victims.end()) {
+    enemy.try_hurt(EnemyAttack::EXPLOSION, *this, &enemy_sprite);
   }
-
-  enemy.try_hurt(ATTACK_EXPLOSION, *this, &enemy_sprite);
 }
 
 /**
@@ -180,7 +178,7 @@ void Explosion::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool /* killed */) {
 
-  if (result.type != EnemyReaction::IGNORED) {
+  if (result.type != EnemyReaction::ReactionType::IGNORED) {
     victims.push_back(&victim);
   }
 }

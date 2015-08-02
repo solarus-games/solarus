@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -290,43 +290,43 @@ uint32_t Hero::State::get_when_suspended() const {
  * is not suspended.
  * \param command The command pressed.
  */
-void Hero::State::notify_command_pressed(GameCommands::Command command) {
+void Hero::State::notify_command_pressed(GameCommand command) {
 
   switch (command) {
 
     // action key
-  case GameCommands::ACTION:
+  case GameCommand::ACTION:
     notify_action_command_pressed();
     break;
 
     // sword key
-  case GameCommands::ATTACK:
+  case GameCommand::ATTACK:
     notify_attack_command_pressed();
     break;
 
     // move the hero
-  case GameCommands::RIGHT:
+  case GameCommand::RIGHT:
     notify_direction_command_pressed(0);
     break;
 
-  case GameCommands::UP:
+  case GameCommand::UP:
     notify_direction_command_pressed(1);
     break;
 
-  case GameCommands::LEFT:
+  case GameCommand::LEFT:
     notify_direction_command_pressed(2);
     break;
 
-  case GameCommands::DOWN:
+  case GameCommand::DOWN:
     notify_direction_command_pressed(3);
     break;
 
     // use an equipment item
-  case GameCommands::ITEM_1:
+  case GameCommand::ITEM_1:
     notify_item_command_pressed(1);
     break;
 
-  case GameCommands::ITEM_2:
+  case GameCommand::ITEM_2:
     notify_item_command_pressed(2);
     break;
 
@@ -340,39 +340,39 @@ void Hero::State::notify_command_pressed(GameCommands::Command command) {
  * not suspended.
  * \param command The command released.
  */
-void Hero::State::notify_command_released(GameCommands::Command command) {
+void Hero::State::notify_command_released(GameCommand command) {
 
   switch (command) {
 
-  case GameCommands::ACTION:
+  case GameCommand::ACTION:
     notify_action_command_released();
     break;
 
-  case GameCommands::ATTACK:
+  case GameCommand::ATTACK:
     notify_attack_command_released();
     break;
 
-  case GameCommands::RIGHT:
+  case GameCommand::RIGHT:
     notify_direction_command_released(0);
     break;
 
-  case GameCommands::UP:
+  case GameCommand::UP:
     notify_direction_command_released(1);
     break;
 
-  case GameCommands::LEFT:
+  case GameCommand::LEFT:
     notify_direction_command_released(2);
     break;
 
-  case GameCommands::DOWN:
+  case GameCommand::DOWN:
     notify_direction_command_released(3);
     break;
 
-  case GameCommands::ITEM_1:
+  case GameCommand::ITEM_1:
     notify_item_command_released(0);
     break;
 
-  case GameCommands::ITEM_2:
+  case GameCommand::ITEM_2:
     notify_item_command_released(1);
     break;
 
@@ -1020,7 +1020,7 @@ void Hero::State::notify_attacked_enemy(
  */
 int Hero::State::get_sword_damage_factor() const {
 
-  return get_equipment().get_ability(ABILITY_SWORD);
+  return get_equipment().get_ability(Ability::SWORD);
 }
 
 /**

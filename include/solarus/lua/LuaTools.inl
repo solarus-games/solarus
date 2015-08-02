@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,22 +35,26 @@ int exception_boundary_handle(
     lua_State* l,
     Callable&& func
 ) {
-  try
-  {
+  try {
     return func();
   }
   catch (const LuaException& ex) {
+    // Error in user script, detected by Solarus.
     luaL_error(l, ex.what());
   }
   catch (const SolarusFatal& ex) {
+    // Internal Solarus bug.
     luaL_error(l, (std::string("Internal error: ") + ex.what()).c_str());
   }
   catch (const std::exception& ex) {
-    luaL_error(l, (std::string("Unexpected exception: ") + ex.what()).c_str());
+    // Probably also a Solarus bug.
+    luaL_error(l, (std::string("Internal error: ") + ex.what()).c_str());
   }
-  catch (...) {
-    luaL_error(l, "Unexpected exception");
-  }
+  // If we get another exception type, just don't catch it.
+  // Because with LuaJIT, it can already be a Lua error properly wrapped in a
+  // C++ exception. Generating a new Lua error from it would repeat the
+  // file and line number in the error message.
+
   return 0;
 }
 
@@ -187,130 +191,5 @@ E opt_enum_field(
   return value;
 }
 
-/**
- * \brief Checks whether a value is the name of an enumeration value and
- * returns this value.
- *
- * It is recommended to use the std::map overload of this function instead.
- *
- * \param l A Lua state.
- * \param index Index of a string in the Lua stack.
- * \param names A list of strings to search in.
- * \return The index (converted to the enumerated type E) where the string was
- * found in the list.
- * \deprecated
- */
-template<typename E>
-E check_enum(
-    lua_State* l,
-    int index,
-    const std::vector<std::string>& names
-) {
-  std::map<E, std::string> names_map;
-  int i = 0;
-  for (const std::string& name: names) {
-    names_map[static_cast<E>(i)] = name;
-    ++i;
-  }
-  return check_enum(l, index, names_map);
-}
-
-/**
- * \brief Checks that a table field is the name of an enumeration value and
- * returns this value.
- *
- * It is recommended to use the std::map overload of this function instead.
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \param names A list of strings to search in.
- * \return The index (converted to the enumerated type E) where the string was
- * found in the list.
- * \deprecated
- */
-template<typename E>
-E check_enum_field(
-    lua_State* l,
-    int table_index,
-    const std::string& key,
-    const std::vector<std::string>& names
-) {
-  lua_getfield(l, table_index, key.c_str());
-  if (!lua_isstring(l, -1)) {
-    arg_error(l, table_index,
-        std::string("Bad field '") + key + "' (string expected, got "
-        + luaL_typename(l, -1)
-    );
-  }
-
-  E value = check_enum<E>(l, -1, names);
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Like LuaTools::check_enum() but with a default value.
- *
- * It is recommended to use the std::map overload of this function instead.
- *
- * \param l A Lua state.
- * \param index Index of a string in the Lua stack.
- * \param names A list of strings to search in.
- * \param default_value The default value to return.
- * \return The index (converted to the enumerated type E) where the string was
- * found in the list.
- */
-template<typename E>
-E opt_enum(
-    lua_State* l,
-    int index,
-    const std::vector<std::string>& names,
-    E default_value
-) {
-  if (lua_isnoneornil(l, index)) {
-    return default_value;
-  }
-
-  return check_enum<E>(l, index, names);
-}
-
-/**
- * \brief Like LuaTools::check_enum_field() but with a default value.
- *
- * \deprecated It is recommended to use the std::map overload of this function instead.
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \param names A list of strings to search in.
- * \param default_value The default value to return.
- * \return The index (converted to the enumerated type E) where the string was
- * found in the list.
- */
-template<typename E>
-E opt_enum_field(
-    lua_State* l,
-    int table_index,
-    const std::string& key,
-    const std::vector<std::string>& names,
-    E default_value
-) {
-  lua_getfield(l, table_index, key.c_str());
-  if (lua_isnil(l, -1)) {
-    return default_value;
-  }
-
-  if (!lua_isstring(l, -1)) {
-    arg_error(l, table_index,
-        std::string("Bad field '") + key + "' (string expected, got "
-        + luaL_typename(l, -1) + ")"
-    );
-  }
-  E value = check_enum<E>(l, -1, names);
-  lua_pop(l, 1);
-  return value;
-}
-
-}
-}
+}  // namespace LuaTools
+}  // namespace Solarus

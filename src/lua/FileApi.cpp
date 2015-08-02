@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  */
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 
 namespace Solarus {
 
@@ -73,43 +73,43 @@ int LuaContext::file_api_open(lua_State* l) {
     if (writing) {
 
       // Writing a file.
-      if (FileTools::get_quest_write_dir().empty()) {
+      if (QuestFiles::get_quest_write_dir().empty()) {
         LuaTools::error(l,
             "Cannot open file in writing: no write directory was specified in quest.dat");
       }
 
-      real_file_name = FileTools::get_full_quest_write_dir() + "/" + file_name;
+      real_file_name = QuestFiles::get_full_quest_write_dir() + "/" + file_name;
     }
     else {
       // Reading a file.
-      FileTools::DataFileLocation location = FileTools::data_file_get_location(file_name);
+      QuestFiles::DataFileLocation location = QuestFiles::data_file_get_location(file_name);
 
       switch (location) {
 
-      case FileTools::LOCATION_NONE:
+      case QuestFiles::LOCATION_NONE:
         // Not found.
         lua_pushnil(l);
         push_string(l, std::string("Cannot find file '") + file_name
             + "' in the quest write directory, in data/, data.solarus or in data.solarus.zip");
         return 2;
 
-      case FileTools::LOCATION_WRITE_DIRECTORY:
+      case QuestFiles::LOCATION_WRITE_DIRECTORY:
         // Found in the quest write directory.
-        real_file_name = FileTools::get_full_quest_write_dir() + "/" + file_name;
+        real_file_name = QuestFiles::get_full_quest_write_dir() + "/" + file_name;
         break;
 
-      case FileTools::LOCATION_DATA_DIRECTORY:
+      case QuestFiles::LOCATION_DATA_DIRECTORY:
         // Found in the data directory.
-        real_file_name = FileTools::get_quest_path() + "/data/" + file_name;
+        real_file_name = QuestFiles::get_quest_path() + "/data/" + file_name;
         break;
 
-      case FileTools::LOCATION_DATA_ARCHIVE:
+      case QuestFiles::LOCATION_DATA_ARCHIVE:
       {
         // Found in the data archive.
         // To call io.open(), we need a regular file, so let's create
         // a temporary one.
-        const std::string& buffer = FileTools::data_file_read(file_name);
-        real_file_name = FileTools::create_temporary_file(buffer);
+        const std::string& buffer = QuestFiles::data_file_read(file_name);
+        real_file_name = QuestFiles::create_temporary_file(buffer);
         break;
       }
       }
@@ -139,7 +139,7 @@ int LuaContext::file_api_exists(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
-    lua_pushboolean(l, FileTools::data_file_exists(file_name, false));
+    lua_pushboolean(l, QuestFiles::data_file_exists(file_name, false));
 
     return 1;
   });
@@ -155,7 +155,7 @@ int LuaContext::file_api_remove(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
-    bool success = FileTools::data_file_delete(file_name);
+    bool success = QuestFiles::data_file_delete(file_name);
 
     if (!success) {
       lua_pushnil(l);
@@ -178,7 +178,7 @@ int LuaContext::file_api_mkdir(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& dir_name = LuaTools::check_string(l, 1);
 
-    bool success = FileTools::data_file_mkdir(dir_name);
+    bool success = QuestFiles::data_file_mkdir(dir_name);
 
     if (!success) {
       lua_pushnil(l);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,8 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/Settings.h"
-#include "solarus/lowlevel/FileTools.h"
-#include "solarus/Language.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/CurrentQuest.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lowlevel/VideoMode.h"
 #include "solarus/lowlevel/Sound.h"
@@ -35,17 +35,17 @@ namespace Solarus {
  */
 bool Settings::load(const std::string& file_name) {
 
-  const std::string& quest_write_dir = FileTools::get_quest_write_dir();
+  const std::string& quest_write_dir = QuestFiles::get_quest_write_dir();
   Debug::check_assertion(!quest_write_dir.empty(),
       "Cannot load settings: no quest write directory was specified in quest.dat");
 
-  if (!FileTools::data_file_exists(file_name)) {
+  if (!QuestFiles::data_file_exists(file_name)) {
     return false;
   }
 
   // Read the settings as a Lua data file.
   lua_State* l = luaL_newstate();
-  const std::string& buffer = FileTools::data_file_read(file_name);
+  const std::string& buffer = QuestFiles::data_file_read(file_name);
   int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0 || lua_pcall(l, 0, 0, 0) != 0) {
@@ -100,8 +100,8 @@ bool Settings::load(const std::string& file_name) {
   lua_getglobal(l, "language");
   if (lua_isstring(l, 1)) {
     const std::string& language = lua_tostring(l, 1);
-    if (Language::has_language(language)) {
-      Language::set_language(language);
+    if (CurrentQuest::has_language(language)) {
+      CurrentQuest::set_language(language);
     }
   }
   lua_pop(l, 1);
@@ -126,7 +126,7 @@ bool Settings::load(const std::string& file_name) {
  */
 bool Settings::save(const std::string& file_name) {
 
-  const std::string& quest_write_dir = FileTools::get_quest_write_dir();
+  const std::string& quest_write_dir = QuestFiles::get_quest_write_dir();
   Debug::check_assertion(!quest_write_dir.empty(),
       "Cannot save settings: no quest write directory was specified in quest.dat");
 
@@ -136,13 +136,13 @@ bool Settings::save(const std::string& file_name) {
   oss << "fullscreen = " << (Video::is_fullscreen() ? "true" : "false") << "\n";
   oss << "sound_volume = " << Sound::get_volume() << "\n";
   oss << "music_volume = " << Music::get_volume() << "\n";
-  if (!Language::get_language().empty()) {
-    oss << "language = \"" << Language::get_language() << "\"\n";
+  if (!CurrentQuest::get_language().empty()) {
+    oss << "language = \"" << CurrentQuest::get_language() << "\"\n";
   }
   oss << "joypad_enabled = " << (InputEvent::is_joypad_enabled() ? "true" : "false") << "\n";
 
   const std::string& text = oss.str();
-  FileTools::data_file_save(file_name, text);
+  QuestFiles::data_file_save(file_name, text);
   return true;
 }
 

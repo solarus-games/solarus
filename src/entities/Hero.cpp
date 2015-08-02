@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,6 +62,8 @@
 #include "solarus/EquipmentItem.h"
 #include "solarus/KeysEffect.h"
 #include "solarus/Sprite.h"
+#include <algorithm>
+#include <utility>
 
 namespace Solarus {
 
@@ -70,12 +72,13 @@ namespace Solarus {
  * \param equipment the equipment (needed to build the sprites even outside a game)
  */
 Hero::Hero(Equipment& equipment):
-  MapEntity("hero", 0, LAYER_LOW, 0, 0, 16, 16),
+  MapEntity("hero", 0, LAYER_LOW, Point(0, 0), Size(16, 16)),
   state(nullptr),
   invincible(false),
   end_invincible_date(0),
   normal_walking_speed(88),
   walking_speed(normal_walking_speed),
+  delayed_teletransporter(nullptr),
   on_raised_blocks(false),
   next_ground_date(0),
   next_ice_date(0) {
@@ -98,7 +101,7 @@ Hero::Hero(Equipment& equipment):
  * \return the type of entity
  */
 EntityType Hero::get_type() const {
-  return ENTITY_HERO;
+  return EntityType::HERO;
 }
 
 /**
@@ -458,7 +461,7 @@ void Hero::draw_on_map() {
  * and the game is not suspended.
  * \param command The command pressed.
  */
-void Hero::notify_command_pressed(GameCommands::Command command) {
+void Hero::notify_command_pressed(GameCommand command) {
   state->notify_command_pressed(command);
 }
 
@@ -467,7 +470,7 @@ void Hero::notify_command_pressed(GameCommands::Command command) {
  * if the game is not suspended.
  * \param command The command released.
  */
-void Hero::notify_command_released(GameCommands::Command command) {
+void Hero::notify_command_released(GameCommand command) {
   state->notify_command_released(command);
 }
 
@@ -1462,9 +1465,7 @@ bool Hero::is_ladder_obstacle() const {
 }
 
 /**
- * \brief Returns whether a block is currently considered as an obstacle by this entity.
- * \param block a block
- * \return true if the teletransporter is currently an obstacle for this entity
+ * \copydoc MapEntity::is_block_obstacle
  */
 bool Hero::is_block_obstacle(Block& block) {
   return block.is_hero_obstacle(*this);
@@ -1560,7 +1561,7 @@ void Hero::notify_collision_with_enemy(
   const std::string this_sprite_id = this_sprite.get_animation_set_id();
   if (this_sprite_id == get_hero_sprites().get_sword_sprite_id()) {
     // the hero's sword overlaps the enemy
-    enemy.try_hurt(ATTACK_SWORD, *this, &enemy_sprite);
+    enemy.try_hurt(EnemyAttack::SWORD, *this, &enemy_sprite);
   }
   else if (this_sprite_id == get_hero_sprites().get_tunic_sprite_id()) {
     // The hero's body sprite overlaps the enemy.
@@ -2174,7 +2175,7 @@ void Hero::start_deep_water() {
   }
   else {
     // move to state swimming or jumping
-    if (get_equipment().has_ability(ABILITY_SWIM)) {
+    if (get_equipment().has_ability(Ability::SWIM)) {
       set_state(new SwimmingState(*this));
     }
     else {
@@ -2451,13 +2452,13 @@ void Hero::start_running() {
 
   // The running state may be triggered by the action command or an
   // item command.
-  GameCommands::Command command;
+  GameCommand command;
   if (is_free()) {
-    command = GameCommands::ACTION;
+    command = GameCommand::ACTION;
   }
   else {
-    command = get_commands().is_command_pressed(GameCommands::ITEM_1) ?
-        GameCommands::ITEM_1 : GameCommands::ITEM_2;
+    command = get_commands().is_command_pressed(GameCommand::ITEM_1) ?
+        GameCommand::ITEM_1 : GameCommand::ITEM_2;
   }
   set_state(new RunningState(*this, command));
 }
@@ -2505,7 +2506,7 @@ bool Hero::can_avoid_teletransporter(const Teletransporter& teletransporter) con
  */
 bool Hero::can_run() const {
 
-  if (!get_equipment().has_ability(ABILITY_RUN)) {
+  if (!get_equipment().has_ability(Ability::RUN)) {
     return false;
   }
 
@@ -2645,7 +2646,7 @@ void Hero::start_state_from_ground() {
 
   case Ground::DEEP_WATER:
     if (state->is_touching_ground()
-        && get_equipment().has_ability(ABILITY_SWIM)) {
+        && get_equipment().has_ability(Ability::SWIM)) {
       set_state(new SwimmingState(*this));
     }
     else {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,23 +14,26 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/MainLoop.h"
+#include "solarus/entities/TilePattern.h"
+#include "solarus/lowlevel/Color.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Music.h"
+#include "solarus/lowlevel/Output.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Video.h"
-#include "solarus/lowlevel/Color.h"
-#include "solarus/lowlevel/Surface.h"
-#include "solarus/lowlevel/Music.h"
-#include "solarus/lowlevel/FileTools.h"
-#include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/Settings.h"
-#include "solarus/QuestProperties.h"
-#include "solarus/Game.h"
-#include "solarus/Savegame.h"
-#include "solarus/StringResource.h"
 #include "solarus/CurrentQuest.h"
+#include "solarus/Game.h"
+#include "solarus/QuestProperties.h"
+#include "solarus/MainLoop.h"
+#include "solarus/Savegame.h"
+#include "solarus/Settings.h"
 #include <lua.hpp>
+#include <iostream>
 #include <sstream>
+#include <string>
 
 namespace Solarus {
 
@@ -89,6 +92,9 @@ MainLoop::MainLoop(const Arguments& args):
   next_game(nullptr),
   exiting(false) {
 
+  Output::initialize(args);
+  std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
+
   // Initialize basic features (input, audio, video, files...).
   System::initialize(args);
 
@@ -97,6 +103,7 @@ MainLoop::MainLoop(const Arguments& args):
 
   // Read the quest resource list from data.
   CurrentQuest::initialize();
+  TilePattern::initialize();
 
   // Create the quest surface.
   root_surface = Surface::create(
@@ -120,13 +127,19 @@ MainLoop::MainLoop(const Arguments& args):
 MainLoop::~MainLoop() {
 
   if (game != nullptr) {
-    // While stopping the game, the Lua world must still exist.
     game->stop();
+    game.reset();  // While deleting the game, the Lua world must still exist.
   }
 
+  // Clear the surface while Lua still exists,
+  // because it may point to other surfaces that have Lua movements.
+  root_surface = nullptr;
+
   lua_context->exit();
+  TilePattern::quit();
   CurrentQuest::quit();
   System::quit();
+  Output::quit();
 }
 
 /**
@@ -204,6 +217,7 @@ void MainLoop::set_game(Game* game) {
 void MainLoop::run() {
 
   // Main loop.
+  std::cout << "Simulation started" << std::endl;
 
   uint32_t last_frame_date = System::get_real_time();
   uint32_t lag = 0;  // Lose time of the simulation to catch up.
@@ -257,6 +271,7 @@ void MainLoop::run() {
       System::sleep(System::timestep - last_frame_duration);
     }
   }
+  std::cout << "Simulation finished" << std::endl;
 }
 
 /**
@@ -362,7 +377,7 @@ void MainLoop::load_quest_properties() {
   // Read the quest properties file.
   const std::string file_name("quest.dat");
   lua_State* l = luaL_newstate();
-  const std::string& buffer = FileTools::data_file_read(file_name);
+  const std::string& buffer = QuestFiles::data_file_read(file_name);
   int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
 
   if (load_result != 0) {
@@ -386,7 +401,7 @@ void MainLoop::load_quest_properties() {
   lua_close(l);
 
   check_version_compatibility(properties.get_solarus_version());
-  FileTools::set_quest_write_dir(properties.get_quest_write_dir());
+  QuestFiles::set_quest_write_dir(properties.get_quest_write_dir());
   if (!properties.get_title_bar().empty()) {
     Video::set_window_title(properties.get_title_bar());
   }

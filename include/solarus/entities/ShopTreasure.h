@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
- * 
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -22,6 +22,8 @@
 #include "solarus/Sprite.h"
 #include "solarus/entities/Detector.h"
 #include "solarus/lowlevel/TextSurface.h"
+#include <memory>
+#include <string>
 
 struct lua_State;
 
@@ -42,10 +44,10 @@ class ShopTreasure: public Detector {
     ShopTreasure(
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
+        const Point& xy,
         const Treasure& treasure,
         int price,
+        const std::string& font_id,
         const std::string& dialog_id
     );
 
@@ -53,10 +55,10 @@ class ShopTreasure: public Detector {
         Game& game,
         const std::string& name,
         Layer layer,
-        int x,
-        int y,
+        const Point& xy,
         const Treasure& treasure,
         int price,
+        const std::string& font_id,
         const std::string& dialog_id
     );
 
@@ -76,14 +78,14 @@ class ShopTreasure: public Detector {
   private:
 
     // data
-    Treasure treasure;                /**< the treasure the player can buy */
-    int price;                        /**< the treasure's price */
-    std::string dialog_id;            /**< id of the dialog describing the shop item */
+    Treasure treasure;                /**< The treasure the player can buy. */
+    int price;                        /**< The treasure's price. */
+    std::string dialog_id;            /**< Id of the dialog describing the treasure. */
 
     // displaying
-    TextSurface price_digits;         /**< the digits that show the price */
+    TextSurface price_digits;         /**< The digits that show the price. */
     SpritePtr
-        rupee_icon_sprite;            /**< the rupee icon near the price */
+        rupee_icon_sprite;            /**< The rupee icon near the price. */
 
 };
 

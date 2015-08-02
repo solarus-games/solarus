@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 #include "solarus/Common.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/lowlevel/Size.h"
 
 namespace Solarus {
 
@@ -43,8 +44,11 @@ class TilePattern {
 
     int get_width() const;
     int get_height() const;
+    const Size& get_size() const;
     Ground get_ground() const;
 
+    static void initialize();
+    static void quit();
     static void update();
     void fill_surface(
         const SurfacePtr& dst_surface,
@@ -72,12 +76,11 @@ class TilePattern {
 
   protected:
 
-    TilePattern(Ground ground, int width, int height);
+    TilePattern(Ground ground, const Size& size);
 
     const Ground ground;     /**< Kind of tile. */
 
-    const int width;         /**< Pattern width (multiple of 8). */
-    const int height;        /**< Pattern height (multiple of 8). */
+    const Size size;         /**< Pattern size (multiple of 8). */
 
 };
 

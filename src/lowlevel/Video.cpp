@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,13 +24,14 @@
 #include "solarus/lowlevel/Hq4xFilter.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Color.h"
-#include "solarus/lowlevel/FileTools.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/shaders/ShaderContext.h"
 #include "solarus/Arguments.h"
-#include <algorithm>
-#include <sstream>
 #include <iostream>
+#include <memory>
+#include <sstream>
+#include <utility>
 #include <SDL_render.h>
 
 namespace Solarus {
@@ -67,7 +68,7 @@ Size window_size;                         /**< Size of the window. The quest siz
  * \brief Creates the window but does not show it.
  * \param args Command-line arguments.
  */
-void create_window(const Arguments& args) {
+void create_window() {
 
   Debug::check_assertion(main_window == nullptr, "Window already exists");
 
@@ -93,16 +94,9 @@ void create_window(const Arguments& args) {
   Debug::check_assertion(main_window != nullptr,
       std::string("Cannot create the window: ") + SDL_GetError());
 
-  int acceleration_flag = 0;
-  if (args.get_argument_value("-video-acceleration") == "no") {
-    acceleration_enabled = false;
-    acceleration_flag = SDL_RENDERER_SOFTWARE;
-  }
-  else {
-    // Accelerated by default.
-    acceleration_enabled = true;
-    acceleration_flag = SDL_RENDERER_ACCELERATED;
-  }
+  int acceleration_flag = acceleration_enabled ?
+      SDL_RENDERER_ACCELERATED : SDL_RENDERER_SOFTWARE;
+
   main_renderer = SDL_CreateRenderer(main_window, -1, acceleration_flag
 #if SOLARUS_HAVE_OPENGL != 1
       | SDL_RENDERER_PRESENTVSYNC
@@ -216,7 +210,7 @@ void initialize_video_modes() {
 
     // Get all shaders of the quest's shader/videomodes folder.
     std::vector<std::string> shader_names =
-        FileTools::data_files_enumerate("shaders/videomodes/", true, false);
+        QuestFiles::data_files_enumerate("shaders/videomodes/", true, false);
     // FIXME don't enumerate data files, use the quest resource system like always.
 
     for (unsigned i = 0; i < shader_names.size(); ++i) {
@@ -277,13 +271,21 @@ void Video::initialize(const Arguments& args) {
     }
   }
 
+  if (args.get_argument_value("-video-acceleration") == "no") {
+    acceleration_enabled = false;
+  }
+  else {
+    // Accelerated by default.
+    acceleration_enabled = true;
+  }
+
   if (disable_window) {
     // Create a pixel format anyway to make surface and color operations work,
     // even though nothing will ever be rendered.
     pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ABGR8888);
   }
   else {
-    create_window(args);
+    create_window();
   }
 }
 

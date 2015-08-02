@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #include "solarus/entities/TilesetData.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaTools.h"
-#include <fstream>
+#include <ostream>
 #include <sstream>
 
 namespace Solarus {
@@ -29,6 +29,13 @@ const std::map<TileScrolling, std::string> scrolling_names = {
     { TileScrolling::NONE, "" },
     { TileScrolling::PARALLAX, "parallax" },
     { TileScrolling::SELF, "self" },
+};
+
+const std::map<TilePatternRepeatMode, std::string> repeat_mode_names = {
+    { TilePatternRepeatMode::ALL, "all" },
+    { TilePatternRepeatMode::HORIZONTAL, "horizontal" },
+    { TilePatternRepeatMode::VERTICAL, "vertical" },
+    { TilePatternRepeatMode::NONE, "none" },
 };
 
 }
@@ -99,6 +106,47 @@ TileScrolling TilePatternData::get_scrolling() const {
  */
 void TilePatternData::set_scrolling(TileScrolling scrolling) {
   this->scrolling = scrolling;
+}
+
+/**
+ * \brief Returns how this pattern is intended to be repeated.
+ */
+TilePatternRepeatMode TilePatternData::get_repeat_mode() const {
+  return repeat_mode;
+}
+
+/**
+ * \brief Sets how this pattern is intended to be repeated.
+ */
+void TilePatternData::set_repeat_mode(TilePatternRepeatMode repeat_mode) {
+  this->repeat_mode = repeat_mode;
+}
+
+/**
+ * \brief Returns the name of a tile pattern repeat mode.
+ * \param type A repeat mode.
+ * \return The corresponding name.
+ */
+const std::string& TilePatternData::get_repeat_mode_name(TilePatternRepeatMode repeat_mode) {
+
+  return repeat_mode_names.at(repeat_mode);
+}
+
+/**
+ * \brief Returns the tile pattern repeat mode value with the given name.
+ * \param repeat_mode_name The name of a repeat mode. It must exist.
+ * \return The corresponding repeat mode value.
+ */
+TilePatternRepeatMode TilePatternData::get_repeat_mode_by_name(const std::string& repeat_mode_name) {
+
+  for (const auto& kvp: repeat_mode_names) {
+    if (kvp.second == repeat_mode_name) {
+      return kvp.first;
+    }
+  }
+
+  Debug::die(std::string("Unknown repeat mode: ") + repeat_mode_name);
+  return TilePatternRepeatMode();
 }
 
 /**
@@ -217,6 +265,7 @@ bool TilesetData::exists(const std::string& pattern_id) const {
  * \brief Returns the pattern with the specified id.
  * \param pattern_id A tile pattern id. It must exist.
  * \return The pattern with this id.
+ * The object remains valid until tile patterns are added or removed.
  */
 const TilePatternData& TilesetData::get_pattern(const std::string& pattern_id) const {
 
@@ -234,6 +283,7 @@ const TilePatternData& TilesetData::get_pattern(const std::string& pattern_id) c
  *
  * \param pattern_id A tile pattern id. It must exist.
  * \return The pattern with this id.
+ * The object remains valid until tile patterns are added or removed.
  */
 TilePatternData& TilesetData::get_pattern(const std::string& pattern_id) {
 
@@ -253,7 +303,7 @@ TilePatternData& TilesetData::get_pattern(const std::string& pattern_id) {
 bool TilesetData::add_pattern(
     const std::string& pattern_id, const TilePatternData& pattern) {
 
-  const auto& result = patterns.insert(std::make_pair(pattern_id, pattern));
+  const auto& result = patterns.emplace(pattern_id, pattern);
   if (!result.second) {
     // Insertion failed: the id already exists.
     return false;
@@ -357,6 +407,11 @@ int l_tile_pattern(lua_State* l) {
         l, 1, "scrolling", scrolling_names, TileScrolling::NONE
     );
     pattern_data.set_scrolling(scrolling);
+
+    const TilePatternRepeatMode repeat_mode = LuaTools::opt_enum_field<TilePatternRepeatMode>(
+        l, 1, "repeat_mode", repeat_mode_names, TilePatternRepeatMode::ALL
+    );
+    pattern_data.set_repeat_mode(repeat_mode);
 
     const int width = LuaTools::check_int_field(l, 1, "width");
     const int height = LuaTools::check_int_field(l, 1, "height");
@@ -505,6 +560,10 @@ bool TilesetData::export_to_lua(std::ostream& out) const {
     if (pattern.get_scrolling() != TileScrolling::NONE) {
       const std::string& scolling_name = scrolling_names.at(pattern.get_scrolling());
       out << "  scrolling = \"" << scolling_name << "\",\n";
+    }
+    if (pattern.get_repeat_mode() != TilePatternRepeatMode::ALL) {
+      const std::string& repeat_mode_name = TilePatternData::get_repeat_mode_name(pattern.get_repeat_mode());
+      out << "  repeat_mode = \"" << repeat_mode_name << "\",\n";
     }
     out << "}\n\n";
   }

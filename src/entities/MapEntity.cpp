@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,24 +14,28 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/MapEntity.h"
-#include "solarus/entities/MapEntities.h"
-#include "solarus/entities/Tileset.h"
-#include "solarus/entities/Switch.h"
 #include "solarus/entities/Destructible.h"
-#include "solarus/entities/Separator.h"
 #include "solarus/entities/Hero.h"
+#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/Separator.h"
 #include "solarus/entities/StreamAction.h"
-#include "solarus/movements/Movement.h"
-#include "solarus/lua/LuaContext.h"
+#include "solarus/entities/Switch.h"
+#include "solarus/entities/Tileset.h"
+#include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/MainLoop.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/movements/Movement.h"
 #include "solarus/Game.h"
+#include "solarus/MainLoop.h"
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
 #include "solarus/SpriteAnimationSet.h"
+#include <algorithm>
+#include <iterator>
+#include <list>
+#include <utility>
 
 namespace Solarus {
 
@@ -40,23 +44,20 @@ namespace Solarus {
  * \param name Name identifying the entity on the map or an empty string.
  * \param direction direction of the entity
  * \param layer layer of the entity
- * \param x x position of the entity
- * \param y y position of the entity
- * \param width width of the entity
- * \param height height of the entity
+ * \param xy Coordinates where to create the entity.
+ * \param size Size of the entity.
  */
 MapEntity::MapEntity(
     const std::string& name,
     int direction,
     Layer layer,
-    int x,
-    int y,
-    int width,
-    int height):
+    const Point& xy,
+    const Size& size
+):
   main_loop(nullptr),
   map(nullptr),
   layer(layer),
-  bounding_box(x, y, width, height),
+  bounding_box(xy, size),
   ground_below(Ground::EMPTY),
   origin(0, 0),
   name(name),
@@ -76,7 +77,7 @@ MapEntity::MapEntity(
   optimization_distance(default_optimization_distance),
   optimization_distance2(default_optimization_distance * default_optimization_distance) {
 
-  Debug::check_assertion(width % 8 == 0 && height % 8 == 0,
+  Debug::check_assertion(size.width % 8 == 0 && size.height % 8 == 0,
       "Invalid entity size: width and height must be multiple of 8");
 }
 
@@ -97,6 +98,9 @@ MapEntity::~MapEntity() {
 
 /**
  * \brief Returns the name identifying this type in Lua.
+ *
+ * This is the internal name of the metatable for the entity.
+ *
  * \return The name identifying this type in Lua.
  */
 const std::string& MapEntity::get_lua_type_name() const {
@@ -108,7 +112,7 @@ const std::string& MapEntity::get_lua_type_name() const {
  * \return true if this entity is the hero
  */
 bool MapEntity::is_hero() const {
-  return get_type() == ENTITY_HERO;
+  return get_type() == EntityType::HERO;
 }
 
 /**
@@ -143,7 +147,7 @@ bool MapEntity::can_be_obstacle() const {
  * \brief Returns whether this entity is sensible to the ground below it.
  *
  * This function returns \c false by default.
- * If this function returns \c true when it is added to a map,
+ * If this function returns \c true,
  * get_ground_below() will then return the ground below it
  * and notify_ground_below_changed() will be called when it changes.
  *
@@ -159,7 +163,7 @@ bool MapEntity::is_ground_observer() const {
  *
  * The ground of a point is computed as the ground of the tile below it,
  * possibly modified by entities overlapping the point and who redefine
- * can_change_ground() to \c true.
+ * is_ground_modifier() to \c true.
  *
  * This function returns \c false by default.
  * If this function returns \c true, the entity is added to the list of
@@ -556,7 +560,9 @@ void MapEntity::notify_being_removed() {
   this->being_removed = true;
 
   // If this entity defines a ground, tell people that it is disappearing.
-  update_ground_observers();
+  if (is_on_map() && map->is_started()) {
+    update_ground_observers();
+  }
 }
 
 /**
@@ -1196,17 +1202,19 @@ SpritePtr MapEntity::create_sprite(
 
 /**
  * \brief Marks a sprite of this entity to be removed as soon as possible.
+ * \return \c true in case of success, \c false if this entity has no such
+ * sprite.
  */
-void MapEntity::remove_sprite(Sprite& sprite) {
+bool MapEntity::remove_sprite(Sprite& sprite) {
 
   for (const SpritePtr& current_sprite: sprites) {
     if (current_sprite.get() == &sprite) {
       old_sprites.push_back(current_sprite);
-      return;
+      return true;
     }
   }
 
-  Debug::die("This sprite does not belong to this entity");
+  return false;
 }
 
 /**
@@ -1216,9 +1224,8 @@ void MapEntity::remove_sprite(Sprite& sprite) {
  */
 void MapEntity::clear_sprites() {
 
-  for (const SpritePtr& sprite: sprites) {
-    old_sprites.push_back(sprite);
-  }
+  std::copy(sprites.begin(), sprites.end(),
+            std::back_inserter(old_sprites));
   sprites.clear();
 }
 
@@ -1228,11 +1235,9 @@ void MapEntity::clear_sprites() {
 void MapEntity::clear_old_sprites() {
 
   for (const SpritePtr& old_sprite: old_sprites) {
-    for (auto it = sprites.begin(); it != sprites.end(); ++it) {
-      if (it->get() == old_sprite.get()) {
-        sprites.erase(it);
-        break;
-      }
+    auto it = std::find(sprites.begin(), sprites.end(), old_sprite);
+    if (it != sprites.end()) {
+      sprites.erase(it);
     }
   }
   old_sprites.clear();
@@ -1616,7 +1621,62 @@ void MapEntity::notify_enabled(bool /* enabled */) {
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool MapEntity::is_obstacle_for(MapEntity& /* other */) {
+bool MapEntity::is_obstacle_for(MapEntity& other) {
+
+  if (!can_be_obstacle()) {
+    // This type of entity can never be an obstacle for others.
+    return false;
+  }
+
+  if (!is_ground_modifier()) {
+    // Return false by default.
+    return false;
+  }
+
+  // This entity modifies the ground of the map.
+  // Return the appropriate obstacle property.
+  switch (get_modified_ground()) {
+
+    case Ground::WALL:
+    case Ground::WALL_TOP_RIGHT:
+    case Ground::WALL_TOP_LEFT:
+    case Ground::WALL_BOTTOM_LEFT:
+    case Ground::WALL_BOTTOM_RIGHT:
+    case Ground::WALL_TOP_RIGHT_WATER:
+    case Ground::WALL_TOP_LEFT_WATER:
+    case Ground::WALL_BOTTOM_LEFT_WATER:
+    case Ground::WALL_BOTTOM_RIGHT_WATER:
+      return true;
+
+    case Ground::LOW_WALL:
+      return other.is_low_wall_obstacle();
+
+    case Ground::EMPTY:
+    case Ground::TRAVERSABLE:
+    case Ground::GRASS:
+    case Ground::ICE:
+      return false;
+
+    case Ground::SHALLOW_WATER:
+      return other.is_shallow_water_obstacle();
+
+    case Ground::DEEP_WATER:
+      return other.is_deep_water_obstacle();
+
+    case Ground::HOLE:
+      return other.is_hole_obstacle();
+
+    case Ground::LAVA:
+      return other.is_lava_obstacle();
+
+    case Ground::PRICKLE:
+      return other.is_prickle_obstacle();
+
+    case Ground::LADDER:
+      return other.is_ladder_obstacle();
+
+  }
+
   return false;
 }
 
@@ -2432,7 +2492,7 @@ void MapEntity::update() {
 
   // Static tiles are optimized and should never be used individually
   // once the map is created.
-  SOLARUS_ASSERT(get_type() != ENTITY_TILE,
+  SOLARUS_ASSERT(get_type() != EntityType::TILE,
       "Attempt to update a static tile");
 
   // enable if necessary

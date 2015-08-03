@@ -25,10 +25,11 @@ endif()
 
 # Configuration variable
 set(SOLARUS_BUNDLE_TARGET_NAME        "solarus_run")
+set(SOLARUS_LIBRARY                   "${CMAKE_SHARED_LIBRARY_PREFIX}solarus${CMAKE_SHARED_LIBRARY_SUFFIX}")
 if(SOLARUS_BUNDLE_CODESIGN)
-  set(SOLARUS_BUNDLE_GUI_IDENTIFIER "${SOLARUS_BUNDLE_CODESIGN}")
+  set(SOLARUS_BUNDLE_GUI_IDENTIFIER   "${SOLARUS_BUNDLE_CODESIGN}")
 else()
-  set(SOLARUS_BUNDLE_GUI_IDENTIFIER "${SOLARUS_BUNDLE_TARGET_NAME}-team")
+  set(SOLARUS_BUNDLE_GUI_IDENTIFIER   "${SOLARUS_BUNDLE_TARGET_NAME}-team")
 endif()
 
 # OS-specific configuration variable
@@ -58,6 +59,7 @@ else()
     endif()
   endmacro()
 
+  add_to_copied_libraries(${SOLARUS_LIBRARY})
   add_to_copied_libraries(${SDL2_FRAMEWORK})
   add_to_copied_libraries(${SDL2_IMAGE_LIBRARY})
   add_to_copied_libraries(${SDL2_TTF_LIBRARY})

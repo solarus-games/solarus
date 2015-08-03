@@ -21,7 +21,7 @@ string(REGEX REPLACE "([0-9]+)\\.([0-9]+).*" "\\1.\\2" SOLARUS_CURRENT_OSX_VERSI
 
 # Build architectures.
 if(NOT SOLARUS_ARCH)
-    set(SOLARUS_ARCH "x86_64")
+  set(SOLARUS_ARCH "x86_64")
 endif()
 set(CMAKE_OSX_ARCHITECTURES "${SOLARUS_ARCH}" CACHE STRING "Build architecture" FORCE)
 

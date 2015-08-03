@@ -21,17 +21,7 @@ string(REGEX REPLACE "([0-9]+)\\.([0-9]+).*" "\\1.\\2" SOLARUS_CURRENT_OSX_VERSI
 
 # Build architectures.
 if(NOT SOLARUS_ARCH)
-  if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.4.4")
-    set(SOLARUS_ARCH "${SOLARUS_ARCH}i386;")
-  endif()
-  if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.5")
-    # WORKAROUND : LuaJIT needs additional linker flag with the 64bit build.
-    # CMake can't set arch-specific flag with Makefile and Ninja generators for now,
-    # so make a 32bit-only build if LuaJit and i386 are requested without XCode generator.
-    if(XCODE OR NOT SOLARUS_USE_LUAJIT OR NOT SOLARUS_ARCH MATCHES "i386")
-      set(SOLARUS_ARCH "${SOLARUS_ARCH}x86_64;")
-    endif()
-  endif()
+    set(SOLARUS_ARCH "x86_64")
 endif()
 set(CMAKE_OSX_ARCHITECTURES "${SOLARUS_ARCH}" CACHE STRING "Build architecture" FORCE)
 

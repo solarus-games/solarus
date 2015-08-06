@@ -46,6 +46,7 @@ Bug fixes for the 1.4 release.
 * Fix custom_entity:set_can_traverse_ground() giving opposite result (#668).
 * Fix enemy:immobilize() having no effect when already immobilized.
 * Fix the position of the shadow of pickables when they move.
+* Fix pickables not reacting to their ground (#655).
 
 _______________________________
 

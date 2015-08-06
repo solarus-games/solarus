@@ -54,10 +54,11 @@ class Pickable: public Detector {
         bool force_persistent
     );
 
-    virtual EntityType get_type() const override;
-    virtual bool can_be_obstacle() const override;
+    EntityType get_type() const override;
+    bool can_be_obstacle() const override;
+    bool is_ground_observer() const override;
 
-    virtual void notify_created() override;
+    void notify_created() override;
 
     // properties
     bool is_falling() const;
@@ -65,19 +66,20 @@ class Pickable: public Detector {
     const Treasure& get_treasure() const;
 
     // item state
-    virtual void set_suspended(bool suspended) override;
+    void set_suspended(bool suspended) override;
     MapEntityPtr get_entity_followed();
-    virtual void notify_collision(
+    void notify_collision(
         MapEntity& entity_overlapping,
         CollisionMode collision_mode
     ) override;
-    virtual void notify_collision(
+    void notify_collision(
         MapEntity& other_entity,
         Sprite& this_sprite,
         Sprite& other_sprite
     ) override;
-    virtual void update() override;
-    virtual void draw_on_map() override;
+    void notify_ground_below_changed() override;
+    void update() override;
+    void draw_on_map() override;
 
   private:
 

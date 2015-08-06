@@ -20,8 +20,6 @@
 #include "solarus/entities/Hookshot.h"
 #include "solarus/entities/MapEntities.h"
 #include "solarus/hero/HeroSprites.h"
-#include "solarus/movements/FallingOnFloorMovement.h"
-#include "solarus/movements/FollowMovement.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Sound.h"

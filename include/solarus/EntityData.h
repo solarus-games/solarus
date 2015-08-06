@@ -63,11 +63,7 @@ class SOLARUS_API EntityData : public LuaData {
         bool operator==(const FieldValue& other) const;
         bool operator!=(const FieldValue& other) const;
 
-#if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
         EntityFieldType value_type;
-#else
-        const EntityFieldType value_type;
-#endif
         std::string string_value;
         int int_value;  // Also used for boolean.
     };

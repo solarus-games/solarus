@@ -18,6 +18,7 @@ Bug fixes for the 1.4 release.
 * Fix hero stuck on blocks.
 * Fix custom_entity:set_can_traverse_ground() giving opposite result (#668).
 * Fix enemy:immobilize() having no effect when already immobilized.
+* Fix dying animation of flying and swimming enemies.
 * Fix the position of the shadow of pickables when they move.
 * Fix pickables not reacting to their ground (#655).
 

@@ -39,6 +39,7 @@ Bug fixes for the 1.4 release.
 * Fix crash when trying to remove a sprite already removed (#705).
 * Fix crash when a custom entity collision or traversable test errors.
 * Fix Lua error message saying "number expected" instead of "string expected".
+* Fix game:set_command_keyboard/joypad_binding refusing parameters.
 * Fix map scrolling not working if quest size is not a multiple of 5 (#701).
 * Fix entities already destroyed when map:on_finished() is called (#691).
 * Fix entity:bring_to_front()/back() ignoring the order of obstacles.

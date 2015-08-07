@@ -346,13 +346,30 @@ void Pickable::notify_collision(
 }
 
 /**
- * \copydoc MapEntity::notify_ground_below_changed
+ * \brief Reacts to the ground of the pickable.
+ *
+ * It is removed it is on water, lava or a hole.
+ * It goes to the lower layer if the ground is empty.
  */
-void Pickable::notify_ground_below_changed() {
+void Pickable::check_bad_ground() {
 
-  MapEntity::notify_ground_below_changed();
+  if (is_being_removed()) {
+    // Be silent if the pickable was already removed by a script.
+    return;
+  }
+
+  if (get_y() < shadow_xy.y) {
+    // The pickable is above the ground for now, let it fall first.
+    return;
+  }
+
+  if (System::now() <= appear_date + 200) {
+    // The pickable appeared very recently, let the user see it for
+    // a short time at least.
+    return;
+  }
+
   Ground ground = get_ground_below();
-
   switch (ground) {
 
     case Ground::EMPTY:
@@ -511,6 +528,8 @@ void Pickable::update() {
     }
     entity_followed = nullptr;
   }
+
+  check_bad_ground();
 
   if (!is_suspended()) {
 

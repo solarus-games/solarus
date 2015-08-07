@@ -77,7 +77,6 @@ class Pickable: public Detector {
         Sprite& this_sprite,
         Sprite& other_sprite
     ) override;
-    void notify_ground_below_changed() override;
     void update() override;
     void draw_on_map() override;
 
@@ -90,6 +89,8 @@ class Pickable: public Detector {
     // item
     void try_give_item_to_player();
     void set_blinking(bool blinking);
+
+    void check_bad_ground();
 
     Treasure treasure;                          /**< the treasure obtained when the player picks this item */
     bool given_to_player;                       /**< indicates that the treasure was given to the player */

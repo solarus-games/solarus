@@ -444,7 +444,7 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
     std::ostringstream oss;
     oss << "Failed to fill the audio buffer with decoded SPC data for music file '"
       << file_name << ": error " << error;
-    Debug::die(oss.str());
+    Debug::error(oss.str());
   }
 }
 
@@ -468,7 +468,7 @@ void Music::decode_it(ALuint destination_buffer, ALsizei nb_samples) {
       std::ostringstream oss;
       oss << "Failed to fill the audio buffer with decoded IT data for music file '"
           << file_name << ": error " << error;
-      Debug::die(oss.str());
+      Debug::error(oss.str());
     }
   }
 }

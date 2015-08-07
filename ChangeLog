@@ -38,6 +38,7 @@ Bug fixes for the 1.4 release.
 * Fix crash when a sprite file is missing or has no animation (#700).
 * Fix crash when trying to remove a sprite already removed (#705).
 * Fix crash when a custom entity collision or traversable test errors.
+* Fix crash when changing hero sprites sometimes.
 * Fix Lua error message saying "number expected" instead of "string expected".
 * Fix game:set_command_keyboard/joypad_binding refusing parameters.
 * Fix map scrolling not working if quest size is not a multiple of 5 (#701).

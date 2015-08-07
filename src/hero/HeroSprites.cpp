@@ -711,6 +711,10 @@ void HeroSprites::restore_animation_direction() {
  */
 void HeroSprites::update() {
 
+  // Keep the current sprites here in case they change from a script during the operation.
+  SpritePtr tunic_sprite = this->tunic_sprite;
+  SpritePtr sword_sprite = this->sword_sprite;
+
   // update the frames
   tunic_sprite->update();
 

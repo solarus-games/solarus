@@ -1178,8 +1178,6 @@ void CustomEntity::set_modified_ground(Ground modified_ground) {
   }
 
   // The ground changes, notify observers even if it changes to Ground::EMPTY.
-  ground_modifier = true;
-
   this->modified_ground = modified_ground;
   update_ground_observers();
 

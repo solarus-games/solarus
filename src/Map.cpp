@@ -1067,6 +1067,11 @@ bool Map::has_empty_ground(Layer layer, const Rectangle& collision_box) const {
  */
 Ground Map::get_ground(Layer layer, int x, int y) const {
 
+  if (test_collision_with_border(x, y)) {
+    // Outside the map bounds.
+    return Ground::EMPTY;
+  }
+
   // See if a dynamic entity changes the ground.
   // TODO store ground modifiers in a quad tree for performance.
 

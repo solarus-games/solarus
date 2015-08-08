@@ -40,6 +40,7 @@ Bug fixes for the 1.4 release.
 * Fix crash when a custom entity collision or traversable test errors.
 * Fix crash when changing hero sprites sometimes.
 * Fix crash when sound buffers are full.
+* Fix crash in map:get_ground() with out of bounds coordinates.
 * Fix Lua error message saying "number expected" instead of "string expected".
 * Fix game:set_command_keyboard/joypad_binding refusing parameters.
 * Fix map scrolling not working if quest size is not a multiple of 5 (#701).

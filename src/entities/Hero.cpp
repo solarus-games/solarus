@@ -316,7 +316,7 @@ void Hero::update_ground_effects() {
           apply_additional_ground_movement();
         }
 
-        next_ground_date = now + 20;
+        next_ground_date = now + 30;
 
         if (now >= next_ice_date) {
           // Time to update the additional movement.
@@ -344,7 +344,7 @@ void Hero::update_ice() {
     }
     else {
       // But he was just moving on ice: continue the ice movement.
-      ground_dxy = direction_to_xy_move(ice_movement_direction8);
+      ground_dxy = direction_to_xy_move(ice_movement_direction8) * 2;
       next_ice_date = now + 300;
     }
   }
@@ -356,8 +356,8 @@ void Hero::update_ice() {
       next_ice_date = now + 300;
     }
     else if (ice_movement_direction8 != wanted_movement_direction8) {
-      // He changed his direction: continue the ice movement.
-      ground_dxy = direction_to_xy_move(ice_movement_direction8);
+      // He changed his direction: continue the ice movement strongly.
+      ground_dxy = direction_to_xy_move(ice_movement_direction8) * 2;
       next_ice_date = now + 300;
     }
     else {

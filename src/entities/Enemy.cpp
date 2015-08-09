@@ -1348,6 +1348,7 @@ void Enemy::kill() {
           // TODO animation of falling into a hole.
           special_ground = true;
           Sound::play("jump");
+          clear_treasure();
         }
         break;
 
@@ -1357,6 +1358,7 @@ void Enemy::kill() {
           // TODO water animation.
           special_ground = true;
           Sound::play("splash");
+          clear_treasure();
         }
         break;
 
@@ -1366,6 +1368,7 @@ void Enemy::kill() {
           // TODO lava animation.
           special_ground = true;
           Sound::play("splash");
+          clear_treasure();
         }
         break;
 
@@ -1454,6 +1457,13 @@ const Treasure& Enemy::get_treasure() const {
  */
 void Enemy::set_treasure(const Treasure& treasure) {
   this->treasure = treasure;
+}
+
+/**
+ * \brief Sets the treasure dropped by this enemy to nothing.
+ */
+void Enemy::clear_treasure() {
+  this->treasure = Treasure(get_game(), "", 1, "");
 }
 
 /**

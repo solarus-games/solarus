@@ -196,6 +196,7 @@ class Enemy: public Detector {
     bool is_dying() const;
     const Treasure& get_treasure() const;
     void set_treasure(const Treasure& treasure);
+    void clear_treasure();
 
     static const std::map<EnemyAttack, std::string> attack_names;                   /**< Lua names of the EnemyAttack enum. */
     static const std::map<HurtStyle, std::string> hurt_style_names;                 /**< Lua names of the HurtStyle enum. */

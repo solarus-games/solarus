@@ -122,8 +122,6 @@ void Camera::update_fixed_on_hero() {
         finished = true;
       }
     }
-    x = separator_scrolling_position.get_x();
-    y = separator_scrolling_position.get_y();
 
     if (finished) {
         separator_next_scrolling_date = 0;
@@ -134,7 +132,10 @@ void Camera::update_fixed_on_hero() {
 
     // Then only apply map limit constraints.
     // Ignore separators since we are currently crossing one of them.
-    this->position = apply_map_bounds(Rectangle(x, y, get_width(), get_height()));
+    this->position = apply_map_bounds(Rectangle(
+        separator_scrolling_position.get_xy(),
+        position.get_size()
+    ));
   }
 }
 
@@ -152,7 +153,6 @@ void Camera::update_moving() {
   }
 
   movement->update();
-  const Point& xy = movement->get_xy();
 
   if (movement->is_finished()) {
     movement = nullptr;
@@ -167,7 +167,7 @@ void Camera::update_moving() {
     }
   }
 
-  position.set_xy(xy);
+  position.set_xy(movement->get_xy());
 }
 
 /**

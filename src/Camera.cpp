@@ -152,8 +152,7 @@ void Camera::update_moving() {
   }
 
   movement->update();
-  int x = movement->get_x() - get_width() / 2;
-  int y = movement->get_y() - get_height() / 2;
+  const Point& xy = movement->get_xy();
 
   if (movement->is_finished()) {
     movement = nullptr;
@@ -168,7 +167,7 @@ void Camera::update_moving() {
     }
   }
 
-  position.set_xy(x, y);
+  position.set_xy(xy);
 }
 
 /**
@@ -180,7 +179,7 @@ void Camera::update_moving() {
  * \return \c true if the camera is moving.
  */
 bool Camera::is_moving() const {
-  return !fixed_on_hero                      // Moving to a point.
+  return !fixed_on_hero                       // Moving to a point.
       || separator_next_scrolling_date != 0;  // Traversing a separator.
 }
 
@@ -196,40 +195,30 @@ void Camera::set_speed(int speed) {
  * \brief Makes the camera move towards a destination point.
  *
  * The camera will be centered on this point.
- * If there was already a movement, the new one replaces it.
+ * If the camera was already moving, the old movement is discarded.
  *
- * \param target_x x coordinate of the target point
- * \param target_y y coordinate of the target point
+ * If the target point is not in the same separator region, then the camera
+ * will stop on separators.
+ *
+ * \param target_x X coordinate of the target point.
+ * \param target_y Y coordinate of the target point.
  */
 void Camera::move(int target_x, int target_y) {
 
   movement = nullptr;
+  fixed_on_hero = false;
 
-  // Take care of the limits of the map.
-  // TODO Also take care of separators.
-  const Rectangle& map_location = map.get_location();
-  if (map_location.get_width() < get_width()) {
-    target_x = map_location.get_width() / 2;
-  }
-  else {
-    target_x = std::min(std::max(target_x, get_width() / 2),
-        map_location.get_width() - get_width() / 2);
-  }
-
-  if (map_location.get_height() < get_height()) {
-    target_y = map_location.get_height() / 2;
-  }
-  else {
-    target_y = std::min(std::max(target_y, get_height() / 2),
-        map_location.get_height() - get_height() / 2);
-  }
+  // Take care of the limits of the map and of separators.
+  target_x = target_x - get_width() / 2;
+  target_y = target_y - get_height() / 2;
+  const Rectangle& target_camera = apply_separators_and_map_bounds(
+      Rectangle(target_x, target_y, get_width(), get_height())
+  );
 
   movement = std::make_shared<TargetMovement>(
-      nullptr, target_x, target_y, speed, true
+      nullptr, target_camera.get_x(), target_camera.get_y(), speed, true
   );
-  movement->set_xy(position.get_x() + get_width() / 2, position.get_y() + get_height() / 2);
-
-  fixed_on_hero = false;
+  movement->set_xy(position.get_xy());
 }
 
 /**

@@ -55,6 +55,10 @@ class Camera {
     void restore();
     void traverse_separator(Separator* separator);
 
+    Rectangle apply_map_bounds(const Rectangle& area);
+    Rectangle apply_separators(const Rectangle& area);
+    Rectangle apply_separators_and_map_bounds(const Rectangle& area);
+
   private:
 
     int get_width() const;

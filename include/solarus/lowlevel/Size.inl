@@ -105,7 +105,7 @@ constexpr bool Size::is_square() const {
  * \param rhs Another size.
  * \return \c true if the sizes are equal.
  */
-inline bool operator==(const Size& lhs, const Size& rhs) {
+constexpr bool operator==(const Size& lhs, const Size& rhs) {
   return lhs.width == rhs.width && lhs.height == rhs.height;
 }
 
@@ -115,7 +115,7 @@ inline bool operator==(const Size& lhs, const Size& rhs) {
  * \param rhs Another size.
  * \return \c true if the sizes are not equal.
  */
-inline bool operator!=(const Size& lhs, const Size& rhs) {
+constexpr bool operator!=(const Size& lhs, const Size& rhs) {
   return !(lhs == rhs);
 }
 

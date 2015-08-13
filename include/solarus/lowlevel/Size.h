@@ -64,8 +64,8 @@ class Size {
 // Free functions
 
 // Comparison operators
-bool operator==(const Size& lhs, const Size& rhs);
-bool operator!=(const Size& lhs, const Size& rhs);
+constexpr bool operator==(const Size& lhs, const Size& rhs);
+constexpr bool operator!=(const Size& lhs, const Size& rhs);
 
 // Arithmetic operators
 Size operator+(Size lhs, const Size& rhs);

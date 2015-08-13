@@ -48,14 +48,14 @@ class Rectangle {
     constexpr Rectangle(int x, int y, int width, int height);
     constexpr Rectangle(const Point& xy, const Size& size);
 
-    int get_x() const;
-    int get_y() const;
-    Point get_xy() const;
-    int get_width() const;
-    int get_height() const;
-    Size get_size() const;
-    bool is_flat() const;
-    Point get_center() const;
+    constexpr int get_x() const;
+    constexpr int get_y() const;
+    constexpr Point get_xy() const;
+    constexpr int get_width() const;
+    constexpr int get_height() const;
+    constexpr Size get_size() const;
+    constexpr bool is_flat() const;
+    constexpr Point get_center() const;
 
     void set_x(int x);
     void set_y(int y);
@@ -76,9 +76,9 @@ class Rectangle {
     void add_xy(int dx, int dy);
     void add_xy(const Point& other);
 
-    bool contains(int x, int y) const;
-    bool contains(const Point& point) const;
-    bool contains(const Rectangle& other) const;
+    constexpr bool contains(int x, int y) const;
+    constexpr bool contains(const Point& point) const;
+    constexpr bool contains(const Rectangle& other) const;
     bool overlaps(const Rectangle& other) const;
 
     Rectangle get_intersection(const Rectangle& other) const;
@@ -92,8 +92,8 @@ class Rectangle {
 
 };
 
-bool operator==(const Rectangle& lhs, const Rectangle& rhs);
-bool operator!=(const Rectangle& lhs, const Rectangle& rhs);
+constexpr bool operator==(const Rectangle& lhs, const Rectangle& rhs);
+constexpr bool operator!=(const Rectangle& lhs, const Rectangle& rhs);
 
 SOLARUS_API std::ostream& operator<<(std::ostream& stream, const Rectangle& rectangle);
 

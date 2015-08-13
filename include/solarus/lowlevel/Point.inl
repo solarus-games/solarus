@@ -89,7 +89,7 @@ inline Point& Point::operator/=(int divisor) {
  * \param rhs Another point.
  * \return \c true if the points are equal.
  */
-inline bool operator==(const Point& lhs, const Point& rhs) {
+constexpr bool operator==(const Point& lhs, const Point& rhs) {
   return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
@@ -99,7 +99,7 @@ inline bool operator==(const Point& lhs, const Point& rhs) {
  * \param rhs Another point.
  * \return \c true if the points are not equal.
  */
-inline bool operator!=(const Point& lhs, const Point& rhs) {
+constexpr bool operator!=(const Point& lhs, const Point& rhs) {
   return !(lhs == rhs);
 }
 

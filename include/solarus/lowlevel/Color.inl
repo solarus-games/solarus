@@ -48,7 +48,7 @@ constexpr Color::Color(int r, int g, int b, int a):
  * \brief Returns the alpha component of this color.
  * \return The alpha component. 255 is opaque.
  */
-inline uint8_t Color::get_alpha() const {
+constexpr uint8_t Color::get_alpha() const {
   return a;
 }
 
@@ -97,7 +97,7 @@ inline void Color::set_components(int r, int g, int b, int a) {
  * \param rhs Another color.
  * \return \c true if both colors are equal.
  */
-inline bool operator==(const Color& lhs, const Color& rhs) {
+constexpr bool operator==(const Color& lhs, const Color& rhs) {
 
   return lhs.r == rhs.r &&
       lhs.g == rhs.g &&
@@ -111,7 +111,7 @@ inline bool operator==(const Color& lhs, const Color& rhs) {
  * \param rhs Another color.
  * \return \c true if both colors are equal.
  */
-inline bool operator!=(const Color& lhs, const Color& rhs) {
+constexpr bool operator!=(const Color& lhs, const Color& rhs) {
 
   return lhs.r != rhs.r ||
       lhs.g != rhs.g ||

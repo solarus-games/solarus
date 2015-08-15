@@ -21,17 +21,7 @@ string(REGEX REPLACE "([0-9]+)\\.([0-9]+).*" "\\1.\\2" SOLARUS_CURRENT_OSX_VERSI
 
 # Build architectures
 if(NOT SOLARUS_ARCH)
-  if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.4.4")
-    set(SOLARUS_ARCH "${SOLARUS_ARCH}i386;")
-  endif()
-  if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.5")
-    # WORKAROUND : LuaJIT needs additional linker flag with the 64bit build.
-    # CMake can't set arch-specific flag with Makefile and Ninja generators for now,
-    # so make a 32bit-only build if LuaJit and i386 are requested without XCode generator.
-    if(XCODE OR NOT SOLARUS_USE_LUAJIT OR NOT SOLARUS_ARCH MATCHES "i386")
-      set(SOLARUS_ARCH "${SOLARUS_ARCH}x86_64;")
-    endif()
-  endif()
+  set(SOLARUS_ARCH "x86_64")
 endif()
 set(CMAKE_OSX_ARCHITECTURES "${SOLARUS_ARCH}" CACHE STRING "Build architecture" FORCE)
 
@@ -54,11 +44,7 @@ set(CMAKE_OSX_SYSROOT "${SOLARUS_SYSROOT}" CACHE STRING "Build SDK" FORCE)
 
 # Deployment version
 if(NOT SOLARUS_DEPLOYMENT AND DEFINED SOLARUS_SYSROOT)
-  if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.6")
-    set(SOLARUS_DEPLOYMENT "10.6")
-  else()
-    set(SOLARUS_DEPLOYMENT "10.2")
-  endif()
+  set(SOLARUS_DEPLOYMENT "10.7")
 endif()
 set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Oldest OS version supported" FORCE)
 
@@ -84,7 +70,8 @@ if(SOLARUS_USE_LUAJIT AND SOLARUS_ARCH MATCHES "x86_64")
   endif()
 endif()
 
-# TODO try to build on 10.6+ with following flags and run on 10.5
-# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-syslibroot,${CMAKE_OSX_SYSROOT}" CACHE STRING "Link with SDK")
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector" CACHE STRING "Emit extra code to check for buffer overflows on function with vulnerable objects")
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-all" CACHE STRING "Emit extra code to check for buffer overflows on all functions")
+# Add Path on the library
+set_target_properties(solarus PROPERTIES 
+  BUILD_WITH_INSTALL_RPATH           1 
+  INSTALL_NAME_DIR                   "@rpath/"
+)

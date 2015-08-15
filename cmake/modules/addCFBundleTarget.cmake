@@ -24,7 +24,9 @@ if(NOT SOLARUS_BUNDLE)
 endif()
 
 # Configuration variable
-set(SOLARUS_BUNDLE_TARGET_NAME        "solarus")
+set(SOLARUS_TARGET_NAME             "solarus")
+set(SOLARUS_LIBRARY_OUTPUT_NAME     "${CMAKE_SHARED_LIBRARY_PREFIX}${SOLARUS_TARGET_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}")
+set(SOLARUS_BUNDLE_TARGET_NAME      "${SOLARUS_TARGET_NAME}_run")
 if(SOLARUS_BUNDLE_CODESIGN)
   set(SOLARUS_BUNDLE_GUI_IDENTIFIER "${SOLARUS_BUNDLE_CODESIGN}")
 else()
@@ -78,8 +80,8 @@ endif()
 
 # Add executable target into CFBundle form and rename it as requested
 add_executable(${SOLARUS_BUNDLE_TARGET_NAME} MACOSX_BUNDLE
-  solarus_static
-  ${main_source_file}
+  ${source_files}
+  ${SOLARUS_TARGET_NAME}
   ${SOLARUS_BUNDLE_ICON} 
   ${SOLARUS_BUNDLE_COPIED_LIBRARIES}
 )
@@ -130,12 +132,14 @@ if(NOT XCODE)
   foreach(LIB ${SOLARUS_BUNDLE_COPIED_LIBRARIES})
     copy_into_bundle(${LIB} Frameworks)
   endforeach()
+  copy_into_bundle(${SOLARUS_LIBRARY_OUTPUT_NAME} Frameworks)
   
 # Proper way, buggy with Makefile Generator for now.
 else()
   foreach(LIB ${SOLARUS_BUNDLE_COPIED_LIBRARIES})
     set_source_files_properties(${LIB} PROPERTIES MACOSX_PACKAGE_LOCATION Frameworks)
   endforeach()
+  set_source_files_properties(${SOLARUS_LIBRARY_OUTPUT_NAME} PROPERTIES MACOSX_PACKAGE_LOCATION Frameworks)
 endif()
 
 # Info.plist template and additional lines

@@ -18,9 +18,8 @@
 #include "solarus/entities/Boomerang.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Hookshot.h"
+#include "solarus/entities/MapEntities.h"
 #include "solarus/hero/HeroSprites.h"
-#include "solarus/movements/FallingOnFloorMovement.h"
-#include "solarus/movements/FollowMovement.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Sound.h"
@@ -140,6 +139,13 @@ bool Pickable::can_be_obstacle() const {
 }
 
 /**
+ * \copydoc MapEntity::is_ground_observer
+ */
+bool Pickable::is_ground_observer() const {
+  return true;
+}
+
+/**
  * \brief Creates the sprite of this pickable treasure.
  *
  * Pickable treasures are represented with two sprites:
@@ -227,6 +233,9 @@ bool Pickable::initialize_sprites() {
 void Pickable::notify_created() {
 
   Detector::notify_created();
+
+  update_ground_below();
+  notify_ground_below_changed();  // Necessary if on empty ground.
 
   // This entity and the map are now both ready. Notify the Lua item.
   EquipmentItem& item = get_equipment().get_item(treasure.get_item_name());
@@ -333,6 +342,64 @@ void Pickable::notify_collision(
     if (other_sprite.get_animation_set_id() == hero.get_hero_sprites().get_sword_sprite_id()) {
       try_give_item_to_player();
     }
+  }
+}
+
+/**
+ * \brief Reacts to the ground of the pickable.
+ *
+ * It is removed it is on water, lava or a hole.
+ * It goes to the lower layer if the ground is empty.
+ */
+void Pickable::check_bad_ground() {
+
+  if (is_being_removed()) {
+    // Be silent if the pickable was already removed by a script.
+    return;
+  }
+
+  if (get_y() < shadow_xy.y) {
+    // The pickable is above the ground for now, let it fall first.
+    return;
+  }
+
+  if (System::now() <= appear_date + 200) {
+    // The pickable appeared very recently, let the user see it for
+    // a short time at least.
+    return;
+  }
+
+  Ground ground = get_ground_below();
+  switch (ground) {
+
+    case Ground::EMPTY:
+    {
+      // Fall to a lower layer.
+      int layer = static_cast<int>(get_layer());
+      if (layer > static_cast<int>(LAYER_LOW)) {
+        --layer;
+        get_entities().set_entity_layer(*this, static_cast<Layer>(layer));
+      }
+    }
+    break;
+
+    case Ground::HOLE:
+    {
+      Sound::play("jump");
+      remove_from_map();
+    }
+    break;
+
+    case Ground::DEEP_WATER:
+    case Ground::LAVA:
+    {
+      Sound::play("splash");
+      remove_from_map();
+    }
+    break;
+
+    default:
+      break;
   }
 }
 
@@ -461,6 +528,8 @@ void Pickable::update() {
     }
     entity_followed = nullptr;
   }
+
+  check_bad_ground();
 
   if (!is_suspended()) {
 

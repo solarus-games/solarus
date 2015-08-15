@@ -18,6 +18,7 @@
 #define SOLARUS_BOOMERANG_H
 
 #include "solarus/Common.h"
+#include "solarus/entities/HeroPtr.h"
 #include "solarus/entities/MapEntity.h"
 #include <memory>
 #include <string>
@@ -35,7 +36,7 @@ class Boomerang: public MapEntity {
   public:
 
     Boomerang(
-        const std::shared_ptr<Hero>& hero,
+        const HeroPtr& hero,
         int max_distance,
         int speed,
         double angle,
@@ -85,7 +86,7 @@ class Boomerang: public MapEntity {
 
   private:
 
-    std::shared_ptr<Hero> hero;     /**< The hero who shot this boomerang. */
+    HeroPtr hero;                   /**< The hero who shot this boomerang. */
 
     uint32_t next_sound_date;       /**< date when the boomerang sound is played next time */
 

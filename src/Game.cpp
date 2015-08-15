@@ -181,7 +181,7 @@ LuaContext& Game::get_lua_context() {
  * \brief Returns the hero.
  * \return the hero
  */
-const std::shared_ptr<Hero>& Game::get_hero() {
+const HeroPtr& Game::get_hero() {
   return hero;
 }
 

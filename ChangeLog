@@ -25,10 +25,10 @@ Data files format changes
 
 * Dialogs: Allow empty texts.
 
-_______________________________
+__________________________
 
-Solarus 1.4.3 (in progress)
-_______________________________
+Solarus 1.4.3 (2015-08-12)
+__________________________
 
 Bug fixes for the 1.4 release.
 
@@ -38,14 +38,22 @@ Bug fixes for the 1.4 release.
 * Fix crash when a sprite file is missing or has no animation (#700).
 * Fix crash when trying to remove a sprite already removed (#705).
 * Fix crash when a custom entity collision or traversable test errors.
+* Fix crash when changing hero sprites sometimes.
+* Fix crash when sound buffers are full.
+* Fix crash in map:get_ground() with out of bounds coordinates.
 * Fix Lua error message saying "number expected" instead of "string expected".
+* Fix game:set_command_keyboard/joypad_binding refusing parameters.
 * Fix map scrolling not working if quest size is not a multiple of 5 (#701).
+* Fix camera:move() ignoring separators.
 * Fix entities already destroyed when map:on_finished() is called (#691).
 * Fix entity:bring_to_front()/back() ignoring the order of obstacles.
 * Fix hero stuck on blocks.
+* Fix hero going backwards on ice sometimes.
 * Fix custom_entity:set_can_traverse_ground() giving opposite result (#668).
 * Fix enemy:immobilize() having no effect when already immobilized.
+* Fix dying animation of flying and swimming enemies.
 * Fix the position of the shadow of pickables when they move.
+* Fix pickables not reacting to their ground (#655).
 
 _______________________________
 

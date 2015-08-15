@@ -1340,27 +1340,46 @@ void Enemy::kill() {
   else {
     // Replace the enemy sprites.
     clear_sprites();
+    bool special_ground = false;
     switch (get_ground_below()) {
 
       case Ground::HOLE:
-        // TODO animation of falling into a hole.
-        Sound::play("jump");
+        if (get_obstacle_behavior() != ObstacleBehavior::FLYING) {
+          // TODO animation of falling into a hole.
+          special_ground = true;
+          Sound::play("jump");
+          clear_treasure();
+        }
         break;
 
       case Ground::DEEP_WATER:
-        // TODO water animation.
-        Sound::play("splash");
+        if (get_obstacle_behavior() != ObstacleBehavior::FLYING &&
+            get_obstacle_behavior() != ObstacleBehavior::SWIMMING) {
+          // TODO water animation.
+          special_ground = true;
+          Sound::play("splash");
+          clear_treasure();
+        }
         break;
 
       case Ground::LAVA:
-        // TODO lava animation.
-        Sound::play("splash");
+        if (get_obstacle_behavior() != ObstacleBehavior::FLYING &&
+            get_obstacle_behavior() != ObstacleBehavior::SWIMMING) {
+          // TODO lava animation.
+          special_ground = true;
+          Sound::play("splash");
+          clear_treasure();
+        }
         break;
 
       default:
-        create_sprite("enemies/enemy_killed");
-        Sound::play("enemy_killed");
         break;
+    }
+
+    if (!special_ground) {
+      // Normal dying animation.
+      create_sprite("enemies/enemy_killed");
+      Sound::play("enemy_killed");
     }
   }
 
@@ -1438,6 +1457,13 @@ const Treasure& Enemy::get_treasure() const {
  */
 void Enemy::set_treasure(const Treasure& treasure) {
   this->treasure = treasure;
+}
+
+/**
+ * \brief Sets the treasure dropped by this enemy to nothing.
+ */
+void Enemy::clear_treasure() {
+  this->treasure = Treasure(get_game(), "", 1, "");
 }
 
 /**

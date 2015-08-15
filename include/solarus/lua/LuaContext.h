@@ -23,6 +23,7 @@
 #include "solarus/entities/EnemyAttack.h"
 #include "solarus/entities/EntityType.h"
 #include "solarus/entities/Ground.h"
+#include "solarus/entities/HeroPtr.h"
 #include "solarus/entities/MapEntityPtr.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/InputEvent.h"
@@ -58,7 +59,6 @@ class Enemy;
 class EntityData;
 class ExportableToLua;
 class EquipmentItem;
-class Hero;
 class Game;
 class JumpMovement;
 class MainLoop;
@@ -1089,7 +1089,7 @@ class LuaContext {
     static bool is_entity(lua_State* l, int index);
     static MapEntityPtr check_entity(lua_State* l, int index);
     static bool is_hero(lua_State* l, int index);
-    static std::shared_ptr<Hero> check_hero(lua_State* l, int index);
+    static HeroPtr check_hero(lua_State* l, int index);
     static bool is_teletransporter(lua_State* l, int index);
     static std::shared_ptr<Teletransporter> check_teletransporter(lua_State* l, int index);
     static bool is_npc(lua_State* l, int index);

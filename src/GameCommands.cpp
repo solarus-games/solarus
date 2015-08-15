@@ -589,7 +589,7 @@ InputEvent::KeyboardKey GameCommands::get_keyboard_binding(GameCommand command) 
  * (The old command gets the previous key of the new command.)
  *
  * \param command A game command.
- * \param key The keyboard key to map to this game command, or InputEvent::KEY_GameCommand::NONE
+ * \param key The keyboard key to map to this game command, or InputEvent::KEY_NONE
  * to unmap the command.
  */
 void GameCommands::set_keyboard_binding(GameCommand command, InputEvent::KeyboardKey key) {
@@ -609,7 +609,9 @@ void GameCommands::set_keyboard_binding(GameCommand command, InputEvent::Keyboar
     }
   }
 
-  keyboard_mapping[key] = command;
+  if (key != InputEvent::KEY_NONE) {
+      keyboard_mapping[key] = command;
+  }
   set_saved_keyboard_binding(command, key);
 }
 
@@ -660,7 +662,9 @@ void GameCommands::set_joypad_binding(GameCommand command, const std::string& jo
     }
   }
 
-  joypad_mapping[joypad_string] = command;
+  if (!joypad_string.empty()) {
+    joypad_mapping[joypad_string] = command;
+  }
   set_saved_joypad_binding(command, joypad_string);
 }
 

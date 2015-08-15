@@ -190,13 +190,11 @@ Ground MapEntity::get_modified_ground() const {
 /**
  * \brief Inform entities sensible to their ground that it may have just
  * changed because of this entity.
+ *
+ * This does the work even if this entity is not a ground modifier,
+ * because this is necessary in case it just stopped being one.
  */
 void MapEntity::update_ground_observers() {
-
-  if (!is_ground_modifier()) {
-    // Nothing to do.
-    return;
-  }
 
   // Update overlapping entities sensible to their ground.
   const std::list<MapEntity*>& ground_observers =
@@ -560,7 +558,10 @@ void MapEntity::notify_being_removed() {
   this->being_removed = true;
 
   // If this entity defines a ground, tell people that it is disappearing.
-  if (is_on_map() && map->is_started()) {
+  if (is_on_map() &&
+      map->is_started() &&
+      is_ground_modifier()
+  ) {
     update_ground_observers();
   }
 }
@@ -599,7 +600,10 @@ void MapEntity::notify_layer_changed() {
 
   if (is_on_map()) {
     check_collision_with_detectors();
-    update_ground_observers();
+
+    if (is_ground_modifier()) {
+      update_ground_observers();
+    }
     update_ground_below();
 
     if (are_movement_notifications_enabled()) {
@@ -1434,7 +1438,9 @@ void MapEntity::notify_obstacle_reached() {
 void MapEntity::notify_position_changed() {
 
   check_collision_with_detectors();
-  update_ground_observers();
+  if (is_ground_modifier()) {
+    update_ground_observers();
+  }
   update_ground_below();
 
   if (are_movement_notifications_enabled()) {
@@ -1608,7 +1614,9 @@ void MapEntity::notify_enabled(bool /* enabled */) {
     return;
   }
 
-  update_ground_observers();
+  if (is_ground_modifier()) {
+    update_ground_observers();
+  }
   update_ground_below();
 }
 

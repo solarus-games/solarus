@@ -28,12 +28,12 @@ namespace Solarus {
  *
  * This class simply wraps the RGBA components of a color.
  */
-class SOLARUS_API Color {
+class Color {
 
   public:
 
-    Color();
-    Color(int r, int g, int b, int a = 255);
+    constexpr Color();
+    constexpr Color(int r, int g, int b, int a = 255);
 
     uint8_t get_alpha() const;
     void set_alpha(uint8_t alpha);
@@ -54,6 +54,7 @@ class SOLARUS_API Color {
   private:
 
     friend bool operator==(const Color& lhs, const Color& rhs);
+    friend bool operator!=(const Color& lhs, const Color& rhs);
 
     uint8_t r;     /**< The red component. */
     uint8_t g;     /**< The green component. */
@@ -61,9 +62,12 @@ class SOLARUS_API Color {
     uint8_t a;     /**< The alpha (opacity) component. 255 is opaque. */
 };
 
-SOLARUS_API bool operator==(const Color& lhs, const Color& rhs);
+bool operator==(const Color& lhs, const Color& rhs);
+bool operator!=(const Color& lhs, const Color& rhs);
 
 }
+
+#include "solarus/lowlevel/Color.inl"
 
 #endif
 

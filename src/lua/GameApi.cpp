@@ -1365,7 +1365,7 @@ int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
     Savegame& savegame = *check_game(l, 1);
     GameCommand command = LuaTools::check_enum<GameCommand>(
         l, 2, GameCommands::command_names);
-    if (lua_gettop(l) <= 3) {
+    if (lua_gettop(l) <= 2) {
       LuaTools::type_error(l, 3, "string or nil");
     }
     const std::string& key_name = LuaTools::opt_string(l, 3, "");
@@ -1418,7 +1418,7 @@ int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
     Savegame& savegame = *check_game(l, 1);
     GameCommand command = LuaTools::check_enum<GameCommand>(
         l, 2, GameCommands::command_names);
-    if (lua_gettop(l) <= 3) {
+    if (lua_gettop(l) <= 2) {
       LuaTools::type_error(l, 3, "string or nil");
     }
     const std::string& joypad_string = LuaTools::opt_string(l, 3, "");

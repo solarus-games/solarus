@@ -48,10 +48,21 @@ if(NOT SOLARUS_DEPLOYMENT AND DEFINED SOLARUS_SYSROOT)
 endif()
 set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Oldest OS version supported" FORCE)
 
-# Root path.
-### TODO dispatch
+# Embed library search path
 set(CMAKE_MACOSX_RPATH ON)
-set_target_properties(solarus PROPERTIES MACOSX_RPATH ON)
+if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5")
+  if(NOT CMAKE_EXE_LINKER_FLAGS MATCHES "-Xlinker -rpath")
+    set(CMAKE_EXE_LINKER_FLAGS         "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
+  endif()
+  set(SOLARUS_RPATH                  "@rpath")
+else()
+  set(SOLARUS_RPATH                  "@executable_path/../Frameworks")
+endif()
+set_target_properties(solarus PROPERTIES
+  MACOSX_RPATH                       ON
+  BUILD_WITH_INSTALL_RPATH           1
+  INSTALL_NAME_DIR                   ${SOLARUS_RPATH}
+)
 
 # LuaJIT workaround.
 if(SOLARUS_USE_LUAJIT AND SOLARUS_ARCH MATCHES "x86_64")

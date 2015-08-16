@@ -24,8 +24,9 @@ if(NOT SOLARUS_BUNDLE)
 endif()
 
 # Configuration variable
-set(SOLARUS_BUNDLE_TARGET_NAME        "solarus_run")
-set(SOLARUS_LIBRARY                   "${CMAKE_SHARED_LIBRARY_PREFIX}solarus${CMAKE_SHARED_LIBRARY_SUFFIX}")
+set(SOLARUS_LIBRARY_TARGET_NAME       "solarus")
+set(SOLARUS_LIBRARY_OUTPUT_NAME       "${CMAKE_SHARED_LIBRARY_PREFIX}${SOLARUS_LIBRARY_TARGET_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}")
+set(SOLARUS_BUNDLE_TARGET_NAME        "${SOLARUS_LIBRARY_TARGET_NAME}_run")
 if(SOLARUS_BUNDLE_CODESIGN)
   set(SOLARUS_BUNDLE_GUI_IDENTIFIER   "${SOLARUS_BUNDLE_CODESIGN}")
 else()
@@ -59,7 +60,6 @@ else()
     endif()
   endmacro()
 
-  add_to_copied_libraries(${SOLARUS_LIBRARY})
   add_to_copied_libraries(${SDL2_FRAMEWORK})
   add_to_copied_libraries(${SDL2_IMAGE_LIBRARY})
   add_to_copied_libraries(${SDL2_TTF_LIBRARY})
@@ -124,6 +124,8 @@ get_filename_component(library_name ${library_path} NAME)
     )
   endif()
 endmacro()
+
+# Copy libraries into Framework subfolder
 if(NOT XCODE)
   if(NOT SOLARUS_IOS_BUILD)
     add_custom_command(TARGET ${SOLARUS_BUNDLE_TARGET_NAME} POST_BUILD COMMAND mkdir ARGS -p "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/Frameworks")
@@ -131,12 +133,14 @@ if(NOT XCODE)
   foreach(LIB ${SOLARUS_BUNDLE_COPIED_LIBRARIES})
     copy_into_bundle(${LIB} Frameworks)
   endforeach()
-  
+  copy_into_bundle(${SOLARUS_LIBRARY_OUTPUT_NAME} Frameworks)
+
 # Proper way, buggy with Makefile Generator for now.
 else()
   foreach(LIB ${SOLARUS_BUNDLE_COPIED_LIBRARIES})
     set_source_files_properties(${LIB} PROPERTIES MACOSX_PACKAGE_LOCATION Frameworks)
   endforeach()
+  set_source_files_properties(${SOLARUS_LIBRARY_OUTPUT_NAME} PROPERTIES MACOSX_PACKAGE_LOCATION Frameworks)
 endif()
 
 # Info.plist template and additional lines
@@ -154,21 +158,12 @@ set_target_properties(${SOLARUS_BUNDLE_TARGET_NAME} PROPERTIES
   MACOSX_BUNDLE_INFO_STRING            "${SOLARUS_BUNDLE} Version ${SOLARUS_BUNDLE_VERSION}, Copyright 2013, ${SOLARUS_BUNDLE_GUI_IDENTIFIER}."
 )
 
-# Embed library search path
-if(NOT SOLARUS_IOS_BUILD)
-  if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5")
-    if(NOT CMAKE_EXE_LINKER_FLAGS MATCHES "-Xlinker -rpath")
-      set(CMAKE_EXE_LINKER_FLAGS         "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
-    endif()
-    set(SOLARUS_RPATH                  "@rpath/")
-  else()
-    set(SOLARUS_RPATH                  "@executable_path/../Frameworks/")
-  endif()
-  set_target_properties(${SOLARUS_BUNDLE_TARGET_NAME} PROPERTIES 
-    BUILD_WITH_INSTALL_RPATH           1 
-    INSTALL_NAME_DIR                   ${SOLARUS_RPATH}	
-  )
-endif()
+# Add root path
+set_target_properties(${SOLARUS_BUNDLE_TARGET_NAME} PROPERTIES
+  MACOSX_RPATH                       ON
+  BUILD_WITH_INSTALL_RPATH           1
+  INSTALL_NAME_DIR                   ${SOLARUS_RPATH}
+)
 
 # Code signing
 if(XCODE)

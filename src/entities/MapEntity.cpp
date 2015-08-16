@@ -297,6 +297,22 @@ void MapEntity::set_drawn_in_y_order(bool drawn_in_y_order) {
 }
 
 /**
+ * \brief This function is called when a game command is pressed
+ * and the game is not suspended.
+ * \param command The command pressed.
+ */
+void MapEntity::notify_command_pressed(GameCommand game_command) {
+}
+
+/**
+ * \brief This function is called when a game command is released
+ * if the game is not suspended.
+ * \param command The command released.
+ */
+void MapEntity::notify_command_released(GameCommand game_command) {
+}
+
+/**
  * \brief Returns whether this entity is on a map, that is,
  * whether set_map() has been called.
  * \return true if the entity is on a map

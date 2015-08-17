@@ -35,7 +35,7 @@ class Color {
     constexpr Color();
     constexpr Color(int r, int g, int b, int a = 255);
 
-    uint8_t get_alpha() const;
+    constexpr uint8_t get_alpha() const;
     void set_alpha(uint8_t alpha);
     void get_components(uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) const;
     void set_components(int r, int g, int b, int a = 255);
@@ -53,8 +53,8 @@ class Color {
 
   private:
 
-    friend bool operator==(const Color& lhs, const Color& rhs);
-    friend bool operator!=(const Color& lhs, const Color& rhs);
+    friend constexpr bool operator==(const Color& lhs, const Color& rhs);
+    friend constexpr bool operator!=(const Color& lhs, const Color& rhs);
 
     uint8_t r;     /**< The red component. */
     uint8_t g;     /**< The green component. */
@@ -62,8 +62,8 @@ class Color {
     uint8_t a;     /**< The alpha (opacity) component. 255 is opaque. */
 };
 
-bool operator==(const Color& lhs, const Color& rhs);
-bool operator!=(const Color& lhs, const Color& rhs);
+constexpr bool operator==(const Color& lhs, const Color& rhs);
+constexpr bool operator!=(const Color& lhs, const Color& rhs);
 
 }
 

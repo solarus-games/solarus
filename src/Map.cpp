@@ -1130,6 +1130,7 @@ void Map::check_collision_with_detectors(MapEntity& entity) {
   for (Detector* detector: detectors) {
 
     if (detector->is_enabled()
+        && !detector->is_suspended()
         && !detector->is_being_removed()) {
       detector->check_collision(entity);
     }

@@ -301,7 +301,7 @@ void MapEntity::set_drawn_in_y_order(bool drawn_in_y_order) {
  * and the game is not suspended.
  * \param command The command pressed.
  */
-void MapEntity::notify_command_pressed(GameCommand game_command) {
+void MapEntity::notify_command_pressed(GameCommand /* game_command */) {
 }
 
 /**
@@ -309,7 +309,7 @@ void MapEntity::notify_command_pressed(GameCommand game_command) {
  * if the game is not suspended.
  * \param command The command released.
  */
-void MapEntity::notify_command_released(GameCommand game_command) {
+void MapEntity::notify_command_released(GameCommand /* game_command */) {
 }
 
 /**

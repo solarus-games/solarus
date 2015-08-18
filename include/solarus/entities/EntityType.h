@@ -59,6 +59,7 @@ enum class EntityType {
 
   // entities created only during the game (not stored in maps)
 
+  CAMERA,             /**< the camera */
   HERO,               /**< the hero */
   CARRIED_ITEM,       /**< item carried and thrown by the hero (comes from a destructible item) */
   BOOMERANG,          /**< a boomerang thrown */

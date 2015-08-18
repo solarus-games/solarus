@@ -36,8 +36,7 @@ namespace Solarus {
  * \param map The map.
  */
 Camera::Camera(Map& map):
-  position(Video::get_quest_size()),
-  map(map),
+  Entity("camera", 0, LAYER_HIGH, Point(0, 0), Video::get_quest_size()),
   fixed_on(map.get_game().get_hero()),
   separator_scrolling_dx(0),
   separator_scrolling_dy(0),
@@ -45,24 +44,12 @@ Camera::Camera(Map& map):
   separator_scrolling_direction4(0),
   separator_traversed(),
   restoring(false),
-  speed(120),
-  movement() {
+  speed(120) {
+  set_map(map);
 }
 
-/**
- * \brief Returns the width of the visible area shown by the camera.
- * \return The width of the quest screen.
- */
-int Camera::get_width() const {
-  return position.get_width();
-}
-
-/**
- * \brief Returns the height of the visible area shown by the camera.
- * \return The height of the quest screen.
- */
-int Camera::get_height() const {
-  return position.get_height();
+EntityType Camera::get_type() const {
+  return EntityType::CAMERA;
 }
 
 /**
@@ -76,7 +63,7 @@ void Camera::update() {
     // If the camera is not moving towards a target, center it on the hero.
     update_fixed_on();
   }
-  else if (movement != nullptr) {
+  else if (get_movement() != nullptr) {
     update_moving();
   }
 }
@@ -103,7 +90,7 @@ void Camera::update_fixed_on() {
     y = hero_y - get_height() / 2;
 
     // Then apply constraints of both separators and map limits.
-    this->position = apply_separators_and_map_bounds(Rectangle(x, y, get_width(), get_height()));
+    set_bounding_box(apply_separators_and_map_bounds(Rectangle(x, y, get_width(), get_height())));
   }
   else {
     // The player is currently traversing a separator.
@@ -135,7 +122,7 @@ void Camera::update_fixed_on() {
 
     // Then only apply map limit constraints.
     // Ignore separators since we are currently crossing one of them.
-    this->position = apply_map_bounds(Rectangle(x, y, get_width(), get_height()));
+    set_bounding_box(apply_map_bounds(Rectangle(x, y, get_width(), get_height())));
   }
 }
 
@@ -148,27 +135,27 @@ void Camera::update_moving() {
   Debug::check_assertion(fixed_on == nullptr,
       "Illegal call to Camera::update_moving()");
 
-  if (movement == nullptr) {
+  if (get_movement() == nullptr) {
     return;
   }
 
-  movement->update();
-  const Point& xy = movement->get_xy();
+  get_movement()->update();
+  const Point& xy = get_movement()->get_xy();
 
-  if (movement->is_finished()) {
-    movement = nullptr;
+  if (get_movement()->is_finished()) {
+    clear_movement();
 
     if (restoring) {
       restoring = false;
-      fixed_on = map.get_game().get_hero();
-      map.get_lua_context().map_on_camera_back(map);
+      fixed_on = get_game().get_hero();
+      get_map().get_lua_context().map_on_camera_back(get_map());
     }
     else {
-      map.get_lua_context().notify_camera_reached_target(map);
+      get_map().get_lua_context().notify_camera_reached_target(get_map());
     }
   }
 
-  position.set_xy(xy);
+  set_xy(xy);
 }
 
 /**
@@ -206,7 +193,7 @@ void Camera::set_speed(int speed) {
  */
 void Camera::move(int target_x, int target_y) {
 
-  movement = nullptr;
+  clear_movement();
   fixed_on = nullptr;
 
   // Take care of the limits of the map and of separators.
@@ -216,10 +203,10 @@ void Camera::move(int target_x, int target_y) {
       Rectangle(target_x, target_y, get_width(), get_height())
   );
 
-  movement = std::make_shared<TargetMovement>(
+  set_movement(std::make_shared<TargetMovement>(
       nullptr, target_camera.get_x(), target_camera.get_y(), speed, true
-  );
-  movement->set_xy(position.get_xy());
+  ));
+  get_movement()->set_xy(get_bounding_box().get_xy());
 }
 
 /**
@@ -256,7 +243,7 @@ void Camera::move(Entity& entity) {
  */
 void Camera::restore() {
 
-  move(map.get_entities().get_hero());
+  move(get_hero());
   restoring = true;
 }
 
@@ -272,7 +259,7 @@ void Camera::traverse_separator(Separator* separator) {
   Debug::check_assertion(separator != nullptr, "Missing parameter separator");
 
   // Save the current position of the camera.
-  separator_scrolling_position = position;
+  separator_scrolling_position = get_bounding_box();
 
   // Start scrolling.
   separator_traversed = std::static_pointer_cast<Separator>(
@@ -280,8 +267,8 @@ void Camera::traverse_separator(Separator* separator) {
   );
   separator_scrolling_dx = 0;
   separator_scrolling_dy = 0;
-  separator_target_position = position;
-  Hero& hero = map.get_entities().get_hero();
+  separator_target_position = get_bounding_box();
+  Hero& hero = get_hero();
   const Point& hero_center = hero.get_center_point();
   const Point& separator_center = separator->get_center_point();
   if (separator->is_horizontal()) {
@@ -331,7 +318,7 @@ Rectangle Camera::apply_map_bounds(const Rectangle& area) {
   const int width = area.get_width();
   const int height = area.get_height();
 
-  const Size& map_size = map.get_size();
+  const Size& map_size = get_map().get_size();
   if (map_size.width < width) {
     x = (map_size.width - width) / 2;
   }
@@ -367,7 +354,7 @@ Rectangle Camera::apply_separators(const Rectangle& area) {
   int adjusted_y = y;
   std::list<const Separator*> applied_separators;
   const std::list<const Separator*>& separators =
-      map.get_entities().get_separators();
+      get_entities().get_separators();
   for (const Separator* separator: separators) {
 
     if (separator->is_vertical()) {

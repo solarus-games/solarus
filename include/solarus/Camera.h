@@ -18,6 +18,7 @@
 #define SOLARUS_CAMERA_H
 
 #include "solarus/Common.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/entities/EntityPtr.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include <memory>
@@ -25,7 +26,6 @@
 namespace Solarus {
 
 class Map;
-class Entity;
 class Separator;
 class TargetMovement;
 
@@ -39,14 +39,15 @@ class TargetMovement;
  * Occasionally, it can also be moved towards a point and then restored
  * towards the hero.
  */
-class Camera {
+class Camera : public Entity {
 
   public:
 
     explicit Camera(Map& map);
 
-    void update();
-    const Rectangle& get_position() const;
+    virtual EntityType get_type() const override;
+
+    virtual void update() override;
 
     bool is_moving() const;
     void set_speed(int speed);
@@ -62,14 +63,8 @@ class Camera {
 
   private:
 
-    int get_width() const;
-    int get_height() const;
-
     void update_fixed_on();
     void update_moving();
-
-    Rectangle position;           /**< Visible area of the camera on the map. */
-    Map& map;                     /**< The map. */
 
     // Camera centered on the hero.
     EntityPtr fixed_on;                     /**< \c true if the camera is fixed on the hero. */
@@ -85,20 +80,7 @@ class Camera {
     // Camera being moved toward a point or back to the hero.
     bool restoring;                         /**< \c true if the camera is moving back to the hero. */
     int speed;                              /**< Speed of the next movement. */
-    std::shared_ptr<TargetMovement>
-        movement;                           /**< Movement of the camera, or nullptr for no movement. */
 };
-
-/**
- * \brief Returns the current position of the camera.
- *
- * This function returns the rectangle of the visible area of this camera.
- *
- * \return The visible area.
- */
-inline const Rectangle& Camera::get_position() const {
-  return position;
-}
 
 }
 

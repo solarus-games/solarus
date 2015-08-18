@@ -259,7 +259,7 @@ inline bool Map::test_collision_with_border(const Point& point) const {
  */
 inline const Rectangle& Map::get_camera_position() const {
   SOLARUS_ASSERT(camera != nullptr, "Missing camera");
-  return camera->get_position();
+  return camera->get_bounding_box();
 }
 
 }

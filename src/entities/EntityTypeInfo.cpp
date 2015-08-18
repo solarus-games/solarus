@@ -29,6 +29,7 @@ const std::map<EntityType, std::string> entity_type_names = {
     { EntityType::BLOCK, "block" },
     { EntityType::BOMB, "bomb" },
     { EntityType::BOOMERANG, "boomerang" },
+    { EntityType::CAMERA, "camera" },
     { EntityType::CARRIED_ITEM, "carried_object" },
     { EntityType::CHEST, "chest" },
     { EntityType::CRYSTAL, "crystal" },
@@ -145,6 +146,7 @@ bool can_be_stored_in_map_file(EntityType type) {
   case EntityType::ARROW:
   case EntityType::BOMB:
   case EntityType::BOOMERANG:
+  case EntityType::CAMERA:
   case EntityType::CARRIED_ITEM:
   case EntityType::EXPLOSION:
   case EntityType::HERO:
@@ -195,6 +197,7 @@ bool can_be_created_from_lua_api(EntityType type) {
 
   case EntityType::ARROW:
   case EntityType::BOOMERANG:
+  case EntityType::CAMERA:
   case EntityType::CARRIED_ITEM:
   case EntityType::HERO:
   case EntityType::HOOKSHOT:

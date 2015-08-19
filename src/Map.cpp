@@ -1125,6 +1125,10 @@ void Map::check_collision_with_detectors(MapEntity& entity) {
     return;
   }
 
+  if (entity.is_being_removed()) {
+    return;
+  }
+
   // Check this entity with each detector.
   const std::list<Detector*>& detectors = entities->get_detectors();
   for (Detector* detector: detectors) {
@@ -1148,6 +1152,10 @@ void Map::check_collision_with_detectors(MapEntity& entity) {
 void Map::check_collision_from_detector(Detector& detector) {
 
   if (suspended) {
+    return;
+  }
+
+  if (detector.is_being_removed()) {
     return;
   }
 

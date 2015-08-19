@@ -2504,6 +2504,10 @@ void MapEntity::update() {
   SOLARUS_ASSERT(get_type() != EntityType::TILE,
       "Attempt to update a static tile");
 
+  if (is_being_removed()) {
+    return;
+  }
+
   // enable if necessary
   if (waiting_enabled) {
     Hero& hero = get_hero();

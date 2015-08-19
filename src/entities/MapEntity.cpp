@@ -1484,12 +1484,6 @@ void MapEntity::check_collision_with_detectors() {
     return;
   }
 
-  if (get_distance_to_camera2() > optimization_distance2
-      && optimization_distance > 0) {
-    // Don't check entities far for the visible area.
-    return;
-  }
-
   // Detect simple collisions.
   get_map().check_collision_with_detectors(*this);
 
@@ -1510,12 +1504,6 @@ void MapEntity::check_collision_with_detectors(Sprite& sprite) {
 
   if (!is_enabled()) {
     // The entity is disabled.
-    return;
-  }
-
-  if (get_distance_to_camera2() > optimization_distance2
-      && optimization_distance > 0) {
-    // Don't check entities far for the visible area.
     return;
   }
 
@@ -2600,12 +2588,8 @@ void MapEntity::update() {
  */
 bool MapEntity::is_drawn() const {
 
-  const bool far = get_distance_to_camera2() > optimization_distance2
-      && optimization_distance > 0;
-
   return is_visible()
       && (overlaps_camera()
-          || !far
           || !is_drawn_at_its_position()
       );
 }

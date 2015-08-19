@@ -287,13 +287,7 @@ class SOLARUS_API MapEntity: public ExportableToLua {
 
     virtual bool is_obstacle_for(MapEntity& other);
     virtual bool is_obstacle_for(MapEntity& other, const Rectangle& candidate_position);
-    virtual bool is_low_wall_obstacle() const;
-    virtual bool is_shallow_water_obstacle() const;
-    virtual bool is_deep_water_obstacle() const;
-    virtual bool is_hole_obstacle() const;
-    virtual bool is_lava_obstacle() const;
-    virtual bool is_prickle_obstacle() const;
-    virtual bool is_ladder_obstacle() const;
+    bool is_ground_obstacle(Ground ground) const;
     virtual bool is_hero_obstacle(Hero& hero);
     virtual bool is_block_obstacle(Block& block);
     virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter);
@@ -335,6 +329,14 @@ class SOLARUS_API MapEntity: public ExportableToLua {
 
     void update_ground_observers();
     void update_ground_below();
+
+    virtual bool is_low_wall_obstacle() const;
+    virtual bool is_shallow_water_obstacle() const;
+    virtual bool is_deep_water_obstacle() const;
+    virtual bool is_hole_obstacle() const;
+    virtual bool is_lava_obstacle() const;
+    virtual bool is_prickle_obstacle() const;
+    virtual bool is_ladder_obstacle() const;
 
     // easy access to various game objects
     MapEntities& get_entities();

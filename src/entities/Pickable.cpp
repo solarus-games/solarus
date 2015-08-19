@@ -360,6 +360,11 @@ void Pickable::check_bad_ground() {
     return;
   }
 
+  if (get_entity_followed() != nullptr) {
+    // We are attached to a hookshot or boomerang: don't fall.
+    return;
+  }
+
   if (get_y() < shadow_xy.y) {
     // The pickable is above the ground for now, let it fall first.
     return;

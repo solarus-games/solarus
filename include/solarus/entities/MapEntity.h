@@ -414,11 +414,11 @@ class SOLARUS_API MapEntity: public ExportableToLua {
     bool suspended;                             /**< indicates that the animation and movement of this entity are suspended */
     uint32_t when_suspended;                    /**< indicates when this entity was suspended */
 
-    int optimization_distance;                  /**< above this distance from the visible area,
-                                                 * the entity is suspended (0 means infinite) */
+    int optimization_distance;                  /**< Above this distance from the visible area,
+                                                 * the engine may skip updates (0 means infinite). */
     int optimization_distance2;                 /**< Square of optimization_distance. */
     static constexpr int
-        default_optimization_distance = 400;    /**< default value */
+        default_optimization_distance = 0;      /**< Default value. */
 
 };
 

@@ -48,7 +48,6 @@ Bomb::Bomb(const std::string& name, Layer layer, const Point& xy):
   set_size(16, 16);
   set_origin(8, 13);
   set_drawn_in_y_order(true);
-  set_optimization_distance(0); // make the bomb explode even if the hero runs far away
 }
 
 /**

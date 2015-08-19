@@ -40,7 +40,6 @@ Explosion::Explosion(const std::string& name, Layer layer,
   // initialize the entity
   create_sprite("entities/explosion");
 
-  set_optimization_distance(2000); // because of placing a bomb on a switch
   get_sprite().enable_pixel_collisions();
   if (with_damage) {
     set_size(48, 48);

@@ -1138,9 +1138,10 @@ void MapEntity::set_origin(const Point& origin) {
 /**
  * \brief Returns the optimization distance of this entity.
  *
- * Above this distance from the visible area, the entity is suspended.
+ * Above this distance from the visible area, the engine may decide to
+ * skip updates.
  *
- * \return the optimization distance (0 means infinite)
+ * \return The optimization distance (0 means infinite).
  */
 int MapEntity::get_optimization_distance() const {
   return optimization_distance;
@@ -1157,9 +1158,10 @@ int MapEntity::get_optimization_distance2() const {
 /**
  * \brief Sets the optimization distance of this entity.
  *
- * Above this distance from the visible area, the entity is suspended.
+ * Above this distance from the visible area, the engine may decide to
+ * skip updates.
  *
- * \param distance the optimization distance (0 means infinite)
+ * \param distance The optimization distance (0 means infinite).
  */
 void MapEntity::set_optimization_distance(int distance) {
   this->optimization_distance = distance;

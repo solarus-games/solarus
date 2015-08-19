@@ -81,7 +81,6 @@ Switch::Switch(
   }
   else if (subtype == Subtype::SOLID) {
     set_collision_modes(COLLISION_SPRITE | COLLISION_OVERLAPPING);
-    set_optimization_distance(2000);  // Because of bombs and arrows on the switch.
   }
 }
 

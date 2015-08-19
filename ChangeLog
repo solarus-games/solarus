@@ -8,6 +8,7 @@ Engine changes
 
 * Print when the main loop starts and stops.
 * Print the Lua version at startup (#692).
+* Fix collisions sometimes triggered on entities that were removed.
 
 Lua API changes
 ---------------

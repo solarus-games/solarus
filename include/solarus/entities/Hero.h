@@ -22,7 +22,6 @@
 #include "solarus/entities/Ground.h"
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/lowlevel/Point.h"
-#include "solarus/GameCommand.h"
 #include <list>
 #include <memory>
 #include <string>
@@ -70,8 +69,8 @@ class Hero: public MapEntity {
     virtual void update() override;
     virtual void draw_on_map() override;
     virtual void set_suspended(bool suspended) override;
-    void notify_command_pressed(GameCommand command);
-    void notify_command_released(GameCommand command);
+    virtual void notify_command_pressed(GameCommand command) override;
+    virtual void notify_command_released(GameCommand command) override;
 
     /**
      * \name Sprites.

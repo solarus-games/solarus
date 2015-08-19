@@ -8,6 +8,7 @@ Engine changes
 
 * Print when the main loop starts and stops.
 * Print the Lua version at startup (#692).
+* Fix collisions sometimes triggered on entities that were removed.
 
 Lua API changes
 ---------------
@@ -24,6 +25,15 @@ Data files format changes
 -------------------------
 
 * Dialogs: Allow empty texts.
+
+__________________________
+
+Solarus 1.4.4 (2015-08-19)
+__________________________
+
+Bug fixes for the 1.4 release.
+
+* Fix pickables falling in holes even when hooked (#740).
 
 __________________________
 

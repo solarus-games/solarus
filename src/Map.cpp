@@ -844,31 +844,13 @@ bool Map::test_collision_with_ground(
     break;
 
   case Ground::LOW_WALL:
-    on_obstacle = entity_to_check.is_low_wall_obstacle();
-    break;
-
   case Ground::SHALLOW_WATER:
-    on_obstacle = entity_to_check.is_shallow_water_obstacle();
-    break;
-
   case Ground::DEEP_WATER:
-    on_obstacle = entity_to_check.is_deep_water_obstacle();
-    break;
-
   case Ground::HOLE:
-    on_obstacle = entity_to_check.is_hole_obstacle();
-    break;
-
   case Ground::LAVA:
-    on_obstacle = entity_to_check.is_lava_obstacle();
-    break;
-
   case Ground::PRICKLE:
-    on_obstacle = entity_to_check.is_prickle_obstacle();
-    break;
-
   case Ground::LADDER:
-    on_obstacle = entity_to_check.is_ladder_obstacle();
+    on_obstacle = entity_to_check.is_ground_obstacle(ground);
     break;
   }
 
@@ -1125,6 +1107,10 @@ void Map::check_collision_with_detectors(MapEntity& entity) {
     return;
   }
 
+  if (entity.is_being_removed()) {
+    return;
+  }
+
   // Check this entity with each detector.
   const std::list<Detector*>& detectors = entities->get_detectors();
   for (Detector* detector: detectors) {
@@ -1148,6 +1134,10 @@ void Map::check_collision_with_detectors(MapEntity& entity) {
 void Map::check_collision_from_detector(Detector& detector) {
 
   if (suspended) {
+    return;
+  }
+
+  if (detector.is_being_removed()) {
     return;
   }
 

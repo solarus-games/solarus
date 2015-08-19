@@ -109,7 +109,7 @@ class Sprite: public Drawable {
     virtual void raw_draw(Surface& dst_surface, const Point& dst_position) override;
     virtual void raw_draw_region(const Rectangle& region,
         Surface& dst_surface, const Point& dst_position) override;
-    virtual void draw_transition(Transition& transition);
+    virtual void draw_transition(Transition& transition) override;
     virtual Surface& get_transition_surface() override;
 
     LuaContext* get_lua_context() const;

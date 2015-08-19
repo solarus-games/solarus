@@ -297,6 +297,22 @@ void MapEntity::set_drawn_in_y_order(bool drawn_in_y_order) {
 }
 
 /**
+ * \brief This function is called when a game command is pressed
+ * and the game is not suspended.
+ * \param command The command pressed.
+ */
+void MapEntity::notify_command_pressed(GameCommand /* game_command */) {
+}
+
+/**
+ * \brief This function is called when a game command is released
+ * if the game is not suspended.
+ * \param command The command released.
+ */
+void MapEntity::notify_command_released(GameCommand /* game_command */) {
+}
+
+/**
  * \brief Returns whether this entity is on a map, that is,
  * whether set_map() has been called.
  * \return true if the entity is on a map
@@ -1643,7 +1659,13 @@ bool MapEntity::is_obstacle_for(MapEntity& other) {
 
   // This entity modifies the ground of the map.
   // Return the appropriate obstacle property.
-  switch (get_modified_ground()) {
+  return other.is_ground_obstacle(get_modified_ground());
+}
+
+bool MapEntity::is_ground_obstacle(Ground ground) const {
+  // This entity modifies the ground of the map.
+  // Return the appropriate obstacle property.
+  switch (ground) {
 
     case Ground::WALL:
     case Ground::WALL_TOP_RIGHT:
@@ -1657,7 +1679,7 @@ bool MapEntity::is_obstacle_for(MapEntity& other) {
       return true;
 
     case Ground::LOW_WALL:
-      return other.is_low_wall_obstacle();
+      return is_low_wall_obstacle();
 
     case Ground::EMPTY:
     case Ground::TRAVERSABLE:
@@ -1666,22 +1688,22 @@ bool MapEntity::is_obstacle_for(MapEntity& other) {
       return false;
 
     case Ground::SHALLOW_WATER:
-      return other.is_shallow_water_obstacle();
+      return is_shallow_water_obstacle();
 
     case Ground::DEEP_WATER:
-      return other.is_deep_water_obstacle();
+      return is_deep_water_obstacle();
 
     case Ground::HOLE:
-      return other.is_hole_obstacle();
+      return is_hole_obstacle();
 
     case Ground::LAVA:
-      return other.is_lava_obstacle();
+      return is_lava_obstacle();
 
     case Ground::PRICKLE:
-      return other.is_prickle_obstacle();
+      return is_prickle_obstacle();
 
     case Ground::LADDER:
-      return other.is_ladder_obstacle();
+      return is_ladder_obstacle();
 
   }
 
@@ -2502,6 +2524,10 @@ void MapEntity::update() {
   // once the map is created.
   SOLARUS_ASSERT(get_type() != EntityType::TILE,
       "Attempt to update a static tile");
+
+  if (is_being_removed()) {
+    return;
+  }
 
   // enable if necessary
   if (waiting_enabled) {

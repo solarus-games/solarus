@@ -58,8 +58,8 @@ class Point {
 // Free functions
 
 // Comparison operators
-bool operator==(const Point& lhs, const Point& rhs);
-bool operator!=(const Point& lhs, const Point& rhs);
+constexpr bool operator==(const Point& lhs, const Point& rhs);
+constexpr bool operator!=(const Point& lhs, const Point& rhs);
 
 // Unary arithmetic operators
 Point operator+(const Point& point);

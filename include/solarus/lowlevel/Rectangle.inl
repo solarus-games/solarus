@@ -73,7 +73,7 @@ constexpr Rectangle::Rectangle(const Point& xy, const Size& size):
  * \brief Returns the x coordinate of the top-left corner of this rectangle.
  * \return the x coordinate of the top-left corner
  */
-inline int Rectangle::get_x() const {
+constexpr int Rectangle::get_x() const {
   return rect.x;
 }
 
@@ -81,7 +81,7 @@ inline int Rectangle::get_x() const {
  * \brief Returns the y coordinate of the top-left corner of this rectangle.
  * \return the y coordinate of the top-left corner
  */
-inline int Rectangle::get_y() const {
+constexpr int Rectangle::get_y() const {
   return rect.y;
 }
 
@@ -89,7 +89,7 @@ inline int Rectangle::get_y() const {
  * \brief Returns the coordinates of the top-left corner of this rectangle.
  * \return the coordinates of the top-left corner
  */
-inline Point Rectangle::get_xy() const {
+constexpr Point Rectangle::get_xy() const {
   return { get_x(), get_y() };
 }
 
@@ -97,7 +97,7 @@ inline Point Rectangle::get_xy() const {
  * \brief Returns the center point of this rectangle.
  * \return The center point.
  */
-inline Point Rectangle::get_center() const {
+constexpr Point Rectangle::get_center() const {
 
   return {
       get_x() + get_width() / 2,
@@ -109,7 +109,7 @@ inline Point Rectangle::get_center() const {
  * \brief Returns the width of this rectangle.
  * \return the width
  */
-inline int Rectangle::get_width()  const {
+constexpr int Rectangle::get_width()  const {
   return rect.w;
 }
 
@@ -117,7 +117,7 @@ inline int Rectangle::get_width()  const {
  * \brief Returns the height of this rectangle.
  * \return the height
  */
-inline int Rectangle::get_height() const {
+constexpr int Rectangle::get_height() const {
   return rect.h;
 }
 
@@ -125,7 +125,7 @@ inline int Rectangle::get_height() const {
  * \brief Returns the size of this rectangle.
  * \return the size
  */
-inline Size Rectangle::get_size() const {
+constexpr Size Rectangle::get_size() const {
   return { get_width(), get_height() };
 }
 
@@ -133,7 +133,7 @@ inline Size Rectangle::get_size() const {
  * \brief Returns whether this rectangle is flat.
  * \return true if the width or the height is 0.
  */
-inline bool Rectangle::is_flat() const {
+constexpr bool Rectangle::is_flat() const {
   return get_width() == 0 || get_height() == 0;
 }
 
@@ -278,7 +278,7 @@ inline void Rectangle::add_xy(const Point& dxy) {
  * \param y y coordinate of the point
  * \return true if the point is in this rectangle
  */
-inline bool Rectangle::contains(int x, int y) const {
+constexpr bool Rectangle::contains(int x, int y) const {
   return x >= get_x() && x < get_x() + get_width()
       && y >= get_y() && y < get_y() + get_height();
 }
@@ -288,7 +288,7 @@ inline bool Rectangle::contains(int x, int y) const {
  * \param point point that may be in this rectangle
  * \return true if \a point is in this rectangle
  */
-inline bool Rectangle::contains(const Point& point) const {
+constexpr bool Rectangle::contains(const Point& point) const {
   return contains(point.x, point.y);
 }
 
@@ -297,7 +297,7 @@ inline bool Rectangle::contains(const Point& point) const {
  * \param other another rectangle
  * \return true if the specified rectangle is inside this rectangle
  */
-inline bool Rectangle::contains(const Rectangle& other) const {
+constexpr bool Rectangle::contains(const Rectangle& other) const {
   return contains(other.get_x(), other.get_y())
       && contains(other.get_x() + other.get_width() - 1, other.get_y() + other.get_height() - 1);
 }
@@ -377,7 +377,7 @@ inline Rectangle Rectangle::get_intersection(const Rectangle& other) const {
  * \param rhs second rectangle
  * \return true if both rectangles have the same coordinates and size
  */
-inline bool operator==(const Rectangle& lhs, const Rectangle& rhs) {
+constexpr bool operator==(const Rectangle& lhs, const Rectangle& rhs) {
   return lhs.get_xy() == rhs.get_xy()
       && lhs.get_size() == rhs.get_size();
 }
@@ -388,7 +388,7 @@ inline bool operator==(const Rectangle& lhs, const Rectangle& rhs) {
  * \param rhs second rectangle
  * \return true if the rectangles are not equal
  */
-inline bool operator!=(const Rectangle& lhs, const Rectangle& rhs) {
+constexpr bool operator!=(const Rectangle& lhs, const Rectangle& rhs) {
   return !(rhs == lhs);
 }
 

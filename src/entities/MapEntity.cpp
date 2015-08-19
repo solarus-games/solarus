@@ -2589,17 +2589,6 @@ void MapEntity::update() {
       stop_stream_action();
     }
   }
-
-  // suspend the entity if far from the camera
-  // TODO don't do this, it has too many side effects
-  const bool far = get_distance_to_camera2() > optimization_distance2
-      && optimization_distance > 0;
-  if (far && !is_suspended()) {
-    set_suspended(true);
-  }
-  else if (!far && is_suspended() && !get_game().is_suspended()) {
-    set_suspended(false);
-  }
 }
 
 /**

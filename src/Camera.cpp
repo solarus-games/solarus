@@ -38,11 +38,8 @@ namespace Solarus {
 Camera::Camera(Map& map):
   Entity("camera", 0, LAYER_HIGH, Point(0, 0), Video::get_quest_size()),
   fixed_on(map.get_game().get_hero()),
-  separator_scrolling_dx(0),
-  separator_scrolling_dy(0),
   separator_next_scrolling_date(0),
   separator_scrolling_direction4(0),
-  separator_traversed(),
   restoring(false),
   speed(120) {
   set_map(map);
@@ -77,20 +74,15 @@ void Camera::update_fixed_on() {
   Debug::check_assertion(fixed_on != nullptr,
       "Illegal call to Camera::update_fixed_on_hero()");
 
-  int x = 0;
-  int y = 0;
   if (separator_next_scrolling_date == 0) {
     // Normal case: not traversing a separator.
 
     // First compute camera coordinates ignoring map limits and separators.
-    const Point& hero_center = fixed_on->get_center_point();
-    const int hero_x = hero_center.x;
-    const int hero_y = hero_center.y;
-    x = hero_x - get_width() / 2;
-    y = hero_y - get_height() / 2;
+    Rectangle next = get_bounding_box();
+    next.set_center(fixed_on->get_center_point());
 
     // Then apply constraints of both separators and map limits.
-    set_bounding_box(apply_separators_and_map_bounds(Rectangle(x, y, get_width(), get_height())));
+    set_bounding_box(apply_separators_and_map_bounds(next));
   }
   else {
     // The player is currently traversing a separator.
@@ -99,9 +91,7 @@ void Camera::update_fixed_on() {
     bool finished = false;
     while (separator_next_scrolling_date != 0
         && now >= separator_next_scrolling_date) {
-      separator_scrolling_position.add_xy(
-          separator_scrolling_dx, separator_scrolling_dy
-      );
+      separator_scrolling_position.add_xy(separator_scrolling_delta);
 
       separator_next_scrolling_date += 1;
 
@@ -110,8 +100,6 @@ void Camera::update_fixed_on() {
         finished = true;
       }
     }
-    x = separator_scrolling_position.get_x();
-    y = separator_scrolling_position.get_y();
 
     if (finished) {
         separator_next_scrolling_date = 0;
@@ -122,7 +110,7 @@ void Camera::update_fixed_on() {
 
     // Then only apply map limit constraints.
     // Ignore separators since we are currently crossing one of them.
-    set_bounding_box(apply_map_bounds(Rectangle(x, y, get_width(), get_height())));
+    set_bounding_box(apply_map_bounds(separator_scrolling_position));
   }
 }
 
@@ -265,8 +253,7 @@ void Camera::traverse_separator(Separator* separator) {
   separator_traversed = std::static_pointer_cast<Separator>(
       separator->shared_from_this()
   );
-  separator_scrolling_dx = 0;
-  separator_scrolling_dy = 0;
+  separator_scrolling_delta = Point();
   separator_target_position = get_bounding_box();
   Hero& hero = get_hero();
   const Point& hero_center = hero.get_center_point();
@@ -274,24 +261,24 @@ void Camera::traverse_separator(Separator* separator) {
   if (separator->is_horizontal()) {
     if (hero_center.y < separator_center.y) {
       separator_scrolling_direction4 = 3;
-      separator_scrolling_dy = 1;
+      separator_scrolling_delta.y = 1;
       separator_target_position.add_y(get_height());
     }
     else {
       separator_scrolling_direction4 = 1;
-      separator_scrolling_dy = -1;
+      separator_scrolling_delta.y = -1;
       separator_target_position.add_y(-get_height());
     }
   }
   else {
     if (hero_center.x < separator_center.x) {
       separator_scrolling_direction4 = 0;
-      separator_scrolling_dx = 1;
+      separator_scrolling_delta.x = 1;
       separator_target_position.add_x(get_width());
     }
     else {
       separator_scrolling_direction4 = 2;
-      separator_scrolling_dx = -1;
+      separator_scrolling_delta.x = -1;
       separator_target_position.add_x(-get_width());
     }
   }
@@ -300,8 +287,7 @@ void Camera::traverse_separator(Separator* separator) {
   separator_next_scrolling_date = System::now();
 
   // Move the hero two pixels ahead to avoid to traversed the separator again.
-  hero.set_xy(hero.get_x() + 2 * separator_scrolling_dx,
-      hero.get_y() + 2 * separator_scrolling_dy);
+  hero.set_xy(hero.get_xy() + 2 * separator_scrolling_delta);
 }
 
 /**

@@ -70,8 +70,7 @@ class Camera : public Entity {
     EntityPtr fixed_on;                     /**< \c true if the camera is fixed on the hero. */
     Rectangle separator_scrolling_position; /**< Current camera position while crossing a separator. */
     Rectangle separator_target_position;    /**< Target camera position when crossing a separator. */
-    int separator_scrolling_dx;             /**< X increment to the camera position when crossing a separator. */
-    int separator_scrolling_dy;             /**< Y increment to the camera position when crossing a separator. */
+    Point separator_scrolling_delta;        /**< increment to the camera position when crossing a separator. */
     uint32_t separator_next_scrolling_date; /**< Next camera position change when crossing a separator. */
     int separator_scrolling_direction4;     /**< Direction when scrolling. */
     std::shared_ptr<Separator>

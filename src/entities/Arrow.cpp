@@ -23,7 +23,7 @@
 #include "solarus/entities/Destructible.h"
 #include "solarus/entities/Npc.h"
 #include "solarus/movements/PathMovement.h"
-#include "solarus/movements/FollowMovement.h"
+#include "solarus/movements/RelativeMovement.h"
 #include "solarus/Sprite.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
@@ -233,7 +233,7 @@ void Arrow::update() {
     if (entity_reached != nullptr) {
       // the arrow just hit an entity (typically an enemy) and this entity may have a movement
       Point dxy = get_xy() - entity_reached->get_xy();
-      set_movement(std::make_shared<FollowMovement>(
+      set_movement(std::make_shared<RelativeMovement>(
           entity_reached, dxy.x, dxy.y, true
       ));
     }

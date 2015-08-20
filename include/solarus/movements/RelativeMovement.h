@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_FOLLOW_MOVEMENT_H
-#define SOLARUS_FOLLOW_MOVEMENT_H
+#ifndef SOLARUS_RELATIVE_MOVEMENT_H
+#define SOLARUS_RELATIVE_MOVEMENT_H
 
 #include "solarus/Common.h"
 #include "solarus/entities/MapEntityPtr.h"
@@ -31,11 +31,11 @@ namespace Solarus {
  * If the movement is sensible to obstacles, it becomes finished as
  * soon as the entity cannot be placed at the requested position.
  */
-class FollowMovement: public Movement {
+class RelativeMovement: public Movement {
 
   public:
 
-    FollowMovement(
+    RelativeMovement(
         const MapEntityPtr& entity_followed,
         int x,
         int y,

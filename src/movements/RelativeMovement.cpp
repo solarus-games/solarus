@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/movements/FollowMovement.h"
+#include "solarus/movements/RelativeMovement.h"
 #include "solarus/entities/MapEntity.h"
 #include "solarus/lowlevel/Debug.h"
 
@@ -27,7 +27,7 @@ namespace Solarus {
  * \param y y coordinate of where this entity should be placed (relative to the entity followed)
  * \param ignore_obstacles true to make the movement ignore obstacles
  */
-FollowMovement::FollowMovement(
+RelativeMovement::RelativeMovement(
     const MapEntityPtr& entity_followed,
     int x,
     int y,
@@ -43,14 +43,14 @@ FollowMovement::FollowMovement(
  * \brief Returns whether the movement is finished.
  * \return true if there was a collision or the entity followed disappeared
  */
-bool FollowMovement::is_finished() const {
+bool RelativeMovement::is_finished() const {
   return finished;
 }
 
 /**
  * \brief Updates the position.
  */
-void FollowMovement::update() {
+void RelativeMovement::update() {
 
   if (entity_followed == nullptr) {
     finished = true;
@@ -95,7 +95,7 @@ void FollowMovement::update() {
  * should be displayed.
  * \return the coordinates to use to display the object controlled by this movement
  */
-Point FollowMovement::get_displayed_xy() const {
+Point RelativeMovement::get_displayed_xy() const {
 
   if (entity_followed == nullptr) {
     return get_xy();

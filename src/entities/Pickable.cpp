@@ -26,7 +26,7 @@
 #include "solarus/lowlevel/System.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/movements/FallingOnFloorMovement.h"
-#include "solarus/movements/FollowMovement.h"
+#include "solarus/movements/RelativeMovement.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
 #include "solarus/Game.h"
@@ -319,7 +319,7 @@ void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode /* 
 
     if (entity_followed != nullptr) {
       clear_movement();
-      set_movement(std::make_shared<FollowMovement>(
+      set_movement(std::make_shared<RelativeMovement>(
           entity_followed, 0, 0, true
       ));
       falling_height = FALLING_NONE;

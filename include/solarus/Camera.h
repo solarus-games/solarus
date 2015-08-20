@@ -57,9 +57,9 @@ class Camera : public Entity {
     void restore();
     void traverse_separator(Separator* separator);
 
-    Rectangle apply_map_bounds(const Rectangle& area);
-    Rectangle apply_separators(const Rectangle& area);
-    Rectangle apply_separators_and_map_bounds(const Rectangle& area);
+    Rectangle apply_map_bounds(const Rectangle& area) const;
+    Rectangle apply_separators(const Rectangle& area) const;
+    Rectangle apply_separators_and_map_bounds(const Rectangle& area) const;
 
   private:
 

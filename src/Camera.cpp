@@ -297,7 +297,7 @@ void Camera::traverse_separator(Separator* separator) {
  * avoid to cross map limits, and it will be centered.
  * \return A rectangle corresponding to the first one but stopping on map limits.
  */
-Rectangle Camera::apply_map_bounds(const Rectangle& area) {
+Rectangle Camera::apply_map_bounds(const Rectangle& area) const {
 
   int x = area.get_x();  // Top-left corner.
   int y = area.get_y();
@@ -328,7 +328,7 @@ Rectangle Camera::apply_map_bounds(const Rectangle& area) {
  * \param area The rectangle to check.
  * \return A rectangle corresponding to the first one but stopping on separators.
  */
-Rectangle Camera::apply_separators(const Rectangle& area) {
+Rectangle Camera::apply_separators(const Rectangle& area) const {
 
   int x = area.get_x();  // Top-left corner.
   int y = area.get_y();
@@ -437,7 +437,7 @@ Rectangle Camera::apply_separators(const Rectangle& area) {
  * \return A rectangle corresponding to the first one but stopping on
  * separators and map bounds.
  */
-Rectangle Camera::apply_separators_and_map_bounds(const Rectangle& area) {
+Rectangle Camera::apply_separators_and_map_bounds(const Rectangle& area) const {
   return apply_map_bounds(apply_separators(area));
 }
 

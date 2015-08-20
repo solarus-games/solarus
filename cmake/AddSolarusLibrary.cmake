@@ -4,6 +4,8 @@ file(
   source_files
 
   include/solarus/containers/Grid.h
+  include/solarus/containers/Quadtree.h
+  include/solarus/containers/Quadtree.inl
 
   include/solarus/entities/AnimatedTilePattern.h
   include/solarus/entities/Arrow.h

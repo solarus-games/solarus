@@ -18,6 +18,7 @@
 #define SOLARUS_MAP_ENTITIES_H
 
 #include "solarus/Common.h"
+#include "solarus/containers/Quadtree.h"
 #include "solarus/entities/EntityType.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/entities/Layer.h"

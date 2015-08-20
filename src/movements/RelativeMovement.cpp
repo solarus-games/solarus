@@ -32,10 +32,22 @@ RelativeMovement::RelativeMovement(
     int x,
     int y,
     bool ignore_obstacles):
+  RelativeMovement(entity_followed, Point(x,y), ignore_obstacles) {
+}
+
+/**
+ * \brief Creates a follow movement.
+ * \param entity_followed the entity to follow
+ * \param offset coordinate of where this entity should be placed (relative to the entity followed)
+ * \param ignore_obstacles true to make the movement ignore obstacles
+ */
+RelativeMovement::RelativeMovement(
+    const MapEntityPtr& entity_followed,
+    const Point& entity_offset,
+    bool ignore_obstacles):
   Movement(ignore_obstacles),
   entity_followed(entity_followed),
-  x(x),
-  y(y),
+  entity_offset(entity_offset),
   finished(false) {
 }
 
@@ -63,19 +75,15 @@ void RelativeMovement::update() {
   }
   else {
 
-    int next_x = entity_followed->get_x() + x;
-    int next_y = entity_followed->get_y() + y;
-
-    int dx = next_x - get_x();
-    int dy = next_y - get_y();
+    Point next = entity_followed->get_xy() + entity_offset;
+    Point dnext = next - get_xy();
 
     if (!are_obstacles_ignored()) {
 
-      if (!finished && (dx != 0 || dy != 0)) {
+      if (!finished && (dnext.x != 0 || dnext.y != 0)) {
 
-        if (!test_collision_with_obstacles(dx, dy)) {
-          set_x(next_x);
-          set_y(next_y);
+        if (!test_collision_with_obstacles(dnext)) {
+          set_xy(next);
         }
         else {
           finished = true;
@@ -84,8 +92,7 @@ void RelativeMovement::update() {
       }
     }
     else {
-      set_x(next_x);
-      set_y(next_y);
+      set_xy(next);
     }
   }
 }

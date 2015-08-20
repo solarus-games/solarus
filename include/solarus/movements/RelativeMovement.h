@@ -42,6 +42,12 @@ class RelativeMovement: public Movement {
         bool ignore_obstacles
     );
 
+    RelativeMovement(
+        const MapEntityPtr& entity_followed,
+        const Point& entity_offset,
+        bool ignore_obstacles
+    );
+
     virtual bool is_finished() const override;
     virtual Point get_displayed_xy() const override;
 
@@ -52,9 +58,7 @@ class RelativeMovement: public Movement {
   private:
 
     MapEntityPtr entity_followed;      /**< The entity followed by this movement or nullptr. */
-    const int x;                       /**< x coordinate of where this entity should be placed,
-                                        * relative to the entity followed */
-    const int y;                       /**< y coordinate of where this entity should be placed,
+    const Point entity_offset;         /**< coordinate of where this entity should be placed,
                                         * relative to the entity followed */
 
     bool finished;                     /**< indicates that the movement is stopped because of obstacles */

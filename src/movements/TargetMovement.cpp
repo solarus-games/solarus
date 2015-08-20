@@ -31,7 +31,7 @@ const uint32_t TargetMovement::recomputation_delay = 150;
  * \param target_entity The entity to target or nullptr.
  * \param x X of the target point, or X offset in the case of an entity.
  * \param y Y of the target point, or Y offset in the case of an entity.
- * \param moving_speed Speed of the movement when not stopped0
+ * \param moving_speed Speed of the movement when not stopped.
  * \param ignore_obstacles \c true to ignore obstacles (if on a map).
  */
 TargetMovement::TargetMovement(
@@ -40,11 +40,25 @@ TargetMovement::TargetMovement(
     int y,
     int moving_speed,
     bool ignore_obstacles):
+    TargetMovement(target_entity, Point(x,y), moving_speed, ignore_obstacles) {
+}
+/**
+ * \brief Creates a new target movement toward an entity or a fixed point.
+ * \param target_entity The entity to target or nullptr.
+ * \param target the target point, or offset in the case of an entity.
+ * \param moving_speed Speed of the movement when not stopped.
+ * \param ignore_obstacles \c true to ignore obstacles (if on a map).
+ */
+TargetMovement::TargetMovement(
+    const MapEntityPtr& target_entity,
+    const Point& target,
+    int moving_speed,
+    bool ignore_obstacles):
 
   StraightMovement(ignore_obstacles, true),
-  target(x, y),
+  target(target),
   target_entity(target_entity),
-  entity_offset(x, y),
+  entity_offset(target),
   sign_x(0),
   sign_y(0),
   moving_speed(moving_speed),

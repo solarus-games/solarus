@@ -62,7 +62,7 @@
  * Data files compatibility is always preserved between changes of the patch
  * version.
  */
-#define SOLARUS_PATCH_VERSION 3
+#define SOLARUS_PATCH_VERSION 5
 
 /**
  * \brief The Solarus version as a string.

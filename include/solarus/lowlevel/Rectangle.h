@@ -47,6 +47,7 @@ class Rectangle {
     explicit constexpr Rectangle(const Size& size);
     constexpr Rectangle(int x, int y, int width, int height);
     constexpr Rectangle(const Point& xy, const Size& size);
+    constexpr Rectangle(const Point& top_left, const Point& bottom_right);
 
     constexpr int get_x() const;
     constexpr int get_y() const;
@@ -55,7 +56,16 @@ class Rectangle {
     constexpr int get_height() const;
     constexpr Size get_size() const;
     constexpr bool is_flat() const;
+
+    constexpr int get_bottom() const;
+    constexpr Point get_bottom_left() const;
+    constexpr Point get_bottom_right() const;
     constexpr Point get_center() const;
+    constexpr int get_left() const;
+    constexpr int get_right() const;
+    constexpr int get_top() const;
+    constexpr Point get_top_left() const;
+    constexpr Point get_top_right() const;
 
     void set_x(int x);
     void set_y(int y);

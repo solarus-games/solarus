@@ -26,6 +26,15 @@ Data files format changes
 
 * Dialogs: Allow empty texts.
 
+___________________________
+
+Solarus 1.4.5 (in progress)
+___________________________
+
+Bug fixes for the 1.4 release.
+
+* Fix collisions triggered for removed entities (#710).
+
 __________________________
 
 Solarus 1.4.4 (2015-08-19)

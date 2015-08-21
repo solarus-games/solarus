@@ -30,6 +30,8 @@ namespace Solarus {
  *
  * The main goal of this container is to get objects in a given rectangle as
  * quickly as possible.
+ *
+ * \param T Type of objects. There must be a get_bounding_box() method.
  */
 template <typename T>
 class Quadtree {
@@ -47,6 +49,12 @@ class Quadtree {
     void get_elements(
         const Rectangle& where,
         std::vector<T>& elements
+    ) const;
+
+    int get_num_elements() const;
+
+    int get_num_elements(
+        const Rectangle& where
     ) const;
 
     static constexpr int
@@ -68,7 +76,7 @@ class Quadtree {
 
       Node() :
         elements(),
-        children({ nullptr }),
+        children{ nullptr },
         parent(nullptr),
         num_elements(0) {
 
@@ -80,9 +88,11 @@ class Quadtree {
         const Rectangle& where,
         std::vector<T>& elements
     ) const;
+
     int get_num_elements(
-        const Node* node
-    );
+        const Node* node,
+        const Rectangle& where
+    ) const;
 
     const Size space_size;
     Node root;

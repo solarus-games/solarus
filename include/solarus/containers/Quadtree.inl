@@ -14,18 +14,53 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Random.h"
+#include "solarus/lowlevel/Surface.h"
 
 namespace Solarus {
 
 /**
- * \brief Creates a quadtree.
+ * \brief Creates a quadtree with a default space size.
+ *
+ * Call initialize() later to specify the size.
+ */
+template<typename T>
+Quadtree<T>::Quadtree() :
+    Quadtree(Size(256, 256)) {
+
+}
+
+/**
+ * \brief Creates a quadtree and initializes with the given size.
  * \param size Size of the space to create partitions of.
  */
 template<typename T>
 Quadtree<T>::Quadtree(const Size& space_size) :
     root(Rectangle(Point(0, 0), space_size)) {
 
+}
+
+/**
+ * \brief Removes all elements of the quadtree.
+ */
+template<typename T>
+void Quadtree<T>::clear() {
+
+  elements.clear();
+  root.clear();
+}
+
+/**
+ * \brief Clears the quadtree and initializes with a new size.
+ * \param size Size of the space to create partitions of.
+ */
+template<typename T>
+void Quadtree<T>::initialize(const Size& space_size) {
+
+  clear();
+  root.initialize(Rectangle(Point(0, 0), space_size));
 }
 
 /**
@@ -102,6 +137,17 @@ void Quadtree<T>::get_elements(
 }
 
 /**
+ * \brief Draws the quadtree on a surface for debugging purposes.
+ * \param dst_surface The destination surface.
+ * \param dst_position Where to draw on that surface.
+ */
+template<typename T>
+void Quadtree<T>::draw(const SurfacePtr& dst_surface, const Point& dst_position) {
+
+  root.draw(dst_surface, dst_position);
+}
+
+/**
  * \brief Creates a node with the given coordinates.
  * \param cell Cell coordinates of the node.
  */
@@ -111,8 +157,41 @@ Quadtree<T>::Node::Node(const Rectangle& cell) :
     children{ nullptr, nullptr, nullptr, nullptr },
     cell(cell),
     center(cell.get_center()),
-    num_elements(0) {
+    num_elements(0),
+    color() {
 
+  elements.reserve(max_in_cell);
+
+  if (debug_quadtrees) {
+    color = Color(Random::get_number(256), Random::get_number(256), Random::get_number(256));
+  }
+}
+
+/**
+ * \brief Clears this node.
+ *
+ * Children nodes and their content are destroyed.
+ */
+template<typename T>
+void Quadtree<T>::Node::clear() {
+
+  elements.clear();
+  children[0] = nullptr;
+  children[1] = nullptr;
+  children[2] = nullptr;
+  children[3] = nullptr;
+  num_elements = 0;
+}
+
+/**
+ * \brief Clears this node and initializes it with a new cell rectangle.
+ * \param cell The new cell.
+ */
+template<typename T>
+void Quadtree<T>::Node::initialize(const Rectangle& cell) {
+
+  clear();
+  this->cell = cell;
   elements.reserve(max_in_cell);
 }
 
@@ -157,8 +236,8 @@ bool Quadtree<T>::Node::add(
     if (get_cell().contains(box.get_center())) {
       // We are the main cell of this element: it counts in the total.
       if (get_num_elements() >= max_in_cell &&
-          get_cell_size().width < min_cell_size &&
-          get_cell_size().height < min_cell_size) {
+          get_cell_size().width > min_cell_size &&
+          get_cell_size().height > min_cell_size) {
         split();
       }
     }
@@ -196,17 +275,17 @@ void Quadtree<T>::Node::split() {
 
   Debug::check_assertion(!is_split(), "Quadtree node already split");
 
-  // Create children cells.
+  // Create 4 children cells.
   const Rectangle& cell = get_cell();
   const Point& center = cell.get_center();
   children[0] = std::unique_ptr<Node>(
       new Node(Rectangle(cell.get_top_left(), center))
   );
   children[1] = std::unique_ptr<Node>(
-      new Node(Rectangle(center.x, cell.get_top(), cell.get_right(), center.y))
+      new Node(Rectangle(Point(center.x, cell.get_top()), Point(cell.get_right(), center.y)))
   );
   children[2] = std::unique_ptr<Node>(
-      new Node(Rectangle(cell.get_left(), center.y, center.x, cell.get_bottom()))
+      new Node(Rectangle(Point(cell.get_left(), center.y), Point(center.x, cell.get_bottom())))
   );
   children[3] = std::unique_ptr<Node>(
       new Node(Rectangle(center, cell.get_bottom_right()))
@@ -254,6 +333,63 @@ void Quadtree<T>::Node::get_elements(
 ) const {
 
   // TODO avoid duplicates
+}
+
+/**
+ * \brief Draws the node on a surface for debugging purposes.
+ * \param dst_surface The destination surface.
+ * \param dst_position Where to draw on that surface.
+ */
+template<typename T>
+void Quadtree<T>::Node::draw(const SurfacePtr& dst_surface, const Point& dst_position) {
+
+  // Draw the rectangle of the node.
+  draw_rectangle(get_cell(), color, dst_surface, dst_position);
+
+  // Draw children nodes.
+  if (is_split()) {
+    children[0]->draw(dst_surface, dst_position);
+    children[1]->draw(dst_surface, dst_position);
+    children[2]->draw(dst_surface, dst_position);
+    children[3]->draw(dst_surface, dst_position);
+  }
+
+  // Draw bounding boxes of elements.
+  for (const T& element: elements) {
+    draw_rectangle(element->get_bounding_box(), color, dst_surface, dst_position);
+  }
+}
+
+/**
+ * \brief Draws the border of a rectangle on a surface for debugging purposes.
+ * \param rectangle The rectangle to draw.
+ * \param line_color The color to use.
+ * \param dst_surface The destination surface.
+ * \param dst_position Where to draw on that surface.
+ */
+template<typename T>
+void Quadtree<T>::Node::draw_rectangle(
+    const Rectangle& rectangle,
+    const Color& line_color,
+    const SurfacePtr& dst_surface,
+    const Point& dst_position
+) {
+  // TODO remove this function when the draw line API is available
+
+  Rectangle where = rectangle;
+  where.set_xy(where.get_xy() + dst_position);
+  dst_surface->fill_with_color(line_color, Rectangle(
+      where.get_top_left(), Size(where.get_width(), 1)
+  ));
+  dst_surface->fill_with_color(line_color, Rectangle(
+      where.get_bottom_left() + Point(0, -1), Size(where.get_width(), 1)
+  ));
+  dst_surface->fill_with_color(line_color, Rectangle(
+      where.get_top_left(), Size(1, where.get_height())
+  ));
+  dst_surface->fill_with_color(line_color, Rectangle(
+      where.get_top_right() + Point(-1, 0), Size(1, where.get_height())
+  ));
 }
 
 }  // namespace Solarus

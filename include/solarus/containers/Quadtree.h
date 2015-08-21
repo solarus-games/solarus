@@ -18,13 +18,17 @@
 #define SOLARUS_QUADTREE_H
 
 #include "solarus/Common.h"
+#include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lowlevel/Size.h"
+#include "solarus/lowlevel/SurfacePtr.h"
 #include <map>
 #include <memory>
 #include <vector>
 
 namespace Solarus {
+
+class Color;
 
 /**
  * \brief A collection of objects spatially located in an adaptable 2D grid.
@@ -40,7 +44,11 @@ class Quadtree {
 
   public:
 
+    Quadtree();
     Quadtree(const Size& space_size);
+
+    void clear();
+    void initialize(const Size& space_size);
 
     Size get_space_size() const;
 
@@ -55,6 +63,8 @@ class Quadtree {
 
     int get_num_elements() const;
 
+    void draw(const SurfacePtr& dst_surface, const Point& dst_position);
+
     static constexpr int
         min_cell_size = 16;  /**< Don't split more if a cell is smaller than
                               * this size. */
@@ -66,6 +76,8 @@ class Quadtree {
         min_in_4_cells = 4;  /**< 4 sibling cells are merged if their total
                               * is below this number when removing an element. */
 
+    static constexpr bool debug_quadtrees = true;
+
   private:
 
     class Node {
@@ -73,6 +85,9 @@ class Quadtree {
       public:
 
         Node(const Rectangle& cell);
+
+        void clear();
+        void initialize(const Rectangle& cell);
 
         Rectangle get_cell() const;
         Size get_cell_size() const;
@@ -88,6 +103,16 @@ class Quadtree {
 
         int get_num_elements() const;
 
+        void draw(
+            const SurfacePtr& dst_surface, const Point& dst_position
+        );
+        void draw_rectangle(
+            const Rectangle& rectangle,
+            const Color& line_color,
+            const SurfacePtr& dst_surface,
+            const Point& dst_position
+        );
+
       private:
 
         bool is_split() const;
@@ -98,6 +123,7 @@ class Quadtree {
         Rectangle cell;
         Point center;
         int num_elements;
+        Color color;
 
     };
 

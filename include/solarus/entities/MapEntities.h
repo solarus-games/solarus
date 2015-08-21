@@ -18,6 +18,7 @@
 #define SOLARUS_MAP_ENTITIES_H
 
 #include "solarus/Common.h"
+#include "solarus/containers/Quadtree.h"
 #include "solarus/entities/EntityType.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/entities/Layer.h"
@@ -42,6 +43,8 @@ class NonAnimatedRegions;
 class Rectangle;
 class Separator;
 class Stairs;
+
+using EntityTree = Quadtree<MapEntityPtr>;
 
 /**
  * \brief Manages the whole content of a map.
@@ -141,6 +144,8 @@ class SOLARUS_API MapEntities {
     std::list<MapEntityPtr> all_entities;           /**< all map entities except the tiles and the hero;
                                                      * this vector is used to delete the entities
                                                      * when the map is unloaded */
+    EntityTree quadtree;                            /**< All map entities except tiles.
+                                                     * Optimized for fast spatial search. */
     std::list<MapEntity*> entities_to_remove;       /**< list of entities that need to be removed right now */
 
     std::list<MapEntity*>

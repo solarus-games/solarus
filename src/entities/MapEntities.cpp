@@ -336,6 +336,10 @@ void MapEntities::bring_to_back(MapEntity& entity) {
  */
 void MapEntities::notify_map_started() {
 
+  // Put the hero in the the quadtree.
+  quadtree.add(std::static_pointer_cast<Hero>(hero.shared_from_this()));
+
+  // Notify entities.
   for (const MapEntityPtr& entity: all_entities) {
     entity->notify_map_started();
     entity->notify_tileset_changed();
@@ -571,6 +575,9 @@ void MapEntities::add_entity(const MapEntityPtr& entity) {
   else {
     Layer layer = entity->get_layer();
 
+    // update the quadtree
+    quadtree.add(entity);
+
     // update the detectors list
     if (entity->is_detector()) {
       detectors.push_back(static_cast<Detector*>(entity.get()));
@@ -733,7 +740,11 @@ void MapEntities::remove_marked_entities() {
   // remove the marked entities
   for (MapEntity* entity: entities_to_remove) {
 
+    MapEntityPtr shared_entity = std::static_pointer_cast<MapEntity>(entity->shared_from_this());
     Layer layer = entity->get_layer();
+
+    // remove it from the quadtree
+    quadtree.remove(shared_entity);
 
     // remove it from the obstacle entities list if present
     if (entity->can_be_obstacle()) {
@@ -772,7 +783,6 @@ void MapEntities::remove_marked_entities() {
     }
 
     // remove it from the whole list
-    MapEntityPtr shared_entity = std::static_pointer_cast<MapEntity>(entity->shared_from_this());
     all_entities.remove(shared_entity);
     const std::string& name = entity->get_name();
     if (!name.empty()) {
@@ -893,6 +903,10 @@ void MapEntities::draw() {
         entity->draw_on_map();
       }
     }
+  }
+
+  if (EntityTree::debug_quadtrees) {
+    quadtree.draw(map.get_visible_surface(), -map.get_camera_position().get_top_left());
   }
 }
 

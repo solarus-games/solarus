@@ -61,6 +61,9 @@ void check_num_elements(const Quadtree<ElementPtr>& quadtree, int expected) {
   }
 }
 
+/**
+ * \brief Creates an element with the given coordinates and adds it to a quatree.
+ */
 ElementPtr add(Quadtree<ElementPtr>& quadtree, int x, int y, int width, int height) {
 
   ElementPtr element(std::make_shared<Element>(Rectangle(x, y, width, height)));

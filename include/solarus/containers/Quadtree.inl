@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/lowlevel/Debug.h"
 
 namespace Solarus {
 
@@ -108,10 +109,10 @@ template<typename T>
 Quadtree<T>::Node::Node(const Rectangle& cell) :
     elements(),
     children{ nullptr, nullptr, nullptr, nullptr },
-    parent(nullptr),
     cell(cell),
     center(cell.get_center()),
     num_elements(0) {
+
   elements.reserve(max_in_cell);
 }
 
@@ -139,30 +140,86 @@ Size Quadtree<T>::Node::get_cell_size() const {
  * Splits the node if necessary when the threshold is exceeded.
  *
  * \param element The element to add.
- * \return The number of cells the element was added to.
+ * \return \c true in case of success.
  */
 template<typename T>
-int Quadtree<T>::Node::add(
+bool Quadtree<T>::Node::add(
     const T& element
 ) {
   const Rectangle& box = element->get_bounding_box();
   if (!get_cell().overlaps(box)) {
-    return 0;
+    return false;
   }
 
-  if (get_cell().contains(box.get_center())) {
-    // We are the main cell of this element: it counts in the total.
-    if (get_num_elements() >= max_in_cell &&
-        get_cell_size().width < min_cell_size &&
-        get_cell_size().height < min_cell_size) {
-      // TODO split();
-      return 0;
+  if (!is_split()) {
+
+    // See if it is time to split.
+    if (get_cell().contains(box.get_center())) {
+      // We are the main cell of this element: it counts in the total.
+      if (get_num_elements() >= max_in_cell &&
+          get_cell_size().width < min_cell_size &&
+          get_cell_size().height < min_cell_size) {
+        split();
+      }
     }
   }
 
-  // Add it to the current node.
-  elements.push_back(element);
-  return 1;
+  if (!is_split()) {
+    // Add it to the current node.
+    elements.push_back(element);
+    return true;
+  }
+
+  // Add it to children cells.
+  children[0]->add(element);
+  children[1]->add(element);
+  children[2]->add(element);
+  children[3]->add(element);
+  return true;
+}
+
+/**
+ * \brief Returns whether this node is split or is a leaf cell.
+ * \return \c true if the node is split.
+ */
+template<typename T>
+bool Quadtree<T>::Node::is_split() const {
+
+  return children[0] != nullptr;
+}
+
+/**
+ * \brief Splits this cell in four parts and moves its elements to them.
+ */
+template<typename T>
+void Quadtree<T>::Node::split() {
+
+  Debug::check_assertion(!is_split(), "Quadtree node already split");
+
+  // Create children cells.
+  const Rectangle& cell = get_cell();
+  const Point& center = cell.get_center();
+  children[0] = std::unique_ptr<Node>(
+      new Node(Rectangle(cell.get_top_left(), center))
+  );
+  children[1] = std::unique_ptr<Node>(
+      new Node(Rectangle(center.x, cell.get_top(), cell.get_right(), center.y))
+  );
+  children[2] = std::unique_ptr<Node>(
+      new Node(Rectangle(cell.get_left(), center.y, center.x, cell.get_bottom()))
+  );
+  children[3] = std::unique_ptr<Node>(
+      new Node(Rectangle(center, cell.get_bottom_right()))
+  );
+
+  // Move existing elements into them.
+  for (const T& element: elements) {
+    children[0]->add(element);
+    children[1]->add(element);
+    children[2]->add(element);
+    children[3]->add(element);
+  }
+  elements.clear();
 }
 
 /**

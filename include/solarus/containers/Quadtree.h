@@ -21,6 +21,7 @@
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lowlevel/Size.h"
 #include <map>
+#include <memory>
 #include <vector>
 
 namespace Solarus {
@@ -31,7 +32,8 @@ namespace Solarus {
  * The main goal of this container is to get objects in a given rectangle as
  * quickly as possible.
  *
- * \param T Type of objects. There must be a get_bounding_box() method.
+ * \param T Type of objects. There must be a get_bounding_box() method
+ * returning a Rectangle.
  */
 template <typename T>
 class Quadtree {
@@ -54,14 +56,15 @@ class Quadtree {
     int get_num_elements() const;
 
     static constexpr int
+        min_cell_size = 16;  /**< Don't split more if a cell is smaller than
+                              * this size. */
+    static constexpr int
         max_in_cell = 8;     /**< A cell is split if it exceeds this number
-                              * when adding an element. */
+                              * when adding an element, unless the cell is
+                              * too small. */
     static constexpr int
         min_in_4_cells = 4;  /**< 4 sibling cells are merged if their total
                               * is below this number when removing an element. */
-    static constexpr int
-        min_cell_size = 16;  /**< Don't split more if a cell is smaller than
-                              * this size. */
 
   private:
 
@@ -74,7 +77,7 @@ class Quadtree {
         Rectangle get_cell() const;
         Size get_cell_size() const;
 
-        int add(
+        bool add(
             const T& element
         );
 
@@ -87,9 +90,11 @@ class Quadtree {
 
       private:
 
+        bool is_split() const;
+        void split();
+
         std::vector<T> elements;
-        Node* children[4];
-        Node* parent;
+        std::unique_ptr<Node> children[4];
         Rectangle cell;
         Point center;
         int num_elements;

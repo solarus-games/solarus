@@ -26,7 +26,7 @@
 #include "solarus/entities/Npc.h"
 #include "solarus/entities/MapEntities.h"
 #include "solarus/movements/PixelMovement.h"
-#include "solarus/movements/FollowMovement.h"
+#include "solarus/movements/RelativeMovement.h"
 #include "solarus/movements/StraightMovement.h"
 #include "solarus/Sprite.h"
 #include "solarus/Game.h"
@@ -364,7 +364,7 @@ void CarriedItem::update() {
 
     // make the item follow the hero
     clear_movement();
-    set_movement(std::make_shared<FollowMovement>(
+    set_movement(std::make_shared<RelativeMovement>(
         std::static_pointer_cast<Hero>(hero.shared_from_this()),
         0,
         -18,

@@ -18,12 +18,12 @@
 # Exportable to XCode.
 ####
 
-# Assertions
+# Assertions.
 if(NOT SOLARUS_BUNDLE)
   message(FATAL_ERROR "Bundle name not correctly specified. Set a valid SOLARUS_BUNDLE value")
 endif()
 
-# Configuration variable
+# Configuration variables.
 set(SOLARUS_LIBRARY_TARGET_NAME       "solarus")
 set(SOLARUS_LIBRARY_OUTPUT_NAME       "${CMAKE_SHARED_LIBRARY_PREFIX}${SOLARUS_LIBRARY_TARGET_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}")
 set(SOLARUS_BUNDLE_TARGET_NAME        "${SOLARUS_LIBRARY_TARGET_NAME}_run")
@@ -33,7 +33,7 @@ else()
   set(SOLARUS_BUNDLE_GUI_IDENTIFIER   "${SOLARUS_BUNDLE_TARGET_NAME}-team")
 endif()
 
-# OS-specific configuration variable
+# OS-specific configuration variables.
 if(SOLARUS_IOS_BUILD)
   set(SOLARUS_OS_NAME                 "iOS")
   set(SOLARUS_INSTALL_DESTINATION     "local/share")
@@ -49,12 +49,12 @@ else()
     set(SOLARUS_BUNDLE_INFOPLIST      "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/apple/bundle_content/OSX-Info.plist")
   endif()
 
-  # Remove the hardcoded additional link on SDL2 path
+  # Remove the hardcoded additional link on SDL2 path.
   string(REPLACE "-framework Cocoa" "" SDL2_FRAMEWORK "${SDL2_LIBRARY}")
 
-  # Find libraries to copy into the bundle
+  # Find libraries to copy into the bundle.
   macro(add_to_copied_libraries library_path)
-    # Assuming that static libraries never match ".framework" or ".dylib" strings
+    # Assuming that static libraries never match ".framework" or ".dylib" strings.
     if(${library_path} MATCHES ".framework" OR ${library_path} MATCHES ".dylib")
       set(SOLARUS_BUNDLE_COPIED_LIBRARIES ${SOLARUS_BUNDLE_COPIED_LIBRARIES} ${library_path})
     endif()
@@ -70,7 +70,7 @@ else()
   add_to_copied_libraries(${LUA_LIBRARY})
 endif()
 
-# Default files if not specified
+# Default files if not specified.
 if(NOT SOLARUS_BUNDLE_ICON)
   set(SOLARUS_BUNDLE_ICON           "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/icons/Solarus.icns")
 endif()
@@ -78,7 +78,7 @@ if(NOT SOLARUS_BUNDLE_VERSION)
   set(SOLARUS_BUNDLE_VERSION        "1.0")
 endif()
 
-# Add executable target into CFBundle form and rename it as requested
+# Add executable target into CFBundle form and rename it as requested.
 add_executable(${SOLARUS_BUNDLE_TARGET_NAME} MACOSX_BUNDLE
   ${source_files}
   ${SOLARUS_BUNDLE_ICON} 
@@ -88,7 +88,7 @@ set_target_properties(${SOLARUS_BUNDLE_TARGET_NAME} PROPERTIES
   OUTPUT_NAME   "${SOLARUS_BUNDLE}"
 )
 
-# Set right properties on copied files
+# Set right properties on copied files.
 set_property(SOURCE
   ${SOLARUS_BUNDLE_ICON} 
   PROPERTY MACOSX_PACKAGE_LOCATION Resources
@@ -98,7 +98,7 @@ set_property(SOURCE
 # TODO : Remove when http://public.kitware.com/Bug/view.php?id=13784 will be accepted.
 macro(copy_into_bundle library_path destination_directory)
 get_filename_component(library_name ${library_path} NAME)
-  # Encapsulate cp with a condition instead of using -n flag, which is buggy on some OSX versions
+  # Encapsulate cp with a condition instead of using -n flag, which is buggy on some OSX versions.
   if(IS_DIRECTORY ${library_path})
     add_custom_command(
       TARGET ${SOLARUS_BUNDLE_TARGET_NAME}
@@ -125,7 +125,7 @@ get_filename_component(library_name ${library_path} NAME)
   endif()
 endmacro()
 
-# Copy libraries into Framework subfolder
+# Copy libraries into Framework subfolder.
 if(NOT XCODE)
   if(NOT SOLARUS_IOS_BUILD)
     add_custom_command(TARGET ${SOLARUS_BUNDLE_TARGET_NAME} POST_BUILD COMMAND mkdir ARGS -p "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/Frameworks")
@@ -143,7 +143,7 @@ else()
   set_source_files_properties(${SOLARUS_LIBRARY_OUTPUT_NAME} PROPERTIES MACOSX_PACKAGE_LOCATION Frameworks)
 endif()
 
-# Info.plist template and additional lines
+# Info.plist template and additional lines.
 get_filename_component(SOLARUS_BUNDLE_ICON_NAME "${SOLARUS_BUNDLE_ICON}" NAME)
 set_target_properties(${SOLARUS_BUNDLE_TARGET_NAME} PROPERTIES
   MACOSX_BUNDLE_INFO_PLIST             "${SOLARUS_BUNDLE_INFOPLIST}"
@@ -158,14 +158,14 @@ set_target_properties(${SOLARUS_BUNDLE_TARGET_NAME} PROPERTIES
   MACOSX_BUNDLE_INFO_STRING            "${SOLARUS_BUNDLE} Version ${SOLARUS_BUNDLE_VERSION}, Copyright 2013, ${SOLARUS_BUNDLE_GUI_IDENTIFIER}."
 )
 
-# Add root path
+# Set up the bundle root path.
 set_target_properties(${SOLARUS_BUNDLE_TARGET_NAME} PROPERTIES
   MACOSX_RPATH                       ON
   BUILD_WITH_INSTALL_RPATH           1
-  INSTALL_NAME_DIR                   ${SOLARUS_RPATH}
+  INSTALL_NAME_DIR                   "@rpath"
 )
 
-# Code signing
+# Code signing.
 if(XCODE)
   set_target_properties(${SOLARUS_BUNDLE_TARGET_NAME} PROPERTIES XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "${SOLARUS_OS_NAME} Developer: ${SOLARUS_BUNDLE_GUI_IDENTIFIER}")
 elseif(SOLARUS_BUNDLE_CODESIGN)
@@ -178,7 +178,7 @@ elseif(SOLARUS_BUNDLE_CODESIGN)
 endif()
 
 # Move the main binary into resource folder, and substitute it
-# by a wrapper which call it with the resource path as parameter
+# by a wrapper which call it with the resource path as parameter.
 add_custom_command(
   TARGET ${SOLARUS_BUNDLE_TARGET_NAME}
   POST_BUILD
@@ -188,7 +188,7 @@ add_custom_command(
   ARGS "${PROJECT_BINARY_DIR}/cmake/apple/bundle_content/OSX-wrapper.sh" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}"
 )
 
-# Copy the PkgInfo file
+# Copy the PkgInfo file.
 if(NOT XCODE)
   add_custom_command(
     TARGET ${SOLARUS_BUNDLE_TARGET_NAME}

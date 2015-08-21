@@ -17,7 +17,7 @@
 #include "solarus/entities/Block.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Switch.h"
-#include "solarus/movements/FollowMovement.h"
+#include "solarus/movements/RelativeMovement.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
 #include "solarus/KeysEffect.h"
@@ -222,7 +222,7 @@ bool Block::start_movement_by_hero() {
   int dx = get_x() - hero.get_x();
   int dy = get_y() - hero.get_y();
 
-  set_movement(std::make_shared<FollowMovement>(
+  set_movement(std::make_shared<RelativeMovement>(
       std::static_pointer_cast<Hero>(hero.shared_from_this()),
       dx,
       dy,

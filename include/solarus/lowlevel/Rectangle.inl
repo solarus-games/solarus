@@ -70,6 +70,21 @@ constexpr Rectangle::Rectangle(const Point& xy, const Size& size):
 {}
 
 /**
+ * \brief Creates a rectangle, specifying its properties.
+ *
+ * This is the equivalent of:
+ * Rectangle(top_left.x, top_left.y,
+ *           bottom_right.x - top_left.x , bottom_right.y - top_left.y)
+ *
+ * \param top_left coordinates of the top-left corner
+ * \param bottom_right coordinates of the bottom-right corner
+ */
+constexpr Rectangle::Rectangle(const Point& top_left, const Point& bottom_right):
+    Rectangle(top_left.x, top_left.y,
+              bottom_right.x - top_left.x , bottom_right.y - top_left.y)
+{}
+
+/**
  * \brief Returns the x coordinate of the top-left corner of this rectangle.
  * \return the x coordinate of the top-left corner
  */
@@ -94,15 +109,96 @@ constexpr Point Rectangle::get_xy() const {
 }
 
 /**
+ * \brief Returns the bottom coordinate of this rectangle.
+ *
+ * This is the equivalent of: get_top() + get_height()
+ *
+ * \return The bottom coordinate.
+ */
+constexpr int Rectangle::get_bottom() const {
+  return get_top() + get_height();
+}
+
+/**
+ * \brief Returns the bottom-left point of this rectangle.
+ *
+ * This is the equivalent of: Point(get_left(), get_bottom())
+ *
+ * \return The bottom-left point.
+ */
+constexpr Point Rectangle::get_bottom_left() const {
+  return { get_left(), get_bottom() };
+}
+
+/**
+ * \brief Returns the bottom-right point of this rectangle.
+ *
+ * This is the equivalent of: Point(get_right(), get_bottom())
+ *
+ * \return The bottom-right point.
+ */
+constexpr Point Rectangle::get_bottom_right() const {
+  return { get_right(), get_bottom() }; 
+}
+
+/**
  * \brief Returns the center point of this rectangle.
  * \return The center point.
  */
 constexpr Point Rectangle::get_center() const {
-
   return {
-      get_x() + get_width() / 2,
-      get_y() + get_height() / 2,
+      get_left() + get_width() / 2,
+      get_top() + get_height() / 2,
   };
+}
+
+/**
+ * \brief Returns the left coordinate of this rectangle.
+ * \return The left coordinate.
+ */
+constexpr int Rectangle::get_left() const {
+  return rect.x;
+}
+
+/**
+ * \brief Returns the right coordinate of this rectangle.
+ *
+ * This is the equivalent of: get_left() + get_width()
+ *
+ * \return The right coordinate.
+ */
+constexpr int Rectangle::get_right() const {
+  return get_left() + get_width();
+}
+
+/**
+ * \brief Returns the top coordinate of this rectangle.
+ * \return The top coordinate.
+ */
+constexpr int Rectangle::get_top() const {
+  return rect.y;
+}
+
+/**
+ * \brief Returns the top-left point of this rectangle.
+ *
+ * This is the equivalent of: Point(get_left(), get_top())
+ *
+ * \return The top-left point.
+ */
+constexpr Point Rectangle::get_top_left() const {
+  return { get_left(), get_top() };
+}
+
+/**
+ * \brief Returns the top-right point of this rectangle.
+ *
+ * This is the equivalent of: Point(get_right(), get_top())
+ *
+ * \return The top-right point.
+ */
+constexpr Point Rectangle::get_top_right() const {
+  return { get_right(), get_top() };
 }
 
 /**

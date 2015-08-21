@@ -43,6 +43,13 @@ class TargetMovement: public StraightMovement {
         bool ignore_obstacles
     );
 
+    TargetMovement(
+        const MapEntityPtr& target_entity,
+        const Point& xy,
+        int moving_speed,
+        bool ignore_obstacles
+    );
+
     void set_target(
         const MapEntityPtr& target_entity,
         const Point& xy

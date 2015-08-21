@@ -139,7 +139,6 @@ file(
   include/solarus/movements/CircleMovement.h
   include/solarus/movements/FallingHeight.h
   include/solarus/movements/FallingOnFloorMovement.h
-  include/solarus/movements/FollowMovement.h
   include/solarus/movements/JumpMovement.h
   include/solarus/movements/Movement.h
   include/solarus/movements/PathFinding.h
@@ -149,6 +148,7 @@ file(
   include/solarus/movements/PlayerMovement.h
   include/solarus/movements/RandomMovement.h
   include/solarus/movements/RandomPathMovement.h
+  include/solarus/movements/RelativeMovement.h
   include/solarus/movements/StraightMovement.h
   include/solarus/movements/TargetMovement.h
 
@@ -345,7 +345,6 @@ file(
 
   src/movements/CircleMovement.cpp
   src/movements/FallingOnFloorMovement.cpp
-  src/movements/FollowMovement.cpp
   src/movements/JumpMovement.cpp
   src/movements/Movement.cpp
   src/movements/PathFinding.cpp
@@ -355,6 +354,7 @@ file(
   src/movements/PlayerMovement.cpp
   src/movements/RandomMovement.cpp
   src/movements/RandomPathMovement.cpp
+  src/movements/RelativeMovement.cpp
   src/movements/StraightMovement.cpp
   src/movements/TargetMovement.cpp
 

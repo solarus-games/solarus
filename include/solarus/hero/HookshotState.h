@@ -33,8 +33,8 @@ class Hero::HookshotState: public Hero::State {
 
     HookshotState(Hero& hero);
 
-    virtual void start(const State* previous_state);
-    virtual void stop(const State* next_state);
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
 
     virtual bool is_touching_ground() const override;
     virtual bool can_avoid_deep_water() const override;

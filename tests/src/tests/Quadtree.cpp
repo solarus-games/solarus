@@ -19,6 +19,7 @@
 #include "solarus/lowlevel/Rectangle.h"
 #include "test_tools/TestEnvironment.h"
 #include <memory>
+#include <sstream>
 
 using namespace Solarus;
 
@@ -51,6 +52,22 @@ class Element {
 
 using ElementPtr = std::shared_ptr<Element>;
 
+void check_num_elements(const Quadtree<ElementPtr>& quadtree, int expected) {
+
+  if (quadtree.get_num_elements() != expected) {
+    std::ostringstream oss;
+    oss << "Wrong number of elements: expected " << expected << ", got " << quadtree.get_num_elements();
+    Debug::die(oss.str());
+  }
+}
+
+ElementPtr add(Quadtree<ElementPtr>& quadtree, int x, int y, int width, int height) {
+
+  ElementPtr element(std::make_shared<Element>(Rectangle(x, y, width, height)));
+  Debug::check_assertion(quadtree.add(element), "Failed to add element");
+  return element;
+}
+
 /**
  * \brief Tests an empty quadtree.
  */
@@ -61,7 +78,20 @@ void test_empty(TestEnvironment& /* env */) {
   Quadtree<ElementPtr> quadtree(space_size);
 
   Debug::check_assertion(quadtree.get_space_size() == space_size, "Wrong space size");
-  Debug::check_assertion(quadtree.get_num_elements() == 0, "Expected empty quadtree");
+  check_num_elements(quadtree, 0);
+}
+
+/**
+ * \brief Tests adding elements to a quadtree.
+ */
+void test_add(TestEnvironment& /* env */) {
+
+  Size space_size(1280, 960);
+
+  Quadtree<ElementPtr> quadtree(space_size);
+
+  add(quadtree, 800, 40, 16, 16);
+  check_num_elements(quadtree, 1);
 }
 
 }
@@ -74,6 +104,7 @@ int main(int argc, char** argv) {
   TestEnvironment env(argc, argv);
 
   test_empty(env);
+  test_add(env);
 
   return 0;
 }

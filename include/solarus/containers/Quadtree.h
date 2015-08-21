@@ -20,7 +20,7 @@
 #include "solarus/Common.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lowlevel/Size.h"
-#include <array>
+#include <map>
 #include <vector>
 
 namespace Solarus {
@@ -40,11 +40,11 @@ class Quadtree {
 
     Quadtree(const Size& space_size);
 
-    const Size& get_space_size() const;
+    Size get_space_size() const;
 
-    void add(const T& element);
-    void remove(const T& element);
-    void move(const T& element);
+    bool add(const T& element);
+    bool remove(const T& element);
+    bool move(const T& element);
 
     void get_elements(
         const Rectangle& where,
@@ -53,51 +53,61 @@ class Quadtree {
 
     int get_num_elements() const;
 
-    int get_num_elements(
-        const Rectangle& where
-    ) const;
-
     static constexpr int
         max_in_cell = 8;     /**< A cell is split if it exceeds this number
                               * when adding an element. */
     static constexpr int
         min_in_4_cells = 4;  /**< 4 sibling cells are merged if their total
                               * is below this number when removing an element. */
+    static constexpr int
+        min_cell_size = 16;  /**< Don't split more if a cell is smaller than
+                              * this size. */
 
   private:
 
-    struct Node {
+    class Node {
 
-      T elements[max_in_cell];
-      Node* children[4];
-      Node* parent;
-      Point center;
-      int num_elements;
+      public:
 
-      Node() :
-        elements(),
-        children{ nullptr },
-        parent(nullptr),
-        num_elements(0) {
+        Node(const Rectangle& cell);
 
-      }
+        Rectangle get_cell() const;
+        Size get_cell_size() const;
+
+        int add(
+            const T& element
+        );
+
+        void get_elements(
+            const Rectangle& where,
+            std::vector<T>& elements
+        ) const;
+
+        int get_num_elements() const;
+
+      private:
+
+        std::vector<T> elements;
+        Node* children[4];
+        Node* parent;
+        Rectangle cell;
+        Point center;
+        int num_elements;
+
     };
 
-    void get_elements(
-        const Node* node,
-        const Rectangle& where,
-        std::vector<T>& elements
-    ) const;
+    struct ElementInfo {
+        Rectangle bounding_box;
+        int num_nodes;
+    };
 
-    int get_num_elements(
-        const Node* node,
-        const Rectangle& where
-    ) const;
-
-    const Size space_size;
+    std::map<T, ElementInfo> elements;
     Node root;
 
 };
+
+template<typename T>
+using QuadtreeNode = typename Quadtree<T>::Node;
 
 }
 

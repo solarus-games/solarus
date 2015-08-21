@@ -23,8 +23,7 @@ namespace Solarus {
  */
 template<typename T>
 Quadtree<T>::Quadtree(const Size& space_size) :
-    space_size(space_size),
-    root() {
+    root(Rectangle(Point(0, 0), space_size)) {
 
 }
 
@@ -33,28 +32,35 @@ Quadtree<T>::Quadtree(const Size& space_size) :
  * \return The space size.
  */
 template<typename T>
-const Size& Quadtree<T>::get_space_size() const {
-    return space_size;
+Size Quadtree<T>::get_space_size() const {
+    return root.get_cell_size();
 }
 
 /**
  * \brief Adds an element to the quadtree.
  * \param element The element to add.
+ * \return \c true in case of success.
  */
 template<typename T>
-void Quadtree<T>::add(const T& element) {
+bool Quadtree<T>::add(const T& element) {
 
-  // TODO
+  if (elements.find(element) != elements.end()) {
+    return false;
+  }
+
+  return root.add(element);
 }
 
 /**
  * \brief Removes an element from the quadtree.
  * \param element The element to remove.
+ * \return \c true in case of success.
  */
 template<typename T>
-void Quadtree<T>::remove(const T& element) {
+bool Quadtree<T>::remove(const T& /* element */) {
 
   // TODO
+  return false;
 }
 
 /**
@@ -62,11 +68,14 @@ void Quadtree<T>::remove(const T& element) {
  *
  * This function should be called when the position or size or the element
  * is changed.
+ *
+ * \return \c true in case of success.
  */
 template<typename T>
-void Quadtree<T>::move(const T& element) {
+bool Quadtree<T>::move(const T& /* element */) {
 
   // TODO store a map of bounding boxes to know the previous position
+  return false;
 }
 
 /**
@@ -75,36 +84,7 @@ void Quadtree<T>::move(const T& element) {
  */
 template<typename T>
 int Quadtree<T>::get_num_elements() const {
-  return get_num_elements(Rectangle(Point(0, 0), get_space_size()));
-}
-
-/**
- * \brief Returns the number of elements intersecting the given rectangle.
- * \param where The rectangle to check.
- * \return The number of elements whose bounding box intersect the rectangle.
- */
-template<typename T>
-int Quadtree<T>::get_num_elements(
-    const Rectangle& where
-) const {
-  return get_num_elements(&root, where);
-}
-
-/**
- * \brief Returns the number of elements intersecting the given rectangle
- * under a given node.
- * \param node The node to inspect or nullptr.
- * \param where The rectangle to check.
- * \return The number of elements under this node.
- */
-template<typename T>
-int Quadtree<T>::get_num_elements(
-    const Node* /* node */,
-    const Rectangle& /* where */
-) const {
-
-  // TODO avoid duplicates
-  return 0;
+  return root.get_num_elements();
 }
 
 /**
@@ -117,18 +97,101 @@ void Quadtree<T>::get_elements(
     const Rectangle& where,
     std::vector<T>& elements
 ) const {
-  get_elements(&root, where, elements);
+  root.get_elements(where, elements);
 }
 
 /**
- * \brief Gets the elements intersecting the given rectangle under a node.
- * \param[in] node The node to inspect or nullptr.
+ * \brief Creates a node with the given coordinates.
+ * \param cell Cell coordinates of the node.
+ */
+template<typename T>
+Quadtree<T>::Node::Node(const Rectangle& cell) :
+    elements(),
+    children{ nullptr, nullptr, nullptr, nullptr },
+    parent(nullptr),
+    cell(cell),
+    center(cell.get_center()),
+    num_elements(0) {
+  elements.reserve(max_in_cell);
+}
+
+/**
+ * \brief Returns the cell represented by this node.
+ * \return The cell's rectangle.
+ */
+template<typename T>
+Rectangle Quadtree<T>::Node::get_cell() const {
+  return cell;
+}
+
+/**
+ * \brief Returns the size of the cell represented by this node.
+ * \return The cell size.
+ */
+template<typename T>
+Size Quadtree<T>::Node::get_cell_size() const {
+    return get_cell().get_size();
+}
+
+/**
+ * \brief Adds an element to this node if its bounding box intersects it.
+ *
+ * Splits the node if necessary when the threshold is exceeded.
+ *
+ * \param element The element to add.
+ * \return The number of cells the element was added to.
+ */
+template<typename T>
+int Quadtree<T>::Node::add(
+    const T& element
+) {
+  const Rectangle& box = element->get_bounding_box();
+  if (!get_cell().overlaps(box)) {
+    return 0;
+  }
+
+  if (get_cell().contains(box.get_center())) {
+    // We are the main cell of this element: it counts in the total.
+    if (get_num_elements() >= max_in_cell &&
+        get_cell_size().width < min_cell_size &&
+        get_cell_size().height < min_cell_size) {
+      // TODO split();
+      return 0;
+    }
+  }
+
+  // Add it to the current node.
+  elements.push_back(element);
+  return 1;
+}
+
+/**
+ * \brief Returns the number of elements whose center is under this node.
+ * \return The number of elements under this node.
+ */
+template<typename T>
+int Quadtree<T>::Node::get_num_elements() const {
+
+  // Some elements can overlap several cells.
+  // To avoid duplicates, we count an element if its center is in this cell.
+  // TODO This information could be stored for better performance.
+  int num_elements = 0;
+  for (const T& element: elements) {
+    const Rectangle& box = element->get_bounding_box();
+    if (get_cell().contains(box.get_center())) {
+      ++num_elements;
+    }
+  }
+  return num_elements;
+}
+
+/**
+ * \brief Gets the elements intersecting the given rectangle under this node.
  * \param[in] where The rectangle to check.
  * \param[in/out] elements A list that will be filled with elements.
  */
 template<typename T>
-void Quadtree<T>::get_elements(
-    const Node* /* node */,
+void Quadtree<T>::Node::get_elements(
     const Rectangle& /* where */,
     std::vector<T>& /* elements */
 ) const {

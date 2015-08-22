@@ -40,8 +40,10 @@ Quadtree<T>::Quadtree() :
  */
 template<typename T>
 Quadtree<T>::Quadtree(const Rectangle& space) :
-    root(space) {
+    elements(),
+    root() {
 
+    initialize(space);
 }
 
 /**
@@ -62,7 +64,19 @@ template<typename T>
 void Quadtree<T>::initialize(const Rectangle& space) {
 
   clear();
-  root.initialize(space);
+
+  // Expand the space so that it is square.
+  Rectangle square = space;
+  if (space.get_width() > space.get_height()) {
+    square.set_y(square.get_center().y - square.get_width() / 2);
+    square.set_height(square.get_width());
+  }
+  else {
+    square.set_x(square.get_center().x - square.get_height() / 2);
+    square.set_width(square.get_height());
+  }
+
+  root.initialize(square);
 }
 
 /**
@@ -178,6 +192,17 @@ void Quadtree<T>::draw(const SurfacePtr& dst_surface, const Point& dst_position)
 }
 
 /**
+ * \brief Creates a node with default coordinates.
+ *
+ * Call initialize later to set coordinates.
+ */
+template<typename T>
+Quadtree<T>::Node::Node() :
+    Node(Rectangle(0, 0, 256, 256)) {
+
+}
+
+/**
  * \brief Creates a node with the given coordinates.
  * \param cell Cell coordinates of the node.
  */
@@ -189,7 +214,7 @@ Quadtree<T>::Node::Node(const Rectangle& cell) :
     center(cell.get_center()),
     color() {
 
-  elements.reserve(max_in_cell);
+  initialize(cell);
 
   if (debug_quadtrees) {
     color = Color(Random::get_number(256), Random::get_number(256), Random::get_number(256));

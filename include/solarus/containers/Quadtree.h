@@ -84,6 +84,7 @@ class Quadtree {
 
       public:
 
+        Node();
         Node(const Rectangle& cell);
 
         void clear();

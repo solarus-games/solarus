@@ -2614,8 +2614,12 @@ void MapEntity::update() {
  */
 bool MapEntity::is_drawn() const {
 
+  int camera_width = get_map().get_camera_position().get_width();
+  const bool far = get_distance_to_camera() > camera_width * 1.5;
+
   return is_visible()
       && (overlaps_camera()
+          || !far
           || !is_drawn_at_its_position()
       );
 }

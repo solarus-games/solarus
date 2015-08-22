@@ -52,6 +52,9 @@ class Element {
 
 using ElementPtr = std::shared_ptr<Element>;
 
+/**
+ * \brief Checks the number of elements of a quadtree.
+ */
 void check_num_elements(const Quadtree<ElementPtr>& quadtree, int expected) {
 
   if (quadtree.get_num_elements() != expected) {
@@ -59,6 +62,17 @@ void check_num_elements(const Quadtree<ElementPtr>& quadtree, int expected) {
     oss << "Wrong number of elements: expected " << expected << ", got " << quadtree.get_num_elements();
     Debug::die(oss.str());
   }
+}
+
+/**
+ * \brief Checks that an element was found after a quadtree query.
+ */
+void check_found(const std::vector<ElementPtr>& found_elements, ElementPtr& expected) {
+
+  Debug::check_assertion(
+      std::find(found_elements.begin(), found_elements.end(), expected) != found_elements.end(),
+      "Element not found"
+  );
 }
 
 /**
@@ -121,9 +135,20 @@ void test_add(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
       Rectangle(700, 400, 16, 16)
   };
 
+  std::vector<ElementPtr> added_elements;
   for (const Rectangle& rectangle : rectangles) {
-    add(quadtree, rectangle);
+    ElementPtr element = add(quadtree, rectangle);
+    added_elements.push_back(element);
   }
+
+  std::vector<ElementPtr> found_elements;
+  Rectangle region(220, 10, 100, 100);
+  quadtree.get_elements(region, found_elements);
+
+  Debug::check_assertion(found_elements.size() == 3, "Expected 3 elements found");
+  check_found(found_elements, added_elements[2]);
+  check_found(found_elements, added_elements[3]);
+  check_found(found_elements, added_elements[4]);
 }
 
 /**

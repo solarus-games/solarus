@@ -853,7 +853,9 @@ void MapEntity::set_size(int width, int height) {
       "Invalid entity size: width and height must be multiple of 8");
   bounding_box.set_size(width, height);
 
-  // TODO notify the quadtree
+  if (is_on_map()) {
+    get_entities().notify_entity_bounding_box_changed(*this, bounding_box);
+  }
 }
 
 /**
@@ -1457,7 +1459,10 @@ void MapEntity::notify_obstacle_reached() {
  */
 void MapEntity::notify_position_changed() {
 
-  // TODO notify the quadtree
+  // Notify the quadtree.
+  if (is_on_map()) {
+    get_entities().notify_entity_bounding_box_changed(*this, bounding_box);
+  }
 
   check_collision_with_detectors();
   if (is_ground_modifier()) {

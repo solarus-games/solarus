@@ -90,6 +90,7 @@ class SOLARUS_API MapEntities {
     static bool compare_y(MapEntity* first, MapEntity* second);
     void set_entity_drawn_in_y_order(MapEntity& entity, bool drawn_in_y_order);
     void set_entity_layer(MapEntity& entity, Layer layer);
+    void notify_entity_bounding_box_changed(MapEntity& entity, const Rectangle& bounding_box);
     void notify_entity_ground_observer_changed(MapEntity& entity);
     void notify_entity_ground_modifier_changed(MapEntity& entity);
 

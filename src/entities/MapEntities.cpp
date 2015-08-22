@@ -992,6 +992,19 @@ void MapEntities::set_entity_layer(MapEntity& entity, Layer layer) {
 }
 
 /**
+ * \brief This function should be called whenever the size or coordinates of
+ * an entity changes.
+ * \param entity The entity modified.
+ * \param bounding_box The new bounding box.
+ */
+void MapEntities::notify_entity_bounding_box_changed(MapEntity& entity, const Rectangle& bounding_box) {
+
+  // Update the quadtree.
+  MapEntityPtr shared_entity = std::static_pointer_cast<MapEntity>(entity.shared_from_this());
+  quadtree.move(shared_entity, bounding_box);
+}
+
+/**
  * \brief This function should be called when an entity becomes a ground
  * observer or when it stops being one.
  * \param entity The entity whose ground observer property has changed.

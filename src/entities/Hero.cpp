@@ -1077,6 +1077,10 @@ void Hero::notify_obstacle_reached() {
  */
 void Hero::notify_position_changed() {
 
+  if (is_on_map()) {
+    get_entities().notify_entity_bounding_box_changed(*this, get_bounding_box());
+  }
+
   check_position();
   state->notify_position_changed();
 

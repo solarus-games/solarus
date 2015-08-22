@@ -127,6 +127,17 @@ bool Quadtree<T>::remove(const T& element) {
 template<typename T>
 bool Quadtree<T>::move(const T& element, const Rectangle& bounding_box) {
 
+  const auto& it = elements.find(element);
+  if (it == elements.end()) {
+    // Entity not in the quadtree.
+    return false;
+  }
+
+  if (it->second.bounding_box == bounding_box) {
+    // No change.
+    return true;
+  }
+
   if (!remove(element)) {
     return false;
   }
@@ -362,6 +373,8 @@ void Quadtree<T>::Node::split() {
     }
   }
   elements.clear();
+
+  Debug::check_assertion(is_split(), "Quadtree node split failed");
 }
 
 /**
@@ -377,7 +390,7 @@ void Quadtree<T>::Node::merge() {
   // We want to avoid duplicates while preserving a deterministic order.
   std::set<T> merged_elements;
   for (const std::unique_ptr<Node>& child : children) {
-    Debug::check_assertion(!child->is_split(), "Quadtree node child is not a leave");
+    Debug::check_assertion(!child->is_split(), "Quadtree node child is not a leaf");
     for (const std::pair<T, Rectangle>& pair: child->elements) {
       const T& element = pair.first;
       if (merged_elements.insert(element).second) {
@@ -385,6 +398,12 @@ void Quadtree<T>::Node::merge() {
       }
     }
   }
+
+  for (std::unique_ptr<Node>& child : children) {
+    child = nullptr;
+  }
+
+  Debug::check_assertion(!is_split(), "Quadtree node merge failed");
 }
 
 /**
@@ -454,19 +473,23 @@ void Quadtree<T>::Node::get_elements(
 template<typename T>
 void Quadtree<T>::Node::draw(const SurfacePtr& dst_surface, const Point& dst_position) {
 
-  // Draw the rectangle of the node.
-  draw_rectangle(get_cell(), color, dst_surface, dst_position);
+  if (!is_split()) {
+    // Draw the rectangle of the node.
+    draw_rectangle(get_cell(), color, dst_surface, dst_position);
 
-  // Draw children nodes.
-  if (is_split()) {
+    // Draw bounding boxes of elements.
+    for (const std::pair<T, Rectangle>& pair: elements) {
+      const Rectangle& bounding_box = pair.second;
+      if (get_cell().contains(bounding_box.get_center())) {
+        draw_rectangle(bounding_box, color, dst_surface, dst_position);
+      }
+    }
+  }
+  else {
+    // Draw children nodes.
     for (const std::unique_ptr<Node>& child : children) {
       child->draw(dst_surface, dst_position);
     }
-  }
-
-  // Draw bounding boxes of elements.
-  for (const std::pair<T, Rectangle>& pair: elements) {
-    draw_rectangle(pair.second, color, dst_surface, dst_position);
   }
 }
 

@@ -125,8 +125,8 @@ constexpr bool operator!=(const Size& lhs, const Size& rhs) {
  * \param rhs Another size.
  * \return The sum of both sizes.
  */
-inline Size operator+(Size lhs, const Size& rhs) {
-  return lhs += rhs;
+constexpr Size operator+(const Size& lhs, const Size& rhs) {
+  return { lhs.width + rhs.width, lhs.height + rhs.height };
 }
 
 /**
@@ -135,8 +135,8 @@ inline Size operator+(Size lhs, const Size& rhs) {
  * \param rhs The size to subtract.
  * \return The difference of both sizes.
  */
-inline Size operator-(Size lhs, const Size& rhs) {
-  return lhs -= rhs;
+constexpr Size operator-(const Size& lhs, const Size& rhs) {
+  return { lhs.width - rhs.width, lhs.height - rhs.height };
 }
 
 /**
@@ -145,8 +145,8 @@ inline Size operator-(Size lhs, const Size& rhs) {
  * \param factor The multiplication factor.
  * \return A size with width and height multiplied by the factor.
  */
-inline Size operator*(Size size, int factor) {
-  return size *= factor;
+constexpr Size operator*(const Size& size, int factor) {
+  return { size.width * factor, size.height * factor };
 }
 
 /**
@@ -155,8 +155,8 @@ inline Size operator*(Size size, int factor) {
  * \param size A size.
  * \return A size with width and height multiplied by the factor.
  */
-inline Size operator*(int factor, Size size) {
-  return size *= factor;
+constexpr Size operator*(int factor, const Size& size) {
+  return size * factor;
 }
 
 /**
@@ -165,8 +165,8 @@ inline Size operator*(int factor, Size size) {
  * \param divisor The divisor.
  * \return A size with width and height divided by the divisor.
  */
-inline Size operator/(Size size, int divisor) {
-  return size /= divisor;
+constexpr Size operator/(const Size& size, int divisor) {
+  return { size.width / divisor, size.height / divisor };
 }
 
 }

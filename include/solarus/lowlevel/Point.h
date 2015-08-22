@@ -62,16 +62,16 @@ constexpr bool operator==(const Point& lhs, const Point& rhs);
 constexpr bool operator!=(const Point& lhs, const Point& rhs);
 
 // Unary arithmetic operators
-Point operator+(const Point& point);
-Point operator-(const Point& point);
+constexpr Point operator+(const Point& point);
+constexpr Point operator-(const Point& point);
 
 // Binary arithmetic operators
-Point operator+(Point lhs, const Point& rhs);
-Point operator-(Point lhs, const Point& rhs);
+constexpr Point operator+(const Point& lhs, const Point& rhs);
+constexpr Point operator-(const Point& lhs, const Point& rhs);
 
-Point operator*(Point point, int factor);
-Point operator*(int factor, Point point);
-Point operator/(Point point, int divisor);
+constexpr Point operator*(const Point& point, int factor);
+constexpr Point operator*(int factor, const Point& point);
+constexpr Point operator/(const Point& point, int divisor);
 
 // Output to stream
 std::ostream& operator<<(std::ostream& stream, const Point& point);

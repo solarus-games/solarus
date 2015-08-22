@@ -195,7 +195,6 @@ int main(int argc, char** argv) {
   int margin = 64;
   Rectangle space(-margin, -margin, 1280 + 2 * margin, 960 + 2 * margin);
   Quadtree<ElementPtr> quadtree(space);
-  Debug::check_assertion(quadtree.get_space() == space, "Wrong space rectangle");
 
   test_empty(env, quadtree);
   test_add(env, quadtree);

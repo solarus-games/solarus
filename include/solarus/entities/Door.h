@@ -69,14 +69,14 @@ class Door: public Detector {
 
     virtual EntityType get_type() const override;
 
-    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual bool is_obstacle_for(Entity& other) override;
     virtual void set_suspended(bool suspended) override;
     virtual void update() override;
     virtual void draw_on_map() override;
     virtual std::string get_sword_tapping_sound() override;
     virtual bool notify_action_command_pressed() override;
-    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
-    virtual void notify_collision(MapEntity& entity, Sprite& this_sprite, Sprite& other_sprite) override;
+    virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual void notify_collision(Entity& entity, Sprite& this_sprite, Sprite& other_sprite) override;
     virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
 
     // Properties.

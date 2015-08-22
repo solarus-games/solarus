@@ -42,7 +42,7 @@ class Bomb: public Detector {
     virtual bool is_lava_obstacle() const override;
     virtual bool is_prickle_obstacle() const override;
     virtual bool is_ladder_obstacle() const override;
-    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
     virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
     virtual void notify_collision_with_stream(Stream& stream, int dx, int dy) override;
     virtual void notify_position_changed() override;

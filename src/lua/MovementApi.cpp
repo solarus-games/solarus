@@ -602,7 +602,7 @@ int LuaContext::movement_api_start(lua_State* l) {
       lua_context.start_movement_on_point(movement, 2);
     }
     else if (is_entity(l, 2)) {
-      MapEntity& entity = *check_entity(l, 2);
+      Entity& entity = *check_entity(l, 2);
       entity.clear_movement();
       entity.set_movement(movement);
     }
@@ -631,7 +631,7 @@ int LuaContext::movement_api_stop(lua_State* l) {
 
     std::shared_ptr<Movement> movement = check_movement(l, 1);
 
-    MapEntity* entity = movement->get_entity();
+    Entity* entity = movement->get_entity();
     if (entity != nullptr) {
       // The object controlled is a map entity.
       entity->clear_movement();
@@ -1002,7 +1002,7 @@ int LuaContext::target_movement_api_set_target(lua_State* l) {
     }
     else {
       // the target is an entity, possibly with an offset.
-      MapEntityPtr target = check_entity(l, 2);
+      EntityPtr target = check_entity(l, 2);
       int x = 0;
       int y = 0;
       if (lua_isnumber(l, 3)) {
@@ -1337,7 +1337,7 @@ int LuaContext::path_finding_movement_api_set_target(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     PathFindingMovement& movement = *check_path_finding_movement(l, 1);
-    MapEntityPtr target = check_entity(l, 2);
+    EntityPtr target = check_entity(l, 2);
 
     movement.set_target(target);
 
@@ -1415,7 +1415,7 @@ int LuaContext::circle_movement_api_set_center(lua_State* l) {
     else {
       // the center is an entity
 
-      MapEntityPtr center = check_entity(l, 2);
+      EntityPtr center = check_entity(l, 2);
       int dx = LuaTools::opt_int(l, 3, 0);
       int dy = LuaTools::opt_int(l, 4, 0);
       movement.set_center(center, dx, dy);

@@ -63,13 +63,13 @@ const std::string CarriedItem::lifting_trajectories[4] = {
  */
 CarriedItem::CarriedItem(
     Hero& hero,
-    const MapEntity& original_entity,
+    const Entity& original_entity,
     const std::string& animation_set_id,
     const std::string& destruction_sound_id,
     int damage_on_enemies,
     uint32_t explosion_date
 ):
-  MapEntity("", 0, hero.get_layer(), Point(0, 0), Size(0, 0)),
+  Entity("", 0, hero.get_layer(), Point(0, 0), Size(0, 0)),
   hero(hero),
   is_lifting(true),
   is_throwing(false),
@@ -327,7 +327,7 @@ bool CarriedItem::can_explode() const {
  */
 void CarriedItem::set_suspended(bool suspended) {
 
-  MapEntity::set_suspended(suspended); // suspend the animation and the movement
+  Entity::set_suspended(suspended); // suspend the animation and the movement
 
   if (is_throwing) {
     // suspend the shadow
@@ -352,7 +352,7 @@ void CarriedItem::set_suspended(bool suspended) {
 void CarriedItem::update() {
 
   // update the sprite and the position
-  MapEntity::update();
+  Entity::update();
 
   if (is_suspended()) {
     return;
@@ -435,7 +435,7 @@ void CarriedItem::notify_obstacle_reached() {
 /**
  * \brief Draws the carried item on the map.
  *
- * This is a redefinition of MapEntity::draw_on_map()
+ * This is a redefinition of Entity::draw_on_map()
  * to draw the shadow independently of the item movement.
  */
 void CarriedItem::draw_on_map() {
@@ -446,7 +446,7 @@ void CarriedItem::draw_on_map() {
 
   if (!is_throwing) {
     // draw the sprite normally
-    MapEntity::draw_on_map();
+    Entity::draw_on_map();
   }
   else {
     // when the item is being thrown, draw the shadow and the item separately
@@ -470,7 +470,7 @@ void CarriedItem::notify_collision_with_enemy(Enemy &enemy) {
 }
 
 /**
- * \copydoc MapEntity::notify_attacked_enemy
+ * \copydoc Entity::notify_attacked_enemy
  */
 void CarriedItem::notify_attacked_enemy(
     EnemyAttack /* attack */,
@@ -494,7 +494,7 @@ bool CarriedItem::is_teletransporter_obstacle(Teletransporter& /* teletransporte
 }
 
 /**
- * \copydoc MapEntity::is_stream_obstacle
+ * \copydoc Entity::is_stream_obstacle
  */
 bool CarriedItem::is_stream_obstacle(Stream& /* stream */) {
   return false;
@@ -596,7 +596,7 @@ bool CarriedItem::is_npc_obstacle(Npc& npc) {
 }
 
 /**
- * \copydoc MapEntity::is_jumper_obstacle
+ * \copydoc Entity::is_jumper_obstacle
  */
 bool CarriedItem::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candidate_position */) {
   return false;

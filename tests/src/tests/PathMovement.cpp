@@ -26,7 +26,7 @@ namespace {
 /**
  * \brief Tests a path movement composed of one step.
  */
-void one_step_test(TestEnvironment& env, MapEntity& entity) {
+void one_step_test(TestEnvironment& env, Entity& entity) {
 
   Point old_xy = entity.get_xy();
 
@@ -77,7 +77,7 @@ void one_step_test(TestEnvironment& env, MapEntity& entity) {
 /**
  * \brief Tests that a path movement returns the correct current direction.
  */
-void direction_test(TestEnvironment& env, MapEntity& entity) {
+void direction_test(TestEnvironment& env, Entity& entity) {
 
   std::shared_ptr<PathMovement> movement = std::make_shared<PathMovement>(
       "5", 100, false, false, false  // 8 pixels to the right.
@@ -99,7 +99,7 @@ void direction_test(TestEnvironment& env, MapEntity& entity) {
 /**
  * \brief Tests a path movement composed of several 8-pixel steps.
  */
-void multi_step_test(TestEnvironment& env, MapEntity& entity) {
+void multi_step_test(TestEnvironment& env, Entity& entity) {
 
   Point old_xy = entity.get_xy();
 
@@ -134,7 +134,7 @@ void multi_step_test(TestEnvironment& env, MapEntity& entity) {
 /**
  * \brief Checks the snap-to-grid option of PathMovement.
  */
-void snap_test(TestEnvironment& env, MapEntity& entity) {
+void snap_test(TestEnvironment& env, Entity& entity) {
 
   entity.set_top_left_xy(155, 108);  // Not aligned to the grid.
   Debug::check_assertion(!entity.is_aligned_to_grid(),

@@ -42,7 +42,7 @@ class Tileset;
  *
  * If you need to dynamically enable or disable a tile, see DynamicTile.
  */
-class Tile: public MapEntity {
+class Tile: public Entity {
 
   public:
 

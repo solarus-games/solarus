@@ -226,7 +226,7 @@ void Hero::PullingState::stop_moving_pulled_entity() {
 
     hero.clear_movement();
     pulling_movement = nullptr;
-    MapEntity* entity_just_moved = pulled_entity;
+    Entity* entity_just_moved = pulled_entity;
     pulled_entity = nullptr;
     entity_just_moved->notify_moved_by(hero);
   }
@@ -240,7 +240,7 @@ void Hero::PullingState::stop_moving_pulled_entity() {
  * \param attacker an attacker that is trying to hurt the hero
  * (or nullptr if the source of the attack is not an enemy)
  */
-bool Hero::PullingState::can_be_hurt(MapEntity* /* attacker */) const {
+bool Hero::PullingState::can_be_hurt(Entity* /* attacker */) const {
   return !is_moving_grabbed_entity();
 }
 

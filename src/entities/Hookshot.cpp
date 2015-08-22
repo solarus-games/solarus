@@ -40,7 +40,7 @@ namespace Solarus {
  * \param hero the hero
  */
 Hookshot::Hookshot(const Hero& hero):
-    MapEntity("", 0, hero.get_layer(), Point(0, 0), Size(0, 0)),
+    Entity("", 0, hero.get_layer(), Point(0, 0), Size(0, 0)),
     next_sound_date(System::now()),
     has_to_go_back(false),
     going_back(false),
@@ -93,7 +93,7 @@ bool Hookshot::is_teletransporter_obstacle(Teletransporter& /* teletransporter *
 }
 
 /**
- * \copydoc MapEntity::is_stream_obstacle
+ * \copydoc Entity::is_stream_obstacle
  */
 bool Hookshot::is_stream_obstacle(Stream& /* stream */) {
   return false;
@@ -167,7 +167,7 @@ bool Hookshot::is_crystal_obstacle(Crystal& /* crystal */) {
 }
 
 /**
- * \copydoc MapEntity::is_jumper_obstacle
+ * \copydoc Entity::is_jumper_obstacle
  */
 bool Hookshot::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candidate_position */) {
   return false;
@@ -178,7 +178,7 @@ bool Hookshot::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* cand
  */
 void Hookshot::update() {
 
-  MapEntity::update();
+  Entity::update();
 
   if (is_suspended()) {
     return;
@@ -234,7 +234,7 @@ void Hookshot::draw_on_map() {
     return;
   }
 
-  MapEntity::draw_on_map();
+  Entity::draw_on_map();
 
   // also draw the links
   int direction = get_sprite().get_current_direction();
@@ -281,7 +281,7 @@ void Hookshot::go_back() {
  * \brief Attachs the hookshot to an entity and makes the hero move towards this entity.
  * \param entity_reached the entity to attach the hookshot to
  */
-void Hookshot::attach_to(MapEntity& entity_reached) {
+void Hookshot::attach_to(Entity& entity_reached) {
 
   Debug::check_assertion(this->entity_reached == nullptr,
       "The hookshot is already attached to an entity");
@@ -327,7 +327,7 @@ void Hookshot::notify_collision_with_enemy(
 }
 
 /**
- * \copydoc MapEntity::notify_attacked_enemy
+ * \copydoc Entity::notify_attacked_enemy
  */
 void Hookshot::notify_attacked_enemy(
     EnemyAttack /* attack */,

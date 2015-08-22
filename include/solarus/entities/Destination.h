@@ -26,7 +26,7 @@ namespace Solarus {
 /**
  * \brief A location of the map where the hero can arrive when using a teletransporter.
  */
-class Destination: public MapEntity {
+class Destination: public Entity {
 
   public:
 

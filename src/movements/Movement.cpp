@@ -59,7 +59,7 @@ Movement::~Movement() {
  * \return the entity controlled by this movement, or nullptr if this movement
  * is not attached to a map entity
  */
-MapEntity* Movement::get_entity() const {
+Entity* Movement::get_entity() const {
   return entity;
 }
 
@@ -73,7 +73,7 @@ MapEntity* Movement::get_entity() const {
  * \param entity The entity to control, or nullptr if the movement should not be
  * attached to a map entity.
  */
-void Movement::set_entity(MapEntity* entity) {
+void Movement::set_entity(Entity* entity) {
 
   Debug::check_assertion(drawable == nullptr, "This movement is already assigned to a drawable");
 

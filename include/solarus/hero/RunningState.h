@@ -43,7 +43,7 @@ class Hero::RunningState: public HeroState {
     virtual bool can_take_jumper() const override;
     virtual void notify_jumper_activated(Jumper& jumper) override;
     virtual bool can_take_stairs() const override;
-    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_be_hurt(Entity* attacker) const override;
     virtual bool can_pick_treasure(EquipmentItem& item) const override;
     virtual bool can_sword_hit_crystal() const override;
     virtual bool can_start_gameover_sequence() const override;

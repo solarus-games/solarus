@@ -139,7 +139,7 @@ bool Pickable::can_be_obstacle() const {
 }
 
 /**
- * \copydoc MapEntity::is_ground_observer
+ * \copydoc Entity::is_ground_observer
  */
 bool Pickable::is_ground_observer() const {
   return true;
@@ -228,7 +228,7 @@ bool Pickable::initialize_sprites() {
 }
 
 /**
- * \copydoc MapEntity::notify_created
+ * \copydoc Entity::notify_created
  */
 void Pickable::notify_created() {
 
@@ -281,7 +281,7 @@ const Treasure& Pickable::get_treasure() const {
  * \brief Returns the entity (if any) followed by this pickable item.
  * \return the entity followed or nullptr
  */
-MapEntityPtr Pickable::get_entity_followed() {
+EntityPtr Pickable::get_entity_followed() {
   return entity_followed;
 }
 
@@ -293,15 +293,15 @@ MapEntityPtr Pickable::get_entity_followed() {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
+void Pickable::notify_collision(Entity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   if (entity_overlapping.is_hero()) {
     try_give_item_to_player();
   }
   else if (entity_followed == nullptr) {
 
-    MapEntityPtr shared_entity_overlapping =
-        std::static_pointer_cast<MapEntity>(entity_overlapping.shared_from_this());
+    EntityPtr shared_entity_overlapping =
+        std::static_pointer_cast<Entity>(entity_overlapping.shared_from_this());
     if (entity_overlapping.get_type() == EntityType::BOOMERANG) {
       Boomerang& boomerang = static_cast<Boomerang&>(entity_overlapping);
       if (!boomerang.is_going_back()) {
@@ -329,10 +329,10 @@ void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode /* 
 }
 
 /**
- * \copydoc Detector::notify_collision(MapEntity&, Sprite&, Sprite&)
+ * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Pickable::notify_collision(
-    MapEntity& other_entity,
+    Entity& other_entity,
     Sprite& /* this_sprite */,
     Sprite& other_sprite
 ) {
@@ -465,7 +465,7 @@ void Pickable::set_blinking(bool blinking) {
 /**
  * \brief This function is called by the map when the game is suspended or resumed.
  *
- * This is a redefinition of MapEntity::set_suspended() to suspend the timer
+ * This is a redefinition of Entity::set_suspended() to suspend the timer
  * which makes the pickable item disappear after a few seconds.
  *
  * \param suspended true to suspend the entity, false to resume it
@@ -503,7 +503,7 @@ void Pickable::set_suspended(bool suspended) {
  * \brief Updates the pickable item.
  *
  * This function is called repeatedly by the map.
- * This is a redefinition of MapEntity::update() to make
+ * This is a redefinition of Entity::update() to make
  * the item blink and then disappear after an amount of time.
  */
 void Pickable::update() {
@@ -566,7 +566,7 @@ void Pickable::update() {
 /**
  * \brief Draws the pickable item on the map.
  *
- * This is a redefinition of MapEntity::draw_on_map
+ * This is a redefinition of Entity::draw_on_map
  * to draw the shadow independently of the item movement.
  */
 void Pickable::draw_on_map() {

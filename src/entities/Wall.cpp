@@ -44,7 +44,7 @@ Wall::Wall(
     bool stops_blocks,
     bool stops_projectiles
 ):
-  MapEntity(name, 0, layer, xy, size) {
+  Entity(name, 0, layer, xy, size) {
 
   if (stops_hero) {
     entity_types_stopped.insert(EntityType::HERO);
@@ -88,7 +88,7 @@ bool Wall::can_be_drawn() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Wall::is_obstacle_for(MapEntity& other) {
+bool Wall::is_obstacle_for(Entity& other) {
 
   const auto it = entity_types_stopped.find(other.get_type());
   return it != entity_types_stopped.end();

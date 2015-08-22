@@ -309,7 +309,7 @@ bool Hero::JumpingState::can_avoid_switch() const {
  * \param attacker an attacker that is trying to hurt the hero
  * (or nullptr if the source of the attack is not an enemy)
  */
-bool Hero::JumpingState::can_be_hurt(MapEntity* /* attacker */) const {
+bool Hero::JumpingState::can_be_hurt(Entity* /* attacker */) const {
   return false;
 }
 

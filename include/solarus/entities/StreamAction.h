@@ -25,7 +25,7 @@
 
 namespace Solarus {
 
-class MapEntity;
+class Entity;
 class Stream;
 
 /**
@@ -39,10 +39,10 @@ class StreamAction {
 
   public:
 
-    StreamAction(Stream& stream, MapEntity& entity_moved);
+    StreamAction(Stream& stream, Entity& entity_moved);
 
     const Stream& get_stream() const;
-    const MapEntity& get_entity_moved() const;
+    const Entity& get_entity_moved() const;
     bool is_active() const;
 
     void update();
@@ -58,7 +58,7 @@ class StreamAction {
     std::shared_ptr<Stream>
         stream;                   /**< The stream applied,
                                    * or nullptr if it was destroyed. */
-    MapEntityPtr entity_moved;    /**< The entity the stream is applied to,
+    EntityPtr entity_moved;    /**< The entity the stream is applied to,
                                    * or nullptr if it was destroyed. */
     bool active;                  /**< Whether the stream effect is currently
                                    * applied. */

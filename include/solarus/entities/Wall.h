@@ -31,7 +31,7 @@ namespace Solarus {
  * This entity is typically used to prevent enemies from going to
  * a specific place.
  */
-class Wall: public MapEntity {
+class Wall: public Entity {
 
   public:
 
@@ -49,7 +49,7 @@ class Wall: public MapEntity {
 
     virtual EntityType get_type() const override;
     virtual bool can_be_drawn() const override;
-    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual bool is_obstacle_for(Entity& other) override;
 
   private:
 

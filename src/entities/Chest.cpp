@@ -72,7 +72,7 @@ Chest::Chest(
 
   set_origin(get_width() / 2, get_height() - 3);
 
-  // TODO set this as the default drawn_in_y_order for MapEntity
+  // TODO set this as the default drawn_in_y_order for Entity
   set_drawn_in_y_order(sprite.get_max_size().height > get_height());
 }
 
@@ -323,7 +323,7 @@ void Chest::set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id) 
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool Chest::is_obstacle_for(MapEntity& /* other */) {
+bool Chest::is_obstacle_for(Entity& /* other */) {
   return true;
 }
 
@@ -332,7 +332,7 @@ bool Chest::is_obstacle_for(MapEntity& /* other */) {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Chest::notify_collision(MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
+void Chest::notify_collision(Entity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   if (!is_suspended()) {
     entity_overlapping.notify_collision_with_chest(*this);
@@ -343,7 +343,7 @@ void Chest::notify_collision(MapEntity& entity_overlapping, CollisionMode /* col
  * \brief Updates the chest.
  *
  * This function is called repeatedly by the map.
- * This is a redefinition of MapEntity::update()
+ * This is a redefinition of Entity::update()
  * the handle the chest opening.
  */
 void Chest::update() {
@@ -379,7 +379,7 @@ void Chest::update() {
     }
   }
 
-  MapEntity::update();
+  Entity::update();
 }
 
 /**
@@ -414,14 +414,14 @@ bool Chest::notify_action_command_pressed() {
 /**
  * \brief This function is called by the map when the game is suspended or resumed.
  *
- * This is a redefinition of MapEntity::set_suspended() to suspend the timer
+ * This is a redefinition of Entity::set_suspended() to suspend the timer
  * of the chest being opened.
  *
  * \param suspended true to suspend the entity, false to resume it
  */
 void Chest::set_suspended(bool suspended) {
 
-  MapEntity::set_suspended(suspended);
+  Entity::set_suspended(suspended);
 
   if (!suspended && treasure_date != 0) {
     // restore the timer

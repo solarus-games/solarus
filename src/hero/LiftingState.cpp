@@ -126,7 +126,7 @@ void Hero::LiftingState::set_suspended(bool suspended) {
  * \param attacker an attacker that is trying to hurt the hero
  * (or nullptr if the source of the attack is not an enemy)
  */
-bool Hero::LiftingState::can_be_hurt(MapEntity* /* attacker */) const {
+bool Hero::LiftingState::can_be_hurt(Entity* /* attacker */) const {
   return true;
 }
 

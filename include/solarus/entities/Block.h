@@ -46,20 +46,20 @@ class Block: public Detector {
     virtual EntityType get_type() const override;
     virtual bool is_ground_observer() const override;
 
-    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual bool is_obstacle_for(Entity& other) override;
     virtual bool is_hole_obstacle() const override;
     virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter) override;
     virtual bool is_hero_obstacle(Hero& hero) override;
     virtual bool is_enemy_obstacle(Enemy& enemy) override;
     virtual bool is_destructible_obstacle(Destructible& destructible) override;
     virtual void notify_created() override;
-    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
     virtual void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) override;
     virtual bool notify_action_command_pressed() override;
     virtual bool start_movement_by_hero() override;
     virtual void stop_movement_by_hero() override;
-    virtual void notify_moving_by(MapEntity& entity) override;
-    virtual void notify_moved_by(MapEntity& entity) override;
+    virtual void notify_moving_by(Entity& entity) override;
+    virtual void notify_moved_by(Entity& entity) override;
     virtual void notify_position_changed() override;
     virtual void notify_obstacle_reached() override;
     virtual void notify_ground_below_changed() override;

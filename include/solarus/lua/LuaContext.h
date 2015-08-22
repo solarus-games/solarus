@@ -63,7 +63,7 @@ class Game;
 class JumpMovement;
 class MainLoop;
 class Map;
-class MapEntity;
+class Entity;
 class Movement;
 class Npc;
 class PathFindingMovement;
@@ -198,7 +198,7 @@ class LuaContext {
     void destroy_timers();
     void update_timers();
     void notify_timers_map_suspended(bool suspended);
-    void set_entity_timers_suspended(MapEntity& entity, bool suspended);
+    void set_entity_timers_suspended(Entity& entity, bool suspended);
     void do_timer_callback(const TimerPtr& timer);
 
     // Menus.
@@ -234,22 +234,22 @@ class LuaContext {
     bool do_custom_entity_traversable_test_function(
         const ScopedLuaRef& traversable_test_ref,
         CustomEntity& custom_entity,
-        MapEntity& other_entity
+        Entity& other_entity
     );
     bool do_custom_entity_collision_test_function(
         const ScopedLuaRef& collision_test_ref,
         CustomEntity& custom_entity,
-        MapEntity& other_entity
+        Entity& other_entity
     );
     void do_custom_entity_collision_callback(
         const ScopedLuaRef& callback_ref,
         CustomEntity& custom_entity,
-        MapEntity& other_entity
+        Entity& other_entity
     );
     void do_custom_entity_collision_callback(
         const ScopedLuaRef& callback_ref,
         CustomEntity& custom_entity,
-        MapEntity& other_entity,
+        Entity& other_entity,
         Sprite& custom_entity_sprite,
         Sprite& other_entity_sprite
     );
@@ -352,20 +352,20 @@ class LuaContext {
     bool map_on_command_released(Map& map, GameCommand command);
 
     // Map entity events.
-    void entity_on_update(MapEntity& entity);
-    void entity_on_suspended(MapEntity& entity, bool suspended);
-    void entity_on_created(MapEntity& entity);
-    void entity_on_removed(MapEntity& entity);
-    void entity_on_enabled(MapEntity& entity);
-    void entity_on_disabled(MapEntity& entity);
-    void entity_on_pre_draw(MapEntity& entity);
-    void entity_on_post_draw(MapEntity& entity);
-    void entity_on_position_changed(MapEntity& entity, const Point& xy, Layer layer);
-    void entity_on_obstacle_reached(MapEntity& entity, Movement& movement);
-    void entity_on_movement_changed(MapEntity& entity, Movement& movement);
-    void entity_on_movement_finished(MapEntity& entity);
-    bool entity_on_interaction(MapEntity& entity);
-    bool entity_on_interaction_item(MapEntity& entity, EquipmentItem& item_used);
+    void entity_on_update(Entity& entity);
+    void entity_on_suspended(Entity& entity, bool suspended);
+    void entity_on_created(Entity& entity);
+    void entity_on_removed(Entity& entity);
+    void entity_on_enabled(Entity& entity);
+    void entity_on_disabled(Entity& entity);
+    void entity_on_pre_draw(Entity& entity);
+    void entity_on_post_draw(Entity& entity);
+    void entity_on_position_changed(Entity& entity, const Point& xy, Layer layer);
+    void entity_on_obstacle_reached(Entity& entity, Movement& movement);
+    void entity_on_movement_changed(Entity& entity, Movement& movement);
+    void entity_on_movement_finished(Entity& entity);
+    bool entity_on_interaction(Entity& entity);
+    bool entity_on_interaction_item(Entity& entity, EquipmentItem& item_used);
     void hero_on_state_changed(Hero& hero, const std::string& state_name);
     bool hero_on_taking_damage(Hero& hero, int damage);
     void destination_on_activated(Destination& destination);
@@ -1027,7 +1027,7 @@ class LuaContext {
     static void push_movement(lua_State* l, Movement& movement);
     static void push_game(lua_State* l, Savegame& game);
     static void push_map(lua_State* l, Map& map);
-    static void push_entity(lua_State* l, MapEntity& entity);
+    static void push_entity(lua_State* l, Entity& entity);
     static void push_hero(lua_State* l, Hero& hero);
     static void push_npc(lua_State* l, Npc& npc);
     static void push_teletransporter(lua_State* l, Teletransporter& teletransporter);
@@ -1087,7 +1087,7 @@ class LuaContext {
     static bool is_map(lua_State* l, int index);
     static std::shared_ptr<Map> check_map(lua_State* l, int index);
     static bool is_entity(lua_State* l, int index);
-    static MapEntityPtr check_entity(lua_State* l, int index);
+    static EntityPtr check_entity(lua_State* l, int index);
     static bool is_hero(lua_State* l, int index);
     static HeroPtr check_hero(lua_State* l, int index);
     static bool is_teletransporter(lua_State* l, int index);

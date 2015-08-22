@@ -69,8 +69,8 @@ class ShopTreasure: public Detector {
     const std::string& get_dialog_id() const;
 
     virtual bool is_sword_ignored() const override;
-    virtual bool is_obstacle_for(MapEntity& other) override;
-    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual bool is_obstacle_for(Entity& other) override;
+    virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
     virtual bool notify_action_command_pressed() override;
 
     virtual void draw_on_map() override;

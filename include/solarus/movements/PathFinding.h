@@ -26,7 +26,7 @@
 namespace Solarus {
 
 class Map;
-class MapEntity;
+class Entity;
 class Rectangle;
 
 /**
@@ -42,8 +42,8 @@ class SOLARUS_API PathFinding {
 
     PathFinding(
         Map& map,
-        MapEntity& source_entity,
-        MapEntity& target_entity);
+        Entity& source_entity,
+        Entity& target_entity);
 
     std::string compute_path();
 
@@ -82,8 +82,8 @@ class SOLARUS_API PathFinding {
     static const Rectangle transition_collision_boxes[];
 
     Map& map;                          /**< the map */
-    MapEntity& source_entity;          /**< the entity to move */
-    MapEntity& target_entity;          /**< the target point */
+    Entity& source_entity;          /**< the entity to move */
+    Entity& target_entity;          /**< the target point */
 
     std::map<int, Node> closed_list;   /**< the closed list, indexed by the node locations on the map */
     std::map<int, Node> open_list;     /**< the open list, indexed by the node locations on the map */

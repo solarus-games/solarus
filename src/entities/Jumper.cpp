@@ -75,10 +75,10 @@ bool Jumper::can_be_drawn() const {
 }
 
 /**
- * \copydoc MapEntity::is_obstacle_for(MapEntity&, const Rectangle&)
+ * \copydoc Entity::is_obstacle_for(Entity&, const Rectangle&)
  */
 bool Jumper::is_obstacle_for(
-    MapEntity& other, const Rectangle& candidate_position) {
+    Entity& other, const Rectangle& candidate_position) {
 
   return other.is_jumper_obstacle(*this, candidate_position);
 }
@@ -215,7 +215,7 @@ bool Jumper::is_in_jump_position(
  * \param entity the entity
  * \return true if the entity's collides with this jumper
  */
-bool Jumper::test_collision_custom(MapEntity& entity) {
+bool Jumper::test_collision_custom(Entity& entity) {
 
   if (!entity.is_hero()) {
     return false;
@@ -382,7 +382,7 @@ bool Jumper::overlaps_jumping_region(const Rectangle& rectangle, bool /* extende
  * \param entity_overlapping The entity that overlaps the jumper.
  * \param collision_mode The collision mode that triggered the event.
  */
-void Jumper::notify_collision(MapEntity& entity_overlapping,
+void Jumper::notify_collision(Entity& entity_overlapping,
     CollisionMode collision_mode) {
 
   entity_overlapping.notify_collision_with_jumper(*this, collision_mode);

@@ -28,7 +28,7 @@ namespace Solarus {
 
 class Drawable;
 class LuaContext;
-class MapEntity;
+class Entity;
 
 /**
  * \brief Abstract class for representing a movement.
@@ -47,8 +47,8 @@ class SOLARUS_API Movement: public ExportableToLua {
     virtual ~Movement();
 
     // object controlled
-    MapEntity* get_entity() const;
-    void set_entity(MapEntity* entity);
+    Entity* get_entity() const;
+    void set_entity(Entity* entity);
     Drawable* get_drawable() const;
     void set_drawable(Drawable* drawable);
     virtual void notify_object_controlled();
@@ -113,7 +113,7 @@ class SOLARUS_API Movement: public ExportableToLua {
   private:
 
     // Object to move (can be an entity, a drawable or a point).
-    MapEntity* entity;                           /**< The entity controlled by this movement. */
+    Entity* entity;                           /**< The entity controlled by this movement. */
     Drawable* drawable;                          /**< The drawable controlled by this movement. */
     Point xy;                                    /**< Coordinates of the point controlled by this movement. */
 

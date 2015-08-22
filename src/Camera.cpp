@@ -243,7 +243,7 @@ void Camera::move(const Point& target) {
  *
  * \param entity the target entity
  */
-void Camera::move(MapEntity& entity) {
+void Camera::move(Entity& entity) {
 
   move(entity.get_center_point());
 }

@@ -72,7 +72,7 @@ namespace Solarus {
  * \param equipment the equipment (needed to build the sprites even outside a game)
  */
 Hero::Hero(Equipment& equipment):
-  MapEntity("hero", 0, LAYER_LOW, Point(0, 0), Size(16, 16)),
+  Entity("hero", 0, LAYER_LOW, Point(0, 0), Size(16, 16)),
   state(nullptr),
   invincible(false),
   end_invincible_date(0),
@@ -186,7 +186,7 @@ std::shared_ptr<CarriedItem> Hero::get_carried_item() {
  */
 void Hero::set_suspended(bool suspended) {
 
-  MapEntity::set_suspended(suspended);
+  Entity::set_suspended(suspended);
 
   if (!suspended) {
 
@@ -534,22 +534,22 @@ bool Hero::is_shadow_visible() const {
 }
 
 /**
- * \copydoc MapEntity::notify_creating
+ * \copydoc Entity::notify_creating
  */
 void Hero::notify_creating() {
 
-  MapEntity::notify_creating();
+  Entity::notify_creating();
 
   // At this point the map is known and loaded. Notify the state.
   state->set_map(get_map());
 }
 
 /**
- * \copydoc MapEntity::notify_map_started
+ * \copydoc Entity::notify_map_started
  */
 void Hero::notify_map_started() {
 
-  MapEntity::notify_map_started();
+  Entity::notify_map_started();
   get_hero_sprites().notify_map_started();
 
   // At this point the map is known and loaded. Notify the state.
@@ -557,11 +557,11 @@ void Hero::notify_map_started() {
 }
 
 /**
- * \copydoc MapEntity::notify_tileset_changed
+ * \copydoc Entity::notify_tileset_changed
  */
 void Hero::notify_tileset_changed() {
 
-  MapEntity::notify_tileset_changed();
+  Entity::notify_tileset_changed();
   get_hero_sprites().notify_tileset_changed();
 }
 
@@ -588,7 +588,7 @@ void Hero::set_map(Map& map, int initial_direction) {
 
   state->set_map(map);
 
-  MapEntity::set_map(map);
+  Entity::set_map(map);
 }
 
 /**
@@ -716,7 +716,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
  */
 void Hero::notify_map_opening_transition_finished() {
 
-  MapEntity::notify_map_opening_transition_finished();
+  Entity::notify_map_opening_transition_finished();
 
   int side = get_map().get_destination_side();
   if (side != -1) {
@@ -752,7 +752,7 @@ void Hero::notify_map_opening_transition_finished() {
 }
 
 /**
- * \copydoc MapEntity::get_facing_point
+ * \copydoc Entity::get_facing_point
  */
 Point Hero::get_facing_point() const {
 
@@ -1062,7 +1062,7 @@ void Hero::notify_movement_finished() {
  */
 void Hero::notify_obstacle_reached() {
 
-  MapEntity::notify_obstacle_reached();
+  Entity::notify_obstacle_reached();
 
   state->notify_obstacle_reached();
 
@@ -1221,7 +1221,7 @@ void Hero::notify_ground_below_changed() {
 
   const bool suspended = get_game().is_suspended();
 
-  MapEntity::notify_ground_below_changed();
+  Entity::notify_ground_below_changed();
 
   switch (get_ground_below()) {
 
@@ -1413,7 +1413,7 @@ void Hero::reset_target_solid_ground_coords() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Hero::is_obstacle_for(MapEntity& other) {
+bool Hero::is_obstacle_for(Entity& other) {
   return other.is_hero_obstacle(*this);
 }
 
@@ -1466,7 +1466,7 @@ bool Hero::is_ladder_obstacle() const {
 }
 
 /**
- * \copydoc MapEntity::is_block_obstacle
+ * \copydoc Entity::is_block_obstacle
  */
 bool Hero::is_block_obstacle(Block& block) {
   return block.is_hero_obstacle(*this);
@@ -1485,7 +1485,7 @@ bool Hero::is_teletransporter_obstacle(Teletransporter& teletransporter) {
 }
 
 /**
- * \copydoc MapEntity::is_stream_obstacle
+ * \copydoc Entity::is_stream_obstacle
  */
 bool Hero::is_stream_obstacle(Stream& stream) {
   return state->is_stream_obstacle(stream);
@@ -1519,14 +1519,14 @@ bool Hero::is_raised_block_obstacle(CrystalBlock& /* raised_block */) {
 }
 
 /**
- * \copydoc MapEntity::is_jumper_obstacle
+ * \copydoc Entity::is_jumper_obstacle
  */
 bool Hero::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) {
   return state->is_jumper_obstacle(jumper, candidate_position);
 }
 
 /**
- * \copydoc MapEntity::is_separator_obstacle
+ * \copydoc Entity::is_separator_obstacle
  */
 bool Hero::is_separator_obstacle(Separator& separator) {
   return state->is_separator_obstacle(separator);
@@ -1615,7 +1615,7 @@ Teletransporter* Hero::get_delayed_teletransporter() {
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_stream
+ * \copydoc Entity::notify_collision_with_stream
  */
 void Hero::notify_collision_with_stream(
     Stream& stream, int dx, int dy) {
@@ -1747,7 +1747,7 @@ void Hero::notify_collision_with_stairs(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_jumper
+ * \copydoc Entity::notify_collision_with_jumper
  */
 void Hero::notify_collision_with_jumper(Jumper& jumper,
     CollisionMode collision_mode) {
@@ -1869,7 +1869,7 @@ void Hero::notify_collision_with_block(Block& /* block */) {
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_separator
+ * \copydoc Entity::notify_collision_with_separator
  */
 void Hero::notify_collision_with_separator(
     Separator& separator, CollisionMode /* collision_mode */) {
@@ -1923,7 +1923,7 @@ void Hero::notify_collision_with_explosion(
  * \param direction the direction of the hero relative to the entity
  * (the hero will be moved into this direction): 0 to 3
  */
-void Hero::avoid_collision(MapEntity& entity, int direction) {
+void Hero::avoid_collision(Entity& entity, int direction) {
 
   // fix the hero's position, whatever the entity's) size is
   switch (direction) {
@@ -2013,7 +2013,7 @@ void Hero::try_snap_to_facing_entity() {
 }
 
 /**
- * \copydoc MapEntity::notify_attacked_enemy
+ * \copydoc Entity::notify_attacked_enemy
  */
 void Hero::notify_attacked_enemy(
     EnemyAttack attack,
@@ -2078,7 +2078,7 @@ void Hero::update_invincibility() {
  * (or nullptr if the source of the attack is not an entity).
  * \return \c true if the hero can be hurt.
  */
-bool Hero::can_be_hurt(MapEntity* attacker) const {
+bool Hero::can_be_hurt(Entity* attacker) const {
   return !is_invincible() && state->can_be_hurt(attacker);
 }
 
@@ -2091,7 +2091,7 @@ bool Hero::can_be_hurt(MapEntity* attacker) const {
  * (this number may be reduced later by the tunic on by hero:on_taking_damage()).
  */
 void Hero::hurt(
-    MapEntity& source,
+    Entity& source,
     Sprite* source_sprite,
     int damage
 ) {

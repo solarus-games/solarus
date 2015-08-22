@@ -72,10 +72,10 @@ void Fire::update() {
 }
 
 /**
- * \copydoc Detector::notify_collision(MapEntity&, Sprite&, Sprite&)
+ * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Fire::notify_collision(
-    MapEntity& other_entity,
+    Entity& other_entity,
     Sprite& /* this_sprite */,
     Sprite& other_sprite
 ) {

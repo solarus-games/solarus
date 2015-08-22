@@ -148,7 +148,7 @@ const CustomEntity::TraversableInfo& CustomEntity::get_traversable_by_entity_inf
  * \param entity The entity to test.
  * \return \c true if the entity can traverse this custom entity.
  */
-bool CustomEntity::is_traversable_by_entity(MapEntity& entity) {
+bool CustomEntity::is_traversable_by_entity(Entity& entity) {
 
   // Find the obstacle settings.
   const TraversableInfo& info = get_traversable_by_entity_info(entity.get_type());
@@ -275,16 +275,16 @@ void CustomEntity::reset_traversable_by_entities(EntityType type) {
 }
 
 /**
- * \copydoc MapEntity::can_be_obstacle
+ * \copydoc Entity::can_be_obstacle
  */
 bool CustomEntity::can_be_obstacle() const {
   return true;
 }
 
 /**
- * \copydoc MapEntity::is_obstacle_for
+ * \copydoc Entity::is_obstacle_for
  */
-bool CustomEntity::is_obstacle_for(MapEntity& other) {
+bool CustomEntity::is_obstacle_for(Entity& other) {
 
   return !is_traversable_by_entity(other);
 }
@@ -422,7 +422,7 @@ void CustomEntity::reset_can_traverse_entities(EntityType type) {
 }
 
 /**
- * \copydoc MapEntity::is_hero_obstacle
+ * \copydoc Entity::is_hero_obstacle
  */
 bool CustomEntity::is_hero_obstacle(Hero& hero) {
 
@@ -434,7 +434,7 @@ bool CustomEntity::is_hero_obstacle(Hero& hero) {
 }
 
 /**
- * \copydoc MapEntity::is_block_obstacle
+ * \copydoc Entity::is_block_obstacle
  */
 bool CustomEntity::is_block_obstacle(Block& block) {
 
@@ -446,7 +446,7 @@ bool CustomEntity::is_block_obstacle(Block& block) {
 }
 
 /**
- * \copydoc MapEntity::is_teletransporter_obstacle
+ * \copydoc Entity::is_teletransporter_obstacle
  */
 bool CustomEntity::is_teletransporter_obstacle(Teletransporter& teletransporter) {
 
@@ -458,7 +458,7 @@ bool CustomEntity::is_teletransporter_obstacle(Teletransporter& teletransporter)
 }
 
 /**
- * \copydoc MapEntity::is_stream_obstacle
+ * \copydoc Entity::is_stream_obstacle
  */
 bool CustomEntity::is_stream_obstacle(Stream& stream) {
 
@@ -470,7 +470,7 @@ bool CustomEntity::is_stream_obstacle(Stream& stream) {
 }
 
 /**
- * \copydoc MapEntity::is_stairs_obstacle
+ * \copydoc Entity::is_stairs_obstacle
  */
 bool CustomEntity::is_stairs_obstacle(Stairs& stairs) {
 
@@ -482,7 +482,7 @@ bool CustomEntity::is_stairs_obstacle(Stairs& stairs) {
 }
 
 /**
- * \copydoc MapEntity::is_sensor_obstacle
+ * \copydoc Entity::is_sensor_obstacle
  */
 bool CustomEntity::is_sensor_obstacle(Sensor& sensor) {
 
@@ -494,7 +494,7 @@ bool CustomEntity::is_sensor_obstacle(Sensor& sensor) {
 }
 
 /**
- * \copydoc MapEntity::is_switch_obstacle
+ * \copydoc Entity::is_switch_obstacle
  */
 bool CustomEntity::is_switch_obstacle(Switch& sw) {
 
@@ -506,7 +506,7 @@ bool CustomEntity::is_switch_obstacle(Switch& sw) {
 }
 
 /**
- * \copydoc MapEntity::is_raised_block_obstacle
+ * \copydoc Entity::is_raised_block_obstacle
  */
 bool CustomEntity::is_raised_block_obstacle(CrystalBlock& raised_block) {
 
@@ -518,7 +518,7 @@ bool CustomEntity::is_raised_block_obstacle(CrystalBlock& raised_block) {
 }
 
 /**
- * \copydoc MapEntity::is_crystal_obstacle
+ * \copydoc Entity::is_crystal_obstacle
  */
 bool CustomEntity::is_crystal_obstacle(Crystal& crystal) {
 
@@ -530,7 +530,7 @@ bool CustomEntity::is_crystal_obstacle(Crystal& crystal) {
 }
 
 /**
- * \copydoc MapEntity::is_npc_obstacle
+ * \copydoc Entity::is_npc_obstacle
  */
 bool CustomEntity::is_npc_obstacle(Npc& npc) {
 
@@ -542,7 +542,7 @@ bool CustomEntity::is_npc_obstacle(Npc& npc) {
 }
 
 /**
- * \copydoc MapEntity::is_enemy_obstacle
+ * \copydoc Entity::is_enemy_obstacle
  */
 bool CustomEntity::is_enemy_obstacle(Enemy& enemy) {
 
@@ -554,7 +554,7 @@ bool CustomEntity::is_enemy_obstacle(Enemy& enemy) {
 }
 
 /**
- * \copydoc MapEntity::is_jumper_obstacle
+ * \copydoc Entity::is_jumper_obstacle
  */
 bool CustomEntity::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) {
 
@@ -566,7 +566,7 @@ bool CustomEntity::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate
 }
 
 /**
- * \copydoc MapEntity::is_destructible_obstacle
+ * \copydoc Entity::is_destructible_obstacle
  */
 bool CustomEntity::is_destructible_obstacle(Destructible& destructible) {
 
@@ -578,7 +578,7 @@ bool CustomEntity::is_destructible_obstacle(Destructible& destructible) {
 }
 
 /**
- * \copydoc MapEntity::is_separator_obstacle
+ * \copydoc Entity::is_separator_obstacle
  */
 bool CustomEntity::is_separator_obstacle(Separator& separator) {
 
@@ -659,7 +659,7 @@ void CustomEntity::reset_can_traverse_ground(Ground ground) {
 }
 
 /**
- * \copydoc MapEntity::is_low_wall_obstacle
+ * \copydoc Entity::is_low_wall_obstacle
  */
 bool CustomEntity::is_low_wall_obstacle() const {
 
@@ -667,7 +667,7 @@ bool CustomEntity::is_low_wall_obstacle() const {
 }
 
 /**
- * \copydoc MapEntity::is_shallow_water_obstacle
+ * \copydoc Entity::is_shallow_water_obstacle
  */
 bool CustomEntity::is_shallow_water_obstacle() const {
 
@@ -675,7 +675,7 @@ bool CustomEntity::is_shallow_water_obstacle() const {
 }
 
 /**
- * \copydoc MapEntity::is_deep_water_obstacle
+ * \copydoc Entity::is_deep_water_obstacle
  */
 bool CustomEntity::is_deep_water_obstacle() const {
 
@@ -683,7 +683,7 @@ bool CustomEntity::is_deep_water_obstacle() const {
 }
 
 /**
- * \copydoc MapEntity::is_hole_obstacle
+ * \copydoc Entity::is_hole_obstacle
  */
 bool CustomEntity::is_hole_obstacle() const {
 
@@ -691,7 +691,7 @@ bool CustomEntity::is_hole_obstacle() const {
 }
 
 /**
- * \copydoc MapEntity::is_lava_obstacle
+ * \copydoc Entity::is_lava_obstacle
  */
 bool CustomEntity::is_lava_obstacle() const {
 
@@ -699,7 +699,7 @@ bool CustomEntity::is_lava_obstacle() const {
 }
 
 /**
- * \copydoc MapEntity::is_prickle_obstacle
+ * \copydoc Entity::is_prickle_obstacle
  */
 bool CustomEntity::is_prickle_obstacle() const {
 
@@ -707,7 +707,7 @@ bool CustomEntity::is_prickle_obstacle() const {
 }
 
 /**
- * \copydoc MapEntity::is_ladder_obstacle
+ * \copydoc Entity::is_ladder_obstacle
  */
 bool CustomEntity::is_ladder_obstacle() const {
 
@@ -777,7 +777,7 @@ void CustomEntity::clear_collision_tests() {
 /**
  * \copydoc Detector::test_collision_custom
  */
-bool CustomEntity::test_collision_custom(MapEntity& entity) {
+bool CustomEntity::test_collision_custom(Entity& entity) {
 
   if (!successful_collision_tests.empty()) {
     // Avoid reentrant collision tests.
@@ -856,9 +856,9 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
 }
 
 /**
- * \copydoc Detector::notify_collision(MapEntity&,CollisionMode)
+ * \copydoc Detector::notify_collision(Entity&,CollisionMode)
  */
-void CustomEntity::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void CustomEntity::notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_FACING) {
     // This collision mode is only useful to set the facing entity, which
@@ -885,10 +885,10 @@ void CustomEntity::notify_collision(MapEntity& entity_overlapping, CollisionMode
 }
 
 /**
- * \copydoc Detector::notify_collision(MapEntity&, Sprite&, Sprite&)
+ * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void CustomEntity::notify_collision(
-    MapEntity& other_entity,
+    Entity& other_entity,
     Sprite& this_sprite,
     Sprite& other_sprite
 ) {
@@ -914,7 +914,7 @@ void CustomEntity::notify_collision(
  * collision with it.
  * \param other_entity The other entity.
  */
-void CustomEntity::notify_collision_from(MapEntity& other_entity) {
+void CustomEntity::notify_collision_from(Entity& other_entity) {
 
   // See if we also detect the other entity, and if yes, do the callbacks.
   if (test_collision_custom(other_entity)) {
@@ -929,14 +929,14 @@ void CustomEntity::notify_collision_from(MapEntity& other_entity) {
  * \param other_sprite Sprite of the other entity involved in the collision.
  * \param this_sprite Sprite of this custom entity entity involved in the collision.
  */
-void CustomEntity::notify_collision_from(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
+void CustomEntity::notify_collision_from(Entity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
 
   // No need to check the collision again: sprite collisions are symmetrical.
   notify_collision(other_entity, other_sprite, this_sprite);
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_destructible
+ * \copydoc Entity::notify_collision_with_destructible
  */
 void CustomEntity::notify_collision_with_destructible(
     Destructible& destructible, CollisionMode /* collision_mode */) {
@@ -945,7 +945,7 @@ void CustomEntity::notify_collision_with_destructible(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_teletransporter
+ * \copydoc Entity::notify_collision_with_teletransporter
  */
 void CustomEntity::notify_collision_with_teletransporter(
     Teletransporter& teletransporter, CollisionMode /* collision_mode */) {
@@ -954,7 +954,7 @@ void CustomEntity::notify_collision_with_teletransporter(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_stream
+ * \copydoc Entity::notify_collision_with_stream
  */
 void CustomEntity::notify_collision_with_stream(
     Stream& stream, int /* dx */, int /* dy */) {
@@ -963,7 +963,7 @@ void CustomEntity::notify_collision_with_stream(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_stairs
+ * \copydoc Entity::notify_collision_with_stairs
  */
 void CustomEntity::notify_collision_with_stairs(
     Stairs& stairs, CollisionMode /* collision_mode */) {
@@ -972,7 +972,7 @@ void CustomEntity::notify_collision_with_stairs(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_jumper
+ * \copydoc Entity::notify_collision_with_jumper
  */
 void CustomEntity::notify_collision_with_jumper(
     Jumper& jumper, CollisionMode /* collision_mode */) {
@@ -981,7 +981,7 @@ void CustomEntity::notify_collision_with_jumper(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_sensor
+ * \copydoc Entity::notify_collision_with_sensor
  */
 void CustomEntity::notify_collision_with_sensor(
     Sensor& sensor, CollisionMode /* collision_mode */) {
@@ -990,7 +990,7 @@ void CustomEntity::notify_collision_with_sensor(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_switch(Switch&,CollisionMode)
+ * \copydoc Entity::notify_collision_with_switch(Switch&,CollisionMode)
  */
 void CustomEntity::notify_collision_with_switch(
     Switch& sw, CollisionMode /* collision_mode */) {
@@ -999,7 +999,7 @@ void CustomEntity::notify_collision_with_switch(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_switch(Switch&,Sprite&)
+ * \copydoc Entity::notify_collision_with_switch(Switch&,Sprite&)
  */
 void CustomEntity::notify_collision_with_switch(
     Switch& sw, Sprite& sprite_overlapping) {
@@ -1008,7 +1008,7 @@ void CustomEntity::notify_collision_with_switch(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_crystal(Crystal&,CollisionMode)
+ * \copydoc Entity::notify_collision_with_crystal(Crystal&,CollisionMode)
  */
 void CustomEntity::notify_collision_with_crystal(
     Crystal& crystal, CollisionMode /* collision_mode */) {
@@ -1017,7 +1017,7 @@ void CustomEntity::notify_collision_with_crystal(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_crystal(Crystal&,Sprite&)
+ * \copydoc Entity::notify_collision_with_crystal(Crystal&,Sprite&)
  */
 void CustomEntity::notify_collision_with_crystal(
     Crystal& crystal, Sprite& sprite_overlapping) {
@@ -1026,7 +1026,7 @@ void CustomEntity::notify_collision_with_crystal(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_chest
+ * \copydoc Entity::notify_collision_with_chest
  */
 void CustomEntity::notify_collision_with_chest(Chest& chest) {
 
@@ -1034,7 +1034,7 @@ void CustomEntity::notify_collision_with_chest(Chest& chest) {
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_block
+ * \copydoc Entity::notify_collision_with_block
  */
 void CustomEntity::notify_collision_with_block(Block& block) {
 
@@ -1042,7 +1042,7 @@ void CustomEntity::notify_collision_with_block(Block& block) {
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_separator
+ * \copydoc Entity::notify_collision_with_separator
  */
 void CustomEntity::notify_collision_with_separator(
     Separator& separator, CollisionMode /* collision_mode */) {
@@ -1051,7 +1051,7 @@ void CustomEntity::notify_collision_with_separator(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_bomb
+ * \copydoc Entity::notify_collision_with_bomb
  */
 void CustomEntity::notify_collision_with_bomb(
     Bomb& bomb, CollisionMode /* collision_mode */) {
@@ -1060,7 +1060,7 @@ void CustomEntity::notify_collision_with_bomb(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_explosion(Explosion&, CollisionMode)
+ * \copydoc Entity::notify_collision_with_explosion(Explosion&, CollisionMode)
  */
 void CustomEntity::notify_collision_with_explosion(
     Explosion& explosion, CollisionMode /* collision_mode */) {
@@ -1069,7 +1069,7 @@ void CustomEntity::notify_collision_with_explosion(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_explosion(Explosion&,Sprite&)
+ * \copydoc Entity::notify_collision_with_explosion(Explosion&,Sprite&)
  */
 void CustomEntity::notify_collision_with_explosion(
     Explosion& explosion, Sprite& sprite_overlapping) {
@@ -1078,7 +1078,7 @@ void CustomEntity::notify_collision_with_explosion(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_fire
+ * \copydoc Entity::notify_collision_with_fire
  */
 void CustomEntity::notify_collision_with_fire(
     Fire& fire, Sprite& sprite_overlapping) {
@@ -1087,7 +1087,7 @@ void CustomEntity::notify_collision_with_fire(
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_enemy(Enemy&)
+ * \copydoc Entity::notify_collision_with_enemy(Enemy&)
  */
 void CustomEntity::notify_collision_with_enemy(Enemy& enemy) {
 
@@ -1095,7 +1095,7 @@ void CustomEntity::notify_collision_with_enemy(Enemy& enemy) {
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_enemy(Enemy&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision_with_enemy(Enemy&, Sprite&, Sprite&)
  */
 void CustomEntity::notify_collision_with_enemy(
     Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) {
@@ -1120,7 +1120,7 @@ bool CustomEntity::interaction_with_item(EquipmentItem& item) {
 }
 
 /**
- * \copydoc MapEntity::is_ground_observer
+ * \copydoc Entity::is_ground_observer
  */
 bool CustomEntity::is_ground_observer() const {
   return ground_observer;
@@ -1144,14 +1144,14 @@ void CustomEntity::update_ground_observer() {
 }
 
 /**
- * \copydoc MapEntity::is_ground_modifier
+ * \copydoc Entity::is_ground_modifier
  */
 bool CustomEntity::is_ground_modifier() const {
   return ground_modifier;
 }
 
 /**
- * \copydoc MapEntity::notify_ground_below_changed
+ * \copydoc Entity::notify_ground_below_changed
  */
 void CustomEntity::notify_ground_below_changed() {
 
@@ -1161,7 +1161,7 @@ void CustomEntity::notify_ground_below_changed() {
 }
 
 /**
- * \copydoc MapEntity::get_modified_ground
+ * \copydoc Entity::get_modified_ground
  */
 Ground CustomEntity::get_modified_ground() const {
   return modified_ground;
@@ -1190,7 +1190,7 @@ void CustomEntity::set_modified_ground(Ground modified_ground) {
 }
 
 /**
- * \copydoc MapEntity::notify_creating
+ * \copydoc Entity::notify_creating
  */
 void CustomEntity::notify_creating() {
 
@@ -1201,7 +1201,7 @@ void CustomEntity::notify_creating() {
 }
 
 /**
- * \copydoc MapEntity::update
+ * \copydoc Entity::update
  */
 void CustomEntity::update() {
 
@@ -1216,7 +1216,7 @@ void CustomEntity::update() {
 }
 
 /**
- * \copydoc MapEntity::set_suspended
+ * \copydoc Entity::set_suspended
  */
 void CustomEntity::set_suspended(bool suspended) {
 
@@ -1226,7 +1226,7 @@ void CustomEntity::set_suspended(bool suspended) {
 }
 
 /**
- * \copydoc MapEntity::notify_enabled
+ * \copydoc Entity::notify_enabled
  */
 void CustomEntity::notify_enabled(bool enabled) {
 
@@ -1241,7 +1241,7 @@ void CustomEntity::notify_enabled(bool enabled) {
 }
 
 /**
- * \copydoc MapEntity::draw_on_map
+ * \copydoc Entity::draw_on_map
  */
 void CustomEntity::draw_on_map() {
 
@@ -1314,7 +1314,7 @@ bool CustomEntity::TraversableInfo::is_empty() const {
  */
 bool CustomEntity::TraversableInfo::is_traversable(
     CustomEntity& current_entity,
-    MapEntity& other_entity
+    Entity& other_entity
 ) const {
 
   Debug::check_assertion(!is_empty(), "Empty traversable info");

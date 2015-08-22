@@ -44,7 +44,7 @@ DynamicTile::DynamicTile(
     const std::string& tile_pattern_id,
     bool enabled
 ) :
-  MapEntity(name, 0, layer, xy, size),
+  Entity(name, 0, layer, xy, size),
   tile_pattern_id(tile_pattern_id),
   tile_pattern(tileset.get_tile_pattern(tile_pattern_id)) {
 

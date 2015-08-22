@@ -126,7 +126,7 @@ void Stream::set_allow_item(bool allow_item) {
 }
 
 /**
- * \copydoc MapEntity::notify_direction_changed
+ * \copydoc Entity::notify_direction_changed
  */
 void Stream::notify_direction_changed() {
 
@@ -142,9 +142,9 @@ void Stream::notify_direction_changed() {
 }
 
 /**
- * \copydoc MapEntity::is_obstacle_for
+ * \copydoc Entity::is_obstacle_for
  */
-bool Stream::is_obstacle_for(MapEntity& other) {
+bool Stream::is_obstacle_for(Entity& other) {
 
   return other.is_stream_obstacle(*this);
 }
@@ -152,7 +152,7 @@ bool Stream::is_obstacle_for(MapEntity& other) {
 /**
  * \copydoc Detector::notify_collision
  */
-void Stream::notify_collision(MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
+void Stream::notify_collision(Entity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   const Point& xy_move = direction_to_xy_move(get_direction());
   entity_overlapping.notify_collision_with_stream(*this, xy_move.x, xy_move.y);
@@ -162,7 +162,7 @@ void Stream::notify_collision(MapEntity& entity_overlapping, CollisionMode /* co
  * \brief Applies this stream on an entity.
  * \param target The entity to move. It should overlap the stream.
  */
-void Stream::activate(MapEntity& target) {
+void Stream::activate(Entity& target) {
 
   target.start_stream_action(std::unique_ptr<StreamAction>(
       new StreamAction(*this, target)

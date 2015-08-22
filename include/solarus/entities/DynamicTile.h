@@ -35,7 +35,7 @@ class Tileset;
  * An enabled dynamic tile behaves like a normal tile and may be an obstacle or any ground.
  * A disabled dynamic tile is invisible and can be traversed.
  */
-class DynamicTile: public MapEntity {
+class DynamicTile: public Entity {
 
   public:
 

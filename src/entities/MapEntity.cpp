@@ -47,7 +47,7 @@ namespace Solarus {
  * \param xy Coordinates where to create the entity.
  * \param size Size of the entity.
  */
-MapEntity::MapEntity(
+Entity::Entity(
     const std::string& name,
     int direction,
     Layer layer,
@@ -86,7 +86,7 @@ MapEntity::MapEntity(
  *
  * The sprite and the movement of the entity are deleted (if any).
  */
-MapEntity::~MapEntity() {
+Entity::~Entity() {
 
   stop_stream_action();
 
@@ -103,7 +103,7 @@ MapEntity::~MapEntity() {
  *
  * \return The name identifying this type in Lua.
  */
-const std::string& MapEntity::get_lua_type_name() const {
+const std::string& Entity::get_lua_type_name() const {
   return LuaContext::get_entity_internal_type_name(get_type());
 }
 
@@ -111,7 +111,7 @@ const std::string& MapEntity::get_lua_type_name() const {
  * \brief Returns whether this entity is the hero controlled by the player.
  * \return true if this entity is the hero
  */
-bool MapEntity::is_hero() const {
+bool Entity::is_hero() const {
   return get_type() == EntityType::HERO;
 }
 
@@ -124,7 +124,7 @@ bool MapEntity::is_hero() const {
  *
  * \return \c true if this type of entity can detect other entities.
  */
-bool MapEntity::is_detector() const {
+bool Entity::is_detector() const {
   return false;
 }
 
@@ -139,7 +139,7 @@ bool MapEntity::is_detector() const {
  *
  * \return \c true if this type of entity can be obstacle for other entities.
  */
-bool MapEntity::can_be_obstacle() const {
+bool Entity::can_be_obstacle() const {
   return true;
 }
 
@@ -153,7 +153,7 @@ bool MapEntity::can_be_obstacle() const {
  *
  * \return \c true if this entity is sensible to its ground.
  */
-bool MapEntity::is_ground_observer() const {
+bool Entity::is_ground_observer() const {
   return false;
 }
 
@@ -171,7 +171,7 @@ bool MapEntity::is_ground_observer() const {
  *
  * \return \c true if this entity can change the ground.
  */
-bool MapEntity::is_ground_modifier() const {
+bool Entity::is_ground_modifier() const {
   return false;
 }
 
@@ -183,7 +183,7 @@ bool MapEntity::is_ground_modifier() const {
  *
  * \return The ground defined by this entity.
  */
-Ground MapEntity::get_modified_ground() const {
+Ground Entity::get_modified_ground() const {
   return Ground::EMPTY;
 }
 
@@ -194,12 +194,12 @@ Ground MapEntity::get_modified_ground() const {
  * This does the work even if this entity is not a ground modifier,
  * because this is necessary in case it just stopped being one.
  */
-void MapEntity::update_ground_observers() {
+void Entity::update_ground_observers() {
 
   // Update overlapping entities sensible to their ground.
-  const std::list<MapEntity*>& ground_observers =
+  const std::list<Entity*>& ground_observers =
       get_entities().get_ground_observers(get_layer());
-  for (MapEntity* ground_observer: ground_observers) {
+  for (Entity* ground_observer: ground_observers) {
     // Update the ground of entities that overlap or were just overlapping this one.
 
     if (overlaps(ground_observer->get_ground_point())
@@ -217,7 +217,7 @@ void MapEntity::update_ground_observers() {
  *
  * \return The ground under this entity.
  */
-Ground MapEntity::get_ground_below() const {
+Ground Entity::get_ground_below() const {
   return ground_below;
 }
 
@@ -226,7 +226,7 @@ Ground MapEntity::get_ground_below() const {
  *
  * This function does nothing if the entity is not sensible to its ground.
  */
-void MapEntity::update_ground_below() {
+void Entity::update_ground_below() {
 
   if (!is_ground_observer()) {
     // This entity does not care about the ground below it.
@@ -260,7 +260,7 @@ void MapEntity::update_ground_below() {
  *
  * \return true if this type of entity can be drawn
  */
-bool MapEntity::can_be_drawn() const {
+bool Entity::can_be_drawn() const {
   return true;
 }
 
@@ -277,7 +277,7 @@ bool MapEntity::can_be_drawn() const {
  * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
-bool MapEntity::is_drawn_in_y_order() const {
+bool Entity::is_drawn_in_y_order() const {
   return drawn_in_y_order;
 }
 
@@ -286,7 +286,7 @@ bool MapEntity::is_drawn_in_y_order() const {
  * \param drawn_in_y_order \c true to drawn this entity at the same level
  * as the hero.
  */
-void MapEntity::set_drawn_in_y_order(bool drawn_in_y_order) {
+void Entity::set_drawn_in_y_order(bool drawn_in_y_order) {
 
   if (drawn_in_y_order != this->drawn_in_y_order) {
     this->drawn_in_y_order = drawn_in_y_order;
@@ -301,7 +301,7 @@ void MapEntity::set_drawn_in_y_order(bool drawn_in_y_order) {
  * and the game is not suspended.
  * \param command The command pressed.
  */
-void MapEntity::notify_command_pressed(GameCommand /* game_command */) {
+void Entity::notify_command_pressed(GameCommand /* game_command */) {
 }
 
 /**
@@ -309,7 +309,7 @@ void MapEntity::notify_command_pressed(GameCommand /* game_command */) {
  * if the game is not suspended.
  * \param command The command released.
  */
-void MapEntity::notify_command_released(GameCommand /* game_command */) {
+void Entity::notify_command_released(GameCommand /* game_command */) {
 }
 
 /**
@@ -317,7 +317,7 @@ void MapEntity::notify_command_released(GameCommand /* game_command */) {
  * whether set_map() has been called.
  * \return true if the entity is on a map
  */
-bool MapEntity::is_on_map() const {
+bool Entity::is_on_map() const {
   return map != nullptr;
 }
 
@@ -329,7 +329,7 @@ bool MapEntity::is_on_map() const {
  *
  * \param map The map.
  */
-void MapEntity::set_map(Map& map) {
+void Entity::set_map(Map& map) {
 
   this->main_loop = &map.get_game().get_main_loop();
   this->map = &map;
@@ -351,7 +351,7 @@ void MapEntity::set_map(Map& map) {
  *
  * The map was being loaded and is now ready.
  */
-void MapEntity::notify_map_started() {
+void Entity::notify_map_started() {
 
   if (!initialized) {
     // The map is now ready: we can finish the initialization of the entity.
@@ -366,7 +366,7 @@ void MapEntity::notify_map_started() {
  * It calls notify_creating(), then the Lua event entity:on_created(),
  * and then notify_created().
  */
-void MapEntity::finish_initialization() {
+void Entity::finish_initialization() {
 
   Debug::check_assertion(!initialized, "Entity is already initialized");
   Debug::check_assertion(is_on_map(), "Missing map");
@@ -388,7 +388,7 @@ void MapEntity::finish_initialization() {
  * map is known and running.
  * The entity:on_created() event will be called after this.
  */
-void MapEntity::notify_creating() {
+void Entity::notify_creating() {
 
 }
 
@@ -401,7 +401,7 @@ void MapEntity::notify_creating() {
  * You can redefine this function to perform additional initializations
  * after entity:on_created().
  */
-void MapEntity::notify_created() {
+void Entity::notify_created() {
 
 }
 
@@ -409,7 +409,7 @@ void MapEntity::notify_created() {
  * \brief Notifies this entity that the opening transition
  * of the map is finished.
  */
-void MapEntity::notify_map_opening_transition_finished() {
+void Entity::notify_map_opening_transition_finished() {
 
   if (is_ground_observer()) {
     update_ground_below();
@@ -421,7 +421,7 @@ void MapEntity::notify_map_opening_transition_finished() {
  *
  * This is useful for tileset-dependent sprites such as doors and blocks.
  */
-void MapEntity::notify_tileset_changed() {
+void Entity::notify_tileset_changed() {
 
   for (const SpritePtr& sprite: sprites) {
     sprite->set_tileset(get_map().get_tileset());
@@ -432,7 +432,7 @@ void MapEntity::notify_tileset_changed() {
  * \brief Returns the map where this entity is.
  * \return the map
  */
-Map& MapEntity::get_map() const {
+Map& Entity::get_map() const {
   return *map;
 }
 
@@ -440,7 +440,7 @@ Map& MapEntity::get_map() const {
  * \brief Returns the game that is running the map where this entity is.
  * \return The game.
  */
-Game& MapEntity::get_game() {
+Game& Entity::get_game() {
   SOLARUS_ASSERT(map != nullptr, "No map was set");
   return map->get_game();
 }
@@ -449,7 +449,7 @@ Game& MapEntity::get_game() {
  * \brief Returns the game that is running the map where this entity is.
  * \return The game.
  */
-const Game& MapEntity::get_game() const {
+const Game& Entity::get_game() const {
   SOLARUS_ASSERT(map != nullptr, "No map was set");
   return map->get_game();
 }
@@ -458,7 +458,7 @@ const Game& MapEntity::get_game() const {
  * \brief Returns the entities of the current map.
  * \return The entities.
  */
-MapEntities& MapEntity::get_entities() {
+MapEntities& Entity::get_entities() {
   Debug::check_assertion(map != nullptr, "No map was set");
   return map->get_entities();
 }
@@ -467,7 +467,7 @@ MapEntities& MapEntity::get_entities() {
  * \brief Returns the entities of the current map.
  * \return The entities.
  */
-const MapEntities& MapEntity::get_entities() const {
+const MapEntities& Entity::get_entities() const {
   Debug::check_assertion(map != nullptr, "No map was set");
   return map->get_entities();
 }
@@ -476,7 +476,7 @@ const MapEntities& MapEntity::get_entities() const {
  * \brief Returns the shared Lua context.
  * \return The Lua context where all scripts are run.
  */
-LuaContext& MapEntity::get_lua_context() {
+LuaContext& Entity::get_lua_context() {
 
   Debug::check_assertion(main_loop != nullptr,
       "This entity is not fully constructed yet");
@@ -487,7 +487,7 @@ LuaContext& MapEntity::get_lua_context() {
  * \brief Returns the shared Lua context.
  * \return The Lua context where all scripts are run.
  */
-const LuaContext& MapEntity::get_lua_context() const {
+const LuaContext& Entity::get_lua_context() const {
 
   Debug::check_assertion(main_loop != nullptr,
       "This entity is not fully constructed yet");
@@ -498,7 +498,7 @@ const LuaContext& MapEntity::get_lua_context() const {
  * \brief Returns the current equipment.
  * \return The equipment.
  */
-Equipment& MapEntity::get_equipment() {
+Equipment& Entity::get_equipment() {
   return get_game().get_equipment();
 }
 
@@ -506,7 +506,7 @@ Equipment& MapEntity::get_equipment() {
  * \brief Returns the current equipment.
  * \return The equipment.
  */
-const Equipment& MapEntity::get_equipment() const {
+const Equipment& Entity::get_equipment() const {
   return get_game().get_equipment();
 }
 
@@ -514,7 +514,7 @@ const Equipment& MapEntity::get_equipment() const {
  * \brief Returns the keys effect manager.
  * \return the keys effect
  */
-KeysEffect& MapEntity::get_keys_effect() {
+KeysEffect& Entity::get_keys_effect() {
   return get_game().get_keys_effect();
 }
 
@@ -522,7 +522,7 @@ KeysEffect& MapEntity::get_keys_effect() {
  * \brief Returns the game commands.
  * \return The commands.
  */
-GameCommands& MapEntity::get_commands() {
+GameCommands& Entity::get_commands() {
   return get_game().get_commands();
 }
 
@@ -530,7 +530,7 @@ GameCommands& MapEntity::get_commands() {
  * \brief Returns the savegame.
  * \return The savegame.
  */
-Savegame& MapEntity::get_savegame() {
+Savegame& Entity::get_savegame() {
   return get_game().get_savegame();
 }
 
@@ -538,7 +538,7 @@ Savegame& MapEntity::get_savegame() {
  * \brief Returns the savegame.
  * \return The savegame.
  */
-const Savegame& MapEntity::get_savegame() const {
+const Savegame& Entity::get_savegame() const {
   return get_game().get_savegame();
 }
 
@@ -546,7 +546,7 @@ const Savegame& MapEntity::get_savegame() const {
  * \brief Returns the hero
  * \return the hero
  */
-Hero& MapEntity::get_hero() {
+Hero& Entity::get_hero() {
   return get_entities().get_hero();
 }
 
@@ -556,7 +556,7 @@ Hero& MapEntity::get_hero() {
  * The entity will be removed from the map and destroyed.
  * This function is equivalent to calling map->get_entities()->remove_entity(this).
  */
-void MapEntity::remove_from_map() {
+void Entity::remove_from_map() {
 
   get_map().get_entities().remove_entity(this);
 }
@@ -568,7 +568,7 @@ void MapEntity::remove_from_map() {
  * to the list of entities that will be removed from the map
  * and deleted from the memory as soon as possible.
  */
-void MapEntity::notify_being_removed() {
+void Entity::notify_being_removed() {
 
   get_lua_context().entity_on_removed(*this);
   this->being_removed = true;
@@ -586,7 +586,7 @@ void MapEntity::notify_being_removed() {
  * \brief Returns the layer of the entity on the map.
  * \return the layer of the entity on the map
  */
-Layer MapEntity::get_layer() const {
+Layer Entity::get_layer() const {
   return layer;
 }
 
@@ -601,7 +601,7 @@ Layer MapEntity::get_layer() const {
  *
  * \param layer the layer of the entity on the map
  */
-void MapEntity::set_layer(Layer layer) {
+void Entity::set_layer(Layer layer) {
 
   this->layer = layer;
   notify_layer_changed();
@@ -612,7 +612,7 @@ void MapEntity::set_layer(Layer layer) {
  *
  * Redefine it if you need to be notified.
  */
-void MapEntity::notify_layer_changed() {
+void Entity::notify_layer_changed() {
 
   if (is_on_map()) {
     check_collision_with_detectors();
@@ -632,7 +632,7 @@ void MapEntity::notify_layer_changed() {
  * \brief This function is called when the ground below this entity has
  * just changed.
  */
-void MapEntity::notify_ground_below_changed() {
+void Entity::notify_ground_below_changed() {
 }
 
 /**
@@ -644,7 +644,7 @@ void MapEntity::notify_ground_below_changed() {
  *
  * \return the direction of the entity
  */
-int MapEntity::get_direction() const {
+int Entity::get_direction() const {
   return direction;
 }
 
@@ -652,7 +652,7 @@ int MapEntity::get_direction() const {
  * \brief Sets the direction property of this entity.
  * \param direction the direction
  */
-void MapEntity::set_direction(int direction) {
+void Entity::set_direction(int direction) {
 
   if (direction != this->direction) {
     this->direction = direction;
@@ -663,14 +663,14 @@ void MapEntity::set_direction(int direction) {
 /**
  * \brief Notifies this entity that its direction property has changed.
  */
-void MapEntity::notify_direction_changed() {
+void Entity::notify_direction_changed() {
 }
 
 /**
  * \brief Returns the current x position of the entity.
  * \return the x position of the entity
  */
-int MapEntity::get_x() const {
+int Entity::get_x() const {
   return bounding_box.get_x() + origin.x;
 }
 
@@ -678,7 +678,7 @@ int MapEntity::get_x() const {
  * \brief Returns the current y position of the entity.
  * \return the y position of the entity
  */
-int MapEntity::get_y() const {
+int Entity::get_y() const {
   return bounding_box.get_y() + origin.y;
 }
 
@@ -689,7 +689,7 @@ int MapEntity::get_y() const {
  *
  * \param x the new x position
  */
-void MapEntity::set_x(int x) {
+void Entity::set_x(int x) {
   bounding_box.set_x(x - origin.x);
 }
 
@@ -700,7 +700,7 @@ void MapEntity::set_x(int x) {
  *
  * \param y the new y position
  */
-void MapEntity::set_y(int y) {
+void Entity::set_y(int y) {
   bounding_box.set_y(y - origin.y);
 }
 
@@ -711,7 +711,7 @@ void MapEntity::set_y(int y) {
  *
  * \return the coordinates of the entity on the map
  */
-Point MapEntity::get_xy() const {
+Point Entity::get_xy() const {
   return { get_x(), get_y() };
 }
 
@@ -723,7 +723,7 @@ Point MapEntity::get_xy() const {
  * \param x the new x coordinate of the entity on the map
  * \param y the new y coordinate of the entity on the map
  */
-void MapEntity::set_xy(int x, int y) {
+void Entity::set_xy(int x, int y) {
   set_x(x);
   set_y(y);
 }
@@ -735,7 +735,7 @@ void MapEntity::set_xy(int x, int y) {
  *
  * \param xy the new coordinates of the entity on the map.
  */
-void MapEntity::set_xy(const Point& xy) {
+void Entity::set_xy(const Point& xy) {
   set_xy(xy.x, xy.y);
 }
 
@@ -743,7 +743,7 @@ void MapEntity::set_xy(const Point& xy) {
  * \brief Returns the x position of the entity's top-left corner.
  * \return the x position of the entity's top-left corner
  */
-int MapEntity::get_top_left_x() const {
+int Entity::get_top_left_x() const {
   return bounding_box.get_x();
 }
 
@@ -751,7 +751,7 @@ int MapEntity::get_top_left_x() const {
  * \brief Returns the y position of the entity's top-left corner.
  * \return the y position of the entity's top-left corner
  */
-int MapEntity::get_top_left_y() const {
+int Entity::get_top_left_y() const {
   return bounding_box.get_y();
 }
 
@@ -759,7 +759,7 @@ int MapEntity::get_top_left_y() const {
  * \brief Returns the position of the entity's top-left corner.
  * \return The position of the entity's top-left corner.
  */
-Point MapEntity::get_top_left_xy() const {
+Point Entity::get_top_left_xy() const {
   return { get_top_left_x(), get_top_left_y() };
 }
 
@@ -767,7 +767,7 @@ Point MapEntity::get_top_left_xy() const {
  * \brief Sets the x position of the entity's top-left corner.
  * \param x the new top-left x position
  */
-void MapEntity::set_top_left_x(int x) {
+void Entity::set_top_left_x(int x) {
   bounding_box.set_x(x);
 }
 
@@ -775,7 +775,7 @@ void MapEntity::set_top_left_x(int x) {
  * \brief Sets the y position of the entity's top-left corner.
  * \param y the new top-left y position
  */
-void MapEntity::set_top_left_y(int y) {
+void Entity::set_top_left_y(int y) {
   bounding_box.set_y(y);
 }
 
@@ -787,7 +787,7 @@ void MapEntity::set_top_left_y(int y) {
  * \param x x position of the entity
  * \param y y position of the entity
  */
-void MapEntity::set_top_left_xy(int x, int y) {
+void Entity::set_top_left_xy(int x, int y) {
   set_top_left_x(x);
   set_top_left_y(y);
 }
@@ -796,7 +796,7 @@ void MapEntity::set_top_left_xy(int x, int y) {
  * \brief Sets the position of the entity's top-left corner.
  * \param xy The new top-left position.
  */
-void MapEntity::set_top_left_xy(const Point& xy) {
+void Entity::set_top_left_xy(const Point& xy) {
   set_top_left_xy(xy.x, xy.y);
 }
 
@@ -809,7 +809,7 @@ void MapEntity::set_top_left_xy(const Point& xy) {
  *
  * \return the coordinates of the entity on the map
  */
- Point MapEntity::get_displayed_xy() const {
+ Point Entity::get_displayed_xy() const {
 
   if (get_movement() == nullptr) {
     return get_xy();
@@ -822,7 +822,7 @@ void MapEntity::set_top_left_xy(const Point& xy) {
  * \brief Returns the width of the entity.
  * \return the width of the entity
  */
-int MapEntity::get_width() const {
+int Entity::get_width() const {
   return bounding_box.get_width();
 }
 
@@ -830,7 +830,7 @@ int MapEntity::get_width() const {
  * \brief Returns the height of the entity.
  * \return the height of the entity
  */
-int MapEntity::get_height() const {
+int Entity::get_height() const {
   return bounding_box.get_height();
 }
 
@@ -838,7 +838,7 @@ int MapEntity::get_height() const {
  * \brief Returns the size of the entity.
  * \return the size of the entity
  */
-Size MapEntity::get_size() const {
+Size Entity::get_size() const {
   return bounding_box.get_size();
 }
 
@@ -847,7 +847,7 @@ Size MapEntity::get_size() const {
  * \param width the entity's width
  * \param height the entity's height
  */
-void MapEntity::set_size(int width, int height) {
+void Entity::set_size(int width, int height) {
 
   Debug::check_assertion(width % 8 == 0 && height % 8 == 0,
       "Invalid entity size: width and height must be multiple of 8");
@@ -858,7 +858,7 @@ void MapEntity::set_size(int width, int height) {
  * \brief Sets the size of the entity.
  * \param size to set to the entity
  */
-void MapEntity::set_size(const Size& size) {
+void Entity::set_size(const Size& size) {
 
   bounding_box.set_size(size);
 }
@@ -871,7 +871,7 @@ void MapEntity::set_size(const Size& size) {
  *
  * \return the position and size of the entity
  */
-const Rectangle& MapEntity::get_bounding_box() const {
+const Rectangle& Entity::get_bounding_box() const {
   return bounding_box;
 }
 
@@ -883,7 +883,7 @@ const Rectangle& MapEntity::get_bounding_box() const {
  *
  * \param bounding_box the new position and size of the entity
  */
-void MapEntity::set_bounding_box(const Rectangle &bounding_box) {
+void Entity::set_bounding_box(const Rectangle &bounding_box) {
   this->bounding_box = bounding_box;
 }
 
@@ -891,7 +891,7 @@ void MapEntity::set_bounding_box(const Rectangle &bounding_box) {
  * \brief Returns whether the entity's bounding box is aligned with the 8*8 grid of the map.
  * \return true if the entity's bounding box is aligned
  */
-bool MapEntity::is_aligned_to_grid() const {
+bool Entity::is_aligned_to_grid() const {
   return is_aligned_to_grid_x() && is_aligned_to_grid_y();
 }
 
@@ -900,7 +900,7 @@ bool MapEntity::is_aligned_to_grid() const {
  * horizontally with the 8*8 grid of the map.
  * \return true if the entity's top-left corner is aligned hotizontally
  */
-bool MapEntity::is_aligned_to_grid_x() const {
+bool Entity::is_aligned_to_grid_x() const {
   return get_top_left_x() % 8 == 0;
 }
 
@@ -909,7 +909,7 @@ bool MapEntity::is_aligned_to_grid_x() const {
  * vertically with the 8*8 grid of the map.
  * \return true if the entity's top-left corner is aligned vertically
  */
-bool MapEntity::is_aligned_to_grid_y() const {
+bool Entity::is_aligned_to_grid_y() const {
   return get_top_left_y() % 8 == 0;
 }
 
@@ -918,7 +918,7 @@ bool MapEntity::is_aligned_to_grid_y() const {
  *
  * Be careful: This function does not check the collisions with obstacles.
  */
-void MapEntity::set_aligned_to_grid() {
+void Entity::set_aligned_to_grid() {
 
   set_aligned_to_grid_x();
   set_aligned_to_grid_y();
@@ -930,7 +930,7 @@ void MapEntity::set_aligned_to_grid() {
  *
  * Be careful: This function does not check the collisions with obstacles.
  */
-void MapEntity::set_aligned_to_grid_x() {
+void Entity::set_aligned_to_grid_x() {
 
   int x = get_top_left_x() + 4;
   x -= x % 8;
@@ -943,7 +943,7 @@ void MapEntity::set_aligned_to_grid_x() {
  *
  * Be careful: This function does not check the collisions with obstacles.
  */
-void MapEntity::set_aligned_to_grid_y() {
+void Entity::set_aligned_to_grid_y() {
 
   int y = get_top_left_y() + 4;
   y -= y % 8;
@@ -962,7 +962,7 @@ void MapEntity::set_aligned_to_grid_y() {
  *
  * \return The coordinates of the point the entity is looking at.
  */
-Point MapEntity::get_facing_point() const {
+Point Entity::get_facing_point() const {
 
   int direction4 = 1;  // North by default.
   if (has_sprite() && get_sprite().get_nb_directions() == 4) {
@@ -985,7 +985,7 @@ Point MapEntity::get_facing_point() const {
  * \param direction A direction (0 to 3).
  * \return The point the entity touching this direction.
  */
-Point MapEntity::get_touching_point(int direction) const {
+Point Entity::get_touching_point(int direction) const {
 
   Point touching_point = get_center_point();
 
@@ -1012,7 +1012,7 @@ Point MapEntity::get_touching_point(int direction) const {
       break;
 
     default:
-      Debug::die("Invalid direction for MapEntity::get_touching_point()");
+      Debug::die("Invalid direction for Entity::get_touching_point()");
   }
   return touching_point;
 }
@@ -1021,7 +1021,7 @@ Point MapEntity::get_touching_point(int direction) const {
  * \brief Returns the detector in front of this entity.
  * \return the detector this entity is touching, or nullptr if there is no detector in front of him
  */
-Detector* MapEntity::get_facing_entity() {
+Detector* Entity::get_facing_entity() {
   return facing_entity;
 }
 
@@ -1029,7 +1029,7 @@ Detector* MapEntity::get_facing_entity() {
  * \brief Returns the detector in front of this entity.
  * \return the detector this entity is touching, or nullptr if there is no detector in front of him
  */
-const Detector* MapEntity::get_facing_entity() const {
+const Detector* Entity::get_facing_entity() const {
   return facing_entity;
 }
 
@@ -1040,7 +1040,7 @@ const Detector* MapEntity::get_facing_entity() const {
  *
  * \param facing_entity the detector this entity is now facing (possibly nullptr)
  */
-void MapEntity::set_facing_entity(Detector* facing_entity) {
+void Entity::set_facing_entity(Detector* facing_entity) {
 
   this->facing_entity = facing_entity;
   notify_facing_entity_changed(facing_entity);
@@ -1050,7 +1050,7 @@ void MapEntity::set_facing_entity(Detector* facing_entity) {
  * \brief Notifies this entity that its facing entity has just changed.
  * \param facing_entity the detector this entity is now facing (possibly nullptr)
  */
-void MapEntity::notify_facing_entity_changed(Detector* /* facing_entity */) {
+void Entity::notify_facing_entity_changed(Detector* /* facing_entity */) {
 }
 
 /**
@@ -1060,7 +1060,7 @@ void MapEntity::notify_facing_entity_changed(Detector* /* facing_entity */) {
  *
  * \return The point used to determine the ground (relative to the map).
  */
-Point MapEntity::get_ground_point() const {
+Point Entity::get_ground_point() const {
 
   return { get_x(), get_y() };
 }
@@ -1069,7 +1069,7 @@ Point MapEntity::get_ground_point() const {
  * \brief Returns the coordinates of the center point of the entity's rectangle.
  * \return The coordinates of the center point of the entity.
  */
-Point MapEntity::get_center_point() const {
+Point Entity::get_center_point() const {
   return bounding_box.get_center();
 }
 
@@ -1078,7 +1078,7 @@ Point MapEntity::get_center_point() const {
  * \return the name of the entity, or an empty string if
  * the entity has no name.
  */
-const std::string& MapEntity::get_name() const {
+const std::string& Entity::get_name() const {
   return name;
 }
 
@@ -1089,7 +1089,7 @@ const std::string& MapEntity::get_name() const {
  *
  * \param name The name of the entity, or an empty string to unset the name.
  */
-void MapEntity::set_name(const std::string& name) {
+void Entity::set_name(const std::string& name) {
 
   Debug::check_assertion(!is_on_map(),
       "Cannot change entity name: this entity is already on a map.");
@@ -1101,7 +1101,7 @@ void MapEntity::set_name(const std::string& name) {
  * \param prefix a prefix
  * \return true if the name starts with this prefix
  */
-bool MapEntity::has_prefix(const std::string& prefix) const {
+bool Entity::has_prefix(const std::string& prefix) const {
   return name.substr(0, prefix.size()) == prefix;
 }
 
@@ -1110,7 +1110,7 @@ bool MapEntity::has_prefix(const std::string& prefix) const {
  * relative to the top-left corner of its rectangle.
  * \return the origin point
  */
-const Point& MapEntity::get_origin() const {
+const Point& Entity::get_origin() const {
   return origin;
 }
 
@@ -1120,7 +1120,7 @@ const Point& MapEntity::get_origin() const {
  * \param x x coordinate of the origin
  * \param y y coordinate of the origin
  */
-void MapEntity::set_origin(int x, int y) {
+void Entity::set_origin(int x, int y) {
 
   bounding_box.add_xy(origin.x - x, origin.y - y);
   origin = { x, y };
@@ -1131,7 +1131,7 @@ void MapEntity::set_origin(int x, int y) {
  * relative to the top-left corner of its rectangle.
  * \param origin x and y coordinates of the origin
  */
-void MapEntity::set_origin(const Point& origin) {
+void Entity::set_origin(const Point& origin) {
   set_origin(origin.x, origin.y);
 }
 
@@ -1142,7 +1142,7 @@ void MapEntity::set_origin(const Point& origin) {
  *
  * \return the optimization distance (0 means infinite)
  */
-int MapEntity::get_optimization_distance() const {
+int Entity::get_optimization_distance() const {
   return optimization_distance;
 }
 
@@ -1150,7 +1150,7 @@ int MapEntity::get_optimization_distance() const {
  * \brief Returns the square of the optimization distance of this entity.
  * \return Square of the optimization distance (0 means infinite).
  */
-int MapEntity::get_optimization_distance2() const {
+int Entity::get_optimization_distance2() const {
   return optimization_distance2;
 }
 
@@ -1161,7 +1161,7 @@ int MapEntity::get_optimization_distance2() const {
  *
  * \param distance the optimization distance (0 means infinite)
  */
-void MapEntity::set_optimization_distance(int distance) {
+void Entity::set_optimization_distance(int distance) {
   this->optimization_distance = distance;
   this->optimization_distance2 = distance * distance;
 }
@@ -1170,7 +1170,7 @@ void MapEntity::set_optimization_distance(int distance) {
  * \brief Returns whether the entity has at least one sprite.
  * \return true if the entity has at least one sprite.
  */
-bool MapEntity::has_sprite() const {
+bool Entity::has_sprite() const {
   return sprites.size() != 0;
 }
 
@@ -1179,7 +1179,7 @@ bool MapEntity::has_sprite() const {
  * for this entity.
  * \return The first sprite created.
  */
-Sprite& MapEntity::get_sprite() {
+Sprite& Entity::get_sprite() {
   return *sprites.front();
 }
 
@@ -1188,7 +1188,7 @@ Sprite& MapEntity::get_sprite() {
  * to create_sprite() for this entity.
  * \return The first sprite created.
  */
-const Sprite& MapEntity::get_sprite() const {
+const Sprite& Entity::get_sprite() const {
   return *sprites.front();
 }
 
@@ -1196,7 +1196,7 @@ const Sprite& MapEntity::get_sprite() const {
  * \brief Returns all sprites of this entity.
  * \return The sprites.
  */
-const std::vector<SpritePtr>& MapEntity::get_sprites() {
+const std::vector<SpritePtr>& Entity::get_sprites() {
   return sprites;
 }
 
@@ -1206,7 +1206,7 @@ const std::vector<SpritePtr>& MapEntity::get_sprites() {
  * \param enable_pixel_collisions true to enable the pixel-perfect collision tests for this sprite
  * \return the sprite created
  */
-SpritePtr MapEntity::create_sprite(
+SpritePtr Entity::create_sprite(
     const std::string& animation_set_id,
     bool enable_pixel_collisions
 ) {
@@ -1225,7 +1225,7 @@ SpritePtr MapEntity::create_sprite(
  * \return \c true in case of success, \c false if this entity has no such
  * sprite.
  */
-bool MapEntity::remove_sprite(Sprite& sprite) {
+bool Entity::remove_sprite(Sprite& sprite) {
 
   for (const SpritePtr& current_sprite: sprites) {
     if (current_sprite.get() == &sprite) {
@@ -1242,7 +1242,7 @@ bool MapEntity::remove_sprite(Sprite& sprite) {
  *
  * They will be destroyed at next iteration.
  */
-void MapEntity::clear_sprites() {
+void Entity::clear_sprites() {
 
   std::copy(sprites.begin(), sprites.end(),
             std::back_inserter(old_sprites));
@@ -1252,7 +1252,7 @@ void MapEntity::clear_sprites() {
 /**
  * \brief Really destroys the sprites that were recently removed.
  */
-void MapEntity::clear_old_sprites() {
+void Entity::clear_old_sprites() {
 
   for (const SpritePtr& old_sprite: old_sprites) {
     auto it = std::find(sprites.begin(), sprites.end(), old_sprite);
@@ -1272,7 +1272,7 @@ void MapEntity::clear_old_sprites() {
  * \param animation the current animation
  * \param frame the new frame
  */
-void MapEntity::notify_sprite_frame_changed(Sprite& /* sprite */, const std::string& /* animation */, int /* frame */) {
+void Entity::notify_sprite_frame_changed(Sprite& /* sprite */, const std::string& /* animation */, int /* frame */) {
 }
 
 /**
@@ -1284,14 +1284,14 @@ void MapEntity::notify_sprite_frame_changed(Sprite& /* sprite */, const std::str
  * \param sprite the sprite
  * \param animation the animation just finished
  */
-void MapEntity::notify_sprite_animation_finished(Sprite& /* sprite */, const std::string& /* animation */) {
+void Entity::notify_sprite_animation_finished(Sprite& /* sprite */, const std::string& /* animation */) {
 }
 
 /**
  * \brief Returns whether this entity is currently visible.
  * \return true if this entity is currently visible
  */
-bool MapEntity::is_visible() const {
+bool Entity::is_visible() const {
   return visible;
 }
 
@@ -1299,7 +1299,7 @@ bool MapEntity::is_visible() const {
  * \brief Sets whether this entity is visible.
  * \param visible true to make it visible
  */
-void MapEntity::set_visible(bool visible) {
+void Entity::set_visible(bool visible) {
   this->visible = visible;
 }
 
@@ -1307,7 +1307,7 @@ void MapEntity::set_visible(bool visible) {
  * \brief Returns the current movement of the entity.
  * \return the entity's movement, or nullptr if there is no movement
  */
-const std::shared_ptr<Movement>& MapEntity::get_movement() {
+const std::shared_ptr<Movement>& Entity::get_movement() {
   return movement;
 }
 
@@ -1315,7 +1315,7 @@ const std::shared_ptr<Movement>& MapEntity::get_movement() {
  * \brief Returns the current movement of the entity.
  * \return the entity's movement, or nullptr if there is no movement
  */
-std::shared_ptr<const Movement> MapEntity::get_movement() const {
+std::shared_ptr<const Movement> Entity::get_movement() const {
   return movement;
 }
 
@@ -1323,7 +1323,7 @@ std::shared_ptr<const Movement> MapEntity::get_movement() const {
  * \brief Sets the movement of this entity.
  * \param movement the movement to set, or nullptr to set no movement
  */
-void MapEntity::set_movement(const std::shared_ptr<Movement>& movement) {
+void Entity::set_movement(const std::shared_ptr<Movement>& movement) {
 
   clear_movement();
   this->movement = movement;
@@ -1344,7 +1344,7 @@ void MapEntity::set_movement(const std::shared_ptr<Movement>& movement) {
  * The movement object will be released at the next cycle,
  * thus this function can be called by the movement object itself.
  */
-void MapEntity::clear_movement() {
+void Entity::clear_movement() {
 
   if (movement != nullptr) {
     movement->set_entity(nullptr);       // Tell the movement to forget me.
@@ -1357,7 +1357,7 @@ void MapEntity::clear_movement() {
 /**
  * \brief Destroys the old movements of this entity.
  */
-void MapEntity::clear_old_movements() {
+void Entity::clear_old_movements() {
 
   old_movements.clear();
 }
@@ -1371,7 +1371,7 @@ void MapEntity::clear_old_movements() {
  *
  * \return Whether movement events are currently enabled.
  */
-bool MapEntity::are_movement_notifications_enabled() const {
+bool Entity::are_movement_notifications_enabled() const {
   return main_loop != nullptr && movement_events_enabled;
 }
 
@@ -1384,7 +1384,7 @@ bool MapEntity::are_movement_notifications_enabled() const {
  *
  * \param notify \c true to enable movement events.
  */
-void MapEntity::set_movement_events_enabled(bool notify) {
+void Entity::set_movement_events_enabled(bool notify) {
   this->movement_events_enabled = notify;
 }
 
@@ -1392,7 +1392,7 @@ void MapEntity::set_movement_events_enabled(bool notify) {
  * \brief Returns whether this entity is following a stream.
  * \return \c true if there is an active stream action.
  */
-bool MapEntity::has_stream_action() const {
+bool Entity::has_stream_action() const {
   return stream_action != nullptr && stream_action->is_active();
 }
 
@@ -1400,7 +1400,7 @@ bool MapEntity::has_stream_action() const {
  * \brief Returns the stream action currently applied if any.
  * \return The stream action of this entity or nullptr.
  */
-const StreamAction* MapEntity::get_stream_action() const {
+const StreamAction* Entity::get_stream_action() const {
   return stream_action.get();
 }
 
@@ -1408,7 +1408,7 @@ const StreamAction* MapEntity::get_stream_action() const {
  * \brief Returns the stream action currently applied if any.
  * \return The stream action of this entity or nullptr.
  */
-StreamAction* MapEntity::get_stream_action() {
+StreamAction* Entity::get_stream_action() {
   return stream_action.get();
 }
 
@@ -1416,7 +1416,7 @@ StreamAction* MapEntity::get_stream_action() {
  * \brief Makes this entity follow a stream.
  * \param stream_action The stream action to start.
  */
-void MapEntity::start_stream_action(
+void Entity::start_stream_action(
     std::unique_ptr<StreamAction> stream_action
 ) {
   stop_stream_action();
@@ -1426,7 +1426,7 @@ void MapEntity::start_stream_action(
 /**
  * \brief Stops following a stream if any.
  */
-void MapEntity::stop_stream_action() {
+void Entity::stop_stream_action() {
 
   stream_action = nullptr;
 }
@@ -1437,7 +1437,7 @@ void MapEntity::stop_stream_action() {
  *
  * This function is called only when the movement is not suspended.
  */
-void MapEntity::notify_obstacle_reached() {
+void Entity::notify_obstacle_reached() {
 
   if (are_movement_notifications_enabled()) {
     get_lua_context().entity_on_obstacle_reached(*this, *get_movement());
@@ -1451,7 +1451,7 @@ void MapEntity::notify_obstacle_reached() {
  * and, if this entity defines a ground, updates entities sensible to their
  * ground.
  */
-void MapEntity::notify_position_changed() {
+void Entity::notify_position_changed() {
 
   check_collision_with_detectors();
   if (is_ground_modifier()) {
@@ -1470,7 +1470,7 @@ void MapEntity::notify_position_changed() {
  * Simple collisions are checked, and then pixel-precise collisions if they are
  * enabled for some sprites of this entity.
  */
-void MapEntity::check_collision_with_detectors() {
+void Entity::check_collision_with_detectors() {
 
   if (!is_on_map()) {
     // The entity is still being initialized.
@@ -1504,7 +1504,7 @@ void MapEntity::check_collision_with_detectors() {
  * entity and the detectors of the map.
  * \param sprite the sprite to check
  */
-void MapEntity::check_collision_with_detectors(Sprite& sprite) {
+void Entity::check_collision_with_detectors(Sprite& sprite) {
 
   if (!is_enabled()) {
     // The entity is disabled.
@@ -1527,7 +1527,7 @@ void MapEntity::check_collision_with_detectors(Sprite& sprite) {
  *
  * TODO: actually call this function from all movement subclasses
  */
-void MapEntity::notify_movement_changed() {
+void Entity::notify_movement_changed() {
 
   if (are_movement_notifications_enabled()) {
     get_lua_context().entity_on_movement_changed(*this, *get_movement());
@@ -1537,7 +1537,7 @@ void MapEntity::notify_movement_changed() {
 /**
  * \brief This function is called when the movement of the entity is finished.
  */
-void MapEntity::notify_movement_finished() {
+void Entity::notify_movement_finished() {
 
   if (are_movement_notifications_enabled()) {
     get_lua_context().entity_on_movement_finished(*this);
@@ -1549,7 +1549,7 @@ void MapEntity::notify_movement_finished() {
  * another one.
  * \param entity The other entity.
  */
-void MapEntity::notify_moving_by(MapEntity& /* entity */) {
+void Entity::notify_moving_by(Entity& /* entity */) {
   // Do nothing by default.
 }
 
@@ -1558,7 +1558,7 @@ void MapEntity::notify_moving_by(MapEntity& /* entity */) {
  * moved by another one.
  * \param entity The other entity.
  */
-void MapEntity::notify_moved_by(MapEntity& /* entity */) {
+void Entity::notify_moved_by(Entity& /* entity */) {
   // Do nothing by default.
 }
 
@@ -1567,7 +1567,7 @@ void MapEntity::notify_moved_by(MapEntity& /* entity */) {
  * \param direction8 a direction (0 to 7)
  * \return a point with x and y set to -1, 0 or 1 depending on the direction
  */
-const Point& MapEntity::direction_to_xy_move(int direction8) {
+const Point& Entity::direction_to_xy_move(int direction8) {
 
   static constexpr Point directions_to_xy_moves[] = {
     {  1,  0 },
@@ -1587,7 +1587,7 @@ const Point& MapEntity::direction_to_xy_move(int direction8) {
  * \brief Enables or disables this entity.
  * \param enabled true to enable the entity, false to disable it
  */
-void MapEntity::set_enabled(bool enabled) {
+void Entity::set_enabled(bool enabled) {
 
   if (this->enabled == enabled) {
     return;
@@ -1624,7 +1624,7 @@ void MapEntity::set_enabled(bool enabled) {
  * \brief Notifies this entity that it was just enabled or disabled.
  * \param enabled \c true if the entity is now enabled.
  */
-void MapEntity::notify_enabled(bool /* enabled */) {
+void Entity::notify_enabled(bool /* enabled */) {
 
   if (!is_on_map()) {
     return;
@@ -1640,12 +1640,12 @@ void MapEntity::notify_enabled(bool /* enabled */) {
  * \brief Returns whether this entity is an obstacle for another one.
  *
  * This function is called by the default implementation of
- * MapEntity::is_obstacle_for(MapEntity&, const Rectangle& candidate_position).
+ * Entity::is_obstacle_for(Entity&, const Rectangle& candidate_position).
  *
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool MapEntity::is_obstacle_for(MapEntity& other) {
+bool Entity::is_obstacle_for(Entity& other) {
 
   if (!can_be_obstacle()) {
     // This type of entity can never be an obstacle for others.
@@ -1662,7 +1662,7 @@ bool MapEntity::is_obstacle_for(MapEntity& other) {
   return other.is_ground_obstacle(get_modified_ground());
 }
 
-bool MapEntity::is_ground_obstacle(Ground ground) const {
+bool Entity::is_ground_obstacle(Ground ground) const {
   // This entity modifies the ground of the map.
   // Return the appropriate obstacle property.
   switch (ground) {
@@ -1718,7 +1718,7 @@ bool MapEntity::is_ground_obstacle(Ground ground) const {
  * \return \c true if this entity is an obstacle for the other one at that
  * position.
  */
-bool MapEntity::is_obstacle_for(MapEntity& other, const Rectangle& /* candidate_position */) {
+bool Entity::is_obstacle_for(Entity& other, const Rectangle& /* candidate_position */) {
 
   // By default, use a position-independent test.
   // Most entities don't need the candidate position of the other one to decide
@@ -1734,7 +1734,7 @@ bool MapEntity::is_obstacle_for(MapEntity& other, const Rectangle& /* candidate_
  *
  * \return true if this entity can collide with entities that are on another layer
  */
-bool MapEntity::has_layer_independent_collisions() const {
+bool Entity::has_layer_independent_collisions() const {
   return false;
 }
 
@@ -1746,7 +1746,7 @@ bool MapEntity::has_layer_independent_collisions() const {
  *
  * \return \c true if low walls are currently obstacle for this entity.
  */
-bool MapEntity::is_low_wall_obstacle() const {
+bool Entity::is_low_wall_obstacle() const {
   return true;
 }
 
@@ -1757,7 +1757,7 @@ bool MapEntity::is_low_wall_obstacle() const {
  *
  * \return true if shallow water is currently an obstacle for this entity
  */
-bool MapEntity::is_shallow_water_obstacle() const {
+bool Entity::is_shallow_water_obstacle() const {
   return is_deep_water_obstacle();
 }
 
@@ -1768,7 +1768,7 @@ bool MapEntity::is_shallow_water_obstacle() const {
  *
  * \return true if deep water is currently an obstacle for this entity
  */
-bool MapEntity::is_deep_water_obstacle() const {
+bool Entity::is_deep_water_obstacle() const {
   return true;
 }
 
@@ -1779,7 +1779,7 @@ bool MapEntity::is_deep_water_obstacle() const {
  *
  * \return true if the holes are currently an obstacle for this entity
  */
-bool MapEntity::is_hole_obstacle() const {
+bool Entity::is_hole_obstacle() const {
   return true;
 }
 
@@ -1790,7 +1790,7 @@ bool MapEntity::is_hole_obstacle() const {
  *
  * \return true if lava is currently an obstacle for this entity
  */
-bool MapEntity::is_lava_obstacle() const {
+bool Entity::is_lava_obstacle() const {
   return true;
 }
 
@@ -1801,7 +1801,7 @@ bool MapEntity::is_lava_obstacle() const {
  *
  * \return true if prickles are currently an obstacle for this entity
  */
-bool MapEntity::is_prickle_obstacle() const {
+bool Entity::is_prickle_obstacle() const {
   return true;
 }
 
@@ -1812,7 +1812,7 @@ bool MapEntity::is_prickle_obstacle() const {
  *
  * \return true if the ladders are currently an obstacle for this entity
  */
-bool MapEntity::is_ladder_obstacle() const {
+bool Entity::is_ladder_obstacle() const {
   return true;
 }
 
@@ -1824,7 +1824,7 @@ bool MapEntity::is_ladder_obstacle() const {
  * \param hero the hero
  * \return true if the hero is currently an obstacle for this entity
  */
-bool MapEntity::is_hero_obstacle(Hero& /* hero */) {
+bool Entity::is_hero_obstacle(Hero& /* hero */) {
   return false;
 }
 
@@ -1836,7 +1836,7 @@ bool MapEntity::is_hero_obstacle(Hero& /* hero */) {
  * \param block a block
  * \return true if the block is currently an obstacle for this entity
  */
-bool MapEntity::is_block_obstacle(Block& /* block */) {
+bool Entity::is_block_obstacle(Block& /* block */) {
   return true;
 }
 
@@ -1848,7 +1848,7 @@ bool MapEntity::is_block_obstacle(Block& /* block */) {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool MapEntity::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) {
+bool Entity::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) {
   return true;
 }
 
@@ -1861,7 +1861,7 @@ bool MapEntity::is_teletransporter_obstacle(Teletransporter& /* teletransporter 
  * \param stream A stream.
  * \return \c true if the stream is currently an obstacle for this entity.
  */
-bool MapEntity::is_stream_obstacle(Stream& /* stream */) {
+bool Entity::is_stream_obstacle(Stream& /* stream */) {
   return true;
 }
 
@@ -1873,7 +1873,7 @@ bool MapEntity::is_stream_obstacle(Stream& /* stream */) {
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool MapEntity::is_stairs_obstacle(Stairs& /* stairs */) {
+bool Entity::is_stairs_obstacle(Stairs& /* stairs */) {
   return true;
 }
 
@@ -1885,7 +1885,7 @@ bool MapEntity::is_stairs_obstacle(Stairs& /* stairs */) {
  * \param sensor a sensor
  * \return true if the sensor is currently an obstacle for this entity
  */
-bool MapEntity::is_sensor_obstacle(Sensor& /* sensor */) {
+bool Entity::is_sensor_obstacle(Sensor& /* sensor */) {
   return false;
 }
 
@@ -1897,7 +1897,7 @@ bool MapEntity::is_sensor_obstacle(Sensor& /* sensor */) {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool MapEntity::is_switch_obstacle(Switch& sw) {
+bool Entity::is_switch_obstacle(Switch& sw) {
   return sw.is_solid();
 }
 
@@ -1909,7 +1909,7 @@ bool MapEntity::is_switch_obstacle(Switch& sw) {
  * \param raised_block a crystal block raised
  * \return true if the raised block is currently an obstacle for this entity
  */
-bool MapEntity::is_raised_block_obstacle(CrystalBlock& /* raised_block */) {
+bool Entity::is_raised_block_obstacle(CrystalBlock& /* raised_block */) {
   return true;
 }
 
@@ -1922,7 +1922,7 @@ bool MapEntity::is_raised_block_obstacle(CrystalBlock& /* raised_block */) {
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool MapEntity::is_crystal_obstacle(Crystal& /* crystal */) {
+bool Entity::is_crystal_obstacle(Crystal& /* crystal */) {
   return true;
 }
 
@@ -1934,7 +1934,7 @@ bool MapEntity::is_crystal_obstacle(Crystal& /* crystal */) {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool MapEntity::is_npc_obstacle(Npc& /* npc */) {
+bool Entity::is_npc_obstacle(Npc& /* npc */) {
   return true;
 }
 
@@ -1946,7 +1946,7 @@ bool MapEntity::is_npc_obstacle(Npc& /* npc */) {
  * \param enemy an enemy
  * \return true if the enemy is currently an obstacle for this entity
  */
-bool MapEntity::is_enemy_obstacle(Enemy& /* enemy */) {
+bool Entity::is_enemy_obstacle(Enemy& /* enemy */) {
   return false;
 }
 
@@ -1957,7 +1957,7 @@ bool MapEntity::is_enemy_obstacle(Enemy& /* enemy */) {
  * \return \c true if the jumper is currently an obstacle for this entity at
  * this candidate position.
  */
-bool MapEntity::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candidate_position */) {
+bool Entity::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candidate_position */) {
   return true;
 }
 
@@ -1970,7 +1970,7 @@ bool MapEntity::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* can
  * \param destructible a destructible item
  * \return true if the destructible item is currently an obstacle for this entity
  */
-bool MapEntity::is_destructible_obstacle(Destructible& destructible) {
+bool Entity::is_destructible_obstacle(Destructible& destructible) {
 
   return !destructible.is_waiting_for_regeneration();
 }
@@ -1984,7 +1984,7 @@ bool MapEntity::is_destructible_obstacle(Destructible& destructible) {
  * \param separator A separator.
  * \return \c true if the separator is currently an obstacle for this entity.
  */
-bool MapEntity::is_separator_obstacle(Separator& /* separator */) {
+bool Entity::is_separator_obstacle(Separator& /* separator */) {
 
   return true;
 }
@@ -1996,7 +1996,7 @@ bool MapEntity::is_separator_obstacle(Separator& /* separator */) {
  *
  * \return true if the sword is ignored
  */
-bool MapEntity::is_sword_ignored() const {
+bool Entity::is_sword_ignored() const {
   return false;
 }
 
@@ -2005,7 +2005,7 @@ bool MapEntity::is_sword_ignored() const {
  * the visible part of the map
  * \return true if the entity is in the visible part of the map
  */
-bool MapEntity::overlaps_camera() const {
+bool Entity::overlaps_camera() const {
 
   const Rectangle& camera_position = get_map().get_camera_position();
   if (bounding_box.overlaps(camera_position)) {
@@ -2035,7 +2035,7 @@ bool MapEntity::overlaps_camera() const {
  * \param rectangle the rectangle to check
  * \return true if this entity's origin point is in the specified rectangle
  */
-bool MapEntity::is_origin_point_in(const Rectangle& rectangle) const {
+bool Entity::is_origin_point_in(const Rectangle& rectangle) const {
   return rectangle.contains(get_xy());
 }
 
@@ -2045,7 +2045,7 @@ bool MapEntity::is_origin_point_in(const Rectangle& rectangle) const {
  * \param rectangle the rectangle to check
  * \return true if this entity's facing point is in the specified rectangle
  */
-bool MapEntity::is_facing_point_in(const Rectangle& rectangle) const {
+bool Entity::is_facing_point_in(const Rectangle& rectangle) const {
 
   const Point& facing_point = get_facing_point();
   return rectangle.contains(facing_point);
@@ -2058,7 +2058,7 @@ bool MapEntity::is_facing_point_in(const Rectangle& rectangle) const {
  * \param direction direction of the touching point to consider (0 to 3)
  * \return true if this touching point is in the specified rectangle
  */
-bool MapEntity::is_touching_point_in(
+bool Entity::is_touching_point_in(
     const Rectangle& rectangle, int direction) const {
 
   const Point& touching_point = get_touching_point(direction);
@@ -2071,7 +2071,7 @@ bool MapEntity::is_touching_point_in(
  * \param rectangle the rectangle to check
  * \return true if this entity's center is in the specified rectangle
  */
-bool MapEntity::is_center_in(const Rectangle& rectangle) const {
+bool Entity::is_center_in(const Rectangle& rectangle) const {
 
   const Point& center = get_center_point();
   return rectangle.contains(center);
@@ -2084,7 +2084,7 @@ bool MapEntity::is_center_in(const Rectangle& rectangle) const {
  * \param y Y coordinate of the point.
  * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
  */
-double MapEntity::get_angle(int x, int y) const {
+double Entity::get_angle(int x, int y) const {
   return Geometry::get_angle(get_x(), get_y(), x, y);
 }
 
@@ -2094,7 +2094,7 @@ double MapEntity::get_angle(int x, int y) const {
  * \param other The other entity.
  * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
  */
-double MapEntity::get_angle(const MapEntity& other) const {
+double Entity::get_angle(const Entity& other) const {
   return Geometry::get_angle(get_xy(), other.get_xy());
 }
 
@@ -2108,8 +2108,8 @@ double MapEntity::get_angle(const MapEntity& other) const {
  * itself or nullptr.
  * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
  */
-double MapEntity::get_angle(
-    const MapEntity& other,
+double Entity::get_angle(
+    const Entity& other,
     const Sprite* this_sprite,
     const Sprite* other_sprite
 ) const {
@@ -2139,7 +2139,7 @@ double MapEntity::get_angle(
  * \param y y coordinate of the point
  * \return the distance between this entity and the point in pixels
  */
-int MapEntity::get_distance(int x, int y) const {
+int Entity::get_distance(int x, int y) const {
   return (int) Geometry::get_distance(get_x(), get_y(), x, y);
 }
 
@@ -2148,7 +2148,7 @@ int MapEntity::get_distance(int x, int y) const {
  * \param point coordinates of the point
  * \return the distance between this entity and the point in pixels
  */
-int MapEntity::get_distance(const Point& point) const {
+int Entity::get_distance(const Point& point) const {
   return (int) Geometry::get_distance(get_xy(), point);
 }
 
@@ -2158,7 +2158,7 @@ int MapEntity::get_distance(const Point& point) const {
  * \param other the other entity
  * \return the distance between the two entities in pixels
  */
-int MapEntity::get_distance(const MapEntity& other) const {
+int Entity::get_distance(const Entity& other) const {
   return (int) Geometry::get_distance(get_xy(), other.get_xy());
 }
 
@@ -2167,7 +2167,7 @@ int MapEntity::get_distance(const MapEntity& other) const {
  * and the center point of the visible part of the map.
  * \return the distance in pixels
  */
-int MapEntity::get_distance_to_camera() const {
+int Entity::get_distance_to_camera() const {
 
   const Rectangle& camera = get_map().get_camera_position();
   return (int) Geometry::get_distance(get_xy(), camera.get_center());
@@ -2178,7 +2178,7 @@ int MapEntity::get_distance_to_camera() const {
  * and the center point of the visible part of the map.
  * \return Square of the distance.
  */
-int MapEntity::get_distance_to_camera2() const {
+int Entity::get_distance_to_camera2() const {
 
   const Rectangle& camera = get_map().get_camera_position();
   return Geometry::get_distance2(get_xy(), camera.get_center());
@@ -2192,7 +2192,7 @@ int MapEntity::get_distance_to_camera2() const {
  * \param other Another entity.
  * \return \c true if both entities are in the same region.
  */
-bool MapEntity::is_in_same_region(const MapEntity& other) const {
+bool Entity::is_in_same_region(const Entity& other) const {
 
   const Point& this_center = get_center_point();
   const Point& other_center = other.get_center_point();
@@ -2271,7 +2271,7 @@ bool MapEntity::is_in_same_region(const MapEntity& other) const {
  * \param destructible the destructible item
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_destructible(Destructible& /* destructible */, CollisionMode /* collision_mode */) {
+void Entity::notify_collision_with_destructible(Destructible& /* destructible */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2279,7 +2279,7 @@ void MapEntity::notify_collision_with_destructible(Destructible& /* destructible
  * \param teletransporter the teletransporter
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_teletransporter(Teletransporter& /* teletransporter */, CollisionMode /* collision_mode */) {
+void Entity::notify_collision_with_teletransporter(Teletransporter& /* teletransporter */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2289,7 +2289,7 @@ void MapEntity::notify_collision_with_teletransporter(Teletransporter& /* teletr
  * \param dx Direction of the x move in pixels (0, 1 or -1).
  * \param dy Direction of the y move in pixels (0, 1 or -1).
  */
-void MapEntity::notify_collision_with_stream(
+void Entity::notify_collision_with_stream(
     Stream& /* stream */, int /* dx */, int /* dy */) {
 }
 
@@ -2298,7 +2298,7 @@ void MapEntity::notify_collision_with_stream(
  * \param stairs the stairs
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_stairs(Stairs& /* stairs */, CollisionMode /* collision_mode */) {
+void Entity::notify_collision_with_stairs(Stairs& /* stairs */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2306,7 +2306,7 @@ void MapEntity::notify_collision_with_stairs(Stairs& /* stairs */, CollisionMode
  * \param jumper The jumper.
  * \param collision_mode The collision mode that detected the event.
  */
-void MapEntity::notify_collision_with_jumper(Jumper& /* jumper */, CollisionMode /* collision_mode */) {
+void Entity::notify_collision_with_jumper(Jumper& /* jumper */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2314,7 +2314,7 @@ void MapEntity::notify_collision_with_jumper(Jumper& /* jumper */, CollisionMode
  * \param sensor a sensor
  * \param collision_mode the collision mode that detected the collision
  */
-void MapEntity::notify_collision_with_sensor(Sensor& /* sensor */, CollisionMode /* collision_mode */) {
+void Entity::notify_collision_with_sensor(Sensor& /* sensor */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2322,7 +2322,7 @@ void MapEntity::notify_collision_with_sensor(Sensor& /* sensor */, CollisionMode
  * \param sw a switch
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_switch(Switch& /* sw */,
+void Entity::notify_collision_with_switch(Switch& /* sw */,
     CollisionMode /* collision_mode */) {
 }
 
@@ -2332,7 +2332,7 @@ void MapEntity::notify_collision_with_switch(Switch& /* sw */,
  * \param sw the switch
  * \param sprite_overlapping the sprite of the current entity that collides with the switch
  */
-void MapEntity::notify_collision_with_switch(Switch& /* sw */, Sprite& /* sprite_overlapping */) {
+void Entity::notify_collision_with_switch(Switch& /* sw */, Sprite& /* sprite_overlapping */) {
 }
 
 /**
@@ -2340,7 +2340,7 @@ void MapEntity::notify_collision_with_switch(Switch& /* sw */, Sprite& /* sprite
  * \param crystal the crystal
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_crystal(Crystal& /* crystal */,
+void Entity::notify_collision_with_crystal(Crystal& /* crystal */,
     CollisionMode /* collision_mode */) {
 }
 
@@ -2350,21 +2350,21 @@ void MapEntity::notify_collision_with_crystal(Crystal& /* crystal */,
  * \param crystal the crystal
  * \param sprite_overlapping the sprite of the current entity that collides with the crystal
  */
-void MapEntity::notify_collision_with_crystal(Crystal& /* crystal */, Sprite& /* sprite_overlapping */) {
+void Entity::notify_collision_with_crystal(Crystal& /* crystal */, Sprite& /* sprite_overlapping */) {
 }
 
 /**
  * \brief This function is called when a chest detects a collision with this entity.
  * \param chest the chest
  */
-void MapEntity::notify_collision_with_chest(Chest& /* chest */) {
+void Entity::notify_collision_with_chest(Chest& /* chest */) {
 }
 
 /**
  * \brief This function is called when a block detects a collision with this entity.
  * \param block the block
  */
-void MapEntity::notify_collision_with_block(Block& /* block */) {
+void Entity::notify_collision_with_block(Block& /* block */) {
 }
 
 /**
@@ -2373,7 +2373,7 @@ void MapEntity::notify_collision_with_block(Block& /* block */) {
  * \param separator The separator.
  * \param collision_mode The collision mode that detected the event.
  */
-void MapEntity::notify_collision_with_separator(
+void Entity::notify_collision_with_separator(
     Separator& /* separator */, CollisionMode /* collision_mode */) {
 
 }
@@ -2383,7 +2383,7 @@ void MapEntity::notify_collision_with_separator(
  * \param bomb the bomb
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_bomb(Bomb& /* bomb */, CollisionMode /* collision_mode */) {
+void Entity::notify_collision_with_bomb(Bomb& /* bomb */, CollisionMode /* collision_mode */) {
 }
 
 /**
@@ -2391,7 +2391,7 @@ void MapEntity::notify_collision_with_bomb(Bomb& /* bomb */, CollisionMode /* co
  * \param explosion the explosion
  * \param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_explosion(Explosion& /* explosion */,
+void Entity::notify_collision_with_explosion(Explosion& /* explosion */,
     CollisionMode /* collision_mode */) {
 }
 
@@ -2401,7 +2401,7 @@ void MapEntity::notify_collision_with_explosion(Explosion& /* explosion */,
  * \param explosion the explosion
  * \param sprite_overlapping the sprite of the current entity that collides with the explosion
  */
-void MapEntity::notify_collision_with_explosion(Explosion& /* explosion */, Sprite& /* sprite_overlapping */) {
+void Entity::notify_collision_with_explosion(Explosion& /* explosion */, Sprite& /* sprite_overlapping */) {
 }
 
 /**
@@ -2410,14 +2410,14 @@ void MapEntity::notify_collision_with_explosion(Explosion& /* explosion */, Spri
  * \param fire the fire
  * \param sprite_overlapping the sprite of the current entity that collides with the fire
  */
-void MapEntity::notify_collision_with_fire(Fire& /* fire */, Sprite& /* sprite_overlapping */) {
+void Entity::notify_collision_with_fire(Fire& /* fire */, Sprite& /* sprite_overlapping */) {
 }
 
 /**
  * \brief This function is called when an enemy's rectangle detects a collision with this entity's rectangle.
  * \param enemy the enemy
  */
-void MapEntity::notify_collision_with_enemy(Enemy& /* enemy */) {
+void Entity::notify_collision_with_enemy(Enemy& /* enemy */) {
 }
 
 /**
@@ -2426,7 +2426,7 @@ void MapEntity::notify_collision_with_enemy(Enemy& /* enemy */) {
  * \param enemy_sprite the enemy's sprite that overlaps a sprite of this entity
  * \param this_sprite this entity's sprite that overlaps the enemy's sprite
  */
-void MapEntity::notify_collision_with_enemy(Enemy& /* enemy */, Sprite& /* enemy_sprite */, Sprite& /* this_sprite */) {
+void Entity::notify_collision_with_enemy(Enemy& /* enemy */, Sprite& /* enemy_sprite */, Sprite& /* this_sprite */) {
 }
 
 /**
@@ -2440,7 +2440,7 @@ void MapEntity::notify_collision_with_enemy(Enemy& /* enemy */, Sprite& /* enemy
  * \param result How the enemy has reacted to the attack.
  * \param killed Whether the attack has just killed the enemy.
  */
-void MapEntity::notify_attacked_enemy(
+void Entity::notify_attacked_enemy(
     EnemyAttack /* attack */,
     Enemy& /* victim */,
     const Sprite* /* victim_sprite */,
@@ -2452,7 +2452,7 @@ void MapEntity::notify_attacked_enemy(
  * \brief Returns whether the movement and the animations of this entity are suspended.
  * \return true if the movement and the animations are suspended
  */
-bool MapEntity::is_suspended() const {
+bool Entity::is_suspended() const {
   return suspended;
 }
 
@@ -2460,7 +2460,7 @@ bool MapEntity::is_suspended() const {
  * \brief Suspends or resumes the movement and the animations of this entity.
  * \param suspended true to suspend the movement and the animations, false to resume them
  */
-void MapEntity::set_suspended(bool suspended) {
+void Entity::set_suspended(bool suspended) {
 
   this->suspended = suspended;
 
@@ -2492,7 +2492,7 @@ void MapEntity::set_suspended(bool suspended) {
  * \brief Returns the date when this entity was suspended.
  * \return When this entity was suspended.
  */
-uint32_t MapEntity::get_when_suspended() const {
+uint32_t Entity::get_when_suspended() const {
   return when_suspended;
 }
 
@@ -2500,7 +2500,7 @@ uint32_t MapEntity::get_when_suspended() const {
  * \brief Makes this entity's sprites play their animation even when the game is suspended.
  * \param ignore_suspend true to keep playing the sprites when the game is suspended
  */
-void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
+void Entity::set_animation_ignore_suspend(bool ignore_suspend) {
 
   for (const SpritePtr& sprite: sprites) {
     sprite->set_ignore_suspend(ignore_suspend);
@@ -2518,7 +2518,7 @@ void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
  * for other treatments but don't forget to call this method
  * to handle the movement and the sprites.
  */
-void MapEntity::update() {
+void Entity::update() {
 
   // Static tiles are optimized and should never be used individually
   // once the map is created.
@@ -2611,7 +2611,7 @@ void MapEntity::update() {
  * \return true if the entity is visible and may have a sprite in the visible part
  * of the map.
  */
-bool MapEntity::is_drawn() const {
+bool Entity::is_drawn() const {
 
   const bool far = get_distance_to_camera2() > optimization_distance2
       && optimization_distance > 0;
@@ -2635,7 +2635,7 @@ bool MapEntity::is_drawn() const {
  *
  * \return true if this entity is drawn where it is located.
  */
-bool MapEntity::is_drawn_at_its_position() const {
+bool Entity::is_drawn_at_its_position() const {
   return true;
 }
 
@@ -2646,7 +2646,7 @@ bool MapEntity::is_drawn_at_its_position() const {
  * at least one of them is in the visible part of the map.
  * This function should do nothing if is_drawn() is false.
  */
-void MapEntity::draw_on_map() {
+void Entity::draw_on_map() {
 
   if (!is_drawn()) {
     return;

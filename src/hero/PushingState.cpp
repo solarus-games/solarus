@@ -231,7 +231,7 @@ void Hero::PushingState::stop_moving_pushed_entity() {
 
     hero.clear_movement();
     pushing_movement = nullptr;
-    MapEntity* entity_just_moved = pushed_entity;
+    Entity* entity_just_moved = pushed_entity;
     pushed_entity = nullptr;
     entity_just_moved->notify_moved_by(hero);
   }
@@ -262,7 +262,7 @@ void Hero::PushingState::stop_moving_pushed_entity() {
  * (or nullptr if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::PushingState::can_be_hurt(MapEntity* /* attacker */) const {
+bool Hero::PushingState::can_be_hurt(Entity* /* attacker */) const {
   return !is_moving_grabbed_entity();
 }
 

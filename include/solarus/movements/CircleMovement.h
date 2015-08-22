@@ -48,7 +48,7 @@ class CircleMovement: public Movement {
     // properties
     void set_center(const Point& center_point);
     void set_center(
-        const MapEntityPtr& center_entity,
+        const EntityPtr& center_entity,
         int x = 0,
         int y = 0
     );
@@ -76,7 +76,7 @@ class CircleMovement: public Movement {
     void recompute_position();
 
     // center of the circle
-    MapEntityPtr center_entity;                     /**< the entity to make circles around (nullptr if only a point is used) */
+    EntityPtr center_entity;                     /**< the entity to make circles around (nullptr if only a point is used) */
     Point center_point;                             /**< absolute coordinates of the center if only a point is used,
                                                      * or coordinates relative to the center entity otherwise */
 

@@ -62,7 +62,7 @@ MapEntities::MapEntities(Game& game, Map& map):
  * \brief Notifies an entity that it is being removed.
  * \param entity The entity being removed.
  */
-void MapEntities::notify_entity_removed(MapEntity* entity) {
+void MapEntities::notify_entity_removed(Entity* entity) {
 
   if (!entity->is_being_removed()) {
     entity->notify_being_removed();
@@ -81,7 +81,7 @@ Hero& MapEntities::get_hero() {
  * \brief Returns all entities expect tiles and the hero.
  * \return The entities except tiles and the hero.
  */
-const std::list<MapEntityPtr>& MapEntities::get_entities() {
+const std::list<EntityPtr>& MapEntities::get_entities() {
   return all_entities;
 }
 
@@ -90,7 +90,7 @@ const std::list<MapEntityPtr>& MapEntities::get_entities() {
  * \param layer The layer.
  * \return The obstacle entities on that layer.
  */
-const std::list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
+const std::list<Entity*>& MapEntities::get_obstacle_entities(Layer layer) {
   return obstacle_entities[layer];
 }
 
@@ -99,7 +99,7 @@ const std::list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
  * \param layer The layer.
  * \return The ground observers on that layer.
  */
-const std::list<MapEntity*>& MapEntities::get_ground_observers(Layer layer) {
+const std::list<Entity*>& MapEntities::get_ground_observers(Layer layer) {
   return ground_observers[layer];
 }
 
@@ -108,7 +108,7 @@ const std::list<MapEntity*>& MapEntities::get_ground_observers(Layer layer) {
  * \param layer The layer.
  * \return The ground observers on that layer.
  */
-const std::list<MapEntity*>& MapEntities::get_ground_modifiers(Layer layer) {
+const std::list<Entity*>& MapEntities::get_ground_modifiers(Layer layer) {
   return ground_modifiers[layer];
 }
 
@@ -182,9 +182,9 @@ void MapEntities::set_tile_ground(Layer layer, int x8, int y8, Ground ground) {
  * \param name Name of the entity to get.
  * \return The entity requested.
  */
-MapEntity* MapEntities::get_entity(const std::string& name) {
+Entity* MapEntities::get_entity(const std::string& name) {
 
-  MapEntity* entity = find_entity(name);
+  Entity* entity = find_entity(name);
 
   if (entity == nullptr) {
     Debug::die(std::string("Map '") + map.get_id()
@@ -199,14 +199,14 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
  * \param name Name of the entity to find.
  * \return The entity requested, or nullptr if there is no entity with the specified name.
  */
-MapEntity* MapEntities::find_entity(const std::string& name) {
+Entity* MapEntities::find_entity(const std::string& name) {
 
   auto it = named_entities.find(name);
   if (it == named_entities.end()) {
     return nullptr;
   }
 
-  MapEntity* entity = it->second;
+  Entity* entity = it->second;
 
   if (entity->is_being_removed()) {
     return nullptr;
@@ -220,11 +220,11 @@ MapEntity* MapEntities::find_entity(const std::string& name) {
  * \param prefix Prefix of the name.
  * \return The entities of this type and having this prefix in their name.
  */
-std::list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& prefix) {
+std::list<Entity*> MapEntities::get_entities_with_prefix(const std::string& prefix) {
 
-  std::list<MapEntity*> entities;
+  std::list<Entity*> entities;
 
-  for (const MapEntityPtr& entity: all_entities) {
+  for (const EntityPtr& entity: all_entities) {
     if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
       entities.push_back(entity.get());
     }
@@ -240,12 +240,12 @@ std::list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& p
  * \param prefix Prefix of the name.
  * \return The entities of this type and having this prefix in their name.
  */
-std::list<MapEntity*> MapEntities::get_entities_with_prefix(
+std::list<Entity*> MapEntities::get_entities_with_prefix(
     EntityType type, const std::string& prefix) {
 
-  std::list<MapEntity*> entities;
+  std::list<Entity*> entities;
 
-  for (const MapEntityPtr& entity: all_entities) {
+  for (const EntityPtr& entity: all_entities) {
     if (entity->get_type() == type && entity->has_prefix(prefix) && !entity->is_being_removed()) {
       entities.push_back(entity.get());
     }
@@ -262,7 +262,7 @@ std::list<MapEntity*> MapEntities::get_entities_with_prefix(
  */
 bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
 
-  for (const MapEntityPtr& entity: all_entities) {
+  for (const EntityPtr& entity: all_entities) {
     if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
       return true;
     }
@@ -275,7 +275,7 @@ bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
  * \brief Brings to front an entity in its layer.
  * \param entity The entity to bring to front.
  */
-void MapEntities::bring_to_front(MapEntity& entity) {
+void MapEntities::bring_to_front(Entity& entity) {
 
   Layer layer = entity.get_layer();
   if (entity.can_be_drawn() && !entity.is_drawn_in_y_order()) {
@@ -305,7 +305,7 @@ void MapEntities::bring_to_front(MapEntity& entity) {
  * \brief Brings to back an entity in its layer.
  * \param entity The entity to bring to back.
  */
-void MapEntities::bring_to_back(MapEntity& entity) {
+void MapEntities::bring_to_back(Entity& entity) {
 
   Layer layer = entity.get_layer();
   if (entity.can_be_drawn() && !entity.is_drawn_in_y_order()) {
@@ -336,7 +336,7 @@ void MapEntities::bring_to_back(MapEntity& entity) {
  */
 void MapEntities::notify_map_started() {
 
-  for (const MapEntityPtr& entity: all_entities) {
+  for (const EntityPtr& entity: all_entities) {
     entity->notify_map_started();
     entity->notify_tileset_changed();
   }
@@ -356,7 +356,7 @@ void MapEntities::notify_map_started() {
  */
 void MapEntities::notify_map_opening_transition_finished() {
 
-  for (const MapEntityPtr& entity: all_entities) {
+  for (const EntityPtr& entity: all_entities) {
     entity->notify_map_opening_transition_finished();
   }
   hero.notify_map_opening_transition_finished();
@@ -373,7 +373,7 @@ void MapEntities::notify_tileset_changed() {
     non_animated_regions[layer]->notify_tileset_changed();
   }
 
-  for (const MapEntityPtr& entity: all_entities) {
+  for (const EntityPtr& entity: all_entities) {
     entity->notify_tileset_changed();
   }
   hero.notify_tileset_changed();
@@ -384,7 +384,7 @@ void MapEntities::notify_tileset_changed() {
  */
 void MapEntities::notify_map_finished() {
 
-  for (const MapEntityPtr& entity: all_entities) {
+  for (const EntityPtr& entity: all_entities) {
     notify_entity_removed(entity.get());
   }
 }
@@ -558,7 +558,7 @@ void MapEntities::add_tile(const TilePtr& tile) {
  *
  * \param entity The entity to add (can be an empty pointer).
  */
-void MapEntities::add_entity(const MapEntityPtr& entity) {
+void MapEntities::add_entity(const EntityPtr& entity) {
 
   if (entity == nullptr) {
     return;
@@ -689,7 +689,7 @@ void MapEntities::add_entity(const MapEntityPtr& entity) {
  * \brief Removes an entity from the map and schedules it to be destroyed.
  * \param entity the entity to remove
  */
-void MapEntities::remove_entity(MapEntity* entity) {
+void MapEntities::remove_entity(Entity* entity) {
 
   if (!entity->is_being_removed()) {
     entities_to_remove.push_back(entity);
@@ -707,7 +707,7 @@ void MapEntities::remove_entity(MapEntity* entity) {
  */
 void MapEntities::remove_entity(const std::string& name) {
 
-  MapEntity* entity = find_entity(name);
+  Entity* entity = find_entity(name);
   if (entity != nullptr) {
     remove_entity(entity);
   }
@@ -719,8 +719,8 @@ void MapEntities::remove_entity(const std::string& name) {
  */
 void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
 
-  std::list<MapEntity*> entities = get_entities_with_prefix(prefix);
-  for (MapEntity* entity: entities) {
+  std::list<Entity*> entities = get_entities_with_prefix(prefix);
+  for (Entity* entity: entities) {
     remove_entity(entity);
   }
 }
@@ -731,7 +731,7 @@ void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
 void MapEntities::remove_marked_entities() {
 
   // remove the marked entities
-  for (MapEntity* entity: entities_to_remove) {
+  for (Entity* entity: entities_to_remove) {
 
     Layer layer = entity->get_layer();
 
@@ -772,7 +772,7 @@ void MapEntities::remove_marked_entities() {
     }
 
     // remove it from the whole list
-    MapEntityPtr shared_entity = std::static_pointer_cast<MapEntity>(entity->shared_from_this());
+    EntityPtr shared_entity = std::static_pointer_cast<Entity>(entity->shared_from_this());
     all_entities.remove(shared_entity);
     const std::string& name = entity->get_name();
     if (!name.empty()) {
@@ -823,7 +823,7 @@ void MapEntities::set_suspended(bool suspended) {
   hero.set_suspended(suspended);
 
   // other entities
-  for (const MapEntityPtr& entity: all_entities) {
+  for (const EntityPtr& entity: all_entities) {
     entity->set_suspended(suspended);
   }
 
@@ -847,7 +847,7 @@ void MapEntities::update() {
     entities_drawn_y_order[layer].sort(compare_y);
   }
 
-  for (const MapEntityPtr& entity: all_entities) {
+  for (const EntityPtr& entity: all_entities) {
 
     if (!entity->is_being_removed()) {
       entity->update();
@@ -878,7 +878,7 @@ void MapEntities::draw() {
     non_animated_regions[layer]->draw_on_map();
 
     // draw the first sprites
-    for (MapEntity* entity: entities_drawn_first[layer]) {
+    for (Entity* entity: entities_drawn_first[layer]) {
 
       if (entity->is_enabled()) {
         entity->draw_on_map();
@@ -887,7 +887,7 @@ void MapEntities::draw() {
 
     // draw the sprites at the hero's level, in the order
     // defined by their y position (including the hero)
-    for (MapEntity* entity: entities_drawn_y_order[layer]) {
+    for (Entity* entity: entities_drawn_y_order[layer]) {
 
       if (entity->is_enabled()) {
         entity->draw_on_map();
@@ -903,7 +903,7 @@ void MapEntities::draw() {
  * \return true if the y position of the first entity is lower
  * than the second one
  */
-bool MapEntities::compare_y(MapEntity* first, MapEntity* second) {
+bool MapEntities::compare_y(Entity* first, Entity* second) {
 
   // before was: first->get_top_left_y() < second->get_top_left_y(); but doesn't work for bosses
   return first->get_top_left_y() + first->get_height() < second->get_top_left_y() + second->get_height();
@@ -916,7 +916,7 @@ bool MapEntities::compare_y(MapEntity* first, MapEntity* second) {
  * display it in Z order.
  */
 void MapEntities::set_entity_drawn_in_y_order(
-    MapEntity& entity, bool drawn_in_y_order) {
+    Entity& entity, bool drawn_in_y_order) {
 
   const Layer layer = entity.get_layer();
   if (drawn_in_y_order) {
@@ -937,7 +937,7 @@ void MapEntities::set_entity_drawn_in_y_order(
  * \param entity an entity
  * \param layer the new layer
  */
-void MapEntities::set_entity_layer(MapEntity& entity, Layer layer) {
+void MapEntities::set_entity_layer(Entity& entity, Layer layer) {
 
   Layer old_layer = entity.get_layer();
 
@@ -981,7 +981,7 @@ void MapEntities::set_entity_layer(MapEntity& entity, Layer layer) {
  * observer or when it stops being one.
  * \param entity The entity whose ground observer property has changed.
  */
-void MapEntities::notify_entity_ground_observer_changed(MapEntity& entity) {
+void MapEntities::notify_entity_ground_observer_changed(Entity& entity) {
 
   Layer layer = entity.get_layer();
   ground_observers[layer].remove(&entity);
@@ -995,7 +995,7 @@ void MapEntities::notify_entity_ground_observer_changed(MapEntity& entity) {
  * modifier or when it stops being one.
  * \param entity The entity whose ground modifier property has changed.
  */
-void MapEntities::notify_entity_ground_modifier_changed(MapEntity& entity) {
+void MapEntities::notify_entity_ground_modifier_changed(Entity& entity) {
 
   Layer layer = entity.get_layer();
   ground_modifiers[layer].remove(&entity);
@@ -1048,7 +1048,7 @@ void MapEntities::remove_boomerang() {
 void MapEntities::remove_arrows() {
 
   // TODO this function may be slow if there are a lot of entities: store the arrows?
-  for (const MapEntityPtr& entity: all_entities) {
+  for (const EntityPtr& entity: all_entities) {
     if (entity->get_type() == EntityType::ARROW) {
       remove_entity(entity.get());
     }

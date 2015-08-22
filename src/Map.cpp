@@ -385,7 +385,7 @@ Destination* Map::get_destination() {
   Destination* destination = nullptr;
   if (!destination_name.empty()) {
     // Use the destination whose name was specified.
-    MapEntity* entity = get_entities().find_entity(destination_name);
+    Entity* entity = get_entities().find_entity(destination_name);
 
     if (entity == nullptr || entity->get_type() != EntityType::DESTINATION) {
       Debug::error(
@@ -780,7 +780,7 @@ bool Map::test_collision_with_ground(
     Layer layer,
     int x,
     int y,
-    const MapEntity& entity_to_check,
+    const Entity& entity_to_check,
     bool& found_diagonal_wall) const {
 
   bool on_obstacle = false;
@@ -868,12 +868,12 @@ bool Map::test_collision_with_ground(
 bool Map::test_collision_with_entities(
     Layer layer,
     const Rectangle& collision_box,
-    MapEntity& entity_to_check) const {
+    Entity& entity_to_check) const {
 
-  const std::list<MapEntity*>& obstacle_entities =
+  const std::list<Entity*>& obstacle_entities =
       entities->get_obstacle_entities(layer);
 
-  for (MapEntity* entity: obstacle_entities) {
+  for (Entity* entity: obstacle_entities) {
 
     if (entity->overlaps(collision_box)
         && entity->is_obstacle_for(entity_to_check, collision_box)
@@ -897,7 +897,7 @@ bool Map::test_collision_with_entities(
 bool Map::test_collision_with_obstacles(
     Layer layer,
     const Rectangle& collision_box,
-    MapEntity& entity_to_check) const {
+    Entity& entity_to_check) const {
 
   // This function is called very often.
   // For performance reasons, we only check the border of the of the collision box.
@@ -971,7 +971,7 @@ bool Map::test_collision_with_obstacles(
     Layer layer,
     int x,
     int y,
-    MapEntity& entity_to_check) const {
+    Entity& entity_to_check) const {
 
   bool collision;
   bool is_diagonal_wall;
@@ -999,7 +999,7 @@ bool Map::test_collision_with_obstacles(
 bool Map::test_collision_with_obstacles(
     Layer layer,
     const Point& point,
-    MapEntity& entity_to_check) const {
+    Entity& entity_to_check) const {
 
   return test_collision_with_obstacles(layer, point.x, point.y, entity_to_check);
 }
@@ -1057,13 +1057,13 @@ Ground Map::get_ground(Layer layer, int x, int y) const {
   // See if a dynamic entity changes the ground.
   // TODO store ground modifiers in a quad tree for performance.
 
-  const std::list<MapEntity*>& ground_modifiers =
+  const std::list<Entity*>& ground_modifiers =
       entities->get_ground_modifiers(layer);
-  std::list<MapEntity*>::const_reverse_iterator it;
-  const std::list<MapEntity*>::const_reverse_iterator rend =
+  std::list<Entity*>::const_reverse_iterator it;
+  const std::list<Entity*>::const_reverse_iterator rend =
       ground_modifiers.rend();
   for (it = ground_modifiers.rbegin(); it != rend; ++it) {
-    const MapEntity& ground_modifier = *(*it);
+    const Entity& ground_modifier = *(*it);
     if (ground_modifier.overlaps(x, y)
         && ground_modifier.get_modified_ground() != Ground::EMPTY
         && ground_modifier.is_enabled()
@@ -1101,7 +1101,7 @@ Ground Map::get_ground(Layer layer, const Point& xy) const {
  * \param entity The entity that has just moved (this entity should have
  * a movement sensible to the collisions).
  */
-void Map::check_collision_with_detectors(MapEntity& entity) {
+void Map::check_collision_with_detectors(Entity& entity) {
 
   if (suspended) {
     return;
@@ -1145,8 +1145,8 @@ void Map::check_collision_from_detector(Detector& detector) {
   detector.check_collision(get_entities().get_hero());
 
   // Check each entity with this detector.
-  const std::list<MapEntityPtr>& all_entities = entities->get_entities();
-  for (const MapEntityPtr& entity: all_entities) {
+  const std::list<EntityPtr>& all_entities = entities->get_entities();
+  for (const EntityPtr& entity: all_entities) {
 
     if (entity->is_enabled()
         && !entity->is_being_removed()) {
@@ -1167,7 +1167,7 @@ void Map::check_collision_from_detector(Detector& detector) {
  * \param entity A map entity.
  * \param sprite The sprite of this entity to check.
  */
-void Map::check_collision_with_detectors(MapEntity& entity, Sprite& sprite) {
+void Map::check_collision_with_detectors(Entity& entity, Sprite& sprite) {
 
   if (suspended) {
     return;

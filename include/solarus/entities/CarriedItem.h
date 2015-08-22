@@ -32,7 +32,7 @@ namespace Solarus {
  * As soon as he throws it, the item becomes attached to the map and the hero
  * may lift another item.
  */
-class CarriedItem: public MapEntity {
+class CarriedItem: public Entity {
 
   public:
 
@@ -47,7 +47,7 @@ class CarriedItem: public MapEntity {
 
     CarriedItem(
         Hero& hero,
-        const MapEntity& original_entity,
+        const Entity& original_entity,
         const std::string& animation_set_id,
         const std::string& destruction_sound_id,
         int damage_on_enemies,

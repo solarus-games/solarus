@@ -72,7 +72,7 @@ bool Bomb::can_be_obstacle() const {
 }
 
 /**
- * \copydoc MapEntity::is_stream_obstacle
+ * \copydoc Entity::is_stream_obstacle
  */
 bool Bomb::is_stream_obstacle(Stream& /* stream */) {
   return false;
@@ -132,7 +132,7 @@ bool Bomb::is_ladder_obstacle() const {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Bomb::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Bomb::notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) {
 
   entity_overlapping.notify_collision_with_bomb(*this, collision_mode);
 }
@@ -151,7 +151,7 @@ void Bomb::notify_collision_with_explosion(Explosion& /* explosion */, Sprite& /
 }
 
 /**
- * \copydoc MapEntity::notify_collision_with_stream
+ * \copydoc Entity::notify_collision_with_stream
  */
 void Bomb::notify_collision_with_stream(Stream& stream, int /* dx */, int /* dy */) {
 

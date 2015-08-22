@@ -93,7 +93,7 @@ bool Block::is_ground_observer() const {
  * \param other another entity
  * \return true
  */
-bool Block::is_obstacle_for(MapEntity& other) {
+bool Block::is_obstacle_for(Entity& other) {
 
   return other.is_block_obstacle(*this);
 }
@@ -152,7 +152,7 @@ bool Block::is_destructible_obstacle(Destructible& /* destructible */) {
 }
 
 /**
- * \copydoc MapEntity::notify_created
+ * \copydoc Entity::notify_created
  */
 void Block::notify_created() {
 
@@ -167,7 +167,7 @@ void Block::notify_created() {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Block::notify_collision(MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
+void Block::notify_collision(Entity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   entity_overlapping.notify_collision_with_block(*this);
 }
@@ -266,7 +266,7 @@ void Block::notify_obstacle_reached() {
 }
 
 /**
- * \copydoc MapEntity::notify_ground_below_changed
+ * \copydoc Entity::notify_ground_below_changed
  */
 void Block::notify_ground_below_changed() {
 
@@ -311,17 +311,17 @@ void Block::stop_movement_by_hero() {
 }
 
 /**
- * \copydoc MapEntity::notify_moving_by
+ * \copydoc Entity::notify_moving_by
  */
-void Block::notify_moving_by(MapEntity& /* entity */) {
+void Block::notify_moving_by(Entity& /* entity */) {
 
   get_lua_context().block_on_moving(*this);
 }
 
 /**
- * \copydoc MapEntity::notify_moved_by
+ * \copydoc Entity::notify_moved_by
  */
-void Block::notify_moved_by(MapEntity& /* entity */) {
+void Block::notify_moved_by(Entity& /* entity */) {
 
   get_lua_context().block_on_moved(*this);
 }

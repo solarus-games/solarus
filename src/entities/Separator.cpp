@@ -44,7 +44,7 @@ Separator::Separator(
 }
 
 /**
- * \copydoc MapEntity::get_type
+ * \copydoc Entity::get_type
  */
 EntityType Separator::get_type() const {
   return EntityType::SEPARATOR;
@@ -67,16 +67,16 @@ bool Separator::is_vertical() const {
 }
 
 /**
- * \copydoc MapEntity::is_obstacle_for
+ * \copydoc Entity::is_obstacle_for
  */
-bool Separator::is_obstacle_for(MapEntity& other) {
+bool Separator::is_obstacle_for(Entity& other) {
   return other.is_separator_obstacle(*this);
 }
 
 /**
  * \copydoc Detector::test_collision_custom
  */
-bool Separator::test_collision_custom(MapEntity& entity) {
+bool Separator::test_collision_custom(Entity& entity) {
 
   // Trigger the collision if the center point crosses the middle of the
   // separator.
@@ -114,7 +114,7 @@ bool Separator::test_collision_custom(MapEntity& entity) {
  * \copydoc Detector::notify_collision
  */
 void Separator::notify_collision(
-    MapEntity& entity_overlapping, CollisionMode collision_mode) {
+    Entity& entity_overlapping, CollisionMode collision_mode) {
 
   entity_overlapping.notify_collision_with_separator(*this, collision_mode);
 }

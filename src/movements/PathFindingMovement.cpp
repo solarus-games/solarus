@@ -38,7 +38,7 @@ PathFindingMovement::PathFindingMovement(int speed):
 /**
  * \brief Sets the entity to target with this movement.
  */
-void PathFindingMovement::set_target(const MapEntityPtr& target) {
+void PathFindingMovement::set_target(const EntityPtr& target) {
 
   this->target = target;
   next_recomputation_date = System::now() + 100;

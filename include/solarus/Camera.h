@@ -25,7 +25,7 @@
 namespace Solarus {
 
 class Map;
-class MapEntity;
+class Entity;
 class Separator;
 class TargetMovement;
 
@@ -52,7 +52,7 @@ class Camera {
     void set_speed(int speed);
     void move(int target_x, int target_y);
     void move(const Point& target);
-    void move(MapEntity& entity);
+    void move(Entity& entity);
     void restore();
     void traverse_separator(Separator* separator);
 
@@ -72,7 +72,7 @@ class Camera {
     Map& map;                     /**< The map. */
 
     // Camera centered on the hero.
-    MapEntityPtr fixed_on;                  /**< \c true if the camera is fixed on the hero. */
+    EntityPtr fixed_on;                     /**< \c true if the camera is fixed on the hero. */
     Rectangle separator_scrolling_position; /**< Current camera position while crossing a separator. */
     Rectangle separator_target_position;    /**< Target camera position when crossing a separator. */
     int separator_scrolling_dx;             /**< X increment to the camera position when crossing a separator. */

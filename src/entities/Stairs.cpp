@@ -96,7 +96,7 @@ Ground Stairs::get_ground() const {
 }
 
 /**
- * \copydoc MapEntity::notify_creating
+ * \copydoc Entity::notify_creating
  */
 void Stairs::notify_creating() {
 
@@ -140,7 +140,7 @@ bool Stairs::is_sword_ignored() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Stairs::is_obstacle_for(MapEntity& other) {
+bool Stairs::is_obstacle_for(Entity& other) {
 
   return other.is_stairs_obstacle(*this);
 }
@@ -151,7 +151,7 @@ bool Stairs::is_obstacle_for(MapEntity& other) {
  * \param collision_mode The collision mode that detected the collision.
  */
 void Stairs::notify_collision(
-    MapEntity& entity_overlapping, CollisionMode collision_mode) {
+    Entity& entity_overlapping, CollisionMode collision_mode) {
 
   if (is_enabled()) {
     entity_overlapping.notify_collision_with_stairs(*this, collision_mode);
@@ -362,15 +362,15 @@ void Stairs::notify_enabled(bool enabled) {
  */
 void Stairs::update_dynamic_tiles() {
 
-  std::list<MapEntity*> tiles = get_entities().get_entities_with_prefix(
+  std::list<Entity*> tiles = get_entities().get_entities_with_prefix(
       EntityType::DYNAMIC_TILE, get_name() + "_enabled");
-  for (MapEntity* tile: tiles) {
+  for (Entity* tile: tiles) {
     tile->set_enabled(is_enabled());
   }
 
   tiles = get_entities().get_entities_with_prefix(
       EntityType::DYNAMIC_TILE, get_name() + "_disabled");
-  for (MapEntity* tile: tiles) {
+  for (Entity* tile: tiles) {
     tile->set_enabled(!is_enabled());
   }
 }

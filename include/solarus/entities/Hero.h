@@ -44,7 +44,7 @@ class Treasure;
  * This class represents the hero. It coordinates his position on the map and his state.
  * The hero is animated by several sprites that are handled by the HeroSprites class.
  */
-class Hero: public MapEntity {
+class Hero: public Entity {
 
   public:
 
@@ -58,7 +58,7 @@ class Hero: public MapEntity {
     /**
      * \name Features.
      *
-     * These functions, required by MapEntity, indicate
+     * These functions, required by Entity, indicate
      * the main properties of this type of entity.
      */
     virtual EntityType get_type() const override;
@@ -166,7 +166,7 @@ class Hero: public MapEntity {
      *
      * Information about what is considered as an obstacle for the hero.
      */
-    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual bool is_obstacle_for(Entity& other) override;
     virtual bool is_shallow_water_obstacle() const override;
     virtual bool is_deep_water_obstacle() const override;
     virtual bool is_hole_obstacle() const override;
@@ -205,7 +205,7 @@ class Hero: public MapEntity {
     virtual void notify_collision_with_separator(Separator& separator, CollisionMode collision_mode) override;
     virtual void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) override;
     virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
-    void avoid_collision(MapEntity& entity, int direction);
+    void avoid_collision(Entity& entity, int direction);
     bool is_striking_with_sword(Detector& detector) const;
 
     /**
@@ -223,9 +223,9 @@ class Hero: public MapEntity {
     int get_sword_damage_factor() const;
     bool is_invincible() const;
     void set_invincible(bool invincible, uint32_t duration);
-    bool can_be_hurt(MapEntity* attacker) const;
+    bool can_be_hurt(Entity* attacker) const;
     void hurt(
-        MapEntity& source,
+        Entity& source,
         Sprite* source_sprite,
         int life_points
     );
@@ -350,7 +350,7 @@ class Hero: public MapEntity {
 
     // sprites
     std::unique_ptr<HeroSprites>
-        sprites;                    /**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
+        sprites;                    /**< the hero's sprites (note that we don't use the sprites structure from Entity) */
 
     // position
     int normal_walking_speed;       /**< speed when normally walking */

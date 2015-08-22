@@ -39,8 +39,8 @@ class Sensor: public Detector {
     virtual EntityType get_type() const override;
     virtual bool can_be_drawn() const override;
 
-    virtual bool is_obstacle_for(MapEntity& other) override;
-    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual bool is_obstacle_for(Entity& other) override;
+    virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
     virtual void notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode) override;
     void activate(Hero& hero);
     virtual void update() override;

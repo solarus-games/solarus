@@ -26,7 +26,7 @@ namespace Solarus {
 /**
  * \brief The hookshot thrown by the hero.
  */
-class Hookshot: public MapEntity {
+class Hookshot: public Entity {
 
   public:
 
@@ -53,7 +53,7 @@ class Hookshot: public MapEntity {
     bool is_flying() const;
     bool is_going_back() const;
     void go_back();
-    void attach_to(MapEntity& entity_reached);
+    void attach_to(Entity& entity_reached);
 
     // collisions
     virtual void notify_obstacle_reached() override;
@@ -77,7 +77,7 @@ class Hookshot: public MapEntity {
 
     bool has_to_go_back;         /**< true if the hookshot is about to go back */
     bool going_back;             /**< indicates that the hookshot is going back towards the hero */
-    MapEntity* entity_reached;   /**< the entity the hookshot is attached to (or nullptr) */
+    Entity* entity_reached;   /**< the entity the hookshot is attached to (or nullptr) */
 
     SpritePtr
         link_sprite;             /**< sprite of the links */

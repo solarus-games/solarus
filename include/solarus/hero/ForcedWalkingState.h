@@ -55,7 +55,7 @@ class Hero::ForcedWalkingState: public HeroState {
     virtual bool can_avoid_stream(const Stream& stream) const override;
     virtual bool can_avoid_sensor() const override;
     virtual bool can_avoid_switch() const override;
-    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_be_hurt(Entity* attacker) const override;
 
   private:
 

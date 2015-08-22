@@ -1032,7 +1032,7 @@ int HeroState::get_sword_damage_factor() const {
  * (or nullptr if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool HeroState::can_be_hurt(MapEntity* /* attacker */) const {
+bool HeroState::can_be_hurt(Entity* /* attacker */) const {
   return false;
 }
 

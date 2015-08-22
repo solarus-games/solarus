@@ -36,7 +36,7 @@ class TargetMovement: public StraightMovement {
   public:
 
     TargetMovement(
-        const MapEntityPtr& target_entity,
+        const EntityPtr& target_entity,
         int x,
         int y,
         int moving_speed,
@@ -44,14 +44,14 @@ class TargetMovement: public StraightMovement {
     );
 
     TargetMovement(
-        const MapEntityPtr& target_entity,
+        const EntityPtr& target_entity,
         const Point& xy,
         int moving_speed,
         bool ignore_obstacles
     );
 
     void set_target(
-        const MapEntityPtr& target_entity,
+        const EntityPtr& target_entity,
         const Point& xy
     );
 
@@ -69,7 +69,7 @@ class TargetMovement: public StraightMovement {
     void recompute_movement();
 
     Point target;                      /**< Coordinates of the point or entity to track. */
-    MapEntityPtr target_entity;        /**< The entity to track (nullptr if only
+    EntityPtr target_entity;        /**< The entity to track (nullptr if only
                                         * a point is targeted) */
     Point entity_offset;               /**< Value to add to the entity's coordinates. */
 

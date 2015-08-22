@@ -81,7 +81,7 @@ bool CrystalBlock::is_raised() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool CrystalBlock::is_obstacle_for(MapEntity& other) {
+bool CrystalBlock::is_obstacle_for(Entity& other) {
 
   // if this block is lowered, it is obviously not an obstacle
   if (!is_raised()) {
@@ -97,7 +97,7 @@ bool CrystalBlock::is_obstacle_for(MapEntity& other) {
  * \param entity_overlapping the other entity
  * \param collision_mode the collision mode that detected the collision
  */
-void CrystalBlock::notify_collision(MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
+void CrystalBlock::notify_collision(Entity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   if (entity_overlapping.is_hero() && is_raised()) {
 
@@ -196,13 +196,13 @@ void CrystalBlock::update() {
   }
   get_sprite().update();
 
-  MapEntity::update();
+  Entity::update();
 }
 
 /**
  * \brief Draws the entity on the map.
  *
- * This is a redefinition of MapEntity::draw_on_map to repeat the block pattern.
+ * This is a redefinition of Entity::draw_on_map to repeat the block pattern.
  */
 void CrystalBlock::draw_on_map() {
 

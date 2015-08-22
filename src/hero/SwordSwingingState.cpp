@@ -118,7 +118,7 @@ bool Hero::SwordSwingingState::can_start_sword() const {
  * \param attacker an attacker that is trying to hurt the hero
  * (or nullptr if the source of the attack is not an enemy)
  */
-bool Hero::SwordSwingingState::can_be_hurt(MapEntity* /* attacker */) const {
+bool Hero::SwordSwingingState::can_be_hurt(Entity* /* attacker */) const {
   return true;
 }
 

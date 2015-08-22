@@ -45,9 +45,9 @@ class Jumper: public Detector {
     virtual EntityType get_type() const override;
     virtual bool can_be_drawn() const override;
     virtual bool is_sword_ignored() const override;
-    virtual bool is_obstacle_for(MapEntity& other, const Rectangle& candidate_position) override;
-    virtual bool test_collision_custom(MapEntity& entity) override;
-    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual bool is_obstacle_for(Entity& other, const Rectangle& candidate_position) override;
+    virtual bool test_collision_custom(Entity& entity) override;
+    virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
 
     int get_jump_length() const;
     bool is_jump_horizontal() const;

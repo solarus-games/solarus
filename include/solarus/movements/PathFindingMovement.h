@@ -39,7 +39,7 @@ class SOLARUS_API PathFindingMovement: public PathMovement {
 
     PathFindingMovement(int speed);
 
-    void set_target(const MapEntityPtr& target);
+    void set_target(const EntityPtr& target);
     virtual bool is_finished() const override;
 
     virtual const std::string& get_lua_type_name() const override;
@@ -51,7 +51,7 @@ class SOLARUS_API PathFindingMovement: public PathMovement {
 
   private:
 
-    MapEntityPtr target;               /**< the entity targeted by this movement (usually the hero) */
+    EntityPtr target;               /**< the entity targeted by this movement (usually the hero) */
     uint32_t next_recomputation_date;
 
 };

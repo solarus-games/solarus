@@ -58,7 +58,7 @@ EntityType Crystal::get_type() const {
 }
 
 /**
- * \copydoc MapEntity::notify_creating
+ * \copydoc Entity::notify_creating
  */
 void Crystal::notify_creating() {
 
@@ -77,7 +77,7 @@ void Crystal::notify_creating() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Crystal::is_obstacle_for(MapEntity& other) {
+bool Crystal::is_obstacle_for(Entity& other) {
   return other.is_crystal_obstacle(*this);
 }
 
@@ -86,14 +86,14 @@ bool Crystal::is_obstacle_for(MapEntity& other) {
  * \param entity_overlapping the other entity
  * \param collision_mode the collision mode that detected the collision
  */
-void Crystal::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Crystal::notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) {
   entity_overlapping.notify_collision_with_crystal(*this, collision_mode);
 }
 
 /**
- * \copydoc Detector::notify_collision(MapEntity&, Sprite&, Sprite&)
+ * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
  */
-void Crystal::notify_collision(MapEntity& other_entity, Sprite& /* this_sprite */, Sprite& other_sprite) {
+void Crystal::notify_collision(Entity& other_entity, Sprite& /* this_sprite */, Sprite& other_sprite) {
   other_entity.notify_collision_with_crystal(*this, other_sprite);
 }
 
@@ -119,10 +119,10 @@ bool Crystal::notify_action_command_pressed() {
  * \brief Activates the crystal if the delay since the last activation allows it.
  * \param entity_activating the entity that activates this crystal
  */
-void Crystal::activate(MapEntity& entity_activating) {
+void Crystal::activate(Entity& entity_activating) {
 
   bool recently_activated = false;
-  for (MapEntity* entity: entities_activating) {
+  for (Entity* entity: entities_activating) {
     if (entity == &entity_activating) {
       recently_activated = true;
       break;
@@ -171,13 +171,13 @@ void Crystal::update() {
     }
   }
 
-  MapEntity::update();
+  Entity::update();
 }
 
 /**
  * \brief Draws the entity on the map.
  *
- * This is a redefinition of MapEntity::draw_on_map() to also draw the twinkling star
+ * This is a redefinition of Entity::draw_on_map() to also draw the twinkling star
  * which has a special position.
  */
 void Crystal::draw_on_map() {
@@ -187,7 +187,7 @@ void Crystal::draw_on_map() {
   }
 
   // draw the crystal
-  MapEntity::draw_on_map();
+  Entity::draw_on_map();
 
   // draw the star
   if (is_drawn()) {
@@ -201,7 +201,7 @@ void Crystal::draw_on_map() {
  */
 void Crystal::set_suspended(bool suspended) {
 
-  MapEntity::set_suspended(suspended);
+  Entity::set_suspended(suspended);
 
   if (!suspended) {
     next_possible_hit_date += System::now() - get_when_suspended();

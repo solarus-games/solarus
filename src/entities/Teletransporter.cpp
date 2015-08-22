@@ -68,7 +68,7 @@ Teletransporter::Teletransporter(
 }
 
 /**
- * \copydoc MapEntity::notify_creating
+ * \copydoc Entity::notify_creating
  */
 void Teletransporter::notify_creating() {
 
@@ -198,7 +198,7 @@ bool Teletransporter::is_on_map_side() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Teletransporter::is_obstacle_for(MapEntity& other) {
+bool Teletransporter::is_obstacle_for(Entity& other) {
 
   return other.is_teletransporter_obstacle(*this);
 }
@@ -208,7 +208,7 @@ bool Teletransporter::is_obstacle_for(MapEntity& other) {
  * \param entity an entity
  * \return true if the entity's collides with this entity
  */
-bool Teletransporter::test_collision_custom(MapEntity& entity) {
+bool Teletransporter::test_collision_custom(Entity& entity) {
 
   bool collision = false;
   bool normal_case = true;
@@ -257,7 +257,7 @@ bool Teletransporter::test_collision_custom(MapEntity& entity) {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Teletransporter::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Teletransporter::notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) {
 
   entity_overlapping.notify_collision_with_teletransporter(*this, collision_mode);
 }

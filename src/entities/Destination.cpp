@@ -40,7 +40,7 @@ Destination::Destination(
     const std::string& sprite_name,
     bool is_default
 ):
-  MapEntity(name, hero_direction, layer, xy, Size(16, 16)),
+  Entity(name, hero_direction, layer, xy, Size(16, 16)),
   is_default_destination(is_default) {
 
   set_origin(8, 13);

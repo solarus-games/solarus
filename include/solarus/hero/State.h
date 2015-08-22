@@ -119,7 +119,7 @@ class HeroState {
         EnemyReaction::Reaction& result,
         bool killed);
     virtual int get_sword_damage_factor() const;
-    virtual bool can_be_hurt(MapEntity* attacker) const;
+    virtual bool can_be_hurt(Entity* attacker) const;
 
     // state specific
     virtual bool is_free() const;

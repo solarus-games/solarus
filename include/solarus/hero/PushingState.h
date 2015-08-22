@@ -44,7 +44,7 @@ class Hero::PushingState: public HeroState {
     virtual void notify_obstacle_reached() override;
     virtual void notify_position_changed() override;
 
-    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_be_hurt(Entity* attacker) const override;
     virtual bool can_pick_treasure(EquipmentItem& item) const override;
     virtual bool is_shallow_water_obstacle() const override;
     virtual bool is_deep_water_obstacle() const override;

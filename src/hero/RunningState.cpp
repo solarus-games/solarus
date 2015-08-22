@@ -240,7 +240,7 @@ void Hero::RunningState::notify_jumper_activated(Jumper& jumper) {
  * (or nullptr if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::RunningState::can_be_hurt(MapEntity* attacker) const {
+bool Hero::RunningState::can_be_hurt(Entity* attacker) const {
 
   if (phase == 0) {
     // Preparing to run.
@@ -248,7 +248,7 @@ bool Hero::RunningState::can_be_hurt(MapEntity* attacker) const {
   }
 
   if (attacker != nullptr && attacker->get_type() == EntityType::ENEMY) {
-    // TODO move get_can_hurt_hero_running to MapEntity.
+    // TODO move get_can_hurt_hero_running to Entity.
     Enemy* enemy = static_cast<Enemy*>(attacker);
     return enemy->get_can_hurt_hero_running();
   }

@@ -33,7 +33,7 @@ class Hero::GrabbingState: public HeroState {
     virtual void start(const HeroState* previous_state) override;
     virtual void update() override;
     virtual bool is_grabbing_or_pulling() const override;
-    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_be_hurt(Entity* attacker) const override;
     virtual bool can_pick_treasure(EquipmentItem& item) const override;
 
 };

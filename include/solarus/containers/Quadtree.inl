@@ -28,17 +28,17 @@ namespace Solarus {
  */
 template<typename T>
 Quadtree<T>::Quadtree() :
-    Quadtree(Size(256, 256)) {
+    Quadtree(Rectangle(0, 0, 256, 256)) {
 
 }
 
 /**
  * \brief Creates a quadtree and initializes with the given size.
- * \param size Size of the space to create partitions of.
+ * \param space Rectangle representing the space to create partitions of.
  */
 template<typename T>
-Quadtree<T>::Quadtree(const Size& space_size) :
-    root(Rectangle(Point(0, 0), space_size)) {
+Quadtree<T>::Quadtree(const Rectangle& space) :
+    root(space) {
 
 }
 
@@ -54,22 +54,22 @@ void Quadtree<T>::clear() {
 
 /**
  * \brief Clears the quadtree and initializes with a new size.
- * \param size Size of the space to create partitions of.
+ * \param space Rectangle representing the space to create partitions of.
  */
 template<typename T>
-void Quadtree<T>::initialize(const Size& space_size) {
+void Quadtree<T>::initialize(const Rectangle& space) {
 
   clear();
-  root.initialize(Rectangle(Point(0, 0), space_size));
+  root.initialize(space);
 }
 
 /**
- * \brief Returns the size of the space partitioned by this quadtree.
- * \return The space size.
+ * \brief Returns the space partitioned by this quadtree.
+ * \return The partitioned space.
  */
 template<typename T>
-Size Quadtree<T>::get_space_size() const {
-    return root.get_cell_size();
+Rectangle Quadtree<T>::get_space() const {
+    return root.get_cell();
 }
 
 /**

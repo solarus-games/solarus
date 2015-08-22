@@ -46,12 +46,12 @@ class Quadtree {
   public:
 
     Quadtree();
-    Quadtree(const Size& space_size);
+    Quadtree(const Rectangle& space);
 
     void clear();
-    void initialize(const Size& space_size);
+    void initialize(const Rectangle& space);
 
-    Size get_space_size() const;
+    Rectangle get_space() const;
 
     bool add(const T& element);
     bool remove(const T& element);

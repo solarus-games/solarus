@@ -89,7 +89,11 @@ void MapLoader::load_map(Game& game, Map& map) {
         new NonAnimatedRegions(map, Layer(layer))
     );
   }
-  entities.quadtree.initialize(map.get_size());
+
+  const int margin = 64;
+  Rectangle quadtree_space(-margin, -margin, map.get_width() + 2 * margin, map.get_height() + 2 * margin);
+  entities.quadtree.initialize(quadtree_space);
+
   entities.boomerang = nullptr;
   map.camera = std::unique_ptr<Camera>(new Camera(map));
 

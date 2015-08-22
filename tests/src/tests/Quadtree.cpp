@@ -74,26 +74,29 @@ ElementPtr add(Quadtree<ElementPtr>& quadtree, int x, int y, int width, int heig
 }
 
 /**
+ * \brief Like add(), but expects that the operation fails.
+ */
+ElementPtr add_expect_fail(Quadtree<ElementPtr>& quadtree, int x, int y, int width, int height) {
+
+  int num_elements = quadtree.get_num_elements();
+  ElementPtr element(std::make_shared<Element>(Rectangle(x, y, width, height)));
+  Debug::check_assertion(!quadtree.add(element), "Element was added, failure was expected");
+  check_num_elements(quadtree, num_elements);
+  return element;
+}
+
+/**
  * \brief Tests an empty quadtree.
  */
-void test_empty(TestEnvironment& /* env */) {
+void test_empty(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
 
-  Size space_size(1280, 960);
-
-  Quadtree<ElementPtr> quadtree(space_size);
-
-  Debug::check_assertion(quadtree.get_space_size() == space_size, "Wrong space size");
   check_num_elements(quadtree, 0);
 }
 
 /**
  * \brief Tests adding elements to a quadtree.
  */
-void test_add(TestEnvironment& /* env */) {
-
-  Size space_size(1280, 960);
-
-  Quadtree<ElementPtr> quadtree(space_size);
+void test_add(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
 
   add(quadtree, 100, 40, 16, 16);
   add(quadtree, 200, 10, 16, 16);
@@ -108,6 +111,24 @@ void test_add(TestEnvironment& /* env */) {
   add(quadtree, 700, 400, 16, 16);
 }
 
+/**
+ * \brief Tests adding elements whose size overlaps several cells.
+ */
+void test_add_big_size(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
+
+  add(quadtree, 25, 25, 600, 600);
+  add(quadtree, 100, 0, 16, 960);
+}
+
+/**
+ * \brief Tests adding elements near the limit or outside the quadtree space.
+ */
+void test_add_limit(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
+
+  add(quadtree, -16, 0, 16, 960);
+  add_expect_fail(quadtree, -160, 0, 16, 960);
+}
+
 }
 
 /**
@@ -117,8 +138,14 @@ int main(int argc, char** argv) {
 
   TestEnvironment env(argc, argv);
 
-  test_empty(env);
-  test_add(env);
+  int margin = 64;
+  Rectangle space(-margin, -margin, 1280 + 2 * margin, 960 + 2 * margin);
+  Quadtree<ElementPtr> quadtree(space);
+  Debug::check_assertion(quadtree.get_space() == space, "Wrong space rectangle");
+
+  test_empty(env, quadtree);
+  test_add(env, quadtree);
+  test_add_big_size(env, quadtree);
 
   return 0;
 }

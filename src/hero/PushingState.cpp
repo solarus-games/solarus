@@ -31,7 +31,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::PushingState::PushingState(Hero& hero):
-  State(hero, "pushing"),
+  HeroState(hero, "pushing"),
   pushing_direction4(0),
   pushed_entity(nullptr),
   pushing_movement(nullptr) {
@@ -42,9 +42,9 @@ Hero::PushingState::PushingState(Hero& hero):
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::PushingState::start(const State* previous_state) {
+void Hero::PushingState::start(const HeroState* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   pushing_direction4 = get_sprites().get_animation_direction();
   get_sprites().set_animation_pushing();
@@ -53,9 +53,9 @@ void Hero::PushingState::start(const State* previous_state) {
 /**
  * \brief Stops this state.
  */
-void Hero::PushingState::stop(const State* next_state) {
+void Hero::PushingState::stop(const HeroState* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
 
   if (is_moving_grabbed_entity()) {
     get_hero().clear_movement();
@@ -69,7 +69,7 @@ void Hero::PushingState::stop(const State* next_state) {
  */
 void Hero::PushingState::update() {
 
-  State::update();
+  HeroState::update();
 
   Hero& hero = get_hero();
   if (!is_moving_grabbed_entity()) { // the hero is pushing a fixed obstacle
@@ -118,7 +118,7 @@ void Hero::PushingState::update() {
 }
 
 /**
- * \copydoc Hero::State::can_avoid_stream
+ * \copydoc HeroState::can_avoid_stream
  */
 bool Hero::PushingState::can_avoid_stream(const Stream& /* stream */) const {
   return true;

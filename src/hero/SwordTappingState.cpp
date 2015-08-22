@@ -36,7 +36,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::SwordTappingState::SwordTappingState(Hero& hero):
-  State(hero, "sword tapping"),
+  HeroState(hero, "sword tapping"),
   next_sound_date(0) {
 
 }
@@ -45,9 +45,9 @@ Hero::SwordTappingState::SwordTappingState(Hero& hero):
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::SwordTappingState::start(const State* previous_state) {
+void Hero::SwordTappingState::start(const HeroState* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   get_sprites().set_animation_sword_tapping();
   next_sound_date = System::now() + 100;
@@ -57,9 +57,9 @@ void Hero::SwordTappingState::start(const State* previous_state) {
  * \brief Ends this state.
  * \param next_state the next state
  */
-void Hero::SwordTappingState::stop(const State* next_state) {
+void Hero::SwordTappingState::stop(const HeroState* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
 
   Hero& hero = get_hero();
   if (hero.get_movement() != nullptr) {
@@ -73,7 +73,7 @@ void Hero::SwordTappingState::stop(const State* next_state) {
  */
 void Hero::SwordTappingState::update() {
 
-  State::update();
+  HeroState::update();
 
   Hero& hero = get_hero();
   if (hero.get_movement() == nullptr) {
@@ -122,7 +122,7 @@ void Hero::SwordTappingState::update() {
  */
 void Hero::SwordTappingState::set_suspended(bool suspended) {
 
-  State::set_suspended(suspended);
+  HeroState::set_suspended(suspended);
 
   if (!suspended) {
     next_sound_date += System::now() - get_when_suspended();
@@ -147,7 +147,7 @@ bool Hero::SwordTappingState::can_pick_treasure(EquipmentItem& /* item */) const
 }
 
 /**
- * \copydoc Hero::State::can_use_shield
+ * \copydoc HeroState::can_use_shield
  */
 bool Hero::SwordTappingState::can_use_shield() const {
   return false;
@@ -192,7 +192,7 @@ void Hero::SwordTappingState::notify_obstacle_reached() {
 }
 
 /**
- * \copydoc Hero::State::notify_attacked_enemy
+ * \copydoc HeroState::notify_attacked_enemy
  */
 void Hero::SwordTappingState::notify_attacked_enemy(
     EnemyAttack attack,

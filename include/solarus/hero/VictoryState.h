@@ -25,14 +25,14 @@ namespace Solarus {
 /**
  * \brief The victory state of the hero.
  */
-class Hero::VictoryState: public Hero::State {
+class Hero::VictoryState: public HeroState {
 
   public:
 
     VictoryState(Hero& hero, const ScopedLuaRef& callback_ref);
 
-    virtual void start(const State* previous_state) override;
-    virtual void stop(const State* next_state) override;
+    virtual void start(const HeroState* previous_state) override;
+    virtual void stop(const HeroState* next_state) override;
     virtual void update() override;
     virtual void set_suspended(bool suspended) override;
 

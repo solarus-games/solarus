@@ -24,14 +24,14 @@ namespace Solarus {
 /**
  * \brief The state "Falling" of the hero.
  */
-class Hero::FallingState: public Hero::State {
+class Hero::FallingState: public HeroState {
 
   public:
 
     FallingState(Hero& hero);
 
-    virtual void start(const State* previous_state) override;
-    virtual void stop(const State* next_state) override;
+    virtual void start(const HeroState* previous_state) override;
+    virtual void stop(const HeroState* next_state) override;
     virtual void update() override;
     virtual bool can_avoid_hole() const override;
     virtual bool can_avoid_lava() const override;

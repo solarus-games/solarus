@@ -39,7 +39,7 @@ Hero::SwimmingState::SwimmingState(Hero& hero):
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::SwimmingState::start(const State* previous_state) {
+void Hero::SwimmingState::start(const HeroState* previous_state) {
 
   PlayerMovementState::start(previous_state);
 
@@ -52,7 +52,7 @@ void Hero::SwimmingState::start(const State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::SwimmingState::stop(const State* next_state) {
+void Hero::SwimmingState::stop(const HeroState* next_state) {
 
   PlayerMovementState::stop(next_state);
 

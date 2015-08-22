@@ -24,13 +24,13 @@ namespace Solarus {
 /**
  * \brief The state "Grabbing" of the hero.
  */
-class Hero::GrabbingState: public Hero::State {
+class Hero::GrabbingState: public HeroState {
 
   public:
 
     GrabbingState(Hero& hero);
 
-    virtual void start(const State* previous_state) override;
+    virtual void start(const HeroState* previous_state) override;
     virtual void update() override;
     virtual bool is_grabbing_or_pulling() const override;
     virtual bool can_be_hurt(MapEntity* attacker) const override;

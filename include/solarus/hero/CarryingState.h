@@ -31,8 +31,8 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
 
     CarryingState(Hero& hero, const std::shared_ptr<CarriedItem>& carried_item);
 
-    void start(const State* previous_state) override;
-    void stop(const State* next_state) override;
+    void start(const HeroState* previous_state) override;
+    void stop(const HeroState* next_state) override;
     void set_map(Map& map) override;
     void notify_position_changed() override;
     void notify_layer_changed() override;

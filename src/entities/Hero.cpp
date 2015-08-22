@@ -123,10 +123,10 @@ const std::string& Hero::get_state_name() const {
  * \param state The new state of the hero. The hero object takes ownership of
  * this object.
  */
-void Hero::set_state(State* new_state) {
+void Hero::set_state(HeroState* new_state) {
 
   // Stop the previous state.
-  State* old_state = this->state.get();
+  HeroState* old_state = this->state.get();
   if (old_state != nullptr) {
 
     old_state->stop(new_state);  // Should not change the state again.
@@ -152,7 +152,7 @@ void Hero::set_state(State* new_state) {
   // of this function.
   this->old_states.emplace_back(std::move(this->state));
 
-  this->state = std::unique_ptr<State>(new_state);
+  this->state = std::unique_ptr<HeroState>(new_state);
   this->state->start(old_state);  // May also change the state again.
 
   if (this->state.get() == new_state) {

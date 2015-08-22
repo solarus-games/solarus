@@ -27,14 +27,14 @@ class PathMovement;
 /**
  * \brief The state "Pulling" of the hero.
  */
-class Hero::PullingState: public Hero::State {
+class Hero::PullingState: public HeroState {
 
   public:
 
     PullingState(Hero& hero);
 
-    virtual void start(const State* previous_state) override;
-    virtual void stop(const State* next_state) override;
+    virtual void start(const HeroState* previous_state) override;
+    virtual void stop(const HeroState* next_state) override;
     virtual void update() override;
     virtual void notify_grabbed_entity_collision() override;
     virtual void notify_movement_finished() override;

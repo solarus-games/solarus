@@ -25,7 +25,7 @@ namespace Solarus {
 /**
  * \brief The state "boomerang" of the hero.
  */
-class Hero::BoomerangState: public Hero::State {
+class Hero::BoomerangState: public HeroState {
 
   public:
 
@@ -33,7 +33,7 @@ class Hero::BoomerangState: public Hero::State {
         const std::string& hero_preparing_animation,
         const std::string& sprite_name);
 
-    virtual void start(const State* previous_state) override;
+    virtual void start(const HeroState* previous_state) override;
     virtual void update() override;
 
     virtual bool can_avoid_stream(const Stream& stream) const override;

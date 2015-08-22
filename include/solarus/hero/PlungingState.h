@@ -24,13 +24,13 @@ namespace Solarus {
 /**
  * \brief The state "Plunging" of the hero.
  */
-class Hero::PlungingState: public Hero::State {
+class Hero::PlungingState: public HeroState {
 
   public:
 
     PlungingState(Hero& hero);
 
-    virtual void start(const State* previous_state) override;
+    virtual void start(const HeroState* previous_state) override;
     virtual void update() override;
     virtual bool can_start_gameover_sequence() const override;
     virtual bool is_touching_ground() const override;

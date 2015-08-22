@@ -39,7 +39,7 @@ namespace Solarus {
  * \param command The game command that triggers running.
  */
 Hero::RunningState::RunningState(Hero& hero, GameCommand command):
-  State(hero, "running"),
+  HeroState(hero, "running"),
   phase(0),
   next_phase_date(0),
   next_sound_date(0),
@@ -51,9 +51,9 @@ Hero::RunningState::RunningState(Hero& hero, GameCommand command):
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::RunningState::start(const State* previous_state) {
+void Hero::RunningState::start(const HeroState* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   get_sprites().set_animation_prepare_running();
 
@@ -67,9 +67,9 @@ void Hero::RunningState::start(const State* previous_state) {
 /**
  * \brief Stops this state.
  */
-void Hero::RunningState::stop(const State* next_state) {
+void Hero::RunningState::stop(const HeroState* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
 
   if (phase != 0) {
     get_hero().clear_movement();
@@ -81,7 +81,7 @@ void Hero::RunningState::stop(const State* next_state) {
  */
 void Hero::RunningState::update() {
 
-  State::update();
+  HeroState::update();
 
   if (is_suspended()) {
     return;
@@ -126,7 +126,7 @@ void Hero::RunningState::update() {
  */
 void Hero::RunningState::set_suspended(bool suspended) {
 
-  State::set_suspended(suspended);
+  HeroState::set_suspended(suspended);
 
   if (!suspended) {
     uint32_t diff = System::now() - get_when_suspended();
@@ -172,7 +172,7 @@ void Hero::RunningState::notify_direction_command_pressed(int direction4) {
  */
 void Hero::RunningState::notify_obstacle_reached() {
 
-  State::notify_obstacle_reached();
+  HeroState::notify_obstacle_reached();
 
   if (phase == 1) {
     int opposite_direction = (get_sprites().get_animation_direction8() + 4) % 8;
@@ -266,7 +266,7 @@ bool Hero::RunningState::can_pick_treasure(EquipmentItem& /* item */) const {
 }
 
 /**
- * \copydoc Hero::State::can_sword_hit_crystal
+ * \copydoc HeroState::can_sword_hit_crystal
  */
 bool Hero::RunningState::can_sword_hit_crystal() const {
   return true;
@@ -329,14 +329,14 @@ bool Hero::RunningState::can_avoid_teletransporter() const {
 }
 
 /**
- * \copydoc Hero::State::can_avoid_stream
+ * \copydoc HeroState::can_avoid_stream
  */
 bool Hero::RunningState::can_avoid_stream(const Stream& /* stream */) const {
   return is_bouncing();
 }
 
 /**
- * \copydoc Hero::State::can_persist_on_stream
+ * \copydoc HeroState::can_persist_on_stream
  */
 bool Hero::RunningState::can_persist_on_stream(const Stream& stream) const {
 
@@ -394,7 +394,7 @@ bool Hero::RunningState::is_cutting_with_sword(Detector& detector) {
 int Hero::RunningState::get_sword_damage_factor() const {
 
   // the damage are multiplied by 2
-  return State::get_sword_damage_factor() * 2;
+  return HeroState::get_sword_damage_factor() * 2;
 }
 
 }

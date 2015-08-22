@@ -24,13 +24,13 @@ namespace Solarus {
 /**
  * \brief The state "bow" of the hero.
  */
-class Hero::BowState: public Hero::State {
+class Hero::BowState: public HeroState {
 
   public:
 
     BowState(Hero& hero);
 
-    virtual void start(const State* previous_state) override;
+    virtual void start(const HeroState* previous_state) override;
     virtual void update() override;
 
     virtual bool can_avoid_stream(const Stream& stream) const override;

@@ -36,7 +36,7 @@ Hero::ForcedWalkingState::ForcedWalkingState(
     bool loop,
     bool ignore_obstacles):
 
-  State(hero, "forced walking") {
+  HeroState(hero, "forced walking") {
 
   this->movement = std::make_shared<PathMovement>(
       path, hero.get_walking_speed(), loop, ignore_obstacles, false
@@ -47,9 +47,9 @@ Hero::ForcedWalkingState::ForcedWalkingState(
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::ForcedWalkingState::start(const State* previous_state) {
+void Hero::ForcedWalkingState::start(const HeroState* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   // update the sprites
   HeroSprites& sprites = get_sprites();
@@ -63,9 +63,9 @@ void Hero::ForcedWalkingState::start(const State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::ForcedWalkingState::stop(const State* next_state) {
+void Hero::ForcedWalkingState::stop(const HeroState* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
 
   get_hero().clear_movement();
 }
@@ -75,7 +75,7 @@ void Hero::ForcedWalkingState::stop(const State* next_state) {
  */
 void Hero::ForcedWalkingState::update() {
 
-  State::update();
+  HeroState::update();
 
   get_sprites().set_animation_direction(movement->get_displayed_direction4());
 
@@ -149,7 +149,7 @@ bool Hero::ForcedWalkingState::can_avoid_teletransporter() const {
 }
 
 /**
- * \copydoc Hero::State::can_avoid_stream
+ * \copydoc HeroState::can_avoid_stream
  */
 bool Hero::ForcedWalkingState::can_avoid_stream(const Stream& /* stream */) const {
   return true;

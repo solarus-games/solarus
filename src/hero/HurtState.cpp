@@ -42,7 +42,7 @@ Hero::HurtState::HurtState(
     Hero& hero,
     const Point* source_xy,
     int damage):
-  State(hero, "hurt"),
+  HeroState(hero, "hurt"),
   has_source(source_xy != nullptr),
   source_xy(has_source ? *source_xy : Point()),
   damage(damage),
@@ -54,9 +54,9 @@ Hero::HurtState::HurtState(
  * \brief Starts this state.
  * \param previous_state The previous state.
  */
-void Hero::HurtState::start(const State* previous_state) {
+void Hero::HurtState::start(const HeroState* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   Equipment& equipment = get_equipment();
 
@@ -99,9 +99,9 @@ void Hero::HurtState::start(const State* previous_state) {
  * \brief Ends this state.
  * \param next_state the next state
  */
-void Hero::HurtState::stop(const State* next_state) {
+void Hero::HurtState::stop(const HeroState* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
 
   get_hero().clear_movement();
 }
@@ -111,7 +111,7 @@ void Hero::HurtState::stop(const State* next_state) {
  */
 void Hero::HurtState::update() {
 
-  State::update();
+  HeroState::update();
 
   Hero& hero = get_hero();
   if ((hero.get_movement() != nullptr && hero.get_movement()->is_finished())
@@ -130,7 +130,7 @@ void Hero::HurtState::update() {
  */
 void Hero::HurtState::set_suspended(bool suspended) {
 
-  State::set_suspended(suspended);
+  HeroState::set_suspended(suspended);
 
   if (!suspended) {
     uint32_t diff = System::now() - get_when_suspended();
@@ -165,7 +165,7 @@ bool Hero::HurtState::is_teletransporter_obstacle(
 }
 
 /**
- * \copydoc Hero::State::is_stream_obstacle
+ * \copydoc HeroState::is_stream_obstacle
  */
 bool Hero::HurtState::is_stream_obstacle(const Stream& /* stream */) const {
   return true;
@@ -181,7 +181,7 @@ bool Hero::HurtState::is_sensor_obstacle(const Sensor& /* sensor */) const {
 }
 
 /**
- * \copydoc Hero::State::is_separator_obstacle
+ * \copydoc HeroState::is_separator_obstacle
  */
 bool Hero::HurtState::is_separator_obstacle(const Separator& /* separator */) const {
   return true;

@@ -32,8 +32,8 @@ class Hero::FreeState: public Hero::PlayerMovementState {
 
     FreeState(Hero& hero);
 
-    virtual void start(const State* previous_state) override;
-    virtual void stop(const State* next_state) override;
+    virtual void start(const HeroState* previous_state) override;
+    virtual void stop(const HeroState* next_state) override;
     virtual void update() override;
     virtual void set_suspended(bool suspended) override;
     virtual void notify_action_command_pressed() override;

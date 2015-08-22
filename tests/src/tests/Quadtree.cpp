@@ -66,8 +66,10 @@ void check_num_elements(const Quadtree<ElementPtr>& quadtree, int expected) {
  */
 ElementPtr add(Quadtree<ElementPtr>& quadtree, int x, int y, int width, int height) {
 
+  int num_elements = quadtree.get_num_elements();
   ElementPtr element(std::make_shared<Element>(Rectangle(x, y, width, height)));
   Debug::check_assertion(quadtree.add(element), "Failed to add element");
+  check_num_elements(quadtree, num_elements + 1);
   return element;
 }
 
@@ -93,8 +95,17 @@ void test_add(TestEnvironment& /* env */) {
 
   Quadtree<ElementPtr> quadtree(space_size);
 
+  add(quadtree, 100, 40, 16, 16);
+  add(quadtree, 200, 10, 16, 16);
+  add(quadtree, 250, 20, 16, 16);
+  add(quadtree, 300, 30, 16, 16);
+  add(quadtree, 300, 50, 16, 16);
+
   add(quadtree, 800, 40, 16, 16);
-  check_num_elements(quadtree, 1);
+  add(quadtree, 500, 60, 16, 16);
+  add(quadtree, 600, 100, 16, 16);
+  add(quadtree, 400, 300, 16, 16);
+  add(quadtree, 700, 400, 16, 16);
 }
 
 }

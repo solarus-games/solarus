@@ -22,6 +22,7 @@
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lowlevel/Size.h"
 #include "solarus/lowlevel/SurfacePtr.h"
+#include <array>
 #include <map>
 #include <memory>
 #include <vector>
@@ -119,7 +120,7 @@ class Quadtree {
         void split();
 
         std::vector<T> elements;
-        std::unique_ptr<Node> children[4];
+        std::array<std::unique_ptr<Node>, 4> children;
         Rectangle cell;
         Point center;
         int num_elements;
@@ -129,7 +130,6 @@ class Quadtree {
 
     struct ElementInfo {
         Rectangle bounding_box;
-        int num_nodes;
     };
 
     std::map<T, ElementInfo> elements;

@@ -81,8 +81,13 @@ template<typename T>
 bool Quadtree<T>::add(const T& element) {
 
   if (elements.find(element) != elements.end()) {
+    // Element already in the quadtree.
     return false;
   }
+
+  ElementInfo info;
+  info.bounding_box = element->get_bounding_box();
+  elements.insert(std::make_pair(element, info));
 
   return root.add(element);
 }
@@ -93,7 +98,12 @@ bool Quadtree<T>::add(const T& element) {
  * \return \c true in case of success.
  */
 template<typename T>
-bool Quadtree<T>::remove(const T& /* element */) {
+bool Quadtree<T>::remove(const T& element) {
+
+  if (elements.find(element) == elements.end()) {
+    // Unknown element.
+    return false;
+  }
 
   // TODO
   return false;
@@ -250,10 +260,9 @@ bool Quadtree<T>::Node::add(
   }
 
   // Add it to children cells.
-  children[0]->add(element);
-  children[1]->add(element);
-  children[2]->add(element);
-  children[3]->add(element);
+  for (const std::unique_ptr<Node>& child : children) {
+    child->add(element);
+  }
   return true;
 }
 
@@ -293,10 +302,9 @@ void Quadtree<T>::Node::split() {
 
   // Move existing elements into them.
   for (const T& element: elements) {
-    children[0]->add(element);
-    children[1]->add(element);
-    children[2]->add(element);
-    children[3]->add(element);
+    for (const std::unique_ptr<Node>& child : children) {
+      child->add(element);
+    }
   }
   elements.clear();
 }
@@ -308,14 +316,22 @@ void Quadtree<T>::Node::split() {
 template<typename T>
 int Quadtree<T>::Node::get_num_elements() const {
 
-  // Some elements can overlap several cells.
-  // To avoid duplicates, we count an element if its center is in this cell.
-  // TODO This information could be stored for better performance.
   int num_elements = 0;
-  for (const T& element: elements) {
-    const Rectangle& box = element->get_bounding_box();
-    if (get_cell().contains(box.get_center())) {
-      ++num_elements;
+  if (!is_split()) {
+    // Some elements can overlap several cells.
+    // To avoid duplicates, we count an element if its center is in this cell.
+    // TODO This information could be stored for better performance.
+    for (const T& element: elements) {
+      const Rectangle& box = element->get_bounding_box();
+      if (get_cell().contains(box.get_center())) {
+        ++num_elements;
+      }
+    }
+  }
+  else {
+    // Ask children.
+    for (const std::unique_ptr<Node>& child : children) {
+      num_elements += child->get_num_elements();
     }
   }
   return num_elements;

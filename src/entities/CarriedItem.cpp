@@ -243,6 +243,9 @@ void CarriedItem::break_item() {
     if (get_sprite().has_animation("destroy")) {
       get_sprite().set_current_animation("destroy");
     }
+    else {
+      remove_from_map();
+    }
   }
   else {
     get_entities().add_entity(std::make_shared<Explosion>(
@@ -392,13 +395,13 @@ void CarriedItem::update() {
     }
   }
 
-  if (is_throwing) {
+  if (is_broken()) {
+    remove_from_map();
+  }
+  else if (is_throwing) {
     shadow_sprite->update();
 
-    if (is_broken()) {
-      remove_from_map();
-    }
-    else if (break_one_layer_above) {
+    if (break_one_layer_above) {
       break_item();
       Layer layer = get_layer();
       if (layer != LAYER_HIGH) {

@@ -1112,13 +1112,23 @@ void Map::check_collision_with_detectors(MapEntity& entity) {
   }
 
   // Check this entity with each detector.
-  const std::list<Detector*>& detectors = entities->get_detectors();
-  for (Detector* detector: detectors) {
 
-    if (detector->is_enabled()
-        && !detector->is_suspended()
-        && !detector->is_being_removed()) {
-      detector->check_collision(entity);
+  // Extend the box because some collision tests work without overlapping.
+  Rectangle box = entity.get_extended_bounding_box(8);
+  std::vector<MapEntityPtr> entities_nearby;
+  entities->get_entities_in_rectangle(box, entities_nearby);
+  for (const MapEntityPtr& entity_nearby: entities_nearby) {
+
+    if (!entity_nearby->is_detector()) {
+      // TODO we can probably get rid of the Detector class.
+      // Most entities are detectors anyway.
+      continue;
+    }
+    Detector& detector_nearby = *std::static_pointer_cast<Detector>(entity_nearby);
+    if (detector_nearby.is_enabled()
+        && !detector_nearby.is_suspended()
+        && !detector_nearby.is_being_removed()) {
+      detector_nearby.check_collision(entity);
     }
   }
 }
@@ -1146,16 +1156,17 @@ void Map::check_collision_from_detector(Detector& detector) {
   detector.check_collision(get_entities().get_hero());
 
   // Check each entity with this detector.
-  // TODO use a grid or a quadtree to only check entities nearby.
-  const std::list<MapEntityPtr>& all_entities = entities->get_entities();
-  for (const MapEntityPtr& entity: all_entities) {
+  Rectangle box = detector.get_extended_bounding_box(8);
+  std::vector<MapEntityPtr> entities_nearby;
+  entities->get_entities_in_rectangle(box, entities_nearby);
+  for (const MapEntityPtr& entity_nearby: entities_nearby) {
 
-    if (entity->is_enabled()
-        && !entity->is_suspended()
-        && !entity->is_being_removed()
-        && entity.get() != &detector
+    if (entity_nearby->is_enabled()
+        && !entity_nearby->is_suspended()
+        && !entity_nearby->is_being_removed()
+        && entity_nearby.get() != &detector
     ) {
-      detector.check_collision(*entity);
+      detector.check_collision(*entity_nearby);
     }
   }
 }
@@ -1179,13 +1190,20 @@ void Map::check_collision_with_detectors(MapEntity& entity, Sprite& sprite) {
   }
 
   // Check each detector.
-  const std::list<Detector*>& detectors = entities->get_detectors();
-  for (Detector* detector: detectors) {
+  Rectangle box = entity.get_bounding_box();  // FIXME get the bounding box of the sprite instead
+  std::vector<MapEntityPtr> entities_nearby;
+  entities->get_entities_in_rectangle(box, entities_nearby);  // FIXME use sprite bounding box in the quadtree
+  for (const MapEntityPtr& entity_nearby: entities_nearby) {
 
-    if (!detector->is_being_removed()
-        && !detector->is_suspended()
-        && detector->is_enabled()) {
-      detector->check_collision(entity, sprite);
+    if (!entity_nearby->is_detector()) {
+      continue;
+    }
+    Detector& detector_nearby = *std::static_pointer_cast<Detector>(entity_nearby);
+
+    if (!detector_nearby.is_being_removed()
+        && !detector_nearby.is_suspended()
+        && detector_nearby.is_enabled()) {
+      detector_nearby.check_collision(entity, sprite);
     }
   }
 }

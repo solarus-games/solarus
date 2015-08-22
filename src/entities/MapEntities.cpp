@@ -272,6 +272,17 @@ bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
 }
 
 /**
+ * \brief Returns all entities whose bounding box overlaps the given rectangle.
+ * \param[in] rectangle A rectangle.
+ * \param[out] result The entities in that rectangle.
+ */
+void MapEntities::get_entities_in_rectangle(
+    const Rectangle& rectangle, std::vector<MapEntityPtr>& result
+) const {
+  quadtree.get_elements(rectangle, result);
+}
+
+/**
  * \brief Brings to front an entity in its layer.
  * \param entity The entity to bring to front.
  */

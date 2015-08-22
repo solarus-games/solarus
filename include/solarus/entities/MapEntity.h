@@ -146,6 +146,7 @@ class SOLARUS_API MapEntity: public ExportableToLua {
     void set_size(const Size& size);
     const Rectangle& get_bounding_box() const;
     void set_bounding_box(const Rectangle& bounding_box);
+    Rectangle get_extended_bounding_box(int margin) const;
     const Point& get_origin() const;
     void set_origin(int x, int y);
     void set_origin(const Point& origin);

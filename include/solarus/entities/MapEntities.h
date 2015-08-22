@@ -61,7 +61,7 @@ class SOLARUS_API MapEntities {
     // creation and destruction
     MapEntities(Game& game, Map& map);
 
-    // entities
+    // get entities
     Hero& get_hero();
     Ground get_tile_ground(Layer layer, int x, int y) const;
     const std::list<MapEntityPtr>& get_entities();
@@ -79,6 +79,8 @@ class SOLARUS_API MapEntities {
     std::list<MapEntity*> get_entities_with_prefix(const std::string& prefix);
     std::list<MapEntity*> get_entities_with_prefix(EntityType type, const std::string& prefix);
     bool has_entity_with_prefix(const std::string& prefix) const;
+
+    void get_entities_in_rectangle(const Rectangle& rectangle, std::vector<MapEntityPtr>& result) const;
 
     // handle entities
     void add_entity(const MapEntityPtr& entity);

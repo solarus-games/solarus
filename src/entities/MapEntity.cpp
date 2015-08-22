@@ -892,6 +892,19 @@ void MapEntity::set_bounding_box(const Rectangle &bounding_box) {
 }
 
 /**
+ * \brief Returns the bounding box of the entity extended with some margin.
+ * \param margin Margin to add to every side.
+ * \return The extended bounding box.
+ */
+Rectangle MapEntity::get_extended_bounding_box(int margin) const {
+
+  Rectangle extended_box = get_bounding_box();
+  extended_box.set_xy(extended_box.get_xy() - Point(margin, margin));
+  extended_box.set_size(extended_box.get_size() + 2 * Size(margin, margin));
+  return extended_box;
+}
+
+/**
  * \brief Returns whether the entity's bounding box is aligned with the 8*8 grid of the map.
  * \return true if the entity's bounding box is aligned
  */

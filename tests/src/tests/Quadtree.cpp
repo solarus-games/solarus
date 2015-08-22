@@ -64,11 +64,11 @@ void check_num_elements(const Quadtree<ElementPtr>& quadtree, int expected) {
 /**
  * \brief Creates an element with the given coordinates and adds it to a quatree.
  */
-ElementPtr add(Quadtree<ElementPtr>& quadtree, int x, int y, int width, int height) {
+ElementPtr add(Quadtree<ElementPtr>& quadtree, const Rectangle& bounding_box) {
 
   int num_elements = quadtree.get_num_elements();
-  ElementPtr element(std::make_shared<Element>(Rectangle(x, y, width, height)));
-  Debug::check_assertion(quadtree.add(element), "Failed to add element");
+  ElementPtr element(std::make_shared<Element>(bounding_box));
+  Debug::check_assertion(quadtree.add(element, element->get_bounding_box()), "Failed to add element");
   check_num_elements(quadtree, num_elements + 1);
   return element;
 }
@@ -76,13 +76,23 @@ ElementPtr add(Quadtree<ElementPtr>& quadtree, int x, int y, int width, int heig
 /**
  * \brief Like add(), but expects that the operation fails.
  */
-ElementPtr add_expect_fail(Quadtree<ElementPtr>& quadtree, int x, int y, int width, int height) {
+ElementPtr add_expect_fail(Quadtree<ElementPtr>& quadtree, const Rectangle& bounding_box) {
 
   int num_elements = quadtree.get_num_elements();
-  ElementPtr element(std::make_shared<Element>(Rectangle(x, y, width, height)));
-  Debug::check_assertion(!quadtree.add(element), "Element was added, failure was expected");
+  ElementPtr element(std::make_shared<Element>(Rectangle(bounding_box)));
+  Debug::check_assertion(!quadtree.add(element, element->get_bounding_box()), "Element was added, failure was expected");
   check_num_elements(quadtree, num_elements);
   return element;
+}
+
+/**
+ * \brief Removes an element from a quatree.
+ */
+void remove(Quadtree<ElementPtr>& quadtree, const ElementPtr& element) {
+
+  int num_elements = quadtree.get_num_elements();
+  Debug::check_assertion(quadtree.remove(element), "Failed to remove element");
+  check_num_elements(quadtree, num_elements - 1);
 }
 
 /**
@@ -98,17 +108,36 @@ void test_empty(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
  */
 void test_add(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
 
-  add(quadtree, 100, 40, 16, 16);
-  add(quadtree, 200, 10, 16, 16);
-  add(quadtree, 250, 20, 16, 16);
-  add(quadtree, 300, 30, 16, 16);
-  add(quadtree, 300, 50, 16, 16);
+  const std::vector<Rectangle> rectangles = {
+      Rectangle(100, 40, 16, 16),
+      Rectangle(200, 10, 16, 16),
+      Rectangle(250, 20, 16, 16),
+      Rectangle(300, 30, 16, 16),
+      Rectangle(300, 50, 16, 16),
+      Rectangle(800, 40, 16, 16),
+      Rectangle(500, 60, 16, 16),
+      Rectangle(600, 100, 16, 16),
+      Rectangle(400, 300, 16, 16),
+      Rectangle(700, 400, 16, 16)
+  };
 
-  add(quadtree, 800, 40, 16, 16);
-  add(quadtree, 500, 60, 16, 16);
-  add(quadtree, 600, 100, 16, 16);
-  add(quadtree, 400, 300, 16, 16);
-  add(quadtree, 700, 400, 16, 16);
+  for (const Rectangle& rectangle : rectangles) {
+    add(quadtree, rectangle);
+  }
+}
+
+/**
+ * \brief Tests removing elements from a quadtree.
+ */
+void test_remove(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
+
+  // Get all elements.
+  std::vector<ElementPtr> elements;
+  quadtree.get_elements(quadtree.get_space(), elements);
+
+  // Remove some of them.
+  Debug::check_assertion(quadtree.get_num_elements() > 5, "Wrong number of elements");
+  remove(quadtree, elements[0]);
 }
 
 /**
@@ -116,8 +145,8 @@ void test_add(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
  */
 void test_add_big_size(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
 
-  add(quadtree, 25, 25, 600, 600);
-  add(quadtree, 100, 0, 16, 960);
+  add(quadtree, Rectangle(25, 25, 600, 600));
+  add(quadtree, Rectangle(100, 0, 16, 960));
 }
 
 /**
@@ -125,8 +154,8 @@ void test_add_big_size(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtre
  */
 void test_add_limit(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
 
-  add(quadtree, -16, 0, 16, 960);
-  add_expect_fail(quadtree, -160, 0, 16, 960);
+  add(quadtree, Rectangle(-16, 0, 16, 960));
+  add_expect_fail(quadtree, Rectangle(-160, 0, 16, 960));
 }
 
 }
@@ -146,6 +175,7 @@ int main(int argc, char** argv) {
   test_empty(env, quadtree);
   test_add(env, quadtree);
   test_add_big_size(env, quadtree);
+  test_remove(env, quadtree);
 
   return 0;
 }

@@ -337,7 +337,8 @@ void MapEntities::bring_to_back(MapEntity& entity) {
 void MapEntities::notify_map_started() {
 
   // Put the hero in the the quadtree.
-  quadtree.add(std::static_pointer_cast<Hero>(hero.shared_from_this()));
+  HeroPtr shared_hero = std::static_pointer_cast<Hero>(hero.shared_from_this());
+  quadtree.add(shared_hero, hero.get_bounding_box());
 
   // Notify entities.
   for (const MapEntityPtr& entity: all_entities) {
@@ -576,7 +577,7 @@ void MapEntities::add_entity(const MapEntityPtr& entity) {
     Layer layer = entity->get_layer();
 
     // update the quadtree
-    quadtree.add(entity);
+    quadtree.add(entity, entity->get_bounding_box());
 
     // update the detectors list
     if (entity->is_detector()) {

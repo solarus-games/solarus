@@ -37,8 +37,7 @@ class Color;
  * The main goal of this container is to get objects in a given rectangle as
  * quickly as possible.
  *
- * \param T Type of objects. There must be a get_bounding_box() method
- * returning a Rectangle.
+ * \param T Type of objects.
  */
 template <typename T>
 class Quadtree {
@@ -53,13 +52,13 @@ class Quadtree {
 
     Rectangle get_space() const;
 
-    bool add(const T& element);
+    bool add(const T& element, const Rectangle& bounding_box);
     bool remove(const T& element);
-    bool move(const T& element);
+    bool move(const T& element, const Rectangle& bounding_box);
 
     void get_elements(
         const Rectangle& where,
-        std::vector<T>& elements
+        std::vector<T>& result
     ) const;
 
     int get_num_elements() const;
@@ -94,12 +93,17 @@ class Quadtree {
         Size get_cell_size() const;
 
         bool add(
-            const T& element
+            const T& element,
+            const Rectangle& bounding_box
+        );
+        bool remove(
+            const T& element,
+            const Rectangle& bounding_box
         );
 
         void get_elements(
-            const Rectangle& where,
-            std::vector<T>& elements
+            const Rectangle& region,
+            std::vector<T>& result
         ) const;
 
         int get_num_elements() const;
@@ -118,12 +122,12 @@ class Quadtree {
 
         bool is_split() const;
         void split();
+        void merge();
 
-        std::vector<T> elements;
+        std::vector<std::pair<T, Rectangle>> elements;
         std::array<std::unique_ptr<Node>, 4> children;
         Rectangle cell;
         Point center;
-        int num_elements;
         Color color;
 
     };

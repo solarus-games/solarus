@@ -18,6 +18,8 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Random.h"
 #include "solarus/lowlevel/Surface.h"
+#include <algorithm>
+#include <set>
 
 namespace Solarus {
 
@@ -75,10 +77,11 @@ Rectangle Quadtree<T>::get_space() const {
 /**
  * \brief Adds an element to the quadtree.
  * \param element The element to add.
+ * \param bounding_box Bounding box of the element.
  * \return \c true in case of success.
  */
 template<typename T>
-bool Quadtree<T>::add(const T& element) {
+bool Quadtree<T>::add(const T& element, const Rectangle& bounding_box) {
 
   if (elements.find(element) != elements.end()) {
     // Element already in the quadtree.
@@ -86,10 +89,10 @@ bool Quadtree<T>::add(const T& element) {
   }
 
   ElementInfo info;
-  info.bounding_box = element->get_bounding_box();
+  info.bounding_box = bounding_box;
   elements.insert(std::make_pair(element, info));
 
-  return root.add(element);
+  return root.add(element, bounding_box);
 }
 
 /**
@@ -100,13 +103,15 @@ bool Quadtree<T>::add(const T& element) {
 template<typename T>
 bool Quadtree<T>::remove(const T& element) {
 
-  if (elements.find(element) == elements.end()) {
+  const auto& it = elements.find(element);
+  if (it == elements.end()) {
     // Unknown element.
     return false;
   }
 
-  // TODO
-  return false;
+  Rectangle box = it->second.bounding_box;
+  elements.erase(element);
+  return root.remove(element, box);
 }
 
 /**
@@ -115,13 +120,17 @@ bool Quadtree<T>::remove(const T& element) {
  * This function should be called when the position or size or the element
  * is changed.
  *
+ * \param element The element to move.
+ * \param bounding_box New bounding box of the element.
  * \return \c true in case of success.
  */
 template<typename T>
-bool Quadtree<T>::move(const T& /* element */) {
+bool Quadtree<T>::move(const T& element, const Rectangle& bounding_box) {
 
-  // TODO store a map of bounding boxes to know the previous position
-  return false;
+  if (!remove(element)) {
+    return false;
+  }
+  return add(element, bounding_box);
 }
 
 /**
@@ -135,15 +144,15 @@ int Quadtree<T>::get_num_elements() const {
 
 /**
  * \brief Gets the elements intersecting the given rectangle.
- * \param[in] where The rectangle to check.
+ * \param[in] region The rectangle to check.
  * \param[in/out] elements A list that will be filled with elements.
  */
 template<typename T>
 void Quadtree<T>::get_elements(
-    const Rectangle& where,
+    const Rectangle& region,
     std::vector<T>& elements
 ) const {
-  root.get_elements(where, elements);
+  root.get_elements(region, elements);
 }
 
 /**
@@ -167,7 +176,6 @@ Quadtree<T>::Node::Node(const Rectangle& cell) :
     children{ nullptr, nullptr, nullptr, nullptr },
     cell(cell),
     center(cell.get_center()),
-    num_elements(0),
     color() {
 
   elements.reserve(max_in_cell);
@@ -190,7 +198,6 @@ void Quadtree<T>::Node::clear() {
   children[1] = nullptr;
   children[2] = nullptr;
   children[3] = nullptr;
-  num_elements = 0;
 }
 
 /**
@@ -229,21 +236,23 @@ Size Quadtree<T>::Node::get_cell_size() const {
  * Splits the node if necessary when the threshold is exceeded.
  *
  * \param element The element to add.
+ * \param bounding_box Bounding box of the element.
  * \return \c true in case of success.
  */
 template<typename T>
 bool Quadtree<T>::Node::add(
-    const T& element
+    const T& element,
+    const Rectangle& bounding_box
 ) {
-  const Rectangle& box = element->get_bounding_box();
-  if (!get_cell().overlaps(box)) {
+  if (!get_cell().overlaps(bounding_box)) {
+    // Nothing to do.
     return false;
   }
 
   if (!is_split()) {
 
     // See if it is time to split.
-    if (get_cell().contains(box.get_center())) {
+    if (get_cell().contains(bounding_box.get_center())) {
       // We are the main cell of this element: it counts in the total.
       if (get_num_elements() >= max_in_cell &&
           get_cell_size().width > min_cell_size &&
@@ -255,15 +264,61 @@ bool Quadtree<T>::Node::add(
 
   if (!is_split()) {
     // Add it to the current node.
-    elements.push_back(element);
+    elements.push_back(std::make_pair(element, bounding_box));
     return true;
   }
 
   // Add it to children cells.
   for (const std::unique_ptr<Node>& child : children) {
-    child->add(element);
+    child->add(element, bounding_box);
   }
   return true;
+}
+
+/**
+ * \brief Removes an element from this node if its bounding box intersects it.
+ *
+ * Merges nodes when necessary.
+ *
+ * \param element The element to remove.
+ * \param bounding_box Bounding box of the element.
+ * \return \c true in the element was found and removed.
+ */
+template<typename T>
+bool Quadtree<T>::Node::remove(
+    const T& element,
+    const Rectangle& bounding_box
+) {
+  if (!get_cell().overlaps(bounding_box)) {
+    // Nothing to do.
+    return false;
+  }
+
+  if (!is_split()) {
+    // Remove from this cell.
+    const auto& it = std::find(elements.begin(), elements.end(), std::make_pair(element, bounding_box));
+    if (it == elements.end()) {
+      // The element was not here.
+      return false;
+    }
+    elements.erase(it);
+    return true;
+  }
+
+  // Remove from children cells.
+  bool removed = false;
+  for (const std::unique_ptr<Node>& child : children) {
+    removed |= child->remove(element, bounding_box);
+  }
+
+  if (removed) {
+    // See if it is time to merge.
+    int num_elements_in_children = get_num_elements();
+    if (num_elements_in_children < min_in_4_cells) {
+      merge();
+    }
+  }
+  return removed;
 }
 
 /**
@@ -301,12 +356,35 @@ void Quadtree<T>::Node::split() {
   );
 
   // Move existing elements into them.
-  for (const T& element: elements) {
+  for (const std::pair<T, Rectangle>& pair: elements) {
     for (const std::unique_ptr<Node>& child : children) {
-      child->add(element);
+      child->add(pair.first, pair.second);
     }
   }
   elements.clear();
+}
+
+/**
+ * \brief Merges the four children cell into this one and destroys them.
+ *
+ * The children must already be leaves.
+ */
+template<typename T>
+void Quadtree<T>::Node::merge() {
+
+  Debug::check_assertion(is_split(), "Quadtree node already merged");
+
+  // We want to avoid duplicates while preserving a deterministic order.
+  std::set<T> merged_elements;
+  for (const std::unique_ptr<Node>& child : children) {
+    Debug::check_assertion(!child->is_split(), "Quadtree node child is not a leave");
+    for (const std::pair<T, Rectangle>& pair: child->elements) {
+      const T& element = pair.first;
+      if (merged_elements.insert(element).second) {
+        elements.push_back(pair);
+      }
+    }
+  }
 }
 
 /**
@@ -321,8 +399,8 @@ int Quadtree<T>::Node::get_num_elements() const {
     // Some elements can overlap several cells.
     // To avoid duplicates, we count an element if its center is in this cell.
     // TODO This information could be stored for better performance.
-    for (const T& element: elements) {
-      const Rectangle& box = element->get_bounding_box();
+    for (const std::pair<T, Rectangle>& pair: elements) {
+      const Rectangle& box = pair.second;
       if (get_cell().contains(box.get_center())) {
         ++num_elements;
       }
@@ -339,16 +417,33 @@ int Quadtree<T>::Node::get_num_elements() const {
 
 /**
  * \brief Gets the elements intersecting the given rectangle under this node.
- * \param[in] where The rectangle to check.
- * \param[in/out] elements A list that will be filled with elements.
+ * \param[in] region The rectangle to check.
+ * \param[in/out] result A list that will be filled with elements.
  */
 template<typename T>
 void Quadtree<T>::Node::get_elements(
-    const Rectangle& /* where */,
-    std::vector<T>& /* elements */
+    const Rectangle& region,
+    std::vector<T>& result
 ) const {
 
-  // TODO avoid duplicates
+  if (!get_cell().overlaps(region)) {
+    // Nothing here.
+    return;
+  }
+
+  if (!is_split()) {
+    for (const std::pair<T, Rectangle>& pair : elements) {
+      if (pair.second.overlaps(region)) {
+        result.push_back(pair.first);
+      }
+    }
+  }
+  else {
+    // Get from from children cells.
+    for (const std::unique_ptr<Node>& child : children) {
+      child->get_elements(region, result);
+    }
+  }
 }
 
 /**
@@ -364,15 +459,14 @@ void Quadtree<T>::Node::draw(const SurfacePtr& dst_surface, const Point& dst_pos
 
   // Draw children nodes.
   if (is_split()) {
-    children[0]->draw(dst_surface, dst_position);
-    children[1]->draw(dst_surface, dst_position);
-    children[2]->draw(dst_surface, dst_position);
-    children[3]->draw(dst_surface, dst_position);
+    for (const std::unique_ptr<Node>& child : children) {
+      child->draw(dst_surface, dst_position);
+    }
   }
 
   // Draw bounding boxes of elements.
-  for (const T& element: elements) {
-    draw_rectangle(element->get_bounding_box(), color, dst_surface, dst_position);
+  for (const std::pair<T, Rectangle>& pair: elements) {
+    draw_rectangle(pair.second, color, dst_surface, dst_position);
   }
 }
 

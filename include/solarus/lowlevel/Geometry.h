@@ -71,7 +71,7 @@ int get_distance2(int x1, int y1, int x2, int y2);
 double get_distance(const Point& point1, const Point& point2);
 int get_distance2(const Point& point1, const Point& point2);
 int get_manhattan_distance(const Point& point1, const Point& point2);
-double get_angle(int x1, int y1, int x2, int y2);
+double get_angle(double x1, double y1, double x2, double y2);
 double get_angle(const Point& point1, const Point& point2);
 Point get_xy(double angle, int distance);
 Point get_xy(const Point& point1, double angle, int distance);

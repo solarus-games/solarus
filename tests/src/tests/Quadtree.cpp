@@ -199,6 +199,7 @@ int main(int argc, char** argv) {
   test_empty(env, quadtree);
   test_add(env, quadtree);
   test_add_big_size(env, quadtree);
+  test_add_limit(env, quadtree);
   test_remove(env, quadtree);
 
   return 0;

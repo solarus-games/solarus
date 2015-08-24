@@ -347,7 +347,9 @@ bool Quadtree<T>::Node::remove(
     removed |= child->remove(element, bounding_box);
   }
 
-  if (removed) {
+  if (removed &&
+      !children[0]->is_split()  // We are the parent node of where the element was removed.
+  ) {
     // See if it is time to merge.
     int num_elements_in_children = get_num_elements();
     if (num_elements_in_children < min_in_4_cells) {

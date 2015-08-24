@@ -209,7 +209,7 @@ Quadtree<T>::Node::Node() :
 template<typename T>
 Quadtree<T>::Node::Node(const Rectangle& cell) :
     elements(),
-    children{ nullptr, nullptr, nullptr, nullptr },
+    children({ nullptr, nullptr, nullptr, nullptr }),
     cell(cell),
     center(cell.get_center()),
     color() {

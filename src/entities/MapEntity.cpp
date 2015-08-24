@@ -919,8 +919,10 @@ Rectangle Entity::get_max_bounding_box() const {
   Rectangle result = get_bounding_box();
   for (const SpritePtr& sprite : sprites) {
     Rectangle box = sprite->get_max_bounding_box();
-    box.add_xy(get_xy());
+    box.add_xy(sprite->get_xy());  // Take into account the sprite's own offset.
+    box.add_xy(get_xy());  // Take into account the coordinates of the entity.
     result |= box;
+    // TODO when the sprite's offset changes, update the bounding box
   }
   return result;
 }

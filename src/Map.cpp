@@ -870,6 +870,7 @@ bool Map::test_collision_with_entities(
     const Rectangle& collision_box,
     Entity& entity_to_check) const {
 
+  // TODO use the quadtree
   const std::list<Entity*>& obstacle_entities =
       entities->get_obstacle_entities(layer);
 
@@ -1055,7 +1056,7 @@ Ground Map::get_ground(Layer layer, int x, int y) const {
   }
 
   // See if a dynamic entity changes the ground.
-  // TODO store ground modifiers in a quad tree for performance.
+  // TODO use the quad tree.
 
   const std::list<Entity*>& ground_modifiers =
       entities->get_ground_modifiers(layer);

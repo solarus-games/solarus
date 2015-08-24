@@ -9,6 +9,8 @@ Engine changes
 * Print when the main loop starts and stops.
 * Print the Lua version at startup (#692).
 * Improve the performance of custom entity collisions.
+* Improve the performance of collisions by using a quadtree.
+* Entities far from the camera are no longer suspended.
 
 Lua API changes
 ---------------
@@ -20,6 +22,7 @@ Changes that introduce incompatibilities:
 Changes that do not introduce incompatibilities:
 
 * Add a method block:get_sprite().
+* entity:set_optimization_distance() is now only a hint for the engine.
 
 Data files format changes
 -------------------------

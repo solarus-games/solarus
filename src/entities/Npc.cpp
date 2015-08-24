@@ -133,7 +133,7 @@ bool Npc::is_solid() const {
  * \param other another entity
  * \return true
  */
-bool Npc::is_obstacle_for(MapEntity& other) {
+bool Npc::is_obstacle_for(Entity& other) {
 
   return other.is_npc_obstacle(*this);
 }
@@ -190,7 +190,7 @@ bool Npc::is_sword_ignored() const {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Npc::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Npc::notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_FACING && entity_overlapping.is_hero()) {
 

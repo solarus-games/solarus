@@ -30,7 +30,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::PlungingState::PlungingState(Hero& hero):
-  State(hero, "plunging") {
+  HeroState(hero, "plunging") {
 
 }
 
@@ -38,9 +38,9 @@ Hero::PlungingState::PlungingState(Hero& hero):
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::PlungingState::start(const State* previous_state) {
+void Hero::PlungingState::start(const HeroState* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   if (get_hero().get_ground_below() == Ground::DEEP_WATER) {
     get_sprites().set_animation("plunging_water");
@@ -56,7 +56,7 @@ void Hero::PlungingState::start(const State* previous_state) {
  */
 void Hero::PlungingState::update() {
 
-  State::update();
+  HeroState::update();
 
   if (get_sprites().is_animation_finished()) {
 

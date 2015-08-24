@@ -60,10 +60,10 @@ class Teletransporter: public Detector {
     void set_destination_name(const std::string& destination_name);
     bool is_on_map_side() const;
 
-    virtual bool is_obstacle_for(MapEntity& other) override;
-    virtual bool test_collision_custom(MapEntity& entity) override;
+    virtual bool is_obstacle_for(Entity& other) override;
+    virtual bool test_collision_custom(Entity& entity) override;
     virtual void notify_collision(
-        MapEntity& entity_overlapping,
+        Entity& entity_overlapping,
         CollisionMode collision_mode
     ) override;
     void transport_hero(Hero& hero);

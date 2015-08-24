@@ -27,14 +27,14 @@ class PathMovement;
 /**
  * \brief The state "Pulling" of the hero.
  */
-class Hero::PullingState: public Hero::State {
+class Hero::PullingState: public HeroState {
 
   public:
 
     PullingState(Hero& hero);
 
-    virtual void start(const State* previous_state) override;
-    virtual void stop(const State* next_state) override;
+    virtual void start(const HeroState* previous_state) override;
+    virtual void stop(const HeroState* next_state) override;
     virtual void update() override;
     virtual void notify_grabbed_entity_collision() override;
     virtual void notify_movement_finished() override;
@@ -50,7 +50,7 @@ class Hero::PullingState: public Hero::State {
     virtual bool is_stream_obstacle(const Stream& stream) const override;
     virtual bool is_separator_obstacle(const Separator& separator) const override;
 
-    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_be_hurt(Entity* attacker) const override;
     virtual bool can_pick_treasure(EquipmentItem& item) const override;
 
   private:

@@ -254,7 +254,7 @@ void Destructible::set_damage_on_enemies(int damage_on_enemies) {
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool Destructible::is_obstacle_for(MapEntity& other) {
+bool Destructible::is_obstacle_for(Entity& other) {
 
   return get_modified_ground() == Ground::WALL
       && !is_being_cut
@@ -293,7 +293,7 @@ void Destructible::update_collision_modes() {
  * \param entity an entity
  * \return true if the entity's collides with this entity
  */
-bool Destructible::test_collision_custom(MapEntity& entity) {
+bool Destructible::test_collision_custom(Entity& entity) {
   return overlaps(entity.get_x(), entity.get_y() - 2);
 }
 
@@ -322,7 +322,7 @@ void Destructible::create_treasure() {
  * \param collision_mode the collision mode that detected the collision
  */
 void Destructible::notify_collision(
-    MapEntity& entity_overlapping, CollisionMode collision_mode) {
+    Entity& entity_overlapping, CollisionMode collision_mode) {
 
   entity_overlapping.notify_collision_with_destructible(*this, collision_mode);
 }
@@ -351,10 +351,10 @@ void Destructible::notify_collision_with_hero(Hero& hero, CollisionMode /* colli
 }
 
 /**
- * \copydoc Detector::notify_collision(MapEntity&, Sprite&, Sprite&)
+ * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Destructible::notify_collision(
-    MapEntity& other_entity,
+    Entity& other_entity,
     Sprite& /* this_sprite */,
     Sprite& other_sprite
 ) {
@@ -492,7 +492,7 @@ void Destructible::explode() {
  */
 void Destructible::set_suspended(bool suspended) {
 
-  MapEntity::set_suspended(suspended); // suspend the animation and the movement
+  Entity::set_suspended(suspended); // suspend the animation and the movement
 
   if (!suspended && regeneration_date != 0) {
     // Recompute the date.
@@ -505,7 +505,7 @@ void Destructible::set_suspended(bool suspended) {
  */
 void Destructible::update() {
 
-  MapEntity::update();
+  Entity::update();
 
   if (is_suspended()) {
     return;

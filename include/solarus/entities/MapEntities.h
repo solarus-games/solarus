@@ -44,13 +44,13 @@ class Rectangle;
 class Separator;
 class Stairs;
 
-using EntityTree = Quadtree<MapEntityPtr>;
+using EntityTree = Quadtree<EntityPtr>;
 
 /**
  * \brief Manages the whole content of a map.
  *
  * Each element of a map is called an entity and is an instance of
- * a subclass of MapEntity.
+ * a subclass of Entity.
  * This class stores all entities of the current map:
  * the tiles, the hero, the enemies and all other entities.
  */
@@ -64,37 +64,37 @@ class SOLARUS_API MapEntities {
     // get entities
     Hero& get_hero();
     Ground get_tile_ground(Layer layer, int x, int y) const;
-    const std::list<MapEntityPtr>& get_entities();
-    const std::list<MapEntity*>& get_obstacle_entities(Layer layer);
-    const std::list<MapEntity*>& get_ground_observers(Layer layer);
-    const std::list<MapEntity*>& get_ground_modifiers(Layer layer);
+    const std::list<EntityPtr>& get_entities();
+    const std::list<Entity*>& get_obstacle_entities(Layer layer);
+    const std::list<Entity*>& get_ground_observers(Layer layer);
+    const std::list<Entity*>& get_ground_modifiers(Layer layer);
     const std::list<Detector*>& get_detectors();
     const std::list<Stairs*>& get_stairs(Layer layer);
     const std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
     const std::list<const Separator*>& get_separators() const;
     Destination* get_default_destination();
 
-    MapEntity* get_entity(const std::string& name);
-    MapEntity* find_entity(const std::string& name);
-    std::list<MapEntity*> get_entities_with_prefix(const std::string& prefix);
-    std::list<MapEntity*> get_entities_with_prefix(EntityType type, const std::string& prefix);
+    Entity* get_entity(const std::string& name);
+    Entity* find_entity(const std::string& name);
+    std::list<Entity*> get_entities_with_prefix(const std::string& prefix);
+    std::list<Entity*> get_entities_with_prefix(EntityType type, const std::string& prefix);
     bool has_entity_with_prefix(const std::string& prefix) const;
 
-    void get_entities_in_rectangle(const Rectangle& rectangle, std::vector<MapEntityPtr>& result) const;
+    void get_entities_in_rectangle(const Rectangle& rectangle, std::vector<EntityPtr>& result) const;
 
     // handle entities
-    void add_entity(const MapEntityPtr& entity);
-    void remove_entity(MapEntity* entity);
+    void add_entity(const EntityPtr& entity);
+    void remove_entity(Entity* entity);
     void remove_entity(const std::string& name);
     void remove_entities_with_prefix(const std::string& prefix);
-    void bring_to_front(MapEntity& entity);
-    void bring_to_back(MapEntity& entity);
-    static bool compare_y(MapEntity* first, MapEntity* second);
-    void set_entity_drawn_in_y_order(MapEntity& entity, bool drawn_in_y_order);
-    void set_entity_layer(MapEntity& entity, Layer layer);
-    void notify_entity_bounding_box_changed(MapEntity& entity, const Rectangle& bounding_box);
-    void notify_entity_ground_observer_changed(MapEntity& entity);
-    void notify_entity_ground_modifier_changed(MapEntity& entity);
+    void bring_to_front(Entity& entity);
+    void bring_to_back(Entity& entity);
+    static bool compare_y(Entity* first, Entity* second);
+    void set_entity_drawn_in_y_order(Entity& entity, bool drawn_in_y_order);
+    void set_entity_layer(Entity& entity, Layer layer);
+    void notify_entity_bounding_box_changed(Entity& entity, const Rectangle& bounding_box);
+    void notify_entity_ground_observer_changed(Entity& entity);
+    void notify_entity_ground_modifier_changed(Entity& entity);
 
     // specific to some entity types
     bool overlaps_raised_blocks(Layer layer, const Rectangle& rectangle);
@@ -120,7 +120,7 @@ class SOLARUS_API MapEntities {
     void add_tile(const TilePtr& tile);
     void set_tile_ground(Layer layer, int x8, int y8, Ground ground);
     void remove_marked_entities();
-    void notify_entity_removed(MapEntity* entity);
+    void notify_entity_removed(Entity* entity);
     void update_crystal_blocks();
 
     // map
@@ -142,19 +142,20 @@ class SOLARUS_API MapEntities {
     // dynamic entities
     Hero& hero;                                     /**< the hero (stored in Game because it is kept when changing maps) */
 
-    std::map<std::string, MapEntity*>
+    std::map<std::string, Entity*>
       named_entities;                               /**< entities identified by a name */
-    std::list<MapEntityPtr> all_entities;           /**< all map entities except the tiles and the hero;
+    std::list<EntityPtr> all_entities;              /**< all map entities except the tiles and the hero;
                                                      * this vector is used to delete the entities
                                                      * when the map is unloaded */
+
     EntityTree quadtree;                            /**< All map entities except tiles.
                                                      * Optimized for fast spatial search. */
-    std::list<MapEntity*> entities_to_remove;       /**< list of entities that need to be removed right now */
+    std::list<Entity*> entities_to_remove;          /**< list of entities that need to be removed right now */
 
-    std::list<MapEntity*>
+    std::list<Entity*>
       entities_drawn_first[LAYER_NB];               /**< all map entities that are drawn in the normal order */
 
-    std::list<MapEntity*>
+    std::list<Entity*>
       entities_drawn_y_order[LAYER_NB];             /**< all map entities that are drawn in the order
                                                      * defined by their y position, including the hero */
 
@@ -162,15 +163,15 @@ class SOLARUS_API MapEntities {
                                                      * on this map.
                                                      * TODO store them by layer like obstacle_entities
                                                      * but take care of has_layer_independent_collisions() */
-    std::list<MapEntity*>
+    std::list<Entity*>
       ground_observers[LAYER_NB];                   /**< all dynamic entities sensible to the ground
                                                      * below them */
-    std::list<MapEntity*>
+    std::list<Entity*>
       ground_modifiers[LAYER_NB];                   /**< all dynamic entities that may change the ground of
                                                      * the map where they are placed */
     Destination* default_destination;               /**< the default destination of this map */
 
-    std::list<MapEntity*>
+    std::list<Entity*>
       obstacle_entities[LAYER_NB];                  /**< all entities that might be obstacle for other
                                                      * entities on this map, including the hero */
 

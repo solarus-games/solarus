@@ -79,12 +79,12 @@ class Teletransporter;
  * - an origin point, relative to the rectangle's top-left corner
  * Some entities can also have a name, a movement and some sprites.
  */
-class SOLARUS_API MapEntity: public ExportableToLua {
+class SOLARUS_API Entity: public ExportableToLua {
 
   public:
 
     // destruction
-    virtual ~MapEntity();
+    virtual ~Entity();
     void remove_from_map();
     virtual void notify_being_removed();
     bool is_being_removed() const;
@@ -221,8 +221,8 @@ class SOLARUS_API MapEntity: public ExportableToLua {
     virtual void notify_ground_below_changed();
     virtual void notify_movement_changed();
     virtual void notify_movement_finished();
-    virtual void notify_moving_by(MapEntity& entity);
-    virtual void notify_moved_by(MapEntity& entity);
+    virtual void notify_moving_by(Entity& entity);
+    virtual void notify_moved_by(Entity& entity);
 
     Detector* get_facing_entity();
     const Detector* get_facing_entity() const;
@@ -234,7 +234,7 @@ class SOLARUS_API MapEntity: public ExportableToLua {
     bool overlaps(const Rectangle& rectangle) const;
     bool overlaps(const Point& point) const;
     bool overlaps(int x, int y) const;
-    bool overlaps(const MapEntity& other) const;
+    bool overlaps(const Entity& other) const;
     bool overlaps_camera() const;
     bool is_origin_point_in(const Rectangle& rectangle) const;
     bool is_facing_point_in(const Rectangle& rectangle) const;
@@ -242,17 +242,17 @@ class SOLARUS_API MapEntity: public ExportableToLua {
     bool is_center_in(const Rectangle& rectangle) const;
 
     double get_angle(int x, int y) const;
-    double get_angle(const MapEntity& other) const;
+    double get_angle(const Entity& other) const;
     double get_angle(
-        const MapEntity& other,
+        const Entity& other,
         const Sprite* this_sprite,
         const Sprite* other_sprite) const;
     int get_distance(int x, int y) const;
     int get_distance(const Point& point) const;
-    int get_distance(const MapEntity& other) const;
+    int get_distance(const Entity& other) const;
     int get_distance_to_camera() const;
     int get_distance_to_camera2() const;
-    bool is_in_same_region(const MapEntity& other) const;
+    bool is_in_same_region(const Entity& other) const;
 
     // collisions
     virtual bool has_layer_independent_collisions() const;
@@ -286,8 +286,8 @@ class SOLARUS_API MapEntity: public ExportableToLua {
         EnemyReaction::Reaction& result,
         bool killed);
 
-    virtual bool is_obstacle_for(MapEntity& other);
-    virtual bool is_obstacle_for(MapEntity& other, const Rectangle& candidate_position);
+    virtual bool is_obstacle_for(Entity& other);
+    virtual bool is_obstacle_for(Entity& other, const Rectangle& candidate_position);
     bool is_ground_obstacle(Ground ground) const;
     virtual bool is_hero_obstacle(Hero& hero);
     virtual bool is_block_obstacle(Block& block);
@@ -314,7 +314,7 @@ class SOLARUS_API MapEntity: public ExportableToLua {
   protected:
 
     // creation
-    MapEntity(
+    Entity(
         const std::string& name,
         int direction,
         Layer layer,
@@ -323,8 +323,8 @@ class SOLARUS_API MapEntity: public ExportableToLua {
     );
 
     // No copy constructor or assignment operator.
-    MapEntity(const MapEntity& other) = delete;
-    MapEntity& operator=(const MapEntity& other) = delete;
+    Entity(const Entity& other) = delete;
+    Entity& operator=(const Entity& other) = delete;
 
     uint32_t get_when_suspended() const;
 
@@ -427,7 +427,7 @@ class SOLARUS_API MapEntity: public ExportableToLua {
  * \brief Returns whether this entity is enabled.
  * \return true if this entity is enabled
  */
-inline bool MapEntity::is_enabled() const {
+inline bool Entity::is_enabled() const {
   return enabled;
 }
 
@@ -439,7 +439,7 @@ inline bool MapEntity::is_enabled() const {
  *
  * \return true if this entity is about to be deleted
  */
-inline bool MapEntity::is_being_removed() const {
+inline bool Entity::is_being_removed() const {
   return being_removed;
 }
 
@@ -448,7 +448,7 @@ inline bool MapEntity::is_being_removed() const {
  * \param rectangle the rectangle to check
  * \return true if this entity's bounding box overlaps the specified rectangle
  */
-inline bool MapEntity::overlaps(const Rectangle& rectangle) const {
+inline bool Entity::overlaps(const Rectangle& rectangle) const {
   return bounding_box.overlaps(rectangle);
 }
 
@@ -457,7 +457,7 @@ inline bool MapEntity::overlaps(const Rectangle& rectangle) const {
  * \param point point to check
  * \return true if the point is in this entity's bounding box
  */
-inline bool MapEntity::overlaps(const Point& point) const {
+inline bool Entity::overlaps(const Point& point) const {
   return bounding_box.contains(point);
 }
 
@@ -467,7 +467,7 @@ inline bool MapEntity::overlaps(const Point& point) const {
  * \param y y coordinate of the point to check
  * \return true if the point is in this entity's bounding box
  */
-inline bool MapEntity::overlaps(int x, int y) const {
+inline bool Entity::overlaps(int x, int y) const {
   return bounding_box.contains(x, y);
 }
 
@@ -477,7 +477,7 @@ inline bool MapEntity::overlaps(int x, int y) const {
  * \param other another entity
  * \return true if this entity's bounding box overlaps the other entity's bounding box
  */
-inline bool MapEntity::overlaps(const MapEntity& other) const {
+inline bool Entity::overlaps(const Entity& other) const {
   return overlaps(other.get_bounding_box());
 }
 

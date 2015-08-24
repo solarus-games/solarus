@@ -38,7 +38,7 @@ Tile::Tile(
     Tileset& tileset,
     const std::string& tile_pattern_id
 ):
-  MapEntity("", 0, layer, xy, size),
+  Entity("", 0, layer, xy, size),
   tile_pattern_id(tile_pattern_id),
   tile_pattern(tileset.get_tile_pattern(tile_pattern_id)) {
 

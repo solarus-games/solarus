@@ -50,7 +50,7 @@ class Destructible: public Detector {
         Ground modified_ground
     );
 
-    // Properties overridden from MapEntity.
+    // Properties overridden from Entity.
     virtual EntityType get_type() const override;
     virtual bool is_ground_modifier() const override;
     virtual Ground get_modified_ground() const override;
@@ -77,14 +77,14 @@ class Destructible: public Detector {
     bool is_waiting_for_regeneration() const;
 
     // Collisions.
-    virtual bool is_obstacle_for(MapEntity& other) override;
-    virtual bool test_collision_custom(MapEntity& entity) override;
+    virtual bool is_obstacle_for(Entity& other) override;
+    virtual bool test_collision_custom(Entity& entity) override;
     virtual void notify_collision(
-        MapEntity& entity_overlapping,
+        Entity& entity_overlapping,
         CollisionMode collision_mode
     ) override;
     virtual void notify_collision(
-        MapEntity& other_entity,
+        Entity& other_entity,
         Sprite& this_sprite,
         Sprite& other_sprite
     ) override;

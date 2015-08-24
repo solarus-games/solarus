@@ -112,7 +112,7 @@ void StraightMovement::set_x_speed(double x_speed) {
     }
     set_next_move_date_x(now + x_delay);
   }
-  angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
+  angle = Geometry::get_angle(0.0, 0.0, x_speed * 100.0, y_speed * 100.0);
   initial_xy = get_xy();
   finished = false;
 
@@ -147,7 +147,7 @@ void StraightMovement::set_y_speed(double y_speed) {
     }
     set_next_move_date_y(now + y_delay);
   }
-  angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
+  angle = Geometry::get_angle(0.0, 0.0, x_speed * 100.0, y_speed * 100.0);
   initial_xy = get_xy();
   finished = false;
 

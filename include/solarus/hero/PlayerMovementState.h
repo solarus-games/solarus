@@ -36,14 +36,14 @@ class PlayerMovement;
  * These states include FreeState (the normal walk), SwordLoadingState (the sword is
  * loading), CarryingState (the hero is carrying something) and SwimmingState.
  */
-class Hero::PlayerMovementState: public Hero::State {
+class Hero::PlayerMovementState: public HeroState {
 
   public:
 
     virtual ~PlayerMovementState();
 
-    virtual void start(const State* previous_state) override;
-    virtual void stop(const State* next_state) override;
+    virtual void start(const HeroState* previous_state) override;
+    virtual void stop(const HeroState* next_state) override;
     virtual void set_map(Map& map) override;
 
     virtual void update() override;
@@ -56,7 +56,7 @@ class Hero::PlayerMovementState: public Hero::State {
     virtual void notify_movement_changed() override;
     virtual void notify_position_changed() override;
     virtual void notify_layer_changed() override;
-    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_be_hurt(Entity* attacker) const override;
     virtual bool can_pick_treasure(EquipmentItem& item) const override;
     virtual bool can_take_jumper() const override;
     virtual void notify_jumper_activated(Jumper& jumper) override;

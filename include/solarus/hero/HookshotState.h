@@ -27,14 +27,14 @@ class Hookshot;
 /**
  * \brief The state "hookshot" of the hero.
  */
-class Hero::HookshotState: public Hero::State {
+class Hero::HookshotState: public HeroState {
 
   public:
 
     HookshotState(Hero& hero);
 
-    virtual void start(const State* previous_state) override;
-    virtual void stop(const State* next_state) override;
+    virtual void start(const HeroState* previous_state) override;
+    virtual void stop(const HeroState* next_state) override;
 
     virtual bool is_touching_ground() const override;
     virtual bool can_avoid_deep_water() const override;
@@ -48,7 +48,7 @@ class Hero::HookshotState: public Hero::State {
     virtual bool is_sensor_obstacle(const Sensor& sensor) const override;
     virtual bool is_jumper_obstacle(const Jumper& jumper, const Rectangle& candidate_position) const override;
     virtual bool can_avoid_switch() const override;
-    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_be_hurt(Entity* attacker) const override;
     virtual bool can_pick_treasure(EquipmentItem& item) const override;
     virtual void notify_obstacle_reached() override;
 

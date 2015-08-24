@@ -82,8 +82,8 @@ class Stairs: public Detector {
     bool is_inside_floor() const;
     virtual bool has_layer_independent_collisions() const override;
     virtual bool is_sword_ignored() const override;
-    virtual bool is_obstacle_for(MapEntity& other) override;
-    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual bool is_obstacle_for(Entity& other) override;
+    virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
     virtual void notify_enabled(bool enabled) override;
 
     int get_movement_direction(Way way);

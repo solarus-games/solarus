@@ -24,7 +24,7 @@ namespace Solarus {
 class Hero;
 
 /**
- * \brief Alias for shared_ptr of MapEntity.
+ * \brief Alias for shared_ptr of Entity.
  */
 using HeroPtr = std::shared_ptr<Hero>;
 

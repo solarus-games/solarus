@@ -62,7 +62,7 @@ class Switch: public Detector {
     );
 
     virtual EntityType get_type() const override;
-    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual bool is_obstacle_for(Entity& other) override;
 
     bool is_walkable() const;
     bool is_arrow_target() const;
@@ -78,13 +78,13 @@ class Switch: public Detector {
     void try_activate();
 
     virtual void update() override;
-    virtual bool test_collision_custom(MapEntity& entity) override;
+    virtual bool test_collision_custom(Entity& entity) override;
     virtual void notify_collision(
-        MapEntity& entity_overlapping,
+        Entity& entity_overlapping,
         CollisionMode collision_mode
     ) override;
     virtual void notify_collision(
-        MapEntity& other_entity,
+        Entity& other_entity,
         Sprite& this_sprite,
         Sprite& other_sprite
     ) override;
@@ -101,7 +101,7 @@ class Switch: public Detector {
     // the following fields are used only for walkable switches
     bool needs_block;                          /**< Whether a block or a statue is required to activate this walkable switch. */
     bool inactivate_when_leaving;              /**< Whether this walkable switch becomes inactivated when the hero or the block leaves it. */
-    MapEntity* entity_overlapping;             /**< The entity currently on this walkable switch (as arrows may be destroyed at any moment). */
+    Entity* entity_overlapping;             /**< The entity currently on this walkable switch (as arrows may be destroyed at any moment). */
     bool entity_overlapping_still_present;     /**< To detect when the entity overlapping leaves the switch. */
 
 };

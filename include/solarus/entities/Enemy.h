@@ -89,7 +89,7 @@ class Enemy: public Detector {
         const Treasure& treasure
     );
 
-    static MapEntityPtr create(
+    static EntityPtr create(
         Game& game,
         const std::string& breed,
         Rank rank,
@@ -153,7 +153,7 @@ class Enemy: public Detector {
     void set_animation(const std::string& animation);
 
     // obstacles
-    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual bool is_obstacle_for(Entity& other) override;
     virtual bool is_destructible_obstacle(Destructible& destructible) override;
     virtual bool is_block_obstacle(Block& block) override;
     virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter) override;
@@ -172,8 +172,8 @@ class Enemy: public Detector {
 
     virtual void notify_enabled(bool enabled) override;
     virtual void notify_ground_below_changed() override;
-    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
-    virtual void notify_collision(MapEntity& other_entity, Sprite& this_sprite, Sprite& other_sprite) override;
+    virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual void notify_collision(Entity& other_entity, Sprite& this_sprite, Sprite& other_sprite) override;
     virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
     virtual void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) override;
     virtual void notify_collision_with_enemy(Enemy& other, Sprite& other_sprite, Sprite& this_sprite) override;
@@ -190,8 +190,8 @@ class Enemy: public Detector {
     bool is_immobilized() const;
     bool is_killed() const;
     bool is_dying_animation_finished() const;
-    void try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite);
-    void hurt(MapEntity& source, Sprite* this_sprite);
+    void try_hurt(EnemyAttack attack, Entity& source, Sprite* this_sprite);
+    void hurt(Entity& source, Sprite* this_sprite);
     void kill();
     bool is_dying() const;
     const Treasure& get_treasure() const;
@@ -210,7 +210,7 @@ class Enemy: public Detector {
     void immobilize();
     void stop_immobilized();
     void custom_attack(EnemyAttack attack, Sprite* this_sprite);
-    void notify_hurt(MapEntity& source, EnemyAttack attack);
+    void notify_hurt(Entity& source, EnemyAttack attack);
     void notify_dead();
     void notify_immobilized();
     bool is_saved() const;

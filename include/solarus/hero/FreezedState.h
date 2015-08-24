@@ -24,13 +24,13 @@ namespace Solarus {
 /**
  * \brief The state "Freezed" of the hero.
  */
-class Hero::FreezedState: public Hero::State {
+class Hero::FreezedState: public HeroState {
 
   public:
 
     FreezedState(Hero& hero);
 
-    virtual void start(const State* previous_state) override;
+    virtual void start(const HeroState* previous_state) override;
 
 };
 

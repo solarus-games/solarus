@@ -29,7 +29,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::GrabbingState::GrabbingState(Hero& hero):
-  State(hero, "grabbing") {
+  HeroState(hero, "grabbing") {
 
 }
 
@@ -37,9 +37,9 @@ Hero::GrabbingState::GrabbingState(Hero& hero):
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::GrabbingState::start(const State* previous_state) {
+void Hero::GrabbingState::start(const HeroState* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   get_sprites().set_animation_grabbing();
 }
@@ -89,7 +89,7 @@ bool Hero::GrabbingState::is_grabbing_or_pulling() const {
  * (or nullptr if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::GrabbingState::can_be_hurt(MapEntity* /* attacker */) const {
+bool Hero::GrabbingState::can_be_hurt(Entity* /* attacker */) const {
   return true;
 }
 

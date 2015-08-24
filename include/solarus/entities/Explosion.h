@@ -48,7 +48,7 @@ class Explosion: public Detector {
     virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame) override;
 
     // collisions
-    virtual void notify_collision(MapEntity& other_entity, Sprite& this_sprite, Sprite& other_sprite) override;
+    virtual void notify_collision(Entity& other_entity, Sprite& this_sprite, Sprite& other_sprite) override;
     virtual void notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) override;
     virtual void notify_collision_with_crystal(Crystal& crystal, Sprite& sprite_overlapping) override;
     virtual void notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode) override;

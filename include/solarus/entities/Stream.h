@@ -54,12 +54,12 @@ class Stream: public Detector {
     void set_allow_item(bool allow_item);
     virtual void notify_direction_changed() override;
 
-    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual bool is_obstacle_for(Entity& other) override;
     virtual void notify_collision(
-            MapEntity& entity_overlapping,
+            Entity& entity_overlapping,
             CollisionMode collision_mode
     ) override;
-    void activate(MapEntity& target);
+    void activate(Entity& target);
 
   private:
 

@@ -40,7 +40,7 @@ namespace Solarus {
  * \param hero The hero.
  */
 Arrow::Arrow(const Hero& hero):
-  MapEntity("", 0, hero.get_layer(), Point(0, 0), Size(0, 0)),
+  Entity("", 0, hero.get_layer(), Point(0, 0), Size(0, 0)),
   hero(hero) {
 
   // initialize the entity
@@ -103,7 +103,7 @@ bool Arrow::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) 
 }
 
 /**
- * \copydoc MapEntity::is_stream_obstacle
+ * \copydoc Entity::is_stream_obstacle
  */
 bool Arrow::is_stream_obstacle(Stream& /* stream */) {
   return false;
@@ -205,7 +205,7 @@ bool Arrow::is_npc_obstacle(Npc& npc) {
 }
 
 /**
- * \copydoc MapEntity::is_jumper_obstacle
+ * \copydoc Entity::is_jumper_obstacle
  */
 bool Arrow::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candidate_position */) {
   return false;
@@ -216,7 +216,7 @@ bool Arrow::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candida
  */
 void Arrow::update() {
 
-  MapEntity::update();
+  Entity::update();
 
   if (is_suspended()) {
     return;
@@ -301,7 +301,7 @@ void Arrow::update() {
  */
 void Arrow::set_suspended(bool suspended) {
 
-  MapEntity::set_suspended(suspended); // suspend the movement
+  Entity::set_suspended(suspended); // suspend the movement
 
   if (!suspended) {
     // recalculate the timer
@@ -336,12 +336,12 @@ bool Arrow::is_flying() const {
  * \brief Stops the arrow movement and attaches the arrow to an entity that was just reached.
  * \param entity_reached the entity that was reached
  */
-void Arrow::attach_to(MapEntity& entity_reached) {
+void Arrow::attach_to(Entity& entity_reached) {
 
   Debug::check_assertion(this->entity_reached == nullptr,
       "This arrow is already attached to an entity");
 
-  this->entity_reached = std::static_pointer_cast<MapEntity>(
+  this->entity_reached = std::static_pointer_cast<Entity>(
       entity_reached.shared_from_this()
   );
   stop_now = true;
@@ -412,7 +412,7 @@ void Arrow::notify_collision_with_enemy(
 }
 
 /**
- * \copydoc MapEntity::notify_attacked_enemy
+ * \copydoc Entity::notify_attacked_enemy
  */
 void Arrow::notify_attacked_enemy(
     EnemyAttack /* attack */,

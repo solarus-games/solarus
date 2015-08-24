@@ -31,7 +31,7 @@ namespace Solarus {
  * In the current implementation, only the hero is supposed to be able to
  * throw a boomerang.
  */
-class Boomerang: public MapEntity {
+class Boomerang: public Entity {
 
   public:
 

@@ -47,10 +47,10 @@ class Separator: public Detector {
     bool is_horizontal() const;
     bool is_vertical() const;
 
-    virtual bool is_obstacle_for(MapEntity& other) override;
-    virtual bool test_collision_custom(MapEntity& entity) override;
+    virtual bool is_obstacle_for(Entity& other) override;
+    virtual bool test_collision_custom(Entity& entity) override;
     virtual void notify_collision(
-        MapEntity& entity_overlapping,
+        Entity& entity_overlapping,
         CollisionMode collision_mode
     ) override;
     void notify_activating(int direction4);

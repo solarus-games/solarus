@@ -28,7 +28,7 @@ namespace Solarus {
  * \param ignore_obstacles true to make the movement ignore obstacles
  */
 RelativeMovement::RelativeMovement(
-    const MapEntityPtr& entity_followed,
+    const EntityPtr& entity_followed,
     int x,
     int y,
     bool ignore_obstacles):
@@ -42,7 +42,7 @@ RelativeMovement::RelativeMovement(
  * \param ignore_obstacles true to make the movement ignore obstacles
  */
 RelativeMovement::RelativeMovement(
-    const MapEntityPtr& entity_followed,
+    const EntityPtr& entity_followed,
     const Point& entity_offset,
     bool ignore_obstacles):
   Movement(ignore_obstacles),

@@ -67,13 +67,13 @@ class Pickable: public Detector {
 
     // item state
     void set_suspended(bool suspended) override;
-    MapEntityPtr get_entity_followed();
+    EntityPtr get_entity_followed();
     void notify_collision(
-        MapEntity& entity_overlapping,
+        Entity& entity_overlapping,
         CollisionMode collision_mode
     ) override;
     void notify_collision(
-        MapEntity& other_entity,
+        Entity& other_entity,
         Sprite& this_sprite,
         Sprite& other_sprite
     ) override;
@@ -108,7 +108,7 @@ class Pickable: public Detector {
     bool can_be_picked;                         /**< indicates that the item can be picked now (i.e. allow_picked_date is past) */
     uint32_t blink_date;                        /**< date when the item starts blinking */
     uint32_t disappear_date;                    /**< date when the item disappears */
-    MapEntityPtr entity_followed;               /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
+    EntityPtr entity_followed;               /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
 };
 
 }

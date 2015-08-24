@@ -65,7 +65,7 @@ bool Sensor::can_be_drawn() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Sensor::is_obstacle_for(MapEntity& other) {
+bool Sensor::is_obstacle_for(Entity& other) {
 
   return other.is_sensor_obstacle(*this);
 }
@@ -75,7 +75,7 @@ bool Sensor::is_obstacle_for(MapEntity& other) {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Sensor::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Sensor::notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) {
 
   entity_overlapping.notify_collision_with_sensor(*this, collision_mode);
 }

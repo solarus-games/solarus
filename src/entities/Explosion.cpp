@@ -95,10 +95,10 @@ void Explosion::notify_sprite_frame_changed(Sprite& /* sprite */, const std::str
 }
 
 /**
- * \copydoc Detector::notify_collision(MapEntity&, Sprite&, Sprite&)
+ * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Explosion::notify_collision(
-    MapEntity& other_entity,
+    Entity& other_entity,
     Sprite& /* this_sprite */,
     Sprite& other_sprite
 ) {
@@ -168,7 +168,7 @@ void Explosion::try_attack_enemy(Enemy& enemy, Sprite& enemy_sprite) {
 }
 
 /**
- * \copydoc MapEntity::notify_attacked_enemy
+ * \copydoc Entity::notify_attacked_enemy
  */
 void Explosion::notify_attacked_enemy(
     EnemyAttack /* attack */,

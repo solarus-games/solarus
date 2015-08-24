@@ -98,7 +98,7 @@ EntityType Switch::get_type() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Switch::is_obstacle_for(MapEntity& other) {
+bool Switch::is_obstacle_for(Entity& other) {
   return other.is_switch_obstacle(*this);
 }
 
@@ -223,7 +223,7 @@ void Switch::update() {
  * \param entity an entity
  * \return true if the entity's collides with this entity
  */
-bool Switch::test_collision_custom(MapEntity& entity) {
+bool Switch::test_collision_custom(Entity& entity) {
 
   // This collision test is performed for walkable switches only.
 
@@ -243,7 +243,7 @@ bool Switch::test_collision_custom(MapEntity& entity) {
  * \param collision_mode the collision mode that detected the collision
  */
 void Switch::notify_collision(
-    MapEntity& entity_overlapping, CollisionMode collision_mode) {
+    Entity& entity_overlapping, CollisionMode collision_mode) {
 
   if (&entity_overlapping == this->entity_overlapping) {
     // already overlapping
@@ -257,10 +257,10 @@ void Switch::notify_collision(
 }
 
 /**
- * \copydoc Detector::notify_collision(MapEntity&, Sprite&, Sprite&)
+ * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Switch::notify_collision(
-    MapEntity& other_entity,
+    Entity& other_entity,
     Sprite& /* this_sprite */,
     Sprite& other_sprite
 ) {

@@ -35,7 +35,7 @@ const uint32_t TargetMovement::recomputation_delay = 150;
  * \param ignore_obstacles \c true to ignore obstacles (if on a map).
  */
 TargetMovement::TargetMovement(
-    const MapEntityPtr& target_entity,
+    const EntityPtr& target_entity,
     int x,
     int y,
     int moving_speed,
@@ -50,7 +50,7 @@ TargetMovement::TargetMovement(
  * \param ignore_obstacles \c true to ignore obstacles (if on a map).
  */
 TargetMovement::TargetMovement(
-    const MapEntityPtr& target_entity,
+    const EntityPtr& target_entity,
     const Point& target,
     int moving_speed,
     bool ignore_obstacles):
@@ -83,7 +83,7 @@ void TargetMovement::notify_object_controlled() {
  * \param xy The target point, or offset in the case of an entity.
  */
 void TargetMovement::set_target(
-    const MapEntityPtr& target_entity,
+    const EntityPtr& target_entity,
     const Point& xy
 ) {
   this->target_entity = target_entity;

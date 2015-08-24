@@ -22,7 +22,7 @@ namespace Solarus {
 /**
  * \brief Constants to identify each kind of map entity.
  *
- * Each constant correspond to a subclass of MapEntity.
+ * Each constant correspond to a subclass of Entity.
  * They can be stored in the map file
  * (tiles, teletransporters, chests, stairs, doors, etc.).
  * or generated dynamically during the game

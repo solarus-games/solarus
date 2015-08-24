@@ -68,12 +68,12 @@ constexpr bool operator==(const Size& lhs, const Size& rhs);
 constexpr bool operator!=(const Size& lhs, const Size& rhs);
 
 // Arithmetic operators
-Size operator+(Size lhs, const Size& rhs);
-Size operator-(Size lhs, const Size& rhs);
+constexpr Size operator+(const Size& lhs, const Size& rhs);
+constexpr Size operator-(const Size& lhs, const Size& rhs);
 
-Size operator*(Size size, int factor);
-Size operator*(int factor, Size size);
-Size operator/(Size size, int divisor);
+constexpr Size operator*(const Size& size, int factor);
+constexpr Size operator*(int factor, const Size& size);
+constexpr Size operator/(const Size& size, int divisor);
 
 // Output to stream
 std::ostream& operator<<(std::ostream& stream, const Size& size);

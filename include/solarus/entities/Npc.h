@@ -81,13 +81,13 @@ class Npc: public Detector {
 
     bool is_solid() const;
 
-    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual bool is_obstacle_for(Entity& other) override;
     virtual bool is_hero_obstacle(Hero& hero) override;
     virtual bool is_npc_obstacle(Npc& npc) override;
     virtual bool is_enemy_obstacle(Enemy& enemy) override;
     virtual bool is_sword_ignored() const override;
 
-    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
     virtual bool notify_action_command_pressed() override;
     virtual bool interaction_with_item(EquipmentItem& item) override;
     virtual void notify_position_changed() override;

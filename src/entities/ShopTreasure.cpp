@@ -150,7 +150,7 @@ bool ShopTreasure::is_sword_ignored() const {
  * \param other another entity
  * \return true
  */
-bool ShopTreasure::is_obstacle_for(MapEntity& /* other */) {
+bool ShopTreasure::is_obstacle_for(Entity& /* other */) {
   return true;
 }
 
@@ -163,7 +163,7 @@ bool ShopTreasure::is_obstacle_for(MapEntity& /* other */) {
  * \param collision_mode the collision mode that detected the collision
  */
 void ShopTreasure::notify_collision(
-    MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
+    Entity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   if (entity_overlapping.is_hero() && !get_game().is_suspended()) {
 

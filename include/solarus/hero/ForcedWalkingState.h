@@ -30,7 +30,7 @@ class PathMovement;
  *
  * The player does not control the hero in this state.
  */
-class Hero::ForcedWalkingState: public Hero::State {
+class Hero::ForcedWalkingState: public HeroState {
 
   public:
 
@@ -41,8 +41,8 @@ class Hero::ForcedWalkingState: public Hero::State {
         bool ignore_obstacles
     );
 
-    virtual void start(const State* previous_state) override;
-    virtual void stop(const State* next_state) override;
+    virtual void start(const HeroState* previous_state) override;
+    virtual void stop(const HeroState* next_state) override;
     virtual void update() override;
     virtual bool can_start_gameover_sequence() const override;
     virtual bool is_touching_ground() const override;
@@ -55,7 +55,7 @@ class Hero::ForcedWalkingState: public Hero::State {
     virtual bool can_avoid_stream(const Stream& stream) const override;
     virtual bool can_avoid_sensor() const override;
     virtual bool can_avoid_switch() const override;
-    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_be_hurt(Entity* attacker) const override;
 
   private:
 

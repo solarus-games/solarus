@@ -322,7 +322,7 @@ int LuaContext::l_create_tile(lua_State* l) {
 
     for (int current_y = y; current_y < y + size.height; current_y += pattern.get_height()) {
       for (int current_x = x; current_x < x + size.width; current_x += pattern.get_width()) {
-        MapEntityPtr entity = std::make_shared<Tile>(
+        EntityPtr entity = std::make_shared<Tile>(
             data.get_layer(),
             Point(current_x, current_y),
             pattern.get_size(),
@@ -348,7 +348,7 @@ int LuaContext::l_create_destination(lua_State* l) {
     Map& map = *check_map(l, 1);
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
-    MapEntityPtr entity = std::make_shared<Destination>(
+    EntityPtr entity = std::make_shared<Destination>(
         data.get_name(),
         data.get_layer(),
         data.get_xy(),
@@ -378,7 +378,7 @@ int LuaContext::l_create_teletransporter(lua_State* l) {
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
 
-    MapEntityPtr entity = std::make_shared<Teletransporter>(
+    EntityPtr entity = std::make_shared<Teletransporter>(
         data.get_name(),
         data.get_layer(),
         data.get_xy(),
@@ -563,7 +563,7 @@ int LuaContext::l_create_jumper(lua_State* l) {
     Map& map = *check_map(l, 1);
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
-    MapEntityPtr entity = std::make_shared<Jumper>(
+    EntityPtr entity = std::make_shared<Jumper>(
         data.get_name(),
         data.get_layer(),
         data.get_xy(),
@@ -591,7 +591,7 @@ int LuaContext::l_create_enemy(lua_State* l) {
     Map& map = *check_map(l, 1);
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
     Game& game = map.get_game();
-    MapEntityPtr entity = Enemy::create(
+    EntityPtr entity = Enemy::create(
         game,
         data.get_string("breed"),
         Enemy::Rank(data.get_integer("rank")),
@@ -632,7 +632,7 @@ int LuaContext::l_create_npc(lua_State* l) {
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
     Game& game = map.get_game();
-    MapEntityPtr entity = std::make_shared<Npc>(
+    EntityPtr entity = std::make_shared<Npc>(
         game,
         data.get_name(),
         data.get_layer(),
@@ -698,7 +698,7 @@ int LuaContext::l_create_dynamic_tile(lua_State* l) {
     Map& map = *check_map(l, 1);
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
-    MapEntityPtr entity = std::make_shared<DynamicTile>(
+    EntityPtr entity = std::make_shared<DynamicTile>(
         data.get_name(),
         data.get_layer(),
         data.get_xy(),
@@ -727,7 +727,7 @@ int LuaContext::l_create_switch(lua_State* l) {
     Map& map = *check_map(l, 1);
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
-    MapEntityPtr entity = std::make_shared<Switch>(
+    EntityPtr entity = std::make_shared<Switch>(
         data.get_name(),
         data.get_layer(),
         data.get_xy(),
@@ -757,7 +757,7 @@ int LuaContext::l_create_wall(lua_State* l) {
     Map& map = *check_map(l, 1);
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
-    MapEntityPtr entity = std::make_shared<Wall>(
+    EntityPtr entity = std::make_shared<Wall>(
         data.get_name(),
         data.get_layer(),
         data.get_xy(),
@@ -788,7 +788,7 @@ int LuaContext::l_create_sensor(lua_State* l) {
     Map& map = *check_map(l, 1);
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
-    MapEntityPtr entity = std::make_shared<Sensor>(
+    EntityPtr entity = std::make_shared<Sensor>(
         data.get_name(),
         data.get_layer(),
         data.get_xy(),
@@ -814,7 +814,7 @@ int LuaContext::l_create_crystal(lua_State* l) {
     Map& map = *check_map(l, 1);
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
-    MapEntityPtr entity = std::make_shared<Crystal>(
+    EntityPtr entity = std::make_shared<Crystal>(
         data.get_name(),
         data.get_layer(),
         data.get_xy()
@@ -840,7 +840,7 @@ int LuaContext::l_create_crystal_block(lua_State* l) {
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
     Game& game = map.get_game();
-    MapEntityPtr entity = std::make_shared<CrystalBlock>(
+    EntityPtr entity = std::make_shared<CrystalBlock>(
         game,
         data.get_name(),
         data.get_layer(),
@@ -869,7 +869,7 @@ int LuaContext::l_create_shop_treasure(lua_State* l) {
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
     Game& game = map.get_game();
-    MapEntityPtr entity = ShopTreasure::create(
+    EntityPtr entity = ShopTreasure::create(
         game,
         data.get_name(),
         data.get_layer(),
@@ -1001,7 +1001,7 @@ int LuaContext::l_create_stairs(lua_State* l) {
     Map& map = *check_map(l, 1);
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
-    MapEntityPtr entity = std::make_shared<Stairs>(
+    EntityPtr entity = std::make_shared<Stairs>(
         data.get_name(),
         data.get_layer(),
         data.get_xy(),
@@ -1028,7 +1028,7 @@ int LuaContext::l_create_separator(lua_State* l) {
     Map& map = *check_map(l, 1);
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
-    MapEntityPtr entity = std::make_shared<Separator>(
+    EntityPtr entity = std::make_shared<Separator>(
         data.get_name(),
         data.get_layer(),
         data.get_xy(),
@@ -1055,7 +1055,7 @@ int LuaContext::l_create_custom_entity(lua_State* l) {
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
     Game& game = map.get_game();
-    MapEntityPtr entity = std::make_shared<CustomEntity>(
+    EntityPtr entity = std::make_shared<CustomEntity>(
         game,
         data.get_name(),
         data.get_integer("direction"),
@@ -1085,7 +1085,7 @@ int LuaContext::l_create_bomb(lua_State* l) {
     Map& map = *check_map(l, 1);
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
-    MapEntityPtr entity = std::make_shared<Bomb>(
+    EntityPtr entity = std::make_shared<Bomb>(
         data.get_name(),
         data.get_layer(),
         data.get_xy()
@@ -1111,7 +1111,7 @@ int LuaContext::l_create_explosion(lua_State* l) {
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
     const bool with_damage = true;
-    MapEntityPtr entity = std::make_shared<Explosion>(
+    EntityPtr entity = std::make_shared<Explosion>(
         data.get_name(),
         data.get_layer(),
         data.get_xy(),
@@ -1137,7 +1137,7 @@ int LuaContext::l_create_fire(lua_State* l) {
     Map& map = *check_map(l, 1);
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
-    MapEntityPtr entity = std::make_shared<Fire>(
+    EntityPtr entity = std::make_shared<Fire>(
         data.get_name(),
         data.get_layer(),
         data.get_xy()
@@ -1224,7 +1224,7 @@ int LuaContext::l_get_map_entity_or_global(lua_State* l) {
     Map& map = *check_map(l, -1);
     const std::string& name = LuaTools::check_string(l, 2);
 
-    MapEntity* entity = nullptr;
+    Entity* entity = nullptr;
     if (map.is_started()) {
       entity = map.get_entities().find_entity(name);
     }
@@ -1607,7 +1607,7 @@ int LuaContext::map_api_open_doors(lua_State* l) {
 
     bool done = false;
     MapEntities& entities = map.get_entities();
-    std::list<MapEntity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
+    std::list<Entity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
     for (auto it = doors.begin(); it != doors.end(); ++it) {
       Door* door = static_cast<Door*>(*it);
       if (!door->is_open() || door->is_closing()) {
@@ -1639,7 +1639,7 @@ int LuaContext::map_api_close_doors(lua_State* l) {
 
     bool done = false;
     MapEntities& entities = map.get_entities();
-    std::list<MapEntity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
+    std::list<Entity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
     for (auto it = doors.begin(); it != doors.end(); ++it) {
       Door* door = static_cast<Door*>(*it);
       if (door->is_open() || door->is_opening()) {
@@ -1671,7 +1671,7 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
     bool open = LuaTools::opt_boolean(l, 3, true);
 
     MapEntities& entities = map.get_entities();
-    std::list<MapEntity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
+    std::list<Entity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
     for (auto it = doors.begin(); it != doors.end(); ++it) {
       Door* door = static_cast<Door*>(*it);
       door->set_open(open);
@@ -1692,7 +1692,7 @@ int LuaContext::map_api_get_entity(lua_State* l) {
     Map& map = *check_map(l, 1);
     const std::string& name = LuaTools::check_string(l, 2);
 
-    MapEntity* entity = map.get_entities().find_entity(name);
+    Entity* entity = map.get_entities().find_entity(name);
 
     if (entity != nullptr && !entity->is_being_removed()) {
       push_entity(l, *entity);
@@ -1715,7 +1715,7 @@ int LuaContext::map_api_has_entity(lua_State* l) {
     Map& map = *check_map(l, 1);
     const std::string& name = LuaTools::check_string(l, 2);
 
-    MapEntity* entity = map.get_entities().find_entity(name);
+    Entity* entity = map.get_entities().find_entity(name);
 
     lua_pushboolean(l, entity != nullptr);
     return 1;
@@ -1733,12 +1733,12 @@ int LuaContext::map_api_get_entities(lua_State* l) {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
-    const std::list<MapEntity*> entities =
+    const std::list<Entity*> entities =
         map.get_entities().get_entities_with_prefix(prefix);
 
     lua_newtable(l);
     for (auto it = entities.begin(); it != entities.end(); ++it) {
-      MapEntity* entity = *it;
+      Entity* entity = *it;
       push_entity(l, *entity);
       lua_pushboolean(l, true);
       lua_rawset(l, -3);
@@ -1765,7 +1765,7 @@ int LuaContext::map_api_get_entities_count(lua_State* l) {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
-    const std::list<MapEntity*> entities =
+    const std::list<Entity*> entities =
         map.get_entities().get_entities_with_prefix(prefix);
 
     lua_pushinteger(l, entities.size());
@@ -1817,7 +1817,7 @@ int LuaContext::map_api_set_entities_enabled(lua_State* l) {
     const std::string& prefix = LuaTools::check_string(l, 2);
     bool enabled = LuaTools::opt_boolean(l, 3, true);
 
-    std::list<MapEntity*> entities =
+    std::list<Entity*> entities =
         map.get_entities().get_entities_with_prefix(prefix);
     for (auto it = entities.begin(); it != entities.end(); ++it) {
       (*it)->set_enabled(enabled);

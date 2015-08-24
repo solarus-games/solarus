@@ -46,20 +46,20 @@ double degrees_to_radians(double degrees) {
  * \param y2 Y coordinate of the second point.
  * \return The angle in radians, between 0 and TWO_PI.
  */
-double get_angle(int x1, int y1, int x2, int y2) {
+double get_angle(double x1, double y1, double x2, double y2) {
 
-  int dx = x2 - x1;
-  int dy = y2 - y1;
+  double dx = x2 - x1;
+  double dy = y2 - y1;
 
   // atan2 is undefined if (y == 0 and x == 0)
-  if (dx == 0 && dy == 0) {
+  if (dx == 0.0 && dy == 0.0) {
     return PI_OVER_2;
   }
 
   double angle = std::atan2(-dy, dx);
 
   // Normalize.
-  if (angle < 0) {
+  if (angle < 0.0) {
     angle += TWO_PI;
   }
 

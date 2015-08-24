@@ -36,14 +36,14 @@ class RelativeMovement: public Movement {
   public:
 
     RelativeMovement(
-        const MapEntityPtr& entity_followed,
+        const EntityPtr& entity_followed,
         int x,
         int y,
         bool ignore_obstacles
     );
 
     RelativeMovement(
-        const MapEntityPtr& entity_followed,
+        const EntityPtr& entity_followed,
         const Point& entity_offset,
         bool ignore_obstacles
     );
@@ -57,7 +57,7 @@ class RelativeMovement: public Movement {
 
   private:
 
-    MapEntityPtr entity_followed;      /**< The entity followed by this movement or nullptr. */
+    EntityPtr entity_followed;      /**< The entity followed by this movement or nullptr. */
     const Point entity_offset;         /**< coordinate of where this entity should be placed,
                                         * relative to the entity followed */
 

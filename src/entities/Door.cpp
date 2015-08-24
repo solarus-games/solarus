@@ -107,7 +107,7 @@ EntityType Door::get_type() const {
  * \param other another entity
  * \return true
  */
-bool Door::is_obstacle_for(MapEntity& /* other */) {
+bool Door::is_obstacle_for(Entity& /* other */) {
   return !is_open();
 }
 
@@ -198,13 +198,13 @@ void Door::set_open(bool door_open) {
  */
 void Door::update_dynamic_tiles() {
 
-  std::list<MapEntity*> tiles = get_entities().get_entities_with_prefix(EntityType::DYNAMIC_TILE, get_name() + "_closed");
-  for (MapEntity* tile: tiles) {
+  std::list<Entity*> tiles = get_entities().get_entities_with_prefix(EntityType::DYNAMIC_TILE, get_name() + "_closed");
+  for (Entity* tile: tiles) {
     tile->set_enabled(is_closed() || is_opening());
   }
 
   tiles = get_entities().get_entities_with_prefix(EntityType::DYNAMIC_TILE, get_name() + "_open");
-  for (MapEntity* tile: tiles) {
+  for (Entity* tile: tiles) {
     tile->set_enabled(is_open() || is_closing());
   }
 }
@@ -217,7 +217,7 @@ void Door::update_dynamic_tiles() {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Door::notify_collision(MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
+void Door::notify_collision(Entity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   if (is_closed() && entity_overlapping.is_hero()) {
 
@@ -239,9 +239,9 @@ void Door::notify_collision(MapEntity& entity_overlapping, CollisionMode /* coll
 }
 
 /**
- * \copydoc Detector::notify_collision(MapEntity&, Sprite&, Sprite&)
+ * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
  */
-void Door::notify_collision(MapEntity& other_entity, Sprite& /* this_sprite */, Sprite& other_sprite) {
+void Door::notify_collision(Entity& other_entity, Sprite& /* this_sprite */, Sprite& other_sprite) {
 
   if (other_entity.get_type() == EntityType::EXPLOSION) {
     notify_collision_with_explosion(static_cast<Explosion&>(other_entity), other_sprite);

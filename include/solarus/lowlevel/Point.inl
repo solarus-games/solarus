@@ -108,7 +108,7 @@ constexpr bool operator!=(const Point& lhs, const Point& rhs) {
  * \param point A point.
  * \return A copy of the point.
  */
-inline Point operator+(const Point& point) {
+constexpr Point operator+(const Point& point) {
   return point;
 }
 
@@ -117,7 +117,7 @@ inline Point operator+(const Point& point) {
  * \param point A point.
  * \return A point with opposite coordinates.
  */
-inline Point operator-(const Point& point) {
+constexpr Point operator-(const Point& point) {
   return { -point.x, -point.y };
 }
 
@@ -127,7 +127,7 @@ inline Point operator-(const Point& point) {
  * \param rhs Another point.
  * \return A point with the sum of their coordinates.
  */
-inline Point operator+(Point lhs, const Point& rhs) {
+constexpr Point operator+(const Point& lhs, const Point& rhs) {
   return { lhs.x + rhs.x, lhs.y + rhs.y };
 }
 
@@ -137,7 +137,7 @@ inline Point operator+(Point lhs, const Point& rhs) {
  * \param rhs The point to subtract.
  * \return A point with the difference of their coordinates.
  */
-inline Point operator-(Point lhs, const Point& rhs) {
+constexpr Point operator-(const Point& lhs, const Point& rhs) {
   return { lhs.x - rhs.x, lhs.y - rhs.y };
 }
 
@@ -147,8 +147,8 @@ inline Point operator-(Point lhs, const Point& rhs) {
  * \param factor The factor.
  * \return A point with coordinates multiplied by the factor.
  */
-inline Point operator*(Point point, int factor) {
-  return point *= factor;
+constexpr Point operator*(const Point& point, int factor) {
+  return { point.x * factor, point.y * factor };
 }
 
 /**
@@ -157,8 +157,8 @@ inline Point operator*(Point point, int factor) {
  * \param point A point.
  * \return A point with coordinates multiplied by the factor.
  */
-inline Point operator*(int factor, Point point) {
-  return point *= factor;
+constexpr Point operator*(int factor, const Point& point) {
+  return point * factor;
 }
 
 /**
@@ -167,8 +167,8 @@ inline Point operator*(int factor, Point point) {
  * \param divisor The divisor.
  * \return A point with coordinates divided by the divisor.
  */
-inline Point operator/(Point point, int divisor) {
-  return point /= divisor;
+constexpr Point operator/(const Point& point, int divisor) {
+  return { point.x / divisor, point.y / divisor };
 }
 
 }

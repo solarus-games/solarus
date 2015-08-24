@@ -26,7 +26,7 @@ namespace Solarus {
 /**
  * \brief An arrow thrown by the bow on the map.
  */
-class Arrow: public MapEntity {
+class Arrow: public Entity {
 
   public:
 
@@ -56,7 +56,7 @@ class Arrow: public MapEntity {
     void stop();
     bool is_stopped() const;
     bool is_flying() const;
-    void attach_to(MapEntity &entity_reached);
+    void attach_to(Entity &entity_reached);
 
     // collisions
     virtual void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) override;
@@ -77,7 +77,7 @@ class Arrow: public MapEntity {
     const Hero& hero;          /**< the hero */
     uint32_t disappear_date;   /**< date when the arrow disappears */
     bool stop_now;             /**< true to make the arrow stop now */
-    MapEntityPtr
+    EntityPtr
         entity_reached;        /**< a dynamic entity reached by the arrow
                                 * (i.e. an enemy or a crystal, not a usual wall) */
 

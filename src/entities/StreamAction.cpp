@@ -28,9 +28,9 @@ namespace Solarus {
  * \param stream The stream applied.
  * \param entity_moved Entity the stream is applied to.
  */
-StreamAction::StreamAction(Stream& stream, MapEntity& entity_moved):
+StreamAction::StreamAction(Stream& stream, Entity& entity_moved):
   stream(std::static_pointer_cast<Stream>(stream.shared_from_this())),
-  entity_moved(std::static_pointer_cast<MapEntity>(entity_moved.shared_from_this())),
+  entity_moved(std::static_pointer_cast<Entity>(entity_moved.shared_from_this())),
   active(true),
   suspended(false),
   when_suspended(0),
@@ -55,7 +55,7 @@ const Stream& StreamAction::get_stream() const {
  * \brief Returns the entity this action is applied to.
  * \return The entity moved by the stream.
  */
-const MapEntity& StreamAction::get_entity_moved() const {
+const Entity& StreamAction::get_entity_moved() const {
   return *entity_moved;
 }
 
@@ -81,7 +81,7 @@ void StreamAction::recompute_movement() {
 
   // Compute the direction of the movement and its target point.
   const int direction8 = stream->get_direction();
-  const Point& xy = MapEntity::direction_to_xy_move(direction8);
+  const Point& xy = Entity::direction_to_xy_move(direction8);
   const int dx = xy.x;
   const int dy = xy.y;
   delay = (uint32_t) (1000 / stream->get_speed());

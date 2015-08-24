@@ -33,7 +33,7 @@ namespace Solarus {
  * victory sequence finishes (possibly an empty ref).
  */
 Hero::VictoryState::VictoryState(Hero& hero, const ScopedLuaRef& callback_ref):
-  State(hero, "victory"),
+  HeroState(hero, "victory"),
   end_victory_date(0),
   finished(false),
   callback_ref(callback_ref) {
@@ -44,9 +44,9 @@ Hero::VictoryState::VictoryState(Hero& hero, const ScopedLuaRef& callback_ref):
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::VictoryState::start(const State* previous_state) {
+void Hero::VictoryState::start(const HeroState* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   get_sprites().set_animation_victory();
   get_sprites().set_ignore_suspend(true);
@@ -63,9 +63,9 @@ void Hero::VictoryState::start(const State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::VictoryState::stop(const State* next_state) {
+void Hero::VictoryState::stop(const HeroState* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
   get_sprites().set_ignore_suspend(false);
   callback_ref.clear();
 }
@@ -75,7 +75,7 @@ void Hero::VictoryState::stop(const State* next_state) {
  */
 void Hero::VictoryState::update() {
 
-  State::update();
+  HeroState::update();
 
   if (!finished && System::now() >= end_victory_date) {
     finished = true;
@@ -97,7 +97,7 @@ void Hero::VictoryState::update() {
  */
 void Hero::VictoryState::set_suspended(bool suspended) {
 
-  State::set_suspended(suspended);
+  HeroState::set_suspended(suspended);
 
   if (!suspended) {
     end_victory_date += System::now() - get_when_suspended();

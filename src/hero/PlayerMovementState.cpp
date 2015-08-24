@@ -33,7 +33,7 @@ namespace Solarus {
 Hero::PlayerMovementState::PlayerMovementState(
     Hero& hero, const std::string& state_name
 ):
-  State(hero, state_name),
+  HeroState(hero, state_name),
   player_movement(),
   current_jumper(),
   jumper_start_date(0) {
@@ -77,9 +77,9 @@ std::shared_ptr<const PlayerMovement> Hero::PlayerMovementState::get_player_move
  *
  * \param previous_state The previous state (for information).
  */
-void Hero::PlayerMovementState::start(const State* previous_state) {
+void Hero::PlayerMovementState::start(const HeroState* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   player_movement = std::make_shared<PlayerMovement>(
       get_hero().get_walking_speed()
@@ -108,9 +108,9 @@ void Hero::PlayerMovementState::start(const State* previous_state) {
  *
  * \param next_state The next state (for information).
  */
-void Hero::PlayerMovementState::stop(const State* next_state) {
+void Hero::PlayerMovementState::stop(const HeroState* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
 
   get_hero().clear_movement();
   get_sprites().set_animation_stopped_normal();
@@ -127,7 +127,7 @@ void Hero::PlayerMovementState::stop(const State* next_state) {
  */
 void Hero::PlayerMovementState::set_map(Map &map) {
 
-  State::set_map(map);
+  HeroState::set_map(map);
   set_animation_stopped();
 }
 
@@ -139,7 +139,7 @@ void Hero::PlayerMovementState::set_map(Map &map) {
  */
 void Hero::PlayerMovementState::update() {
 
-  State::update();
+  HeroState::update();
 
   if (!is_suspended()) {
 
@@ -169,7 +169,7 @@ void Hero::PlayerMovementState::update() {
  */
 void Hero::PlayerMovementState::set_suspended(bool suspended) {
 
-  State::set_suspended(suspended);
+  HeroState::set_suspended(suspended);
 
   if (!suspended) {
     if (jumper_start_date != 0) {
@@ -271,7 +271,7 @@ void Hero::PlayerMovementState::notify_layer_changed() {
  * \param attacker an attacker that is trying to hurt the hero
  * (or nullptr if the source of the attack is not an enemy)
  */
-bool Hero::PlayerMovementState::can_be_hurt(MapEntity* /* attacker */) const {
+bool Hero::PlayerMovementState::can_be_hurt(Entity* /* attacker */) const {
   return true;
 }
 

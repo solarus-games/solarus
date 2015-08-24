@@ -27,7 +27,7 @@ class JumpMovement;
 /**
  * \brief The state "Jumping" of the hero.
  */
-class Hero::JumpingState: public Hero::State {
+class Hero::JumpingState: public HeroState {
 
   public:
 
@@ -39,8 +39,8 @@ class Hero::JumpingState: public Hero::State {
         bool with_sound
     );
 
-    virtual void start(const State* previous_state) override;
-    virtual void stop(const State* next_state) override;
+    virtual void start(const HeroState* previous_state) override;
+    virtual void stop(const HeroState* next_state) override;
     virtual void set_map(Map& map) override;
     virtual void update() override;
     virtual void set_suspended(bool suspended) override;
@@ -60,7 +60,7 @@ class Hero::JumpingState: public Hero::State {
     virtual bool can_avoid_stream(const Stream& stream) const override;
     virtual bool can_avoid_sensor() const override;
     virtual bool can_avoid_switch() const override;
-    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_be_hurt(Entity* attacker) const override;
     virtual std::shared_ptr<CarriedItem> get_carried_item() const override;
     virtual CarriedItem::Behavior get_previous_carried_item_behavior() const override;
 

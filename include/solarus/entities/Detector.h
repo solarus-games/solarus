@@ -34,7 +34,7 @@ class EquipmentItem;
  * to detect the presence of the hero or other moving entities.
  * Examples of detectors include teletransporters, switches and enemies.
  */
-class Detector: public MapEntity {
+class Detector: public Entity {
 
   public:
 
@@ -51,8 +51,8 @@ class Detector: public MapEntity {
     virtual void notify_layer_changed() override;
 
     // general collision checking functions
-    void check_collision(MapEntity& entity);
-    void check_collision(MapEntity& entity, Sprite& sprite);
+    void check_collision(Entity& entity);
+    void check_collision(Entity& entity, Sprite& sprite);
 
     virtual bool notify_action_command_pressed();
     virtual bool interaction_with_item(EquipmentItem& item);  // TODO rename to notify_interaction_with_item
@@ -74,19 +74,19 @@ class Detector: public MapEntity {
     void enable_pixel_collisions();
 
     // specialized collision checking functions
-    bool test_collision_rectangle(MapEntity& entity);
-    bool test_collision_inside(MapEntity& entity);
-    bool test_collision_origin_point(MapEntity& entity);
-    bool test_collision_facing_point(MapEntity& entity);
-    bool test_collision_touching(MapEntity& entity);
-    bool test_collision_center(MapEntity& entity);
-    virtual bool test_collision_custom(MapEntity& entity);
+    bool test_collision_rectangle(Entity& entity);
+    bool test_collision_inside(Entity& entity);
+    bool test_collision_origin_point(Entity& entity);
+    bool test_collision_facing_point(Entity& entity);
+    bool test_collision_touching(Entity& entity);
+    bool test_collision_center(Entity& entity);
+    virtual bool test_collision_custom(Entity& entity);
 
     // functions called when a collision is detected
     virtual void notify_collision(
-        MapEntity& entity_overlapping, CollisionMode collision_mode);
+        Entity& entity_overlapping, CollisionMode collision_mode);
     virtual void notify_collision(
-        MapEntity& other_entity, Sprite& this_sprite, Sprite& other_sprite);
+        Entity& other_entity, Sprite& this_sprite, Sprite& other_sprite);
 
   private:
 

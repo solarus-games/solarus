@@ -25,13 +25,13 @@ namespace Solarus {
 /**
  * \brief The state "using equipment item" of the hero.
  */
-class Hero::UsingItemState: public Hero::State {
+class Hero::UsingItemState: public HeroState {
 
   public:
 
     UsingItemState(Hero& hero, EquipmentItem& item);
 
-    virtual void start(const State* previous_state) override;
+    virtual void start(const HeroState* previous_state) override;
     virtual void update() override;
 
     virtual bool is_using_item() const override;

@@ -32,7 +32,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::SwordSwingingState::SwordSwingingState(Hero& hero):
-  State(hero, "sword swinging"),
+  HeroState(hero, "sword swinging"),
   attacked(false),
   sword_finished(false) {
 
@@ -42,9 +42,9 @@ Hero::SwordSwingingState::SwordSwingingState(Hero& hero):
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::SwordSwingingState::start(const State* previous_state) {
+void Hero::SwordSwingingState::start(const HeroState* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   get_sprites().play_sword_sound();
   get_sprites().set_animation_sword();
@@ -55,9 +55,9 @@ void Hero::SwordSwingingState::start(const State* previous_state) {
  * \brief Ends this state.
  * \param next_state the next state
  */
-void Hero::SwordSwingingState::stop(const State* next_state) {
+void Hero::SwordSwingingState::stop(const HeroState* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
 
   Hero& hero = get_hero();
   if (hero.get_movement() != nullptr) {
@@ -71,7 +71,7 @@ void Hero::SwordSwingingState::stop(const State* next_state) {
  */
 void Hero::SwordSwingingState::update() {
 
-  State::update();
+  HeroState::update();
 
   // check the animation
   Hero& hero = get_hero();
@@ -118,7 +118,7 @@ bool Hero::SwordSwingingState::can_start_sword() const {
  * \param attacker an attacker that is trying to hurt the hero
  * (or nullptr if the source of the attack is not an enemy)
  */
-bool Hero::SwordSwingingState::can_be_hurt(MapEntity* /* attacker */) const {
+bool Hero::SwordSwingingState::can_be_hurt(Entity* /* attacker */) const {
   return true;
 }
 
@@ -132,14 +132,14 @@ bool Hero::SwordSwingingState::can_pick_treasure(EquipmentItem& /* item */) cons
 }
 
 /**
- * \copydoc Hero::State::can_avoid_stream
+ * \copydoc HeroState::can_avoid_stream
  */
 bool Hero::SwordSwingingState::can_avoid_stream(const Stream& /* stream */) const {
   return true;
 }
 
 /**
- * \copydoc Hero::State::can_use_shield
+ * \copydoc HeroState::can_use_shield
  */
 bool Hero::SwordSwingingState::can_use_shield() const {
   return false;
@@ -221,7 +221,7 @@ void Hero::SwordSwingingState::notify_obstacle_reached() {
 }
 
 /**
- * \copydoc Hero::State::notify_attacked_enemy
+ * \copydoc HeroState::notify_attacked_enemy
  */
 void Hero::SwordSwingingState::notify_attacked_enemy(
     EnemyAttack attack,

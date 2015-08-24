@@ -25,14 +25,14 @@ namespace Solarus {
 /**
  * \brief The state "Running" of the hero.
  */
-class Hero::RunningState: public Hero::State {
+class Hero::RunningState: public HeroState {
 
   public:
 
     RunningState(Hero& hero, GameCommand command);
 
-    virtual void start(const State* previous_state) override;
-    virtual void stop(const State* next_state) override;
+    virtual void start(const HeroState* previous_state) override;
+    virtual void stop(const HeroState* next_state) override;
     virtual void update() override;
     virtual void set_suspended(bool suspended) override;
     bool is_pressing_running_key() const;
@@ -43,7 +43,7 @@ class Hero::RunningState: public Hero::State {
     virtual bool can_take_jumper() const override;
     virtual void notify_jumper_activated(Jumper& jumper) override;
     virtual bool can_take_stairs() const override;
-    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_be_hurt(Entity* attacker) const override;
     virtual bool can_pick_treasure(EquipmentItem& item) const override;
     virtual bool can_sword_hit_crystal() const override;
     virtual bool can_start_gameover_sequence() const override;

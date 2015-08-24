@@ -38,11 +38,11 @@ class Crystal: public Detector {
     virtual EntityType get_type() const override;
 
     virtual void notify_creating() override;
-    virtual bool is_obstacle_for(MapEntity& other) override;
-    virtual void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) override;
-    virtual void notify_collision(MapEntity& other_entity, Sprite& this_sprite, Sprite& other_sprite) override;
+    virtual bool is_obstacle_for(Entity& other) override;
+    virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
+    virtual void notify_collision(Entity& other_entity, Sprite& this_sprite, Sprite& other_sprite) override;
     virtual bool notify_action_command_pressed() override;
-    void activate(MapEntity& entity_activating);
+    void activate(Entity& entity_activating);
 
     virtual void update() override;
     virtual void draw_on_map() override;
@@ -55,7 +55,7 @@ class Crystal: public Detector {
     bool state;                                    /**< false if the orange blocks are lowered,
                                                     * true if the blue blocks are lowered */
     uint32_t next_possible_hit_date;               /**< date when the crystal can be hit again */
-    std::list<MapEntity*> entities_activating;     /**< list of entities that recently activated this crystal */
+    std::list<Entity*> entities_activating;        /**< list of entities that recently activated this crystal */
     SpritePtr star_sprite;           /**< sprite of the star twinkling on the crystal */
     Point star_xy;                                 /**< position of the star */
 

@@ -34,15 +34,15 @@ namespace Solarus {
  * Most of them are almost empty here because they depend on the state.
  * Redefine for each state the functions that you need to implement or change.
  */
-class Hero::State {
+class HeroState {
 
   public:
 
     // creation and destruction
-    virtual ~State();
+    virtual ~HeroState();
     const std::string& get_name() const;
-    virtual void start(const State* previous_state);
-    virtual void stop(const State* next_state);
+    virtual void start(const HeroState* previous_state);
+    virtual void stop(const HeroState* next_state);
 
     // game loop
     virtual void update();
@@ -119,7 +119,7 @@ class Hero::State {
         EnemyReaction::Reaction& result,
         bool killed);
     virtual int get_sword_damage_factor() const;
-    virtual bool can_be_hurt(MapEntity* attacker) const;
+    virtual bool can_be_hurt(Entity* attacker) const;
 
     // state specific
     virtual bool is_free() const;
@@ -144,7 +144,7 @@ class Hero::State {
 
   protected:
 
-    State(Hero& hero, const std::string& state_name);
+    HeroState(Hero& hero, const std::string& state_name);
 
     bool is_current_state() const;
     bool is_stopping() const;

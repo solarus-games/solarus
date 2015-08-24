@@ -53,8 +53,8 @@ const Rectangle PathFinding::transition_collision_boxes[] = {
  */
 PathFinding::PathFinding(
     Map& map,
-    MapEntity& source_entity,
-    MapEntity& target_entity):
+    Entity& source_entity,
+    Entity& target_entity):
   map(map),
   source_entity(source_entity),
   target_entity(target_entity) {

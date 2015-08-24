@@ -120,29 +120,29 @@ class SOLARUS_API Map: public ExportableToLua {
         Layer layer,
         int x,
         int y,
-        const MapEntity& entity_to_check,
+        const Entity& entity_to_check,
         bool& found_diagonal_wall
     ) const;
     bool test_collision_with_entities(
         Layer layer,
         const Rectangle& collision_box,
-        MapEntity& entity_to_check
+        Entity& entity_to_check
     ) const;
     bool test_collision_with_obstacles(
         Layer layer,
         const Rectangle& collision_box,
-        MapEntity& entity_to_check
+        Entity& entity_to_check
     ) const;
     bool test_collision_with_obstacles(
         Layer layer,
         int x,
         int y,
-        MapEntity& entity_to_check
+        Entity& entity_to_check
     ) const;
     bool test_collision_with_obstacles(
         Layer layer,
         const Point& point,
-        MapEntity& entity_to_check
+        Entity& entity_to_check
     ) const;
     bool has_empty_ground(
         Layer layer,
@@ -153,8 +153,8 @@ class SOLARUS_API Map: public ExportableToLua {
     Ground get_ground(Layer layer, const Point& xy) const;
 
     // collisions with detectors (checked after a move)
-    void check_collision_with_detectors(MapEntity& entity);
-    void check_collision_with_detectors(MapEntity& entity, Sprite& sprite);
+    void check_collision_with_detectors(Entity& entity);
+    void check_collision_with_detectors(Entity& entity, Sprite& sprite);
     void check_collision_from_detector(Detector& detector);
 
     // main loop

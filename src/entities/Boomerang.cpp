@@ -47,7 +47,7 @@ Boomerang::Boomerang(
     double angle,
     const std::string& sprite_name
 ):
-  MapEntity("", 0, hero->get_layer(), Point(0, 0), Size(0, 0)),
+  Entity("", 0, hero->get_layer(), Point(0, 0), Size(0, 0)),
   hero(hero),
   has_to_go_back(false),
   going_back(false),
@@ -124,7 +124,7 @@ bool Boomerang::is_teletransporter_obstacle(Teletransporter& /* teletransporter 
 }
 
 /**
- * \copydoc MapEntity::is_stream_obstacle
+ * \copydoc Entity::is_stream_obstacle
  */
 bool Boomerang::is_stream_obstacle(Stream& /* stream */) {
   return false;
@@ -226,7 +226,7 @@ bool Boomerang::is_npc_obstacle(Npc& npc) {
 }
 
 /**
- * \copydoc MapEntity::is_jumper_obstacle
+ * \copydoc Entity::is_jumper_obstacle
  */
 bool Boomerang::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candidate_position */) {
   return false;
@@ -255,7 +255,7 @@ void Boomerang::go_back() {
  */
 void Boomerang::update() {
 
-  MapEntity::update();
+  Entity::update();
 
   if (is_suspended()) {
     return;
@@ -352,7 +352,7 @@ void Boomerang::notify_collision_with_enemy(Enemy& enemy) {
 }
 
 /**
- * \copydoc MapEntity::notify_attacked_enemy
+ * \copydoc Entity::notify_attacked_enemy
  */
 void Boomerang::notify_attacked_enemy(
     EnemyAttack /* attack */,

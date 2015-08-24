@@ -169,7 +169,7 @@ void LuaContext::add_timer(
         // Entities are more complex: they also get suspended when disabled
         // and when far from the camera. Therefore, they don't simply follow
         // the map suspended state.
-        MapEntityPtr entity = check_entity(l, context_index);
+        EntityPtr entity = check_entity(l, context_index);
         initially_suspended = entity->is_suspended() || !entity->is_enabled();
       }
 
@@ -284,7 +284,7 @@ void LuaContext::notify_timers_map_suspended(bool suspended) {
  * \param suspended \c true to suspend its timers, \c false to resume them.
  */
 void LuaContext::set_entity_timers_suspended(
-    MapEntity& entity, bool suspended
+    Entity& entity, bool suspended
 ) {
 
   for (const auto& kvp: timers) {

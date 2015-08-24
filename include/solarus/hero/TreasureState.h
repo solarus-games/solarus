@@ -26,7 +26,7 @@ namespace Solarus {
 /**
  * \brief The state "Treasure" of the hero.
  */
-class Hero::TreasureState: public Hero::State {
+class Hero::TreasureState: public HeroState {
 
   public:
 
@@ -36,8 +36,8 @@ class Hero::TreasureState: public Hero::State {
         const ScopedLuaRef& callback_ref
     );
 
-    virtual void start(const State* previous_state) override;
-    virtual void stop(const State* next_state) override;
+    virtual void start(const HeroState* previous_state) override;
+    virtual void stop(const HeroState* next_state) override;
     virtual void draw_on_map() override;
     virtual CarriedItem::Behavior get_previous_carried_item_behavior() const override;
     virtual bool is_brandishing_treasure() const override;

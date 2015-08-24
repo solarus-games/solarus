@@ -42,7 +42,7 @@ class Fire: public Detector {
 
     // collisions
     virtual void notify_collision(
-        MapEntity& other_entity,
+        Entity& other_entity,
         Sprite& this_sprite,
         Sprite& other_sprite
     ) override;

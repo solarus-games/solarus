@@ -138,7 +138,7 @@ Enemy::Enemy(
  * \param treasure the pickable item that the enemy drops
  * \return the enemy created (may also be a Pickable or nullptr)
  */
-MapEntityPtr Enemy::create(
+EntityPtr Enemy::create(
     Game& game,
     const std::string& breed,
     Rank rank,
@@ -196,7 +196,7 @@ bool Enemy::is_ground_observer() const {
 }
 
 /**
- * \copydoc MapEntity::notify_creating
+ * \copydoc Entity::notify_creating
  */
 void Enemy::notify_creating() {
 
@@ -204,7 +204,7 @@ void Enemy::notify_creating() {
 }
 
 /**
- * \copydoc MapEntity::notify_created
+ * \copydoc Entity::notify_created
  */
 void Enemy::notify_created() {
 
@@ -265,7 +265,7 @@ bool Enemy::is_saved() const {
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool Enemy::is_obstacle_for(MapEntity& other) {
+bool Enemy::is_obstacle_for(Entity& other) {
 
   if (!is_enabled()) {
     return false;
@@ -301,7 +301,7 @@ bool Enemy::is_destructible_obstacle(Destructible& destructible) {
 }
 
 /**
- * \copydoc MapEntity::is_block_obstacle
+ * \copydoc Entity::is_block_obstacle
  */
 bool Enemy::is_block_obstacle(Block& block) {
 
@@ -923,7 +923,7 @@ void Enemy::notify_enabled(bool enabled) {
 }
 
 /**
- * \copydoc MapEntity::notify_ground_below_changed
+ * \copydoc Entity::notify_ground_below_changed
  */
 void Enemy::notify_ground_below_changed() {
 
@@ -952,15 +952,15 @@ void Enemy::notify_ground_below_changed() {
  * \param entity_overlapping the other entity
  * \param collision_mode the collision mode that detected the collision
  */
-void Enemy::notify_collision(MapEntity& entity_overlapping, CollisionMode /* collision_mode */) {
+void Enemy::notify_collision(Entity& entity_overlapping, CollisionMode /* collision_mode */) {
 
   entity_overlapping.notify_collision_with_enemy(*this);
 }
 
 /**
- * \copydoc Detector::notify_collision(MapEntity&, Sprite&, Sprite&)
+ * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
  */
-void Enemy::notify_collision(MapEntity& other_entity, Sprite& this_sprite, Sprite& other_sprite) {
+void Enemy::notify_collision(Entity& other_entity, Sprite& this_sprite, Sprite& other_sprite) {
 
   other_entity.notify_collision_with_enemy(*this, this_sprite, other_sprite);
 }
@@ -1155,7 +1155,7 @@ bool Enemy::is_invulnerable() const {
  * \param this_sprite the sprite of this enemy that received the attack, or nullptr
  * if the attack comes from a non pixel-precise collision test
  */
-void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite) {
+void Enemy::try_hurt(EnemyAttack attack, Entity& source, Sprite* this_sprite) {
 
   EnemyReaction::Reaction reaction = get_attack_consequence(attack, this_sprite);
   if (invulnerable || reaction.type == EnemyReaction::ReactionType::IGNORED) {
@@ -1255,7 +1255,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
  * \param this_sprite The sprite of this enemy that received the attack, or nullptr
  * if the attack comes from a non pixel-precise collision test.
  */
-void Enemy::hurt(MapEntity& source, Sprite* this_sprite) {
+void Enemy::hurt(Entity& source, Sprite* this_sprite) {
 
   uint32_t now = System::now();
 
@@ -1291,7 +1291,7 @@ void Enemy::hurt(MapEntity& source, Sprite* this_sprite) {
  * \param source The source of the attack.
  * \param attack The attack that was just successful.
  */
-void Enemy::notify_hurt(MapEntity& /* source */, EnemyAttack attack) {
+void Enemy::notify_hurt(Entity& /* source */, EnemyAttack attack) {
 
   get_lua_context().enemy_on_hurt(*this, attack);
   if (get_life() <= 0) {

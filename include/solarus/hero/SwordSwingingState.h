@@ -24,17 +24,17 @@ namespace Solarus {
 /**
  * \brief The state "sword swinging" of the hero.
  */
-class Hero::SwordSwingingState: public Hero::State {
+class Hero::SwordSwingingState: public HeroState {
 
   public:
 
     SwordSwingingState(Hero& hero);
 
-    virtual void start(const State* previous_state) override;
-    virtual void stop(const State* next_state) override;
+    virtual void start(const HeroState* previous_state) override;
+    virtual void stop(const HeroState* next_state) override;
     virtual void update() override;
     virtual bool can_start_sword() const override;
-    virtual bool can_be_hurt(MapEntity* attacker) const override;
+    virtual bool can_be_hurt(Entity* attacker) const override;
     virtual bool can_pick_treasure(EquipmentItem& item) const override;
     virtual bool can_avoid_stream(const Stream& stream) const override;
     virtual bool can_use_shield() const override;

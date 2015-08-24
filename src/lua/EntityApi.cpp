@@ -533,13 +533,13 @@ bool LuaContext::is_entity(lua_State* l, int index) {
  * \param index An index in the stack.
  * \return The entity.
  */
-MapEntityPtr LuaContext::check_entity(lua_State* l, int index) {
+EntityPtr LuaContext::check_entity(lua_State* l, int index) {
 
   if (is_entity(l, index)) {
     const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(
       lua_touserdata(l, index)
     ));
-    return std::static_pointer_cast<MapEntity>(userdata);
+    return std::static_pointer_cast<Entity>(userdata);
   }
   else {
     LuaTools::type_error(l, index, "entity");
@@ -555,7 +555,7 @@ MapEntityPtr LuaContext::check_entity(lua_State* l, int index) {
  * \param l A Lua context.
  * \param entity An entity.
  */
-void LuaContext::push_entity(lua_State* l, MapEntity& entity) {
+void LuaContext::push_entity(lua_State* l, Entity& entity) {
 
   push_userdata(l, entity);
 }
@@ -583,7 +583,7 @@ const std::string& LuaContext::get_entity_internal_type_name(
 int LuaContext::entity_api_get_type(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
 
     const std::string& type_name = EntityTypeInfo::get_entity_type_name(entity.get_type());
     push_string(l, type_name);
@@ -599,7 +599,7 @@ int LuaContext::entity_api_get_type(lua_State* l) {
 int LuaContext::entity_api_get_map(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
 
     push_map(l, entity.get_map());
     return 1;
@@ -614,7 +614,7 @@ int LuaContext::entity_api_get_map(lua_State* l) {
 int LuaContext::entity_api_get_game(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
 
     push_game(l, entity.get_game().get_savegame());
     return 1;
@@ -629,7 +629,7 @@ int LuaContext::entity_api_get_game(lua_State* l) {
 int LuaContext::entity_api_get_name(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
 
     const std::string& name = entity.get_name();
     if (name.empty()) {
@@ -650,7 +650,7 @@ int LuaContext::entity_api_get_name(lua_State* l) {
 int LuaContext::entity_api_exists(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
 
     lua_pushboolean(l, !entity.is_being_removed());
     return 1;
@@ -665,7 +665,7 @@ int LuaContext::entity_api_exists(lua_State* l) {
 int LuaContext::entity_api_remove(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
 
     entity.remove_from_map();
 
@@ -681,7 +681,7 @@ int LuaContext::entity_api_remove(lua_State* l) {
 int LuaContext::entity_api_is_enabled(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
 
     lua_pushboolean(l, entity.is_enabled());
     return 1;
@@ -696,7 +696,7 @@ int LuaContext::entity_api_is_enabled(lua_State* l) {
 int LuaContext::entity_api_set_enabled(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
     bool enabled = LuaTools::opt_boolean(l, 2, true);
 
     entity.set_enabled(enabled);
@@ -713,7 +713,7 @@ int LuaContext::entity_api_set_enabled(lua_State* l) {
 int LuaContext::entity_api_get_size(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
 
     lua_pushinteger(l, entity.get_width());
     lua_pushinteger(l, entity.get_height());
@@ -729,7 +729,7 @@ int LuaContext::entity_api_get_size(lua_State* l) {
 int LuaContext::entity_api_set_size(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
     int width = LuaTools::check_int(l, 2);
     int height = LuaTools::check_int(l, 3);
 
@@ -758,7 +758,7 @@ int LuaContext::entity_api_set_size(lua_State* l) {
 int LuaContext::entity_api_get_origin(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
 
     const Point& origin = entity.get_origin();
 
@@ -776,7 +776,7 @@ int LuaContext::entity_api_get_origin(lua_State* l) {
 int LuaContext::entity_api_set_origin(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
 
@@ -794,7 +794,7 @@ int LuaContext::entity_api_set_origin(lua_State* l) {
 int LuaContext::entity_api_get_position(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
 
     lua_pushinteger(l, entity.get_x());
     lua_pushinteger(l, entity.get_y());
@@ -811,7 +811,7 @@ int LuaContext::entity_api_get_position(lua_State* l) {
 int LuaContext::entity_api_set_position(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
     int layer = -1;
@@ -838,7 +838,7 @@ int LuaContext::entity_api_set_position(lua_State* l) {
 int LuaContext::entity_api_get_center_position(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
 
     const Point& center_point = entity.get_center_point();
     lua_pushinteger(l, center_point.x);
@@ -855,7 +855,7 @@ int LuaContext::entity_api_get_center_position(lua_State* l) {
 int LuaContext::entity_api_get_bounding_box(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
 
     const Rectangle& bounding_box = entity.get_bounding_box();
     lua_pushinteger(l, bounding_box.get_x());
@@ -874,11 +874,11 @@ int LuaContext::entity_api_get_bounding_box(lua_State* l) {
 int LuaContext::entity_api_overlaps(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
 
     bool overlaps = false;
     if (is_entity(l, 2)) {
-      const MapEntity& other_entity = *check_entity(l, 2);
+      const Entity& other_entity = *check_entity(l, 2);
       overlaps = entity.overlaps(other_entity);
     }
     else {
@@ -902,7 +902,7 @@ int LuaContext::entity_api_overlaps(lua_State* l) {
 int LuaContext::entity_api_snap_to_grid(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
 
     entity.set_aligned_to_grid();
 
@@ -918,7 +918,7 @@ int LuaContext::entity_api_snap_to_grid(lua_State* l) {
 int LuaContext::entity_api_get_distance(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
     int distance;
     if (lua_gettop(l) >= 3) {
       int x = LuaTools::check_number(l, 2);
@@ -926,7 +926,7 @@ int LuaContext::entity_api_get_distance(lua_State* l) {
       distance = entity.get_distance(x, y);
     }
     else {
-      const MapEntity& other_entity = *check_entity(l, 2);
+      const Entity& other_entity = *check_entity(l, 2);
       distance = entity.get_distance(other_entity);
     }
 
@@ -943,7 +943,7 @@ int LuaContext::entity_api_get_distance(lua_State* l) {
 int LuaContext::entity_api_get_angle(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
     double angle;
     if (lua_gettop(l) >= 3) {
       int x = LuaTools::check_number(l, 2);
@@ -951,7 +951,7 @@ int LuaContext::entity_api_get_angle(lua_State* l) {
       angle = entity.get_angle(x, y);
     }
     else {
-      const MapEntity& other_entity = *check_entity(l, 2);
+      const Entity& other_entity = *check_entity(l, 2);
       angle = entity.get_angle(other_entity);
     }
 
@@ -968,7 +968,7 @@ int LuaContext::entity_api_get_angle(lua_State* l) {
 int LuaContext::entity_api_get_direction4_to(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
     double angle;
     if (lua_gettop(l) >= 3) {
       int x = LuaTools::check_number(l, 2);
@@ -976,7 +976,7 @@ int LuaContext::entity_api_get_direction4_to(lua_State* l) {
       angle = entity.get_angle(x, y);
     }
     else {
-      const MapEntity& other_entity = *check_entity(l, 2);
+      const Entity& other_entity = *check_entity(l, 2);
       angle = entity.get_angle(other_entity);
     }
 
@@ -999,7 +999,7 @@ int LuaContext::entity_api_get_direction4_to(lua_State* l) {
 int LuaContext::entity_api_get_direction8_to(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
     double angle;
     if (lua_gettop(l) >= 3) {
       int x = LuaTools::check_number(l, 2);
@@ -1007,7 +1007,7 @@ int LuaContext::entity_api_get_direction8_to(lua_State* l) {
       angle = entity.get_angle(x, y);
     }
     else {
-      const MapEntity& other_entity = *check_entity(l, 2);
+      const Entity& other_entity = *check_entity(l, 2);
       angle = entity.get_angle(other_entity);
     }
 
@@ -1030,7 +1030,7 @@ int LuaContext::entity_api_get_direction8_to(lua_State* l) {
 int LuaContext::entity_api_bring_to_front(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
 
     entity.get_map().get_entities().bring_to_front(entity);
 
@@ -1046,7 +1046,7 @@ int LuaContext::entity_api_bring_to_front(lua_State* l) {
 int LuaContext::entity_api_bring_to_back(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
 
     entity.get_map().get_entities().bring_to_back(entity);
 
@@ -1063,7 +1063,7 @@ int LuaContext::entity_api_bring_to_back(lua_State* l) {
 int LuaContext::entity_api_get_sprite(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
 
     if (entity.has_sprite()) {
       push_sprite(l, entity.get_sprite());
@@ -1083,7 +1083,7 @@ int LuaContext::entity_api_get_sprite(lua_State* l) {
 int LuaContext::entity_api_create_sprite(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
     const std::string& animation_set_id = LuaTools::check_string(l, 2);
 
     Sprite& sprite = *entity.create_sprite(animation_set_id, true);
@@ -1104,7 +1104,7 @@ int LuaContext::entity_api_create_sprite(lua_State* l) {
 int LuaContext::entity_api_remove_sprite(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
 
     if (lua_gettop(l) >= 2) {
       Sprite& sprite = *check_sprite(l, 2);
@@ -1133,7 +1133,7 @@ int LuaContext::entity_api_remove_sprite(lua_State* l) {
 int LuaContext::entity_api_is_visible(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
 
     lua_pushboolean(l, entity.is_visible());
     return 1;
@@ -1148,7 +1148,7 @@ int LuaContext::entity_api_is_visible(lua_State* l) {
 int LuaContext::entity_api_set_visible(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
     bool visible = LuaTools::opt_boolean(l, 2, true);
 
     entity.set_visible(visible);
@@ -1165,7 +1165,7 @@ int LuaContext::entity_api_set_visible(lua_State* l) {
 int LuaContext::entity_api_get_movement(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
 
     const std::shared_ptr<Movement>& movement = entity.get_movement();
     if (movement == nullptr) {
@@ -1186,7 +1186,7 @@ int LuaContext::entity_api_get_movement(lua_State* l) {
  */
 int LuaContext::entity_api_stop_movement(lua_State* l) {
 
-  MapEntity& entity = *check_entity(l, 1);
+  Entity& entity = *check_entity(l, 1);
 
   entity.clear_movement();
 
@@ -1203,7 +1203,7 @@ int LuaContext::entity_api_stop_movement(lua_State* l) {
 int LuaContext::entity_api_has_layer_independent_collisions(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
 
     bool independent = false;
     if (entity.is_detector()) {
@@ -1226,7 +1226,7 @@ int LuaContext::entity_api_has_layer_independent_collisions(lua_State* l) {
 int LuaContext::entity_api_set_layer_independent_collisions(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
     bool independent = LuaTools::opt_boolean(l, 2, true);
 
     if (entity.is_detector()) {
@@ -1246,7 +1246,7 @@ int LuaContext::entity_api_set_layer_independent_collisions(lua_State* l) {
 int LuaContext::entity_api_test_obstacles(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
     int dx = LuaTools::check_int(l, 2);
     int dy = LuaTools::check_int(l, 3);
     Layer layer = entity.get_layer();
@@ -1271,7 +1271,7 @@ int LuaContext::entity_api_test_obstacles(lua_State* l) {
 int LuaContext::entity_api_get_optimization_distance(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
+    const Entity& entity = *check_entity(l, 1);
 
     lua_pushinteger(l, entity.get_optimization_distance());
     return 1;
@@ -1286,7 +1286,7 @@ int LuaContext::entity_api_get_optimization_distance(lua_State* l) {
 int LuaContext::entity_api_set_optimization_distance(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    MapEntity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
     int distance = LuaTools::check_int(l, 2);
 
     entity.set_optimization_distance(distance);
@@ -1303,8 +1303,8 @@ int LuaContext::entity_api_set_optimization_distance(lua_State* l) {
 int LuaContext::entity_api_is_in_same_region(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const MapEntity& entity = *check_entity(l, 1);
-    const MapEntity& other_entity = *check_entity(l, 2);
+    const Entity& entity = *check_entity(l, 1);
+    const Entity& other_entity = *check_entity(l, 2);
 
     lua_pushboolean(l, entity.is_in_same_region(other_entity));
     return 1;
@@ -2019,7 +2019,7 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
     }
     else {
       // hero:start_hurt(source_entity, [source_sprite], damage)
-      MapEntity& source_entity = *check_entity(l, 2);
+      Entity& source_entity = *check_entity(l, 2);
       SpritePtr source_sprite;
       int index = 3;
       if (is_sprite(l, 3)) {
@@ -3120,7 +3120,7 @@ int LuaContext::pickable_api_get_followed_entity(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Pickable& pickable = *check_pickable(l, 1);
 
-    MapEntityPtr followed_entity = pickable.get_entity_followed();
+    EntityPtr followed_entity = pickable.get_entity_followed();
 
     if (followed_entity != nullptr) {
       push_entity(l, *followed_entity);
@@ -4258,7 +4258,7 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
     }
 
     Game& game = map.get_game();
-    const MapEntityPtr& entity = Enemy::create(
+    const EntityPtr& entity = Enemy::create(
         game,
         breed,
         rank,
@@ -4326,7 +4326,7 @@ void LuaContext::push_custom_entity(lua_State* l, CustomEntity& entity) {
 bool LuaContext::do_custom_entity_traversable_test_function(
     const ScopedLuaRef& traversable_test_ref,
     CustomEntity& custom_entity,
-    MapEntity& other_entity) {
+    Entity& other_entity) {
 
   Debug::check_assertion(!traversable_test_ref.is_empty(),
       "Missing traversable test function ref"
@@ -4361,7 +4361,7 @@ bool LuaContext::do_custom_entity_traversable_test_function(
 bool LuaContext::do_custom_entity_collision_test_function(
     const ScopedLuaRef& collision_test_ref,
     CustomEntity& custom_entity,
-    MapEntity& other_entity
+    Entity& other_entity
 ) {
   Debug::check_assertion(!collision_test_ref.is_empty(),
       "Missing collision test function"
@@ -4395,7 +4395,7 @@ bool LuaContext::do_custom_entity_collision_test_function(
 void LuaContext::do_custom_entity_collision_callback(
     const ScopedLuaRef& callback_ref,
     CustomEntity& custom_entity,
-    MapEntity& other_entity
+    Entity& other_entity
 ) {
   Debug::check_assertion(!callback_ref.is_empty(),
       "Missing collision callback");
@@ -4422,7 +4422,7 @@ void LuaContext::do_custom_entity_collision_callback(
 void LuaContext::do_custom_entity_collision_callback(
     const ScopedLuaRef& callback_ref,
     CustomEntity& custom_entity,
-    MapEntity& other_entity,
+    Entity& other_entity,
     Sprite& custom_entity_sprite,
     Sprite& other_entity_sprite) {
 
@@ -4814,7 +4814,7 @@ int LuaContext::custom_entity_api_set_modified_ground(lua_State* l) {
  *
  * \param entity A map entity.
  */
-void LuaContext::entity_on_update(MapEntity& entity) {
+void LuaContext::entity_on_update(Entity& entity) {
 
   // This particular method is tried so often that we want to optimize
   // the std::string construction.
@@ -4836,7 +4836,7 @@ void LuaContext::entity_on_update(MapEntity& entity) {
  * \param entity A map entity.
  * \param suspended \c true if the entity is suspended.
  */
-void LuaContext::entity_on_suspended(MapEntity& entity, bool suspended) {
+void LuaContext::entity_on_suspended(Entity& entity, bool suspended) {
 
   if (!userdata_has_field(entity, "on_suspended")) {
     return;
@@ -4854,7 +4854,7 @@ void LuaContext::entity_on_suspended(MapEntity& entity, bool suspended) {
  *
  * \param entity A map entity.
  */
-void LuaContext::entity_on_created(MapEntity& entity) {
+void LuaContext::entity_on_created(Entity& entity) {
 
   if (!userdata_has_field(entity, "on_created")) {
     return;
@@ -4872,7 +4872,7 @@ void LuaContext::entity_on_created(MapEntity& entity) {
  *
  * \param entity A map entity.
  */
-void LuaContext::entity_on_removed(MapEntity& entity) {
+void LuaContext::entity_on_removed(Entity& entity) {
 
   push_entity(l, entity);
   if (userdata_has_field(entity, "on_removed")) {
@@ -4889,7 +4889,7 @@ void LuaContext::entity_on_removed(MapEntity& entity) {
  *
  * \param entity A map entity.
  */
-void LuaContext::entity_on_enabled(MapEntity& entity) {
+void LuaContext::entity_on_enabled(Entity& entity) {
 
   if (!userdata_has_field(entity, "on_enabled")) {
     return;
@@ -4907,7 +4907,7 @@ void LuaContext::entity_on_enabled(MapEntity& entity) {
  *
  * \param entity A map entity.
  */
-void LuaContext::entity_on_disabled(MapEntity& entity) {
+void LuaContext::entity_on_disabled(Entity& entity) {
 
   if (!userdata_has_field(entity, "on_disabled")) {
     return;
@@ -4925,7 +4925,7 @@ void LuaContext::entity_on_disabled(MapEntity& entity) {
  *
  * \param entity A map entity.
  */
-void LuaContext::entity_on_pre_draw(MapEntity& entity) {
+void LuaContext::entity_on_pre_draw(Entity& entity) {
 
   if (!userdata_has_field(entity, "on_pre_draw")) {
     return;
@@ -4943,7 +4943,7 @@ void LuaContext::entity_on_pre_draw(MapEntity& entity) {
  *
  * \param entity A map entity.
  */
-void LuaContext::entity_on_post_draw(MapEntity& entity) {
+void LuaContext::entity_on_post_draw(Entity& entity) {
 
   if (!userdata_has_field(entity, "on_post_draw")) {
     return;
@@ -4964,7 +4964,7 @@ void LuaContext::entity_on_post_draw(MapEntity& entity) {
  * \param layer The new layer.
  */
 void LuaContext::entity_on_position_changed(
-    MapEntity& entity, const Point& xy, Layer layer) {
+    Entity& entity, const Point& xy, Layer layer) {
 
   if (!userdata_has_field(entity, "on_position_changed")) {
     return;
@@ -4984,7 +4984,7 @@ void LuaContext::entity_on_position_changed(
  * \param movement The movement that reached an obstacle.
  */
 void LuaContext::entity_on_obstacle_reached(
-    MapEntity& entity, Movement& movement) {
+    Entity& entity, Movement& movement) {
 
   if (!userdata_has_field(entity, "on_obstacle_reached")) {
     return;
@@ -5004,7 +5004,7 @@ void LuaContext::entity_on_obstacle_reached(
  * \param movement Its movement.
  */
 void LuaContext::entity_on_movement_changed(
-    MapEntity& entity, Movement& movement) {
+    Entity& entity, Movement& movement) {
 
   if (!userdata_has_field(entity, "on_movement_changed")) {
     return;
@@ -5022,7 +5022,7 @@ void LuaContext::entity_on_movement_changed(
  *
  * \param entity A map entity.
  */
-void LuaContext::entity_on_movement_finished(MapEntity& entity) {
+void LuaContext::entity_on_movement_finished(Entity& entity) {
 
   if (!userdata_has_field(entity, "on_movement_finished")) {
     return;
@@ -5041,7 +5041,7 @@ void LuaContext::entity_on_movement_finished(MapEntity& entity) {
  * \param entity A map entity.
  * \return \c true if an interaction occurred.
  */
-bool LuaContext::entity_on_interaction(MapEntity& entity) {
+bool LuaContext::entity_on_interaction(Entity& entity) {
 
   if (!userdata_has_field(entity, "on_interaction")) {
     return false;
@@ -5064,7 +5064,7 @@ bool LuaContext::entity_on_interaction(MapEntity& entity) {
  * \return \c true if an interaction occurred.
  */
 bool LuaContext::entity_on_interaction_item(
-    MapEntity& entity, EquipmentItem& item_used) {
+    Entity& entity, EquipmentItem& item_used) {
 
   if (!userdata_has_field(entity, "on_interaction_item")) {
     return false;

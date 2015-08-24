@@ -30,7 +30,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::HookshotState::HookshotState(Hero& hero):
-  State(hero, "hookshot"),
+  HeroState(hero, "hookshot"),
   hookshot(nullptr) {
 
 }
@@ -39,9 +39,9 @@ Hero::HookshotState::HookshotState(Hero& hero):
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::HookshotState::start(const State* previous_state) {
+void Hero::HookshotState::start(const HeroState* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   get_sprites().set_animation("hookshot");
   hookshot = std::make_shared<Hookshot>(get_hero());
@@ -52,9 +52,9 @@ void Hero::HookshotState::start(const State* previous_state) {
  * \brief Ends this state.
  * \param next_state the next state (for information)
  */
-void Hero::HookshotState::stop(const State* next_state) {
+void Hero::HookshotState::stop(const HeroState* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
 
   if (!hookshot->is_being_removed()) {
     // the hookshot state was stopped by something other than the hookshot (e.g. an enemy)
@@ -120,7 +120,7 @@ bool Hero::HookshotState::can_avoid_teletransporter() const {
 }
 
 /**
- * \copydoc Hero::State::can_avoid_stream
+ * \copydoc HeroState::can_avoid_stream
  */
 bool Hero::HookshotState::can_avoid_stream(const Stream& /* stream */) const {
   return true;
@@ -147,7 +147,7 @@ bool Hero::HookshotState::is_sensor_obstacle(const Sensor& /* sensor */) const {
 }
 
 /**
- * \copydoc Hero::State::is_jumper_obstacle
+ * \copydoc HeroState::is_jumper_obstacle
  */
 bool Hero::HookshotState::is_jumper_obstacle(
     const Jumper& /* jumper */, const Rectangle& /* candidate_position */) const {
@@ -168,7 +168,7 @@ bool Hero::HookshotState::can_avoid_switch() const {
  * (or nullptr if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::HookshotState::can_be_hurt(MapEntity* /* attacker */) const {
+bool Hero::HookshotState::can_be_hurt(Entity* /* attacker */) const {
   return false;
 }
 

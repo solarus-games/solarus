@@ -248,7 +248,7 @@ bool PathMovement::is_current_elementary_move_finished() const {
  */
 void PathMovement::start_next_elementary_move() {
 
-  MapEntity* entity = get_entity();
+  Entity* entity = get_entity();
 
   // don't move while the entity is unknown
   if (entity == nullptr) {
@@ -319,7 +319,7 @@ Point PathMovement::get_xy_change() const {
 
   for (char direction_char: initial_path) {
     int direction = direction_char - '0';
-    const Point& xy_move = MapEntity::direction_to_xy_move(direction);
+    const Point& xy_move = Entity::direction_to_xy_move(direction);
     xy += xy_move * 8;
   }
 

@@ -42,7 +42,7 @@ Hero::JumpingState::JumpingState(
     bool ignore_obstacles,
     bool with_sound
 ):
-  State(hero, "jumping"),
+  HeroState(hero, "jumping"),
   carried_item() {
 
   if (get_previous_carried_item_behavior() == CarriedItem::BEHAVIOR_KEEP) {
@@ -61,9 +61,9 @@ Hero::JumpingState::JumpingState(
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::JumpingState::start(const State* previous_state) {
+void Hero::JumpingState::start(const HeroState* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   // update the sprites
   HeroSprites& sprites = get_sprites();
@@ -89,9 +89,9 @@ void Hero::JumpingState::start(const State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::JumpingState::stop(const State* next_state) {
+void Hero::JumpingState::stop(const HeroState* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
 
   get_hero().clear_movement();
 
@@ -128,7 +128,7 @@ void Hero::JumpingState::stop(const State* next_state) {
  */
 void Hero::JumpingState::set_map(Map& map) {
 
-  State::set_map(map);
+  HeroState::set_map(map);
 
   // the hero may go to another map while jumping and carrying an item
   if (carried_item != nullptr) {
@@ -141,7 +141,7 @@ void Hero::JumpingState::set_map(Map& map) {
  */
 void Hero::JumpingState::update() {
 
-  State::update();
+  HeroState::update();
 
   if (carried_item != nullptr) {
     carried_item->update();
@@ -158,7 +158,7 @@ void Hero::JumpingState::update() {
  */
 void Hero::JumpingState::set_suspended(bool suspended) {
 
-  State::set_suspended(suspended);
+  HeroState::set_suspended(suspended);
 
   if (carried_item != nullptr) {
     carried_item->set_suspended(suspended);
@@ -253,7 +253,7 @@ bool Hero::JumpingState::can_avoid_teletransporter() const {
 }
 
 /**
- * \copydoc Hero::State::can_avoid_stream
+ * \copydoc HeroState::can_avoid_stream
  */
 bool Hero::JumpingState::can_avoid_stream(const Stream& /* stream */) const {
   return true;
@@ -280,7 +280,7 @@ bool Hero::JumpingState::is_sensor_obstacle(const Sensor& /* sensor */) const {
 }
 
 /**
- * \copydoc Hero::State::is_separator_obstacle
+ * \copydoc HeroState::is_separator_obstacle
  */
 bool Hero::JumpingState::is_separator_obstacle(
     const Separator& /* separator */) const {
@@ -309,7 +309,7 @@ bool Hero::JumpingState::can_avoid_switch() const {
  * \param attacker an attacker that is trying to hurt the hero
  * (or nullptr if the source of the attack is not an enemy)
  */
-bool Hero::JumpingState::can_be_hurt(MapEntity* /* attacker */) const {
+bool Hero::JumpingState::can_be_hurt(Entity* /* attacker */) const {
   return false;
 }
 

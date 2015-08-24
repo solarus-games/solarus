@@ -64,7 +64,7 @@ class SOLARUS_API CustomEntity: public Detector {
     void set_sprites_direction(int direction);
 
     // What can traverse this custom entity.
-    bool is_traversable_by_entity(MapEntity& entity);
+    bool is_traversable_by_entity(Entity& entity);
     void set_traversable_by_entities(bool traversable);
     void set_traversable_by_entities(const ScopedLuaRef& traversable_test_ref);
     void reset_traversable_by_entities();
@@ -73,7 +73,7 @@ class SOLARUS_API CustomEntity: public Detector {
     void reset_traversable_by_entities(EntityType type);
 
     virtual bool can_be_obstacle() const override;
-    virtual bool is_obstacle_for(MapEntity& other) override;
+    virtual bool is_obstacle_for(Entity& other) override;
 
     // What this custom entity can traverse.
     void set_can_traverse_entities(bool traversable);
@@ -124,11 +124,11 @@ class SOLARUS_API CustomEntity: public Detector {
     );
     void clear_collision_tests();
 
-    virtual bool test_collision_custom(MapEntity& entity) override;
+    virtual bool test_collision_custom(Entity& entity) override;
     virtual void notify_collision(
-        MapEntity& entity_overlapping, CollisionMode collision_mode) override;
+        Entity& entity_overlapping, CollisionMode collision_mode) override;
     virtual void notify_collision(
-        MapEntity& other_entity, Sprite& this_sprite, Sprite& other_sprite) override;
+        Entity& other_entity, Sprite& this_sprite, Sprite& other_sprite) override;
 
     virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode) override;
     virtual void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode) override;
@@ -185,7 +185,7 @@ class SOLARUS_API CustomEntity: public Detector {
         bool is_empty() const;
         bool is_traversable(
             CustomEntity& current_entity,
-            MapEntity& other_entity
+            Entity& other_entity
         ) const;
 
       private:
@@ -240,8 +240,8 @@ class SOLARUS_API CustomEntity: public Detector {
     const TraversableInfo& get_traversable_by_entity_info(EntityType type);
     const TraversableInfo& get_can_traverse_entity_info(EntityType type);
 
-    void notify_collision_from(MapEntity& other_entity);
-    void notify_collision_from(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
+    void notify_collision_from(Entity& other_entity);
+    void notify_collision_from(Entity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
 
     void update_ground_observer();
 

@@ -349,7 +349,7 @@ void MapEntities::notify_map_started() {
 
   // Put the hero in the the quadtree.
   HeroPtr shared_hero = std::static_pointer_cast<Hero>(hero.shared_from_this());
-  quadtree.add(shared_hero, hero.get_bounding_box());
+  quadtree.add(shared_hero, hero.get_max_bounding_box());
 
   // Notify entities.
   for (const EntityPtr& entity: all_entities) {
@@ -588,7 +588,7 @@ void MapEntities::add_entity(const EntityPtr& entity) {
     Layer layer = entity->get_layer();
 
     // update the quadtree
-    quadtree.add(entity, entity->get_bounding_box());
+    quadtree.add(entity, entity->get_max_bounding_box());
 
     // update the detectors list
     if (entity->is_detector()) {
@@ -1003,16 +1003,15 @@ void MapEntities::set_entity_layer(Entity& entity, Layer layer) {
 }
 
 /**
- * \brief This function should be called whenever the size or coordinates of
- * an entity changes.
+ * \brief This function should be called whenever the size, coordinates or
+ * sprite bounding box of an entity changes.
  * \param entity The entity modified.
- * \param bounding_box The new bounding box.
  */
-void MapEntities::notify_entity_bounding_box_changed(Entity& entity, const Rectangle& bounding_box) {
+void MapEntities::notify_entity_bounding_box_changed(Entity& entity) {
 
   // Update the quadtree.
   EntityPtr shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
-  quadtree.move(shared_entity, bounding_box);
+  quadtree.move(shared_entity, shared_entity->get_max_bounding_box());
 }
 
 /**

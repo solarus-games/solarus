@@ -65,6 +65,8 @@ class HeroSprites {
     const std::string& get_shield_sprite_id() const;
     void set_shield_sprite_id(const std::string& sprite_id);
 
+    Rectangle get_max_bounding_box() const;
+
     void blink(uint32_t duration);
     void stop_blinking();
     bool is_blinking() const;
@@ -154,6 +156,8 @@ class HeroSprites {
 
     LuaContext& get_lua_context();
 
+    void recompute_sprites_bounding_box();
+
     Hero& hero;                             /**< The hero. */
     Equipment& equipment;                   /**< Equipment of the player. */
 
@@ -211,6 +215,8 @@ class HeroSprites {
         lifted_item;                        /**< if not nullptr, an item to display above the hero */
 
     ScopedLuaRef animation_callback_ref;    /**< Lua ref of a function to call when a custom animation ends. */
+
+    Rectangle sprites_bounding_box;         /**< Union of bounding boxes of all hero sprites at position 0,0. */
 };
 
 }

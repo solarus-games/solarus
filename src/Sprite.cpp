@@ -184,6 +184,20 @@ Point Sprite::get_origin() const {
 }
 
 /**
+ * \brief Returns a rectangle big enough to contain a frame of any animation
+ * and direction.
+ *
+ * The rectangle is anchored to the origin point of the sprite,
+ * so it has has negative top and left coordinates.
+ *
+ * \return The maximum frame size.
+ */
+const Rectangle& Sprite::get_max_bounding_box() const {
+
+  return animation_set.get_max_bounding_box();
+}
+
+/**
  * \brief Returns the frame delay of the current animation.
  *
  * A value of 0 (only for 1-frame animations) means that the
@@ -191,7 +205,7 @@ Point Sprite::get_origin() const {
  * is_animation_finished() always returns false.
  *
  * \return The delay between two frames for the current animation
- * in miliseconds.
+ * in milliseconds.
  */
 uint32_t Sprite::get_frame_delay() const {
   return frame_delay;

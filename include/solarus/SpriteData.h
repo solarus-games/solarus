@@ -53,6 +53,8 @@ class SOLARUS_API SpriteAnimationDirectionData {
     Point get_origin() const;
     void set_origin(const Point& origin);
 
+    Rectangle get_bounding_box() const;
+
     bool is_multi_frame() const;
     int get_num_frames() const;
     void set_num_frames(int num_frames);

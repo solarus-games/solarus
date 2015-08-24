@@ -526,6 +526,14 @@ void Hero::rebuild_equipment() {
 }
 
 /**
+ * \copydoc MapEntity::get_max_bounding_box
+ */
+Rectangle Hero::get_max_bounding_box() const {
+
+  return get_bounding_box() | sprites->get_max_bounding_box();
+}
+
+/**
  * \brief Returns whether the shadow should be currently displayed, separate from the tunic sprite.
  * \return true if the shadow should be currently displayed.
  */
@@ -1078,7 +1086,7 @@ void Hero::notify_obstacle_reached() {
 void Hero::notify_position_changed() {
 
   if (is_on_map()) {
-    get_entities().notify_entity_bounding_box_changed(*this, get_bounding_box());
+    get_entities().notify_entity_bounding_box_changed(*this);
   }
 
   check_position();

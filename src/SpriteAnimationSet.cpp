@@ -83,6 +83,7 @@ void SpriteAnimationSet::add_animation(
     Size size = direction.get_size();
     max_size.width = std::max(size.width, max_size.width);
     max_size.height = std::max(size.height, max_size.height);
+    max_bounding_box |= direction.get_bounding_box();
 
     directions.emplace_back(direction.get_all_frames(), direction.get_origin());
   }
@@ -189,6 +190,19 @@ bool SpriteAnimationSet::are_pixel_collisions_enabled() const {
  */
 const Size& SpriteAnimationSet::get_max_size() const {
   return max_size;
+}
+
+/**
+ * \brief Returns a rectangle big enough to contain a frame of any animation
+ * and direction.
+ *
+ * The rectangle is anchored to the origin point of the sprite,
+ * so it has has negative top and left coordinates.
+ *
+ * \return The maximum frame size.
+ */
+const Rectangle& SpriteAnimationSet::get_max_bounding_box() const {
+  return max_bounding_box;
 }
 
 }

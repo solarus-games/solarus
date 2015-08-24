@@ -18,6 +18,7 @@
 #define SOLARUS_SPRITE_ANIMATION_SET_H
 
 #include "solarus/Common.h"
+#include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lowlevel/Size.h"
 #include <map>
 #include <string>
@@ -54,6 +55,7 @@ class SpriteAnimationSet {
     void enable_pixel_collisions();
     bool are_pixel_collisions_enabled() const;
     const Size& get_max_size() const;
+    const Rectangle& get_max_bounding_box() const;
 
   private:
 
@@ -64,9 +66,12 @@ class SpriteAnimationSet {
 
     std::string id;                          /**< Id of this animation set. */
     std::map<std::string, SpriteAnimation>
-            animations;                      /**< The animations */
+            animations;                      /**< The animations. */
     std::string default_animation_name;      /**< Name of the default animation. */
     Size max_size;                           /**< Size of this biggest frame. */
+    Rectangle max_bounding_box;              /**< Rectangle big enough to contain any frame.
+                                              * Can be larger than max_size if
+                                              * the origin changes. */
 
 };
 

@@ -452,6 +452,25 @@ inline const SDL_Rect* Rectangle::get_internal_rect() const {
  * \return The intersection or an empty rectangle.
  */
 inline Rectangle Rectangle::get_intersection(const Rectangle& other) const {
+  return *this & other;
+}
+
+/**
+ * \brief Returns the intersection between this rectangle and another one.
+ * \param other Another rectangle.
+ * \return The intersection or an empty rectangle.
+ */
+inline Rectangle Rectangle::operator&(const Rectangle& other) const {
+  Rectangle copy(*this);
+  return copy &= other;
+}
+
+/**
+ * \brief Intersects this rectangle with another one.
+ * \param other Another rectangle.
+ * \return This rectangle after modification.
+ */
+inline Rectangle& Rectangle::operator&=(const Rectangle& other) {
 
   Rectangle intersection;
   const bool intersects = SDL_IntersectRect(
@@ -460,11 +479,39 @@ inline Rectangle Rectangle::get_intersection(const Rectangle& other) const {
       intersection.get_internal_rect()
   );
   if (intersects) {
-    return intersection;
+    *this = intersection;
   }
   else {
-    return Rectangle(0, 0, 0, 0);
+    *this = Rectangle(0, 0, 0, 0);
   }
+  return *this;
+}
+
+/**
+ * \brief Returns the union between this rectangle and another one.
+ * \param other Another rectangle.
+ * \return The smallest rectangle that contains both.
+ */
+inline Rectangle Rectangle::operator|(const Rectangle& other) const {
+  Rectangle copy(*this);
+  return copy |= other;
+}
+
+/**
+ * \brief Unites this rectangle with another one.
+ * \param other Another rectangle.
+ * \return This rectangle after modification.
+ */
+inline Rectangle& Rectangle::operator|=(const Rectangle& other) {
+
+  Rectangle result;
+  SDL_UnionRect(
+      this->get_internal_rect(),
+      other.get_internal_rect(),
+      result.get_internal_rect()
+  );
+  *this = result;
+  return *this;
 }
 
 /**

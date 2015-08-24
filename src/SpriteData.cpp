@@ -116,6 +116,17 @@ void SpriteAnimationDirectionData::set_origin(const Point& origin) {
 }
 
 /**
+ * \brief Returns the bounding box of frames of this direction.
+ *
+ * This is a rectangle of size get_size() and whose top-left corner has
+ * coordinates -get_origin().
+ */
+Rectangle SpriteAnimationDirectionData::get_bounding_box() const {
+
+  return Rectangle(-get_origin(), get_size());
+}
+
+/**
  * \brief Returns whether this is a multi-frame direction.
  * \return \c true if the direction has more than one frame.
  */

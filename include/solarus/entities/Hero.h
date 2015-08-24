@@ -86,6 +86,7 @@ class Hero: public Entity {
     bool is_animation_finished() const;
     void rebuild_equipment();
     bool is_shadow_visible() const;
+    Rectangle get_max_bounding_box() const override;
 
     /**
      * \name Changing map.

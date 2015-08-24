@@ -200,6 +200,8 @@ void HeroSprites::set_tunic_sprite_id(const std::string& sprite_id) {
   if (shield_sprite != nullptr) {
     shield_sprite->set_synchronized_to(tunic_sprite);
   }
+
+  recompute_sprites_bounding_box();
 }
 
 /**
@@ -265,6 +267,8 @@ void HeroSprites::set_sword_sprite_id(const std::string& sprite_id) {
   }
 
   has_default_sword_sprite = (sprite_id == get_default_sword_sprite_id());
+
+  recompute_sprites_bounding_box();
 }
 
 /**
@@ -379,6 +383,8 @@ void HeroSprites::set_shield_sprite_id(const std::string& sprite_id) {
   }
 
   has_default_shield_sprite = (sprite_id == get_default_shield_sprite_id());
+
+  recompute_sprites_bounding_box();
 }
 
 /**
@@ -399,6 +405,48 @@ std::string HeroSprites::get_default_shield_sprite_id() const {
   std::ostringstream oss;
   oss << "hero/shield" << shield_level;
   return oss.str();
+}
+
+/**
+ * \brief Returns the bounding box of the hero with all his sprites.
+ * \return The total bounding box.
+ */
+Rectangle HeroSprites::get_max_bounding_box() const {
+
+  Rectangle result(sprites_bounding_box);
+  result.add_xy(hero.get_xy());
+  return result;
+}
+
+/**
+ * \brief Computes the sprites bounding box.
+ *
+ * This function should be called when sprite animation sets change.
+ */
+void HeroSprites::recompute_sprites_bounding_box() {
+
+  sprites_bounding_box = Rectangle();
+  if (tunic_sprite != nullptr) {
+    sprites_bounding_box |= tunic_sprite->get_max_bounding_box();
+  }
+  if (sword_sprite != nullptr) {
+    sprites_bounding_box |= sword_sprite->get_max_bounding_box();
+  }
+  if (sword_stars_sprite != nullptr) {
+    sprites_bounding_box |= sword_stars_sprite->get_max_bounding_box();
+  }
+  if (shield_sprite != nullptr) {
+    sprites_bounding_box |= shield_sprite->get_max_bounding_box();
+  }
+  if (shadow_sprite != nullptr) {
+    sprites_bounding_box |= shadow_sprite->get_max_bounding_box();
+  }
+  if (ground_sprite != nullptr) {
+    sprites_bounding_box |= ground_sprite->get_max_bounding_box();
+  }
+  if (trail_sprite != nullptr) {
+    sprites_bounding_box |= trail_sprite->get_max_bounding_box();
+  }
 }
 
 /**

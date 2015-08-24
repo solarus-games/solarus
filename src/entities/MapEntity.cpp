@@ -853,9 +853,7 @@ void Entity::set_size(int width, int height) {
       "Invalid entity size: width and height must be multiple of 8");
   bounding_box.set_size(width, height);
 
-  if (is_on_map()) {
-    get_entities().notify_entity_bounding_box_changed(*this, bounding_box);
-  }
+  notify_bounding_box_changed();
 }
 
 /**
@@ -872,8 +870,11 @@ void Entity::set_size(const Size& size) {
  *
  * This function returns the rectangle defined by
  * get_top_left_x(), get_top_left_y(), get_width() and get_height().
+ * The sprites of this entity may exceed the bounding box:
+ * if you want a bounding box that takes sprites into account,
+ * call get_max_bounding_box().
  *
- * \return the position and size of the entity
+ * \return The position and size of the entity.
  */
 const Rectangle& Entity::get_bounding_box() const {
   return bounding_box;
@@ -885,7 +886,7 @@ const Rectangle& Entity::get_bounding_box() const {
  * This function sets the rectangle defined by
  * get_top_left_x(), get_top_left_y(), get_width() and get_height().
  *
- * \param bounding_box the new position and size of the entity
+ * \param bounding_box The new position and size of the entity.
  */
 void Entity::set_bounding_box(const Rectangle &bounding_box) {
   this->bounding_box = bounding_box;
@@ -896,12 +897,45 @@ void Entity::set_bounding_box(const Rectangle &bounding_box) {
  * \param margin Margin to add to every side.
  * \return The extended bounding box.
  */
-Rectangle MapEntity::get_extended_bounding_box(int margin) const {
+Rectangle Entity::get_extended_bounding_box(int margin) const {
 
   Rectangle extended_box = get_bounding_box();
   extended_box.set_xy(extended_box.get_xy() - Point(margin, margin));
   extended_box.set_size(extended_box.get_size() + 2 * Size(margin, margin));
   return extended_box;
+}
+
+/**
+ * \brief Returns the bounding box of the entity including its sprites.
+ *
+ * The default implementation takes into account the bounding box of sprites
+ * created with create_sprite().
+ * Subclasses that manage sprites without create_sprite() should reimplement
+ * this function to return a correct bounding box, otherwise sprite collisions
+ * may fail to be detected.
+ */
+Rectangle Entity::get_max_bounding_box() const {
+
+  Rectangle result = get_bounding_box();
+  for (const SpritePtr& sprite : sprites) {
+    Rectangle box = sprite->get_max_bounding_box();
+    box.add_xy(get_xy());
+    result |= box;
+  }
+  return result;
+}
+
+/**
+ * \brief Notifies this entity that its bounding box may have changed.
+ *
+ * This function should be called when the value of get_bounding_box() or
+ * get_max_bounding_box() changes.
+ */
+void Entity::notify_bounding_box_changed() {
+
+  if (is_on_map()) {
+    get_entities().notify_entity_bounding_box_changed(*this);
+  }
 }
 
 /**
@@ -1236,6 +1270,7 @@ SpritePtr Entity::create_sprite(
   }
 
   sprites.push_back(sprite);
+  notify_bounding_box_changed();
   return sprite;
 }
 
@@ -1473,9 +1508,7 @@ void Entity::notify_obstacle_reached() {
 void Entity::notify_position_changed() {
 
   // Notify the quadtree.
-  if (is_on_map()) {
-    get_entities().notify_entity_bounding_box_changed(*this, bounding_box);
-  }
+  notify_bounding_box_changed();
 
   check_collision_with_detectors();
   if (is_ground_modifier()) {

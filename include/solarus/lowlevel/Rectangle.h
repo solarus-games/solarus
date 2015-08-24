@@ -93,6 +93,11 @@ class Rectangle {
 
     Rectangle get_intersection(const Rectangle& other) const;
 
+    Rectangle operator|(const Rectangle& other) const;
+    Rectangle operator&(const Rectangle& other) const;
+    Rectangle& operator|=(const Rectangle& other);
+    Rectangle& operator&=(const Rectangle& other);
+
   private:
 
     SDL_Rect* get_internal_rect();

@@ -1190,9 +1190,9 @@ void Map::check_collision_with_detectors(Entity& entity, Sprite& sprite) {
   }
 
   // Check each detector.
-  Rectangle box = entity.get_bounding_box();  // FIXME get the bounding box of the sprite instead
+  Rectangle box = entity.get_max_bounding_box();
   std::vector<EntityPtr> entities_nearby;
-  entities->get_entities_in_rectangle(box, entities_nearby);  // FIXME use sprite bounding box in the quadtree
+  entities->get_entities_in_rectangle(box, entities_nearby);
   for (const EntityPtr& entity_nearby: entities_nearby) {
 
     if (!entity_nearby->is_detector()) {

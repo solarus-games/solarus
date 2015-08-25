@@ -40,7 +40,7 @@ Hero::TreasureState::TreasureState(
     const ScopedLuaRef& callback_ref
 ):
 
-  State(hero, "treasure"),
+  BaseState(hero, "treasure"),
   treasure(treasure),
   callback_ref(callback_ref) {
 
@@ -105,7 +105,7 @@ void Hero::TreasureState::draw_on_map() {
 }
 
 /**
- * \copydoc Hero::State::get_previous_carried_item_behavior
+ * \copydoc Entity::State::get_previous_carried_item_behavior
  */
 CarriedItem::Behavior Hero::TreasureState::get_previous_carried_item_behavior() const {
   return CarriedItem::BEHAVIOR_DESTROY;

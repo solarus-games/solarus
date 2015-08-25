@@ -113,6 +113,10 @@ const std::string& Hero::get_state_name() const {
   return state->get_name();
 }
 
+Entity::State* Hero::get_state() const {
+    return state.get();
+}
+
 /**
  * \brief Changes the hero's internal state.
  *

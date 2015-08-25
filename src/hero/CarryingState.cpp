@@ -194,7 +194,7 @@ bool Hero::CarryingState::can_start_sword() const {
 }
 
 /**
- * \copydoc Hero::State::can_use_shield
+ * \copydoc Entity::State::can_use_shield
  */
 bool Hero::CarryingState::can_use_shield() const {
   return false;
@@ -232,7 +232,7 @@ std::shared_ptr<CarriedItem> Hero::CarryingState::get_carried_item() const {
 }
 
 /**
- * \copydoc Hero::State::get_previous_carried_item_behavior
+ * \copydoc Entity::State::get_previous_carried_item_behavior
  */
 CarriedItem::Behavior Hero::CarryingState::get_previous_carried_item_behavior() const {
 

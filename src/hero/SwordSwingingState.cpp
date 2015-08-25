@@ -32,7 +32,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::SwordSwingingState::SwordSwingingState(Hero& hero):
-  State(hero, "sword swinging"),
+  BaseState(hero, "sword swinging"),
   attacked(false),
   sword_finished(false) {
 
@@ -132,14 +132,14 @@ bool Hero::SwordSwingingState::can_pick_treasure(EquipmentItem& /* item */) cons
 }
 
 /**
- * \copydoc Hero::State::can_avoid_stream
+ * \copydoc Entity::State::can_avoid_stream
  */
 bool Hero::SwordSwingingState::can_avoid_stream(const Stream& /* stream */) const {
   return true;
 }
 
 /**
- * \copydoc Hero::State::can_use_shield
+ * \copydoc Entity::State::can_use_shield
  */
 bool Hero::SwordSwingingState::can_use_shield() const {
   return false;
@@ -221,7 +221,7 @@ void Hero::SwordSwingingState::notify_obstacle_reached() {
 }
 
 /**
- * \copydoc Hero::State::notify_attacked_enemy
+ * \copydoc Entity::State::notify_attacked_enemy
  */
 void Hero::SwordSwingingState::notify_attacked_enemy(
     EnemyAttack attack,

@@ -286,10 +286,8 @@ class Hero: public Entity {
         uint32_t end_delay = 0, bool with_sound = true);
     void start_state_from_ground();
 
-  private:
-
     // state
-    class State;                    /**< base class for all states */
+    class BaseState;                /**< base class for all hero states */
     class PlayerMovementState;      /**< base class for states whose movement is controlled by the player */
     class FreeState;                /**< the hero is free to move (stopped or walking) and can interact with entities */
     class CarryingState;            /**< the hero can walk but he is carrying a pot or a bush */
@@ -320,9 +318,11 @@ class Hero: public Entity {
     class FreezedState;             /**< the hero cannot move for various possible reasons,
                                      * including an instruction from the script */
 
-    // state
+    State* get_state() const;
     void set_state(State* state);
     void update_state();
+
+  private:
 
     // position
     void update_movement();

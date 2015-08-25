@@ -29,7 +29,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::BowState::BowState(Hero& hero):
-  State(hero, "bow") {
+  BaseState(hero, "bow") {
 }
 
 /**
@@ -38,7 +38,7 @@ Hero::BowState::BowState(Hero& hero):
  */
 void Hero::BowState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
   get_sprites().set_animation("bow");
 }
 
@@ -58,7 +58,7 @@ void Hero::BowState::update() {
 }
 
 /**
- * \copydoc Hero::State::can_avoid_stream
+ * \copydoc Entity::State::can_avoid_stream
  */
 bool Hero::BowState::can_avoid_stream(const Stream& /* stream */) const {
   return true;

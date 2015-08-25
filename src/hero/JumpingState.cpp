@@ -42,7 +42,7 @@ Hero::JumpingState::JumpingState(
     bool ignore_obstacles,
     bool with_sound
 ):
-  State(hero, "jumping"),
+  BaseState(hero, "jumping"),
   carried_item() {
 
   if (get_previous_carried_item_behavior() == CarriedItem::BEHAVIOR_KEEP) {
@@ -253,7 +253,7 @@ bool Hero::JumpingState::can_avoid_teletransporter() const {
 }
 
 /**
- * \copydoc Hero::State::can_avoid_stream
+ * \copydoc Entity::State::can_avoid_stream
  */
 bool Hero::JumpingState::can_avoid_stream(const Stream& /* stream */) const {
   return true;
@@ -280,7 +280,7 @@ bool Hero::JumpingState::is_sensor_obstacle(const Sensor& /* sensor */) const {
 }
 
 /**
- * \copydoc Hero::State::is_separator_obstacle
+ * \copydoc Entity::State::is_separator_obstacle
  */
 bool Hero::JumpingState::is_separator_obstacle(
     const Separator& /* separator */) const {

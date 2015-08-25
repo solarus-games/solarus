@@ -33,7 +33,7 @@ namespace Solarus {
  * victory sequence finishes (possibly an empty ref).
  */
 Hero::VictoryState::VictoryState(Hero& hero, const ScopedLuaRef& callback_ref):
-  State(hero, "victory"),
+  BaseState(hero, "victory"),
   end_victory_date(0),
   finished(false),
   callback_ref(callback_ref) {

@@ -17,14 +17,14 @@
 #ifndef SOLARUS_HERO_SWORD_SWINGING_STATE_H
 #define SOLARUS_HERO_SWORD_SWINGING_STATE_H
 
-#include "solarus/hero/State.h"
+#include "solarus/hero/BaseState.h"
 
 namespace Solarus {
 
 /**
  * \brief The state "sword swinging" of the hero.
  */
-class Hero::SwordSwingingState: public Hero::State {
+class Hero::SwordSwingingState: public Hero::BaseState {
 
   public:
 

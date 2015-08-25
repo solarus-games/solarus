@@ -41,7 +41,7 @@ Hero::StairsState::StairsState(
     Hero& hero,
     Stairs& stairs,
     Stairs::Way way):
-  State(hero, "stairs"),
+  BaseState(hero, "stairs"),
   stairs(stairs),
   way(way),
   phase(0),
@@ -328,7 +328,7 @@ std::shared_ptr<CarriedItem> Hero::StairsState::get_carried_item() const {
 }
 
 /**
- * \copydoc Hero::State::get_previous_carried_item_behavior
+ * \copydoc Entity::State::get_previous_carried_item_behavior
  */
 CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior() const {
 

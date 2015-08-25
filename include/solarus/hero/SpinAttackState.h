@@ -24,7 +24,7 @@ namespace Solarus {
 /**
  * \brief The state "spin attack" of the hero.
  */
-class Hero::SpinAttackState: public Hero::State {
+class Hero::SpinAttackState: public Hero::BaseState {
 
   public:
 

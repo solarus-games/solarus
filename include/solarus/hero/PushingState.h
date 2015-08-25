@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_PUSHING_STATE_H
 #define SOLARUS_HERO_PUSHING_STATE_H
 
-#include "solarus/hero/State.h"
+#include "solarus/hero/BaseState.h"
 #include <memory>
 
 namespace Solarus {
@@ -27,7 +27,7 @@ class PathMovement;
 /**
  * \brief The state "Pushing" of the hero.
  */
-class Hero::PushingState: public Hero::State {
+class Hero::PushingState: public Hero::BaseState {
 
   public:
 

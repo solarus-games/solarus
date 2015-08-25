@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_HOOKSHOT_STATE_H
 #define SOLARUS_HERO_HOOKSHOT_STATE_H
 
-#include "solarus/hero/State.h"
+#include "solarus/hero/BaseState.h"
 #include <memory>
 
 namespace Solarus {
@@ -27,7 +27,7 @@ class Hookshot;
 /**
  * \brief The state "hookshot" of the hero.
  */
-class Hero::HookshotState: public Hero::State {
+class Hero::HookshotState: public Hero::BaseState {
 
   public:
 

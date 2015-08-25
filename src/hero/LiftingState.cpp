@@ -36,7 +36,7 @@ Hero::LiftingState::LiftingState(
     Hero& hero,
     const std::shared_ptr<CarriedItem>& lifted_item
 ):
-  State(hero, "lifting"),
+  BaseState(hero, "lifting"),
   lifted_item(lifted_item) {
 
   Debug::check_assertion(lifted_item != nullptr, "Missing lifted item");

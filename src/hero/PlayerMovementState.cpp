@@ -33,7 +33,7 @@ namespace Solarus {
 Hero::PlayerMovementState::PlayerMovementState(
     Hero& hero, const std::string& state_name
 ):
-  State(hero, state_name),
+  BaseState(hero, state_name),
   player_movement(),
   current_jumper(),
   jumper_start_date(0) {

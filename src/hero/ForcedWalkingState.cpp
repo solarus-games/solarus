@@ -36,7 +36,7 @@ Hero::ForcedWalkingState::ForcedWalkingState(
     bool loop,
     bool ignore_obstacles):
 
-  State(hero, "forced walking") {
+  BaseState(hero, "forced walking") {
 
   this->movement = std::make_shared<PathMovement>(
       path, hero.get_walking_speed(), loop, ignore_obstacles, false
@@ -149,7 +149,7 @@ bool Hero::ForcedWalkingState::can_avoid_teletransporter() const {
 }
 
 /**
- * \copydoc Hero::State::can_avoid_stream
+ * \copydoc Entity::State::can_avoid_stream
  */
 bool Hero::ForcedWalkingState::can_avoid_stream(const Stream& /* stream */) const {
   return true;

@@ -34,7 +34,7 @@ namespace Solarus {
  * Most of them are almost empty here because they depend on the state.
  * Redefine for each state the functions that you need to implement or change.
  */
-class Hero::State {
+class Entity::State {
 
   public:
 

@@ -29,7 +29,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::GrabbingState::GrabbingState(Hero& hero):
-  State(hero, "grabbing") {
+  BaseState(hero, "grabbing") {
 
 }
 

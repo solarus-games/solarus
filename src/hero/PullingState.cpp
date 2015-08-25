@@ -31,7 +31,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::PullingState::PullingState(Hero& hero):
-  State(hero, "pulling"),
+  BaseState(hero, "pulling"),
   pulled_entity(nullptr),
   pulling_movement(nullptr) {
 
@@ -294,14 +294,14 @@ bool Hero::PullingState::is_prickle_obstacle() const {
 }
 
 /**
- * \copydoc Hero::State::is_stream_obstacle
+ * \copydoc Entity::State::is_stream_obstacle
  */
 bool Hero::PullingState::is_stream_obstacle(const Stream& /* stream */) const {
   return true;
 }
 
 /**
- * \copydoc Hero::State::is_separator_obstacle
+ * \copydoc Entity::State::is_separator_obstacle
  */
 bool Hero::PullingState::is_separator_obstacle(
     const Separator& /* separator */) const {

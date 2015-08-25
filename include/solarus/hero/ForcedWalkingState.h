@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_FORCED_WALKING_STATE_H
 #define SOLARUS_HERO_FORCED_WALKING_STATE_H
 
-#include "solarus/hero/State.h"
+#include "solarus/hero/BaseState.h"
 #include <memory>
 #include <string>
 
@@ -30,7 +30,7 @@ class PathMovement;
  *
  * The player does not control the hero in this state.
  */
-class Hero::ForcedWalkingState: public Hero::State {
+class Hero::ForcedWalkingState: public Hero::BaseState {
 
   public:
 

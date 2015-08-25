@@ -31,7 +31,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::PushingState::PushingState(Hero& hero):
-  State(hero, "pushing"),
+  BaseState(hero, "pushing"),
   pushing_direction4(0),
   pushed_entity(nullptr),
   pushing_movement(nullptr) {
@@ -118,7 +118,7 @@ void Hero::PushingState::update() {
 }
 
 /**
- * \copydoc Hero::State::can_avoid_stream
+ * \copydoc Entity::State::can_avoid_stream
  */
 bool Hero::PushingState::can_avoid_stream(const Stream& /* stream */) const {
   return true;

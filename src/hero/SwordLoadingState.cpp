@@ -123,7 +123,7 @@ void Hero::SwordLoadingState::notify_obstacle_reached() {
 }
 
 /**
- * \copydoc Hero::State::notify_attacked_enemy
+ * \copydoc Entity::State::notify_attacked_enemy
  */
 void Hero::SwordLoadingState::notify_attacked_enemy(
     EnemyAttack attack,
@@ -175,7 +175,7 @@ bool Hero::SwordLoadingState::can_pick_treasure(EquipmentItem& /* item */) const
 }
 
 /**
- * \copydoc Hero::State::can_use_shield
+ * \copydoc Entity::State::can_use_shield
  */
 bool Hero::SwordLoadingState::can_use_shield() const {
   return false;

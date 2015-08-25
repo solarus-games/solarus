@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_HURT_STATE_H
 #define SOLARUS_HERO_HURT_STATE_H
 
-#include "solarus/hero/State.h"
+#include "solarus/hero/BaseState.h"
 #include <cstdint>
 
 namespace Solarus {
@@ -25,7 +25,7 @@ namespace Solarus {
 /**
  * \brief The state "Hurt" of the hero.
  */
-class Hero::HurtState: public Hero::State {
+class Hero::HurtState: public Hero::BaseState {
 
   public:
 

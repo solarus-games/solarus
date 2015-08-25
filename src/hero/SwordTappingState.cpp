@@ -36,7 +36,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::SwordTappingState::SwordTappingState(Hero& hero):
-  State(hero, "sword tapping"),
+  BaseState(hero, "sword tapping"),
   next_sound_date(0) {
 
 }
@@ -147,7 +147,7 @@ bool Hero::SwordTappingState::can_pick_treasure(EquipmentItem& /* item */) const
 }
 
 /**
- * \copydoc Hero::State::can_use_shield
+ * \copydoc Entity::State::can_use_shield
  */
 bool Hero::SwordTappingState::can_use_shield() const {
   return false;
@@ -192,7 +192,7 @@ void Hero::SwordTappingState::notify_obstacle_reached() {
 }
 
 /**
- * \copydoc Hero::State::notify_attacked_enemy
+ * \copydoc Entity::State::notify_attacked_enemy
  */
 void Hero::SwordTappingState::notify_attacked_enemy(
     EnemyAttack attack,

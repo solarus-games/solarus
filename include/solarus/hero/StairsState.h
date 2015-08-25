@@ -17,8 +17,8 @@
 #ifndef SOLARUS_HERO_STAIRS_STATE_H
 #define SOLARUS_HERO_STAIRS_STATE_H
 
-#include "solarus/hero/State.h"
 #include "solarus/entities/Stairs.h"
+#include "solarus/hero/BaseState.h"
 #include <cstdint>
 #include <memory>
 
@@ -27,7 +27,7 @@ namespace Solarus {
 /**
  * \brief The state "Stairs" of the hero.
  */
-class Hero::StairsState: public Hero::State {
+class Hero::StairsState: public Hero::BaseState {
 
   public:
 

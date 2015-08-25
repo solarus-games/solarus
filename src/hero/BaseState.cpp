@@ -1,50 +1,47 @@
 /*
  * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
- *
+ * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_LIFTING_STATE_H
-#define SOLARUS_HERO_LIFTING_STATE_H
-
-#include "solarus/hero/State.h"
-#include <memory>
+#include "solarus/hero/BaseState.h"
+#include "solarus/hero/SwordSwingingState.h"
+#include "solarus/KeysEffect.h"
 
 namespace Solarus {
 
 /**
- * \brief The state "Lifting" of the hero.
+ * \brief Constructor.
+ * \param hero The hero controlled by this state.
  */
-class Hero::LiftingState: public Hero::BaseState {
-
-  public:
-
-    LiftingState(Hero& hero, const std::shared_ptr<CarriedItem>& lifted_item);
-
-    virtual void start(const State* previous_state) override;
-    virtual void stop(const State* next_state) override;
-    virtual void update() override;
-    virtual void set_suspended(bool suspended) override;
-    virtual bool can_be_hurt(Entity* attacker) const override;
-
-  private:
-
-    void throw_item();
-
-    std::shared_ptr<CarriedItem> lifted_item;    /**< the item currently being lifted */
-};
+Hero::BaseState::BaseState(Hero& hero, const std::string& state_name):
+  State(hero, state_name) {
 
 }
 
-#endif
+/**
+ * \copydoc Entity::State::notify_attack_command_pressed
+ */
+void Hero::BaseState::notify_attack_command_pressed() {
+  Hero& hero = get_hero();
+
+  if (!hero.is_suspended()
+      && get_keys_effect().get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD
+      && hero.can_start_sword()) {
+
+    hero.set_state(new Hero::SwordSwingingState(hero));
+  }
+}
+
+}
 

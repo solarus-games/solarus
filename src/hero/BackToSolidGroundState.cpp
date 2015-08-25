@@ -36,7 +36,7 @@ namespace Solarus {
  */
 Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
     bool use_memorized_xy, uint32_t end_delay, bool with_sound):
-  State(hero, "back to solid ground"),
+  BaseState(hero, "back to solid ground"),
   end_delay(end_delay),
   end_date(0),
   with_sound(with_sound) {
@@ -198,7 +198,7 @@ bool Hero::BackToSolidGroundState::can_avoid_teletransporter() const {
 }
 
 /**
- * \copydoc Hero::State::can_avoid_stream
+ * \copydoc Entity::State::can_avoid_stream
  */
 bool Hero::BackToSolidGroundState::can_avoid_stream(const Stream& /* stream */) const {
   return true;

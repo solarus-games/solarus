@@ -18,7 +18,7 @@
 #define SOLARUS_HERO_PLAYER_MOVEMENT_STATE_H
 
 #include "solarus/Common.h"
-#include "solarus/hero/State.h"
+#include "solarus/hero/BaseState.h"
 #include <cstdint>
 #include <memory>
 #include <string>
@@ -36,7 +36,7 @@ class PlayerMovement;
  * These states include FreeState (the normal walk), SwordLoadingState (the sword is
  * loading), CarryingState (the hero is carrying something) and SwimmingState.
  */
-class Hero::PlayerMovementState: public Hero::State {
+class Hero::PlayerMovementState: public Hero::BaseState {
 
   public:
 

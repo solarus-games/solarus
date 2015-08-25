@@ -30,7 +30,7 @@ Hero::UsingItemState::UsingItemState(
     Hero& hero,
     EquipmentItem& item):
 
-  State(hero, "using item"),
+  BaseState(hero, "using item"),
   item_usage(hero.get_game(), item) {
 
 }
@@ -89,7 +89,7 @@ EquipmentItemUsage& Hero::UsingItemState::get_item_being_used() {
 }
 
 /**
- * \copydoc Hero::State::can_avoid_stream
+ * \copydoc Entity::State::can_avoid_stream
  */
 bool Hero::UsingItemState::can_avoid_stream(const Stream& stream) const {
   // If the hero can use items on this stream, allow to stay in UsingItemState.

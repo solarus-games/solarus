@@ -42,7 +42,7 @@ Hero::BoomerangState::BoomerangState(
     int speed,
     const std::string& tunic_preparing_animation,
     const std::string& sprite_name):
-  State(hero, "boomerang"),
+  BaseState(hero, "boomerang"),
   direction_pressed8(-1),
   max_distance(max_distance),
   speed(speed),
@@ -105,7 +105,7 @@ void Hero::BoomerangState::update() {
 }
 
 /**
- * \copydoc Hero::State::can_avoid_stream
+ * \copydoc Entity::State::can_avoid_stream
  */
 bool Hero::BoomerangState::can_avoid_stream(const Stream& /* stream */) const {
   return true;

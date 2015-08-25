@@ -62,6 +62,7 @@ file(
   include/solarus/entities/Wall.h
 
   include/solarus/hero/BackToSolidGroundState.h
+  include/solarus/hero/BaseState.h
   include/solarus/hero/BoomerangState.h
   include/solarus/hero/BowState.h
   include/solarus/hero/CarryingState.h
@@ -258,6 +259,7 @@ file(
   src/entities/Wall.cpp
 
   src/hero/BackToSolidGroundState.cpp
+  src/hero/BaseState.cpp
   src/hero/BoomerangState.cpp
   src/hero/BowState.cpp
   src/hero/CarryingState.cpp

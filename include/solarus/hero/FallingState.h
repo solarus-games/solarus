@@ -17,14 +17,14 @@
 #ifndef SOLARUS_HERO_FALLING_STATE_H
 #define SOLARUS_HERO_FALLING_STATE_H
 
-#include "solarus/hero/State.h"
+#include "solarus/hero/BaseState.h"
 
 namespace Solarus {
 
 /**
  * \brief The state "Falling" of the hero.
  */
-class Hero::FallingState: public Hero::State {
+class Hero::FallingState: public Hero::BaseState {
 
   public:
 

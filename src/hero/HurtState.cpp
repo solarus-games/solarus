@@ -42,7 +42,7 @@ Hero::HurtState::HurtState(
     Hero& hero,
     const Point* source_xy,
     int damage):
-  State(hero, "hurt"),
+  BaseState(hero, "hurt"),
   has_source(source_xy != nullptr),
   source_xy(has_source ? *source_xy : Point()),
   damage(damage),
@@ -165,7 +165,7 @@ bool Hero::HurtState::is_teletransporter_obstacle(
 }
 
 /**
- * \copydoc Hero::State::is_stream_obstacle
+ * \copydoc Entity::State::is_stream_obstacle
  */
 bool Hero::HurtState::is_stream_obstacle(const Stream& /* stream */) const {
   return true;
@@ -181,7 +181,7 @@ bool Hero::HurtState::is_sensor_obstacle(const Sensor& /* sensor */) const {
 }
 
 /**
- * \copydoc Hero::State::is_separator_obstacle
+ * \copydoc Entity::State::is_separator_obstacle
  */
 bool Hero::HurtState::is_separator_obstacle(const Separator& /* separator */) const {
   return true;

@@ -39,7 +39,7 @@ namespace Solarus {
  * \param command The game command that triggers running.
  */
 Hero::RunningState::RunningState(Hero& hero, GameCommand command):
-  State(hero, "running"),
+  BaseState(hero, "running"),
   phase(0),
   next_phase_date(0),
   next_sound_date(0),
@@ -266,7 +266,7 @@ bool Hero::RunningState::can_pick_treasure(EquipmentItem& /* item */) const {
 }
 
 /**
- * \copydoc Hero::State::can_sword_hit_crystal
+ * \copydoc Entity::State::can_sword_hit_crystal
  */
 bool Hero::RunningState::can_sword_hit_crystal() const {
   return true;
@@ -329,14 +329,14 @@ bool Hero::RunningState::can_avoid_teletransporter() const {
 }
 
 /**
- * \copydoc Hero::State::can_avoid_stream
+ * \copydoc Entity::State::can_avoid_stream
  */
 bool Hero::RunningState::can_avoid_stream(const Stream& /* stream */) const {
   return is_bouncing();
 }
 
 /**
- * \copydoc Hero::State::can_persist_on_stream
+ * \copydoc Entity::State::can_persist_on_stream
  */
 bool Hero::RunningState::can_persist_on_stream(const Stream& stream) const {
 

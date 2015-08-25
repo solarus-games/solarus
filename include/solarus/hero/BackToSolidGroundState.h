@@ -17,8 +17,8 @@
 #ifndef SOLARUS_HERO_BACK_TO_SOLID_GROUND_STATE_H
 #define SOLARUS_HERO_BACK_TO_SOLID_GROUND_STATE_H
 
+#include "solarus/hero/BaseState.h"
 #include "solarus/lowlevel/Point.h"
-#include "solarus/hero/State.h"
 #include <cstdint>
 
 namespace Solarus {
@@ -26,7 +26,7 @@ namespace Solarus {
 /**
  * \brief The state "back to solid ground" of the hero.
  */
-class Hero::BackToSolidGroundState: public Hero::State {
+class Hero::BackToSolidGroundState: public Hero::BaseState {
 
   public:
 

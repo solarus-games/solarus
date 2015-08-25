@@ -29,7 +29,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::FallingState::FallingState(Hero& hero):
-  State(hero, "falling") {
+  BaseState(hero, "falling") {
 
 }
 

@@ -36,7 +36,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::SpinAttackState::SpinAttackState(Hero& hero):
-  State(hero, "sword spin attack"),
+  BaseState(hero, "sword spin attack"),
   being_pushed(false) {
 
 }
@@ -219,7 +219,7 @@ bool Hero::SpinAttackState::is_teletransporter_obstacle(
 }
 
 /**
- * \copydoc Hero::State::is_separator_obstacle
+ * \copydoc Entity::State::is_separator_obstacle
  */
 bool Hero::SpinAttackState::is_separator_obstacle(
     const Separator& /* separator */) const {
@@ -243,7 +243,7 @@ void Hero::SpinAttackState::notify_obstacle_reached() {
 }
 
 /**
- * \copydoc Hero::State::notify_attacked_enemy
+ * \copydoc Entity::State::notify_attacked_enemy
  */
 void Hero::SpinAttackState::notify_attacked_enemy(
     EnemyAttack attack,

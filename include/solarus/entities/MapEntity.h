@@ -352,6 +352,9 @@ class SOLARUS_API Entity: public ExportableToLua {
     const Savegame& get_savegame() const;
     Hero& get_hero();
 
+    // state
+    class State;                                /**< base class for all states */
+
   private:
 
     void finish_initialization();

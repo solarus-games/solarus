@@ -30,7 +30,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::PlungingState::PlungingState(Hero& hero):
-  State(hero, "plunging") {
+  BaseState(hero, "plunging") {
 
 }
 

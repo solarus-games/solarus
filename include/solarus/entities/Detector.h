@@ -18,7 +18,7 @@
 #define SOLARUS_DETECTOR_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/entities/CollisionMode.h"
 #include <string>
 

@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/movements/Movement.h"
-#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Debug.h"

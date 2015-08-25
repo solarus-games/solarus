@@ -19,7 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/entities/Detector.h"
-#include "solarus/entities/MapEntityPtr.h"
+#include "solarus/entities/EntityPtr.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/movements/FallingHeight.h"
 #include "solarus/SpritePtr.h"

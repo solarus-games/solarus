@@ -26,6 +26,8 @@ file(
   include/solarus/entities/EnemyAttack.h
   include/solarus/entities/Enemy.h
   include/solarus/entities/EnemyReaction.h
+  include/solarus/entities/Entity.h
+  include/solarus/entities/EntityPtr.h
   include/solarus/entities/EntityType.h
   include/solarus/entities/EntityTypeInfo.h
   include/solarus/entities/Explosion.h
@@ -37,8 +39,6 @@ file(
   include/solarus/entities/Jumper.h
   include/solarus/entities/Layer.h
   include/solarus/entities/MapEntities.h
-  include/solarus/entities/MapEntity.h
-  include/solarus/entities/MapEntityPtr.h
   include/solarus/entities/NonAnimatedRegions.h
   include/solarus/entities/Npc.h
   include/solarus/entities/ParallaxScrollingTilePattern.h
@@ -228,6 +228,7 @@ file(
   src/entities/DynamicTile.cpp
   src/entities/Enemy.cpp
   src/entities/EnemyReaction.cpp
+  src/entities/Entity.cpp
   src/entities/EntityTypeInfo.cpp
   src/entities/Explosion.cpp
   src/entities/Fire.cpp
@@ -236,7 +237,6 @@ file(
   src/entities/Hookshot.cpp
   src/entities/Jumper.cpp
   src/entities/MapEntities.cpp
-  src/entities/MapEntity.cpp
   src/entities/NonAnimatedRegions.cpp
   src/entities/Npc.cpp
   src/entities/ParallaxScrollingTilePattern.cpp

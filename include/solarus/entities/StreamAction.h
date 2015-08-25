@@ -18,7 +18,7 @@
 #define SOLARUS_STREAM_ACTION_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/MapEntityPtr.h"
+#include "solarus/entities/EntityPtr.h"
 #include "solarus/lowlevel/Point.h"
 #include <cstdint>
 #include <memory>

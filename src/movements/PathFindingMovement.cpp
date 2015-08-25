@@ -17,7 +17,7 @@
 #include "solarus/movements/PathFindingMovement.h"
 #include "solarus/movements/PathFinding.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/lowlevel/Random.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Debug.h"

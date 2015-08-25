@@ -18,8 +18,8 @@
 #define SOLARUS_BOOMERANG_H
 
 #include "solarus/Common.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/entities/HeroPtr.h"
-#include "solarus/entities/MapEntity.h"
 #include <memory>
 #include <string>
 

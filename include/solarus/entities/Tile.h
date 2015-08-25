@@ -18,7 +18,7 @@
 #define SOLARUS_TILE_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include <string>
 

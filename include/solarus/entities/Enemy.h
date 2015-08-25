@@ -22,8 +22,8 @@
 #include "solarus/entities/Detector.h"
 #include "solarus/entities/EnemyAttack.h"
 #include "solarus/entities/EnemyReaction.h"
+#include "solarus/entities/EntityPtr.h"
 #include "solarus/entities/Explosion.h"
-#include "solarus/entities/MapEntityPtr.h"
 #include <map>
 #include <string>
 

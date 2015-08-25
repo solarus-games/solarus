@@ -17,7 +17,7 @@
 #include "solarus/Camera.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
-#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Separator.h"

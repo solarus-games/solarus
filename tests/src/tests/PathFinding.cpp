@@ -15,8 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/CustomEntity.h"
+#include "solarus/entities/EntityPtr.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntityPtr.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/movements/PathFinding.h"
 #include "solarus/Game.h"

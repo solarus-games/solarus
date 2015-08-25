@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_MAP_ENTITY_PTR_H
-#define SOLARUS_MAP_ENTITY_PTR_H
+#ifndef SOLARUS_ENTITY_PTR_H
+#define SOLARUS_ENTITY_PTR_H
 
 #include <memory>
 
@@ -24,7 +24,7 @@ namespace Solarus {
 class Entity;
 
 /**
- * \brief Alias for shared_ptr of MapEntity.
+ * \brief Alias for shared_ptr of Entity.
  */
 using EntityPtr = std::shared_ptr<Entity>;
 

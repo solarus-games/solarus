@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/movements/PathFinding.h"
-#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/Map.h"
 #include "solarus/lowlevel/Debug.h"

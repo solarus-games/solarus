@@ -530,7 +530,7 @@ void Hero::rebuild_equipment() {
 }
 
 /**
- * \copydoc MapEntity::get_max_bounding_box
+ * \copydoc Entity::get_max_bounding_box
  */
 Rectangle Hero::get_max_bounding_box() const {
 

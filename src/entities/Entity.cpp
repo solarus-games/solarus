@@ -15,9 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Destructible.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/MapEntities.h"
-#include "solarus/entities/MapEntity.h"
 #include "solarus/entities/Separator.h"
 #include "solarus/entities/StreamAction.h"
 #include "solarus/entities/Switch.h"

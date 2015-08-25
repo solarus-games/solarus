@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_MAP_ENTITY_H
-#define SOLARUS_MAP_ENTITY_H
+#ifndef SOLARUS_ENTITY_H
+#define SOLARUS_ENTITY_H
 
 #include "solarus/Common.h"
 #include "solarus/lua/ExportableToLua.h"

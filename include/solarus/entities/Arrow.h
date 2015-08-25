@@ -18,8 +18,8 @@
 #define SOLARUS_ARROW_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/MapEntity.h"
-#include "solarus/entities/MapEntityPtr.h"
+#include "solarus/entities/Entity.h"
+#include "solarus/entities/EntityPtr.h"
 
 namespace Solarus {
 

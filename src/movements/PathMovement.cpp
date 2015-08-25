@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/movements/PathMovement.h"
-#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/lowlevel/System.h"

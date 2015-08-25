@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/movements/PlayerMovement.h"
-#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/entities/Stream.h"
 #include "solarus/entities/StreamAction.h"
 #include "solarus/lowlevel/Geometry.h"

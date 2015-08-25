@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/Entity.h"
 #include "solarus/entities/EntityType.h"
 #include "solarus/entities/EntityTypeInfo.h"
 #include "solarus/entities/Layer.h"
 #include "solarus/entities/MapEntities.h"
-#include "solarus/entities/MapEntity.h"
 #include "solarus/entities/NonAnimatedRegions.h"
 #include "solarus/entities/TilePattern.h"
 #include "solarus/entities/Tileset.h"

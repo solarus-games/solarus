@@ -19,10 +19,10 @@
 
 #include "solarus/Common.h"
 #include "solarus/containers/Quadtree.h"
+#include "solarus/entities/EntityPtr.h"
 #include "solarus/entities/EntityType.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/entities/Layer.h"
-#include "solarus/entities/MapEntityPtr.h"
 #include "solarus/entities/TilePtr.h"
 #include "solarus/Transition.h"
 #include <list>

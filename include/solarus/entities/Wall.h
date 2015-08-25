@@ -18,7 +18,7 @@
 #define SOLARUS_WALL_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/Entity.h"
 #include <set>
 #include <string>
 

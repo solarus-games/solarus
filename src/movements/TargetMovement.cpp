@@ -16,7 +16,7 @@
  */
 #include "solarus/movements/TargetMovement.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Debug.h"

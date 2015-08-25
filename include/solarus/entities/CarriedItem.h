@@ -18,7 +18,7 @@
 #define SOLARUS_CARRIED_ITEM_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/MapEntity.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/SpritePtr.h"
 #include <string>
 

@@ -18,7 +18,7 @@
 #define SOLARUS_CAMERA_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/MapEntityPtr.h"
+#include "solarus/entities/EntityPtr.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include <memory>
 

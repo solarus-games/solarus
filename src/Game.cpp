@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/EntityState.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/MapEntities.h"
 #include "solarus/entities/NonAnimatedRegions.h"
 #include "solarus/entities/TilePattern.h"
 #include "solarus/entities/Tileset.h"
-#include "solarus/hero/State.h"
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Music.h"

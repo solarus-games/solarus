@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_STATE_H
-#define SOLARUS_HERO_STATE_H
+#ifndef SOLARUS_ENTITY_STATE_H
+#define SOLARUS_ENTITY_STATE_H
 
 #include "solarus/Common.h"
 #include "solarus/entities/CarriedItem.h"

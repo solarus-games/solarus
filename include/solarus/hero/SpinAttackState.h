@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_SPIN_ATTACK_STATE_H
 #define SOLARUS_HERO_SPIN_ATTACK_STATE_H
 
-#include "solarus/hero/State.h"
+#include "solarus/entities/EntityState.h"
 
 namespace Solarus {
 

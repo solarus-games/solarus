@@ -28,6 +28,7 @@ file(
   include/solarus/entities/EnemyReaction.h
   include/solarus/entities/Entity.h
   include/solarus/entities/EntityPtr.h
+  include/solarus/entities/EntityState.h
   include/solarus/entities/EntityType.h
   include/solarus/entities/EntityTypeInfo.h
   include/solarus/entities/Explosion.h
@@ -83,7 +84,6 @@ file(
   include/solarus/hero/RunningState.h
   include/solarus/hero/SpinAttackState.h
   include/solarus/hero/StairsState.h
-  include/solarus/hero/State.h
   include/solarus/hero/SwimmingState.h
   include/solarus/hero/SwordLoadingState.h
   include/solarus/hero/SwordSwingingState.h
@@ -229,6 +229,7 @@ file(
   src/entities/Enemy.cpp
   src/entities/EnemyReaction.cpp
   src/entities/Entity.cpp
+  src/entities/EntityState.cpp
   src/entities/EntityTypeInfo.cpp
   src/entities/Explosion.cpp
   src/entities/Fire.cpp
@@ -280,7 +281,6 @@ file(
   src/hero/RunningState.cpp
   src/hero/SpinAttackState.cpp
   src/hero/StairsState.cpp
-  src/hero/State.cpp
   src/hero/SwimmingState.cpp
   src/hero/SwordLoadingState.cpp
   src/hero/SwordSwingingState.cpp

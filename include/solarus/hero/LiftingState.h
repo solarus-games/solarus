@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_LIFTING_STATE_H
 #define SOLARUS_HERO_LIFTING_STATE_H
 
-#include "solarus/hero/State.h"
+#include "solarus/entities/EntityState.h"
 #include <memory>
 
 namespace Solarus {

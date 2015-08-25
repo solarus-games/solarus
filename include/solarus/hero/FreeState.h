@@ -17,7 +17,6 @@
 #ifndef SOLARUS_HERO_FREE_STATE_H
 #define SOLARUS_HERO_FREE_STATE_H
 
-#include "solarus/hero/State.h"
 #include "solarus/hero/PlayerMovementState.h"
 #include <cstdint>
 

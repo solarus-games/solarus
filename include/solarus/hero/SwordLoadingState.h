@@ -31,7 +31,7 @@ class Hero::SwordLoadingState: public Hero::PlayerMovementState {
 
     explicit SwordLoadingState(Hero& hero);
 
-    virtual void start(const HeroState* previous_state) override;
+    virtual void start(const State* previous_state) override;
     virtual void update() override;
     virtual void set_suspended(bool suspended) override;
     virtual void notify_obstacle_reached() override;

@@ -36,7 +36,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::SpinAttackState::SpinAttackState(Hero& hero):
-  HeroState(hero, "sword spin attack"),
+  State(hero, "sword spin attack"),
   being_pushed(false) {
 
 }
@@ -45,9 +45,9 @@ Hero::SpinAttackState::SpinAttackState(Hero& hero):
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::SpinAttackState::start(const HeroState* previous_state) {
+void Hero::SpinAttackState::start(const State* previous_state) {
 
-  HeroState::start(previous_state);
+  State::start(previous_state);
 
   // play the sound
   play_spin_attack_sound();
@@ -75,9 +75,9 @@ void Hero::SpinAttackState::start(const HeroState* previous_state) {
  * \brief Ends this state.
  * \param next_state the next state
  */
-void Hero::SpinAttackState::stop(const HeroState* next_state) {
+void Hero::SpinAttackState::stop(const State* next_state) {
 
-  HeroState::stop(next_state);
+  State::stop(next_state);
 
   Hero& hero = get_hero();
   if (hero.get_movement() != nullptr) {
@@ -154,7 +154,7 @@ bool Hero::SpinAttackState::is_cutting_with_sword(Detector& /* detector */) {
 int Hero::SpinAttackState::get_sword_damage_factor() const {
 
   // the damage are multiplied by 2
-  return HeroState::get_sword_damage_factor() * 2;
+  return State::get_sword_damage_factor() * 2;
 }
 
 /**
@@ -219,7 +219,7 @@ bool Hero::SpinAttackState::is_teletransporter_obstacle(
 }
 
 /**
- * \copydoc HeroState::is_separator_obstacle
+ * \copydoc Hero::State::is_separator_obstacle
  */
 bool Hero::SpinAttackState::is_separator_obstacle(
     const Separator& /* separator */) const {
@@ -243,7 +243,7 @@ void Hero::SpinAttackState::notify_obstacle_reached() {
 }
 
 /**
- * \copydoc HeroState::notify_attacked_enemy
+ * \copydoc Hero::State::notify_attacked_enemy
  */
 void Hero::SpinAttackState::notify_attacked_enemy(
     EnemyAttack attack,

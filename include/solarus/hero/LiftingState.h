@@ -25,14 +25,14 @@ namespace Solarus {
 /**
  * \brief The state "Lifting" of the hero.
  */
-class Hero::LiftingState: public HeroState {
+class Hero::LiftingState: public Hero::State {
 
   public:
 
     LiftingState(Hero& hero, const std::shared_ptr<CarriedItem>& lifted_item);
 
-    virtual void start(const HeroState* previous_state) override;
-    virtual void stop(const HeroState* next_state) override;
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
     virtual void update() override;
     virtual void set_suspended(bool suspended) override;
     virtual bool can_be_hurt(Entity* attacker) const override;

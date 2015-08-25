@@ -29,7 +29,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::FallingState::FallingState(Hero& hero):
-  HeroState(hero, "falling") {
+  State(hero, "falling") {
 
 }
 
@@ -37,9 +37,9 @@ Hero::FallingState::FallingState(Hero& hero):
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::FallingState::start(const HeroState* previous_state) {
+void Hero::FallingState::start(const State* previous_state) {
 
-  HeroState::start(previous_state);
+  State::start(previous_state);
 
   get_hero().delayed_teletransporter = nullptr;
   get_sprites().save_animation_direction();
@@ -51,9 +51,9 @@ void Hero::FallingState::start(const HeroState* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::FallingState::stop(const HeroState* next_state) {
+void Hero::FallingState::stop(const State* next_state) {
 
-  HeroState::stop(next_state);
+  State::stop(next_state);
 
   get_sprites().set_animation_stopped_normal();
   get_sprites().restore_animation_direction();
@@ -64,7 +64,7 @@ void Hero::FallingState::stop(const HeroState* next_state) {
  */
 void Hero::FallingState::update() {
 
-  HeroState::update();
+  State::update();
 
   Hero& hero = get_hero();
   if (!is_suspended() && get_sprites().is_animation_finished()) {

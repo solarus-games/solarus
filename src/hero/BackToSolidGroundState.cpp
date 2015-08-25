@@ -36,7 +36,7 @@ namespace Solarus {
  */
 Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
     bool use_memorized_xy, uint32_t end_delay, bool with_sound):
-  HeroState(hero, "back to solid ground"),
+  State(hero, "back to solid ground"),
   end_delay(end_delay),
   end_date(0),
   with_sound(with_sound) {
@@ -57,9 +57,9 @@ Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::BackToSolidGroundState::start(const HeroState* previous_state) {
+void Hero::BackToSolidGroundState::start(const State* previous_state) {
 
-  HeroState::start(previous_state);
+  State::start(previous_state);
 
   Hero& hero = get_hero();
   hero.set_movement(std::make_shared<TargetMovement>(
@@ -73,9 +73,9 @@ void Hero::BackToSolidGroundState::start(const HeroState* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::BackToSolidGroundState::stop(const HeroState* next_state) {
+void Hero::BackToSolidGroundState::stop(const State* next_state) {
 
-  HeroState::stop(next_state);
+  State::stop(next_state);
 
   get_hero().clear_movement();
 }
@@ -85,7 +85,7 @@ void Hero::BackToSolidGroundState::stop(const HeroState* next_state) {
  */
 void Hero::BackToSolidGroundState::update() {
 
-  HeroState::update();
+  State::update();
 
   // the current movement is an instance of TargetMovement
   Hero& hero = get_hero();
@@ -110,7 +110,7 @@ void Hero::BackToSolidGroundState::update() {
 
 void Hero::BackToSolidGroundState::set_suspended(bool suspended) {
 
-  HeroState::set_suspended(suspended);
+  State::set_suspended(suspended);
 
   if (!suspended && end_date != 0) {
     end_date += System::now() - get_when_suspended();
@@ -198,7 +198,7 @@ bool Hero::BackToSolidGroundState::can_avoid_teletransporter() const {
 }
 
 /**
- * \copydoc HeroState::can_avoid_stream
+ * \copydoc Hero::State::can_avoid_stream
  */
 bool Hero::BackToSolidGroundState::can_avoid_stream(const Stream& /* stream */) const {
   return true;

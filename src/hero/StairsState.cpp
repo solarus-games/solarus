@@ -41,7 +41,7 @@ Hero::StairsState::StairsState(
     Hero& hero,
     Stairs& stairs,
     Stairs::Way way):
-  HeroState(hero, "stairs"),
+  State(hero, "stairs"),
   stairs(stairs),
   way(way),
   phase(0),
@@ -60,7 +60,7 @@ Hero::StairsState::StairsState(
  */
 void Hero::StairsState::set_map(Map& map) {
 
-  HeroState::set_map(map);
+  State::set_map(map);
 
   // the hero may go to another map while taking stairs and carrying an item
   if (carried_item != nullptr) {
@@ -72,9 +72,9 @@ void Hero::StairsState::set_map(Map& map) {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::StairsState::start(const HeroState* previous_state) {
+void Hero::StairsState::start(const State* previous_state) {
 
-  HeroState::start(previous_state);
+  State::start(previous_state);
 
   // movement
   int speed = stairs.is_inside_floor() ? 40 : 24;
@@ -122,9 +122,9 @@ void Hero::StairsState::start(const HeroState* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::StairsState::stop(const HeroState* next_state) {
+void Hero::StairsState::stop(const State* next_state) {
 
-  HeroState::stop(next_state);
+  State::stop(next_state);
 
   if (carried_item != nullptr) {
 
@@ -156,7 +156,7 @@ void Hero::StairsState::stop(const HeroState* next_state) {
  */
 void Hero::StairsState::update() {
 
-  HeroState::update();
+  State::update();
 
   if (is_suspended()) {
     return;
@@ -264,7 +264,7 @@ void Hero::StairsState::update() {
  */
 void Hero::StairsState::set_suspended(bool suspended) {
 
-  HeroState::set_suspended(suspended);
+  State::set_suspended(suspended);
 
   if (carried_item != nullptr) {
     carried_item->set_suspended(suspended);
@@ -328,7 +328,7 @@ std::shared_ptr<CarriedItem> Hero::StairsState::get_carried_item() const {
 }
 
 /**
- * \copydoc HeroState::get_previous_carried_item_behavior
+ * \copydoc Hero::State::get_previous_carried_item_behavior
  */
 CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior() const {
 

@@ -42,7 +42,7 @@ Hero::BoomerangState::BoomerangState(
     int speed,
     const std::string& tunic_preparing_animation,
     const std::string& sprite_name):
-  HeroState(hero, "boomerang"),
+  State(hero, "boomerang"),
   direction_pressed8(-1),
   max_distance(max_distance),
   speed(speed),
@@ -55,9 +55,9 @@ Hero::BoomerangState::BoomerangState(
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::BoomerangState::start(const HeroState* previous_state) {
+void Hero::BoomerangState::start(const State* previous_state) {
 
-  HeroState::start(previous_state);
+  State::start(previous_state);
 
   if (get_map().get_entities().is_boomerang_present()) {
     Hero& hero = get_hero();
@@ -74,7 +74,7 @@ void Hero::BoomerangState::start(const HeroState* previous_state) {
  */
 void Hero::BoomerangState::update() {
 
-  HeroState::update();
+  State::update();
 
   Hero& hero = get_hero();
   if (hero.is_animation_finished()) {
@@ -105,7 +105,7 @@ void Hero::BoomerangState::update() {
 }
 
 /**
- * \copydoc HeroState::can_avoid_stream
+ * \copydoc Hero::State::can_avoid_stream
  */
 bool Hero::BoomerangState::can_avoid_stream(const Stream& /* stream */) const {
   return true;

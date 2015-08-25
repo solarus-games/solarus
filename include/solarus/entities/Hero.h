@@ -32,7 +32,6 @@ class CarriedItem;
 class Equipment;
 class EquipmentItem;
 class EquipmentItemUsage;
-class HeroState;
 class HeroSprites;
 class Map;
 class Rectangle;
@@ -47,8 +46,6 @@ class Treasure;
 class Hero: public Entity {
 
   public:
-
-    friend class HeroState;
 
     /**
      * \name Creation and destruction.
@@ -292,6 +289,7 @@ class Hero: public Entity {
   private:
 
     // state
+    class State;                    /**< base class for all states */
     class PlayerMovementState;      /**< base class for states whose movement is controlled by the player */
     class FreeState;                /**< the hero is free to move (stopped or walking) and can interact with entities */
     class CarryingState;            /**< the hero can walk but he is carrying a pot or a bush */
@@ -323,7 +321,7 @@ class Hero: public Entity {
                                      * including an instruction from the script */
 
     // state
-    void set_state(HeroState* state);
+    void set_state(State* state);
     void update_state();
 
     // position
@@ -343,8 +341,8 @@ class Hero: public Entity {
     void update_invincibility();
 
     // state
-    std::unique_ptr<HeroState> state;   /**< the current internal state */
-    std::list<std::unique_ptr<HeroState>>
+    std::unique_ptr<State> state;   /**< the current internal state */
+    std::list<std::unique_ptr<State>>
         old_states;                 /**< previous state objects to delete as soon as possible */
     bool invincible;                /**< Whether the hero is temporarily invincible. */
     uint32_t end_invincible_date;   /**< When stopping the invincibility (0 means infinite). */

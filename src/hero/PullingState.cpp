@@ -31,7 +31,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::PullingState::PullingState(Hero& hero):
-  HeroState(hero, "pulling"),
+  State(hero, "pulling"),
   pulled_entity(nullptr),
   pulling_movement(nullptr) {
 
@@ -41,9 +41,9 @@ Hero::PullingState::PullingState(Hero& hero):
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::PullingState::start(const HeroState* previous_state) {
+void Hero::PullingState::start(const State* previous_state) {
 
-  HeroState::start(previous_state);
+  State::start(previous_state);
 
   pulled_entity = nullptr;
   get_sprites().set_animation_pulling();
@@ -52,9 +52,9 @@ void Hero::PullingState::start(const HeroState* previous_state) {
 /**
  * \brief Stops this state.
  */
-void Hero::PullingState::stop(const HeroState* next_state) {
+void Hero::PullingState::stop(const State* next_state) {
 
-  HeroState::stop(next_state);
+  State::stop(next_state);
 
   if (is_moving_grabbed_entity()) {
     get_hero().clear_movement();
@@ -68,7 +68,7 @@ void Hero::PullingState::stop(const HeroState* next_state) {
  */
 void Hero::PullingState::update() {
 
-  HeroState::update();
+  State::update();
 
   Hero& hero = get_hero();
   if (!is_moving_grabbed_entity()) {
@@ -294,14 +294,14 @@ bool Hero::PullingState::is_prickle_obstacle() const {
 }
 
 /**
- * \copydoc HeroState::is_stream_obstacle
+ * \copydoc Hero::State::is_stream_obstacle
  */
 bool Hero::PullingState::is_stream_obstacle(const Stream& /* stream */) const {
   return true;
 }
 
 /**
- * \copydoc HeroState::is_separator_obstacle
+ * \copydoc Hero::State::is_separator_obstacle
  */
 bool Hero::PullingState::is_separator_obstacle(
     const Separator& /* separator */) const {

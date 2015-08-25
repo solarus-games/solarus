@@ -44,7 +44,7 @@ Hero::CarryingState::CarryingState(
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::CarryingState::start(const HeroState* previous_state) {
+void Hero::CarryingState::start(const State* previous_state) {
 
   PlayerMovementState::start(previous_state);
 
@@ -60,7 +60,7 @@ void Hero::CarryingState::start(const HeroState* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::CarryingState::stop(const HeroState* next_state) {
+void Hero::CarryingState::stop(const State* next_state) {
 
   PlayerMovementState::stop(next_state);
 
@@ -194,7 +194,7 @@ bool Hero::CarryingState::can_start_sword() const {
 }
 
 /**
- * \copydoc HeroState::can_use_shield
+ * \copydoc Hero::State::can_use_shield
  */
 bool Hero::CarryingState::can_use_shield() const {
   return false;
@@ -232,7 +232,7 @@ std::shared_ptr<CarriedItem> Hero::CarryingState::get_carried_item() const {
 }
 
 /**
- * \copydoc HeroState::get_previous_carried_item_behavior
+ * \copydoc Hero::State::get_previous_carried_item_behavior
  */
 CarriedItem::Behavior Hero::CarryingState::get_previous_carried_item_behavior() const {
 

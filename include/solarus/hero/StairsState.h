@@ -27,7 +27,7 @@ namespace Solarus {
 /**
  * \brief The state "Stairs" of the hero.
  */
-class Hero::StairsState: public HeroState {
+class Hero::StairsState: public Hero::State {
 
   public:
 
@@ -37,8 +37,8 @@ class Hero::StairsState: public HeroState {
         Stairs::Way way
     );
 
-    virtual void start(const HeroState* previous_state) override;
-    virtual void stop(const HeroState* next_state) override;
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
     virtual void set_map(Map& map) override;
     virtual void update() override;
     virtual void set_suspended(bool suspended) override;

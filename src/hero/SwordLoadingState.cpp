@@ -47,7 +47,7 @@ Hero::SwordLoadingState::SwordLoadingState(Hero& hero):
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::SwordLoadingState::start(const HeroState* previous_state) {
+void Hero::SwordLoadingState::start(const State* previous_state) {
 
   PlayerMovementState::start(previous_state);
 
@@ -123,7 +123,7 @@ void Hero::SwordLoadingState::notify_obstacle_reached() {
 }
 
 /**
- * \copydoc HeroState::notify_attacked_enemy
+ * \copydoc Hero::State::notify_attacked_enemy
  */
 void Hero::SwordLoadingState::notify_attacked_enemy(
     EnemyAttack attack,
@@ -137,7 +137,7 @@ void Hero::SwordLoadingState::notify_attacked_enemy(
     Hero& hero = get_hero();
     if (victim.get_push_hero_on_sword()) {
       // let SwordTappingState do the job so that no player movement interferes
-      HeroState* state = new SwordTappingState(hero);
+      State* state = new SwordTappingState(hero);
       hero.set_state(state);
       state->notify_attacked_enemy(attack, victim, victim_sprite, result, killed);
     }
@@ -175,7 +175,7 @@ bool Hero::SwordLoadingState::can_pick_treasure(EquipmentItem& /* item */) const
 }
 
 /**
- * \copydoc HeroState::can_use_shield
+ * \copydoc Hero::State::can_use_shield
  */
 bool Hero::SwordLoadingState::can_use_shield() const {
   return false;

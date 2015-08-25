@@ -30,7 +30,7 @@ Hero::UsingItemState::UsingItemState(
     Hero& hero,
     EquipmentItem& item):
 
-  HeroState(hero, "using item"),
+  State(hero, "using item"),
   item_usage(hero.get_game(), item) {
 
 }
@@ -39,9 +39,9 @@ Hero::UsingItemState::UsingItemState(
  * \brief Starts this state.
  * \param previous_state The previous state.
  */
-void Hero::UsingItemState::start(const HeroState* previous_state) {
+void Hero::UsingItemState::start(const State* previous_state) {
 
-  HeroState::start(previous_state);
+  State::start(previous_state);
 
   bool interaction = false;
   Detector* facing_entity = get_hero().get_facing_entity();
@@ -62,7 +62,7 @@ void Hero::UsingItemState::start(const HeroState* previous_state) {
  */
 void Hero::UsingItemState::update() {
 
-  HeroState::update();
+  State::update();
 
   item_usage.update();
   if (item_usage.is_finished() && is_current_state()) {
@@ -89,7 +89,7 @@ EquipmentItemUsage& Hero::UsingItemState::get_item_being_used() {
 }
 
 /**
- * \copydoc HeroState::can_avoid_stream
+ * \copydoc Hero::State::can_avoid_stream
  */
 bool Hero::UsingItemState::can_avoid_stream(const Stream& stream) const {
   // If the hero can use items on this stream, allow to stay in UsingItemState.

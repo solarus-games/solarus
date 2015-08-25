@@ -40,7 +40,7 @@ Hero::TreasureState::TreasureState(
     const ScopedLuaRef& callback_ref
 ):
 
-  HeroState(hero, "treasure"),
+  State(hero, "treasure"),
   treasure(treasure),
   callback_ref(callback_ref) {
 
@@ -51,9 +51,9 @@ Hero::TreasureState::TreasureState(
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::TreasureState::start(const HeroState* previous_state) {
+void Hero::TreasureState::start(const State* previous_state) {
 
-  HeroState::start(previous_state);
+  State::start(previous_state);
 
   // Show the animation.
   get_sprites().save_animation_direction();
@@ -78,9 +78,9 @@ void Hero::TreasureState::start(const HeroState* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::TreasureState::stop(const HeroState* next_state) {
+void Hero::TreasureState::stop(const State* next_state) {
 
-  HeroState::stop(next_state);
+  State::stop(next_state);
 
   // restore the sprite's direction
   get_sprites().restore_animation_direction();
@@ -92,7 +92,7 @@ void Hero::TreasureState::stop(const HeroState* next_state) {
  */
 void Hero::TreasureState::draw_on_map() {
 
-  HeroState::draw_on_map();
+  State::draw_on_map();
 
   const Hero& hero = get_hero();
   int x = hero.get_x();
@@ -105,7 +105,7 @@ void Hero::TreasureState::draw_on_map() {
 }
 
 /**
- * \copydoc HeroState::get_previous_carried_item_behavior
+ * \copydoc Hero::State::get_previous_carried_item_behavior
  */
 CarriedItem::Behavior Hero::TreasureState::get_previous_carried_item_behavior() const {
   return CarriedItem::BEHAVIOR_DESTROY;

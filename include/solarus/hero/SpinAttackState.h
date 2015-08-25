@@ -24,14 +24,14 @@ namespace Solarus {
 /**
  * \brief The state "spin attack" of the hero.
  */
-class Hero::SpinAttackState: public HeroState {
+class Hero::SpinAttackState: public Hero::State {
 
   public:
 
     explicit SpinAttackState(Hero& hero);
 
-    virtual void start(const HeroState* previous_state) override;
-    virtual void stop(const HeroState* next_state) override;
+    virtual void start(const State* previous_state) override;
+    virtual void stop(const State* next_state) override;
     virtual void update() override;
     virtual bool can_sword_hit_crystal() const override;
     virtual bool can_be_hurt(Entity* attacker) const override;

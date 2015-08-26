@@ -42,6 +42,14 @@ ov_callbacks Sound::ogg_callbacks = {
 
 /**
  * \brief Creates a new Ogg Vorbis sound.
+ */
+Sound::Sound():
+  Sound(std::string("")) {
+
+}
+
+/**
+ * \brief Creates a new Ogg Vorbis sound.
  * \param sound_id id of the sound: name of a .ogg file in the sounds subdirectory,
  * without the extension (.ogg is added automatically)
  */

@@ -43,7 +43,7 @@ class Hero::BackToSolidGroundState: public Hero::BaseState {
     virtual void set_suspended(bool suspended) override;
 
     virtual bool can_start_gameover_sequence() const override;
-    virtual bool is_hero_visible() const override;
+    virtual bool is_visible() const override;
     virtual bool are_collisions_ignored() const override;
     virtual bool can_avoid_deep_water() const override;
     virtual bool can_avoid_hole() const override;

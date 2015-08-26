@@ -129,7 +129,7 @@ bool Hero::BackToSolidGroundState::can_start_gameover_sequence() const {
  * \brief Returns whether the hero is visible in the current state.
  * \return true if the hero is displayed in the current state
  */
-bool Hero::BackToSolidGroundState::is_hero_visible() const {
+bool Hero::BackToSolidGroundState::is_visible() const {
   return end_date != 0;
 }
 

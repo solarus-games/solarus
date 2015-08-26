@@ -459,10 +459,10 @@ bool Entity::State::can_start_gameover_sequence() const {
 }
 
 /**
- * \brief Returns whether the hero is visible in the current state.
- * \return true if the hero is displayed in the current state
+ * \brief Returns whether the entity is visible in the current state.
+ * \return true if the entity is displayed in the current state
  */
-bool Entity::State::is_hero_visible() const {
+bool Entity::State::is_visible() const {
   return true;
 }
 

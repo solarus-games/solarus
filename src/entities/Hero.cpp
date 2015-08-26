@@ -375,7 +375,7 @@ void Hero::draw_on_map() {
     return;
   }
 
-  if (get_state().is_hero_visible()) {
+  if (get_state().is_visible()) {
     // The state may call get_sprites()->draw_on_map() or make its own drawings.
     get_state().draw_on_map();
   }

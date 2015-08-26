@@ -66,7 +66,7 @@ class Entity::State {
     virtual bool can_start_gameover_sequence() const;
 
     // sprites
-    virtual bool is_hero_visible() const;
+    virtual bool is_visible() const;
     virtual bool is_direction_locked() const;
 
     // movement

@@ -98,6 +98,7 @@ void LuaContext::register_map_module() {
       { "get_entities", map_api_get_entities },
       { "get_entities_count", map_api_get_entities_count },
       { "has_entities", map_api_has_entities },
+      { "get_entities_in_rectangle", map_api_get_entities_in_rectangle },
       { "get_hero", map_api_get_hero },
       { "set_entities_enabled", map_api_set_entities_enabled },
       { "remove_entities", map_api_remove_entities },
@@ -1786,6 +1787,41 @@ int LuaContext::map_api_has_entities(lua_State* l) {
 
     lua_pushboolean(l, map.get_entities().has_entity_with_prefix(prefix));
     return 1;
+  });
+}
+
+/**
+ * \brief Implementation of map:get_entities_in_rectangle().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_entities_in_rectangle(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    const int x = LuaTools::check_int(l, 2);
+    const int y = LuaTools::check_int(l, 3);
+    const int width = LuaTools::check_int(l, 4);
+    const int height = LuaTools::check_int(l, 5);
+
+    std::vector<EntityPtr> entities;
+    map.get_entities().get_entities_in_rectangle(
+        Rectangle(x, y, width, height), entities
+    );
+
+    lua_newtable(l);
+    for (auto it = entities.begin(); it != entities.end(); ++it) {
+      EntityPtr entity = *it;
+      push_entity(l, *entity);
+      lua_pushboolean(l, true);
+      lua_rawset(l, -3);
+    }
+    lua_getglobal(l, "pairs");
+    lua_pushvalue(l, -2);
+    lua_call(l, 1, 3);
+    // TODO factorize with get_entities()
+
+    return 3;
   });
 }
 

@@ -16,6 +16,7 @@
  */
 #include "solarus/entities/Destructible.h"
 #include "solarus/entities/Entity.h"
+#include "solarus/entities/EntityState.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Separator.h"
@@ -2313,6 +2314,9 @@ bool Entity::is_in_same_region(const Entity& other) const {
   return true;
 }
 
+void Entity::check_position() {
+}
+
 /**
  * \brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
  * \param destructible the destructible item
@@ -2694,5 +2698,79 @@ void Entity::draw_on_map() {
   }
 }
 
+Entity::State& Entity::get_state() const {
+    return *state.get();
 }
 
+/**
+ * \brief Changes the entity's internal state.
+ *
+ * This function stops the old state and starts the new one.
+ * The old state will also be automatically destroyed, but not right now,
+ * in order to allow this function to be called by the old state itself safely.
+ *
+ * \param state The new state of the hero. The hero object takes ownership of
+ * this object.
+ */
+void Entity::set_state(State* new_state) {
+
+  // Stop the previous state.
+  State* old_state = this->state.get();
+  if (old_state != nullptr) {
+
+    old_state->stop(new_state);  // Should not change the state again.
+
+    // Sanity check.
+    if (old_state != this->state.get()) {
+      // old_state->stop() called set_state() again in the meantime.
+      // This is not a normal situation since we only called stop() to allow
+      // new_state to start.
+      Debug::error(std::string("Entity state '") + old_state->get_name()
+                + "' did not stop properly to let state '" + new_state->get_name()
+                + "' go, it started state '" + this->state->get_name() + "' instead. "
+                + "State '" + new_state->get_name() + "' will be forced.");
+
+      // Let's start the state that was supposed to start in the first place.
+      // Note that old_state is already in the old_states list.
+      set_state(new_state);
+      return;
+    }
+  }
+
+  // Don't delete the previous state immediately since it may be the caller
+  // of this function.
+  this->old_states.emplace_back(std::move(this->state));
+
+  this->state = std::unique_ptr<State>(new_state);
+  this->state->start(old_state);  // May also change the state again.
+
+  if (this->state.get() == new_state) {
+    // If the state has not already changed again.
+    check_position();
+  }
+}
+
+/**
+ * \brief Returns the name of the entity's internal state.
+ * \return A name describing the current state of the entity.
+ */
+const std::string& Entity::get_state_name() const {
+
+  return state->get_name();
+}
+
+/**
+ * \brief Updates the entity's internal state.
+ *
+ * This function is called repeatedly by update().
+ */
+void Entity::update_state() {
+
+  // update the current state
+  state->update();
+
+  // cleanup old states
+  old_states.clear();
+}
+
+}

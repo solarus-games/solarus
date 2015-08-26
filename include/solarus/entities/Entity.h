@@ -28,6 +28,7 @@
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/GameCommand.h"
 #include "solarus/SpritePtr.h"
+#include <list>
 #include <memory>
 #include <string>
 #include <vector>
@@ -262,6 +263,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     void check_collision_with_detectors();
     void check_collision_with_detectors(Sprite& sprite);
 
+    virtual void check_position();
     virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
     virtual void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode);
     virtual void notify_collision_with_stream(Stream& stream, int dx, int dy);
@@ -313,6 +315,21 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual void update();
     virtual void draw_on_map();
 
+    /**
+     * \name State.
+     *
+     * These functions provide information about the entity's internal state
+     * and allow to start actions which may modify this state.
+     * Actions can be triggered by equipment items, entities or scripts.
+     */
+    class State;                                /**< base class for all states */
+
+    State& get_state() const;
+    void set_state(State* state);
+
+    const std::string& get_state_name() const;
+    void update_state();
+
   protected:
 
     // creation
@@ -351,9 +368,6 @@ class SOLARUS_API Entity: public ExportableToLua {
     Savegame& get_savegame();
     const Savegame& get_savegame() const;
     Hero& get_hero();
-
-    // state
-    class State;                                /**< base class for all states */
 
   private:
 
@@ -410,7 +424,11 @@ class SOLARUS_API Entity: public ExportableToLua {
     std::unique_ptr<StreamAction>
         stream_action;                /**< The stream effect currently applied if any. */
 
-    // entity state
+    // state
+    std::unique_ptr<State> state;               /**< the current internal state */
+    std::list<std::unique_ptr<State>>
+        old_states;                             /**< previous state objects to delete as soon as possible */
+
     bool initialized;                           /**< Whether all initializations were done. */
     bool being_removed;                         /**< indicates that the entity is not valid anymore because it is about to be removed */
     bool enabled;                               /**< indicates that the entity is enabled

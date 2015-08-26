@@ -22,7 +22,6 @@
 #include "solarus/entities/Ground.h"
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/lowlevel/Point.h"
-#include <list>
 #include <memory>
 #include <string>
 
@@ -185,7 +184,7 @@ class Hero: public Entity {
      *
      * Handle collisions between the hero and other entities.
      */
-    void check_position();
+    virtual void check_position() override;
     virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode) override;
     virtual void notify_collision_with_enemy(Enemy& enemy) override;
     virtual void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) override;
@@ -238,7 +237,6 @@ class Hero: public Entity {
      * and allow to start actions which may modify this state.
      * Actions can be triggered by equipment items, entities or scripts.
      */
-    const std::string& get_state_name() const;
     bool is_free() const;
     bool is_using_item() const;
     EquipmentItemUsage& get_item_being_used();
@@ -286,6 +284,8 @@ class Hero: public Entity {
         uint32_t end_delay = 0, bool with_sound = true);
     void start_state_from_ground();
 
+  protected:
+
     // state
     class BaseState;                /**< base class for all hero states */
     class PlayerMovementState;      /**< base class for states whose movement is controlled by the player */
@@ -318,10 +318,6 @@ class Hero: public Entity {
     class FreezedState;             /**< the hero cannot move for various possible reasons,
                                      * including an instruction from the script */
 
-    State* get_state() const;
-    void set_state(State* state);
-    void update_state();
-
   private:
 
     // position
@@ -341,9 +337,6 @@ class Hero: public Entity {
     void update_invincibility();
 
     // state
-    std::unique_ptr<State> state;   /**< the current internal state */
-    std::list<std::unique_ptr<State>>
-        old_states;                 /**< previous state objects to delete as soon as possible */
     bool invincible;                /**< Whether the hero is temporarily invincible. */
     uint32_t end_invincible_date;   /**< When stopping the invincibility (0 means infinite). */
 

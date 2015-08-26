@@ -37,7 +37,7 @@ class SOLARUS_API PathFindingMovement: public PathMovement {
 
   public:
 
-    PathFindingMovement(int speed);
+    explicit PathFindingMovement(int speed);
 
     void set_target(const EntityPtr& target);
     virtual bool is_finished() const override;

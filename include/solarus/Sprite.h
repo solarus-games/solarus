@@ -53,7 +53,7 @@ class Sprite: public Drawable {
     static void quit();
 
     // creation and destruction
-    Sprite(const std::string& id);
+    explicit Sprite(const std::string& id);
 
     void set_tileset(Tileset& tileset);
 

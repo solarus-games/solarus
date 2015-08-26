@@ -29,7 +29,7 @@ class Hero::SwordLoadingState: public Hero::PlayerMovementState {
 
   public:
 
-    SwordLoadingState(Hero& hero);
+    explicit SwordLoadingState(Hero& hero);
 
     virtual void start(const HeroState* previous_state) override;
     virtual void update() override;

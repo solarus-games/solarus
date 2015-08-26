@@ -35,7 +35,7 @@ class CircleMovement: public Movement {
   public:
 
     // creation and destruction
-    CircleMovement(bool ignore_obstacles);
+    explicit CircleMovement(bool ignore_obstacles);
 
     // state
     virtual void update() override;

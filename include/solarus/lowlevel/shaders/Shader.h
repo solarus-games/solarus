@@ -33,7 +33,7 @@ class Shader {
 
   public:
 
-    Shader(const std::string& shader_name);
+    explicit Shader(const std::string& shader_name);
     virtual ~Shader();
 
     static void set_shading_language_version(const std::string& version);

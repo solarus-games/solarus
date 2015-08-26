@@ -43,7 +43,7 @@ class Camera {
 
   public:
 
-    Camera(Map& map);
+    explicit Camera(Map& map);
 
     void update();
     const Rectangle& get_position() const;

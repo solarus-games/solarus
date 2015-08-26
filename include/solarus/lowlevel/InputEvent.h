@@ -290,7 +290,7 @@ class InputEvent {
 
   private:
 
-    InputEvent(const SDL_Event& event);
+    explicit InputEvent(const SDL_Event& event);
 
     static const KeyboardKey directional_keys[];  /**< array of the keyboard directional keys */
     static bool joypad_enabled;                   /**< true if joypad support is enabled

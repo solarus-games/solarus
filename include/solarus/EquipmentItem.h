@@ -40,7 +40,7 @@ class EquipmentItem: public ExportableToLua {
 
   public:
 
-    EquipmentItem(Equipment& equipment);
+    explicit EquipmentItem(Equipment& equipment);
 
     Equipment& get_equipment();
     Game* get_game();

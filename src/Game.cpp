@@ -254,10 +254,8 @@ const Equipment& Game::get_equipment() const {
  */
 bool Game::notify_input(const InputEvent& event) {
 
-  bool handled = false;
-
   if (current_map != nullptr && current_map->is_loaded()) {
-    handled = get_lua_context().game_on_input(*this, event);
+    bool handled = get_lua_context().game_on_input(*this, event);
     if (!handled) {
       handled = current_map->notify_input(event);
       if (!handled) {

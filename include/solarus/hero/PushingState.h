@@ -31,7 +31,7 @@ class Hero::PushingState: public HeroState {
 
   public:
 
-    PushingState(Hero& hero);
+    explicit PushingState(Hero& hero);
 
     virtual void start(const HeroState* previous_state) override;
     virtual void stop(const HeroState* next_state) override;

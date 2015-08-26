@@ -30,7 +30,7 @@ class SOLARUS_API SolarusFatal : public std::exception {
 
   public:
 
-    SolarusFatal(const std::string& error_message);
+    explicit SolarusFatal(const std::string& error_message);
     virtual const char* what() const noexcept override;
 
   private:

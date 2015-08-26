@@ -34,7 +34,7 @@ class SOLARUS_API RandomPathMovement: public PathMovement {
 
   public:
 
-    RandomPathMovement(int speed);
+    explicit RandomPathMovement(int speed);
 
     virtual void update() override;
     virtual bool is_finished() const override;

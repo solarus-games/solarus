@@ -38,7 +38,7 @@ class TransitionScrolling: public Transition {
 
   public:
 
-    TransitionScrolling(Direction direction);
+    explicit TransitionScrolling(Direction direction);
 
     virtual bool needs_previous_surface() const override;
 

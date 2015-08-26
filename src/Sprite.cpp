@@ -641,12 +641,11 @@ void Sprite::update() {
       || synchronize_to->get_current_direction() > get_nb_directions()
       || synchronize_to->get_current_frame() > get_nb_frames()) {
     // update the frames normally (with the time)
-    int next_frame;
     while (!finished && !is_suspended() && !paused && get_frame_delay() > 0
         && now >= next_frame_date) {
 
       // we get the next frame
-      next_frame = get_next_frame();
+      int next_frame = get_next_frame();
 
       // test whether the animation is finished
       if (next_frame == -1) {

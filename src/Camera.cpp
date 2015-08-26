@@ -90,8 +90,6 @@ void Camera::update_fixed_on() {
   Debug::check_assertion(fixed_on != nullptr,
       "Illegal call to Camera::update_fixed_on_hero()");
 
-  int x = 0;
-  int y = 0;
   if (separator_next_scrolling_date == 0) {
     // Normal case: not traversing a separator.
 
@@ -99,8 +97,8 @@ void Camera::update_fixed_on() {
     const Point& hero_center = fixed_on->get_center_point();
     const int hero_x = hero_center.x;
     const int hero_y = hero_center.y;
-    x = hero_x - get_width() / 2;
-    y = hero_y - get_height() / 2;
+    int x = hero_x - get_width() / 2;
+    int y = hero_y - get_height() / 2;
 
     // Then apply constraints of both separators and map limits.
     this->position = apply_separators_and_map_bounds(Rectangle(x, y, get_width(), get_height()));

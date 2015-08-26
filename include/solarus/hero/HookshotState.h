@@ -31,7 +31,7 @@ class Hero::HookshotState: public HeroState {
 
   public:
 
-    HookshotState(Hero& hero);
+    explicit HookshotState(Hero& hero);
 
     virtual void start(const HeroState* previous_state) override;
     virtual void stop(const HeroState* next_state) override;

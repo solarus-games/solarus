@@ -33,7 +33,8 @@ class RandomMovement: public StraightMovement {
 
   public:
 
-    RandomMovement(int speed, int max_radius = 0);
+    explicit RandomMovement(int speed);
+    RandomMovement(int speed, int max_radius);
 
     virtual void notify_object_controlled() override;
     virtual void update() override;

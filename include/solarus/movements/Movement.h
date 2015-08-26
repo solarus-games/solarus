@@ -102,7 +102,8 @@ class SOLARUS_API Movement: public ExportableToLua {
 
   protected:
 
-    explicit Movement(bool ignore_obstacles = false);
+    Movement();
+    explicit Movement(bool ignore_obstacles);
 
     // suspended
     uint32_t get_when_suspended() const;

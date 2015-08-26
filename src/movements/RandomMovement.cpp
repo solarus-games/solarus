@@ -28,6 +28,15 @@ namespace Solarus {
 /**
  * \brief Constructor.
  * \param speed Speed of the movement in pixels per seconds.
+ */
+RandomMovement::RandomMovement(int speed):
+  RandomMovement(speed, 0) {
+
+}
+
+/**
+ * \brief Constructor.
+ * \param speed Speed of the movement in pixels per seconds.
  * \param max_radius if the object goes further than this distance, it will come back
  */
 RandomMovement::RandomMovement(int speed, int max_radius):

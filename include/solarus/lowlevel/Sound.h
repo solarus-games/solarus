@@ -57,7 +57,8 @@ class Sound {
     static ov_callbacks ogg_callbacks;           /**< vorbisfile object used to load the encoded sound from memory */
     static size_t cb_read(void* ptr, size_t size, size_t nmemb, void* datasource);
 
-    explicit Sound(const std::string& sound_id = "");
+    Sound();
+    explicit Sound(const std::string& sound_id);
     ~Sound();
     void load();
     bool start();

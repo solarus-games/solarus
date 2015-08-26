@@ -37,7 +37,7 @@ class SavegameConverterV1 {
   public:
 
     // creation and destruction
-    SavegameConverterV1(const std::string& file_name);
+    explicit SavegameConverterV1(const std::string& file_name);
 
     // data
     std::string get_string(int index);

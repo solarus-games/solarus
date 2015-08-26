@@ -27,6 +27,14 @@ namespace Solarus {
 
 /**
  * \brief Constructor.
+ */
+Movement::Movement():
+  Movement(false) {
+
+}
+
+/**
+ * \brief Constructor.
  * \param ignore_obstacles When there is a map and the movement is attached to
  * an entity of this map, indicates whether the movement should ignore
  * obstacles.

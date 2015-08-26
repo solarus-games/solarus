@@ -42,7 +42,7 @@ class GL_2DShader : public Shader {
 
     static bool initialize();
 
-    GL_2DShader(const std::string& shader_name);
+    explicit GL_2DShader(const std::string& shader_name);
 
   private:
 

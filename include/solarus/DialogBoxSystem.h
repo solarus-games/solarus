@@ -43,7 +43,7 @@ class DialogBoxSystem {
 
   public:
 
-    DialogBoxSystem(Game& game);
+    explicit DialogBoxSystem(Game& game);
 
     Game& get_game();
     bool is_enabled() const;

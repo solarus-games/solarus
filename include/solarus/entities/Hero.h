@@ -53,7 +53,7 @@ class Hero: public Entity {
     /**
      * \name Creation and destruction.
      */
-    Hero(Equipment& equipment);
+    explicit Hero(Equipment& equipment);
 
     /**
      * \name Features.

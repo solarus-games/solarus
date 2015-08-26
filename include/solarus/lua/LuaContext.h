@@ -131,7 +131,7 @@ class LuaContext {
     static const std::string movement_jump_module_name;
     static const std::string movement_pixel_module_name;
 
-    LuaContext(MainLoop& main_loop);
+    explicit LuaContext(MainLoop& main_loop);
     ~LuaContext();
 
     static LuaContext& get_lua_context(lua_State* l);

@@ -45,7 +45,7 @@ class SOLARUS_API Equipment {
   public:
 
     // creation and destruction
-    Equipment(Savegame& savegame);
+    explicit Equipment(Savegame& savegame);
 
     Savegame& get_savegame();
     Game* get_game();

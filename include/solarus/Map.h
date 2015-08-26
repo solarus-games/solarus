@@ -57,7 +57,7 @@ class SOLARUS_API Map: public ExportableToLua {
   public:
 
     // creation and destruction
-    Map(const std::string& id);
+    explicit Map(const std::string& id);
 
     // map properties
     const std::string& get_id() const;

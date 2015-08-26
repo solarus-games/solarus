@@ -37,7 +37,7 @@ class SOLARUS_API MainLoop {
 
   public:
 
-    MainLoop(const Arguments& args);
+    explicit MainLoop(const Arguments& args);
     ~MainLoop();
 
     void run();

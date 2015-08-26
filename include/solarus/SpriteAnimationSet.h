@@ -43,7 +43,7 @@ class SpriteAnimationSet {
 
   public:
 
-    SpriteAnimationSet(const std::string& id);
+    explicit SpriteAnimationSet(const std::string& id);
 
     void set_tileset(Tileset& tileset);
 

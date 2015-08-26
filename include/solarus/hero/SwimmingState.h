@@ -29,7 +29,7 @@ class Hero::SwimmingState: public Hero::PlayerMovementState {
 
   public:
 
-    SwimmingState(Hero& hero);
+    explicit SwimmingState(Hero& hero);
 
     virtual void start(const HeroState* previous_state) override;
     virtual void stop(const HeroState* next_state) override;

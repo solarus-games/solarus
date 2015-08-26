@@ -28,6 +28,7 @@ typedef struct _SDL_Joystick SDL_Joystick;
 
 namespace Solarus {
 
+class Point;
 class Rectangle;
 
 /**
@@ -218,7 +219,7 @@ class InputEvent {
     static bool is_mouse_button_down(MouseButton button);
     static int get_joypad_axis_state(int axis);
     static int get_joypad_hat_direction(int hat);
-    static Rectangle get_global_mouse_position();
+    static bool get_global_mouse_position(Point& mouse_xy);
 
     // event type
     bool is_valid() const;
@@ -274,7 +275,7 @@ class InputEvent {
     bool is_mouse_button_released(MouseButton button) const;
 
     MouseButton get_mouse_button() const;
-    Rectangle get_mouse_position() const;
+    bool get_mouse_position(Point& mouse_xy) const;
     static const std::string& get_mouse_button_name(MouseButton button);
     static MouseButton get_mouse_button_by_name(const std::string& button_name);
 

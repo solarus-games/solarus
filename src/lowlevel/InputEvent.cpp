@@ -487,19 +487,18 @@ int InputEvent::get_joypad_hat_direction(int hat) {
 }
 
 /**
- * \brief Returns the x and y position of the mouse.
- * Values are in quest size coordinates and relative to the viewport.
- * \return A rectangle filled with the x and y position of the mouse,
- * in which the width and height are set to 1.
- * Returns a flat Rectangle if the position is not inside the viewport.
+ * \brief Gets the x and y position of the mouse.
+ * Values are in quest size coordinates.
+ * \param[out] mouse_xy The x and y position of the mouse in quest coordinates.
+ * \return \c false if the mouse was outside the quest displaying.
  */
-Rectangle InputEvent::get_global_mouse_position() {
+bool InputEvent::get_global_mouse_position(Point& mouse_xy) {
 
   int x, y;
 
   SDL_GetMouseState(&x, &y);
 
-  return Video::get_scaled_position(Rectangle(x, y, 1, 1));
+  return Video::window_to_quest_coordinates(Point(x, y), mouse_xy);
 }
 
 
@@ -1101,18 +1100,18 @@ InputEvent::MouseButton InputEvent::get_mouse_button() const {
 }
 
 /**
- * \brief Returns the x and y position of this mouse event, if any.
- * Values are in quest size coordinates and relative to the viewport.
- * \return A rectangle filled with the x and y position of the mouse,
- * in which the width and height are set to 1.
- * Returns a flat Rectangle if the position is not inside the viewport.
+ * \brief Gets the x and y position of this mouse event, if any.
+ * Values are in quest size coordinates.
+ * \param[out] mouse_xy The x and y position of the mouse in this mouse event.
+ * \return \c false if the mouse was not inside the quest displaying during
+ * this event.
  */
-Rectangle InputEvent::get_mouse_position() const {
+bool InputEvent::get_mouse_position(Point& mouse_xy) const {
 
   Debug::check_assertion(is_mouse_event(), "Event is not a mouse event");
 
-  return Video::get_scaled_position(
-      Rectangle(internal_event.button.x, internal_event.button.y, 1, 1));
+  return Video::renderer_to_quest_coordinates(
+      Point(internal_event.button.x, internal_event.button.y), mouse_xy);
 }
 
 /**

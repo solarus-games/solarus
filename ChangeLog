@@ -11,6 +11,7 @@ Engine changes
 * Improve the performance of custom entity collisions.
 * Improve the performance of collisions by using a quadtree.
 * Entities far from the camera are no longer suspended.
+* Fix sol.input.get_mouse_coordinates() (#734).
 
 Lua API changes
 ---------------

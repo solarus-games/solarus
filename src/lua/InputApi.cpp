@@ -232,17 +232,14 @@ int LuaContext::input_api_is_mouse_button_released(lua_State* l) {
 int LuaContext::input_api_get_mouse_position(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const Rectangle& position = InputEvent::get_global_mouse_position();
-
-    if (!position.is_flat()) {
-      lua_pushinteger(l, position.get_x());
-      lua_pushinteger(l, position.get_y());
-    }
-    else {
+    Point mouse_xy;
+    if (!InputEvent::get_global_mouse_position(mouse_xy)) {
       lua_pushnil(l);
       return 1;
     }
 
+    lua_pushinteger(l, mouse_xy.x);
+    lua_pushinteger(l, mouse_xy.y);
     return 2;
   });
 }

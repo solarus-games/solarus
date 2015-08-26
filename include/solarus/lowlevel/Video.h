@@ -18,6 +18,7 @@
 #define SOLARUS_VIDEO_H
 
 #include "solarus/Common.h"
+#include "solarus/lowlevel/Point.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include <vector>
 #include <string>
@@ -88,7 +89,8 @@ class Video {
     static void reset_window_size();
 
     static Rectangle get_viewport();
-    static Rectangle get_scaled_position(const Rectangle& position);
+    static bool window_to_quest_coordinates(const Point& window_xy, Point& quest_xy);
+    static bool renderer_to_quest_coordinates(const Point& renderer_xy, Point& quest_xy);
 
     static void render(const SurfacePtr& quest_surface);
 

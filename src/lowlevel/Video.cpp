@@ -849,10 +849,11 @@ void Video::reset_window_size() {
 }
 
 /**
- * \brief Gets the viewport.
- * The viewport is equal to the windows,
- * without borders and possible black bars.
- * \return A Rectangle filled with the viewport.
+ * \brief Gets the viewport of the renderer.
+ * The viewport is the logical drawing area of the renderer.
+ * x and y indicate the possible black bars.
+ * \return The viewport, in renderer logical coordinates (before window scaling).
+ * Use SDL_RenderGetScale() to convert it to window coordinates.
  */
 Rectangle Video::get_viewport() {
 
@@ -864,38 +865,78 @@ Rectangle Video::get_viewport() {
 }
 
 /**
- * \brief Converts a viewport coordinate to a quest size coordinate.
- * \param position A pixel position relative and scaled to the viewport.
- * The width and height of the parameter are unused.
- * \return A Rectangle filled with the coordinate scaled to quest_size,
- * in which the width and height are set to 1.
- * Returns a flat Rectangle if the position is not inside the viewport.
+ * \brief Converts window coordinates to quest size coordinates.
+ * \param[in] position A position relative to the window, not including
+ * the title bar.
+ * \param[out] The corresponding value in quest coordinates.
+ * \return \c false if the position is not inside the quest display.
  */
-Rectangle Video::get_scaled_position(const Rectangle& position) {
+bool Video::window_to_quest_coordinates(
+    const Point& window_xy,
+    Point& quest_xy
+) {
+  Rectangle viewport = get_viewport();
 
-  const Rectangle& viewport = get_viewport();
-  const double x_position = position.get_x();
-  const double y_position = position.get_y();
+  float scale_x = 0.0;
+  float scale_y = 0.0;
+  SDL_RenderGetScale(get_renderer(), &scale_x, &scale_y);
+
+  const double x_position = window_xy.x - viewport.get_x() * scale_x;
+  const double y_position = window_xy.y - viewport.get_y() * scale_y;
   const double quest_size_width = quest_size.width;
   const double quest_size_height = quest_size.height;
-  const double viewport_width = viewport.get_width();
-  const double viewport_height = viewport.get_height();
+  const double window_width = viewport.get_width() * scale_x;
+  const double window_height = viewport.get_height() * scale_y;
 
   Debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
   Debug::check_assertion(!viewport.is_flat(), "Viewport is not initialized");
 
   if (x_position < 0
       || y_position < 0
-      || x_position > viewport_width
-      || y_position > viewport_height) {
-    return Rectangle();
+      || x_position >= window_width
+      || y_position >= window_height) {
+    return false;
   }
 
-  return Rectangle(
-      x_position * viewport_width / quest_size_width,
-      y_position * viewport_height / quest_size_height,
-      1,
-      1);
+  quest_xy = {
+      (int) (x_position * quest_size_width / window_width),
+      (int) (y_position * quest_size_height / window_height)
+  };
+  return true;
+}
+
+/**
+ * \brief Converts logical renderer coordinates to quest size coordinates.
+ * \param[in] position A position in renderer coordinates, without window scaling.
+ * \param[out] The corresponding value in quest coordinates.
+ * \return \c false if the position is not inside the renderer.
+ */
+bool Video::renderer_to_quest_coordinates(
+    const Point& renderer_xy,
+    Point& quest_xy
+) {
+
+  int renderer_width = 0;
+  int renderer_height = 0;
+  SDL_RenderGetLogicalSize(get_renderer(), &renderer_width, &renderer_height);
+
+  const double quest_width = quest_size.width;
+  const double quest_height = quest_size.height;
+
+  quest_xy = {
+      (int) (renderer_xy.x * quest_width / renderer_width),
+      (int) (renderer_xy.y * quest_height / renderer_height)
+  };
+
+  if (quest_xy.x < 0
+      || quest_xy.y < 0
+      || quest_xy.x >= quest_width
+      || quest_xy.y >= quest_height
+  ) {
+    return false;
+  }
+
+  return true;
 }
 
 }

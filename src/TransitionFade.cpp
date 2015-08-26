@@ -34,6 +34,7 @@ TransitionFade::TransitionFade(Direction direction, Surface& dst_surface):
   Transition(direction),
   finished(false),
   alpha(-1),
+  next_frame_date(0),
   dst_surface(&dst_surface),
   colored(true),
   transition_color(Color::black) {

@@ -21,6 +21,7 @@ Changes that introduce incompatibilities:
 
 Changes that do not introduce incompatibilities:
 
+* Add a function sol.main.get_type() (#744).
 * Add a method block:get_sprite().
 * entity:set_optimization_distance() is now only a hint for the engine.
 

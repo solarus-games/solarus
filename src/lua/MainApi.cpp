@@ -47,6 +47,7 @@ void LuaContext::register_main_module() {
       { "save_settings", main_api_save_settings },
       { "get_distance", main_api_get_distance },
       { "get_angle", main_api_get_angle },
+      { "get_type", main_api_get_type },
       { "get_metatable", main_api_get_metatable },
       { "get_os", main_api_get_os },
       { nullptr, nullptr }
@@ -273,6 +274,31 @@ int LuaContext::main_api_get_angle(lua_State* l) {
     double angle = Geometry::get_angle(x1, y1, x2, y2);
 
     lua_pushnumber(l, angle);
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of sol.main.get_type().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::main_api_get_type(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+
+    luaL_checkany(l, 1);
+    std::string module_name;
+    if (!is_solarus_userdata(l, 1, module_name)) {
+      // Return the same thing as the usual Lua type() function.
+      std::string type_name = luaL_typename(l, 1);
+      push_string(l, type_name);
+    }
+    else {
+      // Remove the "sol." prefix.
+      push_string(l, module_name.substr(4));
+    }
+
     return 1;
   });
 }

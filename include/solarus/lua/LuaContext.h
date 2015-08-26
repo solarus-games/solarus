@@ -428,6 +428,7 @@ class LuaContext {
       main_api_save_settings,
       main_api_get_distance,  // TODO remove?
       main_api_get_angle,     // TODO remove?
+      main_api_get_type,
       main_api_get_metatable,
       main_api_get_os,
 
@@ -1049,6 +1050,11 @@ class LuaContext {
         lua_State* l,
         int index,
         const std::string& module_name
+    );
+    static bool is_solarus_userdata(
+        lua_State* l,
+        int index,
+        std::string& module_name
     );
     static bool is_timer(lua_State* l, int index);
     static TimerPtr check_timer(lua_State* l, int index);

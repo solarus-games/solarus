@@ -83,6 +83,22 @@ bool Entity::State::is_stopping() const {
 }
 
 /**
+ * \brief Returns the entity.
+ * \return The entity.
+ */
+Entity& Entity::State::get_entity() {
+  return hero;
+}
+
+/**
+ * \brief Returns the entity.
+ * \return The entity.
+ */
+const Entity& Entity::State::get_entity() const {
+  return hero;
+}
+
+/**
  * \brief Returns the hero.
  * \return The hero.
  */

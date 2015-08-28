@@ -1609,8 +1609,8 @@ int LuaContext::map_api_open_doors(lua_State* l) {
     bool done = false;
     MapEntities& entities = map.get_entities();
     std::list<Entity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
-    for (auto it = doors.begin(); it != doors.end(); ++it) {
-      Door* door = static_cast<Door*>(*it);
+    for (Entity* entity: doors) {
+      Door* door = static_cast<Door*>(entity);
       if (!door->is_open() || door->is_closing()) {
         door->open();
         done = true;
@@ -1641,8 +1641,8 @@ int LuaContext::map_api_close_doors(lua_State* l) {
     bool done = false;
     MapEntities& entities = map.get_entities();
     std::list<Entity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
-    for (auto it = doors.begin(); it != doors.end(); ++it) {
-      Door* door = static_cast<Door*>(*it);
+    for (Entity* entity: doors) {
+      Door* door = static_cast<Door*>(entity);
       if (door->is_open() || door->is_opening()) {
         door->close();
         done = true;
@@ -1673,8 +1673,8 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
 
     MapEntities& entities = map.get_entities();
     std::list<Entity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
-    for (auto it = doors.begin(); it != doors.end(); ++it) {
-      Door* door = static_cast<Door*>(*it);
+    for (Entity* entity: doors) {
+      Door* door = static_cast<Door*>(entity);
       door->set_open(open);
     }
 
@@ -1738,8 +1738,7 @@ int LuaContext::map_api_get_entities(lua_State* l) {
         map.get_entities().get_entities_with_prefix(prefix);
 
     lua_newtable(l);
-    for (auto it = entities.begin(); it != entities.end(); ++it) {
-      Entity* entity = *it;
+    for (Entity* entity: entities) {
       push_entity(l, *entity);
       lua_pushboolean(l, true);
       lua_rawset(l, -3);
@@ -1810,8 +1809,7 @@ int LuaContext::map_api_get_entities_in_rectangle(lua_State* l) {
     );
 
     lua_newtable(l);
-    for (auto it = entities.begin(); it != entities.end(); ++it) {
-      EntityPtr entity = *it;
+    for (const EntityPtr& entity: entities) {
       push_entity(l, *entity);
       lua_pushboolean(l, true);
       lua_rawset(l, -3);
@@ -1855,8 +1853,8 @@ int LuaContext::map_api_set_entities_enabled(lua_State* l) {
 
     std::list<Entity*> entities =
         map.get_entities().get_entities_with_prefix(prefix);
-    for (auto it = entities.begin(); it != entities.end(); ++it) {
-      (*it)->set_enabled(enabled);
+    for (Entity* entity: entities) {
+      entity->set_enabled(enabled);
     }
 
     return 0;

@@ -37,7 +37,7 @@ namespace Solarus {
  *
  * This constructor can be called only from the subclasses.
  *
- * \param hero The hero to control with this state.
+ * \param entity The entity to control with this state.
  * \param state_name A name describing this state.
  */
 Entity::State::State(Entity& entity, const std::string& state_name):
@@ -53,7 +53,7 @@ Entity::State::State(Entity& entity, const std::string& state_name):
 /**
  * \brief Destructor.
  *
- * The state is destroyed once it is not the current state of the hero anymore.
+ * The state is destroyed once it is not the current state of the entity anymore.
  */
 Entity::State::~State() {
 }
@@ -198,7 +198,7 @@ const GameCommands& Entity::State::get_commands() const {
  * \brief Starts this state.
  *
  * This function is called automatically when this state becomes the active
- * state of the hero.
+ * state of the entity.
  * The initializations should be done here rather than in the constructor.
  *
  * \param previous_state The previous state or nullptr if this is the first state
@@ -246,7 +246,7 @@ void Entity::State::update() {
 /**
  * \brief Draws this state.
  *
- * This function draws the hero's sprites in its current state.
+ * This function draws the entity's sprites in its current state.
  * If your state needs to draw additional elements, you can redefine this function.
  */
 void Entity::State::draw_on_map() {
@@ -306,7 +306,7 @@ void Entity::State::notify_command_pressed(GameCommand command) {
     notify_attack_command_pressed();
     break;
 
-    // move the hero
+    // move the entity
   case GameCommand::RIGHT:
     notify_direction_command_pressed(0);
     break;
@@ -438,7 +438,7 @@ void Entity::State::notify_item_command_released(int /* slot */) {
 /**
  * \brief Changes the map.
  *
- * This function is called when the hero is about to go to another map.
+ * This function is called when the entity is about to go to another map.
  *
  * \param map the new map
  */
@@ -480,7 +480,7 @@ bool Entity::State::is_direction_locked() const {
 /**
  * \brief Returns whether the player can control his movements in the current state.
  *
- * This function returns true if and only if the current movement of the hero is
+ * This function returns true if and only if the current movement of the entity is
  * an instance of PlayerMovement.
  *
  * \return true if the player can control his movements
@@ -490,13 +490,13 @@ bool Entity::State::can_control_movement() const {
 }
 
 /**
- * \brief Returns the direction of the hero's movement as defined by the controls applied by the player
+ * \brief Returns the direction of the entity's movement as defined by the controls applied by the player
  * and the movements allowed is the current state.
  *
  * If he is not moving, -1 is returned.
  * This direction may be different from the real movement direction because of obstacles.
  *
- * \return the hero's wanted direction between 0 and 7, or -1 if he is stopped
+ * \return the entity's wanted direction between 0 and 7, or -1 if he is stopped
  */
 int Entity::State::get_wanted_movement_direction8() const {
   return -1;
@@ -505,7 +505,7 @@ int Entity::State::get_wanted_movement_direction8() const {
 /**
  * \brief Notifies this state that the walking speed has changed.
  *
- * If the hero can walk in this state, the state should modify its movement
+ * If the entity can walk in this state, the state should modify its movement
  * to set the new speed.
  */
 void Entity::State::notify_walking_speed_changed() {
@@ -520,8 +520,8 @@ void Entity::State::notify_layer_changed() {
 /**
  * \brief Notifies this state that the movement has changed.
  *
- * This function is called when the hero's movement direction changes (for instance
- * because the player pressed or released a directional key, or the hero just reached an obstacle).
+ * This function is called when the entity's movement direction changes (for instance
+ * because the player pressed or released a directional key, or the entity just reached an obstacle).
  * The animations and collisions should be updated according to the new movement.
  */
 void Entity::State::notify_movement_changed() {
@@ -534,92 +534,92 @@ void Entity::State::notify_movement_finished() {
 }
 
 /**
- * \brief Notifies this state that the hero has just failed to change its
+ * \brief Notifies this state that the entity has just failed to change its
  * position because of obstacles.
  */
 void Entity::State::notify_obstacle_reached() {
 }
 
 /**
- * \brief Notifies this state that the hero has just changed its
+ * \brief Notifies this state that the entity has just changed its
  * position.
  */
 void Entity::State::notify_position_changed() {
 }
 
 /**
- * \brief Returns whether the hero ignores the effect of deep water in this state.
+ * \brief Returns whether the entity ignores the effect of deep water in this state.
  *
  * Returns false by default.
  *
- * \return true if the hero ignores the effect of deep water in the current state
+ * \return true if the entity ignores the effect of deep water in the current state
  */
 bool Entity::State::can_avoid_deep_water() const {
   return false;
 }
 
 /**
- * \brief Returns whether the hero ignores the effect of holes in this state.
+ * \brief Returns whether the entity ignores the effect of holes in this state.
  *
  * Returns false by default.
  *
- * \return true if the hero ignores the effect of holes in the current state
+ * \return true if the entity ignores the effect of holes in the current state
  */
 bool Entity::State::can_avoid_hole() const {
   return false;
 }
 
 /**
- * \brief Returns whether the hero ignores the effect of ice in this state.
+ * \brief Returns whether the entity ignores the effect of ice in this state.
  *
  * Returns false by default.
  *
- * \return \c true if the hero ignores the effect of ice in the current state.
+ * \return \c true if the entity ignores the effect of ice in the current state.
  */
 bool Entity::State::can_avoid_ice() const {
   return false;
 }
 
 /**
- * \brief Returns whether the hero ignores the effect of lava in this state.
+ * \brief Returns whether the entity ignores the effect of lava in this state.
  *
  * Returns false by default.
  *
- * \return true if the hero ignores the effect of lava in the current state
+ * \return true if the entity ignores the effect of lava in the current state
  */
 bool Entity::State::can_avoid_lava() const {
   return false;
 }
 
 /**
- * \brief Returns whether the hero ignores the effect of prickles in this state.
+ * \brief Returns whether the entity ignores the effect of prickles in this state.
  *
  * Returns false by default.
  *
- * \return true if the hero ignores the effect of prickles in the current state
+ * \return true if the entity ignores the effect of prickles in the current state
  */
 bool Entity::State::can_avoid_prickle() const {
   return false;
 }
 
 /**
- * \brief Returns whether the hero is touching the ground in the current state.
+ * \brief Returns whether the entity is touching the ground in the current state.
  *
  * Returns true by default.
  *
- * \return true if the hero is touching the ground in the current state
+ * \return true if the entity is touching the ground in the current state
  */
 bool Entity::State::is_touching_ground() const {
   return true;
 }
 
 /**
- * \brief Returns whether the hero's current position can be considered
+ * \brief Returns whether the entity's current position can be considered
  * as a place to come back after a bad ground (hole, deep water, etc).
  *
  * Returns is_touching_ground() by default.
  *
- * \return true if the hero can come back here
+ * \return true if the entity can come back here
  */
 bool Entity::State::can_come_from_bad_ground() const {
   return is_touching_ground();
@@ -719,11 +719,11 @@ bool Entity::State::is_teletransporter_obstacle(
 }
 
 /**
- * \brief Returns whether the hero ignores the effect of teletransporters in this state.
+ * \brief Returns whether the entity ignores the effect of teletransporters in this state.
  *
  * Returns false by default.
  *
- * \return true if the hero ignores the effect of teletransporters in this state
+ * \return true if the entity ignores the effect of teletransporters in this state
  */
 bool Entity::State::can_avoid_teletransporter() const {
   return false;
@@ -753,9 +753,9 @@ bool Entity::State::is_stream_obstacle(
 }
 
 /**
- * \brief Returns whether the hero ignores the effect of a stream in this state.
+ * \brief Returns whether the entity ignores the effect of a stream in this state.
  * \param stream A stream.
- * \return \c true if the hero ignores the effect of the stream in this state.
+ * \return \c true if the entity ignores the effect of the stream in this state.
  */
 bool Entity::State::can_avoid_stream(const Stream& /* stream */) const {
   return false;
@@ -768,7 +768,7 @@ bool Entity::State::can_avoid_stream(const Stream& /* stream */) const {
  * when can_avoid_stream() is \c false.
  *
  * \param stream A stream.
- * \return \c true if this state can continue, \c false if the hero should
+ * \return \c true if this state can continue, \c false if the entity should
  * get back to FreeState.
  */
 bool Entity::State::can_persist_on_stream(const Stream& /* stream */) const {
@@ -776,12 +776,12 @@ bool Entity::State::can_persist_on_stream(const Stream& /* stream */) const {
 }
 
 /**
- * \brief Returns whether the hero can take stairs in this state.
- * If false is returned, stairs have no effect (but they are obstacle for the hero).
+ * \brief Returns whether the entity can take stairs in this state.
+ * If false is returned, stairs have no effect (but they are obstacle for the entity).
  *
  * Returns false by default.
  *
- * \return true if the hero can take stairs in this state
+ * \return true if the entity can take stairs in this state
  */
 bool Entity::State::can_take_stairs() const {
   return false;
@@ -794,7 +794,7 @@ bool Entity::State::can_take_stairs() const {
  */
 bool Entity::State::is_stairs_obstacle(const Stairs& stairs) const {
 
-  // The hero may overlap stairs in rare cases,
+  // The entity may overlap stairs in rare cases,
   // for example if he arrived by swimming over them
   // and thus did not activate them.
   // This is allowed and can be used to leave water pools for example.
@@ -819,11 +819,11 @@ bool Entity::State::is_sensor_obstacle(const Sensor& /* sensor */) const {
 
 /**
  * \brief Returns whether a jumper is considered as an obstacle in this state
- * for the hero at the specified position.
+ * for the entity at the specified position.
  * \param jumper A jumper.
- * \param candidate_position Position of the hero to test.
+ * \param candidate_position Position of the entity to test.
  * \return \c true if the jumper is an obstacle in this state with this
- * hero position.
+ * entity position.
  */
 bool Entity::State::is_jumper_obstacle(
     const Jumper& /* jumper */, const Rectangle& /* candidate_position */) const {
@@ -844,22 +844,22 @@ bool Entity::State::is_separator_obstacle(const Separator& /* separator */) cons
 }
 
 /**
- * \brief Returns whether the hero ignores the effect of sensors in this state.
+ * \brief Returns whether the entity ignores the effect of sensors in this state.
  *
  * Returns false by default.
  *
- * \return true if the hero ignores the effect of sensors in this state
+ * \return true if the entity ignores the effect of sensors in this state
  */
 bool Entity::State::can_avoid_sensor() const {
   return false;
 }
 
 /**
- * \brief Returns whether the hero ignores the effect of switches in this state.
+ * \brief Returns whether the entity ignores the effect of switches in this state.
  *
  * Returns false by default.
  *
- * \return true if the hero ignores the effect of switches in this state
+ * \return true if the entity ignores the effect of switches in this state
  */
 bool Entity::State::can_avoid_switch() const {
   return false;
@@ -877,32 +877,32 @@ bool Entity::State::can_sword_hit_crystal() const {
 }
 
 /**
- * \brief Returns whether the hero ignores the effect of explosions in this state.
+ * \brief Returns whether the entity ignores the effect of explosions in this state.
  *
  * Returns false by default.
  *
- * \return true if the hero ignores the effect of explosions in this state
+ * \return true if the entity ignores the effect of explosions in this state
  */
 bool Entity::State::can_avoid_explosion() const {
   return false;
 }
 
 /**
- * \brief Returns whether the hero can trigger a jumper in this state.
+ * \brief Returns whether the entity can trigger a jumper in this state.
  *
  * If false is returned, jumpers have no effect (but they are obstacle for
- * the hero).
+ * the entity).
  *
  * Returns false by default.
  *
- * \return \c true if the hero can use jumpers in this state.
+ * \return \c true if the entity can use jumpers in this state.
  */
 bool Entity::State::can_take_jumper() const {
   return false;
 }
 
 /**
- * \brief Notifies this state that the hero is activating a jumper.
+ * \brief Notifies this state that the entity is activating a jumper.
  *
  * Does nothing by default.
  * Redefine this function if you want to perform the jump in your state.
@@ -913,7 +913,7 @@ void Entity::State::notify_jumper_activated(Jumper& /* jumper */) {
 }
 
 /**
- * \brief Notifies this state that the hero has just attacked an enemy.
+ * \brief Notifies this state that the entity has just attacked an enemy.
  *
  * This function is called even if this attack was not successful.
  *
@@ -945,43 +945,43 @@ int Entity::State::get_sword_damage_factor() const {
 }
 
 /**
- * \brief Returns whether the hero can be hurt in this state.
+ * \brief Returns whether the entity can be hurt in this state.
  *
  * Returns false by default.
  *
- * \param attacker an attacker that is trying to hurt the hero
+ * \param attacker an attacker that is trying to hurt the entity
  * (or nullptr if the source of the attack is not an enemy)
- * \return true if the hero can be hurt in this state
+ * \return true if the entity can be hurt in this state
  */
 bool Entity::State::can_be_hurt(Entity* /* attacker */) const {
   return false;
 }
 
 /**
- * \brief Returns whether the hero can walk normally and interact with entities
+ * \brief Returns whether the entity can walk normally and interact with entities
  * in this state.
  *
  * Returns false by default.
  *
- * \return true if the hero can walk normally
+ * \return true if the entity can walk normally
  */
 bool Entity::State::is_free() const {
   return false;
 }
 
 /**
- * \brief Returns whether the hero is using an equipment item in this state.
+ * \brief Returns whether the entity is using an equipment item in this state.
  *
  * Returns false by default.
  *
- * \return true if the hero is using an equipment item.
+ * \return true if the entity is using an equipment item.
  */
 bool Entity::State::is_using_item() const {
   return false;
 }
 
 /**
- * \brief When the hero is using an equipment item, returns that item.
+ * \brief When the entity is using an equipment item, returns that item.
  * \return The current equipment item.
  */
 EquipmentItemUsage& Entity::State::get_item_being_used() {
@@ -991,59 +991,59 @@ EquipmentItemUsage& Entity::State::get_item_being_used() {
 }
 
 /**
- * \brief Returns whether the hero is brandishing a treasure in this state.
+ * \brief Returns whether the entity is brandishing a treasure in this state.
  *
  * Returns false by default.
  *
- * \return \c true if the hero is brandishing a treasure.
+ * \return \c true if the entity is brandishing a treasure.
  */
 bool Entity::State::is_brandishing_treasure() const {
   return false;
 }
 
 /**
- * \brief Returns whether the hero is grabbing or pulling an entity in this state.
+ * \brief Returns whether the entity is grabbing or pulling an entity in this state.
  *
  * Returns false by default.
  *
- * \return true if the hero is grabbing or pulling an entity
+ * \return true if the entity is grabbing or pulling an entity
  */
 bool Entity::State::is_grabbing_or_pulling() const {
   return false;
 }
 
 /**
- * \brief Returns whether the hero is grabbing and moving an entity in this state.
+ * \brief Returns whether the entity is grabbing and moving an entity in this state.
  *
  * If he is not grabbing any entity, false is returned.
  * Returns false by default.
  *
- * \return true if the hero is grabbing and moving an entity
+ * \return true if the entity is grabbing and moving an entity
  */
 bool Entity::State::is_moving_grabbed_entity() const {
   return false;
 }
 
 /**
- * \brief Notifies the hero that the entity he is pushing or pulling in this state
+ * \brief Notifies the entity that the entity he is pushing or pulling in this state
  * cannot move anymore because of a collision.
  */
 void Entity::State::notify_grabbed_entity_collision() {
 }
 
 /**
- * \brief Tests whether the hero is cutting with his sword the specified detector
+ * \brief Tests whether the entity is cutting with his sword the specified detector
  * for which a collision was detected.
  *
  * When the sword sprite collides with a detector,
- * this function can be called to determine whether the hero is
+ * this function can be called to determine whether the entity is
  * really cutting this particular detector precisely.
- * This depends on the hero's state, his direction and his
+ * This depends on the entity's state, his direction and his
  * distance to the detector.
  * This function assumes that there is already a collision
  * between the sword sprite and the detector's sprite.
  * This function should be called to check whether the
- * hero wants to cut a bush or some grass.
+ * entity wants to cut a bush or some grass.
  * Returns false by default.
  *
  * \param detector the detector to check
@@ -1054,23 +1054,23 @@ bool Entity::State::is_cutting_with_sword(Detector& /* detector */) {
 }
 
 /**
- * \brief Returns whether the hero can swing his sword in this state.
+ * \brief Returns whether the entity can swing his sword in this state.
  *
  * Returns false by default.
  *
- * \return true if the hero can swing his sword in this state
+ * \return true if the entity can swing his sword in this state
  */
 bool Entity::State::can_start_sword() const {
   return false;
 }
 
 /**
- * \brief Returns whether the hero can pick a treasure in this state.
+ * \brief Returns whether the entity can pick a treasure in this state.
  *
  * Returns false by default.
  *
  * \param item The equipment item to obtain.
- * \return true if the hero can pick that treasure in this state.
+ * \return true if the entity can pick that treasure in this state.
  */
 bool Entity::State::can_pick_treasure(EquipmentItem& /* item */) const {
   return false;
@@ -1088,42 +1088,42 @@ bool Entity::State::can_use_shield() const {
 }
 
 /**
- * \brief Returns whether the hero can use an equipment item in this state.
+ * \brief Returns whether the entity can use an equipment item in this state.
  *
  * Returns false by default.
  *
  * \param item The equipment item to check.
- * \return true if the hero can use an equipment item in this state.
+ * \return true if the entity can use an equipment item in this state.
  */
 bool Entity::State::can_start_item(EquipmentItem& /* item */) const {
   return false;
 }
 
 /**
- * \brief Returns whether the hero is currently carrying an item in this state.
+ * \brief Returns whether the entity is currently carrying an item in this state.
  *
  * This function returns true if get_carried_item() is not nullptr.
- * Redefine get_carried_item() if the hero is able to carry an item in this state.
+ * Redefine get_carried_item() if the entity is able to carry an item in this state.
  *
- * \return true if the hero is currently carrying an item in this state
+ * \return true if the entity is currently carrying an item in this state
  */
 bool Entity::State::is_carrying_item() const {
   return get_carried_item() != nullptr;
 }
 
 /**
- * \brief Returns the item currently carried by the hero in this state, if any.
+ * \brief Returns the item currently carried by the entity in this state, if any.
  *
- * Redefine this function to make the hero able to carry an item in this state.
+ * Redefine this function to make the entity able to carry an item in this state.
  *
- * \return the item carried by the hero, or nullptr
+ * \return the item carried by the entity, or nullptr
  */
 std::shared_ptr<CarriedItem> Entity::State::get_carried_item() const {
   return nullptr;
 }
 
 /**
- * \brief Returns the action to do with an item previously carried by the hero when this state starts.
+ * \brief Returns the action to do with an item previously carried by the entity when this state starts.
  *
  * Returns CarriedItem::BEHAVIOR_THROW by default.
  *

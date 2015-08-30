@@ -370,6 +370,11 @@ void Pickable::check_bad_ground() {
     return;
   }
 
+  if (get_movement() != nullptr && !get_movement()->is_finished()) {
+    // The falling movement is not finished yet.
+    return;
+  }
+
   if (System::now() <= appear_date + 200) {
     // The pickable appeared very recently, let the user see it for
     // a short time at least.

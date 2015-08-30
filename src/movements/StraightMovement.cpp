@@ -241,8 +241,6 @@ double StraightMovement::get_angle() const {
  * \brief Changes the direction of the movement vector, keeping the same speed.
  *
  * x_speed and y_speed are recomputed so that the total speed is unchanged.
- * Warning: if x_speed and y_speed are both equal to zero, this function
- * stops the program on an error message.
  *
  * \param angle the new movement direction in radians
  */
@@ -544,7 +542,9 @@ void StraightMovement::update_non_smooth_x() {
   if (x_move != 0) {
 
     // make the move only if there is no collision
-    if (!test_collision_with_obstacles(x_move, y_move)) {
+    uint32_t now = System::now();
+    int dy = now >= next_move_date_y ? y_move : 0;
+    if (!test_collision_with_obstacles(x_move, dy)) {
       translate_x(x_move);
     }
     else {
@@ -563,7 +563,9 @@ void StraightMovement::update_non_smooth_y() {
   if (y_move != 0) { // if it's time to try a move
 
     // make the move only if there is no collision
-    if (!test_collision_with_obstacles(x_move, y_move)) {
+    uint32_t now = System::now();
+    int dx = now >= next_move_date_x ? x_move : 0;
+    if (!test_collision_with_obstacles(dx, y_move)) {
       translate_y(y_move);
     }
     else {

@@ -39,6 +39,7 @@ ___________________________
 
 Bug fixes for the 1.4 release.
 
+* Fix collision detection of custom entities that do not move.
 * Fix collisions triggered for removed entities (#710).
 
 __________________________

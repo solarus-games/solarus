@@ -28,7 +28,15 @@ class Hero::BaseState: public Entity::State {
 
   public:
 
+    virtual void start(const State* previous_state) override;
+
+    Hero& get_hero();
+    const Hero& get_hero() const;
+
     void notify_attack_command_pressed();
+    virtual void notify_item_command_pressed(int slot) override;
+
+    bool is_jumper_obstacle(const Jumper& jumper, const Rectangle& candidate_position) const;
 
   protected:
 

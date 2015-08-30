@@ -144,7 +144,7 @@ class Entity::State {
 
   protected:
 
-    State(Hero& hero, const std::string& state_name);
+    State(Entity& entity, const std::string& state_name);
 
     bool is_current_state() const;
     bool is_stopping() const;
@@ -162,14 +162,12 @@ class Entity::State {
     const GameCommands& get_commands() const;
     Entity& get_entity();
     const Entity& get_entity() const;
-    Hero& get_hero();
-    const Hero& get_hero() const;
     HeroSprites& get_sprites();
     const HeroSprites& get_sprites() const;
 
   private:
 
-    Hero& hero;               /**< The hero controlled by this state. */
+    Entity& entity;           /**< The entity controlled by this state. */
     bool suspended;           /**< Whether this state is suspended. */
     uint32_t when_suspended;  /**< When this state was suspended. */
     Map* map;                 /**< The current map (it may change during this state). */

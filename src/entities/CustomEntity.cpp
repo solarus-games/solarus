@@ -740,6 +740,8 @@ void CustomEntity::add_collision_test(
       collision_test,
       callback_ref
   );
+
+  check_collision_with_detectors();
 }
 
 /**
@@ -762,6 +764,8 @@ void CustomEntity::add_collision_test(
       collision_test_ref,
       callback_ref
   );
+
+  check_collision_with_detectors();
 }
 
 /**

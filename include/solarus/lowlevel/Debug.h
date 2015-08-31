@@ -45,6 +45,19 @@ void SOLARUS_API check_assertion(bool assertion, const char* error_message);
 void SOLARUS_API check_assertion(bool assertion, const std::string& error_message);
 void SOLARUS_API die(const std::string& error_message);
 
+/**
+ * \brief Execute an arbitrary function in debug mode.
+ */
+template<typename Function>
+void execute(Function&& func)
+{
+#ifndef NDEBUG
+    func();
+#else
+    (void) func;
+#endif
+}
+
 }
 
 }

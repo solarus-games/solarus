@@ -30,8 +30,8 @@ class Hero::BaseState: public Entity::State {
 
     virtual void start(const State* previous_state) override;
 
-    Hero& get_hero();
-    const Hero& get_hero() const;
+    virtual Hero& get_entity() override;
+    virtual const Hero& get_entity() const override;
 
     void notify_attack_command_pressed();
     virtual void notify_item_command_pressed(int slot) override;

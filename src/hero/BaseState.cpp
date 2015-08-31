@@ -47,7 +47,7 @@ void Hero::BaseState::start(const State* previous_state) {
   Entity::State::start(previous_state);
 
   // Notify Lua.
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (hero.is_on_map()) {
     get_lua_context().hero_on_state_changed(hero, get_name());
   }
@@ -57,23 +57,23 @@ void Hero::BaseState::start(const State* previous_state) {
  * \brief Returns the hero of this state.
  * \return The hero.
  */
-inline Hero& Hero::BaseState::get_hero() {
-  return static_cast<Hero&>(get_entity());
+inline Hero& Hero::BaseState::get_entity() {
+  return static_cast<Hero&>(Entity::State::get_entity());
 }
 
 /**
  * \brief Returns the hero of this state.
  * \return The hero.
  */
-inline const Hero& Hero::BaseState::get_hero() const {
-  return static_cast<const Hero&>(get_entity());
+inline const Hero& Hero::BaseState::get_entity() const {
+  return static_cast<const Hero&>(Entity::State::get_entity());
 }
 
 /**
  * \copydoc Entity::State::notify_attack_command_pressed
  */
 void Hero::BaseState::notify_attack_command_pressed() {
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
 
   if (!hero.is_suspended()
       && get_keys_effect().get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD
@@ -88,7 +88,7 @@ void Hero::BaseState::notify_attack_command_pressed() {
  * \param slot The slot activated (1 or 2).
  */
 void Hero::BaseState::notify_item_command_pressed(int slot) {
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
 
   EquipmentItem* item = get_equipment().get_item_assigned(slot);
 
@@ -107,7 +107,7 @@ void Hero::BaseState::notify_item_command_pressed(int slot) {
  */
 bool Hero::BaseState::is_jumper_obstacle(
     const Jumper& jumper, const Rectangle& candidate_position) const {
-  const Hero& hero = get_hero();
+  const Hero& hero = get_entity();
 
   if (jumper.overlaps_jumping_region(hero.get_bounding_box(), false)) {
     // The hero already overlaps the active part of the jumper.

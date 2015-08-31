@@ -44,7 +44,7 @@ void Hero::HookshotState::start(const State* previous_state) {
   State::start(previous_state);
 
   get_sprites().set_animation("hookshot");
-  hookshot = std::make_shared<Hookshot>(get_hero());
+  hookshot = std::make_shared<Hookshot>(get_entity());
   get_entities().add_entity(hookshot);
 }
 
@@ -59,7 +59,7 @@ void Hero::HookshotState::stop(const State* next_state) {
   if (!hookshot->is_being_removed()) {
     // the hookshot state was stopped by something other than the hookshot (e.g. an enemy)
     hookshot->remove_from_map();
-    get_hero().clear_movement();
+    get_entity().clear_movement();
   }
 }
 
@@ -134,7 +134,7 @@ bool Hero::HookshotState::can_avoid_stream(const Stream& /* stream */) const {
 bool Hero::HookshotState::is_stairs_obstacle(const Stairs& /* stairs */) const {
 
   // allow to fly over stairs covered by water
-  return get_hero().get_ground_below() != Ground::DEEP_WATER;
+  return get_entity().get_ground_below() != Ground::DEEP_WATER;
 }
 
 /**
@@ -200,7 +200,7 @@ void Hero::HookshotState::notify_obstacle_reached() {
  */
 void Hero::HookshotState::finish_movement() {
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   const Rectangle& hero_position = hero.get_bounding_box();
   Layer layer = hero.get_layer();
   Map& map = get_map();

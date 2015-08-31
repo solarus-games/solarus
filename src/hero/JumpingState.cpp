@@ -78,7 +78,7 @@ void Hero::JumpingState::start(const State* previous_state) {
   }
 
   // jump
-  get_hero().set_movement(movement);
+  get_entity().set_movement(movement);
 
   if (with_sound) {
     Sound::play("jump");
@@ -93,7 +93,7 @@ void Hero::JumpingState::stop(const State* next_state) {
 
   State::stop(next_state);
 
-  get_hero().clear_movement();
+  get_entity().clear_movement();
 
   if (carried_item != nullptr) {
 
@@ -148,7 +148,7 @@ void Hero::JumpingState::update() {
   }
 
   if (movement->is_finished()) {
-    get_hero().start_state_from_ground();
+    get_entity().start_state_from_ground();
   }
 }
 
@@ -171,7 +171,7 @@ void Hero::JumpingState::set_suspended(bool suspended) {
 void Hero::JumpingState::notify_layer_changed() {
 
   if (carried_item != nullptr) {
-    carried_item->set_layer(get_hero().get_layer());
+    carried_item->set_layer(get_entity().get_layer());
   }
 }
 
@@ -266,7 +266,7 @@ bool Hero::JumpingState::can_avoid_stream(const Stream& /* stream */) const {
  */
 bool Hero::JumpingState::is_stairs_obstacle(const Stairs& /* stairs */) const {
   // allow to jump over stairs covered by water
-  return get_hero().get_ground_below() != Ground::DEEP_WATER;
+  return get_entity().get_ground_below() != Ground::DEEP_WATER;
 }
 
 /**

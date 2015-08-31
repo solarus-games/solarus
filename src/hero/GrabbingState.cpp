@@ -59,7 +59,7 @@ void Hero::GrabbingState::update() {
   int sprite_direction8 = get_sprites().get_animation_direction8();
 
   // release the obstacle
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (!get_commands().is_command_pressed(GameCommand::ACTION)) {
     hero.set_state(new FreeState(hero));
   }

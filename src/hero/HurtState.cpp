@@ -62,7 +62,7 @@ void Hero::HurtState::start(const State* previous_state) {
 
   Sound::play("hero_hurt");
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   const uint32_t invincibility_duration = 2000;
   hero.set_invincible(true, invincibility_duration);
   get_sprites().set_animation_hurt();
@@ -80,7 +80,7 @@ void Hero::HurtState::start(const State* previous_state) {
   end_hurt_date = System::now() + 200;
 
   // See if the script customizes how the hero takes damages.
-  bool handled = get_lua_context().hero_on_taking_damage(get_hero(), damage);
+  bool handled = get_lua_context().hero_on_taking_damage(hero, damage);
 
   if (!handled && damage != 0) {
     // No customized damage: perform the default calculation.
@@ -103,7 +103,7 @@ void Hero::HurtState::stop(const State* next_state) {
 
   State::stop(next_state);
 
-  get_hero().clear_movement();
+  get_entity().clear_movement();
 }
 
 /**
@@ -113,7 +113,7 @@ void Hero::HurtState::update() {
 
   State::update();
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if ((hero.get_movement() != nullptr && hero.get_movement()->is_finished())
       || System::now() >= end_hurt_date) {
     // The movement may be finished, or the end date may be reached

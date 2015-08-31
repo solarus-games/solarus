@@ -61,7 +61,7 @@ void Hero::SwordTappingState::stop(const State* next_state) {
 
   State::stop(next_state);
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (hero.get_movement() != nullptr) {
     // stop the movement of being pushed by an enemy after hitting him
     hero.clear_movement();
@@ -75,7 +75,7 @@ void Hero::SwordTappingState::update() {
 
   State::update();
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (hero.get_movement() == nullptr) {
     // the hero is not being pushed after hitting an enemy
 
@@ -161,7 +161,7 @@ bool Hero::SwordTappingState::can_use_shield() const {
  */
 bool Hero::SwordTappingState::is_cutting_with_sword(Detector& detector) {
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   return detector.is_obstacle_for(hero)         // only obstacle entities can be cut
     && hero.get_facing_entity() == &detector    // only one entity at a time
     && get_sprites().get_current_frame() >= 3;  // wait until the animation shows an appropriate frame
@@ -176,7 +176,7 @@ bool Hero::SwordTappingState::is_teletransporter_obstacle(
     const Teletransporter& /* teletransporter */) const {
 
   // if the hero was pushed by an enemy, don't go on a teletransporter
-  return get_hero().get_movement() != nullptr;
+  return get_entity().get_movement() != nullptr;
 }
 
 /**
@@ -186,7 +186,7 @@ bool Hero::SwordTappingState::is_teletransporter_obstacle(
 void Hero::SwordTappingState::notify_obstacle_reached() {
 
   // the hero reached an obstacle while being pushed after hitting an enemy
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   hero.clear_movement();
   hero.set_state(new FreeState(hero));
 }
@@ -205,7 +205,7 @@ void Hero::SwordTappingState::notify_attacked_enemy(
 
     if (victim.get_push_hero_on_sword()) {
 
-      Hero& hero = get_hero();
+      Hero& hero = get_entity();
       double angle = victim.get_angle(hero, victim_sprite, nullptr);
       std::shared_ptr<StraightMovement> movement =
           std::make_shared<StraightMovement>(false, true);

@@ -57,7 +57,7 @@ void Hero::PullingState::stop(const State* next_state) {
   State::stop(next_state);
 
   if (is_moving_grabbed_entity()) {
-    get_hero().clear_movement();
+    get_entity().clear_movement();
     pulled_entity->update();
     stop_moving_pulled_entity();
   }
@@ -70,7 +70,7 @@ void Hero::PullingState::update() {
 
   State::update();
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (!is_moving_grabbed_entity()) {
 
     int wanted_direction8 = get_commands().get_wanted_direction8();
@@ -193,7 +193,7 @@ void Hero::PullingState::notify_position_changed() {
  */
 void Hero::PullingState::stop_moving_pulled_entity() {
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (pulled_entity != nullptr) {
     pulled_entity->stop_movement_by_hero();
 

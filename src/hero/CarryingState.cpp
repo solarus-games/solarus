@@ -121,7 +121,7 @@ void Hero::CarryingState::notify_layer_changed() {
   PlayerMovementState::notify_layer_changed();
 
   if (carried_item != nullptr) {
-    carried_item->set_layer(get_hero().get_layer());
+    carried_item->set_layer(get_entity().get_layer());
   }
 }
 
@@ -153,7 +153,7 @@ void Hero::CarryingState::update() {
 
       if (carried_item->is_broken()) {
         carried_item = nullptr;
-        Hero& hero = get_hero();
+        Hero& hero = get_entity();
         hero.set_state(new FreeState(hero));
       }
     }
@@ -167,7 +167,7 @@ void Hero::CarryingState::notify_action_command_pressed() {
 
   if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_THROW) {
     throw_item();
-    Hero& hero = get_hero();
+    Hero& hero = get_entity();
     hero.set_state(new FreeState(hero));
   }
 }

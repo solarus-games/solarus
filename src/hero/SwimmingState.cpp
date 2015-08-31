@@ -44,7 +44,7 @@ void Hero::SwimmingState::start(const State* previous_state) {
   PlayerMovementState::start(previous_state);
 
   get_equipment().notify_ability_used(Ability::SWIM);
-  get_hero().set_walking_speed(get_slow_swimming_speed());
+  get_entity().set_walking_speed(get_slow_swimming_speed());
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_SWIM);
 }
 
@@ -56,7 +56,7 @@ void Hero::SwimmingState::stop(const State* next_state) {
 
   PlayerMovementState::stop(next_state);
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   hero.set_walking_speed(hero.get_normal_walking_speed());
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 }
@@ -72,7 +72,7 @@ void Hero::SwimmingState::update() {
     return;
   }
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (hero.get_ground_below() != Ground::DEEP_WATER) {
     hero.set_state(new FreeState(hero));
   }
@@ -142,7 +142,7 @@ void Hero::SwimmingState::try_swim_faster() {
 
   if (!fast_swimming) {
     fast_swimming = true;
-    get_hero().set_walking_speed(get_fast_swimming_speed());
+    get_entity().set_walking_speed(get_fast_swimming_speed());
     get_sprites().set_animation_swimming_fast();
     Sound::play("swim");
     end_fast_swim_date = System::now() + 600;
@@ -154,7 +154,7 @@ void Hero::SwimmingState::try_swim_faster() {
  * \return the swimming speed in pixels per second
  */
 int Hero::SwimmingState::get_slow_swimming_speed() const {
-  return get_hero().get_normal_walking_speed() / 2;
+  return get_entity().get_normal_walking_speed() / 2;
 }
 
 /**
@@ -162,7 +162,7 @@ int Hero::SwimmingState::get_slow_swimming_speed() const {
  * \return the faster swimming speed in pixels per second
  */
 int Hero::SwimmingState::get_fast_swimming_speed() const {
-  return get_hero().get_normal_walking_speed();
+  return get_entity().get_normal_walking_speed();
 }
 
 /**

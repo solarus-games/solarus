@@ -78,13 +78,14 @@ std::shared_ptr<const PlayerMovement> Hero::PlayerMovementState::get_player_move
  * \param previous_state The previous state (for information).
  */
 void Hero::PlayerMovementState::start(const State* previous_state) {
+  Hero& hero = get_entity();
 
   State::start(previous_state);
 
   player_movement = std::make_shared<PlayerMovement>(
-      get_hero().get_walking_speed()
+      hero.get_walking_speed()
   );
-  get_hero().set_movement(player_movement);
+  hero.set_movement(player_movement);
 
   if (is_current_state()) { // yes, the state may have already changed
     get_player_movement()->compute_movement();
@@ -112,7 +113,7 @@ void Hero::PlayerMovementState::stop(const State* next_state) {
 
   State::stop(next_state);
 
-  get_hero().clear_movement();
+  get_entity().clear_movement();
   get_sprites().set_animation_stopped_normal();
   cancel_jumper();
   player_movement = nullptr;
@@ -138,6 +139,7 @@ void Hero::PlayerMovementState::set_map(Map &map) {
  * so when you call it from a subclass, call is_current_state() then.
  */
 void Hero::PlayerMovementState::update() {
+  Hero& hero = get_entity();
 
   State::update();
 
@@ -148,7 +150,7 @@ void Hero::PlayerMovementState::update() {
       const int jump_direction8 = current_jumper->get_direction();
       if (!current_jumper->is_enabled()
           || current_jumper->is_being_removed()
-          || !current_jumper->is_in_jump_position(get_hero(), get_hero().get_bounding_box(), false)) {
+          || !current_jumper->is_in_jump_position(hero, hero.get_bounding_box(), false)) {
 
         // Cancel the jumper preparation.
         current_jumper = nullptr;
@@ -156,7 +158,7 @@ void Hero::PlayerMovementState::update() {
       }
       else if (System::now() >= jumper_start_date) {
         // Time to make the jump and everything is okay.
-        get_hero().start_jumping(
+        hero.start_jumping(
             jump_direction8, current_jumper->get_jump_length(), true, true);
       }
     }
@@ -197,7 +199,7 @@ void Hero::PlayerMovementState::set_animation_walking() {
 bool Hero::PlayerMovementState::can_control_movement() const {
 
   // The player has control, unless a script has set another movement.
-  return get_hero().get_movement().get() == get_player_movement().get();
+  return get_entity().get_movement().get() == get_player_movement().get();
 }
 
 /**
@@ -222,7 +224,7 @@ int Hero::PlayerMovementState::get_wanted_movement_direction8() const {
 void Hero::PlayerMovementState::notify_walking_speed_changed() {
 
   if (get_player_movement() != nullptr) {
-    get_player_movement()->set_moving_speed(get_hero().get_walking_speed());
+    get_player_movement()->set_moving_speed(get_entity().get_walking_speed());
   }
 }
 
@@ -262,7 +264,7 @@ void Hero::PlayerMovementState::notify_position_changed() {
  * \brief Notifies this state that the layer has changed.
  */
 void Hero::PlayerMovementState::notify_layer_changed() {
-  get_hero().update_movement();
+  get_entity().update_movement();
 }
 
 /**

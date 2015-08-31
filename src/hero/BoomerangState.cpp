@@ -60,7 +60,7 @@ void Hero::BoomerangState::start(const State* previous_state) {
   State::start(previous_state);
 
   if (get_map().get_entities().is_boomerang_present()) {
-    Hero& hero = get_hero();
+    Hero& hero = get_entity();
     hero.set_state(new FreeState(hero));
   }
   else {
@@ -76,7 +76,7 @@ void Hero::BoomerangState::update() {
 
   State::update();
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (hero.is_animation_finished()) {
 
     if (direction_pressed8 == -1) {
@@ -93,7 +93,7 @@ void Hero::BoomerangState::update() {
     }
     double angle = Geometry::degrees_to_radians(boomerang_direction8 * 45);
     get_entities().add_entity(std::make_shared<Boomerang>(
-        std::static_pointer_cast<Hero>(get_hero().shared_from_this()),
+        std::static_pointer_cast<Hero>(get_entity().shared_from_this()),
         max_distance,
         speed,
         angle,

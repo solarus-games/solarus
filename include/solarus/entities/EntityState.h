@@ -160,8 +160,8 @@ class Entity::State {
     KeysEffect& get_keys_effect();
     GameCommands& get_commands();
     const GameCommands& get_commands() const;
-    Entity& get_entity();
-    const Entity& get_entity() const;
+    virtual Entity& get_entity();
+    virtual const Entity& get_entity() const;
     HeroSprites& get_sprites();
     const HeroSprites& get_sprites() const;
 

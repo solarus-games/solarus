@@ -49,7 +49,7 @@ void Hero::BowState::update() {
 
   State::update();
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (get_sprites().is_animation_finished()) {
     Sound::play("bow");
     get_entities().add_entity(std::make_shared<Arrow>(hero));

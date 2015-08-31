@@ -94,7 +94,7 @@ void Hero::TreasureState::draw_on_map() {
 
   State::draw_on_map();
 
-  const Hero& hero = get_hero();
+  const Hero& hero = get_entity();
   int x = hero.get_x();
   int y = hero.get_y();
 

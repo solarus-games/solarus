@@ -56,7 +56,7 @@ void Hero::LiftingState::start(const State* previous_state) {
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
   get_sprites().set_animation_lifting();
   get_sprites().set_lifted_item(lifted_item);
-  get_hero().set_facing_entity(nullptr);
+  get_entity().set_facing_entity(nullptr);
 
   get_equipment().notify_ability_used(Ability::LIFT);
 }
@@ -100,7 +100,7 @@ void Hero::LiftingState::update() {
 
   if (!is_suspended() && !lifted_item->is_being_lifted()) { // the item has finished being lifted
 
-    Hero& hero = get_hero();
+    Hero& hero = get_entity();
     std::shared_ptr<CarriedItem> carried_item = lifted_item;
     lifted_item = nullptr; // we do not take care of the carried item from this state anymore
     hero.set_state(new CarryingState(hero, carried_item));

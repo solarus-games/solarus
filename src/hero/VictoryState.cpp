@@ -85,7 +85,7 @@ void Hero::VictoryState::update() {
     }
     else {
       // By default, get back to the normal state.
-      Hero& hero = get_hero();
+      Hero& hero = get_entity();
       hero.set_state(new FreeState(hero));
     }
   }

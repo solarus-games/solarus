@@ -95,7 +95,7 @@ void Hero::FreeState::set_suspended(bool suspended) {
  */
 void Hero::FreeState::notify_action_command_pressed() {
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   Detector* facing_entity = hero.get_facing_entity();
   bool facing_entity_interaction = false;
   if (facing_entity != nullptr) {
@@ -131,7 +131,7 @@ void Hero::FreeState::notify_obstacle_reached() {
 
   PlayerMovementState::notify_obstacle_reached();
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (hero.is_facing_point_on_obstacle()) { // he is really facing an obstacle
 
     uint32_t now = System::now();
@@ -169,7 +169,7 @@ bool Hero::FreeState::can_start_sword() const {
  */
 bool Hero::FreeState::can_start_item(EquipmentItem& /* item */) const {
 
-  return get_hero().get_ground_below() != Ground::HOLE;
+  return get_entity().get_ground_below() != Ground::HOLE;
 }
 
 /**

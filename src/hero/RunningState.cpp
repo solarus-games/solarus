@@ -72,7 +72,7 @@ void Hero::RunningState::stop(const State* next_state) {
   State::stop(next_state);
 
   if (phase != 0) {
-    get_hero().clear_movement();
+    get_entity().clear_movement();
   }
 }
 
@@ -94,7 +94,7 @@ void Hero::RunningState::update() {
     next_sound_date = now + 170;
   }
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (phase == 0) {
 
     if (now >= next_phase_date) {
@@ -161,7 +161,7 @@ void Hero::RunningState::notify_direction_command_pressed(int direction4) {
 
   if (!is_bouncing()
       && direction4 != get_sprites().get_animation_direction()) {
-    Hero& hero = get_hero();
+    Hero& hero = get_entity();
     hero.set_state(new FreeState(hero));
   }
 }
@@ -176,7 +176,7 @@ void Hero::RunningState::notify_obstacle_reached() {
 
   if (phase == 1) {
     int opposite_direction = (get_sprites().get_animation_direction8() + 4) % 8;
-    get_hero().set_movement(std::make_shared<JumpMovement>(
+    get_entity().set_movement(std::make_shared<JumpMovement>(
         opposite_direction, 32, 64, false
     ));
     get_sprites().set_animation_hurt();
@@ -226,7 +226,7 @@ bool Hero::RunningState::can_take_jumper() const {
 void Hero::RunningState::notify_jumper_activated(Jumper& jumper) {
 
   // Jump immediately.
-  get_hero().start_jumping(
+  get_entity().start_jumping(
       jumper.get_direction(),
       jumper.get_jump_length(),
       true,
@@ -363,7 +363,7 @@ bool Hero::RunningState::is_cutting_with_sword(Detector& detector) {
 
   // check the distance to the detector
   const int distance = 8;
-  Point tested_point = get_hero().get_facing_point();
+  Point tested_point = get_entity().get_facing_point();
 
   switch (get_sprites().get_animation_direction()) {
 

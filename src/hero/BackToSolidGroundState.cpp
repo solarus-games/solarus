@@ -61,7 +61,7 @@ void Hero::BackToSolidGroundState::start(const State* previous_state) {
 
   State::start(previous_state);
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   hero.set_movement(std::make_shared<TargetMovement>(
       nullptr, target_xy.x, target_xy.y, 144, true
   ));
@@ -77,7 +77,7 @@ void Hero::BackToSolidGroundState::stop(const State* next_state) {
 
   State::stop(next_state);
 
-  get_hero().clear_movement();
+  get_entity().clear_movement();
 }
 
 /**
@@ -88,7 +88,7 @@ void Hero::BackToSolidGroundState::update() {
   State::update();
 
   // the current movement is an instance of TargetMovement
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (hero.get_movement()->is_finished()) {
 
     uint32_t now = System::now();

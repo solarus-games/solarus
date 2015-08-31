@@ -78,7 +78,7 @@ void Hero::SwordLoadingState::update() {
     // the player has just released the sword key
 
     // stop loading the sword, go to the normal state or make a spin attack
-    Hero& hero = get_hero();
+    Hero& hero = get_entity();
     if (!sword_loaded) {
       // the sword was not loaded yet: go to the normal state
       hero.set_state(new FreeState(hero));
@@ -111,7 +111,7 @@ void Hero::SwordLoadingState::notify_obstacle_reached() {
 
   PlayerMovementState::notify_obstacle_reached();
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   Detector* facing_entity = hero.get_facing_entity();
 
   if (hero.is_facing_point_on_obstacle()     // he is really facing an obstacle
@@ -134,7 +134,7 @@ void Hero::SwordLoadingState::notify_attacked_enemy(
 
   if (result.type != EnemyReaction::ReactionType::IGNORED && attack == EnemyAttack::SWORD) {
 
-    Hero& hero = get_hero();
+    Hero& hero = get_entity();
     if (victim.get_push_hero_on_sword()) {
       // let SwordTappingState do the job so that no player movement interferes
       State* state = new SwordTappingState(hero);

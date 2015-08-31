@@ -53,7 +53,7 @@ void Hero::SpinAttackState::start(const State* previous_state) {
   play_spin_attack_sound();
 
   // start the animation
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (get_equipment().has_ability(Ability::SWORD_KNOWLEDGE)) {
     get_sprites().set_animation_super_spin_attack();
     std::shared_ptr<CircleMovement> movement =
@@ -79,7 +79,7 @@ void Hero::SpinAttackState::stop(const State* next_state) {
 
   State::stop(next_state);
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (hero.get_movement() != nullptr) {
     // stop the movement of being pushed by an enemy after hitting him
     hero.clear_movement();
@@ -92,7 +92,7 @@ void Hero::SpinAttackState::stop(const State* next_state) {
 void Hero::SpinAttackState::update() {
 
   // check the animation
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (get_sprites().is_animation_finished()) {
     hero.set_state(new FreeState(hero));
   }
@@ -215,7 +215,7 @@ bool Hero::SpinAttackState::is_teletransporter_obstacle(
 
   // if the hero is pushed by an enemy or making a super spin attack,
   // don't go on a teletransporter
-  return get_hero().get_movement() != nullptr;
+  return get_entity().get_movement() != nullptr;
 }
 
 /**
@@ -234,7 +234,7 @@ void Hero::SpinAttackState::notify_obstacle_reached() {
 
   // the hero reached an obstacle while being pushed after hitting an enemy
   // or making a super spin attack
-  get_hero().clear_movement();
+  get_entity().clear_movement();
 
   if (!being_pushed) {
     // obstacle while making a super spin attack: finish with a normal spin attack
@@ -252,7 +252,7 @@ void Hero::SpinAttackState::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool /* killed */) {
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (result.type != EnemyReaction::ReactionType::IGNORED && attack == EnemyAttack::SWORD) {
 
     if (victim.get_push_hero_on_sword()) {

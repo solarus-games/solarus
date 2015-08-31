@@ -95,7 +95,7 @@ void Hero::StairsState::start(const State* previous_state) {
   sprites.set_animation_direction((path[0] - '0') / 2);
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (stairs.is_inside_floor()) {
     if (way == Stairs::NORMAL_WAY) {
       // Towards an upper layer: change the layer now
@@ -174,7 +174,7 @@ void Hero::StairsState::update() {
     carried_item->update();
   }
 
-  Hero& hero = get_hero();
+  Hero& hero = get_entity();
   if (stairs.is_inside_floor()) {
 
     // inside a single floor: return to normal state as soon as the movement is finished
@@ -344,7 +344,7 @@ CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior() co
 void Hero::StairsState::notify_layer_changed() {
 
   if (carried_item != nullptr) {
-    carried_item->set_layer(get_hero().get_layer());
+    carried_item->set_layer(get_entity().get_layer());
   }
 }
 

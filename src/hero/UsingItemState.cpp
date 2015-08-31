@@ -44,7 +44,7 @@ void Hero::UsingItemState::start(const State* previous_state) {
   State::start(previous_state);
 
   bool interaction = false;
-  Detector* facing_entity = get_hero().get_facing_entity();
+  Detector* facing_entity = get_entity().get_facing_entity();
   if (facing_entity != nullptr && !facing_entity->is_being_removed()) {
     // Maybe the facing entity (e.g. an NPC) accepts an interaction with this
     // particular item.
@@ -67,7 +67,7 @@ void Hero::UsingItemState::update() {
   item_usage.update();
   if (item_usage.is_finished() && is_current_state()) {
     // if the state was not modified by the item, return to the normal state
-    Hero& hero = get_hero();
+    Hero& hero = get_entity();
     hero.set_state(new FreeState(hero));
   }
 }

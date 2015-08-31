@@ -207,7 +207,7 @@ class SOLARUS_API Map: public ExportableToLua {
 
     // screen
 
-    std::unique_ptr<Camera>
+    std::shared_ptr<Camera>
         camera;                   /**< The visible area of the map. */
     SurfacePtr visible_surface;   /**< Surface where the map is displayed. This is only the visible part
                                    * of the map, so the coordinates on this surface are relative to the screen,

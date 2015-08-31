@@ -95,7 +95,8 @@ void MapLoader::load_map(Game& game, Map& map) {
   entities.quadtree.initialize(quadtree_space);
 
   entities.boomerang = nullptr;
-  map.camera = std::unique_ptr<Camera>(new Camera(map));
+  map.camera = std::make_shared<Camera>(map);
+  map.get_entities().add_entity(map.camera);
 
   // Create entities by calling the Lua API functions.
   LuaContext& lua_context = map.get_lua_context();

@@ -135,6 +135,19 @@ void LuaContext::register_entity_module() {
       { nullptr, nullptr }
   };
 
+  // Camera.
+  static const luaL_Reg camera_methods[] = {
+      ENTITY_COMMON_METHODS,
+      { nullptr, nullptr }
+  };
+
+  register_type(
+      get_entity_internal_type_name(EntityType::CAMERA),
+      nullptr,
+      camera_methods,
+      metamethods
+  );
+
   // Hero.
   static const luaL_Reg hero_methods[] = {
       ENTITY_COMMON_METHODS,

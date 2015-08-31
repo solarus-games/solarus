@@ -124,17 +124,17 @@ void LuaContext::add_timer(
 
   callback_ref.push();
 
-#ifndef NDEBUG
-  // Sanity check: check the uniqueness of the ref.
-  for (const auto& kvp: timers) {
-    if (kvp.second.callback_ref.get() == callback_ref.get()) {
-      std::ostringstream oss;
-      oss << "Callback ref " << callback_ref.get()
-          << " is already used by a timer (duplicate luaL_unref?)";
-      Debug::die(oss.str());
+  Debug::execute_if_debug([&] {
+    // Sanity check: check the uniqueness of the ref.
+    for (const auto& kvp: timers) {
+      if (kvp.second.callback_ref.get() == callback_ref.get()) {
+        std::ostringstream oss;
+        oss << "Callback ref " << callback_ref.get()
+            << " is already used by a timer (duplicate luaL_unref?)";
+        Debug::die(oss.str());
+      }
     }
-  }
-#endif
+  });
 
   Debug::check_assertion(timers.find(timer) == timers.end(),
       "Duplicate timer in the system");

@@ -27,9 +27,9 @@
 namespace Solarus {
 
 /**
- * \brief Abstract base class for a state of the hero.
+ * \brief Abstract base class for a state of an entity.
  *
- * This class contains all hero-related functions that depend on his state
+ * This class contains all entity-related functions that depend on its state
  * and provide a default implementation for them.
  * Most of them are almost empty here because they depend on the state.
  * Redefine for each state the functions that you need to implement or change.

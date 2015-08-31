@@ -124,7 +124,7 @@ void LuaContext::add_timer(
 
   callback_ref.push();
 
-  Debug::execute([&] {
+  Debug::execute_if_debug([&] {
     // Sanity check: check the uniqueness of the ref.
     for (const auto& kvp: timers) {
       if (kvp.second.callback_ref.get() == callback_ref.get()) {

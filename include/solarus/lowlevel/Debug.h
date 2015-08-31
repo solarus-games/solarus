@@ -49,7 +49,7 @@ void SOLARUS_API die(const std::string& error_message);
  * \brief Execute an arbitrary function in debug mode.
  */
 template<typename Function>
-void execute(Function&& func)
+void execute_if_debug(Function&& func)
 {
 #ifndef NDEBUG
     func();

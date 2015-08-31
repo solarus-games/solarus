@@ -1023,7 +1023,7 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
     luaL_getmetatable(l, userdata.get_lua_type_name().c_str());
                                   // ... all_udata lightudata udata mt
 
-    Debug::execute([&] {
+    Debug::execute_if_debug([&] {
       Debug::check_assertion(!lua_isnil(l, -1),
           std::string("Userdata of type '" + userdata.get_lua_type_name()
           + "' has no metatable, this is a memory leak"));

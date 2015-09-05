@@ -177,6 +177,7 @@ file(
   include/solarus/Dialog.h
   include/solarus/DialogResources.h
   include/solarus/Drawable.h
+  include/solarus/DrawablePtr.h
   include/solarus/EntityData.h
   include/solarus/Equipment.h
   include/solarus/EquipmentItem.h

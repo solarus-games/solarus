@@ -31,6 +31,7 @@
 #include "solarus/lua/ExportableToLuaPtr.h"
 #include "solarus/lua/ScopedLuaRef.h"
 #include "solarus/Ability.h"
+#include "solarus/DrawablePtr.h"
 #include "solarus/SpritePtr.h"
 #include "solarus/TimerPtr.h"
 #include <list>
@@ -213,9 +214,9 @@ class LuaContext {
     void update_menus();
 
     // Drawable objects.
-    bool has_drawable(const std::shared_ptr<Drawable>& drawable);
-    void add_drawable(const std::shared_ptr<Drawable>& drawable);
-    void remove_drawable(const std::shared_ptr<Drawable>& drawable);
+    bool has_drawable(const DrawablePtr& drawable);
+    void add_drawable(const DrawablePtr& drawable);
+    void remove_drawable(const DrawablePtr& drawable);
     void destroy_drawables();
     void update_drawables();
 
@@ -1060,7 +1061,7 @@ class LuaContext {
     static bool is_timer(lua_State* l, int index);
     static TimerPtr check_timer(lua_State* l, int index);
     static bool is_drawable(lua_State* l, int index);
-    static std::shared_ptr<Drawable> check_drawable(lua_State* l, int index);
+    static DrawablePtr check_drawable(lua_State* l, int index);
     static bool is_surface(lua_State* l, int index);
     static SurfacePtr check_surface(lua_State* l, int index);
     static bool is_text_surface(lua_State* l, int index);
@@ -1265,10 +1266,10 @@ class LuaContext {
     std::list<TimerPtr>
         timers_to_remove;           /**< Timers to be removed at the next cycle. */
 
-    std::set<std::shared_ptr<Drawable>>
+    std::set<DrawablePtr>
         drawables;                  /**< All drawable objects created by
                                      * this script. */
-    std::set<std::shared_ptr<Drawable>>
+    std::set<DrawablePtr>
         drawables_to_remove;        /**< Drawable objects to be removed at the
                                      * next cycle. */
     std::map<const ExportableToLua*, std::set<std::string>>

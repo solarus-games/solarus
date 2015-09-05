@@ -48,7 +48,7 @@ bool LuaContext::is_drawable(lua_State* l, int index) {
  * \param index an index in the stack
  * \return The drawable.
  */
-std::shared_ptr<Drawable> LuaContext::check_drawable(lua_State* l, int index) {
+DrawablePtr LuaContext::check_drawable(lua_State* l, int index) {
 
   if (is_drawable(l, index)) {
     const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(
@@ -67,7 +67,7 @@ std::shared_ptr<Drawable> LuaContext::check_drawable(lua_State* l, int index) {
  * \param drawable A drawable object.
  * \return true if the drawable object was created by this script.
  */
-bool LuaContext::has_drawable(const std::shared_ptr<Drawable>& drawable) {
+bool LuaContext::has_drawable(const DrawablePtr& drawable) {
 
   return drawables.find(drawable) != drawables.end();
 }
@@ -76,7 +76,7 @@ bool LuaContext::has_drawable(const std::shared_ptr<Drawable>& drawable) {
  * \brief Registers a drawable object created by this script.
  * \param drawable a drawable object
  */
-void LuaContext::add_drawable(const std::shared_ptr<Drawable>& drawable) {
+void LuaContext::add_drawable(const DrawablePtr& drawable) {
 
   Debug::check_assertion(!has_drawable(drawable),
       "This drawable object is already registered");
@@ -88,7 +88,7 @@ void LuaContext::add_drawable(const std::shared_ptr<Drawable>& drawable) {
  * \brief Unregisters a drawable object created by this script.
  * \param drawable a drawable object
  */
-void LuaContext::remove_drawable(const std::shared_ptr<Drawable>& drawable) {
+void LuaContext::remove_drawable(const DrawablePtr& drawable) {
 
   Debug::check_assertion(has_drawable(drawable),
       "This drawable object was not created by Lua");
@@ -112,7 +112,7 @@ void LuaContext::destroy_drawables() {
 void LuaContext::update_drawables() {
 
   // Update all drawables.
-  for (const std::shared_ptr<Drawable>& drawable: drawables) {
+  for (const DrawablePtr& drawable: drawables) {
     if (has_drawable(drawable)) {
       drawable->update();
     }
@@ -324,7 +324,7 @@ int LuaContext::drawable_meta_gc(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);
-    std::shared_ptr<Drawable> drawable = check_drawable(l, 1);
+    DrawablePtr drawable = check_drawable(l, 1);
 
     if (lua_context.has_drawable(drawable)) {
       // This drawable was created from Lua.

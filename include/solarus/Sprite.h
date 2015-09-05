@@ -64,7 +64,7 @@ class Sprite: public Drawable {
     bool are_pixel_collisions_enabled() const;
 
     // size and origin point
-    Size get_size() const;
+    virtual Size get_size() const override;
     const Size& get_max_size() const;
     Point get_origin() const;
     const Rectangle& get_max_bounding_box() const;

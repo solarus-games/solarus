@@ -103,7 +103,7 @@ class TextSurface: public Drawable {
 
     int get_width() const;
     int get_height() const;
-    Size get_size() const;
+    virtual Size get_size() const override;
 
     virtual void raw_draw(Surface& dst_surface, const Point& dst_position) override;
     virtual void raw_draw_region(const Rectangle& region,

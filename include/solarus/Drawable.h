@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/lowlevel/Point.h"
+#include "solarus/lowlevel/Size.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/ScopedLuaRef.h"
@@ -41,6 +42,12 @@ class Drawable: public ExportableToLua {
   public:
 
     virtual ~Drawable();
+
+    /**
+     * \brief Returns the size of this drawable.
+     * \return the size of this surface
+     */
+    virtual Size get_size() const = 0;
 
     // dynamic effects
     void start_movement(const std::shared_ptr<Movement>& movement);

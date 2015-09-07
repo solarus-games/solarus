@@ -66,7 +66,7 @@ class Sprite: public Drawable {
     // size and origin point
     virtual Size get_size() const override;
     const Size& get_max_size() const;
-    Point get_origin() const;
+    virtual Point get_origin() const override;
     const Rectangle& get_max_bounding_box() const;
 
     // animation state

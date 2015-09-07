@@ -43,6 +43,8 @@ class Drawable: public ExportableToLua {
 
     virtual ~Drawable();
 
+    virtual Point get_origin() const;
+
     /**
      * \brief Returns the size of this drawable.
      * \return the size of this surface

@@ -46,6 +46,14 @@ Drawable::~Drawable() {
 }
 
 /**
+ * \brief Returns the origin point of the drawable.
+ * \return The origin point of the drawable.
+ */
+Point Drawable::get_origin() const {
+  return Point(0, 0);
+}
+
+/**
  * \brief Applies a movement to this object.
  *
  * Any previous movement is stopped.

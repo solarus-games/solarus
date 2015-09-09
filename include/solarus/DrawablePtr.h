@@ -24,7 +24,7 @@ namespace Solarus {
 class Drawable;
 
 /**
- * \brief Alias for shared_ptr of Surface.
+ * \brief Alias for shared_ptr of Drawable.
  */
 using DrawablePtr = std::shared_ptr<Drawable>;
 

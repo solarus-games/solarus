@@ -31,7 +31,7 @@ sprite{ id = "hero/ground1", description = "Grass under hero" }
 sprite{ id = "hero/ground2", description = "Shallow water under hero" }
 sprite{ id = "hero/trail", description = "Hero trail" }
 sprite{ id = "enemies/enemy_killed", description = "Enemy killed" }
-sprite{ id = "menus/solarus_logo", description = "Menu: Solarus logo" }
+sprite{ id = "menus/solarus_logo", description = "Solarus logo" }
 
 music{ id = "village", description = "Village" }
 

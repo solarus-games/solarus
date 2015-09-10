@@ -34,7 +34,7 @@ namespace Solarus {
  *
  * When a drawing is requested, if the destination surface is in GPU, no
  * drawing actually occurs: instead, the information is stored into this tree.
- * At rendering time, the tree is traverses to perform all drawings
+ * At rendering time, the tree is traversed to perform all drawings
  * accelerated in GPU.
  *
  * The root node of the tree is the screen, and the children nodes are the

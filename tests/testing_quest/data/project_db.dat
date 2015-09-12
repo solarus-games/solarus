@@ -2,6 +2,7 @@ map{ id = "all_entities", description = "All entities" }
 map{ id = "basic_test", description = "Basic test" }
 map{ id = "bugs/686_crash_door_item", description = "#686: Crash with doors whose opening condition is an item" }
 map{ id = "bugs/699_crash_exit_surface_moving", description = "#699: Crash at exit when a surface was moving" }
+map{ id = "bugs/769_stuck_dynamic_tile_covered", description = "#769: Non-traversable dynamic tiles covered by traversable ones block the hero" }
 map{ id = "jumper_tests", description = "Jumper tests" }
 map{ id = "surface_tests", description = "Surface tests" }
 map{ id = "traversable", description = "Traversable test area" }

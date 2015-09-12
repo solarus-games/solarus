@@ -1693,26 +1693,48 @@ void Entity::notify_enabled(bool /* enabled */) {
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool Entity::is_obstacle_for(Entity& other) {
+bool Entity::is_obstacle_for(Entity& /* other */) {
 
-  if (!can_be_obstacle()) {
-    // This type of entity can never be an obstacle for others.
-    return false;
-  }
-
-  if (!is_ground_modifier()) {
-    // Return false by default.
-    return false;
-  }
-
-  // This entity modifies the ground of the map.
-  // Return the appropriate obstacle property.
-  return other.is_ground_obstacle(get_modified_ground());
+  return false;
 }
 
+/**
+ * \brief Returns whether this entity is an obstacle for another one it that
+ * other entity was at the specified place.
+ *
+ * There are two mechanisms to block entities: by another entity or by the
+ * ground of the map.
+ *
+ * This function is about entities blocking other entities.
+ * If you return \c true, the other entity will be blocked even if there are
+ * traversable entities on top of yours.
+ *
+ * If your entity modifies the ground of the map (see is_ground_modifier()),
+ * you then rely on the map ground mechanism. In this case, if
+ * other entities at the same coordinates also modify the map ground and are
+ * higher than your entity, their ground overrides yours.
+ *
+ * To respect this behavior, is_obstacle_for() should return false for
+ * ground modifiers.
+ *
+ * \param other Another entity.
+ * \param candidate_position Candidate position of this other entity.
+ * \return \c true if this entity is an obstacle for the other one at that
+ * position.
+ */
+bool Entity::is_obstacle_for(Entity& other, const Rectangle& /* candidate_position */) {
+
+  // By default, use a position-independent test.
+  // Most entities don't need the candidate position of the other one to decide
+  // if they want to block them.
+  return is_obstacle_for(other);
+}
+
+/**
+ * \brief Returns whether a kind of ground is an obstacle for this entity.
+ */
 bool Entity::is_ground_obstacle(Ground ground) const {
-  // This entity modifies the ground of the map.
-  // Return the appropriate obstacle property.
+
   switch (ground) {
 
     case Ground::WALL:
@@ -1752,26 +1774,7 @@ bool Entity::is_ground_obstacle(Ground ground) const {
 
     case Ground::LADDER:
       return is_ladder_obstacle();
-
   }
-
-  return false;
-}
-
-/**
- * \brief Returns whether this entity is an obstacle for another one it that
- * other entity was at the specified place.
- * \param other Another entity.
- * \param candidate_position Candidate position of this other entity.
- * \return \c true if this entity is an obstacle for the other one at that
- * position.
- */
-bool Entity::is_obstacle_for(Entity& other, const Rectangle& /* candidate_position */) {
-
-  // By default, use a position-independent test.
-  // Most entities don't need the candidate position of the other one to decide
-  // if they want to block them.
-  return is_obstacle_for(other);
 }
 
 /**
@@ -2582,8 +2585,13 @@ void Entity::update() {
 
   // enable if necessary
   if (waiting_enabled) {
+
     Hero& hero = get_hero();
-    if (!is_obstacle_for(hero) || !overlaps(hero)) {
+
+    const bool obstacle = is_obstacle_for(hero) ||
+        (is_ground_modifier() && is_ground_obstacle(get_modified_ground()));
+
+    if (!obstacle || !overlaps(hero)) {
       this->enabled = true;
       this->waiting_enabled = false;
       notify_enabled(true);

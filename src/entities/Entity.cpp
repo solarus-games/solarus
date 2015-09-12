@@ -1775,6 +1775,8 @@ bool Entity::is_ground_obstacle(Ground ground) const {
     case Ground::LADDER:
       return is_ladder_obstacle();
   }
+
+  return false;
 }
 
 /**

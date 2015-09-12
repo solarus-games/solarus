@@ -102,11 +102,16 @@ bool Quadtree<T>::add(const T& element, const Rectangle& bounding_box) {
     return false;
   }
 
+  if (!root.add(element, bounding_box)) {
+    // Add failed: maybe the bounding box is outside the quadtree space.
+    return false;
+  }
+
   ElementInfo info;
   info.bounding_box = bounding_box;
   elements.insert(std::make_pair(element, info));
 
-  return root.add(element, bounding_box);
+  return true;
 }
 
 /**
@@ -134,6 +139,11 @@ bool Quadtree<T>::remove(const T& element) {
  * This function should be called when the position or size or the element
  * is changed.
  *
+ * If the element goes outside the space of the quadtree, this is
+ * equivalent to remove().
+ * If the element comes from outside the space of the quadtree, or was not
+ * present, this is equivalent to add().
+ *
  * \param element The element to move.
  * \param bounding_box New bounding box of the element.
  * \return \c true in case of success.
@@ -142,20 +152,19 @@ template<typename T>
 bool Quadtree<T>::move(const T& element, const Rectangle& bounding_box) {
 
   const auto& it = elements.find(element);
-  if (it == elements.end()) {
-    // Entity not in the quadtree.
-    return false;
+  if (it != elements.end()) {
+    if (it->second.bounding_box == bounding_box) {
+      // Already in the quadtree and no change.
+      return true;
+    }
+
+    if (!remove(element)) {
+      return false;
+    }
   }
 
-  if (it->second.bounding_box == bounding_box) {
-    // No change.
-    return true;
-  }
-
-  if (!remove(element)) {
-    return false;
-  }
-  return add(element, bounding_box);
+  add(element, bounding_box);
+  return true;
 }
 
 /**
@@ -178,6 +187,18 @@ void Quadtree<T>::get_elements(
     std::vector<T>& elements
 ) const {
   root.get_elements(region, elements);
+}
+
+/**
+ * \brief Returns whether an element is in the quadtree.
+ * \param element The element to check.
+ * \return \c true if it is in the quadtree.
+ */
+template<typename T>
+bool Quadtree<T>::contains(const T& element) const {
+
+  const auto& it = elements.find(element);
+  return it != elements.end();
 }
 
 /**

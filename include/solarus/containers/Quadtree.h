@@ -62,6 +62,7 @@ class Quadtree {
     ) const;
 
     int get_num_elements() const;
+    bool contains(const T& element) const;
 
     void draw(const SurfacePtr& dst_surface, const Point& dst_position);
 

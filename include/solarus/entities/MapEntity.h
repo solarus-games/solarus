@@ -283,6 +283,7 @@ class SOLARUS_API MapEntity: public ExportableToLua {
 
     virtual bool is_obstacle_for(MapEntity& other);
     virtual bool is_obstacle_for(MapEntity& other, const Rectangle& candidate_position);
+    bool is_ground_obstacle(Ground ground) const;
     virtual bool is_low_wall_obstacle() const;
     virtual bool is_shallow_water_obstacle() const;
     virtual bool is_deep_water_obstacle() const;

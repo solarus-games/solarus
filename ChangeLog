@@ -5,6 +5,7 @@ ___________________________
 
 Bug fixes for the 1.4 release.
 
+* Fix stuck on non-traversable dynamic tiles covered by traversables (#769).
 * Fix collision detection of custom entities that do not move.
 * Fix collisions triggered for removed entities (#710).
 * Fix pickables with special movement falling in holes too early.
@@ -92,7 +93,7 @@ Engine changes
 * Fix crash when using the -no-video command-line option.
 * Fix assertion when a crystal block has less than 4 frames.
 * Fix hero freeze when a treasure's dialog is missing (#595).
-* Fix hero stuck in dynamic tiles just enabled on him (#89).
+* Fix hero stuck in dynamic tiles just enabled on him.
 * Fix hero sometimes moving in wrong directions (#677).
 * Fix tunic and sword collision when their sprite is changed (#617).
 * Fix slightly incorrect position of carried item sometimes (#660).

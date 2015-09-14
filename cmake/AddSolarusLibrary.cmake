@@ -12,6 +12,7 @@ file(
   include/solarus/entities/Block.h
   include/solarus/entities/Bomb.h
   include/solarus/entities/Boomerang.h
+  include/solarus/entities/Camera.h
   include/solarus/entities/CarriedItem.h
   include/solarus/entities/Chest.h
   include/solarus/entities/CollisionMode.h
@@ -169,7 +170,6 @@ file(
   include/solarus/Ability.h
   include/solarus/AbilityInfo.h
   include/solarus/Arguments.h
-  include/solarus/Camera.h
   include/solarus/Common.h
   include/solarus/config.h
   include/solarus/CurrentQuest.h
@@ -217,6 +217,7 @@ file(
   src/entities/Block.cpp
   src/entities/Bomb.cpp
   src/entities/Boomerang.cpp
+  src/entities/Camera.cpp
   src/entities/CarriedItem.cpp
   src/entities/Chest.cpp
   src/entities/CrystalBlock.cpp
@@ -363,7 +364,6 @@ file(
 
   src/AbilityInfo.cpp
   src/Arguments.cpp
-  src/Camera.cpp
   src/CurrentQuest.cpp
   src/DialogBoxSystem.cpp
   src/Dialog.cpp

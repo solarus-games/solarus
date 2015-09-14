@@ -18,13 +18,13 @@
 #define SOLARUS_MAP_H
 
 #include "solarus/Common.h"
+#include "solarus/entities/Camera.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/entities/Layer.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include "solarus/lua/ExportableToLua.h"
-#include "solarus/Camera.h"
 #include "solarus/MapData.h"
 #include "solarus/Transition.h"
 #include <memory>

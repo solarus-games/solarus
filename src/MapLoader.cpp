@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/Entity.h"
+#include "solarus/entities/Camera.h"
 #include "solarus/entities/EntityType.h"
 #include "solarus/entities/EntityTypeInfo.h"
 #include "solarus/entities/Layer.h"
@@ -31,7 +31,6 @@
 #include "solarus/MapLoader.h"
 #include "solarus/Map.h"
 #include "solarus/Game.h"
-#include "solarus/Camera.h"
 #include <memory>
 #include <string>
 

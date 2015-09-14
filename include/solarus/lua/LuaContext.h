@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/GameCommands.h"
+#include "solarus/entities/Camera.h"
 #include "solarus/entities/EnemyAttack.h"
 #include "solarus/entities/EntityPtr.h"
 #include "solarus/entities/EntityType.h"
@@ -820,6 +821,8 @@ class LuaContext {
       entity_api_get_optimization_distance,
       entity_api_set_optimization_distance,
       entity_api_is_in_same_region,
+      camera_api_start_tracking,
+      camera_api_stop_tracking,
       hero_api_teleport,
       hero_api_get_direction,
       hero_api_set_direction,

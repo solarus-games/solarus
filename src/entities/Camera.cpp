@@ -312,6 +312,23 @@ void Camera::traverse_separator(Separator* separator) {
 }
 
 /**
+ * \brief Ensures that the camera track the given entity.
+ * \param entity The entity to track.
+ */
+void Camera::start_tracking(const EntityPtr& entity)
+{
+  fixed_on = entity;
+}
+
+/**
+ * \brief Make the camera not follow an entity.
+ */
+void Camera::stop_tracking()
+{
+  fixed_on.reset();
+}
+
+/**
  * \brief Ensures that a rectangle does not cross map limits.
  * \param area The rectangle to check. Is should not be entirely outside the map.
  * It can be bigger than the map: in such a case, the resulting rectangle cannot

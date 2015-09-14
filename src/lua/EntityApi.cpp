@@ -139,6 +139,8 @@ void LuaContext::register_entity_module() {
   // Camera.
   static const luaL_Reg camera_methods[] = {
       ENTITY_COMMON_METHODS,
+      { "start_tracking", camera_api_start_tracking },
+      { "stop_tracking", camera_api_stop_tracking },
       { nullptr, nullptr }
   };
 
@@ -1360,6 +1362,39 @@ int LuaContext::entity_api_is_in_same_region(lua_State* l) {
 
     lua_pushboolean(l, entity.is_in_same_region(other_entity));
     return 1;
+  });
+}
+
+/**
+ * \brief Implementation of camera:start_tracking().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::camera_api_start_tracking(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Camera& camera = *check_camera(l, 1);
+    EntityPtr entity = check_entity(l, 2);
+
+    camera.start_tracking(entity);
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of camera:stop_tracking().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::camera_api_stop_tracking(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Camera& camera = *check_camera(l, 1);
+
+    camera.stop_tracking();
+
+    return 0;
   });
 }
 

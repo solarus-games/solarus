@@ -159,10 +159,10 @@ void Camera::update_moving() {
     if (restoring) {
       restoring = false;
       fixed_on = get_game().get_hero();
-      get_map().get_lua_context().map_on_camera_back(get_map());
+      get_lua_context()->map_on_camera_back(get_map());
     }
     else {
-      get_map().get_lua_context().notify_camera_reached_target(get_map());
+      get_lua_context()->notify_camera_reached_target(get_map());
     }
   }
 }

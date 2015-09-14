@@ -45,6 +45,9 @@ Camera::Camera(Map& map):
   set_map(map);
 }
 
+/**
+ * \copydoc Entity::get_type()
+ */
 EntityType Camera::get_type() const {
   return EntityType::CAMERA;
 }

@@ -132,8 +132,6 @@ void Camera::update_moving() {
     return;
   }
 
-  const Point& xy = get_movement()->get_xy();
-
   if (get_movement()->is_finished()) {
     clear_movement();
 

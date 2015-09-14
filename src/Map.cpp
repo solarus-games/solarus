@@ -517,7 +517,7 @@ void Map::update() {
   entities->update();
   get_lua_context().map_on_update(*this);
   camera->update();  // update the camera after the entities since this might
-                     // be the last update() call for this map */
+                     // be the last update() call for this map
 }
 
 /**

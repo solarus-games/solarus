@@ -59,6 +59,8 @@ EntityType Camera::get_type() const {
  */
 void Camera::update() {
 
+  Entity::update();
+
   if (fixed_on != nullptr) {
     // If the camera is not moving towards a target, center it on the hero.
     update_fixed_on();
@@ -130,7 +132,6 @@ void Camera::update_moving() {
     return;
   }
 
-  get_movement()->update();
   const Point& xy = get_movement()->get_xy();
 
   if (get_movement()->is_finished()) {
@@ -145,8 +146,6 @@ void Camera::update_moving() {
       get_map().get_lua_context().notify_camera_reached_target(get_map());
     }
   }
-
-  set_xy(xy);
 }
 
 /**

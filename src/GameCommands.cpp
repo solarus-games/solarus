@@ -128,73 +128,7 @@ const Savegame& GameCommands::get_savegame() const {
  * \return true if this game command is currently pressed.
  */
 bool GameCommands::is_command_pressed(GameCommand command) const {
-
-  // We could store the command pressed information from events,
-  // but this is problematic because of possible missed events.
-  // So we compute accurate information instead.
-
-  InputEvent::KeyboardKey key = get_keyboard_binding(command);
-  if (InputEvent::is_key_down(key)) {
-    return true;
-  }
-
-  const std::string& joypad_action = get_joypad_binding(command);
-  const std::string button_prefix = "button ";
-  if (!joypad_action.compare(0, button_prefix.size(), button_prefix)) {
-    // Command mapped to a joypad button.
-    int button = 0;
-    std::istringstream iss(joypad_action.substr(button_prefix.size()));
-    iss >> button;
-    if (!iss) {
-      return false;
-    }
-    return InputEvent::is_joypad_button_down(button);
-  }
-
-  const std::string axis_prefix = "axis ";
-  if (!joypad_action.compare(0, axis_prefix.size(), axis_prefix)) {
-    // Command mapped to a joypad axis.
-    int axis = 0;
-    char sign_char = '+';
-    std::istringstream iss(joypad_action.substr(axis_prefix.size()));
-    iss >> axis >> sign_char;
-    if (!iss) {
-      return false;
-    }
-    int sign = (sign_char == '+') ? 1 : -1;
-    return InputEvent::get_joypad_axis_state(axis) == sign;
-  }
-
-  const std::string hat_prefix = "hat ";
-  if (!joypad_action.compare(0, hat_prefix.size(), hat_prefix)) {
-    // Command mapped to a joypad hat.
-    int hat = 0;
-    int requested_direction = 0;  // The requested direction is not a diagonal one.
-    std::istringstream iss(joypad_action.substr(hat_prefix.size()));
-    iss >> hat >> requested_direction;
-    if (!iss) {
-      return false;
-    }
-    int current_direction = InputEvent::get_joypad_hat_direction(hat);
-    if (current_direction == requested_direction) {
-      return true;
-    }
-    if (current_direction % 2 != 0) {
-      // Diagonal direction.
-      switch (requested_direction) {
-        case 0:
-          return current_direction == 7 || current_direction == 1;
-        case 2:
-          return current_direction == 1 || current_direction == 3;
-        case 4:
-          return current_direction == 3 || current_direction == 4;
-        case 5:
-          return current_direction == 5 || current_direction == 7;
-      }
-    }
-  }
-
-  return false;
+  return commands_pressed.find(command) != commands_pressed.end();
 }
 
 /**
@@ -274,6 +208,7 @@ void GameCommands::keyboard_key_pressed(InputEvent::KeyboardKey keyboard_key_pre
     if (command_pressed != command_to_customize) {
       // Consider this keyboard key as the new mapping for the game command being customized.
       set_keyboard_binding(command_to_customize, keyboard_key_pressed);
+      commands_pressed.insert(command_to_customize);
     }
     do_customization_callback();
   }
@@ -318,6 +253,7 @@ void GameCommands::joypad_button_pressed(int button) {
     if (command_pressed != command_to_customize) {
       // Consider this button as the new mapping for the game command being customized.
       set_joypad_binding(command_to_customize, joypad_string);
+      commands_pressed.insert(command_to_customize);
     }
     do_customization_callback();
   }
@@ -395,6 +331,7 @@ void GameCommands::joypad_axis_moved(int axis, int state) {
       if (command_pressed != command_to_customize) {
         // Consider this axis movement as the new mapping for the game command being customized.
         set_joypad_binding(command_to_customize, joypad_string);
+        commands_pressed.insert(command_to_customize);
       }
       do_customization_callback();
     }
@@ -533,6 +470,7 @@ void GameCommands::joypad_hat_moved(int hat, int value) {
       if (command_1 != command_to_customize) {
         // Consider this hat movement as the new mapping for the game command being customized.
         set_joypad_binding(command_to_customize, joypad_string_1);
+        commands_pressed.insert(command_to_customize);
       }
       do_customization_callback();
     }
@@ -548,6 +486,7 @@ void GameCommands::joypad_hat_moved(int hat, int value) {
  */
 void GameCommands::game_command_pressed(GameCommand command) {
 
+  commands_pressed.insert(command);
   game.notify_command_pressed(command);
 }
 
@@ -560,6 +499,7 @@ void GameCommands::game_command_pressed(GameCommand command) {
  */
 void GameCommands::game_command_released(GameCommand command) {
 
+  commands_pressed.erase(command);
   game.notify_command_released(command);
 }
 

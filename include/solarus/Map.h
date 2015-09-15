@@ -21,6 +21,7 @@
 #include "solarus/entities/Camera.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/entities/Layer.h"
+#include "solarus/entities/MapEntities.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lowlevel/SurfacePtr.h"
@@ -81,6 +82,8 @@ class SOLARUS_API Map: public ExportableToLua {
 
     // camera
     const SurfacePtr& get_visible_surface();
+    const Camera& get_camera() const;
+    Camera& get_camera();
     const Rectangle& get_camera_position() const;
     void move_camera(int x, int y, int speed);
     void restore_camera();
@@ -206,9 +209,6 @@ class SOLARUS_API Map: public ExportableToLua {
                                    * This is used to correctly scroll between adjacent maps. */
 
     // screen
-
-    std::shared_ptr<Camera>
-        camera;                   /**< The visible area of the map. */
     SurfacePtr visible_surface;   /**< Surface where the map is displayed. This is only the visible part
                                    * of the map, so the coordinates on this surface are relative to the screen,
                                    * not to the map. */
@@ -253,13 +253,48 @@ inline bool Map::test_collision_with_border(const Point& point) const {
 }
 
 /**
+ * \brief Returns the entities of the map.
+ *
+ * This function should not be called before the map is loaded into a game.
+ *
+ * \return The entities of the map.
+ */
+inline const MapEntities& Map::get_entities() const {
+  return *entities;
+}
+
+/**
+ * \overload Non-const version.
+ */
+inline MapEntities& Map::get_entities() {
+  return *entities;
+}
+
+/**
+ * \brief Returns the camera of the map.
+ * \return The camera.
+ */
+inline const Camera& Map::get_camera() const {
+
+  return get_entities().get_camera();
+}
+
+/**
+ * \overload Non-const version.
+ */
+inline Camera& Map::get_camera() {
+
+  return get_entities().get_camera();
+}
+
+/**
  * \brief Returns the position of the visible area, relative to the map
  * top-left corner.
  * \return The rectangle of the visible area.
  */
 inline const Rectangle& Map::get_camera_position() const {
-  SOLARUS_ASSERT(camera != nullptr, "Missing camera");
-  return camera->get_bounding_box();
+
+  return get_camera().get_bounding_box();
 }
 
 }

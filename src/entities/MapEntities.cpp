@@ -48,6 +48,7 @@ MapEntities::MapEntities(Game& game, Map& map):
   map_height8(0),
   tiles_grid_size(0),
   hero(*game.get_hero()),
+  camera(nullptr),
   default_destination(nullptr),
   boomerang(nullptr) {
 
@@ -631,6 +632,11 @@ void MapEntities::add_entity(const EntityPtr& entity) {
     // update the specific entities lists
     switch (entity->get_type()) {
 
+      case EntityType::CAMERA:
+        Debug::check_assertion(camera == nullptr, "Only one camera is supported");
+        camera = std::static_pointer_cast<Camera>(entity);
+        break;
+
       case EntityType::STAIRS:
         stairs[layer].push_back(static_cast<Stairs*>(entity.get()));
         break;
@@ -804,6 +810,10 @@ void MapEntities::remove_marked_entities() {
     // update the specific entities lists
     switch (entity->get_type()) {
 
+      case EntityType::CAMERA:
+        camera = nullptr;
+        break;
+
       case EntityType::STAIRS:
         stairs[layer].remove(static_cast<Stairs*>(entity));
         break;
@@ -871,12 +881,18 @@ void MapEntities::update() {
 
   for (const EntityPtr& entity: all_entities) {
 
-    if (!entity->is_being_removed()) {
+    if (
+        !entity->is_being_removed() &&
+        entity->get_type() != EntityType::CAMERA  // The camera is updated after.
+    ) {
       entity->update();
     }
   }
 
-  // remove the entities that have to be removed now
+  // Update the camera after everyone else.
+  camera->update();
+
+  // Remove the entities that have to be removed now.
   remove_marked_entities();
 }
 
@@ -1077,19 +1093,6 @@ void MapEntities::remove_boomerang() {
   if (boomerang != nullptr) {
     remove_entity(boomerang);
     boomerang = nullptr;
-  }
-}
-
-/**
- * \brief Removes any arrow from the map.
- */
-void MapEntities::remove_arrows() {
-
-  // TODO this function may be slow if there are a lot of entities: store the arrows?
-  for (const EntityPtr& entity: all_entities) {
-    if (entity->get_type() == EntityType::ARROW) {
-      remove_entity(entity.get());
-    }
   }
 }
 

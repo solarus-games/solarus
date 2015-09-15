@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/containers/Quadtree.h"
+#include "solarus/entities/Camera.h"
 #include "solarus/entities/EntityPtr.h"
 #include "solarus/entities/EntityType.h"
 #include "solarus/entities/Ground.h"
@@ -63,6 +64,8 @@ class SOLARUS_API MapEntities {
 
     // get entities
     Hero& get_hero();
+    const Camera& get_camera() const;
+    Camera& get_camera();
     Ground get_tile_ground(Layer layer, int x, int y) const;
     const std::list<EntityPtr>& get_entities();
     const std::list<Entity*>& get_obstacle_entities(Layer layer);
@@ -100,7 +103,6 @@ class SOLARUS_API MapEntities {
     bool overlaps_raised_blocks(Layer layer, const Rectangle& rectangle);
     bool is_boomerang_present();
     void remove_boomerang();
-    void remove_arrows();
 
     // map events
     void notify_map_started();
@@ -141,12 +143,12 @@ class SOLARUS_API MapEntities {
 
     // dynamic entities
     Hero& hero;                                     /**< the hero (stored in Game because it is kept when changing maps) */
+    std::shared_ptr<Camera>
+        camera;                                     /**< The visible area of the map. */
 
     std::map<std::string, Entity*>
-      named_entities;                               /**< entities identified by a name */
-    std::list<EntityPtr> all_entities;              /**< all map entities except the tiles and the hero;
-                                                     * this vector is used to delete the entities
-                                                     * when the map is unloaded */
+      named_entities;                               /**< Entities identified by a name. */
+    std::list<EntityPtr> all_entities;              /**< All map entities except tiles and the hero. */
 
     EntityTree quadtree;                            /**< All map entities except tiles.
                                                      * Optimized for fast spatial search. */
@@ -206,6 +208,23 @@ inline Ground MapEntities::get_tile_ground(Layer layer, int x, int y) const {
 
   // Optimization of: return tiles_ground[layer][(y / 8) * map_width8 + (x / 8)];
   return tiles_ground[layer][(y >> 3) * map_width8 + (x >> 3)];
+}
+
+/**
+ * \brief Returns the camera of the map.
+ * \return The camera.
+ */
+inline const Camera& MapEntities::get_camera() const {
+
+  return *camera;
+}
+
+/**
+ * \overload Non-const version.
+ */
+inline Camera& MapEntities::get_camera() {
+
+  return *camera;
 }
 
 }

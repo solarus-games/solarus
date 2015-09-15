@@ -53,6 +53,36 @@ EntityType Camera::get_type() const {
 }
 
 /**
+ * \copydoc Entity::can_be_obstacle()
+ */
+bool Camera::can_be_obstacle() const {
+
+  return false;
+}
+
+/**
+ * \copydoc Entity::can_be_drawn()
+ */
+bool Camera::can_be_drawn() const {
+
+  // The camera itself is not drawn (for now), entities only use its position
+  // to draw themselves on the map surface.
+  return false;
+}
+
+/**
+ * \copydoc Entity::set_suspended()
+ *
+ * Reimplemented from Entity to do nothing, in particular to avoid suspending
+ * the camera movement.
+ *
+ * TODO rename set_suspended() to notify_suspended() / notify_unsuspended().
+ */
+void Camera::set_suspended(bool /* suspended */) {
+
+}
+
+/**
  * \brief Updates the camera position.
  *
  * This function is called continuously by the game loop.

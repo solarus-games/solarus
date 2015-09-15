@@ -19,7 +19,6 @@
 #include "solarus/entities/Detector.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/lowlevel/Music.h"
 #include "solarus/entities/NonAnimatedRegions.h"
 #include "solarus/entities/TilePattern.h"
@@ -51,7 +50,6 @@ Map::Map(const std::string& id):
   height8(0),
   tileset(nullptr),
   floor(MapData::NO_FLOOR),
-  camera(nullptr),
   visible_surface(nullptr),
   background_surface(nullptr),
   foreground_surface(nullptr),
@@ -255,7 +253,6 @@ void Map::unload() {
     background_surface = nullptr;
     foreground_surface = nullptr;
     entities = nullptr;
-    camera = nullptr;
 
     loaded = false;
   }
@@ -311,28 +308,6 @@ LuaContext& Map::get_lua_context() {
  */
 Game& Map::get_game() {
   return *game;
-}
-
-/**
- * \brief Returns the entities of the map.
- *
- * This function should not be called before the map is loaded into a game.
- *
- * \return the entities of the map
- */
-MapEntities& Map::get_entities() {
-  return *entities;
-}
-
-/**
- * \brief Returns the entities of the map.
- *
- * This function should not be called before the map is loaded into a game.
- *
- * \return the entities of the map
- */
-const MapEntities& Map::get_entities() const {
-  return *entities;
 }
 
 /**
@@ -445,15 +420,19 @@ const SurfacePtr& Map::get_visible_surface() {
  * \param speed speed of the movement
  */
 void Map::move_camera(int x, int y, int speed) {
-  camera->set_speed(speed);
-  camera->move(x, y);
+
+  Camera& camera = get_camera();
+  camera.set_speed(speed);
+  camera.move(x, y);
 }
 
 /**
  * \brief Makes the camera move back to the hero.
  */
 void Map::restore_camera() {
-  camera->restore();
+
+  Camera& camera = get_camera();
+  camera.restore();
 }
 
 /**
@@ -465,7 +444,9 @@ void Map::restore_camera() {
  * \return \c true if the camera is moving.
  */
 bool Map::is_camera_moving() const {
-  return camera->is_moving();
+
+  const Camera& camera = get_camera();
+  return camera.is_moving();
 }
 
 /**
@@ -473,7 +454,9 @@ bool Map::is_camera_moving() const {
  * \param separator The separator to traverse.
  */
 void Map::traverse_separator(Separator* separator) {
-  camera->traverse_separator(separator);
+
+  Camera& camera = get_camera();
+  camera.traverse_separator(separator);
 }
 
 /**
@@ -516,8 +499,6 @@ void Map::update() {
   TilePattern::update();
   entities->update();
   get_lua_context().map_on_update(*this);
-  camera->update();  // update the camera after the entities since this might
-                     // be the last update() call for this map
 }
 
 /**

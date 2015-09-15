@@ -45,9 +45,12 @@ class Camera : public Entity {
 
     explicit Camera(Map& map);
 
-    virtual EntityType get_type() const override;
+    EntityType get_type() const override;
 
-    virtual void update() override;
+    bool can_be_obstacle() const override;
+    bool can_be_drawn() const override;
+    void set_suspended(bool suspended) override;
+    void update() override;
 
     bool is_moving() const;
     void set_speed(int speed);

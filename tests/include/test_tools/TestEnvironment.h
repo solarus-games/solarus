@@ -18,7 +18,6 @@
 #define SOLARUS_TEST_ENVIRONMENT_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Layer.h"
 #include "solarus/Arguments.h"
 #include "solarus/MainLoop.h"
 #include "solarus/lowlevel/Point.h"
@@ -65,7 +64,7 @@ class TestEnvironment {
     template<typename T>
     std::shared_ptr<T> make_entity(
         const Point& xy = Point(0, 0),
-        Layer layer = LAYER_LOW
+        int layer = 0
     );
 
     // Simulation.

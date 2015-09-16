@@ -47,7 +47,7 @@ namespace Solarus {
  */
 ShopTreasure::ShopTreasure(
     const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     const Treasure& treasure,
     int price,
@@ -84,7 +84,7 @@ ShopTreasure::ShopTreasure(
 std::shared_ptr<ShopTreasure> ShopTreasure::create(
     Game& /* game */,
     const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     const Treasure& treasure,
     int price,

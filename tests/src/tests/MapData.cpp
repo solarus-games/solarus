@@ -75,8 +75,7 @@ void check_map(TestEnvironment& /* env */, const std::string& map_id) {
   }
 
   // Then export and import every entity of the map.
-  for (int i = Layer::LAYER_LOW; i < Layer::LAYER_NB; ++i) {
-    Layer layer = static_cast<Layer>(i);
+  for (int layer = 0; layer < map_data.get_num_layers(); ++layer) {
     for (int j = 0; j < map_data.get_num_entities(layer); ++j) {
       EntityIndex index = { layer, j };
       const EntityData& entity = map_data.get_entity(index);

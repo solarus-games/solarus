@@ -53,7 +53,7 @@ TilePatternData::TilePatternData() :
  */
 TilePatternData::TilePatternData(const Rectangle& frame) :
     ground(Ground::TRAVERSABLE),
-    default_layer(LAYER_LOW),
+    default_layer(0),
     scrolling(TileScrolling::NONE),
     frames() {
 
@@ -80,7 +80,7 @@ void TilePatternData::set_ground(Ground ground) {
  * \brief Returns the initial layer when creating a tile with this pattern.
  * \return The default layer.
  */
-Layer TilePatternData::get_default_layer() const {
+int TilePatternData::get_default_layer() const {
   return default_layer;
 }
 
@@ -88,7 +88,7 @@ Layer TilePatternData::get_default_layer() const {
  * \brief Sets the initial layer when creating a tile with this pattern.
  * \param default_layer The default layer.
  */
-void TilePatternData::set_default_layer(Layer default_layer) {
+void TilePatternData::set_default_layer(int default_layer) {
   this->default_layer = default_layer;
 }
 
@@ -398,7 +398,7 @@ int l_tile_pattern(lua_State* l) {
     );
     pattern_data.set_ground(ground);
 
-    const Layer default_layer = LuaTools::check_layer_field(
+    const int default_layer = LuaTools::check_int_field(
         l, 1, "default_layer"
     );
     pattern_data.set_default_layer(default_layer);

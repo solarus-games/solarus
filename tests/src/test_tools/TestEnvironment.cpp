@@ -122,7 +122,7 @@ void TestEnvironment::run_map(const std::string& map_id) {
 template<>
 std::shared_ptr<CustomEntity> TestEnvironment::make_entity<CustomEntity>(
     const Point& xy,
-    Layer layer
+    int layer
 ) {
 
   std::shared_ptr<CustomEntity> entity = std::make_shared<CustomEntity>(

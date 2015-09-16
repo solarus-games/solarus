@@ -19,7 +19,6 @@
 
 #include "solarus/Common.h"
 #include "solarus/entities/Ground.h"
-#include "solarus/entities/Layer.h"
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lua/LuaData.h"
@@ -62,8 +61,8 @@ class SOLARUS_API TilePatternData {
     Ground get_ground() const;
     void set_ground(Ground ground);
 
-    Layer get_default_layer() const;
-    void set_default_layer(Layer default_layer);
+    int get_default_layer() const;
+    void set_default_layer(int default_layer);
 
     TileScrolling get_scrolling() const;
     void set_scrolling(TileScrolling scrolling);
@@ -85,7 +84,7 @@ class SOLARUS_API TilePatternData {
   private:
 
     Ground ground;                     /**< Terrain of this pattern. */
-    Layer default_layer;               /**< Initial layer when creating a tile. */
+    int default_layer;                 /**< Initial layer when creating a tile. */
     TileScrolling scrolling;           /**< Kind of scrolling if any. */
     TilePatternRepeatMode repeat_mode; /**< How this patterns intends to be repeated. */
     std::vector<Rectangle> frames;     /**< Coordinates of the pattern's frame(s).

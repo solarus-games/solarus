@@ -231,6 +231,33 @@ int Map::get_height8() const {
 }
 
 /**
+ * \brief Returns the number of layers of this map.
+ * \return The number of layers.
+ */
+int Map::get_num_layers() const {
+
+  return 3;
+}
+
+/**
+ * \brief Returns the index of the first layer of the map.
+ * \return The first (lowest) layer: always 0.
+ */
+int Map::get_lowest_layer() const {
+
+  return 0;
+}
+
+/**
+ * \brief Returns the index of the last layer of the map.
+ * \return The last (highest) layer: always get_num_layers() - 1.
+ */
+int Map::get_highest_layer() const {
+
+  return get_num_layers() - 1;
+}
+
+/**
  * \brief Returns whether the map is loaded.
  * \return true if the map is loaded, false otherwise
  */
@@ -758,7 +785,7 @@ bool Map::test_collision_with_border(const Rectangle& collision_box) const {
  * \return \c true if this point is on an obstacle.
  */
 bool Map::test_collision_with_ground(
-    Layer layer,
+    int layer,
     int x,
     int y,
     const Entity& entity_to_check,
@@ -847,7 +874,7 @@ bool Map::test_collision_with_ground(
  * \return \c true if there is an obstacle entity at this point.
  */
 bool Map::test_collision_with_entities(
-    Layer layer,
+    int layer,
     const Rectangle& collision_box,
     Entity& entity_to_check) const {
 
@@ -877,7 +904,7 @@ bool Map::test_collision_with_entities(
  * \return \c true if the rectangle is overlapping an obstacle.
  */
 bool Map::test_collision_with_obstacles(
-    Layer layer,
+    int layer,
     const Rectangle& collision_box,
     Entity& entity_to_check) const {
 
@@ -950,7 +977,7 @@ bool Map::test_collision_with_obstacles(
  * \return \c true if the point is overlapping an obstacle.
  */
 bool Map::test_collision_with_obstacles(
-    Layer layer,
+    int layer,
     int x,
     int y,
     Entity& entity_to_check) const {
@@ -979,7 +1006,7 @@ bool Map::test_collision_with_obstacles(
  * \return \c true if the point is overlapping an obstacle.
  */
 bool Map::test_collision_with_obstacles(
-    Layer layer,
+    int layer,
     const Point& point,
     Entity& entity_to_check) const {
 
@@ -995,7 +1022,7 @@ bool Map::test_collision_with_obstacles(
  * \param collision_box The rectangle to test.
  * \return \c true if there is at least one empty tile in this rectangle.
  */
-bool Map::has_empty_ground(Layer layer, const Rectangle& collision_box) const {
+bool Map::has_empty_ground(int layer, const Rectangle& collision_box) const {
 
   bool empty_tile = false;
 
@@ -1029,7 +1056,7 @@ bool Map::has_empty_ground(Layer layer, const Rectangle& collision_box) const {
  * \param y Y coordinate of the point.
  * \return The ground at this place.
  */
-Ground Map::get_ground(Layer layer, int x, int y) const {
+Ground Map::get_ground(int layer, int x, int y) const {
 
   if (test_collision_with_border(x, y)) {
     // Outside the map bounds.
@@ -1067,7 +1094,7 @@ Ground Map::get_ground(Layer layer, int x, int y) const {
  * \param xy Coordinate of the point.
  * \return The ground at this place.
  */
-Ground Map::get_ground(Layer layer, const Point& xy) const {
+Ground Map::get_ground(int layer, const Point& xy) const {
   return get_ground(layer, xy.x, xy.y);
 }
 

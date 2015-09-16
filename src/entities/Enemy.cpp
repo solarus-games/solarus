@@ -78,7 +78,7 @@ const std::map<Enemy::ObstacleBehavior, std::string> Enemy::obstacle_behavior_na
 Enemy::Enemy(
     Game& /* game */,
     const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     const std::string& breed,
     const Treasure& treasure
@@ -144,7 +144,7 @@ EntityPtr Enemy::create(
     Rank rank,
     const std::string& savegame_variable,
     const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     int direction,
     const Treasure& treasure
@@ -353,7 +353,7 @@ bool Enemy::is_deep_water_obstacle() const {
     return false;
   }
 
-  const Layer layer = get_layer();
+  const int layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
   if (get_map().get_ground(layer, x, y) == Ground::DEEP_WATER
@@ -388,7 +388,7 @@ bool Enemy::is_hole_obstacle() const {
     return false;
   }
 
-  const Layer layer = get_layer();
+  const int layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
   if (get_map().get_ground(layer, x, y) == Ground::HOLE
@@ -423,7 +423,7 @@ bool Enemy::is_lava_obstacle() const {
     return false;
   }
 
-  const Layer layer = get_layer();
+  const int layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
   if (get_map().get_ground(layer, x, y) == Ground::LAVA
@@ -827,7 +827,7 @@ void Enemy::update() {
       xy.x = get_top_left_x() + Random::get_number(get_width());
       xy.y = get_top_left_y() + Random::get_number(get_height());
       get_entities().add_entity(std::make_shared<Explosion>(
-          "", LAYER_HIGH, xy, false
+          "", get_map().get_highest_layer(), xy, false
       ));
       Sound::play("explosion");
 

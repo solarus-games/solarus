@@ -1516,7 +1516,7 @@ int LuaContext::map_api_get_ground(lua_State* l) {
     const Map& map = *check_map(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
-    Layer layer = LuaTools::check_layer(l, 4);
+    int layer = LuaTools::check_int(l, 4);
 
     Ground ground = map.get_ground(layer, x, y);
 

@@ -18,7 +18,6 @@
 #define SOLARUS_LUA_TOOLS_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Layer.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaException.h"
 #include "solarus/SolarusFatal.h"
@@ -189,32 +188,6 @@ ScopedLuaRef opt_function_field(
     lua_State* l,
     int table_index,
     const std::string& key
-);
-
-// Layer
-bool is_layer(
-    lua_State* l,
-    int index
-);
-Layer check_layer(
-    lua_State* l,
-    int index
-);
-Layer check_layer_field(
-    lua_State* l,
-    int table_index,
-    const std::string& key
-);
-Layer opt_layer(
-    lua_State* l,
-    int index,
-    Layer default_value
-);
-Layer opt_layer_field(
-    lua_State* l,
-    int table_index,
-    const std::string& key,
-    Layer default_value
 );
 
 // Color

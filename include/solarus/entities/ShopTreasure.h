@@ -43,7 +43,7 @@ class ShopTreasure: public Detector {
 
     ShopTreasure(
         const std::string& name,
-        Layer layer,
+        int layer,
         const Point& xy,
         const Treasure& treasure,
         int price,
@@ -54,7 +54,7 @@ class ShopTreasure: public Detector {
     static std::shared_ptr<ShopTreasure> create(
         Game& game,
         const std::string& name,
-        Layer layer,
+        int layer,
         const Point& xy,
         const Treasure& treasure,
         int price,

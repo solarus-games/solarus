@@ -17,7 +17,6 @@
 #include "solarus/entities/Camera.h"
 #include "solarus/entities/EntityType.h"
 #include "solarus/entities/EntityTypeInfo.h"
-#include "solarus/entities/Layer.h"
 #include "solarus/entities/MapEntities.h"
 #include "solarus/entities/NonAnimatedRegions.h"
 #include "solarus/entities/TilePattern.h"
@@ -77,15 +76,15 @@ void MapLoader::load_map(Game& game, Map& map) {
   entities.map_width8 = map.width8;
   entities.map_height8 = map.height8;
   entities.tiles_grid_size = map.width8 * map.height8;
-  for (int layer = 0; layer < LAYER_NB; ++layer) {
+  for (int layer = 0; layer < map.get_num_layers(); ++layer) {
 
-    Ground initial_ground = (layer == LAYER_LOW) ? Ground::TRAVERSABLE : Ground::EMPTY;
+    Ground initial_ground = (layer == 0) ? Ground::TRAVERSABLE : Ground::EMPTY;
     for (int i = 0; i < entities.tiles_grid_size; ++i) {
       entities.tiles_ground[layer].push_back(initial_ground);
     }
 
     entities.non_animated_regions[layer] = std::unique_ptr<NonAnimatedRegions>(
-        new NonAnimatedRegions(map, Layer(layer))
+        new NonAnimatedRegions(map, layer)
     );
   }
 
@@ -98,8 +97,7 @@ void MapLoader::load_map(Game& game, Map& map) {
 
   // Create entities by calling the Lua API functions.
   LuaContext& lua_context = map.get_lua_context();
-  for (int k = LAYER_LOW; k < LAYER_NB; ++k) {
-    Layer layer = (Layer) k;
+  for (int layer = 0; layer < map.get_num_layers(); ++layer) {
     for (int i = 0; i < (int) data.get_num_entities(layer); ++i) {
       const EntityData& entity_data = data.get_entity({ layer, i });
       EntityType type = entity_data.get_type();

@@ -19,7 +19,6 @@
 #include "solarus/entities/Tile.h"
 #include "solarus/entities/Tileset.h"
 #include "solarus/entities/TilePattern.h"
-#include "solarus/entities/Layer.h"
 #include "solarus/entities/CrystalBlock.h"
 #include "solarus/entities/Boomerang.h"
 #include "solarus/entities/Stairs.h"
@@ -47,12 +46,22 @@ MapEntities::MapEntities(Game& game, Map& map):
   map_width8(0),
   map_height8(0),
   tiles_grid_size(0),
+  tiles_ground(map.get_num_layers()),
+  non_animated_regions(map.get_num_layers()),
+  tiles_in_animated_regions(map.get_num_layers()),
   hero(*game.get_hero()),
   camera(nullptr),
+  entities_drawn_first(map.get_num_layers()),
+  entities_drawn_y_order(map.get_num_layers()),
+  ground_observers(map.get_num_layers()),
+  ground_modifiers(map.get_num_layers()),
   default_destination(nullptr),
+  obstacle_entities(map.get_num_layers()),
+  stairs(map.get_num_layers()),
+  crystal_blocks(map.get_num_layers()),
   boomerang(nullptr) {
 
-  Layer hero_layer = hero.get_layer();
+  int hero_layer = hero.get_layer();
   this->obstacle_entities[hero_layer].push_back(&hero);
   this->entities_drawn_y_order[hero_layer].push_back(&hero);
   this->ground_observers[hero_layer].push_back(&hero);
@@ -91,7 +100,7 @@ const std::list<EntityPtr>& MapEntities::get_entities() {
  * \param layer The layer.
  * \return The obstacle entities on that layer.
  */
-const std::list<Entity*>& MapEntities::get_obstacle_entities(Layer layer) {
+const std::list<Entity*>& MapEntities::get_obstacle_entities(int layer) {
   return obstacle_entities[layer];
 }
 
@@ -100,7 +109,7 @@ const std::list<Entity*>& MapEntities::get_obstacle_entities(Layer layer) {
  * \param layer The layer.
  * \return The ground observers on that layer.
  */
-const std::list<Entity*>& MapEntities::get_ground_observers(Layer layer) {
+const std::list<Entity*>& MapEntities::get_ground_observers(int layer) {
   return ground_observers[layer];
 }
 
@@ -109,7 +118,7 @@ const std::list<Entity*>& MapEntities::get_ground_observers(Layer layer) {
  * \param layer The layer.
  * \return The ground observers on that layer.
  */
-const std::list<Entity*>& MapEntities::get_ground_modifiers(Layer layer) {
+const std::list<Entity*>& MapEntities::get_ground_modifiers(int layer) {
   return ground_modifiers[layer];
 }
 
@@ -135,7 +144,7 @@ Destination* MapEntities::get_default_destination() {
  * \param layer the layer
  * \return the stairs on this layer
  */
-const std::list<Stairs*>& MapEntities::get_stairs(Layer layer) {
+const std::list<Stairs*>& MapEntities::get_stairs(int layer) {
   return stairs[layer];
 }
 
@@ -144,7 +153,7 @@ const std::list<Stairs*>& MapEntities::get_stairs(Layer layer) {
  * \param layer the layer
  * \return the crystal blocks on this layer
  */
-const std::list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
+const std::list<CrystalBlock*>& MapEntities::get_crystal_blocks(int layer) {
   return crystal_blocks[layer];
 }
 
@@ -167,7 +176,7 @@ const std::list<const Separator*>& MapEntities::get_separators() const {
  * \param y8 Y coordinate of the square (divided by 8).
  * \param ground The ground property to set.
  */
-void MapEntities::set_tile_ground(Layer layer, int x8, int y8, Ground ground) {
+void MapEntities::set_tile_ground(int layer, int x8, int y8, Ground ground) {
 
   if (x8 >= 0 && x8 < map_width8 && y8 >= 0 && y8 < map_height8) {
     int index = y8 * map_width8 + x8;
@@ -289,7 +298,7 @@ void MapEntities::get_entities_in_rectangle(
  */
 void MapEntities::bring_to_front(Entity& entity) {
 
-  Layer layer = entity.get_layer();
+  int layer = entity.get_layer();
   if (entity.can_be_drawn() && !entity.is_drawn_in_y_order()) {
     entities_drawn_first[layer].remove(&entity);
     entities_drawn_first[layer].push_back(&entity);  // Displayed last.
@@ -297,12 +306,10 @@ void MapEntities::bring_to_front(Entity& entity) {
 
   if (entity.can_be_obstacle()) {
     if (entity.has_layer_independent_collisions()) {
-      obstacle_entities[LAYER_LOW].remove(&entity);
-      obstacle_entities[LAYER_LOW].push_back(&entity);
-      obstacle_entities[LAYER_INTERMEDIATE].remove(&entity);
-      obstacle_entities[LAYER_INTERMEDIATE].push_back(&entity);
-      obstacle_entities[LAYER_HIGH].remove(&entity);
-      obstacle_entities[LAYER_HIGH].push_back(&entity);
+      for (int i = 0; i < map.get_num_layers(); ++i) {
+        obstacle_entities[i].remove(&entity);
+        obstacle_entities[i].push_back(&entity);
+      }
     }
     else {
       obstacle_entities[layer].remove(&entity);
@@ -319,7 +326,7 @@ void MapEntities::bring_to_front(Entity& entity) {
  */
 void MapEntities::bring_to_back(Entity& entity) {
 
-  Layer layer = entity.get_layer();
+  int layer = entity.get_layer();
   if (entity.can_be_drawn() && !entity.is_drawn_in_y_order()) {
     entities_drawn_first[layer].remove(&entity);
     entities_drawn_first[layer].push_front(&entity);  // Displayed first.
@@ -327,12 +334,10 @@ void MapEntities::bring_to_back(Entity& entity) {
 
   if (entity.can_be_obstacle()) {
     if (entity.has_layer_independent_collisions()) {
-      obstacle_entities[LAYER_LOW].remove(&entity);
-      obstacle_entities[LAYER_LOW].push_front(&entity);
-      obstacle_entities[LAYER_INTERMEDIATE].remove(&entity);
-      obstacle_entities[LAYER_INTERMEDIATE].push_front(&entity);
-      obstacle_entities[LAYER_HIGH].remove(&entity);
-      obstacle_entities[LAYER_HIGH].push_front(&entity);
+      for (int i = 0; i < map.get_num_layers(); ++i) {
+        obstacle_entities[i].remove(&entity);
+        obstacle_entities[i].push_front(&entity);
+      }
     }
     else {
       obstacle_entities[layer].remove(&entity);
@@ -361,7 +366,7 @@ void MapEntities::notify_map_started() {
   hero.notify_tileset_changed();
 
   // Setup non-animated tiles pre-drawing.
-  for (int layer = 0; layer < LAYER_NB; layer++) {
+  for (int layer = 0; layer < map.get_num_layers(); layer++) {
     non_animated_regions[layer]->build(tiles_in_animated_regions[layer]);
     // Now, tiles_in_animated_regions contains the tiles that won't be optimized.
   }
@@ -386,7 +391,7 @@ void MapEntities::notify_map_opening_transition_finished() {
 void MapEntities::notify_tileset_changed() {
 
   // Redraw optimized tiles (i.e. non animated ones).
-  for (int layer = 0; layer < LAYER_NB; layer++) {
+  for (int layer = 0; layer < map.get_num_layers(); layer++) {
     non_animated_regions[layer]->notify_tileset_changed();
   }
 
@@ -416,7 +421,7 @@ void MapEntities::notify_map_finished() {
  */
 void MapEntities::add_tile(const TilePtr& tile) {
 
-  const Layer layer = tile->get_layer();
+  const int layer = tile->get_layer();
 
   // Add the tile to the map.
   non_animated_regions[layer]->add_tile(tile);
@@ -586,7 +591,7 @@ void MapEntities::add_entity(const EntityPtr& entity) {
     add_tile(std::static_pointer_cast<Tile>(entity));
   }
   else {
-    Layer layer = entity->get_layer();
+    int layer = entity->get_layer();
 
     // update the quadtree
     quadtree.add(entity, entity->get_max_bounding_box());
@@ -601,9 +606,9 @@ void MapEntities::add_entity(const EntityPtr& entity) {
 
       if (entity->has_layer_independent_collisions()) {
         // some entities handle collisions on any layer (e.g. stairs inside a single floor)
-        obstacle_entities[LAYER_LOW].push_back(entity.get());
-        obstacle_entities[LAYER_INTERMEDIATE].push_back(entity.get());
-        obstacle_entities[LAYER_HIGH].push_back(entity.get());
+        for (int i = 0; i < map.get_num_layers(); ++i) {
+          obstacle_entities[i].push_back(entity.get());
+        }
       }
       else {
         // but usually, an entity collides with only one layer
@@ -759,7 +764,7 @@ void MapEntities::remove_marked_entities() {
   for (Entity* entity: entities_to_remove) {
 
     EntityPtr shared_entity = std::static_pointer_cast<Entity>(entity->shared_from_this());
-    Layer layer = entity->get_layer();
+    int layer = entity->get_layer();
 
     // remove it from the quadtree
     quadtree.remove(shared_entity);
@@ -768,7 +773,7 @@ void MapEntities::remove_marked_entities() {
     if (entity->can_be_obstacle()) {
 
       if (entity->has_layer_independent_collisions()) {
-        for (int i = 0; i < LAYER_NB; i++) {
+        for (int i = 0; i < map.get_num_layers(); i++) {
           obstacle_entities[i].remove(entity);
         }
       }
@@ -873,7 +878,7 @@ void MapEntities::update() {
   hero.update();
 
   // Update the dynamic entities.
-  for (int layer = 0; layer < LAYER_NB; layer++) {
+  for (int layer = 0; layer < map.get_num_layers(); layer++) {
 
     // Sort the entities drawn in y order.
     entities_drawn_y_order[layer].sort(compare_y);
@@ -901,7 +906,7 @@ void MapEntities::update() {
  */
 void MapEntities::draw() {
 
-  for (int layer = 0; layer < LAYER_NB; ++layer) {
+  for (int layer = 0; layer < map.get_num_layers(); ++layer) {
 
     // draw the animated tiles and the tiles that overlap them:
     // in other words, draw all regions containing animated tiles
@@ -960,7 +965,7 @@ bool MapEntities::compare_y(Entity* first, Entity* second) {
 void MapEntities::set_entity_drawn_in_y_order(
     Entity& entity, bool drawn_in_y_order) {
 
-  const Layer layer = entity.get_layer();
+  const int layer = entity.get_layer();
   if (drawn_in_y_order) {
     entities_drawn_first[layer].remove(&entity);
     entities_drawn_y_order[layer].push_back(&entity);
@@ -979,9 +984,9 @@ void MapEntities::set_entity_drawn_in_y_order(
  * \param entity an entity
  * \param layer the new layer
  */
-void MapEntities::set_entity_layer(Entity& entity, Layer layer) {
+void MapEntities::set_entity_layer(Entity& entity, int layer) {
 
-  Layer old_layer = entity.get_layer();
+  int old_layer = entity.get_layer();
 
   if (layer != old_layer) {
 
@@ -1037,7 +1042,7 @@ void MapEntities::notify_entity_bounding_box_changed(Entity& entity) {
  */
 void MapEntities::notify_entity_ground_observer_changed(Entity& entity) {
 
-  Layer layer = entity.get_layer();
+  int layer = entity.get_layer();
   ground_observers[layer].remove(&entity);
   if (entity.is_ground_observer()) {
     ground_observers[layer].push_back(&entity);
@@ -1051,7 +1056,7 @@ void MapEntities::notify_entity_ground_observer_changed(Entity& entity) {
  */
 void MapEntities::notify_entity_ground_modifier_changed(Entity& entity) {
 
-  Layer layer = entity.get_layer();
+  int layer = entity.get_layer();
   ground_modifiers[layer].remove(&entity);
   if (entity.is_ground_modifier()) {
     ground_modifiers[layer].push_back(&entity);
@@ -1064,7 +1069,7 @@ void MapEntities::notify_entity_ground_modifier_changed(Entity& entity) {
  * \param rectangle a rectangle
  * \return true if this rectangle overlaps a raised crystal block
  */
-bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle& rectangle) {
+bool MapEntities::overlaps_raised_blocks(int layer, const Rectangle& rectangle) {
 
   std::list<CrystalBlock*> blocks = get_crystal_blocks(layer);
 

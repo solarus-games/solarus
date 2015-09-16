@@ -39,7 +39,7 @@ class Pickable: public Detector {
     // creation and destruction
     Pickable(
         const std::string& name,
-        Layer layer,
+        int layer,
         const Point& xy,
         const Treasure& treasure
     );
@@ -47,7 +47,7 @@ class Pickable: public Detector {
     static std::shared_ptr<Pickable> create(
         Game& game,
         const std::string& name,
-        Layer layer,
+        int layer,
         const Point& xy,
         Treasure treasure,
         FallingHeight falling_height,

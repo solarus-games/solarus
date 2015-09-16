@@ -19,7 +19,6 @@
 
 #include "solarus/Common.h"
 #include "solarus/GameCommands.h"
-#include "solarus/entities/Layer.h"
 #include "solarus/entities/EnemyAttack.h"
 #include "solarus/entities/EntityPtr.h"
 #include "solarus/entities/EntityType.h"
@@ -361,7 +360,7 @@ class LuaContext {
     void entity_on_disabled(Entity& entity);
     void entity_on_pre_draw(Entity& entity);
     void entity_on_post_draw(Entity& entity);
-    void entity_on_position_changed(Entity& entity, const Point& xy, Layer layer);
+    void entity_on_position_changed(Entity& entity, const Point& xy, int layer);
     void entity_on_obstacle_reached(Entity& entity, Movement& movement);
     void entity_on_movement_changed(Entity& entity, Movement& movement);
     void entity_on_movement_finished(Entity& entity);
@@ -1200,7 +1199,7 @@ class LuaContext {
     void on_restarted();
     void on_pre_draw();
     void on_post_draw();
-    void on_position_changed(const Point& xy, Layer layer);
+    void on_position_changed(const Point& xy, int layer);
     void on_obstacle_reached(Movement& movement);
     void on_movement_changed(Movement& movement);
     void on_movement_finished();

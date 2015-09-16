@@ -32,7 +32,7 @@ MapData::MapData():
     floor(NO_FLOOR),
     tileset_id(),
     music_id("none"),
-    entities(),
+    entities(get_num_layers()),
     named_entities() {
 
 }
@@ -67,6 +67,14 @@ Point MapData::get_location() const {
  */
 void MapData::set_location(const Point& location) {
   this->location = location;
+}
+
+/**
+ * \brief Returns the number of layers on the map.
+ * \return The number of layers.
+ */
+int MapData::get_num_layers() const {
+  return 3;
 }
 
 /**
@@ -166,8 +174,7 @@ void MapData::set_music_id(const std::string& music_id) {
 int MapData::get_num_entities() const {
 
   int num_entities = 0;
-  for (int i = 0; i < Layer::LAYER_NB; ++i) {
-    Layer layer = static_cast<Layer>(i);
+  for (int layer = 0; layer < get_num_layers(); ++layer) {
     num_entities += get_num_entities(layer);
   }
 
@@ -179,7 +186,7 @@ int MapData::get_num_entities() const {
  * \param layer A layer.
  * \return The number of entities on that layer.
  */
-int MapData::get_num_entities(Layer layer) const {
+int MapData::get_num_entities(int layer) const {
   return get_entities(layer).size();
 }
 
@@ -188,7 +195,7 @@ int MapData::get_num_entities(Layer layer) const {
  * \param layer A layer.
  * \return The number of tiles on that layer.
  */
-int MapData::get_num_tiles(Layer layer) const {
+int MapData::get_num_tiles(int layer) const {
   return entities[layer].num_tiles;
 }
 
@@ -197,7 +204,7 @@ int MapData::get_num_tiles(Layer layer) const {
  * \param layer A layer.
  * \return The number of dynamic entities on that layer.
  */
-int MapData::get_num_dynamic_entities(Layer layer) const {
+int MapData::get_num_dynamic_entities(int layer) const {
   return get_num_entities(layer) - get_num_tiles(layer);
 }
 
@@ -206,7 +213,7 @@ int MapData::get_num_dynamic_entities(Layer layer) const {
  * \param layer A layer.
  * \return The entities on that layer.
  */
-const std::deque<EntityData>& MapData::get_entities(Layer layer) const {
+const std::deque<EntityData>& MapData::get_entities(int layer) const {
   return entities[layer].entities;
 }
 
@@ -215,7 +222,7 @@ const std::deque<EntityData>& MapData::get_entities(Layer layer) const {
  *
  * Non-const version.
  */
-std::deque<EntityData>& MapData::get_entities(Layer layer) {
+std::deque<EntityData>& MapData::get_entities(int layer) {
   return entities[layer].entities;
 }
 
@@ -225,9 +232,9 @@ std::deque<EntityData>& MapData::get_entities(Layer layer) {
  * \param dst_layer The new layer to set.
  * \return The new index of the entity.
  */
-EntityIndex MapData::set_entity_layer(const EntityIndex& src_index, Layer dst_layer) {
+EntityIndex MapData::set_entity_layer(const EntityIndex& src_index, int dst_layer) {
 
-  Layer src_layer = src_index.layer;
+  int src_layer = src_index.layer;
   if (dst_layer == src_index.layer) {
     // No change.
     return src_index;
@@ -268,7 +275,7 @@ EntityIndex MapData::set_entity_layer(const EntityIndex& src_index, Layer dst_la
  */
 void MapData::set_entity_order(const EntityIndex& src_index, int dst_order) {
 
-  Layer layer = src_index.layer;
+  int layer = src_index.layer;
   int src_order = src_index.order;
 
   if (dst_order == src_order) {
@@ -544,7 +551,7 @@ bool MapData::set_entity_name(const EntityIndex& index, const std::string& name)
 EntityIndex MapData::add_entity(const EntityData& entity) {
 
   // Compute the appropriate index.
-  Layer layer = entity.get_layer();
+  int layer = entity.get_layer();
   int bound = entity.is_dynamic() ? get_num_entities(layer) : get_num_tiles(layer);
   EntityIndex index = { layer, bound };
 
@@ -574,7 +581,7 @@ bool MapData::insert_entity(const EntityData& entity, const EntityIndex& index) 
     return false;
   }
 
-  const Layer layer = index.layer;
+  const int layer = index.layer;
   int order = index.order;
   bool dynamic = entity.is_dynamic();
   int min_order = dynamic ? get_num_tiles(layer) : 0;
@@ -630,7 +637,7 @@ bool MapData::remove_entity(const EntityIndex& index) {
     return false;
   }
 
-  Layer layer = index.layer;
+  int layer = index.layer;
   int order = index.order;
   const EntityData& entity = get_entity(index);
   bool dynamic = entity.is_dynamic();

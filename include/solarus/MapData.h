@@ -54,7 +54,7 @@ struct EntityIndex {
      * \brief Creates an invalid index.
      */
     EntityIndex():
-      layer(LAYER_LOW),
+      layer(0),
       order(-1) {
     }
 
@@ -63,7 +63,7 @@ struct EntityIndex {
      * \param layer The layer.
      * \param order The order in that layer.
      */
-    EntityIndex(Layer layer, int order):
+    EntityIndex(int layer, int order):
       layer(layer),
       order(order) {
     }
@@ -124,7 +124,7 @@ struct EntityIndex {
       return order > other.order;
     }
 
-    Layer layer;     /**< Layer of the entity on the map. */
+    int layer;       /**< Layer of the entity on the map. */
     int order;       /**< Z order of the entity in that layer.
                       * -1 means an invalid index. */
 
@@ -143,6 +143,7 @@ class SOLARUS_API MapData : public LuaData {
     void set_size(const Size& size);
     Point get_location() const;
     void set_location(const Point& location);
+    int get_num_layers() const;
     bool has_world() const;
     const std::string& get_world() const;
     void set_world(const std::string& world);
@@ -156,11 +157,11 @@ class SOLARUS_API MapData : public LuaData {
     void set_music_id(const std::string& music_id);
 
     int get_num_entities() const;
-    int get_num_entities(Layer layer) const;
-    int get_num_tiles(Layer layer) const;
-    int get_num_dynamic_entities(Layer layer) const;
+    int get_num_entities(int layer) const;
+    int get_num_tiles(int layer) const;
+    int get_num_dynamic_entities(int layer) const;
 
-    EntityIndex set_entity_layer(const EntityIndex& src_index, Layer dst_layer);
+    EntityIndex set_entity_layer(const EntityIndex& src_index, int dst_layer);
     void set_entity_order(const EntityIndex& src_index, int dst_order);
     EntityIndex bring_entity_to_front(const EntityIndex& index);
     EntityIndex bring_entity_to_back(const EntityIndex& index);
@@ -186,8 +187,8 @@ class SOLARUS_API MapData : public LuaData {
 
   private:
 
-    const std::deque<EntityData>& get_entities(Layer layer) const;
-    std::deque<EntityData>& get_entities(Layer layer);
+    const std::deque<EntityData>& get_entities(int layer) const;
+    std::deque<EntityData>& get_entities(int layer);
 
     Size size;                    /**< Size of the map in pixels. */
     std::string world;            /**< World of the map or an empty string. */
@@ -196,7 +197,7 @@ class SOLARUS_API MapData : public LuaData {
     std::string tileset_id;       /**< Tileset to use as skin for the map. */
     std::string music_id;         /**< Background music id or "none" or "same". */
 
-    std::array<EntityList, LAYER_NB>
+    std::vector<EntityList>
         entities;                 /**< The entities on each layer. */
     std::map<std::string, EntityIndex>
         named_entities;           /**< Entities indexed by their name. */

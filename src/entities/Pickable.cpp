@@ -46,7 +46,7 @@ namespace Solarus {
  */
 Pickable::Pickable(
     const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     const Treasure& treasure
 ):
@@ -100,7 +100,7 @@ EntityType Pickable::get_type() const {
 std::shared_ptr<Pickable> Pickable::create(
     Game& /* game */,
     const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     Treasure treasure,
     FallingHeight falling_height,
@@ -385,10 +385,10 @@ void Pickable::check_bad_ground() {
     case Ground::EMPTY:
     {
       // Fall to a lower layer.
-      int layer = static_cast<int>(get_layer());
-      if (layer > static_cast<int>(LAYER_LOW)) {
+      int layer = get_layer();
+      if (layer > 0) {
         --layer;
-        get_entities().set_entity_layer(*this, static_cast<Layer>(layer));
+        get_entities().set_entity_layer(*this, layer);
       }
     }
     break;

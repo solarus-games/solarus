@@ -44,7 +44,7 @@ namespace Solarus {
  */
 Teletransporter::Teletransporter(
     const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     const Size& size,
     const std::string& sprite_name,

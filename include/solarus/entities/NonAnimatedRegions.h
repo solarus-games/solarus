@@ -19,7 +19,6 @@
 
 #include "solarus/Common.h"
 #include "solarus/containers/Grid.h"
-#include "solarus/entities/Layer.h"
 #include "solarus/entities/TilePtr.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include <vector>
@@ -40,7 +39,7 @@ class NonAnimatedRegions {
 
   public:
 
-    NonAnimatedRegions(Map& map, Layer layer);
+    NonAnimatedRegions(Map& map, int layer);
 
     void add_tile(const TilePtr& tile);
     void build(std::vector<TilePtr>& rejected_tiles);
@@ -53,7 +52,7 @@ class NonAnimatedRegions {
     void build_cell(int cell_index);
 
     Map& map;                               /**< The map. */
-    Layer layer;                            /**< Layer of the map managed by this object. */
+    int layer;                              /**< Layer of the map managed by this object. */
     std::vector<TilePtr>
         tiles;                              /**< All tiles contained in this layer and candidates to
                                              * be optimized. This list is cleared after build() is called. */

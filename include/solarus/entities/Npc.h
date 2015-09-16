@@ -69,7 +69,7 @@ class Npc: public Detector {
     Npc(
         Game& game,
         const std::string& name,
-        Layer layer,
+        int layer,
         const Point& xy,
         Subtype subtype,
         const std::string& sprite_name,

@@ -67,7 +67,8 @@ const std::map<Door::OpeningMethod, std::string> Door::opening_method_names = {
  */
 Door::Door(Game& game,
     const std::string& name,
-    Layer layer, const Point& xy,
+    int layer,
+    const Point& xy,
     int direction,
     const std::string& sprite_name,
     const std::string& savegame_variable):

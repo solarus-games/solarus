@@ -49,7 +49,7 @@ const std::map<Switch::Subtype, std::string> Switch::subtype_names = {
  */
 Switch::Switch(
     const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     Subtype subtype,
     const std::string& sprite_name,

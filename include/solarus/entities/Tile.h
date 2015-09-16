@@ -47,7 +47,7 @@ class Tile: public Entity {
   public:
 
     Tile(
-        Layer layer,
+        int layer,
         const Point& xy,
         const Size& size,
         Tileset& tileset,

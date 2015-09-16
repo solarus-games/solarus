@@ -54,7 +54,7 @@ CustomEntity::CustomEntity(
     Game& /* game */,
     const std::string& name,
     int direction,
-    Layer layer,
+    int layer,
     const Point& xy,
     const Size& size,
     const std::string& sprite_name,

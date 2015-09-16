@@ -52,7 +52,7 @@ const std::map<Chest::OpeningMethod, std::string> Chest::opening_method_names = 
  */
 Chest::Chest(
     const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     const std::string& sprite_name,
     const Treasure& treasure):

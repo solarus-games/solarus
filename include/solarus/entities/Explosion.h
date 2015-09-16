@@ -35,7 +35,7 @@ class Explosion: public Detector {
 
     Explosion(
         const std::string& name,
-        Layer layer,
+        int layer,
         const Point& xy,
         bool with_damage
     );

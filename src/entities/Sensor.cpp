@@ -34,7 +34,7 @@ namespace Solarus {
  */
 Sensor::Sensor(
     const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     const Size& size):
   Detector(COLLISION_CONTAINING | COLLISION_OVERLAPPING, name, layer, xy, size),

@@ -46,7 +46,7 @@ namespace Solarus {
  */
 Block::Block(
     const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     int direction,
     const std::string& sprite_name,

@@ -276,12 +276,12 @@ void CarriedItem::break_item_on_ground() {
       // Nothing here: fall one layer below.
     {
       int layer = get_layer();
-      if (layer == LAYER_LOW) {
+      if (layer == 0) {
         // Cannot fall lower.
         break_item();
       }
       else {
-        get_entities().set_entity_layer(*this, Layer(layer - 1));
+        get_entities().set_entity_layer(*this, layer - 1);
         break_item_on_ground();  // Do this again on the next layer.
       }
       break;
@@ -403,9 +403,9 @@ void CarriedItem::update() {
 
     if (break_one_layer_above) {
       break_item();
-      Layer layer = get_layer();
-      if (layer != LAYER_HIGH) {
-        get_entities().set_entity_layer(*this, Layer(layer + 1));
+      int layer = get_layer();
+      if (layer != get_map().get_highest_layer()) {
+        get_entities().set_entity_layer(*this, layer + 1);
       }
       break_one_layer_above = false;
     }

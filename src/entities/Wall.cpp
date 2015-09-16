@@ -35,7 +35,7 @@ namespace Solarus {
  */
 Wall::Wall(
     const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     const Size& size,
     bool stops_hero,

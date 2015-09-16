@@ -32,7 +32,7 @@ namespace Solarus {
  * \param tile_pattern_id Id of the tile pattern in the tileset.
  */
 Tile::Tile(
-    Layer layer,
+    int layer,
     const Point& xy,
     const Size& size,
     Tileset& tileset,

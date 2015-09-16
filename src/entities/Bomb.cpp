@@ -39,7 +39,7 @@ namespace Solarus {
  * \param layer layer of the entity to create
  * \param xy Coordinates of the entity to create.
  */
-Bomb::Bomb(const std::string& name, Layer layer, const Point& xy):
+Bomb::Bomb(const std::string& name, int layer, const Point& xy):
   Detector(COLLISION_FACING, name, layer, xy, Size(16, 16)),
   explosion_date(System::now() + 6000) {
 

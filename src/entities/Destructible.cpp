@@ -49,7 +49,7 @@ namespace Solarus {
  */
 Destructible::Destructible(
     const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     const std::string& animation_set_id,
     const Treasure& treasure,

@@ -36,7 +36,7 @@ namespace Solarus {
  * \param subtype subtype of raised block
  */
 CrystalBlock::CrystalBlock(Game& game, const std::string& name,
-    Layer layer, const Point& xy, const Size& size, Subtype subtype):
+    int layer, const Point& xy, const Size& size, Subtype subtype):
   Detector(COLLISION_OVERLAPPING, name, layer, xy, size),
   subtype(subtype) {
 

@@ -83,7 +83,7 @@ class Enemy: public Detector {
     Enemy(
         Game& game,
         const std::string& name,
-        Layer layer,
+        int layer,
         const Point& xy,
         const std::string& breed,
         const Treasure& treasure
@@ -95,7 +95,7 @@ class Enemy: public Detector {
         Rank rank,
         const std::string& savegame_variable,
         const std::string& name,
-        Layer layer,
+        int layer,
         const Point& xy,
         int direction,
         const Treasure& treasure

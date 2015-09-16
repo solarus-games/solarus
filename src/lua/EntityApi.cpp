@@ -829,13 +829,13 @@ int LuaContext::entity_api_set_position(lua_State* l) {
     int y = LuaTools::check_int(l, 3);
     int layer = -1;
     if (lua_gettop(l) >= 4) {
-      layer = LuaTools::check_layer(l, 4);
+      layer = LuaTools::check_int(l, 4);
     }
 
     entity.set_xy(x, y);
     if (layer != -1) {
       MapEntities& entities = entity.get_map().get_entities();
-      entities.set_entity_layer(entity, Layer(layer));
+      entities.set_entity_layer(entity, layer);
     }
     entity.notify_position_changed();
 
@@ -1262,9 +1262,9 @@ int LuaContext::entity_api_test_obstacles(lua_State* l) {
     Entity& entity = *check_entity(l, 1);
     int dx = LuaTools::check_int(l, 2);
     int dy = LuaTools::check_int(l, 3);
-    Layer layer = entity.get_layer();
+    int layer = entity.get_layer();
     if (lua_gettop(l) >= 4) {
-      layer = LuaTools::check_layer(l, 4);
+      layer = LuaTools::check_int(l, 4);
     }
 
     Rectangle bounding_box = entity.get_bounding_box();
@@ -1454,11 +1454,11 @@ int LuaContext::hero_api_save_solid_ground(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
     int x, y;
-    Layer layer;
+    int layer;
     if (lua_gettop(l) >= 2) {
       x = LuaTools::check_int(l, 2);
       y = LuaTools::check_int(l, 3);
-      layer = LuaTools::check_layer(l, 4);
+      layer = LuaTools::check_int(l, 4);
     }
     else {
       x = hero.get_x();
@@ -4234,7 +4234,7 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
     Enemy& enemy = *check_enemy(l, 1);
     LuaTools::check_type(l, 2, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 2, "name", "");
-    Layer layer = LuaTools::opt_layer_field(l, 2, "layer", enemy.get_layer());
+    int layer = LuaTools::opt_int_field(l, 2, "layer", enemy.get_layer());
     int x = LuaTools::opt_int_field(l, 2, "x", 0);
     int y = LuaTools::opt_int_field(l, 2, "y", 0);
     int direction = LuaTools::opt_int_field(l, 2, "direction", 3);
@@ -4977,7 +4977,7 @@ void LuaContext::entity_on_post_draw(Entity& entity) {
  * \param layer The new layer.
  */
 void LuaContext::entity_on_position_changed(
-    Entity& entity, const Point& xy, Layer layer) {
+    Entity& entity, const Point& xy, int layer) {
 
   if (!userdata_has_field(entity, "on_position_changed")) {
     return;

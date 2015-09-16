@@ -20,7 +20,6 @@
 #include "solarus/Common.h"
 #include "solarus/entities/Camera.h"
 #include "solarus/entities/Ground.h"
-#include "solarus/entities/Layer.h"
 #include "solarus/entities/MapEntities.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Rectangle.h"
@@ -80,6 +79,10 @@ class SOLARUS_API Map: public ExportableToLua {
     int get_width8() const;
     int get_height8() const;
 
+    int get_num_layers() const;
+    int get_lowest_layer() const;
+    int get_highest_layer() const;
+
     // camera
     const SurfacePtr& get_visible_surface();
     const Camera& get_camera() const;
@@ -120,40 +123,40 @@ class SOLARUS_API Map: public ExportableToLua {
     bool test_collision_with_border(const Point& point) const;
     bool test_collision_with_border(const Rectangle& collision_box) const;
     bool test_collision_with_ground(
-        Layer layer,
+        int layer,
         int x,
         int y,
         const Entity& entity_to_check,
         bool& found_diagonal_wall
     ) const;
     bool test_collision_with_entities(
-        Layer layer,
+        int layer,
         const Rectangle& collision_box,
         Entity& entity_to_check
     ) const;
     bool test_collision_with_obstacles(
-        Layer layer,
+        int layer,
         const Rectangle& collision_box,
         Entity& entity_to_check
     ) const;
     bool test_collision_with_obstacles(
-        Layer layer,
+        int layer,
         int x,
         int y,
         Entity& entity_to_check
     ) const;
     bool test_collision_with_obstacles(
-        Layer layer,
+        int layer,
         const Point& point,
         Entity& entity_to_check
     ) const;
     bool has_empty_ground(
-        Layer layer,
+        int layer,
         const Rectangle& collision_box
     ) const;
 
-    Ground get_ground(Layer layer, int x, int y) const;
-    Ground get_ground(Layer layer, const Point& xy) const;
+    Ground get_ground(int layer, int x, int y) const;
+    Ground get_ground(int layer, const Point& xy) const;
 
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(Entity& entity);

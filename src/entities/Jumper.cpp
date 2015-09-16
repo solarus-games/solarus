@@ -31,7 +31,7 @@ namespace Solarus {
  * \param jump_length length of the jump in pixels (usually a multiple of 8)
  */
 Jumper::Jumper(const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     const Size& size,
     int direction,

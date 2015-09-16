@@ -23,7 +23,6 @@
 #include "solarus/entities/EntityPtr.h"
 #include "solarus/entities/EntityType.h"
 #include "solarus/entities/Ground.h"
-#include "solarus/entities/Layer.h"
 #include "solarus/entities/TilePtr.h"
 #include "solarus/Transition.h"
 #include <list>
@@ -66,14 +65,14 @@ class SOLARUS_API MapEntities {
     Hero& get_hero();
     const Camera& get_camera() const;
     Camera& get_camera();
-    Ground get_tile_ground(Layer layer, int x, int y) const;
+    Ground get_tile_ground(int layer, int x, int y) const;
     const std::list<EntityPtr>& get_entities();
-    const std::list<Entity*>& get_obstacle_entities(Layer layer);
-    const std::list<Entity*>& get_ground_observers(Layer layer);
-    const std::list<Entity*>& get_ground_modifiers(Layer layer);
+    const std::list<Entity*>& get_obstacle_entities(int layer);
+    const std::list<Entity*>& get_ground_observers(int layer);
+    const std::list<Entity*>& get_ground_modifiers(int layer);
     const std::list<Detector*>& get_detectors();
-    const std::list<Stairs*>& get_stairs(Layer layer);
-    const std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
+    const std::list<Stairs*>& get_stairs(int layer);
+    const std::list<CrystalBlock*>& get_crystal_blocks(int layer);
     const std::list<const Separator*>& get_separators() const;
     Destination* get_default_destination();
 
@@ -94,13 +93,13 @@ class SOLARUS_API MapEntities {
     void bring_to_back(Entity& entity);
     static bool compare_y(Entity* first, Entity* second);
     void set_entity_drawn_in_y_order(Entity& entity, bool drawn_in_y_order);
-    void set_entity_layer(Entity& entity, Layer layer);
+    void set_entity_layer(Entity& entity, int layer);
     void notify_entity_bounding_box_changed(Entity& entity);
     void notify_entity_ground_observer_changed(Entity& entity);
     void notify_entity_ground_modifier_changed(Entity& entity);
 
     // specific to some entity types
-    bool overlaps_raised_blocks(Layer layer, const Rectangle& rectangle);
+    bool overlaps_raised_blocks(int layer, const Rectangle& rectangle);
     bool is_boomerang_present();
     void remove_boomerang();
 
@@ -120,7 +119,7 @@ class SOLARUS_API MapEntities {
     friend class MapLoader;            /**< the map loader initializes the private fields of MapEntities */
 
     void add_tile(const TilePtr& tile);
-    void set_tile_ground(Layer layer, int x8, int y8, Ground ground);
+    void set_tile_ground(int layer, int x8, int y8, Ground ground);
     void remove_marked_entities();
     void notify_entity_removed(Entity* entity);
     void update_crystal_blocks();
@@ -134,12 +133,14 @@ class SOLARUS_API MapEntities {
     // tiles
     int tiles_grid_size;                            /**< number of 8x8 squares in the map
                                                      * (tiles_grid_size = map_width8 * map_height8) */
-    std::vector<Ground> tiles_ground[LAYER_NB];     /**< array of size tiles_grid_size representing the ground property
+    std::vector<std::vector<Ground>> tiles_ground;  /**< For each layer, list of size tiles_grid_size
+                                                     * representing the ground property
                                                      * of each 8x8 square. */
-    std::unique_ptr<NonAnimatedRegions>
-        non_animated_regions[LAYER_NB];             /**< All non-animated tiles are managed here for performance. */
-    std::vector<TilePtr>
-        tiles_in_animated_regions[LAYER_NB];        /**< animated tiles and tiles overlapping them */
+    std::vector<std::unique_ptr<NonAnimatedRegions>>
+        non_animated_regions;                       /**< For each layer, all non-animated tiles are managed
+                                                     * here for performance. */
+    std::vector<std::vector<TilePtr>>
+        tiles_in_animated_regions;                  /**< For each layer, animated tiles and tiles overlapping them. */
 
     // dynamic entities
     Hero& hero;                                     /**< the hero (stored in Game because it is kept when changing maps) */
@@ -154,35 +155,36 @@ class SOLARUS_API MapEntities {
                                                      * Optimized for fast spatial search. */
     std::list<Entity*> entities_to_remove;          /**< list of entities that need to be removed right now */
 
-    std::list<Entity*>
-      entities_drawn_first[LAYER_NB];               /**< all map entities that are drawn in the normal order */
+    std::vector<std::list<Entity*>>
+      entities_drawn_first;                         /**< For each layer, all map entities that are
+                                                     * drawn in normal order */
 
-    std::list<Entity*>
-      entities_drawn_y_order[LAYER_NB];             /**< all map entities that are drawn in the order
-                                                     * defined by their y position, including the hero */
+    std::vector<std::list<Entity*>>
+      entities_drawn_y_order;                       /**< For each layer, all map entities that are drawn in the order
+                                                     * defined by their y position, including the hero. */
 
     std::list<Detector*> detectors;                 /**< all entities able to detect other entities
                                                      * on this map.
                                                      * TODO store them by layer like obstacle_entities
                                                      * but take care of has_layer_independent_collisions() */
-    std::list<Entity*>
-      ground_observers[LAYER_NB];                   /**< all dynamic entities sensible to the ground
-                                                     * below them */
-    std::list<Entity*>
-      ground_modifiers[LAYER_NB];                   /**< all dynamic entities that may change the ground of
-                                                     * the map where they are placed */
+    std::vector<std::list<Entity*>>
+      ground_observers;                             /**< For each layer, all dynamic entities sensible to the ground
+                                                     * below them. */
+    std::vector<std::list<Entity*>>
+      ground_modifiers;                             /**< For each layer, all dynamic entities that may change the ground of
+                                                     * the map where they are placed. */
     Destination* default_destination;               /**< the default destination of this map */
 
-    std::list<Entity*>
-      obstacle_entities[LAYER_NB];                  /**< all entities that might be obstacle for other
-                                                     * entities on this map, including the hero */
+    std::vector<std::list<Entity*>>
+      obstacle_entities;                            /**< For each layer, all entities that might be obstacle for other
+                                                     * entities on this map, including the hero. */
 
-    std::list<Stairs*> stairs[LAYER_NB];            /**< all stairs of the map */
-    std::list<CrystalBlock*>
-      crystal_blocks[LAYER_NB];                     /**< all crystal blocks of the map */
-    std::list<const Separator*> separators;         /**< all separators of the map */
+    std::vector<std::list<Stairs*>> stairs;         /**< For each layer, all stairs. */
+    std::vector<std::list<CrystalBlock*>>
+      crystal_blocks;                               /**< For each layer, all crystal blocks. */
+    std::list<const Separator*> separators;         /**< All separators of the map. */
 
-    Boomerang* boomerang;                           /**< the boomerang if present on the map, nullptr otherwise */
+    Boomerang* boomerang;                           /**< The boomerang if present on the map, nullptr otherwise. */
 
 };
 
@@ -201,7 +203,7 @@ class SOLARUS_API MapEntities {
  * \param y Y coordinate of the point.
  * \return The ground of the highest tile at this place.
  */
-inline Ground MapEntities::get_tile_ground(Layer layer, int x, int y) const {
+inline Ground MapEntities::get_tile_ground(int layer, int x, int y) const {
 
   // Warning: this function is called very often so it has been optimized and
   // should remain so.

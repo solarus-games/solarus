@@ -36,7 +36,7 @@ class Stream: public Detector {
 
     Stream(
         const std::string& name,
-        Layer layer,
+        int layer,
         const Point& xy,
         int direction,
         const std::string& sprite_name

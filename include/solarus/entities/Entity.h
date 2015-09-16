@@ -20,7 +20,6 @@
 #include "solarus/Common.h"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/entities/EntityType.h"
-#include "solarus/entities/Layer.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/entities/CollisionMode.h"
 #include "solarus/entities/EnemyAttack.h"
@@ -127,8 +126,8 @@ class SOLARUS_API Entity: public ExportableToLua {
     const LuaContext& get_lua_context() const;
 
     // position in the map
-    Layer get_layer() const;
-    void set_layer(Layer layer);
+    int get_layer() const;
+    void set_layer(int layer);
     Ground get_ground_below() const;
 
     int get_x() const;
@@ -336,7 +335,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     Entity(
         const std::string& name,
         int direction,
-        Layer layer,
+        int layer,
         const Point& xy,
         const Size& size
     );
@@ -379,7 +378,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     Map* map;                                   /**< The map where this entity is, or nullptr
                                                  * (automatically set by class MapEntities after adding the entity to the map) */
 
-    Layer layer;                                /**< Layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
+    int layer;                                  /**< Layer of the entity on the map.
                                                  * The layer is constant for the tiles and can change for the hero and the dynamic entities. */
 
     Rectangle bounding_box;                     /**< This rectangle represents the position of the entity of the map and is

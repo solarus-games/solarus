@@ -23,7 +23,7 @@ class CustomEntity;
 template<>
 std::shared_ptr<CustomEntity> TestEnvironment::make_entity<CustomEntity>(
     const Point& xy,
-    Layer layer
+    int layer
 );
 
 // TODO specialization for other entity types

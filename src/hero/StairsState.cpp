@@ -98,10 +98,10 @@ void Hero::StairsState::start(const State* previous_state) {
   Hero& hero = get_entity();
   if (stairs.is_inside_floor()) {
     if (way == Stairs::NORMAL_WAY) {
-      // Towards an upper layer: change the layer now
-      Layer layer = stairs.get_layer();
-      Debug::check_assertion(layer != LAYER_HIGH, "Invalid stairs layer");
-      get_entities().set_entity_layer(hero, Layer(layer + 1));
+      // Toward a higher layer: change the layer now.
+      int layer = stairs.get_layer();
+      Debug::check_assertion(layer < get_map().get_num_layers(), "Invalid stairs layer");
+      get_entities().set_entity_layer(hero, layer + 1);
     }
   }
   else {

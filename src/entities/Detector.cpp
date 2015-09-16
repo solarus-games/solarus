@@ -34,7 +34,7 @@ namespace Solarus {
 Detector::Detector(
     int collision_modes,
     const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     const Size& size
 ):

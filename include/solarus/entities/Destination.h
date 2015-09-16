@@ -32,7 +32,7 @@ class Destination: public Entity {
 
     Destination(
         const std::string& name,
-        Layer layer,
+        int layer,
         const Point& xy,
         int hero_direction,
         const std::string& sprite_name,

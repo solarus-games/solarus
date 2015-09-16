@@ -72,7 +72,7 @@ namespace Solarus {
  * \param equipment the equipment (needed to build the sprites even outside a game)
  */
 Hero::Hero(Equipment& equipment):
-  Entity("hero", 0, LAYER_LOW, Point(0, 0), Size(16, 16)),
+  Entity("hero", 0, 0, Point(0, 0), Size(16, 16)),
   invincible(false),
   end_invincible_date(0),
   normal_walking_speed(88),
@@ -85,7 +85,7 @@ Hero::Hero(Equipment& equipment):
   // position
   set_origin(8, 13);
   last_solid_ground_coords = { -1, -1 };
-  last_solid_ground_layer = LAYER_LOW;
+  last_solid_ground_layer = 0;
 
   // sprites
   set_drawn_in_y_order(true);
@@ -514,7 +514,7 @@ void Hero::set_map(Map& map, int initial_direction) {
   }
 
   last_solid_ground_coords = { -1, -1 };
-  last_solid_ground_layer = LAYER_LOW;
+  last_solid_ground_layer = 0;
   reset_target_solid_ground_coords();
   get_hero_sprites().set_clipping_rectangle();
 
@@ -543,10 +543,10 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
     int x = get_x() - next_map_location.get_x() + previous_map_location.get_x();
     int y = get_y() - next_map_location.get_y() + previous_map_location.get_y();
 
-    // TODO try LAYER_HIGH first
-    Layer layer = LAYER_INTERMEDIATE;
-    if (map.get_ground(LAYER_INTERMEDIATE, x, y) == Ground::EMPTY) {
-      layer = LAYER_LOW;
+    int layer = map.get_highest_layer();
+    while (layer > 0 && map.get_ground(layer, x, y) == Ground::EMPTY) {
+      // TODO check the whole hero's bounding box rather than just a point.
+      --layer;
     }
     set_map(map, -1);
     set_xy(x, y);
@@ -610,7 +610,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
         );
         set_map(map, 3);
         set_top_left_xy(0, 0);
-        map.get_entities().set_entity_layer(*this, LAYER_HIGH);
+        map.get_entities().set_entity_layer(*this, map.get_highest_layer());
       }
       else {
         // Normal case.
@@ -1071,15 +1071,15 @@ void Hero::check_position() {
 
     int x = get_top_left_x();
     int y = get_top_left_y();
-    Layer layer = get_layer();
+    int layer = get_layer();
 
-    if (layer > LAYER_LOW
+    if (layer > 0
         && get_map().get_ground(layer, x, y) == Ground::EMPTY
         && get_map().get_ground(layer, x + 15, y) == Ground::EMPTY
         && get_map().get_ground(layer, x, y + 15) == Ground::EMPTY
         && get_map().get_ground(layer, x + 15, y + 15) == Ground::EMPTY) {
 
-      get_entities().set_entity_layer(*this, Layer(layer - 1));
+      get_entities().set_entity_layer(*this, layer - 1);
       Ground new_ground = get_map().get_ground(get_layer(), x, y);
       if (get_state().is_free() &&
           (new_ground == Ground::TRAVERSABLE
@@ -1290,9 +1290,9 @@ const Point& Hero::get_last_solid_ground_coords() const {
 /**
  * \brief Returns the layer of the last of solid ground where the hero was.
  * \return The last solid ground layer, or
- * LAYER_LOW if the hero never was on solid ground on this map yet.
+ * 0 if the hero never was on solid ground on this map yet.
  */
-Layer Hero::get_last_solid_ground_layer() const {
+int Hero::get_last_solid_ground_layer() const {
   return last_solid_ground_layer;
 }
 
@@ -1310,9 +1310,9 @@ const Point& Hero::get_target_solid_ground_coords() const {
  * \brief Returns the layer memorized by the last call to
  * set_target_solid_ground().
  * \return The solid ground layer, or
- * LAYER_LOW if set_target_solid_ground() was not called.
+ * 0 if set_target_solid_ground() was not called.
  */
-Layer Hero::get_target_solid_ground_layer() const {
+int Hero::get_target_solid_ground_layer() const {
   return target_solid_ground_layer;
 }
 
@@ -1324,7 +1324,7 @@ Layer Hero::get_target_solid_ground_layer() const {
  * \param layer the layer
  */
 void Hero::set_target_solid_ground_coords(
-    const Point& target_solid_ground_coords, Layer layer) {
+    const Point& target_solid_ground_coords, int layer) {
 
   this->target_solid_ground_coords = target_solid_ground_coords;
   this->target_solid_ground_layer = layer;
@@ -1340,7 +1340,7 @@ void Hero::set_target_solid_ground_coords(
 void Hero::reset_target_solid_ground_coords() {
 
   this->target_solid_ground_coords = { -1, -1 };
-  this->target_solid_ground_layer = LAYER_LOW;
+  this->target_solid_ground_layer = 0;
 }
 
 /**

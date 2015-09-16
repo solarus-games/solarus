@@ -105,7 +105,7 @@ bool Hookshot::is_stream_obstacle(Stream& /* stream */) {
  * \return true if the stairs are currently an obstacle for this entity
  */
 bool Hookshot::is_stairs_obstacle(Stairs& stairs) {
-  return stairs.is_inside_floor() && get_layer() == LAYER_LOW;
+  return stairs.is_inside_floor() && get_layer() == stairs.get_layer();
 }
 
 /**

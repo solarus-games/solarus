@@ -41,7 +41,7 @@ class DynamicTile: public Entity {
 
     DynamicTile(
         const std::string& name,
-        Layer layer,
+        int layer,
         const Point& xy,
         const Size& size,
         Tileset& tileset,

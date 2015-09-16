@@ -28,7 +28,7 @@ namespace Solarus {
  * \param map The map. Its size must be known.
  * \param layer The layer to represent.
  */
-NonAnimatedRegions::NonAnimatedRegions(Map& map, Layer layer):
+NonAnimatedRegions::NonAnimatedRegions(Map& map, int layer):
   map(map),
   layer(layer),
   non_animated_tiles(map.get_size(), Size(512, 256)) {

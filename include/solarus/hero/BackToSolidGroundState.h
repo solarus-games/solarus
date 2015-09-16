@@ -60,7 +60,7 @@ class Hero::BackToSolidGroundState: public Hero::BaseState {
   private:
 
     Point target_xy;                /**< coordinates of the solid ground location to go to*/
-    Layer target_layer;             /**< layer of the target location */
+    int target_layer;               /**< layer of the target location */
     uint32_t end_delay;             /**< delay before returning control to the player */
     uint32_t end_date;              /**< date when the state ends */
     bool with_sound;                /**< true to play a sound when reaching the solid ground */

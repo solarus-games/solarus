@@ -63,8 +63,13 @@ class Detector: public Entity {
   protected:
 
     // construction
-    Detector(int collision_mode, const std::string& name, Layer layer,
-        const Point& xy, const Size& size);
+    Detector(
+        int collision_mode,
+        const std::string& name,
+        int layer,
+        const Point& xy,
+        const Size& size
+    );
     virtual bool is_detector() const override;
 
     // properties of the detector

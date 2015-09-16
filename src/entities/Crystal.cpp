@@ -36,7 +36,7 @@ namespace Solarus {
  * \param layer layer of the entity to create on the map
  * \param xy Coordinates of the entity to create.
  */
-Crystal::Crystal(const std::string& name, Layer layer, const Point& xy):
+Crystal::Crystal(const std::string& name, int layer, const Point& xy):
   Detector(COLLISION_SPRITE | COLLISION_OVERLAPPING | COLLISION_FACING,
       name, layer, xy, Size(16, 16)),
   state(false),

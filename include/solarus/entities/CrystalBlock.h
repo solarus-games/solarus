@@ -42,7 +42,7 @@ class CrystalBlock: public Detector {
     };
 
     CrystalBlock(Game& game, const std::string& name,
-        Layer layer, const Point& xy, const Size& size, Subtype subtype);
+        int layer, const Point& xy, const Size& size, Subtype subtype);
 
     virtual EntityType get_type() const override;
 

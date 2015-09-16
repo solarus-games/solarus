@@ -34,7 +34,7 @@ class Sensor: public Detector {
 
   public:
 
-    Sensor(const std::string& name, Layer layer, const Point& xy, const Size& size);
+    Sensor(const std::string& name, int layer, const Point& xy, const Size& size);
 
     virtual EntityType get_type() const override;
     virtual bool can_be_drawn() const override;

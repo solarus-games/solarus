@@ -33,7 +33,7 @@ namespace Solarus {
  * \param xy coordinates of the center of the explosion
  * \param with_damage true to hurt the hero and the enemies
  */
-Explosion::Explosion(const std::string& name, Layer layer,
+Explosion::Explosion(const std::string& name, int layer,
     const Point& xy, bool with_damage):
   Detector(COLLISION_SPRITE | COLLISION_OVERLAPPING, name, layer, xy, Size(48, 48)) {
 

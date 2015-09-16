@@ -2513,7 +2513,7 @@ void LuaContext::on_post_draw() {
  * \param xy The new position.
  * \param layer The new layer.
  */
-void LuaContext::on_position_changed(const Point& xy, Layer layer) {
+void LuaContext::on_position_changed(const Point& xy, int layer) {
 
   if (find_method("on_position_changed")) {
     lua_pushinteger(l, xy.x);

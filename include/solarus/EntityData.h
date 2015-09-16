@@ -19,7 +19,6 @@
 
 #include "solarus/Common.h"
 #include "solarus/entities/EntityType.h"
-#include "solarus/entities/Layer.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/lua/LuaData.h"
 #include <iosfwd>
@@ -100,8 +99,8 @@ class SOLARUS_API EntityData : public LuaData {
     bool has_name() const;
     std::string get_name() const;
     void set_name(const std::string& name);
-    Layer get_layer() const;
-    void set_layer(Layer layer);
+    int get_layer() const;
+    void set_layer(int layer);
     Point get_xy() const;
     void set_xy(const Point& xy);
 
@@ -131,7 +130,7 @@ class SOLARUS_API EntityData : public LuaData {
 
     EntityType type;    /**< Type of entity. */
     std::string name;   /**< Unique name of the entity on the map. */
-    Layer layer;        /**< Layer of the entity on the map. */
+    int layer;          /**< Layer of the entity on the map. */
     Point xy;           /**< Entity position on the map. */
 
     std::map<std::string, FieldValue>

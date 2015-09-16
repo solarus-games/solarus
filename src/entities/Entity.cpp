@@ -43,15 +43,15 @@ namespace Solarus {
 /**
  * \brief Creates an entity, specifying its position, its name and its direction.
  * \param name Name identifying the entity on the map or an empty string.
- * \param direction direction of the entity
- * \param layer layer of the entity
+ * \param direction Direction of the entity.
+ * \param layer Layer of the entity.
  * \param xy Coordinates where to create the entity.
  * \param size Size of the entity.
  */
 Entity::Entity(
     const std::string& name,
     int direction,
-    Layer layer,
+    int layer,
     const Point& xy,
     const Size& size
 ):
@@ -585,9 +585,9 @@ void Entity::notify_being_removed() {
 
 /**
  * \brief Returns the layer of the entity on the map.
- * \return the layer of the entity on the map
+ * \return The layer of the entity on the map.
  */
-Layer Entity::get_layer() const {
+int Entity::get_layer() const {
   return layer;
 }
 
@@ -600,9 +600,9 @@ Layer Entity::get_layer() const {
  * stores different lists of entities for each layer.
  * TODO: use notify_layer_changed to update MapEntities instead
  *
- * \param layer the layer of the entity on the map
+ * \param layer The layer of the entity on the map.
  */
-void Entity::set_layer(Layer layer) {
+void Entity::set_layer(int layer) {
 
   this->layer = layer;
   notify_layer_changed();

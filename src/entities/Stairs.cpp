@@ -36,15 +36,12 @@ namespace Solarus {
  */
 Stairs::Stairs(
     const std::string& name,
-    Layer layer,
+    int layer,
     const Point& xy,
     int direction,
     Subtype subtype):
   Detector(COLLISION_TOUCHING | COLLISION_OVERLAPPING, name, layer, xy, Size(16, 16)),
   subtype(subtype) {
-
-  Debug::check_assertion(!is_inside_floor() || layer != LAYER_HIGH,
-      "Cannot put single floor stairs on the high layer");
 
   set_direction(direction);
 

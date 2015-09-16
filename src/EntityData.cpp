@@ -378,7 +378,7 @@ bool FieldValue::operator!=(const FieldValue& other) const {
 EntityData::EntityData() :
     type(),
     name(),
-    layer(LAYER_LOW),
+    layer(0),
     xy(),
     fields() {
 
@@ -392,7 +392,7 @@ EntityData::EntityData() :
 EntityData::EntityData(EntityType type) :
     type(type),
     name(),
-    layer(LAYER_LOW),
+    layer(0),
     xy(),
     fields() {
 
@@ -467,7 +467,7 @@ void EntityData::set_name(const std::string& name) {
  * \brief Returns the layer of this entity on the map.
  * \return The layer.
  */
-Layer EntityData::get_layer() const {
+int EntityData::get_layer() const {
   return layer;
 }
 
@@ -475,7 +475,7 @@ Layer EntityData::get_layer() const {
  * \brief Sets the layer of this entity on the map.
  * \param layer The layer.
  */
-void EntityData::set_layer(Layer layer) {
+void EntityData::set_layer(int layer) {
   this->layer = layer;
 }
 
@@ -756,7 +756,7 @@ EntityData EntityData::check_entity_data(lua_State* l, int index, EntityType typ
 
   LuaTools::check_type(l, index, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, index, "name", "");
-  Layer layer = LuaTools::check_layer_field(l, index, "layer");
+  int layer = LuaTools::check_int_field(l, index, "layer");
   int x = LuaTools::check_int_field(l, index, "x");
   int y = LuaTools::check_int_field(l, index, "y");
 

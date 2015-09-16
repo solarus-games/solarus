@@ -149,12 +149,12 @@ class Hero: public Entity {
     virtual Point get_ground_point() const override;
     virtual void notify_ground_below_changed() override;
     const Point& get_last_solid_ground_coords() const;
-    Layer get_last_solid_ground_layer() const;
+    int get_last_solid_ground_layer() const;
     const Point& get_target_solid_ground_coords() const;
-    Layer get_target_solid_ground_layer() const;
+    int get_target_solid_ground_layer() const;
     void set_target_solid_ground_coords(
         const Point& target_solid_ground_coords,
-        Layer layer
+        int layer
     );
     void reset_target_solid_ground_coords();
 
@@ -357,11 +357,11 @@ class Hero: public Entity {
     // ground
     Point last_solid_ground_coords;        /**< coordinates of the last hero position on a ground
                                             * where he can walk (e.g. before jumping or falling into a hole) */
-    Layer last_solid_ground_layer;         /**< layer of the last hero position on a solid ground */
+    int last_solid_ground_layer;           /**< layer of the last hero position on a solid ground */
     Point target_solid_ground_coords;      /**< coordinates of the position where the hero will go if he falls
                                             * into a hole (or some other bad ground), or (-1,-1) to indicate
                                             * that the hero will just return to the last solid ground coordinates */
-    Layer target_solid_ground_layer;       /**< layer of the place to go back when falling in some bad ground */
+    int target_solid_ground_layer;         /**< layer of the place to go back when falling in some bad ground */
     uint32_t next_ground_date;             /**< when something will happen with the ground next time (a sound or a movement) */
     uint32_t next_ice_date;                /**< when recomputing the additional movement on ice */
     int ice_movement_direction8;           /**< wanted movement direction a while ago */

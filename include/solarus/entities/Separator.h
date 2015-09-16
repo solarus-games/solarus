@@ -37,7 +37,7 @@ class Separator: public Detector {
 
     Separator(
         const std::string& name,
-        Layer layer,
+        int layer,
         const Point& xy,
         const Size& size
     );

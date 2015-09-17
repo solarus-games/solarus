@@ -34,7 +34,6 @@ class Bomb: public Detector {
 
     virtual EntityType get_type() const override;
 
-    virtual bool can_be_obstacle() const override;
     virtual bool is_stream_obstacle(Stream& stream) override;
     virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter) override;
     virtual bool is_deep_water_obstacle() const override;

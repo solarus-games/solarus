@@ -118,14 +118,6 @@ EntityType CarriedItem::get_type() const {
 }
 
 /**
- * \brief Returns whether entities of this type can be obstacles for other entities.
- * \return true if this type of entity can be obstacle for other entities
- */
-bool CarriedItem::can_be_obstacle() const {
-  return false;
-}
-
-/**
  * \brief Returns whether this entity is sensible to the ground below it.
  * \return \c true if this entity is sensible to its ground.
  */

@@ -41,7 +41,6 @@ class Explosion: public Detector {
     );
 
     virtual EntityType get_type() const override;
-    virtual bool can_be_obstacle() const override;
 
     // state
     virtual void update() override;

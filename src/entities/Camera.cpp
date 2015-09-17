@@ -52,14 +52,6 @@ EntityType Camera::get_type() const {
 }
 
 /**
- * \copydoc Entity::can_be_obstacle()
- */
-bool Camera::can_be_obstacle() const {
-
-  return false;
-}
-
-/**
  * \copydoc Entity::can_be_drawn()
  */
 bool Camera::can_be_drawn() const {

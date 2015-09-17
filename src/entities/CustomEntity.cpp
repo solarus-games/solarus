@@ -275,13 +275,6 @@ void CustomEntity::reset_traversable_by_entities(EntityType type) {
 }
 
 /**
- * \copydoc Entity::can_be_obstacle
- */
-bool CustomEntity::can_be_obstacle() const {
-  return true;
-}
-
-/**
  * \copydoc Entity::is_obstacle_for
  */
 bool CustomEntity::is_obstacle_for(Entity& other) {

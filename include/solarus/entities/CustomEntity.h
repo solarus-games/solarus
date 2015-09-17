@@ -72,7 +72,6 @@ class SOLARUS_API CustomEntity: public Detector {
     void set_traversable_by_entities(EntityType type, const ScopedLuaRef& traversable_test_ref);
     void reset_traversable_by_entities(EntityType type);
 
-    bool can_be_obstacle() const override;
     bool is_obstacle_for(Entity& other) override;
 
     // What this custom entity can traverse.

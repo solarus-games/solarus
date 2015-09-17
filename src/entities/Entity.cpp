@@ -130,21 +130,6 @@ bool Entity::is_detector() const {
 }
 
 /**
- * \brief Returns whether entities of this type can be obstacles for other entities.
- *
- * This function returns \c true by default.
- * If this function returns \c true, the entity is added to the list of
- * potential obstacles when it is added to a map.
- * If your type of entity can never be an obstacle, you should redefine this
- * function and return \c false to avoid useless collision checks.
- *
- * \return \c true if this type of entity can be obstacle for other entities.
- */
-bool Entity::can_be_obstacle() const {
-  return true;
-}
-
-/**
  * \brief Returns whether this entity is sensible to the ground below it.
  *
  * This function returns \c false by default.

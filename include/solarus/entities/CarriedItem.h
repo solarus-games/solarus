@@ -55,7 +55,6 @@ class CarriedItem: public Entity {
     );
 
     virtual EntityType get_type() const override;
-    virtual bool can_be_obstacle() const override;
     virtual bool is_ground_observer() const override;
 
     int get_damage_on_enemies() const;

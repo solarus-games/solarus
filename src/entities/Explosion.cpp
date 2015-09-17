@@ -56,19 +56,6 @@ EntityType Explosion::get_type() const {
 }
 
 /**
- * \brief Returns whether entities of this type can be obstacles for other entities.
- *
- * If yes, the function is_obstacle_for() will be called
- * to determine whether this particular entity is an obstacle or not.
- *
- * \return true if this type of entity can be obstacle for other entities
- */
-bool Explosion::can_be_obstacle() const {
-  return false;
-}
-
-
-/**
  * \brief Updates this entity.
  */
 void Explosion::update() {

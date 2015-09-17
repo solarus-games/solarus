@@ -274,21 +274,6 @@ void MapEntities::bring_to_front(Entity& entity) {
     entities_drawn_first[layer].remove(&entity);
     entities_drawn_first[layer].push_back(&entity);  // Displayed last.
   }
-
-  if (entity.can_be_obstacle()) {
-    if (entity.has_layer_independent_collisions()) {
-      for (int i = 0; i < map.get_num_layers(); ++i) {
-        obstacle_entities[i].remove(&entity);
-        obstacle_entities[i].push_back(&entity);
-      }
-    }
-    else {
-      obstacle_entities[layer].remove(&entity);
-      obstacle_entities[layer].push_back(&entity);
-    }
-  }
-
-  // TODO also update ground_modifiers and ground_observers.
 }
 
 /**
@@ -302,21 +287,6 @@ void MapEntities::bring_to_back(Entity& entity) {
     entities_drawn_first[layer].remove(&entity);
     entities_drawn_first[layer].push_front(&entity);  // Displayed first.
   }
-
-  if (entity.can_be_obstacle()) {
-    if (entity.has_layer_independent_collisions()) {
-      for (int i = 0; i < map.get_num_layers(); ++i) {
-        obstacle_entities[i].remove(&entity);
-        obstacle_entities[i].push_front(&entity);
-      }
-    }
-    else {
-      obstacle_entities[layer].remove(&entity);
-      obstacle_entities[layer].push_front(&entity);
-    }
-  }
-
-  // TODO also update ground_modifiers and ground_observers.
 }
 
 /**
@@ -572,21 +542,6 @@ void MapEntities::add_entity(const EntityPtr& entity) {
     // update the quadtree
     quadtree.add(entity, entity->get_max_bounding_box());
 
-    // update the obstacle list
-    if (entity->can_be_obstacle()) {
-
-      if (entity->has_layer_independent_collisions()) {
-        // some entities handle collisions on any layer (e.g. stairs inside a single floor)
-        for (int i = 0; i < map.get_num_layers(); ++i) {
-          obstacle_entities[i].push_back(entity.get());
-        }
-      }
-      else {
-        // but usually, an entity collides with only one layer
-        obstacle_entities[layer].push_back(entity.get());
-      }
-    }
-
     // update the sprites list
     if (entity->is_drawn_in_y_order()) {
       entities_drawn_y_order[layer].push_back(entity.get());
@@ -729,19 +684,6 @@ void MapEntities::remove_marked_entities() {
 
     // remove it from the quadtree
     quadtree.remove(shared_entity);
-
-    // remove it from the obstacle entities list if present
-    if (entity->can_be_obstacle()) {
-
-      if (entity->has_layer_independent_collisions()) {
-        for (int i = 0; i < map.get_num_layers(); i++) {
-          obstacle_entities[i].remove(entity);
-        }
-      }
-      else {
-        obstacle_entities[layer].remove(entity);
-      }
-    }
 
     // remove it from the sprite entities list if present
     if (entity->is_drawn_in_y_order()) {
@@ -935,12 +877,6 @@ void MapEntities::set_entity_layer(Entity& entity, int layer) {
   int old_layer = entity.get_layer();
 
   if (layer != old_layer) {
-
-    // update the obstacle list
-    if (entity.can_be_obstacle() && !entity.has_layer_independent_collisions()) {
-      obstacle_entities[old_layer].remove(&entity);
-      obstacle_entities[layer].push_back(&entity);
-    }
 
     // update the sprites list
     if (entity.is_drawn_in_y_order()) {

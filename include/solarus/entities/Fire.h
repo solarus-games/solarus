@@ -35,7 +35,6 @@ class Fire: public Detector {
     Fire(const std::string& name, int layer, const Point& xy);
 
     virtual EntityType get_type() const override;
-    virtual bool can_be_obstacle() const override;
 
     // state
     virtual void update() override;

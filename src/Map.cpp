@@ -889,17 +889,18 @@ bool Map::test_collision_with_entities(
     const Rectangle& collision_box,
     Entity& entity_to_check) const {
 
-  // TODO use the quadtree
-  const std::list<Entity*>& obstacle_entities =
-      entities->get_obstacle_entities(layer);
+  std::vector<EntityPtr> entities_nearby;
+  get_entities().get_entities_in_rectangle(collision_box, entities_nearby);
+  for (const EntityPtr& entity_nearby: entities_nearby) {
 
-  for (Entity* entity: obstacle_entities) {
-
-    if (entity->overlaps(collision_box)
-        && entity->is_obstacle_for(entity_to_check, collision_box)
-        && entity->is_enabled()
-        && entity != &entity_to_check)
+    if (entity_nearby->overlaps(collision_box) &&
+        (entity_nearby->get_layer() == layer || entity_nearby->has_layer_independent_collisions()) &&
+        entity_nearby->is_obstacle_for(entity_to_check, collision_box) &&
+        entity_nearby->is_enabled() &&
+        !entity_nearby->is_being_removed() &&
+        entity_nearby.get() != &entity_to_check) {
       return true;
+    }
   }
 
   return false;
@@ -1078,6 +1079,8 @@ Ground Map::get_ground(int layer, int x, int y) const {
   const Rectangle box(Point(x, y), Size(1, 1));
   std::vector<EntityPtr> entities_nearby;
   get_entities().get_entities_in_rectangle(box, entities_nearby);
+
+  // FIXME sort entities in Z order
 
   const auto& rend = entities_nearby.rend();
   for (auto it = entities_nearby.rbegin(); it != rend; ++it) {

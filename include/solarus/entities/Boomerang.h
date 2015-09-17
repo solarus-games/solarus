@@ -44,7 +44,6 @@ class Boomerang: public Entity {
     );
 
     EntityType get_type() const override;
-    virtual bool can_be_obstacle() const override;
     virtual bool can_be_drawn() const override;
 
     // obstacles

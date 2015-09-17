@@ -55,7 +55,6 @@ class Pickable: public Detector {
     );
 
     EntityType get_type() const override;
-    bool can_be_obstacle() const override;
     bool is_ground_observer() const override;
 
     void notify_created() override;

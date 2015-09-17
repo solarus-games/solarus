@@ -142,26 +142,27 @@ class SOLARUS_API MapEntities {
         camera;                                     /**< The visible area of the map. */
 
     std::map<std::string, Entity*>
-      named_entities;                               /**< Entities identified by a name. */
+        named_entities;                             /**< Entities identified by a name. */
     std::list<EntityPtr> all_entities;              /**< All map entities except tiles and the hero. */
 
     EntityTree quadtree;                            /**< All map entities except tiles.
                                                      * Optimized for fast spatial search. */
+
     std::list<Entity*> entities_to_remove;          /**< list of entities that need to be removed right now */
 
     std::vector<std::list<Entity*>>
-      entities_drawn_first;                         /**< For each layer, all map entities that are
+        entities_drawn_first;                       /**< For each layer, all map entities that are
                                                      * drawn in normal order */
 
     std::vector<std::list<Entity*>>
-      entities_drawn_y_order;                       /**< For each layer, all map entities that are drawn in the order
+        entities_drawn_y_order;                     /**< For each layer, all map entities that are drawn in the order
                                                      * defined by their y position, including the hero. */
 
     Destination* default_destination;               /**< the default destination of this map */
 
     std::vector<std::list<Stairs*>> stairs;         /**< For each layer, all stairs. */
     std::vector<std::list<CrystalBlock*>>
-      crystal_blocks;                               /**< For each layer, all crystal blocks. */
+        crystal_blocks;                             /**< For each layer, all crystal blocks. */
     std::list<const Separator*> separators;         /**< All separators of the map. */
 
     Boomerang* boomerang;                           /**< The boomerang if present on the map, nullptr otherwise. */

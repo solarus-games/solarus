@@ -395,10 +395,10 @@ Destination* Map::get_destination() {
 
   Debug::check_assertion(is_loaded(), "This map is not loaded");
 
-  Destination* destination = nullptr;
+  std::shared_ptr<Destination> destination;
   if (!destination_name.empty()) {
     // Use the destination whose name was specified.
-    Entity* entity = get_entities().find_entity(destination_name);
+    const EntityPtr& entity = get_entities().find_entity(destination_name);
 
     if (entity == nullptr || entity->get_type() != EntityType::DESTINATION) {
       Debug::error(
@@ -412,7 +412,7 @@ Destination* Map::get_destination() {
       // quest is released.
     }
     else {
-      destination = static_cast<Destination*>(entity);
+      destination = std::static_pointer_cast<Destination>(entity);
     }
   }
 
@@ -421,7 +421,7 @@ Destination* Map::get_destination() {
     destination = get_entities().get_default_destination();
   }
 
-  return destination;
+  return destination.get();
 }
 
 /**

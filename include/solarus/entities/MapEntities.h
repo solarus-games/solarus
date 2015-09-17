@@ -68,15 +68,15 @@ class SOLARUS_API MapEntities {
     Camera& get_camera();
     Ground get_tile_ground(int layer, int x, int y) const;
     const std::list<EntityPtr>& get_entities();
-    const std::list<Stairs*>& get_stairs(int layer);
-    const std::list<CrystalBlock*>& get_crystal_blocks(int layer);
-    const std::list<const Separator*>& get_separators() const;
-    Destination* get_default_destination();
+    const std::list<std::shared_ptr<Stairs>>& get_stairs(int layer);
+    const std::list<std::shared_ptr<CrystalBlock>>& get_crystal_blocks(int layer);
+    const std::list<std::shared_ptr<Separator>>& get_separators() const;
+    const std::shared_ptr<Destination>& get_default_destination();
 
-    Entity* get_entity(const std::string& name);
-    Entity* find_entity(const std::string& name);
-    std::list<Entity*> get_entities_with_prefix(const std::string& prefix);
-    std::list<Entity*> get_entities_with_prefix(EntityType type, const std::string& prefix);
+    EntityPtr get_entity(const std::string& name);
+    EntityPtr find_entity(const std::string& name);
+    std::vector<EntityPtr> get_entities_with_prefix(const std::string& prefix);
+    std::vector<EntityPtr> get_entities_with_prefix(EntityType type, const std::string& prefix);
     bool has_entity_with_prefix(const std::string& prefix) const;
 
     void get_entities_in_rectangle(const Rectangle& rectangle, std::vector<EntityPtr>& result) const;
@@ -84,7 +84,7 @@ class SOLARUS_API MapEntities {
 
     // handle entities
     void add_entity(const EntityPtr& entity);
-    void remove_entity(Entity* entity);
+    void remove_entity(Entity& entity);
     void remove_entity(const std::string& name);
     void remove_entities_with_prefix(const std::string& prefix);
     int get_entity_relative_z_order(const EntityPtr& entity) const;
@@ -165,7 +165,7 @@ class SOLARUS_API MapEntities {
     std::shared_ptr<Camera>
         camera;                                     /**< The visible area of the map. */
 
-    std::map<std::string, Entity*>
+    std::map<std::string, EntityPtr>
         named_entities;                             /**< Entities identified by a name. */
     std::list<EntityPtr> all_entities;              /**< All map entities except tiles and the hero. */
 
@@ -173,24 +173,32 @@ class SOLARUS_API MapEntities {
                                                      * Optimized for fast spatial search. */
     std::vector<ZCache> z_caches;                   /**< For each layer, tracks the relative Z order of entities. */
 
-    std::list<Entity*> entities_to_remove;          /**< list of entities that need to be removed right now */
+    std::list<EntityPtr> entities_to_remove;          /**< list of entities that need to be removed right now */
 
     std::vector<std::list<EntityPtr>>
         entities_drawn_first;                       /**< For each layer, all map entities that are
-                                                     * drawn in normal order */
+                                                     * drawn in normal order.
+                                                     * TODO remove, use the quadtree instead. */
 
     std::vector<std::list<EntityPtr>>
         entities_drawn_y_order;                     /**< For each layer, all map entities that are drawn in the order
                                                      * defined by their y position, including the hero. */
 
-    Destination* default_destination;               /**< the default destination of this map */
+    std::shared_ptr<Destination>
+        default_destination;                        /**< Default destination of this map or nullptr. */
 
-    std::vector<std::list<Stairs*>> stairs;         /**< For each layer, all stairs. */
-    std::vector<std::list<CrystalBlock*>>
-        crystal_blocks;                             /**< For each layer, all crystal blocks. */
-    std::list<const Separator*> separators;         /**< All separators of the map. */
+    std::vector<std::list<std::shared_ptr<Stairs>>>
+        stairs;                                     /**< For each layer, all stairs.
+                                                     * TODO remove, store entities by type instead. */
+    std::vector<std::list<std::shared_ptr<CrystalBlock>>>
+        crystal_blocks;                             /**< For each layer, all crystal blocks.
+                                                     * TODO remove, store entities by type instead. */
+    std::list<std::shared_ptr<Separator>>
+        separators;                                 /**< All separators of the map.
+                                                     * TODO remove, store entities by type instead. */
 
-    Boomerang* boomerang;                           /**< The boomerang if present on the map, nullptr otherwise. */
+    std::shared_ptr<Boomerang> boomerang;           /**< The boomerang if present on the map, nullptr otherwise.
+                                                     * TODO remove, store entities by type instead. */
 
 };
 

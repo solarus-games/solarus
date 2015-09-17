@@ -545,7 +545,7 @@ Hero& Entity::get_hero() {
  */
 void Entity::remove_from_map() {
 
-  get_map().get_entities().remove_entity(this);
+  get_entities().remove_entity(*this);
 }
 
 /**
@@ -2236,8 +2236,9 @@ bool Entity::is_in_same_region(const Entity& other) const {
   const Point& this_center = get_center_point();
   const Point& other_center = other.get_center_point();
 
-  const std::list<const Separator*>& separators = get_entities().get_separators();
-  for (const Separator* separator: separators) {
+  const std::list<std::shared_ptr<Separator>>& separators =
+      get_entities().get_separators();
+  for (const std::shared_ptr<Separator>& separator: separators) {
 
     if (separator->is_vertical()) {
       // Vertical separation.

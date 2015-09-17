@@ -1254,7 +1254,7 @@ int LuaContext::l_get_map_entity_or_global(lua_State* l) {
     Map& map = *check_map(l, -1);
     const std::string& name = LuaTools::check_string(l, 2);
 
-    Entity* entity = nullptr;
+    EntityPtr entity = nullptr;
     if (map.is_started()) {
       entity = map.get_entities().find_entity(name);
     }
@@ -1637,11 +1637,11 @@ int LuaContext::map_api_open_doors(lua_State* l) {
 
     bool done = false;
     MapEntities& entities = map.get_entities();
-    std::list<Entity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
-    for (Entity* entity: doors) {
-      Door* door = static_cast<Door*>(entity);
-      if (!door->is_open() || door->is_closing()) {
-        door->open();
+    const std::vector<EntityPtr>& doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
+    for (const EntityPtr& entity: doors) {
+      Door& door = *std::static_pointer_cast<Door>(entity);
+      if (!door.is_open() || door.is_closing()) {
+        door.open();
         done = true;
       }
     }
@@ -1669,11 +1669,11 @@ int LuaContext::map_api_close_doors(lua_State* l) {
 
     bool done = false;
     MapEntities& entities = map.get_entities();
-    std::list<Entity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
-    for (Entity* entity: doors) {
-      Door* door = static_cast<Door*>(entity);
-      if (door->is_open() || door->is_opening()) {
-        door->close();
+    const std::vector<EntityPtr>& doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
+    for (const EntityPtr& entity: doors) {
+      Door& door = *std::static_pointer_cast<Door>(entity);
+      if (door.is_open() || door.is_opening()) {
+        door.close();
         done = true;
       }
     }
@@ -1701,10 +1701,10 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
     bool open = LuaTools::opt_boolean(l, 3, true);
 
     MapEntities& entities = map.get_entities();
-    std::list<Entity*> doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
-    for (Entity* entity: doors) {
-      Door* door = static_cast<Door*>(entity);
-      door->set_open(open);
+    const std::vector<EntityPtr>& doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
+    for (const EntityPtr& entity: doors) {
+      Door& door = *std::static_pointer_cast<Door>(entity);
+      door.set_open(open);
     }
 
     return 0;
@@ -1722,7 +1722,7 @@ int LuaContext::map_api_get_entity(lua_State* l) {
     Map& map = *check_map(l, 1);
     const std::string& name = LuaTools::check_string(l, 2);
 
-    Entity* entity = map.get_entities().find_entity(name);
+    const EntityPtr& entity = map.get_entities().find_entity(name);
 
     if (entity != nullptr && !entity->is_being_removed()) {
       push_entity(l, *entity);
@@ -1745,7 +1745,7 @@ int LuaContext::map_api_has_entity(lua_State* l) {
     Map& map = *check_map(l, 1);
     const std::string& name = LuaTools::check_string(l, 2);
 
-    Entity* entity = map.get_entities().find_entity(name);
+    const EntityPtr& entity = map.get_entities().find_entity(name);
 
     lua_pushboolean(l, entity != nullptr);
     return 1;
@@ -1763,11 +1763,11 @@ int LuaContext::map_api_get_entities(lua_State* l) {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
-    const std::list<Entity*> entities =
+    const std::vector<EntityPtr> entities =
         map.get_entities().get_entities_with_prefix(prefix);
 
     lua_newtable(l);
-    for (Entity* entity: entities) {
+    for (const EntityPtr& entity: entities) {
       push_entity(l, *entity);
       lua_pushboolean(l, true);
       lua_rawset(l, -3);
@@ -1794,7 +1794,7 @@ int LuaContext::map_api_get_entities_count(lua_State* l) {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
-    const std::list<Entity*> entities =
+    const std::vector<EntityPtr>& entities =
         map.get_entities().get_entities_with_prefix(prefix);
 
     lua_pushinteger(l, entities.size());
@@ -1880,9 +1880,9 @@ int LuaContext::map_api_set_entities_enabled(lua_State* l) {
     const std::string& prefix = LuaTools::check_string(l, 2);
     bool enabled = LuaTools::opt_boolean(l, 3, true);
 
-    std::list<Entity*> entities =
+    std::vector<EntityPtr> entities =
         map.get_entities().get_entities_with_prefix(prefix);
-    for (Entity* entity: entities) {
+    for (const EntityPtr& entity: entities) {
       entity->set_enabled(enabled);
     }
 
@@ -2097,7 +2097,7 @@ void LuaContext::map_on_suspended(Map& map, bool suspended) {
  * Does nothing if the method is not defined.
  *
  * \param map A map.
- * \param destination The destination point used (nullptr if it's a special one).
+ * \param destination The destination point used (nullptr if it is a special one).
  */
 void LuaContext::map_on_opening_transition_finished(Map& map,
     Destination* destination) {

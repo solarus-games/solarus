@@ -796,19 +796,16 @@ bool Hero::is_on_raised_blocks() const {
 
 /**
  * \brief Returns the stairs the hero may be currently overlapping.
- *
- * The result is calculated (not stored) so that you can know it
- * even when the game is suspended.
- *
  * \return the stairs the hero is currently overlapping, or nullptr
  */
 Stairs* Hero::get_stairs_overlapping() {
 
-  std::list<Stairs*> all_stairs = get_entities().get_stairs(get_layer());
-  for (Stairs* stairs: all_stairs) {
+  std::list<std::shared_ptr<Stairs>> all_stairs =
+      get_entities().get_stairs(get_layer());
+  for (const std::shared_ptr<Stairs>& stairs: all_stairs) {
 
     if (overlaps(*stairs)) {
-      return stairs;
+      return stairs.get();
     }
   }
 

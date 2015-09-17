@@ -162,7 +162,7 @@ const std::list<EntityPtr>& MapEntities::get_entities() {
  * \return The default destination, or nullptr if there exists no destination
  * on this map.
  */
-Destination* MapEntities::get_default_destination() {
+const std::shared_ptr<Destination>& MapEntities::get_default_destination() {
   return default_destination;
 }
 
@@ -171,7 +171,7 @@ Destination* MapEntities::get_default_destination() {
  * \param layer the layer
  * \return the stairs on this layer
  */
-const std::list<Stairs*>& MapEntities::get_stairs(int layer) {
+const std::list<std::shared_ptr<Stairs>>& MapEntities::get_stairs(int layer) {
   return stairs[layer];
 }
 
@@ -180,7 +180,7 @@ const std::list<Stairs*>& MapEntities::get_stairs(int layer) {
  * \param layer the layer
  * \return the crystal blocks on this layer
  */
-const std::list<CrystalBlock*>& MapEntities::get_crystal_blocks(int layer) {
+const std::list<std::shared_ptr<CrystalBlock>>& MapEntities::get_crystal_blocks(int layer) {
   return crystal_blocks[layer];
 }
 
@@ -188,7 +188,7 @@ const std::list<CrystalBlock*>& MapEntities::get_crystal_blocks(int layer) {
  * \brief Returns all separators of the map.
  * \return The separators.
  */
-const std::list<const Separator*>& MapEntities::get_separators() const {
+const std::list<std::shared_ptr<Separator>>& MapEntities::get_separators() const {
   return separators;
 }
 
@@ -219,9 +219,9 @@ void MapEntities::set_tile_ground(int layer, int x8, int y8, Ground ground) {
  * \param name Name of the entity to get.
  * \return The entity requested.
  */
-Entity* MapEntities::get_entity(const std::string& name) {
+EntityPtr MapEntities::get_entity(const std::string& name) {
 
-  Entity* entity = find_entity(name);
+  const EntityPtr& entity = find_entity(name);
 
   if (entity == nullptr) {
     Debug::die(std::string("Map '") + map.get_id()
@@ -232,18 +232,20 @@ Entity* MapEntities::get_entity(const std::string& name) {
 }
 
 /**
- * \brief Returns the entity with the specified name, or nullptr if it doesn't exist.
+ * \brief Returns the entity with the specified name,
+ * or nullptr if it does not exist.
  * \param name Name of the entity to find.
- * \return The entity requested, or nullptr if there is no entity with the specified name.
+ * \return The entity requested, or nullptr if there is no entity with the
+ * given name.
  */
-Entity* MapEntities::find_entity(const std::string& name) {
+EntityPtr MapEntities::find_entity(const std::string& name) {
 
   auto it = named_entities.find(name);
   if (it == named_entities.end()) {
     return nullptr;
   }
 
-  Entity* entity = it->second;
+  const EntityPtr& entity = it->second;
 
   if (entity->is_being_removed()) {
     return nullptr;
@@ -257,13 +259,14 @@ Entity* MapEntities::find_entity(const std::string& name) {
  * \param prefix Prefix of the name.
  * \return The entities of this type and having this prefix in their name.
  */
-std::list<Entity*> MapEntities::get_entities_with_prefix(const std::string& prefix) {
+std::vector<EntityPtr> MapEntities::get_entities_with_prefix(const std::string& prefix) {
 
-  std::list<Entity*> entities;
+  std::vector<EntityPtr> entities;
 
+  // TODO traverse the sorted list named_entities instead.
   for (const EntityPtr& entity: all_entities) {
     if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
-      entities.push_back(entity.get());
+      entities.push_back(entity);
     }
   }
 
@@ -277,14 +280,17 @@ std::list<Entity*> MapEntities::get_entities_with_prefix(const std::string& pref
  * \param prefix Prefix of the name.
  * \return The entities of this type and having this prefix in their name.
  */
-std::list<Entity*> MapEntities::get_entities_with_prefix(
+std::vector<EntityPtr> MapEntities::get_entities_with_prefix(
     EntityType type, const std::string& prefix) {
 
-  std::list<Entity*> entities;
+  std::vector<EntityPtr> entities;
 
   for (const EntityPtr& entity: all_entities) {
-    if (entity->get_type() == type && entity->has_prefix(prefix) && !entity->is_being_removed()) {
-      entities.push_back(entity.get());
+    if (entity->get_type() == type &&
+        entity->has_prefix(prefix) &&
+        !entity->is_being_removed()
+    ) {
+      entities.push_back(entity);
     }
   }
 
@@ -654,24 +660,25 @@ void MapEntities::add_entity(const EntityPtr& entity) {
         break;
 
       case EntityType::STAIRS:
-        stairs[layer].push_back(static_cast<Stairs*>(entity.get()));
+        stairs[layer].push_back(std::static_pointer_cast<Stairs>(entity));
         break;
 
       case EntityType::CRYSTAL_BLOCK:
-        crystal_blocks[layer].push_back(static_cast<CrystalBlock*>(entity.get()));
+        crystal_blocks[layer].push_back(std::static_pointer_cast<CrystalBlock>(entity));
         break;
 
       case EntityType::SEPARATOR:
-        separators.push_back(static_cast<Separator*>(entity.get()));
+        separators.push_back(std::static_pointer_cast<Separator>(entity));
         break;
 
       case EntityType::BOOMERANG:
-        this->boomerang = static_cast<Boomerang*>(entity.get());
+        this->boomerang = std::static_pointer_cast<Boomerang>(entity);
         break;
 
       case EntityType::DESTINATION:
         {
-          Destination* destination = static_cast<Destination*>(entity.get());
+          std::shared_ptr<Destination> destination =
+              std::static_pointer_cast<Destination>(entity);
           if (this->default_destination == nullptr || destination->is_default()) {
             this->default_destination = destination;
           }
@@ -724,7 +731,7 @@ void MapEntities::add_entity(const EntityPtr& entity) {
 
       entity->set_name(name);
     }
-    named_entities[name] = entity.get();
+    named_entities[name] = entity;
   }
 
   // Notify the entity.
@@ -737,13 +744,14 @@ void MapEntities::add_entity(const EntityPtr& entity) {
  * \brief Removes an entity from the map and schedules it to be destroyed.
  * \param entity the entity to remove
  */
-void MapEntities::remove_entity(Entity* entity) {
+void MapEntities::remove_entity(Entity& entity) {
 
-  if (!entity->is_being_removed()) {
-    entities_to_remove.push_back(entity);
-    entity->notify_being_removed();
+  if (!entity.is_being_removed()) {
+    const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
+    entities_to_remove.push_back(shared_entity);
+    entity.notify_being_removed();
 
-    if (entity == this->boomerang) {
+    if (shared_entity == this->boomerang) {
       this->boomerang = nullptr;
     }
   }
@@ -755,9 +763,9 @@ void MapEntities::remove_entity(Entity* entity) {
  */
 void MapEntities::remove_entity(const std::string& name) {
 
-  Entity* entity = find_entity(name);
+  const EntityPtr& entity = find_entity(name);
   if (entity != nullptr) {
-    remove_entity(entity);
+    remove_entity(*entity);
   }
 }
 
@@ -767,9 +775,9 @@ void MapEntities::remove_entity(const std::string& name) {
  */
 void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
 
-  std::list<Entity*> entities = get_entities_with_prefix(prefix);
-  for (Entity* entity: entities) {
-    remove_entity(entity);
+  std::vector<EntityPtr> entities = get_entities_with_prefix(prefix);
+  for (const EntityPtr& entity: entities) {
+    remove_entity(*entity);
   }
 }
 
@@ -779,24 +787,23 @@ void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
 void MapEntities::remove_marked_entities() {
 
   // remove the marked entities
-  for (Entity* entity: entities_to_remove) {
+  for (const EntityPtr& entity: entities_to_remove) {
 
-    EntityPtr shared_entity = std::static_pointer_cast<Entity>(entity->shared_from_this());
     int layer = entity->get_layer();
 
     // remove it from the quadtree
-    quadtree.remove(shared_entity);
+    quadtree.remove(entity);
 
     // remove it from the sprite entities list if present
     if (entity->is_drawn_in_y_order()) {
-      entities_drawn_y_order[layer].remove(shared_entity);
+      entities_drawn_y_order[layer].remove(entity);
     }
     else if (entity->can_be_drawn()) {
-      entities_drawn_first[layer].remove(shared_entity);
+      entities_drawn_first[layer].remove(entity);
     }
 
     // remove it from the whole list
-    all_entities.remove(shared_entity);
+    all_entities.remove(entity);
     const std::string& name = entity->get_name();
     if (!name.empty()) {
       named_entities.erase(name);
@@ -810,15 +817,15 @@ void MapEntities::remove_marked_entities() {
         break;
 
       case EntityType::STAIRS:
-        stairs[layer].remove(static_cast<Stairs*>(entity));
+        stairs[layer].remove(std::static_pointer_cast<Stairs>(entity));
         break;
 
       case EntityType::CRYSTAL_BLOCK:
-        crystal_blocks[layer].remove(static_cast<CrystalBlock*>(entity));
+        crystal_blocks[layer].remove(std::static_pointer_cast<CrystalBlock>(entity));
         break;
 
       case EntityType::SEPARATOR:
-        separators.remove(static_cast<Separator*>(entity));
+        separators.remove(std::static_pointer_cast<Separator>(entity));
         break;
 
       case EntityType::BOOMERANG:
@@ -830,7 +837,7 @@ void MapEntities::remove_marked_entities() {
     }
 
     // Track the insertion order.
-    z_caches[layer].remove(shared_entity);
+    z_caches[layer].remove(entity);
 
     // destroy it
     notify_entity_removed(*entity);
@@ -1016,10 +1023,14 @@ void MapEntities::notify_entity_bounding_box_changed(Entity& entity) {
  */
 bool MapEntities::overlaps_raised_blocks(int layer, const Rectangle& rectangle) {
 
-  std::list<CrystalBlock*> blocks = get_crystal_blocks(layer);
+  std::list<std::shared_ptr<CrystalBlock>> blocks =
+      get_crystal_blocks(layer);
 
-  for (const CrystalBlock* block: blocks) {
-    if (block->overlaps(rectangle) && block->is_raised()) {
+  // TODO Use the quadtree to only check entities intersecting the rectangle.
+  for (const std::shared_ptr<CrystalBlock>& block: blocks) {
+    if (block->overlaps(rectangle) &&
+        block->is_raised()
+    ) {
       return true;
     }
   }
@@ -1041,7 +1052,7 @@ bool MapEntities::is_boomerang_present() {
 void MapEntities::remove_boomerang() {
 
   if (boomerang != nullptr) {
-    remove_entity(boomerang);
+    remove_entity(*boomerang);
     boomerang = nullptr;
   }
 }

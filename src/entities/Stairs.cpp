@@ -357,15 +357,15 @@ void Stairs::notify_enabled(bool enabled) {
  */
 void Stairs::update_dynamic_tiles() {
 
-  std::list<Entity*> tiles = get_entities().get_entities_with_prefix(
+  std::vector<EntityPtr> tiles = get_entities().get_entities_with_prefix(
       EntityType::DYNAMIC_TILE, get_name() + "_enabled");
-  for (Entity* tile: tiles) {
+  for (const EntityPtr& tile: tiles) {
     tile->set_enabled(is_enabled());
   }
 
   tiles = get_entities().get_entities_with_prefix(
       EntityType::DYNAMIC_TILE, get_name() + "_disabled");
-  for (Entity* tile: tiles) {
+  for (const EntityPtr& tile: tiles) {
     tile->set_enabled(!is_enabled());
   }
 }

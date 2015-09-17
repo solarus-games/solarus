@@ -199,13 +199,14 @@ void Door::set_open(bool door_open) {
  */
 void Door::update_dynamic_tiles() {
 
-  std::list<Entity*> tiles = get_entities().get_entities_with_prefix(EntityType::DYNAMIC_TILE, get_name() + "_closed");
-  for (Entity* tile: tiles) {
+  std::vector<EntityPtr> tiles =
+      get_entities().get_entities_with_prefix(EntityType::DYNAMIC_TILE, get_name() + "_closed");
+  for (const EntityPtr& tile: tiles) {
     tile->set_enabled(is_closed() || is_opening());
   }
 
   tiles = get_entities().get_entities_with_prefix(EntityType::DYNAMIC_TILE, get_name() + "_open");
-  for (Entity* tile: tiles) {
+  for (const EntityPtr& tile: tiles) {
     tile->set_enabled(is_open() || is_closing());
   }
 }

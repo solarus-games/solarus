@@ -38,8 +38,27 @@ namespace Solarus {
 namespace {
 
 /**
- * \brief Comparator that sort entities according to their stacking order
- * (Z index) on the map.
+ * \brief Comparator that sorts entities according to their Y coordinate.
+ */
+class YOrderComparator {
+
+  public:
+
+    /**
+     * \brief Compares two entities.
+     * \param first An entity.
+     * \param second Another entity.
+     * \return \c true if the first entity's Y coordinate is lower than the second one's.
+     */
+    bool operator()(const EntityPtr& first, const EntityPtr& second) {
+      return first->get_y() < second->get_y();
+    }
+
+};
+
+/**
+ * \brief Comparator that sorts entities according to their stacking order
+ * on the map (layer and then Z index).
  */
 class ZOrderComparator {
 
@@ -855,7 +874,8 @@ void MapEntities::update() {
   for (int layer = 0; layer < map.get_num_layers(); layer++) {
 
     // Sort the entities drawn in y order.
-    entities_drawn_y_order[layer].sort(compare_y);
+    std::list<EntityPtr>& entities = entities_drawn_y_order[layer];
+    entities.sort(YOrderComparator());
   }
 
   for (const EntityPtr& entity: all_entities) {
@@ -915,19 +935,6 @@ void MapEntities::draw() {
   if (EntityTree::debug_quadtrees) {
     quadtree.draw(map.get_visible_surface(), -map.get_camera_position().get_top_left());
   }
-}
-
-/**
- * \brief Compares the y position of two entities.
- * \param first an entity
- * \param second another entity
- * \return true if the y position of the first entity is lower
- * than the second one
- */
-bool MapEntities::compare_y(const EntityPtr& first, const EntityPtr& second) {
-
-  // before was: first->get_top_left_y() < second->get_top_left_y(); but doesn't work for bosses
-  return first->get_top_left_y() + first->get_height() < second->get_top_left_y() + second->get_height();
 }
 
 /**

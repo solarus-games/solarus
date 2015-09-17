@@ -90,7 +90,6 @@ class SOLARUS_API MapEntities {
     int get_entity_relative_z_order(const EntityPtr& entity) const;
     void bring_to_front(Entity& entity);
     void bring_to_back(Entity& entity);
-    static bool compare_y(const EntityPtr& first, const EntityPtr& second);  // TODO use a function object
     void set_entity_drawn_in_y_order(Entity& entity, bool drawn_in_y_order);
     void set_entity_layer(Entity& entity, int layer);
     void notify_entity_bounding_box_changed(Entity& entity);

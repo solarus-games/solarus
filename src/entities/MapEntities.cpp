@@ -374,10 +374,6 @@ void MapEntities::bring_to_back(Entity& entity) {
  */
 void MapEntities::notify_map_started() {
 
-  // Put the hero in the structures.
-  const HeroPtr& shared_hero = std::static_pointer_cast<Hero>(hero.shared_from_this());
-  add_entity(shared_hero);
-
   // Notify entities.
   for (const EntityPtr& entity: all_entities) {
     entity->notify_map_started();

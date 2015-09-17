@@ -89,7 +89,7 @@ class Hero: public Entity {
      *
      * Functions called when the player goes to another map.
      */
-    void set_map(Map& map, int initial_direction);
+    void add_to_map(Map& map, int initial_direction);
     virtual void notify_creating() override;
     virtual void notify_map_started() override;
     virtual void notify_tileset_changed() override;

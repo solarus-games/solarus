@@ -1078,9 +1078,7 @@ Ground Map::get_ground(int layer, int x, int y) const {
   // See if a dynamic entity changes the ground.
   const Rectangle box(Point(x, y), Size(1, 1));
   std::vector<EntityPtr> entities_nearby;
-  get_entities().get_entities_in_rectangle(box, entities_nearby);
-
-  // FIXME sort entities in Z order
+  get_entities().get_entities_in_rectangle_sorted(box, entities_nearby);
 
   const auto& rend = entities_nearby.rend();
   for (auto it = entities_nearby.rbegin(); it != rend; ++it) {

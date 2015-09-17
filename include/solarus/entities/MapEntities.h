@@ -29,6 +29,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace Solarus {
@@ -79,15 +80,17 @@ class SOLARUS_API MapEntities {
     bool has_entity_with_prefix(const std::string& prefix) const;
 
     void get_entities_in_rectangle(const Rectangle& rectangle, std::vector<EntityPtr>& result) const;
+    void get_entities_in_rectangle_sorted(const Rectangle& rectangle, std::vector<EntityPtr>& result) const;
 
     // handle entities
     void add_entity(const EntityPtr& entity);
     void remove_entity(Entity* entity);
     void remove_entity(const std::string& name);
     void remove_entities_with_prefix(const std::string& prefix);
+    int get_entity_relative_z_order(const EntityPtr& entity) const;
     void bring_to_front(Entity& entity);
     void bring_to_back(Entity& entity);
-    static bool compare_y(Entity* first, Entity* second);
+    static bool compare_y(const EntityPtr& first, const EntityPtr& second);  // TODO use a function object
     void set_entity_drawn_in_y_order(Entity& entity, bool drawn_in_y_order);
     void set_entity_layer(Entity& entity, int layer);
     void notify_entity_bounding_box_changed(Entity& entity);
@@ -111,6 +114,28 @@ class SOLARUS_API MapEntities {
   private:
 
     friend class MapLoader;            /**< the map loader initializes the private fields of MapEntities */
+
+    /**
+     * \brief Internal fast cached information about the entity insertion order.
+     */
+    class ZCache {
+
+      public:
+
+        ZCache();
+
+        int get_z(const EntityPtr& entity) const;
+        void add(const EntityPtr& entity);
+        void remove(const EntityPtr& entity);
+        void bring_to_front(const EntityPtr& entity);
+        void bring_to_back(const EntityPtr& entity);
+
+      private:
+
+        std::unordered_map<EntityPtr, int> z_values;
+        int min = 0;
+        int max = 0;
+    };
 
     void add_tile(const TilePtr& tile);
     void set_tile_ground(int layer, int x8, int y8, Ground ground);
@@ -147,14 +172,15 @@ class SOLARUS_API MapEntities {
 
     EntityTree quadtree;                            /**< All map entities except tiles.
                                                      * Optimized for fast spatial search. */
+    std::vector<ZCache> z_caches;                   /**< For each layer, tracks the relative Z order of entities. */
 
     std::list<Entity*> entities_to_remove;          /**< list of entities that need to be removed right now */
 
-    std::vector<std::list<Entity*>>
+    std::vector<std::list<EntityPtr>>
         entities_drawn_first;                       /**< For each layer, all map entities that are
                                                      * drawn in normal order */
 
-    std::vector<std::list<Entity*>>
+    std::vector<std::list<EntityPtr>>
         entities_drawn_y_order;                     /**< For each layer, all map entities that are drawn in the order
                                                      * defined by their y position, including the hero. */
 

@@ -35,6 +35,53 @@
 
 namespace Solarus {
 
+namespace {
+
+/**
+ * \brief Comparator that sort entities according to their stacking order
+ * (Z index) on the map.
+ */
+class ZOrderComparator {
+
+  public:
+
+    /**
+     * \brief Creates a Z order comparator.
+     * \param entities The map entities to work with.
+     */
+    explicit ZOrderComparator(const MapEntities& entities) :
+        entities(entities) {
+
+    }
+
+    /**
+     * \brief Compares two entities.
+     * \param first An entity.
+     * \param second Another entity.
+     * \return \c true if the first entity's Z index is lower than the second one's.
+     */
+    bool operator()(const EntityPtr& first, const EntityPtr& second) {
+
+      if (first->get_layer() < second->get_layer()) {
+        return true;
+      }
+
+      if (first->get_layer() > second->get_layer()) {
+        return true;
+      }
+
+      // Same layer.
+      return entities.get_entity_relative_z_order(first) < entities.get_entity_relative_z_order(second);
+    }
+
+  private:
+
+    const MapEntities& entities;
+
+};
+
+}  // Anonymous namespace.
+
 /**
  * \brief Constructor.
  * \param game The game.
@@ -51,6 +98,10 @@ MapEntities::MapEntities(Game& game, Map& map):
   tiles_in_animated_regions(map.get_num_layers()),
   hero(*game.get_hero()),
   camera(nullptr),
+  named_entities(),
+  all_entities(),
+  quadtree(),
+  z_caches(map.get_num_layers()),
   entities_drawn_first(map.get_num_layers()),
   entities_drawn_y_order(map.get_num_layers()),
   default_destination(nullptr),
@@ -59,7 +110,8 @@ MapEntities::MapEntities(Game& game, Map& map):
   boomerang(nullptr) {
 
   int hero_layer = hero.get_layer();
-  this->entities_drawn_y_order[hero_layer].push_back(&hero);
+  const HeroPtr& shared_hero = std::static_pointer_cast<Hero>(hero.shared_from_this());
+  this->entities_drawn_y_order[hero_layer].push_back(shared_hero);
   this->named_entities[hero.get_name()] = &hero;
 }
 
@@ -244,12 +296,49 @@ bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
 /**
  * \brief Returns all entities whose bounding box overlaps the given rectangle.
  * \param[in] rectangle A rectangle.
- * \param[out] result The entities in that rectangle.
+ * \param[out] result The entities in that rectangle, in arbitrary order.
  */
 void MapEntities::get_entities_in_rectangle(
     const Rectangle& rectangle, std::vector<EntityPtr>& result
 ) const {
+
   quadtree.get_elements(rectangle, result);
+}
+
+/**
+ * \brief Like get_entities_in_rectangle(), but sorts entities according to
+ * their Z index on the map.
+ */
+void MapEntities::get_entities_in_rectangle_sorted(
+    const Rectangle& rectangle,
+    std::vector<EntityPtr>& result
+) const {
+
+  quadtree.get_elements(rectangle, result);
+  std::sort(result.begin(), result.end(), ZOrderComparator(*this));
+}
+
+/**
+ * \brief Returns a hint on the Z order of this entity.
+ *
+ * It can be used to know if an entity is above or below another one on the
+ * same layer. It is unique for each entity on the same layer.
+ *
+ * This is an arbitrary value: it is not necessarily between 0 and the number
+ * of entities on the layer. Its value only makes sense when compared to the
+ * value of other entities.
+ * Due to entities being removed from the map, entities whose layer changes,
+ * and bring_to_front()/bring_to_back() calls,
+ * there may be holes in the sequence.
+ * The returned value can even be negative.
+ *
+ * \param An entity of the map.
+ * \return Its relative Z order.
+ */
+int MapEntities::get_entity_relative_z_order(const EntityPtr& entity) const {
+
+  const int layer = entity->get_layer();
+  return z_caches[layer].get_z(entity);
 }
 
 /**
@@ -258,11 +347,14 @@ void MapEntities::get_entities_in_rectangle(
  */
 void MapEntities::bring_to_front(Entity& entity) {
 
+  const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
   int layer = entity.get_layer();
   if (entity.can_be_drawn() && !entity.is_drawn_in_y_order()) {
-    entities_drawn_first[layer].remove(&entity);
-    entities_drawn_first[layer].push_back(&entity);  // Displayed last.
+    entities_drawn_first[layer].remove(shared_entity);
+    entities_drawn_first[layer].push_back(shared_entity);  // Displayed last.
   }
+
+  z_caches[layer].bring_to_front(shared_entity);
 }
 
 /**
@@ -271,11 +363,14 @@ void MapEntities::bring_to_front(Entity& entity) {
  */
 void MapEntities::bring_to_back(Entity& entity) {
 
+  const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
   int layer = entity.get_layer();
   if (entity.can_be_drawn() && !entity.is_drawn_in_y_order()) {
-    entities_drawn_first[layer].remove(&entity);
-    entities_drawn_first[layer].push_front(&entity);  // Displayed first.
+    entities_drawn_first[layer].remove(shared_entity);
+    entities_drawn_first[layer].push_front(shared_entity);  // Displayed first.
   }
+
+  z_caches[layer].bring_to_back(shared_entity);
 }
 
 /**
@@ -526,17 +621,17 @@ void MapEntities::add_entity(const EntityPtr& entity) {
     add_tile(std::static_pointer_cast<Tile>(entity));
   }
   else {
-    int layer = entity->get_layer();
+    const int layer = entity->get_layer();
 
     // update the quadtree
     quadtree.add(entity, entity->get_max_bounding_box());
 
     // update the sprites list
     if (entity->is_drawn_in_y_order()) {
-      entities_drawn_y_order[layer].push_back(entity.get());
+      entities_drawn_y_order[layer].push_back(entity);
     }
     else if (entity->can_be_drawn()) {
-      entities_drawn_first[layer].push_back(entity.get());
+      entities_drawn_first[layer].push_back(entity);
     }
 
     // update the specific entities lists
@@ -575,6 +670,9 @@ void MapEntities::add_entity(const EntityPtr& entity) {
       default:
       break;
     }
+
+    // Track the insertion order.
+    z_caches[layer].add(entity);
 
     // Update the list of all entities.
     all_entities.push_back(entity);
@@ -676,10 +774,10 @@ void MapEntities::remove_marked_entities() {
 
     // remove it from the sprite entities list if present
     if (entity->is_drawn_in_y_order()) {
-      entities_drawn_y_order[layer].remove(entity);
+      entities_drawn_y_order[layer].remove(shared_entity);
     }
     else if (entity->can_be_drawn()) {
-      entities_drawn_first[layer].remove(entity);
+      entities_drawn_first[layer].remove(shared_entity);
     }
 
     // remove it from the whole list
@@ -716,8 +814,11 @@ void MapEntities::remove_marked_entities() {
       break;
     }
 
+    // Track the insertion order.
+    z_caches[layer].remove(shared_entity);
+
     // destroy it
-    notify_entity_removed(shared_entity.get());
+    notify_entity_removed(entity);
   }
   entities_to_remove.clear();
 }
@@ -798,7 +899,7 @@ void MapEntities::draw() {
     non_animated_regions[layer]->draw_on_map();
 
     // draw the first sprites
-    for (Entity* entity: entities_drawn_first[layer]) {
+    for (const EntityPtr& entity: entities_drawn_first[layer]) {
 
       if (entity->is_enabled()) {
         entity->draw_on_map();
@@ -807,7 +908,7 @@ void MapEntities::draw() {
 
     // draw the sprites at the hero's level, in the order
     // defined by their y position (including the hero)
-    for (Entity* entity: entities_drawn_y_order[layer]) {
+    for (const EntityPtr& entity: entities_drawn_y_order[layer]) {
 
       if (entity->is_enabled()) {
         entity->draw_on_map();
@@ -827,7 +928,7 @@ void MapEntities::draw() {
  * \return true if the y position of the first entity is lower
  * than the second one
  */
-bool MapEntities::compare_y(Entity* first, Entity* second) {
+bool MapEntities::compare_y(const EntityPtr& first, const EntityPtr& second) {
 
   // before was: first->get_top_left_y() < second->get_top_left_y(); but doesn't work for bosses
   return first->get_top_left_y() + first->get_height() < second->get_top_left_y() + second->get_height();
@@ -842,14 +943,15 @@ bool MapEntities::compare_y(Entity* first, Entity* second) {
 void MapEntities::set_entity_drawn_in_y_order(
     Entity& entity, bool drawn_in_y_order) {
 
+  const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
   const int layer = entity.get_layer();
   if (drawn_in_y_order) {
-    entities_drawn_first[layer].remove(&entity);
-    entities_drawn_y_order[layer].push_back(&entity);
+    entities_drawn_first[layer].remove(shared_entity);
+    entities_drawn_y_order[layer].push_back(shared_entity);
   }
   else {
-    entities_drawn_y_order[layer].remove(&entity);
-    entities_drawn_first[layer].push_back(&entity);
+    entities_drawn_y_order[layer].remove(shared_entity);
+    entities_drawn_first[layer].push_back(shared_entity);
   }
 }
 
@@ -867,15 +969,21 @@ void MapEntities::set_entity_layer(Entity& entity, int layer) {
 
   if (layer != old_layer) {
 
+    const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
+
     // update the sprites list
     if (entity.is_drawn_in_y_order()) {
-      entities_drawn_y_order[old_layer].remove(&entity);
-      entities_drawn_y_order[layer].push_back(&entity);
+      entities_drawn_y_order[old_layer].remove(shared_entity);
+      entities_drawn_y_order[layer].push_back(shared_entity);
     }
     else if (entity.can_be_drawn()) {
-      entities_drawn_first[old_layer].remove(&entity);
-      entities_drawn_first[layer].push_back(&entity);
+      entities_drawn_first[old_layer].remove(shared_entity);
+      entities_drawn_first[layer].push_back(shared_entity);
     }
+
+    // Track the insertion order.
+    z_caches[old_layer].remove(shared_entity);
+    z_caches[layer].add(shared_entity);
 
     // update the entity after the lists because this function might be called again
     entity.set_layer(layer);
@@ -930,6 +1038,75 @@ void MapEntities::remove_boomerang() {
     remove_entity(boomerang);
     boomerang = nullptr;
   }
+}
+
+/**
+ * \brief Creates a Z order tracking data structure.
+ */
+MapEntities::ZCache::ZCache() :
+    z_values(),
+    min(0),
+    max(0) {
+
+}
+
+/**
+ * \brief Returns the relative Z order of an entity.
+ * \param entity An entity of the map. It must be in the structure.
+ * \return Its relative Z order.
+ */
+int MapEntities::ZCache::get_z(const EntityPtr& entity) const {
+
+  return z_values.at(entity);
+}
+
+/**
+ * \brief Inserts an entity at the end of the structure.
+ *
+ * It must not be present.
+ */
+void MapEntities::ZCache::add(const EntityPtr& entity) {
+
+  ++max;
+  const auto& inserted = z_values.insert(std::make_pair(entity, max));
+  Debug::check_assertion(inserted.second, "Entity already in Z order cache");
+}
+
+/**
+ * \brief Removes an entity from the structure.
+ *
+ * It must be present.
+ */
+void MapEntities::ZCache::remove(const EntityPtr& entity) {
+
+  int num_removed = z_values.erase(entity);
+  Debug::check_assertion(num_removed == 1, "Entity not found in Z order cache");
+
+  // Z values remain unchanged: removing an entity does not break the order.
+}
+
+/**
+ * \brief Puts an entity above all others.
+ *
+ * It will then have a Z order greater than all other entities in the structure.
+ */
+void MapEntities::ZCache::bring_to_front(const EntityPtr& entity) {
+
+  remove(entity);
+  add(entity);
+}
+
+/**
+ * \brief Puts an entity behind of all others.
+ *
+ * It will then have a Z order lower than all other entities in the structure.
+ */
+void MapEntities::ZCache::bring_to_back(const EntityPtr& entity) {
+
+  remove(entity);
+  --min;
+  const auto& inserted = z_values.insert(std::make_pair(entity, min));
+  Debug::check_assertion(inserted.second, "Entity already in Z order cache");
 }
 
 }

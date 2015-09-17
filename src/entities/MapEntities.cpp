@@ -123,14 +123,6 @@ const std::list<Entity*>& MapEntities::get_ground_modifiers(int layer) {
 }
 
 /**
- * \brief Returns all detectors on the map.
- * \return the detectors
- */
-const std::list<Detector*>& MapEntities::get_detectors() {
-  return detectors;
-}
-
-/**
  * \brief Returns the default destination of the map.
  * \return The default destination, or nullptr if there exists no destination
  * on this map.
@@ -601,11 +593,6 @@ void MapEntities::add_entity(const EntityPtr& entity) {
     // update the quadtree
     quadtree.add(entity, entity->get_max_bounding_box());
 
-    // update the detectors list
-    if (entity->is_detector()) {
-      detectors.push_back(static_cast<Detector*>(entity.get()));
-    }
-
     // update the obstacle list
     if (entity->can_be_obstacle()) {
 
@@ -785,11 +772,6 @@ void MapEntities::remove_marked_entities() {
       else {
         obstacle_entities[layer].remove(entity);
       }
-    }
-
-    // remove it from the detectors list if present
-    if (entity->is_detector()) {
-      detectors.remove(static_cast<Detector*>(entity));
     }
 
     // remove it from the ground observers list if present

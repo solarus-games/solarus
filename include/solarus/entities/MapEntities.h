@@ -70,7 +70,6 @@ class SOLARUS_API MapEntities {
     const std::list<Entity*>& get_obstacle_entities(int layer);
     const std::list<Entity*>& get_ground_observers(int layer);
     const std::list<Entity*>& get_ground_modifiers(int layer);
-    const std::list<Detector*>& get_detectors();
     const std::list<Stairs*>& get_stairs(int layer);
     const std::list<CrystalBlock*>& get_crystal_blocks(int layer);
     const std::list<const Separator*>& get_separators() const;
@@ -163,10 +162,6 @@ class SOLARUS_API MapEntities {
       entities_drawn_y_order;                       /**< For each layer, all map entities that are drawn in the order
                                                      * defined by their y position, including the hero. */
 
-    std::list<Detector*> detectors;                 /**< all entities able to detect other entities
-                                                     * on this map.
-                                                     * TODO store them by layer like obstacle_entities
-                                                     * but take care of has_layer_independent_collisions() */
     std::vector<std::list<Entity*>>
       ground_observers;                             /**< For each layer, all dynamic entities sensible to the ground
                                                      * below them. */

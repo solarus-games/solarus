@@ -79,8 +79,10 @@ Hero::Hero(Equipment& equipment):
   walking_speed(normal_walking_speed),
   delayed_teletransporter(nullptr),
   on_raised_blocks(false),
+  target_solid_ground_layer(0),
   next_ground_date(0),
-  next_ice_date(0) {
+  next_ice_date(0),
+  ice_movement_direction8(0) {
 
   // position
   set_origin(8, 13);

@@ -1060,6 +1060,15 @@ MapEntities::ZCache::ZCache() :
  */
 int MapEntities::ZCache::get_z(const EntityPtr& entity) const {
 
+  SOLARUS_ASSERT(z_values.find(entity) != z_values.end(),
+      std::string("No such entity in Z cache: " +
+          entity->get_lua_type_name() +
+          " '" +
+          entity->get_name() +
+          "'"
+      )
+  );
+
   return z_values.at(entity);
 }
 
@@ -1072,7 +1081,7 @@ void MapEntities::ZCache::add(const EntityPtr& entity) {
 
   ++max;
   const auto& inserted = z_values.insert(std::make_pair(entity, max));
-  Debug::check_assertion(inserted.second, "Entity already in Z order cache");
+  Debug::check_assertion(inserted.second, "Entity already in Z cache");
 }
 
 /**
@@ -1083,7 +1092,7 @@ void MapEntities::ZCache::add(const EntityPtr& entity) {
 void MapEntities::ZCache::remove(const EntityPtr& entity) {
 
   int num_removed = z_values.erase(entity);
-  Debug::check_assertion(num_removed == 1, "Entity not found in Z order cache");
+  Debug::check_assertion(num_removed == 1, "Entity not found in Z cache");
 
   // Z values remain unchanged: removing an entity does not break the order.
 }
@@ -1109,7 +1118,7 @@ void MapEntities::ZCache::bring_to_back(const EntityPtr& entity) {
   remove(entity);
   --min;
   const auto& inserted = z_values.insert(std::make_pair(entity, min));
-  Debug::check_assertion(inserted.second, "Entity already in Z order cache");
+  Debug::check_assertion(inserted.second, "Entity already in Z cache");
 }
 
 }

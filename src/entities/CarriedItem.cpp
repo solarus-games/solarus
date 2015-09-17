@@ -122,7 +122,11 @@ EntityType CarriedItem::get_type() const {
  * \return \c true if this entity is sensible to its ground.
  */
 bool CarriedItem::is_ground_observer() const {
-  return true;  // To make the item fall into holes, water, etc.
+
+  if (is_throwing) {
+    return true;  // To make the item fall into holes, water, etc.
+  }
+  return false;
 }
 
 /**

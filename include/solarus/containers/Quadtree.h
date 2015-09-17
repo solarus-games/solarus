@@ -25,6 +25,7 @@
 #include <array>
 #include <map>
 #include <memory>
+#include <set>
 #include <vector>
 
 namespace Solarus {
@@ -138,8 +139,12 @@ class Quadtree {
         Rectangle bounding_box;
     };
 
-    std::map<T, ElementInfo> elements;
-    Node root;
+    std::map<T, ElementInfo> elements;      /**< Elements in the quadtree and
+                                             * intersecting its space. */
+    std::set<T> elements_outside;           /**< Elements that were added to
+                                             * the quadtree but that are
+                                             * currently outside its space. */
+    Node root;                              /** The root node of the tree. */
 
 };
 

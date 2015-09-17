@@ -53,11 +53,12 @@ template<typename T>
 void Quadtree<T>::clear() {
 
   elements.clear();
+  elements_outside.clear();
   root.clear();
 }
 
 /**
- * \brief Clears the quadtree and initializes with a new size.
+ * \brief Clears the quadtree and initializes it with a new size.
  * \param space Rectangle representing the space to create partitions of.
  */
 template<typename T>
@@ -90,6 +91,10 @@ Rectangle Quadtree<T>::get_space() const {
 
 /**
  * \brief Adds an element to the quadtree.
+ *
+ * It is allowed to add it outside the space delimited by the quadtree,
+ * for example if it can move inside later.
+ *
  * \param element The element to add.
  * \param bounding_box Bounding box of the element.
  * \return \c true in case of success.
@@ -102,8 +107,12 @@ bool Quadtree<T>::add(const T& element, const Rectangle& bounding_box) {
     return false;
   }
 
-  if (!root.add(element, bounding_box)) {
-    // Add failed: maybe the bounding box is outside the quadtree space.
+  if (!bounding_box.overlaps(get_space())) {
+    // Out of the space of the quadtree.
+    elements_outside.insert(element);
+  }
+  else if (!root.add(element, bounding_box)) {
+    // Add failed.
     return false;
   }
 
@@ -130,6 +139,12 @@ bool Quadtree<T>::remove(const T& element) {
 
   Rectangle box = it->second.bounding_box;
   elements.erase(element);
+  if (elements_outside.erase(element) > 0) {
+    // It was outside the quadtree space.
+    return true;
+  }
+
+  // Normal case.
   return root.remove(element, box);
 }
 
@@ -139,10 +154,8 @@ bool Quadtree<T>::remove(const T& element) {
  * This function should be called when the position or size or the element
  * is changed.
  *
- * If the element goes outside the space of the quadtree, this is
- * equivalent to remove().
- * If the element comes from outside the space of the quadtree, or was not
- * present, this is equivalent to add().
+ * It is allow for an element to go to or come from outside the space of the
+ * quadtree.
  *
  * \param element The element to move.
  * \param bounding_box New bounding box of the element.
@@ -152,34 +165,46 @@ template<typename T>
 bool Quadtree<T>::move(const T& element, const Rectangle& bounding_box) {
 
   const auto& it = elements.find(element);
-  if (it != elements.end()) {
+  if (it == elements.end()) {
+    // Not in the quadtree: error.
+    return false;
+  }
+  else {
     if (it->second.bounding_box == bounding_box) {
       // Already in the quadtree and no change.
       return true;
     }
 
     if (!remove(element)) {
+      // Failed to remove.
       return false;
     }
   }
 
-  add(element, bounding_box);
+  if (!add(element, bounding_box)) {
+    // Failed to add.
+    return false;
+  }
   return true;
 }
 
 /**
  * \brief Returns the total number of elements in the quadtree.
- * \return The number of elements.
+ * \return The number of elements, including elements outside the quadtree
+ * space.
  */
 template<typename T>
 int Quadtree<T>::get_num_elements() const {
-  return root.get_num_elements();
+  return root.get_num_elements() + elements_outside.size();
 }
 
 /**
  * \brief Gets the elements intersecting the given rectangle.
  * \param[in] region The rectangle to check.
- * \param[in/out] elements A list that will be filled with elements.
+ * The rectangle should be entirely contained in the quadtree space.
+ * \param[in/out] elements A list that will be filled with elements
+ * intersecting the rectangle. Elements outside the quadtree space are
+ * not added there.
  */
 template<typename T>
 void Quadtree<T>::get_elements(
@@ -192,7 +217,8 @@ void Quadtree<T>::get_elements(
 /**
  * \brief Returns whether an element is in the quadtree.
  * \param element The element to check.
- * \return \c true if it is in the quadtree.
+ * \return \c true if it is in the quadtree, even if it is
+ * outside the quadtree space.
  */
 template<typename T>
 bool Quadtree<T>::contains(const T& element) const {

@@ -88,18 +88,6 @@ ElementPtr add(Quadtree<ElementPtr>& quadtree, const Rectangle& bounding_box) {
 }
 
 /**
- * \brief Like add(), but expects that the operation fails.
- */
-ElementPtr add_expect_fail(Quadtree<ElementPtr>& quadtree, const Rectangle& bounding_box) {
-
-  int num_elements = quadtree.get_num_elements();
-  ElementPtr element(std::make_shared<Element>(Rectangle(bounding_box)));
-  Debug::check_assertion(!quadtree.add(element, element->get_bounding_box()), "Element was added, failure was expected");
-  check_num_elements(quadtree, num_elements);
-  return element;
-}
-
-/**
  * \brief Removes an element from a quatree.
  */
 void remove(Quadtree<ElementPtr>& quadtree, const ElementPtr& element) {
@@ -114,27 +102,13 @@ void remove(Quadtree<ElementPtr>& quadtree, const ElementPtr& element) {
  */
 void move(Quadtree<ElementPtr>& quadtree, const ElementPtr& element) {
 
-  bool was_in_quadtree = quadtree.contains(element);
-  int num_elements = quadtree.get_num_elements();
+  Debug::check_assertion(quadtree.contains(element), "Element not in quadtree");
 
+  int num_elements = quadtree.get_num_elements();
   Debug::check_assertion(quadtree.move(element, element->get_bounding_box()), "Failed to move element");
 
-  bool is_in_quadtree = element->get_bounding_box().overlaps(quadtree.get_space());
-
-  if (was_in_quadtree) {
-    if (is_in_quadtree) {
-      // The number of elements should be unchanged.
-      check_num_elements(quadtree, num_elements);
-    }
-    else {
-      // The element should actually have been removed.
-      check_num_elements(quadtree, num_elements - 1);
-    }
-  }
-  else {
-    // The element should actually have been added.
-    check_num_elements(quadtree, num_elements + 1);
-  }
+  // The number of elements should be unchanged.
+  check_num_elements(quadtree, num_elements);
 }
 
 /**
@@ -210,7 +184,7 @@ void test_add_limit(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) 
   add(quadtree, Rectangle(-16, 0, 16, 960));
 
   // Try to add an element outside the quadtree space.
-  add_expect_fail(quadtree, Rectangle(-160, 0, 16, 960));
+  add(quadtree, Rectangle(-160, 0, 16, 960));
 }
 
 /**
@@ -245,7 +219,7 @@ void test_move_limit(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree)
   ElementPtr element = elements[0];
   element->get_bounding_box().set_xy(-500, -500);
   move(quadtree, element);
-  Debug::check_assertion(quadtree.get_num_elements() == num_elements - 1, "Wrong number of elements");
+  Debug::check_assertion(quadtree.get_num_elements() == num_elements, "Wrong number of elements");
 
   // Come back in the bounds.
   element->get_bounding_box().set_xy(42, 64);

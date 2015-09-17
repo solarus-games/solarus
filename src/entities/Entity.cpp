@@ -188,8 +188,9 @@ void Entity::update_ground_observers() {
     }
 
     // Update the ground of observers that overlap or were just overlapping this one.
-    if (overlaps(entity_nearby->get_ground_point())
-        || overlaps(*entity_nearby)  // FIXME this is not precise and does not work for entities that disappear.
+    if (entity_nearby->get_layer() == get_layer() &&
+        (overlaps(entity_nearby->get_ground_point()) || overlaps(*entity_nearby))
+        // FIXME this is not precise and does not work for entities that disappear.
     ) {
       entity_nearby->update_ground_below();
     }

@@ -54,13 +54,11 @@ MapEntities::MapEntities(Game& game, Map& map):
   entities_drawn_first(map.get_num_layers()),
   entities_drawn_y_order(map.get_num_layers()),
   default_destination(nullptr),
-  obstacle_entities(map.get_num_layers()),
   stairs(map.get_num_layers()),
   crystal_blocks(map.get_num_layers()),
   boomerang(nullptr) {
 
   int hero_layer = hero.get_layer();
-  this->obstacle_entities[hero_layer].push_back(&hero);
   this->entities_drawn_y_order[hero_layer].push_back(&hero);
   this->named_entities[hero.get_name()] = &hero;
 }
@@ -90,15 +88,6 @@ Hero& MapEntities::get_hero() {
  */
 const std::list<EntityPtr>& MapEntities::get_entities() {
   return all_entities;
-}
-
-/**
- * \brief Returns the entities (other that tiles) such that the hero cannot walk on them.
- * \param layer The layer.
- * \return The obstacle entities on that layer.
- */
-const std::list<Entity*>& MapEntities::get_obstacle_entities(int layer) {
-  return obstacle_entities[layer];
 }
 
 /**

@@ -67,7 +67,6 @@ class SOLARUS_API MapEntities {
     Camera& get_camera();
     Ground get_tile_ground(int layer, int x, int y) const;
     const std::list<EntityPtr>& get_entities();
-    const std::list<Entity*>& get_obstacle_entities(int layer);
     const std::list<Stairs*>& get_stairs(int layer);
     const std::list<CrystalBlock*>& get_crystal_blocks(int layer);
     const std::list<const Separator*>& get_separators() const;
@@ -159,10 +158,6 @@ class SOLARUS_API MapEntities {
                                                      * defined by their y position, including the hero. */
 
     Destination* default_destination;               /**< the default destination of this map */
-
-    std::vector<std::list<Entity*>>
-      obstacle_entities;                            /**< For each layer, all entities that might be obstacle for other
-                                                     * entities on this map, including the hero. */
 
     std::vector<std::list<Stairs*>> stairs;         /**< For each layer, all stairs. */
     std::vector<std::list<CrystalBlock*>>

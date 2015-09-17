@@ -110,7 +110,7 @@ class Hero: public Entity {
     bool is_facing_direction4(int direction4) const;
     bool is_facing_direction8(int direction8) const;
     bool is_on_raised_blocks() const;
-    Stairs* get_stairs_overlapping();
+    std::shared_ptr<const Stairs> get_stairs_overlapping() const;
 
     /**
      * \name Movement.

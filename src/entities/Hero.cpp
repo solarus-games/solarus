@@ -14,53 +14,54 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
-#include "solarus/entities/Destination.h"
-#include "solarus/entities/Teletransporter.h"
-#include "solarus/entities/Stairs.h"
-#include "solarus/entities/Destructible.h"
-#include "solarus/entities/Stream.h"
-#include "solarus/entities/Switch.h"
-#include "solarus/entities/Crystal.h"
-#include "solarus/entities/Chest.h"
 #include "solarus/entities/Block.h"
-#include "solarus/entities/Jumper.h"
-#include "solarus/entities/Sensor.h"
 #include "solarus/entities/Bomb.h"
+#include "solarus/entities/Boomerang.h"
+#include "solarus/entities/Chest.h"
+#include "solarus/entities/Crystal.h"
+#include "solarus/entities/Destination.h"
+#include "solarus/entities/Destructible.h"
 #include "solarus/entities/Enemy.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/entities/Jumper.h"
+#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Sensor.h"
+#include "solarus/entities/Stairs.h"
+#include "solarus/entities/Stream.h"
 #include "solarus/entities/StreamAction.h"
-#include "solarus/hero/HeroSprites.h"
+#include "solarus/entities/Switch.h"
+#include "solarus/entities/Teletransporter.h"
+#include "solarus/hero/BackToSolidGroundState.h"
+#include "solarus/hero/BoomerangState.h"
+#include "solarus/hero/BowState.h"
 #include "solarus/hero/CarryingState.h"
 #include "solarus/hero/FallingState.h"
+#include "solarus/hero/ForcedWalkingState.h"
 #include "solarus/hero/FreeState.h"
 #include "solarus/hero/FreezedState.h"
 #include "solarus/hero/GrabbingState.h"
+#include "solarus/hero/HeroSprites.h"
+#include "solarus/hero/HookshotState.h"
 #include "solarus/hero/HurtState.h"
 #include "solarus/hero/JumpingState.h"
-#include "solarus/hero/ForcedWalkingState.h"
 #include "solarus/hero/LiftingState.h"
 #include "solarus/hero/PlungingState.h"
-#include "solarus/hero/BackToSolidGroundState.h"
 #include "solarus/hero/RunningState.h"
 #include "solarus/hero/StairsState.h"
 #include "solarus/hero/SwimmingState.h"
 #include "solarus/hero/TreasureState.h"
-#include "solarus/hero/VictoryState.h"
 #include "solarus/hero/UsingItemState.h"
-#include "solarus/hero/BoomerangState.h"
-#include "solarus/hero/HookshotState.h"
-#include "solarus/hero/BowState.h"
-#include "solarus/movements/StraightMovement.h"
-#include "solarus/lua/LuaContext.h"
-#include "solarus/lowlevel/System.h"
+#include "solarus/hero/VictoryState.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Sound.h"
-#include "solarus/Game.h"
-#include "solarus/Map.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/movements/StraightMovement.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
+#include "solarus/Game.h"
 #include "solarus/KeysEffect.h"
+#include "solarus/Map.h"
 #include "solarus/Sprite.h"
 #include <algorithm>
 #include <utility>
@@ -627,16 +628,21 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
       last_solid_ground_coords = get_xy();
       last_solid_ground_layer = get_layer();
 
-      map.get_entities().remove_boomerang(); // useful when the map remains the same
+      // Remove boomerangs in case the map remains the same.
+      const std::set<std::shared_ptr<Boomerang>>& boomerangs =
+          map.get_entities().get_entities_by_type<Boomerang>();
+      for (const std::shared_ptr<Boomerang>& boomerang : boomerangs) {
+        boomerang->remove_from_map();
+      }
 
       if (destination != nullptr) {
         get_lua_context().destination_on_activated(*destination);
       }
 
-      Stairs* stairs = get_stairs_overlapping();
+      const std::shared_ptr<const Stairs> stairs = get_stairs_overlapping();
       if (stairs != nullptr) {
         // The hero arrived on the map by stairs.
-        set_state(new StairsState(*this, *stairs, Stairs::REVERSE_WAY));
+        set_state(new StairsState(*this, stairs, Stairs::REVERSE_WAY));
       }
       else {
         // The hero arrived on the map by a usual destination point.
@@ -798,14 +804,14 @@ bool Hero::is_on_raised_blocks() const {
  * \brief Returns the stairs the hero may be currently overlapping.
  * \return the stairs the hero is currently overlapping, or nullptr
  */
-Stairs* Hero::get_stairs_overlapping() {
+std::shared_ptr<const Stairs> Hero::get_stairs_overlapping() const {
 
-  std::list<std::shared_ptr<Stairs>> all_stairs =
-      get_entities().get_stairs(get_layer());
-  for (const std::shared_ptr<Stairs>& stairs: all_stairs) {
+  std::set<std::shared_ptr<const Stairs>> all_stairs =
+      get_entities().get_entities_by_type<Stairs>(get_layer());
+  for (const std::shared_ptr<const Stairs>& stairs: all_stairs) {
 
     if (overlaps(*stairs)) {
-      return stairs.get();
+      return stairs;
     }
   }
 
@@ -1679,7 +1685,9 @@ void Hero::notify_collision_with_stairs(
     // Check whether the hero is trying to move in the direction of the stairs.
     int correct_direction = stairs.get_movement_direction(stairs_way);
     if (is_moving_towards(correct_direction / 2)) {
-      set_state(new StairsState(*this, stairs, stairs_way));
+      std::shared_ptr<const Stairs> shared_stairs =
+          std::static_pointer_cast<const Stairs>(stairs.shared_from_this());
+      set_state(new StairsState(*this, shared_stairs, stairs_way));
     }
   }
 }

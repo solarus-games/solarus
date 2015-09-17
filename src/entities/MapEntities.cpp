@@ -111,22 +111,20 @@ MapEntities::MapEntities(Game& game, Map& map):
   map(map),
   map_width8(0),
   map_height8(0),
+  num_layers(map.get_num_layers()),
   tiles_grid_size(0),
-  tiles_ground(map.get_num_layers()),
-  non_animated_regions(map.get_num_layers()),
-  tiles_in_animated_regions(map.get_num_layers()),
+  tiles_ground(num_layers),
+  non_animated_regions(num_layers),
+  tiles_in_animated_regions(num_layers),
   hero(*game.get_hero()),
   camera(nullptr),
   named_entities(),
   all_entities(),
   quadtree(),
-  z_caches(map.get_num_layers()),
-  entities_drawn_first(map.get_num_layers()),
-  entities_drawn_y_order(map.get_num_layers()),
-  default_destination(nullptr),
-  stairs(map.get_num_layers()),
-  crystal_blocks(map.get_num_layers()),
-  boomerang(nullptr) {
+  z_caches(num_layers),
+  entities_drawn_first(num_layers),
+  entities_drawn_y_order(num_layers),
+  default_destination(nullptr) {
 
 }
 
@@ -153,7 +151,7 @@ Hero& MapEntities::get_hero() {
  * \brief Returns all entities expect tiles and the hero.
  * \return The entities except tiles and the hero.
  */
-const std::list<EntityPtr>& MapEntities::get_entities() {
+const EntityList& MapEntities::get_entities() {
   return all_entities;
 }
 
@@ -164,32 +162,6 @@ const std::list<EntityPtr>& MapEntities::get_entities() {
  */
 const std::shared_ptr<Destination>& MapEntities::get_default_destination() {
   return default_destination;
-}
-
-/**
- * \brief Returns all stairs on the specified layer.
- * \param layer the layer
- * \return the stairs on this layer
- */
-const std::list<std::shared_ptr<Stairs>>& MapEntities::get_stairs(int layer) {
-  return stairs[layer];
-}
-
-/**
- * \brief Returns all crystal blocks on the specified layer.
- * \param layer the layer
- * \return the crystal blocks on this layer
- */
-const std::list<std::shared_ptr<CrystalBlock>>& MapEntities::get_crystal_blocks(int layer) {
-  return crystal_blocks[layer];
-}
-
-/**
- * \brief Returns all separators of the map.
- * \return The separators.
- */
-const std::list<std::shared_ptr<Separator>>& MapEntities::get_separators() const {
-  return separators;
 }
 
 /**
@@ -259,9 +231,9 @@ EntityPtr MapEntities::find_entity(const std::string& name) {
  * \param prefix Prefix of the name.
  * \return The entities of this type and having this prefix in their name.
  */
-std::vector<EntityPtr> MapEntities::get_entities_with_prefix(const std::string& prefix) {
+EntityVector MapEntities::get_entities_with_prefix(const std::string& prefix) {
 
-  std::vector<EntityPtr> entities;
+  EntityVector entities;
 
   // TODO traverse the sorted list named_entities instead.
   for (const EntityPtr& entity: all_entities) {
@@ -280,10 +252,10 @@ std::vector<EntityPtr> MapEntities::get_entities_with_prefix(const std::string& 
  * \param prefix Prefix of the name.
  * \return The entities of this type and having this prefix in their name.
  */
-std::vector<EntityPtr> MapEntities::get_entities_with_prefix(
+EntityVector MapEntities::get_entities_with_prefix(
     EntityType type, const std::string& prefix) {
 
-  std::vector<EntityPtr> entities;
+  EntityVector entities;
 
   for (const EntityPtr& entity: all_entities) {
     if (entity->get_type() == type &&
@@ -320,7 +292,7 @@ bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
  * \param[out] result The entities in that rectangle, in arbitrary order.
  */
 void MapEntities::get_entities_in_rectangle(
-    const Rectangle& rectangle, std::vector<EntityPtr>& result
+    const Rectangle& rectangle, EntityVector& result
 ) const {
 
   quadtree.get_elements(rectangle, result);
@@ -332,7 +304,7 @@ void MapEntities::get_entities_in_rectangle(
  */
 void MapEntities::get_entities_in_rectangle_sorted(
     const Rectangle& rectangle,
-    std::vector<EntityPtr>& result
+    EntityVector& result
 ) const {
 
   quadtree.get_elements(rectangle, result);
@@ -633,7 +605,8 @@ void MapEntities::add_entity(const EntityPtr& entity) {
   Debug::check_assertion(map.is_valid_layer(entity->get_layer()),
       "No such layer on this map");
 
-  if (entity->get_type() == EntityType::TILE) {
+  const EntityType type = entity->get_type();
+  if (type == EntityType::TILE) {
     // Tiles are optimized specifically for obstacle checks and rendering.
     add_tile(std::static_pointer_cast<Tile>(entity));
   }
@@ -659,22 +632,6 @@ void MapEntities::add_entity(const EntityPtr& entity) {
         camera = std::static_pointer_cast<Camera>(entity);
         break;
 
-      case EntityType::STAIRS:
-        stairs[layer].push_back(std::static_pointer_cast<Stairs>(entity));
-        break;
-
-      case EntityType::CRYSTAL_BLOCK:
-        crystal_blocks[layer].push_back(std::static_pointer_cast<CrystalBlock>(entity));
-        break;
-
-      case EntityType::SEPARATOR:
-        separators.push_back(std::static_pointer_cast<Separator>(entity));
-        break;
-
-      case EntityType::BOOMERANG:
-        this->boomerang = std::static_pointer_cast<Boomerang>(entity);
-        break;
-
       case EntityType::DESTINATION:
         {
           std::shared_ptr<Destination> destination =
@@ -692,8 +649,16 @@ void MapEntities::add_entity(const EntityPtr& entity) {
     // Track the insertion order.
     z_caches[layer].add(entity);
 
+    // Update the list of entities by type.
+    auto it = entities_by_type.find(type);
+    if (it == entities_by_type.end()) {
+      it = entities_by_type.emplace(type, std::vector<EntitySet>(num_layers)).first;
+    }
+    std::vector<EntitySet>& sets = it->second;
+    sets[layer].insert(entity);
+
     // Update the list of all entities.
-    if (entity->get_type() != EntityType::HERO) {
+    if (type != EntityType::HERO) {
       all_entities.push_back(entity);
     }
   }
@@ -735,7 +700,7 @@ void MapEntities::add_entity(const EntityPtr& entity) {
   }
 
   // Notify the entity.
-  if (entity->get_type() != EntityType::HERO) {
+  if (type != EntityType::HERO) {
     entity->set_map(map);
   }
 }
@@ -750,10 +715,6 @@ void MapEntities::remove_entity(Entity& entity) {
     const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
     entities_to_remove.push_back(shared_entity);
     entity.notify_being_removed();
-
-    if (shared_entity == this->boomerang) {
-      this->boomerang = nullptr;
-    }
   }
 }
 
@@ -789,7 +750,8 @@ void MapEntities::remove_marked_entities() {
   // remove the marked entities
   for (const EntityPtr& entity: entities_to_remove) {
 
-    int layer = entity->get_layer();
+    const EntityType type = entity->get_type();
+    const int layer = entity->get_layer();
 
     // remove it from the quadtree
     quadtree.remove(entity);
@@ -810,26 +772,10 @@ void MapEntities::remove_marked_entities() {
     }
 
     // update the specific entities lists
-    switch (entity->get_type()) {
+    switch (type) {
 
       case EntityType::CAMERA:
         camera = nullptr;
-        break;
-
-      case EntityType::STAIRS:
-        stairs[layer].remove(std::static_pointer_cast<Stairs>(entity));
-        break;
-
-      case EntityType::CRYSTAL_BLOCK:
-        crystal_blocks[layer].remove(std::static_pointer_cast<CrystalBlock>(entity));
-        break;
-
-      case EntityType::SEPARATOR:
-        separators.remove(std::static_pointer_cast<Separator>(entity));
-        break;
-
-      case EntityType::BOOMERANG:
-        this->boomerang = nullptr;
         break;
 
       default:
@@ -839,7 +785,14 @@ void MapEntities::remove_marked_entities() {
     // Track the insertion order.
     z_caches[layer].remove(entity);
 
-    // destroy it
+    // Update the list of entities by type.
+    const auto& it = entities_by_type.find(type);
+    if (it != entities_by_type.end()) {
+      std::vector<EntitySet>& sets = it->second;
+      sets[layer].erase(entity);
+    }
+
+    // Destroy it.
     notify_entity_removed(*entity);
   }
   entities_to_remove.clear();
@@ -981,7 +934,7 @@ void MapEntities::set_entity_layer(Entity& entity, int layer) {
 
     const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
 
-    // update the sprites list
+    // Update the sprites list.
     if (entity.is_drawn_in_y_order()) {
       entities_drawn_y_order[old_layer].remove(shared_entity);
       entities_drawn_y_order[layer].push_back(shared_entity);
@@ -995,7 +948,16 @@ void MapEntities::set_entity_layer(Entity& entity, int layer) {
     z_caches[old_layer].remove(shared_entity);
     z_caches[layer].add(shared_entity);
 
-    // update the entity after the lists because this function might be called again
+    // Update the list of entities by type and layer.
+    const EntityType type = entity.get_type();
+    const auto& it = entities_by_type.find(type);
+    if (it != entities_by_type.end()) {
+      std::vector<EntitySet>& sets = it->second;
+      sets[old_layer].erase(shared_entity);
+      sets[layer].insert(shared_entity);
+    }
+
+    // Update the entity after the lists because this function might be called again
     entity.set_layer(layer);
   }
 }
@@ -1021,13 +983,13 @@ void MapEntities::notify_entity_bounding_box_changed(Entity& entity) {
  * \param rectangle a rectangle
  * \return true if this rectangle overlaps a raised crystal block
  */
-bool MapEntities::overlaps_raised_blocks(int layer, const Rectangle& rectangle) {
+bool MapEntities::overlaps_raised_blocks(int layer, const Rectangle& rectangle) const {
 
-  std::list<std::shared_ptr<CrystalBlock>> blocks =
-      get_crystal_blocks(layer);
+  std::set<std::shared_ptr<const CrystalBlock>> blocks =
+      get_entities_by_type<CrystalBlock>(layer);
 
   // TODO Use the quadtree to only check entities intersecting the rectangle.
-  for (const std::shared_ptr<CrystalBlock>& block: blocks) {
+  for (const std::shared_ptr<const CrystalBlock>& block: blocks) {
     if (block->overlaps(rectangle) &&
         block->is_raised()
     ) {
@@ -1036,25 +998,6 @@ bool MapEntities::overlaps_raised_blocks(int layer, const Rectangle& rectangle) 
   }
 
   return false;
-}
-
-/**
- * \brief Returns true if the player has thrown the boomerang.
- * \return true if the boomerang is present on the map
- */
-bool MapEntities::is_boomerang_present() {
-  return boomerang != nullptr;
-}
-
-/**
- * \brief Removes the boomerang from the map, if it is present.
- */
-void MapEntities::remove_boomerang() {
-
-  if (boomerang != nullptr) {
-    remove_entity(*boomerang);
-    boomerang = nullptr;
-  }
 }
 
 /**

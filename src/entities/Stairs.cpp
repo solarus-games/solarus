@@ -58,7 +58,7 @@ Stairs::Stairs(
  * \return the type of entity
  */
 EntityType Stairs::get_type() const {
-  return EntityType::STAIRS;
+  return ThisType;
 }
 
 /**
@@ -162,7 +162,7 @@ void Stairs::notify_collision(
  * \return The movement direction an entity should take on these stairs
  * (0 to 7).
  */
-int Stairs::get_movement_direction(Way way) {
+int Stairs::get_movement_direction(Way way) const {
 
   int movement_direction = get_direction() * 2;
   if (way == REVERSE_WAY) {
@@ -181,7 +181,7 @@ int Stairs::get_movement_direction(Way way) {
  * \param way The way you are taking these stairs.
  * \return The direction of animation (0 to 7).
  */
-int Stairs::get_animation_direction(Way way) {
+int Stairs::get_animation_direction(Way way) const {
 
   int basic_direction = get_direction() * 2;
   int result = basic_direction;
@@ -208,7 +208,7 @@ int Stairs::get_animation_direction(Way way) {
  *
  * \param way The way you are taking these stairs.
  */
-void Stairs::play_sound(Way way) {
+void Stairs::play_sound(Way way) const {
 
   std::string sound_id;
   if (is_inside_floor()) {
@@ -242,7 +242,7 @@ void Stairs::play_sound(Way way) {
  * \param way The way you are taking these stairs.
  * \return The corresponding path to make.
  */
-std::string Stairs::get_path(Way way) {
+std::string Stairs::get_path(Way way) const {
 
   // Determine the movement direction.
   int initial_direction = get_direction() * 2;
@@ -297,7 +297,7 @@ std::string Stairs::get_path(Way way) {
  * \return The subarea of the map where the entity displaying should be
  * restricted to.
  */
-Rectangle Stairs::get_clipping_rectangle(Way /* way */) {
+Rectangle Stairs::get_clipping_rectangle(Way /* way */) const {
 
   if (subtype == INSIDE_FLOOR || subtype == STRAIGHT_UPSTAIRS) {
     return Rectangle(0, 0, 0, 0); // no restriction

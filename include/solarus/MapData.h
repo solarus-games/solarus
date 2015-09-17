@@ -34,7 +34,7 @@ namespace Solarus {
  * The entity at index 0 is the most to the back.
  * Tiles are always before all other entities in the list.
  */
-struct EntityList {
+struct EntityDataList {
     std::deque<EntityData> entities;
     int num_tiles;
 };
@@ -198,7 +198,7 @@ class SOLARUS_API MapData : public LuaData {
     std::string tileset_id;       /**< Tileset to use as skin for the map. */
     std::string music_id;         /**< Background music id or "none" or "same". */
 
-    std::vector<EntityList>
+    std::vector<EntityDataList>
         entities;                 /**< The entities on each layer. */
     std::map<std::string, EntityIndex>
         named_entities;           /**< Entities indexed by their name. */

@@ -359,10 +359,10 @@ Rectangle Camera::apply_separators(const Rectangle& area) const {
   // TODO simplify: treat horizontal separators first and then all vertical ones.
   int adjusted_x = x;  // Updated coordinates after applying separators.
   int adjusted_y = y;
-  std::list<std::shared_ptr<Separator>> applied_separators;
-  const std::list<std::shared_ptr<Separator>>& separators =
-      get_entities().get_separators();
-  for (const std::shared_ptr<Separator>& separator: separators) {
+  std::vector<std::shared_ptr<const Separator>> applied_separators;
+  const std::set<std::shared_ptr<const Separator>>& separators =
+      get_entities().get_entities_by_type<Separator>();
+  for (const std::shared_ptr<const Separator>& separator: separators) {
 
     if (separator->is_vertical()) {
       // Vertical separator.
@@ -411,7 +411,7 @@ Rectangle Camera::apply_separators(const Rectangle& area) const {
 
     must_adjust_x = false;
     must_adjust_y = false;
-    for (const std::shared_ptr<Separator>& separator: applied_separators) {
+    for (const std::shared_ptr<const Separator>& separator: applied_separators) {
 
       if (separator->is_vertical()) {
         // Vertical separator.

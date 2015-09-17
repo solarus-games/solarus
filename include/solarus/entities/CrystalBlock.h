@@ -33,6 +33,8 @@ class CrystalBlock: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::CRYSTAL_BLOCK;
+
     /**
      * Subtypes of raised blocks.
      */

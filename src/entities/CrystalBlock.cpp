@@ -63,7 +63,7 @@ CrystalBlock::CrystalBlock(Game& game, const std::string& name,
  * \return the type of entity
  */
 EntityType CrystalBlock::get_type() const {
-  return EntityType::CRYSTAL_BLOCK;
+  return ThisType;
 }
 
 /**

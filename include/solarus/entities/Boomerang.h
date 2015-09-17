@@ -35,6 +35,8 @@ class Boomerang: public Entity {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::BOOMERANG;
+
     Boomerang(
         const HeroPtr& hero,
         int max_distance,

@@ -814,7 +814,7 @@ bool MapData::export_to_lua(std::ostream& out) const {
   }
   out << "}\n\n";
 
-  for (const EntityList& layer_entities : entities) {
+  for (const EntityDataList& layer_entities : entities) {
     for (const EntityData& entity_data : layer_entities.entities) {
       bool success = entity_data.export_to_lua(out);
       Debug::check_assertion(success, "Entity export failed");

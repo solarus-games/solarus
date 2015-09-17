@@ -14,13 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/Boomerang.h"
+#include "solarus/entities/MapEntities.h"
 #include "solarus/hero/BackToSolidGroundState.h"
 #include "solarus/hero/FreeState.h"
 #include "solarus/hero/HeroSprites.h"
-#include "solarus/entities/MapEntities.h"
-#include "solarus/movements/TargetMovement.h"
-#include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Sound.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/movements/TargetMovement.h"
 #include "solarus/Map.h"
 #include <memory>
 
@@ -66,7 +67,12 @@ void Hero::BackToSolidGroundState::start(const State* previous_state) {
       nullptr, target_xy.x, target_xy.y, 144, true
   ));
   get_entities().set_entity_layer(hero, target_layer);
-  get_entities().remove_boomerang();
+
+  const std::set<std::shared_ptr<Boomerang>>& boomerangs =
+      get_entities().get_entities_by_type<Boomerang>();
+  for (const std::shared_ptr<Boomerang>& boomerang : boomerangs) {
+    boomerang->remove_from_map();
+  }
 }
 
 /**

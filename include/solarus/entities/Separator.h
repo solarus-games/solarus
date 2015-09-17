@@ -35,6 +35,8 @@ class Separator: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::SEPARATOR;
+
     Separator(
         const std::string& name,
         int layer,

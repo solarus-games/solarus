@@ -28,23 +28,22 @@
 #include <list>
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
 namespace Solarus {
 
-class Boomerang;
-class CrystalBlock;
 class Destination;
-class Detector;
 class Hero;
 class Map;
 class NonAnimatedRegions;
 class Rectangle;
-class Separator;
-class Stairs;
 
+using EntityList = std::list<EntityPtr>;
+using EntitySet = std::set<EntityPtr>;
+using EntityVector = std::vector<EntityPtr>;
 using EntityTree = Quadtree<EntityPtr>;
 
 /**
@@ -67,20 +66,27 @@ class SOLARUS_API MapEntities {
     const Camera& get_camera() const;
     Camera& get_camera();
     Ground get_tile_ground(int layer, int x, int y) const;
-    const std::list<EntityPtr>& get_entities();
-    const std::list<std::shared_ptr<Stairs>>& get_stairs(int layer);
-    const std::list<std::shared_ptr<CrystalBlock>>& get_crystal_blocks(int layer);
-    const std::list<std::shared_ptr<Separator>>& get_separators() const;
+    const EntityList& get_entities();
     const std::shared_ptr<Destination>& get_default_destination();
 
     EntityPtr get_entity(const std::string& name);
     EntityPtr find_entity(const std::string& name);
-    std::vector<EntityPtr> get_entities_with_prefix(const std::string& prefix);
-    std::vector<EntityPtr> get_entities_with_prefix(EntityType type, const std::string& prefix);
+
+    EntityVector get_entities_with_prefix(const std::string& prefix);
+    EntityVector get_entities_with_prefix(EntityType type, const std::string& prefix);
     bool has_entity_with_prefix(const std::string& prefix) const;
 
-    void get_entities_in_rectangle(const Rectangle& rectangle, std::vector<EntityPtr>& result) const;
-    void get_entities_in_rectangle_sorted(const Rectangle& rectangle, std::vector<EntityPtr>& result) const;
+    template<typename T>
+    std::set<std::shared_ptr<const T>> get_entities_by_type() const;
+    template<typename T>
+    std::set<std::shared_ptr<T>> get_entities_by_type();
+    template<typename T>
+    std::set<std::shared_ptr<const T>> get_entities_by_type(int layer) const;
+    template<typename T>
+    std::set<std::shared_ptr<T>> get_entities_by_type(int layer);
+
+    void get_entities_in_rectangle(const Rectangle& rectangle, EntityVector& result) const;
+    void get_entities_in_rectangle_sorted(const Rectangle& rectangle, EntityVector& result) const;
 
     // handle entities
     void add_entity(const EntityPtr& entity);
@@ -95,9 +101,7 @@ class SOLARUS_API MapEntities {
     void notify_entity_bounding_box_changed(Entity& entity);
 
     // specific to some entity types
-    bool overlaps_raised_blocks(int layer, const Rectangle& rectangle);
-    bool is_boomerang_present();
-    void remove_boomerang();
+    bool overlaps_raised_blocks(int layer, const Rectangle& rectangle) const;
 
     // map events
     void notify_map_started();
@@ -147,6 +151,7 @@ class SOLARUS_API MapEntities {
     Map& map;                                       /**< the map */
     int map_width8;                                 /**< number of 8x8 squares on a row of the map grid */
     int map_height8;                                /**< number of 8x8 squares on a column of the map grid */
+    int num_layers;                                 /**< Number of layers of the map. */
 
     // tiles
     int tiles_grid_size;                            /**< number of 8x8 squares in the map
@@ -161,44 +166,33 @@ class SOLARUS_API MapEntities {
         tiles_in_animated_regions;                  /**< For each layer, animated tiles and tiles overlapping them. */
 
     // dynamic entities
-    Hero& hero;                                     /**< the hero (stored in Game because it is kept when changing maps) */
+    Hero& hero;                                     /**< The hero (stored in Game because it is kept when changing maps). */
     std::shared_ptr<Camera>
         camera;                                     /**< The visible area of the map. */
 
     std::map<std::string, EntityPtr>
         named_entities;                             /**< Entities identified by a name. */
-    std::list<EntityPtr> all_entities;              /**< All map entities except tiles and the hero. */
+    EntityList all_entities;                        /**< All map entities except tiles and the hero. */
+    std::map<EntityType, std::vector<EntitySet>>
+        entities_by_type;                           /**< All map entities except tiles, by type and then layer. */
 
     EntityTree quadtree;                            /**< All map entities except tiles.
                                                      * Optimized for fast spatial search. */
     std::vector<ZCache> z_caches;                   /**< For each layer, tracks the relative Z order of entities. */
 
-    std::list<EntityPtr> entities_to_remove;          /**< list of entities that need to be removed right now */
+    EntityList entities_to_remove;                  /**< List of entities that need to be removed right now. */
 
-    std::vector<std::list<EntityPtr>>
+    std::vector<EntityList>
         entities_drawn_first;                       /**< For each layer, all map entities that are
                                                      * drawn in normal order.
                                                      * TODO remove, use the quadtree instead. */
 
-    std::vector<std::list<EntityPtr>>
+    std::vector<EntityList>
         entities_drawn_y_order;                     /**< For each layer, all map entities that are drawn in the order
                                                      * defined by their y position, including the hero. */
 
     std::shared_ptr<Destination>
         default_destination;                        /**< Default destination of this map or nullptr. */
-
-    std::vector<std::list<std::shared_ptr<Stairs>>>
-        stairs;                                     /**< For each layer, all stairs.
-                                                     * TODO remove, store entities by type instead. */
-    std::vector<std::list<std::shared_ptr<CrystalBlock>>>
-        crystal_blocks;                             /**< For each layer, all crystal blocks.
-                                                     * TODO remove, store entities by type instead. */
-    std::list<std::shared_ptr<Separator>>
-        separators;                                 /**< All separators of the map.
-                                                     * TODO remove, store entities by type instead. */
-
-    std::shared_ptr<Boomerang> boomerang;           /**< The boomerang if present on the map, nullptr otherwise.
-                                                     * TODO remove, store entities by type instead. */
 
 };
 
@@ -241,6 +235,82 @@ inline const Camera& MapEntities::get_camera() const {
 inline Camera& MapEntities::get_camera() {
 
   return *camera;
+}
+
+/**
+ * \brief Returns all entities of a type.
+ * \return All entities of the type.
+ */
+template<typename T>
+std::set<std::shared_ptr<const T>> MapEntities::get_entities_by_type() const {
+
+  std::set<std::shared_ptr<const T>> result;
+  for (int layer = 0; layer < num_layers; ++layer) {
+    const std::set<std::shared_ptr<const T>>& layer_entities = get_entities_by_type<T>(layer);
+    result.insert(layer_entities.begin(), layer_entities.end());
+  }
+  return result;
+}
+
+/**
+ * \brief Returns all entities of a type (non-const version).
+ * \return All entities of the type.
+ */
+template<typename T>
+std::set<std::shared_ptr<T>> MapEntities::get_entities_by_type() {
+
+  std::set<std::shared_ptr<T>> result;
+  for (int layer = 0; layer < num_layers; ++layer) {
+    const std::set<std::shared_ptr<T>>& layer_entities = get_entities_by_type<T>(layer);
+    result.insert(layer_entities.begin(), layer_entities.end());
+  }
+  return result;
+}
+
+/**
+ * \brief Returns all entities of a type on the given layer.
+ * \param layer The layer to get entities from.
+ * \return All entities of the type on this layer.
+ */
+template<typename T>
+std::set<std::shared_ptr<const T>> MapEntities::get_entities_by_type(int layer) const {
+
+  std::set<std::shared_ptr<const T>> result;
+
+  const EntityType type = T::ThisType;  // TODO put a ThisType in each subclass of Entity
+  const auto& it = entities_by_type.find(type);
+  if (it == entities_by_type.end()) {
+    return result;
+  }
+
+  const std::vector<EntitySet>& sets = it->second;
+  for (const EntityPtr& entity : sets[layer]) {
+    result.insert(std::static_pointer_cast<const T>(entity));
+  }
+  return result;
+}
+
+/**
+ * \brief Returns all entities of a type on the given layer (non-const version).
+ * \param layer The layer to get entities from.
+ * \return All entities of the type on this layer.
+ */
+template<typename T>
+std::set<std::shared_ptr<T>> MapEntities::get_entities_by_type(int layer) {
+
+  std::set<std::shared_ptr<T>> result;
+
+  const EntityType type = T::ThisType;
+  const auto& it = entities_by_type.find(type);
+  if (it == entities_by_type.end()) {
+    return result;
+  }
+
+  const std::vector<EntitySet>& sets = it->second;
+  for (const EntityPtr& entity : sets[layer]) {
+    result.insert(std::static_pointer_cast<T>(entity));
+  }
+  return result;
 }
 
 }

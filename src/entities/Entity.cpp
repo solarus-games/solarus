@@ -2236,9 +2236,9 @@ bool Entity::is_in_same_region(const Entity& other) const {
   const Point& this_center = get_center_point();
   const Point& other_center = other.get_center_point();
 
-  const std::list<std::shared_ptr<Separator>>& separators =
-      get_entities().get_separators();
-  for (const std::shared_ptr<Separator>& separator: separators) {
+  const std::set<std::shared_ptr<const Separator>>& separators =
+      get_entities().get_entities_by_type<const Separator>();
+  for (const std::shared_ptr<const Separator>& separator: separators) {
 
     if (separator->is_vertical()) {
       // Vertical separation.

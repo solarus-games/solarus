@@ -45,6 +45,8 @@ class Stairs: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::STAIRS;
+
     /**
      * \brief Subtypes of stairs.
      */
@@ -91,11 +93,11 @@ class Stairs: public Detector {
     virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
     virtual void notify_enabled(bool enabled) override;
 
-    int get_movement_direction(Way way);
-    int get_animation_direction(Way way);
-    void play_sound(Way way);
-    std::string get_path(Way way);
-    Rectangle get_clipping_rectangle(Way way);
+    int get_movement_direction(Way way) const;
+    int get_animation_direction(Way way) const;
+    void play_sound(Way way) const;
+    std::string get_path(Way way) const;
+    Rectangle get_clipping_rectangle(Way way) const;
 
   private:
 

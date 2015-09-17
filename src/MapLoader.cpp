@@ -73,6 +73,7 @@ void MapLoader::load_map(Game& game, Map& map) {
   map.tileset->load();
 
   MapEntities& entities = map.get_entities();
+  entities.num_layers = map.get_num_layers();
   entities.map_width8 = map.width8;
   entities.map_height8 = map.height8;
   entities.tiles_grid_size = map.width8 * map.height8;
@@ -92,7 +93,6 @@ void MapLoader::load_map(Game& game, Map& map) {
   Rectangle quadtree_space(-margin, -margin, map.get_width() + 2 * margin, map.get_height() + 2 * margin);
   entities.quadtree.initialize(quadtree_space);
 
-  entities.boomerang = nullptr;
   entities.add_entity(std::make_shared<Camera>(map));
 
   // Create entities by calling the Lua API functions.

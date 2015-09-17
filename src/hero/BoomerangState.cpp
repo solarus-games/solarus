@@ -59,7 +59,7 @@ void Hero::BoomerangState::start(const State* previous_state) {
 
   State::start(previous_state);
 
-  if (get_map().get_entities().is_boomerang_present()) {
+  if (get_map().get_entities().get_entities_by_type<Boomerang>().empty()) {
     Hero& hero = get_entity();
     hero.set_state(new FreeState(hero));
   }

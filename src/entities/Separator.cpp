@@ -47,7 +47,7 @@ Separator::Separator(
  * \copydoc Entity::get_type
  */
 EntityType Separator::get_type() const {
-  return EntityType::SEPARATOR;
+  return ThisType;
 }
 
 /**

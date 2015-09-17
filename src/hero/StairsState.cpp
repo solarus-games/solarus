@@ -39,8 +39,9 @@ namespace Solarus {
  */
 Hero::StairsState::StairsState(
     Hero& hero,
-    Stairs& stairs,
-    Stairs::Way way):
+    const std::shared_ptr<const Stairs>& stairs,
+    Stairs::Way way
+):
   BaseState(hero, "stairs"),
   stairs(stairs),
   way(way),
@@ -77,8 +78,8 @@ void Hero::StairsState::start(const State* previous_state) {
   State::start(previous_state);
 
   // movement
-  int speed = stairs.is_inside_floor() ? 40 : 24;
-  std::string path = stairs.get_path(way);
+  int speed = stairs->is_inside_floor() ? 40 : 24;
+  std::string path = stairs->get_path(way);
   std::shared_ptr<PathMovement> movement = std::make_shared<PathMovement>(
       path, speed, false, true, false
   );
@@ -96,16 +97,16 @@ void Hero::StairsState::start(const State* previous_state) {
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
   Hero& hero = get_entity();
-  if (stairs.is_inside_floor()) {
+  if (stairs->is_inside_floor()) {
     if (way == Stairs::NORMAL_WAY) {
       // Toward a higher layer: change the layer now.
-      int layer = stairs.get_layer();
+      int layer = stairs->get_layer();
       Debug::check_assertion(layer < get_map().get_num_layers(), "Invalid stairs layer");
       get_entities().set_entity_layer(hero, layer + 1);
     }
   }
   else {
-    sprites.set_clipping_rectangle(stairs.get_clipping_rectangle(way));
+    sprites.set_clipping_rectangle(stairs->get_clipping_rectangle(way));
     if (way == Stairs::REVERSE_WAY) {
       Point dxy = movement->get_xy_change();
       int fix_y = 8;
@@ -164,7 +165,7 @@ void Hero::StairsState::update() {
 
   // first time: we play the sound and initialize
   if (phase == 0) {
-    stairs.play_sound(way);
+    stairs->play_sound(way);
     next_phase_date = System::now() + 450;
     phase++;
   }
@@ -175,13 +176,13 @@ void Hero::StairsState::update() {
   }
 
   Hero& hero = get_entity();
-  if (stairs.is_inside_floor()) {
+  if (stairs->is_inside_floor()) {
 
     // inside a single floor: return to normal state as soon as the movement is finished
     if (hero.get_movement()->is_finished()) {
 
       if (way == Stairs::REVERSE_WAY) {
-        get_entities().set_entity_layer(hero, stairs.get_layer());
+        get_entities().set_entity_layer(hero, stairs->get_layer());
       }
       hero.clear_movement();
       if (carried_item == nullptr) {
@@ -229,7 +230,7 @@ void Hero::StairsState::update() {
         // main movement direction corresponding to each animation direction while taking stairs
         static constexpr int movement_directions[] = { 0, 0, 2, 4, 4, 4, 6, 0 };
 
-        int animation_direction = stairs.get_animation_direction(way);
+        int animation_direction = stairs->get_animation_direction(way);
         if (phase == 2) { // the first phase of the movement is finished
           if (animation_direction % 2 != 0) {
             // if the stairs are spiral, take a diagonal direction of animation
@@ -250,7 +251,7 @@ void Hero::StairsState::update() {
           }
           else {
             // on the new floor, take the opposite direction from the stairs
-            sprites.set_animation_direction((stairs.get_direction() + 2) % 4);
+            sprites.set_animation_direction((stairs->get_direction() + 2) % 4);
           }
         }
       }
@@ -332,7 +333,7 @@ std::shared_ptr<CarriedItem> Hero::StairsState::get_carried_item() const {
  */
 CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior() const {
 
-  if (stairs.is_inside_floor()) {
+  if (stairs->is_inside_floor()) {
     return CarriedItem::BEHAVIOR_KEEP;
   }
   return CarriedItem::BEHAVIOR_DESTROY;

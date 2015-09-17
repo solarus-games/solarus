@@ -1001,6 +1001,9 @@ void MapEntities::set_entity_layer(Entity& entity, int layer) {
 void MapEntities::notify_entity_bounding_box_changed(Entity& entity) {
 
   // Update the quadtree.
+
+  // Note that if the entity is not in the quadtree
+  // (i.e. not managed by MapEntities) this does nothing.
   EntityPtr shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
   quadtree.move(shared_entity, shared_entity->get_max_bounding_box());
 }

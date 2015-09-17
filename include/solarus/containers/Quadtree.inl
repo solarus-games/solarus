@@ -157,7 +157,8 @@ bool Quadtree<T>::remove(const T& element) {
  * It is allow for an element to go to or come from outside the space of the
  * quadtree.
  *
- * \param element The element to move.
+ * \param element The element to move. If the element is not in the quadtree,
+ * does nothing and returns \c false.
  * \param bounding_box New bounding box of the element.
  * \return \c true in case of success.
  */

@@ -109,10 +109,6 @@ MapEntities::MapEntities(Game& game, Map& map):
   crystal_blocks(map.get_num_layers()),
   boomerang(nullptr) {
 
-  int hero_layer = hero.get_layer();
-  const HeroPtr& shared_hero = std::static_pointer_cast<Hero>(hero.shared_from_this());
-  this->entities_drawn_y_order[hero_layer].push_back(shared_hero);
-  this->named_entities[hero.get_name()] = &hero;
 }
 
 /**
@@ -378,9 +374,9 @@ void MapEntities::bring_to_back(Entity& entity) {
  */
 void MapEntities::notify_map_started() {
 
-  // Put the hero in the the quadtree.
-  HeroPtr shared_hero = std::static_pointer_cast<Hero>(hero.shared_from_this());
-  quadtree.add(shared_hero, hero.get_max_bounding_box());
+  // Put the hero in the structures.
+  const HeroPtr& shared_hero = std::static_pointer_cast<Hero>(hero.shared_from_this());
+  add_entity(shared_hero);
 
   // Notify entities.
   for (const EntityPtr& entity: all_entities) {
@@ -675,7 +671,9 @@ void MapEntities::add_entity(const EntityPtr& entity) {
     z_caches[layer].add(entity);
 
     // Update the list of all entities.
-    all_entities.push_back(entity);
+    if (entity->get_type() != EntityType::HERO) {
+      all_entities.push_back(entity);
+    }
   }
 
   // Rename the entity if there is already an entity with the same name.
@@ -715,7 +713,9 @@ void MapEntities::add_entity(const EntityPtr& entity) {
   }
 
   // Notify the entity.
-  entity->set_map(map);
+  if (entity->get_type() != EntityType::HERO) {
+    entity->set_map(map);
+  }
 }
 
 /**
@@ -1046,7 +1046,7 @@ void MapEntities::remove_boomerang() {
 MapEntities::ZCache::ZCache() :
     z_values(),
     min(0),
-    max(0) {
+    max(-1) {
 
 }
 

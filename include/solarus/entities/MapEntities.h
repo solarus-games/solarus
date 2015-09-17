@@ -133,8 +133,8 @@ class SOLARUS_API MapEntities {
       private:
 
         std::unordered_map<EntityPtr, int> z_values;
-        int min = 0;
-        int max = 0;
+        int min;
+        int max;
     };
 
     void add_tile(const TilePtr& tile);

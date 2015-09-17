@@ -878,7 +878,7 @@ bool EntityData::export_to_lua(std::ostream& out) const {
   }
 
   // Position on the map.
-  out << "  layer = " << static_cast<int>(get_layer()) << ",\n"
+  out << "  layer = " << get_layer() << ",\n"
       << "  x = " << get_xy().x << ",\n"
       << "  y = " << get_xy().y << ",\n";
 

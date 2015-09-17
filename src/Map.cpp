@@ -258,6 +258,17 @@ int Map::get_highest_layer() const {
 }
 
 /**
+ * \brief Returns whether the specified layer exists in this map.
+ * \param layer The layer to check.
+ * \return \c true if the layer is between \c get_lowest_layer()
+ * and \c get_highest_layer().
+ */
+bool Map::is_valid_layer(int layer) const {
+
+  return layer >= 0 && layer < get_num_layers();
+}
+
+/**
  * \brief Returns whether the map is loaded.
  * \return true if the map is loaded, false otherwise
  */

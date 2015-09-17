@@ -574,17 +574,22 @@ void MapEntities::add_tile(const TilePtr& tile) {
 /**
  * \brief Adds an entity to the map.
  *
- * This function is called when loading the map. If the entity
- * specified is nullptr (because some entity creation functions
- * may return nullptr), nothing is done.
+ * This function can be called when loading the map or,
+ * except for tiles, when the map is already loaded.
+ * If the entity specified is nullptr
+ * (because some entity creation functions may return nullptr),
+ * nothing is done.
  *
- * \param entity The entity to add (can be an empty pointer).
+ * \param entity The entity to add or nullptr.
  */
 void MapEntities::add_entity(const EntityPtr& entity) {
 
   if (entity == nullptr) {
     return;
   }
+
+  Debug::check_assertion(map.is_valid_layer(entity->get_layer()),
+      "No such layer on this map");
 
   if (entity->get_type() == EntityType::TILE) {
     // Tiles are optimized specifically for obstacle checks and rendering.

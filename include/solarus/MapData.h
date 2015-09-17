@@ -144,6 +144,7 @@ class SOLARUS_API MapData : public LuaData {
     Point get_location() const;
     void set_location(const Point& location);
     int get_num_layers() const;
+    bool is_valid_layer(int layer) const;
     bool has_world() const;
     const std::string& get_world() const;
     void set_world(const std::string& world);

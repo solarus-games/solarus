@@ -829,7 +829,7 @@ int LuaContext::entity_api_set_position(lua_State* l) {
     int y = LuaTools::check_int(l, 3);
     int layer = -1;
     if (lua_gettop(l) >= 4) {
-      layer = LuaTools::check_int(l, 4);
+      layer = LuaTools::check_layer(l, 4, entity.get_map());
     }
 
     entity.set_xy(x, y);
@@ -1264,7 +1264,7 @@ int LuaContext::entity_api_test_obstacles(lua_State* l) {
     int dy = LuaTools::check_int(l, 3);
     int layer = entity.get_layer();
     if (lua_gettop(l) >= 4) {
-      layer = LuaTools::check_int(l, 4);
+      layer = LuaTools::check_layer(l, 4, entity.get_map());
     }
 
     Rectangle bounding_box = entity.get_bounding_box();
@@ -1458,7 +1458,7 @@ int LuaContext::hero_api_save_solid_ground(lua_State* l) {
     if (lua_gettop(l) >= 2) {
       x = LuaTools::check_int(l, 2);
       y = LuaTools::check_int(l, 3);
-      layer = LuaTools::check_int(l, 4);
+      layer = LuaTools::check_layer(l, 4, hero.get_map());
     }
     else {
       x = hero.get_x();
@@ -4234,7 +4234,7 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
     Enemy& enemy = *check_enemy(l, 1);
     LuaTools::check_type(l, 2, LUA_TTABLE);
     const std::string& name = LuaTools::opt_string_field(l, 2, "name", "");
-    int layer = LuaTools::opt_int_field(l, 2, "layer", enemy.get_layer());
+    int layer = LuaTools::opt_layer_field(l, 2, "layer", enemy.get_map(), enemy.get_layer());
     int x = LuaTools::opt_int_field(l, 2, "x", 0);
     int y = LuaTools::opt_int_field(l, 2, "y", 0);
     int direction = LuaTools::opt_int_field(l, 2, "direction", 3);

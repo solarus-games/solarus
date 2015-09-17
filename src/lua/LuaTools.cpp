@@ -14,10 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lua/LuaTools.h"
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lua/LuaException.h"
+#include "solarus/lua/LuaTools.h"
 #include "solarus/lua/ScopedLuaRef.h"
+#include "solarus/Map.h"
 #include <cctype>
 #include <sstream>
 
@@ -726,6 +727,133 @@ ScopedLuaRef opt_function_field(
     );
   }
   return create_ref(l);  // This also pops the function from the stack.
+}
+/**
+ * \brief Returns whether a value is a layer.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \param map The map whose number of layer matters.
+ * \return \c true if the value is a valid layer for the map.
+ */
+bool is_layer(
+    lua_State* l,
+    int index,
+    const Map& map
+) {
+  if (!lua_isnumber(l, index)) {
+    return false;
+  }
+  int layer = check_int(l, index);
+  return map.is_valid_layer(layer);
+}
+
+/**
+ * \brief Checks that the value at the given index is a valid layer and returns it.
+ * \param l A Lua state.
+ * \param index An index in the Lua stack.
+ * \param map The map whose number of layer matters.
+ * \return The layer at this index.
+ */
+int check_layer(
+    lua_State* l,
+    int index,
+    const Map& map
+) {
+  if (!is_layer(l, index, map)) {
+    std::ostringstream oss;
+    if (!lua_isnumber(l, index)) {
+      oss << "Invalid layer";
+    }
+    else {
+      oss << "Invalid layer: " << lua_tonumber(l, index);
+    }
+    arg_error(l, index, oss.str());
+  }
+
+  return lua_tointeger(l, index);
+}
+
+/**
+ * \brief Checks that a table field is a valid layer and returns it.
+ *
+ * This function acts like lua_getfield() followed by LuaTools::check_layer().
+ *
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param map The map whose number of layer matters.
+ * \return The wanted field as a layer.
+ */
+int check_layer_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    const Map& map
+) {
+  lua_getfield(l, table_index, key.c_str());
+  if (!is_layer(l, -1, map)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (layer expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+
+  int value = lua_tointeger(l, -1);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * \brief Like LuaTools::check_layer() but with a default value.
+ * \param l A Lua state.
+ * \param index Index of a value in the stack.
+ * \param map The map whose number of layer matters.
+ * \param default_value The default value to return if the value is \c nil.
+ * \return The wanted value as a layer.
+ */
+int opt_layer(
+    lua_State* l,
+    int index,
+    const Map& map,
+    int default_value
+) {
+  if (lua_isnoneornil(l, index)) {
+    return default_value;
+  }
+  return check_layer(l, index, map);
+}
+
+/**
+ * \brief Like LuaTools::check_layer_field() but with a default value.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param map The map whose number of layer matters.
+ * \param default_value The default value to return if the field is \c nil.
+ * \return The wanted field as a layer.
+ */
+int opt_layer_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    const Map& map,
+    int default_value
+) {
+  lua_getfield(l, table_index, key.c_str());
+  if (lua_isnil(l, -1)) {
+    lua_pop(l, 1);
+    return default_value;
+  }
+
+  if (!is_layer(l, -1, map)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (layer expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+  int value = lua_tointeger(l, -1);
+  lua_pop(l, 1);
+  return value;
 }
 
 /**

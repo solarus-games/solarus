@@ -19,6 +19,7 @@
 #include "solarus/lua/LuaTools.h"
 #include "solarus/MapData.h"
 #include <ostream>
+#include <sstream>
 
 namespace Solarus {
 
@@ -75,6 +76,16 @@ void MapData::set_location(const Point& location) {
  */
 int MapData::get_num_layers() const {
   return 3;
+}
+
+/**
+ * \brief Returns whether the specified layer exists in the map.
+ * \param layer The layer to check.
+ * \return \c true if the layer is >= 0 and < get_num_layers().
+ */
+bool MapData::is_valid_layer(int layer) const {
+
+  return layer >= 0 && layer < get_num_layers();
 }
 
 /**
@@ -546,9 +557,14 @@ bool MapData::set_entity_name(const EntityIndex& index, const std::string& name)
  * \param entity The information of an entity.
  * \return The index of this entity on the map.
  * Returns an invalid index in case of failure, that is,
- * if the name was already in use or if the entity type is illegal.
+ * if the name was already in use or if the entity type or layer is illegal.
  */
 EntityIndex MapData::add_entity(const EntityData& entity) {
+
+  if (!is_valid_layer(entity.get_layer())) {
+    // Illegal layer.
+    return EntityIndex();
+  }
 
   // Compute the appropriate index.
   int layer = entity.get_layer();
@@ -690,6 +706,12 @@ int l_add_entity(lua_State* l) {
         l, lua_upvalueindex(1), EntityTypeInfo::get_entity_type_names()
     );
     const EntityData& entity = EntityData::check_entity_data(l, 1, type);
+
+    if (!map.is_valid_layer(entity.get_layer())) {
+      std::ostringstream oss;
+      oss << "Invalid layer: " << entity.get_layer();
+      LuaTools::error(l, oss.str());
+    }
 
     EntityIndex index = map.add_entity(entity);
     if (!index.is_valid()) {

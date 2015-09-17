@@ -28,6 +28,7 @@
 namespace Solarus {
 
 class Color;
+class Map;
 class ScopedLuaRef;
 
 /**
@@ -53,6 +54,12 @@ bool call_function(
 );
 
 // Error handling.
+template<typename Callable>
+int exception_boundary_handle(
+    lua_State* l,
+    Callable&& func
+);
+
 void error(
     lua_State* l,
     const std::string& message
@@ -75,11 +82,6 @@ void check_type(
 void check_any(
     lua_State* l,
     int arg_index
-);
-template<typename Callable>
-int exception_boundary_handle(
-    lua_State* l,
-    Callable&& func
 );
 
 // int
@@ -188,6 +190,37 @@ ScopedLuaRef opt_function_field(
     lua_State* l,
     int table_index,
     const std::string& key
+);
+
+// Layer
+bool is_layer(
+    lua_State* l,
+    int index,
+    const Map& map
+);
+int check_layer(
+    lua_State* l,
+    int index,
+    const Map& map
+);
+int check_layer_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    const Map& map
+);
+int opt_layer(
+    lua_State* l,
+    int index,
+    const Map& map,
+    int default_value
+);
+int opt_layer_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    const Map& map,
+    int default_value
 );
 
 // Color

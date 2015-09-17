@@ -166,6 +166,35 @@ void LuaContext::push_map(lua_State* l, Map& map) {
 namespace {
 
 /**
+ * \brief Checks and returns the layer of an entity to be created.
+ *
+ * The layer is assumed to be specified in a field "layer".
+ * Throws a LuaException if the layer is invalid for the map.
+ *
+ * \param l A Lua state.
+ * \param index Index of the argument in the Lua stack.
+ * \param entity_data Description of the entity to create.
+ * \param map The map where to create the entity.
+ * \return The layer.
+ */
+int entity_creation_check_layer(
+    lua_State* l,
+    int index,
+    const EntityData& entity_data,
+    const Map& map) {
+
+  const int layer = entity_data.get_layer();
+
+  if (!map.is_valid_layer(layer)) {
+    std::ostringstream oss;
+    oss << "Invalid layer: " << layer;
+    LuaTools::arg_error(l, index, oss.str());
+  }
+
+  return layer;
+}
+
+/**
  * \brief Checks and returns the size of an entity to be created.
  *
  * The size is assumed to be specified in fields "width" and "height".
@@ -314,6 +343,7 @@ int LuaContext::l_create_tile(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
+    const int layer = entity_creation_check_layer(l, 1, data, map);
     const int x = data.get_xy().x;
     const int y = data.get_xy().y;
     const Size size =  entity_creation_check_size(l, 1, data);
@@ -324,7 +354,7 @@ int LuaContext::l_create_tile(lua_State* l) {
     for (int current_y = y; current_y < y + size.height; current_y += pattern.get_height()) {
       for (int current_x = x; current_x < x + size.width; current_x += pattern.get_width()) {
         EntityPtr entity = std::make_shared<Tile>(
-            data.get_layer(),
+            layer,
             Point(current_x, current_y),
             pattern.get_size(),
             map.get_tileset(),
@@ -351,7 +381,7 @@ int LuaContext::l_create_destination(lua_State* l) {
 
     EntityPtr entity = std::make_shared<Destination>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         data.get_integer("direction"),
         data.get_string("sprite"),
@@ -378,10 +408,9 @@ int LuaContext::l_create_teletransporter(lua_State* l) {
     Map& map = *check_map(l, 1);
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
-
     EntityPtr entity = std::make_shared<Teletransporter>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         entity_creation_check_size(l, 1, data),
         data.get_string("sprite"),
@@ -423,7 +452,7 @@ int LuaContext::l_create_pickable(lua_State* l) {
     const std::shared_ptr<Pickable>& entity = Pickable::create(
         game,
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         Treasure(
             game,
@@ -463,7 +492,7 @@ int LuaContext::l_create_destructible(lua_State* l) {
 
     std::shared_ptr<Destructible> destructible = std::make_shared<Destructible>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         data.get_string("sprite"),
         Treasure(
@@ -530,7 +559,7 @@ int LuaContext::l_create_chest(lua_State* l) {
 
     std::shared_ptr<Chest> chest = std::make_shared<Chest>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         data.get_string("sprite"),
         Treasure(
@@ -566,7 +595,7 @@ int LuaContext::l_create_jumper(lua_State* l) {
 
     EntityPtr entity = std::make_shared<Jumper>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         entity_creation_check_size(l, 1, data),
         data.get_integer("direction"),
@@ -598,7 +627,7 @@ int LuaContext::l_create_enemy(lua_State* l) {
         Enemy::Rank(data.get_integer("rank")),
         entity_creation_check_savegame_variable_optional(l, 1, data, "savegame_variable"),
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         data.get_integer("direction"),
         Treasure(
@@ -636,7 +665,7 @@ int LuaContext::l_create_npc(lua_State* l) {
     EntityPtr entity = std::make_shared<Npc>(
         game,
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         Npc::Subtype(data.get_integer("subtype")),
         data.get_string("sprite"),
@@ -671,7 +700,7 @@ int LuaContext::l_create_block(lua_State* l) {
     }
     std::shared_ptr<Block> entity = std::make_shared<Block>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         data.get_integer("direction"),
         data.get_string("sprite"),
@@ -701,7 +730,7 @@ int LuaContext::l_create_dynamic_tile(lua_State* l) {
 
     EntityPtr entity = std::make_shared<DynamicTile>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         entity_creation_check_size(l, 1, data),
         map.get_tileset(),
@@ -730,7 +759,7 @@ int LuaContext::l_create_switch(lua_State* l) {
 
     EntityPtr entity = std::make_shared<Switch>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         entity_creation_check_enum<Switch::Subtype>(l, 1, data, "subtype", Switch::subtype_names),
         data.get_string("sprite"),
@@ -760,7 +789,7 @@ int LuaContext::l_create_wall(lua_State* l) {
 
     EntityPtr entity = std::make_shared<Wall>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         entity_creation_check_size(l, 1, data),
         data.get_boolean("stops_hero"),
@@ -791,7 +820,7 @@ int LuaContext::l_create_sensor(lua_State* l) {
 
     EntityPtr entity = std::make_shared<Sensor>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         entity_creation_check_size(l, 1, data)
     );
@@ -817,7 +846,7 @@ int LuaContext::l_create_crystal(lua_State* l) {
 
     EntityPtr entity = std::make_shared<Crystal>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy()
     );
     map.get_entities().add_entity(entity);
@@ -844,7 +873,7 @@ int LuaContext::l_create_crystal_block(lua_State* l) {
     EntityPtr entity = std::make_shared<CrystalBlock>(
         game,
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         entity_creation_check_size(l, 1, data),
         CrystalBlock::Subtype(data.get_integer("subtype"))
@@ -873,7 +902,7 @@ int LuaContext::l_create_shop_treasure(lua_State* l) {
     EntityPtr entity = ShopTreasure::create(
         game,
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         Treasure(
             game,
@@ -912,7 +941,7 @@ int LuaContext::l_create_stream(lua_State* l) {
 
     std::shared_ptr<Stream> stream = std::make_shared<Stream>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         data.get_integer("direction"),
         data.get_string("sprite")
@@ -972,7 +1001,7 @@ int LuaContext::l_create_door(lua_State* l) {
     std::shared_ptr<Door> door = std::make_shared<Door>(
         game,
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         data.get_integer("direction"),
         data.get_string("sprite"),
@@ -1004,7 +1033,7 @@ int LuaContext::l_create_stairs(lua_State* l) {
 
     EntityPtr entity = std::make_shared<Stairs>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         data.get_integer("direction"),
         Stairs::Subtype(data.get_integer("subtype"))
@@ -1031,7 +1060,7 @@ int LuaContext::l_create_separator(lua_State* l) {
 
     EntityPtr entity = std::make_shared<Separator>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         entity_creation_check_size(l, 1, data)
     );
@@ -1060,7 +1089,7 @@ int LuaContext::l_create_custom_entity(lua_State* l) {
         game,
         data.get_name(),
         data.get_integer("direction"),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         entity_creation_check_size(l, 1, data),
         data.get_string("sprite"),
@@ -1088,7 +1117,7 @@ int LuaContext::l_create_bomb(lua_State* l) {
 
     EntityPtr entity = std::make_shared<Bomb>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy()
     );
     map.get_entities().add_entity(entity);
@@ -1114,7 +1143,7 @@ int LuaContext::l_create_explosion(lua_State* l) {
     const bool with_damage = true;
     EntityPtr entity = std::make_shared<Explosion>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
         with_damage
     );
@@ -1140,7 +1169,7 @@ int LuaContext::l_create_fire(lua_State* l) {
 
     EntityPtr entity = std::make_shared<Fire>(
         data.get_name(),
-        data.get_layer(),
+        entity_creation_check_layer(l, 1, data, map),
         data.get_xy()
     );
     map.get_entities().add_entity(entity);
@@ -1516,7 +1545,7 @@ int LuaContext::map_api_get_ground(lua_State* l) {
     const Map& map = *check_map(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
-    int layer = LuaTools::check_int(l, 4);
+    int layer = LuaTools::check_layer(l, 4, map);
 
     Ground ground = map.get_ground(layer, x, y);
 

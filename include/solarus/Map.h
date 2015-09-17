@@ -82,6 +82,7 @@ class SOLARUS_API Map: public ExportableToLua {
     int get_num_layers() const;
     int get_lowest_layer() const;
     int get_highest_layer() const;
+    bool is_valid_layer(int layer) const;
 
     // camera
     const SurfacePtr& get_visible_surface();

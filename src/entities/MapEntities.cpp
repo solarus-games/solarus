@@ -134,10 +134,10 @@ MapEntities::MapEntities(Game& game, Map& map):
  * \brief Notifies an entity that it is being removed.
  * \param entity The entity being removed.
  */
-void MapEntities::notify_entity_removed(Entity* entity) {
+void MapEntities::notify_entity_removed(Entity& entity) {
 
-  if (!entity->is_being_removed()) {
-    entity->notify_being_removed();
+  if (!entity.is_being_removed()) {
+    entity.notify_being_removed();
   }
 }
 
@@ -443,7 +443,7 @@ void MapEntities::notify_tileset_changed() {
 void MapEntities::notify_map_finished() {
 
   for (const EntityPtr& entity: all_entities) {
-    notify_entity_removed(entity.get());
+    notify_entity_removed(*entity);
   }
 }
 
@@ -833,7 +833,7 @@ void MapEntities::remove_marked_entities() {
     z_caches[layer].remove(shared_entity);
 
     // destroy it
-    notify_entity_removed(entity);
+    notify_entity_removed(*entity);
   }
   entities_to_remove.clear();
 }

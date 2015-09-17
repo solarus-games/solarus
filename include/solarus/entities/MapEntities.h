@@ -139,7 +139,7 @@ class SOLARUS_API MapEntities {
     void add_tile(const TilePtr& tile);
     void set_tile_ground(int layer, int x8, int y8, Ground ground);
     void remove_marked_entities();
-    void notify_entity_removed(Entity* entity);
+    void notify_entity_removed(Entity& entity);
     void update_crystal_blocks();
 
     // map

@@ -197,16 +197,22 @@ Ground Entity::get_modified_ground() const {
  */
 void Entity::update_ground_observers() {
 
-  // Update overlapping entities sensible to their ground.
-  const std::list<Entity*>& ground_observers =
-      get_entities().get_ground_observers(get_layer());
-  for (Entity* ground_observer: ground_observers) {
-    // Update the ground of entities that overlap or were just overlapping this one.
+  // Update overlapping entities that are sensible to their ground.
+  const Rectangle& box = get_bounding_box();
+  std::vector<EntityPtr> entities_nearby;
+  get_entities().get_entities_in_rectangle(box, entities_nearby);
+  for (const EntityPtr& entity_nearby: entities_nearby) {
 
-    if (overlaps(ground_observer->get_ground_point())
-        || overlaps(*ground_observer)  // FIXME this is not precise and does not work for entities that disappear.
+    if (!entity_nearby->is_ground_observer()) {
+      // The entity does not care about the ground below it.
+      continue;
+    }
+
+    // Update the ground of observers that overlap or were just overlapping this one.
+    if (overlaps(entity_nearby->get_ground_point())
+        || overlaps(*entity_nearby)  // FIXME this is not precise and does not work for entities that disappear.
     ) {
-      ground_observer->update_ground_below();
+      entity_nearby->update_ground_below();
     }
   }
 }

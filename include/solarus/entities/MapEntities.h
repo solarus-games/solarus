@@ -68,8 +68,6 @@ class SOLARUS_API MapEntities {
     Ground get_tile_ground(int layer, int x, int y) const;
     const std::list<EntityPtr>& get_entities();
     const std::list<Entity*>& get_obstacle_entities(int layer);
-    const std::list<Entity*>& get_ground_observers(int layer);
-    const std::list<Entity*>& get_ground_modifiers(int layer);
     const std::list<Stairs*>& get_stairs(int layer);
     const std::list<CrystalBlock*>& get_crystal_blocks(int layer);
     const std::list<const Separator*>& get_separators() const;
@@ -94,8 +92,6 @@ class SOLARUS_API MapEntities {
     void set_entity_drawn_in_y_order(Entity& entity, bool drawn_in_y_order);
     void set_entity_layer(Entity& entity, int layer);
     void notify_entity_bounding_box_changed(Entity& entity);
-    void notify_entity_ground_observer_changed(Entity& entity);
-    void notify_entity_ground_modifier_changed(Entity& entity);
 
     // specific to some entity types
     bool overlaps_raised_blocks(int layer, const Rectangle& rectangle);
@@ -162,12 +158,6 @@ class SOLARUS_API MapEntities {
       entities_drawn_y_order;                       /**< For each layer, all map entities that are drawn in the order
                                                      * defined by their y position, including the hero. */
 
-    std::vector<std::list<Entity*>>
-      ground_observers;                             /**< For each layer, all dynamic entities sensible to the ground
-                                                     * below them. */
-    std::vector<std::list<Entity*>>
-      ground_modifiers;                             /**< For each layer, all dynamic entities that may change the ground of
-                                                     * the map where they are placed. */
     Destination* default_destination;               /**< the default destination of this map */
 
     std::vector<std::list<Entity*>>

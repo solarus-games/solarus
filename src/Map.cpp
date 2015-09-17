@@ -1075,20 +1075,25 @@ Ground Map::get_ground(int layer, int x, int y) const {
   }
 
   // See if a dynamic entity changes the ground.
-  // TODO use the quad tree.
+  const Rectangle box(Point(x, y), Size(1, 1));
+  std::vector<EntityPtr> entities_nearby;
+  get_entities().get_entities_in_rectangle(box, entities_nearby);
 
-  const std::list<Entity*>& ground_modifiers =
-      entities->get_ground_modifiers(layer);
-  std::list<Entity*>::const_reverse_iterator it;
-  const std::list<Entity*>::const_reverse_iterator rend =
-      ground_modifiers.rend();
-  for (it = ground_modifiers.rbegin(); it != rend; ++it) {
-    const Entity& ground_modifier = *(*it);
-    if (ground_modifier.overlaps(x, y)
-        && ground_modifier.get_modified_ground() != Ground::EMPTY
-        && ground_modifier.is_enabled()
-        && !ground_modifier.is_being_removed()) {
-      return ground_modifier.get_modified_ground();
+  const auto& rend = entities_nearby.rend();
+  for (auto it = entities_nearby.rbegin(); it != rend; ++it) {
+    const Entity& entity_nearby = *(*it);
+
+    if (!entity_nearby.is_ground_modifier()) {
+      // The entity has no influence on the ground.
+      continue;
+    }
+
+    if (entity_nearby.overlaps(x, y)
+        && entity_nearby.get_modified_ground() != Ground::EMPTY
+        && entity_nearby.is_enabled()
+        && !entity_nearby.is_being_removed()
+    ) {
+      return entity_nearby.get_modified_ground();
     }
   }
 

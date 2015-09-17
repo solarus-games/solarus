@@ -53,8 +53,6 @@ MapEntities::MapEntities(Game& game, Map& map):
   camera(nullptr),
   entities_drawn_first(map.get_num_layers()),
   entities_drawn_y_order(map.get_num_layers()),
-  ground_observers(map.get_num_layers()),
-  ground_modifiers(map.get_num_layers()),
   default_destination(nullptr),
   obstacle_entities(map.get_num_layers()),
   stairs(map.get_num_layers()),
@@ -64,7 +62,6 @@ MapEntities::MapEntities(Game& game, Map& map):
   int hero_layer = hero.get_layer();
   this->obstacle_entities[hero_layer].push_back(&hero);
   this->entities_drawn_y_order[hero_layer].push_back(&hero);
-  this->ground_observers[hero_layer].push_back(&hero);
   this->named_entities[hero.get_name()] = &hero;
 }
 
@@ -102,24 +99,6 @@ const std::list<EntityPtr>& MapEntities::get_entities() {
  */
 const std::list<Entity*>& MapEntities::get_obstacle_entities(int layer) {
   return obstacle_entities[layer];
-}
-
-/**
- * \brief Returns the entities that are sensible to the ground below them.
- * \param layer The layer.
- * \return The ground observers on that layer.
- */
-const std::list<Entity*>& MapEntities::get_ground_observers(int layer) {
-  return ground_observers[layer];
-}
-
-/**
- * \brief Returns the entities that are sensible to the ground below them.
- * \param layer The layer.
- * \return The ground observers on that layer.
- */
-const std::list<Entity*>& MapEntities::get_ground_modifiers(int layer) {
-  return ground_modifiers[layer];
 }
 
 /**
@@ -608,16 +587,6 @@ void MapEntities::add_entity(const EntityPtr& entity) {
       }
     }
 
-    // update the ground observers list
-    if (entity->is_ground_observer()) {
-      ground_observers[layer].push_back(entity.get());
-    }
-
-    // update the ground modifiers list
-    if (entity->is_ground_modifier()) {
-      ground_modifiers[layer].push_back(entity.get());
-    }
-
     // update the sprites list
     if (entity->is_drawn_in_y_order()) {
       entities_drawn_y_order[layer].push_back(entity.get());
@@ -772,16 +741,6 @@ void MapEntities::remove_marked_entities() {
       else {
         obstacle_entities[layer].remove(entity);
       }
-    }
-
-    // remove it from the ground observers list if present
-    if (entity->is_ground_observer()) {
-      ground_observers[layer].remove(entity);
-    }
-
-    // remove it from the ground modifiers list if present
-    if (entity->is_ground_modifier()) {
-      ground_modifiers[layer].remove(entity);
     }
 
     // remove it from the sprite entities list if present
@@ -983,18 +942,6 @@ void MapEntities::set_entity_layer(Entity& entity, int layer) {
       obstacle_entities[layer].push_back(&entity);
     }
 
-    // update the ground observers list
-    if (entity.is_ground_observer()) {
-      ground_observers[old_layer].remove(&entity);
-      ground_observers[layer].push_back(&entity);
-    }
-
-    // update the ground modifiers list
-    if (entity.is_ground_modifier()) {
-      ground_modifiers[old_layer].remove(&entity);
-      ground_modifiers[layer].push_back(&entity);
-    }
-
     // update the sprites list
     if (entity.is_drawn_in_y_order()) {
       entities_drawn_y_order[old_layer].remove(&entity);
@@ -1020,34 +967,6 @@ void MapEntities::notify_entity_bounding_box_changed(Entity& entity) {
   // Update the quadtree.
   EntityPtr shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
   quadtree.move(shared_entity, shared_entity->get_max_bounding_box());
-}
-
-/**
- * \brief This function should be called when an entity becomes a ground
- * observer or when it stops being one.
- * \param entity The entity whose ground observer property has changed.
- */
-void MapEntities::notify_entity_ground_observer_changed(Entity& entity) {
-
-  int layer = entity.get_layer();
-  ground_observers[layer].remove(&entity);
-  if (entity.is_ground_observer()) {
-    ground_observers[layer].push_back(&entity);
-  }
-}
-
-/**
- * \brief This function should be called when an entity becomes a ground
- * modifier or when it stops being one.
- * \param entity The entity whose ground modifier property has changed.
- */
-void MapEntities::notify_entity_ground_modifier_changed(Entity& entity) {
-
-  int layer = entity.get_layer();
-  ground_modifiers[layer].remove(&entity);
-  if (entity.is_ground_modifier()) {
-    ground_modifiers[layer].push_back(&entity);
-  }
 }
 
 /**

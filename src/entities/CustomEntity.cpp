@@ -1143,7 +1143,6 @@ void CustomEntity::update_ground_observer() {
   );
   if (ground_observer != this->ground_observer) {
     this->ground_observer = ground_observer;
-    get_entities().notify_entity_ground_observer_changed(*this);
   }
 }
 
@@ -1189,7 +1188,6 @@ void CustomEntity::set_modified_ground(Ground modified_ground) {
   bool ground_modifier = modified_ground != Ground::EMPTY;
   if (ground_modifier != this->ground_modifier) {
     this->ground_modifier = ground_modifier;
-    get_entities().notify_entity_ground_modifier_changed(*this);
   }
 }
 

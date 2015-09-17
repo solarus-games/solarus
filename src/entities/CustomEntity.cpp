@@ -66,7 +66,6 @@ CustomEntity::CustomEntity(
   ),
   model(model),
   ground_observer(false),
-  ground_modifier(false),
   modified_ground(Ground::EMPTY) {
 
   set_origin(8, 13);
@@ -1140,13 +1139,6 @@ void CustomEntity::update_ground_observer() {
 }
 
 /**
- * \copydoc Entity::is_ground_modifier
- */
-bool CustomEntity::is_ground_modifier() const {
-  return ground_modifier;
-}
-
-/**
  * \copydoc Entity::notify_ground_below_changed
  */
 void CustomEntity::notify_ground_below_changed() {
@@ -1176,12 +1168,6 @@ void CustomEntity::set_modified_ground(Ground modified_ground) {
   // The ground changes, notify observers even if it changes to Ground::EMPTY.
   this->modified_ground = modified_ground;
   update_ground_observers();
-
-  // Now, continue notifications only if not Ground::EMPTY.
-  bool ground_modifier = modified_ground != Ground::EMPTY;
-  if (ground_modifier != this->ground_modifier) {
-    this->ground_modifier = ground_modifier;
-  }
 }
 
 /**
@@ -1191,7 +1177,6 @@ void CustomEntity::notify_creating() {
 
   Detector::notify_creating();
 
-  ground_modifier = false;
   get_lua_context().run_custom_entity(*this);
 }
 

@@ -144,28 +144,22 @@ bool Entity::is_ground_observer() const {
 }
 
 /**
- * \brief Returns whether this entity can override the ground
- * of where they are placed.
+ * \brief Returns whether this entity overrides the ground
+ * of where it is placed.
  *
- * The ground of a point is computed as the ground of the tile below it,
- * possibly modified by entities overlapping the point and who redefine
- * is_ground_modifier() to \c true.
+ * This is equivalent to get_modified_ground() != Ground::EMPTY.
  *
- * This function returns \c false by default.
- * If this function returns \c true, the entity is added to the list of
- * potential ground modifiers when it is added to a map.
- *
- * \return \c true if this entity can change the ground.
+ * \return \c true if this entity changes the ground.
  */
 bool Entity::is_ground_modifier() const {
-  return false;
+  return get_modified_ground() != Ground::EMPTY;
 }
 
 /**
- * \brief When is_ground_modifier() is \c true, returns the ground defined
- * by this entity.
+ * \brief Returns the ground defined by this entity.
  *
- * Entities overlapping it should take it into account.
+ * If a value other than Ground::EMPTY is returned, it means that this
+ * entity modifies the ground of the map where it is placed.
  *
  * \return The ground defined by this entity.
  */

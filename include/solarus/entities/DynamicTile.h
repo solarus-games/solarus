@@ -50,7 +50,6 @@ class DynamicTile: public Entity {
     );
 
     virtual EntityType get_type() const override;
-    virtual bool is_ground_modifier() const override;
     virtual Ground get_modified_ground() const override;
     virtual void draw_on_map() override;
 

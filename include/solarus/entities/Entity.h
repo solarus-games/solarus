@@ -99,7 +99,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual bool is_detector() const;
     virtual bool is_ground_observer() const;
     virtual Point get_ground_point() const;
-    virtual bool is_ground_modifier() const;
+    bool is_ground_modifier() const;
     virtual Ground get_modified_ground() const;
     virtual bool can_be_drawn() const;
     bool is_drawn_in_y_order() const;

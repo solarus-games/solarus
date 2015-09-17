@@ -1086,15 +1086,16 @@ Ground Map::get_ground(int layer, int x, int y) const {
   for (auto it = entities_nearby.rbegin(); it != rend; ++it) {
     const Entity& entity_nearby = *(*it);
 
-    if (!entity_nearby.is_ground_modifier()) {
+    const Ground ground = entity_nearby.get_modified_ground();
+    if (ground == Ground::EMPTY) {
       // The entity has no influence on the ground.
       continue;
     }
 
-    if (entity_nearby.overlaps(x, y)
-        && entity_nearby.get_modified_ground() != Ground::EMPTY
-        && entity_nearby.is_enabled()
-        && !entity_nearby.is_being_removed()
+    if (entity_nearby.overlaps(x, y) &&
+        entity_nearby.get_layer() == layer &&
+        entity_nearby.is_enabled() &&
+        !entity_nearby.is_being_removed()
     ) {
       return entity_nearby.get_modified_ground();
     }

@@ -61,15 +61,6 @@ EntityType DynamicTile::get_type() const {
 }
 
 /**
- * \brief Returns whether entities of this type can override the ground
- * of where they are placed.
- * \return \c true if this type of entity can change the ground.
- */
-bool DynamicTile::is_ground_modifier() const {
-  return true;
-}
-
-/**
  * \brief When is_ground_modifier() is \c true, returns the ground defined
  * by this entity.
  * \return The ground defined by this entity.

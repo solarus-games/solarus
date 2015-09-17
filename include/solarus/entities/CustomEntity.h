@@ -157,7 +157,6 @@ class SOLARUS_API CustomEntity: public Detector {
     void notify_ground_below_changed() override;
 
     // Modifying the ground.
-    bool is_ground_modifier() const override;
     Ground get_modified_ground() const override;
     void set_modified_ground(Ground modified_ground);
 
@@ -267,7 +266,6 @@ class SOLARUS_API CustomEntity: public Detector {
                                         * COLLISION_SPRITE. */
 
     bool ground_observer;              /**< Whether this custom entity is a ground observer. */
-    bool ground_modifier;              /**< Whether this custom entity is a ground modifier. */
     Ground modified_ground;            /**< The ground defined by this custom
                                         * entity or GROUND_EMPTY. */
 };

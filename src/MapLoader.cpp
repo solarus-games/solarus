@@ -64,6 +64,7 @@ void MapLoader::load_map(Game& game, Map& map) {
   map.location.set_size(data.get_size());
   map.width8 = data.get_size().width / 8;
   map.height8 = data.get_size().height / 8;
+  map.num_layers = data.get_num_layers();
   map.location.set_xy(data.get_location());
   map.music_id = data.get_music_id();
   map.set_world(data.get_world());
@@ -73,7 +74,7 @@ void MapLoader::load_map(Game& game, Map& map) {
   map.tileset->load();
 
   MapEntities& entities = map.get_entities();
-  entities.num_layers = map.get_num_layers();
+  entities.initialize_layers();
   entities.map_width8 = map.width8;
   entities.map_height8 = map.height8;
   entities.tiles_grid_size = map.width8 * map.height8;

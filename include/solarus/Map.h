@@ -194,6 +194,7 @@ class SOLARUS_API Map: public ExportableToLua {
 
     int width8;                   /**< Map width in 8x8 squares (width8 = get_width() / 8). */
     int height8;                  /**< Map height in 8x8 squares (height8 = get_height() / 8). */
+    int num_layers;               /**< Number of layers of the map. */
 
     std::string tileset_id;       /**< Id of the current tileset. */
     std::unique_ptr<Tileset>

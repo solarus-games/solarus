@@ -27,15 +27,17 @@ namespace Solarus {
  * \brief Creates an empty map data object.
  */
 MapData::MapData():
+    num_layers(),
     size(0, 0),
     world(),
     location(0, 0),
     floor(NO_FLOOR),
     tileset_id(),
     music_id("none"),
-    entities(get_num_layers()),
+    entities(),
     named_entities() {
 
+  set_num_layers(3);
 }
 
 /**
@@ -75,7 +77,37 @@ void MapData::set_location(const Point& location) {
  * \return The number of layers.
  */
 int MapData::get_num_layers() const {
-  return 3;
+  return num_layers;
+}
+
+/**
+ * \brief Changes the number of layers of the map.
+ * \param num_layers The new numer of layers.
+ * If you reduce it, entities in removed layers are destroyed.
+ */
+void MapData::set_num_layers(int num_layers) {
+
+  Debug::check_assertion(num_layers > 0, "The number of layers must be positive");
+
+  if (num_layers == this->num_layers) {
+    // No change.
+    return;
+  }
+
+  if (num_layers < this->num_layers) {
+    // Removing some layers: entities may be removed.
+    // Take care of the entity by name structure.
+    for (int layer = this->num_layers - 1; layer >= num_layers; --layer) {
+      for (const EntityData& entity : entities[layer].entities) {
+        if (entity.has_name()) {
+          named_entities.erase(entity.get_name());
+        }
+      }
+    }
+  }
+
+  this->num_layers = num_layers;
+  entities.resize(num_layers);
 }
 
 /**
@@ -244,6 +276,8 @@ std::deque<EntityData>& MapData::get_entities(int layer) {
  * \return The new index of the entity.
  */
 EntityIndex MapData::set_entity_layer(const EntityIndex& src_index, int dst_layer) {
+
+  Debug::check_assertion(is_valid_layer(dst_layer), "Invalid layer in MapData::set_entity_layer()");
 
   int src_layer = src_index.layer;
   if (dst_layer == src_index.layer) {
@@ -746,14 +780,20 @@ int l_properties(lua_State* l) {
     const int y = LuaTools::opt_int_field(l, 1, "y", 0);
     const int width = LuaTools::check_int_field(l, 1, "width");
     const int height = LuaTools::check_int_field(l, 1, "height");
+    const int num_layers = LuaTools::check_int_field(l, 1, "num_layers");
     const std::string& world = LuaTools::opt_string_field(l, 1 , "world", "");
     const int floor = LuaTools::opt_int_field(l, 1, "floor", MapData::NO_FLOOR);
     const std::string& tileset_id = LuaTools::check_string_field(l, 1, "tileset");
     const std::string& music_id = LuaTools::opt_string_field(l, 1, "music", "none");
 
+    if (num_layers <= 0) {
+      LuaTools::arg_error(l, 1, "num_layers must be positive");
+    }
+
     // Initialize the map data.
     map.set_location({ x, y });
     map.set_size({ width, height });
+    map.set_num_layers(num_layers);
     map.set_music_id(music_id);
     map.set_world(world);
     map.set_floor(floor);
@@ -801,7 +841,8 @@ bool MapData::export_to_lua(std::ostream& out) const {
       << "  x = " << get_location().x << ",\n"
       << "  y = " << get_location().y << ",\n"
       << "  width = " << get_size().width << ",\n"
-      << "  height = " << get_size().height << ",\n";
+      << "  height = " << get_size().height << ",\n"
+      << "  num_layers = " << get_num_layers() << ",\n";
   if (has_world()) {
     out << "  world = \"" << get_world() << "\",\n";
   }

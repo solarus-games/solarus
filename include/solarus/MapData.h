@@ -36,7 +36,7 @@ namespace Solarus {
  */
 struct EntityDataList {
     std::deque<EntityData> entities;
-    int num_tiles;
+    int num_tiles = 0;
 };
 
 /**
@@ -144,6 +144,7 @@ class SOLARUS_API MapData : public LuaData {
     Point get_location() const;
     void set_location(const Point& location);
     int get_num_layers() const;
+    void set_num_layers(int num_layers);
     bool is_valid_layer(int layer) const;
     bool has_world() const;
     const std::string& get_world() const;
@@ -191,6 +192,7 @@ class SOLARUS_API MapData : public LuaData {
     const std::deque<EntityData>& get_entities(int layer) const;
     std::deque<EntityData>& get_entities(int layer);
 
+    int num_layers;               /**< Numer of layers of the map. */
     Size size;                    /**< Size of the map in pixels. */
     std::string world;            /**< World of the map or an empty string. */
     Point location;               /**< Coordinates of the upper-left corner of the map in its world. */

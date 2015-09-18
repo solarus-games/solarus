@@ -48,6 +48,7 @@ Map::Map(const std::string& id):
   id(id),
   width8(0),
   height8(0),
+  num_layers(0),
   tileset(nullptr),
   floor(MapData::NO_FLOOR),
   visible_surface(nullptr),
@@ -235,8 +236,7 @@ int Map::get_height8() const {
  * \return The number of layers.
  */
 int Map::get_num_layers() const {
-
-  return 3;
+  return num_layers;
 }
 
 /**

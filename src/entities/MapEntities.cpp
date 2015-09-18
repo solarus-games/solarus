@@ -111,19 +111,19 @@ MapEntities::MapEntities(Game& game, Map& map):
   map(map),
   map_width8(0),
   map_height8(0),
-  num_layers(map.get_num_layers()),
+  num_layers(0),
   tiles_grid_size(0),
-  tiles_ground(num_layers),
-  non_animated_regions(num_layers),
-  tiles_in_animated_regions(num_layers),
+  tiles_ground(),
+  non_animated_regions(),
+  tiles_in_animated_regions(),
   hero(*game.get_hero()),
   camera(nullptr),
   named_entities(),
   all_entities(),
   quadtree(),
-  z_caches(num_layers),
-  entities_drawn_first(num_layers),
-  entities_drawn_y_order(num_layers),
+  z_caches(),
+  entities_drawn_first(),
+  entities_drawn_y_order(),
   default_destination(nullptr) {
 
 }
@@ -423,6 +423,27 @@ void MapEntities::notify_map_finished() {
   for (const EntityPtr& entity: all_entities) {
     notify_entity_removed(*entity);
   }
+}
+
+/**
+ * \brief Creates the internal layer structures.
+ *
+ * The number of layers in the map must be known at this point.
+ */
+void MapEntities::initialize_layers() {
+
+  Debug::check_assertion(num_layers == 0, "Layers already initialized");
+
+  num_layers = map.get_num_layers();
+
+  Debug::check_assertion(num_layers > 0, "Unknown number of layers");
+
+  tiles_ground.resize(num_layers);
+  non_animated_regions.resize(num_layers);
+  tiles_in_animated_regions.resize(num_layers);
+  z_caches.resize(num_layers);
+  entities_drawn_first.resize(num_layers);
+  entities_drawn_y_order.resize(num_layers);
 }
 
 /**

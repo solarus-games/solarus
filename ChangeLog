@@ -6,6 +6,7 @@ _______________________________
 Engine changes
 --------------
 
+* Maps: allow more than 3 layers (#445).
 * Print when the main loop starts and stops.
 * Print the Lua version at startup (#692).
 * Improve the performance of custom entity collisions.
@@ -24,6 +25,7 @@ Changes that introduce incompatibilities:
 Changes that do not introduce incompatibilities:
 
 * Add a function sol.main.get_type() (#744).
+* Add a method map:get_num_layers() (#445).
 * Add a method map:get_entities_in_rectangle() (#142).
 * Add a method block:get_sprite().
 * entity:set_optimization_distance() is now only a hint for the engine.
@@ -31,6 +33,7 @@ Changes that do not introduce incompatibilities:
 Data files format changes
 -------------------------
 
+* Maps: New property num_layers (#445).
 * Dialogs: Allow empty texts.
 
 ___________________________

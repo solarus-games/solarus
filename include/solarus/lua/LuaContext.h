@@ -740,6 +740,7 @@ class LuaContext {
       map_api_get_game,
       map_api_get_world,
       map_api_get_floor,
+      map_api_get_num_layers,
       map_api_get_size,
       map_api_get_location,
       map_api_get_tileset,

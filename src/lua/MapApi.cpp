@@ -77,6 +77,7 @@ void LuaContext::register_map_module() {
       { "get_id", map_api_get_id },
       { "get_game", map_api_get_game },
       { "get_world", map_api_get_world },
+      { "get_num_layers", map_api_get_num_layers },
       { "get_size", map_api_get_size },
       { "get_location", map_api_get_location },
       { "get_floor", map_api_get_floor },
@@ -1359,6 +1360,21 @@ int LuaContext::map_api_get_world(lua_State* l) {
     else {
       push_string(l, world);
     }
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of map:get_num_layers().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_num_layers(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Map& map = *check_map(l, 1);
+
+    lua_pushinteger(l, map.get_num_layers());
     return 1;
   });
 }

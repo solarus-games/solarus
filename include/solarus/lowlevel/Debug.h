@@ -43,7 +43,7 @@ void SOLARUS_API warning(const std::string& message);
 void SOLARUS_API error(const std::string& message);
 void SOLARUS_API check_assertion(bool assertion, const char* error_message);
 void SOLARUS_API check_assertion(bool assertion, const std::string& error_message);
-void SOLARUS_API die(const std::string& error_message);
+[[noreturn]] void SOLARUS_API die(const std::string& error_message);
 
 /**
  * \brief Execute an arbitrary function in debug mode.

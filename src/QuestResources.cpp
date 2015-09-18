@@ -262,7 +262,6 @@ ResourceType QuestResources::get_resource_type_by_name(
   }
 
   Debug::die(std::string("Unknown resource type: ") + resource_type_name);
-  return ResourceType();
 }
 
 /**

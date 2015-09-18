@@ -135,7 +135,6 @@ EnemyReaction::ReactionType EnemyReaction::get_reaction_by_name(const std::strin
   }
 
   Debug::die(std::string("Invalid enemy reaction name: '") + name + "'");
-  throw;
 }
 
 }

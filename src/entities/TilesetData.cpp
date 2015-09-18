@@ -146,7 +146,6 @@ TilePatternRepeatMode TilePatternData::get_repeat_mode_by_name(const std::string
   }
 
   Debug::die(std::string("Unknown repeat mode: ") + repeat_mode_name);
-  return TilePatternRepeatMode();
 }
 
 /**

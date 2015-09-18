@@ -929,7 +929,6 @@ uint32_t Surface::get_pixel(int index) const {
   std::ostringstream oss;
   oss << "Unknown pixel depth: " << format->BitsPerPixel;
   Debug::die(oss.str());
-  return 0;
 }
 
 /**

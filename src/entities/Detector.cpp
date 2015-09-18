@@ -306,7 +306,6 @@ bool Detector::test_collision_center(Entity& entity) {
 bool Detector::test_collision_custom(Entity& /* entity */) {
 
   Debug::die("Custom collision mode invoked but not defined");
-  return false;
 }
 
 /**

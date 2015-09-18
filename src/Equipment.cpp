@@ -581,7 +581,6 @@ std::string Equipment::get_ability_savegame_variable(Ability ability) const {
   }
 
   Debug::die("Invalid ability");
-  return "";
 }
 
 /**

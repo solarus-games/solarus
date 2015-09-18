@@ -68,7 +68,6 @@ Ability get_ability_by_name(const std::string& ability_name) {
   }
 
   Debug::die(std::string("Unknown ability: ") + ability_name);
-  return Ability();
 }
 
 }

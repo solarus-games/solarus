@@ -987,7 +987,6 @@ bool Entity::State::is_using_item() const {
 EquipmentItemUsage& Entity::State::get_item_being_used() {
 
   Debug::die("No item is being used in this state");
-  throw;
 }
 
 /**

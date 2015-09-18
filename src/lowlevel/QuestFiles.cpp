@@ -153,7 +153,6 @@ QuestFiles::DataFileLocation QuestFiles::data_file_get_location(
   }
 
   Debug::die(std::string("Unexpected search path element: " + path));
-  return LOCATION_NONE;
 }
 
 /**

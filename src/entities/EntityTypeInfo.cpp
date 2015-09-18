@@ -106,7 +106,6 @@ EntityType get_entity_type_by_name(const std::string& entity_type_name) {
   }
 
   Debug::die(std::string("Unknown entity type: ") + entity_type_name);
-  return EntityType();
 }
 
 

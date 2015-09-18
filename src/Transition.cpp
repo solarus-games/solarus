@@ -201,7 +201,6 @@ Transition::Style Transition::get_style_by_name(const std::string& style_name) {
   }
 
   Debug::die(std::string("Unknown transition style name: ") + style_name);
-  return Style();
 }
 
 }

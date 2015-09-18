@@ -2751,8 +2751,6 @@ int LuaContext::l_panic(lua_State* l) {
   const std::string& error = luaL_checkstring(l, 1);
 
   Debug::die(error);
-
-  return 0;
 }
 
 /**

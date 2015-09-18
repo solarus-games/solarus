@@ -118,7 +118,6 @@ Ground get_ground_by_name(const std::string& ground_name) {
   }
 
   Debug::die(std::string("Unknown ground: ") + ground_name);
-  return Ground();
 }
 
 }

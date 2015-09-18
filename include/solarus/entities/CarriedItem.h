@@ -36,6 +36,8 @@ class CarriedItem: public Entity {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::CARRIED_ITEM;
+
     /**
      * Indicates what to do with a carried item.
      */

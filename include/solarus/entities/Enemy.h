@@ -49,6 +49,8 @@ class Enemy: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::ENEMY;
+
     /**
      * \brief Enemy ranks.
      */

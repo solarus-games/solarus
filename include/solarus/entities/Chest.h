@@ -34,6 +34,8 @@ class Chest: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::CHEST;
+
     /**
      * \brief The different possible ways of opening a chest.
      */

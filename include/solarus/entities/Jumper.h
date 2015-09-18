@@ -33,6 +33,8 @@ class Jumper: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::JUMPER;
+
     Jumper(
         const std::string& name,
         int layer,

@@ -95,7 +95,7 @@ Npc::Npc(
  * \return the type of entity
  */
 EntityType Npc::get_type() const {
-  return EntityType::NPC;
+  return ThisType;
 }
 
 /**

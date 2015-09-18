@@ -34,6 +34,8 @@ class Sensor: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::SENSOR;
+
     Sensor(const std::string& name, int layer, const Point& xy, const Size& size);
 
     virtual EntityType get_type() const override;

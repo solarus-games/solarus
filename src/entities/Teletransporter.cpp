@@ -100,7 +100,7 @@ void Teletransporter::notify_creating() {
  * \return the type of entity
  */
 EntityType Teletransporter::get_type() const {
-  return EntityType::TELETRANSPORTER;
+  return ThisType;
 }
 
 /**

@@ -35,6 +35,8 @@ class Teletransporter: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::TELETRANSPORTER;
+
     Teletransporter(
         const std::string& name,
         int layer,

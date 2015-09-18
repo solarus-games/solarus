@@ -36,6 +36,8 @@ class Pickable: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::PICKABLE;
+
     // creation and destruction
     Pickable(
         const std::string& name,

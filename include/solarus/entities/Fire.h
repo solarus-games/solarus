@@ -32,6 +32,8 @@ class Fire: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::FIRE;
+
     Fire(const std::string& name, int layer, const Point& xy);
 
     virtual EntityType get_type() const override;

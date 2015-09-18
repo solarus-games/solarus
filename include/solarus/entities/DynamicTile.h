@@ -39,6 +39,8 @@ class DynamicTile: public Entity {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::DYNAMIC_TILE;
+
     DynamicTile(
         const std::string& name,
         int layer,

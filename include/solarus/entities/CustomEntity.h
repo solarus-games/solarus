@@ -37,6 +37,8 @@ class SOLARUS_API CustomEntity: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::CUSTOM;
+
     CustomEntity(
         Game& game,
         const std::string& name,

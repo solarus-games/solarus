@@ -63,7 +63,7 @@ Jumper::Jumper(const std::string& name,
  * \return the type of entity
  */
 EntityType Jumper::get_type() const {
-  return EntityType::JUMPER;
+  return ThisType;
 }
 
 /**

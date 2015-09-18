@@ -106,7 +106,7 @@ std::shared_ptr<ShopTreasure> ShopTreasure::create(
  * \return the type of entity
  */
 EntityType ShopTreasure::get_type() const {
-  return EntityType::SHOP_TREASURE;
+  return ThisType;
 }
 
 /**

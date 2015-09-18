@@ -55,7 +55,7 @@ Bomb::Bomb(const std::string& name, int layer, const Point& xy):
  * \return the type of entity
  */
 EntityType Bomb::get_type() const {
-  return EntityType::BOMB;
+  return ThisType;
 }
 
 /**

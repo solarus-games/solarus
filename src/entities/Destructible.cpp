@@ -80,7 +80,7 @@ Destructible::Destructible(
  * \return the type of entity
  */
 EntityType Destructible::get_type() const {
-  return EntityType::DESTRUCTIBLE;
+  return ThisType;
 }
 
 /**

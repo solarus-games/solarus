@@ -53,7 +53,7 @@ Crystal::Crystal(const std::string& name, int layer, const Point& xy):
  * \return the type of entity
  */
 EntityType Crystal::get_type() const {
-  return EntityType::CRYSTAL;
+  return ThisType;
 }
 
 /**

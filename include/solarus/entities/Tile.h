@@ -46,6 +46,8 @@ class Tile: public Entity {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::TILE;
+
     Tile(
         int layer,
         const Point& xy,

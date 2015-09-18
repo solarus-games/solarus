@@ -35,6 +35,8 @@ class Wall: public Entity {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::WALL;
+
     Wall(
         const std::string& name,
         int layer,

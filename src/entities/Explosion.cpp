@@ -52,7 +52,7 @@ Explosion::Explosion(const std::string& name, int layer,
  * \return the type of entity
  */
 EntityType Explosion::get_type() const {
-  return EntityType::EXPLOSION;
+  return ThisType;
 }
 
 /**

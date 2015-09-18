@@ -78,7 +78,7 @@ Arrow::Arrow(const Hero& hero):
  * \return the type of entity
  */
 EntityType Arrow::get_type() const {
-  return EntityType::ARROW;
+  return ThisType;
 }
 
 /**

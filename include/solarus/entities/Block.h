@@ -33,6 +33,8 @@ class Block: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::BLOCK;
+
     Block(const std::string& name,
         int layer,
         const Point& xy,

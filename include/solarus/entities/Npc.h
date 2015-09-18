@@ -49,6 +49,8 @@ class Npc: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::NPC;
+
     /**
      * \brief The different kinds of interactions.
      */

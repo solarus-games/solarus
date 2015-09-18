@@ -71,7 +71,7 @@ Wall::Wall(
  * \return the type of entity
  */
 EntityType Wall::get_type() const {
-  return EntityType::WALL;
+  return ThisType;
 }
 
 /**

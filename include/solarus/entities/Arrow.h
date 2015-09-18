@@ -30,6 +30,8 @@ class Arrow: public Entity {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::ARROW;
+
     explicit Arrow(const Hero& hero);
 
     virtual EntityType get_type() const override;

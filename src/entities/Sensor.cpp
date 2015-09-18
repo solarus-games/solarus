@@ -49,7 +49,7 @@ Sensor::Sensor(
  * \return the type of entity
  */
 EntityType Sensor::get_type() const {
-  return EntityType::SENSOR;
+  return ThisType;
 }
 
 /**

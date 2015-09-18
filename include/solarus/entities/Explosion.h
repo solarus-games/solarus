@@ -33,6 +33,8 @@ class Explosion: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::EXPLOSION;
+
     Explosion(
         const std::string& name,
         int layer,

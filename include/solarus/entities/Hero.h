@@ -46,6 +46,8 @@ class Hero: public Entity {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::HERO;
+
     /**
      * \name Creation and destruction.
      */

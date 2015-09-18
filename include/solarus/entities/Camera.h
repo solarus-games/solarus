@@ -43,6 +43,8 @@ class Camera : public Entity {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::CAMERA;
+
     explicit Camera(Map& map);
 
     EntityType get_type() const override;

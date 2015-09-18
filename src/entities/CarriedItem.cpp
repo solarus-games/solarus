@@ -114,7 +114,7 @@ CarriedItem::CarriedItem(
  * \return the type of entity
  */
 EntityType CarriedItem::get_type() const {
-  return EntityType::CARRIED_ITEM;
+  return ThisType;
 }
 
 /**

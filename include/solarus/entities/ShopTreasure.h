@@ -41,6 +41,8 @@ class ShopTreasure: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::SHOP_TREASURE;
+
     ShopTreasure(
         const std::string& name,
         int layer,

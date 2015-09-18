@@ -71,7 +71,7 @@ Pickable::Pickable(
  * \return the type of entity
  */
 EntityType Pickable::get_type() const {
-  return EntityType::PICKABLE;
+  return ThisType;
 }
 
 /**

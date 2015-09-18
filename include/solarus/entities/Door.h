@@ -45,6 +45,8 @@ class Door: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::DOOR;
+
     /**
      * \brief The different possible ways of opening a door.
      *

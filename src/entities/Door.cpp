@@ -100,7 +100,7 @@ Door::Door(Game& game,
  * \return the type of entity
  */
 EntityType Door::get_type() const {
-  return EntityType::DOOR;
+  return ThisType;
 }
 
 /**

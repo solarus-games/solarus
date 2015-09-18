@@ -30,6 +30,8 @@ class Hookshot: public Entity {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::HOOKSHOT;
+
     explicit Hookshot(const Hero& hero);
 
     virtual EntityType get_type() const override;

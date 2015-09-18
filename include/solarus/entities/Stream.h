@@ -34,6 +34,8 @@ class Stream: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::STREAM;
+
     Stream(
         const std::string& name,
         int layer,

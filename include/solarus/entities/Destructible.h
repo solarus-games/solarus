@@ -40,6 +40,8 @@ class Destructible: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::DESTRUCTIBLE;
+
     // Creation and destruction.
     Destructible(
         const std::string& name,

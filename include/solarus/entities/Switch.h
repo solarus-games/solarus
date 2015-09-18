@@ -39,6 +39,8 @@ class Switch: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::SWITCH;
+
     /**
      * Subtypes of switches.
      */

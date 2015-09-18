@@ -81,7 +81,7 @@ CustomEntity::CustomEntity(
  * \return The type of entity.
  */
 EntityType CustomEntity::get_type() const {
-  return EntityType::CUSTOM;
+  return ThisType;
 }
 
 /**

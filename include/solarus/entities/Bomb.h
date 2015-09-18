@@ -30,6 +30,8 @@ class Bomb: public Detector {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::BOMB;
+
     Bomb(const std::string& name, int layer, const Point& xy);
 
     virtual EntityType get_type() const override;

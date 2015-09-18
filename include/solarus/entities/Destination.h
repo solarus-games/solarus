@@ -30,6 +30,8 @@ class Destination: public Entity {
 
   public:
 
+    static constexpr EntityType ThisType = EntityType::DESTINATION;
+
     Destination(
         const std::string& name,
         int layer,

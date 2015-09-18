@@ -18,6 +18,42 @@
 namespace Solarus {
 namespace LuaTools {
 
+template<typename E>
+E check_enum(
+    lua_State* l,
+    int index
+) {
+  return check_enum(l, index, EnumInfoTraits<E>::names);
+}
+
+template<typename E>
+E check_enum_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key
+) {
+  return check_enum_field(l, table_index, key, EnumInfoTraits<E>::names);
+}
+
+template<typename E>
+E opt_enum(
+    lua_State* l,
+    int index,
+    E default_value
+) {
+  return opt_enum(l, index, EnumInfoTraits<E>::names, default_value);
+}
+
+template<typename E>
+E opt_enum_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    E default_value
+) {
+  return opt_enum_field(l, table_index, key, EnumInfoTraits<E>::names, default_value);
+}
+
 /**
  * \brief Function to be used at the Lua to C++ boundary.
  *

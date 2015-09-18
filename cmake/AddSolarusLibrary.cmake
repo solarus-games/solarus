@@ -179,6 +179,8 @@ file(
   include/solarus/Drawable.h
   include/solarus/DrawablePtr.h
   include/solarus/EntityData.h
+  include/solarus/EnumInfo.h
+  include/solarus/EnumInfo.inl
   include/solarus/Equipment.h
   include/solarus/EquipmentItem.h
   include/solarus/EquipmentItemUsage.h

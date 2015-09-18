@@ -332,6 +332,16 @@ E entity_creation_check_enum(
   return E();  // Make sure the compiler is happy.
 }
 
+template<typename E>
+E entity_creation_check_enum(
+    lua_State* l,
+    int index,
+    const EntityData& entity_data,
+    const std::string& field_name
+) {
+  return entity_creation_check_enum<E>(l, index, entity_data, field_name, EnumInfoTraits<E>::names);
+}
+
 }
 
 /**

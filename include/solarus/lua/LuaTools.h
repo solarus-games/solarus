@@ -18,6 +18,7 @@
 #define SOLARUS_LUA_TOOLS_H
 
 #include "solarus/Common.h"
+#include "solarus/EnumInfo.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaException.h"
 #include "solarus/SolarusFatal.h"
@@ -250,6 +251,31 @@ Color opt_color_field(
 );
 
 // enum
+template<typename E>
+E check_enum(
+    lua_State* l,
+    int index
+);
+template<typename E>
+E check_enum_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key
+);
+template<typename E>
+E opt_enum(
+    lua_State* l,
+    int index,
+    E default_value
+);
+template<typename E>
+E opt_enum_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    E default_value
+);
+
 template<typename E>
 E check_enum(
     lua_State* l,

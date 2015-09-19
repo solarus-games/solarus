@@ -19,9 +19,9 @@
 
 namespace Solarus {
 
-namespace {
+const std::string EnumInfoTraits<Ability>::pretty_name = "ability";
 
-const std::map<Ability, std::string> ability_names = {
+const EnumInfo<Ability>::names_type EnumInfoTraits<Ability>::names = {
     { Ability::TUNIC, "tunic" },
     { Ability::SWORD, "sword" },
     { Ability::SWORD_KNOWLEDGE, "sword_knowledge" },
@@ -31,45 +31,5 @@ const std::map<Ability, std::string> ability_names = {
     { Ability::RUN, "run" },
     { Ability::DETECT_WEAK_WALLS, "detect_weak_walls" }
 };
-
-}  // Anonymous namespace.
-
-namespace AbilityInfo {
-
-/**
- * \brief Returns the ability values and their Lua name.
- * \return The name of each ability.
- */
-const std::map<Ability, std::string>& get_ability_names() {
-  return ability_names;
-}
-
-/**
- * \brief Returns the name of an ability.
- * \param type A ability value.
- * \return The corresponding name.
- */
-const std::string& get_ability_name(Ability ability) {
-
-  return ability_names.at(ability);
-}
-
-/**
- * \brief Returns the ability value with the given name.
- * \param ability_name The ability of an ability. It must exist.
- * \return The corresponding ability value.
- */
-Ability get_ability_by_name(const std::string& ability_name) {
-
-  for (const auto& kvp: ability_names) {
-    if (kvp.second == ability_name) {
-      return kvp.first;
-    }
-  }
-
-  Debug::die(std::string("Unknown ability: ") + ability_name);
-}
-
-}
 
 }

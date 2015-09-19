@@ -18,19 +18,21 @@
 #define SOLARUS_ABILITY_INFO_H
 
 #include "solarus/Common.h"
+#include "solarus/EnumInfo.h"
 #include "solarus/Ability.h"
 #include <map>
 #include <string>
 
 namespace Solarus {
 
-namespace AbilityInfo {
+template <>
+struct EnumInfoTraits<Ability> {
+  static const std::string pretty_name;
 
-SOLARUS_API const std::map<Ability, std::string>& get_ability_names();
-SOLARUS_API const std::string& get_ability_name(Ability ability);
-SOLARUS_API Ability get_ability_by_name(const std::string& ability_name);
+  static const EnumInfo<Ability>::names_type names;
+};
 
-}
+using AbilityInfo = struct EnumInfo<Ability>;
 
 }
 

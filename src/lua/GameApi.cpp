@@ -1092,7 +1092,7 @@ int LuaContext::game_api_has_ability(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    Ability ability = LuaTools::check_enum<Ability>(l, 2, AbilityInfo::get_ability_names());
+    Ability ability = LuaTools::check_enum<Ability>(l, 2);
 
     bool has_ability = savegame.get_equipment().has_ability(ability);
 
@@ -1110,7 +1110,7 @@ int LuaContext::game_api_get_ability(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    Ability ability = LuaTools::check_enum<Ability>(l, 2, AbilityInfo::get_ability_names());
+    Ability ability = LuaTools::check_enum<Ability>(l, 2);
 
     int ability_level = savegame.get_equipment().get_ability(ability);
 
@@ -1128,7 +1128,7 @@ int LuaContext::game_api_set_ability(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Savegame& savegame = *check_game(l, 1);
-    Ability ability = LuaTools::check_enum<Ability>(l, 2, AbilityInfo::get_ability_names());
+    Ability ability = LuaTools::check_enum<Ability>(l, 2);
     int level = LuaTools::check_int(l, 3);
 
     savegame.get_equipment().set_ability(ability, level);

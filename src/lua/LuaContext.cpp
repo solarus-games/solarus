@@ -2433,7 +2433,7 @@ void LuaContext::on_using() {
 void LuaContext::on_ability_used(Ability ability) {
 
   if (find_method("on_ability_used")) {
-    push_string(l, AbilityInfo::get_ability_name(ability));
+    push_string(l, enum_to_name(ability));
     call_function(2, 0, "on_ability_used");
   }
 }

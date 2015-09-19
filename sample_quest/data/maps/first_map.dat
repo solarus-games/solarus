@@ -4,6 +4,7 @@ properties{
   width = 320,
   height = 240,
   world = "inside",
+  num_layers = 3,
   tileset = "castle",
   music = "village",
 }

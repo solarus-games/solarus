@@ -18,22 +18,28 @@
 #define SOLARUS_ENTITY_TYPE_INFO_H
 
 #include "solarus/Common.h"
+#include "solarus/EnumInfo.h"
 #include "solarus/entities/EntityType.h"
 #include <map>
 #include <string>
 
 namespace Solarus {
 
-namespace EntityTypeInfo {
+template <>
+struct EnumInfoTraits<EntityType> {
+  static const std::string pretty_name;
 
-SOLARUS_API const std::map<EntityType, std::string>& get_entity_type_names();
-SOLARUS_API const std::string& get_entity_type_name(EntityType type);
-SOLARUS_API EntityType get_entity_type_by_name(const std::string& type_name);
+  static const EnumInfo<EntityType>::names_type names;
+};
 
-SOLARUS_API bool can_be_stored_in_map_file(EntityType type);
-SOLARUS_API bool can_be_created_from_lua_api(EntityType type);
+class EntityTypeInfo : public EnumInfo<EntityType> {
 
-}  // namespace EntityTypeInfo
+  public:
+
+    static bool can_be_stored_in_map_file(EntityType type);
+    static bool can_be_created_from_lua_api(EntityType type);
+
+};
 
 }  // namespace Solarus
 

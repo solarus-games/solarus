@@ -117,7 +117,7 @@ void LuaContext::register_map_module() {
 
   // Add map:create_* functions as closures because we pass the entity type as upvalue.
   luaL_getmetatable(l, map_module_name.c_str());
-  for (const auto& kvp : EntityTypeInfo::get_entity_type_names()) {
+  for (const auto& kvp : EnumInfoTraits<EntityType>::names) {
     EntityType type = kvp.first;
     const std::string& type_name = kvp.second;
     if (!EntityTypeInfo::can_be_created_from_lua_api(type)) {
@@ -1232,7 +1232,7 @@ const std::map<EntityType, lua_CFunction> LuaContext::entity_creation_functions 
  */
 bool LuaContext::create_map_entity_from_data(Map& map, const EntityData& entity_data) {
 
-  const std::string& type_name = EntityTypeInfo::get_entity_type_name(entity_data.get_type());
+  const std::string& type_name = enum_to_name(entity_data.get_type());
   std::string function_name = "create_" + type_name;
   const auto& it = entity_creation_functions.find(entity_data.get_type());
   Debug::check_assertion(it != entity_creation_functions.end(),
@@ -1942,7 +1942,7 @@ int LuaContext::map_api_create_entity(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
 
     EntityType type = LuaTools::check_enum<EntityType>(
-        l, lua_upvalueindex(1), EntityTypeInfo::get_entity_type_names()
+        l, lua_upvalueindex(1)
     );
     Map& map = *check_map(l, 1);
     const EntityData& data = EntityData::check_entity_data(l, 2, type);

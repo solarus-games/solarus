@@ -286,7 +286,7 @@ int l_create_entity_data(lua_State* l) {
 
     // Get the type of entity, it should have been passed as an upvalue.
     EntityType type = LuaTools::check_enum<EntityType>(
-        l, lua_upvalueindex(1), EntityTypeInfo::get_entity_type_names()
+        l, lua_upvalueindex(1)
     );
 
     entity = EntityData::check_entity_data(l, 1, type);
@@ -437,7 +437,7 @@ bool EntityData::is_dynamic() const {
  * \return The type name of entity.
  */
 const std::string& EntityData::get_type_name() const {
-  return EntityTypeInfo::get_entity_type_name(get_type());
+  return enum_to_name(get_type());
 }
 
 /**
@@ -843,7 +843,7 @@ bool EntityData::import_from_lua(lua_State* l) {
 
   lua_pushlightuserdata(l, this);
   lua_setfield(l, LUA_REGISTRYINDEX, "entity");
-  for (const auto& kvp : EntityTypeInfo::get_entity_type_names()) {
+  for (const auto& kvp : EnumInfoTraits<EntityType>::names) {
     EntityType type = kvp.first;
     const std::string& type_name = kvp.second;
     if (!EntityTypeInfo::can_be_stored_in_map_file(type)) {

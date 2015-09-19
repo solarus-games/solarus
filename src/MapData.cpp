@@ -736,8 +736,8 @@ int l_add_entity(lua_State* l) {
     lua_pop(l, 1);
 
     // Get the type of entity to create.
-    EntityType type = LuaTools::check_enum(
-        l, lua_upvalueindex(1), EntityTypeInfo::get_entity_type_names()
+    EntityType type = LuaTools::check_enum<EntityType>(
+        l, lua_upvalueindex(1)
     );
     const EntityData& entity = EntityData::check_entity_data(l, 1, type);
 
@@ -802,7 +802,7 @@ int l_properties(lua_State* l) {
     // Properties are set: we now allow the data file to declare entities.
 
     for (const auto& kvp : EntityData::get_entity_type_descriptions()) {
-      const std::string& type_name = EntityTypeInfo::get_entity_type_name(kvp.first);
+      const std::string& type_name = enum_to_name(kvp.first);
       lua_pushstring(l, type_name.c_str());
       lua_pushcclosure(l, l_add_entity, 1);
       lua_setglobal(l, type_name.c_str());

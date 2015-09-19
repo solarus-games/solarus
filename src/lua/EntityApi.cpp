@@ -63,7 +63,7 @@ const std::map<EntityType, std::string>& get_entity_internal_type_names() {
 
   static std::map<EntityType, std::string> result;
   if (result.empty()) {
-    for (const auto& kvp : EntityTypeInfo::get_entity_type_names()) {
+    for (const auto& kvp : EnumInfoTraits<EntityType>::names) {
       std::string internal_type_name = std::string("sol.") + kvp.second;
       result.emplace(kvp.first, internal_type_name);
     }
@@ -79,7 +79,7 @@ const std::set<std::string>& get_entity_internal_type_names_set() {
 
   static std::set<std::string> result;
   if (result.empty()) {
-    for (const auto& kvp : EntityTypeInfo::get_entity_type_names()) {
+    for (const auto& kvp : EnumInfoTraits<EntityType>::names) {
       result.insert(LuaContext::get_entity_internal_type_name(kvp.first));
     }
   }
@@ -598,7 +598,7 @@ int LuaContext::entity_api_get_type(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const Entity& entity = *check_entity(l, 1);
 
-    const std::string& type_name = EntityTypeInfo::get_entity_type_name(entity.get_type());
+    const std::string& type_name = enum_to_name(entity.get_type());
     push_string(l, type_name);
     return 1;
   });
@@ -4549,7 +4549,7 @@ int LuaContext::custom_entity_api_set_traversable_by(lua_State* l) {
       ++index;
       type_specific = true;
       type = LuaTools::check_enum<EntityType>(
-          l, 2, EntityTypeInfo::get_entity_type_names()
+          l, 2
       );
     }
 
@@ -4608,7 +4608,7 @@ int LuaContext::custom_entity_api_set_can_traverse(lua_State* l) {
       ++index;
       type_specific = true;
       type = LuaTools::check_enum<EntityType>(
-          l, 2, EntityTypeInfo::get_entity_type_names()
+          l, 2
       );
     }
 

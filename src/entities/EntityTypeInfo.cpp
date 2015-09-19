@@ -19,12 +19,12 @@
 
 namespace Solarus {
 
-namespace {
+const std::string EnumInfoTraits<EntityType>::pretty_name = "entity type";
 
 /**
  * \brief Lua name of each map entity type.
  */
-const std::map<EntityType, std::string> entity_type_names = {
+const EnumInfo<EntityType>::names_type EnumInfoTraits<EntityType>::names = {
     { EntityType::ARROW, "arrow" },
     { EntityType::BLOCK, "block" },
     { EntityType::BOMB, "bomb" },
@@ -58,63 +58,12 @@ const std::map<EntityType, std::string> entity_type_names = {
     { EntityType::WALL, "wall" }
 };
 
-}  // Anonymous namespace
-
-namespace EntityTypeInfo {
-
-/**
- * \brief Returns the entity types and their Lua name.
- *
- * This is the name used in data files and return by the Lua function
- * entity:get_type().
- *
- * \return The name of each entity type.
- */
-const std::map<EntityType, std::string>& get_entity_type_names() {
-  return entity_type_names;
-}
-
-/**
- * \brief Returns the name of an entity type.
- *
- * This is the name used in data files and return by the Lua function
- * entity:get_type().
- *
- * \param type A type of entity.
- * \return The corresponding name.
- */
-const std::string& get_entity_type_name(EntityType entity_type) {
-
-  return entity_type_names.at(entity_type);
-}
-
-/**
- * \brief Returns the entity type with the given name.
- *
- * This is the name used in data files and return by the Lua function
- * entity:get_type().
- *
- * \param entity_type_name The name of an entity type. It must exist.
- * \return The corresponding type.
- */
-EntityType get_entity_type_by_name(const std::string& entity_type_name) {
-
-  for (const auto& kvp: entity_type_names) {
-    if (kvp.second == entity_type_name) {
-      return kvp.first;
-    }
-  }
-
-  Debug::die(std::string("Unknown entity type: ") + entity_type_name);
-}
-
-
 /**
  * \brief Returns whether entities of the specified type can be stored in map files.
  * \param type A type of entity.
  * \return \c true if this type can be stored.
  */
-bool can_be_stored_in_map_file(EntityType type) {
+bool EntityTypeInfo::can_be_stored_in_map_file(EntityType type) {
 
   switch (type) {
 
@@ -163,7 +112,7 @@ bool can_be_stored_in_map_file(EntityType type) {
  * \param type A type of entity.
  * \return \c true if this type can be created through the scripting API.
  */
-bool can_be_created_from_lua_api(EntityType type) {
+bool EntityTypeInfo::can_be_created_from_lua_api(EntityType type) {
 
   switch (type) {
 
@@ -209,8 +158,6 @@ bool can_be_created_from_lua_api(EntityType type) {
 
   return false;
 }
-
-}  // namespace EntityTypeInfo
 
 }  // namespace Solarus
 

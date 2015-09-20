@@ -20,17 +20,15 @@
 
 namespace Solarus {
 
-namespace {
+const std::string EnumInfoTraits<EnemyReaction::ReactionType>::pretty_name = "enemy reaction type";
 
-const std::map<EnemyReaction::ReactionType, std::string> reaction_names = {
+const EnumInfo<EnemyReaction::ReactionType>::names_type EnumInfoTraits<EnemyReaction::ReactionType>::names = {
   { EnemyReaction::ReactionType::HURT, "hurt" },
   { EnemyReaction::ReactionType::IGNORED, "ignored" },
   { EnemyReaction::ReactionType::PROTECTED, "protected" },
   { EnemyReaction::ReactionType::IMMOBILIZED, "immobilized" },
   { EnemyReaction::ReactionType::CUSTOM, "custom" }
 };
-
-}  // Anonymous namespace.
 
 /**
  * \brief Constructor.
@@ -96,45 +94,6 @@ const EnemyReaction::Reaction& EnemyReaction::get_reaction(
     }
   }
   return general_reaction;
-}
-
-/**
- * \brief Returns the reaction type values and their Lua name.
- * \return The name of each reaction type.
- */
-const std::map<EnemyReaction::ReactionType, std::string>& EnemyReaction::get_reaction_names() {
-  return reaction_names;
-}
-
-/**
- * \brief Returns the name corresponding to a type of reaction.
- * \param reaction A type of reaction.
- * \return The corresponding name.
- */
-const std::string& EnemyReaction::get_reaction_name(ReactionType reaction) {
-
-  const auto& it = reaction_names.find(reaction);
-  if (it == reaction_names.end()) {
-    Debug::die("Missing reaction name");
-  }
-
-  return it->second;
-}
-
-/**
- * \brief Returns a type of reaction from its name.
- * \param name A name of reaction type.
- * \return The corresponding reaction type.
- */
-EnemyReaction::ReactionType EnemyReaction::get_reaction_by_name(const std::string& name) {
-
-  for (const auto& kvp : reaction_names) {
-    if (kvp.second == name) {
-      return kvp.first;
-    }
-  }
-
-  Debug::die(std::string("Invalid enemy reaction name: '") + name + "'");
 }
 
 }

@@ -18,6 +18,7 @@
 #define SOLARUS_ENEMY_REACTION_H
 
 #include "solarus/Common.h"
+#include "solarus/EnumInfo.h"
 #include <map>
 #include <string>
 
@@ -65,16 +66,20 @@ class SOLARUS_API EnemyReaction {
     void set_sprite_reaction(const Sprite* sprite, ReactionType reaction, int life_lost = 0);
     const Reaction& get_reaction(const Sprite* sprite) const;
 
-    static const std::map<EnemyReaction::ReactionType, std::string>& get_reaction_names();
-    static const std::string& get_reaction_name(ReactionType reaction);
-    static ReactionType get_reaction_by_name(const std::string& name);
-
   private:
 
     Reaction general_reaction;                             /**< reaction to make unless sprite-specific override */
     std::map<const Sprite*, Reaction> sprite_reactions;    /**< sprite-specific reaction (overrides the default one) */
 
 };
+
+template <>
+struct EnumInfoTraits<EnemyReaction::ReactionType> {
+  static const std::string pretty_name;
+
+  static const EnumInfo<EnemyReaction::ReactionType>::names_type names;
+};
+
 
 }
 

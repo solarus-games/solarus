@@ -23,9 +23,9 @@
 
 namespace Solarus {
 
-namespace {
+const std::string EnumInfoTraits<ResourceType>::pretty_name = "resource type";
 
-  const std::map<ResourceType, std::string> resource_type_names = {
+const EnumInfo<ResourceType>::names_type EnumInfoTraits<ResourceType>::names = {
       { ResourceType::MAP, "map" },
       { ResourceType::TILESET, "tileset" },
       { ResourceType::SPRITE, "sprite" },
@@ -37,6 +37,8 @@ namespace {
       { ResourceType::LANGUAGE, "language" },
       { ResourceType::FONT, "font" }
   };
+
+namespace {
 
   /**
    * \brief Implementation of the resource() function.
@@ -54,7 +56,7 @@ namespace {
       lua_pop(l, 1);
 
       ResourceType resource_type =
-          LuaTools::check_enum(l, 1, resource_type_names);
+          LuaTools::check_enum<ResourceType>(l, 1);
       const std::string& id = LuaTools::check_string_field(l, 2, "id");
       const std::string& description = LuaTools::check_string_field(l, 2, "description");
 
@@ -76,7 +78,7 @@ namespace {
  */
 QuestResources::QuestResources() {
 
-  for (size_t i = 0 ; i < resource_type_names.size(); ++i) {
+  for (size_t i = 0 ; i < EnumInfoTraits<ResourceType>::names.size(); ++i) {
     resource_maps.emplace(static_cast<ResourceType>(i), ResourceMap());
   }
 }
@@ -86,7 +88,7 @@ QuestResources::QuestResources() {
  */
 void QuestResources::clear() {
 
-  for (size_t i = 0 ; i < resource_type_names.size(); ++i) {
+  for (size_t i = 0 ; i < EnumInfoTraits<ResourceType>::names.size(); ++i) {
     resource_maps[static_cast<ResourceType>(i)].clear();
   }
 }
@@ -228,43 +230,6 @@ bool QuestResources::set_description(
 }
 
 /**
- * \brief Returns the list of existing resource types and their names.
- * \return The resource type names.
- */
-const std::map<ResourceType, std::string>& QuestResources::get_resource_type_names() {
-  return resource_type_names;
-}
-
-/**
- * \brief Returns the name of a resource type.
- * \param resource_type A resource type.
- * \return The name of this resource type.
- */
-const std::string& QuestResources::get_resource_type_name(ResourceType resource_type) {
-
-  return resource_type_names.at(resource_type);
-}
-
-/**
- * \brief Returns a resource type given its Lua name.
- * \param resource_type_name Lua name of a resource type. It must be valid.
- * \return The corresponding resource_type.
- */
-ResourceType QuestResources::get_resource_type_by_name(
-    const std::string& resource_type_name
-) {
-  int i = 0;
-  for (const auto& kvp: resource_type_names) {
-    if (kvp.second == resource_type_name) {
-      return kvp.first;
-    }
-    ++i;
-  }
-
-  Debug::die(std::string("Unknown resource type: ") + resource_type_name);
-}
-
-/**
  * \copydoc LuaData::import_from_lua
  */
 bool QuestResources::import_from_lua(lua_State* l) {
@@ -274,7 +239,7 @@ bool QuestResources::import_from_lua(lua_State* l) {
 
   // We register only one C function for all resource types.
   lua_register(l, "resource", l_resource_element);
-  for (const auto& kvp: resource_type_names) {
+  for (const auto& kvp: EnumInfoTraits<ResourceType>::names) {
     std::ostringstream oss;
     oss << "function " << kvp.second << "(t) resource('"
       << kvp.second << "', t) end";
@@ -296,7 +261,7 @@ bool QuestResources::import_from_lua(lua_State* l) {
 bool QuestResources::export_to_lua(std::ostream& out) const {
 
   // Save each resource.
-  for (const auto& kvp: resource_type_names) {
+  for (const auto& kvp: EnumInfoTraits<ResourceType>::names) {
 
     const ResourceMap& resource = get_elements(kvp.first);
     for (const auto& element: resource) {

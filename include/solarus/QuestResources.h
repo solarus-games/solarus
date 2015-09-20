@@ -18,6 +18,7 @@
 #define SOLARUS_QUEST_RESOURCE_H
 
 #include "solarus/Common.h"
+#include "solarus/EnumInfo.h"
 #include "solarus/lua/LuaData.h"
 #include "solarus/ResourceType.h"
 #include <iosfwd>
@@ -25,6 +26,13 @@
 #include <string>
 
 namespace Solarus {
+
+template <>
+struct EnumInfoTraits<ResourceType> {
+  static const std::string pretty_name;
+
+  static const EnumInfo<ResourceType>::names_type names;
+};
 
 /**
  * \brief Stores the resource list of a quest.
@@ -74,10 +82,6 @@ class SOLARUS_API QuestResources : public LuaData {
         const std::string& id,
         const std::string& description
     );
-
-    static const std::map<ResourceType, std::string>& get_resource_type_names();
-    static const std::string& get_resource_type_name(ResourceType resource_type);
-    static ResourceType get_resource_type_by_name(const std::string& resource_type_name);
 
     virtual bool import_from_lua(lua_State* l) override;
     virtual bool export_to_lua(std::ostream& out) const override;

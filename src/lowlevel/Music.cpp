@@ -394,15 +394,15 @@ bool Music::update_playing() {
     switch (format) {
 
       case SPC:
-        decode_spc(buffer, 4096);
+        decode_spc(buffer, 16384);
         break;
 
       case IT:
-        decode_it(buffer, 4096);
+        decode_it(buffer, 16384);
         break;
 
       case OGG:
-        decode_ogg(buffer, 4096);
+        decode_ogg(buffer, 16384);
         break;
 
       case NO_FORMAT:
@@ -571,7 +571,7 @@ bool Music::start() {
       spc_decoder->load((int16_t*) sound_buffer.data(), sound_buffer.size());
 
       for (int i = 0; i < nb_buffers; i++) {
-        decode_spc(buffers[i], 4096);
+        decode_spc(buffers[i], 16384);
       }
       break;
 
@@ -583,7 +583,7 @@ bool Music::start() {
       it_decoder->load(sound_buffer);
 
       for (int i = 0; i < nb_buffers; i++) {
-        decode_it(buffers[i], 4096);
+        decode_it(buffers[i], 16384);
       }
       break;
 
@@ -603,7 +603,7 @@ bool Music::start() {
       }
       else {
         for (int i = 0; i < nb_buffers; i++) {
-          decode_ogg(buffers[i], 4096);
+          decode_ogg(buffers[i], 16384);
         }
       }
       break;

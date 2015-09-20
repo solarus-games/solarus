@@ -24,3 +24,6 @@ tools/solarus-editor.jar
 work/unversioned/
 build/
 gcwbuild/
+build_linux/
+build_vs/
+commit.txt

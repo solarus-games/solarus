@@ -61,7 +61,7 @@ class SOLARUS_API Color {
     uint8_t a;     /**< The alpha (opacity) component. 255 is opaque. */
 };
 
-SOLARUS_API bool operator==(const Color& lhs, const Color& rhs);
+//SOLARUS_API bool operator==(const Color& lhs, const Color& rhs);
 
 }
 

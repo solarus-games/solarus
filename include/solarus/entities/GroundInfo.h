@@ -18,21 +18,25 @@
 #define SOLARUS_GROUND_INFO_H
 
 #include "solarus/Common.h"
+#include "solarus/EnumInfo.h"
 #include "solarus/entities/Ground.h"
 #include <map>
 #include <string>
 
 namespace Solarus {
 
-namespace GroundInfo {
+template <>
+struct EnumInfoTraits<Ground> {
+  static const std::string pretty_name;
 
-SOLARUS_API bool is_ground_diagonal(Ground ground);
+  static const EnumInfo<Ground>::names_type names;
+};
 
-SOLARUS_API const std::map<Ground, std::string>& get_ground_names();
-SOLARUS_API const std::string& get_ground_name(Ground ground);
-SOLARUS_API Ground get_ground_by_name(const std::string& ground_name);
+struct GroundInfo : EnumInfo<Ground> {
 
-}
+static bool is_ground_diagonal(Ground ground);
+
+};
 
 }
 

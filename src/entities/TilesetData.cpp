@@ -367,7 +367,7 @@ int l_tile_pattern(lua_State* l) {
     const std::string& id = LuaTools::check_string_field(l, 1, "id");
 
     const Ground ground = LuaTools::check_enum_field<Ground>(
-        l, 1, "ground", GroundInfo::get_ground_names()
+        l, 1, "ground"
     );
     pattern_data.set_ground(ground);
 
@@ -519,7 +519,7 @@ bool TilesetData::export_to_lua(std::ostream& out) const {
       y << " }";
     }
 
-    const std::string& ground_name = GroundInfo::get_ground_name(pattern.get_ground());
+    const std::string& ground_name = enum_to_name(pattern.get_ground());
     int layer_index = static_cast<int>(pattern.get_default_layer());
 
     out << "tile_pattern{\n"

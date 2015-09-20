@@ -19,9 +19,9 @@
 
 namespace Solarus {
 
-namespace {
+const std::string EnumInfoTraits<Ground>::pretty_name = "ground";
 
-const std::map<Ground, std::string> ground_names = {
+const EnumInfo<Ground>::names_type EnumInfoTraits<Ground>::names = {
     { Ground::EMPTY, "empty" } ,
     { Ground::TRAVERSABLE, "traversable" },
     { Ground::WALL, "wall" },
@@ -44,16 +44,12 @@ const std::map<Ground, std::string> ground_names = {
     { Ground::LAVA, "lava" }
 };
 
-}  // Anonymous namespace.
-
-namespace GroundInfo {
-
 /**
  * \brief Returns whether a ground value represents a diagonal obstacle.
  * \return ground The ground to test.
  * \retrun \c true if this is diagonal ground.
  */
-bool is_ground_diagonal(Ground ground) {
+bool GroundInfo::is_ground_diagonal(Ground ground) {
 
   switch (ground) {
 
@@ -84,42 +80,6 @@ bool is_ground_diagonal(Ground ground) {
   }
 
   return false;
-}
-
-/**
- * \brief Returns the ground values and their Lua name.
- * \return The name of each ground.
- */
-const std::map<Ground, std::string>& get_ground_names() {
-  return ground_names;
-}
-
-/**
- * \brief Returns the name of a ground.
- * \param type A ground value.
- * \return The corresponding name.
- */
-const std::string& get_ground_name(Ground ground) {
-
-  return ground_names.at(ground);
-}
-
-/**
- * \brief Returns the ground value with the given name.
- * \param ground_name The name of a ground. It must exist.
- * \return The corresponding ground value.
- */
-Ground get_ground_by_name(const std::string& ground_name) {
-
-  for (const auto& kvp: ground_names) {
-    if (kvp.second == ground_name) {
-      return kvp.first;
-    }
-  }
-
-  Debug::die(std::string("Unknown ground: ") + ground_name);
-}
-
 }
 
 }

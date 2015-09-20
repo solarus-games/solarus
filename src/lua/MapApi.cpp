@@ -512,7 +512,7 @@ int LuaContext::l_create_destructible(lua_State* l) {
             data.get_integer("treasure_variant"),
             entity_creation_check_savegame_variable_optional(l, 1, data, "treasure_savegame_variable")
         ),
-        entity_creation_check_enum<Ground>(l, 1, data, "ground", GroundInfo::get_ground_names())
+        entity_creation_check_enum<Ground>(l, 1, data, "ground")
     );
     destructible->set_destruction_sound(data.get_string("destruction_sound"));
     destructible->set_weight(data.get_integer("weight"));
@@ -1575,7 +1575,7 @@ int LuaContext::map_api_get_ground(lua_State* l) {
 
     Ground ground = map.get_ground(layer, x, y);
 
-    push_string(l, GroundInfo::get_ground_name(ground));
+    push_string(l, enum_to_name(ground));
     return 1;
   });
 }

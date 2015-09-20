@@ -3501,7 +3501,7 @@ int LuaContext::destructible_api_get_modified_ground(lua_State* l) {
 
     Ground modified_ground = destructible.get_modified_ground();
 
-    push_string(l, GroundInfo::get_ground_name(modified_ground));
+    push_string(l, enum_to_name(modified_ground));
     return 1;
   });
 }
@@ -4657,9 +4657,7 @@ int LuaContext::custom_entity_api_can_traverse_ground(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const CustomEntity& entity = *check_custom_entity(l, 1);
-    Ground ground = LuaTools::check_enum<Ground>(
-        l, 2, GroundInfo::get_ground_names()
-    );
+    Ground ground = LuaTools::check_enum<Ground>(l, 2);
 
     bool traversable = entity.can_traverse_ground(ground);
 
@@ -4677,9 +4675,7 @@ int LuaContext::custom_entity_api_set_can_traverse_ground(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     CustomEntity& entity = *check_custom_entity(l, 1);
-    Ground ground = LuaTools::check_enum<Ground>(
-        l, 2, GroundInfo::get_ground_names()
-    );
+    Ground ground = LuaTools::check_enum<Ground>(l, 2);
     if (lua_isnil(l, 3)) {
       entity.reset_can_traverse_ground(ground);
     }
@@ -4790,7 +4786,7 @@ int LuaContext::custom_entity_api_get_modified_ground(lua_State* l) {
       lua_pushnil(l);
     }
     else {
-      push_string(l, GroundInfo::get_ground_name(modified_ground));
+      push_string(l, enum_to_name(modified_ground));
     }
     return 0;
   });
@@ -4808,9 +4804,7 @@ int LuaContext::custom_entity_api_set_modified_ground(lua_State* l) {
     Ground modified_ground = Ground::EMPTY;
 
     if (!lua_isnil(l, 2)) {
-      modified_ground = LuaTools::check_enum<Ground>(l, 2,
-          GroundInfo::get_ground_names()
-      );
+      modified_ground = LuaTools::check_enum<Ground>(l, 2);
     }
 
     entity.set_modified_ground(modified_ground);

@@ -2735,7 +2735,7 @@ void LuaContext::on_ground_below_changed(Ground ground_below) {
       lua_pushnil(l);
     }
     else {
-      push_string(l, GroundInfo::get_ground_name(ground_below));
+      push_string(l, enum_to_name(ground_below));
     }
     call_function(2, 0, "on_ground_below_changed");
   }

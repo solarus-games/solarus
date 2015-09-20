@@ -18,6 +18,7 @@
 #define SOLARUS_TRANSITION_H
 
 #include "solarus/Common.h"
+#include "solarus/EnumInfo.h"
 #include <map>
 #include <string>
 
@@ -95,10 +96,6 @@ class SOLARUS_API Transition {
      */
     virtual void draw(Surface& dst_surface) = 0;
 
-    static const std::map<Style, std::string>& get_style_names();
-    static const std::string& get_style_name(Style style);
-    static Style get_style_by_name(const std::string& style_name);
-
   protected:
 
     explicit Transition(Direction direction);
@@ -122,6 +119,13 @@ class SOLARUS_API Transition {
     bool suspended;               /**< Indicates that the transition is currently paused. */
     uint32_t when_suspended;      /**< Date when the transition was suspended. */
 
+};
+
+template <>
+struct EnumInfoTraits<Transition::Style> {
+  static const std::string pretty_name;
+
+  static const EnumInfo<Transition::Style>::names_type names;
 };
 
 }

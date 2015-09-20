@@ -23,15 +23,13 @@
 
 namespace Solarus {
 
-namespace {
+const std::string EnumInfoTraits<Transition::Style>::pretty_name = "transition style";
 
-const std::map<Transition::Style, std::string> style_names = {
+const EnumInfo<Transition::Style>::names_type EnumInfoTraits<Transition::Style>::names = {
     { Transition::Style::IMMEDIATE, "immediate" },
     { Transition::Style::FADE, "fade" },
     { Transition::Style::SCROLLING, "scrolling" }
 };
-
-}
 
 /**
  * \brief Creates a transition effect.
@@ -168,39 +166,6 @@ void Transition::set_suspended(bool suspended) {
  */
 uint32_t Transition::get_when_suspended() const {
   return when_suspended;
-}
-
-/**
- * \brief Returns the transition style values and their Lua name.
- * \return The name of each transition style.
- */
-const std::map<Transition::Style, std::string>& Transition::get_style_names() {
-  return style_names;
-}
-
-/**
- * \brief Returns the name of a transition style.
- * \param style A transition style value.
- * \return The corresponding name.
- */
-const std::string& Transition::get_style_name(Style style) {
-  return style_names.at(style);
-}
-
-/**
- * \brief Returns the transition style value with the given name.
- * \param style_name The name of a transition style. It must exist.
- * \return The corresponding transition style value.
- */
-Transition::Style Transition::get_style_by_name(const std::string& style_name) {
-
-  for (const auto& kvp: style_names) {
-    if (kvp.second == style_name) {
-      return kvp.first;
-    }
-  }
-
-  Debug::die(std::string("Unknown transition style name: ") + style_name);
 }
 
 }

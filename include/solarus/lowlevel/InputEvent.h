@@ -18,6 +18,7 @@
 #define SOLARUS_INPUT_EVENT_H
 
 #include "solarus/Common.h"
+#include "solarus/EnumInfo.h"
 #include <map>
 #include <memory>
 #include <set>
@@ -246,8 +247,6 @@ class InputEvent {
     bool is_with_alt() const;
 
     KeyboardKey get_keyboard_key() const;
-    static const std::string& get_keyboard_key_name(InputEvent::KeyboardKey key);
-    static InputEvent::KeyboardKey get_keyboard_key_by_name(const std::string& keyboard_key_name);
 
     bool is_character_pressed() const;
     std::string get_character() const;
@@ -276,8 +275,6 @@ class InputEvent {
 
     MouseButton get_mouse_button() const;
     bool get_mouse_position(Point& mouse_xy) const;
-    static const std::string& get_mouse_button_name(MouseButton button);
-    static MouseButton get_mouse_button_by_name(const std::string& button_name);
 
     // functions common to keyboard, joypad and mouse
     int get_direction() const;
@@ -309,6 +306,21 @@ class InputEvent {
     const SDL_Event internal_event;               /**< the internal event encapsulated */
 
 };
+
+template <>
+struct EnumInfoTraits<InputEvent::KeyboardKey> {
+  static const std::string pretty_name;
+
+  static const EnumInfo<InputEvent::KeyboardKey>::names_type names;
+};
+
+template <>
+struct EnumInfoTraits<InputEvent::MouseButton> {
+  static const std::string pretty_name;
+
+  static const EnumInfo<InputEvent::MouseButton>::names_type names;
+};
+
 
 }
 

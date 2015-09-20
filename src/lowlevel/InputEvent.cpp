@@ -38,7 +38,9 @@ std::set<InputEvent::KeyboardKey> InputEvent::keys_pressed;
 int InputEvent::joypad_axis_state[2] = { 0, 0 };
 
 // Keyboard key names.
-std::map<InputEvent::KeyboardKey, std::string> InputEvent::keyboard_key_names = {
+const std::string EnumInfoTraits<InputEvent::KeyboardKey>::pretty_name = "ability";
+
+const EnumInfo<InputEvent::KeyboardKey>::names_type EnumInfoTraits<InputEvent::KeyboardKey>::names = {
 
     { InputEvent::KEY_NONE,              "" },
     { InputEvent::KEY_BACKSPACE,         "backspace" },
@@ -167,7 +169,9 @@ std::map<InputEvent::KeyboardKey, std::string> InputEvent::keyboard_key_names = 
 };
 
 // Mouse button names.
-std::map<InputEvent::MouseButton, std::string> InputEvent::mouse_button_names = {
+const std::string EnumInfoTraits<InputEvent::MouseButton>::pretty_name = "ability";
+
+const EnumInfo<InputEvent::MouseButton>::names_type EnumInfoTraits<InputEvent::MouseButton>::names = {
     { InputEvent::MOUSE_BUTTON_NONE,   "" },
     { InputEvent::MOUSE_BUTTON_LEFT,   "left" },
     { InputEvent::MOUSE_BUTTON_MIDDLE, "middle" },
@@ -745,31 +749,6 @@ InputEvent::KeyboardKey InputEvent::get_keyboard_key() const {
 }
 
 /**
- * \brief Returns the Lua name of a keyboard key.
- * \param key A keyboard key.
- * \return The corresponding name (or an empty string for KEY_NONE).
- */
-const std::string& InputEvent::get_keyboard_key_name(KeyboardKey key) {
-  return keyboard_key_names[key];
-}
-
-/**
- * \brief Returns a keyboard key given its name.
- * \param keyboard_key_name The name of a keyboard key.
- * \return The corresponding key, or KEY_NONE if this name is empty or unknown.
- */
-InputEvent::KeyboardKey InputEvent::get_keyboard_key_by_name(const std::string& keyboard_key_name) {
-
-  // TODO check that this traversal is not significant, otherwise make a reverse mapping.
-  for (const auto& kvp: keyboard_key_names) {
-    if (kvp.second == keyboard_key_name) {
-      return kvp.first;
-    }
-  }
-  return KEY_NONE;
-}
-
-/**
  * \brief Returns whether this event is a text event.
  * \return true if this event corresponds to entered text.
  */
@@ -1113,33 +1092,6 @@ bool InputEvent::get_mouse_position(Point& mouse_xy) const {
   return Video::renderer_to_quest_coordinates(
       Point(internal_event.button.x, internal_event.button.y), mouse_xy);
 }
-
-/**
- * \brief Returns the Lua name of a mouse button.
- * \param button A mouse button.
- * \return The corresponding name (or an empty string for MOUSE_BUTTON_NONE).
- */
-const std::string& InputEvent::get_mouse_button_name(MouseButton button) {
-
-  return mouse_button_names[button];
-}
-
-/**
- * \brief Returns a mouse button given its name.
- * \param button_name The name of a mouse button.
- * \return The corresponding button, or MOUSE_BUTTON_NONE if this name is
- * empty or unknown.
- */
-InputEvent::MouseButton InputEvent::get_mouse_button_by_name(const std::string& button_name) {
-
-  for (const auto& kvp: mouse_button_names) {
-    if (kvp.second == button_name) {
-      return kvp.first;
-    }
-  }
-  return MOUSE_BUTTON_NONE;
-}
-
 
 // functions common to keyboard and joypad events
 

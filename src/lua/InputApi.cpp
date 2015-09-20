@@ -85,7 +85,7 @@ int LuaContext::input_api_is_key_pressed(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& key_name = LuaTools::check_string(l, 1);
-    InputEvent::KeyboardKey key = InputEvent::get_keyboard_key_by_name(key_name);
+    InputEvent::KeyboardKey key = name_to_enum(key_name, InputEvent::KEY_NONE);
 
     if (key == InputEvent::KEY_NONE) {
       LuaTools::arg_error(l, 1, std::string(
@@ -191,7 +191,7 @@ int LuaContext::input_api_is_mouse_button_pressed(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& button_name = LuaTools::check_string(l, 1);
-    InputEvent::MouseButton button = InputEvent::get_mouse_button_by_name(button_name);
+    InputEvent::MouseButton button = name_to_enum(button_name, InputEvent::MOUSE_BUTTON_NONE);
 
     if (button == InputEvent::MOUSE_BUTTON_NONE) {
       LuaTools::arg_error(l, 1, std::string(
@@ -212,7 +212,7 @@ int LuaContext::input_api_is_mouse_button_released(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& button_name = LuaTools::check_string(l, 1);
-    InputEvent::MouseButton button = InputEvent::get_mouse_button_by_name(button_name);
+    InputEvent::MouseButton button = name_to_enum(button_name, InputEvent::MOUSE_BUTTON_NONE);
 
     if (button == InputEvent::MOUSE_BUTTON_NONE) {
       LuaTools::arg_error(l, 1, std::string(

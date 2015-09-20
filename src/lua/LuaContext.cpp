@@ -1543,7 +1543,7 @@ bool LuaContext::on_key_pressed(const InputEvent& event) {
   bool handled = false;
   if (find_method("on_key_pressed")) {
 
-    const std::string& key_name = InputEvent::get_keyboard_key_name(event.get_keyboard_key());
+    const std::string& key_name = enum_to_name(event.get_keyboard_key());
     if (!key_name.empty()) { // This key exists in the Solarus API.
 
       push_string(l, key_name);
@@ -1619,7 +1619,7 @@ bool LuaContext::on_key_released(const InputEvent& event) {
   bool handled = false;
   if (find_method("on_key_released")) {
 
-    const std::string& key_name = InputEvent::get_keyboard_key_name(event.get_keyboard_key());
+    const std::string& key_name = enum_to_name(event.get_keyboard_key());
     if (!key_name.empty()) { // This key exists in the Solarus API.
       push_string(l, key_name);
       bool success = call_function(2, 1, "on_key_released");
@@ -1759,7 +1759,7 @@ bool LuaContext::on_mouse_button_pressed(const InputEvent& event) {
   bool handled = false;
   if (find_method("on_mouse_pressed")) {
 
-    const std::string& button_name = InputEvent::get_mouse_button_name(event.get_mouse_button());
+    const std::string& button_name = enum_to_name(event.get_mouse_button());
     Point mouse_xy;
     bool in_quest = event.get_mouse_position(mouse_xy);
 
@@ -1800,7 +1800,7 @@ bool LuaContext::on_mouse_button_released(const InputEvent& event) {
   bool handled = false;
   if (find_method("on_mouse_released")) {
 
-    const std::string& button_name = InputEvent::get_mouse_button_name(event.get_mouse_button());
+    const std::string& button_name = enum_to_name(event.get_mouse_button());
     Point mouse_xy;
     bool in_quest = event.get_mouse_position(mouse_xy);
 

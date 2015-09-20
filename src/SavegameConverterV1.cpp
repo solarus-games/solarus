@@ -105,23 +105,23 @@ void SavegameConverterV1::convert_to_v2(Savegame& savegame_v2) {
   savegame_v2.set_string(Savegame::KEY_ITEM_SLOT_1, get_string(ITEM_SLOT_0));
   savegame_v2.set_string(Savegame::KEY_ITEM_SLOT_2, get_string(ITEM_SLOT_1));
 
-  savegame_v2.set_string(Savegame::KEY_KEYBOARD_ACTION, InputEvent::get_keyboard_key_name(
+  savegame_v2.set_string(Savegame::KEY_KEYBOARD_ACTION, enum_to_name(
       InputEvent::KeyboardKey(get_integer(KEYBOARD_ACTION_KEY))));
-  savegame_v2.set_string(Savegame::KEY_KEYBOARD_ATTACK, InputEvent::get_keyboard_key_name(
+  savegame_v2.set_string(Savegame::KEY_KEYBOARD_ATTACK, enum_to_name(
       InputEvent::KeyboardKey(get_integer(KEYBOARD_SWORD_KEY))));
-  savegame_v2.set_string(Savegame::KEY_KEYBOARD_ITEM_1, InputEvent::get_keyboard_key_name(
+  savegame_v2.set_string(Savegame::KEY_KEYBOARD_ITEM_1, enum_to_name(
       InputEvent::KeyboardKey(get_integer(KEYBOARD_ITEM_1_KEY))));
-  savegame_v2.set_string(Savegame::KEY_KEYBOARD_ITEM_2, InputEvent::get_keyboard_key_name(
+  savegame_v2.set_string(Savegame::KEY_KEYBOARD_ITEM_2, enum_to_name(
       InputEvent::KeyboardKey(get_integer(KEYBOARD_ITEM_2_KEY))));
-  savegame_v2.set_string(Savegame::KEY_KEYBOARD_PAUSE, InputEvent::get_keyboard_key_name(
+  savegame_v2.set_string(Savegame::KEY_KEYBOARD_PAUSE, enum_to_name(
       InputEvent::KeyboardKey(get_integer(KEYBOARD_PAUSE_KEY))));
-  savegame_v2.set_string(Savegame::KEY_KEYBOARD_RIGHT, InputEvent::get_keyboard_key_name(
+  savegame_v2.set_string(Savegame::KEY_KEYBOARD_RIGHT, enum_to_name(
       InputEvent::KeyboardKey(get_integer(KEYBOARD_RIGHT_KEY))));
-  savegame_v2.set_string(Savegame::KEY_KEYBOARD_UP, InputEvent::get_keyboard_key_name(
+  savegame_v2.set_string(Savegame::KEY_KEYBOARD_UP, enum_to_name(
       InputEvent::KeyboardKey(get_integer(KEYBOARD_UP_KEY))));
-  savegame_v2.set_string(Savegame::KEY_KEYBOARD_LEFT, InputEvent::get_keyboard_key_name(
+  savegame_v2.set_string(Savegame::KEY_KEYBOARD_LEFT, enum_to_name(
       InputEvent::KeyboardKey(get_integer(KEYBOARD_LEFT_KEY))));
-  savegame_v2.set_string(Savegame::KEY_KEYBOARD_DOWN, InputEvent::get_keyboard_key_name(
+  savegame_v2.set_string(Savegame::KEY_KEYBOARD_DOWN, enum_to_name(
       InputEvent::KeyboardKey(get_integer(KEYBOARD_DOWN_KEY))));
   savegame_v2.set_string(Savegame::KEY_JOYPAD_ACTION, get_string(JOYPAD_ACTION_KEY));
   savegame_v2.set_string(Savegame::KEY_JOYPAD_ATTACK, get_string(JOYPAD_SWORD_KEY));

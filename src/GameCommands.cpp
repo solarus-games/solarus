@@ -671,7 +671,7 @@ InputEvent::KeyboardKey GameCommands::get_saved_keyboard_binding(
 
   const std::string& savegame_variable = get_keyboard_binding_savegame_variable(command);
   const std::string& keyboard_key_name = get_savegame().get_string(savegame_variable);
-  return InputEvent::get_keyboard_key_by_name(keyboard_key_name);
+  return name_to_enum(keyboard_key_name, InputEvent::KEY_NONE);
 }
 
 /**
@@ -685,7 +685,7 @@ void GameCommands::set_saved_keyboard_binding(
     GameCommand command, InputEvent::KeyboardKey keyboard_key) {
 
   const std::string& savegame_variable = get_keyboard_binding_savegame_variable(command);
-  const std::string& keyboard_key_name = InputEvent::get_keyboard_key_name(keyboard_key);
+  const std::string& keyboard_key_name = enum_to_name(keyboard_key);
   get_savegame().set_string(savegame_variable, keyboard_key_name);
 }
 

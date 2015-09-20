@@ -10,3 +10,6 @@ developer_doc/1.*
 work/unversioned/
 build/
 gcwbuild/
+build_linux/
+build_vs/
+commit.txt

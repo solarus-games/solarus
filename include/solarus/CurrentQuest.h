@@ -32,30 +32,28 @@ namespace Solarus {
  * \brief Provides access to data of the current quest.
  */
 namespace CurrentQuest {
+SOLARUS_API void initialize();
+SOLARUS_API void quit();
 
-void SOLARUS_API initialize();
-void SOLARUS_API quit();
+SOLARUS_API QuestResources& get_resources();
+SOLARUS_API bool resource_exists(ResourceType resource_type, const std::string& id);
+SOLARUS_API const std::map<std::string, std::string>& get_resources(ResourceType resource_type);
 
-QuestResources& SOLARUS_API get_resources();
-bool SOLARUS_API resource_exists(ResourceType resource_type, const std::string& id);
-const std::map<std::string, std::string>& SOLARUS_API get_resources(ResourceType resource_type);
+SOLARUS_API bool has_language(const std::string& language_code);
+SOLARUS_API void set_language(const std::string& language_code);
+SOLARUS_API std::string& get_language();
+SOLARUS_API std::string get_language_name(const std::string& language_code);
 
-bool SOLARUS_API has_language(const std::string& language_code);
-void SOLARUS_API set_language(const std::string& language_code);
-std::string& SOLARUS_API get_language();
-std::string SOLARUS_API get_language_name(const std::string& language_code);
+SOLARUS_API StringResources& get_strings();
+SOLARUS_API bool string_exists(const std::string& key);
+SOLARUS_API const std::string& get_string(const std::string& key);
 
-StringResources& SOLARUS_API get_strings();
-bool SOLARUS_API string_exists(const std::string& key);
-const std::string& SOLARUS_API get_string(const std::string& key);
-
-std::map<std::string, Dialog>& SOLARUS_API get_dialogs();
-bool SOLARUS_API dialog_exists(const std::string& dialog_id);
-const Dialog& SOLARUS_API get_dialog(const std::string& dialog_id);
+SOLARUS_API std::map<std::string, Dialog>& get_dialogs();
+SOLARUS_API bool dialog_exists(const std::string& dialog_id);
+SOLARUS_API const Dialog& get_dialog(const std::string& dialog_id);
 
 }
 
 }
 
 #endif
-

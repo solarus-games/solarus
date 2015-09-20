@@ -25,6 +25,8 @@
 #include "solarus/GameCommand.h"
 #include "solarus/KeysEffect.h"
 #include "solarus/Transition.h"
+#include "solarus/GameCommands.h"
+#include "solarus/entities/NonAnimatedRegions.h"
 #include <memory>
 #include <string>
 

@@ -30,11 +30,11 @@ set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Werror -Wextra -pedantic ${CMAKE_CXX_FLAGS_DEB
 # Platform-specific flags.
 if(WIN32)
   # Windows: disable the console by default.
-  if(MSVC)
-    set_target_properties(SOLARUS_ENGINE PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
-  elseif(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "-mwindows ${CMAKE_CXX_FLAGS}")
-  endif()
+  #if(MSVC)
+  #  set_target_properties(SOLARUS_ENGINE PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
+  #elseif(CMAKE_COMPILER_IS_GNUCXX)
+  #  set(CMAKE_CXX_FLAGS "-mwindows ${CMAKE_CXX_FLAGS}")
+  #endif()
 endif()
 
 if(GCWZERO)

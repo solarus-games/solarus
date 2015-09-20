@@ -35,15 +35,15 @@ class CommandLine;
  */
 namespace Debug {
 
-void SOLARUS_API set_die_on_error(bool die);
-void SOLARUS_API set_show_popup_on_die(bool show);
-void SOLARUS_API set_abort_on_die(bool abort);
+SOLARUS_API void set_die_on_error(bool die);
+SOLARUS_API void set_show_popup_on_die(bool show);
+SOLARUS_API void set_abort_on_die(bool abort);
 
-void SOLARUS_API warning(const std::string& message);
-void SOLARUS_API error(const std::string& message);
-void SOLARUS_API check_assertion(bool assertion, const char* error_message);
-void SOLARUS_API check_assertion(bool assertion, const std::string& error_message);
-[[noreturn]] void SOLARUS_API die(const std::string& error_message);
+SOLARUS_API void warning(const std::string& message);
+SOLARUS_API void error(const std::string& message);
+SOLARUS_API void check_assertion(bool assertion, const char* error_message);
+SOLARUS_API void check_assertion(bool assertion, const std::string& error_message);
+SOLARUS_API [[noreturn]] void die(const std::string& error_message);
 
 /**
  * \brief Execute an arbitrary function in debug mode.
@@ -57,7 +57,6 @@ void execute_if_debug(Function&& func)
     (void) func;
 #endif
 }
-
 }
 
 }

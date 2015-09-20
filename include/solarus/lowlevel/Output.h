@@ -30,8 +30,8 @@ class Arguments;
  */
 namespace Output {
 
-void SOLARUS_API initialize(const Arguments& args);
-void SOLARUS_API quit();
+SOLARUS_API void initialize(const Arguments& args);
+SOLARUS_API void  quit();
 
 }
 

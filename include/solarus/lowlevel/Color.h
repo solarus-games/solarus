@@ -62,9 +62,6 @@ class Color {
     uint8_t a;     /**< The alpha (opacity) component. 255 is opaque. */
 };
 
-constexpr bool operator==(const Color& lhs, const Color& rhs);
-constexpr bool operator!=(const Color& lhs, const Color& rhs);
-
 }
 
 #include "solarus/lowlevel/Color.inl"

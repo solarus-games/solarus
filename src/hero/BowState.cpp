@@ -19,6 +19,7 @@
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Arrow.h"
+#include "solarus/entities/NonAnimatedRegions.h"
 #include "solarus/lowlevel/Sound.h"
 #include <memory>
 

@@ -18,6 +18,7 @@
 #define SOLARUS_TILESET_DATA_H
 
 #include "solarus/Common.h"
+#include "solarus/EnumInfo.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Rectangle.h"
@@ -38,6 +39,13 @@ enum class TileScrolling {
     SELF                /**< Scrolling on itself. */
 };
 
+template <>
+struct EnumInfoTraits<TileScrolling> {
+  static const std::string pretty_name;
+
+  static const EnumInfo<TileScrolling>::names_type names;
+};
+
 /**
  * \brief Kind of scrolling applied to a tile pattern.
  */
@@ -46,6 +54,13 @@ enum class TilePatternRepeatMode {
     HORIZONTAL,         /**< Repeatable only horizontally. */
     VERTICAL,           /**< Repeatable only vertically. */
     NONE                /**< Not repeatable. */
+};
+
+template <>
+struct EnumInfoTraits<TilePatternRepeatMode> {
+  static const std::string pretty_name;
+
+  static const EnumInfo<TilePatternRepeatMode>::names_type names;
 };
 
 /**
@@ -69,9 +84,6 @@ class SOLARUS_API TilePatternData {
 
     TilePatternRepeatMode get_repeat_mode() const;
     void set_repeat_mode(TilePatternRepeatMode repeat_mode);
-
-    static const std::string& get_repeat_mode_name(TilePatternRepeatMode repeat_mode);
-    static TilePatternRepeatMode get_repeat_mode_by_name(const std::string& repeat_mode_name);
 
     bool is_multi_frame() const;
     int get_num_frames() const;

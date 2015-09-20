@@ -23,22 +23,22 @@
 
 namespace Solarus {
 
-namespace {
+const std::string EnumInfoTraits<TileScrolling>::pretty_name = "tile scrolling";
 
-const std::map<TileScrolling, std::string> scrolling_names = {
+const EnumInfo<TileScrolling>::names_type EnumInfoTraits<TileScrolling>::names = {
     { TileScrolling::NONE, "" },
     { TileScrolling::PARALLAX, "parallax" },
     { TileScrolling::SELF, "self" },
 };
 
-const std::map<TilePatternRepeatMode, std::string> repeat_mode_names = {
+const std::string EnumInfoTraits<TilePatternRepeatMode>::pretty_name = "tile pattern repeat mode";
+
+const EnumInfo<TilePatternRepeatMode>::names_type EnumInfoTraits<TilePatternRepeatMode>::names = {
     { TilePatternRepeatMode::ALL, "all" },
     { TilePatternRepeatMode::HORIZONTAL, "horizontal" },
     { TilePatternRepeatMode::VERTICAL, "vertical" },
     { TilePatternRepeatMode::NONE, "none" },
 };
-
-}
 
 /**
  * \brief Creates a default single-frame tile pattern.
@@ -120,32 +120,6 @@ TilePatternRepeatMode TilePatternData::get_repeat_mode() const {
  */
 void TilePatternData::set_repeat_mode(TilePatternRepeatMode repeat_mode) {
   this->repeat_mode = repeat_mode;
-}
-
-/**
- * \brief Returns the name of a tile pattern repeat mode.
- * \param type A repeat mode.
- * \return The corresponding name.
- */
-const std::string& TilePatternData::get_repeat_mode_name(TilePatternRepeatMode repeat_mode) {
-
-  return repeat_mode_names.at(repeat_mode);
-}
-
-/**
- * \brief Returns the tile pattern repeat mode value with the given name.
- * \param repeat_mode_name The name of a repeat mode. It must exist.
- * \return The corresponding repeat mode value.
- */
-TilePatternRepeatMode TilePatternData::get_repeat_mode_by_name(const std::string& repeat_mode_name) {
-
-  for (const auto& kvp: repeat_mode_names) {
-    if (kvp.second == repeat_mode_name) {
-      return kvp.first;
-    }
-  }
-
-  Debug::die(std::string("Unknown repeat mode: ") + repeat_mode_name);
 }
 
 /**
@@ -403,12 +377,12 @@ int l_tile_pattern(lua_State* l) {
     pattern_data.set_default_layer(default_layer);
 
     const TileScrolling scrolling = LuaTools::opt_enum_field<TileScrolling>(
-        l, 1, "scrolling", scrolling_names, TileScrolling::NONE
+        l, 1, "scrolling", TileScrolling::NONE
     );
     pattern_data.set_scrolling(scrolling);
 
     const TilePatternRepeatMode repeat_mode = LuaTools::opt_enum_field<TilePatternRepeatMode>(
-        l, 1, "repeat_mode", repeat_mode_names, TilePatternRepeatMode::ALL
+        l, 1, "repeat_mode", TilePatternRepeatMode::ALL
     );
     pattern_data.set_repeat_mode(repeat_mode);
 
@@ -557,11 +531,11 @@ bool TilesetData::export_to_lua(std::ostream& out) const {
         << "  width = " << width << ",\n"
         << "  height = " << height << ",\n";
     if (pattern.get_scrolling() != TileScrolling::NONE) {
-      const std::string& scolling_name = scrolling_names.at(pattern.get_scrolling());
+      const std::string& scolling_name = enum_to_name(pattern.get_scrolling());
       out << "  scrolling = \"" << scolling_name << "\",\n";
     }
     if (pattern.get_repeat_mode() != TilePatternRepeatMode::ALL) {
-      const std::string& repeat_mode_name = TilePatternData::get_repeat_mode_name(pattern.get_repeat_mode());
+      const std::string& repeat_mode_name = enum_to_name(pattern.get_repeat_mode());
       out << "  repeat_mode = \"" << repeat_mode_name << "\",\n";
     }
     out << "}\n\n";

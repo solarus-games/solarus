@@ -395,7 +395,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
       int bitstream;
       long bytes_read;
       long total_bytes_read = 0;
-      const int buffer_size = 4096;
+      const int buffer_size = 16384;
       char samples_buffer[buffer_size];
       do {
         bytes_read = ov_read(&file, samples_buffer, buffer_size, 0, 2, 1, &bitstream);

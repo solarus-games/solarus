@@ -156,7 +156,6 @@ void Shader::load_lua_file(const std::string& path) {
 
       // Runtime error.
       Debug::die(std::string("Failed to parse ") + path + " : " + lua_tostring(l, -1));
-      lua_pop(l, 1);
     }
   }
 

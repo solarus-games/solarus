@@ -224,7 +224,6 @@ void Savegame::import_from_file() {
     if (lua_pcall(l, 0, 0, 0) != 0) {
       Debug::die(std::string("Failed to load savegame file '")
           + file_name + "': " + lua_tostring(l, -1));
-      lua_pop(l, 1);
     }
   }
   else if (load_result == LUA_ERRSYNTAX) {

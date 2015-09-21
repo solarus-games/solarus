@@ -18,36 +18,42 @@
 
 namespace Solarus {
 
+const std::string EnumInfoTraits<KeysEffect::ActionKeyEffect>::pretty_name = "action key effect";
+
 /**
  * \brief Lua name of each value of the ActionKeyEffect enum.
  */
-const std::vector<std::string> KeysEffect::action_key_effect_names = {
-  "",
-  "next",
-  "look",
-  "open",
-  "lift",
-  "throw",
-  "grab",
-  "speak",
-  "swim"
+const EnumInfo<KeysEffect::ActionKeyEffect>::names_type EnumInfoTraits<KeysEffect::ActionKeyEffect>::names = {
+  { KeysEffect::ACTION_KEY_NONE, "" },
+  { KeysEffect::ACTION_KEY_NEXT, "next" },
+  { KeysEffect::ACTION_KEY_LOOK, "look" },
+  { KeysEffect::ACTION_KEY_OPEN, "open" },
+  { KeysEffect::ACTION_KEY_LIFT, "lift" },
+  { KeysEffect::ACTION_KEY_THROW, "throw" },
+  { KeysEffect::ACTION_KEY_GRAB, "grab" },
+  { KeysEffect::ACTION_KEY_SPEAK, "speak" },
+  { KeysEffect::ACTION_KEY_SWIM, "swim"}
 };
+
+const std::string EnumInfoTraits<KeysEffect::SwordKeyEffect>::pretty_name = "sword key effect";
 
 /**
  * \brief Lua name of each value of the SwordKeyEffect enum.
  */
-const std::vector<std::string> KeysEffect::sword_key_effect_names = {
-  "",
-  "sword"
+const EnumInfo<KeysEffect::SwordKeyEffect>::names_type EnumInfoTraits<KeysEffect::SwordKeyEffect>::names = {
+  { KeysEffect::SWORD_KEY_NONE, "" },
+  { KeysEffect::SWORD_KEY_SWORD, "sword" }
 };
+
+const std::string EnumInfoTraits<KeysEffect::PauseKeyEffect>::pretty_name = "pause key effect";
 
 /**
  * \brief Lua name of each value of the PauseKeyEffect enum.
  */
-const std::vector<std::string> KeysEffect::pause_key_effect_names = {
-  "",
-  "pause",
-  "return"
+const EnumInfo<KeysEffect::PauseKeyEffect>::names_type EnumInfoTraits<KeysEffect::PauseKeyEffect>::names = {
+  { KeysEffect::PAUSE_KEY_NONE, "" },
+  { KeysEffect::PAUSE_KEY_PAUSE, "pause" },
+  { KeysEffect::PAUSE_KEY_RETURN, "return" }
 };
 
 /**
@@ -134,34 +140,6 @@ bool KeysEffect::is_action_key_acting_on_facing_entity() {
     || action_key_effect == ACTION_KEY_GRAB;
 }
 
-/**
- * \brief Returns the name of an action command effect.
- * \param effect An effect of the action command.
- * \return The name of this effect, or an empty string if the effect is ACTION_KEY_NONE.
- */
-const std::string& KeysEffect::get_action_key_effect_name(
-    ActionKeyEffect effect) {
-
-  return action_key_effect_names[effect];
-}
-
-/**
- * \brief Returns an action command effect given its Lua name.
- * \param effect_name Lua name of an action command effect.
- * \return The corresponding action command effect, or ACTION_KEY_NONE
- * if the name is invalid.
- */
-KeysEffect::ActionKeyEffect KeysEffect::get_action_key_effect_by_name(
-    const std::string& effect_name) {
-
-  for (int i = 0; i < ACTION_KEY_NB; i++) {
-    if (action_key_effect_names[i] == effect_name) {
-      return ActionKeyEffect(i);
-    }
-  }
-  return ACTION_KEY_NONE;
-}
-
 // sword key
 
 /**
@@ -213,34 +191,6 @@ void KeysEffect::restore_sword_key_effect() {
   this->sword_key_effect = sword_key_effect_saved;
 }
 
-/**
- * \brief Returns the name of an attack command effect.
- * \param effect An effect of the attack command.
- * \return The name of this effect, or an empty string if the effect is SWORD_KEY_NONE.
- */
-const std::string& KeysEffect::get_sword_key_effect_name(
-    SwordKeyEffect effect) {
-
-  return sword_key_effect_names[effect];
-}
-
-/**
- * \brief Returns an attack command effect given its Lua name.
- * \param effect_name Lua name of an attack command effect.
- * \return The corresponding attack command effect, or SWORD_KEY_NONE
- * if the name is invalid.
- */
-KeysEffect::SwordKeyEffect KeysEffect::get_sword_key_effect_by_name(
-    const std::string& effect_name) {
-
-  for (int i = 0; i < SWORD_KEY_NB; i++) {
-    if (sword_key_effect_names[i] == effect_name) {
-      return SwordKeyEffect(i);
-    }
-  }
-  return SWORD_KEY_NONE;
-}
-
 // pause key
 
 /**
@@ -290,34 +240,6 @@ void KeysEffect::save_pause_key_effect() {
  */
 void KeysEffect::restore_pause_key_effect() {
   this->pause_key_effect = pause_key_effect_saved;
-}
-
-/**
- * \brief Returns the name of a pause command effect.
- * \param effect An effect of the pause command.
- * \return The name of this effect, or an empty string if the effect is PAUSE_KEY_NONE.
- */
-const std::string& KeysEffect::get_pause_key_effect_name(
-    PauseKeyEffect effect) {
-
-  return pause_key_effect_names[effect];
-}
-
-/**
- * \brief Returns a pause command effect given its Lua name.
- * \param effect_name Lua name of a pause command effect.
- * \return The corresponding pause command effect, or PAUSE_KEY_NONE
- * if the name is invalid.
- */
-KeysEffect::PauseKeyEffect KeysEffect::get_pause_key_effect_by_name(
-    const std::string& effect_name) {
-
-  for (int i = 0; i < PAUSE_KEY_NB; i++) {
-    if (pause_key_effect_names[i] == effect_name) {
-      return PauseKeyEffect(i);
-    }
-  }
-  return PAUSE_KEY_NONE;
 }
 
 // item keys

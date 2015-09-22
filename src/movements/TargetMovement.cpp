@@ -24,7 +24,11 @@
 
 namespace Solarus {
 
-const uint32_t TargetMovement::recomputation_delay = 150;
+namespace {
+
+const uint32_t recomputation_delay = 150;
+
+}  // Anonymous namespace.
 
 /**
  * \brief Creates a new target movement toward an entity or a fixed point.

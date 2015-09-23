@@ -26,6 +26,9 @@ namespace Solarus {
 
 namespace {
 
+/**
+ * \brief Time interval between each recomputation of the angle.
+ */
 const uint32_t recomputation_delay = 150;
 
 }  // Anonymous namespace.

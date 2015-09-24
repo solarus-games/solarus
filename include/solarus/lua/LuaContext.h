@@ -797,7 +797,7 @@ class LuaContext {
       entity_api_remove_sprite,
       entity_api_is_visible,
       entity_api_set_visible,
-      entity_api_get_movement,
+      entity_api_get_movement,  // TODO some movement types are not in the Lua API
       entity_api_stop_movement,
       entity_api_has_layer_independent_collisions,
       entity_api_set_layer_independent_collisions,

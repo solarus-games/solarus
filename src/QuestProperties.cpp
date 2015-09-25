@@ -27,6 +27,9 @@ namespace Solarus {
 
 namespace {
 
+/**
+ * \brief Function called by Lua when parsing the quest{ } part of the file.
+ */
 int l_quest(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {

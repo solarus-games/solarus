@@ -27,8 +27,10 @@
 #include "solarus/Camera.h"
 #include "solarus/MapData.h"
 #include "solarus/Transition.h"
-#include <memory>
-#include <string>
+#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Tileset.h"
+#include "solarus/entities/NonAnimatedRegions.h"
+#include "solarus/entities/TilePattern.h"
 
 namespace Solarus {
 

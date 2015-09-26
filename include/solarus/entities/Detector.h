@@ -34,7 +34,7 @@ class EquipmentItem;
  * to detect the presence of the hero or other moving entities.
  * Examples of detectors include teletransporters, switches and enemies.
  */
-class Detector: public MapEntity {
+class SOLARUS_API Detector: public MapEntity {
 
   public:
 

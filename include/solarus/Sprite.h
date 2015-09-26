@@ -20,6 +20,7 @@
 #include "solarus/Common.h"
 #include "solarus/Drawable.h"
 #include "solarus/SpritePtr.h"
+#include "solarus/entities/NonAnimatedRegions.h"
 #include <map>
 #include <string>
 

@@ -23,16 +23,6 @@
 #ifndef SOLARUS_COMMON_H
 #define SOLARUS_COMMON_H
 
-#pragma warning( disable : 4251 4275 4458 4514 4710 4820 4244 4800)
- // 4251 needs to have dll-interface to be used by clients of class
- // 4275 non dll-interface class 'Foo::Bar' used as base for dll-interface class 'Foo::Baz'
- // 4458 declaration of 'foo' hides class member
- // 4514 unreferenced inline function has been removed
- // 4710 function not inlined
- // 4820 padding added after data member
- // 4244 'argument': conversion from 'foo' to 'bar', possible loss of data
- // 4800 'int': forcing value to bool 'true' or 'false' (performance warning)
-
 #include "solarus/config.h"
 
 /**
@@ -101,6 +91,18 @@
 #  else
 #    define SOLARUS_API __declspec(dllimport)
 #  endif
+
+// TODO MSVC: fix these warnings instead of disabling them
+#  pragma warning( disable : 4251 4275 4458 4514 4710 4820 4244 4800)
+// 4251 needs to have dll-interface to be used by clients of class
+// 4275 non dll-interface class 'Foo::Bar' used as base for dll-interface class 'Foo::Baz'
+// 4458 declaration of 'foo' hides class member
+// 4514 unreferenced inline function has been removed
+// 4710 function not inlined
+// 4820 padding added after data member
+// 4244 'argument': conversion from 'foo' to 'bar', possible loss of data
+// 4800 'int': forcing value to bool 'true' or 'false' (performance warning)
+
 #else
 #  define SOLARUS_API
 #endif

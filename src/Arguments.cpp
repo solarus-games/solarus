@@ -44,11 +44,19 @@ Arguments::Arguments(int argc, char** argv) {
 }
 
 /**
- * \brief Returns the program name that was passed as first argument of main().
+ * \brief Returns the program name, usually the first argument of main().
  * \return The program name, or an empty string if unknown.
  */
 const std::string& Arguments::get_program_name() const {
   return program_name;
+}
+
+/**
+ * \brief Sets the program name of this argument list.
+ * \param program_name The program name.
+ */
+void Arguments::set_program_name(const std::string& program_name) {
+  this->program_name = program_name;
 }
 
 /**

@@ -38,6 +38,7 @@ class SOLARUS_API Arguments {
     Arguments(int argc, char** argv);
 
     const std::string& get_program_name() const;
+    void set_program_name(const std::string& program_name);
     const std::vector<std::string>& get_arguments() const;
     bool has_argument(const std::string& option) const;
     std::string get_argument_value(const std::string& key) const;

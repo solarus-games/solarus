@@ -82,7 +82,7 @@ int MapData::get_num_layers() const {
 
 /**
  * \brief Changes the number of layers of the map.
- * \param num_layers The new numer of layers.
+ * \param num_layers The new number of layers.
  * If you reduce it, entities in removed layers are destroyed.
  */
 void MapData::set_num_layers(int num_layers) {

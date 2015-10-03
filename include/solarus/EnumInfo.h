@@ -29,7 +29,7 @@ class EnumInfo {
 
   public:
 
-    using names_type = typename std::map<E, std::string> ;
+    using names_type = std::map<E, std::string>;
 
     static const std::list<E> enums();
     static const std::list<std::string> names();

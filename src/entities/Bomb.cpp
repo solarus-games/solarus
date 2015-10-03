@@ -170,10 +170,10 @@ void Bomb::notify_position_changed() {
   Detector::notify_position_changed();
 
   if (get_hero().get_facing_entity() == this
-      && get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_LIFT
+      && get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_LIFT
       && !get_hero().is_facing_point_in(get_bounding_box())) {
 
-    get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
+    get_commands_effects().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
   }
 }
 
@@ -182,7 +182,7 @@ void Bomb::notify_position_changed() {
  */
 bool Bomb::notify_action_command_pressed() {
 
-  CommandsEffects::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
+  CommandsEffects::ActionKeyEffect effect = get_commands_effects().get_action_key_effect();
 
   if (effect == CommandsEffects::ACTION_KEY_LIFT
       && get_hero().get_facing_entity() == this

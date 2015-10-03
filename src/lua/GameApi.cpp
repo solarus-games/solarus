@@ -1257,14 +1257,14 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
 
       case GameCommand::ACTION:
       {
-        CommandsEffects::ActionKeyEffect effect = game->get_keys_effect().get_action_key_effect();
+        CommandsEffects::ActionKeyEffect effect = game->get_commands_effects().get_action_key_effect();
         effect_name = enum_to_name(effect);
         break;
       }
 
       case GameCommand::ATTACK:
       {
-        CommandsEffects::SwordKeyEffect effect = game->get_keys_effect().get_sword_key_effect();
+        CommandsEffects::SwordKeyEffect effect = game->get_commands_effects().get_sword_key_effect();
         effect_name = enum_to_name(effect);
         break;
       }
@@ -1283,7 +1283,7 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
 
       case GameCommand::PAUSE:
       {
-        CommandsEffects::PauseKeyEffect effect = game->get_keys_effect().get_pause_key_effect();
+        CommandsEffects::PauseKeyEffect effect = game->get_commands_effects().get_pause_key_effect();
         effect_name = enum_to_name(effect);
         break;
       }

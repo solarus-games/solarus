@@ -361,7 +361,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     const MapEntities& get_entities() const;
     Equipment& get_equipment();
     const Equipment& get_equipment() const;
-    CommandsEffects& get_keys_effect();
+    CommandsEffects& get_commands_effects();
     GameCommands& get_commands();
     Savegame& get_savegame();
     const Savegame& get_savegame() const;

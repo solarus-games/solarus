@@ -501,8 +501,8 @@ const Equipment& Entity::get_equipment() const {
  * \brief Returns the keys effect manager.
  * \return the keys effect
  */
-CommandsEffects& Entity::get_keys_effect() {
-  return get_game().get_keys_effect();
+CommandsEffects& Entity::get_commands_effects() {
+  return get_game().get_commands_effects();
 }
 
 /**

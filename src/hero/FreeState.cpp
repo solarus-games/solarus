@@ -58,7 +58,7 @@ void Hero::FreeState::stop(const State* next_state) {
 
   PlayerMovementState::stop(next_state);
 
-  get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
+  get_commands_effects().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
 }
 
 /**
@@ -99,8 +99,8 @@ void Hero::FreeState::notify_action_command_pressed() {
   Detector* facing_entity = hero.get_facing_entity();
   bool facing_entity_interaction = false;
   if (facing_entity != nullptr) {
-    if (get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE ||
-        get_keys_effect().is_action_key_acting_on_facing_entity()
+    if (get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE ||
+        get_commands_effects().is_action_key_acting_on_facing_entity()
     ) {
 
       // action on the facing entity

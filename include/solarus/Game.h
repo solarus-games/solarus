@@ -67,7 +67,7 @@ class SOLARUS_API Game {
     const HeroPtr& get_hero();
     GameCommands& get_commands();
     const GameCommands& get_commands() const;
-    CommandsEffects& get_keys_effect();
+    CommandsEffects& get_commands_effects();
     Savegame& get_savegame();
     const Savegame& get_savegame() const;
     Equipment& get_equipment();
@@ -143,7 +143,7 @@ class SOLARUS_API Game {
     std::unique_ptr<GameCommands>
         commands;              /**< this object receives the keyboard and joypad events */
     CommandsEffects
-        keys_effect;           /**< current effect associated to the main game keys
+        commands_effects;      /**< current effect associated to the main game keys
                                 * (represented on the HUD by the action icon, the objects icons, etc.) */
 
     // map
@@ -164,7 +164,7 @@ class SOLARUS_API Game {
     bool crystal_state;        /**< indicates that a crystal has been enabled (i.e. the orange blocks are raised) */
 
     // update functions
-    void update_keys_effect();
+    void update_commands_effects();
     void update_transitions();
     void update_gameover_sequence();
     void notify_map_changed();

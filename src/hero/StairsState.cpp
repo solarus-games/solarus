@@ -94,7 +94,7 @@ void Hero::StairsState::start(const State* previous_state) {
     sprites.set_animation_walking_carrying();
   }
   sprites.set_animation_direction((path[0] - '0') / 2);
-  get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
+  get_commands_effects().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
 
   Hero& hero = get_entity();
   if (stairs->is_inside_floor()) {

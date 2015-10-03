@@ -225,16 +225,16 @@ void Door::notify_collision(Entity& entity_overlapping, CollisionMode /* collisi
 
     Hero& hero = static_cast<Hero&>(entity_overlapping);
 
-    if (get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE
+    if (get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE
         && hero.is_free()) {
 
       if (can_open()) {
         // The action command opens the door.
-        get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_OPEN);
+        get_commands_effects().set_action_key_effect(CommandsEffects::ACTION_KEY_OPEN);
       }
       else if (!get_cannot_open_dialog_id().empty()) {
         // The action command shows a dialog.
-        get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_LOOK);
+        get_commands_effects().set_action_key_effect(CommandsEffects::ACTION_KEY_LOOK);
       }
     }
   }
@@ -550,7 +550,7 @@ bool Door::notify_action_command_pressed() {
 
   if (get_hero().is_free() &&
       is_closed() &&
-      get_keys_effect().get_action_key_effect() != CommandsEffects::ACTION_KEY_NONE
+      get_commands_effects().get_action_key_effect() != CommandsEffects::ACTION_KEY_NONE
   ) {
 
     if (can_open()) {

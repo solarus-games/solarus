@@ -326,14 +326,14 @@ void Destructible::notify_collision_with_hero(Hero& hero, CollisionMode /* colli
       && !is_being_cut
       && !is_waiting_for_regeneration()
       && !is_regenerating
-      && get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE
+      && get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE
       && hero.is_free()) {
 
     if (get_equipment().has_ability(Ability::LIFT, get_weight())) {
-      get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_LIFT);
+      get_commands_effects().set_action_key_effect(CommandsEffects::ACTION_KEY_LIFT);
     }
     else {
-      get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_LOOK);
+      get_commands_effects().set_action_key_effect(CommandsEffects::ACTION_KEY_LOOK);
     }
   }
 }
@@ -386,7 +386,7 @@ void Destructible::notify_collision(
  */
 bool Destructible::notify_action_command_pressed() {
 
-  CommandsEffects::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
+  CommandsEffects::ActionKeyEffect effect = get_commands_effects().get_action_key_effect();
 
   if ((effect == CommandsEffects::ACTION_KEY_LIFT || effect == CommandsEffects::ACTION_KEY_LOOK)
       && get_weight() != -1

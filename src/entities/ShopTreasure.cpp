@@ -169,11 +169,11 @@ void ShopTreasure::notify_collision(
 
     Hero& hero = static_cast<Hero&>(entity_overlapping);
 
-    if (get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE
+    if (get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE
         && hero.is_free()) {
 
       // we show the 'look' icon
-      get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_LOOK);
+      get_commands_effects().set_action_key_effect(CommandsEffects::ACTION_KEY_LOOK);
     }
   }
 }
@@ -184,7 +184,7 @@ void ShopTreasure::notify_collision(
 bool ShopTreasure::notify_action_command_pressed() {
 
   if (get_hero().is_free()
-      && get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_LOOK) {
+      && get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_LOOK) {
 
     LuaContext& lua_context = get_lua_context();
     lua_context.notify_shop_treasure_interaction(*this);

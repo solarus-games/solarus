@@ -97,7 +97,7 @@ void DialogBoxSystem::open(
   this->callback_ref = callback_ref;
 
   // Save commands.
-  CommandsEffects& keys_effect = game.get_keys_effect();
+  CommandsEffects& keys_effect = game.get_commands_effects();
   keys_effect.save_action_key_effect();
   keys_effect.set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
   keys_effect.save_sword_key_effect();
@@ -174,7 +174,7 @@ void DialogBoxSystem::close(const ScopedLuaRef& status_ref) {
   this->dialog_id = "";
 
   // Restore commands.
-  CommandsEffects& keys_effect = game.get_keys_effect();
+  CommandsEffects& keys_effect = game.get_commands_effects();
   keys_effect.restore_action_key_effect();
   keys_effect.restore_sword_key_effect();
   keys_effect.restore_pause_key_effect();
@@ -216,7 +216,7 @@ void DialogBoxSystem::show_more_lines() {
     return;
   }
 
-  CommandsEffects& keys_effect = game.get_keys_effect();
+  CommandsEffects& keys_effect = game.get_commands_effects();
   keys_effect.set_action_key_effect(CommandsEffects::ACTION_KEY_NEXT);
 
   // Prepare the 3 lines.

@@ -57,10 +57,10 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/movements/StraightMovement.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
 #include "solarus/Game.h"
-#include "solarus/KeysEffect.h"
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
 #include <algorithm>
@@ -713,7 +713,7 @@ void Hero::notify_facing_entity_changed(Detector* facing_entity) {
       get_keys_effect().is_action_key_acting_on_facing_entity()) {
 
     // the hero just stopped facing an entity that was showing an action icon
-    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+    get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
   }
 }
 
@@ -1759,11 +1759,11 @@ void Hero::notify_collision_with_crystal(Crystal& /* crystal */, CollisionMode c
   if (collision_mode == COLLISION_FACING) {
     // The hero is touching the crystal and is looking in its direction.
 
-    if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+    if (get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE
         && is_free()) {
 
       // We show the action icon.
-      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
+      get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_LOOK);
     }
   }
 }
@@ -1790,13 +1790,13 @@ void Hero::notify_collision_with_crystal(Crystal& crystal, Sprite& sprite_overla
  */
 void Hero::notify_collision_with_chest(Chest& chest) {
 
-  if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+  if (get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE
       && is_free()
       && is_facing_direction4(1)
       && !chest.is_open()) {
 
     // We show the 'open' icon even if the chest cannot be opened yet.
-    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_OPEN);
+    get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_OPEN);
   }
 }
 
@@ -1806,11 +1806,11 @@ void Hero::notify_collision_with_chest(Chest& chest) {
  */
 void Hero::notify_collision_with_block(Block& /* block */) {
 
-  if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+  if (get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE
       && is_free()) {
 
     // we show the action icon
-    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_GRAB);
+    get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_GRAB);
   }
 }
 
@@ -1833,12 +1833,12 @@ void Hero::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) 
   if (collision_mode == COLLISION_FACING) {
     // the hero is touching the bomb and is looking in its direction
 
-    if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+    if (get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE
         && get_facing_entity() == &bomb
         && is_free()) {
 
       // we show the action icon
-      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
+      get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_LIFT);
     }
   }
 }

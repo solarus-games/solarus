@@ -18,9 +18,9 @@
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Switch.h"
 #include "solarus/movements/RelativeMovement.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
-#include "solarus/KeysEffect.h"
 #include "solarus/Sprite.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/System.h"
@@ -187,7 +187,7 @@ void Block::notify_collision_with_switch(Switch& sw, CollisionMode /* collision_
  */
 bool Block::notify_action_command_pressed() {
 
-  if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_GRAB) {
+  if (get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_GRAB) {
     get_hero().start_grabbing();
     return true;
   }

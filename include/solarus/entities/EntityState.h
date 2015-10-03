@@ -157,7 +157,7 @@ class Entity::State {
     Map& get_map();
     Equipment& get_equipment();
     const Equipment& get_equipment() const;
-    KeysEffect& get_keys_effect();
+    CommandsEffects& get_keys_effect();
     GameCommands& get_commands();
     const GameCommands& get_commands() const;
     virtual Entity& get_entity();

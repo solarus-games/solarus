@@ -23,9 +23,9 @@
 #include "solarus/movements/PathMovement.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Sound.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Sprite.h"
 #include "solarus/Map.h"
-#include "solarus/KeysEffect.h"
 #include <memory>
 
 namespace Solarus {
@@ -170,10 +170,10 @@ void Bomb::notify_position_changed() {
   Detector::notify_position_changed();
 
   if (get_hero().get_facing_entity() == this
-      && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_LIFT
+      && get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_LIFT
       && !get_hero().is_facing_point_in(get_bounding_box())) {
 
-    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+    get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
   }
 }
 
@@ -182,9 +182,9 @@ void Bomb::notify_position_changed() {
  */
 bool Bomb::notify_action_command_pressed() {
 
-  KeysEffect::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
+  CommandsEffects::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
 
-  if (effect == KeysEffect::ACTION_KEY_LIFT
+  if (effect == CommandsEffects::ACTION_KEY_LIFT
       && get_hero().get_facing_entity() == this
       && get_hero().is_facing_point_in(get_bounding_box())) {
 

@@ -22,11 +22,11 @@
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/TextSurface.h"
 #include "solarus/lua/LuaContext.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
-#include "solarus/KeysEffect.h"
 #include "solarus/Savegame.h"
 #include "solarus/Sprite.h"
 #include <sstream>
@@ -169,11 +169,11 @@ void ShopTreasure::notify_collision(
 
     Hero& hero = static_cast<Hero&>(entity_overlapping);
 
-    if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+    if (get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE
         && hero.is_free()) {
 
       // we show the 'look' icon
-      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
+      get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_LOOK);
     }
   }
 }
@@ -184,7 +184,7 @@ void ShopTreasure::notify_collision(
 bool ShopTreasure::notify_action_command_pressed() {
 
   if (get_hero().is_free()
-      && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {
+      && get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_LOOK) {
 
     LuaContext& lua_context = get_lua_context();
     lua_context.notify_shop_treasure_interaction(*this);

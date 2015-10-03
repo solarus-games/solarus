@@ -18,8 +18,8 @@
 #include "solarus/hero/BaseState.h"
 #include "solarus/hero/SwordSwingingState.h"
 #include "solarus/lua/LuaContext.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Equipment.h"
-#include "solarus/KeysEffect.h"
 
 namespace Solarus {
 
@@ -76,7 +76,7 @@ void Hero::BaseState::notify_attack_command_pressed() {
   Hero& hero = get_entity();
 
   if (!hero.is_suspended()
-      && get_keys_effect().get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD
+      && get_keys_effect().get_sword_key_effect() == CommandsEffects::SWORD_KEY_SWORD
       && hero.can_start_sword()) {
 
     hero.set_state(new Hero::SwordSwingingState(hero));

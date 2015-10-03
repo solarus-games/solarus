@@ -20,8 +20,8 @@
 #include "solarus/entities/CarriedItem.h"
 #include "solarus/entities/MapEntities.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Game.h"
-#include "solarus/KeysEffect.h"
 #include "solarus/Map.h"
 
 namespace Solarus {
@@ -52,7 +52,7 @@ void Hero::CarryingState::start(const State* previous_state) {
     get_sprites().set_lifted_item(carried_item);
 
     // action icon "throw"
-    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
+    get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_THROW);
   }
 }
 
@@ -65,7 +65,7 @@ void Hero::CarryingState::stop(const State* next_state) {
   PlayerMovementState::stop(next_state);
 
   get_sprites().set_lifted_item(nullptr);
-  get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
 
   if (carried_item != nullptr) {
 
@@ -165,7 +165,7 @@ void Hero::CarryingState::update() {
  */
 void Hero::CarryingState::notify_action_command_pressed() {
 
-  if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_THROW) {
+  if (get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_THROW) {
     throw_item();
     Hero& hero = get_entity();
     hero.set_state(new FreeState(hero));

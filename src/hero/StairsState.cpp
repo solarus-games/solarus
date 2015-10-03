@@ -23,9 +23,9 @@
 #include "solarus/movements/PathMovement.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/lowlevel/System.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
-#include "solarus/KeysEffect.h"
 #include "solarus/lowlevel/Debug.h"
 #include <string>
 
@@ -94,7 +94,7 @@ void Hero::StairsState::start(const State* previous_state) {
     sprites.set_animation_walking_carrying();
   }
   sprites.set_animation_direction((path[0] - '0') / 2);
-  get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
 
   Hero& hero = get_entity();
   if (stairs->is_inside_floor()) {

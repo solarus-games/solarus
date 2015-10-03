@@ -16,9 +16,9 @@
  */
 #include "solarus/DialogBoxSystem.h"
 #include "solarus/CurrentQuest.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
-#include "solarus/KeysEffect.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/lowlevel/TextSurface.h"
 #include "solarus/lua/LuaContext.h"
@@ -97,13 +97,13 @@ void DialogBoxSystem::open(
   this->callback_ref = callback_ref;
 
   // Save commands.
-  KeysEffect& keys_effect = game.get_keys_effect();
+  CommandsEffects& keys_effect = game.get_keys_effect();
   keys_effect.save_action_key_effect();
-  keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  keys_effect.set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
   keys_effect.save_sword_key_effect();
-  keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
+  keys_effect.set_sword_key_effect(CommandsEffects::SWORD_KEY_NONE);
   keys_effect.save_pause_key_effect();
-  keys_effect.set_pause_key_effect(KeysEffect::PAUSE_KEY_NONE);
+  keys_effect.set_pause_key_effect(CommandsEffects::PAUSE_KEY_NONE);
 
   // A dialog was just started: notify Lua.
   LuaContext& lua_context = game.get_lua_context();
@@ -115,7 +115,7 @@ void DialogBoxSystem::open(
   if (built_in) {
 
     // Show a built-in default dialog box.
-    keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
+    keys_effect.set_action_key_effect(CommandsEffects::ACTION_KEY_NEXT);
 
     // Prepare the text.
     std::string text = dialog.get_text();
@@ -174,7 +174,7 @@ void DialogBoxSystem::close(const ScopedLuaRef& status_ref) {
   this->dialog_id = "";
 
   // Restore commands.
-  KeysEffect& keys_effect = game.get_keys_effect();
+  CommandsEffects& keys_effect = game.get_keys_effect();
   keys_effect.restore_action_key_effect();
   keys_effect.restore_sword_key_effect();
   keys_effect.restore_pause_key_effect();
@@ -216,8 +216,8 @@ void DialogBoxSystem::show_more_lines() {
     return;
   }
 
-  KeysEffect& keys_effect = game.get_keys_effect();
-  keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
+  CommandsEffects& keys_effect = game.get_keys_effect();
+  keys_effect.set_action_key_effect(CommandsEffects::ACTION_KEY_NEXT);
 
   // Prepare the 3 lines.
   int text_x = text_position.x;

@@ -26,9 +26,9 @@
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Equipment.h"
 #include "solarus/Game.h"
-#include "solarus/KeysEffect.h"
 #include "solarus/MainLoop.h"
 #include "solarus/Map.h"
 #include "solarus/CurrentQuest.h"
@@ -205,7 +205,7 @@ const GameCommands& Game::get_commands() const {
  * \brief Returns the current effect of the main keys (action, sword, pause, etc.).
  * \return the current effect of the main keys
  */
-KeysEffect& Game::get_keys_effect() {
+CommandsEffects& Game::get_keys_effect() {
   return keys_effect;
 }
 
@@ -503,14 +503,14 @@ void Game::update_keys_effect() {
 
   // make sure the sword key is coherent with having a sword
   if (get_equipment().has_ability(Ability::SWORD)
-      && keys_effect.get_sword_key_effect() != KeysEffect::SWORD_KEY_SWORD) {
+      && keys_effect.get_sword_key_effect() != CommandsEffects::SWORD_KEY_SWORD) {
 
-    keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_SWORD);
+    keys_effect.set_sword_key_effect(CommandsEffects::SWORD_KEY_SWORD);
   }
   else if (!get_equipment().has_ability(Ability::SWORD)
-      && keys_effect.get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD) {
+      && keys_effect.get_sword_key_effect() == CommandsEffects::SWORD_KEY_SWORD) {
 
-    keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
+    keys_effect.set_sword_key_effect(CommandsEffects::SWORD_KEY_NONE);
   }
 }
 
@@ -776,17 +776,17 @@ void Game::set_paused(bool paused) {
     this->paused = paused;
     if (paused) {
       keys_effect.save_action_key_effect();
-      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+      keys_effect.set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
       keys_effect.save_sword_key_effect();
-      keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
-      keys_effect.set_pause_key_effect(KeysEffect::PAUSE_KEY_RETURN);
+      keys_effect.set_sword_key_effect(CommandsEffects::SWORD_KEY_NONE);
+      keys_effect.set_pause_key_effect(CommandsEffects::PAUSE_KEY_RETURN);
       get_lua_context().game_on_paused(*this);
     }
     else {
       get_lua_context().game_on_unpaused(*this);
       keys_effect.restore_action_key_effect();
       keys_effect.restore_sword_key_effect();
-      keys_effect.set_pause_key_effect(KeysEffect::PAUSE_KEY_PAUSE);
+      keys_effect.set_pause_key_effect(CommandsEffects::PAUSE_KEY_PAUSE);
     }
   }
 }

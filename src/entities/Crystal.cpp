@@ -20,8 +20,8 @@
 #include "solarus/lowlevel/Random.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/System.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Game.h"
-#include "solarus/KeysEffect.h"
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
 #include "solarus/SpriteAnimationSet.h"
@@ -102,9 +102,9 @@ void Crystal::notify_collision(Entity& other_entity, Sprite& /* this_sprite */, 
 bool Crystal::notify_action_command_pressed() {
 
   if (get_hero().is_free() &&
-      get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK
+      get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_LOOK
   ) {
-    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+    get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
 
     // start a dialog
     get_game().start_dialog("_crystal", ScopedLuaRef(), ScopedLuaRef());

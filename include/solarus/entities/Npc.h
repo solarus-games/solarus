@@ -19,7 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/entities/Detector.h"
-#include "solarus/KeysEffect.h"
+#include "solarus/CommandsEffects.h"
 #include <string>
 
 namespace Solarus {

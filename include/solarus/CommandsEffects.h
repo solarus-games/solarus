@@ -37,11 +37,10 @@ namespace Solarus {
  * This class is also used by the HUD to display the five icons
  * representing those keys.
  *
- * TODO rename to CommandsEffects
  * TODO make a single enum for all commands
  * TODO rename Sword to Attack
  */
-class KeysEffect {
+class CommandsEffects {
 
   public:
 
@@ -78,7 +77,7 @@ class KeysEffect {
       PAUSE_KEY_RETURN     /**< close the pause menu */
     };
 
-    KeysEffect();
+    CommandsEffects();
 
     // action key
 
@@ -134,24 +133,24 @@ class KeysEffect {
 };
 
 template <>
-struct EnumInfoTraits<KeysEffect::ActionKeyEffect> {
+struct EnumInfoTraits<CommandsEffects::ActionKeyEffect> {
   static const std::string pretty_name;
 
-  static const EnumInfo<KeysEffect::ActionKeyEffect>::names_type names;
+  static const EnumInfo<CommandsEffects::ActionKeyEffect>::names_type names;
 };
 
 template <>
-struct EnumInfoTraits<KeysEffect::SwordKeyEffect> {
+struct EnumInfoTraits<CommandsEffects::SwordKeyEffect> {
   static const std::string pretty_name;
 
-  static const EnumInfo<KeysEffect::SwordKeyEffect>::names_type names;
+  static const EnumInfo<CommandsEffects::SwordKeyEffect>::names_type names;
 };
 
 template <>
-struct EnumInfoTraits<KeysEffect::PauseKeyEffect> {
+struct EnumInfoTraits<CommandsEffects::PauseKeyEffect> {
   static const std::string pretty_name;
 
-  static const EnumInfo<KeysEffect::PauseKeyEffect>::names_type names;
+  static const EnumInfo<CommandsEffects::PauseKeyEffect>::names_type names;
 };
 
 }

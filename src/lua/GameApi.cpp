@@ -19,11 +19,11 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/AbilityInfo.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/CurrentQuest.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
 #include "solarus/Game.h"
-#include "solarus/KeysEffect.h"
 #include "solarus/MainLoop.h"
 #include "solarus/Savegame.h"
 
@@ -1257,14 +1257,14 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
 
       case GameCommand::ACTION:
       {
-        KeysEffect::ActionKeyEffect effect = game->get_keys_effect().get_action_key_effect();
+        CommandsEffects::ActionKeyEffect effect = game->get_keys_effect().get_action_key_effect();
         effect_name = enum_to_name(effect);
         break;
       }
 
       case GameCommand::ATTACK:
       {
-        KeysEffect::SwordKeyEffect effect = game->get_keys_effect().get_sword_key_effect();
+        CommandsEffects::SwordKeyEffect effect = game->get_keys_effect().get_sword_key_effect();
         effect_name = enum_to_name(effect);
         break;
       }
@@ -1283,7 +1283,7 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
 
       case GameCommand::PAUSE:
       {
-        KeysEffect::PauseKeyEffect effect = game->get_keys_effect().get_pause_key_effect();
+        CommandsEffects::PauseKeyEffect effect = game->get_keys_effect().get_pause_key_effect();
         effect_name = enum_to_name(effect);
         break;
       }

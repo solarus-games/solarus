@@ -20,9 +20,9 @@
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/hero/LiftingState.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Equipment.h"
 #include "solarus/Game.h"
-#include "solarus/KeysEffect.h"
 #include "solarus/Map.h"
 
 namespace Solarus {
@@ -53,7 +53,7 @@ void Hero::LiftingState::start(const State* previous_state) {
   // initialize the entity that will be lifted
   lifted_item->set_map(get_map());
 
-  get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
+  get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_THROW);
   get_sprites().set_animation_lifting();
   get_sprites().set_lifted_item(lifted_item);
   get_entity().set_facing_entity(nullptr);
@@ -85,7 +85,7 @@ void Hero::LiftingState::stop(const State* next_state) {
       lifted_item = nullptr;
       break;
     }
-    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+    get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
   }
 }
 

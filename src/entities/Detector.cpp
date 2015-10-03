@@ -16,8 +16,8 @@
  */
 #include "solarus/entities/Detector.h"
 #include "solarus/entities/Hero.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Map.h"
-#include "solarus/KeysEffect.h"
 #include "solarus/Sprite.h"
 #include "solarus/lowlevel/Debug.h"
 

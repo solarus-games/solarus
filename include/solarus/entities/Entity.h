@@ -39,6 +39,7 @@ namespace Solarus {
 class Block;
 class Bomb;
 class Chest;
+class CommandsEffects;
 class Crystal;
 class CrystalBlock;
 class Detector;
@@ -50,7 +51,6 @@ class Fire;
 class Game;
 class GameCommands;
 class Hero;
-class KeysEffect;
 class Jumper;
 class LuaContext;
 class Map;
@@ -361,7 +361,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     const MapEntities& get_entities() const;
     Equipment& get_equipment();
     const Equipment& get_equipment() const;
-    KeysEffect& get_keys_effect();
+    CommandsEffects& get_keys_effect();
     GameCommands& get_commands();
     Savegame& get_savegame();
     const Savegame& get_savegame() const;

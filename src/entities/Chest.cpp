@@ -21,9 +21,9 @@
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/ScopedLuaRef.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
-#include "solarus/KeysEffect.h"
 #include "solarus/Map.h"
 #include "solarus/Game.h"
 #include "solarus/Savegame.h"
@@ -389,7 +389,7 @@ bool Chest::notify_action_command_pressed() {
 
   if (is_enabled() &&
       get_hero().is_free() &&
-      get_keys_effect().get_action_key_effect() != KeysEffect::ACTION_KEY_NONE
+      get_keys_effect().get_action_key_effect() != CommandsEffects::ACTION_KEY_NONE
   ) {
 
     if (can_open()) {
@@ -397,7 +397,7 @@ bool Chest::notify_action_command_pressed() {
       set_open(true);
       treasure_date = System::now() + 300;
 
-      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+      get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
       get_hero().start_freezed();
     }
     else if (!get_cannot_open_dialog_id().empty()) {

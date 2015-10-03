@@ -196,7 +196,7 @@ void Npc::notify_collision(Entity& entity_overlapping, CollisionMode collision_m
 
     Hero& hero = static_cast<Hero&>(entity_overlapping);
 
-    if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+    if (get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE
         && hero.is_free()) {
 
       if (subtype == USUAL_NPC // the hero can talk to usual NPCs from any direction
@@ -205,10 +205,10 @@ void Npc::notify_collision(Entity& entity_overlapping, CollisionMode collision_m
 
         // show the appropriate action icon
         get_keys_effect().set_action_key_effect(subtype == USUAL_NPC ?
-            KeysEffect::ACTION_KEY_SPEAK : KeysEffect::ACTION_KEY_LOOK);
+            CommandsEffects::ACTION_KEY_SPEAK : CommandsEffects::ACTION_KEY_LOOK);
       }
       else if (can_be_lifted() && get_equipment().has_ability(Ability::LIFT)) {
-        get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
+        get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_LIFT);
       }
     }
   }
@@ -231,11 +231,11 @@ bool Npc::notify_action_command_pressed() {
 
   Hero& hero = get_hero();
   if (hero.is_free() &&
-      get_keys_effect().get_action_key_effect() != KeysEffect::ACTION_KEY_NONE
+      get_keys_effect().get_action_key_effect() != CommandsEffects::ACTION_KEY_NONE
   ) {
 
-    KeysEffect::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
-    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+    CommandsEffects::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
+    get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
 
     // if this is a usual NPC, look towards the hero
     if (subtype == USUAL_NPC) {
@@ -243,7 +243,7 @@ bool Npc::notify_action_command_pressed() {
       get_sprite().set_current_direction(direction);
     }
 
-    if (effect != KeysEffect::ACTION_KEY_LIFT) {
+    if (effect != CommandsEffects::ACTION_KEY_LIFT) {
       // start the normal behavior
       if (behavior == BEHAVIOR_DIALOG) {
         get_game().start_dialog(dialog_to_show, ScopedLuaRef(), ScopedLuaRef());
@@ -339,10 +339,10 @@ void Npc::notify_position_changed() {
     }
 
     if (get_hero().get_facing_entity() == this &&
-        get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_SPEAK &&
+        get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_SPEAK &&
         !get_hero().is_facing_point_in(get_bounding_box())) {
 
-      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+      get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
     }
   }
 }

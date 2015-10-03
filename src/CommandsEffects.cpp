@@ -14,52 +14,52 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/KeysEffect.h"
+#include "solarus/CommandsEffects.h"
 
 namespace Solarus {
 
-const std::string EnumInfoTraits<KeysEffect::ActionKeyEffect>::pretty_name = "action key effect";
+const std::string EnumInfoTraits<CommandsEffects::ActionKeyEffect>::pretty_name = "action key effect";
 
 /**
  * \brief Lua name of each value of the ActionKeyEffect enum.
  */
-const EnumInfo<KeysEffect::ActionKeyEffect>::names_type EnumInfoTraits<KeysEffect::ActionKeyEffect>::names = {
-  { KeysEffect::ACTION_KEY_NONE, "" },
-  { KeysEffect::ACTION_KEY_NEXT, "next" },
-  { KeysEffect::ACTION_KEY_LOOK, "look" },
-  { KeysEffect::ACTION_KEY_OPEN, "open" },
-  { KeysEffect::ACTION_KEY_LIFT, "lift" },
-  { KeysEffect::ACTION_KEY_THROW, "throw" },
-  { KeysEffect::ACTION_KEY_GRAB, "grab" },
-  { KeysEffect::ACTION_KEY_SPEAK, "speak" },
-  { KeysEffect::ACTION_KEY_SWIM, "swim"}
+const EnumInfo<CommandsEffects::ActionKeyEffect>::names_type EnumInfoTraits<CommandsEffects::ActionKeyEffect>::names = {
+  { CommandsEffects::ACTION_KEY_NONE, "" },
+  { CommandsEffects::ACTION_KEY_NEXT, "next" },
+  { CommandsEffects::ACTION_KEY_LOOK, "look" },
+  { CommandsEffects::ACTION_KEY_OPEN, "open" },
+  { CommandsEffects::ACTION_KEY_LIFT, "lift" },
+  { CommandsEffects::ACTION_KEY_THROW, "throw" },
+  { CommandsEffects::ACTION_KEY_GRAB, "grab" },
+  { CommandsEffects::ACTION_KEY_SPEAK, "speak" },
+  { CommandsEffects::ACTION_KEY_SWIM, "swim"}
 };
 
-const std::string EnumInfoTraits<KeysEffect::SwordKeyEffect>::pretty_name = "sword key effect";
+const std::string EnumInfoTraits<CommandsEffects::SwordKeyEffect>::pretty_name = "sword key effect";
 
 /**
  * \brief Lua name of each value of the SwordKeyEffect enum.
  */
-const EnumInfo<KeysEffect::SwordKeyEffect>::names_type EnumInfoTraits<KeysEffect::SwordKeyEffect>::names = {
-  { KeysEffect::SWORD_KEY_NONE, "" },
-  { KeysEffect::SWORD_KEY_SWORD, "sword" }
+const EnumInfo<CommandsEffects::SwordKeyEffect>::names_type EnumInfoTraits<CommandsEffects::SwordKeyEffect>::names = {
+  { CommandsEffects::SWORD_KEY_NONE, "" },
+  { CommandsEffects::SWORD_KEY_SWORD, "sword" }
 };
 
-const std::string EnumInfoTraits<KeysEffect::PauseKeyEffect>::pretty_name = "pause key effect";
+const std::string EnumInfoTraits<CommandsEffects::PauseKeyEffect>::pretty_name = "pause key effect";
 
 /**
  * \brief Lua name of each value of the PauseKeyEffect enum.
  */
-const EnumInfo<KeysEffect::PauseKeyEffect>::names_type EnumInfoTraits<KeysEffect::PauseKeyEffect>::names = {
-  { KeysEffect::PAUSE_KEY_NONE, "" },
-  { KeysEffect::PAUSE_KEY_PAUSE, "pause" },
-  { KeysEffect::PAUSE_KEY_RETURN, "return" }
+const EnumInfo<CommandsEffects::PauseKeyEffect>::names_type EnumInfoTraits<CommandsEffects::PauseKeyEffect>::names = {
+  { CommandsEffects::PAUSE_KEY_NONE, "" },
+  { CommandsEffects::PAUSE_KEY_PAUSE, "pause" },
+  { CommandsEffects::PAUSE_KEY_RETURN, "return" }
 };
 
 /**
  * \brief Constructor.
  */
-KeysEffect::KeysEffect():
+CommandsEffects::CommandsEffects():
   action_key_effect(ACTION_KEY_NONE),
   action_key_effect_saved(ACTION_KEY_NONE),
   action_key_enabled(true),
@@ -79,14 +79,14 @@ KeysEffect::KeysEffect():
  * \brief Returns the current effect of the action key.
  * \return the current effect of the action key
  */
-KeysEffect::ActionKeyEffect KeysEffect::get_action_key_effect() {
+CommandsEffects::ActionKeyEffect CommandsEffects::get_action_key_effect() {
   return action_key_effect;
 }
 /**
  * \brief Sets the current effect of the action key.
  * \param action_key_effect the current effect of the action key
  */
-void KeysEffect::set_action_key_effect(KeysEffect::ActionKeyEffect action_key_effect) {
+void CommandsEffects::set_action_key_effect(CommandsEffects::ActionKeyEffect action_key_effect) {
   this->action_key_effect = action_key_effect;
 }
 
@@ -94,7 +94,7 @@ void KeysEffect::set_action_key_effect(KeysEffect::ActionKeyEffect action_key_ef
  * \brief Returns whether the action key is enabled.
  * \return true if the action key is enabled, false otherwise
  */
-bool KeysEffect::is_action_key_enabled() {
+bool CommandsEffects::is_action_key_enabled() {
   return action_key_enabled;
 }
 
@@ -102,7 +102,7 @@ bool KeysEffect::is_action_key_enabled() {
  * \brief Sets whether the action key is enabled.
  * \param enable true to enable the action key, false to disable it
  */
-void KeysEffect::set_action_key_enabled(bool enable) {
+void CommandsEffects::set_action_key_enabled(bool enable) {
   this->action_key_enabled = enable;
 }
 
@@ -111,7 +111,7 @@ void KeysEffect::set_action_key_enabled(bool enable) {
  *
  * Call restore_action_key_effect() to restore the action key saved here.
  */
-void KeysEffect::save_action_key_effect() {
+void CommandsEffects::save_action_key_effect() {
   this->action_key_effect_saved = get_action_key_effect();
 }
 
@@ -119,7 +119,7 @@ void KeysEffect::save_action_key_effect() {
  * \brief Restores the action key effect saved by the last
  * call to save_action_key_effect().
  */
-void KeysEffect::restore_action_key_effect() {
+void CommandsEffects::restore_action_key_effect() {
   this->action_key_effect = action_key_effect_saved;
 }
 
@@ -132,7 +132,7 @@ void KeysEffect::restore_action_key_effect() {
  *
  * \return true if the action key is acting on the facing entity
  */
-bool KeysEffect::is_action_key_acting_on_facing_entity() {
+bool CommandsEffects::is_action_key_acting_on_facing_entity() {
   return action_key_effect == ACTION_KEY_LOOK
     || action_key_effect == ACTION_KEY_OPEN
     || action_key_effect == ACTION_KEY_LIFT
@@ -146,7 +146,7 @@ bool KeysEffect::is_action_key_acting_on_facing_entity() {
  * \brief Returns the current effect of the sword key.
  * \return the current effect of the sword key
  */
-KeysEffect::SwordKeyEffect KeysEffect::get_sword_key_effect() {
+CommandsEffects::SwordKeyEffect CommandsEffects::get_sword_key_effect() {
   return sword_key_effect;
 }
 
@@ -154,7 +154,7 @@ KeysEffect::SwordKeyEffect KeysEffect::get_sword_key_effect() {
  * \brief Sets the current effect of the sword key.
  * \param sword_key_effect the current effect of the sword key
  */
-void KeysEffect::set_sword_key_effect(KeysEffect::SwordKeyEffect sword_key_effect) {
+void CommandsEffects::set_sword_key_effect(CommandsEffects::SwordKeyEffect sword_key_effect) {
   this->sword_key_effect = sword_key_effect;
 }
 
@@ -162,7 +162,7 @@ void KeysEffect::set_sword_key_effect(KeysEffect::SwordKeyEffect sword_key_effec
  * \brief Returns whether the sword key is enabled.
  * \return true if the sword key is enabled, false otherwise
  */
-bool KeysEffect::is_sword_key_enabled() {
+bool CommandsEffects::is_sword_key_enabled() {
   return sword_key_enabled;
 }
 
@@ -170,7 +170,7 @@ bool KeysEffect::is_sword_key_enabled() {
  * \brief Sets whether the sword key is enabled.
  * \param enable true to enable the sword key, false to disable it
  */
-void KeysEffect::set_sword_key_enabled(bool enable) {
+void CommandsEffects::set_sword_key_enabled(bool enable) {
   this->sword_key_enabled = enable;
 }
 
@@ -179,7 +179,7 @@ void KeysEffect::set_sword_key_enabled(bool enable) {
  *
  * Call restore_sword_key_effect to restore the sword key saved here.
  */
-void KeysEffect::save_sword_key_effect() {
+void CommandsEffects::save_sword_key_effect() {
   this->sword_key_effect_saved = get_sword_key_effect();
 }
 
@@ -187,7 +187,7 @@ void KeysEffect::save_sword_key_effect() {
  * \brief Restores the sword key effect saved by the last
  * call to save_sword_key_effect().
  */
-void KeysEffect::restore_sword_key_effect() {
+void CommandsEffects::restore_sword_key_effect() {
   this->sword_key_effect = sword_key_effect_saved;
 }
 
@@ -197,7 +197,7 @@ void KeysEffect::restore_sword_key_effect() {
  * \brief Returns the current effect of the pause key.
  * \return the current effect of the pause key
  */
-KeysEffect::PauseKeyEffect KeysEffect::get_pause_key_effect() {
+CommandsEffects::PauseKeyEffect CommandsEffects::get_pause_key_effect() {
   return pause_key_effect;
 }
 
@@ -205,7 +205,7 @@ KeysEffect::PauseKeyEffect KeysEffect::get_pause_key_effect() {
  * \brief Sets the current effect of the pause key.
  * \param pause_key_effect the current effect of the pause key
  */
-void KeysEffect::set_pause_key_effect(KeysEffect::PauseKeyEffect pause_key_effect) {
+void CommandsEffects::set_pause_key_effect(CommandsEffects::PauseKeyEffect pause_key_effect) {
   this->pause_key_effect = pause_key_effect;
 }
 
@@ -213,7 +213,7 @@ void KeysEffect::set_pause_key_effect(KeysEffect::PauseKeyEffect pause_key_effec
  * \brief Returns whether the pause key is enabled.
  * \return true if the pause key is enabled, false otherwise
  */
-bool KeysEffect::is_pause_key_enabled() {
+bool CommandsEffects::is_pause_key_enabled() {
   return pause_key_enabled;
 }
 
@@ -221,7 +221,7 @@ bool KeysEffect::is_pause_key_enabled() {
  * \brief Sets whether the pause key is enabled.
  * \param enable true to enable the pause key, false to disable it
  */
-void KeysEffect::set_pause_key_enabled(bool enable) {
+void CommandsEffects::set_pause_key_enabled(bool enable) {
   this->pause_key_enabled = enable;
 }
 
@@ -230,7 +230,7 @@ void KeysEffect::set_pause_key_enabled(bool enable) {
  *
  * Call restore_pause_key_effect to restore the pause key saved here.
  */
-void KeysEffect::save_pause_key_effect() {
+void CommandsEffects::save_pause_key_effect() {
   this->pause_key_effect_saved = get_pause_key_effect();
 }
 
@@ -238,7 +238,7 @@ void KeysEffect::save_pause_key_effect() {
  * \brief Restores the pause key effect saved by the last
  * call to save_pause_key_effect().
  */
-void KeysEffect::restore_pause_key_effect() {
+void CommandsEffects::restore_pause_key_effect() {
   this->pause_key_effect = pause_key_effect_saved;
 }
 
@@ -248,7 +248,7 @@ void KeysEffect::restore_pause_key_effect() {
  * \brief Returns whether the two item keys are enabled.
  * \return true if the two item keys are enabled, false otherwise
  */
-bool KeysEffect::are_item_keys_enabled() {
+bool CommandsEffects::are_item_keys_enabled() {
   return item_keys_enabled;
 }
 
@@ -256,7 +256,7 @@ bool KeysEffect::are_item_keys_enabled() {
  * \brief Sets whether the two item keys are enabled.
  * \param enable true to enable the two item keys, false to disable them
  */
-void KeysEffect::set_item_keys_enabled(bool enable) {
+void CommandsEffects::set_item_keys_enabled(bool enable) {
   this->item_keys_enabled = enable;
 }
 
@@ -264,7 +264,7 @@ void KeysEffect::set_item_keys_enabled(bool enable) {
  * \brief Enables or disables the 5 keys.
  * \param enable true to enable the 5 keys, false to disable them
  */
-void KeysEffect::set_all_keys_enabled(bool enable) {
+void CommandsEffects::set_all_keys_enabled(bool enable) {
   set_action_key_enabled(enable);
   set_sword_key_enabled(enable);
   set_pause_key_enabled(enable);

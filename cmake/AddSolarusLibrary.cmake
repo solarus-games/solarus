@@ -170,6 +170,7 @@ file(
   include/solarus/Ability.h
   include/solarus/AbilityInfo.h
   include/solarus/Arguments.h
+  include/solarus/CommandsEffects.h
   include/solarus/Common.h
   include/solarus/config.h
   include/solarus/CurrentQuest.h
@@ -187,7 +188,6 @@ file(
   include/solarus/GameCommand.h
   include/solarus/GameCommands.h
   include/solarus/Game.h
-  include/solarus/KeysEffect.h
   include/solarus/MainLoop.h
   include/solarus/Map.h
   include/solarus/MapData.h
@@ -366,6 +366,7 @@ file(
 
   src/AbilityInfo.cpp
   src/Arguments.cpp
+  src/CommandsEffects.cpp
   src/CurrentQuest.cpp
   src/DialogBoxSystem.cpp
   src/Dialog.cpp
@@ -377,7 +378,6 @@ file(
   src/EquipmentItemUsage.cpp
   src/GameCommands.cpp
   src/Game.cpp
-  src/KeysEffect.cpp
   src/MainLoop.cpp
   src/main/Main.cpp
   src/Map.cpp

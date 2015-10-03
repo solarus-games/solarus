@@ -23,12 +23,12 @@
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaContext.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
 #include "solarus/Sprite.h"
-#include "solarus/KeysEffect.h"
 
 namespace Solarus {
 
@@ -174,7 +174,7 @@ const Equipment& Entity::State::get_equipment() const {
  * \brief Returns the keys effect manager.
  * \return the keys effect
  */
-KeysEffect& Entity::State::get_keys_effect() {
+CommandsEffects& Entity::State::get_keys_effect() {
   return get_game().get_keys_effect();
 }
 

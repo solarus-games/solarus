@@ -21,9 +21,9 @@
 #include "solarus/entities/HeroPtr.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/DialogBoxSystem.h"
 #include "solarus/GameCommand.h"
-#include "solarus/KeysEffect.h"
 #include "solarus/Transition.h"
 #include "solarus/GameCommands.h"
 #include "solarus/entities/NonAnimatedRegions.h"
@@ -32,10 +32,10 @@
 
 namespace Solarus {
 
+class CommandsEffects;
 class Equipment;
 class GameCommands;
 class InputEvent;
-class KeysEffect;
 class LuaContext;
 class MainLoop;
 class Map;
@@ -67,7 +67,7 @@ class SOLARUS_API Game {
     const HeroPtr& get_hero();
     GameCommands& get_commands();
     const GameCommands& get_commands() const;
-    KeysEffect& get_keys_effect();
+    CommandsEffects& get_keys_effect();
     Savegame& get_savegame();
     const Savegame& get_savegame() const;
     Equipment& get_equipment();
@@ -142,7 +142,8 @@ class SOLARUS_API Game {
     // controls
     std::unique_ptr<GameCommands>
         commands;              /**< this object receives the keyboard and joypad events */
-    KeysEffect keys_effect;    /**< current effect associated to the main game keys
+    CommandsEffects
+        keys_effect;           /**< current effect associated to the main game keys
                                 * (represented on the HUD by the action icon, the objects icons, etc.) */
 
     // map

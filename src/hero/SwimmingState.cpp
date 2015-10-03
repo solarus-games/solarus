@@ -19,8 +19,8 @@
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/System.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Equipment.h"
-#include "solarus/KeysEffect.h"
 
 namespace Solarus {
 
@@ -45,7 +45,7 @@ void Hero::SwimmingState::start(const State* previous_state) {
 
   get_equipment().notify_ability_used(Ability::SWIM);
   get_entity().set_walking_speed(get_slow_swimming_speed());
-  get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_SWIM);
+  get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_SWIM);
 }
 
 /**
@@ -58,7 +58,7 @@ void Hero::SwimmingState::stop(const State* next_state) {
 
   Hero& hero = get_entity();
   hero.set_walking_speed(hero.get_normal_walking_speed());
-  get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
 }
 
 /**

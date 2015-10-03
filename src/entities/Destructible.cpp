@@ -27,8 +27,8 @@
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/CommandsEffects.h"
 #include "solarus/Game.h"
-#include "solarus/KeysEffect.h"
 #include "solarus/Equipment.h"
 #include "solarus/Treasure.h"
 #include "solarus/Map.h"
@@ -326,14 +326,14 @@ void Destructible::notify_collision_with_hero(Hero& hero, CollisionMode /* colli
       && !is_being_cut
       && !is_waiting_for_regeneration()
       && !is_regenerating
-      && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+      && get_keys_effect().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE
       && hero.is_free()) {
 
     if (get_equipment().has_ability(Ability::LIFT, get_weight())) {
-      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
+      get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_LIFT);
     }
     else {
-      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
+      get_keys_effect().set_action_key_effect(CommandsEffects::ACTION_KEY_LOOK);
     }
   }
 }
@@ -386,9 +386,9 @@ void Destructible::notify_collision(
  */
 bool Destructible::notify_action_command_pressed() {
 
-  KeysEffect::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
+  CommandsEffects::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
 
-  if ((effect == KeysEffect::ACTION_KEY_LIFT || effect == KeysEffect::ACTION_KEY_LOOK)
+  if ((effect == CommandsEffects::ACTION_KEY_LIFT || effect == CommandsEffects::ACTION_KEY_LOOK)
       && get_weight() != -1
       && !is_being_cut
       && !is_waiting_for_regeneration()

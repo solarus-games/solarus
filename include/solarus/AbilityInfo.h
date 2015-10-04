@@ -32,8 +32,6 @@ struct EnumInfoTraits<Ability> {
   static const EnumInfo<Ability>::names_type names;
 };
 
-using AbilityInfo = struct EnumInfo<Ability>;
-
 }
 
 #endif

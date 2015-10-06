@@ -74,7 +74,7 @@ class SOLARUS_API EnemyReaction {
 };
 
 template <>
-struct EnumInfoTraits<EnemyReaction::ReactionType> {
+struct SOLARUS_API EnumInfoTraits<EnemyReaction::ReactionType> {
   static const std::string pretty_name;
 
   static const EnumInfo<EnemyReaction::ReactionType>::names_type names;

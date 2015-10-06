@@ -26,13 +26,13 @@
 namespace Solarus {
 
 template <>
-struct EnumInfoTraits<Ground> {
+struct SOLARUS_API EnumInfoTraits<Ground> {
   static const std::string pretty_name;
 
   static const EnumInfo<Ground>::names_type names;
 };
 
-struct GroundInfo : EnumInfo<Ground> {
+struct SOLARUS_API GroundInfo : EnumInfo<Ground> {
 
 static bool is_ground_diagonal(Ground ground);
 

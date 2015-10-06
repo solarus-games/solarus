@@ -25,7 +25,7 @@
 namespace Solarus {
 
 template <typename E>
-class EnumInfo {
+class SOLARUS_API EnumInfo {
 
   public:
 

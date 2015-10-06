@@ -122,7 +122,7 @@ class SOLARUS_API Transition {
 };
 
 template <>
-struct EnumInfoTraits<Transition::Style> {
+struct SOLARUS_API EnumInfoTraits<Transition::Style> {
   static const std::string pretty_name;
 
   static const EnumInfo<Transition::Style>::names_type names;

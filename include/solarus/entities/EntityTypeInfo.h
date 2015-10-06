@@ -26,13 +26,13 @@
 namespace Solarus {
 
 template <>
-struct EnumInfoTraits<EntityType> {
+struct SOLARUS_API EnumInfoTraits<EntityType> {
   static const std::string pretty_name;
 
   static const EnumInfo<EntityType>::names_type names;
 };
 
-class EntityTypeInfo : public EnumInfo<EntityType> {
+class SOLARUS_API EntityTypeInfo : public EnumInfo<EntityType> {
 
   public:
 

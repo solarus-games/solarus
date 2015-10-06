@@ -1,21 +1,21 @@
 /*
  * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_KEYS_EFFECT_H
-#define SOLARUS_KEYS_EFFECT_H
+#ifndef SOLARUS_COMMANDS_EFFECT_H
+#define SOLARUS_COMMANDS_EFFECT_H
 
 #include "solarus/Common.h"
 #include "solarus/EnumInfo.h"
@@ -133,21 +133,21 @@ class CommandsEffects {
 };
 
 template <>
-struct EnumInfoTraits<CommandsEffects::ActionKeyEffect> {
+struct SOLARUS_API EnumInfoTraits<CommandsEffects::ActionKeyEffect> {
   static const std::string pretty_name;
 
   static const EnumInfo<CommandsEffects::ActionKeyEffect>::names_type names;
 };
 
 template <>
-struct EnumInfoTraits<CommandsEffects::SwordKeyEffect> {
+struct SOLARUS_API EnumInfoTraits<CommandsEffects::SwordKeyEffect> {
   static const std::string pretty_name;
 
   static const EnumInfo<CommandsEffects::SwordKeyEffect>::names_type names;
 };
 
 template <>
-struct EnumInfoTraits<CommandsEffects::PauseKeyEffect> {
+struct SOLARUS_API EnumInfoTraits<CommandsEffects::PauseKeyEffect> {
   static const std::string pretty_name;
 
   static const EnumInfo<CommandsEffects::PauseKeyEffect>::names_type names;

@@ -308,14 +308,14 @@ class InputEvent {
 };
 
 template <>
-struct EnumInfoTraits<InputEvent::KeyboardKey> {
+struct SOLARUS_API EnumInfoTraits<InputEvent::KeyboardKey> {
   static const std::string pretty_name;
 
   static const EnumInfo<InputEvent::KeyboardKey>::names_type names;
 };
 
 template <>
-struct EnumInfoTraits<InputEvent::MouseButton> {
+struct SOLARUS_API EnumInfoTraits<InputEvent::MouseButton> {
   static const std::string pretty_name;
 
   static const EnumInfo<InputEvent::MouseButton>::names_type names;

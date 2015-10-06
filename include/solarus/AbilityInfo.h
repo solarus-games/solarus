@@ -26,7 +26,7 @@
 namespace Solarus {
 
 template <>
-struct EnumInfoTraits<Ability> {
+struct SOLARUS_API EnumInfoTraits<Ability> {
   static const std::string pretty_name;
 
   static const EnumInfo<Ability>::names_type names;

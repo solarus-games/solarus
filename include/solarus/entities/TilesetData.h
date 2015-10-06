@@ -40,7 +40,7 @@ enum class TileScrolling {
 };
 
 template <>
-struct EnumInfoTraits<TileScrolling> {
+struct SOLARUS_API EnumInfoTraits<TileScrolling> {
   static const std::string pretty_name;
 
   static const EnumInfo<TileScrolling>::names_type names;
@@ -57,7 +57,7 @@ enum class TilePatternRepeatMode {
 };
 
 template <>
-struct EnumInfoTraits<TilePatternRepeatMode> {
+struct SOLARUS_API EnumInfoTraits<TilePatternRepeatMode> {
   static const std::string pretty_name;
 
   static const EnumInfo<TilePatternRepeatMode>::names_type names;

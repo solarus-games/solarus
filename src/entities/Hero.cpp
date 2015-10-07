@@ -209,7 +209,7 @@ void Hero::update_ground_effects() {
       const std::shared_ptr<StraightMovement> movement =
           std::dynamic_pointer_cast<StraightMovement>(get_movement());
       if (movement != nullptr) {
-        // TODO replace the dynamic_cast by a virtual method get_speed() in Movement.
+        // TODO replace the dynamic_pointer_cast by a virtual method get_speed() in Movement.
         double speed = movement->get_speed();
         next_ground_date = now + std::max(150, (int) (20000 / speed));
         if (sprites->is_walking() && get_state().is_touching_ground()) {

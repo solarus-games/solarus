@@ -98,17 +98,17 @@ void Equipment::update() {
 
   Game* game = savegame.get_game();
   if (game == nullptr) {
-    // nothing dynamic when there is no game
+    // Nothing dynamic when there is no game.
     return;
   }
 
-  // check if the game is suspended
+  // Check if the game is suspended.
   bool game_suspended = game->is_suspended();
   if (suspended != game_suspended) {
     set_suspended(game_suspended);
   }
 
-  // update the item scripts
+  // Update item scripts.
   for (const auto& kvp: items) {
     EquipmentItem& item = *kvp.second;
     item.update();
@@ -123,7 +123,7 @@ void Equipment::set_suspended(bool suspended) {
 
   this->suspended = suspended;
 
-  // notify the item scripts
+  // Notify the item scripts.
   for (const auto& kvp: items) {
     EquipmentItem& item = *kvp.second;
     item.set_suspended(suspended);

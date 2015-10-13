@@ -28,6 +28,7 @@
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Size.h"
+#include <limits>
 #include <memory>
 #include <sstream>
 

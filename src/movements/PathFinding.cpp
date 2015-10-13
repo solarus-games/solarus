@@ -19,6 +19,7 @@
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/Map.h"
 #include "solarus/lowlevel/Debug.h"
+#include <limits>
 
 namespace Solarus {
 
@@ -84,7 +85,7 @@ std::string PathFinding::compute_path() {
   };
 
   std::string best_path;
-  int minimum_steps = std::numeric_limits<int>::max();
+  size_t minimum_steps = std::numeric_limits<int>::max();
   for (const Point& offset : offsets) {
     std::string path = compute_path(offset);
     if (!path.empty() && path.size() < minimum_steps) {

@@ -36,7 +36,7 @@ void check_entity(const EntityData& entity) {
   Debug::check_assertion(success, "Entity export failed");
 
   EntityData imported_entity;
-  success = imported_entity.import_from_buffer(exported_entity_buffer);
+  success = imported_entity.import_from_buffer(exported_entity_buffer, "entity");
   Debug::check_assertion(success, "Entity import failed");
 
   Debug::check_assertion(imported_entity.get_type() == entity.get_type(), "Entity type differs");
@@ -58,7 +58,7 @@ void check_map(TestEnvironment& /* env */, const std::string& map_id) {
   // Import the map data file.
   std::string file_name = "maps/" + map_id + ".dat";
   std::string imported_map_buffer = QuestFiles::data_file_read(file_name);
-  success = map_data.import_from_buffer(imported_map_buffer);
+  success = map_data.import_from_buffer(imported_map_buffer, file_name);
   Debug::check_assertion(success, "Map import failed");
 
   // Export it.

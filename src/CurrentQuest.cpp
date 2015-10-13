@@ -106,15 +106,13 @@ void set_language(const std::string& language_code) {
 
   // Read the quest string list file.
   get_strings().clear();
-  get_strings().import_from_buffer(
-        QuestFiles::data_file_read("text/strings.dat", true));
+  get_strings().import_from_quest_file("text/strings.dat", true);
 
   // Read the quest dialog list file.
   DialogResources resources;
   auto& dialogs = get_dialogs();
 
-  bool success = resources.import_from_buffer(
-        QuestFiles::data_file_read("text/dialogs.dat", true));
+  bool success = resources.import_from_quest_file("text/dialogs.dat", true);
 
   // Create dialogs.
   dialogs.clear();

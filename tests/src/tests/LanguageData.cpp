@@ -36,7 +36,7 @@ void check_strings(TestEnvironment& /* env */, const std::string& language_id) {
   // Import the strings data file.
   std::string file_name = "languages/" + language_id + "/text/strings.dat";
   std::string imported_string_buffer = QuestFiles::data_file_read(file_name);
-  success = string_resources.import_from_buffer(imported_string_buffer);
+  success = string_resources.import_from_buffer(imported_string_buffer, file_name);
   Debug::check_assertion(success, "Strings import failed");
 
   // Export it.
@@ -64,7 +64,7 @@ void check_dialogs(TestEnvironment& /* env */, const std::string& language_id) {
   // Import the dialogs data file.
   std::string file_name = "languages/" + language_id + "/text/dialogs.dat";
   std::string imported_dialog_buffer = QuestFiles::data_file_read(file_name);
-  success = dialog_resources.import_from_buffer(imported_dialog_buffer);
+  success = dialog_resources.import_from_quest_file(file_name);
   Debug::check_assertion(success, "Dialogs import failed");
 
   // Export it.

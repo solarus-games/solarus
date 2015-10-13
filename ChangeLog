@@ -10,6 +10,7 @@ Bug fixes for the 1.4 release.
 * Fix collisions triggered for removed entities (#710).
 * Fix pickables with special movement falling in holes too early.
 * Fix performance issue when sprites have huge frame delays (#723).
+* Fix file name not shown when there is an error in dialogs file (#718).
 
 __________________________
 

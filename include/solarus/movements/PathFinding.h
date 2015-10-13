@@ -46,6 +46,7 @@ class SOLARUS_API PathFinding {
         MapEntity& target_entity);
 
     std::string compute_path();
+    std::string compute_path(const Point& offset);
 
   private:
 

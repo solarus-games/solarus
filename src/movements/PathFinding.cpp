@@ -70,12 +70,45 @@ PathFinding::PathFinding(
  */
 std::string PathFinding::compute_path() {
 
-  //std::cout << "will compute a path from " << source_entity.get_top_left_x() << ","
-  //  << source_entity.get_top_left_y() << " to " << target_entity.get_top_left_x() << ","
-  //  << target_entity.get_top_left_y() << std::endl;
+  if (!target_entity.is_obstacle_for(source_entity)) {
+    // No offset needed.
+    return compute_path(Point());
+  }
+
+  // The target is not traversable: then try to compute a path to somewhere close.
+  const std::vector<Point> offsets = {
+      Point(target_entity.get_width(), 0),
+      Point(0, -target_entity.get_height()),
+      Point(-target_entity.get_width(), 0),
+      Point(0, target_entity.get_height())
+  };
+
+  std::string best_path;
+  int minimum_steps = std::numeric_limits<int>::max();
+  for (const Point& offset : offsets) {
+    std::string path = compute_path(offset);
+    if (!path.empty() && path.size() < minimum_steps) {
+      best_path = path;
+      minimum_steps = path.size();
+    }
+  }
+
+  return best_path;
+}
+
+/**
+ * \brief Tries to find a path from the source point to the target point
+ * plus an offset.
+ * \param offset Translation to add to the target.
+ * \return the path found, or an empty string if no path was found
+ * (because there is no path or the target is too far)
+ */
+std::string PathFinding::compute_path(const Point& offset) {
 
   Point source = source_entity.get_bounding_box().get_xy();
-  Point target = target_entity.get_bounding_box().get_xy();
+  Point target = target_entity.get_bounding_box().get_xy() + offset;
+
+  // std::cout << "will compute a path from " << source << " to " << target << std::endl;
 
   target.x += 4;
   target.x += -target.x % 8;
@@ -103,6 +136,10 @@ std::string PathFinding::compute_path() {
   starting_node.total_cost = total_mdistance;
   starting_node.direction = ' ';
   starting_node.parent_index = -1;
+
+  open_list.clear();
+  closed_list.clear();
+  open_list_indices.clear();
 
   open_list[index] = starting_node;
   open_list_indices.push_front(index);

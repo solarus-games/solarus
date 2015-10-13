@@ -16,6 +16,7 @@
  */
 #include "solarus/entities/CustomEntity.h"
 #include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Npc.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/Map.h"
@@ -134,6 +135,32 @@ std::shared_ptr<CustomEntity> TestEnvironment::make_entity<CustomEntity>(
      Size(16, 16),
      "",
      ""
+  );
+  get_entities().add_entity(entity);
+
+  return entity;
+}
+
+/**
+ * \brief Creates an NPC on the map and returns it.
+ * \param xy Coordinates of the entity to create.
+ * \param layer Layer of the entity to create.
+ */
+template<>
+std::shared_ptr<Npc> TestEnvironment::make_entity<Npc>(
+    const Point& xy,
+    int layer
+) {
+
+  std::shared_ptr<Npc> entity = std::make_shared<Npc>(
+     get_game(),
+     "",
+     layer,
+     xy,
+     Npc::Subtype::GENERALIZED_NPC,
+     "",
+     0,
+     "map"
   );
   get_entities().add_entity(entity);
 

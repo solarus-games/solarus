@@ -29,13 +29,16 @@ namespace Solarus {
  * \brief Imports a Lua data file from memory to this object.
  * \param[in] buffer A memory area with the content of a data file
  * encoded in UTF-8.
+ * \param[in] file_name Name of a file to use in error messages.
  * \return \c true in case of success, \c false if the file could not be loaded.
  */
-bool LuaData::import_from_buffer(const std::string& buffer) {
-
+bool LuaData::import_from_buffer(
+    const std::string& buffer,
+    const std::string& file_name
+) {
   // Read the file.
   lua_State* l = luaL_newstate();
-  if (luaL_loadbuffer(l, buffer.data(), buffer.size(), "data file") != 0) {
+  if (luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str()) != 0) {
     Debug::error(std::string("Failed to load data file: ") + lua_tostring(l, -1));
     lua_pop(l, 1);
     return false;
@@ -97,7 +100,7 @@ bool LuaData::import_from_quest_file(
   const std::string& buffer = QuestFiles::data_file_read(
       quest_file_name, language_specific
   );
-  return import_from_buffer(buffer);
+  return import_from_buffer(buffer, quest_file_name);
 }
 
 /**

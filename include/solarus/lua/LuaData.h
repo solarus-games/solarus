@@ -38,7 +38,7 @@ class SOLARUS_API LuaData {
     virtual bool import_from_lua(lua_State* l) = 0;
     virtual bool export_to_lua(std::ostream& out) const;  // Optional.
 
-    bool import_from_buffer(const std::string& buffer);
+    bool import_from_buffer(const std::string& buffer, const std::string& file_name);
     bool import_from_file(const std::string& file_name);
     bool import_from_quest_file(
         const std::string& quest_file_name,

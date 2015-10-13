@@ -46,6 +46,7 @@ class SOLARUS_API PathFinding {
         Entity& target_entity);
 
     std::string compute_path();
+    std::string compute_path(const Point& offset);
 
   private:
 
@@ -82,8 +83,8 @@ class SOLARUS_API PathFinding {
     static const Rectangle transition_collision_boxes[];
 
     Map& map;                          /**< the map */
-    Entity& source_entity;          /**< the entity to move */
-    Entity& target_entity;          /**< the target point */
+    Entity& source_entity;             /**< the entity to move */
+    Entity& target_entity;             /**< the target point */
 
     std::map<int, Node> closed_list;   /**< the closed list, indexed by the node locations on the map */
     std::map<int, Node> open_list;     /**< the open list, indexed by the node locations on the map */

@@ -557,6 +557,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
     }
     add_to_map(map, -1);
     set_xy(x, y);
+    map.get_entities().notify_entity_bounding_box_changed(*this);
     map.get_entities().set_entity_layer(*this, layer);
     last_solid_ground_coords = { x, y };
     last_solid_ground_layer = get_layer();
@@ -617,12 +618,14 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
         );
         add_to_map(map, 3);
         set_top_left_xy(0, 0);
+        map.get_entities().notify_entity_bounding_box_changed(*this);
         map.get_entities().set_entity_layer(*this, map.get_highest_layer());
       }
       else {
         // Normal case.
         add_to_map(map, destination->get_direction());
         set_xy(destination->get_xy());
+        map.get_entities().notify_entity_bounding_box_changed(*this);
         map.get_entities().set_entity_layer(*this, destination->get_layer());
       }
       last_solid_ground_coords = get_xy();

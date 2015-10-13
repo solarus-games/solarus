@@ -43,13 +43,14 @@ ___________________________
 
 Bug fixes for the 1.4 release.
 
-* Fix stuck on non-traversable dynamic tiles covered by traversables (#769).
-* Fix collision detection of custom entities that do not move.
-* Fix collisions triggered for removed entities (#710).
-* Fix pickables with special movement falling in holes too early.
-* Fix performance issue when sprites have huge frame delays (#723).
 * Fix file name not shown when there is an error in dialogs file (#718).
 * Fix sol.main.load_file() returning a string instead of nil on error (#730).
+* Fix performance issue when sprites have huge frame delays (#723).
+* Fix collisions triggered for removed entities (#710).
+* Fix hero disappearing if lifting animation has less than 5 frames (#682).
+* Fix stuck on non-traversable dynamic tiles covered by traversables (#769).
+* Fix collision detection of custom entities that do not move.
+* Fix pickables with special movement falling in holes too early.
 
 __________________________
 

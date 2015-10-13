@@ -98,9 +98,11 @@ void Hero::LiftingState::update() {
 
   lifted_item->update();
 
-  if (!is_suspended() && !lifted_item->is_being_lifted()) { // the item has finished being lifted
+  // See if the item has finished being lifted.
+  Hero& hero = get_entity();
+  const bool lift_finished = !lifted_item->is_being_lifted() || hero.is_animation_finished();
+  if (!is_suspended() && lift_finished) {
 
-    Hero& hero = get_entity();
     std::shared_ptr<CarriedItem> carried_item = lifted_item;
     lifted_item = nullptr; // we do not take care of the carried item from this state anymore
     hero.set_state(new CarryingState(hero, carried_item));

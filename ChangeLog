@@ -11,6 +11,7 @@ Bug fixes for the 1.4 release.
 * Fix pickables with special movement falling in holes too early.
 * Fix performance issue when sprites have huge frame delays (#723).
 * Fix file name not shown when there is an error in dialogs file (#718).
+* Fix sol.main.load_file() returning a string instead of nil on error (#730).
 
 __________________________
 

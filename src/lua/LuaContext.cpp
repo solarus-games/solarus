@@ -673,18 +673,21 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
     file_name = oss.str();
   }
 
-  if (QuestFiles::data_file_exists(file_name)) {
-    // Load the file.
-    const std::string& buffer = QuestFiles::data_file_read(file_name);
-    int result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
-
-    if (result != 0) {
-      Debug::error(std::string("Failed to load script '")
-          + script_name + "': " + lua_tostring(l, -1));
-    }
-    return true;
+  if (!QuestFiles::data_file_exists(file_name)) {
+    // No error message: this is not an error.
+    return false;
   }
-  return false;
+
+  // Load the file.
+  const std::string& buffer = QuestFiles::data_file_read(file_name);
+  int result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
+
+  if (result != 0) {
+    Debug::error(std::string("Failed to load script '")
+        + script_name + "': " + lua_tostring(l, -1));
+    return false;
+  }
+  return true;
 }
 
 /**

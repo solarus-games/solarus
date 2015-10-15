@@ -55,6 +55,7 @@ TilePatternData::TilePatternData(const Rectangle& frame) :
     ground(Ground::TRAVERSABLE),
     default_layer(0),
     scrolling(TileScrolling::NONE),
+    repeat_mode(TilePatternRepeatMode::ALL),
     frames() {
 
   set_frame(frame);

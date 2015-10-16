@@ -149,7 +149,7 @@ std::shared_ptr<CustomEntity> TestEnvironment::make_entity<CustomEntity>(
 template<>
 std::shared_ptr<Npc> TestEnvironment::make_entity<Npc>(
     const Point& xy,
-    int layer
+    Layer layer
 ) {
 
   std::shared_ptr<Npc> entity = std::make_shared<Npc>(

@@ -244,9 +244,9 @@ void Destructible::set_damage_on_enemies(int damage_on_enemies) {
  */
 bool Destructible::is_obstacle_for(Entity& other) {
 
-  return get_modified_ground() == Ground::WALL
-      && !is_being_cut
-      && other.is_destructible_obstacle(*this);
+  return get_modified_ground() == Ground::WALL &&
+      !is_being_cut &&
+      other.is_destructible_obstacle(*this);
 }
 
 /**

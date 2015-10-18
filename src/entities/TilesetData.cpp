@@ -546,4 +546,3 @@ bool TilesetData::export_to_lua(std::ostream& out) const {
 }
 
 }
-

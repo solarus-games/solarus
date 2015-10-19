@@ -2001,17 +2001,16 @@ bool Entity::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candid
 }
 
 /**
- * \brief Returns whether a destructible item is currently considered as an obstacle by this entity.
+ * \brief Returns whether a destructible object is currently considered as an obstacle by this entity.
  *
- * By default, this function returns true unless the destructible item is disabled
- * (e.g. a bomb flower that will regenerate).
+ * By default, this function returns true.
  *
  * \param destructible a destructible item
  * \return true if the destructible item is currently an obstacle for this entity
  */
-bool Entity::is_destructible_obstacle(Destructible& destructible) {
+bool Entity::is_destructible_obstacle(Destructible& /* destructible */) {
 
-  return !destructible.is_waiting_for_regeneration();
+  return true;
 }
 
 /**

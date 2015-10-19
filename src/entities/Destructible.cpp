@@ -90,7 +90,7 @@ EntityType Destructible::get_type() const {
  */
 Ground Destructible::get_modified_ground() const {
 
-  if (is_waiting_for_regeneration()) {
+  if (is_waiting_for_regeneration() || is_being_cut) {
     return Ground::EMPTY;
   }
 
@@ -246,6 +246,7 @@ bool Destructible::is_obstacle_for(Entity& other) {
 
   return get_modified_ground() == Ground::WALL &&
       !is_being_cut &&
+      !is_waiting_for_regeneration() &&
       other.is_destructible_obstacle(*this);
 }
 

@@ -521,12 +521,12 @@ bool TilesetData::export_to_lua(std::ostream& out) const {
     }
 
     const std::string& ground_name = enum_to_name(pattern.get_ground());
-    int layer_index = static_cast<int>(pattern.get_default_layer());
+    int default_layer = static_cast<int>(pattern.get_default_layer());
 
     out << "tile_pattern{\n"
         << "  id = \"" << id << "\",\n"
         << "  ground = \"" << ground_name << "\",\n"
-        << "  default_layer = " << layer_index << ",\n"
+        << "  default_layer = " << default_layer << ",\n"
         << "  x = " << x.str() << ",\n"
         << "  y = " << y.str() << ",\n"
         << "  width = " << width << ",\n"

@@ -192,7 +192,8 @@ bool StringResources::export_to_lua(std::ostream& out) const {
     const std::string& key = kvp.first;
     const std::string& value = kvp.second;
 
-    out << "text{ key = \"" << key << "\", value = \"" << value << "\" }\n";
+    out << "text{ key = \"" << escape_string(key) <<
+        "\", value = \"" << escape_string(value) << "\" }\n";
   }
 
   return true;

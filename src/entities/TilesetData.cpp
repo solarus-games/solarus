@@ -497,7 +497,7 @@ bool TilesetData::export_to_lua(std::ostream& out) const {
     int layer_index = static_cast<int>(pattern.get_default_layer());
 
     out << "tile_pattern{\n"
-        << "  id = \"" << id << "\",\n"
+        << "  id = \"" << escape_string(id) << "\",\n"
         << "  ground = \"" << ground_name << "\",\n"
         << "  default_layer = " << layer_index << ",\n"
         << "  x = " << x.str() << ",\n"

@@ -48,6 +48,10 @@ class SOLARUS_API LuaData {
     bool export_to_buffer(std::string& buffer) const;
     bool export_to_file(const std::string& file_name) const;
 
+    static std::string escape_string(std::string value);
+    static std::string escape_multiline_string(std::string value);
+    static std::string unescape_multiline_string(std::string value);
+
 };
 
 }

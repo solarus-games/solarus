@@ -307,9 +307,9 @@ bool QuestResources::export_to_lua(std::ostream& out) const {
 
       out << kvp.second
           << "{ id = \""
-          << id
+          << escape_string(id)
           << "\", description = \""
-          << description
+          << escape_string(description)
           << "\" }\n";
     }
     out << "\n";

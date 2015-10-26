@@ -6,6 +6,7 @@ ___________________________
 Bug fixes for the 1.4 release.
 
 * Fix file name not shown when there is an error in dialogs file (#718).
+* Fix saving special characters in data files (#719).
 * Fix sol.main.load_file() returning a string instead of nil on error (#730).
 * Fix performance issue when sprites have huge frame delays (#723).
 * Fix collisions triggered for removed entities (#710).

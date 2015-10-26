@@ -705,8 +705,8 @@ void SpriteData::export_animation_to_lua(
   SpriteAnimationData animation = animations.at(animation_name);
 
   out << "animation{\n"
-      << "  name = \"" << animation_name << "\",\n"
-      << "  src_image = \"" << animation.get_src_image() << "\",\n";
+      << "  name = \"" << escape_string(animation_name) << "\",\n"
+      << "  src_image = \"" << escape_string(animation.get_src_image()) << "\",\n";
 
   if (animation.get_frame_delay() > 0) {
     out << "  frame_delay = " << animation.get_frame_delay() << ",\n";

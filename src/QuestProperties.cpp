@@ -123,8 +123,8 @@ bool QuestProperties::export_to_lua(std::ostream& out) const {
 
   out << "quest{\n"
       << "  solarus_version = \"" << solarus_version << "\",\n"
-      << "  write_dir = \"" << quest_write_dir << "\",\n"
-      << "  title_bar = \"" << title_bar << "\",\n"
+      << "  write_dir = \"" << escape_string(quest_write_dir) << "\",\n"
+      << "  title_bar = \"" << escape_string(title_bar) << "\",\n"
       << "  normal_quest_size = \"" << normal_quest_size.width << 'x' << normal_quest_size.height << "\",\n"
       << "  min_quest_size = \"" << min_quest_size.width << 'x' << min_quest_size.height << "\",\n"
       << "  max_quest_size = \"" << max_quest_size.width << 'x' << max_quest_size.height << "\",\n"

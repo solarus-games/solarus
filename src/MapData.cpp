@@ -774,14 +774,14 @@ bool MapData::export_to_lua(std::ostream& out) const {
       << "  width = " << get_size().width << ",\n"
       << "  height = " << get_size().height << ",\n";
   if (has_world()) {
-    out << "  world = \"" << get_world() << "\",\n";
+    out << "  world = \"" << escape_string(get_world()) << "\",\n";
   }
   if (has_floor()) {
     out << "  floor = " << get_floor() << ",\n";
   }
-  out << "  tileset = \"" << get_tileset_id() << "\",\n";
+  out << "  tileset = \"" << escape_string(get_tileset_id()) << "\",\n";
   if (has_music()) {
-    out << "  music = \"" << get_music_id() << "\",\n";
+    out << "  music = \"" << escape_string(get_music_id()) << "\",\n";
   }
   out << "}\n\n";
 

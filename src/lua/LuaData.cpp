@@ -180,4 +180,79 @@ bool LuaData::export_to_lua(std::ostream& /* out */) const {
   return false;
 }
 
+/**
+ * \brief Protects a string so that it can safely be enclosed in double quotes.
+ *
+ * Characters \ and " are protected by a backslash.
+ *
+ * Note that there is no unescape_string() function because the Lua parser
+ * already replaces \\ and \".
+ *
+ * \param value The string value to escape.
+ * \return The escaped value.
+ */
+std::string LuaData::escape_string(std::string value) {
+
+  for (size_t i = 0; i < value.size(); ++i) {
+    if (value[i] == '\\') {
+      value.replace(i, 1, "\\\\");
+      ++i;
+    }
+    else if (value[i] == '"') {
+      value.replace(i, 1, "\\\"");
+      ++i;
+    }
+  }
+
+  return value;
+}
+
+/**
+ * \brief Protects a string so that it can safely be enclosed between [[ and ]].
+ *
+ * Characters \, [ and ] are protected by a backslash.
+ *
+ * \param value The string value to escape.
+ * \return The escaped value.
+ */
+std::string LuaData::escape_multiline_string(std::string value) {
+
+  for (size_t i = 0; i < value.size(); ++i) {
+    if (value[i] == '\\') {
+      value.replace(i, 1, "\\\\");
+      ++i;
+    }
+    else if (value[i] == '[') {
+      value.replace(i, 1, "\\[");
+      ++i;
+    }
+    else if (value[i] == ']') {
+      value.replace(i, 1, "\\]");
+      ++i;
+    }
+  }
+
+  return value;
+}
+
+/**
+ * \brief Restores an original string after a call to escape_multiline_string().
+ * \param value The string value to unescape.
+ * \return The unescaped value.
+ */
+std::string LuaData::unescape_multiline_string(std::string value) {
+
+  // The Lua parsing step already replaced \\.
+  for (int i = 0; i < (int) (value.size() - 1); ++i) {
+    if (value[i] == '\\' && value[i + 1] == '[') {
+      value.replace(i, 2, "[");
+    }
+    else if (value[i] == '\\' && value[i + 1] == ']') {
+      value.replace(i, 2, "]");
+    }
+  }
+
+  return value;
+}
+
 }

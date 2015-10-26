@@ -874,7 +874,7 @@ bool EntityData::export_to_lua(std::ostream& out) const {
 
   // Name.
   if (has_name()) {
-    out << "  name = \"" << get_name() << "\",\n";
+    out << "  name = \"" << escape_string(get_name()) << "\",\n";
   }
 
   // Position on the map.
@@ -899,7 +899,7 @@ bool EntityData::export_to_lua(std::ostream& out) const {
           // No need to write the value.
           continue;
         }
-        out << "  " << key << " = \"" << value << "\",\n";
+        out << "  " << key << " = \"" << escape_string(value) << "\",\n";
         break;
       }
 

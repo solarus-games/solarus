@@ -235,8 +235,9 @@ int DialogResources::l_dialog(lua_State* l) {
 
     LuaTools::check_type(l, 1, LUA_TTABLE);
 
-    const std::string dialog_id = LuaTools::check_string_field(l, 1, "id");
-    const std::string text = LuaTools::check_string_field(l, 1, "text");
+    std::string dialog_id = LuaTools::check_string_field(l, 1, "id");
+    std::string text = LuaTools::check_string_field(l, 1, "text");
+    text = unescape_multiline_string(text);
     DialogData dialog;
     dialog.set_text(text);
 
@@ -308,12 +309,12 @@ bool DialogResources::export_to_lua(std::ostream& out) const {
     const std::string& id = kvp.first;
     const DialogData& dialog = kvp.second;
 
-    out << "dialog{\n  id = \"" << id << "\",\n";
+    out << "dialog{\n  id = \"" << escape_string(id) << "\",\n";
     for (const auto pkvp : dialog.get_properties()) {
       out << "  " << pkvp.first << " = \"" << pkvp.second << "\",\n";
     }
     const std::string& text = dialog.get_text();
-    out << "  text = [[\n" << text;
+    out << "  text = [[\n" << escape_multiline_string(text);
     if (!text.empty() && text[text.size() - 1] != '\n') {
       // Make sure that the closing ]] is always on a new line.
       out << '\n';

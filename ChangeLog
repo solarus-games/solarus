@@ -15,6 +15,7 @@ Bug fixes for the 1.4 release.
 * Fix stuck on non-traversable dynamic tiles covered by traversables (#769).
 * Fix collision detection of custom entities that do not move.
 * Fix pickables with special movement falling in holes too early.
+* Fix blocking streams not working when the hero's speed is greater (#488).
 
 __________________________
 

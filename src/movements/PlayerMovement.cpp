@@ -32,7 +32,8 @@ namespace Solarus {
 PlayerMovement::PlayerMovement(int moving_speed):
   StraightMovement(false, true),
   moving_speed(moving_speed),
-  direction8(-1) {
+  direction8(-1),
+  blocked_by_stream(false) {
 
 }
 
@@ -48,21 +49,27 @@ void PlayerMovement::update() {
     return; // the entity is not ready yet
   }
 
-  if (entity->has_stream_action() &&
-      !entity->get_stream_action()->get_stream().get_allow_movement()) {
-    // A stream blocks the control from the player.
-    stop();
-  }
+  // See if a stream blocks the control from the player.
+  // If yes, we will set the speed to zero but keep the direction
+  // wanted by the player.
+  blocked_by_stream =
+      entity->has_stream_action() &&
+      !entity->get_stream_action()->get_stream().get_allow_movement();
 
   // Someone may have stopped the movement
-  // (e.g. Hero::reset_movement() or a blocking stream).
-  if (is_stopped() && direction8 != -1) {
+  // (e.g. Hero::reset_movement()).
+  if (is_stopped() &&
+      direction8 != -1 &&
+      !blocked_by_stream
+  ) {
     direction8 = -1;
     compute_movement();
   }
   else {
-
-    // check whether the wanted direction has changed
+    if (!is_stopped() && blocked_by_stream) {
+      stop();
+    }
+    // Check if the wanted direction has changed.
     const GameCommands& commands = get_entity()->get_game().get_commands();
     int wanted_direction8 = commands.get_wanted_direction8();
     if (wanted_direction8 != direction8 && !is_suspended()) {
@@ -125,11 +132,16 @@ void PlayerMovement::compute_movement() {
   // Compute the speed vector corresponding to the direction wanted by the player
 
   if (direction8 == -1) {
-    // No movement.
+    // No wanted movement.
     stop();
   }
   else { // The directional keys currently pressed define a valid movement.
-    set_speed(moving_speed);
+    if (blocked_by_stream) {
+      stop();
+    }
+    else {
+      set_speed(moving_speed);
+    }
     set_angle(Geometry::degrees_to_radians(direction8 * 45));
   }
 }

@@ -1116,7 +1116,7 @@ Ground Map::get_ground(int layer, int x, int y) const {
  * Static tiles and dynamic entities are all taken into account here.
  *
  * \param layer Layer of the point.
- * \param xy Coordinate of the point.
+ * \param xy Coordinates of the point.
  * \return The ground at this place.
  */
 Ground Map::get_ground(int layer, const Point& xy) const {
@@ -1142,6 +1142,27 @@ Ground Map::get_ground(int layer, const Point& xy) const {
  * \return The ground at this place.
  */
 Ground Map::get_ground_from_entity(const Entity& entity, int x, int y) const {
+  return get_ground_from_entity(entity, Point(x, y));
+}
+
+/**
+ * \brief Returns the modified ground of an entity at the specified point.
+ *
+ * The point is assumed to overlap the entity.
+ *
+ * The point only matters if the ground is diagonal.
+ * When an entity has a diagonal ground, only 8x8 squares on the diagonal of
+ * that entity are diagonal grounds, other ones are resolved Ground::WALL on a
+ * side and Ground::TRAVERSABLE or Ground::DEEP_WATER on the other side.
+ *
+ * A current limitation is that entities with diagonal grounds must be aligned
+ * to the 8x8 grid to work correctly.
+ *
+ * \param entity Entity whose modified ground to get.
+ * \param xy Coordinates of the point.
+ * \return The ground at this place.
+ */
+Ground Map::get_ground_from_entity(const Entity& entity, const Point& xy) const {
 
   const Ground ground = entity.get_modified_ground();
   if (!GroundInfo::is_ground_diagonal(ground)) {
@@ -1164,14 +1185,8 @@ Ground Map::get_ground_from_entity(const Entity& entity, int x, int y) const {
     return ground;
   }
 
-  const Point point_in_entity = {
-      x - entity.get_top_left_x(),
-      y - entity.get_top_left_y()
-  };
-  const Point square_in_entity = {
-      point_in_entity.x / 8,
-      point_in_entity.y / 8
-  };
+  const Point point_in_entity = xy - entity.get_top_left_xy();
+  const Point square_in_entity = point_in_entity / 8;
 
   const int num_squares = entity.get_width() / 8;
   int sum = 0;

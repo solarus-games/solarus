@@ -52,6 +52,7 @@ class PlayerMovement: public StraightMovement {
                               * as defined by the directional commands
                               * currently pressed by the player (when the
                               * movement allows them) or -1. */
+    bool blocked_by_stream;  /**< Whether on a blocking stream. */
 
 };
 

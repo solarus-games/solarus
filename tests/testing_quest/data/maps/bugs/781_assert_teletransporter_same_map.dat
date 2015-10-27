@@ -1,0 +1,64 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  num_layers = 3,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  pattern = "3",
+}
+
+teletransporter{
+  layer = 0,
+  x = 48,
+  y = 16,
+  width = 16,
+  height = 16,
+  transition = "immediate",
+  destination_map = "bugs/781_assert_teletransporter_same_map",
+  destination = "destination_2",
+}
+
+destination{
+  name = "destination_1",
+  layer = 0,
+  x = 56,
+  y = 29,
+  direction = 1,
+}
+
+destination{
+  name = "destination_2",
+  layer = 0,
+  x = 88,
+  y = 29,
+  direction = -1,
+}
+
+teletransporter{
+  layer = 0,
+  x = 16,
+  y = 16,
+  width = 16,
+  height = 16,
+  transition = "immediate",
+  destination_map = "bugs/781_assert_teletransporter_same_map",
+  destination = "destination_1",
+}
+
+destination{
+  layer = 0,
+  x = 24,
+  y = 29,
+  direction = 3,
+  default = true,
+}
+

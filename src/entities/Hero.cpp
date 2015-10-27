@@ -504,21 +504,22 @@ void Hero::notify_tileset_changed() {
  * \brief Puts the hero on a map.
  *
  * This function is called when the current map is changed.
+ * Does nothing if the hero is already on this map.
  *
  * \param map The map.
- * \param initial_direction The direction of the hero (0 to 3)
- * or -1 to let the direction unchanged.
  */
-void Hero::add_to_map(Map& map, int initial_direction) {
+void Hero::place_on_map(Map& map) {
+
+  if (is_on_map() &&
+      &get_map() == &map
+  ) {
+    // No change.
+    return;
+  }
 
   // Add the hero to the map.
   const HeroPtr& shared_hero = std::static_pointer_cast<Hero>(shared_from_this());
   map.get_entities().add_entity(shared_hero);
-
-  // Take the specified direction.
-  if (initial_direction != -1) {
-    sprites->set_animation_direction(initial_direction);
-  }
 
   last_solid_ground_coords = { -1, -1 };
   last_solid_ground_layer = 0;
@@ -555,7 +556,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
       // TODO check the whole hero's bounding box rather than just a point.
       --layer;
     }
-    add_to_map(map, -1);
+    place_on_map(map);
     set_xy(x, y);
     map.get_entities().notify_entity_bounding_box_changed(*this);
     map.get_entities().set_entity_layer(*this, layer);
@@ -570,8 +571,8 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
 
     if (side != -1) {
 
-      // go to a side of the other map
-      add_to_map(map, -1);
+      // Go to a side of the other map.
+      place_on_map(map);
 
       switch (side) {
 
@@ -616,14 +617,18 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
             std::string("No valid destination on map '") + map.get_id()
             + "'. Placing the hero at (0,0) instead."
         );
-        add_to_map(map, 3);
+        place_on_map(map);
+        sprites->set_animation_direction(3);
         set_top_left_xy(0, 0);
         map.get_entities().notify_entity_bounding_box_changed(*this);
         map.get_entities().set_entity_layer(*this, map.get_highest_layer());
       }
       else {
         // Normal case.
-        add_to_map(map, destination->get_direction());
+        place_on_map(map);
+        if (destination->get_direction() != -1) {
+          sprites->set_animation_direction(destination->get_direction());
+        }
         set_xy(destination->get_xy());
         map.get_entities().notify_entity_bounding_box_changed(*this);
         map.get_entities().set_entity_layer(*this, destination->get_layer());

@@ -91,7 +91,6 @@ class Hero: public Entity {
      *
      * Functions called when the player goes to another map.
      */
-    void add_to_map(Map& map, int initial_direction);
     virtual void notify_creating() override;
     virtual void notify_map_started() override;
     virtual void notify_tileset_changed() override;
@@ -323,6 +322,7 @@ class Hero: public Entity {
   private:
 
     // position
+    void place_on_map(Map& map);
     void update_movement();
     void try_snap_to_facing_entity();
     void apply_additional_ground_movement();

@@ -8,6 +8,7 @@ set(lua_test_maps
   "bugs/686_crash_door_item"
   "bugs/699_crash_exit_surface_moving"
   "bugs/769_stuck_dynamic_tile_covered"
+  "bugs/781_assert_teletransporter_same_map"
 )
 
 # Build the Solarus testing library.
@@ -54,8 +55,8 @@ set(
   src/tests/PathMovement.cpp
   src/tests/PixelMovement.cpp
   src/tests/Quadtree.cpp
-  src/tests/RunLuaTest.cpp
   src/tests/SpriteData.cpp
+  src/tests/RunLuaTest.cpp
 )
 
 foreach(test_main_file ${tests_main_files})

@@ -4,6 +4,7 @@ map{ id = "bugs/486_diagonal_dynamic_tiles", description = "#486: Wrong obstacle
 map{ id = "bugs/686_crash_door_item", description = "#686: Crash with doors whose opening condition is an item" }
 map{ id = "bugs/699_crash_exit_surface_moving", description = "#699: Crash at exit when a surface was moving" }
 map{ id = "bugs/769_stuck_dynamic_tile_covered", description = "#769: Non-traversable dynamic tiles covered by traversable ones block the hero" }
+map{ id = "bugs/781_assert_teletransporter_same_map", description = "#781: Assertion error when a teletransporter leads to the same map" }
 map{ id = "jumper_tests", description = "Jumper tests" }
 map{ id = "surface_tests", description = "Surface tests" }
 map{ id = "traversable", description = "Traversable test area" }

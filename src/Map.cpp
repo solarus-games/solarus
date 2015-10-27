@@ -1076,14 +1076,27 @@ bool Map::has_empty_ground(int layer, const Rectangle& collision_box) const {
  * \return The ground at this place.
  */
 Ground Map::get_ground(int layer, int x, int y) const {
+  return get_ground(layer, Point(x, y));
+}
 
-  if (test_collision_with_border(x, y)) {
+/**
+ * \brief Returns the ground at the specified point.
+ *
+ * Static tiles and dynamic entities are all taken into account here.
+ *
+ * \param layer Layer of the point.
+ * \param xy Coordinates of the point.
+ * \return The ground at this place.
+ */
+Ground Map::get_ground(int layer, const Point& xy) const {
+
+  if (test_collision_with_border(xy)) {
     // Outside the map bounds.
     return Ground::EMPTY;
   }
 
   // See if a dynamic entity changes the ground.
-  const Rectangle box(Point(x, y), Size(1, 1));
+  const Rectangle box(xy, Size(1, 1));
   std::vector<EntityPtr> entities_nearby;
   get_entities().get_entities_in_rectangle_sorted(box, entities_nearby);
 
@@ -1097,30 +1110,17 @@ Ground Map::get_ground(int layer, int x, int y) const {
       continue;
     }
 
-    if (entity_nearby.overlaps(x, y) &&
+    if (entity_nearby.overlaps(xy) &&
         entity_nearby.get_layer() == layer &&
         entity_nearby.is_enabled() &&
         !entity_nearby.is_being_removed()
     ) {
-      return get_ground_from_entity(entity_nearby, x, y);
+      return get_ground_from_entity(entity_nearby, xy);
     }
   }
 
   // Otherwise, return the ground defined by static tiles (this is very fast).
-  return entities->get_tile_ground(layer, x, y);
-}
-
-/**
- * \brief Returns the ground at the specified point.
- *
- * Static tiles and dynamic entities are all taken into account here.
- *
- * \param layer Layer of the point.
- * \param xy Coordinates of the point.
- * \return The ground at this place.
- */
-Ground Map::get_ground(int layer, const Point& xy) const {
-  return get_ground(layer, xy.x, xy.y);
+  return entities->get_tile_ground(layer, xy.x, xy.y);
 }
 
 /**

@@ -45,7 +45,7 @@ namespace Solarus {
  * interactive entity, and the map script has to handle explicitly its
  * animations (if any).
  */
-class Npc: public Detector {
+class SOLARUS_API Npc: public Detector {
 
   public:
 

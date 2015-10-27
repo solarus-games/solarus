@@ -92,7 +92,7 @@
 #    define SOLARUS_API __declspec(dllimport)
 #  endif
 
-#  ifdef _MSVC_VER
+#  ifdef _MSC_VER
 // TODO MSVC: fix these warnings instead of disabling them
 #    pragma warning( disable : 4251 4275 4458 4514 4710 4820 4244 4800)
 // 4251 needs to have dll-interface to be used by clients of class

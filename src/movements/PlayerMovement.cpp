@@ -122,19 +122,16 @@ void PlayerMovement::set_wanted_direction() {
  */
 void PlayerMovement::compute_movement() {
 
-  // compute the speed vector corresponding to the direction wanted by the player
+  // Compute the speed vector corresponding to the direction wanted by the player
 
   if (direction8 == -1) {
-    // no movement
+    // No movement.
     stop();
   }
-  else { // the directional keys currently pressed define a valid movement
+  else { // The directional keys currently pressed define a valid movement.
     set_speed(moving_speed);
     set_angle(Geometry::degrees_to_radians(direction8 * 45));
   }
-
-  // Notify the entity that the properties of its movement have just changed.
-  notify_movement_changed();
 }
 
 }

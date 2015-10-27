@@ -14,15 +14,16 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/Debug.h"
 #include "solarus/entities/Destination.h"
 #include "solarus/entities/Detector.h"
 #include "solarus/entities/Ground.h"
+#include "solarus/entities/GroundInfo.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/lowlevel/Music.h"
 #include "solarus/entities/NonAnimatedRegions.h"
 #include "solarus/entities/TilePattern.h"
 #include "solarus/entities/Tileset.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Music.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Video.h"
@@ -994,13 +995,12 @@ bool Map::test_collision_with_obstacles(
     int y,
     Entity& entity_to_check) const {
 
-  bool collision;
-  bool is_diagonal_wall;
+  bool is_diagonal_wall = false;
 
   // Test the terrain.
-  collision = test_collision_with_ground(layer, x, y, entity_to_check, is_diagonal_wall);
+  bool collision = test_collision_with_ground(layer, x, y, entity_to_check, is_diagonal_wall);
 
-  // Test the dynamic entities.
+  // Test dynamic entities.
   if (!collision) {
     Rectangle collision_box(x, y, 1, 1);
     collision = test_collision_with_entities(layer, collision_box, entity_to_check);
@@ -1063,6 +1063,13 @@ bool Map::has_empty_ground(int layer, const Rectangle& collision_box) const {
  *
  * Static tiles and dynamic entities are all taken into account here.
  *
+ * When an entity has a diagonal ground, only 8x8 squares on the diagonal of
+ * that entity are diagonal grounds, other ones are resolved Ground::WALL on a
+ * side and Ground::TRAVERSABLE or Ground::DEEP_WATER on the other side.
+ *
+ * A current limitation is that entities with diagonal grounds must be aligned
+ * to the 8x8 grid to work correctly.
+ *
  * \param layer Layer of the point.
  * \param x X coordinate of the point.
  * \param y Y coordinate of the point.
@@ -1095,7 +1102,7 @@ Ground Map::get_ground(int layer, int x, int y) const {
         entity_nearby.is_enabled() &&
         !entity_nearby.is_being_removed()
     ) {
-      return entity_nearby.get_modified_ground();
+      return get_ground_from_entity(entity_nearby, x, y);
     }
   }
 
@@ -1114,6 +1121,128 @@ Ground Map::get_ground(int layer, int x, int y) const {
  */
 Ground Map::get_ground(int layer, const Point& xy) const {
   return get_ground(layer, xy.x, xy.y);
+}
+
+/**
+ * \brief Returns the modified ground of an entity at the specified point.
+ *
+ * The point is assumed to overlap the entity.
+ *
+ * The point only matters if the ground is diagonal.
+ * When an entity has a diagonal ground, only 8x8 squares on the diagonal of
+ * that entity are diagonal grounds, other ones are resolved Ground::WALL on a
+ * side and Ground::TRAVERSABLE or Ground::DEEP_WATER on the other side.
+ *
+ * A current limitation is that entities with diagonal grounds must be aligned
+ * to the 8x8 grid to work correctly.
+ *
+ * \param entity Entity whose modified ground to get.
+ * \param x X coordinate of the point.
+ * \param y Y coordinate of the point.
+ * \return The ground at this place.
+ */
+Ground Map::get_ground_from_entity(const Entity& entity, int x, int y) const {
+
+  const Ground ground = entity.get_modified_ground();
+  if (!GroundInfo::is_ground_diagonal(ground)) {
+    // Easy case.
+    return ground;
+  }
+
+  const bool square = entity.get_width() == entity.get_height();
+  if (!square) {
+    // Malformed entity.
+    return Ground::TRAVERSABLE;
+  }
+  if (!entity.is_aligned_to_grid() || entity.get_width() % 8 != 0) {
+    // Not supported yet.
+    return Ground::TRAVERSABLE;
+  }
+
+  if (entity.get_width() == 8) {
+    // The entity only occupies one 8x8 square: the ground is then fully diagonal.
+    return ground;
+  }
+
+  const Point point_in_entity = {
+      x - entity.get_top_left_x(),
+      y - entity.get_top_left_y()
+  };
+  const Point square_in_entity = {
+      point_in_entity.x / 8,
+      point_in_entity.y / 8
+  };
+
+  const int num_squares = entity.get_width() / 8;
+  int sum = 0;
+
+  switch (ground) {
+
+    // If the top right corner of the tile is an obstacle,
+    // then the top right 8x8 squares are Ground::WALL, the bottom left 8x8
+    // squares are Ground::TRAVERSABLE or Ground::DEEP_WATER and the 8x8 squares
+    // on the diagonal are Ground::WALL_TOP_RIGHT.
+    case Ground::WALL_TOP_RIGHT:
+    case Ground::WALL_TOP_RIGHT_WATER:
+
+      if (square_in_entity.x == square_in_entity.y) {
+        // 8x8 square on the diagonal.
+        return ground;
+      }
+      if (square_in_entity.x > square_in_entity.y) {
+        // 8x8 square in the wall part.
+        return Ground::WALL;
+      }
+      // 8x8 square in the non-wall part.
+      return ground == Ground::WALL_TOP_RIGHT ? Ground::TRAVERSABLE : Ground::DEEP_WATER;
+
+    case Ground::WALL_TOP_LEFT:
+    case Ground::WALL_TOP_LEFT_WATER:
+
+      sum = square_in_entity.x + square_in_entity.y;
+      if (sum == num_squares - 1) {
+        // 8x8 square on the diagonal.
+        return ground;
+      }
+      if (sum < num_squares - 1) {
+        // 8x8 square in the wall part.
+        return Ground::WALL;
+      }
+      // 8x8 square in the non-wall part.
+      return ground == Ground::WALL_TOP_LEFT ? Ground::TRAVERSABLE : Ground::DEEP_WATER;
+
+    case Ground::WALL_BOTTOM_LEFT:
+    case Ground::WALL_BOTTOM_LEFT_WATER:
+
+      if (square_in_entity.x == square_in_entity.y) {
+        // 8x8 square on the diagonal.
+        return ground;
+      }
+      if (square_in_entity.x < square_in_entity.y) {
+        // 8x8 square in the wall part.
+        return Ground::WALL;
+      }
+      // 8x8 square in the non-wall part.
+      return ground == Ground::WALL_BOTTOM_LEFT ? Ground::TRAVERSABLE : Ground::DEEP_WATER;
+
+    case Ground::WALL_BOTTOM_RIGHT:
+    case Ground::WALL_BOTTOM_RIGHT_WATER:
+
+      sum = square_in_entity.x + square_in_entity.y;
+      if (sum == num_squares - 1) {
+        // 8x8 square on the diagonal.
+        return ground;
+      }
+      if (sum > num_squares - 1) {
+        // 8x8 square in the wall part.
+        return Ground::WALL;
+      }
+      // 8x8 square in the non-wall part.
+      return ground == Ground::WALL_BOTTOM_RIGHT ? Ground::TRAVERSABLE : Ground::DEEP_WATER;
+
+    default:
+      return ground;
+  }
 }
 
 /**

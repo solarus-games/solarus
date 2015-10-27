@@ -4,6 +4,7 @@ set(lua_test_maps
   "jumper_tests"
   "surface_tests"
   "all_entities"
+  "bugs/486_diagonal_dynamic_tiles"
   "bugs/686_crash_door_item"
   "bugs/699_crash_exit_surface_moving"
   "bugs/769_stuck_dynamic_tile_covered"

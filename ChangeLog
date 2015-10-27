@@ -49,6 +49,7 @@ Bug fixes for the 1.4 release.
 * Fix performance issue when sprites have huge frame delays (#723).
 * Fix collisions triggered for removed entities (#710).
 * Fix hero disappearing if lifting animation has less than 5 frames (#682).
+* Fix collisions with diagonal dynamic tiles larger than 8x8 (#486).
 * Fix path finding movement not working with NPCs (#708).
 * Fix stuck on non-traversable dynamic tiles covered by traversables (#769).
 * Fix collision detection of custom entities that do not move.

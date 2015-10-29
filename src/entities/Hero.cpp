@@ -576,22 +576,22 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
 
       switch (side) {
 
-      case 0: // right side
+      case 0: // Right side.
         set_x(map.get_width());
         set_y(get_y() - map.get_location().get_y() + previous_map_location.get_y());
         break;
 
-      case 1: // top side
+      case 1: // Top side.
         set_y(5);
         set_x(get_x() - map.get_location().get_x() + previous_map_location.get_x());
         break;
 
-      case 2: // left side
+      case 2: // Left side.
         set_x(0);
         set_y(get_y() - map.get_location().get_y() + previous_map_location.get_y());
         break;
 
-      case 3: // bottom side
+      case 3: // Bottom side.
         set_y(map.get_height() + 5);
         set_x(get_x() - map.get_location().get_x() + previous_map_location.get_x());
         break;

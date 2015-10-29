@@ -644,8 +644,9 @@ void Sprite::update() {
       }
       else {
         current_frame = next_frame;
+        uint32_t old_next_frame_date = next_frame_date;
         next_frame_date += get_frame_delay();
-        if (next_frame_date < now) {
+        if (next_frame_date < old_next_frame_date) {
           // Overflow. Can happen with data files generated with the editor
           // before 1.4 (frame_delay is too big).
           next_frame_date = std::numeric_limits<uint32_t>::max();

@@ -307,7 +307,7 @@ void Camera::traverse_separator(Separator* separator) {
   separator->notify_activating(separator_scrolling_direction4);
   separator_next_scrolling_date = System::now();
 
-  // Move the hero two pixels ahead to avoid to traversed the separator again.
+  // Move the hero two pixels ahead to avoid to traverse the separator again.
   hero.set_xy(hero.get_xy() + 2 * separator_scrolling_delta);
 }
 

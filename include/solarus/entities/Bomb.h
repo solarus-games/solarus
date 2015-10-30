@@ -34,28 +34,28 @@ class Bomb: public Detector {
 
     Bomb(const std::string& name, int layer, const Point& xy);
 
-    virtual EntityType get_type() const override;
+    EntityType get_type() const override;
 
-    virtual bool is_stream_obstacle(Stream& stream) override;
-    virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter) override;
-    virtual bool is_deep_water_obstacle() const override;
-    virtual bool is_hole_obstacle() const override;
-    virtual bool is_lava_obstacle() const override;
-    virtual bool is_prickle_obstacle() const override;
-    virtual bool is_ladder_obstacle() const override;
-    virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
-    virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
-    virtual void notify_collision_with_stream(Stream& stream, int dx, int dy) override;
-    virtual void notify_position_changed() override;
-    virtual bool notify_action_command_pressed() override;
-    virtual void set_suspended(bool suspended) override;
-    virtual void update() override;
+    bool is_stream_obstacle(Stream& stream) override;
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter) override;
+    bool is_deep_water_obstacle() const override;
+    bool is_hole_obstacle() const override;
+    bool is_lava_obstacle() const override;
+    bool is_prickle_obstacle() const override;
+    bool is_ladder_obstacle() const override;
+    void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
+    void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
+    void notify_collision_with_stream(Stream& stream, int dx, int dy) override;
+    void notify_position_changed() override;
+    bool notify_action_command_pressed() override;
+    void set_suspended(bool suspended) override;
+    void update() override;
 
     void explode();
 
   private:
 
-    uint32_t explosion_date;  /**< date when the bomb explodes */
+    uint32_t explosion_date;  /**< Date when the bomb explodes. */
 
 };
 

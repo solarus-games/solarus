@@ -238,18 +238,13 @@ bool Block::start_movement_by_hero() {
  */
 void Block::notify_position_changed() {
 
+  Detector::notify_position_changed();
+
   // now we know that the block moves at least of 1 pixel:
   // we can play the sound
   if (get_movement() != nullptr && !sound_played) {
     Sound::play("hero_pushes");
     sound_played = true;
-  }
-
-  check_collision_with_detectors();
-  update_ground_below();
-
-  if (are_movement_notifications_enabled()) {
-    get_lua_context().entity_on_position_changed(*this, get_xy(), get_layer());
   }
 }
 
@@ -337,9 +332,10 @@ void Block::reset() {
     when_can_move = System::now() + moving_delay;
   }
 
-  set_xy(initial_position);
   last_position = initial_position;
   this->maximum_moves = initial_maximum_moves;
+  set_xy(initial_position);
+  notify_position_changed();
 }
 
 /**

@@ -636,19 +636,22 @@ void Sprite::update() {
   frame_changed = false;
   uint32_t now = System::now();
 
-  // update the current frame
+  // Update the current frame.
   if (synchronize_to == nullptr
       || current_animation_name != synchronize_to->get_current_animation()
       || synchronize_to->get_current_direction() > get_nb_directions()
       || synchronize_to->get_current_frame() > get_nb_frames()) {
-    // update the frames normally (with the time)
-    while (!finished && !is_suspended() && !paused && get_frame_delay() > 0
-        && now >= next_frame_date) {
 
-      // we get the next frame
+    // Update frames normally (with time).
+    while (!finished &&
+        !is_suspended() &&
+        !paused &&
+        get_frame_delay() > 0 &&
+        now >= next_frame_date
+    ) {
       int next_frame = get_next_frame();
 
-      // test whether the animation is finished
+      // Test if the animation is finished.
       if (next_frame == -1) {
         finished = true;
         if (lua_context != nullptr) {
@@ -673,7 +676,7 @@ void Sprite::update() {
     }
   }
   else {
-    // take the same frame as the other sprite
+    // Take the same frame as the other sprite.
     if (synchronize_to->is_animation_finished()) {
       finished = true;
       if (lua_context != nullptr) {
@@ -694,9 +697,9 @@ void Sprite::update() {
     }
   }
 
-  // update the special effects
+  // Update the special effects.
   if (is_blinking()) {
-    // the sprite is blinking
+    // The sprite is blinking.
 
     while (now >= blink_next_change_date) {
       blink_is_sprite_visible = !blink_is_sprite_visible;

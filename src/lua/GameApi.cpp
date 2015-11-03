@@ -249,10 +249,10 @@ int LuaContext::game_api_start(lua_State* l) {
       LuaTools::error(l, "Cannot start game: there is no map in this quest");
     }
 
-    Game* game = savegame->get_game();
-    if (game != nullptr) {
+    Game* saved_game = savegame->get_game();
+    if (saved_game != nullptr) {
       // A game is already running with this savegame: restart it.
-      game->restart();
+      saved_game->restart();
     }
     else {
       // Create a new game to run.
@@ -261,8 +261,8 @@ int LuaContext::game_api_start(lua_State* l) {
         // Stop any previous game.
         main_loop.get_game()->stop();
       }
-      Game* game = new Game(main_loop, savegame);
-      main_loop.set_game(game);
+      Game* new_game = new Game(main_loop, savegame);
+      main_loop.set_game(new_game);
     }
 
     return 0;

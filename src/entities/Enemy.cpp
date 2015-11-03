@@ -819,8 +819,8 @@ void Enemy::update() {
   }
 
   if (exploding) {
-    uint32_t now = System::now();
-    if (now >= next_explosion_date) {
+    uint32_t now_explosion = System::now();
+    if (now_explosion >= next_explosion_date) {
 
       // create an explosion
       Point xy;
@@ -831,7 +831,7 @@ void Enemy::update() {
       ));
       Sound::play("explosion");
 
-      next_explosion_date = now + 200;
+      next_explosion_date = now_explosion + 200;
       nb_explosions++;
 
       if (nb_explosions >= 15) {

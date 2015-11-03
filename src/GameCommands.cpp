@@ -402,39 +402,39 @@ void GameCommands::joypad_hat_moved(int hat, int value) {
       direction_2 = 0;
     }
 
-    std::ostringstream oss;
-    oss << "hat " << hat << ' ' << direction_names[direction_1];
-    const std::string& joypad_string_1 = oss.str();
+    std::ostringstream oss_1;
+    oss_1 << "hat " << hat << ' ' << direction_names[direction_1];
+    const std::string& joypad_string_1 = oss_1.str();
     GameCommand command_1 = get_command_from_joypad(joypad_string_1);
 
-    oss.str("");
-    oss << "hat " << hat << ' ' << direction_names[(direction_1 + 2) % 4];
-    const std::string& inverse_joypad_string_1 = oss.str();
+    oss_1.str("");
+    oss_1 << "hat " << hat << ' ' << direction_names[(direction_1 + 2) % 4];
+    const std::string& inverse_joypad_string_1 = oss_1.str();
     GameCommand inverse_command_1 = get_command_from_joypad(inverse_joypad_string_1);
 
     GameCommand command_2 = GameCommand::NONE;
     GameCommand inverse_command_2 = GameCommand::NONE;
 
     if (direction_2 != -1) {
-      oss.str("");
-      oss << "hat " << hat << ' ' << direction_names[direction_2];
-      const std::string& joypad_string_2 = oss.str();
+      oss_1.str("");
+      oss_1 << "hat " << hat << ' ' << direction_names[direction_2];
+      const std::string& joypad_string_2 = oss_1.str();
       command_2 = get_command_from_joypad(joypad_string_2);
 
-      oss.str("");
-      oss << "hat " << hat << ' ' << direction_names[(direction_2 + 2) % 4];
-      const std::string& inverse_joypad_string_2 = oss.str();
+      oss_1.str("");
+      oss_1 << "hat " << hat << ' ' << direction_names[(direction_2 + 2) % 4];
+      const std::string& inverse_joypad_string_2 = oss_1.str();
       inverse_command_2 = get_command_from_joypad(inverse_joypad_string_2);
     }
     else {
-      std::ostringstream oss;
-      oss << "hat " << hat << ' ' << direction_names[(direction_1 + 1) % 4];
-      const std::string& joypad_string_2 = oss.str();
+      std::ostringstream oss_2;
+      oss_2 << "hat " << hat << ' ' << direction_names[(direction_1 + 1) % 4];
+      const std::string& joypad_string_2 = oss_2.str();
       command_2 = get_command_from_joypad(joypad_string_2);
 
-      oss.str("");
-      oss << "hat " << hat << ' ' << direction_names[(direction_1 + 3) % 4];
-      const std::string& inverse_joypad_string_2 = oss.str();
+      oss_2.str("");
+      oss_2 << "hat " << hat << ' ' << direction_names[(direction_1 + 3) % 4];
+      const std::string& inverse_joypad_string_2 = oss_2.str();
       inverse_command_2 = get_command_from_joypad(inverse_joypad_string_2);
     }
 

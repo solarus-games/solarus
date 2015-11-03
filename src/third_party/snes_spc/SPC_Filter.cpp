@@ -30,8 +30,8 @@ void SPC_Filter::run( short* io, int count )
 {
 	require( (count & 1) == 0 ); // must be even
 	
-	int const gain = this->gain;
-	int const bass = this->bass;
+	int const g = this->gain;
+	int const b = this->bass;
 	chan_t* c = &ch [2];
 	do
 	{
@@ -50,7 +50,7 @@ void SPC_Filter::run( short* io, int count )
 			int delta = f - pp1;
 			pp1 = f;
 			int s = sum >> (gain_bits + 2);
-			sum += (delta * gain) - (sum >> bass);
+			sum += (delta * g) - (sum >> b);
 			
 			// Clamp to 16 bits
 			if ( (short) s != s )

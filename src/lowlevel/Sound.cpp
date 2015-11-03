@@ -355,12 +355,12 @@ ALuint Sound::decode_file(const std::string& file_name) {
   mem.data = QuestFiles::data_file_read(file_name);
 
   OggVorbis_File file;
-  int error = ov_open_callbacks(&mem, &file, nullptr, 0, ogg_callbacks);
+  int open_callbacks_error = ov_open_callbacks(&mem, &file, nullptr, 0, ogg_callbacks);
 
-  if (error) {
+  if (open_callbacks_error) {
     std::ostringstream oss;
     oss << "Cannot load sound file '" << file_name
-        << "' from memory: error " << error;
+        << "' from memory: error " << open_callbacks_error;
     Debug::error(oss.str());
   }
   else {
@@ -426,12 +426,12 @@ ALuint Sound::decode_file(const std::string& file_name) {
           reinterpret_cast<ALshort*>(samples.data()),
           ALsizei(total_bytes_read),
           sample_rate);
-      ALenum error = alGetError();
-      if (error != AL_NO_ERROR) {
+      ALenum al_error = alGetError();
+      if (al_error != AL_NO_ERROR) {
         std::ostringstream oss;
         oss << "Cannot copy the sound samples of '"
             << file_name << "' into buffer " << buffer
-            << ": error " << error;
+            << ": error " << al_error;
         Debug::error(oss.str());
         buffer = AL_NONE;
       }

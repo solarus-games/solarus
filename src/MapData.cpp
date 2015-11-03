@@ -610,8 +610,8 @@ bool MapData::insert_entity(const EntityData& entity, const EntityIndex& index) 
     const EntityData& current_entity = *it;
     const std::string& name = current_entity.get_name();
     if (!name.empty()) {
-      EntityIndex& index = named_entities[name];
-      ++index.order;
+      EntityIndex& entity_index = named_entities[name];
+      ++entity_index.order;
     }
   }
 
@@ -654,8 +654,8 @@ bool MapData::remove_entity(const EntityIndex& index) {
     const EntityData& current_entity = *it;
     const std::string& name = current_entity.get_name();
     if (!name.empty()) {
-      EntityIndex& index = named_entities[name];
-      --index.order;
+      EntityIndex& entity_index = named_entities[name];
+      --entity_index.order;
     }
   }
   return true;

@@ -83,11 +83,11 @@ void NonAnimatedRegions::build(std::vector<TilePtr>& rejected_tiles) {
       int tile_width8 = tile.get_width() / 8;
       int tile_height8 = tile.get_height() / 8;
 
-      for (int i = 0; i < tile_height8; i++) {
-        for (int j = 0; j < tile_width8; j++) {
+      for (int j = 0; j < tile_height8; j++) {
+        for (int k = 0; k < tile_width8; k++) {
 
-          int x8 = tile_x8 + j;
-          int y8 = tile_y8 + i;
+          int x8 = tile_x8 + k;
+          int y8 = tile_y8 + j;
           if (x8 >= 0 && x8 < map_width8 && y8 >= 0 && y8 < map_height8) {
             int index = y8 * map_width8 + x8;
             are_squares_animated[index] = true;

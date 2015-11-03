@@ -95,35 +95,35 @@ std::string PathFinding::compute_path() {
   std::string path = "";
 
   Node starting_node;
-  const int index = get_square_index(source);
+  const int index_1 = get_square_index(source);
   starting_node.location = source;
-  starting_node.index = index;
+  starting_node.index = index_1;
   starting_node.previous_cost = 0;
   starting_node.heuristic = total_mdistance;
   starting_node.total_cost = total_mdistance;
   starting_node.direction = ' ';
   starting_node.parent_index = -1;
 
-  open_list[index] = starting_node;
-  open_list_indices.push_front(index);
+  open_list[index_1] = starting_node;
+  open_list_indices.push_front(index_1);
 
   bool finished = false;
   while (!finished) {
 
     // pick the node with the lowest total cost in the open list
-    const int index = open_list_indices.front();
-    Node* current_node = &open_list[index];
+    const int index_2 = open_list_indices.front();
+    Node* current_node = &open_list[index_2];
     open_list_indices.pop_front();
-    closed_list[index] = *current_node;
-    open_list.erase(index);
-    current_node = &closed_list[index];
+    closed_list[index_2] = *current_node;
+    open_list.erase(index_2);
+    current_node = &closed_list[index_2];
 
     //std::cout << System::now() << " picking the lowest cost node in the open list ("
     //  << (open_list_indices.size() + 1) << " elements): "
     //  << current_node->location << ", index = " << current_node->index
     //  << ", cost = " << current_node->previous_cost << " + " << current_node->heuristic << "\n";
 
-    if (index == target_index) {
+    if (index_2 == target_index) {
       //std::cout << "target node was added to the closed list\n";
       finished = true;
       path = rebuild_path(current_node);
@@ -154,7 +154,7 @@ std::string PathFinding::compute_path() {
             // not in the open list: add it
             new_node.heuristic = Geometry::get_manhattan_distance(new_node.location, target);
             new_node.total_cost = new_node.previous_cost + new_node.heuristic;
-            new_node.parent_index = index;
+            new_node.parent_index = index_2;
             new_node.direction = '0' + i;
             open_list[new_node.index] = new_node;
             add_index_sorted(&open_list[new_node.index]);
@@ -169,7 +169,7 @@ std::string PathFinding::compute_path() {
             if (new_node.previous_cost < existing_node->previous_cost) {
               existing_node->previous_cost = new_node.previous_cost;
               existing_node->total_cost = existing_node->previous_cost + existing_node->heuristic;
-              existing_node->parent_index = index;
+              existing_node->parent_index = index_2;
               open_list_indices.sort();
             }
           }

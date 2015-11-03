@@ -587,8 +587,8 @@ std::vector<const VideoMode*> Video::get_video_modes() {
 
   // Return a copy of all_video_modes with const elements.
   std::vector<const VideoMode*> result;
-  for (const VideoMode& video_mode: all_video_modes) {
-    result.push_back(&video_mode);
+  for (const VideoMode& vm: all_video_modes) {
+    result.push_back(&vm);
   }
   return result;
 }
@@ -602,9 +602,9 @@ std::vector<const VideoMode*> Video::get_video_modes() {
 const VideoMode* Video::get_video_mode_by_name(
     const std::string& mode_name) {
 
-  for (const VideoMode& video_mode: all_video_modes) {
-    if (video_mode.get_name() == mode_name) {
-      return &video_mode;
+  for (const VideoMode& vm: all_video_modes) {
+    if (vm.get_name() == mode_name) {
+      return &vm;
     }
   }
 

@@ -158,14 +158,19 @@ void LuaContext::destroy_menus() {
 void LuaContext::update_menus() {
 
   // Destroy the ones that should be removed.
-  for (auto it = menus.begin(); it != menus.end(); ++it) {
-
+  for (auto it = menus.begin();
+      it != menus.end();
+      // No ++it (elements may be removed while traversing).
+  ) {
     it->recently_added = false;
     if (it->ref.is_empty()) {
-      // Empty ref on a menu means that we should remove it.
+      // Empty ref on a menu means that we should remove.
       // In this case, context must also be nullptr.
       Debug::check_assertion(it->context == nullptr, "Menu with context and no ref");
-      menus.erase(it--);
+      it = menus.erase(it);
+    }
+    else {
+      ++it;
     }
   }
 }

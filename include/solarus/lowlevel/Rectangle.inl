@@ -21,7 +21,7 @@ namespace Solarus {
  * \brief Creates a rectangle, without specifying its properties.
  */
 constexpr Rectangle::Rectangle():
-    Rectangle(0, 0, 0, 0)
+    rect({0, 0, 0, 0})
 {}
 
 /**
@@ -30,7 +30,7 @@ constexpr Rectangle::Rectangle():
  * \param y y coordinate of the top-left corner
  */
 constexpr Rectangle::Rectangle(int x, int y):
-    Rectangle(x, y, 0, 0)
+    rect({x, y, 0, 0})
 {}
 
 /**
@@ -46,7 +46,7 @@ constexpr Rectangle::Rectangle(const Point& xy):
  * \param size the rectangle's size
  */
 constexpr Rectangle::Rectangle(const Size& size):
-    Rectangle(0, 0, size.width, size.height)
+    rect({0, 0, size.width, size.height})
 {}
 
 /**
@@ -88,7 +88,7 @@ constexpr Rectangle::Rectangle(const Point& top_left, const Point& bottom_right)
  * \brief Returns the x coordinate of the top-left corner of this rectangle.
  * \return the x coordinate of the top-left corner
  */
-constexpr int Rectangle::get_x() const {
+inline int Rectangle::get_x() const {
   return rect.x;
 }
 
@@ -96,7 +96,7 @@ constexpr int Rectangle::get_x() const {
  * \brief Returns the y coordinate of the top-left corner of this rectangle.
  * \return the y coordinate of the top-left corner
  */
-constexpr int Rectangle::get_y() const {
+inline int Rectangle::get_y() const {
   return rect.y;
 }
 
@@ -104,7 +104,7 @@ constexpr int Rectangle::get_y() const {
  * \brief Returns the coordinates of the top-left corner of this rectangle.
  * \return the coordinates of the top-left corner
  */
-constexpr Point Rectangle::get_xy() const {
+inline Point Rectangle::get_xy() const {
   return { get_x(), get_y() };
 }
 
@@ -115,7 +115,7 @@ constexpr Point Rectangle::get_xy() const {
  *
  * \return The bottom coordinate.
  */
-constexpr int Rectangle::get_bottom() const {
+inline int Rectangle::get_bottom() const {
   return get_top() + get_height();
 }
 
@@ -126,7 +126,7 @@ constexpr int Rectangle::get_bottom() const {
  *
  * \return The bottom-left point.
  */
-constexpr Point Rectangle::get_bottom_left() const {
+inline Point Rectangle::get_bottom_left() const {
   return { get_left(), get_bottom() };
 }
 
@@ -137,15 +137,15 @@ constexpr Point Rectangle::get_bottom_left() const {
  *
  * \return The bottom-right point.
  */
-constexpr Point Rectangle::get_bottom_right() const {
-  return { get_right(), get_bottom() }; 
+inline Point Rectangle::get_bottom_right() const {
+  return { get_right(), get_bottom() };
 }
 
 /**
  * \brief Returns the center point of this rectangle.
  * \return The center point.
  */
-constexpr Point Rectangle::get_center() const {
+inline Point Rectangle::get_center() const {
   return {
       get_left() + get_width() / 2,
       get_top() + get_height() / 2,
@@ -156,7 +156,7 @@ constexpr Point Rectangle::get_center() const {
  * \brief Returns the left coordinate of this rectangle.
  * \return The left coordinate.
  */
-constexpr int Rectangle::get_left() const {
+inline int Rectangle::get_left() const {
   return rect.x;
 }
 
@@ -167,7 +167,7 @@ constexpr int Rectangle::get_left() const {
  *
  * \return The right coordinate.
  */
-constexpr int Rectangle::get_right() const {
+inline int Rectangle::get_right() const {
   return get_left() + get_width();
 }
 
@@ -175,7 +175,7 @@ constexpr int Rectangle::get_right() const {
  * \brief Returns the top coordinate of this rectangle.
  * \return The top coordinate.
  */
-constexpr int Rectangle::get_top() const {
+inline int Rectangle::get_top() const {
   return rect.y;
 }
 
@@ -186,7 +186,7 @@ constexpr int Rectangle::get_top() const {
  *
  * \return The top-left point.
  */
-constexpr Point Rectangle::get_top_left() const {
+inline Point Rectangle::get_top_left() const {
   return { get_left(), get_top() };
 }
 
@@ -197,7 +197,7 @@ constexpr Point Rectangle::get_top_left() const {
  *
  * \return The top-right point.
  */
-constexpr Point Rectangle::get_top_right() const {
+inline Point Rectangle::get_top_right() const {
   return { get_right(), get_top() };
 }
 
@@ -205,7 +205,7 @@ constexpr Point Rectangle::get_top_right() const {
  * \brief Returns the width of this rectangle.
  * \return the width
  */
-constexpr int Rectangle::get_width()  const {
+inline int Rectangle::get_width()  const {
   return rect.w;
 }
 
@@ -213,7 +213,7 @@ constexpr int Rectangle::get_width()  const {
  * \brief Returns the height of this rectangle.
  * \return the height
  */
-constexpr int Rectangle::get_height() const {
+inline int Rectangle::get_height() const {
   return rect.h;
 }
 
@@ -221,7 +221,7 @@ constexpr int Rectangle::get_height() const {
  * \brief Returns the size of this rectangle.
  * \return the size
  */
-constexpr Size Rectangle::get_size() const {
+inline Size Rectangle::get_size() const {
   return { get_width(), get_height() };
 }
 
@@ -229,7 +229,7 @@ constexpr Size Rectangle::get_size() const {
  * \brief Returns whether this rectangle is flat.
  * \return true if the width or the height is 0.
  */
-constexpr bool Rectangle::is_flat() const {
+inline bool Rectangle::is_flat() const {
   return get_width() == 0 || get_height() == 0;
 }
 
@@ -374,7 +374,7 @@ inline void Rectangle::add_xy(const Point& dxy) {
  * \param y y coordinate of the point
  * \return true if the point is in this rectangle
  */
-constexpr bool Rectangle::contains(int x, int y) const {
+inline bool Rectangle::contains(int x, int y) const {
   return x >= get_x() && x < get_x() + get_width()
       && y >= get_y() && y < get_y() + get_height();
 }
@@ -384,7 +384,7 @@ constexpr bool Rectangle::contains(int x, int y) const {
  * \param point point that may be in this rectangle
  * \return true if \a point is in this rectangle
  */
-constexpr bool Rectangle::contains(const Point& point) const {
+inline bool Rectangle::contains(const Point& point) const {
   return contains(point.x, point.y);
 }
 
@@ -393,7 +393,7 @@ constexpr bool Rectangle::contains(const Point& point) const {
  * \param other another rectangle
  * \return true if the specified rectangle is inside this rectangle
  */
-constexpr bool Rectangle::contains(const Rectangle& other) const {
+inline bool Rectangle::contains(const Rectangle& other) const {
   return contains(other.get_x(), other.get_y())
       && contains(other.get_x() + other.get_width() - 1, other.get_y() + other.get_height() - 1);
 }
@@ -520,7 +520,7 @@ inline Rectangle& Rectangle::operator|=(const Rectangle& other) {
  * \param rhs second rectangle
  * \return true if both rectangles have the same coordinates and size
  */
-constexpr bool operator==(const Rectangle& lhs, const Rectangle& rhs) {
+inline bool operator==(const Rectangle& lhs, const Rectangle& rhs) {
   return lhs.get_xy() == rhs.get_xy()
       && lhs.get_size() == rhs.get_size();
 }
@@ -531,7 +531,7 @@ constexpr bool operator==(const Rectangle& lhs, const Rectangle& rhs) {
  * \param rhs second rectangle
  * \return true if the rectangles are not equal
  */
-constexpr bool operator!=(const Rectangle& lhs, const Rectangle& rhs) {
+inline bool operator!=(const Rectangle& lhs, const Rectangle& rhs) {
   return !(rhs == lhs);
 }
 

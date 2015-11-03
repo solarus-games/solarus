@@ -49,23 +49,23 @@ class Rectangle {
     constexpr Rectangle(const Point& xy, const Size& size);
     constexpr Rectangle(const Point& top_left, const Point& bottom_right);
 
-    constexpr int get_x() const;
-    constexpr int get_y() const;
-    constexpr Point get_xy() const;
-    constexpr int get_width() const;
-    constexpr int get_height() const;
-    constexpr Size get_size() const;
-    constexpr bool is_flat() const;
+    int get_x() const;
+    int get_y() const;
+    Point get_xy() const;
+    int get_width() const;
+    int get_height() const;
+    Size get_size() const;
+    bool is_flat() const;
 
-    constexpr int get_bottom() const;
-    constexpr Point get_bottom_left() const;
-    constexpr Point get_bottom_right() const;
-    constexpr Point get_center() const;
-    constexpr int get_left() const;
-    constexpr int get_right() const;
-    constexpr int get_top() const;
-    constexpr Point get_top_left() const;
-    constexpr Point get_top_right() const;
+    int get_bottom() const;
+    Point get_bottom_left() const;
+    Point get_bottom_right() const;
+    Point get_center() const;
+    int get_left() const;
+    int get_right() const;
+    int get_top() const;
+    Point get_top_left() const;
+    Point get_top_right() const;
 
     void set_x(int x);
     void set_y(int y);
@@ -86,9 +86,9 @@ class Rectangle {
     void add_xy(int dx, int dy);
     void add_xy(const Point& other);
 
-    constexpr bool contains(int x, int y) const;
-    constexpr bool contains(const Point& point) const;
-    constexpr bool contains(const Rectangle& other) const;
+    bool contains(int x, int y) const;
+    bool contains(const Point& point) const;
+    bool contains(const Rectangle& other) const;
     bool overlaps(const Rectangle& other) const;
 
     Rectangle get_intersection(const Rectangle& other) const;
@@ -107,8 +107,8 @@ class Rectangle {
 
 };
 
-constexpr bool operator==(const Rectangle& lhs, const Rectangle& rhs);
-constexpr bool operator!=(const Rectangle& lhs, const Rectangle& rhs);
+bool operator==(const Rectangle& lhs, const Rectangle& rhs);
+bool operator!=(const Rectangle& lhs, const Rectangle& rhs);
 
 SOLARUS_API std::ostream& operator<<(std::ostream& stream, const Rectangle& rectangle);
 

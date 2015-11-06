@@ -52,7 +52,7 @@ void Hero::UsingItemState::start(const State* previous_state) {
   }
 
   if (!interaction) {
-    // no interaction occurred with the facing entity: use the item normally
+    // No interaction occurred with the facing entity: use the item normally.
     item_usage.start();
   }
 }

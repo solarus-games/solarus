@@ -1151,8 +1151,8 @@ bool LuaContext::is_solarus_userdata(
 
 /**
  * \brief Finalizer of a userdata type.
- * \param l a Lua state
- * \return number of values to return to Lua
+ * \param l A Lua state.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::userdata_meta_gc(lua_State* l) {
 
@@ -1192,7 +1192,7 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
 
   }
 
-  // Manually destroy the shared_ptr allocated by Lua.
+  // Manually destroy the shared_ptr allocated for Lua.
   userdata->~shared_ptr<ExportableToLua>();
 
   return 0;

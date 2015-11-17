@@ -1011,7 +1011,7 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
     }
     catch (const std::bad_weak_ptr& ex) {
       // No existing shared_ptr. This is probably because you forgot to
-      // store your object in a shared_ptr at creation time..
+      // store your object in a shared_ptr at creation time.
       Debug::die(
           std::string("No living shared_ptr for ") + userdata.get_lua_type_name()
       );

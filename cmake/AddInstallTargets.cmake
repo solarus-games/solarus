@@ -3,7 +3,7 @@ if(CMAKE_LIBRARY_ARCHITECTURE)
   # Handle standard multi-architecture library directory names like x86_64-linux-gnu
   set(SOLARUS_LIBRARY_DIRECTORY_NAME "lib/${CMAKE_LIBRARY_ARCHITECTURE}")
 else()
-  set(SOLARUS_LIBRARY_DIRECTORY_NAME "lib")
+  set(SOLARUS_LIBRARY_DIRECTORY_NAME "lib${LIB_SUFFIX}")
 endif()
 
 set(SOLARUS_LIBRARY_INSTALL_DESTINATION "${SOLARUS_LIBRARY_DIRECTORY_NAME}" CACHE PATH "Library install destination")

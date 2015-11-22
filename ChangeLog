@@ -36,10 +36,10 @@ Data files format changes
 * Maps: New property num_layers (#445).
 * Dialogs: Allow empty texts.
 
-___________________________
+__________________________
 
-Solarus 1.4.5 (in progress)
-___________________________
+Solarus 1.4.5 (2015-11-22)
+__________________________
 
 Bug fixes for the 1.4 release.
 

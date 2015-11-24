@@ -60,6 +60,8 @@ void print_help(const Solarus::Arguments& args) {
     << "  -quest-size=<width>x<height>  sets the size of the drawing area (if compatible with the quest)"
     << std::endl
     << "  -win-console=yes|no           allows to see output in a console, only needed on Windows (default no)"
+    << std::endl
+    << "  -lag=X                        slows down each frame of X milliseconds to simulate slower systems for debugging (default 0)"
     << std::endl;
 }
 
@@ -87,6 +89,8 @@ void print_help(const Solarus::Arguments& args) {
  *   -quest-size=<width>x<height>      Sets the size of the drawing area (if compatible with the quest).
  *   -win-console=yes|no               Opens a console to see debug output (default: no).
  *                                     Windows only (other systems use their existing console if any).
+ *   -lag=X                            (Advanced) Artificially slows down each frame of X milliseconds
+ *                                     to simulate slower systems for debugging (default: 0).
  *
  * \param argc Number of command-line arguments.
  * \param argv Command-line arguments.

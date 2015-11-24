@@ -66,6 +66,8 @@ class SOLARUS_API MainLoop {
     std::unique_ptr<Game> game;   /**< The current game if any, nullptr otherwise. */
     Game* next_game;              /**< The game to start at next cycle (nullptr means resetting the game). */
     bool exiting;                 /**< Indicates that the program is about to stop. */
+    uint32_t debug_lag;           /**< Artificial lag added to each frame.
+                                   * Useful to debug issues that only happen on slow systems. */
 
 };
 

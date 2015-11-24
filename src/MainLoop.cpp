@@ -24,6 +24,7 @@
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
+#include "solarus/Arguments.h"
 #include "solarus/CurrentQuest.h"
 #include "solarus/Game.h"
 #include "solarus/QuestProperties.h"
@@ -90,12 +91,19 @@ MainLoop::MainLoop(const Arguments& args):
   root_surface(nullptr),
   game(nullptr),
   next_game(nullptr),
-  exiting(false) {
+  exiting(false),
+  debug_lag(0) {
 
+  // Main loop settings.
+  const std::string lag_arg = args.get_argument_value("-lag");
+  if (!lag_arg.empty()) {
+    std::istringstream iss(lag_arg);
+    iss >> debug_lag;
+  }
+
+  // Initialize basic features (I/O, audio, video...).
   Output::initialize(args);
   std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
-
-  // Initialize basic features (input, audio, video, files...).
   System::initialize(args);
 
   // Read the quest general properties.
@@ -266,6 +274,12 @@ void MainLoop::run() {
     }
 
     // 4. Sleep if we have time, to save CPU and GPU cycles.
+
+    if (debug_lag > 0) {
+      // Extra sleep time for debugging, useful to simulate slower systems.
+      System::sleep(debug_lag);
+    }
+
     last_frame_duration = (System::get_real_time() - time_dropped) - last_frame_date;
     if (last_frame_duration < System::timestep) {
       System::sleep(System::timestep - last_frame_duration);

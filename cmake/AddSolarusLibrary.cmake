@@ -446,7 +446,7 @@ target_link_libraries(solarus
 
 set_target_properties(solarus PROPERTIES
   VERSION ${SOLARUS_VERSION_STRING}
-  SOVERSION ${SOLARUS_VERSION_MAJOR}
+  SOVERSION ${SOLARUS_MAJOR_VERSION}
 )
 
 # Configuration for OSX and iOS build and deployment.

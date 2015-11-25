@@ -70,8 +70,8 @@ void check_version_compatibility(const std::string& solarus_required_version) {
   // and second digits) breaks compatibility and we just die.
   // This may change in the future, because all minor versions won't
   // necessarily break compatibility.
-  if (required_major_version != SOLARUS_VERSION_MAJOR ||
-      required_minor_version != SOLARUS_VERSION_MINOR) {
+  if (required_major_version != SOLARUS_MAJOR_VERSION ||
+      required_minor_version != SOLARUS_MINOR_VERSION) {
     std::ostringstream oss;
     oss << "This quest is made for Solarus " << required_major_version << "."
         << required_minor_version << ".x but you are running Solarus "

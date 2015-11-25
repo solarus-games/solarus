@@ -1,5 +1,10 @@
 # Solarus-specific -D preprocessor constants.
 
+# Solarus version
+add_definitions(-DSOLARUS_VERSION_MAJOR=${SOLARUS_VERSION_MAJOR})
+add_definitions(-DSOLARUS_VERSION_MINOR=${SOLARUS_VERSION_MINOR})
+add_definitions(-DSOLARUS_VERSION_PATCH=${SOLARUS_VERSION_PATCH})
+
 # Quest to launch if none is specified at runtime.
 set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
 if(DEFAULT_QUEST)

@@ -444,6 +444,11 @@ target_link_libraries(solarus
   "${MODPLUG_LIBRARY}"
 )
 
+set_target_properties(solarus PROPERTIES
+  VERSION ${SOLARUS_VERSION_STRING}
+  SOVERSION ${SOLARUS_VERSION_MAJOR}
+)
+
 # Configuration for OSX and iOS build and deployment.
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   if(NOT SOLARUS_IOS_BUILD)

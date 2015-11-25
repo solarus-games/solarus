@@ -35,42 +35,12 @@
  */
 
 /**
- * \brief Solarus major version.
- *
- * A change of major version is a important step in the maturity of the
- * project.
- * Data files other than scripts can be upgraded automatically.
- * Lua API changes may sometimes break compatibility, so check the ChangeLog
- * before upgrading.
- */
-#define SOLARUS_MAJOR_VERSION 1
-
-/**
- * \brief Solarus minor version.
- *
- * Minor versions add new features and may change the format of data files.
- * Data files other than scripts can be upgraded automatically.
- * Lua API changes may sometimes break compatibility, so check the ChangeLog
- * before upgrading.
- */
-#define SOLARUS_MINOR_VERSION 5
-
-/**
- * \brief Solarus patch version.
- *
- * Patch versions are only bug fixes.
- * Data files compatibility is always preserved between changes of the patch
- * version.
- */
-#define SOLARUS_PATCH_VERSION 0
-
-/**
  * \brief The Solarus version as a string.
  *
  * This string has the form "x.y.z" where x is the major version, y is the
  * minor version and z is the patch version.
  */
-#define SOLARUS_VERSION SOLARUS_STRINGIFY(SOLARUS_MAJOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_MINOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_PATCH_VERSION)
+#define SOLARUS_VERSION SOLARUS_STRINGIFY(SOLARUS_VERSION_MAJOR) "." SOLARUS_STRINGIFY(SOLARUS_VERSION_MINOR) "." SOLARUS_STRINGIFY(SOLARUS_VERSION_PATCH)
 
 /**
  * \brief The Solarus version as a string, without patch number.
@@ -78,7 +48,7 @@
  * This string has the form "x.y" where x is the major version and y is the
  * minor version.
  */
-#define SOLARUS_VERSION_WITHOUT_PATCH SOLARUS_STRINGIFY(SOLARUS_MAJOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_MINOR_VERSION)
+#define SOLARUS_VERSION_WITHOUT_PATCH SOLARUS_STRINGIFY(SOLARUS_VERSION_MAJOR) "." SOLARUS_STRINGIFY(SOLARUS_VERSION_MINOR)
 
 // Windows specific.
 /**

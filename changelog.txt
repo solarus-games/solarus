@@ -6,10 +6,11 @@ _______________________________
 Engine changes
 --------------
 
-* Maps: allow more than 3 layers (#445).
+* Add version number and symbolic links when building the library.
+* Add a -lag command-line option to simulate slower systems for debugging.
 * Print when the main loop starts and stops.
 * Print the Lua version at startup (#692).
-* Add a -lag command-line option to simulate slower systems for debugging.
+* Maps: allow more than 3 layers (#445).
 * Improve the performance of custom entity collisions.
 * Improve the performance of collisions by using a quadtree.
 * Entities far from the camera are no longer suspended.

@@ -14,6 +14,7 @@ Engine changes
 * Improve the performance of custom entity collisions.
 * Improve the performance of collisions by using a quadtree.
 * Entities far from the camera are no longer suspended.
+* Fix sprite:on_animation_finished() and others not working sometimes (#799).
 * Fix sol.input.get_mouse_coordinates() (#734).
 * Fix straight movement precision.
 

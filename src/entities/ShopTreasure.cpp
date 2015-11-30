@@ -186,8 +186,7 @@ bool ShopTreasure::notify_action_command_pressed() {
   if (get_hero().is_free()
       && get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_LOOK) {
 
-    LuaContext& lua_context = get_lua_context();
-    lua_context.notify_shop_treasure_interaction(*this);
+    get_lua_context()->notify_shop_treasure_interaction(*this);
     return true;
   }
 

@@ -361,7 +361,7 @@ void Destructible::notify_collision(
       hero.check_position();  // To update the ground under the hero.
       create_treasure();
 
-      get_lua_context().destructible_on_cut(*this);
+      get_lua_context()->destructible_on_cut(*this);
 
       if (get_can_explode()) {
         explode();
@@ -423,12 +423,12 @@ bool Destructible::notify_action_command_pressed() {
       }
 
       // Notify Lua.
-      get_lua_context().destructible_on_lifting(*this);
+      get_lua_context()->destructible_on_lifting(*this);
     }
     else {
       // Cannot lift the object.
       get_hero().start_grabbing();
-      get_lua_context().destructible_on_looked(*this);
+      get_lua_context()->destructible_on_looked(*this);
     }
 
     return true;
@@ -472,7 +472,7 @@ void Destructible::explode() {
       "", get_layer(), get_xy(), true
   ));
   Sound::play("explosion");
-  get_lua_context().destructible_on_exploded(*this);
+  get_lua_context()->destructible_on_exploded(*this);
 }
 
 /**
@@ -518,7 +518,7 @@ void Destructible::update() {
     get_sprite().set_current_animation("regenerating");
     is_regenerating = true;
     regeneration_date = 0;
-    get_lua_context().destructible_on_regenerating(*this);
+    get_lua_context()->destructible_on_regenerating(*this);
   }
   else if (is_regenerating && get_sprite().is_animation_finished()) {
     get_sprite().set_current_animation("on_ground");

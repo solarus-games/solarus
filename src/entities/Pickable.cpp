@@ -439,8 +439,8 @@ void Pickable::try_give_item_to_player() {
     treasure.give_to_player();
 
     // Call on_obtained() immediately since the treasure is not brandished.
-    get_lua_context().item_on_obtained(item, treasure);
-    get_lua_context().map_on_obtained_treasure(get_map(), treasure);
+    get_lua_context()->item_on_obtained(item, treasure);
+    get_lua_context()->map_on_obtained_treasure(get_map(), treasure);
   }
 }
 

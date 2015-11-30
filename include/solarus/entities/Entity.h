@@ -121,8 +121,6 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual void notify_tileset_changed();
     Game& get_game();
     const Game& get_game() const;
-    LuaContext& get_lua_context();
-    const LuaContext& get_lua_context() const;
 
     // position in the map
     int get_layer() const;
@@ -209,7 +207,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     void set_movement(const std::shared_ptr<Movement>& movement);
     void clear_movement();
     bool are_movement_notifications_enabled() const;
-    void set_movement_events_enabled(bool notify);
+    void set_movement_notifications_enabled(bool notify);
     bool has_stream_action() const;
     const StreamAction* get_stream_action() const;
     StreamAction* get_stream_action();
@@ -417,10 +415,10 @@ class SOLARUS_API Entity: public ExportableToLua {
                                                  * nullptr indicates that the entity has no movement. */
     std::vector<std::shared_ptr<Movement>>
         old_movements;                          /**< old movements to destroy as soon as possible */
-    bool movement_events_enabled;               /**< Whether entity:on_position_changed() and friends should be called. */
+    bool movement_notifications_enabled;        /**< Whether entity:on_position_changed() and friends should be called. */
     Detector* facing_entity;                    /**< The detector in front of this entity if any. */
     std::unique_ptr<StreamAction>
-        stream_action;                /**< The stream effect currently applied if any. */
+        stream_action;                          /**< The stream effect currently applied if any. */
 
     // state
     std::unique_ptr<State> state;               /**< the current internal state */

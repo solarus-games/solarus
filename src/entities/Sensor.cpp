@@ -88,7 +88,7 @@ void Sensor::notify_collision(Entity& entity_overlapping, CollisionMode collisio
 void Sensor::notify_collision_with_explosion(Explosion& /* explosion */, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_OVERLAPPING) {
-    get_lua_context().sensor_on_collision_explosion(*this);
+    get_lua_context()->sensor_on_collision_explosion(*this);
   }
 }
 
@@ -107,13 +107,13 @@ void Sensor::activate(Hero& /* hero */) {
 
     // Notify Lua.
     notifying_script = true;
-    get_lua_context().sensor_on_activated(*this);
+    get_lua_context()->sensor_on_activated(*this);
     notifying_script = false;
   }
   else {
     if (!notifying_script && !get_game().is_suspended()) {
       notifying_script = true;
-      get_lua_context().sensor_on_activated_repeat(*this);
+      get_lua_context()->sensor_on_activated_repeat(*this);
       notifying_script = false;
     }
   }
@@ -133,7 +133,7 @@ void Sensor::update() {
 
       // Notify Lua.
       notifying_script = true;
-      get_lua_context().sensor_on_left(*this);
+      get_lua_context()->sensor_on_left(*this);
       notifying_script = false;
     }
   }

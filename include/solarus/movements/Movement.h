@@ -27,7 +27,6 @@
 namespace Solarus {
 
 class Drawable;
-class LuaContext;
 class Entity;
 
 /**
@@ -94,10 +93,10 @@ class SOLARUS_API Movement: public ExportableToLua {
     virtual Point get_displayed_xy() const;
 
     // Lua
-    LuaContext* get_lua_context();
-    void set_lua_context(LuaContext* lua_context);
     const ScopedLuaRef& get_finished_callback() const;
     void set_finished_callback(const ScopedLuaRef& finished_callback_ref);
+    bool are_lua_notifications_enabled() const;
+    void set_lua_notifications_enabled(bool lua_notifications_enabled);
     virtual const std::string& get_lua_type_name() const override;
 
   protected:
@@ -114,12 +113,13 @@ class SOLARUS_API Movement: public ExportableToLua {
   private:
 
     // Object to move (can be an entity, a drawable or a point).
-    Entity* entity;                           /**< The entity controlled by this movement. */
+    Entity* entity;                              /**< The entity controlled by this movement. */
     Drawable* drawable;                          /**< The drawable controlled by this movement. */
     Point xy;                                    /**< Coordinates of the point controlled by this movement. */
 
     uint32_t last_move_date;                     /**< Date of the last x or y move. */
     bool finished;                               /**< true if is_finished() returns true. */
+    bool lua_notifications_enabled;              /**< Whether Lua events and callbacks should be called for this movement. */
 
     // suspended
     bool suspended;                              /**< Indicates whether the movement is suspended. */
@@ -133,8 +133,6 @@ class SOLARUS_API Movement: public ExportableToLua {
     bool default_ignore_obstacles;               /**< Indicates that this movement normally ignores obstacles. */
     bool current_ignore_obstacles;               /**< Indicates that this movement currently ignores obstacles. */
 
-    LuaContext* lua_context;                     /**< The Solarus Lua API (nullptr means no callbacks for this movement).
-                                                  * TODO move this to ExportableToLua */
     ScopedLuaRef finished_callback_ref;          /**< Lua ref to a function to call when this movement finishes. */
 
 };

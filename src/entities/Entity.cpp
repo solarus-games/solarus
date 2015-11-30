@@ -66,7 +66,7 @@ Entity::Entity(
   visible(true),
   drawn_in_y_order(false),
   movement(nullptr),
-  movement_events_enabled(true),
+  movement_notifications_enabled(true),
   facing_entity(nullptr),
   stream_action(nullptr),
   initialized(false),
@@ -320,6 +320,7 @@ void Entity::set_map(Map& map) {
 
   this->main_loop = &map.get_game().get_main_loop();
   this->map = &map;
+  set_lua_context(&main_loop->get_lua_context());
   if (&get_game().get_current_map() == &map) {
     notify_tileset_changed();
   }
@@ -362,7 +363,7 @@ void Entity::finish_initialization() {
   initialized = true;
 
   notify_creating();
-  get_lua_context().entity_on_created(*this);
+  get_lua_context()->entity_on_created(*this);
   notify_created();
 }
 
@@ -460,28 +461,6 @@ const MapEntities& Entity::get_entities() const {
 }
 
 /**
- * \brief Returns the shared Lua context.
- * \return The Lua context where all scripts are run.
- */
-LuaContext& Entity::get_lua_context() {
-
-  Debug::check_assertion(main_loop != nullptr,
-      "This entity is not fully constructed yet");
-  return main_loop->get_lua_context();
-}
-
-/**
- * \brief Returns the shared Lua context.
- * \return The Lua context where all scripts are run.
- */
-const LuaContext& Entity::get_lua_context() const {
-
-  Debug::check_assertion(main_loop != nullptr,
-      "This entity is not fully constructed yet");
-  return main_loop->get_lua_context();
-}
-
-/**
  * \brief Returns the current equipment.
  * \return The equipment.
  */
@@ -557,7 +536,7 @@ void Entity::remove_from_map() {
  */
 void Entity::notify_being_removed() {
 
-  get_lua_context().entity_on_removed(*this);
+  get_lua_context()->entity_on_removed(*this);
   this->being_removed = true;
 
   // If this entity defines a ground, tell people that it is disappearing.
@@ -610,7 +589,7 @@ void Entity::notify_layer_changed() {
     update_ground_below();
 
     if (are_movement_notifications_enabled()) {
-      get_lua_context().entity_on_position_changed(*this, get_xy(), get_layer());
+      get_lua_context()->entity_on_position_changed(*this, get_xy(), get_layer());
     }
   }
 }
@@ -1390,9 +1369,9 @@ void Entity::set_movement(const std::shared_ptr<Movement>& movement) {
 void Entity::clear_movement() {
 
   if (movement != nullptr) {
-    movement->set_entity(nullptr);       // Tell the movement to forget me.
-    movement->set_lua_context(nullptr);  // Stop future Lua callbacks.
-    old_movements.push_back(movement);   // Destroy it later.
+    movement->set_entity(nullptr);                   // Tell the movement to forget me.
+    movement->set_lua_notifications_enabled(false);  // Stop future Lua callbacks.
+    old_movements.push_back(movement);               // Destroy it later.
     movement = nullptr;
   }
 }
@@ -1415,7 +1394,7 @@ void Entity::clear_old_movements() {
  * \return Whether movement events are currently enabled.
  */
 bool Entity::are_movement_notifications_enabled() const {
-  return main_loop != nullptr && movement_events_enabled;
+  return main_loop != nullptr && movement_notifications_enabled;
 }
 
 /**
@@ -1427,8 +1406,8 @@ bool Entity::are_movement_notifications_enabled() const {
  *
  * \param notify \c true to enable movement events.
  */
-void Entity::set_movement_events_enabled(bool notify) {
-  this->movement_events_enabled = notify;
+void Entity::set_movement_notifications_enabled(bool notify) {
+  this->movement_notifications_enabled = notify;
 }
 
 /**
@@ -1483,7 +1462,7 @@ void Entity::stop_stream_action() {
 void Entity::notify_obstacle_reached() {
 
   if (are_movement_notifications_enabled()) {
-    get_lua_context().entity_on_obstacle_reached(*this, *get_movement());
+    get_lua_context()->entity_on_obstacle_reached(*this, *get_movement());
   }
 }
 
@@ -1506,7 +1485,7 @@ void Entity::notify_position_changed() {
   update_ground_below();
 
   if (are_movement_notifications_enabled()) {
-    get_lua_context().entity_on_position_changed(*this, get_xy(), get_layer());
+    get_lua_context()->entity_on_position_changed(*this, get_xy(), get_layer());
   }
 }
 
@@ -1558,13 +1537,11 @@ void Entity::check_collision_with_detectors(Sprite& sprite) {
  * \brief This function can be called by the movement object
  * to notify the entity when the movement has just changed
  * (e.g. the speed, the angle or the trajectory).
- *
- * TODO: actually call this function from all movement subclasses
  */
 void Entity::notify_movement_changed() {
 
   if (are_movement_notifications_enabled()) {
-    get_lua_context().entity_on_movement_changed(*this, *get_movement());
+    get_lua_context()->entity_on_movement_changed(*this, *get_movement());
   }
 }
 
@@ -1574,7 +1551,7 @@ void Entity::notify_movement_changed() {
 void Entity::notify_movement_finished() {
 
   if (are_movement_notifications_enabled()) {
-    get_lua_context().entity_on_movement_finished(*this);
+    get_lua_context()->entity_on_movement_finished(*this);
   }
 }
 
@@ -1647,7 +1624,7 @@ void Entity::set_enabled(bool enabled) {
       }
 
       if (is_on_map()) {
-        get_lua_context().set_entity_timers_suspended(*this, true);
+        get_lua_context()->set_entity_timers_suspended(*this, true);
       }
     }
     notify_enabled(false);
@@ -2526,7 +2503,7 @@ void Entity::set_suspended(bool suspended) {
 
   // Suspend/unsuspend the timers.
   if (is_on_map()) {
-    get_lua_context().set_entity_timers_suspended(*this, suspended || !is_enabled());
+    get_lua_context()->set_entity_timers_suspended(*this, suspended || !is_enabled());
   }
 }
 
@@ -2600,7 +2577,7 @@ void Entity::update() {
         }
 
         if (is_on_map()) {
-          get_lua_context().set_entity_timers_suspended(*this, false);
+          get_lua_context()->set_entity_timers_suspended(*this, false);
         }
       }
     }

@@ -183,10 +183,10 @@ void Door::set_open(bool door_open) {
     }
 
     if (door_open) {
-      get_lua_context().door_on_opened(*this);
+      get_lua_context()->door_on_opened(*this);
     }
     else {
-      get_lua_context().door_on_closed(*this);
+      get_lua_context()->door_on_closed(*this);
     }
   }
 }

@@ -274,7 +274,7 @@ void Teletransporter::transport_hero(Hero& hero) {
   }
   transporting_hero = true;
 
-  get_lua_context().teletransporter_on_activated(*this);
+  get_lua_context()->teletransporter_on_activated(*this);
 
   if (!sound_id.empty()) {
     Sound::play(sound_id);

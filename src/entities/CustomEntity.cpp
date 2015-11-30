@@ -174,7 +174,7 @@ bool CustomEntity::is_traversable_by_entity(Entity& entity) {
 void CustomEntity::set_traversable_by_entities(bool traversable) {
 
   traversable_by_entities_general = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable
   );
 }
@@ -194,7 +194,7 @@ void CustomEntity::set_traversable_by_entities(
     const ScopedLuaRef& traversable_test_ref
 ) {
   traversable_by_entities_general = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable_test_ref
   );
 }
@@ -230,7 +230,7 @@ void CustomEntity::set_traversable_by_entities(
     EntityType type, bool traversable) {
 
   traversable_by_entities_type[type] = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable
   );
 }
@@ -252,7 +252,7 @@ void CustomEntity::set_traversable_by_entities(
     const ScopedLuaRef& traversable_test_ref
 ) {
   traversable_by_entities_type[type] = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable_test_ref
   );
 }
@@ -313,7 +313,7 @@ const CustomEntity::TraversableInfo& CustomEntity::get_can_traverse_entity_info(
 void CustomEntity::set_can_traverse_entities(bool traversable) {
 
   can_traverse_entities_general = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable
   );
 }
@@ -332,7 +332,7 @@ void CustomEntity::set_can_traverse_entities(bool traversable) {
 void CustomEntity::set_can_traverse_entities(const ScopedLuaRef& traversable_test_ref) {
 
   can_traverse_entities_general = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable_test_ref
   );
 }
@@ -370,7 +370,7 @@ void CustomEntity::set_can_traverse_entities(
 ) {
 
   can_traverse_entities_type[type] = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable
   );
 }
@@ -393,7 +393,7 @@ void CustomEntity::set_can_traverse_entities(
 ) {
 
   can_traverse_entities_type[type] = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable_test_ref
   );
 }
@@ -728,7 +728,7 @@ void CustomEntity::add_collision_test(
   }
 
   collision_tests.emplace_back(
-      get_lua_context(),
+      *get_lua_context(),
       collision_test,
       callback_ref
   );
@@ -752,7 +752,7 @@ void CustomEntity::add_collision_test(
   add_collision_mode(COLLISION_CUSTOM);
 
   collision_tests.emplace_back(
-      get_lua_context(),
+      *get_lua_context(),
       collision_test_ref,
       callback_ref
   );
@@ -830,7 +830,7 @@ bool CustomEntity::test_collision_custom(Entity& entity) {
         break;
 
       case COLLISION_CUSTOM:
-        if (get_lua_context().do_custom_entity_collision_test_function(
+        if (get_lua_context()->do_custom_entity_collision_test_function(
               info.get_custom_test_ref(), *this, entity)
         ) {
           collision = true;
@@ -872,7 +872,7 @@ void CustomEntity::notify_collision(Entity& entity_overlapping, CollisionMode co
 
   // There is a collision: execute the callbacks.
   for (const CollisionInfo& info: successful_collision_tests) {
-    get_lua_context().do_custom_entity_collision_callback(
+    get_lua_context()->do_custom_entity_collision_callback(
         info.get_callback_ref(), *this, entity_overlapping
     );
   }
@@ -894,7 +894,7 @@ void CustomEntity::notify_collision(
 
     if (info.get_built_in_test() == COLLISION_SPRITE) {
       // Execute the callback.
-      get_lua_context().do_custom_entity_collision_callback(
+      get_lua_context()->do_custom_entity_collision_callback(
           info.get_callback_ref(),
           *this,
           other_entity,
@@ -1104,7 +1104,7 @@ void CustomEntity::notify_collision_with_enemy(
  */
 bool CustomEntity::notify_action_command_pressed() {
 
-  return get_lua_context().entity_on_interaction(*this);
+  return get_lua_context()->entity_on_interaction(*this);
 }
 
 /**
@@ -1112,7 +1112,7 @@ bool CustomEntity::notify_action_command_pressed() {
  */
 bool CustomEntity::interaction_with_item(EquipmentItem& item) {
 
-  return get_lua_context().entity_on_interaction_item(*this, item);
+  return get_lua_context()->entity_on_interaction_item(*this, item);
 }
 
 /**
@@ -1130,7 +1130,7 @@ void CustomEntity::update_ground_observer() {
   // If there is no on_ground_below_changed() event, don't bother
   // determine the ground below.
   static const std::string field_name = "on_ground_below_changed";
-  bool ground_observer = get_lua_context().userdata_has_field(
+  bool ground_observer = get_lua_context()->userdata_has_field(
       *this, "field_name"
   );
   if (ground_observer != this->ground_observer) {
@@ -1143,7 +1143,7 @@ void CustomEntity::update_ground_observer() {
  */
 void CustomEntity::notify_ground_below_changed() {
 
-  get_lua_context().custom_entity_on_ground_below_changed(
+  get_lua_context()->custom_entity_on_ground_below_changed(
       *this, get_ground_below()
   );
 }
@@ -1177,7 +1177,7 @@ void CustomEntity::notify_creating() {
 
   Detector::notify_creating();
 
-  get_lua_context().run_custom_entity(*this);
+  get_lua_context()->run_custom_entity(*this);
 }
 
 /**
@@ -1192,7 +1192,7 @@ void CustomEntity::update() {
     return;
   }
 
-  get_lua_context().entity_on_update(*this);
+  get_lua_context()->entity_on_update(*this);
 }
 
 /**
@@ -1202,7 +1202,7 @@ void CustomEntity::set_suspended(bool suspended) {
 
   Detector::set_suspended(suspended);
 
-  get_lua_context().entity_on_suspended(*this, suspended);
+  get_lua_context()->entity_on_suspended(*this, suspended);
 }
 
 /**
@@ -1213,10 +1213,10 @@ void CustomEntity::notify_enabled(bool enabled) {
   Detector::notify_enabled(enabled);
 
   if (enabled) {
-    get_lua_context().entity_on_enabled(*this);
+    get_lua_context()->entity_on_enabled(*this);
   }
   else {
-    get_lua_context().entity_on_disabled(*this);
+    get_lua_context()->entity_on_disabled(*this);
   }
 }
 
@@ -1229,9 +1229,9 @@ void CustomEntity::draw_on_map() {
     return;
   }
 
-  get_lua_context().entity_on_pre_draw(*this);
+  get_lua_context()->entity_on_pre_draw(*this);
   Detector::draw_on_map();
-  get_lua_context().entity_on_post_draw(*this);
+  get_lua_context()->entity_on_post_draw(*this);
 }
 
 /**

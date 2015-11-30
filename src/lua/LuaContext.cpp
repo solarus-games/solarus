@@ -1229,8 +1229,14 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
                                   // ... udata_tables lightudata
   lua_gettable(l, -2);
                                   // ... udata_tables udata_table/nil
-  if (lua_isnil(l, -1)) {
+  if (!lua_isnil(l, -1)) {
+    // The userdata table already exists.
+    Debug::check_assertion(userdata->is_with_lua_table(), "Userdata marked without table");
+  }
+  else {
     // Create the userdata table if it does not exist yet.
+    Debug::check_assertion(!userdata->is_with_lua_table(), "Userdata marked with a table");
+
     userdata->set_with_lua_table(true);
                                   // ... udata_tables nil
     lua_pop(l, 1);

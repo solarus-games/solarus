@@ -310,7 +310,7 @@ void Block::stop_movement_by_hero() {
  */
 void Block::notify_moving_by(Entity& /* entity */) {
 
-  get_lua_context().block_on_moving(*this);
+  get_lua_context()->block_on_moving(*this);
 }
 
 /**
@@ -318,7 +318,7 @@ void Block::notify_moving_by(Entity& /* entity */) {
  */
 void Block::notify_moved_by(Entity& /* entity */) {
 
-  get_lua_context().block_on_moved(*this);
+  get_lua_context()->block_on_moved(*this);
 }
 
 /**

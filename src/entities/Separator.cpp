@@ -125,7 +125,7 @@ void Separator::notify_collision(
  */
 void Separator::notify_activating(int direction4) {
 
-  get_lua_context().separator_on_activating(*this, direction4);
+  get_lua_context()->separator_on_activating(*this, direction4);
 }
 
 /**
@@ -135,7 +135,7 @@ void Separator::notify_activating(int direction4) {
  */
 void Separator::notify_activated(int direction4) {
 
-  get_lua_context().separator_on_activated(*this, direction4);
+  get_lua_context()->separator_on_activated(*this, direction4);
 }
 
 }

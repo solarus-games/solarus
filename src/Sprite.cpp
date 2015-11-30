@@ -21,13 +21,13 @@
 #include "solarus/Game.h"
 #include "solarus/Map.h"
 #include "solarus/movements/Movement.h"
-#include "solarus/lua/LuaContext.h"
 #include "solarus/lowlevel/PixelBits.h"
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Size.h"
+#include "solarus/lua/LuaContext.h"
 #include <limits>
 #include <memory>
 #include <sstream>
@@ -86,7 +86,6 @@ SpriteAnimationSet& Sprite::get_animation_set(const std::string& id) {
  */
 Sprite::Sprite(const std::string& id):
   Drawable(),
-  lua_context(nullptr),
   animation_set_id(id),
   animation_set(get_animation_set(id)),
   current_animation(nullptr),
@@ -270,6 +269,7 @@ void Sprite::set_current_animation(const std::string& animation_name) {
 
     set_current_frame(0, false);
 
+    LuaContext* lua_context = get_lua_context();
     if (lua_context != nullptr) {
       lua_context->sprite_on_animation_changed(*this, current_animation_name);
       lua_context->sprite_on_frame_changed(*this, current_animation_name, 0);
@@ -331,6 +331,7 @@ void Sprite::set_current_direction(int current_direction) {
 
     set_current_frame(0, false);
 
+    LuaContext* lua_context = get_lua_context();
     if (lua_context != nullptr) {
       lua_context->sprite_on_direction_changed(*this, current_animation_name, current_direction);
       lua_context->sprite_on_frame_changed(*this, current_animation_name, 0);
@@ -380,9 +381,12 @@ void Sprite::set_current_frame(int current_frame, bool notify_script) {
     this->current_frame = current_frame;
     set_frame_changed(true);
 
-    if (notify_script && lua_context != nullptr) {
-      lua_context->sprite_on_frame_changed(
-          *this, current_animation_name, current_frame);
+    if (notify_script) {
+      LuaContext* lua_context = get_lua_context();
+      if (lua_context != nullptr) {
+        lua_context->sprite_on_frame_changed(
+            *this, current_animation_name, current_frame);
+      }
     }
   }
 }
@@ -633,6 +637,8 @@ void Sprite::update() {
     return;
   }
 
+  LuaContext* lua_context = get_lua_context();
+
   frame_changed = false;
   uint32_t now = System::now();
 
@@ -843,23 +849,6 @@ Surface& Sprite::get_intermediate_surface() const {
     intermediate_surface = Surface::create(get_max_size());
   }
   return *intermediate_surface;
-}
-
-/**
- * \brief Returns the Solarus Lua API.
- * \return The Lua context, or nullptr if Lua callbacks are not enabled for this sprite.
- */
-LuaContext* Sprite::get_lua_context() const {
-  return lua_context;
-}
-
-/**
- * \brief Sets the Solarus Lua API.
- * \param lua_context The Lua context, or nullptr to disable Lua callbacks
- * for this sprite.
- */
-void Sprite::set_lua_context(LuaContext* lua_context) {
-  this->lua_context = lua_context;
 }
 
 /**

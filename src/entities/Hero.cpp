@@ -644,7 +644,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
       }
 
       if (destination != nullptr) {
-        get_lua_context().destination_on_activated(*destination);
+        get_lua_context()->destination_on_activated(*destination);
       }
 
       const std::shared_ptr<const Stairs> stairs = get_stairs_overlapping();
@@ -1033,7 +1033,7 @@ void Hero::notify_position_changed() {
   get_state().notify_position_changed();
 
   if (are_movement_notifications_enabled()) {
-    get_lua_context().entity_on_position_changed(*this, get_xy(), get_layer());
+    get_lua_context()->entity_on_position_changed(*this, get_xy(), get_layer());
   }
 }
 

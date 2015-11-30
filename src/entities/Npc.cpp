@@ -216,10 +216,10 @@ void Npc::notify_collision(Entity& entity_overlapping, CollisionMode collision_m
 
     if (behavior == BEHAVIOR_ITEM_SCRIPT) {
       EquipmentItem& item = get_equipment().get_item(item_name);
-      get_lua_context().item_on_npc_collision_fire(item, *this);
+      get_lua_context()->item_on_npc_collision_fire(item, *this);
     }
     else {
-      get_lua_context().npc_on_collision_fire(*this);
+      get_lua_context()->npc_on_collision_fire(*this);
     }
   }
 }
@@ -280,11 +280,11 @@ bool Npc::notify_action_command_pressed() {
 void Npc::call_script_hero_interaction() {
 
   if (behavior == BEHAVIOR_MAP_SCRIPT) {
-    get_lua_context().entity_on_interaction(*this);
+    get_lua_context()->entity_on_interaction(*this);
   }
   else {
     EquipmentItem& item = get_equipment().get_item(item_name);
-    get_lua_context().item_on_npc_interaction(item, *this);
+    get_lua_context()->item_on_npc_interaction(item, *this);
   }
 }
 
@@ -303,12 +303,12 @@ bool Npc::interaction_with_item(EquipmentItem& item_used) {
   bool interaction_occured;
   if (behavior == BEHAVIOR_ITEM_SCRIPT) {
     EquipmentItem& item_to_notify = get_equipment().get_item(item_name);
-    interaction_occured = get_lua_context().item_on_npc_interaction_item(
+    interaction_occured = get_lua_context()->item_on_npc_interaction_item(
         item_to_notify, *this, item_used
     );
   }
   else {
-    interaction_occured = get_lua_context().entity_on_interaction_item(
+    interaction_occured = get_lua_context()->entity_on_interaction_item(
         *this, item_used
     );
   }

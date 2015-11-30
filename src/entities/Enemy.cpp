@@ -200,7 +200,7 @@ bool Enemy::is_ground_observer() const {
  */
 void Enemy::notify_creating() {
 
-  get_lua_context().run_enemy(*this);
+  get_lua_context()->run_enemy(*this);
 }
 
 /**
@@ -779,7 +779,7 @@ void Enemy::update() {
     // see if we should stop the animation "hurt"
     if (now >= stop_hurt_date) {
       being_hurt = false;
-      set_movement_events_enabled(true);
+      set_movement_notifications_enabled(true);
 
       if (life <= 0) {
         kill();
@@ -862,7 +862,7 @@ void Enemy::update() {
     notify_dead();
   }
 
-  get_lua_context().entity_on_update(*this);
+  get_lua_context()->entity_on_update(*this);
 }
 
 /**
@@ -884,7 +884,7 @@ void Enemy::set_suspended(bool suspended) {
     end_shaking_date += diff;
     next_explosion_date += diff;
   }
-  get_lua_context().entity_on_suspended(*this, suspended);
+  get_lua_context()->entity_on_suspended(*this, suspended);
 }
 
 /**
@@ -896,9 +896,9 @@ void Enemy::draw_on_map() {
     return;
   }
 
-  get_lua_context().entity_on_pre_draw(*this);
+  get_lua_context()->entity_on_pre_draw(*this);
   Detector::draw_on_map();
-  get_lua_context().entity_on_post_draw(*this);
+  get_lua_context()->entity_on_post_draw(*this);
 }
 
 /**
@@ -915,10 +915,10 @@ void Enemy::notify_enabled(bool enabled) {
 
   if (enabled) {
     restart();
-    get_lua_context().entity_on_enabled(*this);
+    get_lua_context()->entity_on_enabled(*this);
   }
   else {
-    get_lua_context().entity_on_disabled(*this);
+    get_lua_context()->entity_on_disabled(*this);
   }
 }
 
@@ -997,7 +997,7 @@ void Enemy::notify_collision_with_enemy(Enemy& other,
     Sprite& other_sprite, Sprite& this_sprite) {
 
   if (is_in_normal_state()) {
-    get_lua_context().enemy_on_collision_enemy(
+    get_lua_context()->enemy_on_collision_enemy(
         *this, other, other_sprite, this_sprite);
   }
 }
@@ -1043,7 +1043,7 @@ void Enemy::attack_hero(Hero& hero, Sprite* this_sprite) {
     }
     else {
       // Let the enemy script handle this if it wants.
-      const bool handled = get_lua_context().enemy_on_attacking_hero(
+      const bool handled = get_lua_context()->enemy_on_attacking_hero(
           *this, hero, this_sprite
       );
       if (!handled) {
@@ -1116,7 +1116,7 @@ void Enemy::restart() {
     stop_immobilized();
   }
   set_animation("walking");
-  get_lua_context().enemy_on_restarted(*this);
+  get_lua_context()->enemy_on_restarted(*this);
 }
 
 /**
@@ -1211,7 +1211,7 @@ void Enemy::try_hurt(EnemyAttack attack, Entity& source, Sprite* this_sprite) {
         );
 
         // For a sword attack, the damage may be something customized.
-        bool customized = get_lua_context().enemy_on_hurt_by_sword(
+        bool customized = get_lua_context()->enemy_on_hurt_by_sword(
             *this, hero, *this_sprite);
 
         if (customized) {
@@ -1260,7 +1260,7 @@ void Enemy::hurt(Entity& source, Sprite* this_sprite) {
   uint32_t now = System::now();
 
   // update the enemy state
-  set_movement_events_enabled(false);
+  set_movement_notifications_enabled(false);
 
   can_attack = false;
   can_attack_again_date = now + 300;
@@ -1293,9 +1293,9 @@ void Enemy::hurt(Entity& source, Sprite* this_sprite) {
  */
 void Enemy::notify_hurt(Entity& /* source */, EnemyAttack attack) {
 
-  get_lua_context().enemy_on_hurt(*this, attack);
+  get_lua_context()->enemy_on_hurt(*this, attack);
   if (get_life() <= 0) {
-    get_lua_context().enemy_on_dying(*this);
+    get_lua_context()->enemy_on_dying(*this);
   }
 }
 
@@ -1304,7 +1304,7 @@ void Enemy::notify_hurt(Entity& /* source */, EnemyAttack attack) {
  */
 void Enemy::notify_dead() {
 
-  get_lua_context().enemy_on_dead(*this);
+  get_lua_context()->enemy_on_dead(*this);
 }
 
 /**
@@ -1313,7 +1313,7 @@ void Enemy::notify_dead() {
  */
 void Enemy::notify_immobilized() {
 
-  get_lua_context().enemy_on_immobilized(*this);
+  get_lua_context()->enemy_on_immobilized(*this);
 }
 
 /**
@@ -1514,7 +1514,7 @@ bool Enemy::is_immobilized() const {
  */
 void Enemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
 
-  get_lua_context().enemy_on_custom_attack_received(*this, attack, this_sprite);
+  get_lua_context()->enemy_on_custom_attack_received(*this, attack, this_sprite);
 }
 
 }

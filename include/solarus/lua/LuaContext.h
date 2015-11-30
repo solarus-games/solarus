@@ -186,6 +186,8 @@ class LuaContext {
         const ExportableToLua& userdata,
         const std::string& key
     ) const;
+    void notify_userdata_destroyed(ExportableToLua& userdata);
+    void userdata_close_lua();
 
     // Timers.
     void add_timer(

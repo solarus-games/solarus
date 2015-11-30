@@ -369,7 +369,7 @@ void Chest::update() {
 
         treasure_given = true;
 
-        bool done = get_lua_context().chest_on_empty(*this);
+        bool done = get_lua_context()->chest_on_empty(*this);
         if (!done) {
           // The script does not define any behavior:
           // by default, do nothing and unfreeze the hero.

@@ -90,7 +90,7 @@ HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
  * \return The Lua context.
  */
 LuaContext& HeroSprites::get_lua_context() {
-  return hero.get_lua_context();
+  return *hero.get_lua_context();
 }
 
 /**

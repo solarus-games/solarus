@@ -361,7 +361,6 @@ std::shared_ptr<Movement> LuaContext::check_movement(lua_State* l, int index) {
  */
 void LuaContext::push_movement(lua_State* l, Movement& movement) {
 
-  movement.set_lua_context(&get_lua_context(l));  // To make callbacks work.
   push_userdata(l, movement);
 }
 
@@ -597,7 +596,6 @@ int LuaContext::movement_api_start(lua_State* l) {
 
     ScopedLuaRef callback_ref = LuaTools::opt_function(l, 3);
 
-    movement->set_lua_context(&lua_context);
     if (lua_type(l, 2) == LUA_TTABLE) {
       lua_context.start_movement_on_point(movement, 2);
     }

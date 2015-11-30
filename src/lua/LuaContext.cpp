@@ -1176,6 +1176,10 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
       // Remove the table associated to this userdata.
       // Otherwise, if the same pointer gets reallocated, a new userdata will get
       // its table from this deleted one!
+
+      // TODO This should be done from ~ExportableToLua() because right now,
+      // it is not cleaned when the object disappears from Lua first.
+
                                     // udata
       lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                     // udata udata_tables
@@ -1225,21 +1229,19 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
 
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                   // ... udata_tables
-  lua_pushlightuserdata(l, userdata.get());
-                                  // ... udata_tables lightudata
-  lua_gettable(l, -2);
-                                  // ... udata_tables udata_table/nil
-  if (!lua_isnil(l, -1)) {
-    // The userdata table already exists.
-    Debug::check_assertion(userdata->is_with_lua_table(), "Userdata marked without table");
-  }
-  else {
+
+  if (!userdata->is_with_lua_table()) {
     // Create the userdata table if it does not exist yet.
-    Debug::check_assertion(!userdata->is_with_lua_table(), "Userdata marked with a table");
+
+    // Note that is is possible that an old table exists with this pointer.
+    // This can happen when an old pointer is reused for this userdata,
+    // if the old object was destroyed from Lua before C++.
+    // In this case its table was not cleaned (see the TODO comment in __gc).
+    // Then we simply overwrite it here.
 
     userdata->set_with_lua_table(true);
-                                  // ... udata_tables nil
-    lua_pop(l, 1);
+    get_lua_context(l).userdata_fields.erase(userdata.get());
+
                                   // ... udata_tables
     lua_newtable(l);
                                   // ... udata_tables udata_table
@@ -1250,6 +1252,14 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
     lua_settable(l, -4);
                                   // ... udata_tables udata_table
   }
+  else {
+    // The userdata table already exists.
+    lua_pushlightuserdata(l, userdata.get());
+                                  // ... udata_tables lightudata
+    lua_gettable(l, -2);
+                                  // ... udata_tables udata_table
+  }
+  Debug::check_assertion(!lua_isnil(l, -1), "Missing userdata table");
   lua_pushvalue(l, 2);
                                   // ... udata_tables udata_table key
   lua_pushvalue(l, 3);

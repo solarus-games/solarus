@@ -32,14 +32,3 @@ if(DEFAULT_QUEST_HEIGHT)
   add_definitions(-DSOLARUS_DEFAULT_QUEST_HEIGHT=${DEFAULT_QUEST_HEIGHT})
 endif()
 
-# Color depth.
-if(CAANOO OR GCWZERO)
-  set(INITIAL_COLOR_DEPTH 16)
-else()
-  set(INITIAL_COLOR_DEPTH 32)
-endif()
-set(COLOR_DEPTH ${INITIAL_COLOR_DEPTH} CACHE INTEGER "Number of bits per pixel for surfaces.")
-if(COLOR_DEPTH)
-  add_definitions(-DSOLARUS_COLOR_DEPTH=${COLOR_DEPTH})
-endif()
-

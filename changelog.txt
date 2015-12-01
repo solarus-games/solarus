@@ -17,6 +17,7 @@ Engine changes
 * Fix sprite:on_animation_finished() and others not working sometimes (#799).
 * Fix sol.input.get_mouse_coordinates() (#734).
 * Fix straight movement precision.
+* Fix sword tapping sound still played when the game is suspended (#797).
 
 Lua API changes
 ---------------

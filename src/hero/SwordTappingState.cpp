@@ -75,6 +75,10 @@ void Hero::SwordTappingState::update() {
 
   State::update();
 
+  if (is_suspended()) {
+    return;
+  }
+
   Hero& hero = get_entity();
   if (hero.get_movement() == nullptr) {
     // the hero is not being pushed after hitting an enemy

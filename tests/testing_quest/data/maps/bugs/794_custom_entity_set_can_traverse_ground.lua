@@ -37,7 +37,7 @@ function map:on_started()
   for _, ground in ipairs(grounds) do
     print("Testing ground: " .. ground)
     ground_entity:set_modified_ground(ground)
-  
+
     tested_entity:set_can_traverse_ground(ground, true)
     assert(not tested_entity:test_obstacles(0, 0))
 

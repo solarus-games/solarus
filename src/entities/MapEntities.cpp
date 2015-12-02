@@ -740,7 +740,7 @@ void MapEntities::remove_entity(Entity& entity) {
     // Tell the entity.
     entity.notify_being_removed();
 
-    // Clear the entity's name to avoid allow users to create a new one with
+    // Clear the entity's name to allow users to create a new one with
     // the same name right now.
     if (!entity.get_name().empty()) {
       named_entities.erase(entity.get_name());

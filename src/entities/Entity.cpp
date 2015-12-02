@@ -1103,15 +1103,10 @@ const std::string& Entity::get_name() const {
 
 /**
  * \brief Sets the name of the entity.
- *
- * The name can only be changed before the entity is added to a map.
- *
  * \param name The name of the entity, or an empty string to unset the name.
  */
 void Entity::set_name(const std::string& name) {
 
-  Debug::check_assertion(!is_on_map(),
-      "Cannot change entity name: this entity is already on a map.");
   this->name = name;
 }
 

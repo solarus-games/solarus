@@ -10,6 +10,7 @@ set(lua_test_maps
   "bugs/769_stuck_dynamic_tile_covered"
   "bugs/781_assert_teletransporter_same_map"
   "bugs/794_custom_entity_set_can_traverse_ground"
+  "bugs/795_recreate_entity_same_name"
 )
 
 # Build the Solarus testing library.

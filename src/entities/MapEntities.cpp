@@ -733,9 +733,19 @@ void MapEntities::add_entity(const EntityPtr& entity) {
 void MapEntities::remove_entity(Entity& entity) {
 
   if (!entity.is_being_removed()) {
+    // Destroy the entity next frame.
     const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
     entities_to_remove.push_back(shared_entity);
+
+    // Tell the entity.
     entity.notify_being_removed();
+
+    // Clear the entity's name to avoid allow users to create a new one with
+    // the same name right now.
+    if (!entity.get_name().empty()) {
+      named_entities.erase(entity.get_name());
+      entity.set_name("");
+    }
   }
 }
 

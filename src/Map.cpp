@@ -819,13 +819,15 @@ bool Map::test_collision_with_ground(
   case Ground::TRAVERSABLE:
   case Ground::GRASS:
   case Ground::ICE:
-    // The square is not an obstacle.
-    on_obstacle = false;
-    break;
-
   case Ground::WALL:
-    // The square is entirely an obstacle.
-    on_obstacle = true;
+  case Ground::LOW_WALL:
+  case Ground::SHALLOW_WATER:
+  case Ground::DEEP_WATER:
+  case Ground::HOLE:
+  case Ground::LAVA:
+  case Ground::PRICKLE:
+  case Ground::LADDER:
+    on_obstacle = entity_to_check.is_ground_obstacle(ground);
     break;
 
   case Ground::WALL_TOP_RIGHT:
@@ -863,15 +865,6 @@ bool Map::test_collision_with_ground(
     found_diagonal_wall = true;
     break;
 
-  case Ground::LOW_WALL:
-  case Ground::SHALLOW_WATER:
-  case Ground::DEEP_WATER:
-  case Ground::HOLE:
-  case Ground::LAVA:
-  case Ground::PRICKLE:
-  case Ground::LADDER:
-    on_obstacle = entity_to_check.is_ground_obstacle(ground);
-    break;
   }
 
   return on_obstacle;

@@ -1700,43 +1700,52 @@ bool Entity::is_ground_obstacle(Ground ground) const {
 
   switch (ground) {
 
-    case Ground::WALL:
-    case Ground::WALL_TOP_RIGHT:
-    case Ground::WALL_TOP_LEFT:
-    case Ground::WALL_BOTTOM_LEFT:
-    case Ground::WALL_BOTTOM_RIGHT:
-    case Ground::WALL_TOP_RIGHT_WATER:
-    case Ground::WALL_TOP_LEFT_WATER:
-    case Ground::WALL_BOTTOM_LEFT_WATER:
-    case Ground::WALL_BOTTOM_RIGHT_WATER:
-      return true;
+  case Ground::EMPTY:
+    return false;
 
-    case Ground::LOW_WALL:
-      return is_low_wall_obstacle();
+  case Ground::TRAVERSABLE:
+    return is_traversable_obstacle();
 
-    case Ground::EMPTY:
-    case Ground::TRAVERSABLE:
-    case Ground::GRASS:
-    case Ground::ICE:
-      return false;
+  case Ground::WALL:
+    return is_wall_obstacle();
 
-    case Ground::SHALLOW_WATER:
-      return is_shallow_water_obstacle();
+  case Ground::LOW_WALL:
+    return is_low_wall_obstacle();
 
-    case Ground::DEEP_WATER:
-      return is_deep_water_obstacle();
+  case Ground::WALL_TOP_RIGHT:
+  case Ground::WALL_TOP_LEFT:
+  case Ground::WALL_BOTTOM_LEFT:
+  case Ground::WALL_BOTTOM_RIGHT:
+  case Ground::WALL_TOP_RIGHT_WATER:
+  case Ground::WALL_TOP_LEFT_WATER:
+  case Ground::WALL_BOTTOM_LEFT_WATER:
+  case Ground::WALL_BOTTOM_RIGHT_WATER:
+    return is_wall_obstacle();
 
-    case Ground::HOLE:
-      return is_hole_obstacle();
+  case Ground::DEEP_WATER:
+    return is_deep_water_obstacle();
 
-    case Ground::LAVA:
-      return is_lava_obstacle();
+  case Ground::SHALLOW_WATER:
+    return is_shallow_water_obstacle();
 
-    case Ground::PRICKLE:
-      return is_prickle_obstacle();
+  case Ground::GRASS:
+    return is_grass_obstacle();
 
-    case Ground::LADDER:
-      return is_ladder_obstacle();
+  case Ground::HOLE:
+    return is_hole_obstacle();
+
+  case Ground::ICE:
+    return is_ice_obstacle();
+
+  case Ground::LADDER:
+    return is_ladder_obstacle();
+
+  case Ground::PRICKLE:
+    return is_prickle_obstacle();
+
+  case Ground::LAVA:
+    return is_lava_obstacle();
+
   }
 
   return false;
@@ -1755,6 +1764,30 @@ bool Entity::has_layer_independent_collisions() const {
 }
 
 /**
+ * \brief Returns whether traversable ground is currently considered as an
+ * obstacle by this entity.
+ *
+ * This function returns \c false by default.
+ *
+ * \return \c true if traversable ground is currently obstacle for this entity.
+ */
+bool Entity::is_traversable_obstacle() const {
+    return false;
+}
+
+/**
+ * \brief Returns whether walls are currently considered as an
+ * obstacle by this entity.
+ *
+ * This function returns \c true by default.
+ *
+ * \return \c true if wall ground is currently obstacle for this entity.
+ */
+bool Entity::is_wall_obstacle() const {
+    return true;
+}
+
+/**
  * \brief Returns whether a low wall is currently considered as an obstacle
  * by this entity.
  *
@@ -1764,6 +1797,18 @@ bool Entity::has_layer_independent_collisions() const {
  */
 bool Entity::is_low_wall_obstacle() const {
   return true;
+}
+
+/**
+ * \brief Returns whether grass ground is currently considered as an
+ * obstacle by this entity.
+ *
+ * This function returns \c false by default.
+ *
+ * \return \c true if grass ground is currently obstacle for this entity.
+ */
+bool Entity::is_grass_obstacle() const {
+  return false;
 }
 
 /**
@@ -1808,6 +1853,18 @@ bool Entity::is_hole_obstacle() const {
  */
 bool Entity::is_lava_obstacle() const {
   return true;
+}
+
+/**
+ * \brief Returns whether ice ground is currently considered as an
+ * obstacle by this entity.
+ *
+ * This function returns \c false by default.
+ *
+ * \return \c true if ice ground is currently obstacle for this entity.
+ */
+bool Entity::is_ice_obstacle() const {
+    return false;
 }
 
 /**

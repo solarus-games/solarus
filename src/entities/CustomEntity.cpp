@@ -651,11 +651,35 @@ void CustomEntity::reset_can_traverse_ground(Ground ground) {
 }
 
 /**
+ * \copydoc Entity::is_traversable_obstacle
+ */
+bool CustomEntity::is_traversable_obstacle() const {
+
+  return !can_traverse_ground(Ground::TRAVERSABLE);
+}
+
+/**
+ * \copydoc Entity::is_wall_obstacle
+ */
+bool CustomEntity::is_wall_obstacle() const {
+
+  return !can_traverse_ground(Ground::WALL);
+}
+
+/**
  * \copydoc Entity::is_low_wall_obstacle
  */
 bool CustomEntity::is_low_wall_obstacle() const {
 
   return !can_traverse_ground(Ground::LOW_WALL);
+}
+
+/**
+ * \copydoc Entity::is_grass_obstacle
+ */
+bool CustomEntity::is_grass_obstacle() const {
+
+  return !can_traverse_ground(Ground::GRASS);
 }
 
 /**
@@ -680,6 +704,14 @@ bool CustomEntity::is_deep_water_obstacle() const {
 bool CustomEntity::is_hole_obstacle() const {
 
   return !can_traverse_ground(Ground::HOLE);
+}
+
+/**
+ * \copydoc Entity::is_ice_obstacle
+ */
+bool CustomEntity::is_ice_obstacle() const {
+
+  return !can_traverse_ground(Ground::ICE);
 }
 
 /**

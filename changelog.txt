@@ -18,6 +18,7 @@ Engine changes
 * Fix sol.input.get_mouse_coordinates() (#734).
 * Fix straight movement precision.
 * Fix sword tapping sound still played when the game is suspended (#797).
+* Fix custom_entity:set_can_traverse_ground() not working for some grounds (#794).
 
 Lua API changes
 ---------------

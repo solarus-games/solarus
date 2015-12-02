@@ -106,10 +106,14 @@ class SOLARUS_API CustomEntity: public Detector {
     void set_can_traverse_ground(Ground ground, bool traversable);
     void reset_can_traverse_ground(Ground ground);
 
+    bool is_traversable_obstacle() const override;
+    bool is_wall_obstacle() const override;
     bool is_low_wall_obstacle() const override;
+    bool is_grass_obstacle() const override;
     bool is_shallow_water_obstacle() const override;
     bool is_deep_water_obstacle() const override;
     bool is_hole_obstacle() const override;
+    bool is_ice_obstacle() const override;
     bool is_lava_obstacle() const override;
     bool is_prickle_obstacle() const override;
     bool is_ladder_obstacle() const override;

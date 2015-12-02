@@ -346,9 +346,13 @@ class SOLARUS_API Entity: public ExportableToLua {
     void update_ground_observers();
     void update_ground_below();
 
+    virtual bool is_traversable_obstacle() const;
+    virtual bool is_wall_obstacle() const;
     virtual bool is_low_wall_obstacle() const;
+    virtual bool is_grass_obstacle() const;
     virtual bool is_shallow_water_obstacle() const;
     virtual bool is_deep_water_obstacle() const;
+    virtual bool is_ice_obstacle() const;
     virtual bool is_hole_obstacle() const;
     virtual bool is_lava_obstacle() const;
     virtual bool is_prickle_obstacle() const;

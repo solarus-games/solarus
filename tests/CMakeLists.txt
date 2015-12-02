@@ -9,6 +9,7 @@ set(lua_test_maps
   "bugs/699_crash_exit_surface_moving"
   "bugs/769_stuck_dynamic_tile_covered"
   "bugs/781_assert_teletransporter_same_map"
+  "bugs/794_custom_entity_set_can_traverse_ground"
 )
 
 # Build the Solarus testing library.

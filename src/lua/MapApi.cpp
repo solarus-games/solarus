@@ -1827,7 +1827,7 @@ int LuaContext::map_api_get_entities(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
-    const std::string& prefix = LuaTools::check_string(l, 2);
+    const std::string& prefix = LuaTools::opt_string(l, 2, "");
 
     const EntityVector& entities =
         map.get_entities().get_entities_with_prefix_sorted(prefix);

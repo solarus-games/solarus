@@ -73,7 +73,9 @@ class SOLARUS_API MapEntities {
     EntityPtr find_entity(const std::string& name);
 
     EntityVector get_entities_with_prefix(const std::string& prefix);
+    EntityVector get_entities_with_prefix_sorted(const std::string& prefix);
     EntityVector get_entities_with_prefix(EntityType type, const std::string& prefix);
+    EntityVector get_entities_with_prefix_sorted(EntityType type, const std::string& prefix);
     bool has_entity_with_prefix(const std::string& prefix) const;
 
     template<typename T>
@@ -84,6 +86,8 @@ class SOLARUS_API MapEntities {
     std::set<std::shared_ptr<const T>> get_entities_by_type(int layer) const;
     template<typename T>
     std::set<std::shared_ptr<T>> get_entities_by_type(int layer);
+    EntitySet get_entities_by_type(EntityType type);
+    EntitySet get_entities_by_type(EntityType type, int layer);
 
     void get_entities_in_rectangle(const Rectangle& rectangle, EntityVector& result) const;
     void get_entities_in_rectangle_sorted(const Rectangle& rectangle, EntityVector& result) const;

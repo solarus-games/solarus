@@ -1111,6 +1111,14 @@ void Entity::set_name(const std::string& name) {
 }
 
 /**
+ * \brief Returns whether this entity has a name.
+ * \return \c true if the name is not empty.
+ */
+bool Entity::has_name() const {
+  return !name.empty();
+}
+
+/**
  * \brief Returns whether the name of this entity starts with the specified prefix.
  * \param prefix a prefix
  * \return true if the name starts with this prefix

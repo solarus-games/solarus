@@ -179,6 +179,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     // properties
     const std::string& get_name() const;
     void set_name(const std::string& name);
+    bool has_name() const;
     bool has_prefix(const std::string& prefix) const;
     int get_direction() const;
     void set_direction(int direction);

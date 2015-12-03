@@ -4,6 +4,7 @@ map{ id = "bugs/486_diagonal_dynamic_tiles", description = "#486: Wrong obstacle
 map{ id = "bugs/686_crash_door_item", description = "#686: Crash with doors whose opening condition is an item" }
 map{ id = "bugs/699_crash_exit_surface_moving", description = "#699: Crash at exit when a surface was moving" }
 map{ id = "bugs/769_stuck_dynamic_tile_covered", description = "#769: Non-traversable dynamic tiles covered by traversable ones block the hero" }
+map{ id = "bugs/779_get_entities_random_order", description = "#779: map:get_entities() returns entities in random order" }
 map{ id = "bugs/781_assert_teletransporter_same_map", description = "#781: Assertion error when a teletransporter leads to the same map" }
 map{ id = "bugs/794_custom_entity_set_can_traverse_ground", description = "#794: custom_entity:set_can_traverse_ground(\"traversable\", false) does not work" }
 map{ id = "bugs/795_recreate_entity_same_name", description = "#795: Cannot create an entity with the same name as another one just removed" }

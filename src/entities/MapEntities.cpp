@@ -86,7 +86,7 @@ class ZOrderComparator {
       }
 
       if (first->get_layer() > second->get_layer()) {
-        return true;
+        return false;
       }
 
       // Same layer.
@@ -229,18 +229,45 @@ EntityPtr MapEntities::find_entity(const std::string& name) {
 /**
  * \brief Returns the entities of the map having the specified name prefix.
  * \param prefix Prefix of the name.
- * \return The entities of this type and having this prefix in their name.
+ * \return The entities having this prefix in their name, in arbitrary order.
  */
 EntityVector MapEntities::get_entities_with_prefix(const std::string& prefix) {
 
   EntityVector entities;
 
-  // TODO traverse the sorted list named_entities instead.
-  for (const EntityPtr& entity: all_entities) {
-    if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
+  if (prefix.empty()) {
+    // No prefix: return all entities no matter their name.
+    for (const EntityPtr& entity: all_entities) {
+      if (!entity->is_being_removed()) {
+        entities.push_back(entity);
+      }
+    }
+    return entities;
+  }
+
+  // Normal case: add entities whose name starts with the prefix.
+  for (const auto& kvp: named_entities) {
+    const EntityPtr& entity = kvp.second;
+    if (entity->has_prefix(prefix) &&
+        !entity->is_being_removed()) {
       entities.push_back(entity);
     }
   }
+
+  return entities;
+}
+
+/**
+ * \brief Like get_entities_with_prefix(const std::string&), but sorts entities according to
+ * their Z index on the map.
+ * \param prefix Prefix of the name.
+ * \return The entities having this prefix in their name, in arbitrary order.
+ */
+EntityVector MapEntities::get_entities_with_prefix_sorted(const std::string& prefix) {
+
+  EntityVector entities;
+  get_entities_with_prefix(prefix);
+  std::sort(entities.begin(), entities.end(), ZOrderComparator(*this));
 
   return entities;
 }
@@ -250,14 +277,26 @@ EntityVector MapEntities::get_entities_with_prefix(const std::string& prefix) {
  * the specified name prefix.
  * \param type Type of entity.
  * \param prefix Prefix of the name.
- * \return The entities of this type and having this prefix in their name.
+ * \return The entities of this type and having this prefix in their name, in arbitrary order.
  */
 EntityVector MapEntities::get_entities_with_prefix(
     EntityType type, const std::string& prefix) {
 
   EntityVector entities;
 
-  for (const EntityPtr& entity: all_entities) {
+  if (prefix.empty()) {
+    // No prefix: return all entities of the type, no matter their name.
+    for (const EntityPtr& entity: get_entities_by_type(type)) {
+      if (!entity->is_being_removed()) {
+        entities.push_back(entity);
+      }
+    }
+    return entities;
+  }
+
+  // Normal case: add entities whose name starts with the prefix.
+  for (const auto& kvp: named_entities) {
+    const EntityPtr& entity = kvp.second;
     if (entity->get_type() == type &&
         entity->has_prefix(prefix) &&
         !entity->is_being_removed()
@@ -265,6 +304,23 @@ EntityVector MapEntities::get_entities_with_prefix(
       entities.push_back(entity);
     }
   }
+
+  return entities;
+}
+
+/**
+ * \brief Like get_entities_with_prefix(EntityType, const std::string&),
+ * but sorts entities according to their Z index on the map.
+ * \param type Type of entity.
+ * \param prefix Prefix of the name.
+ * \return The entities having this prefix in their name, in arbitrary order.
+ */
+EntityVector MapEntities::get_entities_with_prefix_sorted(
+    EntityType type, const std::string& prefix) {
+
+  EntityVector entities;
+  get_entities_with_prefix(type, prefix);
+  std::sort(entities.begin(), entities.end(), ZOrderComparator(*this));
 
   return entities;
 }
@@ -301,14 +357,52 @@ void MapEntities::get_entities_in_rectangle(
 /**
  * \brief Like get_entities_in_rectangle(), but sorts entities according to
  * their Z index on the map.
+ * \param[in] rectangle A rectangle.
+ * \param[out] result The entities in that rectangle, in arbitrary order.
  */
 void MapEntities::get_entities_in_rectangle_sorted(
     const Rectangle& rectangle,
     EntityVector& result
 ) const {
 
-  quadtree.get_elements(rectangle, result);
+  get_entities_in_rectangle(rectangle, result);
   std::sort(result.begin(), result.end(), ZOrderComparator(*this));
+}
+
+/**
+ * \brief Returns all entities of a type.
+ * \param type An entity type.
+ * \return All entities of the type.
+ */
+EntitySet MapEntities::get_entities_by_type(EntityType type) {
+
+  EntitySet result;
+  for (int layer = 0; layer < num_layers; ++layer) {
+    const EntitySet& layer_entities = get_entities_by_type(type, layer);
+    result.insert(layer_entities.begin(), layer_entities.end());
+  }
+  return result;
+}
+
+/**
+ * \brief Returns all entities of a type on the given layer.
+ * \param layer The layer to get entities from.
+ * \return All entities of the type on this layer.
+ */
+EntitySet MapEntities::get_entities_by_type(EntityType type, int layer) {
+
+  EntitySet result;
+
+  const auto& it = entities_by_type.find(type);
+  if (it == entities_by_type.end()) {
+    return result;
+  }
+
+  const std::vector<EntitySet>& sets = it->second;
+  for (const EntityPtr& entity : sets[layer]) {
+    result.insert(entity);
+  }
+  return result;
 }
 
 /**

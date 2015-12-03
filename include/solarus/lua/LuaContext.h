@@ -1035,6 +1035,7 @@ class LuaContext {
     static void push_game(lua_State* l, Savegame& game);
     static void push_map(lua_State* l, Map& map);
     static void push_entity(lua_State* l, Entity& entity);
+    static void push_entity_iterator(lua_State* l, const std::vector<EntityPtr>& entities);
     static void push_hero(lua_State* l, Hero& hero);
     static void push_npc(lua_State* l, Npc& npc);
     static void push_teletransporter(lua_State* l, Teletransporter& teletransporter);

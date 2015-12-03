@@ -1790,8 +1790,9 @@ int LuaContext::map_api_get_entities(lua_State* l) {
     const std::string& prefix = LuaTools::check_string(l, 2);
 
     const std::vector<EntityPtr> entities =
-        map.get_entities().get_entities_with_prefix(prefix);
+        map.get_entities().get_entities_with_prefix_sorted(prefix);
 
+    // TODO push_entity_iterator(l, entities);
     lua_newtable(l);
     for (const EntityPtr& entity: entities) {
       push_entity(l, *entity);
@@ -1859,7 +1860,7 @@ int LuaContext::map_api_get_entities_in_rectangle(lua_State* l) {
     const int height = LuaTools::check_int(l, 5);
 
     std::vector<EntityPtr> entities;
-    map.get_entities().get_entities_in_rectangle(
+    map.get_entities().get_entities_in_rectangle_sorted(
         Rectangle(x, y, width, height), entities
     );
 

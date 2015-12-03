@@ -58,10 +58,10 @@ class SOLARUS_API MapEntities {
 
   public:
 
-    // creation and destruction
+    // Creation and destruction.
     MapEntities(Game& game, Map& map);
 
-    // get entities
+    // Get entities.
     Hero& get_hero();
     const Camera& get_camera() const;
     Camera& get_camera();
@@ -69,6 +69,7 @@ class SOLARUS_API MapEntities {
     const EntityList& get_entities();
     const std::shared_ptr<Destination>& get_default_destination();
 
+    // By name.
     EntityPtr get_entity(const std::string& name);
     EntityPtr find_entity(const std::string& name);
 
@@ -78,6 +79,11 @@ class SOLARUS_API MapEntities {
     EntityVector get_entities_with_prefix_sorted(EntityType type, const std::string& prefix);
     bool has_entity_with_prefix(const std::string& prefix) const;
 
+    // By type.
+    EntitySet get_entities_by_type(EntityType type);
+    EntitySet get_entities_by_type(EntityType type, int layer);
+
+    // By type: template versions to avoid casts.
     template<typename T>
     std::set<std::shared_ptr<const T>> get_entities_by_type() const;
     template<typename T>
@@ -86,13 +92,12 @@ class SOLARUS_API MapEntities {
     std::set<std::shared_ptr<const T>> get_entities_by_type(int layer) const;
     template<typename T>
     std::set<std::shared_ptr<T>> get_entities_by_type(int layer);
-    EntitySet get_entities_by_type(EntityType type);
-    EntitySet get_entities_by_type(EntityType type, int layer);
 
+    // By coordinates.
     void get_entities_in_rectangle(const Rectangle& rectangle, EntityVector& result) const;
     void get_entities_in_rectangle_sorted(const Rectangle& rectangle, EntityVector& result) const;
 
-    // handle entities
+    // Handle entities.
     void add_entity(const EntityPtr& entity);
     void remove_entity(Entity& entity);
     void remove_entity(const std::string& name);
@@ -104,16 +109,16 @@ class SOLARUS_API MapEntities {
     void set_entity_layer(Entity& entity, int layer);
     void notify_entity_bounding_box_changed(Entity& entity);
 
-    // specific to some entity types
+    // Specific to some entity types.
     bool overlaps_raised_blocks(int layer, const Rectangle& rectangle) const;
 
-    // map events
+    // Map events.
     void notify_map_started();
     void notify_map_opening_transition_finished();
     void notify_tileset_changed();
     void notify_map_finished();
 
-    // game loop
+    // Game loop.
     void set_suspended(bool suspended);
     void update();
     void draw();

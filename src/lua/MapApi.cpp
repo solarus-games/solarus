@@ -1281,6 +1281,46 @@ int LuaContext::l_get_map_entity_or_global(lua_State* l) {
 }
 
 /**
+ * \brief Closure of an iterator over a list of entities.
+ *
+ * This closure expects 3 upvalues in this order:
+ * - The array of entities.
+ * - The size of the array (for performance).
+ * - The current index in the array.
+ *
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_map_get_entities_next(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+
+    // Get upvalues.
+    const int table_index = lua_upvalueindex(1);
+    const int size = lua_tointeger(l, lua_upvalueindex(2));
+    int index = lua_tointeger(l, lua_upvalueindex(3));
+
+    if (index >= size) {
+      // Finished.
+      lua_pushnil(l);
+    }
+    else {
+
+      // Get the next value.
+      lua_pushinteger(l, index);
+      lua_gettable(l, table_index);
+
+      // Increment index.
+      ++index;
+      lua_pushinteger(l, index);
+      lua_replace(l, lua_upvalueindex(3));
+    }
+
+    return 1;
+  });
+}
+
+/**
  * \brief Executes the callback function of a camera movement.
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -1789,24 +1829,11 @@ int LuaContext::map_api_get_entities(lua_State* l) {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
-    const std::vector<EntityPtr> entities =
+    const EntityVector& entities =
         map.get_entities().get_entities_with_prefix_sorted(prefix);
 
-    // TODO push_entity_iterator(l, entities);
-    lua_newtable(l);
-    for (const EntityPtr& entity: entities) {
-      push_entity(l, *entity);
-      lua_pushboolean(l, true);
-      lua_rawset(l, -3);
-    }
-    lua_getglobal(l, "pairs");
-    lua_pushvalue(l, -2);
-    lua_call(l, 1, 3);  // TODO don't call the pairs global value, implement our
-    // own iterator instead.
-    // Or at least store pairs in the registry (like we do
-    // with io.open) to be sure it is the original one.
-
-    return 3;
+    push_entity_iterator(l, entities);
+    return 1;
   });
 }
 
@@ -1821,7 +1848,7 @@ int LuaContext::map_api_get_entities_count(lua_State* l) {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
-    const std::vector<EntityPtr>& entities =
+    const EntityVector& entities =
         map.get_entities().get_entities_with_prefix(prefix);
 
     lua_pushinteger(l, entities.size());
@@ -1859,23 +1886,13 @@ int LuaContext::map_api_get_entities_in_rectangle(lua_State* l) {
     const int width = LuaTools::check_int(l, 4);
     const int height = LuaTools::check_int(l, 5);
 
-    std::vector<EntityPtr> entities;
+    EntityVector entities;
     map.get_entities().get_entities_in_rectangle_sorted(
         Rectangle(x, y, width, height), entities
     );
 
-    lua_newtable(l);
-    for (const EntityPtr& entity: entities) {
-      push_entity(l, *entity);
-      lua_pushboolean(l, true);
-      lua_rawset(l, -3);
-    }
-    lua_getglobal(l, "pairs");
-    lua_pushvalue(l, -2);
-    lua_call(l, 1, 3);
-    // TODO factorize with get_entities()
-
-    return 3;
+    push_entity_iterator(l, entities);
+    return 1;
   });
 }
 

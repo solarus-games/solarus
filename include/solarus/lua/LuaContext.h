@@ -38,6 +38,7 @@
 #include <memory>
 #include <set>
 #include <string>
+#include <vector>
 
 struct lua_State;
 struct luaL_Reg;
@@ -56,6 +57,7 @@ class Dialog;
 class Door;
 class Drawable;
 class Enemy;
+class Entity;
 class EntityData;
 class ExportableToLua;
 class EquipmentItem;
@@ -63,7 +65,6 @@ class Game;
 class JumpMovement;
 class MainLoop;
 class Map;
-class Entity;
 class Movement;
 class Npc;
 class PathFindingMovement;
@@ -85,6 +86,8 @@ class Teletransporter;
 class TextSurface;
 class Timer;
 class Treasure;
+
+using EntityVector = std::vector<EntityPtr>;
 
 /**
  * \brief This class represents a living Lua context that can execute quest
@@ -1035,7 +1038,7 @@ class LuaContext {
     static void push_game(lua_State* l, Savegame& game);
     static void push_map(lua_State* l, Map& map);
     static void push_entity(lua_State* l, Entity& entity);
-    static void push_entity_iterator(lua_State* l, const std::vector<EntityPtr>& entities);
+    static void push_entity_iterator(lua_State* l, const EntityVector& entities);
     static void push_hero(lua_State* l, Hero& hero);
     static void push_npc(lua_State* l, Npc& npc);
     static void push_teletransporter(lua_State* l, Teletransporter& teletransporter);
@@ -1228,6 +1231,7 @@ class LuaContext {
       l_panic,
       l_loader,
       l_get_map_entity_or_global,
+      l_map_get_entities_next,
       l_camera_do_callback,
       l_camera_restore,
       l_treasure_dialog_finished,

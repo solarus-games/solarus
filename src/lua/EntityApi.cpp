@@ -574,6 +574,33 @@ void LuaContext::push_entity(lua_State* l, Entity& entity) {
 }
 
 /**
+ * \brief Pushes a list of entities as an iterator onto the stack.
+ *
+ * The iterator is pushed onto the stack as one value of type function.
+ *
+ * \param l A Lua context.
+ * \param entity A list of entities. The iterator preserves their order.
+ */
+void LuaContext::push_entity_iterator(lua_State* l, const EntityVector& entities) {
+
+  // Create a Lua table with the list of entities, preserving their order.
+  int i = 0;
+  lua_newtable(l);
+  for (const EntityPtr& entity: entities) {
+    ++i;
+    lua_pushinteger(l, i);
+    push_entity(l, *entity);
+    lua_rawset(l, -3);
+  }
+
+  lua_pushinteger(l, entities.size());
+  lua_pushinteger(l, 1);
+  // 3 upvalues: entities table, size, current index.
+
+  lua_pushcclosure(l, l_map_get_entities_next, 3);
+}
+
+/**
  * \brief Returns the Lua metatable name corresponding to a type of map entity.
  * \param entity_type A type of map entity.
  * \return The corresponding Lua metatable name, e.g. "sol.enemy".

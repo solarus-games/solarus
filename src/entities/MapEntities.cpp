@@ -261,12 +261,11 @@ EntityVector MapEntities::get_entities_with_prefix(const std::string& prefix) {
  * \brief Like get_entities_with_prefix(const std::string&), but sorts entities according to
  * their Z index on the map.
  * \param prefix Prefix of the name.
- * \return The entities having this prefix in their name, in arbitrary order.
+ * \return The entities having this prefix in their name, in Z order.
  */
 EntityVector MapEntities::get_entities_with_prefix_sorted(const std::string& prefix) {
 
-  EntityVector entities;
-  get_entities_with_prefix(prefix);
+  EntityVector entities = get_entities_with_prefix(prefix);
   std::sort(entities.begin(), entities.end(), ZOrderComparator(*this));
 
   return entities;
@@ -313,13 +312,12 @@ EntityVector MapEntities::get_entities_with_prefix(
  * but sorts entities according to their Z index on the map.
  * \param type Type of entity.
  * \param prefix Prefix of the name.
- * \return The entities having this prefix in their name, in arbitrary order.
+ * \return The entities having this prefix in their name, in Z order.
  */
 EntityVector MapEntities::get_entities_with_prefix_sorted(
     EntityType type, const std::string& prefix) {
 
-  EntityVector entities;
-  get_entities_with_prefix(type, prefix);
+  EntityVector entities = get_entities_with_prefix(type, prefix);
   std::sort(entities.begin(), entities.end(), ZOrderComparator(*this));
 
   return entities;

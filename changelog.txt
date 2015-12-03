@@ -35,6 +35,7 @@ Changes that do not introduce incompatibilities:
 * Add a function sol.main.get_type() (#744).
 * Add a method map:get_num_layers() (#445).
 * Add a method map:get_entities_in_rectangle() (#142).
+* map:get_entities*() functions now give entities sorted in Z order (#779).
 * Add a method block:get_sprite().
 * entity:set_optimization_distance() is now only a hint for the engine.
 

@@ -83,7 +83,7 @@ class SOLARUS_API MapEntities {
     EntitySet get_entities_by_type(EntityType type);
     EntitySet get_entities_by_type(EntityType type, int layer);
 
-    // By type: template versions to avoid casts.
+    // By type, template versions to avoid casts.
     template<typename T>
     std::set<std::shared_ptr<const T>> get_entities_by_type() const;
     template<typename T>

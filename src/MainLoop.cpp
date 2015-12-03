@@ -106,12 +106,12 @@ MainLoop::MainLoop(const Arguments& args):
   std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
   System::initialize(args);
 
-  // Read the quest general properties.
-  load_quest_properties();
-
   // Read the quest resource list from data.
   CurrentQuest::initialize();
   TilePattern::initialize();
+
+  // Read the quest general properties.
+  load_quest_properties();
 
   // Create the quest surface.
   root_surface = Surface::create(
@@ -388,31 +388,7 @@ void MainLoop::draw() {
  */
 void MainLoop::load_quest_properties() {
 
-  // Read the quest properties file.
-  const std::string file_name("quest.dat");
-  lua_State* l = luaL_newstate();
-  const std::string& buffer = QuestFiles::data_file_read(file_name);
-  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
-
-  if (load_result != 0) {
-    // Syntax error in quest.dat.
-    // Loading quest.dat failed.
-    // There may be a syntax error, or this is a quest for Solarus 0.9.
-    // There was no version number at that time.
-
-    if (std::string(buffer).find("[info]")) {
-      // Quest format of Solarus 0.9.
-      Debug::die(std::string("This quest is made for Solarus 0.9 but you are running Solarus ")
-          + SOLARUS_VERSION);
-    }
-    else {
-      Debug::die(std::string("Failed to load quest.dat: ") + lua_tostring(l, -1));
-    }
-  }
-
-  QuestProperties properties;
-  properties.import_from_lua(l);
-  lua_close(l);
+  const QuestProperties& properties = CurrentQuest::get_properties();
 
   check_version_compatibility(properties.get_solarus_version());
   QuestFiles::set_quest_write_dir(properties.get_quest_write_dir());

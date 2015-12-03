@@ -19,21 +19,26 @@
 
 #include "solarus/Common.h"
 #include "solarus/ResourceType.h"
-#include "solarus/QuestResources.h"
-#include "solarus/StringResources.h"
-#include "solarus/DialogResources.h"
 #include "solarus/Dialog.h"
 #include <map>
 #include <string>
 
 namespace Solarus {
 
+class DialogResources;
+class QuestProperties;
+class QuestResources;
+class StringResources;
+
 /**
  * \brief Provides access to data of the current quest.
  */
 namespace CurrentQuest {
+
 SOLARUS_API void initialize();
 SOLARUS_API void quit();
+
+SOLARUS_API QuestProperties& get_properties();
 
 SOLARUS_API QuestResources& get_resources();
 SOLARUS_API bool resource_exists(ResourceType resource_type, const std::string& id);

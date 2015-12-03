@@ -19,6 +19,8 @@
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/System.h"
+#include "solarus/CurrentQuest.h"
+#include "solarus/QuestProperties.h"
 #include "solarus/MainLoop.h"
 #include "solarus/Settings.h"
 #include <lua.hpp>
@@ -36,6 +38,8 @@ const std::string LuaContext::main_module_name = "sol.main";
 void LuaContext::register_main_module() {
 
   static const luaL_Reg functions[] = {
+      { "get_solarus_version", main_api_get_solarus_version },
+      { "get_quest_format", main_api_get_quest_format },
       { "load_file", main_api_load_file },
       { "do_file", main_api_do_file },
       { "reset", main_api_reset },
@@ -81,6 +85,36 @@ void LuaContext::register_main_module() {
 void LuaContext::push_main(lua_State* l) {
 
   lua_getfield(l, LUA_REGISTRYINDEX, main_module_name.c_str());
+}
+
+/**
+ * \brief Implementation of sol.main.get_solarus_version().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::main_api_get_solarus_version(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const std::string& solarus_version = SOLARUS_VERSION;
+
+    push_string(l, solarus_version);
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of sol.main.get_quest_format().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::main_api_get_quest_format(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const std::string& quest_format = CurrentQuest::get_properties().get_solarus_version();
+
+    push_string(l, quest_format);
+    return 1;
+  });
 }
 
 /**

@@ -419,6 +419,8 @@ class LuaContext {
     static FunctionExportedToLua
 
       // Main API.
+      main_api_get_solarus_version,
+      main_api_get_quest_format,
       main_api_load_file,
       main_api_do_file,
       main_api_reset,

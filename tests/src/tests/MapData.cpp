@@ -17,6 +17,7 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/CurrentQuest.h"
+#include "solarus/QuestResources.h"
 #include "solarus/MapData.h"
 #include "test_tools/TestEnvironment.h"
 #include <iostream>

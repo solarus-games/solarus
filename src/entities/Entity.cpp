@@ -270,17 +270,11 @@ bool Entity::is_drawn_in_y_order() const {
 
 /**
  * \brief Sets whether this entity should be drawn in y order.
- * \param drawn_in_y_order \c true to drawn this entity at the same level
+ * \param drawn_in_y_order \c true to draw this entity at the same level
  * as the hero.
  */
 void Entity::set_drawn_in_y_order(bool drawn_in_y_order) {
-
-  if (drawn_in_y_order != this->drawn_in_y_order) {
-    this->drawn_in_y_order = drawn_in_y_order;
-    if (is_on_map()) {
-      get_entities().set_entity_drawn_in_y_order(*this, drawn_in_y_order);
-    }
-  }
+  this->drawn_in_y_order = drawn_in_y_order;
 }
 
 /**

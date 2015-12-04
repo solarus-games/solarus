@@ -107,7 +107,6 @@ class SOLARUS_API Entities {
     int get_entity_relative_z_order(const EntityPtr& entity) const;
     void bring_to_front(Entity& entity);
     void bring_to_back(Entity& entity);
-    void set_entity_drawn_in_y_order(Entity& entity, bool drawn_in_y_order);
     void set_entity_layer(Entity& entity, int layer);
     void notify_entity_bounding_box_changed(Entity& entity);
 
@@ -192,17 +191,11 @@ class SOLARUS_API Entities {
     EntityTree quadtree;                            /**< All map entities except tiles.
                                                      * Optimized for fast spatial search. */
     std::vector<ZCache> z_caches;                   /**< For each layer, tracks the relative Z order of entities. */
+    std::vector<std::pair<EntityVector, EntityVector>>
+        entities_to_draw;                           /**< For each layer, entities currently in the camera and ready to be drawn.
+                                                     * Two lists are drawn: entities in Z order and then entities in Y order. */
 
     EntityList entities_to_remove;                  /**< List of entities that need to be removed right now. */
-
-    std::vector<EntityList>
-        entities_drawn_first;                       /**< For each layer, all map entities that are
-                                                     * drawn in normal order.
-                                                     * TODO remove, use the quadtree instead. */
-
-    std::vector<EntityList>
-        entities_drawn_y_order;                     /**< For each layer, all map entities that are drawn in the order
-                                                     * defined by their y position, including the hero. */
 
     std::shared_ptr<Destination>
         default_destination;                        /**< Default destination of this map or nullptr. */

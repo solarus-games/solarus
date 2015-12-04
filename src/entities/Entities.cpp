@@ -122,8 +122,6 @@ Entities::Entities(Game& game, Map& map):
   all_entities(),
   quadtree(),
   z_caches(),
-  entities_drawn_first(),
-  entities_drawn_y_order(),
   default_destination(nullptr) {
 
 }
@@ -456,11 +454,6 @@ void Entities::bring_to_front(Entity& entity) {
 
   const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
   int layer = entity.get_layer();
-  if (entity.can_be_drawn() && !entity.is_drawn_in_y_order()) {
-    entities_drawn_first[layer].remove(shared_entity);
-    entities_drawn_first[layer].push_back(shared_entity);  // Displayed last.
-  }
-
   z_caches[layer].bring_to_front(shared_entity);
 }
 
@@ -472,11 +465,6 @@ void Entities::bring_to_back(Entity& entity) {
 
   const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
   int layer = entity.get_layer();
-  if (entity.can_be_drawn() && !entity.is_drawn_in_y_order()) {
-    entities_drawn_first[layer].remove(shared_entity);
-    entities_drawn_first[layer].push_front(shared_entity);  // Displayed first.
-  }
-
   z_caches[layer].bring_to_back(shared_entity);
 }
 
@@ -556,8 +544,6 @@ void Entities::initialize_layers() {
   non_animated_regions.resize(num_layers);
   tiles_in_animated_regions.resize(num_layers);
   z_caches.resize(num_layers);
-  entities_drawn_first.resize(num_layers);
-  entities_drawn_y_order.resize(num_layers);
 }
 
 /**
@@ -751,14 +737,6 @@ void Entities::add_entity(const EntityPtr& entity) {
     // update the quadtree
     quadtree.add(entity, entity->get_max_bounding_box());
 
-    // update the sprites list
-    if (entity->is_drawn_in_y_order()) {
-      entities_drawn_y_order[layer].push_back(entity);
-    }
-    else if (entity->can_be_drawn()) {
-      entities_drawn_first[layer].push_back(entity);
-    }
-
     // update the specific entities lists
     switch (entity->get_type()) {
 
@@ -901,14 +879,6 @@ void Entities::remove_marked_entities() {
     // remove it from the quadtree
     quadtree.remove(entity);
 
-    // remove it from the sprite entities list if present
-    if (entity->is_drawn_in_y_order()) {
-      entities_drawn_y_order[layer].remove(entity);
-    }
-    else if (entity->can_be_drawn()) {
-      entities_drawn_first[layer].remove(entity);
-    }
-
     // remove it from the whole list
     all_entities.remove(entity);
     const std::string& name = entity->get_name();
@@ -976,13 +946,6 @@ void Entities::update() {
   hero->update();
 
   // Update the dynamic entities.
-  for (int layer = 0; layer < map.get_num_layers(); layer++) {
-
-    // Sort the entities drawn in y order.
-    std::list<EntityPtr>& entities = entities_drawn_y_order[layer];
-    entities.sort(YOrderComparator());
-  }
-
   for (const EntityPtr& entity: all_entities) {
 
     if (
@@ -995,6 +958,7 @@ void Entities::update() {
 
   // Update the camera after everyone else.
   camera->update();
+  entities_to_draw.clear();  // Invalidate entities to draw.
 
   // Remove the entities that have to be removed now.
   remove_marked_entities();
@@ -1005,71 +969,69 @@ void Entities::update() {
  */
 void Entities::draw() {
 
-  for (int layer = 0; layer < map.get_num_layers(); ++layer) {
+  // Lazily build the list of entities to draw.
+  if (entities_to_draw.empty()) {
 
-    // draw the animated tiles and the tiles that overlap them:
-    // in other words, draw all regions containing animated tiles
-    // (and maybe more, but we don't care because non-animated tiles
-    // will be drawn later)
-    for (unsigned int i = 0; i < tiles_in_animated_regions[layer].size(); i++) {
-      tiles_in_animated_regions[layer][i]->draw_on_map();
-    }
+    // Get entities in the camera.
+    EntityVector entities_in_camera;
+    get_entities_in_rectangle(get_camera().get_bounding_box(), entities_in_camera);
 
-    // draw the non-animated tiles (with transparent rectangles on the regions of animated tiles
-    // since they are already drawn)
-    non_animated_regions[layer]->draw_on_map();
-
-    // draw the first sprites
-    for (const EntityPtr& entity: entities_drawn_first[layer]) {
-
-      if (entity->is_enabled()) {
-        entity->draw_on_map();
-      }
-    }
-
-    // draw the sprites at the hero's level, in the order
-    // defined by their y position (including the hero)
-    for (const EntityPtr& entity: entities_drawn_y_order[layer]) {
-
-      if (entity->is_enabled()) {
-        entity->draw_on_map();
+    // Split them by layer.
+    // On each layer there are two lists of entities to draw: one in Z order and one in Y order.
+    entities_to_draw.resize(map.get_num_layers());
+    for (const EntityPtr& entity : entities_in_camera) {
+      int layer = entity->get_layer();
+      Debug::check_assertion(layer >= 0 && layer < map.get_num_layers(), "Invalid layer");
+      if (entity->is_drawn()) {
+        if (entity->is_drawn_in_y_order()) {
+          entities_to_draw[layer].second.push_back(entity);
+        }
+        else {
+          entities_to_draw[layer].first.push_back(entity);
+        }
       }
     }
   }
 
+  for (int layer = 0; layer < map.get_num_layers(); ++layer) {
+
+    // Draw the animated tiles and the tiles that overlap them:
+    // in other words, draw all regions containing animated tiles
+    // (and maybe more, but we don't care because non-animated tiles
+    // will be drawn later).
+    for (unsigned int i = 0; i < tiles_in_animated_regions[layer].size(); i++) {
+      tiles_in_animated_regions[layer][i]->draw_on_map();
+    }
+
+    // Draw the non-animated tiles (with transparent rectangles on the regions of animated tiles
+    // since they are already drawn).
+    non_animated_regions[layer]->draw_on_map();
+
+    // Draw entities in Z order first.
+    EntityVector& entities_z_order = entities_to_draw[layer].first;
+    std::sort(entities_z_order.begin(), entities_z_order.end(), ZOrderComparator(*this));
+    for (const EntityPtr& entity: entities_z_order) {
+      entity->draw_on_map();
+    }
+
+    // Draw entities in Y order then (including the hero).
+    EntityVector& entities_y_order = entities_to_draw[layer].second;
+    std::sort(entities_y_order.begin(), entities_y_order.end(), YOrderComparator());
+    for (const EntityPtr& entity: entities_y_order) {
+      entity->draw_on_map();
+    }
+  }
+
   if (EntityTree::debug_quadtrees) {
+    // Draw the quadtree structure for debugging.
     quadtree.draw(map.get_visible_surface(), -map.get_camera_position().get_top_left());
   }
 }
 
 /**
- * \brief Sets whether an entity is drawn in Y order or in creation order.
- * \param entity The entity to change.
- * \param drawn_in_y_order \c true to display it in Y order, \c false to
- * display it in Z order.
- */
-void Entities::set_entity_drawn_in_y_order(
-    Entity& entity, bool drawn_in_y_order) {
-
-  const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
-  const int layer = entity.get_layer();
-  if (drawn_in_y_order) {
-    entities_drawn_first[layer].remove(shared_entity);
-    entities_drawn_y_order[layer].push_back(shared_entity);
-  }
-  else {
-    entities_drawn_y_order[layer].remove(shared_entity);
-    entities_drawn_first[layer].push_back(shared_entity);
-  }
-}
-
-/**
  * \brief Changes the layer of an entity.
- *
- * Only some specific entities should change their layer.
- *
- * \param entity an entity
- * \param layer the new layer
+ * \param entity An entity.
+ * \param layer The new layer.
  */
 void Entities::set_entity_layer(Entity& entity, int layer) {
 
@@ -1078,16 +1040,6 @@ void Entities::set_entity_layer(Entity& entity, int layer) {
   if (layer != old_layer) {
 
     const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
-
-    // Update the sprites list.
-    if (entity.is_drawn_in_y_order()) {
-      entities_drawn_y_order[old_layer].remove(shared_entity);
-      entities_drawn_y_order[layer].push_back(shared_entity);
-    }
-    else if (entity.can_be_drawn()) {
-      entities_drawn_first[old_layer].remove(shared_entity);
-      entities_drawn_first[layer].push_back(shared_entity);
-    }
 
     // Track the insertion order.
     z_caches[old_layer].remove(shared_entity);
@@ -1102,7 +1054,7 @@ void Entities::set_entity_layer(Entity& entity, int layer) {
       sets[layer].insert(shared_entity);
     }
 
-    // Update the entity after the lists because this function might be called again
+    // Update the entity after the lists because this function might be called again.
     entity.set_layer(layer);
   }
 }

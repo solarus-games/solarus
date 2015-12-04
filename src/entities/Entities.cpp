@@ -1124,20 +1124,25 @@ void Entities::notify_entity_bounding_box_changed(Entity& entity) {
 
 /**
  * \brief Returns whether a rectangle overlaps with a raised crystal block.
- * \param layer the layer to check
- * \param rectangle a rectangle
- * \return true if this rectangle overlaps a raised crystal block
+ * \param layer The layer to check.
+ * \param rectangle A rectangle.
+ * \return \c true if this rectangle overlaps a raised crystal block.
  */
 bool Entities::overlaps_raised_blocks(int layer, const Rectangle& rectangle) const {
 
   std::set<std::shared_ptr<const CrystalBlock>> blocks =
       get_entities_by_type<CrystalBlock>(layer);
 
-  // TODO Use the quadtree to only check entities intersecting the rectangle.
-  for (const std::shared_ptr<const CrystalBlock>& block: blocks) {
-    if (block->overlaps(rectangle) &&
-        block->is_raised()
-    ) {
+  EntityVector entities_nearby;
+  get_entities_in_rectangle(rectangle, entities_nearby);
+  for (const EntityPtr& entity : entities_nearby) {
+
+    if (entity->get_type() != EntityType::CRYSTAL_BLOCK) {
+      continue;
+    }
+
+    const CrystalBlock& crystal_block = static_cast<CrystalBlock&>(*entity);
+    if (crystal_block.is_raised()) {
       return true;
     }
   }

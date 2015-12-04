@@ -1,7 +1,10 @@
 ![Solarus logo](/images/solaruslogo.png)
 
 [![Build Status](https://travis-ci.org/christopho/solarus.svg?branch=master)](https://travis-ci.org/christopho/solarus)
+[![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://www.gnu.org/copyleft/gpl.html)
+
 ====================================
+
 Solarus is an open-source Zelda-like 2D game engine written in C++.
 It can run games scripted in Lua.
 This engine is used by our Zelda fangames.

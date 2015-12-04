@@ -1300,7 +1300,7 @@ int LuaContext::l_map_get_entities_next(lua_State* l) {
     const int size = lua_tointeger(l, lua_upvalueindex(2));
     int index = lua_tointeger(l, lua_upvalueindex(3));
 
-    if (index >= size) {
+    if (index > size) {
       // Finished.
       lua_pushnil(l);
     }

@@ -287,7 +287,7 @@ std::set<std::shared_ptr<const T>> MapEntities::get_entities_by_type(int layer) 
 
   std::set<std::shared_ptr<const T>> result;
 
-  const EntityType type = T::ThisType;  // TODO put a ThisType in each subclass of Entity
+  const EntityType type = T::ThisType;
   const auto& it = entities_by_type.find(type);
   if (it == entities_by_type.end()) {
     return result;

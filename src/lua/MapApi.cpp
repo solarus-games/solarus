@@ -99,6 +99,7 @@ void LuaContext::register_map_module() {
       { "get_entities", map_api_get_entities },
       { "get_entities_count", map_api_get_entities_count },
       { "has_entities", map_api_has_entities },
+      { "get_entities_by_type", map_api_get_entities_by_type },
       { "get_entities_in_rectangle", map_api_get_entities_in_rectangle },
       { "get_hero", map_api_get_hero },
       { "set_entities_enabled", map_api_set_entities_enabled },
@@ -1868,6 +1869,25 @@ int LuaContext::map_api_has_entities(lua_State* l) {
     const std::string& prefix = LuaTools::check_string(l, 2);
 
     lua_pushboolean(l, map.get_entities().has_entity_with_prefix(prefix));
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of map:get_entities_by_type().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_entities_by_type(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityType type = LuaTools::check_enum<EntityType>(l, 2);
+
+    const EntityVector& entities =
+        map.get_entities().get_entities_by_type_sorted(type);
+
+    push_entity_iterator(l, entities);
     return 1;
   });
 }

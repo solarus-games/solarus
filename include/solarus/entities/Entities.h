@@ -82,6 +82,7 @@ class SOLARUS_API Entities {
 
     // By type.
     EntitySet get_entities_by_type(EntityType type);
+    EntityVector get_entities_by_type_sorted(EntityType type);
     EntitySet get_entities_by_type(EntityType type, int layer);
 
     // By type, template versions to avoid casts.

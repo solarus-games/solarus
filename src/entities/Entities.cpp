@@ -387,6 +387,21 @@ EntitySet Entities::get_entities_by_type(EntityType type) {
 }
 
 /**
+ * \brief Like get_entities_by_type(EntityType),
+ * but sorts entities according to their Z index on the map.
+ * \param type An entity type.
+ * \return All entities of the type.
+ */
+EntityVector Entities::get_entities_by_type_sorted(EntityType type) {
+
+  EntitySet entity_set = get_entities_by_type(type);
+  EntityVector entities;
+  entities.insert(entities.begin(), entity_set.begin(), entity_set.end());
+  std::sort(entities.begin(), entities.end(), ZOrderComparator(*this));
+  return entities;
+}
+
+/**
  * \brief Returns all entities of a type on the given layer.
  * \param layer The layer to get entities from.
  * \return All entities of the type on this layer.

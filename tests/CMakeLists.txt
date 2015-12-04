@@ -13,6 +13,7 @@ set(lua_test_maps
   "bugs/781_assert_teletransporter_same_map"
   "bugs/794_custom_entity_set_can_traverse_ground"
   "bugs/795_recreate_entity_same_name"
+  "bugs/796_map_get_entities_by_type"
 )
 
 # Build the Solarus testing library.

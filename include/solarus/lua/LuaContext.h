@@ -768,6 +768,7 @@ class LuaContext {
       map_api_get_entities,
       map_api_get_entities_count,
       map_api_has_entities,
+      map_api_get_entities_by_type,
       map_api_get_entities_in_rectangle,
       map_api_get_hero,
       map_api_set_entities_enabled,

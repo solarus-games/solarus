@@ -67,7 +67,7 @@ class SOLARUS_API Entities {
     const Camera& get_camera() const;
     Camera& get_camera();
     Ground get_tile_ground(int layer, int x, int y) const;
-    const EntityList& get_entities();
+    EntityVector get_entities();
     const std::shared_ptr<Destination>& get_default_destination();
 
     // By name.

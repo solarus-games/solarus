@@ -148,11 +148,14 @@ Hero& Entities::get_hero() {
 }
 
 /**
- * \brief Returns all entities expect tiles and the hero.
- * \return The entities except tiles and the hero.
+ * \brief Returns all entities expect tiles.
+ * \return The entities except tiles.
  */
-const EntityList& Entities::get_entities() {
-  return all_entities;
+EntityVector Entities::get_entities() {
+
+  EntityVector result;
+  result.insert(result.begin(), all_entities.begin(), all_entities.end());
+  return result;
 }
 
 /**

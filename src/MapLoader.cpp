@@ -15,9 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Camera.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/EntityType.h"
 #include "solarus/entities/EntityTypeInfo.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/NonAnimatedRegions.h"
 #include "solarus/entities/TilePattern.h"
 #include "solarus/entities/Tileset.h"
@@ -73,7 +73,7 @@ void MapLoader::load_map(Game& game, Map& map) {
   map.tileset = std::unique_ptr<Tileset>(new Tileset(data.get_tileset_id()));
   map.tileset->load();
 
-  MapEntities& entities = map.get_entities();
+  Entities& entities = map.get_entities();
   entities.initialize_layers();
   entities.map_width8 = map.width8;
   entities.map_height8 = map.height8;

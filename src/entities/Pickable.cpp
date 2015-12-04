@@ -14,13 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/Pickable.h"
 #include "solarus/entities/Boomerang.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Hookshot.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Pickable.h"
 #include "solarus/hero/HeroSprites.h"
-#include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/System.h"

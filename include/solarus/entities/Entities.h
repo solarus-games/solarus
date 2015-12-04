@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_MAP_ENTITIES_H
-#define SOLARUS_MAP_ENTITIES_H
+#ifndef SOLARUS_ENTITIES_H
+#define SOLARUS_ENTITIES_H
 
 #include "solarus/Common.h"
 #include "solarus/containers/Quadtree.h"
@@ -55,12 +55,12 @@ using EntityTree = Quadtree<EntityPtr>;
  * This class stores all entities of the current map:
  * the tiles, the hero, the enemies and all other entities.
  */
-class SOLARUS_API MapEntities {
+class SOLARUS_API Entities {
 
   public:
 
     // Creation and destruction.
-    MapEntities(Game& game, Map& map);
+    Entities(Game& game, Map& map);
 
     // Get entities.
     Hero& get_hero();
@@ -223,7 +223,7 @@ class SOLARUS_API MapEntities {
  * \param y Y coordinate of the point.
  * \return The ground of the highest tile at this place.
  */
-inline Ground MapEntities::get_tile_ground(int layer, int x, int y) const {
+inline Ground Entities::get_tile_ground(int layer, int x, int y) const {
 
   // Warning: this function is called very often so it has been optimized and
   // should remain so.
@@ -236,7 +236,7 @@ inline Ground MapEntities::get_tile_ground(int layer, int x, int y) const {
  * \brief Returns the camera of the map.
  * \return The camera.
  */
-inline const Camera& MapEntities::get_camera() const {
+inline const Camera& Entities::get_camera() const {
 
   return *camera;
 }
@@ -244,7 +244,7 @@ inline const Camera& MapEntities::get_camera() const {
 /**
  * \overload Non-const version.
  */
-inline Camera& MapEntities::get_camera() {
+inline Camera& Entities::get_camera() {
 
   return *camera;
 }
@@ -254,7 +254,7 @@ inline Camera& MapEntities::get_camera() {
  * \return All entities of the type.
  */
 template<typename T>
-std::set<std::shared_ptr<const T>> MapEntities::get_entities_by_type() const {
+std::set<std::shared_ptr<const T>> Entities::get_entities_by_type() const {
 
   std::set<std::shared_ptr<const T>> result;
   for (int layer = 0; layer < num_layers; ++layer) {
@@ -269,7 +269,7 @@ std::set<std::shared_ptr<const T>> MapEntities::get_entities_by_type() const {
  * \return All entities of the type.
  */
 template<typename T>
-std::set<std::shared_ptr<T>> MapEntities::get_entities_by_type() {
+std::set<std::shared_ptr<T>> Entities::get_entities_by_type() {
 
   std::set<std::shared_ptr<T>> result;
   for (int layer = 0; layer < num_layers; ++layer) {
@@ -285,7 +285,7 @@ std::set<std::shared_ptr<T>> MapEntities::get_entities_by_type() {
  * \return All entities of the type on this layer.
  */
 template<typename T>
-std::set<std::shared_ptr<const T>> MapEntities::get_entities_by_type(int layer) const {
+std::set<std::shared_ptr<const T>> Entities::get_entities_by_type(int layer) const {
 
   std::set<std::shared_ptr<const T>> result;
 
@@ -308,7 +308,7 @@ std::set<std::shared_ptr<const T>> MapEntities::get_entities_by_type(int layer) 
  * \return All entities of the type on this layer.
  */
 template<typename T>
-std::set<std::shared_ptr<T>> MapEntities::get_entities_by_type(int layer) {
+std::set<std::shared_ptr<T>> Entities::get_entities_by_type(int layer) {
 
   std::set<std::shared_ptr<T>> result;
 

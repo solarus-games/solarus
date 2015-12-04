@@ -151,7 +151,7 @@ class Entity::State {
 
     // access to various game objects
     LuaContext& get_lua_context();
-    MapEntities& get_entities();
+    Entities& get_entities();
     Game& get_game();
     const Game& get_game() const;
     Map& get_map();

@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/EntityState.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/NonAnimatedRegions.h"
 #include "solarus/entities/TilePattern.h"
 #include "solarus/entities/Tileset.h"
@@ -27,11 +27,11 @@
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/CommandsEffects.h"
+#include "solarus/CurrentQuest.h"
 #include "solarus/Equipment.h"
 #include "solarus/Game.h"
 #include "solarus/MainLoop.h"
 #include "solarus/Map.h"
-#include "solarus/CurrentQuest.h"
 #include "solarus/Savegame.h"
 #include "solarus/Treasure.h"
 #include "solarus/TransitionFade.h"

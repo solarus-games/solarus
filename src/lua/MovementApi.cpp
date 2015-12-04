@@ -14,25 +14,25 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/movements/PixelMovement.h"
-#include "solarus/movements/PathMovement.h"
-#include "solarus/movements/RandomMovement.h"
-#include "solarus/movements/RandomPathMovement.h"
-#include "solarus/movements/PathFindingMovement.h"
-#include "solarus/movements/TargetMovement.h"
-#include "solarus/movements/CircleMovement.h"
-#include "solarus/movements/JumpMovement.h"
+#include "solarus/entities/Entities.h"
+#include "solarus/entities/Hero.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/ExportableToLuaPtr.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
-#include "solarus/MainLoop.h"
-#include "solarus/Game.h"
-#include "solarus/Map.h"
+#include "solarus/movements/CircleMovement.h"
+#include "solarus/movements/JumpMovement.h"
+#include "solarus/movements/PathFindingMovement.h"
+#include "solarus/movements/PathMovement.h"
+#include "solarus/movements/PixelMovement.h"
+#include "solarus/movements/RandomMovement.h"
+#include "solarus/movements/RandomPathMovement.h"
+#include "solarus/movements/TargetMovement.h"
 #include "solarus/Drawable.h"
+#include "solarus/Game.h"
+#include "solarus/MainLoop.h"
+#include "solarus/Map.h"
 
 namespace Solarus {
 

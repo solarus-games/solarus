@@ -14,23 +14,23 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/MapEntities.h"
-#include "solarus/entities/Hero.h"
-#include "solarus/entities/Tile.h"
-#include "solarus/entities/Tileset.h"
-#include "solarus/entities/TilePattern.h"
-#include "solarus/entities/CrystalBlock.h"
 #include "solarus/entities/Boomerang.h"
-#include "solarus/entities/Stairs.h"
-#include "solarus/entities/Separator.h"
+#include "solarus/entities/CrystalBlock.h"
 #include "solarus/entities/Destination.h"
+#include "solarus/entities/Entities.h"
+#include "solarus/entities/Hero.h"
 #include "solarus/entities/NonAnimatedRegions.h"
-#include "solarus/Map.h"
-#include "solarus/Game.h"
-#include "solarus/lowlevel/Surface.h"
+#include "solarus/entities/Separator.h"
+#include "solarus/entities/Stairs.h"
+#include "solarus/entities/Tile.h"
+#include "solarus/entities/TilePattern.h"
+#include "solarus/entities/Tileset.h"
 #include "solarus/lowlevel/Color.h"
-#include "solarus/lowlevel/Music.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Music.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/Game.h"
+#include "solarus/Map.h"
 #include <sstream>
 
 namespace Solarus {
@@ -68,7 +68,7 @@ class ZOrderComparator {
      * \brief Creates a Z order comparator.
      * \param entities The map entities to work with.
      */
-    explicit ZOrderComparator(const MapEntities& entities) :
+    explicit ZOrderComparator(const Entities& entities) :
         entities(entities) {
 
     }
@@ -95,7 +95,7 @@ class ZOrderComparator {
 
   private:
 
-    const MapEntities& entities;
+    const Entities& entities;
 
 };
 
@@ -106,7 +106,7 @@ class ZOrderComparator {
  * \param game The game.
  * \param map The map (not loaded yet).
  */
-MapEntities::MapEntities(Game& game, Map& map):
+Entities::Entities(Game& game, Map& map):
   game(game),
   map(map),
   map_width8(0),
@@ -132,7 +132,7 @@ MapEntities::MapEntities(Game& game, Map& map):
  * \brief Notifies an entity that it is being removed.
  * \param entity The entity being removed.
  */
-void MapEntities::notify_entity_removed(Entity& entity) {
+void Entities::notify_entity_removed(Entity& entity) {
 
   if (!entity.is_being_removed()) {
     entity.notify_being_removed();
@@ -143,7 +143,7 @@ void MapEntities::notify_entity_removed(Entity& entity) {
  * \brief Returns the hero.
  * \return The hero.
  */
-Hero& MapEntities::get_hero() {
+Hero& Entities::get_hero() {
   return *hero;
 }
 
@@ -151,7 +151,7 @@ Hero& MapEntities::get_hero() {
  * \brief Returns all entities expect tiles and the hero.
  * \return The entities except tiles and the hero.
  */
-const EntityList& MapEntities::get_entities() {
+const EntityList& Entities::get_entities() {
   return all_entities;
 }
 
@@ -160,7 +160,7 @@ const EntityList& MapEntities::get_entities() {
  * \return The default destination, or nullptr if there exists no destination
  * on this map.
  */
-const std::shared_ptr<Destination>& MapEntities::get_default_destination() {
+const std::shared_ptr<Destination>& Entities::get_default_destination() {
   return default_destination;
 }
 
@@ -175,7 +175,7 @@ const std::shared_ptr<Destination>& MapEntities::get_default_destination() {
  * \param y8 Y coordinate of the square (divided by 8).
  * \param ground The ground property to set.
  */
-void MapEntities::set_tile_ground(int layer, int x8, int y8, Ground ground) {
+void Entities::set_tile_ground(int layer, int x8, int y8, Ground ground) {
 
   if (x8 >= 0 && x8 < map_width8 && y8 >= 0 && y8 < map_height8) {
     int index = y8 * map_width8 + x8;
@@ -191,7 +191,7 @@ void MapEntities::set_tile_ground(int layer, int x8, int y8, Ground ground) {
  * \param name Name of the entity to get.
  * \return The entity requested.
  */
-EntityPtr MapEntities::get_entity(const std::string& name) {
+EntityPtr Entities::get_entity(const std::string& name) {
 
   const EntityPtr& entity = find_entity(name);
 
@@ -210,7 +210,7 @@ EntityPtr MapEntities::get_entity(const std::string& name) {
  * \return The entity requested, or nullptr if there is no entity with the
  * given name.
  */
-EntityPtr MapEntities::find_entity(const std::string& name) {
+EntityPtr Entities::find_entity(const std::string& name) {
 
   auto it = named_entities.find(name);
   if (it == named_entities.end()) {
@@ -234,7 +234,7 @@ EntityPtr MapEntities::find_entity(const std::string& name) {
  * \param prefix Prefix of the name.
  * \return The entities having this prefix in their name, in arbitrary order.
  */
-EntityVector MapEntities::get_entities_with_prefix(const std::string& prefix) {
+EntityVector Entities::get_entities_with_prefix(const std::string& prefix) {
 
   EntityVector entities;
 
@@ -267,7 +267,7 @@ EntityVector MapEntities::get_entities_with_prefix(const std::string& prefix) {
  * \param prefix Prefix of the name.
  * \return The entities having this prefix in their name, in Z order.
  */
-EntityVector MapEntities::get_entities_with_prefix_sorted(const std::string& prefix) {
+EntityVector Entities::get_entities_with_prefix_sorted(const std::string& prefix) {
 
   EntityVector entities = get_entities_with_prefix(prefix);
   std::sort(entities.begin(), entities.end(), ZOrderComparator(*this));
@@ -282,7 +282,7 @@ EntityVector MapEntities::get_entities_with_prefix_sorted(const std::string& pre
  * \param prefix Prefix of the name.
  * \return The entities of this type and having this prefix in their name, in arbitrary order.
  */
-EntityVector MapEntities::get_entities_with_prefix(
+EntityVector Entities::get_entities_with_prefix(
     EntityType type, const std::string& prefix) {
 
   EntityVector entities;
@@ -318,7 +318,7 @@ EntityVector MapEntities::get_entities_with_prefix(
  * \param prefix Prefix of the name.
  * \return The entities having this prefix in their name, in Z order.
  */
-EntityVector MapEntities::get_entities_with_prefix_sorted(
+EntityVector Entities::get_entities_with_prefix_sorted(
     EntityType type, const std::string& prefix) {
 
   EntityVector entities = get_entities_with_prefix(type, prefix);
@@ -333,7 +333,7 @@ EntityVector MapEntities::get_entities_with_prefix_sorted(
  * \param prefix Prefix of the name.
  * \return \c true if there exists an entity with this prefix.
  */
-bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
+bool Entities::has_entity_with_prefix(const std::string& prefix) const {
 
   for (const EntityPtr& entity: all_entities) {
     if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
@@ -349,7 +349,7 @@ bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
  * \param[in] rectangle A rectangle.
  * \param[out] result The entities in that rectangle, in arbitrary order.
  */
-void MapEntities::get_entities_in_rectangle(
+void Entities::get_entities_in_rectangle(
     const Rectangle& rectangle, EntityVector& result
 ) const {
 
@@ -362,7 +362,7 @@ void MapEntities::get_entities_in_rectangle(
  * \param[in] rectangle A rectangle.
  * \param[out] result The entities in that rectangle, in arbitrary order.
  */
-void MapEntities::get_entities_in_rectangle_sorted(
+void Entities::get_entities_in_rectangle_sorted(
     const Rectangle& rectangle,
     EntityVector& result
 ) const {
@@ -376,7 +376,7 @@ void MapEntities::get_entities_in_rectangle_sorted(
  * \param type An entity type.
  * \return All entities of the type.
  */
-EntitySet MapEntities::get_entities_by_type(EntityType type) {
+EntitySet Entities::get_entities_by_type(EntityType type) {
 
   EntitySet result;
   for (int layer = 0; layer < num_layers; ++layer) {
@@ -391,7 +391,7 @@ EntitySet MapEntities::get_entities_by_type(EntityType type) {
  * \param layer The layer to get entities from.
  * \return All entities of the type on this layer.
  */
-EntitySet MapEntities::get_entities_by_type(EntityType type, int layer) {
+EntitySet Entities::get_entities_by_type(EntityType type, int layer) {
 
   EntitySet result;
 
@@ -424,7 +424,7 @@ EntitySet MapEntities::get_entities_by_type(EntityType type, int layer) {
  * \param An entity of the map.
  * \return Its relative Z order.
  */
-int MapEntities::get_entity_relative_z_order(const EntityPtr& entity) const {
+int Entities::get_entity_relative_z_order(const EntityPtr& entity) const {
 
   const int layer = entity->get_layer();
   return z_caches[layer].get_z(entity);
@@ -434,7 +434,7 @@ int MapEntities::get_entity_relative_z_order(const EntityPtr& entity) const {
  * \brief Brings to front an entity in its layer.
  * \param entity The entity to bring to front.
  */
-void MapEntities::bring_to_front(Entity& entity) {
+void Entities::bring_to_front(Entity& entity) {
 
   const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
   int layer = entity.get_layer();
@@ -450,7 +450,7 @@ void MapEntities::bring_to_front(Entity& entity) {
  * \brief Brings to back an entity in its layer.
  * \param entity The entity to bring to back.
  */
-void MapEntities::bring_to_back(Entity& entity) {
+void Entities::bring_to_back(Entity& entity) {
 
   const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
   int layer = entity.get_layer();
@@ -465,7 +465,7 @@ void MapEntities::bring_to_back(Entity& entity) {
 /**
  * \brief Notifies all entities of the map that the map has just become active.
  */
-void MapEntities::notify_map_started() {
+void Entities::notify_map_started() {
 
   // Notify entities.
   for (const EntityPtr& entity: all_entities) {
@@ -486,7 +486,7 @@ void MapEntities::notify_map_started() {
  * \brief Notifies all entities that the opening transition
  * of the map is finished.
  */
-void MapEntities::notify_map_opening_transition_finished() {
+void Entities::notify_map_opening_transition_finished() {
 
   for (const EntityPtr& entity: all_entities) {
     entity->notify_map_opening_transition_finished();
@@ -498,7 +498,7 @@ void MapEntities::notify_map_opening_transition_finished() {
  * \brief Notifies this entity manager that the tileset of the map has
  * changed.
  */
-void MapEntities::notify_tileset_changed() {
+void Entities::notify_tileset_changed() {
 
   // Redraw optimized tiles (i.e. non animated ones).
   for (int layer = 0; layer < map.get_num_layers(); layer++) {
@@ -514,7 +514,7 @@ void MapEntities::notify_tileset_changed() {
 /**
  * \brief Notifies all entities that the map is being stopped.
  */
-void MapEntities::notify_map_finished() {
+void Entities::notify_map_finished() {
 
   for (const EntityPtr& entity: all_entities) {
     notify_entity_removed(*entity);
@@ -526,7 +526,7 @@ void MapEntities::notify_map_finished() {
  *
  * The number of layers in the map must be known at this point.
  */
-void MapEntities::initialize_layers() {
+void Entities::initialize_layers() {
 
   Debug::check_assertion(num_layers == 0, "Layers already initialized");
 
@@ -550,7 +550,7 @@ void MapEntities::initialize_layers() {
  *
  * \param tile The tile to add.
  */
-void MapEntities::add_tile(const TilePtr& tile) {
+void Entities::add_tile(const TilePtr& tile) {
 
   const int layer = tile->get_layer();
 
@@ -713,7 +713,7 @@ void MapEntities::add_tile(const TilePtr& tile) {
  *
  * \param entity The entity to add or nullptr.
  */
-void MapEntities::add_entity(const EntityPtr& entity) {
+void Entities::add_entity(const EntityPtr& entity) {
 
   if (entity == nullptr) {
     return;
@@ -826,7 +826,7 @@ void MapEntities::add_entity(const EntityPtr& entity) {
  * \brief Removes an entity from the map and schedules it to be destroyed.
  * \param entity the entity to remove
  */
-void MapEntities::remove_entity(Entity& entity) {
+void Entities::remove_entity(Entity& entity) {
 
   if (!entity.is_being_removed()) {
     // Destroy the entity next frame.
@@ -849,7 +849,7 @@ void MapEntities::remove_entity(Entity& entity) {
  * \brief Removes an entity from the map.
  * \param name Name of the entity.
  */
-void MapEntities::remove_entity(const std::string& name) {
+void Entities::remove_entity(const std::string& name) {
 
   const EntityPtr& entity = find_entity(name);
   if (entity != nullptr) {
@@ -861,7 +861,7 @@ void MapEntities::remove_entity(const std::string& name) {
  * \brief Removes all entities of a type whose name starts with the specified prefix.
  * \param prefix Prefix of the name of the entities to remove.
  */
-void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
+void Entities::remove_entities_with_prefix(const std::string& prefix) {
 
   std::vector<EntityPtr> entities = get_entities_with_prefix(prefix);
   for (const EntityPtr& entity: entities) {
@@ -872,7 +872,7 @@ void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
 /**
  * \brief Removes and destroys the entities placed in the entities_to_remove list.
  */
-void MapEntities::remove_marked_entities() {
+void Entities::remove_marked_entities() {
 
   // remove the marked entities
   for (const EntityPtr& entity: entities_to_remove) {
@@ -934,7 +934,7 @@ void MapEntities::remove_marked_entities() {
  * \param suspended true to suspend the movement and the animations,
  * false to resume them
  */
-void MapEntities::set_suspended(bool suspended) {
+void Entities::set_suspended(bool suspended) {
 
   // the hero first
   hero->set_suspended(suspended);
@@ -950,7 +950,7 @@ void MapEntities::set_suspended(bool suspended) {
 /**
  * \brief Updates the position, movement and animation each entity.
  */
-void MapEntities::update() {
+void Entities::update() {
 
   Debug::check_assertion(map.is_started(), "The map is not started");
 
@@ -985,7 +985,7 @@ void MapEntities::update() {
 /**
  * \brief Draws the entities on the map surface.
  */
-void MapEntities::draw() {
+void Entities::draw() {
 
   for (int layer = 0; layer < map.get_num_layers(); ++layer) {
 
@@ -1030,7 +1030,7 @@ void MapEntities::draw() {
  * \param drawn_in_y_order \c true to display it in Y order, \c false to
  * display it in Z order.
  */
-void MapEntities::set_entity_drawn_in_y_order(
+void Entities::set_entity_drawn_in_y_order(
     Entity& entity, bool drawn_in_y_order) {
 
   const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
@@ -1053,7 +1053,7 @@ void MapEntities::set_entity_drawn_in_y_order(
  * \param entity an entity
  * \param layer the new layer
  */
-void MapEntities::set_entity_layer(Entity& entity, int layer) {
+void Entities::set_entity_layer(Entity& entity, int layer) {
 
   int old_layer = entity.get_layer();
 
@@ -1094,7 +1094,7 @@ void MapEntities::set_entity_layer(Entity& entity, int layer) {
  * sprite bounding box of an entity changes.
  * \param entity The entity modified.
  */
-void MapEntities::notify_entity_bounding_box_changed(Entity& entity) {
+void Entities::notify_entity_bounding_box_changed(Entity& entity) {
 
   // Update the quadtree.
 
@@ -1110,7 +1110,7 @@ void MapEntities::notify_entity_bounding_box_changed(Entity& entity) {
  * \param rectangle a rectangle
  * \return true if this rectangle overlaps a raised crystal block
  */
-bool MapEntities::overlaps_raised_blocks(int layer, const Rectangle& rectangle) const {
+bool Entities::overlaps_raised_blocks(int layer, const Rectangle& rectangle) const {
 
   std::set<std::shared_ptr<const CrystalBlock>> blocks =
       get_entities_by_type<CrystalBlock>(layer);
@@ -1130,7 +1130,7 @@ bool MapEntities::overlaps_raised_blocks(int layer, const Rectangle& rectangle) 
 /**
  * \brief Creates a Z order tracking data structure.
  */
-MapEntities::ZCache::ZCache() :
+Entities::ZCache::ZCache() :
     z_values(),
     min(0),
     max(-1) {
@@ -1142,7 +1142,7 @@ MapEntities::ZCache::ZCache() :
  * \param entity An entity of the map. It must be in the structure.
  * \return Its relative Z order.
  */
-int MapEntities::ZCache::get_z(const EntityPtr& entity) const {
+int Entities::ZCache::get_z(const EntityPtr& entity) const {
 
   SOLARUS_ASSERT(z_values.find(entity) != z_values.end(),
       std::string("No such entity in Z cache: " +
@@ -1161,7 +1161,7 @@ int MapEntities::ZCache::get_z(const EntityPtr& entity) const {
  *
  * It must not be present.
  */
-void MapEntities::ZCache::add(const EntityPtr& entity) {
+void Entities::ZCache::add(const EntityPtr& entity) {
 
   ++max;
   const auto& inserted = z_values.insert(std::make_pair(entity, max));
@@ -1173,7 +1173,7 @@ void MapEntities::ZCache::add(const EntityPtr& entity) {
  *
  * It must be present.
  */
-void MapEntities::ZCache::remove(const EntityPtr& entity) {
+void Entities::ZCache::remove(const EntityPtr& entity) {
 
   int num_removed = z_values.erase(entity);
   Debug::check_assertion(num_removed == 1, "Entity not found in Z cache");
@@ -1186,7 +1186,7 @@ void MapEntities::ZCache::remove(const EntityPtr& entity) {
  *
  * It will then have a Z order greater than all other entities in the structure.
  */
-void MapEntities::ZCache::bring_to_front(const EntityPtr& entity) {
+void Entities::ZCache::bring_to_front(const EntityPtr& entity) {
 
   remove(entity);
   add(entity);
@@ -1197,7 +1197,7 @@ void MapEntities::ZCache::bring_to_front(const EntityPtr& entity) {
  *
  * It will then have a Z order lower than all other entities in the structure.
  */
-void MapEntities::ZCache::bring_to_back(const EntityPtr& entity) {
+void Entities::ZCache::bring_to_back(const EntityPtr& entity) {
 
   remove(entity);
   --min;

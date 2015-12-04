@@ -15,11 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Camera.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Separator.h"
-#include "solarus/lowlevel/Video.h"
 #include "solarus/lowlevel/System.h"
+#include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/movements/TargetMovement.h"
 #include "solarus/Game.h"

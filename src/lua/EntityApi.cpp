@@ -21,10 +21,10 @@
 #include "solarus/entities/Destructible.h"
 #include "solarus/entities/Door.h"
 #include "solarus/entities/Enemy.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/EntityTypeInfo.h"
 #include "solarus/entities/GroundInfo.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Npc.h"
 #include "solarus/entities/Pickable.h"
 #include "solarus/entities/Sensor.h"
@@ -861,7 +861,7 @@ int LuaContext::entity_api_set_position(lua_State* l) {
 
     entity.set_xy(x, y);
     if (layer != -1) {
-      MapEntities& entities = entity.get_map().get_entities();
+      Entities& entities = entity.get_map().get_entities();
       entities.set_entity_layer(entity, layer);
     }
     entity.notify_position_changed();

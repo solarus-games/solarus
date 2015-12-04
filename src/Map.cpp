@@ -316,7 +316,7 @@ void Map::load(Game& game) {
   );
   background_surface->set_software_destination(false);
 
-  entities = std::unique_ptr<MapEntities>(new MapEntities(game, *this));
+  entities = std::unique_ptr<Entities>(new Entities(game, *this));
 
   // read the map file
   map_loader.load_map(game, *this);

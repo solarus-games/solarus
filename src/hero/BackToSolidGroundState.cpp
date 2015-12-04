@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Boomerang.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/hero/BackToSolidGroundState.h"
 #include "solarus/hero/FreeState.h"
 #include "solarus/hero/HeroSprites.h"

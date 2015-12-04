@@ -15,10 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Destructible.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Entity.h"
 #include "solarus/entities/EntityState.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Separator.h"
 #include "solarus/entities/StreamAction.h"
 #include "solarus/entities/Switch.h"
@@ -446,7 +446,7 @@ const Game& Entity::get_game() const {
  * \brief Returns the entities of the current map.
  * \return The entities.
  */
-MapEntities& Entity::get_entities() {
+Entities& Entity::get_entities() {
   Debug::check_assertion(map != nullptr, "No map was set");
   return map->get_entities();
 }
@@ -455,7 +455,7 @@ MapEntities& Entity::get_entities() {
  * \brief Returns the entities of the current map.
  * \return The entities.
  */
-const MapEntities& Entity::get_entities() const {
+const Entities& Entity::get_entities() const {
   Debug::check_assertion(map != nullptr, "No map was set");
   return map->get_entities();
 }

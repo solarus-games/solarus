@@ -25,13 +25,13 @@
 #include "solarus/entities/Door.h"
 #include "solarus/entities/DynamicTile.h"
 #include "solarus/entities/Enemy.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/EntityTypeInfo.h"
 #include "solarus/entities/Explosion.h"
 #include "solarus/entities/Fire.h"
 #include "solarus/entities/GroundInfo.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Jumper.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Npc.h"
 #include "solarus/entities/Pickable.h"
 #include "solarus/entities/Sensor.h"
@@ -1702,7 +1702,7 @@ int LuaContext::map_api_open_doors(lua_State* l) {
     const std::string& prefix = LuaTools::check_string(l, 2);
 
     bool done = false;
-    MapEntities& entities = map.get_entities();
+    Entities& entities = map.get_entities();
     const std::vector<EntityPtr>& doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
     for (const EntityPtr& entity: doors) {
       Door& door = *std::static_pointer_cast<Door>(entity);
@@ -1734,7 +1734,7 @@ int LuaContext::map_api_close_doors(lua_State* l) {
     const std::string& prefix = LuaTools::check_string(l, 2);
 
     bool done = false;
-    MapEntities& entities = map.get_entities();
+    Entities& entities = map.get_entities();
     const std::vector<EntityPtr>& doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
     for (const EntityPtr& entity: doors) {
       Door& door = *std::static_pointer_cast<Door>(entity);
@@ -1766,7 +1766,7 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
     const std::string& prefix = LuaTools::check_string(l, 2);
     bool open = LuaTools::opt_boolean(l, 3, true);
 
-    MapEntities& entities = map.get_entities();
+    Entities& entities = map.get_entities();
     const std::vector<EntityPtr>& doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
     for (const EntityPtr& entity: doors) {
       Door& door = *std::static_pointer_cast<Door>(entity);

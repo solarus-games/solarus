@@ -126,7 +126,7 @@ Map& Entity::State::get_map() {
  * \brief Returns the entities of the current map.
  * \return the entities
  */
-MapEntities& Entity::State::get_entities() {
+Entities& Entity::State::get_entities() {
   return map->get_entities();
 }
 

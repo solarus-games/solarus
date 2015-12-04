@@ -20,17 +20,16 @@
 #include "solarus/Common.h"
 #include "solarus/entities/Camera.h"
 #include "solarus/entities/Ground.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Entities.h"
+#include "solarus/entities/NonAnimatedRegions.h"
+#include "solarus/entities/TilePattern.h"
+#include "solarus/entities/Tileset.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/MapData.h"
 #include "solarus/Transition.h"
-#include "solarus/entities/MapEntities.h"
-#include "solarus/entities/Tileset.h"
-#include "solarus/entities/NonAnimatedRegions.h"
-#include "solarus/entities/TilePattern.h"
 
 namespace Solarus {
 
@@ -38,7 +37,7 @@ class Destination;
 class Detector;
 class InputEvent;
 class LuaContext;
-class MapEntities;
+class Entities;
 class MapLoader;
 class Tileset;
 class Sprite;
@@ -107,8 +106,8 @@ class SOLARUS_API Map: public ExportableToLua {
     void notify_opening_transition_finished();
 
     // entities
-    MapEntities& get_entities();
-    const MapEntities& get_entities() const;
+    Entities& get_entities();
+    const Entities& get_entities() const;
 
     // presence of the hero
     bool is_started() const;
@@ -235,7 +234,7 @@ class SOLARUS_API Map: public ExportableToLua {
                                    * to place the hero on a side of the map,
                                    * or an empty string to use the one saved. */
 
-    std::unique_ptr<MapEntities>
+    std::unique_ptr<Entities>
         entities;                 /**< The entities on the map. */
     bool suspended;               /**< Whether the game is suspended. */
 };
@@ -268,14 +267,14 @@ inline bool Map::test_collision_with_border(const Point& point) const {
  *
  * \return The entities of the map.
  */
-inline const MapEntities& Map::get_entities() const {
+inline const Entities& Map::get_entities() const {
   return *entities;
 }
 
 /**
  * \overload Non-const version.
  */
-inline MapEntities& Map::get_entities() {
+inline Entities& Map::get_entities() {
   return *entities;
 }
 

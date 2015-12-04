@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/CarriedItem.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/hero/CarryingState.h"
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/hero/LiftingState.h"

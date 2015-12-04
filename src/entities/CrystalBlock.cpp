@@ -15,14 +15,14 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/CrystalBlock.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/Sound.h"
 #include "solarus/movements/PlayerMovement.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/Sound.h"
 
 namespace Solarus {
 

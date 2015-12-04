@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/hero/HookshotState.h"
-#include "solarus/hero/FreeState.h"
-#include "solarus/hero/BackToSolidGroundState.h"
-#include "solarus/hero/HeroSprites.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Hookshot.h"
+#include "solarus/hero/BackToSolidGroundState.h"
+#include "solarus/hero/FreeState.h"
+#include "solarus/hero/HeroSprites.h"
+#include "solarus/hero/HookshotState.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/Map.h"
 
@@ -204,7 +204,7 @@ void Hero::HookshotState::finish_movement() {
   const Rectangle& hero_position = hero.get_bounding_box();
   int layer = hero.get_layer();
   Map& map = get_map();
-  MapEntities& entities = get_entities();
+  Entities& entities = get_entities();
 
   if (layer == 0 || !map.has_empty_ground(layer, hero_position)) {
     // the hero is totally on the same layer: no problem

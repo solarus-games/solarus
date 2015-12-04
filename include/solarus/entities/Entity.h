@@ -55,7 +55,7 @@ class Jumper;
 class LuaContext;
 class Map;
 class MainLoop;
-class MapEntities;
+class Entities;
 class Movement;
 class Npc;
 class Savegame;
@@ -360,8 +360,8 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual bool is_ladder_obstacle() const;
 
     // easy access to various game objects
-    MapEntities& get_entities();
-    const MapEntities& get_entities() const;
+    Entities& get_entities();
+    const Entities& get_entities() const;
     Equipment& get_equipment();
     const Equipment& get_equipment() const;
     CommandsEffects& get_commands_effects();

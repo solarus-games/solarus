@@ -27,6 +27,7 @@ Lua API changes
 Changes that introduce incompatibilities:
 
 * Items with amount now have a default max amount of 1000 (#688).
+* Fix map:get_entities() not returning the hero (#670).
 
 Changes that do not introduce incompatibilities:
 

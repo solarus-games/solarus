@@ -5,6 +5,7 @@ set(lua_test_maps
   "surface_tests"
   "all_entities"
   "bugs/486_diagonal_dynamic_tiles"
+  "bugs/670_map_get_entities_no_hero"
   "bugs/686_crash_door_item"
   "bugs/699_crash_exit_surface_moving"
   "bugs/779_get_entities_random_order"

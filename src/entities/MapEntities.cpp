@@ -116,7 +116,7 @@ MapEntities::MapEntities(Game& game, Map& map):
   tiles_ground(),
   non_animated_regions(),
   tiles_in_animated_regions(),
-  hero(*game.get_hero()),
+  hero(game.get_hero()),
   camera(nullptr),
   named_entities(),
   all_entities(),
@@ -141,10 +141,10 @@ void MapEntities::notify_entity_removed(Entity& entity) {
 
 /**
  * \brief Returns the hero.
- * \return the hero
+ * \return The hero.
  */
 Hero& MapEntities::get_hero() {
-  return hero;
+  return *hero;
 }
 
 /**
@@ -228,6 +228,9 @@ EntityPtr MapEntities::find_entity(const std::string& name) {
 
 /**
  * \brief Returns the entities of the map having the specified name prefix.
+ *
+ * The hero is included if the prefix matches.
+ *
  * \param prefix Prefix of the name.
  * \return The entities having this prefix in their name, in arbitrary order.
  */
@@ -242,6 +245,7 @@ EntityVector MapEntities::get_entities_with_prefix(const std::string& prefix) {
         entities.push_back(entity);
       }
     }
+    entities.push_back(hero);
     return entities;
   }
 
@@ -468,8 +472,8 @@ void MapEntities::notify_map_started() {
     entity->notify_map_started();
     entity->notify_tileset_changed();
   }
-  hero.notify_map_started();
-  hero.notify_tileset_changed();
+  hero->notify_map_started();
+  hero->notify_tileset_changed();
 
   // Setup non-animated tiles pre-drawing.
   for (int layer = 0; layer < map.get_num_layers(); layer++) {
@@ -487,7 +491,7 @@ void MapEntities::notify_map_opening_transition_finished() {
   for (const EntityPtr& entity: all_entities) {
     entity->notify_map_opening_transition_finished();
   }
-  hero.notify_map_opening_transition_finished();
+  hero->notify_map_opening_transition_finished();
 }
 
 /**
@@ -504,7 +508,7 @@ void MapEntities::notify_tileset_changed() {
   for (const EntityPtr& entity: all_entities) {
     entity->notify_tileset_changed();
   }
-  hero.notify_tileset_changed();
+  hero->notify_tileset_changed();
 }
 
 /**
@@ -933,7 +937,7 @@ void MapEntities::remove_marked_entities() {
 void MapEntities::set_suspended(bool suspended) {
 
   // the hero first
-  hero.set_suspended(suspended);
+  hero->set_suspended(suspended);
 
   // other entities
   for (const EntityPtr& entity: all_entities) {
@@ -951,7 +955,7 @@ void MapEntities::update() {
   Debug::check_assertion(map.is_started(), "The map is not started");
 
   // First update the hero.
-  hero.update();
+  hero->update();
 
   // Update the dynamic entities.
   for (int layer = 0; layer < map.get_num_layers(); layer++) {

@@ -23,6 +23,7 @@
 #include "solarus/entities/EntityPtr.h"
 #include "solarus/entities/EntityType.h"
 #include "solarus/entities/Ground.h"
+#include "solarus/entities/HeroPtr.h"
 #include "solarus/entities/TilePtr.h"
 #include "solarus/Transition.h"
 #include <list>
@@ -176,7 +177,8 @@ class SOLARUS_API MapEntities {
         tiles_in_animated_regions;                  /**< For each layer, animated tiles and tiles overlapping them. */
 
     // dynamic entities
-    Hero& hero;                                     /**< The hero (stored in Game because it is kept when changing maps). */
+    HeroPtr hero;                                   /**< The hero, also stored in Game because
+                                                     * it is kept when changing maps. */
     std::shared_ptr<Camera>
         camera;                                     /**< The visible area of the map. */
 

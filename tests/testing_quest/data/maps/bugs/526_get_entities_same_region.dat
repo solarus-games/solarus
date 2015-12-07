@@ -421,7 +421,7 @@ sensor{
 }
 
 sensor{
-  name = "region_m_3",
+  name = "region_n_2",
   layer = 0,
   x = 1528,
   y = 853,
@@ -430,7 +430,7 @@ sensor{
 }
 
 sensor{
-  name = "region_m_4",
+  name = "region_q_2",
   layer = 0,
   x = 1552,
   y = 1085,
@@ -439,7 +439,7 @@ sensor{
 }
 
 sensor{
-  name = "region_m_5",
+  name = "region_p_2",
   layer = 0,
   x = 1048,
   y = 1077,

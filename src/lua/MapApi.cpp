@@ -101,6 +101,7 @@ void LuaContext::register_map_module() {
       { "has_entities", map_api_has_entities },
       { "get_entities_by_type", map_api_get_entities_by_type },
       { "get_entities_in_rectangle", map_api_get_entities_in_rectangle },
+      { "get_entities_in_region", map_api_get_entities_in_region },
       { "get_hero", map_api_get_hero },
       { "set_entities_enabled", map_api_set_entities_enabled },
       { "remove_entities", map_api_remove_entities },
@@ -1609,7 +1610,7 @@ int LuaContext::map_api_move_camera(lua_State* l) {
 int LuaContext::map_api_get_ground(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const Map& map = *check_map(l, 1);
+    Map& map = *check_map(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
     int layer = LuaTools::check_layer(l, 4, map);
@@ -1910,6 +1911,48 @@ int LuaContext::map_api_get_entities_in_rectangle(lua_State* l) {
     map.get_entities().get_entities_in_rectangle_sorted(
         Rectangle(x, y, width, height), entities
     );
+
+    push_entity_iterator(l, entities);
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of map:get_entities_in_region().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_entities_in_region(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    Point xy;
+    EntityPtr entity;
+    if (lua_isnumber(l, 2)) {
+      int x = LuaTools::check_int(l, 2);
+      int y = LuaTools::check_int(l, 3);
+      xy = Point(x, y);
+    }
+    else if (is_entity(l, 2)) {
+      entity = check_entity(l, 2);
+      xy = entity->get_xy();
+    }
+    else {
+      LuaTools::type_error(l, 2, "entity or number");
+    }
+
+    EntityVector entities;
+    map.get_entities().get_entities_in_region_sorted(
+        xy, entities
+    );
+
+    if (entity != nullptr) {
+      // Entity variant: remove the entity itself.
+      const auto& it = std::find(entities.begin(), entities.end(), entity);
+      if (it != entities.end()) {
+        entities.erase(it);
+      }
+    }
 
     push_entity_iterator(l, entities);
     return 1;

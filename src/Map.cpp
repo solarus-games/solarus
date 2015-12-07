@@ -801,7 +801,7 @@ bool Map::test_collision_with_ground(
     int x,
     int y,
     const Entity& entity_to_check,
-    bool& found_diagonal_wall) const {
+    bool& found_diagonal_wall) {
 
   bool on_obstacle = false;
   int x_in_tile, y_in_tile;
@@ -881,7 +881,7 @@ bool Map::test_collision_with_ground(
 bool Map::test_collision_with_entities(
     int layer,
     const Rectangle& collision_box,
-    Entity& entity_to_check) const {
+    Entity& entity_to_check) {
 
   std::vector<EntityPtr> entities_nearby;
   get_entities().get_entities_in_rectangle(collision_box, entities_nearby);
@@ -912,7 +912,7 @@ bool Map::test_collision_with_entities(
 bool Map::test_collision_with_obstacles(
     int layer,
     const Rectangle& collision_box,
-    Entity& entity_to_check) const {
+    Entity& entity_to_check) {
 
   // This function is called very often.
   // For performance reasons, we only check the border of the of the collision box.
@@ -986,7 +986,8 @@ bool Map::test_collision_with_obstacles(
     int layer,
     int x,
     int y,
-    Entity& entity_to_check) const {
+    Entity& entity_to_check
+) {
 
   bool is_diagonal_wall = false;
 
@@ -1013,7 +1014,7 @@ bool Map::test_collision_with_obstacles(
 bool Map::test_collision_with_obstacles(
     int layer,
     const Point& point,
-    Entity& entity_to_check) const {
+    Entity& entity_to_check) {
 
   return test_collision_with_obstacles(layer, point.x, point.y, entity_to_check);
 }
@@ -1027,7 +1028,7 @@ bool Map::test_collision_with_obstacles(
  * \param collision_box The rectangle to test.
  * \return \c true if there is at least one empty tile in this rectangle.
  */
-bool Map::has_empty_ground(int layer, const Rectangle& collision_box) const {
+bool Map::has_empty_ground(int layer, const Rectangle& collision_box) {
 
   bool empty_tile = false;
 
@@ -1068,7 +1069,7 @@ bool Map::has_empty_ground(int layer, const Rectangle& collision_box) const {
  * \param y Y coordinate of the point.
  * \return The ground at this place.
  */
-Ground Map::get_ground(int layer, int x, int y) const {
+Ground Map::get_ground(int layer, int x, int y) {
   return get_ground(layer, Point(x, y));
 }
 
@@ -1081,7 +1082,7 @@ Ground Map::get_ground(int layer, int x, int y) const {
  * \param xy Coordinates of the point.
  * \return The ground at this place.
  */
-Ground Map::get_ground(int layer, const Point& xy) const {
+Ground Map::get_ground(int layer, const Point& xy) {
 
   if (test_collision_with_border(xy)) {
     // Outside the map bounds.

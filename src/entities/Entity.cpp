@@ -2254,17 +2254,32 @@ int Entity::get_distance_to_camera2() const {
 }
 
 /**
- * \brief Returns whether an entity is in the same region as this one.
+ * \brief Returns whether this entity is in the same region as another one.
  *
  * Regions are defined by the position of separators on the map.
+ * The region of entities is the one of their center point.
  *
  * \param other Another entity.
  * \return \c true if both entities are in the same region.
  */
 bool Entity::is_in_same_region(const Entity& other) const {
 
-  const Point& this_center = get_center_point();
-  const Point& other_center = other.get_center_point();
+    return is_in_same_region(other.get_center_point());
+}
+
+/**
+ * \brief Returns whether this entity is in the same region as a point.
+ *
+ * Regions are defined by the position of separators on the map.
+ * The region of this entity is the one of its center point.
+ *
+ * \param xy A point.
+ * \return \c true if this entity and the point are in the same region.
+ */
+bool Entity::is_in_same_region(const Point& xy) const {
+
+  const Point& this_xy = get_center_point();
+  const Point& other_xy = xy;
 
   const std::set<std::shared_ptr<const Separator>>& separators =
       get_entities().get_entities_by_type<const Separator>();
@@ -2272,8 +2287,8 @@ bool Entity::is_in_same_region(const Entity& other) const {
 
     if (separator->is_vertical()) {
       // Vertical separation.
-      if (this_center.y < separator->get_top_left_y() ||
-          this_center.y >= separator->get_top_left_y() + separator->get_height()) {
+      if (this_xy.y < separator->get_top_left_y() ||
+          this_xy.y >= separator->get_top_left_y() + separator->get_height()) {
         // This separator is irrelevant: the entity is not in either side,
         // it is too much to the north or to the south.
         //
@@ -2286,8 +2301,8 @@ bool Entity::is_in_same_region(const Entity& other) const {
         continue;
       }
 
-      if (other_center.y < separator->get_top_left_y() ||
-          other_center.y >= separator->get_top_left_y() + separator->get_height()) {
+      if (other_xy.y < separator->get_top_left_y() ||
+          other_xy.y >= separator->get_top_left_y() + separator->get_height()) {
         // This separator is irrelevant: the other entity is not in either side.
         // it is too much to the north or to the south.
         continue;
@@ -2296,38 +2311,38 @@ bool Entity::is_in_same_region(const Entity& other) const {
       // Both entities are in the zone of influence of this separator.
       // See if they are in the same side.
       const int separation_x = separator->get_center_point().x;
-      if (this_center.x < separation_x &&
-          separation_x <= other_center.x) {
+      if (this_xy.x < separation_x &&
+          separation_x <= other_xy.x) {
         // Different side.
         return false;
       }
 
-      if (other_center.x < separation_x &&
-          separation_x <= this_center.x) {
+      if (other_xy.x < separation_x &&
+          separation_x <= this_xy.x) {
         // Different side.
         return false;
       }
     }
     else {
       // Horizontal separation.
-      if (this_center.x < separator->get_top_left_x() ||
-          this_center.x >= separator->get_top_left_x() + separator->get_width()) {
+      if (this_xy.x < separator->get_top_left_x() ||
+          this_xy.x >= separator->get_top_left_x() + separator->get_width()) {
         continue;
       }
 
-      if (other_center.x < separator->get_top_left_x() ||
-          other_center.x >= separator->get_top_left_x() + separator->get_width()) {
+      if (other_xy.x < separator->get_top_left_x() ||
+          other_xy.x >= separator->get_top_left_x() + separator->get_width()) {
         continue;
       }
 
       const int separation_y = separator->get_center_point().y;
-      if (this_center.y < separation_y &&
-          separation_y <= other_center.y) {
+      if (this_xy.y < separation_y &&
+          separation_y <= other_xy.y) {
         return false;
       }
 
-      if (other_center.y < separation_y &&
-          separation_y <= this_center.y) {
+      if (other_xy.y < separation_y &&
+          separation_y <= this_xy.y) {
         return false;
       }
     }

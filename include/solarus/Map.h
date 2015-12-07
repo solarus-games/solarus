@@ -130,35 +130,35 @@ class SOLARUS_API Map: public ExportableToLua {
         int y,
         const Entity& entity_to_check,
         bool& found_diagonal_wall
-    ) const;
+    );
     bool test_collision_with_entities(
         int layer,
         const Rectangle& collision_box,
         Entity& entity_to_check
-    ) const;
+    );
     bool test_collision_with_obstacles(
         int layer,
         const Rectangle& collision_box,
         Entity& entity_to_check
-    ) const;
+    );
     bool test_collision_with_obstacles(
         int layer,
         int x,
         int y,
         Entity& entity_to_check
-    ) const;
+    );
     bool test_collision_with_obstacles(
         int layer,
         const Point& point,
         Entity& entity_to_check
-    ) const;
+    );
     bool has_empty_ground(
         int layer,
         const Rectangle& collision_box
-    ) const;
+    );
 
-    Ground get_ground(int layer, int x, int y) const;
-    Ground get_ground(int layer, const Point& xy) const;
+    Ground get_ground(int layer, int x, int y);
+    Ground get_ground(int layer, const Point& xy);
     Ground get_ground_from_entity(const Entity& entity, int x, int y) const;
     Ground get_ground_from_entity(const Entity& entity, const Point& xy) const;
 

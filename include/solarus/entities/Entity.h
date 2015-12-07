@@ -253,6 +253,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     int get_distance_to_camera() const;
     int get_distance_to_camera2() const;
     bool is_in_same_region(const Entity& other) const;
+    bool is_in_same_region(const Point& xy) const;
 
     // collisions
     virtual bool has_layer_independent_collisions() const;

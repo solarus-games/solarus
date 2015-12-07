@@ -352,7 +352,7 @@ bool Entities::has_entity_with_prefix(const std::string& prefix) const {
  */
 void Entities::get_entities_in_rectangle(
     const Rectangle& rectangle, EntityVector& result
-) const {
+) {
 
   quadtree.get_elements(rectangle, result);
 }
@@ -366,9 +366,44 @@ void Entities::get_entities_in_rectangle(
 void Entities::get_entities_in_rectangle_sorted(
     const Rectangle& rectangle,
     EntityVector& result
-) const {
+) {
 
   get_entities_in_rectangle(rectangle, result);
+  std::sort(result.begin(), result.end(), ZOrderComparator(*this));
+}
+
+/**
+ * \brief Returns all entities in the same separator region as the given point.
+ * \param[in] xy A point.
+ * \param[out] result The entities in the same region as the point,
+ * where regions are delimited by separators and map limits.
+ */
+void Entities::get_entities_in_region(
+    const Point& xy, EntityVector& result
+) {
+
+  // TODO performance can be improved by finding the bounding box of
+  // the region and starting with entities in it.
+  EntityVector all_entities = get_entities();
+  for (const EntityPtr& entity : all_entities) {
+    if (entity->is_in_same_region(xy)) {
+      result.push_back(entity);
+    }
+  }
+}
+
+/**
+ * \brief Like get_entities_in_region(), but sorts entities according to
+ * their Z index on the map.
+ * \param[in] xy A point.
+ * \param[out] result The entities in the same region as the point,
+ * where regions are delimited by separators and map limits.
+ */
+void Entities::get_entities_in_region_sorted(
+    const Point& xy, EntityVector& result
+) {
+
+  get_entities_in_region(xy, result);
   std::sort(result.begin(), result.end(), ZOrderComparator(*this));
 }
 
@@ -1080,9 +1115,9 @@ void Entities::notify_entity_bounding_box_changed(Entity& entity) {
  * \param rectangle A rectangle.
  * \return \c true if this rectangle overlaps a raised crystal block.
  */
-bool Entities::overlaps_raised_blocks(int layer, const Rectangle& rectangle) const {
+bool Entities::overlaps_raised_blocks(int layer, const Rectangle& rectangle) {
 
-  std::set<std::shared_ptr<const CrystalBlock>> blocks =
+  std::set<std::shared_ptr<CrystalBlock>> blocks =
       get_entities_by_type<CrystalBlock>(layer);
 
   EntityVector entities_nearby;

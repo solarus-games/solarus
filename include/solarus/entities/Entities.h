@@ -96,8 +96,12 @@ class SOLARUS_API Entities {
     std::set<std::shared_ptr<T>> get_entities_by_type(int layer);
 
     // By coordinates.
-    void get_entities_in_rectangle(const Rectangle& rectangle, EntityVector& result) const;
-    void get_entities_in_rectangle_sorted(const Rectangle& rectangle, EntityVector& result) const;
+    void get_entities_in_rectangle(const Rectangle& rectangle, EntityVector& result);
+    void get_entities_in_rectangle_sorted(const Rectangle& rectangle, EntityVector& result);
+
+    // By separator region.
+    void get_entities_in_region(const Point& xy, EntityVector& result);
+    void get_entities_in_region_sorted(const Point& xy, EntityVector& result);
 
     // Handle entities.
     void add_entity(const EntityPtr& entity);
@@ -111,7 +115,7 @@ class SOLARUS_API Entities {
     void notify_entity_bounding_box_changed(Entity& entity);
 
     // Specific to some entity types.
-    bool overlaps_raised_blocks(int layer, const Rectangle& rectangle) const;
+    bool overlaps_raised_blocks(int layer, const Rectangle& rectangle) ;
 
     // Map events.
     void notify_map_started();

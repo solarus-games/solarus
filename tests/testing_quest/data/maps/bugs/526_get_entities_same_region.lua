@@ -2,7 +2,7 @@ local map = ...
 
 function map:on_started()
 
-  -- First get all entities and build expected results according to their name.
+  -- First, build expected results according to names of entities.
   local empty = true
   local sensors_by_region = {}
   for sensor in map:get_entities("region_") do
@@ -21,6 +21,8 @@ function map:on_started()
   -- returns exactly the expected ones.
   for sensor in map:get_entities("region_") do
 
+    print("Test entity " .. sensor:get_name())
+
     local region_prefix = sensor:get_name():match("^(region_%a_)")
     assert(region_prefix ~= nil)
 
@@ -28,16 +30,46 @@ function map:on_started()
     assert(expected_in_region ~= nil)
 
     local found_in_region = {}
-    for sensor_found in map:get_entities_in_same_region(sensor) do
-      found_in_region[sensor_found] = true
+    for found in map:get_entities_in_region(sensor) do
+      if found:get_name() ~= nil and found:get_name():match("^region_") then
+        found_in_region[found] = true
+      end
+    end
+    -- The sensor itself should not have been returned.
+    assert(not found_in_region[sensor])
+
+    -- Compare both sets.
+    for expected in pairs(expected_in_region) do
+      if expected ~= sensor then
+        print("  Expected " .. expected:get_name())
+        assert(found_in_region[expected])
+        print("    Found it!")
+      end
+    end
+    for found in pairs(found_in_region) do
+      print("  Found " .. found:get_name())
+      assert(expected_in_region[found])
+      print("    Expected it!")
+    end
+
+    -- Do it again using coordinates.
+    found_in_region = {}
+    for found in map:get_entities_in_region(sensor:get_position()) do
+      if found:get_name() ~= nil and found:get_name():match("^region_") then
+        found_in_region[found] = true
+      end
     end
 
     -- Compare both sets.
-    for expected in expected_in_region do
+    for expected in pairs(expected_in_region) do
+      print("  Expected " .. expected:get_name())
       assert(found_in_region[expected])
+      print("    Found it!")
     end
-    for found in found_in_region do
+    for found in pairs(found_in_region) do
+      print("  Found " .. found:get_name())
       assert(expected_in_region[found])
+      print("    Expected it!")
     end
   end
 

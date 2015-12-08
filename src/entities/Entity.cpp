@@ -2351,6 +2351,11 @@ bool Entity::is_in_same_region(const Point& xy) const {
   return true;
 }
 
+/**
+ * \brief This function is called when the position, movement or state changes.
+ *
+ * Subclasses can redefine it to perform some checks.
+ */
 void Entity::check_position() {
 }
 

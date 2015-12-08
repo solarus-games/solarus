@@ -39,6 +39,7 @@ namespace Solarus {
 class Destination;
 class Hero;
 class Map;
+class MapData;
 class NonAnimatedRegions;
 class Rectangle;
 
@@ -108,6 +109,7 @@ class SOLARUS_API Entities {
     Rectangle get_region_box(const Point& point) const;
 
     // Handle entities.
+    void create_entities(const MapData& data);
     void add_entity(const EntityPtr& entity);
     void remove_entity(Entity& entity);
     void remove_entity(const std::string& name);
@@ -133,8 +135,6 @@ class SOLARUS_API Entities {
     void draw();
 
   private:
-
-    friend class MapLoader;            /**< the map loader initializes the private fields of MapEntities */
 
     /**
      * \brief Internal fast cached information about the entity insertion order.

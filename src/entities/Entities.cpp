@@ -18,6 +18,7 @@
 #include "solarus/entities/CrystalBlock.h"
 #include "solarus/entities/Destination.h"
 #include "solarus/entities/Entities.h"
+#include "solarus/entities/EntityTypeInfo.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/NonAnimatedRegions.h"
 #include "solarus/entities/Separator.h"
@@ -30,9 +31,11 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Music.h"
 #include "solarus/lowlevel/Surface.h"
+#include "solarus/lua/LuaContext.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
 #include <sstream>
+#include <lua.hpp>
 
 namespace Solarus {
 
@@ -105,7 +108,7 @@ class ZOrderComparator {
 /**
  * \brief Constructor.
  * \param game The game.
- * \param map The map (not loaded yet).
+ * \param map The map.
  */
 Entities::Entities(Game& game, Map& map):
   game(game),
@@ -125,6 +128,51 @@ Entities::Entities(Game& game, Map& map):
   z_caches(),
   default_destination(nullptr) {
 
+  // Initialize the size.
+  initialize_layers();
+  map_width8 = map.get_width8();
+  map_height8 = map.get_height8();
+  tiles_grid_size = map.get_width8() * map.get_height8();
+  for (int layer = 0; layer < map.get_num_layers(); ++layer) {
+
+    Ground initial_ground = (layer == 0) ? Ground::TRAVERSABLE : Ground::EMPTY;
+    for (int i = 0; i < tiles_grid_size; ++i) {
+      tiles_ground[layer].push_back(initial_ground);
+    }
+
+    non_animated_regions[layer] = std::unique_ptr<NonAnimatedRegions>(
+        new NonAnimatedRegions(map, layer)
+    );
+  }
+
+  // Initialize the quadtree.
+  const int margin = 64;
+  Rectangle quadtree_space(-margin, -margin, map.get_width() + 2 * margin, map.get_height() + 2 * margin);
+  quadtree.initialize(quadtree_space);
+
+  // Create the camera.
+  add_entity(std::make_shared<Camera>(map));
+}
+
+/**
+ * \brief Creates live entities from the given data.
+ */
+void Entities::create_entities(const MapData& data) {
+
+  // Create entities from the map data file.
+  LuaContext& lua_context = map.get_lua_context();
+  for (int layer = 0; layer < map.get_num_layers(); ++layer) {
+    for (int i = 0; i < data.get_num_entities(layer); ++i) {
+      const EntityData& entity_data = data.get_entity({ layer, i });
+      EntityType type = entity_data.get_type();
+      if (!EntityTypeInfo::can_be_stored_in_map_file(type)) {
+        Debug::error("Illegal entity type in map data: " + enum_to_name(type));
+      }
+      if (lua_context.create_map_entity_from_data(map, entity_data)) {
+        lua_pop(lua_context.get_internal_state(), 1);  // Discard the created entity on the stack.
+      }
+    }
+  }
 }
 
 /**

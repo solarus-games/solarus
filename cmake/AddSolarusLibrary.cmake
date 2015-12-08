@@ -193,7 +193,6 @@ file(
   include/solarus/MainLoop.h
   include/solarus/Map.h
   include/solarus/MapData.h
-  include/solarus/MapLoader.h
   include/solarus/QuestProperties.h
   include/solarus/QuestResources.h
   include/solarus/ResourceType.h
@@ -351,6 +350,8 @@ file(
   src/lua/TimerApi.cpp
   src/lua/VideoApi.cpp
 
+  src/main/Main.cpp
+
   src/movements/CircleMovement.cpp
   src/movements/FallingOnFloorMovement.cpp
   src/movements/JumpMovement.cpp
@@ -381,10 +382,8 @@ file(
   src/GameCommands.cpp
   src/Game.cpp
   src/MainLoop.cpp
-  src/main/Main.cpp
   src/Map.cpp
   src/MapData.cpp
-  src/MapLoader.cpp
   src/QuestProperties.cpp
   src/QuestResources.cpp
   src/SavegameConverterV1.cpp

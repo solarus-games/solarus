@@ -37,8 +37,6 @@
 
 namespace Solarus {
 
-MapLoader Map::map_loader;
-
 /**
  * \brief Creates a map.
  * \param id Id of the map, used to determine the data file and
@@ -316,10 +314,30 @@ void Map::load(Game& game) {
   );
   background_surface->set_software_destination(false);
 
-  entities = std::unique_ptr<Entities>(new Entities(game, *this));
+  // Read the map data file.
+  MapData data;
+  const std::string& file_name = std::string("maps/") + get_id() + ".dat";
+  bool success = data.import_from_quest_file(file_name);
 
-  // read the map file
-  map_loader.load_map(game, *this);
+  if (!success) {
+    Debug::die("Failed to load map data file '" + file_name + "'");
+  }
+
+  // Initialize the map from the data just read.
+  this->game = &game;
+  location.set_xy(data.get_location());
+  location.set_size(data.get_size());
+  width8 = data.get_size().width / 8;
+  height8 = data.get_size().height / 8;
+  num_layers = data.get_num_layers();
+  music_id = data.get_music_id();
+  set_world(data.get_world());
+  set_floor(data.get_floor());
+  tileset_id = data.get_tileset_id();
+  tileset = std::unique_ptr<Tileset>(new Tileset(data.get_tileset_id()));
+  tileset->load();
+  entities = std::unique_ptr<Entities>(new Entities(game, *this));
+  entities->create_entities(data);
 
   build_background_surface();
   build_foreground_surface();

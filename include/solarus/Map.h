@@ -180,15 +180,11 @@ class SOLARUS_API Map: public ExportableToLua {
 
   private:
 
-    friend class MapLoader; // the map loader modifies the private fields of Map
-
     void set_suspended(bool suspended);
     void build_background_surface();
     void build_foreground_surface();
     void draw_background();
     void draw_foreground();
-
-    static MapLoader map_loader;  /**< The map file parser. */
 
     // map properties
 

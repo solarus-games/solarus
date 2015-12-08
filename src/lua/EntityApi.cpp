@@ -2579,7 +2579,6 @@ int LuaContext::block_api_set_maximum_moves(lua_State* l) {
       LuaTools::type_error(l, 2, "number or nil");
     }
 
-
     if (lua_isnumber(l, 2)) {
       const int maximum_moves = LuaTools::check_int(l, 2);
       if (maximum_moves < 0 || maximum_moves > 1) {

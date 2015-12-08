@@ -77,10 +77,12 @@ void LuaContext::register_map_module() {
       { "get_id", map_api_get_id },
       { "get_game", map_api_get_game },
       { "get_world", map_api_get_world },
+      { "set_world", map_api_set_world },
       { "get_num_layers", map_api_get_num_layers },
       { "get_size", map_api_get_size },
       { "get_location", map_api_get_location },
       { "get_floor", map_api_get_floor },
+      { "set_floor", map_api_set_floor },
       { "get_tileset", map_api_get_tileset },
       { "set_tileset", map_api_set_tileset },
       { "get_music", map_api_get_music },
@@ -1417,6 +1419,29 @@ int LuaContext::map_api_get_world(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of map:set_world().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_set_world(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    std::string world;
+    if (lua_type(l, 2) != LUA_TSTRING && lua_type(l, 2) != LUA_TNIL) {
+      LuaTools::type_error(l, 2, "string or nil");
+    }
+    if (!lua_isnil(l, 2)) {
+      world = LuaTools::check_string(l, 2);
+    }
+
+    map.set_world(world);
+
+    return 0;
+  });
+}
+
+/**
  * \brief Implementation of map:get_num_layers().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -1448,6 +1473,29 @@ int LuaContext::map_api_get_floor(lua_State* l) {
       lua_pushinteger(l, map.get_floor());
     }
     return 1;
+  });
+}
+
+/**
+ * \brief Implementation of map:set_floor().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_set_floor(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    int floor = MapData::NO_FLOOR;
+    if (lua_type(l, 2) != LUA_TNUMBER && lua_type(l, 2) != LUA_TNIL) {
+      LuaTools::type_error(l, 2, "number or nil");
+    }
+    if (!lua_isnil(l, 2)) {
+      floor = LuaTools::check_int(l, 2);
+    }
+
+    map.set_floor(floor);
+
+    return 0;
   });
 }
 

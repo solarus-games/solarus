@@ -38,6 +38,7 @@ file(
   include/solarus/entities/Ground.h
   include/solarus/entities/GroundInfo.h
   include/solarus/entities/Hero.h
+  include/solarus/entities/HeroPtr.h
   include/solarus/entities/Hookshot.h
   include/solarus/entities/Jumper.h
   include/solarus/entities/Layer.h
@@ -48,6 +49,7 @@ file(
   include/solarus/entities/SelfScrollingTilePattern.h
   include/solarus/entities/Sensor.h
   include/solarus/entities/Separator.h
+  include/solarus/entities/SeparatorPtr.h
   include/solarus/entities/ShopTreasure.h
   include/solarus/entities/SimpleTilePattern.h
   include/solarus/entities/Stairs.h

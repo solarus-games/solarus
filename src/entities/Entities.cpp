@@ -21,6 +21,7 @@
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/NonAnimatedRegions.h"
 #include "solarus/entities/Separator.h"
+#include "solarus/entities/SeparatorPtr.h"
 #include "solarus/entities/Stairs.h"
 #include "solarus/entities/Tile.h"
 #include "solarus/entities/TilePattern.h"
@@ -374,6 +375,9 @@ void Entities::get_entities_in_rectangle_sorted(
 
 /**
  * \brief Returns all entities in the same separator region as the given point.
+ *
+ * Regions are assumed to be rectangular (convex: no "L" shape).
+ *
  * \param[in] xy A point.
  * \param[out] result The entities in the same region as the point,
  * where regions are delimited by separators and map limits.
@@ -382,14 +386,85 @@ void Entities::get_entities_in_region(
     const Point& xy, EntityVector& result
 ) {
 
-  // TODO performance can be improved by finding the bounding box of
-  // the region and starting with entities in it.
-  EntityVector all_entities = get_entities();
-  for (const EntityPtr& entity : all_entities) {
-    if (entity->is_in_same_region(xy)) {
-      result.push_back(entity);
+  // Find the bounding box of the region.
+  Rectangle region_box = get_region_box(xy);
+
+  // Get entities in that rectangle.
+  get_entities_in_rectangle(region_box, result);
+}
+
+/**
+ * \brief Determines the bounding box of a same separator region.
+ *
+ * Regions are assumed to be rectangular (convex: no "L" shape).
+ *
+ * \param xy A point.
+ * \return The box of the region.
+ */
+Rectangle Entities::get_region_box(const Point& point) const {
+
+  // Start with a rectangle of the whole map.
+  int top = 0;
+  int bottom = map.get_height();
+  int left = 0;
+  int right = map.get_width();
+
+  // Find the closest separator in each direction.
+
+  const std::set<ConstSeparatorPtr>& separators =
+      get_entities_by_type<Separator>();
+  for (const ConstSeparatorPtr& separator: separators) {
+
+    const Point& separator_center = separator->get_center_point();
+
+    if (separator->is_vertical()) {
+
+      // Vertical separation.
+      if (point.y < separator->get_top_left_y() ||
+          point.y >= separator->get_top_left_y() + separator->get_height()) {
+        // This separator is irrelevant: the point is not in either side,
+        // it is too much to the north or to the south.
+        //
+        //     |
+        //     |
+        //     |
+        //
+        //  x
+        //
+        continue;
+      }
+
+      if (separator_center.x <= point.x) {
+        // The separator is on the left.
+        left = std::max(left, separator_center.x);
+      }
+      else {
+        // The separator is on the right.
+        right = std::min(right, separator_center.x);
+      }
+    }
+    else {
+      // Horizontal separation.
+      if (point.x < separator->get_top_left_x() ||
+          point.x >= separator->get_top_left_x() + separator->get_width()) {
+        // This separator is irrelevant: the point is not in either side.
+        continue;
+      }
+
+      if (separator_center.y <= point.y) {
+        // The separator is on the top.
+        top = std::max(top, separator_center.y);
+      }
+      else {
+        // The separator is on the bottom.
+        bottom = std::min(bottom, separator_center.y);
+      }
     }
   }
+
+  Debug::check_assertion(top < bottom && left < right, "Invalid region rectangle");
+
+  return Rectangle(left, top, right - left, bottom - top);
 }
 
 /**

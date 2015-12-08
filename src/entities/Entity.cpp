@@ -20,6 +20,7 @@
 #include "solarus/entities/EntityState.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Separator.h"
+#include "solarus/entities/SeparatorPtr.h"
 #include "solarus/entities/StreamAction.h"
 #include "solarus/entities/Switch.h"
 #include "solarus/entities/Tileset.h"
@@ -2281,9 +2282,9 @@ bool Entity::is_in_same_region(const Point& xy) const {
   const Point& this_xy = get_center_point();
   const Point& other_xy = xy;
 
-  const std::set<std::shared_ptr<const Separator>>& separators =
-      get_entities().get_entities_by_type<const Separator>();
-  for (const std::shared_ptr<const Separator>& separator: separators) {
+  const std::set<ConstSeparatorPtr>& separators =
+      get_entities().get_entities_by_type<Separator>();
+  for (const ConstSeparatorPtr& separator: separators) {
 
     if (separator->is_vertical()) {
       // Vertical separation.

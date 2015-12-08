@@ -30,7 +30,6 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
-#include "solarus/MapLoader.h"
 #include "solarus/Savegame.h"
 #include "solarus/Sprite.h"
 #include <list>

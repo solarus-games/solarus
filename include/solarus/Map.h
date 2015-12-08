@@ -38,7 +38,6 @@ class Detector;
 class InputEvent;
 class LuaContext;
 class Entities;
-class MapLoader;
 class Tileset;
 class Sprite;
 

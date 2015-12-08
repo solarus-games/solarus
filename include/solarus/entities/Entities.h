@@ -45,6 +45,7 @@ class Rectangle;
 using EntityList = std::list<EntityPtr>;
 using EntitySet = std::set<EntityPtr>;
 using EntityVector = std::vector<EntityPtr>;
+using ConstEntityVector = std::vector<ConstEntityPtr>;
 using EntityTree = Quadtree<EntityPtr>;
 
 /**
@@ -96,7 +97,9 @@ class SOLARUS_API Entities {
     std::set<std::shared_ptr<T>> get_entities_by_type(int layer);
 
     // By coordinates.
+    void get_entities_in_rectangle(const Rectangle& rectangle, ConstEntityVector& result) const;
     void get_entities_in_rectangle(const Rectangle& rectangle, EntityVector& result);
+    void get_entities_in_rectangle_sorted(const Rectangle& rectangle, ConstEntityVector& result) const;
     void get_entities_in_rectangle_sorted(const Rectangle& rectangle, EntityVector& result);
 
     // By separator region.
@@ -109,7 +112,7 @@ class SOLARUS_API Entities {
     void remove_entity(Entity& entity);
     void remove_entity(const std::string& name);
     void remove_entities_with_prefix(const std::string& prefix);
-    int get_entity_relative_z_order(const EntityPtr& entity) const;
+    int get_entity_relative_z_order(const ConstEntityPtr& entity) const;
     void bring_to_front(Entity& entity);
     void bring_to_back(Entity& entity);
     void set_entity_layer(Entity& entity, int layer);
@@ -142,15 +145,15 @@ class SOLARUS_API Entities {
 
         ZCache();
 
-        int get_z(const EntityPtr& entity) const;
-        void add(const EntityPtr& entity);
-        void remove(const EntityPtr& entity);
-        void bring_to_front(const EntityPtr& entity);
-        void bring_to_back(const EntityPtr& entity);
+        int get_z(const ConstEntityPtr& entity) const;
+        void add(const ConstEntityPtr& entity);
+        void remove(const ConstEntityPtr& entity);
+        void bring_to_front(const ConstEntityPtr& entity);
+        void bring_to_back(const ConstEntityPtr& entity);
 
       private:
 
-        std::unordered_map<EntityPtr, int> z_values;
+        std::unordered_map<ConstEntityPtr, int> z_values;
         int min;
         int max;
     };

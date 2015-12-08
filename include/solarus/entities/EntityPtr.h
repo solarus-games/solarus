@@ -28,6 +28,11 @@ class Entity;
  */
 using EntityPtr = std::shared_ptr<Entity>;
 
+/**
+ * \brief Alias for shared_ptr of const Entity.
+ */
+using ConstEntityPtr = std::shared_ptr<const Entity>;
+
 }
 
 #endif

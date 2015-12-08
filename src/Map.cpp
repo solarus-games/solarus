@@ -801,7 +801,7 @@ bool Map::test_collision_with_ground(
     int x,
     int y,
     const Entity& entity_to_check,
-    bool& found_diagonal_wall) {
+    bool& found_diagonal_wall) const {
 
   bool on_obstacle = false;
   int x_in_tile, y_in_tile;
@@ -883,7 +883,7 @@ bool Map::test_collision_with_entities(
     const Rectangle& collision_box,
     Entity& entity_to_check) {
 
-  std::vector<EntityPtr> entities_nearby;
+  EntityVector entities_nearby;
   get_entities().get_entities_in_rectangle(collision_box, entities_nearby);
   for (const EntityPtr& entity_nearby: entities_nearby) {
 
@@ -1028,7 +1028,7 @@ bool Map::test_collision_with_obstacles(
  * \param collision_box The rectangle to test.
  * \return \c true if there is at least one empty tile in this rectangle.
  */
-bool Map::has_empty_ground(int layer, const Rectangle& collision_box) {
+bool Map::has_empty_ground(int layer, const Rectangle& collision_box) const {
 
   bool empty_tile = false;
 
@@ -1069,7 +1069,7 @@ bool Map::has_empty_ground(int layer, const Rectangle& collision_box) {
  * \param y Y coordinate of the point.
  * \return The ground at this place.
  */
-Ground Map::get_ground(int layer, int x, int y) {
+Ground Map::get_ground(int layer, int x, int y) const {
   return get_ground(layer, Point(x, y));
 }
 
@@ -1082,7 +1082,7 @@ Ground Map::get_ground(int layer, int x, int y) {
  * \param xy Coordinates of the point.
  * \return The ground at this place.
  */
-Ground Map::get_ground(int layer, const Point& xy) {
+Ground Map::get_ground(int layer, const Point& xy) const {
 
   if (test_collision_with_border(xy)) {
     // Outside the map bounds.
@@ -1091,7 +1091,7 @@ Ground Map::get_ground(int layer, const Point& xy) {
 
   // See if a dynamic entity changes the ground.
   const Rectangle box(xy, Size(1, 1));
-  std::vector<EntityPtr> entities_nearby;
+  ConstEntityVector entities_nearby;
   get_entities().get_entities_in_rectangle_sorted(box, entities_nearby);
 
   const auto& rend = entities_nearby.rend();

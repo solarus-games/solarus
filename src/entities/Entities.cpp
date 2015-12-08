@@ -75,12 +75,12 @@ class ZOrderComparator {
     }
 
     /**
-     * \brief Compares two entities.
+     * \brief Compares two con entities.
      * \param first An entity.
      * \param second Another entity.
      * \return \c true if the first entity's Z index is lower than the second one's.
      */
-    bool operator()(const EntityPtr& first, const EntityPtr& second) {
+    bool operator()(const ConstEntityPtr& first, const ConstEntityPtr& second) const {
 
       if (first->get_layer() < second->get_layer()) {
         return true;
@@ -352,6 +352,21 @@ bool Entities::has_entity_with_prefix(const std::string& prefix) const {
  * \param[out] result The entities in that rectangle, in arbitrary order.
  */
 void Entities::get_entities_in_rectangle(
+    const Rectangle& rectangle, ConstEntityVector& result
+) const {
+
+  EntityVector non_const_result;
+  quadtree.get_elements(rectangle, non_const_result);
+
+  for (const ConstEntityPtr& entity : non_const_result) {
+      result.push_back(entity);
+  }
+}
+
+/**
+ * \overload Non-const version.
+ */
+void Entities::get_entities_in_rectangle(
     const Rectangle& rectangle, EntityVector& result
 ) {
 
@@ -363,6 +378,18 @@ void Entities::get_entities_in_rectangle(
  * their Z index on the map.
  * \param[in] rectangle A rectangle.
  * \param[out] result The entities in that rectangle, in arbitrary order.
+ */
+void Entities::get_entities_in_rectangle_sorted(
+    const Rectangle& rectangle,
+    ConstEntityVector& result
+) const {
+
+  get_entities_in_rectangle(rectangle, result);
+  std::sort(result.begin(), result.end(), ZOrderComparator(*this));
+}
+
+/**
+ * \overload Non-const version.
  */
 void Entities::get_entities_in_rectangle_sorted(
     const Rectangle& rectangle,
@@ -550,7 +577,7 @@ EntitySet Entities::get_entities_by_type(EntityType type, int layer) {
  * \param An entity of the map.
  * \return Its relative Z order.
  */
-int Entities::get_entity_relative_z_order(const EntityPtr& entity) const {
+int Entities::get_entity_relative_z_order(const ConstEntityPtr& entity) const {
 
   const int layer = entity->get_layer();
   return z_caches[layer].get_z(entity);
@@ -1227,7 +1254,7 @@ Entities::ZCache::ZCache() :
  * \param entity An entity of the map. It must be in the structure.
  * \return Its relative Z order.
  */
-int Entities::ZCache::get_z(const EntityPtr& entity) const {
+int Entities::ZCache::get_z(const ConstEntityPtr& entity) const {
 
   SOLARUS_ASSERT(z_values.find(entity) != z_values.end(),
       std::string("No such entity in Z cache: " +
@@ -1246,7 +1273,7 @@ int Entities::ZCache::get_z(const EntityPtr& entity) const {
  *
  * It must not be present.
  */
-void Entities::ZCache::add(const EntityPtr& entity) {
+void Entities::ZCache::add(const ConstEntityPtr& entity) {
 
   ++max;
   const auto& inserted = z_values.insert(std::make_pair(entity, max));
@@ -1258,7 +1285,7 @@ void Entities::ZCache::add(const EntityPtr& entity) {
  *
  * It must be present.
  */
-void Entities::ZCache::remove(const EntityPtr& entity) {
+void Entities::ZCache::remove(const ConstEntityPtr& entity) {
 
   int num_removed = z_values.erase(entity);
   Debug::check_assertion(num_removed == 1, "Entity not found in Z cache");
@@ -1271,7 +1298,7 @@ void Entities::ZCache::remove(const EntityPtr& entity) {
  *
  * It will then have a Z order greater than all other entities in the structure.
  */
-void Entities::ZCache::bring_to_front(const EntityPtr& entity) {
+void Entities::ZCache::bring_to_front(const ConstEntityPtr& entity) {
 
   remove(entity);
   add(entity);
@@ -1282,7 +1309,7 @@ void Entities::ZCache::bring_to_front(const EntityPtr& entity) {
  *
  * It will then have a Z order lower than all other entities in the structure.
  */
-void Entities::ZCache::bring_to_back(const EntityPtr& entity) {
+void Entities::ZCache::bring_to_back(const ConstEntityPtr& entity) {
 
   remove(entity);
   --min;

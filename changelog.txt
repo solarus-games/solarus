@@ -26,6 +26,7 @@ Lua API changes
 
 Changes that introduce incompatibilities:
 
+* chest:on_empty() is replaced by chest:on_opened(treasure) (#483).
 * Items with amount now have a default max amount of 1000 (#688).
 * Fix map:get_entities() not returning the hero (#670).
 
@@ -42,6 +43,7 @@ Changes that do not introduce incompatibilities:
 * map:get_entities*() functions now give entities sorted in Z order (#779).
 * entity:set_optimization_distance() is now only a hint for the engine.
 * Add a method block:get_sprite().
+* Add an event chest:on_opened() with treasure info parameters (#483).
 
 Data files format changes
 -------------------------

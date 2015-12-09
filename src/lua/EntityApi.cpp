@@ -5239,21 +5239,22 @@ void LuaContext::block_on_moved(Block& block) {
 }
 
 /**
- * \brief Calls the on_empty() method of a Lua chest.
+ * \brief Calls the on_opened() method of a Lua chest.
  *
  * Does nothing if the method is not defined.
  *
  * \param chest A chest.
- * \return \c true if the on_empty() method is defined.
+ * \param treasure The treasure obtained.
+ * \return \c true if the on_opened() method is defined.
  */
-bool LuaContext::chest_on_empty(Chest& chest) {
+bool LuaContext::chest_on_opened(Chest& chest, const Treasure& treasure) {
 
-  if (!userdata_has_field(chest, "on_empty")) {
+  if (!userdata_has_field(chest, "on_opened")) {
     return false;
   }
 
   push_chest(l, chest);
-  bool exists = on_empty();
+  bool exists = on_opened(treasure);
   lua_pop(l, 1);
   return exists;
 }

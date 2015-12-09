@@ -376,7 +376,7 @@ class LuaContext {
     void destination_on_activated(Destination& destination);
     void teletransporter_on_activated(Teletransporter& teletransporter);
     void npc_on_collision_fire(Npc& npc);
-    bool chest_on_empty(Chest& chest);
+    bool chest_on_opened(Chest& chest, const Treasure& treasure);
     void block_on_moving(Block& block);
     void block_on_moved(Block& block);
     void switch_on_activated(Switch& sw);
@@ -1190,10 +1190,10 @@ class LuaContext {
     void on_collision_fire();
     void on_collision_explosion();
     void on_collision_enemy(Enemy& enemy, Sprite& other_sprite, Sprite& this_sprite);
-    bool on_empty();
     bool on_buying();
     void on_bought();
     void on_opened();
+    bool on_opened(const Treasure& treasure);
     void on_closed();
     void on_moving();
     void on_moved();

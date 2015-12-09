@@ -2290,19 +2290,6 @@ void LuaContext::on_collision_explosion() {
 }
 
 /**
- * \brief Calls the on_empty() method of the object on top of the stack.
- * \return \c true if the on_empty() method is defined.
- */
-bool LuaContext::on_empty() {
-
-  if (find_method("on_empty")) {
-    call_function(1, 0, "on_empty");
-    return true;
-  }
-  return false;
-}
-
-/**
  * \brief Calls the on_buying() method of the object on top of the stack.
  * \return true if the player is allowed to buy the item.
  */
@@ -2341,6 +2328,38 @@ void LuaContext::on_opened() {
   if (find_method("on_opened")) {
     call_function(1, 0, "on_opened");
   }
+}
+
+/**
+ * \brief Calls the on_opened() method of the object on top of the stack.
+ * \param treasure A treasure being obtained when opening.
+ * \return \c true if the method is defined.
+ */
+bool LuaContext::on_opened(const Treasure& treasure) {
+
+  if (find_method("on_opened")) {
+
+    if (treasure.is_empty()) {
+      lua_pushnil(l);
+      lua_pushnil(l);
+    }
+    else {
+      push_item(l, treasure.get_item());
+      lua_pushinteger(l, treasure.get_variant());
+    }
+
+    if (!treasure.is_saved()) {
+      lua_pushnil(l);
+    }
+    else {
+      lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    }
+
+    call_function(4, 0, "on_opened");
+    return true;
+  }
+
+  return false;
 }
 
 /**

@@ -354,26 +354,26 @@ void Chest::update() {
 
       treasure_date = 0;
       treasure.ensure_obtainable();  // Make the chest empty if the treasure is not allowed.
-      if (!treasure.is_empty()) {
-        // Give a treasure to the player.
 
-        get_hero().start_treasure(treasure, ScopedLuaRef());
-        treasure_given = true;
-      }
-      else {  // The chest is empty.
-
+      if (treasure.is_empty()) {  // The chest is empty.
         if (treasure.is_saved()) {
           // Mark the treasure as found in the savegame.
           get_savegame().set_boolean(treasure.get_savegame_variable(), true);
         }
+      }
+      treasure_given = true;
 
-        treasure_given = true;
-
-        bool done = get_lua_context()->chest_on_empty(*this);
-        if (!done) {
-          // The script does not define any behavior:
-          // by default, do nothing and unfreeze the hero.
+      // Notify scripts.
+      bool done = get_lua_context()->chest_on_opened(*this, treasure);
+      if (!done) {
+        if (treasure.is_empty()) {
+          // No treasure and the script does not define any behavior:
+          // by default, do nothing but unfreeze the hero.
           get_hero().start_free();
+        }
+        else {
+          // Give the treasure to the player.
+          get_hero().start_treasure(treasure, ScopedLuaRef());
         }
       }
     }

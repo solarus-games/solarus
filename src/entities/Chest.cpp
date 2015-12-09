@@ -99,6 +99,29 @@ void Chest::notify_enabled(bool enabled) {
 }
 
 /**
+ * \brief Returns the treasure of this chest.
+ *
+ * The treasure is returned even if the chest is open.
+ *
+ * \return The treasure. It may be empty or non obtainable.
+ */
+const Treasure& Chest::get_treasure() const {
+  return treasure;
+}
+
+/**
+ * \brief Sets the treasure of this chest.
+ *
+ * The treasure can be set even if the chest is open.
+ * It will be placed inside the chest if the chest is closed again.
+ *
+ * \param treasure The treasure to set. It may be empty or non obtainable.
+ */
+void Chest::set_treasure(const Treasure& treasure) {
+    this->treasure = treasure;
+}
+
+/**
  * \brief Returns whether the player has found the treasure in this chest.
  * \return true if the chest is open
  */
@@ -110,8 +133,8 @@ bool Chest::is_open() const {
  * \brief Sets whether the chest is open.
  *
  * If you don't change the chest state, this function has no effect.
- * If you make the chest opened, its sprite is updated but this function does not give any treasure
- * to the player.
+ * If you make the chest open, its sprite is updated but this function does
+ * not give any treasure to the player.
  * If you close the chest, its sprite is updated and the chest will contain
  * its initial treasure again.
  *
@@ -137,7 +160,7 @@ void Chest::set_open(bool open) {
 
 /**
  * \brief Returns whether the player is able to open this chest now.
- * \return true if this is a small chest or if the player has the big key.
+ * \return \c true if this the player can open the chest.
  */
 bool Chest::can_open() {
 
@@ -353,22 +376,20 @@ void Chest::update() {
     if (!treasure_given && treasure_date != 0 && System::now() >= treasure_date) {
 
       treasure_date = 0;
-      treasure.ensure_obtainable();  // Make the chest empty if the treasure is not allowed.
-
-      if (treasure.is_empty()) {  // The chest is empty.
-        if (treasure.is_saved()) {
-          // Mark the treasure as found in the savegame.
-          get_savegame().set_boolean(treasure.get_savegame_variable(), true);
-        }
-      }
       treasure_given = true;
 
       // Notify scripts.
       bool done = get_lua_context()->chest_on_opened(*this, treasure);
       if (!done) {
-        if (treasure.is_empty()) {
+        if (treasure.is_empty() ||
+            !treasure.is_obtainable()
+        ) {
           // No treasure and the script does not define any behavior:
-          // by default, do nothing but unfreeze the hero.
+          // save the state and unfreeze the hero.
+          if (treasure.is_saved()) {
+            // Mark the treasure as found in the savegame.
+            get_savegame().set_boolean(treasure.get_savegame_variable(), true);
+          }
           get_hero().start_free();
         }
         else {

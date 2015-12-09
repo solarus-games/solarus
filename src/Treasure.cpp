@@ -85,8 +85,7 @@ void Treasure::check_obtainable() const {
  */
 void Treasure::ensure_obtainable() {
 
-  Equipment& equipment = game->get_equipment();
-  if (!item_name.empty() && !equipment.get_item(item_name).is_obtainable()) {
+  if (!is_obtainable()) {
     item_name = "";
     variant = 1;
   }

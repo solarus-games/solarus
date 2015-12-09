@@ -861,6 +861,8 @@ class LuaContext {
       teletransporter_api_set_destination_name,
       chest_api_is_open,
       chest_api_set_open,
+      chest_api_get_treasure,
+      chest_api_set_treasure,
       block_api_reset,
       block_api_is_pushable,
       block_api_set_pushable,

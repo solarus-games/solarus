@@ -7,6 +7,7 @@ set(lua_test_maps
   "bugs/486_diagonal_dynamic_tiles"
   "bugs/526_get_entities_same_region"
   "bugs/656_map_set_world"
+  "bugs/664_chest_get_set_treasure"
   "bugs/670_map_get_entities_no_hero"
   "bugs/686_crash_door_item"
   "bugs/699_crash_exit_surface_moving"

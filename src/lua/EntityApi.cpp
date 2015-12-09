@@ -237,6 +237,8 @@ void LuaContext::register_entity_module() {
       ENTITY_COMMON_METHODS,
       { "is_open", chest_api_is_open },
       { "set_open", chest_api_set_open },
+      { "get_treasure", chest_api_get_treasure },
+      { "set_treasure", chest_api_set_treasure },
       { nullptr, nullptr }
   };
 
@@ -2426,6 +2428,73 @@ int LuaContext::chest_api_set_open(lua_State* l) {
     bool open = LuaTools::opt_boolean(l, 2, true);
 
     chest.set_open(open);
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of chest:get_treasure().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::chest_api_get_treasure(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Chest& chest = *check_chest(l, 1);
+    const Treasure& treasure = chest.get_treasure();
+
+    if (treasure.is_empty()) {
+      // No treasure.
+      lua_pushnil(l);
+      lua_pushnil(l);
+    }
+    else {
+      push_string(l, treasure.get_item_name());
+      lua_pushinteger(l, treasure.get_variant());
+    }
+    if (!treasure.is_saved()) {
+      lua_pushnil(l);
+    }
+    else {
+      push_string(l, treasure.get_savegame_variable());
+    }
+    return 3;
+  });
+}
+
+/**
+ * \brief Implementation of chest:set_treasure().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::chest_api_set_treasure(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Chest& chest = *check_chest(l, 1);
+    std::string item_name;
+    int variant = 1;
+    std::string savegame_variable;
+
+    if (lua_gettop(l) >= 2 && !lua_isnil(l, 2)) {
+      item_name = LuaTools::check_string(l, 2);
+    }
+    if (lua_gettop(l) >= 3 && !lua_isnil(l, 3)) {
+      variant = LuaTools::check_int(l, 3);
+    }
+    if (lua_gettop(l) >= 4 && !lua_isnil(l, 4)) {
+      savegame_variable = LuaTools::check_string(l, 4);
+    }
+
+    if (!savegame_variable.empty()
+        && !LuaTools::is_valid_lua_identifier(savegame_variable)) {
+      LuaTools::arg_error(l, 4,
+          std::string("savegame variable identifier expected, got '")
+      + savegame_variable + "'");
+    }
+
+    Treasure treasure(chest.get_game(), item_name, variant, savegame_variable);
+    chest.set_treasure(treasure);
 
     return 0;
   });

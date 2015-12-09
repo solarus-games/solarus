@@ -41,6 +41,7 @@ Changes that do not introduce incompatibilities:
 * Add methods map:set_world() and map:set_floor() (#656).
 * map:get_entities() can now be called without parameter to get all entities.
 * map:get_entities*() functions now give entities sorted in Z order (#779).
+* Add methods chest:get/set_treasure() (#664).
 * entity:set_optimization_distance() is now only a hint for the engine.
 * Add a method block:get_sprite().
 * Add an event chest:on_opened() with treasure info parameters (#483).

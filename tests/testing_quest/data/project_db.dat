@@ -13,6 +13,7 @@ map{ id = "bugs/781_assert_teletransporter_same_map", description = "#781: Asser
 map{ id = "bugs/794_custom_entity_set_can_traverse_ground", description = "#794: custom_entity:set_can_traverse_ground(\"traversable\", false) does not work" }
 map{ id = "bugs/795_recreate_entity_same_name", description = "#795: Cannot create an entity with the same name as another one just removed" }
 map{ id = "bugs/796_map_get_entities_by_type", description = "#796: Add map:get_entities_by_type()" }
+map{ id = "dynamic_tile_tests", description = "Dynamic tile tests" }
 map{ id = "jumper_tests", description = "Jumper tests" }
 map{ id = "surface_tests", description = "Surface tests" }
 map{ id = "traversable", description = "Traversable test area" }

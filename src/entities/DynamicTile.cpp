@@ -60,6 +60,14 @@ EntityType DynamicTile::get_type() const {
 }
 
 /**
+ * \brief Returns the id of the pattern of this dynamic tile.
+ * \return The tile pattern id.
+ */
+const std::string& DynamicTile::get_tile_pattern_id() const {
+  return tile_pattern_id;
+}
+
+/**
  * \brief When is_ground_modifier() is \c true, returns the ground defined
  * by this entity.
  * \return The ground defined by this entity.

@@ -56,6 +56,7 @@ class Destructible;
 class Dialog;
 class Door;
 class Drawable;
+class DynamicTile;
 class Enemy;
 class Entity;
 class EntityData;
@@ -905,6 +906,8 @@ class LuaContext {
       destructible_api_get_damage_on_enemies,
       destructible_api_set_damage_on_enemies,
       destructible_api_get_modified_ground,
+      dynamic_tile_api_get_pattern_id,
+      dynamic_tile_api_get_modified_ground,
       enemy_api_get_breed,
       enemy_api_get_life,
       enemy_api_set_life,
@@ -1056,6 +1059,7 @@ class LuaContext {
     static void push_shop_treasure(lua_State* l, ShopTreasure& shop_treasure);
     static void push_pickable(lua_State* l, Pickable& pickable);
     static void push_destructible(lua_State* l, Destructible& destructible);
+    static void push_dynamic_tile(lua_State* l, DynamicTile& dynamic_tile);
     static void push_enemy(lua_State* l, Enemy& enemy);
     static void push_custom_entity(lua_State* l, CustomEntity& entity);
 
@@ -1132,6 +1136,8 @@ class LuaContext {
     static std::shared_ptr<Pickable> check_pickable(lua_State* l, int index);
     static bool is_destructible(lua_State* l, int index);
     static std::shared_ptr<Destructible> check_destructible(lua_State* l, int index);
+    static bool is_dynamic_tile(lua_State* l, int index);
+    static std::shared_ptr<DynamicTile> check_dynamic_tile(lua_State* l, int index);
     static bool is_enemy(lua_State* l, int index);
     static std::shared_ptr<Enemy> check_enemy(lua_State* l, int index);
     static bool is_custom_entity(lua_State* l, int index);

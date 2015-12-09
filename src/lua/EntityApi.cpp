@@ -19,6 +19,7 @@
 #include "solarus/entities/CustomEntity.h"
 #include "solarus/entities/Destination.h"
 #include "solarus/entities/Destructible.h"
+#include "solarus/entities/DynamicTile.h"
 #include "solarus/entities/Door.h"
 #include "solarus/entities/Enemy.h"
 #include "solarus/entities/Entities.h"
@@ -359,7 +360,7 @@ void LuaContext::register_entity_module() {
       metamethods
   );
 
-  // Destructibles.
+  // Destructible.
   static const luaL_Reg destructible_methods[] = {
       ENTITY_COMMON_METHODS,
       { "get_treasure", destructible_api_get_treasure },
@@ -384,6 +385,21 @@ void LuaContext::register_entity_module() {
       get_entity_internal_type_name(EntityType::DESTRUCTIBLE),
       nullptr,
       destructible_methods,
+      metamethods
+  );
+
+  // Dynamic tile.
+  static const luaL_Reg dynamic_tile_methods[] = {
+      ENTITY_COMMON_METHODS,
+      { "get_pattern_id", dynamic_tile_api_get_pattern_id },
+      { "get_modified_ground", dynamic_tile_api_get_modified_ground },
+      { nullptr, nullptr }
+  };
+
+  register_type(
+      get_entity_internal_type_name(EntityType::DYNAMIC_TILE),
+      nullptr,
+      dynamic_tile_methods,
       metamethods
   );
 
@@ -485,7 +501,6 @@ void LuaContext::register_entity_module() {
 
   // Also register all other types of entities that have no specific methods.
   register_type(get_entity_internal_type_name(EntityType::TILE), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::DYNAMIC_TILE), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::DESTINATION), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::CARRIED_ITEM), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::JUMPER), nullptr, entity_common_methods, metamethods);
@@ -3595,6 +3610,72 @@ int LuaContext::destructible_api_get_modified_ground(lua_State* l) {
     const Destructible& destructible = *check_destructible(l, 1);
 
     Ground modified_ground = destructible.get_modified_ground();
+
+    push_string(l, enum_to_name(modified_ground));
+    return 1;
+  });
+}
+
+/**
+ * \brief Returns whether a value is a userdata of type dynamic tile.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return \c true if the value at this index is a dynamic tile.
+ */
+bool LuaContext::is_dynamic_tile(lua_State* l, int index) {
+  return is_userdata(l, index, get_entity_internal_type_name(EntityType::DYNAMIC_TILE));
+}
+
+/**
+ * \brief Checks that the userdata at the specified index of the stack is a
+ * dynamic tile and returns it.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return The dynamic tile.
+ */
+std::shared_ptr<DynamicTile> LuaContext::check_dynamic_tile(lua_State* l, int index) {
+  return std::static_pointer_cast<DynamicTile>(check_userdata(
+      l, index, get_entity_internal_type_name(EntityType::DYNAMIC_TILE)
+  ));
+}
+
+/**
+ * \brief Pushes a dynamic tile userdata onto the stack.
+ * \param l A Lua context.
+ * \param dynamic_tile A dynamic tile.
+ */
+void LuaContext::push_dynamic_tile(lua_State* l, DynamicTile& dynamic_tile) {
+  push_userdata(l, dynamic_tile);
+}
+
+/**
+ * \brief Implementation of dynamic_tile:get_pattern_id().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::dynamic_tile_api_get_pattern_id(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const DynamicTile& dynamic_tile = *check_dynamic_tile(l, 1);
+
+    const std::string& pattern_id = dynamic_tile.get_tile_pattern_id();
+
+    push_string(l, pattern_id);
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of dynamic_tile:get_modified_ground().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::dynamic_tile_api_get_modified_ground(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const DynamicTile& dynamic_tile = *check_dynamic_tile(l, 1);
+
+    Ground modified_ground = dynamic_tile.get_modified_ground();
 
     push_string(l, enum_to_name(modified_ground));
     return 1;

@@ -1,6 +1,7 @@
 # List of maps of the testing quest that are unit tests to be run.
 set(lua_test_maps
   "basic_test"
+  "dynamic_tile_tests"
   "jumper_tests"
   "surface_tests"
   "all_entities"

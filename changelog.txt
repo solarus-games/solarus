@@ -42,6 +42,7 @@ Changes that do not introduce incompatibilities:
 * map:get_entities() can now be called without parameter to get all entities.
 * map:get_entities*() functions now give entities sorted in Z order (#779).
 * Add methods chest:get/set_treasure() (#664).
+* Add methods dynamic_tile:get_pattern_id() and get_modified_ground() (#755).
 * entity:set_optimization_distance() is now only a hint for the engine.
 * Add a method block:get_sprite().
 * Add an event chest:on_opened() with treasure info parameters (#483).

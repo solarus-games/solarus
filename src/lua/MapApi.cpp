@@ -78,7 +78,8 @@ void LuaContext::register_map_module() {
       { "get_game", map_api_get_game },
       { "get_world", map_api_get_world },
       { "set_world", map_api_set_world },
-      { "get_num_layers", map_api_get_num_layers },
+      { "get_min_layer", map_api_get_min_layer },
+      { "get_max_layer", map_api_get_max_layer },
       { "get_size", map_api_get_size },
       { "get_location", map_api_get_location },
       { "get_floor", map_api_get_floor },
@@ -1442,16 +1443,31 @@ int LuaContext::map_api_set_world(lua_State* l) {
 }
 
 /**
- * \brief Implementation of map:get_num_layers().
+ * \brief Implementation of map:get_min_layer().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
-int LuaContext::map_api_get_num_layers(lua_State* l) {
+int LuaContext::map_api_get_min_layer(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const Map& map = *check_map(l, 1);
 
-    lua_pushinteger(l, map.get_num_layers());
+    lua_pushinteger(l, map.get_min_layer());
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of map:get_max_layer().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_max_layer(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Map& map = *check_map(l, 1);
+
+    lua_pushinteger(l, map.get_max_layer());
     return 1;
   });
 }

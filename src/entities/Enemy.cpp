@@ -827,7 +827,7 @@ void Enemy::update() {
       xy.x = get_top_left_x() + Random::get_number(get_width());
       xy.y = get_top_left_y() + Random::get_number(get_height());
       get_entities().add_entity(std::make_shared<Explosion>(
-          "", get_map().get_highest_layer(), xy, false
+          "", get_map().get_max_layer(), xy, false
       ));
       Sound::play("explosion");
 

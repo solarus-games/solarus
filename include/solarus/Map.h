@@ -37,7 +37,6 @@ class Destination;
 class Detector;
 class InputEvent;
 class LuaContext;
-class Entities;
 class Tileset;
 class Sprite;
 
@@ -79,9 +78,8 @@ class SOLARUS_API Map: public ExportableToLua {
     int get_width8() const;
     int get_height8() const;
 
-    int get_num_layers() const;
-    int get_lowest_layer() const;
-    int get_highest_layer() const;
+    int get_min_layer() const;
+    int get_max_layer() const;
     bool is_valid_layer(int layer) const;
 
     // camera
@@ -192,7 +190,8 @@ class SOLARUS_API Map: public ExportableToLua {
 
     int width8;                   /**< Map width in 8x8 squares (width8 = get_width() / 8). */
     int height8;                  /**< Map height in 8x8 squares (height8 = get_height() / 8). */
-    int num_layers;               /**< Number of layers of the map. */
+    int min_layer;                /**< Lowest layer of the map (0 or less). */
+    int max_layer;                /**< Highest layer of the map (0 or more). */
 
     std::string tileset_id;       /**< Id of the current tileset. */
     std::unique_ptr<Tileset>

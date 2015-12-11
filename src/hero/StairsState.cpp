@@ -101,7 +101,7 @@ void Hero::StairsState::start(const State* previous_state) {
     if (way == Stairs::NORMAL_WAY) {
       // Toward a higher layer: change the layer now.
       int layer = stairs->get_layer();
-      Debug::check_assertion(layer < get_map().get_num_layers(), "Invalid stairs layer");
+      Debug::check_assertion(get_map().is_valid_layer(layer), "Invalid stairs layer");
       get_entities().set_entity_layer(hero, layer + 1);
     }
   }

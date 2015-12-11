@@ -115,7 +115,6 @@ Entities::Entities(Game& game, Map& map):
   map(map),
   map_width8(0),
   map_height8(0),
-  num_layers(0),
   tiles_grid_size(0),
   tiles_ground(),
   non_animated_regions(),
@@ -133,7 +132,7 @@ Entities::Entities(Game& game, Map& map):
   map_width8 = map.get_width8();
   map_height8 = map.get_height8();
   tiles_grid_size = map.get_width8() * map.get_height8();
-  for (int layer = 0; layer < map.get_num_layers(); ++layer) {
+  for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
 
     Ground initial_ground = (layer == 0) ? Ground::TRAVERSABLE : Ground::EMPTY;
     for (int i = 0; i < tiles_grid_size; ++i) {
@@ -161,7 +160,7 @@ void Entities::create_entities(const MapData& data) {
 
   // Create entities from the map data file.
   LuaContext& lua_context = map.get_lua_context();
-  for (int layer = 0; layer < map.get_num_layers(); ++layer) {
+  for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
     for (int i = 0; i < data.get_num_entities(layer); ++i) {
       const EntityData& entity_data = data.get_entity({ layer, i });
       EntityType type = entity_data.get_type();
@@ -566,7 +565,7 @@ void Entities::get_entities_in_region_sorted(
 EntitySet Entities::get_entities_by_type(EntityType type) {
 
   EntitySet result;
-  for (int layer = 0; layer < num_layers; ++layer) {
+  for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
     const EntitySet& layer_entities = get_entities_by_type(type, layer);
     result.insert(layer_entities.begin(), layer_entities.end());
   }
@@ -595,6 +594,8 @@ EntityVector Entities::get_entities_by_type_sorted(EntityType type) {
  */
 EntitySet Entities::get_entities_by_type(EntityType type, int layer) {
 
+  Debug::check_assertion(map.is_valid_layer(layer), "Invalid layer");
+
   EntitySet result;
 
   const auto& it = entities_by_type.find(type);
@@ -602,8 +603,8 @@ EntitySet Entities::get_entities_by_type(EntityType type, int layer) {
     return result;
   }
 
-  const std::vector<EntitySet>& sets = it->second;
-  for (const EntityPtr& entity : sets[layer]) {
+  const ByLayer<EntitySet>& sets = it->second;
+  for (const EntityPtr& entity : sets.at(layer)) {
     result.insert(entity);
   }
   return result;
@@ -629,7 +630,7 @@ EntitySet Entities::get_entities_by_type(EntityType type, int layer) {
 int Entities::get_entity_relative_z_order(const ConstEntityPtr& entity) const {
 
   const int layer = entity->get_layer();
-  return z_caches[layer].get_z(entity);
+  return z_caches.at(layer).get_z(entity);
 }
 
 /**
@@ -640,7 +641,7 @@ void Entities::bring_to_front(Entity& entity) {
 
   const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
   int layer = entity.get_layer();
-  z_caches[layer].bring_to_front(shared_entity);
+  z_caches.at(layer).bring_to_front(shared_entity);
 }
 
 /**
@@ -651,7 +652,7 @@ void Entities::bring_to_back(Entity& entity) {
 
   const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
   int layer = entity.get_layer();
-  z_caches[layer].bring_to_back(shared_entity);
+  z_caches.at(layer).bring_to_back(shared_entity);
 }
 
 /**
@@ -668,8 +669,8 @@ void Entities::notify_map_started() {
   hero->notify_tileset_changed();
 
   // Setup non-animated tiles pre-drawing.
-  for (int layer = 0; layer < map.get_num_layers(); layer++) {
-    non_animated_regions[layer]->build(tiles_in_animated_regions[layer]);
+  for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
+    non_animated_regions.at(layer)->build(tiles_in_animated_regions.at(layer));
     // Now, tiles_in_animated_regions contains the tiles that won't be optimized.
   }
 }
@@ -693,7 +694,7 @@ void Entities::notify_map_opening_transition_finished() {
 void Entities::notify_tileset_changed() {
 
   // Redraw optimized tiles (i.e. non animated ones).
-  for (int layer = 0; layer < map.get_num_layers(); layer++) {
+  for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
     non_animated_regions[layer]->notify_tileset_changed();
   }
 
@@ -716,20 +717,18 @@ void Entities::notify_map_finished() {
 /**
  * \brief Creates the internal layer structures.
  *
- * The number of layers in the map must be known at this point.
+ * The min and max layers in the map must be known at this point.
  */
 void Entities::initialize_layers() {
 
-  Debug::check_assertion(num_layers == 0, "Layers already initialized");
+  Debug::check_assertion(z_caches.empty(), "Layers already initialized");
 
-  num_layers = map.get_num_layers();
-
-  Debug::check_assertion(num_layers > 0, "Unknown number of layers");
-
-  tiles_ground.resize(num_layers);
-  non_animated_regions.resize(num_layers);
-  tiles_in_animated_regions.resize(num_layers);
-  z_caches.resize(num_layers);
+  for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
+    tiles_ground[layer] = std::vector<Ground>();
+    non_animated_regions[layer] = std::unique_ptr<NonAnimatedRegions>();
+    tiles_in_animated_regions[layer] = std::vector<TilePtr>();
+    z_caches[layer] = ZCache();
+  }
 }
 
 /**
@@ -951,10 +950,10 @@ void Entities::add_entity(const EntityPtr& entity) {
     // Update the list of entities by type.
     auto it = entities_by_type.find(type);
     if (it == entities_by_type.end()) {
-      it = entities_by_type.emplace(type, std::vector<EntitySet>(num_layers)).first;
+      it = entities_by_type.emplace(type, ByLayer<EntitySet>()).first;
     }
-    std::vector<EntitySet>& sets = it->second;
-    sets[layer].insert(entity);
+    ByLayer<EntitySet>& sets = it->second;
+    sets.at(layer).insert(entity);
 
     // Update the list of all entities.
     if (type != EntityType::HERO) {
@@ -1084,13 +1083,13 @@ void Entities::remove_marked_entities() {
     }
 
     // Track the insertion order.
-    z_caches[layer].remove(entity);
+    z_caches.at(layer).remove(entity);
 
     // Update the list of entities by type.
     const auto& it = entities_by_type.find(type);
     if (it != entities_by_type.end()) {
-      std::vector<EntitySet>& sets = it->second;
-      sets[layer].erase(entity);
+      ByLayer<EntitySet>& sets = it->second;
+      sets.at(layer).erase(entity);
     }
 
     // Destroy it.
@@ -1164,10 +1163,10 @@ void Entities::draw() {
 
     // Split them by layer.
     // On each layer there are two lists of entities to draw: one in Z order and one in Y order.
-    entities_to_draw.resize(map.get_num_layers());
+    entities_to_draw.clear();
     for (const EntityPtr& entity : entities_in_camera) {
       int layer = entity->get_layer();
-      Debug::check_assertion(layer >= 0 && layer < map.get_num_layers(), "Invalid layer");
+      Debug::check_assertion(map.is_valid_layer(layer), "Invalid layer");
       if (entity->is_drawn()) {
         if (entity->is_drawn_in_y_order()) {
           entities_to_draw[layer].second.push_back(entity);
@@ -1179,7 +1178,7 @@ void Entities::draw() {
     }
   }
 
-  for (int layer = 0; layer < map.get_num_layers(); ++layer) {
+  for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
 
     // Draw the animated tiles and the tiles that overlap them:
     // in other words, draw all regions containing animated tiles
@@ -1228,16 +1227,16 @@ void Entities::set_entity_layer(Entity& entity, int layer) {
     const EntityPtr& shared_entity = std::static_pointer_cast<Entity>(entity.shared_from_this());
 
     // Track the insertion order.
-    z_caches[old_layer].remove(shared_entity);
-    z_caches[layer].add(shared_entity);
+    z_caches.at(old_layer).remove(shared_entity);
+    z_caches.at(layer).add(shared_entity);
 
     // Update the list of entities by type and layer.
     const EntityType type = entity.get_type();
     const auto& it = entities_by_type.find(type);
     if (it != entities_by_type.end()) {
-      std::vector<EntitySet>& sets = it->second;
-      sets[old_layer].erase(shared_entity);
-      sets[layer].insert(shared_entity);
+      ByLayer<EntitySet>& sets = it->second;
+      sets.at(old_layer).erase(shared_entity);
+      sets.at(layer).insert(shared_entity);
     }
 
     // Update the entity after the lists because this function might be called again.

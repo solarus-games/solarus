@@ -400,7 +400,7 @@ void CarriedItem::update() {
     if (break_one_layer_above) {
       break_item();
       int layer = get_layer();
-      if (layer != get_map().get_highest_layer()) {
+      if (layer != get_map().get_max_layer()) {
         get_entities().set_entity_layer(*this, layer + 1);
       }
       break_one_layer_above = false;

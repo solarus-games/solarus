@@ -953,7 +953,7 @@ void Entities::add_entity(const EntityPtr& entity) {
       it = entities_by_type.emplace(type, ByLayer<EntitySet>()).first;
     }
     ByLayer<EntitySet>& sets = it->second;
-    sets.at(layer).insert(entity);
+    sets[layer].insert(entity);
 
     // Update the list of all entities.
     if (type != EntityType::HERO) {
@@ -1089,7 +1089,7 @@ void Entities::remove_marked_entities() {
     const auto& it = entities_by_type.find(type);
     if (it != entities_by_type.end()) {
       ByLayer<EntitySet>& sets = it->second;
-      sets.at(layer).erase(entity);
+      sets[layer].erase(entity);
     }
 
     // Destroy it.

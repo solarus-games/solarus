@@ -1239,8 +1239,8 @@ void Entities::set_entity_layer(Entity& entity, int layer) {
     const auto& it = entities_by_type.find(type);
     if (it != entities_by_type.end()) {
       ByLayer<EntitySet>& sets = it->second;
-      sets.at(old_layer).erase(shared_entity);
-      sets.at(layer).insert(shared_entity);
+      sets[old_layer].erase(shared_entity);
+      sets[layer].insert(shared_entity);
     }
 
     // Update the entity after the lists because this function might be called again.

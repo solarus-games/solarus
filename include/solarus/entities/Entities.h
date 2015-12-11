@@ -315,7 +315,11 @@ std::set<std::shared_ptr<const T>> Entities::get_entities_by_type(int layer) con
   }
 
   const ByLayer<EntitySet>& sets = it->second;
-  for (const EntityPtr& entity : sets.at(layer)) {
+  const auto& layer_it = sets.find(layer);
+  if (layer_it == sets.end()) {
+    return result;
+  }
+  for (const EntityPtr& entity : layer_it->second) {
     result.insert(std::static_pointer_cast<const T>(entity));
   }
   return result;
@@ -338,7 +342,11 @@ std::set<std::shared_ptr<T>> Entities::get_entities_by_type(int layer) {
   }
 
   const ByLayer<EntitySet>& sets = it->second;
-  for (const EntityPtr& entity : sets.at(layer)) {
+  const auto& layer_it = sets.find(layer);
+  if (layer_it == sets.end()) {
+    return result;
+  }
+  for (const EntityPtr& entity : layer_it->second) {
     result.insert(std::static_pointer_cast<T>(entity));
   }
   return result;

@@ -604,7 +604,11 @@ EntitySet Entities::get_entities_by_type(EntityType type, int layer) {
   }
 
   const ByLayer<EntitySet>& sets = it->second;
-  for (const EntityPtr& entity : sets.at(layer)) {
+  const auto& layer_it = sets.find(layer);
+  if (layer_it == sets.end()) {
+    return result;
+  }
+  for (const EntityPtr& entity : layer_it->second) {
     result.insert(entity);
   }
   return result;

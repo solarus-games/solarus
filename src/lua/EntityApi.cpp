@@ -871,16 +871,11 @@ int LuaContext::entity_api_set_position(lua_State* l) {
     Entity& entity = *check_entity(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
-    int layer = -1;
-    if (lua_gettop(l) >= 4) {
-      layer = LuaTools::check_layer(l, 4, entity.get_map());
-    }
+    int layer = LuaTools::opt_layer(l, 4, entity.get_map(), entity.get_layer());
 
+    Entities& entities = entity.get_map().get_entities();
     entity.set_xy(x, y);
-    if (layer != -1) {
-      Entities& entities = entity.get_map().get_entities();
-      entities.set_entity_layer(entity, layer);
-    }
+    entities.set_entity_layer(entity, layer);
     entity.notify_position_changed();
 
     return 0;

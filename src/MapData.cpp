@@ -28,7 +28,7 @@ namespace Solarus {
  */
 MapData::MapData():
     min_layer(0),
-    max_layer(0),
+    max_layer(-1),
     size(0, 0),
     world(),
     location(0, 0),
@@ -39,7 +39,7 @@ MapData::MapData():
     named_entities() {
 
   set_min_layer(0);
-  set_max_layer(2);
+  set_max_layer(0);
 }
 
 /**
@@ -111,6 +111,12 @@ void MapData::set_min_layer(int min_layer) {
       }
     }
   }
+  else {
+    // Adding layers.
+    for (int layer = this->min_layer - 1; layer >= min_layer; --layer) {
+      entities.emplace(layer, EntityDataList());
+    }
+  }
 
   this->min_layer = min_layer;
 }
@@ -152,6 +158,12 @@ void MapData::set_max_layer(int max_layer) {
       }
     }
   }
+  else {
+    // Adding layers.
+    for (int layer = this->max_layer + 1; layer <= max_layer; ++layer) {
+      entities.emplace(layer, EntityDataList());
+    }
+  }
 
   this->max_layer = max_layer;
 }
@@ -163,7 +175,7 @@ void MapData::set_max_layer(int max_layer) {
  */
 bool MapData::is_valid_layer(int layer) const {
 
-  return layer >= get_min_layer() && layer < get_max_layer();
+  return layer >= get_min_layer() && layer <= get_max_layer();
 }
 
 /**

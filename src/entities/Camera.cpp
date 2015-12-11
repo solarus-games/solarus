@@ -35,7 +35,7 @@ namespace Solarus {
  * \param map The map.
  */
 Camera::Camera(Map& map):
-  Entity("", 0, map.get_highest_layer(), Point(0, 0), Video::get_quest_size()),
+  Entity("", 0, map.get_max_layer(), Point(0, 0), Video::get_quest_size()),
   fixed_on(map.get_game().get_hero()),
   separator_next_scrolling_date(0),
   separator_scrolling_direction4(0),

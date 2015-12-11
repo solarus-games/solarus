@@ -137,6 +137,12 @@ class SOLARUS_API Entities {
   private:
 
     /**
+     * \brief Mapping from layer to a type T.
+     */
+    template<typename T>
+    using ByLayer = std::map<int, T>;
+
+    /**
      * \brief Internal fast cached information about the entity insertion order.
      */
     class ZCache {
@@ -166,22 +172,21 @@ class SOLARUS_API Entities {
     void update_crystal_blocks();
 
     // map
-    Game& game;                                     /**< the game running this map */
-    Map& map;                                       /**< the map */
-    int map_width8;                                 /**< number of 8x8 squares on a row of the map grid */
-    int map_height8;                                /**< number of 8x8 squares on a column of the map grid */
-    int num_layers;                                 /**< Number of layers of the map. */
+    Game& game;                                     /**< The game running this map */
+    Map& map;                                       /**< The map */
+    int map_width8;                                 /**< Number of 8x8 squares on a row of the map grid */
+    int map_height8;                                /**< Number of 8x8 squares on a column of the map grid */
 
     // tiles
-    int tiles_grid_size;                            /**< number of 8x8 squares in the map
+    int tiles_grid_size;                            /**< Number of 8x8 squares in the map
                                                      * (tiles_grid_size = map_width8 * map_height8) */
-    std::vector<std::vector<Ground>> tiles_ground;  /**< For each layer, list of size tiles_grid_size
+    ByLayer<std::vector<Ground>> tiles_ground;      /**< For each layer, list of size tiles_grid_size
                                                      * representing the ground property
                                                      * of each 8x8 square. */
-    std::vector<std::unique_ptr<NonAnimatedRegions>>
+    ByLayer<std::unique_ptr<NonAnimatedRegions>>
         non_animated_regions;                       /**< For each layer, all non-animated tiles are managed
                                                      * here for performance. */
-    std::vector<std::vector<TilePtr>>
+    ByLayer<std::vector<TilePtr>>
         tiles_in_animated_regions;                  /**< For each layer, animated tiles and tiles overlapping them. */
 
     // dynamic entities
@@ -193,13 +198,13 @@ class SOLARUS_API Entities {
     std::map<std::string, EntityPtr>
         named_entities;                             /**< Entities identified by a name. */
     EntityList all_entities;                        /**< All map entities except tiles and the hero. */
-    std::map<EntityType, std::vector<EntitySet>>
+    std::map<EntityType, ByLayer<EntitySet>>
         entities_by_type;                           /**< All map entities except tiles, by type and then layer. */
 
     EntityTree quadtree;                            /**< All map entities except tiles.
                                                      * Optimized for fast spatial search. */
-    std::vector<ZCache> z_caches;                   /**< For each layer, tracks the relative Z order of entities. */
-    std::vector<std::pair<EntityVector, EntityVector>>
+    ByLayer<ZCache> z_caches;                       /**< For each layer, tracks the relative Z order of entities. */
+    ByLayer<std::pair<EntityVector, EntityVector>>
         entities_to_draw;                           /**< For each layer, entities currently in the camera and ready to be drawn.
                                                      * Two lists are drawn: entities in Z order and then entities in Y order. */
 
@@ -227,11 +232,7 @@ class SOLARUS_API Entities {
  */
 inline Ground Entities::get_tile_ground(int layer, int x, int y) const {
 
-  // Warning: this function is called very often so it has been optimized and
-  // should remain so.
-
-  // Optimization of: return tiles_ground[layer][(y / 8) * map_width8 + (x / 8)];
-  return tiles_ground[layer][(y >> 3) * map_width8 + (x >> 3)];
+  return tiles_ground.at(layer)[(y >> 3) * map_width8 + (x >> 3)];
 }
 
 /**
@@ -259,9 +260,17 @@ template<typename T>
 std::set<std::shared_ptr<const T>> Entities::get_entities_by_type() const {
 
   std::set<std::shared_ptr<const T>> result;
-  for (int layer = 0; layer < num_layers; ++layer) {
-    const std::set<std::shared_ptr<const T>>& layer_entities = get_entities_by_type<T>(layer);
-    result.insert(layer_entities.begin(), layer_entities.end());
+
+  const EntityType type = T::ThisType;
+  const auto& it = entities_by_type.find(type);
+  if (it == entities_by_type.end()) {
+    return result;
+  }
+
+  for (const auto& kvp : it->second) {
+    for (const ConstEntityPtr& entity : kvp.second) {
+      result.insert(std::static_pointer_cast<const T>(entity));
+    }
   }
   return result;
 }
@@ -274,9 +283,17 @@ template<typename T>
 std::set<std::shared_ptr<T>> Entities::get_entities_by_type() {
 
   std::set<std::shared_ptr<T>> result;
-  for (int layer = 0; layer < num_layers; ++layer) {
-    const std::set<std::shared_ptr<T>>& layer_entities = get_entities_by_type<T>(layer);
-    result.insert(layer_entities.begin(), layer_entities.end());
+
+  const EntityType type = T::ThisType;
+  const auto& it = entities_by_type.find(type);
+  if (it == entities_by_type.end()) {
+    return result;
+  }
+
+  for (const auto& kvp : it->second) {
+    for (const EntityPtr& entity : kvp.second) {
+      result.insert(std::static_pointer_cast<T>(entity));
+    }
   }
   return result;
 }
@@ -297,8 +314,12 @@ std::set<std::shared_ptr<const T>> Entities::get_entities_by_type(int layer) con
     return result;
   }
 
-  const std::vector<EntitySet>& sets = it->second;
-  for (const EntityPtr& entity : sets[layer]) {
+  const ByLayer<EntitySet>& sets = it->second;
+  const auto& layer_it = sets.find(layer);
+  if (layer_it == sets.end()) {
+    return result;
+  }
+  for (const EntityPtr& entity : layer_it->second) {
     result.insert(std::static_pointer_cast<const T>(entity));
   }
   return result;
@@ -320,8 +341,12 @@ std::set<std::shared_ptr<T>> Entities::get_entities_by_type(int layer) {
     return result;
   }
 
-  const std::vector<EntitySet>& sets = it->second;
-  for (const EntityPtr& entity : sets[layer]) {
+  const ByLayer<EntitySet>& sets = it->second;
+  const auto& layer_it = sets.find(layer);
+  if (layer_it == sets.end()) {
+    return result;
+  }
+  for (const EntityPtr& entity : layer_it->second) {
     result.insert(std::static_pointer_cast<T>(entity));
   }
   return result;

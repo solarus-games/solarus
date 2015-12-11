@@ -551,8 +551,9 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
     int x = get_x() - next_map_location.get_x() + previous_map_location.get_x();
     int y = get_y() - next_map_location.get_y() + previous_map_location.get_y();
 
-    int layer = map.get_highest_layer();
-    while (layer > 0 && map.get_ground(layer, x, y) == Ground::EMPTY) {
+    int layer = map.get_max_layer();
+    while (layer > map.get_min_layer() &&
+        map.get_ground(layer, x, y) == Ground::EMPTY) {
       // TODO check the whole hero's bounding box rather than just a point.
       --layer;
     }
@@ -621,7 +622,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
         sprites->set_animation_direction(3);
         set_top_left_xy(0, 0);
         map.get_entities().notify_entity_bounding_box_changed(*this);
-        map.get_entities().set_entity_layer(*this, map.get_highest_layer());
+        map.get_entities().set_entity_layer(*this, map.get_max_layer());
       }
       else {
         // Normal case.

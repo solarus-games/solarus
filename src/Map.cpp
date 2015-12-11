@@ -46,7 +46,8 @@ Map::Map(const std::string& id):
   id(id),
   width8(0),
   height8(0),
-  num_layers(0),
+  min_layer(0),
+  max_layer(0),
   tileset(nullptr),
   floor(MapData::NO_FLOOR),
   visible_surface(nullptr),
@@ -230,29 +231,21 @@ int Map::get_height8() const {
 }
 
 /**
- * \brief Returns the number of layers of this map.
- * \return The number of layers.
- */
-int Map::get_num_layers() const {
-  return num_layers;
-}
-
-/**
  * \brief Returns the index of the first layer of the map.
- * \return The first (lowest) layer: always 0.
+ * \return The first (lowest) layer (0 or less).
  */
-int Map::get_lowest_layer() const {
+int Map::get_min_layer() const {
 
-  return 0;
+  return min_layer;
 }
 
 /**
  * \brief Returns the index of the last layer of the map.
- * \return The last (highest) layer: always get_num_layers() - 1.
+ * \return The last (highest) layer (0 or more).
  */
-int Map::get_highest_layer() const {
+int Map::get_max_layer() const {
 
-  return get_num_layers() - 1;
+  return max_layer;
 }
 
 /**
@@ -263,7 +256,7 @@ int Map::get_highest_layer() const {
  */
 bool Map::is_valid_layer(int layer) const {
 
-  return layer >= 0 && layer < get_num_layers();
+  return layer >= get_min_layer() && layer <= get_max_layer();
 }
 
 /**
@@ -328,7 +321,8 @@ void Map::load(Game& game) {
   location.set_size(data.get_size());
   width8 = data.get_size().width / 8;
   height8 = data.get_size().height / 8;
-  num_layers = data.get_num_layers();
+  min_layer = data.get_min_layer();
+  max_layer = data.get_max_layer();
   music_id = data.get_music_id();
   set_world(data.get_world());
   set_floor(data.get_floor());

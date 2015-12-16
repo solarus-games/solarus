@@ -5,6 +5,7 @@ map{ id = "bugs/526_get_entities_same_region", description = "#526: map:get_enti
 map{ id = "bugs/656_map_set_world", description = "#656: map:set_world()" }
 map{ id = "bugs/664_chest_get_set_treasure", description = "#664: chest:get/set_treasure()" }
 map{ id = "bugs/670_map_get_entities_no_hero", description = "#670: map:get_entities() does not return the hero" }
+map{ id = "bugs/671_collision_test_not_moving", description = "#671: Custom entity collision not detected when not moving" }
 map{ id = "bugs/686_crash_door_item", description = "#686: Crash with doors whose opening condition is an item" }
 map{ id = "bugs/699_crash_exit_surface_moving", description = "#699: Crash at exit when a surface was moving" }
 map{ id = "bugs/769_stuck_dynamic_tile_covered", description = "#769: Non-traversable dynamic tiles covered by traversable ones block the hero" }

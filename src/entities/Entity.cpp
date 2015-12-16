@@ -2558,17 +2558,17 @@ void Entity::set_suspended(bool suspended) {
 
   this->suspended = suspended;
 
-  // remember the date if the entity is being suspended
+  // Remember the date if the entity is being suspended.
   if (suspended) {
     when_suspended = System::now();
   }
 
-  // suspend/unsuspend the sprites animations
+  // Suspend/unsuspend sprite animations.
   for (const SpritePtr& sprite: sprites) {
     sprite->set_suspended(suspended || !is_enabled());
   }
 
-  // suspend/unsuspend the movement
+  // Suspend/unsuspend the movement.
   if (movement != nullptr) {
     movement->set_suspended(suspended || !is_enabled());
   }
@@ -2576,9 +2576,14 @@ void Entity::set_suspended(bool suspended) {
     stream_action->set_suspended(suspended || !is_enabled());
   }
 
-  // Suspend/unsuspend the timers.
+  // Suspend/unsuspend timers.
   if (is_on_map()) {
     get_lua_context()->set_entity_timers_suspended(*this, suspended || !is_enabled());
+  }
+
+  if (!suspended) {
+    // Collision tests were disabled when the entity was suspended.
+    check_collision_with_detectors();
   }
 }
 

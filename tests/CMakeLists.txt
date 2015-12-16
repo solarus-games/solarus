@@ -10,6 +10,7 @@ set(lua_test_maps
   "bugs/656_map_set_world"
   "bugs/664_chest_get_set_treasure"
   "bugs/670_map_get_entities_no_hero"
+  "bugs/671_collision_test_not_moving"
   "bugs/686_crash_door_item"
   "bugs/699_crash_exit_surface_moving"
   "bugs/779_get_entities_random_order"

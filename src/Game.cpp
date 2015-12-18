@@ -568,9 +568,12 @@ Map& Game::get_current_map() {
  * Call this function when you want the hero to go to another map.
  *
  * \param map_id Id of the map to launch. It must exist.
- * \param destination_name name of the destination point of the map you want to use,
- * or en ampty string to use the default destination point.
- * \param transition_style type of transition between the two maps
+ * \param destination_name Name of the destination point you want to use.
+ * An empty string means the default one.
+ * You can also use "_same" to keep the hero's coordinates, or
+ * "_side0", "_side1", "_side2" or "_side3"
+ * to place the hero on a side of the map.
+ * \param transition_style Type of transition between the two maps.
  */
 void Game::set_current_map(
     const std::string& map_id,

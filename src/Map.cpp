@@ -822,7 +822,7 @@ bool Map::test_collision_with_ground(
   }
 
   // Get the ground property under this point.
-  Ground ground = get_ground(layer, x, y);
+  Ground ground = get_ground(layer, x, y, &entity_to_check);
   switch (ground) {
 
   case Ground::EMPTY:
@@ -1049,13 +1049,13 @@ bool Map::has_empty_ground(int layer, const Rectangle& collision_box) const {
   int x2 = x1 + collision_box.get_width() - 1;
 
   for (int x = x1; x <= x2 && !empty_tile; x++) {
-    empty_tile = get_ground(layer, x, y1) == Ground::EMPTY
-        || get_ground(layer, x, y2) == Ground::EMPTY;
+    empty_tile = get_ground(layer, x, y1, nullptr) == Ground::EMPTY
+        || get_ground(layer, x, y2, nullptr) == Ground::EMPTY;
   }
 
   for (int y = y1; y <= y2 && !empty_tile; y++) {
-    empty_tile = get_ground(layer, x1, y) == Ground::EMPTY
-        || get_ground(layer, x2, y) == Ground::EMPTY;
+    empty_tile = get_ground(layer, x1, y, nullptr) == Ground::EMPTY
+        || get_ground(layer, x2, y, nullptr) == Ground::EMPTY;
   }
 
   return empty_tile;
@@ -1077,10 +1077,17 @@ bool Map::has_empty_ground(int layer, const Rectangle& collision_box) const {
  * \param layer Layer of the point.
  * \param x X coordinate of the point.
  * \param y Y coordinate of the point.
+ * \param entity_to_check The entity you want to know the ground of (if any).
+ * Used to make sure that the entity's own modified ground does not count.
  * \return The ground at this place.
  */
-Ground Map::get_ground(int layer, int x, int y) const {
-  return get_ground(layer, Point(x, y));
+Ground Map::get_ground(
+    int layer,
+    int x,
+    int y,
+    const Entity* entity_to_check
+) const {
+  return get_ground(layer, Point(x, y), entity_to_check);
 }
 
 /**
@@ -1090,9 +1097,15 @@ Ground Map::get_ground(int layer, int x, int y) const {
  *
  * \param layer Layer of the point.
  * \param xy Coordinates of the point.
+ * \param entity_to_check The entity you want to know the ground of (if any).
+ * Used to make sure that the entity's own modified ground does not count.
  * \return The ground at this place.
  */
-Ground Map::get_ground(int layer, const Point& xy) const {
+Ground Map::get_ground(
+    int layer,
+    const Point& xy,
+    const Entity* entity_to_check
+) const {
 
   if (test_collision_with_border(xy)) {
     // Outside the map bounds.
@@ -1109,6 +1122,13 @@ Ground Map::get_ground(int layer, const Point& xy) const {
     const Entity& entity_nearby = *(*it);
 
     const Ground ground = entity_nearby.get_modified_ground();
+
+    if (&entity_nearby == entity_to_check) {
+      // Skip the entity itself.
+      continue;
+    }
+    // TODO also skip entities above?
+
     if (ground == Ground::EMPTY) {
       // The entity has no influence on the ground.
       continue;

@@ -154,8 +154,17 @@ class SOLARUS_API Map: public ExportableToLua {
         const Rectangle& collision_box
     ) const;
 
-    Ground get_ground(int layer, int x, int y) const;
-    Ground get_ground(int layer, const Point& xy) const;
+    Ground get_ground(
+        int layer,
+        int x,
+        int y,
+        const Entity* entity_to_check
+    ) const;
+    Ground get_ground(
+        int layer,
+        const Point& xy,
+        const Entity* entity_to_check
+    ) const;
     Ground get_ground_from_entity(const Entity& entity, int x, int y) const;
     Ground get_ground_from_entity(const Entity& entity, const Point& xy) const;
 

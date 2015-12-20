@@ -1679,7 +1679,7 @@ int LuaContext::map_api_get_ground(lua_State* l) {
     int y = LuaTools::check_int(l, 3);
     int layer = LuaTools::check_layer(l, 4, map);
 
-    Ground ground = map.get_ground(layer, x, y);
+    Ground ground = map.get_ground(layer, x, y, nullptr);
 
     push_string(l, enum_to_name(ground));
     return 1;

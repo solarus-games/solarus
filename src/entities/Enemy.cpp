@@ -356,10 +356,10 @@ bool Enemy::is_deep_water_obstacle() const {
   const int layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
-  if (get_map().get_ground(layer, x, y) == Ground::DEEP_WATER
-      || get_map().get_ground(layer, x + get_width() - 1, y) == Ground::DEEP_WATER
-      || get_map().get_ground(layer, x, y + get_height() - 1) == Ground::DEEP_WATER
-      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == Ground::DEEP_WATER) {
+  if (get_map().get_ground(layer, x, y, this) == Ground::DEEP_WATER
+      || get_map().get_ground(layer, x + get_width() - 1, y, this) == Ground::DEEP_WATER
+      || get_map().get_ground(layer, x, y + get_height() - 1, this) == Ground::DEEP_WATER
+      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1, this) == Ground::DEEP_WATER) {
     return false;
   }
 
@@ -391,10 +391,10 @@ bool Enemy::is_hole_obstacle() const {
   const int layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
-  if (get_map().get_ground(layer, x, y) == Ground::HOLE
-      || get_map().get_ground(layer, x + get_width() - 1, y) == Ground::HOLE
-      || get_map().get_ground(layer, x, y + get_height() - 1) == Ground::HOLE
-      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == Ground::HOLE) {
+  if (get_map().get_ground(layer, x, y, this) == Ground::HOLE
+      || get_map().get_ground(layer, x + get_width() - 1, y, this) == Ground::HOLE
+      || get_map().get_ground(layer, x, y + get_height() - 1, this) == Ground::HOLE
+      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1, this) == Ground::HOLE) {
     return false;
   }
 
@@ -426,10 +426,10 @@ bool Enemy::is_lava_obstacle() const {
   const int layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
-  if (get_map().get_ground(layer, x, y) == Ground::LAVA
-      || get_map().get_ground(layer, x + get_width() - 1, y) == Ground::LAVA
-      || get_map().get_ground(layer, x, y + get_height() - 1) == Ground::LAVA
-      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == Ground::LAVA) {
+  if (get_map().get_ground(layer, x, y, this) == Ground::LAVA
+      || get_map().get_ground(layer, x + get_width() - 1, y, this) == Ground::LAVA
+      || get_map().get_ground(layer, x, y + get_height() - 1, this) == Ground::LAVA
+      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1, this) == Ground::LAVA) {
     return false;
   }
 

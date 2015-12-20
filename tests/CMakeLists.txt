@@ -19,6 +19,7 @@ set(lua_test_maps
   "bugs/794_custom_entity_set_can_traverse_ground"
   "bugs/795_recreate_entity_same_name"
   "bugs/796_map_get_entities_by_type"
+  "bugs/807_cannot_traverse_own_ground"
 )
 
 # Build the Solarus testing library.

@@ -553,7 +553,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
 
     int layer = map.get_max_layer();
     while (layer > map.get_min_layer() &&
-        map.get_ground(layer, x, y) == Ground::EMPTY) {
+        map.get_ground(layer, x, y, this) == Ground::EMPTY) {
       // TODO check the whole hero's bounding box rather than just a point.
       --layer;
     }
@@ -1092,13 +1092,13 @@ void Hero::check_position() {
     int layer = get_layer();
 
     if (layer > 0
-        && get_map().get_ground(layer, x, y) == Ground::EMPTY
-        && get_map().get_ground(layer, x + 15, y) == Ground::EMPTY
-        && get_map().get_ground(layer, x, y + 15) == Ground::EMPTY
-        && get_map().get_ground(layer, x + 15, y + 15) == Ground::EMPTY) {
+        && get_map().get_ground(layer, x, y, this) == Ground::EMPTY
+        && get_map().get_ground(layer, x + 15, y, this) == Ground::EMPTY
+        && get_map().get_ground(layer, x, y + 15, this) == Ground::EMPTY
+        && get_map().get_ground(layer, x + 15, y + 15, this) == Ground::EMPTY) {
 
       get_entities().set_entity_layer(*this, layer - 1);
-      Ground new_ground = get_map().get_ground(get_layer(), x, y);
+      Ground new_ground = get_map().get_ground(get_layer(), x, y, this);
       if (get_state().is_free() &&
           (new_ground == Ground::TRAVERSABLE
            || new_ground == Ground::GRASS

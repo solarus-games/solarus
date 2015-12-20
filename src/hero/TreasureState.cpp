@@ -53,7 +53,7 @@ Hero::TreasureState::TreasureState(
  */
 void Hero::TreasureState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   // Show the animation.
   get_sprites().save_animation_direction();
@@ -80,7 +80,7 @@ void Hero::TreasureState::start(const State* previous_state) {
  */
 void Hero::TreasureState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   // restore the sprite's direction
   get_sprites().restore_animation_direction();
@@ -92,7 +92,7 @@ void Hero::TreasureState::stop(const State* next_state) {
  */
 void Hero::TreasureState::draw_on_map() {
 
-  State::draw_on_map();
+  BaseState::draw_on_map();
 
   const Hero& hero = get_entity();
   int x = hero.get_x();

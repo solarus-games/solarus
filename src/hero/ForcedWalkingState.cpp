@@ -49,7 +49,7 @@ Hero::ForcedWalkingState::ForcedWalkingState(
  */
 void Hero::ForcedWalkingState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   // update the sprites
   HeroSprites& sprites = get_sprites();
@@ -65,7 +65,7 @@ void Hero::ForcedWalkingState::start(const State* previous_state) {
  */
 void Hero::ForcedWalkingState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   get_entity().clear_movement();
 }
@@ -75,7 +75,7 @@ void Hero::ForcedWalkingState::stop(const State* next_state) {
  */
 void Hero::ForcedWalkingState::update() {
 
-  State::update();
+  BaseState::update();
 
   get_sprites().set_animation_direction(movement->get_displayed_direction4());
 

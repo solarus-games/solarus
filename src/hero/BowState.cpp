@@ -48,7 +48,7 @@ void Hero::BowState::start(const State* previous_state) {
  */
 void Hero::BowState::update() {
 
-  State::update();
+  BaseState::update();
 
   Hero& hero = get_entity();
   if (get_sprites().is_animation_finished()) {

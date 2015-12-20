@@ -40,7 +40,7 @@ Hero::PlungingState::PlungingState(Hero& hero):
  */
 void Hero::PlungingState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   if (get_entity().get_ground_below() == Ground::DEEP_WATER) {
     get_sprites().set_animation("plunging_water");
@@ -56,7 +56,7 @@ void Hero::PlungingState::start(const State* previous_state) {
  */
 void Hero::PlungingState::update() {
 
-  State::update();
+  BaseState::update();
 
   if (get_sprites().is_animation_finished()) {
 

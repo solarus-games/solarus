@@ -47,7 +47,7 @@ Hero::SpinAttackState::SpinAttackState(Hero& hero):
  */
 void Hero::SpinAttackState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   // play the sound
   play_spin_attack_sound();
@@ -77,7 +77,7 @@ void Hero::SpinAttackState::start(const State* previous_state) {
  */
 void Hero::SpinAttackState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   Hero& hero = get_entity();
   if (hero.get_movement() != nullptr) {
@@ -154,7 +154,7 @@ bool Hero::SpinAttackState::is_cutting_with_sword(Detector& /* detector */) {
 int Hero::SpinAttackState::get_sword_damage_factor() const {
 
   // the damage are multiplied by 2
-  return State::get_sword_damage_factor() * 2;
+  return BaseState::get_sword_damage_factor() * 2;
 }
 
 /**

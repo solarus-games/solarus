@@ -41,7 +41,7 @@ Hero::HookshotState::HookshotState(Hero& hero):
  */
 void Hero::HookshotState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   get_sprites().set_animation("hookshot");
   hookshot = std::make_shared<Hookshot>(get_entity());
@@ -54,7 +54,7 @@ void Hero::HookshotState::start(const State* previous_state) {
  */
 void Hero::HookshotState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   if (!hookshot->is_being_removed()) {
     // the hookshot state was stopped by something other than the hookshot (e.g. an enemy)

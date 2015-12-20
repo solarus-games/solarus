@@ -53,7 +53,7 @@ Hero::RunningState::RunningState(Hero& hero, GameCommand command):
  */
 void Hero::RunningState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   get_sprites().set_animation_prepare_running();
 
@@ -69,7 +69,7 @@ void Hero::RunningState::start(const State* previous_state) {
  */
 void Hero::RunningState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   if (phase != 0) {
     get_entity().clear_movement();
@@ -81,7 +81,7 @@ void Hero::RunningState::stop(const State* next_state) {
  */
 void Hero::RunningState::update() {
 
-  State::update();
+  BaseState::update();
 
   if (is_suspended()) {
     return;
@@ -126,7 +126,7 @@ void Hero::RunningState::update() {
  */
 void Hero::RunningState::set_suspended(bool suspended) {
 
-  State::set_suspended(suspended);
+  BaseState::set_suspended(suspended);
 
   if (!suspended) {
     uint32_t diff = System::now() - get_when_suspended();
@@ -172,7 +172,7 @@ void Hero::RunningState::notify_direction_command_pressed(int direction4) {
  */
 void Hero::RunningState::notify_obstacle_reached() {
 
-  State::notify_obstacle_reached();
+  BaseState::notify_obstacle_reached();
 
   if (phase == 1) {
     int opposite_direction = (get_sprites().get_animation_direction8() + 4) % 8;
@@ -394,7 +394,7 @@ bool Hero::RunningState::is_cutting_with_sword(Detector& detector) {
 int Hero::RunningState::get_sword_damage_factor() const {
 
   // the damage are multiplied by 2
-  return State::get_sword_damage_factor() * 2;
+  return BaseState::get_sword_damage_factor() * 2;
 }
 
 }

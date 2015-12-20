@@ -44,7 +44,7 @@ Hero::SwordSwingingState::SwordSwingingState(Hero& hero):
  */
 void Hero::SwordSwingingState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   get_sprites().play_sword_sound();
   get_sprites().set_animation_sword();
@@ -57,7 +57,7 @@ void Hero::SwordSwingingState::start(const State* previous_state) {
  */
 void Hero::SwordSwingingState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   Hero& hero = get_entity();
   if (hero.get_movement() != nullptr) {
@@ -71,7 +71,7 @@ void Hero::SwordSwingingState::stop(const State* next_state) {
  */
 void Hero::SwordSwingingState::update() {
 
-  State::update();
+  BaseState::update();
 
   // check the animation
   Hero& hero = get_entity();

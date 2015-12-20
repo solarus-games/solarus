@@ -41,7 +41,7 @@ Hero::UsingItemState::UsingItemState(
  */
 void Hero::UsingItemState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   bool interaction = false;
   Detector* facing_entity = get_entity().get_facing_entity();
@@ -62,7 +62,7 @@ void Hero::UsingItemState::start(const State* previous_state) {
  */
 void Hero::UsingItemState::update() {
 
-  State::update();
+  BaseState::update();
 
   item_usage.update();
   if (item_usage.is_finished() && is_current_state()) {

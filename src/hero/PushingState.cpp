@@ -44,7 +44,7 @@ Hero::PushingState::PushingState(Hero& hero):
  */
 void Hero::PushingState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   pushing_direction4 = get_sprites().get_animation_direction();
   get_sprites().set_animation_pushing();
@@ -55,7 +55,7 @@ void Hero::PushingState::start(const State* previous_state) {
  */
 void Hero::PushingState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   if (is_moving_grabbed_entity()) {
     get_entity().clear_movement();
@@ -69,7 +69,7 @@ void Hero::PushingState::stop(const State* next_state) {
  */
 void Hero::PushingState::update() {
 
-  State::update();
+  BaseState::update();
 
   Hero& hero = get_entity();
   if (!is_moving_grabbed_entity()) { // the hero is pushing a fixed obstacle

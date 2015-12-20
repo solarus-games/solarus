@@ -43,7 +43,7 @@ Hero::PullingState::PullingState(Hero& hero):
  */
 void Hero::PullingState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   pulled_entity = nullptr;
   get_sprites().set_animation_pulling();
@@ -54,7 +54,7 @@ void Hero::PullingState::start(const State* previous_state) {
  */
 void Hero::PullingState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   if (is_moving_grabbed_entity()) {
     get_entity().clear_movement();
@@ -68,7 +68,7 @@ void Hero::PullingState::stop(const State* next_state) {
  */
 void Hero::PullingState::update() {
 
-  State::update();
+  BaseState::update();
 
   Hero& hero = get_entity();
   if (!is_moving_grabbed_entity()) {

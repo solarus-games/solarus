@@ -57,7 +57,7 @@ Hero::BoomerangState::BoomerangState(
  */
 void Hero::BoomerangState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   const bool boomerang_exists = !get_map().get_entities().get_entities_by_type<Boomerang>().empty();
   if (boomerang_exists) {
@@ -75,7 +75,7 @@ void Hero::BoomerangState::start(const State* previous_state) {
  */
 void Hero::BoomerangState::update() {
 
-  State::update();
+  BaseState::update();
 
   Hero& hero = get_entity();
   if (hero.is_animation_finished()) {

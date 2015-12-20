@@ -32,7 +32,6 @@
 #include "solarus/Map.h"
 #include "solarus/Savegame.h"
 #include "solarus/Sprite.h"
-#include <list>
 
 namespace Solarus {
 

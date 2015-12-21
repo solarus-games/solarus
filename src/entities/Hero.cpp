@@ -2011,7 +2011,7 @@ void Hero::set_invincible(bool invincible, uint32_t duration) {
   this->invincible = invincible;
   this->end_invincible_date = 0;
   if (invincible) {
-    this->end_invincible_date = System::now() + duration;
+    this->end_invincible_date = (duration == 0) ? 0 : System::now() + duration;
   }
 }
 
@@ -2020,8 +2020,9 @@ void Hero::set_invincible(bool invincible, uint32_t duration) {
  */
 void Hero::update_invincibility() {
 
-  if (is_invincible()
-      && System::now() >= end_invincible_date) {
+  if (is_invincible() &&
+      end_invincible_date != 0 &&
+      System::now() >= end_invincible_date) {
     set_invincible(false, 0);
   }
 }

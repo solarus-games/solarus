@@ -18,6 +18,7 @@ Engine changes
 * Fix sol.input.get_mouse_coordinates() (#734).
 * Fix straight movement precision.
 * Fix sword tapping sound still played when the game is suspended (#797).
+* Fix hero:set_invincible() not working without duration (#805).
 * Fix custom_entity:set_can_traverse_ground() not working for some grounds (#794).
 * Fix custom entity collisions not detected for entities that do not move (#671).
 * Fix creating an entity with the same name as another one just removed (#795).

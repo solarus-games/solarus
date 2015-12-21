@@ -40,6 +40,7 @@ Changes that do not introduce incompatibilities:
 * Add methods map:get_min_layer() and map:get_max_layer() (#445).
 * Add a method map:get_entities_by_type() (#796).
 * Add a method map:get_entities_in_rectangle() (#142).
+* Add a method map:get_camera() (the camera is now a map entity).
 * Add methods map:set_world() and map:set_floor() (#656).
 * map:get_entities() can now be called without parameter to get all entities.
 * map:get_entities*() functions now give entities sorted in Z order (#779).

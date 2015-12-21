@@ -47,6 +47,7 @@ typedef int (*lua_CFunction) (lua_State* l);
 namespace Solarus {
 
 class Block;
+class Camera;
 class Chest;
 class CircleMovement;
 class Color;
@@ -757,7 +758,8 @@ class LuaContext {
       map_api_get_tileset,
       map_api_set_tileset,
       map_api_get_music,
-      map_api_get_camera_position,
+      map_api_get_camera,
+      map_api_get_camera_position,  // TODO remove or deprecate?
       map_api_move_camera,  // TODO set any movement to the camera instead
       map_api_get_ground,
       map_api_draw_sprite,  // TODO allow to also draw a surface or a text surface
@@ -1050,6 +1052,7 @@ class LuaContext {
     static void push_entity(lua_State* l, Entity& entity);
     static void push_entity_iterator(lua_State* l, const EntityVector& entities);
     static void push_hero(lua_State* l, Hero& hero);
+    static void push_camera(lua_State* l, Camera& camera);
     static void push_npc(lua_State* l, Npc& npc);
     static void push_teletransporter(lua_State* l, Teletransporter& teletransporter);
     static void push_chest(lua_State* l, Chest& chest);
@@ -1117,6 +1120,8 @@ class LuaContext {
     static EntityPtr check_entity(lua_State* l, int index);
     static bool is_hero(lua_State* l, int index);
     static HeroPtr check_hero(lua_State* l, int index);
+    static bool is_camera(lua_State* l, int index);
+    static std::shared_ptr<Camera> check_camera(lua_State* l, int index);
     static bool is_teletransporter(lua_State* l, int index);
     static std::shared_ptr<Teletransporter> check_teletransporter(lua_State* l, int index);
     static bool is_npc(lua_State* l, int index);

@@ -87,6 +87,7 @@ void LuaContext::register_map_module() {
       { "get_tileset", map_api_get_tileset },
       { "set_tileset", map_api_set_tileset },
       { "get_music", map_api_get_music },
+      { "get_camera", map_api_get_camera },
       { "get_camera_position", map_api_get_camera_position },
       { "move_camera", map_api_move_camera },
       { "get_ground", map_api_get_ground },
@@ -1604,6 +1605,22 @@ int LuaContext::map_api_set_tileset(lua_State* l) {
     map.set_tileset(tileset_id);
 
     return 0;
+  });
+}
+
+/**
+ * \brief Implementation of map:get_camera().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_camera(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+
+    // Return the hero even if he is no longer on this map.
+    push_camera(l, map.get_camera());
+    return 1;
   });
 }
 

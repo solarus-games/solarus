@@ -2172,6 +2172,38 @@ int LuaContext::l_treasure_dialog_finished(lua_State* l) {
 }
 
 /**
+ * \brief Returns whether a value is a userdata of type camera.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return true if the value at this index is a camera.
+ */
+bool LuaContext::is_camera(lua_State* l, int index) {
+  return is_userdata(l, index, get_entity_internal_type_name(EntityType::CAMERA));
+}
+
+/**
+ * \brief Checks that the userdata at the specified index of the stack is a
+ * camera and returns it.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return The camera.
+ */
+std::shared_ptr<Camera> LuaContext::check_camera(lua_State* l, int index) {
+  return std::static_pointer_cast<Camera>(check_userdata(
+      l, index, get_entity_internal_type_name(EntityType::CAMERA)
+  ));
+}
+
+/**
+ * \brief Pushes a camera userdata onto the stack.
+ * \param l A Lua context.
+ * \param camera A camera.
+ */
+void LuaContext::push_camera(lua_State* l, Camera& camera) {
+  push_userdata(l, camera);
+}
+
+/**
  * \brief Returns whether a value is a userdata of type teletransporter.
  * \param l A Lua context.
  * \param index An index in the stack.

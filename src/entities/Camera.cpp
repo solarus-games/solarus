@@ -328,7 +328,7 @@ void Camera::stop_tracking() {
 
 /**
  * \brief Ensures that a rectangle does not cross map limits.
- * \param area The rectangle to check. Is should not be entirely outside the map.
+ * \param area The rectangle to check. Is should not be entirely inside the map.
  * It can be bigger than the map: in such a case, the resulting rectangle cannot
  * avoid to cross map limits, and it will be centered.
  * \return A rectangle corresponding to the first one but stopping on map limits.

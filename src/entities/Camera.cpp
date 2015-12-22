@@ -312,19 +312,17 @@ void Camera::traverse_separator(Separator* separator) {
 }
 
 /**
- * \brief Ensures that the camera track the given entity.
+ * \brief Makes that the camera track the given entity.
  * \param entity The entity to track.
  */
-void Camera::start_tracking(const EntityPtr& entity)
-{
+void Camera::start_tracking(const EntityPtr& entity) {
   fixed_on = entity;
 }
 
 /**
- * \brief Make the camera not follow an entity.
+ * \brief Makes the camera stop tracking any entity.
  */
-void Camera::stop_tracking()
-{
+void Camera::stop_tracking() {
   fixed_on.reset();
 }
 

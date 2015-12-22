@@ -322,7 +322,7 @@ void Camera::start_tracking(const EntityPtr& entity) {
 /**
  * \brief Makes the camera stop tracking any entity.
  */
-void Camera::stop_tracking() {
+void Camera::start_manual() {
   fixed_on.reset();
 }
 

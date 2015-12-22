@@ -136,21 +136,6 @@ void LuaContext::register_entity_module() {
       { nullptr, nullptr }
   };
 
-  // Camera.
-  static const luaL_Reg camera_methods[] = {
-      ENTITY_COMMON_METHODS,
-      { "start_tracking", camera_api_start_tracking },
-      { "stop_tracking", camera_api_stop_tracking },
-      { nullptr, nullptr }
-  };
-
-  register_type(
-      get_entity_internal_type_name(EntityType::CAMERA),
-      nullptr,
-      camera_methods,
-      metamethods
-  );
-
   // Hero.
   static const luaL_Reg hero_methods[] = {
       ENTITY_COMMON_METHODS,
@@ -196,6 +181,21 @@ void LuaContext::register_entity_module() {
       get_entity_internal_type_name(EntityType::HERO),
       nullptr,
       hero_methods,
+      metamethods
+  );
+
+  // Camera.
+  static const luaL_Reg camera_methods[] = {
+      ENTITY_COMMON_METHODS,
+      { "start_tracking", camera_api_start_tracking },
+      { "start_manual", camera_api_start_manual },
+      { nullptr, nullptr }
+  };
+
+  register_type(
+      get_entity_internal_type_name(EntityType::CAMERA),
+      nullptr,
+      camera_methods,
       metamethods
   );
 
@@ -1366,39 +1366,6 @@ int LuaContext::entity_api_is_in_same_region(lua_State* l) {
 }
 
 /**
- * \brief Implementation of camera:start_tracking().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::camera_api_start_tracking(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Camera& camera = *check_camera(l, 1);
-    EntityPtr entity = check_entity(l, 2);
-
-    camera.start_tracking(entity);
-
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of camera:stop_tracking().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::camera_api_stop_tracking(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Camera& camera = *check_camera(l, 1);
-
-    camera.stop_tracking();
-
-    return 0;
-  });
-}
-
-/**
  * \brief Returns whether a value is a userdata of type hero.
  * \param l A Lua context.
  * \param index An index in the stack.
@@ -2236,6 +2203,39 @@ std::shared_ptr<Camera> LuaContext::check_camera(lua_State* l, int index) {
  */
 void LuaContext::push_camera(lua_State* l, Camera& camera) {
   push_userdata(l, camera);
+}
+
+/**
+ * \brief Implementation of camera:start_tracking().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::camera_api_start_tracking(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Camera& camera = *check_camera(l, 1);
+    EntityPtr entity = check_entity(l, 2);
+
+    camera.start_tracking(entity);
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of camera:start_manual().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::camera_api_start_manual(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Camera& camera = *check_camera(l, 1);
+
+    camera.start_manual();
+
+    return 0;
+  });
 }
 
 /**

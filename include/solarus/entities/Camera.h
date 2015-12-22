@@ -62,7 +62,7 @@ class Camera : public Entity {
     void traverse_separator(Separator* separator);
 
     void start_tracking(const EntityPtr& entity);
-    void stop_tracking();
+    void start_manual();
 
     Rectangle apply_map_bounds(const Rectangle& area) const;
     Rectangle apply_separators(const Rectangle& area) const;

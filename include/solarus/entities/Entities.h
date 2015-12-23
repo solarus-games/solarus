@@ -143,6 +143,13 @@ class SOLARUS_API Entities {
     using ByLayer = std::map<int, T>;
 
     /**
+     * \brief Alias for std::pair of two entity vectors.
+     *
+     * Used to cache the lists of entities to draw by Z order and by Y order.
+     */
+    using EntityVectorPair = std::pair<EntityVector, EntityVector>;
+
+    /**
      * \brief Internal fast cached information about the entity insertion order.
      */
     class ZCache {
@@ -204,7 +211,7 @@ class SOLARUS_API Entities {
     EntityTree quadtree;                            /**< All map entities except tiles.
                                                      * Optimized for fast spatial search. */
     ByLayer<ZCache> z_caches;                       /**< For each layer, tracks the relative Z order of entities. */
-    ByLayer<std::pair<EntityVector, EntityVector>>
+    ByLayer<EntityVectorPair>
         entities_to_draw;                           /**< For each layer, entities currently in the camera and ready to be drawn.
                                                      * Two lists are drawn: entities in Z order and then entities in Y order. */
 

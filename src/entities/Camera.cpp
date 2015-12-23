@@ -56,8 +56,8 @@ EntityType Camera::get_type() const {
  */
 bool Camera::can_be_drawn() const {
 
-  // The camera itself is not drawn (for now), entities only use its position
-  // to draw themselves on the map surface.
+  // The camera itself is not drawn.
+  // Entities only use its position to draw the map.
   return false;
 }
 

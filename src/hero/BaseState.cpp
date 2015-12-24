@@ -171,7 +171,7 @@ bool Hero::BaseState::is_jumper_obstacle(
   ) {
     // Other special case: trying to enter the jumper the reverse way while
     // swimming: we accept this to allow the hero to leave water pools.
-    // TODO I'm not sure this behavior is really a good idea.
+    // TODO I'm not sure if this behavior is really a good idea.
     // This may change in a future version.
     return false;
   }

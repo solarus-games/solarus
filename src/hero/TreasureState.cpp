@@ -98,10 +98,10 @@ void Hero::TreasureState::draw_on_map() {
   int x = hero.get_x();
   int y = hero.get_y();
 
-  const Rectangle &camera_position = get_map().get_camera_position();
+  const Camera& camera = get_map().get_camera();
   treasure.draw(get_map().get_visible_surface(),
-      x - camera_position.get_x(),
-      y - 24 - camera_position.get_y());
+      x - camera.get_top_left_x(),
+      y - 24 - camera.get_top_left_y());
 }
 
 /**

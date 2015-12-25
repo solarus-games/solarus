@@ -1213,7 +1213,7 @@ void Entities::draw() {
 
   if (EntityTree::debug_quadtrees) {
     // Draw the quadtree structure for debugging.
-    quadtree.draw(map.get_visible_surface(), -map.get_camera_position().get_top_left());
+    quadtree.draw(map.get_visible_surface(), -map.get_camera().get_top_left_xy());
   }
 }
 

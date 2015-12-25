@@ -1634,7 +1634,7 @@ int LuaContext::map_api_get_camera_position(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const Map& map = *check_map(l, 1);
 
-    const Rectangle& camera_position = map.get_camera_position();
+    const Rectangle& camera_position = map.get_camera().get_bounding_box();
 
     lua_pushinteger(l, camera_position.get_x());
     lua_pushinteger(l, camera_position.get_y());

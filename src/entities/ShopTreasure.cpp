@@ -207,19 +207,19 @@ void ShopTreasure::draw_on_map() {
   int y = get_y();
 
   // draw the treasure
-  const Rectangle& camera_position = get_map().get_camera_position();
+  const Camera& camera = get_map().get_camera();
   treasure.draw(map_surface,
-      x + 16 - camera_position.get_x(),
-      y + 13 - camera_position.get_y()
+      x + 16 - camera.get_top_left_x(),
+      y + 13 - camera.get_top_left_y()
   );
 
   // also draw the price
   price_digits.draw(map_surface,
-      x + 12 - camera_position.get_x(),
-      y + 21 - camera_position.get_y());
+      x + 12 - camera.get_top_left_x(),
+      y + 21 - camera.get_top_left_y());
   rupee_icon_sprite->draw(map_surface,
-      x - camera_position.get_x(),
-      y + 22 - camera_position.get_y());
+      x - camera.get_top_left_x(),
+      y + 22 - camera.get_top_left_y());
 }
 
 }

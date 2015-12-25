@@ -2077,8 +2077,8 @@ bool Entity::is_sword_ignored() const {
  */
 bool Entity::overlaps_camera() const {
 
-  const Rectangle& camera_position = get_map().get_camera_position();
-  if (bounding_box.overlaps(camera_position)) {
+  const Camera& camera = get_map().get_camera();
+  if (camera.overlaps(bounding_box)) {
     return true;
   }
 
@@ -2091,7 +2091,7 @@ bool Entity::overlaps_camera() const {
         sprite_size.width,
         sprite_size.height
     );
-    if (sprite_bounding_box.overlaps(camera_position)) {
+    if (camera.overlaps(sprite_bounding_box)) {
       return true;
     }
   }
@@ -2239,8 +2239,8 @@ int Entity::get_distance(const Entity& other) const {
  */
 int Entity::get_distance_to_camera() const {
 
-  const Rectangle& camera = get_map().get_camera_position();
-  return (int) Geometry::get_distance(get_xy(), camera.get_center());
+  const Camera& camera = get_map().get_camera();
+  return (int) Geometry::get_distance(get_xy(), camera.get_center_point());
 }
 
 /**
@@ -2250,8 +2250,8 @@ int Entity::get_distance_to_camera() const {
  */
 int Entity::get_distance_to_camera2() const {
 
-  const Rectangle& camera = get_map().get_camera_position();
-  return Geometry::get_distance2(get_xy(), camera.get_center());
+  const Camera& camera = get_map().get_camera();
+  return Geometry::get_distance2(get_xy(), camera.get_center_point());
 }
 
 /**
@@ -2706,7 +2706,7 @@ void Entity::update() {
  */
 bool Entity::is_drawn() const {
 
-  int camera_width = get_map().get_camera_position().get_width();
+  int camera_width = get_map().get_camera().get_width();
   const bool far = get_distance_to_camera() > camera_width * 1.5;
 
   return is_visible()

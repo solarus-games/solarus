@@ -86,7 +86,6 @@ class SOLARUS_API Map: public ExportableToLua {
     const SurfacePtr& get_visible_surface();
     const Camera& get_camera() const;
     Camera& get_camera();
-    const Rectangle& get_camera_position() const;
     void move_camera(int x, int y, int speed);
     void restore_camera();
     bool is_camera_moving() const;
@@ -296,16 +295,6 @@ inline const Camera& Map::get_camera() const {
 inline Camera& Map::get_camera() {
 
   return get_entities().get_camera();
-}
-
-/**
- * \brief Returns the position of the visible area, relative to the map
- * top-left corner.
- * \return The rectangle of the visible area.
- */
-inline const Rectangle& Map::get_camera_position() const {
-
-  return get_camera().get_bounding_box();
 }
 
 }

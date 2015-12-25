@@ -72,7 +72,7 @@ void Tile::draw_on_map() {
   // Note that the tiles are also optimized for drawing.
   // This function is called at each frame only if the tile is in an
   // animated region. Otherwise, tiles are drawn once when loading the map.
-  draw(get_map().get_visible_surface(), get_map().get_camera_position().get_xy());
+  draw(get_map().get_visible_surface(), get_map().get_camera().get_top_left_xy());
 }
 
 /**

@@ -684,10 +684,10 @@ void Map::draw_sprite(Sprite& sprite, int x, int y) {
 
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
-  const Rectangle& camera_position = get_camera_position();
+  const Camera& camera = get_camera();
   sprite.draw(visible_surface,
-      x - camera_position.get_x(),
-      y - camera_position.get_y()
+      x - camera.get_top_left_x(),
+      y - camera.get_top_left_y()
   );
 }
 
@@ -708,7 +708,7 @@ void Map::draw_sprite(Sprite& sprite, int x, int y,
     return;
   }
 
-  const Rectangle& camera_position = get_camera_position();
+  const Camera& camera = get_camera();
   const Rectangle region_in_frame(
       clipping_area.get_x() - x,
       clipping_area.get_y() - y,
@@ -716,8 +716,8 @@ void Map::draw_sprite(Sprite& sprite, int x, int y,
       clipping_area.get_height()
   );
   const Point dst_position = {
-      x - camera_position.get_x(),
-      y - camera_position.get_y()
+      x - camera.get_top_left_x(),
+      y - camera.get_top_left_y()
   };
   sprite.draw_region(
       region_in_frame,

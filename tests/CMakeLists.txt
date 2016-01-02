@@ -21,6 +21,7 @@ set(lua_test_maps
   "bugs/796_map_get_entities_by_type"
   "bugs/805_hero_set_invincible"
   "bugs/807_cannot_traverse_own_ground"
+  "bugs/808_get_entities_in_rectangle_duplicates"
 )
 
 # Build the Solarus testing library.

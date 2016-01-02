@@ -218,10 +218,6 @@ void Hookshot::draw_on_map() {
     {   0,   7 }
   };
 
-  if (!is_drawn()) {
-    return;
-  }
-
   Entity::draw_on_map();
 
   // also draw the links

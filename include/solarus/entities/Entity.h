@@ -105,7 +105,6 @@ class SOLARUS_API Entity: public ExportableToLua {
     bool is_drawn_in_y_order() const;
     void set_drawn_in_y_order(bool drawn_in_y_order);
     virtual bool is_drawn_at_its_position() const;
-    bool is_drawn() const;
 
     virtual void notify_command_pressed(GameCommand command);
     virtual void notify_command_released(GameCommand command);

@@ -892,10 +892,6 @@ void Enemy::set_suspended(bool suspended) {
  */
 void Enemy::draw_on_map() {
 
-  if (!is_drawn()) {
-    return;
-  }
-
   get_lua_context()->entity_on_pre_draw(*this);
   Detector::draw_on_map();
   get_lua_context()->entity_on_post_draw(*this);

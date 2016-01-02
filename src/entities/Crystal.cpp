@@ -181,17 +181,11 @@ void Crystal::update() {
  */
 void Crystal::draw_on_map() {
 
-  if (!is_drawn()) {
-    return;
-  }
-
   // draw the crystal
   Entity::draw_on_map();
 
   // draw the star
-  if (is_drawn()) {
-    get_map().draw_sprite(*star_sprite, get_top_left_xy() + star_xy);
-  }
+  get_map().draw_sprite(*star_sprite, get_top_left_xy() + star_xy);
 }
 
 /**

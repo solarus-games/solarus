@@ -81,10 +81,6 @@ Ground DynamicTile::get_modified_ground() const {
  */
 void DynamicTile::draw_on_map() {
 
-  if (!is_drawn()) {
-    return;
-  }
-
   const Rectangle& camera_position = get_map().get_camera().get_bounding_box();
 
   Rectangle dst_position(get_top_left_x() - camera_position.get_x(),

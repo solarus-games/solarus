@@ -198,10 +198,6 @@ bool ShopTreasure::notify_action_command_pressed() {
  */
 void ShopTreasure::draw_on_map() {
 
-  if (!is_drawn()) {
-    return;
-  }
-
   const SurfacePtr& map_surface = get_map().get_visible_surface();
   int x = get_x();
   int y = get_y();

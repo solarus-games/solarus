@@ -402,8 +402,7 @@ void Entities::get_entities_in_rectangle(
     const Rectangle& rectangle, ConstEntityVector& result
 ) const {
 
-  EntityVector non_const_result;
-  quadtree.get_elements(rectangle, non_const_result);
+  EntityVector non_const_result = quadtree.get_elements(rectangle);
 
   result.reserve(non_const_result.size());
   for (const ConstEntityPtr& entity : non_const_result) {
@@ -418,7 +417,7 @@ void Entities::get_entities_in_rectangle(
     const Rectangle& rectangle, EntityVector& result
 ) {
 
-  quadtree.get_elements(rectangle, result);
+  result = quadtree.get_elements(rectangle);
 }
 
 /**
@@ -1171,7 +1170,8 @@ void Entities::draw() {
     for (const EntityPtr& entity : entities_in_camera) {
       int layer = entity->get_layer();
       Debug::check_assertion(map.is_valid_layer(layer), "Invalid layer");
-      if (entity->is_drawn()) {
+      if (entity->is_enabled() &&
+          entity->is_visible()) {
         if (entity->is_drawn_in_y_order()) {
           entities_to_draw[layer].second.push_back(entity);
         }
@@ -1180,6 +1180,8 @@ void Entities::draw() {
         }
       }
     }
+
+    // FIXME entities not drawn at their position
   }
 
   for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {

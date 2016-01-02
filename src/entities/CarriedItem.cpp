@@ -439,10 +439,6 @@ void CarriedItem::notify_obstacle_reached() {
  */
 void CarriedItem::draw_on_map() {
 
-  if (!is_drawn()) {
-    return;
-  }
-
   if (!is_throwing) {
     // draw the sprite normally
     Entity::draw_on_map();

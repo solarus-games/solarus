@@ -201,18 +201,20 @@ int Quadtree<T>::get_num_elements() const {
 
 /**
  * \brief Gets the elements intersecting the given rectangle.
- * \param[in] region The rectangle to check.
+ * \param region The rectangle to check.
  * The rectangle should be entirely contained in the quadtree space.
- * \param[in/out] elements A list that will be filled with elements
- * intersecting the rectangle. Elements outside the quadtree space are
- * not added there.
+ * \return A list of elements intersecting the rectangle, in arbitrary order.
+ * Elements outside the quadtree space are not added there.
  */
 template<typename T>
-void Quadtree<T>::get_elements(
-    const Rectangle& region,
-    std::vector<T>& elements
+std::vector<T> Quadtree<T>::get_elements(
+    const Rectangle& region
 ) const {
-  root.get_elements(region, elements);
+  std::set<T> element_set;
+  root.get_elements(region, element_set);
+  std::vector<T> result;
+  result.insert(result.begin(), element_set.begin(), element_set.end());
+  return result;
 }
 
 /**
@@ -517,7 +519,7 @@ int Quadtree<T>::Node::get_num_elements() const {
 template<typename T>
 void Quadtree<T>::Node::get_elements(
     const Rectangle& region,
-    std::vector<T>& result
+    std::set<T>& result
 ) const {
 
   if (!get_cell().overlaps(region)) {
@@ -528,7 +530,7 @@ void Quadtree<T>::Node::get_elements(
   if (!is_split()) {
     for (const std::pair<T, Rectangle>& pair : elements) {
       if (pair.second.overlaps(region)) {
-        result.push_back(pair.first);
+        result.insert(pair.first);
       }
     }
   }

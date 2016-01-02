@@ -206,10 +206,6 @@ void CrystalBlock::update() {
  */
 void CrystalBlock::draw_on_map() {
 
-  if (!is_drawn()) {
-    return;
-  }
-
   Sprite& sprite = get_sprite();
 
   int x1 = get_top_left_x();

@@ -57,9 +57,8 @@ class Quadtree {
     bool remove(const T& element);
     bool move(const T& element, const Rectangle& bounding_box);
 
-    void get_elements(
-        const Rectangle& where,
-        std::vector<T>& result
+    std::vector<T> get_elements(
+        const Rectangle& where
     ) const;
 
     int get_num_elements() const;
@@ -106,7 +105,7 @@ class Quadtree {
 
         void get_elements(
             const Rectangle& region,
-            std::vector<T>& result
+            std::set<T>& result
         ) const;
 
         int get_num_elements() const;

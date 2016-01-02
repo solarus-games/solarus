@@ -2700,23 +2700,6 @@ void Entity::update() {
 }
 
 /**
- * \brief Returns whether this entity should be drawn on the map.
- * \return true if the entity is visible and may have a sprite in the visible part
- * of the map.
- */
-bool Entity::is_drawn() const {
-
-  int camera_width = get_map().get_camera().get_width();
-  const bool far = get_distance_to_camera() > camera_width * 1.5;
-
-  return is_visible()
-      && (overlaps_camera()
-          || !far
-          || !is_drawn_at_its_position()
-      );
-}
-
-/**
  * \brief Returns whether this entity is drawn at its position on the map.
  *
  * Usually, this function returns true, and when it is the case, draw_on_map()
@@ -2740,10 +2723,6 @@ bool Entity::is_drawn_at_its_position() const {
  * This function should do nothing if is_drawn() is false.
  */
 void Entity::draw_on_map() {
-
-  if (!is_drawn()) {
-    return;
-  }
 
   // Draw the sprites.
   for (const SpritePtr& sprite: sprites) {

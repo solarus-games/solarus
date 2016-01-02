@@ -1,0 +1,170 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  min_layer = 0,
+  max_layer = 2,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  pattern = "3",
+}
+
+sensor{
+  layer = 0,
+  x = 120,
+  y = 93,
+  width = 96,
+  height = 80,
+}
+
+sensor{
+  layer = 0,
+  x = 56,
+  y = 29,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 88,
+  y = 29,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 120,
+  y = 29,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 152,
+  y = 29,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 184,
+  y = 29,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 216,
+  y = 29,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 248,
+  y = 29,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 280,
+  y = 29,
+  width = 16,
+  height = 16,
+}
+
+destination{
+  layer = 0,
+  x = 24,
+  y = 29,
+  direction = 1,
+}
+
+sensor{
+  layer = 0,
+  x = 24,
+  y = 221,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 56,
+  y = 221,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 88,
+  y = 221,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 120,
+  y = 221,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 152,
+  y = 221,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 184,
+  y = 221,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 216,
+  y = 221,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 248,
+  y = 221,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  layer = 0,
+  x = 280,
+  y = 221,
+  width = 16,
+  height = 16,
+}
+

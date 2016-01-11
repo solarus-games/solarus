@@ -474,7 +474,6 @@ bool TilesetData::import_from_lua(lua_State* l) {
  */
 bool TilesetData::export_to_lua(std::ostream& out) const {
 
-  std::string last_pattern_id;
   // Background color.
   uint8_t r, g, b, a;
   background_color.get_components(r, g, b, a);
@@ -490,7 +489,6 @@ bool TilesetData::export_to_lua(std::ostream& out) const {
   for (const auto kvp : patterns) {
     const std::string& id = kvp.first;
     const TilePatternData& pattern = kvp.second;
-    last_pattern_id = id;
 
     const Rectangle& first_frame = pattern.get_frame();
     int width = first_frame.get_width();

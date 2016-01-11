@@ -1273,9 +1273,6 @@ void Entities::notify_entity_bounding_box_changed(Entity& entity) {
  */
 bool Entities::overlaps_raised_blocks(int layer, const Rectangle& rectangle) {
 
-  std::set<std::shared_ptr<CrystalBlock>> blocks =
-      get_entities_by_type<CrystalBlock>(layer);
-
   EntityVector entities_nearby;
   get_entities_in_rectangle(rectangle, entities_nearby);
   for (const EntityPtr& entity : entities_nearby) {

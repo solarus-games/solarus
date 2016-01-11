@@ -428,9 +428,8 @@ void LuaContext::main_on_draw(const SurfacePtr& dst_surface) {
  */
 bool LuaContext::main_on_input(const InputEvent& event) {
 
-  bool handled = false;
   push_main(l);
-  handled = on_input(event);
+  bool handled = on_input(event);
   if (!handled) {
     handled = menus_on_input(-1, event);
   }

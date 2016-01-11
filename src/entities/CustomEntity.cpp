@@ -1162,7 +1162,7 @@ void CustomEntity::update_ground_observer() {
   // If there is no on_ground_below_changed() event, don't bother
   // determine the ground below.
   bool ground_observer = get_lua_context()->userdata_has_field(
-      *this, "field_name"
+      *this, "on_ground_below_changed"
   );
   if (ground_observer != this->ground_observer) {
     this->ground_observer = ground_observer;

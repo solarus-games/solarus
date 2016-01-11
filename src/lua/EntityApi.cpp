@@ -5026,7 +5026,7 @@ int LuaContext::custom_entity_api_get_modified_ground(lua_State* l) {
     else {
       push_string(l, enum_to_name(modified_ground));
     }
-    return 0;
+    return 1;
   });
 }
 
@@ -5041,6 +5041,9 @@ int LuaContext::custom_entity_api_set_modified_ground(lua_State* l) {
     CustomEntity& entity = *check_custom_entity(l, 1);
     Ground modified_ground = Ground::EMPTY;
 
+    if (lua_gettop(l) == 1) {
+      LuaTools::type_error(l, 2, "string or nil");
+    }
     if (!lua_isnil(l, 2)) {
       modified_ground = LuaTools::check_enum<Ground>(l, 2);
     }

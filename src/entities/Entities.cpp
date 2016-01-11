@@ -1281,6 +1281,10 @@ bool Entities::overlaps_raised_blocks(int layer, const Rectangle& rectangle) {
       continue;
     }
 
+    if (entity->get_layer() != layer) {
+      continue;
+    }
+
     const CrystalBlock& crystal_block = static_cast<CrystalBlock&>(*entity);
     if (crystal_block.is_raised()) {
       return true;

@@ -596,6 +596,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
       default:
         Debug::die("Invalid destination side");
       }
+      map.get_entities().notify_entity_bounding_box_changed(*this);
       last_solid_ground_coords = get_xy();
       last_solid_ground_layer = get_layer();
       // Note that we keep the hero's state from the previous map.

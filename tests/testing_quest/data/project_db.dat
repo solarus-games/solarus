@@ -18,6 +18,7 @@ map{ id = "bugs/796_map_get_entities_by_type", description = "#796: Add map:get_
 map{ id = "bugs/805_hero_set_invincible", description = "#805: hero:set_invincible() not working" }
 map{ id = "bugs/807_cannot_traverse_own_ground", description = "#807: Entity stuck if cannot traverse its own ground" }
 map{ id = "bugs/808_get_entities_in_rectangle_duplicates", description = "#808: Duplicate entities in map:get_entities_in_rectangle()" }
+map{ id = "bugs/817_entity_set_enabled_overlapping_hero", description = "#817: entity:set_enabled() not working if it is an obstacle on the hero" }
 map{ id = "bugs/818_sprite_get_num_frames", description = "#818: sprite:get_num_frames()" }
 map{ id = "dynamic_tile_tests", description = "Dynamic tile tests" }
 map{ id = "jumper_tests", description = "Jumper tests" }

@@ -73,7 +73,6 @@ Entity::Entity(
   initialized(false),
   being_removed(false),
   enabled(true),
-  waiting_enabled(false),
   suspended(false),
   when_suspended(0),
   optimization_distance(default_optimization_distance),
@@ -1603,12 +1602,33 @@ void Entity::set_enabled(bool enabled) {
   }
 
   if (enabled) {
-    // enable the entity as soon as possible
-    this->waiting_enabled = true;
+    // Enable the entity.
+
+    this->enabled = true;
+
+    if (!is_suspended()) {
+      // Enabling an entity that is not suspended:
+      // unsuspend its movement, its sprites and its timers.
+      if (get_movement() != nullptr) {
+        get_movement()->set_suspended(false);
+      }
+
+      if (stream_action != nullptr) {
+        stream_action->set_suspended(false);
+      }
+
+      for (const SpritePtr& sprite: sprites) {
+        sprite->set_suspended(false);
+      }
+
+      if (is_on_map()) {
+        get_lua_context()->set_entity_timers_suspended(*this, false);
+      }
+    }
+    notify_enabled(true);
   }
   else {
     this->enabled = false;
-    this->waiting_enabled = false;
 
     if (!is_suspended()) {
       // Disabling an entity that is not suspended:
@@ -2626,41 +2646,6 @@ void Entity::update() {
 
   if (is_being_removed()) {
     return;
-  }
-
-  // enable if necessary
-  if (waiting_enabled) {
-
-    Hero& hero = get_hero();
-
-    const bool obstacle = is_obstacle_for(hero) ||
-        (is_ground_modifier() && is_ground_obstacle(get_modified_ground()));
-
-    if (!obstacle || !overlaps(hero)) {
-      this->enabled = true;
-      this->waiting_enabled = false;
-      notify_enabled(true);
-
-      if (!is_suspended()) {
-        // Enabling an entity that is not suspended:
-        // unsuspend its movement, its sprites and its timers.
-        if (get_movement() != nullptr) {
-          get_movement()->set_suspended(false);
-        }
-
-        if (stream_action != nullptr) {
-          stream_action->set_suspended(false);
-        }
-
-        for (const SpritePtr& sprite: sprites) {
-          sprite->set_suspended(false);
-        }
-
-        if (is_on_map()) {
-          get_lua_context()->set_entity_timers_suspended(*this, false);
-        }
-      }
-    }
   }
 
   // check the facing entity

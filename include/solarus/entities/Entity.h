@@ -434,7 +434,6 @@ class SOLARUS_API Entity: public ExportableToLua {
     bool being_removed;                         /**< indicates that the entity is not valid anymore because it is about to be removed */
     bool enabled;                               /**< indicates that the entity is enabled
                                                  * (if not, it will not be displayed and collisions will not be notified) */
-    bool waiting_enabled;                       /**< indicates that the entity will be enabled as soon as the hero stops overlapping it */
 
     bool suspended;                             /**< indicates that the animation and movement of this entity are suspended */
     uint32_t when_suspended;                    /**< indicates when this entity was suspended */

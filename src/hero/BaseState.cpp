@@ -76,7 +76,7 @@ void Hero::BaseState::notify_attack_command_pressed() {
   Hero& hero = get_entity();
 
   if (!hero.is_suspended()
-      && get_commands_effects().get_sword_key_effect() == CommandsEffects::SWORD_KEY_SWORD
+      && get_commands_effects().get_sword_key_effect() == CommandsEffects::ATTACK_KEY_SWORD
       && hero.can_start_sword()) {
 
     hero.set_state(new Hero::SwordSwingingState(hero));

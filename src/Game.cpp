@@ -503,14 +503,14 @@ void Game::update_commands_effects() {
 
   // make sure the sword key is coherent with having a sword
   if (get_equipment().has_ability(Ability::SWORD)
-      && commands_effects.get_sword_key_effect() != CommandsEffects::SWORD_KEY_SWORD) {
+      && commands_effects.get_sword_key_effect() != CommandsEffects::ATTACK_KEY_SWORD) {
 
-    commands_effects.set_sword_key_effect(CommandsEffects::SWORD_KEY_SWORD);
+    commands_effects.set_sword_key_effect(CommandsEffects::ATTACK_KEY_SWORD);
   }
   else if (!get_equipment().has_ability(Ability::SWORD)
-      && commands_effects.get_sword_key_effect() == CommandsEffects::SWORD_KEY_SWORD) {
+      && commands_effects.get_sword_key_effect() == CommandsEffects::ATTACK_KEY_SWORD) {
 
-    commands_effects.set_sword_key_effect(CommandsEffects::SWORD_KEY_NONE);
+    commands_effects.set_sword_key_effect(CommandsEffects::ATTACK_KEY_NONE);
   }
 }
 
@@ -781,7 +781,7 @@ void Game::set_paused(bool paused) {
       commands_effects.save_action_key_effect();
       commands_effects.set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
       commands_effects.save_sword_key_effect();
-      commands_effects.set_sword_key_effect(CommandsEffects::SWORD_KEY_NONE);
+      commands_effects.set_sword_key_effect(CommandsEffects::ATTACK_KEY_NONE);
       commands_effects.set_pause_key_effect(CommandsEffects::PAUSE_KEY_RETURN);
       get_lua_context().game_on_paused(*this);
     }

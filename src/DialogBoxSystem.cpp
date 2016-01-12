@@ -101,7 +101,7 @@ void DialogBoxSystem::open(
   keys_effect.save_action_key_effect();
   keys_effect.set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
   keys_effect.save_sword_key_effect();
-  keys_effect.set_sword_key_effect(CommandsEffects::SWORD_KEY_NONE);
+  keys_effect.set_sword_key_effect(CommandsEffects::ATTACK_KEY_NONE);
   keys_effect.save_pause_key_effect();
   keys_effect.set_pause_key_effect(CommandsEffects::PAUSE_KEY_NONE);
 

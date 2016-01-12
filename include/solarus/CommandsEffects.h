@@ -38,7 +38,6 @@ namespace Solarus {
  * representing those keys.
  *
  * TODO make a single enum for all commands
- * TODO rename Sword to Attack
  */
 class CommandsEffects {
 
@@ -52,7 +51,7 @@ class CommandsEffects {
       ACTION_KEY_NEXT,     /**< display the next message in a dialog */
       ACTION_KEY_LOOK,     /**< look at something */
       ACTION_KEY_OPEN,     /**< open a door or a chest */
-      ACTION_KEY_LIFT,     /**< lift an objet */
+      ACTION_KEY_LIFT,     /**< lift an object */
       ACTION_KEY_THROW,    /**< throw an object */
       ACTION_KEY_GRAB,     /**< grab an object */
       ACTION_KEY_SPEAK,    /**< speak with an NPC */
@@ -60,11 +59,11 @@ class CommandsEffects {
     };
 
     /**
-     * \brief What happens when the user presses the Sword key.
+     * \brief What happens when the user presses the Attack key.
      */
-    enum SwordKeyEffect {
-      SWORD_KEY_NONE,      /**< nothing happens when the user presses the Attack key */
-      SWORD_KEY_SWORD      /**< swing the sword (this is the case most of the time) */
+    enum AttackKeyEffect {
+      ATTACK_KEY_NONE,     /**< nothing happens when the user presses the Attack key */
+      ATTACK_KEY_SWORD     /**< swing the sword (this is the case most of the time) */
     };
 
     /**
@@ -91,8 +90,8 @@ class CommandsEffects {
 
     // sword key
 
-    SwordKeyEffect get_sword_key_effect();
-    void set_sword_key_effect(SwordKeyEffect sword_key_effect);
+    AttackKeyEffect get_sword_key_effect();
+    void set_sword_key_effect(AttackKeyEffect sword_key_effect);
     bool is_sword_key_enabled();
     void set_sword_key_enabled(bool enable);
     void save_sword_key_effect();
@@ -120,8 +119,8 @@ class CommandsEffects {
     ActionKeyEffect action_key_effect_saved; /**< a previous effect of the action key */
     bool action_key_enabled;                 /**< indicates that the action key is currently enabled */
 
-    SwordKeyEffect sword_key_effect;         /**< current effect of the sword key */
-    SwordKeyEffect sword_key_effect_saved;   /**< a previous effect of the sword key */
+    AttackKeyEffect sword_key_effect;         /**< current effect of the sword key */
+    AttackKeyEffect sword_key_effect_saved;   /**< a previous effect of the sword key */
     bool sword_key_enabled;                  /**< indicates that the sword key is currently enabled */
 
     PauseKeyEffect pause_key_effect;         /**< current effect of the pause key */
@@ -140,10 +139,10 @@ struct SOLARUS_API EnumInfoTraits<CommandsEffects::ActionKeyEffect> {
 };
 
 template <>
-struct SOLARUS_API EnumInfoTraits<CommandsEffects::SwordKeyEffect> {
+struct SOLARUS_API EnumInfoTraits<CommandsEffects::AttackKeyEffect> {
   static const std::string pretty_name;
 
-  static const EnumInfo<CommandsEffects::SwordKeyEffect>::names_type names;
+  static const EnumInfo<CommandsEffects::AttackKeyEffect>::names_type names;
 };
 
 template <>

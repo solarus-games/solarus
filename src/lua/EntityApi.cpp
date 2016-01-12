@@ -111,6 +111,7 @@ void LuaContext::register_entity_module() {
       { "set_position", entity_api_set_position },\
       { "get_center_position", entity_api_get_center_position },\
       { "get_bounding_box", entity_api_get_bounding_box },\
+      { "get_sprites_bounding_box", entity_api_get_sprites_bounding_box },\
       { "overlaps", entity_api_overlaps },\
       { "get_distance", entity_api_get_distance },\
       { "get_angle", entity_api_get_angle },\
@@ -916,6 +917,25 @@ int LuaContext::entity_api_get_bounding_box(lua_State* l) {
     lua_pushinteger(l, bounding_box.get_y());
     lua_pushinteger(l, bounding_box.get_width());
     lua_pushinteger(l, bounding_box.get_height());
+    return 4;
+  });
+}
+
+/**
+ * \brief Implementation of entity:get_sprites_bounding_box().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_sprites_bounding_box(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Entity& entity = *check_entity(l, 1);
+
+    const Rectangle& sprites_bounding_box = entity.get_max_bounding_box();
+    lua_pushinteger(l, sprites_bounding_box.get_x());
+    lua_pushinteger(l, sprites_bounding_box.get_y());
+    lua_pushinteger(l, sprites_bounding_box.get_width());
+    lua_pushinteger(l, sprites_bounding_box.get_height());
     return 4;
   });
 }

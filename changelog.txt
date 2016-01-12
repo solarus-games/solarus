@@ -47,6 +47,7 @@ Changes that do not introduce incompatibilities:
 * Add methods map:set_world() and map:set_floor() (#656).
 * map:get_entities() can now be called without parameter to get all entities.
 * map:get_entities*() functions now give entities sorted in Z order (#779).
+* Add a method entity:get_sprites_bounding_box() (#754).
 * Add methods chest:get/set_treasure() (#664).
 * Add methods dynamic_tile:get_pattern_id() and get_modified_ground() (#755).
 * entity:set_optimization_distance() is now only a hint for the engine.

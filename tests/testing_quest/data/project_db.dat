@@ -9,6 +9,7 @@ map{ id = "bugs/671_collision_test_not_moving", description = "#671: Custom enti
 map{ id = "bugs/686_crash_door_item", description = "#686: Crash with doors whose opening condition is an item" }
 map{ id = "bugs/699_crash_exit_surface_moving", description = "#699: Crash at exit when a surface was moving" }
 map{ id = "bugs/738_custom_entity_on_ground_below_changed", description = "#738: custom_entity:on_ground_below_changed() is not called" }
+map{ id = "bugs/754_entity_get_sprites_bounding_box", description = "#754: entity:get_sprites_bounding_box" }
 map{ id = "bugs/769_stuck_dynamic_tile_covered", description = "#769: Non-traversable dynamic tiles covered by traversable ones block the hero" }
 map{ id = "bugs/779_get_entities_random_order", description = "#779: map:get_entities() returns entities in random order" }
 map{ id = "bugs/781_assert_teletransporter_same_map", description = "#781: Assertion error when a teletransporter leads to the same map" }

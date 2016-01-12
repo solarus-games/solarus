@@ -77,7 +77,7 @@ class Quadtree {
         min_in_4_cells = 4;  /**< 4 sibling cells are merged if their total
                               * is below this number when removing an element. */
 
-    static constexpr bool debug_quadtrees = true;
+    static constexpr bool debug_quadtrees = false;
 
   private:
 

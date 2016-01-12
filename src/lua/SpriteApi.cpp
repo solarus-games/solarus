@@ -48,6 +48,7 @@ void LuaContext::register_sprite_module() {
       { "get_num_directions", sprite_api_get_num_directions },
       { "get_frame", sprite_api_get_frame },
       { "set_frame", sprite_api_set_frame },
+      { "get_num_frames", sprite_api_get_num_frames },
       { "get_frame_delay", sprite_api_get_frame_delay },
       { "set_frame_delay", sprite_api_set_frame_delay },
       { "is_paused", sprite_api_is_paused },
@@ -301,6 +302,21 @@ int LuaContext::sprite_api_set_frame(lua_State* l) {
     sprite.set_current_frame(frame);
 
     return 0;
+  });
+}
+
+/**
+ * \brief Implementation of sprite:get_num_frames().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::sprite_api_get_num_frames(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Sprite& sprite = *check_sprite(l, 1);
+
+    lua_pushinteger(l, sprite.get_nb_frames());
+    return 1;
   });
 }
 

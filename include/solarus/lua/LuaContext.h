@@ -570,6 +570,7 @@ class LuaContext {
       sprite_api_get_num_directions,
       sprite_api_get_frame,
       sprite_api_set_frame,
+      sprite_api_get_num_frames,
       sprite_api_get_frame_delay,
       sprite_api_set_frame_delay,
       sprite_api_is_paused,

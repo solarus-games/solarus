@@ -51,6 +51,7 @@ Changes that do not introduce incompatibilities:
 * entity:set_optimization_distance() is now only a hint for the engine.
 * Add a method block:get_sprite().
 * Add an event chest:on_opened() with treasure info parameters (#483).
+* Add a method sprite:get_num_frames() (#818).
 
 Data files format changes
 -------------------------

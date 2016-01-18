@@ -1321,8 +1321,8 @@ int LuaContext::entity_api_test_obstacles(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Entity& entity = *check_entity(l, 1);
-    int dx = LuaTools::check_int(l, 2);
-    int dy = LuaTools::check_int(l, 3);
+    int dx = LuaTools::opt_int(l, 2, 0);
+    int dy = LuaTools::opt_int(l, 3, 0);
     int layer = entity.get_layer();
     if (lua_gettop(l) >= 4) {
       layer = LuaTools::check_layer(l, 4, entity.get_map());

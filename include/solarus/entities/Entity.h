@@ -266,12 +266,15 @@ class SOLARUS_API Entity: public ExportableToLua {
     // Detecting other entities.
     void check_collision(Entity& entity);
     void check_collision(Entity& entity, Sprite& sprite);
-    bool test_collision_rectangle(Entity& entity);
-    bool test_collision_inside(Entity& entity);
-    bool test_collision_origin_point(Entity& entity);
-    bool test_collision_facing_point(Entity& entity);
-    bool test_collision_touching(Entity& entity);
-    bool test_collision_center(Entity& entity);
+    bool test_collision(Entity& entity, CollisionMode collision_mode);
+    bool test_collision_rectangle(const Entity& entity) const;
+    bool test_collision_inside(const Entity& entity) const;
+    bool test_collision_origin_point(const Entity& entity) const;
+    bool test_collision_facing_point(const Entity& entity) const;
+    bool test_collision_touching(const Entity& entity) const;
+    bool test_collision_center(const Entity& entity) const;
+    bool test_collision_sprites(Entity& entity);
+    virtual bool test_collision_custom(Entity& entity);
 
     // Being detected by other entities.
     void check_collision_with_detectors();
@@ -374,7 +377,6 @@ class SOLARUS_API Entity: public ExportableToLua {
     void update_ground_below();
 
     // Collisions.
-    virtual bool test_collision_custom(Entity& entity);
     virtual void notify_collision(
         Entity& entity_overlapping, CollisionMode collision_mode);
     virtual void notify_collision(
@@ -443,9 +445,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     int direction;                              /**< direction of the entity, not used for all kinds of entities */
 
     std::vector<SpritePtr>
-        sprites;                                /**< sprites representing the entity;
-                                                 * note that some entities manage their sprites themselves
-                                                 * rather than using this field */
+        sprites;                                /**< Sprites representing the entity.  */
     std::vector<SpritePtr>
         old_sprites;                            /**< sprites to remove and destroy as soon as possible */
     bool visible;                               /**< indicates that this entity's sprites are currently displayed */

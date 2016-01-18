@@ -117,7 +117,7 @@ void HeroSprites::rebuild_equipment() {
 
   // The hero's shadow.
   if (shadow_sprite == nullptr) {
-    shadow_sprite = std::make_shared<Sprite>("entities/shadow");
+    shadow_sprite = hero.create_sprite("entities/shadow");
     shadow_sprite->set_current_animation("big");
   }
 
@@ -135,7 +135,7 @@ void HeroSprites::rebuild_equipment() {
     // TODO make this sprite depend on the sword sprite: sword_sprite_id + "_stars"
     std::ostringstream oss;
     oss << "hero/sword_stars" << sword_number;
-    sword_stars_sprite = std::make_shared<Sprite>(oss.str());
+    sword_stars_sprite = hero.create_sprite(oss.str());
     sword_stars_sprite->stop_animation();
   }
 
@@ -145,7 +145,7 @@ void HeroSprites::rebuild_equipment() {
   }
 
   // The trail.
-  trail_sprite = std::make_shared<Sprite>("hero/trail");
+  trail_sprite = hero.create_sprite("hero/trail");
   trail_sprite->stop_animation();
 
   // Restore the animation direction.
@@ -181,10 +181,11 @@ void HeroSprites::set_tunic_sprite_id(const std::string& sprite_id) {
     // Delete the previous sprite, but save its animation and direction.
     animation = tunic_sprite->get_current_animation();
     direction = tunic_sprite->get_current_direction();
+    hero.remove_sprite(*tunic_sprite);
     tunic_sprite = nullptr;
   }
 
-  tunic_sprite = std::make_shared<Sprite>(sprite_id);
+  tunic_sprite = hero.create_sprite(sprite_id);
   tunic_sprite->enable_pixel_collisions();
   if (!animation.empty()) {
     set_tunic_animation(animation);
@@ -249,12 +250,13 @@ void HeroSprites::set_sword_sprite_id(const std::string& sprite_id) {
       animation = sword_sprite->get_current_animation();
       direction = sword_sprite->get_current_direction();
     }
+    hero.remove_sprite(*sword_sprite);
     sword_sprite = nullptr;
   }
 
   if (!sprite_id.empty()) {
     // There is a sword sprite specified.
-    sword_sprite = std::make_shared<Sprite>(sprite_id);
+    sword_sprite = hero.create_sprite(sprite_id);
     sword_sprite->enable_pixel_collisions();
     sword_sprite->set_synchronized_to(tunic_sprite);
     if (animation.empty()) {
@@ -366,12 +368,13 @@ void HeroSprites::set_shield_sprite_id(const std::string& sprite_id) {
       animation = shield_sprite->get_current_animation();
       direction = shield_sprite->get_current_direction();
     }
+    hero.remove_sprite(*shield_sprite);
     shield_sprite = nullptr;
   }
 
   if (!sprite_id.empty()) {
     // There is a shield sprite specified.
-    shield_sprite = std::make_shared<Sprite>(sprite_id);
+    shield_sprite = hero.create_sprite(sprite_id);
     shield_sprite->set_synchronized_to(tunic_sprite);
     if (animation.empty()) {
       shield_sprite->stop_animation();

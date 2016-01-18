@@ -1676,15 +1676,61 @@ void Entity::check_collision(Entity& entity, Sprite& sprite) {
 }
 
 /**
+ * \brief Returns whether an entity is overlapping this entity with the given
+ * collision test.
+ * \param entity The entity.
+ * \param collision_mode The collision test to perform.
+ * \return \c true if there is a collision.
+ */
+bool Entity::test_collision(Entity& entity, CollisionMode collision_mode) {
+
+  if (get_layer() != entity.get_layer() && !has_layer_independent_collisions()) {
+    // Not the same layer: no collision.
+    return false;
+  }
+
+  switch (collision_mode) {
+
+  case CollisionMode::COLLISION_NONE:
+    return false;
+
+  case CollisionMode::COLLISION_OVERLAPPING:
+    return test_collision_rectangle(entity);
+
+  case CollisionMode::COLLISION_CONTAINING:
+    return test_collision_inside(entity);
+
+  case CollisionMode::COLLISION_ORIGIN:
+    return test_collision_origin_point(entity);
+
+  case CollisionMode::COLLISION_FACING:
+    return test_collision_facing_point(entity);
+
+  case CollisionMode::COLLISION_TOUCHING:
+    return test_collision_touching(entity);
+
+  case CollisionMode::COLLISION_CENTER:
+    return test_collision_center(entity);
+
+  case CollisionMode::COLLISION_CUSTOM:
+    return test_collision_custom(entity);
+
+  case CollisionMode::COLLISION_SPRITE:
+    return test_collision_sprites(entity);
+  }
+
+  return false;
+}
+
+/**
  * \brief Returns whether an entity's rectangle is overlapping this entity's rectangle.
  *
- * This method is called by check_collision(Entity*) when this entity's collision
- * mode is COLLISION_RECTANGLE.
+ * The layer is not checked.
  *
  * \param entity The entity.
  * \return \c true if the entity's rectangle is overlapping this entity's rectangle.
  */
-bool Entity::test_collision_rectangle(Entity& entity) {
+bool Entity::test_collision_rectangle(const Entity& entity) const {
 
   return entity.overlaps(*this);
 }
@@ -1692,13 +1738,12 @@ bool Entity::test_collision_rectangle(Entity& entity) {
 /**
  * \brief Returns whether an entity's rectangle is entirely inside this entity's rectangle.
  *
- * This method is called by check_collision(Entity*) when this entity's collision
- * mode is COLLISION_INSIDE.
+ * The layer is not checked.
  *
  * \param entity The entity.
  * \return \c true if the entity's rectangle is entirely inside this entity's rectangle.
  */
-bool Entity::test_collision_inside(Entity& entity) {
+bool Entity::test_collision_inside(const Entity& entity) const {
 
   return get_bounding_box().contains(entity.get_bounding_box());
 }
@@ -1707,13 +1752,12 @@ bool Entity::test_collision_inside(Entity& entity) {
 /**
  * \brief Returns whether the origin point of an entity is overlapping this entity's rectangle.
  *
- * This method is called by check_entity_collision(Entity*) when this entity's collision
- * mode is COLLISION_ORIGIN_POINT.
+ * The layer is not checked.
  *
  * \param entity The entity.
  * \return \c true if the entity's origin point is overlapping the this entity's rectangle
  */
-bool Entity::test_collision_origin_point(Entity& entity) {
+bool Entity::test_collision_origin_point(const Entity& entity) const {
 
   return entity.is_origin_point_in(get_bounding_box());
 }
@@ -1721,13 +1765,12 @@ bool Entity::test_collision_origin_point(Entity& entity) {
 /**
  * \brief Returns whether the facing point of an entity is overlapping this entity's rectangle.
  *
- * This method is called by check_collision(Entity*) when this entity's collision
- * mode is COLLISION_FACING_POINT.
+ * The layer is not checked.
  *
  * \param entity The entity.
  * \return \c true if the entity's facing point is overlapping this entity's rectangle
  */
-bool Entity::test_collision_facing_point(Entity& entity) {
+bool Entity::test_collision_facing_point(const Entity& entity) const {
 
   return entity.is_facing_point_in(get_bounding_box());
 }
@@ -1737,14 +1780,13 @@ bool Entity::test_collision_facing_point(Entity& entity) {
  * (in any of the four main directions)
  * is overlapping this entity's rectangle.
  *
- * This method is called by check_collision(Entity*) when this entity's collision
- * mode is COLLISION_TOUCHING_POINT.
+ * The layer is not checked.
  *
  * \param entity The entity.
  * \return \c true if a touching point of the entity is overlapping
  * this entity's rectangle.
  */
-bool Entity::test_collision_touching(Entity& entity) {
+bool Entity::test_collision_touching(const Entity& entity) const {
 
   const Rectangle& bounding_box = get_bounding_box();
   return entity.is_touching_point_in(bounding_box, 0)
@@ -1756,15 +1798,39 @@ bool Entity::test_collision_touching(Entity& entity) {
 /**
  * \brief Returns whether the center point of an entity is overlapping this entity's rectangle.
  *
- * This method is called by check_collision(Entity*) when this entity's collision
- * mode is COLLISION_CENTER.
+ * The layer is not checked.
  *
  * \param entity The entity.
  * \return \c true if the entity's center is overlapping this entity's rectangle.
  */
-bool Entity::test_collision_center(Entity& entity) {
+bool Entity::test_collision_center(const Entity& entity) const {
 
   return entity.is_center_in(get_bounding_box());
+}
+
+/**
+ * \brief Returns whether a sprite of this entity collides with a sprite of another one.
+ *
+ * The layer is not checked.
+ * The test is pixel-precise.
+ *
+ * \param entity The entity.
+ * \return \c true if sprites of both entities overlap.
+ */
+bool Entity::test_collision_sprites(Entity& entity) {
+
+  for (const SpritePtr& this_sprite: get_sprites()) {
+    this_sprite->enable_pixel_collisions();
+    for (const SpritePtr& other_sprite: entity.get_sprites()) {
+
+      other_sprite->enable_pixel_collisions();
+      if (this_sprite->test_collision(*other_sprite, get_x(), get_y(), entity.get_x(), entity.get_y())) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 /**
@@ -1779,7 +1845,7 @@ bool Entity::test_collision_center(Entity& entity) {
  */
 bool Entity::test_collision_custom(Entity& /* entity */) {
 
-  Debug::die("Custom collision mode invoked but not defined");
+  return false;
 }
 
 /**

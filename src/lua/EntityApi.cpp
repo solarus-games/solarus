@@ -948,12 +948,42 @@ int LuaContext::entity_api_get_sprites_bounding_box(lua_State* l) {
 int LuaContext::entity_api_overlaps(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const Entity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
 
     bool overlaps = false;
     if (is_entity(l, 2)) {
-      const Entity& other_entity = *check_entity(l, 2);
-      overlaps = entity.overlaps(other_entity);
+      Entity& other_entity = *check_entity(l, 2);
+      std::string collision_mode_name = LuaTools::opt_string(l, 3, "overlapping");
+
+      CollisionMode collision_mode = CollisionMode::COLLISION_NONE;
+      if (collision_mode_name == "overlapping") {
+        collision_mode = CollisionMode::COLLISION_OVERLAPPING;
+      }
+      else if (collision_mode_name == "containing") {
+        collision_mode = CollisionMode::COLLISION_CONTAINING;
+      }
+      else if (collision_mode_name == "origin") {
+        collision_mode = CollisionMode::COLLISION_ORIGIN;
+      }
+      else if (collision_mode_name == "facing") {
+        collision_mode = CollisionMode::COLLISION_FACING;
+      }
+      else if (collision_mode_name == "touching") {
+        collision_mode = CollisionMode::COLLISION_TOUCHING;
+      }
+      else if (collision_mode_name == "center") {
+        collision_mode = CollisionMode::COLLISION_CENTER;
+      }
+      else if (collision_mode_name == "sprite") {
+        collision_mode = CollisionMode::COLLISION_SPRITE;
+      }
+      else {
+        LuaTools::arg_error(l, 3,
+            std::string("Invalid name '") + lua_tostring(l, 2) + "'"
+        );
+      }
+
+      overlaps = entity.test_collision(other_entity, collision_mode);
     }
     else {
       int x = LuaTools::check_int(l, 2);
@@ -4961,28 +4991,28 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
       // We cannot use LuaTools::check_enum() like always, because this
       // enum has special numerical values.
       const std::string& collision_mode_name = LuaTools::check_string(l, 2);
-      CollisionMode collision_mode = COLLISION_NONE;
+      CollisionMode collision_mode = CollisionMode::COLLISION_NONE;
 
       if (collision_mode_name == "overlapping") {
-        collision_mode = COLLISION_OVERLAPPING;
+        collision_mode = CollisionMode::COLLISION_OVERLAPPING;
       }
       else if (collision_mode_name == "containing") {
-        collision_mode = COLLISION_CONTAINING;
+        collision_mode = CollisionMode::COLLISION_CONTAINING;
       }
       else if (collision_mode_name == "origin") {
-        collision_mode = COLLISION_CONTAINING;
+        collision_mode = CollisionMode::COLLISION_CONTAINING;
       }
       else if (collision_mode_name == "facing") {
-        collision_mode = COLLISION_FACING;
+        collision_mode = CollisionMode::COLLISION_FACING;
       }
       else if (collision_mode_name == "touching") {
-        collision_mode = COLLISION_TOUCHING;
+        collision_mode = CollisionMode::COLLISION_TOUCHING;
       }
       else if (collision_mode_name == "center") {
-        collision_mode = COLLISION_CENTER;
+        collision_mode = CollisionMode::COLLISION_CENTER;
       }
       else if (collision_mode_name == "sprite") {
-        collision_mode = COLLISION_SPRITE;
+        collision_mode = CollisionMode::COLLISION_SPRITE;
       }
       else {
         LuaTools::arg_error(l, 2,

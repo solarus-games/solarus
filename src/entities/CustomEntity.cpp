@@ -1142,7 +1142,7 @@ bool CustomEntity::notify_action_command_pressed() {
 /**
  * \copydoc Entity::interaction_with_item
  */
-bool CustomEntity::interaction_with_item(EquipmentItem& item) {
+bool CustomEntity::notify_interaction_with_item(EquipmentItem& item) {
 
   return get_lua_context()->entity_on_interaction_item(*this, item);
 }

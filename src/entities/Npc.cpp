@@ -299,7 +299,7 @@ void Npc::call_script_hero_interaction() {
  * \param item_used The equipment item used.
  * \return true if an interaction occured.
  */
-bool Npc::interaction_with_item(EquipmentItem& item_used) {
+bool Npc::notify_interaction_with_item(EquipmentItem& item_used) {
 
   bool interaction_occured;
   if (behavior == BEHAVIOR_ITEM_SCRIPT) {

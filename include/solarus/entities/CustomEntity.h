@@ -156,7 +156,7 @@ class SOLARUS_API CustomEntity: public Entity {
     void notify_collision_with_enemy(Enemy& enemy) override;
     void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) override;
     bool notify_action_command_pressed() override;
-    bool interaction_with_item(EquipmentItem& item) override;
+    bool notify_interaction_with_item(EquipmentItem& item) override;
 
     // Observing the ground.
     bool is_ground_observer() const override;

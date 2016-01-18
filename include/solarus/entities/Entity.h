@@ -309,7 +309,7 @@ class SOLARUS_API Entity: public ExportableToLua {
 
     // Interactions.
     virtual bool notify_action_command_pressed();
-    virtual bool interaction_with_item(EquipmentItem& item);  // TODO rename to notify_interaction_with_item
+    virtual bool notify_interaction_with_item(EquipmentItem& item);
     virtual bool start_movement_by_hero();
     virtual void stop_movement_by_hero();
     virtual std::string get_sword_tapping_sound();

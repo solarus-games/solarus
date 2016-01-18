@@ -2986,7 +2986,7 @@ bool Entity::notify_action_command_pressed() {
  * \param item The equipment item used.
  * \return \c true if an interaction occurred.
  */
-bool Entity::interaction_with_item(EquipmentItem& /* item */) {
+bool Entity::notify_interaction_with_item(EquipmentItem& /* item */) {
   return false;
 }
 

@@ -294,11 +294,17 @@ brew install sdl2 libvorbis libmodplug cmake ninja luajit sdl2_image sdl2_ttf
 You will also need a copy of OS X SDK, which is included with XCode. XCode is freely available on the
 App Store.
 
+
 - Compile on OSX
 
-You can compile solarus just by doing the default setting with cmake, or generate the XCode project. 
-Note that you probably want to pass the SOLARUS_BUNDLE flag too, which build the entire bundle instead of 
-just the binary.
+You can compile solarus just by doing the default command with cmake, or generate the XCode project :
+
+$ cmake .
+or
+$ cmake -G XCode .
+
+Note that you probably want to pass the SOLARUS_BUNDLE flag too, to build the entire bundle instead of 
+just the binary (see the "Deploy on OSX" part).
 
 By default, you will build a binary with the maximum of compatibility that your OSX version can provide. 
 You may want to produce an optimized (or exotic) binary instead of a standard one.
@@ -310,13 +316,12 @@ $ cmake -DSOLARUS_SYSROOT="/Developer/SDKs/MacOSX10.5.sdk" -DSOLARUS_ARCH="ppc;i
 
 - Deploy on OSX
 
-You will only build the executable with the default command.
+You will only build the Solarus binary with the default command.
 To build the entire bundle, pass the following flag to cmake
 
 $ cmake -DSOLARUS_BUNDLE="your_bundle_name" .
 
-Which will install the application into a bundle named "your_bundle_name"
-and place it in the /Applications folder.
+Which will install the binary into a bundle named "your_bundle_name".
 A bundle is a .app suffixed folder, which typically contains 
 the executable and all resources it needs.
 Pass SOLARUS_BUNDLE_INFOPLIST, SOLARUS_BUNDLE_ICON,
@@ -325,17 +330,18 @@ in addition to SOLARUS_BUNDLE to specify your own configuration.
 See ./cmake/modules/addCFBundleTarget.cmake for more details.
 
 All non-Mac-native frameworks are placed in ${your_bundle_name}.app/Contents/Frameworks/
-You have to do a little verification on them : check if dependencies search
-path are correctly integrated, just by doing
+You have to check if dependencies search path are correctly set 
+before distributing your application, just by doing
 
-$ otool -L /dylib/or/binary/I/want/to/check
+$ otool -L /dylib/or/binary/you/want/to/check
 
 It show the search path for every dependencies. Just look on the one you embed.
 If one of them has a wrong path, you can modify it with
 
-$ install_name_tool -id new_path /dylib/or/binary/I/want/to/modify
-or
-$ install_name_tool -change old_path new_path /dylib/or/binary/I/want/to/modify
+$ install_name_tool -id new_path /dylib/or/binary/you/want/to/modify
+to change the library path, or
+$ install_name_tool -change old_path new_path /dylib/or/binary/you/want/to/modify
+to change the one of a dependency.
 
 The new_path string usually looks like "@rpath/The_dylib.dylib" or 
 "@rpath/The_framework.framework/Version/A/The_binary" on Mac 10.5+.

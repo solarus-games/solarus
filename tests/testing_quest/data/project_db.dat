@@ -24,6 +24,7 @@ map{ id = "bugs/810_hero_disappears_after_scrolling/1", description = "#810: The
 map{ id = "bugs/810_hero_disappears_after_scrolling/2", description = "#810" }
 map{ id = "bugs/817_entity_set_enabled_overlapping_hero", description = "#817: entity:set_enabled() not working if it is an obstacle on the hero" }
 map{ id = "bugs/818_sprite_get_num_frames", description = "#818: sprite:get_num_frames()" }
+map{ id = "bugs/823_sprite_get_size_origin", description = "#823: sprite:get_size() and sprite:get_origin()" }
 map{ id = "dynamic_tile_tests", description = "Dynamic tile tests" }
 map{ id = "jumper_tests", description = "Jumper tests" }
 map{ id = "surface_tests", description = "Surface tests" }

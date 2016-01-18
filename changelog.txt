@@ -56,6 +56,7 @@ Changes that do not introduce incompatibilities:
 * Add a method block:get_sprite().
 * Add an event chest:on_opened() with treasure info parameters (#483).
 * Add a method sprite:get_num_frames() (#818).
+* Add methods sprite:get_size() and sprite:get_origin() (#823).
 
 Data files format changes
 -------------------------

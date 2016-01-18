@@ -51,6 +51,8 @@ void LuaContext::register_sprite_module() {
       { "get_num_frames", sprite_api_get_num_frames },
       { "get_frame_delay", sprite_api_get_frame_delay },
       { "set_frame_delay", sprite_api_set_frame_delay },
+      { "get_size", sprite_api_get_size },
+      { "get_origin", sprite_api_get_origin },
       { "is_paused", sprite_api_is_paused },
       { "set_paused", sprite_api_set_paused },
       { "set_ignore_suspend", sprite_api_set_ignore_suspend },
@@ -359,6 +361,42 @@ int LuaContext::sprite_api_set_frame_delay(lua_State* l) {
     sprite.set_frame_delay(delay);
 
     return 0;
+  });
+}
+
+/**
+ * \brief Implementation of sprite:get_size().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::sprite_api_get_size(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Sprite& sprite = *check_sprite(l, 1);
+
+    const Size& size = sprite.get_size();
+
+    lua_pushinteger(l, size.width);
+    lua_pushinteger(l, size.height);
+    return 2;
+  });
+}
+
+/**
+ * \brief Implementation of sprite:get_origin().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::sprite_api_get_origin(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Sprite& sprite = *check_sprite(l, 1);
+
+    const Point& origin = sprite.get_origin();
+
+    lua_pushinteger(l, origin.x);
+    lua_pushinteger(l, origin.y);
+    return 2;
   });
 }
 

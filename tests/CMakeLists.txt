@@ -28,6 +28,7 @@ set(lua_test_maps
   "bugs/810_hero_disappears_after_scrolling/1"
   "bugs/817_entity_set_enabled_overlapping_hero"
   "bugs/818_sprite_get_num_frames"
+  "bugs/823_sprite_get_size_origin"
 )
 
 # Build the Solarus testing library.

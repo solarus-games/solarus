@@ -19,8 +19,8 @@ Engine changes
 * Fix straight movement precision.
 * Fix sword tapping sound still played when the game is suspended (#797).
 * Fix hero:set_invincible() not working without duration (#805).
-* Fix custom_entity:set_can_traverse_ground() not working for some grounds (#794).
-* Fix custom entity collisions not detected for entities that do not move (#671).
+* Fix custom_entity:set_can_traverse_ground() for some grounds (#794).
+* Fix custom entity collisions missed for entities that do not move (#671).
 * Fix custom_entity:get_modified_ground() returning nothing.
 * Fix custom_entity:on_ground_below_changed() not called (#738).
 * Fix creating an entity with the same name as another one just removed (#795).
@@ -50,7 +50,7 @@ Changes that do not introduce incompatibilities:
 * Add a method entity:get_sprites_bounding_box() (#754).
 * entity:set_optimization_distance() is now only a hint for the engine.
 * entity:test_obstacles() now also works without parameters.
-* entity:overlaps(other_entity) now has an optional collision mode parameter (#748).
+* entity:overlaps() now has an optional collision mode parameter (#748).
 * Add methods chest:get/set_treasure() (#664).
 * Add methods dynamic_tile:get_pattern_id() and get_modified_ground() (#755).
 * Add a method block:get_sprite().

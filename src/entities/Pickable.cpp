@@ -49,7 +49,7 @@ Pickable::Pickable(
     const Point& xy,
     const Treasure& treasure
 ):
-  Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE, name, layer, xy, Size(0, 0)),
+  Entity(name, 0, layer, xy, Size(0, 0)),
   treasure(treasure),
   given_to_player(false),
   shadow_sprite(),
@@ -63,6 +63,7 @@ Pickable::Pickable(
   disappear_date(0),
   entity_followed(nullptr) {
 
+  set_collision_modes(CollisionMode::COLLISION_OVERLAPPING | CollisionMode::COLLISION_SPRITE);
 }
 
 /**
@@ -223,7 +224,7 @@ bool Pickable::initialize_sprites() {
  */
 void Pickable::notify_created() {
 
-  Detector::notify_created();
+  Entity::notify_created();
 
   update_ground_below();
   notify_ground_below_changed();  // Necessary if on empty ground.
@@ -320,7 +321,7 @@ void Pickable::notify_collision(Entity& entity_overlapping, CollisionMode /* col
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Pickable::notify_collision(
     Entity& other_entity,
@@ -468,7 +469,7 @@ void Pickable::set_blinking(bool blinking) {
  */
 void Pickable::set_suspended(bool suspended) {
 
-  Detector::set_suspended(suspended); // suspend the animation and the movement
+  Entity::set_suspended(suspended); // suspend the animation and the movement
 
   if (shadow_sprite != nullptr) {
     shadow_sprite->set_suspended(suspended);
@@ -505,7 +506,7 @@ void Pickable::set_suspended(bool suspended) {
 void Pickable::update() {
 
   // update the animations and the movement
-  Detector::update();
+  Entity::update();
 
   // update the shadow
   if (shadow_sprite != nullptr) {
@@ -573,7 +574,7 @@ void Pickable::draw_on_map() {
   }
 
   // draw the sprite
-  Detector::draw_on_map();
+  Entity::draw_on_map();
 }
 
 }

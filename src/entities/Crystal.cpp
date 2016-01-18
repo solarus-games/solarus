@@ -37,11 +37,15 @@ namespace Solarus {
  * \param xy Coordinates of the entity to create.
  */
 Crystal::Crystal(const std::string& name, int layer, const Point& xy):
-  Detector(COLLISION_SPRITE | COLLISION_OVERLAPPING | COLLISION_FACING,
-      name, layer, xy, Size(16, 16)),
+  Entity(name, 0, layer, xy, Size(16, 16)),
   state(false),
   next_possible_hit_date(System::now()) {
 
+  set_collision_modes(
+      CollisionMode::COLLISION_SPRITE |
+      CollisionMode::COLLISION_OVERLAPPING |
+      CollisionMode::COLLISION_FACING
+  );
   set_origin(8, 13);
   create_sprite("entities/crystal", true);
   star_sprite = std::make_shared<Sprite>("entities/star");
@@ -61,7 +65,7 @@ EntityType Crystal::get_type() const {
  */
 void Crystal::notify_creating() {
 
-  Detector::notify_creating();
+  Entity::notify_creating();
 
   bool state = get_game().get_crystal_state();
   if (state != this->state) {
@@ -90,14 +94,14 @@ void Crystal::notify_collision(Entity& entity_overlapping, CollisionMode collisi
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Crystal::notify_collision(Entity& other_entity, Sprite& /* this_sprite */, Sprite& other_sprite) {
   other_entity.notify_collision_with_crystal(*this, other_sprite);
 }
 
 /**
- * \copydoc Detector::notify_action_command_pressed
+ * \copydoc Entity::notify_action_command_pressed
  */
 bool Crystal::notify_action_command_pressed() {
 

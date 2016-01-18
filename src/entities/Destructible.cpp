@@ -55,7 +55,7 @@ Destructible::Destructible(
     const Treasure& treasure,
     Ground modified_ground
 ):
-  Detector(COLLISION_NONE, name, layer, xy, Size(16, 16)),
+  Entity(name, 0, layer, xy, Size(16, 16)),
   modified_ground(modified_ground),
   treasure(treasure),
   animation_set_id(animation_set_id),
@@ -265,12 +265,12 @@ void Destructible::update_collision_modes() {
   if (get_modified_ground() == Ground::WALL) {
     // The object is an obstacle.
     // Set the facing collision mode to allow the hero to look at it.
-    add_collision_mode(COLLISION_FACING);
+    add_collision_mode(CollisionMode::COLLISION_FACING);
   }
 
   if (get_can_be_cut()
       || get_can_explode()) {
-    add_collision_mode(COLLISION_SPRITE);
+    add_collision_mode(CollisionMode::COLLISION_SPRITE);
   }
 }
 
@@ -340,7 +340,7 @@ void Destructible::notify_collision_with_hero(Hero& hero, CollisionMode /* colli
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Destructible::notify_collision(
     Entity& other_entity,
@@ -383,7 +383,7 @@ void Destructible::notify_collision(
 }
 
 /**
- * \copydoc Detector::notify_action_command_pressed
+ * \copydoc Entity::notify_action_command_pressed
  */
 bool Destructible::notify_action_command_pressed() {
 

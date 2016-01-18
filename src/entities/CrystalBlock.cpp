@@ -28,18 +28,19 @@ namespace Solarus {
 
 /**
  * \brief Creates a new crystal block.
- * \param game the current game
+ * \param game The current game.
  * \param name Name identifying the entity on the map or an empty string.
- * \param layer layer of the entity to create on the map
+ * \param layer Layer of the entity to create on the map.
  * \param xy Coordinates of the entity to create.
  * \param size Size of the block (the pattern can be repeated).
  * \param subtype subtype of raised block
  */
 CrystalBlock::CrystalBlock(Game& game, const std::string& name,
     int layer, const Point& xy, const Size& size, Subtype subtype):
-  Detector(COLLISION_OVERLAPPING, name, layer, xy, size),
+  Entity(name, 0, layer, xy, size),
   subtype(subtype) {
 
+  set_collision_modes(CollisionMode::COLLISION_OVERLAPPING);
   create_sprite("entities/crystal_block");
 
   // Don't pause the sprite animation when the crystal block is far from the

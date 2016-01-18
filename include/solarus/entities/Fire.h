@@ -18,7 +18,7 @@
 #define SOLARUS_FIRE_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include <string>
 
 namespace Solarus {
@@ -28,7 +28,7 @@ namespace Solarus {
  *
  * Fire can interact with entities.
  */
-class Fire: public Detector {
+class Fire: public Entity {
 
   public:
 

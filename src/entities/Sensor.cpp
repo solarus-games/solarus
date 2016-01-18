@@ -37,10 +37,11 @@ Sensor::Sensor(
     int layer,
     const Point& xy,
     const Size& size):
-  Detector(COLLISION_CONTAINING | COLLISION_OVERLAPPING, name, layer, xy, size),
+  Entity(name, 0, layer, xy, size),
   activated_by_hero(false),
   notifying_script(false) {
 
+  set_collision_modes(CollisionMode::COLLISION_CONTAINING | CollisionMode::COLLISION_OVERLAPPING);
   set_origin(8, 13);
 }
 
@@ -124,7 +125,7 @@ void Sensor::activate(Hero& /* hero */) {
  */
 void Sensor::update() {
 
-  Detector::update();
+  Entity::update();
 
   if (activated_by_hero) {
     // check whether the hero is still present

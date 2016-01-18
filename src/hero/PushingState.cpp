@@ -18,7 +18,6 @@
 #include "solarus/hero/FreeState.h"
 #include "solarus/hero/GrabbingState.h"
 #include "solarus/hero/HeroSprites.h"
-#include "solarus/entities/Detector.h"
 #include "solarus/movements/PathMovement.h"
 #include "solarus/Game.h"
 #include "solarus/GameCommands.h"
@@ -93,7 +92,7 @@ void Hero::PushingState::update() {
     // see if the obstacle pushed is an entity that the hero can move
     else {
 
-      Detector* facing_entity = hero.get_facing_entity();
+      Entity* facing_entity = hero.get_facing_entity();
       if (facing_entity != nullptr) { // the obstacle pushed is an entity
 
         if (facing_entity->get_type() == EntityType::BLOCK) { // it can be moved by the hero (TODO dynamic binding)

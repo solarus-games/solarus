@@ -18,7 +18,7 @@
 #define SOLARUS_SEPARATOR_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include <string>
 
 namespace Solarus {
@@ -31,7 +31,7 @@ namespace Solarus {
  * This entity allows to separate parts of the map like if there was several
  * maps.
  */
-class Separator: public Detector {
+class Separator: public Entity {
 
   public:
 

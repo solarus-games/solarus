@@ -101,7 +101,7 @@ void Hero::SwordTappingState::update() {
       uint32_t now = System::now();
       if (get_sprites().get_current_frame() == 3 && now >= next_sound_date) {
 
-        Detector* facing_entity = hero.get_facing_entity();
+        Entity* facing_entity = hero.get_facing_entity();
         std::string sound_id;
         if (facing_entity != nullptr) {
           sound_id = facing_entity->get_sword_tapping_sound();
@@ -158,16 +158,13 @@ bool Hero::SwordTappingState::can_use_shield() const {
 }
 
 /**
- * \brief Tests whether the hero is cutting with his sword the specified detector
- * for which a collision was detected.
- * \param detector the detector to check
- * \return true if the sword is cutting this detector
+ * \copydoc Entity::State::is_cutting_with_sword
  */
-bool Hero::SwordTappingState::is_cutting_with_sword(Detector& detector) {
+bool Hero::SwordTappingState::is_cutting_with_sword(Entity& entity) {
 
   Hero& hero = get_entity();
-  return detector.is_obstacle_for(hero)         // only obstacle entities can be cut
-    && hero.get_facing_entity() == &detector    // only one entity at a time
+  return entity.is_obstacle_for(hero)         // only obstacle entities can be cut
+    && hero.get_facing_entity() == &entity    // only one entity at a time
     && get_sprites().get_current_frame() >= 3;  // wait until the animation shows an appropriate frame
 }
 

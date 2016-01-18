@@ -18,7 +18,7 @@
 #define SOLARUS_BOMB_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include <string>
 
 namespace Solarus {
@@ -26,7 +26,7 @@ namespace Solarus {
 /**
  * \brief A bomb that will explode soon.
  */
-class Bomb: public Detector {
+class Bomb: public Entity {
 
   public:
 

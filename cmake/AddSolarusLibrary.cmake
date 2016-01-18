@@ -21,7 +21,6 @@ file(
   include/solarus/entities/CustomEntity.h
   include/solarus/entities/Destination.h
   include/solarus/entities/Destructible.h
-  include/solarus/entities/Detector.h
   include/solarus/entities/Door.h
   include/solarus/entities/DynamicTile.h
   include/solarus/entities/EnemyAttack.h
@@ -228,7 +227,6 @@ file(
   src/entities/CustomEntity.cpp
   src/entities/Destination.cpp
   src/entities/Destructible.cpp
-  src/entities/Detector.cpp
   src/entities/Door.cpp
   src/entities/DynamicTile.cpp
   src/entities/Enemy.cpp

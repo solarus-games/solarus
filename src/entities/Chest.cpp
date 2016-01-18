@@ -57,13 +57,15 @@ Chest::Chest(
     const std::string& sprite_name,
     const Treasure& treasure):
 
-  Detector(COLLISION_FACING, name, layer, xy, Size(16, 16)),
+  Entity(name, 0, layer, xy, Size(16, 16)),
   treasure(treasure),
   open(treasure.is_found()),
   treasure_given(open),
   treasure_date(0),
   opening_method(OpeningMethod::BY_INTERACTION),
   opening_condition_consumed(false) {
+
+  set_collision_modes(CollisionMode::COLLISION_FACING);
 
   // Create the sprite.
   Sprite& sprite = *create_sprite(sprite_name);
@@ -90,7 +92,7 @@ EntityType Chest::get_type() const {
  */
 void Chest::notify_enabled(bool enabled) {
 
-  Detector::notify_enabled(enabled);
+  Entity::notify_enabled(enabled);
 
   // Make sure the chest does not appear on the hero.
   if (enabled && overlaps(get_hero())) {
@@ -404,7 +406,7 @@ void Chest::update() {
 }
 
 /**
- * \copydoc Detector::notify_action_command_pressed
+ * \copydoc Entity::notify_action_command_pressed
  */
 bool Chest::notify_action_command_pressed() {
 

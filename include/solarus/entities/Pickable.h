@@ -18,7 +18,7 @@
 #define SOLARUS_PICKABLE_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/entities/EntityPtr.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/movements/FallingHeight.h"
@@ -32,7 +32,7 @@ namespace Solarus {
 /**
  * \brief An treasure placed on the ground and that the hero can take.
  */
-class Pickable: public Detector {
+class Pickable: public Entity {
 
   public:
 

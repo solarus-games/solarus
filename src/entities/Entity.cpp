@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/CollisionMode.h"
 #include "solarus/entities/Destructible.h"
 #include "solarus/entities/Entities.h"
 #include "solarus/entities/Entity.h"
@@ -69,6 +70,8 @@ Entity::Entity(
   movement(nullptr),
   movement_notifications_enabled(true),
   facing_entity(nullptr),
+  collision_modes(CollisionMode::COLLISION_NONE),
+  layer_independent_collisions(false),
   stream_action(nullptr),
   initialized(false),
   being_removed(false),
@@ -114,19 +117,6 @@ const std::string& Entity::get_lua_type_name() const {
  */
 bool Entity::is_hero() const {
   return get_type() == EntityType::HERO;
-}
-
-/**
- * \brief Returns whether entities of this type have detection capabilities.
- *
- * This function returns whether entities of this type can detect the presence
- * of the hero or other entities. If yes, the function
- * notify_collision() will be called when a collision is detected.
- *
- * \return \c true if this type of entity can detect other entities.
- */
-bool Entity::is_detector() const {
-  return false;
 }
 
 /**
@@ -540,6 +530,10 @@ void Entity::notify_being_removed() {
   ) {
     update_ground_observers();
   }
+
+  if (get_hero().get_facing_entity() == this) {
+    get_hero().set_facing_entity(nullptr);
+  }
 }
 
 /**
@@ -574,17 +568,28 @@ void Entity::set_layer(int layer) {
  */
 void Entity::notify_layer_changed() {
 
-  if (is_on_map()) {
-    check_collision_with_detectors();
+  if (!is_on_map()) {
+    return;
+  }
 
-    if (is_ground_modifier()) {
-      update_ground_observers();
-    }
-    update_ground_below();
+  if (is_detector()) {
+    // Since this entity is a detector, all entities need to check
+    // their collisions with it.
+    get_map().check_collision_from_detector(*this);
+  }
 
-    if (are_movement_notifications_enabled()) {
-      get_lua_context()->entity_on_position_changed(*this, get_xy(), get_layer());
-    }
+  // Check collisions between this entity and other detectors.
+  check_collision_with_detectors();
+
+  // Update the ground.
+  if (is_ground_modifier()) {
+    update_ground_observers();
+  }
+  update_ground_below();
+
+  // Notify Lua.
+  if (are_movement_notifications_enabled()) {
+    get_lua_context()->entity_on_position_changed(*this, get_xy(), get_layer());
   }
 }
 
@@ -1032,17 +1037,17 @@ Point Entity::get_touching_point(int direction) const {
 
 /**
  * \brief Returns the detector in front of this entity.
- * \return the detector this entity is touching, or nullptr if there is no detector in front of him
+ * \return The detector this entity is facing, or nullptr if there is no detector in front of him
  */
-Detector* Entity::get_facing_entity() {
+Entity* Entity::get_facing_entity() {
   return facing_entity;
 }
 
 /**
  * \brief Returns the detector in front of this entity.
- * \return the detector this entity is touching, or nullptr if there is no detector in front of him
+ * \return The detector this entity is facing, or nullptr if there is no detector in front of him.
  */
-const Detector* Entity::get_facing_entity() const {
+const Entity* Entity::get_facing_entity() const {
   return facing_entity;
 }
 
@@ -1051,9 +1056,9 @@ const Detector* Entity::get_facing_entity() const {
  *
  * This function is called when this entity is facing a new detector.
  *
- * \param facing_entity the detector this entity is now facing (possibly nullptr)
+ * \param facing_entity The detector this entity is now facing (possibly nullptr).
  */
-void Entity::set_facing_entity(Detector* facing_entity) {
+void Entity::set_facing_entity(Entity* facing_entity) {
 
   this->facing_entity = facing_entity;
   notify_facing_entity_changed(facing_entity);
@@ -1061,9 +1066,9 @@ void Entity::set_facing_entity(Detector* facing_entity) {
 
 /**
  * \brief Notifies this entity that its facing entity has just changed.
- * \param facing_entity the detector this entity is now facing (possibly nullptr)
+ * \param facing_entity The detector this entity is now facing (possibly nullptr).
  */
-void Entity::notify_facing_entity_changed(Detector* /* facing_entity */) {
+void Entity::notify_facing_entity_changed(Entity* /* facing_entity */) {
 }
 
 /**
@@ -1475,15 +1480,341 @@ void Entity::notify_position_changed() {
   // Notify the quadtree.
   notify_bounding_box_changed();
 
+  if (is_detector()) {
+    // Since this entity is a detector, all entities need to check
+    // their collisions with it.
+    get_map().check_collision_from_detector(*this);
+  }
+
+  // Check collisions between this entity and other detectors.
   check_collision_with_detectors();
+
+  // Update the ground.
   if (is_ground_modifier()) {
     update_ground_observers();
   }
   update_ground_below();
 
+  // Notify Lua.
   if (are_movement_notifications_enabled()) {
     get_lua_context()->entity_on_position_changed(*this, get_xy(), get_layer());
   }
+}
+
+/**
+ * \brief Returns whether this entity is able to detect other entities.
+ *
+ * This is \c true if this entity has at least one collision mode.
+ *
+ * \return \c true if this entity can detect other entities.
+ */
+bool Entity::is_detector() const {
+  return collision_modes != CollisionMode::COLLISION_NONE;
+}
+
+/**
+ * \brief Sets the collision modes detected by this entity.
+ * \param collision_modes The collision modes to set
+ * (can be an OR combination of collision modes).
+ */
+void Entity::set_collision_modes(int collision_modes) {
+
+  if (collision_modes & CollisionMode::COLLISION_SPRITE) {
+    enable_pixel_collisions();
+  }
+  this->collision_modes = collision_modes;
+}
+
+/**
+ * \brief Adds a collision mode to be detected this entity.
+ * \param collision_mode The collision mode to add.
+ */
+void Entity::add_collision_mode(CollisionMode collision_mode) {
+
+  set_collision_modes(this->collision_modes | collision_mode);
+}
+
+/**
+ * \brief Returns whether the entity detects the specified.
+ * \param collision_mode A collision mode.
+ * \return \c true if this collision mode is detected by this entity.
+ */
+bool Entity::has_collision_mode(CollisionMode collision_mode) {
+  return (this->collision_modes & collision_mode) != 0;
+}
+
+/**
+ * \brief Enables the pixel-perfect collision checks for all sprites
+ * of this entity.
+ */
+void Entity::enable_pixel_collisions() {
+
+  for (const SpritePtr& sprite: get_sprites()) {
+    sprite->enable_pixel_collisions();
+  }
+}
+
+/**
+ * \brief Returns whether this entity can have collisions with entities even if
+ * they are not on the same layer.
+ *
+ * This function returns false by default.
+ *
+ * \return true if this entity can collide with entities that are on another layer
+ */
+bool Entity::has_layer_independent_collisions() const {
+  return layer_independent_collisions;
+}
+
+/**
+ * \brief Sets whether this entity can detect collisions with entities even if
+ * they are not on the same layer.
+ * \param independent \c true if this entity can detect entities that are on another layer.
+ */
+void Entity::set_layer_independent_collisions(bool independent) {
+  this->layer_independent_collisions = independent;
+}
+
+/**
+ * \brief Checks whether an entity collides with this detector.
+ *
+ * Does nothing if this entity is not a detector.
+ *
+ * This function is called by the map when an entity has just moved.
+ * It checks whether the entity collides with this detector.
+ * Depending on this detector's collision mode(s), the appropriate
+ * test_collision_* functions are called.
+ * If there is a collision, the notify_collision() method is called.
+ *
+ * \param entity The entity to check.
+ */
+void Entity::check_collision(Entity& entity) {
+
+  if (!is_detector()) {
+    // No collision kind to detect.
+    return;
+  }
+
+  if (&entity == this) {
+    return;
+  }
+
+  if (get_layer() != entity.get_layer() && !has_layer_independent_collisions()) {
+    // Not the same layer: no collision.
+    return;
+  }
+
+  // Detect the collision depending on the collision modes.
+
+  if (has_collision_mode(CollisionMode::COLLISION_OVERLAPPING) && test_collision_rectangle(entity)) {
+    notify_collision(entity, CollisionMode::COLLISION_OVERLAPPING);
+  }
+
+  if (has_collision_mode(CollisionMode::COLLISION_CONTAINING) && test_collision_inside(entity)) {
+    notify_collision(entity, CollisionMode::COLLISION_CONTAINING);
+  }
+
+  if (has_collision_mode(CollisionMode::COLLISION_ORIGIN) && test_collision_origin_point(entity)) {
+    notify_collision(entity, CollisionMode::COLLISION_ORIGIN);
+  }
+
+  if (has_collision_mode(CollisionMode::COLLISION_FACING) && test_collision_facing_point(entity)) {
+
+    if (entity.get_facing_entity() == nullptr) {
+      // Make sure only one entity can think "I am the facing entity".
+      entity.set_facing_entity(this);
+    }
+    notify_collision(entity, CollisionMode::COLLISION_FACING);
+  }
+
+  if (has_collision_mode(CollisionMode::COLLISION_TOUCHING) && test_collision_touching(entity)) {
+    notify_collision(entity, CollisionMode::COLLISION_TOUCHING);
+  }
+
+  if (has_collision_mode(CollisionMode::COLLISION_CENTER) && test_collision_center(entity)) {
+    notify_collision(entity, CollisionMode::COLLISION_CENTER);
+  }
+
+  if (has_collision_mode(CollisionMode::COLLISION_CUSTOM) && test_collision_custom(entity)) {
+    notify_collision(entity, CollisionMode::COLLISION_CUSTOM);
+  }
+}
+
+/**
+ * \brief Checks whether a sprite collides with this detector.
+ *
+ * Does nothing if this entity is not a detector.
+ *
+ * If there is a collision, the notify_collision(Entity&, Sprite&, Sprite&) method is called.
+ *
+ * \param entity The entity to check.
+ * \param sprite The sprite of that entity.
+ */
+void Entity::check_collision(Entity& entity, Sprite& sprite) {
+
+  if (!has_collision_mode(CollisionMode::COLLISION_SPRITE)) {
+    return;
+  }
+
+  if (&entity == this) {
+    return;
+  }
+
+  if (get_layer() != entity.get_layer() && !has_layer_independent_collisions()) {
+    // Not the same layer: no collision.
+    return;
+  }
+
+  // We check the collision between the specified entity's sprite and
+  // all sprites of the current entity.
+  for (const SpritePtr& this_sprite: get_sprites()) {
+
+    if (this_sprite->test_collision(sprite, get_x(), get_y(), entity.get_x(), entity.get_y())) {
+      notify_collision(entity, *this_sprite, sprite);
+    }
+  }
+}
+
+/**
+ * \brief Returns whether an entity's rectangle is overlapping this entity's rectangle.
+ *
+ * This method is called by check_collision(Entity*) when this entity's collision
+ * mode is COLLISION_RECTANGLE.
+ *
+ * \param entity The entity.
+ * \return \c true if the entity's rectangle is overlapping this entity's rectangle.
+ */
+bool Entity::test_collision_rectangle(Entity& entity) {
+
+  return entity.overlaps(*this);
+}
+
+/**
+ * \brief Returns whether an entity's rectangle is entirely inside this entity's rectangle.
+ *
+ * This method is called by check_collision(Entity*) when this entity's collision
+ * mode is COLLISION_INSIDE.
+ *
+ * \param entity The entity.
+ * \return \c true if the entity's rectangle is entirely inside this entity's rectangle.
+ */
+bool Entity::test_collision_inside(Entity& entity) {
+
+  return get_bounding_box().contains(entity.get_bounding_box());
+}
+
+
+/**
+ * \brief Returns whether the origin point of an entity is overlapping this entity's rectangle.
+ *
+ * This method is called by check_entity_collision(Entity*) when this entity's collision
+ * mode is COLLISION_ORIGIN_POINT.
+ *
+ * \param entity The entity.
+ * \return \c true if the entity's origin point is overlapping the this entity's rectangle
+ */
+bool Entity::test_collision_origin_point(Entity& entity) {
+
+  return entity.is_origin_point_in(get_bounding_box());
+}
+
+/**
+ * \brief Returns whether the facing point of an entity is overlapping this entity's rectangle.
+ *
+ * This method is called by check_collision(Entity*) when this entity's collision
+ * mode is COLLISION_FACING_POINT.
+ *
+ * \param entity The entity.
+ * \return \c true if the entity's facing point is overlapping this entity's rectangle
+ */
+bool Entity::test_collision_facing_point(Entity& entity) {
+
+  return entity.is_facing_point_in(get_bounding_box());
+}
+
+/**
+ * \brief Returns whether a touching point of an entity
+ * (in any of the four main directions)
+ * is overlapping this entity's rectangle.
+ *
+ * This method is called by check_collision(Entity*) when this entity's collision
+ * mode is COLLISION_TOUCHING_POINT.
+ *
+ * \param entity The entity.
+ * \return \c true if a touching point of the entity is overlapping
+ * this entity's rectangle.
+ */
+bool Entity::test_collision_touching(Entity& entity) {
+
+  const Rectangle& bounding_box = get_bounding_box();
+  return entity.is_touching_point_in(bounding_box, 0)
+      || entity.is_touching_point_in(bounding_box, 1)
+      || entity.is_touching_point_in(bounding_box, 2)
+      || entity.is_touching_point_in(bounding_box, 3);
+}
+
+/**
+ * \brief Returns whether the center point of an entity is overlapping this entity's rectangle.
+ *
+ * This method is called by check_collision(Entity*) when this entity's collision
+ * mode is COLLISION_CENTER.
+ *
+ * \param entity The entity.
+ * \return \c true if the entity's center is overlapping this entity's rectangle.
+ */
+bool Entity::test_collision_center(Entity& entity) {
+
+  return entity.is_center_in(get_bounding_box());
+}
+
+/**
+ * \brief Returns whether an entity collides with this entity with respect to a custom rule.
+ *
+ * This method is called by check_collision(Entity*) when this entity's collision
+ * mode is COLLISION_CUSTOM.
+ * Redefine it if you want to use this collision mode.
+ *
+ * \param entity The entity.
+ * \return \c true if the entity's collides with this entity with respect to the custom rule
+ */
+bool Entity::test_collision_custom(Entity& /* entity */) {
+
+  Debug::die("Custom collision mode invoked but not defined");
+}
+
+/**
+ * \brief Notifies this entity that it just detected a collision with another entity.
+ *
+ * This function is called by check_collision(Entity*)
+ * when an entity overlaps this detector.
+ *
+ * \param entity_overlapping The entity overlapping this detector.
+ * \param collision_mode The collision mode that detected the collision (useful if
+ * this detector has several collision modes).
+ */
+void Entity::notify_collision(Entity& /* entity_overlapping */, CollisionMode /* collision_mode */) {
+
+  // By default, nothing happens.
+  // Redefine this method in the subclasses to do the appropriate action.
+}
+
+/**
+ * \brief Notifies this entity that it just detected a pixel-perfect collision with another sprite.
+ *
+ * This function is called by check_collision(Entity*, Sprite*) when another entity's
+ * sprite overlaps a sprite of this detector.
+ *
+ * \param other_entity The entity overlapping this detector.
+ * \param this_sprite The sprite of this detector that is overlapping the other entity's sprite.
+ * \param other_sprite The sprite of other_entity that is overlapping this detector.
+ */
+void Entity::notify_collision(
+    Entity& /* other_entity */,
+    Sprite& /* this_sprite */,
+    Sprite& /* other_sprite */
+) {
+  // By default, nothing happens.
+  // Redefine this method in the subclasses to do the appropriate action.
 }
 
 /**
@@ -1766,18 +2097,6 @@ bool Entity::is_ground_obstacle(Ground ground) const {
 
   }
 
-  return false;
-}
-
-/**
- * \brief Returns whether this entity can have collisions with entities even if
- * they are not on the same layer.
- *
- * This function returns false by default.
- *
- * \return true if this entity can collide with entities that are on another layer
- */
-bool Entity::has_layer_independent_collisions() const {
   return false;
 }
 
@@ -2560,6 +2879,80 @@ void Entity::notify_attacked_enemy(
     const Sprite* /* victim_sprite */,
     EnemyReaction::Reaction& /* result */,
     bool /* killed */) {
+}
+
+/**
+ * \brief Notifies this entity that the player is interacting with it by
+ * pressing the action command.
+ *
+ * Only possible if this entity detects collisions of type
+ * CollisionMode::COLLISION_FACING.
+ *
+ * This function is called when the player presses the action command
+ * while the hero is facing this entity, unless the action command effect
+ * does not allow the hero to interact with the entity, like while he is
+ * carrying an object.
+ *
+ * By default, nothing happens.
+ * Redefine your function in the subclasses to make the hero interact with
+ * this entity.
+ *
+ * \return \c true if an interaction happened.
+ */
+bool Entity::notify_action_command_pressed() {
+  return false;
+}
+
+/**
+ * \brief Notifies this entity that the player is interacting with it by
+ * using an equipment item.
+ *
+ * Only possible if this entity detects collisions of type
+ * CollisionMode::COLLISION_FACING.
+ *
+ * This function is called when the player uses an equipment item
+ * while the hero is facing this entity.
+ *
+ * By default, nothing happens.
+ * Redefine your function in the subclasses to make your entity react to an
+ * equipment item.
+ *
+ * \param item The equipment item used.
+ * \return \c true if an interaction occurred.
+ */
+bool Entity::interaction_with_item(EquipmentItem& /* item */) {
+  return false;
+}
+
+/**
+ * \brief This function is called when the player tries to push or pull this
+ * entity.
+ *
+ * By default, nothing happens.
+ * Redefine your function in the subclasses to make something happen with the entity.
+ *
+ * \return \c true if this entity was pushed or pulled successfully.
+ */
+bool Entity::start_movement_by_hero() {
+  return false;
+}
+
+/**
+ * \brief This function is called when the player finishes to push or pull
+ * this entity.
+ *
+ * By default, nothing happens.
+ * Redefine your function in the subclasses to make something happen with the entity.
+ */
+void Entity::stop_movement_by_hero() {
+}
+
+/**
+ * \brief This function is called when the player is tapping his sword against this entity.
+ * \return The sound to play when tapping this entity with the sword.
+ */
+std::string Entity::get_sword_tapping_sound() {
+  return "sword_tapping";
 }
 
 /**

@@ -18,7 +18,7 @@
 #define SOLARUS_EXPLOSION_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include <list>
 #include <string>
 
@@ -29,7 +29,7 @@ namespace Solarus {
  *
  * An explosion can hurt the hero, the enemies and open weak walls.
  */
-class Explosion: public Detector {
+class Explosion: public Entity {
 
   public:
 

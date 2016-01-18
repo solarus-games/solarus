@@ -18,7 +18,7 @@
 #define SOLARUS_CRYSTAL_BLOCK_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include <string>
 
 namespace Solarus {
@@ -29,7 +29,7 @@ namespace Solarus {
  * When the block is raised, the hero cannot traverse it. However, if the hero is
  * on raised blocks, he can walk on them until he jumps back to the normal ground.
  */
-class CrystalBlock: public Detector {
+class CrystalBlock: public Entity {
 
   public:
 

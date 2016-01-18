@@ -19,9 +19,9 @@
 
 #include "solarus/Common.h"
 #include "solarus/Treasure.h"
-#include "solarus/entities/Detector.h"
 #include "solarus/entities/EnemyAttack.h"
 #include "solarus/entities/EnemyReaction.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/entities/EntityPtr.h"
 #include "solarus/entities/Explosion.h"
 #include <map>
@@ -45,7 +45,7 @@ namespace Solarus {
  * depending on its current movement and the attacks it is subject to.
  * Additional animations may be defined.
  */
-class Enemy: public Detector {
+class Enemy: public Entity {
 
   public:
 

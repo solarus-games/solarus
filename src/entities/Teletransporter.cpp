@@ -53,7 +53,7 @@ Teletransporter::Teletransporter(
     const std::string& destination_map_id,
     const std::string& destination_name):
 
-  Detector(COLLISION_CUSTOM, name, layer, xy, size),
+  Entity(name, 0, layer, xy, size),
   sound_id(sound_id),
   transition_style(transition_style),
   destination_map_id(destination_map_id),
@@ -61,6 +61,8 @@ Teletransporter::Teletransporter(
   destination_side(-1),
   transition_direction(0),
   transporting_hero(false) {
+
+  set_collision_modes(CollisionMode::COLLISION_CUSTOM);
 
   if (!sprite_name.empty()) {
     create_sprite(sprite_name);
@@ -72,7 +74,7 @@ Teletransporter::Teletransporter(
  */
 void Teletransporter::notify_creating() {
 
-  Detector::notify_creating();
+  Entity::notify_creating();
 
   int x = get_x();
   int y = get_y();

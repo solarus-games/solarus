@@ -710,10 +710,9 @@ Point Hero::get_facing_point() const {
 }
 
 /**
- * \brief Notifies this entity that its facing entity has just changed.
- * \param facing_entity the detector this entity is now facing (possibly nullptr)
+ * \copydoc Entity::notify_facing_entity_changed
  */
-void Hero::notify_facing_entity_changed(Detector* facing_entity) {
+void Hero::notify_facing_entity_changed(Entity* facing_entity) {
 
   if (facing_entity == nullptr &&
       get_commands_effects().is_action_key_acting_on_facing_entity()) {
@@ -1916,12 +1915,12 @@ void Hero::notify_grabbed_entity_collision() {
 }
 
 /**
- * \brief Tests whether the hero is cutting with his sword the specified detector
+ * \brief Tests whether the hero is cutting with his sword the specified entity
  * for which a collision was detected.
  *
- * When the sword sprite collides with a detector,
+ * When the sword sprite collides with an entity,
  * this function can be called to determine whether the hero is
- * really cutting this particular detector precisely.
+ * really cutting this particular entity precisely.
  * This depends on the hero's state, his direction and his
  * distance to the detector.
  * This function assumes that there is already a collision
@@ -1930,11 +1929,11 @@ void Hero::notify_grabbed_entity_collision() {
  * hero wants to cut a bush or some grass.
  * Returns false by default.
  *
- * \param detector the detector to check
- * \return true if the sword is cutting this detector
+ * \param entity The entity to check.
+ * \return \c true if the sword is cutting this entity.
  */
-bool Hero::is_striking_with_sword(Detector& detector) const {
-  return get_state().is_cutting_with_sword(detector);
+bool Hero::is_striking_with_sword(Entity& entity) const {
+  return get_state().is_cutting_with_sword(entity);
 }
 
 /**
@@ -1945,7 +1944,7 @@ bool Hero::is_striking_with_sword(Detector& detector) const {
 void Hero::try_snap_to_facing_entity() {
 
   Rectangle collision_box = get_bounding_box();
-  const Detector* facing_entity = get_facing_entity();
+  const Entity* facing_entity = get_facing_entity();
 
   if (get_animation_direction() % 2 == 0) {
     if (abs(collision_box.get_y() - facing_entity->get_top_left_y()) <= 5) {

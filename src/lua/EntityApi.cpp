@@ -1279,11 +1279,7 @@ int LuaContext::entity_api_has_layer_independent_collisions(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const Entity& entity = *check_entity(l, 1);
 
-    bool independent = false;
-    if (entity.is_detector()) {
-      const Detector& detector = static_cast<const Detector&>(entity);
-      independent = detector.has_layer_independent_collisions();
-    }
+    bool independent = entity.has_layer_independent_collisions();
 
     lua_pushboolean(l, independent);
     return 1;
@@ -1303,10 +1299,7 @@ int LuaContext::entity_api_set_layer_independent_collisions(lua_State* l) {
     Entity& entity = *check_entity(l, 1);
     bool independent = LuaTools::opt_boolean(l, 2, true);
 
-    if (entity.is_detector()) {
-      Detector& detector = static_cast<Detector&>(entity);
-      detector.set_layer_independent_collisions(independent);
-    }
+    entity.set_layer_independent_collisions(independent);
 
     return 0;
   });
@@ -4964,7 +4957,7 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
 
     if (lua_isstring(l, 2)) {
       // Built-in collision test.
-      // TODO move string to enum conversion into a function of Detector.
+      // TODO move string to enum conversion into a function of Entity.
       // We cannot use LuaTools::check_enum() like always, because this
       // enum has special numerical values.
       const std::string& collision_mode_name = LuaTools::check_string(l, 2);

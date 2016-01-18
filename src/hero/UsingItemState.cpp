@@ -44,7 +44,7 @@ void Hero::UsingItemState::start(const State* previous_state) {
   BaseState::start(previous_state);
 
   bool interaction = false;
-  Detector* facing_entity = get_entity().get_facing_entity();
+  Entity* facing_entity = get_entity().get_facing_entity();
   if (facing_entity != nullptr && !facing_entity->is_being_removed()) {
     // Maybe the facing entity (e.g. an NPC) accepts an interaction with this
     // particular item.

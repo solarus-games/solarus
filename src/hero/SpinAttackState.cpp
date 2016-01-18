@@ -136,12 +136,9 @@ bool Hero::SpinAttackState::can_be_hurt(Entity* /* attacker */) const {
 }
 
 /**
- * \brief Tests whether the hero is cutting with his sword the specified detector
- * for which a collision was detected.
- * \param detector the detector to check
- * \return true if the sword is cutting this detector
+ * \copydoc Entity::State::is_cutting_with_sword
  */
-bool Hero::SpinAttackState::is_cutting_with_sword(Detector& /* detector */) {
+bool Hero::SpinAttackState::is_cutting_with_sword(Entity& /* entity */) {
 
   // during a spin attack, any sprite collision can cut things
   return true;

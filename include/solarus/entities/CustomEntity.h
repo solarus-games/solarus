@@ -18,7 +18,7 @@
 #define SOLARUS_CUSTOM_ENTITY_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/lua/ScopedLuaRef.h"
 #include <map>
 #include <string>
@@ -33,7 +33,7 @@ namespace Solarus {
  * that controls it. This is useful to make several custom entities with the
  * same behavior more easily.
  */
-class SOLARUS_API CustomEntity: public Detector {
+class SOLARUS_API CustomEntity: public Entity {
 
   public:
 

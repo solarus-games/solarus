@@ -18,7 +18,7 @@
 #define SOLARUS_JUMPER_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include <string>
 
 namespace Solarus {
@@ -29,7 +29,7 @@ namespace Solarus {
  * A jumper is a detector placed on a map.
  * When the hero touches this detector, he makes a jump with a specified length.
  */
-class Jumper: public Detector {
+class Jumper: public Entity {
 
   public:
 

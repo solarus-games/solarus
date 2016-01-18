@@ -154,13 +154,10 @@ bool Hero::SwordSwingingState::can_sword_hit_crystal() const {
 }
 
 /**
- * \brief Tests whether the hero is cutting with his sword the specified detector
- * for which a collision was detected.
- * \param detector the detector to check
- * \return true if the sword is cutting this detector
+ * \copydoc Entity::State::is_cutting_with_sword
  */
 bool Hero::SwordSwingingState::is_cutting_with_sword(
-    Detector& detector) {
+    Entity& entity) {
 
   Hero& hero = get_entity();
   if (hero.get_movement() != nullptr) {
@@ -168,7 +165,7 @@ bool Hero::SwordSwingingState::is_cutting_with_sword(
   }
 
   // check the distance to the detector
-  int distance = detector.is_obstacle_for(hero) ? 14 : 4;
+  int distance = entity.is_obstacle_for(hero) ? 14 : 4;
   Point tested_point = hero.get_facing_point();
 
   switch (get_sprites().get_animation_direction()) {
@@ -190,7 +187,7 @@ bool Hero::SwordSwingingState::is_cutting_with_sword(
       break;
   }
 
-  return detector.overlaps(tested_point);
+  return entity.overlaps(tested_point);
 }
 
 /**

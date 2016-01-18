@@ -58,11 +58,12 @@ Npc::Npc(
     int direction,
     const std::string& behavior_string
 ):
-  Detector(COLLISION_FACING | COLLISION_OVERLAPPING, name, layer, xy, Size(0, 0)),
+  Entity(name, 0, layer, xy, Size(0, 0)),
   subtype(subtype),
   dialog_to_show(""),
   item_name("") {
 
+  set_collision_modes(CollisionMode::COLLISION_FACING | CollisionMode::COLLISION_OVERLAPPING);
   initialize_sprite(sprite_name, direction);
   set_size(16, 16);
   set_origin(8, 13);
@@ -225,7 +226,7 @@ void Npc::notify_collision(Entity& entity_overlapping, CollisionMode collision_m
 }
 
 /**
- * \copydoc Detector::notify_action_command_pressed
+ * \copydoc Entity::notify_action_command_pressed
  */
 bool Npc::notify_action_command_pressed() {
 
@@ -323,7 +324,7 @@ bool Npc::interaction_with_item(EquipmentItem& item_used) {
  */
 void Npc::notify_position_changed() {
 
-  Detector::notify_position_changed();
+  Entity::notify_position_changed();
 
   if (subtype == USUAL_NPC) {
 
@@ -352,7 +353,7 @@ void Npc::notify_position_changed() {
  */
 void Npc::notify_movement_finished() {
 
-  Detector::notify_movement_finished();
+  Entity::notify_movement_finished();
 
   if (subtype == USUAL_NPC) {
     get_sprite().set_current_animation("stopped");

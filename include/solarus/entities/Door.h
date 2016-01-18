@@ -18,7 +18,7 @@
 #define SOLARUS_DOOR_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include <map>
 #include <string>
 
@@ -41,7 +41,7 @@ namespace Solarus {
  * TODO For opening method OPENING_BY_INTERACTION_IF_ITEM, allow to interact
  * with the item command.
  */
-class Door: public Detector {
+class Door: public Entity {
 
   public:
 

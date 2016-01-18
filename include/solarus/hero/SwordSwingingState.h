@@ -39,7 +39,7 @@ class Hero::SwordSwingingState: public Hero::BaseState {
     virtual bool can_avoid_stream(const Stream& stream) const override;
     virtual bool can_use_shield() const override;
     virtual bool can_sword_hit_crystal() const override;
-    virtual bool is_cutting_with_sword(Detector& detector) override;
+    virtual bool is_cutting_with_sword(Entity& entity) override;
     virtual bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const override;
     virtual void notify_obstacle_reached() override;
     virtual void notify_attacked_enemy(

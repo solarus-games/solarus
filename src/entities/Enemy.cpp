@@ -83,8 +83,7 @@ Enemy::Enemy(
     const std::string& breed,
     const Treasure& treasure
 ):
-  Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE,
-      name, layer, xy, Size(0, 0)),
+  Entity(name, 0, layer, xy, Size(0, 0)),
   breed(breed),
   damage_on_hero(1),
   life(1),
@@ -112,6 +111,7 @@ Enemy::Enemy(
   nb_explosions(0),
   next_explosion_date(0) {
 
+  set_collision_modes(CollisionMode::COLLISION_OVERLAPPING | CollisionMode::COLLISION_SPRITE);
   set_size(16, 16);
   set_origin(8, 13);
   set_drawn_in_y_order(true);
@@ -208,7 +208,7 @@ void Enemy::notify_creating() {
  */
 void Enemy::notify_created() {
 
-  Detector::notify_created();
+  Entity::notify_created();
 
   // At this point, enemy:on_created() was called.
   enable_pixel_collisions();
@@ -229,7 +229,7 @@ void Enemy::notify_created() {
  */
 void Enemy::notify_map_opening_transition_finished() {
 
-  Detector::notify_map_opening_transition_finished();
+  Entity::notify_map_opening_transition_finished();
 
   if (is_enabled() && is_in_normal_state()) {
     restart();
@@ -766,7 +766,7 @@ void Enemy::set_animation(const std::string& animation) {
  */
 void Enemy::update() {
 
-  Detector::update();
+  Entity::update();
 
   if (is_suspended() || !is_enabled()) {
     return;
@@ -871,7 +871,7 @@ void Enemy::update() {
  */
 void Enemy::set_suspended(bool suspended) {
 
-  Detector::set_suspended(suspended);
+  Entity::set_suspended(suspended);
 
   if (!suspended) {
     uint32_t diff = System::now() - get_when_suspended();
@@ -893,7 +893,7 @@ void Enemy::set_suspended(bool suspended) {
 void Enemy::draw_on_map() {
 
   get_lua_context()->entity_on_pre_draw(*this);
-  Detector::draw_on_map();
+  Entity::draw_on_map();
   get_lua_context()->entity_on_post_draw(*this);
 }
 
@@ -903,7 +903,7 @@ void Enemy::draw_on_map() {
  */
 void Enemy::notify_enabled(bool enabled) {
 
-  Detector::notify_enabled(enabled);
+  Entity::notify_enabled(enabled);
 
   if (!is_on_map()) {
     return;
@@ -954,7 +954,7 @@ void Enemy::notify_collision(Entity& entity_overlapping, CollisionMode /* collis
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Enemy::notify_collision(Entity& other_entity, Sprite& this_sprite, Sprite& other_sprite) {
 

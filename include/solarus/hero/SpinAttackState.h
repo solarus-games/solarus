@@ -36,7 +36,7 @@ class Hero::SpinAttackState: public Hero::BaseState {
     virtual bool can_sword_hit_crystal() const override;
     virtual bool can_be_hurt(Entity* attacker) const override;
     virtual bool can_pick_treasure(EquipmentItem& item) const override;
-    virtual bool is_cutting_with_sword(Detector& detector) override;
+    virtual bool is_cutting_with_sword(Entity& entity) override;
     virtual int get_sword_damage_factor() const override;
     virtual bool is_deep_water_obstacle() const override;
     virtual bool is_hole_obstacle() const override;

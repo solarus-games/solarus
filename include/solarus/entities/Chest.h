@@ -19,7 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/Treasure.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include <map>
 #include <string>
 
@@ -30,7 +30,7 @@ namespace Solarus {
  *
  * It can be a normal chest or a big chest.
  */
-class Chest: public Detector {
+class Chest: public Entity {
 
   public:
 

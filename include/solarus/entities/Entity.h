@@ -42,10 +42,10 @@ class Chest;
 class CommandsEffects;
 class Crystal;
 class CrystalBlock;
-class Detector;
 class Destructible;
 class Enemy;
 class Equipment;
+class EquipmentItem;
 class Explosion;
 class Fire;
 class Game;
@@ -75,15 +75,15 @@ class Teletransporter;
  * non-playing characters, doors, chests, etc.
  * Each entity has:
  * - a bounding box that represents its position on the map (a rectangle),
- * - a layer on the map
- * - an origin point, relative to the rectangle's top-left corner
+ * - a layer on the map,
+ * - an origin point, relative to the rectangle's top-left corner.
  * Some entities can also have a name, a movement and some sprites.
  */
 class SOLARUS_API Entity: public ExportableToLua {
 
   public:
 
-    // destruction
+    // Destruction.
     virtual ~Entity();
     void remove_from_map();
     virtual void notify_being_removed();
@@ -91,12 +91,11 @@ class SOLARUS_API Entity: public ExportableToLua {
 
     /**
      * \brief Returns the type of entity.
-     * \return the type of entity
+     * \return The type of entity.
      */
     virtual EntityType get_type() const = 0;
     virtual const std::string& get_lua_type_name() const override;
     bool is_hero() const;
-    virtual bool is_detector() const;
     virtual bool is_ground_observer() const;
     virtual Point get_ground_point() const;
     bool is_ground_modifier() const;
@@ -223,10 +222,10 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual void notify_moving_by(Entity& entity);
     virtual void notify_moved_by(Entity& entity);
 
-    Detector* get_facing_entity();
-    const Detector* get_facing_entity() const;
-    void set_facing_entity(Detector* facing_entity);
-    virtual void notify_facing_entity_changed(Detector* facing_entity);
+    Entity* get_facing_entity();
+    const Entity* get_facing_entity() const;
+    void set_facing_entity(Entity* facing_entity);
+    virtual void notify_facing_entity_changed(Entity* facing_entity);
     static const Point& direction_to_xy_move(int direction8);
 
     // geometry
@@ -254,9 +253,27 @@ class SOLARUS_API Entity: public ExportableToLua {
     bool is_in_same_region(const Entity& other) const;
     bool is_in_same_region(const Point& xy) const;
 
-    // collisions
-    virtual bool has_layer_independent_collisions() const;
+    // Collisions.
+    bool is_detector() const;
+    void set_collision_modes(int collision_modes);
+    void add_collision_mode(CollisionMode collision_mode);
+    bool has_collision_mode(CollisionMode collision_mode);
+    void enable_pixel_collisions();
 
+    bool has_layer_independent_collisions() const;
+    void set_layer_independent_collisions(bool independent);
+
+    // Detecting other entities.
+    void check_collision(Entity& entity);
+    void check_collision(Entity& entity, Sprite& sprite);
+    bool test_collision_rectangle(Entity& entity);
+    bool test_collision_inside(Entity& entity);
+    bool test_collision_origin_point(Entity& entity);
+    bool test_collision_facing_point(Entity& entity);
+    bool test_collision_touching(Entity& entity);
+    bool test_collision_center(Entity& entity);
+
+    // Being detected by other entities.
     void check_collision_with_detectors();
     void check_collision_with_detectors(Sprite& sprite);
 
@@ -287,6 +304,14 @@ class SOLARUS_API Entity: public ExportableToLua {
         EnemyReaction::Reaction& result,
         bool killed);
 
+    // Interactions.
+    virtual bool notify_action_command_pressed();
+    virtual bool interaction_with_item(EquipmentItem& item);  // TODO rename to notify_interaction_with_item
+    virtual bool start_movement_by_hero();
+    virtual void stop_movement_by_hero();
+    virtual std::string get_sword_tapping_sound();
+
+    // Obstacles.
     virtual bool is_obstacle_for(Entity& other);
     virtual bool is_obstacle_for(Entity& other, const Rectangle& candidate_position);
     bool is_ground_obstacle(Ground ground) const;
@@ -306,7 +331,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual bool is_separator_obstacle(Separator& separator);
     virtual bool is_sword_ignored() const;
 
-    // game loop
+    // Game loop.
     bool is_suspended() const;
     virtual void set_suspended(bool suspended);
     virtual void update();
@@ -329,7 +354,7 @@ class SOLARUS_API Entity: public ExportableToLua {
 
   protected:
 
-    // creation
+    // Creation.
     Entity(
         const std::string& name,
         int direction,
@@ -344,9 +369,18 @@ class SOLARUS_API Entity: public ExportableToLua {
 
     uint32_t get_when_suspended() const;
 
+    // Ground.
     void update_ground_observers();
     void update_ground_below();
 
+    // Collisions.
+    virtual bool test_collision_custom(Entity& entity);
+    virtual void notify_collision(
+        Entity& entity_overlapping, CollisionMode collision_mode);
+    virtual void notify_collision(
+        Entity& other_entity, Sprite& this_sprite, Sprite& other_sprite);
+
+    // Obstacles.
     virtual bool is_traversable_obstacle() const;
     virtual bool is_wall_obstacle() const;
     virtual bool is_low_wall_obstacle() const;
@@ -421,7 +455,11 @@ class SOLARUS_API Entity: public ExportableToLua {
     std::vector<std::shared_ptr<Movement>>
         old_movements;                          /**< old movements to destroy as soon as possible */
     bool movement_notifications_enabled;        /**< Whether entity:on_position_changed() and friends should be called. */
-    Detector* facing_entity;                    /**< The detector in front of this entity if any. */
+    Entity* facing_entity;                      /**< The detector in front of this entity if any. */
+    int collision_modes;                        /**< Collision modes detected by entity
+                                                 * (can be an OR combination of CollisionMode values). */
+    bool layer_independent_collisions;          /**< Whether this entity detects collisions on all layers. */
+
     std::unique_ptr<StreamAction>
         stream_action;                          /**< The stream effect currently applied if any. */
 

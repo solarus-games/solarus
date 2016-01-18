@@ -72,7 +72,7 @@ Door::Door(Game& game,
     int direction,
     const std::string& sprite_name,
     const std::string& savegame_variable):
-  Detector(COLLISION_FACING | COLLISION_SPRITE, name, layer, xy, Size(16, 16)),
+  Entity(name, 0, layer, xy, Size(16, 16)),
   savegame_variable(savegame_variable),
   opening_method(OpeningMethod::NONE),
   opening_condition(),
@@ -81,6 +81,8 @@ Door::Door(Game& game,
   state(OPEN),
   initialized(false),
   next_hint_sound_date(0) {
+
+  set_collision_modes(CollisionMode::COLLISION_FACING | CollisionMode::COLLISION_SPRITE);
 
   Sprite& sprite = *create_sprite(sprite_name, true);
   sprite.set_ignore_suspend(true);  // Continue the animation while the camera is moving.
@@ -241,7 +243,7 @@ void Door::notify_collision(Entity& entity_overlapping, CollisionMode /* collisi
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Door::notify_collision(Entity& other_entity, Sprite& /* this_sprite */, Sprite& other_sprite) {
 
@@ -484,7 +486,7 @@ void Door::set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id) {
  */
 void Door::set_suspended(bool suspended) {
 
-  Detector::set_suspended(suspended);
+  Entity::set_suspended(suspended);
 
   if (!suspended && next_hint_sound_date > 0) {
     next_hint_sound_date += System::now() - get_when_suspended();
@@ -496,7 +498,7 @@ void Door::set_suspended(bool suspended) {
  */
 void Door::update() {
 
-  Detector::update();
+  Entity::update();
 
   if (!initialized) {
     update_dynamic_tiles();
@@ -535,12 +537,12 @@ void Door::update() {
 void Door::draw_on_map() {
 
   if (has_sprite() && !is_open()) {
-    Detector::draw_on_map();
+    Entity::draw_on_map();
   }
 }
 
 /**
- * \copydoc Detector::notify_action_command_pressed
+ * \copydoc Entity::notify_action_command_pressed
  */
 bool Door::notify_action_command_pressed() {
 

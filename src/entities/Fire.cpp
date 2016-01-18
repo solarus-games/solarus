@@ -28,9 +28,10 @@ namespace Solarus {
  * \param xy coordinates of the fire
  */
 Fire::Fire(const std::string& name, int layer, const Point& xy):
-  Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE, name, layer, xy, Size(16, 16)) {
+  Entity(name, 0, layer, xy, Size(16, 16)) {
 
   // initialize the entity
+  set_collision_modes(CollisionMode::COLLISION_OVERLAPPING | CollisionMode::COLLISION_SPRITE);
   create_sprite("entities/fire");
 
   get_sprite().enable_pixel_collisions();
@@ -50,7 +51,8 @@ EntityType Fire::get_type() const {
  */
 void Fire::update() {
 
-  Detector::update();
+  Entity::update();
+
   if (get_sprite().is_animation_finished()) {
     remove_from_map();
   }
@@ -60,7 +62,7 @@ void Fire::update() {
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Fire::notify_collision(
     Entity& other_entity,

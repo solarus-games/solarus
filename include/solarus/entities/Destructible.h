@@ -18,8 +18,8 @@
 #define SOLARUS_DESTRUCTIBLE_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
 #include "solarus/entities/Ground.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/Treasure.h"
 #include <string>
 
@@ -36,7 +36,7 @@ namespace Solarus {
  * When the hero lifts a destructible object, it is removed from the map and
  * replaced by an instance of CarriedItem that is attached to the hero.
  */
-class Destructible: public Detector {
+class Destructible: public Entity {
 
   public:
 

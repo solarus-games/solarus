@@ -18,8 +18,8 @@
 #define SOLARUS_BLOCK_H
 
 #include "solarus/Common.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/lowlevel/Point.h"
-#include "solarus/entities/Detector.h"
 #include <string>
 
 namespace Solarus {
@@ -29,7 +29,7 @@ namespace Solarus {
  *
  * Some blocks can be moved only once or in only one direction.
  */
-class Block: public Detector {
+class Block: public Entity {
 
   public:
 

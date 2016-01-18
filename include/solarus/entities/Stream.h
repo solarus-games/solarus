@@ -18,7 +18,7 @@
 #define SOLARUS_STREAM_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include <string>
 
 namespace Solarus {
@@ -30,7 +30,7 @@ namespace Solarus {
  * The hero may or may not resist to the movement of the stream, depending
  * on its properties.
  */
-class Stream: public Detector {
+class Stream: public Entity {
 
   public:
 

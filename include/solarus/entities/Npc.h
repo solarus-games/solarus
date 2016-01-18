@@ -18,7 +18,7 @@
 #define SOLARUS_NPC_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/CommandsEffects.h"
 #include <string>
 
@@ -45,7 +45,7 @@ namespace Solarus {
  * interactive entity, and the map script has to handle explicitly its
  * animations (if any).
  */
-class SOLARUS_API Npc: public Detector {
+class SOLARUS_API Npc: public Entity {
 
   public:
 

@@ -34,7 +34,6 @@
 namespace Solarus {
 
 class Destination;
-class Detector;
 class InputEvent;
 class LuaContext;
 class Tileset;
@@ -170,7 +169,7 @@ class SOLARUS_API Map: public ExportableToLua {
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(Entity& entity);
     void check_collision_with_detectors(Entity& entity, Sprite& sprite);
-    void check_collision_from_detector(Detector& detector);
+    void check_collision_from_detector(Entity& detector);
 
     // main loop
     bool notify_input(const InputEvent& event);

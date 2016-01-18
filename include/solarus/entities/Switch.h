@@ -18,7 +18,7 @@
 #define SOLARUS_SWITCH_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include <map>
 #include <string>
 
@@ -35,7 +35,7 @@ class Arrow;
  * Some walkable switches become disabled when the hero or the block leave it.
  * A switch can have a sprite or be invisible.
  */
-class Switch: public Detector {
+class Switch: public Entity {
 
   public:
 

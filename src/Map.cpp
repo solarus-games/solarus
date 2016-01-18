@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Destination.h"
-#include "solarus/entities/Detector.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/entities/GroundInfo.h"
 #include "solarus/entities/Hero.h"
@@ -1315,15 +1314,14 @@ void Map::check_collision_with_detectors(Entity& entity) {
   for (const EntityPtr& entity_nearby: entities_nearby) {
 
     if (!entity_nearby->is_detector()) {
-      // TODO we can probably get rid of the Detector class.
       // Most entities are detectors anyway.
       continue;
     }
-    Detector& detector_nearby = *std::static_pointer_cast<Detector>(entity_nearby);
-    if (detector_nearby.is_enabled()
-        && !detector_nearby.is_suspended()
-        && !detector_nearby.is_being_removed()) {
-      detector_nearby.check_collision(entity);
+
+    if (entity_nearby->is_enabled()
+        && !entity_nearby->is_suspended()
+        && !entity_nearby->is_being_removed()) {
+      entity_nearby->check_collision(entity);
     }
   }
 }
@@ -1337,7 +1335,7 @@ void Map::check_collision_with_detectors(Entity& entity) {
  *
  * \param detector A detector.
  */
-void Map::check_collision_from_detector(Detector& detector) {
+void Map::check_collision_from_detector(Entity& detector) {
 
   if (suspended) {
     return;
@@ -1393,12 +1391,11 @@ void Map::check_collision_with_detectors(Entity& entity, Sprite& sprite) {
     if (!entity_nearby->is_detector()) {
       continue;
     }
-    Detector& detector_nearby = *std::static_pointer_cast<Detector>(entity_nearby);
 
-    if (!detector_nearby.is_being_removed()
-        && !detector_nearby.is_suspended()
-        && detector_nearby.is_enabled()) {
-      detector_nearby.check_collision(entity, sprite);
+    if (!entity_nearby->is_being_removed()
+        && !entity_nearby->is_suspended()
+        && entity_nearby->is_enabled()) {
+      entity_nearby->check_collision(entity, sprite);
     }
   }
 }

@@ -40,12 +40,15 @@ Stairs::Stairs(
     const Point& xy,
     int direction,
     Subtype subtype):
-  Detector(COLLISION_TOUCHING | COLLISION_OVERLAPPING, name, layer, xy, Size(16, 16)),
+  Entity(name, direction, layer, xy, Size(16, 16)),
   subtype(subtype) {
 
-  set_direction(direction);
+  set_collision_modes(COLLISION_TOUCHING | COLLISION_OVERLAPPING);
 
-  if (!is_inside_floor()) {
+  if (is_inside_floor()) {
+    set_layer_independent_collisions(true);
+  }
+  else {
     set_size(16, 8);
     if (direction == 3) {  // Down.
       set_origin(0, -8);
@@ -97,7 +100,7 @@ Ground Stairs::get_ground() const {
  */
 void Stairs::notify_creating() {
 
-  Detector::notify_creating();
+  Entity::notify_creating();
   update_dynamic_tiles();
 }
 
@@ -107,16 +110,6 @@ void Stairs::notify_creating() {
  */
 bool Stairs::is_inside_floor() const {
   return subtype == INSIDE_FLOOR;
-}
-
-/**
- * \brief Returns whether this entity can have collisions with entities even
- * if they are not on the same layer.
- * \return \c true if this entity can collide with entities that are on
- * another layer.
- */
-bool Stairs::has_layer_independent_collisions() const {
-  return is_inside_floor();
 }
 
 /**
@@ -343,7 +336,7 @@ Rectangle Stairs::get_clipping_rectangle(Way /* way */) const {
  */
 void Stairs::notify_enabled(bool enabled) {
 
-  Detector::notify_enabled(enabled);
+  Entity::notify_enabled(enabled);
 
   update_dynamic_tiles();
 }

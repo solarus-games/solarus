@@ -112,11 +112,11 @@ void Hero::SwordLoadingState::notify_obstacle_reached() {
   PlayerMovementState::notify_obstacle_reached();
 
   Hero& hero = get_entity();
-  Detector* facing_entity = hero.get_facing_entity();
+  Entity* facing_entity = hero.get_facing_entity();
 
   if (hero.is_facing_point_on_obstacle()     // he is really facing an obstacle
       && get_wanted_movement_direction8() == get_sprites().get_animation_direction8()   // he is trying to move towards the obstacle
-      && (facing_entity == nullptr || !facing_entity->is_sword_ignored())) {               // the obstacle allows him to tap with his sword
+      && (facing_entity == nullptr || !facing_entity->is_sword_ignored())) {            // the obstacle allows him to tap with his sword
 
     hero.set_state(new SwordTappingState(hero));
   }

@@ -35,7 +35,9 @@ namespace Solarus {
  */
 Explosion::Explosion(const std::string& name, int layer,
     const Point& xy, bool with_damage):
-  Detector(COLLISION_SPRITE | COLLISION_OVERLAPPING, name, layer, xy, Size(48, 48)) {
+    Entity(name, 0, layer, xy, Size(48, 48)) {
+
+  set_collision_modes(CollisionMode::COLLISION_SPRITE | CollisionMode::COLLISION_OVERLAPPING);
 
   // initialize the entity
   create_sprite("entities/explosion");
@@ -60,7 +62,7 @@ EntityType Explosion::get_type() const {
  */
 void Explosion::update() {
 
-  Detector::update();
+  Entity::update();
 
   if (get_sprite().is_animation_finished()) {
     remove_from_map();
@@ -82,7 +84,7 @@ void Explosion::notify_sprite_frame_changed(Sprite& /* sprite */, const std::str
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Explosion::notify_collision(
     Entity& other_entity,

@@ -56,7 +56,7 @@ class Hero::RunningState: public Hero::BaseState {
     virtual bool can_avoid_stream(const Stream& stream) const override;
     virtual bool can_persist_on_stream(const Stream& stream) const override;
     virtual bool is_sensor_obstacle(const Sensor& sensor) const override;
-    virtual bool is_cutting_with_sword(Detector& detector) override;
+    virtual bool is_cutting_with_sword(Entity& entity) override;
     virtual int get_sword_damage_factor() const override;
 
   private:

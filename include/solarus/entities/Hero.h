@@ -105,7 +105,7 @@ class Hero: public Entity {
      * what is in front of him (we call this the "facing point").
      */
     virtual Point get_facing_point() const override;
-    virtual void notify_facing_entity_changed(Detector* facing_entity) override;
+    virtual void notify_facing_entity_changed(Entity* facing_entity) override;
     bool is_facing_obstacle();
     bool is_facing_point_on_obstacle();
     bool is_facing_direction4(int direction4) const;
@@ -204,7 +204,7 @@ class Hero: public Entity {
     virtual void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) override;
     virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
     void avoid_collision(Entity& entity, int direction);
-    bool is_striking_with_sword(Detector& detector) const;
+    bool is_striking_with_sword(Entity& entity) const;
 
     /**
      * \name Enemies.

@@ -53,12 +53,14 @@ ShopTreasure::ShopTreasure(
     int price,
     const std::string& font_id,
     const std::string& dialog_id):
-  Detector(COLLISION_FACING, name, layer, xy, Size(32, 32)),
+  Entity(name, 0, layer, xy, Size(32, 32)),
   treasure(treasure),
   price(price),
   dialog_id(dialog_id),
   price_digits(0, 0, TextSurface::HorizontalAlignment::LEFT, TextSurface::VerticalAlignment::TOP),
   rupee_icon_sprite(std::make_shared<Sprite>("entities/rupee_icon")) {
+
+  set_collision_modes(CollisionMode::COLLISION_FACING);
 
   std::ostringstream oss;
   oss << price;
@@ -179,7 +181,7 @@ void ShopTreasure::notify_collision(
 }
 
 /**
- * \copydoc Detector::notify_action_command_pressed
+ * \copydoc Entity::notify_action_command_pressed
  */
 bool ShopTreasure::notify_action_command_pressed() {
 

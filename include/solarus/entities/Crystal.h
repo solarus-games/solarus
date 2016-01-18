@@ -18,8 +18,8 @@
 #define SOLARUS_CRYSTAL_H
 
 #include "solarus/Common.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/lowlevel/Point.h"
-#include "solarus/entities/Detector.h"
 #include <list>
 #include <string>
 
@@ -29,7 +29,7 @@ namespace Solarus {
  * \brief A switch that can be activated to change the state of the
  * crystal blocks.
  */
-class Crystal: public Detector {
+class Crystal: public Entity {
 
   public:
 

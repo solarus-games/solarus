@@ -40,9 +40,10 @@ namespace Solarus {
  * \param xy Coordinates of the entity to create.
  */
 Bomb::Bomb(const std::string& name, int layer, const Point& xy):
-  Detector(COLLISION_FACING, name, layer, xy, Size(16, 16)),
+  Entity(name, 0, layer, xy, Size(16, 16)),
   explosion_date(System::now() + 6000) {
 
+  set_collision_modes(CollisionMode::COLLISION_FACING);
   create_sprite("entities/bomb");
   get_sprite().enable_pixel_collisions();
   set_size(16, 16);
@@ -168,7 +169,7 @@ void Bomb::notify_collision_with_stream(Stream& stream, int /* dx */, int /* dy 
  */
 void Bomb::notify_position_changed() {
 
-  Detector::notify_position_changed();
+  Entity::notify_position_changed();
 
   if (get_hero().get_facing_entity() == this
       && get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_LIFT
@@ -179,7 +180,7 @@ void Bomb::notify_position_changed() {
 }
 
 /**
- * \copydoc Detector::notify_action_command_pressed
+ * \copydoc Entity::notify_action_command_pressed
  */
 bool Bomb::notify_action_command_pressed() {
 
@@ -211,7 +212,7 @@ bool Bomb::notify_action_command_pressed() {
  */
 void Bomb::set_suspended(bool suspended) {
 
-  Detector::set_suspended(suspended); // suspend the animation and the movement
+  Entity::set_suspended(suspended); // suspend the animation and the movement
 
   if (!suspended && get_when_suspended() != 0) {
     // recalculate the timer
@@ -225,7 +226,7 @@ void Bomb::set_suspended(bool suspended) {
  */
 void Bomb::update() {
 
-  Detector::update();
+  Entity::update();
 
   if (is_suspended()) {
     return;

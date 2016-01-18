@@ -354,12 +354,9 @@ bool Hero::RunningState::is_sensor_obstacle(const Sensor& /* sensor */) const {
 }
 
 /**
- * \brief Tests whether the hero is cutting with his sword the specified detector
- * for which a collision was detected.
- * \param detector the detector to check
- * \return true if the sword is cutting this detector
+ * \copydoc Entity::State::is_cutting_with_sword
  */
-bool Hero::RunningState::is_cutting_with_sword(Detector& detector) {
+bool Hero::RunningState::is_cutting_with_sword(Entity& entity) {
 
   // check the distance to the detector
   const int distance = 8;
@@ -384,7 +381,7 @@ bool Hero::RunningState::is_cutting_with_sword(Detector& detector) {
       break;
   }
 
-  return detector.overlaps(tested_point);
+  return entity.overlaps(tested_point);
 }
 
 /**

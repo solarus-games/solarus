@@ -1031,12 +1031,12 @@ void Entity::State::notify_grabbed_entity_collision() {
 }
 
 /**
- * \brief Tests whether the entity is cutting with his sword the specified detector
+ * \brief Tests whether the entity is cutting with his sword the specified entity
  * for which a collision was detected.
  *
- * When the sword sprite collides with a detector,
+ * When the sword sprite collides with an entity,
  * this function can be called to determine whether the entity is
- * really cutting this particular detector precisely.
+ * really cutting this particular entity precisely.
  * This depends on the entity's state, his direction and his
  * distance to the detector.
  * This function assumes that there is already a collision
@@ -1045,10 +1045,10 @@ void Entity::State::notify_grabbed_entity_collision() {
  * entity wants to cut a bush or some grass.
  * Returns false by default.
  *
- * \param detector the detector to check
- * \return true if the sword is cutting this detector
+ * \param entity The entity to check.
+ * \return \c true if the sword is cutting this entity.
  */
-bool Entity::State::is_cutting_with_sword(Detector& /* detector */) {
+bool Entity::State::is_cutting_with_sword(Entity& /* detector */) {
   return false;
 }
 

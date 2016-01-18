@@ -56,7 +56,7 @@ Switch::Switch(
     const std::string& sound_id,
     bool needs_block,
     bool inactivate_when_leaving):
-  Detector(COLLISION_NONE, name, layer, xy, Size(16, 16)),
+  Entity(name, 0, layer, xy, Size(16, 16)),
   subtype(subtype),
   sound_id(sound_id),
   activated(false),
@@ -74,13 +74,13 @@ Switch::Switch(
 
   // Collisions.
   if (is_walkable()) {
-    set_collision_modes(COLLISION_CUSTOM);
+    set_collision_modes(CollisionMode::COLLISION_CUSTOM);
   }
   else if (subtype == Subtype::ARROW_TARGET) {
-    set_collision_modes(COLLISION_FACING);
+    set_collision_modes(CollisionMode::COLLISION_FACING);
   }
   else if (subtype == Subtype::SOLID) {
-    set_collision_modes(COLLISION_SPRITE | COLLISION_OVERLAPPING);
+    set_collision_modes(CollisionMode::COLLISION_SPRITE | CollisionMode::COLLISION_OVERLAPPING);
   }
 }
 
@@ -194,7 +194,7 @@ void Switch::set_locked(bool locked) {
  */
 void Switch::update() {
 
-  Detector::update();
+  Entity::update();
 
   if (is_enabled() &&
       is_walkable() &&
@@ -257,7 +257,7 @@ void Switch::notify_collision(
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Switch::notify_collision(
     Entity& other_entity,

@@ -36,9 +36,11 @@ Jumper::Jumper(const std::string& name,
     const Size& size,
     int direction,
     int jump_length):
-  Detector(COLLISION_CUSTOM | COLLISION_FACING, // Facing point detection is necessary to avoid sword tapping.
-      name, layer, xy, size),
+  Entity(name, 0, layer, xy, size),
   jump_length(jump_length) {
+
+  // Facing point detection is necessary to avoid sword tapping.
+  set_collision_modes(CollisionMode::COLLISION_CUSTOM | COLLISION_FACING);
 
   set_direction(direction);
 

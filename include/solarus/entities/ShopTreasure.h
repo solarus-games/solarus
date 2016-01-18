@@ -20,7 +20,7 @@
 #include "solarus/Common.h"
 #include "solarus/Treasure.h"
 #include "solarus/Sprite.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/lowlevel/TextSurface.h"
 #include <memory>
 #include <string>
@@ -37,7 +37,7 @@ namespace Solarus {
  * key in front of it, a dialog is automatically showed and
  * the hero can buy the item.
  */
-class ShopTreasure: public Detector {
+class ShopTreasure: public Entity {
 
   public:
 

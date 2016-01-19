@@ -426,7 +426,7 @@ bool Chest::notify_action_command_pressed() {
       treasure_date = System::now() + 300;
 
       get_commands_effects().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
-      get_hero().start_freezed();
+      get_hero().start_frozen();
     }
     else if (!get_cannot_open_dialog_id().empty()) {
       Sound::play("wrong");

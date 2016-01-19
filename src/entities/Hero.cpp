@@ -2381,11 +2381,11 @@ void Hero::start_victory(const ScopedLuaRef& callback_ref) {
 /**
  * \brief Freezes the hero.
  *
- * When the hero is freezed, he cannot move.
+ * When the hero is frozen, he cannot move.
  * The current animation of the hero's sprites is stopped and the "stopped" animation is played.
  * You can call start_free() to unfreeze him.
  */
-void Hero::start_freezed() {
+void Hero::start_frozen() {
   set_state(new FreezedState(*this));
 }
 

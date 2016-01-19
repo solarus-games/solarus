@@ -264,7 +264,7 @@ class Hero: public Entity {
     void start_forced_walking(const std::string& path, bool loop, bool ignore_obstacles);
     void start_jumping(int direction8, int distance, bool ignore_obstacles,
         bool with_sound);
-    void start_freezed();
+    void start_frozen();
     void start_victory(const ScopedLuaRef& callback_ref);
     void start_lifting(const std::shared_ptr<CarriedItem>& item_to_lift);
     void start_running();

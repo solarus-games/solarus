@@ -26,7 +26,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::FreezedState::FreezedState(Hero& hero):
-  BaseState(hero, "freezed") {
+  BaseState(hero, "frozen") {
 
 }
 

@@ -1868,7 +1868,7 @@ int LuaContext::hero_api_freeze(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
-    hero.start_freezed();
+    hero.start_frozen();
 
     return 0;
   });

@@ -215,8 +215,9 @@ void Enemy::notify_created() {
 
   // Give sprites their initial direction.
   int initial_direction = get_direction();
-  for (const SpritePtr& sprite: get_sprites()) {
-    sprite->set_current_direction(initial_direction);
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    Sprite& sprite = *named_sprite.second;
+    sprite.set_current_direction(initial_direction);
   }
 
   if (is_enabled()) {
@@ -761,8 +762,9 @@ std::string Enemy::get_animation() const {
  */
 void Enemy::set_animation(const std::string& animation) {
 
-  for (const SpritePtr& sprite: get_sprites()) {
-    sprite->set_current_animation(animation);
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    Sprite& sprite = *named_sprite.second;
+    sprite.set_current_animation(animation);
   }
 }
 

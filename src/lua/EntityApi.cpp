@@ -1172,8 +1172,9 @@ int LuaContext::entity_api_create_sprite(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Entity& entity = *check_entity(l, 1);
     const std::string& animation_set_id = LuaTools::check_string(l, 2);
+    const std::string& sprite_name = LuaTools::opt_string(l, 3, "");
 
-    const SpritePtr& sprite = entity.create_sprite(animation_set_id);
+    const SpritePtr& sprite = entity.create_sprite(animation_set_id, sprite_name);
     sprite->enable_pixel_collisions();
     if (entity.is_suspended()) {
       sprite->set_suspended(true);

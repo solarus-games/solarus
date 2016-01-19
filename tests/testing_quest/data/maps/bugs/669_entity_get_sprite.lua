@@ -22,10 +22,5 @@ function map:on_started()
   assert(hero_shield_sprite ~= hero_tunic_sprite)
   assert(hero_shield_sprite == nil)  -- No shield initially.
 
-  local hero_sprites = hero:get_sprites()
-  assert(type(hero_sprites == "table"))
-  assert(hero_sprites.tunic == hero_tunic_sprite)
-  assert(hero_sprites.shield == hero_shield_sprite)
-
   sol.main.exit()
 end

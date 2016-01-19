@@ -31,6 +31,7 @@ Lua API changes
 Changes that introduce incompatibilities:
 
 * chest:on_empty() is replaced by chest:on_opened(treasure) (#483).
+* Enemy ranks no longer exists, set_hurt_style() needs to be called (#449).
 * Items with amount now have a default max amount of 1000 (#688).
 * Fix hero state name "freezed", renamed it to "frozen" (#813).
 * Fix map:get_entities() not returning the hero (#670).

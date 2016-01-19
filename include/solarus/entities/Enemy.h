@@ -52,15 +52,6 @@ class Enemy: public Entity {
     static constexpr EntityType ThisType = EntityType::ENEMY;
 
     /**
-     * \brief Enemy ranks.
-     */
-    enum class Rank {
-      NORMAL,
-      MINIBOSS,
-      BOSS
-    };
-
-    /**
      * \brief Defines the style of sounds and animations played when an enemy
      * is hurt or killed.
      */
@@ -94,7 +85,6 @@ class Enemy: public Entity {
     static EntityPtr create(
         Game& game,
         const std::string& breed,
-        Rank rank,
         const std::string& savegame_variable,
         const std::string& name,
         int layer,
@@ -109,7 +99,6 @@ class Enemy: public Entity {
     virtual void notify_creating() override;
     virtual void notify_created() override;
     virtual void notify_map_opening_transition_finished() override;
-    Rank get_rank() const;
 
     // Enemy properties.
     const std::string& get_breed() const;
@@ -235,7 +224,6 @@ class Enemy: public Entity {
     std::map<EnemyAttack, EnemyReaction>
         attack_reactions;              /**< how the enemy reacts to each attack
                                            * (by default, it depends on the attacks) */
-    Rank rank;                         /**< is this enemy a normal enemy, a miniboss or a boss? */
     std::string savegame_variable;     /**< name of the boolean variable indicating whether this enemy is killed,
                                         * or an empty string if it is not saved */
     bool traversable;                  /**< Whether this enemy can be traversed by other entities. */

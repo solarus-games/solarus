@@ -641,7 +641,6 @@ int LuaContext::l_create_enemy(lua_State* l) {
     EntityPtr entity = Enemy::create(
         game,
         data.get_string("breed"),
-        Enemy::Rank(data.get_integer("rank")),
         entity_creation_check_savegame_variable_optional(l, 1, data, "savegame_variable"),
         data.get_name(),
         entity_creation_check_layer(l, 1, data, map),

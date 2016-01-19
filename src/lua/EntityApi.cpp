@@ -4503,7 +4503,6 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
     int y = LuaTools::opt_int_field(l, 2, "y", 0);
     int direction = LuaTools::opt_int_field(l, 2, "direction", 3);
     const std::string& breed = LuaTools::check_string_field(l, 2, "breed");
-    Enemy::Rank rank = Enemy::Rank(LuaTools::opt_int_field(l, 2, "rank", 0));
     const std::string& savegame_variable = LuaTools::opt_string_field(l, 2, "savegame_variable", "");
     const std::string& treasure_name = LuaTools::opt_string_field(l, 2, "treasure_name", "");
     int treasure_variant = LuaTools::opt_int_field(l, 2, "treasure_variant", 1);
@@ -4538,7 +4537,6 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
     const EntityPtr& entity = Enemy::create(
         game,
         breed,
-        rank,
         savegame_variable,
         name,
         layer,

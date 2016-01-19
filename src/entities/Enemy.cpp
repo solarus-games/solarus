@@ -92,7 +92,6 @@ Enemy::Enemy(
   push_hero_on_sword(false),
   can_hurt_hero_running(false),
   minimum_shield_needed(0),
-  rank(Rank::NORMAL),
   savegame_variable(),
   traversable(true),
   obstacle_behavior(ObstacleBehavior::NORMAL),
@@ -129,7 +128,6 @@ Enemy::Enemy(
  * \param game the current game
  * \param breed breed of the enemy to create
  * \param name a name identifying the enemy
- * \param rank rank of the enemy: normal, miniboss or boss
  * \param savegame_variable name of the boolean variable indicating that the enemy is dead
  * \param layer layer of the enemy on the map
  * \param xy Coordinates of the enemy on the map.
@@ -141,7 +139,6 @@ Enemy::Enemy(
 EntityPtr Enemy::create(
     Game& game,
     const std::string& breed,
-    Rank rank,
     const std::string& savegame_variable,
     const std::string& name,
     int layer,
@@ -167,13 +164,7 @@ EntityPtr Enemy::create(
 
   // initialize the fields
   enemy->set_direction(direction);
-  enemy->rank = rank;
   enemy->savegame_variable = savegame_variable;
-
-  if (rank != Rank::NORMAL) {
-    enemy->hurt_style = HurtStyle::BOSS;
-  }
-
   enemy->set_default_attack_consequences();
 
   return enemy;
@@ -243,14 +234,6 @@ void Enemy::notify_map_opening_transition_finished() {
  */
 const std::string& Enemy::get_breed() const {
   return breed;
-}
-
-/**
- * \brief Returns the rank of the enemy.
- * \return the enemy rank
- */
-Enemy::Rank Enemy::get_rank() const {
-  return rank;
 }
 
 /**

@@ -15,7 +15,7 @@ set(lua_test_maps
   "bugs/699_crash_exit_surface_moving"
   "bugs/738_custom_entity_on_ground_below_changed"
   "bugs/748_entity_overlaps_collision_modes"
-  "bugs/754_entity_get_sprites_bounding_box"
+  "bugs/754_entity_get_max_bounding_box"
   "bugs/779_get_entities_random_order"
   "bugs/769_stuck_dynamic_tile_covered"
   "bugs/781_assert_teletransporter_same_map"

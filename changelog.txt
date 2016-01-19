@@ -66,6 +66,7 @@ Data files format changes
 -------------------------
 
 * Maps: New properties min_layer and max_layer (#445).
+* Maps: Enemies no longer have a rank property (#449).
 * Dialogs: Allow empty texts.
 
 __________________________

@@ -84,8 +84,9 @@ Door::Door(Game& game,
 
   set_collision_modes(CollisionMode::COLLISION_FACING | CollisionMode::COLLISION_SPRITE);
 
-  Sprite& sprite = *create_sprite(sprite_name, true);
-  sprite.set_ignore_suspend(true);  // Continue the animation while the camera is moving.
+  const SpritePtr& sprite = create_sprite(sprite_name);
+  sprite->enable_pixel_collisions();
+  sprite->set_ignore_suspend(true);  // Continue the animation while the camera is moving.
   set_direction(direction);
 
   if (is_saved()) {
@@ -94,7 +95,7 @@ Door::Door(Game& game,
   else {
     set_open(false);
   }
-  sprite.set_current_direction(direction);
+  sprite->set_current_direction(direction);
 }
 
 /**
@@ -168,7 +169,11 @@ void Door::set_open(bool door_open) {
     set_collision_modes(COLLISION_NONE); // to avoid being the hero's facing entity
   }
   else {
-    get_sprite().set_current_animation("closed");
+
+    const SpritePtr& sprite = get_sprite();
+    if (sprite != nullptr) {
+      sprite->set_current_animation("closed");
+    }
     set_collision_modes(COLLISION_FACING | COLLISION_SPRITE);
 
     // ensure that we are not closing the door on the hero
@@ -515,7 +520,10 @@ void Door::update() {
     next_hint_sound_date = System::now() + 500;
   }
 
-  if (is_changing() && get_sprite().is_animation_finished()) {
+  const SpritePtr& sprite = get_sprite();
+  if (is_changing() &&
+      sprite != nullptr &&
+      sprite->is_animation_finished()) {
     // Toggle door_open when the changing animation finishes.
     set_open(is_opening());
   }
@@ -663,9 +671,10 @@ void Door::open() {
  */
 void Door::set_opening() {
 
-  if (get_sprite().has_animation("opening")) {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr && sprite->has_animation("opening")) {
     state = OPENING;
-    get_sprite().set_current_animation("opening");
+    sprite->set_current_animation("opening");
   }
   else {
     set_open(true);
@@ -696,9 +705,10 @@ void Door::close() {
  */
 void Door::set_closing() {
 
-  if (get_sprite().has_animation("closing")) {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr && sprite->has_animation("closing")) {
     state = CLOSING;
-    get_sprite().set_current_animation("closing");
+    sprite->set_current_animation("closing");
   }
   else {
     set_open(false);

@@ -68,8 +68,8 @@ Switch::Switch(
 
   // Sprite.
   if (!sprite_name.empty()) {
-    create_sprite(sprite_name);
-    get_sprite().set_current_animation("inactivated");
+    const SpritePtr& sprite = create_sprite(sprite_name);
+    sprite->set_current_animation("inactivated");
   }
 
   // Collisions.
@@ -166,12 +166,13 @@ void Switch::set_activated(bool activated) {
   if (activated != this->activated) {
     this->activated = activated;
 
-    if (has_sprite()) {
+    const SpritePtr& sprite = get_sprite();
+    if (sprite != nullptr) {
       if (activated) {
-        get_sprite().set_current_animation("activated");
+        sprite->set_current_animation("activated");
       }
       else {
-        get_sprite().set_current_animation("inactivated");
+        sprite->set_current_animation("inactivated");
       }
     }
   }

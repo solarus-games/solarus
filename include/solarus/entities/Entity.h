@@ -83,6 +83,8 @@ class SOLARUS_API Entity: public ExportableToLua {
 
   public:
 
+    using NamedSprite = std::pair<std::string, SpritePtr>;
+
     // Destruction.
     virtual ~Entity();
     void remove_from_map();
@@ -183,14 +185,13 @@ class SOLARUS_API Entity: public ExportableToLua {
     void set_direction(int direction);
     virtual void notify_direction_changed();
 
-    // sprites
+    // Sprites.
     bool has_sprite() const;
-    Sprite& get_sprite();
-    const Sprite& get_sprite() const;
-    const std::vector<SpritePtr>& get_sprites();
+    SpritePtr get_sprite(const std::string& sprite_name = "") const;
+    const std::vector<NamedSprite>& get_sprites() const;
     SpritePtr create_sprite(
         const std::string& animation_set_id,
-        bool enable_pixel_collisions = false
+        const std::string& sprite_name = ""
     );
     bool remove_sprite(Sprite& sprite);
     void clear_sprites();
@@ -444,7 +445,7 @@ class SOLARUS_API Entity: public ExportableToLua {
 
     int direction;                              /**< direction of the entity, not used for all kinds of entities */
 
-    std::vector<SpritePtr>
+    std::vector<NamedSprite>
         sprites;                                /**< Sprites representing the entity.  */
     std::vector<SpritePtr>
         old_sprites;                            /**< sprites to remove and destroy as soon as possible */

@@ -151,7 +151,7 @@ class Enemy: public Entity {
     void set_default_attack_consequences_sprite(const Sprite& sprite);
 
     // sprites
-    const std::string& get_animation() const;
+    std::string get_animation() const;
     void set_animation(const std::string& animation);
 
     // obstacles

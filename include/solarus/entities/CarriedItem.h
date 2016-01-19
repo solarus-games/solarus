@@ -121,6 +121,7 @@ class CarriedItem: public Entity {
     int damage_on_enemies;      /**< damage for an enemy that receives the item */
 
     // throwing the item
+    SpritePtr main_sprite;      /**< main sprite of the destructible object */
     SpritePtr shadow_sprite;    /**< sprite of the shadow when the item is being thrown */
     int throwing_direction;     /**< direction where the item is thrown (0 to 3) */
     uint32_t next_down_date;    /**< when the item is thrown, date when it move one pixel downwards next time */

@@ -446,7 +446,10 @@ void Destructible::play_destroy_animation() {
   if (!destruction_sound_id.empty()) {
     Sound::play(destruction_sound_id);
   }
-  get_sprite().set_current_animation("destroy");
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr) {
+    sprite->set_current_animation("destroy");
+  }
   if (!is_drawn_in_y_order()) {
     get_entities().bring_to_front(*this);  // Show animation destroy to front.
   }
@@ -500,7 +503,11 @@ void Destructible::update() {
     return;
   }
 
-  if (is_being_cut && get_sprite().is_animation_finished()) {
+  const SpritePtr& sprite = get_sprite();
+
+  if (is_being_cut &&
+      sprite != nullptr &&
+      sprite->is_animation_finished()) {
 
     if (!get_can_regenerate()) {
       // Remove this destructible from the map.
@@ -515,13 +522,19 @@ void Destructible::update() {
   else if (is_waiting_for_regeneration()
       && System::now() >= regeneration_date
       && !overlaps(get_hero())) {
-    get_sprite().set_current_animation("regenerating");
+
+    if (sprite != nullptr) {
+      sprite->set_current_animation("regenerating");
+    }
     is_regenerating = true;
     regeneration_date = 0;
     get_lua_context()->destructible_on_regenerating(*this);
   }
-  else if (is_regenerating && get_sprite().is_animation_finished()) {
-    get_sprite().set_current_animation("on_ground");
+  else if (is_regenerating &&
+      sprite != nullptr &&
+      sprite->is_animation_finished()) {
+
+    sprite->set_current_animation("on_ground");
     is_regenerating = false;
   }
 }

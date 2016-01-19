@@ -49,8 +49,9 @@ Hookshot::Hookshot(const Hero& hero):
 
   // initialize the entity
   int direction = hero.get_animation_direction();
-  create_sprite("entities/hookshot", true);
-  get_sprite().set_current_direction(direction);
+  const SpritePtr& sprite = create_sprite("entities/hookshot");
+  sprite->enable_pixel_collisions();
+  sprite->set_current_direction(direction);
   link_sprite->set_current_animation("link");
 
   set_size(16, 16);
@@ -221,7 +222,14 @@ void Hookshot::draw_on_map() {
   Entity::draw_on_map();
 
   // also draw the links
-  int direction = get_sprite().get_current_direction();
+  const SpritePtr& sprite = get_sprite();
+  if (sprite == nullptr) {
+    return;
+  }
+  int direction = sprite->get_current_direction();
+  if (direction > 4) {
+    return;
+  }
   int x1 = get_hero().get_x() + dxy[direction].x;
   int y1 = get_hero().get_y() + dxy[direction].y;
   int x2 = get_x();
@@ -272,7 +280,14 @@ void Hookshot::attach_to(Entity& entity_reached) {
 
   this->entity_reached = &entity_reached;
   clear_movement();
-  int direction = get_sprite().get_current_direction();
+  const SpritePtr& sprite = get_sprite();
+  if (sprite == nullptr) {
+    return;
+  }
+  int direction = sprite->get_current_direction();
+  if (direction > 4) {
+    return;
+  }
   std::string path = " ";
   path[0] = '0' + (direction * 2);
   get_hero().set_movement(std::make_shared<PathMovement>(

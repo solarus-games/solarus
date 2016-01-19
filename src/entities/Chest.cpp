@@ -68,14 +68,14 @@ Chest::Chest(
   set_collision_modes(CollisionMode::COLLISION_FACING);
 
   // Create the sprite.
-  Sprite& sprite = *create_sprite(sprite_name);
+  const SpritePtr& sprite = create_sprite(sprite_name);
   std::string animation = is_open() ? "open" : "closed";
-  sprite.set_current_animation(animation);
+  sprite->set_current_animation(animation);
 
   set_origin(get_width() / 2, get_height() - 3);
 
   // TODO set this as the default drawn_in_y_order for Entity
-  set_drawn_in_y_order(sprite.get_max_size().height > get_height());
+  set_drawn_in_y_order(sprite->get_max_size().height > get_height());
 }
 
 /**
@@ -148,13 +148,18 @@ void Chest::set_open(bool open) {
 
     this->open = open;
 
+    const SpritePtr& sprite = get_sprite();
     if (open) {
       // open the chest
-      get_sprite().set_current_animation("open");
+      if (sprite != nullptr) {
+        sprite->set_current_animation("open");
+      }
     }
     else {
       // close the chest
-      get_sprite().set_current_animation("closed");
+      if (sprite != nullptr) {
+        sprite->set_current_animation("closed");
+      }
       treasure_given = false;
     }
   }

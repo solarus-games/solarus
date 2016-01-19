@@ -40,9 +40,9 @@ Explosion::Explosion(const std::string& name, int layer,
   set_collision_modes(CollisionMode::COLLISION_SPRITE | CollisionMode::COLLISION_OVERLAPPING);
 
   // initialize the entity
-  create_sprite("entities/explosion");
+  const SpritePtr& sprite = create_sprite("entities/explosion");
+  sprite->enable_pixel_collisions();
 
-  get_sprite().enable_pixel_collisions();
   if (with_damage) {
     set_size(48, 48);
     set_origin(24, 24);
@@ -64,7 +64,8 @@ void Explosion::update() {
 
   Entity::update();
 
-  if (get_sprite().is_animation_finished()) {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr && sprite->is_animation_finished()) {
     remove_from_map();
   }
 }

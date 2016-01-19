@@ -51,6 +51,8 @@ Changes that do not introduce incompatibilities:
 * entity:set_optimization_distance() is now only a hint for the engine.
 * entity:test_obstacles() now also works without parameters.
 * entity:overlaps() now has an optional collision mode parameter (#748).
+* Add entity:get_sprite() to all entities, with an optional name value (#669).
+* enemy/custom_entity:create_sprite() now take an optional name value.
 * Add methods chest:get/set_treasure() (#664).
 * Add methods dynamic_tile:get_pattern_id() and get_modified_ground() (#755).
 * Add a method block:get_sprite().

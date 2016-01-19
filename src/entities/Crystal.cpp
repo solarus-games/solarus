@@ -47,8 +47,9 @@ Crystal::Crystal(const std::string& name, int layer, const Point& xy):
       CollisionMode::COLLISION_FACING
   );
   set_origin(8, 13);
-  create_sprite("entities/crystal", true);
-  star_sprite = std::make_shared<Sprite>("entities/star");
+  const SpritePtr& main_sprite = create_sprite("entities/crystal");
+  main_sprite->enable_pixel_collisions();
+  star_sprite = create_sprite("entities/star");
   twinkle();
 }
 
@@ -71,7 +72,10 @@ void Crystal::notify_creating() {
   if (state != this->state) {
 
     this->state = state;
-    get_sprite().set_current_animation(state ? "blue_lowered" : "orange_lowered");
+    const SpritePtr& sprite = get_sprite();
+    if (sprite != nullptr) {
+      sprite->set_current_animation(state ? "blue_lowered" : "orange_lowered");
+    }
   }
 }
 
@@ -160,7 +164,11 @@ void Crystal::update() {
     if (state != this->state) {
 
       this->state = state;
-      get_sprite().set_current_animation(state ? "blue_lowered" : "orange_lowered");
+
+      const SpritePtr& sprite = get_sprite();
+      if (sprite != nullptr) {
+        sprite->set_current_animation(state ? "blue_lowered" : "orange_lowered");
+      }
     }
 
     star_sprite->update();

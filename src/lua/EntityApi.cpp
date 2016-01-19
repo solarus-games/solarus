@@ -124,6 +124,7 @@ void LuaContext::register_entity_module() {
       { "set_optimization_distance", entity_api_set_optimization_distance },\
       { "is_in_same_region", entity_api_is_in_same_region },\
       { "test_obstacles", entity_api_test_obstacles },\
+      { "get_sprite", entity_api_get_sprite },\
       { "is_visible", entity_api_is_visible },\
       { "set_visible", entity_api_set_visible },\
       { "get_movement", entity_api_get_movement },\
@@ -203,7 +204,6 @@ void LuaContext::register_entity_module() {
   // Teletransporter.
   static const luaL_Reg teletransporter_methods[] = {
       ENTITY_COMMON_METHODS,
-      { "get_sprite", entity_api_get_sprite },
       { "get_sound", teletransporter_api_get_sound },
       { "set_sound", teletransporter_api_set_sound },
       { "get_transition", teletransporter_api_get_transition },
@@ -219,20 +219,6 @@ void LuaContext::register_entity_module() {
       get_entity_internal_type_name(EntityType::TELETRANSPORTER),
       nullptr,
       teletransporter_methods,
-      metamethods
-  );
-
-  // Non-playing character.
-  static const luaL_Reg npc_methods[] = {
-      ENTITY_COMMON_METHODS,
-      { "get_sprite", entity_api_get_sprite },
-      { nullptr, nullptr }
-  };
-
-  register_type(
-      get_entity_internal_type_name(EntityType::NPC),
-      nullptr,
-      npc_methods,
       metamethods
   );
 
@@ -256,7 +242,6 @@ void LuaContext::register_entity_module() {
   // Block.
   static const luaL_Reg block_methods[] = {
       ENTITY_COMMON_METHODS,
-      { "get_sprite", entity_api_get_sprite },
       { "reset", block_api_reset },
       { "is_pushable", block_api_is_pushable },
       { "set_pushable", block_api_set_pushable },
@@ -277,7 +262,6 @@ void LuaContext::register_entity_module() {
   // Switch.
   static const luaL_Reg switch_methods[] = {
       ENTITY_COMMON_METHODS,
-      { "get_sprite", entity_api_get_sprite },
       { "is_activated", switch_api_is_activated },
       { "set_activated", switch_api_set_activated },
       { "set_locked", switch_api_set_locked },
@@ -347,7 +331,6 @@ void LuaContext::register_entity_module() {
   // Pickable.
   static const luaL_Reg pickable_methods[] = {
       ENTITY_COMMON_METHODS,
-      { "get_sprite", entity_api_get_sprite },
       { "has_layer_independent_collisions", entity_api_has_layer_independent_collisions },
       { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
       { "get_followed_entity", pickable_api_get_followed_entity },
@@ -449,7 +432,6 @@ void LuaContext::register_entity_module() {
       { "restart", enemy_api_restart },
       { "hurt", enemy_api_hurt },
       { "immobilize", enemy_api_immobilize },
-      { "get_sprite", entity_api_get_sprite },
       { "create_sprite", entity_api_create_sprite },
       { "remove_sprite", entity_api_remove_sprite },
       { "create_enemy", enemy_api_create_enemy },
@@ -471,7 +453,6 @@ void LuaContext::register_entity_module() {
       { "set_origin", entity_api_set_origin },
       { "get_direction", custom_entity_api_get_direction },
       { "set_direction", custom_entity_api_set_direction },
-      { "get_sprite", entity_api_get_sprite },
       { "create_sprite", entity_api_create_sprite },
       { "remove_sprite", entity_api_remove_sprite },
       { "is_drawn_in_y_order", custom_entity_api_is_drawn_in_y_order },
@@ -507,6 +488,7 @@ void LuaContext::register_entity_module() {
   register_type(get_entity_internal_type_name(EntityType::DESTINATION), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::CARRIED_ITEM), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::JUMPER), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::NPC), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::SENSOR), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::SEPARATOR), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::WALL), nullptr, entity_common_methods, metamethods);
@@ -1159,8 +1141,7 @@ int LuaContext::entity_api_bring_to_back(lua_State* l) {
 }
 
 /**
- * \brief Implementation of
- * npc:get_sprite(), pickable:get_sprite() and enemy:get_sprite().
+ * \brief Implementation of entity:get_sprite().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
@@ -1168,9 +1149,11 @@ int LuaContext::entity_api_get_sprite(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Entity& entity = *check_entity(l, 1);
+    std::string sprite_name = LuaTools::opt_string(l, 2 ,"");
 
-    if (entity.has_sprite()) {
-      push_sprite(l, entity.get_sprite());
+    const SpritePtr& sprite = entity.get_sprite(sprite_name);
+    if (sprite != nullptr) {
+      push_sprite(l, *sprite);
     }
     else {
       lua_pushnil(l);
@@ -1189,13 +1172,15 @@ int LuaContext::entity_api_create_sprite(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Entity& entity = *check_entity(l, 1);
     const std::string& animation_set_id = LuaTools::check_string(l, 2);
+    const std::string& sprite_name = LuaTools::opt_string(l, 3, "");
 
-    Sprite& sprite = *entity.create_sprite(animation_set_id, true);
+    const SpritePtr& sprite = entity.create_sprite(animation_set_id, sprite_name);
+    sprite->enable_pixel_collisions();
     if (entity.is_suspended()) {
-      sprite.set_suspended(true);
+      sprite->set_suspended(true);
     }
 
-    push_sprite(l, sprite);
+    push_sprite(l, *sprite);
     return 1;
   });
 }
@@ -1217,12 +1202,12 @@ int LuaContext::entity_api_remove_sprite(lua_State* l) {
         LuaTools::arg_error(l, 2, "This sprite does not belong to this entity");
       }
     }
-    else if (entity.has_sprite()) {
-      Sprite& sprite = entity.get_sprite();
-      entity.remove_sprite(sprite);
-    }
     else {
-      LuaTools::error(l, "This entity has no sprite");
+      const SpritePtr& sprite = entity.get_sprite();
+      if (sprite == nullptr) {
+        LuaTools::error(l, "This entity has no sprite");
+      }
+      entity.remove_sprite(*sprite);
     }
 
     return 0;

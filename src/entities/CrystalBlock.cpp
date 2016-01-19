@@ -41,22 +41,22 @@ CrystalBlock::CrystalBlock(Game& game, const std::string& name,
   subtype(subtype) {
 
   set_collision_modes(CollisionMode::COLLISION_OVERLAPPING);
-  create_sprite("entities/crystal_block");
+  Sprite& sprite = *create_sprite("entities/crystal_block");
 
   // Don't pause the sprite animation when the crystal block is far from the
   // camera. Otherwise it looks weird if the players comes back using a
   // teletransporter.
-  get_sprite().set_ignore_suspend(true);
+  sprite.set_ignore_suspend(true);
 
   this->orange_raised = game.get_crystal_state();
 
   if (subtype == ORANGE) {
-    get_sprite().set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
+    sprite.set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
   }
   else {
-    get_sprite().set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
+    sprite.set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
   }
-  get_sprite().set_current_frame(get_sprite().get_nb_frames() - 1); // to avoid the animations at the map beginning
+  sprite.set_current_frame(sprite.get_nb_frames() - 1); // to avoid the animations at the map beginning
 }
 
 /**
@@ -182,20 +182,24 @@ bool CrystalBlock::try_jump(Hero& hero, const Rectangle& collision_box,
  */
 void CrystalBlock::update() {
 
+  const SpritePtr& sprite = get_sprite();
+
   // see if the state has to be changed
   bool orange_raised = get_game().get_crystal_state();
   if (orange_raised != this->orange_raised) {
 
     this->orange_raised = orange_raised;
 
-    if (subtype == ORANGE) {
-      get_sprite().set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
-    }
-    else {
-      get_sprite().set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
+    if (sprite != nullptr) {
+
+      if (subtype == ORANGE) {
+        sprite->set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
+      }
+      else {
+        sprite->set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
+      }
     }
   }
-  get_sprite().update();
 
   Entity::update();
 }
@@ -207,7 +211,10 @@ void CrystalBlock::update() {
  */
 void CrystalBlock::draw_on_map() {
 
-  Sprite& sprite = get_sprite();
+  const SpritePtr& sprite = get_sprite();
+  if (sprite == nullptr) {
+    return;
+  }
 
   int x1 = get_top_left_x();
   int y1 = get_top_left_y();
@@ -216,7 +223,7 @@ void CrystalBlock::draw_on_map() {
 
   for (int y = y1; y < y2; y += 16) {
     for (int x = x1; x < x2; x += 16) {
-      get_map().draw_sprite(sprite, x, y);
+      get_map().draw_sprite(*sprite, x, y);
     }
   }
 }

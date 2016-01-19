@@ -71,7 +71,7 @@ class Arrow: public Entity {
         EnemyReaction::Reaction& result,
         bool killed
     ) override;
-    bool has_reached_map_border() const;
+    bool has_reached_map_border();
 
   private:
 

@@ -183,15 +183,11 @@ class SOLARUS_API Entity: public ExportableToLua {
     void set_direction(int direction);
     virtual void notify_direction_changed();
 
-    // sprites
+    // Sprites.
     bool has_sprite() const;
-    Sprite& get_sprite();
-    const Sprite& get_sprite() const;
-    const std::vector<SpritePtr>& get_sprites();
-    SpritePtr create_sprite(
-        const std::string& animation_set_id,
-        bool enable_pixel_collisions = false
-    );
+    SpritePtr get_sprite(const std::string& name = "") const;
+    const std::vector<SpritePtr>& get_sprites() const;
+    SpritePtr create_sprite(const std::string& animation_set_id);
     bool remove_sprite(Sprite& sprite);
     void clear_sprites();
     virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);

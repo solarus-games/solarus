@@ -108,9 +108,9 @@ EntityType Npc::get_type() const {
 void Npc::initialize_sprite(const std::string& sprite_name, int initial_direction) {
 
   if (!sprite_name.empty()) {
-    create_sprite(sprite_name);
+    const SpritePtr& sprite = create_sprite(sprite_name);
     if (initial_direction != -1) {
-      get_sprite().set_current_direction(initial_direction);
+      sprite->set_current_direction(initial_direction);
     }
   }
 }
@@ -238,10 +238,14 @@ bool Npc::notify_action_command_pressed() {
     CommandsEffects::ActionKeyEffect effect = get_commands_effects().get_action_key_effect();
     get_commands_effects().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
 
+    SpritePtr sprite = get_sprite();
+
     // if this is a usual NPC, look towards the hero
     if (subtype == USUAL_NPC) {
       int direction = (get_hero().get_animation_direction() + 2) % 4;
-      get_sprite().set_current_direction(direction);
+      if (sprite != nullptr) {
+        sprite->set_current_direction(direction);
+      }
     }
 
     if (effect != CommandsEffects::ACTION_KEY_LIFT) {
@@ -258,10 +262,14 @@ bool Npc::notify_action_command_pressed() {
       // lift the entity
       if (get_equipment().has_ability(Ability::LIFT)) {
 
+        std::string animation_set_id = "stopped";
+        if (sprite != nullptr) {
+          animation_set_id = sprite->get_animation_set_id();
+        }
         hero.start_lifting(std::make_shared<CarriedItem>(
             hero,
             *this,
-            get_sprite().get_animation_set_id(),
+            animation_set_id,
             "stone",
             2,
             0)
@@ -328,15 +336,16 @@ void Npc::notify_position_changed() {
 
   if (subtype == USUAL_NPC) {
 
-    Sprite& sprite = get_sprite();
+    const SpritePtr& sprite = get_sprite();
     if (get_movement() != nullptr) {
       // The NPC is moving.
-      if (sprite.get_current_animation() != "walking") {
-        sprite.set_current_animation("walking");
+      if (sprite != nullptr) {
+        if (sprite->get_current_animation() != "walking") {
+          sprite->set_current_animation("walking");
+        }
+        int direction4 = get_movement()->get_displayed_direction4();
+        sprite->set_current_direction(direction4);
       }
-
-      int direction4 = get_movement()->get_displayed_direction4();
-      get_sprite().set_current_direction(direction4);
     }
 
     if (get_hero().get_facing_entity() == this &&
@@ -356,7 +365,10 @@ void Npc::notify_movement_finished() {
   Entity::notify_movement_finished();
 
   if (subtype == USUAL_NPC) {
-    get_sprite().set_current_animation("stopped");
+    const SpritePtr& sprite = get_sprite();
+    if (sprite != nullptr) {
+      sprite->set_current_animation("stopped");
+    }
   }
 }
 
@@ -370,7 +382,9 @@ bool Npc::can_be_lifted() const {
   // that an NPC can be lifted (nor its weight, damage, sound, etc) so this is hardcoded
   // TODO: specify the possibility to lift and the weight from Lua
   // npc:set_weight()?
-  return has_sprite() && get_sprite().get_animation_set_id() == "entities/sign";
+
+  const SpritePtr& sprite = get_sprite();
+  return sprite != nullptr && sprite->get_animation_set_id() == "entities/sign";
 }
 
 }

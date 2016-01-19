@@ -96,7 +96,8 @@ class Pickable: public Entity {
     Treasure treasure;                          /**< the treasure obtained when the player picks this item */
     bool given_to_player;                       /**< indicates that the treasure was given to the player */
 
-    SpritePtr shadow_sprite;                    /**< sprite of the shadow (if any) */
+    SpritePtr item_sprite;                      /**< Sprite of the treasure. */
+    SpritePtr shadow_sprite;                    /**< Sprite of the shadow (if any). */
     FallingHeight falling_height;               /**< indicates whether the item is falling when it appears */
     bool will_disappear;                        /**< indicates that the item will disappear after an amount of time
                                                  * (only possible for items not saved) */

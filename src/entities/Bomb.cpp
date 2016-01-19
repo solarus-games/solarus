@@ -44,8 +44,8 @@ Bomb::Bomb(const std::string& name, int layer, const Point& xy):
   explosion_date(System::now() + 6000) {
 
   set_collision_modes(CollisionMode::COLLISION_FACING);
-  create_sprite("entities/bomb");
-  get_sprite().enable_pixel_collisions();
+  const SpritePtr& sprite = create_sprite("entities/bomb");
+  sprite->enable_pixel_collisions();
   set_size(16, 16);
   set_origin(8, 13);
   set_drawn_in_y_order(true);
@@ -237,9 +237,12 @@ void Bomb::update() {
   if (now >= explosion_date) {
     explode();
   }
-  else if (now >= explosion_date - 1500
-      && get_sprite().get_current_animation() != "stopped_explosion_soon") {
-    get_sprite().set_current_animation("stopped_explosion_soon");
+  else if (now >= explosion_date - 1500) {
+    const SpritePtr& sprite = get_sprite();
+    if (sprite != nullptr &&
+        sprite->get_current_animation() != "stopped_explosion_soon") {
+      sprite->set_current_animation("stopped_explosion_soon");
+    }
   }
 
   // destroy the movement once finished

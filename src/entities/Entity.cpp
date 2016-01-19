@@ -983,9 +983,10 @@ void Entity::set_aligned_to_grid_y() {
 Point Entity::get_facing_point() const {
 
   int direction4 = 1;  // North by default.
-  if (has_sprite() && get_sprite().get_nb_directions() == 4) {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr && sprite->get_nb_directions() == 4) {
     // Use the sprite to decide where the entity is looking to.
-    direction4 = get_sprite().get_current_direction();
+    direction4 = sprite->get_current_direction();
   }
   else {
     if (get_movement() != nullptr) {
@@ -1194,50 +1195,48 @@ void Entity::set_optimization_distance(int distance) {
  * \return true if the entity has at least one sprite.
  */
 bool Entity::has_sprite() const {
-  return sprites.size() != 0;
+  return !sprites.empty();
 }
 
 /**
- * \brief Returns the sprite created with the first call to create_sprite()
- * for this entity.
- * \return The first sprite created.
+ * \brief Returns a sprite of this entity.
+ * \param sprite_name Name of the sprite to get, or an empty string to
+ * get the first sprite.
+ * \return The corresponding sprite, or nullptr if there is no such sprite.
  */
-Sprite& Entity::get_sprite() {
-  return *sprites.front();
-}
+SpritePtr Entity::get_sprite(const std::string& sprite_name) const {
 
-/**
- * \brief Returns the const version of the sprite created with the first call
- * to create_sprite() for this entity.
- * \return The first sprite created.
- */
-const Sprite& Entity::get_sprite() const {
-  return *sprites.front();
+  if (sprites.empty()) {
+    // This entity has no sprite.
+    return nullptr;
+  }
+
+  if (sprite_name.empty()) {
+    // No sprite name specified: return the first one.
+    return sprites.front();
+  }
+
+  // TODO
+  return nullptr;
 }
 
 /**
  * \brief Returns all sprites of this entity.
  * \return The sprites.
  */
-const std::vector<SpritePtr>& Entity::get_sprites() {
+const std::vector<SpritePtr>& Entity::get_sprites() const {
   return sprites;
 }
 
 /**
- * \brief Adds a sprite to this entity.
- * \param animation_set_id id of the sprite's animation set to use
- * \param enable_pixel_collisions true to enable the pixel-perfect collision tests for this sprite
- * \return the sprite created
+ * \brief Creates a sprite and adds it to this entity.
+ * \param animation_set_id Id of the sprite's animation set to use.
+ * \return The sprite created.
  */
 SpritePtr Entity::create_sprite(
-    const std::string& animation_set_id,
-    bool enable_pixel_collisions
+    const std::string& animation_set_id
 ) {
   SpritePtr sprite = std::make_shared<Sprite>(animation_set_id);
-
-  if (enable_pixel_collisions) {
-    sprite->enable_pixel_collisions();
-  }
 
   sprites.push_back(sprite);
   notify_bounding_box_changed();

@@ -45,8 +45,9 @@ Arrow::Arrow(const Hero& hero):
 
   // initialize the entity
   int direction = hero.get_animation_direction();
-  create_sprite("entities/arrow", true);
-  get_sprite().set_current_direction(direction);
+  const SpritePtr& sprite = create_sprite("entities/arrow");
+  sprite->enable_pixel_collisions();
+  sprite->set_current_direction(direction);
   set_drawn_in_y_order(true);
 
   if (direction % 2 == 0) {
@@ -247,7 +248,8 @@ void Arrow::update() {
   // see if the arrow just hit a wall or an entity
   bool reached_obstacle = false;
 
-  if (get_sprite().get_current_animation() != "reached_obstacle") {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr && sprite->get_current_animation() != "reached_obstacle") {
 
     if (entity_reached != nullptr) {
       // the arrow was just attached to an entity
@@ -269,7 +271,9 @@ void Arrow::update() {
   if (reached_obstacle) {
     // an obstacle or an entity was just reached
     disappear_date = now + 1500;
-    get_sprite().set_current_animation("reached_obstacle");
+    if (sprite != nullptr) {
+      sprite->set_current_animation("reached_obstacle");
+    }
     Sound::play("arrow_hit");
 
     if (entity_reached == nullptr) {
@@ -428,9 +432,14 @@ void Arrow::notify_attacked_enemy(
  * \brief Returns whether the arrow has just hit the map border.
  * \return true if the arrow has just hit the map border
  */
-bool Arrow::has_reached_map_border() const {
+bool Arrow::has_reached_map_border() {
 
-  if (get_sprite().get_current_animation() != "flying" || get_movement() == nullptr) {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr && sprite->get_current_animation() != "flying") {
+    return false;
+  }
+
+  if (get_movement() == nullptr) {
     return false;
   }
 

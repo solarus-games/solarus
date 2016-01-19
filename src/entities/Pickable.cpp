@@ -155,7 +155,7 @@ bool Pickable::initialize_sprites() {
 
   bool has_shadow = false;
   if (!animation.empty()) {
-    shadow_sprite = std::make_shared<Sprite>("entities/shadow");
+    shadow_sprite = create_sprite("entities/shadow");
     has_shadow = shadow_sprite->has_animation(animation);
   }
 
@@ -169,10 +169,9 @@ bool Pickable::initialize_sprites() {
 
   // Main sprite.
   const std::string item_name = treasure.get_item_name();
-  create_sprite("entities/items");
-  Sprite& item_sprite = get_sprite();
+  item_sprite = create_sprite("entities/items");
 
-  if( !item_sprite.has_animation(item_name)) {
+  if( !item_sprite->has_animation(item_name)) {
     std::ostringstream oss;
     oss << "Cannot create pickable treasure '" << item_name
         << "': Sprite 'entities/items' has no animation '"
@@ -181,20 +180,20 @@ bool Pickable::initialize_sprites() {
     return false;
   }
 
-  item_sprite.set_current_animation(item_name);
+  item_sprite->set_current_animation(item_name);
   int direction = treasure.get_variant() - 1;
-  if (direction < 0 || direction >= item_sprite.get_nb_directions()) {
+  if (direction < 0 || direction >= item_sprite->get_nb_directions()) {
     std::ostringstream oss;
     oss << "Pickable treasure '" << item_name
         << "' has variant " << treasure.get_variant()
         << " but sprite 'entities/items' only has "
-        << item_sprite.get_nb_directions() << " variant(s) in animation '"
+        << item_sprite->get_nb_directions() << " variant(s) in animation '"
         << item_name << "'";
     Debug::error(oss.str());
     direction = 0;  // Fallback.
   }
-  item_sprite.set_current_direction(direction);
-  item_sprite.enable_pixel_collisions();
+  item_sprite->set_current_direction(direction);
+  item_sprite->enable_pixel_collisions();
 
   // Set the origin point and the size of the entity.
   set_size(16, 16);
@@ -452,7 +451,9 @@ void Pickable::set_blinking(bool blinking) {
 
   uint32_t blink_delay = blinking ? 75 : 0;
 
-  get_sprite().set_blinking(blink_delay);
+  if (item_sprite != nullptr) {
+    set_blinking(blink_delay);
+  }
 
   if (shadow_sprite != nullptr) {
     shadow_sprite->set_blinking(blink_delay);
@@ -548,7 +549,7 @@ void Pickable::update() {
       // make the item blink and then disappear
       if (will_disappear) {
 
-        if (now >= blink_date && !get_sprite().is_blinking() && entity_followed == nullptr) {
+        if (now >= blink_date && !item_sprite->is_blinking() && entity_followed == nullptr) {
           set_blinking(true);
         }
 

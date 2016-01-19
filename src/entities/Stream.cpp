@@ -135,10 +135,11 @@ void Stream::notify_direction_changed() {
 
   // Give the correct direction to the sprite if any.
   int direction8 = get_direction();
-  if (has_sprite()
-      && get_sprite().get_nb_directions() >= 8) {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr &&
+      sprite->get_nb_directions() >= 8) {
     // There is a sprite with all necessary directions.
-    get_sprite().set_current_direction(direction8);
+    sprite->set_current_direction(direction8);
   }
 }
 

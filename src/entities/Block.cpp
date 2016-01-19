@@ -69,8 +69,9 @@ Block::Block(
 
   set_collision_modes(CollisionMode::COLLISION_FACING);
   set_origin(8, 13);
-  set_direction(direction);  create_sprite(sprite_name);
-  set_drawn_in_y_order(get_sprite().get_size().height > 16);
+  set_direction(direction);
+  const SpritePtr& sprite = create_sprite(sprite_name);
+  set_drawn_in_y_order(sprite->get_size().height > 16);
 }
 
 /**

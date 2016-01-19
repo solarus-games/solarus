@@ -32,9 +32,10 @@ Fire::Fire(const std::string& name, int layer, const Point& xy):
 
   // initialize the entity
   set_collision_modes(CollisionMode::COLLISION_OVERLAPPING | CollisionMode::COLLISION_SPRITE);
-  create_sprite("entities/fire");
 
-  get_sprite().enable_pixel_collisions();
+  const SpritePtr& sprite = create_sprite("entities/fire");
+  sprite->enable_pixel_collisions();
+
   set_origin(8, 13);
 }
 
@@ -53,7 +54,8 @@ void Fire::update() {
 
   Entity::update();
 
-  if (get_sprite().is_animation_finished()) {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr && sprite->is_animation_finished()) {
     remove_from_map();
   }
   else {

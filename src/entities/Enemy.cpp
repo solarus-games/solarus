@@ -742,9 +742,14 @@ void Enemy::set_default_attack_consequences_sprite(const Sprite& sprite) {
  *
  * \return name of the current animation of the first sprite
  */
-const std::string& Enemy::get_animation() const {
+std::string Enemy::get_animation() const {
 
-  return get_sprite().get_current_animation();
+  const SpritePtr& sprite = get_sprite();
+  if (sprite == nullptr) {
+    return "";
+  }
+
+  return sprite->get_current_animation();
 }
 
 /**
@@ -805,14 +810,21 @@ void Enemy::update() {
     can_attack = true;
   }
 
-  if (is_immobilized() && !is_killed() && now >= end_shaking_date &&
-      get_sprite().get_current_animation() == "shaking") {
-
+  if (is_immobilized() &&
+      !is_killed() &&
+      now >= end_shaking_date &&
+      get_animation() == "shaking"
+  ) {
     restart();
   }
 
-  if (is_immobilized() && !is_killed() && !is_being_hurt() && now >= start_shaking_date &&
-      get_sprite().get_current_animation() != "shaking") {
+  if (is_immobilized() &&
+      !is_killed() &&
+      !is_being_hurt() &&
+      now >= start_shaking_date &&
+      !get_animation().empty() &&
+      get_animation() != "shaking"
+  ) {
 
     end_shaking_date = now + 2000;
     set_animation("shaking");
@@ -1190,7 +1202,7 @@ void Enemy::try_hurt(EnemyAttack attack, Entity& source, Sprite* this_sprite) {
 
     case EnemyReaction::ReactionType::HURT:
 
-      if (is_immobilized() && get_sprite().get_current_animation() == "shaking") {
+      if (is_immobilized() && get_animation() == "shaking") {
         stop_immobilized();
       }
 
@@ -1421,9 +1433,10 @@ bool Enemy::is_dying_animation_finished() const {
     return !exploding;
   }
 
-  if (has_sprite()) {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr) {
     // The dying animation is the usual "enemy_killed" sprite.
-    return get_sprite().is_animation_finished();
+    return sprite->is_animation_finished();
   }
 
   // There is no dying animation (case of holes, water and lava for now).
@@ -1468,8 +1481,12 @@ void Enemy::clear_treasure() {
  */
 bool Enemy::is_sprite_finished_or_looping() const {
 
-  const Sprite& sprite = get_sprite();
-  return sprite.is_animation_finished() || sprite.is_animation_looping();
+  const SpritePtr& sprite = get_sprite();
+  if (sprite == nullptr) {
+    return true;
+  }
+
+  return sprite->is_animation_finished() || sprite->is_animation_looping();
 }
 
 /**

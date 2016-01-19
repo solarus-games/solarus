@@ -104,6 +104,8 @@ LuaContext& HeroSprites::get_lua_context() {
  */
 void HeroSprites::rebuild_equipment() {
 
+  // TODO take care or the sprites order (keep the tunic first).
+
   int animation_direction = -1;
   if (tunic_sprite != nullptr) {
     // Save the direction.
@@ -797,7 +799,10 @@ void HeroSprites::update() {
   }
 
   if (lifted_item != nullptr && walking) {
-    lifted_item->get_sprite().set_current_frame(tunic_sprite->get_current_frame() % 3);
+    const SpritePtr& lifted_item_sprite = lifted_item->get_sprite();
+    if (lifted_item_sprite != nullptr) {
+      lifted_item_sprite->set_current_frame(tunic_sprite->get_current_frame() % 3);
+    }
   }
 
   // blinking
@@ -1547,6 +1552,9 @@ void HeroSprites::set_animation(
  */
 void HeroSprites::create_ground(Ground ground) {
 
+  if (ground_sprite != nullptr) {
+    hero.remove_sprite(*ground_sprite);
+  }
   ground_sprite = nullptr;
 
   std::string sprite_id;
@@ -1560,7 +1568,7 @@ void HeroSprites::create_ground(Ground ground) {
   }
 
   if (!sprite_id.empty()) {
-    ground_sprite = std::make_shared<Sprite>(sprite_id);
+    ground_sprite = hero.create_sprite(sprite_id);
     ground_sprite->set_tileset(hero.get_map().get_tileset());
     if (ground != Ground::SHALLOW_WATER) {
       ground_sprite->set_current_animation(walking ? "walking" : "stopped");

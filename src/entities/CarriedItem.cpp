@@ -100,12 +100,12 @@ CarriedItem::CarriedItem(
   std::shared_ptr<PixelMovement> movement = std::make_shared<PixelMovement>(
       lifting_trajectories[direction], 100, false, true
   );
-  create_sprite(animation_set_id);
-  get_sprite().set_current_animation("stopped");
+  main_sprite = create_sprite(animation_set_id);
+  main_sprite->set_current_animation("stopped");
   set_movement(movement);
 
   // create the shadow (not visible yet)
-  shadow_sprite = std::make_shared<Sprite>("entities/shadow");
+  shadow_sprite = create_sprite("entities/shadow");
   shadow_sprite->set_current_animation("big");
 }
 
@@ -147,7 +147,7 @@ void CarriedItem::set_animation_stopped() {
 
   if (!is_lifting && !is_throwing) {
     std::string animation = will_explode_soon() ? "stopped_explosion_soon" : "stopped";
-    get_sprite().set_current_animation(animation);
+    main_sprite->set_current_animation(animation);
   }
 }
 
@@ -161,7 +161,7 @@ void CarriedItem::set_animation_walking() {
 
   if (!is_lifting && !is_throwing) {
     std::string animation = will_explode_soon() ? "walking_explosion_soon" : "walking";
-    get_sprite().set_current_animation(animation);
+    main_sprite->set_current_animation(animation);
   }
 }
 
@@ -179,8 +179,7 @@ void CarriedItem::throw_item(int direction) {
   Sound::play("throw");
 
   // stop the sprite animation
-  Sprite& sprite = get_sprite();
-  sprite.set_current_animation("stopped");
+  main_sprite->set_current_animation("stopped");
 
   // set the movement of the item sprite
   set_y(hero.get_y());
@@ -236,8 +235,8 @@ void CarriedItem::break_item() {
     if (!destruction_sound_id.empty()) {
       Sound::play(destruction_sound_id);
     }
-    if (get_sprite().has_animation("destroy")) {
-      get_sprite().set_current_animation("destroy");
+    if (main_sprite->has_animation("destroy")) {
+      main_sprite->set_current_animation("destroy");
     }
     else {
       remove_from_map();
@@ -309,7 +308,7 @@ void CarriedItem::break_item_on_ground() {
  * \return true if the item is broken
  */
 bool CarriedItem::is_broken() const {
-  return is_breaking && (get_sprite().is_animation_finished() || can_explode());
+  return is_breaking && (main_sprite->is_animation_finished() || can_explode());
 }
 
 /**
@@ -381,12 +380,12 @@ void CarriedItem::update() {
     }
     else if (will_explode_soon()) {
 
-      std::string animation = get_sprite().get_current_animation();
+      std::string animation = main_sprite->get_current_animation();
       if (animation == "stopped") {
-        get_sprite().set_current_animation("stopped_explosion_soon");
+        main_sprite->set_current_animation("stopped_explosion_soon");
       }
       else if (animation == "walking") {
-        get_sprite().set_current_animation("walking_explosion_soon");
+        main_sprite->set_current_animation("walking_explosion_soon");
       }
     }
   }
@@ -447,7 +446,7 @@ void CarriedItem::draw_on_map() {
     // when the item is being thrown, draw the shadow and the item separately
     // TODO: this could probably be simplified by using a JumpMovement
     get_map().draw_sprite(*shadow_sprite, get_xy());
-    get_map().draw_sprite(get_sprite(), get_x(), get_y() - item_height);
+    get_map().draw_sprite(*main_sprite, get_x(), get_y() - item_height);
   }
 }
 

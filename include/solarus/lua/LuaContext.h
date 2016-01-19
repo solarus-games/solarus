@@ -813,6 +813,7 @@ class LuaContext {
       entity_api_bring_to_back,
       entity_api_snap_to_grid,
       entity_api_get_sprite,
+      // TODO entity_api_get_sprites,
       entity_api_create_sprite,
       entity_api_remove_sprite,
       entity_api_is_visible,

@@ -54,8 +54,9 @@ class DynamicTile: public Entity {
     virtual EntityType get_type() const override;
 
     const std::string& get_tile_pattern_id() const;
-    virtual Ground get_modified_ground() const override;
-    virtual void draw_on_map() override;
+    Ground get_modified_ground() const override;
+    bool is_drawn_at_its_position() const override;
+    void draw_on_map() override;
 
   private:
 

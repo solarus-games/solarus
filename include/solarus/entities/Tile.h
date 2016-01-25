@@ -56,13 +56,13 @@ class Tile: public Entity {
         const std::string& tile_pattern_id
     );
 
-    virtual EntityType get_type() const override;
-    virtual void draw_on_map() override;
+    EntityType get_type() const override;
+    bool is_drawn_at_its_position() const override;
+    void draw_on_map() override;
     void draw(const SurfacePtr& dst_surface, const Point& viewport);
     TilePattern& get_tile_pattern();
     const std::string& get_tile_pattern_id() const;
     bool is_animated() const;
-    virtual bool is_drawn_at_its_position() const override;
 
   private:
 

@@ -53,8 +53,7 @@ EntityType Tile::get_type() const {
 }
 
 /**
- * \brief Returns whether this entity is drawn at its position on the map.
- * \return true if this entity is drawn where it is located.
+ * \copydoc Entity::is_drawn_at_its_position()
  */
 bool Tile::is_drawn_at_its_position() const {
   return tile_pattern.is_drawn_at_its_position();

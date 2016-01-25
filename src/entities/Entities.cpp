@@ -42,25 +42,6 @@ namespace Solarus {
 namespace {
 
 /**
- * \brief Comparator that sorts entities according to their Y coordinate.
- */
-class YOrderComparator {
-
-  public:
-
-    /**
-     * \brief Compares two entities.
-     * \param first An entity.
-     * \param second Another entity.
-     * \return \c true if the first entity's Y coordinate is lower than the second one's.
-     */
-    bool operator()(const EntityPtr& first, const EntityPtr& second) {
-      return first->get_y() < second->get_y();
-    }
-
-};
-
-/**
  * \brief Comparator that sorts entities according to their stacking order
  * on the map (layer and then Z index).
  */
@@ -125,6 +106,9 @@ Entities::Entities(Game& game, Map& map):
   all_entities(),
   quadtree(),
   z_caches(),
+  entities_drawn_not_at_their_position(),
+  entities_to_draw(),
+  entities_to_remove(),
   default_destination(nullptr) {
 
   // Initialize the size.
@@ -922,10 +906,10 @@ void Entities::add_entity(const EntityPtr& entity) {
   else {
     const int layer = entity->get_layer();
 
-    // update the quadtree
+    // Update the quadtree.
     quadtree.add(entity, entity->get_max_bounding_box());
 
-    // update the specific entities lists
+    // Update the specific entities lists.
     switch (entity->get_type()) {
 
       case EntityType::CAMERA:
@@ -945,6 +929,11 @@ void Entities::add_entity(const EntityPtr& entity) {
 
       default:
       break;
+    }
+
+    // Update the list of entities drawn not at their position.
+    if (!entity->is_drawn_at_its_position()) {
+      entities_drawn_not_at_their_position[layer].push_back(entity);
     }
 
     // Track the insertion order.
@@ -1162,28 +1151,26 @@ void Entities::draw() {
   // Lazily build the list of entities to draw.
   if (entities_to_draw.empty()) {
 
-    // Get entities in the camera.
+    // Add entities in the camera.
     EntityVector entities_in_camera;
     get_entities_in_rectangle(camera.get_bounding_box(), entities_in_camera);
 
-    // Split them by layer.
-    // On each layer there are two lists of entities to draw: one in Z order and one in Y order.
-    entities_to_draw.clear();
     for (const EntityPtr& entity : entities_in_camera) {
       int layer = entity->get_layer();
       Debug::check_assertion(map.is_valid_layer(layer), "Invalid layer");
       if (entity->is_enabled() &&
           entity->is_visible()) {
-        if (entity->is_drawn_in_y_order()) {
-          entities_to_draw[layer].second.push_back(entity);
-        }
-        else {
-          entities_to_draw[layer].first.push_back(entity);
-        }
+          entities_to_draw[layer].insert(entity);
       }
     }
 
-    // FIXME entities not drawn at their position
+    // Add entities displayed even when out of the camera.
+    for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
+      entities_to_draw[layer].insert(
+        entities_drawn_not_at_their_position[layer].begin(),
+        entities_drawn_not_at_their_position[layer].end()
+      );
+    }
   }
 
   for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
@@ -1203,17 +1190,8 @@ void Entities::draw() {
     // since they are already drawn).
     non_animated_regions[layer]->draw_on_map();
 
-    // Draw entities in Z order first.
-    EntityVector& entities_z_order = entities_to_draw[layer].first;
-    std::sort(entities_z_order.begin(), entities_z_order.end(), ZOrderComparator(*this));
-    for (const EntityPtr& entity: entities_z_order) {
-      entity->draw_on_map();
-    }
-
-    // Draw entities in Y order then (including the hero).
-    EntityVector& entities_y_order = entities_to_draw[layer].second;
-    std::sort(entities_y_order.begin(), entities_y_order.end(), YOrderComparator());
-    for (const EntityPtr& entity: entities_y_order) {
+    // Draw dynamic entities, ordered by their data structure.
+    for (const EntityPtr& entity: entities_to_draw[layer]) {
       entity->draw_on_map();
     }
   }

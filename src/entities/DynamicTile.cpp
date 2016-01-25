@@ -77,6 +77,13 @@ Ground DynamicTile::get_modified_ground() const {
 }
 
 /**
+ * \copydoc Entity::is_drawn_at_its_position()
+ */
+bool DynamicTile::is_drawn_at_its_position() const {
+  return tile_pattern.is_drawn_at_its_position();
+}
+
+/**
  * \brief Draws the tile on the map.
  */
 void DynamicTile::draw_on_map() {

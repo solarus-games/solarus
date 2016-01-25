@@ -143,11 +143,55 @@ class SOLARUS_API Entities {
     using ByLayer = std::map<int, T>;
 
     /**
-     * \brief Alias for std::pair of two entity vectors.
-     *
-     * Used to cache the lists of entities to draw by Z order and by Y order.
+     * \brief Comparator that sorts entities in drawing order.
+     * on the map (layer and then Z index).
      */
-    using EntityVectorPair = std::pair<EntityVector, EntityVector>;
+    class DrawingOrderComparator {
+
+      public:
+
+        /**
+         * \brief Compares two entities.
+         * \param first An entity.
+         * \param second Another entity.
+         * \return \c true if the first entity should be drawn before the secone one.
+         */
+        bool operator()(const EntityPtr& first, const EntityPtr& second) const {
+
+          if (first->get_layer() < second->get_layer()) {
+            return true;
+          }
+
+          if (first->get_layer() > second->get_layer()) {
+            return false;
+          }
+
+          // Same layer.
+          // All entities displayed in Z order are displayed before entities displayed in Y order.
+          if (!first->is_drawn_in_y_order() && second->is_drawn_in_y_order()) {
+            return true;
+          }
+
+          if (first->is_drawn_in_y_order() && !second->is_drawn_in_y_order()) {
+            return false;
+          }
+
+          if (first->is_drawn_in_y_order()) {
+            // Both entities are displayed in Y order.
+            return first->get_y() < second->get_y();
+          }
+
+          // Both entities are displayed in Z order.
+          const Entities& entities = first->get_entities();
+          return entities.get_entity_relative_z_order(first) < entities.get_entity_relative_z_order(second);
+        }
+
+    };
+
+    /**
+     * \brief Ordered set of entities to be drawn.
+     */
+    using EntitiesToDraw = std::set<EntityPtr, DrawingOrderComparator>;
 
     /**
      * \brief Internal fast cached information about the entity insertion order.
@@ -211,9 +255,10 @@ class SOLARUS_API Entities {
     EntityTree quadtree;                            /**< All map entities except tiles.
                                                      * Optimized for fast spatial search. */
     ByLayer<ZCache> z_caches;                       /**< For each layer, tracks the relative Z order of entities. */
-    ByLayer<EntityVectorPair>
-        entities_to_draw;                           /**< For each layer, entities currently in the camera and ready to be drawn.
-                                                     * Two lists are drawn: entities in Z order and then entities in Y order. */
+    ByLayer<EntityVector>
+        entities_drawn_not_at_their_position;       /**< For each layer, entities to draw even if there position
+                                                     * is outside the camera. */
+    ByLayer<EntitiesToDraw> entities_to_draw;       /**< For each layer, entities to be drawn at this cycle. */
 
     EntityList entities_to_remove;                  /**< List of entities that need to be removed right now. */
 

@@ -341,6 +341,17 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual void update();
     virtual void draw_on_map();
 
+    // Easy access to various game objects.
+    Entities& get_entities();
+    const Entities& get_entities() const;
+    Equipment& get_equipment();
+    const Equipment& get_equipment() const;
+    CommandsEffects& get_commands_effects();
+    GameCommands& get_commands();
+    Savegame& get_savegame();
+    const Savegame& get_savegame() const;
+    Hero& get_hero();
+
     /**
      * \name State.
      *
@@ -395,17 +406,6 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual bool is_lava_obstacle() const;
     virtual bool is_prickle_obstacle() const;
     virtual bool is_ladder_obstacle() const;
-
-    // easy access to various game objects
-    Entities& get_entities();
-    const Entities& get_entities() const;
-    Equipment& get_equipment();
-    const Equipment& get_equipment() const;
-    CommandsEffects& get_commands_effects();
-    GameCommands& get_commands();
-    Savegame& get_savegame();
-    const Savegame& get_savegame() const;
-    Hero& get_hero();
 
   private:
 

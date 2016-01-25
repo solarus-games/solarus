@@ -1157,12 +1157,14 @@ void Entities::update() {
  */
 void Entities::draw() {
 
+  const Camera& camera = get_camera();
+
   // Lazily build the list of entities to draw.
   if (entities_to_draw.empty()) {
 
     // Get entities in the camera.
     EntityVector entities_in_camera;
-    get_entities_in_rectangle(get_camera().get_bounding_box(), entities_in_camera);
+    get_entities_in_rectangle(camera.get_bounding_box(), entities_in_camera);
 
     // Split them by layer.
     // On each layer there are two lists of entities to draw: one in Z order and one in Y order.
@@ -1191,7 +1193,10 @@ void Entities::draw() {
     // (and maybe more, but we don't care because non-animated tiles
     // will be drawn later).
     for (unsigned int i = 0; i < tiles_in_animated_regions[layer].size(); i++) {
-      tiles_in_animated_regions[layer][i]->draw_on_map();
+      Tile& tile = *tiles_in_animated_regions[layer][i];
+      if (tile.overlaps(camera) || !tile.is_drawn_at_its_position()) {
+        tile.draw_on_map();
+      }
     }
 
     // Draw the non-animated tiles (with transparent rectangles on the regions of animated tiles
@@ -1215,7 +1220,7 @@ void Entities::draw() {
 
   if (EntityTree::debug_quadtrees) {
     // Draw the quadtree structure for debugging.
-    quadtree.draw(map.get_visible_surface(), -map.get_camera().get_top_left_xy());
+    quadtree.draw(map.get_visible_surface(), -camera.get_top_left_xy());
   }
 }
 

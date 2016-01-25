@@ -22,6 +22,7 @@
 #include "solarus/EquipmentItem.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
+#include "solarus/Sprite.h"
 #include <lua.hpp>
 #include <string>
 
@@ -42,9 +43,11 @@ Hero::TreasureState::TreasureState(
 
   BaseState(hero, "treasure"),
   treasure(treasure),
+  treasure_sprite(),
   callback_ref(callback_ref) {
 
   treasure.check_obtainable();
+  treasure_sprite = treasure.create_sprite();
 }
 
 /**
@@ -88,6 +91,16 @@ void Hero::TreasureState::stop(const State* next_state) {
 }
 
 /**
+ * \copydoc Hero::BaseState::update
+ */
+void Hero::TreasureState::update() {
+
+  BaseState::update();
+
+  treasure_sprite->update();
+}
+
+/**
  * \brief Draws this state.
  */
 void Hero::TreasureState::draw_on_map() {
@@ -99,7 +112,7 @@ void Hero::TreasureState::draw_on_map() {
   int y = hero.get_y();
 
   const Camera& camera = get_map().get_camera();
-  treasure.draw(get_map().get_visible_surface(),
+  treasure_sprite->draw(get_map().get_visible_surface(),
       x - camera.get_top_left_x(),
       y - 24 - camera.get_top_left_y());
 }

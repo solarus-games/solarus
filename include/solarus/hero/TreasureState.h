@@ -36,15 +36,17 @@ class Hero::TreasureState: public Hero::BaseState {
         const ScopedLuaRef& callback_ref
     );
 
-    virtual void start(const State* previous_state) override;
-    virtual void stop(const State* next_state) override;
-    virtual void draw_on_map() override;
-    virtual CarriedItem::Behavior get_previous_carried_item_behavior() const override;
-    virtual bool is_brandishing_treasure() const override;
+    void start(const State* previous_state) override;
+    void stop(const State* next_state) override;
+    void update() override;
+    void draw_on_map() override;
+    CarriedItem::Behavior get_previous_carried_item_behavior() const override;
+    bool is_brandishing_treasure() const override;
 
   private:
 
-    Treasure treasure;            /**< the treasure to give to the hero */
+    Treasure treasure;            /**< The treasure to give to the hero. */
+    SpritePtr treasure_sprite;    /**< Sprite of the treasure. */
     ScopedLuaRef callback_ref;    /**< Lua ref of a function to call when the
                                    * treasure's dialog finishes. */
 

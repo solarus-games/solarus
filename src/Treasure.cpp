@@ -47,8 +47,7 @@ Treasure::Treasure(Game& game, const std::string& item_name, int variant,
   game(&game),
   item_name(item_name),
   variant(variant),
-  savegame_variable(savegame_variable),
-  sprite(nullptr) {
+  savegame_variable(savegame_variable) {
 
 }
 
@@ -189,23 +188,14 @@ void Treasure::give_to_player() const {
 }
 
 /**
- * \brief Draws the treasure.
- * \param dst_surface The surface where to draw.
- * \param x The treasure x position on this surface.
- * \param y The treasure y position on this surface.
+ * \brief Creates and returns a sprite representing this treasure.
  */
-void Treasure::draw(const SurfacePtr& dst_surface, int x, int y) {
+SpritePtr Treasure::create_sprite() const {
 
-  if (sprite == nullptr) {
-    // Create the sprite only if needed (many treasures are actually
-    // never drawn).
-    sprite = std::make_shared<Sprite>("entities/items");
-    sprite->set_current_animation(get_item_name());
-    sprite->set_current_direction(get_variant() - 1);
-  }
-
-  // Draw the item.
-  sprite->draw(dst_surface, x, y);
+  SpritePtr sprite = std::make_shared<Sprite>("entities/items");
+  sprite->set_current_animation(get_item_name());
+  sprite->set_current_direction(get_variant() - 1);
+  return sprite;
 }
 
 }

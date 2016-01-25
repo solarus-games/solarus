@@ -63,7 +63,7 @@ class Treasure {
     void give_to_player() const;
     bool is_found() const;
 
-    void draw(const SurfacePtr& dst_surface, int x, int y);
+    SpritePtr create_sprite() const;
 
   private:
 
@@ -72,7 +72,6 @@ class Treasure {
     int variant;                       /**< variant of this content */
     std::string savegame_variable;     /**< name of the savegame boolean variable corresponding to this treasure,
                                         * or an empty string if the treasure state is not saved */
-    SpritePtr sprite;                  /**< the sprite of the treasure (loaded on demand, nullptr until required) */
 
 };
 

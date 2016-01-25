@@ -37,6 +37,7 @@ Changes that introduce incompatibilities:
 * Fix hero state name "freezed", renamed it to "frozen" (#813).
 * Fix map:get_entities() not returning the hero (#670).
 * Fix entity:set_enabled(true) delayed while it blocks the hero (#817).
+* Fix brandished treasure sprite and shop treasure sprite not animated (#790).
 
 Changes that do not introduce incompatibilities:
 

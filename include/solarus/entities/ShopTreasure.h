@@ -70,24 +70,25 @@ class ShopTreasure: public Entity {
     int get_price() const;
     const std::string& get_dialog_id() const;
 
-    virtual bool is_sword_ignored() const override;
-    virtual bool is_obstacle_for(Entity& other) override;
-    virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
-    virtual bool notify_action_command_pressed() override;
+    bool is_sword_ignored() const override;
+    bool is_obstacle_for(Entity& other) override;
+    void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
+    bool notify_action_command_pressed() override;
 
-    virtual void draw_on_map() override;
+    void update() override;
+    void draw_on_map() override;
 
   private:
 
-    // data
+    // Data.
     Treasure treasure;                /**< The treasure the player can buy. */
     int price;                        /**< The treasure's price. */
     std::string dialog_id;            /**< Id of the dialog describing the treasure. */
 
-    // displaying
+    // Displaying.
+    SpritePtr treasure_sprite;        /**< Sprite of the treasure. */
+    SpritePtr rupee_icon_sprite;      /**< The rupee icon near the price. */
     TextSurface price_digits;         /**< The digits that show the price. */
-    SpritePtr
-        rupee_icon_sprite;            /**< The rupee icon near the price. */
 
 };
 

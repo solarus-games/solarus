@@ -57,8 +57,9 @@ ShopTreasure::ShopTreasure(
   treasure(treasure),
   price(price),
   dialog_id(dialog_id),
-  price_digits(0, 0, TextSurface::HorizontalAlignment::LEFT, TextSurface::VerticalAlignment::TOP),
-  rupee_icon_sprite(std::make_shared<Sprite>("entities/rupee_icon")) {
+  treasure_sprite(treasure.create_sprite()),
+  rupee_icon_sprite(std::make_shared<Sprite>("entities/rupee_icon")),
+  price_digits(0, 0, TextSurface::HorizontalAlignment::LEFT, TextSurface::VerticalAlignment::TOP) {
 
   set_collision_modes(CollisionMode::COLLISION_FACING);
 
@@ -196,6 +197,17 @@ bool ShopTreasure::notify_action_command_pressed() {
 }
 
 /**
+ * \copydoc Entity::update
+ */
+void ShopTreasure::update() {
+
+  Entity::update();
+
+  treasure_sprite->update();
+  rupee_icon_sprite->update();
+}
+
+/**
  * \brief Draws the entity on the map.
  */
 void ShopTreasure::draw_on_map() {
@@ -206,7 +218,7 @@ void ShopTreasure::draw_on_map() {
 
   // draw the treasure
   const Camera& camera = get_map().get_camera();
-  treasure.draw(map_surface,
+  treasure_sprite->draw(map_surface,
       x + 16 - camera.get_top_left_x(),
       y + 13 - camera.get_top_left_y()
   );

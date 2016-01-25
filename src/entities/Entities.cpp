@@ -1197,9 +1197,21 @@ void Entities::draw() {
   // Lazily build the list of entities to draw.
   if (entities_to_draw.empty()) {
 
-    // Add entities in the camera.
+    // Add entities in the camera,
+    // or nearby because of possible
+    // on_pre_draw()/on_draw()/on_post_draw() reimplementations.
+    // TODO it would probably be better to detect entities with
+    // such events and make their is_drawn_at_its_position()
+    // method return false.
     EntityVector entities_in_camera;
-    get_entities_in_rectangle(camera.get_bounding_box(), entities_in_camera);
+    Rectangle around_camera(
+        Point(
+            camera.get_x() - camera.get_size().width,
+            camera.get_y() - camera.get_size().height
+        ),
+        camera.get_size() * 3
+    );
+    get_entities_in_rectangle(around_camera, entities_in_camera);
 
     for (const EntityPtr& entity : entities_in_camera) {
       int layer = entity->get_layer();

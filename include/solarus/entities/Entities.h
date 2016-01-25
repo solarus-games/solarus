@@ -143,55 +143,9 @@ class SOLARUS_API Entities {
     using ByLayer = std::map<int, T>;
 
     /**
-     * \brief Comparator that sorts entities in drawing order.
-     * on the map (layer and then Z index).
+     * \brief Ordered list of entities to be drawn.
      */
-    class DrawingOrderComparator {
-
-      public:
-
-        /**
-         * \brief Compares two entities.
-         * \param first An entity.
-         * \param second Another entity.
-         * \return \c true if the first entity should be drawn before the secone one.
-         */
-        bool operator()(const EntityPtr& first, const EntityPtr& second) const {
-
-          if (first->get_layer() < second->get_layer()) {
-            return true;
-          }
-
-          if (first->get_layer() > second->get_layer()) {
-            return false;
-          }
-
-          // Same layer.
-          // All entities displayed in Z order are displayed before entities displayed in Y order.
-          if (!first->is_drawn_in_y_order() && second->is_drawn_in_y_order()) {
-            return true;
-          }
-
-          if (first->is_drawn_in_y_order() && !second->is_drawn_in_y_order()) {
-            return false;
-          }
-
-          if (first->is_drawn_in_y_order()) {
-            // Both entities are displayed in Y order.
-            return first->get_y() < second->get_y();
-          }
-
-          // Both entities are displayed in Z order.
-          const Entities& entities = first->get_entities();
-          return entities.get_entity_relative_z_order(first) < entities.get_entity_relative_z_order(second);
-        }
-
-    };
-
-    /**
-     * \brief Ordered set of entities to be drawn.
-     */
-    using EntitiesToDraw = std::set<EntityPtr, DrawingOrderComparator>;
+    using EntitiesToDraw = std::vector<EntityPtr>;
 
     /**
      * \brief Internal fast cached information about the entity insertion order.

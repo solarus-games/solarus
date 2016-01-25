@@ -84,6 +84,52 @@ class ZOrderComparator {
 
 };
 
+/**
+ * \brief Comparator that sorts entities in drawing order.
+ * on the map (layer and then Z index).
+ */
+class DrawingOrderComparator {
+
+  public:
+
+    /**
+     * \brief Compares two entities.
+     * \param first An entity.
+     * \param second Another entity.
+     * \return \c true if the first entity should be drawn before the secone one.
+     */
+    bool operator()(const EntityPtr& first, const EntityPtr& second) const {
+
+      if (first->get_layer() < second->get_layer()) {
+        return true;
+      }
+
+      if (first->get_layer() > second->get_layer()) {
+        return false;
+      }
+
+      // Same layer.
+      // All entities displayed in Z order are displayed before entities displayed in Y order.
+      if (!first->is_drawn_in_y_order() && second->is_drawn_in_y_order()) {
+        return true;
+      }
+
+      if (first->is_drawn_in_y_order() && !second->is_drawn_in_y_order()) {
+        return false;
+      }
+
+      if (first->is_drawn_in_y_order()) {
+        // Both entities are displayed in Y order.
+        return first->get_y() < second->get_y();
+      }
+
+      // Both entities are displayed in Z order.
+      const Entities& entities = first->get_entities();
+      return entities.get_entity_relative_z_order(first) < entities.get_entity_relative_z_order(second);
+    }
+
+};
+
 }  // Anonymous namespace.
 
 /**
@@ -1160,17 +1206,29 @@ void Entities::draw() {
       Debug::check_assertion(map.is_valid_layer(layer), "Invalid layer");
       if (entity->is_enabled() &&
           entity->is_visible()) {
-          entities_to_draw[layer].insert(entity);
+          entities_to_draw[layer].push_back(entity);
       }
     }
 
     // Add entities displayed even when out of the camera.
     for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
       entities_to_draw[layer].insert(
-        entities_drawn_not_at_their_position[layer].begin(),
-        entities_drawn_not_at_their_position[layer].end()
+          entities_to_draw[layer].end(),
+          entities_drawn_not_at_their_position[layer].begin(),
+          entities_drawn_not_at_their_position[layer].end()
+      );
+
+      // Sort them and remove duplicates.
+      // Duplicate drawings are a problem for entities with semi-transparency.
+      // Using an std::set would be slower because duplicates are rare:
+      // there are not often a lot of dynamic entities displayed out of the camera.
+      std::sort(entities_to_draw[layer].begin(), entities_to_draw[layer].end(), DrawingOrderComparator());
+      entities_to_draw[layer].erase(
+            std::unique(entities_to_draw[layer].begin(), entities_to_draw[layer].end()),
+            entities_to_draw[layer].end()
       );
     }
+
   }
 
   for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {

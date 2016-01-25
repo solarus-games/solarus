@@ -150,9 +150,28 @@ bool Pickable::initialize_sprites() {
 
   EquipmentItem& item = treasure.get_item();
 
+  // Shadow sprite first, because below the treasure sprite.
+  shadow_sprite = nullptr;
+  const std::string& shadow_animation = item.get_shadow();
+
+  bool has_shadow = false;
+  if (!shadow_animation.empty()) {
+    shadow_sprite = create_sprite("entities/shadow", "shadow");
+    has_shadow = shadow_sprite->has_animation(shadow_animation);
+  }
+
+  if (!has_shadow) {
+    // No shadow or no such shadow animation.
+    shadow_sprite = nullptr;
+  }
+  else {
+    shadow_sprite->set_current_animation(shadow_animation);
+  }
+
   // Main sprite.
   const std::string item_name = treasure.get_item_name();
   item_sprite = create_sprite("entities/items", "treasure");
+  set_default_sprite_name("treasure");
 
   if( !item_sprite->has_animation(item_name)) {
     std::ostringstream oss;
@@ -177,23 +196,6 @@ bool Pickable::initialize_sprites() {
   }
   item_sprite->set_current_direction(direction);
 
-  // Shadow sprite.
-  shadow_sprite = nullptr;
-  const std::string& shadow_animation = item.get_shadow();
-
-  bool has_shadow = false;
-  if (!shadow_animation.empty()) {
-    shadow_sprite = create_sprite("entities/shadow", "shadow");
-    has_shadow = shadow_sprite->has_animation(shadow_animation);
-  }
-
-  if (!has_shadow) {
-    // No shadow or no such shadow animation.
-    shadow_sprite = nullptr;
-  }
-  else {
-    shadow_sprite->set_current_animation(shadow_animation);
-  }
   enable_pixel_collisions();
 
   // Set the origin point and the size of the entity.

@@ -110,7 +110,7 @@ class Pickable: public Entity {
     bool can_be_picked;                         /**< indicates that the item can be picked now (i.e. allow_picked_date is past) */
     uint32_t blink_date;                        /**< date when the item starts blinking */
     uint32_t disappear_date;                    /**< date when the item disappears */
-    EntityPtr entity_followed;               /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
+    EntityPtr entity_followed;                  /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
 };
 
 }

@@ -65,6 +65,9 @@ Entity::Entity(
   origin(0, 0),
   name(name),
   direction(direction),
+  sprites(),
+  default_sprite_name(),
+  old_sprites(),
   visible(true),
   drawn_in_y_order(false),
   movement(nullptr),
@@ -1203,7 +1206,7 @@ bool Entity::has_sprite() const {
 /**
  * \brief Returns a sprite of this entity.
  * \param sprite_name Name of the sprite to get, or an empty string to
- * get the first sprite.
+ * get the default sprite.
  * \return The corresponding sprite, or nullptr if there is no such sprite.
  */
 SpritePtr Entity::get_sprite(const std::string& sprite_name) const {
@@ -1213,13 +1216,23 @@ SpritePtr Entity::get_sprite(const std::string& sprite_name) const {
     return nullptr;
   }
 
+  std::string valid_sprite_name;
   if (sprite_name.empty()) {
-    // No sprite name specified: return the first one.
-    return sprites.front().second;
+    // No sprite name specified: use the default one if any.
+    if (default_sprite_name.empty()) {
+      // No default sprite either: return the first one.
+      return sprites.front().second;
+    }
+    else {
+      valid_sprite_name = default_sprite_name;
+    }
+  }
+  else {
+    valid_sprite_name = sprite_name;
   }
 
   for (const NamedSprite& named_sprite : sprites) {
-    if (named_sprite.first == sprite_name) {
+    if (named_sprite.first == valid_sprite_name) {
       return named_sprite.second;
     }
   }
@@ -1305,6 +1318,25 @@ void Entity::clear_old_sprites() {
     }
   }
   old_sprites.clear();
+}
+
+/**
+ * \brief Returns the name of the default sprite of this entity.
+ * \return The default sprite name.
+ * An empty name means the first one in creation order.
+ */
+std::string Entity::get_default_sprite_name() const {
+  return default_sprite_name;
+}
+
+/**
+ * \brief Sets the default sprite of this entity.
+ * \param default_sprite_name The default sprite name to set.
+ * An empty name means the first one in creation order.
+ */
+void Entity::set_default_sprite_name(const std::string& default_sprite_name) {
+
+  this->default_sprite_name = default_sprite_name;
 }
 
 /**

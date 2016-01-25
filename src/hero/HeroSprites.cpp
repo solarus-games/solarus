@@ -104,7 +104,8 @@ LuaContext& HeroSprites::get_lua_context() {
  */
 void HeroSprites::rebuild_equipment() {
 
-  // TODO take care or the sprites order (keep the tunic first).
+  // Make the tunic sprite be the default one.
+  hero.set_default_sprite_name("tunic");
 
   int animation_direction = -1;
   if (tunic_sprite != nullptr) {

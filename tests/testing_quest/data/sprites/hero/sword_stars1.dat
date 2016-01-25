@@ -1,0 +1,13 @@
+animation{
+  name = "loading",
+  src_image = "hero/loading.sword_stars1.png",
+  frame_delay = 50,
+  frame_to_loop_on = 35,
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 16, origin_x = 1, origin_y = 12, num_frames = 56, num_columns = 19 },
+    { x = 0, y = 48, frame_width = 16, frame_height = 24, origin_x = 10, origin_y = 32, num_frames = 56, num_columns = 28 },
+    { x = 0, y = 96, frame_width = 24, frame_height = 16, origin_x = 23, origin_y = 12, num_frames = 56, num_columns = 19 },
+    { x = 0, y = 144, frame_width = 16, frame_height = 24, origin_x = 6, origin_y = 7, num_frames = 56, num_columns = 28 },
+  },
+}
+

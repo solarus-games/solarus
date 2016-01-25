@@ -79,7 +79,7 @@ void Hero::BaseState::notify_attack_command_pressed() {
       && get_commands_effects().get_sword_key_effect() == CommandsEffects::ATTACK_KEY_SWORD
       && hero.can_start_sword()) {
 
-    hero.set_state(new Hero::SwordSwingingState(hero));
+    hero.start_sword();
   }
 }
 

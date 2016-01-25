@@ -167,10 +167,11 @@ void LuaContext::register_entity_module() {
       { "freeze", hero_api_freeze },
       { "unfreeze", hero_api_unfreeze },
       { "walk", hero_api_walk },  // TODO use the more general movement:start
+      { "start_attack", hero_api_start_attack },
+      { "start_item", hero_api_start_item },
       { "start_jumping", hero_api_start_jumping },
       { "start_treasure", hero_api_start_treasure },
       { "start_victory", hero_api_start_victory},
-      { "start_item", hero_api_start_item },
       { "start_boomerang", hero_api_start_boomerang },
       { "start_bow", hero_api_start_bow },
       { "start_hookshot", hero_api_start_hookshot },
@@ -1910,6 +1911,43 @@ int LuaContext::hero_api_walk(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of hero:start_attack().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_start_attack(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Hero& hero = *check_hero(l, 1);
+
+    if (hero.can_start_sword()) {
+      hero.start_sword();
+    }
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of hero:start_item().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_start_item(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Hero& hero = *check_hero(l, 1);
+    EquipmentItem& item = *check_item(l, 2);
+
+    if (hero.can_start_item(item)) {
+      hero.start_item(item);
+    }
+
+    return 0;
+  });
+}
+
+/**
  * \brief Implementation of hero:start_jumping().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -1980,25 +2018,6 @@ int LuaContext::hero_api_start_victory(lua_State* l) {
     ScopedLuaRef callback_ref = LuaTools::opt_function(l, 2);
 
     hero.start_victory(callback_ref);
-
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of hero:start_item().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::hero_api_start_item(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Hero& hero = *check_hero(l, 1);
-    EquipmentItem& item = *check_item(l, 2);
-
-    if (hero.can_start_item(item)) {
-      hero.start_item(item);
-    }
 
     return 0;
   });

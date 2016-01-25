@@ -48,6 +48,7 @@
 #include "solarus/hero/PlungingState.h"
 #include "solarus/hero/RunningState.h"
 #include "solarus/hero/StairsState.h"
+#include "solarus/hero/SwordSwingingState.h"
 #include "solarus/hero/SwimmingState.h"
 #include "solarus/hero/TreasureState.h"
 #include "solarus/hero/UsingItemState.h"
@@ -2498,6 +2499,16 @@ bool Hero::can_start_sword() const {
 
   return get_state().can_start_sword();
 }
+
+/**
+ * \brief Starts using the sword.
+ */
+void Hero::start_sword() {
+
+  Debug::check_assertion(can_start_sword(), "The hero cannot start using the sword now");
+  set_state(new SwordSwingingState(*this));
+}
+
 /**
  * \brief Returns whether the hero can starts using an equipment item.
  * \param item The equipment item to use.
@@ -2531,7 +2542,7 @@ bool Hero::can_start_item(EquipmentItem& item) {
 void Hero::start_item(EquipmentItem& item) {
   Debug::check_assertion(can_start_item(item),
       std::string("The hero cannot start using item '")
-      + item.get_name() + "' now.");
+      + item.get_name() + "' now");
   set_state(new UsingItemState(*this, item));
 }
 

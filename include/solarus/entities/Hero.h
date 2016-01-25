@@ -274,6 +274,7 @@ class Hero: public Entity {
     bool can_run() const;
     bool can_use_shield() const;
     bool can_start_sword() const;
+    void start_sword();
     bool can_start_item(EquipmentItem& item);
     void start_item(EquipmentItem& item);
     void start_boomerang(int max_distance, int speed,

@@ -107,6 +107,7 @@ CarriedItem::CarriedItem(
   // create the shadow (not visible yet)
   shadow_sprite = create_sprite("entities/shadow");
   shadow_sprite->set_current_animation("big");
+  shadow_sprite->stop_animation();
 }
 
 /**
@@ -178,8 +179,9 @@ void CarriedItem::throw_item(int direction) {
   // play the sound
   Sound::play("throw");
 
-  // stop the sprite animation
+  // Set up sprites.
   main_sprite->set_current_animation("stopped");
+  shadow_sprite->start_animation();
 
   // set the movement of the item sprite
   set_y(hero.get_y());
@@ -230,6 +232,7 @@ void CarriedItem::break_item() {
   }
 
   get_movement()->stop();
+  shadow_sprite->stop_animation();
 
   if (!can_explode()) {
     if (!destruction_sound_id.empty()) {
@@ -394,7 +397,6 @@ void CarriedItem::update() {
     remove_from_map();
   }
   else if (is_throwing) {
-    shadow_sprite->update();
 
     if (break_one_layer_above) {
       break_item();

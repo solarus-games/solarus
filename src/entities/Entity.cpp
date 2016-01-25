@@ -1686,6 +1686,11 @@ void Entity::check_collision(Entity& entity, Sprite& sprite) {
     return;
   }
 
+  if (!sprite.is_animation_started()) {
+    // Animation is not running.
+    return;
+  }
+
   // We check the collision between the specified entity's sprite and
   // all sprites of the current entity.
   for (const NamedSprite& this_named_sprite: get_sprites()) {

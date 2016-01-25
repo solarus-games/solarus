@@ -764,11 +764,13 @@ void HeroSprites::restore_animation_direction() {
  */
 void HeroSprites::update() {
 
+  // Hero sprites are all updated here, Entity::update() is overridden for the hero.
+
   // Keep the current sprites here in case they change from a script during the operation.
   SpritePtr tunic_sprite = this->tunic_sprite;
   SpritePtr sword_sprite = this->sword_sprite;
 
-  // update the frames
+  // Update the frames.
   tunic_sprite->update();
 
   if (is_sword_visible()) {
@@ -779,7 +781,7 @@ void HeroSprites::update() {
   hero.check_collision_with_detectors(*tunic_sprite);
 
   if (is_sword_stars_visible()) {
-    // the stars are not synchronized with the other sprites
+    // The stars are not synchronized with the other sprites.
     sword_stars_sprite->update();
   }
 
@@ -805,7 +807,7 @@ void HeroSprites::update() {
     }
   }
 
-  // blinking
+  // Blinking.
   if (is_blinking()
       && end_blink_date != 0
       && System::now() >= end_blink_date) {

@@ -609,6 +609,11 @@ bool Sprite::test_collision(const Sprite& other, int x1, int y1, int x2, int y2)
     return false;
   }
 
+  if (!is_animation_started() || !other.is_animation_started()) {
+    // The animation is not running.
+    return false;
+  }
+
   const SpriteAnimationDirection& direction1 = current_animation->get_direction(current_direction);
   const Point& origin1 = direction1.get_origin();
   Point location1 = { x1 - origin1.x, y1 - origin1.y };

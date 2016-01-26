@@ -22,6 +22,9 @@
 #include "solarus/MainLoop.h"
 #include <iostream>
 #include <string>
+#include <thread>
+
+namespace Solarus {
 
 namespace {
 
@@ -30,9 +33,9 @@ namespace {
  * \param argc number of command-line arguments
  * \param argv command-line arguments
  */
-void print_help(const Solarus::Arguments& args) {
+void print_help(const Arguments& args) {
 
-  Solarus::Output::initialize(args);
+  Output::initialize(args);
   std::string binary_name = args.get_program_name();
   if (binary_name.empty()) {
     binary_name = "solarus";
@@ -65,7 +68,36 @@ void print_help(const Solarus::Arguments& args) {
     << std::endl;
 }
 
+/**
+ * \brief Reads Lua lines from the standard input and executes them.
+ */
+void read_lua_from_stdin(MainLoop* main_loop) {
+
+  std::string line;
+  while (std::getline(std::cin, line)) {
+    main_loop->push_lua_command(line);
+  }
 }
+
+/**
+ * \brief Runs the quest.
+ * \param arguments Command-line arguments.
+ */
+void run_quest(const Arguments& arguments) {
+
+  MainLoop main_loop(arguments);
+
+  // Watch stdin in a separate thread.
+  std::thread stdin_thread(read_lua_from_stdin, &main_loop);
+  stdin_thread.detach();  // Don't wait for stding to end.
+
+  // Run the simulation in the main thread.
+  main_loop.run();
+}
+
+}  // Anonymous namespace.
+
+}  // namespace Solarus.
 
 /**
  * \brief Usual entry point of the program.
@@ -111,7 +143,7 @@ int main(int argc, char** argv) {
   }
   else {
     // Run the main loop.
-    MainLoop(args).run();
+    run_quest(args);
   }
 
   return 0;

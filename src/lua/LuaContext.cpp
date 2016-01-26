@@ -618,7 +618,7 @@ bool LuaContext::find_method(int index, const char* function_name) {
 /**
  * \brief Calls the Lua function with its arguments on top of the stack.
  *
- * This function is like lua_pcall, except that it additionaly handles the
+ * This function is like lua_pcall, except that it additionally handles the
  * error message if an error occurs in the Lua code (the error is printed).
  * This function leaves the results on the stack if there is no error,
  * and leaves nothing on the stack in case of error.
@@ -629,7 +629,7 @@ bool LuaContext::find_method(int index, const char* function_name) {
  * there is no error)
  * \param function_name A name describing the Lua function (only used to print
  * the error message if any).
- * This is not an const std::string& but a const char* on purpose to avoid
+ * This is not a const std::string& but a const char* on purpose to avoid
  * costly conversions as this function is called very often.
  * \return true in case of success
  */

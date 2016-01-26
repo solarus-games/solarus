@@ -177,6 +177,12 @@ class LuaContext {
     ScopedLuaRef create_ref();
     static void push_ref(lua_State* l, const ScopedLuaRef& ref);
 
+    // Executing Lua code.
+    static void load_file(lua_State* l, const std::string& script_name);
+    static bool load_file_if_exists(lua_State* l, const std::string& script_name);
+    static void do_file(lua_State* l, const std::string& script_name);
+    static bool do_file_if_exists(lua_State* l, const std::string& script_name);
+
     // Calling Lua functions.
     bool call_function(
         int nb_arguments,
@@ -1009,10 +1015,6 @@ class LuaContext {
         const ExportableToLua& userdata, const char* key) const;
     bool find_method(int index, const char* function_name);
     bool find_method(const char* function_name);
-    static void load_file(lua_State* l, const std::string& script_name);
-    static bool load_file_if_exists(lua_State* l, const std::string& script_name);
-    static void do_file(lua_State* l, const std::string& script_name);
-    static bool do_file_if_exists(lua_State* l, const std::string& script_name);
     void print_stack(lua_State* l);
     void print_lua_version();
 

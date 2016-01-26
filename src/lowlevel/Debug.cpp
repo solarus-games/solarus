@@ -77,7 +77,7 @@ void SOLARUS_API warning(const std::string& message) {
     error_output_file.open(error_output_file_name.c_str());
   }
   error_output_file << "Warning: " << message << std::endl;
-  std::cerr << "Warning: " << message << std::endl;
+  std::cout << "Warning: " << message << std::endl;
 }
 
 /**
@@ -98,7 +98,7 @@ void SOLARUS_API error(const std::string& message) {
     error_output_file.open(error_output_file_name.c_str());
   }
   error_output_file << "Error: " << message << std::endl;
-  std::cerr << "Error: " << message << std::endl;
+  std::cout << "Error: " << message << std::endl;
 
 }
 
@@ -140,7 +140,7 @@ void SOLARUS_API die(const std::string& error_message) {
     error_output_file.open(error_output_file_name.c_str());
   }
   error_output_file << "Fatal: " << error_message << std::endl;
-  std::cerr << "Fatal: " << error_message << std::endl;
+  std::cout << "Fatal: " << error_message << std::endl;
 
   if (show_popup_on_die) {
     SDL_ShowSimpleMessageBox(

@@ -24,6 +24,7 @@
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
+#include "solarus/lua/LuaTools.h"
 #include "solarus/Arguments.h"
 #include "solarus/CurrentQuest.h"
 #include "solarus/Game.h"
@@ -80,7 +81,7 @@ void check_version_compatibility(const std::string& solarus_required_version) {
   }
 }
 
-}
+}  // Anonymous namespace.
 
 /**
  * \brief Initializes the game engine.
@@ -92,7 +93,11 @@ MainLoop::MainLoop(const Arguments& args):
   game(nullptr),
   next_game(nullptr),
   exiting(false),
-  debug_lag(0) {
+  debug_lag(0),
+  lua_commands(),
+  lua_commands_mutex(),
+  num_lua_commands_pushed(0),
+  num_lua_commands_done(0) {
 
   // Main loop settings.
   const std::string lag_arg = args.get_argument_value("-lag");
@@ -217,6 +222,22 @@ void MainLoop::set_game(Game* game) {
 }
 
 /**
+ * \brief Schedules a Lua command to be executed at the next cycle.
+ *
+ * This function is thread safe, it can be called from a separate thread
+ * while the main loop is running.
+ *
+ * \param command The Lua string to execute.
+ * \return A number identifying your command.
+ */
+int MainLoop::push_lua_command(const std::string& command) {
+
+  std::lock_guard<std::mutex> lock(lua_commands_mutex);
+  lua_commands.push_back(command);
+  return num_lua_commands_pushed++;
+}
+
+/**
  * \brief Runs the main loop until the user requests to stop the program.
  *
  * The main loop controls simulated time and repeatedly updates the world and
@@ -303,10 +324,28 @@ void MainLoop::step() {
  */
 void MainLoop::check_input() {
 
+  // Check SDL events.
   std::unique_ptr<InputEvent> event = InputEvent::get_event();
   while (event != nullptr) {
     notify_input(*event);
     event = InputEvent::get_event();
+  }
+
+  // Check Lua requests.
+  if (!lua_commands.empty()) {
+    std::lock_guard<std::mutex> lock(lua_commands_mutex);
+    for (const std::string& command : lua_commands) {
+      std::cout << "[Solarus] ====== Begin Lua command #" << num_lua_commands_done << " ======" << std::endl;
+      const bool success = LuaTools::do_string(get_lua_context().get_internal_state(), command, "Lua request");
+      if (success) {
+        std::cout << "[Solarus] ====== End Lua command #" << num_lua_commands_done << ": success ======" << std::endl;
+      }
+      else {
+        std::cout << "[Solarus] ====== End Lua command #" << num_lua_commands_done << ": error ======" << std::endl;
+      }
+      ++num_lua_commands_done;
+    }
+    lua_commands.clear();
   }
 }
 

@@ -20,6 +20,8 @@
 #include "solarus/Common.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include <memory>
+#include <mutex>
+#include <vector>
 
 namespace Solarus {
 
@@ -49,6 +51,7 @@ class SOLARUS_API MainLoop {
     bool is_resetting();
     Game* get_game();
     void set_game(Game* game);
+    int push_lua_command(const std::string& command);
 
     LuaContext& get_lua_context();
 
@@ -68,6 +71,13 @@ class SOLARUS_API MainLoop {
     bool exiting;                 /**< Indicates that the program is about to stop. */
     uint32_t debug_lag;           /**< Artificial lag added to each frame.
                                    * Useful to debug issues that only happen on slow systems. */
+
+    std::vector<std::string>
+        lua_commands;             /**< Lua commands to run next cycle. */
+    std::mutex
+        lua_commands_mutex;       /**< Lock for the list of scheduled Lua commands. */
+    int num_lua_commands_pushed;  /**< Counter of Lua commands requested. */
+    int num_lua_commands_done;    /**< Counter of Lua commands executed. */
 
 };
 

@@ -36,6 +36,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <thread>
 
 namespace Solarus {
 
@@ -129,6 +130,17 @@ MainLoop::MainLoop(const Arguments& args):
   // because Lua might change the video mode initially.
   lua_context = std::unique_ptr<LuaContext>(new LuaContext(*this));
   lua_context->initialize();
+
+  // Set up the Lua console.
+  const std::string& lua_console_arg = args.get_argument_value("-lua-console");
+  const bool enable_lua_console = lua_console_arg.empty() || lua_console_arg == "yes";
+  if (enable_lua_console) {
+    std::cout << "Lua console: yes" << std::endl;
+    initialize_lua_console();
+  }
+  else {
+    std::cout << "Lua console: no" << std::endl;
+  }
 
   // Finally show the window.
   Video::show_window();
@@ -441,6 +453,22 @@ void MainLoop::load_quest_properties() {
       properties.get_max_quest_size()
   );
 
+}
+
+/**
+ * \brief Enables accepting standard input lines as Lua commands.
+ */
+void MainLoop::initialize_lua_console() {
+
+  // Watch stdin in a separate thread.
+  std::thread stdin_thread([&]() {
+
+    std::string line;
+    while (std::getline(std::cin, line)) {
+      push_lua_command(line);
+    }
+  });
+  stdin_thread.detach();  // Don't wait for stdin to end.
 }
 
 }

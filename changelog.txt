@@ -6,9 +6,9 @@ _______________________________
 Engine changes
 --------------
 
-* Allow to run Lua code from the standard input.
 * Add version number and symbolic links when building the library.
-* Add a -lag command-line option to simulate slower systems for debugging.
+* Add a -lua-console option to run Lua code from the standard input.
+* Add a -lag option to simulate slower systems for debugging.
 * Print when the main loop starts and stops.
 * Print the Lua version at startup (#692).
 * Maps: allow more than 3 layers (#445).

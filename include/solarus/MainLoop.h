@@ -57,11 +57,13 @@ class SOLARUS_API MainLoop {
 
   private:
 
-    void load_quest_properties();
     void check_input();
     void notify_input(const InputEvent& event);
     void draw();
     void update();
+
+    void load_quest_properties();
+    void initialize_lua_console();
 
     std::unique_ptr<LuaContext>
         lua_context;              /**< The Lua world where scripts are run. */

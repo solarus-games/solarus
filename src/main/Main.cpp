@@ -22,7 +22,6 @@
 #include "solarus/MainLoop.h"
 #include <iostream>
 #include <string>
-#include <thread>
 
 namespace Solarus {
 
@@ -62,37 +61,12 @@ void print_help(const Arguments& args) {
     << std::endl
     << "  -quest-size=<width>x<height>  sets the size of the drawing area (if compatible with the quest)"
     << std::endl
+    << "  -lua-console=yes|no           accepts standard input lines as Lua commands (default yes)"
+    << std::endl
     << "  -win-console=yes|no           allows to see output in a console, only needed on Windows (default no)"
     << std::endl
     << "  -lag=X                        slows down each frame of X milliseconds to simulate slower systems for debugging (default 0)"
     << std::endl;
-}
-
-/**
- * \brief Reads Lua lines from the standard input and executes them.
- */
-void read_lua_from_stdin(MainLoop* main_loop) {
-
-  std::string line;
-  while (std::getline(std::cin, line)) {
-    main_loop->push_lua_command(line);
-  }
-}
-
-/**
- * \brief Runs the quest.
- * \param arguments Command-line arguments.
- */
-void run_quest(const Arguments& arguments) {
-
-  MainLoop main_loop(arguments);
-
-  // Watch stdin in a separate thread.
-  std::thread stdin_thread(read_lua_from_stdin, &main_loop);
-  stdin_thread.detach();  // Don't wait for stdin to end.
-
-  // Run the simulation in the main thread.
-  main_loop.run();
 }
 
 }  // Anonymous namespace.
@@ -117,8 +91,9 @@ void run_quest(const Arguments& arguments) {
  *   -help                             Shows a help message.
  *   -no-audio                         Disables sounds and musics.
  *   -no-video                         Disables displaying (used for unit tests).
- *   -video-acceleration=yes|no        Enables or disables 2D accelerated graphics if available (default yes).
+ *   -video-acceleration=yes|no        Enables or disables 2D accelerated graphics if available (default: yes).
  *   -quest-size=<width>x<height>      Sets the size of the drawing area (if compatible with the quest).
+ *   -lua-console=yes|no               Accepts lines from standard input as Lua commands (default: yes).
  *   -win-console=yes|no               Opens a console to see debug output (default: no).
  *                                     Windows only (other systems use their existing console if any).
  *   -lag=X                            (Advanced) Artificially slows down each frame of X milliseconds
@@ -143,7 +118,7 @@ int main(int argc, char** argv) {
   }
   else {
     // Run the main loop.
-    run_quest(args);
+    MainLoop(args).run();
   }
 
   return 0;

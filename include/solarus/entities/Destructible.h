@@ -34,7 +34,7 @@ namespace Solarus {
  * and others have both behaviors (for example a bush).
  * Some others can explode when they are lifted (a bomb or a bomb flower).
  * When the hero lifts a destructible object, it is removed from the map and
- * replaced by an instance of CarriedItem that is attached to the hero.
+ * replaced by an instance of CarriedObject that is attached to the hero.
  */
 class Destructible: public Entity {
 

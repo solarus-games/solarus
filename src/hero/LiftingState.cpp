@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/CarriedItem.h"
+#include "solarus/entities/CarriedObject.h"
 #include "solarus/entities/Entities.h"
 #include "solarus/hero/CarryingState.h"
 #include "solarus/hero/HeroSprites.h"
@@ -34,7 +34,7 @@ namespace Solarus {
  */
 Hero::LiftingState::LiftingState(
     Hero& hero,
-    const std::shared_ptr<CarriedItem>& lifted_item
+    const std::shared_ptr<CarriedObject>& lifted_item
 ):
   BaseState(hero, "lifting"),
   lifted_item(lifted_item) {
@@ -74,14 +74,14 @@ void Hero::LiftingState::stop(const State* next_state) {
     get_sprites().set_lifted_item(nullptr);
 
     // the lifted item is still managed by this state
-    switch (next_state->get_previous_carried_item_behavior()) {
+    switch (next_state->get_previous_carried_object_behavior()) {
 
-    case CarriedItem::BEHAVIOR_THROW:
+    case CarriedObject::BEHAVIOR_THROW:
       throw_item();
       break;
 
-    case CarriedItem::BEHAVIOR_DESTROY:
-    case CarriedItem::BEHAVIOR_KEEP:
+    case CarriedObject::BEHAVIOR_DESTROY:
+    case CarriedObject::BEHAVIOR_KEEP:
       lifted_item = nullptr;
       break;
     }
@@ -103,9 +103,9 @@ void Hero::LiftingState::update() {
   const bool lift_finished = !lifted_item->is_being_lifted() || hero.is_animation_finished();
   if (!is_suspended() && lift_finished) {
 
-    std::shared_ptr<CarriedItem> carried_item = lifted_item;
-    lifted_item = nullptr; // we do not take care of the carried item from this state anymore
-    hero.set_state(new CarryingState(hero, carried_item));
+    std::shared_ptr<CarriedObject> carried_object = lifted_item;
+    lifted_item = nullptr; // we do not take care of the carried object from this state anymore
+    hero.set_state(new CarryingState(hero, carried_object));
   }
 }
 

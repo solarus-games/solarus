@@ -61,8 +61,8 @@ class Hero::JumpingState: public Hero::BaseState {
     virtual bool can_avoid_sensor() const override;
     virtual bool can_avoid_switch() const override;
     virtual bool can_be_hurt(Entity* attacker) const override;
-    virtual std::shared_ptr<CarriedItem> get_carried_item() const override;
-    virtual CarriedItem::Behavior get_previous_carried_item_behavior() const override;
+    virtual std::shared_ptr<CarriedObject> get_carried_object() const override;
+    virtual CarriedObject::Behavior get_previous_carried_object_behavior() const override;
 
   private:
 
@@ -70,8 +70,8 @@ class Hero::JumpingState: public Hero::BaseState {
         movement;                 /**< the movement applied to the hero */
     int direction8;               /**< direction of the jump (0 to 7) */
     bool with_sound;              /**< indicates that a jump sound is played */
-    std::shared_ptr<CarriedItem>
-        carried_item;             /**< an item carried by the hero while making
+    std::shared_ptr<CarriedObject>
+        carried_object;             /**< an item carried by the hero while making
                                    * this jump, or nullptr */
 
 };

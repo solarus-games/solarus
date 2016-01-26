@@ -27,7 +27,7 @@
 
 namespace Solarus {
 
-class CarriedItem;
+class CarriedObject;
 class Equipment;
 class EquipmentItem;
 class EquipmentItemUsage;
@@ -266,7 +266,7 @@ class Hero: public Entity {
         bool with_sound);
     void start_frozen();
     void start_victory(const ScopedLuaRef& callback_ref);
-    void start_lifting(const std::shared_ptr<CarriedItem>& item_to_lift);
+    void start_lifting(const std::shared_ptr<CarriedObject>& item_to_lift);
     void start_running();
     void start_grabbing();
     bool can_pick_treasure(EquipmentItem& item);
@@ -328,7 +328,7 @@ class Hero: public Entity {
     void try_snap_to_facing_entity();
     void apply_additional_ground_movement();
     Teletransporter* get_delayed_teletransporter();
-    std::shared_ptr<CarriedItem> get_carried_item();
+    std::shared_ptr<CarriedObject> get_carried_object();
 
     // ground
     void update_ground_effects();

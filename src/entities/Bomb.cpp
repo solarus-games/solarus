@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Bomb.h"
-#include "solarus/entities/CarriedItem.h"
+#include "solarus/entities/CarriedObject.h"
 #include "solarus/entities/Entities.h"
 #include "solarus/entities/Explosion.h"
 #include "solarus/entities/Hero.h"
@@ -190,7 +190,7 @@ bool Bomb::notify_action_command_pressed() {
       && get_hero().get_facing_entity() == this
       && get_hero().is_facing_point_in(get_bounding_box())) {
 
-    get_hero().start_lifting(std::make_shared<CarriedItem>(
+    get_hero().start_lifting(std::make_shared<CarriedObject>(
         get_hero(),
         *this,
         "entities/bomb",

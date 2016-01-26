@@ -13,7 +13,7 @@ file(
   include/solarus/entities/Bomb.h
   include/solarus/entities/Boomerang.h
   include/solarus/entities/Camera.h
-  include/solarus/entities/CarriedItem.h
+  include/solarus/entities/CarriedObject.h
   include/solarus/entities/Chest.h
   include/solarus/entities/CollisionMode.h
   include/solarus/entities/CrystalBlock.h
@@ -220,7 +220,7 @@ file(
   src/entities/Bomb.cpp
   src/entities/Boomerang.cpp
   src/entities/Camera.cpp
-  src/entities/CarriedItem.cpp
+  src/entities/CarriedObject.cpp
   src/entities/Chest.cpp
   src/entities/CrystalBlock.cpp
   src/entities/Crystal.cpp

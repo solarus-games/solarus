@@ -30,7 +30,7 @@ const EnumInfo<EntityType>::names_type EnumInfoTraits<EntityType>::names = {
     { EntityType::BOMB, "bomb" },
     { EntityType::BOOMERANG, "boomerang" },
     { EntityType::CAMERA, "camera" },
-    { EntityType::CARRIED_ITEM, "carried_object" },
+    { EntityType::CARRIED_OBJECT, "carried_object" },
     { EntityType::CHEST, "chest" },
     { EntityType::CRYSTAL, "crystal" },
     { EntityType::CRYSTAL_BLOCK, "crystal_block" },
@@ -95,7 +95,7 @@ bool EntityTypeInfo::can_be_stored_in_map_file(EntityType type) {
   case EntityType::BOMB:
   case EntityType::BOOMERANG:
   case EntityType::CAMERA:
-  case EntityType::CARRIED_ITEM:
+  case EntityType::CARRIED_OBJECT:
   case EntityType::EXPLOSION:
   case EntityType::HERO:
   case EntityType::HOOKSHOT:
@@ -146,7 +146,7 @@ bool EntityTypeInfo::can_be_created_from_lua_api(EntityType type) {
   case EntityType::ARROW:
   case EntityType::BOOMERANG:
   case EntityType::CAMERA:
-  case EntityType::CARRIED_ITEM:
+  case EntityType::CARRIED_OBJECT:
   case EntityType::HERO:
   case EntityType::HOOKSHOT:
   case EntityType::TILE:

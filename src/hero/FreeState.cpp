@@ -181,10 +181,10 @@ bool Hero::FreeState::can_take_stairs() const {
 }
 
 /**
- * \copydoc Entity::State::get_previous_carried_item_behavior
+ * \copydoc Entity::State::get_previous_carried_object_behavior
  */
-CarriedItem::Behavior Hero::FreeState::get_previous_carried_item_behavior() const {
-  return CarriedItem::BEHAVIOR_DESTROY;
+CarriedObject::Behavior Hero::FreeState::get_previous_carried_object_behavior() const {
+  return CarriedObject::BEHAVIOR_DESTROY;
 }
 
 /**

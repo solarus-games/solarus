@@ -40,7 +40,7 @@ class Hero::TreasureState: public Hero::BaseState {
     void stop(const State* next_state) override;
     void update() override;
     void draw_on_map() override;
-    CarriedItem::Behavior get_previous_carried_item_behavior() const override;
+    CarriedObject::Behavior get_previous_carried_object_behavior() const override;
     bool is_brandishing_treasure() const override;
 
   private:

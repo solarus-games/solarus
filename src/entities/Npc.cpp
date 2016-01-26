@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Npc.h"
-#include "solarus/entities/CarriedItem.h"
+#include "solarus/entities/CarriedObject.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/QuestFiles.h"
@@ -266,7 +266,7 @@ bool Npc::notify_action_command_pressed() {
         if (sprite != nullptr) {
           animation_set_id = sprite->get_animation_set_id();
         }
-        hero.start_lifting(std::make_shared<CarriedItem>(
+        hero.start_lifting(std::make_shared<CarriedObject>(
             hero,
             *this,
             animation_set_id,

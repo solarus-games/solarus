@@ -487,7 +487,7 @@ void LuaContext::register_entity_module() {
   // Also register all other types of entities that have no specific methods.
   register_type(get_entity_internal_type_name(EntityType::TILE), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::DESTINATION), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::CARRIED_ITEM), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::CARRIED_OBJECT), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::JUMPER), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::NPC), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::SENSOR), nullptr, entity_common_methods, metamethods);

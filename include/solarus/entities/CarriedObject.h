@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_CARRIED_ITEM_H
-#define SOLARUS_CARRIED_ITEM_H
+#ifndef SOLARUS_CARRIED_OBJECT_H
+#define SOLARUS_CARRIED_OBJECT_H
 
 #include "solarus/Common.h"
 #include "solarus/entities/Entity.h"
@@ -32,14 +32,14 @@ namespace Solarus {
  * As soon as he throws it, the item becomes attached to the map and the hero
  * may lift another item.
  */
-class CarriedItem: public Entity {
+class CarriedObject: public Entity {
 
   public:
 
-    static constexpr EntityType ThisType = EntityType::CARRIED_ITEM;
+    static constexpr EntityType ThisType = EntityType::CARRIED_OBJECT;
 
     /**
-     * Indicates what to do with a carried item.
+     * Indicates what to do with a carried object.
      */
     enum Behavior {
       BEHAVIOR_THROW,          /**< make the hero throw the item */
@@ -47,7 +47,7 @@ class CarriedItem: public Entity {
       BEHAVIOR_KEEP            /**< let the hero continue to carry the item */
     };
 
-    CarriedItem(
+    CarriedObject(
         Hero& hero,
         const Entity& original_entity,
         const std::string& animation_set_id,

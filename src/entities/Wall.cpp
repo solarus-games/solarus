@@ -59,7 +59,7 @@ Wall::Wall(
     entity_types_stopped.insert(EntityType::BLOCK);
   }
   if (stops_projectiles) {
-    entity_types_stopped.insert(EntityType::CARRIED_ITEM);
+    entity_types_stopped.insert(EntityType::CARRIED_OBJECT);
     entity_types_stopped.insert(EntityType::ARROW);
     entity_types_stopped.insert(EntityType::HOOKSHOT);
     entity_types_stopped.insert(EntityType::BOOMERANG);

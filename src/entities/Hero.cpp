@@ -113,10 +113,10 @@ EntityType Hero::get_type() const {
  * This function is used internally to allow this item to be preserved between
  * different hero states.
  *
- * \return The carried item or nullptr.
+ * \return The carried object or nullptr.
  */
-std::shared_ptr<CarriedItem> Hero::get_carried_item() {
-  return get_state().get_carried_item();
+std::shared_ptr<CarriedObject> Hero::get_carried_object() {
+  return get_state().get_carried_object();
 }
 
 /**
@@ -2309,7 +2309,7 @@ void Hero::start_free_carrying_loading_or_running() {
   }
 
   if (get_state().is_carrying_item()) {
-    set_state(new CarryingState(*this, get_state().get_carried_item()));
+    set_state(new CarryingState(*this, get_state().get_carried_object()));
   }
   else {
     set_state(new FreeState(*this));
@@ -2394,7 +2394,7 @@ void Hero::start_frozen() {
  * \brief Makes the hero lift a destructible item.
  * \param item_to_lift The item to lift.
  */
-void Hero::start_lifting(const std::shared_ptr<CarriedItem>& item_to_lift) {
+void Hero::start_lifting(const std::shared_ptr<CarriedObject>& item_to_lift) {
   set_state(new LiftingState(*this, item_to_lift));
 }
 

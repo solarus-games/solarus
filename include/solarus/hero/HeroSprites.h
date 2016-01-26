@@ -27,7 +27,7 @@
 
 namespace Solarus {
 
-class CarriedItem;
+class CarriedObject;
 class Equipment;
 class Hero;
 class LuaContext;
@@ -130,7 +130,7 @@ class HeroSprites {
     void destroy_ground();
     void play_ground_sound();
 
-    void set_lifted_item(const std::shared_ptr<CarriedItem>& lifted_item);
+    void set_lifted_item(const std::shared_ptr<CarriedObject>& lifted_item);
 
   private:
 
@@ -211,7 +211,7 @@ class HeroSprites {
     Rectangle clipping_rectangle;           /**< when drawing the sprites onto a map, indicates an area of the map to be restricted to
                                              * (usually, the whole map is considered and this rectangle's values are all 0) */
 
-    std::shared_ptr<CarriedItem>
+    std::shared_ptr<CarriedObject>
         lifted_item;                        /**< if not nullptr, an item to display above the hero */
 
     ScopedLuaRef animation_callback_ref;    /**< Lua ref of a function to call when a custom animation ends. */

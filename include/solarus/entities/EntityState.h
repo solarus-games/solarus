@@ -18,7 +18,7 @@
 #define SOLARUS_ENTITY_STATE_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/CarriedItem.h"
+#include "solarus/entities/CarriedObject.h"
 #include "solarus/entities/Hero.h"
 #include <cstdint>
 #include <memory>
@@ -139,8 +139,8 @@ class Entity::State {
     virtual bool can_take_jumper() const;
     virtual void notify_jumper_activated(Jumper& jumper);
     bool is_carrying_item() const;
-    virtual std::shared_ptr<CarriedItem> get_carried_item() const;
-    virtual CarriedItem::Behavior get_previous_carried_item_behavior() const;
+    virtual std::shared_ptr<CarriedObject> get_carried_object() const;
+    virtual CarriedObject::Behavior get_previous_carried_object_behavior() const;
 
   protected:
 

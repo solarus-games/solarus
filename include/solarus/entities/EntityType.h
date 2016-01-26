@@ -61,7 +61,7 @@ enum class EntityType {
 
   CAMERA,             /**< the camera */
   HERO,               /**< the hero */
-  CARRIED_ITEM,       /**< item carried and thrown by the hero (comes from a destructible item) */
+  CARRIED_OBJECT,       /**< item carried and thrown by the hero (comes from a destructible item) */
   BOOMERANG,          /**< a boomerang thrown */
   EXPLOSION,          /**< an explosion, that may be caused by a bomb, a bomb flower, an enemy, etc. */
   ARROW,              /**< an arrow thrown by the bow */

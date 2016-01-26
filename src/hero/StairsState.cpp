@@ -47,11 +47,11 @@ Hero::StairsState::StairsState(
   way(way),
   phase(0),
   next_phase_date(0),
-  carried_item(nullptr) {
+  carried_object(nullptr) {
 
-  if (get_previous_carried_item_behavior() == CarriedItem::BEHAVIOR_KEEP) {
-    // Keep the carried item of the previous state.
-    carried_item = hero.get_carried_item();
+  if (get_previous_carried_object_behavior() == CarriedObject::BEHAVIOR_KEEP) {
+    // Keep the carried object of the previous state.
+    carried_object = hero.get_carried_object();
   }
 }
 
@@ -64,8 +64,8 @@ void Hero::StairsState::set_map(Map& map) {
   BaseState::set_map(map);
 
   // the hero may go to another map while taking stairs and carrying an item
-  if (carried_item != nullptr) {
-    carried_item->set_map(map);
+  if (carried_object != nullptr) {
+    carried_object->set_map(map);
   }
 }
 
@@ -86,11 +86,11 @@ void Hero::StairsState::start(const State* previous_state) {
 
   // sprites and sound
   HeroSprites& sprites = get_sprites();
-  if (carried_item == nullptr) {
+  if (carried_object == nullptr) {
     sprites.set_animation_walking_normal();
   }
   else {
-    sprites.set_lifted_item(carried_item);
+    sprites.set_lifted_item(carried_object);
     sprites.set_animation_walking_carrying();
   }
   sprites.set_animation_direction((path[0] - '0') / 2);
@@ -127,27 +127,27 @@ void Hero::StairsState::stop(const State* next_state) {
 
   BaseState::stop(next_state);
 
-  if (carried_item != nullptr) {
+  if (carried_object != nullptr) {
 
-    switch (next_state->get_previous_carried_item_behavior()) {
+    switch (next_state->get_previous_carried_object_behavior()) {
 
-    case CarriedItem::BEHAVIOR_THROW:
-      carried_item->throw_item(get_sprites().get_animation_direction());
-      get_entities().add_entity(carried_item);
-      carried_item = nullptr;
+    case CarriedObject::BEHAVIOR_THROW:
+      carried_object->throw_item(get_sprites().get_animation_direction());
+      get_entities().add_entity(carried_object);
+      carried_object = nullptr;
       get_sprites().set_lifted_item(nullptr);
       break;
 
-    case CarriedItem::BEHAVIOR_DESTROY:
+    case CarriedObject::BEHAVIOR_DESTROY:
       get_sprites().set_lifted_item(nullptr);
       break;
 
-    case CarriedItem::BEHAVIOR_KEEP:
-      carried_item = nullptr;
+    case CarriedObject::BEHAVIOR_KEEP:
+      carried_object = nullptr;
       break;
 
     default:
-      Debug::die("Invalid carried item behavior");
+      Debug::die("Invalid carried object behavior");
     }
   }
 }
@@ -170,9 +170,9 @@ void Hero::StairsState::update() {
     phase++;
   }
 
-  // update the carried item if any
-  if (carried_item != nullptr) {
-    carried_item->update();
+  // update the carried object if any
+  if (carried_object != nullptr) {
+    carried_object->update();
   }
 
   Hero& hero = get_entity();
@@ -185,11 +185,11 @@ void Hero::StairsState::update() {
         get_entities().set_entity_layer(hero, stairs->get_layer());
       }
       hero.clear_movement();
-      if (carried_item == nullptr) {
+      if (carried_object == nullptr) {
         hero.set_state(new FreeState(hero));
       }
       else {
-        hero.set_state(new CarryingState(hero, carried_item));
+        hero.set_state(new CarryingState(hero, carried_object));
       }
     }
   }
@@ -200,11 +200,11 @@ void Hero::StairsState::update() {
     if (hero.get_movement()->is_finished()) {
       hero.clear_movement();
 
-      if (carried_item == nullptr) {
+      if (carried_object == nullptr) {
         hero.set_state(new FreeState(hero));
       }
       else {
-        hero.set_state(new CarryingState(hero, carried_item));
+        hero.set_state(new CarryingState(hero, carried_object));
       }
 
       if (way == Stairs::NORMAL_WAY) {
@@ -267,8 +267,8 @@ void Hero::StairsState::set_suspended(bool suspended) {
 
   BaseState::set_suspended(suspended);
 
-  if (carried_item != nullptr) {
-    carried_item->set_suspended(suspended);
+  if (carried_object != nullptr) {
+    carried_object->set_suspended(suspended);
   }
 
   if (!suspended) {
@@ -324,19 +324,19 @@ int Hero::StairsState::get_wanted_movement_direction8() const {
  * \brief Returns the item currently carried by the hero in this state, if any.
  * \return the item carried by the hero, or nullptr
  */
-std::shared_ptr<CarriedItem> Hero::StairsState::get_carried_item() const {
-  return carried_item;
+std::shared_ptr<CarriedObject> Hero::StairsState::get_carried_object() const {
+  return carried_object;
 }
 
 /**
- * \copydoc Entity::State::get_previous_carried_item_behavior
+ * \copydoc Entity::State::get_previous_carried_object_behavior
  */
-CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior() const {
+CarriedObject::Behavior Hero::StairsState::get_previous_carried_object_behavior() const {
 
   if (stairs->is_inside_floor()) {
-    return CarriedItem::BEHAVIOR_KEEP;
+    return CarriedObject::BEHAVIOR_KEEP;
   }
-  return CarriedItem::BEHAVIOR_DESTROY;
+  return CarriedObject::BEHAVIOR_DESTROY;
 }
 
 /**
@@ -344,8 +344,8 @@ CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior() co
  */
 void Hero::StairsState::notify_layer_changed() {
 
-  if (carried_item != nullptr) {
-    carried_item->set_layer(get_entity().get_layer());
+  if (carried_object != nullptr) {
+    carried_object->set_layer(get_entity().get_layer());
   }
 }
 

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/CarriedItem.h"
+#include "solarus/entities/CarriedObject.h"
 #include "solarus/entities/Destructible.h"
 #include "solarus/entities/Entities.h"
 #include "solarus/entities/Explosion.h"
@@ -398,7 +398,7 @@ bool Destructible::notify_action_command_pressed() {
     if (get_equipment().has_ability(Ability::LIFT, get_weight())) {
 
       uint32_t explosion_date = get_can_explode() ? System::now() + 6000 : 0;
-      get_hero().start_lifting(std::make_shared<CarriedItem>(
+      get_hero().start_lifting(std::make_shared<CarriedObject>(
           get_hero(),
           *this,
           get_animation_set_id(),

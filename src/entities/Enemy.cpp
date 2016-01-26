@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Block.h"
-#include "solarus/entities/CarriedItem.h"
+#include "solarus/entities/CarriedObject.h"
 #include "solarus/entities/CrystalBlock.h"
 #include "solarus/entities/Destructible.h"
 #include "solarus/entities/Enemy.h"
@@ -1217,7 +1217,7 @@ void Enemy::try_hurt(EnemyAttack attack, Entity& source, Sprite* this_sprite) {
         }
       }
       else if (attack == EnemyAttack::THROWN_ITEM) {
-        reaction.life_lost *= static_cast<CarriedItem&>(source).get_damage_on_enemies();
+        reaction.life_lost *= static_cast<CarriedObject&>(source).get_damage_on_enemies();
       }
       life -= reaction.life_lost;
 

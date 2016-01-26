@@ -1101,13 +1101,13 @@ bool Entity::State::can_start_item(EquipmentItem& /* item */) const {
 /**
  * \brief Returns whether the entity is currently carrying an item in this state.
  *
- * This function returns true if get_carried_item() is not nullptr.
- * Redefine get_carried_item() if the entity is able to carry an item in this state.
+ * This function returns true if get_carried_object() is not nullptr.
+ * Redefine get_carried_object() if the entity is able to carry an item in this state.
  *
  * \return true if the entity is currently carrying an item in this state
  */
 bool Entity::State::is_carrying_item() const {
-  return get_carried_item() != nullptr;
+  return get_carried_object() != nullptr;
 }
 
 /**
@@ -1117,19 +1117,19 @@ bool Entity::State::is_carrying_item() const {
  *
  * \return the item carried by the entity, or nullptr
  */
-std::shared_ptr<CarriedItem> Entity::State::get_carried_item() const {
+std::shared_ptr<CarriedObject> Entity::State::get_carried_object() const {
   return nullptr;
 }
 
 /**
  * \brief Returns the action to do with an item previously carried by the entity when this state starts.
  *
- * Returns CarriedItem::BEHAVIOR_THROW by default.
+ * Returns CarriedObject::BEHAVIOR_THROW by default.
  *
- * \return the action to do with a previous carried item when this state starts
+ * \return the action to do with a previous carried object when this state starts
  */
-CarriedItem::Behavior Entity::State::get_previous_carried_item_behavior() const {
-  return CarriedItem::BEHAVIOR_THROW;
+CarriedObject::Behavior Entity::State::get_previous_carried_object_behavior() const {
+  return CarriedObject::BEHAVIOR_THROW;
 }
 
 }

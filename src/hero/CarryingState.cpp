@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/CarriedItem.h"
+#include "solarus/entities/CarriedObject.h"
 #include "solarus/entities/Entities.h"
 #include "solarus/hero/CarryingState.h"
 #include "solarus/hero/FreeState.h"
@@ -29,15 +29,15 @@ namespace Solarus {
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
- * \param carried_item The item to carry.
+ * \param carried_object The item to carry.
  */
 Hero::CarryingState::CarryingState(
-    Hero& hero, const std::shared_ptr<CarriedItem>& carried_item
+    Hero& hero, const std::shared_ptr<CarriedObject>& carried_object
 ):
   PlayerMovementState(hero, "carrying"),
-  carried_item(carried_item) {
+  carried_object(carried_object) {
 
-  Debug::check_assertion(carried_item != nullptr, "Missing carried item");
+  Debug::check_assertion(carried_object != nullptr, "Missing carried object");
 }
 
 /**
@@ -49,7 +49,7 @@ void Hero::CarryingState::start(const State* previous_state) {
   PlayerMovementState::start(previous_state);
 
   if (is_current_state()) {
-    get_sprites().set_lifted_item(carried_item);
+    get_sprites().set_lifted_item(carried_object);
 
     // action icon "throw"
     get_commands_effects().set_action_key_effect(CommandsEffects::ACTION_KEY_THROW);
@@ -67,21 +67,21 @@ void Hero::CarryingState::stop(const State* next_state) {
   get_sprites().set_lifted_item(nullptr);
   get_commands_effects().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
 
-  if (carried_item != nullptr) {
+  if (carried_object != nullptr) {
 
-    switch (next_state->get_previous_carried_item_behavior()) {
+    switch (next_state->get_previous_carried_object_behavior()) {
 
-    case CarriedItem::BEHAVIOR_THROW:
+    case CarriedObject::BEHAVIOR_THROW:
       throw_item();
       break;
 
-    case CarriedItem::BEHAVIOR_DESTROY:
-    case CarriedItem::BEHAVIOR_KEEP:
-      carried_item = nullptr;
+    case CarriedObject::BEHAVIOR_DESTROY:
+    case CarriedObject::BEHAVIOR_KEEP:
+      carried_object = nullptr;
       break;
 
     default:
-      Debug::die("Invalid carried item behavior");
+      Debug::die("Invalid carried object behavior");
     }
   }
 }
@@ -95,8 +95,8 @@ void Hero::CarryingState::set_map(Map& map) {
   PlayerMovementState::set_map(map);
 
   // the hero may go to another map while carrying an item
-  if (carried_item != nullptr) {
-    carried_item->set_map(map);
+  if (carried_object != nullptr) {
+    carried_object->set_map(map);
   }
 }
 
@@ -107,9 +107,9 @@ void Hero::CarryingState::notify_position_changed() {
 
   PlayerMovementState::notify_position_changed();
 
-  if (carried_item != nullptr) {
-    // Update the position of the carried item too.
-    carried_item->update();
+  if (carried_object != nullptr) {
+    // Update the position of the carried object too.
+    carried_object->update();
   }
 }
 
@@ -120,8 +120,8 @@ void Hero::CarryingState::notify_layer_changed() {
 
   PlayerMovementState::notify_layer_changed();
 
-  if (carried_item != nullptr) {
-    carried_item->set_layer(get_entity().get_layer());
+  if (carried_object != nullptr) {
+    carried_object->set_layer(get_entity().get_layer());
   }
 }
 
@@ -133,8 +133,8 @@ void Hero::CarryingState::set_suspended(bool suspended) {
 
   PlayerMovementState::set_suspended(suspended);
 
-  if (carried_item != nullptr) {
-    carried_item->set_suspended(suspended);
+  if (carried_object != nullptr) {
+    carried_object->set_suspended(suspended);
   }
 }
 
@@ -147,12 +147,12 @@ void Hero::CarryingState::update() {
 
   // The state may have just been changed for example by a jumper.
   if (is_current_state()) {
-    carried_item->update();
+    carried_object->update();
 
     if (!is_suspended()) {
 
-      if (carried_item->is_broken()) {
-        carried_item = nullptr;
+      if (carried_object->is_broken()) {
+        carried_object = nullptr;
         Hero& hero = get_entity();
         hero.set_state(new FreeState(hero));
       }
@@ -180,9 +180,9 @@ void Hero::CarryingState::notify_action_command_pressed() {
  */
 void Hero::CarryingState::throw_item() {
 
-  carried_item->throw_item(get_sprites().get_animation_direction());
-  get_entities().add_entity(carried_item);
-  carried_item = nullptr;
+  carried_object->throw_item(get_sprites().get_animation_direction());
+  get_entities().add_entity(carried_object);
+  carried_object = nullptr;
 }
 
 /**
@@ -227,16 +227,16 @@ void Hero::CarryingState::set_animation_walking() {
  * \brief Returns the item currently carried by the hero in this state, if any.
  * \return the item carried by the hero, or nullptr
  */
-std::shared_ptr<CarriedItem> Hero::CarryingState::get_carried_item() const {
-  return carried_item;
+std::shared_ptr<CarriedObject> Hero::CarryingState::get_carried_object() const {
+  return carried_object;
 }
 
 /**
- * \copydoc Entity::State::get_previous_carried_item_behavior
+ * \copydoc Entity::State::get_previous_carried_object_behavior
  */
-CarriedItem::Behavior Hero::CarryingState::get_previous_carried_item_behavior() const {
+CarriedObject::Behavior Hero::CarryingState::get_previous_carried_object_behavior() const {
 
-  return CarriedItem::BEHAVIOR_KEEP;
+  return CarriedObject::BEHAVIOR_KEEP;
 }
 
 }

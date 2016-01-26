@@ -16,7 +16,7 @@
  */
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/CarriedItem.h"
+#include "solarus/entities/CarriedObject.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Sprite.h"
 #include "solarus/SpriteAnimationSet.h"
@@ -1051,7 +1051,7 @@ void HeroSprites::set_animation_stopped_sword_loading() {
  * \brief Starts the "stopped" animation with sprites that represent
  * the hero carrying something.
  *
- * If the hero actually carries an item, the carried item also takes a "stopped" animation.
+ * If the hero actually carries an item, the carried object also takes a "stopped" animation.
  */
 void HeroSprites::set_animation_stopped_carrying() {
 
@@ -1141,7 +1141,7 @@ void HeroSprites::set_animation_walking_sword_loading() {
  * \brief Starts the "walking" animation with sprites that represent
  * the hero carrying something.
  *
- * If the hero actually carries an item, the carried item also takes a "walking" animation.
+ * If the hero actually carries an item, the carried object also takes a "walking" animation.
  */
 void HeroSprites::set_animation_walking_carrying() {
 
@@ -1605,7 +1605,7 @@ void HeroSprites::play_ground_sound() {
  * \param lifted_item the item to display, or nullptr to stop displaying a lifted item
  */
 void HeroSprites::set_lifted_item(
-    const std::shared_ptr<CarriedItem>& lifted_item
+    const std::shared_ptr<CarriedObject>& lifted_item
 ) {
   this->lifted_item = lifted_item;
 }

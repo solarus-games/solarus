@@ -883,7 +883,8 @@ int LuaContext::entity_api_get_center_position(lua_State* l) {
     const Point& center_point = entity.get_center_point();
     lua_pushinteger(l, center_point.x);
     lua_pushinteger(l, center_point.y);
-    return 2;
+    lua_pushinteger(l, entity.get_layer());
+    return 3;
   });
 }
 
@@ -900,7 +901,8 @@ int LuaContext::entity_api_get_ground_position(lua_State* l) {
     const Point& ground_point = entity.get_ground_point();
     lua_pushinteger(l, ground_point.x);
     lua_pushinteger(l, ground_point.y);
-    return 2;
+    lua_pushinteger(l, entity.get_layer());
+    return 3;
   });
 }
 

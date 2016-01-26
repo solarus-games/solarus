@@ -47,9 +47,9 @@ Crystal::Crystal(const std::string& name, int layer, const Point& xy):
       CollisionMode::COLLISION_FACING
   );
   set_origin(8, 13);
-  const SpritePtr& main_sprite = create_sprite("entities/crystal");
+  const SpritePtr& main_sprite = create_sprite("entities/crystal", "main");
   main_sprite->enable_pixel_collisions();
-  star_sprite = create_sprite("entities/star");
+  star_sprite = create_sprite("entities/star", "star");
   twinkle();
 }
 

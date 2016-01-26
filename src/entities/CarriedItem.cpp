@@ -100,12 +100,13 @@ CarriedItem::CarriedItem(
   std::shared_ptr<PixelMovement> movement = std::make_shared<PixelMovement>(
       lifting_trajectories[direction], 100, false, true
   );
-  main_sprite = create_sprite(animation_set_id);
+  main_sprite = create_sprite(animation_set_id, "main");
   main_sprite->set_current_animation("stopped");
+  set_default_sprite_name("main");
   set_movement(movement);
 
   // create the shadow (not visible yet)
-  shadow_sprite = create_sprite("entities/shadow");
+  shadow_sprite = create_sprite("entities/shadow", "shadow");
   shadow_sprite->set_current_animation("big");
   shadow_sprite->stop_animation();
 }

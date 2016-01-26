@@ -321,7 +321,6 @@ struct SOLARUS_API EnumInfoTraits<InputEvent::MouseButton> {
   static const EnumInfo<InputEvent::MouseButton>::names_type names;
 };
 
-
 }
 
 #endif

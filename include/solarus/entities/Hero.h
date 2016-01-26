@@ -147,7 +147,6 @@ class Hero: public Entity {
      */
     bool is_ground_visible() const;
     virtual bool is_ground_observer() const override;
-    virtual Point get_ground_point() const override;
     virtual void notify_ground_below_changed() override;
     const Point& get_last_solid_ground_coords() const;
     int get_last_solid_ground_layer() const;

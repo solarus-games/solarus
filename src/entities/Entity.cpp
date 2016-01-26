@@ -127,8 +127,7 @@ bool Entity::is_hero() const {
  *
  * This function returns \c false by default.
  * If this function returns \c true,
- * get_ground_below() will then return the ground below it
- * and notify_ground_below_changed() will be called when it changes.
+ * notify_ground_below_changed() will be called when it changes.
  *
  * \return \c true if this entity is sensible to its ground.
  */
@@ -192,13 +191,18 @@ void Entity::update_ground_observers() {
 
 /**
  * \brief Returns the ground where this entity is.
- *
- * If the entity is not sensible to its ground, always returns Ground::EMPTY.
- *
  * \return The ground under this entity.
  */
 Ground Entity::get_ground_below() const {
-  return ground_below;
+
+  if (is_ground_observer()) {
+    // The information is already known.
+    return ground_below;
+  }
+
+  return get_map().get_ground(
+      get_layer(), get_ground_point(), this
+  );
 }
 
 /**
@@ -1078,15 +1082,14 @@ void Entity::notify_facing_entity_changed(Entity* /* facing_entity */) {
 }
 
 /**
- * \brief Returns the point that determines the ground below this entity.
- *
- * By default, returns the coordinates of the entity.
- *
+ * \brief Returns the point used to determine which ground is below this entity.
  * \return The point used to determine the ground (relative to the map).
  */
 Point Entity::get_ground_point() const {
 
-  return { get_x(), get_y() };
+  // Return a point slightly above the origin point, otherwise the hero
+  // falls too easily in bad grounds to the South.
+  return { get_x(), get_y() - 2 };
 }
 
 /**

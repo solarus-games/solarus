@@ -1286,14 +1286,6 @@ bool Hero::is_ground_observer() const {
 }
 
 /**
- * \brief Returns the point that determines the ground below this entity.
- * \return The point used to determine the ground (relative to the map).
- */
-Point Hero::get_ground_point() const {
-  return { get_x(), get_y() - 2 };
-}
-
-/**
  * \brief Returns the last point of solid ground where the hero was.
  * \return The last solid ground coordinates, or
  * <tt>-1,-1</tt> if the hero never was on solid ground on this map yet.

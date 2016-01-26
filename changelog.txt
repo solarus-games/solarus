@@ -52,6 +52,8 @@ Changes that do not introduce incompatibilities:
 * map:get_entities() can now be called without parameter to get all entities.
 * map:get_entities*() functions now give entities sorted in Z order (#779).
 * Add a method entity:get_max_bounding_box() considering sprite boxes (#754).
+* Add a method entity:get_ground_position() (#830).
+* Add a method entity:get_ground_below() (#830).
 * entity:set_optimization_distance() is now only a hint for the engine.
 * entity:test_obstacles() now also works without parameters.
 * entity:overlaps() now has an optional collision mode parameter (#748).

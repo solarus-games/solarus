@@ -110,6 +110,8 @@ void LuaContext::register_entity_module() {
       { "get_position", entity_api_get_position },\
       { "set_position", entity_api_set_position },\
       { "get_center_position", entity_api_get_center_position },\
+      { "get_ground_position", entity_api_get_ground_position },\
+      { "get_ground_below", entity_api_get_ground_below },\
       { "get_bounding_box", entity_api_get_bounding_box },\
       { "get_max_bounding_box", entity_api_get_max_bounding_box },\
       { "overlaps", entity_api_overlaps },\
@@ -882,6 +884,40 @@ int LuaContext::entity_api_get_center_position(lua_State* l) {
     lua_pushinteger(l, center_point.x);
     lua_pushinteger(l, center_point.y);
     return 2;
+  });
+}
+
+/**
+ * \brief Implementation of entity:get_ground_position().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_ground_position(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Entity& entity = *check_entity(l, 1);
+
+    const Point& ground_point = entity.get_ground_point();
+    lua_pushinteger(l, ground_point.x);
+    lua_pushinteger(l, ground_point.y);
+    return 2;
+  });
+}
+
+/**
+ * \brief Implementation of entity:get_ground_below().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_ground_below(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Entity& entity = *check_entity(l, 1);
+
+    Ground ground = entity.get_ground_below();
+
+    push_string(l, enum_to_name(ground));
+    return 1;
   });
 }
 

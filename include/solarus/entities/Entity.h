@@ -99,7 +99,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual const std::string& get_lua_type_name() const override;
     bool is_hero() const;
     virtual bool is_ground_observer() const;
-    virtual Point get_ground_point() const;
+    Point get_ground_point() const;
     bool is_ground_modifier() const;
     virtual Ground get_modified_ground() const;
     virtual bool can_be_drawn() const;

@@ -89,7 +89,7 @@ void run_quest(const Arguments& arguments) {
 
   // Watch stdin in a separate thread.
   std::thread stdin_thread(read_lua_from_stdin, &main_loop);
-  stdin_thread.detach();  // Don't wait for stding to end.
+  stdin_thread.detach();  // Don't wait for stdin to end.
 
   // Run the simulation in the main thread.
   main_loop.run();

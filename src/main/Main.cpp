@@ -90,7 +90,6 @@ void print_help(const Arguments& args) {
  *   -video-acceleration=yes|no        Enables or disables 2D accelerated graphics if available (default: yes).
  *   -quest-size=<width>x<height>      Sets the size of the drawing area (if compatible with the quest).
  *   -lua-console=yes|no               Accepts lines from standard input as Lua commands (default: yes).
- *                                     Windows only (other systems use their existing console if any).
  *   -lag=X                            (Advanced) Artificially slows down each frame of X milliseconds
  *                                     to simulate slower systems for debugging (default: 0).
  *

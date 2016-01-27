@@ -104,6 +104,7 @@ file(
   include/solarus/lowlevel/Hq4xFilter.h
   include/solarus/lowlevel/InputEvent.h
   include/solarus/lowlevel/ItDecoder.h
+  include/solarus/lowlevel/Logger.h
   include/solarus/lowlevel/Music.h
   include/solarus/lowlevel/PixelBits.h
   include/solarus/lowlevel/PixelFilter.h
@@ -300,6 +301,7 @@ file(
   src/lowlevel/Hq4xFilter.cpp
   src/lowlevel/InputEvent.cpp
   src/lowlevel/ItDecoder.cpp
+  src/lowlevel/Logger.cpp
   src/lowlevel/Music.cpp
   src/lowlevel/PixelBits.cpp
   src/lowlevel/PixelFilter.cpp

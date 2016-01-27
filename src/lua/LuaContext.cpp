@@ -28,6 +28,7 @@
 #include "solarus/entities/Switch.h"
 #include "solarus/entities/Tileset.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/ExportableToLuaPtr.h"
 #include "solarus/lua/LuaContext.h"
@@ -39,7 +40,6 @@
 #include "solarus/Timer.h"
 #include "solarus/Treasure.h"
 #include <sstream>
-#include <iostream>
 
 namespace Solarus {
 
@@ -738,25 +738,26 @@ void LuaContext::print_stack(lua_State* l) {
   int i;
   int top = lua_gettop(l);
 
+  std::ostringstream oss;
   for (i = 1; i <= top; i++) {
 
     int type = lua_type(l, i);
     switch (type) {
 
       case LUA_TSTRING:
-        std::cout << "\"" << lua_tostring(l, i) << "\"";
+        oss << "\"" << lua_tostring(l, i) << "\"";
         break;
 
       case LUA_TBOOLEAN:
-        std::cout << (lua_toboolean(l, i) ? "true" : "false");
+        oss << (lua_toboolean(l, i) ? "true" : "false");
         break;
 
       case LUA_TNUMBER:
-        std::cout << lua_tonumber(l, i);
+        oss << lua_tonumber(l, i);
         break;
 
       case LUA_TLIGHTUSERDATA:
-        std::cout << "lightuserdata:" << lua_touserdata(l, i);
+        oss << "lightuserdata:" << lua_touserdata(l, i);
         break;
 
       case LUA_TUSERDATA:
@@ -764,18 +765,18 @@ void LuaContext::print_stack(lua_State* l) {
         const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(
             lua_touserdata(l, i)));
         const std::string& lua_type_name = userdata->get_lua_type_name();
-        std::cout << lua_type_name.substr(lua_type_name.find_last_of('.') + 1);
+        oss << lua_type_name.substr(lua_type_name.find_last_of('.') + 1);
         break;
       }
 
       default:
-        std::cout << lua_typename(l, type);
+        oss << lua_typename(l, type);
         break;
 
     }
-    std::cout << " ";
+    oss << " ";
   }
-  std::cout << std::endl;
+  Logger::debug(oss.str());
 }
 
 /**
@@ -803,7 +804,7 @@ void LuaContext::print_lua_version() {
     version = LuaTools::check_string(l, -1);
     lua_pop(l, 2);
                                   // -
-    std::cout << "LuaJIT: no (" << version << ")" << std::endl;
+    Logger::info("LuaJIT: no (" + version + ")");
   }
   else {
     // LuaJIT.
@@ -811,7 +812,7 @@ void LuaContext::print_lua_version() {
     version = LuaTools::check_string_field(l, -1, "version");
     lua_pop(l, 1);
                                   // -
-    std::cout << "LuaJIT: yes (" << version << ")" << std::endl;
+    Logger::info("LuaJIT: yes (" + version + ")");
   }
 
   Debug::check_assertion(lua_gettop(l) == 0, "Non-empty Lua stack after print_lua_version()");

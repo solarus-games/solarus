@@ -24,7 +24,6 @@
 #include "solarus/lowlevel/Video.h"
 #include "solarus/Sprite.h"
 #include <SDL.h>
-#include <iostream>
 #ifdef SOLARUS_USE_APPLE_POOL
 #  include "lowlevel/apple/AppleInterface.h"
 #endif
@@ -95,9 +94,6 @@ void System::update() {
   // Use a constant timestep here to have deterministic updates.
   ticks += timestep;
   Sound::update();
-
-  // Make sure that a process reading our standard output gets lines often.
-  std::cout.flush();
 }
 
 /**

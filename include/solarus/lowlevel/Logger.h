@@ -14,52 +14,35 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_DEBUG_H
-#define SOLARUS_DEBUG_H
+#ifndef SOLARUS_LOGGER_H
+#define SOLARUS_LOGGER_H
 
 #include "solarus/Common.h"
+#include <iostream>
 #include <string>
-
-#ifndef NDEBUG
-#define SOLARUS_ASSERT(condition, message) Debug::check_assertion(condition, message)
-#else
-#define SOLARUS_ASSERT(condition, message)
-#endif
 
 namespace Solarus {
 
-class CommandLine;
-
 /**
- * \brief Provides features for handling errors.
+ * \brief Provides features for logging output and errors.
+ *
+ * Message logged are all prepended by "[Solarus] [t] " where t is the current
+ * simulated time.
+ * This allows to better distinguish messages from the engine and messages
+ * from the quest.
  */
-namespace Debug {
+namespace Logger {
 
-SOLARUS_API void set_die_on_error(bool die);
-SOLARUS_API void set_show_popup_on_die(bool show);
-SOLARUS_API void set_abort_on_die(bool abort);
+SOLARUS_API void print(const std::string& message, std::ostream& out = std::cout);
 
+SOLARUS_API void debug(const std::string& message);
+SOLARUS_API void info(const std::string& message);
 SOLARUS_API void warning(const std::string& message);
 SOLARUS_API void error(const std::string& message);
-SOLARUS_API void check_assertion(bool assertion, const char* error_message);
-SOLARUS_API void check_assertion(bool assertion, const std::string& error_message);
-[[noreturn]] SOLARUS_API void die(const std::string& error_message);
+SOLARUS_API void fatal(const std::string& message);
 
-/**
- * \brief Execute an arbitrary function in debug mode.
- */
-template<typename Function>
-void execute_if_debug(Function&& func)
-{
-#ifndef NDEBUG
-    func();
-#else
-    (void) func;
-#endif
-}
-}
+}  // namespace Logger
 
-}
+}  // namespace Solarus
 
 #endif
-

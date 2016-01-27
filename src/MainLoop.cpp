@@ -17,6 +17,7 @@
 #include "solarus/entities/TilePattern.h"
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/Music.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Surface.h"
@@ -32,7 +33,6 @@
 #include "solarus/Savegame.h"
 #include "solarus/Settings.h"
 #include <lua.hpp>
-#include <iostream>
 #include <sstream>
 #include <string>
 #include <thread>
@@ -107,7 +107,7 @@ MainLoop::MainLoop(const Arguments& args):
   }
 
   // Initialize basic features (I/O, audio, video...).
-  std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
+  Logger::info(std::string("Solarus ") + SOLARUS_VERSION);
   System::initialize(args);
 
   // Read the quest resource list from data.
@@ -133,11 +133,11 @@ MainLoop::MainLoop(const Arguments& args):
   const std::string& lua_console_arg = args.get_argument_value("-lua-console");
   const bool enable_lua_console = lua_console_arg.empty() || lua_console_arg == "yes";
   if (enable_lua_console) {
-    std::cout << "Lua console: yes" << std::endl;
+    Logger::info("Lua console: yes");
     initialize_lua_console();
   }
   else {
-    std::cout << "Lua console: no" << std::endl;
+    Logger::info("Lua console: no");
   }
 
   // Finally show the window.
@@ -255,7 +255,7 @@ int MainLoop::push_lua_command(const std::string& command) {
 void MainLoop::run() {
 
   // Main loop.
-  std::cout << "Simulation started" << std::endl;
+  Logger::info("Simulation started");
 
   uint32_t last_frame_date = System::get_real_time();
   uint32_t lag = 0;  // Lose time of the simulation to catch up.
@@ -315,7 +315,7 @@ void MainLoop::run() {
       System::sleep(System::timestep - last_frame_duration);
     }
   }
-  std::cout << "Simulation finished" << std::endl;
+  Logger::info("Simulation finished");
 }
 
 /**
@@ -344,13 +344,13 @@ void MainLoop::check_input() {
   if (!lua_commands.empty()) {
     std::lock_guard<std::mutex> lock(lua_commands_mutex);
     for (const std::string& command : lua_commands) {
-      std::cout << "[Solarus] ====== Begin Lua command #" << num_lua_commands_done << " ======" << std::endl;
+      Logger::info("====== Begin Lua command #" + std::to_string(num_lua_commands_done) + " ======");
       const bool success = LuaTools::do_string(get_lua_context().get_internal_state(), command, "Lua request");
       if (success) {
-        std::cout << "[Solarus] ====== End Lua command #" << num_lua_commands_done << ": success ======" << std::endl;
+        Logger::info("[Solarus] ====== End Lua command #" + std::to_string(num_lua_commands_done) + ": success ======");
       }
       else {
-        std::cout << "[Solarus] ====== End Lua command #" << num_lua_commands_done << ": error ======" << std::endl;
+        Logger::info("[Solarus] ====== End Lua command #" + std::to_string(num_lua_commands_done) + ": error ======");
       }
       ++num_lua_commands_done;
     }

@@ -345,7 +345,7 @@ void MainLoop::check_input() {
     std::lock_guard<std::mutex> lock(lua_commands_mutex);
     for (const std::string& command : lua_commands) {
       Logger::info("====== Begin Lua command #" + std::to_string(num_lua_commands_done) + " ======");
-      const bool success = LuaTools::do_string(get_lua_context().get_internal_state(), command, "Lua request");
+      const bool success = LuaTools::do_string(get_lua_context().get_internal_state(), command, "Lua command");
       if (success) {
         Logger::info("====== End Lua command #" + std::to_string(num_lua_commands_done) + ": success ======");
       }

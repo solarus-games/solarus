@@ -347,10 +347,10 @@ void MainLoop::check_input() {
       Logger::info("====== Begin Lua command #" + std::to_string(num_lua_commands_done) + " ======");
       const bool success = LuaTools::do_string(get_lua_context().get_internal_state(), command, "Lua request");
       if (success) {
-        Logger::info("[Solarus] ====== End Lua command #" + std::to_string(num_lua_commands_done) + ": success ======");
+        Logger::info("====== End Lua command #" + std::to_string(num_lua_commands_done) + ": success ======");
       }
       else {
-        Logger::info("[Solarus] ====== End Lua command #" + std::to_string(num_lua_commands_done) + ": error ======");
+        Logger::info("====== End Lua command #" + std::to_string(num_lua_commands_done) + ": error ======");
       }
       ++num_lua_commands_done;
     }

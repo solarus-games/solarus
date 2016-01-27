@@ -55,7 +55,6 @@ SOLARUS_API void print(const std::string& message, std::ostream& out) {
 
   uint32_t simulated_time = System::now();
   out << "[Solarus] [" << simulated_time << "] " << message << std::endl;
-  out.flush();
 }
 
 /**

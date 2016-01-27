@@ -155,6 +155,10 @@ void LuaContext::initialize() {
   lua_pop(l, 1);
                                   // --
 
+  // Make sure that stdout gets flushed when Lua scripts output new lines.
+  // This is not always the case by default.
+  luaL_dostring(l, "io.stdout:setvbuf(\"line\")");
+
   Debug::check_assertion(lua_gettop(l) == 0, "Lua stack is not empty after initialization");
 
   // Execute the main file.

@@ -17,7 +17,6 @@
 #ifndef SOLARUS_NOMAIN
 
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/Output.h"
 #include "solarus/Arguments.h"
 #include "solarus/MainLoop.h"
 #include <iostream>
@@ -34,7 +33,6 @@ namespace {
  */
 void print_help(const Arguments& args) {
 
-  Output::initialize(args);
   std::string binary_name = args.get_program_name();
   if (binary_name.empty()) {
     binary_name = "solarus";
@@ -62,8 +60,6 @@ void print_help(const Arguments& args) {
     << "  -quest-size=<width>x<height>  sets the size of the drawing area (if compatible with the quest)"
     << std::endl
     << "  -lua-console=yes|no           accepts standard input lines as Lua commands (default yes)"
-    << std::endl
-    << "  -win-console=yes|no           allows to see output in a console, only needed on Windows (default no)"
     << std::endl
     << "  -lag=X                        slows down each frame of X milliseconds to simulate slower systems for debugging (default 0)"
     << std::endl;
@@ -94,7 +90,6 @@ void print_help(const Arguments& args) {
  *   -video-acceleration=yes|no        Enables or disables 2D accelerated graphics if available (default: yes).
  *   -quest-size=<width>x<height>      Sets the size of the drawing area (if compatible with the quest).
  *   -lua-console=yes|no               Accepts lines from standard input as Lua commands (default: yes).
- *   -win-console=yes|no               Opens a console to see debug output (default: no).
  *                                     Windows only (other systems use their existing console if any).
  *   -lag=X                            (Advanced) Artificially slows down each frame of X milliseconds
  *                                     to simulate slower systems for debugging (default: 0).

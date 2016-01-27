@@ -8,6 +8,7 @@ Engine changes
 
 * Add version number and symbolic links when building the library.
 * Add a -lua-console option to run Lua code from the standard input.
+* Remove the -win-console option, the preferred way is now to use a GUI.
 * Add a -lag option to simulate slower systems for debugging.
 * Print when the main loop starts and stops.
 * Print the Lua version at startup (#692).

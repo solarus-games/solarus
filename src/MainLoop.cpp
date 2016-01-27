@@ -18,7 +18,6 @@
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Music.h"
-#include "solarus/lowlevel/Output.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/System.h"
@@ -108,7 +107,6 @@ MainLoop::MainLoop(const Arguments& args):
   }
 
   // Initialize basic features (I/O, audio, video...).
-  Output::initialize(args);
   std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
   System::initialize(args);
 
@@ -164,7 +162,6 @@ MainLoop::~MainLoop() {
   TilePattern::quit();
   CurrentQuest::quit();
   System::quit();
-  Output::quit();
 }
 
 /**

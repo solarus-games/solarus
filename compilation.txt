@@ -29,7 +29,7 @@ Contents
 1  Overview
 -----------
 
-When it is installed, the project provide the following files:
+When it is installed, the project provides the following files:
 - A dynamic library called "solarus".
 - An executable file called "solarus-run" that directly runs a quest.
 - An executable file called "solarus", which is a GUI window to let the user

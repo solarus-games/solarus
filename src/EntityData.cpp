@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -826,7 +826,7 @@ EntityData EntityData::check_entity_data(lua_State* l, int index, EntityType typ
  *
  * Note: entities whose type is not in this map can only be created
  * by the engine.
- * This is the case of HERO, CARRIED_ITEM, BOOMERANG, ARROW and HOOKHOT.
+ * This is the case of HERO, CARRIED_OBJECT, BOOMERANG, ARROW and HOOKHOT.
  * The ones in the map can be created either by declaring them in a map
  * data file or by the Lua API, or both.
  *

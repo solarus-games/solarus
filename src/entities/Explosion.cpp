@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,12 +35,14 @@ namespace Solarus {
  */
 Explosion::Explosion(const std::string& name, int layer,
     const Point& xy, bool with_damage):
-  Detector(COLLISION_SPRITE | COLLISION_OVERLAPPING, name, layer, xy, Size(48, 48)) {
+    Entity(name, 0, layer, xy, Size(48, 48)) {
+
+  set_collision_modes(CollisionMode::COLLISION_SPRITE | CollisionMode::COLLISION_OVERLAPPING);
 
   // initialize the entity
-  create_sprite("entities/explosion");
+  const SpritePtr& sprite = create_sprite("entities/explosion");
+  sprite->enable_pixel_collisions();
 
-  get_sprite().enable_pixel_collisions();
   if (with_damage) {
     set_size(48, 48);
     set_origin(24, 24);
@@ -60,9 +62,10 @@ EntityType Explosion::get_type() const {
  */
 void Explosion::update() {
 
-  Detector::update();
+  Entity::update();
 
-  if (get_sprite().is_animation_finished()) {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr && sprite->is_animation_finished()) {
     remove_from_map();
   }
 }
@@ -82,7 +85,7 @@ void Explosion::notify_sprite_frame_changed(Sprite& /* sprite */, const std::str
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Explosion::notify_collision(
     Entity& other_entity,

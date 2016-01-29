@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,14 +35,14 @@ const EnumInfo<CommandsEffects::ActionKeyEffect>::names_type EnumInfoTraits<Comm
   { CommandsEffects::ACTION_KEY_SWIM, "swim"}
 };
 
-const std::string EnumInfoTraits<CommandsEffects::SwordKeyEffect>::pretty_name = "sword key effect";
+const std::string EnumInfoTraits<CommandsEffects::AttackKeyEffect>::pretty_name = "sword key effect";
 
 /**
  * \brief Lua name of each value of the SwordKeyEffect enum.
  */
-const EnumInfo<CommandsEffects::SwordKeyEffect>::names_type EnumInfoTraits<CommandsEffects::SwordKeyEffect>::names = {
-  { CommandsEffects::SWORD_KEY_NONE, "" },
-  { CommandsEffects::SWORD_KEY_SWORD, "sword" }
+const EnumInfo<CommandsEffects::AttackKeyEffect>::names_type EnumInfoTraits<CommandsEffects::AttackKeyEffect>::names = {
+  { CommandsEffects::ATTACK_KEY_NONE, "" },
+  { CommandsEffects::ATTACK_KEY_SWORD, "sword" }
 };
 
 const std::string EnumInfoTraits<CommandsEffects::PauseKeyEffect>::pretty_name = "pause key effect";
@@ -63,8 +63,8 @@ CommandsEffects::CommandsEffects():
   action_key_effect(ACTION_KEY_NONE),
   action_key_effect_saved(ACTION_KEY_NONE),
   action_key_enabled(true),
-  sword_key_effect(SWORD_KEY_NONE),
-  sword_key_effect_saved(SWORD_KEY_NONE),
+  sword_key_effect(ATTACK_KEY_NONE),
+  sword_key_effect_saved(ATTACK_KEY_NONE),
   sword_key_enabled(true),
   pause_key_effect(PAUSE_KEY_PAUSE),
   pause_key_effect_saved(PAUSE_KEY_PAUSE),
@@ -146,7 +146,7 @@ bool CommandsEffects::is_action_key_acting_on_facing_entity() {
  * \brief Returns the current effect of the sword key.
  * \return the current effect of the sword key
  */
-CommandsEffects::SwordKeyEffect CommandsEffects::get_sword_key_effect() {
+CommandsEffects::AttackKeyEffect CommandsEffects::get_sword_key_effect() {
   return sword_key_effect;
 }
 
@@ -154,7 +154,7 @@ CommandsEffects::SwordKeyEffect CommandsEffects::get_sword_key_effect() {
  * \brief Sets the current effect of the sword key.
  * \param sword_key_effect the current effect of the sword key
  */
-void CommandsEffects::set_sword_key_effect(CommandsEffects::SwordKeyEffect sword_key_effect) {
+void CommandsEffects::set_sword_key_effect(CommandsEffects::AttackKeyEffect sword_key_effect) {
   this->sword_key_effect = sword_key_effect;
 }
 

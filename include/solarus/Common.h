@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,36 +33,6 @@
 /**
  * \endcond
  */
-
-/**
- * \brief Solarus major version.
- *
- * A change of major version is a important step in the maturity of the
- * project.
- * Data files other than scripts can be upgraded automatically.
- * Lua API changes may sometimes break compatibility, so check the ChangeLog
- * before upgrading.
- */
-#define SOLARUS_MAJOR_VERSION 1
-
-/**
- * \brief Solarus minor version.
- *
- * Minor versions add new features and may change the format of data files.
- * Data files other than scripts can be upgraded automatically.
- * Lua API changes may sometimes break compatibility, so check the ChangeLog
- * before upgrading.
- */
-#define SOLARUS_MINOR_VERSION 5
-
-/**
- * \brief Solarus patch version.
- *
- * Patch versions are only bug fixes.
- * Data files compatibility is always preserved between changes of the patch
- * version.
- */
-#define SOLARUS_PATCH_VERSION 0
 
 /**
  * \brief The Solarus version as a string.
@@ -183,19 +153,6 @@
  */
 #ifndef SOLARUS_DEFAULT_QUEST_HEIGHT
 #  define SOLARUS_DEFAULT_QUEST_HEIGHT 240
-#endif
-
-// TODO see if this flag still works/is needed with 16bpp surface on Caanoo.
-/**
- * \def SOLARUS_COLOR_DEPTH
- * \brief Number of bits per pixel for surfaces.
- */
-#ifndef SOLARUS_COLOR_DEPTH
-#  if defined(CAANOO)
-#    define SOLARUS_COLOR_DEPTH 16
-#  else
-#    define SOLARUS_COLOR_DEPTH 32
-#  endif
 #endif
 
 #endif

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ const EnumInfo<EntityType>::names_type EnumInfoTraits<EntityType>::names = {
     { EntityType::BOMB, "bomb" },
     { EntityType::BOOMERANG, "boomerang" },
     { EntityType::CAMERA, "camera" },
-    { EntityType::CARRIED_ITEM, "carried_object" },
+    { EntityType::CARRIED_OBJECT, "carried_object" },
     { EntityType::CHEST, "chest" },
     { EntityType::CRYSTAL, "crystal" },
     { EntityType::CRYSTAL_BLOCK, "crystal_block" },
@@ -95,7 +95,7 @@ bool EntityTypeInfo::can_be_stored_in_map_file(EntityType type) {
   case EntityType::BOMB:
   case EntityType::BOOMERANG:
   case EntityType::CAMERA:
-  case EntityType::CARRIED_ITEM:
+  case EntityType::CARRIED_OBJECT:
   case EntityType::EXPLOSION:
   case EntityType::HERO:
   case EntityType::HOOKSHOT:
@@ -146,7 +146,7 @@ bool EntityTypeInfo::can_be_created_from_lua_api(EntityType type) {
   case EntityType::ARROW:
   case EntityType::BOOMERANG:
   case EntityType::CAMERA:
-  case EntityType::CARRIED_ITEM:
+  case EntityType::CARRIED_OBJECT:
   case EntityType::HERO:
   case EntityType::HOOKSHOT:
   case EntityType::TILE:

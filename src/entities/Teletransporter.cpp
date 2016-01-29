@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ Teletransporter::Teletransporter(
     const std::string& destination_map_id,
     const std::string& destination_name):
 
-  Detector(COLLISION_CUSTOM, name, layer, xy, size),
+  Entity(name, 0, layer, xy, size),
   sound_id(sound_id),
   transition_style(transition_style),
   destination_map_id(destination_map_id),
@@ -61,6 +61,8 @@ Teletransporter::Teletransporter(
   destination_side(-1),
   transition_direction(0),
   transporting_hero(false) {
+
+  set_collision_modes(CollisionMode::COLLISION_CUSTOM);
 
   if (!sprite_name.empty()) {
     create_sprite(sprite_name);
@@ -72,7 +74,7 @@ Teletransporter::Teletransporter(
  */
 void Teletransporter::notify_creating() {
 
-  Detector::notify_creating();
+  Entity::notify_creating();
 
   int x = get_x();
   int y = get_y();
@@ -274,7 +276,7 @@ void Teletransporter::transport_hero(Hero& hero) {
   }
   transporting_hero = true;
 
-  get_lua_context().teletransporter_on_activated(*this);
+  get_lua_context()->teletransporter_on_activated(*this);
 
   if (!sound_id.empty()) {
     Sound::play(sound_id);

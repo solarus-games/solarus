@@ -1,0 +1,51 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  min_layer = 0,
+  max_layer = 2,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  pattern = "3",
+}
+
+destination{
+  layer = 0,
+  x = 24,
+  y = 29,
+  direction = 1,
+}
+
+block{
+  name = "block",
+  layer = 0,
+  x = 56,
+  y = 29,
+  sprite = "entities/block",
+  pushable = true,
+  pullable = false,
+  maximum_moves = 1,
+}
+
+wall{
+  name = "wall",
+  layer = 0,
+  x = 80,
+  y = 16,
+  width = 16,
+  height = 16,
+  stops_hero = true,
+  stops_npcs = true,
+  stops_enemies = true,
+  stops_blocks = true,
+  stops_projectiles = true,
+}
+

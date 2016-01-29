@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -126,7 +126,7 @@ Map& Entity::State::get_map() {
  * \brief Returns the entities of the current map.
  * \return the entities
  */
-MapEntities& Entity::State::get_entities() {
+Entities& Entity::State::get_entities() {
   return map->get_entities();
 }
 
@@ -1031,12 +1031,12 @@ void Entity::State::notify_grabbed_entity_collision() {
 }
 
 /**
- * \brief Tests whether the entity is cutting with his sword the specified detector
+ * \brief Tests whether the entity is cutting with his sword the specified entity
  * for which a collision was detected.
  *
- * When the sword sprite collides with a detector,
+ * When the sword sprite collides with an entity,
  * this function can be called to determine whether the entity is
- * really cutting this particular detector precisely.
+ * really cutting this particular entity precisely.
  * This depends on the entity's state, his direction and his
  * distance to the detector.
  * This function assumes that there is already a collision
@@ -1045,10 +1045,10 @@ void Entity::State::notify_grabbed_entity_collision() {
  * entity wants to cut a bush or some grass.
  * Returns false by default.
  *
- * \param detector the detector to check
- * \return true if the sword is cutting this detector
+ * \param entity The entity to check.
+ * \return \c true if the sword is cutting this entity.
  */
-bool Entity::State::is_cutting_with_sword(Detector& /* detector */) {
+bool Entity::State::is_cutting_with_sword(Entity& /* detector */) {
   return false;
 }
 
@@ -1101,13 +1101,13 @@ bool Entity::State::can_start_item(EquipmentItem& /* item */) const {
 /**
  * \brief Returns whether the entity is currently carrying an item in this state.
  *
- * This function returns true if get_carried_item() is not nullptr.
- * Redefine get_carried_item() if the entity is able to carry an item in this state.
+ * This function returns true if get_carried_object() is not nullptr.
+ * Redefine get_carried_object() if the entity is able to carry an item in this state.
  *
  * \return true if the entity is currently carrying an item in this state
  */
 bool Entity::State::is_carrying_item() const {
-  return get_carried_item() != nullptr;
+  return get_carried_object() != nullptr;
 }
 
 /**
@@ -1117,19 +1117,19 @@ bool Entity::State::is_carrying_item() const {
  *
  * \return the item carried by the entity, or nullptr
  */
-std::shared_ptr<CarriedItem> Entity::State::get_carried_item() const {
+std::shared_ptr<CarriedObject> Entity::State::get_carried_object() const {
   return nullptr;
 }
 
 /**
  * \brief Returns the action to do with an item previously carried by the entity when this state starts.
  *
- * Returns CarriedItem::BEHAVIOR_THROW by default.
+ * Returns CarriedObject::BEHAVIOR_THROW by default.
  *
- * \return the action to do with a previous carried item when this state starts
+ * \return the action to do with a previous carried object when this state starts
  */
-CarriedItem::Behavior Entity::State::get_previous_carried_item_behavior() const {
-  return CarriedItem::BEHAVIOR_THROW;
+CarriedObject::Behavior Entity::State::get_previous_carried_object_behavior() const {
+  return CarriedObject::BEHAVIOR_THROW;
 }
 
 }

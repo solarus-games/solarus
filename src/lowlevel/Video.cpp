@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,21 +14,21 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/Video.h"
-#include "solarus/lowlevel/VideoMode.h"
-#include "solarus/lowlevel/Rectangle.h"
-#include "solarus/lowlevel/Size.h"
-#include "solarus/lowlevel/Scale2xFilter.h"
+#include "solarus/lowlevel/Color.h"
+#include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Hq2xFilter.h"
 #include "solarus/lowlevel/Hq3xFilter.h"
 #include "solarus/lowlevel/Hq4xFilter.h"
-#include "solarus/lowlevel/Surface.h"
-#include "solarus/lowlevel/Color.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lowlevel/Scale2xFilter.h"
+#include "solarus/lowlevel/Size.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Video.h"
+#include "solarus/lowlevel/VideoMode.h"
 #include "solarus/lowlevel/shaders/ShaderContext.h"
 #include "solarus/Arguments.h"
-#include <iostream>
 #include <memory>
 #include <sstream>
 #include <utility>
@@ -141,13 +141,13 @@ void create_window() {
     && (renderer_info.flags & SDL_RENDERER_ACCELERATED) != 0;
   if (acceleration_enabled) {
     // Solarus uses accelerated graphics as of version 1.2 with SDL2.
-    std::cout << "2D acceleration: yes" << std::endl;
+    Logger::info("2D acceleration: yes");
   }
   else {
     // Acceleration may be disabled because the user decided so or because the
     // system does not support it.
     // This is not a problem: the engine runs perfectly in software mode.
-    std::cout << "2D acceleration: no" << std::endl;
+    Logger::info("2D acceleration: no");
   }
 }
 

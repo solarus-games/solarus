@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ Hero::GrabbingState::GrabbingState(Hero& hero):
  */
 void Hero::GrabbingState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   get_sprites().set_animation_grabbing();
 }

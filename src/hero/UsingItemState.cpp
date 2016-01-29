@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,14 +41,14 @@ Hero::UsingItemState::UsingItemState(
  */
 void Hero::UsingItemState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   bool interaction = false;
-  Detector* facing_entity = get_entity().get_facing_entity();
+  Entity* facing_entity = get_entity().get_facing_entity();
   if (facing_entity != nullptr && !facing_entity->is_being_removed()) {
     // Maybe the facing entity (e.g. an NPC) accepts an interaction with this
     // particular item.
-    interaction = facing_entity->interaction_with_item(item_usage.get_item());
+    interaction = facing_entity->notify_interaction_with_item(item_usage.get_item());
   }
 
   if (!interaction) {
@@ -62,7 +62,7 @@ void Hero::UsingItemState::start(const State* previous_state) {
  */
 void Hero::UsingItemState::update() {
 
-  State::update();
+  BaseState::update();
 
   item_usage.update();
   if (item_usage.is_finished() && is_current_state()) {

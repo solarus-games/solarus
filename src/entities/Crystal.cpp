@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,14 +37,19 @@ namespace Solarus {
  * \param xy Coordinates of the entity to create.
  */
 Crystal::Crystal(const std::string& name, int layer, const Point& xy):
-  Detector(COLLISION_SPRITE | COLLISION_OVERLAPPING | COLLISION_FACING,
-      name, layer, xy, Size(16, 16)),
+  Entity(name, 0, layer, xy, Size(16, 16)),
   state(false),
   next_possible_hit_date(System::now()) {
 
+  set_collision_modes(
+      CollisionMode::COLLISION_SPRITE |
+      CollisionMode::COLLISION_OVERLAPPING |
+      CollisionMode::COLLISION_FACING
+  );
   set_origin(8, 13);
-  create_sprite("entities/crystal", true);
-  star_sprite = std::make_shared<Sprite>("entities/star");
+  const SpritePtr& main_sprite = create_sprite("entities/crystal", "main");
+  main_sprite->enable_pixel_collisions();
+  star_sprite = create_sprite("entities/star", "star");
   twinkle();
 }
 
@@ -61,13 +66,16 @@ EntityType Crystal::get_type() const {
  */
 void Crystal::notify_creating() {
 
-  Detector::notify_creating();
+  Entity::notify_creating();
 
   bool state = get_game().get_crystal_state();
   if (state != this->state) {
 
     this->state = state;
-    get_sprite().set_current_animation(state ? "blue_lowered" : "orange_lowered");
+    const SpritePtr& sprite = get_sprite();
+    if (sprite != nullptr) {
+      sprite->set_current_animation(state ? "blue_lowered" : "orange_lowered");
+    }
   }
 }
 
@@ -90,14 +98,14 @@ void Crystal::notify_collision(Entity& entity_overlapping, CollisionMode collisi
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Crystal::notify_collision(Entity& other_entity, Sprite& /* this_sprite */, Sprite& other_sprite) {
   other_entity.notify_collision_with_crystal(*this, other_sprite);
 }
 
 /**
- * \copydoc Detector::notify_action_command_pressed
+ * \copydoc Entity::notify_action_command_pressed
  */
 bool Crystal::notify_action_command_pressed() {
 
@@ -156,7 +164,11 @@ void Crystal::update() {
     if (state != this->state) {
 
       this->state = state;
-      get_sprite().set_current_animation(state ? "blue_lowered" : "orange_lowered");
+
+      const SpritePtr& sprite = get_sprite();
+      if (sprite != nullptr) {
+        sprite->set_current_animation(state ? "blue_lowered" : "orange_lowered");
+      }
     }
 
     star_sprite->update();
@@ -181,17 +193,11 @@ void Crystal::update() {
  */
 void Crystal::draw_on_map() {
 
-  if (!is_drawn()) {
-    return;
-  }
-
   // draw the crystal
   Entity::draw_on_map();
 
   // draw the star
-  if (is_drawn()) {
-    get_map().draw_sprite(*star_sprite, get_top_left_xy() + star_xy);
-  }
+  get_map().draw_sprite(*star_sprite, get_top_left_xy() + star_xy);
 }
 
 /**

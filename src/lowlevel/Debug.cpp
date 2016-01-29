@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,10 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/SolarusFatal.h"
 #include <cstdlib>  // std::abort
-#include <fstream>
-#include <iostream>
 #include <SDL_messagebox.h>
 
 namespace Solarus {
@@ -29,28 +28,24 @@ namespace {
   bool die_on_error = false;
   bool show_popup_on_die = true;
   bool abort_on_die = false;
-  const std::string error_output_file_name = "error.txt";
-  std::ofstream error_output_file;
 
 }
 
 /**
  * \brief Sets whether errors are fatal.
- *
  * \param die If \c true, calling Debug::error() will stop Solarus.
  * The default is \c false.
  */
-void SOLARUS_API set_die_on_error(bool die) {
+SOLARUS_API void set_die_on_error(bool die) {
   die_on_error = die;
 }
 
 /**
  * \brief Sets whether a dialog should pop when Solarus dies.
- *
  * \param show Whether a dialog should pop when Solarus dies.
  * The default is \c true.
  */
-void SOLARUS_API set_show_popup_on_die(bool show) {
+SOLARUS_API void set_show_popup_on_die(bool show) {
   show_popup_on_die = show;
 }
 
@@ -63,42 +58,35 @@ void SOLARUS_API set_show_popup_on_die(bool show) {
  * This should be preferred if Solarus is used as a library.
  * The default is \c false.
  */
-void SOLARUS_API set_abort_on_die(bool abort) {
+SOLARUS_API void set_abort_on_die(bool abort) {
   abort_on_die = abort;
 }
 
 /**
- * \brief Prints "Warning: " and a message on both stderr and error.txt.
+ * \brief Prints "Warning: " and a message on both stdout and error.txt.
  * \param message The warning message to print.
  */
-void SOLARUS_API warning(const std::string& message) {
+SOLARUS_API void warning(const std::string& message) {
 
-  if (!error_output_file.is_open()) {
-    error_output_file.open(error_output_file_name.c_str());
-  }
-  error_output_file << "Warning: " << message << std::endl;
-  std::cerr << "Warning: " << message << std::endl;
+  Logger::warning(message);
 }
 
 /**
- * \brief Prints "Error: " and a message on both stderr and error.txt.
+ * \brief Prints "Error: " and a message on both stdout and error.txt.
  *
  * Use this function for non fatal errors such as errors in quest data files.
+ * Stops Solarus if set_die_on_error(true) was called.
  *
  * \param message The error message to print.
  */
-void SOLARUS_API error(const std::string& message) {
+SOLARUS_API void error(const std::string& message) {
 
   if (die_on_error) {
     // Errors are fatal.
     die(message);
   }
 
-  if (!error_output_file.is_open()) {
-    error_output_file.open(error_output_file_name.c_str());
-  }
-  error_output_file << "Error: " << message << std::endl;
-  std::cerr << "Error: " << message << std::endl;
+  Logger::error(message);
 
 }
 
@@ -115,7 +103,7 @@ void SOLARUS_API check_assertion(bool assertion, const char* error_message) {
 }
 
 /**
- * \brief Aborts the program if the specified assertion is \c false.
+ * \brief Stops Solarus if the specified assertion is \c false.
  * \param assertion The assertion to check.
  * \param error_message Error message to show in case of failure.
  */
@@ -127,20 +115,16 @@ void SOLARUS_API check_assertion(bool assertion, const std::string& error_messag
 }
 
 /**
- * \brief Aborts the program.
+ * \brief Stops Solarus on a fatal error.
  *
  * This function is equivalent to check_assertion(false, error_message).
- * The error message is printed on both stderr and error.txt.
+ * The error message is printed on both stdout and error.txt.
  *
- * \param error_message The error message to show.
+ * \param error_message The error message to report.
  */
 void SOLARUS_API die(const std::string& error_message) {
 
-  if (!error_output_file.is_open()) {
-    error_output_file.open(error_output_file_name.c_str());
-  }
-  error_output_file << "Fatal: " << error_message << std::endl;
-  std::cerr << "Fatal: " << error_message << std::endl;
+  Logger::fatal(error_message);
 
   if (show_popup_on_die) {
     SDL_ShowSimpleMessageBox(

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 
 namespace Solarus {
 
-class CarriedItem;
+class CarriedObject;
 class Equipment;
 class EquipmentItem;
 class EquipmentItemUsage;
@@ -105,7 +105,7 @@ class Hero: public Entity {
      * what is in front of him (we call this the "facing point").
      */
     virtual Point get_facing_point() const override;
-    virtual void notify_facing_entity_changed(Detector* facing_entity) override;
+    virtual void notify_facing_entity_changed(Entity* facing_entity) override;
     bool is_facing_obstacle();
     bool is_facing_point_on_obstacle();
     bool is_facing_direction4(int direction4) const;
@@ -147,7 +147,6 @@ class Hero: public Entity {
      */
     bool is_ground_visible() const;
     virtual bool is_ground_observer() const override;
-    virtual Point get_ground_point() const override;
     virtual void notify_ground_below_changed() override;
     const Point& get_last_solid_ground_coords() const;
     int get_last_solid_ground_layer() const;
@@ -204,7 +203,7 @@ class Hero: public Entity {
     virtual void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) override;
     virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
     void avoid_collision(Entity& entity, int direction);
-    bool is_striking_with_sword(Detector& detector) const;
+    bool is_striking_with_sword(Entity& entity) const;
 
     /**
      * \name Enemies.
@@ -264,9 +263,9 @@ class Hero: public Entity {
     void start_forced_walking(const std::string& path, bool loop, bool ignore_obstacles);
     void start_jumping(int direction8, int distance, bool ignore_obstacles,
         bool with_sound);
-    void start_freezed();
+    void start_frozen();
     void start_victory(const ScopedLuaRef& callback_ref);
-    void start_lifting(const std::shared_ptr<CarriedItem>& item_to_lift);
+    void start_lifting(const std::shared_ptr<CarriedObject>& item_to_lift);
     void start_running();
     void start_grabbing();
     bool can_pick_treasure(EquipmentItem& item);
@@ -274,6 +273,7 @@ class Hero: public Entity {
     bool can_run() const;
     bool can_use_shield() const;
     bool can_start_sword() const;
+    void start_sword();
     bool can_start_item(EquipmentItem& item);
     void start_item(EquipmentItem& item);
     void start_boomerang(int max_distance, int speed,
@@ -327,7 +327,7 @@ class Hero: public Entity {
     void try_snap_to_facing_entity();
     void apply_additional_ground_movement();
     Teletransporter* get_delayed_teletransporter();
-    std::shared_ptr<CarriedItem> get_carried_item();
+    std::shared_ptr<CarriedObject> get_carried_object();
 
     // ground
     void update_ground_effects();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,26 +14,26 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/CarriedItem.h"
+#include "solarus/entities/CarriedObject.h"
 #include "solarus/entities/Destructible.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Enemy.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Explosion.h"
 #include "solarus/entities/Sensor.h"
 #include "solarus/entities/Stairs.h"
 #include "solarus/entities/Switch.h"
 #include "solarus/entities/Crystal.h"
 #include "solarus/entities/Npc.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/lowlevel/Geometry.h"
 #include "solarus/movements/PixelMovement.h"
 #include "solarus/movements/RelativeMovement.h"
 #include "solarus/movements/StraightMovement.h"
 #include "solarus/Sprite.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
-#include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/Sound.h"
-#include "solarus/lowlevel/Geometry.h"
 #include <memory>
 
 namespace Solarus {
@@ -41,7 +41,7 @@ namespace Solarus {
 /**
  * \brief Movement of the item when the hero is lifting it.
  */
-const std::string CarriedItem::lifting_trajectories[4] = {
+const std::string CarriedObject::lifting_trajectories[4] = {
     "0 0  0 0  -3 -3  -5 -3  -5 -2",
     "0 0  0 0  0 -1  0 -1  0 0",
     "0 0  0 0  3 -3  5 -3  5 -2",
@@ -49,9 +49,9 @@ const std::string CarriedItem::lifting_trajectories[4] = {
 };
 
 /**
- * \brief Creates a carried item (i.e. an item carried by the hero).
+ * \brief Creates a carried object (i.e. an item carried by the hero).
  * \param hero the hero who is lifting the item to be created
- * \param original_entity the entity that will be replaced by this carried item
+ * \param original_entity the entity that will be replaced by this carried object
  * (its coordinates, size and origin will be copied)
  * \param animation_set_id name of the animation set for the sprite to create
  * \param destruction_sound_id Name of the sound to play when this item is destroyed
@@ -61,7 +61,7 @@ const std::string CarriedItem::lifting_trajectories[4] = {
  * \param explosion_date date of the explosion if the item should explode,
  * or 0 if the item does not explode
  */
-CarriedItem::CarriedItem(
+CarriedObject::CarriedObject(
     Hero& hero,
     const Entity& original_entity,
     const std::string& animation_set_id,
@@ -100,20 +100,22 @@ CarriedItem::CarriedItem(
   std::shared_ptr<PixelMovement> movement = std::make_shared<PixelMovement>(
       lifting_trajectories[direction], 100, false, true
   );
-  create_sprite(animation_set_id);
-  get_sprite().set_current_animation("stopped");
+  main_sprite = create_sprite(animation_set_id, "main");
+  main_sprite->set_current_animation("stopped");
+  set_default_sprite_name("main");
   set_movement(movement);
 
   // create the shadow (not visible yet)
-  shadow_sprite = std::make_shared<Sprite>("entities/shadow");
+  shadow_sprite = create_sprite("entities/shadow", "shadow");
   shadow_sprite->set_current_animation("big");
+  shadow_sprite->stop_animation();
 }
 
 /**
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType CarriedItem::get_type() const {
+EntityType CarriedObject::get_type() const {
   return ThisType;
 }
 
@@ -121,7 +123,7 @@ EntityType CarriedItem::get_type() const {
  * \brief Returns whether this entity is sensible to the ground below it.
  * \return \c true if this entity is sensible to its ground.
  */
-bool CarriedItem::is_ground_observer() const {
+bool CarriedObject::is_ground_observer() const {
 
   if (is_throwing) {
     return true;  // To make the item fall into holes, water, etc.
@@ -133,7 +135,7 @@ bool CarriedItem::is_ground_observer() const {
  * \brief Returns the damage this item can cause to ennemies.
  * \return the damage on enemies
  */
-int CarriedItem::get_damage_on_enemies() const {
+int CarriedObject::get_damage_on_enemies() const {
   return damage_on_enemies;
 }
 
@@ -143,11 +145,11 @@ int CarriedItem::get_damage_on_enemies() const {
  * This function is called when the hero stops walking while carrying the item.
  * The item also stops moving.
  */
-void CarriedItem::set_animation_stopped() {
+void CarriedObject::set_animation_stopped() {
 
   if (!is_lifting && !is_throwing) {
     std::string animation = will_explode_soon() ? "stopped_explosion_soon" : "stopped";
-    get_sprite().set_current_animation(animation);
+    main_sprite->set_current_animation(animation);
   }
 }
 
@@ -157,11 +159,11 @@ void CarriedItem::set_animation_stopped() {
  * This function is called when the hero starts walking while carrying the item.
  * The item moves like him.
  */
-void CarriedItem::set_animation_walking() {
+void CarriedObject::set_animation_walking() {
 
   if (!is_lifting && !is_throwing) {
     std::string animation = will_explode_soon() ? "walking_explosion_soon" : "walking";
-    get_sprite().set_current_animation(animation);
+    main_sprite->set_current_animation(animation);
   }
 }
 
@@ -169,7 +171,7 @@ void CarriedItem::set_animation_walking() {
  * \brief Throws the item.
  * \param direction direction where the hero throws the item (0 to 3)
  */
-void CarriedItem::throw_item(int direction) {
+void CarriedObject::throw_item(int direction) {
 
   this->throwing_direction = direction;
   this->is_lifting = false;
@@ -178,9 +180,9 @@ void CarriedItem::throw_item(int direction) {
   // play the sound
   Sound::play("throw");
 
-  // stop the sprite animation
-  Sprite& sprite = get_sprite();
-  sprite.set_current_animation("stopped");
+  // Set up sprites.
+  main_sprite->set_current_animation("stopped");
+  shadow_sprite->start_animation();
 
   // set the movement of the item sprite
   set_y(hero.get_y());
@@ -200,7 +202,7 @@ void CarriedItem::throw_item(int direction) {
  * \brief Returns whether the item is being lifted.
  * \return true if the item is being lifted
  */
-bool CarriedItem::is_being_lifted() const {
+bool CarriedObject::is_being_lifted() const {
   return is_lifting;
 }
 
@@ -208,7 +210,7 @@ bool CarriedItem::is_being_lifted() const {
  * \brief Returns whether the item is being thrown.
  * \return true if the item is being thrown
  */
-bool CarriedItem::is_being_thrown() const {
+bool CarriedObject::is_being_thrown() const {
   return is_throwing;
 }
 
@@ -216,14 +218,14 @@ bool CarriedItem::is_being_thrown() const {
  * \brief Returns whether the item is about to explode.
  * \return true if the item is about to explode
  */
-bool CarriedItem::will_explode_soon()  const{
+bool CarriedObject::will_explode_soon()  const{
   return can_explode() && System::now() >= explosion_date - 1500;
 }
 
 /**
  * \brief Destroys the item while it is being thrown.
  */
-void CarriedItem::break_item() {
+void CarriedObject::break_item() {
 
   if (is_throwing && throwing_direction != 3) {
     // destroy the item where it is actually drawn
@@ -231,13 +233,14 @@ void CarriedItem::break_item() {
   }
 
   get_movement()->stop();
+  shadow_sprite->stop_animation();
 
   if (!can_explode()) {
     if (!destruction_sound_id.empty()) {
       Sound::play(destruction_sound_id);
     }
-    if (get_sprite().has_animation("destroy")) {
-      get_sprite().set_current_animation("destroy");
+    if (main_sprite->has_animation("destroy")) {
+      main_sprite->set_current_animation("destroy");
     }
     else {
       remove_from_map();
@@ -261,7 +264,7 @@ void CarriedItem::break_item() {
  *
  * How the item breaks depends on the ground where it lands.
  */
-void CarriedItem::break_item_on_ground() {
+void CarriedObject::break_item_on_ground() {
 
   get_movement()->stop();
 
@@ -308,15 +311,15 @@ void CarriedItem::break_item_on_ground() {
  * \brief Returns whether the item is broken.
  * \return true if the item is broken
  */
-bool CarriedItem::is_broken() const {
-  return is_breaking && (get_sprite().is_animation_finished() || can_explode());
+bool CarriedObject::is_broken() const {
+  return is_breaking && (main_sprite->is_animation_finished() || can_explode());
 }
 
 /**
  * \brief Returns whether the item can explode.
  * \return true if the item will explode
  */
-bool CarriedItem::can_explode() const {
+bool CarriedObject::can_explode() const {
   return explosion_date != 0;
 }
 
@@ -324,7 +327,7 @@ bool CarriedItem::can_explode() const {
  * \brief This function is called by the map when the game is suspended or resumed.
  * \param suspended true to suspend the entity, false to resume it
  */
-void CarriedItem::set_suspended(bool suspended) {
+void CarriedObject::set_suspended(bool suspended) {
 
   Entity::set_suspended(suspended); // suspend the animation and the movement
 
@@ -348,7 +351,7 @@ void CarriedItem::set_suspended(bool suspended) {
 /**
  * \brief This function is called repeatedly.
  */
-void CarriedItem::update() {
+void CarriedObject::update() {
 
   // update the sprite and the position
   Entity::update();
@@ -381,12 +384,12 @@ void CarriedItem::update() {
     }
     else if (will_explode_soon()) {
 
-      std::string animation = get_sprite().get_current_animation();
+      std::string animation = main_sprite->get_current_animation();
       if (animation == "stopped") {
-        get_sprite().set_current_animation("stopped_explosion_soon");
+        main_sprite->set_current_animation("stopped_explosion_soon");
       }
       else if (animation == "walking") {
-        get_sprite().set_current_animation("walking_explosion_soon");
+        main_sprite->set_current_animation("walking_explosion_soon");
       }
     }
   }
@@ -395,12 +398,11 @@ void CarriedItem::update() {
     remove_from_map();
   }
   else if (is_throwing) {
-    shadow_sprite->update();
 
     if (break_one_layer_above) {
       break_item();
       int layer = get_layer();
-      if (layer != get_map().get_highest_layer()) {
+      if (layer != get_map().get_max_layer()) {
         get_entities().set_entity_layer(*this, layer + 1);
       }
       break_one_layer_above = false;
@@ -424,7 +426,7 @@ void CarriedItem::update() {
  * \brief Notifies this entity that it has just failed to change its position
  * because of obstacles.
  */
-void CarriedItem::notify_obstacle_reached() {
+void CarriedObject::notify_obstacle_reached() {
 
   if (is_throwing && !is_broken()) {
     break_item();
@@ -432,16 +434,12 @@ void CarriedItem::notify_obstacle_reached() {
 }
 
 /**
- * \brief Draws the carried item on the map.
+ * \brief Draws the carried object on the map.
  *
  * This is a redefinition of Entity::draw_on_map()
  * to draw the shadow independently of the item movement.
  */
-void CarriedItem::draw_on_map() {
-
-  if (!is_drawn()) {
-    return;
-  }
+void CarriedObject::draw_on_map() {
 
   if (!is_throwing) {
     // draw the sprite normally
@@ -451,15 +449,15 @@ void CarriedItem::draw_on_map() {
     // when the item is being thrown, draw the shadow and the item separately
     // TODO: this could probably be simplified by using a JumpMovement
     get_map().draw_sprite(*shadow_sprite, get_xy());
-    get_map().draw_sprite(get_sprite(), get_x(), get_y() - item_height);
+    get_map().draw_sprite(*main_sprite, get_x(), get_y() - item_height);
   }
 }
 
 /**
- * \brief This function is called when this carried item collides an enemy.
+ * \brief This function is called when this carried object collides an enemy.
  * \param enemy the enemy
  */
-void CarriedItem::notify_collision_with_enemy(Enemy &enemy) {
+void CarriedObject::notify_collision_with_enemy(Enemy &enemy) {
 
   if (is_throwing
       && !can_explode()
@@ -471,7 +469,7 @@ void CarriedItem::notify_collision_with_enemy(Enemy &enemy) {
 /**
  * \copydoc Entity::notify_attacked_enemy
  */
-void CarriedItem::notify_attacked_enemy(
+void CarriedObject::notify_attacked_enemy(
     EnemyAttack /* attack */,
     Enemy& /* victim */,
     const Sprite* /* victim_sprite */,
@@ -488,14 +486,14 @@ void CarriedItem::notify_attacked_enemy(
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool CarriedItem::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) {
+bool CarriedObject::is_teletransporter_obstacle(Teletransporter& /* teletransporter */) {
   return false;
 }
 
 /**
  * \copydoc Entity::is_stream_obstacle
  */
-bool CarriedItem::is_stream_obstacle(Stream& /* stream */) {
+bool CarriedObject::is_stream_obstacle(Stream& /* stream */) {
   return false;
 }
 
@@ -504,7 +502,7 @@ bool CarriedItem::is_stream_obstacle(Stream& /* stream */) {
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool CarriedItem::is_stairs_obstacle(Stairs& /* stairs */) {
+bool CarriedObject::is_stairs_obstacle(Stairs& /* stairs */) {
   return false;
 }
 
@@ -513,7 +511,7 @@ bool CarriedItem::is_stairs_obstacle(Stairs& /* stairs */) {
  * by this entity.
  * \return \c true if low walls are currently obstacle for this entity.
  */
-bool CarriedItem::is_low_wall_obstacle() const {
+bool CarriedObject::is_low_wall_obstacle() const {
   return false;
 }
 
@@ -521,7 +519,7 @@ bool CarriedItem::is_low_wall_obstacle() const {
  * \brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
  * \return true if the deep water tiles are currently an obstacle for this entity
  */
-bool CarriedItem::is_deep_water_obstacle() const {
+bool CarriedObject::is_deep_water_obstacle() const {
   return false;
 }
 
@@ -529,7 +527,7 @@ bool CarriedItem::is_deep_water_obstacle() const {
  * \brief Returns whether a hole is currently considered as an obstacle for this entity.
  * \return true if the holes are currently an obstacle for this entity
  */
-bool CarriedItem::is_hole_obstacle() const {
+bool CarriedObject::is_hole_obstacle() const {
   return false;
 }
 
@@ -537,7 +535,7 @@ bool CarriedItem::is_hole_obstacle() const {
  * \brief Returns whether lava is currently considered as an obstacle for this entity.
  * \return true if lava is currently an obstacle for this entity
  */
-bool CarriedItem::is_lava_obstacle() const {
+bool CarriedObject::is_lava_obstacle() const {
   return false;
 }
 
@@ -545,7 +543,7 @@ bool CarriedItem::is_lava_obstacle() const {
  * \brief Returns whether prickles are currently considered as an obstacle for this entity.
  * \return true if prickles are currently an obstacle for this entity
  */
-bool CarriedItem::is_prickle_obstacle() const {
+bool CarriedObject::is_prickle_obstacle() const {
   return false;
 }
 
@@ -553,7 +551,7 @@ bool CarriedItem::is_prickle_obstacle() const {
  * \brief Returns whether a ladder is currently considered as an obstacle for this entity.
  * \return true if the ladders are currently an obstacle for this entity
  */
-bool CarriedItem::is_ladder_obstacle() const {
+bool CarriedObject::is_ladder_obstacle() const {
   return false;
 }
 
@@ -562,7 +560,7 @@ bool CarriedItem::is_ladder_obstacle() const {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool CarriedItem::is_switch_obstacle(Switch& /* sw */) {
+bool CarriedObject::is_switch_obstacle(Switch& /* sw */) {
   return !is_being_thrown();
 }
 
@@ -571,7 +569,7 @@ bool CarriedItem::is_switch_obstacle(Switch& /* sw */) {
  * \param raised_block a crystal block raised
  * \return false
  */
-bool CarriedItem::is_raised_block_obstacle(CrystalBlock& /* raised_block */) {
+bool CarriedObject::is_raised_block_obstacle(CrystalBlock& /* raised_block */) {
   // thrown items can traverse crystal blocks
   return false;
 }
@@ -581,7 +579,7 @@ bool CarriedItem::is_raised_block_obstacle(CrystalBlock& /* raised_block */) {
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool CarriedItem::is_crystal_obstacle(Crystal& /* crystal */) {
+bool CarriedObject::is_crystal_obstacle(Crystal& /* crystal */) {
   return !is_being_thrown();
 }
 
@@ -590,14 +588,14 @@ bool CarriedItem::is_crystal_obstacle(Crystal& /* crystal */) {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool CarriedItem::is_npc_obstacle(Npc& npc) {
+bool CarriedObject::is_npc_obstacle(Npc& npc) {
   return npc.is_solid();
 }
 
 /**
  * \copydoc Entity::is_jumper_obstacle
  */
-bool CarriedItem::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candidate_position */) {
+bool CarriedObject::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* candidate_position */) {
   return false;
 }
 
@@ -606,7 +604,7 @@ bool CarriedItem::is_jumper_obstacle(Jumper& /* jumper */, const Rectangle& /* c
  * \param sensor a sensor
  * \return true if this sensor is currently an obstacle for this entity.
  */
-bool CarriedItem::is_sensor_obstacle(Sensor& /* sensor */) {
+bool CarriedObject::is_sensor_obstacle(Sensor& /* sensor */) {
   return false;
 }
 
@@ -615,7 +613,7 @@ bool CarriedItem::is_sensor_obstacle(Sensor& /* sensor */) {
  * \param enemy an enemy
  * \return true if this enemy is considered as an obstacle for this entity.
  */
-bool CarriedItem::is_enemy_obstacle(Enemy& /* enemy */) {
+bool CarriedObject::is_enemy_obstacle(Enemy& /* enemy */) {
   // if this item explodes when reaching an obstacle, then we consider enemies as obstacles
   return can_explode();
 }
@@ -625,7 +623,7 @@ bool CarriedItem::is_enemy_obstacle(Enemy& /* enemy */) {
  * \param sw the switch
  * \param collision_mode the collision mode that detected the event
  */
-void CarriedItem::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
+void CarriedObject::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_OVERLAPPING
       && is_being_thrown()
@@ -641,7 +639,7 @@ void CarriedItem::notify_collision_with_switch(Switch& sw, CollisionMode collisi
  * \param crystal the crystal
  * \param collision_mode the collision mode that detected the event
  */
-void CarriedItem::notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) {
+void CarriedObject::notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_OVERLAPPING
       && is_being_thrown()
@@ -657,7 +655,7 @@ void CarriedItem::notify_collision_with_crystal(Crystal& crystal, CollisionMode 
  * \param stairs the stairs entity
  * \param collision_mode the collision mode that detected the event
  */
-void CarriedItem::notify_collision_with_stairs(Stairs& stairs, CollisionMode /* collision_mode */) {
+void CarriedObject::notify_collision_with_stairs(Stairs& stairs, CollisionMode /* collision_mode */) {
 
   if (is_throwing
       && !is_breaking

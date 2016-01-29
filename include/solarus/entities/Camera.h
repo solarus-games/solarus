@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,6 +60,9 @@ class Camera : public Entity {
     void move(Entity& entity);
     void restore();
     void traverse_separator(Separator* separator);
+
+    void start_tracking(const EntityPtr& entity);
+    void start_manual();
 
     Rectangle apply_map_bounds(const Rectangle& area) const;
     Rectangle apply_separators(const Rectangle& area) const;

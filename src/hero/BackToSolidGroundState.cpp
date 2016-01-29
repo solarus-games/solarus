@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Boomerang.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/hero/BackToSolidGroundState.h"
 #include "solarus/hero/FreeState.h"
 #include "solarus/hero/HeroSprites.h"
@@ -60,7 +60,7 @@ Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
  */
 void Hero::BackToSolidGroundState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   Hero& hero = get_entity();
   hero.set_movement(std::make_shared<TargetMovement>(
@@ -81,7 +81,7 @@ void Hero::BackToSolidGroundState::start(const State* previous_state) {
  */
 void Hero::BackToSolidGroundState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   get_entity().clear_movement();
 }
@@ -91,7 +91,7 @@ void Hero::BackToSolidGroundState::stop(const State* next_state) {
  */
 void Hero::BackToSolidGroundState::update() {
 
-  State::update();
+  BaseState::update();
 
   // the current movement is an instance of TargetMovement
   Hero& hero = get_entity();
@@ -116,7 +116,7 @@ void Hero::BackToSolidGroundState::update() {
 
 void Hero::BackToSolidGroundState::set_suspended(bool suspended) {
 
-  State::set_suspended(suspended);
+  BaseState::set_suspended(suspended);
 
   if (!suspended && end_date != 0) {
     end_date += System::now() - get_when_suspended();

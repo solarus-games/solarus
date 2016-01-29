@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,21 +19,26 @@
 
 #include "solarus/Common.h"
 #include "solarus/ResourceType.h"
-#include "solarus/QuestResources.h"
-#include "solarus/StringResources.h"
-#include "solarus/DialogResources.h"
 #include "solarus/Dialog.h"
 #include <map>
 #include <string>
 
 namespace Solarus {
 
+class DialogResources;
+class QuestProperties;
+class QuestResources;
+class StringResources;
+
 /**
  * \brief Provides access to data of the current quest.
  */
 namespace CurrentQuest {
+
 SOLARUS_API void initialize();
 SOLARUS_API void quit();
+
+SOLARUS_API QuestProperties& get_properties();
 
 SOLARUS_API QuestResources& get_resources();
 SOLARUS_API bool resource_exists(ResourceType resource_type, const std::string& id);

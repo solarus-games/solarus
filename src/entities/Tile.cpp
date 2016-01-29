@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,8 +53,7 @@ EntityType Tile::get_type() const {
 }
 
 /**
- * \brief Returns whether this entity is drawn at its position on the map.
- * \return true if this entity is drawn where it is located.
+ * \copydoc Entity::is_drawn_at_its_position()
  */
 bool Tile::is_drawn_at_its_position() const {
   return tile_pattern.is_drawn_at_its_position();
@@ -65,14 +64,10 @@ bool Tile::is_drawn_at_its_position() const {
  */
 void Tile::draw_on_map() {
 
-  if (!is_drawn()) {
-    return;
-  }
-
   // Note that the tiles are also optimized for drawing.
   // This function is called at each frame only if the tile is in an
   // animated region. Otherwise, tiles are drawn once when loading the map.
-  draw(get_map().get_visible_surface(), get_map().get_camera_position().get_xy());
+  draw(get_map().get_visible_surface(), get_map().get_camera().get_top_left_xy());
 }
 
 /**

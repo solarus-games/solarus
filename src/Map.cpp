@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Destination.h"
-#include "solarus/entities/Detector.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/entities/GroundInfo.h"
 #include "solarus/entities/Hero.h"
@@ -30,14 +29,10 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
-#include "solarus/MapLoader.h"
 #include "solarus/Savegame.h"
 #include "solarus/Sprite.h"
-#include <list>
 
 namespace Solarus {
-
-MapLoader Map::map_loader;
 
 /**
  * \brief Creates a map.
@@ -49,7 +44,8 @@ Map::Map(const std::string& id):
   id(id),
   width8(0),
   height8(0),
-  num_layers(0),
+  min_layer(0),
+  max_layer(0),
   tileset(nullptr),
   floor(MapData::NO_FLOOR),
   visible_surface(nullptr),
@@ -233,29 +229,21 @@ int Map::get_height8() const {
 }
 
 /**
- * \brief Returns the number of layers of this map.
- * \return The number of layers.
- */
-int Map::get_num_layers() const {
-  return num_layers;
-}
-
-/**
  * \brief Returns the index of the first layer of the map.
- * \return The first (lowest) layer: always 0.
+ * \return The first (lowest) layer (0 or less).
  */
-int Map::get_lowest_layer() const {
+int Map::get_min_layer() const {
 
-  return 0;
+  return min_layer;
 }
 
 /**
  * \brief Returns the index of the last layer of the map.
- * \return The last (highest) layer: always get_num_layers() - 1.
+ * \return The last (highest) layer (0 or more).
  */
-int Map::get_highest_layer() const {
+int Map::get_max_layer() const {
 
-  return get_num_layers() - 1;
+  return max_layer;
 }
 
 /**
@@ -266,7 +254,7 @@ int Map::get_highest_layer() const {
  */
 bool Map::is_valid_layer(int layer) const {
 
-  return layer >= 0 && layer < get_num_layers();
+  return layer >= get_min_layer() && layer <= get_max_layer();
 }
 
 /**
@@ -316,10 +304,31 @@ void Map::load(Game& game) {
   );
   background_surface->set_software_destination(false);
 
-  entities = std::unique_ptr<MapEntities>(new MapEntities(game, *this));
+  // Read the map data file.
+  MapData data;
+  const std::string& file_name = std::string("maps/") + get_id() + ".dat";
+  bool success = data.import_from_quest_file(file_name);
 
-  // read the map file
-  map_loader.load_map(game, *this);
+  if (!success) {
+    Debug::die("Failed to load map data file '" + file_name + "'");
+  }
+
+  // Initialize the map from the data just read.
+  this->game = &game;
+  location.set_xy(data.get_location());
+  location.set_size(data.get_size());
+  width8 = data.get_size().width / 8;
+  height8 = data.get_size().height / 8;
+  min_layer = data.get_min_layer();
+  max_layer = data.get_max_layer();
+  music_id = data.get_music_id();
+  set_world(data.get_world());
+  set_floor(data.get_floor());
+  tileset_id = data.get_tileset_id();
+  tileset = std::unique_ptr<Tileset>(new Tileset(data.get_tileset_id()));
+  tileset->load();
+  entities = std::unique_ptr<Entities>(new Entities(game, *this));
+  entities->create_entities(data);
 
   build_background_surface();
   build_foreground_surface();
@@ -674,10 +683,10 @@ void Map::draw_sprite(Sprite& sprite, int x, int y) {
 
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
-  const Rectangle& camera_position = get_camera_position();
+  const Camera& camera = get_camera();
   sprite.draw(visible_surface,
-      x - camera_position.get_x(),
-      y - camera_position.get_y()
+      x - camera.get_top_left_x(),
+      y - camera.get_top_left_y()
   );
 }
 
@@ -698,7 +707,7 @@ void Map::draw_sprite(Sprite& sprite, int x, int y,
     return;
   }
 
-  const Rectangle& camera_position = get_camera_position();
+  const Camera& camera = get_camera();
   const Rectangle region_in_frame(
       clipping_area.get_x() - x,
       clipping_area.get_y() - y,
@@ -706,8 +715,8 @@ void Map::draw_sprite(Sprite& sprite, int x, int y,
       clipping_area.get_height()
   );
   const Point dst_position = {
-      x - camera_position.get_x(),
-      y - camera_position.get_y()
+      x - camera.get_top_left_x(),
+      y - camera.get_top_left_y()
   };
   sprite.draw_region(
       region_in_frame,
@@ -812,20 +821,22 @@ bool Map::test_collision_with_ground(
   }
 
   // Get the ground property under this point.
-  Ground ground = get_ground(layer, x, y);
+  Ground ground = get_ground(layer, x, y, &entity_to_check);
   switch (ground) {
 
   case Ground::EMPTY:
   case Ground::TRAVERSABLE:
   case Ground::GRASS:
   case Ground::ICE:
-    // The square is not an obstacle.
-    on_obstacle = false;
-    break;
-
   case Ground::WALL:
-    // The square is entirely an obstacle.
-    on_obstacle = true;
+  case Ground::LOW_WALL:
+  case Ground::SHALLOW_WATER:
+  case Ground::DEEP_WATER:
+  case Ground::HOLE:
+  case Ground::LAVA:
+  case Ground::PRICKLE:
+  case Ground::LADDER:
+    on_obstacle = entity_to_check.is_ground_obstacle(ground);
     break;
 
   case Ground::WALL_TOP_RIGHT:
@@ -863,15 +874,6 @@ bool Map::test_collision_with_ground(
     found_diagonal_wall = true;
     break;
 
-  case Ground::LOW_WALL:
-  case Ground::SHALLOW_WATER:
-  case Ground::DEEP_WATER:
-  case Ground::HOLE:
-  case Ground::LAVA:
-  case Ground::PRICKLE:
-  case Ground::LADDER:
-    on_obstacle = entity_to_check.is_ground_obstacle(ground);
-    break;
   }
 
   return on_obstacle;
@@ -888,9 +890,9 @@ bool Map::test_collision_with_ground(
 bool Map::test_collision_with_entities(
     int layer,
     const Rectangle& collision_box,
-    Entity& entity_to_check) const {
+    Entity& entity_to_check) {
 
-  std::vector<EntityPtr> entities_nearby;
+  EntityVector entities_nearby;
   get_entities().get_entities_in_rectangle(collision_box, entities_nearby);
   for (const EntityPtr& entity_nearby: entities_nearby) {
 
@@ -919,7 +921,7 @@ bool Map::test_collision_with_entities(
 bool Map::test_collision_with_obstacles(
     int layer,
     const Rectangle& collision_box,
-    Entity& entity_to_check) const {
+    Entity& entity_to_check) {
 
   // This function is called very often.
   // For performance reasons, we only check the border of the of the collision box.
@@ -993,7 +995,8 @@ bool Map::test_collision_with_obstacles(
     int layer,
     int x,
     int y,
-    Entity& entity_to_check) const {
+    Entity& entity_to_check
+) {
 
   bool is_diagonal_wall = false;
 
@@ -1020,7 +1023,7 @@ bool Map::test_collision_with_obstacles(
 bool Map::test_collision_with_obstacles(
     int layer,
     const Point& point,
-    Entity& entity_to_check) const {
+    Entity& entity_to_check) {
 
   return test_collision_with_obstacles(layer, point.x, point.y, entity_to_check);
 }
@@ -1045,13 +1048,13 @@ bool Map::has_empty_ground(int layer, const Rectangle& collision_box) const {
   int x2 = x1 + collision_box.get_width() - 1;
 
   for (int x = x1; x <= x2 && !empty_tile; x++) {
-    empty_tile = get_ground(layer, x, y1) == Ground::EMPTY
-        || get_ground(layer, x, y2) == Ground::EMPTY;
+    empty_tile = get_ground(layer, x, y1, nullptr) == Ground::EMPTY
+        || get_ground(layer, x, y2, nullptr) == Ground::EMPTY;
   }
 
   for (int y = y1; y <= y2 && !empty_tile; y++) {
-    empty_tile = get_ground(layer, x1, y) == Ground::EMPTY
-        || get_ground(layer, x2, y) == Ground::EMPTY;
+    empty_tile = get_ground(layer, x1, y, nullptr) == Ground::EMPTY
+        || get_ground(layer, x2, y, nullptr) == Ground::EMPTY;
   }
 
   return empty_tile;
@@ -1073,10 +1076,17 @@ bool Map::has_empty_ground(int layer, const Rectangle& collision_box) const {
  * \param layer Layer of the point.
  * \param x X coordinate of the point.
  * \param y Y coordinate of the point.
+ * \param entity_to_check The entity you want to know the ground of (if any).
+ * Used to make sure that the entity's own modified ground does not count.
  * \return The ground at this place.
  */
-Ground Map::get_ground(int layer, int x, int y) const {
-  return get_ground(layer, Point(x, y));
+Ground Map::get_ground(
+    int layer,
+    int x,
+    int y,
+    const Entity* entity_to_check
+) const {
+  return get_ground(layer, Point(x, y), entity_to_check);
 }
 
 /**
@@ -1086,9 +1096,15 @@ Ground Map::get_ground(int layer, int x, int y) const {
  *
  * \param layer Layer of the point.
  * \param xy Coordinates of the point.
+ * \param entity_to_check The entity you want to know the ground of (if any).
+ * Used to make sure that the entity's own modified ground does not count.
  * \return The ground at this place.
  */
-Ground Map::get_ground(int layer, const Point& xy) const {
+Ground Map::get_ground(
+    int layer,
+    const Point& xy,
+    const Entity* entity_to_check
+) const {
 
   if (test_collision_with_border(xy)) {
     // Outside the map bounds.
@@ -1097,7 +1113,7 @@ Ground Map::get_ground(int layer, const Point& xy) const {
 
   // See if a dynamic entity changes the ground.
   const Rectangle box(xy, Size(1, 1));
-  std::vector<EntityPtr> entities_nearby;
+  ConstEntityVector entities_nearby;
   get_entities().get_entities_in_rectangle_sorted(box, entities_nearby);
 
   const auto& rend = entities_nearby.rend();
@@ -1105,6 +1121,13 @@ Ground Map::get_ground(int layer, const Point& xy) const {
     const Entity& entity_nearby = *(*it);
 
     const Ground ground = entity_nearby.get_modified_ground();
+
+    if (&entity_nearby == entity_to_check) {
+      // Skip the entity itself.
+      continue;
+    }
+    // TODO also skip entities above?
+
     if (ground == Ground::EMPTY) {
       // The entity has no influence on the ground.
       continue;
@@ -1291,15 +1314,14 @@ void Map::check_collision_with_detectors(Entity& entity) {
   for (const EntityPtr& entity_nearby: entities_nearby) {
 
     if (!entity_nearby->is_detector()) {
-      // TODO we can probably get rid of the Detector class.
       // Most entities are detectors anyway.
       continue;
     }
-    Detector& detector_nearby = *std::static_pointer_cast<Detector>(entity_nearby);
-    if (detector_nearby.is_enabled()
-        && !detector_nearby.is_suspended()
-        && !detector_nearby.is_being_removed()) {
-      detector_nearby.check_collision(entity);
+
+    if (entity_nearby->is_enabled()
+        && !entity_nearby->is_suspended()
+        && !entity_nearby->is_being_removed()) {
+      entity_nearby->check_collision(entity);
     }
   }
 }
@@ -1313,7 +1335,7 @@ void Map::check_collision_with_detectors(Entity& entity) {
  *
  * \param detector A detector.
  */
-void Map::check_collision_from_detector(Detector& detector) {
+void Map::check_collision_from_detector(Entity& detector) {
 
   if (suspended) {
     return;
@@ -1369,12 +1391,11 @@ void Map::check_collision_with_detectors(Entity& entity, Sprite& sprite) {
     if (!entity_nearby->is_detector()) {
       continue;
     }
-    Detector& detector_nearby = *std::static_pointer_cast<Detector>(entity_nearby);
 
-    if (!detector_nearby.is_being_removed()
-        && !detector_nearby.is_suspended()
-        && detector_nearby.is_enabled()) {
-      detector_nearby.check_collision(entity, sprite);
+    if (!entity_nearby->is_being_removed()
+        && !entity_nearby->is_suspended()
+        && entity_nearby->is_enabled()) {
+      entity_nearby->check_collision(entity, sprite);
     }
   }
 }

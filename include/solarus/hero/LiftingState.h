@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ class Hero::LiftingState: public Hero::BaseState {
 
   public:
 
-    LiftingState(Hero& hero, const std::shared_ptr<CarriedItem>& lifted_item);
+    LiftingState(Hero& hero, const std::shared_ptr<CarriedObject>& lifted_item);
 
     virtual void start(const State* previous_state) override;
     virtual void stop(const State* next_state) override;
@@ -41,7 +41,7 @@ class Hero::LiftingState: public Hero::BaseState {
 
     void throw_item();
 
-    std::shared_ptr<CarriedItem> lifted_item;    /**< the item currently being lifted */
+    std::shared_ptr<CarriedObject> lifted_item;    /**< the item currently being lifted */
 };
 
 }

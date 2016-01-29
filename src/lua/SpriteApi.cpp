@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,8 +48,11 @@ void LuaContext::register_sprite_module() {
       { "get_num_directions", sprite_api_get_num_directions },
       { "get_frame", sprite_api_get_frame },
       { "set_frame", sprite_api_set_frame },
+      { "get_num_frames", sprite_api_get_num_frames },
       { "get_frame_delay", sprite_api_get_frame_delay },
       { "set_frame_delay", sprite_api_set_frame_delay },
+      { "get_size", sprite_api_get_size },
+      { "get_origin", sprite_api_get_origin },
       { "is_paused", sprite_api_is_paused },
       { "set_paused", sprite_api_set_paused },
       { "set_ignore_suspend", sprite_api_set_ignore_suspend },
@@ -104,7 +107,6 @@ SpritePtr LuaContext::check_sprite(lua_State* l, int index) {
  */
 void LuaContext::push_sprite(lua_State* l, Sprite& sprite) {
 
-  sprite.set_lua_context(&get_lua_context(l));  // To make callbacks work.
   push_userdata(l, sprite);
 }
 
@@ -306,6 +308,21 @@ int LuaContext::sprite_api_set_frame(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of sprite:get_num_frames().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::sprite_api_get_num_frames(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Sprite& sprite = *check_sprite(l, 1);
+
+    lua_pushinteger(l, sprite.get_nb_frames());
+    return 1;
+  });
+}
+
+/**
  * \brief Implementation of sprite:get_frame_delay().
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
@@ -344,6 +361,42 @@ int LuaContext::sprite_api_set_frame_delay(lua_State* l) {
     sprite.set_frame_delay(delay);
 
     return 0;
+  });
+}
+
+/**
+ * \brief Implementation of sprite:get_size().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::sprite_api_get_size(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Sprite& sprite = *check_sprite(l, 1);
+
+    const Size& size = sprite.get_size();
+
+    lua_pushinteger(l, size.width);
+    lua_pushinteger(l, size.height);
+    return 2;
+  });
+}
+
+/**
+ * \brief Implementation of sprite:get_origin().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::sprite_api_get_origin(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Sprite& sprite = *check_sprite(l, 1);
+
+    const Point& origin = sprite.get_origin();
+
+    lua_pushinteger(l, origin.x);
+    lua_pushinteger(l, origin.y);
+    return 2;
   });
 }
 

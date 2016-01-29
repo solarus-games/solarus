@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ Hero::FallingState::FallingState(Hero& hero):
  */
 void Hero::FallingState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   get_entity().delayed_teletransporter = nullptr;
   get_sprites().save_animation_direction();
@@ -53,7 +53,7 @@ void Hero::FallingState::start(const State* previous_state) {
  */
 void Hero::FallingState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   get_sprites().set_animation_stopped_normal();
   get_sprites().restore_animation_direction();
@@ -64,7 +64,7 @@ void Hero::FallingState::stop(const State* next_state) {
  */
 void Hero::FallingState::update() {
 
-  State::update();
+  BaseState::update();
 
   Hero& hero = get_entity();
   if (!is_suspended() && get_sprites().is_animation_finished()) {

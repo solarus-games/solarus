@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -267,9 +267,10 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
     }
 
     // Check if keyboard events are correct.
-    // For some reason, when running Solarus from the quest editor,
+    // For some reason, when running Solarus from a Qt application
+    // (which is not recommended)
     // multiple SDL_KEYUP events are generated when a key remains pressed
-    // (Qt/SDL conflict?).
+    // (Qt/SDL conflict). This fixes most problems but not all of them.
     if (internal_event.type == SDL_KEYDOWN) {
       KeyboardKey key = static_cast<KeyboardKey>(internal_event.key.keysym.sym);
       if (!is_key_down(key)) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,28 +14,25 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_OUTPUT_H
-#define SOLARUS_OUTPUT_H
+#ifndef SOLARUS_SEPARATOR_PTR_H
+#define SOLARUS_SEPARATOR_PTR_H
 
-#include "solarus/Common.h"
+#include <memory>
 
 namespace Solarus {
 
-class Arguments;
+class Separator;
 
 /**
- * \brief Initializes appropriate output facilities.
- *
- * This should be done before any output.
+ * \brief Alias for shared_ptr of Separator.
  */
-namespace Output {
+using SeparatorPtr = std::shared_ptr<Separator>;
 
-SOLARUS_API void initialize(const Arguments& args);
-SOLARUS_API void  quit();
-
-}
+/**
+ * \brief Alias for shared_ptr of const Separator.
+ */
+using ConstSeparatorPtr = std::shared_ptr<const Separator>;
 
 }
 
 #endif
-

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,13 +56,13 @@ class Tile: public Entity {
         const std::string& tile_pattern_id
     );
 
-    virtual EntityType get_type() const override;
-    virtual void draw_on_map() override;
+    EntityType get_type() const override;
+    bool is_drawn_at_its_position() const override;
+    void draw_on_map() override;
     void draw(const SurfacePtr& dst_surface, const Point& viewport);
     TilePattern& get_tile_pattern();
     const std::string& get_tile_pattern_id() const;
     bool is_animated() const;
-    virtual bool is_drawn_at_its_position() const override;
 
   private:
 

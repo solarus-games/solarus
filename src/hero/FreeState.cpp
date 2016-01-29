@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 #include "solarus/hero/GrabbingState.h"
 #include "solarus/hero/PushingState.h"
 #include "solarus/hero/HeroSprites.h"
-#include "solarus/entities/Detector.h"
 #include "solarus/movements/PlayerMovement.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/CommandsEffects.h"
@@ -96,7 +95,7 @@ void Hero::FreeState::set_suspended(bool suspended) {
 void Hero::FreeState::notify_action_command_pressed() {
 
   Hero& hero = get_entity();
-  Detector* facing_entity = hero.get_facing_entity();
+  Entity* facing_entity = hero.get_facing_entity();
   bool facing_entity_interaction = false;
   if (facing_entity != nullptr) {
     if (get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE ||
@@ -182,10 +181,10 @@ bool Hero::FreeState::can_take_stairs() const {
 }
 
 /**
- * \copydoc Entity::State::get_previous_carried_item_behavior
+ * \copydoc Entity::State::get_previous_carried_object_behavior
  */
-CarriedItem::Behavior Hero::FreeState::get_previous_carried_item_behavior() const {
-  return CarriedItem::BEHAVIOR_DESTROY;
+CarriedObject::Behavior Hero::FreeState::get_previous_carried_object_behavior() const {
+  return CarriedObject::BEHAVIOR_DESTROY;
 }
 
 /**

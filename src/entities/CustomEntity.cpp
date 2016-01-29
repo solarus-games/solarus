@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,10 +23,10 @@
 #include "solarus/entities/CrystalBlock.h"
 #include "solarus/entities/Destructible.h"
 #include "solarus/entities/Enemy.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Fire.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Jumper.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Npc.h"
 #include "solarus/entities/Sensor.h"
 #include "solarus/entities/Separator.h"
@@ -60,14 +60,14 @@ CustomEntity::CustomEntity(
     const std::string& sprite_name,
     const std::string& model
 ):
-  Detector(
-      COLLISION_FACING,
-      name, layer, xy, size
+  Entity(
+      name, 0, layer, xy, size
   ),
   model(model),
   ground_observer(false),
   modified_ground(Ground::EMPTY) {
 
+  set_collision_modes(CollisionMode::COLLISION_FACING);
   set_origin(8, 13);
 
   if (!sprite_name.empty()) {
@@ -116,9 +116,10 @@ void CustomEntity::set_sprites_direction(int direction) {
 
   set_direction(direction);
 
-  for (const SpritePtr& sprite: get_sprites()) {
-    if (direction >= 0 && direction < sprite->get_nb_directions()) {
-      sprite->set_current_direction(direction);
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    Sprite& sprite = *named_sprite.second;
+    if (direction >= 0 && direction < sprite.get_nb_directions()) {
+      sprite.set_current_direction(direction);
     }
   }
 }
@@ -174,7 +175,7 @@ bool CustomEntity::is_traversable_by_entity(Entity& entity) {
 void CustomEntity::set_traversable_by_entities(bool traversable) {
 
   traversable_by_entities_general = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable
   );
 }
@@ -194,7 +195,7 @@ void CustomEntity::set_traversable_by_entities(
     const ScopedLuaRef& traversable_test_ref
 ) {
   traversable_by_entities_general = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable_test_ref
   );
 }
@@ -230,7 +231,7 @@ void CustomEntity::set_traversable_by_entities(
     EntityType type, bool traversable) {
 
   traversable_by_entities_type[type] = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable
   );
 }
@@ -252,7 +253,7 @@ void CustomEntity::set_traversable_by_entities(
     const ScopedLuaRef& traversable_test_ref
 ) {
   traversable_by_entities_type[type] = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable_test_ref
   );
 }
@@ -313,7 +314,7 @@ const CustomEntity::TraversableInfo& CustomEntity::get_can_traverse_entity_info(
 void CustomEntity::set_can_traverse_entities(bool traversable) {
 
   can_traverse_entities_general = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable
   );
 }
@@ -332,7 +333,7 @@ void CustomEntity::set_can_traverse_entities(bool traversable) {
 void CustomEntity::set_can_traverse_entities(const ScopedLuaRef& traversable_test_ref) {
 
   can_traverse_entities_general = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable_test_ref
   );
 }
@@ -370,7 +371,7 @@ void CustomEntity::set_can_traverse_entities(
 ) {
 
   can_traverse_entities_type[type] = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable
   );
 }
@@ -393,7 +394,7 @@ void CustomEntity::set_can_traverse_entities(
 ) {
 
   can_traverse_entities_type[type] = TraversableInfo(
-      get_lua_context(),
+      *get_lua_context(),
       traversable_test_ref
   );
 }
@@ -422,7 +423,7 @@ bool CustomEntity::is_hero_obstacle(Hero& hero) {
   if (!info.is_empty()) {
     return !info.is_traversable(*this, hero);
   }
-  return Detector::is_hero_obstacle(hero);
+  return Entity::is_hero_obstacle(hero);
 }
 
 /**
@@ -434,7 +435,7 @@ bool CustomEntity::is_block_obstacle(Block& block) {
   if (!info.is_empty()) {
     return !info.is_traversable(*this, block);
   }
-  return Detector::is_block_obstacle(block);
+  return Entity::is_block_obstacle(block);
 }
 
 /**
@@ -446,7 +447,7 @@ bool CustomEntity::is_teletransporter_obstacle(Teletransporter& teletransporter)
   if (!info.is_empty()) {
     return !info.is_traversable(*this, teletransporter);
   }
-  return Detector::is_teletransporter_obstacle(teletransporter);
+  return Entity::is_teletransporter_obstacle(teletransporter);
 }
 
 /**
@@ -458,7 +459,7 @@ bool CustomEntity::is_stream_obstacle(Stream& stream) {
   if (!info.is_empty()) {
     return !info.is_traversable(*this, stream);
   }
-  return Detector::is_stream_obstacle(stream);
+  return Entity::is_stream_obstacle(stream);
 }
 
 /**
@@ -470,7 +471,7 @@ bool CustomEntity::is_stairs_obstacle(Stairs& stairs) {
   if (!info.is_empty()) {
     return !info.is_traversable(*this, stairs);
   }
-  return Detector::is_stairs_obstacle(stairs);
+  return Entity::is_stairs_obstacle(stairs);
 }
 
 /**
@@ -482,7 +483,7 @@ bool CustomEntity::is_sensor_obstacle(Sensor& sensor) {
   if (!info.is_empty()) {
     return !info.is_traversable(*this, sensor);
   }
-  return Detector::is_sensor_obstacle(sensor);
+  return Entity::is_sensor_obstacle(sensor);
 }
 
 /**
@@ -494,7 +495,7 @@ bool CustomEntity::is_switch_obstacle(Switch& sw) {
   if (!info.is_empty()) {
     return !info.is_traversable(*this, sw);
   }
-  return Detector::is_switch_obstacle(sw);
+  return Entity::is_switch_obstacle(sw);
 }
 
 /**
@@ -506,7 +507,7 @@ bool CustomEntity::is_raised_block_obstacle(CrystalBlock& raised_block) {
   if (!info.is_empty()) {
     return !info.is_traversable(*this, raised_block);
   }
-  return Detector::is_raised_block_obstacle(raised_block);
+  return Entity::is_raised_block_obstacle(raised_block);
 }
 
 /**
@@ -518,7 +519,7 @@ bool CustomEntity::is_crystal_obstacle(Crystal& crystal) {
   if (!info.is_empty()) {
     return !info.is_traversable(*this, crystal);
   }
-  return Detector::is_crystal_obstacle(crystal);
+  return Entity::is_crystal_obstacle(crystal);
 }
 
 /**
@@ -530,7 +531,7 @@ bool CustomEntity::is_npc_obstacle(Npc& npc) {
   if (!info.is_empty()) {
     return !info.is_traversable(*this, npc);
   }
-  return Detector::is_npc_obstacle(npc);
+  return Entity::is_npc_obstacle(npc);
 }
 
 /**
@@ -542,7 +543,7 @@ bool CustomEntity::is_enemy_obstacle(Enemy& enemy) {
   if (!info.is_empty()) {
     return !info.is_traversable(*this, enemy);
   }
-  return Detector::is_enemy_obstacle(enemy);
+  return Entity::is_enemy_obstacle(enemy);
 }
 
 /**
@@ -554,7 +555,7 @@ bool CustomEntity::is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate
   if (!info.is_empty()) {
     return !info.is_traversable(*this, jumper);
   }
-  return Detector::is_jumper_obstacle(jumper, candidate_position);
+  return Entity::is_jumper_obstacle(jumper, candidate_position);
 }
 
 /**
@@ -566,7 +567,7 @@ bool CustomEntity::is_destructible_obstacle(Destructible& destructible) {
   if (!info.is_empty()) {
     return !info.is_traversable(*this, destructible);
   }
-  return Detector::is_destructible_obstacle(destructible);
+  return Entity::is_destructible_obstacle(destructible);
 }
 
 /**
@@ -578,7 +579,7 @@ bool CustomEntity::is_separator_obstacle(Separator& separator) {
   if (!info.is_empty()) {
     return !info.is_traversable(*this, separator);
   }
-  return Detector::is_separator_obstacle(separator);
+  return Entity::is_separator_obstacle(separator);
 }
 
 /**
@@ -651,11 +652,35 @@ void CustomEntity::reset_can_traverse_ground(Ground ground) {
 }
 
 /**
+ * \copydoc Entity::is_traversable_obstacle
+ */
+bool CustomEntity::is_traversable_obstacle() const {
+
+  return !can_traverse_ground(Ground::TRAVERSABLE);
+}
+
+/**
+ * \copydoc Entity::is_wall_obstacle
+ */
+bool CustomEntity::is_wall_obstacle() const {
+
+  return !can_traverse_ground(Ground::WALL);
+}
+
+/**
  * \copydoc Entity::is_low_wall_obstacle
  */
 bool CustomEntity::is_low_wall_obstacle() const {
 
   return !can_traverse_ground(Ground::LOW_WALL);
+}
+
+/**
+ * \copydoc Entity::is_grass_obstacle
+ */
+bool CustomEntity::is_grass_obstacle() const {
+
+  return !can_traverse_ground(Ground::GRASS);
 }
 
 /**
@@ -680,6 +705,14 @@ bool CustomEntity::is_deep_water_obstacle() const {
 bool CustomEntity::is_hole_obstacle() const {
 
   return !can_traverse_ground(Ground::HOLE);
+}
+
+/**
+ * \copydoc Entity::is_ice_obstacle
+ */
+bool CustomEntity::is_ice_obstacle() const {
+
+  return !can_traverse_ground(Ground::ICE);
 }
 
 /**
@@ -728,7 +761,7 @@ void CustomEntity::add_collision_test(
   }
 
   collision_tests.emplace_back(
-      get_lua_context(),
+      *get_lua_context(),
       collision_test,
       callback_ref
   );
@@ -752,7 +785,7 @@ void CustomEntity::add_collision_test(
   add_collision_mode(COLLISION_CUSTOM);
 
   collision_tests.emplace_back(
-      get_lua_context(),
+      *get_lua_context(),
       collision_test_ref,
       callback_ref
   );
@@ -771,7 +804,7 @@ void CustomEntity::clear_collision_tests() {
 }
 
 /**
- * \copydoc Detector::test_collision_custom
+ * \copydoc Entity::test_collision_custom
  */
 bool CustomEntity::test_collision_custom(Entity& entity) {
 
@@ -830,7 +863,7 @@ bool CustomEntity::test_collision_custom(Entity& entity) {
         break;
 
       case COLLISION_CUSTOM:
-        if (get_lua_context().do_custom_entity_collision_test_function(
+        if (get_lua_context()->do_custom_entity_collision_test_function(
               info.get_custom_test_ref(), *this, entity)
         ) {
           collision = true;
@@ -852,13 +885,13 @@ bool CustomEntity::test_collision_custom(Entity& entity) {
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&,CollisionMode)
+ * \copydoc Entity::notify_collision(Entity&,CollisionMode)
  */
 void CustomEntity::notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_FACING) {
     // This collision mode is only useful to set the facing entity, which
-    // is already done by Detector.
+    // is already done by the Entity class.
     return;
   }
 
@@ -872,7 +905,7 @@ void CustomEntity::notify_collision(Entity& entity_overlapping, CollisionMode co
 
   // There is a collision: execute the callbacks.
   for (const CollisionInfo& info: successful_collision_tests) {
-    get_lua_context().do_custom_entity_collision_callback(
+    get_lua_context()->do_custom_entity_collision_callback(
         info.get_callback_ref(), *this, entity_overlapping
     );
   }
@@ -881,7 +914,7 @@ void CustomEntity::notify_collision(Entity& entity_overlapping, CollisionMode co
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void CustomEntity::notify_collision(
     Entity& other_entity,
@@ -894,7 +927,7 @@ void CustomEntity::notify_collision(
 
     if (info.get_built_in_test() == COLLISION_SPRITE) {
       // Execute the callback.
-      get_lua_context().do_custom_entity_collision_callback(
+      get_lua_context()->do_custom_entity_collision_callback(
           info.get_callback_ref(),
           *this,
           other_entity,
@@ -1000,7 +1033,7 @@ void CustomEntity::notify_collision_with_switch(
 void CustomEntity::notify_collision_with_switch(
     Switch& sw, Sprite& sprite_overlapping) {
 
-  notify_collision_from(sw, sw.get_sprite(), sprite_overlapping);
+  notify_collision_from(sw, *sw.get_sprite(), sprite_overlapping);
 }
 
 /**
@@ -1018,7 +1051,7 @@ void CustomEntity::notify_collision_with_crystal(
 void CustomEntity::notify_collision_with_crystal(
     Crystal& crystal, Sprite& sprite_overlapping) {
 
-  notify_collision_from(crystal, crystal.get_sprite(), sprite_overlapping);
+  notify_collision_from(crystal, *crystal.get_sprite(), sprite_overlapping);
 }
 
 /**
@@ -1070,7 +1103,7 @@ void CustomEntity::notify_collision_with_explosion(
 void CustomEntity::notify_collision_with_explosion(
     Explosion& explosion, Sprite& sprite_overlapping) {
 
-  notify_collision_from(explosion, explosion.get_sprite(), sprite_overlapping);
+  notify_collision_from(explosion, *explosion.get_sprite(), sprite_overlapping);
 }
 
 /**
@@ -1079,7 +1112,7 @@ void CustomEntity::notify_collision_with_explosion(
 void CustomEntity::notify_collision_with_fire(
     Fire& fire, Sprite& sprite_overlapping) {
 
-  notify_collision_from(fire, fire.get_sprite(), sprite_overlapping);
+  notify_collision_from(fire, *fire.get_sprite(), sprite_overlapping);
 }
 
 /**
@@ -1100,19 +1133,19 @@ void CustomEntity::notify_collision_with_enemy(
 }
 
 /**
- * \copydoc Detector::notify_action_command_pressed
+ * \copydoc Entity::notify_action_command_pressed
  */
 bool CustomEntity::notify_action_command_pressed() {
 
-  return get_lua_context().entity_on_interaction(*this);
+  return get_lua_context()->entity_on_interaction(*this);
 }
 
 /**
- * \copydoc Detector::interaction_with_item
+ * \copydoc Entity::interaction_with_item
  */
-bool CustomEntity::interaction_with_item(EquipmentItem& item) {
+bool CustomEntity::notify_interaction_with_item(EquipmentItem& item) {
 
-  return get_lua_context().entity_on_interaction_item(*this, item);
+  return get_lua_context()->entity_on_interaction_item(*this, item);
 }
 
 /**
@@ -1129,9 +1162,8 @@ void CustomEntity::update_ground_observer() {
 
   // If there is no on_ground_below_changed() event, don't bother
   // determine the ground below.
-  static const std::string field_name = "on_ground_below_changed";
-  bool ground_observer = get_lua_context().userdata_has_field(
-      *this, "field_name"
+  bool ground_observer = get_lua_context()->userdata_has_field(
+      *this, "on_ground_below_changed"
   );
   if (ground_observer != this->ground_observer) {
     this->ground_observer = ground_observer;
@@ -1143,7 +1175,7 @@ void CustomEntity::update_ground_observer() {
  */
 void CustomEntity::notify_ground_below_changed() {
 
-  get_lua_context().custom_entity_on_ground_below_changed(
+  get_lua_context()->custom_entity_on_ground_below_changed(
       *this, get_ground_below()
   );
 }
@@ -1175,9 +1207,9 @@ void CustomEntity::set_modified_ground(Ground modified_ground) {
  */
 void CustomEntity::notify_creating() {
 
-  Detector::notify_creating();
+  Entity::notify_creating();
 
-  get_lua_context().run_custom_entity(*this);
+  get_lua_context()->run_custom_entity(*this);
 }
 
 /**
@@ -1185,14 +1217,14 @@ void CustomEntity::notify_creating() {
  */
 void CustomEntity::update() {
 
-  Detector::update();
+  Entity::update();
   update_ground_observer();
 
   if (is_suspended() || !is_enabled()) {
     return;
   }
 
-  get_lua_context().entity_on_update(*this);
+  get_lua_context()->entity_on_update(*this);
 }
 
 /**
@@ -1200,9 +1232,9 @@ void CustomEntity::update() {
  */
 void CustomEntity::set_suspended(bool suspended) {
 
-  Detector::set_suspended(suspended);
+  Entity::set_suspended(suspended);
 
-  get_lua_context().entity_on_suspended(*this, suspended);
+  get_lua_context()->entity_on_suspended(*this, suspended);
 }
 
 /**
@@ -1210,13 +1242,13 @@ void CustomEntity::set_suspended(bool suspended) {
  */
 void CustomEntity::notify_enabled(bool enabled) {
 
-  Detector::notify_enabled(enabled);
+  Entity::notify_enabled(enabled);
 
   if (enabled) {
-    get_lua_context().entity_on_enabled(*this);
+    get_lua_context()->entity_on_enabled(*this);
   }
   else {
-    get_lua_context().entity_on_disabled(*this);
+    get_lua_context()->entity_on_disabled(*this);
   }
 }
 
@@ -1225,13 +1257,9 @@ void CustomEntity::notify_enabled(bool enabled) {
  */
 void CustomEntity::draw_on_map() {
 
-  if (!is_drawn()) {
-    return;
-  }
-
-  get_lua_context().entity_on_pre_draw(*this);
-  Detector::draw_on_map();
-  get_lua_context().entity_on_post_draw(*this);
+  get_lua_context()->entity_on_pre_draw(*this);
+  Entity::draw_on_map();
+  get_lua_context()->entity_on_post_draw(*this);
 }
 
 /**

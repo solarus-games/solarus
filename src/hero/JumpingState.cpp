@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/hero/JumpingState.h"
-#include "solarus/hero/FreeState.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/hero/CarryingState.h"
+#include "solarus/hero/FreeState.h"
 #include "solarus/hero/HeroSprites.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/hero/JumpingState.h"
 #include "solarus/movements/JumpMovement.h"
-#include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Sound.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
 
@@ -43,11 +43,11 @@ Hero::JumpingState::JumpingState(
     bool with_sound
 ):
   BaseState(hero, "jumping"),
-  carried_item() {
+  carried_object() {
 
-  if (get_previous_carried_item_behavior() == CarriedItem::BEHAVIOR_KEEP) {
-    // Keep the carried item of the previous state.
-    carried_item = hero.get_carried_item();
+  if (get_previous_carried_object_behavior() == CarriedObject::BEHAVIOR_KEEP) {
+    // Keep the carried object of the previous state.
+    carried_object = hero.get_carried_object();
   }
 
   this->movement = std::make_shared<JumpMovement>(
@@ -63,18 +63,18 @@ Hero::JumpingState::JumpingState(
  */
 void Hero::JumpingState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   // update the sprites
   HeroSprites& sprites = get_sprites();
   sprites.set_animation_direction8(direction8);
 
-  if (carried_item == nullptr) {
+  if (carried_object == nullptr) {
     sprites.set_animation_jumping();
   }
   else {
     sprites.set_animation_walking_carrying();
-    sprites.set_lifted_item(carried_item);
+    sprites.set_lifted_item(carried_object);
   }
 
   // jump
@@ -91,33 +91,33 @@ void Hero::JumpingState::start(const State* previous_state) {
  */
 void Hero::JumpingState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   get_entity().clear_movement();
 
-  if (carried_item != nullptr) {
+  if (carried_object != nullptr) {
 
-    switch (next_state->get_previous_carried_item_behavior()) {
+    switch (next_state->get_previous_carried_object_behavior()) {
 
-    case CarriedItem::BEHAVIOR_THROW:
-      carried_item->throw_item(get_sprites().get_animation_direction());
-      get_entities().add_entity(carried_item);
-      carried_item = nullptr;
+    case CarriedObject::BEHAVIOR_THROW:
+      carried_object->throw_item(get_sprites().get_animation_direction());
+      get_entities().add_entity(carried_object);
+      carried_object = nullptr;
       get_sprites().set_lifted_item(nullptr);
       break;
 
-    case CarriedItem::BEHAVIOR_DESTROY:
-      carried_item = nullptr;
+    case CarriedObject::BEHAVIOR_DESTROY:
+      carried_object = nullptr;
       get_sprites().set_lifted_item(nullptr);
       break;
 
-    case CarriedItem::BEHAVIOR_KEEP:
+    case CarriedObject::BEHAVIOR_KEEP:
       // The next state is now the owner and has incremented the refcount.
-      carried_item = nullptr;
+      carried_object = nullptr;
       break;
 
     default:
-      Debug::die("Invalid carried item behavior");
+      Debug::die("Invalid carried object behavior");
     }
   }
 }
@@ -128,11 +128,11 @@ void Hero::JumpingState::stop(const State* next_state) {
  */
 void Hero::JumpingState::set_map(Map& map) {
 
-  State::set_map(map);
+  BaseState::set_map(map);
 
   // the hero may go to another map while jumping and carrying an item
-  if (carried_item != nullptr) {
-    carried_item->set_map(map);
+  if (carried_object != nullptr) {
+    carried_object->set_map(map);
   }
 }
 
@@ -141,10 +141,10 @@ void Hero::JumpingState::set_map(Map& map) {
  */
 void Hero::JumpingState::update() {
 
-  State::update();
+  BaseState::update();
 
-  if (carried_item != nullptr) {
-    carried_item->update();
+  if (carried_object != nullptr) {
+    carried_object->update();
   }
 
   if (movement->is_finished()) {
@@ -158,10 +158,10 @@ void Hero::JumpingState::update() {
  */
 void Hero::JumpingState::set_suspended(bool suspended) {
 
-  State::set_suspended(suspended);
+  BaseState::set_suspended(suspended);
 
-  if (carried_item != nullptr) {
-    carried_item->set_suspended(suspended);
+  if (carried_object != nullptr) {
+    carried_object->set_suspended(suspended);
   }
 }
 
@@ -170,8 +170,8 @@ void Hero::JumpingState::set_suspended(bool suspended) {
  */
 void Hero::JumpingState::notify_layer_changed() {
 
-  if (carried_item != nullptr) {
-    carried_item->set_layer(get_entity().get_layer());
+  if (carried_object != nullptr) {
+    carried_object->set_layer(get_entity().get_layer());
   }
 }
 
@@ -317,17 +317,17 @@ bool Hero::JumpingState::can_be_hurt(Entity* /* attacker */) const {
  * \brief Returns the item currently carried by the hero in this state, if any.
  * \return the item carried by the hero, or nullptr
  */
-std::shared_ptr<CarriedItem> Hero::JumpingState::get_carried_item() const {
-  return carried_item;
+std::shared_ptr<CarriedObject> Hero::JumpingState::get_carried_object() const {
+  return carried_object;
 }
 
 /**
  * \brief Returns the action to do with an item previously carried by the hero when this state starts.
- * \return the action to do with a previous carried item when this state starts
+ * \return the action to do with a previous carried object when this state starts
  */
-CarriedItem::Behavior Hero::JumpingState::get_previous_carried_item_behavior() const {
+CarriedObject::Behavior Hero::JumpingState::get_previous_carried_object_behavior() const {
 
-  return CarriedItem::BEHAVIOR_KEEP;
+  return CarriedObject::BEHAVIOR_KEEP;
 }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@
 
 namespace Solarus {
 
-class LuaContext;
 class Size;
 class SpriteAnimation;
 class SpriteAnimationSet;
@@ -114,8 +113,6 @@ class Sprite: public Drawable {
     virtual void draw_transition(Transition& transition) override;
     virtual Surface& get_transition_surface() override;
 
-    LuaContext* get_lua_context() const;
-    void set_lua_context(LuaContext* lua_context);
     virtual const std::string& get_lua_type_name() const override;
 
   private:
@@ -124,8 +121,6 @@ class Sprite: public Drawable {
     int get_next_frame() const;
     Surface& get_intermediate_surface() const ;
     void set_frame_changed(bool frame_changed);
-
-    LuaContext* lua_context;           /**< The Solarus Lua API (nullptr means no callbacks for this sprite). TODO move this to ExportableToLua */
 
     // animation set
     static std::map<std::string, SpriteAnimationSet*> all_animation_sets;

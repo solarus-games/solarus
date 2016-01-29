@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Logger.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/CurrentQuest.h"
 #include "solarus/Arguments.h"
+#include "solarus/CurrentQuest.h"
 #include <physfs.h>
-#include <iostream>
 #include <fstream>
 #include <cstdlib>  // exit(), mkstemp(), tmpnam()
 #include <cstdio>   // remove()
@@ -65,7 +65,7 @@ void QuestFiles::initialize(const Arguments& args) {
     quest_path = options.back();
   }
 
-  std::cout << "Opening quest '" << quest_path << "'" << std::endl;
+  Logger::info("Opening quest '" + quest_path + "'");
 
   // Now, quest_path may be the path defined as command-line argument,
   // the path defined during the build process, or the current directory
@@ -85,10 +85,10 @@ void QuestFiles::initialize(const Arguments& args) {
 
   // Check the existence of a quest at this location.
   if (!QuestFiles::data_file_exists("quest.dat")) {
-    std::cout << "Fatal: No quest was found in the directory '" << quest_path
-        << "'.\n" << "To specify your quest's path, run: "
-        << (program_name.empty() ? std::string("solarus") : program_name)
-        << " path/to/quest" << std::endl;
+    Debug::error("No quest was found in the directory '" + quest_path +
+        "'. To specify your quest's path, run: " +
+        (program_name.empty() ? std::string("solarus-run") : program_name) +
+        " path/to/quest");
     std::exit(EXIT_SUCCESS);
   }
 

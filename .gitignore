@@ -5,8 +5,9 @@
 .project
 .settings
 .csettings
+CMakeLists.txt.user
 tags
 developer_doc/1.*
 work/unversioned/
 build/
-commit.txt
+

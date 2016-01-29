@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,7 +80,7 @@ std::shared_ptr<const PlayerMovement> Hero::PlayerMovementState::get_player_move
 void Hero::PlayerMovementState::start(const State* previous_state) {
   Hero& hero = get_entity();
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   player_movement = std::make_shared<PlayerMovement>(
       hero.get_walking_speed()
@@ -111,7 +111,7 @@ void Hero::PlayerMovementState::start(const State* previous_state) {
  */
 void Hero::PlayerMovementState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   get_entity().clear_movement();
   get_sprites().set_animation_stopped_normal();
@@ -128,7 +128,7 @@ void Hero::PlayerMovementState::stop(const State* next_state) {
  */
 void Hero::PlayerMovementState::set_map(Map &map) {
 
-  State::set_map(map);
+  BaseState::set_map(map);
   set_animation_stopped();
 }
 
@@ -141,7 +141,7 @@ void Hero::PlayerMovementState::set_map(Map &map) {
 void Hero::PlayerMovementState::update() {
   Hero& hero = get_entity();
 
-  State::update();
+  BaseState::update();
 
   if (!is_suspended()) {
 
@@ -171,7 +171,7 @@ void Hero::PlayerMovementState::update() {
  */
 void Hero::PlayerMovementState::set_suspended(bool suspended) {
 
-  State::set_suspended(suspended);
+  BaseState::set_suspended(suspended);
 
   if (!suspended) {
     if (jumper_start_date != 0) {

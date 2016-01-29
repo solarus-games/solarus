@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 #include "solarus/hero/GrabbingState.h"
 #include "solarus/hero/FreeState.h"
 #include "solarus/hero/HeroSprites.h"
-#include "solarus/entities/Detector.h"
 #include "solarus/movements/PathMovement.h"
 #include "solarus/Game.h"
 #include "solarus/GameCommands.h"
@@ -43,7 +42,7 @@ Hero::PullingState::PullingState(Hero& hero):
  */
 void Hero::PullingState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   pulled_entity = nullptr;
   get_sprites().set_animation_pulling();
@@ -54,7 +53,7 @@ void Hero::PullingState::start(const State* previous_state) {
  */
 void Hero::PullingState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   if (is_moving_grabbed_entity()) {
     get_entity().clear_movement();
@@ -68,7 +67,7 @@ void Hero::PullingState::stop(const State* next_state) {
  */
 void Hero::PullingState::update() {
 
-  State::update();
+  BaseState::update();
 
   Hero& hero = get_entity();
   if (!is_moving_grabbed_entity()) {
@@ -90,7 +89,7 @@ void Hero::PullingState::update() {
     // see if the obstacle is an entity that the hero can pull
     else {
 
-      Detector* facing_entity = hero.get_facing_entity();
+      Entity* facing_entity = hero.get_facing_entity();
       if (facing_entity != nullptr) {
 
         if (facing_entity->get_type() == EntityType::BLOCK) { // TODO use dynamic binding

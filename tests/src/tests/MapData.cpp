@@ -17,6 +17,7 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/CurrentQuest.h"
+#include "solarus/QuestResources.h"
 #include "solarus/MapData.h"
 #include "test_tools/TestEnvironment.h"
 #include <iostream>
@@ -75,7 +76,7 @@ void check_map(TestEnvironment& /* env */, const std::string& map_id) {
   }
 
   // Then export and import every entity of the map.
-  for (int layer = 0; layer < map_data.get_num_layers(); ++layer) {
+  for (int layer = map_data.get_min_layer(); layer <= map_data.get_max_layer(); ++layer) {
     for (int j = 0; j < map_data.get_num_entities(layer); ++j) {
       EntityIndex index = { layer, j };
       const EntityData& entity = map_data.get_entity(index);

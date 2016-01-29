@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,19 +14,19 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/CarriedObject.h"
 #include "solarus/entities/Destructible.h"
-#include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
-#include "solarus/entities/Pickable.h"
-#include "solarus/entities/CarriedItem.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Explosion.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/entities/Pickable.h"
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/movements/FallingHeight.h"
-#include "solarus/lua/LuaContext.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lua/LuaContext.h"
 #include "solarus/CommandsEffects.h"
 #include "solarus/Game.h"
 #include "solarus/Equipment.h"
@@ -55,7 +55,7 @@ Destructible::Destructible(
     const Treasure& treasure,
     Ground modified_ground
 ):
-  Detector(COLLISION_NONE, name, layer, xy, Size(16, 16)),
+  Entity(name, 0, layer, xy, Size(16, 16)),
   modified_ground(modified_ground),
   treasure(treasure),
   animation_set_id(animation_set_id),
@@ -265,12 +265,12 @@ void Destructible::update_collision_modes() {
   if (get_modified_ground() == Ground::WALL) {
     // The object is an obstacle.
     // Set the facing collision mode to allow the hero to look at it.
-    add_collision_mode(COLLISION_FACING);
+    add_collision_mode(CollisionMode::COLLISION_FACING);
   }
 
   if (get_can_be_cut()
       || get_can_explode()) {
-    add_collision_mode(COLLISION_SPRITE);
+    add_collision_mode(CollisionMode::COLLISION_SPRITE);
   }
 }
 
@@ -340,7 +340,7 @@ void Destructible::notify_collision_with_hero(Hero& hero, CollisionMode /* colli
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Destructible::notify_collision(
     Entity& other_entity,
@@ -361,7 +361,7 @@ void Destructible::notify_collision(
       hero.check_position();  // To update the ground under the hero.
       create_treasure();
 
-      get_lua_context().destructible_on_cut(*this);
+      get_lua_context()->destructible_on_cut(*this);
 
       if (get_can_explode()) {
         explode();
@@ -383,7 +383,7 @@ void Destructible::notify_collision(
 }
 
 /**
- * \copydoc Detector::notify_action_command_pressed
+ * \copydoc Entity::notify_action_command_pressed
  */
 bool Destructible::notify_action_command_pressed() {
 
@@ -398,7 +398,7 @@ bool Destructible::notify_action_command_pressed() {
     if (get_equipment().has_ability(Ability::LIFT, get_weight())) {
 
       uint32_t explosion_date = get_can_explode() ? System::now() + 6000 : 0;
-      get_hero().start_lifting(std::make_shared<CarriedItem>(
+      get_hero().start_lifting(std::make_shared<CarriedObject>(
           get_hero(),
           *this,
           get_animation_set_id(),
@@ -423,12 +423,12 @@ bool Destructible::notify_action_command_pressed() {
       }
 
       // Notify Lua.
-      get_lua_context().destructible_on_lifting(*this);
+      get_lua_context()->destructible_on_lifting(*this);
     }
     else {
       // Cannot lift the object.
       get_hero().start_grabbing();
-      get_lua_context().destructible_on_looked(*this);
+      get_lua_context()->destructible_on_looked(*this);
     }
 
     return true;
@@ -446,7 +446,10 @@ void Destructible::play_destroy_animation() {
   if (!destruction_sound_id.empty()) {
     Sound::play(destruction_sound_id);
   }
-  get_sprite().set_current_animation("destroy");
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr) {
+    sprite->set_current_animation("destroy");
+  }
   if (!is_drawn_in_y_order()) {
     get_entities().bring_to_front(*this);  // Show animation destroy to front.
   }
@@ -472,7 +475,7 @@ void Destructible::explode() {
       "", get_layer(), get_xy(), true
   ));
   Sound::play("explosion");
-  get_lua_context().destructible_on_exploded(*this);
+  get_lua_context()->destructible_on_exploded(*this);
 }
 
 /**
@@ -500,7 +503,11 @@ void Destructible::update() {
     return;
   }
 
-  if (is_being_cut && get_sprite().is_animation_finished()) {
+  const SpritePtr& sprite = get_sprite();
+
+  if (is_being_cut &&
+      sprite != nullptr &&
+      sprite->is_animation_finished()) {
 
     if (!get_can_regenerate()) {
       // Remove this destructible from the map.
@@ -515,13 +522,19 @@ void Destructible::update() {
   else if (is_waiting_for_regeneration()
       && System::now() >= regeneration_date
       && !overlaps(get_hero())) {
-    get_sprite().set_current_animation("regenerating");
+
+    if (sprite != nullptr) {
+      sprite->set_current_animation("regenerating");
+    }
     is_regenerating = true;
     regeneration_date = 0;
-    get_lua_context().destructible_on_regenerating(*this);
+    get_lua_context()->destructible_on_regenerating(*this);
   }
-  else if (is_regenerating && get_sprite().is_animation_finished()) {
-    get_sprite().set_current_animation("on_ground");
+  else if (is_regenerating &&
+      sprite != nullptr &&
+      sprite->is_animation_finished()) {
+
+    sprite->set_current_animation("on_ground");
     is_regenerating = false;
   }
 }

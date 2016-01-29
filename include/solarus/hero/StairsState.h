@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,8 +47,8 @@ class Hero::StairsState: public Hero::BaseState {
     virtual bool can_come_from_bad_ground() const override;
     virtual bool is_teletransporter_delayed() const override;
     virtual int get_wanted_movement_direction8() const override;
-    virtual std::shared_ptr<CarriedItem> get_carried_item() const override;
-    virtual CarriedItem::Behavior get_previous_carried_item_behavior() const override;
+    virtual std::shared_ptr<CarriedObject> get_carried_object() const override;
+    virtual CarriedObject::Behavior get_previous_carried_object_behavior() const override;
     virtual void notify_layer_changed() override;
 
   private:
@@ -64,8 +64,8 @@ class Hero::StairsState: public Hero::BaseState {
                                         * phase of the animations (0: not started, 1: initial animation,
                                         * 2: diagonal animation, 3: final animation) */
     uint32_t next_phase_date;          /**< date when the stairs phase changes */
-    std::shared_ptr<CarriedItem>
-        carried_item;                  /**< an item carried by the hero while taking the stairs, or nullptr */
+    std::shared_ptr<CarriedObject>
+        carried_object;                  /**< an item carried by the hero while taking the stairs, or nullptr */
 
 };
 

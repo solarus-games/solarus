@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,47 +15,48 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/CrystalBlock.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/Sound.h"
 #include "solarus/movements/PlayerMovement.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/Sound.h"
 
 namespace Solarus {
 
 /**
  * \brief Creates a new crystal block.
- * \param game the current game
+ * \param game The current game.
  * \param name Name identifying the entity on the map or an empty string.
- * \param layer layer of the entity to create on the map
+ * \param layer Layer of the entity to create on the map.
  * \param xy Coordinates of the entity to create.
  * \param size Size of the block (the pattern can be repeated).
  * \param subtype subtype of raised block
  */
 CrystalBlock::CrystalBlock(Game& game, const std::string& name,
     int layer, const Point& xy, const Size& size, Subtype subtype):
-  Detector(COLLISION_OVERLAPPING, name, layer, xy, size),
+  Entity(name, 0, layer, xy, size),
   subtype(subtype) {
 
-  create_sprite("entities/crystal_block");
+  set_collision_modes(CollisionMode::COLLISION_OVERLAPPING);
+  Sprite& sprite = *create_sprite("entities/crystal_block");
 
   // Don't pause the sprite animation when the crystal block is far from the
   // camera. Otherwise it looks weird if the players comes back using a
   // teletransporter.
-  get_sprite().set_ignore_suspend(true);
+  sprite.set_ignore_suspend(true);
 
   this->orange_raised = game.get_crystal_state();
 
   if (subtype == ORANGE) {
-    get_sprite().set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
+    sprite.set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
   }
   else {
-    get_sprite().set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
+    sprite.set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
   }
-  get_sprite().set_current_frame(get_sprite().get_nb_frames() - 1); // to avoid the animations at the map beginning
+  sprite.set_current_frame(sprite.get_nb_frames() - 1); // to avoid the animations at the map beginning
 }
 
 /**
@@ -181,20 +182,24 @@ bool CrystalBlock::try_jump(Hero& hero, const Rectangle& collision_box,
  */
 void CrystalBlock::update() {
 
+  const SpritePtr& sprite = get_sprite();
+
   // see if the state has to be changed
   bool orange_raised = get_game().get_crystal_state();
   if (orange_raised != this->orange_raised) {
 
     this->orange_raised = orange_raised;
 
-    if (subtype == ORANGE) {
-      get_sprite().set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
-    }
-    else {
-      get_sprite().set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
+    if (sprite != nullptr) {
+
+      if (subtype == ORANGE) {
+        sprite->set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
+      }
+      else {
+        sprite->set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
+      }
     }
   }
-  get_sprite().update();
 
   Entity::update();
 }
@@ -206,11 +211,10 @@ void CrystalBlock::update() {
  */
 void CrystalBlock::draw_on_map() {
 
-  if (!is_drawn()) {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite == nullptr) {
     return;
   }
-
-  Sprite& sprite = get_sprite();
 
   int x1 = get_top_left_x();
   int y1 = get_top_left_y();
@@ -219,7 +223,7 @@ void CrystalBlock::draw_on_map() {
 
   for (int y = y1; y < y2; y += 16) {
     for (int x = x1; x < x2; x += 16) {
-      get_map().draw_sprite(sprite, x, y);
+      get_map().draw_sprite(*sprite, x, y);
     }
   }
 }

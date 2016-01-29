@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #define SOLARUS_STAIRS_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include <string>
 
 namespace Solarus {
@@ -41,7 +41,7 @@ namespace Solarus {
  * - a stairs entity (that make the hero take the stairs animation),
  * - a destination point on the next map.
  */
-class Stairs: public Detector {
+class Stairs: public Entity {
 
   public:
 
@@ -87,7 +87,6 @@ class Stairs: public Detector {
 
     virtual void notify_creating() override;
     bool is_inside_floor() const;
-    virtual bool has_layer_independent_collisions() const override;
     virtual bool is_sword_ignored() const override;
     virtual bool is_obstacle_for(Entity& other) override;
     virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;

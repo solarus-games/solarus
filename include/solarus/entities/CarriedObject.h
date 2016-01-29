@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_CARRIED_ITEM_H
-#define SOLARUS_CARRIED_ITEM_H
+#ifndef SOLARUS_CARRIED_OBJECT_H
+#define SOLARUS_CARRIED_OBJECT_H
 
 #include "solarus/Common.h"
 #include "solarus/entities/Entity.h"
@@ -32,14 +32,14 @@ namespace Solarus {
  * As soon as he throws it, the item becomes attached to the map and the hero
  * may lift another item.
  */
-class CarriedItem: public Entity {
+class CarriedObject: public Entity {
 
   public:
 
-    static constexpr EntityType ThisType = EntityType::CARRIED_ITEM;
+    static constexpr EntityType ThisType = EntityType::CARRIED_OBJECT;
 
     /**
-     * Indicates what to do with a carried item.
+     * Indicates what to do with a carried object.
      */
     enum Behavior {
       BEHAVIOR_THROW,          /**< make the hero throw the item */
@@ -47,7 +47,7 @@ class CarriedItem: public Entity {
       BEHAVIOR_KEEP            /**< let the hero continue to carry the item */
     };
 
-    CarriedItem(
+    CarriedObject(
         Hero& hero,
         const Entity& original_entity,
         const std::string& animation_set_id,
@@ -121,6 +121,7 @@ class CarriedItem: public Entity {
     int damage_on_enemies;      /**< damage for an enemy that receives the item */
 
     // throwing the item
+    SpritePtr main_sprite;      /**< main sprite of the destructible object */
     SpritePtr shadow_sprite;    /**< sprite of the shadow when the item is being thrown */
     int throwing_direction;     /**< direction where the item is thrown (0 to 3) */
     uint32_t next_down_date;    /**< when the item is thrown, date when it move one pixel downwards next time */

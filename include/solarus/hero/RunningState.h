@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ class Hero::RunningState: public Hero::BaseState {
     virtual bool can_avoid_stream(const Stream& stream) const override;
     virtual bool can_persist_on_stream(const Stream& stream) const override;
     virtual bool is_sensor_obstacle(const Sensor& sensor) const override;
-    virtual bool is_cutting_with_sword(Detector& detector) override;
+    virtual bool is_cutting_with_sword(Entity& entity) override;
     virtual int get_sword_damage_factor() const override;
 
   private:

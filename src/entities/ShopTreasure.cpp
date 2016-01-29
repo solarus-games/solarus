@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,12 +53,15 @@ ShopTreasure::ShopTreasure(
     int price,
     const std::string& font_id,
     const std::string& dialog_id):
-  Detector(COLLISION_FACING, name, layer, xy, Size(32, 32)),
+  Entity(name, 0, layer, xy, Size(32, 32)),
   treasure(treasure),
   price(price),
   dialog_id(dialog_id),
-  price_digits(0, 0, TextSurface::HorizontalAlignment::LEFT, TextSurface::VerticalAlignment::TOP),
-  rupee_icon_sprite(std::make_shared<Sprite>("entities/rupee_icon")) {
+  treasure_sprite(treasure.create_sprite()),
+  rupee_icon_sprite(std::make_shared<Sprite>("entities/rupee_icon")),
+  price_digits(0, 0, TextSurface::HorizontalAlignment::LEFT, TextSurface::VerticalAlignment::TOP) {
+
+  set_collision_modes(CollisionMode::COLLISION_FACING);
 
   std::ostringstream oss;
   oss << price;
@@ -179,15 +182,14 @@ void ShopTreasure::notify_collision(
 }
 
 /**
- * \copydoc Detector::notify_action_command_pressed
+ * \copydoc Entity::notify_action_command_pressed
  */
 bool ShopTreasure::notify_action_command_pressed() {
 
   if (get_hero().is_free()
       && get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_LOOK) {
 
-    LuaContext& lua_context = get_lua_context();
-    lua_context.notify_shop_treasure_interaction(*this);
+    get_lua_context()->notify_shop_treasure_interaction(*this);
     return true;
   }
 
@@ -195,32 +197,39 @@ bool ShopTreasure::notify_action_command_pressed() {
 }
 
 /**
+ * \copydoc Entity::update
+ */
+void ShopTreasure::update() {
+
+  Entity::update();
+
+  treasure_sprite->update();
+  rupee_icon_sprite->update();
+}
+
+/**
  * \brief Draws the entity on the map.
  */
 void ShopTreasure::draw_on_map() {
-
-  if (!is_drawn()) {
-    return;
-  }
 
   const SurfacePtr& map_surface = get_map().get_visible_surface();
   int x = get_x();
   int y = get_y();
 
   // draw the treasure
-  const Rectangle& camera_position = get_map().get_camera_position();
-  treasure.draw(map_surface,
-      x + 16 - camera_position.get_x(),
-      y + 13 - camera_position.get_y()
+  const Camera& camera = get_map().get_camera();
+  treasure_sprite->draw(map_surface,
+      x + 16 - camera.get_top_left_x(),
+      y + 13 - camera.get_top_left_y()
   );
 
   // also draw the price
   price_digits.draw(map_surface,
-      x + 12 - camera_position.get_x(),
-      y + 21 - camera_position.get_y());
+      x + 12 - camera.get_top_left_x(),
+      y + 21 - camera.get_top_left_y());
   rupee_icon_sprite->draw(map_surface,
-      x - camera_position.get_x(),
-      y + 22 - camera_position.get_y());
+      x - camera.get_top_left_x(),
+      y + 22 - camera.get_top_left_y());
 }
 
 }

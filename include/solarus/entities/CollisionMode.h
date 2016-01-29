@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,7 @@
 namespace Solarus {
 
 /**
- * \brief Collisions modes of a detector.
- *
- * The collision mode indicates what kind of collisions a detector will detect.
+ * \brief Collisions modes an entity can detect.
  */
 enum CollisionMode {
   COLLISION_NONE              = 0x0000, /**< No collision will be detected
@@ -41,7 +39,7 @@ enum CollisionMode {
                                          * is inside the detector's rectangle. */
   COLLISION_SPRITE            = 0x0040, /**< Collision if an entity's sprite has pixels
                                          * overlapping pixels of the detector's sprite. */
-  COLLISION_CUSTOM            = 0x0080  /**< Custom collision function, defined by a subclass of Detector. */
+  COLLISION_CUSTOM            = 0x0080  /**< Custom collision function, defined by a subclass of Entity. */
 };
 
 }

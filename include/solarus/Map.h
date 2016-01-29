@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,26 +20,22 @@
 #include "solarus/Common.h"
 #include "solarus/entities/Camera.h"
 #include "solarus/entities/Ground.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Entities.h"
+#include "solarus/entities/NonAnimatedRegions.h"
+#include "solarus/entities/TilePattern.h"
+#include "solarus/entities/Tileset.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/MapData.h"
 #include "solarus/Transition.h"
-#include "solarus/entities/MapEntities.h"
-#include "solarus/entities/Tileset.h"
-#include "solarus/entities/NonAnimatedRegions.h"
-#include "solarus/entities/TilePattern.h"
 
 namespace Solarus {
 
 class Destination;
-class Detector;
 class InputEvent;
 class LuaContext;
-class MapEntities;
-class MapLoader;
 class Tileset;
 class Sprite;
 
@@ -81,16 +77,14 @@ class SOLARUS_API Map: public ExportableToLua {
     int get_width8() const;
     int get_height8() const;
 
-    int get_num_layers() const;
-    int get_lowest_layer() const;
-    int get_highest_layer() const;
+    int get_min_layer() const;
+    int get_max_layer() const;
     bool is_valid_layer(int layer) const;
 
     // camera
     const SurfacePtr& get_visible_surface();
     const Camera& get_camera() const;
     Camera& get_camera();
-    const Rectangle& get_camera_position() const;
     void move_camera(int x, int y, int speed);
     void restore_camera();
     bool is_camera_moving() const;
@@ -107,8 +101,8 @@ class SOLARUS_API Map: public ExportableToLua {
     void notify_opening_transition_finished();
 
     // entities
-    MapEntities& get_entities();
-    const MapEntities& get_entities() const;
+    Entities& get_entities();
+    const Entities& get_entities() const;
 
     // presence of the hero
     bool is_started() const;
@@ -136,37 +130,46 @@ class SOLARUS_API Map: public ExportableToLua {
         int layer,
         const Rectangle& collision_box,
         Entity& entity_to_check
-    ) const;
+    );
     bool test_collision_with_obstacles(
         int layer,
         const Rectangle& collision_box,
         Entity& entity_to_check
-    ) const;
+    );
     bool test_collision_with_obstacles(
         int layer,
         int x,
         int y,
         Entity& entity_to_check
-    ) const;
+    );
     bool test_collision_with_obstacles(
         int layer,
         const Point& point,
         Entity& entity_to_check
-    ) const;
+    );
     bool has_empty_ground(
         int layer,
         const Rectangle& collision_box
     ) const;
 
-    Ground get_ground(int layer, int x, int y) const;
-    Ground get_ground(int layer, const Point& xy) const;
+    Ground get_ground(
+        int layer,
+        int x,
+        int y,
+        const Entity* entity_to_check
+    ) const;
+    Ground get_ground(
+        int layer,
+        const Point& xy,
+        const Entity* entity_to_check
+    ) const;
     Ground get_ground_from_entity(const Entity& entity, int x, int y) const;
     Ground get_ground_from_entity(const Entity& entity, const Point& xy) const;
 
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(Entity& entity);
     void check_collision_with_detectors(Entity& entity, Sprite& sprite);
-    void check_collision_from_detector(Detector& detector);
+    void check_collision_from_detector(Entity& detector);
 
     // main loop
     bool notify_input(const InputEvent& event);
@@ -181,15 +184,11 @@ class SOLARUS_API Map: public ExportableToLua {
 
   private:
 
-    friend class MapLoader; // the map loader modifies the private fields of Map
-
     void set_suspended(bool suspended);
     void build_background_surface();
     void build_foreground_surface();
     void draw_background();
     void draw_foreground();
-
-    static MapLoader map_loader;  /**< The map file parser. */
 
     // map properties
 
@@ -198,7 +197,8 @@ class SOLARUS_API Map: public ExportableToLua {
 
     int width8;                   /**< Map width in 8x8 squares (width8 = get_width() / 8). */
     int height8;                  /**< Map height in 8x8 squares (height8 = get_height() / 8). */
-    int num_layers;               /**< Number of layers of the map. */
+    int min_layer;                /**< Lowest layer of the map (0 or less). */
+    int max_layer;                /**< Highest layer of the map (0 or more). */
 
     std::string tileset_id;       /**< Id of the current tileset. */
     std::unique_ptr<Tileset>
@@ -235,7 +235,7 @@ class SOLARUS_API Map: public ExportableToLua {
                                    * to place the hero on a side of the map,
                                    * or an empty string to use the one saved. */
 
-    std::unique_ptr<MapEntities>
+    std::unique_ptr<Entities>
         entities;                 /**< The entities on the map. */
     bool suspended;               /**< Whether the game is suspended. */
 };
@@ -268,14 +268,14 @@ inline bool Map::test_collision_with_border(const Point& point) const {
  *
  * \return The entities of the map.
  */
-inline const MapEntities& Map::get_entities() const {
+inline const Entities& Map::get_entities() const {
   return *entities;
 }
 
 /**
  * \overload Non-const version.
  */
-inline MapEntities& Map::get_entities() {
+inline Entities& Map::get_entities() {
   return *entities;
 }
 
@@ -294,16 +294,6 @@ inline const Camera& Map::get_camera() const {
 inline Camera& Map::get_camera() {
 
   return get_entities().get_camera();
-}
-
-/**
- * \brief Returns the position of the visible area, relative to the map
- * top-left corner.
- * \return The rectangle of the visible area.
- */
-inline const Rectangle& Map::get_camera_position() const {
-
-  return get_camera().get_bounding_box();
 }
 
 }

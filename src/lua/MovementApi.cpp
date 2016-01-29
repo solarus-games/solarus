@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,25 +14,25 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/movements/PixelMovement.h"
-#include "solarus/movements/PathMovement.h"
-#include "solarus/movements/RandomMovement.h"
-#include "solarus/movements/RandomPathMovement.h"
-#include "solarus/movements/PathFindingMovement.h"
-#include "solarus/movements/TargetMovement.h"
-#include "solarus/movements/CircleMovement.h"
-#include "solarus/movements/JumpMovement.h"
+#include "solarus/entities/Entities.h"
+#include "solarus/entities/Hero.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/ExportableToLuaPtr.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
-#include "solarus/MainLoop.h"
-#include "solarus/Game.h"
-#include "solarus/Map.h"
+#include "solarus/movements/CircleMovement.h"
+#include "solarus/movements/JumpMovement.h"
+#include "solarus/movements/PathFindingMovement.h"
+#include "solarus/movements/PathMovement.h"
+#include "solarus/movements/PixelMovement.h"
+#include "solarus/movements/RandomMovement.h"
+#include "solarus/movements/RandomPathMovement.h"
+#include "solarus/movements/TargetMovement.h"
 #include "solarus/Drawable.h"
+#include "solarus/Game.h"
+#include "solarus/MainLoop.h"
+#include "solarus/Map.h"
 
 namespace Solarus {
 
@@ -361,7 +361,6 @@ std::shared_ptr<Movement> LuaContext::check_movement(lua_State* l, int index) {
  */
 void LuaContext::push_movement(lua_State* l, Movement& movement) {
 
-  movement.set_lua_context(&get_lua_context(l));  // To make callbacks work.
   push_userdata(l, movement);
 }
 
@@ -597,7 +596,6 @@ int LuaContext::movement_api_start(lua_State* l) {
 
     ScopedLuaRef callback_ref = LuaTools::opt_function(l, 3);
 
-    movement->set_lua_context(&lua_context);
     if (lua_type(l, 2) == LUA_TTABLE) {
       lua_context.start_movement_on_point(movement, 2);
     }

@@ -1,7 +1,7 @@
 # Solarus library source files.
 file(
   GLOB
-  source_files
+  solarus_SOURCES
 
   include/solarus/containers/Grid.h
   include/solarus/containers/Quadtree.h
@@ -13,7 +13,7 @@ file(
   include/solarus/entities/Bomb.h
   include/solarus/entities/Boomerang.h
   include/solarus/entities/Camera.h
-  include/solarus/entities/CarriedItem.h
+  include/solarus/entities/CarriedObject.h
   include/solarus/entities/Chest.h
   include/solarus/entities/CollisionMode.h
   include/solarus/entities/CrystalBlock.h
@@ -21,12 +21,12 @@ file(
   include/solarus/entities/CustomEntity.h
   include/solarus/entities/Destination.h
   include/solarus/entities/Destructible.h
-  include/solarus/entities/Detector.h
   include/solarus/entities/Door.h
   include/solarus/entities/DynamicTile.h
   include/solarus/entities/EnemyAttack.h
   include/solarus/entities/Enemy.h
   include/solarus/entities/EnemyReaction.h
+  include/solarus/entities/Entities.h
   include/solarus/entities/Entity.h
   include/solarus/entities/EntityPtr.h
   include/solarus/entities/EntityState.h
@@ -37,10 +37,10 @@ file(
   include/solarus/entities/Ground.h
   include/solarus/entities/GroundInfo.h
   include/solarus/entities/Hero.h
+  include/solarus/entities/HeroPtr.h
   include/solarus/entities/Hookshot.h
   include/solarus/entities/Jumper.h
   include/solarus/entities/Layer.h
-  include/solarus/entities/MapEntities.h
   include/solarus/entities/NonAnimatedRegions.h
   include/solarus/entities/Npc.h
   include/solarus/entities/ParallaxScrollingTilePattern.h
@@ -48,6 +48,7 @@ file(
   include/solarus/entities/SelfScrollingTilePattern.h
   include/solarus/entities/Sensor.h
   include/solarus/entities/Separator.h
+  include/solarus/entities/SeparatorPtr.h
   include/solarus/entities/ShopTreasure.h
   include/solarus/entities/SimpleTilePattern.h
   include/solarus/entities/Stairs.h
@@ -103,12 +104,12 @@ file(
   include/solarus/lowlevel/Hq4xFilter.h
   include/solarus/lowlevel/InputEvent.h
   include/solarus/lowlevel/ItDecoder.h
+  include/solarus/lowlevel/Logger.h
   include/solarus/lowlevel/Music.h
   include/solarus/lowlevel/PixelBits.h
   include/solarus/lowlevel/PixelFilter.h
   include/solarus/lowlevel/Point.h
   include/solarus/lowlevel/Point.inl
-  include/solarus/lowlevel/Output.h
   include/solarus/lowlevel/QuestFiles.h
   include/solarus/lowlevel/Random.h
   include/solarus/lowlevel/Rectangle.h
@@ -191,7 +192,6 @@ file(
   include/solarus/MainLoop.h
   include/solarus/Map.h
   include/solarus/MapData.h
-  include/solarus/MapLoader.h
   include/solarus/QuestProperties.h
   include/solarus/QuestResources.h
   include/solarus/ResourceType.h
@@ -220,18 +220,18 @@ file(
   src/entities/Bomb.cpp
   src/entities/Boomerang.cpp
   src/entities/Camera.cpp
-  src/entities/CarriedItem.cpp
+  src/entities/CarriedObject.cpp
   src/entities/Chest.cpp
   src/entities/CrystalBlock.cpp
   src/entities/Crystal.cpp
   src/entities/CustomEntity.cpp
   src/entities/Destination.cpp
   src/entities/Destructible.cpp
-  src/entities/Detector.cpp
   src/entities/Door.cpp
   src/entities/DynamicTile.cpp
   src/entities/Enemy.cpp
   src/entities/EnemyReaction.cpp
+  src/entities/Entities.cpp
   src/entities/Entity.cpp
   src/entities/EntityState.cpp
   src/entities/EntityTypeInfo.cpp
@@ -241,7 +241,6 @@ file(
   src/entities/Hero.cpp
   src/entities/Hookshot.cpp
   src/entities/Jumper.cpp
-  src/entities/MapEntities.cpp
   src/entities/NonAnimatedRegions.cpp
   src/entities/Npc.cpp
   src/entities/ParallaxScrollingTilePattern.cpp
@@ -302,8 +301,8 @@ file(
   src/lowlevel/Hq4xFilter.cpp
   src/lowlevel/InputEvent.cpp
   src/lowlevel/ItDecoder.cpp
+  src/lowlevel/Logger.cpp
   src/lowlevel/Music.cpp
-  src/lowlevel/Output.cpp
   src/lowlevel/PixelBits.cpp
   src/lowlevel/PixelFilter.cpp
   src/lowlevel/Point.cpp
@@ -379,10 +378,8 @@ file(
   src/GameCommands.cpp
   src/Game.cpp
   src/MainLoop.cpp
-  src/main/Main.cpp
   src/Map.cpp
   src/MapData.cpp
-  src/MapLoader.cpp
   src/QuestProperties.cpp
   src/QuestResources.cpp
   src/SavegameConverterV1.cpp
@@ -418,8 +415,8 @@ file(
 
 # Additional source files for Apple systems.
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(source_files
-    ${source_files}
+  set(solarus_SOURCES
+    ${solarus_SOURCES}
     src/lowlevel/apple/AppleInterface.mm
     include/solarus/lowlevel/apple/AppleInterface.h
   )
@@ -428,7 +425,7 @@ endif()
 # Build the Solarus library.
 add_library(solarus
   SHARED
-  ${source_files}
+  ${solarus_SOURCES}
 )
 
 target_link_libraries(solarus
@@ -442,6 +439,11 @@ target_link_libraries(solarus
   "${VORBISFILE_LIBRARY}"
   "${OGG_LIBRARY}"
   "${MODPLUG_LIBRARY}"
+)
+
+set_target_properties(solarus PROPERTIES
+  VERSION ${SOLARUS_VERSION_STRING}
+  SOVERSION ${SOLARUS_MAJOR_VERSION}
 )
 
 # Configuration for OSX and iOS build and deployment.

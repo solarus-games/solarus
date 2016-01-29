@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #define SOLARUS_STREAM_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include <string>
 
 namespace Solarus {
@@ -30,7 +30,7 @@ namespace Solarus {
  * The hero may or may not resist to the movement of the stream, depending
  * on its properties.
  */
-class Stream: public Detector {
+class Stream: public Entity {
 
   public:
 

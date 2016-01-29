@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ Wall::Wall(
     entity_types_stopped.insert(EntityType::BLOCK);
   }
   if (stops_projectiles) {
-    entity_types_stopped.insert(EntityType::CARRIED_ITEM);
+    entity_types_stopped.insert(EntityType::CARRIED_OBJECT);
     entity_types_stopped.insert(EntityType::ARROW);
     entity_types_stopped.insert(EntityType::HOOKSHOT);
     entity_types_stopped.insert(EntityType::BOOMERANG);

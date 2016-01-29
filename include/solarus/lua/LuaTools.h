@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,6 +52,11 @@ bool call_function(
     int nb_arguments,
     int nb_results,
     const char* function_name
+);
+bool do_string(
+    lua_State* l,
+    const std::string& code,
+    const std::string& chunk_name
 );
 
 // Error handling.

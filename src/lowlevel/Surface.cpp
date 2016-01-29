@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -845,10 +845,8 @@ void Surface::render(
 
     // Calculate absolute destination subrectangle position on screen.
     Rectangle subsurface_dst_rect(
-        dst_rect.get_x() + subsurface->dst_rect.get_x() - src_rect.get_x(),
-        dst_rect.get_y() + subsurface->dst_rect.get_y() - src_rect.get_y(),
-        subsurface->src_rect.get_width(),
-        subsurface->src_rect.get_height()
+        dst_rect.get_xy() + subsurface->dst_rect.get_xy() - src_rect.get_xy(),
+        subsurface->src_rect.get_size()
     );
 
     // Set the intersection of the subsurface destination and this surface's clip as clipping rectangle.

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/EntityState.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/NonAnimatedRegions.h"
 #include "solarus/entities/TilePattern.h"
 #include "solarus/entities/Tileset.h"
@@ -27,11 +27,11 @@
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/CommandsEffects.h"
+#include "solarus/CurrentQuest.h"
 #include "solarus/Equipment.h"
 #include "solarus/Game.h"
 #include "solarus/MainLoop.h"
 #include "solarus/Map.h"
-#include "solarus/CurrentQuest.h"
 #include "solarus/Savegame.h"
 #include "solarus/Treasure.h"
 #include "solarus/TransitionFade.h"
@@ -503,14 +503,14 @@ void Game::update_commands_effects() {
 
   // make sure the sword key is coherent with having a sword
   if (get_equipment().has_ability(Ability::SWORD)
-      && commands_effects.get_sword_key_effect() != CommandsEffects::SWORD_KEY_SWORD) {
+      && commands_effects.get_sword_key_effect() != CommandsEffects::ATTACK_KEY_SWORD) {
 
-    commands_effects.set_sword_key_effect(CommandsEffects::SWORD_KEY_SWORD);
+    commands_effects.set_sword_key_effect(CommandsEffects::ATTACK_KEY_SWORD);
   }
   else if (!get_equipment().has_ability(Ability::SWORD)
-      && commands_effects.get_sword_key_effect() == CommandsEffects::SWORD_KEY_SWORD) {
+      && commands_effects.get_sword_key_effect() == CommandsEffects::ATTACK_KEY_SWORD) {
 
-    commands_effects.set_sword_key_effect(CommandsEffects::SWORD_KEY_NONE);
+    commands_effects.set_sword_key_effect(CommandsEffects::ATTACK_KEY_NONE);
   }
 }
 
@@ -568,9 +568,12 @@ Map& Game::get_current_map() {
  * Call this function when you want the hero to go to another map.
  *
  * \param map_id Id of the map to launch. It must exist.
- * \param destination_name name of the destination point of the map you want to use,
- * or en ampty string to use the default destination point.
- * \param transition_style type of transition between the two maps
+ * \param destination_name Name of the destination point you want to use.
+ * An empty string means the default one.
+ * You can also use "_same" to keep the hero's coordinates, or
+ * "_side0", "_side1", "_side2" or "_side3"
+ * to place the hero on a side of the map.
+ * \param transition_style Type of transition between the two maps.
  */
 void Game::set_current_map(
     const std::string& map_id,
@@ -778,7 +781,7 @@ void Game::set_paused(bool paused) {
       commands_effects.save_action_key_effect();
       commands_effects.set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
       commands_effects.save_sword_key_effect();
-      commands_effects.set_sword_key_effect(CommandsEffects::SWORD_KEY_NONE);
+      commands_effects.set_sword_key_effect(CommandsEffects::ATTACK_KEY_NONE);
       commands_effects.set_pause_key_effect(CommandsEffects::PAUSE_KEY_RETURN);
       get_lua_context().game_on_paused(*this);
     }

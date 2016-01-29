@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ Hero::SwordSwingingState::SwordSwingingState(Hero& hero):
  */
 void Hero::SwordSwingingState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   get_sprites().play_sword_sound();
   get_sprites().set_animation_sword();
@@ -57,7 +57,7 @@ void Hero::SwordSwingingState::start(const State* previous_state) {
  */
 void Hero::SwordSwingingState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   Hero& hero = get_entity();
   if (hero.get_movement() != nullptr) {
@@ -71,7 +71,7 @@ void Hero::SwordSwingingState::stop(const State* next_state) {
  */
 void Hero::SwordSwingingState::update() {
 
-  State::update();
+  BaseState::update();
 
   // check the animation
   Hero& hero = get_entity();
@@ -154,13 +154,10 @@ bool Hero::SwordSwingingState::can_sword_hit_crystal() const {
 }
 
 /**
- * \brief Tests whether the hero is cutting with his sword the specified detector
- * for which a collision was detected.
- * \param detector the detector to check
- * \return true if the sword is cutting this detector
+ * \copydoc Entity::State::is_cutting_with_sword
  */
 bool Hero::SwordSwingingState::is_cutting_with_sword(
-    Detector& detector) {
+    Entity& entity) {
 
   Hero& hero = get_entity();
   if (hero.get_movement() != nullptr) {
@@ -168,7 +165,7 @@ bool Hero::SwordSwingingState::is_cutting_with_sword(
   }
 
   // check the distance to the detector
-  int distance = detector.is_obstacle_for(hero) ? 14 : 4;
+  int distance = entity.is_obstacle_for(hero) ? 14 : 4;
   Point tested_point = hero.get_facing_point();
 
   switch (get_sprites().get_animation_direction()) {
@@ -190,7 +187,7 @@ bool Hero::SwordSwingingState::is_cutting_with_sword(
       break;
   }
 
-  return detector.overlaps(tested_point);
+  return entity.overlaps(tested_point);
 }
 
 /**

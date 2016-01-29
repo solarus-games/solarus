@@ -35,11 +35,12 @@ Separator::Separator(
     const Point& xy,
     const Size& size
 ):
-  Detector(COLLISION_CUSTOM, name, layer, xy, size) {
+  Entity(name, 0, layer, xy, size) {
 
   Debug::check_assertion((size.width == 16 && size.height > 16)
       || (size.width > 16 && size.height == 16), "Invalid separator size");
 
+  set_collision_modes(CollisionMode::COLLISION_CUSTOM);
   set_layer_independent_collisions(true);
 }
 
@@ -74,7 +75,7 @@ bool Separator::is_obstacle_for(Entity& other) {
 }
 
 /**
- * \copydoc Detector::test_collision_custom
+ * \copydoc Entity::test_collision_custom
  */
 bool Separator::test_collision_custom(Entity& entity) {
 
@@ -111,7 +112,7 @@ bool Separator::test_collision_custom(Entity& entity) {
 }
 
 /**
- * \copydoc Detector::notify_collision
+ * \copydoc Entity::notify_collision
  */
 void Separator::notify_collision(
     Entity& entity_overlapping, CollisionMode collision_mode) {
@@ -125,7 +126,7 @@ void Separator::notify_collision(
  */
 void Separator::notify_activating(int direction4) {
 
-  get_lua_context().separator_on_activating(*this, direction4);
+  get_lua_context()->separator_on_activating(*this, direction4);
 }
 
 /**
@@ -135,7 +136,7 @@ void Separator::notify_activating(int direction4) {
  */
 void Separator::notify_activated(int direction4) {
 
-  get_lua_context().separator_on_activated(*this, direction4);
+  get_lua_context()->separator_on_activated(*this, direction4);
 }
 
 }

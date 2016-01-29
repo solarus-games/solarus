@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Door.h"
 #include "solarus/entities/DynamicTile.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Explosion.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/lowlevel/Debug.h"
@@ -72,7 +72,7 @@ Door::Door(Game& game,
     int direction,
     const std::string& sprite_name,
     const std::string& savegame_variable):
-  Detector(COLLISION_FACING | COLLISION_SPRITE, name, layer, xy, Size(16, 16)),
+  Entity(name, 0, layer, xy, Size(16, 16)),
   savegame_variable(savegame_variable),
   opening_method(OpeningMethod::NONE),
   opening_condition(),
@@ -82,8 +82,11 @@ Door::Door(Game& game,
   initialized(false),
   next_hint_sound_date(0) {
 
-  Sprite& sprite = *create_sprite(sprite_name, true);
-  sprite.set_ignore_suspend(true);  // Continue the animation while the camera is moving.
+  set_collision_modes(CollisionMode::COLLISION_FACING | CollisionMode::COLLISION_SPRITE);
+
+  const SpritePtr& sprite = create_sprite(sprite_name);
+  sprite->enable_pixel_collisions();
+  sprite->set_ignore_suspend(true);  // Continue the animation while the camera is moving.
   set_direction(direction);
 
   if (is_saved()) {
@@ -92,7 +95,7 @@ Door::Door(Game& game,
   else {
     set_open(false);
   }
-  sprite.set_current_direction(direction);
+  sprite->set_current_direction(direction);
 }
 
 /**
@@ -166,7 +169,11 @@ void Door::set_open(bool door_open) {
     set_collision_modes(COLLISION_NONE); // to avoid being the hero's facing entity
   }
   else {
-    get_sprite().set_current_animation("closed");
+
+    const SpritePtr& sprite = get_sprite();
+    if (sprite != nullptr) {
+      sprite->set_current_animation("closed");
+    }
     set_collision_modes(COLLISION_FACING | COLLISION_SPRITE);
 
     // ensure that we are not closing the door on the hero
@@ -183,10 +190,10 @@ void Door::set_open(bool door_open) {
     }
 
     if (door_open) {
-      get_lua_context().door_on_opened(*this);
+      get_lua_context()->door_on_opened(*this);
     }
     else {
-      get_lua_context().door_on_closed(*this);
+      get_lua_context()->door_on_closed(*this);
     }
   }
 }
@@ -241,7 +248,7 @@ void Door::notify_collision(Entity& entity_overlapping, CollisionMode /* collisi
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Door::notify_collision(Entity& other_entity, Sprite& /* this_sprite */, Sprite& other_sprite) {
 
@@ -484,7 +491,7 @@ void Door::set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id) {
  */
 void Door::set_suspended(bool suspended) {
 
-  Detector::set_suspended(suspended);
+  Entity::set_suspended(suspended);
 
   if (!suspended && next_hint_sound_date > 0) {
     next_hint_sound_date += System::now() - get_when_suspended();
@@ -496,7 +503,7 @@ void Door::set_suspended(bool suspended) {
  */
 void Door::update() {
 
-  Detector::update();
+  Entity::update();
 
   if (!initialized) {
     update_dynamic_tiles();
@@ -513,7 +520,10 @@ void Door::update() {
     next_hint_sound_date = System::now() + 500;
   }
 
-  if (is_changing() && get_sprite().is_animation_finished()) {
+  const SpritePtr& sprite = get_sprite();
+  if (is_changing() &&
+      sprite != nullptr &&
+      sprite->is_animation_finished()) {
     // Toggle door_open when the changing animation finishes.
     set_open(is_opening());
   }
@@ -534,17 +544,13 @@ void Door::update() {
  */
 void Door::draw_on_map() {
 
-  if (!is_drawn()) {
-    return;
-  }
-
   if (has_sprite() && !is_open()) {
-    Detector::draw_on_map();
+    Entity::draw_on_map();
   }
 }
 
 /**
- * \copydoc Detector::notify_action_command_pressed
+ * \copydoc Entity::notify_action_command_pressed
  */
 bool Door::notify_action_command_pressed() {
 
@@ -665,9 +671,10 @@ void Door::open() {
  */
 void Door::set_opening() {
 
-  if (get_sprite().has_animation("opening")) {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr && sprite->has_animation("opening")) {
     state = OPENING;
-    get_sprite().set_current_animation("opening");
+    sprite->set_current_animation("opening");
   }
   else {
     set_open(true);
@@ -698,9 +705,10 @@ void Door::close() {
  */
 void Door::set_closing() {
 
-  if (get_sprite().has_animation("closing")) {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr && sprite->has_animation("closing")) {
     state = CLOSING;
-    get_sprite().set_current_animation("closing");
+    sprite->set_current_animation("closing");
   }
   else {
     set_open(false);

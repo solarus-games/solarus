@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +25,13 @@
 #include "solarus/entities/Door.h"
 #include "solarus/entities/DynamicTile.h"
 #include "solarus/entities/Enemy.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/EntityTypeInfo.h"
 #include "solarus/entities/Explosion.h"
 #include "solarus/entities/Fire.h"
 #include "solarus/entities/GroundInfo.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Jumper.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Npc.h"
 #include "solarus/entities/Pickable.h"
 #include "solarus/entities/Sensor.h"
@@ -77,13 +77,17 @@ void LuaContext::register_map_module() {
       { "get_id", map_api_get_id },
       { "get_game", map_api_get_game },
       { "get_world", map_api_get_world },
-      { "get_num_layers", map_api_get_num_layers },
+      { "set_world", map_api_set_world },
+      { "get_min_layer", map_api_get_min_layer },
+      { "get_max_layer", map_api_get_max_layer },
       { "get_size", map_api_get_size },
       { "get_location", map_api_get_location },
       { "get_floor", map_api_get_floor },
+      { "set_floor", map_api_set_floor },
       { "get_tileset", map_api_get_tileset },
       { "set_tileset", map_api_set_tileset },
       { "get_music", map_api_get_music },
+      { "get_camera", map_api_get_camera },
       { "get_camera_position", map_api_get_camera_position },
       { "move_camera", map_api_move_camera },
       { "get_ground", map_api_get_ground },
@@ -99,7 +103,9 @@ void LuaContext::register_map_module() {
       { "get_entities", map_api_get_entities },
       { "get_entities_count", map_api_get_entities_count },
       { "has_entities", map_api_has_entities },
+      { "get_entities_by_type", map_api_get_entities_by_type },
       { "get_entities_in_rectangle", map_api_get_entities_in_rectangle },
+      { "get_entities_in_region", map_api_get_entities_in_region },
       { "get_hero", map_api_get_hero },
       { "set_entities_enabled", map_api_set_entities_enabled },
       { "remove_entities", map_api_remove_entities },
@@ -635,7 +641,6 @@ int LuaContext::l_create_enemy(lua_State* l) {
     EntityPtr entity = Enemy::create(
         game,
         data.get_string("breed"),
-        Enemy::Rank(data.get_integer("rank")),
         entity_creation_check_savegame_variable_optional(l, 1, data, "savegame_variable"),
         data.get_name(),
         entity_creation_check_layer(l, 1, data, map),
@@ -1281,6 +1286,46 @@ int LuaContext::l_get_map_entity_or_global(lua_State* l) {
 }
 
 /**
+ * \brief Closure of an iterator over a list of entities.
+ *
+ * This closure expects 3 upvalues in this order:
+ * - The array of entities.
+ * - The size of the array (for performance).
+ * - The current index in the array.
+ *
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_map_get_entities_next(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+
+    // Get upvalues.
+    const int table_index = lua_upvalueindex(1);
+    const int size = lua_tointeger(l, lua_upvalueindex(2));
+    int index = lua_tointeger(l, lua_upvalueindex(3));
+
+    if (index > size) {
+      // Finished.
+      lua_pushnil(l);
+    }
+    else {
+
+      // Get the next value.
+      lua_pushinteger(l, index);
+      lua_gettable(l, table_index);
+
+      // Increment index.
+      ++index;
+      lua_pushinteger(l, index);
+      lua_replace(l, lua_upvalueindex(3));
+    }
+
+    return 1;
+  });
+}
+
+/**
  * \brief Executes the callback function of a camera movement.
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -1375,16 +1420,54 @@ int LuaContext::map_api_get_world(lua_State* l) {
 }
 
 /**
- * \brief Implementation of map:get_num_layers().
+ * \brief Implementation of map:set_world().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
-int LuaContext::map_api_get_num_layers(lua_State* l) {
+int LuaContext::map_api_set_world(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    std::string world;
+    if (lua_type(l, 2) != LUA_TSTRING && lua_type(l, 2) != LUA_TNIL) {
+      LuaTools::type_error(l, 2, "string or nil");
+    }
+    if (!lua_isnil(l, 2)) {
+      world = LuaTools::check_string(l, 2);
+    }
+
+    map.set_world(world);
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of map:get_min_layer().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_min_layer(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const Map& map = *check_map(l, 1);
 
-    lua_pushinteger(l, map.get_num_layers());
+    lua_pushinteger(l, map.get_min_layer());
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of map:get_max_layer().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_max_layer(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Map& map = *check_map(l, 1);
+
+    lua_pushinteger(l, map.get_max_layer());
     return 1;
   });
 }
@@ -1406,6 +1489,29 @@ int LuaContext::map_api_get_floor(lua_State* l) {
       lua_pushinteger(l, map.get_floor());
     }
     return 1;
+  });
+}
+
+/**
+ * \brief Implementation of map:set_floor().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_set_floor(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    int floor = MapData::NO_FLOOR;
+    if (lua_type(l, 2) != LUA_TNUMBER && lua_type(l, 2) != LUA_TNIL) {
+      LuaTools::type_error(l, 2, "number or nil");
+    }
+    if (!lua_isnil(l, 2)) {
+      floor = LuaTools::check_int(l, 2);
+    }
+
+    map.set_floor(floor);
+
+    return 0;
   });
 }
 
@@ -1502,6 +1608,22 @@ int LuaContext::map_api_set_tileset(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of map:get_camera().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_camera(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+
+    // Return the hero even if he is no longer on this map.
+    push_camera(l, map.get_camera());
+    return 1;
+  });
+}
+
+/**
  * \brief Implementation of map:get_camera_position().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -1511,7 +1633,7 @@ int LuaContext::map_api_get_camera_position(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const Map& map = *check_map(l, 1);
 
-    const Rectangle& camera_position = map.get_camera_position();
+    const Rectangle& camera_position = map.get_camera().get_bounding_box();
 
     lua_pushinteger(l, camera_position.get_x());
     lua_pushinteger(l, camera_position.get_y());
@@ -1568,12 +1690,12 @@ int LuaContext::map_api_move_camera(lua_State* l) {
 int LuaContext::map_api_get_ground(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const Map& map = *check_map(l, 1);
+    Map& map = *check_map(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
     int layer = LuaTools::check_layer(l, 4, map);
 
-    Ground ground = map.get_ground(layer, x, y);
+    Ground ground = map.get_ground(layer, x, y, nullptr);
 
     push_string(l, enum_to_name(ground));
     return 1;
@@ -1662,7 +1784,7 @@ int LuaContext::map_api_open_doors(lua_State* l) {
     const std::string& prefix = LuaTools::check_string(l, 2);
 
     bool done = false;
-    MapEntities& entities = map.get_entities();
+    Entities& entities = map.get_entities();
     const std::vector<EntityPtr>& doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
     for (const EntityPtr& entity: doors) {
       Door& door = *std::static_pointer_cast<Door>(entity);
@@ -1694,7 +1816,7 @@ int LuaContext::map_api_close_doors(lua_State* l) {
     const std::string& prefix = LuaTools::check_string(l, 2);
 
     bool done = false;
-    MapEntities& entities = map.get_entities();
+    Entities& entities = map.get_entities();
     const std::vector<EntityPtr>& doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
     for (const EntityPtr& entity: doors) {
       Door& door = *std::static_pointer_cast<Door>(entity);
@@ -1726,7 +1848,7 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
     const std::string& prefix = LuaTools::check_string(l, 2);
     bool open = LuaTools::opt_boolean(l, 3, true);
 
-    MapEntities& entities = map.get_entities();
+    Entities& entities = map.get_entities();
     const std::vector<EntityPtr>& doors = entities.get_entities_with_prefix(EntityType::DOOR, prefix);
     for (const EntityPtr& entity: doors) {
       Door& door = *std::static_pointer_cast<Door>(entity);
@@ -1787,25 +1909,13 @@ int LuaContext::map_api_get_entities(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
-    const std::string& prefix = LuaTools::check_string(l, 2);
+    const std::string& prefix = LuaTools::opt_string(l, 2, "");
 
-    const std::vector<EntityPtr> entities =
-        map.get_entities().get_entities_with_prefix(prefix);
+    const EntityVector& entities =
+        map.get_entities().get_entities_with_prefix_sorted(prefix);
 
-    lua_newtable(l);
-    for (const EntityPtr& entity: entities) {
-      push_entity(l, *entity);
-      lua_pushboolean(l, true);
-      lua_rawset(l, -3);
-    }
-    lua_getglobal(l, "pairs");
-    lua_pushvalue(l, -2);
-    lua_call(l, 1, 3);  // TODO don't call the pairs global value, implement our
-    // own iterator instead.
-    // Or at least store pairs in the registry (like we do
-    // with io.open) to be sure it is the original one.
-
-    return 3;
+    push_entity_iterator(l, entities);
+    return 1;
   });
 }
 
@@ -1820,7 +1930,7 @@ int LuaContext::map_api_get_entities_count(lua_State* l) {
     Map& map = *check_map(l, 1);
     const std::string& prefix = LuaTools::check_string(l, 2);
 
-    const std::vector<EntityPtr>& entities =
+    const EntityVector& entities =
         map.get_entities().get_entities_with_prefix(prefix);
 
     lua_pushinteger(l, entities.size());
@@ -1845,6 +1955,25 @@ int LuaContext::map_api_has_entities(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of map:get_entities_by_type().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_entities_by_type(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    EntityType type = LuaTools::check_enum<EntityType>(l, 2);
+
+    const EntityVector& entities =
+        map.get_entities().get_entities_by_type_sorted(type);
+
+    push_entity_iterator(l, entities);
+    return 1;
+  });
+}
+
+/**
  * \brief Implementation of map:get_entities_in_rectangle().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -1858,23 +1987,55 @@ int LuaContext::map_api_get_entities_in_rectangle(lua_State* l) {
     const int width = LuaTools::check_int(l, 4);
     const int height = LuaTools::check_int(l, 5);
 
-    std::vector<EntityPtr> entities;
-    map.get_entities().get_entities_in_rectangle(
+    EntityVector entities;
+    map.get_entities().get_entities_in_rectangle_sorted(
         Rectangle(x, y, width, height), entities
     );
 
-    lua_newtable(l);
-    for (const EntityPtr& entity: entities) {
-      push_entity(l, *entity);
-      lua_pushboolean(l, true);
-      lua_rawset(l, -3);
-    }
-    lua_getglobal(l, "pairs");
-    lua_pushvalue(l, -2);
-    lua_call(l, 1, 3);
-    // TODO factorize with get_entities()
+    push_entity_iterator(l, entities);
+    return 1;
+  });
+}
 
-    return 3;
+/**
+ * \brief Implementation of map:get_entities_in_region().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_entities_in_region(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Map& map = *check_map(l, 1);
+    Point xy;
+    EntityPtr entity;
+    if (lua_isnumber(l, 2)) {
+      int x = LuaTools::check_int(l, 2);
+      int y = LuaTools::check_int(l, 3);
+      xy = Point(x, y);
+    }
+    else if (is_entity(l, 2)) {
+      entity = check_entity(l, 2);
+      xy = entity->get_xy();
+    }
+    else {
+      LuaTools::type_error(l, 2, "entity or number");
+    }
+
+    EntityVector entities;
+    map.get_entities().get_entities_in_region_sorted(
+        xy, entities
+    );
+
+    if (entity != nullptr) {
+      // Entity variant: remove the entity itself.
+      const auto& it = std::find(entities.begin(), entities.end(), entity);
+      if (it != entities.end()) {
+        entities.erase(it);
+      }
+    }
+
+    push_entity_iterator(l, entities);
+    return 1;
   });
 }
 

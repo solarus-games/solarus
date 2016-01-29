@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
- * 
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -36,11 +36,11 @@ Hero::ForcedWalkingState::ForcedWalkingState(
     bool loop,
     bool ignore_obstacles):
 
-  BaseState(hero, "forced walking") {
-
-  this->movement = std::make_shared<PathMovement>(
+  BaseState(hero, "forced walking"),
+  movement(std::make_shared<PathMovement>(
       path, hero.get_walking_speed(), loop, ignore_obstacles, false
-  );
+  )) {
+
 }
 
 /**
@@ -49,7 +49,7 @@ Hero::ForcedWalkingState::ForcedWalkingState(
  */
 void Hero::ForcedWalkingState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   // update the sprites
   HeroSprites& sprites = get_sprites();
@@ -65,7 +65,7 @@ void Hero::ForcedWalkingState::start(const State* previous_state) {
  */
 void Hero::ForcedWalkingState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   get_entity().clear_movement();
 }
@@ -75,7 +75,7 @@ void Hero::ForcedWalkingState::stop(const State* next_state) {
  */
 void Hero::ForcedWalkingState::update() {
 
-  State::update();
+  BaseState::update();
 
   get_sprites().set_animation_direction(movement->get_displayed_direction4());
 

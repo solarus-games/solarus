@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,10 +76,10 @@ void Hero::BaseState::notify_attack_command_pressed() {
   Hero& hero = get_entity();
 
   if (!hero.is_suspended()
-      && get_commands_effects().get_sword_key_effect() == CommandsEffects::SWORD_KEY_SWORD
+      && get_commands_effects().get_sword_key_effect() == CommandsEffects::ATTACK_KEY_SWORD
       && hero.can_start_sword()) {
 
-    hero.set_state(new Hero::SwordSwingingState(hero));
+    hero.start_sword();
   }
 }
 
@@ -171,7 +171,7 @@ bool Hero::BaseState::is_jumper_obstacle(
   ) {
     // Other special case: trying to enter the jumper the reverse way while
     // swimming: we accept this to allow the hero to leave water pools.
-    // TODO I'm not sure this behavior is really a good idea.
+    // TODO I'm not sure if this behavior is really a good idea.
     // This may change in a future version.
     return false;
   }

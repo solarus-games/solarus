@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,12 +46,12 @@ Movement::Movement(bool ignore_obstacles):
   xy(0, 0),
   last_move_date(0),
   finished(false),
+  lua_notifications_enabled(true),
   suspended(false),
   when_suspended(0),
   last_collision_box_on_obstacle(-1, -1),
   default_ignore_obstacles(ignore_obstacles),
   current_ignore_obstacles(ignore_obstacles),
-  lua_context(nullptr),
   finished_callback_ref() {
 
 }
@@ -264,7 +264,7 @@ void Movement::translate_xy(const Point& dxy) {
 void Movement::notify_position_changed() {
 
   LuaContext* lua_context = get_lua_context();
-  if (lua_context != nullptr) {
+  if (lua_context != nullptr && are_lua_notifications_enabled()) {
     lua_context->movement_on_position_changed(*this, get_xy());
   }
 
@@ -282,7 +282,7 @@ void Movement::notify_position_changed() {
 void Movement::notify_obstacle_reached() {
 
   LuaContext* lua_context = get_lua_context();
-  if (lua_context != nullptr) {
+  if (lua_context != nullptr && are_lua_notifications_enabled()) {
     lua_context->movement_on_obstacle_reached(*this);
   }
 
@@ -298,7 +298,7 @@ void Movement::notify_obstacle_reached() {
 void Movement::notify_movement_changed() {
 
   LuaContext* lua_context = get_lua_context();
-  if (lua_context != nullptr) {
+  if (lua_context != nullptr && are_lua_notifications_enabled()) {
     lua_context->movement_on_changed(*this);
   }
 
@@ -313,7 +313,7 @@ void Movement::notify_movement_changed() {
 void Movement::notify_movement_finished() {
 
   LuaContext* lua_context = get_lua_context();
-  if (lua_context != nullptr) {
+  if (lua_context != nullptr && are_lua_notifications_enabled()) {
     finished_callback_ref.clear_and_call("movement callback");
     lua_context->movement_on_finished(*this);
   }
@@ -536,23 +536,6 @@ Point Movement::get_displayed_xy() const {
 }
 
 /**
- * \brief Returns the Solarus Lua API.
- * \return The Lua context, or nullptr if Lua callbacks are not enabled for this movement.
- */
-LuaContext* Movement::get_lua_context() {
-  return lua_context;
-}
-
-/**
- * \brief Sets the Solarus Lua API.
- * \param lua_context The Lua context, or nullptr to disable Lua callbacks
- * for this movement.
- */
-void Movement::set_lua_context(LuaContext* lua_context) {
-  this->lua_context = lua_context;
-}
-
-/**
  * \brief Returns the Lua registry ref to the function to call when this
  * movement finishes.
  * \return The Lua ref to a function, or an empty ref.
@@ -570,6 +553,32 @@ void Movement::set_finished_callback(const ScopedLuaRef& finished_callback_ref) 
   Debug::check_assertion(get_lua_context() != nullptr, "Undefined Lua context");
 
   this->finished_callback_ref = finished_callback_ref;
+}
+
+/**
+ * \brief Returns whether Lua events and callbacks are enabled for this movement.
+ *
+ * If no, the finished callback and events
+ * movement:on_position_changed(), movement:on_obstacle_reached(),
+ * movement:on_changed() and movement:on_finished() won't be called.
+ *
+ * \return Whether Lua notifications are currently enabled.
+ */
+bool Movement::are_lua_notifications_enabled() const {
+  return lua_notifications_enabled;
+}
+
+/**
+ * \brief Sets whether Lua events and callbacks are enabled for this movement.
+ *
+ * If no, the finished callback and events
+ * movement:on_position_changed(), movement:on_obstacle_reached(),
+ * movement:on_changed() and movement:on_finished() won't be called.
+ *
+ * \param notify \c true to enable Lua notifications.
+ */
+void Movement::set_lua_notifications_enabled(bool notify) {
+  this->lua_notifications_enabled = notify;
 }
 
 /**

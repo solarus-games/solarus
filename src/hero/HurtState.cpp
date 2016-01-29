@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ Hero::HurtState::HurtState(
  */
 void Hero::HurtState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  BaseState::start(previous_state);
 
   Equipment& equipment = get_equipment();
 
@@ -101,7 +101,7 @@ void Hero::HurtState::start(const State* previous_state) {
  */
 void Hero::HurtState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  BaseState::stop(next_state);
 
   get_entity().clear_movement();
 }
@@ -111,7 +111,7 @@ void Hero::HurtState::stop(const State* next_state) {
  */
 void Hero::HurtState::update() {
 
-  State::update();
+  BaseState::update();
 
   Hero& hero = get_entity();
   if ((hero.get_movement() != nullptr && hero.get_movement()->is_finished())
@@ -130,7 +130,7 @@ void Hero::HurtState::update() {
  */
 void Hero::HurtState::set_suspended(bool suspended) {
 
-  State::set_suspended(suspended);
+  BaseState::set_suspended(suspended);
 
   if (!suspended) {
     uint32_t diff = System::now() - get_when_suspended();

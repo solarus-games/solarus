@@ -1,0 +1,62 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  min_layer = 0,
+  max_layer = 2,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  pattern = "3",
+}
+
+chest{
+  name = "empty_chest_1",
+  layer = 0,
+  x = 24,
+  y = 29,
+  sprite = "entities/chest",
+}
+
+chest{
+  name = "chest_1",
+  layer = 0,
+  x = 24,
+  y = 61,
+  treasure_name = "bomb",
+  sprite = "entities/chest",
+}
+
+chest{
+  name = "chest_2",
+  layer = 0,
+  x = 56,
+  y = 61,
+  treasure_name = "sword",
+  treasure_savegame_variable = "sword_chest",
+  sprite = "entities/chest",
+}
+
+chest{
+  name = "empty_chest_2",
+  layer = 0,
+  x = 56,
+  y = 29,
+  treasure_savegame_variable = "empty_chest",
+  sprite = "entities/chest",
+}
+
+destination{
+  layer = 0,
+  x = 40,
+  y = 45,
+  direction = 1,
+}
+

@@ -1,0 +1,37 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 640,
+  height = 240,
+  min_layer = 0,
+  max_layer = 2,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 640,
+  height = 240,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 128,
+  y = 96,
+  width = 48,
+  height = 32,
+  pattern = "2",
+}
+
+tile{
+  layer = 0,
+  x = 512,
+  y = 160,
+  width = 48,
+  height = 32,
+  pattern = "2",
+}
+

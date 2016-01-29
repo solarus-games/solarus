@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,8 @@ namespace Solarus {
  * \brief Creates an empty map data object.
  */
 MapData::MapData():
-    num_layers(),
+    min_layer(0),
+    max_layer(-1),
     size(0, 0),
     world(),
     location(0, 0),
@@ -37,7 +38,8 @@ MapData::MapData():
     entities(),
     named_entities() {
 
-  set_num_layers(3);
+  set_min_layer(0);
+  set_max_layer(0);
 }
 
 /**
@@ -73,31 +75,35 @@ void MapData::set_location(const Point& location) {
 }
 
 /**
- * \brief Returns the number of layers on the map.
- * \return The number of layers.
+ * \brief Returns the lowest layer of the map.
+ * \return The lowest layer.
  */
-int MapData::get_num_layers() const {
-  return num_layers;
+int MapData::get_min_layer() const {
+  return min_layer;
 }
 
 /**
- * \brief Changes the number of layers of the map.
- * \param num_layers The new number of layers.
- * If you reduce it, entities in removed layers are destroyed.
+ * \brief Changes the lowest layer of the map.
+ * \param min_layer The new lowest layer.
+ * If you increase it, entities in removed layers are destroyed.
  */
-void MapData::set_num_layers(int num_layers) {
+void MapData::set_min_layer(int min_layer) {
 
-  Debug::check_assertion(num_layers > 0, "The number of layers must be positive");
+  Debug::check_assertion(min_layer <= 0, "The min layer should be lower than or equal to 0");
 
-  if (num_layers == this->num_layers) {
+  if (min_layer == this->min_layer) {
     // No change.
     return;
   }
 
-  if (num_layers < this->num_layers) {
+  if (min_layer > this->min_layer) {
     // Removing some layers: entities may be removed.
-    // Take care of the entity by name structure.
-    for (int layer = this->num_layers - 1; layer >= num_layers; --layer) {
+    for (int layer = this->min_layer; layer < min_layer; ++layer) {
+
+      // Update the entities by layer structure.
+      entities.erase(layer);
+
+      // Update the entities by name structure.
       for (const EntityData& entity : entities[layer].entities) {
         if (entity.has_name()) {
           named_entities.erase(entity.get_name());
@@ -105,9 +111,61 @@ void MapData::set_num_layers(int num_layers) {
       }
     }
   }
+  else {
+    // Adding layers.
+    for (int layer = this->min_layer - 1; layer >= min_layer; --layer) {
+      entities.emplace(layer, EntityDataList());
+    }
+  }
 
-  this->num_layers = num_layers;
-  entities.resize(num_layers);
+  this->min_layer = min_layer;
+}
+
+/**
+ * \brief Returns the highest layer of the map.
+ * \return The highest layer.
+ */
+int MapData::get_max_layer() const {
+  return max_layer;
+}
+
+/**
+ * \brief Changes the highest layer of the map.
+ * \param max_layer The new highest layer.
+ * If you decrease it, entities in removed layers are destroyed.
+ */
+void MapData::set_max_layer(int max_layer) {
+
+  Debug::check_assertion(max_layer >= 0, "The max layer should be higher than or equal to 0");
+
+  if (max_layer == this->max_layer) {
+    // No change.
+    return;
+  }
+
+  if (max_layer < this->max_layer) {
+    // Removing some layers: entities may be removed.
+    for (int layer = this->max_layer; layer > max_layer; --layer) {
+
+      // Update the entities by layer structure.
+      entities.erase(layer);
+
+      // Update the entities by name structure.
+      for (const EntityData& entity : entities[layer].entities) {
+        if (entity.has_name()) {
+          named_entities.erase(entity.get_name());
+        }
+      }
+    }
+  }
+  else {
+    // Adding layers.
+    for (int layer = this->max_layer + 1; layer <= max_layer; ++layer) {
+      entities.emplace(layer, EntityDataList());
+    }
+  }
+
+  this->max_layer = max_layer;
 }
 
 /**
@@ -117,7 +175,7 @@ void MapData::set_num_layers(int num_layers) {
  */
 bool MapData::is_valid_layer(int layer) const {
 
-  return layer >= 0 && layer < get_num_layers();
+  return layer >= get_min_layer() && layer <= get_max_layer();
 }
 
 /**
@@ -217,7 +275,7 @@ void MapData::set_music_id(const std::string& music_id) {
 int MapData::get_num_entities() const {
 
   int num_entities = 0;
-  for (int layer = 0; layer < get_num_layers(); ++layer) {
+  for (int layer = get_min_layer(); layer <= get_max_layer(); ++layer) {
     num_entities += get_num_entities(layer);
   }
 
@@ -239,7 +297,10 @@ int MapData::get_num_entities(int layer) const {
  * \return The number of tiles on that layer.
  */
 int MapData::get_num_tiles(int layer) const {
-  return entities[layer].num_tiles;
+
+  Debug::check_assertion(is_valid_layer(layer), "Invalid layer");
+
+  return entities.at(layer).num_tiles;
 }
 
 /**
@@ -257,7 +318,10 @@ int MapData::get_num_dynamic_entities(int layer) const {
  * \return The entities on that layer.
  */
 const std::deque<EntityData>& MapData::get_entities(int layer) const {
-  return entities[layer].entities;
+
+  Debug::check_assertion(is_valid_layer(layer), "Invalid layer");
+
+  return entities.at(layer).entities;
 }
 
 /**
@@ -266,7 +330,10 @@ const std::deque<EntityData>& MapData::get_entities(int layer) const {
  * Non-const version.
  */
 std::deque<EntityData>& MapData::get_entities(int layer) {
-  return entities[layer].entities;
+
+  Debug::check_assertion(is_valid_layer(layer), "Invalid layer");
+
+  return entities.at(layer).entities;
 }
 
 /**
@@ -780,20 +847,25 @@ int l_properties(lua_State* l) {
     const int y = LuaTools::opt_int_field(l, 1, "y", 0);
     const int width = LuaTools::check_int_field(l, 1, "width");
     const int height = LuaTools::check_int_field(l, 1, "height");
-    const int num_layers = LuaTools::check_int_field(l, 1, "num_layers");
+    const int min_layer = LuaTools::check_int_field(l, 1, "min_layer");
+    const int max_layer = LuaTools::check_int_field(l, 1, "max_layer");
     const std::string& world = LuaTools::opt_string_field(l, 1 , "world", "");
     const int floor = LuaTools::opt_int_field(l, 1, "floor", MapData::NO_FLOOR);
     const std::string& tileset_id = LuaTools::check_string_field(l, 1, "tileset");
     const std::string& music_id = LuaTools::opt_string_field(l, 1, "music", "none");
 
-    if (num_layers <= 0) {
-      LuaTools::arg_error(l, 1, "num_layers must be positive");
+    if (min_layer > 0) {
+      LuaTools::arg_error(l, 1, "min_layer must be lower than or equal to 0");
+    }
+    if (max_layer < 0) {
+      LuaTools::arg_error(l, 1, "max_layer must be higher than or equal to 0");
     }
 
     // Initialize the map data.
     map.set_location({ x, y });
     map.set_size({ width, height });
-    map.set_num_layers(num_layers);
+    map.set_min_layer(min_layer);
+    map.set_max_layer(max_layer);
     map.set_music_id(music_id);
     map.set_world(world);
     map.set_floor(floor);
@@ -842,7 +914,8 @@ bool MapData::export_to_lua(std::ostream& out) const {
       << "  y = " << get_location().y << ",\n"
       << "  width = " << get_size().width << ",\n"
       << "  height = " << get_size().height << ",\n"
-      << "  num_layers = " << get_num_layers() << ",\n";
+      << "  min_layer = " << get_min_layer() << ",\n"
+      << "  max_layer = " << get_max_layer() << ",\n";
   if (has_world()) {
     out << "  world = \"" << escape_string(get_world()) << "\",\n";
   }
@@ -855,7 +928,8 @@ bool MapData::export_to_lua(std::ostream& out) const {
   }
   out << "}\n\n";
 
-  for (const EntityDataList& layer_entities : entities) {
+  for (const auto& kvp : entities) {
+    const EntityDataList& layer_entities = kvp.second;
     for (const EntityData& entity_data : layer_entities.entities) {
       bool success = entity_data.export_to_lua(out);
       Debug::check_assertion(success, "Entity export failed");

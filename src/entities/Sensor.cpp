@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/Sensor.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Sensor.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/Debug.h"
 
 namespace Solarus {
 
@@ -37,10 +37,11 @@ Sensor::Sensor(
     int layer,
     const Point& xy,
     const Size& size):
-  Detector(COLLISION_CONTAINING | COLLISION_OVERLAPPING, name, layer, xy, size),
+  Entity(name, 0, layer, xy, size),
   activated_by_hero(false),
   notifying_script(false) {
 
+  set_collision_modes(CollisionMode::COLLISION_CONTAINING | CollisionMode::COLLISION_OVERLAPPING);
   set_origin(8, 13);
 }
 
@@ -88,7 +89,7 @@ void Sensor::notify_collision(Entity& entity_overlapping, CollisionMode collisio
 void Sensor::notify_collision_with_explosion(Explosion& /* explosion */, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_OVERLAPPING) {
-    get_lua_context().sensor_on_collision_explosion(*this);
+    get_lua_context()->sensor_on_collision_explosion(*this);
   }
 }
 
@@ -107,13 +108,13 @@ void Sensor::activate(Hero& /* hero */) {
 
     // Notify Lua.
     notifying_script = true;
-    get_lua_context().sensor_on_activated(*this);
+    get_lua_context()->sensor_on_activated(*this);
     notifying_script = false;
   }
   else {
     if (!notifying_script && !get_game().is_suspended()) {
       notifying_script = true;
-      get_lua_context().sensor_on_activated_repeat(*this);
+      get_lua_context()->sensor_on_activated_repeat(*this);
       notifying_script = false;
     }
   }
@@ -124,7 +125,7 @@ void Sensor::activate(Hero& /* hero */) {
  */
 void Sensor::update() {
 
-  Detector::update();
+  Entity::update();
 
   if (activated_by_hero) {
     // check whether the hero is still present
@@ -133,7 +134,7 @@ void Sensor::update() {
 
       // Notify Lua.
       notifying_script = true;
-      get_lua_context().sensor_on_left(*this);
+      get_lua_context()->sensor_on_left(*this);
       notifying_script = false;
     }
   }

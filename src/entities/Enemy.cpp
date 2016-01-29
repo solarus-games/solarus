@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,30 +14,30 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/Enemy.h"
-#include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
-#include "solarus/entities/CarriedItem.h"
-#include "solarus/entities/Pickable.h"
-#include "solarus/entities/Destructible.h"
-#include "solarus/entities/CrystalBlock.h"
 #include "solarus/entities/Block.h"
+#include "solarus/entities/CarriedObject.h"
+#include "solarus/entities/CrystalBlock.h"
+#include "solarus/entities/Destructible.h"
+#include "solarus/entities/Enemy.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Fire.h"
-#include "solarus/lua/LuaContext.h"
-#include "solarus/Game.h"
-#include "solarus/Savegame.h"
-#include "solarus/Equipment.h"
-#include "solarus/Sprite.h"
-#include "solarus/SpriteAnimationSet.h"
-#include "solarus/Map.h"
-#include "solarus/movements/StraightMovement.h"
-#include "solarus/movements/FallingHeight.h"
+#include "solarus/entities/Hero.h"
+#include "solarus/entities/Pickable.h"
+#include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Random.h"
-#include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Sound.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/movements/FallingHeight.h"
+#include "solarus/movements/StraightMovement.h"
+#include "solarus/Equipment.h"
+#include "solarus/Game.h"
+#include "solarus/Map.h"
+#include "solarus/Savegame.h"
+#include "solarus/Sprite.h"
+#include "solarus/SpriteAnimationSet.h"
 #include <memory>
 #include <sstream>
 
@@ -83,8 +83,7 @@ Enemy::Enemy(
     const std::string& breed,
     const Treasure& treasure
 ):
-  Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE,
-      name, layer, xy, Size(0, 0)),
+  Entity(name, 0, layer, xy, Size(0, 0)),
   breed(breed),
   damage_on_hero(1),
   life(1),
@@ -93,7 +92,6 @@ Enemy::Enemy(
   push_hero_on_sword(false),
   can_hurt_hero_running(false),
   minimum_shield_needed(0),
-  rank(Rank::NORMAL),
   savegame_variable(),
   traversable(true),
   obstacle_behavior(ObstacleBehavior::NORMAL),
@@ -112,6 +110,7 @@ Enemy::Enemy(
   nb_explosions(0),
   next_explosion_date(0) {
 
+  set_collision_modes(CollisionMode::COLLISION_OVERLAPPING | CollisionMode::COLLISION_SPRITE);
   set_size(16, 16);
   set_origin(8, 13);
   set_drawn_in_y_order(true);
@@ -129,7 +128,6 @@ Enemy::Enemy(
  * \param game the current game
  * \param breed breed of the enemy to create
  * \param name a name identifying the enemy
- * \param rank rank of the enemy: normal, miniboss or boss
  * \param savegame_variable name of the boolean variable indicating that the enemy is dead
  * \param layer layer of the enemy on the map
  * \param xy Coordinates of the enemy on the map.
@@ -141,7 +139,6 @@ Enemy::Enemy(
 EntityPtr Enemy::create(
     Game& game,
     const std::string& breed,
-    Rank rank,
     const std::string& savegame_variable,
     const std::string& name,
     int layer,
@@ -167,13 +164,7 @@ EntityPtr Enemy::create(
 
   // initialize the fields
   enemy->set_direction(direction);
-  enemy->rank = rank;
   enemy->savegame_variable = savegame_variable;
-
-  if (rank != Rank::NORMAL) {
-    enemy->hurt_style = HurtStyle::BOSS;
-  }
-
   enemy->set_default_attack_consequences();
 
   return enemy;
@@ -200,7 +191,7 @@ bool Enemy::is_ground_observer() const {
  */
 void Enemy::notify_creating() {
 
-  get_lua_context().run_enemy(*this);
+  get_lua_context()->run_enemy(*this);
 }
 
 /**
@@ -208,15 +199,16 @@ void Enemy::notify_creating() {
  */
 void Enemy::notify_created() {
 
-  Detector::notify_created();
+  Entity::notify_created();
 
   // At this point, enemy:on_created() was called.
   enable_pixel_collisions();
 
   // Give sprites their initial direction.
   int initial_direction = get_direction();
-  for (const SpritePtr& sprite: get_sprites()) {
-    sprite->set_current_direction(initial_direction);
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    Sprite& sprite = *named_sprite.second;
+    sprite.set_current_direction(initial_direction);
   }
 
   if (is_enabled()) {
@@ -229,7 +221,7 @@ void Enemy::notify_created() {
  */
 void Enemy::notify_map_opening_transition_finished() {
 
-  Detector::notify_map_opening_transition_finished();
+  Entity::notify_map_opening_transition_finished();
 
   if (is_enabled() && is_in_normal_state()) {
     restart();
@@ -242,14 +234,6 @@ void Enemy::notify_map_opening_transition_finished() {
  */
 const std::string& Enemy::get_breed() const {
   return breed;
-}
-
-/**
- * \brief Returns the rank of the enemy.
- * \return the enemy rank
- */
-Enemy::Rank Enemy::get_rank() const {
-  return rank;
 }
 
 /**
@@ -356,10 +340,10 @@ bool Enemy::is_deep_water_obstacle() const {
   const int layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
-  if (get_map().get_ground(layer, x, y) == Ground::DEEP_WATER
-      || get_map().get_ground(layer, x + get_width() - 1, y) == Ground::DEEP_WATER
-      || get_map().get_ground(layer, x, y + get_height() - 1) == Ground::DEEP_WATER
-      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == Ground::DEEP_WATER) {
+  if (get_map().get_ground(layer, x, y, this) == Ground::DEEP_WATER
+      || get_map().get_ground(layer, x + get_width() - 1, y, this) == Ground::DEEP_WATER
+      || get_map().get_ground(layer, x, y + get_height() - 1, this) == Ground::DEEP_WATER
+      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1, this) == Ground::DEEP_WATER) {
     return false;
   }
 
@@ -391,10 +375,10 @@ bool Enemy::is_hole_obstacle() const {
   const int layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
-  if (get_map().get_ground(layer, x, y) == Ground::HOLE
-      || get_map().get_ground(layer, x + get_width() - 1, y) == Ground::HOLE
-      || get_map().get_ground(layer, x, y + get_height() - 1) == Ground::HOLE
-      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == Ground::HOLE) {
+  if (get_map().get_ground(layer, x, y, this) == Ground::HOLE
+      || get_map().get_ground(layer, x + get_width() - 1, y, this) == Ground::HOLE
+      || get_map().get_ground(layer, x, y + get_height() - 1, this) == Ground::HOLE
+      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1, this) == Ground::HOLE) {
     return false;
   }
 
@@ -426,10 +410,10 @@ bool Enemy::is_lava_obstacle() const {
   const int layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
-  if (get_map().get_ground(layer, x, y) == Ground::LAVA
-      || get_map().get_ground(layer, x + get_width() - 1, y) == Ground::LAVA
-      || get_map().get_ground(layer, x, y + get_height() - 1) == Ground::LAVA
-      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == Ground::LAVA) {
+  if (get_map().get_ground(layer, x, y, this) == Ground::LAVA
+      || get_map().get_ground(layer, x + get_width() - 1, y, this) == Ground::LAVA
+      || get_map().get_ground(layer, x, y + get_height() - 1, this) == Ground::LAVA
+      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1, this) == Ground::LAVA) {
     return false;
   }
 
@@ -742,9 +726,14 @@ void Enemy::set_default_attack_consequences_sprite(const Sprite& sprite) {
  *
  * \return name of the current animation of the first sprite
  */
-const std::string& Enemy::get_animation() const {
+std::string Enemy::get_animation() const {
 
-  return get_sprite().get_current_animation();
+  const SpritePtr& sprite = get_sprite();
+  if (sprite == nullptr) {
+    return "";
+  }
+
+  return sprite->get_current_animation();
 }
 
 /**
@@ -756,8 +745,9 @@ const std::string& Enemy::get_animation() const {
  */
 void Enemy::set_animation(const std::string& animation) {
 
-  for (const SpritePtr& sprite: get_sprites()) {
-    sprite->set_current_animation(animation);
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    Sprite& sprite = *named_sprite.second;
+    sprite.set_current_animation(animation);
   }
 }
 
@@ -766,7 +756,7 @@ void Enemy::set_animation(const std::string& animation) {
  */
 void Enemy::update() {
 
-  Detector::update();
+  Entity::update();
 
   if (is_suspended() || !is_enabled()) {
     return;
@@ -779,7 +769,7 @@ void Enemy::update() {
     // see if we should stop the animation "hurt"
     if (now >= stop_hurt_date) {
       being_hurt = false;
-      set_movement_events_enabled(true);
+      set_movement_notifications_enabled(true);
 
       if (life <= 0) {
         kill();
@@ -805,14 +795,21 @@ void Enemy::update() {
     can_attack = true;
   }
 
-  if (is_immobilized() && !is_killed() && now >= end_shaking_date &&
-      get_sprite().get_current_animation() == "shaking") {
-
+  if (is_immobilized() &&
+      !is_killed() &&
+      now >= end_shaking_date &&
+      get_animation() == "shaking"
+  ) {
     restart();
   }
 
-  if (is_immobilized() && !is_killed() && !is_being_hurt() && now >= start_shaking_date &&
-      get_sprite().get_current_animation() != "shaking") {
+  if (is_immobilized() &&
+      !is_killed() &&
+      !is_being_hurt() &&
+      now >= start_shaking_date &&
+      !get_animation().empty() &&
+      get_animation() != "shaking"
+  ) {
 
     end_shaking_date = now + 2000;
     set_animation("shaking");
@@ -827,7 +824,7 @@ void Enemy::update() {
       xy.x = get_top_left_x() + Random::get_number(get_width());
       xy.y = get_top_left_y() + Random::get_number(get_height());
       get_entities().add_entity(std::make_shared<Explosion>(
-          "", get_map().get_highest_layer(), xy, false
+          "", get_map().get_max_layer(), xy, false
       ));
       Sound::play("explosion");
 
@@ -862,7 +859,7 @@ void Enemy::update() {
     notify_dead();
   }
 
-  get_lua_context().entity_on_update(*this);
+  get_lua_context()->entity_on_update(*this);
 }
 
 /**
@@ -871,7 +868,7 @@ void Enemy::update() {
  */
 void Enemy::set_suspended(bool suspended) {
 
-  Detector::set_suspended(suspended);
+  Entity::set_suspended(suspended);
 
   if (!suspended) {
     uint32_t diff = System::now() - get_when_suspended();
@@ -884,7 +881,7 @@ void Enemy::set_suspended(bool suspended) {
     end_shaking_date += diff;
     next_explosion_date += diff;
   }
-  get_lua_context().entity_on_suspended(*this, suspended);
+  get_lua_context()->entity_on_suspended(*this, suspended);
 }
 
 /**
@@ -892,13 +889,9 @@ void Enemy::set_suspended(bool suspended) {
  */
 void Enemy::draw_on_map() {
 
-  if (!is_drawn()) {
-    return;
-  }
-
-  get_lua_context().entity_on_pre_draw(*this);
-  Detector::draw_on_map();
-  get_lua_context().entity_on_post_draw(*this);
+  get_lua_context()->entity_on_pre_draw(*this);
+  Entity::draw_on_map();
+  get_lua_context()->entity_on_post_draw(*this);
 }
 
 /**
@@ -907,7 +900,7 @@ void Enemy::draw_on_map() {
  */
 void Enemy::notify_enabled(bool enabled) {
 
-  Detector::notify_enabled(enabled);
+  Entity::notify_enabled(enabled);
 
   if (!is_on_map()) {
     return;
@@ -915,10 +908,10 @@ void Enemy::notify_enabled(bool enabled) {
 
   if (enabled) {
     restart();
-    get_lua_context().entity_on_enabled(*this);
+    get_lua_context()->entity_on_enabled(*this);
   }
   else {
-    get_lua_context().entity_on_disabled(*this);
+    get_lua_context()->entity_on_disabled(*this);
   }
 }
 
@@ -958,7 +951,7 @@ void Enemy::notify_collision(Entity& entity_overlapping, CollisionMode /* collis
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Enemy::notify_collision(Entity& other_entity, Sprite& this_sprite, Sprite& other_sprite) {
 
@@ -997,7 +990,7 @@ void Enemy::notify_collision_with_enemy(Enemy& other,
     Sprite& other_sprite, Sprite& this_sprite) {
 
   if (is_in_normal_state()) {
-    get_lua_context().enemy_on_collision_enemy(
+    get_lua_context()->enemy_on_collision_enemy(
         *this, other, other_sprite, this_sprite);
   }
 }
@@ -1043,7 +1036,7 @@ void Enemy::attack_hero(Hero& hero, Sprite* this_sprite) {
     }
     else {
       // Let the enemy script handle this if it wants.
-      const bool handled = get_lua_context().enemy_on_attacking_hero(
+      const bool handled = get_lua_context()->enemy_on_attacking_hero(
           *this, hero, this_sprite
       );
       if (!handled) {
@@ -1116,7 +1109,7 @@ void Enemy::restart() {
     stop_immobilized();
   }
   set_animation("walking");
-  get_lua_context().enemy_on_restarted(*this);
+  get_lua_context()->enemy_on_restarted(*this);
 }
 
 /**
@@ -1194,7 +1187,7 @@ void Enemy::try_hurt(EnemyAttack attack, Entity& source, Sprite* this_sprite) {
 
     case EnemyReaction::ReactionType::HURT:
 
-      if (is_immobilized() && get_sprite().get_current_animation() == "shaking") {
+      if (is_immobilized() && get_animation() == "shaking") {
         stop_immobilized();
       }
 
@@ -1211,7 +1204,7 @@ void Enemy::try_hurt(EnemyAttack attack, Entity& source, Sprite* this_sprite) {
         );
 
         // For a sword attack, the damage may be something customized.
-        bool customized = get_lua_context().enemy_on_hurt_by_sword(
+        bool customized = get_lua_context()->enemy_on_hurt_by_sword(
             *this, hero, *this_sprite);
 
         if (customized) {
@@ -1224,7 +1217,7 @@ void Enemy::try_hurt(EnemyAttack attack, Entity& source, Sprite* this_sprite) {
         }
       }
       else if (attack == EnemyAttack::THROWN_ITEM) {
-        reaction.life_lost *= static_cast<CarriedItem&>(source).get_damage_on_enemies();
+        reaction.life_lost *= static_cast<CarriedObject&>(source).get_damage_on_enemies();
       }
       life -= reaction.life_lost;
 
@@ -1260,7 +1253,7 @@ void Enemy::hurt(Entity& source, Sprite* this_sprite) {
   uint32_t now = System::now();
 
   // update the enemy state
-  set_movement_events_enabled(false);
+  set_movement_notifications_enabled(false);
 
   can_attack = false;
   can_attack_again_date = now + 300;
@@ -1293,9 +1286,9 @@ void Enemy::hurt(Entity& source, Sprite* this_sprite) {
  */
 void Enemy::notify_hurt(Entity& /* source */, EnemyAttack attack) {
 
-  get_lua_context().enemy_on_hurt(*this, attack);
+  get_lua_context()->enemy_on_hurt(*this, attack);
   if (get_life() <= 0) {
-    get_lua_context().enemy_on_dying(*this);
+    get_lua_context()->enemy_on_dying(*this);
   }
 }
 
@@ -1304,7 +1297,7 @@ void Enemy::notify_hurt(Entity& /* source */, EnemyAttack attack) {
  */
 void Enemy::notify_dead() {
 
-  get_lua_context().enemy_on_dead(*this);
+  get_lua_context()->enemy_on_dead(*this);
 }
 
 /**
@@ -1313,7 +1306,7 @@ void Enemy::notify_dead() {
  */
 void Enemy::notify_immobilized() {
 
-  get_lua_context().enemy_on_immobilized(*this);
+  get_lua_context()->enemy_on_immobilized(*this);
 }
 
 /**
@@ -1425,9 +1418,10 @@ bool Enemy::is_dying_animation_finished() const {
     return !exploding;
   }
 
-  if (has_sprite()) {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr) {
     // The dying animation is the usual "enemy_killed" sprite.
-    return get_sprite().is_animation_finished();
+    return sprite->is_animation_finished();
   }
 
   // There is no dying animation (case of holes, water and lava for now).
@@ -1472,8 +1466,12 @@ void Enemy::clear_treasure() {
  */
 bool Enemy::is_sprite_finished_or_looping() const {
 
-  const Sprite& sprite = get_sprite();
-  return sprite.is_animation_finished() || sprite.is_animation_looping();
+  const SpritePtr& sprite = get_sprite();
+  if (sprite == nullptr) {
+    return true;
+  }
+
+  return sprite->is_animation_finished() || sprite->is_animation_looping();
 }
 
 /**
@@ -1514,7 +1512,7 @@ bool Enemy::is_immobilized() const {
  */
 void Enemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
 
-  get_lua_context().enemy_on_custom_attack_received(*this, attack, this_sprite);
+  get_lua_context()->enemy_on_custom_attack_received(*this, attack, this_sprite);
 }
 
 }

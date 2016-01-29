@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Camera.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Separator.h"
-#include "solarus/lowlevel/Video.h"
 #include "solarus/lowlevel/System.h"
+#include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/movements/TargetMovement.h"
 #include "solarus/Game.h"
@@ -35,7 +35,7 @@ namespace Solarus {
  * \param map The map.
  */
 Camera::Camera(Map& map):
-  Entity("", 0, map.get_highest_layer(), Point(0, 0), Video::get_quest_size()),
+  Entity("", 0, map.get_max_layer(), Point(0, 0), Video::get_quest_size()),
   fixed_on(map.get_game().get_hero()),
   separator_next_scrolling_date(0),
   separator_scrolling_direction4(0),
@@ -56,8 +56,8 @@ EntityType Camera::get_type() const {
  */
 bool Camera::can_be_drawn() const {
 
-  // The camera itself is not drawn (for now), entities only use its position
-  // to draw themselves on the map surface.
+  // The camera itself is not drawn.
+  // Entities only use its position to draw the map.
   return false;
 }
 
@@ -159,10 +159,10 @@ void Camera::update_moving() {
     if (restoring) {
       restoring = false;
       fixed_on = get_game().get_hero();
-      get_map().get_lua_context().map_on_camera_back(get_map());
+      get_lua_context()->map_on_camera_back(get_map());
     }
     else {
-      get_map().get_lua_context().notify_camera_reached_target(get_map());
+      get_lua_context()->notify_camera_reached_target(get_map());
     }
   }
 }
@@ -312,8 +312,23 @@ void Camera::traverse_separator(Separator* separator) {
 }
 
 /**
+ * \brief Makes that the camera track the given entity.
+ * \param entity The entity to track.
+ */
+void Camera::start_tracking(const EntityPtr& entity) {
+  fixed_on = entity;
+}
+
+/**
+ * \brief Makes the camera stop tracking any entity.
+ */
+void Camera::start_manual() {
+  fixed_on.reset();
+}
+
+/**
  * \brief Ensures that a rectangle does not cross map limits.
- * \param area The rectangle to check. Is should not be entirely outside the map.
+ * \param area The rectangle to check. Is should not be entirely inside the map.
  * It can be bigger than the map: in such a case, the resulting rectangle cannot
  * avoid to cross map limits, and it will be centered.
  * \return A rectangle corresponding to the first one but stopping on map limits.

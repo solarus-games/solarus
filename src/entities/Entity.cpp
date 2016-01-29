@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,12 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/CollisionMode.h"
 #include "solarus/entities/Destructible.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Entity.h"
 #include "solarus/entities/EntityState.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Separator.h"
+#include "solarus/entities/SeparatorPtr.h"
 #include "solarus/entities/StreamAction.h"
 #include "solarus/entities/Switch.h"
 #include "solarus/entities/Tileset.h"
@@ -63,16 +65,20 @@ Entity::Entity(
   origin(0, 0),
   name(name),
   direction(direction),
+  sprites(),
+  default_sprite_name(),
+  old_sprites(),
   visible(true),
   drawn_in_y_order(false),
   movement(nullptr),
-  movement_events_enabled(true),
+  movement_notifications_enabled(true),
   facing_entity(nullptr),
+  collision_modes(CollisionMode::COLLISION_NONE),
+  layer_independent_collisions(false),
   stream_action(nullptr),
   initialized(false),
   being_removed(false),
   enabled(true),
-  waiting_enabled(false),
   suspended(false),
   when_suspended(0),
   optimization_distance(default_optimization_distance),
@@ -117,25 +123,11 @@ bool Entity::is_hero() const {
 }
 
 /**
- * \brief Returns whether entities of this type have detection capabilities.
- *
- * This function returns whether entities of this type can detect the presence
- * of the hero or other entities. If yes, the function
- * notify_collision() will be called when a collision is detected.
- *
- * \return \c true if this type of entity can detect other entities.
- */
-bool Entity::is_detector() const {
-  return false;
-}
-
-/**
  * \brief Returns whether this entity is sensible to the ground below it.
  *
  * This function returns \c false by default.
  * If this function returns \c true,
- * get_ground_below() will then return the ground below it
- * and notify_ground_below_changed() will be called when it changes.
+ * notify_ground_below_changed() will be called when it changes.
  *
  * \return \c true if this entity is sensible to its ground.
  */
@@ -199,13 +191,18 @@ void Entity::update_ground_observers() {
 
 /**
  * \brief Returns the ground where this entity is.
- *
- * If the entity is not sensible to its ground, always returns Ground::EMPTY.
- *
  * \return The ground under this entity.
  */
 Ground Entity::get_ground_below() const {
-  return ground_below;
+
+  if (is_ground_observer()) {
+    // The information is already known.
+    return ground_below;
+  }
+
+  return get_map().get_ground(
+      get_layer(), get_ground_point(), this
+  );
 }
 
 /**
@@ -232,7 +229,7 @@ void Entity::update_ground_below() {
 
   Ground previous_ground = this->ground_below;
   this->ground_below = get_map().get_ground(
-      get_layer(), get_ground_point()
+      get_layer(), get_ground_point(), this
   );
   if (this->ground_below != previous_ground) {
     notify_ground_below_changed();
@@ -270,17 +267,11 @@ bool Entity::is_drawn_in_y_order() const {
 
 /**
  * \brief Sets whether this entity should be drawn in y order.
- * \param drawn_in_y_order \c true to drawn this entity at the same level
+ * \param drawn_in_y_order \c true to draw this entity at the same level
  * as the hero.
  */
 void Entity::set_drawn_in_y_order(bool drawn_in_y_order) {
-
-  if (drawn_in_y_order != this->drawn_in_y_order) {
-    this->drawn_in_y_order = drawn_in_y_order;
-    if (is_on_map()) {
-      get_entities().set_entity_drawn_in_y_order(*this, drawn_in_y_order);
-    }
-  }
+  this->drawn_in_y_order = drawn_in_y_order;
 }
 
 /**
@@ -320,6 +311,7 @@ void Entity::set_map(Map& map) {
 
   this->main_loop = &map.get_game().get_main_loop();
   this->map = &map;
+  set_lua_context(&main_loop->get_lua_context());
   if (&get_game().get_current_map() == &map) {
     notify_tileset_changed();
   }
@@ -362,7 +354,7 @@ void Entity::finish_initialization() {
   initialized = true;
 
   notify_creating();
-  get_lua_context().entity_on_created(*this);
+  get_lua_context()->entity_on_created(*this);
   notify_created();
 }
 
@@ -410,8 +402,9 @@ void Entity::notify_map_opening_transition_finished() {
  */
 void Entity::notify_tileset_changed() {
 
-  for (const SpritePtr& sprite: sprites) {
-    sprite->set_tileset(get_map().get_tileset());
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    Sprite& sprite = *named_sprite.second;
+    sprite.set_tileset(get_map().get_tileset());
   }
 }
 
@@ -445,7 +438,7 @@ const Game& Entity::get_game() const {
  * \brief Returns the entities of the current map.
  * \return The entities.
  */
-MapEntities& Entity::get_entities() {
+Entities& Entity::get_entities() {
   Debug::check_assertion(map != nullptr, "No map was set");
   return map->get_entities();
 }
@@ -454,31 +447,9 @@ MapEntities& Entity::get_entities() {
  * \brief Returns the entities of the current map.
  * \return The entities.
  */
-const MapEntities& Entity::get_entities() const {
+const Entities& Entity::get_entities() const {
   Debug::check_assertion(map != nullptr, "No map was set");
   return map->get_entities();
-}
-
-/**
- * \brief Returns the shared Lua context.
- * \return The Lua context where all scripts are run.
- */
-LuaContext& Entity::get_lua_context() {
-
-  Debug::check_assertion(main_loop != nullptr,
-      "This entity is not fully constructed yet");
-  return main_loop->get_lua_context();
-}
-
-/**
- * \brief Returns the shared Lua context.
- * \return The Lua context where all scripts are run.
- */
-const LuaContext& Entity::get_lua_context() const {
-
-  Debug::check_assertion(main_loop != nullptr,
-      "This entity is not fully constructed yet");
-  return main_loop->get_lua_context();
 }
 
 /**
@@ -557,7 +528,7 @@ void Entity::remove_from_map() {
  */
 void Entity::notify_being_removed() {
 
-  get_lua_context().entity_on_removed(*this);
+  get_lua_context()->entity_on_removed(*this);
   this->being_removed = true;
 
   // If this entity defines a ground, tell people that it is disappearing.
@@ -566,6 +537,10 @@ void Entity::notify_being_removed() {
       is_ground_modifier()
   ) {
     update_ground_observers();
+  }
+
+  if (get_hero().get_facing_entity() == this) {
+    get_hero().set_facing_entity(nullptr);
   }
 }
 
@@ -601,17 +576,28 @@ void Entity::set_layer(int layer) {
  */
 void Entity::notify_layer_changed() {
 
-  if (is_on_map()) {
-    check_collision_with_detectors();
+  if (!is_on_map()) {
+    return;
+  }
 
-    if (is_ground_modifier()) {
-      update_ground_observers();
-    }
-    update_ground_below();
+  if (is_detector()) {
+    // Since this entity is a detector, all entities need to check
+    // their collisions with it.
+    get_map().check_collision_from_detector(*this);
+  }
 
-    if (are_movement_notifications_enabled()) {
-      get_lua_context().entity_on_position_changed(*this, get_xy(), get_layer());
-    }
+  // Check collisions between this entity and other detectors.
+  check_collision_with_detectors();
+
+  // Update the ground.
+  if (is_ground_modifier()) {
+    update_ground_observers();
+  }
+  update_ground_below();
+
+  // Notify Lua.
+  if (are_movement_notifications_enabled()) {
+    get_lua_context()->entity_on_position_changed(*this, get_xy(), get_layer());
   }
 }
 
@@ -904,9 +890,10 @@ Rectangle Entity::get_extended_bounding_box(int margin) const {
 Rectangle Entity::get_max_bounding_box() const {
 
   Rectangle result = get_bounding_box();
-  for (const SpritePtr& sprite : sprites) {
-    Rectangle box = sprite->get_max_bounding_box();
-    box.add_xy(sprite->get_xy());  // Take into account the sprite's own offset.
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    Sprite& sprite = *named_sprite.second;
+    Rectangle box = sprite.get_max_bounding_box();
+    box.add_xy(sprite.get_xy());  // Take into account the sprite's own offset.
     box.add_xy(get_xy());  // Take into account the coordinates of the entity.
     result |= box;
     // TODO when the sprite's offset changes, update the bounding box
@@ -1005,9 +992,10 @@ void Entity::set_aligned_to_grid_y() {
 Point Entity::get_facing_point() const {
 
   int direction4 = 1;  // North by default.
-  if (has_sprite() && get_sprite().get_nb_directions() == 4) {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr && sprite->get_nb_directions() == 4) {
     // Use the sprite to decide where the entity is looking to.
-    direction4 = get_sprite().get_current_direction();
+    direction4 = sprite->get_current_direction();
   }
   else {
     if (get_movement() != nullptr) {
@@ -1059,17 +1047,17 @@ Point Entity::get_touching_point(int direction) const {
 
 /**
  * \brief Returns the detector in front of this entity.
- * \return the detector this entity is touching, or nullptr if there is no detector in front of him
+ * \return The detector this entity is facing, or nullptr if there is no detector in front of him
  */
-Detector* Entity::get_facing_entity() {
+Entity* Entity::get_facing_entity() {
   return facing_entity;
 }
 
 /**
  * \brief Returns the detector in front of this entity.
- * \return the detector this entity is touching, or nullptr if there is no detector in front of him
+ * \return The detector this entity is facing, or nullptr if there is no detector in front of him.
  */
-const Detector* Entity::get_facing_entity() const {
+const Entity* Entity::get_facing_entity() const {
   return facing_entity;
 }
 
@@ -1078,9 +1066,9 @@ const Detector* Entity::get_facing_entity() const {
  *
  * This function is called when this entity is facing a new detector.
  *
- * \param facing_entity the detector this entity is now facing (possibly nullptr)
+ * \param facing_entity The detector this entity is now facing (possibly nullptr).
  */
-void Entity::set_facing_entity(Detector* facing_entity) {
+void Entity::set_facing_entity(Entity* facing_entity) {
 
   this->facing_entity = facing_entity;
   notify_facing_entity_changed(facing_entity);
@@ -1088,21 +1076,20 @@ void Entity::set_facing_entity(Detector* facing_entity) {
 
 /**
  * \brief Notifies this entity that its facing entity has just changed.
- * \param facing_entity the detector this entity is now facing (possibly nullptr)
+ * \param facing_entity The detector this entity is now facing (possibly nullptr).
  */
-void Entity::notify_facing_entity_changed(Detector* /* facing_entity */) {
+void Entity::notify_facing_entity_changed(Entity* /* facing_entity */) {
 }
 
 /**
- * \brief Returns the point that determines the ground below this entity.
- *
- * By default, returns the coordinates of the entity.
- *
+ * \brief Returns the point used to determine which ground is below this entity.
  * \return The point used to determine the ground (relative to the map).
  */
 Point Entity::get_ground_point() const {
 
-  return { get_x(), get_y() };
+  // Return a point slightly above the origin point, otherwise the hero
+  // falls too easily in bad grounds to the South.
+  return { get_x(), get_y() - 2 };
 }
 
 /**
@@ -1124,16 +1111,19 @@ const std::string& Entity::get_name() const {
 
 /**
  * \brief Sets the name of the entity.
- *
- * The name can only be changed before the entity is added to a map.
- *
  * \param name The name of the entity, or an empty string to unset the name.
  */
 void Entity::set_name(const std::string& name) {
 
-  Debug::check_assertion(!is_on_map(),
-      "Cannot change entity name: this entity is already on a map.");
   this->name = name;
+}
+
+/**
+ * \brief Returns whether this entity has a name.
+ * \return \c true if the name is not empty.
+ */
+bool Entity::has_name() const {
+  return !name.empty();
 }
 
 /**
@@ -1213,52 +1203,66 @@ void Entity::set_optimization_distance(int distance) {
  * \return true if the entity has at least one sprite.
  */
 bool Entity::has_sprite() const {
-  return sprites.size() != 0;
+  return !sprites.empty();
 }
 
 /**
- * \brief Returns the sprite created with the first call to create_sprite()
- * for this entity.
- * \return The first sprite created.
+ * \brief Returns a sprite of this entity.
+ * \param sprite_name Name of the sprite to get, or an empty string to
+ * get the default sprite.
+ * \return The corresponding sprite, or nullptr if there is no such sprite.
  */
-Sprite& Entity::get_sprite() {
-  return *sprites.front();
-}
+SpritePtr Entity::get_sprite(const std::string& sprite_name) const {
 
-/**
- * \brief Returns the const version of the sprite created with the first call
- * to create_sprite() for this entity.
- * \return The first sprite created.
- */
-const Sprite& Entity::get_sprite() const {
-  return *sprites.front();
+  if (sprites.empty()) {
+    // This entity has no sprite.
+    return nullptr;
+  }
+
+  std::string valid_sprite_name;
+  if (sprite_name.empty()) {
+    // No sprite name specified: use the default one if any.
+    if (default_sprite_name.empty()) {
+      // No default sprite either: return the first one.
+      return sprites.front().second;
+    }
+    else {
+      valid_sprite_name = default_sprite_name;
+    }
+  }
+  else {
+    valid_sprite_name = sprite_name;
+  }
+
+  for (const NamedSprite& named_sprite : sprites) {
+    if (named_sprite.first == valid_sprite_name) {
+      return named_sprite.second;
+    }
+  }
+  return nullptr;
 }
 
 /**
  * \brief Returns all sprites of this entity.
  * \return The sprites.
  */
-const std::vector<SpritePtr>& Entity::get_sprites() {
+const std::vector<Entity::NamedSprite>& Entity::get_sprites() const {
   return sprites;
 }
 
 /**
- * \brief Adds a sprite to this entity.
- * \param animation_set_id id of the sprite's animation set to use
- * \param enable_pixel_collisions true to enable the pixel-perfect collision tests for this sprite
- * \return the sprite created
+ * \brief Creates a sprite and adds it to this entity.
+ * \param animation_set_id Id of the sprite's animation set to use.
+ * \param sprite_name Name to identify the sprite or an empty string.
+ * \return The sprite created.
  */
 SpritePtr Entity::create_sprite(
     const std::string& animation_set_id,
-    bool enable_pixel_collisions
+    const std::string& sprite_name
 ) {
   SpritePtr sprite = std::make_shared<Sprite>(animation_set_id);
 
-  if (enable_pixel_collisions) {
-    sprite->enable_pixel_collisions();
-  }
-
-  sprites.push_back(sprite);
+  sprites.push_back(std::make_pair(sprite_name, sprite));
   notify_bounding_box_changed();
   return sprite;
 }
@@ -1270,7 +1274,8 @@ SpritePtr Entity::create_sprite(
  */
 bool Entity::remove_sprite(Sprite& sprite) {
 
-  for (const SpritePtr& current_sprite: sprites) {
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    const SpritePtr& current_sprite = named_sprite.second;
     if (current_sprite.get() == &sprite) {
       old_sprites.push_back(current_sprite);
       return true;
@@ -1287,8 +1292,11 @@ bool Entity::remove_sprite(Sprite& sprite) {
  */
 void Entity::clear_sprites() {
 
-  std::copy(sprites.begin(), sprites.end(),
-            std::back_inserter(old_sprites));
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    const SpritePtr& sprite = named_sprite.second;
+    old_sprites.push_back(sprite);
+  }
+
   sprites.clear();
 }
 
@@ -1298,12 +1306,40 @@ void Entity::clear_sprites() {
 void Entity::clear_old_sprites() {
 
   for (const SpritePtr& old_sprite: old_sprites) {
-    auto it = std::find(sprites.begin(), sprites.end(), old_sprite);
-    if (it != sprites.end()) {
-      sprites.erase(it);
+
+    for (auto it = sprites.begin();
+        it != sprites.end();
+        // No ++it since elements can be removed while traversing
+    ) {
+      const SpritePtr& sprite = it->second;
+      if (sprite == old_sprite) {
+        sprites.erase(it++);
+      }
+      else {
+        ++it;
+      }
     }
   }
   old_sprites.clear();
+}
+
+/**
+ * \brief Returns the name of the default sprite of this entity.
+ * \return The default sprite name.
+ * An empty name means the first one in creation order.
+ */
+std::string Entity::get_default_sprite_name() const {
+  return default_sprite_name;
+}
+
+/**
+ * \brief Sets the default sprite of this entity.
+ * \param default_sprite_name The default sprite name to set.
+ * An empty name means the first one in creation order.
+ */
+void Entity::set_default_sprite_name(const std::string& default_sprite_name) {
+
+  this->default_sprite_name = default_sprite_name;
 }
 
 /**
@@ -1390,9 +1426,9 @@ void Entity::set_movement(const std::shared_ptr<Movement>& movement) {
 void Entity::clear_movement() {
 
   if (movement != nullptr) {
-    movement->set_entity(nullptr);       // Tell the movement to forget me.
-    movement->set_lua_context(nullptr);  // Stop future Lua callbacks.
-    old_movements.push_back(movement);   // Destroy it later.
+    movement->set_entity(nullptr);                   // Tell the movement to forget me.
+    movement->set_lua_notifications_enabled(false);  // Stop future Lua callbacks.
+    old_movements.push_back(movement);               // Destroy it later.
     movement = nullptr;
   }
 }
@@ -1415,7 +1451,7 @@ void Entity::clear_old_movements() {
  * \return Whether movement events are currently enabled.
  */
 bool Entity::are_movement_notifications_enabled() const {
-  return main_loop != nullptr && movement_events_enabled;
+  return main_loop != nullptr && movement_notifications_enabled;
 }
 
 /**
@@ -1427,8 +1463,8 @@ bool Entity::are_movement_notifications_enabled() const {
  *
  * \param notify \c true to enable movement events.
  */
-void Entity::set_movement_events_enabled(bool notify) {
-  this->movement_events_enabled = notify;
+void Entity::set_movement_notifications_enabled(bool notify) {
+  this->movement_notifications_enabled = notify;
 }
 
 /**
@@ -1483,7 +1519,7 @@ void Entity::stop_stream_action() {
 void Entity::notify_obstacle_reached() {
 
   if (are_movement_notifications_enabled()) {
-    get_lua_context().entity_on_obstacle_reached(*this, *get_movement());
+    get_lua_context()->entity_on_obstacle_reached(*this, *get_movement());
   }
 }
 
@@ -1499,15 +1535,416 @@ void Entity::notify_position_changed() {
   // Notify the quadtree.
   notify_bounding_box_changed();
 
+  if (is_detector()) {
+    // Since this entity is a detector, all entities need to check
+    // their collisions with it.
+    get_map().check_collision_from_detector(*this);
+  }
+
+  // Check collisions between this entity and other detectors.
   check_collision_with_detectors();
+
+  // Update the ground.
   if (is_ground_modifier()) {
     update_ground_observers();
   }
   update_ground_below();
 
+  // Notify Lua.
   if (are_movement_notifications_enabled()) {
-    get_lua_context().entity_on_position_changed(*this, get_xy(), get_layer());
+    get_lua_context()->entity_on_position_changed(*this, get_xy(), get_layer());
   }
+}
+
+/**
+ * \brief Returns whether this entity is able to detect other entities.
+ *
+ * This is \c true if this entity has at least one collision mode.
+ *
+ * \return \c true if this entity can detect other entities.
+ */
+bool Entity::is_detector() const {
+  return collision_modes != CollisionMode::COLLISION_NONE;
+}
+
+/**
+ * \brief Sets the collision modes detected by this entity.
+ * \param collision_modes The collision modes to set
+ * (can be an OR combination of collision modes).
+ */
+void Entity::set_collision_modes(int collision_modes) {
+
+  if (collision_modes & CollisionMode::COLLISION_SPRITE) {
+    enable_pixel_collisions();
+  }
+  this->collision_modes = collision_modes;
+}
+
+/**
+ * \brief Adds a collision mode to be detected this entity.
+ * \param collision_mode The collision mode to add.
+ */
+void Entity::add_collision_mode(CollisionMode collision_mode) {
+
+  set_collision_modes(this->collision_modes | collision_mode);
+}
+
+/**
+ * \brief Returns whether the entity detects the specified.
+ * \param collision_mode A collision mode.
+ * \return \c true if this collision mode is detected by this entity.
+ */
+bool Entity::has_collision_mode(CollisionMode collision_mode) {
+  return (this->collision_modes & collision_mode) != 0;
+}
+
+/**
+ * \brief Enables the pixel-perfect collision checks for all sprites
+ * of this entity.
+ */
+void Entity::enable_pixel_collisions() {
+
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    Sprite& sprite = *named_sprite.second;
+    sprite.enable_pixel_collisions();
+  }
+}
+
+/**
+ * \brief Returns whether this entity can have collisions with entities even if
+ * they are not on the same layer.
+ *
+ * This function returns false by default.
+ *
+ * \return true if this entity can collide with entities that are on another layer
+ */
+bool Entity::has_layer_independent_collisions() const {
+  return layer_independent_collisions;
+}
+
+/**
+ * \brief Sets whether this entity can detect collisions with entities even if
+ * they are not on the same layer.
+ * \param independent \c true if this entity can detect entities that are on another layer.
+ */
+void Entity::set_layer_independent_collisions(bool independent) {
+  this->layer_independent_collisions = independent;
+}
+
+/**
+ * \brief Checks whether an entity collides with this detector.
+ *
+ * Does nothing if this entity is not a detector.
+ *
+ * This function is called by the map when an entity has just moved.
+ * It checks whether the entity collides with this detector.
+ * Depending on this detector's collision mode(s), the appropriate
+ * test_collision_* functions are called.
+ * If there is a collision, the notify_collision() method is called.
+ *
+ * \param entity The entity to check.
+ */
+void Entity::check_collision(Entity& entity) {
+
+  if (!is_detector()) {
+    // No collision kind to detect.
+    return;
+  }
+
+  if (&entity == this) {
+    return;
+  }
+
+  if (get_layer() != entity.get_layer() && !has_layer_independent_collisions()) {
+    // Not the same layer: no collision.
+    return;
+  }
+
+  // Detect the collision depending on the collision modes.
+
+  if (has_collision_mode(CollisionMode::COLLISION_OVERLAPPING) && test_collision_rectangle(entity)) {
+    notify_collision(entity, CollisionMode::COLLISION_OVERLAPPING);
+  }
+
+  if (has_collision_mode(CollisionMode::COLLISION_CONTAINING) && test_collision_inside(entity)) {
+    notify_collision(entity, CollisionMode::COLLISION_CONTAINING);
+  }
+
+  if (has_collision_mode(CollisionMode::COLLISION_ORIGIN) && test_collision_origin_point(entity)) {
+    notify_collision(entity, CollisionMode::COLLISION_ORIGIN);
+  }
+
+  if (has_collision_mode(CollisionMode::COLLISION_FACING) && test_collision_facing_point(entity)) {
+
+    if (entity.get_facing_entity() == nullptr) {
+      // Make sure only one entity can think "I am the facing entity".
+      entity.set_facing_entity(this);
+    }
+    notify_collision(entity, CollisionMode::COLLISION_FACING);
+  }
+
+  if (has_collision_mode(CollisionMode::COLLISION_TOUCHING) && test_collision_touching(entity)) {
+    notify_collision(entity, CollisionMode::COLLISION_TOUCHING);
+  }
+
+  if (has_collision_mode(CollisionMode::COLLISION_CENTER) && test_collision_center(entity)) {
+    notify_collision(entity, CollisionMode::COLLISION_CENTER);
+  }
+
+  if (has_collision_mode(CollisionMode::COLLISION_CUSTOM) && test_collision_custom(entity)) {
+    notify_collision(entity, CollisionMode::COLLISION_CUSTOM);
+  }
+}
+
+/**
+ * \brief Checks whether a sprite collides with this detector.
+ *
+ * Does nothing if this entity is not a detector.
+ *
+ * If there is a collision, the notify_collision(Entity&, Sprite&, Sprite&) method is called.
+ *
+ * \param entity The entity to check.
+ * \param sprite The sprite of that entity.
+ */
+void Entity::check_collision(Entity& entity, Sprite& sprite) {
+
+  if (!has_collision_mode(CollisionMode::COLLISION_SPRITE)) {
+    return;
+  }
+
+  if (&entity == this) {
+    return;
+  }
+
+  if (get_layer() != entity.get_layer() && !has_layer_independent_collisions()) {
+    // Not the same layer: no collision.
+    return;
+  }
+
+  if (!sprite.is_animation_started()) {
+    // Animation is not running.
+    return;
+  }
+
+  // We check the collision between the specified entity's sprite and
+  // all sprites of the current entity.
+  for (const NamedSprite& this_named_sprite: get_sprites()) {
+
+    Sprite& this_sprite = *this_named_sprite.second;
+    if (this_sprite.test_collision(sprite, get_x(), get_y(), entity.get_x(), entity.get_y())) {
+      notify_collision(entity, this_sprite, sprite);
+    }
+  }
+}
+
+/**
+ * \brief Returns whether an entity is overlapping this entity with the given
+ * collision test.
+ * \param entity The entity.
+ * \param collision_mode The collision test to perform.
+ * \return \c true if there is a collision.
+ */
+bool Entity::test_collision(Entity& entity, CollisionMode collision_mode) {
+
+  if (get_layer() != entity.get_layer() && !has_layer_independent_collisions()) {
+    // Not the same layer: no collision.
+    return false;
+  }
+
+  switch (collision_mode) {
+
+  case CollisionMode::COLLISION_NONE:
+    return false;
+
+  case CollisionMode::COLLISION_OVERLAPPING:
+    return test_collision_rectangle(entity);
+
+  case CollisionMode::COLLISION_CONTAINING:
+    return test_collision_inside(entity);
+
+  case CollisionMode::COLLISION_ORIGIN:
+    return test_collision_origin_point(entity);
+
+  case CollisionMode::COLLISION_FACING:
+    return test_collision_facing_point(entity);
+
+  case CollisionMode::COLLISION_TOUCHING:
+    return test_collision_touching(entity);
+
+  case CollisionMode::COLLISION_CENTER:
+    return test_collision_center(entity);
+
+  case CollisionMode::COLLISION_CUSTOM:
+    return test_collision_custom(entity);
+
+  case CollisionMode::COLLISION_SPRITE:
+    return test_collision_sprites(entity);
+  }
+
+  return false;
+}
+
+/**
+ * \brief Returns whether an entity's rectangle is overlapping this entity's rectangle.
+ *
+ * The layer is not checked.
+ *
+ * \param entity The entity.
+ * \return \c true if the entity's rectangle is overlapping this entity's rectangle.
+ */
+bool Entity::test_collision_rectangle(const Entity& entity) const {
+
+  return entity.overlaps(*this);
+}
+
+/**
+ * \brief Returns whether an entity's rectangle is entirely inside this entity's rectangle.
+ *
+ * The layer is not checked.
+ *
+ * \param entity The entity.
+ * \return \c true if the entity's rectangle is entirely inside this entity's rectangle.
+ */
+bool Entity::test_collision_inside(const Entity& entity) const {
+
+  return get_bounding_box().contains(entity.get_bounding_box());
+}
+
+
+/**
+ * \brief Returns whether the origin point of an entity is overlapping this entity's rectangle.
+ *
+ * The layer is not checked.
+ *
+ * \param entity The entity.
+ * \return \c true if the entity's origin point is overlapping the this entity's rectangle
+ */
+bool Entity::test_collision_origin_point(const Entity& entity) const {
+
+  return entity.is_origin_point_in(get_bounding_box());
+}
+
+/**
+ * \brief Returns whether the facing point of an entity is overlapping this entity's rectangle.
+ *
+ * The layer is not checked.
+ *
+ * \param entity The entity.
+ * \return \c true if the entity's facing point is overlapping this entity's rectangle
+ */
+bool Entity::test_collision_facing_point(const Entity& entity) const {
+
+  return entity.is_facing_point_in(get_bounding_box());
+}
+
+/**
+ * \brief Returns whether a touching point of an entity
+ * (in any of the four main directions)
+ * is overlapping this entity's rectangle.
+ *
+ * The layer is not checked.
+ *
+ * \param entity The entity.
+ * \return \c true if a touching point of the entity is overlapping
+ * this entity's rectangle.
+ */
+bool Entity::test_collision_touching(const Entity& entity) const {
+
+  const Rectangle& bounding_box = get_bounding_box();
+  return entity.is_touching_point_in(bounding_box, 0)
+      || entity.is_touching_point_in(bounding_box, 1)
+      || entity.is_touching_point_in(bounding_box, 2)
+      || entity.is_touching_point_in(bounding_box, 3);
+}
+
+/**
+ * \brief Returns whether the center point of an entity is overlapping this entity's rectangle.
+ *
+ * The layer is not checked.
+ *
+ * \param entity The entity.
+ * \return \c true if the entity's center is overlapping this entity's rectangle.
+ */
+bool Entity::test_collision_center(const Entity& entity) const {
+
+  return entity.is_center_in(get_bounding_box());
+}
+
+/**
+ * \brief Returns whether a sprite of this entity collides with a sprite of another one.
+ *
+ * The layer is not checked.
+ * The test is pixel-precise.
+ *
+ * \param entity The entity.
+ * \return \c true if sprites of both entities overlap.
+ */
+bool Entity::test_collision_sprites(Entity& entity) {
+
+  for (const NamedSprite& this_named_sprite: get_sprites()) {
+    Sprite& this_sprite = *this_named_sprite.second;
+    this_sprite.enable_pixel_collisions();
+    for (const NamedSprite& other_named_sprite: entity.get_sprites()) {
+
+      Sprite& other_sprite = *other_named_sprite.second;
+      other_sprite.enable_pixel_collisions();
+      if (this_sprite.test_collision(other_sprite, get_x(), get_y(), entity.get_x(), entity.get_y())) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+/**
+ * \brief Returns whether an entity collides with this entity with respect to a custom rule.
+ *
+ * This method is called by check_collision(Entity*) when this entity's collision
+ * mode is COLLISION_CUSTOM.
+ * Redefine it if you want to use this collision mode.
+ *
+ * \param entity The entity.
+ * \return \c true if the entity's collides with this entity with respect to the custom rule
+ */
+bool Entity::test_collision_custom(Entity& /* entity */) {
+
+  return false;
+}
+
+/**
+ * \brief Notifies this entity that it just detected a collision with another entity.
+ *
+ * This function is called by check_collision(Entity*)
+ * when an entity overlaps this detector.
+ *
+ * \param entity_overlapping The entity overlapping this detector.
+ * \param collision_mode The collision mode that detected the collision (useful if
+ * this detector has several collision modes).
+ */
+void Entity::notify_collision(Entity& /* entity_overlapping */, CollisionMode /* collision_mode */) {
+
+  // By default, nothing happens.
+  // Redefine this method in the subclasses to do the appropriate action.
+}
+
+/**
+ * \brief Notifies this entity that it just detected a pixel-perfect collision with another sprite.
+ *
+ * This function is called by check_collision(Entity*, Sprite*) when another entity's
+ * sprite overlaps a sprite of this detector.
+ *
+ * \param other_entity The entity overlapping this detector.
+ * \param this_sprite The sprite of this detector that is overlapping the other entity's sprite.
+ * \param other_sprite The sprite of other_entity that is overlapping this detector.
+ */
+void Entity::notify_collision(
+    Entity& /* other_entity */,
+    Sprite& /* this_sprite */,
+    Sprite& /* other_sprite */
+) {
+  // By default, nothing happens.
+  // Redefine this method in the subclasses to do the appropriate action.
 }
 
 /**
@@ -1532,9 +1969,10 @@ void Entity::check_collision_with_detectors() {
   get_map().check_collision_with_detectors(*this);
 
   // Detect pixel-precise collisions.
-  for (const SpritePtr& sprite: sprites) {
-    if (sprite->are_pixel_collisions_enabled()) {
-      get_map().check_collision_with_detectors(*this, *sprite);
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    Sprite& sprite = *named_sprite.second;
+    if (sprite.are_pixel_collisions_enabled()) {
+      get_map().check_collision_with_detectors(*this, sprite);
     }
   }
 }
@@ -1558,13 +1996,11 @@ void Entity::check_collision_with_detectors(Sprite& sprite) {
  * \brief This function can be called by the movement object
  * to notify the entity when the movement has just changed
  * (e.g. the speed, the angle or the trajectory).
- *
- * TODO: actually call this function from all movement subclasses
  */
 void Entity::notify_movement_changed() {
 
   if (are_movement_notifications_enabled()) {
-    get_lua_context().entity_on_movement_changed(*this, *get_movement());
+    get_lua_context()->entity_on_movement_changed(*this, *get_movement());
   }
 }
 
@@ -1574,7 +2010,7 @@ void Entity::notify_movement_changed() {
 void Entity::notify_movement_finished() {
 
   if (are_movement_notifications_enabled()) {
-    get_lua_context().entity_on_movement_finished(*this);
+    get_lua_context()->entity_on_movement_finished(*this);
   }
 }
 
@@ -1628,12 +2064,34 @@ void Entity::set_enabled(bool enabled) {
   }
 
   if (enabled) {
-    // enable the entity as soon as possible
-    this->waiting_enabled = true;
+    // Enable the entity.
+
+    this->enabled = true;
+
+    if (!is_suspended()) {
+      // Enabling an entity that is not suspended:
+      // unsuspend its movement, its sprites and its timers.
+      if (get_movement() != nullptr) {
+        get_movement()->set_suspended(false);
+      }
+
+      if (stream_action != nullptr) {
+        stream_action->set_suspended(false);
+      }
+
+      for (const NamedSprite& named_sprite: get_sprites()) {
+        Sprite& sprite = *named_sprite.second;
+        sprite.set_suspended(false);
+      }
+
+      if (is_on_map()) {
+        get_lua_context()->set_entity_timers_suspended(*this, false);
+      }
+    }
+    notify_enabled(true);
   }
   else {
     this->enabled = false;
-    this->waiting_enabled = false;
 
     if (!is_suspended()) {
       // Disabling an entity that is not suspended:
@@ -1642,12 +2100,13 @@ void Entity::set_enabled(bool enabled) {
         get_movement()->set_suspended(true);
       }
 
-      for (const SpritePtr& sprite: sprites) {
-        sprite->set_suspended(true);
+      for (const NamedSprite& named_sprite: get_sprites()) {
+        Sprite& sprite = *named_sprite.second;
+        sprite.set_suspended(true);
       }
 
       if (is_on_map()) {
-        get_lua_context().set_entity_timers_suspended(*this, true);
+        get_lua_context()->set_entity_timers_suspended(*this, true);
       }
     }
     notify_enabled(false);
@@ -1723,58 +2182,79 @@ bool Entity::is_ground_obstacle(Ground ground) const {
 
   switch (ground) {
 
-    case Ground::WALL:
-    case Ground::WALL_TOP_RIGHT:
-    case Ground::WALL_TOP_LEFT:
-    case Ground::WALL_BOTTOM_LEFT:
-    case Ground::WALL_BOTTOM_RIGHT:
-    case Ground::WALL_TOP_RIGHT_WATER:
-    case Ground::WALL_TOP_LEFT_WATER:
-    case Ground::WALL_BOTTOM_LEFT_WATER:
-    case Ground::WALL_BOTTOM_RIGHT_WATER:
-      return true;
+  case Ground::EMPTY:
+    return false;
 
-    case Ground::LOW_WALL:
-      return is_low_wall_obstacle();
+  case Ground::TRAVERSABLE:
+    return is_traversable_obstacle();
 
-    case Ground::EMPTY:
-    case Ground::TRAVERSABLE:
-    case Ground::GRASS:
-    case Ground::ICE:
-      return false;
+  case Ground::WALL:
+    return is_wall_obstacle();
 
-    case Ground::SHALLOW_WATER:
-      return is_shallow_water_obstacle();
+  case Ground::LOW_WALL:
+    return is_low_wall_obstacle();
 
-    case Ground::DEEP_WATER:
-      return is_deep_water_obstacle();
+  case Ground::WALL_TOP_RIGHT:
+  case Ground::WALL_TOP_LEFT:
+  case Ground::WALL_BOTTOM_LEFT:
+  case Ground::WALL_BOTTOM_RIGHT:
+  case Ground::WALL_TOP_RIGHT_WATER:
+  case Ground::WALL_TOP_LEFT_WATER:
+  case Ground::WALL_BOTTOM_LEFT_WATER:
+  case Ground::WALL_BOTTOM_RIGHT_WATER:
+    return is_wall_obstacle();
 
-    case Ground::HOLE:
-      return is_hole_obstacle();
+  case Ground::DEEP_WATER:
+    return is_deep_water_obstacle();
 
-    case Ground::LAVA:
-      return is_lava_obstacle();
+  case Ground::SHALLOW_WATER:
+    return is_shallow_water_obstacle();
 
-    case Ground::PRICKLE:
-      return is_prickle_obstacle();
+  case Ground::GRASS:
+    return is_grass_obstacle();
 
-    case Ground::LADDER:
-      return is_ladder_obstacle();
+  case Ground::HOLE:
+    return is_hole_obstacle();
+
+  case Ground::ICE:
+    return is_ice_obstacle();
+
+  case Ground::LADDER:
+    return is_ladder_obstacle();
+
+  case Ground::PRICKLE:
+    return is_prickle_obstacle();
+
+  case Ground::LAVA:
+    return is_lava_obstacle();
+
   }
 
   return false;
 }
 
 /**
- * \brief Returns whether this entity can have collisions with entities even if
- * they are not on the same layer.
+ * \brief Returns whether traversable ground is currently considered as an
+ * obstacle by this entity.
  *
- * This function returns false by default.
+ * This function returns \c false by default.
  *
- * \return true if this entity can collide with entities that are on another layer
+ * \return \c true if traversable ground is currently obstacle for this entity.
  */
-bool Entity::has_layer_independent_collisions() const {
-  return false;
+bool Entity::is_traversable_obstacle() const {
+    return false;
+}
+
+/**
+ * \brief Returns whether walls are currently considered as an
+ * obstacle by this entity.
+ *
+ * This function returns \c true by default.
+ *
+ * \return \c true if wall ground is currently obstacle for this entity.
+ */
+bool Entity::is_wall_obstacle() const {
+    return true;
 }
 
 /**
@@ -1787,6 +2267,18 @@ bool Entity::has_layer_independent_collisions() const {
  */
 bool Entity::is_low_wall_obstacle() const {
   return true;
+}
+
+/**
+ * \brief Returns whether grass ground is currently considered as an
+ * obstacle by this entity.
+ *
+ * This function returns \c false by default.
+ *
+ * \return \c true if grass ground is currently obstacle for this entity.
+ */
+bool Entity::is_grass_obstacle() const {
+  return false;
 }
 
 /**
@@ -1831,6 +2323,18 @@ bool Entity::is_hole_obstacle() const {
  */
 bool Entity::is_lava_obstacle() const {
   return true;
+}
+
+/**
+ * \brief Returns whether ice ground is currently considered as an
+ * obstacle by this entity.
+ *
+ * This function returns \c false by default.
+ *
+ * \return \c true if ice ground is currently obstacle for this entity.
+ */
+bool Entity::is_ice_obstacle() const {
+    return false;
 }
 
 /**
@@ -2045,21 +2549,22 @@ bool Entity::is_sword_ignored() const {
  */
 bool Entity::overlaps_camera() const {
 
-  const Rectangle& camera_position = get_map().get_camera_position();
-  if (bounding_box.overlaps(camera_position)) {
+  const Camera& camera = get_map().get_camera();
+  if (camera.overlaps(bounding_box)) {
     return true;
   }
 
-  for (const SpritePtr& sprite: sprites) {
-    const Size& sprite_size = sprite->get_size();
-    const Point& sprite_origin = sprite->get_origin();
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    Sprite& sprite = *named_sprite.second;
+    const Size& sprite_size = sprite.get_size();
+    const Point& sprite_origin = sprite.get_origin();
     const Rectangle sprite_bounding_box(
         get_x() - sprite_origin.x,
         get_y() - sprite_origin.y,
         sprite_size.width,
         sprite_size.height
     );
-    if (sprite_bounding_box.overlaps(camera_position)) {
+    if (camera.overlaps(sprite_bounding_box)) {
       return true;
     }
   }
@@ -2207,8 +2712,8 @@ int Entity::get_distance(const Entity& other) const {
  */
 int Entity::get_distance_to_camera() const {
 
-  const Rectangle& camera = get_map().get_camera_position();
-  return (int) Geometry::get_distance(get_xy(), camera.get_center());
+  const Camera& camera = get_map().get_camera();
+  return (int) Geometry::get_distance(get_xy(), camera.get_center_point());
 }
 
 /**
@@ -2218,31 +2723,46 @@ int Entity::get_distance_to_camera() const {
  */
 int Entity::get_distance_to_camera2() const {
 
-  const Rectangle& camera = get_map().get_camera_position();
-  return Geometry::get_distance2(get_xy(), camera.get_center());
+  const Camera& camera = get_map().get_camera();
+  return Geometry::get_distance2(get_xy(), camera.get_center_point());
 }
 
 /**
- * \brief Returns whether an entity is in the same region as this one.
+ * \brief Returns whether this entity is in the same region as another one.
  *
  * Regions are defined by the position of separators on the map.
+ * The region of entities is the one of their center point.
  *
  * \param other Another entity.
  * \return \c true if both entities are in the same region.
  */
 bool Entity::is_in_same_region(const Entity& other) const {
 
-  const Point& this_center = get_center_point();
-  const Point& other_center = other.get_center_point();
+    return is_in_same_region(other.get_center_point());
+}
 
-  const std::set<std::shared_ptr<const Separator>>& separators =
-      get_entities().get_entities_by_type<const Separator>();
-  for (const std::shared_ptr<const Separator>& separator: separators) {
+/**
+ * \brief Returns whether this entity is in the same region as a point.
+ *
+ * Regions are defined by the position of separators on the map.
+ * The region of this entity is the one of its center point.
+ *
+ * \param xy A point.
+ * \return \c true if this entity and the point are in the same region.
+ */
+bool Entity::is_in_same_region(const Point& xy) const {
+
+  const Point& this_xy = get_center_point();
+  const Point& other_xy = xy;
+
+  const std::set<ConstSeparatorPtr>& separators =
+      get_entities().get_entities_by_type<Separator>();
+  for (const ConstSeparatorPtr& separator: separators) {
 
     if (separator->is_vertical()) {
       // Vertical separation.
-      if (this_center.y < separator->get_top_left_y() ||
-          this_center.y >= separator->get_top_left_y() + separator->get_height()) {
+      if (this_xy.y < separator->get_top_left_y() ||
+          this_xy.y >= separator->get_top_left_y() + separator->get_height()) {
         // This separator is irrelevant: the entity is not in either side,
         // it is too much to the north or to the south.
         //
@@ -2255,8 +2775,8 @@ bool Entity::is_in_same_region(const Entity& other) const {
         continue;
       }
 
-      if (other_center.y < separator->get_top_left_y() ||
-          other_center.y >= separator->get_top_left_y() + separator->get_height()) {
+      if (other_xy.y < separator->get_top_left_y() ||
+          other_xy.y >= separator->get_top_left_y() + separator->get_height()) {
         // This separator is irrelevant: the other entity is not in either side.
         // it is too much to the north or to the south.
         continue;
@@ -2265,38 +2785,38 @@ bool Entity::is_in_same_region(const Entity& other) const {
       // Both entities are in the zone of influence of this separator.
       // See if they are in the same side.
       const int separation_x = separator->get_center_point().x;
-      if (this_center.x < separation_x &&
-          separation_x <= other_center.x) {
+      if (this_xy.x < separation_x &&
+          separation_x <= other_xy.x) {
         // Different side.
         return false;
       }
 
-      if (other_center.x < separation_x &&
-          separation_x <= this_center.x) {
+      if (other_xy.x < separation_x &&
+          separation_x <= this_xy.x) {
         // Different side.
         return false;
       }
     }
     else {
       // Horizontal separation.
-      if (this_center.x < separator->get_top_left_x() ||
-          this_center.x >= separator->get_top_left_x() + separator->get_width()) {
+      if (this_xy.x < separator->get_top_left_x() ||
+          this_xy.x >= separator->get_top_left_x() + separator->get_width()) {
         continue;
       }
 
-      if (other_center.x < separator->get_top_left_x() ||
-          other_center.x >= separator->get_top_left_x() + separator->get_width()) {
+      if (other_xy.x < separator->get_top_left_x() ||
+          other_xy.x >= separator->get_top_left_x() + separator->get_width()) {
         continue;
       }
 
       const int separation_y = separator->get_center_point().y;
-      if (this_center.y < separation_y &&
-          separation_y <= other_center.y) {
+      if (this_xy.y < separation_y &&
+          separation_y <= other_xy.y) {
         return false;
       }
 
-      if (other_center.y < separation_y &&
-          separation_y <= this_center.y) {
+      if (other_xy.y < separation_y &&
+          separation_y <= this_xy.y) {
         return false;
       }
     }
@@ -2305,6 +2825,11 @@ bool Entity::is_in_same_region(const Entity& other) const {
   return true;
 }
 
+/**
+ * \brief This function is called when the position, movement or state changes.
+ *
+ * Subclasses can redefine it to perform some checks.
+ */
 void Entity::check_position() {
 }
 
@@ -2491,6 +3016,80 @@ void Entity::notify_attacked_enemy(
 }
 
 /**
+ * \brief Notifies this entity that the player is interacting with it by
+ * pressing the action command.
+ *
+ * Only possible if this entity detects collisions of type
+ * CollisionMode::COLLISION_FACING.
+ *
+ * This function is called when the player presses the action command
+ * while the hero is facing this entity, unless the action command effect
+ * does not allow the hero to interact with the entity, like while he is
+ * carrying an object.
+ *
+ * By default, nothing happens.
+ * Redefine your function in the subclasses to make the hero interact with
+ * this entity.
+ *
+ * \return \c true if an interaction happened.
+ */
+bool Entity::notify_action_command_pressed() {
+  return false;
+}
+
+/**
+ * \brief Notifies this entity that the player is interacting with it by
+ * using an equipment item.
+ *
+ * Only possible if this entity detects collisions of type
+ * CollisionMode::COLLISION_FACING.
+ *
+ * This function is called when the player uses an equipment item
+ * while the hero is facing this entity.
+ *
+ * By default, nothing happens.
+ * Redefine your function in the subclasses to make your entity react to an
+ * equipment item.
+ *
+ * \param item The equipment item used.
+ * \return \c true if an interaction occurred.
+ */
+bool Entity::notify_interaction_with_item(EquipmentItem& /* item */) {
+  return false;
+}
+
+/**
+ * \brief This function is called when the player tries to push or pull this
+ * entity.
+ *
+ * By default, nothing happens.
+ * Redefine your function in the subclasses to make something happen with the entity.
+ *
+ * \return \c true if this entity was pushed or pulled successfully.
+ */
+bool Entity::start_movement_by_hero() {
+  return false;
+}
+
+/**
+ * \brief This function is called when the player finishes to push or pull
+ * this entity.
+ *
+ * By default, nothing happens.
+ * Redefine your function in the subclasses to make something happen with the entity.
+ */
+void Entity::stop_movement_by_hero() {
+}
+
+/**
+ * \brief This function is called when the player is tapping his sword against this entity.
+ * \return The sound to play when tapping this entity with the sword.
+ */
+std::string Entity::get_sword_tapping_sound() {
+  return "sword_tapping";
+}
+
+/**
  * \brief Returns whether the movement and the animations of this entity are suspended.
  * \return true if the movement and the animations are suspended
  */
@@ -2506,17 +3105,18 @@ void Entity::set_suspended(bool suspended) {
 
   this->suspended = suspended;
 
-  // remember the date if the entity is being suspended
+  // Remember the date if the entity is being suspended.
   if (suspended) {
     when_suspended = System::now();
   }
 
-  // suspend/unsuspend the sprites animations
-  for (const SpritePtr& sprite: sprites) {
-    sprite->set_suspended(suspended || !is_enabled());
+  // Suspend/unsuspend sprite animations.
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    Sprite& sprite = *named_sprite.second;
+    sprite.set_suspended(suspended || !is_enabled());
   }
 
-  // suspend/unsuspend the movement
+  // Suspend/unsuspend the movement.
   if (movement != nullptr) {
     movement->set_suspended(suspended || !is_enabled());
   }
@@ -2524,9 +3124,14 @@ void Entity::set_suspended(bool suspended) {
     stream_action->set_suspended(suspended || !is_enabled());
   }
 
-  // Suspend/unsuspend the timers.
+  // Suspend/unsuspend timers.
   if (is_on_map()) {
-    get_lua_context().set_entity_timers_suspended(*this, suspended || !is_enabled());
+    get_lua_context()->set_entity_timers_suspended(*this, suspended || !is_enabled());
+  }
+
+  if (!suspended) {
+    // Collision tests were disabled when the entity was suspended.
+    check_collision_with_detectors();
   }
 }
 
@@ -2544,8 +3149,9 @@ uint32_t Entity::get_when_suspended() const {
  */
 void Entity::set_animation_ignore_suspend(bool ignore_suspend) {
 
-  for (const SpritePtr& sprite: sprites) {
-    sprite->set_ignore_suspend(ignore_suspend);
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    Sprite& sprite = *named_sprite.second;
+    sprite.set_ignore_suspend(ignore_suspend);
   }
 }
 
@@ -2571,59 +3177,25 @@ void Entity::update() {
     return;
   }
 
-  // enable if necessary
-  if (waiting_enabled) {
-
-    Hero& hero = get_hero();
-
-    const bool obstacle = is_obstacle_for(hero) ||
-        (is_ground_modifier() && is_ground_obstacle(get_modified_ground()));
-
-    if (!obstacle || !overlaps(hero)) {
-      this->enabled = true;
-      this->waiting_enabled = false;
-      notify_enabled(true);
-
-      if (!is_suspended()) {
-        // Enabling an entity that is not suspended:
-        // unsuspend its movement, its sprites and its timers.
-        if (get_movement() != nullptr) {
-          get_movement()->set_suspended(false);
-        }
-
-        if (stream_action != nullptr) {
-          stream_action->set_suspended(false);
-        }
-
-        for (const SpritePtr& sprite: sprites) {
-          sprite->set_suspended(false);
-        }
-
-        if (is_on_map()) {
-          get_lua_context().set_entity_timers_suspended(*this, false);
-        }
-      }
-    }
-  }
-
   // check the facing entity
   if (facing_entity != nullptr && facing_entity->is_being_removed()) {
     set_facing_entity(nullptr);
   }
 
   // update the sprites
-  for (const SpritePtr& sprite: sprites) {
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    Sprite& sprite = *named_sprite.second;
 
-    sprite->update();
-    if (sprite->has_frame_changed()) {
+    sprite.update();
+    if (sprite.has_frame_changed()) {
 
-      if (sprite->are_pixel_collisions_enabled()) {
-        check_collision_with_detectors(*sprite);
+      if (sprite.are_pixel_collisions_enabled()) {
+        check_collision_with_detectors(sprite);
       }
 
-      notify_sprite_frame_changed(*sprite, sprite->get_current_animation(), sprite->get_current_frame());
-      if (sprite->is_animation_finished()) {
-        notify_sprite_animation_finished(*sprite, sprite->get_current_animation());
+      notify_sprite_frame_changed(sprite, sprite.get_current_animation(), sprite.get_current_frame());
+      if (sprite.is_animation_finished()) {
+        notify_sprite_animation_finished(sprite, sprite.get_current_animation());
       }
     }
   }
@@ -2640,23 +3212,6 @@ void Entity::update() {
       stop_stream_action();
     }
   }
-}
-
-/**
- * \brief Returns whether this entity should be drawn on the map.
- * \return true if the entity is visible and may have a sprite in the visible part
- * of the map.
- */
-bool Entity::is_drawn() const {
-
-  int camera_width = get_map().get_camera_position().get_width();
-  const bool far = get_distance_to_camera() > camera_width * 1.5;
-
-  return is_visible()
-      && (overlaps_camera()
-          || !far
-          || !is_drawn_at_its_position()
-      );
 }
 
 /**
@@ -2684,13 +3239,10 @@ bool Entity::is_drawn_at_its_position() const {
  */
 void Entity::draw_on_map() {
 
-  if (!is_drawn()) {
-    return;
-  }
-
   // Draw the sprites.
-  for (const SpritePtr& sprite: sprites) {
-    get_map().draw_sprite(*sprite, get_displayed_xy());
+  for (const NamedSprite& named_sprite: get_sprites()) {
+    Sprite& sprite = *named_sprite.second;
+    get_map().draw_sprite(sprite, get_displayed_xy());
   }
 }
 

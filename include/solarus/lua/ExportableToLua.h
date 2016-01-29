@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@
 
 namespace Solarus {
 
+class LuaContext;
+
 /**
  * \brief Interface of a C++ type that can also exist as a Lua userdata.
  *
@@ -37,6 +39,8 @@ class ExportableToLua:
     ExportableToLua();
     virtual ~ExportableToLua();
 
+    LuaContext* get_lua_context() const;
+    void set_lua_context(LuaContext* lua_context);
     bool is_known_to_lua() const;
     void set_known_to_lua(bool known_to_lua);
     bool is_with_lua_table() const;
@@ -49,6 +53,9 @@ class ExportableToLua:
     virtual const std::string& get_lua_type_name() const = 0;
 
   private:
+
+    LuaContext* lua_context;     /**< The Solarus Lua API, or nullptr if
+                                  * not currently exported to Lua. */
 
     bool known_to_lua;           /**< Whether this object was exported to Lua
                                   * at least once. */

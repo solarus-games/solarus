@@ -6,34 +6,78 @@ _______________________________
 Engine changes
 --------------
 
-* Maps: allow more than 3 layers (#445).
+* Add a launcher GUI to ease chosing a quest and setting options (#693).
+* Rename the solarus_run executable to solarus-run.
+* Add version number and symbolic links when building the library.
+* Add a -lua-console option to run Lua code from the standard input.
+* Remove the -win-console option, the preferred way is now to use a GUI.
+* Add a -lag option to simulate slower systems for debugging.
 * Print when the main loop starts and stops.
 * Print the Lua version at startup (#692).
+* Outputs are now prefixed by [Solarus] and the current simulated time.
+* Maps: allow more than 3 layers (#445).
 * Improve the performance of custom entity collisions.
 * Improve the performance of collisions by using a quadtree.
 * Entities far from the camera are no longer suspended.
+* Fix sprite:on_animation_finished() and others not working sometimes (#799).
 * Fix sol.input.get_mouse_coordinates() (#734).
 * Fix straight movement precision.
+* Fix sword tapping sound still played when the game is suspended (#797).
+* Fix hero:set_invincible() not working without duration (#805).
+* Fix custom_entity:set_can_traverse_ground() for some grounds (#794).
+* Fix custom entity collisions missed for entities that do not move (#671).
+* Fix custom_entity:get_modified_ground() returning nothing.
+* Fix custom_entity:on_ground_below_changed() not called (#738).
+* Fix creating an entity with the same name as another one just removed (#795).
+* Fix parallax scrolling for dynamic tiles (#816).
 
 Lua API changes
 ---------------
 
 Changes that introduce incompatibilities:
 
+* chest:on_empty() is replaced by chest:on_opened(treasure) (#483).
+* Enemy ranks no longer exists, set_hurt_style() needs to be called (#449).
 * Items with amount now have a default max amount of 1000 (#688).
+* Fix hero state name "freezed", renamed it to "frozen" (#813).
+* Fix map:get_entities() not returning the hero (#670).
+* Fix entity:set_enabled(true) delayed while it blocks the hero (#817).
+* Fix brandished treasure sprite and shop treasure sprite not animated (#790).
 
 Changes that do not introduce incompatibilities:
 
+* Add a function sol.main.get_solarus_version() (#767).
+* Add a function sol.main.get_quest_format().
 * Add a function sol.main.get_type() (#744).
-* Add a method map:get_num_layers() (#445).
+* Add methods map:get_min_layer() and map:get_max_layer() (#445).
+* Add a method map:get_entities_by_type() (#796).
 * Add a method map:get_entities_in_rectangle() (#142).
-* Add a method block:get_sprite().
+* Add a method map:get_camera() (the camera is now a map entity).
+* Add methods map:set_world() and map:set_floor() (#656).
+* map:get_entities() can now be called without parameter to get all entities.
+* map:get_entities*() functions now give entities sorted in Z order (#779).
+* Add a method entity:get_max_bounding_box() considering sprite boxes (#754).
+* entity:get_center_position() now also returns the layer.
+* Add a method entity:get_ground_position() (#830).
+* Add a method entity:get_ground_below() (#830).
 * entity:set_optimization_distance() is now only a hint for the engine.
+* entity:test_obstacles() now also works without parameters.
+* entity:overlaps() now has an optional collision mode parameter (#748).
+* Add entity:get_sprite() to all entities, with an optional name value (#669).
+* enemy/custom_entity:create_sprite() now take an optional name value.
+* Add a method hero:start_attack() (#821).
+* Add methods chest:get/set_treasure() (#664).
+* Add methods dynamic_tile:get_pattern_id() and get_modified_ground() (#755).
+* Add a method block:get_sprite().
+* Add an event chest:on_opened() with treasure info parameters (#483).
+* Add a method sprite:get_num_frames() (#818).
+* Add methods sprite:get_size() and sprite:get_origin() (#823).
 
 Data files format changes
 -------------------------
 
-* Maps: New property num_layers (#445).
+* Maps: New properties min_layer and max_layer (#445).
+* Maps: Enemies no longer have a rank property (#449).
 * Dialogs: Allow empty texts.
 
 __________________________

@@ -3,7 +3,8 @@ properties{
   y = 0,
   width = 320,
   height = 240,
-  num_layers = 3,
+  min_layer = 0,
+  max_layer = 2,
   tileset = "castle",
   music = "same",
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,9 @@
 #include "solarus/entities/Destination.h"
 #include "solarus/entities/Destructible.h"
 #include "solarus/entities/Enemy.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Jumper.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Sensor.h"
 #include "solarus/entities/Stairs.h"
 #include "solarus/entities/Stream.h"
@@ -48,6 +48,7 @@
 #include "solarus/hero/PlungingState.h"
 #include "solarus/hero/RunningState.h"
 #include "solarus/hero/StairsState.h"
+#include "solarus/hero/SwordSwingingState.h"
 #include "solarus/hero/SwimmingState.h"
 #include "solarus/hero/TreasureState.h"
 #include "solarus/hero/UsingItemState.h"
@@ -112,10 +113,10 @@ EntityType Hero::get_type() const {
  * This function is used internally to allow this item to be preserved between
  * different hero states.
  *
- * \return The carried item or nullptr.
+ * \return The carried object or nullptr.
  */
-std::shared_ptr<CarriedItem> Hero::get_carried_item() {
-  return get_state().get_carried_item();
+std::shared_ptr<CarriedObject> Hero::get_carried_object() {
+  return get_state().get_carried_object();
 }
 
 /**
@@ -374,10 +375,6 @@ void Hero::check_gameover() {
  */
 void Hero::draw_on_map() {
 
-  if (!is_drawn()) {
-    return;
-  }
-
   if (get_state().is_visible()) {
     // The state may call get_sprites()->draw_on_map() or make its own drawings.
     get_state().draw_on_map();
@@ -551,8 +548,9 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
     int x = get_x() - next_map_location.get_x() + previous_map_location.get_x();
     int y = get_y() - next_map_location.get_y() + previous_map_location.get_y();
 
-    int layer = map.get_highest_layer();
-    while (layer > 0 && map.get_ground(layer, x, y) == Ground::EMPTY) {
+    int layer = map.get_max_layer();
+    while (layer > map.get_min_layer() &&
+        map.get_ground(layer, x, y, this) == Ground::EMPTY) {
       // TODO check the whole hero's bounding box rather than just a point.
       --layer;
     }
@@ -599,6 +597,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
       default:
         Debug::die("Invalid destination side");
       }
+      map.get_entities().notify_entity_bounding_box_changed(*this);
       last_solid_ground_coords = get_xy();
       last_solid_ground_layer = get_layer();
       // Note that we keep the hero's state from the previous map.
@@ -621,7 +620,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
         sprites->set_animation_direction(3);
         set_top_left_xy(0, 0);
         map.get_entities().notify_entity_bounding_box_changed(*this);
-        map.get_entities().set_entity_layer(*this, map.get_highest_layer());
+        map.get_entities().set_entity_layer(*this, map.get_max_layer());
       }
       else {
         // Normal case.
@@ -644,7 +643,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
       }
 
       if (destination != nullptr) {
-        get_lua_context().destination_on_activated(*destination);
+        get_lua_context()->destination_on_activated(*destination);
       }
 
       const std::shared_ptr<const Stairs> stairs = get_stairs_overlapping();
@@ -712,10 +711,9 @@ Point Hero::get_facing_point() const {
 }
 
 /**
- * \brief Notifies this entity that its facing entity has just changed.
- * \param facing_entity the detector this entity is now facing (possibly nullptr)
+ * \copydoc Entity::notify_facing_entity_changed
  */
-void Hero::notify_facing_entity_changed(Detector* facing_entity) {
+void Hero::notify_facing_entity_changed(Entity* facing_entity) {
 
   if (facing_entity == nullptr &&
       get_commands_effects().is_action_key_acting_on_facing_entity()) {
@@ -1033,7 +1031,7 @@ void Hero::notify_position_changed() {
   get_state().notify_position_changed();
 
   if (are_movement_notifications_enabled()) {
-    get_lua_context().entity_on_position_changed(*this, get_xy(), get_layer());
+    get_lua_context()->entity_on_position_changed(*this, get_xy(), get_layer());
   }
 }
 
@@ -1091,13 +1089,13 @@ void Hero::check_position() {
     int layer = get_layer();
 
     if (layer > 0
-        && get_map().get_ground(layer, x, y) == Ground::EMPTY
-        && get_map().get_ground(layer, x + 15, y) == Ground::EMPTY
-        && get_map().get_ground(layer, x, y + 15) == Ground::EMPTY
-        && get_map().get_ground(layer, x + 15, y + 15) == Ground::EMPTY) {
+        && get_map().get_ground(layer, x, y, this) == Ground::EMPTY
+        && get_map().get_ground(layer, x + 15, y, this) == Ground::EMPTY
+        && get_map().get_ground(layer, x, y + 15, this) == Ground::EMPTY
+        && get_map().get_ground(layer, x + 15, y + 15, this) == Ground::EMPTY) {
 
       get_entities().set_entity_layer(*this, layer - 1);
-      Ground new_ground = get_map().get_ground(get_layer(), x, y);
+      Ground new_ground = get_map().get_ground(get_layer(), x, y, this);
       if (get_state().is_free() &&
           (new_ground == Ground::TRAVERSABLE
            || new_ground == Ground::GRASS
@@ -1285,14 +1283,6 @@ bool Hero::is_ground_visible() const {
  */
 bool Hero::is_ground_observer() const {
   return true;
-}
-
-/**
- * \brief Returns the point that determines the ground below this entity.
- * \return The point used to determine the ground (relative to the map).
- */
-Point Hero::get_ground_point() const {
-  return { get_x(), get_y() - 2 };
 }
 
 /**
@@ -1918,12 +1908,12 @@ void Hero::notify_grabbed_entity_collision() {
 }
 
 /**
- * \brief Tests whether the hero is cutting with his sword the specified detector
+ * \brief Tests whether the hero is cutting with his sword the specified entity
  * for which a collision was detected.
  *
- * When the sword sprite collides with a detector,
+ * When the sword sprite collides with an entity,
  * this function can be called to determine whether the hero is
- * really cutting this particular detector precisely.
+ * really cutting this particular entity precisely.
  * This depends on the hero's state, his direction and his
  * distance to the detector.
  * This function assumes that there is already a collision
@@ -1932,11 +1922,11 @@ void Hero::notify_grabbed_entity_collision() {
  * hero wants to cut a bush or some grass.
  * Returns false by default.
  *
- * \param detector the detector to check
- * \return true if the sword is cutting this detector
+ * \param entity The entity to check.
+ * \return \c true if the sword is cutting this entity.
  */
-bool Hero::is_striking_with_sword(Detector& detector) const {
-  return get_state().is_cutting_with_sword(detector);
+bool Hero::is_striking_with_sword(Entity& entity) const {
+  return get_state().is_cutting_with_sword(entity);
 }
 
 /**
@@ -1947,7 +1937,7 @@ bool Hero::is_striking_with_sword(Detector& detector) const {
 void Hero::try_snap_to_facing_entity() {
 
   Rectangle collision_box = get_bounding_box();
-  const Detector* facing_entity = get_facing_entity();
+  const Entity* facing_entity = get_facing_entity();
 
   if (get_animation_direction() % 2 == 0) {
     if (abs(collision_box.get_y() - facing_entity->get_top_left_y()) <= 5) {
@@ -2010,7 +2000,7 @@ void Hero::set_invincible(bool invincible, uint32_t duration) {
   this->invincible = invincible;
   this->end_invincible_date = 0;
   if (invincible) {
-    this->end_invincible_date = System::now() + duration;
+    this->end_invincible_date = (duration == 0) ? 0 : System::now() + duration;
   }
 }
 
@@ -2019,8 +2009,9 @@ void Hero::set_invincible(bool invincible, uint32_t duration) {
  */
 void Hero::update_invincibility() {
 
-  if (is_invincible()
-      && System::now() >= end_invincible_date) {
+  if (is_invincible() &&
+      end_invincible_date != 0 &&
+      System::now() >= end_invincible_date) {
     set_invincible(false, 0);
   }
 }
@@ -2310,7 +2301,7 @@ void Hero::start_free_carrying_loading_or_running() {
   }
 
   if (get_state().is_carrying_item()) {
-    set_state(new CarryingState(*this, get_state().get_carried_item()));
+    set_state(new CarryingState(*this, get_state().get_carried_object()));
   }
   else {
     set_state(new FreeState(*this));
@@ -2383,11 +2374,11 @@ void Hero::start_victory(const ScopedLuaRef& callback_ref) {
 /**
  * \brief Freezes the hero.
  *
- * When the hero is freezed, he cannot move.
+ * When the hero is frozen, he cannot move.
  * The current animation of the hero's sprites is stopped and the "stopped" animation is played.
  * You can call start_free() to unfreeze him.
  */
-void Hero::start_freezed() {
+void Hero::start_frozen() {
   set_state(new FreezedState(*this));
 }
 
@@ -2395,7 +2386,7 @@ void Hero::start_freezed() {
  * \brief Makes the hero lift a destructible item.
  * \param item_to_lift The item to lift.
  */
-void Hero::start_lifting(const std::shared_ptr<CarriedItem>& item_to_lift) {
+void Hero::start_lifting(const std::shared_ptr<CarriedObject>& item_to_lift) {
   set_state(new LiftingState(*this, item_to_lift));
 }
 
@@ -2500,6 +2491,16 @@ bool Hero::can_start_sword() const {
 
   return get_state().can_start_sword();
 }
+
+/**
+ * \brief Starts using the sword.
+ */
+void Hero::start_sword() {
+
+  Debug::check_assertion(can_start_sword(), "The hero cannot start using the sword now");
+  set_state(new SwordSwingingState(*this));
+}
+
 /**
  * \brief Returns whether the hero can starts using an equipment item.
  * \param item The equipment item to use.
@@ -2533,7 +2534,7 @@ bool Hero::can_start_item(EquipmentItem& item) {
 void Hero::start_item(EquipmentItem& item) {
   Debug::check_assertion(can_start_item(item),
       std::string("The hero cannot start using item '")
-      + item.get_name() + "' now.");
+      + item.get_name() + "' now");
   set_state(new UsingItemState(*this, item));
 }
 

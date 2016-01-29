@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ class Hero::PullingState: public Hero::BaseState {
 
     void stop_moving_pulled_entity();
 
-    Detector* pulled_entity;           /**< The entity the hero is pulling (or nullptr). */
+    Entity* pulled_entity;             /**< The entity the hero is pulling (or nullptr). */
     std::shared_ptr<PathMovement>
         pulling_movement;              /**< The movement created by this state.
                                         * The movement of the hero is also this object,

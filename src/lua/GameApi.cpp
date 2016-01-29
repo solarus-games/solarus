@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1264,7 +1264,7 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
 
       case GameCommand::ATTACK:
       {
-        CommandsEffects::SwordKeyEffect effect = game->get_commands_effects().get_sword_key_effect();
+        CommandsEffects::AttackKeyEffect effect = game->get_commands_effects().get_sword_key_effect();
         effect_name = enum_to_name(effect);
         break;
       }

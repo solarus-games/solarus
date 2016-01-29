@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,10 +42,10 @@ class Chest;
 class CommandsEffects;
 class Crystal;
 class CrystalBlock;
-class Detector;
 class Destructible;
 class Enemy;
 class Equipment;
+class EquipmentItem;
 class Explosion;
 class Fire;
 class Game;
@@ -55,7 +55,7 @@ class Jumper;
 class LuaContext;
 class Map;
 class MainLoop;
-class MapEntities;
+class Entities;
 class Movement;
 class Npc;
 class Savegame;
@@ -75,15 +75,17 @@ class Teletransporter;
  * non-playing characters, doors, chests, etc.
  * Each entity has:
  * - a bounding box that represents its position on the map (a rectangle),
- * - a layer on the map
- * - an origin point, relative to the rectangle's top-left corner
+ * - a layer on the map,
+ * - an origin point, relative to the rectangle's top-left corner.
  * Some entities can also have a name, a movement and some sprites.
  */
 class SOLARUS_API Entity: public ExportableToLua {
 
   public:
 
-    // destruction
+    using NamedSprite = std::pair<std::string, SpritePtr>;
+
+    // Destruction.
     virtual ~Entity();
     void remove_from_map();
     virtual void notify_being_removed();
@@ -91,21 +93,19 @@ class SOLARUS_API Entity: public ExportableToLua {
 
     /**
      * \brief Returns the type of entity.
-     * \return the type of entity
+     * \return The type of entity.
      */
     virtual EntityType get_type() const = 0;
     virtual const std::string& get_lua_type_name() const override;
     bool is_hero() const;
-    virtual bool is_detector() const;
     virtual bool is_ground_observer() const;
-    virtual Point get_ground_point() const;
+    Point get_ground_point() const;
     bool is_ground_modifier() const;
     virtual Ground get_modified_ground() const;
     virtual bool can_be_drawn() const;
     bool is_drawn_in_y_order() const;
     void set_drawn_in_y_order(bool drawn_in_y_order);
     virtual bool is_drawn_at_its_position() const;
-    bool is_drawn() const;
 
     virtual void notify_command_pressed(GameCommand command);
     virtual void notify_command_released(GameCommand command);
@@ -121,8 +121,6 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual void notify_tileset_changed();
     Game& get_game();
     const Game& get_game() const;
-    LuaContext& get_lua_context();
-    const LuaContext& get_lua_context() const;
 
     // position in the map
     int get_layer() const;
@@ -181,22 +179,24 @@ class SOLARUS_API Entity: public ExportableToLua {
     // properties
     const std::string& get_name() const;
     void set_name(const std::string& name);
+    bool has_name() const;
     bool has_prefix(const std::string& prefix) const;
     int get_direction() const;
     void set_direction(int direction);
     virtual void notify_direction_changed();
 
-    // sprites
+    // Sprites.
     bool has_sprite() const;
-    Sprite& get_sprite();
-    const Sprite& get_sprite() const;
-    const std::vector<SpritePtr>& get_sprites();
+    SpritePtr get_sprite(const std::string& sprite_name = "") const;
+    const std::vector<NamedSprite>& get_sprites() const;
     SpritePtr create_sprite(
         const std::string& animation_set_id,
-        bool enable_pixel_collisions = false
+        const std::string& sprite_name = ""
     );
     bool remove_sprite(Sprite& sprite);
     void clear_sprites();
+    std::string get_default_sprite_name() const;
+    void set_default_sprite_name(const std::string& default_sprite_name);
     virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     virtual void notify_sprite_animation_finished(Sprite& sprite, const std::string& animation);
     bool is_visible() const;
@@ -209,7 +209,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     void set_movement(const std::shared_ptr<Movement>& movement);
     void clear_movement();
     bool are_movement_notifications_enabled() const;
-    void set_movement_events_enabled(bool notify);
+    void set_movement_notifications_enabled(bool notify);
     bool has_stream_action() const;
     const StreamAction* get_stream_action() const;
     StreamAction* get_stream_action();
@@ -225,10 +225,10 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual void notify_moving_by(Entity& entity);
     virtual void notify_moved_by(Entity& entity);
 
-    Detector* get_facing_entity();
-    const Detector* get_facing_entity() const;
-    void set_facing_entity(Detector* facing_entity);
-    virtual void notify_facing_entity_changed(Detector* facing_entity);
+    Entity* get_facing_entity();
+    const Entity* get_facing_entity() const;
+    void set_facing_entity(Entity* facing_entity);
+    virtual void notify_facing_entity_changed(Entity* facing_entity);
     static const Point& direction_to_xy_move(int direction8);
 
     // geometry
@@ -254,10 +254,32 @@ class SOLARUS_API Entity: public ExportableToLua {
     int get_distance_to_camera() const;
     int get_distance_to_camera2() const;
     bool is_in_same_region(const Entity& other) const;
+    bool is_in_same_region(const Point& xy) const;
 
-    // collisions
-    virtual bool has_layer_independent_collisions() const;
+    // Collisions.
+    bool is_detector() const;
+    void set_collision_modes(int collision_modes);
+    void add_collision_mode(CollisionMode collision_mode);
+    bool has_collision_mode(CollisionMode collision_mode);
+    void enable_pixel_collisions();
 
+    bool has_layer_independent_collisions() const;
+    void set_layer_independent_collisions(bool independent);
+
+    // Detecting other entities.
+    void check_collision(Entity& entity);
+    void check_collision(Entity& entity, Sprite& sprite);
+    bool test_collision(Entity& entity, CollisionMode collision_mode);
+    bool test_collision_rectangle(const Entity& entity) const;
+    bool test_collision_inside(const Entity& entity) const;
+    bool test_collision_origin_point(const Entity& entity) const;
+    bool test_collision_facing_point(const Entity& entity) const;
+    bool test_collision_touching(const Entity& entity) const;
+    bool test_collision_center(const Entity& entity) const;
+    bool test_collision_sprites(Entity& entity);
+    virtual bool test_collision_custom(Entity& entity);
+
+    // Being detected by other entities.
     void check_collision_with_detectors();
     void check_collision_with_detectors(Sprite& sprite);
 
@@ -288,6 +310,14 @@ class SOLARUS_API Entity: public ExportableToLua {
         EnemyReaction::Reaction& result,
         bool killed);
 
+    // Interactions.
+    virtual bool notify_action_command_pressed();
+    virtual bool notify_interaction_with_item(EquipmentItem& item);
+    virtual bool start_movement_by_hero();
+    virtual void stop_movement_by_hero();
+    virtual std::string get_sword_tapping_sound();
+
+    // Obstacles.
     virtual bool is_obstacle_for(Entity& other);
     virtual bool is_obstacle_for(Entity& other, const Rectangle& candidate_position);
     bool is_ground_obstacle(Ground ground) const;
@@ -307,11 +337,22 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual bool is_separator_obstacle(Separator& separator);
     virtual bool is_sword_ignored() const;
 
-    // game loop
+    // Game loop.
     bool is_suspended() const;
     virtual void set_suspended(bool suspended);
     virtual void update();
     virtual void draw_on_map();
+
+    // Easy access to various game objects.
+    Entities& get_entities();
+    const Entities& get_entities() const;
+    Equipment& get_equipment();
+    const Equipment& get_equipment() const;
+    CommandsEffects& get_commands_effects();
+    GameCommands& get_commands();
+    Savegame& get_savegame();
+    const Savegame& get_savegame() const;
+    Hero& get_hero();
 
     /**
      * \name State.
@@ -330,7 +371,7 @@ class SOLARUS_API Entity: public ExportableToLua {
 
   protected:
 
-    // creation
+    // Creation.
     Entity(
         const std::string& name,
         int direction,
@@ -345,27 +386,28 @@ class SOLARUS_API Entity: public ExportableToLua {
 
     uint32_t get_when_suspended() const;
 
+    // Ground.
     void update_ground_observers();
     void update_ground_below();
 
+    // Collisions.
+    virtual void notify_collision(
+        Entity& entity_overlapping, CollisionMode collision_mode);
+    virtual void notify_collision(
+        Entity& other_entity, Sprite& this_sprite, Sprite& other_sprite);
+
+    // Obstacles.
+    virtual bool is_traversable_obstacle() const;
+    virtual bool is_wall_obstacle() const;
     virtual bool is_low_wall_obstacle() const;
+    virtual bool is_grass_obstacle() const;
     virtual bool is_shallow_water_obstacle() const;
     virtual bool is_deep_water_obstacle() const;
+    virtual bool is_ice_obstacle() const;
     virtual bool is_hole_obstacle() const;
     virtual bool is_lava_obstacle() const;
     virtual bool is_prickle_obstacle() const;
     virtual bool is_ladder_obstacle() const;
-
-    // easy access to various game objects
-    MapEntities& get_entities();
-    const MapEntities& get_entities() const;
-    Equipment& get_equipment();
-    const Equipment& get_equipment() const;
-    CommandsEffects& get_commands_effects();
-    GameCommands& get_commands();
-    Savegame& get_savegame();
-    const Savegame& get_savegame() const;
-    Hero& get_hero();
 
   private:
 
@@ -405,10 +447,9 @@ class SOLARUS_API Entity: public ExportableToLua {
 
     int direction;                              /**< direction of the entity, not used for all kinds of entities */
 
-    std::vector<SpritePtr>
-        sprites;                                /**< sprites representing the entity;
-                                                 * note that some entities manage their sprites themselves
-                                                 * rather than using this field */
+    std::vector<NamedSprite>
+        sprites;                                /**< Sprites representing the entity.  */
+    std::string default_sprite_name;            /**< Name of the sprite to get in get_sprite() without parameter. */
     std::vector<SpritePtr>
         old_sprites;                            /**< sprites to remove and destroy as soon as possible */
     bool visible;                               /**< indicates that this entity's sprites are currently displayed */
@@ -417,10 +458,14 @@ class SOLARUS_API Entity: public ExportableToLua {
                                                  * nullptr indicates that the entity has no movement. */
     std::vector<std::shared_ptr<Movement>>
         old_movements;                          /**< old movements to destroy as soon as possible */
-    bool movement_events_enabled;               /**< Whether entity:on_position_changed() and friends should be called. */
-    Detector* facing_entity;                    /**< The detector in front of this entity if any. */
+    bool movement_notifications_enabled;        /**< Whether entity:on_position_changed() and friends should be called. */
+    Entity* facing_entity;                      /**< The detector in front of this entity if any. */
+    int collision_modes;                        /**< Collision modes detected by entity
+                                                 * (can be an OR combination of CollisionMode values). */
+    bool layer_independent_collisions;          /**< Whether this entity detects collisions on all layers. */
+
     std::unique_ptr<StreamAction>
-        stream_action;                /**< The stream effect currently applied if any. */
+        stream_action;                          /**< The stream effect currently applied if any. */
 
     // state
     std::unique_ptr<State> state;               /**< the current internal state */
@@ -431,7 +476,6 @@ class SOLARUS_API Entity: public ExportableToLua {
     bool being_removed;                         /**< indicates that the entity is not valid anymore because it is about to be removed */
     bool enabled;                               /**< indicates that the entity is enabled
                                                  * (if not, it will not be displayed and collisions will not be notified) */
-    bool waiting_enabled;                       /**< indicates that the entity will be enabled as soon as the hero stops overlapping it */
 
     bool suspended;                             /**< indicates that the animation and movement of this entity are suspended */
     uint32_t when_suspended;                    /**< indicates when this entity was suspended */

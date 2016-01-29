@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ Switch::Switch(
     const std::string& sound_id,
     bool needs_block,
     bool inactivate_when_leaving):
-  Detector(COLLISION_NONE, name, layer, xy, Size(16, 16)),
+  Entity(name, 0, layer, xy, Size(16, 16)),
   subtype(subtype),
   sound_id(sound_id),
   activated(false),
@@ -68,19 +68,19 @@ Switch::Switch(
 
   // Sprite.
   if (!sprite_name.empty()) {
-    create_sprite(sprite_name);
-    get_sprite().set_current_animation("inactivated");
+    const SpritePtr& sprite = create_sprite(sprite_name);
+    sprite->set_current_animation("inactivated");
   }
 
   // Collisions.
   if (is_walkable()) {
-    set_collision_modes(COLLISION_CUSTOM);
+    set_collision_modes(CollisionMode::COLLISION_CUSTOM);
   }
   else if (subtype == Subtype::ARROW_TARGET) {
-    set_collision_modes(COLLISION_FACING);
+    set_collision_modes(CollisionMode::COLLISION_FACING);
   }
   else if (subtype == Subtype::SOLID) {
-    set_collision_modes(COLLISION_SPRITE | COLLISION_OVERLAPPING);
+    set_collision_modes(CollisionMode::COLLISION_SPRITE | CollisionMode::COLLISION_OVERLAPPING);
   }
 }
 
@@ -150,7 +150,7 @@ void Switch::activate() {
       Sound::play(sound_id);
     }
 
-    get_lua_context().switch_on_activated(*this);
+    get_lua_context()->switch_on_activated(*this);
   }
 }
 
@@ -166,12 +166,13 @@ void Switch::set_activated(bool activated) {
   if (activated != this->activated) {
     this->activated = activated;
 
-    if (has_sprite()) {
+    const SpritePtr& sprite = get_sprite();
+    if (sprite != nullptr) {
       if (activated) {
-        get_sprite().set_current_animation("activated");
+        sprite->set_current_animation("activated");
       }
       else {
-        get_sprite().set_current_animation("inactivated");
+        sprite->set_current_animation("inactivated");
       }
     }
   }
@@ -194,7 +195,7 @@ void Switch::set_locked(bool locked) {
  */
 void Switch::update() {
 
-  Detector::update();
+  Entity::update();
 
   if (is_enabled() &&
       is_walkable() &&
@@ -211,9 +212,9 @@ void Switch::update() {
       entity_overlapping = nullptr;
       if (is_activated() && inactivate_when_leaving && !locked) {
         set_activated(false);
-        get_lua_context().switch_on_inactivated(*this);
+        get_lua_context()->switch_on_inactivated(*this);
       }
-      get_lua_context().switch_on_left(*this);
+      get_lua_context()->switch_on_left(*this);
     }
   }
 }
@@ -257,7 +258,7 @@ void Switch::notify_collision(
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Switch::notify_collision(
     Entity& other_entity,

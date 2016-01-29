@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #include "solarus/lowlevel/Random.h"
 #include "solarus/lowlevel/Surface.h"
 #include <algorithm>
+#include <iterator>
 #include <set>
 
 namespace Solarus {
@@ -102,7 +103,7 @@ Rectangle Quadtree<T>::get_space() const {
 template<typename T>
 bool Quadtree<T>::add(const T& element, const Rectangle& bounding_box) {
 
-  if (elements.find(element) != elements.end()) {
+  if (contains(element)) {
     // Element already in the quadtree.
     return false;
   }
@@ -116,9 +117,8 @@ bool Quadtree<T>::add(const T& element, const Rectangle& bounding_box) {
     return false;
   }
 
-  ElementInfo info;
-  info.bounding_box = bounding_box;
-  elements.insert(std::make_pair(element, info));
+  ElementInfo info = { bounding_box };
+  elements.emplace(element, info);
 
   return true;
 }
@@ -201,18 +201,18 @@ int Quadtree<T>::get_num_elements() const {
 
 /**
  * \brief Gets the elements intersecting the given rectangle.
- * \param[in] region The rectangle to check.
+ * \param region The rectangle to check.
  * The rectangle should be entirely contained in the quadtree space.
- * \param[in/out] elements A list that will be filled with elements
- * intersecting the rectangle. Elements outside the quadtree space are
- * not added there.
+ * \return A list of elements intersecting the rectangle, in arbitrary order.
+ * Elements outside the quadtree space are not added there.
  */
 template<typename T>
-void Quadtree<T>::get_elements(
-    const Rectangle& region,
-    std::vector<T>& elements
+std::vector<T> Quadtree<T>::get_elements(
+    const Rectangle& region
 ) const {
-  root.get_elements(region, elements);
+  std::set<T> element_set;
+  root.get_elements(region, element_set);
+  return std::vector<T>(element_set.begin(), element_set.end());
 }
 
 /**
@@ -278,10 +278,7 @@ template<typename T>
 void Quadtree<T>::Node::clear() {
 
   elements.clear();
-  children[0] = nullptr;
-  children[1] = nullptr;
-  children[2] = nullptr;
-  children[3] = nullptr;
+  std::fill(std::begin(children), std::end(children), nullptr);
 }
 
 /**
@@ -348,7 +345,7 @@ bool Quadtree<T>::Node::add(
 
   if (!is_split()) {
     // Add it to the current node.
-    elements.push_back(std::make_pair(element, bounding_box));
+    elements.emplace_back(element, bounding_box);
     return true;
   }
 
@@ -442,7 +439,7 @@ void Quadtree<T>::Node::split() {
   );
 
   // Move existing elements into them.
-  for (const std::pair<T, Rectangle>& pair: elements) {
+  for (const std::pair<T, Rectangle>& pair : elements) {
     for (const std::unique_ptr<Node>& child : children) {
       child->add(pair.first, pair.second);
     }
@@ -466,7 +463,7 @@ void Quadtree<T>::Node::merge() {
   std::set<T> merged_elements;
   for (const std::unique_ptr<Node>& child : children) {
     Debug::check_assertion(!child->is_split(), "Quadtree node child is not a leaf");
-    for (const std::pair<T, Rectangle>& pair: child->elements) {
+    for (const std::pair<T, Rectangle>& pair : child->elements) {
       const T& element = pair.first;
       if (merged_elements.insert(element).second) {
         elements.push_back(pair);
@@ -474,9 +471,7 @@ void Quadtree<T>::Node::merge() {
     }
   }
 
-  for (std::unique_ptr<Node>& child : children) {
-    child = nullptr;
-  }
+  std::fill(std::begin(children), std::end(children), nullptr);
 
   Debug::check_assertion(!is_split(), "Quadtree node merge failed");
 }
@@ -493,7 +488,7 @@ int Quadtree<T>::Node::get_num_elements() const {
     // Some elements can overlap several cells.
     // To avoid duplicates, we count an element if its center is in this cell.
     // TODO This information could be stored for better performance.
-    for (const std::pair<T, Rectangle>& pair: elements) {
+    for (const std::pair<T, Rectangle>& pair : elements) {
       const Rectangle& box = pair.second;
       if (get_cell().contains(box.get_center())) {
         ++num_elements;
@@ -517,7 +512,7 @@ int Quadtree<T>::Node::get_num_elements() const {
 template<typename T>
 void Quadtree<T>::Node::get_elements(
     const Rectangle& region,
-    std::vector<T>& result
+    std::set<T>& result
 ) const {
 
   if (!get_cell().overlaps(region)) {
@@ -528,7 +523,7 @@ void Quadtree<T>::Node::get_elements(
   if (!is_split()) {
     for (const std::pair<T, Rectangle>& pair : elements) {
       if (pair.second.overlaps(region)) {
-        result.push_back(pair.first);
+        result.insert(pair.first);
       }
     }
   }
@@ -553,7 +548,7 @@ void Quadtree<T>::Node::draw(const SurfacePtr& dst_surface, const Point& dst_pos
     draw_rectangle(get_cell(), color, dst_surface, dst_position);
 
     // Draw bounding boxes of elements.
-    for (const std::pair<T, Rectangle>& pair: elements) {
+    for (const std::pair<T, Rectangle>& pair : elements) {
       const Rectangle& bounding_box = pair.second;
       if (get_cell().contains(bounding_box.get_center())) {
         draw_rectangle(bounding_box, color, dst_surface, dst_position);

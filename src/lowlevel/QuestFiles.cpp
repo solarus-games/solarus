@@ -87,7 +87,7 @@ void QuestFiles::initialize(const Arguments& args) {
   if (!QuestFiles::data_file_exists("quest.dat")) {
     Debug::error("No quest was found in the directory '" + quest_path +
         "'. To specify your quest's path, run: " +
-        (program_name.empty() ? std::string("solarus_run") : program_name) +
+        (program_name.empty() ? std::string("solarus-run") : program_name) +
         " path/to/quest");
     std::exit(EXIT_SUCCESS);
   }

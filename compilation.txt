@@ -28,7 +28,7 @@ Contents
 -----------
 
 When it is installed, the project is divided in two parts:
-- Solarus (the engine), which is an executable file called solarus_run and
+- Solarus (the engine), which is an executable file called solarus-run and
   a dynamic library called solarus.
 - One (or several) quests, each quest corresponding to a game, represented as a
   directory called "data" or a zip archive called "data.solarus" or
@@ -201,13 +201,13 @@ The build error messages will tell you which headers
 and libraries are missing (it is hard to get them right in one try!).
 
 Once the compilation is finished, you obtain a dynamic library called solarus
-and an executable called solarus_run.
+and an executable called solarus-run.
 
 
 3.3.  Run
 ---------
 
-To execute a quest with the Solarus engine, execute the solarus_run
+To execute a quest with the Solarus engine, execute the solarus-run
 executable.
 The quest path must be specified on the command line.
 If you don't specify it, it will be the current directory by default.
@@ -216,21 +216,21 @@ The quest path is a directory containing the "data" subdirectory of your
 quest, or containing the "data.solarus" or "data.solarus.zip" archive of
 your quest.
 
-It means that if you run solarus_run without parameters, a quest must
+It means that if you run solarus-run without parameters, a quest must
 exist in the current directory.
 
 - Graphically:
 
-Make a shortcut that runs the solarus_run executable with your quest path as
+Make a shortcut that runs the solarus-run executable with your quest path as
 parameter.
-Or place the quest in the same directory as the solarus_run executable
+Or place the quest in the same directory as the solarus-run executable
 and run it wihout parameter.
 
 - Or from the command line:
 
 Type from your build directory:
 
-$ ./solarus_run path/to/your/quest
+$ ./solarus-run path/to/your/quest
 
 
 3.4.  Install
@@ -244,7 +244,7 @@ library in another project.
 
 - Graphically:
 
-Copy the solarus_run executable and the solarus library where you want them
+Copy the solarus-run executable and the solarus library where you want them
 to be installed.
 
 If you intend to use the Solarus library from another project, you need to
@@ -261,7 +261,7 @@ available:
 
 $ make install
 
-This will correctly install the solarus_run executable, the solarus library
+This will correctly install the solarus-run executable, the solarus library
 and the solarus headers (including the generated one config.h).
 The default installation directory probably requires administrative
 privileges.

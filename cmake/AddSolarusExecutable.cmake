@@ -1,4 +1,4 @@
-# Source file of the solarus_run executable.
+# Source file of the solarus-run executable.
 set(source_files
   src/main/Main.cpp
 )
@@ -16,12 +16,12 @@ if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
   # Build into CFBundle form if requested or iOS build.
   include(cmake/apple/AddCFBundleTarget.cmake)
 else()
-  add_executable(solarus_run
+  add_executable(solarus-run
     ${source_files}
   )
 endif()
 
-target_link_libraries(solarus_run
+target_link_libraries(solarus-run
   solarus
   "${SDL2_LIBRARY}"
   "${SDL2_IMAGE_LIBRARY}"

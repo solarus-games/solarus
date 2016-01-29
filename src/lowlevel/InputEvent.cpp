@@ -267,9 +267,10 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
     }
 
     // Check if keyboard events are correct.
-    // For some reason, when running Solarus from the quest editor,
+    // For some reason, when running Solarus from a Qt application
+    // (which is not recommended)
     // multiple SDL_KEYUP events are generated when a key remains pressed
-    // (Qt/SDL conflict?).
+    // (Qt/SDL conflict). This fixes most problems but not all of them.
     if (internal_event.type == SDL_KEYDOWN) {
       KeyboardKey key = static_cast<KeyboardKey>(internal_event.key.keysym.sym);
       if (!is_key_down(key)) {

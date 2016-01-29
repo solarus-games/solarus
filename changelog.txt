@@ -6,6 +6,7 @@ _______________________________
 Engine changes
 --------------
 
+* Add a launcher GUI to ease chosing a quest and setting options (#693).
 * Rename the solarus_run executable to solarus-run.
 * Add version number and symbolic links when building the library.
 * Add a -lua-console option to run Lua code from the standard input.

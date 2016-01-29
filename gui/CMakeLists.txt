@@ -15,6 +15,8 @@ include_directories(
 
 # Source files.
 set(solarus_gui_SOURCES
+  include/gui/main_window.h
+  src/gui/main_window.cpp
   src/main.cpp
 )
 
@@ -28,6 +30,7 @@ endif()
 
 # UI files.
 set(solarus_gui_FORMS
+  src/gui/main_window.ui
 )
 
 # Generate .h from .ui.

@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "gui/main_window.h"
 #include <solarus/lowlevel/Debug.h>
 #include <solarus/Arguments.h>
 #include <solarus/MainLoop.h>
@@ -23,6 +24,8 @@
 #include <QLibraryInfo>
 #include <QStyleFactory>
 #include <QTranslator>
+
+namespace Solarus {
 
 namespace {
 
@@ -46,7 +49,7 @@ int run_gui(int argc, char* argv[]) {
   translator.load("solarus_" + QLocale::system().name());
   application.installTranslator(&translator);
 
-  QMainWindow window(nullptr);
+  MainWindow window(nullptr);
   window.show();
 
   return application.exec();
@@ -70,7 +73,9 @@ int run_quest(int argc, char* argv[]) {
   return 0;
 }
 
-}
+}  // Anonymous namespace
+
+}  // namespace Solarus
 
 /**
  * @brief Entry point of Solarus.
@@ -88,10 +93,10 @@ int main(int argc, char* argv[]) {
 
   if (argc > 1 && QString(argv[1]) == "-run") {
     // Quest run mode.
-    return run_quest(argc, argv);
+    return Solarus::run_quest(argc, argv);
   }
   else {
     // Solarus GUI mode.
-    return run_gui(argc, argv);
+    return Solarus::run_gui(argc, argv);
   }
 }

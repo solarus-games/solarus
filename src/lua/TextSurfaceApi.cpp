@@ -333,7 +333,7 @@ int LuaContext::text_surface_api_set_rendering_mode(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
     TextSurface::RenderingMode mode = LuaTools::check_enum<TextSurface::RenderingMode>(
-        l, 1, rendering_mode_names);
+        l, 2, rendering_mode_names);
 
     text_surface.set_rendering_mode(mode);
 

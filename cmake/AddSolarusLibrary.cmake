@@ -1,7 +1,7 @@
 # Solarus library source files.
 file(
   GLOB
-  source_files
+  solarus_SOURCES
 
   include/solarus/containers/Grid.h
   include/solarus/containers/Quadtree.h
@@ -348,8 +348,6 @@ file(
   src/lua/TimerApi.cpp
   src/lua/VideoApi.cpp
 
-  src/main/Main.cpp
-
   src/movements/CircleMovement.cpp
   src/movements/FallingOnFloorMovement.cpp
   src/movements/JumpMovement.cpp
@@ -417,8 +415,8 @@ file(
 
 # Additional source files for Apple systems.
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(source_files
-    ${source_files}
+  set(solarus_SOURCES
+    ${solarus_SOURCES}
     src/lowlevel/apple/AppleInterface.mm
     include/solarus/lowlevel/apple/AppleInterface.h
   )
@@ -427,7 +425,7 @@ endif()
 # Build the Solarus library.
 add_library(solarus
   SHARED
-  ${source_files}
+  ${solarus_SOURCES}
 )
 
 target_link_libraries(solarus

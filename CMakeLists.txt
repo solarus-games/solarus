@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.11)
-project(SOLARUS_ENGINE)
+project(solarus-engine)
 
 include(cmake/AddSolarusVersion.cmake)
 include(cmake/AddDefines.cmake)

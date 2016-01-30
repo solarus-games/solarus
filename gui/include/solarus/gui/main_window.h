@@ -19,7 +19,7 @@
 
 #include "ui_main_window.h"
 
-namespace Solarus {
+namespace SolarusGui {
 
 /**
  * @brief Main window of the Solarus GUI.

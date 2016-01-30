@@ -15,9 +15,15 @@ include_directories(
 
 # Source files.
 set(solarus_gui_SOURCES
-  include/gui/main_window.h
-  src/gui/main_window.cpp
+  include/solarus/gui/console.h
+  include/solarus/gui/console_line_edit.h
+  include/solarus/gui/quest_runner.h
+  include/solarus/gui/main_window.h
+  src/console.cpp
+  src/console_line_edit.cpp
+  src/quest_runner.cpp
   src/main.cpp
+  src/main_window.cpp
 )
 
 # Add an icon for the executable in Windows.
@@ -30,7 +36,8 @@ endif()
 
 # UI files.
 set(solarus_gui_FORMS
-  src/gui/main_window.ui
+  src/console.ui
+  src/main_window.ui
 )
 
 # Generate .h from .ui.

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2014-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "gui/main_window.h"
-#include <solarus/lowlevel/Debug.h>
-#include <solarus/Arguments.h>
-#include <solarus/MainLoop.h>
+#include "solarus/gui/main_window.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/Arguments.h"
+#include "solarus/MainLoop.h"
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QMainWindow>
@@ -25,7 +25,7 @@
 #include <QStyleFactory>
 #include <QTranslator>
 
-namespace Solarus {
+namespace SolarusGui {
 
 namespace {
 
@@ -75,7 +75,7 @@ int run_quest(int argc, char* argv[]) {
 
 }  // Anonymous namespace
 
-}  // namespace Solarus
+}  // namespace SolarusGui
 
 /**
  * @brief Entry point of Solarus.
@@ -93,10 +93,10 @@ int main(int argc, char* argv[]) {
 
   if (argc > 1 && QString(argv[1]) == "-run") {
     // Quest run mode.
-    return Solarus::run_quest(argc, argv);
+    return SolarusGui::run_quest(argc, argv);
   }
   else {
     // Solarus GUI mode.
-    return Solarus::run_gui(argc, argv);
+    return SolarusGui::run_gui(argc, argv);
   }
 }

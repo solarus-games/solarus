@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2014-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "gui/main_window.h"
+#include "solarus/gui/main_window.h"
 #include "solarus/Common.h"
 
-namespace Solarus {
+namespace SolarusGui {
 
 /**
  * @brief Creates a main window.

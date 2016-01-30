@@ -236,7 +236,7 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
       if (internal_event.type == SDL_JOYAXISMOTION) {
         // Determine the current state of the axis
         int axis_state = 0;
-        int axis = internal_event.jaxis.axis % 2; // Ensure we only get an index of 0 or 1
+        int axis = internal_event.jaxis.axis;
         int value = internal_event.jaxis.value;
         if (std::abs(value) < 10000) {
           axis_state = 0;

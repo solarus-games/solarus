@@ -126,6 +126,10 @@ install(DIRECTORY
   "${CMAKE_CURRENT_SOURCE_DIR}/include/solarus"
   DESTINATION ${SOLARUS_HEADERS_INSTALL_DESTINATION}
 )
+install(FILES
+  ${solarus_gui_lib_FORMS_HEADERS}
+  DESTINATION "${SOLARUS_HEADERS_INSTALL_DESTINATION}/solarus/gui"
+)
 
 # Platform specific.
 

@@ -4,9 +4,13 @@ branches:
     - dev
 
 notifications:
-  irc: "chat.freenode.net#solarus"
+  irc:
+    channels:
+      - "chat.freenode.net#solarus"
     on_success: change
     on_failure: always
+    use_notice: true
+    skip_join: true
 
 language: cpp
 

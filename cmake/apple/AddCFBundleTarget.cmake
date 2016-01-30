@@ -38,7 +38,7 @@ if(SOLARUS_IOS_BUILD)
   set(SOLARUS_OS_NAME                 "iOS")
   set(SOLARUS_INSTALL_DESTINATION     "local/share")
   if(NOT SOLARUS_BUNDLE_INFOPLIST)
-    set(SOLARUS_BUNDLE_INFOPLIST      "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/apple/bundle_content/iOS-Info.plist")
+    set(SOLARUS_BUNDLE_INFOPLIST      "${CMAKE_SOURCE_DIR}/cmake/apple/bundle_content/iOS-Info.plist")
   endif()
   set(SOLARUS_BUNDLE_COPIED_LIBRARIES "")
 
@@ -46,7 +46,7 @@ else()
   set(SOLARUS_OS_NAME                 "OSX")
   set(SOLARUS_INSTALL_DESTINATION     "/Applications")
   if(NOT SOLARUS_BUNDLE_INFOPLIST)
-    set(SOLARUS_BUNDLE_INFOPLIST      "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/apple/bundle_content/OSX-Info.plist")
+    set(SOLARUS_BUNDLE_INFOPLIST      "${CMAKE_SOURCE_DIR}/cmake/apple/bundle_content/OSX-Info.plist")
   endif()
 
   # Remove the hardcoded additional link on SDL2 path.
@@ -72,7 +72,7 @@ endif()
 
 # Default files if not specified.
 if(NOT SOLARUS_BUNDLE_ICON)
-  set(SOLARUS_BUNDLE_ICON           "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/icons/Solarus.icns")
+  set(SOLARUS_BUNDLE_ICON           "${CMAKE_SOURCE_DIR}/cmake/icons/Solarus.icns")
 endif()
 if(NOT SOLARUS_BUNDLE_VERSION)
   set(SOLARUS_BUNDLE_VERSION        "1.0")

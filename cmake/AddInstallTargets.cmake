@@ -30,7 +30,7 @@ else()
   # Install headers: useful for projects that use Solarus as a library.
   install(DIRECTORY
     "${CMAKE_BINARY_DIR}/include/solarus"  # For config.h.
-    "${SOLARUS_ENGINE_SOURCE_DIR}/include/solarus"
+    "${CMAKE_SOURCE_DIR}/include/solarus"
     DESTINATION ${SOLARUS_HEADERS_INSTALL_DESTINATION}
   )
 endif()

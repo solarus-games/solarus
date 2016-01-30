@@ -1,9 +1,9 @@
 # Include paths.
 include_directories(
   "${CMAKE_BINARY_DIR}/include"  # For config.h.
-  "${SOLARUS_ENGINE_SOURCE_DIR}/include"
-  "${SOLARUS_ENGINE_SOURCE_DIR}/include/solarus/third_party"
-  "${SOLARUS_ENGINE_SOURCE_DIR}/include/solarus/third_party/snes_spc"
+  "${CMAKE_SOURCE_DIR}/include"
+  "${CMAKE_SOURCE_DIR}/include/solarus/third_party"
+  "${CMAKE_SOURCE_DIR}/include/solarus/third_party/snes_spc"
 )
 
 # External include paths, marked as system ones to disable their warnings.

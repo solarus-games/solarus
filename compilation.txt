@@ -29,13 +29,6 @@ Contents
 1  Overview
 -----------
 
-When it is installed, the project provides the following files:
-- A dynamic library called "solarus".
-- An executable file called "solarus-run" that directly runs a quest.
-- An executable file called "solarus", which is a GUI window to let the user
-  choose a quest and change settings.
-  If you don't need to build this GUI executable, it is possible to disable it.
-
 Solarus can run quests scripted in Lua.
 A quest is a game, represented as a directory called "data"
 or a zip archive called "data.solarus" or
@@ -45,31 +38,51 @@ A short sample quest is provided in the directory "sample_quest".
 
 Our quests can be found on the website: http://www.solarus-games.org.
 
+The project is separated in two parts: Solarus and the Solarus GUI.
+- Compiling the core part (Solarus) generates:
+  - A dynamic library called "solarus".
+  - An executable file called "solarus-run" that directly runs a quest.
+- Compiling the GUI part (Solarus GUI) is optional and generates:
+  - A dynamic library called "solarus-gui"
+  - An executable file called "solarus", providing a GUI window
+    to run quests.
+
+It is possible to play Solarus games without the GUI part:
+the "solarus-run" execute will directly run the quest in the current
+directory if any.
+The GUI part adds a user-friendly interface with menus that allow users to
+select quests and change some settings.
+
+The GUI mode is probably the preferred way for desktop systems,
+while the solarus-run mode may be better on mobile systems.
+If you don't want the GUI part, it is possible to disable it
+at configuration time, and then you don't need Qt.
+
 
 ------------------------
 2  External dependencies
 ------------------------
 
-The build process of solarus uses CMake.
+The build process of Solarus uses CMake.
 
 To compile Solarus, you need a C++ compiler with support of C++11.
 Solarus compiles fine with gcc 4.8.1 or greater and clang 3.4 or greater,
 and probably with other recent compilers (please let us know).
 
 
-The following libraries are required to compile and to execute the Solarus
-library and the solarus-run executable:
+The following libraries are required to compile and execute Solarus:
 
-SDL2 (2.0.1 or greater)
-SDL2main
-SDL2_image
-SDL2_ttf
-openal
-vorbisfile
-modplug (0.8.8.4 or greater)
-lua5.1 (LuaJIT is recommended)
-physfs
-Qt5 (only if you build the Solarus GUI too)
+- SDL2 (2.0.1 or greater)
+- SDL2main
+- SDL2_image
+- SDL2_ttf
+- Openal
+- Vorbisfile
+- Ogg
+- Modplug (0.8.8.4 or greater)
+- Lua 5.1 or LuaJIT 2.0 (LuaJIT is recommended)
+- Physfs
+- Qt5 (only if you build the Solarus GUI too)
 
 Note that another library is directly embedded in the source code:
 snes_spc, an SPC music decoding library.
@@ -261,15 +274,17 @@ Installing Solarus is optional.
 
 But this can be useful in some cases: if your want it in your PATH (on Unix),
 if you want to remove the build directory, or if you want to use the Solarus
-library in another project.
+libraries in another project.
 
 - Graphically:
 
-Copy the solarus-run executable, the solarus executable and the solarus library
+Copy the solarus library, the solarus-run executable,
+the solarus-gui library and the solarus executable
 where you want them to be installed.
 
-If you intend to use the Solarus library from another project, you need to
-copy the whole include/solarus directory somewhere too.
+If you intend to use the Solarus libraries from another project, you need to
+copy the whole include/solarus directory somewhere too
+(and gui/include/solarus for the Solarus GUI library).
 Important: also copy the build/include/solarus/config.h and put it with the
 other installed headers, next to config.h.in.
 (config.h is a header generated at configuration step, this is why it was in
@@ -282,16 +297,16 @@ available:
 
 $ make install
 
-This will correctly install the solarus-run executable, the solarus exeuctable,
-the solarus library and the solarus headers
-(including the generated one config.h).
+This will install all compiled Solarus libraries, executables
+and headers (including the generated header config.h).
 The default installation directory probably requires administrative
 privileges.
 
 To change the installation directory, change the CMake variable
 CMAKE_INSTALL_PREFIX at the configuration step.
-The executable, the library and the headers will be installed in
-bin/, lib/ and include/ subdirectories of this install prefix.
+The executables, the libraries and the headers will be installed in
+standard subdirectories of this install prefix, like
+bin/, lib/ and include/.
 
 If you need finer customization, the name of these three subdirectories
 can also be changed in CMake: they are set in variables

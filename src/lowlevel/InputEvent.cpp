@@ -35,7 +35,7 @@ SDL_Joystick* InputEvent::joystick = nullptr;
 bool InputEvent::repeat_keyboard = false;
 std::set<InputEvent::KeyboardKey> InputEvent::keys_pressed;
 // Default the axis states to centered
-int InputEvent::joypad_axis_state[2] = { 0, 0 };
+std::vector<int> InputEvent::joypad_axis_state;
 
 // Keyboard key names.
 const std::string EnumInfoTraits<InputEvent::KeyboardKey>::pretty_name = "ability";
@@ -797,11 +797,13 @@ void InputEvent::set_joypad_enabled(bool joypad_enabled) {
     if (joystick != nullptr) {
       SDL_JoystickClose(joystick);
       joystick = nullptr;
+      joypad_axis_state.clear();
     }
 
     if (joypad_enabled && SDL_NumJoysticks() > 0) {
         SDL_InitSubSystem(SDL_INIT_JOYSTICK);
         joystick = SDL_JoystickOpen(0);
+        joypad_axis_state.assign(SDL_JoystickNumAxes(joystick), 0);
     }
     else {
       SDL_JoystickEventState(SDL_IGNORE);

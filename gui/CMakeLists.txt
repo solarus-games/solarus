@@ -14,7 +14,7 @@ include_directories(
 )
 
 # Source files.
-set(solarus_gui_SOURCES
+set(solarus_gui_lib_SOURCES
   include/solarus/gui/console.h
   include/solarus/gui/console_line_edit.h
   include/solarus/gui/quest_runner.h
@@ -22,54 +22,46 @@ set(solarus_gui_SOURCES
   src/console.cpp
   src/console_line_edit.cpp
   src/quest_runner.cpp
-  src/main.cpp
   src/main_window.cpp
 )
 
-# Add an icon for the executable in Windows.
-if(WIN32)
-  set(solarus_gui_SOURCES
-    ${solarus_gui_SOURCES}
-    ../cmake/win32/resources.rc
-  )
-endif()
-
 # UI files.
-set(solarus_gui_FORMS
+set(solarus_gui_lib_FORMS
   src/console.ui
   src/main_window.ui
 )
 
 # Generate .h from .ui.
-qt5_wrap_ui(solarus_gui_FORMS_HEADERS
-  ${solarus_gui_FORMS}
+qt5_wrap_ui(solarus_gui_lib_FORMS_HEADERS
+  ${solarus_gui_lib_FORMS}
 )
 
 # Resources.
-set(solarus_gui_RESOURCES
+set(solarus_gui_lib_RESOURCES
 )
 
 # Compile resource files.
-qt5_add_resources(solarus_gui_RESOURCES_RCC
-  ${solarus_gui_RESOURCES}
+qt5_add_resources(solarus_gui_lib_RESOURCES_RCC
+  ${solarus_gui_lib_RESOURCES}
 )
 
 # Translations.
-set(solarus_gui_TRANSLATIONS
+set(solarus_gui_lib_TRANSLATIONS
 )
-qt5_add_translation(solarus_gui_TRANSLATIONS_QM
-  ${solarus_gui_TRANSLATIONS}
-)
-
-# Main executable.
-add_executable(solarus-gui
-  ${solarus_gui_SOURCES}
-  ${solarus_gui_FORMS_HEADERS}
-  ${solarus_gui_RESOURCES_RCC}
-  ${solarus_gui_TRANSLATIONS_QM}
+qt5_add_translation(solarus_gui_lib_TRANSLATIONS_QM
+  ${solarus_gui_lib_TRANSLATIONS}
 )
 
-target_link_libraries(solarus-gui
+# Build the Solarus GUI library.
+add_library(solarus_gui_lib
+  SHARED
+  ${solarus_gui_lib_SOURCES}
+  ${solarus_gui_lib_FORMS_HEADERS}
+  ${solarus_gui_lib_RESOURCES_RCC}
+  ${solarus_gui_lib_TRANSLATIONS_QM}
+)
+
+target_link_libraries(solarus_gui_lib
   solarus
   Qt5::Widgets
   "${SDL2_LIBRARY}"
@@ -84,16 +76,55 @@ target_link_libraries(solarus-gui
   "${MODPLUG_LIBRARY}"
 )
 
-# Name the GUI executable "solarus", not "solarus-gui".
-# "solarus-gui" is the cmake target name because
-# the "solarus" cmake target name is already used by the library.
-set_target_properties(solarus-gui PROPERTIES
+set_target_properties(solarus_gui_lib PROPERTIES
+  OUTPUT_NAME solarus-gui
+)
+# Main executable.
+set(solarus_gui_exe_SOURCES
+  src/main.cpp
+)
+
+# Add the Solarus icon in Windows.
+if(WIN32)
+  set(solarus_gui_exe_SOURCES
+    ${solarus_gui_exe_SOURCES}
+    ../cmake/win32/resources.rc
+  )
+endif()
+
+add_executable(solarus_gui_exe
+  ${solarus_gui_exe_SOURCES}
+)
+
+target_link_libraries(solarus_gui_exe
+  solarus
+  solarus_gui_lib
+  Qt5::Widgets
+  "${SDL2_LIBRARY}"
+  "${SDL2_IMAGE_LIBRARY}"
+  "${SDL2_TTF_LIBRARY}"
+  "${OPENAL_LIBRARY}"
+  "${LUA_LIBRARY}"
+  "${DL_LIBRARY}"
+  "${PHYSFS_LIBRARY}"
+  "${VORBISFILE_LIBRARY}"
+  "${OGG_LIBRARY}"
+  "${MODPLUG_LIBRARY}"
+)
+
+# Name the GUI executable "solarus".
+set_target_properties(solarus_gui_exe PROPERTIES
   OUTPUT_NAME solarus
 )
 
-# Set files to install
-install(TARGETS solarus-gui
-  RUNTIME DESTINATION bin
+# Set files to install.
+install(TARGETS solarus_gui_lib solarus_gui_exe
+  LIBRARY DESTINATION ${SOLARUS_LIBRARY_INSTALL_DESTINATION}
+  RUNTIME DESTINATION ${SOLARUS_EXECUTABLE_INSTALL_DESTINATION}
+)
+install(DIRECTORY
+  "${CMAKE_CURRENT_SOURCE_DIR}/include/solarus"
+  DESTINATION ${SOLARUS_HEADERS_INSTALL_DESTINATION}
 )
 
 # Platform specific.

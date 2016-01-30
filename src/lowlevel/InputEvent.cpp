@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,9 +38,7 @@ std::set<InputEvent::KeyboardKey> InputEvent::keys_pressed;
 std::vector<int> InputEvent::joypad_axis_state;
 
 // Keyboard key names.
-const std::string EnumInfoTraits<InputEvent::KeyboardKey>::pretty_name = "ability";
-
-const EnumInfo<InputEvent::KeyboardKey>::names_type EnumInfoTraits<InputEvent::KeyboardKey>::names = {
+std::map<InputEvent::KeyboardKey, std::string> InputEvent::keyboard_key_names = {
 
     { InputEvent::KEY_NONE,              "" },
     { InputEvent::KEY_BACKSPACE,         "backspace" },
@@ -169,9 +167,7 @@ const EnumInfo<InputEvent::KeyboardKey>::names_type EnumInfoTraits<InputEvent::K
 };
 
 // Mouse button names.
-const std::string EnumInfoTraits<InputEvent::MouseButton>::pretty_name = "ability";
-
-const EnumInfo<InputEvent::MouseButton>::names_type EnumInfoTraits<InputEvent::MouseButton>::names = {
+std::map<InputEvent::MouseButton, std::string> InputEvent::mouse_button_names = {
     { InputEvent::MOUSE_BUTTON_NONE,   "" },
     { InputEvent::MOUSE_BUTTON_LEFT,   "left" },
     { InputEvent::MOUSE_BUTTON_MIDDLE, "middle" },
@@ -227,43 +223,20 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
   SDL_Event internal_event;
   if (SDL_PollEvent(&internal_event)) {
 
-    // Ignore intermediate positions of joystick axis.
-    if (internal_event.type != SDL_JOYAXISMOTION
-        || std::abs(internal_event.jaxis.value) <= 1000
-        || std::abs(internal_event.jaxis.value) >= 10000) {
+    // If this is a joypad axis event
+    if (internal_event.type == SDL_JOYAXISMOTION) {
 
-      // If this is a joypad axis event
-      if (internal_event.type == SDL_JOYAXISMOTION) {
         // Determine the current state of the axis
         int axis_state = 0;
         int axis = internal_event.jaxis.axis;
         int value = internal_event.jaxis.value;
         if (std::abs(value) < 10000) {
           axis_state = 0;
-        }
-        else {
+        } else {
           axis_state = (value > 0) ? 1 : -1;
         }
-
-        // and state is same as last event for this axis
-        if (joypad_axis_state[axis] == axis_state) {
-          // Ignore repeat joypad axis movement state.
-          // However, an event still needs to be returned so that
-          // all events will be handled this frame. Therefore, change
-          // the type to a invalid event so it will be ignored.
-          internal_event.type = SDL_LASTEVENT;
-        }
-        else {
-          // Otherwise store the new axis state
-          joypad_axis_state[axis] = axis_state;
-        }
-      }
-    }
-    else {
-      // In deadzone band, however, an event still needs to be returned so that
-      // all events will be handled this frame. Therefore, change
-      // the type to a invalid event so it will be ignored.
-      internal_event.type = SDL_LASTEVENT;
+        
+        joypad_axis_state[axis] = axis_state;
     }
 
     // Check if keyboard events are correct.
@@ -492,18 +465,19 @@ int InputEvent::get_joypad_hat_direction(int hat) {
 }
 
 /**
- * \brief Gets the x and y position of the mouse.
- * Values are in quest size coordinates.
- * \param[out] mouse_xy The x and y position of the mouse in quest coordinates.
- * \return \c false if the mouse was outside the quest displaying.
+ * \brief Returns the x and y position of the mouse.
+ * Values are in quest size coordinates and relative to the viewport.
+ * \return A rectangle filled with the x and y position of the mouse,
+ * in which the width and height are set to 1.
+ * Returns a flat Rectangle if the position is not inside the viewport.
  */
-bool InputEvent::get_global_mouse_position(Point& mouse_xy) {
+Rectangle InputEvent::get_global_mouse_position() {
 
   int x, y;
 
   SDL_GetMouseState(&x, &y);
 
-  return Video::window_to_quest_coordinates(Point(x, y), mouse_xy);
+  return Video::get_scaled_position(Rectangle(x, y, 1, 1));
 }
 
 
@@ -747,6 +721,31 @@ InputEvent::KeyboardKey InputEvent::get_keyboard_key() const {
   }
 
   return KeyboardKey(internal_event.key.keysym.sym);
+}
+
+/**
+ * \brief Returns the Lua name of a keyboard key.
+ * \param key A keyboard key.
+ * \return The corresponding name (or an empty string for KEY_NONE).
+ */
+const std::string& InputEvent::get_keyboard_key_name(KeyboardKey key) {
+  return keyboard_key_names[key];
+}
+
+/**
+ * \brief Returns a keyboard key given its name.
+ * \param keyboard_key_name The name of a keyboard key.
+ * \return The corresponding key, or KEY_NONE if this name is empty or unknown.
+ */
+InputEvent::KeyboardKey InputEvent::get_keyboard_key_by_name(const std::string& keyboard_key_name) {
+
+  // TODO check that this traversal is not significant, otherwise make a reverse mapping.
+  for (const auto& kvp: keyboard_key_names) {
+    if (kvp.second == keyboard_key_name) {
+      return kvp.first;
+    }
+  }
+  return KEY_NONE;
 }
 
 /**
@@ -1082,19 +1081,46 @@ InputEvent::MouseButton InputEvent::get_mouse_button() const {
 }
 
 /**
- * \brief Gets the x and y position of this mouse event, if any.
- * Values are in quest size coordinates.
- * \param[out] mouse_xy The x and y position of the mouse in this mouse event.
- * \return \c false if the mouse was not inside the quest displaying during
- * this event.
+ * \brief Returns the x and y position of this mouse event, if any.
+ * Values are in quest size coordinates and relative to the viewport.
+ * \return A rectangle filled with the x and y position of the mouse,
+ * in which the width and height are set to 1.
+ * Returns a flat Rectangle if the position is not inside the viewport.
  */
-bool InputEvent::get_mouse_position(Point& mouse_xy) const {
+Rectangle InputEvent::get_mouse_position() const {
 
   Debug::check_assertion(is_mouse_event(), "Event is not a mouse event");
 
-  return Video::renderer_to_quest_coordinates(
-      Point(internal_event.button.x, internal_event.button.y), mouse_xy);
+  return Video::get_scaled_position(
+      Rectangle(internal_event.button.x, internal_event.button.y, 1, 1));
 }
+
+/**
+ * \brief Returns the Lua name of a mouse button.
+ * \param button A mouse button.
+ * \return The corresponding name (or an empty string for MOUSE_BUTTON_NONE).
+ */
+const std::string& InputEvent::get_mouse_button_name(MouseButton button) {
+
+  return mouse_button_names[button];
+}
+
+/**
+ * \brief Returns a mouse button given its name.
+ * \param button_name The name of a mouse button.
+ * \return The corresponding button, or MOUSE_BUTTON_NONE if this name is
+ * empty or unknown.
+ */
+InputEvent::MouseButton InputEvent::get_mouse_button_by_name(const std::string& button_name) {
+
+  for (const auto& kvp: mouse_button_names) {
+    if (kvp.second == button_name) {
+      return kvp.first;
+    }
+  }
+  return MOUSE_BUTTON_NONE;
+}
+
 
 // functions common to keyboard and joypad events
 

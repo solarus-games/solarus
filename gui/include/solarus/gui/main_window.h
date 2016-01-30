@@ -17,6 +17,7 @@
 #ifndef SOLARUS_GUI_MAIN_WINDOW_H
 #define SOLARUS_GUI_MAIN_WINDOW_H
 
+#include "solarus/Common.h"
 #include "ui_main_window.h"
 
 namespace SolarusGui {
@@ -24,7 +25,7 @@ namespace SolarusGui {
 /**
  * @brief Main window of the Solarus GUI.
  */
-class MainWindow : public QMainWindow {
+class SOLARUS_API MainWindow : public QMainWindow {
   Q_OBJECT
 
 public:

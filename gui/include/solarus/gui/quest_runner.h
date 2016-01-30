@@ -17,6 +17,7 @@
 #ifndef SOLARUS_GUI_QUEST_RUNNER_H
 #define SOLARUS_GUI_QUEST_RUNNER_H
 
+#include "solarus/Common.h"
 #include <QProcess>
 
 namespace SolarusGui {
@@ -24,7 +25,7 @@ namespace SolarusGui {
 /**
  * @brief Class to run a quest in a dedicated process.
  */
-class QuestRunner : public QObject {
+class SOLARUS_API QuestRunner : public QObject {
   Q_OBJECT
 
 public:

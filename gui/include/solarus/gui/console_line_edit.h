@@ -17,6 +17,7 @@
 #ifndef SOLARUS_GUI_CONSOLE_LINE_EDIT_H
 #define SOLARUS_GUI_CONSOLE_LINE_EDIT_H
 
+#include "solarus/Common.h"
 #include <QLineEdit>
 
 class QStringListModel;
@@ -28,7 +29,7 @@ namespace SolarusGui {
  *
  * Manages the history of commands.
  */
-class ConsoleLineEdit : public QLineEdit {
+class SOLARUS_API ConsoleLineEdit : public QLineEdit {
   Q_OBJECT
 
 public:

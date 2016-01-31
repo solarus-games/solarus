@@ -16,6 +16,7 @@
  */
 #include "solarus/gui/main_window.h"
 #include "solarus/Common.h"
+#include <QFileDialog>
 
 namespace SolarusGui {
 
@@ -24,7 +25,8 @@ namespace SolarusGui {
  * @param parent Parent object or nullptr.
  */
 MainWindow::MainWindow(QWidget* parent) :
-  QMainWindow(parent) {
+  QMainWindow(parent),
+  quest_runner() {
 
   // Set up widgets.
   ui.setupUi(this);
@@ -32,6 +34,7 @@ MainWindow::MainWindow(QWidget* parent) :
   // Title.
   update_title();
 
+  ui.console->set_quest_runner(quest_runner);
   ui.console->set_command_enabled(false);
   const int console_height = 100;
   ui.console_splitter->setSizes({ height() - console_height, console_height });
@@ -58,6 +61,23 @@ bool MainWindow::confirm_close() {
 
   // TODO confirmation dialog if a quest is running
   return true;
+}
+
+/**
+ * @brief Slot called when the user adds a quest to the quest list.
+ */
+void MainWindow::on_action_add_quest_triggered() {
+
+  QString quest_path = QFileDialog::getExistingDirectory(
+        this,
+        tr("Select quest directory")
+  );
+
+  if (quest_path.isEmpty()) {
+    return;
+  }
+
+  // TODO
 }
 
 /**

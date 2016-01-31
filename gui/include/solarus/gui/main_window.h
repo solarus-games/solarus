@@ -18,6 +18,7 @@
 #define SOLARUS_GUI_MAIN_WINDOW_H
 
 #include "solarus/Common.h"
+#include "solarus/gui/quest_runner.h"
 #include "ui_main_window.h"
 
 namespace SolarusGui {
@@ -34,6 +35,7 @@ public:
 
 private slots:
 
+  void on_action_add_quest_triggered();
   void on_action_exit_triggered();
 
 private:
@@ -41,7 +43,8 @@ private:
   void update_title();
   bool confirm_close();
 
-  Ui::MainWindow ui;
+  Ui::MainWindow ui;         /**< The widgets. */
+  QuestRunner quest_runner;  /**< The quest executor. */
 
 };
 

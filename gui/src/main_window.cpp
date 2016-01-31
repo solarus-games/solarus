@@ -32,6 +32,9 @@ MainWindow::MainWindow(QWidget* parent) :
   // Title.
   update_title();
 
+  ui.console->set_command_enabled(false);
+  const int console_height = 100;
+  ui.console_splitter->setSizes({ height() - console_height, console_height });
 }
 
 /**

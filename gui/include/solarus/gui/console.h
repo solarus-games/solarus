@@ -38,6 +38,9 @@ public:
 
   void set_quest_runner(QuestRunner& quest_runner);
 
+  bool is_command_enabled() const;
+  void set_command_enabled(bool enable);
+
 private slots:
 
   void quest_running();
@@ -49,8 +52,9 @@ private:
 
   QString decorate_output(const QString& line);
 
-  Ui::Console ui;
+  Ui::Console ui;                      /**< The widgets. */
   QPointer<QuestRunner> quest_runner;  /**< The quest execution. */
+  bool command_enabled_;               /**< Whether the user can type Lua commands. */
 
 };
 

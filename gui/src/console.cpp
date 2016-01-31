@@ -43,9 +43,28 @@ QRegularExpression output_simplify_console_error_regexp("In Lua command: \\[stri
  * @param parent Parent object or nullptr.
  */
 Console::Console(QWidget* parent) :
-  QWidget(parent) {
+  QWidget(parent),
+  command_enabled_(true) {
 
   ui.setupUi(this);
+}
+
+/**
+ * @brief Returns whether the Lua command input field is available.
+ * @return @c true if the user can type Lua commands.
+ */
+bool Console::is_command_enabled() const {
+  return command_enabled_;
+}
+
+/**
+ * @brief Sets whether the Lua command input field is available.
+ * @param enable @c true to allow user to type Lua commands.
+ */
+void Console::set_command_enabled(bool enable) {
+
+  this->command_enabled_ = enable;
+  ui.command_field->setVisible(enable);
 }
 
 /**

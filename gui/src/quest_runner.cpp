@@ -15,9 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/gui/quest_runner.h"
+#include "solarus/gui/settings.h"
 #include <QApplication>
 #include <QMessageBox>
-#include <QSettings>
 #include <QSize>
 
 namespace SolarusGui {
@@ -66,7 +66,7 @@ QStringList QuestRunner::create_arguments(const QString& quest_path) {
 
   QStringList arguments;
 
-  QSettings settings("solarus", "solarus");  // TODO
+  Settings settings;
 
   // -run quest_path
   arguments << "-run";

@@ -78,7 +78,7 @@
      <height>25</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuQuest">
+   <widget class="QMenu" name="menu_quest">
     <property name="title">
      <string>File</string>
     </property>
@@ -86,7 +86,7 @@
     <addaction name="separator"/>
     <addaction name="action_exit"/>
    </widget>
-   <addaction name="menuQuest"/>
+   <addaction name="menu_quest"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action_add_quest">

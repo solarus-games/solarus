@@ -15,11 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/gui/console_line_edit.h"
+#include "solarus/gui/settings.h"
 #include <lua.hpp>
 #include <QCompleter>
 #include <QKeyEvent>
 #include <QHash>
-#include <QSettings>
 #include <QStringListModel>
 #include <QValidator>
 #include <algorithm>
@@ -69,8 +69,7 @@ ConsoleLineEdit::ConsoleLineEdit(QWidget* parent) :
   history_position(0),
   current_command() {
 
-  // TODO settings class
-  QSettings settings("solarus", "solarus");
+  Settings settings;
   history = settings.value("console_history").toStringList();
 
   set_history_position(history.size());  // Start after the history.

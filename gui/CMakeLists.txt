@@ -19,10 +19,12 @@ set(solarus_gui_lib_SOURCES
   include/solarus/gui/console_line_edit.h
   include/solarus/gui/quest_runner.h
   include/solarus/gui/main_window.h
+  include/solarus/gui/settings.h
   src/console.cpp
   src/console_line_edit.cpp
   src/quest_runner.cpp
   src/main_window.cpp
+  src/settings.cpp
 )
 
 # UI files.

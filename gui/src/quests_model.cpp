@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/gui/quests_model.h"
-#include <QIcon>
+#include "solarus/gui/settings.h"
 
 namespace SolarusGui {
 
@@ -24,8 +24,14 @@ namespace SolarusGui {
  * @param parent Parent object or nullptr.
  */
 QuestsModel::QuestsModel(QObject* parent) :
-  QAbstractListModel(parent) {
+  QAbstractListModel(parent),
+  quests() {
 
+  Settings settings;
+  QStringList quest_paths = settings.value("quest_paths").toStringList();
+  for (const QString& path : quest_paths) {
+    add_quest(path);
+  }
 }
 
 /**
@@ -36,7 +42,7 @@ QuestsModel::QuestsModel(QObject* parent) :
 int QuestsModel::rowCount(const QModelIndex& parent) const {
 
   Q_UNUSED(parent);
-  return 3; // TODO
+  return quests.size();
 }
 
 /**
@@ -47,19 +53,45 @@ int QuestsModel::rowCount(const QModelIndex& parent) const {
  */
 QVariant QuestsModel::data(const QModelIndex& index, int role) const {
 
-  Q_UNUSED(index);  // TODO
+  if (index.row() < 0 || index.row() >= rowCount()) {
+    return QVariant();
+  }
+
+  const QuestInfo& info = quests[index.row()];
 
   switch (role) {
 
   case Qt::DisplayRole:
-    return "Quest";  // TODO
+    return info.quest_title;
 
   case Qt::DecorationRole:
-    return QIcon(":/images/logo_solarus_200.png");  // TODO
+    return info.icon;
 
   }
 
   return QVariant();
+}
+
+/**
+ * @brief Adds a quest to the model.
+ * @param quest_path Path of the quest to add.
+ */
+void QuestsModel::add_quest(const QString& quest_path) {
+
+  const int num_quests = rowCount();
+  beginInsertRows(QModelIndex(), num_quests, num_quests);
+
+  QuestInfo info;
+  info.path = quest_path;
+  info.directory_name = quest_path.section('/', -1, -1, QString::SectionSkipEmpty);
+  info.quest_title = info.directory_name;  // TODO
+  info.icon = QIcon(":/images/logo_solarus_200.png");  // TODO
+
+  quests.push_back(info);
+
+  endInsertRows();
+
+  // TODO save settings
 }
 
 }

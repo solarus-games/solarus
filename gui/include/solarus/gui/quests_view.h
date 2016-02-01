@@ -22,6 +22,8 @@
 
 namespace SolarusGui {
 
+class QuestsModel;
+
 /**
  * @brief A widget where the user can select a quest.
  */
@@ -30,6 +32,12 @@ class QuestsView : public QListView {
 public:
 
   QuestsView(QWidget* parent = nullptr);
+
+  void add_quest(const QString& quest_path);
+
+private:
+
+  QuestsModel* model;
 
 };
 

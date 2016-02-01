@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/gui/main_window.h"
+#include "solarus/gui/quests_view.h"
 #include "solarus/Common.h"
 #include <QFileDialog>
 
@@ -80,7 +81,7 @@ void MainWindow::on_action_add_quest_triggered() {
     return;
   }
 
-  // TODO
+  ui.quests_view->add_quest(quest_path);
 }
 
 /**

@@ -24,13 +24,25 @@ namespace SolarusGui {
  * @param parent Parent object or nullptr.
  */
 QuestsView::QuestsView(QWidget* parent) :
-  QListView(parent) {
+  QListView(parent),
+  model(nullptr) {
 
   setViewMode(ViewMode::IconMode);
   setMovement(Movement::Static);
   setGridSize(QSize(200, 200));
   setIconSize(QSize(128, 128));
-  setModel(new QuestsModel(this));
+
+  model = new QuestsModel(this);
+  setModel(model);
+}
+
+/**
+ * @brief Adds a quest to the model of this view.
+ * @param quest_path Path of the quest to add.
+ */
+void QuestsView::add_quest(const QString& quest_path) {
+
+  model->add_quest(quest_path);
 }
 
 }

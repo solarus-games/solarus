@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include <QAbstractListModel>
+#include <QIcon>
 
 namespace SolarusGui {
 
@@ -35,6 +36,21 @@ public:
   int rowCount(const QModelIndex& parent = QModelIndex()) const override;
   QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
+  void add_quest(const QString& quest_path);
+
+private:
+
+  /**
+   * @brief Info of a quest from the list.
+   */
+  struct QuestInfo {
+    QString path;                   /**< Path to the quest directory. */
+    QString directory_name;         /**< Name of the quest directory. */
+    QString quest_title;            /**< Title of the quest. */
+    QIcon icon;                     /**< Icon of the quest. */
+  };
+
+  std::vector<QuestInfo> quests;    /**< Info of each quest in the list. */
 };
 
 }

@@ -34,6 +34,9 @@ MainWindow::MainWindow(QWidget* parent) :
   // Title.
   update_title();
 
+  // Icon.
+  setWindowIcon(QIcon(":/images/icon_solarus.png"));  // TODO different sizes
+
   ui.console->set_quest_runner(quest_runner);
   ui.console->set_command_enabled(false);
   const int console_height = 100;

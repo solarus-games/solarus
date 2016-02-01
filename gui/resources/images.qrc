@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/icon_solarus.png</file>
+        <file>images/logo_solarus_200.png</file>
+    </qresource>
+</RCC>

@@ -85,8 +85,8 @@ class Quadtree {
 
       public:
 
-        Node();
-        explicit Node(const Rectangle& cell);
+        explicit Node(const Quadtree& quadtree);
+        Node(const Quadtree& quadtree, const Rectangle& cell);
 
         void clear();
         void initialize(const Rectangle& cell);
@@ -125,7 +125,9 @@ class Quadtree {
         bool is_split() const;
         void split();
         void merge();
+        bool is_main_cell(const Rectangle& bounding_box) const;
 
+        const Quadtree& quadtree;
         std::vector<std::pair<T, Rectangle>> elements;
         std::array<std::unique_ptr<Node>, 4> children;
         Rectangle cell;

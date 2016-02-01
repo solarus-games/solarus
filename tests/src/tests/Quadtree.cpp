@@ -186,6 +186,14 @@ void test_add_limit(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) 
 }
 
 /**
+ * \brief Tests adding an element partially outside the quadtree space, with the center outside.
+ */
+void test_add_center_outside(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
+
+  add(quadtree, Rectangle(-480, 32, 640, 640));
+}
+
+/**
  * \brief Tests moving elements in a quadtree.
  */
 void test_move(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
@@ -213,7 +221,7 @@ void test_move_limit(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree)
   Debug::check_assertion(num_elements > 4, "Wrong number of elements");
 
   ElementPtr element = elements[0];
-  element->get_bounding_box().set_xy(-500, -500);
+  element->get_bounding_box().set_xy(-50000, -50000);
   move(quadtree, element);
   Debug::check_assertion(quadtree.get_num_elements() == num_elements, "Wrong number of elements");
 
@@ -240,6 +248,7 @@ int main(int argc, char** argv) {
   test_add(env, quadtree);
   test_add_big_size(env, quadtree);
   test_add_limit(env, quadtree);
+  test_add_center_outside(env, quadtree);
   test_remove(env, quadtree);
   test_move(env, quadtree);
   test_move_limit(env, quadtree);

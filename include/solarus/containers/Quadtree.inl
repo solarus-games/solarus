@@ -42,7 +42,7 @@ Quadtree<T>::Quadtree() :
 template<typename T>
 Quadtree<T>::Quadtree(const Rectangle& space) :
     elements(),
-    root() {
+    root(*this) {
 
     initialize(space);
 }
@@ -154,7 +154,7 @@ bool Quadtree<T>::remove(const T& element) {
  * This function should be called when the position or size or the element
  * is changed.
  *
- * It is allow for an element to go to or come from outside the space of the
+ * It is allowed for an element to go to or come from outside the space of the
  * quadtree.
  *
  * \param element The element to move. If the element is not in the quadtree,
@@ -243,19 +243,23 @@ void Quadtree<T>::draw(const SurfacePtr& dst_surface, const Point& dst_position)
  * \brief Creates a node with default coordinates.
  *
  * Call initialize later to set coordinates.
+ *
+ * \param quadtree The quadtree this node belongs to.
  */
 template<typename T>
-Quadtree<T>::Node::Node() :
-    Node(Rectangle(0, 0, 256, 256)) {
+Quadtree<T>::Node::Node(const Quadtree& quadtree) :
+    Node(quadtree, Rectangle(0, 0, 256, 256)) {
 
 }
 
 /**
  * \brief Creates a node with the given coordinates.
+ * \param quadtree The quadtree this node belongs to.
  * \param cell Cell coordinates of the node.
  */
 template<typename T>
-Quadtree<T>::Node::Node(const Rectangle& cell) :
+Quadtree<T>::Node::Node(const Quadtree& quadtree, const Rectangle& cell) :
+    quadtree(quadtree),
     elements(),
     children(),
     cell(cell),
@@ -333,7 +337,7 @@ bool Quadtree<T>::Node::add(
   if (!is_split()) {
 
     // See if it is time to split.
-    if (get_cell().contains(bounding_box.get_center())) {
+    if (is_main_cell(bounding_box)) {
       // We are the main cell of this element: it counts in the total.
       if (get_num_elements() >= max_in_cell &&
           get_cell_size().width > min_cell_size &&
@@ -426,16 +430,16 @@ void Quadtree<T>::Node::split() {
   const Rectangle& cell = get_cell();
   const Point& center = cell.get_center();
   children[0] = std::unique_ptr<Node>(
-      new Node(Rectangle(cell.get_top_left(), center))
+      new Node(quadtree, Rectangle(cell.get_top_left(), center))
   );
   children[1] = std::unique_ptr<Node>(
-      new Node(Rectangle(Point(center.x, cell.get_top()), Point(cell.get_right(), center.y)))
+      new Node(quadtree, Rectangle(Point(center.x, cell.get_top()), Point(cell.get_right(), center.y)))
   );
   children[2] = std::unique_ptr<Node>(
-      new Node(Rectangle(Point(cell.get_left(), center.y), Point(center.x, cell.get_bottom())))
+      new Node(quadtree, Rectangle(Point(cell.get_left(), center.y), Point(center.x, cell.get_bottom())))
   );
   children[3] = std::unique_ptr<Node>(
-      new Node(Rectangle(center, cell.get_bottom_right()))
+      new Node(quadtree, Rectangle(center, cell.get_bottom_right()))
   );
 
   // Move existing elements into them.
@@ -477,6 +481,36 @@ void Quadtree<T>::Node::merge() {
 }
 
 /**
+ * \brief Returns whether this cell contains a box and is also its main cell.
+ *
+ * The main cell is used to ensure uniqueness, for example when counting
+ * elements.
+ */
+template<typename T>
+bool Quadtree<T>::Node::is_main_cell(const Rectangle& bounding_box) const {
+
+  if (!get_cell().overlaps(bounding_box)) {
+    // Not overlapping this cell.
+    return false;
+  }
+
+  // The bounding box is in this cell. See if this is the main cell.
+  Point center = bounding_box.get_center();
+
+  // Clamp the center to the quadtree space,
+  // in case the center it actually outside.
+  const Rectangle& quadtree_space = quadtree.get_space();
+  center = {
+      std::max(quadtree_space.get_left(), std::min(quadtree_space.get_right(), center.x)),
+      std::max(quadtree_space.get_top(), std::min(quadtree_space.get_bottom(), center.y))
+  };
+
+  Debug::check_assertion(quadtree_space.contains(center), "Wrong center position");
+
+  return get_cell().contains(center);
+}
+
+/**
  * \brief Returns the number of elements whose center is under this node.
  * \return The number of elements under this node.
  */
@@ -486,11 +520,11 @@ int Quadtree<T>::Node::get_num_elements() const {
   int num_elements = 0;
   if (!is_split()) {
     // Some elements can overlap several cells.
-    // To avoid duplicates, we count an element if its center is in this cell.
+    // To avoid duplicates, we count an element if this cell is its main cell.
     // TODO This information could be stored for better performance.
     for (const std::pair<T, Rectangle>& pair : elements) {
       const Rectangle& box = pair.second;
-      if (get_cell().contains(box.get_center())) {
+      if (is_main_cell(box)) {
         ++num_elements;
       }
     }
@@ -550,7 +584,7 @@ void Quadtree<T>::Node::draw(const SurfacePtr& dst_surface, const Point& dst_pos
     // Draw bounding boxes of elements.
     for (const std::pair<T, Rectangle>& pair : elements) {
       const Rectangle& bounding_box = pair.second;
-      if (get_cell().contains(bounding_box.get_center())) {
+      if (is_main_cell(bounding_box)) {
         draw_rectangle(bounding_box, color, dst_surface, dst_position);
       }
     }

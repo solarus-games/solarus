@@ -39,6 +39,8 @@ private slots:
   void on_action_remove_quest_triggered();
   void on_action_exit_triggered();
 
+  void selected_quest_changed();
+
 private:
 
   void update_title();

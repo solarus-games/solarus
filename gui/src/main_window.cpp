@@ -60,6 +60,10 @@ MainWindow::MainWindow(QWidget* parent) :
 
   ui.add_button->setDefaultAction(ui.action_add_quest);
   ui.remove_button->setDefaultAction(ui.action_remove_quest);
+
+  connect(ui.quests_view->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
+          this, SLOT(selected_quest_changed()));
+  selected_quest_changed();
 }
 
 /**
@@ -144,6 +148,24 @@ void MainWindow::on_action_exit_triggered() {
   if (confirm_close()) {
     QApplication::exit(0);
   }
+}
+
+/**
+ * @brief Slot called when the selection changes in the quest list.
+ */
+void MainWindow::selected_quest_changed() {
+
+  QString selected_path = ui.quests_view->get_selected_path();
+  bool has_current = !selected_path.isEmpty();
+
+  // Enable/disable buttons.
+  ui.action_remove_quest->setEnabled(has_current);
+  ui.action_play->setEnabled(has_current);
+  ui.play_button->setEnabled(has_current);
+
+  // Save the last selected quest (including if none).
+  Settings settings;
+  settings.setValue("last_quest", selected_path);
 }
 
 }

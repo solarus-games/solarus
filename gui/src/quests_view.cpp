@@ -101,11 +101,11 @@ bool QuestsView::remove_quest(int index) {
  */
 int QuestsView::get_selected_index() const {
 
-  QModelIndex model_index = currentIndex();
-  if (!model_index.isValid()) {
+  QModelIndexList model_indexes = selectionModel()->selectedIndexes();
+  if (model_indexes.isEmpty()) {
     return -1;
   }
-  return model_index.row();
+  return model_indexes.first().row();
 }
 
 /**

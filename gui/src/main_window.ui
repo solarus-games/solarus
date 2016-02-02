@@ -174,7 +174,9 @@
     <property name="title">
      <string>Quest</string>
     </property>
-    <addaction name="action_play"/>
+    <addaction name="action_play_quest"/>
+    <addaction name="action_stop_quest"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -199,7 +201,7 @@
     <string>Exit</string>
    </property>
   </action>
-  <action name="action_play">
+  <action name="action_play_quest">
    <property name="icon">
     <iconset resource="../resources/images.qrc">
      <normaloff>:/images/icon_start.png</normaloff>:/images/icon_start.png</iconset>
@@ -218,6 +220,15 @@
    </property>
    <property name="text">
     <string>Remove quest</string>
+   </property>
+  </action>
+  <action name="action_stop_quest">
+   <property name="icon">
+    <iconset resource="../resources/images.qrc">
+     <normaloff>:/images/icon_stop.png</normaloff>:/images/icon_stop.png</iconset>
+   </property>
+   <property name="text">
+    <string>Stop</string>
    </property>
   </action>
  </widget>

@@ -35,13 +35,20 @@ public:
 
   void initialize_geometry_on_screen();
 
+protected:
+
+  void closeEvent(QCloseEvent* event) override;
+
 private slots:
 
   void on_action_add_quest_triggered();
   void on_action_remove_quest_triggered();
   void on_action_exit_triggered();
+  void on_action_play_quest_triggered();
+  void on_action_stop_quest_triggered();
 
   void selected_quest_changed();
+  void update_run_quest();
 
 private:
 

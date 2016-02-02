@@ -20,6 +20,7 @@
 #include "solarus/Common.h"
 #include <QDesktopWidget>
 #include <QFileDialog>
+#include <QMessageBox>
 
 namespace SolarusGui {
 
@@ -67,7 +68,15 @@ MainWindow::MainWindow(QWidget* parent) :
   // Make connections.
   connect(ui.quests_view->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
           this, SLOT(selected_quest_changed()));
+  connect(ui.play_button, SIGNAL(clicked()),
+          this, SLOT(on_action_play_quest_triggered()));
+  connect(&quest_runner, SIGNAL(running()),
+          this, SLOT(update_run_quest()));
+  connect(&quest_runner, SIGNAL(finished()),
+          this, SLOT(update_run_quest()));
+
   selected_quest_changed();
+  update_run_quest();
 }
 
 /**
@@ -97,6 +106,20 @@ void MainWindow::update_title() {
 }
 
 /**
+ * @brief Receives a window close event.
+ * @param event The event to handle.
+ */
+void MainWindow::closeEvent(QCloseEvent* event) {
+
+  if (confirm_close()) {
+    event->accept();
+  }
+  else {
+    event->ignore();
+  }
+}
+
+/**
  * @brief Function called when the user wants to exit the program.
  *
  * A confirmation dialog is shown if a quest is running.
@@ -105,7 +128,32 @@ void MainWindow::update_title() {
  */
 bool MainWindow::confirm_close() {
 
-  // TODO confirmation dialog if a quest is running
+  if (!quest_runner.is_started()) {
+    // No quest is running.
+    return true;
+  }
+
+  QMessageBox::StandardButton answer = QMessageBox::question(
+        nullptr,
+        tr("A quest is playing"),
+        tr("A quest is playing. Do you really want to exit Solarus?"),
+        QMessageBox::Close | QMessageBox::Cancel
+  );
+
+  switch (answer) {
+
+  case QMessageBox::Close:
+    return true;
+
+
+  case QMessageBox::Cancel:
+  case QMessageBox::Escape:
+    return false;
+
+  default:
+    return false;
+  }
+
   return true;
 }
 
@@ -171,6 +219,53 @@ void MainWindow::on_action_exit_triggered() {
 }
 
 /**
+ * @brief Slot called when the user triggers the "Play quest" action.
+ */
+void MainWindow::on_action_play_quest_triggered() {
+
+  if (quest_runner.is_started()) {
+    return;
+  }
+
+  QString path = ui.quests_view->get_selected_path();
+  if (path.isEmpty()) {
+    return;
+  }
+  quest_runner.start(path);
+
+  update_run_quest();
+}
+
+/**
+ * @brief Slot called when the user triggers the "Stop quest" action.
+ */
+void MainWindow::on_action_stop_quest_triggered() {
+
+  if (!quest_runner.is_started()) {
+    return;
+  }
+
+  quest_runner.stop();
+
+  update_run_quest();
+}
+
+/**
+ * @brief Slot called when the quest has just started or stopped.
+ */
+void MainWindow::update_run_quest() {
+
+  QString selected_path = ui.quests_view->get_selected_path();
+  bool has_current = !selected_path.isEmpty();
+
+  bool enable_play = has_current && !quest_runner.is_started();
+  bool enable_stop = has_current && quest_runner.is_started();
+  ui.action_play_quest->setEnabled(enable_play);
+  ui.play_button->setEnabled(enable_play);
+  ui.action_stop_quest->setEnabled(enable_stop);
+}
+
+/**
  * @brief Slot called when the selection changes in the quest list.
  */
 void MainWindow::selected_quest_changed() {
@@ -180,8 +275,7 @@ void MainWindow::selected_quest_changed() {
 
   // Enable/disable buttons.
   ui.action_remove_quest->setEnabled(has_current);
-  ui.action_play->setEnabled(has_current);
-  ui.play_button->setEnabled(has_current);
+  update_run_quest();
 
   // Save the last selected quest (including if none).
   Settings settings;

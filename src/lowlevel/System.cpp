@@ -103,6 +103,7 @@ void System::update() {
  *
  * If the correct OS name is not available, returns a string
  * beginning with the text "Unknown".
+ *
  * \return the name of the running OS.
  */
 std::string System::get_os() {
@@ -112,9 +113,9 @@ std::string System::get_os() {
 
 /**
  * \brief Returns the number of simulated milliseconds elapsed since the
- * initialization of the Solarus library.
+ * main loop started.
  *
- * Corresponds to the real time unless the system is too slow to play at
+ * Follows to the real time unless the system is too slow to play at
  * normal speed.
  *
  * \return The number of simulated milliseconds elapsed since the

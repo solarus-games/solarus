@@ -67,19 +67,43 @@ QVariant QuestsModel::data(const QModelIndex& index, int role) const {
 }
 
 /**
+ * @brief Finds the index of a quest in the list.
+ * @param quest_path Path of the quest to look for.
+ * @return The quest index, or -1 if it is not in the list.
+ */
+int QuestsModel::path_to_index(const QString& quest_path) const {
+
+  for (size_t i = 0; i < quests.size(); ++i) {
+    if (quests[i].path == quest_path) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+/**
+ * @brief Returns the quest path at the given index.
+ * @param quest_index Index of the quest to get.
+ * @return The path, or an empty string if the index is invalid.
+ */
+QString QuestsModel::index_to_path(int quest_index) const {
+
+  if (quest_index < 0 || quest_index >= (int) quests.size()) {
+    return QString();
+  }
+
+  return quests[quest_index].path;
+}
+
+/**
  * @brief Returns whether the model contains the given quest path.
  * @param quest_path Quest path to test.
  * @return @c true if it is in the model.
  */
 bool QuestsModel::has_quest(const QString& quest_path) {
 
-  for (const QuestInfo& info : quests) {
-    if (info.path == quest_path) {
-      return true;
-    }
-  }
-
-  return false;
+  return path_to_index(quest_path) != -1;
 }
 
 /**
@@ -106,6 +130,24 @@ bool QuestsModel::add_quest(const QString& quest_path) {
 
   endInsertRows();
 
+  return true;
+}
+
+/**
+ * @brief Removes a quest from this model.
+ * @param index Index of the quest to remove.
+ * @return @c true if the quest was removed, @c false if there is no quest
+ * with this index.
+ */
+bool QuestsModel::remove_quest(int index) {
+
+  if (index < 0 || index > rowCount()) {
+    return false;
+  }
+
+  beginRemoveRows(QModelIndex(), index, index);
+  quests.erase(quests.begin() + index);
+  endRemoveRows();
   return true;
 }
 

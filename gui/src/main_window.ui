@@ -14,16 +14,74 @@
    <string>Solarus</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
      <widget class="QSplitter" name="console_splitter">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
-      <widget class="QWidget" name="layoutWidget">
-       <layout class="QVBoxLayout" name="vertical_layout">
+      <widget class="QGroupBox" name="quests_group_box">
+       <property name="title">
+        <string>Quests</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="SolarusGui::QuestsView" name="quests_view"/>
+         <layout class="QHBoxLayout" name="horizontal_layout_2">
+          <item>
+           <widget class="SolarusGui::QuestsView" name="quests_view"/>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="vertical_layout_2">
+            <item>
+             <widget class="QToolButton" name="add_button">
+              <property name="toolTip">
+               <string>Add quest</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../resources/images.qrc">
+                <normaloff>:/images/icon_add.png</normaloff>:/images/icon_add.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="remove_button">
+              <property name="toolTip">
+               <string>Remove quest</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../resources/images.qrc">
+                <normaloff>:/images/icon_remove.png</normaloff>:/images/icon_remove.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="vertical_spacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontal_layout">
@@ -42,8 +100,24 @@
           </item>
           <item>
            <widget class="QPushButton" name="play_button">
+            <property name="minimumSize">
+             <size>
+              <width>400</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
             <property name="text">
              <string>Play</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../resources/images.qrc">
+              <normaloff>:/images/icon_start.png</normaloff>:/images/icon_start.png</iconset>
             </property>
            </widget>
           </item>
@@ -64,7 +138,16 @@
         </item>
        </layout>
       </widget>
-      <widget class="SolarusGui::Console" name="console" native="true"/>
+      <widget class="QGroupBox" name="console_group_box">
+       <property name="title">
+        <string>Console</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="SolarusGui::Console" name="console" native="true"/>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -83,20 +166,61 @@
      <string>File</string>
     </property>
     <addaction name="action_add_quest"/>
+    <addaction name="action_remove_quest"/>
     <addaction name="separator"/>
     <addaction name="action_exit"/>
    </widget>
+   <widget class="QMenu" name="menuQuest">
+    <property name="title">
+     <string>Quest</string>
+    </property>
+    <addaction name="action_play"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+   </widget>
    <addaction name="menu_quest"/>
+   <addaction name="menuQuest"/>
+   <addaction name="menuSettings"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <action name="action_add_quest">
+   <property name="icon">
+    <iconset resource="../resources/images.qrc">
+     <normaloff>:/images/icon_add.png</normaloff>:/images/icon_add.png</iconset>
+   </property>
    <property name="text">
     <string>Add quest...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="action_exit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="action_play">
+   <property name="icon">
+    <iconset resource="../resources/images.qrc">
+     <normaloff>:/images/icon_start.png</normaloff>:/images/icon_start.png</iconset>
+   </property>
+   <property name="text">
+    <string>Play</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="action_remove_quest">
+   <property name="icon">
+    <iconset resource="../resources/images.qrc">
+     <normaloff>:/images/icon_remove.png</normaloff>:/images/icon_remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Remove quest</string>
    </property>
   </action>
  </widget>
@@ -113,6 +237,8 @@
    <header>solarus/gui/quests_view.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources/images.qrc"/>
+ </resources>
  <connections/>
 </ui>

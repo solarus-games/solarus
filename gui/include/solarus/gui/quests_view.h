@@ -33,8 +33,18 @@ public:
 
   QuestsView(QWidget* parent = nullptr);
 
-  bool add_quest(const QString& quest_path);
+  int path_to_index(const QString& path) const;
+  QString index_to_path(int index) const;
+
+  int get_num_quests() const;
   QStringList get_paths() const;
+  bool add_quest(const QString& path);
+  bool remove_quest(int index);
+
+  int get_selected_index() const;
+  QString get_selected_path() const;
+  void select_quest(int index);
+  void select_quest(const QString& path);
 
 private:
 

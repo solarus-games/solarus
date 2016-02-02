@@ -2,5 +2,10 @@
     <qresource prefix="/">
         <file>images/icon_solarus.png</file>
         <file>images/logo_solarus_200.png</file>
+        <file>images/icon_open.png</file>
+        <file>images/icon_start.png</file>
+        <file>images/icon_stop.png</file>
+        <file>images/icon_remove.png</file>
+        <file>images/icon_add.png</file>
     </qresource>
 </RCC>

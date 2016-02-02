@@ -36,6 +36,7 @@ public:
 private slots:
 
   void on_action_add_quest_triggered();
+  void on_action_remove_quest_triggered();
   void on_action_exit_triggered();
 
 private:

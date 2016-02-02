@@ -37,13 +37,32 @@ QuestsView::QuestsView(QWidget* parent) :
 }
 
 /**
- * @brief Adds a quest to the model of this view.
- * @param quest_path Path of the quest to add.
- * @return @c true if it was added, @c false if it was already there.
+ * @brief Finds the index of a quest in the list.
+ * @param path Path of the quest to look for.
+ * @return The quest index, or -1 if it is not in the list.
  */
-bool QuestsView::add_quest(const QString& quest_path) {
+int QuestsView::path_to_index(const QString& path) const {
 
-  return model->add_quest(quest_path);
+  return model->path_to_index(path);
+}
+
+/**
+ * @brief Returns the quest path at the given index.
+ * @param index Index of the quest to get.
+ * @return The path, or an empty string if the index is invalid.
+ */
+QString QuestsView::index_to_path(int index) const {
+
+  return model->index_to_path(index);
+}
+
+/**
+ * @brief Returns the number of quests in this view.
+ * @return The number of quests.
+ */
+int QuestsView::get_num_quests() const {
+
+  return model->rowCount();
 }
 
 /**
@@ -53,6 +72,75 @@ bool QuestsView::add_quest(const QString& quest_path) {
 QStringList QuestsView::get_paths() const {
 
   return model->get_paths();
+}
+
+/**
+ * @brief Adds a quest to the model of this view.
+ * @param quest_path Path of the quest to add.
+ * @return @c true if it was added, @c false if it was already there.
+ */
+bool QuestsView::add_quest(const QString& path) {
+
+  return model->add_quest(path);
+}
+
+/**
+ * @brief Removes a quest from the model of this view.
+ * @param index Index of the quest to remove.
+ * @return @c true if the quest was removed, @c false if there is no quest
+ * with this index.
+ */
+bool QuestsView::remove_quest(int index) {
+
+  return model->remove_quest(index);
+}
+
+/**
+ * @brief Returns the index of the currently selected quest.
+ * @return Return current index, or -1 if no quest is selected.
+ */
+int QuestsView::get_selected_index() const {
+
+  QModelIndex model_index = currentIndex();
+  if (!model_index.isValid()) {
+    return -1;
+  }
+  return model_index.row();
+}
+
+/**
+ * @brief Returns the quest path currently selected.
+ * @return The current quest path, or an empty string if no quest is selected.
+ */
+QString QuestsView::get_selected_path() const {
+
+  return index_to_path(get_selected_index());
+}
+
+/**
+ * @brief Selects a quest.
+ * @param index Index of the quest to make selected.
+ */
+void QuestsView::select_quest(int index) {
+
+  if (index < 0 || index >= get_num_quests()) {
+    return;
+  }
+
+  selectionModel()->setCurrentIndex(model->index(index, 0), QItemSelectionModel::Select);
+}
+
+/**
+ * @brief Selects the given quest if it is in the view.
+ * @param path Path of the quest to make selected.
+ */
+void QuestsView::select_quest(const QString& path) {
+
+  int index = path_to_index(path);
+  if (index == -1) {
+    return;
+  }
+  select_quest(index);
 }
 
 }

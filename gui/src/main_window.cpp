@@ -51,6 +51,15 @@ MainWindow::MainWindow(QWidget* parent) :
   for (const QString& path : quest_paths) {
     ui.quests_view->add_quest(path);
   }
+
+  // Select the last quest played.
+  QString last_quest = settings.value("last_quest").toString();
+  if (!last_quest.isEmpty()) {
+    ui.quests_view->select_quest(last_quest);
+  }
+
+  ui.add_button->setDefaultAction(ui.action_add_quest);
+  ui.remove_button->setDefaultAction(ui.action_remove_quest);
 }
 
 /**
@@ -97,6 +106,34 @@ void MainWindow::on_action_add_quest_triggered() {
     Settings settings;
     settings.setValue("quests_paths", ui.quests_view->get_paths());
   }
+
+  // Select it.
+  ui.quests_view->select_quest(quest_path);
+}
+
+/**
+ * @brief Slot called when the user removes a quest to the quest list.
+ */
+void MainWindow::on_action_remove_quest_triggered() {
+
+  int selected_index = ui.quests_view->get_selected_index();
+
+  if (selected_index == -1) {
+    return;
+  }
+
+  // Remove from the quest list view.
+  if (ui.quests_view->remove_quest(selected_index)) {
+
+    // Update the quest list.
+    Settings settings;
+    settings.setValue("quests_paths", ui.quests_view->get_paths());
+  }
+
+  // Select the next one.
+  int num_quests = ui.quests_view->get_num_quests();
+  selected_index = qMin(selected_index, num_quests - 1);
+  ui.quests_view->select_quest(selected_index);
 }
 
 /**

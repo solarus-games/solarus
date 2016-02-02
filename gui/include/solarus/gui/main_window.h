@@ -33,6 +33,8 @@ public:
 
   explicit MainWindow(QWidget* parent = nullptr);
 
+  void initialize_geometry_on_screen();
+
 private slots:
 
   void on_action_add_quest_triggered();

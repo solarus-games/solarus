@@ -50,6 +50,7 @@ int run_gui(int argc, char* argv[]) {
   application.installTranslator(&translator);
 
   MainWindow window(nullptr);
+  window.initialize_geometry_on_screen();
   window.show();
 
   return application.exec();

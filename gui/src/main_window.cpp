@@ -18,6 +18,7 @@
 #include "solarus/gui/quests_view.h"
 #include "solarus/gui/settings.h"
 #include "solarus/Common.h"
+#include <QDesktopWidget>
 #include <QFileDialog>
 
 namespace SolarusGui {
@@ -64,6 +65,22 @@ MainWindow::MainWindow(QWidget* parent) :
   connect(ui.quests_view->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
           this, SLOT(selected_quest_changed()));
   selected_quest_changed();
+}
+
+/**
+ * @brief Sets an appropriate size and centers the window on the screen having
+ * the mouse.
+ */
+void MainWindow::initialize_geometry_on_screen() {
+
+  QDesktopWidget* desktop = QApplication::desktop();
+  QRect screen = desktop->screenGeometry(desktop->screenNumber(QCursor::pos()));
+
+  // Center the window on the screen where the mouse is currently.
+  int x = screen.width() / 2 - frameGeometry().width() / 2 + screen.left() - 2;
+  int y = screen.height() / 2 - frameGeometry().height() / 2 + screen.top() - 10;
+
+  move(qMax(0, x), qMax(0, y));
 }
 
 /**

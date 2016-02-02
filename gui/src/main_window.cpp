@@ -133,7 +133,7 @@ bool MainWindow::confirm_close() {
     return true;
   }
 
-  QMessageBox::StandardButton answer = QMessageBox::question(
+  QMessageBox::StandardButton answer = QMessageBox::warning(
         nullptr,
         tr("A quest is playing"),
         tr("A quest is playing. Do you really want to exit Solarus?"),

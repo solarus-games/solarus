@@ -180,12 +180,44 @@
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
-     <string>Settings</string>
+     <string>Video</string>
     </property>
+    <widget class="QMenu" name="menuZoom">
+     <property name="title">
+      <string>Zoom</string>
+     </property>
+     <addaction name="action_zoom_x1"/>
+     <addaction name="action_zoom_x2"/>
+     <addaction name="action_zoom_x3"/>
+     <addaction name="action_zoom_x4"/>
+    </widget>
+    <widget class="QMenu" name="menuVideo_filter">
+     <property name="title">
+      <string>Video filter</string>
+     </property>
+     <addaction name="action_filter_none"/>
+     <addaction name="action_filter_scale2x"/>
+     <addaction name="action_filter_hq2x"/>
+     <addaction name="action_filter_hq3x"/>
+     <addaction name="action_filter_hq4x"/>
+    </widget>
+    <addaction name="action_fullscreen"/>
+    <addaction name="action_video_acceleration"/>
+    <addaction name="menuVideo_filter"/>
+    <addaction name="menuZoom"/>
+   </widget>
+   <widget class="QMenu" name="menuAudio">
+    <property name="title">
+     <string>Audio</string>
+    </property>
+    <addaction name="action_mute"/>
+    <addaction name="action_music_volume"/>
+    <addaction name="action_sound_volume"/>
    </widget>
    <addaction name="menu_quest"/>
    <addaction name="menuQuest"/>
    <addaction name="menuSettings"/>
+   <addaction name="menuAudio"/>
   </widget>
   <action name="action_add_quest">
    <property name="icon">
@@ -229,6 +261,88 @@
    </property>
    <property name="text">
     <string>Stop</string>
+   </property>
+  </action>
+  <action name="action_sound_volume">
+   <property name="text">
+    <string>Sound volume</string>
+   </property>
+  </action>
+  <action name="action_music_volume">
+   <property name="text">
+    <string>Music volume</string>
+   </property>
+  </action>
+  <action name="action_fullscreen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Fullscreen</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
+   </property>
+  </action>
+  <action name="action_zoom_x1">
+   <property name="text">
+    <string>x1</string>
+   </property>
+  </action>
+  <action name="action_zoom_x2">
+   <property name="text">
+    <string>x2</string>
+   </property>
+  </action>
+  <action name="action_zoom_x3">
+   <property name="text">
+    <string>x3</string>
+   </property>
+  </action>
+  <action name="action_zoom_x4">
+   <property name="text">
+    <string>x4</string>
+   </property>
+  </action>
+  <action name="action_filter_none">
+   <property name="text">
+    <string>None</string>
+   </property>
+  </action>
+  <action name="action_filter_scale2x">
+   <property name="text">
+    <string>Scale2x</string>
+   </property>
+  </action>
+  <action name="action_filter_hq2x">
+   <property name="text">
+    <string>Hq2x</string>
+   </property>
+  </action>
+  <action name="action_filter_hq3x">
+   <property name="text">
+    <string>Hq3x</string>
+   </property>
+  </action>
+  <action name="action_filter_hq4x">
+   <property name="text">
+    <string>Hq4x</string>
+   </property>
+  </action>
+  <action name="action_video_acceleration">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>2D acceleration</string>
+   </property>
+  </action>
+  <action name="action_mute">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Mute</string>
    </property>
   </action>
  </widget>

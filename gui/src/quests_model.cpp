@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/gui/quests_model.h"
-#include "solarus/gui/settings.h"
 
 namespace SolarusGui {
 
@@ -27,11 +26,6 @@ QuestsModel::QuestsModel(QObject* parent) :
   QAbstractListModel(parent),
   quests() {
 
-  Settings settings;
-  QStringList quest_paths = settings.value("quest_paths").toStringList();
-  for (const QString& path : quest_paths) {
-    add_quest(path);
-  }
 }
 
 /**
@@ -73,10 +67,31 @@ QVariant QuestsModel::data(const QModelIndex& index, int role) const {
 }
 
 /**
+ * @brief Returns whether the model contains the given quest path.
+ * @param quest_path Quest path to test.
+ * @return @c true if it is in the model.
+ */
+bool QuestsModel::has_quest(const QString& quest_path) {
+
+  for (const QuestInfo& info : quests) {
+    if (info.path == quest_path) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
  * @brief Adds a quest to the model.
  * @param quest_path Path of the quest to add.
+ * @return @c true if it was added, @c false if it was already there.
  */
-void QuestsModel::add_quest(const QString& quest_path) {
+bool QuestsModel::add_quest(const QString& quest_path) {
+
+  if (has_quest(quest_path)) {
+    return false;
+  }
 
   const int num_quests = rowCount();
   beginInsertRows(QModelIndex(), num_quests, num_quests);
@@ -92,6 +107,19 @@ void QuestsModel::add_quest(const QString& quest_path) {
   endInsertRows();
 
   // TODO save settings
+}
+
+/**
+ * @brief Returns the list of quests paths in the model.
+ * @return The quests paths.
+ */
+QStringList QuestsModel::get_paths() const {
+
+  QStringList paths;
+  for (const QuestInfo& info : quests) {
+    paths << info.path;
+  }
+  return paths;
 }
 
 }

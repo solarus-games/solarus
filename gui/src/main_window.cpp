@@ -16,6 +16,7 @@
  */
 #include "solarus/gui/main_window.h"
 #include "solarus/gui/quests_view.h"
+#include "solarus/gui/settings.h"
 #include "solarus/Common.h"
 #include <QFileDialog>
 
@@ -38,10 +39,18 @@ MainWindow::MainWindow(QWidget* parent) :
   // Icon.
   setWindowIcon(QIcon(":/images/icon_solarus.png"));  // TODO different sizes
 
+  // Console.
   ui.console->set_quest_runner(quest_runner);
   ui.console->set_command_enabled(false);
   const int console_height = 100;
   ui.console_splitter->setSizes({ height() - console_height, console_height });
+
+  // Show recent quests.
+  Settings settings;
+  QStringList quest_paths = settings.value("quests_paths").toStringList();
+  for (const QString& path : quest_paths) {
+    ui.quests_view->add_quest(path);
+  }
 }
 
 /**
@@ -81,7 +90,13 @@ void MainWindow::on_action_add_quest_triggered() {
     return;
   }
 
-  ui.quests_view->add_quest(quest_path);
+  // Add to the quest list view.
+  if (ui.quests_view->add_quest(quest_path)) {
+
+    // Remember the quest list.
+    Settings settings;
+    settings.setValue("quests_paths", ui.quests_view->get_paths());
+  }
 }
 
 /**

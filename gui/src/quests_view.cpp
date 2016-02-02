@@ -39,10 +39,20 @@ QuestsView::QuestsView(QWidget* parent) :
 /**
  * @brief Adds a quest to the model of this view.
  * @param quest_path Path of the quest to add.
+ * @return @c true if it was added, @c false if it was already there.
  */
-void QuestsView::add_quest(const QString& quest_path) {
+bool QuestsView::add_quest(const QString& quest_path) {
 
-  model->add_quest(quest_path);
+  return model->add_quest(quest_path);
+}
+
+/**
+ * @brief Returns the list of quests paths in the view.
+ * @return The quests paths.
+ */
+QStringList QuestsView::get_paths() const {
+
+  return model->get_paths();
 }
 
 }

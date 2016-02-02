@@ -33,7 +33,8 @@ public:
 
   QuestsView(QWidget* parent = nullptr);
 
-  void add_quest(const QString& quest_path);
+  bool add_quest(const QString& quest_path);
+  QStringList get_paths() const;
 
 private:
 

@@ -36,7 +36,9 @@ public:
   int rowCount(const QModelIndex& parent = QModelIndex()) const override;
   QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
-  void add_quest(const QString& quest_path);
+  bool has_quest(const QString& quest_path);
+  bool add_quest(const QString& quest_path);
+  QStringList get_paths() const;
 
 private:
 

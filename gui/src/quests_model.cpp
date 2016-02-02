@@ -106,7 +106,7 @@ bool QuestsModel::add_quest(const QString& quest_path) {
 
   endInsertRows();
 
-  // TODO save settings
+  return true;
 }
 
 /**

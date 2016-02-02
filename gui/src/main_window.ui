@@ -193,9 +193,6 @@
    <property name="text">
     <string>Add quest...</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+O</string>
-   </property>
   </action>
   <action name="action_exit">
    <property name="text">

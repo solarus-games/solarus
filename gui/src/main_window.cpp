@@ -59,9 +59,12 @@ MainWindow::MainWindow(QWidget* parent) :
     ui.quests_view->select_quest(last_quest);
   }
 
+  ui.action_add_quest->setShortcut(QKeySequence::Open);
+  ui.action_exit->setShortcut(QKeySequence::Quit);
   ui.add_button->setDefaultAction(ui.action_add_quest);
   ui.remove_button->setDefaultAction(ui.action_remove_quest);
 
+  // Make connections.
   connect(ui.quests_view->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
           this, SLOT(selected_quest_changed()));
   selected_quest_changed();

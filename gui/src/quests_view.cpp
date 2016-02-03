@@ -31,6 +31,7 @@ QuestsView::QuestsView(QWidget* parent) :
   setMovement(Movement::Static);
   setGridSize(QSize(200, 200));
   setIconSize(QSize(128, 128));
+  setSelectionMode(QAbstractItemView::SingleSelection);
 
   model = new QuestsModel(this);
   setModel(model);
@@ -127,7 +128,7 @@ void QuestsView::select_quest(int index) {
     return;
   }
 
-  selectionModel()->setCurrentIndex(model->index(index, 0), QItemSelectionModel::Select);
+  selectionModel()->select(model->index(index, 0), QItemSelectionModel::ClearAndSelect);
 }
 
 /**

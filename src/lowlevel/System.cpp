@@ -48,9 +48,6 @@ void System::initialize(const Arguments& args) {
   initial_time = get_real_time();
   ticks = 0;
 
-  // files
-  QuestFiles::initialize(args);
-
   // audio
   Sound::initialize(args);
 

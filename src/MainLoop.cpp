@@ -106,8 +106,15 @@ MainLoop::MainLoop(const Arguments& args):
     iss >> debug_lag;
   }
 
-  // Initialize basic features (I/O, audio, video...).
   Logger::info(std::string("Solarus ") + SOLARUS_VERSION);
+
+  // Check the existence of the quest.
+  QuestFiles::initialize(args);
+  if (!QuestFiles::quest_exists()) {
+    return;
+  }
+
+  // Initialize engine features (audio, video...).
   System::initialize(args);
 
   // Read the quest resource list from data.
@@ -158,7 +165,9 @@ MainLoop::~MainLoop() {
   // because it may point to other surfaces that have Lua movements.
   root_surface = nullptr;
 
-  lua_context->exit();
+  if (lua_context != nullptr) {
+    lua_context->exit();
+  }
   TilePattern::quit();
   CurrentQuest::quit();
   System::quit();
@@ -251,8 +260,14 @@ int MainLoop::push_lua_command(const std::string& command) {
  *
  * The main loop controls simulated time and repeatedly updates the world and
  * redraws the screen.
+ *
+ * Does nothing if the quest is missing.
  */
 void MainLoop::run() {
+
+  if (!QuestFiles::quest_exists()) {
+    return;
+  }
 
   // Main loop.
   Logger::info("Simulation started");

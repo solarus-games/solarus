@@ -84,12 +84,8 @@ void QuestFiles::initialize(const Arguments& args) {
   PHYSFS_addToSearchPath((base_dir + "/" + archive_quest_path_2).c_str(), 1);
 
   // Check the existence of a quest at this location.
-  if (!QuestFiles::data_file_exists("quest.dat")) {
-    Debug::error("No quest was found in the directory '" + quest_path +
-        "'. To specify your quest's path, run: " +
-        (program_name.empty() ? std::string("solarus-run") : program_name) +
-        " path/to/quest");
-    std::exit(EXIT_SUCCESS);
+  if (!quest_exists()) {
+    Debug::error("No quest was found in the directory '" + quest_path + "'");
   }
 
   // Set the engine root write directory.
@@ -117,6 +113,19 @@ void QuestFiles::quit() {
  */
 const std::string& QuestFiles::get_quest_path() {
   return quest_path;
+}
+
+/**
+ * @brief Returns whether there is a quest in the directory QuestFiles
+ * were initialized with.
+ *
+ * A quest is considered to be found if there is at a least quest.dat file.
+ *
+ * @return @c true if the quest exists.
+ */
+bool QuestFiles::quest_exists() {
+
+  return data_file_exists("quest.dat");
 }
 
 /**

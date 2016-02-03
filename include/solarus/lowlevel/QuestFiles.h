@@ -58,6 +58,7 @@ class SOLARUS_API QuestFiles {
 
     // Reading data files of the quest.
     static const std::string& get_quest_path();
+    static bool quest_exists();
     static DataFileLocation data_file_get_location(
         const std::string& file_name);
     static bool data_file_exists(

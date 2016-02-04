@@ -76,7 +76,6 @@ void System::quit() {
   Sprite::quit();
   FontResource::quit();
   Video::quit();
-  QuestFiles::quit();
 
   SDL_Quit();
 }

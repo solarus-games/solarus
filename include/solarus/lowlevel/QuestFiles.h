@@ -53,8 +53,12 @@ class SOLARUS_API QuestFiles {
     };
 
     // Initialization.
-    static void initialize(const Arguments& args);
-    static void quit();
+    static bool open_quest(
+        const std::string& program_name,
+        const std::string& quest_path
+    );
+    static void close_quest();
+    static bool is_open();
 
     // Reading data files of the quest.
     static const std::string& get_quest_path();

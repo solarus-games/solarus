@@ -81,6 +81,31 @@ void check_version_compatibility(const std::string& solarus_required_version) {
   }
 }
 
+/**
+ * \brief Returns path of the quest to run.
+ *
+ * It may be the path defined as command-line argument,
+ * the path defined during the build process, or the current directory
+ * if nothing was specified.
+ *
+ * \param args Command-line arguments.
+ * \return The quest path.
+ */
+std::string get_quest_path(const Arguments& args) {
+
+  // If a quest command-line argument was specified, use it instead.
+  const std::vector<std::string>& options = args.get_arguments();
+  if (!options.empty()
+      && !options.back().empty()
+      && options.back()[0] != '-') {
+    // The last parameter is not an option: it is the quest path.
+    return options.back();
+  }
+
+  // The default quest path is defined during the build process.
+  return SOLARUS_DEFAULT_QUEST;
+}
+
 }  // Anonymous namespace.
 
 /**
@@ -108,9 +133,11 @@ MainLoop::MainLoop(const Arguments& args):
 
   Logger::info(std::string("Solarus ") + SOLARUS_VERSION);
 
-  // Check the existence of the quest.
-  QuestFiles::initialize(args);
-  if (!QuestFiles::quest_exists()) {
+  // Try to open the quest.
+  const std::string& quest_path = get_quest_path(args);
+  Logger::info("Opening quest '" + quest_path + "'");
+  if (!QuestFiles::open_quest(args.get_program_name(), quest_path)) {
+    Debug::error("No quest was found in the directory '" + quest_path + "'");
     return;
   }
 

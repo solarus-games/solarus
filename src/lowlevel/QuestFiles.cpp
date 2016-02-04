@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Arguments.h"
@@ -40,36 +39,25 @@ std::string QuestFiles::quest_write_dir;
 std::vector<std::string> QuestFiles::temporary_files;
 
 /**
- * \brief Initializes the file tools.
- * \param args Command-line arguments.
+ * \brief Opens a quest.
+ *
+ * Only one quest can be open at a time.
+ *
+ * \param program_name Program name passed as first command-line argument.
+ * Necessary for the quest file management system.
+ * \param quest_path Path of the quest to open.
+ * \return \c true if the quest was found.
  */
-void QuestFiles::initialize(const Arguments& args) {
+bool QuestFiles::open_quest(const std::string& program_name, const std::string& quest_path) {
 
-  const std::string& program_name = args.get_program_name().c_str();
+  Debug::check_assertion(!is_open(), "A quest is already open");
+
   if (program_name.empty()) {
     PHYSFS_init(nullptr);
   }
   else {
     PHYSFS_init(program_name.c_str());
   }
-
-  // Set the quest path, by default as defined during the build process.
-  quest_path = SOLARUS_DEFAULT_QUEST;
-
-  // If a quest command-line argument was specified, use it instead.
-  const std::vector<std::string>& options = args.get_arguments();
-  if (!options.empty()
-      && !options.back().empty()
-      && options.back()[0] != '-') {
-    // The last parameter is not an option: it is the quest path.
-    quest_path = options.back();
-  }
-
-  Logger::info("Opening quest '" + quest_path + "'");
-
-  // Now, quest_path may be the path defined as command-line argument,
-  // the path defined during the build process, or the current directory
-  // if nothing was specified.
 
   std::string dir_quest_path = quest_path + "/data";
   std::string archive_quest_path_1 = quest_path + "/data.solarus";
@@ -83,19 +71,20 @@ void QuestFiles::initialize(const Arguments& args) {
   PHYSFS_addToSearchPath((base_dir + "/" + archive_quest_path_1).c_str(), 1);
   PHYSFS_addToSearchPath((base_dir + "/" + archive_quest_path_2).c_str(), 1);
 
-  // Check the existence of a quest at this location.
-  if (!quest_exists()) {
-    Debug::error("No quest was found in the directory '" + quest_path + "'");
-  }
-
   // Set the engine root write directory.
   set_solarus_write_dir(SOLARUS_WRITE_DIR);
+
+  return quest_exists();
 }
 
 /**
- * \brief Quits the file tools.
+ * \brief Closes the quest.
  */
-void QuestFiles::quit() {
+void QuestFiles::close_quest() {
+
+  if (!is_open()) {
+    return;
+  }
 
   remove_temporary_files();
 
@@ -104,6 +93,15 @@ void QuestFiles::quit() {
   quest_write_dir = "";
 
   PHYSFS_deinit();
+}
+
+/**
+ * @brief Returns whether a quest is open.
+ * @return @c true if a quest is open, even if missing.
+ */
+bool QuestFiles::is_open() {
+
+  return !quest_path.empty();
 }
 
 /**

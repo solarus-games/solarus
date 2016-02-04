@@ -23,19 +23,40 @@
 
 namespace Solarus {
 
+class VideoMode;
+
 /**
- * \brief Loads and saves the built-in settings of the quest.
+ * \brief Stores built-in settings of the quest.
  *
  * Settings include the language, the video mode and the audio volume.
  */
-namespace Settings {
+class SOLARUS_API Settings {
 
-SOLARUS_API bool load(const std::string& file_name);
-SOLARUS_API bool save(const std::string& file_name);
+public:
 
-}
+  template<typename T>
+  using OptionalSetting = std::pair<T, bool>;
 
-}
+  Settings();
+
+  bool load(const std::string& file_name);
+  bool save(const std::string& file_name);
+
+  void set_from_quest();
+  void apply_to_quest();
+
+private:
+
+  OptionalSetting<const VideoMode*> video_mode;  /**< Video mode if any. TODO name instead of pointer */
+  OptionalSetting<bool> fullscreen               /**< Fullscreen flag if any. */;
+  OptionalSetting<int> sound_volume;             /**< Sound volume if any (0 to 100). */
+  OptionalSetting<int> music_volume;             /**< Music volume if any (0 to 100). */
+  OptionalSetting<std::string> language;         /**< Language code if any. */
+  OptionalSetting<bool> joypad_enabled;          /**< Joypad flag if any. */
+
+};
+
+}  // namespace Solarus
 
 #endif
 

@@ -28,14 +28,25 @@
 
 namespace Solarus {
 
-namespace Settings {
+/**
+ * \brief Creates empty settings.
+ */
+Settings::Settings() :
+  video_mode(nullptr, false),
+  fullscreen(false, false),
+  sound_volume(0, false),
+  music_volume(0, false),
+  language("", false),
+  joypad_enabled(false, false) {
+
+}
 
 /**
  * \brief Attempts to load the built-in settings from a file.
  * \param file_name Settings file to read, relative to the quest write directory.
  * \return \c true if settings were successfully loaded and applied.
  */
-SOLARUS_API bool load(const std::string& file_name) {
+bool Settings::load(const std::string& file_name) {
 
   const std::string& quest_write_dir = QuestFiles::get_quest_write_dir();
   if (quest_write_dir.empty()) {
@@ -71,7 +82,10 @@ SOLARUS_API bool load(const std::string& file_name) {
     if (mode_name != "" && mode_name != Video::get_video_mode().get_name()) {
       const VideoMode* video_mode = Video::get_video_mode_by_name(mode_name);
       if (video_mode != nullptr) {  // Valid video mode.
-        Video::set_video_mode(*video_mode);
+        this->video_mode = std::make_pair(video_mode, true);
+      }
+      else {
+        this->video_mode = std::make_pair(nullptr, false);
       }
     }
   }
@@ -81,7 +95,10 @@ SOLARUS_API bool load(const std::string& file_name) {
   lua_getglobal(l, "fullscreen");
   if (lua_isboolean(l, 1)) {
     bool fullscreen = lua_toboolean(l, 1);
-    Video::set_fullscreen(fullscreen);
+    this->fullscreen = std::make_pair(fullscreen, true);
+  }
+  else {
+    this->fullscreen = std::make_pair(false, false);
   }
   lua_pop(l, 1);
 
@@ -89,7 +106,10 @@ SOLARUS_API bool load(const std::string& file_name) {
   lua_getglobal(l, "sound_volume");
   if (lua_isnumber(l, 1)) {
     int sound_volume = int(lua_tointeger(l, 1));
-    Sound::set_volume(sound_volume);
+    this->sound_volume = std::make_pair(sound_volume, true);
+  }
+  else {
+    this->sound_volume = std::make_pair(0, false);
   }
   lua_pop(l, 1);
 
@@ -97,7 +117,10 @@ SOLARUS_API bool load(const std::string& file_name) {
   lua_getglobal(l, "music_volume");
   if (lua_isnumber(l, 1)) {
     int music_volume = int(lua_tointeger(l, 1));
-    Music::set_volume(music_volume);
+    this->music_volume = std::make_pair(music_volume, true);
+  }
+  else {
+    this->music_volume = std::make_pair(0, false);
   }
   lua_pop(l, 1);
 
@@ -105,9 +128,10 @@ SOLARUS_API bool load(const std::string& file_name) {
   lua_getglobal(l, "language");
   if (lua_isstring(l, 1)) {
     const std::string& language = lua_tostring(l, 1);
-    if (CurrentQuest::has_language(language)) {
-      CurrentQuest::set_language(language);
-    }
+    this->language = std::make_pair(language, true);
+  }
+  else {
+    this->language = std::make_pair("", false);
   }
   lua_pop(l, 1);
 
@@ -115,7 +139,10 @@ SOLARUS_API bool load(const std::string& file_name) {
   lua_getglobal(l, "joypad_enabled");
   if (lua_isboolean(l, 1)) {
     bool joypad_enabled = lua_toboolean(l, 1);
-    InputEvent::set_joypad_enabled(joypad_enabled);
+    this->joypad_enabled = std::make_pair(joypad_enabled, true);
+  }
+  else {
+    this->joypad_enabled = std::make_pair(false, false);
   }
   lua_pop(l, 1);
 
@@ -127,30 +154,106 @@ SOLARUS_API bool load(const std::string& file_name) {
 /**
  * \brief Attempts to save the built-in settings to a file.
  * \param file_name Settings file to write, relative to the quest write directory.
- * \return true if settings were successfully saved.
+ * \return \c true if settings were successfully saved.
  */
-SOLARUS_API bool save(const std::string& file_name) {
+bool Settings::save(const std::string& file_name) {
 
   const std::string& quest_write_dir = QuestFiles::get_quest_write_dir();
-  Debug::check_assertion(!quest_write_dir.empty(),
-      "Cannot save settings: no quest write directory was specified in quest.dat");
+  if (quest_write_dir.empty()) {
+    Debug::error("Cannot save settings: no quest write directory was specified in quest.dat");
+  }
 
   std::ostringstream oss;
-  const VideoMode& video_mode = Video::get_video_mode();
-  oss << "video_mode = \"" << video_mode.get_name() << "\"\n";
-  oss << "fullscreen = " << (Video::is_fullscreen() ? "true" : "false") << "\n";
-  oss << "sound_volume = " << Sound::get_volume() << "\n";
-  oss << "music_volume = " << Music::get_volume() << "\n";
-  if (!CurrentQuest::get_language().empty()) {
-    oss << "language = \"" << CurrentQuest::get_language() << "\"\n";
+
+  if (video_mode.second) {
+    Debug::check_assertion(video_mode.first != nullptr, "Missing video mode");
+    oss << "video_mode = \"" << video_mode.first->get_name() << "\"\n";
   }
-  oss << "joypad_enabled = " << (InputEvent::is_joypad_enabled() ? "true" : "false") << "\n";
+
+  if (fullscreen.second) {
+    oss << "fullscreen = " << (fullscreen.first ? "true" : "false") << "\n";
+  }
+
+  if (sound_volume.second) {
+    oss << "sound_volume = " << sound_volume.first << "\n";
+  }
+
+  if (music_volume.second) {
+    oss << "music_volume = " << music_volume.first << "\n";
+  }
+
+  if (language.second) {
+    Debug::check_assertion(!language.first.empty(), "Missing language");
+    oss << "language = \"" << language.first << "\"\n";
+  }
+
+  if (joypad_enabled.second) {
+    oss << "joypad_enabled = " << (joypad_enabled.first ? "true" : "false") << "\n";
+  }
 
   const std::string& text = oss.str();
   QuestFiles::data_file_save(file_name, text);
   return true;
 }
 
-}  // namespace Settings
+/**
+ * \brief Sets these settings to the ones of the currently running quest.
+ */
+void Settings::set_from_quest() {
+
+  /* TODO
+  set_video_mode(std::make_pair(&Video::get_video_mode(), true));
+  set_fullscreen(std::make_pair(Video::is_fullscreen(), true));
+  set_sound_volume(std::make_pair(Sound::get_volume()));
+  set_music_volume(std::make_pair(Music::get_volume()));
+  set_joypad_enabled(std::make_pair(InputEvent::is_joypad_enabled()));
+
+  if (CurrentQuest::get_language().empty()) {
+    set_language(std::make_pair("", false));
+  }
+  else {
+    set_language(std::make_pair(CurrentQuest::get_language()));
+  }
+  */
+}
+
+/**
+ * \brief Applies these settings to the currently running quest.
+ */
+void Settings::apply_to_quest() {
+
+  // Video mode.
+  if (video_mode.second) {
+    Debug::check_assertion(video_mode.first != nullptr, "Missing video mode");
+    Video::set_video_mode(*video_mode.first);
+  }
+
+  // Fullscreen.
+  if (fullscreen.second) {
+    Video::set_fullscreen(fullscreen.first);
+  }
+
+  // Sound volume.
+  if (sound_volume.second) {
+    Sound::set_volume(sound_volume.first);
+  }
+
+  // Music volume.
+  if (music_volume.second) {
+    Music::set_volume(music_volume.first);
+  }
+
+  // Language.
+  if (language.second) {
+    if (CurrentQuest::has_language(language.first)) {
+      CurrentQuest::set_language(language.first);
+    }
+  }
+
+  // Joystick.
+  if (joypad_enabled.second) {
+    InputEvent::set_joypad_enabled(joypad_enabled.first);
+  }
+}
 
 }  // namespace Solarus

@@ -28,18 +28,23 @@
 
 namespace Solarus {
 
+namespace Settings {
+
 /**
  * \brief Attempts to load the built-in settings from a file.
  * \param file_name Settings file to read, relative to the quest write directory.
- * \return true if settings were successfully loaded and applied.
+ * \return \c true if settings were successfully loaded and applied.
  */
-bool Settings::load(const std::string& file_name) {
+SOLARUS_API bool load(const std::string& file_name) {
 
   const std::string& quest_write_dir = QuestFiles::get_quest_write_dir();
-  Debug::check_assertion(!quest_write_dir.empty(),
-      "Cannot load settings: no quest write directory was specified in quest.dat");
+  if (quest_write_dir.empty()) {
+    Debug::error("Cannot load settings: no write directory was specified in quest.dat");
+    return false;
+  }
 
   if (!QuestFiles::data_file_exists(file_name)) {
+    Debug::error("Cannot find settings file '" + file_name + "'");
     return false;
   }
 
@@ -124,7 +129,7 @@ bool Settings::load(const std::string& file_name) {
  * \param file_name Settings file to write, relative to the quest write directory.
  * \return true if settings were successfully saved.
  */
-bool Settings::save(const std::string& file_name) {
+SOLARUS_API bool save(const std::string& file_name) {
 
   const std::string& quest_write_dir = QuestFiles::get_quest_write_dir();
   Debug::check_assertion(!quest_write_dir.empty(),
@@ -146,5 +151,6 @@ bool Settings::save(const std::string& file_name) {
   return true;
 }
 
-}
+}  // namespace Settings
 
+}  // namespace Solarus

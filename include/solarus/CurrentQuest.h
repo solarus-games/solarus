@@ -31,7 +31,7 @@ class QuestResources;
 class StringResources;
 
 /**
- * \brief Provides access to data of the current quest.
+ * \brief Provides access to resources and properties of the current quest.
  */
 namespace CurrentQuest {
 

@@ -14,10 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/InputEvent.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lowlevel/Video.h"
-#include "solarus/lowlevel/Debug.h"
 #include <SDL.h>
 #include <cstdlib>  // std::abs
 
@@ -827,6 +828,8 @@ void InputEvent::set_joypad_enabled(bool joypad_enabled) {
       SDL_JoystickEventState(SDL_IGNORE);
       SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
     }
+
+    Logger::info(std::string("Joypad enabled: ") + (joypad_enabled ? "true" : "false"));
   }
 }
 

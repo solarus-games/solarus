@@ -452,6 +452,7 @@ void Video::set_fullscreen(bool fullscreen) {
 
   Debug::check_assertion(video_mode != nullptr, "No video mode");
   set_video_mode(*video_mode, fullscreen);
+  Logger::info(std::string("Fullscreen: ") + (fullscreen ? "yes" : "no"));
 }
 
 /**
@@ -569,6 +570,8 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
       reset_window_size();
     }
   }
+
+  Logger::info(std::string("Video mode: ") + video_mode->get_name());
 
   return true;
 }

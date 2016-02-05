@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/ItDecoder.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/Music.h"
 #include "solarus/lowlevel/SpcDecoder.h"
-#include "solarus/lowlevel/ItDecoder.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/Debug.h"
 #include "solarus/lua/LuaContext.h"
 #include <lua.hpp>
 #include <algorithm>
@@ -154,6 +155,8 @@ void Music::set_volume(int volume) {
   if (current_music != nullptr) {
     alSourcef(current_music->source, AL_GAIN, Music::volume);
   }
+
+  Logger::info(std::string("Music volume: ") + std::to_string(get_volume()));
 }
 
 /**

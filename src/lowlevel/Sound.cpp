@@ -19,6 +19,7 @@
 #include <sstream>
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/Music.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/Arguments.h"
@@ -223,6 +224,7 @@ void Sound::set_volume(int volume) {
 
   volume = std::min(100, std::max(0, volume));
   Sound::volume = volume / 100.0;
+  Logger::info(std::string("Sound volume: ") + std::to_string(get_volume()));
 }
 
 /**

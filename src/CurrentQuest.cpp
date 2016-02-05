@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/CurrentQuest.h"
 #include "solarus/DialogResources.h"
@@ -177,7 +178,7 @@ void set_language(const std::string& language_code) {
 
   // Read the quest dialog list file.
   DialogResources resources;
-  auto& dialogs = get_dialogs();
+  std::map<std::string, Dialog>& dialogs = get_dialogs();
 
   bool success = resources.import_from_quest_file("text/dialogs.dat", true);
 
@@ -200,6 +201,8 @@ void set_language(const std::string& language_code) {
       dialogs.emplace(id, dialog);
     }
   }
+
+  Logger::info(std::string("Language: ") + language_code);
 }
 
 /**

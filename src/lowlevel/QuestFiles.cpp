@@ -482,7 +482,7 @@ SOLARUS_API std::string create_temporary_file(const std::string& content) {
   std::string file_name;
 
 #ifdef HAVE_MKSTEMP
-  // mkstemp+close is safer than tmpname, but POSIX only.
+  // mkstemp+close is safer than tmpnam, but POSIX only.
   char name_template[] = "/tmp/solarus.XXXXXX";
   int file_descriptor = mkstemp(name_template);
   if (file_descriptor == -1) {

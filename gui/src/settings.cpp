@@ -39,7 +39,7 @@ Settings::Settings() :
  *
  * @param quest_path Path of the quest where to write a settings file.
  */
-void Settings::export_to_quest(const QString& quest_path) {
+void Settings::export_to_quest(const QString& quest_path) const {
 
   if (Solarus::QuestFiles::is_open()) {
     Solarus::QuestFiles::close_quest();
@@ -60,35 +60,85 @@ void Settings::export_to_quest(const QString& quest_path) {
 
   QVariant video_mode = value("quest_video_mode");
   if (video_mode.isValid()) {
-    solarus_settings.set_string("video_mode", video_mode.toString().toStdString());
+    solarus_settings.set_string(
+          Solarus::Settings::key_video_mode, video_mode.toString().toStdString());
   }
 
   QVariant fullscreen = value("quest_fullscreen");
   if (fullscreen.isValid()) {
-    solarus_settings.set_boolean("fullscreen", video_mode.toBool());
+    solarus_settings.set_boolean(
+          Solarus::Settings::key_fullscreen, video_mode.toBool());
   }
 
   QVariant sound_volume = value("quest_sound_volume");
   if (sound_volume.isValid()) {
-    solarus_settings.set_integer("sound_volume", sound_volume.toInt());
+    solarus_settings.set_integer(
+          Solarus::Settings::key_sound_volume, sound_volume.toInt());
   }
 
   QVariant music_volume = value("quest_music_volume");
   if (music_volume.isValid()) {
-    solarus_settings.set_integer("music_volume", music_volume.toInt());
+    solarus_settings.set_integer(
+          Solarus::Settings::key_music_volume, music_volume.toInt());
   }
 
   QVariant language = value("quest_language");
   if (language.isValid()) {
-    solarus_settings.set_string("language", language.toString().toStdString());
+    solarus_settings.set_string(
+          Solarus::Settings::key_language, language.toString().toStdString());
   }
 
   QVariant joypad_enabled = value("quest_joypad_enabled");
   if (joypad_enabled.isValid()) {
-    solarus_settings.set_boolean("joypad_enabled", joypad_enabled.toBool());
+    solarus_settings.set_boolean(
+          Solarus::Settings::key_joypad_enabled, joypad_enabled.toBool());
   }
 
   solarus_settings.save(file_name);
+}
+
+/**
+ * @brief Returns Lua commands that set these settings in the Solarus API.
+ *
+ * System settings like audio volume and the video mode are returned as
+ * Lua commands.
+ * This function allows to apply to a running quest process
+ * what the user chose in the GUI.
+ */
+QStringList Settings::get_quest_lua_commands() const {
+
+  QStringList commands;
+  QVariant video_mode = value("quest_video_mode");
+  if (video_mode.isValid()) {
+    commands << QString("sol.video.set_mode(\"%1\")").
+                arg(video_mode.toString());
+  }
+
+  QVariant fullscreen = value("quest_fullscreen");
+  if (fullscreen.isValid()) {
+    commands << QString("sol.video.set_fullscreen(\"%1\")").
+                arg(fullscreen.toBool() ? "true" : "false");
+  }
+
+  QVariant sound_volume = value("quest_sound_volume");
+  if (sound_volume.isValid()) {
+    commands << QString("sol.audio.set_sound_volume(%1)").
+                arg(sound_volume.toInt());
+  }
+
+  QVariant music_volume = value("quest_music_volume");
+  if (music_volume.isValid()) {
+    commands << QString("sol.audio.set_music_volume(%1)").
+                arg(music_volume.toInt());
+  }
+
+  QVariant language = value("quest_language");
+  if (language.isValid()) {
+    commands << QString("sol.language.set_language(\"%1\")").
+                arg(language.toString());
+  }
+
+  return commands;
 }
 
 }

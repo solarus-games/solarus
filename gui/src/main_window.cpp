@@ -301,12 +301,16 @@ void MainWindow::on_action_play_quest_triggered() {
     return;
   }
 
-  // Forward system settings to the quest.
+  // Write system settings to the settings.dat file of the quest.
   Settings settings;
   settings.export_to_quest(path);
 
   // Run the quest.
   quest_runner.start(path);
+
+  // Apply settings to the running quest as Lua commands,
+  // for quests that don't read the settings.dat file.
+  quest_runner.apply_settings(settings);
 
   update_run_quest();
 }

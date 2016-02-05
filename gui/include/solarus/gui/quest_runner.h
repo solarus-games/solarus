@@ -22,6 +22,8 @@
 
 namespace SolarusGui {
 
+class Settings;
+
 /**
  * @brief Class to run a quest in a dedicated process.
  */
@@ -36,6 +38,7 @@ public:
   bool is_started() const;
   bool is_running() const;
   bool execute_command(const QString& command);
+  bool apply_settings(const Settings& settings);
 
 public slots:
 

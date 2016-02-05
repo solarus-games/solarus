@@ -192,7 +192,8 @@ void QuestRunner::standard_output_data_available() {
 /**
  * @brief Executes some Lua code in the quest process.
  * @param command The Lua code.
- * @return @c true if the code could be sent to the process (even if it produces an error).
+ * @return @c true if the code could be sent to the process
+ * (even if it produces an error).
  */
 bool QuestRunner::execute_command(const QString& command) {
 
@@ -204,6 +205,29 @@ bool QuestRunner::execute_command(const QString& command) {
   command_utf8.append("\n");
   qint64 bytes_written = process.write(command_utf8);
   return bytes_written == command_utf8.size();
+}
+
+/**
+ * @brief Applies system settings of the GUI to the quest process.
+ *
+ * Settings are applied as Lua commands.
+ *
+ * @param settings The settings.
+ * @return @c true if settings commands could be sent to the process
+ * (even if they produce an error).
+ */
+bool QuestRunner::apply_settings(const Settings& settings) {
+
+  if (!is_running()) {
+    return false;
+  }
+
+  QStringList commands = settings.get_quest_lua_commands();
+  bool success = true;
+  for (const QString& command : commands) {
+    success = execute_command(command) && success;
+  }
+  return success;
 }
 
 }

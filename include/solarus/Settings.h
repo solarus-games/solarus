@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 #ifndef SOLARUS_SETTINGS_H
 #define SOLARUS_SETTINGS_H
 
 #include "solarus/Common.h"
+#include <map>
 #include <string>
 
 namespace Solarus {
@@ -34,9 +34,6 @@ class SOLARUS_API Settings {
 
 public:
 
-  template<typename T>
-  using OptionalSetting = std::pair<T, bool>;
-
   Settings();
 
   bool load(const std::string& file_name);
@@ -45,14 +42,26 @@ public:
   void set_from_quest();
   void apply_to_quest();
 
+  std::pair<std::string, bool> get_string(const std::string& key);
+  std::pair<int, bool> get_integer(const std::string& key);
+  std::pair<bool, bool> get_boolean(const std::string& key);
+
+  void set_string(const std::string& key, const std::string& value);
+  void set_integer(const std::string& key, int value);
+  void set_boolean(const std::string& key, bool value);
+  void unset(const std::string& key);
+  void clear();
+
+  static const std::string key_video_mode;
+  static const std::string key_fullscreen;
+  static const std::string key_sound_volume;
+  static const std::string key_music_volume;
+  static const std::string key_language;
+  static const std::string key_joypad_enabled;
+
 private:
 
-  OptionalSetting<const VideoMode*> video_mode;  /**< Video mode if any. TODO name instead of pointer */
-  OptionalSetting<bool> fullscreen               /**< Fullscreen flag if any. */;
-  OptionalSetting<int> sound_volume;             /**< Sound volume if any (0 to 100). */
-  OptionalSetting<int> music_volume;             /**< Music volume if any (0 to 100). */
-  OptionalSetting<std::string> language;         /**< Language code if any. */
-  OptionalSetting<bool> joypad_enabled;          /**< Joypad flag if any. */
+  std::map<std::string, std::string> entries;
 
 };
 

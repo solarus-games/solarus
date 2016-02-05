@@ -30,6 +30,7 @@ const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
     KEY_DOWN,
     KEY_NONE
 };
+bool InputEvent::initialized = false;
 bool InputEvent::joypad_enabled = false;
 SDL_Joystick* InputEvent::joystick = nullptr;
 bool InputEvent::repeat_keyboard = false;
@@ -38,7 +39,7 @@ std::set<InputEvent::KeyboardKey> InputEvent::keys_pressed;
 std::vector<int> InputEvent::joypad_axis_state;
 
 // Keyboard key names.
-const std::string EnumInfoTraits<InputEvent::KeyboardKey>::pretty_name = "ability";
+const std::string EnumInfoTraits<InputEvent::KeyboardKey>::pretty_name = "keyboard_key";
 
 const EnumInfo<InputEvent::KeyboardKey>::names_type EnumInfoTraits<InputEvent::KeyboardKey>::names = {
 
@@ -169,7 +170,7 @@ const EnumInfo<InputEvent::KeyboardKey>::names_type EnumInfoTraits<InputEvent::K
 };
 
 // Mouse button names.
-const std::string EnumInfoTraits<InputEvent::MouseButton>::pretty_name = "ability";
+const std::string EnumInfoTraits<InputEvent::MouseButton>::pretty_name = "mouse_button";
 
 const EnumInfo<InputEvent::MouseButton>::names_type EnumInfoTraits<InputEvent::MouseButton>::names = {
     { InputEvent::MOUSE_BUTTON_NONE,   "" },
@@ -185,6 +186,8 @@ const EnumInfo<InputEvent::MouseButton>::names_type EnumInfoTraits<InputEvent::M
  * \brief Initializes the input event manager.
  */
 void InputEvent::initialize() {
+
+  initialized = true;
 
   // Initialize text events.
   SDL_StartTextInput();
@@ -202,6 +205,21 @@ void InputEvent::quit() {
     SDL_JoystickClose(joystick);
   }
   SDL_StopTextInput();
+
+  joypad_enabled = false;
+  joystick = nullptr;
+  repeat_keyboard = false;
+  keys_pressed.clear();
+  joypad_axis_state.clear();
+  initialized = false;
+}
+
+/**
+ * \brief Returns whether the input event manager is initialized.
+ */
+bool InputEvent::is_initialized() {
+
+  return initialized;
 }
 
 /**

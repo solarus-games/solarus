@@ -28,17 +28,115 @@
 
 namespace Solarus {
 
+const std::string Settings::key_video_mode = "video_mode";
+const std::string Settings::key_fullscreen = "fullscreen";
+const std::string Settings::key_sound_volume = "sound_volume";
+const std::string Settings::key_music_volume = "music_volume";
+const std::string Settings::key_language = "language";
+const std::string Settings::key_joypad_enabled = "joypad_enabled";
+
 /**
  * \brief Creates empty settings.
  */
 Settings::Settings() :
-  video_mode(nullptr, false),
-  fullscreen(false, false),
-  sound_volume(0, false),
-  music_volume(0, false),
-  language("", false),
-  joypad_enabled(false, false) {
+  entries() {
 
+}
+
+/**
+ * \brief Returns a string value if any.
+ * \param key Key of the entry to get.
+ * \return The value if any and a boolean indicating if it exists.
+ */
+std::pair<std::string, bool> Settings::get_string(const std::string& key) {
+
+  const auto& it = entries.find(key);
+  if (it == entries.end()) {
+    return std::make_pair("", false);
+  }
+
+  return std::make_pair(it->second, true);
+}
+
+/**
+ * \brief Returns an integer value if any.
+ * \param key Key of the entry to get.
+ * \return The value if any and a boolean indicating if it exists.
+ */
+std::pair<int, bool> Settings::get_integer(const std::string& key) {
+
+  const auto& it = entries.find(key);
+  if (it == entries.end()) {
+    return std::make_pair(0, false);
+  }
+
+  int value = 0;
+  const std::string string_value = it->second;
+  std::istringstream iss(string_value);
+  iss >> value;
+  return std::make_pair(value, true);
+}
+
+/**
+ * \brief Returns a boolean value if any.
+ * \param key Key of the entry to get.
+ * \return The value if any and a boolean indicating if it exists.
+ */
+std::pair<bool, bool> Settings::get_boolean(const std::string& key) {
+
+  const auto& it = entries.find(key);
+  if (it == entries.end()) {
+    return std::make_pair(false, false);
+  }
+
+  return std::make_pair(it->second == "true", true);
+}
+
+/**
+ * \brief Sets a string value.
+ * \param key Key of the value to set.
+ * \param value The new value.
+ */
+void Settings::set_string(const std::string& key, const std::string& value) {
+
+  entries[key] = value;
+}
+
+/**
+ * \brief Sets an integer value.
+ * \param key Key of the value to set.
+ * \param value The new value.
+ */
+void Settings::set_integer(const std::string& key, int value) {
+
+  entries[key] = std::to_string(value);
+}
+
+/**
+ * \brief Sets an boolean value.
+ * \param key Key of the value to set.
+ * \param value The new value.
+ */
+void Settings::set_boolean(const std::string& key, bool value) {
+
+  entries[key] = value ? "true" : "false";
+}
+
+/**
+ * \brief Unsets a value.
+ * \param key Key of the value to unset.
+ */
+void Settings::unset(const std::string& key) {
+
+  entries.erase(key);
+}
+
+/**
+ * \brief Unsets all values.
+ */
+void Settings::clear() {
+
+  entries.clear();
 }
 
 /**
@@ -74,19 +172,14 @@ bool Settings::load(const std::string& file_name) {
   }
 
   // The syntax of the settings file is valid. Read its values now.
+  entries.clear();
 
   // Video mode.
   lua_getglobal(l, "video_mode");
   if (lua_isstring(l, 1)) {
     const std::string& mode_name = lua_tostring(l, 1);
-    if (mode_name != "" && mode_name != Video::get_video_mode().get_name()) {
-      const VideoMode* video_mode = Video::get_video_mode_by_name(mode_name);
-      if (video_mode != nullptr) {  // Valid video mode.
-        this->video_mode = std::make_pair(video_mode, true);
-      }
-      else {
-        this->video_mode = std::make_pair(nullptr, false);
-      }
+    if (!mode_name.empty()) {
+      entries[key_video_mode] = mode_name;
     }
   }
   lua_pop(l, 1);
@@ -95,32 +188,23 @@ bool Settings::load(const std::string& file_name) {
   lua_getglobal(l, "fullscreen");
   if (lua_isboolean(l, 1)) {
     bool fullscreen = lua_toboolean(l, 1);
-    this->fullscreen = std::make_pair(fullscreen, true);
-  }
-  else {
-    this->fullscreen = std::make_pair(false, false);
+    entries[key_fullscreen] = fullscreen ? "true" : "false";
   }
   lua_pop(l, 1);
 
   // Sound volume.
   lua_getglobal(l, "sound_volume");
   if (lua_isnumber(l, 1)) {
-    int sound_volume = int(lua_tointeger(l, 1));
-    this->sound_volume = std::make_pair(sound_volume, true);
-  }
-  else {
-    this->sound_volume = std::make_pair(0, false);
+    const std::string& sound_volume = lua_tostring(l, 1);
+    entries[key_sound_volume] = sound_volume;
   }
   lua_pop(l, 1);
 
   // Music volume.
   lua_getglobal(l, "music_volume");
   if (lua_isnumber(l, 1)) {
-    int music_volume = int(lua_tointeger(l, 1));
-    this->music_volume = std::make_pair(music_volume, true);
-  }
-  else {
-    this->music_volume = std::make_pair(0, false);
+    const std::string& music_volume = lua_tostring(l, 1);
+    entries[key_music_volume] = music_volume;
   }
   lua_pop(l, 1);
 
@@ -128,10 +212,7 @@ bool Settings::load(const std::string& file_name) {
   lua_getglobal(l, "language");
   if (lua_isstring(l, 1)) {
     const std::string& language = lua_tostring(l, 1);
-    this->language = std::make_pair(language, true);
-  }
-  else {
-    this->language = std::make_pair("", false);
+    entries[key_language] = language;
   }
   lua_pop(l, 1);
 
@@ -139,10 +220,7 @@ bool Settings::load(const std::string& file_name) {
   lua_getglobal(l, "joypad_enabled");
   if (lua_isboolean(l, 1)) {
     bool joypad_enabled = lua_toboolean(l, 1);
-    this->joypad_enabled = std::make_pair(joypad_enabled, true);
-  }
-  else {
-    this->joypad_enabled = std::make_pair(false, false);
+    entries[key_joypad_enabled] = joypad_enabled ? "true" : "false";
   }
   lua_pop(l, 1);
 
@@ -165,30 +243,34 @@ bool Settings::save(const std::string& file_name) {
 
   std::ostringstream oss;
 
-  if (video_mode.second) {
-    Debug::check_assertion(video_mode.first != nullptr, "Missing video mode");
-    oss << "video_mode = \"" << video_mode.first->get_name() << "\"\n";
+  auto it = entries.find(key_video_mode);
+  if (it != entries.end()) {
+    oss << it->first << " = \"" << it->second << "\"\n";
   }
 
-  if (fullscreen.second) {
-    oss << "fullscreen = " << (fullscreen.first ? "true" : "false") << "\n";
+  it = entries.find(key_fullscreen);
+  if (it != entries.end()) {
+    oss << it->first << " = " << it->second << "\n";
   }
 
-  if (sound_volume.second) {
-    oss << "sound_volume = " << sound_volume.first << "\n";
+  it = entries.find(key_sound_volume);
+  if (it != entries.end()) {
+    oss << it->first << " = " << it->second << "\n";
   }
 
-  if (music_volume.second) {
-    oss << "music_volume = " << music_volume.first << "\n";
+  it = entries.find(key_music_volume);
+  if (it != entries.end()) {
+    oss << it->first << " = " << it->second << "\n";
   }
 
-  if (language.second) {
-    Debug::check_assertion(!language.first.empty(), "Missing language");
-    oss << "language = \"" << language.first << "\"\n";
+  it = entries.find(key_language);
+  if (it != entries.end()) {
+    oss << it->first << " = \"" << it->second << "\"\n";
   }
 
-  if (joypad_enabled.second) {
-    oss << "joypad_enabled = " << (joypad_enabled.first ? "true" : "false") << "\n";
+  it = entries.find(key_joypad_enabled);
+  if (it != entries.end()) {
+    oss << it->first << " = " << it->second << "\n";
   }
 
   const std::string& text = oss.str();
@@ -201,20 +283,24 @@ bool Settings::save(const std::string& file_name) {
  */
 void Settings::set_from_quest() {
 
-  /* TODO
-  set_video_mode(std::make_pair(&Video::get_video_mode(), true));
-  set_fullscreen(std::make_pair(Video::is_fullscreen(), true));
-  set_sound_volume(std::make_pair(Sound::get_volume()));
-  set_music_volume(std::make_pair(Music::get_volume()));
-  set_joypad_enabled(std::make_pair(InputEvent::is_joypad_enabled()));
+  clear();
 
-  if (CurrentQuest::get_language().empty()) {
-    set_language(std::make_pair("", false));
+  if (Video::is_initialized()) {
+    set_string(key_video_mode, Video::get_video_mode().get_name());
+    set_boolean(key_fullscreen, Video::is_fullscreen());
   }
-  else {
-    set_language(std::make_pair(CurrentQuest::get_language()));
+  if (Sound::is_initialized()) {
+    set_integer(key_sound_volume, Sound::get_volume());
+    set_integer(key_music_volume, Music::get_volume());
   }
-  */
+  if (InputEvent::is_initialized()) {
+    set_boolean(key_joypad_enabled, InputEvent::is_joypad_enabled());
+  }
+  if (CurrentQuest::is_initialized()) {
+    if (!CurrentQuest::get_language().empty()) {
+      set_string(key_language, CurrentQuest::get_language());
+    }
+  }
 }
 
 /**
@@ -222,37 +308,53 @@ void Settings::set_from_quest() {
  */
 void Settings::apply_to_quest() {
 
-  // Video mode.
-  if (video_mode.second) {
-    Debug::check_assertion(video_mode.first != nullptr, "Missing video mode");
-    Video::set_video_mode(*video_mode.first);
-  }
+  if (Video::is_initialized()) {
+    // Video mode.
+    auto video_mode_name = get_string(key_video_mode);
+    if (video_mode_name.second) {
+      const VideoMode* video_mode = Video::get_video_mode_by_name(video_mode_name.first);
+      if (video_mode != nullptr) {
+        Video::set_video_mode(*video_mode);
+      }
+    }
 
-  // Fullscreen.
-  if (fullscreen.second) {
-    Video::set_fullscreen(fullscreen.first);
-  }
-
-  // Sound volume.
-  if (sound_volume.second) {
-    Sound::set_volume(sound_volume.first);
-  }
-
-  // Music volume.
-  if (music_volume.second) {
-    Music::set_volume(music_volume.first);
-  }
-
-  // Language.
-  if (language.second) {
-    if (CurrentQuest::has_language(language.first)) {
-      CurrentQuest::set_language(language.first);
+    // Fullscreen.
+    auto fullscreen = get_boolean(key_fullscreen);
+    if (fullscreen.second) {
+      Video::set_fullscreen(fullscreen.first);
     }
   }
 
-  // Joystick.
-  if (joypad_enabled.second) {
-    InputEvent::set_joypad_enabled(joypad_enabled.first);
+  if (Sound::is_initialized()) {
+    // Sound volume.
+    auto sound_volume = get_integer(key_sound_volume);
+    if (sound_volume.second) {
+      Sound::set_volume(sound_volume.first);
+    }
+
+    // Music volume.
+    auto music_volume = get_integer(key_music_volume);
+    if (music_volume.second) {
+      Music::set_volume(music_volume.first);
+    }
+}
+
+  if (CurrentQuest::is_initialized()) {
+    // Language.
+    auto language = get_string(key_language);
+    if (language.second) {
+      if (CurrentQuest::has_language(language.first)) {
+        CurrentQuest::set_language(language.first);
+      }
+    }
+  }
+
+  if (InputEvent::is_initialized()) {
+    // Joystick.
+    auto joypad_enabled = get_boolean(key_joypad_enabled);
+    if (joypad_enabled.second) {
+      InputEvent::set_joypad_enabled(joypad_enabled.first);
+    }
   }
 }
 

@@ -46,6 +46,7 @@ class Video {
 
     static void initialize(const Arguments& args);
     static void quit();
+    static bool is_initialized();
 
     static SDL_Window* get_window();
     static SDL_Renderer* get_renderer();

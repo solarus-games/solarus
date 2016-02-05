@@ -108,6 +108,7 @@ void Music::quit() {
     current_music = nullptr;
     spc_decoder = nullptr;
     it_decoder = nullptr;
+    volume = 1.0;
   }
 }
 

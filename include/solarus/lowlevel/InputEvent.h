@@ -204,6 +204,7 @@ class InputEvent {
 
     static void initialize();
     static void quit();
+    static bool is_initialized();
 
     // retrieve the current event
     static std::unique_ptr<InputEvent> get_event();
@@ -291,6 +292,7 @@ class InputEvent {
     explicit InputEvent(const SDL_Event& event);
 
     static const KeyboardKey directional_keys[];  /**< array of the keyboard directional keys */
+    static bool initialized;                      /**< Whether the input manager is initialized. */
     static bool joypad_enabled;                   /**< true if joypad support is enabled
                                                    * (may be true even without joypad plugged) */
     static SDL_Joystick* joystick;                /**< the joystick object if enabled and plugged */

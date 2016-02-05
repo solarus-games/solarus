@@ -37,6 +37,7 @@ namespace CurrentQuest {
 
 SOLARUS_API void initialize();
 SOLARUS_API void quit();
+SOLARUS_API bool is_initialized();
 
 SOLARUS_API QuestProperties& get_properties();
 

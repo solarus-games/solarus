@@ -256,6 +256,8 @@ void initialize_video_modes() {
  */
 void Video::initialize(const Arguments& args) {
 
+  Debug::check_assertion(!is_initialized(), "Video system already initialized");
+
   // Check the -no-video and the -quest-size options.
   const std::string& quest_size_string = args.get_argument_value("-quest-size");
   disable_window = args.has_argument("-no-video");
@@ -293,6 +295,10 @@ void Video::initialize(const Arguments& args) {
  * \brief Closes the video system.
  */
 void Video::quit() {
+
+  if (!is_initialized()) {
+    return;
+  }
 
   ShaderContext::quit();
 
@@ -333,6 +339,14 @@ void Video::quit() {
   wanted_quest_size = Size();
   window_size = Size();
 
+}
+
+/**
+ * \brief Returns whether the video system is initialized.
+ * \return \c true if video is initialized.
+ */
+bool Video::is_initialized() {
+  return video_mode != nullptr;
 }
 
 /**

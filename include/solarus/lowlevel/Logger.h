@@ -26,7 +26,7 @@ namespace Solarus {
 /**
  * \brief Provides features for logging output and errors.
  *
- * Message logged are all prepended by "[Solarus] [t] " where t is the current
+ * Messages logged are all prepended by "[Solarus] [t] " where t is the current
  * simulated time.
  * This allows to better distinguish messages from the engine and messages
  * from the quest.

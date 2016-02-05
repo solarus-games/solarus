@@ -310,7 +310,7 @@ void MainWindow::on_action_play_quest_triggered() {
 
   // Apply settings to the running quest as Lua commands,
   // for quests that don't read the settings.dat file.
-  quest_runner.apply_settings(settings);
+  quest_runner.apply_settings();
 
   update_run_quest();
 }

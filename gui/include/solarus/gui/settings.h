@@ -32,7 +32,6 @@ public:
   Settings();
 
   void export_to_quest(const QString& quest_path) const;
-  QStringList get_quest_lua_commands() const;
 
 };
 

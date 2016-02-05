@@ -62,7 +62,7 @@ QuestRunner::~QuestRunner() {
  * @brief Creates and returns the list of arguments to pass to the process.
  * @param quest_path The path of the quest to run.
  */
-QStringList QuestRunner::create_arguments(const QString& quest_path) {
+QStringList QuestRunner::create_arguments(const QString& quest_path) const {
 
   QStringList arguments;
 
@@ -208,7 +208,7 @@ bool QuestRunner::execute_command(const QString& command) {
 }
 
 /**
- * @brief Applies system settings of the GUI to the quest process.
+ * @brief Applies current settings of the GUI to the quest process.
  *
  * Settings are applied as Lua commands.
  *
@@ -216,18 +216,64 @@ bool QuestRunner::execute_command(const QString& command) {
  * @return @c true if settings commands could be sent to the process
  * (even if they produce an error).
  */
-bool QuestRunner::apply_settings(const Settings& settings) {
+bool QuestRunner::apply_settings() {
 
   if (!is_running()) {
     return false;
   }
 
-  QStringList commands = settings.get_quest_lua_commands();
+  QStringList commands = get_quest_lua_commands_from_settings();
   bool success = true;
   for (const QString& command : commands) {
     success = execute_command(command) && success;
   }
   return success;
+}
+
+
+/**
+ * @brief Returns Lua commands that set the given settings in the Solarus API.
+ *
+ * System settings like audio volume and the video mode are returned as
+ * Lua commands.
+ * This function allows to apply to a running quest process
+ * what the user chose in the GUI.
+ */
+QStringList QuestRunner::get_quest_lua_commands_from_settings() const {
+
+  Settings settings;
+  QStringList commands;
+  QVariant video_mode = settings.value("quest_video_mode");
+  if (video_mode.isValid()) {
+    commands << QString("sol.video.set_mode(\"%1\")").
+                arg(video_mode.toString());
+  }
+
+  QVariant fullscreen = settings.value("quest_fullscreen");
+  if (fullscreen.isValid()) {
+    commands << QString("sol.video.set_fullscreen(\"%1\")").
+                arg(fullscreen.toBool() ? "true" : "false");
+  }
+
+  QVariant sound_volume = settings.value("quest_sound_volume");
+  if (sound_volume.isValid()) {
+    commands << QString("sol.audio.set_sound_volume(%1)").
+                arg(sound_volume.toInt());
+  }
+
+  QVariant music_volume = settings.value("quest_music_volume");
+  if (music_volume.isValid()) {
+    commands << QString("sol.audio.set_music_volume(%1)").
+                arg(music_volume.toInt());
+  }
+
+  QVariant language = settings.value("quest_language");
+  if (language.isValid()) {
+    commands << QString("sol.language.set_language(\"%1\")").
+                arg(language.toString());
+  }
+
+  return commands;
 }
 
 }

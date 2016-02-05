@@ -97,48 +97,4 @@ void Settings::export_to_quest(const QString& quest_path) const {
   solarus_settings.save(file_name);
 }
 
-/**
- * @brief Returns Lua commands that set these settings in the Solarus API.
- *
- * System settings like audio volume and the video mode are returned as
- * Lua commands.
- * This function allows to apply to a running quest process
- * what the user chose in the GUI.
- */
-QStringList Settings::get_quest_lua_commands() const {
-
-  QStringList commands;
-  QVariant video_mode = value("quest_video_mode");
-  if (video_mode.isValid()) {
-    commands << QString("sol.video.set_mode(\"%1\")").
-                arg(video_mode.toString());
-  }
-
-  QVariant fullscreen = value("quest_fullscreen");
-  if (fullscreen.isValid()) {
-    commands << QString("sol.video.set_fullscreen(\"%1\")").
-                arg(fullscreen.toBool() ? "true" : "false");
-  }
-
-  QVariant sound_volume = value("quest_sound_volume");
-  if (sound_volume.isValid()) {
-    commands << QString("sol.audio.set_sound_volume(%1)").
-                arg(sound_volume.toInt());
-  }
-
-  QVariant music_volume = value("quest_music_volume");
-  if (music_volume.isValid()) {
-    commands << QString("sol.audio.set_music_volume(%1)").
-                arg(music_volume.toInt());
-  }
-
-  QVariant language = value("quest_language");
-  if (language.isValid()) {
-    commands << QString("sol.language.set_language(\"%1\")").
-                arg(language.toString());
-  }
-
-  return commands;
-}
-
 }

@@ -559,15 +559,6 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
     // Initialize the window.
     // Set fullscreen flag first to set the size on the right mode.
     SDL_SetWindowFullscreen(main_window, fullscreen_flag);
-    if (!fullscreen && is_fullscreen()) {
-      SDL_SetWindowSize(
-          main_window,
-          window_size.width,
-          window_size.height
-      );
-      SDL_SetWindowPosition(main_window,
-          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-    }
     SDL_RenderSetLogicalSize(
         main_renderer,
         render_size.width,

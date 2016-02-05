@@ -14,28 +14,58 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 #ifndef SOLARUS_SETTINGS_H
 #define SOLARUS_SETTINGS_H
 
 #include "solarus/Common.h"
+#include <map>
 #include <string>
 
 namespace Solarus {
 
+class VideoMode;
+
 /**
- * \brief Loads and saves the built-in settings of the quest.
+ * \brief Stores built-in settings of the quest.
  *
  * Settings include the language, the video mode and the audio volume.
  */
-namespace Settings {
+class SOLARUS_API Settings {
 
-SOLARUS_API bool load(const std::string& file_name);
-SOLARUS_API bool save(const std::string& file_name);
+public:
 
-}
+  Settings();
 
-}
+  bool load(const std::string& file_name);
+  bool save(const std::string& file_name);
+
+  void set_from_quest();
+  void apply_to_quest();
+
+  std::pair<std::string, bool> get_string(const std::string& key);
+  std::pair<int, bool> get_integer(const std::string& key);
+  std::pair<bool, bool> get_boolean(const std::string& key);
+
+  void set_string(const std::string& key, const std::string& value);
+  void set_integer(const std::string& key, int value);
+  void set_boolean(const std::string& key, bool value);
+  void unset(const std::string& key);
+  void clear();
+
+  static const std::string key_video_mode;
+  static const std::string key_fullscreen;
+  static const std::string key_sound_volume;
+  static const std::string key_music_volume;
+  static const std::string key_language;
+  static const std::string key_joypad_enabled;
+
+private:
+
+  std::map<std::string, std::string> entries;
+
+};
+
+}  // namespace Solarus
 
 #endif
 

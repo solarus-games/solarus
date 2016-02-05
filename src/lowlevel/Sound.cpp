@@ -147,6 +147,7 @@ void Sound::quit() {
     context = nullptr;
     alcCloseDevice(device);
     device = nullptr;
+    volume = 1.0;
 
     initialized = false;
   }

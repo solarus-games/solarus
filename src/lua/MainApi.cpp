@@ -244,7 +244,11 @@ int LuaContext::main_api_load_settings(lua_State* l) {
       LuaTools::error(l, "Cannot load settings: no write directory was specified in quest.dat");
     }
 
-    bool success = Settings::load(file_name);
+    Settings settings;
+    bool success = settings.load(file_name);
+    if (success) {
+      settings.apply_to_quest();
+    }
 
     lua_pushboolean(l, success);
     return 1;
@@ -265,7 +269,9 @@ int LuaContext::main_api_save_settings(lua_State* l) {
       LuaTools::error(l, "Cannot save settings: no write directory was specified in quest.dat");
     }
 
-    bool success = Settings::save(file_name);
+    Settings settings;
+    settings.set_from_quest();
+    bool success = settings.save(file_name);
 
     lua_pushboolean(l, success);
     return 1;

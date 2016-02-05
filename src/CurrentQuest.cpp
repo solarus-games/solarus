@@ -27,6 +27,12 @@ namespace Solarus {
 
 namespace CurrentQuest {
 
+namespace {
+
+bool initialized = false;
+
+}
+
 /**
  * \brief Reads the resource list file data file project_db.dat of the
  * current quest and stores it.
@@ -67,6 +73,8 @@ void initialize() {
   // Normal case.
   properties.import_from_lua(l);
   lua_close(l);
+
+  initialized = true;
 }
 
 /**
@@ -77,7 +85,18 @@ void quit() {
   get_resources().clear();
   get_strings().clear();
   get_dialogs().clear();
+
+  initialized = false;
 }
+
+/**
+ * \brief Returns whether there is a current quest.
+ * \return \c true if there is a current quest.
+ */
+bool is_initialized() {
+  return initialized;
+}
+
 
 /**
  * \brief Returns the properties of current quest.
@@ -85,8 +104,8 @@ void quit() {
  */
 QuestProperties& get_properties() {
 
-  // The resources object must be in a function to avoid static initialization
-  // order problems.
+  // The quest properties object must be in a function to avoid static
+  // initialization order problems.
   static QuestProperties properties;
   return properties;
 }

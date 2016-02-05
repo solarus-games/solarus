@@ -195,7 +195,7 @@
      <property name="title">
       <string>Video filter</string>
      </property>
-     <addaction name="action_filter_none"/>
+     <addaction name="action_filter_normal"/>
      <addaction name="action_filter_scale2x"/>
      <addaction name="action_filter_hq2x"/>
      <addaction name="action_filter_hq3x"/>
@@ -304,27 +304,42 @@
     <string>x4</string>
    </property>
   </action>
-  <action name="action_filter_none">
+  <action name="action_filter_normal">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>None</string>
    </property>
   </action>
   <action name="action_filter_scale2x">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Scale2x</string>
    </property>
   </action>
   <action name="action_filter_hq2x">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Hq2x</string>
    </property>
   </action>
   <action name="action_filter_hq3x">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Hq3x</string>
    </property>
   </action>
   <action name="action_filter_hq4x">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Hq4x</string>
    </property>

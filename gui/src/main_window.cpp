@@ -17,7 +17,6 @@
 #include "solarus/gui/main_window.h"
 #include "solarus/gui/quests_view.h"
 #include "solarus/gui/settings.h"
-#include "solarus/Common.h"
 #include <QDesktopWidget>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -60,6 +59,10 @@ MainWindow::MainWindow(QWidget* parent) :
     ui.quests_view->select_quest(last_quest);
   }
 
+  // Menus.
+  initialize_menus();
+
+  // Actions.
   ui.action_add_quest->setShortcut(QKeySequence::Open);
   ui.action_exit->setShortcut(QKeySequence::Quit);
   ui.add_button->setDefaultAction(ui.action_add_quest);
@@ -103,6 +106,72 @@ void MainWindow::update_title() {
   QString version = SOLARUS_VERSION;
   QString title = tr("Solarus %1").arg(version);
   setWindowTitle(title);
+}
+
+/**
+ * @brief Sets up the menus of the main window.
+ */
+void MainWindow::initialize_menus() {
+
+  QActionGroup* group = new QActionGroup(this);
+
+  const QMap<QAction*, QString> video_mode_names = {
+    { ui.action_filter_normal, "normal" },
+    { ui.action_filter_scale2x, "scale2x" },
+    { ui.action_filter_hq2x, "hq2x" },
+    { ui.action_filter_hq3x, "hq3x" },
+    { ui.action_filter_hq4x, "hq4x" }
+  };
+
+  for (auto it = video_mode_names.constBegin(); it != video_mode_names.constEnd(); ++it) {
+    QAction* action = it.key();
+    const QString& name = it.value();
+    group->addAction(action);
+    action->setData(name);
+    connect(action, &QAction::triggered, [=]() {
+      set_video_mode_requested(name);
+    });
+  }
+
+  update_menus();
+}
+
+/**
+ * @brief Updates menus with the current settings.
+ */
+void MainWindow::update_menus() {
+
+  update_filter_menu();
+}
+
+/**
+ * @brief Updates the video filter menu with the current settings.
+ */
+void MainWindow::update_filter_menu() {
+
+  Settings settings;
+
+  QString video_mode = settings.value("quest_video_mode").toString();
+
+  if (video_mode == "normal") {
+    ui.action_filter_normal->setChecked(true);
+  }
+  else if (video_mode == "scale2x") {
+    ui.action_filter_scale2x->setChecked(true);
+  }
+  else if (video_mode == "hq2x") {
+    ui.action_filter_hq2x->setChecked(true);
+  }
+  else if (video_mode == "hq3x") {
+    ui.action_filter_hq3x->setChecked(true);
+  }
+  else if (video_mode == "hq4x") {
+    ui.action_filter_hq4x->setChecked(true);
+  }
+  else {
+    ui.action_filter_normal->setChecked(true);
+    settings.setValue("quest_video_mode", "normal");
+  }
 }
 
 /**
@@ -231,6 +300,12 @@ void MainWindow::on_action_play_quest_triggered() {
   if (path.isEmpty()) {
     return;
   }
+
+  // Forward system settings to the quest.
+  Settings settings;
+  settings.export_to_quest(path);
+
+  // Run the quest.
   quest_runner.start(path);
 
   update_run_quest();
@@ -280,6 +355,27 @@ void MainWindow::selected_quest_changed() {
   // Save the last selected quest (including if none).
   Settings settings;
   settings.setValue("last_quest", selected_path);
+}
+
+/**
+ * @brief Slot called when the user wants to change the video mode.
+ * @param video_mode_name The new video mode.
+ */
+void MainWindow::set_video_mode_requested(const QString& video_mode_name) {
+
+  Settings settings;
+  const QString& previous = settings.value("quest_video_mode").toString();
+  if (video_mode_name == previous) {
+    return;
+  }
+
+  settings.setValue("quest_video_mode", video_mode_name);
+
+  if (quest_runner.is_started()) {
+    // Change the video mode of the current quest process.
+    QString command = QString("sol.video.set_mode(\"%1\")").arg(video_mode_name);
+    quest_runner.execute_command(command);
+  }
 }
 
 }

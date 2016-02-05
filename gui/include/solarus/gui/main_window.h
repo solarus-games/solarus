@@ -50,10 +50,15 @@ private slots:
   void selected_quest_changed();
   void update_run_quest();
 
+  void set_video_mode_requested(const QString& video_mode_name);
+
 private:
 
   void update_title();
   bool confirm_close();
+  void initialize_menus();
+  void update_menus();
+  void update_filter_menu();
 
   Ui::MainWindow ui;         /**< The widgets. */
   QuestRunner quest_runner;  /**< The quest executor. */

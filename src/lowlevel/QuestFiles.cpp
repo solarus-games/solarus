@@ -19,6 +19,7 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Arguments.h"
 #include "solarus/CurrentQuest.h"
+#include "solarus/QuestProperties.h"
 #include <physfs.h>
 #include <fstream>
 #include <cstdlib>  // exit(), mkstemp(), tmpnam()
@@ -124,6 +125,7 @@ SOLARUS_API bool open_quest(const std::string& program_name, const std::string& 
     PHYSFS_init(program_name.c_str());
   }
 
+  quest_path_ = quest_path;
   std::string dir_quest_path = quest_path + "/data";
   std::string archive_quest_path_1 = quest_path + "/data.solarus";
   std::string archive_quest_path_2 = quest_path + "/data.solarus.zip";
@@ -139,7 +141,15 @@ SOLARUS_API bool open_quest(const std::string& program_name, const std::string& 
   // Set the engine root write directory.
   set_solarus_write_dir(SOLARUS_WRITE_DIR);
 
-  return quest_exists();
+  if (!quest_exists()) {
+    return false;
+  }
+
+  // Set the quest write directory.
+  CurrentQuest::initialize();
+  set_quest_write_dir(CurrentQuest::get_properties().get_quest_write_dir());
+
+  return true;
 }
 
 /**
@@ -150,6 +160,8 @@ SOLARUS_API void close_quest() {
   if (!is_open()) {
     return;
   }
+
+  CurrentQuest::quit();
 
   remove_temporary_files();
 

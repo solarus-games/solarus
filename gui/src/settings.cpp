@@ -15,6 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/gui/settings.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/Settings.h"
+#include <QApplication>
 
 namespace SolarusGui {
 
@@ -24,6 +27,68 @@ namespace SolarusGui {
 Settings::Settings() :
   QSettings("solarus", "solarus") {
 
+}
+
+/**
+ * @brief Export system settings to the Solarus settings.dat file of a quest.
+ *
+ * System settings like audio volume and the video mode are written to
+ * settings.dat.
+ * It allows quests that load the settings.dat to apply what the user chose
+ * in the GUI.
+ *
+ * @param quest_path Path of the quest where to write a settings file.
+ */
+void Settings::export_to_quest(const QString& quest_path) {
+
+  if (Solarus::QuestFiles::is_open()) {
+    Solarus::QuestFiles::close_quest();
+  }
+
+  QStringList arguments = QApplication::arguments();
+  const QString& program_name = arguments.isEmpty() ? QString() : arguments.first();
+  if (!Solarus::QuestFiles::open_quest(program_name.toStdString(), quest_path.toStdString())) {
+    return;
+  }
+
+  const std::string file_name = "settings.dat";
+  Solarus::Settings solarus_settings;
+  if (Solarus::QuestFiles::data_file_exists(file_name)) {
+    // First, load the existing settings.dat to preserve unmodified values.
+    solarus_settings.load(file_name);
+  }
+
+  QVariant video_mode = value("quest_video_mode");
+  if (video_mode.isValid()) {
+    solarus_settings.set_string("video_mode", video_mode.toString().toStdString());
+  }
+
+  QVariant fullscreen = value("quest_fullscreen");
+  if (fullscreen.isValid()) {
+    solarus_settings.set_boolean("fullscreen", video_mode.toBool());
+  }
+
+  QVariant sound_volume = value("quest_sound_volume");
+  if (sound_volume.isValid()) {
+    solarus_settings.set_integer("sound_volume", sound_volume.toInt());
+  }
+
+  QVariant music_volume = value("quest_music_volume");
+  if (music_volume.isValid()) {
+    solarus_settings.set_integer("music_volume", music_volume.toInt());
+  }
+
+  QVariant language = value("quest_language");
+  if (language.isValid()) {
+    solarus_settings.set_string("language", language.toString().toStdString());
+  }
+
+  QVariant joypad_enabled = value("quest_joypad_enabled");
+  if (joypad_enabled.isValid()) {
+    solarus_settings.set_boolean("joypad_enabled", joypad_enabled.toBool());
+  }
+
+  solarus_settings.save(file_name);
 }
 
 }

@@ -481,7 +481,6 @@ void MainLoop::load_quest_properties() {
   const QuestProperties& properties = CurrentQuest::get_properties();
 
   check_version_compatibility(properties.get_solarus_version());
-  QuestFiles::set_quest_write_dir(properties.get_quest_write_dir());
   if (!properties.get_title_bar().empty()) {
     Video::set_window_title(properties.get_title_bar());
   }

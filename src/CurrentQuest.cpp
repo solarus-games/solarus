@@ -35,8 +35,7 @@ bool initialized = false;
 }
 
 /**
- * \brief Reads the resource list file data file project_db.dat of the
- * current quest and stores it.
+ * \brief Reads the resource list, the quest properties and stores them.
  */
 void initialize() {
 

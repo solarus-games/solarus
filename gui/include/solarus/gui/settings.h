@@ -31,6 +31,8 @@ public:
 
   Settings();
 
+  void export_to_quest(const QString& quest_path);
+
 };
 
 }

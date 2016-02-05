@@ -148,7 +148,7 @@ bool Settings::load(const std::string& file_name) {
 
   const std::string& quest_write_dir = QuestFiles::get_quest_write_dir();
   if (quest_write_dir.empty()) {
-    Debug::error("Cannot load settings: no write directory was specified in quest.dat");
+    Debug::error("Cannot load settings: no quest write directory was specified in quest.dat");
     return false;
   }
 

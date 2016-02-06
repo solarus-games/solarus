@@ -79,7 +79,7 @@ QStringList QuestRunner::create_arguments(const QString& quest_path) const {
 
   // video-acceleration
   const bool video_acceleration =
-      settings.value("video_acceleration", false).toBool();
+      settings.value("video_acceleration", true).toBool();
   arguments << "-video-acceleration=" + QString(video_acceleration ? "yes" : "no");
 
   // quest-size

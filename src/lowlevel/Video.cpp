@@ -571,7 +571,10 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
     }
   }
 
-  Logger::info(std::string("Video mode: ") + video_mode->get_name());
+  if (mode_changed) {
+    Logger::info(std::string("Video mode: ") + video_mode->get_name());
+
+  }
 
   return true;
 }

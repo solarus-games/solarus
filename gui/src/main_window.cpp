@@ -77,6 +77,8 @@ MainWindow::MainWindow(QWidget* parent) :
           this, SLOT(update_run_quest()));
   connect(&quest_runner, SIGNAL(finished()),
           this, SLOT(update_run_quest()));
+  connect(ui.console, SIGNAL(setting_changed_in_quest(QString, QVariant)),
+          this, SLOT(setting_changed_in_quest(QString, QVariant)));
 
   selected_quest_changed();
   update_run_quest();
@@ -359,6 +361,25 @@ void MainWindow::selected_quest_changed() {
   // Save the last selected quest (including if none).
   Settings settings;
   settings.setValue("last_quest", selected_path);
+}
+
+/**
+ * @brief Slot called when a setting changes in the currently running quest.
+ *
+ * The GUI is updated to reflect and remember the new setting.
+ *
+ * @param key Name of the system setting that has just changed.
+ * @param value The new value.
+ */
+void MainWindow::setting_changed_in_quest(
+    const QString& key, const QVariant& value
+) {
+
+  Settings settings;
+  if (key == "quest_video_mode") {
+    settings.setValue(key, value);
+    update_filter_menu();
+  }
 }
 
 /**

@@ -33,8 +33,9 @@ QString colorize(const QString& line, const QString& color) {
   return QString("<span style=\"color: %1\">%2</span>").arg(color, line.toHtmlEscaped());
 }
 
-QRegularExpression output_regexp("^\\[Solarus\\] \\[(\\d+)\\] (\\w+): (.+)$");
-QRegularExpression output_simplify_console_error_regexp("In Lua command: \\[string \".*\"\\]:\\d+: ");
+const QRegularExpression output_regexp("^\\[Solarus\\] \\[(\\d+)\\] (\\w+): (.+)$");
+const QRegularExpression output_simplify_console_error_regexp("In Lua command: \\[string \".*\"\\]:\\d+: ");
+const QRegularExpression output_setting_video_mode_regexp("^Video mode: (\\w+)$");
 
 }
 
@@ -108,13 +109,7 @@ void Console::quest_finished() {
 void Console::quest_output_produced(const QStringList& lines) {
 
   for (const QString& line : lines) {
-
-    QString line_html = decorate_output(line);
-    if (line_html.isEmpty()) {
-      continue;
-    }
-
-    ui.log_view->appendHtml(line_html);
+    parse_output(line);
   }
 }
 
@@ -142,46 +137,92 @@ void Console::command_field_activated() {
 }
 
 /**
- * @brief Parses a Solarus output line and returns a decorated version of it.
- *
- * Colors may be added, and parts of the line may be removed or changed.
- *
- * @param line The raw output line.
- * @return The HTML decorated line, or an empty string if this line should not be
- * displayed in the console.
+ * @brief Parses a Solarus output line and handles it.
+ * @param line The output line.
  */
-QString Console::decorate_output(const QString& line) {
+void Console::parse_output(const QString& line) {
 
   if (line.isEmpty()) {
-    return line;
+    return;
   }
 
   QRegularExpressionMatch match_result = output_regexp.match(line);
   if (!match_result.hasMatch()) {
     // Not a line from Solarus, probably one from the quest.
-    return line;
+    ui.log_view->appendPlainText(line);
+    return;
   }
 
   // 4 captures expected: full line, time, log level, message.
-  QString log_level;
-  QString message;
   QStringList captures = match_result.capturedTexts();
   if (captures.size() != 4) {
-    return line;
+    ui.log_view->appendPlainText(line);
+    return;
   }
 
-  log_level = captures[2];
-  message = captures[3];
+  QString log_level = captures[2];
+  QString message = captures[3];
 
   // Filter out technical delimiters of commands output.
   if (message.startsWith("====== Begin Lua command #")
       || message.startsWith("====== End Lua command #")) {
-    return QString();
+    return;
   }
+
+  // Report system setting changes.
+  detect_setting_change(log_level, message);
 
   if (log_level == "Error") {
     // Clean specific error messages.
     message.remove(output_simplify_console_error_regexp);
+  }
+
+  // Add color.
+  QString line_html = colorize_output(log_level, message);
+  if (line_html.isEmpty()) {
+    return;
+  }
+
+  ui.log_view->appendHtml(line_html);
+}
+
+/**
+ * @brief Emits the signal system_setting_changed if an output message
+ * indicates that a setting has just changed.
+ * @param log_level The Solarus log level of the line.
+ * @param message The rest of the message.
+ */
+void Console::detect_setting_change(
+    const QString& log_level,
+    const QString& message) {
+
+  if (log_level != "Info") {
+    return;
+  }
+
+  QRegularExpressionMatch match_result;
+
+  match_result = output_setting_video_mode_regexp.match(message);
+  if (match_result.lastCapturedIndex() == 1) {
+    QVariant value = match_result.captured(1);
+    emit setting_changed_in_quest("quest_video_mode", value);
+    return;
+  }
+}
+
+/**
+ * @brief Returns a colorized version of a Solarus output line.
+ *
+ * Colors may be added.
+ *
+ * @param log_level The Solarus log level of the line.
+ * @param message The rest of the message.
+ * @return The HTML decorated line.
+ */
+QString Console::colorize_output(const QString& log_level, const QString& message) {
+
+  if (message.isEmpty()) {
+    return message;
   }
 
   QString decorated_line = log_level + ": " + message;

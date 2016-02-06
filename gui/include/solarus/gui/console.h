@@ -41,6 +41,10 @@ public:
   bool is_command_enabled() const;
   void set_command_enabled(bool enable);
 
+signals:
+
+  void setting_changed_in_quest(const QString& key, const QVariant& value);
+
 private slots:
 
   void quest_running();
@@ -50,7 +54,9 @@ private slots:
 
 private:
 
-  QString decorate_output(const QString& line);
+  void parse_output(const QString& line);
+  void detect_setting_change(const QString& log_level, const QString& message);
+  QString colorize_output(const QString& log_level, const QString& message);
 
   Ui::Console ui;                      /**< The widgets. */
   QPointer<QuestRunner> quest_runner;  /**< The quest execution. */

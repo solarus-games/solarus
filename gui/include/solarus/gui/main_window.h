@@ -50,6 +50,7 @@ private slots:
   void selected_quest_changed();
   void update_run_quest();
 
+  void setting_changed_in_quest(const QString& key, const QVariant& value);
   void set_video_mode_requested(const QString& video_mode_name);
 
 private:

@@ -144,6 +144,7 @@ void MainWindow::initialize_menus() {
 void MainWindow::update_menus() {
 
   update_filter_menu();
+  update_fullscreen_action();
 }
 
 /**
@@ -174,6 +175,17 @@ void MainWindow::update_filter_menu() {
     ui.action_filter_normal->setChecked(true);
     settings.setValue("quest_video_mode", "normal");
   }
+}
+
+/**
+ * @brief Updates the fullscreen action with the current settings.
+ */
+void MainWindow::update_fullscreen_action() {
+
+  Settings settings;
+
+  bool fullscreen = settings.value("quest_fullscreen").toBool();
+  ui.action_fullscreen->setChecked(fullscreen);
 }
 
 /**
@@ -332,6 +344,28 @@ void MainWindow::on_action_stop_quest_triggered() {
 }
 
 /**
+ * @brief Slot called when the user triggers the "Fullscreen" action.
+ */
+void MainWindow::on_action_fullscreen_triggered() {
+
+  bool fullscreen = ui.action_fullscreen->isChecked();
+
+  Settings settings;
+  bool previous = settings.value("quest_fullscreen").toBool();
+  if (fullscreen == previous) {
+    return;
+  }
+
+  settings.setValue("quest_fullscreen", fullscreen);
+
+  if (quest_runner.is_started()) {
+    // Change the setting in the current quest process.
+    QString command = QString("sol.video.set_fullscreen(%1)").arg(fullscreen ? "true" : "false");
+    quest_runner.execute_command(command);
+  }
+}
+
+/**
  * @brief Slot called when the quest has just started or stopped.
  */
 void MainWindow::update_run_quest() {
@@ -379,6 +413,10 @@ void MainWindow::setting_changed_in_quest(
   if (key == "quest_video_mode") {
     settings.setValue(key, value);
     update_filter_menu();
+  }
+  else if (key == "quest_fullscreen") {
+    settings.setValue(key, value);
+    update_fullscreen_action();
   }
 }
 

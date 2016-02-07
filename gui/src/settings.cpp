@@ -67,7 +67,7 @@ void Settings::export_to_quest(const QString& quest_path) const {
   QVariant fullscreen = value("quest_fullscreen");
   if (fullscreen.isValid()) {
     solarus_settings.set_boolean(
-          Solarus::Settings::key_fullscreen, video_mode.toBool());
+          Solarus::Settings::key_fullscreen, fullscreen.toBool());
   }
 
   QVariant sound_volume = value("quest_sound_volume");

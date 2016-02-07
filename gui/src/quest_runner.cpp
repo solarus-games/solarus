@@ -137,7 +137,7 @@ void QuestRunner::start(const QString& quest_path) {
     return;
   }
 
-  // Run the solarus-quest-editor executable itself with the special option "-run quest_path".
+  // Run the current executable itself with the special option "-run quest_path".
   QStringList editor_arguments = QApplication::arguments();
   if (editor_arguments.isEmpty()) {
     QMessageBox::warning(

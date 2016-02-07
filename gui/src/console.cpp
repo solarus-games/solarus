@@ -36,6 +36,7 @@ QString colorize(const QString& line, const QString& color) {
 const QRegularExpression output_regexp("^\\[Solarus\\] \\[(\\d+)\\] (\\w+): (.+)$");
 const QRegularExpression output_simplify_console_error_regexp("In Lua command: \\[string \".*\"\\]:\\d+: ");
 const QRegularExpression output_setting_video_mode_regexp("^Video mode: (\\w+)$");
+const QRegularExpression output_setting_fullscreen_regexp("^Fullscreen: (\\w+)$");
 
 }
 
@@ -206,6 +207,13 @@ void Console::detect_setting_change(
   if (match_result.lastCapturedIndex() == 1) {
     QVariant value = match_result.captured(1);
     emit setting_changed_in_quest("quest_video_mode", value);
+    return;
+  }
+
+  match_result = output_setting_fullscreen_regexp.match(message);
+  if (match_result.lastCapturedIndex() == 1) {
+    QVariant value = (match_result.captured(1) == "yes");
+    emit setting_changed_in_quest("quest_fullscreen", value);
     return;
   }
 }

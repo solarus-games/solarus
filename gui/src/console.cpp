@@ -122,19 +122,40 @@ void Console::command_field_activated() {
   if (quest_runner == nullptr) {
     return;
   }
+
   if (!quest_runner->is_running()) {
     return;
   }
 
   const QString& command = ui.command_field->text();
 
-  quest_runner->execute_command(command);
+  execute_command(command);
   ui.command_field->command_executed(command);
+}
+
+/**
+ * @brief Executes some Lua code in the quest process and logs it into the console.
+ * @param command The Lua code.
+ * @return @c true if the code could be sent to the process
+ * (even if it produces an error).
+ */
+bool Console::execute_command(const QString& command) {
+
+  if (quest_runner == nullptr) {
+    return false;
+  }
+
+  if (!quest_runner->is_started()) {
+    return false;
+  }
+
+  quest_runner->execute_command(command);
 
   // Show the command in the log view.
   // TODO: show it only when receiving its results, to make sure it is displayed
   // just before its results.
   ui.log_view->appendPlainText("> " + command);
+  return true;
 }
 
 /**

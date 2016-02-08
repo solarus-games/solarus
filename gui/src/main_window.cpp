@@ -373,7 +373,7 @@ void MainWindow::on_action_fullscreen_triggered() {
   if (quest_runner.is_started()) {
     // Change the setting in the current quest process.
     QString command = QString("sol.video.set_fullscreen(%1)").arg(fullscreen ? "true" : "false");
-    quest_runner.execute_command(command);
+    ui.console->execute_command(command);
   }
 }
 
@@ -403,18 +403,49 @@ void MainWindow::on_action_video_acceleration_triggered() {
 }
 
 /**
+ * @brief Slot called when the user triggers the "Zoom x1" action.
+ */
+void MainWindow::on_action_zoom_x1_triggered() {
+  set_zoom_requested(1);
+}
+
+/**
+ * @brief Slot called when the user triggers the "Zoom x2" action.
+ */
+void MainWindow::on_action_zoom_x2_triggered() {
+  set_zoom_requested(2);
+}
+
+/**
+ * @brief Slot called when the user triggers the "Zoom x3" action.
+ */
+void MainWindow::on_action_zoom_x3_triggered() {
+  set_zoom_requested(3);
+}
+
+/**
+ * @brief Slot called when the user triggers the "Zoom x4" action.
+ */
+void MainWindow::on_action_zoom_x4_triggered() {
+  set_zoom_requested(4);
+}
+
+/**
  * @brief Slot called when the quest has just started or stopped.
  */
 void MainWindow::update_run_quest() {
 
   QString selected_path = ui.quests_view->get_selected_path();
   bool has_current = !selected_path.isEmpty();
+  bool playing = quest_runner.is_started();
 
-  bool enable_play = has_current && !quest_runner.is_started();
-  bool enable_stop = has_current && quest_runner.is_started();
+  bool enable_play = has_current && !playing;
+  bool enable_stop = has_current && playing;
   ui.action_play_quest->setEnabled(enable_play);
   ui.play_button->setEnabled(enable_play);
   ui.action_stop_quest->setEnabled(enable_stop);
+
+  ui.menu_zoom->setEnabled(playing);
 }
 
 /**
@@ -474,8 +505,22 @@ void MainWindow::set_video_mode_requested(const QString& video_mode_name) {
   if (quest_runner.is_started()) {
     // Change the video mode of the current quest process.
     QString command = QString("sol.video.set_mode(\"%1\")").arg(video_mode_name);
-    quest_runner.execute_command(command);
+    ui.console->execute_command(command);
   }
+}
+
+/**
+ * @brief Slot called when the user wants to change the window zoom.
+ * @param zoom The new zoom factor.
+ */
+void MainWindow::set_zoom_requested(int zoom) {
+
+  if (!quest_runner.is_started()) {
+    return;
+  }
+
+  QString command = QString("local w, h = sol.video.get_quest_size(); sol.video.set_window_size(w * %1, h * %2)").arg(zoom).arg(zoom);
+  ui.console->execute_command(command);
 }
 
 }

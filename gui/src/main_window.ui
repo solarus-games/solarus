@@ -161,7 +161,7 @@
      <height>25</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu_quest">
+   <widget class="QMenu" name="menu_file">
     <property name="title">
      <string>File</string>
     </property>
@@ -170,7 +170,7 @@
     <addaction name="separator"/>
     <addaction name="action_exit"/>
    </widget>
-   <widget class="QMenu" name="menuQuest">
+   <widget class="QMenu" name="menu_quest">
     <property name="title">
      <string>Quest</string>
     </property>
@@ -178,11 +178,11 @@
     <addaction name="action_stop_quest"/>
     <addaction name="separator"/>
    </widget>
-   <widget class="QMenu" name="menuSettings">
+   <widget class="QMenu" name="menu_video">
     <property name="title">
      <string>Video</string>
     </property>
-    <widget class="QMenu" name="menuZoom">
+    <widget class="QMenu" name="menu_zoom">
      <property name="title">
       <string>Zoom</string>
      </property>
@@ -191,7 +191,7 @@
      <addaction name="action_zoom_x3"/>
      <addaction name="action_zoom_x4"/>
     </widget>
-    <widget class="QMenu" name="menuVideo_filter">
+    <widget class="QMenu" name="menu_video_filter">
      <property name="title">
       <string>Video filter</string>
      </property>
@@ -203,10 +203,10 @@
     </widget>
     <addaction name="action_fullscreen"/>
     <addaction name="action_video_acceleration"/>
-    <addaction name="menuVideo_filter"/>
-    <addaction name="menuZoom"/>
+    <addaction name="menu_video_filter"/>
+    <addaction name="menu_zoom"/>
    </widget>
-   <widget class="QMenu" name="menuAudio">
+   <widget class="QMenu" name="menu_audio">
     <property name="title">
      <string>Audio</string>
     </property>
@@ -214,10 +214,10 @@
     <addaction name="action_music_volume"/>
     <addaction name="action_sound_volume"/>
    </widget>
+   <addaction name="menu_file"/>
    <addaction name="menu_quest"/>
-   <addaction name="menuQuest"/>
-   <addaction name="menuSettings"/>
-   <addaction name="menuAudio"/>
+   <addaction name="menu_video"/>
+   <addaction name="menu_audio"/>
   </widget>
   <action name="action_add_quest">
    <property name="icon">

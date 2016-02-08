@@ -40,6 +40,7 @@ public:
 
   bool is_command_enabled() const;
   void set_command_enabled(bool enable);
+  bool execute_command(const QString& command);
 
 signals:
 

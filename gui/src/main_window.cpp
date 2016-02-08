@@ -135,6 +135,10 @@ void MainWindow::initialize_menus() {
     });
   }
 
+  // TODO implement the audio menu
+  delete ui.menu_audio;
+  ui.menu_audio = nullptr;
+
   update_menus();
 }
 

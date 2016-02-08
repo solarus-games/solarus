@@ -189,7 +189,7 @@ void ConsoleLineEdit::command_executed(const QString& command) {
     }
 
     // Save the modified history.
-    QSettings settings("solarus", "solarus");  // TODO
+    Settings settings;
     settings.setValue("console_history", history);
   }
 

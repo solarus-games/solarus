@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget* parent) :
   // Console.
   ui.console->set_quest_runner(quest_runner);
   ui.console->set_command_enabled(false);
-  const int console_height = 100;
+  const int console_height = 150;
   ui.console_splitter->setSizes({ height() - console_height, console_height });
 
   // Show recent quests.
@@ -145,6 +145,7 @@ void MainWindow::update_menus() {
 
   update_filter_menu();
   update_fullscreen_action();
+  update_video_acceleration_action();
 }
 
 /**
@@ -154,7 +155,7 @@ void MainWindow::update_filter_menu() {
 
   Settings settings;
 
-  QString video_mode = settings.value("quest_video_mode").toString();
+  QString video_mode = settings.value("quest_video_mode", "normal").toString();
 
   if (video_mode == "normal") {
     ui.action_filter_normal->setChecked(true);
@@ -184,8 +185,19 @@ void MainWindow::update_fullscreen_action() {
 
   Settings settings;
 
-  bool fullscreen = settings.value("quest_fullscreen").toBool();
+  bool fullscreen = settings.value("quest_fullscreen", false).toBool();
   ui.action_fullscreen->setChecked(fullscreen);
+}
+
+/**
+ * @brief Updates the 2D acceleration action with the current settings.
+ */
+void MainWindow::update_video_acceleration_action() {
+
+  Settings settings;
+
+  bool video_acceleration = settings.value("video_acceleration", true).toBool();
+  ui.action_video_acceleration->setChecked(video_acceleration);
 }
 
 /**
@@ -351,7 +363,7 @@ void MainWindow::on_action_fullscreen_triggered() {
   bool fullscreen = ui.action_fullscreen->isChecked();
 
   Settings settings;
-  bool previous = settings.value("quest_fullscreen").toBool();
+  bool previous = settings.value("quest_fullscreen", false).toBool();
   if (fullscreen == previous) {
     return;
   }
@@ -362,6 +374,31 @@ void MainWindow::on_action_fullscreen_triggered() {
     // Change the setting in the current quest process.
     QString command = QString("sol.video.set_fullscreen(%1)").arg(fullscreen ? "true" : "false");
     quest_runner.execute_command(command);
+  }
+}
+
+/**
+ * @brief Slot called when the user triggers the "2D acceleration" action.
+ */
+void MainWindow::on_action_video_acceleration_triggered() {
+
+  bool video_acceleration = ui.action_video_acceleration->isChecked();
+
+  Settings settings;
+  bool previous = settings.value("video_acceleration", true).toBool();
+  if (video_acceleration == previous) {
+    return;
+  }
+
+  settings.setValue("video_acceleration", video_acceleration);
+
+  if (quest_runner.is_started()) {
+    QMessageBox::information(
+          this,
+          tr("2D acceleration changed"),
+          tr("The change will take effect next time you play a quest."),
+          QMessageBox::Ok
+    );
   }
 }
 

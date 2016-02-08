@@ -47,6 +47,7 @@ private slots:
   void on_action_play_quest_triggered();
   void on_action_stop_quest_triggered();
   void on_action_fullscreen_triggered();
+  void on_action_video_acceleration_triggered();
 
   void selected_quest_changed();
   void update_run_quest();
@@ -62,6 +63,7 @@ private:
   void update_menus();
   void update_filter_menu();
   void update_fullscreen_action();
+  void update_video_acceleration_action();
 
   Ui::MainWindow ui;         /**< The widgets. */
   QuestRunner quest_runner;  /**< The quest executor. */

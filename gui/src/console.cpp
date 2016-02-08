@@ -16,6 +16,7 @@
  */
 #include "solarus/gui/console.h"
 #include "solarus/gui/quest_runner.h"
+#include <QDebug>
 #include <QRegularExpression>
 
 namespace SolarusGui {
@@ -33,7 +34,9 @@ QString colorize(const QString& line, const QString& color) {
   return QString("<span style=\"color: %1\">%2</span>").arg(color, line.toHtmlEscaped());
 }
 
-const QRegularExpression output_regexp("^\\[Solarus\\] \\[(\\d+)\\] (\\w+): (.+)$");
+const QRegularExpression output_regexp("^\\[Solarus\\] \\[(\\d+)\\] (\\w*): (.+)$");
+const QRegularExpression output_command_result_begin_regexp("^====== Begin Lua command #(\\d+) ======$");
+const QRegularExpression output_command_result_end_regexp("^====== End Lua command #(\\d+): (\\w+) ======$");
 const QRegularExpression output_simplify_console_error_regexp("In Lua command: \\[string \".*\"\\]:\\d+: ");
 const QRegularExpression output_setting_video_mode_regexp("^Video mode: (\\w+)$");
 const QRegularExpression output_setting_fullscreen_regexp("^Fullscreen: (\\w+)$");
@@ -46,7 +49,10 @@ const QRegularExpression output_setting_fullscreen_regexp("^Fullscreen: (\\w+)$"
  */
 Console::Console(QWidget* parent) :
   QWidget(parent),
-  command_enabled_(true) {
+  quest_runner(),
+  pending_commands(),
+  output_command_id(-1),
+  command_enabled(true) {
 
   ui.setupUi(this);
 }
@@ -56,7 +62,7 @@ Console::Console(QWidget* parent) :
  * @return @c true if the user can type Lua commands.
  */
 bool Console::is_command_enabled() const {
-  return command_enabled_;
+  return command_enabled;
 }
 
 /**
@@ -65,7 +71,7 @@ bool Console::is_command_enabled() const {
  */
 void Console::set_command_enabled(bool enable) {
 
-  this->command_enabled_ = enable;
+  this->command_enabled = enable;
   ui.command_field->setVisible(enable);
 }
 
@@ -135,27 +141,32 @@ void Console::command_field_activated() {
 
 /**
  * @brief Executes some Lua code in the quest process and logs it into the console.
+ *
+ * Use the command_result_received() signal to be notified of the result if you
+ * need to.
+ *
  * @param command The Lua code.
- * @return @c true if the code could be sent to the process
- * (even if it produces an error).
+ * @return The id of the command executed, or -1 if it could not be sent
+ * to the process.
  */
-bool Console::execute_command(const QString& command) {
+int Console::execute_command(const QString& command) {
 
   if (quest_runner == nullptr) {
-    return false;
+    return -1;
   }
 
   if (!quest_runner->is_started()) {
-    return false;
+    return -1;
   }
 
-  quest_runner->execute_command(command);
+  if (command.isEmpty()) {
+    return -1;
+  }
 
-  // Show the command in the log view.
-  // TODO: show it only when receiving its results, to make sure it is displayed
-  // just before its results.
-  ui.log_view->appendPlainText("> " + command);
-  return true;
+  int command_id = quest_runner->execute_command(command);
+  pending_commands[command_id] = command;
+
+  return command_id;
 }
 
 /**
@@ -168,26 +179,35 @@ void Console::parse_output(const QString& line) {
     return;
   }
 
+  QString log_level;
+  QString message = line;
   QRegularExpressionMatch match_result = output_regexp.match(line);
-  if (!match_result.hasMatch()) {
+
+  if (match_result.hasMatch()) {
+    // 4 captures expected: full line, time, log level, message.
+    QStringList captures = match_result.capturedTexts();
+    if (captures.size() != 4) {
+      ui.log_view->appendPlainText(line);
+      return;
+    }
+
+    log_level = captures[2];
+    message = captures[3];
+  }
+
+  if (!log_level.isEmpty() && message.isEmpty()) {
+    // Solarus produced an empty message just to flush its stdout.
+    return;
+  }
+
+  // Detect technical delimiters of commands output but don't show them.
+  if (detect_command_result(log_level, message)) {
+    return;
+  }
+
+  if (log_level.isEmpty()) {
     // Not a line from Solarus, probably one from the quest.
     ui.log_view->appendPlainText(line);
-    return;
-  }
-
-  // 4 captures expected: full line, time, log level, message.
-  QStringList captures = match_result.capturedTexts();
-  if (captures.size() != 4) {
-    ui.log_view->appendPlainText(line);
-    return;
-  }
-
-  QString log_level = captures[2];
-  QString message = captures[3];
-
-  // Filter out technical delimiters of commands output.
-  if (message.startsWith("====== Begin Lua command #")
-      || message.startsWith("====== End Lua command #")) {
     return;
   }
 
@@ -206,6 +226,75 @@ void Console::parse_output(const QString& line) {
   }
 
   ui.log_view->appendHtml(line_html);
+}
+
+/**
+ * @brief Detects output messages that are the result of a command that was
+ * send from the console.
+ * @param log_level The Solarus log level of the line.
+ * @param message The rest of the message.
+ * @return @c true if the message is a command result delimiter and was consumed.
+ */
+bool Console::detect_command_result(
+    const QString& log_level,
+    const QString& message) {
+
+  QRegularExpressionMatch match_result;
+
+  // Detect the beginning of a console command result.
+  match_result = output_command_result_begin_regexp.match(message);
+  if (log_level == "Info" && match_result.lastCapturedIndex() == 1) {
+    // Start of a command result.
+    if (output_command_id != -1) {
+      qWarning() << "Beginning of a command result inside another command result";
+    }
+
+    output_command_id = match_result.captured(1).toInt();
+    output_command_result = QString();
+
+    // Show the command in the log view.
+    // We show the command only when receiving its results,
+    // to make sure it is displayed just before its results.
+    QString command = pending_commands.value(output_command_id);
+    ui.log_view->appendPlainText("> " + command);
+
+    return true;
+  }
+
+  // Detect the end of a console command result.
+  match_result = output_command_result_end_regexp.match(message);
+  if (log_level == "Info" && match_result.lastCapturedIndex() == 2) {
+    // End of a command result.
+    if (output_command_id == -1) {
+      qWarning() << "End of a command result without beginning";
+      return false;
+    }
+    int id = match_result.captured(1).toInt();
+    bool success = (match_result.captured(2) == "success");
+    QString command = pending_commands.value(output_command_id);
+    QString result = output_command_result;
+
+    if (id != output_command_id) {
+      qWarning() << "Unmatched command delimiters";
+    }
+
+    pending_commands.remove(output_command_id);
+    output_command_id = -1;
+    output_command_result.clear();
+
+    emit command_result_received(id, command, success, result);
+
+    return true;
+  }
+
+  // Process the current result between delimiters.
+  if (output_command_id != -1) {
+    // We are inside the delimiters.
+    output_command_result += message;
+    return false;  // Let the console colorize and show the text normally.
+  }
+
+  return false;
 }
 
 /**

@@ -35,7 +35,7 @@ public:
 
   bool is_started() const;
   bool is_running() const;
-  bool execute_command(const QString& command);
+  int execute_command(const QString& command);
   bool apply_settings();
 
 public slots:
@@ -60,6 +60,7 @@ private:
   QStringList get_quest_lua_commands_from_settings() const;
 
   QProcess process;     /**< The Solarus process. */
+  int last_command_id;  /**< Id of the last command executed (-1 if none). */
 };
 
 }

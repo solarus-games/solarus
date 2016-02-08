@@ -386,12 +386,15 @@ void MainLoop::check_input() {
   if (!lua_commands.empty()) {
     std::lock_guard<std::mutex> lock(lua_commands_mutex);
     for (const std::string& command : lua_commands) {
+      std::cout << "\n";  // To make sure that the command delimiter starts on a new line.
       Logger::info("====== Begin Lua command #" + std::to_string(num_lua_commands_done) + " ======");
       const bool success = LuaTools::do_string(get_lua_context().get_internal_state(), command, "Lua command");
       if (success) {
+        std::cout << "\n";
         Logger::info("====== End Lua command #" + std::to_string(num_lua_commands_done) + ": success ======");
       }
       else {
+        std::cout << "\n";
         Logger::info("====== End Lua command #" + std::to_string(num_lua_commands_done) + ": error ======");
       }
       ++num_lua_commands_done;

@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include "ui_console.h"
+#include <QMap>
 #include <QPointer>
 
 namespace SolarusGui {
@@ -40,11 +41,12 @@ public:
 
   bool is_command_enabled() const;
   void set_command_enabled(bool enable);
-  bool execute_command(const QString& command);
+  int execute_command(const QString& command);
 
 signals:
 
   void setting_changed_in_quest(const QString& key, const QVariant& value);
+  void command_result_received(int id, const QString& command, bool success, const QString& result);
 
 private slots:
 
@@ -56,12 +58,17 @@ private slots:
 private:
 
   void parse_output(const QString& line);
+  bool detect_command_result(const QString& log_level, const QString& message);
   void detect_setting_change(const QString& log_level, const QString& message);
   QString colorize_output(const QString& log_level, const QString& message);
 
   Ui::Console ui;                      /**< The widgets. */
   QPointer<QuestRunner> quest_runner;  /**< The quest execution. */
-  bool command_enabled_;               /**< Whether the user can type Lua commands. */
+  QMap<int, QString> pending_commands; /**< Commands for which we are waiting a result. */
+  int output_command_id;               /**< Id of the command we are reading the result of
+                                        * (-1 if none). */
+  QString output_command_result;       /**< Partial result of the command. */
+  bool command_enabled;                /**< Whether the user can type Lua commands. */
 
 };
 

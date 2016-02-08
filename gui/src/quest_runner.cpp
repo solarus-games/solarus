@@ -28,7 +28,8 @@ namespace SolarusGui {
  */
 QuestRunner::QuestRunner(QObject* parent) :
   QObject(parent),
-  process(this) {
+  process(this),
+  last_command_id(-1) {
 
   // Connect to QProcess signals to know when the quest is running and finished.
   connect(&process, SIGNAL(started()),
@@ -192,19 +193,28 @@ void QuestRunner::standard_output_data_available() {
 /**
  * @brief Executes some Lua code in the quest process.
  * @param command The Lua code.
- * @return @c true if the code could be sent to the process
- * (even if it produces an error).
+ * @return The id of the command executed, or -1 if it could not be sent
+ * to the process.
  */
-bool QuestRunner::execute_command(const QString& command) {
+int QuestRunner::execute_command(const QString& command) {
 
   if (!is_running()) {
-    return false;
+    return -1;
+  }
+
+  if (command.isEmpty()) {
+    return -1;
   }
 
   QByteArray command_utf8 = command.toUtf8();
   command_utf8.append("\n");
   qint64 bytes_written = process.write(command_utf8);
-  return bytes_written == command_utf8.size();
+  if (bytes_written != command_utf8.size()) {
+    return -1;
+  }
+
+  ++last_command_id;
+  return last_command_id;
 }
 
 /**

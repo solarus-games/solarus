@@ -829,7 +829,7 @@ void InputEvent::set_joypad_enabled(bool joypad_enabled) {
       SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
     }
 
-    Logger::info(std::string("Joypad enabled: ") + (joypad_enabled ? "true" : "false"));
+    Logger::info(std::string("Joypad support enabled: ") + (joypad_enabled ? "true" : "false"));
   }
 }
 

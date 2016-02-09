@@ -708,6 +708,11 @@ void HeroSprites::set_animation_direction(int direction) {
   if (is_trail_visible()) {
     trail_sprite->set_current_direction(direction);
   }
+
+  if (lifted_item != nullptr) {
+    const SpritePtr& sprite = lifted_item->get_sprite();
+    sprite->restart_animation();
+  }
 }
 
 /**
@@ -799,13 +804,6 @@ void HeroSprites::update() {
 
   if (is_ground_visible()) {
     ground_sprite->update();
-  }
-
-  if (lifted_item != nullptr && walking) {
-    const SpritePtr& lifted_item_sprite = lifted_item->get_sprite();
-    if (lifted_item_sprite != nullptr) {
-      lifted_item_sprite->set_current_frame(tunic_sprite->get_current_frame() % 3);
-    }
   }
 
   // Blinking.

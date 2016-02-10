@@ -11,7 +11,7 @@ quest{
   -- Uncomment the line below and set its value to the name of that directory:
   write_dir = "sample_quest",
 
-  -- Title of the window. You should probably put the title of your game here.
-  title_bar = "Solarus - Sample Quest",
+  -- Title of your quest.
+  title = "Solarus Sample Quest",
 }
 

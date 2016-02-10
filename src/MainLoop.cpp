@@ -484,8 +484,14 @@ void MainLoop::load_quest_properties() {
   const QuestProperties& properties = CurrentQuest::get_properties();
 
   check_version_compatibility(properties.get_solarus_version());
-  if (!properties.get_title_bar().empty()) {
-    Video::set_window_title(properties.get_title_bar());
+  const std::string& title = properties.get_title();
+  const std::string& quest_version = properties.get_quest_version();
+  if (!title.empty()) {
+    std::string window_title = title;
+    if (!quest_version.empty()) {
+      window_title += " " + quest_version;
+    }
+    Video::set_window_title(window_title);
   }
 
   Video::set_quest_size_range(

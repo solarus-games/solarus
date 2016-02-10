@@ -79,6 +79,8 @@ Changes that do not introduce incompatibilities:
 Data files format changes
 -------------------------
 
+* Quest properties: New properties describing the quest, used in the GUI (#838).
+* Quest properties: the title_bar property no longer exists, use title instead.
 * Maps: New properties min_layer and max_layer (#445).
 * Maps: Enemies no longer have a rank property (#449).
 * Dialogs: Allow empty texts.

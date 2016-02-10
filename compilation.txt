@@ -234,7 +234,8 @@ and an executable called solarus-run.
 3.3.  Run the Solarus GUI
 -------------------------
 
-To open the Solarus user-friendly GUI, run the "solarus" executable.
+To open the Solarus user-friendly GUI, run the "solarus" executable located
+in the "gui" directory.
 You can then choose the quest to run and change some settings.
 
 

@@ -227,8 +227,11 @@ $ make
 The build error messages will tell you which headers
 and libraries are missing (it is hard to get them right in one try!).
 
-Once the compilation is finished, you obtain a dynamic library called solarus
-and an executable called solarus-run.
+Once the compilation is finished, you obtain a dynamic library called "solarus"
+and an executable called "solarus-run".
+If you built the Solarus GUI too, you also have a "gui" directory
+that contains a dynamic library called "solarus-gui"
+and an executable called "solarus".
 
 
 3.3.  Run the Solarus GUI

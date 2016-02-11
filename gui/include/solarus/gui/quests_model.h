@@ -53,6 +53,7 @@ private:
     QString path;                   /**< Path to the quest directory. */
     QString directory_name;         /**< Name of the quest directory. */
     QString quest_title;            /**< Title of the quest. */
+    QString short_description;      /**< One-line description of the quest. */
     QIcon icon;                     /**< Icon of the quest. */
   };
 

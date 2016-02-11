@@ -27,10 +27,11 @@ QuestsView::QuestsView(QWidget* parent) :
   QListView(parent),
   model(nullptr) {
 
-  setViewMode(ViewMode::IconMode);
+  setViewMode(ViewMode::ListMode);
+  setUniformItemSizes(true);
   setMovement(Movement::Static);
-  setGridSize(QSize(200, 200));
-  setIconSize(QSize(128, 128));
+  setGridSize(QSize(200, 100));
+  setIconSize(QSize(100, 100));
   setSelectionMode(QAbstractItemView::SingleSelection);
 
   model = new QuestsModel(this);

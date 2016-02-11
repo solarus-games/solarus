@@ -60,7 +60,7 @@ QVariant QuestsModel::data(const QModelIndex& index, int role) const {
   switch (role) {
 
   case Qt::DisplayRole:
-    return info.quest_title;
+    return QString("%1\n\n%2").arg(info.quest_title, info.short_description);
 
   case Qt::DecorationRole:
     return info.icon;
@@ -138,6 +138,7 @@ bool QuestsModel::add_quest(const QString& quest_path) {
   info.path = quest_path;
   info.directory_name = quest_path.section('/', -1, -1, QString::SectionSkipEmpty);
   info.quest_title = QString::fromStdString(properties.get_title());
+  info.short_description = QString::fromStdString(properties.get_short_description());
   info.icon = QIcon(":/images/logo_solarus_200.png");  // TODO
 
   quests.push_back(info);

@@ -63,6 +63,8 @@ class SOLARUS_API QuestProperties : public LuaData {
     void set_quest_version(const std::string& quest_version);
     std::string get_release_date() const;
     void set_release_date(const std::string& release_date);
+    std::string get_website() const;
+    void set_website(const std::string& website);
     Size get_normal_quest_size() const;
     void set_normal_quest_size(const Size& normal_quest_size);
     Size get_min_quest_size() const;

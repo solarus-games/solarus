@@ -55,14 +55,17 @@ int l_quest(lua_State* l) {
 
     const std::string& short_description =
         LuaTools::opt_string_field(l, 1, "short_description", "");
-    const std::string& long_description =
+    std::string long_description =
         LuaTools::opt_string_field(l, 1, "long_description", "");
+    long_description = LuaData::unescape_multiline_string(long_description);
     const std::string& author =
         LuaTools::opt_string_field(l, 1, "author", "");
     const std::string& quest_version =
         LuaTools::opt_string_field(l, 1, "quest_version", "");
     const std::string& release_date =
         LuaTools::opt_string_field(l, 1, "release_date", "");
+    const std::string& website =
+        LuaTools::opt_string_field(l, 1, "website", "");
 
     const std::string& normal_quest_size_string =
         LuaTools::opt_string_field(l, 1, "normal_quest_size", "320x240");
@@ -77,6 +80,7 @@ int l_quest(lua_State* l) {
     properties.set_short_description(short_description);
     properties.set_long_description(long_description);
     properties.set_author(author);
+    properties.set_website(website);
     properties.set_quest_version(quest_version);
     properties.set_release_date(release_date);
 
@@ -152,7 +156,7 @@ bool QuestProperties::export_to_lua(std::ostream& out) const {
       << "  write_dir = \"" << escape_string(quest_write_dir) << "\",\n"
       << "  title = \"" << escape_string(title) << "\",\n"
       << "  short_description = \"" << escape_string(short_description) << "\",\n"
-      << "  long_description = \"" << escape_string(long_description) << "\",\n"
+      << "  long_description = [[\n" << escape_multiline_string(long_description) << "]],\n"
       << "  author = \"" << escape_string(author) << "\",\n"
       << "  quest_version = \"" << escape_string(quest_version) << "\",\n"
       << "  release_date = \"" << escape_string(release_date) << "\",\n"
@@ -291,6 +295,22 @@ std::string QuestProperties::get_release_date() const {
  */
 void QuestProperties::set_release_date(const std::string& release_date) {
   this->release_date = release_date;
+}
+
+/**
+ * \brief Returns the website of the quest.
+ * \return The "website" value.
+ */
+std::string QuestProperties::get_website() const {
+  return website;
+}
+
+/**
+ * \brief Sets the website of the quest.
+ * \param website The "website" value.
+ */
+void QuestProperties::set_website(const std::string& website) {
+  this->website = website;
 }
 
 /**

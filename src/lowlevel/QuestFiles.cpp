@@ -108,6 +108,7 @@ void set_solarus_write_dir(const std::string& solarus_write_dir) {
  * \brief Opens a quest.
  *
  * Only one quest can be open at a time.
+ * If a quest is already open, it is automatically closed.
  *
  * \param program_name Program name passed as first command-line argument.
  * Necessary for the quest file management system.
@@ -116,7 +117,9 @@ void set_solarus_write_dir(const std::string& solarus_write_dir) {
  */
 SOLARUS_API bool open_quest(const std::string& program_name, const std::string& quest_path) {
 
-  Debug::check_assertion(!is_open(), "A quest is already open");
+  if (is_open()) {
+    close_quest();
+  }
 
   if (program_name.empty()) {
     PHYSFS_init(nullptr);

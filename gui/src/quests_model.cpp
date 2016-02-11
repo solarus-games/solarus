@@ -15,6 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/gui/quests_model.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/CurrentQuest.h"
+#include "solarus/QuestProperties.h"
+#include <QApplication>
 
 namespace SolarusGui {
 
@@ -117,13 +121,23 @@ bool QuestsModel::add_quest(const QString& quest_path) {
     return false;
   }
 
+  // Open the quest to get its quest.dat file.
+  QStringList arguments = QApplication::arguments();
+  QString program_name = arguments.isEmpty() ? QString() : arguments.first();
+  if (!Solarus::QuestFiles::open_quest(program_name.toStdString(), quest_path.toStdString())) {
+    Solarus::QuestFiles::close_quest();
+    return false;
+  }
+  Solarus::QuestProperties properties = Solarus::CurrentQuest::get_properties();
+  Solarus::QuestFiles::close_quest();
+
   const int num_quests = rowCount();
   beginInsertRows(QModelIndex(), num_quests, num_quests);
 
   QuestInfo info;
   info.path = quest_path;
   info.directory_name = quest_path.section('/', -1, -1, QString::SectionSkipEmpty);
-  info.quest_title = info.directory_name;  // TODO
+  info.quest_title = QString::fromStdString(properties.get_title());
   info.icon = QIcon(":/images/logo_solarus_200.png");  // TODO
 
   quests.push_back(info);

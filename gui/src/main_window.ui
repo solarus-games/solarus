@@ -24,12 +24,9 @@
        <property name="title">
         <string>Quests</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <layout class="QHBoxLayout" name="horizontal_layout_2">
-          <item>
-           <widget class="SolarusGui::QuestsView" name="quests_view"/>
-          </item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <layout class="QVBoxLayout" name="vertical_layout_2">
             <item>
@@ -81,58 +78,54 @@
             </item>
            </layout>
           </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontal_layout">
           <item>
-           <spacer name="horizontal_spacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
+           <widget class="SolarusGui::QuestsView" name="quests_view"/>
           </item>
           <item>
-           <widget class="QPushButton" name="play_button">
-            <property name="minimumSize">
-             <size>
-              <width>400</width>
-              <height>50</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Play</string>
-            </property>
-            <property name="icon">
-             <iconset resource="../resources/images.qrc">
-              <normaloff>:/images/icon_start.png</normaloff>:/images/icon_start.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontal_spacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>100</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Image</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="play_button">
+              <property name="minimumSize">
+               <size>
+                <width>150</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Play</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../resources/images.qrc">
+                <normaloff>:/images/icon_start.png</normaloff>:/images/icon_start.png</iconset>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>

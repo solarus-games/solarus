@@ -2,10 +2,10 @@ animation{
   name = "stopped",
   src_image = "main_heroes/edgar.png",
   directions = {
-    { x = 72, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
-    { x = 72, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
-    { x = 72, y = 48, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
-    { x = 72, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 216, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 240, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 264, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 288, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
   },
 }
 animation{
@@ -32,16 +32,16 @@ animation{
   name = "carrying_stopped",
   src_image = "main_heroes/edgar.png",
   directions = {
-    { x = 72, y = 104, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
-    { x = 72, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
-    { x = 72, y = 152, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
-    { x = 72, y = 176, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 216, y = 104, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 240, y = 104, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 264, y = 104, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 288, y = 104, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
   },
 }
 animation{
   name = "carrying_walking",
   src_image = "main_heroes/edgar.png",
-  frame_delay = 90,
+  frame_delay = 70,
   frame_to_loop_on = 0,
   directions = {
     { x = 0, y = 104, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },

@@ -39,6 +39,7 @@ public:
 
   int get_num_quests() const;
   QStringList get_paths() const;
+  bool has_quest(const QString& path);
   bool add_quest(const QString& path);
   bool remove_quest(int index);
 

@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/gui/gui_tools.h"
 #include "solarus/gui/main_window.h"
 #include "solarus/gui/quests_view.h"
 #include "solarus/gui/settings.h"
@@ -270,13 +271,21 @@ void MainWindow::on_action_add_quest_triggered() {
     return;
   }
 
-  // Add to the quest list view.
-  if (ui.quests_view->add_quest(quest_path)) {
-
-    // Remember the quest list.
-    Settings settings;
-    settings.setValue("quests_paths", ui.quests_view->get_paths());
+  if (ui.quests_view->has_quest(quest_path)) {
+    // Quest already in the list.
+    ui.quests_view->select_quest(quest_path);
+    return;
   }
+
+  // Add to the quest list view.
+  if (!ui.quests_view->add_quest(quest_path)) {
+    GuiTools::error_dialog("No quest was found in this directory");
+    return;
+  }
+
+  // Remember the quest list.
+  Settings settings;
+  settings.setValue("quests_paths", ui.quests_view->get_paths());
 
   // Select it.
   ui.quests_view->select_quest(quest_path);

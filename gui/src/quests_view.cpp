@@ -77,6 +77,16 @@ QStringList QuestsView::get_paths() const {
 }
 
 /**
+ * @brief Returns whether the view contains the given quest path.
+ * @param quest_path Quest path to test.
+ * @return @c true if it is in the view.
+ */
+bool QuestsView::has_quest(const QString& path) {
+
+  return model->has_quest(path);
+}
+
+/**
  * @brief Adds a quest to the model of this view.
  * @param quest_path Path of the quest to add.
  * @return @c true if it was added, @c false if it was already there.

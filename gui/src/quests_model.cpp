@@ -117,7 +117,8 @@ bool QuestsModel::has_quest(const QString& quest_path) {
 /**
  * @brief Adds a quest to the model.
  * @param quest_path Path of the quest to add.
- * @return @c true if it was added, @c false if it was already there.
+ * @return @c true if it was added, @c false if there is no such quest
+ * or if it is already there.
  */
 bool QuestsModel::add_quest(const QString& quest_path) {
 

@@ -60,7 +60,11 @@ QVariant QuestsModel::data(const QModelIndex& index, int role) const {
   switch (role) {
 
   case Qt::DisplayRole:
-    return QString("%1\n\n%2").arg(info.quest_title, info.short_description);
+  {
+    QString title = QString::fromStdString(info.properties.get_title());
+    QString short_description = QString::fromStdString(info.properties.get_short_description());
+    return QString("%1\n\n%2").arg(title, short_description);
+  }
 
   case Qt::DecorationRole:
     return info.icon;
@@ -121,6 +125,8 @@ bool QuestsModel::add_quest(const QString& quest_path) {
     return false;
   }
 
+  QuestInfo info;
+
   // Open the quest to get its quest.dat file.
   QStringList arguments = QApplication::arguments();
   QString program_name = arguments.isEmpty() ? QString() : arguments.first();
@@ -128,17 +134,14 @@ bool QuestsModel::add_quest(const QString& quest_path) {
     Solarus::QuestFiles::close_quest();
     return false;
   }
-  Solarus::QuestProperties properties = Solarus::CurrentQuest::get_properties();
+  info.properties = Solarus::CurrentQuest::get_properties();
   Solarus::QuestFiles::close_quest();
 
   const int num_quests = rowCount();
   beginInsertRows(QModelIndex(), num_quests, num_quests);
 
-  QuestInfo info;
   info.path = quest_path;
   info.directory_name = quest_path.section('/', -1, -1, QString::SectionSkipEmpty);
-  info.quest_title = QString::fromStdString(properties.get_title());
-  info.short_description = QString::fromStdString(properties.get_short_description());
   info.icon = QIcon(":/images/logo_solarus_200.png");  // TODO
 
   quests.push_back(info);
@@ -150,18 +153,18 @@ bool QuestsModel::add_quest(const QString& quest_path) {
 
 /**
  * @brief Removes a quest from this model.
- * @param index Index of the quest to remove.
+ * @param quest_index Index of the quest to remove.
  * @return @c true if the quest was removed, @c false if there is no quest
  * with this index.
  */
-bool QuestsModel::remove_quest(int index) {
+bool QuestsModel::remove_quest(int quest_index) {
 
-  if (index < 0 || index > rowCount()) {
+  if (quest_index < 0 || quest_index > rowCount()) {
     return false;
   }
 
-  beginRemoveRows(QModelIndex(), index, index);
-  quests.erase(quests.begin() + index);
+  beginRemoveRows(QModelIndex(), quest_index, quest_index);
+  quests.erase(quests.begin() + quest_index);
   endRemoveRows();
   return true;
 }
@@ -177,6 +180,20 @@ QStringList QuestsModel::get_paths() const {
     paths << info.path;
   }
   return paths;
+}
+
+/**
+ * @brief Returns the properties of a quest in the model.
+ * @param quest_index Index of the quest to get.
+ * @return The quest properties.
+ */
+Solarus::QuestProperties QuestsModel::get_quest_properties(int quest_index) const {
+
+  if (quest_index < 0 || quest_index > rowCount()) {
+    return Solarus::QuestProperties();
+  }
+
+  return quests[quest_index].properties;
 }
 
 }

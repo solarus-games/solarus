@@ -18,6 +18,7 @@
 #define SOLARUS_GUI_QUESTS_MODEL_H
 
 #include "solarus/Common.h"
+#include "solarus/QuestProperties.h"
 #include <QAbstractListModel>
 #include <QIcon>
 
@@ -44,6 +45,8 @@ public:
   bool remove_quest(int index);
   QStringList get_paths() const;
 
+  Solarus::QuestProperties get_quest_properties(int quest_index) const;
+
 private:
 
   /**
@@ -52,9 +55,9 @@ private:
   struct QuestInfo {
     QString path;                   /**< Path to the quest directory. */
     QString directory_name;         /**< Name of the quest directory. */
-    QString quest_title;            /**< Title of the quest. */
-    QString short_description;      /**< One-line description of the quest. */
     QIcon icon;                     /**< Icon of the quest. */
+    Solarus::QuestProperties
+        properties;                 /**< All properties from quest.dat. */
   };
 
   std::vector<QuestInfo> quests;    /**< Info of each quest in the list. */

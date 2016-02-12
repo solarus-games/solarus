@@ -98,6 +98,30 @@ bool QuestsView::remove_quest(int index) {
 }
 
 /**
+ * @brief Returns the properties of the selected quest.
+ * @return The quest properties, or a default-constructed object
+ * if no quest is selected.
+ */
+Solarus::QuestProperties QuestsView::get_selected_quest_properties() const {
+
+  int index = get_selected_index();
+  if (index == -1) {
+    return Solarus::QuestProperties();
+  }
+  return get_quest_properties(index);
+}
+
+/**
+ * @brief Returns the properties of a quest in this view.
+ * @param index Index of the quest to get.
+ * @return The quest properties.
+ */
+Solarus::QuestProperties QuestsView::get_quest_properties(int index) const {
+
+  return model->get_quest_properties(index);
+}
+
+/**
  * @brief Returns the index of the currently selected quest.
  * @return Return current index, or -1 if no quest is selected.
  */

@@ -18,6 +18,7 @@
 #define SOLARUS_GUI_QUESTS_VIEW_H
 
 #include "solarus/Common.h"
+#include "solarus/QuestProperties.h"
 #include <QListView>
 
 namespace SolarusGui {
@@ -40,6 +41,9 @@ public:
   QStringList get_paths() const;
   bool add_quest(const QString& path);
   bool remove_quest(int index);
+
+  Solarus::QuestProperties get_selected_quest_properties() const;
+  Solarus::QuestProperties get_quest_properties(int index) const;
 
   int get_selected_index() const;
   QString get_selected_path() const;

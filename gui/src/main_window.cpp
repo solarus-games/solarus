@@ -467,6 +467,55 @@ void MainWindow::selected_quest_changed() {
   // Save the last selected quest (including if none).
   Settings settings;
   settings.setValue("last_quest", selected_path);
+
+  if (!has_current) {
+    ui.quest_title_value->clear();
+    ui.quest_title_value->setVisible(false);
+
+    ui.quest_author_label->setVisible(false);
+    ui.quest_author_value->setVisible(false);
+    ui.quest_author_value->clear();
+
+    ui.quest_version_label->setVisible(false);
+    ui.quest_version_value->setVisible(false);
+    ui.quest_version_value->clear();
+
+    ui.quest_long_description_value->setVisible(false);
+    ui.quest_long_description_value->clear();
+  }
+  else {
+    const Solarus::QuestProperties properties = ui.quests_view->get_selected_quest_properties();
+
+    QString title = QString::fromStdString(properties.get_title());
+    ui.quest_title_value->setVisible(true);
+    ui.quest_title_value->setText(title);
+
+    QString author = QString::fromStdString(properties.get_author());
+    if (author.isEmpty()) {
+      ui.quest_author_label->setVisible(false);
+      ui.quest_author_value->setVisible(false);
+    }
+    else {
+      ui.quest_author_label->setVisible(true);
+      ui.quest_author_value->setText(author);
+      ui.quest_author_value->setVisible(true);
+    }
+
+    QString quest_version = QString::fromStdString(properties.get_quest_version());
+    if (quest_version.isEmpty()) {
+      ui.quest_version_label->setVisible(false);
+      ui.quest_version_value->setVisible(false);
+    }
+    else {
+      ui.quest_version_label->setVisible(true);
+      ui.quest_version_value->setText(quest_version);
+      ui.quest_version_value->setVisible(true);
+    }
+
+    QString long_description = QString::fromStdString(properties.get_long_description());
+    ui.quest_long_description_value->setVisible(true);
+    ui.quest_long_description_value->setText(long_description);
+  }
 }
 
 /**

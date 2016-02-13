@@ -1,0 +1,60 @@
+animation{
+  name = "stopped",
+  src_image = "animals/cat_red.png",
+  frame_delay = 80,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 16, origin_x = 12, origin_y = 13 },
+    { x = 0, y = 56, frame_width = 16, frame_height = 24, origin_x = 8, origin_y = 21 },
+    { x = 0, y = 16, frame_width = 24, frame_height = 16, origin_x = 12, origin_y = 13 },
+    { x = 0, y = 32, frame_width = 16, frame_height = 24, origin_x = 8, origin_y = 21 },
+  },
+}
+animation{
+  name = "scared",
+  src_image = "animals/cat_red.png",
+  frame_delay = 50,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 96, frame_width = 24, frame_height = 16, origin_x = 12, origin_y = 13, num_frames = 2 },
+    { x = 0, y = 96, frame_width = 24, frame_height = 16, origin_x = 12, origin_y = 13, num_frames = 2 },
+    { x = 48, y = 96, frame_width = 24, frame_height = 16, origin_x = 12, origin_y = 13, num_frames = 2 },
+    { x = 48, y = 96, frame_width = 24, frame_height = 16, origin_x = 12, origin_y = 13, num_frames = 2 },
+  },
+}
+animation{
+  name = "sit",
+  src_image = "animals/cat_red.png",
+  frame_delay = 500,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 80, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+    { x = 32, y = 80, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+    { x = 64, y = 80, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+    { x = 96, y = 80, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+  },
+}
+animation{
+  name = "touch",
+  src_image = "animals/cat_red.png",
+  frame_delay = 250,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 128, y = 32, frame_width = 24, frame_height = 16, origin_x = 12, origin_y = 13, num_frames = 2 },
+    { x = 160, y = 64, frame_width = 16, frame_height = 24, origin_x = 8, origin_y = 21, num_frames = 2 },
+    { x = 128, y = 48, frame_width = 24, frame_height = 16, origin_x = 12, origin_y = 13, num_frames = 2 },
+    { x = 128, y = 64, frame_width = 16, frame_height = 24, origin_x = 8, origin_y = 21, num_frames = 2 },
+  },
+}
+animation{
+  name = "walking",
+  src_image = "animals/cat_red.png",
+  frame_delay = 80,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 16, origin_x = 12, origin_y = 13, num_frames = 8 },
+    { x = 0, y = 56, frame_width = 16, frame_height = 24, origin_x = 8, origin_y = 21, num_frames = 8 },
+    { x = 0, y = 16, frame_width = 24, frame_height = 16, origin_x = 12, origin_y = 13, num_frames = 8 },
+    { x = 0, y = 32, frame_width = 16, frame_height = 24, origin_x = 8, origin_y = 21, num_frames = 8 },
+  },
+}

@@ -1,0 +1,16 @@
+animation{
+  name = "stopped",
+  src_image = "dialogs/DialogOldMen.png",
+  directions = {
+    { x = 0, y = 0, frame_width = 48, frame_height = 48, origin_x = 24, origin_y = 24 },
+  },
+}
+animation{
+  name = "talking",
+  src_image = "dialogs/DialogOldMen.png",
+  frame_delay = 100,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 0, frame_width = 48, frame_height = 48, origin_x = 24, origin_y = 24, num_frames = 4 },
+  },
+}

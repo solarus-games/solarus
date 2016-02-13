@@ -1,0 +1,38 @@
+animation{
+  name = "stopped",
+  src_image = "animals/birds.png",
+  directions = {
+    { x = 0, y = 8, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 4 },
+    { x = 0, y = 0, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 4 },
+  },
+}
+animation{
+  name = "fly",
+  src_image = "animals/birds.png",
+  frame_delay = 100,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 16, y = 8, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 4, num_frames = 4 },
+    { x = 16, y = 0, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 4, num_frames = 4 },
+  },
+}
+animation{
+  name = "jump",
+  src_image = "animals/birds.png",
+  frame_delay = 150,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 8, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 4, num_frames = 2 },
+    { x = 0, y = 0, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 4, num_frames = 2 },
+  },
+}
+animation{
+  name = "peck",
+  src_image = "animals/birds.png",
+  frame_delay = 150,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 48, y = 8, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 4, num_frames = 2 },
+    { x = 48, y = 0, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 4, num_frames = 2 },
+  },
+}

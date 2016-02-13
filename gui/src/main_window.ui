@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>960</width>
+    <height>640</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -133,6 +133,12 @@
             <layout class="QFormLayout" name="formLayout">
              <item row="0" column="0">
               <widget class="QLabel" name="quest_author_label">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
                <property name="text">
                 <string>Author:</string>
                </property>
@@ -147,6 +153,12 @@
              </item>
              <item row="1" column="0">
               <widget class="QLabel" name="quest_version_label">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
                <property name="text">
                 <string>Version:</string>
                </property>
@@ -165,6 +177,9 @@
             <widget class="QLabel" name="quest_long_description_value">
              <property name="text">
               <string>Description</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
              </property>
              <property name="wordWrap">
               <bool>true</bool>
@@ -231,7 +246,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>960</width>
      <height>25</height>
     </rect>
    </property>

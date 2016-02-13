@@ -1,0 +1,24 @@
+animation{
+  name = "stopped",
+  src_image = "citizens/old_man.png",
+  frame_delay = 600,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 96, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 2 },
+    { x = 48, y = 96, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 2 },
+    { x = 0, y = 120, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 2 },
+    { x = 48, y = 120, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 2 },
+  },
+}
+animation{
+  name = "walking",
+  src_image = "citizens/old_man.png",
+  frame_delay = 200,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 4 },
+    { x = 0, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 4 },
+    { x = 0, y = 48, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 4 },
+    { x = 0, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 4 },
+  },
+}

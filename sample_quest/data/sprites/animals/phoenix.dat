@@ -1,0 +1,24 @@
+animation{
+  name = "stopped",
+  src_image = "animals/phoenix.png",
+  frame_delay = 250,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+    { x = 0, y = 48, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+    { x = 0, y = 16, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+    { x = 0, y = 32, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+  },
+}
+animation{
+  name = "flying",
+  src_image = "animals/phoenix.png",
+  frame_delay = 250,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 32, y = 0, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+    { x = 32, y = 48, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+    { x = 32, y = 16, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+    { x = 32, y = 32, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+  },
+}

@@ -101,6 +101,7 @@ CarriedObject::CarriedObject(
       lifting_trajectories[direction], 100, false, true
   );
   main_sprite = create_sprite(animation_set_id, "main");
+  main_sprite->enable_pixel_collisions();
   main_sprite->set_current_animation("stopped");
   set_default_sprite_name("main");
   set_movement(movement);
@@ -454,15 +455,17 @@ void CarriedObject::draw_on_map() {
 }
 
 /**
- * \brief This function is called when this carried object collides an enemy.
- * \param enemy the enemy
+ * \copydoc Entity::notify_collision_with_enemy(Enemy&, Sprite&, Sprite&)
  */
-void CarriedObject::notify_collision_with_enemy(Enemy &enemy) {
+void CarriedObject::notify_collision_with_enemy(
+    Enemy& enemy,
+    Sprite& enemy_sprite,
+    Sprite& /* this_sprite */) {
 
   if (is_throwing
       && !can_explode()
       && get_damage_on_enemies() > 0) {
-    enemy.try_hurt(EnemyAttack::THROWN_ITEM, *this, nullptr);
+    enemy.try_hurt(EnemyAttack::THROWN_ITEM, *this, &enemy_sprite);
   }
 }
 

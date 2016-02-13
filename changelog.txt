@@ -25,6 +25,7 @@ Engine changes
 * Fix sword tapping sound still played when the game is suspended (#797).
 * Fix hero:set_invincible() not working without duration (#805).
 * Fix lifted item walking animation only accepting 3 frames (#645).
+* Fix enemy:set_attack_consequence_sprite() with thrown items (#834).
 * Fix custom_entity:set_can_traverse_ground() for some grounds (#794).
 * Fix custom entity collisions missed for entities that do not move (#671).
 * Fix custom_entity:get_modified_ground() returning nothing.

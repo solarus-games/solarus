@@ -80,7 +80,7 @@ class TilePattern {
 
     const Ground ground;     /**< Kind of tile. */
 
-    const Size size;         /**< Pattern size (multiple of 8). */
+    Size size;               /**< Pattern size (multiple of 8). */
 
 };
 

@@ -2,5 +2,14 @@ quest{
   solarus_version = "1.5",
   write_dir = "testing_quest",
   title = "Testing Quest",
+  short_description = "Technical quest used for Solarus automated tests",
+  long_description = [[
+This is not a playable game, but a quest that contains automated tests for the Solarus engine. Each map is a unit test.]],
+  author = "Christopho",
+  quest_version = "",
+  release_date = "",
+  website = "http://www.solarus-games.org",
+  normal_quest_size = "320x240",
+  min_quest_size = "320x240",
+  max_quest_size = "320x240",
 }
-

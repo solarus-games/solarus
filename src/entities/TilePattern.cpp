@@ -48,8 +48,9 @@ TilePattern::TilePattern(Ground ground, const Size& size):
 
   // Diagonal obstacle: check that the tile is square.
   if (GroundInfo::is_ground_diagonal(ground)) {
-    Debug::check_assertion(size.is_square(),
-        "Invalid tile pattern: a tile pattern with a diagonal wall must be square");
+    if (!size.is_square()) {
+      Debug::error("Invalid tile pattern: a tile pattern with a diagonal wall must be square");
+    }
   }
 }
 

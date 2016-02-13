@@ -56,8 +56,8 @@ class CarriedObject: public Entity {
         uint32_t explosion_date
     );
 
-    virtual EntityType get_type() const override;
-    virtual bool is_ground_observer() const override;
+    EntityType get_type() const override;
+    bool is_ground_observer() const override;
 
     int get_damage_on_enemies() const;
 
@@ -71,32 +71,36 @@ class CarriedObject: public Entity {
     bool is_broken() const;
     bool can_explode() const;
 
-    virtual void set_suspended(bool suspended) override;
-    virtual void update() override;
-    virtual void draw_on_map() override;
+    void set_suspended(bool suspended) override;
+    void update() override;
+    void draw_on_map() override;
 
-    virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter) override;
-    virtual bool is_stream_obstacle(Stream& stream) override;
-    virtual bool is_stairs_obstacle(Stairs& stairs) override;
-    virtual bool is_low_wall_obstacle() const override;
-    virtual bool is_deep_water_obstacle() const override;
-    virtual bool is_hole_obstacle() const override;
-    virtual bool is_lava_obstacle() const override;
-    virtual bool is_prickle_obstacle() const override;
-    virtual bool is_ladder_obstacle() const override;
-    virtual bool is_switch_obstacle(Switch& sw) override;
-    virtual bool is_raised_block_obstacle(CrystalBlock& raised_block) override;
-    virtual bool is_crystal_obstacle(Crystal& crystal) override;
-    virtual bool is_sensor_obstacle(Sensor& sensor) override;
-    virtual bool is_npc_obstacle(Npc& npc) override;
-    virtual bool is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) override;
-    virtual bool is_enemy_obstacle(Enemy& enemy) override;
-    virtual void notify_obstacle_reached() override;
-    virtual void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) override;
-    virtual void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) override;
-    virtual void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode) override;
-    virtual void notify_collision_with_enemy(Enemy& enemy) override;
-    virtual void notify_attacked_enemy(
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter) override;
+    bool is_stream_obstacle(Stream& stream) override;
+    bool is_stairs_obstacle(Stairs& stairs) override;
+    bool is_low_wall_obstacle() const override;
+    bool is_deep_water_obstacle() const override;
+    bool is_hole_obstacle() const override;
+    bool is_lava_obstacle() const override;
+    bool is_prickle_obstacle() const override;
+    bool is_ladder_obstacle() const override;
+    bool is_switch_obstacle(Switch& sw) override;
+    bool is_raised_block_obstacle(CrystalBlock& raised_block) override;
+    bool is_crystal_obstacle(Crystal& crystal) override;
+    bool is_sensor_obstacle(Sensor& sensor) override;
+    bool is_npc_obstacle(Npc& npc) override;
+    bool is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) override;
+    bool is_enemy_obstacle(Enemy& enemy) override;
+    void notify_obstacle_reached() override;
+    void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) override;
+    void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) override;
+    void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode) override;
+    void notify_collision_with_enemy(
+        Enemy& enemy,
+        Sprite& enemy_sprite,
+        Sprite& this_sprite
+    ) override;
+    void notify_attacked_enemy(
         EnemyAttack attack,
         Enemy& victim,
         const Sprite* victim_sprite,
@@ -117,7 +121,8 @@ class CarriedObject: public Entity {
     bool is_breaking;           /**< indicates that the item is breaking */
     bool break_one_layer_above; /**< indicates that the item has to get broken
                                  * now one layer above its current position */
-    std::string destruction_sound_id;   /**< the sound played when the item breaks */
+    std::string
+        destruction_sound_id;   /**< the sound played when the item breaks */
     int damage_on_enemies;      /**< damage for an enemy that receives the item */
 
     // throwing the item

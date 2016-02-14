@@ -396,7 +396,7 @@ int LuaContext::l_create_destination(lua_State* l) {
     Map& map = *check_map(l, 1);
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
-    EntityPtr entity = std::make_shared<Destination>(
+    std::shared_ptr<Destination> entity = std::make_shared<Destination>(
         data.get_name(),
         entity_creation_check_layer(l, 1, data, map),
         data.get_xy(),
@@ -404,6 +404,9 @@ int LuaContext::l_create_destination(lua_State* l) {
         data.get_string("sprite"),
         data.get_boolean("default")
     );
+    StartingLocationMode starting_location_mode =
+        entity_creation_check_enum<StartingLocationMode>(l, 1, data, "when_world_changes");
+    entity->set_starting_location_mode(starting_location_mode);
     map.get_entities().add_entity(entity);
 
     if (map.is_started()) {

@@ -66,6 +66,7 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
         EntityType::DESTINATION, {
             { "direction", OptionalFlag::MANDATORY, FieldValue(1) },
             { "sprite", OptionalFlag::OPTIONAL, FieldValue("") },
+            { "starting_location_mode", OptionalFlag::OPTIONAL, FieldValue("when_world_changes") },
             { "default", OptionalFlag::OPTIONAL, FieldValue(false) }
         }
     },

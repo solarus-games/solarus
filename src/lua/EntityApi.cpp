@@ -204,6 +204,21 @@ void LuaContext::register_entity_module() {
       metamethods
   );
 
+  // Destination.
+  static const luaL_Reg destination_methods[] = {
+      ENTITY_COMMON_METHODS,
+      { "get_starting_location_mode", destination_api_get_starting_location_mode },
+      { "set_starting_location_mode", destination_api_set_starting_location_mode },
+      { nullptr, nullptr }
+  };
+
+  register_type(
+      get_entity_internal_type_name(EntityType::DESTINATION),
+      nullptr,
+      destination_methods,
+      metamethods
+  );
+
   // Teletransporter.
   static const luaL_Reg teletransporter_methods[] = {
       ENTITY_COMMON_METHODS,
@@ -488,7 +503,6 @@ void LuaContext::register_entity_module() {
 
   // Also register all other types of entities that have no specific methods.
   register_type(get_entity_internal_type_name(EntityType::TILE), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::DESTINATION), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::CARRIED_OBJECT), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::JUMPER), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::NPC), nullptr, entity_common_methods, metamethods);
@@ -2319,6 +2333,78 @@ int LuaContext::camera_api_start_manual(lua_State* l) {
 
     camera.start_manual();
 
+    return 0;
+  });
+}
+
+/**
+ * \brief Returns whether a value is a userdata of type destination.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return \c true if the value at this index is an destination.
+ */
+bool LuaContext::is_destination(lua_State* l, int index) {
+  return is_userdata(l, index, get_entity_internal_type_name(EntityType::DESTINATION));
+}
+
+/**
+ * \brief Checks that the userdata at the specified index of the stack is a
+ * destination and returns it.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return The destination.
+ */
+std::shared_ptr<Destination> LuaContext::check_destination(lua_State* l, int index) {
+  return std::static_pointer_cast<Destination>(check_userdata(
+      l, index, get_entity_internal_type_name(EntityType::DESTINATION)
+  ));
+}
+
+/**
+ * \brief Pushes an destination userdata onto the stack.
+ * \param l A Lua context.
+ * \param destination A destination.
+ */
+void LuaContext::push_destination(lua_State* l, Destination& destination) {
+  push_userdata(l, destination);
+}
+
+/**
+ * \brief Implementation of destination:get_starting_location_mode().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destination_api_get_starting_location_mode(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Destination& destination = *check_destination(l, 1);
+
+    StartingLocationMode mode = destination.get_starting_location_mode();
+
+    push_string(l, enum_to_name(mode));
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of destination:set_starting_location_mode().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destination_api_set_starting_location_mode(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Destination& destination = *check_destination(l, 1);
+    StartingLocationMode mode = StartingLocationMode::WHEN_WORLD_CHANGES;
+
+    if (lua_gettop(l) == 1) {
+      LuaTools::type_error(l, 2, "string or nil");
+    }
+    if (!lua_isnil(l, 2)) {
+      mode = LuaTools::check_enum<StartingLocationMode>(l, 2);
+    }
+
+    destination.set_starting_location_mode(mode);
     return 0;
   });
 }

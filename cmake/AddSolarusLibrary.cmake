@@ -52,6 +52,7 @@ file(
   include/solarus/entities/ShopTreasure.h
   include/solarus/entities/SimpleTilePattern.h
   include/solarus/entities/Stairs.h
+  include/solarus/entities/StartingLocationMode.h
   include/solarus/entities/StreamAction.h
   include/solarus/entities/Stream.h
   include/solarus/entities/Switch.h
@@ -251,6 +252,7 @@ file(
   src/entities/ShopTreasure.cpp
   src/entities/SimpleTilePattern.cpp
   src/entities/Stairs.cpp
+  src/entities/StartingLocationMode.cpp
   src/entities/StreamAction.cpp
   src/entities/Stream.cpp
   src/entities/Switch.cpp

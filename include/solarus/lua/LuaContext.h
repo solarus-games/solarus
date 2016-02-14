@@ -872,6 +872,8 @@ class LuaContext {
       hero_api_start_hurt,
       camera_api_start_tracking,
       camera_api_start_manual,
+      destination_api_get_starting_location_mode,
+      destination_api_set_starting_location_mode,
       teletransporter_api_get_sound,
       teletransporter_api_set_sound,
       teletransporter_api_get_transition,
@@ -1067,6 +1069,7 @@ class LuaContext {
     static void push_hero(lua_State* l, Hero& hero);
     static void push_camera(lua_State* l, Camera& camera);
     static void push_npc(lua_State* l, Npc& npc);
+    static void push_destination(lua_State* l, Destination& destination);
     static void push_teletransporter(lua_State* l, Teletransporter& teletransporter);
     static void push_chest(lua_State* l, Chest& chest);
     static void push_block(lua_State* l, Block& block);
@@ -1135,6 +1138,8 @@ class LuaContext {
     static HeroPtr check_hero(lua_State* l, int index);
     static bool is_camera(lua_State* l, int index);
     static std::shared_ptr<Camera> check_camera(lua_State* l, int index);
+    static bool is_destination(lua_State* l, int index);
+    static std::shared_ptr<Destination> check_destination(lua_State* l, int index);
     static bool is_teletransporter(lua_State* l, int index);
     static std::shared_ptr<Teletransporter> check_teletransporter(lua_State* l, int index);
     static bool is_npc(lua_State* l, int index);

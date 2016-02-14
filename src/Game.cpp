@@ -14,10 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/Destination.h"
 #include "solarus/entities/Entities.h"
 #include "solarus/entities/EntityState.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/NonAnimatedRegions.h"
+#include "solarus/entities/StartingLocationMode.h"
 #include "solarus/entities/TilePattern.h"
 #include "solarus/entities/Tileset.h"
 #include "solarus/lowlevel/Color.h"
@@ -412,6 +414,36 @@ void Game::update_transitions() {
     }
     else if (transition_direction == Transition::Direction::CLOSING) {
 
+      const std::string& destination_name = next_map->get_destination_name();
+      bool special_destination = destination_name == "_same" ||
+          destination_name.substr(0,5) == "_side";
+      StartingLocationMode starting_location_mode = StartingLocationMode::NO;
+      if (!special_destination) {
+        EntityPtr destination = next_map->get_entities().find_entity(destination_name);
+        if (destination != nullptr && destination->get_type() == EntityType::DESTINATION) {
+          starting_location_mode =
+              std::static_pointer_cast<Destination>(destination)->get_starting_location_mode();
+        }
+      }
+      bool save_starting_location = starting_location_mode == StartingLocationMode::YES;
+
+      // Special treatments for a transition between two different worlds
+      // (e.g. outside world to a dungeon).
+      if (!next_map->has_world() || next_map->get_world() != current_map->get_world()) {
+
+        // Reset the crystal blocks.
+        crystal_state = false;
+
+        // Update the starting location if the destination wants it.
+        save_starting_location = starting_location_mode != StartingLocationMode::NO;
+      }
+
+      // Save the location if needed, except if this is a special destination.
+      if (save_starting_location && !special_destination) {
+        get_savegame().set_string(Savegame::KEY_STARTING_MAP, next_map->get_id());
+        get_savegame().set_string(Savegame::KEY_STARTING_POINT, destination_name);
+      }
+
       if (next_map == current_map) {
         // same map
         hero->place_on_destination(*current_map, previous_map_location);
@@ -428,22 +460,6 @@ void Game::update_transitions() {
 
         // change the map
         current_map->leave();
-
-        // special treatments for a transition between two different worlds
-        // (e.g. outside world to a dungeon)
-        if (!next_map->has_world() || next_map->get_world() != current_map->get_world()) {
-
-          // reset the crystal blocks
-          crystal_state = false;
-
-          // Save the location except if this is a special destination.
-          const std::string& destination_name = next_map->get_destination_name();
-          if (destination_name != "_same"
-              && destination_name.substr(0,5) != "_side") {
-            get_savegame().set_string(Savegame::KEY_STARTING_MAP, next_map->get_id());
-            get_savegame().set_string(Savegame::KEY_STARTING_POINT, destination_name);
-          }
-        }
 
         // before closing the map, draw it on a backup surface for transition effects
         // that want to display both maps at the same time

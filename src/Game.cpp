@@ -414,6 +414,14 @@ void Game::update_transitions() {
     }
     else if (transition_direction == Transition::Direction::CLOSING) {
 
+      bool world_changed = next_map != current_map &&
+          (!next_map->has_world() || next_map->get_world() != current_map->get_world());
+
+      if (world_changed) {
+        // Reset the crystal blocks.
+        crystal_state = false;
+      }
+
       const std::string& destination_name = next_map->get_destination_name();
       bool special_destination = destination_name == "_same" ||
           destination_name.substr(0,5) == "_side";
@@ -425,17 +433,21 @@ void Game::update_transitions() {
               std::static_pointer_cast<Destination>(destination)->get_starting_location_mode();
         }
       }
-      bool save_starting_location = starting_location_mode == StartingLocationMode::YES;
+      bool save_starting_location = false;
 
-      // Special treatments for a transition between two different worlds
-      // (e.g. outside world to a dungeon).
-      if (!next_map->has_world() || next_map->get_world() != current_map->get_world()) {
+      switch (starting_location_mode) {
 
-        // Reset the crystal blocks.
-        crystal_state = false;
+      case StartingLocationMode::YES:
+        save_starting_location = true;
+        break;
 
-        // Update the starting location if the destination wants it.
-        save_starting_location = starting_location_mode != StartingLocationMode::NO;
+      case StartingLocationMode::NO:
+        save_starting_location = false;
+        break;
+
+      case StartingLocationMode::WHEN_WORLD_CHANGES:
+        save_starting_location = world_changed;
+        break;
       }
 
       // Save the location if needed, except if this is a special destination.

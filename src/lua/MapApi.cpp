@@ -405,7 +405,7 @@ int LuaContext::l_create_destination(lua_State* l) {
         data.get_boolean("default")
     );
     StartingLocationMode starting_location_mode =
-        entity_creation_check_enum<StartingLocationMode>(l, 1, data, "when_world_changes");
+        entity_creation_check_enum<StartingLocationMode>(l, 1, data, "starting_location_mode");
     entity->set_starting_location_mode(starting_location_mode);
     map.get_entities().add_entity(entity);
 

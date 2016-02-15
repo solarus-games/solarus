@@ -422,32 +422,46 @@ void Game::update_transitions() {
         crystal_state = false;
       }
 
-      const std::string& destination_name = next_map->get_destination_name();
+      // Determine the destination to use and its name.
+      std::string destination_name = next_map->get_destination_name();
       bool special_destination = destination_name == "_same" ||
           destination_name.substr(0,5) == "_side";
       StartingLocationMode starting_location_mode = StartingLocationMode::NO;
       if (!special_destination) {
-        EntityPtr destination = next_map->get_entities().find_entity(destination_name);
+        EntityPtr destination;
+        if (destination_name.empty()) {
+          std::shared_ptr<Destination> default_destination = next_map->get_entities().get_default_destination();
+          if (default_destination != nullptr) {
+            destination = default_destination;
+            destination_name = destination->get_name();
+          }
+        }
+        else {
+          destination = next_map->get_entities().find_entity(destination_name);
+        }
         if (destination != nullptr && destination->get_type() == EntityType::DESTINATION) {
           starting_location_mode =
               std::static_pointer_cast<Destination>(destination)->get_starting_location_mode();
         }
       }
+
+      // The starting location can only be updated if the destination has a name.
       bool save_starting_location = false;
+      if (!destination_name.empty()) {
+        switch (starting_location_mode) {
 
-      switch (starting_location_mode) {
+        case StartingLocationMode::YES:
+          save_starting_location = true;
+          break;
 
-      case StartingLocationMode::YES:
-        save_starting_location = true;
-        break;
+        case StartingLocationMode::NO:
+          save_starting_location = false;
+          break;
 
-      case StartingLocationMode::NO:
-        save_starting_location = false;
-        break;
-
-      case StartingLocationMode::WHEN_WORLD_CHANGES:
-        save_starting_location = world_changed;
-        break;
+        case StartingLocationMode::WHEN_WORLD_CHANGES:
+          save_starting_location = world_changed;
+          break;
+        }
       }
 
       // Save the location if needed, except if this is a special destination.

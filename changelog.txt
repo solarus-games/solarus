@@ -56,9 +56,12 @@ Changes that do not introduce incompatibilities:
 * Add a function sol.main.get_quest_format().
 * Add a function sol.main.get_type() (#744).
 * Add methods map:get_min_layer() and map:get_max_layer() (#445).
+* Add a method game:set_suspended().
 * Add a method map:get_entities_by_type() (#796).
 * Add a method map:get_entities_in_rectangle() (#142).
 * Add a method map:get_camera() (the camera is now a map entity).
+* map:get_camera_position() is now deprecated, use camera:get_position().
+* map:move_camera() is now deprecated, use a camera movement instead.
 * Add methods map:set_world() and map:set_floor() (#656).
 * map:get_entities() can now be called without parameter to get all entities.
 * map:get_entities*() functions now give entities sorted in Z order (#779).

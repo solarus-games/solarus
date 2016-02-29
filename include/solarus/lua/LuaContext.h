@@ -667,6 +667,7 @@ class LuaContext {
       game_api_start,
       game_api_is_started,
       game_api_is_suspended,
+      game_api_set_suspended,
       game_api_is_paused,
       game_api_set_paused,
       game_api_is_pause_allowed,
@@ -769,8 +770,8 @@ class LuaContext {
       map_api_set_tileset,
       map_api_get_music,
       map_api_get_camera,
-      map_api_get_camera_position,  // TODO remove or deprecate?
-      map_api_move_camera,  // TODO set any movement to the camera instead
+      map_api_get_camera_position,
+      map_api_move_camera,
       map_api_get_ground,
       map_api_draw_sprite,  // TODO allow to also draw a surface or a text surface
       map_api_get_crystal_state,

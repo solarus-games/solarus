@@ -53,6 +53,7 @@ void LuaContext::register_game_module() {
       { "start", game_api_start },
       { "is_started", game_api_is_started },
       { "is_suspended", game_api_is_suspended },
+      { "set_suspended", game_api_set_suspended },
       { "is_paused", game_api_is_paused },
       { "set_paused", game_api_set_paused },
       { "is_pause_allowed", game_api_is_pause_allowed },
@@ -302,6 +303,26 @@ int LuaContext::game_api_is_suspended(lua_State* l) {
 
     lua_pushboolean(l, is_suspended);
     return 1;
+  });
+}
+
+/**
+ * \brief Implementation of game:set_suspended().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::game_api_set_suspended(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Savegame& savegame = *check_game(l, 1);
+    bool suspended = LuaTools::opt_boolean(l, 2, true);
+
+    Game* game = savegame.get_game();
+    if (game != nullptr) {
+      game->set_suspended_by_script(suspended);
+    }
+
+    return 0;
   });
 }
 

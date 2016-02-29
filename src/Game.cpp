@@ -53,6 +53,7 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
   paused(false),
   dialog_box(*this),
   showing_game_over(false),
+  suspended_by_script(false),
   started(false),
   restarting(false),
   commands_effects(),
@@ -698,21 +699,23 @@ bool Game::is_playing_transition() const {
  *
  * This is true in the following cases:
  * - the game is paused,
- * - a dialog a being dispayed,
- * - a transition between two maps is playing,
- * - the game over sequence is active,
- * - the camera is moving.
+ * - or a dialog a being dispayed,
+ * - or a transition between two maps is playing,
+ * - or the game over sequence is active,
+ * - or the camera is moving,
+ * - or a script explicitly suspended the game.
  *
  * \return true if the game is suspended
  */
 bool Game::is_suspended() const {
 
-  return current_map == nullptr
-      || is_paused()
-      || is_dialog_enabled()
-      || is_playing_transition()
-      || is_showing_game_over()
-      || current_map->is_camera_moving();
+  return current_map == nullptr ||
+      is_paused() ||
+      is_dialog_enabled() ||
+      is_playing_transition() ||
+      is_showing_game_over() ||
+      current_map->is_camera_moving() ||
+      is_suspended_by_script();
 }
 
 /**
@@ -834,6 +837,23 @@ void Game::set_paused(bool paused) {
       commands_effects.set_pause_key_effect(CommandsEffects::PAUSE_KEY_PAUSE);
     }
   }
+}
+
+/**
+ * \brief Returns whether this game is currently suspended by a script.
+ * \return \c true if a script is suspending the game.
+ */
+bool Game::is_suspended_by_script() const {
+  return suspended_by_script;
+}
+
+/**
+ * \brief Sets whether this game is currently suspended by a script.
+ * \param \c true to suspend the game, \c false to resume it
+ * if nothing else is suspending it.
+ */
+void Game::set_suspended_by_script(bool suspended) {
+  this->suspended_by_script = suspended;
 }
 
 /**

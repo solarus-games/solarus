@@ -886,6 +886,8 @@ Rectangle Entity::get_extended_bounding_box(int margin) const {
  * Subclasses that manage sprites without create_sprite() should reimplement
  * this function to return a correct bounding box, otherwise sprite collisions
  * may fail to be detected.
+ *
+ * \return The bounding box of the entity including its sprites.
  */
 Rectangle Entity::get_max_bounding_box() const {
 
@@ -3246,6 +3248,10 @@ void Entity::draw_on_map() {
   }
 }
 
+/**
+ * \brief Returns the current state of this entity.
+ * \return The state.
+ */
 Entity::State& Entity::get_state() const {
     return *state.get();
 }

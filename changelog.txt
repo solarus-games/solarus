@@ -55,7 +55,7 @@ Changes that do not introduce incompatibilities:
 * Add a function sol.main.get_solarus_version() (#767).
 * Add a function sol.main.get_quest_format().
 * Add a function sol.main.get_type() (#744).
-* Add a method game:set_suspended().
+* Add a method game:set_suspended() (#845).
 * Add methods map:get_min_layer() and map:get_max_layer() (#445).
 * Add a method map:get_entities_by_type() (#796).
 * Add a method map:get_entities_in_rectangle() (#142).

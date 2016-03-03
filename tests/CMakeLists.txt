@@ -33,6 +33,7 @@ set(lua_test_maps
   "bugs/821_hero_start_attack"
   "bugs/823_sprite_get_size_origin"
   "bugs/830_entity_get_ground_position"
+  "bugs/845_game_set_suspended"
 )
 
 # Build the Solarus testing library.

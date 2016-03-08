@@ -19,6 +19,7 @@ Engine changes
 * Improve the performance of custom entity collisions.
 * Improve the performance of collisions by using a quadtree.
 * Entities far from the camera are no longer suspended.
+* Destinations can now set to update or not the starting location (#819).
 * Fix sprite:on_animation_finished() and others not working sometimes (#799).
 * Fix sol.input.get_mouse_coordinates() (#734).
 * Fix straight movement precision.
@@ -54,10 +55,13 @@ Changes that do not introduce incompatibilities:
 * Add a function sol.main.get_solarus_version() (#767).
 * Add a function sol.main.get_quest_format().
 * Add a function sol.main.get_type() (#744).
+* Add a method game:set_suspended() (#845).
 * Add methods map:get_min_layer() and map:get_max_layer() (#445).
 * Add a method map:get_entities_by_type() (#796).
 * Add a method map:get_entities_in_rectangle() (#142).
 * Add a method map:get_camera() (the camera is now a map entity).
+* map:get_camera_position() is now deprecated, use camera:get_position().
+* map:move_camera() is now deprecated, use a camera movement instead.
 * Add methods map:set_world() and map:set_floor() (#656).
 * map:get_entities() can now be called without parameter to get all entities.
 * map:get_entities*() functions now give entities sorted in Z order (#779).
@@ -75,6 +79,7 @@ Changes that do not introduce incompatibilities:
 * Add methods dynamic_tile:get_pattern_id() and get_modified_ground() (#755).
 * Add a method block:get_sprite().
 * Add an event chest:on_opened() with treasure info parameters (#483).
+* Add methods destination:get/set_starting_location_mode() (#819).
 * Add a method sprite:get_num_frames() (#818).
 * Add methods sprite:get_size() and sprite:get_origin() (#823).
 
@@ -85,6 +90,7 @@ Data files format changes
 * Quest properties: the title_bar property no longer exists, use title instead.
 * Maps: New properties min_layer and max_layer (#445).
 * Maps: Enemies no longer have a rank property (#449).
+* Maps: New property starting_location_mode on destinations (#819).
 * Dialogs: Allow empty texts.
 
 __________________________

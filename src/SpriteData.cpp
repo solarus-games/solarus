@@ -120,6 +120,8 @@ void SpriteAnimationDirectionData::set_origin(const Point& origin) {
  *
  * This is a rectangle of size get_size() and whose top-left corner has
  * coordinates -get_origin().
+ *
+ * \return The bounding box.
  */
 Rectangle SpriteAnimationDirectionData::get_bounding_box() const {
 

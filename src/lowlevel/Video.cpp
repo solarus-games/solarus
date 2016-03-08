@@ -877,9 +877,9 @@ Rectangle Video::get_viewport() {
 
 /**
  * \brief Converts window coordinates to quest size coordinates.
- * \param[in] position A position relative to the window, not including
+ * \param[in] window_xy A position relative to the window, not including
  * the title bar.
- * \param[out] The corresponding value in quest coordinates.
+ * \param[out] quest_xy The corresponding value in quest coordinates.
  * \return \c false if the position is not inside the quest display.
  */
 bool Video::window_to_quest_coordinates(
@@ -918,8 +918,8 @@ bool Video::window_to_quest_coordinates(
 
 /**
  * \brief Converts logical renderer coordinates to quest size coordinates.
- * \param[in] position A position in renderer coordinates, without window scaling.
- * \param[out] The corresponding value in quest coordinates.
+ * \param[in] renderer_xy A position in renderer coordinates, without window scaling.
+ * \param[out] quest_xy The corresponding value in quest coordinates.
  * \return \c false if the position is not inside the renderer.
  */
 bool Video::renderer_to_quest_coordinates(

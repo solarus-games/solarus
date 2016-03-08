@@ -47,8 +47,7 @@ class Sprite;
  * - the tileset,
  * - the tiles and the other entities placed on the map,
  * - the ground of each 8x8 square,
- * - the background music,
- * - the position of the camera.
+ * - the background music.
  */
 class SOLARUS_API Map: public ExportableToLua {
 

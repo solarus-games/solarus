@@ -23,7 +23,11 @@ template <typename E>
 const std::list<E> EnumInfo<E>::enums() {
   std::list<E> enums;
 
-  std::transform(EnumInfoTraits<E>::names.begin(), EnumInfoTraits<E>::names.end(), std::back_inserter(enums), [](typename decltype(EnumInfoTraits<E>::names)::const_reference val){return val.first;} );
+  std::transform(EnumInfoTraits<E>::names.begin(), EnumInfoTraits<E>::names.end(), std::back_inserter(enums),
+      [] (typename decltype(EnumInfoTraits<E>::names)::const_reference val) {
+        return val.first;
+      }
+  );
   return enums;
 }
 
@@ -31,7 +35,11 @@ template <typename E>
 const std::list<std::string> EnumInfo<E>::names() {
   std::list<std::string> names;
 
-  std::transform(EnumInfoTraits<E>::names.begin(), EnumInfoTraits<E>::names.end(), std::back_inserter(enums), [](typename decltype(EnumInfoTraits<E>::names)::const_reference val){return val.second;} );
+  std::transform(EnumInfoTraits<E>::names.begin(), EnumInfoTraits<E>::names.end(), std::back_inserter(enums),
+      [] (typename decltype(EnumInfoTraits<E>::names)::const_reference val) {
+        return val.second;
+      }
+  );
   return names;
 }
 
@@ -40,7 +48,8 @@ const std::string& enum_to_name(E value) {
 
   const auto& it = EnumInfoTraits<E>::names.find(value);
   if (it == EnumInfoTraits<E>::names.end()) {
-    Debug::die(std::string("Missing ") + EnumInfoTraits<E>::pretty_name);
+    Debug::die(std::string("Invalid ") + EnumInfoTraits<E>::pretty_name +
+               " number: " + std::to_string(static_cast<int>(value)));
   }
 
   return it->second;

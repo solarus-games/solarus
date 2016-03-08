@@ -14,10 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/Destination.h"
 #include "solarus/entities/Entities.h"
 #include "solarus/entities/EntityState.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/NonAnimatedRegions.h"
+#include "solarus/entities/StartingLocationMode.h"
 #include "solarus/entities/TilePattern.h"
 #include "solarus/entities/Tileset.h"
 #include "solarus/lowlevel/Color.h"
@@ -51,6 +53,7 @@ Game::Game(MainLoop& main_loop, const std::shared_ptr<Savegame>& savegame):
   paused(false),
   dialog_box(*this),
   showing_game_over(false),
+  suspended_by_script(false),
   started(false),
   restarting(false),
   commands_effects(),
@@ -412,6 +415,62 @@ void Game::update_transitions() {
     }
     else if (transition_direction == Transition::Direction::CLOSING) {
 
+      bool world_changed = next_map != current_map &&
+          (!next_map->has_world() || next_map->get_world() != current_map->get_world());
+
+      if (world_changed) {
+        // Reset the crystal blocks.
+        crystal_state = false;
+      }
+
+      // Determine the destination to use and its name.
+      std::string destination_name = next_map->get_destination_name();
+      bool special_destination = destination_name == "_same" ||
+          destination_name.substr(0,5) == "_side";
+      StartingLocationMode starting_location_mode = StartingLocationMode::NO;
+      if (!special_destination) {
+        EntityPtr destination;
+        if (destination_name.empty()) {
+          std::shared_ptr<Destination> default_destination = next_map->get_entities().get_default_destination();
+          if (default_destination != nullptr) {
+            destination = default_destination;
+            destination_name = destination->get_name();
+          }
+        }
+        else {
+          destination = next_map->get_entities().find_entity(destination_name);
+        }
+        if (destination != nullptr && destination->get_type() == EntityType::DESTINATION) {
+          starting_location_mode =
+              std::static_pointer_cast<Destination>(destination)->get_starting_location_mode();
+        }
+      }
+
+      // The starting location can only be updated if the destination has a name.
+      bool save_starting_location = false;
+      if (!destination_name.empty()) {
+        switch (starting_location_mode) {
+
+        case StartingLocationMode::YES:
+          save_starting_location = true;
+          break;
+
+        case StartingLocationMode::NO:
+          save_starting_location = false;
+          break;
+
+        case StartingLocationMode::WHEN_WORLD_CHANGES:
+          save_starting_location = world_changed;
+          break;
+        }
+      }
+
+      // Save the location if needed, except if this is a special destination.
+      if (save_starting_location && !special_destination) {
+        get_savegame().set_string(Savegame::KEY_STARTING_MAP, next_map->get_id());
+        get_savegame().set_string(Savegame::KEY_STARTING_POINT, destination_name);
+      }
+
       if (next_map == current_map) {
         // same map
         hero->place_on_destination(*current_map, previous_map_location);
@@ -428,22 +487,6 @@ void Game::update_transitions() {
 
         // change the map
         current_map->leave();
-
-        // special treatments for a transition between two different worlds
-        // (e.g. outside world to a dungeon)
-        if (!next_map->has_world() || next_map->get_world() != current_map->get_world()) {
-
-          // reset the crystal blocks
-          crystal_state = false;
-
-          // Save the location except if this is a special destination.
-          const std::string& destination_name = next_map->get_destination_name();
-          if (destination_name != "_same"
-              && destination_name.substr(0,5) != "_side") {
-            get_savegame().set_string(Savegame::KEY_STARTING_MAP, next_map->get_id());
-            get_savegame().set_string(Savegame::KEY_STARTING_POINT, destination_name);
-          }
-        }
 
         // before closing the map, draw it on a backup surface for transition effects
         // that want to display both maps at the same time
@@ -656,21 +699,23 @@ bool Game::is_playing_transition() const {
  *
  * This is true in the following cases:
  * - the game is paused,
- * - a dialog a being dispayed,
- * - a transition between two maps is playing,
- * - the game over sequence is active,
- * - the camera is moving.
+ * - or a dialog a being dispayed,
+ * - or a transition between two maps is playing,
+ * - or the game over sequence is active,
+ * - or the camera is moving,
+ * - or a script explicitly suspended the game.
  *
  * \return true if the game is suspended
  */
 bool Game::is_suspended() const {
 
-  return current_map == nullptr
-      || is_paused()
-      || is_dialog_enabled()
-      || is_playing_transition()
-      || is_showing_game_over()
-      || current_map->is_camera_moving();
+  return current_map == nullptr ||
+      is_paused() ||
+      is_dialog_enabled() ||
+      is_playing_transition() ||
+      is_showing_game_over() ||
+      current_map->is_camera_moving() ||
+      is_suspended_by_script();
 }
 
 /**
@@ -792,6 +837,23 @@ void Game::set_paused(bool paused) {
       commands_effects.set_pause_key_effect(CommandsEffects::PAUSE_KEY_PAUSE);
     }
   }
+}
+
+/**
+ * \brief Returns whether this game is currently suspended by a script.
+ * \return \c true if a script is suspending the game.
+ */
+bool Game::is_suspended_by_script() const {
+  return suspended_by_script;
+}
+
+/**
+ * \brief Sets whether this game is currently suspended by a script.
+ * \param \c true to suspend the game, \c false to resume it
+ * if nothing else is suspending it.
+ */
+void Game::set_suspended_by_script(bool suspended) {
+  this->suspended_by_script = suspended;
 }
 
 /**

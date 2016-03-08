@@ -40,7 +40,7 @@ std::set<InputEvent::KeyboardKey> InputEvent::keys_pressed;
 std::vector<int> InputEvent::joypad_axis_state;
 
 // Keyboard key names.
-const std::string EnumInfoTraits<InputEvent::KeyboardKey>::pretty_name = "keyboard_key";
+const std::string EnumInfoTraits<InputEvent::KeyboardKey>::pretty_name = "keyboard key";
 
 const EnumInfo<InputEvent::KeyboardKey>::names_type EnumInfoTraits<InputEvent::KeyboardKey>::names = {
 
@@ -171,7 +171,7 @@ const EnumInfo<InputEvent::KeyboardKey>::names_type EnumInfoTraits<InputEvent::K
 };
 
 // Mouse button names.
-const std::string EnumInfoTraits<InputEvent::MouseButton>::pretty_name = "mouse_button";
+const std::string EnumInfoTraits<InputEvent::MouseButton>::pretty_name = "mouse button";
 
 const EnumInfo<InputEvent::MouseButton>::names_type EnumInfoTraits<InputEvent::MouseButton>::names = {
     { InputEvent::MOUSE_BUTTON_NONE,   "" },

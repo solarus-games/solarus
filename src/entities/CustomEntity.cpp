@@ -1141,7 +1141,7 @@ bool CustomEntity::notify_action_command_pressed() {
 }
 
 /**
- * \copydoc Entity::interaction_with_item
+ * \copydoc Entity::notify_interaction_with_item
  */
 bool CustomEntity::notify_interaction_with_item(EquipmentItem& item) {
 

@@ -502,7 +502,7 @@ void Entities::get_entities_in_region(
  *
  * Regions are assumed to be rectangular (convex: no "L" shape).
  *
- * \param xy A point.
+ * \param point A point.
  * \return The box of the region.
  */
 Rectangle Entities::get_region_box(const Point& point) const {
@@ -618,6 +618,7 @@ EntityVector Entities::get_entities_by_type_sorted(EntityType type) {
 
 /**
  * \brief Returns all entities of a type on the given layer.
+ * \param type Type of entities to get.
  * \param layer The layer to get entities from.
  * \return All entities of the type on this layer.
  */
@@ -657,7 +658,7 @@ EntitySet Entities::get_entities_by_type(EntityType type, int layer) {
  * there may be holes in the sequence.
  * The returned value can even be negative.
  *
- * \param An entity of the map.
+ * \param entity An entity of the map.
  * \return Its relative Z order.
  */
 int Entities::get_entity_relative_z_order(const ConstEntityPtr& entity) const {

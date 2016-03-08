@@ -1186,6 +1186,8 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
  *
  * It means that it is no longer used from Lua either
  * (__gc has been called before or is being called).
+ *
+ * \param userdata The userdata just destroyed.
  */
 void LuaContext::notify_userdata_destroyed(ExportableToLua& userdata) {
 

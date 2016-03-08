@@ -25,9 +25,13 @@ map{ id = "bugs/810_hero_disappears_after_scrolling/1", description = "#810: The
 map{ id = "bugs/810_hero_disappears_after_scrolling/2", description = "#810" }
 map{ id = "bugs/817_entity_set_enabled_overlapping_hero", description = "#817: entity:set_enabled() not working if it is an obstacle on the hero" }
 map{ id = "bugs/818_sprite_get_num_frames", description = "#818: sprite:get_num_frames()" }
+map{ id = "bugs/819_destination_starting_location_mode/1", description = "#819: Starting location mode on destinations" }
+map{ id = "bugs/819_destination_starting_location_mode/2", description = "#819: world a" }
+map{ id = "bugs/819_destination_starting_location_mode/3", description = "#819: world a" }
 map{ id = "bugs/821_hero_start_attack", description = "#821: hero:start_attack()" }
 map{ id = "bugs/823_sprite_get_size_origin", description = "#823: sprite:get_size() and sprite:get_origin()" }
 map{ id = "bugs/830_entity_get_ground_position", description = "#830: entity:get_ground_position() and entity:get_ground_below()" }
+map{ id = "bugs/845_game_set_suspended", description = "#845: game:set_suspended" }
 map{ id = "dynamic_tile_tests", description = "Dynamic tile tests" }
 map{ id = "jumper_tests", description = "Jumper tests" }
 map{ id = "surface_tests", description = "Surface tests" }

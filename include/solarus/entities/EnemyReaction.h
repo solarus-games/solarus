@@ -80,7 +80,6 @@ struct SOLARUS_API EnumInfoTraits<EnemyReaction::ReactionType> {
   static const EnumInfo<EnemyReaction::ReactionType>::names_type names;
 };
 
-
 }
 
 #endif

@@ -468,9 +468,9 @@ class SOLARUS_API Entity: public ExportableToLua {
         stream_action;                          /**< The stream effect currently applied if any. */
 
     // state
-    std::unique_ptr<State> state;               /**< the current internal state */
+    std::unique_ptr<State> state;               /**< The current internal state */
     std::list<std::unique_ptr<State>>
-        old_states;                             /**< previous state objects to delete as soon as possible */
+        old_states;                             /**< Previous state objects to delete as soon as possible. */
 
     bool initialized;                           /**< Whether all initializations were done. */
     bool being_removed;                         /**< indicates that the entity is not valid anymore because it is about to be removed */

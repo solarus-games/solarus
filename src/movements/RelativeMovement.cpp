@@ -36,9 +36,9 @@ RelativeMovement::RelativeMovement(
 }
 
 /**
- * \brief Creates a follow movement.
+ * \brief Creates a relative movement.
  * \param entity_followed the entity to follow
- * \param offset coordinate of where this entity should be placed (relative to the entity followed)
+ * \param entity_offset coordinate of where this entity should be placed (relative to the entity followed)
  * \param ignore_obstacles true to make the movement ignore obstacles
  */
 RelativeMovement::RelativeMovement(

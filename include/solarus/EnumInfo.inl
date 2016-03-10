@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/String.h"
 #include <algorithm>
 
 namespace Solarus {
@@ -49,7 +50,7 @@ const std::string& enum_to_name(E value) {
   const auto& it = EnumInfoTraits<E>::names.find(value);
   if (it == EnumInfoTraits<E>::names.end()) {
     Debug::die(std::string("Invalid ") + EnumInfoTraits<E>::pretty_name +
-               " number: " + std::to_string(static_cast<int>(value)));
+               " number: " + String::to_string(static_cast<int>(value)));
   }
 
   return it->second;

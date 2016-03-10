@@ -15,14 +15,16 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/Settings.h"
-#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/CurrentQuest.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/InputEvent.h"
+#include "solarus/lowlevel/Logger.h"
+#include "solarus/lowlevel/Music.h"
+#include "solarus/lowlevel/Sound.h"
+#include "solarus/lowlevel/String.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lowlevel/VideoMode.h"
-#include "solarus/lowlevel/Sound.h"
-#include "solarus/lowlevel/Music.h"
-#include "solarus/lowlevel/InputEvent.h"
-#include "solarus/lowlevel/Debug.h"
 #include <lua.hpp>
 #include <sstream>
 
@@ -109,7 +111,7 @@ void Settings::set_string(const std::string& key, const std::string& value) {
  */
 void Settings::set_integer(const std::string& key, int value) {
 
-  entries[key] = std::to_string(value);
+  entries[key] = String::to_string(value);
 }
 
 /**

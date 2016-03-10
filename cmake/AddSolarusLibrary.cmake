@@ -124,6 +124,7 @@ file(
   include/solarus/lowlevel/Size.inl
   include/solarus/lowlevel/Sound.h
   include/solarus/lowlevel/SpcDecoder.h
+  include/solarus/lowlevel/String.h
   include/solarus/lowlevel/Surface.h
   include/solarus/lowlevel/SurfacePtr.h
   include/solarus/lowlevel/System.h
@@ -320,6 +321,7 @@ file(
   src/lowlevel/Size.cpp
   src/lowlevel/Sound.cpp
   src/lowlevel/SpcDecoder.cpp
+  src/lowlevel/String.cpp
   src/lowlevel/Surface.cpp
   src/lowlevel/System.cpp
   src/lowlevel/TextSurface.cpp

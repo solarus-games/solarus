@@ -5593,21 +5593,21 @@ bool LuaContext::entity_on_interaction_item(
 }
 
 /**
- * \brief Calls the on_state_changed() method of a Lua hero.
+ * \brief Calls the on_state_changed() method of a Lua entity.
  *
  * Does nothing if the method is not defined.
  *
- * \param hero The hero.
+ * \param entity A map entity.
  * \param state_name A name describing the new state.
  */
-void LuaContext::hero_on_state_changed(
-    Hero& hero, const std::string& state_name) {
+void LuaContext::entity_on_state_changed(
+    Entity& entity, const std::string& state_name) {
 
-  if (!userdata_has_field(hero, "on_state_changed")) {
+  if (!userdata_has_field(entity, "on_state_changed")) {
     return;
   }
 
-  push_hero(l, hero);
+  push_entity(l, entity);
   on_state_changed(state_name);
   lua_pop(l, 1);
 }

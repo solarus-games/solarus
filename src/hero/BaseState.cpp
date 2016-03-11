@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,27 +30,6 @@ namespace Solarus {
 Hero::BaseState::BaseState(Hero& hero, const std::string& state_name):
   State(hero, state_name) {
 
-}
-
-/**
- * \brief Starts this state.
- *
- * This function is called automatically when this state becomes the active
- * state of the hero.
- * The initializations should be done here rather than in the constructor.
- *
- * \param previous_state The previous state or nullptr if this is the first state
- * (for information).
- */
-void Hero::BaseState::start(const State* previous_state) {
-
-  Entity::State::start(previous_state);
-
-  // Notify Lua.
-  Hero& hero = get_entity();
-  if (hero.is_on_map()) {
-    get_lua_context().hero_on_state_changed(hero, get_name());
-  }
 }
 
 /**

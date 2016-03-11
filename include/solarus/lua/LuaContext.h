@@ -380,7 +380,7 @@ class LuaContext {
     void entity_on_movement_finished(Entity& entity);
     bool entity_on_interaction(Entity& entity);
     bool entity_on_interaction_item(Entity& entity, EquipmentItem& item_used);
-    void hero_on_state_changed(Hero& hero, const std::string& state_name);
+    void entity_on_state_changed(Entity& entity, const std::string& state_name);
     bool hero_on_taking_damage(Hero& hero, int damage);
     void destination_on_activated(Destination& destination);
     void teletransporter_on_activated(Teletransporter& teletransporter);

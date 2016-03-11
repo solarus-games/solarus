@@ -208,12 +208,10 @@ void Entity::State::start(const State* /* previous_state */) {
 
   set_suspended(entity.is_suspended());
 
-#if 0
   // Notify Lua.
   if (entity.is_on_map()) {
     get_lua_context().entity_on_state_changed(entity, get_name());
   }
-#endif
 }
 
 /**

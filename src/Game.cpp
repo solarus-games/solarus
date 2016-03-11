@@ -126,7 +126,7 @@ void Game::start() {
   get_savegame().notify_game_started();
   get_lua_context().game_on_started(*this);
   Hero& hero = *get_hero();
-  get_lua_context().hero_on_state_changed(hero, hero.get_state_name());
+  get_lua_context().entity_on_state_changed(hero, hero.get_state_name());
 }
 
 /**

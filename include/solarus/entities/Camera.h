@@ -79,8 +79,8 @@ class Camera : public Entity {
     Point position_on_screen;               /**< Where to draw this camera on the screen. */
 
     // Camera centered on an entity.
-    EntityPtr fixed_on;                     /**< An entity the camera is fixed on,
-                                             * nullptr if it has a movement. */
+    EntityPtr tracked_entity;               /**< An entity the camera is tracking
+                                             * or nullptr. */
     Rectangle separator_scrolling_position; /**< Current camera position while crossing a separator. */
     Rectangle separator_target_position;    /**< Target camera position when crossing a separator. */
     Point separator_scrolling_delta;        /**< increment to the camera position when crossing a separator. */

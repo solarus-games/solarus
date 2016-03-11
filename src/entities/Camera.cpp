@@ -37,7 +37,7 @@ namespace Solarus {
 Camera::Camera(Map& map):
   Entity("", 0, map.get_max_layer(), Point(0, 0), Video::get_quest_size()),
   position_on_screen(0, 0),
-  fixed_on(map.get_game().get_hero()),
+  tracked_entity(map.get_game().get_hero()),
   separator_next_scrolling_date(0),
   separator_scrolling_direction4(0),
   restoring(false),
@@ -113,8 +113,7 @@ void Camera::update() {
 
   Entity::update();
 
-  if (fixed_on != nullptr) {
-    // If the camera is not moving towards a target, center it on the hero.
+  if (tracked_entity != nullptr) {
     update_fixed_on();
   }
   else if (get_movement() != nullptr) {
@@ -128,7 +127,7 @@ void Camera::update() {
  */
 void Camera::update_fixed_on() {
 
-  Debug::check_assertion(fixed_on != nullptr,
+  Debug::check_assertion(tracked_entity != nullptr,
       "Illegal call to Camera::update_fixed_on_hero()");
 
   if (separator_next_scrolling_date == 0) {
@@ -136,7 +135,7 @@ void Camera::update_fixed_on() {
 
     // First compute camera coordinates ignoring map limits and separators.
     Rectangle next = get_bounding_box();
-    next.set_center(fixed_on->get_center_point());
+    next.set_center(tracked_entity->get_center_point());
 
     // Then apply constraints of both separators and map limits.
     set_bounding_box(apply_separators_and_map_bounds(next));
@@ -177,7 +176,7 @@ void Camera::update_fixed_on() {
  */
 void Camera::update_moving() {
 
-  Debug::check_assertion(fixed_on == nullptr,
+  Debug::check_assertion(tracked_entity == nullptr,
       "Illegal call to Camera::update_moving()");
 
   if (get_movement() == nullptr) {
@@ -189,7 +188,7 @@ void Camera::update_moving() {
 
     if (restoring) {
       restoring = false;
-      fixed_on = get_game().get_hero();
+      tracked_entity = get_game().get_hero();
       get_lua_context()->map_on_camera_back(get_map());
     }
     else {
@@ -207,7 +206,7 @@ void Camera::update_moving() {
  * \return \c true if the camera is moving.
  */
 bool Camera::is_moving() const {
-  return fixed_on == nullptr                  // Moving to a point.
+  return tracked_entity == nullptr            // Moving to a point.
       || separator_next_scrolling_date != 0;  // Traversing a separator.
 }
 
@@ -234,7 +233,7 @@ void Camera::set_speed(int speed) {
 void Camera::move(int target_x, int target_y) {
 
   clear_movement();
-  fixed_on = nullptr;
+  tracked_entity = nullptr;
 
   // Take care of the limits of the map and of separators.
   target_x = target_x - get_width() / 2;
@@ -347,14 +346,14 @@ void Camera::traverse_separator(Separator* separator) {
  * \param entity The entity to track.
  */
 void Camera::start_tracking(const EntityPtr& entity) {
-  fixed_on = entity;
+  tracked_entity = entity;
 }
 
 /**
  * \brief Makes the camera stop tracking any entity.
  */
 void Camera::start_manual() {
-  fixed_on.reset();
+  tracked_entity = nullptr;
 }
 
 /**
@@ -363,7 +362,7 @@ void Camera::start_manual() {
  * state.
  */
 EntityPtr Camera::get_tracked_entity() const {
-  return fixed_on;
+  return tracked_entity;
 }
 
 /**

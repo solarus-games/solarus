@@ -366,7 +366,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     State& get_state() const;
     void set_state(State* state);
 
-    const std::string& get_state_name() const;
+    std::string get_state_name() const;
     void update_state();
 
   protected:

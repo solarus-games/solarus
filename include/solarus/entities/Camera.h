@@ -49,8 +49,12 @@ class Camera : public Entity {
 
     bool can_be_drawn() const override;
     void set_suspended(bool suspended) override;
-    void update() override;
 
+    Point get_position_on_screen() const;
+    void set_position_on_screen(const Point& position_on_screen);
+    Point get_position_to_track(const Point& tracked_xy) const;
+
+    void update() override;
     bool is_moving() const;
     void set_speed(int speed);
     void move(int target_x, int target_y);
@@ -61,6 +65,7 @@ class Camera : public Entity {
 
     void start_tracking(const EntityPtr& entity);
     void start_manual();
+    EntityPtr get_tracked_entity() const;
 
     Rectangle apply_map_bounds(const Rectangle& area) const;
     Rectangle apply_separators(const Rectangle& area) const;
@@ -71,7 +76,9 @@ class Camera : public Entity {
     void update_fixed_on();
     void update_moving();
 
-    // Camera centered on the hero.
+    Point position_on_screen;               /**< Where to draw this camera on the screen. */
+
+    // Camera centered on an entity.
     EntityPtr fixed_on;                     /**< An entity the camera is fixed on,
                                              * nullptr if it has a movement. */
     Rectangle separator_scrolling_position; /**< Current camera position while crossing a separator. */

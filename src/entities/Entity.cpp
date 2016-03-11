@@ -3307,9 +3307,13 @@ void Entity::set_state(State* new_state) {
 /**
  * \brief Returns the name of the entity's internal state.
  * \return A name describing the current state of the entity.
+ * Returns an empty string if this entity has no state.
  */
-const std::string& Entity::get_state_name() const {
+std::string Entity::get_state_name() const {
 
+  if (state == nullptr) {
+    return "";
+  }
   return state->get_name();
 }
 

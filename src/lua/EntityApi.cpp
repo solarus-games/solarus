@@ -165,7 +165,7 @@ void LuaContext::register_entity_module() {
       { "set_blinking", hero_api_set_blinking },
       { "is_invincible", hero_api_is_invincible },
       { "set_invincible", hero_api_set_invincible },
-      { "get_state", hero_api_get_state },
+      { "get_state", entity_api_get_state },
       { "freeze", hero_api_freeze },
       { "unfreeze", hero_api_unfreeze },
       { "walk", hero_api_walk },  // TODO use the more general movement:start
@@ -192,8 +192,14 @@ void LuaContext::register_entity_module() {
   // Camera.
   static const luaL_Reg camera_methods[] = {
       ENTITY_COMMON_METHODS,
+      { "set_size", entity_api_set_size },
+      { "get_position_on_screen", camera_api_get_position_on_screen },
+      { "set_position_on_screen", camera_api_set_position_on_screen },
+      { "get_state", entity_api_get_state },
       { "start_tracking", camera_api_start_tracking },
       { "start_manual", camera_api_start_manual },
+      { "get_position_to_track", camera_api_get_position_to_track },
+      { "get_tracked_entity", camera_api_get_tracked_entity },
       { nullptr, nullptr }
   };
 
@@ -1447,6 +1453,27 @@ int LuaContext::entity_api_is_in_same_region(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of hero:get_state() and camera:get_state().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_state(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Entity& entity = *check_entity(l, 1);
+
+    std::string state_name = entity.get_state_name();
+    if (state_name.empty()) {
+      lua_pushnil(l);
+    }
+    else {
+      push_string(l, state_name);
+    }
+    return 1;
+  });
+}
+
+/**
  * \brief Returns whether a value is a userdata of type hero.
  * \param l A Lua context.
  * \param index An index in the stack.
@@ -1897,21 +1924,6 @@ int LuaContext::hero_api_set_invincible(lua_State* l) {
 }
 
 /**
- * \brief Implementation of hero:get_state().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::hero_api_get_state(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    const Hero& hero = *check_hero(l, 1);
-
-    push_string(l, hero.get_state_name());
-    return 1;
-  });
-}
-
-/**
  * \brief Implementation of hero:freeze().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -2305,6 +2317,43 @@ void LuaContext::push_camera(lua_State* l, Camera& camera) {
 }
 
 /**
+ * \brief Implementation of camera:get_position_on_screen().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::camera_api_get_position_on_screen(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Camera& camera = *check_camera(l, 1);
+
+    const Point& position_on_screen = camera.get_position_on_screen();
+
+    lua_pushinteger(l, position_on_screen.x);
+    lua_pushinteger(l, position_on_screen.y);
+
+    return 2;
+  });
+}
+
+/**
+ * \brief Implementation of camera:set_position_on_screen().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::camera_api_set_position_on_screen(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Camera& camera = *check_camera(l, 1);
+    int x = LuaTools::check_int(l, 2);
+    int y = LuaTools::check_int(l, 3);
+
+    camera.set_position_on_screen({ x, y });
+
+    return 0;
+  });
+}
+
+/**
  * \brief Implementation of camera:start_tracking().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -2334,6 +2383,58 @@ int LuaContext::camera_api_start_manual(lua_State* l) {
     camera.start_manual();
 
     return 0;
+  });
+}
+
+/**
+ * \brief Implementation of camera:get_position_to_track().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::camera_api_get_position_to_track(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Camera& camera = *check_camera(l, 1);
+
+    Point xy;
+    if (lua_isnumber(l, 2)) {
+      xy.x = LuaTools::check_int(l, 2);
+      xy.y = LuaTools::check_int(l, 3);
+    }
+    else if (is_entity(l, 2)) {
+      const Entity& entity = *check_entity(l, 2);
+      xy = entity.get_center_point();
+    }
+    else {
+      LuaTools::type_error(l, 2, "number or entity");
+    }
+    const Point& position_to_track = camera.get_position_to_track(xy);
+
+    lua_pushinteger(l, position_to_track.x);
+    lua_pushinteger(l, position_to_track.y);
+
+    return 2;
+  });
+}
+
+/**
+ * \brief Implementation of camera:get_tracked_entity().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::camera_api_get_tracked_entity(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Camera& camera = *check_camera(l, 1);
+
+    EntityPtr entity = camera.get_tracked_entity();
+    if (entity == nullptr) {
+      lua_pushnil(l);
+    }
+    else {
+      push_entity(l, *entity);
+    }
+    return 1;
   });
 }
 

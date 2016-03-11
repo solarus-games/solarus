@@ -36,6 +36,7 @@ namespace Solarus {
  */
 Camera::Camera(Map& map):
   Entity("", 0, map.get_max_layer(), Point(0, 0), Video::get_quest_size()),
+  position_on_screen(0, 0),
   fixed_on(map.get_game().get_hero()),
   separator_next_scrolling_date(0),
   separator_scrolling_direction4(0),
@@ -59,6 +60,36 @@ bool Camera::can_be_drawn() const {
   // The camera itself is not drawn.
   // Entities only use its position to draw the map.
   return false;
+}
+
+/**
+ * \brief Returns where this camera is displayed on the screen.
+ * \return Position of the upper-left corner of the camera relative to the
+ * quest screen.
+ */
+Point Camera::get_position_on_screen() const {
+  return position_on_screen;
+}
+
+/**
+ * \brief Sets where this camera is displayed on the screen.
+ * \param position_on_screen position of the upper-left corner of the camera
+ * relative to the quest screen.
+ */
+void Camera::set_position_on_screen(const Point& position_on_screen) {
+  this->position_on_screen = position_on_screen;
+}
+
+/**
+ * \brief Returns the position this camera should take to track the specified point.
+ * \param tracked_xy A point in map coordinates.
+ * \return Where this camera should be placed to be focused on this point,
+ * respecting separators and map limits.
+ */
+Point Camera::get_position_to_track(const Point& /* tracked_xy */) const {
+
+  // TODO
+  return { 0, 0 };
 }
 
 /**
@@ -324,6 +355,15 @@ void Camera::start_tracking(const EntityPtr& entity) {
  */
 void Camera::start_manual() {
   fixed_on.reset();
+}
+
+/**
+ * \brief Returns the entity currently tracked by this camera if any.
+ * \return The tracked entity, or nullptr if the camera is not in tracking
+ * state.
+ */
+EntityPtr Camera::get_tracked_entity() const {
+  return fixed_on;
 }
 
 /**

@@ -33,11 +33,9 @@ class TargetMovement;
  * \brief Manages the visible area of the map.
  *
  * The camera determines the visible area of the map.
- * Most of the time, the camera is centered on the hero movements,
- * blocking on the map borders and on separators.
- *
- * Occasionally, it can also be moved towards a point and then restored
- * towards the hero.
+ * The camera may either be tracking an entity
+ * (usually the hero)
+ * or be controlled manually by a script.
  */
 class Camera : public Entity {
 

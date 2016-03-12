@@ -25,6 +25,9 @@ namespace String {
  * \brief Converts an integer to a string.
  *
  * This function replaces std::to_string which is missing on some systems.
+ *
+ * \param value The value to convert.
+ * \return String representation of the value.
  */
 SOLARUS_API std::string to_string(int value) {
 

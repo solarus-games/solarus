@@ -34,6 +34,7 @@ Engine changes
 * Fix creating an entity with the same name as another one just removed (#795).
 * Fix parallax scrolling for dynamic tiles (#816).
 * Fix crash when a diagonal tile is not square (#837).
+* Fix crash when the teletransporter after stairs is missing.
 * Fix text_surface:set_rendering_mode() not working (#833).
 * Fix support of joypads with multiple axes.
 

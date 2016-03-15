@@ -21,6 +21,7 @@
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/hero/StairsState.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/movements/PathMovement.h"
@@ -212,8 +213,12 @@ void Hero::StairsState::update() {
         // there must be a teletransporter associated with these stairs,
         // otherwise the hero would get stuck into the walls
         std::shared_ptr<Teletransporter> teletransporter = hero.get_delayed_teletransporter();
-        Debug::check_assertion(teletransporter != nullptr, "Teletransporter expected with the stairs");
-        teletransporter->transport_hero(hero);
+        if (teletransporter == nullptr) {
+          Logger::error("Teletransporter expected with the stairs");
+        }
+        else {
+          teletransporter->transport_hero(hero);
+        }
       }
       else {
         // we are on the new floor: everything is finished

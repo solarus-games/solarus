@@ -17,15 +17,17 @@
 #ifndef SOLARUS_GUI_GUI_TOOLS_H
 #define SOLARUS_GUI_GUI_TOOLS_H
 
+#include "solarus/gui/gui_common.h"
+
 class QString;
 
 namespace SolarusGui {
 
 namespace GuiTools {
 
-void information_dialog(const QString& message);
-void warning_dialog(const QString& message);
-void error_dialog(const QString& message);
+void SOLARUS_GUI_API information_dialog(const QString& message);
+void SOLARUS_GUI_API warning_dialog(const QString& message);
+void SOLARUS_GUI_API error_dialog(const QString& message);
 
 }
 

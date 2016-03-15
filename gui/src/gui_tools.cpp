@@ -25,7 +25,7 @@ namespace GuiTools {
  * @brief Shows a modal dialog box with an information message.
  * @param message The message to show.
  */
-void information_dialog(const QString& message) {
+void SOLARUS_GUI_API information_dialog(const QString& message) {
 
   QMessageBox messageBox;
   messageBox.setIcon(QMessageBox::Information);
@@ -38,7 +38,7 @@ void information_dialog(const QString& message) {
  * @brief Shows a modal dialog box with a warning message.
  * @param message The message to show.
  */
-void warning_dialog(const QString& message) {
+void SOLARUS_GUI_API warning_dialog(const QString& message) {
 
   QMessageBox messageBox;
   messageBox.setIcon(QMessageBox::Warning);
@@ -51,7 +51,7 @@ void warning_dialog(const QString& message) {
  * @brief Shows a modal dialog box with an error message.
  * @param message The message to show.
  */
-void error_dialog(const QString& message) {
+void SOLARUS_GUI_API error_dialog(const QString& message) {
 
   QMessageBox messageBox;
   messageBox.setIcon(QMessageBox::Critical);

@@ -17,7 +17,7 @@
 #ifndef SOLARUS_GUI_QUESTS_MODEL_H
 #define SOLARUS_GUI_QUESTS_MODEL_H
 
-#include "solarus/Common.h"
+#include "solarus/gui/gui_common.h"
 #include "solarus/QuestProperties.h"
 #include <QAbstractListModel>
 #include <QIcon>
@@ -27,7 +27,7 @@ namespace SolarusGui {
 /**
  * @brief List of quests added to Solarus.
  */
-class QuestsModel : public QAbstractListModel {
+class SOLARUS_GUI_API QuestsModel : public QAbstractListModel {
 
 public:
 

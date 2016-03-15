@@ -17,7 +17,7 @@
 #ifndef SOLARUS_GUI_QUESTS_VIEW_H
 #define SOLARUS_GUI_QUESTS_VIEW_H
 
-#include "solarus/Common.h"
+#include "solarus/gui/gui_common.h"
 #include "solarus/QuestProperties.h"
 #include <QListView>
 
@@ -28,7 +28,7 @@ class QuestsModel;
 /**
  * @brief A widget where the user can select a quest.
  */
-class QuestsView : public QListView {
+class SOLARUS_GUI_API QuestsView : public QListView {
 
 public:
 

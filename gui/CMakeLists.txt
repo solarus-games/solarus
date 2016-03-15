@@ -17,6 +17,7 @@ include_directories(
 set(solarus_gui_lib_SOURCES
   include/solarus/gui/console.h
   include/solarus/gui/console_line_edit.h
+  include/solarus/gui/gui_common.h
   include/solarus/gui/gui_tools.h
   include/solarus/gui/quest_runner.h
   include/solarus/gui/quests_model.h

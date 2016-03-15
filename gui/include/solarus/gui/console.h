@@ -17,7 +17,7 @@
 #ifndef SOLARUS_GUI_CONSOLE_H
 #define SOLARUS_GUI_CONSOLE_H
 
-#include "solarus/Common.h"
+#include "solarus/gui/gui_common.h"
 #include "ui_console.h"
 #include <QMap>
 #include <QPointer>
@@ -30,7 +30,7 @@ class QuestRunner;
  * @brief Quest execution log viewer and interactive console to execute Lua
  * commands.
  */
-class SOLARUS_API Console : public QWidget {
+class SOLARUS_GUI_API Console : public QWidget {
   Q_OBJECT
 
 public:

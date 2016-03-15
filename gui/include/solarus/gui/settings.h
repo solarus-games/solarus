@@ -17,7 +17,7 @@
 #ifndef SOLARUS_GUI_SETTINGS_H
 #define SOLARUS_GUI_SETTINGS_H
 
-#include "solarus/Common.h"
+#include "solarus/gui/gui_common.h"
 #include <QSettings>
 
 namespace SolarusGui {
@@ -25,7 +25,7 @@ namespace SolarusGui {
 /**
  * @brief Specialized QSettings object for Solarus settings.
  */
-class SOLARUS_API Settings : public QSettings {
+class SOLARUS_GUI_API Settings : public QSettings {
 
 public:
 

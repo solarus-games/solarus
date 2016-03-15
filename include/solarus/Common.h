@@ -55,8 +55,18 @@
  * \def SOLARUS_API
  * \brief Windows DLL import/export specifications for the Solarus library symbols.
  */
-#ifdef _WIN32
+#ifndef SOLARUS_LIBRARY_EXPORT
 #  ifdef solarus_EXPORTS  // Define automatically added by cmake.
+#    define SOLARUS_LIBRARY_EXPORT 1
+#  else
+#    define SOLARUS_LIBRARY_EXPORT 0
+#  endif
+#else
+#    define SOLARUS_LIBRARY_EXPORT 0
+#endif
+
+#ifdef _WIN32
+#  if SOLARUS_LIBRARY_EXPORT == 1
 #    define SOLARUS_API __declspec(dllexport)
 #  else
 #    define SOLARUS_API __declspec(dllimport)

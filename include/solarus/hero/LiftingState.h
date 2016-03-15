@@ -25,7 +25,7 @@ namespace Solarus {
 /**
  * \brief The state "Lifting" of the hero.
  */
-class Hero::LiftingState: public Hero::BaseState {
+class Hero::LiftingState: public HeroState {
 
   public:
 

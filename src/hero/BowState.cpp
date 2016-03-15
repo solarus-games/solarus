@@ -30,7 +30,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::BowState::BowState(Hero& hero):
-  BaseState(hero, "bow") {
+  HeroState(hero, "bow") {
 }
 
 /**
@@ -39,7 +39,7 @@ Hero::BowState::BowState(Hero& hero):
  */
 void Hero::BowState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
   get_sprites().set_animation("bow");
 }
 
@@ -48,7 +48,7 @@ void Hero::BowState::start(const State* previous_state) {
  */
 void Hero::BowState::update() {
 
-  BaseState::update();
+  HeroState::update();
 
   Hero& hero = get_entity();
   if (get_sprites().is_animation_finished()) {

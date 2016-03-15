@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Jumper.h"
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 #include "solarus/hero/SwordSwingingState.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/CommandsEffects.h"
@@ -27,7 +27,7 @@ namespace Solarus {
  * \brief Constructor.
  * \param hero The hero controlled by this state.
  */
-Hero::BaseState::BaseState(Hero& hero, const std::string& state_name):
+HeroState::HeroState(Hero& hero, const std::string& state_name):
   State(hero, state_name) {
 
 }
@@ -36,7 +36,7 @@ Hero::BaseState::BaseState(Hero& hero, const std::string& state_name):
  * \brief Returns the hero of this state.
  * \return The hero.
  */
-inline Hero& Hero::BaseState::get_entity() {
+inline Hero& HeroState::get_entity() {
   return static_cast<Hero&>(Entity::State::get_entity());
 }
 
@@ -44,14 +44,14 @@ inline Hero& Hero::BaseState::get_entity() {
  * \brief Returns the hero of this state.
  * \return The hero.
  */
-inline const Hero& Hero::BaseState::get_entity() const {
+inline const Hero& HeroState::get_entity() const {
   return static_cast<const Hero&>(Entity::State::get_entity());
 }
 
 /**
  * \copydoc Entity::State::notify_attack_command_pressed
  */
-void Hero::BaseState::notify_attack_command_pressed() {
+void HeroState::notify_attack_command_pressed() {
   Hero& hero = get_entity();
 
   if (!hero.is_suspended()
@@ -66,7 +66,7 @@ void Hero::BaseState::notify_attack_command_pressed() {
  * \brief Notifies this state that an item command was just pressed.
  * \param slot The slot activated (1 or 2).
  */
-void Hero::BaseState::notify_item_command_pressed(int slot) {
+void HeroState::notify_item_command_pressed(int slot) {
   Hero& hero = get_entity();
 
   EquipmentItem* item = get_equipment().get_item_assigned(slot);
@@ -84,7 +84,7 @@ void Hero::BaseState::notify_item_command_pressed(int slot) {
  * \return \c true if the jumper is an obstacle in this state with this
  * hero position.
  */
-bool Hero::BaseState::is_jumper_obstacle(
+bool HeroState::is_jumper_obstacle(
     const Jumper& jumper, const Rectangle& candidate_position) const {
   const Hero& hero = get_entity();
 

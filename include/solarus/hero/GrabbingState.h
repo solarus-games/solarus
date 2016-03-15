@@ -17,14 +17,14 @@
 #ifndef SOLARUS_HERO_GRABBING_STATE_H
 #define SOLARUS_HERO_GRABBING_STATE_H
 
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 
 namespace Solarus {
 
 /**
  * \brief The state "Grabbing" of the hero.
  */
-class Hero::GrabbingState: public Hero::BaseState {
+class Hero::GrabbingState: public HeroState {
 
   public:
 

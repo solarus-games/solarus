@@ -42,7 +42,7 @@ Hero::JumpingState::JumpingState(
     bool ignore_obstacles,
     bool with_sound
 ):
-  BaseState(hero, "jumping"),
+  HeroState(hero, "jumping"),
   carried_object() {
 
   if (get_previous_carried_object_behavior() == CarriedObject::BEHAVIOR_KEEP) {
@@ -63,7 +63,7 @@ Hero::JumpingState::JumpingState(
  */
 void Hero::JumpingState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
 
   // update the sprites
   HeroSprites& sprites = get_sprites();
@@ -91,7 +91,7 @@ void Hero::JumpingState::start(const State* previous_state) {
  */
 void Hero::JumpingState::stop(const State* next_state) {
 
-  BaseState::stop(next_state);
+  HeroState::stop(next_state);
 
   get_entity().clear_movement();
 
@@ -128,7 +128,7 @@ void Hero::JumpingState::stop(const State* next_state) {
  */
 void Hero::JumpingState::set_map(Map& map) {
 
-  BaseState::set_map(map);
+  HeroState::set_map(map);
 
   // the hero may go to another map while jumping and carrying an item
   if (carried_object != nullptr) {
@@ -141,7 +141,7 @@ void Hero::JumpingState::set_map(Map& map) {
  */
 void Hero::JumpingState::update() {
 
-  BaseState::update();
+  HeroState::update();
 
   if (carried_object != nullptr) {
     carried_object->update();
@@ -158,7 +158,7 @@ void Hero::JumpingState::update() {
  */
 void Hero::JumpingState::set_suspended(bool suspended) {
 
-  BaseState::set_suspended(suspended);
+  HeroState::set_suspended(suspended);
 
   if (carried_object != nullptr) {
     carried_object->set_suspended(suspended);

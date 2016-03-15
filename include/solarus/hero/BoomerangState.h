@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_BOOMERANG_STATE_H
 #define SOLARUS_HERO_BOOMERANG_STATE_H
 
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 #include <string>
 
 namespace Solarus {
@@ -25,7 +25,7 @@ namespace Solarus {
 /**
  * \brief The state "boomerang" of the hero.
  */
-class Hero::BoomerangState: public Hero::BaseState {
+class Hero::BoomerangState: public HeroState {
 
   public:
 

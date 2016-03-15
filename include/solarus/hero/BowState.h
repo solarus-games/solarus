@@ -17,14 +17,14 @@
 #ifndef SOLARUS_HERO_BOW_STATE_H
 #define SOLARUS_HERO_BOW_STATE_H
 
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 
 namespace Solarus {
 
 /**
  * \brief The state "bow" of the hero.
  */
-class Hero::BowState: public Hero::BaseState {
+class Hero::BowState: public HeroState {
 
   public:
 

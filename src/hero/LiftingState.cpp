@@ -36,7 +36,7 @@ Hero::LiftingState::LiftingState(
     Hero& hero,
     const std::shared_ptr<CarriedObject>& lifted_item
 ):
-  BaseState(hero, "lifting"),
+  HeroState(hero, "lifting"),
   lifted_item(lifted_item) {
 
   Debug::check_assertion(lifted_item != nullptr, "Missing lifted item");
@@ -48,7 +48,7 @@ Hero::LiftingState::LiftingState(
  */
 void Hero::LiftingState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
 
   // initialize the entity that will be lifted
   lifted_item->set_map(get_map());
@@ -67,7 +67,7 @@ void Hero::LiftingState::start(const State* previous_state) {
  */
 void Hero::LiftingState::stop(const State* next_state) {
 
-  BaseState::stop(next_state);
+  HeroState::stop(next_state);
 
   if (lifted_item != nullptr) {
 
@@ -94,7 +94,7 @@ void Hero::LiftingState::stop(const State* next_state) {
  */
 void Hero::LiftingState::update() {
 
-  BaseState::update();
+  HeroState::update();
 
   lifted_item->update();
 
@@ -115,7 +115,7 @@ void Hero::LiftingState::update() {
  */
 void Hero::LiftingState::set_suspended(bool suspended) {
 
-  BaseState::set_suspended(suspended);
+  HeroState::set_suspended(suspended);
 
   if (lifted_item != nullptr) {
     lifted_item->set_suspended(suspended);

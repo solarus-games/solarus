@@ -37,7 +37,7 @@ namespace Solarus {
  */
 Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
     bool use_memorized_xy, uint32_t end_delay, bool with_sound):
-  BaseState(hero, "back to solid ground"),
+  HeroState(hero, "back to solid ground"),
   end_delay(end_delay),
   end_date(0),
   with_sound(with_sound) {
@@ -60,7 +60,7 @@ Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
  */
 void Hero::BackToSolidGroundState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
 
   Hero& hero = get_entity();
   hero.set_movement(std::make_shared<TargetMovement>(
@@ -81,7 +81,7 @@ void Hero::BackToSolidGroundState::start(const State* previous_state) {
  */
 void Hero::BackToSolidGroundState::stop(const State* next_state) {
 
-  BaseState::stop(next_state);
+  HeroState::stop(next_state);
 
   get_entity().clear_movement();
 }
@@ -91,7 +91,7 @@ void Hero::BackToSolidGroundState::stop(const State* next_state) {
  */
 void Hero::BackToSolidGroundState::update() {
 
-  BaseState::update();
+  HeroState::update();
 
   // the current movement is an instance of TargetMovement
   Hero& hero = get_entity();
@@ -116,7 +116,7 @@ void Hero::BackToSolidGroundState::update() {
 
 void Hero::BackToSolidGroundState::set_suspended(bool suspended) {
 
-  BaseState::set_suspended(suspended);
+  HeroState::set_suspended(suspended);
 
   if (!suspended && end_date != 0) {
     end_date += System::now() - get_when_suspended();

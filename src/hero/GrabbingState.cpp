@@ -29,7 +29,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::GrabbingState::GrabbingState(Hero& hero):
-  BaseState(hero, "grabbing") {
+  HeroState(hero, "grabbing") {
 
 }
 
@@ -39,7 +39,7 @@ Hero::GrabbingState::GrabbingState(Hero& hero):
  */
 void Hero::GrabbingState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
 
   get_sprites().set_animation_grabbing();
 }

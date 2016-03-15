@@ -30,7 +30,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::PullingState::PullingState(Hero& hero):
-  BaseState(hero, "pulling"),
+  HeroState(hero, "pulling"),
   pulled_entity(nullptr),
   pulling_movement(nullptr) {
 
@@ -42,7 +42,7 @@ Hero::PullingState::PullingState(Hero& hero):
  */
 void Hero::PullingState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
 
   pulled_entity = nullptr;
   get_sprites().set_animation_pulling();
@@ -53,7 +53,7 @@ void Hero::PullingState::start(const State* previous_state) {
  */
 void Hero::PullingState::stop(const State* next_state) {
 
-  BaseState::stop(next_state);
+  HeroState::stop(next_state);
 
   if (is_moving_grabbed_entity()) {
     get_entity().clear_movement();
@@ -67,7 +67,7 @@ void Hero::PullingState::stop(const State* next_state) {
  */
 void Hero::PullingState::update() {
 
-  BaseState::update();
+  HeroState::update();
 
   Hero& hero = get_entity();
   if (!is_moving_grabbed_entity()) {

@@ -17,14 +17,14 @@
 #ifndef SOLARUS_HERO_PLUNGING_STATE_H
 #define SOLARUS_HERO_PLUNGING_STATE_H
 
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 
 namespace Solarus {
 
 /**
  * \brief The state "Plunging" of the hero.
  */
-class Hero::PlungingState: public Hero::BaseState {
+class Hero::PlungingState: public HeroState {
 
   public:
 

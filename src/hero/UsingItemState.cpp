@@ -30,7 +30,7 @@ Hero::UsingItemState::UsingItemState(
     Hero& hero,
     EquipmentItem& item):
 
-  BaseState(hero, "using item"),
+  HeroState(hero, "using item"),
   item_usage(hero.get_game(), item) {
 
 }
@@ -41,7 +41,7 @@ Hero::UsingItemState::UsingItemState(
  */
 void Hero::UsingItemState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
 
   bool interaction = false;
   Entity* facing_entity = get_entity().get_facing_entity();
@@ -62,7 +62,7 @@ void Hero::UsingItemState::start(const State* previous_state) {
  */
 void Hero::UsingItemState::update() {
 
-  BaseState::update();
+  HeroState::update();
 
   item_usage.update();
   if (item_usage.is_finished() && is_current_state()) {

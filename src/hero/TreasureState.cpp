@@ -41,7 +41,7 @@ Hero::TreasureState::TreasureState(
     const ScopedLuaRef& callback_ref
 ):
 
-  BaseState(hero, "treasure"),
+  HeroState(hero, "treasure"),
   treasure(treasure),
   treasure_sprite(),
   callback_ref(callback_ref) {
@@ -56,7 +56,7 @@ Hero::TreasureState::TreasureState(
  */
 void Hero::TreasureState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
 
   // Show the animation.
   get_sprites().save_animation_direction();
@@ -83,7 +83,7 @@ void Hero::TreasureState::start(const State* previous_state) {
  */
 void Hero::TreasureState::stop(const State* next_state) {
 
-  BaseState::stop(next_state);
+  HeroState::stop(next_state);
 
   // restore the sprite's direction
   get_sprites().restore_animation_direction();
@@ -91,11 +91,11 @@ void Hero::TreasureState::stop(const State* next_state) {
 }
 
 /**
- * \copydoc Hero::BaseState::update
+ * \copydoc Hero::HeroState::update
  */
 void Hero::TreasureState::update() {
 
-  BaseState::update();
+  HeroState::update();
 
   treasure_sprite->update();
 }
@@ -105,7 +105,7 @@ void Hero::TreasureState::update() {
  */
 void Hero::TreasureState::draw_on_map() {
 
-  BaseState::draw_on_map();
+  HeroState::draw_on_map();
 
   const Hero& hero = get_entity();
   int x = hero.get_x();

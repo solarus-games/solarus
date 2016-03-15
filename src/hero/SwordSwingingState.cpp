@@ -32,7 +32,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::SwordSwingingState::SwordSwingingState(Hero& hero):
-  BaseState(hero, "sword swinging"),
+  HeroState(hero, "sword swinging"),
   attacked(false),
   sword_finished(false) {
 
@@ -44,7 +44,7 @@ Hero::SwordSwingingState::SwordSwingingState(Hero& hero):
  */
 void Hero::SwordSwingingState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
 
   get_sprites().play_sword_sound();
   get_sprites().set_animation_sword();
@@ -57,7 +57,7 @@ void Hero::SwordSwingingState::start(const State* previous_state) {
  */
 void Hero::SwordSwingingState::stop(const State* next_state) {
 
-  BaseState::stop(next_state);
+  HeroState::stop(next_state);
 
   Hero& hero = get_entity();
   if (hero.get_movement() != nullptr) {
@@ -71,7 +71,7 @@ void Hero::SwordSwingingState::stop(const State* next_state) {
  */
 void Hero::SwordSwingingState::update() {
 
-  BaseState::update();
+  HeroState::update();
 
   // check the animation
   Hero& hero = get_entity();

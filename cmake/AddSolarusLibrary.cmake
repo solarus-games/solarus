@@ -66,7 +66,6 @@ file(
   include/solarus/entities/Wall.h
 
   include/solarus/hero/BackToSolidGroundState.h
-  include/solarus/hero/BaseState.h
   include/solarus/hero/BoomerangState.h
   include/solarus/hero/BowState.h
   include/solarus/hero/CarryingState.h
@@ -76,6 +75,7 @@ file(
   include/solarus/hero/FreezedState.h
   include/solarus/hero/GrabbingState.h
   include/solarus/hero/HeroSprites.h
+  include/solarus/hero/HeroState.h
   include/solarus/hero/HookshotState.h
   include/solarus/hero/HurtState.h
   include/solarus/hero/JumpingState.h
@@ -266,7 +266,6 @@ file(
   src/entities/Wall.cpp
 
   src/hero/BackToSolidGroundState.cpp
-  src/hero/BaseState.cpp
   src/hero/BoomerangState.cpp
   src/hero/BowState.cpp
   src/hero/CarryingState.cpp
@@ -276,6 +275,7 @@ file(
   src/hero/FreezedState.cpp
   src/hero/GrabbingState.cpp
   src/hero/HeroSprites.cpp
+  src/hero/HeroState.cpp
   src/hero/HookshotState.cpp
   src/hero/HurtState.cpp
   src/hero/JumpingState.cpp

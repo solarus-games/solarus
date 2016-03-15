@@ -36,7 +36,7 @@ Hero::ForcedWalkingState::ForcedWalkingState(
     bool loop,
     bool ignore_obstacles):
 
-  BaseState(hero, "forced walking"),
+  HeroState(hero, "forced walking"),
   movement(std::make_shared<PathMovement>(
       path, hero.get_walking_speed(), loop, ignore_obstacles, false
   )) {
@@ -49,7 +49,7 @@ Hero::ForcedWalkingState::ForcedWalkingState(
  */
 void Hero::ForcedWalkingState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
 
   // update the sprites
   HeroSprites& sprites = get_sprites();
@@ -65,7 +65,7 @@ void Hero::ForcedWalkingState::start(const State* previous_state) {
  */
 void Hero::ForcedWalkingState::stop(const State* next_state) {
 
-  BaseState::stop(next_state);
+  HeroState::stop(next_state);
 
   get_entity().clear_movement();
 }
@@ -75,7 +75,7 @@ void Hero::ForcedWalkingState::stop(const State* next_state) {
  */
 void Hero::ForcedWalkingState::update() {
 
-  BaseState::update();
+  HeroState::update();
 
   get_sprites().set_animation_direction(movement->get_displayed_direction4());
 

@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_INVENTORY_ITEM_STATE_H
 #define SOLARUS_HERO_INVENTORY_ITEM_STATE_H
 
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 #include "solarus/EquipmentItemUsage.h"
 
 namespace Solarus {
@@ -25,7 +25,7 @@ namespace Solarus {
 /**
  * \brief The state "using equipment item" of the hero.
  */
-class Hero::UsingItemState: public Hero::BaseState {
+class Hero::UsingItemState: public HeroState {
 
   public:
 

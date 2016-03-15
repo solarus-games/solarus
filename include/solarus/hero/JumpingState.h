@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_JUMPING_STATE_H
 #define SOLARUS_HERO_JUMPING_STATE_H
 
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 #include <memory>
 
 namespace Solarus {
@@ -27,7 +27,7 @@ class JumpMovement;
 /**
  * \brief The state "Jumping" of the hero.
  */
-class Hero::JumpingState: public Hero::BaseState {
+class Hero::JumpingState: public HeroState {
 
   public:
 

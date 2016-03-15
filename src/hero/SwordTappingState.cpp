@@ -36,7 +36,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::SwordTappingState::SwordTappingState(Hero& hero):
-  BaseState(hero, "sword tapping"),
+  HeroState(hero, "sword tapping"),
   next_sound_date(0) {
 
 }
@@ -47,7 +47,7 @@ Hero::SwordTappingState::SwordTappingState(Hero& hero):
  */
 void Hero::SwordTappingState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
 
   get_sprites().set_animation_sword_tapping();
   next_sound_date = System::now() + 100;
@@ -59,7 +59,7 @@ void Hero::SwordTappingState::start(const State* previous_state) {
  */
 void Hero::SwordTappingState::stop(const State* next_state) {
 
-  BaseState::stop(next_state);
+  HeroState::stop(next_state);
 
   Hero& hero = get_entity();
   if (hero.get_movement() != nullptr) {
@@ -73,7 +73,7 @@ void Hero::SwordTappingState::stop(const State* next_state) {
  */
 void Hero::SwordTappingState::update() {
 
-  BaseState::update();
+  HeroState::update();
 
   if (is_suspended()) {
     return;
@@ -126,7 +126,7 @@ void Hero::SwordTappingState::update() {
  */
 void Hero::SwordTappingState::set_suspended(bool suspended) {
 
-  BaseState::set_suspended(suspended);
+  HeroState::set_suspended(suspended);
 
   if (!suspended) {
     next_sound_date += System::now() - get_when_suspended();

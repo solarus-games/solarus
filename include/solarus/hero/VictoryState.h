@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_VICTORY_STATE_H
 #define SOLARUS_HERO_VICTORY_STATE_H
 
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 #include <cstdint>
 
 namespace Solarus {
@@ -25,7 +25,7 @@ namespace Solarus {
 /**
  * \brief The victory state of the hero.
  */
-class Hero::VictoryState: public Hero::BaseState {
+class Hero::VictoryState: public HeroState {
 
   public:
 

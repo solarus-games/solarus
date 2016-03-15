@@ -32,6 +32,7 @@ class Equipment;
 class EquipmentItem;
 class EquipmentItemUsage;
 class HeroSprites;
+class HeroState;
 class Map;
 class Rectangle;
 class Treasure;
@@ -285,10 +286,9 @@ class Hero: public Entity {
         uint32_t end_delay = 0, bool with_sound = true);
     void start_state_from_ground();
 
-  protected:
+  private:
 
     // state
-    class BaseState;                /**< base class for all hero states */
     class PlayerMovementState;      /**< base class for states whose movement is controlled by the player */
     class FreeState;                /**< the hero is free to move (stopped or walking) and can interact with entities */
     class CarryingState;            /**< the hero can walk but he is carrying a pot or a bush */
@@ -318,8 +318,6 @@ class Hero: public Entity {
     class BowState;                 /**< the hero is shooting an arrow with a bow */
     class FreezedState;             /**< the hero cannot move for various possible reasons,
                                      * including an instruction from the script */
-
-  private:
 
     // position
     void place_on_map(Map& map);

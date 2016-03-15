@@ -36,7 +36,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::SpinAttackState::SpinAttackState(Hero& hero):
-  BaseState(hero, "sword spin attack"),
+  HeroState(hero, "sword spin attack"),
   being_pushed(false) {
 
 }
@@ -47,7 +47,7 @@ Hero::SpinAttackState::SpinAttackState(Hero& hero):
  */
 void Hero::SpinAttackState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
 
   // play the sound
   play_spin_attack_sound();
@@ -77,7 +77,7 @@ void Hero::SpinAttackState::start(const State* previous_state) {
  */
 void Hero::SpinAttackState::stop(const State* next_state) {
 
-  BaseState::stop(next_state);
+  HeroState::stop(next_state);
 
   Hero& hero = get_entity();
   if (hero.get_movement() != nullptr) {
@@ -151,7 +151,7 @@ bool Hero::SpinAttackState::is_cutting_with_sword(Entity& /* entity */) {
 int Hero::SpinAttackState::get_sword_damage_factor() const {
 
   // the damage are multiplied by 2
-  return BaseState::get_sword_damage_factor() * 2;
+  return HeroState::get_sword_damage_factor() * 2;
 }
 
 /**

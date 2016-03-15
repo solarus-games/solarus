@@ -17,14 +17,14 @@
 #ifndef SOLARUS_HERO_FREEZED_STATE_H
 #define SOLARUS_HERO_FREEZED_STATE_H
 
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 
 namespace Solarus {
 
 /**
  * \brief The state "Freezed" of the hero.
  */
-class Hero::FreezedState: public Hero::BaseState {
+class Hero::FreezedState: public HeroState {
 
   public:
 

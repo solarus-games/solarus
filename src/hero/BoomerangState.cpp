@@ -42,7 +42,7 @@ Hero::BoomerangState::BoomerangState(
     int speed,
     const std::string& tunic_preparing_animation,
     const std::string& sprite_name):
-  BaseState(hero, "boomerang"),
+  HeroState(hero, "boomerang"),
   direction_pressed8(-1),
   max_distance(max_distance),
   speed(speed),
@@ -57,7 +57,7 @@ Hero::BoomerangState::BoomerangState(
  */
 void Hero::BoomerangState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
 
   const bool boomerang_exists = !get_map().get_entities().get_entities_by_type<Boomerang>().empty();
   if (boomerang_exists) {
@@ -75,7 +75,7 @@ void Hero::BoomerangState::start(const State* previous_state) {
  */
 void Hero::BoomerangState::update() {
 
-  BaseState::update();
+  HeroState::update();
 
   Hero& hero = get_entity();
   if (hero.is_animation_finished()) {

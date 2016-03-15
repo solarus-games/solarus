@@ -26,7 +26,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::FreezedState::FreezedState(Hero& hero):
-  BaseState(hero, "frozen") {
+  HeroState(hero, "frozen") {
 
 }
 
@@ -36,7 +36,7 @@ Hero::FreezedState::FreezedState(Hero& hero):
  */
 void Hero::FreezedState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
 
   get_sprites().set_animation_stopped_normal();
   get_commands_effects().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);

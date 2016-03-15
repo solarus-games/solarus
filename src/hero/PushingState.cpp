@@ -30,7 +30,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::PushingState::PushingState(Hero& hero):
-  BaseState(hero, "pushing"),
+  HeroState(hero, "pushing"),
   pushing_direction4(0),
   pushed_entity(nullptr),
   pushing_movement(nullptr) {
@@ -43,7 +43,7 @@ Hero::PushingState::PushingState(Hero& hero):
  */
 void Hero::PushingState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
 
   pushing_direction4 = get_sprites().get_animation_direction();
   get_sprites().set_animation_pushing();
@@ -54,7 +54,7 @@ void Hero::PushingState::start(const State* previous_state) {
  */
 void Hero::PushingState::stop(const State* next_state) {
 
-  BaseState::stop(next_state);
+  HeroState::stop(next_state);
 
   if (is_moving_grabbed_entity()) {
     get_entity().clear_movement();
@@ -68,7 +68,7 @@ void Hero::PushingState::stop(const State* next_state) {
  */
 void Hero::PushingState::update() {
 
-  BaseState::update();
+  HeroState::update();
 
   Hero& hero = get_entity();
   if (!is_moving_grabbed_entity()) { // the hero is pushing a fixed obstacle

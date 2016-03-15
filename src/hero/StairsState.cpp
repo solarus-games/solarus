@@ -42,7 +42,7 @@ Hero::StairsState::StairsState(
     const std::shared_ptr<const Stairs>& stairs,
     Stairs::Way way
 ):
-  BaseState(hero, "stairs"),
+  HeroState(hero, "stairs"),
   stairs(stairs),
   way(way),
   phase(0),
@@ -61,7 +61,7 @@ Hero::StairsState::StairsState(
  */
 void Hero::StairsState::set_map(Map& map) {
 
-  BaseState::set_map(map);
+  HeroState::set_map(map);
 
   // the hero may go to another map while taking stairs and carrying an item
   if (carried_object != nullptr) {
@@ -75,7 +75,7 @@ void Hero::StairsState::set_map(Map& map) {
  */
 void Hero::StairsState::start(const State* previous_state) {
 
-  BaseState::start(previous_state);
+  HeroState::start(previous_state);
 
   // movement
   int speed = stairs->is_inside_floor() ? 40 : 24;
@@ -125,7 +125,7 @@ void Hero::StairsState::start(const State* previous_state) {
  */
 void Hero::StairsState::stop(const State* next_state) {
 
-  BaseState::stop(next_state);
+  HeroState::stop(next_state);
 
   if (carried_object != nullptr) {
 
@@ -157,7 +157,7 @@ void Hero::StairsState::stop(const State* next_state) {
  */
 void Hero::StairsState::update() {
 
-  BaseState::update();
+  HeroState::update();
 
   if (is_suspended()) {
     return;
@@ -265,7 +265,7 @@ void Hero::StairsState::update() {
  */
 void Hero::StairsState::set_suspended(bool suspended) {
 
-  BaseState::set_suspended(suspended);
+  HeroState::set_suspended(suspended);
 
   if (carried_object != nullptr) {
     carried_object->set_suspended(suspended);

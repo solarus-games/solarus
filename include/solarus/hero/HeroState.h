@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_BASE_STATE_H
-#define SOLARUS_HERO_BASE_STATE_H
+#ifndef SOLARUS_HERO_STATE_H
+#define SOLARUS_HERO_STATE_H
 
 #include "solarus/entities/EntityState.h"
 
@@ -24,7 +24,7 @@ namespace Solarus {
 /**
  * \brief The hero base state.
  */
-class Hero::BaseState: public Entity::State {
+class HeroState: public Entity::State {
 
   public:
 
@@ -38,7 +38,7 @@ class Hero::BaseState: public Entity::State {
 
   protected:
 
-    BaseState(Hero& hero, const std::string& state_name);
+    HeroState(Hero& hero, const std::string& state_name);
 
 };
 

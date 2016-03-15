@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_TREASURE_STATE_H
 #define SOLARUS_HERO_TREASURE_STATE_H
 
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 #include "solarus/lua/ScopedLuaRef.h"
 #include "solarus/Treasure.h"
 
@@ -26,7 +26,7 @@ namespace Solarus {
 /**
  * \brief The state "Treasure" of the hero.
  */
-class Hero::TreasureState: public Hero::BaseState {
+class Hero::TreasureState: public HeroState {
 
   public:
 

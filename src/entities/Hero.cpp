@@ -38,7 +38,7 @@
 #include "solarus/hero/FallingState.h"
 #include "solarus/hero/ForcedWalkingState.h"
 #include "solarus/hero/FreeState.h"
-#include "solarus/hero/FreezedState.h"
+#include "solarus/hero/FrozenState.h"
 #include "solarus/hero/GrabbingState.h"
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/hero/HookshotState.h"
@@ -2379,7 +2379,7 @@ void Hero::start_victory(const ScopedLuaRef& callback_ref) {
  * You can call start_free() to unfreeze him.
  */
 void Hero::start_frozen() {
-  set_state(new FreezedState(*this));
+  set_state(new FrozenState(*this));
 }
 
 /**

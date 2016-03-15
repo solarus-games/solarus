@@ -72,7 +72,7 @@ file(
   include/solarus/hero/FallingState.h
   include/solarus/hero/ForcedWalkingState.h
   include/solarus/hero/FreeState.h
-  include/solarus/hero/FreezedState.h
+  include/solarus/hero/FrozenState.h
   include/solarus/hero/GrabbingState.h
   include/solarus/hero/HeroSprites.h
   include/solarus/hero/HeroState.h
@@ -272,7 +272,7 @@ file(
   src/hero/FallingState.cpp
   src/hero/ForcedWalkingState.cpp
   src/hero/FreeState.cpp
-  src/hero/FreezedState.cpp
+  src/hero/FrozenState.cpp
   src/hero/GrabbingState.cpp
   src/hero/HeroSprites.cpp
   src/hero/HeroState.cpp

@@ -316,7 +316,7 @@ class Hero: public Entity {
     class BoomerangState;           /**< the hero is shooting a boomerang */
     class HookshotState;            /**< the hero is throwing his hookshot */
     class BowState;                 /**< the hero is shooting an arrow with a bow */
-    class FreezedState;             /**< the hero cannot move for various possible reasons,
+    class FrozenState;              /**< the hero cannot move for various possible reasons,
                                      * including an instruction from the script */
 
     // position

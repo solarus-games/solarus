@@ -128,7 +128,7 @@ void Camera::update() {
 void Camera::update_fixed_on() {
 
   Debug::check_assertion(tracked_entity != nullptr,
-      "Illegal call to Camera::update_fixed_on_hero()");
+      "Illegal call to Camera::update_fixed_on()");
 
   if (separator_next_scrolling_date == 0) {
     // Normal case: not traversing a separator.

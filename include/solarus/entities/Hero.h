@@ -324,7 +324,7 @@ class Hero: public Entity {
     void update_movement();
     void try_snap_to_facing_entity();
     void apply_additional_ground_movement();
-    Teletransporter* get_delayed_teletransporter();
+    std::shared_ptr<Teletransporter> get_delayed_teletransporter();
     std::shared_ptr<CarriedObject> get_carried_object();
 
     // ground
@@ -337,22 +337,23 @@ class Hero: public Entity {
     void update_invincibility();
 
     // state
-    bool invincible;                /**< Whether the hero is temporarily invincible. */
-    uint32_t end_invincible_date;   /**< When stopping the invincibility (0 means infinite). */
+    bool invincible;                       /**< Whether the hero is temporarily invincible. */
+    uint32_t end_invincible_date;          /**< When stopping the invincibility (0 means infinite). */
 
     // sprites
     std::unique_ptr<HeroSprites>
-        sprites;                    /**< the hero's sprites (note that we don't use the sprites structure from Entity) */
+        sprites;                           /**< the hero's sprites (note that we don't use the sprites structure from Entity) */
 
     // position
-    int normal_walking_speed;       /**< speed when normally walking */
-    int walking_speed;              /**< current walking speed (possibly changed by the ground) */
+    int normal_walking_speed;              /**< speed when normally walking */
+    int walking_speed;                     /**< current walking speed (possibly changed by the ground) */
 
     // state specific
-    Teletransporter* delayed_teletransporter;   /**< a teletransporter that will be activated when the hero finishes
-                                                 * a special behavior, such as falling into a hole or walking on stairs */
-    bool on_raised_blocks;          /**< indicates that the hero is currently on
-                                     * raised crystal blocks */
+    std::shared_ptr<Teletransporter>
+        delayed_teletransporter;           /**< a teletransporter that will be activated when the hero finishes
+                                            * a special behavior, such as falling into a hole or walking on stairs */
+    bool on_raised_blocks;                 /**< indicates that the hero is currently on
+                                            * raised crystal blocks */
 
     // ground
     Point last_solid_ground_coords;        /**< coordinates of the last hero position on a ground

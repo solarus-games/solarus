@@ -211,7 +211,7 @@ void Hero::StairsState::update() {
         // we are on the old floor:
         // there must be a teletransporter associated with these stairs,
         // otherwise the hero would get stuck into the walls
-        Teletransporter* teletransporter = hero.get_delayed_teletransporter();
+        std::shared_ptr<Teletransporter> teletransporter = hero.get_delayed_teletransporter();
         Debug::check_assertion(teletransporter != nullptr, "Teletransporter expected with the stairs");
         teletransporter->transport_hero(hero);
       }

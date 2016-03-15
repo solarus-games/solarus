@@ -1538,7 +1538,10 @@ void Hero::notify_collision_with_teletransporter(
     update_ground_below();  // Make sure the ground is up-to-date.
     bool on_hole = get_ground_below() == Ground::HOLE;
     if (on_hole || get_state().is_teletransporter_delayed()) {
-      this->delayed_teletransporter = &teletransporter; // fall into the hole (or do something else) first, transport later
+       // Fall into the hole (or do something else) first, transport later
+      this->delayed_teletransporter = std::static_pointer_cast<Teletransporter>(
+            teletransporter.shared_from_this()
+      );
     }
     else {
       teletransporter.transport_hero(*this); // usual case: transport right now
@@ -1550,9 +1553,9 @@ void Hero::notify_collision_with_teletransporter(
  * \brief Returns a teletransporter that has detected a collision with the hero
  * bu will be activated when the current action is finished
  * (e.g. falling into a hole or taking stairs).
- * \return the delayed teletransporter
+ * \return The delayed teletransporter or nullptr.
  */
-Teletransporter* Hero::get_delayed_teletransporter() {
+std::shared_ptr<Teletransporter> Hero::get_delayed_teletransporter() {
   return delayed_teletransporter;
 }
 

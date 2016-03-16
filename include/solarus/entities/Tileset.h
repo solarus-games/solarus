@@ -20,7 +20,6 @@
 #include "solarus/Common.h"
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/SurfacePtr.h"
-#include <map>
 #include <memory>
 #include <string>
 #include <unordered_map>

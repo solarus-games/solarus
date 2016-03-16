@@ -58,6 +58,7 @@ file(
   include/solarus/entities/Switch.h
   include/solarus/entities/Teletransporter.h
   include/solarus/entities/Tile.h
+  include/solarus/entities/TileInfo.h
   include/solarus/entities/TilePattern.h
   include/solarus/entities/TilePtr.h
   include/solarus/entities/TilesetData.h

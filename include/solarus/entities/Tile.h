@@ -24,8 +24,8 @@
 
 namespace Solarus {
 
+class TileInfo;
 class TilePattern;
-class Tileset;
 
 /**
  * \brief A small fixed piece of the map, optimized for collisions and drawing.
@@ -48,22 +48,7 @@ class Tile: public Entity {
 
     static constexpr EntityType ThisType = EntityType::TILE;
 
-    Tile(
-        int layer,
-        const Point& xy,
-        const Size& size,
-        Tileset& tileset,
-        const std::string& tile_pattern_id
-    );
-
-    Tile(
-        int layer,
-        const Point& xy,
-        const Size& size,
-        Tileset& tileset,
-        const std::string& tile_pattern_id,
-        TilePattern& tile_pattern
-    );
+    Tile(const TileInfo& tile_info);
 
     EntityType get_type() const override;
     bool is_drawn_at_its_position() const override;

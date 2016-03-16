@@ -16,6 +16,7 @@ Engine changes
 * Print the Lua version at startup (#692).
 * Outputs are now prefixed by [Solarus] and the current simulated time.
 * Maps: allow more than 3 layers (#445).
+* Improve the performance of loading big maps (#854).
 * Improve the performance of custom entity collisions.
 * Improve the performance of collisions by using a quadtree.
 * Entities far from the camera are no longer suspended.

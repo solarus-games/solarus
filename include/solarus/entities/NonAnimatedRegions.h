@@ -19,8 +19,8 @@
 
 #include "solarus/Common.h"
 #include "solarus/containers/Grid.h"
-#include "solarus/entities/TilePtr.h"
 #include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/entities/TileInfo.h"
 #include <vector>
 
 namespace Solarus {
@@ -41,25 +41,25 @@ class NonAnimatedRegions {
 
     NonAnimatedRegions(Map& map, int layer);
 
-    void add_tile(const TilePtr& tile);
-    void build(std::vector<TilePtr>& rejected_tiles);
+    void add_tile(const TileInfo& tile);
+    void build(std::vector<TileInfo>& rejected_tiles);
     void notify_tileset_changed();
     void draw_on_map();
 
   private:
 
-    bool overlaps_animated_tile(Tile& tile) const;
+    bool overlaps_animated_tile(const TileInfo& tile) const;
     void build_cell(int cell_index);
 
     Map& map;                               /**< The map. */
     int layer;                              /**< Layer of the map managed by this object. */
-    std::vector<TilePtr>
+    std::vector<TileInfo>
         tiles;                              /**< All tiles contained in this layer and candidates to
                                              * be optimized. This list is cleared after build() is called. */
     std::vector<bool> are_squares_animated; /**< Whether each 8x8 square of the map has animated tiles. */
 
     // Handle the lazy drawing.
-    Grid<TilePtr>
+    Grid<TileInfo>
         non_animated_tiles;                 /**< All non-animated tiles. Stored in a grid so that
                                              * we can quickly find the ones to draw lazily later when the
                                              * camera moves. */

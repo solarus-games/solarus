@@ -45,7 +45,7 @@ class Grid {
     size_t get_num_cells() const;
 
     void clear();
-    void add(const T& element);
+    void add(const T& element, const Rectangle& bounding_box);
 
     const std::vector<T>& get_elements(size_t cell_index) const;
     void get_elements(const Rectangle& where,
@@ -211,16 +211,15 @@ void Grid<T>::clear() {
  * The element will be added to all cells it overlaps.
  *
  * \param element The element to add.
+ * \param bounding_box Bounding box of the element.
  */
 template <typename T>
-void Grid<T>::add(const T& element) {
+void Grid<T>::add(const T& element, const Rectangle& bounding_box) {
 
-  const Rectangle& position = element->get_bounding_box();
-
-  const size_t row1 = position.get_y() / cell_size.height;
-  const size_t row2 = (position.get_y() + position.get_height()) / cell_size.height;
-  const size_t column1 = position.get_x() / cell_size.width;
-  const size_t column2 = (position.get_x() + position.get_width()) / cell_size.width;
+  const size_t row1 = bounding_box.get_y() / cell_size.height;
+  const size_t row2 = (bounding_box.get_y() + bounding_box.get_height()) / cell_size.height;
+  const size_t column1 = bounding_box.get_x() / cell_size.width;
+  const size_t column2 = (bounding_box.get_x() + bounding_box.get_width()) / cell_size.width;
 
   if (row1 > row2 || column1 > column2) {
     // No cell.

@@ -165,9 +165,7 @@ Entities::Entities(Game& game, Map& map):
   for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
 
     Ground initial_ground = (layer == 0) ? Ground::TRAVERSABLE : Ground::EMPTY;
-    for (int i = 0; i < tiles_grid_size; ++i) {
-      tiles_ground[layer].push_back(initial_ground);
-    }
+    tiles_ground[layer].assign(tiles_grid_size, initial_ground);
 
     non_animated_regions[layer] = std::unique_ptr<NonAnimatedRegions>(
         new NonAnimatedRegions(map, layer)
@@ -694,6 +692,19 @@ void Entities::bring_to_back(Entity& entity) {
  */
 void Entities::notify_map_started() {
 
+  // Setup non-animated tiles pre-drawing.
+  for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
+    std::vector<TileInfo> tiles_in_animated_regions_info;
+    non_animated_regions.at(layer)->build(tiles_in_animated_regions_info);
+    for (const TileInfo& tile_info : tiles_in_animated_regions_info) {
+      // This tile is non-optimizable, create it for real.
+      TilePtr tile = std::make_shared<Tile>(tile_info);
+      tiles_in_animated_regions.at(layer).push_back(tile);
+      add_entity(tile);
+    }
+  }
+
+  // Now, tiles_in_animated_regions contains the tiles that won't be optimized.
   // Notify entities.
   for (const EntityPtr& entity: all_entities) {
     entity->notify_map_started();
@@ -701,12 +712,6 @@ void Entities::notify_map_started() {
   }
   hero->notify_map_started();
   hero->notify_tileset_changed();
-
-  // Setup non-animated tiles pre-drawing.
-  for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
-    non_animated_regions.at(layer)->build(tiles_in_animated_regions.at(layer));
-    // Now, tiles_in_animated_regions contains the tiles that won't be optimized.
-  }
 }
 
 /**
@@ -766,33 +771,43 @@ void Entities::initialize_layers() {
 }
 
 /**
- * \brief Adds a tile on the map.
+ * \brief Adds tile creation info to the map.
+ *
+ * If possible, the actual tile will never be created for performance reasons:
+ * instead, only its picture and its obstacle info are stored.
  *
  * This function is called for each tile when loading the map.
- * The tiles cannot change during the game.
  *
- * \param tile The tile to add.
+ * \param tile_info The tile info to add.
  */
-void Entities::add_tile(const TilePtr& tile) {
+void Entities::add_tile_info(const TileInfo& tile_info) {
 
-  const int layer = tile->get_layer();
+  const Rectangle& box = tile_info.box;
+  const int layer = tile_info.layer;
+  Debug::check_assertion(map.is_valid_layer(layer),
+                         "Invalid layer");
 
-  // Add the tile to the map.
-  non_animated_regions[layer]->add_tile(tile);
+  Debug::check_assertion(tile_info.pattern != nullptr,
+                         "Missing tile pattern");
+  const TilePattern& pattern = *tile_info.pattern;
 
-  const TilePattern& pattern = tile->get_tile_pattern();
+  // The size of a runtime tile should be the size of its pattern
+  // for performance reasons, to optimize away more tiles.
   Debug::check_assertion(
-      tile->get_width() == pattern.get_width()
-      && tile->get_height() == pattern.get_height(),
+      box.get_width() == pattern.get_width() &&
+      box.get_height() == pattern.get_height(),
       "Static tile size must match tile pattern size");
 
-  // Update the ground list.
-  const Ground ground = tile->get_tile_pattern().get_ground();
+  // Update the animated regions manager.
+  non_animated_regions[tile_info.layer]->add_tile(tile_info);
 
-  const int tile_x8 = tile->get_x() / 8;
-  const int tile_y8 = tile->get_y() / 8;
-  const int tile_width8 = tile->get_width() / 8;
-  const int tile_height8 = tile->get_height() / 8;
+  // Update the ground list.
+  const Ground ground = pattern.get_ground();
+
+  const int tile_x8 = box.get_x() / 8;
+  const int tile_y8 = box.get_y() / 8;
+  const int tile_width8 = box.get_width() / 8;
+  const int tile_height8 = box.get_height() / 8;
 
   int i, j;
   Ground non_obstacle_triangle;
@@ -946,11 +961,7 @@ void Entities::add_entity(const EntityPtr& entity) {
       "No such layer on this map");
 
   const EntityType type = entity->get_type();
-  if (type == EntityType::TILE) {
-    // Tiles are optimized specifically for obstacle checks and rendering.
-    add_tile(std::static_pointer_cast<Tile>(entity));
-  }
-  else {
+  if (type != EntityType::TILE) {  // Tiles are optimized specifically.
     const int layer = entity->get_layer();
 
     // Update the quadtree.

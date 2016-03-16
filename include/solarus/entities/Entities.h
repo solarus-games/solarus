@@ -42,6 +42,9 @@ class Map;
 class MapData;
 class NonAnimatedRegions;
 class Rectangle;
+class Tileset;
+class TilePattern;
+struct TileInfo;
 
 using EntityList = std::list<EntityPtr>;
 using EntitySet = std::set<EntityPtr>;
@@ -110,7 +113,9 @@ class SOLARUS_API Entities {
 
     // Handle entities.
     void create_entities(const MapData& data);
+    void add_tile_info(const TileInfo& tile);
     void add_entity(const EntityPtr& entity);
+    void add_tile(const TilePtr& entity);
     void remove_entity(Entity& entity);
     void remove_entity(const std::string& name);
     void remove_entities_with_prefix(const std::string& prefix);
@@ -170,7 +175,6 @@ class SOLARUS_API Entities {
     };
 
     void initialize_layers();
-    void add_tile(const TilePtr& tile);
     void set_tile_ground(int layer, int x8, int y8, Ground ground);
     void remove_marked_entities();
     void notify_entity_removed(Entity& entity);

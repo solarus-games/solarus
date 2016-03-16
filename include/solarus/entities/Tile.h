@@ -24,7 +24,7 @@
 
 namespace Solarus {
 
-class TileInfo;
+struct TileInfo;
 class TilePattern;
 
 /**

@@ -34,10 +34,6 @@ struct TileInfo {
   Rectangle box;
   std::string pattern_id;
   TilePattern* pattern = nullptr;
-
-  const Rectangle& get_bounding_box() const {
-    return box;
-  }
 };
 
 }

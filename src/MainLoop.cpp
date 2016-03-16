@@ -512,11 +512,21 @@ void MainLoop::initialize_lua_console() {
   std::thread stdin_thread([&]() {
 
     std::string line;
-    while (std::getline(std::cin, line)) {
-      push_lua_command(line);
+    while (!is_exiting()) {
+
+      if (std::cin.peek() == std::char_traits<char>::eof()) {
+        // Don't block if there is nothing to read yet.
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        continue;
+      }
+
+      if (std::getline(std::cin, line)) {
+        push_lua_command(line);
+      }
     }
   });
   stdin_thread.detach();  // Don't wait for stdin to end.
+  // TODO join
 }
 
 }

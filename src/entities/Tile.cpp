@@ -38,9 +38,32 @@ Tile::Tile(
     Tileset& tileset,
     const std::string& tile_pattern_id
 ):
+  Tile(layer, xy, size, tileset, tile_pattern_id,
+       tileset.get_tile_pattern(tile_pattern_id)) {
+
+}
+
+/**
+ * \brief Creates a new tile.
+ * \param layer layer of the tile
+ * \param xy Coordinates of the tile on the map
+ * \param size Size of the tile (the pattern can be repeated).
+ * \param tileset The tileset to use.
+ * \param tile_pattern_id Id of the tile pattern in the tileset.
+ * \param tile_pattern Tile tile pattern in the tileset.
+ * Must match the id.
+ */
+Tile::Tile(
+    int layer,
+    const Point& xy,
+    const Size& size,
+    Tileset& tileset,
+    const std::string& tile_pattern_id,
+    TilePattern& tile_pattern
+):
   Entity("", 0, layer, xy, size),
   tile_pattern_id(tile_pattern_id),
-  tile_pattern(tileset.get_tile_pattern(tile_pattern_id)) {
+  tile_pattern(tile_pattern) {
 
 }
 

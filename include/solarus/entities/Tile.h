@@ -56,6 +56,15 @@ class Tile: public Entity {
         const std::string& tile_pattern_id
     );
 
+    Tile(
+        int layer,
+        const Point& xy,
+        const Size& size,
+        Tileset& tileset,
+        const std::string& tile_pattern_id,
+        TilePattern& tile_pattern
+    );
+
     EntityType get_type() const override;
     bool is_drawn_at_its_position() const override;
     void draw_on_map() override;

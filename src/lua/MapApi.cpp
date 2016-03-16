@@ -366,18 +366,29 @@ int LuaContext::l_create_tile(lua_State* l) {
     const Size size =  entity_creation_check_size(l, 1, data);
     const std::string& tile_pattern_id = data.get_string("pattern");
 
-    const TilePattern& pattern = map.get_tileset().get_tile_pattern(tile_pattern_id);
+    Tileset& tileset = map.get_tileset();
+    TilePattern& pattern = tileset.get_tile_pattern(tile_pattern_id);
+    const Size& pattern_size = pattern.get_size();
+    Entities& entities = map.get_entities();
+
+    // If the tile is big, divide it in several smaller tiles so that
+    // most of them can still be optimized away when creating the list of
+    // tiles in animated regions.
+    // Otherwise, tiles expanded in big rectangles like a lake or a dungeon
+    // floor would be entirely redrawn at each frame if just one small
+    // animated tile overlapped them.
 
     for (int current_y = y; current_y < y + size.height; current_y += pattern.get_height()) {
       for (int current_x = x; current_x < x + size.width; current_x += pattern.get_width()) {
         EntityPtr entity = std::make_shared<Tile>(
             layer,
             Point(current_x, current_y),
-            pattern.get_size(),
-            map.get_tileset(),
-            tile_pattern_id
+            pattern_size,
+            tileset,
+            tile_pattern_id,
+            pattern
         );
-        map.get_entities().add_entity(entity);
+        entities.add_entity(entity);
       }
     }
 

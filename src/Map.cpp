@@ -68,18 +68,6 @@ const std::string& Map::get_id() const {
 }
 
 /**
- * \brief Returns the tileset associated to this map.
- * \return the tileset
- */
-Tileset& Map::get_tileset() {
-
-  SOLARUS_ASSERT(tileset != nullptr,
-      std::string("Missing tileset in map '") + get_id() + "'"
-  );
-  return *tileset;
-}
-
-/**
  * \brief Returns the id of the tileset associated to this map.
  * \return the id of the tileset
  */

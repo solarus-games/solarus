@@ -23,6 +23,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 struct lua_State;
 
@@ -61,7 +62,7 @@ class Tileset {
     );
 
     const std::string id;                             /**< id of the tileset */
-    std::map<std::string, std::unique_ptr<TilePattern>>
+    std::unordered_map<std::string, std::unique_ptr<TilePattern>>
         tile_patterns;                                /**< tile patterns in this tileset */
     Color background_color;                           /**< background color of the tileset */
     SurfacePtr tiles_image;                           /**< image from which the tile patterns are extracted */

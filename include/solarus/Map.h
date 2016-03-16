@@ -261,6 +261,18 @@ inline bool Map::test_collision_with_border(const Point& point) const {
 }
 
 /**
+ * \brief Returns the tileset associated to this map.
+ * \return The tileset.
+ */
+inline Tileset& Map::get_tileset() {
+
+  SOLARUS_ASSERT(tileset != nullptr,
+      std::string("Missing tileset in map '") + get_id() + "'"
+  );
+  return *tileset;
+}
+
+/**
  * \brief Returns the entities of the map.
  *
  * This function should not be called before the map is loaded into a game.

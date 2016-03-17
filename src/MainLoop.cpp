@@ -523,6 +523,7 @@ void MainLoop::initialize_lua_console() {
       }
     }
   });
+  stdin_thread.detach();
 }
 
 /**

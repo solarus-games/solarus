@@ -19,6 +19,7 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QSize>
+#include <QTimer>
 
 namespace SolarusGui {
 
@@ -40,6 +41,16 @@ QuestRunner::QuestRunner(QObject* parent) :
           this, SIGNAL(finished()));  // TODO report the error
   connect(&process, SIGNAL(readyReadStandardOutput()),
           this, SLOT(standard_output_data_available()));
+
+  // Workaround to make the quest process close properly instead of hanging
+  // while reading on its stdin on windows.
+  QTimer* timer = new QTimer(this);
+  connect(timer, &QTimer::timeout, [=] () {
+    if (is_started()) {
+      process.write("\n");
+    }
+  });
+  timer->start(100);
 }
 
 /**

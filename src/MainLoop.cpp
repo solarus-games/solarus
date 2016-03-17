@@ -199,6 +199,7 @@ MainLoop::~MainLoop() {
   TilePattern::quit();
   CurrentQuest::quit();
   System::quit();
+  quit_lua_console();
 }
 
 /**
@@ -509,24 +510,32 @@ void MainLoop::load_quest_properties() {
 void MainLoop::initialize_lua_console() {
 
   // Watch stdin in a separate thread.
-  std::thread stdin_thread([&]() {
+  stdin_thread = std::thread([&]() {
 
     std::string line;
+
     while (!is_exiting()) {
 
-      if (std::cin.peek() == std::char_traits<char>::eof()) {
-        // Don't block if there is nothing to read yet.
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        continue;
-      }
-
       if (std::getline(std::cin, line)) {
-        push_lua_command(line);
+        if (!line.empty()) {
+          push_lua_command(line);
+        }
       }
     }
   });
-  stdin_thread.detach();  // Don't wait for stdin to end.
-  // TODO join
+}
+
+/**
+ * \brief Cleans resources started by initialize_lua_console().
+ */
+void MainLoop::quit_lua_console() {
+
+  exiting = true;
+  if (!stdin_thread.joinable()) {
+      return;
+  }
+
+  stdin_thread.join();
 }
 
 }

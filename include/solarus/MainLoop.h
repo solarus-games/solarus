@@ -22,6 +22,7 @@
 #include <atomic>
 #include <memory>
 #include <mutex>
+#include <thread>
 #include <vector>
 
 namespace Solarus {
@@ -65,6 +66,7 @@ class SOLARUS_API MainLoop {
 
     void load_quest_properties();
     void initialize_lua_console();
+    void quit_lua_console();
 
     std::unique_ptr<LuaContext>
         lua_context;              /**< The Lua world where scripts are run. */
@@ -75,6 +77,7 @@ class SOLARUS_API MainLoop {
     uint32_t debug_lag;           /**< Artificial lag added to each frame.
                                    * Useful to debug issues that only happen on slow systems. */
 
+    std::thread stdin_thread;     /**< Separate thread that reads Lua commands on stdin. */
     std::vector<std::string>
         lua_commands;             /**< Lua commands to run next cycle. */
     std::mutex

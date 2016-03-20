@@ -245,7 +245,6 @@ bool MainWindow::confirm_close() {
   case QMessageBox::Close:
     return true;
 
-
   case QMessageBox::Cancel:
   case QMessageBox::Escape:
     return false;

@@ -32,6 +32,7 @@ map{ id = "bugs/821_hero_start_attack", description = "#821: hero:start_attack()
 map{ id = "bugs/823_sprite_get_size_origin", description = "#823: sprite:get_size() and sprite:get_origin()" }
 map{ id = "bugs/830_entity_get_ground_position", description = "#830: entity:get_ground_position() and entity:get_ground_below()" }
 map{ id = "bugs/845_game_set_suspended", description = "#845: game:set_suspended" }
+map{ id = "bugs/859_crash_game_start", description = "#859: Crash when restarting game" }
 map{ id = "bugs/860_crash_remove_sprite", description = "#860: Crash when removing secondary sprite" }
 map{ id = "dynamic_tile_tests", description = "Dynamic tile tests" }
 map{ id = "jumper_tests", description = "Jumper tests" }

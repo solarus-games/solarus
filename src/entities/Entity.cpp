@@ -296,7 +296,7 @@ void Entity::notify_command_released(GameCommand /* game_command */) {
  * \return true if the entity is on a map
  */
 bool Entity::is_on_map() const {
-  return map != nullptr;
+  return map != nullptr && map->is_loaded();
 }
 
 /**
@@ -502,7 +502,7 @@ const Savegame& Entity::get_savegame() const {
 
 /**
  * \brief Returns the hero
- * \return the hero
+ * \return The hero.
  */
 Hero& Entity::get_hero() {
   return get_entities().get_hero();

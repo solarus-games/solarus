@@ -1245,7 +1245,7 @@ int LuaContext::entity_api_create_sprite(lua_State* l) {
 }
 
 /**
- * \brief Implementation of enemy:remove_sprite().
+ * \brief Implementation of enemy:remove_sprite() and custom_entity:remove_sprite().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */

@@ -1314,8 +1314,8 @@ void Entity::clear_old_sprites() {
         // No ++it since elements can be removed while traversing
     ) {
       const SpritePtr& sprite = it->second;
-      if (sprite == old_sprite) {
-        sprites.erase(it++);
+      if (sprite.get() == old_sprite.get()) {
+        it = sprites.erase(it);
       }
       else {
         ++it;

@@ -36,6 +36,7 @@ set(lua_test_maps
   "bugs/845_game_set_suspended"
   "bugs/859_crash_game_start"
   "bugs/860_crash_remove_sprite"
+  "bugs/867_crash_crystal"
 )
 
 # Build the Solarus testing library.

@@ -15,19 +15,19 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/Sprite.h"
-#include "solarus/SpriteAnimationSet.h"
 #include "solarus/SpriteAnimation.h"
 #include "solarus/SpriteAnimationDirection.h"
+#include "solarus/SpriteAnimationSet.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
-#include "solarus/movements/Movement.h"
-#include "solarus/lowlevel/PixelBits.h"
 #include "solarus/lowlevel/Color.h"
-#include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/PixelBits.h"
 #include "solarus/lowlevel/Size.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/System.h"
 #include "solarus/lua/LuaContext.h"
+#include "solarus/movements/Movement.h"
 #include <limits>
 #include <memory>
 #include <sstream>
@@ -611,6 +611,18 @@ bool Sprite::test_collision(const Sprite& other, int x1, int y1, int x2, int y2)
 
   if (!is_animation_started() || !other.is_animation_started()) {
     // The animation is not running.
+    return false;
+  }
+
+  if (!are_pixel_collisions_enabled()) {
+    Debug::error(std::string("Pixel-precise collisions are not enabled for sprite '") +
+                 get_animation_set_id() + "'");
+    return false;
+  }
+
+  if (!other.are_pixel_collisions_enabled()) {
+    Debug::error(std::string("Pixel-precise collisions are not enabled for sprite '") +
+                 other.get_animation_set_id() + "'");
     return false;
   }
 

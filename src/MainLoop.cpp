@@ -120,10 +120,13 @@ MainLoop::MainLoop(const Arguments& args):
   next_game(nullptr),
   exiting(false),
   debug_lag(0),
+  turbo(false),
   lua_commands(),
   lua_commands_mutex(),
   num_lua_commands_pushed(0),
   num_lua_commands_done(0) {
+
+  Logger::info(std::string("Solarus ") + SOLARUS_VERSION);
 
   // Main loop settings.
   const std::string lag_arg = args.get_argument_value("-lag");
@@ -131,8 +134,14 @@ MainLoop::MainLoop(const Arguments& args):
     std::istringstream iss(lag_arg);
     iss >> debug_lag;
   }
-
-  Logger::info(std::string("Solarus ") + SOLARUS_VERSION);
+  const std::string& turbo_arg = args.get_argument_value("-turbo");
+  turbo = (turbo_arg == "yes");
+  if (turbo) {
+    Logger::info("Turbo mode: yes");
+  }
+  else {
+    Logger::info("Turbo mode: no");
+  }
 
   // Try to open the quest.
   const std::string& quest_path = get_quest_path(args);
@@ -334,13 +343,15 @@ void MainLoop::run() {
     // 2. Update the world once, or several times (skipping some draws)
     // to catch up if the system is slow.
     int num_updates = 0;
-    while (lag >= System::timestep
-        && num_updates < 10  // To draw sometimes anyway on very slow systems.
-        && !is_exiting()) {
+    do {
       step();
       lag -= System::timestep;
       ++num_updates;
     }
+    while (lag >= System::timestep
+        && num_updates < 10  // To draw sometimes anyway on very slow systems.
+        && !is_exiting()
+    );
 
     // 3. Redraw the screen.
     if (num_updates > 0) {
@@ -348,14 +359,13 @@ void MainLoop::run() {
     }
 
     // 4. Sleep if we have time, to save CPU and GPU cycles.
-
-    if (debug_lag > 0) {
+    if (debug_lag > 0 && !turbo) {
       // Extra sleep time for debugging, useful to simulate slower systems.
       System::sleep(debug_lag);
     }
 
     last_frame_duration = (System::get_real_time() - time_dropped) - last_frame_date;
-    if (last_frame_duration < System::timestep) {
+    if (last_frame_duration < System::timestep && !turbo) {
       System::sleep(System::timestep - last_frame_duration);
     }
   }

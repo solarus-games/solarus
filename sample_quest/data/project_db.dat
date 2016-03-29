@@ -2,9 +2,23 @@ map{ id = "first_map", description = "First map" }
 
 tileset{ id = "castle", description = "Castle" }
 
+sprite{ id = "animals/bird_red", description = "Red Bird" }
+sprite{ id = "animals/cat_green", description = "Green Cat" }
+sprite{ id = "animals/cat_red", description = "Red Cat" }
+sprite{ id = "animals/cat_yellow", description = "Yellow Cat" }
+sprite{ id = "animals/chameleon", description = "Chameleon" }
+sprite{ id = "animals/mouse", description = "Mouse" }
+sprite{ id = "animals/phoenix", description = "Phoenix" }
+sprite{ id = "citizens/old_man", description = "Old man" }
+sprite{ id = "citizens/old_woman", description = "Old Woman" }
+sprite{ id = "dialogs/dialog_Edgar", description = "Edgar Dialog" }
+sprite{ id = "dialogs/dialog_Robyne", description = "Robyne Dialog" }
+sprite{ id = "dialogs/dialog_old_man", description = "Old man Dialog" }
+sprite{ id = "dialogs/dialog_old_woman", description = "Old woman Dialog" }
 sprite{ id = "enemies/enemy_killed", description = "Enemy killed" }
 sprite{ id = "enemies/slime_green", description = "Green Slime" }
 sprite{ id = "entities/arrow", description = "Arrow" }
+sprite{ id = "entities/big_chest", description = "Big chest" }
 sprite{ id = "entities/block", description = "Block" }
 sprite{ id = "entities/bomb", description = "Bomb" }
 sprite{ id = "entities/bomb_flower", description = "Bomb flower" }
@@ -12,7 +26,7 @@ sprite{ id = "entities/bush", description = "Bush" }
 sprite{ id = "entities/chest", description = "Chest" }
 sprite{ id = "entities/conveyor_belt", description = "Conveyor belt" }
 sprite{ id = "entities/crystal", description = "Crystal" }
-sprite{ id = "entities/explostion", description = "Explosion" }
+sprite{ id = "entities/explosion", description = "Explosion" }
 sprite{ id = "entities/fire", description = "Fire" }
 sprite{ id = "entities/grass", description = "Grass" }
 sprite{ id = "entities/hookshot", description = "Hookshot" }
@@ -40,52 +54,84 @@ sprite{ id = "things/ground_effects", description = "Ground effects" }
 music{ id = "village", description = "Village" }
 
 sound{ id = "arrow_hit", description = "arrow_hit" }
+sound{ id = "bomb", description = "bomb" }
 sound{ id = "boomerang", description = "boomerang" }
+sound{ id = "boots_crash", description = "boots_crash" }
 sound{ id = "boss_hurt", description = "boss_hurt" }
 sound{ id = "boss_killed", description = "boss_killed" }
+sound{ id = "bounce", description = "bounce" }
 sound{ id = "bow", description = "bow" }
 sound{ id = "bush", description = "bush" }
 sound{ id = "cane", description = "cane" }
+sound{ id = "cat", description = "cat" }
+sound{ id = "chest_appears", description = "chest_appears" }
 sound{ id = "chest_open", description = "chest_open" }
+sound{ id = "crystal", description = "crystal" }
+sound{ id = "cursor", description = "cursor" }
+sound{ id = "danger", description = "danger" }
 sound{ id = "door_closed", description = "door_closed" }
 sound{ id = "door_open", description = "door_open" }
 sound{ id = "door_unlocked", description = "door_unlocked" }
 sound{ id = "enemy_hurt", description = "enemy_hurt" }
 sound{ id = "enemy_killed", description = "enemy_killed" }
 sound{ id = "explosion", description = "explosion" }
+sound{ id = "falling_on_hole", description = "falling_on_hole" }
+sound{ id = "falling_rock", description = "falling_rock" }
+sound{ id = "fire_ball", description = "fire_ball" }
+sound{ id = "heart", description = "heart" }
+sound{ id = "hero_dying", description = "hero_dying" }
 sound{ id = "hero_falls", description = "hero_falls" }
 sound{ id = "hero_hurt", description = "hero_hurt" }
 sound{ id = "hero_lands", description = "hero_lands" }
 sound{ id = "hero_pushes", description = "hero_pushes" }
 sound{ id = "hookshot", description = "hookshot" }
+sound{ id = "item_fall", description = "item_fall" }
 sound{ id = "jump", description = "jump" }
+sound{ id = "key_fall", description = "key_fall" }
 sound{ id = "lift", description = "lift" }
 sound{ id = "message_end", description = "message_end" }
+sound{ id = "message_letter", description = "message_letter" }
 sound{ id = "monster_hurt", description = "monster_hurt" }
+sound{ id = "mouse", description = "mouse" }
+sound{ id = "ok", description = "ok" }
+sound{ id = "open_lock", description = "open_lock" }
+sound{ id = "pause_closed", description = "pause_closed" }
+sound{ id = "pause_open", description = "pause_open" }
 sound{ id = "picked_item", description = "picked_item" }
+sound{ id = "picked_rupee", description = "picked_rupee" }
+sound{ id = "quake", description = "quake" }
 sound{ id = "running", description = "running" }
 sound{ id = "running_obstacle", description = "running_obstacle" }
+sound{ id = "rupee_counter", description = "rupee_counter" }
+sound{ id = "rupee_counter_end", description = "rupee_counter_end" }
 sound{ id = "shield", description = "shield" }
+sound{ id = "soft_tap", description = "soft_tap" }
 sound{ id = "splash", description = "splash" }
 sound{ id = "stairs_down_end", description = "stairs_down_end" }
 sound{ id = "stairs_down_start", description = "stairs_down_start" }
 sound{ id = "stairs_up_end", description = "stairs_up_end" }
 sound{ id = "stairs_up_start", description = "stairs_up_start" }
 sound{ id = "stone", description = "stone" }
+sound{ id = "swim", description = "swim" }
 sound{ id = "switch", description = "switch" }
+sound{ id = "switch_hero", description = "switch_hero" }
 sound{ id = "sword1", description = "sword1" }
 sound{ id = "sword_spin_attack_load", description = "sword_spin_attack_load" }
 sound{ id = "sword_spin_attack_release", description = "sword_spin_attack_release" }
 sound{ id = "sword_tapping", description = "sword_tapping" }
 sound{ id = "sword_tapping_weak_wall", description = "sword_tapping_weak_wall" }
+sound{ id = "teleporter", description = "teleporter" }
 sound{ id = "throw", description = "throw" }
 sound{ id = "timer", description = "timer" }
 sound{ id = "timer_hurry", description = "timer_hurry" }
+sound{ id = "tongue", description = "tongue" }
 sound{ id = "treasure", description = "treasure" }
 sound{ id = "victory", description = "victory" }
 sound{ id = "walk_on_grass", description = "walk_on_grass" }
 sound{ id = "walk_on_water", description = "walk_on_water" }
+sound{ id = "warp", description = "warp" }
 sound{ id = "wrong", description = "wrong" }
+sound{ id = "wrong2", description = "wrong2" }
 
 item{ id = "bomb", description = "Bomb" }
 

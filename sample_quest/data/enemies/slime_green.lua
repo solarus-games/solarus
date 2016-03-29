@@ -18,7 +18,7 @@ function enemy:on_created()
   self:set_pushed_back_when_hurt(false)
   self:set_push_hero_on_sword(true)
   self:set_obstacle_behavior("flying") -- Allow to traverse bad grounds (and fall on them).
-  local sprite = self:get_sprite() 
+  local sprite = self:get_sprite()
   if not sprite then sprite = self:create_sprite("enemies/slime_green") end
   state = "hidden"
   function sprite:on_animation_finished(animation)
@@ -42,7 +42,7 @@ end
 
 function enemy:on_restarted()
   -- Allow to push enemies.
-  is_pushing_enemy = false 
+  is_pushing_enemy = false
   -- Reset the starting animation if necessary (the engine sets the "walking" animation).
   if state == "hidden" then
     self:get_sprite():set_animation("hidden")
@@ -132,8 +132,8 @@ function enemy:jump()
   sol.timer.start(self, refreshing_time, function() -- Update shift each 10 milliseconds.
     sprite:set_xy(0, -f(t))
     t = t + refreshing_time
-    if t > jump_duration then return false 
-      else return true 
+    if t > jump_duration then return false
+      else return true
     end
   end)
   -- Add a shadow sprite.
@@ -171,11 +171,11 @@ function enemy:check_on_ground()
   local map = self:get_map()
   local x, y, layer = self:get_position()
   local ground = map:get_ground(x, y, layer)
-  if ground == "empty" and layer > 0 then 
+  if ground == "empty" and layer > 0 then
     -- Fall to lower layer and check ground again.
      self:set_position(x, y, layer-1)
      self:check_on_ground() -- Check again new ground.
-  elseif ground == "hole" then  
+  elseif ground == "hole" then
     -- Create falling animation centered correctly on the 8x8 grid.
     x = math.floor(x/8)*8 + 4; if map:get_ground(x, y, layer) ~= "hole" then x = x + 4 end
     y = math.floor(y/8)*8 + 4; if map:get_ground(x, y, layer) ~= "hole" then y = y + 4 end
@@ -187,7 +187,7 @@ function enemy:check_on_ground()
     sol.audio.play_sound("falling_on_hole")
   elseif ground == "deep_water" then
     -- Sink in water.
-    local water_splash = map:create_custom_entity({x = x, y = y, layer = layer, direction = 0})    
+    local water_splash = map:create_custom_entity({x = x, y = y, layer = layer, direction = 0})
     local sprite = water_splash:create_sprite("things/ground_effects")
     sprite:set_animation("water_splash")
     self:remove()
@@ -195,7 +195,7 @@ function enemy:check_on_ground()
     sol.audio.play_sound("splash")
   elseif ground == "lava" then
     -- Sink in lava.
-    local lava_splash = map:create_custom_entity({x = x, y = y, layer = layer, direction = 0})    
+    local lava_splash = map:create_custom_entity({x = x, y = y, layer = layer, direction = 0})
     local sprite = lava_splash:create_sprite("things/ground_effects")
     sprite:set_animation("lava_splash")
     self:remove()

@@ -62,7 +62,7 @@ void print_help(const Arguments& args) {
     << "  -lua-console=yes|no           accepts standard input lines as Lua commands (default yes)"
     << std::endl
     << "  -turbo=yes|no                 runs as fast as possible rather than simulating real time (default no)"
-    << std::endl;
+    << std::endl
     << "  -lag=X                        slows down each frame of X milliseconds to simulate slower systems for debugging (default 0)"
     << std::endl;
 }

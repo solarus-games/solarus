@@ -161,7 +161,7 @@ animation{
 }
 animation{
   name = "running",
-  src_image = "main_heroes/edgar_running.png",
+  src_image = "main_heroes/running.png",
   frame_delay = 45,
   frame_to_loop_on = 0,
   directions = {
@@ -173,7 +173,7 @@ animation{
 }
 animation{
   name = "running_starting",
-  src_image = "main_heroes/edgar_running.png",
+  src_image = "main_heroes/running.png",
   frame_delay = 45,
   frame_to_loop_on = 0,
   directions = {

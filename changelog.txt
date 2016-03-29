@@ -95,6 +95,11 @@ Data files format changes
 * Maps: New property starting_location_mode on destinations (#819).
 * Dialogs: Allow empty texts.
 
+Sample quest changes
+--------------------
+
+* Lots of new sprites and sounds from Diarandor.
+
 __________________________
 
 Solarus 1.4.5 (2015-11-22)

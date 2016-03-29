@@ -2,6 +2,8 @@ map{ id = "first_map", description = "First map" }
 
 tileset{ id = "castle", description = "Castle" }
 
+sprite{ id = "enemies/enemy_killed", description = "Enemy killed" }
+sprite{ id = "enemies/slime_green", description = "Green Slime" }
 sprite{ id = "entities/arrow", description = "Arrow" }
 sprite{ id = "entities/block", description = "Block" }
 sprite{ id = "entities/bomb", description = "Bomb" }
@@ -23,15 +25,17 @@ sprite{ id = "entities/star", description = "Star" }
 sprite{ id = "entities/stone_small_black", description = "Stone (black)" }
 sprite{ id = "entities/stone_small_white", description = "Stone (white)" }
 sprite{ id = "entities/switch", description = "Switch" }
-sprite{ id = "hero/tunic1", description = "Hero tunic 1" }
-sprite{ id = "hero/sword1", description = "Hero sword 1" }
-sprite{ id = "hero/sword_stars1", description = "Hero sword stars 1" }
-sprite{ id = "hero/shield1", description = "Hero shield 1" }
 sprite{ id = "hero/ground1", description = "Grass under hero" }
 sprite{ id = "hero/ground2", description = "Shallow water under hero" }
+sprite{ id = "hero/shield1", description = "Hero shield 1" }
+sprite{ id = "hero/sword1", description = "Hero sword 1" }
+sprite{ id = "hero/sword_stars1", description = "Hero sword stars 1" }
 sprite{ id = "hero/trail", description = "Hero trail" }
-sprite{ id = "enemies/enemy_killed", description = "Enemy killed" }
+sprite{ id = "hero/tunic1", description = "Hero tunic 1" }
+sprite{ id = "main_heroes/edgar", description = "Edgar" }
+sprite{ id = "main_heroes/robyne", description = "Robyne" }
 sprite{ id = "menus/solarus_logo", description = "Solarus logo" }
+sprite{ id = "things/ground_effects", description = "Ground effects" }
 
 music{ id = "village", description = "Village" }
 
@@ -60,6 +64,7 @@ sound{ id = "message_end", description = "message_end" }
 sound{ id = "monster_hurt", description = "monster_hurt" }
 sound{ id = "picked_item", description = "picked_item" }
 sound{ id = "running", description = "running" }
+sound{ id = "running_obstacle", description = "running_obstacle" }
 sound{ id = "shield", description = "shield" }
 sound{ id = "splash", description = "splash" }
 sound{ id = "stairs_down_end", description = "stairs_down_end" }
@@ -74,20 +79,21 @@ sound{ id = "sword_spin_attack_release", description = "sword_spin_attack_releas
 sound{ id = "sword_tapping", description = "sword_tapping" }
 sound{ id = "sword_tapping_weak_wall", description = "sword_tapping_weak_wall" }
 sound{ id = "throw", description = "throw" }
-sound{ id = "timer_hurry", description = "timer_hurry" }
 sound{ id = "timer", description = "timer" }
+sound{ id = "timer_hurry", description = "timer_hurry" }
 sound{ id = "treasure", description = "treasure" }
 sound{ id = "victory", description = "victory" }
 sound{ id = "walk_on_grass", description = "walk_on_grass" }
 sound{ id = "walk_on_water", description = "walk_on_water" }
 sound{ id = "wrong", description = "wrong" }
-sound{ id = "running_obstacle", description = "running_obstacle" }
 
 item{ id = "bomb", description = "Bomb" }
 
+enemy{ id = "slime_green", description = "Green Slime" }
 
 
 language{ id = "en", description = "English" }
 
 font{ id = "8_bit", description = "8_bit" }
 font{ id = "minecraftia", description = "minecraftia" }
+

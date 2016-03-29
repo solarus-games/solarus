@@ -1730,7 +1730,10 @@ void Entity::check_collision(Entity& entity, Sprite& sprite) {
 
   // We check the collision between the specified entity's sprite and
   // all sprites of the current entity.
-  for (const NamedSprite& this_named_sprite: get_sprites()) {
+  // Make a copy of the sprites list in case it gets reallocated while
+  // traversing it.
+  std::vector<NamedSprite> this_sprites = get_sprites();
+  for (const NamedSprite& this_named_sprite: this_sprites) {
 
     Sprite& this_sprite = *this_named_sprite.second;
     if (this_sprite.test_collision(sprite, get_x(), get_y(), entity.get_x(), entity.get_y())) {

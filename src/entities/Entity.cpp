@@ -1270,6 +1270,14 @@ std::vector<SpritePtr> Entity::get_sprites() const {
 }
 
 /**
+ * \brief Returns all sprites of this entity and their names.
+ * \return The sprites and their names.
+ */
+std::vector<Entity::NamedSprite> Entity::get_named_sprites() const {
+  return sprites;
+}
+
+/**
  * \brief Creates a sprite and adds it to this entity.
  * \param animation_set_id Id of the sprite's animation set to use.
  * \param sprite_name Name to identify the sprite or an empty string.
@@ -1342,7 +1350,7 @@ void Entity::clear_old_sprites() {
 }
 
 /**
- * \brief Moves a sprite of this entity to the last position.
+ * \brief Changes the order of a sprite of this entity to display it first.
  * \return \c true in case of success, \c false if this entity has no such
  * sprite.
  */
@@ -1355,7 +1363,8 @@ bool Entity::bring_sprite_to_back(Sprite& sprite) {
     if (named_sprite.sprite.get() == &sprite) {
       NamedSprite copy = named_sprite;
       named_sprite.removed = true;
-      sprites.push_back(copy);
+      // Bring to back means displaying first.
+      sprites.insert(sprites.begin(), copy);
       return true;
     }
   }
@@ -1364,7 +1373,7 @@ bool Entity::bring_sprite_to_back(Sprite& sprite) {
 }
 
 /**
- * \brief Moves a sprite of this entity to the first position.
+ * \brief Changes the order of a sprite of this entity to display it last.
  * \return \c true in case of success, \c false if this entity has no such
  * sprite.
  */
@@ -1377,7 +1386,8 @@ bool Entity::bring_sprite_to_front(Sprite& sprite) {
     if (named_sprite.sprite.get() == &sprite) {
       NamedSprite copy = named_sprite;
       named_sprite.removed = true;
-      sprites.insert(sprites.begin(), copy);
+      // Bring to front means displaying last.
+      sprites.push_back(copy);
       return true;
     }
   }

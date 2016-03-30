@@ -194,6 +194,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     bool has_sprite() const;
     SpritePtr get_sprite(const std::string& sprite_name = "") const;
     std::vector<SpritePtr> get_sprites() const;
+    std::vector<NamedSprite> get_named_sprites() const;
     SpritePtr create_sprite(
         const std::string& animation_set_id,
         const std::string& sprite_name = ""

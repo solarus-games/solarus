@@ -822,7 +822,7 @@ class LuaContext {
       entity_api_bring_to_back,
       entity_api_snap_to_grid,
       entity_api_get_sprite,
-      // TODO entity_api_get_sprites,
+      entity_api_get_sprites,
       entity_api_create_sprite,
       entity_api_remove_sprite,
       entity_api_is_visible,
@@ -1072,6 +1072,10 @@ class LuaContext {
     static void push_map(lua_State* l, Map& map);
     static void push_entity(lua_State* l, Entity& entity);
     static void push_entity_iterator(lua_State* l, const EntityVector& entities);
+    static void push_named_sprite_iterator(
+        lua_State* l,
+        const std::vector<Entity::NamedSprite>& sprites
+    );
     static void push_hero(lua_State* l, Hero& hero);
     static void push_camera(lua_State* l, Camera& camera);
     static void push_npc(lua_State* l, Npc& npc);
@@ -1273,7 +1277,8 @@ class LuaContext {
       l_panic,
       l_loader,
       l_get_map_entity_or_global,
-      l_map_get_entities_next,
+      l_entity_iterator_next,
+      l_named_sprite_iterator_next,
       l_camera_do_callback,
       l_camera_restore,
       l_treasure_dialog_finished,

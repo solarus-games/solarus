@@ -438,25 +438,25 @@ void HeroSprites::reorder_sprites() {
   // Shadow, tunic, trail, ground, sword, sword stars, shield.
 
   if (shadow_sprite != nullptr) {
-    hero.bring_sprite_to_back(*shadow_sprite);
+    hero.bring_sprite_to_front(*shadow_sprite);
   }
   if (tunic_sprite != nullptr) {
-    hero.bring_sprite_to_back(*tunic_sprite);
+    hero.bring_sprite_to_front(*tunic_sprite);
   }
   if (trail_sprite != nullptr) {
-    hero.bring_sprite_to_back(*trail_sprite);
+    hero.bring_sprite_to_front(*trail_sprite);
   }
   if (ground_sprite != nullptr) {
-    hero.bring_sprite_to_back(*ground_sprite);
+    hero.bring_sprite_to_front(*ground_sprite);
   }
   if (sword_sprite != nullptr) {
-    hero.bring_sprite_to_back(*sword_sprite);
+    hero.bring_sprite_to_front(*sword_sprite);
   }
   if (sword_stars_sprite != nullptr) {
-    hero.bring_sprite_to_back(*sword_stars_sprite);
+    hero.bring_sprite_to_front(*sword_stars_sprite);
   }
   if (shield_sprite != nullptr) {
-    hero.bring_sprite_to_back(*shield_sprite);
+    hero.bring_sprite_to_front(*shield_sprite);
   }
 }
 

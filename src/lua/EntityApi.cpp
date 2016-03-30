@@ -127,6 +127,7 @@ void LuaContext::register_entity_module() {
       { "is_in_same_region", entity_api_is_in_same_region },\
       { "test_obstacles", entity_api_test_obstacles },\
       { "get_sprite", entity_api_get_sprite },\
+      { "get_sprites", entity_api_get_sprites },\
       { "is_visible", entity_api_is_visible },\
       { "set_visible", entity_api_set_visible },\
       { "get_movement", entity_api_get_movement },\
@@ -622,7 +623,7 @@ void LuaContext::push_entity_iterator(lua_State* l, const EntityVector& entities
   lua_pushinteger(l, 1);
   // 3 upvalues: entities table, size, current index.
 
-  lua_pushcclosure(l, l_map_get_entities_next, 3);
+  lua_pushcclosure(l, l_entity_iterator_next, 3);
 }
 
 /**
@@ -638,6 +639,82 @@ const std::string& LuaContext::get_entity_internal_type_name(
   SOLARUS_ASSERT(it != names.end(), "Missing entity internal type name");
 
   return it->second;
+}
+
+/**
+ * \brief Closure of an iterator over a list of sprites and their names.
+ *
+ * This closure expects 3 upvalues in this order:
+ * - An array of { name, sprite } pairs.
+ * - The size of the array (for performance).
+ * - The current index in the array.
+ *
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_named_sprite_iterator_next(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+
+    // Get upvalues.
+    const int table_index = lua_upvalueindex(1);
+    const int size = lua_tointeger(l, lua_upvalueindex(2));
+    int index = lua_tointeger(l, lua_upvalueindex(3));
+
+    if (index > size) {
+      // Finished.
+      return 0;
+    }
+
+    // Get the next value.
+    lua_rawgeti(l, table_index, index);   // pair
+    lua_rawgeti(l, -1, 1);                // pair name
+    lua_rawgeti(l, -2, 2);                // pair name sprite
+
+    // Increment index.
+    ++index;
+    lua_pushinteger(l, index);
+    lua_replace(l, lua_upvalueindex(3));
+
+    return 2;
+  });
+}
+
+/**
+ * \brief Pushes a list of sprites and their names as an iterator onto the stack.
+ *
+ * The iterator is pushed onto the stack as one value of type function.
+ *
+ * \param l A Lua context.
+ * \param sprites A list of sprites and their names. The iterator preserves their order.
+ */
+void LuaContext::push_named_sprite_iterator(
+    lua_State* l,
+    const std::vector<Entity::NamedSprite>& sprites
+) {
+  // Create a Lua table with the list of name-sprite pairs, preserving their order.
+  int i = 0;
+  lua_newtable(l);
+                                                 // sprites
+  for (const Entity::NamedSprite& named_sprite: sprites) {
+    if (named_sprite.removed) {
+      continue;
+    }
+    ++i;
+    lua_newtable(l);                             // sprites pair
+    push_string(l, named_sprite.name);           // sprites pair name
+    lua_rawseti(l, -2, 1);                       // sprites pair
+    push_sprite(l, *named_sprite.sprite);        // sprites pair sprite
+    lua_rawseti(l, -2, 2);                       // sprites pair
+
+    lua_rawseti(l, -2, i);                       // sprites
+  }
+
+  lua_pushinteger(l, i);
+  lua_pushinteger(l, 1);
+  // 3 upvalues: sprites table, size, current index.
+
+  lua_pushcclosure(l, l_named_sprite_iterator_next, 3);
 }
 
 /**
@@ -1217,6 +1294,22 @@ int LuaContext::entity_api_get_sprite(lua_State* l) {
     else {
       lua_pushnil(l);
     }
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of entity:get_sprites().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_sprites(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Entity& entity = *check_entity(l, 1);
+
+    const std::vector<Entity::NamedSprite> named_sprites = entity.get_named_sprites();
+    push_named_sprite_iterator(l, named_sprites);
     return 1;
   });
 }

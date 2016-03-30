@@ -77,6 +77,7 @@ Changes that do not introduce incompatibilities:
 * entity:test_obstacles() now also works without parameters.
 * entity:overlaps() now has an optional collision mode parameter (#748).
 * Add entity:get_sprite() to all entities, with an optional name value (#669).
+* Add a method entity:get_sprites() (#851).
 * enemy/custom_entity:create_sprite() now take an optional name value.
 * Add a method hero:start_attack() (#821).
 * Add methods chest:get/set_treasure() (#664).

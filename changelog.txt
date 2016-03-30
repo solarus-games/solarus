@@ -82,7 +82,6 @@ Changes that do not introduce incompatibilities:
 * Add a method hero:start_attack() (#821).
 * Add methods chest:get/set_treasure() (#664).
 * Add methods dynamic_tile:get_pattern_id() and get_modified_ground() (#755).
-* Add a method block:get_sprite().
 * Add an event chest:on_opened() with treasure info parameters (#483).
 * Add methods destination:get/set_starting_location_mode() (#819).
 * Add a method sprite:get_num_frames() (#818).

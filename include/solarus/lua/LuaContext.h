@@ -569,7 +569,7 @@ class LuaContext {
       sprite_api_create,
       sprite_api_get_animation_set,
       sprite_api_get_animation,
-      sprite_api_set_animation,  // TODO allow to pass the on_animation_finished callback as a parameter?
+      sprite_api_set_animation,
       sprite_api_has_animation,
       sprite_api_get_direction,
       sprite_api_set_direction,

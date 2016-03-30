@@ -87,6 +87,7 @@ Changes that do not introduce incompatibilities:
 * Add methods destination:get/set_starting_location_mode() (#819).
 * Add a method sprite:get_num_frames() (#818).
 * Add methods sprite:get_size() and sprite:get_origin() (#823).
+* sprite:set_animation() now takes an optional callback parameter (#861).
 
 Data files format changes
 -------------------------

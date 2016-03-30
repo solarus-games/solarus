@@ -39,6 +39,7 @@ set(lua_test_maps
   "bugs/855_hero_get_sprite_wrong"
   "bugs/859_crash_game_start"
   "bugs/860_crash_remove_sprite"
+  "bugs/861_sprite_set_animation_callback"
   "bugs/867_crash_crystal"
 )
 

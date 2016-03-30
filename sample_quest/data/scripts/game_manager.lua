@@ -15,6 +15,7 @@ function game_manager:start_game()
 
   local hero = game:get_hero()
   hero:set_tunic_sprite_id("main_heroes/edgar")
+  print(hero:get_sprite():get_animation_set())
 end
 
 return game_manager

@@ -67,7 +67,6 @@ Entity::Entity(
   direction(direction),
   sprites(),
   default_sprite_name(),
-  old_sprites(),
   visible(true),
   drawn_in_y_order(false),
   movement(nullptr),
@@ -402,9 +401,8 @@ void Entity::notify_map_opening_transition_finished() {
  */
 void Entity::notify_tileset_changed() {
 
-  for (const NamedSprite& named_sprite: get_sprites()) {
-    Sprite& sprite = *named_sprite.second;
-    sprite.set_tileset(get_map().get_tileset());
+  for (const SpritePtr& sprite: get_sprites()) {
+    sprite->set_tileset(get_map().get_tileset());
   }
 }
 
@@ -892,10 +890,9 @@ Rectangle Entity::get_extended_bounding_box(int margin) const {
 Rectangle Entity::get_max_bounding_box() const {
 
   Rectangle result = get_bounding_box();
-  for (const NamedSprite& named_sprite: get_sprites()) {
-    Sprite& sprite = *named_sprite.second;
-    Rectangle box = sprite.get_max_bounding_box();
-    box.add_xy(sprite.get_xy());  // Take into account the sprite's own offset.
+  for (const SpritePtr& sprite: get_sprites()) {
+    Rectangle box = sprite->get_max_bounding_box();
+    box.add_xy(sprite->get_xy());  // Take into account the sprite's own offset.
     box.add_xy(get_xy());  // Take into account the coordinates of the entity.
     result |= box;
     // TODO when the sprite's offset changes, update the bounding box
@@ -1205,7 +1202,13 @@ void Entity::set_optimization_distance(int distance) {
  * \return true if the entity has at least one sprite.
  */
 bool Entity::has_sprite() const {
-  return !sprites.empty();
+
+  for (const NamedSprite& named_sprite : sprites) {
+    if (!named_sprite.removed) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /**
@@ -1226,7 +1229,11 @@ SpritePtr Entity::get_sprite(const std::string& sprite_name) const {
     // No sprite name specified: use the default one if any.
     if (default_sprite_name.empty()) {
       // No default sprite either: return the first one.
-      return sprites.front().second;
+      for (const NamedSprite& named_sprite : sprites) {
+        if (!named_sprite.removed) {
+          return named_sprite.sprite;
+        }
+      }
     }
     else {
       valid_sprite_name = default_sprite_name;
@@ -1237,8 +1244,10 @@ SpritePtr Entity::get_sprite(const std::string& sprite_name) const {
   }
 
   for (const NamedSprite& named_sprite : sprites) {
-    if (named_sprite.first == valid_sprite_name) {
-      return named_sprite.second;
+    // Find a sprite with the given name and that was not removed.
+    if (named_sprite.name == valid_sprite_name &&
+        !named_sprite.removed) {
+      return named_sprite.sprite;
     }
   }
   return nullptr;
@@ -1248,8 +1257,16 @@ SpritePtr Entity::get_sprite(const std::string& sprite_name) const {
  * \brief Returns all sprites of this entity.
  * \return The sprites.
  */
-const std::vector<Entity::NamedSprite>& Entity::get_sprites() const {
-  return sprites;
+std::vector<SpritePtr> Entity::get_sprites() const {
+
+  std::vector<SpritePtr> result;
+  result.reserve(sprites.size());
+  for (const NamedSprite& named_sprite : sprites) {
+    if (!named_sprite.removed) {
+      result.push_back(named_sprite.sprite);
+    }
+  }
+  return result;
 }
 
 /**
@@ -1264,7 +1281,11 @@ SpritePtr Entity::create_sprite(
 ) {
   SpritePtr sprite = std::make_shared<Sprite>(animation_set_id);
 
-  sprites.push_back(std::make_pair(sprite_name, sprite));
+  NamedSprite named_sprite;
+  named_sprite.name = sprite_name;
+  named_sprite.sprite = sprite;
+  named_sprite.removed = false;
+  sprites.emplace_back(named_sprite);
   notify_bounding_box_changed();
   return sprite;
 }
@@ -1276,10 +1297,9 @@ SpritePtr Entity::create_sprite(
  */
 bool Entity::remove_sprite(Sprite& sprite) {
 
-  for (const NamedSprite& named_sprite: get_sprites()) {
-    const SpritePtr& current_sprite = named_sprite.second;
-    if (current_sprite.get() == &sprite) {
-      old_sprites.push_back(current_sprite);
+  for (NamedSprite& named_sprite: sprites) {
+    if (named_sprite.sprite.get() == &sprite) {
+      named_sprite.removed = true;
       return true;
     }
   }
@@ -1294,35 +1314,28 @@ bool Entity::remove_sprite(Sprite& sprite) {
  */
 void Entity::clear_sprites() {
 
-  for (const NamedSprite& named_sprite: get_sprites()) {
-    const SpritePtr& sprite = named_sprite.second;
-    old_sprites.push_back(sprite);
+  for (NamedSprite& named_sprite: sprites) {
+    named_sprite.removed = true;
   }
-
-  sprites.clear();
 }
 
 /**
- * \brief Really destroys the sprites that were recently removed.
+ * \brief Really removes the sprites that were recently marked to be removed.
  */
 void Entity::clear_old_sprites() {
 
-  for (const SpritePtr& old_sprite: old_sprites) {
-
-    for (auto it = sprites.begin();
-        it != sprites.end();
-        // No ++it since elements can be removed while traversing
-    ) {
-      const SpritePtr& sprite = it->second;
-      if (sprite.get() == old_sprite.get()) {
-        it = sprites.erase(it);
-      }
-      else {
-        ++it;
-      }
+  for (auto it = sprites.begin();
+      it != sprites.end();
+      // No ++it since elements can be removed while traversing
+  ) {
+    const NamedSprite& named_sprite = *it;
+    if (named_sprite.removed) {
+      it = sprites.erase(it);
+    }
+    else {
+      ++it;
     }
   }
-  old_sprites.clear();
 }
 
 /**
@@ -1606,9 +1619,8 @@ bool Entity::has_collision_mode(CollisionMode collision_mode) {
  */
 void Entity::enable_pixel_collisions() {
 
-  for (const NamedSprite& named_sprite: get_sprites()) {
-    Sprite& sprite = *named_sprite.second;
-    sprite.enable_pixel_collisions();
+  for (const NamedSprite& named_sprite: sprites) {
+    named_sprite.sprite->enable_pixel_collisions();
   }
 }
 
@@ -1732,12 +1744,11 @@ void Entity::check_collision(Entity& entity, Sprite& sprite) {
   // all sprites of the current entity.
   // Make a copy of the sprites list in case it gets reallocated while
   // traversing it.
-  std::vector<NamedSprite> this_sprites = get_sprites();
-  for (const NamedSprite& this_named_sprite: this_sprites) {
+  std::vector<SpritePtr> this_sprites = get_sprites();
+  for (const SpritePtr& this_sprite: this_sprites) {
 
-    Sprite& this_sprite = *this_named_sprite.second;
-    if (this_sprite.test_collision(sprite, get_x(), get_y(), entity.get_x(), entity.get_y())) {
-      notify_collision(entity, this_sprite, sprite);
+    if (this_sprite->test_collision(sprite, get_x(), get_y(), entity.get_x(), entity.get_y())) {
+      notify_collision(entity, *this_sprite, sprite);
     }
   }
 }
@@ -1886,12 +1897,19 @@ bool Entity::test_collision_center(const Entity& entity) const {
  */
 bool Entity::test_collision_sprites(Entity& entity) {
 
-  for (const NamedSprite& this_named_sprite: get_sprites()) {
-    Sprite& this_sprite = *this_named_sprite.second;
-    this_sprite.enable_pixel_collisions();
-    for (const NamedSprite& other_named_sprite: entity.get_sprites()) {
+  for (const NamedSprite& this_named_sprite: sprites) {
 
-      Sprite& other_sprite = *other_named_sprite.second;
+    if (this_named_sprite.removed) {
+      continue;
+    }
+    Sprite& this_sprite = *this_named_sprite.sprite;
+    this_sprite.enable_pixel_collisions();
+    for (const NamedSprite& other_named_sprite: entity.sprites) {
+
+      if (other_named_sprite.removed) {
+        continue;
+      }
+      Sprite& other_sprite = *other_named_sprite.sprite;
       other_sprite.enable_pixel_collisions();
       if (this_sprite.test_collision(other_sprite, get_x(), get_y(), entity.get_x(), entity.get_y())) {
         return true;
@@ -1974,8 +1992,11 @@ void Entity::check_collision_with_detectors() {
   get_map().check_collision_with_detectors(*this);
 
   // Detect pixel-precise collisions.
-  for (const NamedSprite& named_sprite: get_sprites()) {
-    Sprite& sprite = *named_sprite.second;
+  for (const NamedSprite& named_sprite: sprites) {
+    if (named_sprite.removed) {
+      continue;
+    }
+    Sprite& sprite = *named_sprite.sprite;
     if (sprite.are_pixel_collisions_enabled()) {
       get_map().check_collision_with_detectors(*this, sprite);
     }
@@ -2084,8 +2105,11 @@ void Entity::set_enabled(bool enabled) {
         stream_action->set_suspended(false);
       }
 
-      for (const NamedSprite& named_sprite: get_sprites()) {
-        Sprite& sprite = *named_sprite.second;
+      for (const NamedSprite& named_sprite: sprites) {
+        if (named_sprite.removed) {
+          continue;
+        }
+        Sprite& sprite = *named_sprite.sprite;
         sprite.set_suspended(false);
       }
 
@@ -2105,8 +2129,11 @@ void Entity::set_enabled(bool enabled) {
         get_movement()->set_suspended(true);
       }
 
-      for (const NamedSprite& named_sprite: get_sprites()) {
-        Sprite& sprite = *named_sprite.second;
+      for (const NamedSprite& named_sprite: sprites) {
+        if (named_sprite.removed) {
+          continue;
+        }
+        Sprite& sprite = *named_sprite.sprite;
         sprite.set_suspended(true);
       }
 
@@ -2559,8 +2586,11 @@ bool Entity::overlaps_camera() const {
     return true;
   }
 
-  for (const NamedSprite& named_sprite: get_sprites()) {
-    Sprite& sprite = *named_sprite.second;
+  for (const NamedSprite& named_sprite: sprites) {
+    if (named_sprite.removed) {
+      continue;
+    }
+    Sprite& sprite = *named_sprite.sprite;
     const Size& sprite_size = sprite.get_size();
     const Point& sprite_origin = sprite.get_origin();
     const Rectangle sprite_bounding_box(
@@ -3116,8 +3146,11 @@ void Entity::set_suspended(bool suspended) {
   }
 
   // Suspend/unsuspend sprite animations.
-  for (const NamedSprite& named_sprite: get_sprites()) {
-    Sprite& sprite = *named_sprite.second;
+  for (const NamedSprite& named_sprite: sprites) {
+    if (named_sprite.removed) {
+      continue;
+    }
+    Sprite& sprite = *named_sprite.sprite;
     sprite.set_suspended(suspended || !is_enabled());
   }
 
@@ -3154,8 +3187,11 @@ uint32_t Entity::get_when_suspended() const {
  */
 void Entity::set_animation_ignore_suspend(bool ignore_suspend) {
 
-  for (const NamedSprite& named_sprite: get_sprites()) {
-    Sprite& sprite = *named_sprite.second;
+  for (const NamedSprite& named_sprite: sprites) {
+    if (named_sprite.removed) {
+      continue;
+    }
+    Sprite& sprite = *named_sprite.sprite;
     sprite.set_ignore_suspend(ignore_suspend);
   }
 }
@@ -3188,8 +3224,12 @@ void Entity::update() {
   }
 
   // update the sprites
-  for (const NamedSprite& named_sprite: get_sprites()) {
-    Sprite& sprite = *named_sprite.second;
+  std::vector<NamedSprite> sprites = this->sprites;
+  for (const NamedSprite& named_sprite: sprites) {
+    if (named_sprite.removed) {
+      continue;
+    }
+    Sprite& sprite = *named_sprite.sprite;
 
     sprite.update();
     if (sprite.has_frame_changed()) {
@@ -3245,8 +3285,11 @@ bool Entity::is_drawn_at_its_position() const {
 void Entity::draw_on_map() {
 
   // Draw the sprites.
-  for (const NamedSprite& named_sprite: get_sprites()) {
-    Sprite& sprite = *named_sprite.second;
+  for (const NamedSprite& named_sprite: sprites) {
+    if (named_sprite.removed) {
+      continue;
+    }
+    Sprite& sprite = *named_sprite.sprite;
     get_map().draw_sprite(sprite, get_displayed_xy());
   }
 }

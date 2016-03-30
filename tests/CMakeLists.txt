@@ -34,6 +34,7 @@ set(lua_test_maps
   "bugs/823_sprite_get_size_origin"
   "bugs/830_entity_get_ground_position"
   "bugs/845_game_set_suspended"
+  "bugs/855_hero_get_sprite_wrong"
   "bugs/859_crash_game_start"
   "bugs/860_crash_remove_sprite"
   "bugs/867_crash_crystal"

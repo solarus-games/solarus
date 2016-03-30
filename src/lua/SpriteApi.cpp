@@ -174,7 +174,7 @@ int LuaContext::sprite_api_set_animation(lua_State* l) {
     Sprite& sprite = *check_sprite(l, 1);
     const std::string& animation_name = LuaTools::check_string(l, 2);
     ScopedLuaRef callback_ref;
-    if (!lua_isnil(l, 3)) {
+    if (lua_gettop(l) >= 3) {
       if (!lua_isfunction(l, 3) && !lua_isstring(l, 3)) {
         LuaTools::type_error(l, 3, "function or string");
       }

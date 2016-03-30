@@ -19,6 +19,7 @@ function map:on_opening_transition_finished()
 
   sol.timer.start(5000, function()
     assert_equal(animation_finished_count, 4)
+    sprite:set_animation("explosion")
     sol.main.exit()
   end)
 end

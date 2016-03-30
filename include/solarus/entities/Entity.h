@@ -200,6 +200,8 @@ class SOLARUS_API Entity: public ExportableToLua {
     );
     bool remove_sprite(Sprite& sprite);
     void clear_sprites();
+    bool bring_sprite_to_back(Sprite& sprite);
+    bool bring_sprite_to_front(Sprite& sprite);
     std::string get_default_sprite_name() const;
     void set_default_sprite_name(const std::string& default_sprite_name);
     virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);

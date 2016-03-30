@@ -155,6 +155,8 @@ void HeroSprites::rebuild_equipment() {
   if (animation_direction != -1) {
     set_animation_direction(animation_direction);
   }
+
+  reorder_sprites();
 }
 
 /**
@@ -205,6 +207,7 @@ void HeroSprites::set_tunic_sprite_id(const std::string& sprite_id) {
     shield_sprite->set_synchronized_to(tunic_sprite);
   }
 
+  reorder_sprites();
   recompute_sprites_bounding_box();
 }
 
@@ -273,6 +276,7 @@ void HeroSprites::set_sword_sprite_id(const std::string& sprite_id) {
 
   has_default_sword_sprite = (sprite_id == get_default_sword_sprite_id());
 
+  reorder_sprites();
   recompute_sprites_bounding_box();
 }
 
@@ -390,6 +394,7 @@ void HeroSprites::set_shield_sprite_id(const std::string& sprite_id) {
 
   has_default_shield_sprite = (sprite_id == get_default_shield_sprite_id());
 
+  reorder_sprites();
   recompute_sprites_bounding_box();
 }
 
@@ -422,6 +427,37 @@ Rectangle HeroSprites::get_max_bounding_box() const {
   Rectangle result(sprites_bounding_box);
   result.add_xy(hero.get_xy());
   return result;
+}
+
+/**
+ * \brief Makes sure that hero sprites are stored in the correct order.
+ * This function should be called whenever some sprites are created.
+ */
+void HeroSprites::reorder_sprites() {
+
+  // Shadow, tunic, trail, ground, sword, sword stars, shield.
+
+  if (shadow_sprite != nullptr) {
+    hero.bring_sprite_to_back(*shadow_sprite);
+  }
+  if (tunic_sprite != nullptr) {
+    hero.bring_sprite_to_back(*tunic_sprite);
+  }
+  if (trail_sprite != nullptr) {
+    hero.bring_sprite_to_back(*trail_sprite);
+  }
+  if (ground_sprite != nullptr) {
+    hero.bring_sprite_to_back(*ground_sprite);
+  }
+  if (sword_sprite != nullptr) {
+    hero.bring_sprite_to_back(*sword_sprite);
+  }
+  if (sword_stars_sprite != nullptr) {
+    hero.bring_sprite_to_back(*sword_stars_sprite);
+  }
+  if (shield_sprite != nullptr) {
+    hero.bring_sprite_to_back(*shield_sprite);
+  }
 }
 
 /**

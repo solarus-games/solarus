@@ -1299,6 +1299,9 @@ bool Entity::remove_sprite(Sprite& sprite) {
 
   for (NamedSprite& named_sprite: sprites) {
     if (named_sprite.sprite.get() == &sprite) {
+      if (named_sprite.removed) {
+        continue;
+      }
       named_sprite.removed = true;
       return true;
     }
@@ -1336,6 +1339,50 @@ void Entity::clear_old_sprites() {
       ++it;
     }
   }
+}
+
+/**
+ * \brief Moves a sprite of this entity to the last position.
+ * \return \c true in case of success, \c false if this entity has no such
+ * sprite.
+ */
+bool Entity::bring_sprite_to_back(Sprite& sprite) {
+
+  for (NamedSprite& named_sprite: sprites) {
+    if (named_sprite.removed) {
+      continue;
+    }
+    if (named_sprite.sprite.get() == &sprite) {
+      NamedSprite copy = named_sprite;
+      named_sprite.removed = true;
+      sprites.push_back(copy);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * \brief Moves a sprite of this entity to the first position.
+ * \return \c true in case of success, \c false if this entity has no such
+ * sprite.
+ */
+bool Entity::bring_sprite_to_front(Sprite& sprite) {
+
+  for (NamedSprite& named_sprite: sprites) {
+    if (named_sprite.removed) {
+      continue;
+    }
+    if (named_sprite.sprite.get() == &sprite) {
+      NamedSprite copy = named_sprite;
+      named_sprite.removed = true;
+      sprites.insert(sprites.begin(), copy);
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /**

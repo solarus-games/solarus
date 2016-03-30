@@ -825,6 +825,8 @@ class LuaContext {
       entity_api_get_sprites,
       entity_api_create_sprite,
       entity_api_remove_sprite,
+      entity_api_bring_sprite_to_front,
+      entity_api_bring_sprite_to_back,
       entity_api_is_visible,
       entity_api_set_visible,
       entity_api_get_movement,  // TODO some movement types are not in the Lua API

@@ -128,6 +128,8 @@ void LuaContext::register_entity_module() {
       { "test_obstacles", entity_api_test_obstacles },\
       { "get_sprite", entity_api_get_sprite },\
       { "get_sprites", entity_api_get_sprites },\
+      { "bring_sprite_to_front", entity_api_bring_sprite_to_front },\
+      { "bring_sprite_to_back", entity_api_bring_sprite_to_back },\
       { "is_visible", entity_api_is_visible },\
       { "set_visible", entity_api_set_visible },\
       { "get_movement", entity_api_get_movement },\
@@ -1360,6 +1362,44 @@ int LuaContext::entity_api_remove_sprite(lua_State* l) {
         LuaTools::error(l, "This entity has no sprite");
       }
       entity.remove_sprite(*sprite);
+    }
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of entity:bring_sprite_to_front().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_bring_sprite_to_front(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Entity& entity = *check_entity(l, 1);
+    Sprite& sprite = *check_sprite(l, 2);
+    bool success = entity.bring_sprite_to_front(sprite);
+    if (!success) {
+      LuaTools::arg_error(l, 2, "This sprite does not belong to this entity");
+    }
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of entity:bring_sprite_to_back().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_bring_sprite_to_back(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Entity& entity = *check_entity(l, 1);
+    Sprite& sprite = *check_sprite(l, 2);
+    bool success = entity.bring_sprite_to_back(sprite);
+    if (!success) {
+      LuaTools::arg_error(l, 2, "This sprite does not belong to this entity");
     }
 
     return 0;

@@ -26,6 +26,7 @@ set(lua_test_maps
   "bugs/805_hero_set_invincible"
   "bugs/807_cannot_traverse_own_ground"
   "bugs/808_get_entities_in_rectangle_duplicates"
+  "bugs/809_entity_bring_sprite_to_front_back"
   "bugs/810_hero_disappears_after_scrolling/1"
   "bugs/817_entity_set_enabled_overlapping_hero"
   "bugs/818_sprite_get_num_frames"

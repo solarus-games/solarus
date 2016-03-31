@@ -43,6 +43,18 @@ animation{
   },
 }
 animation{
+  name = "sword_running",
+  src_image = "main_heroes/sword_running.png",
+  frame_delay = 45,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = -4, origin_y = 23, num_frames = 8 },
+    { x = 0, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 39, num_frames = 8 },
+    { x = 0, y = 48, frame_width = 24, frame_height = 24, origin_x = 28, origin_y = 23, num_frames = 8 },
+    { x = 0, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 7, num_frames = 8 },
+  },
+}
+animation{
   name = "sword_tapping",
   src_image = "main_heroes/sword_tapping.png",
   frame_delay = 40,

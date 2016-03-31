@@ -35,8 +35,9 @@ namespace Solarus {
  * Tiles are always before all other entities in the list.
  */
 struct EntityDataList {
-    std::deque<EntityData> entities;
-    int num_tiles = 0;
+    std::deque<EntityData> entities;   /**< All entities of a layer, with tiles first. */
+    int num_tiles = 0;                 /**< Number of tiles in the list.
+                                        * Dynamic entities are after this index. */
 };
 
 /**

@@ -107,7 +107,7 @@ Surface::Surface(int width, int height):
   internal_texture(nullptr),
   internal_color(nullptr),
   is_rendered(false),
-  internal_opacity(255),
+  opacity(255),
   width(width),
   height(height) {
 
@@ -131,7 +131,7 @@ Surface::Surface(SDL_Surface* internal_surface):
   internal_texture(nullptr),
   internal_color(nullptr),
   is_rendered(false),
-  internal_opacity(255) {
+  opacity(255) {
 
   width = internal_surface->w;
   height = internal_surface->h;
@@ -286,7 +286,7 @@ void Surface::create_texture_from_surface() {
 
     // Copy the pixels of the software surface to the GPU texture.
     SDL_UpdateTexture(internal_texture.get(), nullptr, internal_surface->pixels, internal_surface->pitch);
-    SDL_GetSurfaceAlphaMod(internal_surface.get(), &internal_opacity);
+    SDL_GetSurfaceAlphaMod(internal_surface.get(), &opacity);
   }
 }
 
@@ -315,10 +315,20 @@ Size Surface::get_size() const {
 }
 
 /**
+ * \brief Returns the opacity of this surface.
+ * \return The opacity (0 to 255).
+ */
+uint8_t Surface::get_opacity() const {
+  return opacity;
+}
+
+/**
  * \brief Sets the opacity of this surface.
- * \param opacity the opacity (0 to 255).
+ * \param opacity The opacity (0 to 255).
  */
 void Surface::set_opacity(uint8_t opacity) {
+
+  this->opacity = opacity;
 
   if (software_destination  // The destination surface is in RAM.
       || !Video::is_acceleration_enabled()  // The rendering is in RAM.
@@ -336,9 +346,8 @@ void Surface::set_opacity(uint8_t opacity) {
     }
     is_rendered = false;  // The surface has changed.
   }
-  else {
-    internal_opacity = opacity;
-  }
+
+  // If this is a hardware surface, the opacity is applied later.
 }
 
 /**
@@ -809,11 +818,11 @@ void Surface::render(
           internal_surface->pixels,
           internal_surface->pitch
       );
-      SDL_GetSurfaceAlphaMod(internal_surface.get(), &internal_opacity);
+      SDL_GetSurfaceAlphaMod(internal_surface.get(), &this->opacity);
     }
   }
 
-  const uint8_t current_opacity = std::min(internal_opacity, opacity);
+  const uint8_t current_opacity = std::min(this->opacity, opacity);
 
   // Draw the internal color as background color.
   if (internal_color != nullptr) {

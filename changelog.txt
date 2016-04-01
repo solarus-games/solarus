@@ -88,6 +88,7 @@ Changes that do not introduce incompatibilities:
 * Add a method sprite:get_num_frames() (#818).
 * Add methods sprite:get_size() and sprite:get_origin() (#823).
 * sprite:set_animation() now takes an optional callback parameter (#861).
+* Add a method surface:get_opacity() (#722).
 
 Data files format changes
 -------------------------

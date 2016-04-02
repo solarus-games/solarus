@@ -20,6 +20,9 @@
 #include "solarus/gui/gui_common.h"
 #include <QStyledItemDelegate>
 
+#include <QSize>
+#include <QPalette>
+
 namespace SolarusGui {
 
 /**
@@ -37,6 +40,13 @@ public:
 
   QSize sizeHint(const QStyleOptionViewItem &option,
                  const QModelIndex &index) const override;
+
+public:
+  const QSize &iconSize() const;
+  void setIconSize(const QSize &iconSize);
+
+private:
+  QSize _iconSize;
 };
 
 } // namespace SolarusGui

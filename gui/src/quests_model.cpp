@@ -124,7 +124,8 @@ bool QuestsModel::add_quest(const QString& quest_path) {
   // Open the quest to get its quest.dat file.
   QStringList arguments = QApplication::arguments();
   QString program_name = arguments.isEmpty() ? QString() : arguments.first();
-  if (!Solarus::QuestFiles::open_quest(program_name.toStdString(), quest_path.toStdString())) {
+  if (!Solarus::QuestFiles::open_quest(program_name.toStdString(),
+                                       quest_path.toStdString())) {
     Solarus::QuestFiles::close_quest();
     return false;
   }
@@ -136,8 +137,8 @@ bool QuestsModel::add_quest(const QString& quest_path) {
 
   info.path = quest_path;
   info.directory_name = quest_path.section('/', -1, -1, QString::SectionSkipEmpty);
-  info.icon = QIcon(":/images/logo_solarus_200.png");  // TODO
-
+  info.icon = get_quest_default_icon();  // TODO
+  info.logo = get_quest_default_logo(); // TODO
   quests.push_back(info);
 
   endInsertRows();
@@ -188,6 +189,42 @@ Solarus::QuestProperties QuestsModel::get_quest_properties(int quest_index) cons
   }
 
   return quests[quest_index].properties;
+}
+
+/**
+ * @brief Returns the default logo for a quest.
+ * @return The default logo
+ */
+const QPixmap &QuestsModel::get_quest_default_logo() const {
+
+  static const QPixmap default_logo(":/images/no_logo.png");
+
+  return default_logo;
+}
+
+/**
+ * @brief Returns the quest logo.
+ * @param quest_index Index of the quest to get.
+ * @return The quest logo.
+ */
+const QPixmap &QuestsModel::get_quest_logo(int quest_index) const {
+
+  if (quest_index < 0 || quest_index > rowCount()) {
+    return get_quest_default_logo();
+  }
+
+  return quests[quest_index].logo;
+}
+
+/**
+ * @brief Returns the default icon for a quest.
+ * @return The default icon.
+ */
+const QIcon &QuestsModel::get_quest_default_icon() const {
+
+    static const QIcon default_icon(":/images/default_icon.png");
+
+    return default_icon;
 }
 
 /**

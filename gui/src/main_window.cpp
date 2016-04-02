@@ -472,7 +472,11 @@ void MainWindow::selected_quest_changed() {
   Settings settings;
   settings.setValue("last_quest", selected_path);
 
+  static const QPixmap default_pixmap = QPixmap(":/images/no_logo.png");
+
   if (!has_current) {
+    ui.quest_info_panel->setEnabled(false);
+
     ui.quest_title_value->clear();
     ui.quest_title_value->setVisible(false);
 
@@ -486,9 +490,17 @@ void MainWindow::selected_quest_changed() {
 
     ui.quest_long_description_value->setVisible(false);
     ui.quest_long_description_value->clear();
+
+    ui.quest_box_label->setPixmap(default_pixmap);
   }
   else {
-    const Solarus::QuestProperties properties = ui.quests_view->get_selected_quest_properties();
+    ui.quest_info_panel->setEnabled(true);
+
+    const Solarus::QuestProperties properties =
+            ui.quests_view->get_selected_quest_properties();
+
+    ui.quest_box_label->setPixmap(default_pixmap);
+    //ui.quest_box_label->setText("ayon");
 
     QString title = QString::fromStdString(properties.get_title());
     ui.quest_title_value->setVisible(true);
@@ -505,7 +517,8 @@ void MainWindow::selected_quest_changed() {
       ui.quest_author_value->setVisible(true);
     }
 
-    QString quest_version = QString::fromStdString(properties.get_quest_version());
+    QString quest_version =
+            QString::fromStdString(properties.get_quest_version());
     if (quest_version.isEmpty()) {
       ui.quest_version_label->setVisible(false);
       ui.quest_version_value->setVisible(false);
@@ -516,7 +529,8 @@ void MainWindow::selected_quest_changed() {
       ui.quest_version_value->setVisible(true);
     }
 
-    QString long_description = QString::fromStdString(properties.get_long_description());
+    QString long_description =
+            QString::fromStdString(properties.get_long_description());
     ui.quest_long_description_value->setVisible(true);
     ui.quest_long_description_value->setText(long_description);
   }

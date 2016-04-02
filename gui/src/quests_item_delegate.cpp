@@ -28,7 +28,7 @@
 namespace SolarusGui {
 
 QuestsItemDelegate::QuestsItemDelegate(QObject *parent)
-    : QStyledItemDelegate(parent) {}
+    : QStyledItemDelegate(parent), _iconSize(32, 32) {}
 
 QuestsItemDelegate::~QuestsItemDelegate() {}
 
@@ -36,7 +36,8 @@ void QuestsItemDelegate::paint(QPainter *painter,
                                const QStyleOptionViewItem &option,
                                const QModelIndex &index) const {
 
-  QStyledItemDelegate::paint(painter, option, index);
+  // Paint the default background
+  //QStyledItemDelegate::paint(painter, option, index);
 
   // Save painter initial state before any modification
   painter->save();
@@ -44,7 +45,6 @@ void QuestsItemDelegate::paint(QPainter *painter,
   painter->setRenderHint(QPainter::TextAntialiasing, true);
 
   const auto &global_rect = option.rect;
-  const auto icon_dimension = 32;
   const auto padding = 4;
   const auto &default_font = option.font;
 
@@ -62,7 +62,7 @@ void QuestsItemDelegate::paint(QPainter *painter,
   auto alternate_rows = features.testFlag(QStyleOptionViewItem::Alternate);
   auto should_alternate = alternate_rows && index.row() % 2;
   //auto focused = state.testFlag(QStyle::State_HasFocus);
-  auto mouse_over = state.testFlag(QStyle::StateFlag::State_MouseOver);
+  //auto mouse_over = state.testFlag(QStyle::StateFlag::State_MouseOver);
 
   // Compute colors
   auto color_group =
@@ -74,14 +74,16 @@ void QuestsItemDelegate::paint(QPainter *painter,
   auto background = palette.brush(color_group, color_role);
 
   // Paint background
-  //painter->fillRect(option.rect, background);
+  painter->fillRect(option.rect, background);
 
   // Paint icon
   QRect icon_rect(
       global_rect.left() + padding * 2,
-      global_rect.top() + (global_rect.height() - icon_dimension) / 2, 32, 32);
+      global_rect.top() + (global_rect.height() - _iconSize.height()) / 2,
+      _iconSize.width(),
+      _iconSize.height());
   auto icon_mode = enabled ? QIcon::Normal : QIcon::Disabled;
-  auto pixmap = quest_info.icon.pixmap(QSize(icon_dimension, icon_dimension),
+  auto pixmap = quest_info.icon.pixmap(_iconSize,
                                        icon_mode, QIcon::On);
   painter->drawPixmap(icon_rect, pixmap);
 
@@ -127,17 +129,20 @@ void QuestsItemDelegate::paint(QPainter *painter,
   author_rect.translate(0, y_translate);
 
   // Compute title text color
-  auto pen_color_role = QPalette::ColorRole::Text;
+  auto pen_color_role = selected ? QPalette::HighlightedText
+                               : QPalette::Text;
   auto title_pen_color = palette.brush(color_group, pen_color_role).color();
 
   // Paint title text
   auto title_text = QString::fromStdString(quest_info.properties.get_title());
-  auto title_elided_text = title_font_metrics.elidedText(title_text,
-                                                         Qt::ElideRight,
-                                                         title_rect_width);
-  painter->setPen(title_pen_color);
-  painter->setFont(title_font);
-  painter->drawText(title_rect, title_elided_text);
+  if(!title_text.isEmpty()){
+    auto title_elided_text = title_font_metrics.elidedText(title_text,
+                                                           Qt::ElideRight,
+                                                           title_rect_width);
+    painter->setPen(title_pen_color);
+    painter->setFont(title_font);
+    painter->drawText(title_rect, title_elided_text);
+  }
 
   // Compute title text color
   auto author_pen_color =
@@ -147,25 +152,40 @@ void QuestsItemDelegate::paint(QPainter *painter,
   auto separator = QString(" %1 ").arg(QChar(0x2022)); // bullet
 
   QStringList secondarInfo;
-  auto author_text = QString::fromStdString(quest_info.properties.get_author());
-  auto date_text = QString::fromStdString(quest_info.properties.get_release_date());
-  secondarInfo << date_text;
-  secondarInfo << author_text;
+  auto author_text =
+          QString::fromStdString(quest_info.properties.get_author());
+  auto date_text =
+          QString::fromStdString(quest_info.properties.get_release_date());
+  if(!date_text.isEmpty()){
+    secondarInfo << date_text;
+  }
+  if(!author_text.isEmpty()){
+    secondarInfo << author_text;
+  }
 
-  auto secondary_text = secondarInfo.join(separator);
-  auto secondary_elided_text = author_font_metrics.elidedText(
-      secondary_text, Qt::ElideRight, author_rect_width);
-  painter->setPen(author_pen_color);
-  painter->setFont(author_font);
-  painter->drawText(author_rect, secondary_elided_text);
-
+  if(!secondarInfo.isEmpty()){
+    auto secondary_text = secondarInfo.join(separator);
+    auto secondary_elided_text = author_font_metrics.elidedText(
+        secondary_text, Qt::ElideRight, author_rect_width);
+    painter->setPen(author_pen_color);
+    painter->setFont(author_font);
+    painter->drawText(author_rect, secondary_elided_text);
+  }
   // Restore painter initial state
   painter->restore();
 }
 
 QSize QuestsItemDelegate::sizeHint(const QStyleOptionViewItem &,
                              const QModelIndex &) const {
-  return QSize(150, 48);
+  return QSize(150, _iconSize.height() + 16);
+}
+
+const QSize &QuestsItemDelegate::iconSize() const {
+  return _iconSize;
+}
+
+void QuestsItemDelegate::setIconSize(const QSize &iconSize) {
+  _iconSize = iconSize;
 }
 
 } // namespace SolarusGui

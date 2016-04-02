@@ -1,11 +1,12 @@
 <RCC>
     <qresource prefix="/">
         <file>images/icon_solarus.png</file>
-        <file>images/logo_solarus_200.png</file>
         <file>images/icon_open.png</file>
         <file>images/icon_start.png</file>
         <file>images/icon_stop.png</file>
         <file>images/icon_remove.png</file>
         <file>images/icon_add.png</file>
+        <file>images/default_icon.png</file>
+        <file>images/no_logo.png</file>
     </qresource>
 </RCC>

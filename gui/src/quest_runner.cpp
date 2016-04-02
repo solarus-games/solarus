@@ -36,9 +36,9 @@ QuestRunner::QuestRunner(QObject* parent) :
   connect(&process, SIGNAL(started()),
           this, SIGNAL(running()));
   connect(&process, SIGNAL(finished(int)),
-          this, SIGNAL(finished()));
+          this, SLOT(on_finished()));
   connect(&process, SIGNAL(error(QProcess::ProcessError)),
-          this, SIGNAL(finished()));  // TODO report the error
+          this, SLOT(on_finished()));  // TODO report the error
   connect(&process, SIGNAL(readyReadStandardOutput()),
           this, SLOT(standard_output_data_available()));
 
@@ -226,6 +226,15 @@ int QuestRunner::execute_command(const QString& command) {
 
   ++last_command_id;
   return last_command_id;
+}
+
+/**
+ * @brief Slot called when the execution finishes.
+ */
+void QuestRunner::on_finished() {
+
+  last_command_id = -1;
+  emit finished();
 }
 
 }

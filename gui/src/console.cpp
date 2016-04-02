@@ -111,6 +111,9 @@ void Console::quest_running() {
  */
 void Console::quest_finished() {
 
+  output_command_id = -1;
+  pending_commands.clear();
+  output_command_result.clear();
 }
 
 /**

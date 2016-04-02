@@ -53,6 +53,7 @@ signals:
 private slots:
 
   void standard_output_data_available();
+  void on_finished();
 
 private:
 

@@ -272,7 +272,7 @@ QStringList QuestRunner::get_quest_lua_commands_from_settings() const {
 
   QVariant fullscreen = settings.value("quest_fullscreen");
   if (fullscreen.isValid()) {
-    commands << QString("sol.video.set_fullscreen(\"%1\")").
+    commands << QString("sol.video.set_fullscreen(%1)").
                 arg(fullscreen.toBool() ? "true" : "false");
   }
 

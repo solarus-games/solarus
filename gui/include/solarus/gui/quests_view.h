@@ -24,6 +24,7 @@
 namespace SolarusGui {
 
 class QuestsModel;
+class QuestsItemDelegate;
 
 /**
  * @brief A widget where the user can select a quest.
@@ -54,7 +55,7 @@ public:
 private:
 
   QuestsModel* model;
-
+  QuestsItemDelegate* itemDelegate;
 };
 
 }

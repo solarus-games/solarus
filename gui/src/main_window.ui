@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>642</width>
-    <height>557</height>
+    <width>658</width>
+    <height>505</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -23,7 +23,7 @@
    <string notr="true">QLabel#quests_title_label, 
 QLabel#console_title_label {
 	font-size: 15pt;
-	font-weight: bold;
+	font-weight: 200;
 }
 
 QLabel#quest_title_value {
@@ -57,7 +57,7 @@ QPushButton#play_button {
          <height>300</height>
         </size>
        </property>
-       <layout class="QGridLayout" name="top_widget_layout" columnstretch="0,1,0,0">
+       <layout class="QGridLayout" name="top_widget_layout" columnstretch="0,0,0,0">
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -70,8 +70,36 @@ QPushButton#play_button {
         <property name="bottomMargin">
          <number>0</number>
         </property>
-        <item row="1" column="0">
-         <layout class="QVBoxLayout" name="buttons_layout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item row="1" column="0" colspan="2">
+         <widget class="SolarusGui::QuestsView" name="quests_view">
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="showDropIndicator" stdset="0">
+           <bool>false</bool>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SingleSelection</enum>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="uniformItemSizes">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <layout class="QHBoxLayout" name="quest_title_layout">
+          <property name="spacing">
+           <number>3</number>
+          </property>
           <property name="leftMargin">
            <number>0</number>
           </property>
@@ -84,6 +112,29 @@ QPushButton#play_button {
           <property name="bottomMargin">
            <number>0</number>
           </property>
+          <item>
+           <widget class="QLabel" name="quests_title_label">
+            <property name="text">
+             <string>Quests</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::MinimumExpanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
           <item>
            <widget class="QToolButton" name="add_button">
             <property name="toolTip">
@@ -118,22 +169,9 @@ QPushButton#play_button {
             </property>
            </widget>
           </item>
-          <item>
-           <spacer name="vertical_spacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
          </layout>
         </item>
-        <item row="1" column="3">
+        <item row="0" column="3" rowspan="2">
          <widget class="QWidget" name="quest_info_panel" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -339,6 +377,9 @@ QPushButton#play_button {
                <property name="text">
                 <string>Author:</string>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
               </widget>
              </item>
              <item row="0" column="1">
@@ -355,6 +396,9 @@ QPushButton#play_button {
               <widget class="QLabel" name="quest_version_label">
                <property name="text">
                 <string>Version:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                </property>
                <property name="text_role" stdset="0">
                 <string>h3</string>
@@ -389,9 +433,6 @@ QPushButton#play_button {
           </layout>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="SolarusGui::QuestsView" name="quests_view"/>
-        </item>
         <item row="1" column="2">
          <spacer name="top_widget_horizontal_spacer">
           <property name="orientation">
@@ -407,13 +448,6 @@ QPushButton#play_button {
            </size>
           </property>
          </spacer>
-        </item>
-        <item row="0" column="0" colspan="4">
-         <widget class="QLabel" name="quests_title_label">
-          <property name="text">
-           <string>Quests</string>
-          </property>
-         </widget>
         </item>
        </layout>
       </widget>
@@ -452,7 +486,7 @@ QPushButton#play_button {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>642</width>
+     <width>658</width>
      <height>27</height>
     </rect>
    </property>

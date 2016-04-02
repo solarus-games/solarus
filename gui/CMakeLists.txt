@@ -20,6 +20,7 @@ set(solarus_gui_lib_SOURCES
   include/solarus/gui/gui_common.h
   include/solarus/gui/gui_tools.h
   include/solarus/gui/quest_runner.h
+  include/solarus/gui/quests_item_delegate.h
   include/solarus/gui/quests_model.h
   include/solarus/gui/quests_view.h
   include/solarus/gui/main_window.h
@@ -28,6 +29,7 @@ set(solarus_gui_lib_SOURCES
   src/console_line_edit.cpp
   src/gui_tools.cpp
   src/quest_runner.cpp
+  src/quests_item_delegate.cpp
   src/quests_model.cpp
   src/quests_view.cpp
   src/main_window.cpp

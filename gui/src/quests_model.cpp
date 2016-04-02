@@ -19,6 +19,7 @@
 #include "solarus/CurrentQuest.h"
 #include "solarus/QuestProperties.h"
 #include <QApplication>
+#include <algorithm>
 
 namespace SolarusGui {
 
@@ -55,23 +56,15 @@ QVariant QuestsModel::data(const QModelIndex& index, int role) const {
     return QVariant();
   }
 
-  const QuestInfo& info = quests[index.row()];
-
   switch (role) {
-
-  case Qt::DisplayRole:
-  {
-    QString title = QString::fromStdString(info.properties.get_title());
-    QString short_description = QString::fromStdString(info.properties.get_short_description());
-    return QString("%1\n\n%2").arg(title, short_description);
+  case Qt::ItemDataRole::DisplayRole:
+    return QVariant::fromValue(quests.at(index.row()));
+  case Qt::ItemDataRole::ToolTipRole:
+    return QString::fromStdString(
+            quests.at(index.row()).properties.get_title());
+  default:
+    return QVariant();
   }
-
-  case Qt::DecorationRole:
-    return info.icon;
-
-  }
-
-  return QVariant();
 }
 
 /**
@@ -197,4 +190,49 @@ Solarus::QuestProperties QuestsModel::get_quest_properties(int quest_index) cons
   return quests[quest_index].properties;
 }
 
+/**
+ * @brief Sort the quests and notify the view (more convenient than sort(int, order).
+ * @param sortType Way to sort the quests in the list by
+ * @param order Order to the quests in the list by
+ */
+void QuestsModel::sort(QuestSort sortType, Qt::SortOrder order) {
+
+  sort((int)sortType, order);
 }
+
+/**
+ * @brief Sort the quests and notify the view
+ * @param column int value of a QuestSort value, column to sort the quests by
+ * @param order Order to the quests in the list by
+ */
+void QuestsModel::sort(int column, Qt::SortOrder order) {
+
+  doSort((QuestSort)column, order);
+}
+
+/**
+ * @brief Do the actual sort, without notifying the view
+ * @param sortType Way to sort the quests in the list by
+ * @param order Order to sort the quests in the list by
+ */
+void QuestsModel::doSort(QuestSort sortType, Qt::SortOrder order) {
+
+  std::sort(quests.begin(), quests.end(),
+    [sortType, order](const QuestInfo &a, const QuestInfo &b) {
+      auto ascending = order == Qt::AscendingOrder;
+      switch (sortType) {
+      case SortByAuthor:
+        return ascending ? a.properties.get_author() < a.properties.get_author()
+                         : a.properties.get_author() > a.properties.get_author();
+      case SortByDate:
+        return ascending ? a.properties.get_release_date() < b.properties.get_release_date()
+                         : a.properties.get_release_date() > b.properties.get_release_date();
+      case SortByName:
+      default:
+        return ascending ? a.properties.get_title() < b.properties.get_title()
+                         : a.properties.get_title() > b.properties.get_title();
+      }
+    });
+}
+
+} // namespace SolarusGui

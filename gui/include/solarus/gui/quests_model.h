@@ -21,6 +21,7 @@
 #include "solarus/QuestProperties.h"
 #include <QAbstractListModel>
 #include <QIcon>
+#include <QMetaType>
 
 namespace SolarusGui {
 
@@ -28,6 +29,11 @@ namespace SolarusGui {
  * @brief List of quests added to Solarus.
  */
 class SOLARUS_GUI_API QuestsModel : public QAbstractListModel {
+public:
+    /**
+     * @brief Ways to sort the quests in the list
+     */
+    enum QuestSort { SortByName = 0, SortByAuthor = 1, SortByDate = 2 };
 
 public:
 
@@ -47,7 +53,13 @@ public:
 
   Solarus::QuestProperties get_quest_properties(int quest_index) const;
 
+  void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
+  void sort(QuestSort sort, Qt::SortOrder order = Qt::AscendingOrder);
+
 private:
+  void doSort(QuestSort sort, Qt::SortOrder order = Qt::AscendingOrder);
+
+public:
 
   /**
    * @brief Info of a quest from the list.
@@ -60,9 +72,13 @@ private:
         properties;                 /**< All properties from quest.dat. */
   };
 
+private:
   std::vector<QuestInfo> quests;    /**< Info of each quest in the list. */
 };
 
 }
+
+// Allow to use QuesInfo in QVariant
+Q_DECLARE_METATYPE(SolarusGui::QuestsModel::QuestInfo);
 
 #endif

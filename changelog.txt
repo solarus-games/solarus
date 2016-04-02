@@ -40,6 +40,7 @@ Engine changes
 * Fix crash when the teletransporter after stairs is missing.
 * Fix text_surface:set_rendering_mode() not working (#833).
 * Fix support of joypads with multiple axes.
+* Fix sol.input.get_mouse_coordinates() ignoring the zoom factor (#734).
 
 Lua API changes
 ---------------

@@ -72,6 +72,7 @@ class Switch: public Entity {
     bool is_activated() const;
     void activate();
     void set_activated(bool enabled);
+    bool is_locked() const;
     void set_locked(bool locked);
 
     void try_activate(Hero& hero);

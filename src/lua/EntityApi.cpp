@@ -291,6 +291,7 @@ void LuaContext::register_entity_module() {
       ENTITY_COMMON_METHODS,
       { "is_activated", switch_api_is_activated },
       { "set_activated", switch_api_set_activated },
+      { "is_locked", switch_api_is_locked },
       { "set_locked", switch_api_set_locked },
       { "is_walkable", switch_api_is_walkable },
       { nullptr, nullptr }
@@ -3208,6 +3209,21 @@ int LuaContext::switch_api_set_activated(lua_State* l) {
     sw.set_activated(activated);
 
     return 0;
+  });
+}
+
+/**
+ * \brief Implementation of switch:is_locked().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::switch_api_is_locked(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Switch& sw = *check_switch(l, 1);
+
+    lua_pushboolean(l, sw.is_locked());
+    return 1;
   });
 }
 

@@ -757,7 +757,8 @@ bool InputEvent::is_with_alt() const {
  * The raw key is returned. If you want the corresponding character if any,
  * see get_character().
  *
- * \return The key of this keyboard event.
+ * \return The key of this keyboard event, or KEY_NONE if this is not a
+ * keyboard event or if the key is unknown.
  */
 InputEvent::KeyboardKey InputEvent::get_keyboard_key() const {
 
@@ -765,7 +766,13 @@ InputEvent::KeyboardKey InputEvent::get_keyboard_key() const {
     return KEY_NONE;
   }
 
-  return KeyboardKey(internal_event.key.keysym.sym);
+  SDL_Keycode sdl_symbol = internal_event.key.keysym.sym;
+  if (EnumInfoTraits<KeyboardKey>::names.find(static_cast<KeyboardKey>(sdl_symbol)) ==
+      EnumInfoTraits<KeyboardKey>::names.end()) {
+    return KEY_NONE;
+  }
+
+  return static_cast<KeyboardKey>(sdl_symbol);
 }
 
 /**

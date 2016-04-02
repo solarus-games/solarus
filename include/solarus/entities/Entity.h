@@ -29,6 +29,7 @@
 #include "solarus/SpritePtr.h"
 #include <list>
 #include <memory>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -83,7 +84,11 @@ class SOLARUS_API Entity: public ExportableToLua {
 
   public:
 
-    using NamedSprite = std::pair<std::string, SpritePtr>;
+    struct NamedSprite {
+      std::string name;
+      SpritePtr sprite;
+      bool removed = false;
+    };
 
     // Destruction.
     virtual ~Entity();
@@ -188,13 +193,16 @@ class SOLARUS_API Entity: public ExportableToLua {
     // Sprites.
     bool has_sprite() const;
     SpritePtr get_sprite(const std::string& sprite_name = "") const;
-    const std::vector<NamedSprite>& get_sprites() const;
+    std::vector<SpritePtr> get_sprites() const;
+    std::vector<NamedSprite> get_named_sprites() const;
     SpritePtr create_sprite(
         const std::string& animation_set_id,
         const std::string& sprite_name = ""
     );
     bool remove_sprite(Sprite& sprite);
     void clear_sprites();
+    bool bring_sprite_to_back(Sprite& sprite);
+    bool bring_sprite_to_front(Sprite& sprite);
     std::string get_default_sprite_name() const;
     void set_default_sprite_name(const std::string& default_sprite_name);
     virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
@@ -448,16 +456,14 @@ class SOLARUS_API Entity: public ExportableToLua {
     int direction;                              /**< direction of the entity, not used for all kinds of entities */
 
     std::vector<NamedSprite>
-        sprites;                                /**< Sprites representing the entity.  */
+        sprites;                                /**< Sprites representing the entity. */
     std::string default_sprite_name;            /**< Name of the sprite to get in get_sprite() without parameter. */
-    std::vector<SpritePtr>
-        old_sprites;                            /**< sprites to remove and destroy as soon as possible */
-    bool visible;                               /**< indicates that this entity's sprites are currently displayed */
+    bool visible;                               /**< Whether this entity's sprites are currently displayed. */
     bool drawn_in_y_order;                      /**< Whether this entity is drawn in Y order or in Z order. */
     std::shared_ptr<Movement> movement;         /**< Movement of the entity.
                                                  * nullptr indicates that the entity has no movement. */
     std::vector<std::shared_ptr<Movement>>
-        old_movements;                          /**< old movements to destroy as soon as possible */
+        old_movements;                          /**< Old movements to destroy as soon as possible. */
     bool movement_notifications_enabled;        /**< Whether entity:on_position_changed() and friends should be called. */
     Entity* facing_entity;                      /**< The detector in front of this entity if any. */
     int collision_modes;                        /**< Collision modes detected by entity

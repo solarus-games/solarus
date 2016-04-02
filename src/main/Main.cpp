@@ -61,6 +61,8 @@ void print_help(const Arguments& args) {
     << std::endl
     << "  -lua-console=yes|no           accepts standard input lines as Lua commands (default yes)"
     << std::endl
+    << "  -turbo=yes|no                 runs as fast as possible rather than simulating real time (default no)"
+    << std::endl
     << "  -lag=X                        slows down each frame of X milliseconds to simulate slower systems for debugging (default 0)"
     << std::endl;
 }
@@ -78,7 +80,7 @@ void print_help(const Arguments& args) {
  * directory ("data") or the data archive ("data.solarus" or
  * "data.solarus.zip").
  * If the quest path is not specified, it is set to the preprocessor constant
- * DEFAULT_QUEST, which is the current directory "." by default.
+ * SOLARUS_DEFAULT_QUEST, which is the current directory "." by default.
  * In all cases, this quest path is relative to the working directory,
  * or to the solarus executable directory if no quest is found in the working
  * directory.
@@ -90,6 +92,7 @@ void print_help(const Arguments& args) {
  *   -video-acceleration=yes|no        Enables or disables 2D accelerated graphics if available (default: yes).
  *   -quest-size=<width>x<height>      Sets the size of the drawing area (if compatible with the quest).
  *   -lua-console=yes|no               Accepts lines from standard input as Lua commands (default: yes).
+ *   -turbo=yes|no                     Runs as fast as possible rather than simulating real time (default: no).
  *   -lag=X                            (Advanced) Artificially slows down each frame of X milliseconds
  *                                     to simulate slower systems for debugging (default: 0).
  *

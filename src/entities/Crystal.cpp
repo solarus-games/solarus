@@ -47,9 +47,10 @@ Crystal::Crystal(const std::string& name, int layer, const Point& xy):
       CollisionMode::COLLISION_FACING
   );
   set_origin(8, 13);
-  const SpritePtr& main_sprite = create_sprite("entities/crystal", "main");
+  main_sprite = create_sprite("entities/crystal", "main");
   main_sprite->enable_pixel_collisions();
   star_sprite = create_sprite("entities/star", "star");
+  star_sprite->enable_pixel_collisions();
   twinkle();
 }
 
@@ -72,10 +73,7 @@ void Crystal::notify_creating() {
   if (state != this->state) {
 
     this->state = state;
-    const SpritePtr& sprite = get_sprite();
-    if (sprite != nullptr) {
-      sprite->set_current_animation(state ? "blue_lowered" : "orange_lowered");
-    }
+    main_sprite->set_current_animation(state ? "blue_lowered" : "orange_lowered");
   }
 }
 
@@ -100,8 +98,11 @@ void Crystal::notify_collision(Entity& entity_overlapping, CollisionMode collisi
 /**
  * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
-void Crystal::notify_collision(Entity& other_entity, Sprite& /* this_sprite */, Sprite& other_sprite) {
-  other_entity.notify_collision_with_crystal(*this, other_sprite);
+void Crystal::notify_collision(Entity& other_entity, Sprite& this_sprite, Sprite& other_sprite) {
+
+  if (&this_sprite == main_sprite.get()) {
+    other_entity.notify_collision_with_crystal(*this, other_sprite);
+  }
 }
 
 /**
@@ -150,8 +151,9 @@ void Crystal::activate(Entity& entity_activating) {
  */
 void Crystal::twinkle() {
 
-  star_xy = { Random::get_number(3, 13), Random::get_number(3, 13) };
+  const Point star_xy = { Random::get_number(3, 13), Random::get_number(3, 13) };
   star_sprite->restart_animation();
+  star_sprite->set_xy(star_xy - get_origin());
 }
 
 /**
@@ -164,11 +166,7 @@ void Crystal::update() {
     if (state != this->state) {
 
       this->state = state;
-
-      const SpritePtr& sprite = get_sprite();
-      if (sprite != nullptr) {
-        sprite->set_current_animation(state ? "blue_lowered" : "orange_lowered");
-      }
+      main_sprite->set_current_animation(state ? "blue_lowered" : "orange_lowered");
     }
 
     star_sprite->update();
@@ -183,21 +181,6 @@ void Crystal::update() {
   }
 
   Entity::update();
-}
-
-/**
- * \brief Draws the entity on the map.
- *
- * This is a redefinition of Entity::draw_on_map() to also draw the twinkling star
- * which has a special position.
- */
-void Crystal::draw_on_map() {
-
-  // draw the crystal
-  Entity::draw_on_map();
-
-  // draw the star
-  get_map().draw_sprite(*star_sprite, get_top_left_xy() + star_xy);
 }
 
 /**

@@ -76,6 +76,8 @@ class SOLARUS_API MainLoop {
     std::atomic<bool> exiting;    /**< Indicates that the program is about to stop. */
     uint32_t debug_lag;           /**< Artificial lag added to each frame.
                                    * Useful to debug issues that only happen on slow systems. */
+    bool turbo;                   /**< \c to run the simulation as fast as possible
+                                   * rather than following real time. */
 
     std::thread stdin_thread;     /**< Separate thread that reads Lua commands on stdin. */
     std::vector<std::string>

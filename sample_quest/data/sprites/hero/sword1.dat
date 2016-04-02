@@ -11,20 +11,9 @@ animation{
 }
 animation{
   name = "spin_attack",
-  src_image = "hero/spin_attack.sword1.png",
+  src_image = "main_heroes/spin_attack.png",
   frame_delay = 30,
-  directions = {
-    { x = 0, y = 0, frame_width = 64, frame_height = 64, origin_x = 32, origin_y = 39, num_frames = 30, num_columns = 15 },
-    { x = 0, y = 128, frame_width = 64, frame_height = 64, origin_x = 32, origin_y = 39, num_frames = 30, num_columns = 15 },
-    { x = 0, y = 256, frame_width = 64, frame_height = 64, origin_x = 32, origin_y = 39, num_frames = 30, num_columns = 15 },
-    { x = 0, y = 384, frame_width = 64, frame_height = 64, origin_x = 32, origin_y = 39, num_frames = 30, num_columns = 15 },
-  },
-}
-animation{
-  name = "super_spin_attack",
-  src_image = "hero/spin_attack.sword1.png",
-  frame_delay = 30,
-  frame_to_loop_on = 5,
+  frame_to_loop_on = 0,
   directions = {
     { x = 0, y = 0, frame_width = 64, frame_height = 64, origin_x = 32, origin_y = 39, num_frames = 22, num_columns = 15 },
     { x = 0, y = 128, frame_width = 64, frame_height = 64, origin_x = 32, origin_y = 39, num_frames = 22, num_columns = 15 },
@@ -34,47 +23,58 @@ animation{
 }
 animation{
   name = "sword_loading_stopped",
-  src_image = "hero/sword.sword1.png",
+  src_image = "main_heroes/sword_loading.png",
   directions = {
-    { x = 0, y = 0, frame_width = 48, frame_height = 24, origin_x = 12, origin_y = 21 },
-    { x = 0, y = 0, frame_width = 48, frame_height = 24, origin_x = 12, origin_y = 21 },
-    { x = 0, y = 0, frame_width = 48, frame_height = 24, origin_x = 12, origin_y = 21 },
-    { x = 0, y = 0, frame_width = 48, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = -4, origin_y = 22 },
+    { x = 0, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 39 },
+    { x = 0, y = 48, frame_width = 24, frame_height = 24, origin_x = 28, origin_y = 22 },
+    { x = 0, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 7 },
   },
 }
 animation{
   name = "sword_loading_walking",
-  src_image = "hero/sword.sword1.png",
+  src_image = "main_heroes/sword_loading.png",
   frame_delay = 100,
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = -4, origin_y = 23, num_frames = 6 },
+    { x = 0, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 39, num_frames = 6 },
+    { x = 0, y = 48, frame_width = 24, frame_height = 24, origin_x = 28, origin_y = 23, num_frames = 6 },
+    { x = 0, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 7, num_frames = 6 },
+  },
+}
+animation{
+  name = "sword_running",
+  src_image = "main_heroes/sword_running.png",
+  frame_delay = 45,
   frame_to_loop_on = 0,
   directions = {
-    { x = 0, y = 0, frame_width = 48, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 3 },
-    { x = 0, y = 0, frame_width = 48, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 3 },
-    { x = 0, y = 0, frame_width = 48, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 3 },
-    { x = 0, y = 0, frame_width = 48, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 3 },
+    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = -4, origin_y = 23, num_frames = 8 },
+    { x = 0, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 39, num_frames = 8 },
+    { x = 0, y = 48, frame_width = 24, frame_height = 24, origin_x = 28, origin_y = 23, num_frames = 8 },
+    { x = 0, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 7, num_frames = 8 },
   },
 }
 animation{
   name = "sword_tapping",
-  src_image = "hero/sword_tapping.sword.png",
+  src_image = "main_heroes/sword_tapping.png",
   frame_delay = 40,
   frame_to_loop_on = 1,
   directions = {
-    { x = 0, y = 0, frame_width = 40, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 7 },
-    { x = 0, y = 24, frame_width = 24, frame_height = 40, origin_x = 12, origin_y = 37, num_frames = 7 },
-    { x = 0, y = 64, frame_width = 40, frame_height = 24, origin_x = 28, origin_y = 21, num_frames = 7 },
-    { x = 0, y = 88, frame_width = 24, frame_height = 40, origin_x = 12, origin_y = 21, num_frames = 7 },
+    { x = 0, y = 0, frame_width = 40, frame_height = 24, origin_x = 8, origin_y = 23, num_frames = 7 },
+    { x = 0, y = 24, frame_width = 24, frame_height = 40, origin_x = 12, origin_y = 39, num_frames = 7 },
+    { x = 0, y = 64, frame_width = 40, frame_height = 24, origin_x = 32, origin_y = 23, num_frames = 7 },
+    { x = 0, y = 88, frame_width = 24, frame_height = 40, origin_x = 12, origin_y = 23, num_frames = 7 },
   },
 }
 animation{
   name = "victory",
-  src_image = "hero/victory.sword.png",
+  src_image = "main_heroes/sword_victory.png",
   frame_delay = 50,
-  frame_to_loop_on = 17,
+  frame_to_loop_on = 18,
   directions = {
-    { x = 0, y = 0, frame_width = 64, frame_height = 64, origin_x = 32, origin_y = 39, num_frames = 18, num_columns = 9 },
-    { x = 0, y = 0, frame_width = 64, frame_height = 64, origin_x = 32, origin_y = 39, num_frames = 18, num_columns = 9 },
-    { x = 0, y = 0, frame_width = 64, frame_height = 64, origin_x = 32, origin_y = 39, num_frames = 18, num_columns = 9 },
-    { x = 0, y = 0, frame_width = 64, frame_height = 64, origin_x = 32, origin_y = 39, num_frames = 18, num_columns = 9 },
+    { x = 0, y = 0, frame_width = 64, frame_height = 64, origin_x = 32, origin_y = 39, num_frames = 30, num_columns = 15 },
+    { x = 0, y = 0, frame_width = 64, frame_height = 64, origin_x = 32, origin_y = 39, num_frames = 30, num_columns = 15 },
+    { x = 0, y = 0, frame_width = 64, frame_height = 64, origin_x = 32, origin_y = 39, num_frames = 30, num_columns = 15 },
+    { x = 0, y = 0, frame_width = 64, frame_height = 64, origin_x = 32, origin_y = 39, num_frames = 30, num_columns = 15 },
   },
 }

@@ -44,6 +44,7 @@ void LuaContext::register_surface_module() {
       { "get_size", surface_api_get_size },
       { "clear", surface_api_clear },
       { "fill_color", surface_api_fill_color },
+      { "get_opacity", surface_api_get_opacity },
       { "set_opacity", surface_api_set_opacity },
       { "get_pixels", surface_api_get_pixels },
       { "set_pixels", surface_api_set_pixels },
@@ -196,6 +197,23 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
     }
 
     return 0;
+  });
+}
+
+/**
+ * \brief Implementation of surface:get_opacity().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::surface_api_get_opacity(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Surface& surface = *check_surface(l, 1);
+
+    uint8_t opacity = surface.get_opacity();
+
+    lua_pushinteger(l, opacity);
+    return 1;
   });
 }
 

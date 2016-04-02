@@ -16,6 +16,7 @@
  */
 #include "solarus/gui/console.h"
 #include "solarus/gui/quest_runner.h"
+#include "solarus/gui/settings.h"
 #include <QDebug>
 #include <QRegularExpression>
 
@@ -100,6 +101,9 @@ void Console::set_quest_runner(QuestRunner& quest_runner) {
  */
 void Console::quest_running() {
 
+  // Apply settings to the running quest as Lua commands,
+  // for quests that don't read the settings.dat file.
+  apply_settings();
 }
 
 /**
@@ -107,6 +111,9 @@ void Console::quest_running() {
  */
 void Console::quest_finished() {
 
+  output_command_id = -1;
+  pending_commands.clear();
+  output_command_result.clear();
 }
 
 /**
@@ -255,7 +262,7 @@ bool Console::detect_command_result(
     // Show the command in the log view.
     // We show the command only when receiving its results,
     // to make sure it is displayed just before its results.
-    QString command = pending_commands.value(output_command_id);
+    QString command = pending_commands.take(output_command_id);
     ui.log_view->appendPlainText("> " + command);
 
     return true;
@@ -271,7 +278,7 @@ bool Console::detect_command_result(
     }
     int id = match_result.captured(1).toInt();
     bool success = (match_result.captured(2) == "success");
-    QString command = pending_commands.value(output_command_id);
+    QString command = pending_commands.take(output_command_id);
     QString result = output_command_result;
 
     if (id != output_command_id) {
@@ -367,6 +374,74 @@ QString Console::colorize_output(const QString& log_level, const QString& messag
   }
 
   return decorated_line;
+}
+
+/**
+ * @brief Returns Lua commands that set the given settings in the Solarus API.
+ *
+ * System settings like audio volume and the video mode are returned as
+ * Lua commands.
+ * This function allows to apply to a running quest process
+ * what the user chose in the GUI.
+ */
+QStringList Console::get_quest_lua_commands_from_settings() const {
+
+  Settings settings;
+  QStringList commands;
+  QVariant video_mode = settings.value("quest_video_mode");
+  if (video_mode.isValid()) {
+    commands << QString("sol.video.set_mode(\"%1\")").
+                arg(video_mode.toString());
+  }
+
+  QVariant fullscreen = settings.value("quest_fullscreen");
+  if (fullscreen.isValid()) {
+    commands << QString("sol.video.set_fullscreen(%1)").
+                arg(fullscreen.toBool() ? "true" : "false");
+  }
+
+  QVariant sound_volume = settings.value("quest_sound_volume");
+  if (sound_volume.isValid()) {
+    commands << QString("sol.audio.set_sound_volume(%1)").
+                arg(sound_volume.toInt());
+  }
+
+  QVariant music_volume = settings.value("quest_music_volume");
+  if (music_volume.isValid()) {
+    commands << QString("sol.audio.set_music_volume(%1)").
+                arg(music_volume.toInt());
+  }
+
+  QVariant language = settings.value("quest_language");
+  if (language.isValid()) {
+    commands << QString("sol.language.set_language(\"%1\")").
+                arg(language.toString());
+  }
+
+  return commands;
+}
+
+/**
+ * @brief Applies current settings of the GUI to the quest process.
+ *
+ * Settings are applied as Lua commands.
+ *
+ * @param settings The settings.
+ * @return @c true if settings commands could be sent to the process
+ * (even if they produce an error).
+ */
+bool Console::apply_settings() {
+
+  if (quest_runner == nullptr || !quest_runner->is_running()) {
+    return false;
+  }
+
+  QStringList commands = get_quest_lua_commands_from_settings();
+  bool success = true;
+  for (const QString& command : commands) {
+    success = execute_command(command) && success;
+  }
+  return success;
 }
 
 }

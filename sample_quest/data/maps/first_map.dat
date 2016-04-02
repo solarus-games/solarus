@@ -3,9 +3,9 @@ properties{
   y = 0,
   width = 320,
   height = 240,
-  world = "inside",
   min_layer = 0,
   max_layer = 2,
+  world = "inside",
   tileset = "castle",
   music = "village",
 }
@@ -16,7 +16,7 @@ tile{
   y = 32,
   width = 288,
   height = 160,
-  pattern = 3,
+  pattern = "3",
 }
 
 tile{
@@ -25,7 +25,7 @@ tile{
   y = 192,
   width = 16,
   height = 16,
-  pattern = 3,
+  pattern = "3",
 }
 
 tile{
@@ -34,7 +34,7 @@ tile{
   y = 192,
   width = 16,
   height = 16,
-  pattern = 3,
+  pattern = "3",
 }
 
 tile{
@@ -43,7 +43,7 @@ tile{
   y = 160,
   width = 96,
   height = 64,
-  pattern = 67,
+  pattern = "67",
 }
 
 tile{
@@ -52,7 +52,7 @@ tile{
   y = 16,
   width = 8,
   height = 16,
-  pattern = 32,
+  pattern = "32",
 }
 
 tile{
@@ -61,7 +61,7 @@ tile{
   y = 16,
   width = 256,
   height = 16,
-  pattern = 33,
+  pattern = "33",
 }
 
 tile{
@@ -70,7 +70,7 @@ tile{
   y = 16,
   width = 16,
   height = 16,
-  pattern = 34,
+  pattern = "34",
 }
 
 tile{
@@ -79,7 +79,7 @@ tile{
   y = 16,
   width = 8,
   height = 16,
-  pattern = 35,
+  pattern = "35",
 }
 
 tile{
@@ -88,7 +88,7 @@ tile{
   y = 32,
   width = 8,
   height = 144,
-  pattern = 31,
+  pattern = "31",
 }
 
 tile{
@@ -97,7 +97,7 @@ tile{
   y = 32,
   width = 8,
   height = 144,
-  pattern = 30,
+  pattern = "30",
 }
 
 tile{
@@ -106,7 +106,7 @@ tile{
   y = 176,
   width = 16,
   height = 16,
-  pattern = 36,
+  pattern = "36",
 }
 
 tile{
@@ -115,7 +115,7 @@ tile{
   y = 176,
   width = 80,
   height = 16,
-  pattern = 37,
+  pattern = "37",
 }
 
 tile{
@@ -124,7 +124,7 @@ tile{
   y = 176,
   width = 16,
   height = 16,
-  pattern = 38,
+  pattern = "38",
 }
 
 tile{
@@ -133,7 +133,7 @@ tile{
   y = 168,
   width = 48,
   height = 32,
-  pattern = 26,
+  pattern = "26",
 }
 
 tile{
@@ -142,7 +142,7 @@ tile{
   y = 144,
   width = 16,
   height = 32,
-  pattern = 40,
+  pattern = "40",
 }
 
 tile{
@@ -151,7 +151,7 @@ tile{
   y = 96,
   width = 48,
   height = 32,
-  pattern = 64,
+  pattern = "64",
 }
 
 tile{
@@ -160,7 +160,7 @@ tile{
   y = 64,
   width = 32,
   height = 24,
-  pattern = 47,
+  pattern = "47",
 }
 
 tile{
@@ -169,7 +169,7 @@ tile{
   y = 16,
   width = 16,
   height = 16,
-  pattern = 8,
+  pattern = "8",
 }
 
 tile{
@@ -178,7 +178,7 @@ tile{
   y = 24,
   width = 32,
   height = 32,
-  pattern = 41,
+  pattern = "41",
 }
 
 tile{
@@ -187,7 +187,7 @@ tile{
   y = 24,
   width = 16,
   height = 56,
-  pattern = 44,
+  pattern = "44",
 }
 
 tile{
@@ -196,7 +196,7 @@ tile{
   y = 64,
   width = 96,
   height = 16,
-  pattern = 45,
+  pattern = "45",
 }
 
 tile{
@@ -205,7 +205,7 @@ tile{
   y = 24,
   width = 16,
   height = 56,
-  pattern = 46,
+  pattern = "46",
 }
 
 tile{
@@ -214,7 +214,7 @@ tile{
   y = 152,
   width = 32,
   height = 24,
-  pattern = 25,
+  pattern = "25",
 }
 
 tile{
@@ -223,7 +223,7 @@ tile{
   y = 16,
   width = 16,
   height = 16,
-  pattern = 8,
+  pattern = "8",
 }
 
 tile{
@@ -232,7 +232,7 @@ tile{
   y = 112,
   width = 16,
   height = 24,
-  pattern = 39,
+  pattern = "39",
 }
 
 tile{
@@ -241,7 +241,7 @@ tile{
   y = 112,
   width = 16,
   height = 24,
-  pattern = 39,
+  pattern = "39",
 }
 
 tile{
@@ -250,7 +250,7 @@ tile{
   y = 96,
   width = 16,
   height = 16,
-  pattern = 52,
+  pattern = "52",
 }
 
 tile{
@@ -259,7 +259,7 @@ tile{
   y = 48,
   width = 16,
   height = 24,
-  pattern = 57,
+  pattern = "57",
 }
 
 tile{
@@ -268,7 +268,7 @@ tile{
   y = 56,
   width = 16,
   height = 16,
-  pattern = 62,
+  pattern = "62",
 }
 
 tile{
@@ -277,7 +277,7 @@ tile{
   y = 56,
   width = 16,
   height = 16,
-  pattern = 59,
+  pattern = "59",
 }
 
 tile{
@@ -286,7 +286,7 @@ tile{
   y = 16,
   width = 32,
   height = 32,
-  pattern = 66,
+  pattern = "66",
 }
 
 tile{
@@ -295,7 +295,7 @@ tile{
   y = 16,
   width = 16,
   height = 32,
-  pattern = 65,
+  pattern = "65",
 }
 
 tile{
@@ -304,7 +304,7 @@ tile{
   y = 24,
   width = 32,
   height = 32,
-  pattern = 41,
+  pattern = "41",
 }
 
 tile{
@@ -313,7 +313,7 @@ tile{
   y = 208,
   width = 16,
   height = 16,
-  pattern = 36,
+  pattern = "36",
 }
 
 tile{
@@ -322,7 +322,7 @@ tile{
   y = 208,
   width = 96,
   height = 16,
-  pattern = 37,
+  pattern = "37",
 }
 
 tile{
@@ -331,7 +331,7 @@ tile{
   y = 176,
   width = 8,
   height = 32,
-  pattern = 30,
+  pattern = "30",
 }
 
 tile{
@@ -340,7 +340,7 @@ tile{
   y = 208,
   width = 16,
   height = 16,
-  pattern = 38,
+  pattern = "38",
 }
 
 tile{
@@ -349,7 +349,7 @@ tile{
   y = 176,
   width = 8,
   height = 32,
-  pattern = 31,
+  pattern = "31",
 }
 
 tile{
@@ -358,7 +358,7 @@ tile{
   y = 176,
   width = 48,
   height = 16,
-  pattern = 37,
+  pattern = "37",
 }
 
 tile{
@@ -367,7 +367,7 @@ tile{
   y = 120,
   width = 16,
   height = 24,
-  pattern = 81,
+  pattern = "81",
 }
 
 tile{
@@ -376,7 +376,7 @@ tile{
   y = 16,
   width = 16,
   height = 16,
-  pattern = 8,
+  pattern = "8",
 }
 
 destination{
@@ -456,7 +456,7 @@ npc{
   x = 144,
   y = 165,
   direction = 3,
-  subtype = "0",
+  subtype = 0,
   sprite = "entities/sign",
   behavior = "dialog#welcome_sign",
 }
@@ -465,10 +465,17 @@ block{
   layer = 0,
   x = 64,
   y = 173,
-  direction = -1,
   sprite = "entities/block",
   pushable = true,
   pullable = true,
   maximum_moves = 2,
+}
+
+enemy{
+  layer = 0,
+  x = 104,
+  y = 85,
+  direction = 0,
+  breed = "slime_green",
 }
 

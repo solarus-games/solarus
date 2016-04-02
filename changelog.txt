@@ -11,6 +11,7 @@ Engine changes
 * Add version number and symbolic links when building the library.
 * Add a -lua-console option to run Lua code from the standard input.
 * Remove the -win-console option, the preferred way is now to use a GUI.
+* Add a -turbo option to run at full speed.
 * Add a -lag option to simulate slower systems for debugging.
 * Print when the main loop starts and stops.
 * Print the Lua version at startup (#692).
@@ -21,6 +22,7 @@ Engine changes
 * Improve the performance of collisions by using a quadtree.
 * Entities far from the camera are no longer suspended.
 * Destinations can now set to update or not the starting location (#819).
+* Fix crash with missing directions in sprites controlled by the engine (#864).
 * Fix sprite:on_animation_finished() and others not working sometimes (#799).
 * Fix sol.input.get_mouse_coordinates() (#734).
 * Fix straight movement precision.
@@ -38,6 +40,7 @@ Engine changes
 * Fix crash when the teletransporter after stairs is missing.
 * Fix text_surface:set_rendering_mode() not working (#833).
 * Fix support of joypads with multiple axes.
+* Fix sol.input.get_mouse_coordinates() ignoring the zoom factor (#734).
 
 Lua API changes
 ---------------
@@ -75,15 +78,18 @@ Changes that do not introduce incompatibilities:
 * entity:test_obstacles() now also works without parameters.
 * entity:overlaps() now has an optional collision mode parameter (#748).
 * Add entity:get_sprite() to all entities, with an optional name value (#669).
+* Add a method entity:get_sprites() (#851).
+* Add methods entity:bring_sprite_to_front/back() (#809).
 * enemy/custom_entity:create_sprite() now take an optional name value.
 * Add a method hero:start_attack() (#821).
 * Add methods chest:get/set_treasure() (#664).
 * Add methods dynamic_tile:get_pattern_id() and get_modified_ground() (#755).
-* Add a method block:get_sprite().
 * Add an event chest:on_opened() with treasure info parameters (#483).
 * Add methods destination:get/set_starting_location_mode() (#819).
 * Add a method sprite:get_num_frames() (#818).
 * Add methods sprite:get_size() and sprite:get_origin() (#823).
+* sprite:set_animation() now takes an optional callback parameter (#861).
+* Add a method surface:get_opacity() (#722).
 
 Data files format changes
 -------------------------
@@ -94,6 +100,11 @@ Data files format changes
 * Maps: Enemies no longer have a rank property (#449).
 * Maps: New property starting_location_mode on destinations (#819).
 * Dialogs: Allow empty texts.
+
+Sample quest changes
+--------------------
+
+* Lots of new sprites and sounds from Diarandor.
 
 __________________________
 

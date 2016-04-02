@@ -47,7 +47,6 @@ class Crystal: public Entity {
     void activate(Entity& entity_activating);
 
     virtual void update() override;
-    virtual void draw_on_map() override;
     virtual void set_suspended(bool suspended) override;
 
   private:
@@ -58,8 +57,8 @@ class Crystal: public Entity {
                                                     * true if the blue blocks are lowered */
     uint32_t next_possible_hit_date;               /**< date when the crystal can be hit again */
     std::list<Entity*> entities_activating;        /**< list of entities that recently activated this crystal */
+    SpritePtr main_sprite;                         /**< Main sprite of the crystal. */
     SpritePtr star_sprite;                         /**< sprite of the star twinkling on the crystal */
-    Point star_xy;                                 /**< position of the star */
 
 };
 

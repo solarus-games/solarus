@@ -21,6 +21,7 @@ map{ id = "bugs/796_map_get_entities_by_type", description = "#796: Add map:get_
 map{ id = "bugs/805_hero_set_invincible", description = "#805: hero:set_invincible() not working" }
 map{ id = "bugs/807_cannot_traverse_own_ground", description = "#807: Entity stuck if cannot traverse its own ground" }
 map{ id = "bugs/808_get_entities_in_rectangle_duplicates", description = "#808: Duplicate entities in map:get_entities_in_rectangle()" }
+map{ id = "bugs/809_entity_bring_sprite_to_front_back", description = "#809: entity:bring_sprite_to_front/back()" }
 map{ id = "bugs/810_hero_disappears_after_scrolling/1", description = "#810: The hero disappears after scrolling between adjacent maps" }
 map{ id = "bugs/810_hero_disappears_after_scrolling/2", description = "#810" }
 map{ id = "bugs/817_entity_set_enabled_overlapping_hero", description = "#817: entity:set_enabled() not working if it is an obstacle on the hero" }
@@ -32,6 +33,12 @@ map{ id = "bugs/821_hero_start_attack", description = "#821: hero:start_attack()
 map{ id = "bugs/823_sprite_get_size_origin", description = "#823: sprite:get_size() and sprite:get_origin()" }
 map{ id = "bugs/830_entity_get_ground_position", description = "#830: entity:get_ground_position() and entity:get_ground_below()" }
 map{ id = "bugs/845_game_set_suspended", description = "#845: game:set_suspended" }
+map{ id = "bugs/851_entity_get_sprites", description = "#851: entity:get_sprites()" }
+map{ id = "bugs/855_hero_get_sprite_wrong", description = "#855: hero:get_sprite() returns the wrong sprite" }
+map{ id = "bugs/859_crash_game_start", description = "#859: Crash when restarting game" }
+map{ id = "bugs/860_crash_remove_sprite", description = "#860: Crash when removing secondary sprite" }
+map{ id = "bugs/861_sprite_set_animation_callback", description = "#861: sprite:set_animation() callback parameter" }
+map{ id = "bugs/867_crash_crystal", description = "#867: Crash with crystals" }
 map{ id = "dynamic_tile_tests", description = "Dynamic tile tests" }
 map{ id = "jumper_tests", description = "Jumper tests" }
 map{ id = "surface_tests", description = "Surface tests" }
@@ -40,6 +47,7 @@ map{ id = "traversable", description = "Traversable test area" }
 tileset{ id = "castle", description = "Castle" }
 
 sprite{ id = "enemies/enemy_killed", description = "Enemy killed" }
+sprite{ id = "enemies/slime_green", description = "Green Slime" }
 sprite{ id = "enemies/test_enemy", description = "Test enemy" }
 sprite{ id = "entities/arrow", description = "Arrow" }
 sprite{ id = "entities/block", description = "Block" }
@@ -71,6 +79,7 @@ sprite{ id = "hero/sword1", description = "Hero sword 1" }
 sprite{ id = "hero/sword_stars1", description = "Hero sword stars 1" }
 sprite{ id = "hero/trail", description = "Hero trail" }
 sprite{ id = "hero/tunic1", description = "Hero tunic 1" }
+sprite{ id = "main_heroes/edgar", description = "Edgar" }
 sprite{ id = "menus/solarus_logo", description = "Menu: Solarus logo" }
 sprite{ id = "todo", description = "TODO image" }
 
@@ -126,6 +135,7 @@ sound{ id = "wrong", description = "wrong" }
 item{ id = "bomb", description = "Bomb" }
 item{ id = "sword", description = "Sword" }
 
+enemy{ id = "slime_green", description = "Green Slime" }
 enemy{ id = "test_enemy", description = "Test enemy" }
 
 

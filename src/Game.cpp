@@ -407,8 +407,6 @@ void Game::update_transitions() {
 
     MainLoop& main_loop = get_main_loop();
     if (restarting) {
-      current_map->leave();
-      current_map->unload();
       stop();
       main_loop.set_game(new Game(main_loop, savegame));
       this->savegame = nullptr;  // The new game is the owner.

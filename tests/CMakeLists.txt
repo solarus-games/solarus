@@ -26,6 +26,7 @@ set(lua_test_maps
   "bugs/805_hero_set_invincible"
   "bugs/807_cannot_traverse_own_ground"
   "bugs/808_get_entities_in_rectangle_duplicates"
+  "bugs/809_entity_bring_sprite_to_front_back"
   "bugs/810_hero_disappears_after_scrolling/1"
   "bugs/817_entity_set_enabled_overlapping_hero"
   "bugs/818_sprite_get_num_frames"
@@ -34,6 +35,12 @@ set(lua_test_maps
   "bugs/823_sprite_get_size_origin"
   "bugs/830_entity_get_ground_position"
   "bugs/845_game_set_suspended"
+  "bugs/851_entity_get_sprites"
+  "bugs/855_hero_get_sprite_wrong"
+  "bugs/859_crash_game_start"
+  "bugs/860_crash_remove_sprite"
+  "bugs/861_sprite_set_animation_callback"
+  "bugs/867_crash_crystal"
 )
 
 # Build the Solarus testing library.
@@ -111,13 +118,13 @@ foreach(test_main_file ${tests_main_files})
   if (${test_main_file} MATCHES "src/tests/RunLuaTest.cpp")
     # Lua test runner: add an individual test for each map.
     foreach(map_id ${lua_test_maps})
-      add_test("lua/${map_id}" "bin/${test_bin_file}" -no-audio -no-video -map=${map_id} "${CMAKE_CURRENT_SOURCE_DIR}/testing_quest")
+      add_test("lua/${map_id}" "bin/${test_bin_file}" -no-audio -no-video -turbo=yes -map=${map_id} "${CMAKE_CURRENT_SOURCE_DIR}/testing_quest")
     endforeach()
   else()
     # Normal C++ test.
     get_filename_component(test_name "${test_main_file}" NAME_WE)
     string(TOLOWER "${test_name}" test_name)
-    add_test("${test_name}" "bin/${test_bin_file}" -no-audio -no-video "${CMAKE_CURRENT_SOURCE_DIR}/testing_quest")
+    add_test("${test_name}" "bin/${test_bin_file}" -no-audio -no-video -turbo=yes "${CMAKE_CURRENT_SOURCE_DIR}/testing_quest")
   endif()
 
 endforeach()

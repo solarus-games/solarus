@@ -21,7 +21,7 @@ function map:on_started()
   check_max_box(block, block:get_bounding_box())
 
   -- Check an entity with larger sprites.
-  check_max_box(hero, -4, -8, 56, 56)
+  check_max_box(hero, -12, -10, 72, 64)
 
   sol.main.exit()
 end

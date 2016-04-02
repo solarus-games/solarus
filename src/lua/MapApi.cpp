@@ -1311,7 +1311,7 @@ int LuaContext::l_get_map_entity_or_global(lua_State* l) {
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
-int LuaContext::l_map_get_entities_next(lua_State* l) {
+int LuaContext::l_entity_iterator_next(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
 
@@ -1322,19 +1322,16 @@ int LuaContext::l_map_get_entities_next(lua_State* l) {
 
     if (index > size) {
       // Finished.
-      lua_pushnil(l);
+      return 0;
     }
-    else {
 
-      // Get the next value.
-      lua_pushinteger(l, index);
-      lua_gettable(l, table_index);
+    // Get the next value.
+    lua_rawgeti(l, table_index, index);
 
-      // Increment index.
-      ++index;
-      lua_pushinteger(l, index);
-      lua_replace(l, lua_upvalueindex(3));
-    }
+    // Increment index.
+    ++index;
+    lua_pushinteger(l, index);
+    lua_replace(l, lua_upvalueindex(3));
 
     return 1;
   });

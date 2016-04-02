@@ -905,6 +905,7 @@ class LuaContext {
       switch_api_is_activated,
       switch_api_set_activated,
       switch_api_set_locked,
+      switch_api_is_walkable,
       stream_api_get_direction,
       stream_api_set_direction,
       stream_api_get_speed,

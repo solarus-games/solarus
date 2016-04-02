@@ -83,9 +83,10 @@ Changes that do not introduce incompatibilities:
 * enemy/custom_entity:create_sprite() now take an optional name value.
 * Add a method hero:start_attack() (#821).
 * Add methods chest:get/set_treasure() (#664).
-* Add methods dynamic_tile:get_pattern_id() and get_modified_ground() (#755).
 * Add an event chest:on_opened() with treasure info parameters (#483).
+* Add methods dynamic_tile:get_pattern_id() and get_modified_ground() (#755).
 * Add methods destination:get/set_starting_location_mode() (#819).
+* Add method switch:is_walkable() (#729).
 * Add a method sprite:get_num_frames() (#818).
 * Add methods sprite:get_size() and sprite:get_origin() (#823).
 * sprite:set_animation() now takes an optional callback parameter (#861).

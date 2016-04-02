@@ -14,6 +14,7 @@ set(lua_test_maps
   "bugs/671_collision_test_not_moving"
   "bugs/686_crash_door_item"
   "bugs/699_crash_exit_surface_moving"
+  "bugs/729_switch_is_walkable"
   "bugs/738_custom_entity_on_ground_below_changed"
   "bugs/748_entity_overlaps_collision_modes"
   "bugs/754_entity_get_max_bounding_box"

@@ -292,6 +292,7 @@ void LuaContext::register_entity_module() {
       { "is_activated", switch_api_is_activated },
       { "set_activated", switch_api_set_activated },
       { "set_locked", switch_api_set_locked },
+      { "is_walkable", switch_api_is_walkable },
       { nullptr, nullptr }
   };
 
@@ -3224,6 +3225,21 @@ int LuaContext::switch_api_set_locked(lua_State* l) {
     sw.set_locked(locked);
 
     return 0;
+  });
+}
+
+/**
+ * \brief Implementation of switch:is_walkable().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::switch_api_is_walkable(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Switch& sw = *check_switch(l, 1);
+
+    lua_pushboolean(l, sw.is_walkable());
+    return 1;
   });
 }
 

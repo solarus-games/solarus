@@ -523,10 +523,14 @@ void MainLoop::initialize_lua_console() {
   stdin_thread = std::thread([&]() {
 
     std::string line;
-
     while (!is_exiting()) {
 
       if (std::getline(std::cin, line)) {
+
+        while (!line.empty() && std::isspace(line.at(line.size() - 1))) {
+          line.erase(line.size() - 1);
+        }
+
         if (!line.empty()) {
           push_lua_command(line);
         }

@@ -255,7 +255,7 @@ bool Console::detect_command_result(
     // Show the command in the log view.
     // We show the command only when receiving its results,
     // to make sure it is displayed just before its results.
-    QString command = pending_commands.value(output_command_id);
+    QString command = pending_commands.take(output_command_id);
     ui.log_view->appendPlainText("> " + command);
 
     return true;
@@ -271,7 +271,7 @@ bool Console::detect_command_result(
     }
     int id = match_result.captured(1).toInt();
     bool success = (match_result.captured(2) == "success");
-    QString command = pending_commands.value(output_command_id);
+    QString command = pending_commands.take(output_command_id);
     QString result = output_command_result;
 
     if (id != output_command_id) {

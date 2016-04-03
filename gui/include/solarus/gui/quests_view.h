@@ -24,6 +24,7 @@
 namespace SolarusGui {
 
 class QuestsModel;
+class QuestsItemDelegate;
 
 /**
  * @brief A widget where the user can select a quest.
@@ -46,6 +47,9 @@ public:
   Solarus::QuestProperties get_selected_quest_properties() const;
   Solarus::QuestProperties get_quest_properties(int index) const;
 
+  const QPixmap &get_selected_logo() const;
+  const QPixmap &get_quest_logo(int index) const;
+
   int get_selected_index() const;
   QString get_selected_path() const;
   void select_quest(int index);
@@ -54,7 +58,7 @@ public:
 private:
 
   QuestsModel* model;
-
+  QuestsItemDelegate* itemDelegate;
 };
 
 }

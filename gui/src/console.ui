@@ -28,6 +28,12 @@
    </property>
    <item>
     <widget class="QPlainTextEdit" name="log_view">
+     <property name="font">
+      <font>
+       <family>DejaVu Sans Mono</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
      <property name="readOnly">
       <bool>true</bool>
      </property>
@@ -38,6 +44,12 @@
    </item>
    <item>
     <widget class="SolarusGui::ConsoleLineEdit" name="command_field">
+     <property name="font">
+      <font>
+       <family>DejaVu Sans Mono</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
      <property name="toolTip">
       <string>Run Lua code to the quest</string>
      </property>

@@ -15,19 +15,23 @@ include_directories(
 
 # Source files.
 set(solarus_gui_lib_SOURCES
+  include/solarus/gui/about_dialog.h
   include/solarus/gui/console.h
   include/solarus/gui/console_line_edit.h
   include/solarus/gui/gui_common.h
   include/solarus/gui/gui_tools.h
   include/solarus/gui/quest_runner.h
+  include/solarus/gui/quests_item_delegate.h
   include/solarus/gui/quests_model.h
   include/solarus/gui/quests_view.h
   include/solarus/gui/main_window.h
   include/solarus/gui/settings.h
+  src/about_dialog.cpp
   src/console.cpp
   src/console_line_edit.cpp
   src/gui_tools.cpp
   src/quest_runner.cpp
+  src/quests_item_delegate.cpp
   src/quests_model.cpp
   src/quests_view.cpp
   src/main_window.cpp
@@ -36,6 +40,7 @@ set(solarus_gui_lib_SOURCES
 
 # UI files.
 set(solarus_gui_lib_FORMS
+  src/about_dialog.ui
   src/console.ui
   src/main_window.ui
 )

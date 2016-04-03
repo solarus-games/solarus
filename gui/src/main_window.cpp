@@ -18,6 +18,7 @@
 #include "solarus/gui/main_window.h"
 #include "solarus/gui/quests_view.h"
 #include "solarus/gui/settings.h"
+#include "solarus/gui/about_dialog.h"
 #include <QDesktopWidget>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -39,7 +40,12 @@ MainWindow::MainWindow(QWidget* parent) :
   update_title();
 
   // Icon.
-  setWindowIcon(QIcon(":/images/icon_solarus.png"));  // TODO different sizes
+  QStringList icon_sizes = { "16", "24", "32", "48", "64", "128", "256" };
+  QIcon icon;
+  for (const QString size : icon_sizes) {
+    icon.addPixmap(":/images/icon/solarus_launcher_icon_" + size + ".png");
+  }
+  setWindowIcon(icon);
 
   // Console.
   ui.console->set_quest_runner(quest_runner);
@@ -245,7 +251,6 @@ bool MainWindow::confirm_close() {
   case QMessageBox::Close:
     return true;
 
-
   case QMessageBox::Cancel:
   case QMessageBox::Escape:
     return false;
@@ -440,6 +445,14 @@ void MainWindow::on_action_zoom_x4_triggered() {
 }
 
 /**
+ * @brief Slot called when the user triggers the "About" action.
+ */
+void MainWindow::on_action_about_triggered() {
+  AboutDialog dialog(this);
+  dialog.exec();
+}
+
+/**
  * @brief Slot called when the quest has just started or stopped.
  */
 void MainWindow::update_run_quest() {
@@ -473,7 +486,11 @@ void MainWindow::selected_quest_changed() {
   Settings settings;
   settings.setValue("last_quest", selected_path);
 
+  static const QPixmap default_pixmap = QPixmap(":/images/no_logo.png");
+
   if (!has_current) {
+    ui.quest_info_panel->setEnabled(false);
+
     ui.quest_title_value->clear();
     ui.quest_title_value->setVisible(false);
 
@@ -487,9 +504,16 @@ void MainWindow::selected_quest_changed() {
 
     ui.quest_long_description_value->setVisible(false);
     ui.quest_long_description_value->clear();
+
+    ui.quest_box_label->setPixmap(default_pixmap);
   }
   else {
-    const Solarus::QuestProperties properties = ui.quests_view->get_selected_quest_properties();
+    ui.quest_info_panel->setEnabled(true);
+
+    const Solarus::QuestProperties properties =
+            ui.quests_view->get_selected_quest_properties();
+
+    ui.quest_box_label->setPixmap(ui.quests_view->get_selected_logo());
 
     QString title = QString::fromStdString(properties.get_title());
     ui.quest_title_value->setVisible(true);
@@ -506,7 +530,8 @@ void MainWindow::selected_quest_changed() {
       ui.quest_author_value->setVisible(true);
     }
 
-    QString quest_version = QString::fromStdString(properties.get_quest_version());
+    QString quest_version =
+            QString::fromStdString(properties.get_quest_version());
     if (quest_version.isEmpty()) {
       ui.quest_version_label->setVisible(false);
       ui.quest_version_value->setVisible(false);
@@ -517,7 +542,8 @@ void MainWindow::selected_quest_changed() {
       ui.quest_version_value->setVisible(true);
     }
 
-    QString long_description = QString::fromStdString(properties.get_long_description());
+    QString long_description =
+            QString::fromStdString(properties.get_long_description());
     ui.quest_long_description_value->setVisible(true);
     ui.quest_long_description_value->setText(long_description);
   }

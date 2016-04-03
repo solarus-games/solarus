@@ -19,6 +19,7 @@
 #include "solarus/CurrentQuest.h"
 #include "solarus/QuestProperties.h"
 #include <QApplication>
+#include <algorithm>
 
 namespace SolarusGui {
 
@@ -55,23 +56,15 @@ QVariant QuestsModel::data(const QModelIndex& index, int role) const {
     return QVariant();
   }
 
-  const QuestInfo& info = quests[index.row()];
-
   switch (role) {
-
-  case Qt::DisplayRole:
-  {
-    QString title = QString::fromStdString(info.properties.get_title());
-    QString short_description = QString::fromStdString(info.properties.get_short_description());
-    return QString("%1\n\n%2").arg(title, short_description);
+  case Qt::ItemDataRole::DisplayRole:
+    return QVariant::fromValue(quests.at(index.row()));
+  case Qt::ItemDataRole::ToolTipRole:
+    return QString::fromStdString(
+            quests.at(index.row()).properties.get_title());
+  default:
+    return QVariant();
   }
-
-  case Qt::DecorationRole:
-    return info.icon;
-
-  }
-
-  return QVariant();
 }
 
 /**
@@ -131,7 +124,8 @@ bool QuestsModel::add_quest(const QString& quest_path) {
   // Open the quest to get its quest.dat file.
   QStringList arguments = QApplication::arguments();
   QString program_name = arguments.isEmpty() ? QString() : arguments.first();
-  if (!Solarus::QuestFiles::open_quest(program_name.toStdString(), quest_path.toStdString())) {
+  if (!Solarus::QuestFiles::open_quest(program_name.toStdString(),
+                                       quest_path.toStdString())) {
     Solarus::QuestFiles::close_quest();
     return false;
   }
@@ -143,8 +137,8 @@ bool QuestsModel::add_quest(const QString& quest_path) {
 
   info.path = quest_path;
   info.directory_name = quest_path.section('/', -1, -1, QString::SectionSkipEmpty);
-  info.icon = QIcon(":/images/logo_solarus_200.png");  // TODO
-
+  info.icon = get_quest_default_icon();  // TODO
+  info.logo = get_quest_default_logo(); // TODO
   quests.push_back(info);
 
   endInsertRows();
@@ -197,4 +191,85 @@ Solarus::QuestProperties QuestsModel::get_quest_properties(int quest_index) cons
   return quests[quest_index].properties;
 }
 
+/**
+ * @brief Returns the default logo for a quest.
+ * @return The default logo
+ */
+const QPixmap &QuestsModel::get_quest_default_logo() const {
+
+  static const QPixmap default_logo(":/images/no_logo.png");
+
+  return default_logo;
 }
+
+/**
+ * @brief Returns the quest logo.
+ * @param quest_index Index of the quest to get.
+ * @return The quest logo.
+ */
+const QPixmap &QuestsModel::get_quest_logo(int quest_index) const {
+
+  if (quest_index < 0 || quest_index > rowCount()) {
+    return get_quest_default_logo();
+  }
+
+  return quests[quest_index].logo;
+}
+
+/**
+ * @brief Returns the default icon for a quest.
+ * @return The default icon.
+ */
+const QIcon &QuestsModel::get_quest_default_icon() const {
+
+    static const QIcon default_icon(":/images/default_icon.png");
+
+    return default_icon;
+}
+
+/**
+ * @brief Sort the quests and notify the view (more convenient than sort(int, order).
+ * @param sortType Way to sort the quests in the list by
+ * @param order Order to the quests in the list by
+ */
+void QuestsModel::sort(QuestSort sortType, Qt::SortOrder order) {
+
+  sort((int)sortType, order);
+}
+
+/**
+ * @brief Sort the quests and notify the view
+ * @param column int value of a QuestSort value, column to sort the quests by
+ * @param order Order to the quests in the list by
+ */
+void QuestsModel::sort(int column, Qt::SortOrder order) {
+
+  doSort((QuestSort)column, order);
+}
+
+/**
+ * @brief Do the actual sort, without notifying the view
+ * @param sortType Way to sort the quests in the list by
+ * @param order Order to sort the quests in the list by
+ */
+void QuestsModel::doSort(QuestSort sortType, Qt::SortOrder order) {
+
+  std::sort(quests.begin(), quests.end(),
+    [sortType, order](const QuestInfo &a, const QuestInfo &b) {
+      auto ascending = order == Qt::AscendingOrder;
+      switch (sortType) {
+      case SortByAuthor:
+        return ascending ? a.properties.get_author() < a.properties.get_author()
+                         : a.properties.get_author() > a.properties.get_author();
+      case SortByDate:
+        return ascending ? a.properties.get_release_date() < b.properties.get_release_date()
+                         : a.properties.get_release_date() > b.properties.get_release_date();
+      case SortByName:
+      default:
+        return ascending ? a.properties.get_title() < b.properties.get_title()
+                         : a.properties.get_title() > b.properties.get_title();
+      }
+    });
+}
+
+} // namespace SolarusGui

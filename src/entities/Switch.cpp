@@ -179,12 +179,29 @@ void Switch::set_activated(bool activated) {
 }
 
 /**
+ * \brief Returns whether this switch is locked its current state.
+ *
+ * When the switch is locked, it cannot be activated or deactivated
+ * by other entities.
+ * However, the state can still be changed manually by calling
+ * set_activated().
+ *
+ * \return \c true if the switch is locked.
+ */
+bool Switch::is_locked() const {
+  return locked;
+}
+
+/**
  * \brief Locks this switch is its current state or unlocks it.
  *
- * When the switch is locked, it cannot be activated or inactivated by other entities.
- * However, the state can still be changed manually by calling set_activated().
+ * When the switch is locked, it cannot be activated or deactivated
+ * by other entities.
+ * However, the state can still be changed manually by calling
+ * set_activated().
  *
- * \param locked true to lock the switch in its current state, false to unlock it
+ * \param locked \c true to lock the switch in its current state,
+ * \c false to unlock it.
  */
 void Switch::set_locked(bool locked) {
   this->locked = locked;

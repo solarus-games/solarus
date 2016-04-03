@@ -18,7 +18,7 @@ function enemy:on_created()
   self:set_pushed_back_when_hurt(false)
   self:set_push_hero_on_sword(true)
   self:set_obstacle_behavior("flying") -- Allow to traverse bad grounds (and fall on them).
-  local sprite = self:get_sprite()
+  local sprite = self:get_sprite() 
   if not sprite then sprite = self:create_sprite("enemies/slime_green") end
   state = "hidden"
   function sprite:on_animation_finished(animation)
@@ -42,7 +42,7 @@ end
 
 function enemy:on_restarted()
   -- Allow to push enemies.
-  is_pushing_enemy = false
+  is_pushing_enemy = false 
   -- Reset the starting animation if necessary (the engine sets the "walking" animation).
   if state == "hidden" then
     self:get_sprite():set_animation("hidden")
@@ -113,6 +113,7 @@ function enemy:finish_jump()
   state = "finish_jump"
   self:stop_movement()
   self:get_sprite():set_animation("finish_jump")
+  self:set_can_attack(true) -- Allow to attack the hero again.
 end
 
 -- Jump.
@@ -123,6 +124,7 @@ function enemy:jump()
   sprite:set_animation("jump")
   sol.audio.play_sound("jump")
   self:set_invincible(true) -- Set invincible.
+  self:set_can_attack(false) -- Do not attack hero during jump.
   -- Start shift on sprite.
   local function f(t) -- Shifting function.
     return math.floor(4 * max_height * (t / jump_duration - (t / jump_duration) ^ 2))
@@ -132,8 +134,8 @@ function enemy:jump()
   sol.timer.start(self, refreshing_time, function() -- Update shift each 10 milliseconds.
     sprite:set_xy(0, -f(t))
     t = t + refreshing_time
-    if t > jump_duration then return false
-      else return true
+    if t > jump_duration then return false 
+      else return true 
     end
   end)
   -- Add a shadow sprite.
@@ -154,8 +156,10 @@ function enemy:jump()
   -- Finish the jump.
   sol.timer.start(self, jump_duration, function()
     self:remove_sprite(shadow) -- Remove shadow sprite.
-    self:set_default_attack_consequences() -- Stop invincibility after jump.
-    self:finish_jump()
+    sol.timer.start(self, 1, function() -- TODO: remove this after #868 is fixed.
+      self:set_default_attack_consequences() -- Stop invincibility after jump.
+      self:finish_jump()
+    end)
   end)
 end
 
@@ -170,8 +174,8 @@ end
 function enemy:check_on_ground()
   local map = self:get_map()
   local x, y, layer = self:get_position()
-  local ground = map:get_ground(x, y, layer)
-  if ground == "empty" and layer > 0 then
+  local ground = self:get_ground_below()
+  if ground == "empty" and layer > 0 then 
     -- Fall to lower layer and check ground again.
      self:set_position(x, y, layer-1)
      self:check_on_ground() -- Check again new ground.
@@ -187,7 +191,7 @@ function enemy:check_on_ground()
     sol.audio.play_sound("falling_on_hole")
   elseif ground == "deep_water" then
     -- Sink in water.
-    local water_splash = map:create_custom_entity({x = x, y = y, layer = layer, direction = 0})
+    local water_splash = map:create_custom_entity({x = x, y = y, layer = layer, direction = 0})    
     local sprite = water_splash:create_sprite("things/ground_effects")
     sprite:set_animation("water_splash")
     self:remove()
@@ -195,7 +199,7 @@ function enemy:check_on_ground()
     sol.audio.play_sound("splash")
   elseif ground == "lava" then
     -- Sink in lava.
-    local lava_splash = map:create_custom_entity({x = x, y = y, layer = layer, direction = 0})
+    local lava_splash = map:create_custom_entity({x = x, y = y, layer = layer, direction = 0})    
     local sprite = lava_splash:create_sprite("things/ground_effects")
     sprite:set_animation("lava_splash")
     self:remove()

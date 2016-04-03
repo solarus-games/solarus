@@ -86,6 +86,6 @@ private:
 }
 
 // Allow to use QuesInfo in QVariant
-Q_DECLARE_METATYPE(SolarusGui::QuestsModel::QuestInfo);
+Q_DECLARE_METATYPE(SolarusGui::QuestsModel::QuestInfo)
 
 #endif

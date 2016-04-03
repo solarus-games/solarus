@@ -39,7 +39,12 @@ MainWindow::MainWindow(QWidget* parent) :
   update_title();
 
   // Icon.
-  setWindowIcon(QIcon(":/images/icon_solarus.png"));  // TODO different sizes
+  QStringList icon_sizes = { "16", "24", "32", "48", "64", "128", "256" };
+  QIcon icon;
+  for (const QString size : icon_sizes) {
+    icon.addPixmap(":/images/icon/solarus_launcher_icon_" + size + ".png");
+  }
+  setWindowIcon(icon);
 
   // Console.
   ui.console->set_quest_runner(quest_runner);

@@ -14,5 +14,6 @@
         <file>images/icon/solarus_launcher_icon_64.png</file>
         <file>images/icon/solarus_launcher_icon_128.png</file>
         <file>images/icon/solarus_launcher_icon_256.png</file>
+        <file>images/solarus_logo_128.png</file>
     </qresource>
 </RCC>

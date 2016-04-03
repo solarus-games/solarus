@@ -18,6 +18,7 @@
 #include "solarus/gui/main_window.h"
 #include "solarus/gui/quests_view.h"
 #include "solarus/gui/settings.h"
+#include "solarus/gui/about_dialog.h"
 #include <QDesktopWidget>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -441,6 +442,14 @@ void MainWindow::on_action_zoom_x3_triggered() {
  */
 void MainWindow::on_action_zoom_x4_triggered() {
   set_zoom_requested(4);
+}
+
+/**
+ * @brief Slot called when the user triggers the "About" action.
+ */
+void MainWindow::on_action_about_triggered() {
+  AboutDialog dialog(this);
+  dialog.exec();
 }
 
 /**

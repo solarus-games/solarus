@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>669</width>
-    <height>531</height>
+    <width>600</width>
+    <height>496</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -151,7 +151,7 @@ QPushButton#play_button {
                 <x>0</x>
                 <y>0</y>
                 <width>260</width>
-                <height>365</height>
+                <height>340</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -629,7 +629,7 @@ QPushButton#play_button {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>669</width>
+     <width>600</width>
      <height>27</height>
     </rect>
    </property>
@@ -686,10 +686,17 @@ QPushButton#play_button {
     <addaction name="action_music_volume"/>
     <addaction name="action_sound_volume"/>
    </widget>
+   <widget class="QMenu" name="menu_help">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="action_about"/>
+   </widget>
    <addaction name="menu_file"/>
    <addaction name="menu_quest"/>
    <addaction name="menu_video"/>
    <addaction name="menu_audio"/>
+   <addaction name="menu_help"/>
   </widget>
   <action name="action_add_quest">
    <property name="icon">
@@ -830,6 +837,11 @@ QPushButton#play_button {
    </property>
    <property name="text">
     <string>Mute</string>
+   </property>
+  </action>
+  <action name="action_about">
+   <property name="text">
+    <string>About</string>
    </property>
   </action>
  </widget>

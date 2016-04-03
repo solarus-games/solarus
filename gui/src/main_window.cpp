@@ -513,8 +513,7 @@ void MainWindow::selected_quest_changed() {
     const Solarus::QuestProperties properties =
             ui.quests_view->get_selected_quest_properties();
 
-    ui.quest_box_label->setPixmap(default_pixmap);
-    //ui.quest_box_label->setText("ayon");
+    ui.quest_box_label->setPixmap(ui.quests_view->get_selected_logo());
 
     QString title = QString::fromStdString(properties.get_title());
     ui.quest_title_value->setVisible(true);

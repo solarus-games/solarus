@@ -21,6 +21,7 @@
 #include "solarus/QuestProperties.h"
 #include <QAbstractListModel>
 #include <QIcon>
+#include <QMetaType>
 
 namespace SolarusGui {
 
@@ -28,6 +29,11 @@ namespace SolarusGui {
  * @brief List of quests added to Solarus.
  */
 class SOLARUS_GUI_API QuestsModel : public QAbstractListModel {
+public:
+    /**
+     * @brief Ways to sort the quests in the list. More convenient than columns.
+     */
+    enum QuestSort { SortByName = 0, SortByAuthor = 1, SortByDate = 2 };
 
 public:
 
@@ -37,6 +43,7 @@ public:
   int rowCount(const QModelIndex& parent = QModelIndex()) const override;
   QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
+  // QuestsModel API
   int path_to_index(const QString& quest_path) const;
   QString index_to_path(int quest_index) const;
 
@@ -47,22 +54,38 @@ public:
 
   Solarus::QuestProperties get_quest_properties(int quest_index) const;
 
+  const QPixmap &get_quest_default_logo() const;
+  const QPixmap &get_quest_logo(int index) const;
+
+  const QIcon &get_quest_default_icon() const;
+
+  void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
+  void sort(QuestSort sort, Qt::SortOrder order = Qt::AscendingOrder);
+
 private:
+  void doSort(QuestSort sort, Qt::SortOrder order = Qt::AscendingOrder);
+
+public:
 
   /**
    * @brief Info of a quest from the list.
    */
   struct QuestInfo {
-    QString path;                   /**< Path to the quest directory. */
-    QString directory_name;         /**< Name of the quest directory. */
-    QIcon icon;                     /**< Icon of the quest. */
+    QString path;               /**< Path to the quest directory. */
+    QString directory_name;     /**< Name of the quest directory. */
+    QIcon icon;                 /**< Icon of the quest. */
+    QPixmap logo;               /**< Logo of the quest (Recommanded 200x140). */
     Solarus::QuestProperties
-        properties;                 /**< All properties from quest.dat. */
+        properties;             /**< All properties from quest.dat. */
   };
 
+private:
   std::vector<QuestInfo> quests;    /**< Info of each quest in the list. */
 };
 
 }
+
+// Allow to use QuesInfo in QVariant
+Q_DECLARE_METATYPE(SolarusGui::QuestsModel::QuestInfo);
 
 #endif

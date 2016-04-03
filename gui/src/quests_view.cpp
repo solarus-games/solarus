@@ -16,6 +16,7 @@
  */
 #include "solarus/gui/quests_model.h"
 #include "solarus/gui/quests_view.h"
+#include "solarus/gui/quests_item_delegate.h"
 
 namespace SolarusGui {
 
@@ -25,16 +26,12 @@ namespace SolarusGui {
  */
 QuestsView::QuestsView(QWidget* parent) :
   QListView(parent),
-  model(nullptr) {
-
-  setViewMode(ViewMode::ListMode);
-  setUniformItemSizes(true);
-  setMovement(Movement::Static);
-  setGridSize(QSize(200, 100));
-  setIconSize(QSize(100, 100));
-  setSelectionMode(QAbstractItemView::SingleSelection);
+  model(nullptr), itemDelegate(nullptr) {
 
   model = new QuestsModel(this);
+  itemDelegate = new QuestsItemDelegate(this);
+  itemDelegate->setIconSize(QSize(32,32));
+  setItemDelegate(itemDelegate);
   setModel(model);
 }
 
@@ -129,6 +126,29 @@ Solarus::QuestProperties QuestsView::get_selected_quest_properties() const {
 Solarus::QuestProperties QuestsView::get_quest_properties(int index) const {
 
   return model->get_quest_properties(index);
+}
+
+/**
+ * @brief Returns the logo of the selected quest.
+ * @return The quest logo, or the default image if no quest is selected.
+ */
+const QPixmap &QuestsView::get_selected_logo() const {
+
+  int index = get_selected_index();
+  if (index == -1) {
+    return model->get_quest_default_logo();
+  }
+  return get_quest_logo(index);
+}
+
+/**
+ * @brief Returns the logo of a quest in this view.
+ * @param index Index of the quest to get.
+ * @return The quest logo.
+ */
+const QPixmap &QuestsView::get_quest_logo(int index) const {
+
+  return model->get_quest_logo(index);
 }
 
 /**

@@ -99,22 +99,6 @@ const Entity& Entity::State::get_entity() const {
 }
 
 /**
- * \brief Returns the hero's sprites.
- * \return the sprites
- */
-HeroSprites& Entity::State::get_sprites() {
-  return static_cast<Hero&>(entity).get_hero_sprites(); // FIXME
-}
-
-/**
- * \brief Returns the hero's sprites.
- * \return the sprites
- */
-const HeroSprites& Entity::State::get_sprites() const {
-  return static_cast<Hero&>(entity).get_hero_sprites(); // FIXME
-}
-
-/**
  * \brief Returns the current map.
  * \return the map
  */
@@ -244,12 +228,12 @@ void Entity::State::update() {
 /**
  * \brief Draws this state.
  *
- * This function draws the entity's sprites in its current state.
+ * This function draws this entity in its current state.
+ * The default implement does nothing.
  * If your state needs to draw additional elements, you can redefine this function.
  */
 void Entity::State::draw_on_map() {
 
-  get_sprites().draw_on_map();
 }
 
 /**

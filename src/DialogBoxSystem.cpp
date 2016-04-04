@@ -21,6 +21,7 @@
 #include "solarus/Map.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/lowlevel/TextSurface.h"
+#include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include <lua.hpp>
@@ -144,13 +145,18 @@ void DialogBoxSystem::open(
     }
 
     // Determine the position.
-    const Rectangle& camera_position = game.get_current_map().get_camera().get_bounding_box();
     bool top = false;
-    if (game.get_hero()->get_y() >= camera_position.get_y() + 130) {
-      top = true;
+    const CameraPtr& camera = game.get_current_map().get_camera();
+    if (camera != nullptr) {
+      const Rectangle& camera_position = camera->get_bounding_box();
+      if (game.get_hero()->get_y() >= camera_position.get_y() + 130) {
+        top = true;
+      }
     }
-    int x = camera_position.get_width() / 2 - 110;
-    int y = top ? 32 : camera_position.get_height() - 96;
+
+    const Size& quest_size = Video::get_quest_size();
+    int x = quest_size.width / 2 - 110;
+    int y = top ? 32 : quest_size.height - 96;
 
     text_position = { x, y };
 

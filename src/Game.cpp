@@ -712,7 +712,7 @@ bool Game::is_suspended() const {
       is_dialog_enabled() ||
       is_playing_transition() ||
       is_showing_game_over() ||
-      current_map->is_camera_moving() ||
+      is_suspended_by_camera() ||
       is_suspended_by_script();
 }
 
@@ -835,6 +835,21 @@ void Game::set_paused(bool paused) {
       commands_effects.set_pause_key_effect(CommandsEffects::PAUSE_KEY_PAUSE);
     }
   }
+}
+
+/**
+ * \brief Returns whether this game is currently suspended by a camera sequence.
+ * \return \c true if a camera is suspending the game.
+ */
+bool Game::is_suspended_by_camera() const {
+
+  if (current_map == nullptr) {
+    return false;
+  }
+
+  // The game is suspended when the camera is scrolling on a separator.
+  const CameraPtr& camera = current_map->get_camera();
+  return camera->is_traversing_separator();
 }
 
 /**

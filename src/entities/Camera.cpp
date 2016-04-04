@@ -16,6 +16,7 @@
  */
 #include "solarus/entities/Camera.h"
 #include "solarus/entities/Entities.h"
+#include "solarus/entities/EntityState.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Separator.h"
 #include "solarus/lowlevel/System.h"
@@ -28,7 +29,197 @@
 #include <algorithm>
 #include <list>
 
+#include <iostream> // TODO
+
 namespace Solarus {
+
+namespace {
+
+/**
+ * \brief State of the camera when centered on an entity.
+ */
+class TrackingState: public Entity::State {
+
+public:
+
+  TrackingState(Camera& camera, const EntityPtr& tracked_entity);
+
+  void update() override;
+  bool is_traversing_separator() const;
+  void traverse_separator(Separator& separator);
+
+  const EntityPtr& get_tracked_entity() const;
+
+private:
+
+  EntityPtr tracked_entity;               /**< Entity the camera is tracking. */
+  Rectangle separator_scrolling_position; /**< Current camera position while crossing a separator. */
+  Rectangle separator_target_position;    /**< Target camera position when crossing a separator. */
+  Point separator_scrolling_delta;        /**< increment to the camera position when crossing a separator. */
+  uint32_t separator_next_scrolling_date; /**< Next camera position change when crossing a separator. */
+  int separator_scrolling_direction4;     /**< Direction when scrolling. */
+  std::shared_ptr<Separator>
+      separator_traversed;                /**< Separator currently being traversed or nullptr. */
+
+};
+
+/**
+ * \brief Creates a camera tracking state.
+ * \param camera The camera to control.
+ * \param tracked_entity The entity to track with this camera.
+ */
+TrackingState::TrackingState(Camera& camera, const EntityPtr& tracked_entity) :
+  Entity::State(camera, "tracking"),
+  tracked_entity(tracked_entity),
+  separator_next_scrolling_date(0),
+  separator_scrolling_direction4(0) {
+
+  Debug::check_assertion(tracked_entity != nullptr,
+      "Missing tracked entity");
+}
+
+/**
+ * \brief Returns the entity tracked in this state.
+ * \return The tracked entity.
+ */
+const EntityPtr& TrackingState::get_tracked_entity() const {
+  return tracked_entity;
+}
+
+/**
+ * \brief Updates the position of the camera when the camera is tracking
+ * an entity.
+ */
+void TrackingState::update() {
+
+  Camera& camera = get_entity<Camera>();
+  if (separator_next_scrolling_date == 0) {
+    // Normal case: not traversing a separator.
+
+    // First compute camera coordinates ignoring map limits and separators.
+    Rectangle next = camera.get_bounding_box();
+    next.set_center(tracked_entity->get_center_point());
+
+    // Then apply constraints of both separators and map limits.
+    camera.set_bounding_box(camera.apply_separators_and_map_bounds(next));
+    camera.notify_bounding_box_changed();
+  }
+  else {
+    // The tracked entity is currently traversing a separator.
+    // Update camera coordinates.
+    uint32_t now = System::now();
+    bool finished = false;
+    while (separator_next_scrolling_date != 0
+        && now >= separator_next_scrolling_date) {
+      separator_scrolling_position.add_xy(separator_scrolling_delta);
+
+      separator_next_scrolling_date += 1;
+
+      if (separator_scrolling_position == separator_target_position) {
+        // Finished.
+        finished = true;
+      }
+    }
+
+    if (finished) {
+      separator_next_scrolling_date = 0;
+      separator_traversed->notify_activated(separator_scrolling_direction4);
+      separator_traversed = nullptr;
+      separator_scrolling_direction4 = 0;
+    }
+
+    // Then only apply map limit constraints.
+    // Ignore separators since we are currently crossing one of them.
+    camera.set_bounding_box(camera.apply_map_bounds(separator_scrolling_position));
+    camera.notify_bounding_box_changed();
+  }
+}
+
+/**
+ * \brief Returns whether the camera is currently scrolling on a separator.
+ * \return \c truc if scrolling on a separator.
+ */
+bool TrackingState::is_traversing_separator() const {
+  return separator_traversed != nullptr;
+}
+
+/**
+ * \brief Starts traversing a separator.
+ *
+ * The tracked entity must touch the separator when you call this function.
+ *
+ * \param separator The separator to traverse.
+ */
+void TrackingState::traverse_separator(Separator& separator) {
+
+  Camera& camera = get_entity<Camera>();
+
+  // Save the current position of the camera.
+  separator_scrolling_position = camera.get_bounding_box();
+
+  // Start scrolling.
+  separator_traversed = std::static_pointer_cast<Separator>(
+      separator.shared_from_this()
+  );
+  separator_scrolling_delta = Point();
+  separator_target_position = separator_scrolling_position;
+
+  const Point& tracked_entity_center = tracked_entity->get_center_point();
+  const Point& separator_center = separator.get_center_point();
+  if (separator.is_horizontal()) {
+    if (tracked_entity_center.y < separator_center.y) {
+      separator_scrolling_direction4 = 3;
+      separator_scrolling_delta.y = 1;
+      separator_target_position.add_y(camera.get_height());
+    }
+    else {
+      separator_scrolling_direction4 = 1;
+      separator_scrolling_delta.y = -1;
+      separator_target_position.add_y(-camera.get_height());
+    }
+  }
+  else {
+    if (tracked_entity_center.x < separator_center.x) {
+      separator_scrolling_direction4 = 0;
+      separator_scrolling_delta.x = 1;
+      separator_target_position.add_x(camera.get_width());
+    }
+    else {
+      separator_scrolling_direction4 = 2;
+      separator_scrolling_delta.x = -1;
+      separator_target_position.add_x(-camera.get_width());
+    }
+  }
+
+  separator.notify_activating(separator_scrolling_direction4);
+  separator_next_scrolling_date = System::now();
+
+  // Move the tracked entity two pixels ahead to avoid to traverse the separator again.
+  tracked_entity->set_xy(tracked_entity->get_xy() + 2 * separator_scrolling_delta);
+  tracked_entity->notify_bounding_box_changed();
+}
+
+/**
+ * \brief State of the camera when controlled by scripts.
+ */
+class ManualState: public Entity::State {
+
+public:
+
+  ManualState(Camera& camera);
+
+};
+
+/**
+ * \brief Creates a camera manual state.
+ * \param camera The camera to control.
+ */
+ManualState::ManualState(Camera& camera) :
+  Entity::State(camera, "manual") {
+
+}
+
+}  // Anonymous namespace.
 
 /**
  * \brief Creates a camera.
@@ -36,13 +227,12 @@ namespace Solarus {
  */
 Camera::Camera(Map& map):
   Entity("", 0, map.get_max_layer(), Point(0, 0), Video::get_quest_size()),
-  position_on_screen(0, 0),
-  tracked_entity(map.get_game().get_hero()),
-  separator_next_scrolling_date(0),
-  separator_scrolling_direction4(0),
-  restoring(false),
-  speed(120) {
+  position_on_screen(0, 0) {
+
   set_map(map);
+  const HeroPtr& hero = get_game().get_hero();
+  Debug::check_assertion(hero != nullptr, "Missing hero when initializing camera");
+  start_tracking(hero);
 }
 
 /**
@@ -105,255 +295,18 @@ void Camera::set_suspended(bool /* suspended */) {
 }
 
 /**
- * \brief Updates the camera position.
- *
- * This function is called continuously by the game loop.
- */
-void Camera::update() {
-
-  Entity::update();
-
-  if (tracked_entity != nullptr) {
-    update_fixed_on();
-  }
-  else if (get_movement() != nullptr) {
-    update_moving();
-  }
-}
-
-/**
- * \brief Updates the position of the camera when the camera is fixed
- * on the hero.
- */
-void Camera::update_fixed_on() {
-
-  Debug::check_assertion(tracked_entity != nullptr,
-      "Illegal call to Camera::update_fixed_on()");
-
-  if (separator_next_scrolling_date == 0) {
-    // Normal case: not traversing a separator.
-
-    // First compute camera coordinates ignoring map limits and separators.
-    Rectangle next = get_bounding_box();
-    next.set_center(tracked_entity->get_center_point());
-
-    // Then apply constraints of both separators and map limits.
-    set_bounding_box(apply_separators_and_map_bounds(next));
-  }
-  else {
-    // The player is currently traversing a separator.
-    // Update camera coordinates.
-    uint32_t now = System::now();
-    bool finished = false;
-    while (separator_next_scrolling_date != 0
-        && now >= separator_next_scrolling_date) {
-      separator_scrolling_position.add_xy(separator_scrolling_delta);
-
-      separator_next_scrolling_date += 1;
-
-      if (separator_scrolling_position == separator_target_position) {
-        // Finished.
-        finished = true;
-      }
-    }
-
-    if (finished) {
-        separator_next_scrolling_date = 0;
-        separator_traversed->notify_activated(separator_scrolling_direction4);
-        separator_traversed = nullptr;
-        separator_scrolling_direction4 = 0;
-    }
-
-    // Then only apply map limit constraints.
-    // Ignore separators since we are currently crossing one of them.
-    set_bounding_box(apply_map_bounds(separator_scrolling_position));
-  }
-}
-
-/**
- * \brief Updates the position of the camera when the camera is moving
- * towards a point or back to the hero.
- */
-void Camera::update_moving() {
-
-  Debug::check_assertion(tracked_entity == nullptr,
-      "Illegal call to Camera::update_moving()");
-
-  if (get_movement() == nullptr) {
-    return;
-  }
-
-  if (get_movement()->is_finished()) {
-    clear_movement();
-
-    if (restoring) {
-      restoring = false;
-      tracked_entity = get_game().get_hero();
-      get_lua_context()->map_on_camera_back(get_map());
-    }
-    else {
-      get_lua_context()->notify_camera_reached_target(get_map());
-    }
-  }
-}
-
-/**
- * \brief Returns whether there is a camera movement.
- *
- * It may be a movement towards a point or a scrolling movement due to a
- * separator.
- *
- * \return \c true if the camera is moving.
- */
-bool Camera::is_moving() const {
-  return tracked_entity == nullptr            // Moving to a point.
-      || separator_next_scrolling_date != 0;  // Traversing a separator.
-}
-
-/**
- * \brief Sets the speed of the camera movement.
- * \param speed speed of the movement in pixels per second
- */
-void Camera::set_speed(int speed) {
-  this->speed = speed;
-}
-
-/**
- * \brief Makes the camera move towards a destination point.
- *
- * The camera will be centered on this point.
- * If the camera was already moving, the old movement is discarded.
- *
- * If the target point is not in the same separator region, then the camera
- * will stop on separators.
- *
- * \param target_x X coordinate of the target point.
- * \param target_y Y coordinate of the target point.
- */
-void Camera::move(int target_x, int target_y) {
-
-  clear_movement();
-  tracked_entity = nullptr;
-
-  // Take care of the limits of the map and of separators.
-  target_x = target_x - get_width() / 2;
-  target_y = target_y - get_height() / 2;
-  const Rectangle& target_camera = apply_separators_and_map_bounds(
-      Rectangle(target_x, target_y, get_width(), get_height())
-  );
-
-  set_movement(std::make_shared<TargetMovement>(
-      nullptr, target_camera.get_x(), target_camera.get_y(), speed, true
-  ));
-  get_movement()->set_xy(get_bounding_box().get_xy());
-}
-
-/**
- * \brief Makes the camera move towards a destination point.
- *
- * The camera will be centered on this point.
- * If there was already a movement, the new one replaces it.
- *
- * \param target target point
- */
-void Camera::move(const Point& target) {
-  move(target.x, target.y);
-}
-
-/**
- * \brief Makes the camera move towards an entity.
- *
- * The camera will be centered on the entity's center point.
- * If there was already a movement, the new one replaces it.
- * Note that the camera will not update its movement if the entity moves.
- *
- * \param entity the target entity
- */
-void Camera::move(Entity& entity) {
-
-  move(entity.get_center_point());
-}
-
-/**
- * \brief Moves the camera back to the hero.
- *
- * The hero is not supposed to move during this time.
- * Once the movement is finished, the camera starts following the hero again.
- */
-void Camera::restore() {
-
-  move(get_hero());
-  restoring = true;
-}
-
-/**
- * \brief Starts traversing a separator.
- *
- * The hero must touch the separator when you call this function.
- *
- * \param separator The separator to traverse (cannot be nullptr).
- */
-void Camera::traverse_separator(Separator* separator) {
-
-  Debug::check_assertion(separator != nullptr, "Missing parameter separator");
-
-  // Save the current position of the camera.
-  separator_scrolling_position = get_bounding_box();
-
-  // Start scrolling.
-  separator_traversed = std::static_pointer_cast<Separator>(
-      separator->shared_from_this()
-  );
-  separator_scrolling_delta = Point();
-  separator_target_position = get_bounding_box();
-  Hero& hero = get_hero();
-  const Point& hero_center = hero.get_center_point();
-  const Point& separator_center = separator->get_center_point();
-  if (separator->is_horizontal()) {
-    if (hero_center.y < separator_center.y) {
-      separator_scrolling_direction4 = 3;
-      separator_scrolling_delta.y = 1;
-      separator_target_position.add_y(get_height());
-    }
-    else {
-      separator_scrolling_direction4 = 1;
-      separator_scrolling_delta.y = -1;
-      separator_target_position.add_y(-get_height());
-    }
-  }
-  else {
-    if (hero_center.x < separator_center.x) {
-      separator_scrolling_direction4 = 0;
-      separator_scrolling_delta.x = 1;
-      separator_target_position.add_x(get_width());
-    }
-    else {
-      separator_scrolling_direction4 = 2;
-      separator_scrolling_delta.x = -1;
-      separator_target_position.add_x(-get_width());
-    }
-  }
-
-  separator->notify_activating(separator_scrolling_direction4);
-  separator_next_scrolling_date = System::now();
-
-  // Move the hero two pixels ahead to avoid to traverse the separator again.
-  hero.set_xy(hero.get_xy() + 2 * separator_scrolling_delta);
-}
-
-/**
  * \brief Makes that the camera track the given entity.
- * \param entity The entity to track.
+ * \param tracked_entity The entity to track.
  */
-void Camera::start_tracking(const EntityPtr& entity) {
-  tracked_entity = entity;
+void Camera::start_tracking(const EntityPtr& tracked_entity) {
+  set_state(new TrackingState(*this, tracked_entity));
 }
 
 /**
  * \brief Makes the camera stop tracking any entity.
  */
 void Camera::start_manual() {
-  tracked_entity = nullptr;
+  set_state(new ManualState(*this));
 }
 
 /**
@@ -362,7 +315,39 @@ void Camera::start_manual() {
  * state.
  */
 EntityPtr Camera::get_tracked_entity() const {
-  return tracked_entity;
+
+  if (get_state_name() != "tracking") {
+    return nullptr;
+  }
+
+  return static_cast<TrackingState&>(get_state()).get_tracked_entity();
+}
+
+/**
+ * \brief Function called when the tracked entity crosses a separator.
+ * \param separator The separator being traversed.
+ */
+void Camera::notify_tracked_entity_traversing_separator(Separator& separator) {
+
+  if (get_state_name() != "tracking") {
+    return;
+  }
+
+  static_cast<TrackingState&>(get_state()).traverse_separator(separator);
+}
+
+/**
+ * \brief Returns whether this camera is currently scrolling on a separator.
+ * \return \c true if this camera is tracking an entity that traverses a
+ * separator.
+ */
+bool Camera::is_traversing_separator() const {
+
+  if (get_state_name() != "tracking") {
+    return false;
+  }
+
+  return static_cast<TrackingState&>(get_state()).is_traversing_separator();
 }
 
 /**
@@ -517,4 +502,3 @@ Rectangle Camera::apply_separators_and_map_bounds(const Rectangle& area) const {
 }
 
 }
-

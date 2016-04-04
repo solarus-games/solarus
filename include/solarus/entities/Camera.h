@@ -54,44 +54,21 @@ class Camera : public Entity {
     void set_position_on_screen(const Point& position_on_screen);
     Point get_position_to_track(const Point& tracked_xy) const;
 
-    void update() override;
-    bool is_moving() const;
-    void set_speed(int speed);
-    void move(int target_x, int target_y);
-    void move(const Point& target);
-    void move(Entity& entity);
-    void restore();
-    void traverse_separator(Separator* separator);
-
     void start_tracking(const EntityPtr& entity);
     void start_manual();
+
     EntityPtr get_tracked_entity() const;
+    void notify_tracked_entity_traversing_separator(Separator& separator);
+    bool is_traversing_separator() const;
 
     Rectangle apply_map_bounds(const Rectangle& area) const;
     Rectangle apply_separators(const Rectangle& area) const;
     Rectangle apply_separators_and_map_bounds(const Rectangle& area) const;
 
-  private:
-
-    void update_fixed_on();
-    void update_moving();
+private:
 
     Point position_on_screen;               /**< Where to draw this camera on the screen. */
 
-    // Camera centered on an entity.
-    EntityPtr tracked_entity;               /**< An entity the camera is tracking
-                                             * or nullptr. */
-    Rectangle separator_scrolling_position; /**< Current camera position while crossing a separator. */
-    Rectangle separator_target_position;    /**< Target camera position when crossing a separator. */
-    Point separator_scrolling_delta;        /**< increment to the camera position when crossing a separator. */
-    uint32_t separator_next_scrolling_date; /**< Next camera position change when crossing a separator. */
-    int separator_scrolling_direction4;     /**< Direction when scrolling. */
-    std::shared_ptr<Separator>
-        separator_traversed;                /**< Separator currently being traversed or nullptr. */
-
-    // Camera being moved toward a point or back to the hero.
-    bool restoring;                         /**< \c true if the camera is moving back to the hero. */
-    int speed;                              /**< Speed of the next movement. */
 };
 
 }

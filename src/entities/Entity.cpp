@@ -2638,8 +2638,12 @@ bool Entity::is_sword_ignored() const {
  */
 bool Entity::overlaps_camera() const {
 
-  const Camera& camera = get_map().get_camera();
-  if (camera.overlaps(bounding_box)) {
+  const CameraPtr& camera = get_map().get_camera();
+  if (camera == nullptr) {
+    return false;
+  }
+
+  if (camera->overlaps(bounding_box)) {
     return true;
   }
 
@@ -2656,7 +2660,7 @@ bool Entity::overlaps_camera() const {
         sprite_size.width,
         sprite_size.height
     );
-    if (camera.overlaps(sprite_bounding_box)) {
+    if (camera->overlaps(sprite_bounding_box)) {
       return true;
     }
   }
@@ -2795,28 +2799,6 @@ int Entity::get_distance(const Point& point) const {
  */
 int Entity::get_distance(const Entity& other) const {
   return (int) Geometry::get_distance(get_xy(), other.get_xy());
-}
-
-/**
- * \brief Returns the distance between the origin of this entity
- * and the center point of the visible part of the map.
- * \return the distance in pixels
- */
-int Entity::get_distance_to_camera() const {
-
-  const Camera& camera = get_map().get_camera();
-  return (int) Geometry::get_distance(get_xy(), camera.get_center_point());
-}
-
-/**
- * \brief Returns the square of the distance between the origin of this entity
- * and the center point of the visible part of the map.
- * \return Square of the distance.
- */
-int Entity::get_distance_to_camera2() const {
-
-  const Camera& camera = get_map().get_camera();
-  return Geometry::get_distance2(get_xy(), camera.get_center_point());
 }
 
 /**
@@ -3275,12 +3257,12 @@ void Entity::update() {
     return;
   }
 
-  // check the facing entity
+  // Check the facing entity.
   if (facing_entity != nullptr && facing_entity->is_being_removed()) {
     set_facing_entity(nullptr);
   }
 
-  // update the sprites
+  // Update the sprites.
   std::vector<NamedSprite> sprites = this->sprites;
   for (const NamedSprite& named_sprite: sprites) {
     if (named_sprite.removed) {
@@ -3303,7 +3285,7 @@ void Entity::update() {
   }
   clear_old_sprites();
 
-  // update the movement
+  // Update the movement.
   if (movement != nullptr) {
     movement->update();
   }
@@ -3314,6 +3296,9 @@ void Entity::update() {
       stop_stream_action();
     }
   }
+
+  // Update the state if any.
+  update_state();
 }
 
 /**
@@ -3421,16 +3406,18 @@ std::string Entity::get_state_name() const {
 }
 
 /**
- * \brief Updates the entity's internal state.
+ * \brief Updates the entity's internal state if any.
  *
- * This function is called repeatedly by update().
+ * This function is called repeatedly by the game loop.
  */
 void Entity::update_state() {
 
-  // update the current state
-  state->update();
+  // Update the current state
+  if (state != nullptr) {
+    state->update();
+  }
 
-  // cleanup old states
+  // Cleanup old states.
   old_states.clear();
 }
 

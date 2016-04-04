@@ -14,39 +14,20 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_STATE_H
-#define SOLARUS_HERO_STATE_H
+#ifndef SOLARUS_CAMERA_PTR_H
+#define SOLARUS_CAMERA_PTR_H
 
-#include "solarus/entities/EntityState.h"
+#include <memory>
 
 namespace Solarus {
 
+class Camera;
+
 /**
- * \brief The hero base state.
+ * \brief Alias for shared_ptr of Camera.
  */
-class HeroState: public Entity::State {
-
-  public:
-
-    virtual Hero& get_entity() override;
-    virtual const Hero& get_entity() const override;
-    const HeroSprites& get_sprites() const ;
-    HeroSprites& get_sprites();
-
-    void draw_on_map() override;
-
-    void notify_attack_command_pressed() override;
-    void notify_item_command_pressed(int slot) override;
-
-    bool is_jumper_obstacle(const Jumper& jumper, const Rectangle& candidate_position) const override;
-
-  protected:
-
-    HeroState(Hero& hero, const std::string& state_name);
-
-};
+using CameraPtr = std::shared_ptr<Camera>;
 
 }
 
 #endif
-

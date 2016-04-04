@@ -1338,48 +1338,6 @@ int LuaContext::l_entity_iterator_next(lua_State* l) {
 }
 
 /**
- * \brief Executes the callback function of a camera movement.
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::l_camera_do_callback(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    // Execute the function.
-    lua_settop(l, 0);
-    lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_function");
-    LuaTools::call_function(l, 0, 0, "camera callback");
-
-    // Set a second timer to restore the camera.
-    Map& map = get_lua_context(l).get_main_loop().get_game()->get_current_map();
-    push_map(l, map);
-    lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
-    lua_pushcfunction(l, l_camera_restore);
-    timer_api_start(l);
-    const TimerPtr& timer = check_timer(l, -1);
-    timer->set_suspended_with_map(false);
-
-    return 0;
-  });
-}
-
-/**
- * \brief Moves the camera back to the hero.
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::l_camera_restore(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    LuaContext& lua_context = get_lua_context(l);
-
-    lua_context.get_main_loop().get_game()->get_current_map().restore_camera();
-
-    return 0;
-  });
-}
-
-/**
  * \brief Implementation of map:get_game().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -1629,8 +1587,13 @@ int LuaContext::map_api_get_camera(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
 
-    // Return the hero even if he is no longer on this map.
-    push_camera(l, map.get_camera());
+    const CameraPtr& camera = map.get_camera();
+    if (camera == nullptr) {
+      lua_pushnil(l);
+      return 1;
+    }
+
+    push_camera(l, *camera);
     return 1;
   });
 }
@@ -1643,9 +1606,19 @@ int LuaContext::map_api_get_camera(lua_State* l) {
 int LuaContext::map_api_get_camera_position(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
+
+    get_lua_context(l).warning_deprecated("map:get_camera_position()",
+        "Use map:get_camera():get_position() instead.");
+
     const Map& map = *check_map(l, 1);
 
-    const Rectangle& camera_position = map.get_camera().get_bounding_box();
+    const CameraPtr& camera = map.get_camera();
+    if (camera == nullptr) {
+      lua_pushnil(l);
+      return 1;
+    }
+
+    const Rectangle& camera_position = camera->get_bounding_box();
 
     lua_pushinteger(l, camera_position.get_x());
     lua_pushinteger(l, camera_position.get_y());
@@ -1663,6 +1636,11 @@ int LuaContext::map_api_get_camera_position(lua_State* l) {
 int LuaContext::map_api_move_camera(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
+
+    get_lua_context(l).warning_deprecated("map:move_camera()",
+        "Make a target movement on map:get_camera() instead.");
+
+    /* TODO
     Map& map = *check_map(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
@@ -1677,19 +1655,10 @@ int LuaContext::map_api_move_camera(lua_State* l) {
         delay_after = LuaTools::check_int(l, 7);
       }
     }
-    lua_settop(l, 5); // let the function on top of the stack
+    lua_settop(l, 5);  // Let the function on top of the stack.
 
-    // store the function and the delays
-    // TODO store this as Lua refs instead of globally
-    lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_function");
-    lua_pushinteger(l, delay_before);
-    lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
-    lua_pushinteger(l, delay_after);
-    lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
-
-    // start the camera
-    map.move_camera(x, y, speed);
-
+    // TODO
+    */
     return 0;
   });
 }
@@ -2307,24 +2276,6 @@ void LuaContext::map_on_opening_transition_finished(Map& map,
 
   push_map(l, map);
   on_opening_transition_finished(destination);
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_camera_back() method of a Lua map.
- *
- * Does nothing if the method is not defined.
- *
- * \param map A map.
- */
-void LuaContext::map_on_camera_back(Map& map) {
-
-  if (!userdata_has_field(map, "on_camera_back")) {
-    return;
-  }
-
-  push_map(l, map);
-  on_camera_back();
   lua_pop(l, 1);
 }
 

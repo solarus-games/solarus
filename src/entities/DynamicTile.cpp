@@ -88,7 +88,11 @@ bool DynamicTile::is_drawn_at_its_position() const {
  */
 void DynamicTile::draw_on_map() {
 
-  const Rectangle& camera_position = get_map().get_camera().get_bounding_box();
+  const CameraPtr& camera = get_map().get_camera();
+  if (camera == nullptr) {
+    return;
+  }
+  const Rectangle& camera_position = camera->get_bounding_box();
 
   Rectangle dst_position(get_top_left_x() - camera_position.get_x(),
       get_top_left_y() - camera_position.get_y(),

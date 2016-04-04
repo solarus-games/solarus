@@ -162,8 +162,11 @@ class Entity::State {
     const GameCommands& get_commands() const;
     virtual Entity& get_entity();
     virtual const Entity& get_entity() const;
-    HeroSprites& get_sprites();
-    const HeroSprites& get_sprites() const;
+
+    template<typename T>
+    T& get_entity();
+    template<typename T>
+    const T& get_entity() const;
 
   private:
 
@@ -175,6 +178,24 @@ class Entity::State {
     bool stopping;            /**< Indicates that this state is being stopped. */
 
 };
+
+/**
+ * \brief Returns the entity of this state cast to an entity type.
+ * \return The entity.
+ */
+template<typename T>
+T& Entity::State::get_entity() {
+  return static_cast<T&>(get_entity());
+}
+
+/**
+ * \brief Returns the entity of this state cast to an entity type.
+ * \return The entity.
+ */
+template<typename T>
+const T& Entity::State::get_entity() const {
+  return static_cast<const T&>(get_entity());
+}
 
 }
 

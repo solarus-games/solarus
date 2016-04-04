@@ -151,7 +151,6 @@ class LuaContext {
     void update();
     bool notify_input(const InputEvent& event);
     void notify_map_suspended(Map& map, bool suspended);
-    void notify_camera_reached_target(Map& map);
     void notify_shop_treasure_interaction(ShopTreasure& shop_treasure);
     void notify_hero_brandish_treasure(
         const Treasure& treasure,
@@ -172,6 +171,11 @@ class LuaContext {
     void run_map(Map& map, Destination* destination);
     void run_enemy(Enemy& enemy);
     void run_custom_entity(CustomEntity& custom_entity);
+
+    void warning_deprecated(
+        const std::string& function_name,
+        const std::string& message
+    );
 
     // Lua refs.
     ScopedLuaRef create_ref();
@@ -358,7 +362,6 @@ class LuaContext {
     void map_on_suspended(Map& map, bool suspended);
     void map_on_opening_transition_finished(Map& map,
         Destination* destination);
-    void map_on_camera_back(Map& map);
     void map_on_obtaining_treasure(Map& map, const Treasure& treasure);
     void map_on_obtained_treasure(Map& map, const Treasure& treasure);
     bool map_on_input(Map& map, const InputEvent& event);
@@ -1217,7 +1220,6 @@ class LuaContext {
     void on_changed();
     void on_started(Destination* destination);
     void on_opening_transition_finished(Destination* destination);
-    void on_camera_back();
     void on_obtaining_treasure(const Treasure& treasure);
     void on_obtained_treasure(const Treasure& treasure);
     void on_state_changed(const std::string& state_name);
@@ -1284,8 +1286,6 @@ class LuaContext {
       l_get_map_entity_or_global,
       l_entity_iterator_next,
       l_named_sprite_iterator_next,
-      l_camera_do_callback,
-      l_camera_restore,
       l_treasure_dialog_finished,
       l_shop_treasure_description_dialog_finished,
       l_shop_treasure_question_dialog_finished,
@@ -1316,34 +1316,37 @@ class LuaContext {
       l_create_fire;
 
     // Script data.
-    lua_State* l;                   /**< The Lua state encapsulated. */
-    MainLoop& main_loop;            /**< The Solarus main loop. */
+    lua_State* l;                      /**< The Lua state encapsulated. */
+    MainLoop& main_loop;               /**< The Solarus main loop. */
 
-    std::list<LuaMenuData> menus;   /**< The menus currently running in their context.
-                                     * Invalid ones are to be removed at the next cycle. */
+    std::list<LuaMenuData> menus;      /**< The menus currently running in their context.
+                                        * Invalid ones are to be removed at the next cycle. */
     std::map<TimerPtr, LuaTimerData>
-        timers;                     /**< The timers currently running, with
-                                     * their context and callback. */
+        timers;                        /**< The timers currently running, with
+                                        * their context and callback. */
     std::list<TimerPtr>
-        timers_to_remove;           /**< Timers to be removed at the next cycle. */
+        timers_to_remove;              /**< Timers to be removed at the next cycle. */
 
     std::set<DrawablePtr>
-        drawables;                  /**< All drawable objects created by
-                                     * this script. */
+        drawables;                     /**< All drawable objects created by
+                                        * this script. */
     std::set<DrawablePtr>
-        drawables_to_remove;        /**< Drawable objects to be removed at the
-                                     * next cycle. */
+        drawables_to_remove;           /**< Drawable objects to be removed at the
+                                        * next cycle. */
     std::map<const ExportableToLua*, std::set<std::string>>
-        userdata_fields;            /**< Existing string keys created on each
-                                     * userdata with our __newindex. This is
-                                     * only for performance, to avoid Lua
-                                     * lookups for callbacks like on_update. */
+        userdata_fields;               /**< Existing string keys created on each
+                                        * userdata with our __newindex. This is
+                                        * only for performance, to avoid Lua
+                                        * lookups for callbacks like on_update. */
+    std::set<std::string>
+        warning_deprecated_functions;  /**< Names of deprecated functions of
+                                        * the API for which a warning was emitted. */
 
     static const std::map<EntityType, lua_CFunction>
-        entity_creation_functions;  /**< Creation function of each entity type. */
+        entity_creation_functions;     /**< Creation function of each entity type. */
     static std::map<lua_State*, LuaContext*>
-        lua_contexts;               /**< Mapping to get the encapsulating object
-                                     * from the lua_State pointer. */
+        lua_contexts;                  /**< Mapping to get the encapsulating object
+                                        * from the lua_State pointer. */
 
 };
 

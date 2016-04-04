@@ -2,12 +2,12 @@ local map = ...
 
 function map:on_opening_transition_finished()
 
-  local hero_found = false
+  local num_entities = 0
   for entity in map:get_entities_in_rectangle(hero:get_bounding_box()) do
-    assert(entity == hero)
-    hero_found = true
+    assert(entity == hero or entity:get_type() == "camera")
+    num_entities = num_entities + 1
   end
+  assert_equal(num_entities, 2)
 
-  assert(hero_found)
   sol.main.exit()
 end

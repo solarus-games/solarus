@@ -49,6 +49,29 @@ inline const Hero& HeroState::get_entity() const {
 }
 
 /**
+ * \brief Returns the hero's sprites.
+ * \return the sprites
+ */
+const HeroSprites& HeroState::get_sprites() const {
+  return get_entity().get_hero_sprites();
+}
+
+/**
+ * \overload Non-const version.
+ */
+HeroSprites& HeroState::get_sprites() {
+  return get_entity().get_hero_sprites();
+}
+
+/**
+ * \brief Draws this state.
+ */
+void HeroState::draw_on_map() {
+
+  get_sprites().draw_on_map();
+}
+
+/**
  * \copydoc Entity::State::notify_attack_command_pressed
  */
 void HeroState::notify_attack_command_pressed() {

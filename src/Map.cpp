@@ -450,52 +450,6 @@ const SurfacePtr& Map::get_visible_surface() {
 }
 
 /**
- * \brief Makes the camera move towards a point.
- * \param x x coordinate of the target point
- * \param y y coordinate of the target point
- * \param speed speed of the movement
- */
-void Map::move_camera(int x, int y, int speed) {
-
-  Camera& camera = get_camera();
-  camera.set_speed(speed);
-  camera.move(x, y);
-}
-
-/**
- * \brief Makes the camera move back to the hero.
- */
-void Map::restore_camera() {
-
-  Camera& camera = get_camera();
-  camera.restore();
-}
-
-/**
- * \brief Returns whether there is a camera movement.
- *
- * It may be a movement towards a point or a scrolling movement due to a
- * separator.
- *
- * \return \c true if the camera is moving.
- */
-bool Map::is_camera_moving() const {
-
-  const Camera& camera = get_camera();
-  return camera.is_moving();
-}
-
-/**
- * \brief Makes the camera traverse a separator.
- * \param separator The separator to traverse.
- */
-void Map::traverse_separator(Separator* separator) {
-
-  Camera& camera = get_camera();
-  camera.traverse_separator(separator);
-}
-
-/**
  * \brief Suspends or resumes the movement and animations of the entities.
  *
  * This function is called when the game is being suspended
@@ -671,10 +625,13 @@ void Map::draw_sprite(Sprite& sprite, int x, int y) {
 
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
-  const Camera& camera = get_camera();
+  const CameraPtr& camera = get_camera();
+  if (camera == nullptr) {
+    return;
+  }
   sprite.draw(visible_surface,
-      x - camera.get_top_left_x(),
-      y - camera.get_top_left_y()
+      x - camera->get_top_left_x(),
+      y - camera->get_top_left_y()
   );
 }
 
@@ -695,7 +652,11 @@ void Map::draw_sprite(Sprite& sprite, int x, int y,
     return;
   }
 
-  const Camera& camera = get_camera();
+  const CameraPtr& camera = get_camera();
+  if (camera == nullptr) {
+    return;
+  }
+
   const Rectangle region_in_frame(
       clipping_area.get_x() - x,
       clipping_area.get_y() - y,
@@ -703,8 +664,8 @@ void Map::draw_sprite(Sprite& sprite, int x, int y,
       clipping_area.get_height()
   );
   const Point dst_position = {
-      x - camera.get_top_left_x(),
-      y - camera.get_top_left_y()
+      x - camera->get_top_left_x(),
+      y - camera->get_top_left_y()
   };
   sprite.draw_region(
       region_in_frame,

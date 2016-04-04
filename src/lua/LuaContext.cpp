@@ -377,24 +377,6 @@ void LuaContext::run_custom_entity(CustomEntity& custom_entity) {
 }
 
 /**
- * \brief Notifies Lua that the sequence started by a call to
- * map:move_camera() has reached its target.
- * \param map The current map.
- */
-void LuaContext::notify_camera_reached_target(Map& map) {
-
-  // Set a timer to execute the function.
-  lua_settop(l, 0);
-  push_map(l, map);
-  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
-  lua_pushcfunction(l, l_camera_do_callback);
-  timer_api_start(l);
-  const TimerPtr& timer = check_timer(l, -1);
-  timer->set_suspended_with_map(false);
-  lua_settop(l, 0);
-}
-
-/**
  * \brief Notifies Lua that a dialog starts.
  * \param game The game.
  * \param dialog The dialog that is becoming active.
@@ -439,6 +421,28 @@ void LuaContext::notify_dialog_finished(
     }
     call_function(1, 0, "dialog callback");
   }
+}
+
+/**
+ * \brief Shows a warning message for a deprecated function of the Lua API.
+ *
+ * Does nothing if the message for this function was already shown once.
+ *
+ * \param function_name A deprecated Lua function.
+ * \param message A warning message explaining how to replace the call.
+ */
+void LuaContext::warning_deprecated(
+    const std::string& function_name,
+    const std::string& message
+) {
+  if (warning_deprecated_functions.find(function_name) !=
+      warning_deprecated_functions.end()) {
+    return;
+  }
+  Logger::warning("The function " + function_name +
+                  " is deprecated and may be removed in a future version. " +
+                  message);
+  warning_deprecated_functions.insert(function_name);
 }
 
 /**
@@ -2039,16 +2043,6 @@ void LuaContext::on_opening_transition_finished(Destination* destination) {
       push_entity(l, *destination);
     }
     call_function(2, 0, "on_opening_transition_finished");
-  }
-}
-
-/**
- * \brief Calls the on_camera_back() method of the object on top of the stack.
- */
-void LuaContext::on_camera_back() {
-
-  if (find_method("on_camera_back")) {
-    call_function(1, 0, "on_camera_back");
   }
 }
 

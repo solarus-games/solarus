@@ -20,6 +20,7 @@
 #include "solarus/Common.h"
 #include "solarus/containers/Quadtree.h"
 #include "solarus/entities/Camera.h"
+#include "solarus/entities/CameraPtr.h"
 #include "solarus/entities/EntityPtr.h"
 #include "solarus/entities/EntityType.h"
 #include "solarus/entities/Ground.h"
@@ -69,8 +70,7 @@ class SOLARUS_API Entities {
 
     // Get entities.
     Hero& get_hero();
-    const Camera& get_camera() const;
-    Camera& get_camera();
+    const CameraPtr& get_camera() const;
     Ground get_tile_ground(int layer, int x, int y) const;
     EntityVector get_entities();
     const std::shared_ptr<Destination>& get_default_destination();
@@ -201,8 +201,7 @@ class SOLARUS_API Entities {
     // dynamic entities
     HeroPtr hero;                                   /**< The hero, also stored in Game because
                                                      * it is kept when changing maps. */
-    std::shared_ptr<Camera>
-        camera;                                     /**< The visible area of the map. */
+    CameraPtr camera;                               /**< The visible area of the map. */
 
     std::map<std::string, EntityPtr>
         named_entities;                             /**< Entities identified by a name. */
@@ -247,19 +246,11 @@ inline Ground Entities::get_tile_ground(int layer, int x, int y) const {
 
 /**
  * \brief Returns the camera of the map.
- * \return The camera.
+ * \return The camera, or nullptr if there is no camera.
  */
-inline const Camera& Entities::get_camera() const {
+inline const CameraPtr& Entities::get_camera() const {
 
-  return *camera;
-}
-
-/**
- * \overload Non-const version.
- */
-inline Camera& Entities::get_camera() {
-
-  return *camera;
+  return camera;
 }
 
 /**

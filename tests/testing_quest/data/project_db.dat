@@ -13,6 +13,7 @@ map{ id = "bugs/729_switch_is_walkable", description = "#729: switch:is_walkable
 map{ id = "bugs/738_custom_entity_on_ground_below_changed", description = "#738: custom_entity:on_ground_below_changed() is not called" }
 map{ id = "bugs/748_entity_overlaps_collision_modes", description = "#748: entity:overlaps() new paramater collision_mode" }
 map{ id = "bugs/754_entity_get_max_bounding_box", description = "#754: entity:get_max_bounding_box" }
+map{ id = "bugs/762_camera_entity", description = "#762: Camera as entity" }
 map{ id = "bugs/769_stuck_dynamic_tile_covered", description = "#769: Non-traversable dynamic tiles covered by traversable ones block the hero" }
 map{ id = "bugs/779_get_entities_random_order", description = "#779: map:get_entities() returns entities in random order" }
 map{ id = "bugs/781_assert_teletransporter_same_map", description = "#781: Assertion error when a teletransporter leads to the same map" }

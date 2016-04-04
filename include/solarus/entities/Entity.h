@@ -228,8 +228,9 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual void notify_position_changed();
     virtual void notify_layer_changed();
     virtual void notify_ground_below_changed();
-    virtual void notify_movement_changed();
+    virtual void notify_movement_started();
     virtual void notify_movement_finished();
+    virtual void notify_movement_changed();
     virtual void notify_moving_by(Entity& entity);
     virtual void notify_moved_by(Entity& entity);
 

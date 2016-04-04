@@ -1488,6 +1488,7 @@ void Entity::set_movement(const std::shared_ptr<Movement>& movement) {
     if (movement->is_suspended() != suspended) {
       movement->set_suspended(suspended || !is_enabled());
     }
+    notify_movement_started();
   }
 }
 
@@ -2079,15 +2080,10 @@ void Entity::check_collision_with_detectors(Sprite& sprite) {
 }
 
 /**
- * \brief This function can be called by the movement object
- * to notify the entity when the movement has just changed
- * (e.g. the speed, the angle or the trajectory).
+ * \brief This function is called when a movement started on this entity.
  */
-void Entity::notify_movement_changed() {
+void Entity::notify_movement_started() {
 
-  if (are_movement_notifications_enabled()) {
-    get_lua_context()->entity_on_movement_changed(*this, *get_movement());
-  }
 }
 
 /**
@@ -2097,6 +2093,18 @@ void Entity::notify_movement_finished() {
 
   if (are_movement_notifications_enabled()) {
     get_lua_context()->entity_on_movement_finished(*this);
+  }
+}
+
+/**
+ * \brief This function can be called by the movement object
+ * to notify the entity when the movement has just changed
+ * (e.g. the speed, the angle or the trajectory).
+ */
+void Entity::notify_movement_changed() {
+
+  if (are_movement_notifications_enabled()) {
+    get_lua_context()->entity_on_movement_changed(*this, *get_movement());
   }
 }
 

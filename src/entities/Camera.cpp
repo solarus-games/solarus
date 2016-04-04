@@ -295,6 +295,19 @@ void Camera::set_suspended(bool /* suspended */) {
 }
 
 /**
+ * \copydoc Entity::notify_movement_started()
+ */
+void Camera::notify_movement_started() {
+
+  Entity::notify_movement_started();
+
+  // When a movement is set, automatically switch to manual state.
+  if (get_state_name() != "manual") {
+    start_manual();
+  }
+}
+
+/**
  * \brief Makes that the camera track the given entity.
  * \param tracked_entity The entity to track.
  */

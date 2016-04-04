@@ -49,6 +49,7 @@ class Camera : public Entity {
 
     bool can_be_drawn() const override;
     void set_suspended(bool suspended) override;
+    void notify_movement_started() override;
 
     Point get_position_on_screen() const;
     void set_position_on_screen(const Point& position_on_screen);

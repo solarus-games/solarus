@@ -424,6 +424,28 @@ void LuaContext::notify_dialog_finished(
 }
 
 /**
+ * \brief Shows a warning message for a deprecated function of the Lua API.
+ *
+ * Does nothing if the message for this function was already shown once.
+ *
+ * \param function_name A deprecated Lua function.
+ * \param message A warning message explaining how to replace the call.
+ */
+void LuaContext::warning_deprecated(
+    const std::string& function_name,
+    const std::string& message
+) {
+  if (warning_deprecated_functions.find(function_name) !=
+      warning_deprecated_functions.end()) {
+    return;
+  }
+  Logger::warning("The function " + function_name +
+                  " is deprecated and may be removed in a future version. " +
+                  message);
+  warning_deprecated_functions.insert(function_name);
+}
+
+/**
  * \brief Creates a reference to the Lua value on top of the stack and pops
  * this value.
  * \return The reference created, wrapped in an object that manages its

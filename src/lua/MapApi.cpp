@@ -1606,6 +1606,10 @@ int LuaContext::map_api_get_camera(lua_State* l) {
 int LuaContext::map_api_get_camera_position(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
+
+    get_lua_context(l).warning_deprecated("map:get_camera_position()",
+        "Use map:get_camera():get_position() instead.");
+
     const Map& map = *check_map(l, 1);
 
     const CameraPtr& camera = map.get_camera();
@@ -1632,6 +1636,10 @@ int LuaContext::map_api_get_camera_position(lua_State* l) {
 int LuaContext::map_api_move_camera(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
+
+    get_lua_context(l).warning_deprecated("map:move_camera()",
+        "Make a target movement on map:get_camera() instead.");
+
     /* TODO
     Map& map = *check_map(l, 1);
     int x = LuaTools::check_int(l, 2);

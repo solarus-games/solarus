@@ -381,6 +381,9 @@ void Entity::notify_creating() {
  */
 void Entity::notify_created() {
 
+  if (state != nullptr) {
+    get_lua_context()->entity_on_state_changed(*this, get_state_name());
+  }
 }
 
 /**

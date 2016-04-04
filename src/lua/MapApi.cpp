@@ -63,6 +63,48 @@
 
 namespace Solarus {
 
+namespace {
+
+/**
+ * \brief Lua equivalent of the deprecated map:move_camera() function.
+ */
+const char* move_camera_code =
+"local map, x, y, speed, callback, delay_before, delay_after = ...\n"
+"local camera = map:get_camera()\n"
+"local game = map:get_game()\n"
+"local hero = map:get_hero()\n"
+"delay_before = delay_before or 1000\n"
+"delay_after = delay_after or 1000\n"
+"local old_x, old_y = camera:get_position()\n"
+"game:set_suspended(true)\n"
+"camera:start_manual()\n"
+"local movement = sol.movement.create(\"target\")\n"
+"movement:set_target(camera:get_position_to_track(x, y))\n"
+"movement:set_ignore_obstacles(true)\n"
+"movement:set_speed(speed)\n"
+"movement:start(camera, function()\n"
+"  local timer_1 = sol.timer.start(map, delay_before, function()\n"
+"    callback()\n"
+"    local timer_2 = sol.timer.start(map, delay_after, function()\n"
+"      local movement = sol.movement.create(\"target\")\n"
+"      movement:set_target(old_x, old_y)\n"
+"      movement:set_ignore_obstacles(true)\n"
+"      movement:set_speed(speed)\n"
+"      movement:start(camera, function()\n"
+"        game:set_suspended(false)\n"
+"        camera:start_tracking(hero)\n"
+"        if map.on_camera_back ~= nil then\n"
+"          map:on_camera_back()\n"
+"        end\n"
+"      end)\n"
+"    end)\n"
+"    timer_2:set_suspended_with_map(false)\n"
+"  end)\n"
+"  timer_1:set_suspended_with_map(false)\n"
+"end)\n";
+
+}  // Anonymous namespace.
+
 /**
  * Name of the Lua table representing the map module.
  */
@@ -133,6 +175,17 @@ void LuaContext::register_map_module() {
     push_string(l, type_name);
     lua_pushcclosure(l, map_api_create_entity, 1);
     lua_setfield(l, -2, function_name.c_str());
+  }
+
+  // Add a Lua implementation of the deprecated map:move_camera() function.
+  int result = luaL_loadstring(l, move_camera_code);
+  if (result != 0) {
+    Debug::error(std::string("Failed to initialize map:move_camera(): ") + lua_tostring(l, -1));
+    lua_pop(l, 1);
+  }
+  else {
+    Debug::check_assertion(lua_isfunction(l, -1), "map:move_camera() is not a function");
+    lua_setfield(l, LUA_REGISTRYINDEX, "map.move_camera");
   }
 }
 
@@ -1637,28 +1690,30 @@ int LuaContext::map_api_move_camera(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
 
-    get_lua_context(l).warning_deprecated("map:move_camera()",
+    LuaContext& lua_context = get_lua_context(l);
+    lua_context.warning_deprecated("map:move_camera()",
         "Make a target movement on map:get_camera() instead.");
 
-    /* TODO
-    Map& map = *check_map(l, 1);
-    int x = LuaTools::check_int(l, 2);
-    int y = LuaTools::check_int(l, 3);
-    int speed = LuaTools::check_int(l, 4);
+    check_map(l, 1);
+    LuaTools::check_int(l, 2);
+    LuaTools::check_int(l, 3);
+    LuaTools::check_int(l, 4);
     LuaTools::check_type(l, 5, LUA_TFUNCTION);
-
-    uint32_t delay_before = 1000;
-    uint32_t delay_after = 1000;
     if (lua_gettop(l) >= 6) {
-      delay_before = LuaTools::check_int(l, 6);
-      if (lua_gettop(l) >= 7) {
-        delay_after = LuaTools::check_int(l, 7);
-      }
+      LuaTools::check_int(l, 6);
     }
-    lua_settop(l, 5);  // Let the function on top of the stack.
+    if (lua_gettop(l) >= 7) {
+      LuaTools::check_int(l, 7);
+    }
+    lua_settop(l, 7); // Make sure that we always have 7 arguments.
 
-    // TODO
-    */
+    lua_getfield(l, LUA_REGISTRYINDEX, "map.move_camera");
+    if (!lua_isnil(l, -1)) {
+      Debug::check_assertion(lua_isfunction(l, -1), "map:move_camera() is not a function");
+      lua_insert(l, 1);
+      lua_context.call_function(7, 0, "move_camera");
+    }
+
     return 0;
   });
 }

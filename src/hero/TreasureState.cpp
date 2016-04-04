@@ -111,10 +111,13 @@ void Hero::TreasureState::draw_on_map() {
   int x = hero.get_x();
   int y = hero.get_y();
 
-  const Camera& camera = get_map().get_camera();
+  const CameraPtr& camera = get_map().get_camera();
+  if (camera == nullptr) {
+    return;
+  }
   treasure_sprite->draw(get_map().get_visible_surface(),
-      x - camera.get_top_left_x(),
-      y - 24 - camera.get_top_left_y());
+      x - camera->get_top_left_x(),
+      y - 24 - camera->get_top_left_y());
 }
 
 /**

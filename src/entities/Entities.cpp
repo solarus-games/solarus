@@ -1204,7 +1204,10 @@ void Entities::update() {
  */
 void Entities::draw() {
 
-  const Camera& camera = get_camera();
+  const CameraPtr& camera = get_camera();
+  if (camera == nullptr) {
+    return;
+  }
 
   // Lazily build the list of entities to draw.
   if (entities_to_draw.empty()) {
@@ -1218,10 +1221,10 @@ void Entities::draw() {
     EntityVector entities_in_camera;
     Rectangle around_camera(
         Point(
-            camera.get_x() - camera.get_size().width,
-            camera.get_y() - camera.get_size().height
+            camera->get_x() - camera->get_size().width,
+            camera->get_y() - camera->get_size().height
         ),
-        camera.get_size() * 3
+        camera->get_size() * 3
     );
     get_entities_in_rectangle(around_camera, entities_in_camera);
 
@@ -1263,7 +1266,7 @@ void Entities::draw() {
     // will be drawn later).
     for (unsigned int i = 0; i < tiles_in_animated_regions[layer].size(); i++) {
       Tile& tile = *tiles_in_animated_regions[layer][i];
-      if (tile.overlaps(camera) || !tile.is_drawn_at_its_position()) {
+      if (tile.overlaps(*camera) || !tile.is_drawn_at_its_position()) {
         tile.draw_on_map();
       }
     }
@@ -1280,7 +1283,7 @@ void Entities::draw() {
 
   if (EntityTree::debug_quadtrees) {
     // Draw the quadtree structure for debugging.
-    quadtree.draw(map.get_visible_surface(), -camera.get_top_left_xy());
+    quadtree.draw(map.get_visible_surface(), -camera->get_top_left_xy());
   }
 }
 

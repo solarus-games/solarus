@@ -101,6 +101,7 @@ class SOLARUS_API Game {
     bool is_dialog_enabled() const;
     bool is_playing_transition() const;
     bool is_showing_game_over() const;
+    bool is_suspended_by_camera() const;
     bool is_suspended_by_script() const;
     bool is_suspended() const; // true if at least one of the 5 functions above returns true
 

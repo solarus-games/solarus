@@ -403,6 +403,13 @@ void Hero::notify_command_released(GameCommand command) {
  * \brief Returns the sprites currently representing the hero.
  * \return the sprites
  */
+const HeroSprites& Hero::get_hero_sprites() const {
+  return *sprites;
+}
+
+/**
+ * \overload Non-const version.
+ */
 HeroSprites& Hero::get_hero_sprites() {
   return *sprites;
 }
@@ -1821,7 +1828,13 @@ void Hero::notify_collision_with_block(Block& /* block */) {
 void Hero::notify_collision_with_separator(
     Separator& separator, CollisionMode /* collision_mode */) {
 
-  get_map().traverse_separator(&separator);
+  const CameraPtr& camera = get_map().get_camera();
+  if (camera == nullptr) {
+    return;
+  }
+  if (camera->get_tracked_entity().get() == this) {
+    camera->notify_tracked_entity_traversing_separator(separator);
+  }
 }
 
 /**

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -212,24 +212,28 @@ void ShopTreasure::update() {
  */
 void ShopTreasure::draw_on_map() {
 
+  const CameraPtr& camera = get_map().get_camera();
+  if (camera == nullptr) {
+    return;
+  }
+
   const SurfacePtr& map_surface = get_map().get_visible_surface();
   int x = get_x();
   int y = get_y();
 
   // draw the treasure
-  const Camera& camera = get_map().get_camera();
   treasure_sprite->draw(map_surface,
-      x + 16 - camera.get_top_left_x(),
-      y + 13 - camera.get_top_left_y()
+      x + 16 - camera->get_top_left_x(),
+      y + 13 - camera->get_top_left_y()
   );
 
   // also draw the price
   price_digits.draw(map_surface,
-      x + 12 - camera.get_top_left_x(),
-      y + 21 - camera.get_top_left_y());
+      x + 12 - camera->get_top_left_x(),
+      y + 21 - camera->get_top_left_y());
   rupee_icon_sprite->draw(map_surface,
-      x - camera.get_top_left_x(),
-      y + 22 - camera.get_top_left_y());
+      x - camera->get_top_left_x(),
+      y + 22 - camera->get_top_left_y());
 }
 
 }

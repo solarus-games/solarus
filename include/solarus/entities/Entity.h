@@ -259,8 +259,6 @@ class SOLARUS_API Entity: public ExportableToLua {
     int get_distance(int x, int y) const;
     int get_distance(const Point& point) const;
     int get_distance(const Entity& other) const;
-    int get_distance_to_camera() const;
-    int get_distance_to_camera2() const;
     bool is_in_same_region(const Entity& other) const;
     bool is_in_same_region(const Point& xy) const;
 

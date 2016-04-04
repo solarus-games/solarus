@@ -151,7 +151,6 @@ class LuaContext {
     void update();
     bool notify_input(const InputEvent& event);
     void notify_map_suspended(Map& map, bool suspended);
-    void notify_camera_reached_target(Map& map);
     void notify_shop_treasure_interaction(ShopTreasure& shop_treasure);
     void notify_hero_brandish_treasure(
         const Treasure& treasure,
@@ -358,7 +357,6 @@ class LuaContext {
     void map_on_suspended(Map& map, bool suspended);
     void map_on_opening_transition_finished(Map& map,
         Destination* destination);
-    void map_on_camera_back(Map& map);
     void map_on_obtaining_treasure(Map& map, const Treasure& treasure);
     void map_on_obtained_treasure(Map& map, const Treasure& treasure);
     bool map_on_input(Map& map, const InputEvent& event);
@@ -1217,7 +1215,6 @@ class LuaContext {
     void on_changed();
     void on_started(Destination* destination);
     void on_opening_transition_finished(Destination* destination);
-    void on_camera_back();
     void on_obtaining_treasure(const Treasure& treasure);
     void on_obtained_treasure(const Treasure& treasure);
     void on_state_changed(const std::string& state_name);
@@ -1284,8 +1281,6 @@ class LuaContext {
       l_get_map_entity_or_global,
       l_entity_iterator_next,
       l_named_sprite_iterator_next,
-      l_camera_do_callback,
-      l_camera_restore,
       l_treasure_dialog_finished,
       l_shop_treasure_description_dialog_finished,
       l_shop_treasure_question_dialog_finished,

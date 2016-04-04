@@ -57,10 +57,15 @@ bool Tile::is_drawn_at_its_position() const {
  */
 void Tile::draw_on_map() {
 
+  const CameraPtr& camera = get_map().get_camera();
+  if (camera == nullptr) {
+    return;
+  }
+
   // Note that the tiles are also optimized for drawing.
   // This function is called at each frame only if the tile is in an
   // animated region. Otherwise, tiles are drawn once when loading the map.
-  draw(get_map().get_visible_surface(), get_map().get_camera().get_top_left_xy());
+  draw(get_map().get_visible_surface(), camera->get_top_left_xy());
 }
 
 /**

@@ -82,12 +82,7 @@ class SOLARUS_API Map: public ExportableToLua {
 
     // camera
     const SurfacePtr& get_visible_surface();
-    const Camera& get_camera() const;
-    Camera& get_camera();
-    void move_camera(int x, int y, int speed);
-    void restore_camera();
-    bool is_camera_moving() const;
-    void traverse_separator(Separator* separator);
+    const CameraPtr& get_camera() const;
 
     // loading
     bool is_loaded() const;
@@ -292,17 +287,9 @@ inline Entities& Map::get_entities() {
 
 /**
  * \brief Returns the camera of the map.
- * \return The camera.
+ * \return The camera, or nullptr if there is no camera.
  */
-inline const Camera& Map::get_camera() const {
-
-  return get_entities().get_camera();
-}
-
-/**
- * \overload Non-const version.
- */
-inline Camera& Map::get_camera() {
+inline const CameraPtr& Map::get_camera() const {
 
   return get_entities().get_camera();
 }

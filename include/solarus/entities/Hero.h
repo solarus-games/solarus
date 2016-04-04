@@ -38,7 +38,7 @@ class Rectangle;
 class Treasure;
 
 /**
- * \brief The hero's entity.
+ * \brief The hero entity.
  *
  * This class represents the hero. It coordinates his position on the map and his state.
  * The hero is animated by several sprites that are handled by the HeroSprites class.
@@ -79,6 +79,7 @@ class Hero: public Entity {
      * Functions relative to the sprites.
      * The sprites are managed and drawn by the class HeroSprites.
      */
+    const HeroSprites& get_hero_sprites() const;
     HeroSprites& get_hero_sprites();
     int get_animation_direction() const;
     void set_animation_direction(int direction);

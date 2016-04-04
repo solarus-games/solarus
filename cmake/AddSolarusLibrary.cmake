@@ -13,6 +13,7 @@ file(
   include/solarus/entities/Bomb.h
   include/solarus/entities/Boomerang.h
   include/solarus/entities/Camera.h
+  include/solarus/entities/CameraPtr.h
   include/solarus/entities/CarriedObject.h
   include/solarus/entities/Chest.h
   include/solarus/entities/CollisionMode.h

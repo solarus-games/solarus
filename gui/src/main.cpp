@@ -40,7 +40,7 @@ int run_gui(int argc, char* argv[]) {
   // Set up application.
   QApplication application(argc, argv);
   application.setApplicationName("Solarus");
-  application.setApplicationVersion("1.0.0"); // TODO use cmake
+  application.setApplicationVersion(SOLARUS_VERSION);
 
   // Set up the translations.
   QTranslator qt_translator;

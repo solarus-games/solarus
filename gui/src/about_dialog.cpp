@@ -30,8 +30,8 @@ AboutDialog::AboutDialog(QWidget* parent) :
     ui.setupUi(this);
 
     // Set app information in labels
-    ui.app_title_label->setText(qApp->applicationName());
-    ui.app_version_label->setText(qApp->applicationVersion());
+    ui.app_title_label->setText(QApplication::applicationName());
+    ui.app_version_label->setText(QApplication::applicationVersion());
 
     // Setup dialog properties.
     setWindowModality(Qt::WindowModal);

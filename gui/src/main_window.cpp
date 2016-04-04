@@ -112,7 +112,7 @@ void MainWindow::initialize_geometry_on_screen() {
  */
 void MainWindow::update_title() {
 
-  QString version = SOLARUS_VERSION;
+  QString version = QApplication::applicationVersion();
   QString title = tr("Solarus %1").arg(version);
   setWindowTitle(title);
 }

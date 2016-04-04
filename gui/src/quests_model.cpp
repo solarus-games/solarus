@@ -195,7 +195,7 @@ Solarus::QuestProperties QuestsModel::get_quest_properties(int quest_index) cons
  * @brief Returns the default logo for a quest.
  * @return The default logo
  */
-const QPixmap &QuestsModel::get_quest_default_logo() const {
+const QPixmap& QuestsModel::get_quest_default_logo() const {
 
   static const QPixmap default_logo(":/images/no_logo.png");
 
@@ -207,7 +207,7 @@ const QPixmap &QuestsModel::get_quest_default_logo() const {
  * @param quest_index Index of the quest to get.
  * @return The quest logo.
  */
-const QPixmap &QuestsModel::get_quest_logo(int quest_index) const {
+const QPixmap& QuestsModel::get_quest_logo(int quest_index) const {
 
   if (quest_index < 0 || quest_index > rowCount()) {
     return get_quest_default_logo();

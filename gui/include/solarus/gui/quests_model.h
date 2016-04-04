@@ -54,10 +54,10 @@ public:
 
   Solarus::QuestProperties get_quest_properties(int quest_index) const;
 
-  const QPixmap &get_quest_default_logo() const;
-  const QPixmap &get_quest_logo(int index) const;
+  const QPixmap& get_quest_default_logo() const;
+  const QPixmap& get_quest_logo(int index) const;
 
-  const QIcon &get_quest_default_icon() const;
+  const QIcon& get_quest_default_icon() const;
 
   void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
   void sort(QuestSort sort, Qt::SortOrder order = Qt::AscendingOrder);
@@ -74,7 +74,7 @@ public:
     QString path;               /**< Path to the quest directory. */
     QString directory_name;     /**< Name of the quest directory. */
     QIcon icon;                 /**< Icon of the quest. */
-    QPixmap logo;               /**< Logo of the quest (Recommanded 200x140). */
+    QPixmap logo;               /**< Logo of the quest (recommended: 200x140). */
     Solarus::QuestProperties
         properties;             /**< All properties from quest.dat. */
   };

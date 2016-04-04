@@ -17,13 +17,14 @@
 #include "solarus/gui/quests_item_delegate.h"
 #include "solarus/gui/quests_model.h"
 
-#include <QPainter>
-#include <QRect>
+#include <QDate>
 #include <QFont>
 #include <QFontMetrics>
-#include <QStringList>
-#include <QSize>
 #include <QIcon>
+#include <QPainter>
+#include <QRect>
+#include <QSize>
+#include <QStringList>
 
 namespace SolarusGui {
 
@@ -153,8 +154,10 @@ void QuestsItemDelegate::paint(QPainter *painter,
   QStringList secondary_info;
   QString author_text =
           QString::fromStdString(quest_info.properties.get_author());
-  QString date_text =
+  QString date_string =
           QString::fromStdString(quest_info.properties.get_release_date());
+  QDate date = QDate::fromString(date_string, "yyyyMMdd");
+  QString date_text = date.toString("yyyy");
   if (!date_text.isEmpty()) {
     secondary_info << date_text;
   }

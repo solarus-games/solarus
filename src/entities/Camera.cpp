@@ -29,8 +29,6 @@
 #include <algorithm>
 #include <list>
 
-#include <iostream> // TODO
-
 namespace Solarus {
 
 namespace {
@@ -276,10 +274,12 @@ void Camera::set_position_on_screen(const Point& position_on_screen) {
  * \return Where this camera should be placed to be focused on this point,
  * respecting separators and map limits.
  */
-Point Camera::get_position_to_track(const Point& /* tracked_xy */) const {
+Point Camera::get_position_to_track(const Point& tracked_xy) const {
 
-  // TODO
-  return { 0, 0 };
+  Point top_left_xy = tracked_xy - Point(get_width() / 2, get_height() / 2);
+  Rectangle box(top_left_xy, get_size());
+
+  return apply_separators_and_map_bounds(box).get_xy();
 }
 
 /**

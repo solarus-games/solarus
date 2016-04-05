@@ -283,7 +283,6 @@ void Map::load(Game& game) {
   background_surface = Surface::create(
       Video::get_quest_size()
   );
-  background_surface->set_software_destination(false);
 
   // Read the map data file.
   MapData data;

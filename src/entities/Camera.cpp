@@ -225,8 +225,10 @@ ManualState::ManualState(Camera& camera) :
  */
 Camera::Camera(Map& map):
   Entity("", 0, map.get_max_layer(), Point(0, 0), Video::get_quest_size()),
+  surface(nullptr),
   position_on_screen(0, 0) {
 
+  create_surface();
   set_map(map);
   const HeroPtr& hero = get_game().get_hero();
   Debug::check_assertion(hero != nullptr, "Missing hero when initializing camera");
@@ -248,6 +250,36 @@ bool Camera::can_be_drawn() const {
   // The camera itself is not drawn.
   // Entities only use its position to draw the map.
   return false;
+}
+
+/**
+ * \brief Initializes the surface where this camera draws entities.
+ *
+ * This function should be called when the camera size is changed.
+ */
+void Camera::create_surface() {
+
+  surface = Surface::create(get_size());
+  surface->set_software_destination(false);
+}
+
+/**
+ * \brief Returns the surface where this camera draws entities.
+ * \return The camera surface.
+ */
+const SurfacePtr& Camera::get_surface() {
+  return surface;
+}
+
+/**
+ * \brief Notifies this entity that its size has just changed.
+ */
+void Camera::notify_size_changed() {
+
+  // The size thas changed: rebuild the surface.
+  if (surface == nullptr || get_size() != surface->get_size()) {
+    create_surface();
+  }
 }
 
 /**

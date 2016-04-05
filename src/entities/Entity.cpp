@@ -827,7 +827,7 @@ void Entity::set_size(int width, int height) {
       "Invalid entity size: width and height must be multiple of 8");
   bounding_box.set_size(width, height);
 
-  notify_bounding_box_changed();
+  notify_size_changed();
 }
 
 /**
@@ -837,6 +837,14 @@ void Entity::set_size(int width, int height) {
 void Entity::set_size(const Size& size) {
 
   set_size(size.width, size.height);
+}
+
+/**
+ * \brief Notifies this entity that its size has just changed.
+ */
+void Entity::notify_size_changed() {
+
+  notify_bounding_box_changed();
 }
 
 /**

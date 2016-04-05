@@ -146,6 +146,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     Size get_size() const;
     void set_size(int width, int height);
     void set_size(const Size& size);
+    virtual void notify_size_changed();
     const Rectangle& get_bounding_box() const;
     void set_bounding_box(const Rectangle& bounding_box);
     Rectangle get_extended_bounding_box(int margin) const;

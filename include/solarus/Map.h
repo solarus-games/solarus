@@ -81,8 +81,8 @@ class SOLARUS_API Map: public ExportableToLua {
     bool is_valid_layer(int layer) const;
 
     // camera
-    const SurfacePtr& get_visible_surface();
     const CameraPtr& get_camera() const;
+    SurfacePtr get_visible_surface();  // TODO remove
 
     // loading
     bool is_loaded() const;
@@ -181,8 +181,8 @@ class SOLARUS_API Map: public ExportableToLua {
     void set_suspended(bool suspended);
     void build_background_surface();
     void build_foreground_surface();
-    void draw_background();
-    void draw_foreground();
+    void draw_background(const SurfacePtr& dst_surface);
+    void draw_foreground(const SurfacePtr& dst_surface);
 
     // map properties
 
@@ -211,10 +211,7 @@ class SOLARUS_API Map: public ExportableToLua {
                                    * indicate the map size in pixel, and the x and y field indicate the position.
                                    * This is used to correctly scroll between adjacent maps. */
 
-    // screen
-    SurfacePtr visible_surface;   /**< Surface where the map is displayed. This is only the visible part
-                                   * of the map, so the coordinates on this surface are relative to the screen,
-                                   * not to the map. */
+    // Quest Zscreen
     SurfacePtr
         background_surface;       /**< A surface filled with the background color of the tileset. */
     SurfacePtr

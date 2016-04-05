@@ -21,12 +21,14 @@
 #include "solarus/entities/Entity.h"
 #include "solarus/entities/EntityPtr.h"
 #include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lowlevel/SurfacePtr.h"
 #include <memory>
 
 namespace Solarus {
 
 class Map;
 class Separator;
+class Surface;
 class TargetMovement;
 
 /**
@@ -50,6 +52,9 @@ class Camera : public Entity {
     bool can_be_drawn() const override;
     void set_suspended(bool suspended) override;
     void notify_movement_started() override;
+    void notify_size_changed() override;
+
+    const SurfacePtr& get_surface();
 
     Point get_position_on_screen() const;
     void set_position_on_screen(const Point& position_on_screen);
@@ -68,7 +73,10 @@ class Camera : public Entity {
 
 private:
 
-    Point position_on_screen;               /**< Where to draw this camera on the screen. */
+    void create_surface();
+
+    SurfacePtr surface;           /**< Surface where this camera draws its entities. */
+    Point position_on_screen;     /**< Where to draw this camera on the screen. */
 
 };
 

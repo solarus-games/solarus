@@ -567,10 +567,14 @@ void Game::draw(const SurfacePtr& dst_surface) {
   // Draw the map.
   if (current_map->is_loaded()) {
     current_map->draw();
-    if (transition != nullptr) {
-      transition->draw(*current_map->get_visible_surface());
+    const CameraPtr& camera = current_map->get_camera();
+    if (camera != nullptr) {
+      const SurfacePtr& camera_surface = camera->get_surface();
+      if (transition != nullptr) {
+        transition->draw(*camera_surface);
+      }
+      camera_surface->draw(dst_surface);
     }
-    current_map->get_visible_surface()->draw(dst_surface);
 
     // Draw the built-in dialog box if any.
     if (is_dialog_enabled()) {

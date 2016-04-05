@@ -1209,6 +1209,8 @@ void Entities::draw() {
     return;
   }
 
+  const SurfacePtr& camera_surface = camera->get_surface();
+
   // Lazily build the list of entities to draw.
   if (entities_to_draw.empty()) {
 
@@ -1283,7 +1285,7 @@ void Entities::draw() {
 
   if (EntityTree::debug_quadtrees) {
     // Draw the quadtree structure for debugging.
-    quadtree.draw(map.get_visible_surface(), -camera->get_top_left_xy());
+    quadtree.draw(camera_surface, -camera->get_top_left_xy());
   }
 }
 

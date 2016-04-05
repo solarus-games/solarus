@@ -48,7 +48,6 @@ Map::Map(const std::string& id):
   max_layer(0),
   tileset(nullptr),
   floor(MapData::NO_FLOOR),
-  visible_surface(nullptr),
   background_surface(nullptr),
   foreground_surface(nullptr),
   loaded(false),
@@ -264,7 +263,6 @@ void Map::unload() {
 
   if (is_loaded()) {
     tileset = nullptr;
-    visible_surface = nullptr;
     background_surface = nullptr;
     foreground_surface = nullptr;
     entities = nullptr;
@@ -281,11 +279,6 @@ void Map::unload() {
  * \param game the game
  */
 void Map::load(Game& game) {
-
-  visible_surface = Surface::create(
-      Video::get_quest_size()
-  );
-  visible_surface->set_software_destination(false);
 
   background_surface = Surface::create(
       Video::get_quest_size()
@@ -437,16 +430,19 @@ int Map::get_destination_side() const {
 }
 
 /**
- * \brief Returns the surface where the map is displayed.
- *
- * This surface is only the visible part of the map, so the
- * coordinates on this surface are relative to the screen,
- * not to the map.
- *
- * \return the surface where the map is displayed
+ * \brief Returns the camera surface where the map is displayed.
+ * \return The camera surface.
  */
-const SurfacePtr& Map::get_visible_surface() {
-  return visible_surface;
+SurfacePtr Map::get_visible_surface() {
+
+  if (!is_loaded()) {
+    return nullptr;
+  }
+  const CameraPtr& camera = get_camera();
+  if (camera == nullptr) {
+    return nullptr;
+  }
+  return camera->get_surface();
 }
 
 /**
@@ -519,19 +515,27 @@ void Map::check_suspended() {
  */
 void Map::draw() {
 
-  if (is_loaded()) {
-    // background
-    draw_background();
-
-    // draw all entities (including the hero)
-    entities->draw();
-
-    // foreground
-    draw_foreground();
-
-    // Lua
-    get_lua_context().map_on_draw(*this, visible_surface);
+  if (!is_loaded()) {
+    return;
   }
+
+  const SurfacePtr& camera_surface = get_visible_surface();
+
+  if (camera_surface == nullptr) {
+    return;
+  }
+
+  // background
+  draw_background(camera_surface);
+
+  // draw all entities (including the hero)
+  entities->draw();
+
+  // foreground
+  draw_foreground(camera_surface);
+
+  // Lua
+  get_lua_context().map_on_draw(*this, camera_surface);
 }
 
 /**
@@ -548,10 +552,11 @@ void Map::build_background_surface() {
 
 /**
  * \brief Draws the background of the map.
+ * \param dst_surface The surface where to draw.
  */
-void Map::draw_background() {
+void Map::draw_background(const SurfacePtr& dst_surface) {
 
-  background_surface->draw(visible_surface);
+  background_surface->draw(dst_surface);
 }
 
 /**
@@ -562,33 +567,34 @@ void Map::build_foreground_surface() {
 
   foreground_surface = nullptr;
 
-  const int screen_width = visible_surface->get_width();
-  const int screen_height = visible_surface->get_height();
+  const Size& quest_size = Video::get_quest_size();
+  const int quest_width = quest_size.width;
+  const int quest_height = quest_size.height;
 
   // If the map is too small for the screen, add black bars outside the map.
   const int map_width = get_width();
   const int map_height = get_height();
 
-  if (map_width >= screen_width
-      && map_height >= screen_height) {
+  if (map_width >= quest_width
+      && map_height >= quest_height) {
     // Nothing to do.
     return;
   }
 
-  foreground_surface = Surface::create(visible_surface->get_size());
+  foreground_surface = Surface::create(quest_size);
   // Keep this surface as software destination because it is built only once.
 
-  if (map_width < screen_width) {
-    int bar_width = (screen_width - map_width) / 2;
-    Rectangle dst_position(0, 0, bar_width, screen_height);
+  if (map_width < quest_width) {
+    int bar_width = (quest_width - map_width) / 2;
+    Rectangle dst_position(0, 0, bar_width, quest_height);
     foreground_surface->fill_with_color(Color::black, dst_position);
     dst_position.set_x(bar_width + map_width);
     foreground_surface->fill_with_color(Color::black, dst_position);
   }
 
-  if (map_height < screen_height) {
-    int bar_height = (screen_height - map_height) / 2;
-    Rectangle dst_position(0, 0, screen_width, bar_height);
+  if (map_height < quest_height) {
+    int bar_height = (quest_height - map_height) / 2;
+    Rectangle dst_position(0, 0, quest_width, bar_height);
     foreground_surface->fill_with_color(Color::black, dst_position);
     dst_position.set_y(bar_height + map_height);
     foreground_surface->fill_with_color(Color::black, dst_position);
@@ -597,11 +603,12 @@ void Map::build_foreground_surface() {
 
 /**
  * \brief Draws the foreground of the map.
+ * \param dst_surface The surface where to draw.
  */
-void Map::draw_foreground() {
+void Map::draw_foreground(const SurfacePtr& dst_surface) {
 
   if (foreground_surface != nullptr) {
-    foreground_surface->draw(visible_surface);
+    foreground_surface->draw(dst_surface);
   }
 }
 
@@ -629,7 +636,8 @@ void Map::draw_sprite(Sprite& sprite, int x, int y) {
   if (camera == nullptr) {
     return;
   }
-  sprite.draw(visible_surface,
+  const SurfacePtr& camera_surface = camera->get_surface();
+  sprite.draw(camera_surface,
       x - camera->get_top_left_x(),
       y - camera->get_top_left_y()
   );
@@ -656,6 +664,7 @@ void Map::draw_sprite(Sprite& sprite, int x, int y,
   if (camera == nullptr) {
     return;
   }
+  const SurfacePtr& camera_surface = camera->get_surface();
 
   const Rectangle region_in_frame(
       clipping_area.get_x() - x,
@@ -669,7 +678,7 @@ void Map::draw_sprite(Sprite& sprite, int x, int y,
   };
   sprite.draw_region(
       region_in_frame,
-      visible_surface,
+      camera_surface,
       dst_position
   );
 }
@@ -683,7 +692,6 @@ void Map::draw_sprite(Sprite& sprite, int x, int y,
 void Map::start() {
 
   this->started = true;
-  this->visible_surface->set_opacity(255);
 
   Music::play(music_id, true);
   this->entities->notify_map_started();
@@ -718,7 +726,12 @@ bool Map::is_started() const {
  */
 void Map::notify_opening_transition_finished() {
 
-  visible_surface->set_opacity(255); // because the transition effect may have changed the opacity
+  const CameraPtr& camera = get_camera();
+  if (camera != nullptr) {
+    const SurfacePtr& camera_surface = camera->get_surface();
+    camera_surface->set_opacity(255); // because the transition effect may have changed the opacity
+  }
+
   check_suspended();
   entities->notify_map_opening_transition_finished();
   get_lua_context().map_on_opening_transition_finished(*this, get_destination());

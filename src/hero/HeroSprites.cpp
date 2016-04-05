@@ -1247,8 +1247,8 @@ void HeroSprites::set_animation_sword() {
   if (equipment.has_ability(Ability::SHIELD)) {
 
     if (direction % 2 != 0) {
-      shield_sprite->set_current_animation("sword");
       shield_sprite->set_current_direction(direction / 2);
+      shield_sprite->set_current_animation("sword");
       shield_sprite->restart_animation();
     }
     else {

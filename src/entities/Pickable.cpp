@@ -460,7 +460,7 @@ void Pickable::set_blinking(bool blinking) {
   uint32_t blink_delay = blinking ? 75 : 0;
 
   if (item_sprite != nullptr) {
-    set_blinking(blink_delay);
+    item_sprite->set_blinking(blink_delay);
   }
 
   if (shadow_sprite != nullptr) {

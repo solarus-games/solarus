@@ -125,8 +125,6 @@ void Game::start() {
   started = true;
   get_savegame().notify_game_started();
   get_lua_context().game_on_started(*this);
-  Hero& hero = *get_hero();
-  get_lua_context().entity_on_state_changed(hero, hero.get_state_name());
 }
 
 /**
@@ -488,11 +486,10 @@ void Game::update_transitions() {
 
         // before closing the map, draw it on a backup surface for transition effects
         // that want to display both maps at the same time
-        if (needs_previous_surface) {
+        if (needs_previous_surface && current_map->get_camera() != nullptr) {
           previous_map_surface = Surface::create(
-              Video::get_quest_size()
+              current_map->get_camera()->get_size()
           );
-          previous_map_surface->set_software_destination(false);
           current_map->draw();
           current_map->get_visible_surface()->draw(previous_map_surface);
         }
@@ -568,11 +565,16 @@ void Game::draw(const SurfacePtr& dst_surface) {
 
   // Draw the map.
   if (current_map->is_loaded()) {
+    dst_surface->fill_with_color(current_map->get_tileset().get_background_color());
     current_map->draw();
-    if (transition != nullptr) {
-      transition->draw(*current_map->get_visible_surface());
+    const CameraPtr& camera = current_map->get_camera();
+    if (camera != nullptr) {
+      const SurfacePtr& camera_surface = camera->get_surface();
+      if (transition != nullptr) {
+        transition->draw(*camera_surface);
+      }
+      camera_surface->draw(dst_surface, camera->get_position_on_screen());
     }
-    current_map->get_visible_surface()->draw(dst_surface);
 
     // Draw the built-in dialog box if any.
     if (is_dialog_enabled()) {

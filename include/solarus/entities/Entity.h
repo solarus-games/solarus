@@ -146,6 +146,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     Size get_size() const;
     void set_size(int width, int height);
     void set_size(const Size& size);
+    virtual void notify_size_changed();
     const Rectangle& get_bounding_box() const;
     void set_bounding_box(const Rectangle& bounding_box);
     Rectangle get_extended_bounding_box(int margin) const;
@@ -228,8 +229,9 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual void notify_position_changed();
     virtual void notify_layer_changed();
     virtual void notify_ground_below_changed();
-    virtual void notify_movement_changed();
+    virtual void notify_movement_started();
     virtual void notify_movement_finished();
+    virtual void notify_movement_changed();
     virtual void notify_moving_by(Entity& entity);
     virtual void notify_moved_by(Entity& entity);
 

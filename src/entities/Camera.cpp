@@ -29,8 +29,6 @@
 #include <algorithm>
 #include <list>
 
-#include <iostream> // TODO
-
 namespace Solarus {
 
 namespace {
@@ -227,8 +225,10 @@ ManualState::ManualState(Camera& camera) :
  */
 Camera::Camera(Map& map):
   Entity("", 0, map.get_max_layer(), Point(0, 0), Video::get_quest_size()),
+  surface(nullptr),
   position_on_screen(0, 0) {
 
+  create_surface();
   set_map(map);
   const HeroPtr& hero = get_game().get_hero();
   Debug::check_assertion(hero != nullptr, "Missing hero when initializing camera");
@@ -250,6 +250,35 @@ bool Camera::can_be_drawn() const {
   // The camera itself is not drawn.
   // Entities only use its position to draw the map.
   return false;
+}
+
+/**
+ * \brief Initializes the surface where this camera draws entities.
+ *
+ * This function should be called when the camera size is changed.
+ */
+void Camera::create_surface() {
+
+  surface = Surface::create(get_size());
+}
+
+/**
+ * \brief Returns the surface where this camera draws entities.
+ * \return The camera surface.
+ */
+const SurfacePtr& Camera::get_surface() {
+  return surface;
+}
+
+/**
+ * \brief Notifies this entity that its size has just changed.
+ */
+void Camera::notify_size_changed() {
+
+  // The size thas changed: rebuild the surface.
+  if (surface == nullptr || get_size() != surface->get_size()) {
+    create_surface();
+  }
 }
 
 /**
@@ -276,10 +305,12 @@ void Camera::set_position_on_screen(const Point& position_on_screen) {
  * \return Where this camera should be placed to be focused on this point,
  * respecting separators and map limits.
  */
-Point Camera::get_position_to_track(const Point& /* tracked_xy */) const {
+Point Camera::get_position_to_track(const Point& tracked_xy) const {
 
-  // TODO
-  return { 0, 0 };
+  Point top_left_xy = tracked_xy - Point(get_width() / 2, get_height() / 2);
+  Rectangle box(top_left_xy, get_size());
+
+  return apply_separators_and_map_bounds(box).get_xy();
 }
 
 /**
@@ -292,6 +323,19 @@ Point Camera::get_position_to_track(const Point& /* tracked_xy */) const {
  */
 void Camera::set_suspended(bool /* suspended */) {
 
+}
+
+/**
+ * \copydoc Entity::notify_movement_started()
+ */
+void Camera::notify_movement_started() {
+
+  Entity::notify_movement_started();
+
+  // When a movement is set, automatically switch to manual state.
+  if (get_state_name() != "manual") {
+    start_manual();
+  }
 }
 
 /**

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>496</height>
+    <width>960</width>
+    <height>640</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -151,7 +151,7 @@ QPushButton#play_button {
                 <x>0</x>
                 <y>0</y>
                 <width>260</width>
-                <height>340</height>
+                <height>464</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -362,7 +362,7 @@ QPushButton#play_button {
                <item>
                 <widget class="QLabel" name="quest_long_description_value">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -629,8 +629,8 @@ QPushButton#play_button {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
-     <height>27</height>
+     <width>960</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_file">

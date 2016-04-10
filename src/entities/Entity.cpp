@@ -381,6 +381,9 @@ void Entity::notify_creating() {
  */
 void Entity::notify_created() {
 
+  if (state != nullptr) {
+    get_lua_context()->entity_on_state_changed(*this, get_state_name());
+  }
 }
 
 /**
@@ -824,7 +827,7 @@ void Entity::set_size(int width, int height) {
       "Invalid entity size: width and height must be multiple of 8");
   bounding_box.set_size(width, height);
 
-  notify_bounding_box_changed();
+  notify_size_changed();
 }
 
 /**
@@ -834,6 +837,14 @@ void Entity::set_size(int width, int height) {
 void Entity::set_size(const Size& size) {
 
   set_size(size.width, size.height);
+}
+
+/**
+ * \brief Notifies this entity that its size has just changed.
+ */
+void Entity::notify_size_changed() {
+
+  notify_bounding_box_changed();
 }
 
 /**
@@ -1485,6 +1496,7 @@ void Entity::set_movement(const std::shared_ptr<Movement>& movement) {
     if (movement->is_suspended() != suspended) {
       movement->set_suspended(suspended || !is_enabled());
     }
+    notify_movement_started();
   }
 }
 
@@ -2076,15 +2088,10 @@ void Entity::check_collision_with_detectors(Sprite& sprite) {
 }
 
 /**
- * \brief This function can be called by the movement object
- * to notify the entity when the movement has just changed
- * (e.g. the speed, the angle or the trajectory).
+ * \brief This function is called when a movement started on this entity.
  */
-void Entity::notify_movement_changed() {
+void Entity::notify_movement_started() {
 
-  if (are_movement_notifications_enabled()) {
-    get_lua_context()->entity_on_movement_changed(*this, *get_movement());
-  }
 }
 
 /**
@@ -2094,6 +2101,18 @@ void Entity::notify_movement_finished() {
 
   if (are_movement_notifications_enabled()) {
     get_lua_context()->entity_on_movement_finished(*this);
+  }
+}
+
+/**
+ * \brief This function can be called by the movement object
+ * to notify the entity when the movement has just changed
+ * (e.g. the speed, the angle or the trajectory).
+ */
+void Entity::notify_movement_changed() {
+
+  if (are_movement_notifications_enabled()) {
+    get_lua_context()->entity_on_movement_changed(*this, *get_movement());
   }
 }
 

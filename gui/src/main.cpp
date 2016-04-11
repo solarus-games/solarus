@@ -39,9 +39,9 @@ int run_gui(int argc, char* argv[]) {
 
   // Set up the application.
   QApplication application(argc, argv);
-  application.setApplicationName("Solarus");
+  application.setApplicationName("solarus");
   application.setApplicationVersion(SOLARUS_VERSION);
-  application.setOrganizationName("Solarus");
+  application.setOrganizationName("solarus");
 
   // Set up the translations.
   QTranslator qt_translator;

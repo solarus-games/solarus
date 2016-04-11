@@ -227,12 +227,12 @@ void Grid<T>::add(const T& element, const Rectangle& bounding_box) {
   }
 
   for (ssize_t i = row1; i <= row2; ++i) {
-    if (i < 0 || i >= num_rows) {
+    if (i < 0 || i >= (ssize_t) num_rows) {
       continue;
     }
 
     for (ssize_t j = column1; j <= column2; ++j) {
-      if (j < 0 || j >= num_columns) {
+      if (j < 0 || j >= (ssize_t) num_columns) {
         continue;
       }
 

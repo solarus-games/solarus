@@ -432,7 +432,7 @@ int Map::get_destination_side() const {
  * \brief Returns the camera surface where the map is displayed.
  * \return The camera surface.
  */
-SurfacePtr Map::get_visible_surface() {
+SurfacePtr Map::get_camera_surface() {
 
   if (!is_loaded()) {
     return nullptr;
@@ -518,7 +518,7 @@ void Map::draw() {
     return;
   }
 
-  const SurfacePtr& camera_surface = get_visible_surface();
+  const SurfacePtr& camera_surface = get_camera_surface();
 
   if (camera_surface == nullptr) {
     return;

@@ -72,7 +72,7 @@ endif()
 
 # Default files if not specified.
 if(NOT SOLARUS_BUNDLE_ICON)
-  set(SOLARUS_BUNDLE_ICON           "${CMAKE_SOURCE_DIR}/cmake/icons/Solarus.icns")
+  set(SOLARUS_BUNDLE_ICON           "${CMAKE_SOURCE_DIR}/cmake/icons/solarus_icon.icns")
 endif()
 if(NOT SOLARUS_BUNDLE_VERSION)
   set(SOLARUS_BUNDLE_VERSION        "1.0")

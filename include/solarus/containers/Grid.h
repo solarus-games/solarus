@@ -216,23 +216,23 @@ void Grid<T>::clear() {
 template <typename T>
 void Grid<T>::add(const T& element, const Rectangle& bounding_box) {
 
-  const ssize_t row1 = bounding_box.get_y() / cell_size.height;
-  const ssize_t row2 = (bounding_box.get_y() + bounding_box.get_height()) / cell_size.height;
-  const ssize_t column1 = bounding_box.get_x() / cell_size.width;
-  const ssize_t column2 = (bounding_box.get_x() + bounding_box.get_width()) / cell_size.width;
+  const int row1 = bounding_box.get_y() / cell_size.height;
+  const int row2 = (bounding_box.get_y() + bounding_box.get_height()) / cell_size.height;
+  const int column1 = bounding_box.get_x() / cell_size.width;
+  const int column2 = (bounding_box.get_x() + bounding_box.get_width()) / cell_size.width;
 
   if (row1 > row2 || column1 > column2) {
     // No cell.
     return;
   }
 
-  for (ssize_t i = row1; i <= row2; ++i) {
-    if (i < 0 || i >= (ssize_t) num_rows) {
+  for (int i = row1; i <= row2; ++i) {
+    if (i < 0 || i >= (int) num_rows) {
       continue;
     }
 
-    for (ssize_t j = column1; j <= column2; ++j) {
-      if (j < 0 || j >= (ssize_t) num_columns) {
+    for (int j = column1; j <= column2; ++j) {
+      if (j < 0 || j >= (int) num_columns) {
         continue;
       }
 

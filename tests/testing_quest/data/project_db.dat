@@ -42,6 +42,7 @@ map{ id = "bugs/859_crash_game_start", description = "#859: Crash when restartin
 map{ id = "bugs/860_crash_remove_sprite", description = "#860: Crash when removing secondary sprite" }
 map{ id = "bugs/861_sprite_set_animation_callback", description = "#861: sprite:set_animation() callback parameter" }
 map{ id = "bugs/867_crash_crystal", description = "#867: Crash with crystals" }
+map{ id = "bugs/875_freeze_load_map_tiles_outside", description = "#875: Freeze when loading a map with tiles outside" }
 map{ id = "dynamic_tile_tests", description = "Dynamic tile tests" }
 map{ id = "jumper_tests", description = "Jumper tests" }
 map{ id = "surface_tests", description = "Surface tests" }

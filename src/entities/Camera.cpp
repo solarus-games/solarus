@@ -260,6 +260,7 @@ bool Camera::can_be_drawn() const {
 void Camera::create_surface() {
 
   surface = Surface::create(get_size());
+  surface->set_software_destination(false);
 }
 
 /**

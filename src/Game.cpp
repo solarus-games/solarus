@@ -487,6 +487,7 @@ void Game::update_transitions() {
           previous_map_surface = Surface::create(
               current_map->get_camera()->get_size()
           );
+          previous_map_surface->set_software_destination(false);
           current_map->draw();
           current_map->get_camera_surface()->draw(previous_map_surface);
         }

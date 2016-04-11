@@ -136,12 +136,6 @@ MainLoop::MainLoop(const Arguments& args):
   }
   const std::string& turbo_arg = args.get_argument_value("-turbo");
   turbo = (turbo_arg == "yes");
-  if (turbo) {
-    Logger::info("Turbo mode: yes");
-  }
-  else {
-    Logger::info("Turbo mode: no");
-  }
 
   // Try to open the quest.
   const std::string& quest_path = get_quest_path(args);
@@ -153,6 +147,13 @@ MainLoop::MainLoop(const Arguments& args):
 
   // Initialize engine features (audio, video...).
   System::initialize(args);
+
+  if (turbo) {
+    Logger::info("Turbo mode: yes");
+  }
+  else {
+    Logger::info("Turbo mode: no");
+  }
 
   // Read the quest resource list from data.
   CurrentQuest::initialize();
@@ -317,6 +318,7 @@ void MainLoop::run() {
   // The main loop basically repeats
   // check_input(), update(), draw() and sleep().
   // Each call to update() makes the simulated time advance one fixed step.
+
   while (!is_exiting()) {
 
     // Measure the time of the last iteration.
@@ -343,15 +345,21 @@ void MainLoop::run() {
     // 2. Update the world once, or several times (skipping some draws)
     // to catch up if the system is slow.
     int num_updates = 0;
-    do {
+    if (turbo) {
+      // Turbo mode: always update at least once.
       step();
       lag -= System::timestep;
       ++num_updates;
     }
-    while (lag >= System::timestep
-        && num_updates < 10  // To draw sometimes anyway on very slow systems.
-        && !is_exiting()
-    );
+
+    while (lag >= System::timestep &&
+           num_updates < 10 && // To draw sometimes anyway on very slow systems.
+           !is_exiting()
+    ) {
+      step();
+      lag -= System::timestep;
+      ++num_updates;
+    }
 
     // 3. Redraw the screen.
     if (num_updates > 0) {
@@ -369,6 +377,7 @@ void MainLoop::run() {
       System::sleep(System::timestep - last_frame_duration);
     }
   }
+
   Logger::info("Simulation finished");
 }
 

@@ -25,16 +25,16 @@ namespace SolarusGui {
  * @brief Creates a Solarus settings object.
  */
 Settings::Settings() :
-  QSettings("solarus", "solarus") {
+  QSettings() {
 
 }
 
 /**
- * @brief Export system settings to the Solarus settings.dat file of a quest.
+ * @brief Export GUI settings to the Solarus settings.dat file of a quest.
  *
  * System settings like audio volume and the video mode are written to
  * settings.dat.
- * It allows quests that load the settings.dat to apply what the user chose
+ * It allows quests that use settings.dat to apply what the user chose
  * in the GUI.
  *
  * @param quest_path Path of the quest where to write a settings file.

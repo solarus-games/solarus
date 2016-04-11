@@ -387,7 +387,7 @@ void Game::update_transitions() {
       transition = std::unique_ptr<Transition>(Transition::create(
           transition_style,
           Transition::Direction::CLOSING,
-          *current_map->get_visible_surface(),
+          *current_map->get_camera_surface(),
           this
       ));
       transition->start();
@@ -442,23 +442,20 @@ void Game::update_transitions() {
         }
       }
 
-      // The starting location can only be updated if the destination has a name.
       bool save_starting_location = false;
-      if (!destination_name.empty()) {
-        switch (starting_location_mode) {
+      switch (starting_location_mode) {
 
-        case StartingLocationMode::YES:
-          save_starting_location = true;
-          break;
+      case StartingLocationMode::YES:
+        save_starting_location = true;
+        break;
 
-        case StartingLocationMode::NO:
-          save_starting_location = false;
-          break;
+      case StartingLocationMode::NO:
+        save_starting_location = false;
+        break;
 
-        case StartingLocationMode::WHEN_WORLD_CHANGES:
-          save_starting_location = world_changed;
-          break;
-        }
+      case StartingLocationMode::WHEN_WORLD_CHANGES:
+        save_starting_location = world_changed;
+        break;
       }
 
       // Save the location if needed, except if this is a special destination.
@@ -473,7 +470,7 @@ void Game::update_transitions() {
         transition = std::unique_ptr<Transition>(Transition::create(
             transition_style,
             Transition::Direction::OPENING,
-            *current_map->get_visible_surface(),
+            *current_map->get_camera_surface(),
             this
         ));
         transition->start();
@@ -491,7 +488,7 @@ void Game::update_transitions() {
               current_map->get_camera()->get_size()
           );
           current_map->draw();
-          current_map->get_visible_surface()->draw(previous_map_surface);
+          current_map->get_camera_surface()->draw(previous_map_surface);
         }
 
         // set the next map
@@ -513,7 +510,7 @@ void Game::update_transitions() {
     transition = std::unique_ptr<Transition>(Transition::create(
         transition_style,
         Transition::Direction::OPENING,
-        *current_map->get_visible_surface(),
+        *current_map->get_camera_surface(),
         this
     ));
 
@@ -880,7 +877,7 @@ void Game::restart() {
     transition = std::unique_ptr<Transition>(Transition::create(
         Transition::Style::FADE,
         Transition::Direction::CLOSING,
-        *current_map->get_visible_surface(),
+        *current_map->get_camera_surface(),
         this
     ));
     transition->start();

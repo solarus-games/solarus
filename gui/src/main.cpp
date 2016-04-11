@@ -37,10 +37,11 @@ namespace {
  */
 int run_gui(int argc, char* argv[]) {
 
-  // Set up application.
+  // Set up the application.
   QApplication application(argc, argv);
   application.setApplicationName("Solarus");
   application.setApplicationVersion(SOLARUS_VERSION);
+  application.setOrganizationName("Solarus");
 
   // Set up the translations.
   QTranslator qt_translator;

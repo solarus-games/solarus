@@ -82,7 +82,7 @@ class SOLARUS_API Map: public ExportableToLua {
 
     // camera
     const CameraPtr& get_camera() const;
-    SurfacePtr get_visible_surface();  // TODO remove
+    SurfacePtr get_camera_surface();  // TODO remove
 
     // loading
     bool is_loaded() const;

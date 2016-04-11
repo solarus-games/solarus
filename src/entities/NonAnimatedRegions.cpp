@@ -208,7 +208,7 @@ void NonAnimatedRegions::draw_on_map() {
 
       const Point dst_position = cell_xy - camera_position.get_xy();
       optimized_tiles_surfaces[cell_index]->draw(
-          map.get_visible_surface(), dst_position
+          map.get_camera_surface(), dst_position
       );
     }
   }

@@ -25,10 +25,10 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -y gcc-4.8 g++-4.8
+  - sudo apt-get install -y --force-yes gcc-4.8 g++-4.8
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 90
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
-  - sudo apt-get install -y cmake libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libluajit-5.1-dev libphysfs-dev libopenal-dev libmodplug-dev libvorbis-dev
+  - sudo apt-get install -y --force-yes cmake libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libluajit-5.1-dev libphysfs-dev libopenal-dev libmodplug-dev libvorbis-dev
 # Install Qt5 manually because we need Qt >= 5.2, which is not in usual backport PPAs.
   - wget http://www.solarus-games.org/downloads/qt/qt-5.3.2.zip && unzip qt-5.3.2.zip -d "$HOME/qt"
 

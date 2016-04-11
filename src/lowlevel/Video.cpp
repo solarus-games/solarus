@@ -80,8 +80,9 @@ void create_window() {
   SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
 #endif
 
+  std::string title = std::string("Solarus ") + SOLARUS_VERSION;
   main_window = SDL_CreateWindow(
-      (std::string("Solarus ") + SOLARUS_VERSION).c_str(),
+      title.c_str(),
       SDL_WINDOWPOS_CENTERED,
       SDL_WINDOWPOS_CENTERED,
       wanted_quest_size.width,

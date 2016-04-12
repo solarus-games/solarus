@@ -98,6 +98,7 @@ Changes that do not introduce incompatibilities:
 Data files format changes
 -------------------------
 
+* New directory logos to put the logo and icons of your quest, used in the GUI.
 * Quest properties: New properties describing the quest, used in the GUI (#838).
 * Quest properties: the title_bar property no longer exists, use title instead.
 * Maps: New properties min_layer and max_layer (#445).

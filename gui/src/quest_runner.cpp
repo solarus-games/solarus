@@ -45,7 +45,7 @@ QuestRunner::QuestRunner(QObject* parent) :
   // Workaround to make the quest process close properly instead of hanging
   // while reading on its stdin on windows.
   QTimer* timer = new QTimer(this);
-  connect(timer, &QTimer::timeout, [=] () {
+  connect(timer, &QTimer::timeout, [this] () {
     if (is_started()) {
       process.write("\n");
     }

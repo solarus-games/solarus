@@ -137,7 +137,7 @@ void MainWindow::initialize_menus() {
     const QString& name = it.value();
     group->addAction(action);
     action->setData(name);
-    connect(action, &QAction::triggered, [=]() {
+    connect(action, &QAction::triggered, [this, name]() {
       set_video_mode_requested(name);
     });
   }

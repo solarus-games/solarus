@@ -76,7 +76,7 @@ ConsoleLineEdit::ConsoleLineEdit(QWidget* parent) :
 
   // Set a validator.
   setValidator(new LuaSyntaxValidator(this));
-  connect(this, &ConsoleLineEdit::textChanged, [&](const QString& text) {
+  connect(this, &ConsoleLineEdit::textChanged, [this](const QString& text) {
     QString text_copy = text;
     int cursor_position = cursorPosition();
     if (validator()->validate(text_copy, cursor_position) == QValidator::Acceptable) {

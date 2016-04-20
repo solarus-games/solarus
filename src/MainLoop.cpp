@@ -529,7 +529,7 @@ void MainLoop::load_quest_properties() {
 void MainLoop::initialize_lua_console() {
 
   // Watch stdin in a separate thread.
-  stdin_thread = std::thread([&]() {
+  stdin_thread = std::thread([this]() {
 
     std::string line;
     while (!is_exiting()) {

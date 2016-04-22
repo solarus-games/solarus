@@ -159,10 +159,13 @@ void LuaContext::initialize() {
   // This is not always the case by default.
   luaL_dostring(l, "io.stdout:setvbuf(\"line\")");
 
-  Debug::check_assertion(lua_gettop(l) == 0, "Lua stack is not empty after initialization");
+  Debug::check_assertion(lua_gettop(l) == 0, "Non-empty Lua stack after initialization");
 
   // Execute the main file.
   do_file_if_exists(l, "main");
+
+  Debug::check_assertion(lua_gettop(l) == 0, "Non-empty Lua Lua stack after running main.lua");
+
   main_on_started();
 }
 
@@ -666,7 +669,8 @@ void LuaContext::load_file(lua_State* l, const std::string& script_name) {
  * \brief Opens a script if it exists and lets it on top of the stack as a
  * function.
  *
- * If the file does not exist, the stack is left intact and false is returned.
+ * If the file does not exist or has a syntax error,
+ * the stack is left intact and false is returned.
  *
  * \param l A Lua state.
  * \param script_name File name of the script with or without extension,
@@ -696,6 +700,7 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
   if (result != 0) {
     Debug::error(std::string("Failed to load script '")
         + script_name + "': " + lua_tostring(l, -1));
+    lua_pop(l, 1);
     return false;
   }
   return true;

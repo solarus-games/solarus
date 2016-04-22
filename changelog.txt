@@ -22,7 +22,8 @@ Engine changes
 * Improve the performance of collisions by using a quadtree.
 * Entities far from the camera are no longer suspended.
 * Destinations can now set to update or not the starting location (#819).
-* Fix crash with missing directions in sprites controlled by the engine (#864).
+* Fix crash when main.lua has a syntax error.
+* Fix crash with missing directions in sprites controlled by the engine (#864from).
 * Fix sprite:on_animation_finished() and others not working sometimes (#799).
 * Fix straight movement precision.
 * Fix freeze when loading a map with tiles outside the limits (#875).

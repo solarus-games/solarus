@@ -1,6 +1,6 @@
 ![Solarus logo](/images/solarus_logo.png)
 
-[![Build Status](https://travis-ci.org/christopho/solarus.svg?branch=master)](https://travis-ci.org/christopho/solarus)
+[![Build Status](https://travis-ci.org/christopho/solarus.svg?branch=dev)](https://travis-ci.org/christopho/solarus)
 [![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://www.gnu.org/copyleft/gpl.html)
 
 ====================================

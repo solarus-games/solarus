@@ -132,7 +132,7 @@ Solarus::QuestProperties QuestsView::get_quest_properties(int index) const {
  * @brief Returns the logo of the selected quest.
  * @return The quest logo, or the default image if no quest is selected.
  */
-const QPixmap &QuestsView::get_selected_logo() const {
+const QPixmap& QuestsView::get_selected_logo() const {
 
   int index = get_selected_index();
   if (index == -1) {
@@ -146,7 +146,7 @@ const QPixmap &QuestsView::get_selected_logo() const {
  * @param index Index of the quest to get.
  * @return The quest logo.
  */
-const QPixmap &QuestsView::get_quest_logo(int index) const {
+const QPixmap& QuestsView::get_quest_logo(int index) const {
 
   return model->get_quest_logo(index);
 }

@@ -57,11 +57,15 @@ QVariant QuestsModel::data(const QModelIndex& index, int role) const {
   }
 
   switch (role) {
+
   case Qt::ItemDataRole::DisplayRole:
+    load_icon(index.row());
     return QVariant::fromValue(quests.at(index.row()));
+
   case Qt::ItemDataRole::ToolTipRole:
     return QString::fromStdString(
             quests.at(index.row()).properties.get_title());
+
   default:
     return QVariant();
   }
@@ -137,8 +141,6 @@ bool QuestsModel::add_quest(const QString& quest_path) {
 
   info.path = quest_path;
   info.directory_name = quest_path.section('/', -1, -1, QString::SectionSkipEmpty);
-  info.icon = get_quest_default_icon();  // TODO
-  info.logo = get_quest_default_logo(); // TODO
   quests.push_back(info);
 
   endInsertRows();
@@ -213,18 +215,93 @@ const QPixmap& QuestsModel::get_quest_logo(int quest_index) const {
     return get_quest_default_logo();
   }
 
-  return quests[quest_index].logo;
+  QuestInfo& quest = quests[quest_index];
+  if (quest.logo.isNull()) {
+    // Lazily load the logo.
+    quest.logo = get_quest_default_logo();
+
+    QStringList arguments = QApplication::arguments();
+    QString program_name = arguments.isEmpty() ? QString() : arguments.first();
+    if (Solarus::QuestFiles::open_quest(program_name.toStdString(),
+                                        quest.path.toStdString())) {
+      std::string file_name = "logos/logo_2x.png";
+      if (Solarus::QuestFiles::data_file_exists(file_name)) {
+        std::string buffer = Solarus::QuestFiles::data_file_read(file_name);
+        QPixmap pixmap;
+        if (pixmap.loadFromData((const uchar*) buffer.data(), (uint) buffer.size())) {
+          quests[quest_index].logo = pixmap;
+        }
+      }
+    }
+    Solarus::QuestFiles::close_quest();
+  }
+
+  return quest.logo;
 }
 
 /**
  * @brief Returns the default icon for a quest.
  * @return The default icon.
  */
-const QIcon &QuestsModel::get_quest_default_icon() const {
+const QIcon& QuestsModel::get_quest_default_icon() const {
 
-    static const QIcon default_icon(":/images/default_icon.png");
+  static const QIcon default_icon(":/images/default_icon.png");
 
-    return default_icon;
+  return default_icon;
+}
+
+/**
+ * @brief Loads the icon of the given quest.
+ * @param quest_index Index of a quest.
+ */
+void QuestsModel::load_icon(int quest_index) const {
+
+  if (quest_index < 0 || quest_index > rowCount()) {
+    return;
+  }
+
+  QuestInfo& quest = quests[quest_index];
+  QIcon& icon = quest.icon;
+  if (!icon.isNull()) {
+    // Already loaded.
+    return;
+  }
+
+  QStringList arguments = QApplication::arguments();
+  QString program_name = arguments.isEmpty() ? QString() : arguments.first();
+  if (!Solarus::QuestFiles::open_quest(program_name.toStdString(),
+                                       quest.path.toStdString())) {
+    Solarus::QuestFiles::close_quest();
+    icon = get_quest_default_icon();
+    return;
+  }
+
+  QStringList file_names = {
+    "logos/icon_16.png",
+    "logos/icon_24.png",
+    "logos/icon_32.png",
+    "logos/icon_48.png",
+    "logos/icon_64.png",
+    "logos/icon_128.png",
+    "logos/icon_256.png",
+    "logos/icon_512.png",
+    "logos/icon_1024.png",
+  };
+  for (const QString& file_name : file_names) {
+    if (Solarus::QuestFiles::data_file_exists(file_name.toStdString())) {
+      std::string buffer = Solarus::QuestFiles::data_file_read(file_name.toStdString());
+      QPixmap pixmap;
+      if (!pixmap.loadFromData((const uchar*) buffer.data(), (uint) buffer.size())) {
+        continue;
+      }
+      icon.addPixmap(pixmap);
+    }
+  }
+  Solarus::QuestFiles::close_quest();
+
+  if (icon.isNull()) {
+    icon = get_quest_default_icon();
+  }
 }
 
 /**

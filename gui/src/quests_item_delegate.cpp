@@ -56,7 +56,7 @@ void QuestsItemDelegate::paint(QPainter *painter,
   // Retrieve info from option
   QStyle::State state = option.state;
   const QStyleOptionViewItem::ViewItemFeatures& features = option.features;
-  const QPalette & palette = option.palette;
+  const QPalette& palette = option.palette;
   bool active = state.testFlag(QStyle::State_Active);
   bool enabled = state.testFlag(QStyle::State_Enabled);
   bool selected = state.testFlag(QStyle::State_Selected);

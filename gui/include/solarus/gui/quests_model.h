@@ -29,13 +29,29 @@ namespace SolarusGui {
  * @brief List of quests added to Solarus.
  */
 class SOLARUS_GUI_API QuestsModel : public QAbstractListModel {
+
 public:
+
     /**
      * @brief Ways to sort the quests in the list. More convenient than columns.
      */
-    enum QuestSort { SortByName = 0, SortByAuthor = 1, SortByDate = 2 };
+    enum QuestSort {
+      SortByName = 0,
+      SortByAuthor = 1,
+      SortByDate = 2
+    };
 
-public:
+    /**
+     * @brief Info of a quest from the list.
+     */
+    struct QuestInfo {
+      QString path;               /**< Path to the quest directory. */
+      QString directory_name;     /**< Name of the quest directory. */
+      QIcon icon;                 /**< Icon of the quest. */
+      QPixmap logo;               /**< Logo of the quest (recommended: 200x140). */
+      Solarus::QuestProperties
+          properties;             /**< All properties from quest.dat. */
+    };
 
   QuestsModel(QObject* parent = nullptr);
 
@@ -63,24 +79,12 @@ public:
   void sort(QuestSort sort, Qt::SortOrder order = Qt::AscendingOrder);
 
 private:
+
   void doSort(QuestSort sort, Qt::SortOrder order = Qt::AscendingOrder);
+  void load_icon(int quest_index) const;
 
-public:
-
-  /**
-   * @brief Info of a quest from the list.
-   */
-  struct QuestInfo {
-    QString path;               /**< Path to the quest directory. */
-    QString directory_name;     /**< Name of the quest directory. */
-    QIcon icon;                 /**< Icon of the quest. */
-    QPixmap logo;               /**< Logo of the quest (recommended: 200x140). */
-    Solarus::QuestProperties
-        properties;             /**< All properties from quest.dat. */
-  };
-
-private:
-  std::vector<QuestInfo> quests;    /**< Info of each quest in the list. */
+  mutable std::vector<QuestInfo>
+      quests;                   /**< Info of each quest in the list. */
 };
 
 }

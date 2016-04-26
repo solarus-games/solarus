@@ -130,8 +130,6 @@ void Equipment::set_suspended(bool suspended) {
   }
 }
 
-// money
-
 /**
  * \brief Returns the maximum amount of money of the player.
  * \return the player's maximum number of money
@@ -208,8 +206,6 @@ void Equipment::remove_money(int money_to_remove) {
 
   set_money(get_money() - money_to_remove);
 }
-
-// life
 
 /**
  * \brief Returns the maximum level of life of the player.
@@ -297,8 +293,6 @@ void Equipment::restore_all_life() {
   set_life(get_max_life());
 }
 
-// magic
-
 /**
  * \brief Returns the maximum number of magic points.
  * \return the maximum level of magic
@@ -385,8 +379,6 @@ void Equipment::restore_all_magic() {
 
   set_magic(get_max_magic());
 }
-
-// items
 
 /**
  * \brief Runs the Lua script of each equipment item.

@@ -163,10 +163,6 @@ void StraightMovement::set_y_speed(double y_speed) {
  */
 void StraightMovement::set_speed(double speed) {
 
-  if (x_speed == 0 && y_speed == 0) {
-    x_speed = 1;
-  }
-
   // compute the new speed vector
   double old_angle = this->angle;
   set_x_speed(speed * std::cos(old_angle));

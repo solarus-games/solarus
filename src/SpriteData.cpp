@@ -212,7 +212,8 @@ std::vector<Rectangle> SpriteAnimationDirectionData::get_all_frames() const {
 SpriteAnimationData::SpriteAnimationData() :
   src_image(""),
   frame_delay(0),
-  loop_on_frame(0) {
+  loop_on_frame(0),
+  directions() {
 }
 
 /**

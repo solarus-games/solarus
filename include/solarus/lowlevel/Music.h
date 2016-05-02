@@ -18,8 +18,6 @@
 #define SOLARUS_MUSIC_H
 
 #include "solarus/Common.h"
-#include "solarus/lowlevel/ItDecoder.h"
-#include "solarus/lowlevel/SpcDecoder.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lua/ScopedLuaRef.h"
 #include <memory>
@@ -27,6 +25,10 @@
 #include <vector>
 
 namespace Solarus {
+
+class ItDecoder;
+class OggDecoder;
+class SpcDecoder;
 
 /**
  * \brief Represents a music that can be played.
@@ -116,18 +118,16 @@ class Music {
     bool loop;                                   /**< Whether the music should loop. */
     ScopedLuaRef callback_ref;                   /**< Lua ref to a function to call when the music finishes. */
 
-    // OGG specific
-    OggVorbis_File ogg_file;                     /**< the file used by the vorbisfile lib */
-    Sound::SoundFromMemory ogg_mem;              /**< the encoded music loaded in memory, passed to the vorbisfile lib as user data */
-
     static constexpr int nb_buffers = 8;
     ALuint buffers[nb_buffers];                  /**< multiple buffers used to stream the music */
     ALuint source;                               /**< the OpenAL source streaming the buffers */
 
     static std::unique_ptr<SpcDecoder>
-        spc_decoder;                             /**< the SPC decoder */
+        spc_decoder;                             /**< The SPC decoder. */
     static std::unique_ptr<ItDecoder>
-        it_decoder;                              /**< the IT decoder */
+        it_decoder;                              /**< The IT decoder. */
+    static std::unique_ptr<OggDecoder>
+        ogg_decoder;                             /**< The OGG decoder. */
     static float volume;                         /**< volume of musics (0.0 to 1.0) */
 
     static std::unique_ptr<Music> current_music; /**< the music currently played (if any) */

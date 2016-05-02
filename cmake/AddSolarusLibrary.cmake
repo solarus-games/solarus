@@ -109,6 +109,7 @@ file(
   include/solarus/lowlevel/ItDecoder.h
   include/solarus/lowlevel/Logger.h
   include/solarus/lowlevel/Music.h
+  include/solarus/lowlevel/OggDecoder.h
   include/solarus/lowlevel/PixelBits.h
   include/solarus/lowlevel/PixelFilter.h
   include/solarus/lowlevel/Point.h
@@ -308,6 +309,7 @@ file(
   src/lowlevel/ItDecoder.cpp
   src/lowlevel/Logger.cpp
   src/lowlevel/Music.cpp
+  src/lowlevel/OggDecoder.cpp
   src/lowlevel/PixelBits.cpp
   src/lowlevel/PixelFilter.cpp
   src/lowlevel/Point.cpp

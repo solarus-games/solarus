@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/lowlevel/Sound.h"
+#include <memory>
 #include <string>
 
 namespace Solarus {
@@ -31,7 +32,6 @@ class OggDecoder {
   public:
 
     OggDecoder();
-    ~OggDecoder();
 
     bool load(const std::string& ogg_data, bool loop);
     void unload();
@@ -39,7 +39,15 @@ class OggDecoder {
 
   private:
 
-    OggVorbis_File ogg_file;           /**< The file used by the vorbisfile lib. */
+    struct OggFileDeleter {
+      void operator()(OggVorbis_File* ogg_file) {
+        ov_clear(ogg_file);
+        delete ogg_file;
+      }
+    };
+    using OggFileUniquePtr = std::unique_ptr<OggVorbis_File, OggFileDeleter>;
+
+    OggFileUniquePtr ogg_file;         /**< The file used by the vorbisfile lib. */
     Sound::SoundFromMemory ogg_mem;    /**< The encoded music loaded in memory,
                                         * passed to the vorbisfile lib as user data. */
 

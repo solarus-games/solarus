@@ -31,14 +31,6 @@ OggDecoder::OggDecoder() {
 }
 
 /**
- * \brief Destructor.
- */
-OggDecoder::~OggDecoder() {
-
-  ov_clear(&ogg_file);
-}
-
-/**
  * \brief Loads an OGG file from the memory.
  * \param ogg_data The memory area to read.
  * \param loop Whether the music should loop if reaching the end.
@@ -46,12 +38,14 @@ OggDecoder::~OggDecoder() {
  */
 bool OggDecoder::load(const std::string& ogg_data, bool loop) {
 
+  ogg_file = OggFileUniquePtr(new OggVorbis_File());
+
   ogg_mem.position = 0;
   ogg_mem.loop = loop;
   ogg_mem.data = ogg_data;
   // Now, ogg_mem contains the encoded data.
 
-  int error = ov_open_callbacks(&ogg_mem, &ogg_file, nullptr, 0, Sound::ogg_callbacks);
+  int error = ov_open_callbacks(&ogg_mem, ogg_file.get(), nullptr, 0, Sound::ogg_callbacks);
   return error == 0;
 }
 
@@ -59,7 +53,7 @@ bool OggDecoder::load(const std::string& ogg_data, bool loop) {
  * \brief Unloads the OGG data from memory.
  */
 void OggDecoder::unload() {
-  ov_clear(&ogg_file);
+  ogg_file = nullptr;
   ogg_mem.data.clear();
 }
 
@@ -73,7 +67,7 @@ void OggDecoder::unload() {
 void OggDecoder::decode(ALuint destination_buffer, ALsizei nb_samples) {
 
   // Read the encoded music properties.
-  vorbis_info* info = ov_info(&ogg_file, -1);
+  vorbis_info* info = ov_info(ogg_file.get(), -1);
   ALsizei sample_rate = ALsizei(info->rate);
 
   ALenum al_format = AL_NONE;
@@ -91,7 +85,7 @@ void OggDecoder::decode(ALuint destination_buffer, ALsizei nb_samples) {
   long total_bytes_read = 0;
   long remaining_bytes = nb_samples * info->channels * sizeof(ALshort);
   do {
-    bytes_read = ov_read(&ogg_file, ((char*) raw_data.data()) + total_bytes_read, int(remaining_bytes), 0, 2, 1, &bitstream);
+    bytes_read = ov_read(ogg_file.get(), ((char*) raw_data.data()) + total_bytes_read, int(remaining_bytes), 0, 2, 1, &bitstream);
     if (bytes_read < 0) {
       if (bytes_read != OV_HOLE) { // OV_HOLE is normal when the music loops
         std::ostringstream oss;

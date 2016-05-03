@@ -48,14 +48,13 @@ class Sound {
      * \brief Buffer containing an encoded sound file.
      */
     struct SoundFromMemory {
-      std::string data;         /**< the buffer */
-      size_t position;          /**< current position in the buffer */
-      bool loop;                /**< true to restart the sound when finished */
+      std::string data;         /**< The OGG encded data. */
+      size_t position;          /**< Current position in the buffer. */
+      bool loop;                /**< \c true to restart the sound if it finishes. */
     };
 
     // functions to load the encoded sound from memory
     static ov_callbacks ogg_callbacks;           /**< vorbisfile object used to load the encoded sound from memory */
-    static size_t cb_read(void* ptr, size_t size, size_t nmemb, void* datasource);
 
     Sound();
     explicit Sound(const std::string& sound_id);

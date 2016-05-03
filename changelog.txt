@@ -16,6 +16,7 @@ Engine changes
 * Print when the main loop starts and stops.
 * Print the Lua version at startup (#692).
 * Outputs are now prefixed by [Solarus] and the current simulated time.
+* Musics: Add support of custom OGG looping (#643).
 * Maps: allow more than 3 layers (#445).
 * Improve the performance of loading big maps (#854).
 * Improve the performance of custom entity collisions.

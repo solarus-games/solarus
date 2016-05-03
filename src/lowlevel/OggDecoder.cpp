@@ -21,8 +21,6 @@
 #include <sstream>
 #include <vector>
 
-#include <iostream>// TODO
-
 namespace Solarus {
 
 /**
@@ -32,8 +30,8 @@ OggDecoder::OggDecoder():
   ogg_file(),
   ogg_mem(),
   ogg_info(nullptr),
-  loop_start(-1),
-  loop_end(-1) {
+  loop_start_pcm(-1),
+  loop_end_pcm(-1) {
 
 }
 
@@ -75,7 +73,8 @@ bool OggDecoder::load(std::string&& ogg_data, bool loop) {
     ogg_int64_t pcm = -1;
     if (iss >> pcm && pcm >= 0) {
       // There is a loop.
-      loop_start = pcm;
+      loop_start_pcm = pcm;
+      loop_end_pcm = ov_pcm_total(ogg_file.get(), -1);  // Default loop end value.
     }
 
     if (loop_end_string != nullptr) {
@@ -83,7 +82,7 @@ bool OggDecoder::load(std::string&& ogg_data, bool loop) {
       iss.str(loop_end_string);
       if (iss >> pcm && pcm > 0) {
         // There is a loop end info.
-        loop_end = pcm;
+        loop_end_pcm = pcm;
       }
     }
     else if (loop_length_string != nullptr) {
@@ -91,7 +90,7 @@ bool OggDecoder::load(std::string&& ogg_data, bool loop) {
       iss.str(loop_length_string);
       if (iss >> pcm && pcm > 0) {
         // There is a loop end info from a length value.
-        loop_end = loop_start + pcm;
+        loop_end_pcm = loop_start_pcm + pcm;
       }
     }
   }
@@ -106,8 +105,8 @@ void OggDecoder::unload() {
   ogg_file = nullptr;
   ogg_mem.data.clear();
   ogg_info = nullptr;
-  loop_start = -1;
-  loop_end = -1;
+  loop_start_pcm = -1;
+  loop_end_pcm = -1;
 }
 
 /**
@@ -123,26 +122,40 @@ void OggDecoder::decode(ALuint destination_buffer, ALsizei nb_samples) {
   }
 
   // Read the encoded music properties.
+  const int num_channels = ogg_info->channels;
   ALsizei sample_rate = ALsizei(ogg_info->rate);
   ALenum al_format = AL_NONE;
-  if (ogg_info->channels == 1) {
+  if (num_channels == 1) {
     al_format = AL_FORMAT_MONO16;
   }
-  else if (ogg_info->channels == 2) {
+  else if (num_channels == 2) {
     al_format = AL_FORMAT_STEREO16;
   }
 
+  const ogg_int64_t loop_end_byte = loop_end_pcm * num_channels * sizeof(ALshort);
+
   // Decode the OGG data.
-  std::vector<ALshort> raw_data(nb_samples * ogg_info->channels);
-  int bitstream;
-  long bytes_read;
+  std::vector<ALshort> raw_data(nb_samples * num_channels);
+  int bitstream = 0;
+  long bytes_read = 0;
   long total_bytes_read = 0;
-  long remaining_bytes = nb_samples * ogg_info->channels * sizeof(ALshort);
+  long remaining_bytes = nb_samples * num_channels * sizeof(ALshort);
+
   do {
+    long max_bytes_to_read = remaining_bytes;
+    ogg_int64_t current_pcm = ov_pcm_tell(ogg_file.get());
+    ogg_int64_t current_byte = current_pcm * num_channels * sizeof(ALshort);
+
+    if (loop_end_pcm != -1 &&
+        current_byte + max_bytes_to_read > loop_end_byte) {
+      // Don't read after the loop point.
+      max_bytes_to_read = (long) loop_end_byte - current_byte;
+    }
+
     bytes_read = ov_read(
         ogg_file.get(),
         ((char*) raw_data.data()) + total_bytes_read,
-        int(remaining_bytes),
+        max_bytes_to_read,
         0,
         2,
         1,
@@ -160,6 +173,20 @@ void OggDecoder::decode(ALuint destination_buffer, ALsizei nb_samples) {
     else {
       total_bytes_read += bytes_read;
       remaining_bytes -= bytes_read;
+
+      // Check if we should loop now.
+      current_pcm = ov_pcm_tell(ogg_file.get());
+
+      if (loop_end_pcm != -1 &&
+          loop_start_pcm != -1 &&
+          current_pcm == loop_end_pcm) {
+        int error = ov_pcm_seek(ogg_file.get(), loop_start_pcm);
+        if (error != 0) {
+          std::ostringstream oss;
+          oss << "Failed to loop in OGG file: error " << error;
+          Debug::error(oss.str());
+        }
+      }
     }
   }
   while (remaining_bytes > 0 && bytes_read > 0);

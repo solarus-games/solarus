@@ -39,7 +39,7 @@ OggDecoder::OggDecoder():
  * \param loop Whether the music should loop if reaching the end.
  * \return \c true in case of success.
  */
-bool OggDecoder::load(const std::string& ogg_data, bool loop) {
+bool OggDecoder::load(std::string&& ogg_data, bool loop) {
 
   ogg_file = OggFileUniquePtr(new OggVorbis_File());
 

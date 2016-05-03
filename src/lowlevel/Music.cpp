@@ -556,7 +556,7 @@ bool Music::start() {
       sound_buffer = QuestFiles::data_file_read(file_name);
 
       // Give the OGG data to the OGG decoder.
-      success = ogg_decoder->load(sound_buffer, this->loop);
+      success = ogg_decoder->load(std::move(sound_buffer), this->loop);
       if (success) {
         for (int i = 0; i < nb_buffers; i++) {
           decode_ogg(buffers[i], 16384);

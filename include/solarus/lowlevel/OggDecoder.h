@@ -33,7 +33,7 @@ class OggDecoder {
 
     OggDecoder();
 
-    bool load(const std::string& ogg_data, bool loop);
+    bool load(std::string&& ogg_data, bool loop);
     void unload();
     void decode(ALuint destination_buffer, ALsizei nb_samples);
 

@@ -51,6 +51,10 @@ class OggDecoder {
     Sound::SoundFromMemory ogg_mem;    /**< The encoded music loaded in memory,
                                         * passed to the vorbisfile lib as user data. */
     vorbis_info* ogg_info;             /**< Info about the OGG file. */
+    ogg_int64_t loop_start;            /**< Where to loop to in PCM samples.
+                                        * -1 means no loop. */
+    ogg_int64_t loop_end;              /**< Where to loop from in PCM samples.
+                                        * -1 means the end of the file. */
 
 };
 

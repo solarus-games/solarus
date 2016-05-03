@@ -21,6 +21,8 @@
 #include <sstream>
 #include <vector>
 
+#include <iostream>// TODO
+
 namespace Solarus {
 
 /**
@@ -29,7 +31,9 @@ namespace Solarus {
 OggDecoder::OggDecoder():
   ogg_file(),
   ogg_mem(),
-  ogg_info(nullptr) {
+  ogg_info(nullptr),
+  loop_start(-1),
+  loop_end(-1) {
 
 }
 
@@ -56,6 +60,42 @@ bool OggDecoder::load(std::string&& ogg_data, bool loop) {
 
   ogg_info = ov_info(ogg_file.get(), -1);
 
+  // Read loop info from the header.
+  vorbis_comment* header = ov_comment(ogg_file.get(), -1);
+  if (header == nullptr) {
+    return false;
+  }
+
+  const char* loop_start_string = vorbis_comment_query(header, "LOOPSTART", 0);
+  const char* loop_end_string = vorbis_comment_query(header, "LOOPEND", 0);
+  const char* loop_length_string = vorbis_comment_query(header, "LOOPLENGTH", 0);
+
+  if (loop_start_string != nullptr) {
+    std::istringstream iss(loop_start_string);
+    ogg_int64_t pcm = -1;
+    if (iss >> pcm && pcm >= 0) {
+      // There is a loop.
+      loop_start = pcm;
+    }
+
+    if (loop_end_string != nullptr) {
+      iss.clear();
+      iss.str(loop_end_string);
+      if (iss >> pcm && pcm > 0) {
+        // There is a loop end info.
+        loop_end = pcm;
+      }
+    }
+    else if (loop_length_string != nullptr) {
+      iss.clear();
+      iss.str(loop_length_string);
+      if (iss >> pcm && pcm > 0) {
+        // There is a loop end info from a length value.
+        loop_end = loop_start + pcm;
+      }
+    }
+  }
+
   return true;
 }
 
@@ -65,6 +105,9 @@ bool OggDecoder::load(std::string&& ogg_data, bool loop) {
 void OggDecoder::unload() {
   ogg_file = nullptr;
   ogg_mem.data.clear();
+  ogg_info = nullptr;
+  loop_start = -1;
+  loop_end = -1;
 }
 
 /**

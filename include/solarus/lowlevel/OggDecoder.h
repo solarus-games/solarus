@@ -50,6 +50,7 @@ class OggDecoder {
     OggFileUniquePtr ogg_file;         /**< The file used by the vorbisfile lib. */
     Sound::SoundFromMemory ogg_mem;    /**< The encoded music loaded in memory,
                                         * passed to the vorbisfile lib as user data. */
+    vorbis_info* ogg_info;             /**< Info about the OGG file. */
 
 };
 

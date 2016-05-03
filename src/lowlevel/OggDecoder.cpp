@@ -26,7 +26,10 @@ namespace Solarus {
 /**
  * \brief Creates an Ogg decoder.
  */
-OggDecoder::OggDecoder() {
+OggDecoder::OggDecoder():
+  ogg_file(),
+  ogg_mem(),
+  ogg_info(nullptr) {
 
 }
 
@@ -46,7 +49,14 @@ bool OggDecoder::load(const std::string& ogg_data, bool loop) {
   // Now, ogg_mem contains the encoded data.
 
   int error = ov_open_callbacks(&ogg_mem, ogg_file.get(), nullptr, 0, Sound::ogg_callbacks);
-  return error == 0;
+
+  if (error != 0) {
+    return false;
+  }
+
+  ogg_info = ov_info(ogg_file.get(), -1);
+
+  return true;
 }
 
 /**
@@ -62,30 +72,40 @@ void OggDecoder::unload() {
  * and plays it.
  * \param decoded_data Pointer to where you want the decoded data to be written.
  * \param nb_samples Number of samples to write.
- * \return The number of bytes read, or 0 if the end is reached.
  */
 void OggDecoder::decode(ALuint destination_buffer, ALsizei nb_samples) {
 
-  // Read the encoded music properties.
-  vorbis_info* info = ov_info(ogg_file.get(), -1);
-  ALsizei sample_rate = ALsizei(info->rate);
+  if (ogg_info == nullptr) {
+    return;
+  }
 
+  // Read the encoded music properties.
+  ALsizei sample_rate = ALsizei(ogg_info->rate);
   ALenum al_format = AL_NONE;
-  if (info->channels == 1) {
+  if (ogg_info->channels == 1) {
     al_format = AL_FORMAT_MONO16;
   }
-  else if (info->channels == 2) {
+  else if (ogg_info->channels == 2) {
     al_format = AL_FORMAT_STEREO16;
   }
 
   // Decode the OGG data.
-  std::vector<ALshort> raw_data(nb_samples * info->channels);
+  std::vector<ALshort> raw_data(nb_samples * ogg_info->channels);
   int bitstream;
   long bytes_read;
   long total_bytes_read = 0;
-  long remaining_bytes = nb_samples * info->channels * sizeof(ALshort);
+  long remaining_bytes = nb_samples * ogg_info->channels * sizeof(ALshort);
   do {
-    bytes_read = ov_read(ogg_file.get(), ((char*) raw_data.data()) + total_bytes_read, int(remaining_bytes), 0, 2, 1, &bitstream);
+    bytes_read = ov_read(
+        ogg_file.get(),
+        ((char*) raw_data.data()) + total_bytes_read,
+        int(remaining_bytes),
+        0,
+        2,
+        1,
+        &bitstream
+    );
+
     if (bytes_read < 0) {
       if (bytes_read != OV_HOLE) { // OV_HOLE is normal when the music loops
         std::ostringstream oss;

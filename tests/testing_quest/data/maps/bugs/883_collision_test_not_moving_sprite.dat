@@ -17,21 +17,21 @@ tile{
   pattern = "3",
 }
 
-custom_entity{
-  name = "custom_entity_1",
-  layer = 0,
-  x = 24,
-  y = 61,
-  direction = 0,
-  sprite = "entities/block",
-}
-
 destination{
   name = "destination",
   layer = 0,
   x = 24,
   y = 29,
   direction = 1,
+}
+
+custom_entity{
+  name = "custom_entity_1",
+  layer = 0,
+  x = 16,
+  y = 69,
+  direction = 0,
+  sprite = "hero/sword1",
 }
 
 custom_entity{

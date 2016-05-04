@@ -67,11 +67,16 @@ CustomEntity::CustomEntity(
   ground_observer(false),
   modified_ground(Ground::EMPTY) {
 
-  set_collision_modes(CollisionMode::COLLISION_FACING);
+  set_collision_modes(
+      CollisionMode::COLLISION_FACING |
+      CollisionMode::COLLISION_CUSTOM |
+      CollisionMode::COLLISION_SPRITE
+  );
   set_origin(8, 13);
 
   if (!sprite_name.empty()) {
     create_sprite(sprite_name);
+    enable_pixel_collisions();
   }
   set_sprites_direction(direction);
 }
@@ -751,13 +756,6 @@ void CustomEntity::add_collision_test(
 ) {
   Debug::check_assertion(collision_test != COLLISION_NONE, "Invalid collision mode");
   Debug::check_assertion(!callback_ref.is_empty(), "Missing collision callback");
-
-  if (collision_test == COLLISION_SPRITE) {
-    add_collision_mode(COLLISION_SPRITE);
-  }
-  else {
-    add_collision_mode(COLLISION_CUSTOM);
-  }
 
   collision_tests.emplace_back(
       *get_lua_context(),

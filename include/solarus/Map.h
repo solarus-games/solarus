@@ -164,6 +164,7 @@ class SOLARUS_API Map: public ExportableToLua {
     void check_collision_with_detectors(Entity& entity);
     void check_collision_with_detectors(Entity& entity, Sprite& sprite);
     void check_collision_from_detector(Entity& detector);
+    void check_collision_from_detector(Entity& detector, Sprite& detector_sprite);
 
     // main loop
     bool notify_input(const InputEvent& event);

@@ -275,8 +275,10 @@ class SOLARUS_API Entity: public ExportableToLua {
     void set_layer_independent_collisions(bool independent);
 
     // Detecting other entities.
-    void check_collision(Entity& entity);
-    void check_collision(Entity& entity, Sprite& sprite);
+    void check_collision(Entity& other);
+    void check_collision(Entity& other, Sprite& other_sprite);
+    void check_collision(Sprite& this_sprite, Entity& other);
+    // TODO void check_collision(Sprite& this_sprite, Entity& other, Sprite& other_sprite);
     bool test_collision(Entity& entity, CollisionMode collision_mode);
     bool test_collision_rectangle(const Entity& entity) const;
     bool test_collision_inside(const Entity& entity) const;

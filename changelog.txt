@@ -34,7 +34,7 @@ Engine changes
 * Fix lifted item walking animation only accepting 3 frames (#645).
 * Fix enemy:set_attack_consequence_sprite() with thrown items (#834).
 * Fix custom_entity:set_can_traverse_ground() for some grounds (#794).
-* Fix custom entity collisions missed for entities that do not move (#671).
+* Fix custom entity collisions missed for entities that do not move (#671, #883).
 * Fix custom_entity:get_modified_ground() returning nothing.
 * Fix custom_entity:on_ground_below_changed() not called (#738).
 * Fix creating an entity with the same name as another one just removed (#795).

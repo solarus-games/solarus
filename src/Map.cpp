@@ -1326,6 +1326,46 @@ void Map::check_collision_from_detector(Entity& detector) {
 }
 
 /**
+ * \brief Checks pixel-precise collisions between all entities and a
+ * particular sprite of a detector.
+ *
+ * This function is called when a detector wants to check entities,
+ * typically when its sprite has just changed.
+ * If the map is suspended, this function does nothing.
+ *
+ * \param detector A detector.
+ * \param detector_sprite The detector's sprite to check.
+ */
+void Map::check_collision_from_detector(Entity& detector, Sprite& detector_sprite) {
+
+  if (suspended) {
+    return;
+  }
+
+  if (detector.is_being_removed()) {
+    return;
+  }
+
+  // First check the hero.
+  detector.check_collision(detector_sprite, get_entities().get_hero());
+
+  // Check each entity with this detector.
+  Rectangle box = detector.get_max_bounding_box();
+  std::vector<EntityPtr> entities_nearby;
+  entities->get_entities_in_rectangle(box, entities_nearby);
+  for (const EntityPtr& entity_nearby: entities_nearby) {
+
+    if (entity_nearby->is_enabled() &&
+        !entity_nearby->is_suspended() &&
+        !entity_nearby->is_being_removed() &&
+        entity_nearby.get() != &detector
+    ) {
+      detector.check_collision(detector_sprite, *entity_nearby);
+    }
+  }
+}
+
+/**
  * \brief Checks the pixel-precise collisions between an entity and the
  * detectors of the map.
  *

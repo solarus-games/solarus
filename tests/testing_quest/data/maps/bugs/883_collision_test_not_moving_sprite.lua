@@ -11,7 +11,7 @@ function map:on_opening_transition_finished()
 
   -- The collision should be detected after the opening transition,
   -- when the map is unsuspended.
-  sol.timer.start(10, function()
+  sol.timer.start(1000, function()
     assert(detected)
     sol.main.exit()
   end)

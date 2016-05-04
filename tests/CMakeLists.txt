@@ -46,6 +46,7 @@ set(lua_test_maps
   "bugs/867_crash_crystal"
   "bugs/875_freeze_load_map_tiles_outside"
   "bugs/883_collision_test_not_moving_sprite"
+  "bugs/889_crash_use_non_saved_item"
 )
 
 # Build the Solarus testing library.

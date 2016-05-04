@@ -28,6 +28,7 @@ Engine changes
 * Fix sprite:on_animation_finished() and others not working sometimes (#799).
 * Fix straight movement precision.
 * Fix freeze when loading a map with tiles outside the limits (#875).
+* Fix crash when trying to use a non-saved item (#889).
 * Fix sword tapping sound still played when the game is suspended (#797).
 * Fix hero:set_invincible() not working without duration (#805).
 * Fix lifted item walking animation only accepting 3 frames (#645).

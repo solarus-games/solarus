@@ -2138,6 +2138,10 @@ int LuaContext::hero_api_start_item(lua_State* l) {
     Hero& hero = *check_hero(l, 1);
     EquipmentItem& item = *check_item(l, 2);
 
+    if (!item.is_saved()) {
+      LuaTools::arg_error(l, 2,
+          std::string("Cannot use item '" + item.get_name() + "': this item is not saved"));
+    }
     if (hero.can_start_item(item)) {
       hero.start_item(item);
     }

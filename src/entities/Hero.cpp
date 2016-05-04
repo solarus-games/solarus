@@ -2524,6 +2524,11 @@ void Hero::start_sword() {
  */
 bool Hero::can_start_item(EquipmentItem& item) {
 
+  if (!item.is_saved()) {
+    // This item has no possession state, it cannot be used.
+    return false;
+  }
+
   if (!item.is_assignable()) {
     // This item cannot be used explicitly.
     return false;

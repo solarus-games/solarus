@@ -44,6 +44,7 @@ map{ id = "bugs/861_sprite_set_animation_callback", description = "#861: sprite:
 map{ id = "bugs/867_crash_crystal", description = "#867: Crash with crystals" }
 map{ id = "bugs/875_freeze_load_map_tiles_outside", description = "#875: Freeze when loading a map with tiles outside" }
 map{ id = "bugs/883_collision_test_not_moving_sprite", description = "#883: Custom entity sprite collision not detected when not moving" }
+map{ id = "bugs/889_crash_use_non_saved_item", description = "#889: Crash when using a non saved item" }
 map{ id = "dynamic_tile_tests", description = "Dynamic tile tests" }
 map{ id = "jumper_tests", description = "Jumper tests" }
 map{ id = "surface_tests", description = "Surface tests" }
@@ -138,6 +139,7 @@ sound{ id = "walk_on_water", description = "walk_on_water" }
 sound{ id = "wrong", description = "wrong" }
 
 item{ id = "bomb", description = "Bomb" }
+item{ id = "non_saved_item", description = "Non-saved item" }
 item{ id = "sword", description = "Sword" }
 
 enemy{ id = "slime_green", description = "Green Slime" }

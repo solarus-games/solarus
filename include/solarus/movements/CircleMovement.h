@@ -59,7 +59,7 @@ class CircleMovement: public Movement {
     int get_angle_speed() const;
     void set_angle_speed(int angle_speed);
     double get_initial_angle() const;
-    void set_initial_angle(double initial_angle);
+    void set_initial_angle(int initial_angle);
     bool is_clockwise() const;
     void set_clockwise(bool clockwise);
     uint32_t get_duration() const;
@@ -76,7 +76,7 @@ class CircleMovement: public Movement {
     void recompute_position();
 
     // center of the circle
-    EntityPtr center_entity;                     /**< the entity to make circles around (nullptr if only a point is used) */
+    EntityPtr center_entity;                        /**< the entity to make circles around (nullptr if only a point is used) */
     Point center_point;                             /**< absolute coordinates of the center if only a point is used,
                                                      * or coordinates relative to the center entity otherwise */
 
@@ -85,7 +85,7 @@ class CircleMovement: public Movement {
     int initial_angle;                              /**< the first circle starts from this angle in degrees */
     int angle_increment;                            /**< number of degrees to add when the angle changes (1 or -1) */
     uint32_t next_angle_change_date;                /**< date when the angle changes */
-    uint32_t angle_change_delay;                    /**< if not zero, time interval between two angle changes */
+    uint32_t angle_change_delay;                    /**< if not zero, time interval between two angle changes in milliseconds */
 
     // radius
     int current_radius;                             /**< current radius of the circle in pixels */

@@ -43,6 +43,7 @@ Engine changes
 * Fix crash when a diagonal tile is not square (#837).
 * Fix crash when the teletransporter after stairs is missing.
 * Fix text_surface:set_rendering_mode() not working (#833).
+* Fix circle_movement:set_initial_angle() not working (#721).
 * Fix support of joypads with multiple axes.
 * Fix sol.input.get_mouse_coordinates() ignoring the zoom factor (#734).
 
@@ -60,6 +61,7 @@ Changes that introduce incompatibilities:
 * map:move_camera() is now deprecated, use a camera movement instead.
 * Fix entity:set_enabled(true) delayed while it blocks the hero (#817).
 * Fix brandished treasure sprite and shop treasure sprite not animated (#790).
+* movement:get/set_initial_angle() now use degrees (#721).
 
 Changes that do not introduce incompatibilities:
 

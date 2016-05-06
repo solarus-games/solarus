@@ -1521,7 +1521,7 @@ int LuaContext::circle_movement_api_get_initial_angle(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const CircleMovement& movement = *check_circle_movement(l, 1);
-    lua_pushnumber(l, movement.get_initial_angle());
+    lua_pushinteger(l, movement.get_initial_angle());
     return 1;
   });
 }
@@ -1535,7 +1535,7 @@ int LuaContext::circle_movement_api_set_initial_angle(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     CircleMovement& movement = *check_circle_movement(l, 1);
-    double initial_angle = LuaTools::check_number(l, 2);
+    int initial_angle = LuaTools::check_int(l, 2);
     movement.set_initial_angle(initial_angle);
     return 0;
   });

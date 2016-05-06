@@ -110,6 +110,8 @@ void LuaContext::register_entity_module() {
       { "get_position", entity_api_get_position },\
       { "set_position", entity_api_set_position },\
       { "get_center_position", entity_api_get_center_position },\
+      { "get_facing_position", entity_api_get_facing_position },\
+      { "get_facing_entity", entity_api_get_facing_entity },\
       { "get_ground_position", entity_api_get_ground_position },\
       { "get_ground_below", entity_api_get_ground_below },\
       { "get_bounding_box", entity_api_get_bounding_box },\
@@ -988,6 +990,45 @@ int LuaContext::entity_api_get_center_position(lua_State* l) {
     lua_pushinteger(l, center_point.y);
     lua_pushinteger(l, entity.get_layer());
     return 3;
+  });
+}
+
+/**
+ * \brief Implementation of entity:get_facing_position().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_facing_position(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Entity& entity = *check_entity(l, 1);
+
+    const Point& facing_point = entity.get_facing_point();
+    lua_pushinteger(l, facing_point.x);
+    lua_pushinteger(l, facing_point.y);
+    lua_pushinteger(l, entity.get_layer());
+    return 3;
+  });
+}
+
+/**
+ * \brief Implementation of entity:get_facing_entity().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_facing_entity(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Entity& entity = *check_entity(l, 1);
+
+    Entity* facing_entity = entity.get_facing_entity();
+    if (facing_entity == nullptr) {
+      lua_pushnil(l);
+    }
+    else {
+      push_entity(l, *facing_entity);
+    }
+    return 1;
   });
 }
 

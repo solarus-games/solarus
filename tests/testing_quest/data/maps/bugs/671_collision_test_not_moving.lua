@@ -3,8 +3,11 @@ local map = ...
 local detected = false
 
 custom_entity_1:add_collision_test("overlapping", function(_, other)
-  assert(other == custom_entity_2)
-  detected = true
+
+  if other:get_type() == "custom_entity" then
+    assert(other == custom_entity_2)
+    detected = true
+  end
 end)
 
 function map:on_opening_transition_finished()

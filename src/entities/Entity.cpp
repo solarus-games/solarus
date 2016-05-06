@@ -1057,7 +1057,7 @@ Point Entity::get_touching_point(int direction) const {
 
 /**
  * \brief Returns the detector in front of this entity.
- * \return The detector this entity is facing, or nullptr if there is no detector in front of him
+ * \return The detector this entity is facing, or nullptr if there is no detector in front of him.
  */
 Entity* Entity::get_facing_entity() {
   return facing_entity;
@@ -3295,7 +3295,10 @@ void Entity::set_suspended(bool suspended) {
 
   if (!suspended) {
     // Collision tests were disabled when the entity was suspended.
-    check_collision_with_detectors();
+    if (is_on_map()) {
+      get_map().check_collision_from_detector(*this);
+      check_collision_with_detectors();
+    }
   }
 }
 

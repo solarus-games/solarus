@@ -813,6 +813,8 @@ class LuaContext {
       entity_api_get_position,
       entity_api_set_position,
       entity_api_get_center_position,
+      entity_api_get_facing_position,
+      entity_api_get_facing_entity,
       entity_api_get_ground_position,
       entity_api_get_ground_below,
       entity_api_get_bounding_box,

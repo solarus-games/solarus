@@ -711,6 +711,8 @@ void Hero::notify_map_opening_transition_finished() {
 
 /**
  * \copydoc Entity::get_facing_point
+ *
+ * TODO remove this override
  */
 Point Hero::get_facing_point() const {
 

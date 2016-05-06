@@ -45,6 +45,7 @@ set(lua_test_maps
   "bugs/861_sprite_set_animation_callback"
   "bugs/867_crash_crystal"
   "bugs/875_freeze_load_map_tiles_outside"
+  "bugs/877_get_facing_entity"
   "bugs/880_custom_entity_set_origin"
   "bugs/883_collision_test_not_moving_sprite"
   "bugs/889_crash_use_non_saved_item"

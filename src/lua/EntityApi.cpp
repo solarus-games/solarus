@@ -868,7 +868,7 @@ int LuaContext::entity_api_get_size(lua_State* l) {
 }
 
 /**
- * \brief Implementation of enemy:set_size().
+ * \brief Implementation of entity:set_size().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
@@ -891,6 +891,7 @@ int LuaContext::entity_api_set_size(lua_State* l) {
     }
 
     entity.set_size(width, height);
+    entity.notify_position_changed();
 
     return 0;
   });
@@ -927,6 +928,7 @@ int LuaContext::entity_api_set_origin(lua_State* l) {
     int y = LuaTools::check_int(l, 3);
 
     entity.set_origin(x, y);
+    entity.notify_position_changed();
 
     return 0;
   });

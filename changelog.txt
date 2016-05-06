@@ -37,6 +37,7 @@ Engine changes
 * Fix custom entity collisions missed for entities that do not move (#671, #883).
 * Fix custom_entity:get_modified_ground() returning nothing.
 * Fix custom_entity:on_ground_below_changed() not called (#738).
+* Fix missing notifications in custom_entity:set_origin() (#880).
 * Fix creating an entity with the same name as another one just removed (#795).
 * Fix parallax scrolling for dynamic tiles (#816).
 * Fix crash when a diagonal tile is not square (#837).

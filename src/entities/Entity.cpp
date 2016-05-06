@@ -1613,6 +1613,8 @@ void Entity::notify_obstacle_reached() {
  * It checks collisions with the detectors on the map
  * and, if this entity defines a ground, updates entities sensible to their
  * ground.
+ *
+ * TODO only keep notify_bounding_box_changed()
  */
 void Entity::notify_position_changed() {
 

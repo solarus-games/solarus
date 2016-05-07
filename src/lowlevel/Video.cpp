@@ -45,6 +45,7 @@ SDL_PixelFormat* pixel_format = nullptr;  /**< The pixel color format to use. */
 std::string rendering_driver_name;        /**< The name of the rendering driver. */
 bool disable_window = false;              /**< Indicates that no window is displayed (used for unit tests). */
 bool fullscreen_window = false;           /**< True if the window is in fullscreen. */
+bool visible_cursor = true;               /**< True if the mouse cursor is visible. */
 bool rendertarget_supported = false;      /**< True if rendering on texture is supported. */
 bool shaders_enabled = false;             /**< True if shaded modes support is enabled. */
 bool acceleration_enabled = false;        /**< \c true if 2D GPU acceleration is available and enabled. */
@@ -457,6 +458,26 @@ void Video::set_fullscreen(bool fullscreen) {
 }
 
 /**
+ * \brief Returns whether the mouse cursor is currently visible.
+ * \return true if the mouse cursor is currently visible.
+ */
+bool Video::is_cursor_visible() {
+  return visible_cursor;
+}
+
+/**
+ * \brief Sets the mouse cursor to visible or invisible.
+ * \param cursor_visible true to make the cursor visible.
+ */
+void Video::set_cursor_visible(bool cursor_visible) {
+
+  visible_cursor = cursor_visible;
+  Debug::check_assertion(video_mode != nullptr, "No video mode");
+  set_video_mode(*video_mode, is_fullscreen());
+  Logger::info(std::string("Cursor visible: ") + (cursor_visible ? "yes" : "no"));
+}
+
+/**
  * \brief Sets the default video mode.
  */
 void Video::set_default_video_mode() {
@@ -529,16 +550,13 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
     return false;
   }
 
-  int show_cursor;
   Uint32 fullscreen_flag;
   if (fullscreen) {
     fullscreen_flag = SDL_WINDOW_FULLSCREEN_DESKTOP;
-    show_cursor = SDL_DISABLE;
     window_size = get_window_size();  // Store the window size before fullscreen.
   }
   else {
     fullscreen_flag = 0;
-    show_cursor = SDL_ENABLE;
   }
 
   video_mode = &mode;
@@ -565,7 +583,7 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
         main_renderer,
         render_size.width,
         render_size.height);
-    SDL_ShowCursor(show_cursor);
+    SDL_ShowCursor(visible_cursor);
 
     if (mode_changed) {
       reset_window_size();

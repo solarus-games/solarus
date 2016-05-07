@@ -478,6 +478,8 @@ class LuaContext {
       video_api_get_modes,
       video_api_is_fullscreen,
       video_api_set_fullscreen,
+      video_api_is_cursor_visible,
+      video_api_set_cursor_visible,
       video_api_get_quest_size,
       video_api_get_window_size,
       video_api_set_window_size,

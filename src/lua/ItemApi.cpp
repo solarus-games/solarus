@@ -52,6 +52,7 @@ void LuaContext::register_item_module() {
       { "set_obtainable", item_api_set_obtainable },
       { "is_assignable", item_api_is_assignable },
       { "set_assignable", item_api_set_assignable },
+      { "is_being_used", item_api_is_being_used },
       { "get_can_disappear", item_api_get_can_disappear },
       { "set_can_disappear", item_api_set_can_disappear },
       { "get_brandish_when_picked", item_api_get_brandish_when_picked },
@@ -327,6 +328,21 @@ int LuaContext::item_api_set_assignable(lua_State* l) {
     item.set_assignable(assignable);
 
     return 0;
+  });
+}
+
+/**
+ * \brief Implementation of item:is_being_used().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::item_api_is_being_used(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    EquipmentItem& item = *check_item(l, 1);
+
+    lua_pushboolean(l, item.is_being_used());
+    return 1;
   });
 }
 

@@ -70,6 +70,9 @@ class Video {
     static bool is_fullscreen();
     static void set_fullscreen(bool fullscreen);
 
+    static bool is_cursor_visible();
+    static void set_cursor_visible(bool cursor_visible);
+
     static std::string get_window_title();
     static void set_window_title(const std::string& window_title);
 

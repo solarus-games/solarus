@@ -114,6 +114,7 @@ Data files format changes
 * Maps: Enemies no longer have a rank property (#449).
 * Maps: New property starting_location_mode on destinations (#819).
 * Dialogs: Allow empty texts.
+* Make "tileset.entities.png" files optional (#884).
 
 Sample quest changes
 --------------------

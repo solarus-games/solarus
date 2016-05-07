@@ -22,7 +22,6 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/movements/CircleMovement.h"
 #include "solarus/Map.h"
-#include <cmath>
 #include <sstream>
 
 namespace Solarus {

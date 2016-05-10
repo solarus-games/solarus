@@ -44,6 +44,7 @@ class CommandsEffects;
 class Crystal;
 class CrystalBlock;
 class Destructible;
+class Door;
 class Enemy;
 class Equipment;
 class EquipmentItem;
@@ -341,6 +342,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual bool is_raised_block_obstacle(CrystalBlock& raised_block);
     virtual bool is_crystal_obstacle(Crystal& crystal);
     virtual bool is_npc_obstacle(Npc& npc);
+    virtual bool is_door_obstacle(Door& door);
     virtual bool is_enemy_obstacle(Enemy& enemy);
     virtual bool is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position);
     virtual bool is_destructible_obstacle(Destructible& destructible);

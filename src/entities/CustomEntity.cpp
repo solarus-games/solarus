@@ -17,11 +17,11 @@
 #include "solarus/entities/CustomEntity.h"
 #include "solarus/entities/Block.h"
 #include "solarus/entities/Bomb.h"
-#include "solarus/entities/Stream.h"
 #include "solarus/entities/Chest.h"
 #include "solarus/entities/Crystal.h"
 #include "solarus/entities/CrystalBlock.h"
 #include "solarus/entities/Destructible.h"
+#include "solarus/entities/Door.h"
 #include "solarus/entities/Enemy.h"
 #include "solarus/entities/Entities.h"
 #include "solarus/entities/Fire.h"
@@ -31,6 +31,7 @@
 #include "solarus/entities/Sensor.h"
 #include "solarus/entities/Separator.h"
 #include "solarus/entities/Stairs.h"
+#include "solarus/entities/Stream.h"
 #include "solarus/entities/Switch.h"
 #include "solarus/entities/Teletransporter.h"
 #include "solarus/lua/LuaContext.h"
@@ -536,6 +537,22 @@ bool CustomEntity::is_npc_obstacle(Npc& npc) {
     return !info.is_traversable(*this, npc);
   }
   return Entity::is_npc_obstacle(npc);
+}
+
+/**
+ * \copydoc Entity::is_door_obstacle
+ */
+bool CustomEntity::is_door_obstacle(Door& door) {
+
+  if (door.is_open()) {
+    return false;
+  }
+
+  const TraversableInfo& info = get_can_traverse_entity_info(door.get_type());
+  if (!info.is_empty()) {
+    return !info.is_traversable(*this, door);
+  }
+  return Entity::is_door_obstacle(door);
 }
 
 /**

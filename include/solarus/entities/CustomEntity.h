@@ -97,6 +97,7 @@ class SOLARUS_API CustomEntity: public Entity {
     bool is_raised_block_obstacle(CrystalBlock& raised_block) override;
     bool is_crystal_obstacle(Crystal& crystal) override;
     bool is_npc_obstacle(Npc& npc) override;
+    bool is_door_obstacle(Door& block) override;
     bool is_enemy_obstacle(Enemy& enemy) override;
     bool is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) override;
     bool is_destructible_obstacle(Destructible& destructible) override;

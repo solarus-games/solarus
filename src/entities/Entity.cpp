@@ -16,6 +16,7 @@
  */
 #include "solarus/entities/CollisionMode.h"
 #include "solarus/entities/Destructible.h"
+#include "solarus/entities/Door.h"
 #include "solarus/entities/Entities.h"
 #include "solarus/entities/Entity.h"
 #include "solarus/entities/EntityState.h"
@@ -2655,6 +2656,19 @@ bool Entity::is_crystal_obstacle(Crystal& /* crystal */) {
  */
 bool Entity::is_npc_obstacle(Npc& /* npc */) {
   return true;
+}
+
+/**
+ * \brief Returns whether a door is currently considered as an obstacle
+ * by this entity.
+ *
+ * By default, this function returns \c true unless the door is open.
+ *
+ * \param door A door.
+ * \return \c true if the door is currently an obstacle for this entity.
+ */
+bool Entity::is_door_obstacle(Door& door) {
+  return !door.is_open();
 }
 
 /**

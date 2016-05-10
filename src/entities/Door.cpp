@@ -111,8 +111,9 @@ EntityType Door::get_type() const {
  * \param other another entity
  * \return true
  */
-bool Door::is_obstacle_for(Entity& /* other */) {
-  return !is_open();
+bool Door::is_obstacle_for(Entity& other) {
+
+  return other.is_door_obstacle(*this);
 }
 
 /**

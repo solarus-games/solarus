@@ -508,7 +508,7 @@ void Enemy::set_obstacle_behavior(ObstacleBehavior obstacle_behavior) {
 }
 
 /**
- * \brief Returns whether this enemy is traversable.by other entities.
+ * \brief Returns whether this enemy is traversable by other entities.
  *
  * If the enemy is not traversable, is_obstacle_for() will always return
  * \c false.
@@ -522,7 +522,7 @@ bool Enemy::is_traversable() const {
 }
 
 /**
- * \brief Sets whether this enemy is traversable.by other entities.
+ * \brief Sets whether this enemy is traversable by other entities.
  *
  * If the enemy is not traversable, is_obstacle_for() will always return
  * \c false.

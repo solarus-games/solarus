@@ -60,6 +60,8 @@ Npc::Npc(
 ):
   Entity(name, 0, layer, xy, Size(0, 0)),
   subtype(subtype),
+  behavior(BEHAVIOR_MAP_SCRIPT),
+  traversable(false),
   dialog_to_show(""),
   item_name("") {
 
@@ -127,6 +129,28 @@ void Npc::initialize_sprite(const std::string& sprite_name, int initial_directio
 bool Npc::is_solid() const {
 
   return subtype != USUAL_NPC;
+}
+
+/**
+ * \brief Returns whether this NPC is traversable by other entities.
+ *
+ * Note that some entities can override this setting.
+ *
+ * \return \c true if this NPC is traversable.
+ */
+bool Npc::is_traversable() const {
+  return traversable;
+}
+
+/**
+ * \brief Sets whether this NPC is traversable by other entities.
+ *
+ * Note that some entities can override this setting.
+ *
+ * \param traversable \c true to make this NPC traversable.
+ */
+void Npc::set_traversable(bool traversable) {
+  this->traversable = traversable;
 }
 
 /**

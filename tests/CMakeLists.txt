@@ -14,6 +14,7 @@ set(lua_test_maps
   "bugs/671_collision_test_not_moving"
   "bugs/686_crash_door_item"
   "bugs/699_crash_exit_surface_moving"
+  "bugs/712_npc_set_traversable"
   "bugs/716_custom_entity_set_can_traverse_door"
   "bugs/729_switch_is_walkable"
   "bugs/738_custom_entity_on_ground_below_changed"

@@ -898,6 +898,8 @@ class LuaContext {
       teletransporter_api_set_destination_map,
       teletransporter_api_get_destination_name,
       teletransporter_api_set_destination_name,
+      npc_api_is_traversable,
+      npc_api_set_traversable,
       chest_api_is_open,
       chest_api_set_open,
       chest_api_get_treasure,

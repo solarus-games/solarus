@@ -82,6 +82,8 @@ class SOLARUS_API Npc: public Entity {
     EntityType get_type() const override;
 
     bool is_solid() const;
+    bool is_traversable() const;
+    void set_traversable(bool traversable);
 
     virtual bool is_obstacle_for(Entity& other) override;
     virtual bool is_hero_obstacle(Hero& hero) override;
@@ -103,6 +105,8 @@ class SOLARUS_API Npc: public Entity {
 
     Subtype subtype;                    /**< subtpype of NPC */
     Behavior behavior;                  /**< type of action done when the player interacts with this entity */
+    bool traversable;                   /**< Whether this NPC can be traversed by other entities
+                                         * (not that some entities override this setting). */
     std::string dialog_to_show;         /**< dialog to show when an interaction occurs, or an empty string */
     std::string item_name;              /**< name of an equipment item to notify when an interaction occurs */
 

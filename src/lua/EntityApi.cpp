@@ -251,6 +251,21 @@ void LuaContext::register_entity_module() {
       metamethods
   );
 
+  // NPC.
+  static const luaL_Reg npc_methods[] = {
+      ENTITY_COMMON_METHODS,
+      { "is_traversable", npc_api_is_traversable },
+      { "set_traversable", npc_api_set_traversable },
+      { nullptr, nullptr }
+  };
+
+  register_type(
+      get_entity_internal_type_name(EntityType::NPC),
+      nullptr,
+      npc_methods,
+      metamethods
+  );
+
   // Chest.
   static const luaL_Reg chest_methods[] = {
       ENTITY_COMMON_METHODS,
@@ -518,7 +533,6 @@ void LuaContext::register_entity_module() {
   register_type(get_entity_internal_type_name(EntityType::TILE), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::CARRIED_OBJECT), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::JUMPER), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::NPC), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::SENSOR), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::SEPARATOR), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::WALL), nullptr, entity_common_methods, metamethods);
@@ -2898,6 +2912,39 @@ std::shared_ptr<Npc> LuaContext::check_npc(lua_State* l, int index) {
  */
 void LuaContext::push_npc(lua_State* l, Npc& npc) {
   push_userdata(l, npc);
+}
+
+/**
+ * \brief Implementation of npc:is_traversable().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::npc_api_is_traversable(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Npc& npc = *check_npc(l, 1);
+
+    lua_pushboolean(l, npc.is_traversable());
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of npc:set_traversable().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::npc_api_set_traversable(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Npc& npc = *check_npc(l, 1);
+
+    bool traversable = LuaTools::opt_boolean(l, 2, true);
+
+    npc.set_traversable(traversable);
+
+    return 0;
+  });
 }
 
 /**

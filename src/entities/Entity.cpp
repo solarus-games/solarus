@@ -21,6 +21,7 @@
 #include "solarus/entities/Entity.h"
 #include "solarus/entities/EntityState.h"
 #include "solarus/entities/Hero.h"
+#include "solarus/entities/Npc.h"
 #include "solarus/entities/Separator.h"
 #include "solarus/entities/SeparatorPtr.h"
 #include "solarus/entities/StreamAction.h"
@@ -2654,8 +2655,8 @@ bool Entity::is_crystal_obstacle(Crystal& /* crystal */) {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool Entity::is_npc_obstacle(Npc& /* npc */) {
-  return true;
+bool Entity::is_npc_obstacle(Npc& npc) {
+  return !npc.is_traversable();
 }
 
 /**

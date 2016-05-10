@@ -9,6 +9,7 @@ map{ id = "bugs/670_map_get_entities_no_hero", description = "#670: map:get_enti
 map{ id = "bugs/671_collision_test_not_moving", description = "#671: Custom entity collision not detected when not moving" }
 map{ id = "bugs/686_crash_door_item", description = "#686: Crash with doors whose opening condition is an item" }
 map{ id = "bugs/699_crash_exit_surface_moving", description = "#699: Crash at exit when a surface was moving" }
+map{ id = "bugs/712_npc_set_traversable", description = "#712: npc:is/set_traversable()" }
 map{ id = "bugs/716_custom_entity_set_can_traverse_door", description = "#716: Doors cannot be set traversable by custom entities" }
 map{ id = "bugs/729_switch_is_walkable", description = "#729: switch:is_walkable()" }
 map{ id = "bugs/738_custom_entity_on_ground_below_changed", description = "#738: custom_entity:on_ground_below_changed() is not called" }

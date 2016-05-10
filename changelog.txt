@@ -63,7 +63,6 @@ Changes that introduce incompatibilities:
 * Fix entity:set_enabled(true) delayed while it blocks the hero (#817).
 * Fix brandished treasure sprite and shop treasure sprite not animated (#790).
 * movement:get/set_initial_angle() now use degrees (#721).
-* Add ability to hide mouse cursor (#891).
 
 Changes that do not introduce incompatibilities:
 
@@ -104,6 +103,7 @@ Changes that do not introduce incompatibilities:
 * Add methods sprite:get_size() and sprite:get_origin() (#823).
 * sprite:set_animation() now takes an optional callback parameter (#861).
 * Add a method surface:get_opacity() (#722).
+* Add ability to hide mouse cursor (#891).
 
 Data files format changes
 -------------------------

@@ -444,6 +444,7 @@ target_link_libraries(solarus
   "${LUA_LIBRARY}"
   "${DL_LIBRARY}"
   "${PHYSFS_LIBRARY}"
+  "${VORBIS_LIBRARY}"
   "${VORBISFILE_LIBRARY}"
   "${OGG_LIBRARY}"
   "${MODPLUG_LIBRARY}"

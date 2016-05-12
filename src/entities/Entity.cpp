@@ -1700,10 +1700,8 @@ void Entity::enable_pixel_collisions() {
 /**
  * \brief Returns whether this entity can have collisions with entities even if
  * they are not on the same layer.
- *
- * This function returns false by default.
- *
- * \return true if this entity can collide with entities that are on another layer
+ * \return \c true if this entity can detect collisions with entities
+ * that are on another layer.
  */
 bool Entity::has_layer_independent_collisions() const {
   return layer_independent_collisions;
@@ -1712,7 +1710,8 @@ bool Entity::has_layer_independent_collisions() const {
 /**
  * \brief Sets whether this entity can detect collisions with entities even if
  * they are not on the same layer.
- * \param independent \c true if this entity can detect entities that are on another layer.
+ * \param independent \c true if this entity can detect entities
+ * that are on another layer.
  */
 void Entity::set_layer_independent_collisions(bool independent) {
   this->layer_independent_collisions = independent;

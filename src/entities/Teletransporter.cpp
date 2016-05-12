@@ -94,6 +94,10 @@ void Teletransporter::notify_creating() {
     destination_side = 1;
   }
 
+  if (destination_side != -1) {
+    set_layer_independent_collisions(true);
+  }
+
   transition_direction = (destination_side + 2) % 4;
 }
 

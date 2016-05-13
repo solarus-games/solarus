@@ -32,7 +32,7 @@ class Hero::BackToSolidGroundState: public HeroState {
 
     BackToSolidGroundState(
         Hero& hero,
-        bool use_memorized_xy,
+        bool use_specified_position,
         uint32_t end_delay = 0,
         bool with_sound = true
     );
@@ -59,8 +59,7 @@ class Hero::BackToSolidGroundState: public HeroState {
 
   private:
 
-    Point target_xy;                /**< coordinates of the solid ground location to go to*/
-    int target_layer;               /**< layer of the target location */
+    ScopedLuaRef target_position;   /**< Where to go back. */
     uint32_t end_delay;             /**< delay before returning control to the player */
     uint32_t end_date;              /**< date when the state ends */
     bool with_sound;                /**< true to play a sound when reaching the solid ground */

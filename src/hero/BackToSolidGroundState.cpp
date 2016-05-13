@@ -21,8 +21,11 @@
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/System.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lua/LuaTools.h"
 #include "solarus/movements/TargetMovement.h"
 #include "solarus/Map.h"
+#include <lua.hpp>
 #include <memory>
 
 namespace Solarus {
@@ -30,27 +33,32 @@ namespace Solarus {
 /**
  * \brief Constructor.
  * \param hero the hero controlled by this state
- * \param use_memorized_xy true to get back to the place previously memorized (if any),
+ * \param use_specified_position true to get back to the place previously specified (if any),
  * false to get back to the last coordinates with solid ground
  * \param end_delay a delay to add at the end before returning control to the hero (default 0)
  * \param with_sound true to play a sound when returning to solid ground
  */
-Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
-    bool use_memorized_xy, uint32_t end_delay, bool with_sound):
+Hero::BackToSolidGroundState::BackToSolidGroundState(
+    Hero& hero,
+    bool use_specified_position,
+    uint32_t end_delay,
+    bool with_sound):
   HeroState(hero, "back to solid ground"),
+  target_position(),
   end_delay(end_delay),
   end_date(0),
   with_sound(with_sound) {
 
-  if (use_memorized_xy && hero.get_target_solid_ground_coords().x != -1) {
-    // go back to a target point specified earlier
-    this->target_xy = hero.get_target_solid_ground_coords();
-    this->target_layer = hero.get_target_solid_ground_layer();
+  if (use_specified_position && !hero.get_target_solid_ground_callback().is_empty()) {
+    // go back to a target position specified earlier
+    this->target_position = hero.get_target_solid_ground_callback();
   }
   else {
     // just go back to the last solid ground location
-    this->target_xy = hero.get_last_solid_ground_coords();
-    this->target_layer = hero.get_last_solid_ground_layer();
+    this->target_position = hero.make_solid_ground_callback(
+        hero.get_last_solid_ground_coords(),
+        hero.get_last_solid_ground_layer()
+    );
   }
 }
 
@@ -62,11 +70,33 @@ void Hero::BackToSolidGroundState::start(const State* previous_state) {
 
   HeroState::start(previous_state);
 
+  Point xy;
+  int layer = 0;
+
   Hero& hero = get_entity();
+  lua_State* l = hero.get_lua_context()->get_internal_state();
+
+  // Call the Lua function to get the coordinates and layer.
+  Debug::check_assertion(!target_position.is_empty(), "Missing solid ground callback");
+  target_position.push();
+  bool success = LuaTools::call_function(l, 0, 3, "Solid ground callback");
+  if (!success) {
+    // Fallback: use the last solid ground position.
+    xy = hero.get_last_solid_ground_coords();
+    layer = hero.get_last_solid_ground_layer();
+  }
+  else {
+    // Normal case: use the result of the function.
+    xy.x = LuaTools::check_int(l, -3);
+    xy.y = LuaTools::check_int(l, -2);
+    layer = LuaTools::check_int(l, -1);
+    lua_pop(l, 3);
+  }
+
   hero.set_movement(std::make_shared<TargetMovement>(
-      nullptr, target_xy.x, target_xy.y, 144, true
+      nullptr, xy.x, xy.y, 144, true
   ));
-  get_entities().set_entity_layer(hero, target_layer);
+  get_entities().set_entity_layer(hero, layer);
 
   const std::set<std::shared_ptr<Boomerang>>& boomerangs =
       get_entities().get_entities_by_type<Boomerang>();

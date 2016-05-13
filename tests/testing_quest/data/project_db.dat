@@ -4,6 +4,7 @@ map{ id = "bugs/486_diagonal_dynamic_tiles", description = "#486: Wrong obstacle
 map{ id = "bugs/526_get_entities_same_region", description = "#526: map:get_entities_in_same_region()" }
 map{ id = "bugs/656_map_set_world", description = "#656: map:set_world()" }
 map{ id = "bugs/664_chest_get_set_treasure", description = "#664: chest:get/set_treasure()" }
+map{ id = "bugs/667_hero_save_solid_ground_callback", description = "#867: Add callback parameter to hero:save_solid_ground()" }
 map{ id = "bugs/669_entity_get_sprite", description = "#669: entity:get_sprite()" }
 map{ id = "bugs/670_map_get_entities_no_hero", description = "#670: map:get_entities() does not return the hero" }
 map{ id = "bugs/671_collision_test_not_moving", description = "#671: Custom entity collision not detected when not moving" }

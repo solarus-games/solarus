@@ -152,13 +152,11 @@ class Hero: public Entity {
     virtual void notify_ground_below_changed() override;
     const Point& get_last_solid_ground_coords() const;
     int get_last_solid_ground_layer() const;
-    const Point& get_target_solid_ground_coords() const;
-    int get_target_solid_ground_layer() const;
-    void set_target_solid_ground_coords(
-        const Point& target_solid_ground_coords,
-        int layer
-    );
-    void reset_target_solid_ground_coords();
+    ScopedLuaRef make_solid_ground_callback(
+        const Point& xy, int layer) const;
+    const ScopedLuaRef& get_target_solid_ground_callback() const;
+    void set_target_solid_ground_callback(const ScopedLuaRef& callback);
+    void reset_target_solid_ground_callback();
 
     /**
      * \name Obstacles.
@@ -283,7 +281,7 @@ class Hero: public Entity {
         const std::string& sprite_name);
     void start_bow();
     void start_hookshot();
-    void start_back_to_solid_ground(bool use_memorized_xy,
+    void start_back_to_solid_ground(bool use_specified_position,
         uint32_t end_delay = 0, bool with_sound = true);
     void start_state_from_ground();
 
@@ -360,10 +358,10 @@ class Hero: public Entity {
     Point last_solid_ground_coords;        /**< coordinates of the last hero position on a ground
                                             * where he can walk (e.g. before jumping or falling into a hole) */
     int last_solid_ground_layer;           /**< layer of the last hero position on a solid ground */
-    Point target_solid_ground_coords;      /**< coordinates of the position where the hero will go if he falls
-                                            * into a hole (or some other bad ground), or (-1,-1) to indicate
-                                            * that the hero will just return to the last solid ground coordinates */
-    int target_solid_ground_layer;         /**< layer of the place to go back when falling in some bad ground */
+    ScopedLuaRef
+        target_solid_ground_callback;      /**< Function that gives the position where the hero will go back if he falls
+                                            * into a hole (or some other bad ground), or an empty ref to indicate
+                                            * that the hero will just return to the last solid ground coordinates. */
     uint32_t next_ground_date;             /**< when something will happen with the ground next time (a sound or a movement) */
     uint32_t next_ice_date;                /**< when recomputing the additional movement on ice */
     int ice_movement_direction8;           /**< wanted movement direction a while ago */

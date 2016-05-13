@@ -1794,20 +1794,36 @@ int LuaContext::hero_api_save_solid_ground(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    int x, y;
-    int layer;
-    if (lua_gettop(l) >= 2) {
-      x = LuaTools::check_int(l, 2);
-      y = LuaTools::check_int(l, 3);
-      layer = LuaTools::check_layer(l, 4, hero.get_map());
+
+    ScopedLuaRef callback;
+    if (lua_gettop(l) == 2) {
+      // Function parameter.
+      if (lua_isnil(l, 2)) {
+        hero.reset_target_solid_ground_callback();
+        return 0;
+      }
+      else {
+        callback = LuaTools::check_function(l, 2);
+      }
     }
     else {
-      x = hero.get_x();
-      y = hero.get_y();
-      layer = hero.get_layer();
+      // Coordinates and layer.
+      int x = 0;
+      int y = 0;
+      int layer = 0;
+      if (lua_gettop(l) >= 2) {
+        x = LuaTools::check_int(l, 2);
+        y = LuaTools::check_int(l, 3);
+        layer = LuaTools::check_layer(l, 4, hero.get_map());
+      }
+      else {
+        x = hero.get_x();
+        y = hero.get_y();
+        layer = hero.get_layer();
+      }
+      callback = hero.make_solid_ground_callback(Point(x, y), layer);
     }
-
-    hero.set_target_solid_ground_coords(Point(x, y), layer);
+    hero.set_target_solid_ground_callback(callback);
 
     return 0;
   });
@@ -1823,7 +1839,7 @@ int LuaContext::hero_api_reset_solid_ground(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
-    hero.reset_target_solid_ground_coords();
+    hero.reset_target_solid_ground_callback();
 
     return 0;
   });
@@ -1839,28 +1855,43 @@ int LuaContext::hero_api_get_solid_ground_position(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const Hero& hero = *check_hero(l, 1);
 
-    const Point& target_coords = hero.get_target_solid_ground_coords();
-    if (target_coords.x != -1) {
+    Point xy;
+    int layer = 0;
+
+    const ScopedLuaRef& solid_ground_callback = hero.get_target_solid_ground_callback();
+    if (!solid_ground_callback.is_empty()) {
       // Coordinates memorized by hero:save_solid_ground().
-      lua_pushinteger(l, target_coords.x);
-      lua_pushinteger(l, target_coords.y);
-      lua_pushinteger(l, hero.get_target_solid_ground_layer());
-      return 3;
+      solid_ground_callback.push();
+      bool success = LuaTools::call_function(l, 0, 3, "Solid ground callback");
+      if (!success) {
+        // Fallback: use the last solid ground position.
+        xy = hero.get_last_solid_ground_coords();
+        layer = hero.get_last_solid_ground_layer();
+        lua_pushinteger(l, xy.x);
+        lua_pushinteger(l, xy.y);
+        lua_pushinteger(l, layer);
+        return 3;
+      }
+      else {
+        // Normal case: use the result of the function.
+        return 3;
+      }
     }
-
-    const Point& last_coords = hero.get_last_solid_ground_coords();
-    if (last_coords.x != -1) {
+    else if (hero.get_last_solid_ground_coords().x != -1) {
+      xy = hero.get_last_solid_ground_coords();
+      layer = hero.get_last_solid_ground_layer();
       // Last solid ground coordinates.
-      lua_pushinteger(l, last_coords.x);
-      lua_pushinteger(l, last_coords.y);
-      lua_pushinteger(l, hero.get_last_solid_ground_layer());
+      lua_pushinteger(l, xy.x);
+      lua_pushinteger(l, xy.y);
+      lua_pushinteger(l, layer);
       return 3;
     }
-
-    // No solid ground coordinates.
-    // Maybe the map started in water.
-    lua_pushnil(l);
-    return 1;
+    else {
+      // No solid ground coordinates.
+      // Maybe the map started in water.
+      lua_pushnil(l);
+      return 1;
+    }
   });
 }
 

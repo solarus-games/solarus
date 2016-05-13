@@ -501,8 +501,8 @@ bool Quadtree<T>::Node::is_main_cell(const Rectangle& bounding_box) const {
   // in case the center it actually outside.
   const Rectangle& quadtree_space = quadtree.get_space();
   center = {
-      std::max(quadtree_space.get_left(), std::min(quadtree_space.get_right(), center.x)),
-      std::max(quadtree_space.get_top(), std::min(quadtree_space.get_bottom(), center.y))
+      std::max(quadtree_space.get_left(), std::min(quadtree_space.get_right() - 1, center.x)),
+      std::max(quadtree_space.get_top(), std::min(quadtree_space.get_bottom() - 1, center.y))
   };
 
   Debug::check_assertion(quadtree_space.contains(center), "Wrong center position");

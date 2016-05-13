@@ -191,6 +191,7 @@ void test_add_limit(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) 
 void test_add_center_outside(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
 
   add(quadtree, Rectangle(-480, 32, 640, 640));
+  add(quadtree, Rectangle(1300, 32, 640, 640));
 }
 
 /**

@@ -72,12 +72,12 @@ animation{
 }
 animation{
   name = "hurt",
-  src_image = "main_heroes/robyne.png",
+  src_image = "main_heroes/robyne_miscellaneous.png",
   directions = {
-    { x = 192, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
-    { x = 192, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
-    { x = 192, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
-    { x = 192, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
   },
 }
 animation{
@@ -93,7 +93,7 @@ animation{
 }
 animation{
   name = "surprised",
-  src_image = "main_heroes/expressions.png",
+  src_image = "main_heroes/robyne_miscellaneous.png",
   directions = {
     { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
     { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },

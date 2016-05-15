@@ -19,6 +19,28 @@ animation{
   },
 }
 animation{
+  name = "boomerang1",
+  src_image = "main_heroes/edgar_boomerang.png",
+  frame_delay = 100,
+  directions = {
+    { x = 0, y = 0, frame_width = 32, frame_height = 24, origin_x = 16, origin_y = 23, num_frames = 2 },
+    { x = 64, y = 0, frame_width = 32, frame_height = 24, origin_x = 16, origin_y = 23, num_frames = 2 },
+    { x = 128, y = 0, frame_width = 32, frame_height = 24, origin_x = 16, origin_y = 23, num_frames = 2 },
+    { x = 192, y = 0, frame_width = 32, frame_height = 24, origin_x = 16, origin_y = 23, num_frames = 2 },
+  },
+}
+animation{
+  name = "bow",
+  src_image = "main_heroes/edgar_bow.png",
+  frame_delay = 100,
+  directions = {
+    { x = 0, y = 0, frame_width = 32, frame_height = 24, origin_x = 16, origin_y = 23, num_frames = 3 },
+    { x = 0, y = 24, frame_width = 32, frame_height = 24, origin_x = 16, origin_y = 23, num_frames = 3 },
+    { x = 0, y = 48, frame_width = 32, frame_height = 24, origin_x = 16, origin_y = 23, num_frames = 3 },
+    { x = 0, y = 72, frame_width = 32, frame_height = 24, origin_x = 16, origin_y = 23, num_frames = 3 },
+  },
+}
+animation{
   name = "brandish",
   src_image = "main_heroes/edgar_miscellaneous.png",
   directions = {
@@ -93,6 +115,16 @@ animation{
   },
 }
 animation{
+  name = "hookshot",
+  src_image = "main_heroes/edgar_hookshot.png",
+  directions = {
+    { x = 0, y = 0, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 23 },
+    { x = 32, y = 0, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 23 },
+    { x = 64, y = 0, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 23 },
+    { x = 96, y = 0, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 23 },
+  },
+}
+animation{
   name = "hurt",
   src_image = "main_heroes/edgar_miscellaneous.png",
   directions = {
@@ -105,13 +137,13 @@ animation{
 animation{
   name = "jumping",
   src_image = "main_heroes/edgar_jumping.png",
-  frame_delay = 120,
+  frame_delay = 50,
   frame_to_loop_on = 2,
   directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
+    { x = 0, y = 48, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
     { x = 0, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
-    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 3 },
-    { x = 48, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 3 },
-    { x = 72, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 3 },
+    { x = 0, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
   },
 }
 animation{
@@ -173,18 +205,6 @@ animation{
 }
 animation{
   name = "running",
-  src_image = "main_heroes/edgar_running.png",
-  frame_delay = 45,
-  frame_to_loop_on = 0,
-  directions = {
-    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
-    { x = 0, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
-    { x = 0, y = 48, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
-    { x = 0, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
-  },
-}
-animation{
-  name = "running_starting",
   src_image = "main_heroes/edgar_running.png",
   frame_delay = 45,
   frame_to_loop_on = 0,
@@ -267,7 +287,18 @@ animation{
   frame_delay = 30,
   directions = {
     { x = 0, y = 0, frame_width = 48, frame_height = 48, origin_x = 12, origin_y = 31, num_frames = 12 },
-    { x = 0, y = 96, frame_width = 48, frame_height = 48, origin_x = 20, origin_y = 31, num_frames = 12 },
+    { x = 0, y = 104, frame_width = 48, frame_height = 48, origin_x = 20, origin_y = 31, num_frames = 12 },
+    { x = 0, y = 48, frame_width = 48, frame_height = 48, origin_x = 36, origin_y = 31, num_frames = 12 },
+    { x = 0, y = 144, frame_width = 48, frame_height = 48, origin_x = 20, origin_y = 31, num_frames = 12 },
+  },
+}
+animation{
+  name = "sword_inverted",
+  src_image = "main_heroes/edgar_sword_brandish_inverted.png",
+  frame_delay = 30,
+  directions = {
+    { x = 0, y = 0, frame_width = 48, frame_height = 48, origin_x = 12, origin_y = 31, num_frames = 12 },
+    { x = 0, y = 104, frame_width = 48, frame_height = 48, origin_x = 20, origin_y = 31, num_frames = 12 },
     { x = 0, y = 48, frame_width = 48, frame_height = 48, origin_x = 36, origin_y = 31, num_frames = 12 },
     { x = 0, y = 144, frame_width = 48, frame_height = 48, origin_x = 20, origin_y = 31, num_frames = 12 },
   },
@@ -321,7 +352,7 @@ animation{
 animation{
   name = "throw",
   src_image = "main_heroes/edgar.png",
-  frame_delay = 50,
+  frame_delay = 30,
   directions = {
     { x = 72, y = 208, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 4 },
     { x = 72, y = 232, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 4 },

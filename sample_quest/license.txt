@@ -38,8 +38,12 @@ text/8_bit.png                                      Christopho, adapted from: ht
 Data files under CC BY-NC-SA 4.0:
 (Non-commercial license.)                           Author/Origin (if known)
 ------------------------------                      ------------------------
+sprites/main_heroes/arrow1.png                      Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/edgar.png                       Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/main_heroes/edgar_boomerang.png             Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/main_heroes/edgar_bow.png                   Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/edgar_grabbing.png              Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/main_heroes/edgar_hookshot.png              Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/edgar_jumping.png               Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/edgar_miscellaneous.png         Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/edgar_plunging.png              Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
@@ -47,17 +51,29 @@ sprites/main_heroes/edgar_running.png               Diarandor (diarandor at gmai
 sprites/main_heroes/edgar_spin_attack.png           Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/edgar_swimming.png              Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/edgar_sword_brandish.png        Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/main_heroes/edgar_sword_brandish_inverted.png    Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/edgar_sword_loading.png         Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/edgar_sword_tapping.png         Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/edgar_victory.png               Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/main_heroes/hookshot_parts1.png             Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/main_heroes/loading_shield1.png             Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/main_heroes/loading_shield2.png             Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/loading_sword_magic.png         Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/robyne.png                      Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/main_heroes/robyne_miscellaneous.png        Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/running.png                     Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/main_heroes/shield1_walking.png             Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/main_heroes/shield2_walking.png             Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/spin_attack.png                 Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/sword_brandish.png              Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/main_heroes/sword_brandish_inverted.png     Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/sword_loading.png               Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/sword_running.png               Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/main_heroes/sword_shield1.png               Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/main_heroes/sword_shield2.png               Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/sword_tapping.png               Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/main_heroes/sword_tapping_shield1.png       Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/main_heroes/sword_tapping_shield2.png       Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/sword_victory.png               Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/dialogs/DialogEdgar.png                     Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/dialogs/DialogRobyne.png                    Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
@@ -74,14 +90,25 @@ sprites/animals/phoenix.png                         Diarandor (diarandor at gmai
 sprites/things/ground_effects.png                   Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/enemies/slime_green.png                     Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/items/bag1.png                              Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/items/boomerang1.png                        Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/items/boots1.png                            Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/items/bow1.png                              Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/items/dragon_fruit.png                      Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/items/feather1.png                          Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/items/feather2.png                          Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/items/feather3.png                          Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/items/hookshot1.png                         Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/items/makopa.png                            Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/items/quiver1.png                           Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/items/shield1.png                           Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/items/shield2.png                           Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/items/star_fruit.png                        Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+
+
 sprites/items/sword1.png                            Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sounds/arrow_hit.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/bomb.ogg                                     Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/boomerang.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/boots_crash.ogg                              Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/bounce.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/bow.ogg                                      Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
@@ -105,6 +132,7 @@ sounds/hero_falls.ogg                               Diarandor (diarandor at gmai
 sounds/hero_hurt.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/hero_lands.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/hero_pushes.ogg                              Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/hookshot.ogg                                 Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/item_fall.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/jump.ogg                                     Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/key_fall.ogg                                 Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/

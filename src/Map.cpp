@@ -560,40 +560,45 @@ void Map::draw_background(const SurfacePtr& dst_surface) {
 
 /**
  * \brief Builds a surface with black bars when the map is smaller than the
- * quest size.
+ * camera size.
  */
 void Map::build_foreground_surface() {
 
   foreground_surface = nullptr;
 
-  const Size& quest_size = Video::get_quest_size();
-  const int quest_width = quest_size.width;
-  const int quest_height = quest_size.height;
+  const CameraPtr& camera = get_camera();
+  if (camera != nullptr) {
+    return;
+  }
 
-  // If the map is too small for the screen, add black bars outside the map.
+  const Size& camera_size = camera->get_size();
+  const int camera_width = camera_size.width;
+  const int camera_height = camera_size.height;
+
+  // If the map is too small for the camera, add black bars outside the map.
   const int map_width = get_width();
   const int map_height = get_height();
 
-  if (map_width >= quest_width
-      && map_height >= quest_height) {
+  if (map_width >= camera_width
+      && map_height >= camera_height) {
     // Nothing to do.
     return;
   }
 
-  foreground_surface = Surface::create(quest_size);
+  foreground_surface = Surface::create(camera_size);
   // Keep this surface as software destination because it is built only once.
 
-  if (map_width < quest_width) {
-    int bar_width = (quest_width - map_width) / 2;
-    Rectangle dst_position(0, 0, bar_width, quest_height);
+  if (map_width < camera_width) {
+    int bar_width = (camera_width - map_width) / 2;
+    Rectangle dst_position(0, 0, bar_width, camera_height);
     foreground_surface->fill_with_color(Color::black, dst_position);
     dst_position.set_x(bar_width + map_width);
     foreground_surface->fill_with_color(Color::black, dst_position);
   }
 
-  if (map_height < quest_height) {
-    int bar_height = (quest_height - map_height) / 2;
-    Rectangle dst_position(0, 0, quest_width, bar_height);
+  if (map_height < camera_height) {
+    int bar_height = (camera_height - map_height) / 2;
+    Rectangle dst_position(0, 0, camera_width, bar_height);
     foreground_surface->fill_with_color(Color::black, dst_position);
     dst_position.set_y(bar_height + map_height);
     foreground_surface->fill_with_color(Color::black, dst_position);

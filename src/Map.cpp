@@ -617,22 +617,22 @@ void Map::draw_foreground(const SurfacePtr& dst_surface) {
 }
 
 /**
- * \brief Draws a sprite on the map surface.
- * \param sprite the sprite to draw
- * \param xy coordinates of the sprite's origin point in the map
+ * \brief Draws a drawable object on the camera surface.
+ * \param drawable The drawable object to draw.
+ * \param xy Coordinates of the drawable's origin point in the map.
  */
-void Map::draw_sprite(Sprite& sprite, const Point &xy) {
+void Map::draw_visual(Drawable& drawable, const Point &xy) {
 
-  draw_sprite(sprite, xy.x, xy.y);
+  draw_visual(drawable, xy.x, xy.y);
 }
 
 /**
- * \brief Draws a sprite on the map surface.
- * \param sprite the sprite to draw
- * \param x x coordinate of the sprite's origin point in the map
- * \param y y coordinate of the sprite's origin point in the map
+ * \brief Draws a drawable object on the camera surface.
+ * \param drawable The drawable object to draw.
+ * \param x X coordinate of the drawable's origin point in the map.
+ * \param y Y coordinate of the drawable's origin point in the map.
  */
-void Map::draw_sprite(Sprite& sprite, int x, int y) {
+void Map::draw_visual(Drawable& drawable, int x, int y) {
 
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
@@ -641,26 +641,26 @@ void Map::draw_sprite(Sprite& sprite, int x, int y) {
     return;
   }
   const SurfacePtr& camera_surface = camera->get_surface();
-  sprite.draw(camera_surface,
+  drawable.draw(camera_surface,
       x - camera->get_top_left_x(),
       y - camera->get_top_left_y()
   );
 }
 
 /**
- * \brief Draws a sprite on a restricted area of the map surface.
- * \param sprite The sprite to draw.
- * \param x X coordinate of the sprite's origin point in the map.
- * \param y Y coordinate of the sprite's origin point in the map.
+ * \brief Draws a drawable object on a restricted area of the camera surface.
+ * \param drawable The drawable object to draw.
+ * \param x X coordinate of the drawable's origin point in the map.
+ * \param y Y coordinate of the drawable's origin point in the map.
  * \param clipping_area Rectangle of the map where the drawing will be
  * restricted. A flat rectangle means no restriction.
  */
-void Map::draw_sprite(Sprite& sprite, int x, int y,
+void Map::draw_visual(Drawable& drawable, int x, int y,
     const Rectangle& clipping_area) {
 
   if (clipping_area.is_flat()) {
     // No clipping area.
-    draw_sprite(sprite, x, y);
+    draw_visual(drawable, x, y);
     return;
   }
 
@@ -680,7 +680,7 @@ void Map::draw_sprite(Sprite& sprite, int x, int y,
       x - camera->get_top_left_x(),
       y - camera->get_top_left_y()
   };
-  sprite.draw_region(
+  drawable.draw_region(
       region_in_frame,
       camera_surface,
       dst_position

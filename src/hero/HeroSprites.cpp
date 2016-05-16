@@ -867,33 +867,33 @@ void HeroSprites::draw_on_map() {
   Map& map = hero.get_map();
 
   if (hero.is_shadow_visible()) {
-    map.draw_sprite(*shadow_sprite, x, y, clipping_rectangle);
+    map.draw_visual(*shadow_sprite, x, y, clipping_rectangle);
   }
 
   const Point& displayed_xy = hero.get_displayed_xy();
   x = displayed_xy.x;
   y = displayed_xy.y;
 
-  map.draw_sprite(*tunic_sprite, x, y, clipping_rectangle);
+  map.draw_visual(*tunic_sprite, x, y, clipping_rectangle);
 
   if (is_trail_visible()) {
-    map.draw_sprite(*trail_sprite, x, y, clipping_rectangle);
+    map.draw_visual(*trail_sprite, x, y, clipping_rectangle);
   }
 
   if (is_ground_visible()) {
-    map.draw_sprite(*ground_sprite, x, y, clipping_rectangle);
+    map.draw_visual(*ground_sprite, x, y, clipping_rectangle);
   }
 
   if (is_sword_visible()) {
-    map.draw_sprite(*sword_sprite, x, y, clipping_rectangle);
+    map.draw_visual(*sword_sprite, x, y, clipping_rectangle);
   }
 
   if (is_sword_stars_visible()) {
-    map.draw_sprite(*sword_stars_sprite, x, y, clipping_rectangle);
+    map.draw_visual(*sword_stars_sprite, x, y, clipping_rectangle);
   }
 
   if (is_shield_visible()) {
-    map.draw_sprite(*shield_sprite, x, y, clipping_rectangle);
+    map.draw_visual(*shield_sprite, x, y, clipping_rectangle);
   }
 
   if (lifted_item != nullptr) {

@@ -172,9 +172,9 @@ class SOLARUS_API Map: public ExportableToLua {
     bool is_suspended() const;
     void check_suspended();
     void draw();
-    void draw_sprite(Sprite& sprite, const Point& xy);
-    void draw_sprite(Sprite& sprite, int x, int y);
-    void draw_sprite(Sprite& sprite, int x, int y,
+    void draw_visual(Drawable& drawable, const Point& xy);
+    void draw_visual(Drawable& drawable, int x, int y);
+    void draw_visual(Drawable& drawable, int x, int y,
         const Rectangle& clipping_area);
 
   private:

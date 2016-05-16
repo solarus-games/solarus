@@ -449,8 +449,8 @@ void CarriedObject::draw_on_map() {
   else {
     // when the item is being thrown, draw the shadow and the item separately
     // TODO: this could probably be simplified by using a JumpMovement
-    get_map().draw_sprite(*shadow_sprite, get_xy());
-    get_map().draw_sprite(*main_sprite, get_x(), get_y() - item_height);
+    get_map().draw_visual(*shadow_sprite, get_xy());
+    get_map().draw_visual(*main_sprite, get_x(), get_y() - item_height);
   }
 }
 

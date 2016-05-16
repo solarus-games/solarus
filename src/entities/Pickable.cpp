@@ -579,7 +579,7 @@ void Pickable::draw_on_map() {
 
   // draw the shadow
   if (shadow_sprite != nullptr) {
-    get_map().draw_sprite(*shadow_sprite, shadow_xy);
+    get_map().draw_visual(*shadow_sprite, shadow_xy);
   }
 
   // draw the sprite

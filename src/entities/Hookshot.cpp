@@ -239,7 +239,7 @@ void Hookshot::draw_on_map() {
   for (int i = 0; i < nb_links; i++) {
     link_xy.x = x1 + (x2 - x1) * i / nb_links;
     link_xy.y = y1 + (y2 - y1) * i / nb_links;
-    get_map().draw_sprite(*link_sprite, link_xy);
+    get_map().draw_visual(*link_sprite, link_xy);
   }
 }
 

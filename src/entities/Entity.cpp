@@ -3444,7 +3444,7 @@ void Entity::draw_on_map() {
       continue;
     }
     Sprite& sprite = *named_sprite.sprite;
-    get_map().draw_sprite(sprite, get_displayed_xy());
+    get_map().draw_visual(sprite, get_displayed_xy());
   }
 }
 

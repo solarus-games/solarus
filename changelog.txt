@@ -61,6 +61,7 @@ Changes that introduce incompatibilities:
 * Fix map:get_entities() not returning the hero (#670).
 * map:get_camera_position() is now deprecated, use camera:get_position().
 * map:move_camera() is now deprecated, use a camera movement instead.
+* map:draw_sprite() is now deprecated, use map:draw_visual() instead (#661).
 * Fix entity:set_enabled(true) delayed while it blocks the hero (#817).
 * Fix brandished treasure sprite and shop treasure sprite not animated (#790).
 * movement:get/set_initial_angle() now use degrees (#721).
@@ -75,6 +76,7 @@ Changes that do not introduce incompatibilities:
 * Add methods map:get_min_layer() and map:get_max_layer() (#445).
 * Add a method map:get_entities_by_type() (#796).
 * Add a method map:get_entities_in_rectangle() (#142).
+* Add a method map:draw_visual() to draw any drawable object (#661).
 * Add a method map:get_camera() (the camera is now a map entity).
 * map:get_camera_position() is now deprecated, use camera:get_position().
 * map:move_camera() is now deprecated, use a camera movement instead.

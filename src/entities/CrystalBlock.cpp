@@ -223,7 +223,7 @@ void CrystalBlock::draw_on_map() {
 
   for (int y = y1; y < y2; y += 16) {
     for (int x = x1; x < x2; x += 16) {
-      get_map().draw_sprite(*sprite, x, y);
+      get_map().draw_visual(*sprite, x, y);
     }
   }
 }

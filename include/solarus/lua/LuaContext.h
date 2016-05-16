@@ -779,7 +779,8 @@ class LuaContext {
       map_api_get_camera_position,
       map_api_move_camera,
       map_api_get_ground,
-      map_api_draw_sprite,  // TODO allow to also draw a surface or a text surface
+      map_api_draw_visual,
+      map_api_draw_sprite,
       map_api_get_crystal_state,
       map_api_set_crystal_state,
       map_api_change_crystal_state,

@@ -182,8 +182,7 @@ class LuaContext {
     static void push_ref(lua_State* l, const ScopedLuaRef& ref);
 
     // Executing Lua code.
-    static void load_file(lua_State* l, const std::string& script_name);
-    static bool load_file_if_exists(lua_State* l, const std::string& script_name);
+    static bool load_file(lua_State* l, const std::string& script_name);
     static void do_file(lua_State* l, const std::string& script_name);
     static bool do_file_if_exists(lua_State* l, const std::string& script_name);
 

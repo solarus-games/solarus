@@ -256,7 +256,7 @@ void LuaContext::run_map(Map& map, Destination* destination) {
   std::string file_name = std::string("maps/") + map.get_id();
 
   // Load the map's code.
-  load_file(l, file_name);
+  bool load_success = load_file(l, file_name);
                                   // map_fun
 
   // Set a special environment to access map entities like global variables.
@@ -282,9 +282,11 @@ void LuaContext::run_map(Map& map, Destination* destination) {
   lua_setfenv(l, -2);
                                   // map_fun
 
-  // Run the map's code with the map userdata as parameter.
-  push_map(l, map);
-  call_function(1, 0, file_name.c_str());
+  if (load_success) {
+    // Run the map's code with the map userdata as parameter.
+    push_map(l, map);
+    call_function(1, 0, file_name.c_str());
+  }
 
   // Call the map:on_started() callback.
   map_on_started(map, destination);
@@ -314,7 +316,7 @@ void LuaContext::run_item(EquipmentItem& item) {
   std::string file_name = std::string("items/") + item.get_name();
 
   // Load the item's code.
-  if (load_file_if_exists(l, file_name)) {
+  if (load_file(l, file_name)) {
 
     // Run it with the item userdata as parameter.
     push_item(l, item);
@@ -338,7 +340,7 @@ void LuaContext::run_enemy(Enemy& enemy) {
   std::string file_name = std::string("enemies/") + enemy.get_breed();
 
   // Load the enemy's code.
-  if (load_file_if_exists(l, file_name)) {
+  if (load_file(l, file_name)) {
 
     // Run it with the enemy userdata as parameter.
     push_enemy(l, enemy);
@@ -369,7 +371,7 @@ void LuaContext::run_custom_entity(CustomEntity& custom_entity) {
   std::string file_name = std::string("entities/") + model;
 
   // Load the entity's code.
-  if (load_file_if_exists(l, file_name)) {
+  if (load_file(l, file_name)) {
 
     // Run it with the entity userdata as parameter.
     push_custom_entity(l, custom_entity);
@@ -653,19 +655,6 @@ bool LuaContext::call_function(
 }
 
 /**
- * \brief Opens a script and lets it on top of the stack as a function.
- * \param l A Lua state.
- * \param script_name File name of the script without extension,
- * relative to the data directory.
- */
-void LuaContext::load_file(lua_State* l, const std::string& script_name) {
-
-  if (!load_file_if_exists(l, script_name)) {
-    Debug::die(std::string("Cannot find script file '") + script_name + "'");
-  }
-}
-
-/**
  * \brief Opens a script if it exists and lets it on top of the stack as a
  * function.
  *
@@ -677,7 +666,7 @@ void LuaContext::load_file(lua_State* l, const std::string& script_name) {
  * relative to the data directory.
  * \return true if the file exists and was loaded.
  */
-bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_name) {
+bool LuaContext::load_file(lua_State* l, const std::string& script_name) {
 
   // Determine the file name (possibly adding ".lua").
   std::string file_name(script_name);
@@ -718,8 +707,12 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
  */
 void LuaContext::do_file(lua_State* l, const std::string& script_name) {
 
-  load_file(l, script_name);
-  LuaTools::call_function(l, 0, 0, script_name.c_str());
+  if (!load_file(l, script_name)) {
+    Debug::error("Failed to load script '" + script_name + "'");
+  }
+  else {
+    LuaTools::call_function(l, 0, 0, script_name.c_str());
+  }
 }
 
 /**
@@ -735,7 +728,7 @@ void LuaContext::do_file(lua_State* l, const std::string& script_name) {
  */
 bool LuaContext::do_file_if_exists(lua_State* l, const std::string& script_name) {
 
-  if (load_file_if_exists(l, script_name)) {
+  if (load_file(l, script_name)) {
     LuaTools::call_function(l, 0, 0, script_name.c_str());
     return true;
   }
@@ -2829,9 +2822,9 @@ int LuaContext::l_loader(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& script_name = luaL_checkstring(l, 1);
-    bool exists = load_file_if_exists(l, script_name);
+    bool load_success = load_file(l, script_name);
 
-    if (!exists) {
+    if (!load_success) {
       std::ostringstream oss;
       oss << std::endl << "\tno quest file '" << script_name
           << ".lua' in 'data/', 'data.solarus' or 'data.solarus.zip'";

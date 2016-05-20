@@ -19,8 +19,44 @@ tile{
 
 stream{
   layer = 0,
-  x = 24,
+  x = 56,
   y = 29,
   direction = 6,
+}
+
+destination{
+  name = "destination",
+  layer = 0,
+  x = 24,
+  y = 29,
+  direction = 1,
+}
+
+stream{
+  layer = 0,
+  x = 56,
+  y = 45,
+  direction = 6,
+}
+
+stream{
+  layer = 0,
+  x = 56,
+  y = 61,
+  direction = 4,
+}
+
+stream{
+  layer = 0,
+  x = 40,
+  y = 61,
+  direction = 4,
+}
+
+stream{
+  layer = 0,
+  x = 24,
+  y = 61,
+  direction = 4,
 }
 

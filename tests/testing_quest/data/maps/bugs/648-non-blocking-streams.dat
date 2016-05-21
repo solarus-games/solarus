@@ -60,3 +60,38 @@ stream{
   direction = 4,
 }
 
+stream{
+  layer = 0,
+  x = 88,
+  y = 29,
+  direction = 6,
+}
+
+stream{
+  layer = 0,
+  x = 88,
+  y = 45,
+  direction = 6,
+}
+
+stream{
+  layer = 0,
+  x = 88,
+  y = 61,
+  direction = 0,
+}
+
+stream{
+  layer = 0,
+  x = 104,
+  y = 61,
+  direction = 0,
+}
+
+stream{
+  layer = 0,
+  x = 120,
+  y = 61,
+  direction = 0,
+}
+

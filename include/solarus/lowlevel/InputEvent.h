@@ -23,6 +23,7 @@
 #include <memory>
 #include <set>
 #include <string>
+#include <vector>
 #include <SDL_events.h>
 
 typedef struct _SDL_Joystick SDL_Joystick;

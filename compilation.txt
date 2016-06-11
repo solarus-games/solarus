@@ -338,66 +338,17 @@ App Store.
 
 - Compile on OSX
 
-You can compile solarus just by doing the default command with cmake, or generate the XCode project :
+You can follow the standard compilation instructions to build Solarus on OSX.
+Here are however some tips that may be useful depending on your developer environment :
 
-$ cmake .
-or
-$ cmake -G XCode .
+You can build the XCode project using cmake
+$ cmake -G Xcode ..
 
-Note that you probably want to pass the SOLARUS_BUNDLE flag too, to build the entire bundle instead of 
-just the binary (see the "Deploy on OSX" part).
+If you wish to build the solarus GUI, the cmake line will probably became 
+$ cmake -DCMAKE_PREFIX_PATH="<path_to_Qt>/Qt/5.5/clang_64/lib/cmake" -Wno-dev  ..
 
-By default, you will build a binary with the maximum of compatibility that your OSX version can provide. 
-You may want to produce an optimized (or exotic) binary instead of a standard one.
-To do so, pass SOLARUS_SYSROOT, SOLARUS_DEPLOYMENT or/and SOLARUS_ARCH constants to
-cmake to overload default settings, just like the following example :
-
-$ cmake -DSOLARUS_SYSROOT="/Developer/SDKs/MacOSX10.5.sdk" -DSOLARUS_ARCH="ppc;i386;x86_64" -DSOLARUS_DEPLOYMENT=10.5 .
-
-
-- Deploy on OSX
-
-You will only build the Solarus binary with the default command.
-To build the entire bundle, pass the following flag to cmake
-
-$ cmake -DSOLARUS_BUNDLE="your_bundle_name" .
-
-Which will install the binary into a bundle named "your_bundle_name".
-A bundle is a .app suffixed folder, which typically contains 
-the executable and all resources it needs.
-Pass SOLARUS_BUNDLE_INFOPLIST, SOLARUS_BUNDLE_ICON,
-SOLARUS_BUNDLE_CODESIGN and/or SOLARUS_BUNDLE_VERSION flags
-in addition to SOLARUS_BUNDLE to specify your own configuration.
-See ./cmake/modules/addCFBundleTarget.cmake for more details.
-
-All non-Mac-native frameworks are placed in ${your_bundle_name}.app/Contents/Frameworks/
-You have to check if dependencies search path are correctly set 
-before distributing your application, just by doing
-
-$ otool -L /dylib/or/binary/you/want/to/check
-
-It show the search path for every dependencies. Just look on the one you embed.
-If one of them has a wrong path, you can modify it with
-
-$ install_name_tool -id new_path /dylib/or/binary/you/want/to/modify
-to change the library path, or
-$ install_name_tool -change old_path new_path /dylib/or/binary/you/want/to/modify
-to change the one of a dependency.
-
-The new_path string usually looks like "@rpath/The_dylib.dylib" or 
-"@rpath/The_framework.framework/Version/A/The_binary" on Mac 10.5+.
-Replace "@rpath/" by "@executable_path/../Frameworks/" on older OSX versions.
-
-Instead of using this command on embed libraries, you should directly do it on system libraries,
-which they are copied from, and then just do this step once.
-
-Finally, see https://developer.apple.com/library/mac/#releasenotes/General/SubmittingToMacAppStore/_index.html#//apple_ref/doc/uid/TP40010572
-to make sure you have a fully 10.8+ and Mac App Store compatible application.
-
-
-- Add a quest into the OSX Bundle
-
-Just copy the quest file (data.solarus, data.solarus.zip or data/) into ${your_bundle_name}.app/Contents/Resources/
+If you want to deploy a quest on non-developer environment with a standalone bundle, the better way is to use the Solarus package provided on http://www.solarus-games.org/ and use a post-install script to replace Solarus.app/Contents/Resources/solarus-run and Solarus.app/Contents/Frameworks/libsolarus.dylib by ones just compiled.
+The bundle is made to run the data/ or data.solarus quest located into Solarus.app/Contents/Resources.
 
 
 4.2  OpenPandora

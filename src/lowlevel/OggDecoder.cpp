@@ -17,7 +17,7 @@
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/OggDecoder.h"
 #include "solarus/lowlevel/QuestFiles.h"
-#include <AL/al.h>
+#include <al.h>
 #include <sstream>
 #include <vector>
 

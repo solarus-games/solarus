@@ -140,7 +140,7 @@ void StreamAction::update() {
     return;
   }
 
-  // Stop the stream action if the hero escapes a non-blocking stream.
+  // Stop the stream action if the entity escapes a non-blocking stream.
   const Point& ground_point = entity_moved->get_ground_point();
   if (
       stream->get_allow_movement() &&

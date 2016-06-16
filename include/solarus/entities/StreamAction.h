@@ -58,7 +58,7 @@ class StreamAction {
     std::shared_ptr<Stream>
         stream;                   /**< The stream applied,
                                    * or nullptr if it was destroyed. */
-    EntityPtr entity_moved;    /**< The entity the stream is applied to,
+    EntityPtr entity_moved;       /**< The entity the stream is applied to,
                                    * or nullptr if it was destroyed. */
     bool active;                  /**< Whether the stream effect is currently
                                    * applied. */

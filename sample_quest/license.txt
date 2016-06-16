@@ -127,7 +127,7 @@ sprites/things/grass_effect.png                     Diarandor (diarandor at gmai
 sprites/things/lava_splash_effect.png               Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/things/shadow.png                           Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/things/switch_aureole.png                   Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
-sprites/things/water_splash_effect.png                   Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/things/water_splash_effect.png              Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sounds/arrow_hit.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/bomb.ogg                                     Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/boomerang.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/

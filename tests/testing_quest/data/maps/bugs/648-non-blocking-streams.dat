@@ -10,10 +10,73 @@ properties{
 
 tile{
   layer = 0,
-  x = 0,
-  y = 0,
-  width = 320,
-  height = 240,
+  x = 48,
+  y = 16,
+  width = 16,
+  height = 32,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 16,
+  y = 48,
+  width = 48,
+  height = 16,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 80,
+  y = 48,
+  width = 48,
+  height = 16,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 80,
+  y = 16,
+  width = 16,
+  height = 32,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 16,
+  y = 80,
+  width = 48,
+  height = 16,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 48,
+  y = 96,
+  width = 16,
+  height = 32,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 80,
+  y = 96,
+  width = 16,
+  height = 32,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 80,
+  y = 80,
+  width = 48,
+  height = 16,
   pattern = "3",
 }
 
@@ -92,6 +155,76 @@ stream{
   layer = 0,
   x = 120,
   y = 61,
+  direction = 0,
+}
+
+stream{
+  layer = 0,
+  x = 40,
+  y = 93,
+  direction = 4,
+}
+
+stream{
+  layer = 0,
+  x = 24,
+  y = 93,
+  direction = 4,
+}
+
+stream{
+  layer = 0,
+  x = 104,
+  y = 93,
+  direction = 0,
+}
+
+stream{
+  layer = 0,
+  x = 120,
+  y = 93,
+  direction = 0,
+}
+
+stream{
+  layer = 0,
+  x = 56,
+  y = 109,
+  direction = 2,
+}
+
+stream{
+  layer = 0,
+  x = 56,
+  y = 125,
+  direction = 2,
+}
+
+stream{
+  layer = 0,
+  x = 88,
+  y = 109,
+  direction = 2,
+}
+
+stream{
+  layer = 0,
+  x = 88,
+  y = 125,
+  direction = 2,
+}
+
+stream{
+  layer = 0,
+  x = 56,
+  y = 93,
+  direction = 4,
+}
+
+stream{
+  layer = 0,
+  x = 88,
+  y = 93,
   direction = 0,
 }
 

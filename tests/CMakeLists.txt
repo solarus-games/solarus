@@ -7,6 +7,7 @@ set(lua_test_maps
   "all_entities"
   "bugs/486_diagonal_dynamic_tiles"
   "bugs/526_get_entities_same_region"
+  "bugs/648_non_blocking_streams"
   "bugs/656_map_set_world"
   "bugs/664_chest_get_set_treasure"
   "bugs/667_hero_save_solid_ground_callback"

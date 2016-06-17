@@ -153,7 +153,7 @@ void StreamAction::update() {
     // This is needed to have precise
     // exact diagonal movements of 16 pixels in stream mazes.
 
-    if (entity_moved->get_distance(target) > 8) {
+    if (entity_moved->get_distance(target) > 12) {
       // This last test is to avoid stopping a stream when being close to the target.
       // Indeed, in the last pixels before the target, the entity's ground
       // point is no longer on the stream. We continue anyway until the target.

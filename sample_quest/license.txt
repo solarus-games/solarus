@@ -1,42 +1,36 @@
-﻿This file gives the license information of all data files of this quest.
+﻿This file gives the license information of all data files of the Solarus
+sample quest (this directory) and testing quest (../tests/testing_quest).
+
 Some resources come from communities like OpenGameArt, and others are original
 creations made by us, the Solarus team.
 
 - Lua scripts are licensed under the terms of the GNU General Public License
 in version 3.
 
-- All data files we created are licensed under
-Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0).
-http://creativecommons.org/licenses/by-sa/3.0/
+- All data files we created (other than Lua scripts) are licensed under
+Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0).
+http://creativecommons.org/licenses/by-sa/4.0/
 
-Scripts under GNU GPL v3:                           Author/Origin (if known)
+Scripts under GNU GPL v3:                           Author/Origin
 -------------------------                           ------------------------
 **.lua                                              Christopho
 
-Data files under CC BY-SA 3.0:                      Author/Origin (if known)
+Data files under CC BY-SA 4.0:                      Author/Origin
 ------------------------------                      ------------------------
-**.dat                                              Christopho
+items/**.dat                                        Christopho
+
+maps/**.dat                                         Christopho
+
+musics/village.ogg                                  Eduardo Dueñas
+
 sprites/entities/bomb.png                           Bertram, adapted from: http://opengameart.org/content/lots-of-free-2d-tiles-and-sprites-by-hyptosis
 sprites/entities/chest.png                          Bertram, adapted from sprites here: http://opengameart.org/content/modified-32x32-treasure-chest, http://opengameart.org/content/jrpg-chests-16-32-64-and-128px-squared
 sprites/entities/explosion.png                      Bertram, adapted from: http://opengameart.org/content/lots-of-free-2d-tiles-and-sprites-by-hyptosis
 sprites/entities/items.png                          Bertram, adapted from: http://opengameart.org/content/lots-of-free-2d-tiles-and-sprites-by-hyptosis
 sprites/entities/shadow.png                         Christopho
 sprites/menus/solarus_logo.png                      Neovyse
-tilesets/castle.entities.png                        Bertram, adapted from tiles of: http://opengameart.org/content/lpc-tile-atlas
-tilesets/castle.tiles.png                           Christopho, adapted from Challener (Redshrike): http://opengameart.org/content/16x16-indoor-rpg-tileset-the-baseline
 sprites/hero/stopped.tunic.png                      Christopho, adapted from Arikel: http://opengameart.org/content/2d-rpg-character-walk-spritesheet
 sprites/hero/walking.tunic.png                      Christopho, adapted from Arikel: http://opengameart.org/content/2d-rpg-character-walk-spritesheet
-musics/village.ogg                                  Eduardo Dueñas
-sounds/secret.ogg                                   Eduardo Dueñas <duenase@hotmail.com>
-text/minecraftia.ttf                                Andrew Tyler: http://www.andrewtyler.net
-
-Data files under public domain:                     Author/Origin (if known)
--------------------------------                     ------------------------
-text/8_bit.png                                      Christopho, adapted from: http://opengameart.org/content/a-package-of-8-bit-fonts-for-grafx2-and-linux
-
-
-Data files under CC BY-SA 4.0:                      Author/Origin (if known)
-------------------------------                      ------------------------
 sprites/animals/birds.png                           Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/animals/butterfly.png                       Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/animals/cat_green.png                       Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
@@ -128,6 +122,7 @@ sprites/things/lava_splash_effect.png               Diarandor (diarandor at gmai
 sprites/things/shadow.png                           Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/things/switch_aureole.png                   Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/things/water_splash_effect.png              Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+
 sounds/arrow_hit.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/bomb.ogg                                     Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/boomerang.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
@@ -172,6 +167,7 @@ sounds/quake.ogg                                    Diarandor (diarandor at gmai
 sounds/running.ogg                                  Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/rupee_counter.ogg                            Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/rupee_counter_end.ogg                        Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/secret.ogg                                   Eduardo Dueñas
 sounds/soft_tap.ogg                                 Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/splash.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/stairs_down_end.ogg                          Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
@@ -196,4 +192,14 @@ sounds/walk_on_water.ogg                            Diarandor (diarandor at gmai
 sounds/warp.ogg                                     Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/wrong.ogg                                    Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/wrong2.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+
+text/minecraftia.ttf                                Andrew Tyler: http://www.andrewtyler.net
+
+tilesets/**.dat                                     Christopho
+tilesets/castle.entities.png                        Bertram, adapted from tiles of: http://opengameart.org/content/lpc-tile-atlas
+tilesets/castle.tiles.png                           Christopho, adapted from Challener (Redshrike): http://opengameart.org/content/16x16-indoor-rpg-tileset-the-baseline
+
+Data files under public domain:                     Author/Origin
+-------------------------------                     ------------------------
+text/8_bit.png                                      Christopho, adapted from: http://opengameart.org/content/a-package-of-8-bit-fonts-for-grafx2-and-linux
 

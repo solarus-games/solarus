@@ -45,6 +45,7 @@ Engine changes
 * Fix parallax scrolling for dynamic tiles (#816).
 * Fix crash when a diagonal tile is not square (#837).
 * Fix crash when the teletransporter after stairs is missing.
+* Fix non-blocking stream turns after going south (#648).
 * Fix text_surface:set_rendering_mode() not working (#833).
 * Fix circle_movement:set_initial_angle() not working (#721).
 * Fix straight movement setting speed to zero when reaching obstacles (#633).

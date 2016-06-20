@@ -543,9 +543,6 @@ void StraightMovement::update_non_smooth_x() {
     if (!test_collision_with_obstacles(x_move, dy)) {
       translate_x(x_move);
     }
-    else {
-      stop(); // also stop on y
-    }
     next_move_date_x += x_delay;
   }
 }
@@ -563,9 +560,6 @@ void StraightMovement::update_non_smooth_y() {
     int dx = now >= next_move_date_x ? x_move : 0;
     if (!test_collision_with_obstacles(dx, y_move)) {
       translate_y(y_move);
-    }
-    else {
-      stop(); // also stop on x
     }
     next_move_date_y += y_delay;
   }

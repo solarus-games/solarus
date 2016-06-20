@@ -6,6 +6,7 @@ set(lua_test_maps
   "surface_tests"
   "all_entities"
   "bugs/486_diagonal_dynamic_tiles"
+  "bugs/496_stream_speed_0"
   "bugs/526_get_entities_same_region"
   "bugs/633_straight_movement_speed_zero"
   "bugs/648_non_blocking_streams"

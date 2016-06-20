@@ -24,6 +24,7 @@ Engine changes
 * Entities far from the camera are no longer suspended.
 * Destinations can now set to update or not the starting location (#819).
 * Teletransporters on the side of the map now work on all layers (#850).
+* Streams can now have a speed of zero (#496).
 * Fix crash when main.lua has a syntax error.
 * Fix crash with missing directions in sprites controlled by the engine (#864).
 * Fix sprite:on_animation_finished() and others not working sometimes (#799).

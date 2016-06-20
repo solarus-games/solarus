@@ -84,7 +84,15 @@ void StreamAction::recompute_movement() {
   const Point& xy = Entity::direction_to_xy_move(direction8);
   const int dx = xy.x;
   const int dy = xy.y;
-  delay = (uint32_t) (1000 / stream->get_speed());
+  const int speed = stream->get_speed();
+
+  if (speed > 0) {
+    delay = (uint32_t) (1000 / speed);
+  }
+  else {
+    // Stream of speed 0: inactive.
+    delay = 0;
+  }
 
   target = stream->get_xy();
 
@@ -163,6 +171,10 @@ void StreamAction::update() {
   }
 
   if (is_suspended()) {
+    return;
+  }
+
+  if (stream->get_speed() <= 0) {
     return;
   }
 

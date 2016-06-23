@@ -28,6 +28,7 @@ const EnumInfo<Ability>::names_type EnumInfoTraits<Ability>::names = {
     { Ability::SHIELD, "shield" },
     { Ability::LIFT, "lift" },
     { Ability::SWIM, "swim" },
+    { Ability::JUMP_OVER_WATER, "jump_over_water" },
     { Ability::RUN, "run" },
     { Ability::DETECT_WEAK_WALLS, "detect_weak_walls" }
 };

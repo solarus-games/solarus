@@ -2175,21 +2175,28 @@ void Hero::notify_game_over_finished() {
  */
 void Hero::start_deep_water() {
 
+  const bool can_swim = get_equipment().has_ability(Ability::SWIM);
+  const bool can_jump_over_water = get_equipment().has_ability(Ability::JUMP_OVER_WATER);
+
   if (!get_state().is_touching_ground()) {
-    // plunge into the water
+    // Entering water from above the ground
+    // (e.g. after a jump).
     set_state(new PlungingState(*this));
   }
   else {
-    // move to state swimming or jumping
-    if (get_equipment().has_ability(Ability::SWIM)) {
+    // Entering water normally (e.g. by walking).
+    if (can_swim) {
       set_state(new SwimmingState(*this));
     }
-    else {
+    else if (can_jump_over_water) {
       int direction8 = get_wanted_movement_direction8();
       if (direction8 == -1) {
         direction8 = get_animation_direction() * 2;
       }
       start_jumping(direction8, 32, false, true);
+    }
+    else {
+      set_state(new PlungingState(*this));
     }
   }
 }

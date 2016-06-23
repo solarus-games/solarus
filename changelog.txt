@@ -22,6 +22,7 @@ Engine changes
 * Improve the performance of custom entity collisions.
 * Improve the performance of collisions by using a quadtree.
 * Entities far from the camera are no longer suspended.
+* The hero no longer automatically jumps when arriving on water (#530).
 * Destinations can now set to update or not the starting location (#819).
 * Teletransporters on the side of the map now work on all layers (#850).
 * Streams can now have a speed of zero (#496).
@@ -60,6 +61,7 @@ Changes that introduce incompatibilities:
 * chest:on_empty() is replaced by chest:on_opened(treasure) (#483).
 * Enemy ranks no longer exists, set_hurt_style() needs to be called (#449).
 * Items with amount now have a default max amount of 1000 (#688).
+* New ability "jump_over_water" in game:get/set_ability(), off by default (#530).
 * Fix hero state name "freezed", renamed it to "frozen" (#813).
 * Fix map:get_entities() not returning the hero (#670).
 * map:get_camera_position() is now deprecated, use camera:get_position().

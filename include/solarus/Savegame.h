@@ -77,6 +77,7 @@ class SOLARUS_API Savegame: public ExportableToLua {
     static const std::string KEY_ABILITY_SHIELD;
     static const std::string KEY_ABILITY_LIFT;
     static const std::string KEY_ABILITY_SWIM;
+    static const std::string KEY_ABILITY_JUMP_OVER_WATER;
     static const std::string KEY_ABILITY_RUN;
     static const std::string KEY_ABILITY_DETECT_WEAK_WALLS;
     static const std::string KEY_ABILITY_GET_BACK_FROM_DEATH;

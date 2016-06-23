@@ -65,6 +65,8 @@ const std::string Savegame::KEY_ABILITY_SWORD_KNOWLEDGE =
 const std::string Savegame::KEY_ABILITY_SHIELD = "_ability_shield";    /**< Protection level. */
 const std::string Savegame::KEY_ABILITY_LIFT = "_ability_lift";        /**< Lift level. */
 const std::string Savegame::KEY_ABILITY_SWIM = "_ability_swim";        /**< Swim level. */
+const std::string Savegame::KEY_ABILITY_JUMP_OVER_WATER =
+    "_ability_jump_over_water";                                        /**< Jump over water level. */
 const std::string Savegame::KEY_ABILITY_RUN = "_ability_run";          /**< Run level. */
 const std::string Savegame::KEY_ABILITY_DETECT_WEAK_WALLS =
     "_ability_detect_weak_walls";                                      /**< Weak walls detection level. */

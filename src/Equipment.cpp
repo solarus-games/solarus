@@ -562,8 +562,11 @@ std::string Equipment::get_ability_savegame_variable(Ability ability) const {
     case Ability::LIFT:
       return Savegame::KEY_ABILITY_LIFT;
 
-    case Ability::SWIM:
-      return Savegame::KEY_ABILITY_SWIM;
+  case Ability::SWIM:
+    return Savegame::KEY_ABILITY_SWIM;
+
+  case Ability::JUMP_OVER_WATER:
+    return Savegame::KEY_ABILITY_JUMP_OVER_WATER;
 
     case Ability::RUN:
       return Savegame::KEY_ABILITY_RUN;

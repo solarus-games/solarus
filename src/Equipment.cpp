@@ -547,20 +547,20 @@ std::string Equipment::get_ability_savegame_variable(Ability ability) const {
 
   switch (ability) {
 
-    case Ability::TUNIC:
-      return Savegame::KEY_ABILITY_TUNIC;
+  case Ability::TUNIC:
+    return Savegame::KEY_ABILITY_TUNIC;
 
-    case Ability::SWORD:
-      return Savegame::KEY_ABILITY_SWORD;
+  case Ability::SWORD:
+    return Savegame::KEY_ABILITY_SWORD;
 
-    case Ability::SWORD_KNOWLEDGE:
-      return Savegame::KEY_ABILITY_SWORD_KNOWLEDGE;
+  case Ability::SWORD_KNOWLEDGE:
+    return Savegame::KEY_ABILITY_SWORD_KNOWLEDGE;
 
-    case Ability::SHIELD:
-      return Savegame::KEY_ABILITY_SHIELD;
+  case Ability::SHIELD:
+    return Savegame::KEY_ABILITY_SHIELD;
 
-    case Ability::LIFT:
-      return Savegame::KEY_ABILITY_LIFT;
+  case Ability::LIFT:
+    return Savegame::KEY_ABILITY_LIFT;
 
   case Ability::SWIM:
     return Savegame::KEY_ABILITY_SWIM;
@@ -568,11 +568,11 @@ std::string Equipment::get_ability_savegame_variable(Ability ability) const {
   case Ability::JUMP_OVER_WATER:
     return Savegame::KEY_ABILITY_JUMP_OVER_WATER;
 
-    case Ability::RUN:
-      return Savegame::KEY_ABILITY_RUN;
+  case Ability::RUN:
+    return Savegame::KEY_ABILITY_RUN;
 
-    case Ability::DETECT_WEAK_WALLS:
-      return Savegame::KEY_ABILITY_DETECT_WEAK_WALLS;
+  case Ability::DETECT_WEAK_WALLS:
+    return Savegame::KEY_ABILITY_DETECT_WEAK_WALLS;
   }
 
   Debug::die("Invalid ability");

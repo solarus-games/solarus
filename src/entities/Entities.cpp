@@ -164,7 +164,7 @@ Entities::Entities(Game& game, Map& map):
   tiles_grid_size = map.get_width8() * map.get_height8();
   for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
 
-    Ground initial_ground = (layer == 0) ? Ground::TRAVERSABLE : Ground::EMPTY;
+    Ground initial_ground = (layer == map.get_min_layer()) ? Ground::TRAVERSABLE : Ground::EMPTY;
     tiles_ground[layer].assign(tiles_grid_size, initial_ground);
 
     non_animated_regions[layer] = std::unique_ptr<NonAnimatedRegions>(

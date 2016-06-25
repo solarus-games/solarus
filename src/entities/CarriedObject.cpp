@@ -276,7 +276,7 @@ void CarriedObject::break_item_on_ground() {
       // Nothing here: fall one layer below.
     {
       int layer = get_layer();
-      if (layer == 0) {
+      if (layer == get_map().get_min_layer()) {
         // Cannot fall lower.
         break_item();
       }

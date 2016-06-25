@@ -206,7 +206,7 @@ void Hero::HookshotState::finish_movement() {
   Map& map = get_map();
   Entities& entities = get_entities();
 
-  if (layer == 0 || !map.has_empty_ground(layer, hero_position)) {
+  if (layer == map.get_min_layer() || !map.has_empty_ground(layer, hero_position)) {
     // the hero is totally on the same layer: no problem
     hero.start_state_from_ground();
   }

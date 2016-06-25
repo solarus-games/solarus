@@ -1122,7 +1122,7 @@ void Hero::check_position() {
     int y = get_top_left_y();
     int layer = get_layer();
 
-    if (layer > 0
+    if (layer > get_map().get_min_layer()
         && get_map().get_ground(layer, x, y, this) == Ground::EMPTY
         && get_map().get_ground(layer, x + 15, y, this) == Ground::EMPTY
         && get_map().get_ground(layer, x, y + 15, this) == Ground::EMPTY

@@ -2595,6 +2595,18 @@ void LuaContext::on_obstacle_reached(Movement& movement) {
 }
 
 /**
+ * \brief Calls the on_movement_started() method of the object on top of the stack.
+ * \param movement A movement.
+ */
+void LuaContext::on_movement_started(Movement& movement) {
+
+  if (find_method("on_movement_started")) {
+    push_movement(l, movement);
+    call_function(2, 0, "on_movement_started");
+  }
+}
+
+/**
  * \brief Calls the on_movement_changed() method of the object on top of the stack.
  * \param movement A movement.
  */

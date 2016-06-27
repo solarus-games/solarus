@@ -1531,8 +1531,8 @@ void Entity::clear_old_movements() {
  * \brief Returns whether Lua movement events are enabled for this entity.
  *
  * If no, events entity:on_position_changed(), entity:on_obstacle_reached(),
- * entity:on_movement_changed() and entity:on_movement_finished() won't be
- * called.
+ * entity:on_movement_started(), entity:on_movement_changed() and
+ * entity:on_movement_finished() won't be called.
  *
  * \return Whether movement events are currently enabled.
  */
@@ -1544,8 +1544,8 @@ bool Entity::are_movement_notifications_enabled() const {
  * \brief Sets whether Lua movement events are enabled for this entity.
  *
  * If no, events entity:on_position_changed(), entity:on_obstacle_reached(),
- * entity:on_movement_changed() and entity:on_movement_finished() won't be
- * called.
+ * entity:on_movement_started(), entity:on_movement_changed() and
+ * entity:on_movement_finished() won't be called.
  *
  * \param notify \c true to enable movement events.
  */
@@ -2161,6 +2161,9 @@ void Entity::check_collision_with_detectors(Sprite& sprite) {
  */
 void Entity::notify_movement_started() {
 
+  if (are_movement_notifications_enabled()) {
+    get_lua_context()->entity_on_movement_started(*this, *get_movement());
+  }
 }
 
 /**

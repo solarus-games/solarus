@@ -5802,6 +5802,25 @@ void LuaContext::entity_on_obstacle_reached(
 }
 
 /**
+ * \brief Calls the on_movement_started() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ */
+  void LuaContext::entity_on_movement_started(
+      Entity& entity, Movement& movement) {
+
+  if (!userdata_has_field(entity, "on_movement_started")) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_movement_started(movement);
+  lua_pop(l, 1);
+}
+
+/**
  * \brief Calls the on_movement_changed() method of a Lua map entity.
  *
  * Does nothing if the method is not defined.

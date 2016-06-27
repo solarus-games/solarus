@@ -1,10 +1,11 @@
 # List of maps of the testing quest that are unit tests to be run.
 set(lua_test_maps
+  "all_entities"
   "basic_test"
   "dynamic_tile_tests"
   "jumper_tests"
   "surface_tests"
-  "all_entities"
+  "teletransportation_tests/first_map"
   "bugs/486_diagonal_dynamic_tiles"
   "bugs/496_stream_speed_0"
   "bugs/526_get_entities_same_region"

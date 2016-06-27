@@ -195,9 +195,12 @@ sounds/wrong2.ogg                                   Diarandor (diarandor at gmai
 
 text/minecraftia.ttf                                Andrew Tyler: http://www.andrewtyler.net
 
-tilesets/**.dat                                     Christopho
+tilesets/castle.dat                                 Christopho
 tilesets/castle.entities.png                        Bertram, adapted from tiles of: http://opengameart.org/content/lpc-tile-atlas
 tilesets/castle.tiles.png                           Christopho, adapted from Challener (Redshrike): http://opengameart.org/content/16x16-indoor-rpg-tileset-the-baseline
+tilesets/overworld.dat                              Diarandor, Christopho
+tilesets/overworld.entities.png                     Diarandor, Christopho
+tilesets/overworld.tiles.png                        Diarandor, Christopho
 
 Data files under public domain:                     Author/Origin
 -------------------------------                     ------------------------

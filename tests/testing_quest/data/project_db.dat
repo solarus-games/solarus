@@ -56,9 +56,12 @@ map{ id = "bugs/889_crash_use_non_saved_item", description = "#889: Crash when u
 map{ id = "dynamic_tile_tests", description = "Dynamic tile tests" }
 map{ id = "jumper_tests", description = "Jumper tests" }
 map{ id = "surface_tests", description = "Surface tests" }
+map{ id = "teletransportation_tests/first_map", description = "First map" }
+map{ id = "teletransportation_tests/start_in_hole", description = "Start in a hole" }
 map{ id = "traversable", description = "Traversable test area" }
 
 tileset{ id = "castle", description = "Castle" }
+tileset{ id = "overworld", description = "Overworld" }
 
 sprite{ id = "enemies/enemy_killed", description = "Enemy killed" }
 sprite{ id = "enemies/slime_green", description = "Green Slime" }

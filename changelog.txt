@@ -88,6 +88,7 @@ Changes that do not introduce incompatibilities:
 * Add methods map:set_world() and map:set_floor() (#656).
 * map:get_entities() can now be called without parameter to get all entities.
 * map:get_entities*() functions now give entities sorted in Z order (#779).
+* Add an event entity:on_movement_started().
 * Add a method entity:get_max_bounding_box() considering sprite boxes (#754).
 * entity:get_center_position() now also returns the layer.
 * Add a method entity:get_facing_position().

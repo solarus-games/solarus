@@ -5,7 +5,6 @@ animation{
     { x = 272, y = 168, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4 },
   },
 }
-
 animation{
   name = "walking",
   src_image = "tileset",
@@ -15,4 +14,3 @@ animation{
     { x = 272, y = 168, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4, num_frames = 3 },
   },
 }
-

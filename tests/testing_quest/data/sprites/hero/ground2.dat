@@ -7,4 +7,3 @@ animation{
     { x = 272, y = 176, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4, num_frames = 3 },
   },
 }
-

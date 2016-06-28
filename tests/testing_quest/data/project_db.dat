@@ -60,6 +60,8 @@ map{ id = "teletransportation_tests/main", description = "Main map" }
 map{ id = "teletransportation_tests/start_in_deep_water_drown", description = "Start in deep water (drowning)" }
 map{ id = "teletransportation_tests/start_in_deep_water_swim", description = "Start in deep water (swimming)" }
 map{ id = "teletransportation_tests/start_in_hole", description = "Start in a hole" }
+map{ id = "teletransportation_tests/start_in_lava", description = "Start in lava" }
+map{ id = "teletransportation_tests/start_in_shallow_water", description = "Start in shallow water" }
 map{ id = "traversable", description = "Traversable test area" }
 
 tileset{ id = "castle", description = "Castle" }

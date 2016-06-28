@@ -126,6 +126,17 @@ animation{
   },
 }
 animation{
+  name = "plunging_lava",
+  src_image = "main_heroes/edgar.png",
+  frame_delay = 500,
+  directions = {
+    { x = 72, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 48, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+  },
+}
+animation{
   name = "plunging_water",
   src_image = "main_heroes/edgar.png",
   frame_delay = 500,

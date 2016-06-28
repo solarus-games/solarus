@@ -6,6 +6,8 @@ local test_maps = {
   "start_in_hole",
   "start_in_deep_water_drown",
   "start_in_deep_water_swim",
+  "start_in_shallow_water",
+  "start_in_lava",
 }
 
 function hero:assert_position_equal(other)

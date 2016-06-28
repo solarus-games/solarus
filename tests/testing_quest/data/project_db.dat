@@ -62,6 +62,13 @@ map{ id = "teletransportation_tests/start_in_deep_water_swim", description = "St
 map{ id = "teletransportation_tests/start_in_hole", description = "Start in a hole" }
 map{ id = "teletransportation_tests/start_in_lava", description = "Start in lava" }
 map{ id = "teletransportation_tests/start_in_shallow_water", description = "Start in shallow water" }
+map{ id = "teletransportation_tests/start_in_stairs", description = "Start in stairs" }
+map{ id = "teletransportation_tests/start_same_point", description = "Start at the same point" }
+map{ id = "teletransportation_tests/start_scrolling", description = "Start by scrolling" }
+map{ id = "teletransportation_tests/start_scrolling_carrying", description = "Start by scrolling while carrying" }
+map{ id = "teletransportation_tests/start_scrolling_jumping", description = "Start by scrolling while jumping" }
+map{ id = "teletransportation_tests/start_scrolling_running", description = "Start by scrolling while running" }
+map{ id = "teletransportation_tests/start_scrolling_sword_charged", description = "Start by scrolling while the sword is charged" }
 map{ id = "traversable", description = "Traversable test area" }
 
 tileset{ id = "castle", description = "Castle" }

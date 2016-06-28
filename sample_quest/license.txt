@@ -126,7 +126,6 @@ sprites/things/water_splash_effect.png              Diarandor (diarandor at gmai
 sounds/arrow_hit.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/bomb.ogg                                     Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/boomerang.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
-sounds/boots_crash.ogg                              Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/bounce.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/bow.ogg                                      Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/bush.ogg                                     Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
@@ -165,6 +164,7 @@ sounds/picked_item.ogg                              Diarandor (diarandor at gmai
 sounds/picked_rupee.ogg                             Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/quake.ogg                                    Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/running.ogg                                  Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/running_obstacle.ogg                         Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/rupee_counter.ogg                            Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/rupee_counter_end.ogg                        Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/secret.ogg                                   Eduardo Dueñas

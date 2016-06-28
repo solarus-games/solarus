@@ -3,11 +3,13 @@ local game = map:get_game()
 local hero = map:get_hero()
 
 local test_maps = {
-  "start_in_hole",
-  "start_in_deep_water_drown",
-  "start_in_deep_water_swim",
-  "start_in_shallow_water",
-  "start_in_lava",
+  { "teletransportation_tests/start_in_hole" },
+  { "teletransportation_tests/start_in_deep_water_drown" },
+  { "teletransportation_tests/start_in_deep_water_swim" },
+  { "teletransportation_tests/start_in_shallow_water" },
+  { "teletransportation_tests/start_in_lava" },
+  { "teletransportation_tests/start_in_stairs" },
+  { "teletransportation_tests/start_same_point", "_same" },
 }
 
 function hero:assert_position_equal(other)
@@ -29,14 +31,11 @@ end
 function map:on_started()
 
   sol.timer.start(game, 5000, function()
-    if #test_maps == 0 then
-      -- Finished.
-      sol.main.exit()
-    else
+    if #test_maps > 0 then
       -- Next map in the list.
-      local next_map_id = test_maps[1]
+      local next_map = test_maps[1]
       table.remove(test_maps, 1)
-      hero:teleport("teletransportation_tests/" .. next_map_id)
+      hero:teleport(unpack(next_map))
       return true  -- Repeat the timer.
     end
   end)

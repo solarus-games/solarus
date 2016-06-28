@@ -385,6 +385,18 @@ animation{
   },
 }
 animation{
+  name = "walking_diagonal",
+  src_image = "main_heroes/edgar.png",
+  frame_delay = 70,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
+    { x = 0, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
+    { x = 0, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
+    { x = 0, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
+  },
+}
+animation{
   name = "walking_with_shield",
   src_image = "main_heroes/edgar.png",
   frame_delay = 70,

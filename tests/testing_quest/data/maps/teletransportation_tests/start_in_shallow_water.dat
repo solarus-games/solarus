@@ -19,8 +19,8 @@ tile{
 
 tile{
   layer = 0,
-  x = 8,
-  y = 8,
+  x = 16,
+  y = 16,
   width = 32,
   height = 32,
   pattern = "4",
@@ -29,8 +29,8 @@ tile{
 destination{
   name = "destination_1",
   layer = 0,
-  x = 24,
-  y = 29,
+  x = 32,
+  y = 37,
   direction = 3,
 }
 

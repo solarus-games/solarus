@@ -1,0 +1,75 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  min_layer = 0,
+  max_layer = 2,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 192,
+  y = 96,
+  width = 128,
+  height = 32,
+  pattern = "67",
+}
+
+tile{
+  layer = 0,
+  x = 192,
+  y = 128,
+  width = 32,
+  height = 128,
+  pattern = "67",
+}
+
+sensor{
+  name = "sensor_on_opening_transition_finished",
+  layer = 0,
+  x = 312,
+  y = 117,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  name = "sensor_on_started",
+  layer = 0,
+  x = 320,
+  y = 117,
+  width = 16,
+  height = 16,
+}
+
+sensor{
+  name = "go_down_sensor",
+  layer = 0,
+  x = 208,
+  y = 117,
+  width = 16,
+  height = 16,
+}
+
+teletransporter{
+  layer = 0,
+  x = 0,
+  y = 240,
+  width = 320,
+  height = 16,
+  transition = "scrolling",
+  destination_map = "teletransportation_tests/start_scrolling_sword_charged",
+  destination = "_side",
+}
+

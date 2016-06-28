@@ -57,7 +57,8 @@ map{ id = "dynamic_tile_tests", description = "Dynamic tile tests" }
 map{ id = "jumper_tests", description = "Jumper tests" }
 map{ id = "surface_tests", description = "Surface tests" }
 map{ id = "teletransportation_tests/main", description = "Main map" }
-map{ id = "teletransportation_tests/start_in_deep_water", description = "Start in deep water" }
+map{ id = "teletransportation_tests/start_in_deep_water_drown", description = "Start in deep water (drowning)" }
+map{ id = "teletransportation_tests/start_in_deep_water_swim", description = "Start in deep water (swimming)" }
 map{ id = "teletransportation_tests/start_in_hole", description = "Start in a hole" }
 map{ id = "traversable", description = "Traversable test area" }
 

@@ -3,8 +3,9 @@ local game = map:get_game()
 local hero = map:get_hero()
 
 local test_maps = {
-  --"start_in_hole",
-  "start_in_deep_water",
+  "start_in_hole",
+  "start_in_deep_water_drown",
+  "start_in_deep_water_swim",
 }
 
 function hero:assert_position_equal(other)

@@ -16,7 +16,7 @@ function map:on_opening_transition_finished()
   hero:assert_state_ground_animation("falling", "hole", "falling")
 
   sol.timer.start(500, function()
-    
+
     hero:assert_position_equal(hero, destination_2)
     hero:assert_state_ground_animation("falling", "hole", "falling")
   end)

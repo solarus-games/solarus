@@ -21,13 +21,13 @@ tile{
   layer = 0,
   x = 16,
   y = 16,
-  width = 64,
-  height = 64,
+  width = 32,
+  height = 32,
   pattern = "25",
 }
 
 destination{
-  name = "destination",
+  name = "destination_1",
   layer = 0,
   x = 32,
   y = 37,

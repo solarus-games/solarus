@@ -53,10 +53,64 @@ tile{
   pattern = "30",
 }
 
+tile{
+  layer = 0,
+  x = 64,
+  y = 32,
+  width = 16,
+  height = 16,
+  pattern = "34",
+}
+
+tile{
+  layer = 0,
+  x = 80,
+  y = 32,
+  width = 16,
+  height = 16,
+  pattern = "36",
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 16,
+  width = 16,
+  height = 16,
+  pattern = "28",
+}
+
+tile{
+  layer = 0,
+  x = 80,
+  y = 16,
+  width = 16,
+  height = 16,
+  pattern = "30",
+}
+
+teletransporter{
+  layer = 0,
+  x = 24,
+  y = 24,
+  width = 16,
+  height = 16,
+  destination_map = "teletransportation_tests/start_in_hole",
+  destination = "destination_2",
+}
+
 destination{
-  name = "destination",
+  name = "destination_1",
   layer = 0,
   x = 32,
+  y = 37,
+  direction = 3,
+}
+
+destination{
+  name = "destination_2",
+  layer = 0,
+  x = 80,
   y = 37,
   direction = 3,
 }

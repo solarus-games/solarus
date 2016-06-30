@@ -164,7 +164,7 @@ bool QuestProperties::export_to_lua(std::ostream& out) const {
       << "  normal_quest_size = \"" << normal_quest_size.width << 'x' << normal_quest_size.height << "\",\n"
       << "  min_quest_size = \"" << min_quest_size.width << 'x' << min_quest_size.height << "\",\n"
       << "  max_quest_size = \"" << max_quest_size.width << 'x' << max_quest_size.height << "\",\n"
-      << "}\n";
+      << "}\n\n";
 
   return true;
 }

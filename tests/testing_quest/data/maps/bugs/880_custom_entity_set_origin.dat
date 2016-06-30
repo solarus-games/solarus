@@ -30,6 +30,8 @@ custom_entity{
   layer = 0,
   x = 24,
   y = 61,
+  width = 16,
+  height = 16,
   direction = 0,
 }
 
@@ -38,6 +40,8 @@ custom_entity{
   layer = 0,
   x = 24,
   y = 77,
+  width = 16,
+  height = 16,
   direction = 0,
 }
 
@@ -46,6 +50,8 @@ custom_entity{
   layer = 0,
   x = 56,
   y = 77,
+  width = 16,
+  height = 16,
   direction = 0,
 }
 

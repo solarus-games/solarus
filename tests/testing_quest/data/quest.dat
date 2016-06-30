@@ -13,3 +13,4 @@ This is not a playable game, but a quest that contains automated tests for the S
   min_quest_size = "320x240",
   max_quest_size = "320x240",
 }
+

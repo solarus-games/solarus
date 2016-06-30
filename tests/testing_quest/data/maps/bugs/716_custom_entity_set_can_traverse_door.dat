@@ -39,6 +39,8 @@ custom_entity{
   layer = 0,
   x = 64,
   y = 37,
+  width = 16,
+  height = 16,
   direction = 0,
 }
 

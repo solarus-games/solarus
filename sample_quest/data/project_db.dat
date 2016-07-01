@@ -56,7 +56,6 @@ music{ id = "village", description = "Village" }
 sound{ id = "arrow_hit", description = "arrow_hit" }
 sound{ id = "bomb", description = "bomb" }
 sound{ id = "boomerang", description = "boomerang" }
-sound{ id = "boots_crash", description = "boots_crash" }
 sound{ id = "boss_hurt", description = "boss_hurt" }
 sound{ id = "boss_killed", description = "boss_killed" }
 sound{ id = "bounce", description = "bounce" }

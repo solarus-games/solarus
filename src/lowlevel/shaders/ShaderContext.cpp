@@ -58,7 +58,8 @@ void ShaderContext::quit() {
  */
 std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& shader_name) {
 
-  std::unique_ptr<Shader> shader;
+  std::unique_ptr<Shader> shader = nullptr;
+  bool error = false;
 
 #if SOLARUS_HAVE_OPENGL == 1
   if (Shader::get_sampler_type() == "sampler2DRect") {
@@ -68,11 +69,15 @@ std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& shader_n
     shader = std::unique_ptr<Shader>(new GL_2DShader(shader_name));
   }
 
-  if (shader != nullptr && glGetError() != GL_NO_ERROR) {
+  if (glGetError() != GL_NO_ERROR) {
+    error = true;
+  }
+#endif
+  
+  if (error) {
     Debug::warning("Can't compile shader '" + shader_name + "'");
     shader = nullptr;
   }
-#endif
 
   return shader;
 }

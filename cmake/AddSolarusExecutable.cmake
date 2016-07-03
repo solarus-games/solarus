@@ -11,15 +11,9 @@ if(WIN32)
   )
 endif()
 
-# Build the executable,
-if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
-  # Build into CFBundle form if requested or iOS build.
-  include(cmake/apple/AddCFBundleTarget.cmake)
-else()
-  add_executable(solarus-run
-    ${solarus_run_SOURCES}
-  )
-endif()
+add_executable(solarus-run
+  ${solarus_run_SOURCES}
+)
 
 target_link_libraries(solarus-run
   solarus

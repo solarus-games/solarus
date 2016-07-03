@@ -50,7 +50,7 @@ class GL_ARBShader : public Shader {
     static int l_shader(lua_State* l);
 
     void register_callback(lua_State* l);
-    void render(const SurfacePtr& quest_surface);
+    void render(const SurfacePtr& quest_surface) const;
 
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */
     GLhandleARB vertex_shader;                   /**< The vertex shader. */

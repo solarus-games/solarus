@@ -332,23 +332,29 @@ To install the needed packages via the brew package manager:
 
 brew install sdl2 libvorbis libmodplug cmake ninja luajit sdl2_image sdl2_ttf
 
-You will also need a copy of OS X SDK, which is included with XCode. XCode is freely available on the
-App Store.
+You will also need a copy of OS X SDK, which is included with XCode. XCode is 
+freely available on the App Store.
 
 
 - Compile on OSX
 
 You can follow the standard compilation instructions to build Solarus on OSX.
-Here are however some tips that may be useful depending on your developer environment :
+However here are some tips that may be useful depending on your developer environment :
 
 You can build the XCode project using cmake
 $ cmake -G Xcode ..
 
-If you wish to build the solarus GUI, the cmake line will probably became 
+If you wish to build the solarus GUI, the cmake line will probably become
+something like
 $ cmake -DCMAKE_PREFIX_PATH="<path_to_Qt>/Qt/5.5/clang_64/lib/cmake" -Wno-dev  ..
 
-If you want to deploy a quest on non-developer environment with a standalone bundle, the better way is to use the Solarus package provided on http://www.solarus-games.org/ and use a post-install script to replace Solarus.app/Contents/Resources/solarus-run and Solarus.app/Contents/Frameworks/libsolarus.dylib by ones just compiled.
-The bundle is made to run the data/ or data.solarus quest located into Solarus.app/Contents/Resources.
+If you want to deploy a quest on non-developer environment with a
+standalone bundle, the better way is to use the Solarus package provided on
+http://www.solarus-games.org/ and use a post-build script to replace 
+Solarus.app/Contents/Resources/solarus-run and 
+Solarus.app/Contents/Frameworks/libsolarus.dylib by ones just compiled.
+The bundle is made to run the data/ or data.solarus quest located into
+Solarus.app/Contents/Resources.
 
 
 4.2  OpenPandora

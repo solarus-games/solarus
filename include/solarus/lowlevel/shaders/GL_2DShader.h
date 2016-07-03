@@ -50,7 +50,7 @@ class GL_2DShader : public Shader {
     static int l_shader(lua_State* l);
 
     void register_callback(lua_State* l);
-    void render(const SurfacePtr& quest_surface);
+    void render(const SurfacePtr& quest_surface) const;
 };
 
 }

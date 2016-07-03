@@ -56,7 +56,7 @@ void ShaderContext::quit() {
  * \param shader_name The name of the shader to load.
  * \return The created shader, or nullptr if the shader fails to compile.
  */
-std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& /* shader_name */) {
+std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& shader_name) {
 
   std::unique_ptr<Shader> shader;
 

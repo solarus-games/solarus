@@ -71,7 +71,7 @@ void GL_2DShader::register_callback(lua_State* l) {
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
  */
-void GL_2DShader::render(Surface& quest_surface) {
+void GL_2DShader::render(const SurfacePtr& quest_surface) const {
 }
 
 }

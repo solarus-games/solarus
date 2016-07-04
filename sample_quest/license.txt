@@ -124,24 +124,42 @@ sprites/things/switch_aureole.png                   Diarandor (diarandor at gmai
 sprites/things/water_splash_effect.png              Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 
 sounds/arrow_hit.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/bird_chirp.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/bird_chirp1.ogg                              Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/bird_chirp2.ogg                              Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/bomb.ogg                                     Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/boomerang.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/boss_charge.ogg                              Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/boss_fireball.ogg                            Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/boss_hurt.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/boss_killed.ogg                              Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/bounce.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/bow.ogg                                      Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/bush.ogg                                     Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/cane.ogg                                     Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/cane2.ogg                                    Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/cane3.ogg                                    Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/cat.ogg                                      Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/chest_appears.ogg                            Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/chest_open.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/cricket.ogg                                  Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/crystal.ogg                                  Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/crystal2.ogg                                 Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/cursor.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/danger.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/door_closed.ogg                              Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/door_open.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/door_unlocked.ogg                            Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/electrified.ogg                              Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/electrified2.ogg                             Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/enemy_awake.ogg                              Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/enemy_hurt.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/enemy_killed.ogg                             Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/explosion.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/falling_on_hole.ogg                          Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/falling_rock.ogg                             Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/fire_ball.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/fire_ball2.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/heart.ogg                                    Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/hero_dying.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/hero_falls.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
@@ -152,6 +170,7 @@ sounds/hookshot.ogg                                 Diarandor (diarandor at gmai
 sounds/item_fall.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/jump.ogg                                     Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/key_fall.ogg                                 Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/lamp.ogg                                     Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/lift.ogg                                     Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/message_end.ogg                              Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/                      
 sounds/message_letter.ogg                           Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
@@ -182,6 +201,9 @@ sounds/sword_spin_attack_release.ogg                Diarandor (diarandor at gmai
 sounds/sword_tapping.ogg                            Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/sword_tapping_weak_wall.ogg                  Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/sword1.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/sword2.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/sword3.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/sword4.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/teleporter.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/throw.ogg                                    Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/tongue.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
@@ -190,8 +212,11 @@ sounds/victory.ogg                                  Diarandor (diarandor at gmai
 sounds/walk_on_grass.ogg                            Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/walk_on_water.ogg                            Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/warp.ogg                                     Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/water_fill.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/world_warp.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/wrong.ogg                                    Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/wrong2.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/wrong3.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 
 text/minecraftia.ttf                                Andrew Tyler: http://www.andrewtyler.net
 

@@ -735,6 +735,7 @@ class LuaContext {
       item_api_set_savegame_variable,
       item_api_get_amount_savegame_variable,
       item_api_set_amount_savegame_variable,
+      item_api_is_being_used,
       item_api_is_obtainable,
       item_api_set_obtainable,
       item_api_is_assignable,   // TODO remove

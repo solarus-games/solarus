@@ -115,6 +115,7 @@ Changes that do not introduce incompatibilities:
 * Add methods sprite:get_size() and sprite:get_origin() (#823).
 * sprite:set_animation() now takes an optional callback parameter (#861).
 * Add a method surface:get_opacity() (#722).
+* Add function item:is_being_used() (#879).
 
 Data files format changes
 -------------------------

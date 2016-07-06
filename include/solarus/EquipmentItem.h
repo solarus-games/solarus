@@ -57,6 +57,8 @@ class EquipmentItem: public ExportableToLua {
     bool has_amount() const;
     const std::string& get_amount_savegame_variable() const;
     void set_amount_savegame_variable(const std::string& amount_savegame_variable);
+    bool is_being_used() const;
+    void set_being_used(bool being_used);
     bool is_obtainable() const;
     void set_obtainable(bool obtainable);
     bool is_assignable() const;
@@ -104,6 +106,7 @@ class EquipmentItem: public ExportableToLua {
     std::string amount_savegame_variable; /**< savegame variable that stores the amount associated to this item
                                           * or an empty string if there is no amount */
     int max_amount;                      /**< limit of the amount associated to this item, or 0 */
+    bool being_used;                     /**< whether the item is currently being used */
     bool obtainable;                     /**< whether the player can receive this item */
     bool assignable;                     /**< indicates that this item can be assigned to an item key an then
                                           * be used explicitly */

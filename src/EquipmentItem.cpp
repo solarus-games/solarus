@@ -34,6 +34,7 @@ EquipmentItem::EquipmentItem(Equipment& equipment):
   name(""),
   savegame_variable(""),
   max_amount(1000),
+  being_used(false),
   obtainable(true),
   assignable(false),
   can_disappear(false),
@@ -156,6 +157,21 @@ void EquipmentItem::set_amount_savegame_variable(
   this->amount_savegame_variable = amount_savegame_variable;
 }
 
+/**
+ * \brief Returns whether this item is currently being used.
+ * \return true if this item is being used.
+ */
+bool EquipmentItem::is_being_used() const {
+  return being_used;
+}
+
+/**
+ * \brief Sets whether this item is currently being used.
+ * \param being_used true to denote the item as being in use.
+ */
+void EquipmentItem::set_being_used(bool being_used) {
+  this->being_used = being_used;
+}
 /**
  * \brief Returns whether this item can be obtained by the player.
  * \return true if this item can be obtained.

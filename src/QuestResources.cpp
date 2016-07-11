@@ -69,11 +69,6 @@ namespace {
 }
 
 /**
- * \typedef std::map<std::string, std::string> QuestResources::ResourceMap
- * \brief Mapping of resource element ids to their description.
- */
-
-/**
  * \brief Creates an empty quest resources object.
  */
 QuestResources::QuestResources() {

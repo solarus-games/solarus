@@ -34,16 +34,13 @@
 #include "solarus/DrawablePtr.h"
 #include "solarus/SpritePtr.h"
 #include "solarus/TimerPtr.h"
+#include <lua.hpp>
 #include <list>
 #include <map>
 #include <memory>
 #include <set>
 #include <string>
 #include <vector>
-
-struct lua_State;
-struct luaL_Reg;
-typedef int (*lua_CFunction) (lua_State* l);
 
 namespace Solarus {
 
@@ -428,7 +425,7 @@ class LuaContext {
     /**
      * \brief Type of the functions that can be called by Lua.
      */
-    typedef int (FunctionExportedToLua) (lua_State* l);
+    using FunctionExportedToLua = int(lua_State* l);
 
     // All functions named <type>_api_<name> can be called by Lua.
     static FunctionExportedToLua

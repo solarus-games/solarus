@@ -45,6 +45,9 @@ class SOLARUS_API QuestResources : public LuaData {
 
   public:
 
+    /**
+     * Mapping of resource element ids to their description.
+     */
     using ResourceMap = std::map<std::string, std::string>;
 
     QuestResources();

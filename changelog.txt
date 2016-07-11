@@ -64,7 +64,7 @@ Changes that introduce incompatibilities:
 * New ability "jump_over_water" in game:get/set_ability(), off by default (#530).
 * Fix hero state name "freezed", renamed it to "frozen" (#813).
 * Fix map:get_entities() not returning the hero (#670).
-* map:get_camera_position() is now deprecated, use camera:get_position().
+* map:get_camera_position() is now deprecated, use camera:get_bounding_box().
 * map:move_camera() is now deprecated, use a camera movement instead.
 * map:draw_sprite() is now deprecated, use map:draw_visual() instead (#661).
 * Fix entity:set_enabled(true) delayed while it blocks the hero (#817).
@@ -83,8 +83,6 @@ Changes that do not introduce incompatibilities:
 * Add a method map:get_entities_in_rectangle() (#142).
 * Add a method map:draw_visual() to draw any drawable object (#661).
 * Add a method map:get_camera() (the camera is now a map entity).
-* map:get_camera_position() is now deprecated, use camera:get_position().
-* map:move_camera() is now deprecated, use a camera movement instead.
 * Add methods map:set_world() and map:set_floor() (#656).
 * map:get_entities() can now be called without parameter to get all entities.
 * map:get_entities*() functions now give entities sorted in Z order (#779).

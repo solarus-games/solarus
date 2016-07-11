@@ -1662,7 +1662,7 @@ int LuaContext::map_api_get_camera_position(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
 
     get_lua_context(l).warning_deprecated("map:get_camera_position()",
-        "Use map:get_camera():get_position() instead.");
+        "Use map:get_camera():get_bounding_box() instead.");
 
     const Map& map = *check_map(l, 1);
 

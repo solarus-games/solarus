@@ -25,6 +25,7 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Transition.h"
 #include <algorithm>
+#include <iostream>
 #include <sstream>
 
 namespace Solarus {
@@ -135,6 +136,20 @@ Surface::Surface(SDL_Surface* internal_surface):
 
   width = internal_surface->w;
   height = internal_surface->h;
+
+  // Convert to the preferred pixel format.
+  SDL_PixelFormat* pixel_format = Video::get_pixel_format();
+  if (internal_surface->format->format != pixel_format->format) {
+
+    SDL_Surface* converted_surface = SDL_ConvertSurface(
+        internal_surface,
+        pixel_format,
+        0
+    );
+    Debug::check_assertion(converted_surface != nullptr,
+                           "Failed to convert text surface");
+    this->internal_surface = SDL_Surface_UniquePtr(converted_surface);
+  }
 }
 
 /**
@@ -224,34 +239,27 @@ SDL_Surface* Surface::get_surface_from_file(
   Debug::check_assertion(software_surface != nullptr,
       std::string("Cannot load image '") + prefixed_file_name + "'");
 
-  return software_surface;
-}
-
-/**
- * \brief Converts the software surface to the preferred pixel format
- * (32-bit with alpha channel).
- */
-void Surface::convert_software_surface() {
-
-  Debug::check_assertion(internal_surface != nullptr,
-      "Missing software surface to convert");
-
   SDL_PixelFormat* pixel_format = Video::get_pixel_format();
-  if (internal_surface->format->format != pixel_format->format) {
-    // Convert to the preferred pixel format.
-    uint8_t opacity;
-    SDL_GetSurfaceAlphaMod(internal_surface.get(), &opacity);
-    SDL_Surface* converted_surface = SDL_ConvertSurface(
-        internal_surface.get(),
+  if (software_surface->format->format == pixel_format->format) {
+    return software_surface;
+  }
+
+  // Convert to the preferred pixel format.
+  uint8_t opacity;
+  SDL_GetSurfaceAlphaMod(software_surface, &opacity);
+  SDL_Surface* converted_surface = SDL_ConvertSurface(
+        software_surface,
         pixel_format,
         0
-    );
-    Debug::check_assertion(converted_surface != nullptr,
-        "Failed to convert software surface");
+        );
+  Debug::check_assertion(converted_surface != nullptr,
+                         "Failed to convert software surface");
+  SDL_FreeSurface(software_surface);
 
-    internal_surface = SDL_Surface_UniquePtr(converted_surface);
-    SDL_SetSurfaceAlphaMod(internal_surface.get(), opacity);  // Re-apply the alpha.
-  }
+  SDL_SetSurfaceAlphaMod(converted_surface, opacity);  // Re-apply the alpha.
+  SDL_SetSurfaceBlendMode(converted_surface, SDL_BLENDMODE_BLEND);
+
+  return converted_surface;
 }
 
 /**
@@ -267,11 +275,6 @@ void Surface::create_texture_from_surface() {
     Debug::check_assertion(internal_surface != nullptr,
         "Missing software surface to create texture from");
 
-    // Make sure the software surface has the same format as the texture.
-    // This is because SDL_UpdateTexture does not have a format parameter
-    // for performance reasons.
-    convert_software_surface();
-
     // Create the texture.
     internal_texture = SDL_Texture_UniquePtr(
         SDL_CreateTexture(
@@ -282,7 +285,7 @@ void Surface::create_texture_from_surface() {
             internal_surface->h
         )
     );
-    SDL_SetTextureBlendMode(internal_texture.get(), SDL_BLENDMODE_BLEND);
+    SDL_SetTextureBlendMode(internal_texture.get(), get_sdl_blend_mode());
 
     // Copy the pixels of the software surface to the GPU texture.
     SDL_UpdateTexture(internal_texture.get(), nullptr, internal_surface->pixels, internal_surface->pitch);
@@ -336,9 +339,6 @@ void Surface::set_opacity(uint8_t opacity) {
     if (internal_surface == nullptr) {
       create_software_surface();
     }
-
-    // The surface must be 32-bit with alpha value for this function to work.
-    convert_software_surface();
 
     int error = SDL_SetSurfaceAlphaMod(internal_surface.get(), opacity);
     if (error != 0) {
@@ -476,7 +476,8 @@ void Surface::create_software_surface() {
           format->Amask
       )
   );
-  SDL_SetSurfaceBlendMode(internal_surface.get(), SDL_BLENDMODE_BLEND);
+
+  SDL_SetSurfaceBlendMode(internal_surface.get(), get_sdl_blend_mode());
   is_rendered = false;
 
   Debug::check_assertion(internal_surface != nullptr,
@@ -665,6 +666,10 @@ void Surface::raw_draw_region(
     if (this->internal_surface != nullptr) {
       // The source surface is not empty: draw it onto the destination.
 
+      SDL_SetSurfaceBlendMode(
+            this->internal_surface.get(),
+            get_sdl_blend_mode()
+      );
       SDL_BlitSurface(
           this->internal_surface.get(),
           region.get_internal_rect(),
@@ -674,7 +679,7 @@ void Surface::raw_draw_region(
     }
     else if (internal_color != nullptr) { // No internal surface to draw: this may be a color.
 
-      if (internal_color->get_alpha() == 255) {
+      if (get_blend_mode() == BlendMode::ALPHA_BLENDING && internal_color->get_alpha() == 255) {
         // Fill with opaque color: we can directly modify the destination pixels.
         Rectangle dst_rect(
             dst_position,
@@ -811,7 +816,6 @@ void Surface::render(
     else if (
         (software_destination || !Video::is_acceleration_enabled())
          && !is_rendered) {
-      convert_software_surface();
       SDL_UpdateTexture(
           internal_texture.get(),
           nullptr,
@@ -976,6 +980,30 @@ uint32_t Surface::get_color_value(const Color& color) const {
   uint8_t r, g, b, a;
   color.get_components(r, g, b, a);
   return SDL_MapRGBA(Video::get_pixel_format(), r, g, b, a);
+}
+
+/**
+ * \brief Returns the blend mode as an SDL_BlendMode value.
+ * \return The blend mode.
+ */
+SDL_BlendMode Surface::get_sdl_blend_mode() const {
+
+  switch (get_blend_mode()) {
+
+  case BlendMode::NO_BLENDING:
+    return SDL_BLENDMODE_NONE;
+
+  case BlendMode::ALPHA_BLENDING:
+    return SDL_BLENDMODE_BLEND;
+
+  case BlendMode::ADDITIVE_BLENDING:
+    return SDL_BLENDMODE_ADD;
+
+  case BlendMode::COLOR_MODULATE:
+    return SDL_BLENDMODE_MOD;
+  }
+
+  return SDL_BLENDMODE_BLEND;
 }
 
 /**

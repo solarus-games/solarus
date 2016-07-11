@@ -14,22 +14,24 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/AbilityInfo.h"
+#ifndef SOLARUS_BLEND_MODE_INFO_H
+#define SOLARUS_BLEND_MODE_INFO_H
+
+#include "solarus/Common.h"
+#include "solarus/EnumInfo.h"
+#include "solarus/lowlevel/BlendMode.h"
+#include <map>
+#include <string>
 
 namespace Solarus {
 
-const std::string EnumInfoTraits<Ability>::pretty_name = "ability";
+template <>
+struct SOLARUS_API EnumInfoTraits<BlendMode> {
+  static const std::string pretty_name;
 
-const EnumInfo<Ability>::names_type EnumInfoTraits<Ability>::names = {
-    { Ability::TUNIC, "tunic" },
-    { Ability::SWORD, "sword" },
-    { Ability::SWORD_KNOWLEDGE, "sword_knowledge" },
-    { Ability::SHIELD, "shield" },
-    { Ability::LIFT, "lift" },
-    { Ability::SWIM, "swim" },
-    { Ability::JUMP_OVER_WATER, "jump_over_water" },
-    { Ability::RUN, "run" },
-    { Ability::DETECT_WEAK_WALLS, "detect_weak_walls" }
+  static const EnumInfo<BlendMode>::names_type names;
 };
 
 }
+
+#endif

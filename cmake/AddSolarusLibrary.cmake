@@ -98,6 +98,8 @@ file(
   include/solarus/hero/VictoryState.h
 
   include/solarus/lowlevel/apple/AppleInterface.h
+  include/solarus/lowlevel/BlendMode.h
+  include/solarus/lowlevel/BlendModeInfo.h
   include/solarus/lowlevel/Color.h
   include/solarus/lowlevel/Debug.h
   include/solarus/lowlevel/FontResource.h
@@ -298,6 +300,7 @@ file(
   src/hero/UsingItemState.cpp
   src/hero/VictoryState.cpp
 
+  src/lowlevel/BlendModeInfo.cpp
   src/lowlevel/Color.cpp
   src/lowlevel/Debug.cpp
   src/lowlevel/FontResource.cpp

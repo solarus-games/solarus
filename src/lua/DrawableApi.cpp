@@ -14,10 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/lowlevel/BlendModeInfo.h"
+#include "solarus/lowlevel/Surface.h"
 #include "solarus/lua/ExportableToLuaPtr.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/lowlevel/Surface.h"
 #include "solarus/movements/Movement.h"
 #include "solarus/Drawable.h"
 #include "solarus/TransitionFade.h"
@@ -161,6 +162,41 @@ int LuaContext::drawable_api_draw_region(lua_State* l) {
         LuaTools::opt_int(l, 8, 0)
     };
     drawable.draw_region(region, dst_surface, dst_position);
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of drawable:get_blend_mode().
+ * \param l the Lua context that is calling this function
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::drawable_api_get_blend_mode(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Drawable& drawable = *check_drawable(l, 1);
+
+    BlendMode blend_mode = drawable.get_blend_mode();
+
+    push_string(l, enum_to_name(blend_mode));
+
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of drawable:set_blend_mode().
+ * \param l the Lua context that is calling this function
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::drawable_api_set_blend_mode(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Drawable& drawable = *check_drawable(l, 1);
+    BlendMode blend_mode = LuaTools::check_enum<BlendMode>(l, 2);
+
+    drawable.set_blend_mode(blend_mode);
 
     return 0;
   });

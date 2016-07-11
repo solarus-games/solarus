@@ -531,6 +531,8 @@ class LuaContext {
       // Drawable API (i.e. common to surfaces, text surfaces and sprites).
       drawable_api_draw,
       drawable_api_draw_region,
+      drawable_api_get_blend_mode,
+      drawable_api_set_blend_mode,
       drawable_api_fade_in,
       drawable_api_fade_out,
       drawable_api_get_xy,

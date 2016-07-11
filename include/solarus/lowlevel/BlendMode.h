@@ -14,22 +14,23 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/AbilityInfo.h"
+#ifndef SOLARUS_BLEND_MODE_H
+#define SOLARUS_BLEND_MODE_H
 
 namespace Solarus {
 
-const std::string EnumInfoTraits<Ability>::pretty_name = "ability";
+/**
+ * \brief Possible blend modes for drawable objects.
+ */
+enum class BlendMode {
 
-const EnumInfo<Ability>::names_type EnumInfoTraits<Ability>::names = {
-    { Ability::TUNIC, "tunic" },
-    { Ability::SWORD, "sword" },
-    { Ability::SWORD_KNOWLEDGE, "sword_knowledge" },
-    { Ability::SHIELD, "shield" },
-    { Ability::LIFT, "lift" },
-    { Ability::SWIM, "swim" },
-    { Ability::JUMP_OVER_WATER, "jump_over_water" },
-    { Ability::RUN, "run" },
-    { Ability::DETECT_WEAK_WALLS, "detect_weak_walls" }
+  NO_BLENDING,          /**< No blending: the destination is replaced by the source. */
+  ALPHA_BLENDING,       /**< Alpha blending (default). */
+  ADDITIVE_BLENDING,    /**< Additive blending. */
+  COLOR_MODULATE        /**< Color modulate. */
 };
 
 }
+
+#endif
+

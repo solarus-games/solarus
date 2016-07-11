@@ -762,20 +762,15 @@ void Sprite::raw_draw(
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    if (intermediate_surface == nullptr) {
-      current_animation->draw(dst_surface, dst_position,
-          current_direction, current_frame);
-    }
-    else {
-      intermediate_surface->clear();
-      current_animation->draw(*intermediate_surface, get_origin(),
-          current_direction, current_frame);
-      intermediate_surface->draw_region(
-          Rectangle(get_size()),
-          std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
-          dst_position - get_origin()
-      );
-    }
+    get_intermediate_surface().clear();
+    current_animation->draw(get_intermediate_surface(), get_origin(),
+        current_direction, current_frame);
+    get_intermediate_surface().set_blend_mode(get_blend_mode());
+    get_intermediate_surface().draw_region(
+        Rectangle(get_size()),
+        std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
+        dst_position - get_origin()
+    );
   }
 }
 
@@ -839,6 +834,7 @@ void Sprite::raw_draw_region(
     Point dst_position2 = dst_position;
     dst_position2 += src_position.get_xy(); // Let a space for the part outside the region.
     dst_position2 -= origin;                // Input coordinates were relative to the origin.
+    get_intermediate_surface().set_blend_mode(get_blend_mode());
     get_intermediate_surface().draw_region(
         src_position,
         std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),

@@ -18,6 +18,7 @@
 #define SOLARUS_DRAWABLE_H
 
 #include "solarus/Common.h"
+#include "solarus/lowlevel/BlendMode.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/lowlevel/Size.h"
 #include "solarus/lowlevel/SurfacePtr.h"
@@ -128,6 +129,9 @@ class Drawable: public ExportableToLua {
     bool is_suspended() const;
     virtual void set_suspended(bool suspended);
 
+    BlendMode get_blend_mode() const;
+    void set_blend_mode(BlendMode blend_mode);
+
   protected:
 
     Drawable();
@@ -144,6 +148,7 @@ class Drawable: public ExportableToLua {
                                   /**< Lua registry ref of a function to call
                                    * when the transition finishes */
     bool suspended;               /**< Whether this object is suspended. */
+    BlendMode blend_mode;         /**< How to draw this object on a surface. */
 };
 
 }

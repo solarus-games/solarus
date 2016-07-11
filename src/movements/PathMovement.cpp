@@ -156,17 +156,21 @@ void PathMovement::notify_object_controlled() {
 }
 
 /**
- * \brief Updates the movements: detects the collisions
- * in order to restart the movement.
+ * \copydoc Movement::update()
  */
 void PathMovement::update() {
 
-  while (!is_suspended()
-      && is_current_elementary_move_finished()
-      && !PathMovement::is_finished()
-      && get_entity() != nullptr) {
+  while (!is_suspended() &&
+      is_current_elementary_move_finished() &&
+      !PathMovement::is_finished() &&
+      get_entity() != nullptr) {
+
     start_next_elementary_move();
     PixelMovement::update();
+
+    if (snapping) {
+      break;
+    }
   }
 
   // Do this at last so that Movement::update() knows whether we are finished.

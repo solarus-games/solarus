@@ -19,7 +19,6 @@
 
 #include "solarus/Common.h"
 #include <cstdint>
-#include <SDL.h>
 
 namespace Solarus {
 

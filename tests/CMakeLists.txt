@@ -115,6 +115,7 @@ foreach(test_main_file ${tests_main_files})
     solarus
     solarus_testing
     "${SDL2_LIBRARY}"
+    "${SDL2MAIN_LIBRARY}"
     "${SDL2_IMAGE_LIBRARY}"
     "${SDL2_TTF_LIBRARY}"
     "${OPENAL_LIBRARY}"

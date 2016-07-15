@@ -24,10 +24,10 @@ namespace Solarus {
  */
 enum class BlendMode {
 
-  NO_BLENDING,          /**< No blending: the destination is replaced by the source. */
-  ALPHA_BLENDING,       /**< Alpha blending (default). */
-  ADDITIVE_BLENDING,    /**< Additive blending. */
-  COLOR_MODULATE        /**< Color modulate. */
+  NONE,       /**< No blending: the destination is replaced by the source. */
+  BLEND,      /**< Alpha blending (default). */
+  ADD,        /**< Additive blending. */
+  MULTIPLY    /**< Color modulate. */
 };
 
 }

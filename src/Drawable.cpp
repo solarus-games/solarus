@@ -33,7 +33,7 @@ Drawable::Drawable():
   transition(nullptr),
   transition_callback_ref(),
   suspended(false),
-  blend_mode(BlendMode::ALPHA_BLENDING) {
+  blend_mode(BlendMode::BLEND) {
 
 }
 

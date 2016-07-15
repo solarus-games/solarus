@@ -21,10 +21,10 @@ namespace Solarus {
 const std::string EnumInfoTraits<BlendMode>::pretty_name = "blend mode";
 
 const EnumInfo<BlendMode>::names_type EnumInfoTraits<BlendMode>::names = {
-    { BlendMode::NO_BLENDING, "none" },
-    { BlendMode::ALPHA_BLENDING, "alpha_blending" },
-    { BlendMode::ADDITIVE_BLENDING, "additive_blending" },
-    { BlendMode::COLOR_MODULATE, "color_modulate" },
+    { BlendMode::NONE, "none" },
+    { BlendMode::BLEND, "blend" },
+    { BlendMode::ADD, "add" },
+    { BlendMode::MULTIPLY, "multiply" },
 };
 
 }

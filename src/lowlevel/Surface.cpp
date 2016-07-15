@@ -679,7 +679,7 @@ void Surface::raw_draw_region(
     }
     else if (internal_color != nullptr) { // No internal surface to draw: this may be a color.
 
-      if (get_blend_mode() == BlendMode::ALPHA_BLENDING && internal_color->get_alpha() == 255) {
+      if (get_blend_mode() == BlendMode::BLEND && internal_color->get_alpha() == 255) {
         // Fill with opaque color: we can directly modify the destination pixels.
         Rectangle dst_rect(
             dst_position,
@@ -990,16 +990,16 @@ SDL_BlendMode Surface::get_sdl_blend_mode() const {
 
   switch (get_blend_mode()) {
 
-  case BlendMode::NO_BLENDING:
+  case BlendMode::NONE:
     return SDL_BLENDMODE_NONE;
 
-  case BlendMode::ALPHA_BLENDING:
+  case BlendMode::BLEND:
     return SDL_BLENDMODE_BLEND;
 
-  case BlendMode::ADDITIVE_BLENDING:
+  case BlendMode::ADD:
     return SDL_BLENDMODE_ADD;
 
-  case BlendMode::COLOR_MODULATE:
+  case BlendMode::MULTIPLY:
     return SDL_BLENDMODE_MOD;
   }
 

@@ -27,7 +27,7 @@ enum class BlendMode {
   NONE,       /**< No blending: the destination is replaced by the source. */
   BLEND,      /**< Alpha blending (default). */
   ADD,        /**< Additive blending. */
-  MULTIPLY    /**< Color modulate. */
+  MULTIPLY    /**< Multiplicative blending (color modulate). */
 };
 
 }

@@ -6,7 +6,7 @@ include(CheckCXXSymbolExists)
 check_cxx_symbol_exists(mkstemp "cstdlib" MKSTEMP_SYMBOL_EXIST)
 
 if(MKSTEMP_FUNCTION_EXIST AND MKSTEMP_SYMBOL_EXIST)
-	set(HAVE_MKSTEMP)
+  set(HAVE_MKSTEMP)
 endif()
 
 include(CheckIncludeFiles)

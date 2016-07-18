@@ -76,7 +76,7 @@ class Sound {
 
   private:
 
-    ALuint decode_file(const std::string &file_name);
+    ALuint decode_file(const std::string& file_name);
     bool update_playing();
 
     static ALCdevice* device;

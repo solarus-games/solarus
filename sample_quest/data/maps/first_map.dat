@@ -147,7 +147,7 @@ tile{
 
 tile{
   layer = 0,
-  x = 40,
+  x = 24,
   y = 96,
   width = 48,
   height = 32,
@@ -228,8 +228,8 @@ tile{
 
 tile{
   layer = 0,
-  x = 216,
-  y = 112,
+  x = 208,
+  y = 136,
   width = 16,
   height = 24,
   pattern = "39",
@@ -237,8 +237,8 @@ tile{
 
 tile{
   layer = 0,
-  x = 120,
-  y = 112,
+  x = 128,
+  y = 136,
   width = 16,
   height = 24,
   pattern = "39",
@@ -246,7 +246,7 @@ tile{
 
 tile{
   layer = 0,
-  x = 56,
+  x = 40,
   y = 96,
   width = 16,
   height = 16,
@@ -363,7 +363,7 @@ tile{
 
 tile{
   layer = 0,
-  x = 56,
+  x = 40,
   y = 120,
   width = 16,
   height = 24,
@@ -453,8 +453,8 @@ destructible{
 
 npc{
   layer = 0,
-  x = 144,
-  y = 165,
+  x = 200,
+  y = 157,
   direction = 3,
   subtype = 0,
   sprite = "entities/sign",
@@ -473,9 +473,64 @@ block{
 
 enemy{
   layer = 0,
-  x = 104,
-  y = 85,
+  x = 40,
+  y = 77,
   direction = 0,
   breed = "slime_green",
+}
+
+custom_entity{
+  name = "witch",
+  layer = 0,
+  x = 136,
+  y = 109,
+  direction = 2,
+  sprite = "citizens/witch",
+  model = "citizens/witch",
+}
+
+custom_entity{
+  name = "broom",
+  layer = 0,
+  x = 184,
+  y = 101,
+  direction = 0,
+  sprite = "things/broom",
+  model = "things/broom",
+}
+
+custom_entity{
+  layer = 0,
+  x = 120,
+  y = 109,
+  direction = 0,
+  sprite = "things/marmite_witch",
+  model = "things/marmite",
+}
+
+custom_entity{
+  name = "r",
+  layer = 0,
+  x = 136,
+  y = 117,
+  height = 8,
+  direction = 0,
+  sprite = "things/long_chair",
+}
+
+enemy{
+  layer = 0,
+  x = 264,
+  y = 45,
+  direction = 0,
+  breed = "slime_green",
+}
+
+custom_entity{
+  layer = 1,
+  x = 120,
+  y = 93,
+  direction = 0,
+  sprite = "things/steam",
 }
 

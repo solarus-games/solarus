@@ -11,6 +11,7 @@ sprite{ id = "animals/mouse", description = "Mouse" }
 sprite{ id = "animals/phoenix", description = "Phoenix" }
 sprite{ id = "citizens/old_man", description = "Old man" }
 sprite{ id = "citizens/old_woman", description = "Old Woman" }
+sprite{ id = "citizens/witch", description = "witch" }
 sprite{ id = "dialogs/dialog_Edgar", description = "Edgar Dialog" }
 sprite{ id = "dialogs/dialog_Robyne", description = "Robyne Dialog" }
 sprite{ id = "dialogs/dialog_old_man", description = "Old man Dialog" }
@@ -48,8 +49,22 @@ sprite{ id = "hero/trail", description = "Hero trail" }
 sprite{ id = "hero/tunic1", description = "Hero tunic 1" }
 sprite{ id = "main_heroes/edgar", description = "Edgar" }
 sprite{ id = "main_heroes/robyne", description = "Robyne" }
+sprite{ id = "main_heroes/sword", description = "sword" }
+sprite{ id = "main_heroes/sword_electricity", description = "sword electricity" }
+sprite{ id = "main_heroes/trail", description = "trail" }
 sprite{ id = "menus/solarus_logo", description = "Solarus logo" }
-sprite{ id = "things/ground_effects", description = "Ground effects" }
+sprite{ id = "shadows/shadow_big", description = "shadow big" }
+sprite{ id = "shadows/shadow_big_dynamic", description = "shadow big dynamic" }
+sprite{ id = "shadows/shadow_small", description = "shadow small" }
+sprite{ id = "things/broom", description = "broom witch" }
+sprite{ id = "things/fall_on_hole_effect", description = "fall on hole" }
+sprite{ id = "things/grass_effect", description = "grass effect" }
+sprite{ id = "things/lava_splash_effect", description = "lava splash" }
+sprite{ id = "things/long_chair", description = "long chair witch" }
+sprite{ id = "things/marmite_witch", description = "marmite witch" }
+sprite{ id = "things/steam", description = "steam" }
+sprite{ id = "things/switch_aureole", description = "switch aureole" }
+sprite{ id = "things/water_splash_effect", description = "water splash" }
 
 music{ id = "village", description = "Village" }
 

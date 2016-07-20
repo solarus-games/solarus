@@ -39,8 +39,9 @@ sprites/animals/cat_yellow.png                      Diarandor (diarandor at gmai
 sprites/animals/chameleon.png                       Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/animals/mouse.png                           Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/animals/phoenix.png                         Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
-sprites/citicens/old_man.png                        Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
-sprites/citicens/old_woman.png                      Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/citizens/old_man.png                        Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/citizens/old_woman.png                      Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/citizens/witch.png                          Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/dialogs/DialogEdgar.png                     Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/dialogs/DialogRobyne.png                    Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/dialogs/DialogOldMen.png                    Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
@@ -132,6 +133,7 @@ sprites/main_heroes/sword_tapping_shield1.png       Diarandor (diarandor at gmai
 sprites/main_heroes/sword_tapping_shield2.png       Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/main_heroes/sword_victory.png               Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/menus/game_over_menu.png                    Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/shadows/shadow.png              Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/things/fall_on_hole_effect.png              Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/things/grass_effect.png                     Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/things/lava_splash_effect.png               Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/

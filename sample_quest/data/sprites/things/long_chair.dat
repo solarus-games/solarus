@@ -1,0 +1,7 @@
+animation{
+  name = "stopped",
+  src_image = "citizens/witch.png",
+  directions = {
+    { x = 128, y = 72, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 17 },
+  },
+}

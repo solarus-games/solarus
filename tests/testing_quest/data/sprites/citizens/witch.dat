@@ -1,0 +1,22 @@
+animation{
+  name = "stopped",
+  src_image = "citizens/witch.png",
+  frame_delay = 1000,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 48, y = 48, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 29, num_frames = 2 },
+    { x = 144, y = 48, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 29, num_frames = 2 },
+    { x = 0, y = 48, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 29, num_frames = 2 },
+    { x = 96, y = 48, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 29, num_frames = 2 },
+  },
+}
+animation{
+  name = "witch_mixing",
+  src_image = "citizens/witch.png",
+  frame_delay = 200,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 128, y = 0, frame_width = 24, frame_height = 24, origin_x = 16, origin_y = 29, num_frames = 4 },
+    { x = 128, y = 24, frame_width = 24, frame_height = 24, origin_x = 8, origin_y = 29, num_frames = 4 },
+  },
+}

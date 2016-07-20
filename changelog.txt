@@ -29,6 +29,7 @@ Engine changes
 * Fix crash when main.lua has a syntax error.
 * Fix crash with missing directions in sprites controlled by the engine (#864).
 * Fix sprite:on_animation_finished() and others not working sometimes (#799).
+* Fix error in sprite:set_animation() when the direction is missing (#937).
 * Fix straight movement precision.
 * Fix freeze when loading a map with tiles outside the limits (#875).
 * Fix crash when trying to use a non-saved item (#889).

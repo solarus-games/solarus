@@ -272,13 +272,9 @@ void Sprite::set_current_animation(const std::string& animation_name) {
       this->current_animation = nullptr;
     }
 
+    int old_direction = this->current_direction;
     if (current_direction < 0
         || current_direction >= get_nb_directions()) {
-      std::ostringstream oss;
-      oss << "Illegal direction " << current_direction
-          << " for sprite '" << get_animation_set_id()
-          << "' in animation '" << current_animation_name << "'";
-      Debug::error(oss.str());
       current_direction = 0;
     }
 
@@ -288,6 +284,9 @@ void Sprite::set_current_animation(const std::string& animation_name) {
     LuaContext* lua_context = get_lua_context();
     if (lua_context != nullptr) {
       lua_context->sprite_on_animation_changed(*this, current_animation_name);
+      if (current_direction != old_direction) {
+        lua_context->sprite_on_direction_changed(*this, current_animation_name, current_direction);
+      }
       lua_context->sprite_on_frame_changed(*this, current_animation_name, 0);
     }
   }

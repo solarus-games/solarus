@@ -65,6 +65,7 @@ Changes that introduce incompatibilities:
 * New ability "jump_over_water" in game:get/set_ability(), off by default (#530).
 * Fix hero state name "freezed", renamed it to "frozen" (#813).
 * Fix map:get_entities() not returning the hero (#670).
+* Fix map:create_custom_entity() not erroring when width/height are missing.
 * map:get_camera_position() is now deprecated, use camera:get_bounding_box().
 * map:move_camera() is now deprecated, use a camera movement instead.
 * map:draw_sprite() is now deprecated, use map:draw_visual() instead (#661).

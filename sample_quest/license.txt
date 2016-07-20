@@ -137,7 +137,6 @@ sprites/shadows/shadow.png              Diarandor (diarandor at gmail dot com). 
 sprites/things/fall_on_hole_effect.png              Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/things/grass_effect.png                     Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/things/lava_splash_effect.png               Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
-sprites/things/shadow.png                           Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/things/switch_aureole.png                   Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/things/water_splash_effect.png              Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 

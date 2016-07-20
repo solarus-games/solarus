@@ -1,0 +1,9 @@
+animation{
+  name = "marmite",
+  src_image = "citizens/witch.png",
+  frame_delay = 1000,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 16, origin_x = 12, origin_y = 13, num_frames = 4 },
+  },
+}

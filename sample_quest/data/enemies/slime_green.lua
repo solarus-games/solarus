@@ -1,6 +1,6 @@
 local enemy = ...
 
-local life = 1
+local life = 2
 local damage = 1
 local state -- States: "stopped", "going_hero", "hidden", "hiding", "unhiding", "jumping", "prepare_jump", "finish_jump".
 local speed = 20
@@ -8,7 +8,6 @@ local detection_distance = 80
 local jump_duration = 1000 -- Time in milliseconds.
 local max_height = 24 -- Height for the jump, in pixels.
 local jumping_speed = 60 -- Speed of the movement during the jump.
-local is_pushing_enemy = false -- Used to avoid a chain reaction of too many collisions (that makes a crash).
 
 function enemy:on_created()
   self:set_life(life)
@@ -41,11 +40,11 @@ function enemy:on_created()
 end
 
 function enemy:on_restarted()
-  -- Allow to push enemies.
-  is_pushing_enemy = false 
   -- Reset the starting animation if necessary (the engine sets the "walking" animation).
   if state == "hidden" then
     self:get_sprite():set_animation("hidden")
+  elseif state == "going_hero" then
+    self:start_going_hero()
   end
   -- Check for bad grounds.
   self:start_checking_ground()
@@ -84,7 +83,7 @@ function enemy:start_going_hero()
   m:set_target(self:get_map():get_hero())
   m:start(self)
   -- Prepare jump.
-  sol.timer.start(self, 1500, function()
+  sol.timer.start(self, 2000, function()
     self:prepare_jump()
   end)
 end
@@ -104,9 +103,7 @@ end
 function enemy:prepare_jump()
   state = "prepare_jump"
   self:stop_movement()
-  --sol.timer.start(self, 1000, function()
-    self:get_sprite():set_animation("prepare_jump")
-  --end)
+  self:get_sprite():set_animation("prepare_jump")
 end
 -- Finish jump.
 function enemy:finish_jump()
@@ -123,7 +120,7 @@ function enemy:jump()
   local sprite = self:get_sprite()
   sprite:set_animation("jump")
   sol.audio.play_sound("jump")
-  self:set_invincible(true) -- Set invincible.
+  self:set_invincible() -- Set invincible.
   self:set_can_attack(false) -- Do not attack hero during jump.
   -- Start shift on sprite.
   local function f(t) -- Shifting function.
@@ -139,8 +136,7 @@ function enemy:jump()
     end
   end)
   -- Add a shadow sprite.
-  local shadow = self:create_sprite("things/ground_effects")
-  shadow:set_animation("shadow_big_dynamic")
+  local shadow = self:create_sprite("shadows/shadow_big_dynamic")
   local new_frame_delay = math.floor(jump_duration/shadow:get_num_frames())
   shadow:set_frame_delay(new_frame_delay)
   -- Add movement towards near the hero during the jump. The jump does not target the hero.
@@ -165,7 +161,8 @@ end
 
 -- Add an "splash" sprite when dying.
 function enemy:on_dying()
-  local splash = self:create_sprite("enemies/slime_green")
+  local slime_sprite_id = self:get_sprite():get_animation_set() -- Get sprite variant of slime.
+  local splash = self:create_sprite(slime_sprite_id)
   splash:set_animation("pieces")
   splash:set_xy(0,-14)
 end
@@ -173,26 +170,27 @@ end
 -- Check for bad ground (water, hole and lava) and also for empty ground.
 function enemy:check_on_ground()
   local map = self:get_map()
-  local x, y, layer = self:get_position()
+  local px, py, layer = self:get_position()
+  local x, y, layer = self:get_ground_position()
   local ground = self:get_ground_below()
   if ground == "empty" and layer > 0 then 
     -- Fall to lower layer and check ground again.
-     self:set_position(x, y, layer-1)
+     self:set_position(px, py, layer-1)
      self:check_on_ground() -- Check again new ground.
   elseif ground == "hole" then
     -- Create falling animation centered correctly on the 8x8 grid.
     x = math.floor(x/8)*8 + 4; if map:get_ground(x, y, layer) ~= "hole" then x = x + 4 end
     y = math.floor(y/8)*8 + 4; if map:get_ground(x, y, layer) ~= "hole" then y = y + 4 end
     local fall_on_hole = map:create_custom_entity({x = x, y = y, layer = layer, direction = 0})
-    local sprite = fall_on_hole:create_sprite("things/ground_effects")
-    sprite:set_animation("hole_fall")
+    local sprite = fall_on_hole:create_sprite("ground_effects/fall_on_hole_effect")
+    sprite:set_animation("fall_on_hole")
     self:remove()
     function sprite:on_animation_finished() fall_on_hole:remove() end
     sol.audio.play_sound("falling_on_hole")
   elseif ground == "deep_water" then
     -- Sink in water.
     local water_splash = map:create_custom_entity({x = x, y = y, layer = layer, direction = 0})    
-    local sprite = water_splash:create_sprite("things/ground_effects")
+    local sprite = water_splash:create_sprite("ground_effects/water_splash_effect")
     sprite:set_animation("water_splash")
     self:remove()
     function sprite:on_animation_finished() water_splash:remove() end
@@ -200,7 +198,7 @@ function enemy:check_on_ground()
   elseif ground == "lava" then
     -- Sink in lava.
     local lava_splash = map:create_custom_entity({x = x, y = y, layer = layer, direction = 0})    
-    local sprite = lava_splash:create_sprite("things/ground_effects")
+    local sprite = lava_splash:create_sprite("ground_effects/lava_splash_effect")
     sprite:set_animation("lava_splash")
     self:remove()
     function sprite:on_animation_finished() lava_splash:remove() end

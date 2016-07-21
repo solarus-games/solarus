@@ -132,7 +132,7 @@ bool LuaData::export_to_file(const std::string& file_name) const {
 
   // Work on a temporary file to keep the initial one intact in case of failure.
   std::string tmp_file_name = file_name + ".solarus_tmp";
-  std::ofstream tmp_out(tmp_file_name, std::ofstream::binary);
+  std::ofstream tmp_out(tmp_file_name);
   if (!tmp_out) {
     return false;
   }

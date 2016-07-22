@@ -512,6 +512,7 @@ void MainLoop::load_quest_properties() {
     if (!quest_version.empty()) {
       window_title += " " + quest_version;
     }
+    window_title += std::string(" - Solarus ") + SOLARUS_VERSION;
     Video::set_window_title(window_title);
   }
 

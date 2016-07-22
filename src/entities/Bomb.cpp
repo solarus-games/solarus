@@ -152,7 +152,6 @@ void Bomb::notify_collision_with_stream(Stream& stream, int /* dx */, int /* dy 
 
     if (stream.overlaps(center)) {
       set_xy(stream.get_xy());
-      notify_position_changed();
 
       std::string path = "  ";
       path[0] = path[1] = '0' + stream.get_direction();

@@ -12,10 +12,10 @@ sprite{ id = "animals/phoenix", description = "Phoenix" }
 sprite{ id = "citizens/old_man", description = "Old man" }
 sprite{ id = "citizens/old_woman", description = "Old Woman" }
 sprite{ id = "citizens/witch", description = "witch" }
-sprite{ id = "dialogs/dialog_Robyne", description = "Robyne Dialog" }
 sprite{ id = "dialogs/dialog_edgar", description = "Edgar Dialog" }
 sprite{ id = "dialogs/dialog_old_man", description = "Old man Dialog" }
 sprite{ id = "dialogs/dialog_old_woman", description = "Old woman Dialog" }
+sprite{ id = "dialogs/dialog_robyne", description = "Robyne Dialog" }
 sprite{ id = "enemies/enemy_killed", description = "Enemy killed" }
 sprite{ id = "enemies/slime_green", description = "Green Slime" }
 sprite{ id = "entities/arrow", description = "Arrow" }

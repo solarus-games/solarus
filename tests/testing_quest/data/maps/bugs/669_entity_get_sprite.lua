@@ -14,7 +14,7 @@ function map:on_started()
   -- Test an entity with multiple sprites.
   local hero_tunic_sprite = hero:get_sprite()
   assert(hero_tunic_sprite ~= nil)
-  assert(hero_tunic_sprite:get_animation_set() == "main_heroes/edgar")
+  assert(hero_tunic_sprite:get_animation_set() == "main_heroes/eldran")
   assert(hero_tunic_sprite:get_animation_set() == hero:get_tunic_sprite_id())
   assert(hero:get_sprite("tunic") == hero_tunic_sprite)
 

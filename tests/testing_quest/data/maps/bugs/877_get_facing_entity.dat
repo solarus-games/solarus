@@ -43,7 +43,7 @@ npc{
   y = 45,
   direction = 2,
   subtype = 1,
-  sprite = "main_heroes/edgar",
+  sprite = "main_heroes/eldran",
 }
 
 block{

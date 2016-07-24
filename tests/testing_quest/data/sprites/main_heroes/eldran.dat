@@ -1,6 +1,6 @@
 animation{
   name = "stopped",
-  src_image = "main_heroes/edgar.png",
+  src_image = "main_heroes/eldran.png",
   directions = {
     { x = 216, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
     { x = 240, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
@@ -10,7 +10,7 @@ animation{
 }
 animation{
   name = "black",
-  src_image = "main_heroes/edgar.png",
+  src_image = "main_heroes/eldran.png",
   directions = {
     { x = 192, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
     { x = 192, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
@@ -20,7 +20,7 @@ animation{
 }
 animation{
   name = "boomerang1",
-  src_image = "main_heroes/edgar_boomerang.png",
+  src_image = "main_heroes/eldran_boomerang.png",
   frame_delay = 100,
   directions = {
     { x = 0, y = 0, frame_width = 32, frame_height = 24, origin_x = 16, origin_y = 23, num_frames = 2 },
@@ -31,7 +31,7 @@ animation{
 }
 animation{
   name = "bow",
-  src_image = "main_heroes/edgar_bow.png",
+  src_image = "main_heroes/eldran_bow.png",
   frame_delay = 100,
   directions = {
     { x = 0, y = 0, frame_width = 32, frame_height = 24, origin_x = 16, origin_y = 23, num_frames = 3 },
@@ -42,7 +42,7 @@ animation{
 }
 animation{
   name = "brandish",
-  src_image = "main_heroes/edgar_miscellaneous.png",
+  src_image = "main_heroes/eldran_miscellaneous.png",
   directions = {
     { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
     { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
@@ -52,7 +52,7 @@ animation{
 }
 animation{
   name = "carrying_stopped",
-  src_image = "main_heroes/edgar.png",
+  src_image = "main_heroes/eldran.png",
   directions = {
     { x = 216, y = 104, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
     { x = 240, y = 104, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
@@ -62,7 +62,7 @@ animation{
 }
 animation{
   name = "carrying_walking",
-  src_image = "main_heroes/edgar.png",
+  src_image = "main_heroes/eldran.png",
   frame_delay = 70,
   frame_to_loop_on = 0,
   directions = {
@@ -74,7 +74,7 @@ animation{
 }
 animation{
   name = "dead",
-  src_image = "main_heroes/edgar_miscellaneous.png",
+  src_image = "main_heroes/eldran_miscellaneous.png",
   directions = {
     { x = 216, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
     { x = 216, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
@@ -84,7 +84,7 @@ animation{
 }
 animation{
   name = "dying",
-  src_image = "main_heroes/edgar_miscellaneous.png",
+  src_image = "main_heroes/eldran_miscellaneous.png",
   frame_delay = 175,
   directions = {
     { x = 0, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 10 },
@@ -95,7 +95,7 @@ animation{
 }
 animation{
   name = "falling",
-  src_image = "main_heroes/edgar_jumping.png",
+  src_image = "main_heroes/eldran_jumping.png",
   frame_delay = 125,
   directions = {
     { x = 0, y = 96, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 12, num_frames = 6 },
@@ -106,7 +106,7 @@ animation{
 }
 animation{
   name = "grabbing",
-  src_image = "main_heroes/edgar_grabbing.png",
+  src_image = "main_heroes/eldran_grabbing.png",
   directions = {
     { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
     { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
@@ -116,7 +116,7 @@ animation{
 }
 animation{
   name = "hookshot",
-  src_image = "main_heroes/edgar_hookshot.png",
+  src_image = "main_heroes/eldran_hookshot.png",
   directions = {
     { x = 0, y = 0, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 23 },
     { x = 32, y = 0, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 23 },
@@ -126,7 +126,7 @@ animation{
 }
 animation{
   name = "hurt",
-  src_image = "main_heroes/edgar_miscellaneous.png",
+  src_image = "main_heroes/eldran_miscellaneous.png",
   directions = {
     { x = 48, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
     { x = 72, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
@@ -136,7 +136,7 @@ animation{
 }
 animation{
   name = "jumping",
-  src_image = "main_heroes/edgar_jumping.png",
+  src_image = "main_heroes/eldran_jumping.png",
   frame_delay = 50,
   frame_to_loop_on = 2,
   directions = {
@@ -148,7 +148,7 @@ animation{
 }
 animation{
   name = "lifting",
-  src_image = "main_heroes/edgar.png",
+  src_image = "main_heroes/eldran.png",
   frame_delay = 100,
   directions = {
     { x = 0, y = 208, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 4 },
@@ -159,7 +159,7 @@ animation{
 }
 animation{
   name = "plunging_lava",
-  src_image = "main_heroes/edgar_plunging.png",
+  src_image = "main_heroes/eldran_plunging.png",
   frame_delay = 50,
   directions = {
     { x = 336, y = 0, frame_width = 56, frame_height = 24, origin_x = 28, origin_y = 21, num_frames = 6 },
@@ -170,7 +170,7 @@ animation{
 }
 animation{
   name = "plunging_water",
-  src_image = "main_heroes/edgar_plunging.png",
+  src_image = "main_heroes/eldran_plunging.png",
   frame_delay = 50,
   directions = {
     { x = 0, y = 0, frame_width = 56, frame_height = 24, origin_x = 28, origin_y = 21, num_frames = 6 },
@@ -181,7 +181,7 @@ animation{
 }
 animation{
   name = "pulling",
-  src_image = "main_heroes/edgar_grabbing.png",
+  src_image = "main_heroes/eldran_grabbing.png",
   frame_delay = 150,
   frame_to_loop_on = 0,
   directions = {
@@ -193,7 +193,7 @@ animation{
 }
 animation{
   name = "pushing",
-  src_image = "main_heroes/edgar_grabbing.png",
+  src_image = "main_heroes/eldran_grabbing.png",
   frame_delay = 150,
   frame_to_loop_on = 0,
   directions = {
@@ -205,7 +205,7 @@ animation{
 }
 animation{
   name = "running",
-  src_image = "main_heroes/edgar_running.png",
+  src_image = "main_heroes/eldran_running.png",
   frame_delay = 45,
   frame_to_loop_on = 0,
   directions = {
@@ -217,7 +217,7 @@ animation{
 }
 animation{
   name = "spin_attack",
-  src_image = "main_heroes/edgar_spin_attack.png",
+  src_image = "main_heroes/eldran_spin_attack.png",
   frame_delay = 30,
   directions = {
     { x = 0, y = 0, frame_width = 64, frame_height = 64, origin_x = 32, origin_y = 39, num_frames = 22, num_columns = 15 },
@@ -228,7 +228,7 @@ animation{
 }
 animation{
   name = "stopped_with_shield",
-  src_image = "main_heroes/edgar.png",
+  src_image = "main_heroes/eldran.png",
   directions = {
     { x = 72, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
     { x = 72, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
@@ -238,7 +238,7 @@ animation{
 }
 animation{
   name = "surprised",
-  src_image = "main_heroes/edgar_miscellaneous.png",
+  src_image = "main_heroes/eldran_miscellaneous.png",
   directions = {
     { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
     { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
@@ -248,7 +248,7 @@ animation{
 }
 animation{
   name = "swimming_fast",
-  src_image = "main_heroes/edgar_swimming.png",
+  src_image = "main_heroes/eldran_swimming.png",
   frame_delay = 200,
   directions = {
     { x = 240, y = 0, frame_width = 40, frame_height = 40, origin_x = 20, origin_y = 29, num_frames = 3 },
@@ -259,7 +259,7 @@ animation{
 }
 animation{
   name = "swimming_slow",
-  src_image = "main_heroes/edgar_swimming.png",
+  src_image = "main_heroes/eldran_swimming.png",
   frame_delay = 200,
   frame_to_loop_on = 0,
   directions = {
@@ -271,7 +271,7 @@ animation{
 }
 animation{
   name = "swimming_stopped",
-  src_image = "main_heroes/edgar_swimming.png",
+  src_image = "main_heroes/eldran_swimming.png",
   frame_delay = 500,
   frame_to_loop_on = 0,
   directions = {
@@ -283,7 +283,7 @@ animation{
 }
 animation{
   name = "sword",
-  src_image = "main_heroes/edgar_sword_brandish.png",
+  src_image = "main_heroes/eldran_sword_brandish.png",
   frame_delay = 30,
   directions = {
     { x = 0, y = 0, frame_width = 48, frame_height = 48, origin_x = 12, origin_y = 31, num_frames = 12 },
@@ -294,7 +294,7 @@ animation{
 }
 animation{
   name = "sword_inverted",
-  src_image = "main_heroes/edgar_sword_brandish_inverted.png",
+  src_image = "main_heroes/eldran_sword_brandish_inverted.png",
   frame_delay = 30,
   directions = {
     { x = 0, y = 0, frame_width = 48, frame_height = 48, origin_x = 12, origin_y = 31, num_frames = 12 },
@@ -305,7 +305,7 @@ animation{
 }
 animation{
   name = "sword_loading_stopped",
-  src_image = "main_heroes/edgar_sword_loading.png",
+  src_image = "main_heroes/eldran_sword_loading.png",
   directions = {
     { x = 144, y = 56, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
     { x = 168, y = 56, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
@@ -315,7 +315,7 @@ animation{
 }
 animation{
   name = "sword_loading_walking",
-  src_image = "main_heroes/edgar_sword_loading.png",
+  src_image = "main_heroes/eldran_sword_loading.png",
   frame_delay = 100,
   frame_to_loop_on = 0,
   directions = {
@@ -327,7 +327,7 @@ animation{
 }
 animation{
   name = "sword_running",
-  src_image = "main_heroes/edgar_running.png",
+  src_image = "main_heroes/eldran_running.png",
   frame_delay = 45,
   frame_to_loop_on = 0,
   directions = {
@@ -339,7 +339,7 @@ animation{
 }
 animation{
   name = "sword_tapping",
-  src_image = "main_heroes/edgar_sword_tapping.png",
+  src_image = "main_heroes/eldran_sword_tapping.png",
   frame_delay = 40,
   frame_to_loop_on = 1,
   directions = {
@@ -351,7 +351,7 @@ animation{
 }
 animation{
   name = "throw",
-  src_image = "main_heroes/edgar.png",
+  src_image = "main_heroes/eldran.png",
   frame_delay = 30,
   directions = {
     { x = 72, y = 208, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 4 },
@@ -362,7 +362,7 @@ animation{
 }
 animation{
   name = "victory",
-  src_image = "main_heroes/edgar_victory.png",
+  src_image = "main_heroes/eldran_victory.png",
   frame_delay = 50,
   frame_to_loop_on = 18,
   directions = {
@@ -374,7 +374,7 @@ animation{
 }
 animation{
   name = "walking",
-  src_image = "main_heroes/edgar.png",
+  src_image = "main_heroes/eldran.png",
   frame_delay = 70,
   frame_to_loop_on = 0,
   directions = {
@@ -386,7 +386,7 @@ animation{
 }
 animation{
   name = "walking_diagonal",
-  src_image = "main_heroes/edgar.png",
+  src_image = "main_heroes/eldran.png",
   frame_delay = 70,
   frame_to_loop_on = 0,
   directions = {
@@ -398,7 +398,7 @@ animation{
 }
 animation{
   name = "walking_with_shield",
-  src_image = "main_heroes/edgar.png",
+  src_image = "main_heroes/eldran.png",
   frame_delay = 70,
   frame_to_loop_on = 0,
   directions = {

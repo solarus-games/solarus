@@ -110,7 +110,7 @@ sprite{ id = "hero/sword1", description = "Hero sword 1" }
 sprite{ id = "hero/sword_stars1", description = "Hero sword stars 1" }
 sprite{ id = "hero/trail", description = "Hero trail" }
 sprite{ id = "hero/tunic1", description = "Hero tunic 1" }
-sprite{ id = "main_heroes/edgar", description = "Edgar" }
+sprite{ id = "main_heroes/eldran", description = "Eldran" }
 sprite{ id = "main_heroes/robyne", description = "Robyne" }
 sprite{ id = "main_heroes/sword", description = "Sword" }
 sprite{ id = "main_heroes/sword_electricity", description = "Sword electricity" }

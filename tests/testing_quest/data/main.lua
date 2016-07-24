@@ -12,7 +12,7 @@ local game_meta = sol.main.get_metatable("game")
 function game_meta:on_started()
 
   local hero = self:get_hero()
-  hero:set_tunic_sprite_id("main_heroes/edgar")
+  hero:set_tunic_sprite_id("main_heroes/eldran")
   self:set_max_life(40)
   self:set_life(self:get_max_life())
 end

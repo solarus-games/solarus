@@ -519,8 +519,8 @@ custom_entity{
   layer = 0,
   x = 136,
   y = 117,
-  height = 8,
   width = 16,
+  height = 8,
   direction = 0,
   sprite = "things/long_chair",
 }

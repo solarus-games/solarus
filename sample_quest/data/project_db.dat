@@ -12,7 +12,7 @@ sprite{ id = "animals/phoenix", description = "Phoenix" }
 sprite{ id = "citizens/old_man", description = "Old man" }
 sprite{ id = "citizens/old_woman", description = "Old Woman" }
 sprite{ id = "citizens/witch", description = "witch" }
-sprite{ id = "dialogs/dialog_edgar", description = "Edgar Dialog" }
+sprite{ id = "dialogs/dialog_eldran", description = "Eldran Dialog" }
 sprite{ id = "dialogs/dialog_old_man", description = "Old man Dialog" }
 sprite{ id = "dialogs/dialog_old_woman", description = "Old woman Dialog" }
 sprite{ id = "dialogs/dialog_robyne", description = "Robyne Dialog" }
@@ -47,7 +47,7 @@ sprite{ id = "hero/sword1", description = "Hero sword 1" }
 sprite{ id = "hero/sword_stars1", description = "Hero sword stars 1" }
 sprite{ id = "hero/trail", description = "Hero trail" }
 sprite{ id = "hero/tunic1", description = "Hero tunic 1" }
-sprite{ id = "main_heroes/edgar", description = "Edgar" }
+sprite{ id = "main_heroes/eldran", description = "Eldran" }
 sprite{ id = "main_heroes/robyne", description = "Robyne" }
 sprite{ id = "main_heroes/sword", description = "sword" }
 sprite{ id = "main_heroes/sword_electricity", description = "sword electricity" }

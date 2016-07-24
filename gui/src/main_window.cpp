@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget* parent) :
     icon.addPixmap(":/images/icon/solarus_launcher_icon_" + size + ".png");
   }
   setWindowIcon(icon);
+  QApplication::setWindowIcon(icon);
 
   // Console.
   ui.console->set_quest_runner(quest_runner);

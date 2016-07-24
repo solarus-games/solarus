@@ -1,13 +1,13 @@
 animation{
   name = "stopped",
-  src_image = "dialogs/DialogEdgar.png",
+  src_image = "dialogs/DialogEldran.png",
   directions = {
     { x = 0, y = 0, frame_width = 48, frame_height = 48, origin_x = 24, origin_y = 24 },
   },
 }
 animation{
   name = "angry",
-  src_image = "dialogs/DialogEdgar.png",
+  src_image = "dialogs/DialogEldran.png",
   frame_delay = 250,
   frame_to_loop_on = 0,
   directions = {
@@ -16,7 +16,7 @@ animation{
 }
 animation{
   name = "happy",
-  src_image = "dialogs/DialogEdgar.png",
+  src_image = "dialogs/DialogEldran.png",
   frame_delay = 250,
   frame_to_loop_on = 0,
   directions = {
@@ -25,7 +25,7 @@ animation{
 }
 animation{
   name = "talking",
-  src_image = "dialogs/DialogEdgar.png",
+  src_image = "dialogs/DialogEldran.png",
   frame_delay = 250,
   frame_to_loop_on = 0,
   directions = {

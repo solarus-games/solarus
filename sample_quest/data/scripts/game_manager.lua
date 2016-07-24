@@ -14,7 +14,7 @@ function game_manager:start_game()
   game:start()
 
   local hero = game:get_hero()
-  hero:set_tunic_sprite_id("main_heroes/edgar")
+  hero:set_tunic_sprite_id("main_heroes/eldran")
 end
 
 return game_manager

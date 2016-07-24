@@ -435,9 +435,6 @@ QPushButton#play_button {
                    <property name="alignment">
                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                    </property>
-                   <property name="text_role" stdset="0">
-                    <string>h3</string>
-                   </property>
                   </widget>
                  </item>
                  <item row="1" column="1">

@@ -54,6 +54,6 @@ gui/resources/images/icon_stop.png
 Sample quest and testing quest
 ------------------------------
 
-Solarus is provided a sample quest and a testing quest with a lot of data files.
+Solarus provides a sample quest and a testing quest with a lot of data files.
 See sample_quest/license.txt to know their license.
 

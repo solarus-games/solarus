@@ -1279,6 +1279,10 @@ void Map::check_collision_with_detectors(Entity& entity) {
   entities->get_entities_in_rectangle(box, entities_nearby);
   for (const EntityPtr& entity_nearby: entities_nearby) {
 
+    if (entity.is_being_removed()) {
+      return;
+    }
+
     if (!entity_nearby->is_detector()) {
       // Most entities are detectors anyway.
       continue;
@@ -1320,10 +1324,15 @@ void Map::check_collision_from_detector(Entity& detector) {
   entities->get_entities_in_rectangle(box, entities_nearby);
   for (const EntityPtr& entity_nearby: entities_nearby) {
 
-    if (entity_nearby->is_enabled()
-        && !entity_nearby->is_suspended()
-        && !entity_nearby->is_being_removed()
-        && entity_nearby.get() != &detector
+    if (detector.is_being_removed()) {
+      return;
+    }
+
+    if (entity_nearby->is_enabled() &&
+        !entity_nearby->is_suspended() &&
+        !entity_nearby->is_being_removed() &&
+        entity_nearby.get() != &detector &&
+        entity_nearby.get() != &get_entities().get_hero()
     ) {
       detector.check_collision(*entity_nearby);
     }
@@ -1360,10 +1369,15 @@ void Map::check_collision_from_detector(Entity& detector, Sprite& detector_sprit
   entities->get_entities_in_rectangle(box, entities_nearby);
   for (const EntityPtr& entity_nearby: entities_nearby) {
 
+    if (detector.is_being_removed()) {
+      return;
+    }
+
     if (entity_nearby->is_enabled() &&
         !entity_nearby->is_suspended() &&
         !entity_nearby->is_being_removed() &&
-        entity_nearby.get() != &detector
+        entity_nearby.get() != &detector &&
+        entity_nearby.get() != &get_entities().get_hero()
     ) {
       detector.check_collision(detector_sprite, *entity_nearby);
     }
@@ -1393,6 +1407,10 @@ void Map::check_collision_with_detectors(Entity& entity, Sprite& sprite) {
   std::vector<EntityPtr> entities_nearby;
   entities->get_entities_in_rectangle(box, entities_nearby);
   for (const EntityPtr& entity_nearby: entities_nearby) {
+
+    if (entity.is_being_removed()) {
+      return;
+    }
 
     if (!entity_nearby->is_detector()) {
       continue;

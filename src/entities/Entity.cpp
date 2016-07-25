@@ -219,10 +219,11 @@ void Entity::update_ground_below() {
   }
 
   if (!is_enabled() ||
-      is_being_removed() ||
-      is_suspended()) {
+      is_being_removed()) {
     return;
   }
+  // Note that even if the entity is suspended,
+  // the user might want to know the ground below it.
 
   if (map->test_collision_with_border(get_ground_point())) {
     // If the entity is outside the map, which is legal during a scrolling

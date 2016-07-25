@@ -918,6 +918,10 @@ void Enemy::notify_enabled(bool enabled) {
  */
 void Enemy::notify_ground_below_changed() {
 
+  if (is_suspended()) {
+    return;
+  }
+
   if (get_obstacle_behavior() != ObstacleBehavior::NORMAL
       || get_life() <= 0) {
     return;

@@ -519,6 +519,8 @@ void Game::update_transitions() {
       transition->set_previous_surface(previous_map_surface.get());
     }
 
+    set_suspended_by_script(false);
+
     hero->place_on_destination(*current_map, previous_map_location);
     transition->start();
     current_map->start();

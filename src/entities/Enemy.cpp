@@ -96,7 +96,6 @@ Enemy::Enemy(
   savegame_variable(),
   traversable(true),
   obstacle_behavior(ObstacleBehavior::NORMAL),
-  created(false),
   being_hurt(false),
   stop_hurt_date(0),
   invulnerable(false),
@@ -204,7 +203,6 @@ void Enemy::notify_created() {
   Entity::notify_created();
 
   // At this point, enemy:on_created() was called.
-  created = true;
   enable_pixel_collisions();
 
   // Give sprites their initial direction.
@@ -925,7 +923,7 @@ void Enemy::notify_ground_below_changed() {
 
   // React to bad ground.
 
-  if (!created) {
+  if (!is_initialized()) {
     // Still initializing the enemy.
     // Maybe the obstacle behabior is not even set yet.
     return;

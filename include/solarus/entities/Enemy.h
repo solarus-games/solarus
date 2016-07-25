@@ -230,7 +230,6 @@ class Enemy: public Entity {
     ObstacleBehavior obstacle_behavior; /**< behavior with obstacles */
 
     // enemy state
-    bool created;                      /**< Whether enemy:on_created() was called. */
     bool being_hurt;                   /**< indicates that the enemy is being hurt */
     uint32_t stop_hurt_date;           /**< date when the enemy stops being hurt */
     bool invulnerable;                 /**< indicates that the enemy cannot be hurt for now */

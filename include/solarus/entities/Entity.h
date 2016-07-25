@@ -117,6 +117,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual void notify_command_released(GameCommand command);
 
     // adding to a map
+    bool is_initialized() const;
     bool is_on_map() const;
     void set_map(Map& map);
     Map& get_map() const;

@@ -60,6 +60,7 @@ Lua API changes
 
 Changes that introduce incompatibilities:
 
+* Fix missing collision detections and entity notifications.
 * chest:on_empty() is replaced by chest:on_opened(treasure) (#483).
 * Enemy ranks no longer exist, set_hurt_style() needs to be called (#449).
 * Items with amount now have a default max amount of 1000 (#688).

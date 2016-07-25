@@ -330,6 +330,17 @@ void Entity::set_map(Map& map) {
 }
 
 /**
+ * @brief Returns whether this entity is fully initialized.
+ *
+ * This becomes true after entity:on_created() is called.
+ *
+ * @return @c true if the entity is initialized.
+ */
+bool Entity::is_initialized() const {
+  return initialized;
+}
+
+/**
  * \brief Notifies this entity that its map has just started.
  *
  * The map was being loaded and is now ready.
@@ -355,11 +366,11 @@ void Entity::finish_initialization() {
   Debug::check_assertion(is_on_map(), "Missing map");
   Debug::check_assertion(get_map().is_loaded(), "Map is not ready");
 
-  initialized = true;
-
   notify_creating();
   get_lua_context()->entity_on_created(*this);
   notify_created();
+
+  initialized = true;
 }
 
 /**
@@ -1540,7 +1551,8 @@ void Entity::clear_old_movements() {
  * \return Whether movement events are currently enabled.
  */
 bool Entity::are_movement_notifications_enabled() const {
-  return main_loop != nullptr && movement_notifications_enabled;
+  return main_loop != nullptr &&
+      movement_notifications_enabled;
 }
 
 /**

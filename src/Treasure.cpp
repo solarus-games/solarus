@@ -167,7 +167,6 @@ const std::string& Treasure::get_savegame_variable() const {
  */
 void Treasure::give_to_player() const {
 
-  Debug::check_assertion(!is_found(), "This treasure was already found");
   check_obtainable();
 
   // Mark the treasure as found in the savegame.

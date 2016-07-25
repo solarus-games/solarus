@@ -2130,6 +2130,7 @@ void Entity::check_collision_with_detectors() {
   get_map().check_collision_with_detectors(*this);
 
   // Detect pixel-precise collisions.
+  std::vector<NamedSprite> sprites = this->sprites;
   for (const NamedSprite& named_sprite: sprites) {
     if (named_sprite.removed) {
       continue;

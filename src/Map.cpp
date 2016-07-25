@@ -1267,7 +1267,8 @@ void Map::check_collision_with_detectors(Entity& entity) {
     return;
   }
 
-  if (entity.is_being_removed()) {
+  if (entity.is_being_removed() ||
+      !entity.is_enabled()) {
     return;
   }
 
@@ -1288,9 +1289,9 @@ void Map::check_collision_with_detectors(Entity& entity) {
       continue;
     }
 
-    if (entity_nearby->is_enabled()
-        && !entity_nearby->is_suspended()
-        && !entity_nearby->is_being_removed()) {
+    if (entity_nearby->is_enabled() &&
+        !entity_nearby->is_suspended() &&
+        !entity_nearby->is_being_removed()) {
       entity_nearby->check_collision(entity);
     }
   }
@@ -1311,7 +1312,8 @@ void Map::check_collision_from_detector(Entity& detector) {
     return;
   }
 
-  if (detector.is_being_removed()) {
+  if (detector.is_being_removed() ||
+      !detector.is_enabled()) {
     return;
   }
 
@@ -1356,7 +1358,8 @@ void Map::check_collision_from_detector(Entity& detector, Sprite& detector_sprit
     return;
   }
 
-  if (detector.is_being_removed()) {
+  if (detector.is_being_removed() ||
+      !detector.is_enabled()) {
     return;
   }
 
@@ -1399,6 +1402,10 @@ void Map::check_collision_from_detector(Entity& detector, Sprite& detector_sprit
 void Map::check_collision_with_detectors(Entity& entity, Sprite& sprite) {
 
   if (suspended) {
+    return;
+  }
+
+  if (!entity.is_enabled()) {
     return;
   }
 

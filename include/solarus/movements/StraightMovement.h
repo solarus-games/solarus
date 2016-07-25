@@ -68,11 +68,12 @@ class StraightMovement: public Movement {
     void set_next_move_date_x(uint32_t next_move_date_x);
     void set_next_move_date_y(uint32_t next_move_date_y);
 
-    void update_x();
+    void update_smooth_xy();
     void update_smooth_x();
-    void update_non_smooth_x();
-    void update_y();
     void update_smooth_y();
+
+    void update_non_smooth_xy();
+    void update_non_smooth_x();
     void update_non_smooth_y();
 
   private:

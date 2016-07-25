@@ -467,17 +467,20 @@ void Music::decode_it(ALuint destination_buffer, ALsizei nb_samples) {
   std::vector<ALushort> raw_data(nb_samples);
   int bytes_read = it_decoder->decode(raw_data.data(), nb_samples);
 
-  if (bytes_read > 0) {
+  if (bytes_read == 0) {
+    // End of file.
+    alBufferData(destination_buffer, AL_FORMAT_STEREO16, raw_data.data(), 0, 44100);
+  }
+  else {
     // Put this decoded data into the buffer.
     alBufferData(destination_buffer, AL_FORMAT_STEREO16, raw_data.data(), nb_samples, 44100);
-
-    int error = alGetError();
-    if (error != AL_NO_ERROR) {
-      std::ostringstream oss;
-      oss << "Failed to fill the audio buffer with decoded IT data for music file '"
-          << file_name << ": error " << error;
-      Debug::error(oss.str());
-    }
+  }
+  int error = alGetError();
+  if (error != AL_NO_ERROR) {
+    std::ostringstream oss;
+    oss << "Failed to fill the audio buffer with decoded IT data for music file '"
+        << file_name << ": error " << error;
+    Debug::error(oss.str());
   }
 }
 

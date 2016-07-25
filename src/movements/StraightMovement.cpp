@@ -360,6 +360,9 @@ void StraightMovement::set_smooth(bool smooth) {
  */
 void StraightMovement::update_smooth_xy() {
 
+  // Save the current coordinates.
+  Point old_xy = get_xy();
+
   uint32_t now = System::now();
   bool x_move_now = x_move != 0 && now >= next_move_date_x;
   bool y_move_now = y_move != 0 && now >= next_move_date_y;
@@ -392,6 +395,19 @@ void StraightMovement::update_smooth_xy() {
   else {
     update_smooth_y();
   }
+
+  if (!is_suspended() && get_entity() != nullptr && !finished) {
+
+    // the movement was successful if the entity's coordinates have changed
+    // and the movement was not stopped
+    bool success = (get_xy() != old_xy)
+        && (x_move != 0 || y_move != 0);
+
+    if (!success) {
+      notify_obstacle_reached();
+    }
+  }
+
 }
 
 /**
@@ -575,6 +591,9 @@ void StraightMovement::update_smooth_y() {
  */
 void StraightMovement::update_non_smooth_xy() {
 
+  // Save the current coordinates.
+  Point old_xy = get_xy();
+
   uint32_t now = System::now();
   bool x_move_now = x_move != 0 && now >= next_move_date_x;
   bool y_move_now = y_move != 0 && now >= next_move_date_y;
@@ -585,72 +604,40 @@ void StraightMovement::update_non_smooth_xy() {
     if (y_move_now) {
       // but it's also time to make a y move
 
-      if (next_move_date_x <= next_move_date_y) {
-        // x move first
-        update_non_smooth_x();
-        if (now >= next_move_date_y) {
-          update_non_smooth_y();
-        }
-        next_move_date_x += x_delay;
-        next_move_date_y += y_delay;
+      if (!test_collision_with_obstacles(x_move, y_move)) {
+        translate_xy(x_move, y_move);
       }
-      else {
-        // y move first
-        update_non_smooth_y();
-        if (now >= next_move_date_x) {
-          update_non_smooth_x();
-        }
-        next_move_date_x += x_delay;
-        next_move_date_y += y_delay;
-      }
+      next_move_date_x += x_delay;
+      next_move_date_y += y_delay;
     }
     else {
-      update_non_smooth_x();
+      if (!test_collision_with_obstacles(x_move, 0)) {
+        translate_x(x_move);
+      }
       next_move_date_x += x_delay;
     }
   }
   else {
-    update_non_smooth_y();
-    next_move_date_y += y_delay;
-  }
-}
-
-/**
- * \brief Updates the x position of the entity if it wants to move
- * (non-smooth version).
- *
- * Does not update next_move_date_x yet.
- */
-void StraightMovement::update_non_smooth_x() {
-
-  if (x_move != 0) {
-
-    // make the move only if there is no collision
-    uint32_t now = System::now();
-    int dy = now >= next_move_date_y ? y_move : 0;
-    if (!test_collision_with_obstacles(x_move, dy)) {
-      translate_x(x_move);
-    }
-  }
-}
-
-/**
- * \brief Updates the y position of the entity if it wants to move
- * (non-smooth version).
- *
- * Does not update next_move_date_x yet.
- */
-void StraightMovement::update_non_smooth_y() {
-
-  if (y_move != 0) { // if it's time to try a move
-
-    // make the move only if there is no collision
-    uint32_t now = System::now();
-    int dx = now >= next_move_date_x ? x_move : 0;
-    if (!test_collision_with_obstacles(dx, y_move)) {
+    if (!test_collision_with_obstacles(0, y_move)) {
       translate_y(y_move);
     }
+    next_move_date_y += y_delay;
   }
+
+  if (!is_suspended() &&
+      get_entity() != nullptr &&
+      !finished) {
+
+    // the movement was successful if the entity's coordinates have changed
+    // and the movement was not stopped
+    bool success = (get_xy() != old_xy)
+        && (x_move != 0 || y_move != 0);
+
+    if (!success) {
+      notify_obstacle_reached();
+    }
+  }
+
 }
 
 /**
@@ -668,26 +655,11 @@ void StraightMovement::update() {
 
     while (x_move_now || y_move_now) { // while it's time to move
 
-      // save the current coordinates
-      Point old_xy = get_xy();
-
       if (is_smooth()) {
         update_smooth_xy();
       }
       else {
         update_non_smooth_xy();
-      }
-
-      if (!is_suspended() && get_entity() != nullptr && !finished) {
-
-        // the movement was successful if the entity's coordinates have changed
-        // and the movement was not stopped
-        bool success = (get_xy() != old_xy)
-            && (x_move != 0 || y_move != 0);
-
-        if (!success) {
-          notify_obstacle_reached();
-        }
       }
 
       now = System::now();

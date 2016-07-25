@@ -55,6 +55,7 @@ map{ id = "bugs/883_collision_test_not_moving_sprite", description = "#883: Cust
 map{ id = "bugs/889_crash_use_non_saved_item", description = "#889: Crash when using a non saved item" }
 map{ id = "bugs/937_custom_entity_missing_direction", description = "#937: Error when changing the animation of a custom entity if the direction is missing" }
 map{ id = "bugs/940_crash_bomb_on_stream", description = "#940: Crash when placing a bomb on a stream" }
+map{ id = "bugs/945_flying_enemies_fall_in_hole", description = "#945: Flying enemies fall in holes when the map starts" }
 map{ id = "dynamic_tile_tests", description = "Dynamic tile tests" }
 map{ id = "jumper_tests", description = "Jumper tests" }
 map{ id = "surface_tests", description = "Surface tests" }
@@ -173,6 +174,7 @@ item{ id = "sword", description = "Sword" }
 
 enemy{ id = "slime_green", description = "Green Slime" }
 enemy{ id = "test_enemy", description = "Test enemy" }
+enemy{ id = "test_flying_enemy", description = "Flying enemy" }
 
 
 language{ id = "en", description = "English" }

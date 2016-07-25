@@ -218,7 +218,9 @@ void Entity::update_ground_below() {
     return;
   }
 
-  if (!is_enabled() || is_being_removed()) {
+  if (!is_enabled() ||
+      is_being_removed() ||
+      is_suspended()) {
     return;
   }
 

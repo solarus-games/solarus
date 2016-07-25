@@ -40,6 +40,7 @@
 #include "solarus/SpriteAnimationSet.h"
 #include <memory>
 #include <sstream>
+#include <iostream>
 
 namespace Solarus {
 
@@ -95,6 +96,7 @@ Enemy::Enemy(
   savegame_variable(),
   traversable(true),
   obstacle_behavior(ObstacleBehavior::NORMAL),
+  created(false),
   being_hurt(false),
   stop_hurt_date(0),
   invulnerable(false),
@@ -202,6 +204,7 @@ void Enemy::notify_created() {
   Entity::notify_created();
 
   // At this point, enemy:on_created() was called.
+  created = true;
   enable_pixel_collisions();
 
   // Give sprites their initial direction.
@@ -917,6 +920,16 @@ void Enemy::notify_enabled(bool enabled) {
  * \copydoc Entity::notify_ground_below_changed
  */
 void Enemy::notify_ground_below_changed() {
+
+  Entity::notify_ground_below_changed();
+
+  // React to bad ground.
+
+  if (!created) {
+    // Still initializing the enemy.
+    // Maybe the obstacle behabior is not even set yet.
+    return;
+  }
 
   if (is_suspended()) {
     return;

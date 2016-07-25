@@ -374,6 +374,7 @@ void Music::update() {
     if (!playing) {
       // Music is finished.
       ScopedLuaRef callback_ref = current_music->callback_ref;
+      current_music->stop();
       current_music = nullptr;
       callback_ref.call("music callback");
     }

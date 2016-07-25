@@ -57,7 +57,7 @@ class Arrow: public Entity {
     void stop();
     bool is_stopped() const;
     bool is_flying() const;
-    void attach_to(Entity &entity_reached);
+    void attach_to(Entity& entity_reached);
 
     // collisions
     virtual void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) override;

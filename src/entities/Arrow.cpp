@@ -347,8 +347,13 @@ void Arrow::attach_to(Entity& entity_reached) {
  */
 void Arrow::notify_collision_with_switch(Switch& sw, CollisionMode /* collision_mode */) {
 
+  if (entity_reached != nullptr) {
+    return;
+  }
+
   if (sw.is_arrow_target() && is_stopped()) {
     sw.try_activate(*this);
+    attach_to(sw);
   }
   else if (sw.is_solid() && is_flying()) {
     sw.try_activate();

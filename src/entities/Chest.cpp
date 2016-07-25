@@ -385,6 +385,11 @@ void Chest::update() {
       treasure_date = 0;
       treasure_given = true;
 
+      if (treasure.is_saved()) {
+        // Mark the chest as open in the savegame.
+        get_savegame().set_boolean(treasure.get_savegame_variable(), true);
+      }
+
       // Notify scripts.
       bool done = get_lua_context()->chest_on_opened(*this, treasure);
       if (!done) {
@@ -393,10 +398,6 @@ void Chest::update() {
         ) {
           // No treasure and the script does not define any behavior:
           // save the state and unfreeze the hero.
-          if (treasure.is_saved()) {
-            // Mark the treasure as found in the savegame.
-            get_savegame().set_boolean(treasure.get_savegame_variable(), true);
-          }
           get_hero().start_free();
         }
         else {

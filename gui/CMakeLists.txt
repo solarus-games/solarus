@@ -104,7 +104,7 @@ set(solarus_gui_exe_SOURCES
 if(WIN32)
   set(solarus_gui_exe_SOURCES
     ${solarus_gui_exe_SOURCES}
-    ../cmake/win32/resources.rc
+    ../gui/resources/win32/resources.rc
   )
 endif()
 

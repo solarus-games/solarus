@@ -925,7 +925,7 @@ void Enemy::notify_ground_below_changed() {
 
   if (!is_initialized()) {
     // Still initializing the enemy.
-    // Maybe the obstacle behabior is not even set yet.
+    // Maybe the obstacle behavior is not even set yet.
     return;
   }
 
@@ -1130,8 +1130,8 @@ void Enemy::restart() {
  *
  * The enemy is considered to be in its normal state if
  * it is not disabled, dying, being hurt or immobilized.
- * When this method returns false, the subclasses of Enemy
- * should not change the enemy properties.
+ * When this method returns false, scripts
+ * cannot hurt or immobilized the enemy.
  *
  * \return true if this enemy is in a normal state
  */

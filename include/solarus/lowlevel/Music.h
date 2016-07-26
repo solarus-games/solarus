@@ -43,7 +43,7 @@ class SpcDecoder;
  * TODO move the non-static parts to an internal private class.
  * TODO make a subclass for each format?
  */
-class Music {
+class SOLARUS_API Music {
 
   public:
 

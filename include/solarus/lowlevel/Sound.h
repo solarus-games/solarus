@@ -38,7 +38,7 @@ class Arguments;
  * This class is the only one that depends on the sound decoding library (libsndfile).
  * This class and the Music class are the only ones that depend on the audio mixer library (OpenAL).
  */
-class Sound {
+class SOLARUS_API Sound {
 
   public:
 

@@ -20,13 +20,12 @@ animation{
 }
 animation{
   name = "bow",
-  src_image = "hero/bow_brandish.png",
-  frame_delay = 100,
+  src_image = "main_heroes/robyne.png",
   directions = {
-    { x = 72, y = 8, frame_width = 32, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 3 },
-    { x = 72, y = 8, frame_width = 32, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 3 },
-    { x = 72, y = 8, frame_width = 32, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 3 },
-    { x = 72, y = 8, frame_width = 32, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 3 },
+    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 48, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
   },
 }
 animation{

@@ -1507,6 +1507,7 @@ void Entity::set_movement(const std::shared_ptr<Movement>& movement) {
   this->movement = movement;
 
   if (movement != nullptr) {
+    movement->set_lua_notifications_enabled(true);
     movement->set_entity(this);
 
     if (movement->is_suspended() != suspended) {

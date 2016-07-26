@@ -56,6 +56,7 @@ map{ id = "bugs/889_crash_use_non_saved_item", description = "#889: Crash when u
 map{ id = "bugs/937_custom_entity_missing_direction", description = "#937: Error when changing the animation of a custom entity if the direction is missing" }
 map{ id = "bugs/940_crash_bomb_on_stream", description = "#940: Crash when placing a bomb on a stream" }
 map{ id = "bugs/945_flying_enemies_fall_in_hole", description = "#945: Flying enemies fall in holes when the map starts" }
+map{ id = "bugs/946_reused_movement_callback", description = "#946: Callbacks no longer work after reusing a movement" }
 map{ id = "dynamic_tile_tests", description = "Dynamic tile tests" }
 map{ id = "jumper_tests", description = "Jumper tests" }
 map{ id = "surface_tests", description = "Surface tests" }

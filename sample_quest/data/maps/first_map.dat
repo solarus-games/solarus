@@ -399,25 +399,7 @@ destructible{
   x = 88,
   y = 45,
   sprite = "entities/pot",
-  destruction_sound = "stone",
-  damage_on_enemies = 2,
-}
-
-destructible{
-  layer = 0,
-  x = 104,
-  y = 45,
-  sprite = "entities/pot",
-  destruction_sound = "stone",
-  damage_on_enemies = 2,
-}
-
-destructible{
-  layer = 0,
-  x = 120,
-  y = 45,
-  sprite = "entities/pot",
-  destruction_sound = "stone",
+  destruction_sound = "falling_rock",
   damage_on_enemies = 2,
 }
 
@@ -426,27 +408,7 @@ destructible{
   x = 32,
   y = 157,
   sprite = "entities/stone_small_white",
-  destruction_sound = "stone",
-  weight = 1,
-  damage_on_enemies = 2,
-}
-
-destructible{
-  layer = 0,
-  x = 48,
-  y = 173,
-  sprite = "entities/stone_small_white",
-  destruction_sound = "stone",
-  weight = 1,
-  damage_on_enemies = 2,
-}
-
-destructible{
-  layer = 0,
-  x = 32,
-  y = 173,
-  sprite = "entities/stone_small_white",
-  destruction_sound = "stone",
+  destruction_sound = "falling_rock",
   weight = 1,
   damage_on_enemies = 2,
 }
@@ -531,6 +493,44 @@ enemy{
   y = 45,
   direction = 0,
   breed = "slime_green",
+}
+
+destructible{
+  layer = 0,
+  x = 32,
+  y = 173,
+  sprite = "entities/stone_small_white",
+  destruction_sound = "falling_rock",
+  weight = 1,
+  damage_on_enemies = 2,
+}
+
+destructible{
+  layer = 0,
+  x = 48,
+  y = 173,
+  sprite = "entities/stone_small_white",
+  destruction_sound = "falling_rock",
+  weight = 1,
+  damage_on_enemies = 2,
+}
+
+destructible{
+  layer = 0,
+  x = 104,
+  y = 45,
+  sprite = "entities/pot",
+  destruction_sound = "falling_rock",
+  damage_on_enemies = 2,
+}
+
+destructible{
+  layer = 0,
+  x = 120,
+  y = 45,
+  sprite = "entities/pot",
+  destruction_sound = "falling_rock",
+  damage_on_enemies = 2,
 }
 
 custom_entity{

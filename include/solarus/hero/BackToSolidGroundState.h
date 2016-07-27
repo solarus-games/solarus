@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_BACK_TO_SOLID_GROUND_STATE_H
 #define SOLARUS_HERO_BACK_TO_SOLID_GROUND_STATE_H
 
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 #include "solarus/lowlevel/Point.h"
 #include <cstdint>
 
@@ -26,13 +26,13 @@ namespace Solarus {
 /**
  * \brief The state "back to solid ground" of the hero.
  */
-class Hero::BackToSolidGroundState: public Hero::BaseState {
+class Hero::BackToSolidGroundState: public HeroState {
 
   public:
 
     BackToSolidGroundState(
         Hero& hero,
-        bool use_memorized_xy,
+        bool use_specified_position,
         uint32_t end_delay = 0,
         bool with_sound = true
     );
@@ -59,8 +59,7 @@ class Hero::BackToSolidGroundState: public Hero::BaseState {
 
   private:
 
-    Point target_xy;                /**< coordinates of the solid ground location to go to*/
-    int target_layer;               /**< layer of the target location */
+    ScopedLuaRef target_position;   /**< Where to go back. */
     uint32_t end_delay;             /**< delay before returning control to the player */
     uint32_t end_date;              /**< date when the state ends */
     bool with_sound;                /**< true to play a sound when reaching the solid ground */

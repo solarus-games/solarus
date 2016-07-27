@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #define SOLARUS_ENTITY_STATE_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/CarriedItem.h"
+#include "solarus/entities/CarriedObject.h"
 #include "solarus/entities/Hero.h"
 #include <cstdint>
 #include <memory>
@@ -129,7 +129,7 @@ class Entity::State {
     virtual bool is_grabbing_or_pulling() const;
     virtual bool is_moving_grabbed_entity() const;
     virtual void notify_grabbed_entity_collision();
-    virtual bool is_cutting_with_sword(Detector& detector);
+    virtual bool is_cutting_with_sword(Entity& entity);
     virtual bool can_start_sword() const;
     virtual bool can_pick_treasure(EquipmentItem& item) const;
     virtual bool can_use_shield() const;
@@ -139,8 +139,8 @@ class Entity::State {
     virtual bool can_take_jumper() const;
     virtual void notify_jumper_activated(Jumper& jumper);
     bool is_carrying_item() const;
-    virtual std::shared_ptr<CarriedItem> get_carried_item() const;
-    virtual CarriedItem::Behavior get_previous_carried_item_behavior() const;
+    virtual std::shared_ptr<CarriedObject> get_carried_object() const;
+    virtual CarriedObject::Behavior get_previous_carried_object_behavior() const;
 
   protected:
 
@@ -151,7 +151,7 @@ class Entity::State {
 
     // access to various game objects
     LuaContext& get_lua_context();
-    MapEntities& get_entities();
+    Entities& get_entities();
     Game& get_game();
     const Game& get_game() const;
     Map& get_map();
@@ -162,8 +162,11 @@ class Entity::State {
     const GameCommands& get_commands() const;
     virtual Entity& get_entity();
     virtual const Entity& get_entity() const;
-    HeroSprites& get_sprites();
-    const HeroSprites& get_sprites() const;
+
+    template<typename T>
+    T& get_entity();
+    template<typename T>
+    const T& get_entity() const;
 
   private:
 
@@ -175,6 +178,24 @@ class Entity::State {
     bool stopping;            /**< Indicates that this state is being stopped. */
 
 };
+
+/**
+ * \brief Returns the entity of this state cast to an entity type.
+ * \return The entity.
+ */
+template<typename T>
+T& Entity::State::get_entity() {
+  return static_cast<T&>(get_entity());
+}
+
+/**
+ * \brief Returns the entity of this state cast to an entity type.
+ * \return The entity.
+ */
+template<typename T>
+const T& Entity::State::get_entity() const {
+  return static_cast<const T&>(get_entity());
+}
 
 }
 

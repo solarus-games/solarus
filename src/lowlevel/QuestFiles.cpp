@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/CurrentQuest.h"
 #include "solarus/Arguments.h"
+#include "solarus/CurrentQuest.h"
+#include "solarus/QuestProperties.h"
 #include <physfs.h>
-#include <iostream>
 #include <fstream>
 #include <cstdlib>  // exit(), mkstemp(), tmpnam()
 #include <cstdio>   // remove()
@@ -34,18 +34,93 @@
 
 namespace Solarus {
 
-std::string QuestFiles::quest_path;
-std::string QuestFiles::solarus_write_dir;
-std::string QuestFiles::quest_write_dir;
-std::vector<std::string> QuestFiles::temporary_files;
+namespace QuestFiles {
+
+namespace {
 
 /**
- * \brief Initializes the file tools.
- * \param args Command-line arguments.
- */
-void QuestFiles::initialize(const Arguments& args) {
+ * \brief Path of the data/ directory, the data.solarus archive
+ * or the data.solarus.zip archive,
+ * absolute or relative to the current directory. */
+std::string quest_path_;
 
-  const std::string& program_name = args.get_program_name().c_str();
+/**
+ * \brief Directory where the engine can write files,
+ * relative to the user's home.
+ */
+std::string solarus_write_dir_;
+
+/**<
+ * \brief Write directory of the current quest,
+ * relative to solarus_write_dir.
+ */
+std::string quest_write_dir_;
+
+/**
+ * \brief Name of all temporary files created.
+ */
+std::vector<std::string> temporary_files_;
+
+/**
+ * \brief Sets the directory where the engine can write files.
+ *
+ * Initially, this directory is set to the preprocessor constant
+ * SOLARUS_WRITE_DIR (by default ".solarus").
+ * You normally don't need to change this, it should have been set correctly
+ * at compilation time to a value that depends on the target system.
+ *
+ * \param solarus_write_dir The directory where the engine can write files,
+ * relative to the base write directory.
+ */
+void set_solarus_write_dir(const std::string& solarus_write_dir) {
+
+  // This setting never changes at runtime.
+  // Allowing to change it would be complex and we don't need that.
+  Debug::check_assertion(solarus_write_dir_.empty(),
+      "The Solarus write directory is already set");
+
+  solarus_write_dir_ = solarus_write_dir;
+
+  // First check that we can write in a directory.
+  if (!PHYSFS_setWriteDir(get_base_write_dir().c_str())) {
+     Debug::die(std::string("Cannot write in user directory '")
+         + get_base_write_dir().c_str() + "': " + PHYSFS_getLastError());
+  }
+
+  // Create the directory.
+  PHYSFS_mkdir(solarus_write_dir.c_str());
+
+  const std::string& full_write_dir = get_base_write_dir() + "/" + solarus_write_dir;
+  if (!PHYSFS_setWriteDir(full_write_dir.c_str())) {
+    Debug::die(std::string("Cannot set Solarus write directory to '")
+        + full_write_dir + "': " + PHYSFS_getLastError());
+  }
+
+  // The quest subdirectory may be new, create it if needed.
+  if (!quest_write_dir_.empty()) {
+    set_quest_write_dir(quest_write_dir_);
+  }
+}
+
+} // Anonymous namespace
+
+/**
+ * \brief Opens a quest.
+ *
+ * Only one quest can be open at a time.
+ * If a quest is already open, it is automatically closed.
+ *
+ * \param program_name Program name passed as first command-line argument.
+ * Necessary for the quest file management system.
+ * \param quest_path Path of the quest to open.
+ * \return \c true if the quest was found.
+ */
+SOLARUS_API bool open_quest(const std::string& program_name, const std::string& quest_path) {
+
+  if (is_open()) {
+    close_quest();
+  }
+
   if (program_name.empty()) {
     PHYSFS_init(nullptr);
   }
@@ -53,24 +128,7 @@ void QuestFiles::initialize(const Arguments& args) {
     PHYSFS_init(program_name.c_str());
   }
 
-  // Set the quest path, by default as defined during the build process.
-  quest_path = SOLARUS_DEFAULT_QUEST;
-
-  // If a quest command-line argument was specified, use it instead.
-  const std::vector<std::string>& options = args.get_arguments();
-  if (!options.empty()
-      && !options.back().empty()
-      && options.back()[0] != '-') {
-    // The last parameter is not an option: it is the quest path.
-    quest_path = options.back();
-  }
-
-  std::cout << "Opening quest '" << quest_path << "'" << std::endl;
-
-  // Now, quest_path may be the path defined as command-line argument,
-  // the path defined during the build process, or the current directory
-  // if nothing was specified.
-
+  quest_path_ = quest_path;
   std::string dir_quest_path = quest_path + "/data";
   std::string archive_quest_path_1 = quest_path + "/data.solarus";
   std::string archive_quest_path_2 = quest_path + "/data.solarus.zip";
@@ -83,31 +141,47 @@ void QuestFiles::initialize(const Arguments& args) {
   PHYSFS_addToSearchPath((base_dir + "/" + archive_quest_path_1).c_str(), 1);
   PHYSFS_addToSearchPath((base_dir + "/" + archive_quest_path_2).c_str(), 1);
 
-  // Check the existence of a quest at this location.
-  if (!QuestFiles::data_file_exists("quest.dat")) {
-    std::cout << "Fatal: No quest was found in the directory '" << quest_path
-        << "'.\n" << "To specify your quest's path, run: "
-        << (program_name.empty() ? std::string("solarus") : program_name)
-        << " path/to/quest" << std::endl;
-    std::exit(EXIT_SUCCESS);
-  }
-
   // Set the engine root write directory.
   set_solarus_write_dir(SOLARUS_WRITE_DIR);
+
+  if (!quest_exists()) {
+    return false;
+  }
+
+  // Set the quest write directory.
+  CurrentQuest::initialize();
+  set_quest_write_dir(CurrentQuest::get_properties().get_quest_write_dir());
+
+  return true;
 }
 
 /**
- * \brief Quits the file tools.
+ * \brief Closes the quest.
  */
-void QuestFiles::quit() {
+SOLARUS_API void close_quest() {
+
+  if (!is_open()) {
+    return;
+  }
+
+  CurrentQuest::quit();
 
   remove_temporary_files();
 
-  quest_path = "";
-  solarus_write_dir = "";
-  quest_write_dir = "";
+  quest_path_ = "";
+  solarus_write_dir_ = "";
+  quest_write_dir_ = "";
 
   PHYSFS_deinit();
+}
+
+/**
+ * @brief Returns whether a quest is open.
+ * @return @c true if a quest is open, even if missing.
+ */
+SOLARUS_API bool is_open() {
+
+  return !quest_path_.empty();
 }
 
 /**
@@ -115,8 +189,21 @@ void QuestFiles::quit() {
  * \return Path of the data/ directory, the data.solarus archive or the
  * data.solarus.zip archive, relative to the current directory.
  */
-const std::string& QuestFiles::get_quest_path() {
-  return quest_path;
+SOLARUS_API const std::string& get_quest_path() {
+  return quest_path_;
+}
+
+/**
+ * @brief Returns whether there is a quest in the directory QuestFiles
+ * were initialized with.
+ *
+ * A quest is considered to be found if there is at a least quest.dat file.
+ *
+ * @return @c true if the quest exists.
+ */
+SOLARUS_API bool quest_exists() {
+
+  return data_file_exists("quest.dat");
 }
 
 /**
@@ -129,27 +216,27 @@ const std::string& QuestFiles::get_quest_path() {
  * \param file_name The file to look for.
  * \return Where it is actually located, or LOCATION_NONE if not found.
  */
-QuestFiles::DataFileLocation QuestFiles::data_file_get_location(
+SOLARUS_API DataFileLocation data_file_get_location(
     const std::string& file_name) {
 
   const char* path_ptr = PHYSFS_getRealDir(file_name.c_str());
   std::string path = path_ptr == nullptr ? "" : path_ptr;
   if (path.empty()) {
     // File does not exist.
-    return LOCATION_NONE;
+    return DataFileLocation::LOCATION_NONE;
   }
 
   if (!get_quest_write_dir().empty() && path == PHYSFS_getWriteDir()) {
-    return LOCATION_WRITE_DIRECTORY;
+    return DataFileLocation::LOCATION_WRITE_DIRECTORY;
   }
 
   if (path.rfind("data") == path.size() - 4) {
-    return LOCATION_DATA_DIRECTORY;
+    return DataFileLocation::LOCATION_DATA_DIRECTORY;
   }
 
   if (path.rfind("data.solarus") == path.size() - 12
       || path.rfind("data.solarus.zip") == path.size() - 16) {
-    return LOCATION_DATA_ARCHIVE;
+    return DataFileLocation::LOCATION_DATA_ARCHIVE;
   }
 
   Debug::die(std::string("Unexpected search path element: " + path));
@@ -164,7 +251,7 @@ QuestFiles::DataFileLocation QuestFiles::data_file_get_location(
  * language directory.
  * \return true if this file exists.
  */
-bool QuestFiles::data_file_exists(const std::string& file_name,
+SOLARUS_API bool data_file_exists(const std::string& file_name,
     bool language_specific) {
 
   std::string full_file_name;
@@ -187,7 +274,7 @@ bool QuestFiles::data_file_exists(const std::string& file_name,
  * \param language_specific \c true if the file is specific to the current language.
  * \return The content of the file.
  */
-std::string QuestFiles::data_file_read(
+SOLARUS_API std::string data_file_read(
     const std::string& file_name,
     bool language_specific
 ) {
@@ -229,7 +316,7 @@ std::string QuestFiles::data_file_read(
  * \param buffer The buffer to save.
  *
  */
-void QuestFiles::data_file_save(
+SOLARUS_API void data_file_save(
     const std::string& file_name,
     const std::string& buffer
 ) {
@@ -255,7 +342,7 @@ void QuestFiles::data_file_save(
  * write directory.
  * \return \c true in case of success.
  */
-bool QuestFiles::data_file_delete(const std::string& file_name) {
+SOLARUS_API bool data_file_delete(const std::string& file_name) {
 
   if (!PHYSFS_delete(file_name.c_str())) {
     return false;
@@ -270,7 +357,7 @@ bool QuestFiles::data_file_delete(const std::string& file_name) {
  * write directory.
  * \return \c true in case of success.
  */
-bool QuestFiles::data_file_mkdir(const std::string& dir_name) {
+SOLARUS_API bool data_file_mkdir(const std::string& dir_name) {
 
   if (!PHYSFS_mkdir(dir_name.c_str())) {
     return false;
@@ -290,7 +377,7 @@ bool QuestFiles::data_file_mkdir(const std::string& dir_name) {
  * \param list_directories Whether directories should be included in the result.
  * \return The files in this directory.
  */
-std::vector<std::string> QuestFiles::data_files_enumerate(
+SOLARUS_API std::vector<std::string> data_files_enumerate(
     const std::string& dir_path,
     bool list_files,
     bool list_directories
@@ -321,49 +408,8 @@ std::vector<std::string> QuestFiles::data_files_enumerate(
  * \returns The directory where the engine can write files, relative to the
  * base write directory.
  */
-const std::string& QuestFiles::get_solarus_write_dir() {
-  return solarus_write_dir;
-}
-
-/**
- * \brief Sets the directory where the engine can write files.
- *
- * Initially, this directory is set to the preprocessor constant
- * SOLARUS_WRITE_DIR (by default ".solarus").
- * You normally don't need to change this, it should have been set correctly
- * at compilation time to a value that depends on the target system.
- *
- * \param solarus_write_dir The directory where the engine can write files,
- * relative to the base write directory.
- */
-void QuestFiles::set_solarus_write_dir(const std::string& solarus_write_dir) {
-
-  // This setting never changes at runtime.
-  // Allowing to change it would be complex and we don't need that.
-  Debug::check_assertion(QuestFiles::solarus_write_dir.empty(),
-      "The Solarus write directory is already set");
-
-  QuestFiles::solarus_write_dir = solarus_write_dir;
-
-  // First check that we can write in a directory.
-  if (!PHYSFS_setWriteDir(get_base_write_dir().c_str())) {
-     Debug::die(std::string("Cannot write in user directory '")
-         + get_base_write_dir().c_str() + "': " + PHYSFS_getLastError());
-  }
-
-  // Create the directory.
-  PHYSFS_mkdir(solarus_write_dir.c_str());
-
-  const std::string& full_write_dir = get_base_write_dir() + "/" + solarus_write_dir;
-  if (!PHYSFS_setWriteDir(full_write_dir.c_str())) {
-    Debug::die(std::string("Cannot set Solarus write directory to '")
-        + full_write_dir + "': " + PHYSFS_getLastError());
-  }
-
-  // The quest subdirectory may be new, create it if needed.
-  if (!quest_write_dir.empty()) {
-    set_quest_write_dir(quest_write_dir);
-  }
+SOLARUS_API const std::string& get_solarus_write_dir() {
+  return solarus_write_dir_;
 }
 
 /**
@@ -372,8 +418,8 @@ void QuestFiles::set_solarus_write_dir(const std::string& solarus_write_dir) {
  * \return The quest write directory, relative to the Solarus write directory,
  * or an empty string if it has not been set yet.
  */
-const std::string& QuestFiles::get_quest_write_dir() {
-  return quest_write_dir;
+SOLARUS_API const std::string& get_quest_write_dir() {
+  return quest_write_dir_;
 }
 
 /**
@@ -388,19 +434,19 @@ const std::string& QuestFiles::get_quest_write_dir() {
  * \param quest_write_dir The quest write directory, relative to the Solarus
  * write directory.
  */
-void QuestFiles::set_quest_write_dir(const std::string& quest_write_dir) {
+SOLARUS_API void set_quest_write_dir(const std::string& quest_write_dir) {
 
-  if (!QuestFiles::quest_write_dir.empty()) {
+  if (!quest_write_dir_.empty()) {
     // There was already a previous quest subdirectory: remove it from the
     // search path.
     PHYSFS_removeFromSearchPath(PHYSFS_getWriteDir());
   }
 
-  QuestFiles::quest_write_dir = quest_write_dir;
+  quest_write_dir_ = quest_write_dir;
 
   // Reset the write directory to the Solarus directory
   // so that we can create the new quest subdirectory.
-  std::string full_write_dir = get_base_write_dir() + "/" + solarus_write_dir;
+  std::string full_write_dir = get_base_write_dir() + "/" + solarus_write_dir_;
   if (!PHYSFS_setWriteDir(full_write_dir.c_str())) {
     Debug::die(std::string("Cannot set Solarus write directory to '")
         + full_write_dir + "': " + PHYSFS_getLastError());
@@ -412,7 +458,7 @@ void QuestFiles::set_quest_write_dir(const std::string& quest_write_dir) {
     PHYSFS_mkdir(quest_write_dir.c_str());
 
     // Set the write directory to this new place.
-    full_write_dir = get_base_write_dir() + "/" + solarus_write_dir + "/" + quest_write_dir;
+    full_write_dir = get_base_write_dir() + "/" + solarus_write_dir_ + "/" + quest_write_dir;
     PHYSFS_setWriteDir(full_write_dir.c_str());
 
     // Also allow the quest to read savegames, settings and data files there.
@@ -423,7 +469,7 @@ void QuestFiles::set_quest_write_dir(const std::string& quest_write_dir) {
 /**
  * \brief Returns the absolute path of the quest write directory.
  */
-std::string QuestFiles::get_full_quest_write_dir() {
+SOLARUS_API std::string get_full_quest_write_dir() {
   return get_base_write_dir() + "/" + get_solarus_write_dir() + "/" + get_quest_write_dir();
 }
 
@@ -431,7 +477,7 @@ std::string QuestFiles::get_full_quest_write_dir() {
  * \brief Returns the privileged base write directory, depending on the OS.
  * \return The base write directory.
  */
-std::string QuestFiles::get_base_write_dir() {
+SOLARUS_API std::string get_base_write_dir() {
 
 #if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
   return std::string(get_user_application_support_directory());
@@ -445,13 +491,13 @@ std::string QuestFiles::get_base_write_dir() {
  * \param content Content of the file to create.
  * \return Full name of the file created, or an empty string in case of failure.
  */
-std::string QuestFiles::create_temporary_file(const std::string& content) {
+SOLARUS_API std::string create_temporary_file(const std::string& content) {
 
   // Determine the name of our temporary file.
   std::string file_name;
 
 #ifdef HAVE_MKSTEMP
-  // mkstemp+close is safer than tmpname, but POSIX only.
+  // mkstemp+close is safer than tmpnam, but POSIX only.
   char name_template[] = "/tmp/solarus.XXXXXX";
   int file_descriptor = mkstemp(name_template);
   if (file_descriptor == -1) {
@@ -471,7 +517,7 @@ std::string QuestFiles::create_temporary_file(const std::string& content) {
   }
 
   // File successfully created.
-  temporary_files.push_back(file_name);
+  temporary_files_.push_back(file_name);
 
   if (!content.empty()) {
     out.write(content.data(), content.size());
@@ -490,17 +536,20 @@ std::string QuestFiles::create_temporary_file(const std::string& content) {
  * \return \c true in case of success, \c false if at least one file could not
  * be deleted.
  */
-bool QuestFiles::remove_temporary_files() {
+SOLARUS_API bool remove_temporary_files() {
 
   bool success = true;
-  for (const std::string& file_name: temporary_files) {
+  for (const std::string& file_name: temporary_files_) {
     if (std::remove(file_name.c_str()) != 0) {
       success = false;
     }
   }
+  temporary_files_.clear();
 
   return success;
 }
 
-}
+}  // namespace QuestFiles
+
+}  // namespace Solarus
 

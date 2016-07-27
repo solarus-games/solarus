@@ -1,0 +1,12 @@
+animation{
+  name = "loading",
+  src_image = "main_heroes/loading_sword_magic.png",
+  frame_delay = 50,
+  frame_to_loop_on = 20,
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 16, origin_x = -9, origin_y = 16, num_frames = 38, num_columns = 19 },
+    { x = 0, y = 64, frame_width = 16, frame_height = 24, origin_x = 9, origin_y = 46, num_frames = 38, num_columns = 19 },
+    { x = 0, y = 32, frame_width = 24, frame_height = 16, origin_x = 33, origin_y = 16, num_frames = 38, num_columns = 19 },
+    { x = 0, y = 112, frame_width = 16, frame_height = 24, origin_x = 8, origin_y = 1, num_frames = 38, num_columns = 19 },
+  },
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,23 +14,67 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Logger.h"
+#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/CurrentQuest.h"
+#include "solarus/DialogResources.h"
+#include "solarus/QuestProperties.h"
+#include "solarus/QuestResources.h"
+#include "solarus/StringResources.h"
+#include <lua.hpp>
 
 namespace Solarus {
 
 namespace CurrentQuest {
 
+namespace {
+
+bool initialized = false;
+
+}
+
 /**
- * \brief Reads the resource list file data file project_db.dat of the
- * current quest and stores it.
+ * \brief Reads the resource list, the quest properties and stores them.
  */
 void initialize() {
 
   // Read the quest resource list file.
   QuestResources& resources = get_resources();
   resources.import_from_quest_file("project_db.dat");
+
+  // Read the quest properties file.
+  QuestProperties& properties = get_properties();
+
+  const std::string file_name("quest.dat");
+  lua_State* l = luaL_newstate();
+  const std::string& buffer = QuestFiles::data_file_read(file_name);
+  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
+
+  if (load_result != 0) {
+    // Syntax error in quest.dat.
+    // Loading quest.dat failed.
+    // There may be a syntax error, or this is a quest for Solarus 0.9.
+    // There was no version number at that time.
+
+    const std::string error_message = lua_tostring(l, -1);
+    lua_close(l);
+
+    if (std::string(buffer).find("[info]")) {
+      // Quest format of Solarus 0.9.
+      Debug::die(std::string("This quest is made for Solarus 0.9 but you are running Solarus ")
+          + SOLARUS_VERSION);
+    }
+    else {
+      Debug::die(std::string("Failed to load quest.dat: ") + error_message);
+    }
+  }
+
+  // Normal case.
+  properties.import_from_lua(l);
+  lua_close(l);
+
+  initialized = true;
 }
 
 /**
@@ -41,6 +85,29 @@ void quit() {
   get_resources().clear();
   get_strings().clear();
   get_dialogs().clear();
+
+  initialized = false;
+}
+
+/**
+ * \brief Returns whether there is a current quest.
+ * \return \c true if there is a current quest.
+ */
+bool is_initialized() {
+  return initialized;
+}
+
+
+/**
+ * \brief Returns the properties of current quest.
+ * \return The current quest properties.
+ */
+QuestProperties& get_properties() {
+
+  // The quest properties object must be in a function to avoid static
+  // initialization order problems.
+  static QuestProperties properties;
+  return properties;
 }
 
 /**
@@ -110,7 +177,7 @@ void set_language(const std::string& language_code) {
 
   // Read the quest dialog list file.
   DialogResources resources;
-  auto& dialogs = get_dialogs();
+  std::map<std::string, Dialog>& dialogs = get_dialogs();
 
   bool success = resources.import_from_quest_file("text/dialogs.dat", true);
 
@@ -133,6 +200,8 @@ void set_language(const std::string& language_code) {
       dialogs.emplace(id, dialog);
     }
   }
+
+  Logger::info(std::string("Language: ") + language_code);
 }
 
 /**

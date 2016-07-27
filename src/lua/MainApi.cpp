@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/System.h"
+#include "solarus/CurrentQuest.h"
+#include "solarus/QuestProperties.h"
 #include "solarus/MainLoop.h"
 #include "solarus/Settings.h"
 #include <lua.hpp>
@@ -36,6 +38,8 @@ const std::string LuaContext::main_module_name = "sol.main";
 void LuaContext::register_main_module() {
 
   static const luaL_Reg functions[] = {
+      { "get_solarus_version", main_api_get_solarus_version },
+      { "get_quest_format", main_api_get_quest_format },
       { "load_file", main_api_load_file },
       { "do_file", main_api_do_file },
       { "reset", main_api_reset },
@@ -84,6 +88,36 @@ void LuaContext::push_main(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of sol.main.get_solarus_version().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::main_api_get_solarus_version(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const std::string& solarus_version = SOLARUS_VERSION;
+
+    push_string(l, solarus_version);
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of sol.main.get_quest_format().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::main_api_get_quest_format(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const std::string& quest_format = CurrentQuest::get_properties().get_solarus_version();
+
+    push_string(l, quest_format);
+    return 1;
+  });
+}
+
+/**
  * \brief Implementation of sol.main.load_file().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -93,7 +127,7 @@ int LuaContext::main_api_load_file(lua_State *l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& file_name = LuaTools::check_string(l, 1);
 
-    if (!load_file_if_exists(l, file_name)) {
+    if (!load_file(l, file_name)) {
       lua_pushnil(l);
     }
 
@@ -210,7 +244,11 @@ int LuaContext::main_api_load_settings(lua_State* l) {
       LuaTools::error(l, "Cannot load settings: no write directory was specified in quest.dat");
     }
 
-    bool success = Settings::load(file_name);
+    Settings settings;
+    bool success = settings.load(file_name);
+    if (success) {
+      settings.apply_to_quest();
+    }
 
     lua_pushboolean(l, success);
     return 1;
@@ -231,7 +269,9 @@ int LuaContext::main_api_save_settings(lua_State* l) {
       LuaTools::error(l, "Cannot save settings: no write directory was specified in quest.dat");
     }
 
-    bool success = Settings::save(file_name);
+    Settings settings;
+    settings.set_from_quest();
+    bool success = settings.save(file_name);
 
     lua_pushboolean(l, success);
     return 1;
@@ -394,9 +434,8 @@ void LuaContext::main_on_draw(const SurfacePtr& dst_surface) {
  */
 bool LuaContext::main_on_input(const InputEvent& event) {
 
-  bool handled = false;
   push_main(l);
-  handled = on_input(event);
+  bool handled = on_input(event);
   if (!handled) {
     handled = menus_on_input(-1, event);
   }

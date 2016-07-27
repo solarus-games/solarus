@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include "solarus/EquipmentItem.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
+#include "solarus/Sprite.h"
 #include <lua.hpp>
 #include <string>
 
@@ -40,11 +41,13 @@ Hero::TreasureState::TreasureState(
     const ScopedLuaRef& callback_ref
 ):
 
-  BaseState(hero, "treasure"),
+  HeroState(hero, "treasure"),
   treasure(treasure),
+  treasure_sprite(),
   callback_ref(callback_ref) {
 
   treasure.check_obtainable();
+  treasure_sprite = treasure.create_sprite();
 }
 
 /**
@@ -53,7 +56,7 @@ Hero::TreasureState::TreasureState(
  */
 void Hero::TreasureState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   // Show the animation.
   get_sprites().save_animation_direction();
@@ -80,7 +83,7 @@ void Hero::TreasureState::start(const State* previous_state) {
  */
 void Hero::TreasureState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
 
   // restore the sprite's direction
   get_sprites().restore_animation_direction();
@@ -88,27 +91,40 @@ void Hero::TreasureState::stop(const State* next_state) {
 }
 
 /**
+ * \copydoc Hero::HeroState::update
+ */
+void Hero::TreasureState::update() {
+
+  HeroState::update();
+
+  treasure_sprite->update();
+}
+
+/**
  * \brief Draws this state.
  */
 void Hero::TreasureState::draw_on_map() {
 
-  State::draw_on_map();
+  HeroState::draw_on_map();
 
   const Hero& hero = get_entity();
   int x = hero.get_x();
   int y = hero.get_y();
 
-  const Rectangle &camera_position = get_map().get_camera_position();
-  treasure.draw(get_map().get_visible_surface(),
-      x - camera_position.get_x(),
-      y - 24 - camera_position.get_y());
+  const CameraPtr& camera = get_map().get_camera();
+  if (camera == nullptr) {
+    return;
+  }
+  treasure_sprite->draw(get_map().get_camera_surface(),
+      x - camera->get_top_left_x(),
+      y - 24 - camera->get_top_left_y());
 }
 
 /**
- * \copydoc Entity::State::get_previous_carried_item_behavior
+ * \copydoc Entity::State::get_previous_carried_object_behavior
  */
-CarriedItem::Behavior Hero::TreasureState::get_previous_carried_item_behavior() const {
-  return CarriedItem::BEHAVIOR_DESTROY;
+CarriedObject::Behavior Hero::TreasureState::get_previous_carried_object_behavior() const {
+  return CarriedObject::BEHAVIOR_DESTROY;
 }
 
 /**

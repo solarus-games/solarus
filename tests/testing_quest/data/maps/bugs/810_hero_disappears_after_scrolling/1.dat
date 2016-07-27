@@ -1,0 +1,46 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  min_layer = 0,
+  max_layer = 2,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 16,
+  y = 48,
+  width = 48,
+  height = 32,
+  pattern = "1",
+}
+
+destination{
+  layer = 0,
+  x = 8,
+  y = 29,
+  direction = 1,
+}
+
+teletransporter{
+  layer = 0,
+  x = -16,
+  y = 0,
+  width = 16,
+  height = 240,
+  transition = "immediate",
+  destination_map = "bugs/810_hero_disappears_after_scrolling/2",
+  destination = "_side",
+}
+

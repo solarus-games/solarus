@@ -1,0 +1,64 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  min_layer = 0,
+  max_layer = 2,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 216,
+  y = 88,
+  width = 48,
+  height = 32,
+  pattern = "1",
+}
+
+tile{
+  layer = 0,
+  x = 16,
+  y = 32,
+  width = 320,
+  height = 32,
+  pattern = "67",
+}
+
+sensor{
+  name = "sensor",
+  layer = 0,
+  x = 40,
+  y = 53,
+  width = 16,
+  height = 16,
+}
+
+destination{
+  name = "destination_1",
+  layer = 0,
+  x = 296,
+  y = 53,
+  direction = 1,
+}
+
+teletransporter{
+  layer = 0,
+  x = 320,
+  y = 0,
+  width = 16,
+  height = 240,
+  destination_map = "teletransportation_tests/start_scrolling",
+  destination = "_side",
+}
+

@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/icon_open.png</file>
+        <file>images/icon_start.png</file>
+        <file>images/icon_stop.png</file>
+        <file>images/icon_remove.png</file>
+        <file>images/icon_add.png</file>
+        <file>images/default_icon.png</file>
+        <file>images/no_logo.png</file>
+        <file>images/icon/solarus_launcher_icon_16.png</file>
+        <file>images/icon/solarus_launcher_icon_24.png</file>
+        <file>images/icon/solarus_launcher_icon_32.png</file>
+        <file>images/icon/solarus_launcher_icon_48.png</file>
+        <file>images/icon/solarus_launcher_icon_64.png</file>
+        <file>images/icon/solarus_launcher_icon_128.png</file>
+        <file>images/icon/solarus_launcher_icon_256.png</file>
+        <file>images/solarus_logo_128.png</file>
+    </qresource>
+</RCC>

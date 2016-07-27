@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,8 +52,11 @@ class DynamicTile: public Entity {
     );
 
     virtual EntityType get_type() const override;
-    virtual Ground get_modified_ground() const override;
-    virtual void draw_on_map() override;
+
+    const std::string& get_tile_pattern_id() const;
+    Ground get_modified_ground() const override;
+    bool is_drawn_at_its_position() const override;
+    void draw_on_map() override;
 
   private:
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_SWORD_TAPPING_STATE_H
 #define SOLARUS_HERO_SWORD_TAPPING_STATE_H
 
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 #include <cstdint>
 
 namespace Solarus {
@@ -25,7 +25,7 @@ namespace Solarus {
 /**
  * \brief The state "sword tapping" of the hero.
  */
-class Hero::SwordTappingState: public Hero::BaseState {
+class Hero::SwordTappingState: public HeroState {
 
   public:
 
@@ -38,7 +38,7 @@ class Hero::SwordTappingState: public Hero::BaseState {
     virtual bool can_sword_hit_crystal() const override;
     virtual bool can_pick_treasure(EquipmentItem& item) const override;
     virtual bool can_use_shield() const override;
-    virtual bool is_cutting_with_sword(Detector& detector) override;
+    virtual bool is_cutting_with_sword(Entity& entity) override;
     virtual bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const override;
     virtual void notify_obstacle_reached() override;
     virtual void notify_attacked_enemy(

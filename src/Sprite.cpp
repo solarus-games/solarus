@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,19 +15,21 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/Sprite.h"
-#include "solarus/SpriteAnimationSet.h"
 #include "solarus/SpriteAnimation.h"
 #include "solarus/SpriteAnimationDirection.h"
+#include "solarus/SpriteAnimationSet.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
-#include "solarus/movements/Movement.h"
-#include "solarus/lua/LuaContext.h"
-#include "solarus/lowlevel/PixelBits.h"
 #include "solarus/lowlevel/Color.h"
-#include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/PixelBits.h"
 #include "solarus/lowlevel/Size.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lua/LuaTools.h"
+#include "solarus/movements/Movement.h"
+#include <lua.hpp>
 #include <limits>
 #include <memory>
 #include <sstream>
@@ -86,7 +88,6 @@ SpriteAnimationSet& Sprite::get_animation_set(const std::string& id) {
  */
 Sprite::Sprite(const std::string& id):
   Drawable(),
-  lua_context(nullptr),
   animation_set_id(id),
   animation_set(get_animation_set(id)),
   current_animation(nullptr),
@@ -97,7 +98,10 @@ Sprite::Sprite(const std::string& id):
   finished(false),
   synchronize_to(nullptr),
   intermediate_surface(nullptr),
-  blink_delay(0) {
+  blink_delay(0),
+  blink_is_sprite_visible(true),
+  blink_next_change_date(0),
+  finished_callback_ref() {
 
   set_current_animation(animation_set.get_default_animation());
 }
@@ -268,10 +272,21 @@ void Sprite::set_current_animation(const std::string& animation_name) {
       this->current_animation = nullptr;
     }
 
-    set_current_frame(0, false);
+    int old_direction = this->current_direction;
+    if (current_direction < 0
+        || current_direction >= get_nb_directions()) {
+      current_direction = 0;
+    }
 
+    set_current_frame(0, false);
+    set_finished_callback(ScopedLuaRef());
+
+    LuaContext* lua_context = get_lua_context();
     if (lua_context != nullptr) {
       lua_context->sprite_on_animation_changed(*this, current_animation_name);
+      if (current_direction != old_direction) {
+        lua_context->sprite_on_direction_changed(*this, current_animation_name, current_direction);
+      }
       lua_context->sprite_on_frame_changed(*this, current_animation_name, 0);
     }
   }
@@ -321,16 +336,18 @@ void Sprite::set_current_direction(int current_direction) {
     if (current_direction < 0
         || current_direction >= get_nb_directions()) {
       std::ostringstream oss;
-      oss << "Invalid direction " << current_direction
+      oss << "Illegal direction " << current_direction
           << " for sprite '" << get_animation_set_id()
           << "' in animation '" << current_animation_name << "'";
-      Debug::die(oss.str());
+      Debug::error(oss.str());
+      return;
     }
 
     this->current_direction = current_direction;
 
     set_current_frame(0, false);
 
+    LuaContext* lua_context = get_lua_context();
     if (lua_context != nullptr) {
       lua_context->sprite_on_direction_changed(*this, current_animation_name, current_direction);
       lua_context->sprite_on_frame_changed(*this, current_animation_name, 0);
@@ -380,9 +397,12 @@ void Sprite::set_current_frame(int current_frame, bool notify_script) {
     this->current_frame = current_frame;
     set_frame_changed(true);
 
-    if (notify_script && lua_context != nullptr) {
-      lua_context->sprite_on_frame_changed(
-          *this, current_animation_name, current_frame);
+    if (notify_script) {
+      LuaContext* lua_context = get_lua_context();
+      if (lua_context != nullptr) {
+        lua_context->sprite_on_frame_changed(
+            *this, current_animation_name, current_frame);
+      }
     }
   }
 }
@@ -605,6 +625,23 @@ bool Sprite::test_collision(const Sprite& other, int x1, int y1, int x2, int y2)
     return false;
   }
 
+  if (!is_animation_started() || !other.is_animation_started()) {
+    // The animation is not running.
+    return false;
+  }
+
+  if (!are_pixel_collisions_enabled()) {
+    Debug::error(std::string("Pixel-precise collisions are not enabled for sprite '") +
+                 get_animation_set_id() + "'");
+    return false;
+  }
+
+  if (!other.are_pixel_collisions_enabled()) {
+    Debug::error(std::string("Pixel-precise collisions are not enabled for sprite '") +
+                 other.get_animation_set_id() + "'");
+    return false;
+  }
+
   const SpriteAnimationDirection& direction1 = current_animation->get_direction(current_direction);
   const Point& origin1 = direction1.get_origin();
   Point location1 = { x1 - origin1.x, y1 - origin1.y };
@@ -633,6 +670,8 @@ void Sprite::update() {
     return;
   }
 
+  LuaContext* lua_context = get_lua_context();
+
   frame_changed = false;
   uint32_t now = System::now();
 
@@ -654,9 +693,7 @@ void Sprite::update() {
       // Test if the animation is finished.
       if (next_frame == -1) {
         finished = true;
-        if (lua_context != nullptr) {
-          lua_context->sprite_on_animation_finished(*this, current_animation_name);
-        }
+        notify_finished();
       }
       else {
         current_frame = next_frame;
@@ -679,9 +716,7 @@ void Sprite::update() {
     // Take the same frame as the other sprite.
     if (synchronize_to->is_animation_finished()) {
       finished = true;
-      if (lua_context != nullptr) {
-        lua_context->sprite_on_animation_finished(*this, current_animation_name);
-      }
+      notify_finished();
     }
     else {
       int other_frame = synchronize_to->get_current_frame();
@@ -726,20 +761,15 @@ void Sprite::raw_draw(
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    if (intermediate_surface == nullptr) {
-      current_animation->draw(dst_surface, dst_position,
-          current_direction, current_frame);
-    }
-    else {
-      intermediate_surface->clear();
-      current_animation->draw(*intermediate_surface, get_origin(),
-          current_direction, current_frame);
-      intermediate_surface->draw_region(
-          Rectangle(get_size()),
-          std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
-          dst_position - get_origin()
-      );
-    }
+    get_intermediate_surface().clear();
+    current_animation->draw(get_intermediate_surface(), get_origin(),
+        current_direction, current_frame);
+    get_intermediate_surface().set_blend_mode(get_blend_mode());
+    get_intermediate_surface().draw_region(
+        Rectangle(get_size()),
+        std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
+        dst_position - get_origin()
+    );
   }
 }
 
@@ -803,6 +833,7 @@ void Sprite::raw_draw_region(
     Point dst_position2 = dst_position;
     dst_position2 += src_position.get_xy(); // Let a space for the part outside the region.
     dst_position2 -= origin;                // Input coordinates were relative to the origin.
+    get_intermediate_surface().set_blend_mode(get_blend_mode());
     get_intermediate_surface().draw_region(
         src_position,
         std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
@@ -846,20 +877,27 @@ Surface& Sprite::get_intermediate_surface() const {
 }
 
 /**
- * \brief Returns the Solarus Lua API.
- * \return The Lua context, or nullptr if Lua callbacks are not enabled for this sprite.
+ * \brief Returns the Lua registry ref to what to do when the current
+ * animation finishes.
+ * \return A Lua ref to a function or string (the name of an animation),
+ * or an empty ref.
  */
-LuaContext* Sprite::get_lua_context() const {
-  return lua_context;
+const ScopedLuaRef& Sprite::get_finished_callback() const {
+  return finished_callback_ref;
 }
 
 /**
- * \brief Sets the Solarus Lua API.
- * \param lua_context The Lua context, or nullptr to disable Lua callbacks
- * for this sprite.
+ * \brief Sets what to do when the current animation finishes.
+ * \param finished_callback_ref A Lua ref to a function or string
+ * (the name of an animation), or an empty ref.
  */
-void Sprite::set_lua_context(LuaContext* lua_context) {
-  this->lua_context = lua_context;
+void Sprite::set_finished_callback(const ScopedLuaRef& finished_callback_ref) {
+
+  if (!finished_callback_ref.is_empty()) {
+    Debug::check_assertion(get_lua_context() != nullptr, "Undefined Lua context");
+  }
+
+  this->finished_callback_ref = finished_callback_ref;
 }
 
 /**
@@ -868,6 +906,38 @@ void Sprite::set_lua_context(LuaContext* lua_context) {
  */
 const std::string& Sprite::get_lua_type_name() const {
   return LuaContext::sprite_module_name;
+}
+
+/**
+ * \brief Performs appropriate notifications when the current animation finishes.
+ */
+void Sprite::notify_finished() {
+
+  LuaContext* lua_context = get_lua_context();
+  if (lua_context != nullptr) {
+    lua_State* l = finished_callback_ref.get_lua_state();
+
+    // Sprite callback.
+    if (!finished_callback_ref.is_empty()) {
+      // The callback may be a function or a string.
+      finished_callback_ref.push();
+      finished_callback_ref.clear();
+      if (lua_isstring(l, -1)) {
+        // Name of a next animation to set.
+        std::string animation = lua_tostring(l, -1);
+        lua_pop(l, 1);
+        set_current_animation(animation);
+      }
+      else {
+        // Function to call.
+        LuaTools::call_function(l, 0, 0, "sprite callback");
+      }
+    }
+
+    // Sprite event.
+    lua_context->sprite_on_animation_finished(*this, current_animation_name);
+  }
+
 }
 
 }

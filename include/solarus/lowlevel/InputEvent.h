@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,9 +23,9 @@
 #include <memory>
 #include <set>
 #include <string>
+#include <vector>
 #include <SDL_events.h>
-
-typedef struct _SDL_Joystick SDL_Joystick;
+#include <SDL_joystick.h>
 
 namespace Solarus {
 
@@ -204,6 +204,7 @@ class InputEvent {
 
     static void initialize();
     static void quit();
+    static bool is_initialized();
 
     // retrieve the current event
     static std::unique_ptr<InputEvent> get_event();
@@ -291,10 +292,11 @@ class InputEvent {
     explicit InputEvent(const SDL_Event& event);
 
     static const KeyboardKey directional_keys[];  /**< array of the keyboard directional keys */
+    static bool initialized;                      /**< Whether the input manager is initialized. */
     static bool joypad_enabled;                   /**< true if joypad support is enabled
                                                    * (may be true even without joypad plugged) */
     static SDL_Joystick* joystick;                /**< the joystick object if enabled and plugged */
-    static int joypad_axis_state[2];              /**< keep track of the current horizontal and verticle axis states */
+    static std::vector<int> joypad_axis_state;    /**< keep track of the current horizontal and vertical axis states */
     static std::map<KeyboardKey, std::string>
       keyboard_key_names;                         /**< Names of all existing keyboard keys. */
     static std::map<MouseButton, std::string>
@@ -320,7 +322,6 @@ struct SOLARUS_API EnumInfoTraits<InputEvent::MouseButton> {
 
   static const EnumInfo<InputEvent::MouseButton>::names_type names;
 };
-
 
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #define SOLARUS_HERO_PLAYER_MOVEMENT_STATE_H
 
 #include "solarus/Common.h"
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 #include <cstdint>
 #include <memory>
 #include <string>
@@ -36,7 +36,7 @@ class PlayerMovement;
  * These states include FreeState (the normal walk), SwordLoadingState (the sword is
  * loading), CarryingState (the hero is carrying something) and SwimmingState.
  */
-class Hero::PlayerMovementState: public Hero::BaseState {
+class Hero::PlayerMovementState: public HeroState {
 
   public:
 

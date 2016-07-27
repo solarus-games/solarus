@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,17 +15,17 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Bomb.h"
+#include "solarus/entities/CarriedObject.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Explosion.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/CarriedItem.h"
 #include "solarus/entities/Stream.h"
 #include "solarus/movements/PathMovement.h"
-#include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Sound.h"
+#include "solarus/lowlevel/System.h"
 #include "solarus/CommandsEffects.h"
-#include "solarus/Sprite.h"
 #include "solarus/Map.h"
+#include "solarus/Sprite.h"
 #include <memory>
 
 namespace Solarus {
@@ -40,11 +40,12 @@ namespace Solarus {
  * \param xy Coordinates of the entity to create.
  */
 Bomb::Bomb(const std::string& name, int layer, const Point& xy):
-  Detector(COLLISION_FACING, name, layer, xy, Size(16, 16)),
+  Entity(name, 0, layer, xy, Size(16, 16)),
   explosion_date(System::now() + 6000) {
 
-  create_sprite("entities/bomb");
-  get_sprite().enable_pixel_collisions();
+  set_collision_modes(CollisionMode::COLLISION_FACING);
+  const SpritePtr& sprite = create_sprite("entities/bomb");
+  sprite->enable_pixel_collisions();
   set_size(16, 16);
   set_origin(8, 13);
   set_drawn_in_y_order(true);
@@ -151,7 +152,6 @@ void Bomb::notify_collision_with_stream(Stream& stream, int /* dx */, int /* dy 
 
     if (stream.overlaps(center)) {
       set_xy(stream.get_xy());
-      notify_position_changed();
 
       std::string path = "  ";
       path[0] = path[1] = '0' + stream.get_direction();
@@ -168,7 +168,7 @@ void Bomb::notify_collision_with_stream(Stream& stream, int /* dx */, int /* dy 
  */
 void Bomb::notify_position_changed() {
 
-  Detector::notify_position_changed();
+  Entity::notify_position_changed();
 
   if (get_hero().get_facing_entity() == this
       && get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_LIFT
@@ -179,7 +179,7 @@ void Bomb::notify_position_changed() {
 }
 
 /**
- * \copydoc Detector::notify_action_command_pressed
+ * \copydoc Entity::notify_action_command_pressed
  */
 bool Bomb::notify_action_command_pressed() {
 
@@ -189,7 +189,7 @@ bool Bomb::notify_action_command_pressed() {
       && get_hero().get_facing_entity() == this
       && get_hero().is_facing_point_in(get_bounding_box())) {
 
-    get_hero().start_lifting(std::make_shared<CarriedItem>(
+    get_hero().start_lifting(std::make_shared<CarriedObject>(
         get_hero(),
         *this,
         "entities/bomb",
@@ -211,7 +211,7 @@ bool Bomb::notify_action_command_pressed() {
  */
 void Bomb::set_suspended(bool suspended) {
 
-  Detector::set_suspended(suspended); // suspend the animation and the movement
+  Entity::set_suspended(suspended); // suspend the animation and the movement
 
   if (!suspended && get_when_suspended() != 0) {
     // recalculate the timer
@@ -225,7 +225,7 @@ void Bomb::set_suspended(bool suspended) {
  */
 void Bomb::update() {
 
-  Detector::update();
+  Entity::update();
 
   if (is_suspended()) {
     return;
@@ -236,9 +236,12 @@ void Bomb::update() {
   if (now >= explosion_date) {
     explode();
   }
-  else if (now >= explosion_date - 1500
-      && get_sprite().get_current_animation() != "stopped_explosion_soon") {
-    get_sprite().set_current_animation("stopped_explosion_soon");
+  else if (now >= explosion_date - 1500) {
+    const SpritePtr& sprite = get_sprite();
+    if (sprite != nullptr &&
+        sprite->get_current_animation() != "stopped_explosion_soon") {
+      sprite->set_current_animation("stopped_explosion_soon");
+    }
   }
 
   // destroy the movement once finished

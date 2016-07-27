@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,15 +33,10 @@ class MainLoop;
 /**
  * \brief This class stores properties of a quest (the quest.dat file).
  *
- * These properties are general information about a quest. They include:
- * - the Solarus compatibility version,
- * - the writing directory for savegames of this quest,
- * - the window title bar.
- * - the quest size.
- *
- * The main reason why these quest properties are stored as a data file
- * (even if they are also available through the Solarus scripting API)
- * is to make them easily editable in quest editors.
+ * These properties are general information about a quest.
+ * They include the Solarus compatibility version,
+ * the writing directory for savegames of this quest,
+ * and some metadata describing the quest.
  */
 class SOLARUS_API QuestProperties : public LuaData {
 
@@ -49,24 +44,31 @@ class SOLARUS_API QuestProperties : public LuaData {
 
     QuestProperties();
 
-    virtual bool import_from_lua(lua_State* l) override;
-    virtual bool export_to_lua(std::ostream& out) const override;
+    bool import_from_lua(lua_State* l) override;
+    bool export_to_lua(std::ostream& out) const override;
 
     std::string get_solarus_version() const;
     void set_solarus_version(const std::string& solarus_version);
-
     std::string get_quest_write_dir() const;
     void set_quest_write_dir(const std::string& quest_write_dir);
-
-    std::string get_title_bar() const;
-    void set_title_bar(const std::string& title_bar);
-
+    std::string get_title() const;
+    void set_title(const std::string& title);
+    std::string get_short_description() const;
+    void set_short_description(const std::string& short_description);
+    std::string get_long_description() const;
+    void set_long_description(const std::string& long_description);
+    std::string get_author() const;
+    void set_author(const std::string& author);
+    std::string get_quest_version() const;
+    void set_quest_version(const std::string& quest_version);
+    std::string get_release_date() const;
+    void set_release_date(const std::string& release_date);
+    std::string get_website() const;
+    void set_website(const std::string& website);
     Size get_normal_quest_size() const;
     void set_normal_quest_size(const Size& normal_quest_size);
-
     Size get_min_quest_size() const;
     void set_min_quest_size(const Size& min_quest_size);
-
     Size get_max_quest_size() const;
     void set_max_quest_size(const Size& max_quest_size);
 
@@ -77,7 +79,14 @@ class SOLARUS_API QuestProperties : public LuaData {
     std::string quest_write_dir;       /**< Directory where to save files of
                                         * the quest, relative to
                                         * FileTools::get_base_write_dir(). */
-    std::string title_bar;             /**< Title of the game window. */
+    std::string title;                 /**< Title of the quest. */
+    std::string short_description;     /**< One-line description of the quest. */
+    std::string long_description;      /**< Longer description of the quest. */
+    std::string author;                /**< Who created the quest. */
+    std::string quest_version;         /**< Version of the quest. */
+    std::string release_date;          /**< Date of the last quest release
+                                        * (YYYY-MM-DD). */
+    std::string website;               /**< URL of the quest website. */
     Size normal_quest_size;            /**< Default quest size. */
     Size min_quest_size;               /**< Minimum quest size. */
     Size max_quest_size;               /**< Maximum quest size. */

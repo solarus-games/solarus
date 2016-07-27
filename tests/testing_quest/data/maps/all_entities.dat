@@ -3,7 +3,8 @@ properties{
   y = 0,
   width = 320,
   height = 720,
-  num_layers = 3,
+  min_layer = 0,
+  max_layer = 2,
   tileset = "castle",
 }
 
@@ -174,6 +175,8 @@ custom_entity{
   layer = 0,
   x = 24,
   y = 653,
+  width = 16,
+  height = 16,
   direction = 3,
 }
 

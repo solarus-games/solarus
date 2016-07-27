@@ -1,0 +1,64 @@
+animation{
+  name = "stopped",
+  src_image = "animals/chameleon.png",
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 48, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 0, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 48, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+  },
+}
+animation{
+  name = "attack",
+  src_image = "animals/chameleon.png",
+  frame_delay = 1000,
+  directions = {
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 72, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 24, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 72, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+  },
+}
+animation{
+  name = "hurt",
+  src_image = "animals/chameleon.png",
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 48, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 0, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 48, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+  },
+}
+animation{
+  name = "looking",
+  src_image = "animals/chameleon.png",
+  frame_delay = 400,
+  directions = {
+    { x = 0, y = 48, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 4 },
+    { x = 0, y = 120, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 4 },
+    { x = 0, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 4 },
+    { x = 0, y = 96, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21, num_frames = 4 },
+  },
+}
+animation{
+  name = "tongue",
+  src_image = "animals/chameleon.png",
+  frame_delay = 100,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 96, y = 0, frame_width = 24, frame_height = 24, origin_x = 8, origin_y = 8, num_frames = 5 },
+    { x = 96, y = 72, frame_width = 24, frame_height = 24, origin_x = 8, origin_y = 8, num_frames = 5 },
+    { x = 96, y = 24, frame_width = 24, frame_height = 24, origin_x = 8, origin_y = 8, num_frames = 5 },
+    { x = 96, y = 48, frame_width = 24, frame_height = 24, origin_x = 8, origin_y = 8, num_frames = 5 },
+  },
+}
+animation{
+  name = "walking",
+  src_image = "animals/chameleon.png",
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 48, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 0, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 48, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+  },
+}

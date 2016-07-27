@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ Destination::Destination(
     bool is_default
 ):
   Entity(name, hero_direction, layer, xy, Size(16, 16)),
+  starting_location_mode(StartingLocationMode::WHEN_WORLD_CHANGES),
   is_default_destination(is_default) {
 
   set_origin(8, 13);
@@ -64,6 +65,22 @@ EntityType Destination::get_type() const {
  */
 bool Destination::is_default() const {
   return is_default_destination;
+}
+
+/**
+ * \brief Returns whether this destination updates the starting location.
+ * \return The starting location mode.
+ */
+StartingLocationMode Destination::get_starting_location_mode() const {
+  return starting_location_mode;
+}
+
+/**
+ * \brief Sets whether this destination updates the starting location.
+ * \param mode The starting location mode.
+ */
+void Destination::set_starting_location_mode(StartingLocationMode mode) {
+  this->starting_location_mode = mode;
 }
 
 }

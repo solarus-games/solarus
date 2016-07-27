@@ -1,0 +1,22 @@
+animation{
+  name = "flying",
+  src_image = "main_heroes/arrow1.png",
+  directions = {
+    { x = 0, y = 4, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4 },
+    { x = 4, y = 16, frame_width = 8, frame_height = 16, origin_x = 4, origin_y = 8 },
+    { x = 0, y = 36, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4 },
+    { x = 4, y = 48, frame_width = 8, frame_height = 16, origin_x = 4, origin_y = 8 },
+  },
+}
+animation{
+  name = "reached_obstacle",
+  src_image = "main_heroes/arrow1.png",
+  frame_delay = 50,
+  frame_to_loop_on = 7,
+  directions = {
+    { x = 16, y = 0, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 8, num_frames = 8 },
+    { x = 16, y = 16, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 16, num_frames = 8 },
+    { x = 16, y = 32, frame_width = 16, frame_height = 16, origin_x = 16, origin_y = 8, num_frames = 8 },
+    { x = 16, y = 48, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 0, num_frames = 8 },
+  },
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/movements/CircleMovement.h"
-#include "solarus/lua/LuaContext.h"
-#include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/Geometry.h"
-#include "solarus/lowlevel/Debug.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Entity.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Geometry.h"
+#include "solarus/lowlevel/System.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/movements/CircleMovement.h"
 #include "solarus/Map.h"
 #include <sstream>
 
@@ -184,27 +184,28 @@ void CircleMovement::set_angle_speed(int angle_speed) {
 
 /**
  * \brief Returns the angle from where the first circle starts.
- * \return the angle in radians
+ * \return The angle in degrees.
  */
 double CircleMovement::get_initial_angle() const {
 
-  return Geometry::degrees_to_radians(initial_angle);
+  return initial_angle;
 }
 
 /**
  * \brief Sets the angle from where the first circle starts.
- * \param initial_angle angle in radians
+ * \param initial_angle Angle in degrees.
  */
-void CircleMovement::set_initial_angle(double initial_angle) {
+void CircleMovement::set_initial_angle(int initial_angle) {
 
-  if (initial_angle < 0 || initial_angle >= Geometry::TWO_PI) {
-    std::ostringstream oss;
-    oss << "Invalid initial angle: " << initial_angle;
-    Debug::die(oss.str());
+  // Normalize the angle.
+  initial_angle = initial_angle % 360;
+  if (initial_angle < 0) {
+    initial_angle += 360;
   }
 
-  // convert to degrees (everything works in degrees in this class)
-  this->initial_angle = Geometry::radians_to_degrees(initial_angle);
+  this->initial_angle = initial_angle;
+
+  start();
 }
 
 /**
@@ -331,10 +332,17 @@ void CircleMovement::update() {
   uint32_t now = System::now();
 
   // maybe it is time to stop or to restart
-  if (current_radius != 0 && duration != 0 && now >= end_movement_date && wanted_radius != 0) {
+  if (current_radius != 0 &&
+      duration != 0 &&
+      now >= end_movement_date &&
+      wanted_radius != 0) {
     stop();
   }
-  else if (current_radius == 0 && loop_delay != 0 && now >= restart_date && wanted_radius == 0) {
+  else if (current_radius == 0 &&
+           loop_delay != 0 &&
+           now >= restart_date &&
+           wanted_radius == 0
+  ) {
     set_radius(previous_radius);
     start();
   }
@@ -359,7 +367,8 @@ void CircleMovement::update() {
   }
 
   // update the radius
-  while (current_radius != wanted_radius && now >= next_radius_change_date) {
+  while (current_radius != wanted_radius &&
+         now >= next_radius_change_date) {
 
     current_radius += radius_increment;
 

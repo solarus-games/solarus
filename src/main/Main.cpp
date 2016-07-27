@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,11 +17,12 @@
 #ifndef SOLARUS_NOMAIN
 
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/Output.h"
 #include "solarus/Arguments.h"
 #include "solarus/MainLoop.h"
 #include <iostream>
 #include <string>
+
+namespace Solarus {
 
 namespace {
 
@@ -30,9 +31,8 @@ namespace {
  * \param argc number of command-line arguments
  * \param argv command-line arguments
  */
-void print_help(const Solarus::Arguments& args) {
+void print_help(const Arguments& args) {
 
-  Solarus::Output::initialize(args);
   std::string binary_name = args.get_program_name();
   if (binary_name.empty()) {
     binary_name = "solarus";
@@ -59,11 +59,17 @@ void print_help(const Solarus::Arguments& args) {
     << std::endl
     << "  -quest-size=<width>x<height>  sets the size of the drawing area (if compatible with the quest)"
     << std::endl
-    << "  -win-console=yes|no           allows to see output in a console, only needed on Windows (default no)"
+    << "  -lua-console=yes|no           accepts standard input lines as Lua commands (default yes)"
+    << std::endl
+    << "  -turbo=yes|no                 runs as fast as possible rather than simulating real time (default no)"
+    << std::endl
+    << "  -lag=X                        slows down each frame of X milliseconds to simulate slower systems for debugging (default 0)"
     << std::endl;
 }
 
-}
+}  // Anonymous namespace.
+
+}  // namespace Solarus.
 
 /**
  * \brief Usual entry point of the program.
@@ -74,7 +80,7 @@ void print_help(const Solarus::Arguments& args) {
  * directory ("data") or the data archive ("data.solarus" or
  * "data.solarus.zip").
  * If the quest path is not specified, it is set to the preprocessor constant
- * DEFAULT_QUEST, which is the current directory "." by default.
+ * SOLARUS_DEFAULT_QUEST, which is the current directory "." by default.
  * In all cases, this quest path is relative to the working directory,
  * or to the solarus executable directory if no quest is found in the working
  * directory.
@@ -83,10 +89,12 @@ void print_help(const Solarus::Arguments& args) {
  *   -help                             Shows a help message.
  *   -no-audio                         Disables sounds and musics.
  *   -no-video                         Disables displaying (used for unit tests).
- *   -video-acceleration=yes|no        Enables or disables 2D accelerated graphics if available (default yes).
+ *   -video-acceleration=yes|no        Enables or disables 2D accelerated graphics if available (default: yes).
  *   -quest-size=<width>x<height>      Sets the size of the drawing area (if compatible with the quest).
- *   -win-console=yes|no               Opens a console to see debug output (default: no).
- *                                     Windows only (other systems use their existing console if any).
+ *   -lua-console=yes|no               Accepts lines from standard input as Lua commands (default: yes).
+ *   -turbo=yes|no                     Runs as fast as possible rather than simulating real time (default: no).
+ *   -lag=X                            (Advanced) Artificially slows down each frame of X milliseconds
+ *                                     to simulate slower systems for debugging (default: 0).
  *
  * \param argc Number of command-line arguments.
  * \param argv Command-line arguments.

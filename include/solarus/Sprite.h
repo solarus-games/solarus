@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
 #define SOLARUS_SPRITE_H
 
 #include "solarus/Common.h"
+#include "solarus/entities/NonAnimatedRegions.h"
+#include "solarus/lua/ScopedLuaRef.h"
 #include "solarus/Drawable.h"
 #include "solarus/SpritePtr.h"
-#include "solarus/entities/NonAnimatedRegions.h"
 #include <map>
 #include <string>
 
 namespace Solarus {
 
-class LuaContext;
 class Size;
 class SpriteAnimation;
 class SpriteAnimationSet;
@@ -114,8 +114,9 @@ class Sprite: public Drawable {
     virtual void draw_transition(Transition& transition) override;
     virtual Surface& get_transition_surface() override;
 
-    LuaContext* get_lua_context() const;
-    void set_lua_context(LuaContext* lua_context);
+    // Lua
+    const ScopedLuaRef& get_finished_callback() const;
+    void set_finished_callback(const ScopedLuaRef& finished_callback_ref);
     virtual const std::string& get_lua_type_name() const override;
 
   private:
@@ -124,8 +125,7 @@ class Sprite: public Drawable {
     int get_next_frame() const;
     Surface& get_intermediate_surface() const ;
     void set_frame_changed(bool frame_changed);
-
-    LuaContext* lua_context;           /**< The Solarus Lua API (nullptr means no callbacks for this sprite). TODO move this to ExportableToLua */
+    void notify_finished();
 
     // animation set
     static std::map<std::string, SpriteAnimationSet*> all_animation_sets;
@@ -159,6 +159,10 @@ class Sprite: public Drawable {
     uint32_t blink_delay;              /**< blink delay of the sprite, or zero if the sprite is not blinking */
     bool blink_is_sprite_visible;      /**< when blinking, true if the sprite is visible or false if it is invisible */
     uint32_t blink_next_change_date;   /**< date of the next change when blinking: visible or not */
+
+    ScopedLuaRef
+        finished_callback_ref;         /**< Lua ref to an action to do when this movement finishes.
+                                        * Automatically cleared when executed. */
 
 };
 

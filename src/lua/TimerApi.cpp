@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -166,8 +166,8 @@ void LuaContext::add_timer(
         initially_suspended = game->is_dialog_enabled();
       }
       else {
-        // Entities are more complex: they also get suspended when disabled
-        // and when far from the camera. Therefore, they don't simply follow
+        // Entities are more complex: they also get suspended when disabled.
+        // Therefore, they don't simply follow
         // the map suspended state.
         EntityPtr entity = check_entity(l, context_index);
         initially_suspended = entity->is_suspended() || !entity->is_enabled();

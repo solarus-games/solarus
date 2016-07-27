@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,9 +36,11 @@ Jumper::Jumper(const std::string& name,
     const Size& size,
     int direction,
     int jump_length):
-  Detector(COLLISION_CUSTOM | COLLISION_FACING, // Facing point detection is necessary to avoid sword tapping.
-      name, layer, xy, size),
+  Entity(name, 0, layer, xy, size),
   jump_length(jump_length) {
+
+  // Facing point detection is necessary to avoid sword tapping.
+  set_collision_modes(CollisionMode::COLLISION_CUSTOM | COLLISION_FACING);
 
   set_direction(direction);
 

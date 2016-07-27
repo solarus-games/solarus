@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,11 +41,32 @@ int l_quest(lua_State* l) {
     // Retrieve the quest properties from the table parameter.
     LuaTools::check_type(l, 1, LUA_TTABLE);
     const std::string& solarus_version =
-        LuaTools::opt_string_field(l, 1, "solarus_version", "");
+        LuaTools::check_string_field(l, 1, "solarus_version");
     const std::string& quest_write_dir =
         LuaTools::opt_string_field(l, 1, "write_dir", "");
+
+    // Accept the old title_bar value (1.4 and before) as a quest title
+    // so that the quest.dat file of 1.4 quests and earlier
+    // is still recognized, even though the quest cannot be run.
     const std::string& title_bar =
         LuaTools::opt_string_field(l, 1, "title_bar", "");
+    const std::string& title =
+        LuaTools::opt_string_field(l, 1, "title", title_bar);
+
+    const std::string& short_description =
+        LuaTools::opt_string_field(l, 1, "short_description", "");
+    std::string long_description =
+        LuaTools::opt_string_field(l, 1, "long_description", "");
+    long_description = LuaData::unescape_multiline_string(long_description);
+    const std::string& author =
+        LuaTools::opt_string_field(l, 1, "author", "");
+    const std::string& quest_version =
+        LuaTools::opt_string_field(l, 1, "quest_version", "");
+    const std::string& release_date =
+        LuaTools::opt_string_field(l, 1, "release_date", "");
+    const std::string& website =
+        LuaTools::opt_string_field(l, 1, "website", "");
+
     const std::string& normal_quest_size_string =
         LuaTools::opt_string_field(l, 1, "normal_quest_size", "320x240");
     const std::string& min_quest_size_string =
@@ -55,7 +76,13 @@ int l_quest(lua_State* l) {
 
     properties.set_solarus_version(solarus_version);
     properties.set_quest_write_dir(quest_write_dir);
-    properties.set_title_bar(title_bar);
+    properties.set_title(title);
+    properties.set_short_description(short_description);
+    properties.set_long_description(long_description);
+    properties.set_author(author);
+    properties.set_website(website);
+    properties.set_quest_version(quest_version);
+    properties.set_release_date(release_date);
 
     Size normal_quest_size, min_quest_size, max_quest_size;
     bool success = Video::parse_size(normal_quest_size_string, normal_quest_size);
@@ -127,11 +154,17 @@ bool QuestProperties::export_to_lua(std::ostream& out) const {
   out << "quest{\n"
       << "  solarus_version = \"" << solarus_version << "\",\n"
       << "  write_dir = \"" << escape_string(quest_write_dir) << "\",\n"
-      << "  title_bar = \"" << escape_string(title_bar) << "\",\n"
+      << "  title = \"" << escape_string(title) << "\",\n"
+      << "  short_description = \"" << escape_string(short_description) << "\",\n"
+      << "  long_description = [[\n" << escape_multiline_string(long_description) << "]],\n"
+      << "  author = \"" << escape_string(author) << "\",\n"
+      << "  quest_version = \"" << escape_string(quest_version) << "\",\n"
+      << "  release_date = \"" << escape_string(release_date) << "\",\n"
+      << "  website = \"" << escape_string(website) << "\",\n"
       << "  normal_quest_size = \"" << normal_quest_size.width << 'x' << normal_quest_size.height << "\",\n"
       << "  min_quest_size = \"" << min_quest_size.width << 'x' << min_quest_size.height << "\",\n"
       << "  max_quest_size = \"" << max_quest_size.width << 'x' << max_quest_size.height << "\",\n"
-      << "}\n";
+      << "}\n\n";
 
   return true;
 }
@@ -169,19 +202,115 @@ void QuestProperties::set_quest_write_dir(const std::string& quest_write_dir) {
 }
 
 /**
- * \brief Returns the title of the game window.
- * \return The "title_bar" value.
+ * \brief Returns the title of the quest.
+ * \return The "title" value.
  */
-std::string QuestProperties::get_title_bar() const {
-  return title_bar;
+std::string QuestProperties::get_title() const {
+  return title;
 }
 
 /**
- * \brief Sets the title of game windows for the quest.
- * \param title_bar The "title_bar" value.
+ * \brief Sets the title of quest.
+ * \param title The "title" value.
  */
-void QuestProperties::set_title_bar(const std::string& title_bar) {
-  this->title_bar = title_bar;
+void QuestProperties::set_title(const std::string& title) {
+  this->title = title;
+}
+
+/**
+ * \brief Returns the one-line description of the quest.
+ * \return The "short_description" value.
+ */
+std::string QuestProperties::get_short_description() const {
+  return short_description;
+}
+
+/**
+ * \brief Sets the one-line description of the quest.
+ * \param short_description The "short_description" value.
+ */
+void QuestProperties::set_short_description(const std::string& short_description) {
+  this->short_description = short_description;
+}
+
+/**
+ * \brief Returns the longer description of the quest.
+ * \return The "long_description" value.
+ */
+std::string QuestProperties::get_long_description() const {
+  return long_description;
+}
+
+/**
+ * \brief Sets the longer description of the quest.
+ * \param long_description The "long_description" value.
+ */
+void QuestProperties::set_long_description(const std::string& long_description) {
+  this->long_description = long_description;
+}
+
+/**
+ * \brief Returns the author of the quest.
+ * \return The "author" value.
+ */
+std::string QuestProperties::get_author() const {
+  return author;
+}
+
+/**
+ * \brief Sets the author of the quest.
+ * \param author The "author" value.
+ */
+void QuestProperties::set_author(const std::string& author) {
+  this->author = author;
+}
+
+/**
+ * \brief Returns the version of the quest.
+ * \return The "quest_version" value.
+ */
+std::string QuestProperties::get_quest_version() const {
+  return quest_version;
+}
+
+/**
+ * \brief Sets the version of the quest.
+ * \param quest_version The "quest_version" value.
+ */
+void QuestProperties::set_quest_version(const std::string& quest_version) {
+  this->quest_version = quest_version;
+}
+
+/**
+ * \brief Returns the release date of the quest.
+ * \return The "release_date" value.
+ */
+std::string QuestProperties::get_release_date() const {
+  return release_date;
+}
+
+/**
+ * \brief Sets the release date of the quest.
+ * \param release_date The "release_date" value.
+ */
+void QuestProperties::set_release_date(const std::string& release_date) {
+  this->release_date = release_date;
+}
+
+/**
+ * \brief Returns the website of the quest.
+ * \return The "website" value.
+ */
+std::string QuestProperties::get_website() const {
+  return website;
+}
+
+/**
+ * \brief Sets the website of the quest.
+ * \param website The "website" value.
+ */
+void QuestProperties::set_website(const std::string& website) {
+  this->website = website;
 }
 
 /**

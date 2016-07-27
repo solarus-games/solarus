@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/movements/Movement.h"
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lua/LuaContext.h"
 #include "solarus/Drawable.h"
 #include "solarus/Transition.h"
-#include "solarus/movements/Movement.h"
-#include "solarus/lua/LuaContext.h"
-#include "solarus/lowlevel/Debug.h"
 #include <lua.hpp>
 #include <utility>
 
@@ -32,7 +32,8 @@ Drawable::Drawable():
   movement(nullptr),
   transition(nullptr),
   transition_callback_ref(),
-  suspended(false) {
+  suspended(false),
+  blend_mode(BlendMode::BLEND) {
 
 }
 
@@ -268,6 +269,22 @@ void Drawable::draw_region(
   }
 
   raw_draw_region(region, *dst_surface, dst_position + xy);
+}
+
+/**
+ * \brief Returns the blend mode of this drawable object.
+ * \return The blend mode.
+ */
+BlendMode Drawable::get_blend_mode() const {
+  return blend_mode;
+}
+
+/**
+ * \brief Sets the blend mode of this drawable object.
+ * \param blend_mode The blend mode.
+ */
+void Drawable::set_blend_mode(BlendMode blend_mode) {
+  this->blend_mode = blend_mode;
 }
 
 }

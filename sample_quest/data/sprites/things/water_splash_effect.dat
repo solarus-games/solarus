@@ -1,0 +1,8 @@
+animation{
+  name = "water_splash",
+  src_image = "things/water_splash_effect.png",
+  frame_delay = 125,
+  directions = {
+    { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 8, num_frames = 5 },
+  },
+}

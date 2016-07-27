@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,6 +83,7 @@ class Surface: public Drawable {
     void clear(const Rectangle& where);
     void fill_with_color(const Color& color);
     void fill_with_color(const Color& color, const Rectangle& where);
+    uint8_t get_opacity() const;
     void set_opacity(uint8_t opacity);
 
     std::string get_pixels() const;
@@ -130,6 +131,7 @@ class Surface: public Drawable {
     uint32_t get_pixel(int index) const;
     bool is_pixel_transparent(int index) const;
     uint32_t get_color_value(const Color& color) const;
+    SDL_BlendMode get_sdl_blend_mode() const;
 
     static SDL_Surface* get_surface_from_file(
         const std::string& file_name,
@@ -152,17 +154,18 @@ class Surface: public Drawable {
     std::vector<SubSurfaceNodePtr>
         subsurfaces;                      /**< Source Subsurfaces not in the tree yet */
 
-    bool software_destination;            /**< indicates that this surface is modified on software side
+    bool software_destination;            /**< Whether this surface should be modified on software side
                                            * (and therefore immediately) when used as a destination */
     SDL_Surface_UniquePtr
-        internal_surface;                 /**< the SDL_Surface encapsulated, if any. */
+        internal_surface;                 /**< The SDL_Surface encapsulated, if any. */
     SDL_Texture_UniquePtr
-        internal_texture;                 /**< the SDL_Texture encapsulated, if any. */
+        internal_texture;                 /**< The SDL_Texture encapsulated, if any. */
     std::unique_ptr<Color>
-        internal_color;                   /**< the background color to use, if any. */
-    bool is_rendered;                     /**< indicates if the current surface has been rendered. Set to false when drawing a surface on this one. */
-    uint8_t internal_opacity;             /**< opacity to apply to all subtextures. */
-    int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */
+        internal_color;                   /**< The background color to use, if any. */
+    bool is_rendered;                     /**< Whether the current surface has been rendered.
+                                           * Set to false when drawing a surface on this one. */
+    uint8_t opacity;                      /**< Opacity (0: transparent, 255: opaque). */
+    int width, height;                    /**< Size of the texture, avoid to use SDL_QueryTexture. */
 
 };
 

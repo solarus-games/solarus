@@ -4,12 +4,13 @@
 option(SOLARUS_USE_LUAJIT "Use LuaJIT instead of default Lua (recommended)" ON)
 
 # Find dependencies.
-set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
 #find_package(OpenGL)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(OpenAL REQUIRED)
+find_package(Vorbis REQUIRED)
 find_package(VorbisFile REQUIRED)
 find_package(Ogg REQUIRED)
 find_package(ModPlug REQUIRED)

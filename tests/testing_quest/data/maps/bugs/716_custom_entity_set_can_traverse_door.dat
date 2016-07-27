@@ -1,0 +1,46 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  min_layer = 0,
+  max_layer = 2,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  pattern = "3",
+}
+
+door{
+  name = "door",
+  layer = 0,
+  x = 48,
+  y = 16,
+  direction = 3,
+  sprite = "entities/door",
+}
+
+destination{
+  name = "destination",
+  layer = 0,
+  x = 24,
+  y = 29,
+  direction = 1,
+}
+
+custom_entity{
+  name = "custom_entity",
+  layer = 0,
+  x = 64,
+  y = 37,
+  width = 16,
+  height = 16,
+  direction = 0,
+}
+

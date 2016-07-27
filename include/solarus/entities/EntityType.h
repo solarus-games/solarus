@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,7 +61,7 @@ enum class EntityType {
 
   CAMERA,             /**< the camera */
   HERO,               /**< the hero */
-  CARRIED_ITEM,       /**< item carried and thrown by the hero (comes from a destructible item) */
+  CARRIED_OBJECT,       /**< item carried and thrown by the hero (comes from a destructible item) */
   BOOMERANG,          /**< a boomerang thrown */
   EXPLOSION,          /**< an explosion, that may be caused by a bomb, a bomb flower, an enemy, etc. */
   ARROW,              /**< an arrow thrown by the bow */

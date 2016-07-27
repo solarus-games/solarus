@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,23 +21,23 @@
 #include "solarus/entities/Entity.h"
 #include "solarus/entities/EntityPtr.h"
 #include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lowlevel/SurfacePtr.h"
 #include <memory>
 
 namespace Solarus {
 
 class Map;
 class Separator;
+class Surface;
 class TargetMovement;
 
 /**
  * \brief Manages the visible area of the map.
  *
  * The camera determines the visible area of the map.
- * Most of the time, the camera is centered on the hero movements,
- * blocking on the map borders and on separators.
- *
- * Occasionally, it can also be moved towards a point and then restored
- * towards the hero.
+ * The camera may either be tracking an entity
+ * (usually the hero)
+ * or be controlled manually by a script.
  */
 class Camera : public Entity {
 
@@ -51,39 +51,33 @@ class Camera : public Entity {
 
     bool can_be_drawn() const override;
     void set_suspended(bool suspended) override;
-    void update() override;
+    void notify_movement_started() override;
+    void notify_size_changed() override;
 
-    bool is_moving() const;
-    void set_speed(int speed);
-    void move(int target_x, int target_y);
-    void move(const Point& target);
-    void move(Entity& entity);
-    void restore();
-    void traverse_separator(Separator* separator);
+    const SurfacePtr& get_surface();
+
+    Point get_position_on_screen() const;
+    void set_position_on_screen(const Point& position_on_screen);
+    Point get_position_to_track(const Point& tracked_xy) const;
+
+    void start_tracking(const EntityPtr& entity);
+    void start_manual();
+
+    EntityPtr get_tracked_entity() const;
+    void notify_tracked_entity_traversing_separator(Separator& separator);
+    bool is_traversing_separator() const;
 
     Rectangle apply_map_bounds(const Rectangle& area) const;
     Rectangle apply_separators(const Rectangle& area) const;
     Rectangle apply_separators_and_map_bounds(const Rectangle& area) const;
 
-  private:
+private:
 
-    void update_fixed_on();
-    void update_moving();
+    void create_surface();
 
-    // Camera centered on the hero.
-    EntityPtr fixed_on;                     /**< An entity the camera is fixed on,
-                                             * nullptr if it has a movement. */
-    Rectangle separator_scrolling_position; /**< Current camera position while crossing a separator. */
-    Rectangle separator_target_position;    /**< Target camera position when crossing a separator. */
-    Point separator_scrolling_delta;        /**< increment to the camera position when crossing a separator. */
-    uint32_t separator_next_scrolling_date; /**< Next camera position change when crossing a separator. */
-    int separator_scrolling_direction4;     /**< Direction when scrolling. */
-    std::shared_ptr<Separator>
-        separator_traversed;                /**< Separator currently being traversed or nullptr. */
+    SurfacePtr surface;           /**< Surface where this camera draws its entities. */
+    Point position_on_screen;     /**< Where to draw this camera on the screen. */
 
-    // Camera being moved toward a point or back to the hero.
-    bool restoring;                         /**< \c true if the camera is moving back to the hero. */
-    int speed;                              /**< Speed of the next movement. */
 };
 
 }

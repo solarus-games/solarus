@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
 
   public:
 
-    CarryingState(Hero& hero, const std::shared_ptr<CarriedItem>& carried_item);
+    CarryingState(Hero& hero, const std::shared_ptr<CarriedObject>& carried_object);
 
     void start(const State* previous_state) override;
     void stop(const State* next_state) override;
@@ -44,14 +44,14 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
     bool can_take_stairs() const override;
     void set_animation_stopped() override;
     void set_animation_walking() override;
-    std::shared_ptr<CarriedItem> get_carried_item() const override;
-    CarriedItem::Behavior get_previous_carried_item_behavior() const override;
+    std::shared_ptr<CarriedObject> get_carried_object() const override;
+    CarriedObject::Behavior get_previous_carried_object_behavior() const override;
 
   private:
 
     void throw_item();
 
-    std::shared_ptr<CarriedItem> carried_item;         /**< the item to carry */
+    std::shared_ptr<CarriedObject> carried_object;         /**< the item to carry */
 
 };
 

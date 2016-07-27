@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,8 +47,7 @@ Treasure::Treasure(Game& game, const std::string& item_name, int variant,
   game(&game),
   item_name(item_name),
   variant(variant),
-  savegame_variable(savegame_variable),
-  sprite(nullptr) {
+  savegame_variable(savegame_variable) {
 
 }
 
@@ -85,8 +84,7 @@ void Treasure::check_obtainable() const {
  */
 void Treasure::ensure_obtainable() {
 
-  Equipment& equipment = game->get_equipment();
-  if (!item_name.empty() && !equipment.get_item(item_name).is_obtainable()) {
+  if (!is_obtainable()) {
     item_name = "";
     variant = 1;
   }
@@ -169,7 +167,6 @@ const std::string& Treasure::get_savegame_variable() const {
  */
 void Treasure::give_to_player() const {
 
-  Debug::check_assertion(!is_found(), "This treasure was already found");
   check_obtainable();
 
   // Mark the treasure as found in the savegame.
@@ -190,23 +187,14 @@ void Treasure::give_to_player() const {
 }
 
 /**
- * \brief Draws the treasure.
- * \param dst_surface The surface where to draw.
- * \param x The treasure x position on this surface.
- * \param y The treasure y position on this surface.
+ * \brief Creates and returns a sprite representing this treasure.
  */
-void Treasure::draw(const SurfacePtr& dst_surface, int x, int y) {
+SpritePtr Treasure::create_sprite() const {
 
-  if (sprite == nullptr) {
-    // Create the sprite only if needed (many treasures are actually
-    // never drawn).
-    sprite = std::make_shared<Sprite>("entities/items");
-    sprite->set_current_animation(get_item_name());
-    sprite->set_current_direction(get_variant() - 1);
-  }
-
-  // Draw the item.
-  sprite->draw(dst_surface, x, y);
+  SpritePtr sprite = std::make_shared<Sprite>("entities/items");
+  sprite->set_current_animation(get_item_name());
+  sprite->set_current_direction(get_variant() - 1);
+  return sprite;
 }
 
 }

@@ -1,0 +1,16 @@
+animation{
+  name = "grass",
+  src_image = "things/grass_effect.png",
+  directions = {
+    { x = 0, y = 0, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4 },
+  },
+}
+animation{
+  name = "grass_walking",
+  src_image = "things/grass_effect.png",
+  frame_delay = 100,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 0, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4, num_frames = 3 },
+  },
+}

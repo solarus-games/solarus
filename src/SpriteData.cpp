@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -120,6 +120,8 @@ void SpriteAnimationDirectionData::set_origin(const Point& origin) {
  *
  * This is a rectangle of size get_size() and whose top-left corner has
  * coordinates -get_origin().
+ *
+ * \return The bounding box.
  */
 Rectangle SpriteAnimationDirectionData::get_bounding_box() const {
 
@@ -210,7 +212,8 @@ std::vector<Rectangle> SpriteAnimationDirectionData::get_all_frames() const {
 SpriteAnimationData::SpriteAnimationData() :
   src_image(""),
   frame_delay(0),
-  loop_on_frame(0) {
+  loop_on_frame(0),
+  directions() {
 }
 
 /**

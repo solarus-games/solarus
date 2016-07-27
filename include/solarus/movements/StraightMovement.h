@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,12 +68,11 @@ class StraightMovement: public Movement {
     void set_next_move_date_x(uint32_t next_move_date_x);
     void set_next_move_date_y(uint32_t next_move_date_y);
 
-    void update_x();
+    void update_smooth_xy();
     void update_smooth_x();
-    void update_non_smooth_x();
-    void update_y();
     void update_smooth_y();
-    void update_non_smooth_y();
+
+    void update_non_smooth_xy();
 
   private:
 

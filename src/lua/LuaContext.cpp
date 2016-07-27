@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #include "solarus/entities/Switch.h"
 #include "solarus/entities/Tileset.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/ExportableToLuaPtr.h"
 #include "solarus/lua/LuaContext.h"
@@ -39,7 +40,6 @@
 #include "solarus/Timer.h"
 #include "solarus/Treasure.h"
 #include <sstream>
-#include <iostream>
 
 namespace Solarus {
 
@@ -155,10 +155,17 @@ void LuaContext::initialize() {
   lua_pop(l, 1);
                                   // --
 
-  Debug::check_assertion(lua_gettop(l) == 0, "Lua stack is not empty after initialization");
+  // Make sure that stdout gets flushed when Lua scripts output new lines.
+  // This is not always the case by default.
+  luaL_dostring(l, "io.stdout:setvbuf(\"line\")");
+
+  Debug::check_assertion(lua_gettop(l) == 0, "Non-empty Lua stack after initialization");
 
   // Execute the main file.
   do_file_if_exists(l, "main");
+
+  Debug::check_assertion(lua_gettop(l) == 0, "Non-empty Lua Lua stack after running main.lua");
+
   main_on_started();
 }
 
@@ -175,6 +182,7 @@ void LuaContext::exit() {
     destroy_menus();
     destroy_timers();
     destroy_drawables();
+    userdata_close_lua();
 
     // Finalize Lua.
     lua_close(l);
@@ -248,7 +256,7 @@ void LuaContext::run_map(Map& map, Destination* destination) {
   std::string file_name = std::string("maps/") + map.get_id();
 
   // Load the map's code.
-  load_file(l, file_name);
+  bool load_success = load_file(l, file_name);
                                   // map_fun
 
   // Set a special environment to access map entities like global variables.
@@ -274,9 +282,11 @@ void LuaContext::run_map(Map& map, Destination* destination) {
   lua_setfenv(l, -2);
                                   // map_fun
 
-  // Run the map's code with the map userdata as parameter.
-  push_map(l, map);
-  call_function(1, 0, file_name.c_str());
+  if (load_success) {
+    // Run the map's code with the map userdata as parameter.
+    push_map(l, map);
+    call_function(1, 0, file_name.c_str());
+  }
 
   // Call the map:on_started() callback.
   map_on_started(map, destination);
@@ -306,7 +316,7 @@ void LuaContext::run_item(EquipmentItem& item) {
   std::string file_name = std::string("items/") + item.get_name();
 
   // Load the item's code.
-  if (load_file_if_exists(l, file_name)) {
+  if (load_file(l, file_name)) {
 
     // Run it with the item userdata as parameter.
     push_item(l, item);
@@ -330,7 +340,7 @@ void LuaContext::run_enemy(Enemy& enemy) {
   std::string file_name = std::string("enemies/") + enemy.get_breed();
 
   // Load the enemy's code.
-  if (load_file_if_exists(l, file_name)) {
+  if (load_file(l, file_name)) {
 
     // Run it with the enemy userdata as parameter.
     push_enemy(l, enemy);
@@ -361,7 +371,7 @@ void LuaContext::run_custom_entity(CustomEntity& custom_entity) {
   std::string file_name = std::string("entities/") + model;
 
   // Load the entity's code.
-  if (load_file_if_exists(l, file_name)) {
+  if (load_file(l, file_name)) {
 
     // Run it with the entity userdata as parameter.
     push_custom_entity(l, custom_entity);
@@ -369,24 +379,6 @@ void LuaContext::run_custom_entity(CustomEntity& custom_entity) {
   }
 
   // TODO parse Lua only once for each model.
-}
-
-/**
- * \brief Notifies Lua that the sequence started by a call to
- * map:move_camera() has reached its target.
- * \param map The current map.
- */
-void LuaContext::notify_camera_reached_target(Map& map) {
-
-  // Set a timer to execute the function.
-  lua_settop(l, 0);
-  push_map(l, map);
-  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
-  lua_pushcfunction(l, l_camera_do_callback);
-  timer_api_start(l);
-  const TimerPtr& timer = check_timer(l, -1);
-  timer->set_suspended_with_map(false);
-  lua_settop(l, 0);
 }
 
 /**
@@ -434,6 +426,28 @@ void LuaContext::notify_dialog_finished(
     }
     call_function(1, 0, "dialog callback");
   }
+}
+
+/**
+ * \brief Shows a warning message for a deprecated function of the Lua API.
+ *
+ * Does nothing if the message for this function was already shown once.
+ *
+ * \param function_name A deprecated Lua function.
+ * \param message A warning message explaining how to replace the call.
+ */
+void LuaContext::warning_deprecated(
+    const std::string& function_name,
+    const std::string& message
+) {
+  if (warning_deprecated_functions.find(function_name) !=
+      warning_deprecated_functions.end()) {
+    return;
+  }
+  Logger::warning("The function " + function_name +
+                  " is deprecated and may be removed in a future version. " +
+                  message);
+  warning_deprecated_functions.insert(function_name);
 }
 
 /**
@@ -617,7 +631,7 @@ bool LuaContext::find_method(int index, const char* function_name) {
 /**
  * \brief Calls the Lua function with its arguments on top of the stack.
  *
- * This function is like lua_pcall, except that it additionaly handles the
+ * This function is like lua_pcall, except that it additionally handles the
  * error message if an error occurs in the Lua code (the error is printed).
  * This function leaves the results on the stack if there is no error,
  * and leaves nothing on the stack in case of error.
@@ -628,7 +642,7 @@ bool LuaContext::find_method(int index, const char* function_name) {
  * there is no error)
  * \param function_name A name describing the Lua function (only used to print
  * the error message if any).
- * This is not an const std::string& but a const char* on purpose to avoid
+ * This is not a const std::string& but a const char* on purpose to avoid
  * costly conversions as this function is called very often.
  * \return true in case of success
  */
@@ -641,30 +655,18 @@ bool LuaContext::call_function(
 }
 
 /**
- * \brief Opens a script and lets it on top of the stack as a function.
- * \param l A Lua state.
- * \param script_name File name of the script without extension,
- * relative to the data directory.
- */
-void LuaContext::load_file(lua_State* l, const std::string& script_name) {
-
-  if (!load_file_if_exists(l, script_name)) {
-    Debug::die(std::string("Cannot find script file '") + script_name + "'");
-  }
-}
-
-/**
  * \brief Opens a script if it exists and lets it on top of the stack as a
  * function.
  *
- * If the file does not exist, the stack is left intact and false is returned.
+ * If the file does not exist or has a syntax error,
+ * the stack is left intact and false is returned.
  *
  * \param l A Lua state.
  * \param script_name File name of the script with or without extension,
  * relative to the data directory.
  * \return true if the file exists and was loaded.
  */
-bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_name) {
+bool LuaContext::load_file(lua_State* l, const std::string& script_name) {
 
   // Determine the file name (possibly adding ".lua").
   std::string file_name(script_name);
@@ -687,6 +689,7 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
   if (result != 0) {
     Debug::error(std::string("Failed to load script '")
         + script_name + "': " + lua_tostring(l, -1));
+    lua_pop(l, 1);
     return false;
   }
   return true;
@@ -704,8 +707,12 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
  */
 void LuaContext::do_file(lua_State* l, const std::string& script_name) {
 
-  load_file(l, script_name);
-  LuaTools::call_function(l, 0, 0, script_name.c_str());
+  if (!load_file(l, script_name)) {
+    Debug::error("Failed to load script '" + script_name + "'");
+  }
+  else {
+    LuaTools::call_function(l, 0, 0, script_name.c_str());
+  }
 }
 
 /**
@@ -721,7 +728,7 @@ void LuaContext::do_file(lua_State* l, const std::string& script_name) {
  */
 bool LuaContext::do_file_if_exists(lua_State* l, const std::string& script_name) {
 
-  if (load_file_if_exists(l, script_name)) {
+  if (load_file(l, script_name)) {
     LuaTools::call_function(l, 0, 0, script_name.c_str());
     return true;
   }
@@ -737,25 +744,26 @@ void LuaContext::print_stack(lua_State* l) {
   int i;
   int top = lua_gettop(l);
 
+  std::ostringstream oss;
   for (i = 1; i <= top; i++) {
 
     int type = lua_type(l, i);
     switch (type) {
 
       case LUA_TSTRING:
-        std::cout << "\"" << lua_tostring(l, i) << "\"";
+        oss << "\"" << lua_tostring(l, i) << "\"";
         break;
 
       case LUA_TBOOLEAN:
-        std::cout << (lua_toboolean(l, i) ? "true" : "false");
+        oss << (lua_toboolean(l, i) ? "true" : "false");
         break;
 
       case LUA_TNUMBER:
-        std::cout << lua_tonumber(l, i);
+        oss << lua_tonumber(l, i);
         break;
 
       case LUA_TLIGHTUSERDATA:
-        std::cout << "lightuserdata:" << lua_touserdata(l, i);
+        oss << "lightuserdata:" << lua_touserdata(l, i);
         break;
 
       case LUA_TUSERDATA:
@@ -763,18 +771,18 @@ void LuaContext::print_stack(lua_State* l) {
         const ExportableToLuaPtr& userdata = *(static_cast<ExportableToLuaPtr*>(
             lua_touserdata(l, i)));
         const std::string& lua_type_name = userdata->get_lua_type_name();
-        std::cout << lua_type_name.substr(lua_type_name.find_last_of('.') + 1);
+        oss << lua_type_name.substr(lua_type_name.find_last_of('.') + 1);
         break;
       }
 
       default:
-        std::cout << lua_typename(l, type);
+        oss << lua_typename(l, type);
         break;
 
     }
-    std::cout << " ";
+    oss << " ";
   }
-  std::cout << std::endl;
+  Logger::debug(oss.str());
 }
 
 /**
@@ -802,7 +810,7 @@ void LuaContext::print_lua_version() {
     version = LuaTools::check_string(l, -1);
     lua_pop(l, 2);
                                   // -
-    std::cout << "LuaJIT: no (" << version << ")" << std::endl;
+    Logger::info("LuaJIT: no (" + version + ")");
   }
   else {
     // LuaJIT.
@@ -810,7 +818,7 @@ void LuaContext::print_lua_version() {
     version = LuaTools::check_string_field(l, -1, "version");
     lua_pop(l, 1);
                                   // -
-    std::cout << "LuaJIT: yes (" << version << ")" << std::endl;
+    Logger::info("LuaJIT: yes (" + version + ")");
   }
 
   Debug::check_assertion(lua_gettop(l) == 0, "Non-empty Lua stack after print_lua_version()");
@@ -996,6 +1004,7 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
     if (!userdata.is_known_to_lua()) {
       // This is the first time we create a Lua userdata for this object.
       userdata.set_known_to_lua(true);
+      userdata.set_lua_context(&get_lua_context(l));
     }
 
                                   // ... all_udata nil
@@ -1161,41 +1170,75 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
 
   // Note that the full userdata disappears from Lua but it may come back later!
   // So we need to keep its table if the refcount is not zero.
-  // The full userdata is destroyed, but if the refcount is not zero, the light
-  // userdata and its table persist.
+  // The full userdata is destroyed but the light userdata and its table persist.
+  // Its table will be destroyed from ~ExportableToLua().
 
   // We don't need to remove the entry from sol.all_userdata
   // because it is already done: that table is weak on its values and the
   // value was the full userdata.
 
-  if (userdata->unique()) {
-    // The userdata is not used by other people.
-    // The object is going to be destroyed from C++ too.
-
-    if ((*userdata)->is_with_lua_table()) {
-      // Remove the table associated to this userdata.
-      // Otherwise, if the same pointer gets reallocated, a new userdata will get
-      // its table from this deleted one!
-                                    // udata
-      lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
-                                    // udata udata_tables
-      lua_pushlightuserdata(l, userdata->get());
-                                    // udata udata_tables lightudata
-      lua_pushnil(l);
-                                    // udata udata_tables lightudata nil
-      lua_settable(l, -3);
-                                    // udata udata_tables
-      lua_pop(l, 1);
-                                    // udata
-      get_lua_context(l).userdata_fields.erase(userdata->get());
-    }
-
-  }
-
   // Manually destroy the shared_ptr allocated for Lua.
   userdata->~shared_ptr<ExportableToLua>();
 
   return 0;
+}
+
+/**
+ * \brief Function called when a userdata is being destroyed from C++.
+ *
+ * It means that it is no longer used from Lua either
+ * (__gc has been called before or is being called).
+ *
+ * \param userdata The userdata just destroyed.
+ */
+void LuaContext::notify_userdata_destroyed(ExportableToLua& userdata) {
+
+  if (userdata.is_with_lua_table()) {
+    // Remove the table associated to this userdata.
+    // Otherwise, if the same pointer gets reallocated, a new userdata will get
+    // its table from this deleted one!
+
+                                  // ...
+    lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
+                                  // ... udata_tables/nil
+    if (!lua_isnil(l, -1)) {
+                                  // ... udata_tables
+      lua_pushlightuserdata(l, &userdata);
+                                  // ... udata_tables lightudata
+      lua_pushnil(l);
+                                  // ... udata_tables lightudata nil
+      lua_settable(l, -3);
+                                  // ... udata_tables
+    }
+    lua_pop(l, 1);
+                                  // ...
+    get_lua_context(l).userdata_fields.erase(&userdata);
+  }
+}
+
+/**
+ * \brief Tells all userdata that Lua is closing.
+ *
+ * This must be done when Lua is about to be closed,
+ * so that they can continue to live normally in C++.
+ */
+void LuaContext::userdata_close_lua() {
+
+  // Tell userdata to forget about this Lua state.
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.all_userdata");
+  lua_pushnil(l);
+  while (lua_next(l, -2) != 0) {
+    ExportableToLua* userdata = static_cast<ExportableToLua*>(
+        lua_touserdata(l, -2));
+    userdata->set_lua_context(nullptr);
+    lua_pop(l, 1);
+  }
+  lua_pop(l, 1);
+  userdata_fields.clear();
+
+  // Clear userdata tables.
+  lua_pushnil(l);
+  lua_setfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
 }
 
 /**
@@ -1225,15 +1268,11 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
 
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                   // ... udata_tables
-  lua_pushlightuserdata(l, userdata.get());
-                                  // ... udata_tables lightudata
-  lua_gettable(l, -2);
-                                  // ... udata_tables udata_table/nil
-  if (lua_isnil(l, -1)) {
+
+  if (!userdata->is_with_lua_table()) {
     // Create the userdata table if it does not exist yet.
+
     userdata->set_with_lua_table(true);
-                                  // ... udata_tables nil
-    lua_pop(l, 1);
                                   // ... udata_tables
     lua_newtable(l);
                                   // ... udata_tables udata_table
@@ -1244,6 +1283,14 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
     lua_settable(l, -4);
                                   // ... udata_tables udata_table
   }
+  else {
+    // The userdata table already exists.
+    lua_pushlightuserdata(l, userdata.get());
+                                  // ... udata_tables lightudata
+    lua_gettable(l, -2);
+                                  // ... udata_tables udata_table
+  }
+  Debug::check_assertion(!lua_isnil(l, -1), "Missing userdata table");
   lua_pushvalue(l, 2);
                                   // ... udata_tables udata_table key
   lua_pushvalue(l, 3);
@@ -1998,16 +2045,6 @@ void LuaContext::on_opening_transition_finished(Destination* destination) {
 }
 
 /**
- * \brief Calls the on_camera_back() method of the object on top of the stack.
- */
-void LuaContext::on_camera_back() {
-
-  if (find_method("on_camera_back")) {
-    call_function(1, 0, "on_camera_back");
-  }
-}
-
-/**
  * \brief Calls the on_obtaining_treasure() method of the object on top of the stack.
  * \param treasure The treasure being obtained.
  */
@@ -2252,19 +2289,6 @@ void LuaContext::on_collision_explosion() {
 }
 
 /**
- * \brief Calls the on_empty() method of the object on top of the stack.
- * \return \c true if the on_empty() method is defined.
- */
-bool LuaContext::on_empty() {
-
-  if (find_method("on_empty")) {
-    call_function(1, 0, "on_empty");
-    return true;
-  }
-  return false;
-}
-
-/**
  * \brief Calls the on_buying() method of the object on top of the stack.
  * \return true if the player is allowed to buy the item.
  */
@@ -2303,6 +2327,38 @@ void LuaContext::on_opened() {
   if (find_method("on_opened")) {
     call_function(1, 0, "on_opened");
   }
+}
+
+/**
+ * \brief Calls the on_opened() method of the object on top of the stack.
+ * \param treasure A treasure being obtained when opening.
+ * \return \c true if the method is defined.
+ */
+bool LuaContext::on_opened(const Treasure& treasure) {
+
+  if (find_method("on_opened")) {
+
+    if (treasure.is_empty()) {
+      lua_pushnil(l);
+      lua_pushnil(l);
+    }
+    else {
+      push_item(l, treasure.get_item());
+      lua_pushinteger(l, treasure.get_variant());
+    }
+
+    if (!treasure.is_saved()) {
+      lua_pushnil(l);
+    }
+    else {
+      lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    }
+
+    call_function(4, 0, "on_opened");
+    return true;
+  }
+
+  return false;
 }
 
 /**
@@ -2539,6 +2595,18 @@ void LuaContext::on_obstacle_reached(Movement& movement) {
 }
 
 /**
+ * \brief Calls the on_movement_started() method of the object on top of the stack.
+ * \param movement A movement.
+ */
+void LuaContext::on_movement_started(Movement& movement) {
+
+  if (find_method("on_movement_started")) {
+    push_movement(l, movement);
+    call_function(2, 0, "on_movement_started");
+  }
+}
+
+/**
  * \brief Calls the on_movement_changed() method of the object on top of the stack.
  * \param movement A movement.
  */
@@ -2766,9 +2834,9 @@ int LuaContext::l_loader(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& script_name = luaL_checkstring(l, 1);
-    bool exists = load_file_if_exists(l, script_name);
+    bool load_success = load_file(l, script_name);
 
-    if (!exists) {
+    if (!load_success) {
       std::ostringstream oss;
       oss << std::endl << "\tno quest file '" << script_name
           << ".lua' in 'data/', 'data.solarus' or 'data.solarus.zip'";

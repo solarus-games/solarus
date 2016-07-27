@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #define SOLARUS_SWITCH_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include <map>
 #include <string>
 
@@ -35,7 +35,7 @@ class Arrow;
  * Some walkable switches become disabled when the hero or the block leave it.
  * A switch can have a sprite or be invisible.
  */
-class Switch: public Detector {
+class Switch: public Entity {
 
   public:
 
@@ -72,6 +72,7 @@ class Switch: public Detector {
     bool is_activated() const;
     void activate();
     void set_activated(bool enabled);
+    bool is_locked() const;
     void set_locked(bool locked);
 
     void try_activate(Hero& hero);

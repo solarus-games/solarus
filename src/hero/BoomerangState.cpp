@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/Boomerang.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/hero/BoomerangState.h"
 #include "solarus/hero/FreeState.h"
 #include "solarus/hero/HeroSprites.h"
-#include "solarus/entities/MapEntities.h"
-#include "solarus/entities/Boomerang.h"
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/Game.h"
 #include "solarus/GameCommands.h"
@@ -42,7 +42,7 @@ Hero::BoomerangState::BoomerangState(
     int speed,
     const std::string& tunic_preparing_animation,
     const std::string& sprite_name):
-  BaseState(hero, "boomerang"),
+  HeroState(hero, "boomerang"),
   direction_pressed8(-1),
   max_distance(max_distance),
   speed(speed),
@@ -57,7 +57,7 @@ Hero::BoomerangState::BoomerangState(
  */
 void Hero::BoomerangState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   const bool boomerang_exists = !get_map().get_entities().get_entities_by_type<Boomerang>().empty();
   if (boomerang_exists) {
@@ -75,7 +75,7 @@ void Hero::BoomerangState::start(const State* previous_state) {
  */
 void Hero::BoomerangState::update() {
 
-  State::update();
+  HeroState::update();
 
   Hero& hero = get_entity();
   if (hero.is_animation_finished()) {

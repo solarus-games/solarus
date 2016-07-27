@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,24 +86,24 @@ int LuaContext::file_api_open(lua_State* l) {
 
       switch (location) {
 
-      case QuestFiles::LOCATION_NONE:
+      case QuestFiles::DataFileLocation::LOCATION_NONE:
         // Not found.
         lua_pushnil(l);
         push_string(l, std::string("Cannot find file '") + file_name
             + "' in the quest write directory, in data/, data.solarus or in data.solarus.zip");
         return 2;
 
-      case QuestFiles::LOCATION_WRITE_DIRECTORY:
+      case QuestFiles::DataFileLocation::LOCATION_WRITE_DIRECTORY:
         // Found in the quest write directory.
         real_file_name = QuestFiles::get_full_quest_write_dir() + "/" + file_name;
         break;
 
-      case QuestFiles::LOCATION_DATA_DIRECTORY:
+      case QuestFiles::DataFileLocation::LOCATION_DATA_DIRECTORY:
         // Found in the data directory.
         real_file_name = QuestFiles::get_quest_path() + "/data/" + file_name;
         break;
 
-      case QuestFiles::LOCATION_DATA_ARCHIVE:
+      case QuestFiles::DataFileLocation::LOCATION_DATA_ARCHIVE:
       {
         // Found in the data archive.
         // To call io.open(), we need a regular file, so let's create

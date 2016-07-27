@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #define SOLARUS_CUSTOM_ENTITY_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/lua/ScopedLuaRef.h"
 #include <map>
 #include <string>
@@ -33,7 +33,7 @@ namespace Solarus {
  * that controls it. This is useful to make several custom entities with the
  * same behavior more easily.
  */
-class SOLARUS_API CustomEntity: public Detector {
+class SOLARUS_API CustomEntity: public Entity {
 
   public:
 
@@ -97,6 +97,7 @@ class SOLARUS_API CustomEntity: public Detector {
     bool is_raised_block_obstacle(CrystalBlock& raised_block) override;
     bool is_crystal_obstacle(Crystal& crystal) override;
     bool is_npc_obstacle(Npc& npc) override;
+    bool is_door_obstacle(Door& block) override;
     bool is_enemy_obstacle(Enemy& enemy) override;
     bool is_jumper_obstacle(Jumper& jumper, const Rectangle& candidate_position) override;
     bool is_destructible_obstacle(Destructible& destructible) override;
@@ -106,10 +107,14 @@ class SOLARUS_API CustomEntity: public Detector {
     void set_can_traverse_ground(Ground ground, bool traversable);
     void reset_can_traverse_ground(Ground ground);
 
+    bool is_traversable_obstacle() const override;
+    bool is_wall_obstacle() const override;
     bool is_low_wall_obstacle() const override;
+    bool is_grass_obstacle() const override;
     bool is_shallow_water_obstacle() const override;
     bool is_deep_water_obstacle() const override;
     bool is_hole_obstacle() const override;
+    bool is_ice_obstacle() const override;
     bool is_lava_obstacle() const override;
     bool is_prickle_obstacle() const override;
     bool is_ladder_obstacle() const override;
@@ -152,7 +157,7 @@ class SOLARUS_API CustomEntity: public Detector {
     void notify_collision_with_enemy(Enemy& enemy) override;
     void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) override;
     bool notify_action_command_pressed() override;
-    bool interaction_with_item(EquipmentItem& item) override;
+    bool notify_interaction_with_item(EquipmentItem& item) override;
 
     // Observing the ground.
     bool is_ground_observer() const override;

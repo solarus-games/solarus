@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -101,7 +101,9 @@ class SOLARUS_API Game {
     bool is_dialog_enabled() const;
     bool is_playing_transition() const;
     bool is_showing_game_over() const;
-    bool is_suspended() const; // true if at least one of the 4 functions above returns true
+    bool is_suspended_by_camera() const;
+    bool is_suspended_by_script() const;
+    bool is_suspended() const; // true if at least one of the 5 functions above returns true
 
     // pause
     bool can_pause() const;
@@ -122,7 +124,10 @@ class SOLARUS_API Game {
     void start_game_over();
     void stop_game_over();
 
-  private:
+    // Suspend manually.
+    void set_suspended_by_script(bool suspended);
+
+private:
 
     // main objects
     MainLoop& main_loop;       /**< the main loop object */
@@ -136,6 +141,7 @@ class SOLARUS_API Game {
     DialogBoxSystem
         dialog_box;            /**< The dialog box manager. */
     bool showing_game_over;    /**< Whether a game-over sequence is currently active. */
+    bool suspended_by_script;  /**< Whether the game is manually suspended. */
     bool started;              /**< true if this game is running, false if it is not yet started or being closed. */
     bool restarting;           /**< true if the game will be restarted */
 

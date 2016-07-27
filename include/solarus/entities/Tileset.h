@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,9 @@
 #include "solarus/Common.h"
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/SurfacePtr.h"
-#include <map>
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 struct lua_State;
 
@@ -61,7 +61,7 @@ class Tileset {
     );
 
     const std::string id;                             /**< id of the tileset */
-    std::map<std::string, std::unique_ptr<TilePattern>>
+    std::unordered_map<std::string, std::unique_ptr<TilePattern>>
         tile_patterns;                                /**< tile patterns in this tileset */
     Color background_color;                           /**< background color of the tileset */
     SurfacePtr tiles_image;                           /**< image from which the tile patterns are extracted */

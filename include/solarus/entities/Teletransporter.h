@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #define SOLARUS_TELETRANSPORTER_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/Transition.h"
 #include <string>
 
@@ -31,7 +31,7 @@ namespace Solarus {
  * When the hero walks on this detector, he is placed on a destination
  * on the same map or another one.
  */
-class Teletransporter: public Detector {
+class Teletransporter: public Entity {
 
   public:
 

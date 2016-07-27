@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/Treasure.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include <map>
 #include <string>
 
@@ -30,7 +30,7 @@ namespace Solarus {
  *
  * It can be a normal chest or a big chest.
  */
-class Chest: public Detector {
+class Chest: public Entity {
 
   public:
 
@@ -53,6 +53,9 @@ class Chest: public Detector {
         const Treasure& treasure);
 
     virtual EntityType get_type() const override;
+
+    const Treasure& get_treasure() const;
+    void set_treasure(const Treasure& treasure);
 
     bool is_open() const;
     void set_open(bool open);
@@ -78,11 +81,12 @@ class Chest: public Detector {
 
   private:
 
-    Treasure treasure;            /**< the treasure placed in this chest (possibly empty) */
-    bool open;                    /**< true if the chest is open (but the treasure may not have
-                                   * been given yet because there is a delay of 500 ms) */
-    bool treasure_given;          /**< true if the chest is open and the treasure has been given to the player */
-    uint32_t treasure_date;       /**< date when the treasure will be given to the player */
+    Treasure treasure;                 /**< The treasure placed in this chest (possibly empty, possibly non-obtainable).
+                                        * Remains unchanged when the chest is open.  */
+    bool open;                         /**< whether the chest is open (but the treasure may not have
+                                        * been given yet because there is a delay of 500 ms). */
+    bool treasure_given;               /**< whether the chest is open and the treasure has been given to the player. */
+    uint32_t treasure_date;            /**< Date when the treasure will be given to the player. */
 
     OpeningMethod opening_method;      /**< How this chest can be opened. */
     std::string opening_condition;     /**< Condition required to open the chest: a savegame variable if
@@ -93,8 +97,8 @@ class Chest: public Detector {
                                         * (in the case of \c OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE)
                                         * or the required item
                                         * (in the case of \c OPENING_BY_INTERACTION_IF_ITEM)
-                                        * should be consumed when opening the door. */
-    std::string cannot_open_dialog_id; /**< Dialog to show if the door cannot be opened,
+                                        * should be consumed when opening the chesty. */
+    std::string cannot_open_dialog_id; /**< Dialog to show if the chesty cannot be opened,
                                         * or an empty string. */
 
 };

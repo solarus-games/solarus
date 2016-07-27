@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Solarus {
  * \param command The game command that triggers running.
  */
 Hero::RunningState::RunningState(Hero& hero, GameCommand command):
-  BaseState(hero, "running"),
+  HeroState(hero, "running"),
   phase(0),
   next_phase_date(0),
   next_sound_date(0),
@@ -53,7 +53,7 @@ Hero::RunningState::RunningState(Hero& hero, GameCommand command):
  */
 void Hero::RunningState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   get_sprites().set_animation_prepare_running();
 
@@ -69,7 +69,7 @@ void Hero::RunningState::start(const State* previous_state) {
  */
 void Hero::RunningState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
 
   if (phase != 0) {
     get_entity().clear_movement();
@@ -81,7 +81,7 @@ void Hero::RunningState::stop(const State* next_state) {
  */
 void Hero::RunningState::update() {
 
-  State::update();
+  HeroState::update();
 
   if (is_suspended()) {
     return;
@@ -126,7 +126,7 @@ void Hero::RunningState::update() {
  */
 void Hero::RunningState::set_suspended(bool suspended) {
 
-  State::set_suspended(suspended);
+  HeroState::set_suspended(suspended);
 
   if (!suspended) {
     uint32_t diff = System::now() - get_when_suspended();
@@ -172,7 +172,7 @@ void Hero::RunningState::notify_direction_command_pressed(int direction4) {
  */
 void Hero::RunningState::notify_obstacle_reached() {
 
-  State::notify_obstacle_reached();
+  HeroState::notify_obstacle_reached();
 
   if (phase == 1) {
     int opposite_direction = (get_sprites().get_animation_direction8() + 4) % 8;
@@ -354,12 +354,9 @@ bool Hero::RunningState::is_sensor_obstacle(const Sensor& /* sensor */) const {
 }
 
 /**
- * \brief Tests whether the hero is cutting with his sword the specified detector
- * for which a collision was detected.
- * \param detector the detector to check
- * \return true if the sword is cutting this detector
+ * \copydoc Entity::State::is_cutting_with_sword
  */
-bool Hero::RunningState::is_cutting_with_sword(Detector& detector) {
+bool Hero::RunningState::is_cutting_with_sword(Entity& entity) {
 
   // check the distance to the detector
   const int distance = 8;
@@ -384,7 +381,7 @@ bool Hero::RunningState::is_cutting_with_sword(Detector& detector) {
       break;
   }
 
-  return detector.overlaps(tested_point);
+  return entity.overlaps(tested_point);
 }
 
 /**
@@ -394,7 +391,7 @@ bool Hero::RunningState::is_cutting_with_sword(Detector& detector) {
 int Hero::RunningState::get_sword_damage_factor() const {
 
   // the damage are multiplied by 2
-  return State::get_sword_damage_factor() * 2;
+  return HeroState::get_sword_damage_factor() * 2;
 }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,13 +17,16 @@
 #include "solarus/entities/TilePattern.h"
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/Music.h"
-#include "solarus/lowlevel/Output.h"
 #include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/String.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
+#include "solarus/lua/LuaTools.h"
+#include "solarus/Arguments.h"
 #include "solarus/CurrentQuest.h"
 #include "solarus/Game.h"
 #include "solarus/QuestProperties.h"
@@ -31,9 +34,9 @@
 #include "solarus/Savegame.h"
 #include "solarus/Settings.h"
 #include <lua.hpp>
-#include <iostream>
 #include <sstream>
 #include <string>
+#include <thread>
 
 namespace Solarus {
 
@@ -79,7 +82,32 @@ void check_version_compatibility(const std::string& solarus_required_version) {
   }
 }
 
+/**
+ * \brief Returns path of the quest to run.
+ *
+ * It may be the path defined as command-line argument,
+ * the path defined during the build process, or the current directory
+ * if nothing was specified.
+ *
+ * \param args Command-line arguments.
+ * \return The quest path.
+ */
+std::string get_quest_path(const Arguments& args) {
+
+  // If a quest command-line argument was specified, use it instead.
+  const std::vector<std::string>& options = args.get_arguments();
+  if (!options.empty()
+      && !options.back().empty()
+      && options.back()[0] != '-') {
+    // The last parameter is not an option: it is the quest path.
+    return options.back();
+  }
+
+  // The default quest path is defined during the build process.
+  return SOLARUS_DEFAULT_QUEST;
 }
+
+}  // Anonymous namespace.
 
 /**
  * \brief Initializes the game engine.
@@ -90,20 +118,49 @@ MainLoop::MainLoop(const Arguments& args):
   root_surface(nullptr),
   game(nullptr),
   next_game(nullptr),
-  exiting(false) {
+  exiting(false),
+  debug_lag(0),
+  turbo(false),
+  lua_commands(),
+  lua_commands_mutex(),
+  num_lua_commands_pushed(0),
+  num_lua_commands_done(0) {
 
-  Output::initialize(args);
-  std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
+  Logger::info(std::string("Solarus ") + SOLARUS_VERSION);
 
-  // Initialize basic features (input, audio, video, files...).
+  // Main loop settings.
+  const std::string lag_arg = args.get_argument_value("-lag");
+  if (!lag_arg.empty()) {
+    std::istringstream iss(lag_arg);
+    iss >> debug_lag;
+  }
+  const std::string& turbo_arg = args.get_argument_value("-turbo");
+  turbo = (turbo_arg == "yes");
+
+  // Try to open the quest.
+  const std::string& quest_path = get_quest_path(args);
+  Logger::info("Opening quest '" + quest_path + "'");
+  if (!QuestFiles::open_quest(args.get_program_name(), quest_path)) {
+    Debug::error("No quest was found in the directory '" + quest_path + "'");
+    return;
+  }
+
+  // Initialize engine features (audio, video...).
   System::initialize(args);
 
-  // Read the quest general properties.
-  load_quest_properties();
+  if (turbo) {
+    Logger::info("Turbo mode: yes");
+  }
+  else {
+    Logger::info("Turbo mode: no");
+  }
 
   // Read the quest resource list from data.
   CurrentQuest::initialize();
   TilePattern::initialize();
+
+  // Read the quest general properties.
+  load_quest_properties();
 
   // Create the quest surface.
   root_surface = Surface::create(
@@ -116,6 +173,17 @@ MainLoop::MainLoop(const Arguments& args):
   // because Lua might change the video mode initially.
   lua_context = std::unique_ptr<LuaContext>(new LuaContext(*this));
   lua_context->initialize();
+
+  // Set up the Lua console.
+  const std::string& lua_console_arg = args.get_argument_value("-lua-console");
+  const bool enable_lua_console = lua_console_arg.empty() || lua_console_arg == "yes";
+  if (enable_lua_console) {
+    Logger::info("Lua console: yes");
+    initialize_lua_console();
+  }
+  else {
+    Logger::info("Lua console: no");
+  }
 
   // Finally show the window.
   Video::show_window();
@@ -135,11 +203,13 @@ MainLoop::~MainLoop() {
   // because it may point to other surfaces that have Lua movements.
   root_surface = nullptr;
 
-  lua_context->exit();
+  if (lua_context != nullptr) {
+    lua_context->exit();
+  }
   TilePattern::quit();
   CurrentQuest::quit();
   System::quit();
-  Output::quit();
+  quit_lua_console();
 }
 
 /**
@@ -209,15 +279,37 @@ void MainLoop::set_game(Game* game) {
 }
 
 /**
+ * \brief Schedules a Lua command to be executed at the next cycle.
+ *
+ * This function is thread safe, it can be called from a separate thread
+ * while the main loop is running.
+ *
+ * \param command The Lua string to execute.
+ * \return A number identifying your command.
+ */
+int MainLoop::push_lua_command(const std::string& command) {
+
+  std::lock_guard<std::mutex> lock(lua_commands_mutex);
+  lua_commands.push_back(command);
+  return num_lua_commands_pushed++;
+}
+
+/**
  * \brief Runs the main loop until the user requests to stop the program.
  *
  * The main loop controls simulated time and repeatedly updates the world and
  * redraws the screen.
+ *
+ * Does nothing if the quest is missing.
  */
 void MainLoop::run() {
 
+  if (!QuestFiles::quest_exists()) {
+    return;
+  }
+
   // Main loop.
-  std::cout << "Simulation started" << std::endl;
+  Logger::info("Simulation started");
 
   uint32_t last_frame_date = System::get_real_time();
   uint32_t lag = 0;  // Lose time of the simulation to catch up.
@@ -226,6 +318,7 @@ void MainLoop::run() {
   // The main loop basically repeats
   // check_input(), update(), draw() and sleep().
   // Each call to update() makes the simulated time advance one fixed step.
+
   while (!is_exiting()) {
 
     // Measure the time of the last iteration.
@@ -252,9 +345,17 @@ void MainLoop::run() {
     // 2. Update the world once, or several times (skipping some draws)
     // to catch up if the system is slow.
     int num_updates = 0;
-    while (lag >= System::timestep
-        && num_updates < 10  // To draw sometimes anyway on very slow systems.
-        && !is_exiting()) {
+    if (turbo) {
+      // Turbo mode: always update at least once.
+      step();
+      lag -= System::timestep;
+      ++num_updates;
+    }
+
+    while (lag >= System::timestep &&
+           num_updates < 10 && // To draw sometimes anyway on very slow systems.
+           !is_exiting()
+    ) {
       step();
       lag -= System::timestep;
       ++num_updates;
@@ -266,12 +367,18 @@ void MainLoop::run() {
     }
 
     // 4. Sleep if we have time, to save CPU and GPU cycles.
+    if (debug_lag > 0 && !turbo) {
+      // Extra sleep time for debugging, useful to simulate slower systems.
+      System::sleep(debug_lag);
+    }
+
     last_frame_duration = (System::get_real_time() - time_dropped) - last_frame_date;
-    if (last_frame_duration < System::timestep) {
+    if (last_frame_duration < System::timestep && !turbo) {
       System::sleep(System::timestep - last_frame_duration);
     }
   }
-  std::cout << "Simulation finished" << std::endl;
+
+  Logger::info("Simulation finished");
 }
 
 /**
@@ -289,10 +396,31 @@ void MainLoop::step() {
  */
 void MainLoop::check_input() {
 
+  // Check SDL events.
   std::unique_ptr<InputEvent> event = InputEvent::get_event();
   while (event != nullptr) {
     notify_input(*event);
     event = InputEvent::get_event();
+  }
+
+  // Check Lua requests.
+  if (!lua_commands.empty()) {
+    std::lock_guard<std::mutex> lock(lua_commands_mutex);
+    for (const std::string& command : lua_commands) {
+      std::cout << "\n";  // To make sure that the command delimiter starts on a new line.
+      Logger::info("====== Begin Lua command #" + String::to_string(num_lua_commands_done) + " ======");
+      const bool success = LuaTools::do_string(get_lua_context().get_internal_state(), command, "Lua command");
+      if (success) {
+        std::cout << "\n";
+        Logger::info("====== End Lua command #" + String::to_string(num_lua_commands_done) + ": success ======");
+      }
+      else {
+        std::cout << "\n";
+        Logger::info("====== End Lua command #" + String::to_string(num_lua_commands_done) + ": error ======");
+      }
+      ++num_lua_commands_done;
+    }
+    lua_commands.clear();
   }
 }
 
@@ -374,36 +502,18 @@ void MainLoop::draw() {
  */
 void MainLoop::load_quest_properties() {
 
-  // Read the quest properties file.
-  const std::string file_name("quest.dat");
-  lua_State* l = luaL_newstate();
-  const std::string& buffer = QuestFiles::data_file_read(file_name);
-  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
-
-  if (load_result != 0) {
-    // Syntax error in quest.dat.
-    // Loading quest.dat failed.
-    // There may be a syntax error, or this is a quest for Solarus 0.9.
-    // There was no version number at that time.
-
-    if (std::string(buffer).find("[info]")) {
-      // Quest format of Solarus 0.9.
-      Debug::die(std::string("This quest is made for Solarus 0.9 but you are running Solarus ")
-          + SOLARUS_VERSION);
-    }
-    else {
-      Debug::die(std::string("Failed to load quest.dat: ") + lua_tostring(l, -1));
-    }
-  }
-
-  QuestProperties properties;
-  properties.import_from_lua(l);
-  lua_close(l);
+  const QuestProperties& properties = CurrentQuest::get_properties();
 
   check_version_compatibility(properties.get_solarus_version());
-  QuestFiles::set_quest_write_dir(properties.get_quest_write_dir());
-  if (!properties.get_title_bar().empty()) {
-    Video::set_window_title(properties.get_title_bar());
+  const std::string& title = properties.get_title();
+  const std::string& quest_version = properties.get_quest_version();
+  if (!title.empty()) {
+    std::string window_title = title;
+    if (!quest_version.empty()) {
+      window_title += " " + quest_version;
+    }
+    window_title += std::string(" - Solarus ") + SOLARUS_VERSION;
+    Video::set_window_title(window_title);
   }
 
   Video::set_quest_size_range(
@@ -412,6 +522,45 @@ void MainLoop::load_quest_properties() {
       properties.get_max_quest_size()
   );
 
+}
+
+/**
+ * \brief Enables accepting standard input lines as Lua commands.
+ */
+void MainLoop::initialize_lua_console() {
+
+  // Watch stdin in a separate thread.
+  stdin_thread = std::thread([this]() {
+
+    std::string line;
+    while (!is_exiting()) {
+
+      if (std::getline(std::cin, line)) {
+
+        while (!line.empty() && std::isspace(line.at(line.size() - 1))) {
+          line.erase(line.size() - 1);
+        }
+
+        if (!line.empty()) {
+          push_lua_command(line);
+        }
+      }
+    }
+  });
+  stdin_thread.detach();
+}
+
+/**
+ * \brief Cleans resources started by initialize_lua_console().
+ */
+void MainLoop::quit_lua_console() {
+
+  exiting = true;
+  if (!stdin_thread.joinable()) {
+      return;
+  }
+
+  stdin_thread.join();
 }
 
 }

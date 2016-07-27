@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/hero/HookshotState.h"
-#include "solarus/hero/FreeState.h"
-#include "solarus/hero/BackToSolidGroundState.h"
-#include "solarus/hero/HeroSprites.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Hookshot.h"
+#include "solarus/hero/BackToSolidGroundState.h"
+#include "solarus/hero/FreeState.h"
+#include "solarus/hero/HeroSprites.h"
+#include "solarus/hero/HookshotState.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/Map.h"
 
@@ -30,7 +30,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::HookshotState::HookshotState(Hero& hero):
-  BaseState(hero, "hookshot"),
+  HeroState(hero, "hookshot"),
   hookshot(nullptr) {
 
 }
@@ -41,7 +41,7 @@ Hero::HookshotState::HookshotState(Hero& hero):
  */
 void Hero::HookshotState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   get_sprites().set_animation("hookshot");
   hookshot = std::make_shared<Hookshot>(get_entity());
@@ -54,7 +54,7 @@ void Hero::HookshotState::start(const State* previous_state) {
  */
 void Hero::HookshotState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
 
   if (!hookshot->is_being_removed()) {
     // the hookshot state was stopped by something other than the hookshot (e.g. an enemy)
@@ -204,9 +204,9 @@ void Hero::HookshotState::finish_movement() {
   const Rectangle& hero_position = hero.get_bounding_box();
   int layer = hero.get_layer();
   Map& map = get_map();
-  MapEntities& entities = get_entities();
+  Entities& entities = get_entities();
 
-  if (layer == 0 || !map.has_empty_ground(layer, hero_position)) {
+  if (layer == map.get_min_layer() || !map.has_empty_ground(layer, hero_position)) {
     // the hero is totally on the same layer: no problem
     hero.start_state_from_ground();
   }

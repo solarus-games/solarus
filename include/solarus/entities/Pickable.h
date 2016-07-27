@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #define SOLARUS_PICKABLE_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/entities/EntityPtr.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/movements/FallingHeight.h"
@@ -32,7 +32,7 @@ namespace Solarus {
 /**
  * \brief An treasure placed on the ground and that the hero can take.
  */
-class Pickable: public Detector {
+class Pickable: public Entity {
 
   public:
 
@@ -96,7 +96,8 @@ class Pickable: public Detector {
     Treasure treasure;                          /**< the treasure obtained when the player picks this item */
     bool given_to_player;                       /**< indicates that the treasure was given to the player */
 
-    SpritePtr shadow_sprite;                    /**< sprite of the shadow (if any) */
+    SpritePtr item_sprite;                      /**< Sprite of the treasure. */
+    SpritePtr shadow_sprite;                    /**< Sprite of the shadow (if any). */
     FallingHeight falling_height;               /**< indicates whether the item is falling when it appears */
     bool will_disappear;                        /**< indicates that the item will disappear after an amount of time
                                                  * (only possible for items not saved) */
@@ -109,7 +110,7 @@ class Pickable: public Detector {
     bool can_be_picked;                         /**< indicates that the item can be picked now (i.e. allow_picked_date is past) */
     uint32_t blink_date;                        /**< date when the item starts blinking */
     uint32_t disappear_date;                    /**< date when the item disappears */
-    EntityPtr entity_followed;               /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
+    EntityPtr entity_followed;                  /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
 };
 
 }

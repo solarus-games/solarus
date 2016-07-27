@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -541,6 +541,7 @@ void TextSurface::raw_draw(Surface& dst_surface,
     const Point& dst_position) {
 
   if (surface != nullptr) {
+    surface->set_blend_mode(get_blend_mode());
     surface->raw_draw(dst_surface, dst_position + text_position);
   }
 }
@@ -555,6 +556,7 @@ void TextSurface::raw_draw_region(const Rectangle& region,
     Surface& dst_surface, const Point& dst_position) {
 
   if (surface != nullptr) {
+    surface->set_blend_mode(get_blend_mode());
     surface->raw_draw_region(
         region, dst_surface,
         dst_position + text_position);

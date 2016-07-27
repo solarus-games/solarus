@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,6 +84,8 @@ void LuaContext::register_text_surface_module() {
       { "get_size", text_surface_api_get_size },
       { "draw", drawable_api_draw },
       { "draw_region", drawable_api_draw_region },
+      { "get_blend_mode", drawable_api_get_blend_mode },
+      { "set_blend_mode", drawable_api_set_blend_mode },
       { "fade_in", drawable_api_fade_in },
       { "fade_out", drawable_api_fade_out },
       { "get_xy", drawable_api_get_xy },
@@ -333,7 +335,7 @@ int LuaContext::text_surface_api_set_rendering_mode(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     TextSurface& text_surface = *check_text_surface(l, 1);
     TextSurface::RenderingMode mode = LuaTools::check_enum<TextSurface::RenderingMode>(
-        l, 1, rendering_mode_names);
+        l, 2, rendering_mode_names);
 
     text_surface.set_rendering_mode(mode);
 

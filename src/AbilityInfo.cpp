@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/AbilityInfo.h"
-#include "solarus/lowlevel/Debug.h"
 
 namespace Solarus {
 
@@ -28,6 +27,7 @@ const EnumInfo<Ability>::names_type EnumInfoTraits<Ability>::names = {
     { Ability::SHIELD, "shield" },
     { Ability::LIFT, "lift" },
     { Ability::SWIM, "swim" },
+    { Ability::JUMP_OVER_WATER, "jump_over_water" },
     { Ability::RUN, "run" },
     { Ability::DETECT_WEAK_WALLS, "detect_weak_walls" }
 };

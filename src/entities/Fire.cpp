@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,12 +28,14 @@ namespace Solarus {
  * \param xy coordinates of the fire
  */
 Fire::Fire(const std::string& name, int layer, const Point& xy):
-  Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE, name, layer, xy, Size(16, 16)) {
+  Entity(name, 0, layer, xy, Size(16, 16)) {
 
   // initialize the entity
-  create_sprite("entities/fire");
+  set_collision_modes(CollisionMode::COLLISION_OVERLAPPING | CollisionMode::COLLISION_SPRITE);
 
-  get_sprite().enable_pixel_collisions();
+  const SpritePtr& sprite = create_sprite("entities/fire");
+  sprite->enable_pixel_collisions();
+
   set_origin(8, 13);
 }
 
@@ -50,8 +52,10 @@ EntityType Fire::get_type() const {
  */
 void Fire::update() {
 
-  Detector::update();
-  if (get_sprite().is_animation_finished()) {
+  Entity::update();
+
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr && sprite->is_animation_finished()) {
     remove_from_map();
   }
   else {
@@ -60,7 +64,7 @@ void Fire::update() {
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Fire::notify_collision(
     Entity& other_entity,

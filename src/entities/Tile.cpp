@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Tile.h"
+#include "solarus/entities/TileInfo.h"
 #include "solarus/entities/Tileset.h"
 #include "solarus/entities/TilePattern.h"
 #include "solarus/lowlevel/Surface.h"
@@ -25,22 +26,14 @@ namespace Solarus {
 
 /**
  * \brief Creates a new tile.
- * \param layer layer of the tile
- * \param xy Coordinates of the tile on the map
- * \param size Size of the tile (the pattern can be repeated).
- * \param tileset The tileset to use.
- * \param tile_pattern_id Id of the tile pattern in the tileset.
+ * \param tile_info Construction parameters.
  */
 Tile::Tile(
-    int layer,
-    const Point& xy,
-    const Size& size,
-    Tileset& tileset,
-    const std::string& tile_pattern_id
+    const TileInfo& tile_info
 ):
-  Entity("", 0, layer, xy, size),
-  tile_pattern_id(tile_pattern_id),
-  tile_pattern(tileset.get_tile_pattern(tile_pattern_id)) {
+  Entity("", 0, tile_info.layer, tile_info.box.get_xy(), tile_info.box.get_size()),
+  tile_pattern_id(tile_info.pattern_id),
+  tile_pattern(*tile_info.pattern) {
 
 }
 
@@ -53,8 +46,7 @@ EntityType Tile::get_type() const {
 }
 
 /**
- * \brief Returns whether this entity is drawn at its position on the map.
- * \return true if this entity is drawn where it is located.
+ * \copydoc Entity::is_drawn_at_its_position()
  */
 bool Tile::is_drawn_at_its_position() const {
   return tile_pattern.is_drawn_at_its_position();
@@ -65,14 +57,15 @@ bool Tile::is_drawn_at_its_position() const {
  */
 void Tile::draw_on_map() {
 
-  if (!is_drawn()) {
+  const CameraPtr& camera = get_map().get_camera();
+  if (camera == nullptr) {
     return;
   }
 
   // Note that the tiles are also optimized for drawing.
   // This function is called at each frame only if the tile is in an
   // animated region. Otherwise, tiles are drawn once when loading the map.
-  draw(get_map().get_visible_surface(), get_map().get_camera_position().get_xy());
+  draw(get_map().get_camera_surface(), camera->get_top_left_xy());
 }
 
 /**

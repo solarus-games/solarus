@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ class Arguments;
  * This class is the only one that depends on the sound decoding library (libsndfile).
  * This class and the Music class are the only ones that depend on the audio mixer library (OpenAL).
  */
-class Sound {
+class SOLARUS_API Sound {
 
   public:
 
@@ -48,14 +48,13 @@ class Sound {
      * \brief Buffer containing an encoded sound file.
      */
     struct SoundFromMemory {
-      std::string data;         /**< the buffer */
-      size_t position;          /**< current position in the buffer */
-      bool loop;                /**< true to restart the sound when finished */
+      std::string data;         /**< The OGG encded data. */
+      size_t position;          /**< Current position in the buffer. */
+      bool loop;                /**< \c true to restart the sound if it finishes. */
     };
 
     // functions to load the encoded sound from memory
     static ov_callbacks ogg_callbacks;           /**< vorbisfile object used to load the encoded sound from memory */
-    static size_t cb_read(void* ptr, size_t size, size_t nmemb, void* datasource);
 
     Sound();
     explicit Sound(const std::string& sound_id);
@@ -77,7 +76,7 @@ class Sound {
 
   private:
 
-    ALuint decode_file(const std::string &file_name);
+    ALuint decode_file(const std::string& file_name);
     bool update_playing();
 
     static ALCdevice* device;

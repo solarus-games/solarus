@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,14 +15,17 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Boomerang.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/hero/BackToSolidGroundState.h"
 #include "solarus/hero/FreeState.h"
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/System.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lua/LuaTools.h"
 #include "solarus/movements/TargetMovement.h"
 #include "solarus/Map.h"
+#include <lua.hpp>
 #include <memory>
 
 namespace Solarus {
@@ -30,27 +33,32 @@ namespace Solarus {
 /**
  * \brief Constructor.
  * \param hero the hero controlled by this state
- * \param use_memorized_xy true to get back to the place previously memorized (if any),
+ * \param use_specified_position true to get back to the place previously specified (if any),
  * false to get back to the last coordinates with solid ground
  * \param end_delay a delay to add at the end before returning control to the hero (default 0)
  * \param with_sound true to play a sound when returning to solid ground
  */
-Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
-    bool use_memorized_xy, uint32_t end_delay, bool with_sound):
-  BaseState(hero, "back to solid ground"),
+Hero::BackToSolidGroundState::BackToSolidGroundState(
+    Hero& hero,
+    bool use_specified_position,
+    uint32_t end_delay,
+    bool with_sound):
+  HeroState(hero, "back to solid ground"),
+  target_position(),
   end_delay(end_delay),
   end_date(0),
   with_sound(with_sound) {
 
-  if (use_memorized_xy && hero.get_target_solid_ground_coords().x != -1) {
-    // go back to a target point specified earlier
-    this->target_xy = hero.get_target_solid_ground_coords();
-    this->target_layer = hero.get_target_solid_ground_layer();
+  if (use_specified_position && !hero.get_target_solid_ground_callback().is_empty()) {
+    // go back to a target position specified earlier
+    this->target_position = hero.get_target_solid_ground_callback();
   }
   else {
     // just go back to the last solid ground location
-    this->target_xy = hero.get_last_solid_ground_coords();
-    this->target_layer = hero.get_last_solid_ground_layer();
+    this->target_position = hero.make_solid_ground_callback(
+        hero.get_last_solid_ground_coords(),
+        hero.get_last_solid_ground_layer()
+    );
   }
 }
 
@@ -60,13 +68,35 @@ Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
  */
 void Hero::BackToSolidGroundState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
+
+  Point xy;
+  int layer = 0;
 
   Hero& hero = get_entity();
+  lua_State* l = hero.get_lua_context()->get_internal_state();
+
+  // Call the Lua function to get the coordinates and layer.
+  Debug::check_assertion(!target_position.is_empty(), "Missing solid ground callback");
+  target_position.push();
+  bool success = LuaTools::call_function(l, 0, 3, "Solid ground callback");
+  if (!success) {
+    // Fallback: use the last solid ground position.
+    xy = hero.get_last_solid_ground_coords();
+    layer = hero.get_last_solid_ground_layer();
+  }
+  else {
+    // Normal case: use the result of the function.
+    xy.x = LuaTools::check_int(l, -3);
+    xy.y = LuaTools::check_int(l, -2);
+    layer = LuaTools::check_int(l, -1);
+    lua_pop(l, 3);
+  }
+
   hero.set_movement(std::make_shared<TargetMovement>(
-      nullptr, target_xy.x, target_xy.y, 144, true
+      nullptr, xy.x, xy.y, 144, true
   ));
-  get_entities().set_entity_layer(hero, target_layer);
+  get_entities().set_entity_layer(hero, layer);
 
   const std::set<std::shared_ptr<Boomerang>>& boomerangs =
       get_entities().get_entities_by_type<Boomerang>();
@@ -81,7 +111,7 @@ void Hero::BackToSolidGroundState::start(const State* previous_state) {
  */
 void Hero::BackToSolidGroundState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
 
   get_entity().clear_movement();
 }
@@ -91,7 +121,7 @@ void Hero::BackToSolidGroundState::stop(const State* next_state) {
  */
 void Hero::BackToSolidGroundState::update() {
 
-  State::update();
+  HeroState::update();
 
   // the current movement is an instance of TargetMovement
   Hero& hero = get_entity();
@@ -116,7 +146,7 @@ void Hero::BackToSolidGroundState::update() {
 
 void Hero::BackToSolidGroundState::set_suspended(bool suspended) {
 
-  State::set_suspended(suspended);
+  HeroState::set_suspended(suspended);
 
   if (!suspended && end_date != 0) {
     end_date += System::now() - get_when_suspended();

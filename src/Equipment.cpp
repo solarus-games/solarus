@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -130,8 +130,6 @@ void Equipment::set_suspended(bool suspended) {
   }
 }
 
-// money
-
 /**
  * \brief Returns the maximum amount of money of the player.
  * \return the player's maximum number of money
@@ -208,8 +206,6 @@ void Equipment::remove_money(int money_to_remove) {
 
   set_money(get_money() - money_to_remove);
 }
-
-// life
 
 /**
  * \brief Returns the maximum level of life of the player.
@@ -297,8 +293,6 @@ void Equipment::restore_all_life() {
   set_life(get_max_life());
 }
 
-// magic
-
 /**
  * \brief Returns the maximum number of magic points.
  * \return the maximum level of magic
@@ -385,8 +379,6 @@ void Equipment::restore_all_magic() {
 
   set_magic(get_max_magic());
 }
-
-// items
 
 /**
  * \brief Runs the Lua script of each equipment item.
@@ -555,29 +547,32 @@ std::string Equipment::get_ability_savegame_variable(Ability ability) const {
 
   switch (ability) {
 
-    case Ability::TUNIC:
-      return Savegame::KEY_ABILITY_TUNIC;
+  case Ability::TUNIC:
+    return Savegame::KEY_ABILITY_TUNIC;
 
-    case Ability::SWORD:
-      return Savegame::KEY_ABILITY_SWORD;
+  case Ability::SWORD:
+    return Savegame::KEY_ABILITY_SWORD;
 
-    case Ability::SWORD_KNOWLEDGE:
-      return Savegame::KEY_ABILITY_SWORD_KNOWLEDGE;
+  case Ability::SWORD_KNOWLEDGE:
+    return Savegame::KEY_ABILITY_SWORD_KNOWLEDGE;
 
-    case Ability::SHIELD:
-      return Savegame::KEY_ABILITY_SHIELD;
+  case Ability::SHIELD:
+    return Savegame::KEY_ABILITY_SHIELD;
 
-    case Ability::LIFT:
-      return Savegame::KEY_ABILITY_LIFT;
+  case Ability::LIFT:
+    return Savegame::KEY_ABILITY_LIFT;
 
-    case Ability::SWIM:
-      return Savegame::KEY_ABILITY_SWIM;
+  case Ability::SWIM:
+    return Savegame::KEY_ABILITY_SWIM;
 
-    case Ability::RUN:
-      return Savegame::KEY_ABILITY_RUN;
+  case Ability::JUMP_OVER_WATER:
+    return Savegame::KEY_ABILITY_JUMP_OVER_WATER;
 
-    case Ability::DETECT_WEAK_WALLS:
-      return Savegame::KEY_ABILITY_DETECT_WEAK_WALLS;
+  case Ability::RUN:
+    return Savegame::KEY_ABILITY_RUN;
+
+  case Ability::DETECT_WEAK_WALLS:
+    return Savegame::KEY_ABILITY_DETECT_WEAK_WALLS;
   }
 
   Debug::die("Invalid ability");

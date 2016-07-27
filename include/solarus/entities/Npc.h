@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #define SOLARUS_NPC_H
 
 #include "solarus/Common.h"
-#include "solarus/entities/Detector.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/CommandsEffects.h"
 #include <string>
 
@@ -45,7 +45,7 @@ namespace Solarus {
  * interactive entity, and the map script has to handle explicitly its
  * animations (if any).
  */
-class SOLARUS_API Npc: public Detector {
+class SOLARUS_API Npc: public Entity {
 
   public:
 
@@ -82,6 +82,8 @@ class SOLARUS_API Npc: public Detector {
     EntityType get_type() const override;
 
     bool is_solid() const;
+    bool is_traversable() const;
+    void set_traversable(bool traversable);
 
     virtual bool is_obstacle_for(Entity& other) override;
     virtual bool is_hero_obstacle(Hero& hero) override;
@@ -91,7 +93,7 @@ class SOLARUS_API Npc: public Detector {
 
     virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
     virtual bool notify_action_command_pressed() override;
-    virtual bool interaction_with_item(EquipmentItem& item) override;
+    virtual bool notify_interaction_with_item(EquipmentItem& item) override;
     virtual void notify_position_changed() override;
     virtual void notify_movement_finished() override;
     bool can_be_lifted() const;
@@ -103,6 +105,8 @@ class SOLARUS_API Npc: public Detector {
 
     Subtype subtype;                    /**< subtpype of NPC */
     Behavior behavior;                  /**< type of action done when the player interacts with this entity */
+    bool traversable;                   /**< Whether this NPC can be traversed by other entities
+                                         * (not that some entities override this setting). */
     std::string dialog_to_show;         /**< dialog to show when an interaction occurs, or an empty string */
     std::string item_name;              /**< name of an equipment item to notify when an interaction occurs */
 

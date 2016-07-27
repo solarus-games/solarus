@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,9 +19,9 @@
 
 #include "solarus/Common.h"
 #include "solarus/Treasure.h"
-#include "solarus/entities/Detector.h"
 #include "solarus/entities/EnemyAttack.h"
 #include "solarus/entities/EnemyReaction.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/entities/EntityPtr.h"
 #include "solarus/entities/Explosion.h"
 #include <map>
@@ -45,20 +45,11 @@ namespace Solarus {
  * depending on its current movement and the attacks it is subject to.
  * Additional animations may be defined.
  */
-class Enemy: public Detector {
+class Enemy: public Entity {
 
   public:
 
     static constexpr EntityType ThisType = EntityType::ENEMY;
-
-    /**
-     * \brief Enemy ranks.
-     */
-    enum class Rank {
-      NORMAL,
-      MINIBOSS,
-      BOSS
-    };
 
     /**
      * \brief Defines the style of sounds and animations played when an enemy
@@ -94,7 +85,6 @@ class Enemy: public Detector {
     static EntityPtr create(
         Game& game,
         const std::string& breed,
-        Rank rank,
         const std::string& savegame_variable,
         const std::string& name,
         int layer,
@@ -109,7 +99,6 @@ class Enemy: public Detector {
     virtual void notify_creating() override;
     virtual void notify_created() override;
     virtual void notify_map_opening_transition_finished() override;
-    Rank get_rank() const;
 
     // Enemy properties.
     const std::string& get_breed() const;
@@ -151,7 +140,7 @@ class Enemy: public Detector {
     void set_default_attack_consequences_sprite(const Sprite& sprite);
 
     // sprites
-    const std::string& get_animation() const;
+    std::string get_animation() const;
     void set_animation(const std::string& animation);
 
     // obstacles
@@ -235,7 +224,6 @@ class Enemy: public Detector {
     std::map<EnemyAttack, EnemyReaction>
         attack_reactions;              /**< how the enemy reacts to each attack
                                            * (by default, it depends on the attacks) */
-    Rank rank;                         /**< is this enemy a normal enemy, a miniboss or a boss? */
     std::string savegame_variable;     /**< name of the boolean variable indicating whether this enemy is killed,
                                         * or an empty string if it is not saved */
     bool traversable;                  /**< Whether this enemy can be traversed by other entities. */

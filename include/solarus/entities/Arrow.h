@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ class Arrow: public Entity {
     void stop();
     bool is_stopped() const;
     bool is_flying() const;
-    void attach_to(Entity &entity_reached);
+    void attach_to(Entity& entity_reached);
 
     // collisions
     virtual void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) override;
@@ -71,7 +71,7 @@ class Arrow: public Entity {
         EnemyReaction::Reaction& result,
         bool killed
     ) override;
-    bool has_reached_map_border() const;
+    bool has_reached_map_border();
 
   private:
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,17 +27,18 @@
 
 namespace Solarus {
 
-class CarriedItem;
+class CarriedObject;
 class Equipment;
 class EquipmentItem;
 class EquipmentItemUsage;
 class HeroSprites;
+class HeroState;
 class Map;
 class Rectangle;
 class Treasure;
 
 /**
- * \brief The hero's entity.
+ * \brief The hero entity.
  *
  * This class represents the hero. It coordinates his position on the map and his state.
  * The hero is animated by several sprites that are handled by the HeroSprites class.
@@ -78,6 +79,7 @@ class Hero: public Entity {
      * Functions relative to the sprites.
      * The sprites are managed and drawn by the class HeroSprites.
      */
+    const HeroSprites& get_hero_sprites() const;
     HeroSprites& get_hero_sprites();
     int get_animation_direction() const;
     void set_animation_direction(int direction);
@@ -105,7 +107,7 @@ class Hero: public Entity {
      * what is in front of him (we call this the "facing point").
      */
     virtual Point get_facing_point() const override;
-    virtual void notify_facing_entity_changed(Detector* facing_entity) override;
+    virtual void notify_facing_entity_changed(Entity* facing_entity) override;
     bool is_facing_obstacle();
     bool is_facing_point_on_obstacle();
     bool is_facing_direction4(int direction4) const;
@@ -147,17 +149,14 @@ class Hero: public Entity {
      */
     bool is_ground_visible() const;
     virtual bool is_ground_observer() const override;
-    virtual Point get_ground_point() const override;
     virtual void notify_ground_below_changed() override;
     const Point& get_last_solid_ground_coords() const;
     int get_last_solid_ground_layer() const;
-    const Point& get_target_solid_ground_coords() const;
-    int get_target_solid_ground_layer() const;
-    void set_target_solid_ground_coords(
-        const Point& target_solid_ground_coords,
-        int layer
-    );
-    void reset_target_solid_ground_coords();
+    ScopedLuaRef make_solid_ground_callback(
+        const Point& xy, int layer) const;
+    const ScopedLuaRef& get_target_solid_ground_callback() const;
+    void set_target_solid_ground_callback(const ScopedLuaRef& callback);
+    void reset_target_solid_ground_callback();
 
     /**
      * \name Obstacles.
@@ -204,7 +203,7 @@ class Hero: public Entity {
     virtual void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) override;
     virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
     void avoid_collision(Entity& entity, int direction);
-    bool is_striking_with_sword(Detector& detector) const;
+    bool is_striking_with_sword(Entity& entity) const;
 
     /**
      * \name Enemies.
@@ -264,9 +263,9 @@ class Hero: public Entity {
     void start_forced_walking(const std::string& path, bool loop, bool ignore_obstacles);
     void start_jumping(int direction8, int distance, bool ignore_obstacles,
         bool with_sound);
-    void start_freezed();
+    void start_frozen();
     void start_victory(const ScopedLuaRef& callback_ref);
-    void start_lifting(const std::shared_ptr<CarriedItem>& item_to_lift);
+    void start_lifting(const std::shared_ptr<CarriedObject>& item_to_lift);
     void start_running();
     void start_grabbing();
     bool can_pick_treasure(EquipmentItem& item);
@@ -274,6 +273,7 @@ class Hero: public Entity {
     bool can_run() const;
     bool can_use_shield() const;
     bool can_start_sword() const;
+    void start_sword();
     bool can_start_item(EquipmentItem& item);
     void start_item(EquipmentItem& item);
     void start_boomerang(int max_distance, int speed,
@@ -281,14 +281,13 @@ class Hero: public Entity {
         const std::string& sprite_name);
     void start_bow();
     void start_hookshot();
-    void start_back_to_solid_ground(bool use_memorized_xy,
+    void start_back_to_solid_ground(bool use_specified_position,
         uint32_t end_delay = 0, bool with_sound = true);
     void start_state_from_ground();
 
-  protected:
+  private:
 
     // state
-    class BaseState;                /**< base class for all hero states */
     class PlayerMovementState;      /**< base class for states whose movement is controlled by the player */
     class FreeState;                /**< the hero is free to move (stopped or walking) and can interact with entities */
     class CarryingState;            /**< the hero can walk but he is carrying a pot or a bush */
@@ -316,18 +315,16 @@ class Hero: public Entity {
     class BoomerangState;           /**< the hero is shooting a boomerang */
     class HookshotState;            /**< the hero is throwing his hookshot */
     class BowState;                 /**< the hero is shooting an arrow with a bow */
-    class FreezedState;             /**< the hero cannot move for various possible reasons,
+    class FrozenState;              /**< the hero cannot move for various possible reasons,
                                      * including an instruction from the script */
-
-  private:
 
     // position
     void place_on_map(Map& map);
     void update_movement();
     void try_snap_to_facing_entity();
     void apply_additional_ground_movement();
-    Teletransporter* get_delayed_teletransporter();
-    std::shared_ptr<CarriedItem> get_carried_item();
+    std::shared_ptr<Teletransporter> get_delayed_teletransporter();
+    std::shared_ptr<CarriedObject> get_carried_object();
 
     // ground
     void update_ground_effects();
@@ -339,31 +336,32 @@ class Hero: public Entity {
     void update_invincibility();
 
     // state
-    bool invincible;                /**< Whether the hero is temporarily invincible. */
-    uint32_t end_invincible_date;   /**< When stopping the invincibility (0 means infinite). */
+    bool invincible;                       /**< Whether the hero is temporarily invincible. */
+    uint32_t end_invincible_date;          /**< When stopping the invincibility (0 means infinite). */
 
     // sprites
     std::unique_ptr<HeroSprites>
-        sprites;                    /**< the hero's sprites (note that we don't use the sprites structure from Entity) */
+        sprites;                           /**< the hero's sprites (note that we don't use the sprites structure from Entity) */
 
     // position
-    int normal_walking_speed;       /**< speed when normally walking */
-    int walking_speed;              /**< current walking speed (possibly changed by the ground) */
+    int normal_walking_speed;              /**< speed when normally walking */
+    int walking_speed;                     /**< current walking speed (possibly changed by the ground) */
 
     // state specific
-    Teletransporter* delayed_teletransporter;   /**< a teletransporter that will be activated when the hero finishes
-                                                 * a special behavior, such as falling into a hole or walking on stairs */
-    bool on_raised_blocks;          /**< indicates that the hero is currently on
-                                     * raised crystal blocks */
+    std::shared_ptr<Teletransporter>
+        delayed_teletransporter;           /**< a teletransporter that will be activated when the hero finishes
+                                            * a special behavior, such as falling into a hole or walking on stairs */
+    bool on_raised_blocks;                 /**< indicates that the hero is currently on
+                                            * raised crystal blocks */
 
     // ground
     Point last_solid_ground_coords;        /**< coordinates of the last hero position on a ground
                                             * where he can walk (e.g. before jumping or falling into a hole) */
     int last_solid_ground_layer;           /**< layer of the last hero position on a solid ground */
-    Point target_solid_ground_coords;      /**< coordinates of the position where the hero will go if he falls
-                                            * into a hole (or some other bad ground), or (-1,-1) to indicate
-                                            * that the hero will just return to the last solid ground coordinates */
-    int target_solid_ground_layer;         /**< layer of the place to go back when falling in some bad ground */
+    ScopedLuaRef
+        target_solid_ground_callback;      /**< Function that gives the position where the hero will go back if he falls
+                                            * into a hole (or some other bad ground), or an empty ref to indicate
+                                            * that the hero will just return to the last solid ground coordinates. */
     uint32_t next_ground_date;             /**< when something will happen with the ground next time (a sound or a movement) */
     uint32_t next_ice_date;                /**< when recomputing the additional movement on ice */
     int ice_movement_direction8;           /**< wanted movement direction a while ago */

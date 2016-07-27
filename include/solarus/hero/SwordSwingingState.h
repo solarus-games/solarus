@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,14 +17,14 @@
 #ifndef SOLARUS_HERO_SWORD_SWINGING_STATE_H
 #define SOLARUS_HERO_SWORD_SWINGING_STATE_H
 
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 
 namespace Solarus {
 
 /**
  * \brief The state "sword swinging" of the hero.
  */
-class Hero::SwordSwingingState: public Hero::BaseState {
+class Hero::SwordSwingingState: public HeroState {
 
   public:
 
@@ -39,7 +39,7 @@ class Hero::SwordSwingingState: public Hero::BaseState {
     virtual bool can_avoid_stream(const Stream& stream) const override;
     virtual bool can_use_shield() const override;
     virtual bool can_sword_hit_crystal() const override;
-    virtual bool is_cutting_with_sword(Detector& detector) override;
+    virtual bool is_cutting_with_sword(Entity& entity) override;
     virtual bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const override;
     virtual void notify_obstacle_reached() override;
     virtual void notify_attacked_enemy(

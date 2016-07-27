@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,13 @@
 namespace Solarus {
 namespace LuaTools {
 
+/**
+ * \brief Checks that a value is the name of an enum constant and
+ * returns that constant.
+ * \param l A Lua state.
+ * \param index Index of the value in the stack.
+ * \return The corresponding enum value.
+ */
 template<typename E>
 E check_enum(
     lua_State* l,
@@ -26,6 +33,14 @@ E check_enum(
   return check_enum(l, index, EnumInfoTraits<E>::names);
 }
 
+/**
+ * \brief Checks that a table field is the name of an enum constant and
+ * returns that constant.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The corresponding enum value.
+ */
 template<typename E>
 E check_enum_field(
     lua_State* l,
@@ -35,6 +50,13 @@ E check_enum_field(
   return check_enum_field(l, table_index, key, EnumInfoTraits<E>::names);
 }
 
+/**
+ * \brief Like LuaTools::check_enum() but with a default value.
+ * \param l A Lua state.
+ * \param index Index of a value in the stack.
+ * \param default_value The default value to return if the value is \c nil.
+ * \return The wanted enum value.
+ */
 template<typename E>
 E opt_enum(
     lua_State* l,
@@ -44,6 +66,14 @@ E opt_enum(
   return opt_enum(l, index, EnumInfoTraits<E>::names, default_value);
 }
 
+/**
+ * \brief Like LuaTools::check_enum_field() but with a default value.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param default_value The default value to return if the field is \c nil.
+ * \return The wanted enum value.
+ */
 template<typename E>
 E opt_enum_field(
     lua_State* l,

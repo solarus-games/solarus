@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +19,13 @@
 #include <sstream>
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/Music.h"
 #include "solarus/lowlevel/Sound.h"
+#include "solarus/lowlevel/String.h"
 #include "solarus/Arguments.h"
 #include "solarus/CurrentQuest.h"
+#include <cstdio>
 
 namespace Solarus {
 
@@ -33,11 +36,100 @@ bool Sound::sounds_preloaded = false;
 float Sound::volume = 1.0;
 std::list<Sound*> Sound::current_sounds;
 std::map<std::string, Sound> Sound::all_sounds;
+
+namespace {
+
+/**
+ * \brief Loads an encoded sound from memory.
+ *
+ * This function respects the prototype specified by libvorbisfile.
+ *
+ * \param ptr pointer to a buffer to load
+ * \param size size
+ * \param nb_bytes number of bytes to load
+ * \param datasource source of the data to read
+ * \return number of bytes loaded
+ */
+size_t cb_read(void* ptr, size_t /* size */, size_t nb_bytes, void* datasource) {
+
+  Sound::SoundFromMemory* mem = static_cast<Sound::SoundFromMemory*>(datasource);
+
+  const size_t total_size = mem->data.size();
+  if (mem->position >= total_size) {
+    if (mem->loop) {
+      mem->position = 0;
+    }
+    else {
+      return 0;
+    }
+  }
+  else if (mem->position + nb_bytes >= total_size) {
+    nb_bytes = total_size - mem->position;
+  }
+
+  std::memcpy(ptr, mem->data.data() + mem->position, nb_bytes);
+  mem->position += nb_bytes;
+
+  return nb_bytes;
+}
+
+/**
+ * \brief Seeks the sound stream to the specified offset.
+ *
+ * This function respects the prototype specified by libvorbisfile.
+ *
+ * \param datasource Source of the data to read.
+ * \param offset Where to seek.
+ * \param whence How to seek: SEEK_SET, SEEK_CUR or SEEK_END.
+ * \return 0 in case of success, -1 in case of error.
+ */
+int cb_seek(void* datasource, ogg_int64_t offset, int whence) {
+
+  Sound::SoundFromMemory* mem = static_cast<Sound::SoundFromMemory*>(datasource);
+
+  switch (whence) {
+
+  case SEEK_SET:
+    mem->position = offset;
+    break;
+
+  case SEEK_CUR:
+    mem->position += offset;
+    break;
+
+  case SEEK_END:
+    mem->position = mem->data.size() - offset;
+    break;
+  }
+
+  if (mem->position >= mem->data.size()) {
+    mem->position = mem->data.size();
+  }
+
+  return 0;
+}
+
+/**
+ * \brief Returns the current position in a sound stream.
+ *
+ * This function respects the prototype specified by libvorbisfile.
+ *
+ * \param datasource Source of the data to read.
+ * \return The current position.
+ */
+long cb_tell(void* datasource) {
+
+  Sound::SoundFromMemory* mem = static_cast<Sound::SoundFromMemory*>(datasource);
+  return mem->position;
+}
+
+}  // Anonymous namespace.
+
 ov_callbacks Sound::ogg_callbacks = {
     cb_read,
-    nullptr,
-    nullptr,
-    nullptr
+    cb_seek,
+    nullptr,  // close
+    cb_tell,
 };
 
 /**
@@ -147,6 +239,7 @@ void Sound::quit() {
     context = nullptr;
     alcCloseDevice(device);
     device = nullptr;
+    volume = 1.0;
 
     initialized = false;
   }
@@ -222,6 +315,7 @@ void Sound::set_volume(int volume) {
 
   volume = std::min(100, std::max(0, volume));
   Sound::volume = volume / 100.0;
+  Logger::info(std::string("Sound volume: ") + String::to_string(get_volume()));
 }
 
 /**
@@ -450,40 +544,6 @@ ALuint Sound::decode_file(const std::string& file_name) {
   mem.data.clear();
 
   return buffer;
-}
-
-/**
- * \brief Loads an encoded sound from memory.
- *
- * This function respects the prototype specified by libvorbisfile.
- *
- * \param ptr pointer to a buffer to load
- * \param size size
- * \param nb_bytes number of bytes to load
- * \param datasource source of the data to read
- * \return number of bytes loaded
- */
-size_t Sound::cb_read(void* ptr, size_t /* size */, size_t nb_bytes, void* datasource) {
-
-  SoundFromMemory* mem = static_cast<SoundFromMemory*>(datasource);
-
-  const size_t total_size = mem->data.size();
-  if (mem->position >= total_size) {
-    if (mem->loop) {
-      mem->position = 0;
-    }
-    else {
-      return 0;
-    }
-  }
-  else if (mem->position + nb_bytes >= total_size) {
-    nb_bytes = total_size - mem->position;
-  }
-
-  std::memcpy(ptr, mem->data.data() + mem->position, nb_bytes);
-  mem->position += nb_bytes;
-
-  return nb_bytes;
 }
 
 }

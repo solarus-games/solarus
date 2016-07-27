@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,10 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/InputEvent.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lowlevel/Video.h"
-#include "solarus/lowlevel/Debug.h"
 #include <SDL.h>
 #include <cstdlib>  // std::abs
 
@@ -30,15 +31,16 @@ const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
     KEY_DOWN,
     KEY_NONE
 };
+bool InputEvent::initialized = false;
 bool InputEvent::joypad_enabled = false;
 SDL_Joystick* InputEvent::joystick = nullptr;
 bool InputEvent::repeat_keyboard = false;
 std::set<InputEvent::KeyboardKey> InputEvent::keys_pressed;
 // Default the axis states to centered
-int InputEvent::joypad_axis_state[2] = { 0, 0 };
+std::vector<int> InputEvent::joypad_axis_state;
 
 // Keyboard key names.
-const std::string EnumInfoTraits<InputEvent::KeyboardKey>::pretty_name = "ability";
+const std::string EnumInfoTraits<InputEvent::KeyboardKey>::pretty_name = "keyboard key";
 
 const EnumInfo<InputEvent::KeyboardKey>::names_type EnumInfoTraits<InputEvent::KeyboardKey>::names = {
 
@@ -169,7 +171,7 @@ const EnumInfo<InputEvent::KeyboardKey>::names_type EnumInfoTraits<InputEvent::K
 };
 
 // Mouse button names.
-const std::string EnumInfoTraits<InputEvent::MouseButton>::pretty_name = "ability";
+const std::string EnumInfoTraits<InputEvent::MouseButton>::pretty_name = "mouse button";
 
 const EnumInfo<InputEvent::MouseButton>::names_type EnumInfoTraits<InputEvent::MouseButton>::names = {
     { InputEvent::MOUSE_BUTTON_NONE,   "" },
@@ -185,6 +187,8 @@ const EnumInfo<InputEvent::MouseButton>::names_type EnumInfoTraits<InputEvent::M
  * \brief Initializes the input event manager.
  */
 void InputEvent::initialize() {
+
+  initialized = true;
 
   // Initialize text events.
   SDL_StartTextInput();
@@ -202,6 +206,21 @@ void InputEvent::quit() {
     SDL_JoystickClose(joystick);
   }
   SDL_StopTextInput();
+
+  joypad_enabled = false;
+  joystick = nullptr;
+  repeat_keyboard = false;
+  keys_pressed.clear();
+  joypad_axis_state.clear();
+  initialized = false;
+}
+
+/**
+ * \brief Returns whether the input event manager is initialized.
+ */
+bool InputEvent::is_initialized() {
+
+  return initialized;
 }
 
 /**
@@ -236,7 +255,7 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
       if (internal_event.type == SDL_JOYAXISMOTION) {
         // Determine the current state of the axis
         int axis_state = 0;
-        int axis = internal_event.jaxis.axis % 2; // Ensure we only get an index of 0 or 1
+        int axis = internal_event.jaxis.axis;
         int value = internal_event.jaxis.value;
         if (std::abs(value) < 10000) {
           axis_state = 0;
@@ -267,9 +286,10 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
     }
 
     // Check if keyboard events are correct.
-    // For some reason, when running Solarus from the quest editor,
+    // For some reason, when running Solarus from a Qt application
+    // (which is not recommended)
     // multiple SDL_KEYUP events are generated when a key remains pressed
-    // (Qt/SDL conflict?).
+    // (Qt/SDL conflict). This fixes most problems but not all of them.
     if (internal_event.type == SDL_KEYDOWN) {
       KeyboardKey key = static_cast<KeyboardKey>(internal_event.key.keysym.sym);
       if (!is_key_down(key)) {
@@ -737,7 +757,8 @@ bool InputEvent::is_with_alt() const {
  * The raw key is returned. If you want the corresponding character if any,
  * see get_character().
  *
- * \return The key of this keyboard event.
+ * \return The key of this keyboard event, or KEY_NONE if this is not a
+ * keyboard event or if the key is unknown.
  */
 InputEvent::KeyboardKey InputEvent::get_keyboard_key() const {
 
@@ -745,7 +766,13 @@ InputEvent::KeyboardKey InputEvent::get_keyboard_key() const {
     return KEY_NONE;
   }
 
-  return KeyboardKey(internal_event.key.keysym.sym);
+  SDL_Keycode sdl_symbol = internal_event.key.keysym.sym;
+  if (EnumInfoTraits<KeyboardKey>::names.find(static_cast<KeyboardKey>(sdl_symbol)) ==
+      EnumInfoTraits<KeyboardKey>::names.end()) {
+    return KEY_NONE;
+  }
+
+  return static_cast<KeyboardKey>(sdl_symbol);
 }
 
 /**
@@ -796,16 +823,20 @@ void InputEvent::set_joypad_enabled(bool joypad_enabled) {
     if (joystick != nullptr) {
       SDL_JoystickClose(joystick);
       joystick = nullptr;
+      joypad_axis_state.clear();
     }
 
     if (joypad_enabled && SDL_NumJoysticks() > 0) {
         SDL_InitSubSystem(SDL_INIT_JOYSTICK);
         joystick = SDL_JoystickOpen(0);
+        joypad_axis_state.assign(SDL_JoystickNumAxes(joystick), 0);
     }
     else {
       SDL_JoystickEventState(SDL_IGNORE);
       SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
     }
+
+    Logger::info(std::string("Joypad support enabled: ") + (joypad_enabled ? "true" : "false"));
   }
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_JUMPING_STATE_H
 #define SOLARUS_HERO_JUMPING_STATE_H
 
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 #include <memory>
 
 namespace Solarus {
@@ -27,7 +27,7 @@ class JumpMovement;
 /**
  * \brief The state "Jumping" of the hero.
  */
-class Hero::JumpingState: public Hero::BaseState {
+class Hero::JumpingState: public HeroState {
 
   public:
 
@@ -61,8 +61,8 @@ class Hero::JumpingState: public Hero::BaseState {
     virtual bool can_avoid_sensor() const override;
     virtual bool can_avoid_switch() const override;
     virtual bool can_be_hurt(Entity* attacker) const override;
-    virtual std::shared_ptr<CarriedItem> get_carried_item() const override;
-    virtual CarriedItem::Behavior get_previous_carried_item_behavior() const override;
+    virtual std::shared_ptr<CarriedObject> get_carried_object() const override;
+    virtual CarriedObject::Behavior get_previous_carried_object_behavior() const override;
 
   private:
 
@@ -70,8 +70,8 @@ class Hero::JumpingState: public Hero::BaseState {
         movement;                 /**< the movement applied to the hero */
     int direction8;               /**< direction of the jump (0 to 7) */
     bool with_sound;              /**< indicates that a jump sound is played */
-    std::shared_ptr<CarriedItem>
-        carried_item;             /**< an item carried by the hero while making
+    std::shared_ptr<CarriedObject>
+        carried_object;             /**< an item carried by the hero while making
                                    * this jump, or nullptr */
 
 };

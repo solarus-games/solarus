@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,6 +43,8 @@ void LuaContext::register_video_module() {
       { "get_modes", video_api_get_modes },
       { "is_fullscreen", video_api_is_fullscreen },
       { "set_fullscreen", video_api_set_fullscreen },
+      { "is_cursor_visible", video_api_is_cursor_visible },
+      { "set_cursor_visible", video_api_set_cursor_visible },
       { "get_quest_size", video_api_get_quest_size },
       { "get_window_size", video_api_get_window_size },
       { "set_window_size", video_api_set_window_size },
@@ -199,6 +201,37 @@ int LuaContext::video_api_set_fullscreen(lua_State *l) {
     bool fullscreen = LuaTools::opt_boolean(l, 1, true);
 
     Video::set_fullscreen(fullscreen);
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of sol.video.is_cursor_visible().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::video_api_is_cursor_visible(lua_State *l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    bool visible_cursor = Video::is_cursor_visible();
+
+    lua_pushboolean(l, visible_cursor);
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of sol.video.set_fullscreen().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::video_api_set_cursor_visible(lua_State *l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    bool visible_cursor = LuaTools::opt_boolean(l, 1, true);
+
+    Video::set_cursor_visible(visible_cursor);
 
     return 0;
   });

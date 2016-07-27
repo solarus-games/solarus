@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -156,17 +156,21 @@ void PathMovement::notify_object_controlled() {
 }
 
 /**
- * \brief Updates the movements: detects the collisions
- * in order to restart the movement.
+ * \copydoc Movement::update()
  */
 void PathMovement::update() {
 
-  while (!is_suspended()
-      && is_current_elementary_move_finished()
-      && !PathMovement::is_finished()
-      && get_entity() != nullptr) {
+  while (!is_suspended() &&
+      is_current_elementary_move_finished() &&
+      !PathMovement::is_finished() &&
+      get_entity() != nullptr) {
+
     start_next_elementary_move();
     PixelMovement::update();
+
+    if (snapping) {
+      break;
+    }
   }
 
   // Do this at last so that Movement::update() knows whether we are finished.

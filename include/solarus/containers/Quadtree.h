@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,9 +57,8 @@ class Quadtree {
     bool remove(const T& element);
     bool move(const T& element, const Rectangle& bounding_box);
 
-    void get_elements(
-        const Rectangle& where,
-        std::vector<T>& result
+    std::vector<T> get_elements(
+        const Rectangle& where
     ) const;
 
     int get_num_elements() const;
@@ -86,8 +85,8 @@ class Quadtree {
 
       public:
 
-        Node();
-        explicit Node(const Rectangle& cell);
+        explicit Node(const Quadtree& quadtree);
+        Node(const Quadtree& quadtree, const Rectangle& cell);
 
         void clear();
         void initialize(const Rectangle& cell);
@@ -106,7 +105,7 @@ class Quadtree {
 
         void get_elements(
             const Rectangle& region,
-            std::vector<T>& result
+            std::set<T>& result
         ) const;
 
         int get_num_elements() const;
@@ -126,7 +125,9 @@ class Quadtree {
         bool is_split() const;
         void split();
         void merge();
+        bool is_main_cell(const Rectangle& bounding_box) const;
 
+        const Quadtree& quadtree;
         std::vector<std::pair<T, Rectangle>> elements;
         std::array<std::unique_ptr<Node>, 4> children;
         Rectangle cell;

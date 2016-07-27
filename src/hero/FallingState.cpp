@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
- * 
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,7 +29,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::FallingState::FallingState(Hero& hero):
-  BaseState(hero, "falling") {
+  HeroState(hero, "falling") {
 
 }
 
@@ -39,7 +39,7 @@ Hero::FallingState::FallingState(Hero& hero):
  */
 void Hero::FallingState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   get_entity().delayed_teletransporter = nullptr;
   get_sprites().save_animation_direction();
@@ -53,7 +53,7 @@ void Hero::FallingState::start(const State* previous_state) {
  */
 void Hero::FallingState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
 
   get_sprites().set_animation_stopped_normal();
   get_sprites().restore_animation_direction();
@@ -64,13 +64,13 @@ void Hero::FallingState::stop(const State* next_state) {
  */
 void Hero::FallingState::update() {
 
-  State::update();
+  HeroState::update();
 
   Hero& hero = get_entity();
   if (!is_suspended() && get_sprites().is_animation_finished()) {
 
     // the hero has just finished falling
-    Teletransporter* teletransporter = hero.get_delayed_teletransporter();
+    std::shared_ptr<Teletransporter> teletransporter = hero.get_delayed_teletransporter();
     if (teletransporter != nullptr) {
       // special hole with a teletransporter
       teletransporter->transport_hero(hero);

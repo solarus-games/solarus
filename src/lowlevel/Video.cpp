@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,21 +14,21 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/Video.h"
-#include "solarus/lowlevel/VideoMode.h"
-#include "solarus/lowlevel/Rectangle.h"
-#include "solarus/lowlevel/Size.h"
-#include "solarus/lowlevel/Scale2xFilter.h"
+#include "solarus/lowlevel/Color.h"
+#include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Hq2xFilter.h"
 #include "solarus/lowlevel/Hq3xFilter.h"
 #include "solarus/lowlevel/Hq4xFilter.h"
-#include "solarus/lowlevel/Surface.h"
-#include "solarus/lowlevel/Color.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lowlevel/Scale2xFilter.h"
+#include "solarus/lowlevel/Size.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Video.h"
+#include "solarus/lowlevel/VideoMode.h"
 #include "solarus/lowlevel/shaders/ShaderContext.h"
 #include "solarus/Arguments.h"
-#include <iostream>
 #include <memory>
 #include <sstream>
 #include <utility>
@@ -45,6 +45,7 @@ SDL_PixelFormat* pixel_format = nullptr;  /**< The pixel color format to use. */
 std::string rendering_driver_name;        /**< The name of the rendering driver. */
 bool disable_window = false;              /**< Indicates that no window is displayed (used for unit tests). */
 bool fullscreen_window = false;           /**< True if the window is in fullscreen. */
+bool visible_cursor = true;               /**< True if the mouse cursor is visible. */
 bool rendertarget_supported = false;      /**< True if rendering on texture is supported. */
 bool shaders_enabled = false;             /**< True if shaded modes support is enabled. */
 bool acceleration_enabled = false;        /**< \c true if 2D GPU acceleration is available and enabled. */
@@ -80,8 +81,9 @@ void create_window() {
   SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
 #endif
 
+  std::string title = std::string("Solarus ") + SOLARUS_VERSION;
   main_window = SDL_CreateWindow(
-      (std::string("Solarus ") + SOLARUS_VERSION).c_str(),
+      title.c_str(),
       SDL_WINDOWPOS_CENTERED,
       SDL_WINDOWPOS_CENTERED,
       wanted_quest_size.width,
@@ -141,13 +143,13 @@ void create_window() {
     && (renderer_info.flags & SDL_RENDERER_ACCELERATED) != 0;
   if (acceleration_enabled) {
     // Solarus uses accelerated graphics as of version 1.2 with SDL2.
-    std::cout << "2D acceleration: yes" << std::endl;
+    Logger::info("2D acceleration: yes");
   }
   else {
     // Acceleration may be disabled because the user decided so or because the
     // system does not support it.
     // This is not a problem: the engine runs perfectly in software mode.
-    std::cout << "2D acceleration: no" << std::endl;
+    Logger::info("2D acceleration: no");
   }
 }
 
@@ -256,6 +258,8 @@ void initialize_video_modes() {
  */
 void Video::initialize(const Arguments& args) {
 
+  Debug::check_assertion(!is_initialized(), "Video system already initialized");
+
   // Check the -no-video and the -quest-size options.
   const std::string& quest_size_string = args.get_argument_value("-quest-size");
   disable_window = args.has_argument("-no-video");
@@ -293,6 +297,10 @@ void Video::initialize(const Arguments& args) {
  * \brief Closes the video system.
  */
 void Video::quit() {
+
+  if (!is_initialized()) {
+    return;
+  }
 
   ShaderContext::quit();
 
@@ -333,6 +341,14 @@ void Video::quit() {
   wanted_quest_size = Size();
   window_size = Size();
 
+}
+
+/**
+ * \brief Returns whether the video system is initialized.
+ * \return \c true if video is initialized.
+ */
+bool Video::is_initialized() {
+  return video_mode != nullptr;
 }
 
 /**
@@ -438,6 +454,27 @@ void Video::set_fullscreen(bool fullscreen) {
 
   Debug::check_assertion(video_mode != nullptr, "No video mode");
   set_video_mode(*video_mode, fullscreen);
+  Logger::info(std::string("Fullscreen: ") + (fullscreen ? "yes" : "no"));
+}
+
+/**
+ * \brief Returns whether the mouse cursor is currently visible.
+ * \return true if the mouse cursor is currently visible.
+ */
+bool Video::is_cursor_visible() {
+  return visible_cursor;
+}
+
+/**
+ * \brief Sets the mouse cursor to visible or invisible.
+ * \param cursor_visible true to make the cursor visible.
+ */
+void Video::set_cursor_visible(bool cursor_visible) {
+
+  visible_cursor = cursor_visible;
+  Debug::check_assertion(video_mode != nullptr, "No video mode");
+  set_video_mode(*video_mode, is_fullscreen());
+  Logger::info(std::string("Cursor visible: ") + (cursor_visible ? "yes" : "no"));
 }
 
 /**
@@ -513,16 +550,13 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
     return false;
   }
 
-  int show_cursor;
   Uint32 fullscreen_flag;
   if (fullscreen) {
     fullscreen_flag = SDL_WINDOW_FULLSCREEN_DESKTOP;
-    show_cursor = SDL_DISABLE;
     window_size = get_window_size();  // Store the window size before fullscreen.
   }
   else {
     fullscreen_flag = 0;
-    show_cursor = SDL_ENABLE;
   }
 
   video_mode = &mode;
@@ -545,24 +579,20 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
     // Initialize the window.
     // Set fullscreen flag first to set the size on the right mode.
     SDL_SetWindowFullscreen(main_window, fullscreen_flag);
-    if (!fullscreen && is_fullscreen()) {
-      SDL_SetWindowSize(
-          main_window,
-          window_size.width,
-          window_size.height
-      );
-      SDL_SetWindowPosition(main_window,
-          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-    }
     SDL_RenderSetLogicalSize(
         main_renderer,
         render_size.width,
         render_size.height);
-    SDL_ShowCursor(show_cursor);
+    SDL_ShowCursor(visible_cursor);
 
     if (mode_changed) {
       reset_window_size();
     }
+  }
+
+  if (mode_changed) {
+    Logger::info(std::string("Video mode: ") + video_mode->get_name());
+
   }
 
   return true;
@@ -866,9 +896,9 @@ Rectangle Video::get_viewport() {
 
 /**
  * \brief Converts window coordinates to quest size coordinates.
- * \param[in] position A position relative to the window, not including
+ * \param[in] window_xy A position relative to the window, not including
  * the title bar.
- * \param[out] The corresponding value in quest coordinates.
+ * \param[out] quest_xy The corresponding value in quest coordinates.
  * \return \c false if the position is not inside the quest display.
  */
 bool Video::window_to_quest_coordinates(
@@ -907,8 +937,8 @@ bool Video::window_to_quest_coordinates(
 
 /**
  * \brief Converts logical renderer coordinates to quest size coordinates.
- * \param[in] position A position in renderer coordinates, without window scaling.
- * \param[out] The corresponding value in quest coordinates.
+ * \param[in] renderer_xy A position in renderer coordinates, without window scaling.
+ * \param[out] quest_xy The corresponding value in quest coordinates.
  * \return \c false if the position is not inside the renderer.
  */
 bool Video::renderer_to_quest_coordinates(

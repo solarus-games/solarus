@@ -6,4 +6,3 @@ animation{
     { x = 0, y = 0, frame_width = 48, frame_height = 48, origin_x = 24, origin_y = 24, num_frames = 9 },
   },
 }
-

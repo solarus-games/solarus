@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/entities/Entity.h"
+#include "solarus/entities/StartingLocationMode.h"
 #include <string>
 
 namespace Solarus {
@@ -44,9 +45,15 @@ class Destination: public Entity {
     virtual EntityType get_type() const override;
     bool is_default() const;
 
+    StartingLocationMode get_starting_location_mode() const;
+    void set_starting_location_mode(StartingLocationMode mode);
+
   private:
 
-    bool is_default_destination;
+    StartingLocationMode starting_location_mode;  /**< Whether this destination updates
+                                                   * the starting location. */
+    bool is_default_destination;                  /**< Whether this is the default
+                                                   * destination of the map. */
 
 };
 

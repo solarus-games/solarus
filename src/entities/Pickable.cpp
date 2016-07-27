@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,13 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/Pickable.h"
 #include "solarus/entities/Boomerang.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Hookshot.h"
-#include "solarus/entities/MapEntities.h"
+#include "solarus/entities/Pickable.h"
 #include "solarus/hero/HeroSprites.h"
-#include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/System.h"
@@ -50,7 +49,7 @@ Pickable::Pickable(
     const Point& xy,
     const Treasure& treasure
 ):
-  Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE, name, layer, xy, Size(0, 0)),
+  Entity(name, 0, layer, xy, Size(0, 0)),
   treasure(treasure),
   given_to_player(false),
   shadow_sprite(),
@@ -64,6 +63,7 @@ Pickable::Pickable(
   disappear_date(0),
   entity_followed(nullptr) {
 
+  set_collision_modes(CollisionMode::COLLISION_OVERLAPPING | CollisionMode::COLLISION_SPRITE);
 }
 
 /**
@@ -148,15 +148,16 @@ bool Pickable::is_ground_observer() const {
  */
 bool Pickable::initialize_sprites() {
 
-  // Shadow sprite.
-  shadow_sprite = nullptr;
   EquipmentItem& item = treasure.get_item();
-  const std::string& animation = item.get_shadow();
+
+  // Shadow sprite first, because below the treasure sprite.
+  shadow_sprite = nullptr;
+  const std::string& shadow_animation = item.get_shadow();
 
   bool has_shadow = false;
-  if (!animation.empty()) {
-    shadow_sprite = std::make_shared<Sprite>("entities/shadow");
-    has_shadow = shadow_sprite->has_animation(animation);
+  if (!shadow_animation.empty()) {
+    shadow_sprite = create_sprite("entities/shadow", "shadow");
+    has_shadow = shadow_sprite->has_animation(shadow_animation);
   }
 
   if (!has_shadow) {
@@ -164,15 +165,15 @@ bool Pickable::initialize_sprites() {
     shadow_sprite = nullptr;
   }
   else {
-    shadow_sprite->set_current_animation(animation);
+    shadow_sprite->set_current_animation(shadow_animation);
   }
 
   // Main sprite.
   const std::string item_name = treasure.get_item_name();
-  create_sprite("entities/items");
-  Sprite& item_sprite = get_sprite();
+  item_sprite = create_sprite("entities/items", "treasure");
+  set_default_sprite_name("treasure");
 
-  if( !item_sprite.has_animation(item_name)) {
+  if( !item_sprite->has_animation(item_name)) {
     std::ostringstream oss;
     oss << "Cannot create pickable treasure '" << item_name
         << "': Sprite 'entities/items' has no animation '"
@@ -181,20 +182,21 @@ bool Pickable::initialize_sprites() {
     return false;
   }
 
-  item_sprite.set_current_animation(item_name);
+  item_sprite->set_current_animation(item_name);
   int direction = treasure.get_variant() - 1;
-  if (direction < 0 || direction >= item_sprite.get_nb_directions()) {
+  if (direction < 0 || direction >= item_sprite->get_nb_directions()) {
     std::ostringstream oss;
     oss << "Pickable treasure '" << item_name
         << "' has variant " << treasure.get_variant()
         << " but sprite 'entities/items' only has "
-        << item_sprite.get_nb_directions() << " variant(s) in animation '"
+        << item_sprite->get_nb_directions() << " variant(s) in animation '"
         << item_name << "'";
     Debug::error(oss.str());
     direction = 0;  // Fallback.
   }
-  item_sprite.set_current_direction(direction);
-  item_sprite.enable_pixel_collisions();
+  item_sprite->set_current_direction(direction);
+
+  enable_pixel_collisions();
 
   // Set the origin point and the size of the entity.
   set_size(16, 16);
@@ -224,7 +226,7 @@ bool Pickable::initialize_sprites() {
  */
 void Pickable::notify_created() {
 
-  Detector::notify_created();
+  Entity::notify_created();
 
   update_ground_below();
   notify_ground_below_changed();  // Necessary if on empty ground.
@@ -321,14 +323,19 @@ void Pickable::notify_collision(Entity& entity_overlapping, CollisionMode /* col
 }
 
 /**
- * \copydoc Detector::notify_collision(Entity&, Sprite&, Sprite&)
+ * \copydoc Entity::notify_collision(Entity&, Sprite&, Sprite&)
  */
 void Pickable::notify_collision(
     Entity& other_entity,
-    Sprite& /* this_sprite */,
+    Sprite& this_sprite,
     Sprite& other_sprite
 ) {
-  // taking the item with the sword
+  if (&this_sprite != item_sprite.get()) {
+    // Ignore collisions with the shadow.
+    return;
+  }
+
+  // Taking the item with the sword.
   if (other_entity.is_hero()) {
     Hero& hero = static_cast<Hero&>(other_entity);
     if (other_sprite.get_animation_set_id() == hero.get_hero_sprites().get_sword_sprite_id()) {
@@ -340,7 +347,7 @@ void Pickable::notify_collision(
 /**
  * \brief Reacts to the ground of the pickable.
  *
- * It is removed it is on water, lava or a hole.
+ * It is removed if it is on water, lava or a hole.
  * It goes to the lower layer if the ground is empty.
  */
 void Pickable::check_bad_ground() {
@@ -439,8 +446,8 @@ void Pickable::try_give_item_to_player() {
     treasure.give_to_player();
 
     // Call on_obtained() immediately since the treasure is not brandished.
-    get_lua_context().item_on_obtained(item, treasure);
-    get_lua_context().map_on_obtained_treasure(get_map(), treasure);
+    get_lua_context()->item_on_obtained(item, treasure);
+    get_lua_context()->map_on_obtained_treasure(get_map(), treasure);
   }
 }
 
@@ -452,7 +459,9 @@ void Pickable::set_blinking(bool blinking) {
 
   uint32_t blink_delay = blinking ? 75 : 0;
 
-  get_sprite().set_blinking(blink_delay);
+  if (item_sprite != nullptr) {
+    item_sprite->set_blinking(blink_delay);
+  }
 
   if (shadow_sprite != nullptr) {
     shadow_sprite->set_blinking(blink_delay);
@@ -469,7 +478,7 @@ void Pickable::set_blinking(bool blinking) {
  */
 void Pickable::set_suspended(bool suspended) {
 
-  Detector::set_suspended(suspended); // suspend the animation and the movement
+  Entity::set_suspended(suspended); // suspend the animation and the movement
 
   if (shadow_sprite != nullptr) {
     shadow_sprite->set_suspended(suspended);
@@ -506,7 +515,7 @@ void Pickable::set_suspended(bool suspended) {
 void Pickable::update() {
 
   // update the animations and the movement
-  Detector::update();
+  Entity::update();
 
   // update the shadow
   if (shadow_sprite != nullptr) {
@@ -548,7 +557,7 @@ void Pickable::update() {
       // make the item blink and then disappear
       if (will_disappear) {
 
-        if (now >= blink_date && !get_sprite().is_blinking() && entity_followed == nullptr) {
+        if (now >= blink_date && !item_sprite->is_blinking() && entity_followed == nullptr) {
           set_blinking(true);
         }
 
@@ -568,17 +577,13 @@ void Pickable::update() {
  */
 void Pickable::draw_on_map() {
 
-  if (!is_drawn()) {
-    return;
-  }
-
   // draw the shadow
   if (shadow_sprite != nullptr) {
-    get_map().draw_sprite(*shadow_sprite, shadow_xy);
+    get_map().draw_visual(*shadow_sprite, shadow_xy);
   }
 
   // draw the sprite
-  Detector::draw_on_map();
+  Entity::draw_on_map();
 }
 
 }

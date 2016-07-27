@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  */
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/CarriedItem.h"
+#include "solarus/entities/CarriedObject.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Sprite.h"
 #include "solarus/SpriteAnimationSet.h"
@@ -90,7 +90,7 @@ HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
  * \return The Lua context.
  */
 LuaContext& HeroSprites::get_lua_context() {
-  return hero.get_lua_context();
+  return *hero.get_lua_context();
 }
 
 /**
@@ -103,6 +103,9 @@ LuaContext& HeroSprites::get_lua_context() {
  * and as soon as the hero's equipment is changed.
  */
 void HeroSprites::rebuild_equipment() {
+
+  // Make the tunic sprite be the default one.
+  hero.set_default_sprite_name("tunic");
 
   int animation_direction = -1;
   if (tunic_sprite != nullptr) {
@@ -117,7 +120,7 @@ void HeroSprites::rebuild_equipment() {
 
   // The hero's shadow.
   if (shadow_sprite == nullptr) {
-    shadow_sprite = std::make_shared<Sprite>("entities/shadow");
+    shadow_sprite = hero.create_sprite("entities/shadow", "shadow");
     shadow_sprite->set_current_animation("big");
   }
 
@@ -135,7 +138,7 @@ void HeroSprites::rebuild_equipment() {
     // TODO make this sprite depend on the sword sprite: sword_sprite_id + "_stars"
     std::ostringstream oss;
     oss << "hero/sword_stars" << sword_number;
-    sword_stars_sprite = std::make_shared<Sprite>(oss.str());
+    sword_stars_sprite = hero.create_sprite(oss.str(), "sword_stars");
     sword_stars_sprite->stop_animation();
   }
 
@@ -145,13 +148,15 @@ void HeroSprites::rebuild_equipment() {
   }
 
   // The trail.
-  trail_sprite = std::make_shared<Sprite>("hero/trail");
+  trail_sprite = hero.create_sprite("hero/trail", "trail");
   trail_sprite->stop_animation();
 
   // Restore the animation direction.
   if (animation_direction != -1) {
     set_animation_direction(animation_direction);
   }
+
+  reorder_sprites();
 }
 
 /**
@@ -181,10 +186,11 @@ void HeroSprites::set_tunic_sprite_id(const std::string& sprite_id) {
     // Delete the previous sprite, but save its animation and direction.
     animation = tunic_sprite->get_current_animation();
     direction = tunic_sprite->get_current_direction();
+    hero.remove_sprite(*tunic_sprite);
     tunic_sprite = nullptr;
   }
 
-  tunic_sprite = std::make_shared<Sprite>(sprite_id);
+  tunic_sprite = hero.create_sprite(sprite_id, "tunic");
   tunic_sprite->enable_pixel_collisions();
   if (!animation.empty()) {
     set_tunic_animation(animation);
@@ -201,6 +207,7 @@ void HeroSprites::set_tunic_sprite_id(const std::string& sprite_id) {
     shield_sprite->set_synchronized_to(tunic_sprite);
   }
 
+  reorder_sprites();
   recompute_sprites_bounding_box();
 }
 
@@ -249,12 +256,13 @@ void HeroSprites::set_sword_sprite_id(const std::string& sprite_id) {
       animation = sword_sprite->get_current_animation();
       direction = sword_sprite->get_current_direction();
     }
+    hero.remove_sprite(*sword_sprite);
     sword_sprite = nullptr;
   }
 
   if (!sprite_id.empty()) {
     // There is a sword sprite specified.
-    sword_sprite = std::make_shared<Sprite>(sprite_id);
+    sword_sprite = hero.create_sprite(sprite_id, "sword");
     sword_sprite->enable_pixel_collisions();
     sword_sprite->set_synchronized_to(tunic_sprite);
     if (animation.empty()) {
@@ -268,6 +276,7 @@ void HeroSprites::set_sword_sprite_id(const std::string& sprite_id) {
 
   has_default_sword_sprite = (sprite_id == get_default_sword_sprite_id());
 
+  reorder_sprites();
   recompute_sprites_bounding_box();
 }
 
@@ -366,12 +375,13 @@ void HeroSprites::set_shield_sprite_id(const std::string& sprite_id) {
       animation = shield_sprite->get_current_animation();
       direction = shield_sprite->get_current_direction();
     }
+    hero.remove_sprite(*shield_sprite);
     shield_sprite = nullptr;
   }
 
   if (!sprite_id.empty()) {
     // There is a shield sprite specified.
-    shield_sprite = std::make_shared<Sprite>(sprite_id);
+    shield_sprite = hero.create_sprite(sprite_id, "shield");
     shield_sprite->set_synchronized_to(tunic_sprite);
     if (animation.empty()) {
       shield_sprite->stop_animation();
@@ -384,6 +394,7 @@ void HeroSprites::set_shield_sprite_id(const std::string& sprite_id) {
 
   has_default_shield_sprite = (sprite_id == get_default_shield_sprite_id());
 
+  reorder_sprites();
   recompute_sprites_bounding_box();
 }
 
@@ -416,6 +427,37 @@ Rectangle HeroSprites::get_max_bounding_box() const {
   Rectangle result(sprites_bounding_box);
   result.add_xy(hero.get_xy());
   return result;
+}
+
+/**
+ * \brief Makes sure that hero sprites are stored in the correct order.
+ * This function should be called whenever some sprites are created.
+ */
+void HeroSprites::reorder_sprites() {
+
+  // Shadow, tunic, trail, ground, sword, sword stars, shield.
+
+  if (shadow_sprite != nullptr) {
+    hero.bring_sprite_to_front(*shadow_sprite);
+  }
+  if (tunic_sprite != nullptr) {
+    hero.bring_sprite_to_front(*tunic_sprite);
+  }
+  if (trail_sprite != nullptr) {
+    hero.bring_sprite_to_front(*trail_sprite);
+  }
+  if (ground_sprite != nullptr) {
+    hero.bring_sprite_to_front(*ground_sprite);
+  }
+  if (sword_sprite != nullptr) {
+    hero.bring_sprite_to_front(*sword_sprite);
+  }
+  if (sword_stars_sprite != nullptr) {
+    hero.bring_sprite_to_front(*sword_stars_sprite);
+  }
+  if (shield_sprite != nullptr) {
+    hero.bring_sprite_to_front(*shield_sprite);
+  }
 }
 
 /**
@@ -702,6 +744,11 @@ void HeroSprites::set_animation_direction(int direction) {
   if (is_trail_visible()) {
     trail_sprite->set_current_direction(direction);
   }
+
+  if (lifted_item != nullptr) {
+    const SpritePtr& sprite = lifted_item->get_sprite();
+    sprite->restart_animation();
+  }
 }
 
 /**
@@ -759,11 +806,13 @@ void HeroSprites::restore_animation_direction() {
  */
 void HeroSprites::update() {
 
+  // Hero sprites are all updated here, Entity::update() is overridden for the hero.
+
   // Keep the current sprites here in case they change from a script during the operation.
   SpritePtr tunic_sprite = this->tunic_sprite;
   SpritePtr sword_sprite = this->sword_sprite;
 
-  // update the frames
+  // Update the frames.
   tunic_sprite->update();
 
   if (is_sword_visible()) {
@@ -774,7 +823,7 @@ void HeroSprites::update() {
   hero.check_collision_with_detectors(*tunic_sprite);
 
   if (is_sword_stars_visible()) {
-    // the stars are not synchronized with the other sprites
+    // The stars are not synchronized with the other sprites.
     sword_stars_sprite->update();
   }
 
@@ -793,11 +842,7 @@ void HeroSprites::update() {
     ground_sprite->update();
   }
 
-  if (lifted_item != nullptr && walking) {
-    lifted_item->get_sprite().set_current_frame(tunic_sprite->get_current_frame() % 3);
-  }
-
-  // blinking
+  // Blinking.
   if (is_blinking()
       && end_blink_date != 0
       && System::now() >= end_blink_date) {
@@ -822,33 +867,33 @@ void HeroSprites::draw_on_map() {
   Map& map = hero.get_map();
 
   if (hero.is_shadow_visible()) {
-    map.draw_sprite(*shadow_sprite, x, y, clipping_rectangle);
+    map.draw_visual(*shadow_sprite, x, y, clipping_rectangle);
   }
 
   const Point& displayed_xy = hero.get_displayed_xy();
   x = displayed_xy.x;
   y = displayed_xy.y;
 
-  map.draw_sprite(*tunic_sprite, x, y, clipping_rectangle);
+  map.draw_visual(*tunic_sprite, x, y, clipping_rectangle);
 
   if (is_trail_visible()) {
-    map.draw_sprite(*trail_sprite, x, y, clipping_rectangle);
+    map.draw_visual(*trail_sprite, x, y, clipping_rectangle);
   }
 
   if (is_ground_visible()) {
-    map.draw_sprite(*ground_sprite, x, y, clipping_rectangle);
+    map.draw_visual(*ground_sprite, x, y, clipping_rectangle);
   }
 
   if (is_sword_visible()) {
-    map.draw_sprite(*sword_sprite, x, y, clipping_rectangle);
+    map.draw_visual(*sword_sprite, x, y, clipping_rectangle);
   }
 
   if (is_sword_stars_visible()) {
-    map.draw_sprite(*sword_stars_sprite, x, y, clipping_rectangle);
+    map.draw_visual(*sword_stars_sprite, x, y, clipping_rectangle);
   }
 
   if (is_shield_visible()) {
-    map.draw_sprite(*shield_sprite, x, y, clipping_rectangle);
+    map.draw_visual(*shield_sprite, x, y, clipping_rectangle);
   }
 
   if (lifted_item != nullptr) {
@@ -1040,7 +1085,7 @@ void HeroSprites::set_animation_stopped_sword_loading() {
  * \brief Starts the "stopped" animation with sprites that represent
  * the hero carrying something.
  *
- * If the hero actually carries an item, the carried item also takes a "stopped" animation.
+ * If the hero actually carries an item, the carried object also takes a "stopped" animation.
  */
 void HeroSprites::set_animation_stopped_carrying() {
 
@@ -1130,7 +1175,7 @@ void HeroSprites::set_animation_walking_sword_loading() {
  * \brief Starts the "walking" animation with sprites that represent
  * the hero carrying something.
  *
- * If the hero actually carries an item, the carried item also takes a "walking" animation.
+ * If the hero actually carries an item, the carried object also takes a "walking" animation.
  */
 void HeroSprites::set_animation_walking_carrying() {
 
@@ -1202,8 +1247,8 @@ void HeroSprites::set_animation_sword() {
   if (equipment.has_ability(Ability::SHIELD)) {
 
     if (direction % 2 != 0) {
-      shield_sprite->set_current_animation("sword");
       shield_sprite->set_current_direction(direction / 2);
+      shield_sprite->set_current_animation("sword");
       shield_sprite->restart_animation();
     }
     else {
@@ -1544,6 +1589,9 @@ void HeroSprites::set_animation(
  */
 void HeroSprites::create_ground(Ground ground) {
 
+  if (ground_sprite != nullptr) {
+    hero.remove_sprite(*ground_sprite);
+  }
   ground_sprite = nullptr;
 
   std::string sprite_id;
@@ -1557,7 +1605,7 @@ void HeroSprites::create_ground(Ground ground) {
   }
 
   if (!sprite_id.empty()) {
-    ground_sprite = std::make_shared<Sprite>(sprite_id);
+    ground_sprite = hero.create_sprite(sprite_id, "ground");
     ground_sprite->set_tileset(hero.get_map().get_tileset());
     if (ground != Ground::SHALLOW_WATER) {
       ground_sprite->set_current_animation(walking ? "walking" : "stopped");
@@ -1591,7 +1639,7 @@ void HeroSprites::play_ground_sound() {
  * \param lifted_item the item to display, or nullptr to stop displaying a lifted item
  */
 void HeroSprites::set_lifted_item(
-    const std::shared_ptr<CarriedItem>& lifted_item
+    const std::shared_ptr<CarriedObject>& lifted_item
 ) {
   this->lifted_item = lifted_item;
 }

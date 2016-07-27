@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,11 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/OggDecoder.h"
+#include "solarus/lowlevel/ItDecoder.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/Music.h"
 #include "solarus/lowlevel/SpcDecoder.h"
-#include "solarus/lowlevel/ItDecoder.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/String.h"
 #include "solarus/lua/LuaContext.h"
 #include <lua.hpp>
 #include <algorithm>
@@ -29,6 +32,7 @@ namespace Solarus {
 constexpr int Music::nb_buffers;
 std::unique_ptr<SpcDecoder> Music::spc_decoder = nullptr;
 std::unique_ptr<ItDecoder> Music::it_decoder = nullptr;
+std::unique_ptr<OggDecoder> Music::ogg_decoder = nullptr;
 float Music::volume = 1.0;
 std::unique_ptr<Music> Music::current_music = nullptr;
 
@@ -95,6 +99,7 @@ void Music::initialize() {
   // initialize the decoding features
   spc_decoder = std::unique_ptr<SpcDecoder>(new SpcDecoder());
   it_decoder = std::unique_ptr<ItDecoder>(new ItDecoder());
+  ogg_decoder = std::unique_ptr<OggDecoder>(new OggDecoder());
 
   set_volume(100);
 }
@@ -108,6 +113,7 @@ void Music::quit() {
     current_music = nullptr;
     spc_decoder = nullptr;
     it_decoder = nullptr;
+    volume = 1.0;
   }
 }
 
@@ -153,6 +159,8 @@ void Music::set_volume(int volume) {
   if (current_music != nullptr) {
     alSourcef(current_music->source, AL_GAIN, Music::volume);
   }
+
+  Logger::info(std::string("Music volume: ") + String::to_string(get_volume()));
 }
 
 /**
@@ -366,6 +374,7 @@ void Music::update() {
     if (!playing) {
       // Music is finished.
       ScopedLuaRef callback_ref = current_music->callback_ref;
+      current_music->stop();
       current_music = nullptr;
       callback_ref.call("music callback");
     }
@@ -459,17 +468,20 @@ void Music::decode_it(ALuint destination_buffer, ALsizei nb_samples) {
   std::vector<ALushort> raw_data(nb_samples);
   int bytes_read = it_decoder->decode(raw_data.data(), nb_samples);
 
-  if (bytes_read > 0) {
+  if (bytes_read == 0) {
+    // End of file.
+    alBufferData(destination_buffer, AL_FORMAT_STEREO16, raw_data.data(), 0, 44100);
+  }
+  else {
     // Put this decoded data into the buffer.
     alBufferData(destination_buffer, AL_FORMAT_STEREO16, raw_data.data(), nb_samples, 44100);
-
-    int error = alGetError();
-    if (error != AL_NO_ERROR) {
-      std::ostringstream oss;
-      oss << "Failed to fill the audio buffer with decoded IT data for music file '"
-          << file_name << ": error " << error;
-      Debug::error(oss.str());
-    }
+  }
+  int error = alGetError();
+  if (error != AL_NO_ERROR) {
+    std::ostringstream oss;
+    oss << "Failed to fill the audio buffer with decoded IT data for music file '"
+        << file_name << ": error " << error;
+    Debug::error(oss.str());
   }
 }
 
@@ -480,51 +492,7 @@ void Music::decode_it(ALuint destination_buffer, ALsizei nb_samples) {
  */
 void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
 
-  // read the encoded music properties
-  vorbis_info* info = ov_info(&ogg_file, -1);
-  ALsizei sample_rate = ALsizei(info->rate);
-
-  ALenum al_format = AL_NONE;
-  if (info->channels == 1) {
-    al_format = AL_FORMAT_MONO16;
-  }
-  else if (info->channels == 2) {
-    al_format = AL_FORMAT_STEREO16;
-  }
-
-  // decode the OGG data
-  std::vector<ALshort> raw_data(nb_samples * info->channels);
-  int bitstream;
-  long bytes_read;
-  long total_bytes_read = 0;
-  long remaining_bytes = nb_samples * info->channels * sizeof(ALshort);
-  do {
-    bytes_read = ov_read(&ogg_file, ((char*) raw_data.data()) + total_bytes_read, int(remaining_bytes), 0, 2, 1, &bitstream);
-    if (bytes_read < 0) {
-      if (bytes_read != OV_HOLE) { // OV_HOLE is normal when the music loops
-        std::ostringstream oss;
-        oss << "Error while decoding ogg chunk: " << bytes_read;
-        Debug::error(oss.str());
-        return;
-      }
-    }
-    else {
-      total_bytes_read += bytes_read;
-      remaining_bytes -= bytes_read;
-    }
-  }
-  while (remaining_bytes > 0 && bytes_read > 0);
-
-  // Put this decoded data into the buffer.
-  alBufferData(destination_buffer, al_format, raw_data.data(), ALsizei(total_bytes_read), sample_rate);
-
-  int error = alGetError();
-  if (error != AL_NO_ERROR) {
-    std::ostringstream oss;
-    oss << "Failed to fill the audio buffer with decoded OGG data for music file '"
-        << file_name << "': error " << error;
-    Debug::error(oss.str());
-  }
+  ogg_decoder->decode(destination_buffer, nb_samples);
 }
 
 /**
@@ -567,7 +535,7 @@ bool Music::start() {
 
       sound_buffer = QuestFiles::data_file_read(file_name);
 
-      // load the SPC data into the SPC decoding library
+      // Give the SPC data into the SPC decoder.
       spc_decoder->load((int16_t*) sound_buffer.data(), sound_buffer.size());
 
       for (int i = 0; i < nb_buffers; i++) {
@@ -579,7 +547,7 @@ bool Music::start() {
 
       sound_buffer = QuestFiles::data_file_read(file_name);
 
-      // load the IT data into the IT decoding library
+      // Give the IT data to the IT decoder
       it_decoder->load(sound_buffer);
 
       for (int i = 0; i < nb_buffers; i++) {
@@ -588,30 +556,25 @@ bool Music::start() {
       break;
 
     case OGG:
-    {
-      ogg_mem.position = 0;
-      ogg_mem.loop = this->loop;
-      ogg_mem.data = QuestFiles::data_file_read(file_name);
-      // now, ogg_mem contains the encoded data
 
-      int error = ov_open_callbacks(&ogg_mem, &ogg_file, nullptr, 0, Sound::ogg_callbacks);
-      if (error) {
-        std::ostringstream oss;
-        oss << "Cannot load music file '" << file_name
-            << "' from memory: error " << error;
-        Debug::error(oss.str());
-      }
-      else {
+      sound_buffer = QuestFiles::data_file_read(file_name);
+
+      // Give the OGG data to the OGG decoder.
+      success = ogg_decoder->load(std::move(sound_buffer), this->loop);
+      if (success) {
         for (int i = 0; i < nb_buffers; i++) {
           decode_ogg(buffers[i], 16384);
         }
       }
       break;
-    }
 
     case NO_FORMAT:
       Debug::die("Invalid music format");
       break;
+  }
+
+  if (!success) {
+    Debug::error("Cannot load music file '" + file_name + "'");
   }
 
   // start the streaming
@@ -673,8 +636,7 @@ void Music::stop() {
       break;
 
     case OGG:
-      ov_clear(&ogg_file);
-      ogg_mem.data.clear();
+      ogg_decoder->unload();
       break;
 
     case NO_FORMAT:

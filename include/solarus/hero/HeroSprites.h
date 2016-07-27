@@ -1,16 +1,16 @@
 /**
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
- * 
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -27,7 +27,7 @@
 
 namespace Solarus {
 
-class CarriedItem;
+class CarriedObject;
 class Equipment;
 class Hero;
 class LuaContext;
@@ -130,7 +130,7 @@ class HeroSprites {
     void destroy_ground();
     void play_ground_sound();
 
-    void set_lifted_item(const std::shared_ptr<CarriedItem>& lifted_item);
+    void set_lifted_item(const std::shared_ptr<CarriedObject>& lifted_item);
 
   private:
 
@@ -156,6 +156,7 @@ class HeroSprites {
 
     LuaContext& get_lua_context();
 
+    void reorder_sprites();
     void recompute_sprites_bounding_box();
 
     Hero& hero;                             /**< The hero. */
@@ -211,7 +212,7 @@ class HeroSprites {
     Rectangle clipping_rectangle;           /**< when drawing the sprites onto a map, indicates an area of the map to be restricted to
                                              * (usually, the whole map is considered and this rectangle's values are all 0) */
 
-    std::shared_ptr<CarriedItem>
+    std::shared_ptr<CarriedObject>
         lifted_item;                        /**< if not nullptr, an item to display above the hero */
 
     ScopedLuaRef animation_callback_ref;    /**< Lua ref of a function to call when a custom animation ends. */

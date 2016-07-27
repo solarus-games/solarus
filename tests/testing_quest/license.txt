@@ -7,7 +7,7 @@ in version 3.
 
 - Data files come from the Solarus sample quest.
 The ones we created are licensed under
-Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0).
-http://creativecommons.org/licenses/by-sa/3.0/
+Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0).
+http://creativecommons.org/licenses/by-sa/4.0/
 See the license.txt file of the sample_quest directory for more details.
 

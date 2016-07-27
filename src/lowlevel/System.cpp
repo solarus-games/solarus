@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,9 +48,6 @@ void System::initialize(const Arguments& args) {
   initial_time = get_real_time();
   ticks = 0;
 
-  // files
-  QuestFiles::initialize(args);
-
   // audio
   Sound::initialize(args);
 
@@ -79,7 +76,6 @@ void System::quit() {
   Sprite::quit();
   FontResource::quit();
   Video::quit();
-  QuestFiles::quit();
 
   SDL_Quit();
 }
@@ -103,6 +99,7 @@ void System::update() {
  *
  * If the correct OS name is not available, returns a string
  * beginning with the text "Unknown".
+ *
  * \return the name of the running OS.
  */
 std::string System::get_os() {
@@ -112,9 +109,9 @@ std::string System::get_os() {
 
 /**
  * \brief Returns the number of simulated milliseconds elapsed since the
- * initialization of the Solarus library.
+ * main loop started.
  *
- * Corresponds to the real time unless the system is too slow to play at
+ * Follows to the real time unless the system is too slow to play at
  * normal speed.
  *
  * \return The number of simulated milliseconds elapsed since the

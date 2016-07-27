@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ class GL_2DShader : public Shader {
     static int l_shader(lua_State* l);
 
     void register_callback(lua_State* l);
-    void render(const SurfacePtr& quest_surface);
+    void render(const SurfacePtr& quest_surface) const;
 };
 
 }

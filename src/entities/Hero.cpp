@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,9 @@
 #include "solarus/entities/Destination.h"
 #include "solarus/entities/Destructible.h"
 #include "solarus/entities/Enemy.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Jumper.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Sensor.h"
 #include "solarus/entities/Stairs.h"
 #include "solarus/entities/Stream.h"
@@ -38,7 +38,7 @@
 #include "solarus/hero/FallingState.h"
 #include "solarus/hero/ForcedWalkingState.h"
 #include "solarus/hero/FreeState.h"
-#include "solarus/hero/FreezedState.h"
+#include "solarus/hero/FrozenState.h"
 #include "solarus/hero/GrabbingState.h"
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/hero/HookshotState.h"
@@ -48,14 +48,16 @@
 #include "solarus/hero/PlungingState.h"
 #include "solarus/hero/RunningState.h"
 #include "solarus/hero/StairsState.h"
+#include "solarus/hero/SwordSwingingState.h"
 #include "solarus/hero/SwimmingState.h"
 #include "solarus/hero/TreasureState.h"
 #include "solarus/hero/UsingItemState.h"
 #include "solarus/hero/VictoryState.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Sound.h"
-#include "solarus/lua/LuaContext.h"
 #include "solarus/lowlevel/System.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/lua/LuaTools.h"
 #include "solarus/movements/StraightMovement.h"
 #include "solarus/CommandsEffects.h"
 #include "solarus/Equipment.h"
@@ -63,10 +65,32 @@
 #include "solarus/Game.h"
 #include "solarus/Map.h"
 #include "solarus/Sprite.h"
+#include <lua.hpp>
 #include <algorithm>
 #include <utility>
 
 namespace Solarus {
+
+namespace {
+
+/**
+ * \brief Implementation of the callback used to return solid ground coordinates.
+ * \param l A Lua state.
+ * \return Number of values to return to Lua.
+ */
+int l_solid_ground_callback(lua_State* l) {
+
+  int x = LuaTools::check_int(l, lua_upvalueindex(1));
+  int y = LuaTools::check_int(l, lua_upvalueindex(2));
+  int layer = LuaTools::check_int(l, lua_upvalueindex(3));
+
+  lua_pushinteger(l, x);
+  lua_pushinteger(l, y);
+  lua_pushinteger(l, layer);
+  return 3;
+}
+
+}
 
 /**
  * \brief Creates a hero.
@@ -80,7 +104,9 @@ Hero::Hero(Equipment& equipment):
   walking_speed(normal_walking_speed),
   delayed_teletransporter(nullptr),
   on_raised_blocks(false),
-  target_solid_ground_layer(0),
+  last_solid_ground_coords(0, 0),
+  last_solid_ground_layer(0),
+  target_solid_ground_callback(),
   next_ground_date(0),
   next_ice_date(0),
   ice_movement_direction8(0) {
@@ -112,10 +138,10 @@ EntityType Hero::get_type() const {
  * This function is used internally to allow this item to be preserved between
  * different hero states.
  *
- * \return The carried item or nullptr.
+ * \return The carried object or nullptr.
  */
-std::shared_ptr<CarriedItem> Hero::get_carried_item() {
-  return get_state().get_carried_item();
+std::shared_ptr<CarriedObject> Hero::get_carried_object() {
+  return get_state().get_carried_object();
 }
 
 /**
@@ -374,10 +400,6 @@ void Hero::check_gameover() {
  */
 void Hero::draw_on_map() {
 
-  if (!is_drawn()) {
-    return;
-  }
-
   if (get_state().is_visible()) {
     // The state may call get_sprites()->draw_on_map() or make its own drawings.
     get_state().draw_on_map();
@@ -405,6 +427,13 @@ void Hero::notify_command_released(GameCommand command) {
 /**
  * \brief Returns the sprites currently representing the hero.
  * \return the sprites
+ */
+const HeroSprites& Hero::get_hero_sprites() const {
+  return *sprites;
+}
+
+/**
+ * \overload Non-const version.
  */
 HeroSprites& Hero::get_hero_sprites() {
   return *sprites;
@@ -523,7 +552,7 @@ void Hero::place_on_map(Map& map) {
 
   last_solid_ground_coords = { -1, -1 };
   last_solid_ground_layer = 0;
-  reset_target_solid_ground_coords();
+  reset_target_solid_ground_callback();
   get_hero_sprites().set_clipping_rectangle();
 
   get_state().set_map(map);
@@ -551,8 +580,9 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
     int x = get_x() - next_map_location.get_x() + previous_map_location.get_x();
     int y = get_y() - next_map_location.get_y() + previous_map_location.get_y();
 
-    int layer = map.get_highest_layer();
-    while (layer > 0 && map.get_ground(layer, x, y) == Ground::EMPTY) {
+    int layer = map.get_max_layer();
+    while (layer > map.get_min_layer() &&
+        map.get_ground(layer, x, y, this) == Ground::EMPTY) {
       // TODO check the whole hero's bounding box rather than just a point.
       --layer;
     }
@@ -599,6 +629,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
       default:
         Debug::die("Invalid destination side");
       }
+      map.get_entities().notify_entity_bounding_box_changed(*this);
       last_solid_ground_coords = get_xy();
       last_solid_ground_layer = get_layer();
       // Note that we keep the hero's state from the previous map.
@@ -621,7 +652,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
         sprites->set_animation_direction(3);
         set_top_left_xy(0, 0);
         map.get_entities().notify_entity_bounding_box_changed(*this);
-        map.get_entities().set_entity_layer(*this, map.get_highest_layer());
+        map.get_entities().set_entity_layer(*this, map.get_max_layer());
       }
       else {
         // Normal case.
@@ -644,7 +675,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
       }
 
       if (destination != nullptr) {
-        get_lua_context().destination_on_activated(*destination);
+        get_lua_context()->destination_on_activated(*destination);
       }
 
       const std::shared_ptr<const Stairs> stairs = get_stairs_overlapping();
@@ -705,6 +736,8 @@ void Hero::notify_map_opening_transition_finished() {
 
 /**
  * \copydoc Entity::get_facing_point
+ *
+ * TODO remove this override
  */
 Point Hero::get_facing_point() const {
 
@@ -712,10 +745,9 @@ Point Hero::get_facing_point() const {
 }
 
 /**
- * \brief Notifies this entity that its facing entity has just changed.
- * \param facing_entity the detector this entity is now facing (possibly nullptr)
+ * \copydoc Entity::notify_facing_entity_changed
  */
-void Hero::notify_facing_entity_changed(Detector* facing_entity) {
+void Hero::notify_facing_entity_changed(Entity* facing_entity) {
 
   if (facing_entity == nullptr &&
       get_commands_effects().is_action_key_acting_on_facing_entity()) {
@@ -1033,7 +1065,7 @@ void Hero::notify_position_changed() {
   get_state().notify_position_changed();
 
   if (are_movement_notifications_enabled()) {
-    get_lua_context().entity_on_position_changed(*this, get_xy(), get_layer());
+    get_lua_context()->entity_on_position_changed(*this, get_xy(), get_layer());
   }
 }
 
@@ -1090,14 +1122,14 @@ void Hero::check_position() {
     int y = get_top_left_y();
     int layer = get_layer();
 
-    if (layer > 0
-        && get_map().get_ground(layer, x, y) == Ground::EMPTY
-        && get_map().get_ground(layer, x + 15, y) == Ground::EMPTY
-        && get_map().get_ground(layer, x, y + 15) == Ground::EMPTY
-        && get_map().get_ground(layer, x + 15, y + 15) == Ground::EMPTY) {
+    if (layer > get_map().get_min_layer()
+        && get_map().get_ground(layer, x, y, this) == Ground::EMPTY
+        && get_map().get_ground(layer, x + 15, y, this) == Ground::EMPTY
+        && get_map().get_ground(layer, x, y + 15, this) == Ground::EMPTY
+        && get_map().get_ground(layer, x + 15, y + 15, this) == Ground::EMPTY) {
 
       get_entities().set_entity_layer(*this, layer - 1);
-      Ground new_ground = get_map().get_ground(get_layer(), x, y);
+      Ground new_ground = get_map().get_ground(get_layer(), x, y, this);
       if (get_state().is_free() &&
           (new_ground == Ground::TRAVERSABLE
            || new_ground == Ground::GRASS
@@ -1288,14 +1320,6 @@ bool Hero::is_ground_observer() const {
 }
 
 /**
- * \brief Returns the point that determines the ground below this entity.
- * \return The point used to determine the ground (relative to the map).
- */
-Point Hero::get_ground_point() const {
-  return { get_x(), get_y() - 2 };
-}
-
-/**
  * \brief Returns the last point of solid ground where the hero was.
  * \return The last solid ground coordinates, or
  * <tt>-1,-1</tt> if the hero never was on solid ground on this map yet.
@@ -1314,50 +1338,68 @@ int Hero::get_last_solid_ground_layer() const {
 }
 
 /**
- * \brief Returns the point memorized by the last call to
- * set_target_solid_ground().
- * \return The solid ground coordinates, or
- * <tt>-1,-1</tt> if set_target_solid_ground() was not called.
+ * \brief Returns the function indicated by the last call to
+ * set_target_solid_callback().
+ * \return The Lua function that gives solid ground coordinates, or
+ * an empty ref if set_target_solid_callback() was not called.
  */
-const Point& Hero::get_target_solid_ground_coords() const {
-  return target_solid_ground_coords;
+const ScopedLuaRef& Hero::get_target_solid_ground_callback() const {
+  return target_solid_ground_callback;
 }
 
 /**
- * \brief Returns the layer memorized by the last call to
- * set_target_solid_ground().
- * \return The solid ground layer, or
- * 0 if set_target_solid_ground() was not called.
+ * \brief Creates a Lua function that returns the given coordinates and layer.
+ *
+ * This function can be used as callback for specifying the solid ground position.
+ *
+ * \param xy Coordinates the function should return.
+ * \param layer Layer the function should return.
+ * \return Lua ref to a function that returns this solid position.
  */
-int Hero::get_target_solid_ground_layer() const {
-  return target_solid_ground_layer;
+ScopedLuaRef Hero::make_solid_ground_callback(
+    const Point& xy, int layer) const {
+
+  LuaContext* lua_context = get_lua_context();
+  if (lua_context == nullptr) {
+    return ScopedLuaRef();
+  }
+  lua_State* l = lua_context->get_internal_state();
+
+  lua_pushinteger(l, xy.x);
+  lua_pushinteger(l, xy.y);
+  lua_pushinteger(l, layer);
+  lua_pushcclosure(l, l_solid_ground_callback, 3);
+
+  ScopedLuaRef callback_ref = LuaTools::create_ref(l, -1);
+  lua_pop(l, 1);
+  return callback_ref;
 }
 
 /**
- * \brief Specifies a point of the map where the hero will go back if he falls
- * into a hole or some other bad ground.
- * \param target_solid_ground_coords coordinates of the position where
- * the hero will go if he falls into a hole or some other bad ground
- * \param layer the layer
- */
-void Hero::set_target_solid_ground_coords(
-    const Point& target_solid_ground_coords, int layer) {
-
-  this->target_solid_ground_coords = target_solid_ground_coords;
-  this->target_solid_ground_layer = layer;
-}
-
-/**
- * \brief Forgets the point of the map where the hero was supposed to go back
+ * \brief Specifies a function indicating where the hero will go back
  * if he falls into a hole or some other bad ground.
+ * \param target_solid_ground_callback A Lua function that gives the
+ * coordinates and layer of where the hero should go if he falls into
+ * a hole or some other bad ground.
+ * An empty ref means returning automatically to the last solid ground
+ * position.
+ */
+void Hero::set_target_solid_ground_callback(
+    const ScopedLuaRef& target_solid_ground_callback) {
+
+  this->target_solid_ground_callback = target_solid_ground_callback;
+}
+
+/**
+ * \brief Forgets the function indicating where the hero was supposed to go
+ * back if he falls into a hole or some other bad ground.
  *
  * The hero will now get back to the last solid ground instead of going back
- * to a memorized position.
+ * to a custom position.
  */
-void Hero::reset_target_solid_ground_coords() {
+void Hero::reset_target_solid_ground_callback() {
 
-  this->target_solid_ground_coords = { -1, -1 };
-  this->target_solid_ground_layer = 0;
+  set_target_solid_ground_callback(ScopedLuaRef());
 }
 
 /**
@@ -1548,7 +1590,10 @@ void Hero::notify_collision_with_teletransporter(
     update_ground_below();  // Make sure the ground is up-to-date.
     bool on_hole = get_ground_below() == Ground::HOLE;
     if (on_hole || get_state().is_teletransporter_delayed()) {
-      this->delayed_teletransporter = &teletransporter; // fall into the hole (or do something else) first, transport later
+       // Fall into the hole (or do something else) first, transport later
+      this->delayed_teletransporter = std::static_pointer_cast<Teletransporter>(
+            teletransporter.shared_from_this()
+      );
     }
     else {
       teletransporter.transport_hero(*this); // usual case: transport right now
@@ -1560,9 +1605,9 @@ void Hero::notify_collision_with_teletransporter(
  * \brief Returns a teletransporter that has detected a collision with the hero
  * bu will be activated when the current action is finished
  * (e.g. falling into a hole or taking stairs).
- * \return the delayed teletransporter
+ * \return The delayed teletransporter or nullptr.
  */
-Teletransporter* Hero::get_delayed_teletransporter() {
+std::shared_ptr<Teletransporter> Hero::get_delayed_teletransporter() {
   return delayed_teletransporter;
 }
 
@@ -1828,7 +1873,13 @@ void Hero::notify_collision_with_block(Block& /* block */) {
 void Hero::notify_collision_with_separator(
     Separator& separator, CollisionMode /* collision_mode */) {
 
-  get_map().traverse_separator(&separator);
+  const CameraPtr& camera = get_map().get_camera();
+  if (camera == nullptr) {
+    return;
+  }
+  if (camera->get_tracked_entity().get() == this) {
+    camera->notify_tracked_entity_traversing_separator(separator);
+  }
 }
 
 /**
@@ -1918,12 +1969,12 @@ void Hero::notify_grabbed_entity_collision() {
 }
 
 /**
- * \brief Tests whether the hero is cutting with his sword the specified detector
+ * \brief Tests whether the hero is cutting with his sword the specified entity
  * for which a collision was detected.
  *
- * When the sword sprite collides with a detector,
+ * When the sword sprite collides with an entity,
  * this function can be called to determine whether the hero is
- * really cutting this particular detector precisely.
+ * really cutting this particular entity precisely.
  * This depends on the hero's state, his direction and his
  * distance to the detector.
  * This function assumes that there is already a collision
@@ -1932,11 +1983,11 @@ void Hero::notify_grabbed_entity_collision() {
  * hero wants to cut a bush or some grass.
  * Returns false by default.
  *
- * \param detector the detector to check
- * \return true if the sword is cutting this detector
+ * \param entity The entity to check.
+ * \return \c true if the sword is cutting this entity.
  */
-bool Hero::is_striking_with_sword(Detector& detector) const {
-  return get_state().is_cutting_with_sword(detector);
+bool Hero::is_striking_with_sword(Entity& entity) const {
+  return get_state().is_cutting_with_sword(entity);
 }
 
 /**
@@ -1947,7 +1998,7 @@ bool Hero::is_striking_with_sword(Detector& detector) const {
 void Hero::try_snap_to_facing_entity() {
 
   Rectangle collision_box = get_bounding_box();
-  const Detector* facing_entity = get_facing_entity();
+  const Entity* facing_entity = get_facing_entity();
 
   if (get_animation_direction() % 2 == 0) {
     if (abs(collision_box.get_y() - facing_entity->get_top_left_y()) <= 5) {
@@ -2010,7 +2061,7 @@ void Hero::set_invincible(bool invincible, uint32_t duration) {
   this->invincible = invincible;
   this->end_invincible_date = 0;
   if (invincible) {
-    this->end_invincible_date = System::now() + duration;
+    this->end_invincible_date = (duration == 0) ? 0 : System::now() + duration;
   }
 }
 
@@ -2019,8 +2070,9 @@ void Hero::set_invincible(bool invincible, uint32_t duration) {
  */
 void Hero::update_invincibility() {
 
-  if (is_invincible()
-      && System::now() >= end_invincible_date) {
+  if (is_invincible() &&
+      end_invincible_date != 0 &&
+      System::now() >= end_invincible_date) {
     set_invincible(false, 0);
   }
 }
@@ -2123,21 +2175,28 @@ void Hero::notify_game_over_finished() {
  */
 void Hero::start_deep_water() {
 
+  const bool can_swim = get_equipment().has_ability(Ability::SWIM);
+  const bool can_jump_over_water = get_equipment().has_ability(Ability::JUMP_OVER_WATER);
+
   if (!get_state().is_touching_ground()) {
-    // plunge into the water
+    // Entering water from above the ground
+    // (e.g. after a jump).
     set_state(new PlungingState(*this));
   }
   else {
-    // move to state swimming or jumping
-    if (get_equipment().has_ability(Ability::SWIM)) {
+    // Entering water normally (e.g. by walking).
+    if (can_swim) {
       set_state(new SwimmingState(*this));
     }
-    else {
+    else if (can_jump_over_water) {
       int direction8 = get_wanted_movement_direction8();
       if (direction8 == -1) {
         direction8 = get_animation_direction() * 2;
       }
       start_jumping(direction8, 32, false, true);
+    }
+    else {
+      set_state(new PlungingState(*this));
     }
   }
 }
@@ -2310,7 +2369,7 @@ void Hero::start_free_carrying_loading_or_running() {
   }
 
   if (get_state().is_carrying_item()) {
-    set_state(new CarryingState(*this, get_state().get_carried_item()));
+    set_state(new CarryingState(*this, get_state().get_carried_object()));
   }
   else {
     set_state(new FreeState(*this));
@@ -2383,19 +2442,19 @@ void Hero::start_victory(const ScopedLuaRef& callback_ref) {
 /**
  * \brief Freezes the hero.
  *
- * When the hero is freezed, he cannot move.
+ * When the hero is frozen, he cannot move.
  * The current animation of the hero's sprites is stopped and the "stopped" animation is played.
  * You can call start_free() to unfreeze him.
  */
-void Hero::start_freezed() {
-  set_state(new FreezedState(*this));
+void Hero::start_frozen() {
+  set_state(new FrozenState(*this));
 }
 
 /**
  * \brief Makes the hero lift a destructible item.
  * \param item_to_lift The item to lift.
  */
-void Hero::start_lifting(const std::shared_ptr<CarriedItem>& item_to_lift) {
+void Hero::start_lifting(const std::shared_ptr<CarriedObject>& item_to_lift) {
   set_state(new LiftingState(*this, item_to_lift));
 }
 
@@ -2500,12 +2559,27 @@ bool Hero::can_start_sword() const {
 
   return get_state().can_start_sword();
 }
+
+/**
+ * \brief Starts using the sword.
+ */
+void Hero::start_sword() {
+
+  Debug::check_assertion(can_start_sword(), "The hero cannot start using the sword now");
+  set_state(new SwordSwingingState(*this));
+}
+
 /**
  * \brief Returns whether the hero can starts using an equipment item.
  * \param item The equipment item to use.
  * \return true if this equipment item can currently be used.
  */
 bool Hero::can_start_item(EquipmentItem& item) {
+
+  if (!item.is_saved()) {
+    // This item has no possession state, it cannot be used.
+    return false;
+  }
 
   if (!item.is_assignable()) {
     // This item cannot be used explicitly.
@@ -2533,7 +2607,7 @@ bool Hero::can_start_item(EquipmentItem& item) {
 void Hero::start_item(EquipmentItem& item) {
   Debug::check_assertion(can_start_item(item),
       std::string("The hero cannot start using item '")
-      + item.get_name() + "' now.");
+      + item.get_name() + "' now");
   set_state(new UsingItemState(*this, item));
 }
 
@@ -2569,15 +2643,15 @@ void Hero::start_hookshot() {
 
 /**
  * \brief Makes the hero return to his last solid ground position.
- * \param use_memorized_xy true to get back to the place previously memorized (if any),
+ * \param use_specified_position true to get back to the place previously specified (if any),
  * false to get back to the last coordinates with solid ground
  * \param end_delay a delay to add at the end before returning control to the hero (default 0)
  * \param with_sound true to play a sound when returning to solid ground (default true)
  */
-void Hero::start_back_to_solid_ground(bool use_memorized_xy,
+void Hero::start_back_to_solid_ground(bool use_specified_position,
     uint32_t end_delay, bool with_sound) {
 
-  set_state(new BackToSolidGroundState(*this, use_memorized_xy, end_delay, with_sound));
+  set_state(new BackToSolidGroundState(*this, use_specified_position, end_delay, with_sound));
 }
 
 /**

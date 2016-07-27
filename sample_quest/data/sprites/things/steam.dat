@@ -1,0 +1,9 @@
+animation{
+  name = "steam",
+  src_image = "citizens/witch.png",
+  frame_delay = 250,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 224, y = 0, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 4, num_columns = 1 },
+  },
+}

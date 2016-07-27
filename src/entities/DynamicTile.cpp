@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,6 +60,14 @@ EntityType DynamicTile::get_type() const {
 }
 
 /**
+ * \brief Returns the id of the pattern of this dynamic tile.
+ * \return The tile pattern id.
+ */
+const std::string& DynamicTile::get_tile_pattern_id() const {
+  return tile_pattern_id;
+}
+
+/**
  * \brief When is_ground_modifier() is \c true, returns the ground defined
  * by this entity.
  * \return The ground defined by this entity.
@@ -69,22 +77,29 @@ Ground DynamicTile::get_modified_ground() const {
 }
 
 /**
+ * \copydoc Entity::is_drawn_at_its_position()
+ */
+bool DynamicTile::is_drawn_at_its_position() const {
+  return tile_pattern.is_drawn_at_its_position();
+}
+
+/**
  * \brief Draws the tile on the map.
  */
 void DynamicTile::draw_on_map() {
 
-  if (!is_drawn()) {
+  const CameraPtr& camera = get_map().get_camera();
+  if (camera == nullptr) {
     return;
   }
-
-  const Rectangle& camera_position = get_map().get_camera_position();
+  const Rectangle& camera_position = camera->get_bounding_box();
 
   Rectangle dst_position(get_top_left_x() - camera_position.get_x(),
       get_top_left_y() - camera_position.get_y(),
       get_width(), get_height());
 
   tile_pattern.fill_surface(
-      get_map().get_visible_surface(),
+      get_map().get_camera_surface(),
       dst_position,
       get_map().get_tileset(),
       camera_position.get_xy()

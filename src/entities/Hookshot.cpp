@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,8 +49,9 @@ Hookshot::Hookshot(const Hero& hero):
 
   // initialize the entity
   int direction = hero.get_animation_direction();
-  create_sprite("entities/hookshot", true);
-  get_sprite().set_current_direction(direction);
+  const SpritePtr& sprite = create_sprite("entities/hookshot");
+  sprite->enable_pixel_collisions();
+  sprite->set_current_direction(direction);
   link_sprite->set_current_animation("link");
 
   set_size(16, 16);
@@ -218,14 +219,17 @@ void Hookshot::draw_on_map() {
     {   0,   7 }
   };
 
-  if (!is_drawn()) {
-    return;
-  }
-
   Entity::draw_on_map();
 
   // also draw the links
-  int direction = get_sprite().get_current_direction();
+  const SpritePtr& sprite = get_sprite();
+  if (sprite == nullptr) {
+    return;
+  }
+  int direction = sprite->get_current_direction();
+  if (direction > 4) {
+    return;
+  }
   int x1 = get_hero().get_x() + dxy[direction].x;
   int y1 = get_hero().get_y() + dxy[direction].y;
   int x2 = get_x();
@@ -235,7 +239,7 @@ void Hookshot::draw_on_map() {
   for (int i = 0; i < nb_links; i++) {
     link_xy.x = x1 + (x2 - x1) * i / nb_links;
     link_xy.y = y1 + (y2 - y1) * i / nb_links;
-    get_map().draw_sprite(*link_sprite, link_xy);
+    get_map().draw_visual(*link_sprite, link_xy);
   }
 }
 
@@ -276,7 +280,14 @@ void Hookshot::attach_to(Entity& entity_reached) {
 
   this->entity_reached = &entity_reached;
   clear_movement();
-  int direction = get_sprite().get_current_direction();
+  const SpritePtr& sprite = get_sprite();
+  if (sprite == nullptr) {
+    return;
+  }
+  int direction = sprite->get_current_direction();
+  if (direction > 4) {
+    return;
+  }
   std::string path = " ";
   path[0] = '0' + (direction * 2);
   get_hero().set_movement(std::make_shared<PathMovement>(

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,36 +35,6 @@
  */
 
 /**
- * \brief Solarus major version.
- *
- * A change of major version is a important step in the maturity of the
- * project.
- * Data files other than scripts can be upgraded automatically.
- * Lua API changes may sometimes break compatibility, so check the ChangeLog
- * before upgrading.
- */
-#define SOLARUS_MAJOR_VERSION 1
-
-/**
- * \brief Solarus minor version.
- *
- * Minor versions add new features and may change the format of data files.
- * Data files other than scripts can be upgraded automatically.
- * Lua API changes may sometimes break compatibility, so check the ChangeLog
- * before upgrading.
- */
-#define SOLARUS_MINOR_VERSION 5
-
-/**
- * \brief Solarus patch version.
- *
- * Patch versions are only bug fixes.
- * Data files compatibility is always preserved between changes of the patch
- * version.
- */
-#define SOLARUS_PATCH_VERSION 0
-
-/**
  * \brief The Solarus version as a string.
  *
  * This string has the form "x.y.z" where x is the major version, y is the
@@ -85,8 +55,18 @@
  * \def SOLARUS_API
  * \brief Windows DLL import/export specifications for the Solarus library symbols.
  */
-#ifdef _WIN32
+#ifndef SOLARUS_LIBRARY_EXPORT
 #  ifdef solarus_EXPORTS  // Define automatically added by cmake.
+#    define SOLARUS_LIBRARY_EXPORT 1
+#  else
+#    define SOLARUS_LIBRARY_EXPORT 0
+#  endif
+#else
+#    define SOLARUS_LIBRARY_EXPORT 0
+#endif
+
+#ifdef _WIN32
+#  if SOLARUS_LIBRARY_EXPORT == 1
 #    define SOLARUS_API __declspec(dllexport)
 #  else
 #    define SOLARUS_API __declspec(dllimport)
@@ -183,19 +163,6 @@
  */
 #ifndef SOLARUS_DEFAULT_QUEST_HEIGHT
 #  define SOLARUS_DEFAULT_QUEST_HEIGHT 240
-#endif
-
-// TODO see if this flag still works/is needed with 16bpp surface on Caanoo.
-/**
- * \def SOLARUS_COLOR_DEPTH
- * \brief Number of bits per pixel for surfaces.
- */
-#ifndef SOLARUS_COLOR_DEPTH
-#  if defined(CAANOO)
-#    define SOLARUS_COLOR_DEPTH 16
-#  else
-#    define SOLARUS_COLOR_DEPTH 32
-#  endif
 #endif
 
 #endif

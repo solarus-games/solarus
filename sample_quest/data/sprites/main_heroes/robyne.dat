@@ -1,0 +1,155 @@
+animation{
+  name = "stopped",
+  src_image = "main_heroes/robyne.png",
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 48, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+  },
+}
+animation{
+  name = "black",
+  src_image = "main_heroes/robyne.png",
+  directions = {
+    { x = 192, y = 96, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 192, y = 96, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 192, y = 96, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 192, y = 96, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+  },
+}
+animation{
+  name = "bow",
+  src_image = "main_heroes/robyne.png",
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 48, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+  },
+}
+animation{
+  name = "brandish",
+  src_image = "main_heroes/robyne.png",
+  directions = {
+    { x = 72, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+  },
+}
+animation{
+  name = "carrying_stopped",
+  src_image = "main_heroes/robyne.png",
+  directions = {
+    { x = 0, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 48, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+  },
+}
+animation{
+  name = "carrying_walking",
+  src_image = "main_heroes/robyne.png",
+  directions = {
+    { x = 0, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 48, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+  },
+}
+animation{
+  name = "falling",
+  src_image = "main_heroes/robyne.png",
+  frame_delay = 100,
+  directions = {
+    { x = 192, y = 96, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 192, y = 96, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 192, y = 96, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 192, y = 96, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+  },
+}
+animation{
+  name = "hurt",
+  src_image = "main_heroes/robyne_miscellaneous.png",
+  directions = {
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+  },
+}
+animation{
+  name = "lifting",
+  src_image = "main_heroes/robyne.png",
+  frame_delay = 100,
+  directions = {
+    { x = 0, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 48, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+  },
+}
+animation{
+  name = "surprised",
+  src_image = "main_heroes/robyne_miscellaneous.png",
+  directions = {
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+  },
+}
+animation{
+  name = "swimming_fast",
+  src_image = "main_heroes/robyne.png",
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 48, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+  },
+}
+animation{
+  name = "swimming_slow",
+  src_image = "main_heroes/robyne.png",
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 48, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+  },
+}
+animation{
+  name = "swimming_stopped",
+  src_image = "main_heroes/robyne.png",
+  directions = {
+    { x = 0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 48, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+  },
+}
+animation{
+  name = "throw",
+  src_image = "main_heroes/robyne.png",
+  frame_delay = 50,
+  directions = {
+    { x = 0, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 24, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 48, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+    { x = 72, y = 128, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23 },
+  },
+}
+animation{
+  name = "walking",
+  src_image = "main_heroes/robyne.png",
+  frame_delay = 70,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 24, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
+    { x = 0, y = 48, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
+    { x = 0, y = 72, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
+    { x = 0, y = 96, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 23, num_frames = 8 },
+  },
+}

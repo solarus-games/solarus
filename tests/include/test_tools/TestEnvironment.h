@@ -28,7 +28,7 @@ namespace Solarus {
 
 class Hero;
 class Map;
-class MapEntities;
+class Entities;
 
 /**
  * \brief Wraps a Solarus main loop and provides features to easily make tests.
@@ -55,7 +55,7 @@ class TestEnvironment {
     MainLoop& get_main_loop();
     Game& get_game();
     Map& get_map();
-    MapEntities& get_entities();
+    Entities& get_entities();
     Hero& get_hero();
 
     void run_map(const std::string& map_id);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,11 +44,14 @@ void LuaContext::register_surface_module() {
       { "get_size", surface_api_get_size },
       { "clear", surface_api_clear },
       { "fill_color", surface_api_fill_color },
+      { "get_opacity", surface_api_get_opacity },
       { "set_opacity", surface_api_set_opacity },
       { "get_pixels", surface_api_get_pixels },
       { "set_pixels", surface_api_set_pixels },
       { "draw", drawable_api_draw },
       { "draw_region", drawable_api_draw_region },
+      { "get_blend_mode", drawable_api_get_blend_mode },
+      { "set_blend_mode", drawable_api_set_blend_mode },
       { "fade_in", drawable_api_fade_in },
       { "fade_out", drawable_api_fade_out },
       { "get_xy", drawable_api_get_xy },
@@ -196,6 +199,23 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
     }
 
     return 0;
+  });
+}
+
+/**
+ * \brief Implementation of surface:get_opacity().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::surface_api_get_opacity(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Surface& surface = *check_surface(l, 1);
+
+    uint8_t opacity = surface.get_opacity();
+
+    lua_pushinteger(l, opacity);
+    return 1;
   });
 }
 

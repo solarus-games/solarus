@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Surface.h"
-#include "solarus/lowlevel/Video.h"
 #include "solarus/lowlevel/Debug.h"
 #include <memory>
 
@@ -48,17 +47,20 @@ TransitionScrolling::TransitionScrolling(Transition::Direction direction):
 Rectangle TransitionScrolling::get_previous_map_dst_position(
     int scrolling_direction) {
 
-  const Size& quest_size = Video::get_quest_size();
+  const Surface* previous_map_surface = get_previous_surface();
+  Debug::check_assertion(previous_map_surface != nullptr, "Missing previous surface for scrolling");
+  const Size& camera_size = previous_map_surface->get_size();
 
   Rectangle dst_position(0, 0);
   if (scrolling_direction == 1) {
     // Scroll to the north.
-    dst_position.set_y(quest_size.height);
+    dst_position.set_y(camera_size.height);
   }
   else if (scrolling_direction == 2) {
     // Scroll to the west.
-    dst_position.set_x(quest_size.width);
+    dst_position.set_x(camera_size.width);
   }
+
   return dst_position;
 }
 
@@ -71,13 +73,21 @@ void TransitionScrolling::start() {
     return;
   }
 
+  const Game* game = get_game();
+  Debug::check_assertion(game != nullptr, "Missing game for scrolling transition");
+  const Surface* previous_map_surface = get_previous_surface();
+  Debug::check_assertion(previous_map_surface != nullptr, "Missing previous surface for scrolling");
+
+  const Map& map = get_game()->get_current_map();
+
   // get the scrolling direction
-  scrolling_direction = (get_game()->get_current_map().get_destination_side() + 2) % 4;
+  scrolling_direction = (map.get_destination_side() + 2) % 4;
 
   const int scrolling_step = 5;
-  const Size& quest_size = Video::get_quest_size();
-  int width = quest_size.width;
-  int height = quest_size.height;
+
+  const Size& camera_size = previous_map_surface->get_size();
+  int width = camera_size.width;
+  int height = camera_size.height;
   if (scrolling_direction % 2 == 0) {
     // right or left
     width *= 2;
@@ -90,14 +100,13 @@ void TransitionScrolling::start() {
 
   // create a surface with the two maps
   both_maps_surface = Surface::create(width, height);
-  both_maps_surface->set_software_destination(false);
 
   // set the blitting rectangles
 
   previous_map_dst_position = get_previous_map_dst_position(scrolling_direction);
   current_map_dst_position = get_previous_map_dst_position((scrolling_direction + 2) % 4);
   current_scrolling_position = previous_map_dst_position;
-  current_scrolling_position.set_size(Video::get_quest_size());
+  current_scrolling_position.set_size(camera_size);
 
   next_scroll_date = System::now();
 }
@@ -224,4 +233,3 @@ void TransitionScrolling::draw(Surface& dst_surface) {
 }
 
 }
-

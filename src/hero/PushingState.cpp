@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 #include "solarus/hero/FreeState.h"
 #include "solarus/hero/GrabbingState.h"
 #include "solarus/hero/HeroSprites.h"
-#include "solarus/entities/Detector.h"
 #include "solarus/movements/PathMovement.h"
 #include "solarus/Game.h"
 #include "solarus/GameCommands.h"
@@ -31,7 +30,7 @@ namespace Solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::PushingState::PushingState(Hero& hero):
-  BaseState(hero, "pushing"),
+  HeroState(hero, "pushing"),
   pushing_direction4(0),
   pushed_entity(nullptr),
   pushing_movement(nullptr) {
@@ -44,7 +43,7 @@ Hero::PushingState::PushingState(Hero& hero):
  */
 void Hero::PushingState::start(const State* previous_state) {
 
-  State::start(previous_state);
+  HeroState::start(previous_state);
 
   pushing_direction4 = get_sprites().get_animation_direction();
   get_sprites().set_animation_pushing();
@@ -55,7 +54,7 @@ void Hero::PushingState::start(const State* previous_state) {
  */
 void Hero::PushingState::stop(const State* next_state) {
 
-  State::stop(next_state);
+  HeroState::stop(next_state);
 
   if (is_moving_grabbed_entity()) {
     get_entity().clear_movement();
@@ -69,7 +68,7 @@ void Hero::PushingState::stop(const State* next_state) {
  */
 void Hero::PushingState::update() {
 
-  State::update();
+  HeroState::update();
 
   Hero& hero = get_entity();
   if (!is_moving_grabbed_entity()) { // the hero is pushing a fixed obstacle
@@ -93,7 +92,7 @@ void Hero::PushingState::update() {
     // see if the obstacle pushed is an entity that the hero can move
     else {
 
-      Detector* facing_entity = hero.get_facing_entity();
+      Entity* facing_entity = hero.get_facing_entity();
       if (facing_entity != nullptr) { // the obstacle pushed is an entity
 
         if (facing_entity->get_type() == EntityType::BLOCK) { // it can be moved by the hero (TODO dynamic binding)

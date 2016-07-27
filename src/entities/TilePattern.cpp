@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,8 +48,9 @@ TilePattern::TilePattern(Ground ground, const Size& size):
 
   // Diagonal obstacle: check that the tile is square.
   if (GroundInfo::is_ground_diagonal(ground)) {
-    Debug::check_assertion(size.is_square(),
-        "Invalid tile pattern: a tile pattern with a diagonal wall must be square");
+    if (!size.is_square()) {
+      Debug::error("Invalid tile pattern: a tile pattern with a diagonal wall must be square");
+    }
   }
 }
 

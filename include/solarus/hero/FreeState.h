@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ class Hero::FreeState: public Hero::PlayerMovementState {
     virtual bool can_start_sword() const override;
     virtual bool can_start_item(EquipmentItem& item) const override;
     virtual bool can_take_stairs() const override;
-    virtual CarriedItem::Behavior get_previous_carried_item_behavior() const override;
+    virtual CarriedObject::Behavior get_previous_carried_object_behavior() const override;
     virtual void set_animation_stopped() override;
     virtual void set_animation_walking() override;
 

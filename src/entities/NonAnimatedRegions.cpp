@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/NonAnimatedRegions.h"
-#include "solarus/entities/MapEntities.h"
-#include "solarus/entities/Tile.h"
-#include "solarus/lowlevel/Surface.h"
+#include "solarus/entities/Tileset.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/Surface.h"
 #include "solarus/Map.h"
 
 namespace Solarus {
@@ -38,12 +38,11 @@ NonAnimatedRegions::NonAnimatedRegions(Map& map, int layer):
 /**
  * \brief Adds a tile to the list of tiles.
  */
-void NonAnimatedRegions::add_tile(const TilePtr& tile) {
+void NonAnimatedRegions::add_tile(const TileInfo& tile) {
 
   Debug::check_assertion(optimized_tiles_surfaces.empty(),
       "Tile regions are already built");
-  Debug::check_assertion(tile != nullptr, "Missing tile");
-  Debug::check_assertion(tile->get_layer() == layer, "Wrong layer for add tile");
+  Debug::check_assertion(tile.layer == layer, "Wrong layer for add tile");
 
   tiles.push_back(tile);
 }
@@ -55,7 +54,7 @@ void NonAnimatedRegions::add_tile(const TilePtr& tile) {
  * They include all animated tiles plus the static tiles overlapping them.
  * You will have to redraw these tiles at each frame.
  */
-void NonAnimatedRegions::build(std::vector<TilePtr>& rejected_tiles) {
+void NonAnimatedRegions::build(std::vector<TileInfo>& rejected_tiles) {
 
   Debug::check_assertion(optimized_tiles_surfaces.empty(),
       "Tile regions are already built");
@@ -72,22 +71,22 @@ void NonAnimatedRegions::build(std::vector<TilePtr>& rejected_tiles) {
   optimized_tiles_surfaces.resize(non_animated_tiles.get_num_cells());
 
   // Mark animated 8x8 squares of the map.
-  for (unsigned i = 0; i < tiles.size(); ++i) {
-    Tile& tile = *tiles[i];
-    if (tile.is_animated()) {
+  for (size_t i = 0; i < tiles.size(); ++i) {
+    const TileInfo& tile = tiles[i];
+    if (tile.pattern->is_animated()) {
       // Animated tile: mark its region as non-optimizable
       // (otherwise, a non-animated tile above an animated one would screw us).
 
-      int tile_x8 = tile.get_x() / 8;
-      int tile_y8 = tile.get_y() / 8;
-      int tile_width8 = tile.get_width() / 8;
-      int tile_height8 = tile.get_height() / 8;
+      int tile_x8 = tile.box.get_x() / 8;
+      int tile_y8 = tile.box.get_y() / 8;
+      int tile_width8 = tile.box.get_width() / 8;
+      int tile_height8 = tile.box.get_height() / 8;
 
       for (int i = 0; i < tile_height8; i++) {
         for (int j = 0; j < tile_width8; j++) {
 
-          int x8 = tile_x8 + j;
-          int y8 = tile_y8 + i;
+          const int x8 = tile_x8 + j;
+          const int y8 = tile_y8 + i;
           if (x8 >= 0 && x8 < map_width8 && y8 >= 0 && y8 < map_height8) {
             int index = y8 * map_width8 + x8;
             are_squares_animated[index] = true;
@@ -98,10 +97,10 @@ void NonAnimatedRegions::build(std::vector<TilePtr>& rejected_tiles) {
   }
 
   // Build the list of animated tiles and tiles overlapping them.
-  for (const TilePtr& tile: tiles) {
-    if (!tile->is_animated()) {
-      non_animated_tiles.add(tile);
-      if (overlaps_animated_tile(*tile)) {
+  for (const TileInfo& tile: tiles) {
+    if (!tile.pattern->is_animated()) {
+      non_animated_tiles.add(tile, tile.box);
+      if (overlaps_animated_tile(tile)) {
         rejected_tiles.push_back(tile);
       }
     }
@@ -131,16 +130,16 @@ void NonAnimatedRegions::notify_tileset_changed() {
  * \param tile The tile to check.
  * \return \c true if this tile is overlapping an animated tile.
  */
-bool NonAnimatedRegions::overlaps_animated_tile(Tile& tile) const {
+bool NonAnimatedRegions::overlaps_animated_tile(const TileInfo& tile) const {
 
-  if (tile.get_layer() != layer) {
+  if (tile.layer != layer) {
     return false;
   }
 
-  int tile_x8 = tile.get_x() / 8;
-  int tile_y8 = tile.get_y() / 8;
-  int tile_width8 = tile.get_width() / 8;
-  int tile_height8 = tile.get_height() / 8;
+  int tile_x8 = tile.box.get_x() / 8;
+  int tile_y8 = tile.box.get_y() / 8;
+  int tile_width8 = tile.box.get_width() / 8;
+  int tile_height8 = tile.box.get_height() / 8;
 
   for (int i = 0; i < tile_height8; i++) {
     for (int j = 0; j < tile_width8; j++) {
@@ -164,11 +163,16 @@ bool NonAnimatedRegions::overlaps_animated_tile(Tile& tile) const {
  */
 void NonAnimatedRegions::draw_on_map() {
 
+  const CameraPtr& camera = map.get_camera();
+  if (camera == nullptr) {
+    return;
+  }
+
   // Check all grid cells that overlap the camera.
   const int num_rows = non_animated_tiles.get_num_rows();
   const int num_columns = non_animated_tiles.get_num_columns();
   const Size& cell_size = non_animated_tiles.get_cell_size();
-  const Rectangle& camera_position = map.get_camera_position();
+  const Rectangle& camera_position = camera->get_bounding_box();
 
   const int row1 = camera_position.get_y() / cell_size.height;
   const int row2 = (camera_position.get_y() + camera_position.get_height()) / cell_size.height;
@@ -204,7 +208,7 @@ void NonAnimatedRegions::draw_on_map() {
 
       const Point dst_position = cell_xy - camera_position.get_xy();
       optimized_tiles_surfaces[cell_index]->draw(
-          map.get_visible_surface(), dst_position
+          map.get_camera_surface(), dst_position
       );
     }
   }
@@ -239,10 +243,23 @@ void NonAnimatedRegions::build_cell(int cell_index) {
   // Let this surface as a software destination because it is built only
   // once (here) and never changes later.
 
-  const std::vector<TilePtr>& tiles_in_cell =
+  const std::vector<TileInfo>& tiles_in_cell =
       non_animated_tiles.get_elements(cell_index);
-  for (const TilePtr& tile: tiles_in_cell) {
-    tile->draw(cell_surface, cell_xy);
+  for (const TileInfo& tile: tiles_in_cell) {
+
+    Rectangle dst_position(
+        tile.box.get_x() - cell_xy.x,
+        tile.box.get_y() - cell_xy.y,
+        tile.box.get_width(),
+        tile.box.get_height()
+    );
+
+    tile.pattern->fill_surface(
+        cell_surface,
+        dst_position,
+        map.get_tileset(),
+        cell_xy
+    );
   }
 
   // Remember that non-animated tiles are drawn after animated ones.

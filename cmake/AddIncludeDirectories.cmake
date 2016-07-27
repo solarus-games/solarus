@@ -1,13 +1,13 @@
 # Include paths.
 include_directories(
   "${CMAKE_BINARY_DIR}/include"  # For config.h.
-  "${SOLARUS_ENGINE_SOURCE_DIR}/include"
-  "${SOLARUS_ENGINE_SOURCE_DIR}/include/solarus/third_party"
-  "${SOLARUS_ENGINE_SOURCE_DIR}/include/solarus/third_party/snes_spc"
+  "${CMAKE_SOURCE_DIR}/include"
+  "${CMAKE_SOURCE_DIR}/include/solarus/third_party"
+  "${CMAKE_SOURCE_DIR}/include/solarus/third_party/snes_spc"
 )
 
 # External include paths, marked as system ones to disable their warnings.
-include_directories(SYSTEM  
+include_directories(SYSTEM
   "${MODPLUG_INCLUDE_DIR}"  # Before SDL2 because we want the sndfile.h of ModPlug.
   "${SDL2_INCLUDE_DIR}"
   "${SDL2_TTF_INCLUDE_DIR}"

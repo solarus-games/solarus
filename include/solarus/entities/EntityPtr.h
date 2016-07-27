@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,11 @@ class Entity;
  * \brief Alias for shared_ptr of Entity.
  */
 using EntityPtr = std::shared_ptr<Entity>;
+
+/**
+ * \brief Alias for shared_ptr of const Entity.
+ */
+using ConstEntityPtr = std::shared_ptr<const Entity>;
 
 }
 

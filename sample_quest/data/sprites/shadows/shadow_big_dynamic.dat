@@ -1,0 +1,22 @@
+animation{
+  name = "walking",
+  src_image = "shadows/shadow.png",
+  frame_delay = 32,
+  frame_to_loop_on = 15,
+  directions = {
+    { x = 16, y = 0, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4, num_frames = 16, num_columns = 8 },
+    { x = 16, y = 0, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4, num_frames = 16, num_columns = 8 },
+    { x = 16, y = 0, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4, num_frames = 16, num_columns = 8 },
+    { x = 16, y = 0, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4, num_frames = 16, num_columns = 8 },
+  },
+}
+animation{
+  name = "hurt",
+  src_image = "shadows/shadow.png",
+  directions = {
+    { x = 0, y = 0, frame_width = 12, frame_height = 6, origin_x = 6, origin_y = 3 },
+    { x = 0, y = 0, frame_width = 12, frame_height = 6, origin_x = 6, origin_y = 3 },
+    { x = 0, y = 0, frame_width = 12, frame_height = 6, origin_x = 6, origin_y = 3 },
+    { x = 0, y = 0, frame_width = 12, frame_height = 6, origin_x = 6, origin_y = 3 },
+  },
+}

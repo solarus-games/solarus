@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ class VideoMode {
 
     std::string name;              /**< Lua name of this video mode. */
     Size initial_window_size;      /**< Default size of the window when
-                                          * selecting this video mode. */
+                                    * selecting this video mode. */
 
     // Pixel filter (in CPU or GPU).
     std::unique_ptr<PixelFilter> software_filter;        /**< Software scaling pixel filter to use or nullptr. */

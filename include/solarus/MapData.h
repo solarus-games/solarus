@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,8 +35,9 @@ namespace Solarus {
  * Tiles are always before all other entities in the list.
  */
 struct EntityDataList {
-    std::deque<EntityData> entities;
-    int num_tiles = 0;
+    std::deque<EntityData> entities;   /**< All entities of a layer, with tiles first. */
+    int num_tiles = 0;                 /**< Number of tiles in the list.
+                                        * Dynamic entities are after this index. */
 };
 
 /**
@@ -143,8 +144,10 @@ class SOLARUS_API MapData : public LuaData {
     void set_size(const Size& size);
     Point get_location() const;
     void set_location(const Point& location);
-    int get_num_layers() const;
-    void set_num_layers(int num_layers);
+    int get_min_layer() const;
+    void set_min_layer(int min_layer);
+    int get_max_layer() const;
+    void set_max_layer(int max_layer);
     bool is_valid_layer(int layer) const;
     bool has_world() const;
     const std::string& get_world() const;
@@ -192,7 +195,8 @@ class SOLARUS_API MapData : public LuaData {
     const std::deque<EntityData>& get_entities(int layer) const;
     std::deque<EntityData>& get_entities(int layer);
 
-    int num_layers;               /**< Numer of layers of the map. */
+    int min_layer;                /**< Lowest layer of the map (0 or less). */
+    int max_layer;                /**< Highest layer of the map (0 or more). */
     Size size;                    /**< Size of the map in pixels. */
     std::string world;            /**< World of the map or an empty string. */
     Point location;               /**< Coordinates of the upper-left corner of the map in its world. */
@@ -200,7 +204,7 @@ class SOLARUS_API MapData : public LuaData {
     std::string tileset_id;       /**< Tileset to use as skin for the map. */
     std::string music_id;         /**< Background music id or "none" or "same". */
 
-    std::vector<EntityDataList>
+    std::map<int, EntityDataList>
         entities;                 /**< The entities on each layer. */
     std::map<std::string, EntityIndex>
         named_entities;           /**< Entities indexed by their name. */

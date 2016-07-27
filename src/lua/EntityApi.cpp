@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,12 +19,13 @@
 #include "solarus/entities/CustomEntity.h"
 #include "solarus/entities/Destination.h"
 #include "solarus/entities/Destructible.h"
+#include "solarus/entities/DynamicTile.h"
 #include "solarus/entities/Door.h"
 #include "solarus/entities/Enemy.h"
+#include "solarus/entities/Entities.h"
 #include "solarus/entities/EntityTypeInfo.h"
 #include "solarus/entities/GroundInfo.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/entities/MapEntities.h"
 #include "solarus/entities/Npc.h"
 #include "solarus/entities/Pickable.h"
 #include "solarus/entities/Sensor.h"
@@ -109,7 +110,12 @@ void LuaContext::register_entity_module() {
       { "get_position", entity_api_get_position },\
       { "set_position", entity_api_set_position },\
       { "get_center_position", entity_api_get_center_position },\
+      { "get_facing_position", entity_api_get_facing_position },\
+      { "get_facing_entity", entity_api_get_facing_entity },\
+      { "get_ground_position", entity_api_get_ground_position },\
+      { "get_ground_below", entity_api_get_ground_below },\
       { "get_bounding_box", entity_api_get_bounding_box },\
+      { "get_max_bounding_box", entity_api_get_max_bounding_box },\
       { "overlaps", entity_api_overlaps },\
       { "get_distance", entity_api_get_distance },\
       { "get_angle", entity_api_get_angle },\
@@ -122,6 +128,10 @@ void LuaContext::register_entity_module() {
       { "set_optimization_distance", entity_api_set_optimization_distance },\
       { "is_in_same_region", entity_api_is_in_same_region },\
       { "test_obstacles", entity_api_test_obstacles },\
+      { "get_sprite", entity_api_get_sprite },\
+      { "get_sprites", entity_api_get_sprites },\
+      { "bring_sprite_to_front", entity_api_bring_sprite_to_front },\
+      { "bring_sprite_to_back", entity_api_bring_sprite_to_back },\
       { "is_visible", entity_api_is_visible },\
       { "set_visible", entity_api_set_visible },\
       { "get_movement", entity_api_get_movement },\
@@ -134,19 +144,6 @@ void LuaContext::register_entity_module() {
       { "__index", userdata_meta_index_as_table },
       { nullptr, nullptr }
   };
-
-  // Camera.
-  static const luaL_Reg camera_methods[] = {
-      ENTITY_COMMON_METHODS,
-      { nullptr, nullptr }
-  };
-
-  register_type(
-      get_entity_internal_type_name(EntityType::CAMERA),
-      nullptr,
-      camera_methods,
-      metamethods
-  );
 
   // Hero.
   static const luaL_Reg hero_methods[] = {
@@ -173,14 +170,15 @@ void LuaContext::register_entity_module() {
       { "set_blinking", hero_api_set_blinking },
       { "is_invincible", hero_api_is_invincible },
       { "set_invincible", hero_api_set_invincible },
-      { "get_state", hero_api_get_state },
+      { "get_state", entity_api_get_state },
       { "freeze", hero_api_freeze },
       { "unfreeze", hero_api_unfreeze },
       { "walk", hero_api_walk },  // TODO use the more general movement:start
+      { "start_attack", hero_api_start_attack },
+      { "start_item", hero_api_start_item },
       { "start_jumping", hero_api_start_jumping },
       { "start_treasure", hero_api_start_treasure },
       { "start_victory", hero_api_start_victory},
-      { "start_item", hero_api_start_item },
       { "start_boomerang", hero_api_start_boomerang },
       { "start_bow", hero_api_start_bow },
       { "start_hookshot", hero_api_start_hookshot },
@@ -196,10 +194,45 @@ void LuaContext::register_entity_module() {
       metamethods
   );
 
+  // Camera.
+  static const luaL_Reg camera_methods[] = {
+      ENTITY_COMMON_METHODS,
+      { "set_size", entity_api_set_size },
+      { "get_position_on_screen", camera_api_get_position_on_screen },
+      { "set_position_on_screen", camera_api_set_position_on_screen },
+      { "get_state", entity_api_get_state },
+      { "start_tracking", camera_api_start_tracking },
+      { "start_manual", camera_api_start_manual },
+      { "get_position_to_track", camera_api_get_position_to_track },
+      { "get_tracked_entity", camera_api_get_tracked_entity },
+      { nullptr, nullptr }
+  };
+
+  register_type(
+      get_entity_internal_type_name(EntityType::CAMERA),
+      nullptr,
+      camera_methods,
+      metamethods
+  );
+
+  // Destination.
+  static const luaL_Reg destination_methods[] = {
+      ENTITY_COMMON_METHODS,
+      { "get_starting_location_mode", destination_api_get_starting_location_mode },
+      { "set_starting_location_mode", destination_api_set_starting_location_mode },
+      { nullptr, nullptr }
+  };
+
+  register_type(
+      get_entity_internal_type_name(EntityType::DESTINATION),
+      nullptr,
+      destination_methods,
+      metamethods
+  );
+
   // Teletransporter.
   static const luaL_Reg teletransporter_methods[] = {
       ENTITY_COMMON_METHODS,
-      { "get_sprite", entity_api_get_sprite },
       { "get_sound", teletransporter_api_get_sound },
       { "set_sound", teletransporter_api_set_sound },
       { "get_transition", teletransporter_api_get_transition },
@@ -218,10 +251,11 @@ void LuaContext::register_entity_module() {
       metamethods
   );
 
-  // Non-playing character.
+  // NPC.
   static const luaL_Reg npc_methods[] = {
       ENTITY_COMMON_METHODS,
-      { "get_sprite", entity_api_get_sprite },
+      { "is_traversable", npc_api_is_traversable },
+      { "set_traversable", npc_api_set_traversable },
       { nullptr, nullptr }
   };
 
@@ -237,6 +271,8 @@ void LuaContext::register_entity_module() {
       ENTITY_COMMON_METHODS,
       { "is_open", chest_api_is_open },
       { "set_open", chest_api_set_open },
+      { "get_treasure", chest_api_get_treasure },
+      { "set_treasure", chest_api_set_treasure },
       { nullptr, nullptr }
   };
 
@@ -250,7 +286,6 @@ void LuaContext::register_entity_module() {
   // Block.
   static const luaL_Reg block_methods[] = {
       ENTITY_COMMON_METHODS,
-      { "get_sprite", entity_api_get_sprite },
       { "reset", block_api_reset },
       { "is_pushable", block_api_is_pushable },
       { "set_pushable", block_api_set_pushable },
@@ -271,10 +306,11 @@ void LuaContext::register_entity_module() {
   // Switch.
   static const luaL_Reg switch_methods[] = {
       ENTITY_COMMON_METHODS,
-      { "get_sprite", entity_api_get_sprite },
       { "is_activated", switch_api_is_activated },
       { "set_activated", switch_api_set_activated },
+      { "is_locked", switch_api_is_locked },
       { "set_locked", switch_api_set_locked },
+      { "is_walkable", switch_api_is_walkable },
       { nullptr, nullptr }
   };
 
@@ -341,7 +377,6 @@ void LuaContext::register_entity_module() {
   // Pickable.
   static const luaL_Reg pickable_methods[] = {
       ENTITY_COMMON_METHODS,
-      { "get_sprite", entity_api_get_sprite },
       { "has_layer_independent_collisions", entity_api_has_layer_independent_collisions },
       { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
       { "get_followed_entity", pickable_api_get_followed_entity },
@@ -357,7 +392,7 @@ void LuaContext::register_entity_module() {
       metamethods
   );
 
-  // Destructibles.
+  // Destructible.
   static const luaL_Reg destructible_methods[] = {
       ENTITY_COMMON_METHODS,
       { "get_treasure", destructible_api_get_treasure },
@@ -382,6 +417,21 @@ void LuaContext::register_entity_module() {
       get_entity_internal_type_name(EntityType::DESTRUCTIBLE),
       nullptr,
       destructible_methods,
+      metamethods
+  );
+
+  // Dynamic tile.
+  static const luaL_Reg dynamic_tile_methods[] = {
+      ENTITY_COMMON_METHODS,
+      { "get_pattern_id", dynamic_tile_api_get_pattern_id },
+      { "get_modified_ground", dynamic_tile_api_get_modified_ground },
+      { nullptr, nullptr }
+  };
+
+  register_type(
+      get_entity_internal_type_name(EntityType::DYNAMIC_TILE),
+      nullptr,
+      dynamic_tile_methods,
       metamethods
   );
 
@@ -428,7 +478,6 @@ void LuaContext::register_entity_module() {
       { "restart", enemy_api_restart },
       { "hurt", enemy_api_hurt },
       { "immobilize", enemy_api_immobilize },
-      { "get_sprite", entity_api_get_sprite },
       { "create_sprite", entity_api_create_sprite },
       { "remove_sprite", entity_api_remove_sprite },
       { "create_enemy", enemy_api_create_enemy },
@@ -450,7 +499,6 @@ void LuaContext::register_entity_module() {
       { "set_origin", entity_api_set_origin },
       { "get_direction", custom_entity_api_get_direction },
       { "set_direction", custom_entity_api_set_direction },
-      { "get_sprite", entity_api_get_sprite },
       { "create_sprite", entity_api_create_sprite },
       { "remove_sprite", entity_api_remove_sprite },
       { "is_drawn_in_y_order", custom_entity_api_is_drawn_in_y_order },
@@ -483,9 +531,7 @@ void LuaContext::register_entity_module() {
 
   // Also register all other types of entities that have no specific methods.
   register_type(get_entity_internal_type_name(EntityType::TILE), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::DYNAMIC_TILE), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::DESTINATION), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::CARRIED_ITEM), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::CARRIED_OBJECT), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::JUMPER), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::SENSOR), nullptr, entity_common_methods, metamethods);
   register_type(get_entity_internal_type_name(EntityType::SEPARATOR), nullptr, entity_common_methods, metamethods);
@@ -574,6 +620,33 @@ void LuaContext::push_entity(lua_State* l, Entity& entity) {
 }
 
 /**
+ * \brief Pushes a list of entities as an iterator onto the stack.
+ *
+ * The iterator is pushed onto the stack as one value of type function.
+ *
+ * \param l A Lua context.
+ * \param entity A list of entities. The iterator preserves their order.
+ */
+void LuaContext::push_entity_iterator(lua_State* l, const EntityVector& entities) {
+
+  // Create a Lua table with the list of entities, preserving their order.
+  int i = 0;
+  lua_newtable(l);
+  for (const EntityPtr& entity: entities) {
+    ++i;
+    lua_pushinteger(l, i);
+    push_entity(l, *entity);
+    lua_rawset(l, -3);
+  }
+
+  lua_pushinteger(l, entities.size());
+  lua_pushinteger(l, 1);
+  // 3 upvalues: entities table, size, current index.
+
+  lua_pushcclosure(l, l_entity_iterator_next, 3);
+}
+
+/**
  * \brief Returns the Lua metatable name corresponding to a type of map entity.
  * \param entity_type A type of map entity.
  * \return The corresponding Lua metatable name, e.g. "sol.enemy".
@@ -586,6 +659,82 @@ const std::string& LuaContext::get_entity_internal_type_name(
   SOLARUS_ASSERT(it != names.end(), "Missing entity internal type name");
 
   return it->second;
+}
+
+/**
+ * \brief Closure of an iterator over a list of sprites and their names.
+ *
+ * This closure expects 3 upvalues in this order:
+ * - An array of { name, sprite } pairs.
+ * - The size of the array (for performance).
+ * - The current index in the array.
+ *
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_named_sprite_iterator_next(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+
+    // Get upvalues.
+    const int table_index = lua_upvalueindex(1);
+    const int size = lua_tointeger(l, lua_upvalueindex(2));
+    int index = lua_tointeger(l, lua_upvalueindex(3));
+
+    if (index > size) {
+      // Finished.
+      return 0;
+    }
+
+    // Get the next value.
+    lua_rawgeti(l, table_index, index);   // pair
+    lua_rawgeti(l, -1, 1);                // pair name
+    lua_rawgeti(l, -2, 2);                // pair name sprite
+
+    // Increment index.
+    ++index;
+    lua_pushinteger(l, index);
+    lua_replace(l, lua_upvalueindex(3));
+
+    return 2;
+  });
+}
+
+/**
+ * \brief Pushes a list of sprites and their names as an iterator onto the stack.
+ *
+ * The iterator is pushed onto the stack as one value of type function.
+ *
+ * \param l A Lua context.
+ * \param sprites A list of sprites and their names. The iterator preserves their order.
+ */
+void LuaContext::push_named_sprite_iterator(
+    lua_State* l,
+    const std::vector<Entity::NamedSprite>& sprites
+) {
+  // Create a Lua table with the list of name-sprite pairs, preserving their order.
+  int i = 0;
+  lua_newtable(l);
+                                                 // sprites
+  for (const Entity::NamedSprite& named_sprite: sprites) {
+    if (named_sprite.removed) {
+      continue;
+    }
+    ++i;
+    lua_newtable(l);                             // sprites pair
+    push_string(l, named_sprite.name);           // sprites pair name
+    lua_rawseti(l, -2, 1);                       // sprites pair
+    push_sprite(l, *named_sprite.sprite);        // sprites pair sprite
+    lua_rawseti(l, -2, 2);                       // sprites pair
+
+    lua_rawseti(l, -2, i);                       // sprites
+  }
+
+  lua_pushinteger(l, i);
+  lua_pushinteger(l, 1);
+  // 3 upvalues: sprites table, size, current index.
+
+  lua_pushcclosure(l, l_named_sprite_iterator_next, 3);
 }
 
 /**
@@ -735,7 +884,7 @@ int LuaContext::entity_api_get_size(lua_State* l) {
 }
 
 /**
- * \brief Implementation of enemy:set_size().
+ * \brief Implementation of entity:set_size().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
@@ -758,6 +907,7 @@ int LuaContext::entity_api_set_size(lua_State* l) {
     }
 
     entity.set_size(width, height);
+    entity.notify_position_changed();
 
     return 0;
   });
@@ -794,6 +944,7 @@ int LuaContext::entity_api_set_origin(lua_State* l) {
     int y = LuaTools::check_int(l, 3);
 
     entity.set_origin(x, y);
+    entity.notify_position_changed();
 
     return 0;
   });
@@ -827,16 +978,11 @@ int LuaContext::entity_api_set_position(lua_State* l) {
     Entity& entity = *check_entity(l, 1);
     int x = LuaTools::check_int(l, 2);
     int y = LuaTools::check_int(l, 3);
-    int layer = -1;
-    if (lua_gettop(l) >= 4) {
-      layer = LuaTools::check_layer(l, 4, entity.get_map());
-    }
+    int layer = LuaTools::opt_layer(l, 4, entity.get_map(), entity.get_layer());
 
+    Entities& entities = entity.get_map().get_entities();
     entity.set_xy(x, y);
-    if (layer != -1) {
-      MapEntities& entities = entity.get_map().get_entities();
-      entities.set_entity_layer(entity, layer);
-    }
+    entities.set_entity_layer(entity, layer);
     entity.notify_position_changed();
 
     return 0;
@@ -856,7 +1002,82 @@ int LuaContext::entity_api_get_center_position(lua_State* l) {
     const Point& center_point = entity.get_center_point();
     lua_pushinteger(l, center_point.x);
     lua_pushinteger(l, center_point.y);
-    return 2;
+    lua_pushinteger(l, entity.get_layer());
+    return 3;
+  });
+}
+
+/**
+ * \brief Implementation of entity:get_facing_position().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_facing_position(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Entity& entity = *check_entity(l, 1);
+
+    const Point& facing_point = entity.get_facing_point();
+    lua_pushinteger(l, facing_point.x);
+    lua_pushinteger(l, facing_point.y);
+    lua_pushinteger(l, entity.get_layer());
+    return 3;
+  });
+}
+
+/**
+ * \brief Implementation of entity:get_facing_entity().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_facing_entity(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Entity& entity = *check_entity(l, 1);
+
+    Entity* facing_entity = entity.get_facing_entity();
+    if (facing_entity == nullptr) {
+      lua_pushnil(l);
+    }
+    else {
+      push_entity(l, *facing_entity);
+    }
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of entity:get_ground_position().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_ground_position(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Entity& entity = *check_entity(l, 1);
+
+    const Point& ground_point = entity.get_ground_point();
+    lua_pushinteger(l, ground_point.x);
+    lua_pushinteger(l, ground_point.y);
+    lua_pushinteger(l, entity.get_layer());
+    return 3;
+  });
+}
+
+/**
+ * \brief Implementation of entity:get_ground_below().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_ground_below(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Entity& entity = *check_entity(l, 1);
+
+    Ground ground = entity.get_ground_below();
+
+    push_string(l, enum_to_name(ground));
+    return 1;
   });
 }
 
@@ -880,6 +1101,25 @@ int LuaContext::entity_api_get_bounding_box(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of entity:get_max_bounding_box().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_max_bounding_box(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Entity& entity = *check_entity(l, 1);
+
+    const Rectangle& max_bounding_box = entity.get_max_bounding_box();
+    lua_pushinteger(l, max_bounding_box.get_x());
+    lua_pushinteger(l, max_bounding_box.get_y());
+    lua_pushinteger(l, max_bounding_box.get_width());
+    lua_pushinteger(l, max_bounding_box.get_height());
+    return 4;
+  });
+}
+
+/**
  * \brief Implementation of entity:overlaps().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -887,12 +1127,42 @@ int LuaContext::entity_api_get_bounding_box(lua_State* l) {
 int LuaContext::entity_api_overlaps(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const Entity& entity = *check_entity(l, 1);
+    Entity& entity = *check_entity(l, 1);
 
     bool overlaps = false;
     if (is_entity(l, 2)) {
-      const Entity& other_entity = *check_entity(l, 2);
-      overlaps = entity.overlaps(other_entity);
+      Entity& other_entity = *check_entity(l, 2);
+      std::string collision_mode_name = LuaTools::opt_string(l, 3, "overlapping");
+
+      CollisionMode collision_mode = CollisionMode::COLLISION_NONE;
+      if (collision_mode_name == "overlapping") {
+        collision_mode = CollisionMode::COLLISION_OVERLAPPING;
+      }
+      else if (collision_mode_name == "containing") {
+        collision_mode = CollisionMode::COLLISION_CONTAINING;
+      }
+      else if (collision_mode_name == "origin") {
+        collision_mode = CollisionMode::COLLISION_ORIGIN;
+      }
+      else if (collision_mode_name == "facing") {
+        collision_mode = CollisionMode::COLLISION_FACING;
+      }
+      else if (collision_mode_name == "touching") {
+        collision_mode = CollisionMode::COLLISION_TOUCHING;
+      }
+      else if (collision_mode_name == "center") {
+        collision_mode = CollisionMode::COLLISION_CENTER;
+      }
+      else if (collision_mode_name == "sprite") {
+        collision_mode = CollisionMode::COLLISION_SPRITE;
+      }
+      else {
+        LuaTools::arg_error(l, 3,
+            std::string("Invalid name '") + lua_tostring(l, 2) + "'"
+        );
+      }
+
+      overlaps = entity.test_collision(other_entity, collision_mode);
     }
     else {
       int x = LuaTools::check_int(l, 2);
@@ -1068,8 +1338,7 @@ int LuaContext::entity_api_bring_to_back(lua_State* l) {
 }
 
 /**
- * \brief Implementation of
- * npc:get_sprite(), pickable:get_sprite() and enemy:get_sprite().
+ * \brief Implementation of entity:get_sprite().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
@@ -1077,13 +1346,31 @@ int LuaContext::entity_api_get_sprite(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Entity& entity = *check_entity(l, 1);
+    std::string sprite_name = LuaTools::opt_string(l, 2 ,"");
 
-    if (entity.has_sprite()) {
-      push_sprite(l, entity.get_sprite());
+    const SpritePtr& sprite = entity.get_sprite(sprite_name);
+    if (sprite != nullptr) {
+      push_sprite(l, *sprite);
     }
     else {
       lua_pushnil(l);
     }
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of entity:get_sprites().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_sprites(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Entity& entity = *check_entity(l, 1);
+
+    const std::vector<Entity::NamedSprite> named_sprites = entity.get_named_sprites();
+    push_named_sprite_iterator(l, named_sprites);
     return 1;
   });
 }
@@ -1098,19 +1385,21 @@ int LuaContext::entity_api_create_sprite(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Entity& entity = *check_entity(l, 1);
     const std::string& animation_set_id = LuaTools::check_string(l, 2);
+    const std::string& sprite_name = LuaTools::opt_string(l, 3, "");
 
-    Sprite& sprite = *entity.create_sprite(animation_set_id, true);
+    const SpritePtr& sprite = entity.create_sprite(animation_set_id, sprite_name);
+    sprite->enable_pixel_collisions();
     if (entity.is_suspended()) {
-      sprite.set_suspended(true);
+      sprite->set_suspended(true);
     }
 
-    push_sprite(l, sprite);
+    push_sprite(l, *sprite);
     return 1;
   });
 }
 
 /**
- * \brief Implementation of enemy:remove_sprite().
+ * \brief Implementation of enemy:remove_sprite() and custom_entity:remove_sprite().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
@@ -1126,12 +1415,50 @@ int LuaContext::entity_api_remove_sprite(lua_State* l) {
         LuaTools::arg_error(l, 2, "This sprite does not belong to this entity");
       }
     }
-    else if (entity.has_sprite()) {
-      Sprite& sprite = entity.get_sprite();
-      entity.remove_sprite(sprite);
-    }
     else {
-      LuaTools::error(l, "This entity has no sprite");
+      const SpritePtr& sprite = entity.get_sprite();
+      if (sprite == nullptr) {
+        LuaTools::error(l, "This entity has no sprite");
+      }
+      entity.remove_sprite(*sprite);
+    }
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of entity:bring_sprite_to_front().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_bring_sprite_to_front(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Entity& entity = *check_entity(l, 1);
+    Sprite& sprite = *check_sprite(l, 2);
+    bool success = entity.bring_sprite_to_front(sprite);
+    if (!success) {
+      LuaTools::arg_error(l, 2, "This sprite does not belong to this entity");
+    }
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of entity:bring_sprite_to_back().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_bring_sprite_to_back(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Entity& entity = *check_entity(l, 1);
+    Sprite& sprite = *check_sprite(l, 2);
+    bool success = entity.bring_sprite_to_back(sprite);
+    if (!success) {
+      LuaTools::arg_error(l, 2, "This sprite does not belong to this entity");
     }
 
     return 0;
@@ -1218,11 +1545,7 @@ int LuaContext::entity_api_has_layer_independent_collisions(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const Entity& entity = *check_entity(l, 1);
 
-    bool independent = false;
-    if (entity.is_detector()) {
-      const Detector& detector = static_cast<const Detector&>(entity);
-      independent = detector.has_layer_independent_collisions();
-    }
+    bool independent = entity.has_layer_independent_collisions();
 
     lua_pushboolean(l, independent);
     return 1;
@@ -1242,10 +1565,7 @@ int LuaContext::entity_api_set_layer_independent_collisions(lua_State* l) {
     Entity& entity = *check_entity(l, 1);
     bool independent = LuaTools::opt_boolean(l, 2, true);
 
-    if (entity.is_detector()) {
-      Detector& detector = static_cast<Detector&>(entity);
-      detector.set_layer_independent_collisions(independent);
-    }
+    entity.set_layer_independent_collisions(independent);
 
     return 0;
   });
@@ -1260,8 +1580,8 @@ int LuaContext::entity_api_test_obstacles(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Entity& entity = *check_entity(l, 1);
-    int dx = LuaTools::check_int(l, 2);
-    int dy = LuaTools::check_int(l, 3);
+    int dx = LuaTools::opt_int(l, 2, 0);
+    int dy = LuaTools::opt_int(l, 3, 0);
     int layer = entity.get_layer();
     if (lua_gettop(l) >= 4) {
       layer = LuaTools::check_layer(l, 4, entity.get_map());
@@ -1320,6 +1640,27 @@ int LuaContext::entity_api_is_in_same_region(lua_State* l) {
     const Entity& other_entity = *check_entity(l, 2);
 
     lua_pushboolean(l, entity.is_in_same_region(other_entity));
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of hero:get_state() and camera:get_state().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_state(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Entity& entity = *check_entity(l, 1);
+
+    std::string state_name = entity.get_state_name();
+    if (state_name.empty()) {
+      lua_pushnil(l);
+    }
+    else {
+      push_string(l, state_name);
+    }
     return 1;
   });
 }
@@ -1453,20 +1794,36 @@ int LuaContext::hero_api_save_solid_ground(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
-    int x, y;
-    int layer;
-    if (lua_gettop(l) >= 2) {
-      x = LuaTools::check_int(l, 2);
-      y = LuaTools::check_int(l, 3);
-      layer = LuaTools::check_layer(l, 4, hero.get_map());
+
+    ScopedLuaRef callback;
+    if (lua_gettop(l) == 2) {
+      // Function parameter.
+      if (lua_isnil(l, 2)) {
+        hero.reset_target_solid_ground_callback();
+        return 0;
+      }
+      else {
+        callback = LuaTools::check_function(l, 2);
+      }
     }
     else {
-      x = hero.get_x();
-      y = hero.get_y();
-      layer = hero.get_layer();
+      // Coordinates and layer.
+      int x = 0;
+      int y = 0;
+      int layer = 0;
+      if (lua_gettop(l) >= 2) {
+        x = LuaTools::check_int(l, 2);
+        y = LuaTools::check_int(l, 3);
+        layer = LuaTools::check_layer(l, 4, hero.get_map());
+      }
+      else {
+        x = hero.get_x();
+        y = hero.get_y();
+        layer = hero.get_layer();
+      }
+      callback = hero.make_solid_ground_callback(Point(x, y), layer);
     }
-
-    hero.set_target_solid_ground_coords(Point(x, y), layer);
+    hero.set_target_solid_ground_callback(callback);
 
     return 0;
   });
@@ -1482,7 +1839,7 @@ int LuaContext::hero_api_reset_solid_ground(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
-    hero.reset_target_solid_ground_coords();
+    hero.reset_target_solid_ground_callback();
 
     return 0;
   });
@@ -1498,28 +1855,43 @@ int LuaContext::hero_api_get_solid_ground_position(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     const Hero& hero = *check_hero(l, 1);
 
-    const Point& target_coords = hero.get_target_solid_ground_coords();
-    if (target_coords.x != -1) {
+    Point xy;
+    int layer = 0;
+
+    const ScopedLuaRef& solid_ground_callback = hero.get_target_solid_ground_callback();
+    if (!solid_ground_callback.is_empty()) {
       // Coordinates memorized by hero:save_solid_ground().
-      lua_pushinteger(l, target_coords.x);
-      lua_pushinteger(l, target_coords.y);
-      lua_pushinteger(l, hero.get_target_solid_ground_layer());
-      return 3;
+      solid_ground_callback.push();
+      bool success = LuaTools::call_function(l, 0, 3, "Solid ground callback");
+      if (!success) {
+        // Fallback: use the last solid ground position.
+        xy = hero.get_last_solid_ground_coords();
+        layer = hero.get_last_solid_ground_layer();
+        lua_pushinteger(l, xy.x);
+        lua_pushinteger(l, xy.y);
+        lua_pushinteger(l, layer);
+        return 3;
+      }
+      else {
+        // Normal case: use the result of the function.
+        return 3;
+      }
     }
-
-    const Point& last_coords = hero.get_last_solid_ground_coords();
-    if (last_coords.x != -1) {
+    else if (hero.get_last_solid_ground_coords().x != -1) {
+      xy = hero.get_last_solid_ground_coords();
+      layer = hero.get_last_solid_ground_layer();
       // Last solid ground coordinates.
-      lua_pushinteger(l, last_coords.x);
-      lua_pushinteger(l, last_coords.y);
-      lua_pushinteger(l, hero.get_last_solid_ground_layer());
+      lua_pushinteger(l, xy.x);
+      lua_pushinteger(l, xy.y);
+      lua_pushinteger(l, layer);
       return 3;
     }
-
-    // No solid ground coordinates.
-    // Maybe the map started in water.
-    lua_pushnil(l);
-    return 1;
+    else {
+      // No solid ground coordinates.
+      // Maybe the map started in water.
+      lua_pushnil(l);
+      return 1;
+    }
   });
 }
 
@@ -1775,21 +2147,6 @@ int LuaContext::hero_api_set_invincible(lua_State* l) {
 }
 
 /**
- * \brief Implementation of hero:get_state().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::hero_api_get_state(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    const Hero& hero = *check_hero(l, 1);
-
-    push_string(l, hero.get_state_name());
-    return 1;
-  });
-}
-
-/**
  * \brief Implementation of hero:freeze().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -1799,7 +2156,7 @@ int LuaContext::hero_api_freeze(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
-    hero.start_freezed();
+    hero.start_frozen();
 
     return 0;
   });
@@ -1835,6 +2192,47 @@ int LuaContext::hero_api_walk(lua_State* l) {
     bool ignore_obstacles = LuaTools::opt_boolean(l, 4, false);
 
     hero.start_forced_walking(path, loop, ignore_obstacles);
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of hero:start_attack().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_start_attack(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Hero& hero = *check_hero(l, 1);
+
+    if (hero.can_start_sword()) {
+      hero.start_sword();
+    }
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of hero:start_item().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_start_item(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Hero& hero = *check_hero(l, 1);
+    EquipmentItem& item = *check_item(l, 2);
+
+    if (!item.is_saved()) {
+      LuaTools::arg_error(l, 2,
+          std::string("Cannot use item '" + item.get_name() + "': this item is not saved"));
+    }
+    if (hero.can_start_item(item)) {
+      hero.start_item(item);
+    }
 
     return 0;
   });
@@ -1911,25 +2309,6 @@ int LuaContext::hero_api_start_victory(lua_State* l) {
     ScopedLuaRef callback_ref = LuaTools::opt_function(l, 2);
 
     hero.start_victory(callback_ref);
-
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of hero:start_item().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::hero_api_start_item(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Hero& hero = *check_hero(l, 1);
-    EquipmentItem& item = *check_item(l, 2);
-
-    if (hero.can_start_item(item)) {
-      hero.start_item(item);
-    }
 
     return 0;
   });
@@ -2128,6 +2507,232 @@ int LuaContext::l_treasure_dialog_finished(lua_State* l) {
       hero.start_free();
     }
 
+    return 0;
+  });
+}
+
+/**
+ * \brief Returns whether a value is a userdata of type camera.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return true if the value at this index is a camera.
+ */
+bool LuaContext::is_camera(lua_State* l, int index) {
+  return is_userdata(l, index, get_entity_internal_type_name(EntityType::CAMERA));
+}
+
+/**
+ * \brief Checks that the userdata at the specified index of the stack is a
+ * camera and returns it.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return The camera.
+ */
+std::shared_ptr<Camera> LuaContext::check_camera(lua_State* l, int index) {
+  return std::static_pointer_cast<Camera>(check_userdata(
+      l, index, get_entity_internal_type_name(EntityType::CAMERA)
+  ));
+}
+
+/**
+ * \brief Pushes a camera userdata onto the stack.
+ * \param l A Lua context.
+ * \param camera A camera.
+ */
+void LuaContext::push_camera(lua_State* l, Camera& camera) {
+  push_userdata(l, camera);
+}
+
+/**
+ * \brief Implementation of camera:get_position_on_screen().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::camera_api_get_position_on_screen(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Camera& camera = *check_camera(l, 1);
+
+    const Point& position_on_screen = camera.get_position_on_screen();
+
+    lua_pushinteger(l, position_on_screen.x);
+    lua_pushinteger(l, position_on_screen.y);
+
+    return 2;
+  });
+}
+
+/**
+ * \brief Implementation of camera:set_position_on_screen().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::camera_api_set_position_on_screen(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Camera& camera = *check_camera(l, 1);
+    int x = LuaTools::check_int(l, 2);
+    int y = LuaTools::check_int(l, 3);
+
+    camera.set_position_on_screen({ x, y });
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of camera:start_tracking().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::camera_api_start_tracking(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Camera& camera = *check_camera(l, 1);
+    EntityPtr entity = check_entity(l, 2);
+
+    camera.start_tracking(entity);
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of camera:start_manual().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::camera_api_start_manual(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Camera& camera = *check_camera(l, 1);
+
+    camera.start_manual();
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of camera:get_position_to_track().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::camera_api_get_position_to_track(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Camera& camera = *check_camera(l, 1);
+
+    Point xy;
+    if (lua_isnumber(l, 2)) {
+      xy.x = LuaTools::check_int(l, 2);
+      xy.y = LuaTools::check_int(l, 3);
+    }
+    else if (is_entity(l, 2)) {
+      const Entity& entity = *check_entity(l, 2);
+      xy = entity.get_center_point();
+    }
+    else {
+      LuaTools::type_error(l, 2, "number or entity");
+    }
+    const Point& position_to_track = camera.get_position_to_track(xy);
+
+    lua_pushinteger(l, position_to_track.x);
+    lua_pushinteger(l, position_to_track.y);
+
+    return 2;
+  });
+}
+
+/**
+ * \brief Implementation of camera:get_tracked_entity().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::camera_api_get_tracked_entity(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Camera& camera = *check_camera(l, 1);
+
+    EntityPtr entity = camera.get_tracked_entity();
+    if (entity == nullptr) {
+      lua_pushnil(l);
+    }
+    else {
+      push_entity(l, *entity);
+    }
+    return 1;
+  });
+}
+
+/**
+ * \brief Returns whether a value is a userdata of type destination.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return \c true if the value at this index is an destination.
+ */
+bool LuaContext::is_destination(lua_State* l, int index) {
+  return is_userdata(l, index, get_entity_internal_type_name(EntityType::DESTINATION));
+}
+
+/**
+ * \brief Checks that the userdata at the specified index of the stack is a
+ * destination and returns it.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return The destination.
+ */
+std::shared_ptr<Destination> LuaContext::check_destination(lua_State* l, int index) {
+  return std::static_pointer_cast<Destination>(check_userdata(
+      l, index, get_entity_internal_type_name(EntityType::DESTINATION)
+  ));
+}
+
+/**
+ * \brief Pushes an destination userdata onto the stack.
+ * \param l A Lua context.
+ * \param destination A destination.
+ */
+void LuaContext::push_destination(lua_State* l, Destination& destination) {
+  push_userdata(l, destination);
+}
+
+/**
+ * \brief Implementation of destination:get_starting_location_mode().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destination_api_get_starting_location_mode(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Destination& destination = *check_destination(l, 1);
+
+    StartingLocationMode mode = destination.get_starting_location_mode();
+
+    push_string(l, enum_to_name(mode));
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of destination:set_starting_location_mode().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destination_api_set_starting_location_mode(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Destination& destination = *check_destination(l, 1);
+    StartingLocationMode mode = StartingLocationMode::WHEN_WORLD_CHANGES;
+
+    if (lua_gettop(l) == 1) {
+      LuaTools::type_error(l, 2, "string or nil");
+    }
+    if (!lua_isnil(l, 2)) {
+      mode = LuaTools::check_enum<StartingLocationMode>(l, 2);
+    }
+
+    destination.set_starting_location_mode(mode);
     return 0;
   });
 }
@@ -2341,6 +2946,39 @@ void LuaContext::push_npc(lua_State* l, Npc& npc) {
 }
 
 /**
+ * \brief Implementation of npc:is_traversable().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::npc_api_is_traversable(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Npc& npc = *check_npc(l, 1);
+
+    lua_pushboolean(l, npc.is_traversable());
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of npc:set_traversable().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::npc_api_set_traversable(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Npc& npc = *check_npc(l, 1);
+
+    bool traversable = LuaTools::opt_boolean(l, 2, true);
+
+    npc.set_traversable(traversable);
+
+    return 0;
+  });
+}
+
+/**
  * \brief Returns whether a value is a userdata of type chest.
  * \param l A Lua context.
  * \param index An index in the stack.
@@ -2399,6 +3037,73 @@ int LuaContext::chest_api_set_open(lua_State* l) {
     bool open = LuaTools::opt_boolean(l, 2, true);
 
     chest.set_open(open);
+
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of chest:get_treasure().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::chest_api_get_treasure(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Chest& chest = *check_chest(l, 1);
+    const Treasure& treasure = chest.get_treasure();
+
+    if (treasure.is_empty()) {
+      // No treasure.
+      lua_pushnil(l);
+      lua_pushnil(l);
+    }
+    else {
+      push_string(l, treasure.get_item_name());
+      lua_pushinteger(l, treasure.get_variant());
+    }
+    if (!treasure.is_saved()) {
+      lua_pushnil(l);
+    }
+    else {
+      push_string(l, treasure.get_savegame_variable());
+    }
+    return 3;
+  });
+}
+
+/**
+ * \brief Implementation of chest:set_treasure().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::chest_api_set_treasure(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Chest& chest = *check_chest(l, 1);
+    std::string item_name;
+    int variant = 1;
+    std::string savegame_variable;
+
+    if (lua_gettop(l) >= 2 && !lua_isnil(l, 2)) {
+      item_name = LuaTools::check_string(l, 2);
+    }
+    if (lua_gettop(l) >= 3 && !lua_isnil(l, 3)) {
+      variant = LuaTools::check_int(l, 3);
+    }
+    if (lua_gettop(l) >= 4 && !lua_isnil(l, 4)) {
+      savegame_variable = LuaTools::check_string(l, 4);
+    }
+
+    if (!savegame_variable.empty()
+        && !LuaTools::is_valid_lua_identifier(savegame_variable)) {
+      LuaTools::arg_error(l, 4,
+          std::string("savegame variable identifier expected, got '")
+      + savegame_variable + "'");
+    }
+
+    Treasure treasure(chest.get_game(), item_name, variant, savegame_variable);
+    chest.set_treasure(treasure);
 
     return 0;
   });
@@ -2552,7 +3257,6 @@ int LuaContext::block_api_set_maximum_moves(lua_State* l) {
       LuaTools::type_error(l, 2, "number or nil");
     }
 
-
     if (lua_isnumber(l, 2)) {
       const int maximum_moves = LuaTools::check_int(l, 2);
       if (maximum_moves < 0 || maximum_moves > 1) {
@@ -2634,6 +3338,21 @@ int LuaContext::switch_api_set_activated(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of switch:is_locked().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::switch_api_is_locked(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Switch& sw = *check_switch(l, 1);
+
+    lua_pushboolean(l, sw.is_locked());
+    return 1;
+  });
+}
+
+/**
  * \brief Implementation of switch:set_locked().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -2647,6 +3366,21 @@ int LuaContext::switch_api_set_locked(lua_State* l) {
     sw.set_locked(locked);
 
     return 0;
+  });
+}
+
+/**
+ * \brief Implementation of switch:is_walkable().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::switch_api_is_walkable(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Switch& sw = *check_switch(l, 1);
+
+    lua_pushboolean(l, sw.is_walkable());
+    return 1;
   });
 }
 
@@ -3507,6 +4241,72 @@ int LuaContext::destructible_api_get_modified_ground(lua_State* l) {
 }
 
 /**
+ * \brief Returns whether a value is a userdata of type dynamic tile.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return \c true if the value at this index is a dynamic tile.
+ */
+bool LuaContext::is_dynamic_tile(lua_State* l, int index) {
+  return is_userdata(l, index, get_entity_internal_type_name(EntityType::DYNAMIC_TILE));
+}
+
+/**
+ * \brief Checks that the userdata at the specified index of the stack is a
+ * dynamic tile and returns it.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return The dynamic tile.
+ */
+std::shared_ptr<DynamicTile> LuaContext::check_dynamic_tile(lua_State* l, int index) {
+  return std::static_pointer_cast<DynamicTile>(check_userdata(
+      l, index, get_entity_internal_type_name(EntityType::DYNAMIC_TILE)
+  ));
+}
+
+/**
+ * \brief Pushes a dynamic tile userdata onto the stack.
+ * \param l A Lua context.
+ * \param dynamic_tile A dynamic tile.
+ */
+void LuaContext::push_dynamic_tile(lua_State* l, DynamicTile& dynamic_tile) {
+  push_userdata(l, dynamic_tile);
+}
+
+/**
+ * \brief Implementation of dynamic_tile:get_pattern_id().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::dynamic_tile_api_get_pattern_id(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const DynamicTile& dynamic_tile = *check_dynamic_tile(l, 1);
+
+    const std::string& pattern_id = dynamic_tile.get_tile_pattern_id();
+
+    push_string(l, pattern_id);
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of dynamic_tile:get_modified_ground().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::dynamic_tile_api_get_modified_ground(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const DynamicTile& dynamic_tile = *check_dynamic_tile(l, 1);
+
+    Ground modified_ground = dynamic_tile.get_modified_ground();
+
+    push_string(l, enum_to_name(modified_ground));
+    return 1;
+  });
+}
+
+/**
  * \brief Returns whether a value is a userdata of type enemy.
  * \param l A Lua context.
  * \param index An index in the stack.
@@ -4237,7 +5037,6 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
     int y = LuaTools::opt_int_field(l, 2, "y", 0);
     int direction = LuaTools::opt_int_field(l, 2, "direction", 3);
     const std::string& breed = LuaTools::check_string_field(l, 2, "breed");
-    Enemy::Rank rank = Enemy::Rank(LuaTools::opt_int_field(l, 2, "rank", 0));
     const std::string& savegame_variable = LuaTools::opt_string_field(l, 2, "savegame_variable", "");
     const std::string& treasure_name = LuaTools::opt_string_field(l, 2, "treasure_name", "");
     int treasure_variant = LuaTools::opt_int_field(l, 2, "treasure_variant", 1);
@@ -4272,7 +5071,6 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
     const EntityPtr& entity = Enemy::create(
         game,
         breed,
-        rank,
         savegame_variable,
         name,
         layer,
@@ -4706,32 +5504,32 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
 
     if (lua_isstring(l, 2)) {
       // Built-in collision test.
-      // TODO move string to enum conversion into a function of Detector.
+      // TODO move string to enum conversion into a function of Entity.
       // We cannot use LuaTools::check_enum() like always, because this
       // enum has special numerical values.
       const std::string& collision_mode_name = LuaTools::check_string(l, 2);
-      CollisionMode collision_mode = COLLISION_NONE;
+      CollisionMode collision_mode = CollisionMode::COLLISION_NONE;
 
       if (collision_mode_name == "overlapping") {
-        collision_mode = COLLISION_OVERLAPPING;
+        collision_mode = CollisionMode::COLLISION_OVERLAPPING;
       }
       else if (collision_mode_name == "containing") {
-        collision_mode = COLLISION_CONTAINING;
+        collision_mode = CollisionMode::COLLISION_CONTAINING;
       }
       else if (collision_mode_name == "origin") {
-        collision_mode = COLLISION_CONTAINING;
+        collision_mode = CollisionMode::COLLISION_CONTAINING;
       }
       else if (collision_mode_name == "facing") {
-        collision_mode = COLLISION_FACING;
+        collision_mode = CollisionMode::COLLISION_FACING;
       }
       else if (collision_mode_name == "touching") {
-        collision_mode = COLLISION_TOUCHING;
+        collision_mode = CollisionMode::COLLISION_TOUCHING;
       }
       else if (collision_mode_name == "center") {
-        collision_mode = COLLISION_CENTER;
+        collision_mode = CollisionMode::COLLISION_CENTER;
       }
       else if (collision_mode_name == "sprite") {
-        collision_mode = COLLISION_SPRITE;
+        collision_mode = CollisionMode::COLLISION_SPRITE;
       }
       else {
         LuaTools::arg_error(l, 2,
@@ -4788,7 +5586,7 @@ int LuaContext::custom_entity_api_get_modified_ground(lua_State* l) {
     else {
       push_string(l, enum_to_name(modified_ground));
     }
-    return 0;
+    return 1;
   });
 }
 
@@ -4803,6 +5601,9 @@ int LuaContext::custom_entity_api_set_modified_ground(lua_State* l) {
     CustomEntity& entity = *check_custom_entity(l, 1);
     Ground modified_ground = Ground::EMPTY;
 
+    if (lua_gettop(l) == 1) {
+      LuaTools::type_error(l, 2, "string or nil");
+    }
     if (!lua_isnil(l, 2)) {
       modified_ground = LuaTools::check_enum<Ground>(l, 2);
     }
@@ -5001,6 +5802,25 @@ void LuaContext::entity_on_obstacle_reached(
 }
 
 /**
+ * \brief Calls the on_movement_started() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ */
+  void LuaContext::entity_on_movement_started(
+      Entity& entity, Movement& movement) {
+
+  if (!userdata_has_field(entity, "on_movement_started")) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_movement_started(movement);
+  lua_pop(l, 1);
+}
+
+/**
  * \brief Calls the on_movement_changed() method of a Lua map entity.
  *
  * Does nothing if the method is not defined.
@@ -5082,21 +5902,21 @@ bool LuaContext::entity_on_interaction_item(
 }
 
 /**
- * \brief Calls the on_state_changed() method of a Lua hero.
+ * \brief Calls the on_state_changed() method of a Lua entity.
  *
  * Does nothing if the method is not defined.
  *
- * \param hero The hero.
+ * \param entity A map entity.
  * \param state_name A name describing the new state.
  */
-void LuaContext::hero_on_state_changed(
-    Hero& hero, const std::string& state_name) {
+void LuaContext::entity_on_state_changed(
+    Entity& entity, const std::string& state_name) {
 
-  if (!userdata_has_field(hero, "on_state_changed")) {
+  if (!userdata_has_field(entity, "on_state_changed")) {
     return;
   }
 
-  push_hero(l, hero);
+  push_entity(l, entity);
   on_state_changed(state_name);
   lua_pop(l, 1);
 }
@@ -5213,21 +6033,22 @@ void LuaContext::block_on_moved(Block& block) {
 }
 
 /**
- * \brief Calls the on_empty() method of a Lua chest.
+ * \brief Calls the on_opened() method of a Lua chest.
  *
  * Does nothing if the method is not defined.
  *
  * \param chest A chest.
- * \return \c true if the on_empty() method is defined.
+ * \param treasure The treasure obtained.
+ * \return \c true if the on_opened() method is defined.
  */
-bool LuaContext::chest_on_empty(Chest& chest) {
+bool LuaContext::chest_on_opened(Chest& chest, const Treasure& treasure) {
 
-  if (!userdata_has_field(chest, "on_empty")) {
+  if (!userdata_has_field(chest, "on_opened")) {
     return false;
   }
 
   push_chest(l, chest);
-  bool exists = on_empty();
+  bool exists = on_opened(treasure);
   lua_pop(l, 1);
   return exists;
 }

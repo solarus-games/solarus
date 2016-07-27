@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Npc.h"
-#include "solarus/entities/CarriedItem.h"
+#include "solarus/entities/CarriedObject.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/QuestFiles.h"
@@ -58,11 +58,14 @@ Npc::Npc(
     int direction,
     const std::string& behavior_string
 ):
-  Detector(COLLISION_FACING | COLLISION_OVERLAPPING, name, layer, xy, Size(0, 0)),
+  Entity(name, 0, layer, xy, Size(0, 0)),
   subtype(subtype),
+  behavior(BEHAVIOR_MAP_SCRIPT),
+  traversable(false),
   dialog_to_show(""),
   item_name("") {
 
+  set_collision_modes(CollisionMode::COLLISION_FACING | CollisionMode::COLLISION_OVERLAPPING);
   initialize_sprite(sprite_name, direction);
   set_size(16, 16);
   set_origin(8, 13);
@@ -107,9 +110,9 @@ EntityType Npc::get_type() const {
 void Npc::initialize_sprite(const std::string& sprite_name, int initial_direction) {
 
   if (!sprite_name.empty()) {
-    create_sprite(sprite_name);
+    const SpritePtr& sprite = create_sprite(sprite_name);
     if (initial_direction != -1) {
-      get_sprite().set_current_direction(initial_direction);
+      sprite->set_current_direction(initial_direction);
     }
   }
 }
@@ -126,6 +129,28 @@ void Npc::initialize_sprite(const std::string& sprite_name, int initial_directio
 bool Npc::is_solid() const {
 
   return subtype != USUAL_NPC;
+}
+
+/**
+ * \brief Returns whether this NPC is traversable by other entities.
+ *
+ * Note that some entities can override this setting.
+ *
+ * \return \c true if this NPC is traversable.
+ */
+bool Npc::is_traversable() const {
+  return traversable;
+}
+
+/**
+ * \brief Sets whether this NPC is traversable by other entities.
+ *
+ * Note that some entities can override this setting.
+ *
+ * \param traversable \c true to make this NPC traversable.
+ */
+void Npc::set_traversable(bool traversable) {
+  this->traversable = traversable;
 }
 
 /**
@@ -216,16 +241,16 @@ void Npc::notify_collision(Entity& entity_overlapping, CollisionMode collision_m
 
     if (behavior == BEHAVIOR_ITEM_SCRIPT) {
       EquipmentItem& item = get_equipment().get_item(item_name);
-      get_lua_context().item_on_npc_collision_fire(item, *this);
+      get_lua_context()->item_on_npc_collision_fire(item, *this);
     }
     else {
-      get_lua_context().npc_on_collision_fire(*this);
+      get_lua_context()->npc_on_collision_fire(*this);
     }
   }
 }
 
 /**
- * \copydoc Detector::notify_action_command_pressed
+ * \copydoc Entity::notify_action_command_pressed
  */
 bool Npc::notify_action_command_pressed() {
 
@@ -237,10 +262,14 @@ bool Npc::notify_action_command_pressed() {
     CommandsEffects::ActionKeyEffect effect = get_commands_effects().get_action_key_effect();
     get_commands_effects().set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
 
+    SpritePtr sprite = get_sprite();
+
     // if this is a usual NPC, look towards the hero
     if (subtype == USUAL_NPC) {
       int direction = (get_hero().get_animation_direction() + 2) % 4;
-      get_sprite().set_current_direction(direction);
+      if (sprite != nullptr) {
+        sprite->set_current_direction(direction);
+      }
     }
 
     if (effect != CommandsEffects::ACTION_KEY_LIFT) {
@@ -257,10 +286,14 @@ bool Npc::notify_action_command_pressed() {
       // lift the entity
       if (get_equipment().has_ability(Ability::LIFT)) {
 
-        hero.start_lifting(std::make_shared<CarriedItem>(
+        std::string animation_set_id = "stopped";
+        if (sprite != nullptr) {
+          animation_set_id = sprite->get_animation_set_id();
+        }
+        hero.start_lifting(std::make_shared<CarriedObject>(
             hero,
             *this,
-            get_sprite().get_animation_set_id(),
+            animation_set_id,
             "stone",
             2,
             0)
@@ -280,11 +313,11 @@ bool Npc::notify_action_command_pressed() {
 void Npc::call_script_hero_interaction() {
 
   if (behavior == BEHAVIOR_MAP_SCRIPT) {
-    get_lua_context().entity_on_interaction(*this);
+    get_lua_context()->entity_on_interaction(*this);
   }
   else {
     EquipmentItem& item = get_equipment().get_item(item_name);
-    get_lua_context().item_on_npc_interaction(item, *this);
+    get_lua_context()->item_on_npc_interaction(item, *this);
   }
 }
 
@@ -298,17 +331,17 @@ void Npc::call_script_hero_interaction() {
  * \param item_used The equipment item used.
  * \return true if an interaction occured.
  */
-bool Npc::interaction_with_item(EquipmentItem& item_used) {
+bool Npc::notify_interaction_with_item(EquipmentItem& item_used) {
 
   bool interaction_occured;
   if (behavior == BEHAVIOR_ITEM_SCRIPT) {
     EquipmentItem& item_to_notify = get_equipment().get_item(item_name);
-    interaction_occured = get_lua_context().item_on_npc_interaction_item(
+    interaction_occured = get_lua_context()->item_on_npc_interaction_item(
         item_to_notify, *this, item_used
     );
   }
   else {
-    interaction_occured = get_lua_context().entity_on_interaction_item(
+    interaction_occured = get_lua_context()->entity_on_interaction_item(
         *this, item_used
     );
   }
@@ -323,19 +356,20 @@ bool Npc::interaction_with_item(EquipmentItem& item_used) {
  */
 void Npc::notify_position_changed() {
 
-  Detector::notify_position_changed();
+  Entity::notify_position_changed();
 
   if (subtype == USUAL_NPC) {
 
-    Sprite& sprite = get_sprite();
+    const SpritePtr& sprite = get_sprite();
     if (get_movement() != nullptr) {
       // The NPC is moving.
-      if (sprite.get_current_animation() != "walking") {
-        sprite.set_current_animation("walking");
+      if (sprite != nullptr) {
+        if (sprite->get_current_animation() != "walking") {
+          sprite->set_current_animation("walking");
+        }
+        int direction4 = get_movement()->get_displayed_direction4();
+        sprite->set_current_direction(direction4);
       }
-
-      int direction4 = get_movement()->get_displayed_direction4();
-      get_sprite().set_current_direction(direction4);
     }
 
     if (get_hero().get_facing_entity() == this &&
@@ -352,10 +386,13 @@ void Npc::notify_position_changed() {
  */
 void Npc::notify_movement_finished() {
 
-  Detector::notify_movement_finished();
+  Entity::notify_movement_finished();
 
   if (subtype == USUAL_NPC) {
-    get_sprite().set_current_animation("stopped");
+    const SpritePtr& sprite = get_sprite();
+    if (sprite != nullptr) {
+      sprite->set_current_animation("stopped");
+    }
   }
 }
 
@@ -369,7 +406,9 @@ bool Npc::can_be_lifted() const {
   // that an NPC can be lifted (nor its weight, damage, sound, etc) so this is hardcoded
   // TODO: specify the possibility to lift and the weight from Lua
   // npc:set_weight()?
-  return has_sprite() && get_sprite().get_animation_set_id() == "entities/sign";
+
+  const SpritePtr& sprite = get_sprite();
+  return sprite != nullptr && sprite->get_animation_set_id() == "entities/sign";
 }
 
 }

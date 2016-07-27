@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
 #define SOLARUS_CRYSTAL_H
 
 #include "solarus/Common.h"
+#include "solarus/entities/Entity.h"
 #include "solarus/lowlevel/Point.h"
-#include "solarus/entities/Detector.h"
 #include <list>
 #include <string>
 
@@ -29,7 +29,7 @@ namespace Solarus {
  * \brief A switch that can be activated to change the state of the
  * crystal blocks.
  */
-class Crystal: public Detector {
+class Crystal: public Entity {
 
   public:
 
@@ -47,7 +47,6 @@ class Crystal: public Detector {
     void activate(Entity& entity_activating);
 
     virtual void update() override;
-    virtual void draw_on_map() override;
     virtual void set_suspended(bool suspended) override;
 
   private:
@@ -58,8 +57,8 @@ class Crystal: public Detector {
                                                     * true if the blue blocks are lowered */
     uint32_t next_possible_hit_date;               /**< date when the crystal can be hit again */
     std::list<Entity*> entities_activating;        /**< list of entities that recently activated this crystal */
-    SpritePtr star_sprite;           /**< sprite of the star twinkling on the crystal */
-    Point star_xy;                                 /**< position of the star */
+    SpritePtr main_sprite;                         /**< Main sprite of the crystal. */
+    SpritePtr star_sprite;                         /**< sprite of the star twinkling on the crystal */
 
 };
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,12 +38,13 @@ Stream::Stream(
     int direction,
     const std::string& sprite_name
 ):
-  Detector(COLLISION_OVERLAPPING, name, layer, xy, Size(16, 16)),
+  Entity(name, 0, layer, xy, Size(16, 16)),
   speed(64),
   allow_movement(true),
   allow_attack(true),
   allow_item(true) {
 
+  set_collision_modes(CollisionMode::COLLISION_OVERLAPPING);
   set_origin(8, 13);
   set_direction(direction);
   if (!sprite_name.empty()) {
@@ -130,14 +131,15 @@ void Stream::set_allow_item(bool allow_item) {
  */
 void Stream::notify_direction_changed() {
 
-  Detector::notify_direction_changed();
+  Entity::notify_direction_changed();
 
   // Give the correct direction to the sprite if any.
   int direction8 = get_direction();
-  if (has_sprite()
-      && get_sprite().get_nb_directions() >= 8) {
+  const SpritePtr& sprite = get_sprite();
+  if (sprite != nullptr &&
+      sprite->get_nb_directions() >= 8) {
     // There is a sprite with all necessary directions.
-    get_sprite().set_current_direction(direction8);
+    sprite->set_current_direction(direction8);
   }
 }
 
@@ -150,7 +152,7 @@ bool Stream::is_obstacle_for(Entity& other) {
 }
 
 /**
- * \copydoc Detector::notify_collision
+ * \copydoc Entity::notify_collision
  */
 void Stream::notify_collision(Entity& entity_overlapping, CollisionMode /* collision_mode */) {
 

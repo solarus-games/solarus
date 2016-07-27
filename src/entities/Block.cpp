@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ Block::Block(
     bool can_be_pulled,
     int maximum_moves
 ):
-  Detector(COLLISION_FACING, name, layer, xy, Size(16, 16)),
+  Entity(name, direction, layer, xy, Size(16, 16)),
   maximum_moves(maximum_moves),
   sound_played(false),
   when_can_move(System::now()),
@@ -66,10 +66,12 @@ Block::Block(
 
   Debug::check_assertion(maximum_moves >= 0 && maximum_moves <= 2,
       "maximum_moves must be between 0 and 2");
+
+  set_collision_modes(CollisionMode::COLLISION_FACING);
   set_origin(8, 13);
   set_direction(direction);
-  create_sprite(sprite_name);
-  set_drawn_in_y_order(get_sprite().get_size().height > 16);
+  const SpritePtr& sprite = create_sprite(sprite_name);
+  set_drawn_in_y_order(sprite->get_size().height > 16);
 }
 
 /**
@@ -156,7 +158,7 @@ bool Block::is_destructible_obstacle(Destructible& /* destructible */) {
  */
 void Block::notify_created() {
 
-  Detector::notify_created();
+  Entity::notify_created();
 
   check_collision_with_detectors();
   update_ground_below();
@@ -183,7 +185,7 @@ void Block::notify_collision_with_switch(Switch& sw, CollisionMode /* collision_
 }
 
 /**
- * \copydoc Detector::notify_action_command_pressed
+ * \copydoc Entity::notify_action_command_pressed
  */
 bool Block::notify_action_command_pressed() {
 
@@ -238,10 +240,10 @@ bool Block::start_movement_by_hero() {
  */
 void Block::notify_position_changed() {
 
-  Detector::notify_position_changed();
+  Entity::notify_position_changed();
 
-  // now we know that the block moves at least of 1 pixel:
-  // we can play the sound
+  // Now we know that the block moves at least of 1 pixel:
+  // we can play the sound.
   if (get_movement() != nullptr && !sound_played) {
     Sound::play("hero_pushes");
     sound_played = true;
@@ -254,10 +256,10 @@ void Block::notify_position_changed() {
  */
 void Block::notify_obstacle_reached() {
 
-  // the block is stopped by an obstacle while being pushed or pulled
+  // The block is stopped by an obstacle while being pushed or pulled.
   get_hero().notify_grabbed_entity_collision();
 
-  Detector::notify_obstacle_reached();
+  Entity::notify_obstacle_reached();
 }
 
 /**
@@ -310,7 +312,7 @@ void Block::stop_movement_by_hero() {
  */
 void Block::notify_moving_by(Entity& /* entity */) {
 
-  get_lua_context().block_on_moving(*this);
+  get_lua_context()->block_on_moving(*this);
 }
 
 /**
@@ -318,7 +320,7 @@ void Block::notify_moving_by(Entity& /* entity */) {
  */
 void Block::notify_moved_by(Entity& /* entity */) {
 
-  get_lua_context().block_on_moved(*this);
+  get_lua_context()->block_on_moved(*this);
 }
 
 /**

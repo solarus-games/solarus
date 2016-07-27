@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #include "solarus/Map.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/lowlevel/TextSurface.h"
+#include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include <lua.hpp>
@@ -101,7 +102,7 @@ void DialogBoxSystem::open(
   keys_effect.save_action_key_effect();
   keys_effect.set_action_key_effect(CommandsEffects::ACTION_KEY_NONE);
   keys_effect.save_sword_key_effect();
-  keys_effect.set_sword_key_effect(CommandsEffects::SWORD_KEY_NONE);
+  keys_effect.set_sword_key_effect(CommandsEffects::ATTACK_KEY_NONE);
   keys_effect.save_pause_key_effect();
   keys_effect.set_pause_key_effect(CommandsEffects::PAUSE_KEY_NONE);
 
@@ -144,13 +145,18 @@ void DialogBoxSystem::open(
     }
 
     // Determine the position.
-    const Rectangle& camera_position = game.get_current_map().get_camera_position();
     bool top = false;
-    if (game.get_hero()->get_y() >= camera_position.get_y() + 130) {
-      top = true;
+    const CameraPtr& camera = game.get_current_map().get_camera();
+    if (camera != nullptr) {
+      const Rectangle& camera_position = camera->get_bounding_box();
+      if (game.get_hero()->get_y() >= camera_position.get_y() + 130) {
+        top = true;
+      }
     }
-    int x = camera_position.get_width() / 2 - 110;
-    int y = top ? 32 : camera_position.get_height() - 96;
+
+    const Size& quest_size = Video::get_quest_size();
+    int x = quest_size.width / 2 - 110;
+    int y = top ? 32 : quest_size.height - 96;
 
     text_position = { x, y };
 

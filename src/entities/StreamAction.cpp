@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,7 +84,15 @@ void StreamAction::recompute_movement() {
   const Point& xy = Entity::direction_to_xy_move(direction8);
   const int dx = xy.x;
   const int dy = xy.y;
-  delay = (uint32_t) (1000 / stream->get_speed());
+  const int speed = stream->get_speed();
+
+  if (speed > 0) {
+    delay = (uint32_t) (1000 / speed);
+  }
+  else {
+    // Stream of speed 0: inactive.
+    delay = 0;
+  }
 
   target = stream->get_xy();
 
@@ -140,7 +148,7 @@ void StreamAction::update() {
     return;
   }
 
-  // Stop the stream action if the hero escapes a non-blocking stream.
+  // Stop the stream action if the entity escapes a non-blocking stream.
   const Point& ground_point = entity_moved->get_ground_point();
   if (
       stream->get_allow_movement() &&
@@ -153,7 +161,7 @@ void StreamAction::update() {
     // This is needed to have precise
     // exact diagonal movements of 16 pixels in stream mazes.
 
-    if (entity_moved->get_distance(target) > 8) {
+    if (entity_moved->get_distance(target) > 12) {
       // This last test is to avoid stopping a stream when being close to the target.
       // Indeed, in the last pixels before the target, the entity's ground
       // point is no longer on the stream. We continue anyway until the target.
@@ -163,6 +171,10 @@ void StreamAction::update() {
   }
 
   if (is_suspended()) {
+    return;
+  }
+
+  if (stream->get_speed() <= 0) {
     return;
   }
 

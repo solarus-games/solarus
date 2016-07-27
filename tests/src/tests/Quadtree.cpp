@@ -143,9 +143,8 @@ void test_add(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
     added_elements.push_back(element);
   }
 
-  std::vector<ElementPtr> found_elements;
   Rectangle region(220, 10, 100, 100);
-  quadtree.get_elements(region, found_elements);
+  std::vector<ElementPtr> found_elements = quadtree.get_elements(region);
 
   Debug::check_assertion(found_elements.size() == 3, "Expected 3 elements found");
   check_found(found_elements, added_elements[2]);
@@ -159,8 +158,7 @@ void test_add(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
 void test_remove(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
 
   // Get all elements.
-  std::vector<ElementPtr> elements;
-  quadtree.get_elements(quadtree.get_space(), elements);
+  std::vector<ElementPtr> elements = quadtree.get_elements(quadtree.get_space());
 
   // Remove some of them.
   Debug::check_assertion(quadtree.get_num_elements() > 5, "Wrong number of elements");
@@ -188,13 +186,21 @@ void test_add_limit(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) 
 }
 
 /**
+ * \brief Tests adding an element partially outside the quadtree space, with the center outside.
+ */
+void test_add_center_outside(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
+
+  add(quadtree, Rectangle(-480, 32, 640, 640));
+  add(quadtree, Rectangle(1300, 32, 640, 640));
+}
+
+/**
  * \brief Tests moving elements in a quadtree.
  */
 void test_move(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
 
   // Get all elements.
-  std::vector<ElementPtr> elements;
-  quadtree.get_elements(quadtree.get_space(), elements);
+  std::vector<ElementPtr> elements = quadtree.get_elements(quadtree.get_space());
 
   // Move some of them.
   Debug::check_assertion(quadtree.get_num_elements() > 4, "Wrong number of elements");
@@ -209,15 +215,14 @@ void test_move(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
 void test_move_limit(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
 
   // Get all elements.
-  std::vector<ElementPtr> elements;
-  quadtree.get_elements(quadtree.get_space(), elements);
+  std::vector<ElementPtr> elements = quadtree.get_elements(quadtree.get_space());
 
   // Move an element outside the bounds.
   int num_elements = quadtree.get_num_elements();
   Debug::check_assertion(num_elements > 4, "Wrong number of elements");
 
   ElementPtr element = elements[0];
-  element->get_bounding_box().set_xy(-500, -500);
+  element->get_bounding_box().set_xy(-50000, -50000);
   move(quadtree, element);
   Debug::check_assertion(quadtree.get_num_elements() == num_elements, "Wrong number of elements");
 
@@ -244,6 +249,7 @@ int main(int argc, char** argv) {
   test_add(env, quadtree);
   test_add_big_size(env, quadtree);
   test_add_limit(env, quadtree);
+  test_add_center_outside(env, quadtree);
   test_remove(env, quadtree);
   test_move(env, quadtree);
   test_move_limit(env, quadtree);

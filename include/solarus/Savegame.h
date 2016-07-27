@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,6 +77,7 @@ class SOLARUS_API Savegame: public ExportableToLua {
     static const std::string KEY_ABILITY_SHIELD;
     static const std::string KEY_ABILITY_LIFT;
     static const std::string KEY_ABILITY_SWIM;
+    static const std::string KEY_ABILITY_JUMP_OVER_WATER;
     static const std::string KEY_ABILITY_RUN;
     static const std::string KEY_ABILITY_DETECT_WEAK_WALLS;
     static const std::string KEY_ABILITY_GET_BACK_FROM_DEATH;

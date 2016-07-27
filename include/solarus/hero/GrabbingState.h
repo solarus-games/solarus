@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,14 +17,14 @@
 #ifndef SOLARUS_HERO_GRABBING_STATE_H
 #define SOLARUS_HERO_GRABBING_STATE_H
 
-#include "solarus/hero/BaseState.h"
+#include "solarus/hero/HeroState.h"
 
 namespace Solarus {
 
 /**
  * \brief The state "Grabbing" of the hero.
  */
-class Hero::GrabbingState: public Hero::BaseState {
+class Hero::GrabbingState: public HeroState {
 
   public:
 

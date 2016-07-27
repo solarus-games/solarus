@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2015 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@ class Video {
 
     static void initialize(const Arguments& args);
     static void quit();
+    static bool is_initialized();
 
     static SDL_Window* get_window();
     static SDL_Renderer* get_renderer();
@@ -68,6 +69,9 @@ class Video {
 
     static bool is_fullscreen();
     static void set_fullscreen(bool fullscreen);
+
+    static bool is_cursor_visible();
+    static void set_cursor_visible(bool cursor_visible);
 
     static std::string get_window_title();
     static void set_window_title(const std::string& window_title);

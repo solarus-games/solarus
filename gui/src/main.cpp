@@ -44,10 +44,10 @@ int print_help(int argc, char* argv[]) {
 
   std::string binary_name = (argc > 0) ? argv[0] : "solarus";
   std::cout << "Usage:\n" <<
-               "  " << binary_name << "                       Opens the Solarus launcher GUI.\n" <<
-               "  " << binary_name << " -help                 Prints this help message and exists.\n" <<
-               "  " << binary_name << " -run /path/to/quest   Plays a quest.\n" <<
-               "  " << binary_name << " -add /path/to/quest   Adds a quest to the launcher's list and exits.\n";
+               "  " << binary_name << "                         Opens the Solarus launcher GUI\n" <<
+               "  " << binary_name << " -help                   Prints this help message and exits\n" <<
+               "  " << binary_name << " -run [/path/to/quest]   Plays a quest (default: " << SOLARUS_DEFAULT_QUEST << ")\n" <<
+               "  " << binary_name << " -add /path/to/quest     Adds a quest to the launcher's list and exits\n";
   return 0;
 }
 

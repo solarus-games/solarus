@@ -16,7 +16,7 @@ function sol.main:on_started()
   sol.video.set_window_title("Sample quest - Solarus " .. sol.main.get_solarus_version())
 
   -- Show the Solarus logo initially.
-  local solarus_logo = require("menus/solarus_logo")
+  local solarus_logo = require("scripts/menus/solarus_logo")
   sol.menu.start(self, solarus_logo)
 
   -- Start the game when the Solarus logo menu is finished.

@@ -1,3 +1,7 @@
+map{ id = "dungeon1/01", description = "d1-01" }
+map{ id = "dungeon1/02", description = "d1-02" }
+map{ id = "dungeon1/03", description = "d1-03" }
+map{ id = "dungeon1/04", description = "d1-04" }
 map{ id = "first_map", description = "First map" }
 
 tileset{ id = "castle", description = "Castle" }
@@ -9,15 +13,18 @@ sprite{ id = "animals/cat_yellow", description = "Yellow Cat" }
 sprite{ id = "animals/chameleon", description = "Chameleon" }
 sprite{ id = "animals/mouse", description = "Mouse" }
 sprite{ id = "animals/phoenix", description = "Phoenix" }
-sprite{ id = "citizens/old_man", description = "Old man" }
-sprite{ id = "citizens/old_woman", description = "Old Woman" }
+sprite{ id = "citizens/astrologer", description = "astrologer" }
+sprite{ id = "citizens/blacksmith", description = "blacksmith" }
+sprite{ id = "citizens/old_man", description = "old man" }
+sprite{ id = "citizens/old_woman", description = "old Woman" }
 sprite{ id = "citizens/witch", description = "witch" }
 sprite{ id = "dialogs/dialog_eldran", description = "Eldran Dialog" }
 sprite{ id = "dialogs/dialog_old_man", description = "Old man Dialog" }
 sprite{ id = "dialogs/dialog_old_woman", description = "Old woman Dialog" }
 sprite{ id = "dialogs/dialog_robyne", description = "Robyne Dialog" }
 sprite{ id = "enemies/enemy_killed", description = "Enemy killed" }
-sprite{ id = "enemies/slime_green", description = "Green Slime" }
+sprite{ id = "enemies/slime_green", description = "slime green" }
+sprite{ id = "enemies/slime_yellow", description = "slime yellow" }
 sprite{ id = "entities/arrow", description = "Arrow" }
 sprite{ id = "entities/big_chest", description = "Big chest" }
 sprite{ id = "entities/block", description = "Block" }
@@ -47,6 +54,7 @@ sprite{ id = "hero/sword1", description = "Hero sword 1" }
 sprite{ id = "hero/sword_stars1", description = "Hero sword stars 1" }
 sprite{ id = "hero/trail", description = "Hero trail" }
 sprite{ id = "hero/tunic1", description = "Hero tunic 1" }
+sprite{ id = "items/gem", description = "gem" }
 sprite{ id = "main_heroes/eldran", description = "Eldran" }
 sprite{ id = "main_heroes/robyne", description = "Robyne" }
 sprite{ id = "main_heroes/sword", description = "sword" }
@@ -56,12 +64,16 @@ sprite{ id = "menus/solarus_logo", description = "Solarus logo" }
 sprite{ id = "shadows/shadow_big", description = "shadow big" }
 sprite{ id = "shadows/shadow_big_dynamic", description = "shadow big dynamic" }
 sprite{ id = "shadows/shadow_small", description = "shadow small" }
+sprite{ id = "things/anvil_blacksmith", description = "anvil blacksmith" }
 sprite{ id = "things/broom", description = "broom witch" }
 sprite{ id = "things/fall_on_hole_effect", description = "fall on hole" }
 sprite{ id = "things/grass_effect", description = "grass effect" }
 sprite{ id = "things/lava_splash_effect", description = "lava splash" }
 sprite{ id = "things/long_chair", description = "long chair witch" }
+sprite{ id = "things/magic_ball", description = "magic ball" }
+sprite{ id = "things/magic_deck", description = "magic deck" }
 sprite{ id = "things/marmite_witch", description = "marmite witch" }
+sprite{ id = "things/metal_blacksmith", description = "metal blacksmith" }
 sprite{ id = "things/steam", description = "steam" }
 sprite{ id = "things/switch_aureole", description = "switch aureole" }
 sprite{ id = "things/water_splash_effect", description = "water splash" }
@@ -169,9 +181,16 @@ sound{ id = "wrong2", description = "wrong2" }
 sound{ id = "wrong3", description = "wrong3" }
 
 item{ id = "bomb", description = "Bomb" }
+item{ id = "gem", description = "gem" }
 
-enemy{ id = "slime_green", description = "Green Slime" }
+enemy{ id = "animals/chameleon", description = "chameleon" }
+enemy{ id = "citizens/blacksmith", description = "blacksmith" }
+enemy{ id = "slime_green", description = "slime green" }
+enemy{ id = "slime_yellow", description = "slime yellow" }
 
+entity{ id = "citizens/astrologer", description = "astrologer" }
+entity{ id = "citizens/blacksmith", description = "blacksmith" }
+entity{ id = "citizens/witch", description = "witch" }
 
 language{ id = "en", description = "English" }
 

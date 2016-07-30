@@ -379,11 +379,21 @@ tile{
   pattern = "8",
 }
 
+tile{
+  layer = 0,
+  x = 280,
+  y = 120,
+  width = 16,
+  height = 16,
+  pattern = "5",
+}
+
 destination{
   layer = 0,
   x = 176,
   y = 189,
   direction = 1,
+  default = true,
 }
 
 chest{
@@ -531,6 +541,24 @@ destructible{
   sprite = "entities/pot",
   destruction_sound = "falling_rock",
   damage_on_enemies = 2,
+}
+
+destination{
+  name = "dungeon_entrance",
+  layer = 0,
+  x = 272,
+  y = 133,
+  direction = 2,
+}
+
+teletransporter{
+  layer = 0,
+  x = 280,
+  y = 120,
+  width = 16,
+  height = 16,
+  destination_map = "dungeon1/01",
+  destination = "dungeon_entrance",
 }
 
 custom_entity{

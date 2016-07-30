@@ -1,0 +1,182 @@
+animation{
+  name = "stopped",
+  src_image = "citizens/blacksmith.png",
+  frame_delay = 1000,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 32, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+    { x = 64, y = 0, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+    { x = 64, y = 32, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+    { x = 0, y = 0, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+  },
+}
+animation{
+  name = "blacksmith_attack",
+  src_image = "citizens/blacksmith.png",
+  frame_delay = 150,
+  directions = {
+    { x = 0, y = 312, frame_width = 64, frame_height = 40, origin_x = 32, origin_y = 37, num_frames = 3 },
+    { x = 120, y = 496, frame_width = 40, frame_height = 64, origin_x = 16, origin_y = 45, num_frames = 3 },
+    { x = 0, y = 272, frame_width = 64, frame_height = 40, origin_x = 32, origin_y = 37, num_frames = 3 },
+    { x = 0, y = 496, frame_width = 40, frame_height = 64, origin_x = 16, origin_y = 45, num_frames = 3 },
+  },
+}
+animation{
+  name = "blacksmith_attack_end",
+  src_image = "citizens/blacksmith.png",
+  frame_delay = 200,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 128, y = 312, frame_width = 64, frame_height = 40, origin_x = 32, origin_y = 37 },
+    { x = 160, y = 496, frame_width = 40, frame_height = 64, origin_x = 16, origin_y = 45 },
+    { x = 128, y = 272, frame_width = 64, frame_height = 40, origin_x = 32, origin_y = 37 },
+    { x = 80, y = 496, frame_width = 40, frame_height = 64, origin_x = 16, origin_y = 45 },
+  },
+}
+animation{
+  name = "fall",
+  src_image = "citizens/blacksmith.png",
+  frame_delay = 100,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 192, y = 32, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+    { x = 192, y = 32, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+    { x = 192, y = 0, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+    { x = 192, y = 0, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+  },
+}
+animation{
+  name = "float",
+  src_image = "citizens/blacksmith.png",
+  directions = {
+    { x = 96, y = 128, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29 },
+    { x = 96, y = 128, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29 },
+    { x = 32, y = 128, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29 },
+    { x = 32, y = 128, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29 },
+  },
+}
+animation{
+  name = "forge",
+  src_image = "citizens/blacksmith.png",
+  frame_delay = 150,
+  directions = {
+    { x = 0, y = 200, frame_width = 64, frame_height = 40, origin_x = 32, origin_y = 37, num_frames = 3 },
+    { x = 120, y = 432, frame_width = 40, frame_height = 64, origin_x = 16, origin_y = 45, num_frames = 3 },
+    { x = 0, y = 160, frame_width = 64, frame_height = 40, origin_x = 32, origin_y = 37, num_frames = 3 },
+    { x = 0, y = 432, frame_width = 40, frame_height = 64, origin_x = 16, origin_y = 45, num_frames = 3 },
+  },
+}
+animation{
+  name = "forge_end",
+  src_image = "citizens/blacksmith.png",
+  frame_delay = 200,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 128, y = 200, frame_width = 64, frame_height = 40, origin_x = 32, origin_y = 37 },
+    { x = 200, y = 432, frame_width = 40, frame_height = 64, origin_x = 16, origin_y = 45 },
+    { x = 128, y = 160, frame_width = 64, frame_height = 40, origin_x = 32, origin_y = 37 },
+    { x = 80, y = 432, frame_width = 40, frame_height = 64, origin_x = 16, origin_y = 45 },
+  },
+}
+animation{
+  name = "hammer_attack",
+  src_image = "citizens/blacksmith.png",
+  frame_delay = 150,
+  directions = {
+    { x = 0, y = 392, frame_width = 64, frame_height = 40, origin_x = 32, origin_y = 37, num_frames = 3 },
+    { x = 120, y = 560, frame_width = 40, frame_height = 64, origin_x = 16, origin_y = 45, num_frames = 3 },
+    { x = 0, y = 352, frame_width = 64, frame_height = 40, origin_x = 32, origin_y = 37, num_frames = 3 },
+    { x = 0, y = 560, frame_width = 40, frame_height = 64, origin_x = 16, origin_y = 45, num_frames = 3 },
+  },
+}
+animation{
+  name = "hammer_attack_end",
+  src_image = "citizens/blacksmith.png",
+  frame_delay = 200,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 128, y = 392, frame_width = 64, frame_height = 40, origin_x = 32, origin_y = 37 },
+    { x = 200, y = 560, frame_width = 40, frame_height = 64, origin_x = 16, origin_y = 45 },
+    { x = 128, y = 352, frame_width = 64, frame_height = 40, origin_x = 32, origin_y = 37 },
+    { x = 80, y = 560, frame_width = 49, frame_height = 64, origin_x = 16, origin_y = 45 },
+  },
+}
+animation{
+  name = "hand_lifted",
+  src_image = "citizens/blacksmith.png",
+  frame_delay = 500,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 192, y = 224, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+    { x = 192, y = 224, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+    { x = 192, y = 192, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+    { x = 192, y = 192, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+  },
+}
+animation{
+  name = "hurt",
+  src_image = "citizens/blacksmith.png",
+  frame_delay = 1000,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 32, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+    { x = 64, y = 0, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+    { x = 64, y = 32, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+    { x = 0, y = 0, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+  },
+}
+animation{
+  name = "hurt_hammer",
+  src_image = "citizens/blacksmith.png",
+  frame_delay = 500,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 128, y = 128, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+  },
+}
+animation{
+  name = "jump",
+  src_image = "citizens/blacksmith.png",
+  frame_delay = 100,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 128, y = 32, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+    { x = 128, y = 32, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+    { x = 128, y = 0, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+    { x = 128, y = 0, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 2 },
+  },
+}
+animation{
+  name = "running",
+  src_image = "citizens/blacksmith.png",
+  frame_delay = 100,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 96, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 4 },
+    { x = 128, y = 64, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 4 },
+    { x = 128, y = 96, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 4 },
+    { x = 0, y = 64, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 4 },
+  },
+}
+animation{
+  name = "stomp",
+  src_image = "citizens/blacksmith.png",
+  directions = {
+    { x = 64, y = 128, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29 },
+    { x = 64, y = 128, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29 },
+    { x = 0, y = 128, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29 },
+    { x = 0, y = 128, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29 },
+  },
+}
+animation{
+  name = "walking",
+  src_image = "citizens/blacksmith.png",
+  frame_delay = 250,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 96, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 4 },
+    { x = 128, y = 64, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 4 },
+    { x = 128, y = 96, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 4 },
+    { x = 0, y = 64, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 4 },
+  },
+}

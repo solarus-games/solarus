@@ -1,0 +1,280 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  min_layer = 0,
+  max_layer = 2,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 128,
+  y = 0,
+  width = 48,
+  height = 16,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 16,
+  width = 320,
+  height = 208,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 128,
+  y = 160,
+  width = 96,
+  height = 64,
+  pattern = "67",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 144,
+  height = 16,
+  pattern = "33",
+}
+
+tile{
+  layer = 0,
+  x = 312,
+  y = 16,
+  width = 8,
+  height = 208,
+  pattern = "31",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 16,
+  width = 8,
+  height = 208,
+  pattern = "30",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 224,
+  width = 320,
+  height = 16,
+  pattern = "37",
+}
+
+tile{
+  layer = 0,
+  x = 152,
+  y = 176,
+  width = 48,
+  height = 32,
+  pattern = "26",
+}
+
+tile{
+  layer = 0,
+  x = 112,
+  y = 152,
+  width = 16,
+  height = 24,
+  pattern = "39",
+}
+
+tile{
+  layer = 0,
+  x = 56,
+  y = 0,
+  width = 16,
+  height = 16,
+  pattern = "8",
+}
+
+tile{
+  layer = 0,
+  x = 176,
+  y = 0,
+  width = 144,
+  height = 16,
+  pattern = "33",
+}
+
+tile{
+  layer = 0,
+  x = 256,
+  y = 0,
+  width = 16,
+  height = 16,
+  pattern = "8",
+}
+
+tile{
+  layer = 0,
+  x = 128,
+  y = 0,
+  width = 16,
+  height = 24,
+  pattern = "39",
+}
+
+tile{
+  layer = 0,
+  x = 176,
+  y = 0,
+  width = 16,
+  height = 24,
+  pattern = "39",
+}
+
+tile{
+  layer = 0,
+  x = 224,
+  y = 152,
+  width = 16,
+  height = 24,
+  pattern = "39",
+}
+
+tile{
+  layer = 0,
+  x = 168,
+  y = 200,
+  width = 16,
+  height = 24,
+  pattern = "4",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 8,
+  height = 16,
+  pattern = "32",
+}
+
+tile{
+  layer = 0,
+  x = 312,
+  y = 0,
+  width = 8,
+  height = 16,
+  pattern = "35",
+}
+
+destination{
+  name = "dungeon_entrance",
+  layer = 0,
+  x = 176,
+  y = 197,
+  direction = 1,
+}
+
+enemy{
+  layer = 0,
+  x = 32,
+  y = 37,
+  direction = 0,
+  breed = "slime_green",
+}
+
+enemy{
+  layer = 0,
+  x = 296,
+  y = 37,
+  direction = 0,
+  breed = "slime_green",
+}
+
+teletransporter{
+  layer = 0,
+  x = 168,
+  y = 208,
+  width = 16,
+  height = 16,
+  destination_map = "first_map",
+}
+
+enemy{
+  layer = 0,
+  x = 120,
+  y = 61,
+  direction = 0,
+  breed = "animals/chameleon",
+}
+
+enemy{
+  layer = 0,
+  x = 240,
+  y = 53,
+  direction = 0,
+  breed = "animals/chameleon",
+}
+
+enemy{
+  layer = 0,
+  x = 40,
+  y = 85,
+  direction = 0,
+  breed = "animals/chameleon",
+}
+
+enemy{
+  layer = 0,
+  x = 184,
+  y = 77,
+  direction = 0,
+  breed = "slime_yellow",
+}
+
+enemy{
+  layer = 0,
+  x = 72,
+  y = 117,
+  direction = 0,
+  breed = "slime_yellow",
+}
+
+enemy{
+  layer = 0,
+  x = 248,
+  y = 133,
+  direction = 0,
+  breed = "slime_yellow",
+}
+
+enemy{
+  layer = 0,
+  x = 272,
+  y = 85,
+  direction = 0,
+  breed = "slime_yellow",
+}
+
+enemy{
+  layer = 0,
+  x = 120,
+  y = 37,
+  direction = 0,
+  breed = "slime_green",
+}
+
+teletransporter{
+  layer = 0,
+  x = 144,
+  y = -16,
+  width = 32,
+  height = 16,
+  transition = "scrolling",
+  destination_map = "dungeon1/02",
+  destination = "_side",
+}
+

@@ -10,6 +10,7 @@ function game_manager:start_game()
     game:set_life(game:get_max_life())
     game:set_ability("lift", 2)
     game:set_ability("sword", 1)
+    game:set_starting_location("first_map") -- Starting location.
   end
   game:start()
 

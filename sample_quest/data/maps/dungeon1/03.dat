@@ -1,0 +1,289 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  min_layer = 0,
+  max_layer = 2,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 144,
+  y = 224,
+  width = 32,
+  height = 16,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 144,
+  y = 0,
+  width = 32,
+  height = 16,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 16,
+  width = 320,
+  height = 208,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 144,
+  height = 16,
+  pattern = "33",
+}
+
+tile{
+  layer = 0,
+  x = 312,
+  y = 16,
+  width = 8,
+  height = 208,
+  pattern = "31",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 16,
+  width = 8,
+  height = 208,
+  pattern = "30",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 224,
+  width = 144,
+  height = 16,
+  pattern = "37",
+}
+
+tile{
+  layer = 0,
+  x = 128,
+  y = 200,
+  width = 16,
+  height = 24,
+  pattern = "39",
+}
+
+tile{
+  layer = 0,
+  x = 56,
+  y = 0,
+  width = 16,
+  height = 16,
+  pattern = "8",
+}
+
+tile{
+  layer = 0,
+  x = 176,
+  y = 0,
+  width = 144,
+  height = 16,
+  pattern = "33",
+}
+
+tile{
+  layer = 0,
+  x = 256,
+  y = 0,
+  width = 16,
+  height = 16,
+  pattern = "8",
+}
+
+tile{
+  layer = 0,
+  x = 128,
+  y = 0,
+  width = 16,
+  height = 24,
+  pattern = "39",
+}
+
+tile{
+  layer = 0,
+  x = 176,
+  y = 0,
+  width = 16,
+  height = 24,
+  pattern = "39",
+}
+
+tile{
+  layer = 0,
+  x = 176,
+  y = 200,
+  width = 16,
+  height = 24,
+  pattern = "39",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 8,
+  height = 16,
+  pattern = "32",
+}
+
+tile{
+  layer = 0,
+  x = 312,
+  y = 0,
+  width = 8,
+  height = 16,
+  pattern = "35",
+}
+
+tile{
+  layer = 0,
+  x = 176,
+  y = 224,
+  width = 144,
+  height = 16,
+  pattern = "37",
+}
+
+teletransporter{
+  layer = 0,
+  x = 144,
+  y = 240,
+  width = 32,
+  height = 16,
+  transition = "scrolling",
+  destination_map = "dungeon1/02",
+  destination = "_side",
+}
+
+teletransporter{
+  layer = 0,
+  x = 144,
+  y = -16,
+  width = 32,
+  height = 16,
+  transition = "scrolling",
+  destination_map = "dungeon1/04",
+  destination = "_side",
+}
+
+custom_entity{
+  name = "blacksmith",
+  layer = 0,
+  x = 160,
+  y = 125,
+  width = 16,
+  height = 16,
+  direction = 2,
+  sprite = "citizens/blacksmith",
+  model = "citizens/blacksmith",
+}
+
+wall{
+  layer = 0,
+  x = 80,
+  y = 104,
+  width = 64,
+  height = 32,
+  stops_hero = true,
+  stops_npcs = true,
+  stops_enemies = true,
+  stops_blocks = true,
+  stops_projectiles = true,
+}
+
+custom_entity{
+  layer = 0,
+  x = 88,
+  y = 117,
+  width = 64,
+  height = 32,
+  direction = 0,
+  sprite = "things/anvil_blacksmith",
+}
+
+custom_entity{
+  name = "metal",
+  layer = 0,
+  x = 120,
+  y = 117,
+  width = 32,
+  height = 16,
+  direction = 0,
+  sprite = "things/metal_blacksmith",
+}
+
+pickable{
+  layer = 0,
+  x = 88,
+  y = 165,
+  treasure_name = "gem",
+}
+
+pickable{
+  layer = 0,
+  x = 64,
+  y = 197,
+  treasure_name = "gem",
+  treasure_variant = 2,
+}
+
+pickable{
+  layer = 0,
+  x = 40,
+  y = 165,
+  treasure_name = "gem",
+  treasure_variant = 3,
+}
+
+pickable{
+  layer = 0,
+  x = 240,
+  y = 205,
+  treasure_name = "gem",
+  treasure_variant = 4,
+}
+
+pickable{
+  layer = 0,
+  x = 256,
+  y = 173,
+  treasure_name = "gem",
+  treasure_variant = 5,
+}
+
+pickable{
+  layer = 0,
+  x = 296,
+  y = 189,
+  treasure_name = "gem",
+  treasure_variant = 6,
+}
+
+custom_entity{
+  name = "steam",
+  layer = 1,
+  x = 128,
+  y = 101,
+  width = 16,
+  height = 16,
+  direction = 0,
+  sprite = "things/steam",
+}
+

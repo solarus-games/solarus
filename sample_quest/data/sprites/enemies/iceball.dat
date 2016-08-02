@@ -1,0 +1,24 @@
+animation{
+  name = "stopped",
+  src_image = "enemies/slime_cyan.png",
+  frame_delay = 150,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 112, y = 48, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 5, num_frames = 2 },
+    { x = 112, y = 48, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 5, num_frames = 2 },
+    { x = 112, y = 48, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 5, num_frames = 2 },
+    { x = 112, y = 48, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 5, num_frames = 2 },
+  },
+}
+animation{
+  name = "walking",
+  src_image = "enemies/slime_cyan.png",
+  frame_delay = 150,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 112, y = 48, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 5, num_frames = 2 },
+    { x = 112, y = 48, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 5, num_frames = 2 },
+    { x = 112, y = 48, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 5, num_frames = 2 },
+    { x = 112, y = 48, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 5, num_frames = 2 },
+  },
+}

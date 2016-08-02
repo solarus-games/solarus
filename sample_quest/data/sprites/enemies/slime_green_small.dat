@@ -1,0 +1,34 @@
+animation{
+  name = "stopped",
+  src_image = "enemies/slime_green.png",
+  directions = {
+    { x = 0, y = 64, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13 },
+    { x = 0, y = 64, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13 },
+    { x = 0, y = 64, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13 },
+    { x = 0, y = 64, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13 },
+  },
+}
+animation{
+  name = "hurt",
+  src_image = "enemies/slime_green.png",
+  frame_delay = 100,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 128, y = 48, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 5, num_frames = 4, num_columns = 1 },
+    { x = 128, y = 48, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 5, num_frames = 4, num_columns = 1 },
+    { x = 128, y = 48, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 5, num_frames = 4, num_columns = 1 },
+    { x = 128, y = 48, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 5, num_frames = 4, num_columns = 1 },
+  },
+}
+animation{
+  name = "walking",
+  src_image = "enemies/slime_green.png",
+  frame_delay = 100,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 112, y = 48, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 5, num_frames = 4, num_columns = 1 },
+    { x = 112, y = 48, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 5, num_frames = 4, num_columns = 1 },
+    { x = 112, y = 48, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 5, num_frames = 4, num_columns = 1 },
+    { x = 112, y = 48, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 5, num_frames = 4, num_columns = 1 },
+  },
+}

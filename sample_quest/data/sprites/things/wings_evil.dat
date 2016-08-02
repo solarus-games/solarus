@@ -1,0 +1,32 @@
+animation{
+  name = "walking",
+  src_image = "enemies/slime_purple.png",
+  directions = {
+    { x = 0, y = 104, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 16, num_frames = 6 },
+    { x = 0, y = 136, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 16, num_frames = 6 },
+    { x = 120, y = 104, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 16 },
+    { x = 120, y = 136, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 16 },
+  },
+}
+animation{
+  name = "evil_wing",
+  src_image = "enemies/slime_purple.png",
+  frame_delay = 120,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y = 104, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 16, num_frames = 6 },
+    { x = 0, y = 136, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 16, num_frames = 6 },
+    { x = 120, y = 104, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 16 },
+    { x = 120, y = 136, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 16 },
+  },
+}
+animation{
+  name = "hurt",
+  src_image = "enemies/slime_purple.png",
+  directions = {
+    { x = 0, y = 104, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 16, num_frames = 6 },
+    { x = 0, y = 136, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 16, num_frames = 6 },
+    { x = 120, y = 104, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 16 },
+    { x = 120, y = 136, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 16 },
+  },
+}

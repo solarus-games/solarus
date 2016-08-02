@@ -388,6 +388,15 @@ tile{
   pattern = "5",
 }
 
+tile{
+  layer = 0,
+  x = 24,
+  y = 56,
+  width = 16,
+  height = 16,
+  pattern = "5",
+}
+
 destination{
   layer = 0,
   x = 176,
@@ -445,8 +454,8 @@ block{
 
 enemy{
   layer = 0,
-  x = 40,
-  y = 77,
+  x = 288,
+  y = 61,
   direction = 0,
   breed = "slime_green",
 }
@@ -559,6 +568,23 @@ teletransporter{
   height = 16,
   destination_map = "dungeon1/01",
   destination = "dungeon_entrance",
+}
+
+teletransporter{
+  layer = 0,
+  x = 24,
+  y = 56,
+  width = 16,
+  height = 16,
+  destination_map = "dungeon1/slime_room",
+}
+
+destination{
+  name = "destination_left",
+  layer = 0,
+  x = 48,
+  y = 69,
+  direction = 0,
 }
 
 custom_entity{

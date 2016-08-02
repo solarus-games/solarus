@@ -11,6 +11,40 @@ animation{
   },
 }
 animation{
+  name = "ascend",
+  src_image = "shadows/shadow.png",
+  frame_delay = 32,
+  frame_to_loop_on = 7,
+  directions = {
+    { x = 16, y = 0, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4, num_frames = 8 },
+    { x = 16, y = 0, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4, num_frames = 8 },
+    { x = 16, y = 0, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4, num_frames = 8 },
+    { x = 16, y = 0, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4, num_frames = 8 },
+  },
+}
+animation{
+  name = "big",
+  src_image = "shadows/shadow.png",
+  directions = {
+    { x = 16, y = 0, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4 },
+    { x = 16, y = 0, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4 },
+    { x = 16, y = 0, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4 },
+    { x = 16, y = 0, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4 },
+  },
+}
+animation{
+  name = "descend",
+  src_image = "shadows/shadow.png",
+  frame_delay = 32,
+  frame_to_loop_on = 7,
+  directions = {
+    { x = 16, y = 8, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4, num_frames = 8 },
+    { x = 16, y = 8, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4, num_frames = 8 },
+    { x = 16, y = 8, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4, num_frames = 8 },
+    { x = 16, y = 8, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4, num_frames = 8 },
+  },
+}
+animation{
   name = "hurt",
   src_image = "shadows/shadow.png",
   directions = {
@@ -18,5 +52,15 @@ animation{
     { x = 0, y = 0, frame_width = 12, frame_height = 6, origin_x = 6, origin_y = 3 },
     { x = 0, y = 0, frame_width = 12, frame_height = 6, origin_x = 6, origin_y = 3 },
     { x = 0, y = 0, frame_width = 12, frame_height = 6, origin_x = 6, origin_y = 3 },
+  },
+}
+animation{
+  name = "small",
+  src_image = "shadows/shadow.png",
+  directions = {
+    { x = 16, y = 8, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4 },
+    { x = 16, y = 8, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4 },
+    { x = 16, y = 8, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4 },
+    { x = 16, y = 8, frame_width = 16, frame_height = 8, origin_x = 8, origin_y = 4 },
   },
 }

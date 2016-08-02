@@ -1,14 +1,18 @@
 local enemy = ...
+local map = enemy:get_map()
 
 local life = 3
 local damage = 1
-local spark_damage = 4
+local spark_damage = 2
 local state -- States: "stopped", "spark", "going_hero", "hidden", "hiding", "unhiding", "jumping", "prepare_jump", "finish_jump".
 local speed = 10
-local detection_distance = 80
+local detection_distance = 100
+local attack_distance = 48
+local delay_before_attack = 750 -- Delay before spark attack.
 local jump_duration = 1000 -- Time in milliseconds.
-local max_height = 24 -- Height for the jump, in pixels.
+local max_height = 48 -- Height for the jump, in pixels.
 local jumping_speed = 20 -- Speed of the movement during the jump.
+local needs_put_egg = false -- Create only one egg per slime.
 
 function enemy:on_created()
   self:set_life(life)
@@ -31,7 +35,11 @@ function enemy:on_created()
     elseif animation == "prepare_jump" then
       enemy:jump()
     elseif animation == "finish_jump" then
-      enemy:start_spark() -- Start spark attack after jump.
+      state = "stopped"
+      sprite:set_animation("stopped")
+      sol.timer.start(self, 200, function()
+        enemy:start_going_hero()
+      end)
     end
   end
 end
@@ -87,6 +95,17 @@ function enemy:start_going_hero()
   m:set_speed(speed)
   m:set_target(self:get_map():get_hero())
   m:start(self)
+  -- Put egg if necessary.
+  if needs_put_egg then
+    sol.timer.start(self, 500, function() self:create_egg() end)
+  end
+  -- Check if hero is close to start spark attack.
+  sol.timer.start(self, 500, function()
+    if map:get_hero():get_distance(self) < attack_distance then
+      self:start_spark()
+    end
+    return true
+  end)
   -- Prepare jump.
   sol.timer.start(self, 2000, function()
     self:prepare_jump()
@@ -108,6 +127,7 @@ end
 function enemy:prepare_jump()
   state = "prepare_jump"
   self:stop_movement()
+  sol.timer.stop_all(self)
   self:get_sprite():set_animation("prepare_jump")
 end
 -- Finish jump.
@@ -167,14 +187,21 @@ end
 -- Spark attack.
 function enemy:start_spark()
   state = "spark"
-  sol.audio.play_sound("electrified")
-  self:set_damage(spark_damage)
-  self:get_sprite():set_animation("attack")
-  local spark = self:create_sprite("enemies/slime_yellow", "spark")
-  spark:set_animation("spark")
-  self:set_invincible_sprite(spark)
-  sol.timer.start(self, 750, function()
-    self:restart()
+  sol.timer.stop_all(self)
+  self:stop_movement()
+  local sprite = self:get_sprite()
+  sprite:set_animation("jump")
+  -- Make a delay before the spark attack.
+  sol.timer.start(self, delay_before_attack, function()
+    sol.audio.play_sound("electrified")
+    self:set_damage(spark_damage)
+    sprite:set_animation("attack")
+    local spark = self:create_sprite("enemies/slime_yellow", "spark")
+    spark:set_animation("spark")
+    self:set_invincible_sprite(spark)
+    sol.timer.start(self, 750, function()
+      self:restart()
+    end)
   end)
 end
 
@@ -233,3 +260,24 @@ function enemy:start_checking_ground()
     return true
   end)
 end
+
+-- Create egg.
+function enemy:create_egg()
+  state = "egg"
+  needs_put_egg = false
+  self:stop_movement()
+  local sprite = self:get_sprite()
+  sprite:set_animation("jump")
+  sol.timer.start(self, 250, function() sprite:set_animation("stopped") end)
+  local x, y, layer = self:get_position()
+  local prop = {x = x, y = y, layer = layer, direction = 0, breed = "slime_egg"}
+  local egg = map:create_enemy(prop)
+  egg:set_slime_model("slime_yellow")
+  egg:fall() -- Falling animation.
+  egg:set_can_procreate(false) -- Do not allow more procreation from the new slime.
+  return egg
+end
+
+-- Enable/disable putting egg.
+function enemy:set_egg_enabled(bool) needs_put_egg = bool end
+function enemy:get_egg_enabled() return needs_put_egg end

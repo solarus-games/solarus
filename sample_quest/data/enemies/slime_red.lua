@@ -1,16 +1,18 @@
 local enemy = ...
 local map = enemy:get_map()
 
-local life = 2
+local life = 4
 local damage = 1
-local state -- States: "stopped", "egg", "going_hero", "hidden", "hiding", "unhiding", "jumping", "prepare_jump", "finish_jump".
+local fire_damage = 4
+local fireball_speed = 60
+local fireball_duration = 1000
+local needs_put_egg = true -- Create only one egg per slime.
+local state -- States: "stopped", "fireball", "egg", "going_hero", "hidden", "hiding", "unhiding", "jumping", "prepare_jump", "finish_jump".
 local speed = 20
 local detection_distance = 100
 local jump_duration = 1000 -- Time in milliseconds.
 local max_height = 24 -- Height for the jump, in pixels.
-local jumping_speed = 60 -- Speed of the movement during the jump.
-local needs_put_egg = false -- Do not put eggs by default.
-local split_when_hurt = true -- Split in smaller slimes when hurt.
+local jumping_speed = 30 -- Speed of the movement during the jump.
 
 function enemy:on_created()
   self:set_life(life)
@@ -20,12 +22,8 @@ function enemy:on_created()
   self:set_pushed_back_when_hurt(false)
   self:set_push_hero_on_sword(true)
   self:set_obstacle_behavior("flying") -- Allow to traverse bad grounds (and fall on them).
-  -- Note that this function is called a second time for purple slimes, to make them purple
-  -- instead of green. In that case this function applies later to the new sprite (purple one).
-  local sprite = self:get_sprite()
-  if not sprite then -- Condition used for purple slimes, when calling on_created twice.
-    sprite = self:create_sprite("enemies/slime_green")
-  end
+  local sprite = self:get_sprite() 
+  if not sprite then sprite = self:create_sprite("enemies/slime_red") end
   state = "hidden"
   function sprite:on_animation_finished(animation)
     if animation == "hide" then
@@ -64,7 +62,7 @@ end
 
 -- Start checking for hero.
 function enemy:start_checking()
-  local hero = self:get_map():get_hero()
+  local hero = map:get_hero()
   -- Start loop for checking.
   sol.timer.start(self, 30, function()
     --print(state)
@@ -90,14 +88,19 @@ function enemy:start_going_hero()
   self:get_sprite():set_animation("walking")
   local m = sol.movement.create("target")
   m:set_speed(speed)
-  m:set_target(self:get_map():get_hero())
+  m:set_target(map:get_hero())
   m:start(self)
-  -- Put egg if necessary.
+  -- Put egg if necessary. Otherwise throw 2 fireballs.
   if needs_put_egg then
     sol.timer.start(self, 500, function() self:create_egg() end)
+  else
+    sol.timer.start(self, 2000, function()
+      self:throw_fireball()
+      sol.timer.start(self, 500, function() self:throw_fireball() end)
+    end)
   end
   -- Prepare jump.
-  sol.timer.start(self, 2000, function()
+  sol.timer.start(self, 3000, function()
     self:prepare_jump()
   end)
 end
@@ -156,7 +159,7 @@ function enemy:jump()
   -- Add movement towards near the hero during the jump. The jump does not target the hero.
   -- The angle is partially random to avoid too many enemies overlapping.
   local m = sol.movement.create("straight")
-  local angle = self:get_angle(self:get_map():get_hero())
+  local angle = self:get_angle(map:get_hero())
   math.randomseed(os.time()) -- Initialize random seed.
   local d = 2*math.random() - 1 -- Random real number in [-1,1].
   angle = angle + d*math.pi/4 -- Alter jumping angle, randomly.
@@ -183,7 +186,6 @@ end
 
 -- Check for bad ground (water, hole and lava) and also for empty ground.
 function enemy:check_on_ground()
-  local map = self:get_map()
   local px, py, layer = self:get_position()
   local x, y, layer = self:get_ground_position()
   local ground = self:get_ground_below()
@@ -229,6 +231,58 @@ function enemy:start_checking_ground()
   end)
 end
 
+-- Throw fireballs towards the hero.
+function enemy:throw_fireball()
+  state = "fireball"
+  self:stop_movement()
+  local sprite = self:get_sprite()
+  sprite:set_animation("jump")
+  sol.timer.start(self, 250, function() sprite:set_animation("stopped") end)
+  -- Create the fireball and start moving it. The angles have some randomness.
+  local h = map:get_hero()
+  local a = self:get_angle(h)
+  math.randomseed(os.time())
+  local a2 = (2 * math.random() - 1) * math.pi / 4 -- Random angle between -45º and 45º.
+  a = a + a2 -- Modify angle with random perturbation.
+  local x, y, layer = self:get_position()
+  local prop = {x = x, y = y, layer = layer, direction = 0, 
+    width = 8, height = 8, sprite = "enemies/slime_red"}
+  local fireball = map:create_custom_entity(prop)
+  fireball:get_sprite():set_animation("fireball")
+  local m = sol.movement.create("straight")
+  m:set_angle(a); m:set_speed(fireball_speed); m:set_smooth(true)
+  m:start(fireball)
+  -- Destroy fireball when it has landed, and create flame.
+  sol.timer.start(fireball, fireball_duration, function()
+    self:create_flame(fireball:get_position())
+    fireball:remove()
+  end)
+  -- Create shadow.
+  local shadow = fireball:create_sprite("shadows/shadow_small")
+  -- Shift sprite of fireball.
+  local function f(t) -- Shifting function.
+    return math.floor(4 * max_height * (t / fireball_duration - (t / fireball_duration) ^ 2))
+  end
+  local t = 0
+  local refreshing_time = 10
+  sol.timer.start(fireball, refreshing_time, function() -- Update shift each 10 milliseconds.
+    fireball:get_sprite():set_xy(0, -f(t))
+    t = t + refreshing_time
+    if t > fireball_duration then return false 
+      else return true 
+    end
+  end)
+  -- Play fireball sound.
+  sol.audio.play_sound("fire_ball")
+end
+
+-- Create fire entity in some position of the map.
+function enemy:create_flame(x, y, layer)
+  local prop = {x = x, y = y, layer = layer, direction = 0, breed = "flame"}
+  local flame = map:create_enemy(prop)
+  flame:set_damage(fire_damage)
+end
+
 -- Create egg.
 function enemy:create_egg()
   state = "egg"
@@ -240,7 +294,7 @@ function enemy:create_egg()
   local x, y, layer = self:get_position()
   local prop = {x = x, y = y, layer = layer, direction = 0, breed = "slime_egg"}
   local egg = map:create_enemy(prop)
-  egg:set_slime_model("slime_green")
+  egg:set_slime_model("slime_red")
   egg:fall() -- Falling animation.
   egg:set_can_procreate(false) -- Do not allow more procreation from the new slime.
   return egg
@@ -249,22 +303,3 @@ end
 -- Enable/disable putting egg.
 function enemy:set_egg_enabled(bool) needs_put_egg = bool end
 function enemy:get_egg_enabled() return needs_put_egg end
-
--- Change default behavior of splitting when hurt.
-function enemy:set_split_when_hurt(bool) split_when_hurt = bool end
-function enemy:get_split_when_hurt() return split_when_hurt end
-
-function enemy:on_hurt()
-  if not split_when_hurt then return
-  else
-    local x, y, layer = self:get_position()
-    local prop = {x = x, y = y, layer = layer, direction = 0, breed = "slime_green_small"}
-    local s1 = map:create_enemy(prop)
-    local s2 = map:create_enemy(prop)
-    local s3 = map:create_enemy(prop)
-    s1:jump(2 * math.pi / 12)
-    s2:jump(10 * math.pi / 12)
-    s3:jump(18 * math.pi / 12)
-    self:remove()
-  end  
-end

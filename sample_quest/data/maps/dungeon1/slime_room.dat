@@ -1,0 +1,157 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  min_layer = 0,
+  max_layer = 2,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 16,
+  width = 320,
+  height = 208,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 16,
+  pattern = "33",
+}
+
+tile{
+  layer = 0,
+  x = 312,
+  y = 16,
+  width = 8,
+  height = 208,
+  pattern = "31",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 16,
+  width = 8,
+  height = 208,
+  pattern = "30",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 224,
+  width = 320,
+  height = 16,
+  pattern = "37",
+}
+
+tile{
+  layer = 0,
+  x = 56,
+  y = 0,
+  width = 16,
+  height = 16,
+  pattern = "8",
+}
+
+tile{
+  layer = 0,
+  x = 256,
+  y = 0,
+  width = 16,
+  height = 16,
+  pattern = "8",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 8,
+  height = 16,
+  pattern = "32",
+}
+
+tile{
+  layer = 0,
+  x = 312,
+  y = 0,
+  width = 8,
+  height = 16,
+  pattern = "35",
+}
+
+tile{
+  layer = 0,
+  x = 16,
+  y = 200,
+  width = 16,
+  height = 24,
+  pattern = "4",
+}
+
+teletransporter{
+  layer = 0,
+  x = 16,
+  y = 208,
+  width = 16,
+  height = 16,
+  destination_map = "first_map",
+  destination = "destination_left",
+}
+
+destination{
+  layer = 0,
+  x = 40,
+  y = 221,
+  direction = 0,
+}
+
+enemy{
+  layer = 0,
+  x = 248,
+  y = 205,
+  direction = 0,
+  breed = "slime_green",
+}
+
+enemy{
+  layer = 0,
+  x = 72,
+  y = 165,
+  direction = 0,
+  breed = "slime_yellow",
+}
+
+enemy{
+  layer = 0,
+  x = 80,
+  y = 37,
+  direction = 0,
+  breed = "slime_cyan",
+}
+
+enemy{
+  layer = 0,
+  x = 208,
+  y = 45,
+  direction = 0,
+  breed = "slime_red",
+}
+
+enemy{
+  layer = 0,
+  x = 296,
+  y = 125,
+  direction = 0,
+  breed = "slime_purple",
+}
+

@@ -2,6 +2,7 @@ map{ id = "dungeon1/01", description = "d1-01" }
 map{ id = "dungeon1/02", description = "d1-02" }
 map{ id = "dungeon1/03", description = "d1-03" }
 map{ id = "dungeon1/04", description = "d1-04" }
+map{ id = "dungeon1/slime_room", description = "slime room" }
 map{ id = "first_map", description = "First map" }
 
 tileset{ id = "castle", description = "Castle" }
@@ -23,7 +24,14 @@ sprite{ id = "dialogs/dialog_old_man", description = "Old man Dialog" }
 sprite{ id = "dialogs/dialog_old_woman", description = "Old woman Dialog" }
 sprite{ id = "dialogs/dialog_robyne", description = "Robyne Dialog" }
 sprite{ id = "enemies/enemy_killed", description = "Enemy killed" }
+sprite{ id = "enemies/flame", description = "flame" }
+sprite{ id = "enemies/iceball", description = "iceball" }
+sprite{ id = "enemies/slime_cyan", description = "slime cyan" }
+sprite{ id = "enemies/slime_egg", description = "slime egg" }
 sprite{ id = "enemies/slime_green", description = "slime green" }
+sprite{ id = "enemies/slime_green_small", description = "slime green small" }
+sprite{ id = "enemies/slime_purple", description = "slime purple" }
+sprite{ id = "enemies/slime_red", description = "slime red" }
 sprite{ id = "enemies/slime_yellow", description = "slime yellow" }
 sprite{ id = "entities/arrow", description = "Arrow" }
 sprite{ id = "entities/big_chest", description = "Big chest" }
@@ -68,6 +76,7 @@ sprite{ id = "things/anvil_blacksmith", description = "anvil blacksmith" }
 sprite{ id = "things/broom", description = "broom witch" }
 sprite{ id = "things/fall_on_hole_effect", description = "fall on hole" }
 sprite{ id = "things/grass_effect", description = "grass effect" }
+sprite{ id = "things/ice_block", description = "ice block" }
 sprite{ id = "things/lava_splash_effect", description = "lava splash" }
 sprite{ id = "things/long_chair", description = "long chair witch" }
 sprite{ id = "things/magic_ball", description = "magic ball" }
@@ -117,6 +126,8 @@ sound{ id = "falling_on_hole", description = "falling_on_hole" }
 sound{ id = "falling_rock", description = "falling_rock" }
 sound{ id = "fire_ball", description = "fire_ball" }
 sound{ id = "fire_ball2", description = "fire_ball2" }
+sound{ id = "frost1", description = "frost1" }
+sound{ id = "frost2", description = "frost2" }
 sound{ id = "heart", description = "heart" }
 sound{ id = "hero_dying", description = "hero_dying" }
 sound{ id = "hero_falls", description = "hero_falls" }
@@ -175,6 +186,8 @@ sound{ id = "walk_on_grass", description = "walk_on_grass" }
 sound{ id = "walk_on_water", description = "walk_on_water" }
 sound{ id = "warp", description = "warp" }
 sound{ id = "water_fill", description = "water_fill" }
+sound{ id = "wings1", description = "wings1" }
+sound{ id = "wings2", description = "wings2" }
 sound{ id = "world_warp", description = "world_warp" }
 sound{ id = "wrong", description = "wrong" }
 sound{ id = "wrong2", description = "wrong2" }
@@ -185,7 +198,14 @@ item{ id = "gem", description = "gem" }
 
 enemy{ id = "animals/chameleon", description = "chameleon" }
 enemy{ id = "citizens/blacksmith", description = "blacksmith" }
+enemy{ id = "flame", description = "flame" }
+enemy{ id = "iceball", description = "iceball" }
+enemy{ id = "slime_cyan", description = "slime cyan" }
+enemy{ id = "slime_egg", description = "slime egg" }
 enemy{ id = "slime_green", description = "slime green" }
+enemy{ id = "slime_green_small", description = "slime green small" }
+enemy{ id = "slime_purple", description = "slime purple" }
+enemy{ id = "slime_red", description = "slime red" }
 enemy{ id = "slime_yellow", description = "slime yellow" }
 
 entity{ id = "citizens/astrologer", description = "astrologer" }

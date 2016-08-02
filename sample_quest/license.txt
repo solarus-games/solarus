@@ -48,7 +48,10 @@ sprites/dialogs/DialogEldran.png                    Diarandor (diarandor at gmai
 sprites/dialogs/DialogRobyne.png                    Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/dialogs/DialogOldMen.png                    Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/enemies/death.png                           Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/enemies/slime_cyan.png                      Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/enemies/slime_green.png                     Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/enemies/slime_purple.png                    Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/enemies/slime_red.png                       Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/enemies/slime_yellow.png                    Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/entities/sandbox_fruit.png                  Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/items/arrow1.png                            Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
@@ -180,6 +183,8 @@ sounds/falling_on_hole.ogg                          Diarandor (diarandor at gmai
 sounds/falling_rock.ogg                             Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/fire_ball.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/fire_ball2.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/frost1.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/frost2.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/heart.ogg                                    Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/hero_dying.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/hero_falls.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
@@ -233,6 +238,8 @@ sounds/walk_on_grass.ogg                            Diarandor (diarandor at gmai
 sounds/walk_on_water.ogg                            Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/warp.ogg                                     Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/water_fill.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/wings1.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+sounds/wings2.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/world_warp.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/wrong.ogg                                    Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/wrong2.ogg                                   Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/

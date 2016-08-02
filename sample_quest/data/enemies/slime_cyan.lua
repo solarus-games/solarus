@@ -1,16 +1,16 @@
 local enemy = ...
 local map = enemy:get_map()
 
-local life = 2
+local life = 4
 local damage = 1
-local state -- States: "stopped", "egg", "going_hero", "hidden", "hiding", "unhiding", "jumping", "prepare_jump", "finish_jump".
-local speed = 20
+local frost_damage = 4
+local state -- States: "stopped", "iceball", "egg", "going_hero", "hidden", "hiding", "unhiding", "jumping", "prepare_jump", "finish_jump".
+local speed = 15
 local detection_distance = 100
 local jump_duration = 1000 -- Time in milliseconds.
 local max_height = 24 -- Height for the jump, in pixels.
-local jumping_speed = 60 -- Speed of the movement during the jump.
+local jumping_speed = 30 -- Speed of the movement during the jump.
 local needs_put_egg = false -- Do not put eggs by default.
-local split_when_hurt = true -- Split in smaller slimes when hurt.
 
 function enemy:on_created()
   self:set_life(life)
@@ -20,12 +20,7 @@ function enemy:on_created()
   self:set_pushed_back_when_hurt(false)
   self:set_push_hero_on_sword(true)
   self:set_obstacle_behavior("flying") -- Allow to traverse bad grounds (and fall on them).
-  -- Note that this function is called a second time for purple slimes, to make them purple
-  -- instead of green. In that case this function applies later to the new sprite (purple one).
-  local sprite = self:get_sprite()
-  if not sprite then -- Condition used for purple slimes, when calling on_created twice.
-    sprite = self:create_sprite("enemies/slime_green")
-  end
+  local sprite = self:create_sprite("enemies/slime_cyan")
   state = "hidden"
   function sprite:on_animation_finished(animation)
     if animation == "hide" then
@@ -92,12 +87,16 @@ function enemy:start_going_hero()
   m:set_speed(speed)
   m:set_target(self:get_map():get_hero())
   m:start(self)
-  -- Put egg if necessary.
+  -- Put egg if necessary. Otherwise, shoot ice ball.
   if needs_put_egg then
     sol.timer.start(self, 500, function() self:create_egg() end)
+  else
+    sol.timer.start(self, 2000, function()
+      self:throw_iceball()
+    end)
   end
   -- Prepare jump.
-  sol.timer.start(self, 2000, function()
+  sol.timer.start(self, 3000, function()
     self:prepare_jump()
   end)
 end
@@ -229,6 +228,38 @@ function enemy:start_checking_ground()
   end)
 end
 
+-- Shoot iceballs.
+function enemy:throw_iceball()
+  state = "iceball"
+  self:stop_movement()
+  sol.audio.play_sound("fire_ball")
+  local sprite = self:get_sprite()
+  sprite:set_animation("jump")
+  sol.timer.start(self, 150, function() sprite:set_animation("stopped") end)
+  local x, y, layer = self:get_position()
+  local prop = {x = x, y = y, layer = layer, direction = 0, breed = "iceball"}
+  local speed = 60 -- Speed for the fireballs
+  local function create_iceball(angle)
+    local a = angle
+    local iceball = map:create_enemy(prop)
+    iceball:set_frost_damage(frost_damage)
+    iceball:start_movement(a, speed)
+  end
+  local a = self:get_angle(map:get_hero())
+  create_iceball(a)
+  create_iceball(a + math.pi / 8)
+  create_iceball(a - math.pi / 8)
+  sol.timer.start(self, 500, function()
+    sol.audio.play_sound("fire_ball")
+    sprite:set_animation("jump")
+    sol.timer.start(self, 150, function() sprite:set_animation("walking") end)
+    create_iceball(a + math.pi / 16)
+    create_iceball(a - math.pi / 16)
+    create_iceball(a + 3 * math.pi / 16)
+    create_iceball(a - 3 * math.pi / 16)
+  end)
+end
+
 -- Create egg.
 function enemy:create_egg()
   state = "egg"
@@ -249,22 +280,3 @@ end
 -- Enable/disable putting egg.
 function enemy:set_egg_enabled(bool) needs_put_egg = bool end
 function enemy:get_egg_enabled() return needs_put_egg end
-
--- Change default behavior of splitting when hurt.
-function enemy:set_split_when_hurt(bool) split_when_hurt = bool end
-function enemy:get_split_when_hurt() return split_when_hurt end
-
-function enemy:on_hurt()
-  if not split_when_hurt then return
-  else
-    local x, y, layer = self:get_position()
-    local prop = {x = x, y = y, layer = layer, direction = 0, breed = "slime_green_small"}
-    local s1 = map:create_enemy(prop)
-    local s2 = map:create_enemy(prop)
-    local s3 = map:create_enemy(prop)
-    s1:jump(2 * math.pi / 12)
-    s2:jump(10 * math.pi / 12)
-    s3:jump(18 * math.pi / 12)
-    self:remove()
-  end  
-end

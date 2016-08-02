@@ -1,0 +1,44 @@
+animation{
+  name = "egg_hatching",
+  src_image = "enemies/slime_red.png",
+  frame_delay = 250,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 80, y = 88, frame_width = 8, frame_height = 16, origin_x = 4, origin_y = 13, num_frames = 4 },
+    { x = 80, y = 88, frame_width = 8, frame_height = 16, origin_x = 4, origin_y = 13, num_frames = 4 },
+    { x = 80, y = 88, frame_width = 8, frame_height = 16, origin_x = 4, origin_y = 13, num_frames = 4 },
+    { x = 80, y = 88, frame_width = 8, frame_height = 16, origin_x = 4, origin_y = 13, num_frames = 4 },
+  },
+}
+animation{
+  name = "egg",
+  src_image = "enemies/slime_red.png",
+  directions = {
+    { x = 80, y = 96, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 5 },
+    { x = 80, y = 96, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 5 },
+    { x = 80, y = 96, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 5 },
+    { x = 80, y = 96, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 5 },
+  },
+}
+animation{
+  name = "egg_explode",
+  src_image = "enemies/slime_red.png",
+  frame_delay = 200,
+  directions = {
+    { x = 112, y = 56, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+    { x = 112, y = 56, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+    { x = 112, y = 56, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+    { x = 112, y = 56, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+  },
+}
+animation{
+  name = "hurt",
+  src_image = "enemies/slime_red.png",
+  frame_delay = 200,
+  directions = {
+    { x = 112, y = 56, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+    { x = 112, y = 56, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+    { x = 112, y = 56, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+    { x = 112, y = 56, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13, num_frames = 2 },
+  },
+}

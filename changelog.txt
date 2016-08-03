@@ -3,6 +3,11 @@ ___________________________
 Solarus 1.5.1 (in progress)
 ___________________________
 
+Engine changes
+--------------
+
+* Improve error messages of surface creations and conversions.
+
 Sample quest changes
 --------------------
 

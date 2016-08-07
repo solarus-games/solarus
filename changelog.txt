@@ -6,6 +6,7 @@ ___________________________
 Engine changes
 --------------
 
+* Fix registering quest to the launcher at quest install time (#948).
 * Improve error messages of surface creations and conversions.
 
 Sample quest changes

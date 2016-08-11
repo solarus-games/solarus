@@ -114,12 +114,18 @@ foreach(test_main_file ${tests_main_files})
 
   get_filename_component(test_bin_file ${test_main_file} NAME_WE)
   add_executable(${test_bin_file} ${test_main_file})
+  
+  if (WIN32)
+    set(SDL2MAIN_LINK "${SDL2MAIN_LIBRARY}")
+  else()
+    set(SDL2MAIN_LINK "")
+  endif()
 
   target_link_libraries(${test_bin_file}
     solarus
     solarus_testing
     "${SDL2_LIBRARY}"
-    "${SDL2MAIN_LIBRARY}"
+    "${SDL2MAIN_LINK}"
     "${SDL2_IMAGE_LIBRARY}"
     "${SDL2_TTF_LIBRARY}"
     "${OPENAL_LIBRARY}"

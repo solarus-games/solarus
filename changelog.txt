@@ -6,6 +6,7 @@ ___________________________
 Engine changes
 --------------
 
+* Add Spanish translation of the launcher GUI (thanks Diarandor!).
 * Fix registering quest to the launcher at quest install time (#948).
 * Fix memory leak when creating lots of surfaces (#962).
 * Fix cleanup of the quest files at exit.

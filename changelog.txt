@@ -6,6 +6,7 @@ ___________________________
 Engine changes
 --------------
 
+* Add Spanish translation of the launcher GUI (thanks Diarandor!).
 * Fix registering quest to the launcher at quest install time (#948).
 * Fix crash when a carried bomb explodes (#953).
 * Fix crash when a scrolling teletransporter is incorrectly placed (#977).

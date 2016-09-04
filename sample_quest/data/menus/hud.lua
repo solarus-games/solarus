@@ -1,8 +1,9 @@
 -- Control the hero with the mouse.
 local hud = {}
 
-function hud:on_started()
+function hud:create(game)
 
+  self.game = game
   self.has_hud_button_pushed = false
 
   -- Clickable circle buttons.
@@ -17,7 +18,7 @@ end
 
 function hud:on_mouse_pressed(button, x, y)
 
-  if game ~= nil and game:get_map() ~= nil then
+  if self.game ~= nil and self.game:get_map() ~= nil then
 
     -- If the mouse position is over a button, simulate the corresponding command.
     local mouse_position = {sol.input.get_mouse_position()}
@@ -33,7 +34,7 @@ end
 
 function hud:on_mouse_released(button, x, y)
 
-  if game ~= nil and game:get_map() ~= nil then
+  if self.game ~= nil and self.game:get_map() ~= nil then
   
     self.has_hud_button_pushed = false
     for i,button in ipairs(self.circle_buttons) do
@@ -44,7 +45,7 @@ end
 
 function hud:on_draw(screen)
 
-  if game ~= nil and game:get_map() ~= nil then
+  if self.game ~= nil and self.game:get_map() ~= nil then
 
     for i,button in ipairs(self.circle_buttons) do
       local size = {button[1]:get_size()}
@@ -58,7 +59,7 @@ function hud:start_command(button)
 
   if not button[5] then
     button[5] = true
-    game:simulate_command_pressed(button[4])
+    self.game:simulate_command_pressed(button[4])
   end
 end
 
@@ -66,7 +67,7 @@ function hud:stop_command(button)
 
   if button[5] then
     button[5] = false;
-    game:simulate_command_released(button[4])
+    self.game:simulate_command_released(button[4])
   end
 end
 

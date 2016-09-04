@@ -1,10 +1,11 @@
 -- Control the hero with the mouse.
 local mouse_control = {}
 
-function mouse_control:on_started()
+function mouse_control:create(game, hud)
 
+  self.game = game
+  self.hud = hud
   self.is_mouse_button_pushed = false
-  self.hud = nil
 
   -- Movement of the hero.
   self.directions = {
@@ -28,14 +29,14 @@ end
 
 function mouse_control:on_update()
 
-  if game ~= nil and game:get_map() ~= nil then
+  if self.game ~= nil and self.game:get_map() ~= nil then
     if self.is_mouse_button_pushed then
 
       local mouse_position = {sol.input.get_mouse_position()}
 
       -- If the mouse position is not over a button, move the hero.
       if self.hud ~= nil and not self.hud:has_button_pushed() then
-        local hero_position = {game:get_hero():get_position()}
+        local hero_position = {self.game:get_hero():get_position()}
 
         -- Compare the position of the hero and the mouse
         -- and simulate the appropriate command for each directions.
@@ -66,7 +67,7 @@ function mouse_control:start_direction(direction_id)
 
   if not self.directions[direction_id][2] then
     self.directions[direction_id][2] = true;
-    game:simulate_command_pressed(self.directions[direction_id][1])
+    self.game:simulate_command_pressed(self.directions[direction_id][1])
   end
 end
 
@@ -74,13 +75,8 @@ function mouse_control:stop_direction(direction_id)
 
   if self.directions[direction_id][2] then
     self.directions[direction_id][2] = false;
-    game:simulate_command_released(self.directions[direction_id][1])
+    self.game:simulate_command_released(self.directions[direction_id][1])
   end
-end
-
-function mouse_control:attach_hud(hud)
-
-  self.hud = hud
 end
 
 return mouse_control

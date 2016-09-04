@@ -37,15 +37,21 @@ std::string get_user_application_support_directory()
 {
   @autoreleasepool {
 
-    NSString *app_support_directory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES)
+    NSString* app_support_directory = [
+        NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES)
         objectAtIndex:0];
 
     // Create the Application Support folder if it doesn't exist yet.
-    if (![[NSFileManager defaultManager] fileExistsAtPath:app_support_directory isDirectory:NULL]) {
+    if (![[NSFileManager defaultManager]
+        fileExistsAtPath:app_support_directory
+        isDirectory:NULL]) {
 
-      NSError *error = nil;
+      NSError* error = nil;
       if (![[NSFileManager defaultManager]
-            createDirectoryAtPath:app_support_directory withIntermediateDirectories:YES attributes:nil error:&error]) {
+          createDirectoryAtPath:app_support_directory
+          withIntermediateDirectories:YES
+          attributes:nil
+          error:&error]) {
         Solarus::Debug::error("Cannot create " + std::string([app_support_directory UTF8String]));
       }
     }

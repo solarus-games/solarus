@@ -9,10 +9,6 @@ function sol.main:on_started()
 
   print("This is a sample quest for Solarus.")
 
-  -- Mouse control.
-  local mouse_control = require("menus/mouse_control")
-  sol.menu.start(self, mouse_control)
-
   -- Setting a language is useful to display text and dialogs.
   sol.language.set_language("en")
 

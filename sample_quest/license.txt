@@ -1,4 +1,4 @@
-﻿This file gives the license information of all data files of the Solarus
+This file gives the license information of all data files of the Solarus
 sample quest (this directory) and testing quest (../tests/testing_quest).
 
 Some resources come from communities like OpenGameArt, and others are original
@@ -145,6 +145,9 @@ sprites/things/grass_effect.png                     Diarandor (diarandor at gmai
 sprites/things/lava_splash_effect.png               Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/things/switch_aureole.png                   Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
 sprites/things/water_splash_effect.png              Diarandor (diarandor at gmail dot com). http://diarandor.deviantart.com/
+sprites/hud/icon_action.png                         Vlag, adapted from: http://opengameart.org/content/32-star-sprites
+sprites/hud/icon_attack.png                         Vlag, adapted from: http://opengameart.org/content/32-star-sprites and http://opengameart.org/content/scimitar-sword
+sprites/hud/icon_item_1.png                         Vlag, adapted from: http://opengameart.org/content/32-star-sprites and http://opengameart.org/content/farming-tool-icons
 
 sounds/arrow_hit.ogg                                Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 sounds/bird_chirp.ogg                               Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/

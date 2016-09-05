@@ -14,6 +14,16 @@ function game_manager:start_game()
   end
   game:start()
 
+  -- HUD menu.
+  local hud = require("menus/hud")
+  sol.menu.start(game, hud)
+  hud:create(game)
+
+  -- Mouse control.
+  local mouse_control = require("menus/mouse_control")
+  sol.menu.start(game, mouse_control)
+  mouse_control:create(game, hud)
+
   local hero = game:get_hero()
   hero:set_tunic_sprite_id("main_heroes/eldran")
 end

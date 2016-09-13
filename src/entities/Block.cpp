@@ -42,7 +42,7 @@ namespace Solarus {
  * \param can_be_pushed true to allow the hero to push this block
  * \param can_be_pulled true to allow the hero to pull this block
  * \param maximum_moves indicates how many times the block can
- * be moved (0: none, 1: once, 2: infinite)
+ * be moved (0: none, positive: the amount of moves, -1: infinite)
  */
 Block::Block(
     const std::string& name,
@@ -64,8 +64,8 @@ Block::Block(
   can_be_pushed(can_be_pushed),
   can_be_pulled(can_be_pulled) {
 
-  Debug::check_assertion(maximum_moves >= 0 && maximum_moves <= 2,
-      "maximum_moves must be between 0 and 2");
+  Debug::check_assertion(maximum_moves >= -1,
+      "maximum_moves must be greater than or equal to -1");
 
   set_collision_modes(CollisionMode::COLLISION_FACING);
   set_origin(8, 13);
@@ -301,8 +301,8 @@ void Block::stop_movement_by_hero() {
     // the block has moved
     last_position = get_xy(); // save the new position for next time
 
-    if (maximum_moves == 1) { // if the block could be moved only once,
-      maximum_moves = 0;      // then it cannot move anymore
+    if (maximum_moves > 0) { // if the block could be moved multiple times,
+      maximum_moves--;      // then it can move fewer times
     }
   }
 }
@@ -397,8 +397,8 @@ int Block::get_maximum_moves() const {
  */
 void Block::set_maximum_moves(int maximum_moves) {
 
-  Debug::check_assertion(maximum_moves >= 0 && maximum_moves <= 2,
-        "maximum_moves must be between 0 and 2");
+  Debug::check_assertion(maximum_moves >= -1,
+        "maximum_moves must be greater than or equal to -1");
 
   this->initial_maximum_moves = maximum_moves;
   this->maximum_moves = maximum_moves;

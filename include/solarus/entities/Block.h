@@ -27,7 +27,7 @@ namespace Solarus {
 /**
  * \brief A entity that the hero can push or pull.
  *
- * Some blocks can be moved only once or in only one direction.
+ * Some blocks can be moved multiple times or in only one direction.
  */
 class Block: public Entity {
 
@@ -79,7 +79,7 @@ class Block: public Entity {
     void movement_by_hero_finished();
 
     int maximum_moves;          /**< indicates whether the block can be pushed
-                                 * (0: none, 1: once: 2: infinite) */
+                                 * (0: none, positive: multiple times, -1: infinite) */
     bool sound_played;          /**< true if the block sound was played while pulling it */
     uint32_t when_can_move;     /**< date when the hero can move the block again */
 

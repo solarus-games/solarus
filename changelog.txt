@@ -1,5 +1,28 @@
 ___________________________
 
+Solarus 1.6.0 (in progress)
+___________________________
+
+Engine changes
+--------------
+
+* Support multiple, finite block pushes (#967).
+
+Lua API changes
+---------------
+
+Changes that introduce incompatibilities:
+
+* Change the map:create_block() function to allow multiple block pushes (#967).
+
+Changes that do not introduce incompatibilities:
+
+Data files format changes
+-------------------------
+
+* Maps: Blocks can now have a maximum push value of any integer greater than -1 (#967).
+___________________________
+
 Solarus 1.5.1 (in progress)
 ___________________________
 

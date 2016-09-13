@@ -778,7 +778,7 @@ int LuaContext::l_create_block(lua_State* l) {
     EntityData& data = *(static_cast<EntityData*>(lua_touserdata(l, 2)));
 
     int maximum_moves = data.get_integer("maximum_moves");
-    if (maximum_moves < 0 || maximum_moves > 2) {
+    if (maximum_moves < -1) {
       std::ostringstream oss;
       oss << "Invalid maximum_moves: " << maximum_moves;
       LuaTools::arg_error(l, 1, oss.str());

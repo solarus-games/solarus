@@ -15,12 +15,12 @@ function game_manager:start_game()
   game:start()
 
   -- HUD menu.
-  local hud = require("menus/hud")
+  local hud = require("scripts/menus/hud")
   sol.menu.start(game, hud)
   hud:create(game)
 
   -- Mouse control.
-  local mouse_control = require("menus/mouse_control")
+  local mouse_control = require("scripts/menus/mouse_control")
   sol.menu.start(game, mouse_control)
   mouse_control:create(game, hud)
 

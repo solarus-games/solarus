@@ -14,7 +14,7 @@ Engine changes
 Sample quest changes
 --------------------
 
-* Add enemies and NPCs to the sample quest (thanks Diarandor!).
+* Add enemies, NPCs, musics and sounds (thanks Diarandor!).
 * Put the solarus logo script in scripts/menus/.
 
 __________________________

@@ -21,12 +21,7 @@ items/**.dat                                        Christopho
 
 maps/**.dat                                         Christopho
 
-musics/Boss_Theme_v1.0(by Diarandor).ogg            Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
-musics/Castle_Theme_v1.1(by Diarandor).ogg          Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
-musics/House_Inside1_v1.0(by Diarandor).ogg         Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
-musics/House_Inside2_v1.0(by Diarandor).ogg         Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
-musics/House_Inside3_v1.0(by Diarandor).ogg         Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
-musics/SelectNameMenu_v1.0(by Diarandor).ogg        Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
+musics/diarandor/*.ogg                              Diarandor (diarandor at gmail dot com). https://soundcloud.com/d-aranda/
 musics/village.ogg                                  Eduardo Dueñas
 
 sprites/entities/bomb.png                           Bertram, adapted from: http://opengameart.org/content/lots-of-free-2d-tiles-and-sprites-by-hyptosis

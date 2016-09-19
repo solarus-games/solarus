@@ -87,6 +87,12 @@ sprite{ id = "things/steam", description = "steam" }
 sprite{ id = "things/switch_aureole", description = "switch aureole" }
 sprite{ id = "things/water_splash_effect", description = "water splash" }
 
+music{ id = "diarandor/boss", description = "Boss" }
+music{ id = "diarandor/castle", description = "Castle" }
+music{ id = "diarandor/house_inside1", description = "House inside 1" }
+music{ id = "diarandor/house_inside2", description = "House inside 2" }
+music{ id = "diarandor/house_inside3", description = "House inside 3" }
+music{ id = "diarandor/select_name_menu", description = "Select name menu" }
 music{ id = "village", description = "Village" }
 
 sound{ id = "arrow_hit", description = "arrow_hit" }

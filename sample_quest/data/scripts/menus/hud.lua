@@ -37,7 +37,7 @@ end
 
 function hud:on_mouse_pressed(button, x, y)
 
-  if self.game == nil or self.game:get_map() == nil then 
+  if self.game == nil or self.game:get_map() == nil then
     return
   end
 
@@ -54,7 +54,7 @@ end
 
 function hud:on_mouse_released(button, x, y)
 
-  if self.game == nil or self.game:get_map() == nil then 
+  if self.game == nil or self.game:get_map() == nil then
     return
   end
 
@@ -66,7 +66,7 @@ end
 
 function hud:on_draw(screen)
 
-  if self.game == nil or self.game:get_map() == nil then 
+  if self.game == nil or self.game:get_map() == nil then
     return
   end
 

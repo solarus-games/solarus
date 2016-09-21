@@ -1,4 +1,4 @@
-﻿This file gives the license information of all data files of the Solarus
+This file gives the license information of all data files of the Solarus
 sample quest (this directory) and testing quest (../tests/testing_quest).
 
 Some resources come from communities like OpenGameArt, and others are original

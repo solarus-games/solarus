@@ -9,6 +9,7 @@ Engine changes
 * Fix registering quest to the launcher at quest install time (#948).
 * Fix memory leak when creating lots of surfaces (#962).
 * Fix cleanup of the quest files at exit.
+* Fix error in sol.main.load_settings() when the file does not exist.
 * Improve error messages of surface creations and conversions.
 
 Sample quest changes

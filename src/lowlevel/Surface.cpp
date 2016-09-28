@@ -14,14 +14,15 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Color.h"
-#include "solarus/lowlevel/Size.h"
-#include "solarus/lowlevel/Rectangle.h"
-#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/Video.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/PixelFilter.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lowlevel/Size.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Transition.h"
 #include <algorithm>
@@ -251,7 +252,7 @@ SDL_Surface* Surface::get_surface_from_file(
         software_surface,
         pixel_format,
         0
-        );
+  );
   Debug::check_assertion(converted_surface != nullptr,
                          std::string("Failed to convert software surface: ") + SDL_GetError());
   SDL_FreeSurface(software_surface);
@@ -406,6 +407,48 @@ std::string Surface::get_pixels() const {
       std::string("Failed to convert pixels to RGBA format") + SDL_GetError());
   const char* buffer = static_cast<const char*>(converted_surface->pixels);
   return std::string(buffer, num_pixels * 4);
+}
+
+/**
+ * \brief Sets the pixels of this surface.
+ * \param pixels The pixel buffer in RGBA 32-bit format.
+ * \return \c true in case of success.
+ */
+bool Surface::set_pixels(const std::string& pixels) {
+
+  if (!software_destination &&
+      Video::is_acceleration_enabled()) {
+    // The surface is in GPU.
+    Logger::error("This is a hardware surface");
+    return false;
+  }
+
+  const size_t expected_num_pixels = get_width() * get_height();
+  const size_t expected_num_bytes = expected_num_pixels * 4;
+  const size_t actual_num_bytes = pixels.size();
+  if (actual_num_bytes != expected_num_bytes) {
+    std::ostringstream oss;
+    oss << "Expected pixel data of size " << expected_num_bytes <<
+           " bytes (surface size " << get_width() << "x" << get_height() <<
+           "), got " << actual_num_bytes << " bytes";
+    Logger::error(oss.str());
+    return false;
+  }
+  internal_color = nullptr;
+  if (internal_surface == nullptr) {
+    create_software_surface();
+  }
+
+  if (internal_surface->format->format != SDL_PIXELFORMAT_ABGR8888) {
+    // TODO make a new SDL surface with the correct format
+    Logger::error(std::string("Unexpected surface format: ") +
+                  SDL_GetPixelFormatName(internal_surface->format->format));
+    return false;
+  }
+
+  std::copy(pixels.begin(), pixels.end(), reinterpret_cast<char*>(internal_surface->pixels));
+
+  return true;
 }
 
 /**

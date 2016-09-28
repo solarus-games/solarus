@@ -487,7 +487,9 @@ std::string check_string(
     );
   }
 
-  return lua_tostring(l, index);
+  size_t size = 0;
+  const char* data = lua_tolstring(l, index, &size);
+  return std::string(data, size);
 }
 
 /**
@@ -513,7 +515,9 @@ std::string check_string_field(
     );
   }
 
-  const std::string& value = lua_tostring(l, -1);
+  size_t size = 0;
+  const char* data = lua_tolstring(l, -1, &size);
+  std::string value(data, size);
   lua_pop(l, 1);
   return value;
 }
@@ -569,7 +573,10 @@ std::string opt_string_field(
         + luaL_typename(l, -1) + ")"
     );
   }
-  const std::string& value = lua_tostring(l, -1);
+
+  size_t size = 0;
+  const char* data = lua_tolstring(l, -1, &size);
+  std::string value(data, size);
   lua_pop(l, 1);
   return value;
 }

@@ -87,6 +87,7 @@ class Surface: public Drawable {
     void set_opacity(uint8_t opacity);
 
     std::string get_pixels() const;
+    bool set_pixels(const std::string& pixels);
 
     void apply_pixel_filter(const PixelFilter& pixel_filter, Surface& dst_surface);
 

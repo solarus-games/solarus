@@ -245,9 +245,12 @@ int LuaContext::surface_api_get_pixels(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Surface& surface = *check_surface(l, 1);
-    // TODO optional parameters x, y, width, height
 
-    push_string(l, surface.get_pixels());
+    const std::string& pixels = surface.get_pixels();
+    if (pixels.empty()) {
+      LuaTools::error(l, "Failed to get surface pixels");
+    }
+    push_string(l, pixels);
     return 1;
   });
 }
@@ -260,7 +263,14 @@ int LuaContext::surface_api_get_pixels(lua_State* l) {
 int LuaContext::surface_api_set_pixels(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    // TODO
+
+    Surface& surface = *check_surface(l, 1);
+    const std::string& pixels = LuaTools::check_string(l, 2);
+
+    bool success = surface.set_pixels(pixels);
+    if (!success) {
+        LuaTools::error(l, "Failed to modify surface pixels");
+    }
     return 0;
   });
 }

@@ -18,6 +18,7 @@ Sample quest changes
 * Add enemies, NPCs, musics and sounds (thanks Diarandor!).
 * Add a clickable HUD (thanks Vlag!).
 * Put the solarus logo script in scripts/menus/.
+* Fix wrong hero sprite after game-over (#952).
 
 __________________________
 

@@ -12,20 +12,23 @@ function game_manager:start_game()
     game:set_ability("sword", 1)
     game:set_starting_location("first_map") -- Starting location.
   end
+
+  function game:on_started()
+    -- HUD menu.
+    local hud = require("scripts/menus/hud")
+    sol.menu.start(game, hud)
+    hud:create(game)
+
+    -- Mouse control.
+    local mouse_control = require("scripts/menus/mouse_control")
+    sol.menu.start(game, mouse_control)
+    mouse_control:create(game, hud)
+
+    local hero = game:get_hero()
+    hero:set_tunic_sprite_id("main_heroes/eldran")
+  end
+
   game:start()
-
-  -- HUD menu.
-  local hud = require("scripts/menus/hud")
-  sol.menu.start(game, hud)
-  hud:create(game)
-
-  -- Mouse control.
-  local mouse_control = require("scripts/menus/mouse_control")
-  sol.menu.start(game, mouse_control)
-  mouse_control:create(game, hud)
-
-  local hero = game:get_hero()
-  hero:set_tunic_sprite_id("main_heroes/eldran")
 end
 
 return game_manager

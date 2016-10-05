@@ -1,6 +1,6 @@
 ![Solarus logo](/images/solarus_logo.png)
 
-[![Build Status](https://travis-ci.org/christopho/solarus.svg?branch=dev)](https://travis-ci.org/christopho/solarus)
+[![Build Status](https://travis-ci.org/solarus-games/solarus.svg?branch=dev)](https://travis-ci.org/solarus-games/solarus)
 [![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://www.gnu.org/copyleft/gpl.html)
 
 ====================================
@@ -17,17 +17,17 @@ Solarus is licensed under GPL v3.
 
 You might be interested in our fangames created with Solarus:
 
-* [Zelda Mystery of Solarus DX](https://github.com/christopho/zsdx), our first and main creation, release in 2011.
+* [Zelda Mystery of Solarus DX](https://github.com/solarus-games/zsdx), our first and main creation, release in 2011.
 
-* [Zelda Mystery of Solarus XD](https://github.com/christopho/zsxd), a parodic game released on April 1st, 2011.
+* [Zelda Mystery of Solarus XD](https://github.com/solarus-games/zsxd), a parodic game released on April 1st, 2011.
 
-* [Zelda Return of the Hylian SE](https://github.com/christopho/zelda_roth_se), a remake of Vincent Jouillat's game, released in 2015.
+* [Zelda Return of the Hylian SE](https://github.com/solarus-games/zelda_roth_se), a remake of Vincent Jouillat's game, released in 2015.
 
 
 ### Create your own games
 
 If you want to create your own games with the Solarus engine, see also
-[Solarus Quest Editor](https://github.com/christopho/solarus-quest-editor), our Solarus game creation software.
+[Solarus Quest Editor](https://github.com/solarus-games/solarus-quest-editor), our Solarus game creation software.
 
 See our [development blog](http://www.solarus-games.org) to get more
 information and documentation about using the Solarus engine.

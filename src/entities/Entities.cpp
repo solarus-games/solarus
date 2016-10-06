@@ -1067,11 +1067,11 @@ void Entities::remove_entity(Entity& entity) {
     // Tell the entity.
     entity.notify_being_removed();
 
-    // Clear the entity's name to allow users to create a new one with
+    // Remove the entity from the by name list
+    // to allow users to create a new one with
     // the same name right now.
     if (!entity.get_name().empty()) {
       named_entities.erase(entity.get_name());
-      entity.set_name("");
     }
   }
 }

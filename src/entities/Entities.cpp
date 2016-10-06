@@ -1105,23 +1105,23 @@ void Entities::remove_entities_with_prefix(const std::string& prefix) {
  */
 void Entities::remove_marked_entities() {
 
-  // remove the marked entities
+  // Remove the marked entities.
   for (const EntityPtr& entity: entities_to_remove) {
 
     const EntityType type = entity->get_type();
     const int layer = entity->get_layer();
 
-    // remove it from the quadtree
+    // Remove it from the quadtree.
     quadtree.remove(entity);
 
-    // remove it from the whole list
+    // Remove it from the whole list.
     all_entities.remove(entity);
     const std::string& name = entity->get_name();
     if (!name.empty()) {
       named_entities.erase(name);
     }
 
-    // update the specific entities lists
+    // Update the specific entities lists.
     switch (type) {
 
       case EntityType::CAMERA:
@@ -1396,25 +1396,22 @@ int Entities::ZCache::get_z(const ConstEntityPtr& entity) const {
 /**
  * \brief Inserts an entity at the end of the structure.
  *
- * It must not be present.
+ * Nothing happens if the entity was already present.
  */
 void Entities::ZCache::add(const ConstEntityPtr& entity) {
 
   ++max;
-  const auto& inserted = z_values.insert(std::make_pair(entity, max));
-  Debug::check_assertion(inserted.second, "Entity already in Z cache");
+  z_values.insert(std::make_pair(entity, max));
 }
 
 /**
  * \brief Removes an entity from the structure.
  *
- * It must be present.
+ * Nothing happens if the entity was not present.
  */
 void Entities::ZCache::remove(const ConstEntityPtr& entity) {
 
-  int num_removed = z_values.erase(entity);
-  Debug::check_assertion(num_removed == 1, "Entity not found in Z cache");
-
+  z_values.erase(entity);
   // Z values remain unchanged: removing an entity does not break the order.
 }
 
@@ -1438,8 +1435,7 @@ void Entities::ZCache::bring_to_back(const ConstEntityPtr& entity) {
 
   remove(entity);
   --min;
-  const auto& inserted = z_values.insert(std::make_pair(entity, min));
-  Debug::check_assertion(inserted.second, "Entity already in Z cache");
+  z_values.insert(std::make_pair(entity, min));
 }
 
 }

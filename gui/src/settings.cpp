@@ -24,8 +24,8 @@ namespace SolarusGui {
 /**
  * @brief Creates a Solarus settings object.
  */
-Settings::Settings() :
-  QSettings(QSettings::SystemScope, QApplication::organizationName(), QApplication::applicationName()) {
+Settings::Settings(Scope scope) :
+  QSettings(scope, QApplication::organizationName(), QApplication::applicationName()) {
 
 }
 

@@ -129,7 +129,11 @@ int add_quest(int argc, char* argv[]) {
   }
 
   // Add the new path if not already present.
-  Settings settings;
+  Settings test_settings(QSettings::SystemScope);
+  const bool system_settings_writable = test_settings.isWritable();
+
+  Settings settings(system_settings_writable ? QSettings::SystemScope : QSettings::UserScope);
+
   QStringList all_paths = settings.value("quests_paths").toStringList();
   Q_FOREACH(const QString& path, all_paths) {
     if (QFileInfo(path).canonicalFilePath() == canonical_path) {
@@ -137,6 +141,12 @@ int add_quest(int argc, char* argv[]) {
       return 0;
     }
   }
+
+  if (!settings.isWritable()) {
+    std::cerr << "Settings file is not writable: " << settings.fileName().toStdString() << std::endl;
+    return 1;
+  }
+  std::cout << "Writing settings file " << settings.fileName().toStdString() << std::endl;
 
   all_paths.prepend(canonical_path);
   settings.setValue("quests_paths", all_paths);

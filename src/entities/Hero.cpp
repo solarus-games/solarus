@@ -23,6 +23,7 @@
 #include "solarus/entities/Destructible.h"
 #include "solarus/entities/Enemy.h"
 #include "solarus/entities/Entities.h"
+#include "solarus/entities/GroundInfo.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Jumper.h"
 #include "solarus/entities/Sensor.h"
@@ -386,7 +387,8 @@ void Hero::apply_additional_ground_movement() {
  */
 void Hero::check_gameover() {
 
-  if (get_equipment().get_life() <= 0 && get_state().can_start_gameover_sequence()) {
+  if (get_equipment().get_life() <= 0 &&
+      get_state().can_start_gameover_sequence()) {
     sprites->stop_blinking();
     get_game().start_game_over();
   }
@@ -2669,6 +2671,8 @@ void Hero::start_back_to_solid_ground(bool use_specified_position,
  * correct next state depending on the ground the hero lands on.
  */
 void Hero::start_state_from_ground() {
+
+  update_ground_below();  // Make sure the ground is up-to-date.
 
   switch (get_ground_below()) {
 

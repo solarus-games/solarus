@@ -5,7 +5,7 @@ properties{
   height = 240,
   min_layer = 0,
   max_layer = 2,
-  tileset = "castle",
+  tileset = "overworld",
 }
 
 tile{
@@ -14,7 +14,7 @@ tile{
   y = 0,
   width = 320,
   height = 240,
-  pattern = "3",
+  pattern = "2",
 }
 
 tile{
@@ -23,7 +23,7 @@ tile{
   y = 16,
   width = 32,
   height = 32,
-  pattern = "86",
+  pattern = "25",
 }
 
 destination{

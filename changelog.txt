@@ -16,6 +16,11 @@ Engine changes
 * Fix entity:get_name() returning nil after the entity is removed (#954).
 * Improve error messages of surface creations and conversions.
 
+Solarus launcher GUI changes
+----------------------------
+
+* Start the selected quest by pressing Return or double-clicking (#949).
+
 Sample quest changes
 --------------------
 

@@ -80,6 +80,8 @@ MainWindow::MainWindow(QWidget* parent) :
           this, SLOT(selected_quest_changed()));
   connect(ui.play_button, SIGNAL(clicked()),
           this, SLOT(on_action_play_quest_triggered()));
+  connect(ui.quests_view, SIGNAL(activated(QModelIndex)),
+          this, SLOT(on_action_play_quest_triggered()));
   connect(&quest_runner, SIGNAL(running()),
           this, SLOT(update_run_quest()));
   connect(&quest_runner, SIGNAL(finished()),

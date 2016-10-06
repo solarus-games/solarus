@@ -17,8 +17,11 @@ end
 
 function go_down_sensor:on_activated()
 
+  -- Stop running.
+  hero:freeze()
   hero:unfreeze()
 
+  -- Use the sword.
   game:simulate_command_pressed("attack")
   game:simulate_command_pressed("down")
 

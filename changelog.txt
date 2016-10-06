@@ -12,6 +12,7 @@ Engine changes
 * Fix memory leak when creating lots of surfaces (#962).
 * Fix cleanup of the quest files at exit.
 * Fix error in sol.main.load_settings() when the file does not exist.
+* Fix ground ignored after hero:unfreeze() or back to solid ground (#827).
 * Fix entity:get_name() returning nil after the entity is removed (#954).
 * Improve error messages of surface creations and conversions.
 

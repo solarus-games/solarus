@@ -13,18 +13,13 @@ function map:on_opening_transition_finished()
   movement:set_distance(48)
   movement:start(hero, function()
 
-    -- He arrived on a hole and should be in state falling now.
-    assert_equal(hero:get_state(), "falling")
+    -- He arrived in deep water and should be in state plunging now.
+    assert_equal(hero:get_state(), "plunging")
 
-    -- Unfreeze the hero: he is now free.
+    -- Unfreeze the hero: he should now be plunging again.
     hero:unfreeze()
-    assert_equal(hero:get_state(), "free")
-
-    -- At the next cycle, he should be falling again.
-    sol.timer.start(10, function()
-      assert_equal(hero:get_state(), "falling")
-      sol.main.exit()
-    end)
+    assert_equal(hero:get_state(), "plunging")
+    sol.main.exit()
   end)
 
 end

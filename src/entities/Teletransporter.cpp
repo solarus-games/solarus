@@ -96,9 +96,8 @@ void Teletransporter::notify_creating() {
 
   if (destination_side != -1) {
     set_layer_independent_collisions(true);
+    transition_direction = (destination_side + 2) % 4;
   }
-
-  transition_direction = (destination_side + 2) % 4;
 }
 
 /**
@@ -196,7 +195,7 @@ void Teletransporter::set_destination_name(const std::string& destination_name) 
  * \return true if this teletransporter is on the side of the map
  */
 bool Teletransporter::is_on_map_side() const {
-  return destination_name == "_side";
+  return destination_name == "_side" && destination_side != -1;
 }
 
 /**
@@ -278,13 +277,6 @@ void Teletransporter::transport_hero(Hero& hero) {
     // already done
     return;
   }
-  transporting_hero = true;
-
-  get_lua_context()->teletransporter_on_activated(*this);
-
-  if (!sound_id.empty()) {
-    Sound::play(sound_id);
-  }
 
   std::string name = destination_name;
   int hero_x = hero.get_x();
@@ -322,6 +314,14 @@ void Teletransporter::transport_hero(Hero& hero) {
       Debug::die(std::string("Bad destination side for teletransporter '")
           + get_name() + "'");
     }
+  }
+
+  transporting_hero = true;
+
+  get_lua_context()->teletransporter_on_activated(*this);
+
+  if (!sound_id.empty()) {
+    Sound::play(sound_id);
   }
 
   get_game().set_current_map(destination_map_id, name, transition_style);

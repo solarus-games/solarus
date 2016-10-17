@@ -1,9 +1,0 @@
-animation{
-  name = "deck",
-  src_image = "citizens/astrologer.png",
-  frame_delay = 100,
-  frame_to_loop_on = 0,
-  directions = {
-    { x = 8, y = 72, frame_width = 8, frame_height = 8, origin_x = 4, origin_y = 6, num_frames = 12 },
-  },
-}

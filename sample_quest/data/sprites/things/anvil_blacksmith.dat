@@ -1,7 +1,0 @@
-animation{
-  name = "anvil",
-  src_image = "citizens/blacksmith.png",
-  directions = {
-    { x = 192, y = 128, frame_width = 64, frame_height = 32, origin_x = 8, origin_y = 13 },
-  },
-}

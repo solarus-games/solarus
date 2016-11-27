@@ -17,6 +17,8 @@ Engine changes
 * Fix ground ignored after hero:unfreeze() or back to solid ground (#827).
 * Fix entity:get_name() returning nil after the entity is removed (#954).
 * Improve error messages of surface creations and conversions.
+* Chests: set an initial value "entities/chest" to the sprite field.
+
 
 Solarus launcher GUI changes
 ----------------------------

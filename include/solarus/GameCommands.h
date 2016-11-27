@@ -90,7 +90,7 @@ class GameCommands {
     void joypad_axis_moved(int axis, int direction);
     void joypad_hat_moved(int hat, int direction);
     const std::string& get_joypad_binding_savegame_variable(GameCommand command) const;
-    const std::string& get_saved_joypad_binding(GameCommand command) const;
+    std::string get_saved_joypad_binding(GameCommand command) const;
     void set_saved_joypad_binding(GameCommand command, const std::string& joypad_string);
     GameCommand get_command_from_joypad(const std::string& joypad_string) const;
 

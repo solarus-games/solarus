@@ -93,7 +93,7 @@ class SOLARUS_API Savegame: public ExportableToLua {
 
     // data
     bool is_string(const std::string& key) const;
-    const std::string& get_string(const std::string& key) const;
+    std::string get_string(const std::string& key) const;
     void set_string(const std::string& key, const std::string& value);
     bool is_integer(const std::string& key) const;
     int get_integer(const std::string& key) const;

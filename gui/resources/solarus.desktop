@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Solarus Quest Launcher
+Comment=A graphical user interface to organize and play quests for the Solarus engine
+Exec=/usr/games/solarus
+Icon=solarus_launcher_icon.png
+Categories=Game;

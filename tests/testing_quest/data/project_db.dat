@@ -39,6 +39,7 @@ map{ id = "bugs/819_destination_starting_location_mode/2", description = "#819: 
 map{ id = "bugs/819_destination_starting_location_mode/3", description = "#819: world a" }
 map{ id = "bugs/821_hero_start_attack", description = "#821: hero:start_attack()" }
 map{ id = "bugs/823_sprite_get_size_origin", description = "#823: sprite:get_size() and sprite:get_origin()" }
+map{ id = "bugs/827_ground_detection_after_unfreeze", description = "#827: Hero not falling in hole after unfreeze" }
 map{ id = "bugs/830_entity_get_ground_position", description = "#830: entity:get_ground_position() and entity:get_ground_below()" }
 map{ id = "bugs/844_camera_on_state_changed", description = "#844: camera:on_state_changed()" }
 map{ id = "bugs/845_game_set_suspended", description = "#845: game:set_suspended" }
@@ -57,6 +58,7 @@ map{ id = "bugs/937_custom_entity_missing_direction", description = "#937: Error
 map{ id = "bugs/940_crash_bomb_on_stream", description = "#940: Crash when placing a bomb on a stream" }
 map{ id = "bugs/945_flying_enemies_fall_in_hole", description = "#945: Flying enemies fall in holes when the map starts" }
 map{ id = "bugs/946_reused_movement_callback", description = "#946: Callbacks no longer work after reusing a movement" }
+map{ id = "bugs/954_entity_name_nil_after_removed", description = "#954: Entity name is nil after removed" }
 map{ id = "dynamic_tile_tests", description = "Dynamic tile tests" }
 map{ id = "jumper_tests", description = "Jumper tests" }
 map{ id = "surface_tests", description = "Surface tests" }

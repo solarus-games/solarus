@@ -42,6 +42,7 @@ set(lua_test_maps
   "bugs/819_destination_starting_location_mode/1"
   "bugs/821_hero_start_attack"
   "bugs/823_sprite_get_size_origin"
+  "bugs/827_ground_detection_after_unfreeze"
   "bugs/830_entity_get_ground_position"
   "bugs/844_camera_on_state_changed"
   "bugs/845_game_set_suspended"
@@ -60,6 +61,7 @@ set(lua_test_maps
   "bugs/940_crash_bomb_on_stream"
   "bugs/945_flying_enemies_fall_in_hole"
   "bugs/946_reused_movement_callback"
+  "bugs/954_entity_name_nil_after_removed"
 )
 
 # Build the Solarus testing library.
@@ -114,12 +116,18 @@ foreach(test_main_file ${tests_main_files})
 
   get_filename_component(test_bin_file ${test_main_file} NAME_WE)
   add_executable(${test_bin_file} ${test_main_file})
+  
+  if (WIN32)
+    set(SDL2MAIN_LINK "${SDL2MAIN_LIBRARY}")
+  else()
+    set(SDL2MAIN_LINK "")
+  endif()
 
   target_link_libraries(${test_bin_file}
     solarus
     solarus_testing
     "${SDL2_LIBRARY}"
-    "${SDL2MAIN_LIBRARY}"
+    "${SDL2MAIN_LINK}"
     "${SDL2_IMAGE_LIBRARY}"
     "${SDL2_TTF_LIBRARY}"
     "${OPENAL_LIBRARY}"

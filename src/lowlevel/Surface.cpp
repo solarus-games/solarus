@@ -147,7 +147,7 @@ Surface::Surface(SDL_Surface* internal_surface):
         0
     );
     Debug::check_assertion(converted_surface != nullptr,
-                           "Failed to convert text surface");
+                           std::string("Failed to convert surface") + SDL_GetError());
     this->internal_surface = SDL_Surface_UniquePtr(converted_surface);
   }
 }
@@ -253,7 +253,7 @@ SDL_Surface* Surface::get_surface_from_file(
         0
         );
   Debug::check_assertion(converted_surface != nullptr,
-                         "Failed to convert software surface");
+                         std::string("Failed to convert software surface: ") + SDL_GetError());
   SDL_FreeSurface(software_surface);
 
   SDL_SetSurfaceAlphaMod(converted_surface, opacity);  // Re-apply the alpha.
@@ -403,7 +403,7 @@ std::string Surface::get_pixels() const {
   ));
   SDL_FreeFormat(format);
   Debug::check_assertion(converted_surface != nullptr,
-      "Failed to convert pixels to RGBA format");
+      std::string("Failed to convert pixels to RGBA format") + SDL_GetError());
   const char* buffer = static_cast<const char*>(converted_surface->pixels);
   return std::string(buffer, num_pixels * 4);
 }
@@ -477,11 +477,11 @@ void Surface::create_software_surface() {
       )
   );
 
+  Debug::check_assertion(internal_surface != nullptr,
+      std::string("Failed to create software surface: ") + SDL_GetError());
+
   SDL_SetSurfaceBlendMode(internal_surface.get(), get_sdl_blend_mode());
   is_rendered = false;
-
-  Debug::check_assertion(internal_surface != nullptr,
-      "Failed to create software surface");
 }
 
 /**

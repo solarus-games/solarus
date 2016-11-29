@@ -712,7 +712,7 @@ GameCommand GameCommands::get_command_from_keyboard(
  * \param command A game command.
  * \return The joypad action mapped to this game command in the savegame.
  */
-const std::string& GameCommands::get_saved_joypad_binding(
+std::string GameCommands::get_saved_joypad_binding(
     GameCommand command) const {
 
   const std::string& savegame_variable = get_joypad_binding_savegame_variable(command);

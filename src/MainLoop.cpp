@@ -208,6 +208,7 @@ MainLoop::~MainLoop() {
   }
   TilePattern::quit();
   CurrentQuest::quit();
+  QuestFiles::close_quest();
   System::quit();
   quit_lua_console();
 }

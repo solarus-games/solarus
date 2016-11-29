@@ -74,7 +74,7 @@ bool LuaContext::has_drawable(const DrawablePtr& drawable) {
 }
 
 /**
- * \brief Registers a drawable object created by this script.
+ * \brief Registers a drawable object created by Lua.
  * \param drawable a drawable object
  */
 void LuaContext::add_drawable(const DrawablePtr& drawable) {
@@ -86,7 +86,7 @@ void LuaContext::add_drawable(const DrawablePtr& drawable) {
 }
 
 /**
- * \brief Unregisters a drawable object created by this script.
+ * \brief Unregisters a drawable object created by Lua.
  * \param drawable a drawable object
  */
 void LuaContext::remove_drawable(const DrawablePtr& drawable) {
@@ -98,8 +98,7 @@ void LuaContext::remove_drawable(const DrawablePtr& drawable) {
 }
 
 /**
- * \brief Destroys from Lua all drawable objects created
- * by this script.
+ * \brief Cleanups all drawable objects registered.
  */
 void LuaContext::destroy_drawables() {
 
@@ -120,6 +119,9 @@ void LuaContext::update_drawables() {
   }
 
   // Remove the ones that should be removed.
+  for (const DrawablePtr& drawable: drawables_to_remove) {
+    drawables.erase(drawable);
+  }
   drawables_to_remove.clear();
 }
 

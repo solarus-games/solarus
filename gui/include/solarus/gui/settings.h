@@ -29,7 +29,7 @@ class SOLARUS_GUI_API Settings : public QSettings {
 
 public:
 
-  Settings();
+  Settings(Scope scope = UserScope);
 
   void export_to_quest(const QString& quest_path) const;
 

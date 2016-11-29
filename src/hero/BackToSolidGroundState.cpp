@@ -24,6 +24,8 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/movements/TargetMovement.h"
+#include "solarus/Equipment.h"
+#include "solarus/Game.h"
 #include "solarus/Map.h"
 #include <lua.hpp>
 #include <memory>
@@ -123,6 +125,10 @@ void Hero::BackToSolidGroundState::update() {
 
   HeroState::update();
 
+  if (is_suspended()) {
+    return;
+  }
+
   // the current movement is an instance of TargetMovement
   Hero& hero = get_entity();
   if (hero.get_movement()->is_finished()) {
@@ -139,7 +145,15 @@ void Hero::BackToSolidGroundState::update() {
     }
 
     if (now >= end_date) {
-      hero.set_state(new FreeState(hero));
+
+      if (get_equipment().get_life() <= 0 &&
+          !get_game().is_showing_game_over()) {
+        get_sprites().stop_blinking();
+        get_game().start_game_over();
+        return;
+      }
+
+      hero.start_state_from_ground();
     }
   }
 }

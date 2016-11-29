@@ -1,5 +1,37 @@
 __________________________
 
+Solarus 1.5.1 (2016-11-29)
+__________________________
+
+Engine changes
+--------------
+
+* Add Spanish translation of the launcher GUI (thanks Diarandor!).
+* Fix registering quest to the launcher at quest install time (#948).
+* Fix crash when a carried bomb explodes (#953).
+* Fix crash when a scrolling teletransporter is incorrectly placed (#977).
+* Fix crash when an entity has a wrong savegame variable type (#1008).
+* Fix memory leak when creating lots of surfaces (#962).
+* Fix cleanup of the quest files at exit.
+* Fix error in sol.main.load_settings() when the file does not exist.
+* Fix ground ignored after hero:unfreeze() or back to solid ground (#827).
+* Fix entity:get_name() returning nil after the entity is removed (#954).
+* Improve error messages of surface creations and conversions.
+* Chests: set an initial value "entities/chest" to the sprite field.
+
+
+Solarus launcher GUI changes
+----------------------------
+
+* Start the selected quest by pressing Return or double-clicking (#949).
+
+Sample quest changes
+--------------------
+
+* The sample quest is now in a separate repository (#996).
+
+__________________________
+
 Solarus 1.5.0 (2016-07-27)
 __________________________
 

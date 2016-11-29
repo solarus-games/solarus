@@ -2172,7 +2172,7 @@ int LuaContext::hero_api_unfreeze(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Hero& hero = *check_hero(l, 1);
 
-    hero.start_free();
+    hero.start_state_from_ground();
 
     return 0;
   });

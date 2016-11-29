@@ -62,6 +62,7 @@ qt5_add_resources(solarus_gui_lib_RESOURCES_RCC
 
 # Translations.
 set(solarus_gui_lib_TRANSLATIONS
+  translations/solarus_es.ts
   translations/solarus_fr.ts
 )
 qt5_add_translation(solarus_gui_lib_TRANSLATIONS_QM

@@ -1,3 +1,10 @@
+___________________________
+
+Solarus 1.6.0 (in progress)
+___________________________
+
+* Fix text_surface:set_horizontal/vertical_alignment() not working.
+
 __________________________
 
 Solarus 1.5.1 (2016-11-29)

@@ -184,3 +184,9 @@ if(UNIX AND NOT APPLE)
   install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../resources/solarus.desktop
     DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
 endif(UNIX AND NOT APPLE)
+
+# Linux Manpage
+if(UNIX AND NOT APPLE)
+  install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../solarus.6
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/man/man6)
+endif(UNIX AND NOT APPLE)

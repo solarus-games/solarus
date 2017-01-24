@@ -1,7 +1,12 @@
 [Desktop Entry]
+Version=1.0
 Type=Application
 Name=Solarus Quest Launcher
+GenericName=Topdown 2D adventure game
 Comment=A graphical user interface to organize and play quests for the Solarus engine
-Exec=/usr/games/solarus
-Icon=solarus_launcher_icon.png
-Categories=Game;
+Exec=solarus
+Icon=solarus
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=Game;AdventureGame;

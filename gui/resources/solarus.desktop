@@ -7,6 +7,5 @@ Comment=A graphical user interface to organize and play quests for the Solarus e
 Exec=solarus
 Icon=solarus
 Terminal=false
-Type=Application
 StartupNotify=true
 Categories=Game;AdventureGame;

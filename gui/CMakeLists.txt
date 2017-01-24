@@ -181,7 +181,7 @@ endif(UNIX AND NOT APPLE)
 
 # FreeDesktop compatible start menu launcher
 if(UNIX AND NOT APPLE)
-  install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../resources/solarus.desktop
+  install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../gui/resources/solarus.desktop
     DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
 endif(UNIX AND NOT APPLE)
 

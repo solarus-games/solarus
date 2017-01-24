@@ -159,3 +159,34 @@ if(WIN32)
   endif()
 endif()
 
+# FreeDesktop compatible icons
+if(UNIX AND NOT APPLE)
+  install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/icons/solarus_icon_16.png
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/16x16/apps RENAME solarus.png)
+  install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/icons/solarus_icon_24.png
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/24x24/apps RENAME solarus.png)
+  install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/icons/solarus_icon_32.png
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/32x32/apps RENAME solarus.png)
+  install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/icons/solarus_icon_48.png
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/48x48/apps RENAME solarus.png)
+  install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/icons/solarus_icon_64.png
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/64x64/apps RENAME solarus.png)
+  install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/icons/solarus_icon_128.png
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/128x128/apps RENAME solarus.png)
+  install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/icons/solarus_icon_256.png
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/256x256/apps RENAME solarus.png)
+  install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/icons/solarus_icon_512.png
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/512x512/apps RENAME solarus.png)
+endif(UNIX AND NOT APPLE)
+
+# FreeDesktop compatible start menu launcher
+if(UNIX AND NOT APPLE)
+  install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../gui/resources/solarus.desktop
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+endif(UNIX AND NOT APPLE)
+
+# Linux Manpage
+if(UNIX AND NOT APPLE)
+  install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../solarus.6
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/man/man6)
+endif(UNIX AND NOT APPLE)

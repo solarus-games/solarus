@@ -72,24 +72,32 @@ void Tileset::add_tile_pattern(
   if (frames.size() == 1) {
     // Single frame.
     const Rectangle& frame = frames[0];
+    const Size& size = frame.get_size();
+
+    // Diagonal obstacle: check that the tile is square.
+    if (GroundInfo::is_ground_diagonal(ground)) {
+      if (!size.is_square()) {
+        Debug::error("Invalid tile pattern '"  + id + ": a tile pattern with a diagonal wall must be square");
+      }
+    }
 
     switch (scrolling) {
 
     case TileScrolling::NONE:
       tile_pattern = new SimpleTilePattern(
-          ground, frame.get_xy(), frame.get_size()
+          ground, frame.get_xy(), size
       );
       break;
 
     case TileScrolling::PARALLAX:
       tile_pattern = new ParallaxScrollingTilePattern(
-          ground, frame.get_xy(), frame.get_size()
+          ground, frame.get_xy(), size
       );
       break;
 
     case TileScrolling::SELF:
       tile_pattern = new SelfScrollingTilePattern(
-          ground, frame.get_xy(), frame.get_size()
+          ground, frame.get_xy(), size
       );
       break;
     }

@@ -45,13 +45,6 @@ TilePattern::TilePattern(Ground ground, const Size& size):
         ") but should be positive and multiple of 8 pixels";
     Debug::die(oss.str());
   }
-
-  // Diagonal obstacle: check that the tile is square.
-  if (GroundInfo::is_ground_diagonal(ground)) {
-    if (!size.is_square()) {
-      Debug::error("Invalid tile pattern: a tile pattern with a diagonal wall must be square");
-    }
-  }
 }
 
 /**

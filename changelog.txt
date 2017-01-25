@@ -4,6 +4,7 @@ Solarus 1.6.0 (in progress)
 ___________________________
 
 * Fix text_surface:set_horizontal/vertical_alignment() not working.
+* Improve error message of non-square tile patterns with diagonal obstacles.
 
 __________________________
 

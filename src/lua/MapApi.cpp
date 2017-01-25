@@ -420,8 +420,8 @@ int LuaContext::l_create_tile(lua_State* l) {
     const Size size =  entity_creation_check_size(l, 1, data);
     const std::string& tile_pattern_id = data.get_string("pattern");
 
-    Tileset& tileset = map.get_tileset();
-    TilePattern& pattern = tileset.get_tile_pattern(tile_pattern_id);
+    const Tileset& tileset = map.get_tileset();
+    const TilePattern& pattern = tileset.get_tile_pattern(tile_pattern_id);
     const Size& pattern_size = pattern.get_size();
     Entities& entities = map.get_entities();
 

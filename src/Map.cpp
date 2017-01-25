@@ -29,6 +29,7 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Game.h"
 #include "solarus/Map.h"
+#include "solarus/ResourceProvider.h"
 #include "solarus/Savegame.h"
 #include "solarus/Sprite.h"
 
@@ -71,7 +72,6 @@ const std::string& Map::get_id() const {
  * \return the id of the tileset
  */
 const std::string& Map::get_tileset_id() const {
-  // note that if set_tileset() has been called, tileset_id != tileset->get_id()
   return tileset_id;
 }
 
@@ -81,14 +81,13 @@ const std::string& Map::get_tileset_id() const {
  * The new tileset must be compatible with the previous one,
  * i.e. every tile of the previous tileset must exist in the new one
  * and have the same properties.
- * This function keeps the tiles of the previous tileset and loads the
- * image of the new tileset.
  *
  * \param tileset_id Id of the new tileset.
  */
 void Map::set_tileset(const std::string& tileset_id) {
 
-  tileset->set_images(tileset_id);
+  ResourceProvider& resource_provider = get_game().get_resource_provider();
+  tileset = &resource_provider.get_tileset(tileset_id);
   get_entities().notify_tileset_changed();
   this->tileset_id = tileset_id;
   build_background_surface();
@@ -295,6 +294,7 @@ void Map::load(Game& game) {
 
   // Initialize the map from the data just read.
   this->game = &game;
+  ResourceProvider& resource_provider = game.get_resource_provider();
   location.set_xy(data.get_location());
   location.set_size(data.get_size());
   width8 = data.get_size().width / 8;
@@ -305,8 +305,7 @@ void Map::load(Game& game) {
   set_world(data.get_world());
   set_floor(data.get_floor());
   tileset_id = data.get_tileset_id();
-  tileset = std::unique_ptr<Tileset>(new Tileset(data.get_tileset_id()));
-  tileset->load();
+  tileset = &resource_provider.get_tileset(tileset_id);
   entities = std::unique_ptr<Entities>(new Entities(game, *this));
   entities->create_entities(data);
 

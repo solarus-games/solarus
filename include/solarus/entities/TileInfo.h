@@ -33,7 +33,7 @@ struct TileInfo {
   int layer;
   Rectangle box;
   std::string pattern_id;
-  TilePattern* pattern = nullptr;
+  const TilePattern* pattern = nullptr;
 };
 
 }

@@ -45,12 +45,12 @@ class Tileset {
     void load();
     void unload();
 
-    const std::string& get_id();
-    Color& get_background_color();
-    bool is_loaded();
-    const SurfacePtr& get_tiles_image();
-    const SurfacePtr& get_entities_image();
-    TilePattern& get_tile_pattern(const std::string& id);
+    const std::string& get_id() const;
+    const Color& get_background_color() const;
+    bool is_loaded() const;
+    const SurfacePtr& get_tiles_image() const;
+    const SurfacePtr& get_entities_image() const;
+    const TilePattern& get_tile_pattern(const std::string& id) const;
     void set_images(const std::string& other_id);
 
   private:

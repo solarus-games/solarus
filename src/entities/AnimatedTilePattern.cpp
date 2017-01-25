@@ -129,9 +129,9 @@ void AnimatedTilePattern::update() {
 void AnimatedTilePattern::draw(
     const SurfacePtr& dst_surface,
     const Point& dst_position,
-    Tileset& tileset,
+    const Tileset& tileset,
     const Point& viewport
-) {
+) const {
   const SurfacePtr& tileset_image = tileset.get_tiles_image();
   const Rectangle& src = position_in_tileset[current_frames[sequence]];
   Point dst = dst_position;

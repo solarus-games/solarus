@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/ResourceProvider.h"
 #include <atomic>
 #include <memory>
 #include <mutex>
@@ -53,6 +54,7 @@ class SOLARUS_API MainLoop {
     bool is_resetting();
     Game* get_game();
     void set_game(Game* game);
+    ResourceProvider& get_resource_provider();
     int push_lua_command(const std::string& command);
 
     LuaContext& get_lua_context();
@@ -70,6 +72,8 @@ class SOLARUS_API MainLoop {
 
     std::unique_ptr<LuaContext>
         lua_context;              /**< The Lua world where scripts are run. */
+    ResourceProvider
+        resource_provider;        /**< Resource cache of the quest. */
     SurfacePtr root_surface;      /**< The surface where everything is drawn. */
     std::unique_ptr<Game> game;   /**< The current game if any, nullptr otherwise. */
     Game* next_game;              /**< The game to start at next cycle (nullptr means resetting the game). */

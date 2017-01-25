@@ -179,6 +179,14 @@ LuaContext& Game::get_lua_context() {
 }
 
 /**
+ * \brief Returns the resource provider of the quest.
+ * \return The resource provider.
+ */
+ResourceProvider& Game::get_resource_provider() {
+  return main_loop.get_resource_provider();
+}
+
+/**
  * \brief Returns the hero.
  * \return the hero
  */

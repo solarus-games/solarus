@@ -53,9 +53,9 @@ class TilePattern {
     void fill_surface(
         const SurfacePtr& dst_surface,
         const Rectangle& dst_position,
-        Tileset& tileset,
+        const Tileset& tileset,
         const Point& viewport
-    );
+    ) const;
 
     /**
      * \brief Draws the tile image on a surface.
@@ -68,9 +68,9 @@ class TilePattern {
     virtual void draw(
         const SurfacePtr& dst_surface,
         const Point& dst_position,
-        Tileset& tileset,
+        const Tileset& tileset,
         const Point& viewport
-    ) = 0;
+    ) const = 0;
     virtual bool is_animated() const;
     virtual bool is_drawn_at_its_position() const;
 

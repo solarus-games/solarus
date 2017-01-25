@@ -46,7 +46,7 @@ Tileset::Tileset(const std::string& id):
  * \brief Returns the id of this tileset.
  * \return the tileset id
  */
-const std::string& Tileset::get_id() {
+const std::string& Tileset::get_id() const {
   return id;
 }
 
@@ -177,7 +177,7 @@ void Tileset::unload() {
  * \brief Returns the background color of this tileset.
  * \return the background color
  */
-Color& Tileset::get_background_color() {
+const Color& Tileset::get_background_color() const {
   return background_color;
 }
 
@@ -185,7 +185,7 @@ Color& Tileset::get_background_color() {
  * \brief Returns whether this tileset is loaded.
  * \return true if this tileset is loaded
  */
-bool Tileset::is_loaded() {
+bool Tileset::is_loaded() const {
   return tiles_image != nullptr;
 }
 
@@ -193,7 +193,7 @@ bool Tileset::is_loaded() {
  * \brief Returns the image containing the tiles of this tileset.
  * \return the tiles image
  */
-const SurfacePtr& Tileset::get_tiles_image() {
+const SurfacePtr& Tileset::get_tiles_image() const {
   return tiles_image;
 }
 
@@ -201,7 +201,7 @@ const SurfacePtr& Tileset::get_tiles_image() {
  * \brief Returns the image containing the skin-dependent dynamic entities for this tileset.
  * \return the image containing the skin-dependent dynamic entities for this tileset
  */
-const SurfacePtr& Tileset::get_entities_image() {
+const SurfacePtr& Tileset::get_entities_image() const {
   return entities_image;
 }
 
@@ -210,7 +210,7 @@ const SurfacePtr& Tileset::get_entities_image() {
  * \param id id of the tile pattern to get
  * \return the tile pattern with this id
  */
-TilePattern& Tileset::get_tile_pattern(const std::string& id) {
+const TilePattern& Tileset::get_tile_pattern(const std::string& id) const {
 
   const auto& it = tile_patterns.find(id);
   if (it == tile_patterns.end()) {

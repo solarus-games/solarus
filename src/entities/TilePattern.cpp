@@ -154,9 +154,9 @@ bool TilePattern::is_drawn_at_its_position() const {
 void TilePattern::fill_surface(
     const SurfacePtr& dst_surface,
     const Rectangle& dst_position,
-    Tileset& tileset,
+    const Tileset& tileset,
     const Point& viewport
-) {
+) const {
   Point dst;
 
   int limit_x = dst_position.get_x() + dst_position.get_width();

@@ -46,7 +46,7 @@ class DynamicTile: public Entity {
         int layer,
         const Point& xy,
         const Size& size,
-        Tileset& tileset,
+        const Tileset& tileset,
         const std::string& tile_pattern_id,
         bool enabled
     );
@@ -61,7 +61,7 @@ class DynamicTile: public Entity {
   private:
 
     const std::string tile_pattern_id; /**< Id of the tile pattern. */
-    TilePattern& tile_pattern;         /**< Pattern of the tile. */
+    const TilePattern& tile_pattern;   /**< Pattern of the tile. */
 
 };
 

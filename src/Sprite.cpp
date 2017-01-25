@@ -133,7 +133,7 @@ const SpriteAnimationSet& Sprite::get_animation_set() const {
  *
  * \param tileset The tileset.
  */
-void Sprite::set_tileset(Tileset& tileset) {
+void Sprite::set_tileset(const Tileset& tileset) {
   animation_set.set_tileset(tileset);
 }
 

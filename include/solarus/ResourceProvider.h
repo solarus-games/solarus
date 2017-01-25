@@ -14,40 +14,39 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_SIMPLE_TILE_PATTERN_H
-#define SOLARUS_SIMPLE_TILE_PATTERN_H
+#ifndef SOLARUS_RESOURCE_PROVIDER_H
+#define SOLARUS_RESOURCE_PROVIDER_H
 
 #include "solarus/Common.h"
+#include "solarus/entities/Tileset.h"
 #include "solarus/entities/TilePattern.h"
-#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/ResourceType.h"
+#include <map>
+#include <memory>
+#include <string>
 
 namespace Solarus {
 
 /**
- * \brief Non-animated tile pattern.
+ * \brief Provides fast access to quest resources.
  *
- * This tile pattern does not show any special effects and displays
- * a single image.
+ * Maintains a cache of already loaded quest resources
+ * so that next accesses are faster.
  */
-class SimpleTilePattern: public TilePattern {
+class SOLARUS_API ResourceProvider {
 
   public:
 
-    SimpleTilePattern(Ground ground, const Point& xy, const Size& size);
+    ResourceProvider();
 
-    virtual void draw(
-        const SurfacePtr& dst_surface,
-        const Point& dst_position,
-        const Tileset& tileset,
-        const Point& viewport
-    ) const override;
+    const Tileset& get_tileset(const std::string& tileset_id);
+    // TODO other types of resources
 
-    virtual bool is_animated() const override;
+    void invalidate_resource_element(ResourceType resource_type, const std::string& element_id);
 
-  protected:
+  private:
 
-    Rectangle position_in_tileset; /**< position of the tile pattern in the tileset image */
-
+    std::map<std::string, std::unique_ptr<Tileset>> tileset_cache;          /**< Cache of loaded tilesets. */
 };
 
 }

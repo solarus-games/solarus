@@ -101,7 +101,7 @@ void SpriteAnimationSet::add_animation(
  *
  * \param tileset The tileset.
  */
-void SpriteAnimationSet::set_tileset(Tileset& tileset) {
+void SpriteAnimationSet::set_tileset(const Tileset& tileset) {
 
   for (auto& kvp: animations) {
     kvp.second.set_tileset(tileset);

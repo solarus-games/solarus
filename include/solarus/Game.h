@@ -39,6 +39,7 @@ class InputEvent;
 class LuaContext;
 class MainLoop;
 class Map;
+class ResourceProvider;
 class Savegame;
 
 /**
@@ -64,6 +65,7 @@ class SOLARUS_API Game {
     // global objects
     MainLoop& get_main_loop();
     LuaContext& get_lua_context();
+    ResourceProvider& get_resource_provider();
     const HeroPtr& get_hero();
     GameCommands& get_commands();
     const GameCommands& get_commands() const;

@@ -332,7 +332,7 @@ LuaContext& Map::get_lua_context() {
  *
  * This function should not be called before the map is loaded into a game.
  *
- * \return the game
+ * \return The game.
  */
 Game& Map::get_game() {
   return *game;

@@ -200,13 +200,13 @@ SurfacePtr Surface::create(const std::string& file_name,
 }
 
 /**
- * \brief Returns the SDL_Surface corresponding to the requested file.
+ * \brief Creates an SDL surface corresponding to the requested file.
  *
- * The returned SDL_Surface has to be manually deleted.
+ * The returned SDL surface has to be manually deleted.
  *
  * \param file_name Name of the image file to load, relative to the base directory specified.
  * \param base_directory The base directory to use.
- * \return The SDL_Surface.
+ * \return The SDL surface created.
  */
 SDL_Surface* Surface::get_surface_from_file(
     const std::string& file_name,

@@ -149,7 +149,6 @@ void Tileset::load() {
   file_name = std::string("tilesets/") + id + ".entities.png";
   entities_image = Surface::create(file_name, Surface::DIR_DATA);
   if (entities_image == nullptr) {
-    Debug::error(std::string("Missing entities image for tileset '") + id + "': " + file_name);
     entities_image = Surface::create(16, 16);
   }
 }
@@ -194,6 +193,9 @@ const SurfacePtr& Tileset::get_tiles_image() {
  * \return the image containing the skin-dependent dynamic entities for this tileset
  */
 const SurfacePtr& Tileset::get_entities_image() {
+  if (entities_image == nullptr) {
+    Debug::error(std::string("Missing entities image for tileset '") + id + "': " + std::string("tilesets/") + id + ".dat" );
+  }
   return entities_image;
 }
 

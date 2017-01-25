@@ -169,6 +169,7 @@ Data files format changes
 * Maps: New property starting_location_mode on destinations (#819).
 * Maps: width and height of custom entities are now mandatory as documented.
 * Dialogs: Allow empty texts.
+* Make "tileset.entities.png" files optional (#884).
 
 Sample quest changes
 --------------------

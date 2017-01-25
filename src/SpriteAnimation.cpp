@@ -70,7 +70,14 @@ void SpriteAnimation::set_tileset(Tileset& tileset) {
     return;
   }
 
-  src_image = tileset.get_entities_image();
+  const SurfacePtr& entities_image = tileset.get_entities_image();
+  const std::string tid = tileset.get_id();
+  if (entities_image == nullptr) {
+    Debug::error(std::string("Missing entities image for tileset '")
+        + tid + "': " + std::string("tilesets/") + tid + ".dat" );
+  } else {
+    src_image = entities_image;
+  }
   if (should_enable_pixel_collisions) {
     disable_pixel_collisions(); // to force creating the images again
     do_enable_pixel_collisions();

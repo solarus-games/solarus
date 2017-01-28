@@ -557,8 +557,8 @@ bool InputEvent::get_global_finger_position(int finger_id, Point& finger_xy) {
 
     if (finger != NULL) {
       const Size window_size = Video::get_window_size();
-      const int x = internal_event.tfinger.x * static_cast<float>(window_size.width);
-      const int y = internal_event.tfinger.y * static_cast<float>(window_size.height);
+      const int x = finger->x * static_cast<float>(window_size.width);
+      const int y = finger->y * static_cast<float>(window_size.height);
 
       return Video::window_to_quest_coordinates(Point(x, y), finger_xy);;
     }

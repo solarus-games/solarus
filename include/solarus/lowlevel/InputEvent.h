@@ -232,7 +232,6 @@ class InputEvent {
     bool is_joypad_event() const;
     bool is_mouse_event() const;
     bool is_finger_event() const;
-    bool is_touch_event() const;
     bool is_window_event() const;
 
     // keyboard

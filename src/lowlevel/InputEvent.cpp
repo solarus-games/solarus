@@ -425,11 +425,26 @@ bool InputEvent::is_joypad_button_down(int button) {
 /**
  * \brief Returns whether a mouse button is currently down.
  * \param button A mouse button.
- * \return \c true if this joypad button is currently down.
+ * \return \c true if this mouse button is currently down.
  */
 bool InputEvent::is_mouse_button_down(MouseButton button) {
 
   return (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(button)) != 0;
+}
+
+/**
+ * \brief Returns whether a finger is currently pressing the screen.
+ * \param finger_id A finger ID.
+ * \return \c true if this finger is currently down.
+ */
+bool InputEvent::is_finger_down(int finger_id) {
+
+  for (int i = 0; i < SDL_GetNumTouchDevices(); ++i) {
+    if (SDL_GetTouchFinger(SDL_GetTouchDevice(i), finger_id) != NULL)
+      return true;
+  }
+
+  return false;
 }
 
 /**
@@ -525,6 +540,55 @@ bool InputEvent::get_global_mouse_position(Point& mouse_xy) {
   return Video::window_to_quest_coordinates(Point(x, y), mouse_xy);
 }
 
+/**
+ * \brief Gets the x and y position of the finger.
+ * Values are in quest size coordinates.
+ * \param finger_id The ID of the finger.
+ * \param[out] finger_xy The x and y position of the finger in quest coordinates.
+ * \return \c false if the finger was outside the quest displaying or if there are
+ * no finger pressed.
+ */
+bool InputEvent::get_global_finger_position(int finger_id, Point& finger_xy) {
+
+  SDL_Finger* finger;
+
+  for (int i = 0; i < SDL_GetNumTouchDevices(); ++i) {
+    finger = SDL_GetTouchFinger(SDL_GetTouchDevice(i), finger_id);
+
+    if (finger != NULL) {
+      const Size window_size = Video::get_window_size();
+      const int x = internal_event.tfinger.x * static_cast<float>(window_size.width);
+      const int y = internal_event.tfinger.y * static_cast<float>(window_size.height);
+
+      return Video::window_to_quest_coordinates(Point(x, y), finger_xy);;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * \brief Gets the pressure of the finger.
+ * \param finger_id The ID of the finger.
+ * \param[out] finger_pressure The pressure of the finger
+ * \return \c false if there are no finger pressed.
+ */
+bool InputEvent::get_global_finger_pressure(int finger_id, float& finger_pressure) {
+
+  SDL_Finger* finger;
+
+  for (int i = 0; i < SDL_GetNumTouchDevices(); ++i) {
+    finger = SDL_GetTouchFinger(SDL_GetTouchDevice(i), finger_id);
+
+    if (finger != NULL) {
+      finger_pressure = finger->pressure;
+      return true;
+    }
+  }
+
+  return false;
+}
+
 
 // event type
 
@@ -568,6 +632,17 @@ bool InputEvent::is_mouse_event() const {
     || internal_event.type == SDL_MOUSEBUTTONDOWN
     || internal_event.type == SDL_MOUSEBUTTONUP
     || internal_event.type == SDL_MOUSEWHEEL;
+}
+
+/**
+ * \brief Returns whether this event is a finger event.
+ * \return true if this is a finger event.
+ */
+bool InputEvent::is_finger_event() const {
+
+  return internal_event.type == SDL_FINGERMOTION
+  || internal_event.type == SDL_FINGERDOWN
+  || internal_event.type == SDL_FINGERUP;
 }
 
 /**
@@ -1073,7 +1148,7 @@ bool InputEvent::is_mouse_button_pressed(MouseButton button) const {
 
 /**
  * \brief Returns whether this event is a mouse event.
- * corresponding to releasing a any button.
+ * corresponding to releasing any button.
  * \return true if this event corresponds to releasing a mouse button.
  */
 bool InputEvent::is_mouse_button_released() const {
@@ -1122,6 +1197,137 @@ bool InputEvent::get_mouse_position(Point& mouse_xy) const {
 
   return Video::renderer_to_quest_coordinates(
       Point(internal_event.button.x, internal_event.button.y), mouse_xy);
+}
+
+// touch finger
+
+/**
+ * \brief Returns whether this event is a finger event.
+ * corresponding to pressing a finger.
+ * \return true if this event corresponds to pressing a finger.
+ */
+bool InputEvent::is_finger_pressed() const {
+
+  return internal_event.type == SDL_FINGERDOWN;
+}
+
+/**
+ * \brief Returns whether this event is a finger event.
+ * corresponding to pressing a specific finger.
+ * \param finger_id The finger ID to test.
+ * \return true if this event corresponds to pressing that finger.
+ */
+bool InputEvent::is_finger_pressed(int finger_id) const {
+
+  return is_finger_pressed()
+  && static_cast<int>(internal_event.tfinger.fingerId) == finger_id;
+}
+
+/**
+ * \brief Returns whether this event is a finger event.
+ * corresponding to releasing a finger.
+ * \return true if this event corresponds to releasing a finger.
+ */
+bool InputEvent::is_finger_released() const {
+
+  return internal_event.type == SDL_FINGERUP;
+}
+
+/**
+ * \brief Returns whether this event is a finger event.
+ * corresponding to releasing a specific finger.
+ * \param finger_id The finger ID to test.
+ * \return true if this event corresponds to releasing that finger.
+ */
+bool InputEvent::is_finger_released(int finger_id) const {
+
+  return is_finger_released()
+  && static_cast<int>(internal_event.tfinger.fingerId) == finger_id;
+}
+
+/**
+ * \brief Returns whether this event is a finger event.
+ * corresponding to moving a finger.
+ * \return true if this event corresponds to moving a finger.
+ */
+bool InputEvent::is_finger_moved() const {
+
+  return internal_event.type == SDL_FINGERMOTION;
+}
+
+/**
+ * \brief Returns whether this event is a finger event.
+ * corresponding to moving a specific finger.
+ * \param finger_id The finger ID to test.
+ * \return true if this event corresponds to moving that finger button.
+ */
+bool InputEvent::is_finger_moved(int finger_id) const {
+
+  return is_finger_moved()
+  && static_cast<int>(internal_event.tfinger.fingerId) == finger_id;
+}
+
+/**
+ * \brief Returns the finger ID that was pressed, released or moved
+ * during this finger event.
+ *
+ * If this is not a finger event, -1 is returned.
+ * \return The finger ID of this finger event.
+ */
+int InputEvent::get_finger() const {
+
+  Debug::check_assertion(is_finger_event(), "Event is not a touch finger event");
+
+  if (!is_finger_event()) {
+    return -1;
+  }
+
+  return static_cast<int>(internal_event.tfinger.fingerId);
+}
+
+/**
+ * \brief Gets the x and y position of this finger event, if any.
+ * Values are in quest size coordinates.
+ * \param[out] finger_xy The x and y position of the finger in this finger event.
+ * \return \c false if the finger was not inside the quest displaying during
+ * this event.
+ */
+bool InputEvent::get_finger_position(Point& finger_xy) const {
+
+  Debug::check_assertion(is_finger_event(), "Event is not a touch finger event");
+
+  const Size window_size = Video::get_window_size();
+  const int x = internal_event.tfinger.x * static_cast<float>(window_size.width);
+  const int y = internal_event.tfinger.y * static_cast<float>(window_size.height);
+
+  return Video::window_to_quest_coordinates(Point(x, y), finger_xy);
+}
+
+/**
+ * \brief Gets the x and y moved distance of this finger event, if any.
+ * Values are in quest size coordinates.
+ * \return The distance moved in this finger event.
+ */
+Point InputEvent::get_finger_distance() const {
+
+  Debug::check_assertion(is_finger_event(), "Event is not a touch finger event");
+
+  const Size window_size = Video::get_window_size();
+  const int x = internal_event.tfinger.x * static_cast<float>(window_size.width);
+  const int y = internal_event.tfinger.y * static_cast<float>(window_size.height);
+
+  return Video::full_window_to_quest_coordinates(Point(x, y));
+}
+
+/**
+ * \brief Gets the pressure of this finger event, if any.
+ * \return The pressure of this finger event.
+ */
+float InputEvent::get_finger_pressure() const {
+
+  Debug::check_assertion(is_finger_event(), "Event is not a touch finger event");
+
+  return internal_event.tfinger.pressure;
 }
 
 // functions common to keyboard and joypad events

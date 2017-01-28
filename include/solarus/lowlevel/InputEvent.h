@@ -219,15 +219,20 @@ class InputEvent {
     static bool is_key_down(KeyboardKey key);
     static bool is_joypad_button_down(int button);
     static bool is_mouse_button_down(MouseButton button);
+    static bool is_finger_down(int finger_id);
     static int get_joypad_axis_state(int axis);
     static int get_joypad_hat_direction(int hat);
     static bool get_global_mouse_position(Point& mouse_xy);
+    static bool get_global_finger_position(int finger_id, Point& finger_xy);
+    static bool get_global_finger_pressure(int finger_id, float& finger_pressure);
 
     // event type
     bool is_valid() const;
     bool is_keyboard_event() const;
     bool is_joypad_event() const;
     bool is_mouse_event() const;
+    bool is_finger_event() const;
+    bool is_touch_event() const;
     bool is_window_event() const;
 
     // keyboard
@@ -276,6 +281,19 @@ class InputEvent {
 
     MouseButton get_mouse_button() const;
     bool get_mouse_position(Point& mouse_xy) const;
+
+    // touch finger
+    bool is_finger_pressed() const;
+    bool is_finger_pressed(int finger_id) const;
+    bool is_finger_released() const;
+    bool is_finger_released(int finger_id) const;
+    bool is_finger_moved() const;
+    bool is_finger_moved(int finger_id) const;
+
+    int get_finger() const;
+    bool get_finger_position(Point& finger_xy) const;
+    Point get_finger_distance() const;
+    float get_finger_pressure() const;
 
     // functions common to keyboard, joypad and mouse
     int get_direction() const;

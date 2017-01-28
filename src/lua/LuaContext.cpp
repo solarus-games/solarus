@@ -1577,6 +1577,18 @@ bool LuaContext::on_input(const InputEvent& event) {
       handled = on_mouse_button_released(event) || handled;
     }
   }
+  else if (event.is_finger_event()) {
+    // Touch finger.
+    if (event.is_finger_pressed()) {
+      handled = on_finger_pressed(event) || handled;
+    }
+    else if (event.is_finger_released()) {
+      handled = on_finger_released(event) || handled;
+    }
+    else if (event.is_finger_moved()) {
+        handled = on_finger_moved(event) || handled;
+    }
+  }
 
   return handled;
 }
@@ -1863,6 +1875,132 @@ bool LuaContext::on_mouse_button_released(const InputEvent& event) {
       lua_pushinteger(l, mouse_xy.y);
 
       bool success = call_function(4, 1, "on_mouse_released");
+      if (!success) {
+        // Something was wrong in the script: don't propagate the input to other objects.
+        handled = true;
+      }
+      else {
+        handled = lua_toboolean(l, -1);
+        lua_pop(l, 1);
+      }
+    }
+    else {
+      // The method exists but parameters are not congruent.
+      lua_pop(l, 2);  // Pop the object and the method.
+    }
+  }
+  return handled;
+}
+
+/**
+ * \brief Notifies the object on top of the stack
+ * that a finger was just pressed.
+ * \param event The corresponding input event.
+ * \return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::on_finger_pressed(const InputEvent& event) {
+
+  bool handled = false;
+  if (find_method("on_finger_pressed")) {
+
+    Point finger_xy;
+    int finger_id = event.get_finger();
+    float finger_pressure = event.get_finger_pressure();
+    const bool in_quest = event.get_finger_position(finger_xy);
+
+    // Don't call the Lua event if the finger position is not inside the quest display.
+    if (in_quest) {
+      lua_pushinteger(l, finger_id);
+      lua_pushinteger(l, finger_xy.x);
+      lua_pushinteger(l, finger_xy.y);
+      lua_pushnumber(l, finger_pressure);
+
+      bool success = call_function(5, 1, "on_finger_pressed");
+      if (!success) {
+        // Something was wrong in the script: don't propagate the input to other objects.
+        handled = true;
+      }
+      else {
+        handled = lua_toboolean(l, -1);
+        lua_pop(l, 1);
+      }
+    }
+    else {
+      // The method exists but parameters are not congruent.
+      lua_pop(l, 2);  // Pop the object and the method.
+    }
+  }
+  return handled;
+}
+
+/**
+ * \brief Notifies the object on top of the stack
+ * that a finger was just released.
+ * \param event The corresponding input event.
+ * \return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::on_finger_released(const InputEvent& event) {
+
+  bool handled = false;
+  if (find_method("on_finger_released")) {
+
+    Point finger_xy;
+    int finger_id = event.get_finger();
+    float finger_pressure = event.get_finger_pressure();
+    const bool in_quest = event.get_finger_position(finger_xy);
+
+    // Don't call the Lua event if the finger position is not inside the quest display.
+    if (in_quest) {
+      lua_pushinteger(l, finger_id);
+      lua_pushinteger(l, finger_xy.x);
+      lua_pushinteger(l, finger_xy.y);
+      lua_pushnumber(l, finger_pressure);
+
+      bool success = call_function(5, 1, "on_finger_released");
+      if (!success) {
+        // Something was wrong in the script: don't propagate the input to other objects.
+        handled = true;
+      }
+      else {
+        handled = lua_toboolean(l, -1);
+        lua_pop(l, 1);
+      }
+    }
+    else {
+      // The method exists but parameters are not congruent.
+      lua_pop(l, 2);  // Pop the object and the method.
+    }
+  }
+  return handled;
+}
+
+/**
+ * \brief Notifies the object on top of the stack
+ * that a finger was just moved.
+ * \param event The corresponding input event.
+ * \return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::on_finger_moved(const InputEvent& event) {
+
+  bool handled = false;
+  if (find_method("on_finger_moved")) {
+
+    Point finger_xy;
+    int finger_id = event.get_finger();
+    Point finger_distance = event.get_finger_distance();
+    float finger_pressure = event.get_finger_pressure();
+    const bool in_quest = event.get_finger_position(finger_xy);
+
+    // Don't call the Lua event if the finger position is not inside the quest display.
+    if (in_quest) {
+      lua_pushinteger(l, finger_id);
+      lua_pushinteger(l, finger_xy.x);
+      lua_pushinteger(l, finger_xy.y);
+      lua_pushinteger(l, finger_distance.x);
+      lua_pushinteger(l, finger_distance.y);
+      lua_pushnumber(l, finger_pressure);
+
+      bool success = call_function(7, 1, "on_finger_moved");
       if (!success) {
         // Something was wrong in the script: don't propagate the input to other objects.
         handled = true;

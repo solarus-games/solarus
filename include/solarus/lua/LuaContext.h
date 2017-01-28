@@ -493,6 +493,10 @@ class LuaContext {
       input_api_is_mouse_button_pressed,
       input_api_is_mouse_button_released,
       input_api_get_mouse_position,
+      input_api_is_finger_pressed,
+      input_api_is_finger_released,
+      input_api_get_finger_position,
+      input_api_get_finger_pressure,
 
       // File API.
       file_api_open,
@@ -1215,6 +1219,9 @@ class LuaContext {
     bool on_joypad_hat_moved(const InputEvent& event);
     bool on_mouse_button_pressed(const InputEvent& event);
     bool on_mouse_button_released(const InputEvent& event);
+    bool on_finger_pressed(const InputEvent& event);
+    bool on_finger_released(const InputEvent& event);
+    bool on_finger_moved(const InputEvent& event);
     bool on_command_pressed(GameCommand command);
     bool on_command_released(GameCommand command);
     void on_animation_finished(const std::string& animation);

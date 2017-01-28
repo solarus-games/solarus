@@ -896,6 +896,35 @@ Rectangle Video::get_viewport() {
 
 /**
  * \brief Converts window coordinates to quest size coordinates.
+ * \param[in] window_xy A position relative to the window.
+ * \return Coordinates in quest size.
+ */
+Point Video::full_window_to_quest_coordinates(
+    const Point& window_xy
+) {
+  Rectangle viewport = get_viewport();
+
+  float scale_x = 0.0;
+  float scale_y = 0.0;
+  SDL_RenderGetScale(get_renderer(), &scale_x, &scale_y);
+
+  const double x_position = window_xy.x - viewport.get_x() * scale_x;
+  const double y_position = window_xy.y - viewport.get_y() * scale_y;
+  const double quest_size_width = quest_size.width;
+  const double quest_size_height = quest_size.height;
+  const double window_width = viewport.get_width() * scale_x;
+  const double window_height = viewport.get_height() * scale_y;
+
+  Debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
+  Debug::check_assertion(!viewport.is_flat(), "Viewport is not initialized");
+
+  return Point(
+    (int) (x_position * quest_size_width / window_width),
+    (int) (y_position * quest_size_height / window_height));
+}
+
+/**
+ * \brief Converts window coordinates to quest size coordinates.
  * \param[in] window_xy A position relative to the window, not including
  * the title bar.
  * \param[out] quest_xy The corresponding value in quest coordinates.

@@ -1,5 +1,5 @@
 quest{
-  solarus_version = "1.5",
+  solarus_version = "1.6",
   write_dir = "testing_quest",
   title = "Testing Quest",
   short_description = "Technical quest used for Solarus automated tests",

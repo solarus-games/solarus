@@ -50,7 +50,7 @@ void Sprite::initialize() {
 void Sprite::quit() {
 
   // delete the animations loaded
-  for (auto kvp: all_animation_sets) {
+  for (auto& kvp: all_animation_sets) {
     delete kvp.second;
   }
   all_animation_sets.clear();

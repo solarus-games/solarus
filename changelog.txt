@@ -1,6 +1,6 @@
 ___________________________
 
-Solarus 1.6.0 (in progress)
+Solarus 1.5.3 (in progress)
 ___________________________
 
 * Speed up loading maps by keeping tilesets in a cache (#1019).

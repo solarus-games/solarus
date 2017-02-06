@@ -15,8 +15,6 @@ languages/
       strings.dat
       dialogs.dat
     images/
-text/
-  fonts.dat
 sounds/
   arrow_hit.ogg
   boomerang.ogg

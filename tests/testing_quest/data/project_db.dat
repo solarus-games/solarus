@@ -182,6 +182,6 @@ enemy{ id = "test_flying_enemy", description = "Flying enemy" }
 
 language{ id = "en", description = "English" }
 
-font{ id = "8_bit", description = "8_bit" }
-font{ id = "minecraftia", description = "minecraftia" }
+font{ id = "8_bit", description = "8 bit" }
+font{ id = "minecraftia", description = "Minecraftia" }
 

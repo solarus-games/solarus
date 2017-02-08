@@ -222,7 +222,7 @@ class InputEvent {
     static bool is_finger_down(int finger_id);
     static int get_joypad_axis_state(int axis);
     static int get_joypad_hat_direction(int hat);
-    static bool get_global_mouse_position(Point& mouse_xy);
+    static Point get_global_mouse_position();
     static bool get_global_finger_position(int finger_id, Point& finger_xy);
     static bool get_global_finger_pressure(int finger_id, float& finger_pressure);
 
@@ -290,7 +290,7 @@ class InputEvent {
     bool is_finger_moved(int finger_id) const;
 
     int get_finger() const;
-    bool get_finger_position(Point& finger_xy) const;
+    Point get_finger_position() const;
     Point get_finger_distance() const;
     float get_finger_pressure() const;
 

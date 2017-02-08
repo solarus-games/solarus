@@ -93,8 +93,7 @@ class Video {
     static void reset_window_size();
 
     static Rectangle get_viewport();
-    static Point full_window_to_quest_coordinates(const Point& window_xy);
-    static bool window_to_quest_coordinates(const Point& window_xy, Point& quest_xy);
+    static Point window_to_quest_coordinates(const Point& window_xy);
     static bool renderer_to_quest_coordinates(const Point& renderer_xy, Point& quest_xy);
 
     static void render(const SurfacePtr& quest_surface);

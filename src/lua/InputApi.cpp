@@ -236,11 +236,7 @@ int LuaContext::input_api_is_mouse_button_released(lua_State* l) {
 int LuaContext::input_api_get_mouse_position(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    Point mouse_xy;
-    if (!InputEvent::get_global_mouse_position(mouse_xy)) {
-      lua_pushnil(l);
-      return 1;
-    }
+    Point mouse_xy = InputEvent::get_global_mouse_position();
 
     lua_pushinteger(l, mouse_xy.x);
     lua_pushinteger(l, mouse_xy.y);

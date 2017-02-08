@@ -528,16 +528,15 @@ int InputEvent::get_joypad_hat_direction(int hat) {
 /**
  * \brief Gets the x and y position of the mouse.
  * Values are in quest size coordinates.
- * \param[out] mouse_xy The x and y position of the mouse in quest coordinates.
- * \return \c false if the mouse was outside the quest displaying.
+ * \return The mouse position in quest coordinates.
  */
-bool InputEvent::get_global_mouse_position(Point& mouse_xy) {
+Point InputEvent::get_global_mouse_position() {
 
   int x, y;
 
   SDL_GetMouseState(&x, &y);
 
-  return Video::window_to_quest_coordinates(Point(x, y), mouse_xy);
+  return Video::window_to_quest_coordinates(Point(x, y));
 }
 
 /**
@@ -545,8 +544,7 @@ bool InputEvent::get_global_mouse_position(Point& mouse_xy) {
  * Values are in quest size coordinates.
  * \param finger_id The ID of the finger.
  * \param[out] finger_xy The x and y position of the finger in quest coordinates.
- * \return \c false if the finger was outside the quest displaying or if there are
- * no finger pressed.
+ * \return \c false if the finger is not pressed.
  */
 bool InputEvent::get_global_finger_position(int finger_id, Point& finger_xy) {
 
@@ -560,7 +558,8 @@ bool InputEvent::get_global_finger_position(int finger_id, Point& finger_xy) {
       const int x = finger->x * static_cast<float>(window_size.width);
       const int y = finger->y * static_cast<float>(window_size.height);
 
-      return Video::window_to_quest_coordinates(Point(x, y), finger_xy);;
+      finger_xy = Video::window_to_quest_coordinates(Point(x, y));
+      return true;
     }
   }
 
@@ -571,7 +570,7 @@ bool InputEvent::get_global_finger_position(int finger_id, Point& finger_xy) {
  * \brief Gets the pressure of the finger.
  * \param finger_id The ID of the finger.
  * \param[out] finger_pressure The pressure of the finger
- * \return \c false if there are no finger pressed.
+ * \return \c false if the finger is not pressed.
  */
 bool InputEvent::get_global_finger_pressure(int finger_id, float& finger_pressure) {
 
@@ -641,8 +640,8 @@ bool InputEvent::is_mouse_event() const {
 bool InputEvent::is_finger_event() const {
 
   return internal_event.type == SDL_FINGERMOTION
-  || internal_event.type == SDL_FINGERDOWN
-  || internal_event.type == SDL_FINGERUP;
+    || internal_event.type == SDL_FINGERDOWN
+    || internal_event.type == SDL_FINGERUP;
 }
 
 /**
@@ -1220,7 +1219,7 @@ bool InputEvent::is_finger_pressed() const {
 bool InputEvent::is_finger_pressed(int finger_id) const {
 
   return is_finger_pressed()
-  && static_cast<int>(internal_event.tfinger.fingerId) == finger_id;
+    && static_cast<int>(internal_event.tfinger.fingerId) == finger_id;
 }
 
 /**
@@ -1242,7 +1241,7 @@ bool InputEvent::is_finger_released() const {
 bool InputEvent::is_finger_released(int finger_id) const {
 
   return is_finger_released()
-  && static_cast<int>(internal_event.tfinger.fingerId) == finger_id;
+    && static_cast<int>(internal_event.tfinger.fingerId) == finger_id;
 }
 
 /**
@@ -1264,7 +1263,7 @@ bool InputEvent::is_finger_moved() const {
 bool InputEvent::is_finger_moved(int finger_id) const {
 
   return is_finger_moved()
-  && static_cast<int>(internal_event.tfinger.fingerId) == finger_id;
+    && static_cast<int>(internal_event.tfinger.fingerId) == finger_id;
 }
 
 /**
@@ -1292,7 +1291,7 @@ int InputEvent::get_finger() const {
  * \return \c false if the finger was not inside the quest displaying during
  * this event.
  */
-bool InputEvent::get_finger_position(Point& finger_xy) const {
+Point InputEvent::get_finger_position() const {
 
   Debug::check_assertion(is_finger_event(), "Event is not a touch finger event");
 
@@ -1300,7 +1299,7 @@ bool InputEvent::get_finger_position(Point& finger_xy) const {
   const int x = internal_event.tfinger.x * static_cast<float>(window_size.width);
   const int y = internal_event.tfinger.y * static_cast<float>(window_size.height);
 
-  return Video::window_to_quest_coordinates(Point(x, y), finger_xy);
+  return Video::window_to_quest_coordinates(Point(x, y));
 }
 
 /**
@@ -1316,7 +1315,7 @@ Point InputEvent::get_finger_distance() const {
   const int x = internal_event.tfinger.x * static_cast<float>(window_size.width);
   const int y = internal_event.tfinger.y * static_cast<float>(window_size.height);
 
-  return Video::full_window_to_quest_coordinates(Point(x, y));
+  return Video::window_to_quest_coordinates(Point(x, y));
 }
 
 /**

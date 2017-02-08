@@ -1277,10 +1277,6 @@ int InputEvent::get_finger() const {
 
   Debug::check_assertion(is_finger_event(), "Event is not a touch finger event");
 
-  if (!is_finger_event()) {
-    return -1;
-  }
-
   return static_cast<int>(internal_event.tfinger.fingerId);
 }
 

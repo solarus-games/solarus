@@ -237,6 +237,14 @@ int LuaContext::input_api_get_mouse_position(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Point mouse_xy = InputEvent::get_global_mouse_position();
+    
+    if (mouse_xy.x < 0
+        || mouse_xy.y < 0
+        || mouse_xy.x >= window_width
+        || mouse_xy.y >= window_height) {
+      lua_pushnil(l);
+      return 1;;
+    }
 
     lua_pushinteger(l, mouse_xy.x);
     lua_pushinteger(l, mouse_xy.y);

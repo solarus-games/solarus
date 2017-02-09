@@ -27,3 +27,7 @@ https://github.com/solarus-games/solarus-free-resource-pack/blob/master/license.
 We give below the license of all other files of this quest,
 that is, the ones that do not come from the Solarus Free Resource Pack.
 
+Scripts under GNU GPL v3:                           Author
+-------------------------                           ------
+**.lua                                              Christopho
+

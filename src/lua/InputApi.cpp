@@ -245,7 +245,7 @@ int LuaContext::input_api_get_mouse_position(lua_State* l) {
         || mouse_xy.x >= window_size.width
         || mouse_xy.y >= window_size.height) {
       lua_pushnil(l);
-      return 1;;
+      return 1;
     }
 
     lua_pushinteger(l, mouse_xy.x);

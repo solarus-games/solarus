@@ -254,10 +254,6 @@ int LuaContext::input_api_is_finger_pressed(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     int finger_id = LuaTools::check_int(l, 1);
 
-    if (finger_id == -1) {
-      LuaTools::arg_error(l, 1, std::string("Unknown finger id: -1"));
-    }
-
     lua_pushboolean(l, InputEvent::is_finger_down(finger_id));
     return 1;
   });

@@ -896,15 +896,12 @@ Rectangle Video::get_viewport() {
 
 /**
  * \brief Converts window coordinates to quest size coordinates.
- * \param[in] window_xy A position relative to the window, not including
+ * \param window_xy A position relative to the window, not including
  * the title bar.
- * \param[out] quest_xy The corresponding value in quest coordinates.
- * \return \c false if the position is not inside the quest display.
+ * \return The position in quest size coordinate.
  */
-bool Video::window_to_quest_coordinates(
-    const Point& window_xy,
-    Point& quest_xy
-) {
+Point Video::window_to_quest_coordinates(const Point& window_xy) {
+
   Rectangle viewport = get_viewport();
 
   float scale_x = 0.0;
@@ -921,18 +918,9 @@ bool Video::window_to_quest_coordinates(
   Debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
   Debug::check_assertion(!viewport.is_flat(), "Viewport is not initialized");
 
-  if (x_position < 0
-      || y_position < 0
-      || x_position >= window_width
-      || y_position >= window_height) {
-    return false;
-  }
-
-  quest_xy = {
+  return Point(
       (int) (x_position * quest_size_width / window_width),
-      (int) (y_position * quest_size_height / window_height)
-  };
-  return true;
+      (int) (y_position * quest_size_height / window_height));
 }
 
 /**

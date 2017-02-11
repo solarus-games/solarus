@@ -18,6 +18,7 @@
 #include "solarus/lua/LuaTools.h"
 #include "solarus/lowlevel/Rectangle.h"
 #include "solarus/lowlevel/InputEvent.h"
+#include "solarus/lowlevel/Video.h"
 
 namespace Solarus {
 
@@ -41,6 +42,10 @@ void LuaContext::register_input_module() {
       { "get_joypad_hat_direction", input_api_get_joypad_hat_direction },
       { "is_mouse_button_pressed", input_api_is_mouse_button_pressed },
       { "get_mouse_position", input_api_get_mouse_position },
+      { "is_finger_pressed", input_api_is_finger_pressed },
+      { "is_finger_released", input_api_is_finger_released },
+      { "get_finger_position", input_api_get_finger_position },
+      { "get_finger_pressure", input_api_get_finger_pressure },
       { nullptr, nullptr }
   };
 
@@ -232,8 +237,13 @@ int LuaContext::input_api_is_mouse_button_released(lua_State* l) {
 int LuaContext::input_api_get_mouse_position(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    Point mouse_xy;
-    if (!InputEvent::get_global_mouse_position(mouse_xy)) {
+    Point mouse_xy = InputEvent::get_global_mouse_position();
+    const Size window_size = Video::get_window_size();
+
+    if (mouse_xy.x < 0
+        || mouse_xy.y < 0
+        || mouse_xy.x >= window_size.width
+        || mouse_xy.y >= window_size.height) {
       lua_pushnil(l);
       return 1;
     }
@@ -241,6 +251,83 @@ int LuaContext::input_api_get_mouse_position(lua_State* l) {
     lua_pushinteger(l, mouse_xy.x);
     lua_pushinteger(l, mouse_xy.y);
     return 2;
+  });
+}
+
+/**
+ * \brief Implementation of sol.input.is_finger_pressed().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::input_api_is_finger_pressed(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    int finger_id = LuaTools::check_int(l, 1);
+
+    lua_pushboolean(l, InputEvent::is_finger_down(finger_id));
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of sol.input.is_finger_released().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::input_api_is_finger_released(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    int finger_id = LuaTools::check_int(l, 1);
+
+    if (finger_id == -1) {
+      LuaTools::arg_error(l, 1, std::string("Unknown finger id: -1"));
+    }
+
+    lua_pushboolean(l, !InputEvent::is_finger_down(finger_id));
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of sol.input.get_finger_position().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::input_api_get_finger_position(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    int finger_id = LuaTools::check_int(l, 1);
+    Point finger_xy;
+
+    if (!InputEvent::get_global_finger_position(finger_id, finger_xy)) {
+      lua_pushnil(l);
+      return 1;
+    }
+
+    lua_pushinteger(l, finger_xy.x);
+    lua_pushinteger(l, finger_xy.y);
+    return 2;
+  });
+}
+
+/**
+ * \brief Implementation of sol.input.get_finger_pressure().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::input_api_get_finger_pressure(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+
+    int finger_id = LuaTools::check_int(l, 1);
+    float finger_pressure;
+    if (!InputEvent::get_global_finger_pressure(finger_id, finger_pressure)) {
+      lua_pushnil(l);
+      return 1;
+    }
+
+    lua_pushnumber(l, finger_pressure);
+    return 1;
   });
 }
 

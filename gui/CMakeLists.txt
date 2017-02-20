@@ -185,6 +185,12 @@ if(UNIX AND NOT APPLE)
     DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
 endif(UNIX AND NOT APPLE)
 
+# AppStream compatible software gallery metadata
+if(UNIX AND NOT APPLE)
+  install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../gui/resources/solarus.appdata.xml
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/appdata)
+endif(UNIX AND NOT APPLE)
+
 # Linux Manpage
 if(UNIX AND NOT APPLE)
   install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/../solarus.6

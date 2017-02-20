@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>solarus.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0</project_license>
+  <name>Solarus</name>
+  <summary>ARPG 2D game engine</summary>
+  <description>
+    <p>
+      Solarus is an open-source Zelda-like 2D game engine.
+    </p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <image>http://www.solarus-games.org/wp-content/uploads/2016/07/solarus-launcher.png</image>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">http://www.solarus-games.org/</url>
+  <update_contact>christopho@solarus-games.org</update_contact>
+</component>

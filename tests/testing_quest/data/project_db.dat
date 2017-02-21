@@ -119,13 +119,15 @@ sprite{ id = "main_heroes/robyne", description = "Robyne" }
 sprite{ id = "main_heroes/sword", description = "Sword" }
 sprite{ id = "main_heroes/sword_electricity", description = "Sword electricity" }
 sprite{ id = "main_heroes/trail", description = "Trail" }
-sprite{ id = "menus/solarus_logo", description = "Menu: Solarus logo" }
+sprite{ id = "menus/solarus_logo", description = "Solarus logo" }
 sprite{ id = "todo", description = "TODO image" }
+
 
 sound{ id = "arrow_hit", description = "arrow_hit" }
 sound{ id = "bird_chirp", description = "bird_chirp" }
 sound{ id = "bird_chirp1", description = "bird_chirp1" }
 sound{ id = "bird_chirp2", description = "bird_chirp2" }
+sound{ id = "bird_cute", description = "bird_cute" }
 sound{ id = "bomb", description = "bomb" }
 sound{ id = "boomerang", description = "boomerang" }
 sound{ id = "boss_charge", description = "boss_charge" }
@@ -146,6 +148,7 @@ sound{ id = "crystal", description = "crystal" }
 sound{ id = "crystal2", description = "crystal2" }
 sound{ id = "cursor", description = "cursor" }
 sound{ id = "danger", description = "danger" }
+sound{ id = "diarandor/solarus_logo", description = "Solarus logo" }
 sound{ id = "door_closed", description = "door_closed" }
 sound{ id = "door_open", description = "door_open" }
 sound{ id = "door_unlocked", description = "door_unlocked" }
@@ -216,6 +219,11 @@ sound{ id = "sword_tapping", description = "sword_tapping" }
 sound{ id = "sword_tapping_weak_wall", description = "sword_tapping_weak_wall" }
 sound{ id = "teleporter", description = "teleporter" }
 sound{ id = "throw", description = "throw" }
+sound{ id = "thunder1", description = "thunder1" }
+sound{ id = "thunder2", description = "thunder2" }
+sound{ id = "thunder3", description = "thunder3" }
+sound{ id = "thunder_double", description = "thunder_double" }
+sound{ id = "thunder_far", description = "thunder_far" }
 sound{ id = "timer", description = "timer" }
 sound{ id = "timer2", description = "timer2" }
 sound{ id = "timer_hurry", description = "timer_hurry" }

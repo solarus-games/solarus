@@ -4,9 +4,11 @@ the Solarus Testing Quest.
 - Lua scripts are licensed under the terms of the GNU General Public License
 in version 3.
 
-- All data files other than Lua scripts are licensed under
+- Most data files other than Lua scripts are licensed under
 Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0).
 http://creativecommons.org/licenses/by-sa/4.0/
+
+- A few data files are in public domain.
 
 Most data files of this quest come from the official
 Solarus Free Resource Pack:

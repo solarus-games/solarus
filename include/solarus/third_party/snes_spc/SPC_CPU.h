@@ -1198,7 +1198,7 @@ loop:
 	} // switch
 	
 	assert( 0 ); // catch any unhandled instructions
-}   
+}
 out_of_time:
 	rel_time -= m.cycle_table [*pc]; // undo partial execution of opcode
 stop:

@@ -73,7 +73,7 @@ std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& shader_n
     error = true;
   }
 #endif
-  
+
   if (error) {
     Debug::warning("Can't compile shader '" + shader_name + "'");
     shader = nullptr;

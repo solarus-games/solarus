@@ -5,7 +5,7 @@ SET(CMAKE_SYSTEM_NAME Linux)
 SET(CMAKE_C_COMPILER   /opt/pandora-toolchain/bin/arm-none-linux-gnueabi-gcc)
 SET(CMAKE_CXX_COMPILER /opt/pandora-toolchain/bin/arm-none-linux-gnueabi-g++)
 
-# where is the target environment 
+# where is the target environment
 SET(CMAKE_FIND_ROOT_PATH  /opt/pandora-toolchain/)
 
 # search for programs in the build host directories

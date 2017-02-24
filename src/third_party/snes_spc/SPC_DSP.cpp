@@ -209,7 +209,7 @@ void SPC_DSP::run( int clock_count )
 		{
 			m.new_kon &= ~m.kon;
 			m.kon    = m.new_kon;
-			m.t_koff = REG(koff); 
+			m.t_koff = REG(koff);
 		}
 		
 		run_counter( 1 );

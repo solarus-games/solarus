@@ -107,7 +107,7 @@ Does not set up SPC header; use spc_init_header() for that. */
 enum { spc_file_size = 0x10200 }; /* spc_out must have this many bytes allocated */
 void spc_save_spc( SNES_SPC*, void* spc_out );
 
-/* Returns non-zero if new key-on events occurred since last check. Useful for 
+/* Returns non-zero if new key-on events occurred since last check. Useful for
 trimming silence while saving an SPC. */
 int spc_check_kon( SNES_SPC* );
 

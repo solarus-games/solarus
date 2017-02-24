@@ -24,7 +24,7 @@
 
 
 namespace Solarus {
- 
+
 /**
  * \brief Initializes the GL 2D shader system.
  * \return \c true if GL 2D shaders are supported.
@@ -36,7 +36,7 @@ bool GL_2DShader::initialize() {
 
   return false;
 }
-  
+
 /**
  * \brief Constructor.
  * \param shader_name The name of the shader to load.
@@ -57,7 +57,7 @@ void GL_2DShader::set_rendering_settings() {
  */
 int GL_2DShader::l_shader(lua_State* l) {
 }
-  
+
 /**
  * \brief Dummy method used to call the static lua callback for a specific shader implementation.
  * \param l The lua state.
@@ -65,7 +65,7 @@ int GL_2DShader::l_shader(lua_State* l) {
 void GL_2DShader::register_callback(lua_State* l) {
   lua_register(l, "videomode", l_shader);
 }
-  
+
 /**
  * \brief Draws the quest surface on the screen in a shader-allowed context.
  * It will perform the render using the OpenGL API directly.

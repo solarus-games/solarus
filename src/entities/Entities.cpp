@@ -1235,17 +1235,18 @@ void Entities::draw() {
       Debug::check_assertion(map.is_valid_layer(layer), "Invalid layer");
       if (entity->is_enabled() &&
           entity->is_visible()) {
-          entities_to_draw[layer].push_back(entity);
+        entities_to_draw[layer].push_back(entity);
       }
     }
 
     // Add entities displayed even when out of the camera.
     for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
-      entities_to_draw[layer].insert(
-          entities_to_draw[layer].end(),
-          entities_drawn_not_at_their_position[layer].begin(),
-          entities_drawn_not_at_their_position[layer].end()
-      );
+      for (const EntityPtr& entity : entities_drawn_not_at_their_position[layer]) {
+        if (entity->is_enabled() &&
+            entity->is_visible()) {
+          entities_to_draw[layer].push_back(entity);
+        }
+      }
 
       // Sort them and remove duplicates.
       // Duplicate drawings are a problem for entities with semi-transparency.

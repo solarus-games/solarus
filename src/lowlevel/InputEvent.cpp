@@ -242,49 +242,42 @@ InputEvent::InputEvent(const SDL_Event& event):
  */
 std::unique_ptr<InputEvent> InputEvent::get_event() {
 
+  int xDir = 0;
+  int yDir = 0;
+  int joystick_deadzone = 8000;
   InputEvent* result = nullptr;
   SDL_Event internal_event;
   if (SDL_PollEvent(&internal_event)) {
 
-    // Ignore intermediate positions of joystick axis.
-    if (internal_event.type != SDL_JOYAXISMOTION
-        || std::abs(internal_event.jaxis.value) <= 1000
-        || std::abs(internal_event.jaxis.value) >= 10000) {
-
-      // If this is a joypad axis event
-      if (internal_event.type == SDL_JOYAXISMOTION) {
-        // Determine the current state of the axis
-        int axis_state = 0;
-        int axis = internal_event.jaxis.axis;
-        int value = internal_event.jaxis.value;
-        if (std::abs(value) < 10000) {
-          axis_state = 0;
-        }
-        else {
-          axis_state = (value > 0) ? 1 : -1;
-        }
-
-        // and state is same as last event for this axis
-        if (joypad_axis_state[axis] == axis_state) {
-          // Ignore repeat joypad axis movement state.
-          // However, an event still needs to be returned so that
-          // all events will be handled this frame. Therefore, change
-          // the type to a invalid event so it will be ignored.
-          internal_event.type = SDL_LASTEVENT;
-        }
-        else {
-          // Otherwise store the new axis state
-          joypad_axis_state[axis] = axis_state;
-        }
+  // If this is a joypad axis event
+  if (internal_event.type == SDL_JOYAXISMOTION) {
+    // Determine the current state of the axis
+    int axis = internal_event.jaxis.axis;
+    int value = internal_event.jaxis.value;
+    if (axis == 0) {  // X axis
+      if(value < -joystick_deadzone) {
+        //Left of dead zone
+        xDir = -1;
+      } else if(value > joystick_deadzone) {
+        //Right of dead zone
+        xDir =  1;
+      } else {
+        xDir = 0;
       }
+      joypad_axis_state[axis] = xDir;
+    } else if (axis == 1) {  // Y axis
+      if(value < -joystick_deadzone) {
+        //Below of dead zone
+        yDir = -1;
+      } else if(value > joystick_deadzone) {
+        //Above of dead zone
+        yDir =  1;
+      } else {
+        yDir = 0;
+      }
+      joypad_axis_state[axis] = yDir;
     }
-    else {
-      // In deadzone band, however, an event still needs to be returned so that
-      // all events will be handled this frame. Therefore, change
-      // the type to a invalid event so it will be ignored.
-      internal_event.type = SDL_LASTEVENT;
-    }
-
+  }
     // Check if keyboard events are correct.
     // For some reason, when running Solarus from a Qt application
     // (which is not recommended)

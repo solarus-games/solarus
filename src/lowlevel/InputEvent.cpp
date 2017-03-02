@@ -242,48 +242,49 @@ InputEvent::InputEvent(const SDL_Event& event):
  */
 std::unique_ptr<InputEvent> InputEvent::get_event() {
 
-  int xDir = 0;
-  int yDir = 0;
+  int x_dir = 0;
+  int y_dir = 0;
   int joystick_deadzone = 8000;
   InputEvent* result = nullptr;
   SDL_Event internal_event;
   if (SDL_PollEvent(&internal_event)) {
 
-  // If this is a joypad axis event
-  if (internal_event.type == SDL_JOYAXISMOTION) {
-    // Determine the current state of the axis
-    int axis = internal_event.jaxis.axis;
-    int value = internal_event.jaxis.value;
-    if (axis == 0) {  // X axis
-      if(value < -joystick_deadzone) {
-        //Left of dead zone
-        xDir = -1;
-      } else if(value > joystick_deadzone) {
-        //Right of dead zone
-        xDir =  1;
-      } else {
-        xDir = 0;
+    // If this is a joypad axis event
+    if (internal_event.type == SDL_JOYAXISMOTION) {
+      // Determine the current state of the axis
+      int axis = internal_event.jaxis.axis;
+      int value = internal_event.jaxis.value;
+      if (axis == 0) {  // X axis
+        if (value < -joystick_deadzone) {
+          // Left of dead zone
+          x_dir = -1;
+        } else if(value > joystick_deadzone) {
+          // Right of dead zone
+          x_dir =  1;
+        } else {
+          x_dir = 0;
+        }
+        joypad_axis_state[axis] = x_dir;
+      } else if (axis == 1) {  // Y axis
+        if (value < -joystick_deadzone) {
+          // Below dead zone
+          y_dir = -1;
+        } else if(value > joystick_deadzone) {
+          // Above dead zone
+          y_dir =  1;
+        } else {
+          y_dir = 0;
+        }
+        joypad_axis_state[axis] = y_dir;
       }
-      joypad_axis_state[axis] = xDir;
-    } else if (axis == 1) {  // Y axis
-      if(value < -joystick_deadzone) {
-        //Below of dead zone
-        yDir = -1;
-      } else if(value > joystick_deadzone) {
-        //Above of dead zone
-        yDir =  1;
-      } else {
-        yDir = 0;
-      }
-      joypad_axis_state[axis] = yDir;
     }
-  }
+
     // Check if keyboard events are correct.
     // For some reason, when running Solarus from a Qt application
     // (which is not recommended)
     // multiple SDL_KEYUP events are generated when a key remains pressed
     // (Qt/SDL conflict). This fixes most problems but not all of them.
-    if (internal_event.type == SDL_KEYDOWN) {
+    else if (internal_event.type == SDL_KEYDOWN) {
       KeyboardKey key = static_cast<KeyboardKey>(internal_event.key.keysym.sym);
       if (!is_key_down(key)) {
         // The key is actually not pressed, don't create the event.

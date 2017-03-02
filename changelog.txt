@@ -1,5 +1,12 @@
 ___________________________
 
+Solarus 1.6.0 (in progress)
+___________________________
+
+* Fix joypad deadzone issue (#672) by strycore.
+
+___________________________
+
 Solarus 1.5.3 (in progress)
 ___________________________
 

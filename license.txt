@@ -28,7 +28,7 @@ The following Solarus logos and icons are licensed under
 Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0).
 http://creativecommons.org/licenses/by-sa/4.0/
 
-Author: Neovyse (Solarus team)
+Author: Olivier Cléro (Solarus team)
 
 gui/resources/images/icon/*.png
 gui/resources/images/default_icon.png
@@ -53,15 +53,16 @@ gui/resources/images/icon_remove.png
 gui/resources/images/icon_start.png
 gui/resources/images/icon_stop.png
 
-Sample quest and testing quest
-------------------------------
+Testing quest
+-------------
 
-Solarus provides a testing quest with a lot of data files, used for unit testing.
-The testing quest contains assets from the Solarus sample quest,
-available at https://github.com/solarus-games/solarus-sample-quest.
+Solarus provides a testing quest with a lot of data files, used for
+automated tests.
+The testing quest contains assets from the Solarus Free Resource Pack
+available at https://github.com/solarus-games/solarus-free-resource-pack
 
 The license information of these data files can be found here:
-https://github.com/solarus-games/solarus-sample-quest/blob/dev/license.txt
+https://github.com/solarus-games/solarus-free-resource-pack/blob/dev/license.txt
 
 tests/testing_quest/*
 

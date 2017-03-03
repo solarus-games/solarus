@@ -12,6 +12,7 @@ ___________________________
 
 * Speed up loading maps by keeping tilesets in a cache (#1019).
 * Fix text_surface:set_horizontal/vertical_alignment() not working.
+* Fix parallax dynamic tiles still displayed when disabled or invisible.
 * Improve error message of non-square tile patterns with diagonal obstacles.
 
 __________________________

@@ -286,24 +286,14 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
     // (Qt/SDL conflict). This fixes most problems but not all of them.
     else if (internal_event.type == SDL_KEYDOWN) {
       KeyboardKey key = static_cast<KeyboardKey>(internal_event.key.keysym.sym);
-      if (!is_key_down(key)) {
-        // The key is actually not pressed, don't create the event.
-        internal_event.type = SDL_LASTEVENT;
-      }
-
-      else if (!keys_pressed.insert(key).second) {
+      if (!keys_pressed.insert(key).second) {
         // Already known as pressed: mark repeated.
         internal_event.key.repeat = 1;
       }
     }
     else if (internal_event.type == SDL_KEYUP) {
       KeyboardKey key = static_cast<KeyboardKey>(internal_event.key.keysym.sym);
-      if (is_key_down(key)) {
-        // The key is actually pressed, don't create the event.
-        internal_event.type = SDL_LASTEVENT;
-      }
-
-      else if (keys_pressed.erase(key) == 0) {
+      if (keys_pressed.erase(key) == 0) {
         // Already known as not pressed: mark repeated.
         internal_event.key.repeat = 1;
       }
@@ -859,6 +849,34 @@ bool InputEvent::is_character_pressed() const {
 std::string InputEvent::get_character() const {
 
   return internal_event.text.text;
+}
+
+/**
+ * \brief Simulates pressing a keyboard key.
+ * \param key The key to simulate.
+ */
+void InputEvent::simulate_key_pressed(KeyboardKey key) {
+
+  SDL_Event event;
+  event.type = SDL_KEYDOWN;
+  event.key.keysym.sym = key;
+  event.key.repeat = 0;
+
+  SDL_PushEvent(&event);
+}
+
+/**
+ * \brief Simulates releasing a keyboard key.
+ * \param key The key to simulate.
+ */
+void InputEvent::simulate_key_released(KeyboardKey key) {
+
+  SDL_Event event;
+  event.type = SDL_KEYUP;
+  event.key.keysym.sym = key;
+  event.key.repeat = 0;
+
+  SDL_PushEvent(&event);
 }
 
 // joypad

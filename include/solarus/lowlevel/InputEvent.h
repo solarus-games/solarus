@@ -256,6 +256,9 @@ class InputEvent {
     bool is_character_pressed() const;
     std::string get_character() const;
 
+    static void simulate_key_pressed(KeyboardKey key);
+    static void simulate_key_released(KeyboardKey key);
+
     // joypad
     static bool is_joypad_enabled();
     static void set_joypad_enabled(bool joypad_enabled);

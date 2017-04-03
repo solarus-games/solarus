@@ -15,7 +15,7 @@ version=$1
 
 rm -rf ${app}-${version}
 mkdir ${app}-${version}
-git archive -o ${app}-${version}/tmp.tar HEAD changelog.txt CMakeLists.txt doc cmake include src gui tests images license.txt compilation.txt README.md solarus.6
+git archive -o ${app}-${version}/tmp.tar HEAD changelog.txt CMakeLists.txt doc cmake include src gui tests images license.txt compilation.txt README.md solarus.6 solarus-run.6
 cd ${app}-${version}
 tar xf tmp.tar
 rm tmp.tar

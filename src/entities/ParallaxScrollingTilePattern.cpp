@@ -43,9 +43,9 @@ ParallaxScrollingTilePattern::ParallaxScrollingTilePattern(
 void ParallaxScrollingTilePattern::draw(
     const SurfacePtr& dst_surface,
     const Point& dst_position,
-    Tileset& tileset,
+    const Tileset& tileset,
     const Point& viewport
-) {
+) const {
   const SurfacePtr& tileset_image = tileset.get_tiles_image();
   Point dst = dst_position;
   dst += viewport / ratio;

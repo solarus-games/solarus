@@ -78,9 +78,9 @@ void TimeScrollingTilePattern::update() {
 void TimeScrollingTilePattern::draw(
     const SurfacePtr& dst_surface,
     const Point& dst_position,
-    Tileset& tileset,
+    const Tileset& tileset,
     const Point& /* viewport */
-) {
+) const {
   Rectangle src = position_in_tileset;
   Point dst = dst_position;
 

@@ -1,13 +1,35 @@
-This file gives the license information of all data files of this quest.
-Some resources come from communities like OpenGameArt, and others are original
-creations made by us, the Solarus team.
+We give in this file the license information of
+the Solarus Testing Quest.
 
 - Lua scripts are licensed under the terms of the GNU General Public License
 in version 3.
 
-- Data files come from the Solarus sample quest.
-The ones we created are licensed under
+- Most data files other than Lua scripts are licensed under
 Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0).
 http://creativecommons.org/licenses/by-sa/4.0/
-See the license.txt file of the sample_quest directory for more details.
+
+- A few data files are in public domain.
+
+Most data files of this quest come from the official
+Solarus Free Resource Pack:
+https://github.com/solarus-games/solarus-free-resource-pack
+
+Main contributors:
+- Christopho
+- Diarandor <diarandor at gmail dot com>:
+  - Source URL for images: http://diarandor.deviantart.com/
+  - Source URL for sounds and music: https://soundcloud.com/diarandor/
+- Eduardo Dueñas <duenase@hotmail.com>
+- Bertram
+
+The more detailed license information of the Solarus Free Resource Pack
+can be found here:
+https://github.com/solarus-games/solarus-free-resource-pack/blob/master/license.txt
+
+We give below the license of all other files of this quest,
+that is, the ones that do not come from the Solarus Free Resource Pack.
+
+Scripts under GNU GPL v3:                           Author
+-------------------------                           ------
+**.lua                                              Christopho
 

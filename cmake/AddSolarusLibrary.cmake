@@ -201,6 +201,7 @@ file(
   include/solarus/MapData.h
   include/solarus/QuestProperties.h
   include/solarus/QuestResources.h
+  include/solarus/ResourceProvider.h
   include/solarus/ResourceType.h
   include/solarus/SavegameConverterV1.h
   include/solarus/Savegame.h
@@ -393,6 +394,7 @@ file(
   src/MapData.cpp
   src/QuestProperties.cpp
   src/QuestResources.cpp
+  src/ResourceProvider.cpp
   src/SavegameConverterV1.cpp
   src/Savegame.cpp
   src/Settings.cpp

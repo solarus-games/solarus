@@ -63,7 +63,7 @@ SpriteAnimation::SpriteAnimation(
  *
  * \param tileset The tileset.
  */
-void SpriteAnimation::set_tileset(Tileset& tileset) {
+void SpriteAnimation::set_tileset(const Tileset& tileset) {
 
   if (!src_image_is_tileset) {
     // Nothing to do when the tileset changes.
@@ -72,7 +72,7 @@ void SpriteAnimation::set_tileset(Tileset& tileset) {
 
   src_image = tileset.get_entities_image();
   if (should_enable_pixel_collisions) {
-    disable_pixel_collisions(); // to force creating the images again
+    disable_pixel_collisions();  // To force creating the images again.
     do_enable_pixel_collisions();
   }
 }

@@ -58,7 +58,7 @@ class SOLARUS_API Map: public ExportableToLua {
 
     // map properties
     const std::string& get_id() const;
-    Tileset& get_tileset();
+    const Tileset& get_tileset() const;
     const std::string& get_tileset_id() const;
     void set_tileset(const std::string& tileset_id);
     const std::string& get_music_id() const;
@@ -196,8 +196,7 @@ class SOLARUS_API Map: public ExportableToLua {
     int max_layer;                /**< Highest layer of the map (0 or more). */
 
     std::string tileset_id;       /**< Id of the current tileset. */
-    std::unique_ptr<Tileset>
-        tileset;                  /**< Tileset of the map: every tile of this map
+    const Tileset* tileset;       /**< Tileset of the map: every tile of this map
                                    * is extracted from this tileset. */
 
     std::string music_id;         /**< Id of the current music of the map:
@@ -212,7 +211,7 @@ class SOLARUS_API Map: public ExportableToLua {
                                    * indicate the map size in pixel, and the x and y field indicate the position.
                                    * This is used to correctly scroll between adjacent maps. */
 
-    // Quest Zscreen
+    // Quest screen
     SurfacePtr
         background_surface;       /**< A surface filled with the background color of the tileset. */
     SurfacePtr
@@ -257,7 +256,7 @@ inline bool Map::test_collision_with_border(const Point& point) const {
  * \brief Returns the tileset associated to this map.
  * \return The tileset.
  */
-inline Tileset& Map::get_tileset() {
+inline const Tileset& Map::get_tileset() const {
 
   SOLARUS_ASSERT(tileset != nullptr,
       std::string("Missing tileset in map '") + get_id() + "'"

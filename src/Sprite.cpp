@@ -50,7 +50,7 @@ void Sprite::initialize() {
 void Sprite::quit() {
 
   // delete the animations loaded
-  for (auto kvp: all_animation_sets) {
+  for (auto& kvp: all_animation_sets) {
     delete kvp.second;
   }
   all_animation_sets.clear();
@@ -133,7 +133,7 @@ const SpriteAnimationSet& Sprite::get_animation_set() const {
  *
  * \param tileset The tileset.
  */
-void Sprite::set_tileset(Tileset& tileset) {
+void Sprite::set_tileset(const Tileset& tileset) {
   animation_set.set_tileset(tileset);
 }
 

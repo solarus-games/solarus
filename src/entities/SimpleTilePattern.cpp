@@ -44,9 +44,9 @@ SimpleTilePattern::SimpleTilePattern(Ground ground, const Point& xy, const Size&
 void SimpleTilePattern::draw(
     const SurfacePtr& dst_surface,
     const Point& dst_position,
-    Tileset& tileset,
+    const Tileset& tileset,
     const Point& /* viewport */
-) {
+) const {
   const SurfacePtr& tileset_image = tileset.get_tiles_image();
   tileset_image->draw_region(position_in_tileset, dst_surface, dst_position);
 }

@@ -56,7 +56,7 @@ class Sprite: public Drawable {
     // creation and destruction
     explicit Sprite(const std::string& id);
 
-    void set_tileset(Tileset& tileset);
+    void set_tileset(const Tileset& tileset);
 
     // animation set
     const std::string& get_animation_set_id() const;

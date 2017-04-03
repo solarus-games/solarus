@@ -45,7 +45,7 @@ class SpriteAnimation {
         int loop_on_frame
     );
 
-    void set_tileset(Tileset& tileset);
+    void set_tileset(const Tileset& tileset);
 
     int get_next_frame(int current_direction, int current_frame) const;
     void draw(Surface& dst_surface, const Point& dst_position,

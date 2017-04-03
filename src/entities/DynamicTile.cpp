@@ -40,7 +40,7 @@ DynamicTile::DynamicTile(
     int layer,
     const Point& xy,
     const Size& size,
-    Tileset& tileset,
+    const Tileset& tileset,
     const std::string& tile_pattern_id,
     bool enabled
 ) :

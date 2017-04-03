@@ -222,6 +222,14 @@ LuaContext& MainLoop::get_lua_context() {
 }
 
 /**
+ * \brief Returns the resource provider of this quest.
+ * \return The resource provider.
+ */
+ResourceProvider& MainLoop::get_resource_provider() {
+  return resource_provider;
+}
+
+/**
  * \brief Returns whether the user just closed the window.
  *
  * When this function returns true, you should stop immediately

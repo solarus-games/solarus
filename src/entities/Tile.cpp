@@ -93,9 +93,9 @@ void Tile::draw(const SurfacePtr& dst_surface, const Point& viewport) {
 
 /**
  * \brief Returns the pattern of this tile.
- * \return the tile pattern
+ * \return The tile pattern.
  */
-TilePattern& Tile::get_tile_pattern() {
+const TilePattern& Tile::get_tile_pattern() const {
   return tile_pattern;
 }
 

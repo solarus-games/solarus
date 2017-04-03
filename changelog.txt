@@ -1,4 +1,4 @@
-___________________________
+__________________________
 
 Solarus 1.6.0 (in progress)
 ___________________________
@@ -7,8 +7,8 @@ ___________________________
 
 ___________________________
 
-Solarus 1.5.3 (in progress)
-___________________________
+Solarus 1.5.3 (2016-04-01)
+__________________________
 
 * Speed up loading maps by keeping tilesets in a cache (#1019).
 * Fix text_surface:set_horizontal/vertical_alignment() not working.

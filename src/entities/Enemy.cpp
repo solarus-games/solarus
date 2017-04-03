@@ -133,7 +133,6 @@ Enemy::Enemy(
  * \param layer layer of the enemy on the map
  * \param xy Coordinates of the enemy on the map.
  * \param direction initial direction of the enemy on the map (0 to 3)
- * this enemy is killed, or -1 if this enemy is not saved
  * \param treasure the pickable item that the enemy drops
  * \return the enemy created (may also be a Pickable or nullptr)
  */

@@ -497,6 +497,8 @@ class LuaContext {
       input_api_is_finger_released,
       input_api_get_finger_position,
       input_api_get_finger_pressure,
+      input_api_simulate_key_pressed,
+      input_api_simulate_key_released,
 
       // File API.
       file_api_open,

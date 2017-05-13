@@ -46,6 +46,8 @@ void LuaContext::register_input_module() {
       { "is_finger_released", input_api_is_finger_released },
       { "get_finger_position", input_api_get_finger_position },
       { "get_finger_pressure", input_api_get_finger_pressure },
+      { "simulate_key_pressed", input_api_simulate_key_pressed },
+      { "simulate_key_released", input_api_simulate_key_released },
       { nullptr, nullptr }
   };
 
@@ -328,6 +330,50 @@ int LuaContext::input_api_get_finger_pressure(lua_State* l) {
 
     lua_pushnumber(l, finger_pressure);
     return 1;
+  });
+}
+
+/**
+ * \brief Implementation of sol.input.simulate_key_pressed().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::input_api_simulate_key_pressed(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+
+    const std::string& key_name = LuaTools::check_string(l, 1);
+    InputEvent::KeyboardKey key = name_to_enum(key_name, InputEvent::KEY_NONE);
+
+    if (key == InputEvent::KEY_NONE) {
+      LuaTools::arg_error(l, 1, std::string(
+          "Unknown keyboard key name: '") + key_name + "'");
+    }
+
+    InputEvent::simulate_key_pressed(key);
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of sol.input.simulate_key_released().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::input_api_simulate_key_released(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+
+    const std::string& key_name = LuaTools::check_string(l, 1);
+    InputEvent::KeyboardKey key = name_to_enum(key_name, InputEvent::KEY_NONE);
+
+    if (key == InputEvent::KEY_NONE) {
+      LuaTools::arg_error(l, 1, std::string(
+          "Unknown keyboard key name: '") + key_name + "'");
+    }
+
+    InputEvent::simulate_key_released(key);
+    return 0;
   });
 }
 

@@ -940,6 +940,7 @@ void Game::stop_game_over() {
 
 /**
  * \brief Simulates pressing a game command.
+ * \param command The command to simulate.
  */
 void Game::simulate_command_pressed(GameCommand command){
   commands->game_command_pressed(command);
@@ -947,6 +948,7 @@ void Game::simulate_command_pressed(GameCommand command){
 
 /**
  * \brief Simulates releasing a game command.
+ * \param command The command to simulate.
  */
 void Game::simulate_command_released(GameCommand command){
   commands->game_command_released(command);

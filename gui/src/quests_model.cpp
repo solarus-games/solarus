@@ -311,7 +311,7 @@ void QuestsModel::load_icon(int quest_index) const {
  */
 void QuestsModel::sort(QuestSort sortType, Qt::SortOrder order) {
 
-  sort((int)sortType, order);
+  do_sort(sortType, order);
 }
 
 /**
@@ -321,7 +321,7 @@ void QuestsModel::sort(QuestSort sortType, Qt::SortOrder order) {
  */
 void QuestsModel::sort(int column, Qt::SortOrder order) {
 
-  doSort((QuestSort)column, order);
+  do_sort(static_cast<QuestSort>(column), order);
 }
 
 /**
@@ -329,19 +329,19 @@ void QuestsModel::sort(int column, Qt::SortOrder order) {
  * @param sortType Way to sort the quests in the list by
  * @param order Order to sort the quests in the list by
  */
-void QuestsModel::doSort(QuestSort sortType, Qt::SortOrder order) {
+void QuestsModel::do_sort(QuestSort sortType, Qt::SortOrder order) {
 
   std::sort(quests.begin(), quests.end(),
-    [sortType, order](const QuestInfo &a, const QuestInfo &b) {
-      auto ascending = order == Qt::AscendingOrder;
+    [sortType, order](const QuestInfo& a, const QuestInfo& b) {
+      const bool ascending = order == Qt::AscendingOrder;
       switch (sortType) {
-      case SortByAuthor:
-        return ascending ? a.properties.get_author() < a.properties.get_author()
-                         : a.properties.get_author() > a.properties.get_author();
-      case SortByDate:
+      case QuestSort::SortByAuthor:
+        return ascending ? a.properties.get_author() < b.properties.get_author()
+                         : a.properties.get_author() > b.properties.get_author();
+      case QuestSort::SortByDate:
         return ascending ? a.properties.get_release_date() < b.properties.get_release_date()
                          : a.properties.get_release_date() > b.properties.get_release_date();
-      case SortByName:
+      case QuestSort::SortByName:
       default:
         return ascending ? a.properties.get_title() < b.properties.get_title()
                          : a.properties.get_title() > b.properties.get_title();

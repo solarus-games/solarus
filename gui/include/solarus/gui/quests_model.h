@@ -35,7 +35,7 @@ public:
     /**
      * @brief Ways to sort the quests in the list. More convenient than columns.
      */
-    enum QuestSort {
+    enum class QuestSort {
       SortByName = 0,
       SortByAuthor = 1,
       SortByDate = 2
@@ -53,7 +53,7 @@ public:
           properties;             /**< All properties from quest.dat. */
     };
 
-  QuestsModel(QObject* parent = nullptr);
+  explicit QuestsModel(QObject* parent = nullptr);
 
   // QAbstractListModel API
   int rowCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -80,7 +80,7 @@ public:
 
 private:
 
-  void doSort(QuestSort sort, Qt::SortOrder order = Qt::AscendingOrder);
+  void do_sort(QuestSort sort, Qt::SortOrder order = Qt::AscendingOrder);
   void load_icon(int quest_index) const;
 
   mutable std::vector<QuestInfo>
@@ -89,7 +89,7 @@ private:
 
 }
 
-// Allow to use QuesInfo in QVariant
+// Allow to use QuestInfo in QVariant
 Q_DECLARE_METATYPE(SolarusGui::QuestsModel::QuestInfo)
 
 #endif

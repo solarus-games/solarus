@@ -40,7 +40,7 @@ class LuaSyntaxValidator : public QValidator {
 
 public :
 
-  LuaSyntaxValidator(QObject* parent = nullptr);
+  explicit LuaSyntaxValidator(QObject* parent = nullptr);
 
   State validate(QString& input, int& pos) const override;
 

@@ -242,9 +242,6 @@ InputEvent::InputEvent(const SDL_Event& event):
  */
 std::unique_ptr<InputEvent> InputEvent::get_event() {
 
-  int x_dir = 0;
-  int y_dir = 0;
-  int joystick_deadzone = 8000;
   InputEvent* result = nullptr;
   SDL_Event internal_event;
   if (SDL_PollEvent(&internal_event)) {
@@ -254,6 +251,9 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
       // Determine the current state of the axis
       int axis = internal_event.jaxis.axis;
       int value = internal_event.jaxis.value;
+      int x_dir = 0;
+      int y_dir = 0;
+      int joystick_deadzone = 8000;
       if (axis == 0) {  // X axis
         if (value < -joystick_deadzone) {
           // Left of dead zone
@@ -424,8 +424,9 @@ bool InputEvent::is_mouse_button_down(MouseButton button) {
 bool InputEvent::is_finger_down(int finger_id) {
 
   for (int i = 0; i < SDL_GetNumTouchDevices(); ++i) {
-    if (SDL_GetTouchFinger(SDL_GetTouchDevice(i), finger_id) != NULL)
+    if (SDL_GetTouchFinger(SDL_GetTouchDevice(i), finger_id) != NULL) {
       return true;
+    }
   }
 
   return false;

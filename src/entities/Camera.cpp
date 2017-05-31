@@ -204,7 +204,7 @@ class ManualState: public Entity::State {
 
 public:
 
-  ManualState(Camera& camera);
+  explicit ManualState(Camera& camera);
 
 };
 

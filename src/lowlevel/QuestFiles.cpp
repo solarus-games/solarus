@@ -393,8 +393,9 @@ SOLARUS_API std::vector<std::string> data_files_enumerate(
 
       if (!PHYSFS_isSymbolicLink(*file)
           && ((list_files && !is_directory)
-              || (list_directories && is_directory)))
+              || (list_directories && is_directory))) {
         result.push_back(std::string(*file));
+      }
     }
 
     PHYSFS_freeList(files);

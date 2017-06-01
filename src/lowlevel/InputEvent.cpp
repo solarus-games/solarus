@@ -251,10 +251,9 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
       // Determine the current state of the axis
       int axis = internal_event.jaxis.axis;
       int value = internal_event.jaxis.value;
-      int x_dir = 0;
-      int y_dir = 0;
       int joystick_deadzone = 8000;
       if (axis == 0) {  // X axis
+        int x_dir = 0;
         if (value < -joystick_deadzone) {
           // Left of dead zone
           x_dir = -1;
@@ -266,6 +265,7 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
         }
         joypad_axis_state[axis] = x_dir;
       } else if (axis == 1) {  // Y axis
+        int y_dir = 0;
         if (value < -joystick_deadzone) {
           // Below dead zone
           y_dir = -1;

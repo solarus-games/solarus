@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2006-2016 Christopho, Solarus - http://www.solarus-games.org
  *
@@ -447,6 +448,7 @@ class LuaContext {
       main_api_get_type,
       main_api_get_metatable,
       main_api_get_os,
+      main_api_get_quest_version,
 
       // Audio API.
       audio_api_get_sound_volume,

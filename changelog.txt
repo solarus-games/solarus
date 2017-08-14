@@ -3,7 +3,21 @@ __________________________
 Solarus 1.6.0 (in progress)
 ___________________________
 
+Engine changes
+--------------
+
 * Fix joypad deadzone issue (#672) by strycore.
+
+Lua API changes
+---------------
+
+Changes that introduce incompatibilities:
+
+* 
+
+Changes that do not introduce incompatibilities:
+
+* Add a function sol.main.get_quest_version() (#1058) by Nate-Devv.
 
 ___________________________
 

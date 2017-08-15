@@ -585,7 +585,7 @@ int l_border_set(lua_State* l) {
     border_set.set_inner(inner);
 
     std::map<BorderKind, std::string> patterns;
-    for (int i = 1; i < 12; ++i) {
+    for (int i = 0; i < 12; ++i) {
       std::ostringstream oss;
       oss << "pattern_" << i;
       const std::string& pattern_id = LuaTools::opt_string_field(l, 1, oss.str(), "");

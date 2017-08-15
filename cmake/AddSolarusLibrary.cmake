@@ -12,6 +12,8 @@ file(
   include/solarus/entities/Block.h
   include/solarus/entities/Bomb.h
   include/solarus/entities/Boomerang.h
+  include/solarus/entities/BorderKind.h
+  include/solarus/entities/BorderSet.h
   include/solarus/entities/Camera.h
   include/solarus/entities/CameraPtr.h
   include/solarus/entities/CarriedObject.h
@@ -227,6 +229,7 @@ file(
   src/entities/Block.cpp
   src/entities/Bomb.cpp
   src/entities/Boomerang.cpp
+  src/entities/BorderSet.cpp
   src/entities/Camera.cpp
   src/entities/CarriedObject.cpp
   src/entities/Chest.cpp

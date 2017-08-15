@@ -220,7 +220,7 @@ int TilesetData::get_num_patterns() const {
 
 /**
  * \brief Returns all tile patterns of this tileset.
- * \return The tile pattern indexed by their id.
+ * \return The tile patterns indexed by their id.
  */
 const std::map<std::string, TilePatternData>& TilesetData::get_patterns() const {
   return patterns;
@@ -231,7 +231,7 @@ const std::map<std::string, TilePatternData>& TilesetData::get_patterns() const 
  * \param pattern_id The id to test.
  * \return \c true if a tile pattern exists with this id in the tileset.
  */
-bool TilesetData::exists(const std::string& pattern_id) const {
+bool TilesetData::pattern_exists(const std::string& pattern_id) const {
   return patterns.find(pattern_id) != patterns.end();
 }
 
@@ -306,12 +306,12 @@ bool TilesetData::remove_pattern(const std::string& pattern_id) {
 bool TilesetData::set_pattern_id(
     const std::string& old_pattern_id, const std::string& new_pattern_id) {
 
-  if (!exists(old_pattern_id)) {
+  if (!pattern_exists(old_pattern_id)) {
     // No pattern was found with the old id.
     return false;
   }
 
-  if (exists(new_pattern_id)) {
+  if (pattern_exists(new_pattern_id)) {
     // The new id is already used.
     return false;
   }
@@ -319,6 +319,119 @@ bool TilesetData::set_pattern_id(
   TilePatternData pattern = get_pattern(old_pattern_id);
   remove_pattern(old_pattern_id);
   add_pattern(new_pattern_id, pattern);
+
+  return true;
+}
+
+/**
+ * \brief Returns the number of border sets in this tileset.
+ * \return The number of border sets.
+ */
+int TilesetData::get_num_border_sets() const {
+  return border_sets.size();
+}
+
+/**
+ * \brief Returns all border sets of this tileset.
+ * \return The border sets indexed by their id.
+ */
+const std::map<std::string, BorderSet>& TilesetData::get_border_sets() const {
+  return border_sets;
+}
+
+/**
+ * \brief Returns whether there exists a border set with the specified id.
+ * \param border_set_id The id to test.
+ * \return \c true if a border set exists with this id in the tileset.
+ */
+bool TilesetData::border_set_exists(const std::string& border_set_id) const {
+  return border_sets.find(border_set_id) != border_sets.end();
+}
+
+/**
+ * \brief Returns the border set with the specified id.
+ * \param border_set_id A border set id. It must exist.
+ * \return The border_set with this id.
+ * The object remains valid until border sets are added or removed.
+ */
+const BorderSet& TilesetData::get_border_set(const std::string& border_set_id) const {
+
+  const auto& it = border_sets.find(border_set_id);
+  Debug::check_assertion(it != border_sets.end(),
+    std::string("No such border set: '") + border_set_id + "'");
+
+  return it->second;
+}
+
+/**
+ * \brief Returns the border set with the specified id.
+ *
+ * Non-const version.
+ *
+ * \param border_set_id A border set id. It must exist.
+ * \return The border_set with this id.
+ * The object remains valid until border sets are added or removed.
+ */
+BorderSet& TilesetData::get_border_set(const std::string& border_set_id) {
+
+  const auto& it = border_sets.find(border_set_id);
+  Debug::check_assertion(it != border_sets.end(),
+    std::string("No such border set: '") + border_set_id + "'");
+
+  return it->second;
+}
+
+/**
+ * \brief Adds a border set to the tileset.
+ * \param border_set_id Id of the new border set.
+ * \param border_set The border set to add.
+ * \return \c true in case of success.
+ */
+bool TilesetData::add_border_set(
+    const std::string& border_set_id, const BorderSet& border_set) {
+
+  const auto& result = border_sets.emplace(border_set_id, border_set);
+  if (!result.second) {
+    // Insertion failed: the id already exists.
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * \brief Removes a border set from the tileset.
+ * \param border_set_id Id of the border set to remove.
+ * \return \c true in case of success.
+ */
+bool TilesetData::remove_border_set(const std::string& border_set_id) {
+
+  return border_sets.erase(border_set_id) > 0;
+}
+
+/**
+ * \brief Changes the id of a border set in the tileset.
+ * \param old_border_set_id Old id of the border set.
+ * \param new_border_set_id New id to set.
+ * \return \c true in case of success.
+ * In case of failure, the old border set is unchanged.
+ */
+bool TilesetData::set_border_set_id(
+    const std::string& old_border_set_id, const std::string& new_border_set_id) {
+
+  if (!border_set_exists(old_border_set_id)) {
+    // No border set was found with the old id.
+    return false;
+  }
+
+  if (border_set_exists(new_border_set_id)) {
+    // The new id is already used.
+    return false;
+  }
+
+  BorderSet border_set = get_border_set(old_border_set_id);
+  remove_border_set(old_border_set_id);
+  add_border_set(new_border_set_id, border_set);
 
   return true;
 }
@@ -449,6 +562,45 @@ int l_tile_pattern(lua_State* l) {
   });
 }
 
+/**
+ * \brief Function called by Lua to add a border set to the tileset.
+ *
+ * - Argument 1 (table): A table describing the border set to create.
+ *
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int l_border_set(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    lua_getfield(l, LUA_REGISTRYINDEX, "tileset");
+    TilesetData& tileset_data = *static_cast<TilesetData*>(lua_touserdata(l, -1));
+    lua_pop(l, 1);
+
+    BorderSet border_set;
+
+    const std::string& id = LuaTools::check_string_field(l, 1, "id");
+
+    bool inner = LuaTools::opt_boolean_field(l, 1, "inner", false);
+    border_set.set_inner(inner);
+
+    std::map<BorderKind, std::string> patterns;
+    for (int i = 1; i < 12; ++i) {
+      std::ostringstream oss;
+      oss << "pattern_" << i;
+      const std::string& pattern_id = LuaTools::opt_string_field(l, 1, oss.str(), "");
+      if (!pattern_id.empty()) {
+        BorderKind border_kind = static_cast<BorderKind>(i);
+        border_set.set_pattern(border_kind, pattern_id);
+      }
+    }
+
+    tileset_data.add_border_set(id, border_set);
+
+    return 0;
+  });
+}
+
 }  // Anonymous namespace.
 
 /**
@@ -460,6 +612,7 @@ bool TilesetData::import_from_lua(lua_State* l) {
   lua_setfield(l, LUA_REGISTRYINDEX, "tileset");
   lua_register(l, "background_color", l_background_color);
   lua_register(l, "tile_pattern", l_tile_pattern);
+  lua_register(l, "border_set", l_border_set);
   if (lua_pcall(l, 0, 0, 0) != 0) {
     Debug::error(std::string("Failed to load tileset: ") + lua_tostring(l, -1));
     lua_pop(l, 1);
@@ -486,7 +639,7 @@ bool TilesetData::export_to_lua(std::ostream& out) const {
       << " }\n";
 
   // Tile patterns.
-  for (const auto kvp : patterns) {
+  for (const auto& kvp : patterns) {
     const std::string& id = kvp.first;
     const TilePatternData& pattern = kvp.second;
 
@@ -537,6 +690,27 @@ bool TilesetData::export_to_lua(std::ostream& out) const {
       const std::string& repeat_mode_name = enum_to_name(pattern.get_repeat_mode());
       out << "  repeat_mode = \"" << repeat_mode_name << "\",\n";
     }
+    out << "}\n\n";
+  }
+
+  // Border sets.
+  for (const auto& kvp : border_sets) {
+    const std::string& id = kvp.first;
+    const BorderSet& border_set = kvp.second;
+
+    out << "border_set{\n"
+        << "  id = \"" << escape_string(id) << "\",\n";
+    if (border_set.is_inner()) {
+      out << "  inner = true,\n";
+    }
+    for (int i = 1; i < 12; ++i) {
+      BorderKind border_kind = static_cast<BorderKind>(i);
+      const std::string& pattern_id = border_set.get_pattern(border_kind);
+      if (!pattern_id.empty()) {
+        out << "  pattern_" << i << " = \"" << pattern_id << "\",\n";
+      }
+    }
+
     out << "}\n\n";
   }
 

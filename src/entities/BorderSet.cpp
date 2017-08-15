@@ -57,13 +57,23 @@ void BorderSet::set_patterns(const std::map<BorderKind, std::string>& patterns) 
 }
 
 /**
+ * \brief Returns whether a pattern is defined for the given border.
+ * \param border_kind Which border to get.
+ * \return \c true if there is a pattern for this border kind.
+ */
+bool BorderSet::has_pattern(BorderKind border_kind) const {
+
+  return patterns.find(border_kind) != patterns.end();
+}
+
+/**
  * \brief Returns the pattern id of the given border.
- * \param which_border Which border to get.
+ * \param border_kind Which border to get.
  * \return The corresponding pattern id, or an empty string to mean no pattern.
  */
-std::string BorderSet::get_pattern(BorderKind which_border) const {
+std::string BorderSet::get_pattern(BorderKind border_kind) const {
 
-  auto it = patterns.find(which_border);
+  auto it = patterns.find(border_kind);
   if (it == patterns.end()) {
     return "";
   }
@@ -72,18 +82,18 @@ std::string BorderSet::get_pattern(BorderKind which_border) const {
 
 /**
  * \brief Sets the pattern id of the given border.
- * \param which_border Which border to set.
+ * \param border_kind Which border to set.
  * \param pattern_id The corresponding pattern id,
  * or an empty string to mean no pattern.
  */
-void BorderSet::set_pattern(BorderKind which_border, const std::string& pattern_id) {
+void BorderSet::set_pattern(BorderKind border_kind, const std::string& pattern_id) {
 
   if (pattern_id.empty()) {
-    patterns.erase(which_border);
+    patterns.erase(border_kind);
     return;
   }
 
-  patterns[which_border] = pattern_id;
+  patterns[border_kind] = pattern_id;
 }
 
 /**

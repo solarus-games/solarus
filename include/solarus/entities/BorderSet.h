@@ -36,8 +36,9 @@ public:
   const std::map<BorderKind, std::string>& get_patterns() const;
   void set_patterns(const std::map<BorderKind, std::string>& patterns);
 
-  std::string get_pattern(BorderKind which_border) const;
-  void set_pattern(BorderKind which_border, const std::string& pattern_id);
+  bool has_pattern(BorderKind border_kind) const;
+  std::string get_pattern(BorderKind border_kind) const;
+  void set_pattern(BorderKind border_kind, const std::string& pattern_id);
 
   bool is_inner() const;
   void set_inner(bool inner);

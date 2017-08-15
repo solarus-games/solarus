@@ -35,7 +35,7 @@ void check_sprite(TestEnvironment& /* env */, const std::string& sprite_id) {
   SpriteData sprite_data;
   bool success = false;
 
-  // Import the map data file.
+  // Import the sprite data file.
   std::string file_name = "sprites/" + sprite_id + ".dat";
   std::string imported_sprite_buffer = QuestFiles::data_file_read(file_name);
   success = sprite_data.import_from_buffer(imported_sprite_buffer, file_name);

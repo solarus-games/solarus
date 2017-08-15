@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 #include "solarus/EnumInfo.h"
+#include "solarus/entities/BorderSet.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/lowlevel/Color.h"
 #include "solarus/lowlevel/Rectangle.h"
@@ -120,7 +121,7 @@ class SOLARUS_API TilesetData : public LuaData {
 
     int get_num_patterns() const;
     const std::map<std::string, TilePatternData>& get_patterns() const;
-    bool exists(const std::string& pattern_id) const;
+    bool pattern_exists(const std::string& pattern_id) const;
     const TilePatternData& get_pattern(const std::string& pattern_id) const;
     TilePatternData& get_pattern(const std::string& pattern_id);
     bool add_pattern(
@@ -128,6 +129,17 @@ class SOLARUS_API TilesetData : public LuaData {
     bool remove_pattern(const std::string& pattern_id);
     bool set_pattern_id(
         const std::string& old_pattern_id, const std::string& new_pattern_id);
+
+    int get_num_border_sets() const;
+    const std::map<std::string, BorderSet>& get_border_sets() const;
+    bool border_set_exists(const std::string& border_set_id) const;
+    const BorderSet& get_border_set(const std::string& border_set_id) const;
+    BorderSet& get_border_set(const std::string& border_set_id);
+    bool add_border_set(
+        const std::string& border_set_id, const BorderSet& border_set);
+    bool remove_border_set(const std::string& border_set_id);
+    bool set_border_set_id(
+        const std::string& old_border_set_id, const std::string& new_border_set_id);
 
     virtual bool import_from_lua(lua_State* l) override;
     virtual bool export_to_lua(std::ostream& out) const override;
@@ -137,6 +149,8 @@ class SOLARUS_API TilesetData : public LuaData {
     Color background_color;       /**< Background color of the tileset. */
     std::map<std::string, TilePatternData>
         patterns;                 /**< The tile patterns indexed by their id. */
+    std::map<std::string, BorderSet>
+        border_sets;              /**< The border sets indexes by their id. */
 
 };
 

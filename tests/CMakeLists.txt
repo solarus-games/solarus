@@ -109,6 +109,7 @@ set(
   src/tests/PixelMovement.cpp
   src/tests/Quadtree.cpp
   src/tests/SpriteData.cpp
+  src/tests/TilesetData.cpp
   src/tests/RunLuaTest.cpp
 )
 

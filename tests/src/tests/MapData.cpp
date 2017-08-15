@@ -96,7 +96,7 @@ int main(int argc, char** argv) {
 
   const std::map<std::string, std::string>& map_elements =
       CurrentQuest::get_resources().get_elements(ResourceType::MAP);
-  Debug::check_assertion(!map_elements.empty(), "No sprites");
+  Debug::check_assertion(!map_elements.empty(), "No maps");
   for (const auto& kvp : map_elements) {
     const std::string& map_id = kvp.first;
     check_map(env, map_id);

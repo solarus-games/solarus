@@ -433,6 +433,7 @@ class LuaContext {
 
       // Main API.
       main_api_get_solarus_version,
+      main_api_get_quest_version,
       main_api_get_quest_format,
       main_api_load_file,
       main_api_do_file,
@@ -448,7 +449,6 @@ class LuaContext {
       main_api_get_type,
       main_api_get_metatable,
       main_api_get_os,
-      main_api_get_quest_version,
 
       // Audio API.
       audio_api_get_sound_volume,

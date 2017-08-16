@@ -39,6 +39,7 @@ void LuaContext::register_main_module() {
 
   static const luaL_Reg functions[] = {
       { "get_solarus_version", main_api_get_solarus_version },
+      { "get_quest_version", main_api_get_quest_version },
       { "get_quest_format", main_api_get_quest_format },
       { "load_file", main_api_load_file },
       { "do_file", main_api_do_file },
@@ -54,7 +55,6 @@ void LuaContext::register_main_module() {
       { "get_type", main_api_get_type },
       { "get_metatable", main_api_get_metatable },
       { "get_os", main_api_get_os },
-      { "get_quest_version", main_api_get_quest_version },
       { nullptr, nullptr }
   };
 
@@ -99,6 +99,26 @@ int LuaContext::main_api_get_solarus_version(lua_State* l) {
     const std::string& solarus_version = SOLARUS_VERSION;
 
     push_string(l, solarus_version);
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of sol.main.get_quest_version().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::main_api_get_quest_version(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const std::string& quest_version = CurrentQuest::get_properties().get_quest_version();
+
+    if (quest_version.empty()) {
+      lua_pushnil(l);
+    }
+    else {
+      push_string(l, quest_version);
+    }
     return 1;
   });
 }
@@ -373,21 +393,6 @@ int LuaContext::main_api_get_os(lua_State* l) {
 
   push_string(l, os);
   return 1;
-}
-
-/**
- * \brief Implementation of sol.main.get_quest_version().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::main_api_get_quest_version(lua_State* l) {
-    
-  return LuaTools::exception_boundary_handle(l, [&] {
-    const std::string& quest_version = CurrentQuest::get_properties().get_quest_version();
-
-    push_string(l, quest_version);
-    return 1;
-  });
 }
 
 /**

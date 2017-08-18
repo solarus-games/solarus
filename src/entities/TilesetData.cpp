@@ -703,7 +703,7 @@ bool TilesetData::export_to_lua(std::ostream& out) const {
     if (border_set.is_inner()) {
       out << "  inner = true,\n";
     }
-    for (int i = 1; i < 12; ++i) {
+    for (int i = 0; i < 12; ++i) {
       BorderKind border_kind = static_cast<BorderKind>(i);
       const std::string& pattern_id = border_set.get_pattern(border_kind);
       if (!pattern_id.empty()) {

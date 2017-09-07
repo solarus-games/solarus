@@ -135,7 +135,7 @@ int add_quest(int argc, char* argv[]) {
   Settings settings(system_settings_writable ? QSettings::SystemScope : QSettings::UserScope);
 
   QStringList all_paths = settings.value("quests_paths").toStringList();
-  Q_FOREACH(const QString& path, all_paths) {
+  for (const QString& path : all_paths) {
     if (QFileInfo(path).canonicalFilePath() == canonical_path) {
       std::cout << "Nothing to do, quest already registered: " << new_path.toStdString() << std::endl;
       return 0;

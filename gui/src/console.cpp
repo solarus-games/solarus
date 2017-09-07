@@ -122,7 +122,7 @@ void Console::quest_finished() {
  */
 void Console::quest_output_produced(const QStringList& lines) {
 
-  Q_FOREACH (const QString& line, lines) {
+  for (const QString& line : lines) {
     parse_output(line);
   }
 }
@@ -436,9 +436,9 @@ bool Console::apply_settings() {
     return false;
   }
 
-  QStringList commands = get_quest_lua_commands_from_settings();
+  const QStringList& commands = get_quest_lua_commands_from_settings();
   bool success = true;
-  Q_FOREACH (const QString& command, commands) {
+  for (const QString& command : commands) {
     success = execute_command(command) && success;
   }
   return success;

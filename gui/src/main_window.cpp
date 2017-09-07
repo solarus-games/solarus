@@ -40,9 +40,9 @@ MainWindow::MainWindow(QWidget* parent) :
   update_title();
 
   // Icon.
-  QStringList icon_sizes = { "16", "24", "32", "48", "64", "128", "256" };
+  const QStringList& icon_sizes = { "16", "24", "32", "48", "64", "128", "256" };
   QIcon icon;
-  Q_FOREACH (const QString& size, icon_sizes) {
+  for (const QString& size : icon_sizes) {
     icon.addPixmap(":/images/icon/solarus_launcher_icon_" + size + ".png");
   }
   setWindowIcon(icon);
@@ -55,8 +55,8 @@ MainWindow::MainWindow(QWidget* parent) :
 
   // Show recent quests.
   Settings settings;
-  QStringList quest_paths = settings.value("quests_paths").toStringList();
-  Q_FOREACH (const QString& path, quest_paths) {
+  const QStringList& quest_paths = settings.value("quests_paths").toStringList();
+  for (const QString& path : quest_paths) {
     ui.quests_view->add_quest(path);
   }
 

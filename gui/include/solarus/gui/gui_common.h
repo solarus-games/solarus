@@ -9,29 +9,6 @@
  * of the Solarus GUI library.
  */
 
-namespace SolarusGui {
-
-/**
- * \brief Returns a const version of the given value.
- *
- * Equivalent to std::as_const (C++17).
- *
- * \brief value Any value.
- * \return The corresponding const value.
- */
-template <typename T>
-constexpr const T& as_const(T& value) noexcept {
-  return value;
-}
-
-/**
- * \brief Overload to prevent rvalues.
- */
-template <typename T>
-void as_const(const T&&) = delete;
-
-}  // namespace SolarusGui
-
 // Windows specific.
 #ifndef SOLARUS_GUI_LIBRARY_EXPORT
 #  ifdef solarus_gui_lib_EXPORTS  // Define automatically added by cmake.

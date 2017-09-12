@@ -29,6 +29,9 @@ addons:
     - libopenal-dev
     - libmodplug-dev
     - libvorbis-dev
+    - qtbase5-dev
+    - qttools5-dev
+    - qttools5-dev-tools
 
 script: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make && ctest -V
 

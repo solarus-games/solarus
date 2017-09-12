@@ -18,8 +18,17 @@ compiler:
   - gcc
   - clang
 
-install:
-  - sudo apt-get install -y --force-yes libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libluajit-5.1-dev libphysfs-dev libopenal-dev libmodplug-dev libvorbis-dev
+addons:
+  apt:
+    packages:
+    - libsdl2-dev
+    - libsdl2-image-dev
+    - libsdl2-ttf-dev
+    - libluajit-5.1-dev
+    - libphysfs-dev
+    - libopenal-dev
+    - libmodplug-dev
+    - libvorbis-dev
 
 script: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make && ctest -V
 

@@ -19,17 +19,10 @@ compiler:
   - clang
 
 before_install:
-  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test # gcc 4.8
-  - sudo apt-add-repository -y ppa:zoogie/sdl2-snapshots   # SDL2
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -y --force-yes gcc-4.8 g++-4.8
-  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 90
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
   - sudo apt-get install -y --force-yes cmake libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libluajit-5.1-dev libphysfs-dev libopenal-dev libmodplug-dev libvorbis-dev
-# Install Qt5 manually because we need Qt >= 5.2, which is not in usual backport PPAs.
-  - wget http://www.solarus-games.org/downloads/qt/qt-5.3.2.zip && unzip qt-5.3.2.zip -d "$HOME/qt"
 
-script: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="$HOME;$HOME/qt/gcc_64;$HOME/qt/gcc_64/lib/cmake" .. && make && ctest -V
+script: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make && ctest -V
 

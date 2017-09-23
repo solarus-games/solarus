@@ -683,8 +683,9 @@ bool LuaContext::load_file(lua_State* l, const std::string& script_name) {
   }
 
   // Load the file.
+  // "@" tells Lua that the name is a file name, which is useful for better error messages.
   const std::string& buffer = QuestFiles::data_file_read(file_name);
-  int result = luaL_loadbuffer(l, buffer.data(), buffer.size(), file_name.c_str());
+  int result = luaL_loadbuffer(l, buffer.data(), buffer.size(), ("@" + file_name).c_str());
 
   if (result != 0) {
     Debug::error(std::string("Failed to load script '")

@@ -8,6 +8,7 @@ Engine changes
 
 * Fix joypad deadzone issue (#672) by strycore.
 * Fix compilation error with Clang 3.9 in SNES_SPC.
+* Improve Lua error messages.
 
 Lua API changes
 ---------------

@@ -34,7 +34,7 @@ namespace Solarus {
 
 /**
  * \brief Constructor.
- * \param id id of the tileset to create
+ * \param id Id of the tileset to create.
  */
 Tileset::Tileset(const std::string& id):
   id(id),
@@ -44,7 +44,7 @@ Tileset::Tileset(const std::string& id):
 
 /**
  * \brief Returns the id of this tileset.
- * \return the tileset id
+ * \return The tileset id.
  */
 const std::string& Tileset::get_id() const {
   return id;
@@ -156,10 +156,6 @@ void Tileset::load() {
 
   file_name = std::string("tilesets/") + id + ".entities.png";
   entities_image = Surface::create(file_name, Surface::DIR_DATA);
-  if (entities_image == nullptr) {
-    Debug::error(std::string("Missing entities image for tileset '") + id + "': " + file_name);
-    entities_image = Surface::create(16, 16);
-  }
 }
 
 /**
@@ -175,7 +171,7 @@ void Tileset::unload() {
 
 /**
  * \brief Returns the background color of this tileset.
- * \return the background color
+ * \return The background color.
  */
 const Color& Tileset::get_background_color() const {
   return background_color;
@@ -183,7 +179,7 @@ const Color& Tileset::get_background_color() const {
 
 /**
  * \brief Returns whether this tileset is loaded.
- * \return true if this tileset is loaded
+ * \return \c true if this tileset is loaded.
  */
 bool Tileset::is_loaded() const {
   return tiles_image != nullptr;
@@ -191,15 +187,16 @@ bool Tileset::is_loaded() const {
 
 /**
  * \brief Returns the image containing the tiles of this tileset.
- * \return the tiles image
+ * \return The tiles image.
  */
 const SurfacePtr& Tileset::get_tiles_image() const {
   return tiles_image;
 }
 
 /**
- * \brief Returns the image containing the skin-dependent dynamic entities for this tileset.
- * \return the image containing the skin-dependent dynamic entities for this tileset
+ * \brief Returns the image containing the tileset-dependent sprites for this tileset.
+ * \return The image containing the tileset-dependent sprites for this tileset.
+ * Returns \c nullptr if it does not exist.
  */
 const SurfacePtr& Tileset::get_entities_image() const {
   return entities_image;
@@ -207,8 +204,8 @@ const SurfacePtr& Tileset::get_entities_image() const {
 
 /**
  * \brief Returns a tile pattern from this tileset.
- * \param id id of the tile pattern to get
- * \return the tile pattern with this id
+ * \param id Id of the tile pattern to get.
+ * \return The tile pattern with this id.
  */
 const TilePattern& Tileset::get_tile_pattern(const std::string& id) const {
 

@@ -53,6 +53,7 @@ map{ id = "bugs/875_freeze_load_map_tiles_outside", description = "#875: Freeze 
 map{ id = "bugs/877_get_facing_entity", description = "#877: entity:get_facing_entity()" }
 map{ id = "bugs/880_custom_entity_set_origin", description = "#880: custom_entity_set_origin() not working" }
 map{ id = "bugs/883_collision_test_not_moving_sprite", description = "#883: Custom entity sprite collision not detected when not moving" }
+map{ id = "bugs/884_tileset_sprite_file_optional", description = "#884: Tileset sprite file sould be optional" }
 map{ id = "bugs/889_crash_use_non_saved_item", description = "#889: Crash when using a non saved item" }
 map{ id = "bugs/937_custom_entity_missing_direction", description = "#937: Error when changing the animation of a custom entity if the direction is missing" }
 map{ id = "bugs/940_crash_bomb_on_stream", description = "#940: Crash when placing a bomb on a stream" }
@@ -78,6 +79,7 @@ map{ id = "teletransportation_tests/start_scrolling_sword_charged", description 
 map{ id = "traversable", description = "Traversable test area" }
 
 tileset{ id = "castle", description = "Castle" }
+tileset{ id = "castle_no_sprites_file", description = "Castle (no sprites file)" }
 tileset{ id = "overworld", description = "Overworld" }
 
 sprite{ id = "citizens/witch", description = "Witch" }

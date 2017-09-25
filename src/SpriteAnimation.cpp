@@ -25,11 +25,11 @@ namespace Solarus {
 
 /**
  * \brief Constructor.
- * \param image_file_name the image from which the frames are extracted
- * \param directions the image sequence of each direction
- * \param frame_delay delay in millisecond between two frames for this sprite animation
- * (or 0 to make no animation, for example when you have only one frame)
- * \param loop_on_frame frame to loop on after the last frame (or -1 to make no loop)
+ * \param image_file_name The image from which the frames are extracted.
+ * \param directions The image sequence of each direction.
+ * \param frame_delay Delay in millisecond between two frames for this sprite animation
+ * (or 0 to make no animation, for example when you have only one frame).
+ * \param loop_on_frame Frame to loop on after the last frame (or -1 to make no loop).
  */
 SpriteAnimation::SpriteAnimation(
     const std::string& image_file_name,
@@ -45,14 +45,10 @@ SpriteAnimation::SpriteAnimation(
   should_enable_pixel_collisions(false) {
 
   if (!src_image_is_tileset) {
-    // TODO It would be better to create only one surface by distinct
-    // image_file_name (it's currently one by sprite's animation).
-    // However, sprite animation sets are already cached so the gain might
-    // not be significant.
     src_image = Surface::create(image_file_name);
-    Debug::check_assertion(src_image != nullptr,
-        std::string("Cannot load image '" + image_file_name + "'")
-    );
+    if (src_image == nullptr) {
+      Debug::error(std::string("Cannot load sprite image '" + image_file_name + "'"));
+    };
   }
 }
 
@@ -71,6 +67,11 @@ void SpriteAnimation::set_tileset(const Tileset& tileset) {
   }
 
   src_image = tileset.get_entities_image();
+  if (src_image == nullptr) {
+    std::string file_name = std::string("tilesets/") + tileset.get_id() + ".entities.png";
+    Debug::error(std::string("Missing sprites image for tileset '") + tileset.get_id() + "': " + file_name);
+  }
+
   if (should_enable_pixel_collisions) {
     disable_pixel_collisions();  // To force creating the images again.
     do_enable_pixel_collisions();
@@ -122,10 +123,10 @@ int SpriteAnimation::get_next_frame(
 
   int next_frame = current_frame + 1;
 
-  // if we are on the last frame
   if (next_frame == directions[current_direction].get_nb_frames()) {
+    // If we are on the last frame
     // we loop on the appropriate frame
-    // or -1 if there is no loop
+    // or -1 if there is no loop.
     next_frame = loop_on_frame;
   }
 
@@ -143,18 +144,20 @@ int SpriteAnimation::get_next_frame(
 void SpriteAnimation::draw(Surface& dst_surface,
     const Point& dst_position, int current_direction, int current_frame) {
 
-  if (src_image != nullptr) {
-    if (current_direction < 0
-        || current_direction >= get_nb_directions()) {
-      std::ostringstream oss;
-      oss << "Invalid sprite direction "
-          << current_direction << ": this sprite has " << get_nb_directions()
-          << " direction(s)";
-      Debug::die(oss.str());
-    }
-    directions[current_direction].draw(dst_surface, dst_position,
-        current_frame, *src_image);
+  if (src_image == nullptr) {
+    return;
   }
+
+  if (current_direction < 0
+      || current_direction >= get_nb_directions()) {
+    std::ostringstream oss;
+    oss << "Invalid sprite direction "
+        << current_direction << ": this sprite has " << get_nb_directions()
+        << " direction(s)";
+    Debug::die(oss.str());
+  }
+  directions[current_direction].draw(dst_surface, dst_position,
+      current_frame, *src_image);
 }
 
 /**
@@ -166,7 +169,7 @@ void SpriteAnimation::enable_pixel_collisions() {
     do_enable_pixel_collisions();
   }
   else {
-    // wait for the source image to be available before analyzing its pixels
+    // Wait for the source image to be available before analyzing its pixels.
     should_enable_pixel_collisions = true;
   }
 }
@@ -175,6 +178,10 @@ void SpriteAnimation::enable_pixel_collisions() {
  * \brief Internal function that enables the pixel-perfect collision detection for this animation now.
  */
 void SpriteAnimation::do_enable_pixel_collisions() {
+
+  if (src_image == nullptr) {
+    return;
+  }
 
   for (SpriteAnimationDirection& direction: directions) {
     direction.enable_pixel_collisions(*src_image);
@@ -185,6 +192,10 @@ void SpriteAnimation::do_enable_pixel_collisions() {
  * \brief Disables the pixel-perfect collision detection for this animation.
  */
 void SpriteAnimation::disable_pixel_collisions() {
+
+  if (src_image == nullptr) {
+    return;
+  }
 
   for (SpriteAnimationDirection& direction: directions) {
     direction.disable_pixel_collisions();

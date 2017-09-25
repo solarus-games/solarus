@@ -60,12 +60,13 @@ class Tileset {
         const TilePatternData& pattern_data
     );
 
-    const std::string id;                             /**< id of the tileset */
+    const std::string id;          /**< Id of the tileset. */
     std::unordered_map<std::string, std::unique_ptr<TilePattern>>
-        tile_patterns;                                /**< tile patterns in this tileset */
-    Color background_color;                           /**< background color of the tileset */
-    SurfacePtr tiles_image;                           /**< image from which the tile patterns are extracted */
-    SurfacePtr entities_image;                        /**< image from which the skin-dependent entities are extracted */
+        tile_patterns;             /**< Tile patterns in this tileset. */
+    Color background_color;        /**< Background color of the tileset. */
+    SurfacePtr tiles_image;        /**< Image from which the tile patterns are extracted. */
+    SurfacePtr entities_image;     /**< Image from which the tileset-dependent sprites are
+                                    * extracted (optional, nullptr if none). */
 
 };
 

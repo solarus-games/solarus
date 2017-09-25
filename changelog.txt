@@ -8,6 +8,7 @@ Engine changes
 
 * Fix joypad deadzone issue (#672) by strycore.
 * Fix compilation error with Clang 3.9 in SNES_SPC.
+* Fix crash when a sprite PNG file is missing.
 * Improve Lua error messages.
 
 Lua API changes
@@ -20,6 +21,11 @@ Changes that introduce incompatibilities:
 Changes that do not introduce incompatibilities:
 
 * Add a function sol.main.get_quest_version() (#1058) by Nate-Devv.
+
+Data files format changes
+-------------------------
+
+* Make the tileset entities image optional (#884).
 
 ___________________________
 

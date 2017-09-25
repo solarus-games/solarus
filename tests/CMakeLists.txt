@@ -56,6 +56,7 @@ set(lua_test_maps
   "bugs/877_get_facing_entity"
   "bugs/880_custom_entity_set_origin"
   "bugs/883_collision_test_not_moving_sprite"
+  "bugs/884_tileset_sprite_file_optional"
   "bugs/889_crash_use_non_saved_item"
   "bugs/937_custom_entity_missing_direction"
   "bugs/940_crash_bomb_on_stream"

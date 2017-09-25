@@ -64,19 +64,20 @@ class SpriteAnimation {
     void do_enable_pixel_collisions();
     void disable_pixel_collisions();
 
-    SurfacePtr src_image;         /**< image from which the frames are extracted;
-                                   * this image is the same for
-                                   * all directions of the sprite's animation */
+    SurfacePtr src_image;         /**< Image from which the frames are extracted,
+                                   * or nullptr if missing or not loaded yet.
+                                   * This image is the same for
+                                   * all directions of the sprite's animation. */
     const bool
-        src_image_is_tileset;     /**< indicates that the image comes from the tileset */
+        src_image_is_tileset;     /**< Whether the image comes from the tileset. */
     std::vector<SpriteAnimationDirection>
-        directions;               /**< list of directions:
-                                   * each direction is a sequence of images */
-    const uint32_t frame_delay;   /**< default interval in milliseconds between two frames
-                                   * (this delay is the same for all directions) */
-    const int loop_on_frame;      /**< number of the frame to loop on, or -1 to make no loop */
-    bool should_enable_pixel_collisions; /**< indicates that pixel-perfect collisions should be
-                                           * enabled as soon as the image becomes available */
+        directions;               /**< List of directions:
+                                   * each direction is a sequence of images. */
+    const uint32_t frame_delay;   /**< Default interval in milliseconds between two frames
+                                   * (same delay for all directions). */
+    const int loop_on_frame;      /**< Number of the frame to loop on, or -1 to make no loop. */
+    bool should_enable_pixel_collisions; /**< Whether pixel-perfect collisions should be
+                                           * enabled as soon as the image becomes available. */
 };
 
 /**

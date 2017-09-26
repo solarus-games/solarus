@@ -1304,7 +1304,7 @@ class LuaContext {
       l_get_map_entity_or_global,
       l_entity_iterator_next,
       l_named_sprite_iterator_next,
-      l_treasure_dialog_finished,
+      l_treasure_brandish_finished,
       l_shop_treasure_description_dialog_finished,
       l_shop_treasure_question_dialog_finished,
       l_create_tile,

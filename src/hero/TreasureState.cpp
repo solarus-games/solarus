@@ -85,7 +85,7 @@ void Hero::TreasureState::stop(const State* next_state) {
 
   HeroState::stop(next_state);
 
-  // restore the sprite's direction
+  // Restore the sprite's direction.
   get_sprites().restore_animation_direction();
   callback_ref.clear();
 }

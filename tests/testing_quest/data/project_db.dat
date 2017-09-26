@@ -1,5 +1,6 @@
 map{ id = "all_entities", description = "All entities" }
 map{ id = "basic_test", description = "Basic test" }
+map{ id = "bugs/1076_treasure_dialog_optional", description = "#1076: Treasure dialog should be optional" }
 map{ id = "bugs/486_diagonal_dynamic_tiles", description = "#486: Wrong obstacles with diagonal dynamic tiles" }
 map{ id = "bugs/496_stream_speed_0", description = "#496: Allow streams to have a speed of zero" }
 map{ id = "bugs/526_get_entities_same_region", description = "#526: map:get_entities_in_same_region()" }
@@ -244,6 +245,10 @@ sound{ id = "wrong2", description = "wrong2" }
 sound{ id = "wrong3", description = "wrong3" }
 
 item{ id = "bomb", description = "Bomb" }
+item{ id = "item_dialog_no_sprite", description = "Item with a dialog and no sprite" }
+item{ id = "item_dialog_sprite", description = "Item with a dialog and a sprite" }
+item{ id = "item_no_dialog_no_sprite", description = "Item with no dialog and no sprite" }
+item{ id = "item_no_dialog_sprite", description = "Item with no dialog and a sprite" }
 item{ id = "non_saved_item", description = "Non-saved item" }
 item{ id = "sword", description = "Sword" }
 

@@ -87,7 +87,6 @@ SOLARUS_API void error(const std::string& message) {
   }
 
   Logger::error(message);
-
 }
 
 /**

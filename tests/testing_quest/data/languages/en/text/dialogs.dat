@@ -1,4 +1,28 @@
 dialog{
+  id = "_treasure.bomb.1",
+  text = [[
+You found a bomb!
+]]
+}
+
+dialog{
+  id = "_treasure.item_dialog_no_sprite.1",
+  text = [[
+You found something!
+No sprite for this treasure.
+]]
+}
+
+dialog{
+  id = "_treasure.item_dialog_sprite.1",
+  text = [[
+You found something!
+A treasure sprite should
+be there.
+]]
+}
+
+dialog{
   id = "a",
   text = [[
 Simple test dialog.

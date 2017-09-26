@@ -8,6 +8,11 @@ function assert_equal(actual, expected)
 
 end
 
+function sol.main.on_started()
+
+  sol.language.set_language("en")
+end
+
 local game_meta = sol.main.get_metatable("game")
 function game_meta:on_started()
 

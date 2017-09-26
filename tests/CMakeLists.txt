@@ -63,6 +63,7 @@ set(lua_test_maps
   "bugs/945_flying_enemies_fall_in_hole"
   "bugs/946_reused_movement_callback"
   "bugs/954_entity_name_nil_after_removed"
+  "bugs/1076_treasure_dialog_optional"
 )
 
 # Build the Solarus testing library.

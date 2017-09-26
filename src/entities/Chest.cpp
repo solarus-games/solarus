@@ -397,7 +397,7 @@ void Chest::update() {
             !treasure.is_obtainable()
         ) {
           // No treasure and the script does not define any behavior:
-          // save the state and unfreeze the hero.
+          // unfreeze the hero.
           get_hero().start_free();
         }
         else {

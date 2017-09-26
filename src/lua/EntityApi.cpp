@@ -50,6 +50,7 @@
 #include "solarus/Map.h"
 #include "solarus/Savegame.h"
 #include "solarus/Sprite.h"
+#include "solarus/Timer.h"
 #include <sstream>
 
 namespace Solarus {
@@ -2429,7 +2430,7 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
 /**
  * \brief Notifies Lua that the hero is brandishing a treasure.
  *
- * Lua then manages the treasure's dialog.
+ * Lua then manages the treasure's dialog if any.
  *
  * \param treasure The treasure being brandished.
  * \param callback_ref Lua ref to a function to call when the
@@ -2444,32 +2445,38 @@ void LuaContext::notify_hero_brandish_treasure(
   std::ostringstream oss;
   oss << "_treasure." << treasure.get_item_name() << "." << treasure.get_variant();
   const std::string& dialog_id = oss.str();
+  Game& game = treasure.get_game();
 
   push_item(l, treasure.get_item());
   lua_pushinteger(l, treasure.get_variant());
   push_string(l, treasure.get_savegame_variable());
   push_ref(l, callback_ref);
-  lua_pushcclosure(l, l_treasure_dialog_finished, 4);
-  const ScopedLuaRef& dialog_callback_ref = create_ref();
+  lua_pushcclosure(l, l_treasure_brandish_finished, 4);
+  const ScopedLuaRef& treasure_callback_ref = create_ref();
 
   if (!CurrentQuest::dialog_exists(dialog_id)) {
-    Debug::error(std::string("Missing treasure dialog: '") + dialog_id + "'");
-    dialog_callback_ref.call("dialog callback");
+    // No treasure dialog: keep brandishing the treasure for some delay
+    // and then execute the callback.
+    TimerPtr timer = std::make_shared<Timer>(3000);
+    push_map(l, game.get_current_map());
+    add_timer(timer, -1, treasure_callback_ref);
   }
   else {
-    treasure.get_game().start_dialog(dialog_id, ScopedLuaRef(), dialog_callback_ref);
+    // A treasure dialog exists. Show it and then execute the callback.
+    game.start_dialog(dialog_id, ScopedLuaRef(), treasure_callback_ref);
   }
 }
 
 /**
- * \brief Callback function executed after the dialog of obtaining a treasure.
+ * \brief Callback function executed after the animation of brandishing
+ * a treasure.
  *
  * Upvalues: item, variant, savegame variable, callback/nil.
  *
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
-int LuaContext::l_treasure_dialog_finished(lua_State* l) {
+int LuaContext::l_treasure_brandish_finished(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     LuaContext& lua_context = get_lua_context(l);

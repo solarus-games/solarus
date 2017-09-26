@@ -35,7 +35,7 @@ bool InputEvent::initialized = false;
 bool InputEvent::joypad_enabled = false;
 SDL_Joystick* InputEvent::joystick = nullptr;
 bool InputEvent::repeat_keyboard = false;
-std::set<InputEvent::KeyboardKey> InputEvent::keys_pressed;
+std::set<SDL_Keycode> InputEvent::keys_pressed;
 // Default the axis states to centered
 std::vector<int> InputEvent::joypad_axis_state;
 

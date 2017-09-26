@@ -285,14 +285,14 @@ std::unique_ptr<InputEvent> InputEvent::get_event() {
     // multiple SDL_KEYUP events are generated when a key remains pressed
     // (Qt/SDL conflict). This fixes most problems but not all of them.
     else if (internal_event.type == SDL_KEYDOWN) {
-      KeyboardKey key = static_cast<KeyboardKey>(internal_event.key.keysym.sym);
+      SDL_Keycode key = internal_event.key.keysym.sym;
       if (!keys_pressed.insert(key).second) {
         // Already known as pressed: mark repeated.
         internal_event.key.repeat = 1;
       }
     }
     else if (internal_event.type == SDL_KEYUP) {
-      KeyboardKey key = static_cast<KeyboardKey>(internal_event.key.keysym.sym);
+      SDL_Keycode key = internal_event.key.keysym.sym;
       if (keys_pressed.erase(key) == 0) {
         // Already known as not pressed: mark repeated.
         internal_event.key.repeat = 1;

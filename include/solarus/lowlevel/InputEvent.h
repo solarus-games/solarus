@@ -322,7 +322,7 @@ class InputEvent {
     static std::map<MouseButton, std::string>
       mouse_button_names;                         /**< Names of all existing mouse buttons. */
     static bool repeat_keyboard;                  /**< True to handle repeat KEYDOWN and KEYUP events. */
-    static std::set<KeyboardKey> keys_pressed;    /**< Keys currently down, only according to SDL_KEYDOWN and SDL_KEYUP events
+    static std::set<SDL_Keycode> keys_pressed;    /**< Keys currently down, only according to SDL_KEYDOWN and SDL_KEYUP events
                                                    * (i.e. independently of the real current state SDL_GetKeyboardState()). */
 
     const SDL_Event internal_event;               /**< the internal event encapsulated */

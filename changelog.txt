@@ -7,9 +7,10 @@ Engine changes
 --------------
 
 * Treasure dialogs are now optional (#1076).
+* Fix possible crash when reloading very old savegame files (#1064).
+* Fix crash when a sprite PNG file is missing.
 * Fix joypad deadzone issue (#672) by strycore.
 * Fix compilation error with Clang 3.9 in SNES_SPC.
-* Fix crash when a sprite PNG file is missing.
 * Improve Lua error messages.
 
 Lua API changes

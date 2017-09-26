@@ -151,28 +151,28 @@ void Savegame::set_initial_values() {
 void Savegame::set_default_keyboard_controls() {
 
 #if defined(PANDORA)
-  set_string(KEY_KEYBOARD_ACTION, enum_to_name(InputEvent::KEY_PAGE_DOWN));
-  set_string(KEY_KEYBOARD_ATTACK, enum_to_name(InputEvent::KEY_HOME));
-  set_string(KEY_KEYBOARD_ITEM_1, enum_to_name(InputEvent::KEY_PAGE_UP));
-  set_string(KEY_KEYBOARD_ITEM_2, enum_to_name(InputEvent::KEY_END));
-  set_string(KEY_KEYBOARD_PAUSE, enum_to_name(InputEvent::KEY_LEFT_ALT));
+  set_string(KEY_KEYBOARD_ACTION, enum_to_name(InputEvent::KeyboardKey::PAGE_DOWN));
+  set_string(KEY_KEYBOARD_ATTACK, enum_to_name(InputEvent::KeyboardKey::HOME));
+  set_string(KEY_KEYBOARD_ITEM_1, enum_to_name(InputEvent::KeyboardKey::PAGE_UP));
+  set_string(KEY_KEYBOARD_ITEM_2, enum_to_name(InputEvent::KeyboardKey::END));
+  set_string(KEY_KEYBOARD_PAUSE, enum_to_name(InputEvent::KeyboardKey::LEFT_ALT));
 #elif defined(GCWZERO)
-  set_string(KEY_KEYBOARD_ACTION, enum_to_name(InputEvent::KEY_LEFT_ALT));//B
-  set_string(KEY_KEYBOARD_ATTACK, enum_to_name(InputEvent::KEY_SPACE));//Y
-  set_string(KEY_KEYBOARD_ITEM_1, enum_to_name(InputEvent::KEY_LEFT_SHIFT));//X
-  set_string(KEY_KEYBOARD_ITEM_2, enum_to_name(InputEvent::KEY_LEFT_CONTROL));//A
-  set_string(KEY_KEYBOARD_PAUSE, enum_to_name(InputEvent::KEY_RETURN));//START
+  set_string(KEY_KEYBOARD_ACTION, enum_to_name(InputEvent::KeyboardKey::LEFT_ALT));//B
+  set_string(KEY_KEYBOARD_ATTACK, enum_to_name(InputEvent::KeyboardKey::SPACE));//Y
+  set_string(KEY_KEYBOARD_ITEM_1, enum_to_name(InputEvent::KeyboardKey::LEFT_SHIFT));//X
+  set_string(KEY_KEYBOARD_ITEM_2, enum_to_name(InputEvent::KeyboardKey::LEFT_CONTROL));//A
+  set_string(KEY_KEYBOARD_PAUSE, enum_to_name(InputEvent::KeyboardKey::RETURN));//START
 #else
-  set_string(KEY_KEYBOARD_ACTION, enum_to_name(InputEvent::KEY_SPACE));
-  set_string(KEY_KEYBOARD_ATTACK, enum_to_name(InputEvent::KEY_c));
-  set_string(KEY_KEYBOARD_ITEM_1, enum_to_name(InputEvent::KEY_x));
-  set_string(KEY_KEYBOARD_ITEM_2, enum_to_name(InputEvent::KEY_v));
-  set_string(KEY_KEYBOARD_PAUSE, enum_to_name(InputEvent::KEY_d));
+  set_string(KEY_KEYBOARD_ACTION, enum_to_name(InputEvent::KeyboardKey::SPACE));
+  set_string(KEY_KEYBOARD_ATTACK, enum_to_name(InputEvent::KeyboardKey::c));
+  set_string(KEY_KEYBOARD_ITEM_1, enum_to_name(InputEvent::KeyboardKey::x));
+  set_string(KEY_KEYBOARD_ITEM_2, enum_to_name(InputEvent::KeyboardKey::v));
+  set_string(KEY_KEYBOARD_PAUSE, enum_to_name(InputEvent::KeyboardKey::d));
 #endif
-  set_string(KEY_KEYBOARD_RIGHT, enum_to_name(InputEvent::KEY_RIGHT));
-  set_string(KEY_KEYBOARD_UP, enum_to_name(InputEvent::KEY_UP));
-  set_string(KEY_KEYBOARD_LEFT, enum_to_name(InputEvent::KEY_LEFT));
-  set_string(KEY_KEYBOARD_DOWN, enum_to_name(InputEvent::KEY_DOWN));
+  set_string(KEY_KEYBOARD_RIGHT, enum_to_name(InputEvent::KeyboardKey::RIGHT));
+  set_string(KEY_KEYBOARD_UP, enum_to_name(InputEvent::KeyboardKey::UP));
+  set_string(KEY_KEYBOARD_LEFT, enum_to_name(InputEvent::KeyboardKey::LEFT));
+  set_string(KEY_KEYBOARD_DOWN, enum_to_name(InputEvent::KeyboardKey::DOWN));
 }
 
 /**

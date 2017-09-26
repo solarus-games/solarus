@@ -1392,8 +1392,8 @@ int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
     const std::string& key_name = LuaTools::opt_string(l, 3, "");
 
     GameCommands& commands = savegame.get_game()->get_commands();
-    InputEvent::KeyboardKey key = name_to_enum(key_name, InputEvent::KEY_NONE);
-    if (!key_name.empty() && key == InputEvent::KEY_NONE) {
+    InputEvent::KeyboardKey key = name_to_enum(key_name, InputEvent::KeyboardKey::NONE);
+    if (!key_name.empty() && key == InputEvent::KeyboardKey::NONE) {
       LuaTools::arg_error(l, 3,
           std::string("Invalid keyboard key name: '") + key_name + "'");
     }

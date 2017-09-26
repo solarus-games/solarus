@@ -92,9 +92,9 @@ int LuaContext::input_api_is_key_pressed(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& key_name = LuaTools::check_string(l, 1);
-    InputEvent::KeyboardKey key = name_to_enum(key_name, InputEvent::KEY_NONE);
+    InputEvent::KeyboardKey key = name_to_enum(key_name, InputEvent::KeyboardKey::NONE);
 
-    if (key == InputEvent::KEY_NONE) {
+    if (key == InputEvent::KeyboardKey::NONE) {
       LuaTools::arg_error(l, 1, std::string(
           "Unknown keyboard key name: '") + key_name + "'");
     }
@@ -198,9 +198,9 @@ int LuaContext::input_api_is_mouse_button_pressed(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& button_name = LuaTools::check_string(l, 1);
-    InputEvent::MouseButton button = name_to_enum(button_name, InputEvent::MOUSE_BUTTON_NONE);
+    InputEvent::MouseButton button = name_to_enum(button_name, InputEvent::MouseButton::NONE);
 
-    if (button == InputEvent::MOUSE_BUTTON_NONE) {
+    if (button == InputEvent::MouseButton::NONE) {
       LuaTools::arg_error(l, 1, std::string(
           "Unknown mouse button name: '") + button_name + "'");
     }
@@ -219,9 +219,9 @@ int LuaContext::input_api_is_mouse_button_released(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& button_name = LuaTools::check_string(l, 1);
-    InputEvent::MouseButton button = name_to_enum(button_name, InputEvent::MOUSE_BUTTON_NONE);
+    InputEvent::MouseButton button = name_to_enum(button_name, InputEvent::MouseButton::NONE);
 
-    if (button == InputEvent::MOUSE_BUTTON_NONE) {
+    if (button == InputEvent::MouseButton::NONE) {
       LuaTools::arg_error(l, 1, std::string(
           "Unknown mouse button name: '") + button_name + "'");
     }
@@ -343,9 +343,9 @@ int LuaContext::input_api_simulate_key_pressed(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
 
     const std::string& key_name = LuaTools::check_string(l, 1);
-    InputEvent::KeyboardKey key = name_to_enum(key_name, InputEvent::KEY_NONE);
+    InputEvent::KeyboardKey key = name_to_enum(key_name, InputEvent::KeyboardKey::NONE);
 
-    if (key == InputEvent::KEY_NONE) {
+    if (key == InputEvent::KeyboardKey::NONE) {
       LuaTools::arg_error(l, 1, std::string(
           "Unknown keyboard key name: '") + key_name + "'");
     }
@@ -365,9 +365,9 @@ int LuaContext::input_api_simulate_key_released(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
 
     const std::string& key_name = LuaTools::check_string(l, 1);
-    InputEvent::KeyboardKey key = name_to_enum(key_name, InputEvent::KEY_NONE);
+    InputEvent::KeyboardKey key = name_to_enum(key_name, InputEvent::KeyboardKey::NONE);
 
-    if (key == InputEvent::KEY_NONE) {
+    if (key == InputEvent::KeyboardKey::NONE) {
       LuaTools::arg_error(l, 1, std::string(
           "Unknown keyboard key name: '") + key_name + "'");
     }

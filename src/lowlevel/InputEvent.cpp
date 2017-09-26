@@ -25,11 +25,11 @@
 namespace Solarus {
 
 const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
-    KEY_RIGHT,
-    KEY_UP,
-    KEY_LEFT,
-    KEY_DOWN,
-    KEY_NONE
+    KeyboardKey::RIGHT,
+    KeyboardKey::UP,
+    KeyboardKey::LEFT,
+    KeyboardKey::DOWN,
+    KeyboardKey::NONE
 };
 bool InputEvent::initialized = false;
 bool InputEvent::joypad_enabled = false;
@@ -44,142 +44,142 @@ const std::string EnumInfoTraits<InputEvent::KeyboardKey>::pretty_name = "keyboa
 
 const EnumInfo<InputEvent::KeyboardKey>::names_type EnumInfoTraits<InputEvent::KeyboardKey>::names = {
 
-    { InputEvent::KEY_NONE,              "" },
-    { InputEvent::KEY_BACKSPACE,         "backspace" },
-    { InputEvent::KEY_TABULATION,        "tab" },
-    { InputEvent::KEY_CLEAR,             "clear" },
-    { InputEvent::KEY_RETURN,            "return" },
-    { InputEvent::KEY_PAUSE,             "pause" },
-    { InputEvent::KEY_ESCAPE,            "escape" },
-    { InputEvent::KEY_SPACE,             "space" },
-    { InputEvent::KEY_EXCLAMATION_MARK,  "!" },
-    { InputEvent::KEY_DOULE_QUOTE,       "\"" },
-    { InputEvent::KEY_HASH,              "#" },
-    { InputEvent::KEY_DOLLAR,            "$" },
-    { InputEvent::KEY_AMPERSAND,         "&" },
-    { InputEvent::KEY_SINGLE_QUOTE,      "'" },
-    { InputEvent::KEY_LEFT_PARENTHESIS,  "(" },
-    { InputEvent::KEY_RIGHT_PARENTHESIS, ")" },
-    { InputEvent::KEY_ASTERISK,          "*" },
-    { InputEvent::KEY_PLUS,              "+" },
-    { InputEvent::KEY_COMMA,             "," },
-    { InputEvent::KEY_MINUS,             "-" },
-    { InputEvent::KEY_PERIOD,            "." },
-    { InputEvent::KEY_SLASH,             "/" },
-    { InputEvent::KEY_0,                 "0" },
-    { InputEvent::KEY_1,                 "1" },
-    { InputEvent::KEY_2,                 "2" },
-    { InputEvent::KEY_3,                 "3" },
-    { InputEvent::KEY_4,                 "4" },
-    { InputEvent::KEY_5,                 "5" },
-    { InputEvent::KEY_6,                 "6" },
-    { InputEvent::KEY_7,                 "7" },
-    { InputEvent::KEY_8,                 "8" },
-    { InputEvent::KEY_9,                 "9" },
-    { InputEvent::KEY_COLON,             "." },
-    { InputEvent::KEY_SEMICOLON,         ":" },
-    { InputEvent::KEY_LESS,              "<" },
-    { InputEvent::KEY_EQUALS,            "=" },
-    { InputEvent::KEY_GREATER,           ">" },
-    { InputEvent::KEY_QUESTION_MARK,     "?" },
-    { InputEvent::KEY_AT,                "@" },
-    { InputEvent::KEY_LEFT_BRACKET,      "[" },
-    { InputEvent::KEY_BACKSLASH,         "\\" },
-    { InputEvent::KEY_RIGHT_BRACKET,     "]" },
-    { InputEvent::KEY_CARET,             "^" },
-    { InputEvent::KEY_UNDERSCORE,        "_" },
-    { InputEvent::KEY_BACKQUOTE,         "`" },
-    { InputEvent::KEY_a,                 "a" },
-    { InputEvent::KEY_b,                 "b" },
-    { InputEvent::KEY_c,                 "c" },
-    { InputEvent::KEY_d,                 "d" },
-    { InputEvent::KEY_e,                 "e" },
-    { InputEvent::KEY_f,                 "f" },
-    { InputEvent::KEY_g,                 "g" },
-    { InputEvent::KEY_h,                 "h" },
-    { InputEvent::KEY_i,                 "i" },
-    { InputEvent::KEY_j,                 "j" },
-    { InputEvent::KEY_k,                 "k" },
-    { InputEvent::KEY_l,                 "l" },
-    { InputEvent::KEY_m,                 "m" },
-    { InputEvent::KEY_n,                 "n" },
-    { InputEvent::KEY_o,                 "o" },
-    { InputEvent::KEY_p,                 "p" },
-    { InputEvent::KEY_q,                 "q" },
-    { InputEvent::KEY_r,                 "r" },
-    { InputEvent::KEY_s,                 "s" },
-    { InputEvent::KEY_t,                 "t" },
-    { InputEvent::KEY_u,                 "u" },
-    { InputEvent::KEY_v,                 "v" },
-    { InputEvent::KEY_w,                 "w" },
-    { InputEvent::KEY_x,                 "x" },
-    { InputEvent::KEY_y,                 "y" },
-    { InputEvent::KEY_z,                 "z" },
-    { InputEvent::KEY_DELETE,            "delete" },
-    { InputEvent::KEY_KP0,               "kp 0" },
-    { InputEvent::KEY_KP1,               "kp 1" },
-    { InputEvent::KEY_KP2,               "kp 2" },
-    { InputEvent::KEY_KP3,               "kp 3" },
-    { InputEvent::KEY_KP4,               "kp 4" },
-    { InputEvent::KEY_KP5,               "kp 5" },
-    { InputEvent::KEY_KP6,               "kp 6" },
-    { InputEvent::KEY_KP7,               "kp 7" },
-    { InputEvent::KEY_KP8,               "kp 8" },
-    { InputEvent::KEY_KP9,               "kp 9" },
-    { InputEvent::KEY_KP_PERIOD,         "kp ." },
-    { InputEvent::KEY_KP_DIVIDE,         "kp /" },
-    { InputEvent::KEY_KP_MULTIPLY,       "kp *" },
-    { InputEvent::KEY_KP_MINUS,          "kp -" },
-    { InputEvent::KEY_KP_PLUS,           "kp +" },
-    { InputEvent::KEY_KP_ENTER,          "kp return" },
-    { InputEvent::KEY_KP_EQUALS,         "kp =" },
-    { InputEvent::KEY_UP,                "up" },
-    { InputEvent::KEY_DOWN,              "down" },
-    { InputEvent::KEY_RIGHT,             "right" },
-    { InputEvent::KEY_LEFT,              "left" },
-    { InputEvent::KEY_INSERT,            "insert" },
-    { InputEvent::KEY_HOME,              "home" },
-    { InputEvent::KEY_END,               "end" },
-    { InputEvent::KEY_PAGE_UP,           "page up" },
-    { InputEvent::KEY_PAGE_DOWN,         "page down" },
-    { InputEvent::KEY_F1,                "f1" },
-    { InputEvent::KEY_F2,                "f2" },
-    { InputEvent::KEY_F3,                "f3" },
-    { InputEvent::KEY_F4,                "f4" },
-    { InputEvent::KEY_F5,                "f5" },
-    { InputEvent::KEY_F6,                "f6" },
-    { InputEvent::KEY_F7,                "f7" },
-    { InputEvent::KEY_F8,                "f8" },
-    { InputEvent::KEY_F9,                "f9" },
-    { InputEvent::KEY_F10,               "f10" },
-    { InputEvent::KEY_F11,               "f11" },
-    { InputEvent::KEY_F12,               "f12" },
-    { InputEvent::KEY_F13,               "f13" },
-    { InputEvent::KEY_F14,               "f14" },
-    { InputEvent::KEY_F15,               "f15" },
-    { InputEvent::KEY_NUMLOCK,           "num lock" },
-    { InputEvent::KEY_CAPSLOCK,          "caps lock" },
-    { InputEvent::KEY_SCROLLOCK,         "scroll lock" },
-    { InputEvent::KEY_RIGHT_SHIFT,       "right shift" },
-    { InputEvent::KEY_LEFT_SHIFT,        "left shift" },
-    { InputEvent::KEY_RIGHT_CONTROL,     "right control" },
-    { InputEvent::KEY_LEFT_CONTROL,      "left control" },
-    { InputEvent::KEY_RIGHT_ALT,         "right alt" },
-    { InputEvent::KEY_LEFT_ALT,          "left alt" },
-    { InputEvent::KEY_RIGHT_META,        "right meta" },
-    { InputEvent::KEY_LEFT_META,         "left meta" }
+    { InputEvent::KeyboardKey::NONE,              "" },
+    { InputEvent::KeyboardKey::BACKSPACE,         "backspace" },
+    { InputEvent::KeyboardKey::TABULATION,        "tab" },
+    { InputEvent::KeyboardKey::CLEAR,             "clear" },
+    { InputEvent::KeyboardKey::RETURN,            "return" },
+    { InputEvent::KeyboardKey::PAUSE,             "pause" },
+    { InputEvent::KeyboardKey::ESCAPE,            "escape" },
+    { InputEvent::KeyboardKey::SPACE,             "space" },
+    { InputEvent::KeyboardKey::EXCLAMATION_MARK,  "!" },
+    { InputEvent::KeyboardKey::DOULE_QUOTE,       "\"" },
+    { InputEvent::KeyboardKey::HASH,              "#" },
+    { InputEvent::KeyboardKey::DOLLAR,            "$" },
+    { InputEvent::KeyboardKey::AMPERSAND,         "&" },
+    { InputEvent::KeyboardKey::SINGLE_QUOTE,      "'" },
+    { InputEvent::KeyboardKey::LEFT_PARENTHESIS,  "(" },
+    { InputEvent::KeyboardKey::RIGHT_PARENTHESIS, ")" },
+    { InputEvent::KeyboardKey::ASTERISK,          "*" },
+    { InputEvent::KeyboardKey::PLUS,              "+" },
+    { InputEvent::KeyboardKey::COMMA,             "," },
+    { InputEvent::KeyboardKey::MINUS,             "-" },
+    { InputEvent::KeyboardKey::PERIOD,            "." },
+    { InputEvent::KeyboardKey::SLASH,             "/" },
+    { InputEvent::KeyboardKey::NUMBER_0,          "0" },
+    { InputEvent::KeyboardKey::NUMBER_1,          "1" },
+    { InputEvent::KeyboardKey::NUMBER_2,          "2" },
+    { InputEvent::KeyboardKey::NUMBER_3,          "3" },
+    { InputEvent::KeyboardKey::NUMBER_4,          "4" },
+    { InputEvent::KeyboardKey::NUMBER_5,          "5" },
+    { InputEvent::KeyboardKey::NUMBER_6,          "6" },
+    { InputEvent::KeyboardKey::NUMBER_7,          "7" },
+    { InputEvent::KeyboardKey::NUMBER_8,          "8" },
+    { InputEvent::KeyboardKey::NUMBER_9,          "9" },
+    { InputEvent::KeyboardKey::COLON,             "." },
+    { InputEvent::KeyboardKey::SEMICOLON,         ":" },
+    { InputEvent::KeyboardKey::LESS,              "<" },
+    { InputEvent::KeyboardKey::EQUALS,            "=" },
+    { InputEvent::KeyboardKey::GREATER,           ">" },
+    { InputEvent::KeyboardKey::QUESTION_MARK,     "?" },
+    { InputEvent::KeyboardKey::AT,                "@" },
+    { InputEvent::KeyboardKey::LEFT_BRACKET,      "[" },
+    { InputEvent::KeyboardKey::BACKSLASH,         "\\" },
+    { InputEvent::KeyboardKey::RIGHT_BRACKET,     "]" },
+    { InputEvent::KeyboardKey::CARET,             "^" },
+    { InputEvent::KeyboardKey::UNDERSCORE,        "_" },
+    { InputEvent::KeyboardKey::BACKQUOTE,         "`" },
+    { InputEvent::KeyboardKey::a,                 "a" },
+    { InputEvent::KeyboardKey::b,                 "b" },
+    { InputEvent::KeyboardKey::c,                 "c" },
+    { InputEvent::KeyboardKey::d,                 "d" },
+    { InputEvent::KeyboardKey::e,                 "e" },
+    { InputEvent::KeyboardKey::f,                 "f" },
+    { InputEvent::KeyboardKey::g,                 "g" },
+    { InputEvent::KeyboardKey::h,                 "h" },
+    { InputEvent::KeyboardKey::i,                 "i" },
+    { InputEvent::KeyboardKey::j,                 "j" },
+    { InputEvent::KeyboardKey::k,                 "k" },
+    { InputEvent::KeyboardKey::l,                 "l" },
+    { InputEvent::KeyboardKey::m,                 "m" },
+    { InputEvent::KeyboardKey::n,                 "n" },
+    { InputEvent::KeyboardKey::o,                 "o" },
+    { InputEvent::KeyboardKey::p,                 "p" },
+    { InputEvent::KeyboardKey::q,                 "q" },
+    { InputEvent::KeyboardKey::r,                 "r" },
+    { InputEvent::KeyboardKey::s,                 "s" },
+    { InputEvent::KeyboardKey::t,                 "t" },
+    { InputEvent::KeyboardKey::u,                 "u" },
+    { InputEvent::KeyboardKey::v,                 "v" },
+    { InputEvent::KeyboardKey::w,                 "w" },
+    { InputEvent::KeyboardKey::x,                 "x" },
+    { InputEvent::KeyboardKey::y,                 "y" },
+    { InputEvent::KeyboardKey::z,                 "z" },
+    { InputEvent::KeyboardKey::DELETE,            "delete" },
+    { InputEvent::KeyboardKey::KP0,               "kp 0" },
+    { InputEvent::KeyboardKey::KP1,               "kp 1" },
+    { InputEvent::KeyboardKey::KP2,               "kp 2" },
+    { InputEvent::KeyboardKey::KP3,               "kp 3" },
+    { InputEvent::KeyboardKey::KP4,               "kp 4" },
+    { InputEvent::KeyboardKey::KP5,               "kp 5" },
+    { InputEvent::KeyboardKey::KP6,               "kp 6" },
+    { InputEvent::KeyboardKey::KP7,               "kp 7" },
+    { InputEvent::KeyboardKey::KP8,               "kp 8" },
+    { InputEvent::KeyboardKey::KP9,               "kp 9" },
+    { InputEvent::KeyboardKey::KP_PERIOD,         "kp ." },
+    { InputEvent::KeyboardKey::KP_DIVIDE,         "kp /" },
+    { InputEvent::KeyboardKey::KP_MULTIPLY,       "kp *" },
+    { InputEvent::KeyboardKey::KP_MINUS,          "kp -" },
+    { InputEvent::KeyboardKey::KP_PLUS,           "kp +" },
+    { InputEvent::KeyboardKey::KP_ENTER,          "kp return" },
+    { InputEvent::KeyboardKey::KP_EQUALS,         "kp =" },
+    { InputEvent::KeyboardKey::UP,                "up" },
+    { InputEvent::KeyboardKey::DOWN,              "down" },
+    { InputEvent::KeyboardKey::RIGHT,             "right" },
+    { InputEvent::KeyboardKey::LEFT,              "left" },
+    { InputEvent::KeyboardKey::INSERT,            "insert" },
+    { InputEvent::KeyboardKey::HOME,              "home" },
+    { InputEvent::KeyboardKey::END,               "end" },
+    { InputEvent::KeyboardKey::PAGE_UP,           "page up" },
+    { InputEvent::KeyboardKey::PAGE_DOWN,         "page down" },
+    { InputEvent::KeyboardKey::F1,                "f1" },
+    { InputEvent::KeyboardKey::F2,                "f2" },
+    { InputEvent::KeyboardKey::F3,                "f3" },
+    { InputEvent::KeyboardKey::F4,                "f4" },
+    { InputEvent::KeyboardKey::F5,                "f5" },
+    { InputEvent::KeyboardKey::F6,                "f6" },
+    { InputEvent::KeyboardKey::F7,                "f7" },
+    { InputEvent::KeyboardKey::F8,                "f8" },
+    { InputEvent::KeyboardKey::F9,                "f9" },
+    { InputEvent::KeyboardKey::F10,               "f10" },
+    { InputEvent::KeyboardKey::F11,               "f11" },
+    { InputEvent::KeyboardKey::F12,               "f12" },
+    { InputEvent::KeyboardKey::F13,               "f13" },
+    { InputEvent::KeyboardKey::F14,               "f14" },
+    { InputEvent::KeyboardKey::F15,               "f15" },
+    { InputEvent::KeyboardKey::NUMLOCK,           "num lock" },
+    { InputEvent::KeyboardKey::CAPSLOCK,          "caps lock" },
+    { InputEvent::KeyboardKey::SCROLLOCK,         "scroll lock" },
+    { InputEvent::KeyboardKey::RIGHT_SHIFT,       "right shift" },
+    { InputEvent::KeyboardKey::LEFT_SHIFT,        "left shift" },
+    { InputEvent::KeyboardKey::RIGHT_CONTROL,     "right control" },
+    { InputEvent::KeyboardKey::LEFT_CONTROL,      "left control" },
+    { InputEvent::KeyboardKey::RIGHT_ALT,         "right alt" },
+    { InputEvent::KeyboardKey::LEFT_ALT,          "left alt" },
+    { InputEvent::KeyboardKey::RIGHT_META,        "right meta" },
+    { InputEvent::KeyboardKey::LEFT_META,         "left meta" }
 };
 
 // Mouse button names.
 const std::string EnumInfoTraits<InputEvent::MouseButton>::pretty_name = "mouse button";
 
 const EnumInfo<InputEvent::MouseButton>::names_type EnumInfoTraits<InputEvent::MouseButton>::names = {
-    { InputEvent::MOUSE_BUTTON_NONE,   "" },
-    { InputEvent::MOUSE_BUTTON_LEFT,   "left" },
-    { InputEvent::MOUSE_BUTTON_MIDDLE, "middle" },
-    { InputEvent::MOUSE_BUTTON_RIGHT,  "right" },
-    { InputEvent::MOUSE_BUTTON_X1,     "x1" },
-    { InputEvent::MOUSE_BUTTON_X2,     "x2" }
+    { InputEvent::MouseButton::NONE,   "" },
+    { InputEvent::MouseButton::LEFT,   "left" },
+    { InputEvent::MouseButton::MIDDLE, "middle" },
+    { InputEvent::MouseButton::RIGHT,  "right" },
+    { InputEvent::MouseButton::X1,     "x1" },
+    { InputEvent::MouseButton::X2,     "x2" }
 };
 
 
@@ -413,7 +413,7 @@ bool InputEvent::is_joypad_button_down(int button) {
  */
 bool InputEvent::is_mouse_button_down(MouseButton button) {
 
-  return (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(button)) != 0;
+  return (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(static_cast<int>(button))) != 0;
 }
 
 /**
@@ -671,7 +671,7 @@ bool InputEvent::is_keyboard_key_pressed(KeyboardKey key) const {
  */
 bool InputEvent::is_keyboard_key_pressed(const KeyboardKey* keys) const {
 
-  while (*keys != KEY_NONE) {
+  while (*keys != KeyboardKey::NONE) {
 
     if (is_keyboard_key_pressed(*keys)) {
       return true;
@@ -734,7 +734,7 @@ bool InputEvent::is_keyboard_key_released(KeyboardKey key) const {
  */
 bool InputEvent::is_keyboard_key_released(const KeyboardKey* keys) const {
 
-  while (*keys != KEY_NONE) {
+  while (*keys != KeyboardKey::NONE) {
 
     if (is_keyboard_key_released(*keys)) {
       return true;
@@ -822,13 +822,13 @@ bool InputEvent::is_with_alt() const {
 InputEvent::KeyboardKey InputEvent::get_keyboard_key() const {
 
   if (!is_keyboard_event()) {
-    return KEY_NONE;
+    return KeyboardKey::NONE;
   }
 
   SDL_Keycode sdl_symbol = internal_event.key.keysym.sym;
   if (EnumInfoTraits<KeyboardKey>::names.find(static_cast<KeyboardKey>(sdl_symbol)) ==
       EnumInfoTraits<KeyboardKey>::names.end()) {
-    return KEY_NONE;
+    return KeyboardKey::NONE;
   }
 
   return static_cast<KeyboardKey>(sdl_symbol);
@@ -860,7 +860,7 @@ void InputEvent::simulate_key_pressed(KeyboardKey key) {
 
   SDL_Event event;
   event.type = SDL_KEYDOWN;
-  event.key.keysym.sym = key;
+  event.key.keysym.sym = static_cast<SDL_Keycode>(key);
   event.key.repeat = 0;
 
   SDL_PushEvent(&event);
@@ -874,7 +874,7 @@ void InputEvent::simulate_key_released(KeyboardKey key) {
 
   SDL_Event event;
   event.type = SDL_KEYUP;
-  event.key.keysym.sym = key;
+  event.key.keysym.sym = static_cast<SDL_Keycode>(key);
   event.key.repeat = 0;
 
   SDL_PushEvent(&event);
@@ -1190,7 +1190,7 @@ bool InputEvent::is_mouse_button_released(MouseButton button) const {
 InputEvent::MouseButton InputEvent::get_mouse_button() const {
 
   if (!is_mouse_event()) {
-    return MOUSE_BUTTON_NONE;
+    return MouseButton::NONE;
   }
 
   return static_cast<MouseButton>(internal_event.button.button);
@@ -1357,19 +1357,19 @@ int InputEvent::get_direction() const {
 
     switch (get_keyboard_key()) {
 
-      case KEY_RIGHT:
+      case KeyboardKey::RIGHT:
         result = 0;
         break;
 
-      case KEY_UP:
+      case KeyboardKey::UP:
         result = 2;
         break;
 
-      case KEY_LEFT:
+      case KeyboardKey::LEFT:
         result = 4;
         break;
 
-      case KEY_DOWN:
+      case KeyboardKey::DOWN:
         result = 6;
         break;
 

@@ -519,7 +519,7 @@ InputEvent::KeyboardKey GameCommands::get_keyboard_binding(GameCommand command) 
     }
   }
 
-  return InputEvent::KEY_NONE;
+  return InputEvent::KeyboardKey::NONE;
 }
 
 /**
@@ -537,7 +537,7 @@ void GameCommands::set_keyboard_binding(GameCommand command, InputEvent::Keyboar
   InputEvent::KeyboardKey previous_key = get_keyboard_binding(command);
   GameCommand previous_command = get_command_from_keyboard(key);
 
-  if (previous_key != InputEvent::KEY_NONE) {
+  if (previous_key != InputEvent::KeyboardKey::NONE) {
     // The command was already assigned.
     if (previous_command != GameCommand::NONE) {
       // This key is already mapped to a command.
@@ -549,7 +549,7 @@ void GameCommands::set_keyboard_binding(GameCommand command, InputEvent::Keyboar
     }
   }
 
-  if (key != InputEvent::KEY_NONE) {
+  if (key != InputEvent::KeyboardKey::NONE) {
       keyboard_mapping[key] = command;
   }
   set_saved_keyboard_binding(command, key);
@@ -671,7 +671,7 @@ InputEvent::KeyboardKey GameCommands::get_saved_keyboard_binding(
 
   const std::string& savegame_variable = get_keyboard_binding_savegame_variable(command);
   const std::string& keyboard_key_name = get_savegame().get_string(savegame_variable);
-  return name_to_enum(keyboard_key_name, InputEvent::KEY_NONE);
+  return name_to_enum(keyboard_key_name, InputEvent::KeyboardKey::NONE);
 }
 
 /**

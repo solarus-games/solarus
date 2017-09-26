@@ -103,6 +103,10 @@ class SOLARUS_API Savegame: public ExportableToLua {
     void set_boolean(const std::string& key, bool value);
     void unset(const std::string& key);
 
+    void set_initial_values();
+    void set_default_keyboard_controls();
+    void set_default_joypad_controls();
+
     // unsaved data
     MainLoop& get_main_loop();
     LuaContext& get_lua_context();
@@ -139,10 +143,6 @@ class SOLARUS_API Savegame: public ExportableToLua {
 
     void import_from_file();
     static int l_newindex(lua_State* l);
-
-    void set_initial_values();
-    void set_default_keyboard_controls();
-    void set_default_joypad_controls();
 
 };
 

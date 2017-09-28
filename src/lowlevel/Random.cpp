@@ -44,8 +44,8 @@ void quit() {
  *
  * This is equivalent to: Random::get_number(0, x).
  *
- * \param x the superior bound
- * \return a random integer number in [0, x[
+ * \param x The superior bound.
+ * \return a Random integer number in [0, x[.
  */
 int get_number(unsigned int x) {
   return get_number(0, x);
@@ -53,9 +53,9 @@ int get_number(unsigned int x) {
 
 /**
  * \brief Returns a random integer number in [x, y[ with a uniform distribution.
- * \param x the inferior bound
- * \param y the superior bound
- * \return a random integer number in [x, y[
+ * \param x The inferior bound.
+ * \param y The superior bound.
+ * \return A random integer number in [x, y[.
  */
 int get_number(int x, int y) {
 
@@ -75,8 +75,8 @@ int get_number(int x, int y) {
   // thread, initialized once, like a static variable) rather
   // than maintaining them in the body of a class.
   //
-  thread_local std::mt19937 engine(std::time(nullptr));
-  thread_local std::uniform_int_distribution<int> dist{};
+  static std::mt19937 engine(std::time(nullptr));
+  static std::uniform_int_distribution<int> dist{};
 
   // Type of the parameters of the distribution
   using param_type = std::uniform_int_distribution<int>::param_type;

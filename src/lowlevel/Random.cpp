@@ -65,16 +65,6 @@ int get_number(int x, int y) {
   // because not every main platform support non-deterministic
   // random numbers generation yet.
   //
-  // The variables are thread_local so that every thread has
-  // its own to avoid thread-safety problems while still being
-  // more efficient than a mutex-based solution
-  //
-  // These variables need to be known in the function but not
-  // needed outside of it, so it is easier to have them as
-  // thread_local function-local variables (one instance per
-  // thread, initialized once, like a static variable) rather
-  // than maintaining them in the body of a class.
-  //
   static std::mt19937 engine(std::time(nullptr));
   static std::uniform_int_distribution<int> dist{};
 

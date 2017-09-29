@@ -25,7 +25,7 @@
 #include <cstdlib>  // exit(), mkstemp(), tmpnam()
 #include <cstdio>   // remove()
 #ifdef HAVE_UNISTD_H
-#  include <unistd.h>
+#  include <unistd.h>  // close()
 #endif
 
 #if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)

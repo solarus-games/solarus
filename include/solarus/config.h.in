@@ -10,5 +10,6 @@
 #define SOLARUS_PATCH_VERSION 0
 #endif
 
-#cmakedefine HAVE_MKSTEMP
-#cmakedefine HAVE_UNISTD_H
+#cmakedefine HAVE_MKSTEMP 1
+#cmakedefine HAVE_UNISTD_H 1
+

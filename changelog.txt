@@ -12,6 +12,7 @@ Engine changes
 * Fix crash when a sprite PNG file is missing.
 * Fix joypad deadzone issue (#672) by strycore.
 * Fix compilation error with Clang 3.9 in SNES_SPC.
+* Fix possible compilation error when HAVE_UNISTD_H has no value (#1084).
 * Improve Lua error messages.
 
 Lua API changes

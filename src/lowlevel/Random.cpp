@@ -18,10 +18,6 @@
 #include <ctime>
 #include <random>
 
-#if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
-#  define thread_local
-#endif
-
 namespace Solarus {
 namespace Random {
 

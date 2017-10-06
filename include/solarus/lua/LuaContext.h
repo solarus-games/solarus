@@ -829,6 +829,8 @@ class LuaContext {
       entity_api_get_ground_below,
       entity_api_get_bounding_box,
       entity_api_get_max_bounding_box,
+      entity_api_get_layer,
+      entity_api_set_layer,
       entity_api_overlaps,
       entity_api_get_distance,
       entity_api_get_angle,

@@ -117,6 +117,8 @@ void LuaContext::register_entity_module() {
       { "get_ground_below", entity_api_get_ground_below },\
       { "get_bounding_box", entity_api_get_bounding_box },\
       { "get_max_bounding_box", entity_api_get_max_bounding_box },\
+      { "get_layer", entity_api_get_layer },\
+      { "set_layer", entity_api_set_layer },\
       { "overlaps", entity_api_overlaps },\
       { "get_distance", entity_api_get_distance },\
       { "get_angle", entity_api_get_angle },\
@@ -1117,6 +1119,40 @@ int LuaContext::entity_api_get_max_bounding_box(lua_State* l) {
     lua_pushinteger(l, max_bounding_box.get_width());
     lua_pushinteger(l, max_bounding_box.get_height());
     return 4;
+  });
+}
+
+/**
+ * \brief Implementation of entity:get_layer().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_layer(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Entity& entity = *check_entity(l, 1);
+
+    lua_pushinteger(l, entity.get_layer());
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of entity:set_layer().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_set_layer(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Entity& entity = *check_entity(l, 1);
+    int layer = LuaTools::check_layer(l, 2, entity.get_map());
+
+    Entities& entities = entity.get_map().get_entities();
+    entities.set_entity_layer(entity, layer);
+    entity.notify_position_changed();
+
+    return 0;
   });
 }
 

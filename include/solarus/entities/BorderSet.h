@@ -17,6 +17,7 @@
 #ifndef SOLARUS_BORDER_SET_H
 #define SOLARUS_BORDER_SET_H
 
+#include "solarus/Common.h"
 #include "solarus/entities/BorderKind.h"
 #include <string>
 #include <map>
@@ -26,7 +27,7 @@ namespace Solarus {
 /**
  * \brief A set of borders for the autotiler.
  */
-class BorderSet {
+class SOLARUS_API BorderSet {
 
 public:
 

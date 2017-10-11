@@ -68,7 +68,7 @@ int get_number(int x, int y) {
   using param_type = std::uniform_int_distribution<int>::param_type;
 
   // Get a random number in [x, y[
-  return dist(engine, param_type{x, y-1});
+  return dist(engine, param_type{x, y - 1});
 }
 
 }

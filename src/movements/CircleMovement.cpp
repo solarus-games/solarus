@@ -28,7 +28,7 @@ namespace Solarus {
 
 /**
  * \brief Creates a circle movement.
- * \param ignore_obstacles true to ignore obstacles
+ * \param ignore_obstacles \c true to ignore obstacles.
  */
 CircleMovement::CircleMovement(bool ignore_obstacles):
 
@@ -59,7 +59,7 @@ CircleMovement::CircleMovement(bool ignore_obstacles):
  *
  * The movement will make circles around the specified fixed point.
  *
- * \param center_point center of the circles to make
+ * \param center_point Center of the circles to make.
  */
 void CircleMovement::set_center(const Point& center_point) {
 
@@ -74,8 +74,8 @@ void CircleMovement::set_center(const Point& center_point) {
  * The movement will make circles around the specified (possibly moving) entity.
  *
  * \param center_entity the entity around which you want to make circles
- * \param x x coordinate of where the center should be placed relative to the entity's origin
- * \param y y coordinate of where the center should be placed relative to the entity's origin
+ * \param x X coordinate of where the center should be placed relative to the entity's origin.
+ * \param y Y coordinate of where the center should be placed relative to the entity's origin.
  */
 void CircleMovement::set_center(
     const EntityPtr& center_entity,
@@ -89,7 +89,7 @@ void CircleMovement::set_center(
 
 /**
  * \brief Returns the radius of the circles.
- * \return the radius in pixels
+ * \return The radius in pixels.
  */
 int CircleMovement::get_radius() const {
   return wanted_radius;
@@ -97,7 +97,7 @@ int CircleMovement::get_radius() const {
 
 /**
  * \brief Sets the radius of the circles.
- * \param radius the radius in pixels
+ * \param radius The radius in pixels.
  */
 void CircleMovement::set_radius(int radius) {
 
@@ -124,7 +124,7 @@ void CircleMovement::set_radius(int radius) {
 
 /**
  * \brief Returns the speed of the radius variations.
- * \return the speed in pixels per second, or 0 if radius variations are immediate
+ * \return The speed in pixels per second, or 0 if radius variations are immediate.
  */
 int CircleMovement::get_radius_speed() const {
 
@@ -136,8 +136,8 @@ int CircleMovement::get_radius_speed() const {
  *
  * Use set_radius() to specify the wanted value.
  *
- * \param radius_speed speed of the radius variation (number of pixels per second),
- * or 0 to update it immediately
+ * \param radius_speed Speed of the radius variation (number of pixels per second),
+ * or 0 to update it immediately.
  */
 void CircleMovement::set_radius_speed(int radius_speed) {
 

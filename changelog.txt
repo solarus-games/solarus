@@ -26,6 +26,10 @@ Changes that do not introduce incompatibilities:
 
 * Add a function sol.main.get_quest_version() (#1058) by Nate-Devv.
 * Add methods entity:get_layer() and entity:set_layer().
+* sprite:get_num_frames() can now optionally take an animation and direction.
+* sprite:get_frame_delay() can now optionally take an animation.
+* sprite:get_size() can now optionally take an animation and direction.
+* sprite:get_origin() can now optionally take an animation and direction.
 
 Data files format changes
 -------------------------

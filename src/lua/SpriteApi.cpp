@@ -326,8 +326,29 @@ int LuaContext::sprite_api_get_num_frames(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
+    std::string animation_name = sprite.get_current_animation();
+    int direction = sprite.get_current_direction();
+    if (lua_gettop(l) > 1) {
+      animation_name = LuaTools::check_string(l, 2);
+      direction = LuaTools::check_int(l, 3);
+    }
 
-    lua_pushinteger(l, sprite.get_nb_frames());
+    if (!sprite.has_animation(animation_name)) {
+      LuaTools::arg_error(l, 2,
+          std::string("Animation '") + animation_name +
+          "' does not exist in sprite '" + sprite.get_animation_set_id() + "'"
+      );
+    }
+
+    const SpriteAnimation& animation = sprite.get_animation_set().get_animation(animation_name);
+    if (direction < 0 || direction >= animation.get_nb_directions()) {
+      LuaTools::arg_error(l, 2,
+          std::string("Illegal direction '") + lua_tostring(l, 2) + " in animation '" + animation_name +
+          "' of sprite '" + sprite.get_animation_set_id() + "'"
+      );
+    }
+
+    lua_pushinteger(l, animation.get_direction(direction).get_nb_frames());
     return 1;
   });
 }
@@ -341,8 +362,16 @@ int LuaContext::sprite_api_get_frame_delay(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
+    const std::string& animation_name = LuaTools::opt_string(l, 2, sprite.get_current_animation());
+    if (!sprite.has_animation(animation_name)) {
+      LuaTools::arg_error(l, 2,
+          std::string("Animation '") + animation_name
+          + "' does not exist in sprite '" + sprite.get_animation_set_id() + "'"
+      );
+    }
 
-    uint32_t frame_delay = sprite.get_frame_delay();
+    const SpriteAnimation& animation = sprite.get_animation_set().get_animation(animation_name);
+    uint32_t frame_delay = animation.get_frame_delay();
     if (frame_delay == 0) {
       lua_pushnil(l);
     }
@@ -383,8 +412,29 @@ int LuaContext::sprite_api_get_size(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
+    std::string animation_name = sprite.get_current_animation();
+    int direction = sprite.get_current_direction();
+    if (lua_gettop(l) > 1) {
+      animation_name = LuaTools::check_string(l, 2);
+      direction = LuaTools::check_int(l, 3);
+    }
 
-    const Size& size = sprite.get_size();
+    if (!sprite.has_animation(animation_name)) {
+      LuaTools::arg_error(l, 2,
+          std::string("Animation '") + animation_name +
+          "' does not exist in sprite '" + sprite.get_animation_set_id() + "'"
+      );
+    }
+
+    const SpriteAnimation& animation = sprite.get_animation_set().get_animation(animation_name);
+    if (direction < 0 || direction >= animation.get_nb_directions()) {
+      LuaTools::arg_error(l, 2,
+          std::string("Illegal direction '") + lua_tostring(l, 2) + " in animation '" + animation_name +
+          "' of sprite '" + sprite.get_animation_set_id() + "'"
+      );
+    }
+
+    const Size& size = animation.get_direction(direction).get_size();
 
     lua_pushinteger(l, size.width);
     lua_pushinteger(l, size.height);
@@ -401,8 +451,29 @@ int LuaContext::sprite_api_get_origin(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
+    std::string animation_name = sprite.get_current_animation();
+    int direction = sprite.get_current_direction();
+    if (lua_gettop(l) > 1) {
+      animation_name = LuaTools::check_string(l, 2);
+      direction = LuaTools::check_int(l, 3);
+    }
 
-    const Point& origin = sprite.get_origin();
+    if (!sprite.has_animation(animation_name)) {
+      LuaTools::arg_error(l, 2,
+          std::string("Animation '") + animation_name +
+          "' does not exist in sprite '" + sprite.get_animation_set_id() + "'"
+      );
+    }
+
+    const SpriteAnimation& animation = sprite.get_animation_set().get_animation(animation_name);
+    if (direction < 0 || direction >= animation.get_nb_directions()) {
+      LuaTools::arg_error(l, 2,
+          std::string("Illegal direction '") + lua_tostring(l, 2) + " in animation '" + animation_name +
+          "' of sprite '" + sprite.get_animation_set_id() + "'"
+      );
+    }
+
+    const Point& origin = animation.get_direction(direction).get_origin();
 
     lua_pushinteger(l, origin.x);
     lua_pushinteger(l, origin.y);

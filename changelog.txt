@@ -10,6 +10,7 @@ Engine changes
 * Fix random movement giving the same path for all entities on Mac (#1083).
 * Fix possible crash when reloading very old savegame files (#1064).
 * Fix crash when a sprite PNG file is missing.
+* Fix crash when calling entity:test_obstacles() on an unloaded map.
 * Fix joypad deadzone issue (#672) by strycore.
 * Fix compilation error with Clang 3.9 in SNES_SPC.
 * Fix possible compilation error when HAVE_UNISTD_H has no value (#1084).

@@ -429,8 +429,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     void clear_old_sprites();
 
     MainLoop* main_loop;                        /**< The Solarus main loop. */
-    Map* map;                                   /**< The map where this entity is, or nullptr
-                                                 * (automatically set by class MapEntities after adding the entity to the map) */
+    Map* map;                                   /**< The map where this entity is, or nullptr. */
 
     int layer;                                  /**< Layer of the entity on the map.
                                                  * The layer is constant for the tiles and can change for the hero and the dynamic entities. */

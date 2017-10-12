@@ -857,6 +857,10 @@ bool Map::test_collision_with_entities(
     const Rectangle& collision_box,
     Entity& entity_to_check) {
 
+  if (!is_loaded()) {
+    return false;
+  }
+
   EntityVector entities_nearby;
   get_entities().get_entities_in_rectangle(collision_box, entities_nearby);
   for (const EntityPtr& entity_nearby: entities_nearby) {
@@ -1070,6 +1074,10 @@ Ground Map::get_ground(
     const Point& xy,
     const Entity* entity_to_check
 ) const {
+
+  if (!is_loaded()) {
+    return Ground::EMPTY;
+  }
 
   if (test_collision_with_border(xy)) {
     // Outside the map bounds.

@@ -594,6 +594,7 @@ class LuaContext {
       sprite_api_set_frame_delay,
       sprite_api_get_size,
       sprite_api_get_origin,
+      sprite_api_get_frame_src_xy,
       sprite_api_is_paused,
       sprite_api_set_paused,
       sprite_api_set_ignore_suspend,  // TODO rename to set_suspended_with_map() like timers

@@ -1182,6 +1182,7 @@ void Hero::notify_movement_changed() {
   if (get_ground_below() == Ground::ICE) {
     update_ice();
   }
+  Entity::notify_movement_changed();
 }
 
 /**

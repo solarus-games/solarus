@@ -69,7 +69,7 @@ class TargetMovement: public StraightMovement {
     void recompute_movement();
 
     Point target;                      /**< Coordinates of the point or entity to track. */
-    EntityPtr target_entity;        /**< The entity to track (nullptr if only
+    EntityPtr target_entity;           /**< The entity to track (nullptr if only
                                         * a point is targeted) */
     Point entity_offset;               /**< Value to add to the entity's coordinates. */
 

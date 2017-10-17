@@ -128,7 +128,7 @@ void LuaContext::register_movement_module() {
       metamethods
   );
 
-  // straight movement
+  // Straight movement.
   static const luaL_Reg straight_movement_methods[] = {
       MOVEMENT_COMMON_METHODS,
       { "get_speed", straight_movement_api_get_speed },
@@ -148,7 +148,7 @@ void LuaContext::register_movement_module() {
       metamethods
   );
 
-  // random movement
+  // Random movement.
   static const luaL_Reg random_movement_methods[] = {
       MOVEMENT_COMMON_METHODS,
       { "get_speed", random_movement_api_get_speed },
@@ -167,7 +167,7 @@ void LuaContext::register_movement_module() {
       metamethods
   );
 
-  // target movement
+  // Target movement.
   static const luaL_Reg target_movement_methods[] = {
       MOVEMENT_COMMON_METHODS,
       { "set_target", target_movement_api_set_target },
@@ -185,7 +185,7 @@ void LuaContext::register_movement_module() {
       metamethods
   );
 
-  // path movement
+  // Path movement.
   static const luaL_Reg path_movement_methods[] = {
       MOVEMENT_COMMON_METHODS,
       { "get_path", path_movement_api_get_path },
@@ -205,7 +205,7 @@ void LuaContext::register_movement_module() {
       metamethods
   );
 
-  // random path movement
+  // Random path movement.
   static const luaL_Reg random_path_movement_methods[] = {
       MOVEMENT_COMMON_METHODS,
       { "get_speed", random_path_movement_api_get_speed },
@@ -219,7 +219,7 @@ void LuaContext::register_movement_module() {
       metamethods
   );
 
-  // path finding movement
+  // Path finding movement.
   static const luaL_Reg path_finding_movement_methods[] = {
       MOVEMENT_COMMON_METHODS,
       { "set_target", path_finding_movement_api_set_target },
@@ -234,7 +234,7 @@ void LuaContext::register_movement_module() {
       metamethods
   );
 
-  // circle movement
+  // Circle movement.
   static const luaL_Reg circle_movement_methods[] = {
       MOVEMENT_COMMON_METHODS,
       { "set_center", circle_movement_api_set_center },
@@ -263,7 +263,7 @@ void LuaContext::register_movement_module() {
       metamethods
   );
 
-  // jump movement
+  // Jump movement.
   static const luaL_Reg jump_movement_methods[] = {
       MOVEMENT_COMMON_METHODS,
       { "get_direction8", jump_movement_api_get_direction8 },
@@ -281,7 +281,7 @@ void LuaContext::register_movement_module() {
       metamethods
   );
 
-  // pixel movement
+  // Pixel movement.
   static const luaL_Reg pixel_movement_methods[] = {
       MOVEMENT_COMMON_METHODS,
       { "get_trajectory", pixel_movement_api_get_trajectory },

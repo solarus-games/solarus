@@ -244,12 +244,12 @@ SOLARUS_API DataFileLocation data_file_get_location(
 
 /**
  * \brief Returns whether a file exists in the quest data directory or
- * in Solarus write directory.
+ * in Solarus write directory, and is not a directory.
  * \param file_name A file name relative to the quest data directory,
  * to the current language directory or to Solarus write directory.
- * \param language_specific true if the file is relative to the current
+ * \param language_specific \c true if the file is relative to the current
  * language directory.
- * \return true if this file exists.
+ * \return \c true if this file exists and is not a directory.
  */
 SOLARUS_API bool data_file_exists(const std::string& file_name,
     bool language_specific) {
@@ -265,7 +265,8 @@ SOLARUS_API bool data_file_exists(const std::string& file_name,
   else {
     full_file_name = file_name;
   }
-  return PHYSFS_exists(full_file_name.c_str());
+
+  return PHYSFS_exists(full_file_name.c_str()) && !PHYSFS_isDirectory(full_file_name.c_str());
 }
 
 /**
@@ -385,7 +386,7 @@ SOLARUS_API std::vector<std::string> data_files_enumerate(
 
   std::vector<std::string> result;
 
-  if (data_file_exists(dir_path)) {
+  if (PHYSFS_exists(dir_path.c_str())) {
     char** files = PHYSFS_enumerateFiles(dir_path.c_str());
 
     for (char** file = files; *file != nullptr; file++) {

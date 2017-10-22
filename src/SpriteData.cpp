@@ -29,7 +29,7 @@ namespace Solarus {
 SpriteAnimationDirectionData::SpriteAnimationDirectionData() :
   xy(0, 0),
   size(16, 16),
-  origin(8, 8),
+  origin(0, 0),
   num_frames(1),
   num_columns(1) {
 }
@@ -43,7 +43,7 @@ SpriteAnimationDirectionData::SpriteAnimationDirectionData(
     const Point& xy, const Size& size) :
   xy(xy),
   size(size),
-  origin(size.width / 2, size.height / 2),
+  origin(0, 0),
   num_frames(1),
   num_columns(1) {
 }

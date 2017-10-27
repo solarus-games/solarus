@@ -122,8 +122,6 @@ void LuaContext::add_timer(
     context = lua_topointer(l, context_index);
   }
 
-  callback_ref.push();
-
   Debug::execute_if_debug([&] {
     // Sanity check: check the uniqueness of the ref.
     for (const auto& kvp: timers) {

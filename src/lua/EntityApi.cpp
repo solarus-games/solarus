@@ -2496,6 +2496,7 @@ void LuaContext::notify_hero_brandish_treasure(
     TimerPtr timer = std::make_shared<Timer>(3000);
     push_map(l, game.get_current_map());
     add_timer(timer, -1, treasure_callback_ref);
+    lua_pop(l, 1);
   }
   else {
     // A treasure dialog exists. Show it and then execute the callback.

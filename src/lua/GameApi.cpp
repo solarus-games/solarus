@@ -1599,7 +1599,7 @@ void LuaContext::game_on_finished(Game& game) {
 void LuaContext::game_on_update(Game& game) {
 
   push_game(l, game.get_savegame());
-  // This particular method is tried so often that we want to save optimize
+  // This particular method is tried so often that we want to optimize
   // the std::string construction.
   static const std::string method_name = "on_update";
   if (userdata_has_field(game.get_savegame(), method_name)) {

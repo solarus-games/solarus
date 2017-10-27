@@ -352,20 +352,20 @@ void Game::notify_command_released(GameCommand command) {
  */
 void Game::update() {
 
-  // update the transitions between maps
+  // Update the transitions between maps.
   update_transitions();
 
   if (restarting || !started) {
     return;
   }
 
-  // update the map
+  // Update the map.
   current_map->update();
 
-  // call game:on_update() in Lua
+  // Call game:on_update() in Lua.
   get_lua_context().game_on_update(*this);
 
-  // update the equipment and HUD
+  // Update the equipment and HUD.
   get_equipment().update();
   update_commands_effects();
 }

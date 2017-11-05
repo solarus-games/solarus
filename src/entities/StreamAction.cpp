@@ -95,25 +95,23 @@ void StreamAction::recompute_movement() {
     delay = 0;
   }
 
-  target = stream->get_xy();
+  if (stream->get_allow_movement()) {
+    // Don't center the entity on non-blocking streams.
+    target = entity_moved->get_xy();
+  }
+  else {
+    target = stream->get_xy();
+  }
 
   // Stop 16 pixels after the stream.
   if (dx != 0) {
     // Horizontal stream.
-    target.x = stream->get_x() + (dx > 0 ? 16 : -16);
-    if (stream->get_allow_movement()) {
-      // Don't center the entity on non-blocking streams.
-      target.y = entity_moved->get_y();
-    }
+    target.x += dx > 0 ? 16 : -16;
   }
 
   if (dy != 0) {
     // Vertical stream.
-    target.y = stream->get_y() + (dy > 0 ? 16 : -16);
-    if (stream->get_allow_movement()) {
-      // Don't center the entity on non-blocking streams.
-      target.x = entity_moved->get_x();
-    }
+    target.y += dy > 0 ? 16 : -16;
   }
 
   if (stream->get_direction() % 2 != 0) {

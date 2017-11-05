@@ -144,30 +144,32 @@ class Enemy: public Entity {
     void set_animation(const std::string& animation);
 
     // obstacles
-    virtual bool is_obstacle_for(Entity& other) override;
-    virtual bool is_destructible_obstacle(Destructible& destructible) override;
-    virtual bool is_block_obstacle(Block& block) override;
-    virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter) override;
-    virtual bool is_raised_block_obstacle(CrystalBlock& raised_block) override;
-    virtual bool is_low_wall_obstacle() const override;
-    virtual bool is_deep_water_obstacle() const override;
-    virtual bool is_shallow_water_obstacle() const override;
-    virtual bool is_hole_obstacle() const override;
-    virtual bool is_prickle_obstacle() const override;
-    virtual bool is_lava_obstacle() const override;
+    bool is_obstacle_for(Entity& other) override;
+    bool is_destructible_obstacle(Destructible& destructible) override;
+    bool is_block_obstacle(Block& block) override;
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter) override;
+    bool is_raised_block_obstacle(CrystalBlock& raised_block) override;
+    bool is_stream_obstacle(Stream& stream) override;
+
+    bool is_low_wall_obstacle() const override;
+    bool is_deep_water_obstacle() const override;
+    bool is_shallow_water_obstacle() const override;
+    bool is_hole_obstacle() const override;
+    bool is_prickle_obstacle() const override;
+    bool is_lava_obstacle() const override;
 
     // enemy state
-    virtual void update() override;
-    virtual void set_suspended(bool suspended) override;
-    virtual void draw_on_map() override;
+    void update() override;
+    void set_suspended(bool suspended) override;
+    void draw_on_map() override;
 
-    virtual void notify_enabled(bool enabled) override;
-    virtual void notify_ground_below_changed() override;
-    virtual void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
-    virtual void notify_collision(Entity& other_entity, Sprite& this_sprite, Sprite& other_sprite) override;
-    virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
-    virtual void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) override;
-    virtual void notify_collision_with_enemy(Enemy& other, Sprite& other_sprite, Sprite& this_sprite) override;
+    void notify_enabled(bool enabled) override;
+    void notify_ground_below_changed() override;
+    void notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) override;
+    void notify_collision(Entity& other_entity, Sprite& this_sprite, Sprite& other_sprite) override;
+    void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
+    void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) override;
+    void notify_collision_with_enemy(Enemy& other, Sprite& other_sprite, Sprite& this_sprite) override;
 
     // attack the hero
     void attack_hero(Hero& hero, Sprite* this_sprite);

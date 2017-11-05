@@ -69,6 +69,9 @@ class Pickable: public Entity {
     // item state
     void set_suspended(bool suspended) override;
     EntityPtr get_entity_followed();
+
+    bool is_stream_obstacle(Stream& stream) override;
+
     void notify_collision(
         Entity& entity_overlapping,
         CollisionMode collision_mode

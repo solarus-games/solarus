@@ -23,6 +23,7 @@
 #include "solarus/entities/Fire.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Pickable.h"
+#include "solarus/entities/Stream.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/Geometry.h"
 #include "solarus/lowlevel/QuestFiles.h"
@@ -319,6 +320,19 @@ bool Enemy::is_raised_block_obstacle(CrystalBlock& raised_block) {
   }
 
   return true;
+}
+
+/**
+ * \copydoc Entity::is_stream_obstacle
+ */
+bool Enemy::is_stream_obstacle(Stream& stream) {
+
+  // Enemies can move on non-blocking streams only.
+  if (!stream.get_allow_movement()) {
+    return true;
+  }
+
+  return false;
 }
 
 /**

@@ -280,6 +280,14 @@ EntityPtr Pickable::get_entity_followed() {
 }
 
 /**
+ * \copydoc Entity::is_stream_obstacle
+ */
+bool Pickable::is_stream_obstacle(Stream& /* stream */) {
+
+  return false;
+}
+
+/**
  * \brief This function is called by the engine when an entity overlaps the pickable item.
  *
  * If the entity is the player, we give him the item, and the map is notified

@@ -41,7 +41,7 @@ StreamAction::StreamAction(Stream& stream, Entity& entity_moved):
 
   recompute_movement();
 
-  next_move_date = System::now() + delay;
+  next_move_date = System::now();
 }
 
 /**

@@ -19,6 +19,7 @@
 #include "solarus/lowlevel/System.h"
 #include "solarus/movements/Movement.h"
 #include "solarus/Map.h"
+#include "solarus/Sprite.h"
 #include <cmath>
 
 namespace Solarus {
@@ -100,16 +101,38 @@ void StreamAction::recompute_movement() {
   if (dx != 0) {
     // Horizontal stream.
     target.x = stream->get_x() + (dx > 0 ? 16 : -16);
+    if (stream->get_allow_movement()) {
+      // Don't center the entity on non-blocking streams.
+      target.y = entity_moved->get_y();
+    }
   }
 
   if (dy != 0) {
     // Vertical stream.
     target.y = stream->get_y() + (dy > 0 ? 16 : -16);
+    if (stream->get_allow_movement()) {
+      // Don't center the entity on non-blocking streams.
+      target.x = entity_moved->get_x();
+    }
   }
 
-  if (target != entity_moved->get_xy()) {
-    // Adjust the speed to the diagonal movement.
-    delay = (uint32_t) (delay * std::sqrt(2));
+  if (stream->get_direction() % 2 != 0) {
+    if (target != entity_moved->get_xy()) {
+      // Adjust the speed to the diagonal movement.
+      delay = (uint32_t) (delay * std::sqrt(2));
+    }
+  }
+
+  const SpritePtr& sprite = stream->get_sprite();
+  if (sprite != nullptr &&
+      sprite->get_nb_frames() > 1 &&
+      delay == sprite->get_frame_delay() &&
+      sprite->get_next_frame_date() >= System::now() &&
+      next_move_date < sprite->get_next_frame_date()) {
+    // The stream and its sprite happen to have exactly the same speed:
+    // adjust the delay to synchronize them perfectly
+    // to avoid flickering.
+    next_move_date = sprite->get_next_frame_date();
   }
 }
 

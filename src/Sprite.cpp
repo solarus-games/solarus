@@ -93,6 +93,9 @@ Sprite::Sprite(const std::string& id):
   current_animation(nullptr),
   current_direction(0),
   current_frame(-1),
+  frame_changed(false),
+  frame_delay(0),
+  next_frame_date(0),
   ignore_suspend(false),
   paused(false),
   finished(false),
@@ -228,6 +231,15 @@ uint32_t Sprite::get_frame_delay() const {
 void Sprite::set_frame_delay(uint32_t frame_delay) {
   this->frame_delay = frame_delay;
 }
+
+/**
+ * \brief Returns the date if the next frame change.
+ * \return The next frame date or 0 if there is no frame change scheduled.
+ */
+uint32_t Sprite::get_next_frame_date() const {
+  return next_frame_date;
+}
+
 
 /**
  * \brief Returns the next frame of the current frame.

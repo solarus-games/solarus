@@ -83,6 +83,7 @@ class Sprite: public Drawable {
     Rectangle get_current_frame_rectangle() const;
     uint32_t get_frame_delay() const;
     void set_frame_delay(uint32_t frame_delay);
+    uint32_t get_next_frame_date() const;
     void set_synchronized_to(const SpritePtr& other);
 
     bool is_animation_started() const;

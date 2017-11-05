@@ -132,13 +132,6 @@ bool Hero::SwordSwingingState::can_pick_treasure(EquipmentItem& /* item */) cons
 }
 
 /**
- * \copydoc Entity::State::can_avoid_stream
- */
-bool Hero::SwordSwingingState::can_avoid_stream(const Stream& /* stream */) const {
-  return true;
-}
-
-/**
  * \copydoc Entity::State::can_use_shield
  */
 bool Hero::SwordSwingingState::can_use_shield() const {

@@ -104,9 +104,9 @@ bool GL_ARBShader::initialize() {
 
 /**
  * \brief Constructor.
- * \param shader_name The name of the shader to load.
+ * \param shader_id Id of the shader to load.
  */
-GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
+GL_ARBShader::GL_ARBShader(const std::string& shader_id): Shader(shader_id),
     program(0),
     vertex_shader(0),
     fragment_shader(0) {
@@ -114,7 +114,7 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
   glGetError();
 
   // Load the shader.
-  load(shader_name);
+  load(shader_id);
 
   if (is_shader_valid) {
 

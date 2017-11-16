@@ -135,10 +135,10 @@ bool resource_exists(ResourceType resource_type, const std::string& id) {
 }
 
 /**
- * \brief Returns the list of element IDs of the specified resource type.
+ * \brief Returns the list of element ids and descriptions of the specified resource type.
  * \param resource_type A type of resource.
- * \return The IDs of all declared element of this type, in their declaration
- * order.
+ * \return The id and description of every declared element of this type,
+ * in their declaration order.
  */
 const std::map<std::string, std::string>&
 get_resources(ResourceType resource_type) {

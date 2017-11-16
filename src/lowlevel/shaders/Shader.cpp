@@ -110,15 +110,15 @@ void Shader::render(const SurfacePtr& /* quest_surface */) const {
 /**
  * \brief Load all files from the corresponding shader, depending on the driver and shader names.
  * Parse the Lua file and compile GLSL others.
- * \param shader_name The name of the shader to load.
+ * \param shader_id The name of the shader to load.
  */
-void Shader::load(const std::string& shader_name) {
+void Shader::load(const std::string& shader_id) {
 
-  const std::string shader_path =
-      "shaders/videomodes/" + shader_name;
+  const std::string shader_file_name =
+      "shaders/" + shader_id + ".lua";
 
   // Parse the lua file
-  load_lua_file(shader_path);
+  load_lua_file(shader_file_name);
 }
 
 /**

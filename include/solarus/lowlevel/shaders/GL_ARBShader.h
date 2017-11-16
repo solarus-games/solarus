@@ -38,7 +38,7 @@ class GL_ARBShader : public Shader {
 
     static bool initialize();
 
-    explicit GL_ARBShader(const std::string& shader_name);
+    explicit GL_ARBShader(const std::string& shader_id);
     ~GL_ARBShader();
 
   private:

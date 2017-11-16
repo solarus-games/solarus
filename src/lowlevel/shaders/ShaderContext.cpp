@@ -48,19 +48,19 @@ void ShaderContext::quit() {
 
 /**
  * \brief Construct a shader from a name.
- * \param shader_name The name of the shader to load.
+ * \param shader_id The id of the shader to load.
  * \return The created shader, or nullptr if the shader fails to compile.
  */
-std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& shader_name) {
+std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& shader_id) {
 
   std::unique_ptr<Shader> shader = nullptr;
   bool error = false;
 
   if (Shader::get_sampler_type() == "sampler2DRect") {
-    shader = std::unique_ptr<Shader>(new GL_ARBShader(shader_name));
+    shader = std::unique_ptr<Shader>(new GL_ARBShader(shader_id));
   }
   else {
-    shader = std::unique_ptr<Shader>(new GL_2DShader(shader_name));
+    shader = std::unique_ptr<Shader>(new GL_2DShader(shader_id));
   }
 
   if (glGetError() != GL_NO_ERROR) {
@@ -68,7 +68,7 @@ std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& shader_n
   }
 
   if (error) {
-    Debug::warning("Can't compile shader '" + shader_name + "'");
+    Debug::error("Can't compile shader '" + shader_id + "'");
     shader = nullptr;
   }
 

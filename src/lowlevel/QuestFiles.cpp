@@ -368,44 +368,6 @@ SOLARUS_API bool data_file_mkdir(const std::string& dir_name) {
 }
 
 /**
- * \brief Enumerate files of a directory.
- *
- * Symbolic links are never returned.
- *
- * \param dir_path Name of the directory to list, relative to the quest data
- * directory.
- * \param list_files Whether regular files should be included in the result.
- * \param list_directories Whether directories should be included in the result.
- * \return The files in this directory.
- */
-SOLARUS_API std::vector<std::string> data_files_enumerate(
-    const std::string& dir_path,
-    bool list_files,
-    bool list_directories
-) {
-
-  std::vector<std::string> result;
-
-  if (PHYSFS_exists(dir_path.c_str())) {
-    char** files = PHYSFS_enumerateFiles(dir_path.c_str());
-
-    for (char** file = files; *file != nullptr; file++) {
-      bool is_directory = PHYSFS_isDirectory((dir_path + "/" + *file).c_str());
-
-      if (!PHYSFS_isSymbolicLink(*file)
-          && ((list_files && !is_directory)
-              || (list_directories && is_directory))) {
-        result.push_back(std::string(*file));
-      }
-    }
-
-    PHYSFS_freeList(files);
-  }
-
-  return result;
-}
-
-/**
  * \brief Returns the directory where the engine can write files.
  * \returns The directory where the engine can write files, relative to the
  * base write directory.

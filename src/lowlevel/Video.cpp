@@ -29,6 +29,7 @@
 #include "solarus/lowlevel/VideoMode.h"
 #include "solarus/lowlevel/shaders/ShaderContext.h"
 #include "solarus/Arguments.h"
+#include "solarus/CurrentQuest.h"
 #include <memory>
 #include <sstream>
 #include <utility>
@@ -205,15 +206,14 @@ void initialize_video_modes() {
     SDL_SetTextureBlendMode(render_target, SDL_BLENDMODE_BLEND);
 
     // Get all shaders of the quest's shader/videomodes folder.
-    std::vector<std::string> shader_names =
-        QuestFiles::data_files_enumerate("shaders/videomodes/", true, false);
-    // FIXME don't enumerate data files, use the quest resource system like always.
+    const std::map<std::string, std::string>& shader_elements = CurrentQuest::get_resources(ResourceType::SHADER);
 
-    for (unsigned i = 0; i < shader_names.size(); ++i) {
+    for (const auto& kvp: shader_elements) {
 
       // Load the shader and add the corresponding video mode.
+      const std::string& shader_id = kvp.first;
       std::unique_ptr<Shader> video_mode_shader =
-          ShaderContext::create_shader(shader_names.at(i));
+          ShaderContext::create_shader(shader_id);
       if (video_mode_shader != nullptr && video_mode_shader->is_valid()) {
 
         const std::string& video_mode_name = video_mode_shader->get_name();

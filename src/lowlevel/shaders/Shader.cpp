@@ -115,7 +115,7 @@ void Shader::render(const SurfacePtr& /* quest_surface */) const {
 void Shader::load(const std::string& shader_id) {
 
   const std::string shader_file_name =
-      "shaders/" + shader_id + ".lua";
+      "shaders/" + shader_id + ".dat";
 
   // Parse the lua file
   load_lua_file(shader_file_name);

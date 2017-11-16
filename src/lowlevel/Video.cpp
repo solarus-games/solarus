@@ -218,7 +218,7 @@ void initialize_video_modes() {
 
         const std::string& video_mode_name = video_mode_shader->get_name();
         if (Video::get_video_mode_by_name(video_mode_name) != nullptr) {
-          Debug::error("There is already a video mode with name '" + video_mode_name);
+          Debug::error("There is already a video mode with name '" + video_mode_name + "'");
           continue;
         }
 

@@ -170,7 +170,7 @@ void GL_ARBShader::compile_shader(GLhandleARB& shader, const char* source) {
 
 /**
  * \brief Set up OpenGL rendering parameter.
- * This basically reset the projection matrix.
+ * This basically resets the projection matrix.
  */
 void GL_ARBShader::set_rendering_settings() {
 

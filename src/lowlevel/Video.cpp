@@ -189,7 +189,6 @@ void initialize_video_modes() {
       std::unique_ptr<PixelFilter>(new Hq4xFilter()),
       nullptr
   );
-  default_video_mode = &all_video_modes[0];
   // TODO If shaders are enabled, use a C++ shader version of Scale2x and Hq4x instead.
 
   // Initialize quest custom video modes. These can only include shaded modes.
@@ -233,6 +232,8 @@ void initialize_video_modes() {
       }
     }
   }
+
+  default_video_mode = &all_video_modes[0];
 
   // Everything is ready now.
   Video::set_default_video_mode();

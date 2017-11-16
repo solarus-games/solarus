@@ -15,9 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/shaders/GLContext.h"
-
-#if SOLARUS_HAVE_OPENGL == 1
-
 #include "solarus/lowlevel/shaders/GL_ARBShader.h"
 #include "solarus/lowlevel/shaders/GL_2DShader.h"
 #include "solarus/lowlevel/QuestFiles.h"
@@ -76,5 +73,3 @@ void GLContext::quit() {
 }
 
 }
-
-#endif // SOLARUS_HAVE_OPENGL

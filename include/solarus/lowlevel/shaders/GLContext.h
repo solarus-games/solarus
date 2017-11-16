@@ -19,11 +19,8 @@
 
 #include "solarus/Common.h"
 
-#if SOLARUS_HAVE_OPENGL == 1
-
 #include <SDL.h>
 #include <SDL_opengl.h>
-
 
 namespace Solarus {
 
@@ -43,7 +40,5 @@ class GLContext {
 };
 
 }
-
-#endif // SOLARUS_HAVE_OPENGL
 
 #endif

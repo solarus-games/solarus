@@ -24,17 +24,14 @@ namespace Solarus {
 
 bool ShaderContext::shader_supported = false;
 
-
 /**
  * \brief Initializes the shader system.
  * \return \c true if any shader system is supported.
  */
 bool ShaderContext::initialize() {
 
-  //TODO try to initialize DX shaders before GL ones.
-#if SOLARUS_HAVE_OPENGL == 1
+  // TODO try to initialize DX shaders before GL ones.
   shader_supported = GLContext::initialize();
-#endif
 
   return shader_supported;
 }
@@ -45,9 +42,7 @@ bool ShaderContext::initialize() {
 void ShaderContext::quit() {
 
   if (shader_supported) {
-#if SOLARUS_HAVE_OPENGL == 1
     GLContext::quit();
-#endif
   }
 }
 
@@ -61,7 +56,6 @@ std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& shader_n
   std::unique_ptr<Shader> shader = nullptr;
   bool error = false;
 
-#if SOLARUS_HAVE_OPENGL == 1
   if (Shader::get_sampler_type() == "sampler2DRect") {
     shader = std::unique_ptr<Shader>(new GL_ARBShader(shader_name));
   }
@@ -72,7 +66,6 @@ std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& shader_n
   if (glGetError() != GL_NO_ERROR) {
     error = true;
   }
-#endif
 
   if (error) {
     Debug::warning("Can't compile shader '" + shader_name + "'");

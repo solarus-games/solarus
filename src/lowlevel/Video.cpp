@@ -73,13 +73,11 @@ void create_window() {
 
   Debug::check_assertion(main_window == nullptr, "Window already exists");
 
-#if SOLARUS_HAVE_OPENGL == 1
   // Set OpenGL as the default renderer driver when available, to avoid using Direct3d.
   SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
 
-  // Set the default OpenGL built-in shader (nearest)
+  // Set the default OpenGL built-in shader (nearest).
   SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
-#endif
 
   std::string title = std::string("Solarus ") + SOLARUS_VERSION;
   main_window = SDL_CreateWindow(
@@ -88,10 +86,7 @@ void create_window() {
       SDL_WINDOWPOS_CENTERED,
       wanted_quest_size.width,
       wanted_quest_size.height,
-      SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE
-#if SOLARUS_HAVE_OPENGL == 1
-      | SDL_WINDOW_OPENGL
-#endif
+      SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL
   );
   Debug::check_assertion(main_window != nullptr,
       std::string("Cannot create the window: ") + SDL_GetError());
@@ -99,10 +94,10 @@ void create_window() {
   int acceleration_flag = acceleration_enabled ?
       SDL_RENDERER_ACCELERATED : SDL_RENDERER_SOFTWARE;
 
-  main_renderer = SDL_CreateRenderer(main_window, -1, acceleration_flag
-#if SOLARUS_HAVE_OPENGL != 1
-      | SDL_RENDERER_PRESENTVSYNC
-#endif
+  main_renderer = SDL_CreateRenderer(
+        main_window,
+        -1,
+        acceleration_flag | SDL_RENDERER_PRESENTVSYNC
   );
 
   if (main_renderer == nullptr) {
@@ -243,7 +238,7 @@ void initialize_video_modes() {
   Video::set_default_video_mode();
 }
 
-}
+}  // Anonymous namespace.
 
 /**
  * \brief Initializes the video system.

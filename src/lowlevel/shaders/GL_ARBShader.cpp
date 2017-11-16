@@ -22,6 +22,8 @@
 
 namespace Solarus {
 
+namespace {
+
 PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
 PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
 PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB;
@@ -39,8 +41,6 @@ PFNGLGETHANDLEARBPROC glGetHandleARB;
 
 GLhandleARB default_shader_program = 0;
 GL_ARBShader* loading_shader = nullptr;
-
-namespace {
 
 template<typename FunctionPointerType>
 FunctionPointerType get_proc_address_cast(void* object_ptr) {

@@ -266,7 +266,8 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
 
   Shader::render(quest_surface);
 
-  float rendering_width, rendering_height;
+  float rendering_width = 0.0;
+  float rendering_height = 0.0;
   SDL_Renderer* renderer = Video::get_renderer();
   SDL_Window* window = Video::get_window();
   SDL_Texture* render_target = Video::get_render_target();

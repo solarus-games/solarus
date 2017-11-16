@@ -175,7 +175,7 @@ void GL_ARBShader::compile_shader(GLhandleARB& shader, const char* source) {
 void GL_ARBShader::set_rendering_settings() {
 
   const Size& quest_size = Video::get_quest_size();
-  static const GLdouble aspect = GLdouble(quest_size.width) / GLdouble(quest_size.height);
+  static const GLdouble aspect = GLdouble(quest_size.width / quest_size.height);
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();

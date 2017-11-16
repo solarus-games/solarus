@@ -260,7 +260,7 @@ void GL_ARBShader::register_callback(lua_State* l) {
 /**
  * \brief Draws the quest surface on the screen in a shader-allowed context.
  * It will perform the render using the OpenGL API directly.
- * \param quest_surface the surface to render on the screen
+ * \param quest_surface The surface to render on the screen.
  */
 void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
 
@@ -271,12 +271,12 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
   SDL_Window* window = Video::get_window();
   SDL_Texture* render_target = Video::get_render_target();
 
-  // Clear the window
+  // Clear the window.
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
 
-  // Clear the render target
+  // Clear the render target.
   SDL_SetRenderTarget(renderer, render_target);
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
   SDL_RenderSetClipRect(renderer, nullptr);

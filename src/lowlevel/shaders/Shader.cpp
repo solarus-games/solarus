@@ -27,7 +27,6 @@ std::string Shader::sampler_type = "";
 std::string Shader::shading_language_version = "";
 int Shader::display_time = 0;
 
-
 /**
  * \brief Constructor.
  * \param shader_name The name of the shader to load.
@@ -150,7 +149,8 @@ void Shader::load_lua_file(const std::string& path) {
     register_callback(l);
     lua_pushstring(l, Video::get_rendering_driver_name().c_str());
     lua_pushstring(l, shading_language_version.c_str());
-    lua_pushstring(l, sampler_type.c_str());
+//    lua_pushstring(l, sampler_type.c_str());
+    lua_pushstring(l, "sampler2D");
 
     if (lua_pcall(l, 3, 0, 0) != 0) {
 

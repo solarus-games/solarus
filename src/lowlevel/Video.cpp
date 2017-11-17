@@ -256,6 +256,13 @@ void Video::initialize(const Arguments& args) {
 
   Debug::check_assertion(!is_initialized(), "Video system already initialized");
 
+  // Show the SDL version.
+  SDL_version sdl_version;
+  SDL_GetVersion(&sdl_version);
+  std::ostringstream oss;
+  oss << "SDL: " << static_cast<int>(sdl_version.major) << "." << static_cast<int>(sdl_version.minor) << "." << static_cast<int>(sdl_version.patch);
+  Logger::info(oss.str());
+
   // Check the -no-video and the -quest-size options.
   const std::string& quest_size_string = args.get_argument_value("-quest-size");
   disable_window = args.has_argument("-no-video");

@@ -148,13 +148,6 @@ MainLoop::MainLoop(const Arguments& args):
   // Initialize engine features (audio, video...).
   System::initialize(args);
 
-  if (turbo) {
-    Logger::info("Turbo mode: yes");
-  }
-  else {
-    Logger::info("Turbo mode: no");
-  }
-
   // Read the quest resource list from data.
   CurrentQuest::initialize();
   TilePattern::initialize();
@@ -183,6 +176,13 @@ MainLoop::MainLoop(const Arguments& args):
   }
   else {
     Logger::info("Lua console: no");
+  }
+
+  if (turbo) {
+    Logger::info("Turbo mode: yes");
+  }
+  else {
+    Logger::info("Turbo mode: no");
   }
 
   // Finally show the window.

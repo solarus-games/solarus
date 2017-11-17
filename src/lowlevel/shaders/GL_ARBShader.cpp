@@ -42,6 +42,16 @@ PFNGLGETHANDLEARBPROC glGetHandleARB;
 GLhandleARB default_shader_program = 0;
 GL_ARBShader* loading_shader = nullptr;
 
+/**
+ * @brief Casts a pointer-to-object (void*) to a pointer-to-function.
+ *
+ * This function avoids compilation warnings when using SDL_GL_GetProcAddress(),
+ * because directly casting a pointer-to-object to a pointer-to-function
+ * is not allowed.
+ *
+ * @param object_ptr The pointer to cast.
+ * @return The pointer to a function.
+ */
 template<typename FunctionPointerType>
 FunctionPointerType get_proc_address_cast(void* object_ptr) {
   return *reinterpret_cast<FunctionPointerType*>(&object_ptr);

@@ -36,13 +36,10 @@ class Shader {
     explicit Shader(const std::string& shader_id);
     virtual ~Shader();
 
-    static void set_shading_language_version(const std::string& version);
-    static const std::string& get_sampler_type();
     static void reset_time();
 
     const std::string& get_name();
     double get_default_window_scale();
-    bool is_valid();
 
     virtual void render(const SurfacePtr& quest_surface) const;
 
@@ -58,7 +55,6 @@ class Shader {
     std::string shader_name;                     /**< The name of the shader. */
     double default_window_scale;                 /**< Default scale of the window when the shader is being active,
                                                   * compared to the normal quest size. */
-    bool is_shader_valid;                        /**< False if the engine shader context is explicitly set as not compatible with the shader script. */
 
   private:
 

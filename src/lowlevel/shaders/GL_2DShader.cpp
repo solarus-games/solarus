@@ -28,7 +28,6 @@ namespace Solarus {
 bool GL_2DShader::initialize() {
 
   // TODO Force SDL to use 2D fetch textures, sampler and shaders if GL_ARB not supported.
-  sampler_type = "sampler2D";
 
   return false;
 }

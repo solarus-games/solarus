@@ -214,7 +214,7 @@ void initialize_video_modes() {
       const std::string& shader_id = kvp.first;
       std::unique_ptr<Shader> video_mode_shader =
           ShaderContext::create_shader(shader_id);
-      if (video_mode_shader != nullptr && video_mode_shader->is_valid()) {
+      if (video_mode_shader != nullptr) {
 
         const std::string& video_mode_name = video_mode_shader->get_name();
         if (Video::get_video_mode_by_name(video_mode_name) != nullptr) {

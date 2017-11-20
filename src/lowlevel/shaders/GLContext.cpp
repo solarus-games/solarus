@@ -64,9 +64,6 @@ bool GLContext::initialize() {
     SDL_GL_SetSwapInterval(1);
   }
 
-  // Get the shading language version.
-  Shader::set_shading_language_version(shading_language_version);
-
   // Try to initialize a gl shader system, in order from the earlier to the older.
   return GL_ARBShader::initialize() || GL_2DShader::initialize();
 }

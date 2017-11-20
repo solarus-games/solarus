@@ -56,7 +56,7 @@ std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& shader_i
   std::unique_ptr<Shader> shader = nullptr;
   bool error = false;
 
-  if (Shader::get_sampler_type() == "sampler2DRect") {
+  if (true) {  // TODO
     shader = std::unique_ptr<Shader>(new GL_ARBShader(shader_id));
   }
   else {

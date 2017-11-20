@@ -65,7 +65,7 @@ FunctionPointerType get_proc_address_cast(void* object_ptr) {
  */
 bool GL_ARBShader::initialize() {
 
-  //TODO Be sure that SDL doesn't disable GL ARB for render targets even if available.
+  // TODO Be sure that SDL doesn't disable GL ARB for render targets even if available.
 
   // Check for shader support
   if (SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
@@ -103,7 +103,6 @@ bool GL_ARBShader::initialize() {
 
       // Get ARB default configuration.
       default_shader_program = glGetHandleARB(GL_CURRENT_PROGRAM);
-      sampler_type = "sampler2DRect";
 
       return true;
     }
@@ -116,7 +115,8 @@ bool GL_ARBShader::initialize() {
  * \brief Constructor.
  * \param shader_id Id of the shader to load.
  */
-GL_ARBShader::GL_ARBShader(const std::string& shader_id): Shader(shader_id),
+GL_ARBShader::GL_ARBShader(const std::string& shader_id):
+    Shader(shader_id),
     program(0),
     vertex_shader(0),
     fragment_shader(0) {
@@ -126,22 +126,15 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_id): Shader(shader_id),
   // Load the shader.
   load(shader_id);
 
-  if (is_shader_valid) {
+  // Set up the sampler and the io size (= quest size) as uniform variables.
+  const Size& quest_size = Video::get_quest_size();
+  glUseProgramObjectARB(program);
 
-    // Set up the sampler and the io size (= quest size) as uniform variables.
-    const Size& quest_size = Video::get_quest_size();
-    glUseProgramObjectARB(program);
-    GLint location = glGetUniformLocationARB(program, "solarus_sampler");
-    if (location >= 0) {
-      glUniform1iARB(location, 0); // 0 means texture unit 0.
-    }
-
-    location = glGetUniformLocationARB(program, "solarus_io_size");
-    if (location >= 0) {
-      glUniform2fARB(location, quest_size.width, quest_size.height);
-    }
-    glUseProgramObjectARB(default_shader_program);
+  GLint location = glGetUniformLocationARB(program, "solarus_io_size");
+  if (location >= 0) {
+    glUniform2fARB(location, quest_size.width, quest_size.height);
   }
+  glUseProgramObjectARB(default_shader_program);
 }
 
 /**
@@ -171,7 +164,7 @@ void GL_ARBShader::compile_shader(GLhandleARB& shader, const char* source) {
     char* info;
 
     glGetObjectParameterivARB(shader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
-    info = SDL_stack_alloc(char, length+1);
+    info = SDL_stack_alloc(char, length + 1);
     glGetInfoLogARB(shader, length, nullptr, info);
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to compile shader:\n%s\n%s", source, info);
     SDL_stack_free(info);
@@ -214,8 +207,6 @@ int GL_ARBShader::l_shader(lua_State* l) {
           LuaTools::opt_number_field(l, 1, "default_window_scale", 1.0);
       const std::string shader_name =
           LuaTools::opt_string_field(l, 1, "name", loading_shader->shader_name);
-      const bool is_shader_valid =
-          LuaTools::opt_boolean_field(l, 1, "is_shader_valid", true);
       const std::string vertex_source =
           LuaTools::opt_string_field(l, 1, "vertex_source",
               "void main(){\
@@ -225,32 +216,25 @@ int GL_ARBShader::l_shader(lua_State* l) {
       const std::string fragment_source =
           LuaTools::check_string_field(l, 1, "fragment_source");
 
-      loading_shader->is_shader_valid = is_shader_valid;
+      loading_shader->default_window_scale = default_window_scale;
+      loading_shader->shader_name = shader_name;
 
-      if (is_shader_valid) {
-        loading_shader->default_window_scale = default_window_scale;
-        loading_shader->shader_name = shader_name;
+      // Create the vertex and fragment shaders.
+      vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
+      compile_shader(vertex_shader, vertex_source.c_str());
 
-        // Create the vertex and fragment shaders.
-        vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-        compile_shader(vertex_shader, vertex_source.c_str());
+      fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
+      compile_shader(fragment_shader, fragment_source.c_str());
 
-        fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
-        compile_shader(fragment_shader, fragment_source.c_str());
+      // Create one program object to rule them all ...
+      program = glCreateProgramObjectARB();
 
-        // Create one program object to rule them all ...
-        program = glCreateProgramObjectARB();
+      // ... and in the darkness bind them
+      glAttachObjectARB(program, vertex_shader);
+      glAttachObjectARB(program, fragment_shader);
+      glLinkProgramARB(program);
 
-        // ... and in the darkness bind them
-        glAttachObjectARB(program, vertex_shader);
-        glAttachObjectARB(program, fragment_shader);
-        glLinkProgramARB(program);
-
-        loading_shader = nullptr;
-      }
-      else {
-        Debug::warning("The shader script '" + loading_shader->shader_name + "' is not compatible with GLSL " + shading_language_version);
-      }
+      loading_shader = nullptr;
     }
 
     return 0;

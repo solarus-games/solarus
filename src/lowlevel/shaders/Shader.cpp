@@ -23,8 +23,6 @@
 
 namespace Solarus {
 
-std::string Shader::sampler_type = "";
-std::string Shader::shading_language_version = "";
 int Shader::display_time = 0;
 
 /**
@@ -33,32 +31,13 @@ int Shader::display_time = 0;
  */
 Shader::Shader(const std::string& shader_name):
     shader_name(shader_name),
-    default_window_scale(1.0),
-    is_shader_valid(true) {
+    default_window_scale(1.0) {
 }
 
 /**
  * \brief Destructor.
  */
 Shader::~Shader() {
-}
-
-/**
- * \brief Set the shading language version string.
- * \param version The shading language version.
- */
-void Shader::set_shading_language_version(const std::string& version) {
-
-  shading_language_version = version;
-}
-
-/**
- * \brief Get the sampler type as string.
- * \return The sampler type.
- */
-const std::string& Shader::get_sampler_type() {
-
-  return sampler_type;
 }
 
 /**
@@ -85,15 +64,6 @@ const std::string& Shader::get_name() {
 double Shader::get_default_window_scale() {
 
   return default_window_scale;
-}
-
-/**
- * \brief Check if the engine shader context is marked as compatible by the shader script.
- * \return True if the engine shader context is not been explicitly set as not compatible with the shader script .
- */
-bool Shader::is_valid() {
-
-  return is_shader_valid;
 }
 
 /**
@@ -134,28 +104,23 @@ void Shader::register_callback(lua_State* /* l */) {
 void Shader::load_lua_file(const std::string& path) {
 
   lua_State* l = luaL_newstate();
-  luaL_openlibs(l);  // FIXME don't open the libs
-
 
   const std::string& buffer = QuestFiles::data_file_read(path);
   int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), path.c_str());
 
   if (load_result != 0) {
     // Syntax error in the lua file.
-    Debug::die(std::string("Failed to load ") + path + " : " + lua_tostring(l, -1));
+    Debug::error(std::string("Failed to load ") + path + " : " + lua_tostring(l, -1));
+    lua_pop(l, 1);
   }
   else {
     // Register the callback and send string parameters to the lua script.
     register_callback(l);
-    lua_pushstring(l, Video::get_rendering_driver_name().c_str());
-    lua_pushstring(l, shading_language_version.c_str());
-    lua_pushstring(l, sampler_type.c_str());
-//    lua_pushstring(l, "sampler2D");
 
-    if (lua_pcall(l, 3, 0, 0) != 0) {
-
+    if (lua_pcall(l, 0, 0, 0) != 0) {
       // Runtime error.
-      Debug::die(std::string("Failed to parse ") + path + " : " + lua_tostring(l, -1));
+      Debug::error(std::string("Failed to parse ") + path + " : " + lua_tostring(l, -1));
+      lua_pop(l, 1);
     }
   }
 

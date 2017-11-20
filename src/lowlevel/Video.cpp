@@ -98,7 +98,7 @@ void create_window() {
   main_renderer = SDL_CreateRenderer(
         main_window,
         -1,
-        acceleration_flag | SDL_RENDERER_PRESENTVSYNC
+        acceleration_flag
   );
 
   if (main_renderer == nullptr) {

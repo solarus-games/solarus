@@ -319,6 +319,12 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
     glUniform1iARB(location, System::now());
   }
 
+  const Size& window_size = Video::get_window_size();
+  location = glGetUniformLocationARB(program, "solarus_output_size");
+  if (location >= 0) {
+    glUniform2fARB(location, window_size.width, window_size.height);
+  }
+
   const GLfloat square_texcoord[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
   const GLfloat* texcoord = square_texcoord;
 

@@ -29,6 +29,7 @@
 #include "solarus/lowlevel/VideoMode.h"
 #include "solarus/lowlevel/shaders/ShaderContext.h"
 #include "solarus/Arguments.h"
+#include "solarus/CurrentQuest.h"
 #include <memory>
 #include <sstream>
 #include <utility>
@@ -73,13 +74,11 @@ void create_window() {
 
   Debug::check_assertion(main_window == nullptr, "Window already exists");
 
-#if SOLARUS_HAVE_OPENGL == 1
   // Set OpenGL as the default renderer driver when available, to avoid using Direct3d.
   SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
 
-  // Set the default OpenGL built-in shader (nearest)
+  // Set the default OpenGL built-in shader (nearest).
   SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
-#endif
 
   std::string title = std::string("Solarus ") + SOLARUS_VERSION;
   main_window = SDL_CreateWindow(
@@ -88,10 +87,7 @@ void create_window() {
       SDL_WINDOWPOS_CENTERED,
       wanted_quest_size.width,
       wanted_quest_size.height,
-      SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE
-#if SOLARUS_HAVE_OPENGL == 1
-      | SDL_WINDOW_OPENGL
-#endif
+      SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL
   );
   Debug::check_assertion(main_window != nullptr,
       std::string("Cannot create the window: ") + SDL_GetError());
@@ -99,10 +95,10 @@ void create_window() {
   int acceleration_flag = acceleration_enabled ?
       SDL_RENDERER_ACCELERATED : SDL_RENDERER_SOFTWARE;
 
-  main_renderer = SDL_CreateRenderer(main_window, -1, acceleration_flag
-#if SOLARUS_HAVE_OPENGL != 1
-      | SDL_RENDERER_PRESENTVSYNC
-#endif
+  main_renderer = SDL_CreateRenderer(
+        main_window,
+        -1,
+        acceleration_flag
   );
 
   if (main_renderer == nullptr) {
@@ -194,7 +190,6 @@ void initialize_video_modes() {
       std::unique_ptr<PixelFilter>(new Hq4xFilter()),
       nullptr
   );
-  default_video_mode = &all_video_modes[0];
   // TODO If shaders are enabled, use a C++ shader version of Scale2x and Hq4x instead.
 
   // Initialize quest custom video modes. These can only include shaded modes.
@@ -211,20 +206,19 @@ void initialize_video_modes() {
     SDL_SetTextureBlendMode(render_target, SDL_BLENDMODE_BLEND);
 
     // Get all shaders of the quest's shader/videomodes folder.
-    std::vector<std::string> shader_names =
-        QuestFiles::data_files_enumerate("shaders/videomodes/", true, false);
-    // FIXME don't enumerate data files, use the quest resource system like always.
+    const std::map<std::string, std::string>& shader_elements = CurrentQuest::get_resources(ResourceType::SHADER);
 
-    for (unsigned i = 0; i < shader_names.size(); ++i) {
+    for (const auto& kvp: shader_elements) {
 
       // Load the shader and add the corresponding video mode.
+      const std::string& shader_id = kvp.first;
       std::unique_ptr<Shader> video_mode_shader =
-          ShaderContext::create_shader(shader_names.at(i));
-      if (video_mode_shader != nullptr && video_mode_shader->is_valid()) {
+          ShaderContext::create_shader(shader_id);
+      if (video_mode_shader != nullptr) {
 
         const std::string& video_mode_name = video_mode_shader->get_name();
         if (Video::get_video_mode_by_name(video_mode_name) != nullptr) {
-          Debug::error("There is already a video mode with name '" + video_mode_name);
+          Debug::error("There is already a video mode with name '" + video_mode_name + "'");
           continue;
         }
 
@@ -239,11 +233,13 @@ void initialize_video_modes() {
     }
   }
 
+  default_video_mode = &all_video_modes[0];
+
   // Everything is ready now.
   Video::set_default_video_mode();
 }
 
-}
+}  // Anonymous namespace.
 
 /**
  * \brief Initializes the video system.
@@ -259,6 +255,13 @@ void initialize_video_modes() {
 void Video::initialize(const Arguments& args) {
 
   Debug::check_assertion(!is_initialized(), "Video system already initialized");
+
+  // Show the SDL version.
+  SDL_version sdl_version;
+  SDL_GetVersion(&sdl_version);
+  std::ostringstream oss;
+  oss << "SDL: " << static_cast<int>(sdl_version.major) << "." << static_cast<int>(sdl_version.minor) << "." << static_cast<int>(sdl_version.patch);
+  Logger::info(oss.str());
 
   // Check the -no-video and the -quest-size options.
   const std::string& quest_size_string = args.get_argument_value("-quest-size");

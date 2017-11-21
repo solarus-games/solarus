@@ -34,7 +34,8 @@ enum class ResourceType {
   ENEMY,
   ENTITY,
   LANGUAGE,
-  FONT
+  FONT,
+  SHADER,
 };
 
 }

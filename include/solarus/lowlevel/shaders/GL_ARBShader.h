@@ -19,8 +19,6 @@
 
 #include "solarus/Common.h"
 
-#if SOLARUS_HAVE_OPENGL == 1
-
 #include "solarus/lowlevel/shaders/Shader.h"
 #include <SDL.h>
 #include <SDL_opengl.h>
@@ -40,7 +38,7 @@ class GL_ARBShader : public Shader {
 
     static bool initialize();
 
-    explicit GL_ARBShader(const std::string& shader_name);
+    explicit GL_ARBShader(const std::string& shader_id);
     ~GL_ARBShader();
 
   private:
@@ -58,7 +56,5 @@ class GL_ARBShader : public Shader {
 };
 
 }
-
-#endif // SOLARUS_HAVE_OPENGL
 
 #endif

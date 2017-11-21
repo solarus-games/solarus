@@ -109,19 +109,6 @@
  */
 
 /**
- * \def SOLARUS_HAVE_OPENGL
- * \brief Whether the system supports OpenGL as renderer driver.
- * This is optional, but allows to use advanced display features.
- *
- * This is not used for now and always disabled.
- * TODO use the standard configuration way
- */
-#ifdef SOLARUS_HAVE_OPENGL
-#  undef SOLARUS_HAVE_OPENGL
-#endif
-#define SOLARUS_HAVE_OPENGL 0
-
-/**
  * \def SOLARUS_DEFAULT_QUEST
  * \brief Path of the quest to run is none is specified at runtime.
  */

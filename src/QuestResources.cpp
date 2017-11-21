@@ -26,17 +26,18 @@ namespace Solarus {
 const std::string EnumInfoTraits<ResourceType>::pretty_name = "resource type";
 
 const EnumInfo<ResourceType>::names_type EnumInfoTraits<ResourceType>::names = {
-      { ResourceType::MAP, "map" },
-      { ResourceType::TILESET, "tileset" },
-      { ResourceType::SPRITE, "sprite" },
-      { ResourceType::MUSIC, "music" },
-      { ResourceType::SOUND, "sound" },
-      { ResourceType::ITEM, "item" },
-      { ResourceType::ENEMY, "enemy" },
-      { ResourceType::ENTITY, "entity" },
-      { ResourceType::LANGUAGE, "language" },
-      { ResourceType::FONT, "font" }
-  };
+    { ResourceType::MAP, "map" },
+    { ResourceType::TILESET, "tileset" },
+    { ResourceType::SPRITE, "sprite" },
+    { ResourceType::MUSIC, "music" },
+    { ResourceType::SOUND, "sound" },
+    { ResourceType::ITEM, "item" },
+    { ResourceType::ENEMY, "enemy" },
+    { ResourceType::ENTITY, "entity" },
+    { ResourceType::LANGUAGE, "language" },
+    { ResourceType::FONT, "font" },
+    { ResourceType::SHADER, "shader" }
+};
 
 namespace {
 

@@ -15,15 +15,15 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/shaders/GL_ARBShader.h"
-
-#if SOLARUS_HAVE_OPENGL == 1
-
-#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/Video.h"
 #include "solarus/lowlevel/Size.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Video.h"
 
 namespace Solarus {
+
+namespace {
 
 PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
 PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
@@ -43,6 +43,22 @@ PFNGLGETHANDLEARBPROC glGetHandleARB;
 GLhandleARB default_shader_program = 0;
 GL_ARBShader* loading_shader = nullptr;
 
+/**
+ * @brief Casts a pointer-to-object (void*) to a pointer-to-function.
+ *
+ * This function avoids compilation warnings when using SDL_GL_GetProcAddress(),
+ * because directly casting a pointer-to-object to a pointer-to-function
+ * is not allowed.
+ *
+ * @param object_ptr The pointer to cast.
+ * @return The pointer to a function.
+ */
+template<typename FunctionPointerType>
+FunctionPointerType get_proc_address_cast(void* object_ptr) {
+  return *reinterpret_cast<FunctionPointerType*>(&object_ptr);
+}
+
+}  // Anonymous namespace
 
 /**
  * \brief Initializes the GL ARB shader system.
@@ -50,27 +66,27 @@ GL_ARBShader* loading_shader = nullptr;
  */
 bool GL_ARBShader::initialize() {
 
-  //TODO Be sure that SDL doesn't disable GL ARB for render targets even if available.
+  // TODO Be sure that SDL doesn't disable GL ARB for render targets even if available.
 
   // Check for shader support
   if (SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
       SDL_GL_ExtensionSupported("GL_ARB_shading_language_100") &&
       SDL_GL_ExtensionSupported("GL_ARB_vertex_shader") &&
       SDL_GL_ExtensionSupported("GL_ARB_fragment_shader")) {
-    glAttachObjectARB = (PFNGLATTACHOBJECTARBPROC) SDL_GL_GetProcAddress("glAttachObjectARB");
-    glCompileShaderARB = (PFNGLCOMPILESHADERARBPROC) SDL_GL_GetProcAddress("glCompileShaderARB");
-    glCreateProgramObjectARB = (PFNGLCREATEPROGRAMOBJECTARBPROC) SDL_GL_GetProcAddress("glCreateProgramObjectARB");
-    glCreateShaderObjectARB = (PFNGLCREATESHADEROBJECTARBPROC) SDL_GL_GetProcAddress("glCreateShaderObjectARB");
-    glDeleteObjectARB = (PFNGLDELETEOBJECTARBPROC) SDL_GL_GetProcAddress("glDeleteObjectARB");
-    glGetInfoLogARB = (PFNGLGETINFOLOGARBPROC) SDL_GL_GetProcAddress("glGetInfoLogARB");
-    glGetObjectParameterivARB = (PFNGLGETOBJECTPARAMETERIVARBPROC) SDL_GL_GetProcAddress("glGetObjectParameterivARB");
-    glGetUniformLocationARB = (PFNGLGETUNIFORMLOCATIONARBPROC) SDL_GL_GetProcAddress("glGetUniformLocationARB");
-    glLinkProgramARB = (PFNGLLINKPROGRAMARBPROC) SDL_GL_GetProcAddress("glLinkProgramARB");
-    glShaderSourceARB = (PFNGLSHADERSOURCEARBPROC) SDL_GL_GetProcAddress("glShaderSourceARB");
-    glUniform1iARB = (PFNGLUNIFORM1IARBPROC) SDL_GL_GetProcAddress("glUniform1iARB");
-    glUniform2fARB = (PFNGLUNIFORM2FARBPROC) SDL_GL_GetProcAddress("glUniform2fARB");
-    glUseProgramObjectARB = (PFNGLUSEPROGRAMOBJECTARBPROC) SDL_GL_GetProcAddress("glUseProgramObjectARB");
-    glGetHandleARB = (PFNGLGETHANDLEARBPROC) SDL_GL_GetProcAddress("glGetHandleARB");
+    glAttachObjectARB = get_proc_address_cast<PFNGLATTACHOBJECTARBPROC>(SDL_GL_GetProcAddress("glAttachObjectARB"));
+    glCompileShaderARB = get_proc_address_cast<PFNGLCOMPILESHADERARBPROC>(SDL_GL_GetProcAddress("glCompileShaderARB"));
+    glCreateProgramObjectARB = get_proc_address_cast<PFNGLCREATEPROGRAMOBJECTARBPROC>(SDL_GL_GetProcAddress("glCreateProgramObjectARB"));
+    glCreateShaderObjectARB = get_proc_address_cast<PFNGLCREATESHADEROBJECTARBPROC>(SDL_GL_GetProcAddress("glCreateShaderObjectARB"));
+    glDeleteObjectARB = get_proc_address_cast<PFNGLDELETEOBJECTARBPROC>(SDL_GL_GetProcAddress("glDeleteObjectARB"));
+    glGetInfoLogARB = get_proc_address_cast<PFNGLGETINFOLOGARBPROC>(SDL_GL_GetProcAddress("glGetInfoLogARB"));
+    glGetObjectParameterivARB = get_proc_address_cast<PFNGLGETOBJECTPARAMETERIVARBPROC>(SDL_GL_GetProcAddress("glGetObjectParameterivARB"));
+    glGetUniformLocationARB = get_proc_address_cast<PFNGLGETUNIFORMLOCATIONARBPROC>(SDL_GL_GetProcAddress("glGetUniformLocationARB"));
+    glLinkProgramARB = get_proc_address_cast<PFNGLLINKPROGRAMARBPROC>(SDL_GL_GetProcAddress("glLinkProgramARB"));
+    glShaderSourceARB = get_proc_address_cast<PFNGLSHADERSOURCEARBPROC>(SDL_GL_GetProcAddress("glShaderSourceARB"));
+    glUniform1iARB = get_proc_address_cast<PFNGLUNIFORM1IARBPROC>(SDL_GL_GetProcAddress("glUniform1iARB"));
+    glUniform2fARB = get_proc_address_cast<PFNGLUNIFORM2FARBPROC>(SDL_GL_GetProcAddress("glUniform2fARB"));
+    glUseProgramObjectARB = get_proc_address_cast<PFNGLUSEPROGRAMOBJECTARBPROC>(SDL_GL_GetProcAddress("glUseProgramObjectARB"));
+    glGetHandleARB = get_proc_address_cast<PFNGLGETHANDLEARBPROC>(SDL_GL_GetProcAddress("glGetHandleARB"));
     if (glAttachObjectARB &&
         glCompileShaderARB &&
         glCreateProgramObjectARB &&
@@ -88,7 +104,6 @@ bool GL_ARBShader::initialize() {
 
       // Get ARB default configuration.
       default_shader_program = glGetHandleARB(GL_CURRENT_PROGRAM);
-      sampler_type = "sampler2DRect";
 
       return true;
     }
@@ -99,9 +114,10 @@ bool GL_ARBShader::initialize() {
 
 /**
  * \brief Constructor.
- * \param shader_name The name of the shader to load.
+ * \param shader_id Id of the shader to load.
  */
-GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
+GL_ARBShader::GL_ARBShader(const std::string& shader_id):
+    Shader(shader_id),
     program(0),
     vertex_shader(0),
     fragment_shader(0) {
@@ -109,24 +125,17 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
   glGetError();
 
   // Load the shader.
-  load(shader_name);
+  load(shader_id);
 
-  if (is_shader_valid) {
+  // Set up the sampler and the io size (= quest size) as uniform variables.
+  const Size& quest_size = Video::get_quest_size();
+  glUseProgramObjectARB(program);
 
-    // Set up the sampler and the io size (= quest size) as uniform variables.
-    const Size& quest_size = Video::get_quest_size();
-    glUseProgramObjectARB(program);
-    GLint location = glGetUniformLocationARB(program, "solarus_sampler");
-    if (location >= 0) {
-      glUniform1iARB(location, 0); // 0 means texture unit 0.
-    }
-
-    location = glGetUniformLocationARB(program, "solarus_io_size");
-    if (location >= 0) {
-      glUniform2fARB(location, quest_size.width, quest_size.height);
-    }
-    glUseProgramObjectARB(default_shader_program);
+  GLint location = glGetUniformLocationARB(program, "solarus_input_size");
+  if (location >= 0) {
+    glUniform2fARB(location, quest_size.width, quest_size.height);
   }
+  glUseProgramObjectARB(default_shader_program);
 }
 
 /**
@@ -156,16 +165,16 @@ void GL_ARBShader::compile_shader(GLhandleARB& shader, const char* source) {
     char* info;
 
     glGetObjectParameterivARB(shader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
-    info = SDL_stack_alloc(char, length+1);
+    info = SDL_stack_alloc(char, length + 1);
     glGetInfoLogARB(shader, length, nullptr, info);
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to compile shader:\n%s\n%s", source, info);
+    Logger::error(std::string("Failed to compile shader: ") + info);
     SDL_stack_free(info);
   }
 }
 
 /**
  * \brief Set up OpenGL rendering parameter.
- * This basically reset the projection matrix.
+ * This basically resets the projection matrix.
  */
 void GL_ARBShader::set_rendering_settings() {
 
@@ -199,8 +208,6 @@ int GL_ARBShader::l_shader(lua_State* l) {
           LuaTools::opt_number_field(l, 1, "default_window_scale", 1.0);
       const std::string shader_name =
           LuaTools::opt_string_field(l, 1, "name", loading_shader->shader_name);
-      const bool is_shader_valid =
-          LuaTools::opt_boolean_field(l, 1, "is_shader_valid", true);
       const std::string vertex_source =
           LuaTools::opt_string_field(l, 1, "vertex_source",
               "void main(){\
@@ -210,32 +217,39 @@ int GL_ARBShader::l_shader(lua_State* l) {
       const std::string fragment_source =
           LuaTools::check_string_field(l, 1, "fragment_source");
 
-      loading_shader->is_shader_valid = is_shader_valid;
+      loading_shader->default_window_scale = default_window_scale;
+      loading_shader->shader_name = shader_name;
 
-      if (is_shader_valid) {
-        loading_shader->default_window_scale = default_window_scale;
-        loading_shader->shader_name = shader_name;
+      // Create the vertex and fragment shaders.
+      vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
+      compile_shader(vertex_shader, vertex_source.c_str());
 
-        // Create the vertex and fragment shaders.
-        vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-        compile_shader(vertex_shader, vertex_source.c_str());
+      fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
+      compile_shader(fragment_shader, fragment_source.c_str());
 
-        fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
-        compile_shader(fragment_shader, fragment_source.c_str());
+      // Create one program object to rule them all ...
+      program = glCreateProgramObjectARB();
 
-        // Create one program object to rule them all ...
-        program = glCreateProgramObjectARB();
+      // ... and in the darkness bind them
+      glAttachObjectARB(program, vertex_shader);
+      glAttachObjectARB(program, fragment_shader);
 
-        // ... and in the darkness bind them
-        glAttachObjectARB(program, vertex_shader);
-        glAttachObjectARB(program, fragment_shader);
-        glLinkProgramARB(program);
+      glLinkProgramARB(program);
+      GLint status;
+      glGetObjectParameterivARB(program, GL_OBJECT_LINK_STATUS_ARB, &status);
 
-        loading_shader = nullptr;
+      if (status == 0) {
+        GLint length = 0;
+        char* info = nullptr;
+
+        glGetObjectParameterivARB(program, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
+        info = SDL_stack_alloc(char, length + 1);
+        glGetInfoLogARB(program, length, nullptr, info);
+        Logger::error(std::string("Failed to link shader: ") + info);
+        SDL_stack_free(info);
       }
-      else {
-        Debug::warning("The shader script '" + loading_shader->shader_name + "' is not compatible with GLSL " + shading_language_version);
-      }
+
+      loading_shader = nullptr;
     }
 
     return 0;
@@ -255,23 +269,24 @@ void GL_ARBShader::register_callback(lua_State* l) {
 /**
  * \brief Draws the quest surface on the screen in a shader-allowed context.
  * It will perform the render using the OpenGL API directly.
- * \param quest_surface the surface to render on the screen
+ * \param quest_surface The surface to render on the screen.
  */
 void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
 
   Shader::render(quest_surface);
 
-  float rendering_width, rendering_height;
+  float rendering_width = 0.0;
+  float rendering_height = 0.0;
   SDL_Renderer* renderer = Video::get_renderer();
   SDL_Window* window = Video::get_window();
   SDL_Texture* render_target = Video::get_render_target();
 
-  // Clear the window
+  // Clear the window.
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
 
-  // Clear the render target
+  // Clear the render target.
   SDL_SetRenderTarget(renderer, render_target);
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
   SDL_RenderSetClipRect(renderer, nullptr);
@@ -315,5 +330,3 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
 }
 
 }
-
-#endif // SOLARUS_HAVE_OPENGL

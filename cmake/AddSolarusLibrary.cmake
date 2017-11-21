@@ -448,6 +448,7 @@ target_link_libraries(solarus
   "${SDL2_LIBRARY}"
   "${SDL2_IMAGE_LIBRARY}"
   "${SDL2_TTF_LIBRARY}"
+  "${OPENGL_LIBRARY}"
   "${OPENAL_LIBRARY}"
   "${LUA_LIBRARY}"
   "${DL_LIBRARY}"

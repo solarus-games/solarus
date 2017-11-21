@@ -15,13 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/shaders/GL_2DShader.h"
-
-#if SOLARUS_HAVE_OPENGL == 1
-
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Video.h"
-
 
 namespace Solarus {
 
@@ -32,7 +28,6 @@ namespace Solarus {
 bool GL_2DShader::initialize() {
 
   // TODO Force SDL to use 2D fetch textures, sampler and shaders if GL_ARB not supported.
-  sampler_type = "sampler2D";
 
   return false;
 }
@@ -55,7 +50,8 @@ void GL_2DShader::set_rendering_settings() {
  * \brief Callback when parsing the lua file. Fill the loading shader with the result.
  * \param l The lua state.
  */
-int GL_2DShader::l_shader(lua_State* l) {
+int GL_2DShader::l_shader(lua_State* /* l */) {
+  return 0;
 }
 
 /**
@@ -71,9 +67,7 @@ void GL_2DShader::register_callback(lua_State* l) {
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
  */
-void GL_2DShader::render(const SurfacePtr& quest_surface) const {
+void GL_2DShader::render(const SurfacePtr& /* quest_surface */) const {
 }
 
 }
-
-#endif // SOLARUS_HAVE_OPENGL

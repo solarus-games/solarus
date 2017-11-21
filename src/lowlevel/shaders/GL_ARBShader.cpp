@@ -302,13 +302,13 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
   glEnable(GL_TEXTURE_2D);
   SDL_GL_BindTexture(render_target, nullptr, nullptr);
 
+  glUseProgramObjectARB(program);
+
   // Update the display time uniform variable.
   GLint location = glGetUniformLocationARB(program, "solarus_display_time");
   if (location >= 0) {
     glUniform1iARB(location, display_time);
   }
-
-  glUseProgramObjectARB(program);
 
   const GLfloat square_texcoord[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
   const GLfloat* texcoord = square_texcoord;

@@ -15,10 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/shaders/GL_ARBShader.h"
-#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/Video.h"
 #include "solarus/lowlevel/Size.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Video.h"
 
 namespace Solarus {
 
@@ -130,7 +131,7 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_id):
   const Size& quest_size = Video::get_quest_size();
   glUseProgramObjectARB(program);
 
-  GLint location = glGetUniformLocationARB(program, "solarus_io_size");
+  GLint location = glGetUniformLocationARB(program, "solarus_input_size");
   if (location >= 0) {
     glUniform2fARB(location, quest_size.width, quest_size.height);
   }
@@ -166,7 +167,7 @@ void GL_ARBShader::compile_shader(GLhandleARB& shader, const char* source) {
     glGetObjectParameterivARB(shader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
     info = SDL_stack_alloc(char, length + 1);
     glGetInfoLogARB(shader, length, nullptr, info);
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to compile shader:\n%s\n%s", source, info);
+    Logger::error(std::string("Failed to compile shader: ") + info);
     SDL_stack_free(info);
   }
 }
@@ -232,7 +233,21 @@ int GL_ARBShader::l_shader(lua_State* l) {
       // ... and in the darkness bind them
       glAttachObjectARB(program, vertex_shader);
       glAttachObjectARB(program, fragment_shader);
+
       glLinkProgramARB(program);
+      GLint status;
+      glGetObjectParameterivARB(program, GL_OBJECT_LINK_STATUS_ARB, &status);
+
+      if (status == 0) {
+        GLint length = 0;
+        char* info = nullptr;
+
+        glGetObjectParameterivARB(program, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
+        info = SDL_stack_alloc(char, length + 1);
+        glGetInfoLogARB(program, length, nullptr, info);
+        Logger::error(std::string("Failed to link shader: ") + info);
+        SDL_stack_free(info);
+      }
 
       loading_shader = nullptr;
     }

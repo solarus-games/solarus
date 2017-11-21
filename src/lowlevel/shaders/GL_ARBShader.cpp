@@ -57,7 +57,6 @@ template<typename FunctionPointerType>
 FunctionPointerType get_proc_address_cast(void* object_ptr) {
   return *reinterpret_cast<FunctionPointerType*>(&object_ptr);
 }
-
 }  // Anonymous namespace
 
 /**
@@ -127,11 +126,16 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_id):
   // Load the shader.
   load(shader_id);
 
-  // Set up the sampler and the io size (= quest size) as uniform variables.
-  const Size& quest_size = Video::get_quest_size();
   glUseProgramObjectARB(program);
 
-  GLint location = glGetUniformLocationARB(program, "solarus_input_size");
+  // Set up the sampler and the io size (= quest size) as uniform variables.
+  GLint location = glGetUniformLocationARB(program, "solarus_sampler");
+  if (location >= 0) {
+    glUniform1iARB(location, 0); // 0 means texture unit 0.
+  }
+
+  const Size& quest_size = Video::get_quest_size();
+  location = glGetUniformLocationARB(program, "solarus_input_size");
   if (location >= 0) {
     glUniform2fARB(location, quest_size.width, quest_size.height);
   }
@@ -273,8 +277,6 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
 
   Shader::render(quest_surface);
 
-  float rendering_width = 0.0;
-  float rendering_height = 0.0;
   SDL_Renderer* renderer = Video::get_renderer();
   SDL_Window* window = Video::get_window();
   SDL_Texture* render_target = Video::get_render_target();
@@ -297,9 +299,8 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
   SDL_SetRenderTarget(renderer, nullptr);
   set_rendering_settings();
 
-  glEnable(GL_TEXTURE_RECTANGLE_ARB);
-  SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
-  glUseProgramObjectARB(program);
+  glEnable(GL_TEXTURE_2D);
+  SDL_GL_BindTexture(render_target, nullptr, nullptr);
 
   // Update the display time uniform variable.
   GLint location = glGetUniformLocationARB(program, "solarus_display_time");
@@ -307,21 +308,27 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
     glUniform1iARB(location, display_time);
   }
 
+  glUseProgramObjectARB(program);
+
+  const GLfloat square_texcoord[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
+  const GLfloat* texcoord = square_texcoord;
+
   glBegin(GL_QUADS);
-  glTexCoord2f(0.0f, 0.0f);
+  glTexCoord2f(texcoord[0], texcoord[1]);
   glVertex3f(-1.0f, 1.0f, 0.0f); // Top left
-  glTexCoord2f(rendering_width, 0.0f);
+  glTexCoord2f(texcoord[2], texcoord[1]);
   glVertex3f(1.0f, 1.0f, 0.0f); // Top right
-  glTexCoord2f(rendering_width, rendering_height);
+  glTexCoord2f(texcoord[2], texcoord[3]);
   glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
-  glTexCoord2f(0.0f, rendering_height);
+  glTexCoord2f(texcoord[0], texcoord[3]);
   glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
   glEnd();
 
   // Restore default states.
   glUseProgramObjectARB(default_shader_program);
   SDL_GL_UnbindTexture(render_target);
-  glDisable(GL_TEXTURE_RECTANGLE_ARB);
+
+  glDisable(GL_TEXTURE_2D);
 
   // And swap the window.
   SDL_GL_SwapWindow(window);

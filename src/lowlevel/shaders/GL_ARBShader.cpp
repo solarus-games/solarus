@@ -227,10 +227,8 @@ int GL_ARBShader::l_shader(lua_State* l) {
       fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
       compile_shader(fragment_shader, fragment_source.c_str());
 
-      // Create one program object to rule them all ...
+      // Create a program object with both shaders.
       program = glCreateProgramObjectARB();
-
-      // ... and in the darkness bind them
       glAttachObjectARB(program, vertex_shader);
       glAttachObjectARB(program, fragment_shader);
 

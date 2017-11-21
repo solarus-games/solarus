@@ -23,8 +23,6 @@
 
 namespace Solarus {
 
-int Shader::display_time = 0;
-
 /**
  * \brief Constructor.
  * \param shader_name The name of the shader to load.
@@ -38,14 +36,6 @@ Shader::Shader(const std::string& shader_name):
  * \brief Destructor.
  */
 Shader::~Shader() {
-}
-
-/**
- * \brief Reset the displaying time.
- */
-void Shader::reset_time() {
-
-  display_time = 0;
 }
 
 /**
@@ -73,7 +63,6 @@ double Shader::get_default_window_scale() {
  */
 void Shader::render(const SurfacePtr& /* quest_surface */) const {
 
-  display_time += System::timestep;
 }
 
 /**

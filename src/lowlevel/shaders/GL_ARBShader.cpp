@@ -19,6 +19,7 @@
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Size.h"
 #include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Video.h"
 
 namespace Solarus {
@@ -133,6 +134,14 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_id):
   if (location >= 0) {
     glUniform1iARB(location, 0); // 0 means texture unit 0.
   }
+
+  /*
+  SDL_Texture* render_target = Video::get_render_target();
+  SDL_GL_BindTexture(render_target, nullptr, nullptr);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  SDL_GL_UnbindTexture(render_target);
+  */
 
   const Size& quest_size = Video::get_quest_size();
   location = glGetUniformLocationARB(program, "solarus_input_size");
@@ -305,9 +314,9 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
   glUseProgramObjectARB(program);
 
   // Update the display time uniform variable.
-  GLint location = glGetUniformLocationARB(program, "solarus_display_time");
+  GLint location = glGetUniformLocationARB(program, "solarus_time");
   if (location >= 0) {
-    glUniform1iARB(location, display_time);
+    glUniform1iARB(location, System::now());
   }
 
   const GLfloat square_texcoord[4] = { 0.0f, 0.0f, 1.0f, 1.0f };

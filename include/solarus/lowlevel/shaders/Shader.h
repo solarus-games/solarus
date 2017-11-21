@@ -36,8 +36,6 @@ class Shader {
     explicit Shader(const std::string& shader_id);
     virtual ~Shader();
 
-    static void reset_time();
-
     const std::string& get_name();
     double get_default_window_scale();
 
@@ -50,7 +48,6 @@ class Shader {
 
     static std::string shading_language_version; /**< The version of the shading language. */
     static std::string sampler_type;             /**< The sampler type of the shader. */
-    static int display_time;                     /**< Time since the current shader is displayed (without interruptions). */
 
     std::string shader_name;                     /**< The name of the shader. */
     double default_window_scale;                 /**< Default scale of the window when the shader is being active,

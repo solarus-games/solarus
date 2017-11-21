@@ -24,6 +24,7 @@
 namespace Solarus {
 
 class Arguments;
+class MainLoop;
 
 /**
  * \brief Provides low-level functions and initialization.
@@ -34,7 +35,7 @@ class SOLARUS_API System {
 
   public:
 
-    static void initialize(const Arguments& args);
+    static void initialize(const Arguments& args, MainLoop& main_loop);
     static void quit();
     static void update();
 

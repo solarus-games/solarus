@@ -19,6 +19,7 @@
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lowlevel/VideoMode.h"
 #include "solarus/lowlevel/Size.h"
+#include "solarus/MainLoop.h"
 #include <lua.hpp>
 
 namespace Solarus {
@@ -93,9 +94,16 @@ int LuaContext::video_api_set_window_title(lua_State *l) {
 int LuaContext::video_api_get_mode(lua_State *l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    const VideoMode& mode = Video::get_video_mode();
 
-    push_string(l, mode.get_name());
+    LuaContext& lua_context = get_lua_context(l);
+    lua_context.warning_deprecated("sol.video.get_mode()",
+        "Use sol.video.get_shader() instead.");
+
+    const std::string& shader_id = Video::get_shader_id();
+
+    std::string video_mode = shader_id.empty() ? std::string("normal") : shader_id;
+
+    push_string(l, video_mode);
     return 1;
   });
 }
@@ -108,12 +116,15 @@ int LuaContext::video_api_get_mode(lua_State *l) {
 int LuaContext::video_api_set_mode(lua_State *l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    std::string mode_name = LuaTools::check_string(l, 1);
-    const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
-    if (mode != nullptr && Video::get_video_mode().get_name() != mode_name) {
-      Video::set_video_mode(*mode);
-    }
+    LuaContext& lua_context = get_lua_context(l);
+    lua_context.warning_deprecated("sol.video.set_mode()",
+        "Use sol.video.set_shader() instead.");
+
+    const std::string& mode_name = LuaTools::check_string(l, 1);
+
+    std::string shader_id = (mode_name == "normal") ? std::string() : mode_name;
+    Video::set_shader_id(shader_id);
 
     return 0;
   });
@@ -127,7 +138,12 @@ int LuaContext::video_api_set_mode(lua_State *l) {
 int LuaContext::video_api_switch_mode(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    Video::switch_video_mode();
+
+    LuaContext& lua_context = get_lua_context(l);
+    lua_context.warning_deprecated("sol.video.switch_mode()",
+        "Use sol.video.switch_shader() instead.");
+
+    Video::switch_shader();
 
     return 0;
   });
@@ -141,6 +157,12 @@ int LuaContext::video_api_switch_mode(lua_State* l) {
 int LuaContext::video_api_get_modes(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
+
+    LuaContext& lua_context = get_lua_context(l);
+    lua_context.warning_deprecated("sol.video.get_modes()",
+        "Use sol.video.get_shaders() instead.");
+
+    /* TODO
     const std::vector<const VideoMode*>& modes =
         Video::get_video_modes();
 
@@ -154,6 +176,8 @@ int LuaContext::video_api_get_modes(lua_State* l) {
     }
 
     return 1;
+    */
+    return 0;
   });
 }
 
@@ -165,10 +189,22 @@ int LuaContext::video_api_get_modes(lua_State* l) {
 int LuaContext::video_api_is_mode_supported(lua_State *l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    std::string mode_name = LuaTools::check_string(l, 1);
-    const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
-    bool supported = mode != nullptr && Video::is_mode_supported(*mode);
+    LuaContext& lua_context = get_lua_context(l);
+    lua_context.warning_deprecated("sol.video.is_mode_supported()",
+        "Use sol.video.is_shader_valid() instead.");
+
+    std::string mode_name = LuaTools::check_string(l, 1);
+
+    if (mode_name == "normal") {
+      lua_pushboolean(l, true);
+      return 1;
+    }
+
+    const Shader* shader =
+        lua_context.get_main_loop().get_resource_provider().get_shader(mode_name);
+
+    bool supported = shader != nullptr;
 
     lua_pushboolean(l, supported);
     return 1;
@@ -301,7 +337,7 @@ int LuaContext::video_api_set_window_size(lua_State* l) {
 int LuaContext::video_api_reset_window_size(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    Video::reset_window_size();
+    Video::set_window_size(Video::get_quest_size());
 
     return 0;
   });

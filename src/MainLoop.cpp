@@ -146,7 +146,7 @@ MainLoop::MainLoop(const Arguments& args):
   }
 
   // Initialize engine features (audio, video...).
-  System::initialize(args);
+  System::initialize(args, *this);
 
   // Read the quest resource list from data.
   CurrentQuest::initialize();

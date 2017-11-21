@@ -288,7 +288,7 @@ void Settings::set_from_quest() {
   clear();
 
   if (Video::is_initialized()) {
-    set_string(key_video_mode, Video::get_video_mode().get_name());
+// TODO    set_string(key_video_mode, Video::get_shader_id());
     set_boolean(key_fullscreen, Video::is_fullscreen());
   }
   if (Sound::is_initialized()) {
@@ -314,10 +314,12 @@ void Settings::apply_to_quest() {
     // Video mode.
     auto video_mode_name = get_string(key_video_mode);
     if (video_mode_name.second) {
+      /* TODO
       const VideoMode* video_mode = Video::get_video_mode_by_name(video_mode_name.first);
       if (video_mode != nullptr) {
         Video::set_video_mode(*video_mode);
       }
+      */
     }
 
     // Fullscreen.

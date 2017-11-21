@@ -20,6 +20,7 @@
 #include "solarus/Common.h"
 #include "solarus/entities/Tileset.h"
 #include "solarus/entities/TilePattern.h"
+#include "solarus/lowlevel/shaders/Shader.h"
 #include "solarus/ResourceType.h"
 #include <map>
 #include <memory>
@@ -39,14 +40,16 @@ class SOLARUS_API ResourceProvider {
 
     ResourceProvider();
 
-    const Tileset& get_tileset(const std::string& tileset_id);
+    Tileset& get_tileset(const std::string& tileset_id);
+    Shader* get_shader(const std::string& shader_id);
     // TODO other types of resources
 
     void invalidate_resource_element(ResourceType resource_type, const std::string& element_id);
 
   private:
 
-    std::map<std::string, std::unique_ptr<Tileset>> tileset_cache;          /**< Cache of loaded tilesets. */
+    std::map<std::string, std::unique_ptr<Tileset>> tileset_cache;   /**< Cache of loaded tilesets. */
+    std::map<std::string, std::unique_ptr<Shader>> shader_cache;     /**< Cache of loaded shaders. */
 };
 
 }

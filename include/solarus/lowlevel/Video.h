@@ -33,6 +33,7 @@ struct SDL_PixelFormat;
 namespace Solarus {
 
 class Arguments;
+class MainLoop;
 class Rectangle;
 class Size;
 class VideoMode;
@@ -44,7 +45,7 @@ class Video {
 
   public:
 
-    static void initialize(const Arguments& args);
+    static void initialize(const Arguments& args, MainLoop& main_loop);
     static void quit();
     static bool is_initialized();
 
@@ -54,16 +55,11 @@ class Video {
     static SDL_Texture* get_render_target();
     static SDL_PixelFormat* get_pixel_format();
     static bool is_acceleration_enabled();
-    static const std::string& get_rendering_driver_name();
     static void show_window();
 
-    static const VideoMode& get_video_mode();
-    static std::vector<const VideoMode*> get_video_modes();
-    static bool is_mode_supported(const VideoMode& mode);
-    static bool set_video_mode(const VideoMode& mode);
-    static bool set_video_mode(const VideoMode& mode, bool fullscreen);
-    static void set_default_video_mode();
-    static void switch_video_mode();
+    static std::string get_shader_id();
+    static void set_shader_id(const std::string& shader_id);
+    static void switch_shader();
 
     static const VideoMode* get_video_mode_by_name(const std::string& mode_name);
 
@@ -90,7 +86,6 @@ class Video {
 
     static Size get_window_size();
     static void set_window_size(const Size& size);
-    static void reset_window_size();
 
     static Rectangle get_viewport();
     static Point window_to_quest_coordinates(const Point& window_xy);

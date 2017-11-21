@@ -40,8 +40,9 @@ uint32_t System::ticks = 0;
  * the data file system, etc.
  *
  * \param args Command-line arguments.
+ * \param The main loop.
  */
-void System::initialize(const Arguments& args) {
+void System::initialize(const Arguments& args, MainLoop& main_loop) {
 
   // initialize SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
@@ -58,7 +59,7 @@ void System::initialize(const Arguments& args) {
   Random::initialize();
 
   // video
-  Video::initialize(args);
+  Video::initialize(args, main_loop);
   FontResource::initialize();
   Sprite::initialize();
 }

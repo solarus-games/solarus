@@ -30,6 +30,8 @@
 #include "solarus/lowlevel/shaders/ShaderContext.h"
 #include "solarus/Arguments.h"
 #include "solarus/CurrentQuest.h"
+#include "solarus/MainLoop.h"
+#include "solarus/ResourceProvider.h"
 #include <memory>
 #include <sstream>
 #include <utility>
@@ -39,6 +41,7 @@ namespace Solarus {
 
 namespace {
 
+MainLoop* solarus_main_loop = nullptr;    /**< The simulation loop. */
 SDL_Window* main_window = nullptr;        /**< The window. */
 SDL_Renderer* main_renderer = nullptr;    /**< The screen renderer. */
 SDL_Texture* render_target = nullptr;     /**< The render texture used when shader modes are supported. */
@@ -52,9 +55,7 @@ bool shaders_enabled = false;             /**< True if shaded modes support is e
 bool acceleration_enabled = false;        /**< \c true if 2D GPU acceleration is available and enabled. */
 SurfacePtr scaled_surface = nullptr;      /**< The screen surface used with software-scaled modes. */
 
-std::vector<VideoMode> all_video_modes;   /**< Display information for each supported video mode. */
-const VideoMode* video_mode;              /**< Current video mode. */
-const VideoMode* default_video_mode;      /**< Default video mode. */
+Shader* current_shader = nullptr;         /**< Current shader applied to the quest surface if any. */
 
 Size normal_quest_size;                   /**< Default value of quest_size (depends on the quest). */
 Size min_quest_size;                      /**< Minimum value of quest_size (depends on the quest). */
@@ -147,55 +148,16 @@ void create_window() {
     // This is not a problem: the engine runs perfectly in software mode.
     Logger::info("2D acceleration: no");
   }
-}
-
-/**
- * \brief Creates the list of video modes.
- *
- * Some video modes are hardcoded, and some others may be added by the quest.
- */
-void initialize_video_modes() {
 
   // Decide whether we enable shaders.
-  shaders_enabled = rendertarget_supported && Video::is_acceleration_enabled() && ShaderContext::initialize();
+  shaders_enabled = rendertarget_supported &&
+      Video::is_acceleration_enabled() &&
+      ShaderContext::initialize();
 
-  // Initialize hardcoded video modes.
-  all_video_modes.emplace_back(
-      "normal",
-      quest_size * 2,
-      nullptr,
-      nullptr
-  );
-  all_video_modes.emplace_back(
-      "scale2x",
-      quest_size * 2,
-      std::unique_ptr<PixelFilter>(new Scale2xFilter()),
-      nullptr
-  );
-  all_video_modes.emplace_back(
-      "hq2x",
-      quest_size * 2,
-      std::unique_ptr<PixelFilter>(new Hq2xFilter()),
-      nullptr
-  );
-  all_video_modes.emplace_back(
-      "hq3x",
-      quest_size * 3,
-      std::unique_ptr<PixelFilter>(new Hq3xFilter()),
-      nullptr
-  );
-  all_video_modes.emplace_back(
-      "hq4x",
-      quest_size * 4,
-      std::unique_ptr<PixelFilter>(new Hq4xFilter()),
-      nullptr
-  );
-  // TODO If shaders are enabled, use a C++ shader version of Scale2x and Hq4x instead.
-
-  // Initialize quest custom video modes. These can only include shaded modes.
+  // Additional video features needed for shaders to work.
   if (shaders_enabled) {
 
-    // Initialize the render target
+    // Initialize the render target.
     render_target = SDL_CreateTexture(
         main_renderer,
         pixel_format->format,
@@ -204,38 +166,7 @@ void initialize_video_modes() {
         quest_size.height
     );
     SDL_SetTextureBlendMode(render_target, SDL_BLENDMODE_BLEND);
-
-    // Get all shaders of the quest's shader/videomodes folder.
-    const std::map<std::string, std::string>& shader_elements = CurrentQuest::get_resources(ResourceType::SHADER);
-
-    for (const auto& kvp: shader_elements) {  // TODO only create video modes on demand
-
-      // Load the shader and add the corresponding video mode.
-      const std::string& shader_id = kvp.first;
-      std::unique_ptr<Shader> video_mode_shader =
-          ShaderContext::create_shader(shader_id);
-      if (video_mode_shader != nullptr) {
-
-        const std::string& video_mode_name = video_mode_shader->get_id();
-        if (Video::get_video_mode_by_name(video_mode_name) != nullptr) {
-          Debug::error("There is already a video mode with name '" + video_mode_name + "'");
-          continue;
-        }
-
-        all_video_modes.emplace_back(
-              video_mode_shader->get_id(),
-              quest_size,  // TODO No automatic window size change.
-              nullptr,
-              std::move(video_mode_shader)
-        );
-      }
-    }
   }
-
-  default_video_mode = &all_video_modes[0];
-
-  // Everything is ready now.
-  Video::set_default_video_mode();
 }
 
 }  // Anonymous namespace.
@@ -251,9 +182,11 @@ void initialize_video_modes() {
  *
  * \param args Command-line arguments.
  */
-void Video::initialize(const Arguments& args) {
+void Video::initialize(const Arguments& args, MainLoop& main_loop) {
 
   Debug::check_assertion(!is_initialized(), "Video system already initialized");
+
+  solarus_main_loop = &main_loop;
 
   // Show the SDL version.
   SDL_version sdl_version;
@@ -311,8 +244,6 @@ void Video::quit() {
     SDL_SetWindowFullscreen(main_window, 0);
   }
 
-  all_video_modes.clear();
-
   if (pixel_format != nullptr) {
     SDL_FreeFormat(pixel_format);
     pixel_format = nullptr;
@@ -327,6 +258,7 @@ void Video::quit() {
   }
 
   // TODO wrap in a class
+  solarus_main_loop = nullptr;
   rendering_driver_name = "";
   disable_window = false;
   fullscreen_window = false;
@@ -334,8 +266,7 @@ void Video::quit() {
   shaders_enabled = false;
   acceleration_enabled = false;
   scaled_surface = nullptr;
-  video_mode = nullptr;
-  default_video_mode = nullptr;
+  current_shader = nullptr;
   normal_quest_size = Size();
   min_quest_size = Size();
   max_quest_size = Size();
@@ -350,7 +281,7 @@ void Video::quit() {
  * \return \c true if video is initialized.
  */
 bool Video::is_initialized() {
-  return video_mode != nullptr;
+  return solarus_main_loop != nullptr;
 }
 
 /**
@@ -386,15 +317,6 @@ SDL_PixelFormat* Video::get_pixel_format() {
 }
 
 /**
- * \brief Get the default rendering driver for the current platform.
- * \return a string containing the rendering driver name.
- */
-const std::string& Video::get_rendering_driver_name() {
-
-  return rendering_driver_name;
-}
-
-/**
  * \brief Show the window.
  */
 void Video::show_window() {
@@ -413,30 +335,7 @@ void Video::show_window() {
  */
 bool Video::is_acceleration_enabled() {
 
-  const PixelFilter* software_filter = nullptr;
-  if (video_mode != nullptr) {
-    software_filter = video_mode->get_software_filter();
-  }
-
-  return acceleration_enabled      // 2D acceleration must be available on the system.
-      && software_filter == nullptr;  // No software pixel filter must be active.
-}
-
-/**
- * \brief Returns whether a video mode is supported.
- * \param mode a video mode
- * \return true if this mode is supported
- */
-bool Video::is_mode_supported(const VideoMode& mode) {
-
-  for (const VideoMode& current_mode: all_video_modes) {
-    if (current_mode.get_name() == mode.get_name()) {
-      return true;
-    }
-  }
-
-  // The initial detection of this mode failed.
-  return false;
+  return acceleration_enabled;
 }
 
 /**
@@ -454,8 +353,16 @@ bool Video::is_fullscreen() {
  */
 void Video::set_fullscreen(bool fullscreen) {
 
-  Debug::check_assertion(video_mode != nullptr, "No video mode");
-  set_video_mode(*video_mode, fullscreen);
+  Debug::check_assertion(main_window != nullptr, "No window");
+
+  Uint32 fullscreen_flag = 0;
+  if (fullscreen) {
+    fullscreen_flag = SDL_WINDOW_FULLSCREEN_DESKTOP;
+    window_size = get_window_size();  // Store the window size before fullscreen.
+  }
+  fullscreen_window = fullscreen;
+  SDL_SetWindowFullscreen(main_window, fullscreen_flag);
+
   Logger::info(std::string("Fullscreen: ") + (fullscreen ? "yes" : "no"));
 }
 
@@ -474,30 +381,51 @@ bool Video::is_cursor_visible() {
 void Video::set_cursor_visible(bool cursor_visible) {
 
   visible_cursor = cursor_visible;
-  Debug::check_assertion(video_mode != nullptr, "No video mode");
-  set_video_mode(*video_mode, is_fullscreen());
+  SDL_ShowCursor(visible_cursor);
+
   Logger::info(std::string("Cursor visible: ") + (cursor_visible ? "yes" : "no"));
 }
 
 /**
- * \brief Sets the default video mode.
+ * \brief Returns the id of the shader currently applied to the window rendering.
+ * \return The shader id of an empty string.
  */
-void Video::set_default_video_mode() {
+std::string Video::get_shader_id() {
 
-  Debug::check_assertion(default_video_mode != nullptr,
-      "Default video mode was not initialized");
+  if (current_shader == nullptr) {
+    return std::string();
+  }
 
-  set_video_mode(*default_video_mode, false);
+  return current_shader->get_id();
 }
 
 /**
- * \brief Sets the next video mode.
- *
- * The fullscreen flag is preserved.
- * The window size is reset to the default size of the new video mode.
+ * \brief Applies the specified shader to the window rendering.
+ * \param shader_id A shader id or an empty string to set no shader.
  */
-void Video::switch_video_mode() {
+void Video::set_shader_id(const std::string& shader_id) {
 
+  Debug::check_assertion(solarus_main_loop != nullptr, "Missing main loop");
+
+  if (shader_id == get_shader_id()) {
+    // No change.
+    return;
+  }
+
+  if (shader_id.empty()) {
+    current_shader = nullptr;
+    return;
+  }
+
+  current_shader = solarus_main_loop->get_resource_provider().get_shader(shader_id);
+}
+
+/**
+ * \brief Sets the next shader.
+ */
+void Video::switch_shader() {
+
+  /* TODO
   if (all_video_modes.size() <= 1) {
     return;
   }
@@ -522,125 +450,7 @@ void Video::switch_video_mode() {
   } while (mode == nullptr || !is_mode_supported(*mode));
 
   set_video_mode(*mode);
-}
-
-/**
- * \brief Sets the video mode, keeping the fullscreen setting unchanged.
- * \param mode The video mode to set.
- * \return true in case of success, false if this mode is not supported.
- */
-bool Video::set_video_mode(const VideoMode& mode) {
-
-  return set_video_mode(mode, is_fullscreen());
-}
-
-/**
- * \brief Sets the video mode and the fullscreen setting.
- *
- * If the mode changes, the window size is reset to its default value.
- *
- * \param mode The video mode to set.
- * \param fullscreen \c true to set the window to fullscreen.
- * \return true in case of success, false if this mode is not supported.
- */
-bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
-
-  bool mode_changed = video_mode == nullptr
-      || mode.get_name() != video_mode->get_name();
-
-  if (!is_mode_supported(mode)) {
-    return false;
-  }
-
-  Uint32 fullscreen_flag;
-  if (fullscreen) {
-    fullscreen_flag = SDL_WINDOW_FULLSCREEN_DESKTOP;
-    window_size = get_window_size();  // Store the window size before fullscreen.
-  }
-  else {
-    fullscreen_flag = 0;
-  }
-
-  video_mode = &mode;
-  fullscreen_window = fullscreen;
-
-  if (!disable_window) {
-
-    scaled_surface = nullptr;
-
-    Size render_size = quest_size;
-
-    const PixelFilter* software_filter = mode.get_software_filter();
-    if (software_filter != nullptr) {
-      int factor = software_filter->get_scaling_factor();
-      render_size = quest_size * factor;
-      scaled_surface = Surface::create(render_size);
-      scaled_surface->fill_with_color(Color::black);  // To initialize the internal surface.
-    }
-
-    // Initialize the window.
-    // Set fullscreen flag first to set the size on the right mode.
-    SDL_SetWindowFullscreen(main_window, fullscreen_flag);
-    SDL_RenderSetLogicalSize(
-        main_renderer,
-        render_size.width,
-        render_size.height);
-    SDL_ShowCursor(visible_cursor);
-
-    if (mode_changed) {
-      reset_window_size();
-    }
-  }
-
-  if (mode_changed) {
-    Logger::info(std::string("Video mode: ") + video_mode->get_name());
-
-  }
-
-  return true;
-}
-
-/**
- * \brief Returns the current video mode.
- * \return The video mode.
- */
-const VideoMode& Video::get_video_mode() {
-
-  Debug::check_assertion(video_mode != nullptr,
-      "Video mode not initialized");
-  return *video_mode;
-}
-
-/**
- * \brief Returns a list of all supported video modes.
- * \return The list of supported video modes.
- */
-std::vector<const VideoMode*> Video::get_video_modes() {
-
-  // Return a copy of all_video_modes with const elements.
-  std::vector<const VideoMode*> result;
-  for (const VideoMode& video_mode: all_video_modes) {
-    result.push_back(&video_mode);
-  }
-  return result;
-}
-
-/**
- * \brief Returns a video mode given its Lua name.
- * \param mode_name Lua name of a video mode.
- * \return The corresponding supported video mode, or nullptr if there is no
- * known supported video mode with this name.
- */
-const VideoMode* Video::get_video_mode_by_name(
-    const std::string& mode_name) {
-
-  for (const VideoMode& video_mode: all_video_modes) {
-    if (video_mode.get_name() == mode_name) {
-      return &video_mode;
-    }
-  }
-
-  return nullptr;
+  */
 }
 
 /**
@@ -653,34 +463,17 @@ void Video::render(const SurfacePtr& quest_surface) {
     return;
   }
 
-  Debug::check_assertion(video_mode != nullptr,
-      "Missing video mode");
-
-  // See if there is a filter to apply.
-  const Shader* hardware_filter = video_mode->get_hardware_filter();
-  const PixelFilter* software_filter = video_mode->get_software_filter();
-  if (hardware_filter != nullptr) {
+  // See if there is a shader to apply.
+  if (current_shader != nullptr) {
     // OpenGL rendering.
-    hardware_filter->render(quest_surface);
+    current_shader->render(quest_surface);
   }
   else {
-    // SDL rendering, with acceleration if supported, and optionally with
-    // a software filter.
-    Surface* surface_to_render = nullptr;
-    if (software_filter != nullptr) {
-      Debug::check_assertion(scaled_surface != nullptr,
-          "Missing destination surface for scaling");
-      quest_surface->apply_pixel_filter(*software_filter, *scaled_surface);
-      surface_to_render = scaled_surface.get();
-    }
-    else {
-      surface_to_render = quest_surface.get();
-    }
-
+    // SDL rendering, with acceleration if supported.
     SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
     SDL_RenderSetClipRect(main_renderer, nullptr);
     SDL_RenderClear(main_renderer);
-    surface_to_render->render(main_renderer);
+    quest_surface->render(main_renderer);
     SDL_RenderPresent(main_renderer);
   }
 }
@@ -807,9 +600,6 @@ void Video::set_quest_size_range(
   else {
     quest_size = wanted_quest_size;
   }
-
-  // We know the quest size: finish the initialization.
-  initialize_video_modes();
 }
 
 /**
@@ -868,16 +658,6 @@ void Video::set_window_size(const Size& size) {
       );
     }
   }
-}
-
-/**
- * \brief Restores the default size of the window for the current video mode.
- */
-void Video::reset_window_size() {
-
-  Debug::check_assertion(video_mode != nullptr, "No video mode");
-
-  set_window_size(video_mode->get_initial_window_size());
 }
 
 /**

@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/ResourceProvider.h"
+#include "solarus/lowlevel/shaders/ShaderContext.h"
 
 namespace Solarus {
 
@@ -29,7 +30,7 @@ ResourceProvider::ResourceProvider() {
  * \param tileset_id A tileset id.
  * \return The corresponding tileset.
  */
-const Tileset& ResourceProvider::get_tileset(const std::string& tileset_id) {
+Tileset& ResourceProvider::get_tileset(const std::string& tileset_id) {
 
   auto it = tileset_cache.find(tileset_id);
   if (it != tileset_cache.end()) {
@@ -43,6 +44,31 @@ const Tileset& ResourceProvider::get_tileset(const std::string& tileset_id) {
   Tileset& tileset = *it->second;
   tileset.load();
   return tileset;
+}
+
+/**
+ * \brief Provides the shader with the given id.
+ * \param shader_id A shader id.
+ * \return The corresponding shader, or nullptr if such a shader does not exist
+ * or if it failed to compile, or if shaders are not supported.
+ */
+Shader* ResourceProvider::get_shader(const std::string& shader_id) {
+
+  auto it = shader_cache.find(shader_id);
+  if (it != shader_cache.end()) {
+    return it->second.get();
+  }
+
+  std::unique_ptr<Shader> shader = ShaderContext::create_shader(shader_id);
+  if (shader == nullptr) {
+    return nullptr;
+  }
+
+  it = shader_cache.emplace(
+        shader_id,
+        std::move(shader)
+  ).first;
+  return it->second.get();
 }
 
 /**

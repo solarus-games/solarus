@@ -52,7 +52,7 @@ public:
   void unset(const std::string& key);
   void clear();
 
-  static const std::string key_video_mode;
+  static const std::string key_video_mode;  // TODO convert to a shader value
   static const std::string key_fullscreen;
   static const std::string key_sound_volume;
   static const std::string key_music_volume;

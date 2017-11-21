@@ -58,52 +58,10 @@ void Shader::render(const SurfacePtr& /* quest_surface */) const {
 /**
  * \brief Loads this shader.
  *
- * Parses the data file and compiles GLSL others.
+ * Parses the shader data file and compiles GLSL shaders.
  */
 void Shader::load() {
-
-  const std::string shader_file_name =
-      "shaders/" + shader_id + ".dat";
-
-  // Parse the lua file
-  load_lua_file(shader_file_name);
-}
-
-/**
- * \brief Dummy method used to call the static lua callback for a specific shader implementation.
- * \param l The lua state.
- */
-void Shader::register_callback(lua_State* /* l */) {
-}
-
-/**
- * \brief Load and parse the Lua file of the requested shader.
- * \param path The path to the lua file, relative to the data folder.
- */
-void Shader::load_lua_file(const std::string& path) {
-
-  lua_State* l = luaL_newstate();
-
-  const std::string& buffer = QuestFiles::data_file_read(path);
-  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), path.c_str());
-
-  if (load_result != 0) {
-    // Syntax error in the lua file.
-    Debug::error(std::string("Failed to load ") + path + " : " + lua_tostring(l, -1));
-    lua_pop(l, 1);
-  }
-  else {
-    // Register the callback and send string parameters to the lua script.
-    register_callback(l);
-
-    if (lua_pcall(l, 0, 0, 0) != 0) {
-      // Runtime error.
-      Debug::error(std::string("Failed to parse ") + path + " : " + lua_tostring(l, -1));
-      lua_pop(l, 1);
-    }
-  }
-
-  lua_close(l);
+  // TODO make pure virtual
 }
 
 }

@@ -100,6 +100,12 @@ file(
   include/solarus/hero/VictoryState.h
 
   include/solarus/lowlevel/apple/AppleInterface.h
+  include/solarus/lowlevel/shaders/GL_2DShader.h
+  include/solarus/lowlevel/shaders/GL_ARBShader.h
+  include/solarus/lowlevel/shaders/GLContext.h
+  include/solarus/lowlevel/shaders/ShaderContext.h
+  include/solarus/lowlevel/shaders/Shader.h
+  include/solarus/lowlevel/shaders/ShaderData.h
   include/solarus/lowlevel/BlendMode.h
   include/solarus/lowlevel/BlendModeInfo.h
   include/solarus/lowlevel/Color.h
@@ -122,11 +128,6 @@ file(
   include/solarus/lowlevel/Random.h
   include/solarus/lowlevel/Rectangle.h
   include/solarus/lowlevel/Scale2xFilter.h
-  include/solarus/lowlevel/shaders/GL_2DShader.h
-  include/solarus/lowlevel/shaders/GL_ARBShader.h
-  include/solarus/lowlevel/shaders/GLContext.h
-  include/solarus/lowlevel/shaders/ShaderContext.h
-  include/solarus/lowlevel/shaders/Shader.h
   include/solarus/lowlevel/Size.h
   include/solarus/lowlevel/Size.inl
   include/solarus/lowlevel/Sound.h
@@ -304,6 +305,12 @@ file(
   src/hero/UsingItemState.cpp
   src/hero/VictoryState.cpp
 
+  src/lowlevel/shaders/GL_2DShader.cpp
+  src/lowlevel/shaders/GL_ARBShader.cpp
+  src/lowlevel/shaders/GLContext.cpp
+  src/lowlevel/shaders/ShaderContext.cpp
+  src/lowlevel/shaders/ShaderData.cpp
+  src/lowlevel/shaders/Shader.cpp
   src/lowlevel/BlendModeInfo.cpp
   src/lowlevel/Color.cpp
   src/lowlevel/Debug.cpp
@@ -324,11 +331,6 @@ file(
   src/lowlevel/Random.cpp
   src/lowlevel/Rectangle.cpp
   src/lowlevel/Scale2xFilter.cpp
-  src/lowlevel/shaders/GL_2DShader.cpp
-  src/lowlevel/shaders/GL_ARBShader.cpp
-  src/lowlevel/shaders/GLContext.cpp
-  src/lowlevel/shaders/ShaderContext.cpp
-  src/lowlevel/shaders/Shader.cpp
   src/lowlevel/Size.cpp
   src/lowlevel/Sound.cpp
   src/lowlevel/SpcDecoder.cpp

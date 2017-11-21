@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/shaders/GL_ARBShader.h"
+#include "solarus/lowlevel/shaders/ShaderData.h"
 #include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Size.h"
@@ -42,7 +43,6 @@ PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
 PFNGLGETHANDLEARBPROC glGetHandleARB;
 
 GLhandleARB default_shader_program = 0;
-GL_ARBShader* loading_shader = nullptr;  // TODO remove
 
 /**
  * @brief Casts a pointer-to-object (void*) to a pointer-to-function.
@@ -162,6 +162,49 @@ GL_ARBShader::~GL_ARBShader() {
 }
 
 /**
+ * \copydoc Shader::load
+ */
+void GL_ARBShader::load() {
+
+  // Load the shader data file.
+  const std::string shader_file_name =
+      "shaders/" + get_id() + ".dat";
+
+  ShaderData data;
+  bool success = data.import_from_quest_file(shader_file_name);
+  if (!success) {
+    return;
+  }
+
+  // Create the vertex and fragment shaders.
+  vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
+  compile_shader(vertex_shader, data.get_vertex_source().c_str());
+
+  fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
+  compile_shader(fragment_shader, data.get_fragment_source().c_str());
+
+  // Create a program object with both shaders.
+  program = glCreateProgramObjectARB();
+  glAttachObjectARB(program, vertex_shader);
+  glAttachObjectARB(program, fragment_shader);
+
+  glLinkProgramARB(program);
+  GLint status;
+  glGetObjectParameterivARB(program, GL_OBJECT_LINK_STATUS_ARB, &status);
+
+  if (status == 0) {
+    GLint length = 0;
+    char* info = nullptr;
+
+    glGetObjectParameterivARB(program, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
+    info = SDL_stack_alloc(char, length + 1);
+    glGetInfoLogARB(program, length, nullptr, info);
+    Logger::error(std::string("Failed to link shader: ") + info);
+    SDL_stack_free(info);
+  }
+}
+
+/**
  * \brief Compile a shader from source.
  * \param shader Reference to the shader to fill and compile.
  * \param source Sources to compile.
@@ -199,77 +242,6 @@ void GL_ARBShader::set_rendering_settings() {
   glOrtho(-1.0, 1.0, -1.0 / aspect, 1.0 / aspect, 0.0, 1.0);
 
   glMatrixMode(GL_MODELVIEW);
-}
-
-/**
- * \brief Callback when parsing the lua file. Fill the loading shader with the result.
- * \param l The lua state.
- */
-int GL_ARBShader::l_shader(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    if (loading_shader != nullptr) {
-
-      GLhandleARB& program = loading_shader->program,
-          vertex_shader = loading_shader->vertex_shader,
-          fragment_shader = loading_shader->fragment_shader;
-
-      // Retrieve the videomode properties from the table parameter.
-      LuaTools::check_type(l, 1, LUA_TTABLE);
-
-      const std::string vertex_source =
-          LuaTools::opt_string_field(l, 1, "vertex_source",
-              "void main(){\
-               gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\
-               gl_TexCoord[0] = gl_MultiTexCoord0;\
-             }");
-      const std::string fragment_source =
-          LuaTools::check_string_field(l, 1, "fragment_source");
-
-//      loading_shader->shader_name = shader_name;  // TODO
-
-      // Create the vertex and fragment shaders.
-      vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-      compile_shader(vertex_shader, vertex_source.c_str());
-
-      fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
-      compile_shader(fragment_shader, fragment_source.c_str());
-
-      // Create a program object with both shaders.
-      program = glCreateProgramObjectARB();
-      glAttachObjectARB(program, vertex_shader);
-      glAttachObjectARB(program, fragment_shader);
-
-      glLinkProgramARB(program);
-      GLint status;
-      glGetObjectParameterivARB(program, GL_OBJECT_LINK_STATUS_ARB, &status);
-
-      if (status == 0) {
-        GLint length = 0;
-        char* info = nullptr;
-
-        glGetObjectParameterivARB(program, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
-        info = SDL_stack_alloc(char, length + 1);
-        glGetInfoLogARB(program, length, nullptr, info);
-        Logger::error(std::string("Failed to link shader: ") + info);
-        SDL_stack_free(info);
-      }
-
-      loading_shader = nullptr;
-    }
-
-    return 0;
-  });
-}
-
-/**
- * \brief Dummy method used to call the static lua callback for a specific shader implementation.
- * \param l The lua state.
- */
-void GL_ARBShader::register_callback(lua_State* l) {
-
-  loading_shader = this;
-  lua_register(l, "videomode", l_shader);
 }
 
 /**

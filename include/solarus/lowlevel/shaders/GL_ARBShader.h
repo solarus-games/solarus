@@ -41,13 +41,15 @@ class GL_ARBShader : public Shader {
     explicit GL_ARBShader(const std::string& shader_id);
     ~GL_ARBShader();
 
+  protected:
+
+    void load() override;
+
   private:
 
     static void compile_shader(GLhandleARB& shader, const char* source);
     static void set_rendering_settings();
-    static int l_shader(lua_State* l);
 
-    void register_callback(lua_State* l);
     void render(const SurfacePtr& quest_surface) const;
 
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */

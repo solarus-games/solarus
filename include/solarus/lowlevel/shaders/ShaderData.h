@@ -14,38 +14,38 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_SHADER_H
-#define SOLARUS_SHADER_H
+#ifndef SOLARUS_SHADER_DATA_H
+#define SOLARUS_SHADER_DATA_H
 
 #include "solarus/Common.h"
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/SurfacePtr.h"
-#include "solarus/lua/LuaContext.h"
-#include "solarus/lua/LuaTools.h"
-#include <string>
+#include "solarus/lua/LuaData.h"
 
 namespace Solarus {
 
 /**
- * \brief Represents a shader for a driver and sampler-independant uses.
+ * \brief Stores the content of a shader data file.
  */
-class Shader {
+class SOLARUS_API ShaderData : public LuaData {
 
   public:
 
-    explicit Shader(const std::string& shader_id);
-    virtual ~Shader();
+    ShaderData();
 
-    const std::string& get_id() const;
-    virtual void render(const SurfacePtr& quest_surface) const;
+    const std::string& get_vertex_source() const;
+    void set_vertex_source(const std::string& vertex_source);
 
-  protected:
+    const std::string& get_fragment_source() const;
+    void set_fragment_source(const std::string& fragment_source);
 
-    virtual void load();
+    bool import_from_lua(lua_State* l) override;
+    bool export_to_lua(std::ostream& out) const override;
 
   private:
 
-    const std::string shader_id;                       /**< The id of the shader (filename without extension). */
+    static int l_shader(lua_State* l);
+
+    std::string vertex_source;    /**< Source code of the vertex shader. */
+    std::string fragment_source;  /**< Source code of the fragment shader. */
 };
 
 }

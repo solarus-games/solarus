@@ -42,7 +42,7 @@ PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
 PFNGLGETHANDLEARBPROC glGetHandleARB;
 
 GLhandleARB default_shader_program = 0;
-GL_ARBShader* loading_shader = nullptr;
+GL_ARBShader* loading_shader = nullptr;  // TODO remove
 
 /**
  * @brief Casts a pointer-to-object (void*) to a pointer-to-function.
@@ -125,7 +125,7 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_id):
   glGetError();
 
   // Load the shader.
-  load(shader_id);
+  load();
 
   glUseProgramObjectARB(program);
 
@@ -217,10 +217,6 @@ int GL_ARBShader::l_shader(lua_State* l) {
       // Retrieve the videomode properties from the table parameter.
       LuaTools::check_type(l, 1, LUA_TTABLE);
 
-      const double& default_window_scale =
-          LuaTools::opt_number_field(l, 1, "default_window_scale", 1.0);
-      const std::string shader_name =
-          LuaTools::opt_string_field(l, 1, "name", loading_shader->shader_name);
       const std::string vertex_source =
           LuaTools::opt_string_field(l, 1, "vertex_source",
               "void main(){\
@@ -230,8 +226,7 @@ int GL_ARBShader::l_shader(lua_State* l) {
       const std::string fragment_source =
           LuaTools::check_string_field(l, 1, "fragment_source");
 
-      loading_shader->default_window_scale = default_window_scale;
-      loading_shader->shader_name = shader_name;
+//      loading_shader->shader_name = shader_name;  // TODO
 
       // Create the vertex and fragment shaders.
       vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);

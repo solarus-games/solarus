@@ -208,7 +208,7 @@ void initialize_video_modes() {
     // Get all shaders of the quest's shader/videomodes folder.
     const std::map<std::string, std::string>& shader_elements = CurrentQuest::get_resources(ResourceType::SHADER);
 
-    for (const auto& kvp: shader_elements) {
+    for (const auto& kvp: shader_elements) {  // TODO only create video modes on demand
 
       // Load the shader and add the corresponding video mode.
       const std::string& shader_id = kvp.first;
@@ -216,16 +216,15 @@ void initialize_video_modes() {
           ShaderContext::create_shader(shader_id);
       if (video_mode_shader != nullptr) {
 
-        const std::string& video_mode_name = video_mode_shader->get_name();
+        const std::string& video_mode_name = video_mode_shader->get_id();
         if (Video::get_video_mode_by_name(video_mode_name) != nullptr) {
           Debug::error("There is already a video mode with name '" + video_mode_name + "'");
           continue;
         }
 
-        const Size scaled_quest_size = quest_size * video_mode_shader->get_default_window_scale();
         all_video_modes.emplace_back(
-              video_mode_shader->get_name(),
-              scaled_quest_size,
+              video_mode_shader->get_id(),
+              quest_size,  // TODO No automatic window size change.
               nullptr,
               std::move(video_mode_shader)
         );

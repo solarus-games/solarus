@@ -25,11 +25,10 @@ namespace Solarus {
 
 /**
  * \brief Constructor.
- * \param shader_name The name of the shader to load.
+ * \param shader_id The id of the shader to load (filename without extension).
  */
-Shader::Shader(const std::string& shader_name):
-    shader_name(shader_name),
-    default_window_scale(1.0) {
+Shader::Shader(const std::string& shader_id):
+    shader_id(shader_id) {
 }
 
 /**
@@ -39,21 +38,12 @@ Shader::~Shader() {
 }
 
 /**
- * \brief Get the name of the shader, which is also the name of the related video mode.
- * \return The name of the shader.
+ * \brief Returns the id of the shader.
+ * \return The id of the shader.
  */
-const std::string& Shader::get_name() {
+const std::string& Shader::get_id() const {
 
-  return shader_name;
-}
-
-/**
- * \brief Get the scale to apply on the quest size to get the final default size of the related video mode.
- * \return The window scale.
- */
-double Shader::get_default_window_scale() {
-
-  return default_window_scale;
+  return shader_id;
 }
 
 /**
@@ -66,11 +56,11 @@ void Shader::render(const SurfacePtr& /* quest_surface */) const {
 }
 
 /**
- * \brief Load all files from the corresponding shader, depending on the driver and shader names.
- * Parse the Lua file and compile GLSL others.
- * \param shader_id The name of the shader to load.
+ * \brief Loads this shader.
+ *
+ * Parses the data file and compiles GLSL others.
  */
-void Shader::load(const std::string& shader_id) {
+void Shader::load() {
 
   const std::string shader_file_name =
       "shaders/" + shader_id + ".dat";

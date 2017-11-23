@@ -337,6 +337,10 @@ int LuaContext::video_api_set_window_size(lua_State* l) {
 int LuaContext::video_api_reset_window_size(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
+    LuaContext& lua_context = get_lua_context(l);
+    lua_context.warning_deprecated("sol.video.reset_window_size()",
+        "Use sol.video.set_window_size() instead.");
+
     Video::set_window_size(Video::get_quest_size());
 
     return 0;

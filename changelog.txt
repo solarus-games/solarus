@@ -28,6 +28,7 @@ Changes that introduce incompatibilities:
 
 Changes that do not introduce incompatibilities:
 
+* Video mode functions are now deprecated. Use shader functions instead.
 * Add a function sol.main.get_quest_version() (#1058) by Nate-Devv.
 * Add methods entity:get_layer() and entity:set_layer().
 * Add a method sprite:get_frame_src_xy() (#1093).

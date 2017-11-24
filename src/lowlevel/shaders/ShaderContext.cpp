@@ -30,7 +30,6 @@ bool ShaderContext::shader_supported = false;
  */
 bool ShaderContext::initialize() {
 
-  // TODO try to initialize DX shaders before GL ones.
   shader_supported = GLContext::initialize();
 
   return shader_supported;
@@ -54,7 +53,6 @@ void ShaderContext::quit() {
 std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& shader_id) {
 
   std::unique_ptr<Shader> shader = nullptr;
-  bool error = false;
 
   if (true) {  // TODO
     shader = std::unique_ptr<Shader>(new GL_ARBShader(shader_id));
@@ -64,10 +62,6 @@ std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& shader_i
   }
 
   if (glGetError() != GL_NO_ERROR) {
-    error = true;
-  }
-
-  if (error) {
     Debug::error("Can't compile shader '" + shader_id + "'");
     shader = nullptr;
   }

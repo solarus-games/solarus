@@ -54,10 +54,8 @@ bool GLContext::initialize() {
   }
 
   // Setting some parameters
-  glClearDepth(1.0); // Enables clearing of the depth buffer.
   glEnable(GL_DEPTH_TEST); // The type of depth test to do.
   glDepthFunc(GL_LESS); // Enables depth testing.
-  glShadeModel(GL_SMOOTH); // Enables smooth color shading.
 
   // Use late swap tearing, or try to use the classic swap interval (aka VSync) if not supported.
   if (SDL_GL_SetSwapInterval(-1) == -1) {

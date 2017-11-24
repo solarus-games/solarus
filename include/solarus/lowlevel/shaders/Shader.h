@@ -24,6 +24,9 @@
 #include "solarus/lua/LuaTools.h"
 #include <string>
 
+
+#define SOLARUS_HAVE_OPENGL // Temporary define. To determine at configure part
+
 namespace Solarus {
 
 /**

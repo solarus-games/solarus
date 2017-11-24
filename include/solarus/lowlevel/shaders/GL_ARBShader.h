@@ -21,14 +21,17 @@
 
 #include "solarus/lowlevel/shaders/Shader.h"
 #include <SDL.h>
-#include <SDL_opengl.h>
 #include <string>
+
+#ifdef SOLARUS_HAVE_OPENGL
+#  include <SDL_opengl.h>
+#endif
 
 
 namespace Solarus {
 
 /**
- * \brief Represents a GLSL shader for use with GL rectangle ARB sampler.
+ * \brief Represents a GLSL shader and displays it using the GL ARB extension way.
  *
  * This class basically encapsulates a GLSL vertex and fragment shader.
  */
@@ -36,6 +39,7 @@ class GL_ARBShader : public Shader {
 
   public:
 
+#ifdef SOLARUS_HAVE_OPENGL
     static bool initialize();
 
     explicit GL_ARBShader(const std::string& shader_id);
@@ -47,14 +51,19 @@ class GL_ARBShader : public Shader {
 
   private:
 
-    static void compile_shader(GLhandleARB& shader, const char* source);
+    static GLhandleARB create_shader(uint type, const char* source);
     static void set_rendering_settings();
 
-    void render(const SurfacePtr& quest_surface) const;
+    void render(const SurfacePtr& quest_surface) const override;
 
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */
     GLhandleARB vertex_shader;                   /**< The vertex shader. */
     GLhandleARB fragment_shader;                 /**< The fragment shader. */
+#else
+
+  static bool initialize() { return false; }
+  explicit GL_ARBShader(const std::string& shader_id): Shader(shader_id)  {}
+#endif
 };
 
 }

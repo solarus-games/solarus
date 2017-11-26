@@ -206,7 +206,7 @@ void GL_ARBShader::load() {
     glGetObjectParameterivARB(program, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
     info = SDL_stack_alloc(char, length + 1);
     glGetInfoLogARB(program, length, nullptr, info);
-    Logger::error(std::string("Failed to link shader: ") + info);
+    Logger::error(std::string("Failed to link shader ") + get_id() + std::string(" :\n") + info);
     SDL_stack_free(info);
   }
 }
@@ -235,7 +235,7 @@ GLhandleARB GL_ARBShader::create_shader(uint type, const char* source) {
     glGetObjectParameterivARB(shader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
     info = SDL_stack_alloc(char, length + 1);
     glGetInfoLogARB(shader, length, nullptr, info);
-    Logger::error(std::string("Failed to compile shader: ") + info);
+    Logger::error(std::string("Failed to compile shader ") + get_id() + std::string(" :\n") + info);
     SDL_stack_free(info);
   }
 

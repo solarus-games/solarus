@@ -51,7 +51,7 @@ class GL_ARBShader : public Shader {
 
   private:
 
-    static GLhandleARB create_shader(uint type, const char* source);
+    GLhandleARB create_shader(uint type, const char* source);
     static void set_rendering_settings();
 
     void render(const SurfacePtr& quest_surface) const override;

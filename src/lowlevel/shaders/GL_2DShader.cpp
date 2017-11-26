@@ -209,7 +209,7 @@ void GL_2DShader::load() {
     if (info_len > 1) {
       char* info = (char*)malloc(sizeof(char) * info_len);
       ctx.glGetProgramInfoLog(program, info_len, NULL, info);
-      Logger::error(std::string("Failed to link shader: ") + info);
+      Logger::error(std::string("Failed to link shader ") + get_id() + std::string(" :\n") + info);
       free(info);
     }
 
@@ -249,7 +249,7 @@ GLuint GL_2DShader::create_shader(GLenum type, const char* source) {
     if(info_len > 1) {
       char* info = (char*)malloc(sizeof(char) * info_len);
       ctx.glGetShaderInfoLog(shader, info_len, NULL, info);
-      Logger::error(std::string("Error compiling shader:\n%s\n") + info);
+      Logger::error(std::string("Error compiling shader ") + get_id() + std::string(" :\n") + info);
       free(info);
     }
 

@@ -23,6 +23,8 @@
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Video.h"
 
+#ifdef SOLARUS_HAVE_OPENGL
+
 namespace Solarus {
 
 namespace {
@@ -58,6 +60,7 @@ template<typename FunctionPointerType>
 FunctionPointerType get_proc_address_cast(void* object_ptr) {
   return *reinterpret_cast<FunctionPointerType*>(&object_ptr);
 }
+
 }  // Anonymous namespace
 
 /**
@@ -66,9 +69,13 @@ FunctionPointerType get_proc_address_cast(void* object_ptr) {
  */
 bool GL_ARBShader::initialize() {
 
-  // TODO Be sure that SDL doesn't disable GL ARB for render targets even if available.
+  // TODO Make sure that SDL doesn't disable GL ARB for render targets even if available.
 
-  // Check for shader support
+  // Setting some parameters.
+  glClearDepth(1.0); // Enables clearing of the depth buffer.
+  glShadeModel(GL_SMOOTH); // Enables smooth color shading.
+
+  // Initialize GL ARB functions.
   if (SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
       SDL_GL_ExtensionSupported("GL_ARB_shading_language_100") &&
       SDL_GL_ExtensionSupported("GL_ARB_vertex_shader") &&
@@ -102,7 +109,7 @@ bool GL_ARBShader::initialize() {
         glUseProgramObjectARB &&
         glGetHandleARB) {
 
-      // Get ARB default configuration.
+      // Get default shader.
       default_shader_program = glGetHandleARB(GL_CURRENT_PROGRAM);
 
       return true;
@@ -127,13 +134,21 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_id):
   // Load the shader.
   load();
 
+  // Set up constant uniform variables.
   glUseProgramObjectARB(program);
 
-  // Set up the sampler and the io size (= quest size) as uniform variables.
   GLint location = glGetUniformLocationARB(program, "solarus_sampler");
   if (location >= 0) {
-    glUniform1iARB(location, 0); // 0 means texture unit 0.
+    glUniform1iARB(location, 0);
   }
+
+  const Size& quest_size = Video::get_quest_size();
+  location = glGetUniformLocationARB(program, "solarus_input_size");
+  if (location >= 0) {
+    glUniform2fARB(location, quest_size.width, quest_size.height);
+  }
+
+  glUseProgramObjectARB(default_shader_program);
 
   /*
   SDL_Texture* render_target = Video::get_render_target();
@@ -142,13 +157,6 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_id):
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   SDL_GL_UnbindTexture(render_target);
   */
-
-  const Size& quest_size = Video::get_quest_size();
-  location = glGetUniformLocationARB(program, "solarus_input_size");
-  if (location >= 0) {
-    glUniform2fARB(location, quest_size.width, quest_size.height);
-  }
-  glUseProgramObjectARB(default_shader_program);
 }
 
 /**
@@ -177,11 +185,8 @@ void GL_ARBShader::load() {
   }
 
   // Create the vertex and fragment shaders.
-  vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-  compile_shader(vertex_shader, data.get_vertex_source().c_str());
-
-  fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
-  compile_shader(fragment_shader, data.get_fragment_source().c_str());
+  vertex_shader = create_shader(GL_VERTEX_SHADER_ARB, data.get_vertex_source().c_str());
+  fragment_shader = create_shader(GL_FRAGMENT_SHADER_ARB, data.get_fragment_source().c_str());
 
   // Create a program object with both shaders.
   program = glCreateProgramObjectARB();
@@ -189,6 +194,8 @@ void GL_ARBShader::load() {
   glAttachObjectARB(program, fragment_shader);
 
   glLinkProgramARB(program);
+
+  // Check GL status.
   GLint status;
   glGetObjectParameterivARB(program, GL_OBJECT_LINK_STATUS_ARB, &status);
 
@@ -206,15 +213,20 @@ void GL_ARBShader::load() {
 
 /**
  * \brief Compile a shader from source.
- * \param shader Reference to the shader to fill and compile.
+ * \param type The type of the shader to fill and compile.
  * \param source Sources to compile.
  */
-void GL_ARBShader::compile_shader(GLhandleARB& shader, const char* source) {
+GLhandleARB GL_ARBShader::create_shader(uint type, const char* source) {
 
   GLint status;
 
+  // Create the shader object.
+  GLhandleARB shader = glCreateShaderObjectARB(type);
+
   glShaderSourceARB(shader, 1, &source, nullptr);
   glCompileShaderARB(shader);
+
+  // Check the compile status.
   glGetObjectParameterivARB(shader, GL_OBJECT_COMPILE_STATUS_ARB, &status);
   if (status == 0) {
     GLint length;
@@ -226,6 +238,8 @@ void GL_ARBShader::compile_shader(GLhandleARB& shader, const char* source) {
     Logger::error(std::string("Failed to compile shader: ") + info);
     SDL_stack_free(info);
   }
+
+  return shader;
 }
 
 /**
@@ -280,7 +294,7 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
 
   glUseProgramObjectARB(program);
 
-  // Update the display time uniform variable.
+  // Update uniform variables.
   GLint location = glGetUniformLocationARB(program, "solarus_time");
   if (location >= 0) {
     glUniform1iARB(location, System::now());
@@ -292,6 +306,7 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
     glUniform2fARB(location, window_size.width, window_size.height);
   }
 
+  // Draw.
   const GLfloat square_texcoord[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
   const GLfloat* texcoord = square_texcoord;
 
@@ -317,3 +332,5 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
 }
 
 }
+
+#endif /* SOLARUS_HAVE_OPENGL */

@@ -13,14 +13,13 @@ Running a 1.6 quest with Solarus 1.6:
 - sol.video.set_mode() and friends are now deprecated but still work,
   including their automatic window resizing factors.
 - Shaders are not applied if the video mode is not "normal".
-- The video mode from settings is now ignored and will no longer be saved.
+- The video mode from settings is replaced by the corresponding shader id.
 - Initial window size: quest size x2.
 - Changing the shader does not resize the window.
 - The launcher GUI menu should show shader names.
 
 Converting a 1.5 quest to 1.6 with the quest editor:
 - Create shaders equivalent to the old built-in video modes.
-
 
 Deprecated functions:
 - sol.video.get_mode()

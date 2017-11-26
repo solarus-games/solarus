@@ -531,10 +531,10 @@ void MainLoop::load_quest_properties() {
 
   check_version_compatibility(properties.get_solarus_version());
 
+  Logger::info("Quest format: " + properties.get_solarus_version());
+
   const std::string& title = properties.get_title();
   const std::string& quest_version = properties.get_quest_version();
-
-  Logger::info("Quest format: " + properties.get_solarus_version());
 
   if (!title.empty()) {
     std::string window_title = title;

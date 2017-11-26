@@ -6,6 +6,7 @@ ___________________________
 Engine changes
 --------------
 
+* Solarus 1.5 quests are still supported by Solarus 1.6.
 * Treasure dialogs are now optional (#1076).
 * Fix random movement giving the same path for all entities on Mac (#1083).
 * Fix possible crash when reloading very old savegame files (#1064).

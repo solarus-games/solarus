@@ -45,38 +45,54 @@ namespace {
 /**
  * \brief Checks that the quest is compatible with the current version of
  * Solarus.
- * \param solarus_required_version Version of the quest.
+ * \param quest_version Version of the quest.
  */
-void check_version_compatibility(const std::string& solarus_required_version) {
+void check_version_compatibility(const std::string& quest_version) {
 
-  if (solarus_required_version.empty()) {
+  if (quest_version.empty()) {
     Debug::die("No Solarus version is specified in your quest.dat file!");
   }
 
   // TODO check the syntax of the version string
 
-  int dot_index_1 = solarus_required_version.find('.');
-  std::istringstream iss(solarus_required_version.substr(0, dot_index_1));
-  int required_major_version = 0;
-  iss >> required_major_version;
+  int dot_index_1 = quest_version.find('.');
+  std::istringstream iss(quest_version.substr(0, dot_index_1));
+  int quest_major_version = 0;
+  iss >> quest_major_version;
 
-  int dot_index_2 = solarus_required_version.find('.', dot_index_1 + 1);
-  std::istringstream iss2(solarus_required_version.substr(dot_index_1 + 1, dot_index_2));
-  int required_minor_version = 0;
-  iss2 >> required_minor_version;
+  int dot_index_2 = quest_version.find('.', dot_index_1 + 1);
+  std::istringstream iss2(quest_version.substr(dot_index_1 + 1, dot_index_2));
+  int quest_minor_version = 0;
+  iss2 >> quest_minor_version;
 
   // The third digit of the version (patch) is ignored because compatibility
   // is not broken by patches.
 
-  // For now, we assume that any mismatch of major or minor version (first
-  // and second digits) breaks compatibility and we just die.
-  // This may change in the future, because all minor versions won't
-  // necessarily break compatibility.
-  if (required_major_version != SOLARUS_MAJOR_VERSION ||
-      required_minor_version != SOLARUS_MINOR_VERSION) {
+  bool compatible = true;
+  if (quest_major_version != SOLARUS_MAJOR_VERSION) {
+    // Assume that changes of major versions break compatibility.
+    compatible = false;
+  }
+  else {
+    if (quest_minor_version > SOLARUS_MINOR_VERSION) {
+      // The quest is too recent for this engine.
+      compatible = false;
+    }
+    else {
+      // 1.5 quests can be run by Solarus 1.6.
+      if (quest_minor_version < SOLARUS_MINOR_VERSION &&
+          quest_major_version == 1 &&
+          quest_minor_version < 5
+      ) {
+        compatible = false;
+      }
+    }
+  }
+
+  if (!compatible) {
     std::ostringstream oss;
-    oss << "This quest is made for Solarus " << required_major_version << "."
-        << required_minor_version << ".x but you are running Solarus "
+    oss << "This quest is made for Solarus " << quest_major_version << "."
+        << quest_minor_version << ".x but you are running Solarus "
         << SOLARUS_VERSION;
     Debug::die(oss.str());
   }
@@ -514,8 +530,12 @@ void MainLoop::load_quest_properties() {
   const QuestProperties& properties = CurrentQuest::get_properties();
 
   check_version_compatibility(properties.get_solarus_version());
+
   const std::string& title = properties.get_title();
   const std::string& quest_version = properties.get_quest_version();
+
+  Logger::info("Quest format: " + properties.get_solarus_version());
+
   if (!title.empty()) {
     std::string window_title = title;
     if (!quest_version.empty()) {

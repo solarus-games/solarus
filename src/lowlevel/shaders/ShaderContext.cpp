@@ -62,7 +62,7 @@ std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& shader_i
   }
 
   if (glGetError() != GL_NO_ERROR) {
-    Debug::error("Can't compile shader '" + shader_id + "'");
+    Debug::error("Can't create shader '" + shader_id + "'");
     shader = nullptr;
   }
 

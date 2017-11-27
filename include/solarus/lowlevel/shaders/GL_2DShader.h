@@ -53,7 +53,7 @@ class GL_2DShader : public Shader {
 
   private:
 
-    static GLuint create_shader(GLenum type, const char* source);
+    GLuint create_shader(GLenum type, const char* source);
     static void check_gl_error();
 
     void render(const SurfacePtr& quest_surface) const override;

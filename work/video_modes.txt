@@ -30,7 +30,6 @@ Deprecated functions:
 New API:
 - sol.video.get_shader()
 - sol.video.set_shader(shader)
-- sol.video.switch_shader()
 - sol.shader.create(shader_id)
 - shader:get_id()
 - shader:is_valid()

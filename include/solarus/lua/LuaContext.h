@@ -446,6 +446,7 @@ class LuaContext {
       main_api_save_settings,
       main_api_get_distance,  // TODO remove?
       main_api_get_angle,     // TODO remove?
+      main_api_get_resource_ids,
       main_api_get_type,
       main_api_get_metatable,
       main_api_get_os,

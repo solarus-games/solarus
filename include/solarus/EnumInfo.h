@@ -69,6 +69,16 @@ E name_to_enum(const std::string& name);
 template <typename E>
 E name_to_enum(const std::string& name, E default_value);
 
+/**
+ * \brief Returns an enum value from its name.
+ * \param name An enum name.
+ * \param default_value The default value to return if name is not found.
+ * \param success Set to \c true if the name is found.
+ * \return The corresponding value if found, otherwise default_value.
+ */
+template <typename E>
+E name_to_enum(const std::string& name, E default_value, bool& success);
+
 }
 
 #include "EnumInfo.inl"

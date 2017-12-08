@@ -34,9 +34,11 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/AbilityInfo.h"
+#include "solarus/CurrentQuest.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
 #include "solarus/Map.h"
+#include "solarus/QuestProperties.h"
 #include "solarus/Timer.h"
 #include "solarus/Treasure.h"
 #include <sstream>
@@ -429,25 +431,43 @@ void LuaContext::notify_dialog_finished(
 }
 
 /**
- * \brief Shows a warning message for a deprecated function of the Lua API.
+ * \brief Shows a deprecation warning message if the quest format is recent enough.
  *
+ * Does nothing if the quest format is older than the given version.
  * Does nothing if the message for this function was already shown once.
  *
+ * \param version Solarus version (major and minor numbers) where the function
+ *   becomes deprecated.
  * \param function_name A deprecated Lua function.
  * \param message A warning message explaining how to replace the call.
  */
 void LuaContext::warning_deprecated(
+    const std::pair<int, int>& version_deprecating,
     const std::string& function_name,
     const std::string& message
 ) {
+
   if (warning_deprecated_functions.find(function_name) !=
       warning_deprecated_functions.end()) {
     return;
   }
-  Logger::warning("The function " + function_name +
-                  " is deprecated and may be removed in a future version. " +
-                  message);
-  warning_deprecated_functions.insert(function_name);
+
+  const QuestProperties& quest_properties = CurrentQuest::get_properties();
+  const std::pair<int, int>& quest_format = quest_properties.get_solarus_version_major_minor();
+  if (quest_format.first > version_deprecating.first ||
+      (quest_format.first == version_deprecating.first &&
+       quest_format.second >= version_deprecating.second)
+      ) {
+    std::ostringstream oss;
+    oss << "The function "<< function_name <<
+           " is deprecated since Solarus " <<
+           version_deprecating.first << "." <<
+           version_deprecating.second << ". " <<
+           message;
+    Logger::warning(oss.str());
+    warning_deprecated_functions.insert(function_name);
+  }
+
 }
 
 /**

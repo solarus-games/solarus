@@ -59,7 +59,7 @@ void LuaContext::register_video_module() {
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
  */
-int LuaContext::video_api_get_window_title(lua_State *l) {
+int LuaContext::video_api_get_window_title(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& window_title =
@@ -75,7 +75,7 @@ int LuaContext::video_api_get_window_title(lua_State *l) {
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
  */
-int LuaContext::video_api_set_window_title(lua_State *l) {
+int LuaContext::video_api_set_window_title(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const std::string& window_title = LuaTools::check_string(l, 1);
@@ -90,9 +90,16 @@ int LuaContext::video_api_set_window_title(lua_State *l) {
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
  */
-int LuaContext::video_api_get_mode(lua_State *l) {
+int LuaContext::video_api_get_mode(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
+
+    get_lua_context(l).warning_deprecated(
+        { 1, 6 },
+        "sol.video.get_mode()",
+        "Use sol.video.get_shader() instead."
+    );
+
     const VideoMode& mode = Video::get_video_mode();
 
     push_string(l, mode.get_name());
@@ -105,9 +112,16 @@ int LuaContext::video_api_get_mode(lua_State *l) {
  * \param l the Lua context that is calling this function
  * \return Number of values to return to Lua.
  */
-int LuaContext::video_api_set_mode(lua_State *l) {
+int LuaContext::video_api_set_mode(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
+
+    get_lua_context(l).warning_deprecated(
+        { 1, 6 },
+        "sol.video.set_mode()",
+        "Use sol.video.set_shader() instead."
+    );
+
     std::string mode_name = LuaTools::check_string(l, 1);
     const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
@@ -127,6 +141,13 @@ int LuaContext::video_api_set_mode(lua_State *l) {
 int LuaContext::video_api_switch_mode(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
+
+    get_lua_context(l).warning_deprecated(
+        { 1, 6 },
+        "sol.video.switch_mode()",
+        "Use sol.video.get_shader() instead."
+    );
+
     Video::switch_video_mode();
 
     return 0;
@@ -141,6 +162,13 @@ int LuaContext::video_api_switch_mode(lua_State* l) {
 int LuaContext::video_api_get_modes(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
+
+    get_lua_context(l).warning_deprecated(
+        { 1, 6 },
+        "sol.video.get_modes()",
+        "Use sol.main.get_resource_ids(\"shader\") instead."
+    );
+
     const std::vector<const VideoMode*>& modes =
         Video::get_video_modes();
 
@@ -162,9 +190,16 @@ int LuaContext::video_api_get_modes(lua_State* l) {
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
  */
-int LuaContext::video_api_is_mode_supported(lua_State *l) {
+int LuaContext::video_api_is_mode_supported(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
+
+    get_lua_context(l).warning_deprecated(
+        { 1, 6 },
+        "sol.video.is_mode_supported()",
+        "Use sol.shader.create() instead."
+    );
+
     std::string mode_name = LuaTools::check_string(l, 1);
     const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
@@ -180,7 +215,7 @@ int LuaContext::video_api_is_mode_supported(lua_State *l) {
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
  */
-int LuaContext::video_api_is_fullscreen(lua_State *l) {
+int LuaContext::video_api_is_fullscreen(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     bool fullscreen = Video::is_fullscreen();
@@ -195,7 +230,7 @@ int LuaContext::video_api_is_fullscreen(lua_State *l) {
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
  */
-int LuaContext::video_api_set_fullscreen(lua_State *l) {
+int LuaContext::video_api_set_fullscreen(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     bool fullscreen = LuaTools::opt_boolean(l, 1, true);
@@ -226,7 +261,7 @@ int LuaContext::video_api_is_cursor_visible(lua_State *l) {
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
  */
-int LuaContext::video_api_set_cursor_visible(lua_State *l) {
+int LuaContext::video_api_set_cursor_visible(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     bool visible_cursor = LuaTools::opt_boolean(l, 1, true);
@@ -301,6 +336,13 @@ int LuaContext::video_api_set_window_size(lua_State* l) {
 int LuaContext::video_api_reset_window_size(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
+\
+    get_lua_context(l).warning_deprecated(
+        { 1, 6 },
+        "sol.video.reset_window_size()",
+        "Use sol.video.set_window_size() instead."
+    );
+
     Video::reset_window_size();
 
     return 0;

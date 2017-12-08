@@ -171,6 +171,7 @@ class LuaContext {
     void run_custom_entity(CustomEntity& custom_entity);
 
     void warning_deprecated(
+        const std::pair<int, int>& version_deprecating,
         const std::string& function_name,
         const std::string& message
     );

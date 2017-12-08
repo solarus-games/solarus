@@ -23,10 +23,6 @@ Engine changes
 Lua API changes
 ---------------
 
-Changes that introduce incompatibilities:
-
-* 
-
 Changes that do not introduce incompatibilities:
 
 * Video mode functions are now deprecated. Use shader functions instead.

@@ -45,25 +45,16 @@ namespace {
 /**
  * \brief Checks that the quest is compatible with the current version of
  * Solarus.
- * \param quest_version Version of the quest.
+ * \param quest_version Solarus sersion of the quest (major and minor number).
  */
-void check_version_compatibility(const std::string& quest_version) {
+void check_version_compatibility(const std::pair<int, int>& quest_version) {
 
-  if (quest_version.empty()) {
+  const int quest_major_version = quest_version.first;
+  const int quest_minor_version = quest_version.second;
+
+  if (quest_version.first == 0) {
     Debug::die("No Solarus version is specified in your quest.dat file!");
   }
-
-  // TODO check the syntax of the version string
-
-  int dot_index_1 = quest_version.find('.');
-  std::istringstream iss(quest_version.substr(0, dot_index_1));
-  int quest_major_version = 0;
-  iss >> quest_major_version;
-
-  int dot_index_2 = quest_version.find('.', dot_index_1 + 1);
-  std::istringstream iss2(quest_version.substr(dot_index_1 + 1, dot_index_2));
-  int quest_minor_version = 0;
-  iss2 >> quest_minor_version;
 
   // The third digit of the version (patch) is ignored because compatibility
   // is not broken by patches.
@@ -529,7 +520,7 @@ void MainLoop::load_quest_properties() {
 
   const QuestProperties& properties = CurrentQuest::get_properties();
 
-  check_version_compatibility(properties.get_solarus_version());
+  check_version_compatibility(properties.get_solarus_version_major_minor());
 
   Logger::info("Quest format: " + properties.get_solarus_version());
 

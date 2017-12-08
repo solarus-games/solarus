@@ -38,9 +38,8 @@ const std::string LuaContext::main_module_name = "sol.main";
  */
 void LuaContext::register_main_module() {
 
-  static const luaL_Reg functions[] = {
+  std::vector<luaL_Reg> functions = {
       { "get_solarus_version", main_api_get_solarus_version },
-      { "get_quest_version", main_api_get_quest_version },
       { "get_quest_format", main_api_get_quest_format },
       { "load_file", main_api_load_file },
       { "do_file", main_api_do_file },
@@ -53,13 +52,17 @@ void LuaContext::register_main_module() {
       { "save_settings", main_api_save_settings },
       { "get_distance", main_api_get_distance },
       { "get_angle", main_api_get_angle },
-      { "get_resource_ids", main_api_get_resource_ids },
       { "get_type", main_api_get_type },
       { "get_metatable", main_api_get_metatable },
-      { "get_os", main_api_get_os },
-      { nullptr, nullptr }
+      { "get_os", main_api_get_os }
   };
 
+  if (CurrentQuest::is_format_at_least({ 1, 6 })) {
+    functions.insert(functions.end(), {
+        { "get_quest_version", main_api_get_quest_version },
+        { "get_resource_ids", main_api_get_resource_ids }
+    });
+  }
   register_functions(main_module_name, functions);
 
   // Store sol.main in the registry to access it safely

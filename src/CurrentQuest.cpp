@@ -307,6 +307,34 @@ const Dialog& get_dialog(const std::string& dialog_id) {
   return get_dialogs()[dialog_id];
 }
 
+/**
+ * \brief Returns whether the quest format is greater than or equal
+ * to a Solarus version.
+ * \param version A Solarus version (major and minor numbers).
+ * \return \c true if the quest format is greater than to equal to this
+ * Solarus version.
+ */
+bool is_format_at_least(const std::pair<int, int>& version) {
+
+  const std::pair<int, int>& quest_format = get_properties().get_solarus_version_major_minor();
+  return quest_format.first > version.first ||
+      (quest_format.first == version.first && quest_format.second >= version.second);
 }
+
+/**
+ * \brief Returns whether the quest format is lower than or equal
+ * to a Solarus version.
+ * \param version A Solarus version (major and minor numbers).
+ * \return \c true if the quest format is lower than to equal to this
+ * Solarus version.
+ */
+bool is_format_at_most(const std::pair<int, int>& version) {
+
+  const std::pair<int, int>& quest_format = get_properties().get_solarus_version_major_minor();
+  return quest_format.first < version.first ||
+      (quest_format.first == version.first && quest_format.second <= version.second);
+}
+
+}  // namespace CurrentQuest
 
 }

@@ -33,7 +33,7 @@ const std::string LuaContext::video_module_name = "sol.video";
  */
 void LuaContext::register_video_module() {
 
-  static const luaL_Reg functions[] = {
+  const std::vector<luaL_Reg> functions = {
       { "get_window_title", video_api_get_window_title },
       { "set_window_title", video_api_set_window_title },
       { "get_mode", video_api_get_mode },
@@ -48,8 +48,7 @@ void LuaContext::register_video_module() {
       { "get_quest_size", video_api_get_quest_size },
       { "get_window_size", video_api_get_window_size },
       { "set_window_size", video_api_set_window_size },
-      { "reset_window_size", video_api_reset_window_size },
-      { nullptr, nullptr }
+      { "reset_window_size", video_api_reset_window_size }
   };
   register_functions(video_module_name, functions);
 }

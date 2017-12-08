@@ -30,12 +30,11 @@ const std::string LuaContext::file_module_name = "sol.file";
  */
 void LuaContext::register_file_module() {
 
-  static const luaL_Reg functions[] = {
+  const std::vector<luaL_Reg> functions = {
       { "open", file_api_open },
       { "exists", file_api_exists },
       { "remove", file_api_remove },
-      { "mkdir", file_api_mkdir },
-      { nullptr, nullptr }
+      { "mkdir", file_api_mkdir }
   };
   register_functions(file_module_name, functions);
 

@@ -33,7 +33,7 @@ const std::string LuaContext::audio_module_name = "sol.audio";
  */
 void LuaContext::register_audio_module() {
 
-  static const luaL_Reg functions[] = {
+  const std::vector<luaL_Reg> functions = {
       { "get_sound_volume", audio_api_get_sound_volume },
       { "set_sound_volume", audio_api_set_sound_volume },
       { "play_sound", audio_api_play_sound },
@@ -48,8 +48,7 @@ void LuaContext::register_audio_module() {
       { "get_music_channel_volume", audio_api_get_music_channel_volume },
       { "set_music_channel_volume", audio_api_set_music_channel_volume },
       { "get_music_tempo", audio_api_get_music_tempo },
-      { "set_music_tempo", audio_api_set_music_tempo },
-      { nullptr, nullptr }
+      { "set_music_tempo", audio_api_set_music_tempo }
   };
   register_functions(audio_module_name, functions);
 }

@@ -32,7 +32,7 @@ const std::string LuaContext::input_module_name = "sol.input";
  */
 void LuaContext::register_input_module() {
 
-  static const luaL_Reg functions[] = {
+  const std::vector<luaL_Reg> functions = {
       { "is_joypad_enabled", input_api_is_joypad_enabled },
       { "set_joypad_enabled", input_api_set_joypad_enabled },
       { "is_key_pressed", input_api_is_key_pressed },
@@ -47,8 +47,7 @@ void LuaContext::register_input_module() {
       { "get_finger_position", input_api_get_finger_position },
       { "get_finger_pressure", input_api_get_finger_pressure },
       { "simulate_key_pressed", input_api_simulate_key_pressed },
-      { "simulate_key_released", input_api_simulate_key_released },
-      { nullptr, nullptr }
+      { "simulate_key_released", input_api_simulate_key_released }
   };
 
   register_functions(input_module_name, functions);

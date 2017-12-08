@@ -34,12 +34,11 @@ const std::string LuaContext::menu_module_name = "sol.menu";
 void LuaContext::register_menu_module() {
 
   // Functions of sol.menu.
-  static const luaL_Reg functions[] = {
+  const std::vector<luaL_Reg> functions = {
       { "start", menu_api_start },
       { "stop", menu_api_stop },
       { "stop_all", menu_api_stop_all },
-      { "is_started", menu_api_is_started },
-      { nullptr, nullptr }
+      { "is_started", menu_api_is_started }
   };
 
   register_functions(menu_module_name, functions);

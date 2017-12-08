@@ -58,6 +58,9 @@ SOLARUS_API std::map<std::string, Dialog>& get_dialogs();
 SOLARUS_API bool dialog_exists(const std::string& dialog_id);
 SOLARUS_API const Dialog& get_dialog(const std::string& dialog_id);
 
+SOLARUS_API bool is_format_at_least(const std::pair<int, int>& version);
+SOLARUS_API bool is_format_at_most(const std::pair<int, int>& version);
+
 }
 
 }

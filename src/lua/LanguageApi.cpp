@@ -58,14 +58,13 @@ void LuaContext::push_dialog(lua_State* l, const Dialog& dialog) {
  */
 void LuaContext::register_language_module() {
 
-  static const luaL_Reg functions[] = {
+  const std::vector<luaL_Reg> functions = {
       { "get_language", language_api_get_language },
       { "set_language", language_api_set_language },
       { "get_language_name", language_api_get_language_name },
       { "get_languages", language_api_get_languages },
       { "get_string", language_api_get_string },
-      { "get_dialog", language_api_get_dialog },
-      { nullptr, nullptr }
+      { "get_dialog", language_api_get_dialog }
   };
 
   register_functions(language_module_name, functions);

@@ -40,7 +40,7 @@ const std::string LuaContext::item_module_name = "sol.item";
  */
 void LuaContext::register_item_module() {
 
-  static const luaL_Reg methods[] = {
+  const std::vector<luaL_Reg> methods = {
       { "get_name", item_api_get_name },
       { "get_game", item_api_get_game },
       { "get_map", item_api_get_map },
@@ -72,18 +72,16 @@ void LuaContext::register_item_module() {
       { "remove_amount", item_api_remove_amount },
       { "get_max_amount", item_api_get_max_amount },
       { "set_max_amount", item_api_set_max_amount },
-      { "set_finished", item_api_set_finished },
-      { nullptr, nullptr }
+      { "set_finished", item_api_set_finished }
   };
 
-  static const luaL_Reg metamethods[] = {
+  const std::vector<luaL_Reg> metamethods = {
       { "__gc", userdata_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
-      { "__index", userdata_meta_index_as_table },
-      { nullptr, nullptr }
+      { "__index", userdata_meta_index_as_table }
   };
 
-  register_type(item_module_name, nullptr, methods, metamethods);
+  register_type(item_module_name, {}, methods, metamethods);
 }
 
 /**

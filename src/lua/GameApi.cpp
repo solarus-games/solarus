@@ -40,15 +40,14 @@ const std::string LuaContext::game_module_name = "sol.game";
 void LuaContext::register_game_module() {
 
   // Functions of sol.game.
-  static const luaL_Reg functions[] = {
+  const std::vector<luaL_Reg> functions = {
       { "exists", game_api_exists },
       { "delete", game_api_delete },
-      { "load", game_api_load },
-      { nullptr, nullptr }
+      { "load", game_api_load }
   };
 
   // Methods of the game type.
-  static const luaL_Reg methods[] = {
+  const std::vector<luaL_Reg> methods = {
       { "save", game_api_save },
       { "start", game_api_start },
       { "is_started", game_api_is_started },
@@ -105,15 +104,13 @@ void LuaContext::register_game_module() {
       { "set_command_joypad_binding", game_api_set_command_joypad_binding },
       { "capture_command_binding", game_api_capture_command_binding },
       { "simulate_command_pressed", game_api_simulate_command_pressed },
-      { "simulate_command_released", game_api_simulate_command_released },
-      { nullptr, nullptr }
+      { "simulate_command_released", game_api_simulate_command_released }
   };
 
-  static const luaL_Reg metamethods[] = {
+  const std::vector<luaL_Reg> metamethods = {
       { "__gc", userdata_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
-      { "__index", userdata_meta_index_as_table },
-      { nullptr, nullptr }
+      { "__index", userdata_meta_index_as_table }
   };
 
   register_type(game_module_name, functions, methods, metamethods);

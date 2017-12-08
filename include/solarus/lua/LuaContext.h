@@ -1056,13 +1056,13 @@ class LuaContext {
     // Initialization of modules.
     void register_functions(
         const std::string& module_name,
-        const luaL_Reg* functions
+        std::vector<luaL_Reg> functions
     );
     void register_type(
         const std::string& module_name,
-        const luaL_Reg* functions,
-        const luaL_Reg* methods,
-        const luaL_Reg* metamethods
+        std::vector<luaL_Reg> functions,
+        std::vector<luaL_Reg> methods,
+        std::vector<luaL_Reg> metamethods
     );
     void register_modules();
     void register_main_module();

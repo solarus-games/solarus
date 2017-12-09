@@ -18,6 +18,7 @@
 #define SOLARUS_VIDEO_H
 
 #include "solarus/Common.h"
+#include "solarus/lowlevel/shaders/ShaderPtr.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include <vector>
@@ -55,14 +56,6 @@ namespace Video {
     const std::string& get_rendering_driver_name();
     void show_window();
 
-    const SoftwareVideoMode& get_video_mode();
-    std::vector<const SoftwareVideoMode*> get_video_modes();
-    bool is_mode_supported(const SoftwareVideoMode& mode);
-    bool set_video_mode(const SoftwareVideoMode& mode);
-    void set_default_video_mode();
-    void switch_video_mode();
-    const SoftwareVideoMode* get_video_mode_by_name(const std::string& mode_name);
-
     bool is_fullscreen();
     void set_fullscreen(bool fullscreen);
 
@@ -71,6 +64,17 @@ namespace Video {
 
     std::string get_window_title();
     void set_window_title(const std::string& window_title);
+
+    const ShaderPtr& get_shader();
+    void set_shader(const ShaderPtr& shader);
+
+    const SoftwareVideoMode& get_video_mode();
+    std::vector<const SoftwareVideoMode*> get_video_modes();
+    bool is_mode_supported(const SoftwareVideoMode& mode);
+    bool set_video_mode(const SoftwareVideoMode& mode);
+    void set_default_video_mode();
+    void switch_video_mode();
+    const SoftwareVideoMode* get_video_mode_by_name(const std::string& mode_name);
 
     bool parse_size(const std::string& size_string, Size& size);
 

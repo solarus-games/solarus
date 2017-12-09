@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Color.h"
-#include "solarus/lowlevel/Size.h"
-#include "solarus/lowlevel/Rectangle.h"
-#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Size.h"
+#include "solarus/lowlevel/SoftwarePixelFilter.h"
 #include "solarus/lowlevel/Video.h"
-#include "solarus/lowlevel/PixelFilter.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Transition.h"
 #include <algorithm>
@@ -736,7 +736,7 @@ void Surface::draw_transition(Transition& transition) {
  * this surface multiplied by the scaling factor of the filter.
  */
 void Surface::apply_pixel_filter(
-    const PixelFilter& pixel_filter, Surface& dst_surface) {
+    const SoftwarePixelFilter& pixel_filter, Surface& dst_surface) {
 
   const int factor = pixel_filter.get_scaling_factor();
   Debug::check_assertion(dst_surface.get_width() == get_width() * factor,

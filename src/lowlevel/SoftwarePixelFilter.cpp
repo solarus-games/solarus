@@ -14,20 +14,20 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/PixelFilter.h"
+#include "solarus/lowlevel/SoftwarePixelFilter.h"
 
 namespace Solarus {
 
 /**
  * \brief Constructor.
  */
-PixelFilter::PixelFilter() {
+SoftwarePixelFilter::SoftwarePixelFilter() {
 }
 
 /**
  * \brief Destructor.
  */
-PixelFilter::~PixelFilter() {
+SoftwarePixelFilter::~SoftwarePixelFilter() {
 }
 
 }

@@ -21,10 +21,10 @@
 #include "solarus/lowlevel/InputEvent.h"
 #include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/Music.h"
+#include "solarus/lowlevel/SoftwareVideoMode.h"
 #include "solarus/lowlevel/Sound.h"
 #include "solarus/lowlevel/String.h"
 #include "solarus/lowlevel/Video.h"
-#include "solarus/lowlevel/VideoMode.h"
 #include <lua.hpp>
 #include <sstream>
 

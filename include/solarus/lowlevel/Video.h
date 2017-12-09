@@ -35,7 +35,7 @@ namespace Solarus {
 class Arguments;
 class Rectangle;
 class Size;
-class VideoMode;
+class SoftwareVideoMode;
 
 /**
  * \brief Draws the window and handles the video mode.
@@ -55,15 +55,13 @@ namespace Video {
     const std::string& get_rendering_driver_name();
     void show_window();
 
-    const VideoMode& get_video_mode();
-    std::vector<const VideoMode*> get_video_modes();
-    bool is_mode_supported(const VideoMode& mode);
-    bool set_video_mode(const VideoMode& mode);
-    bool set_video_mode(const VideoMode& mode, bool fullscreen);
+    const SoftwareVideoMode& get_video_mode();
+    std::vector<const SoftwareVideoMode*> get_video_modes();
+    bool is_mode_supported(const SoftwareVideoMode& mode);
+    bool set_video_mode(const SoftwareVideoMode& mode);
     void set_default_video_mode();
     void switch_video_mode();
-
-    const VideoMode* get_video_mode_by_name(const std::string& mode_name);
+    const SoftwareVideoMode* get_video_mode_by_name(const std::string& mode_name);
 
     bool is_fullscreen();
     void set_fullscreen(bool fullscreen);

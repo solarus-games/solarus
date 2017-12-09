@@ -24,7 +24,7 @@ namespace Solarus {
  * \brief Constructor.
  */
 Hq3xFilter::Hq3xFilter():
-  PixelFilter() {
+  SoftwarePixelFilter() {
 }
 
 /**

@@ -121,7 +121,6 @@ file(
   include/solarus/lowlevel/Music.h
   include/solarus/lowlevel/OggDecoder.h
   include/solarus/lowlevel/PixelBits.h
-  include/solarus/lowlevel/PixelFilter.h
   include/solarus/lowlevel/Point.h
   include/solarus/lowlevel/Point.inl
   include/solarus/lowlevel/QuestFiles.h
@@ -131,6 +130,8 @@ file(
   include/solarus/lowlevel/Size.h
   include/solarus/lowlevel/Size.inl
   include/solarus/lowlevel/Sound.h
+  include/solarus/lowlevel/SoftwarePixelFilter.h
+  include/solarus/lowlevel/SoftwareVideoMode.h
   include/solarus/lowlevel/SpcDecoder.h
   include/solarus/lowlevel/String.h
   include/solarus/lowlevel/Surface.h
@@ -138,7 +139,6 @@ file(
   include/solarus/lowlevel/System.h
   include/solarus/lowlevel/TextSurface.h
   include/solarus/lowlevel/Video.h
-  include/solarus/lowlevel/VideoMode.h
 
   include/solarus/lua/ExportableToLua.h
   include/solarus/lua/ExportableToLuaPtr.h
@@ -325,13 +325,14 @@ file(
   src/lowlevel/Music.cpp
   src/lowlevel/OggDecoder.cpp
   src/lowlevel/PixelBits.cpp
-  src/lowlevel/PixelFilter.cpp
   src/lowlevel/Point.cpp
   src/lowlevel/QuestFiles.cpp
   src/lowlevel/Random.cpp
   src/lowlevel/Rectangle.cpp
   src/lowlevel/Scale2xFilter.cpp
   src/lowlevel/Size.cpp
+  src/lowlevel/SoftwarePixelFilter.cpp
+  src/lowlevel/SoftwareVideoMode.cpp
   src/lowlevel/Sound.cpp
   src/lowlevel/SpcDecoder.cpp
   src/lowlevel/String.cpp
@@ -339,7 +340,6 @@ file(
   src/lowlevel/System.cpp
   src/lowlevel/TextSurface.cpp
   src/lowlevel/Video.cpp
-  src/lowlevel/VideoMode.cpp
 
   src/lua/AudioApi.cpp
   src/lua/DrawableApi.cpp

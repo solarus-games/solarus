@@ -17,7 +17,7 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/lowlevel/Video.h"
-#include "solarus/lowlevel/VideoMode.h"
+#include "solarus/lowlevel/SoftwareVideoMode.h"
 #include "solarus/lowlevel/Size.h"
 #include <lua.hpp>
 
@@ -99,7 +99,7 @@ int LuaContext::video_api_get_mode(lua_State* l) {
         "Use sol.video.get_shader() instead."
     );
 
-    const VideoMode& mode = Video::get_video_mode();
+    const SoftwareVideoMode& mode = Video::get_video_mode();
 
     push_string(l, mode.get_name());
     return 1;
@@ -122,7 +122,7 @@ int LuaContext::video_api_set_mode(lua_State* l) {
     );
 
     std::string mode_name = LuaTools::check_string(l, 1);
-    const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
+    const SoftwareVideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
     if (mode != nullptr && Video::get_video_mode().get_name() != mode_name) {
       Video::set_video_mode(*mode);
@@ -168,13 +168,13 @@ int LuaContext::video_api_get_modes(lua_State* l) {
         "Use sol.main.get_resource_ids(\"shader\") instead."
     );
 
-    const std::vector<const VideoMode*>& modes =
+    const std::vector<const SoftwareVideoMode*>& modes =
         Video::get_video_modes();
 
     lua_newtable(l);
 
     int i = 1;
-    for (const VideoMode* mode: modes) {
+    for (const SoftwareVideoMode* mode: modes) {
       push_string(l, mode->get_name());
       lua_rawseti(l, -2, i);
       ++i;
@@ -200,7 +200,7 @@ int LuaContext::video_api_is_mode_supported(lua_State* l) {
     );
 
     std::string mode_name = LuaTools::check_string(l, 1);
-    const VideoMode* mode = Video::get_video_mode_by_name(mode_name);
+    const SoftwareVideoMode* mode = Video::get_video_mode_by_name(mode_name);
 
     bool supported = mode != nullptr && Video::is_mode_supported(*mode);
 

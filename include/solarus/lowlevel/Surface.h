@@ -31,8 +31,8 @@
 namespace Solarus {
 
 class Color;
-class PixelFilter;
 class Size;
+class SoftwarePixelFilter;
 class Surface;
 
 /**
@@ -88,7 +88,7 @@ class Surface: public Drawable {
 
     std::string get_pixels() const;
 
-    void apply_pixel_filter(const PixelFilter& pixel_filter, Surface& dst_surface);
+    void apply_pixel_filter(const SoftwarePixelFilter& pixel_filter, Surface& dst_surface);
 
     void render(SDL_Renderer* renderer);
 

@@ -216,7 +216,7 @@ void LuaContext::register_movement_module() {
       { "set_speed", random_path_movement_api_set_speed }
   };
   random_path_movement_methods.insert(
-        path_movement_methods.end(),
+        random_path_movement_methods.end(),
         movement_common_methods.begin(),
         movement_common_methods.end()
   );

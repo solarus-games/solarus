@@ -106,6 +106,7 @@ file(
   include/solarus/lowlevel/shaders/ShaderContext.h
   include/solarus/lowlevel/shaders/Shader.h
   include/solarus/lowlevel/shaders/ShaderData.h
+  include/solarus/lowlevel/shaders/ShaderPtr.h
   include/solarus/lowlevel/BlendMode.h
   include/solarus/lowlevel/BlendModeInfo.h
   include/solarus/lowlevel/Color.h
@@ -359,6 +360,7 @@ file(
   src/lua/MenuApi.cpp
   src/lua/MovementApi.cpp
   src/lua/ScopedLuaRef.cpp
+  src/lua/ShaderApi.cpp
   src/lua/SpriteApi.cpp
   src/lua/SurfaceApi.cpp
   src/lua/TextSurfaceApi.cpp

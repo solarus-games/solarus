@@ -26,6 +26,7 @@
 #include "solarus/entities/EntityType.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/entities/HeroPtr.h"
+#include "solarus/lowlevel/shaders/ShaderPtr.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/InputEvent.h"
 #include "solarus/lowlevel/SurfacePtr.h"
@@ -77,6 +78,7 @@ class RandomMovement;
 class RandomPathMovement;
 class Sensor;
 class Separator;
+class Shader;
 class ShopTreasure;
 class Sprite;
 class StraightMovement;
@@ -124,6 +126,7 @@ class LuaContext {
     static const std::string sprite_module_name;
     static const std::string menu_module_name;
     static const std::string language_module_name;
+    static const std::string shader_module_name;
     static const std::string movement_module_name;
     static const std::string movement_straight_module_name;
     static const std::string movement_random_module_name;
@@ -485,6 +488,8 @@ class LuaContext {
       video_api_get_window_size,
       video_api_set_window_size,
       video_api_reset_window_size,
+      video_api_get_shader,
+      video_api_set_shader,
 
       // Input API.
       input_api_is_joypad_enabled,
@@ -601,6 +606,15 @@ class LuaContext {
       sprite_api_set_paused,
       sprite_api_set_ignore_suspend,  // TODO rename to set_suspended_with_map() like timers
       sprite_api_synchronize,
+
+      // Shader API.
+      shader_api_create,
+      shader_api_get_opengl_version,
+      shader_api_get_shading_language_version,
+      shader_api_get_id,
+      shader_api_get_vertex_file,
+      shader_api_get_fragment_file,
+      shader_api_set_uniform,
 
       // Movement API.
       movement_api_create,
@@ -1075,6 +1089,7 @@ class LuaContext {
     void register_surface_module();
     void register_text_surface_module();
     void register_sprite_module();
+    void register_shader_module();
     void register_movement_module();
     void register_menu_module();
     void register_language_module();
@@ -1093,6 +1108,7 @@ class LuaContext {
     static void push_surface(lua_State* l, Surface& surface);
     static void push_text_surface(lua_State* l, TextSurface& text_surface);
     static void push_sprite(lua_State* l, Sprite& sprite);
+    static void push_shader(lua_State* l, Shader& shader);
     static void push_item(lua_State* l, EquipmentItem& item);
     static void push_movement(lua_State* l, Movement& movement);
     static void push_game(lua_State* l, Savegame& game);
@@ -1143,6 +1159,8 @@ class LuaContext {
     static std::shared_ptr<TextSurface> check_text_surface(lua_State* l, int index);
     static bool is_sprite(lua_State* l, int index);
     static SpritePtr check_sprite(lua_State* l, int index);
+    static bool is_shader(lua_State* l, int index);
+    static ShaderPtr check_shader(lua_State* l, int index);
     static bool is_item(lua_State* l, int index);
     static std::shared_ptr<EquipmentItem> check_item(lua_State* l, int index);
     static bool is_movement(lua_State* l, int index);

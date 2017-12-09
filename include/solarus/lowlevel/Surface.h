@@ -92,7 +92,7 @@ class Surface: public Drawable {
 
     void render(SDL_Renderer* renderer);
 
-    virtual const std::string& get_lua_type_name() const override;
+    const std::string& get_lua_type_name() const override;
 
   protected:
 

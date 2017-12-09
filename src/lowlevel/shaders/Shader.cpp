@@ -64,4 +64,12 @@ void Shader::load() {
   // TODO make pure virtual
 }
 
+/**
+ * \brief Returns the name identifying this type in Lua.
+ * \return The name identifying this type in Lua.
+ */
+const std::string& Shader::get_lua_type_name() const {
+  return LuaContext::shader_module_name;
+}
+
 }

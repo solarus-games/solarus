@@ -20,6 +20,7 @@
 #include "solarus/Common.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include <string>
@@ -32,7 +33,7 @@ namespace Solarus {
 /**
  * \brief Represents a shader for a driver and sampler-independant uses.
  */
-class Shader {
+class Shader : public ExportableToLua {
 
   public:
 
@@ -41,6 +42,8 @@ class Shader {
 
     const std::string& get_id() const;
     virtual void render(const SurfacePtr& quest_surface) const;
+
+    const std::string& get_lua_type_name() const override;
 
   protected:
 

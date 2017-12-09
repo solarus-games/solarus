@@ -91,7 +91,7 @@ TimerPtr LuaContext::check_timer(lua_State* l, int index) {
 /**
  * \brief Pushes a timer userdata onto the stack.
  * \param l A Lua context.
- * \param Timer A timer.
+ * \param timer A timer.
  */
 void LuaContext::push_timer(lua_State* l, const TimerPtr& timer) {
   push_userdata(l, *timer);

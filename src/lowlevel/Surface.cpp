@@ -1008,7 +1008,7 @@ SDL_BlendMode Surface::get_sdl_blend_mode() const {
 
 /**
  * \brief Returns the name identifying this type in Lua.
- * \return the name identifying this type in Lua
+ * \return The name identifying this type in Lua.
  */
 const std::string& Surface::get_lua_type_name() const {
   return LuaContext::surface_module_name;

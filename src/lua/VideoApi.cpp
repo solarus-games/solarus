@@ -19,6 +19,7 @@
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lowlevel/SoftwareVideoMode.h"
 #include "solarus/lowlevel/Size.h"
+#include "solarus/CurrentQuest.h"
 #include <lua.hpp>
 
 namespace Solarus {
@@ -33,7 +34,7 @@ const std::string LuaContext::video_module_name = "sol.video";
  */
 void LuaContext::register_video_module() {
 
-  const std::vector<luaL_Reg> functions = {
+  std::vector<luaL_Reg> functions = {
       { "get_window_title", video_api_get_window_title },
       { "set_window_title", video_api_set_window_title },
       { "get_mode", video_api_get_mode },
@@ -50,6 +51,12 @@ void LuaContext::register_video_module() {
       { "set_window_size", video_api_set_window_size },
       { "reset_window_size", video_api_reset_window_size }
   };
+  if (CurrentQuest::is_format_at_least({ 1, 6 })) {
+    functions.insert(functions.end(), {
+      { "get_shader", video_api_get_shader },
+      { "set_shader", video_api_set_shader},
+    });
+  }
   register_functions(video_module_name, functions);
 }
 
@@ -344,6 +351,34 @@ int LuaContext::video_api_reset_window_size(lua_State* l) {
 
     Video::reset_window_size();
 
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of sol.video.get_shader().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::video_api_get_shader(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+
+    // TODO
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of sol.video.set_shader().
+ * \param l the Lua context that is calling this function
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::video_api_set_shader(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+
+    // TODO
     return 0;
   });
 }

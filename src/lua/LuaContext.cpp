@@ -955,6 +955,7 @@ void LuaContext::register_modules() {
   register_item_module();
   register_input_module();
   register_video_module();
+  register_shader_module();
   register_file_module();
   register_menu_module();
   register_language_module();

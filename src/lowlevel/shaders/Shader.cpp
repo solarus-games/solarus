@@ -28,7 +28,8 @@ namespace Solarus {
  * \param shader_id The id of the shader to load (filename without extension).
  */
 Shader::Shader(const std::string& shader_id):
-    shader_id(shader_id) {
+    shader_id(shader_id),
+    data() {
 }
 
 /**
@@ -44,6 +45,21 @@ Shader::~Shader() {
 const std::string& Shader::get_id() const {
 
   return shader_id;
+}
+
+/**
+ * \brief Returns the shader information loaded from the data file.
+ * \return The shader data.
+ */
+const ShaderData& Shader::get_data() const {
+  return data;
+}
+
+/**
+ * \brief Sets the shader information.
+ */
+void Shader::set_data(const ShaderData& data) {
+  this->data = data;
 }
 
 /**

@@ -18,6 +18,7 @@
 #define SOLARUS_SHADER_H
 
 #include "solarus/Common.h"
+#include "solarus/lowlevel/shaders/ShaderData.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include "solarus/lua/ExportableToLua.h"
@@ -41,17 +42,21 @@ class Shader : public ExportableToLua {
     virtual ~Shader();
 
     const std::string& get_id() const;
+    const ShaderData& get_data() const;
+
     virtual void render(const SurfacePtr& quest_surface) const;
 
     const std::string& get_lua_type_name() const override;
 
   protected:
 
+    void set_data(const ShaderData& data);
     virtual void load();
 
   private:
 
-    const std::string shader_id;                       /**< The id of the shader (filename without extension). */
+    const std::string shader_id;  /**< The id of the shader (filename without extension). */
+    ShaderData data;              /**< The loaded shader data file. */
 };
 
 }

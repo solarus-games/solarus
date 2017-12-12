@@ -50,19 +50,18 @@ void ShaderContext::quit() {
  * \param shader_id The id of the shader to load.
  * \return The created shader, or nullptr if the shader fails to compile.
  */
-std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& shader_id) {
+ShaderPtr ShaderContext::create_shader(const std::string& shader_id) {
 
-  std::unique_ptr<Shader> shader = nullptr;
+  ShaderPtr shader = nullptr;
 
   if (true) {  // TODO
-    shader = std::unique_ptr<Shader>(new GL_ARBShader(shader_id));
+    shader = std::make_shared<GL_ARBShader>(shader_id);
   }
   else {
-    shader = std::unique_ptr<Shader>(new GL_2DShader(shader_id));
+    shader = std::make_shared<GL_2DShader>(shader_id);
   }
 
   if (glGetError() != GL_NO_ERROR) {
-    Debug::error("Can't create shader '" + shader_id + "'");
     shader = nullptr;
   }
 

@@ -21,24 +21,21 @@
 
 #include <SDL.h>
 #include <SDL_opengl.h>
+#include <string>
 
 namespace Solarus {
 
-/**
- * \brief This class provide initialization and quit functions for the GL driver context.
- */
-class GLContext {
+namespace GLContext {
 
-  public:
 
-    static bool initialize();
-    static void quit();
+  bool initialize();
+  void quit();
 
-  private:
+  const std::string& get_opengl_version();
+  const std::string& get_shading_language_version();
 
-    static SDL_GLContext gl_context;             /**< The OpenGL context. */
-};
+}  // namespace GLContext
 
-}
+}  // namespace Solarus
 
 #endif

@@ -14,7 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/lowlevel/shaders/GLContext.h"
 #include "solarus/lowlevel/shaders/Shader.h"
+#include "solarus/lowlevel/shaders/ShaderContext.h"
+#include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/CurrentQuest.h"
@@ -97,8 +100,17 @@ void LuaContext::push_shader(lua_State* l, Shader& shader) {
 int LuaContext::shader_api_create(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    // TODO
-    return 0;
+
+    const std::string& shader_id = LuaTools::check_string(l, 1);
+
+    ShaderPtr shader = ShaderContext::create_shader(shader_id);
+
+    if (shader == nullptr) {
+      LuaTools::error(l, "Cannot create shader '" + shader_id + "'");
+    }
+
+    push_shader(l, *shader);
+    return 1;
   });
 }
 
@@ -110,8 +122,11 @@ int LuaContext::shader_api_create(lua_State* l) {
 int LuaContext::shader_api_get_opengl_version(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    // TODO
-    return 0;
+
+    const std::string& opengl_version = GLContext::get_opengl_version();
+
+    push_string(l, opengl_version);
+    return 1;
   });
 }
 
@@ -123,8 +138,11 @@ int LuaContext::shader_api_get_opengl_version(lua_State* l) {
 int LuaContext::shader_api_get_shading_language_version(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    // TODO
-    return 0;
+
+    const std::string& shading_language_version = GLContext::get_shading_language_version();
+
+    push_string(l, shading_language_version);
+    return 1;
   });
 }
 
@@ -136,8 +154,11 @@ int LuaContext::shader_api_get_shading_language_version(lua_State* l) {
 int LuaContext::shader_api_get_id(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    // TODO
-    return 0;
+
+    const ShaderPtr& shader = check_shader(l, 1);
+
+    push_string(l, shader->get_id());
+    return 1;
   });
 }
 
@@ -149,8 +170,11 @@ int LuaContext::shader_api_get_id(lua_State* l) {
 int LuaContext::shader_api_get_vertex_file(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    // TODO
-    return 0;
+
+    const ShaderPtr& shader = check_shader(l, 1);
+
+    push_string(l, shader->get_data().get_vertex_source());
+    return 1;
   });
 }
 
@@ -162,8 +186,11 @@ int LuaContext::shader_api_get_vertex_file(lua_State* l) {
 int LuaContext::shader_api_get_fragment_file(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    // TODO
-    return 0;
+
+    const ShaderPtr& shader = check_shader(l, 1);
+
+    push_string(l, shader->get_data().get_fragment_source());
+    return 1;
   });
 }
 

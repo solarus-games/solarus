@@ -149,14 +149,6 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_id):
   }
 
   glUseProgramObjectARB(default_shader_program);
-
-  /*
-  SDL_Texture* render_target = Video::get_render_target();
-  SDL_GL_BindTexture(render_target, nullptr, nullptr);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  SDL_GL_UnbindTexture(render_target);
-  */
 }
 
 /**
@@ -183,6 +175,7 @@ void GL_ARBShader::load() {
   if (!success) {
     return;
   }
+  set_data(data);
 
   // Create the vertex and fragment shaders.
   vertex_shader = create_shader(GL_VERTEX_SHADER_ARB, data.get_vertex_source().c_str());

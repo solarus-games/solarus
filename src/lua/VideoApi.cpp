@@ -364,8 +364,15 @@ int LuaContext::video_api_get_shader(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
 
-    // TODO
-    return 0;
+    const ShaderPtr& shader = Video::get_shader();
+
+    if (shader == nullptr) {
+      lua_pushnil(l);
+    }
+    else {
+      push_shader(l, *shader);
+    }
+    return 1;
   });
 }
 
@@ -378,7 +385,18 @@ int LuaContext::video_api_set_shader(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
 
-    // TODO
+    ShaderPtr shader = nullptr;
+    if (!lua_isnil(l, 1)) {
+      if (is_shader(l, 1)) {
+        shader = check_shader(l, 1);
+      }
+      else {
+        LuaTools::type_error(l, 2, "shader or nil");
+      }
+    }
+
+    Video::set_shader(shader);
+
     return 0;
   });
 }

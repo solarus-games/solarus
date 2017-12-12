@@ -25,6 +25,7 @@ Lua API changes
 
 Changes that do not introduce incompatibilities:
 
+* Add a shader API.
 * Video mode functions are now deprecated. Use shader functions instead.
 * Add a function sol.main.get_quest_version() (#1058) by Nate-Devv.
 * Add a function sol.main.get_resource_ids() to get the resource lists (#959).

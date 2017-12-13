@@ -625,7 +625,9 @@ bool is_fullscreen() {
  */
 void set_fullscreen(bool fullscreen) {
 
-  Debug::check_assertion(context.main_window != nullptr, "No window");
+  if (context.main_window == nullptr) {
+    return;
+  }
 
   Uint32 fullscreen_flag;
   if (fullscreen) {

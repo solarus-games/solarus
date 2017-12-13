@@ -212,14 +212,20 @@ int LuaContext::shader_api_set_uniform(lua_State* l) {
     }
     else if (lua_isnumber(l, 3)) {
       const float value = static_cast<float>(lua_tonumber(l, 3));
-      shader.set_uniform_1f(uniform_name, value);
+      if (lua_isnumber(l, 4)) {
+        const float value_2 = static_cast<float>(lua_tonumber(l, 4));
+        shader.set_uniform_2f(uniform_name, value, value_2);
+      }
+      else {
+        shader.set_uniform_1f(uniform_name, value);
+      }
     }
     else if (is_surface(l, 3)) {
       const SurfacePtr& value = check_surface(l, 3);
       shader.set_uniform_texture(uniform_name, value);
     }
     else {
-      LuaTools::type_error(l, 3, "boolean, number or surface");
+      LuaTools::type_error(l, 3, "boolean, number(s) or surface");
     }
     return 0;
   });

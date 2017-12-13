@@ -26,7 +26,6 @@
 #include "solarus/lua/LuaTools.h"
 #include <string>
 
-
 #define SOLARUS_HAVE_OPENGL // Temporary define. To determine at configure part
 
 namespace Solarus {
@@ -44,14 +43,19 @@ class Shader : public ExportableToLua {
     const std::string& get_id() const;
     const ShaderData& get_data() const;
 
-    virtual void render(const SurfacePtr& quest_surface) const;
+    virtual void set_uniform_1b(const std::string& uniform_name, bool value);  // TODO make pure virtual
+    virtual void set_uniform_1f(const std::string& uniform_name, float value);
+    virtual void set_uniform_2f(const std::string& uniform_name, float value_1, float value_2);
+    virtual void set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value);
+
+    virtual void render(const SurfacePtr& quest_surface);  // TODO make pure virtual
 
     const std::string& get_lua_type_name() const override;
 
   protected:
 
     void set_data(const ShaderData& data);
-    virtual void load();
+    virtual void load();  // TODO make pure virtual
 
   private:
 

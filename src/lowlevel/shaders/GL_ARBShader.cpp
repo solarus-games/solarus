@@ -40,6 +40,7 @@ PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocationARB;
 PFNGLLINKPROGRAMARBPROC glLinkProgramARB;
 PFNGLSHADERSOURCEARBPROC glShaderSourceARB;
 PFNGLUNIFORM1IARBPROC glUniform1iARB;
+PFNGLUNIFORM1FARBPROC glUniform1fARB;
 PFNGLUNIFORM2FARBPROC glUniform2fARB;
 PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
 PFNGLGETHANDLEARBPROC glGetHandleARB;
@@ -47,14 +48,14 @@ PFNGLGETHANDLEARBPROC glGetHandleARB;
 GLhandleARB default_shader_program = 0;
 
 /**
- * @brief Casts a pointer-to-object (void*) to a pointer-to-function.
+ * \brief Casts a pointer-to-object (void*) to a pointer-to-function.
  *
  * This function avoids compilation warnings when using SDL_GL_GetProcAddress(),
  * because directly casting a pointer-to-object to a pointer-to-function
  * is not allowed.
  *
- * @param object_ptr The pointer to cast.
- * @return The pointer to a function.
+ * \param object_ptr The pointer to cast.
+ * \return The pointer to a function.
  */
 template<typename FunctionPointerType>
 FunctionPointerType get_proc_address_cast(void* object_ptr) {
@@ -91,6 +92,7 @@ bool GL_ARBShader::initialize() {
     glLinkProgramARB = get_proc_address_cast<PFNGLLINKPROGRAMARBPROC>(SDL_GL_GetProcAddress("glLinkProgramARB"));
     glShaderSourceARB = get_proc_address_cast<PFNGLSHADERSOURCEARBPROC>(SDL_GL_GetProcAddress("glShaderSourceARB"));
     glUniform1iARB = get_proc_address_cast<PFNGLUNIFORM1IARBPROC>(SDL_GL_GetProcAddress("glUniform1iARB"));
+    glUniform1fARB = get_proc_address_cast<PFNGLUNIFORM1FARBPROC>(SDL_GL_GetProcAddress("glUniform1fARB"));
     glUniform2fARB = get_proc_address_cast<PFNGLUNIFORM2FARBPROC>(SDL_GL_GetProcAddress("glUniform2fARB"));
     glUseProgramObjectARB = get_proc_address_cast<PFNGLUSEPROGRAMOBJECTARBPROC>(SDL_GL_GetProcAddress("glUseProgramObjectARB"));
     glGetHandleARB = get_proc_address_cast<PFNGLGETHANDLEARBPROC>(SDL_GL_GetProcAddress("glGetHandleARB"));
@@ -105,6 +107,7 @@ bool GL_ARBShader::initialize() {
         glLinkProgramARB &&
         glShaderSourceARB &&
         glUniform1iARB &&
+        glUniform1fARB &&
         glUniform2fARB &&
         glUseProgramObjectARB &&
         glGetHandleARB) {
@@ -137,13 +140,13 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_id):
   // Set up constant uniform variables.
   glUseProgramObjectARB(program);
 
-  GLint location = glGetUniformLocationARB(program, "solarus_sampler");
+  GLint location = get_uniform_location("solarus_sampler");
   if (location >= 0) {
     glUniform1iARB(location, 0);
   }
 
   const Size& quest_size = Video::get_quest_size();
-  location = glGetUniformLocationARB(program, "solarus_input_size");
+  location = get_uniform_location("solarus_input_size");
   if (location >= 0) {
     glUniform2fARB(location, quest_size.width, quest_size.height);
   }
@@ -176,6 +179,7 @@ void GL_ARBShader::load() {
     return;
   }
   set_data(data);
+  uniform_locations.clear();
 
   // Create the vertex and fragment shaders.
   vertex_shader = create_shader(GL_VERTEX_SHADER_ARB, data.get_vertex_source().c_str());
@@ -256,7 +260,7 @@ void GL_ARBShader::set_rendering_settings() {
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface The surface to render on the screen.
  */
-void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
+void GL_ARBShader::render(const SurfacePtr& quest_surface) {
 
   Shader::render(quest_surface);
 
@@ -288,16 +292,9 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
   glUseProgramObjectARB(program);
 
   // Update uniform variables.
-  GLint location = glGetUniformLocationARB(program, "solarus_time");
-  if (location >= 0) {
-    glUniform1iARB(location, System::now());
-  }
-
   const Size& window_size = Video::get_window_size();
-  location = glGetUniformLocationARB(program, "solarus_output_size");
-  if (location >= 0) {
-    glUniform2fARB(location, window_size.width, window_size.height);
-  }
+  set_uniform_1f("solarus_time", System::now());
+  set_uniform_2f("solarus_output_size", window_size.width, window_size.height);
 
   // Draw.
   const GLfloat square_texcoord[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
@@ -322,6 +319,75 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) const {
 
   // And swap the window.
   SDL_GL_SwapWindow(window);
+}
+
+/**
+ * \brief Returns the location of a uniform value in the shader program.
+ * \param uniform_name Name of the uniform to find.
+ * \return The uniform location or \c -1.
+ */
+GLint GL_ARBShader::get_uniform_location(const std::string& uniform_name) const {
+
+  const auto& it = uniform_locations.find(uniform_name);
+  if (it != uniform_locations.end()) {
+    return it->second;
+  }
+
+  const GLint location = glGetUniformLocationARB(program, uniform_name.c_str());
+  uniform_locations.insert(std::make_pair(uniform_name, location));
+  return location;
+}
+
+/**
+ * \copydoc Shader::set_uniform1f
+ */
+void GL_ARBShader::set_uniform_1b(const std::string& uniform_name, bool value) {
+
+  const GLint location = get_uniform_location(uniform_name);
+  if (location == -1) {
+    return;
+  }
+
+  glUniform1iARB(location, (value ? 1 : 0));
+}
+
+/**
+ * \copydoc Shader::set_uniform_1f
+ */
+void GL_ARBShader::set_uniform_1f(const std::string& uniform_name, float value) {
+
+  const GLint location = get_uniform_location(uniform_name);
+  if (location == -1) {
+    return;
+  }
+
+  glUniform1fARB(location, value);
+}
+
+/**
+ * \copydoc Shader::set_uniform_2f
+ */
+void GL_ARBShader::set_uniform_2f(const std::string& uniform_name, float value_1, float value_2) {
+
+  const GLint location = get_uniform_location(uniform_name);
+  if (location == -1) {
+    return;
+  }
+
+  glUniform2fARB(location, value_1, value_2);
+}
+
+/**
+ * \copydoc Shader::set_uniform_texture
+ */
+void GL_ARBShader::set_uniform_texture(const std::string& uniform_name, const SurfacePtr& /* value */) {
+
+  const GLint location = get_uniform_location(uniform_name);
+  if (location == -1) {
+    return;
+  }
+
+  // TODO OpenGL texture
 }
 
 }

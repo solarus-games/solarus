@@ -297,7 +297,7 @@ void GL_2DShader::check_gl_error() {
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
  */
-void GL_2DShader::render(const SurfacePtr& quest_surface) const {
+void GL_2DShader::render(const SurfacePtr& quest_surface) {
 
   Shader::render(quest_surface);
 

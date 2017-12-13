@@ -155,9 +155,9 @@ int LuaContext::shader_api_get_id(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
 
-    const ShaderPtr& shader = check_shader(l, 1);
+    const Shader& shader = *check_shader(l, 1);
 
-    push_string(l, shader->get_id());
+    push_string(l, shader.get_id());
     return 1;
   });
 }
@@ -171,9 +171,9 @@ int LuaContext::shader_api_get_vertex_file(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
 
-    const ShaderPtr& shader = check_shader(l, 1);
+    const Shader& shader = *check_shader(l, 1);
 
-    push_string(l, shader->get_data().get_vertex_source());
+    push_string(l, shader.get_data().get_vertex_source());
     return 1;
   });
 }
@@ -187,9 +187,9 @@ int LuaContext::shader_api_get_fragment_file(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
 
-    const ShaderPtr& shader = check_shader(l, 1);
+    const Shader& shader = *check_shader(l, 1);
 
-    push_string(l, shader->get_data().get_fragment_source());
+    push_string(l, shader.get_data().get_fragment_source());
     return 1;
   });
 }
@@ -202,7 +202,25 @@ int LuaContext::shader_api_get_fragment_file(lua_State* l) {
 int LuaContext::shader_api_set_uniform(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
-    // TODO
+
+    Shader& shader = *check_shader(l, 1);
+    const std::string& uniform_name = LuaTools::check_string(l, 2);
+
+    if (lua_isboolean(l, 3)) {
+      const bool value = lua_toboolean(l, 3);
+      shader.set_uniform_1b(uniform_name, value);
+    }
+    else if (lua_isnumber(l, 3)) {
+      const float value = static_cast<float>(lua_tonumber(l, 3));
+      shader.set_uniform_1f(uniform_name, value);
+    }
+    else if (is_surface(l, 3)) {
+      const SurfacePtr& value = check_surface(l, 3);
+      shader.set_uniform_texture(uniform_name, value);
+    }
+    else {
+      LuaTools::type_error(l, 3, "boolean, number or surface");
+    }
     return 0;
   });
 }

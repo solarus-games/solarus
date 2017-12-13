@@ -56,7 +56,7 @@ class GL_2DShader : public Shader {
     GLuint create_shader(GLenum type, const char* source);
     static void check_gl_error();
 
-    void render(const SurfacePtr& quest_surface) const override;
+    void render(const SurfacePtr& quest_surface) override;
 
     GLuint program;                         /**< The program which bind the vertex and fragment shader. */
     GLuint vertex_shader;                   /**< The vertex shader. */

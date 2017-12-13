@@ -21,12 +21,12 @@
 
 #include "solarus/lowlevel/shaders/Shader.h"
 #include <SDL.h>
+#include <map>
 #include <string>
 
 #ifdef SOLARUS_HAVE_OPENGL
 #  include <SDL_opengl.h>
 #endif
-
 
 namespace Solarus {
 
@@ -45,6 +45,11 @@ class GL_ARBShader : public Shader {
     explicit GL_ARBShader(const std::string& shader_id);
     ~GL_ARBShader();
 
+    void set_uniform_1b(const std::string& uniform_name, bool value) override;
+    void set_uniform_1f(const std::string& uniform_name, float value) override;
+    void set_uniform_2f(const std::string& uniform_name, float value_1, float value_2) override;
+    void set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value) override;
+
   protected:
 
     void load() override;
@@ -53,12 +58,15 @@ class GL_ARBShader : public Shader {
 
     GLhandleARB create_shader(uint type, const char* source);
     static void set_rendering_settings();
+    GLint get_uniform_location(const std::string& uniform_name) const;
 
-    void render(const SurfacePtr& quest_surface) const override;
+    void render(const SurfacePtr& quest_surface) override;
 
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */
     GLhandleARB vertex_shader;                   /**< The vertex shader. */
     GLhandleARB fragment_shader;                 /**< The fragment shader. */
+    mutable std::map<std::string, GLint>
+        uniform_locations;                       /**< Cache of uniform locations. */
 #else
 
   static bool initialize() { return false; }

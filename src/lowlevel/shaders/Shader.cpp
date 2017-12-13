@@ -63,15 +63,71 @@ void Shader::set_data(const ShaderData& data) {
 }
 
 /**
+ * \fn Shader::set_uniform_1b
+ * \brief Uploads a boolean uniform value to this shader program.
+ *
+ * Does nothing if there is no such uniform in the shader program.
+ *
+ * \param uniform_name Name of the uniform to set.
+ * \param value The boolean value to set.
+ */
+void Shader::set_uniform_1b(const std::string&, bool) {
+  // TODO make pure virtual
+}
+
+/**
+ * \fn Shader::set_uniform_1f
+ * \brief Uploads a float uniform value to this shader program.
+ *
+ * Does nothing if there is no such uniform in the shader program.
+ *
+ * \param uniform_name Name of the uniform to set.
+ * \param value The float value to set.
+ */
+void Shader::set_uniform_1f(const std::string&, float) {
+  // TODO make pure virtual
+}
+
+/**
+ * \fn Shader::set_uniform_2f
+ * \brief Uploads a vec2 uniform value to this shader program.
+ *
+ * Does nothing if there is no such uniform in the shader program.
+ *
+ * \param uniform_name Name of the uniform to set.
+ * \param value_1 The first float value to set.
+ * \param value_2 The second float value to set.
+ */
+void Shader::set_uniform_2f(const std::string&, float, float) {
+  // TODO make pure virtual
+}
+
+/**
+ * \fn Shader::set_uniform_texture
+ * \brief Uploads a 2D texture uniform value to this shader program.
+ *
+ * Does nothing if there is no such uniform in the shader program.
+ *
+ * \param uniform_name Name of the uniform to set.
+ * \param value The 2D texture value value to set.
+ */
+void Shader::set_uniform_texture(const std::string&, const SurfacePtr&) {
+  // TODO make pure virtual
+}
+
+/**
+ * \fn Shader::render()
  * \brief Draws the quest surface on the screen in a shader-allowed context.
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
  */
-void Shader::render(const SurfacePtr& /* quest_surface */) const {
-
+void Shader::render(const SurfacePtr& /* quest_surface */) {
+  // TODO make pure virtual
 }
 
+
 /**
+ * \fn Shader::load()
  * \brief Loads this shader.
  *
  * Parses the shader data file and compiles GLSL shaders.

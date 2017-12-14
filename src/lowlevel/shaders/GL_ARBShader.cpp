@@ -304,6 +304,7 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
   glEnable(GL_TEXTURE_2D);
   SDL_GL_BindTexture(render_target, nullptr, nullptr);
 
+  GLhandleARB previous_program = glGetHandleARB(GL_CURRENT_PROGRAM);
   glUseProgramObjectARB(program);
 
   // Update uniform variables.
@@ -325,6 +326,8 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
   glTexCoord2f(texcoord[0], texcoord[3]);
   glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
   glEnd();
+
+  glUseProgramObjectARB(previous_program);
 
   SDL_GL_UnbindTexture(render_target);
 

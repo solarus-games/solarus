@@ -304,7 +304,7 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
   glEnable(GL_TEXTURE_2D);
   SDL_GL_BindTexture(render_target, nullptr, nullptr);
 
-  GLhandleARB previous_program = glGetHandleARB(GL_CURRENT_PROGRAM);
+  GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
 
   // Update uniform variables.
@@ -349,7 +349,7 @@ GLint GL_ARBShader::get_uniform_location(const std::string& uniform_name) const 
     return it->second;
   }
 
-  GLhandleARB previous_program = glGetHandleARB(GL_CURRENT_PROGRAM);
+  GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
   const GLint location = glGetUniformLocationARB(program, uniform_name.c_str());
   glUseProgramObjectARB(previous_program);
@@ -367,7 +367,7 @@ void GL_ARBShader::set_uniform_1b(const std::string& uniform_name, bool value) {
     return;
   }
 
-  GLhandleARB previous_program = glGetHandleARB(GL_CURRENT_PROGRAM);
+  GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
   glUniform1iARB(location, (value ? 1 : 0));
   glUseProgramObjectARB(previous_program);
@@ -383,7 +383,7 @@ void GL_ARBShader::set_uniform_1f(const std::string& uniform_name, float value) 
     return;
   }
 
-  GLhandleARB previous_program = glGetHandleARB(GL_CURRENT_PROGRAM);
+  GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
   glUniform1fARB(location, value);
   glUseProgramObjectARB(previous_program);
@@ -399,7 +399,7 @@ void GL_ARBShader::set_uniform_2f(const std::string& uniform_name, float value_1
     return;
   }
 
-  GLhandleARB previous_program = glGetHandleARB(GL_CURRENT_PROGRAM);
+  GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
   glUniform2fARB(location, value_1, value_2);
   glUseProgramObjectARB(previous_program);
@@ -420,7 +420,7 @@ bool GL_ARBShader::set_uniform_texture(const std::string& uniform_name, const Su
   if (texture == 0) {
     return false;
   }
-  GLhandleARB previous_program = glGetHandleARB(GL_CURRENT_PROGRAM);
+  GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, texture);

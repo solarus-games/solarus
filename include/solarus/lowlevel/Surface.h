@@ -23,6 +23,7 @@
 #include "solarus/Drawable.h"
 #include <SDL.h>
 #include <SDL_image.h>
+#include <GL/gl.h>
 #include <cstdint>
 #include <memory>
 #include <string>
@@ -61,6 +62,7 @@ class Surface: public Drawable {
 
     Surface(int width, int height);
     explicit Surface(SDL_Surface* internal_surface);
+    ~Surface();
 
     // Surfaces should only created with std::make_shared.
     // This is what create() functions do, so you should call them rather than
@@ -87,10 +89,11 @@ class Surface: public Drawable {
     void set_opacity(uint8_t opacity);
 
     std::string get_pixels() const;
-
     void apply_pixel_filter(const SoftwarePixelFilter& pixel_filter, Surface& dst_surface);
 
     void render(SDL_Renderer* renderer);
+
+    GLuint to_opengl_texture(GLfloat* tex_coords);
 
     const std::string& get_lua_type_name() const override;
 
@@ -166,7 +169,7 @@ class Surface: public Drawable {
                                            * Set to false when drawing a surface on this one. */
     uint8_t opacity;                      /**< Opacity (0: transparent, 255: opaque). */
     int width, height;                    /**< Size of the texture, avoid to use SDL_QueryTexture. */
-
+    GLuint opengl_texture;                /**< OpenGL texture for this surface, if any. */
 };
 
 }

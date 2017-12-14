@@ -29,13 +29,50 @@ namespace Solarus {
  */
 Shader::Shader(const std::string& shader_id):
     shader_id(shader_id),
-    data() {
+    data(),
+    valid(true),
+    error() {
 }
 
 /**
  * \brief Destructor.
  */
 Shader::~Shader() {
+}
+
+/**
+ * \brief Returns whether this shader is valid.
+ * \return \c true if the shader was successfully loaded.
+ */
+bool Shader::is_valid() const {
+  return valid;
+}
+
+/**
+ * \brief Sets whether this shader is valid.
+ * \param valid \c true to indicate that the shader was successfully loaded.
+ */
+void Shader::set_valid(bool valid) {
+  this->valid = valid;
+}
+
+/**
+ * \brief Returns the error message of the last operation if any.
+ * \return The error message or an empty string.
+ */
+std::string Shader::get_error() const {
+  return error;
+}
+
+/**
+ * \brief Sets the error message of the last operation.
+ *
+ * There should be an error message when \c is_valid() returns \c false.
+ *
+ * \return The error message or an empty string.
+ */
+void Shader::set_error(const std::string& error) {
+  this->error = error;
 }
 
 /**
@@ -110,9 +147,11 @@ void Shader::set_uniform_2f(const std::string&, float, float) {
  *
  * \param uniform_name Name of the uniform to set.
  * \param value The 2D texture value value to set.
+ * \return \c true in case of success.
  */
-void Shader::set_uniform_texture(const std::string&, const SurfacePtr&) {
+bool Shader::set_uniform_texture(const std::string&, const SurfacePtr&) {
   // TODO make pure virtual
+  return false;
 }
 
 /**

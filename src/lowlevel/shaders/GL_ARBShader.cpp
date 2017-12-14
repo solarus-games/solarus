@@ -22,6 +22,7 @@
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Video.h"
+#include <sstream>
 
 #ifdef SOLARUS_HAVE_OPENGL
 
@@ -44,8 +45,6 @@ PFNGLUNIFORM1FARBPROC glUniform1fARB;
 PFNGLUNIFORM2FARBPROC glUniform2fARB;
 PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
 PFNGLGETHANDLEARBPROC glGetHandleARB;
-
-GLhandleARB default_shader_program = 0;
 
 /**
  * \brief Casts a pointer-to-object (void*) to a pointer-to-function.
@@ -112,9 +111,6 @@ bool GL_ARBShader::initialize() {
         glUseProgramObjectARB &&
         glGetHandleARB) {
 
-      // Get default shader.
-      default_shader_program = glGetHandleARB(GL_CURRENT_PROGRAM);
-
       return true;
     }
   }
@@ -138,20 +134,27 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_id):
   load();
 
   // Set up constant uniform variables.
+  GLenum gl_error = glGetError();
+  GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
 
-  GLint location = get_uniform_location("solarus_sampler");
+  // TODO use our uniform functions
+  GLint location = get_uniform_location("sol_texture");
   if (location >= 0) {
     glUniform1iARB(location, 0);
   }
 
   const Size& quest_size = Video::get_quest_size();
-  location = get_uniform_location("solarus_input_size");
-  if (location >= 0) {
-    glUniform2fARB(location, quest_size.width, quest_size.height);
-  }
+  set_uniform_2f("sol_input_size", quest_size.width, quest_size.height);
 
-  glUseProgramObjectARB(default_shader_program);
+  glUseProgramObjectARB(previous_program);
+
+  if (gl_error != GL_NO_ERROR) {
+    std::ostringstream oss;
+    oss << "OpenGL error: " << gl_error;
+    set_error(oss.str());
+    set_valid(false);
+  }
 }
 
 /**
@@ -159,6 +162,7 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_id):
  */
 GL_ARBShader::~GL_ARBShader() {
 
+  // TODO use glDeleteProgramARB?
   glDeleteObjectARB(vertex_shader);
   glDeleteObjectARB(fragment_shader);
   glDeleteObjectARB(program);
@@ -169,6 +173,8 @@ GL_ARBShader::~GL_ARBShader() {
  */
 void GL_ARBShader::load() {
 
+  set_valid(true);
+
   // Load the shader data file.
   const std::string shader_file_name =
       "shaders/" + get_id() + ".dat";
@@ -176,6 +182,7 @@ void GL_ARBShader::load() {
   ShaderData data;
   bool success = data.import_from_quest_file(shader_file_name);
   if (!success) {
+    set_valid(false);
     return;
   }
   set_data(data);
@@ -203,7 +210,8 @@ void GL_ARBShader::load() {
     glGetObjectParameterivARB(program, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
     info = SDL_stack_alloc(char, length + 1);
     glGetInfoLogARB(program, length, nullptr, info);
-    Logger::error(std::string("Failed to link shader ") + get_id() + std::string(" :\n") + info);
+    set_error(std::string("Failed to link shader ") + get_id() + std::string(" :\n") + info);
+    set_valid(false);
     SDL_stack_free(info);
   }
 }
@@ -232,7 +240,8 @@ GLhandleARB GL_ARBShader::create_shader(uint type, const char* source) {
     glGetObjectParameterivARB(shader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
     info = SDL_stack_alloc(char, length + 1);
     glGetInfoLogARB(shader, length, nullptr, info);
-    Logger::error(std::string("Failed to compile shader ") + get_id() + std::string(" :\n") + info);
+    set_error(std::string("Failed to compile shader ") + get_id() + std::string(" :\n") + info);
+    set_valid(false);
     SDL_stack_free(info);
   }
 
@@ -293,8 +302,8 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
 
   // Update uniform variables.
   const Size& window_size = Video::get_window_size();
-  set_uniform_1f("solarus_time", System::now());
-  set_uniform_2f("solarus_output_size", window_size.width, window_size.height);
+  set_uniform_1f("sol_time", System::now());
+  set_uniform_2f("sol_output_size", window_size.width, window_size.height);
 
   // Draw.
   const GLfloat square_texcoord[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
@@ -311,8 +320,6 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
   glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
   glEnd();
 
-  // Restore default states.
-  glUseProgramObjectARB(default_shader_program);
   SDL_GL_UnbindTexture(render_target);
 
   glDisable(GL_TEXTURE_2D);
@@ -333,7 +340,10 @@ GLint GL_ARBShader::get_uniform_location(const std::string& uniform_name) const 
     return it->second;
   }
 
+  GLhandleARB previous_program = glGetHandleARB(GL_CURRENT_PROGRAM);
+  glUseProgramObjectARB(program);
   const GLint location = glGetUniformLocationARB(program, uniform_name.c_str());
+  glUseProgramObjectARB(previous_program);
   uniform_locations.insert(std::make_pair(uniform_name, location));
   return location;
 }
@@ -348,7 +358,10 @@ void GL_ARBShader::set_uniform_1b(const std::string& uniform_name, bool value) {
     return;
   }
 
+  GLhandleARB previous_program = glGetHandleARB(GL_CURRENT_PROGRAM);
+  glUseProgramObjectARB(program);
   glUniform1iARB(location, (value ? 1 : 0));
+  glUseProgramObjectARB(previous_program);
 }
 
 /**
@@ -361,7 +374,10 @@ void GL_ARBShader::set_uniform_1f(const std::string& uniform_name, float value) 
     return;
   }
 
+  GLhandleARB previous_program = glGetHandleARB(GL_CURRENT_PROGRAM);
+  glUseProgramObjectARB(program);
   glUniform1fARB(location, value);
+  glUseProgramObjectARB(previous_program);
 }
 
 /**
@@ -374,20 +390,37 @@ void GL_ARBShader::set_uniform_2f(const std::string& uniform_name, float value_1
     return;
   }
 
+  GLhandleARB previous_program = glGetHandleARB(GL_CURRENT_PROGRAM);
+  glUseProgramObjectARB(program);
   glUniform2fARB(location, value_1, value_2);
+  glUseProgramObjectARB(previous_program);
 }
 
 /**
  * \copydoc Shader::set_uniform_texture
  */
-void GL_ARBShader::set_uniform_texture(const std::string& uniform_name, const SurfacePtr& /* value */) {
+bool GL_ARBShader::set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value) {
 
   const GLint location = get_uniform_location(uniform_name);
   if (location == -1) {
-    return;
+    // Not an error.
+    return true;
   }
 
-  // TODO OpenGL texture
+  GLuint texture = value->to_opengl_texture(nullptr);
+  if (texture == 0) {
+    return false;
+  }
+  GLhandleARB previous_program = glGetHandleARB(GL_CURRENT_PROGRAM);
+  glUseProgramObjectARB(program);
+  glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D, texture);
+  glUniform1iARB(location, texture);
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glDisable(GL_TEXTURE_2D);
+  glUseProgramObjectARB(previous_program);
+
+  return true;
 }
 
 }

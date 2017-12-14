@@ -50,7 +50,7 @@ void LuaContext::register_shader_module() {
       { "get_id", shader_api_get_id },
       { "get_vertex_file", shader_api_get_vertex_file },
       { "get_fragment_file", shader_api_get_fragment_file },
-      { "get_set_uniform", shader_api_set_uniform },
+      { "set_uniform", shader_api_set_uniform },
   };
 
   const std::vector<luaL_Reg> metamethods = {
@@ -105,8 +105,8 @@ int LuaContext::shader_api_create(lua_State* l) {
 
     ShaderPtr shader = ShaderContext::create_shader(shader_id);
 
-    if (shader == nullptr) {
-      LuaTools::error(l, "Cannot create shader '" + shader_id + "'");
+    if (!shader->is_valid()) {
+      LuaTools::error(l, "Failed to create shader '" + shader_id + "': " + shader->get_error());
     }
 
     push_shader(l, *shader);
@@ -222,7 +222,10 @@ int LuaContext::shader_api_set_uniform(lua_State* l) {
     }
     else if (is_surface(l, 3)) {
       const SurfacePtr& value = check_surface(l, 3);
-      shader.set_uniform_texture(uniform_name, value);
+      bool success = shader.set_uniform_texture(uniform_name, value);
+      if (!success) {
+        LuaTools::arg_error(l, 3, "Cannot use this surface in a shader");
+      }
     }
     else {
       LuaTools::type_error(l, 3, "boolean, number(s) or surface");

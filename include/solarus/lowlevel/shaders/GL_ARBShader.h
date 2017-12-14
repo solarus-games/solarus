@@ -48,7 +48,7 @@ class GL_ARBShader : public Shader {
     void set_uniform_1b(const std::string& uniform_name, bool value) override;
     void set_uniform_1f(const std::string& uniform_name, float value) override;
     void set_uniform_2f(const std::string& uniform_name, float value_1, float value_2) override;
-    void set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value) override;
+    bool set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value) override;
 
   protected:
 

@@ -48,7 +48,7 @@ void ShaderContext::quit() {
 /**
  * \brief Construct a shader from a name.
  * \param shader_id The id of the shader to load.
- * \return The created shader, or nullptr if the shader fails to compile.
+ * \return The created shader.
  */
 ShaderPtr ShaderContext::create_shader(const std::string& shader_id) {
 
@@ -59,10 +59,6 @@ ShaderPtr ShaderContext::create_shader(const std::string& shader_id) {
   }
   else {
     shader = std::make_shared<GL_2DShader>(shader_id);
-  }
-
-  if (glGetError() != GL_NO_ERROR) {
-    shader = nullptr;
   }
 
   return shader;

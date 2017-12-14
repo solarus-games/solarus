@@ -40,13 +40,16 @@ class Shader : public ExportableToLua {
     explicit Shader(const std::string& shader_id);
     virtual ~Shader();
 
+    bool is_valid() const;
+    std::string get_error() const;
+
     const std::string& get_id() const;
     const ShaderData& get_data() const;
 
     virtual void set_uniform_1b(const std::string& uniform_name, bool value);  // TODO make pure virtual
     virtual void set_uniform_1f(const std::string& uniform_name, float value);
     virtual void set_uniform_2f(const std::string& uniform_name, float value_1, float value_2);
-    virtual void set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value);
+    virtual bool set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value);
 
     virtual void render(const SurfacePtr& quest_surface);  // TODO make pure virtual
 
@@ -54,6 +57,8 @@ class Shader : public ExportableToLua {
 
   protected:
 
+    void set_valid(bool valid);
+    void set_error(const std::string& error);
     void set_data(const ShaderData& data);
     virtual void load();  // TODO make pure virtual
 
@@ -61,6 +66,8 @@ class Shader : public ExportableToLua {
 
     const std::string shader_id;  /**< The id of the shader (filename without extension). */
     ShaderData data;              /**< The loaded shader data file. */
+    bool valid;                   /**< \c true if the compilation succedeed. */
+    std::string error;            /**< Error message of the last operation if any. */
 };
 
 }

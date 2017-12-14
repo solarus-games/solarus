@@ -30,6 +30,23 @@
 
 namespace Solarus {
 
+namespace {
+
+/**
+ * \brief Returns the lowest power of 2 greater than or equal to a value.
+ * \param value A number.
+ * \return The lowest power of 2 greater than or equal to this value.
+ */
+int power_of_two(int value) {
+  int result = 1;
+  while (result < value) {
+    result <<= 1;
+  }
+  return result;
+}
+
+}  // Anonymous namespace.
+
 /**
  * \brief Stores the tree of what surfaces have to be drawn on other surfaces.
  *
@@ -110,7 +127,8 @@ Surface::Surface(int width, int height):
   is_rendered(false),
   opacity(255),
   width(width),
-  height(height) {
+  height(height),
+  opengl_texture(0) {
 
   Debug::check_assertion(width > 0 && height > 0,
       "Attempt to create a surface with an empty size");
@@ -132,10 +150,10 @@ Surface::Surface(SDL_Surface* internal_surface):
   internal_texture(nullptr),
   internal_color(nullptr),
   is_rendered(false),
-  opacity(255) {
-
-  width = internal_surface->w;
-  height = internal_surface->h;
+  opacity(255),
+  width(internal_surface->w),
+  height(internal_surface->h),
+  opengl_texture(0) {
 
   // Convert to the preferred pixel format.
   SDL_PixelFormat* pixel_format = Video::get_pixel_format();
@@ -151,6 +169,15 @@ Surface::Surface(SDL_Surface* internal_surface):
     this->internal_surface = SDL_Surface_UniquePtr(converted_surface);
   }
 }
+
+/**
+ * \brief Destructor.
+ */
+Surface::~Surface() {
+
+  glDeleteTextures(1, &opengl_texture);
+}
+
 
 /**
  * \brief Creates a surface with the specified size.
@@ -1004,6 +1031,82 @@ SDL_BlendMode Surface::get_sdl_blend_mode() const {
   }
 
   return SDL_BLENDMODE_BLEND;
+}
+
+/**
+ * \brief Returns an OpenGL texture with the same pixel data as this surface.
+ *
+ * Only works for software surfaces.
+ *
+ * \param[out] tex_coords Array of 4 texture coordinates or nullptr.
+ * \return The OpenGL texture or \c 0 in case of failure.
+ */
+GLuint Surface::to_opengl_texture(GLfloat* tex_coords) {
+
+  if (internal_surface == nullptr) {
+    // Unfortunately, SDL_texture does not give access to an OpenGL handle.
+    // So we only support this operation for SDL_surface.
+    return 0;
+  }
+
+  if (opengl_texture == 0) {
+    // Create the OpenGL texture.
+    glGenTextures(1, &opengl_texture);
+    glBindTexture(GL_TEXTURE_2D, opengl_texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  }
+
+  // Use the surface width and height expanded to powers of 2.
+  int width = power_of_two(internal_surface->w);
+  int height = power_of_two(internal_surface->h);
+  if (tex_coords != nullptr) {
+    tex_coords[0] = 0.0f;
+    tex_coords[1] = 0.0f;
+    tex_coords[2] = static_cast<GLfloat>(internal_surface->w) / width;
+    tex_coords[3] = static_cast<GLfloat>(internal_surface->h) / height;
+  }
+
+  SDL_Surface_UniquePtr power_2_surface;
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN     // OpenGL RGBA masks.
+  power_2_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
+      SDL_SWSURFACE, width, height, 32,
+      0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000
+  ));
+#else
+  power_2_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
+      SDL_SWSURFACE, width, height, 32,
+      0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF
+  ));
+#endif
+
+  if (power_2_surface == nullptr) {
+    return 0;
+  }
+
+  // Save the alpha blending attributes.
+  SDL_BlendMode saved_mode;
+  SDL_GetSurfaceBlendMode(internal_surface.get(), &saved_mode);
+  SDL_SetSurfaceBlendMode(internal_surface.get(), SDL_BLENDMODE_NONE);
+
+  // Copy the original surface into the power-of-two surface.
+  SDL_Rect area;
+  area.x = 0;
+  area.y = 0;
+  area.w = internal_surface->w;
+  area.h = internal_surface->h;
+  SDL_BlitSurface(internal_surface.get(), &area, power_2_surface.get(), &area);
+
+  // Restore the alpha blending attributes.
+  SDL_SetSurfaceBlendMode(internal_surface.get(), saved_mode);
+
+  // Copy the image to the OpenGL texture.
+  glBindTexture(GL_TEXTURE_2D, opengl_texture);
+  glTexImage2D(GL_TEXTURE_2D,
+               0,
+               GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, power_2_surface->pixels);
+
+  return opengl_texture;
 }
 
 /**

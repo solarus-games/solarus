@@ -190,7 +190,13 @@ void GL_ARBShader::load() {
 
   // Create the vertex and fragment shaders.
   vertex_shader = create_shader(GL_VERTEX_SHADER_ARB, data.get_vertex_source().c_str());
+  if (!is_valid()) {
+    return;
+  }
   fragment_shader = create_shader(GL_FRAGMENT_SHADER_ARB, data.get_fragment_source().c_str());
+  if (!is_valid()) {
+    return;
+  }
 
   // Create a program object with both shaders.
   program = glCreateProgramObjectARB();
@@ -199,7 +205,7 @@ void GL_ARBShader::load() {
 
   glLinkProgramARB(program);
 
-  // Check GL status.
+  // Check the link status.
   GLint status;
   glGetObjectParameterivARB(program, GL_OBJECT_LINK_STATUS_ARB, &status);
 

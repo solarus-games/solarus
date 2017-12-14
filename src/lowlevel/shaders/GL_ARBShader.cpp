@@ -146,6 +146,7 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_id):
 
   const Size& quest_size = Video::get_quest_size();
   set_uniform_2f("sol_input_size", quest_size.width, quest_size.height);
+  set_uniform_2f("sol_texture_size", quest_size.width, quest_size.height);  // TODO next power of 2?
 
   glUseProgramObjectARB(previous_program);
 

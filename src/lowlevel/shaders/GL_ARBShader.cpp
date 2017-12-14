@@ -141,7 +141,7 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_id):
   // TODO use our uniform functions
   GLint location = get_uniform_location("sol_texture");
   if (location >= 0) {
-    glUniform1iARB(location, 0);
+    glUniform1iARB(location, 0);  // Use texture unit 0 for the quest surface.
   }
 
   const Size& quest_size = Video::get_quest_size();
@@ -296,22 +296,24 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
   SDL_RenderClear(renderer);
 
   // Draw on the render target.
-  quest_surface->render(renderer);
+  quest_surface->render(*render_target);
 
   // Render on the window using OpenGL, to apply a shader if we have to.
   SDL_SetRenderTarget(renderer, nullptr);
   set_rendering_settings();
 
-  glEnable(GL_TEXTURE_2D);
-  SDL_GL_BindTexture(render_target, nullptr, nullptr);
-
+  // Update uniform variables.
   GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
 
-  // Update uniform variables.
   const Size& window_size = Video::get_window_size();
   set_uniform_1f("sol_time", System::now());
   set_uniform_2f("sol_output_size", window_size.width, window_size.height);
+
+  glEnable(GL_TEXTURE_2D);
+
+  glActiveTexture(GL_TEXTURE0_ARB);  // Texture unit 0.
+  SDL_GL_BindTexture(render_target, nullptr, nullptr);
 
   // Draw.
   const GLfloat square_texcoord[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
@@ -328,11 +330,18 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
   glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
   glEnd();
 
-  glUseProgramObjectARB(previous_program);
-
   SDL_GL_UnbindTexture(render_target);
 
+  for (const auto& kvp : uniform_texture_units) {
+    const GLuint texture = kvp.first;
+    const int texture_unit = kvp.second;
+    glActiveTextureARB(GL_TEXTURE0_ARB + texture_unit);
+    glBindTexture(GL_TEXTURE_2D, texture);
+  }
+
   glDisable(GL_TEXTURE_2D);
+
+  glUseProgramObjectARB(previous_program);
 
   // And swap the window.
   SDL_GL_SwapWindow(window);
@@ -423,11 +432,18 @@ bool GL_ARBShader::set_uniform_texture(const std::string& uniform_name, const Su
   }
   GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
-  glEnable(GL_TEXTURE_2D);
-  glBindTexture(GL_TEXTURE_2D, texture);
-  glUniform1iARB(location, texture);
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glDisable(GL_TEXTURE_2D);
+
+  int texture_unit = 0;
+  const auto& it = uniform_texture_units.find(texture);
+  if (it != uniform_texture_units.end()) {
+    texture_unit = it->second;
+  }
+  else {
+    texture_unit = uniform_texture_units.size() + 1;
+    uniform_texture_units[texture] = texture_unit;
+  }
+  glUniform1iARB(location, texture_unit);
+
   glUseProgramObjectARB(previous_program);
 
   return true;

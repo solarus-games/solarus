@@ -181,10 +181,6 @@ void TransitionFade::draw(Surface& dst_surface) {
 
   if (!colored) {
     // Set the opacity on the surface.
-    // Only possible for software destinations.
-    Debug::check_assertion(dst_surface.is_software_destination()
-        || !Video::is_acceleration_enabled(),
-        "Cannot apply fade transition: this surface is in read-only mode");
     dst_surface.set_opacity(alpha_impl);
   }
   else {

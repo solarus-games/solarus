@@ -166,7 +166,6 @@ MainLoop::MainLoop(const Arguments& args):
   root_surface = Surface::create(
       Video::get_quest_size()
   );
-  root_surface->set_software_destination(false);  // Accelerate this surface.
 
   // Run the Lua world.
   // Do this after the creation of the window, but before showing the window,

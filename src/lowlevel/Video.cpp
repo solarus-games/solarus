@@ -66,7 +66,7 @@ struct VideoContext {
 
   // Shaders.
   bool rendertarget_supported = false;      /**< True if rendering on texture is supported. */
-  SDL_Texture* render_target = nullptr;     /**< The render texture used when shader modes are supported. */
+  SDL_Texture* render_target = nullptr;     /**< The render texture used. */
   bool shaders_enabled = false;             /**< True if shaded modes support is enabled. */
   ShaderPtr current_shader = nullptr;       /**< The shader currently used or nullptr. */
 
@@ -202,19 +202,6 @@ void initialize_software_video_modes() {
       context.quest_size * 4,
       std::unique_ptr<SoftwarePixelFilter>(new Hq4xFilter())
   );
-
-  if (context.shaders_enabled) {
-
-    // Initialize the render target.
-    context.render_target = SDL_CreateTexture(
-        context.main_renderer,
-        context.pixel_format->format,
-        SDL_TEXTUREACCESS_TARGET,
-        context.quest_size.width,
-        context.quest_size.height
-    );
-    SDL_SetTextureBlendMode(context.render_target, SDL_BLENDMODE_BLEND);
-  }
 
   context.default_video_mode = &context.all_video_modes[0];
 
@@ -409,14 +396,10 @@ void render(const SurfacePtr& quest_surface) {
   SurfacePtr surface_to_render = quest_surface;
   const SoftwarePixelFilter* software_filter = context.video_mode->get_software_filter();
   if (software_filter != nullptr) {
-    // SDL rendering, with acceleration if supported, and optionally with
-    // a software filter.
-    if (software_filter != nullptr) {
-      Debug::check_assertion(context.scaled_surface != nullptr,
-          "Missing destination surface for scaling");
-      quest_surface->apply_pixel_filter(*software_filter, *context.scaled_surface);
-      surface_to_render = context.scaled_surface;
-    }
+    Debug::check_assertion(context.scaled_surface != nullptr,
+        "Missing destination surface for scaling");
+    quest_surface->apply_pixel_filter(*software_filter, *context.scaled_surface);
+    surface_to_render = context.scaled_surface;
   }
 
   if (context.current_shader != nullptr) {
@@ -428,7 +411,8 @@ void render(const SurfacePtr& quest_surface) {
     SDL_SetRenderDrawColor(context.main_renderer, 0, 0, 0, 255);
     SDL_RenderSetClipRect(context.main_renderer, nullptr);
     SDL_RenderClear(context.main_renderer);
-    surface_to_render->render(context.main_renderer);
+    surface_to_render->render(*context.render_target);
+    SDL_RenderCopy(context.main_renderer, context.render_target, nullptr, nullptr);
     SDL_RenderPresent(context.main_renderer);
   }
 }
@@ -494,8 +478,7 @@ void get_quest_size_range(
 /**
  * \brief Sets the allowed range of quest sizes for this quest.
  *
- * This function sets the actual quest size and finishes the initialization
- * by creating the window.
+ * This function sets the actual quest size and finishes the initialization.
  *
  * \param normal_size Default size for this quest.
  * \param min_size Minimum size for this quest.
@@ -537,6 +520,16 @@ void set_quest_size_range(
   else {
     context.quest_size = context.wanted_quest_size;
   }
+
+  // Initialize the render target.
+  context.render_target = SDL_CreateTexture(
+      context.main_renderer,
+      context.pixel_format->format,
+      SDL_TEXTUREACCESS_TARGET,
+      context.quest_size.width,
+      context.quest_size.height
+  );
+  SDL_SetTextureBlendMode(context.render_target, SDL_BLENDMODE_BLEND);
 
   // We know the quest size: we can initialize legacy video modes.
   initialize_software_video_modes();

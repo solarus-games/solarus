@@ -586,22 +586,19 @@ void Surface::render(SDL_Texture& render_target) {
  */
 GLuint Surface::to_opengl_texture(GLfloat* tex_coords) {
 
-  if (internal_surface == nullptr) {
-    // Unfortunately, SDL_texture does not give access to an OpenGL handle.
-    // So we only support this operation for SDL_surface.
-    return 0;
+  if (opengl_texture != 0) {
+    // TODO update if it has changed
+    return opengl_texture;
   }
 
-  if (opengl_texture == 0) {
-    // Create the OpenGL texture.
-    glGenTextures(1, &opengl_texture);
-    glBindTexture(GL_TEXTURE_2D, opengl_texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);  // TODO remove?
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glBindTexture(GL_TEXTURE_2D, 0);
-  }
+  // Create the OpenGL texture.
+  glGenTextures(1, &opengl_texture);
+  glBindTexture(GL_TEXTURE_2D, opengl_texture);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);  // TODO remove?
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glBindTexture(GL_TEXTURE_2D, 0);
 
   // Use the surface width and height expanded to powers of 2.
   int width = power_of_two(internal_surface->w);

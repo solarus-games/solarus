@@ -67,7 +67,7 @@ class GL_ARBShader : public Shader {
     GLhandleARB fragment_shader;                 /**< The fragment shader. */
     mutable std::map<std::string, GLint>
         uniform_locations;                       /**< Cache of uniform locations. */
-    mutable std::map<GLuint, int>
+    mutable std::map<SurfacePtr, int>
         uniform_texture_units;                   /**< Texture unit of each uniform texture. */
 #else
 

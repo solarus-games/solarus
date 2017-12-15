@@ -31,6 +31,7 @@ namespace Solarus {
 namespace {
 
 PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
+PFNGLACTIVETEXTUREARBPROC glActiveTextureARB;
 PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
 PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB;
 PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObjectARB;
@@ -79,8 +80,10 @@ bool GL_ARBShader::initialize() {
   if (SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
       SDL_GL_ExtensionSupported("GL_ARB_shading_language_100") &&
       SDL_GL_ExtensionSupported("GL_ARB_vertex_shader") &&
-      SDL_GL_ExtensionSupported("GL_ARB_fragment_shader")) {
+      SDL_GL_ExtensionSupported("GL_ARB_fragment_shader") &&
+      SDL_GL_ExtensionSupported("GL_ARB_multitexture")) {
     glAttachObjectARB = get_proc_address_cast<PFNGLATTACHOBJECTARBPROC>(SDL_GL_GetProcAddress("glAttachObjectARB"));
+    glActiveTextureARB = get_proc_address_cast<PFNGLACTIVETEXTUREARBPROC>(SDL_GL_GetProcAddress("glActiveTextureARB"));
     glCompileShaderARB = get_proc_address_cast<PFNGLCOMPILESHADERARBPROC>(SDL_GL_GetProcAddress("glCompileShaderARB"));
     glCreateProgramObjectARB = get_proc_address_cast<PFNGLCREATEPROGRAMOBJECTARBPROC>(SDL_GL_GetProcAddress("glCreateProgramObjectARB"));
     glCreateShaderObjectARB = get_proc_address_cast<PFNGLCREATESHADEROBJECTARBPROC>(SDL_GL_GetProcAddress("glCreateShaderObjectARB"));
@@ -96,6 +99,7 @@ bool GL_ARBShader::initialize() {
     glUseProgramObjectARB = get_proc_address_cast<PFNGLUSEPROGRAMOBJECTARBPROC>(SDL_GL_GetProcAddress("glUseProgramObjectARB"));
     glGetHandleARB = get_proc_address_cast<PFNGLGETHANDLEARBPROC>(SDL_GL_GetProcAddress("glGetHandleARB"));
     if (glAttachObjectARB &&
+        glActiveTextureARB &&
         glCompileShaderARB &&
         glCreateProgramObjectARB &&
         glCreateShaderObjectARB &&
@@ -298,21 +302,17 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
   // Draw on the render target.
   quest_surface->render(*render_target);
 
-  // Render on the window using OpenGL, to apply a shader if we have to.
   SDL_SetRenderTarget(renderer, nullptr);
   set_rendering_settings();
 
   // Update uniform variables.
-  GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
 
   const Size& window_size = Video::get_window_size();
   set_uniform_1f("sol_time", System::now());
   set_uniform_2f("sol_output_size", window_size.width, window_size.height);
 
-  glEnable(GL_TEXTURE_2D);
-
-  glActiveTexture(GL_TEXTURE0_ARB);  // Texture unit 0.
+  glActiveTextureARB(GL_TEXTURE0_ARB + 0);  // Texture unit 0.
   SDL_GL_BindTexture(render_target, nullptr, nullptr);
 
   // Draw.
@@ -321,27 +321,26 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
 
   glBegin(GL_QUADS);
   glTexCoord2f(texcoord[0], texcoord[1]);
-  glVertex3f(-1.0f, 1.0f, 0.0f); // Top left
+  glVertex3f(-1.0f, 1.0f, 0.0f); // Top left.
   glTexCoord2f(texcoord[2], texcoord[1]);
-  glVertex3f(1.0f, 1.0f, 0.0f); // Top right
+  glVertex3f(1.0f, 1.0f, 0.0f); // Top right.
   glTexCoord2f(texcoord[2], texcoord[3]);
-  glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
+  glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right.
   glTexCoord2f(texcoord[0], texcoord[3]);
-  glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
+  glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left.
   glEnd();
 
   SDL_GL_UnbindTexture(render_target);
 
   for (const auto& kvp : uniform_texture_units) {
-    const GLuint texture = kvp.first;
+    const GLuint texture = kvp.first->to_opengl_texture(nullptr);
     const int texture_unit = kvp.second;
+    Debug::check_assertion(texture != 0, "Failed to get OpenGL texture");
     glActiveTextureARB(GL_TEXTURE0_ARB + texture_unit);
     glBindTexture(GL_TEXTURE_2D, texture);
   }
 
-  glDisable(GL_TEXTURE_2D);
-
-  glUseProgramObjectARB(previous_program);
+  glActiveTextureARB(GL_TEXTURE0_ARB + 0);  // Necessary to reset the active texture.
 
   // And swap the window.
   SDL_GL_SwapWindow(window);
@@ -426,21 +425,17 @@ bool GL_ARBShader::set_uniform_texture(const std::string& uniform_name, const Su
     return true;
   }
 
-  GLuint texture = value->to_opengl_texture(nullptr);
-  if (texture == 0) {
-    return false;
-  }
   GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
 
   int texture_unit = 0;
-  const auto& it = uniform_texture_units.find(texture);
+  const auto& it = uniform_texture_units.find(value);
   if (it != uniform_texture_units.end()) {
     texture_unit = it->second;
   }
   else {
     texture_unit = uniform_texture_units.size() + 1;
-    uniform_texture_units[texture] = texture_unit;
+    uniform_texture_units[value] = texture_unit;
   }
   glUniform1iARB(location, texture_unit);
 

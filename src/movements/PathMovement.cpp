@@ -440,6 +440,13 @@ void PathMovement::set_snapping_trajectory(const Point& src, const Point& dst) {
   PixelMovement::set_trajectory(trajectory);
 }
 
+/**
+ * @brief Returns the current angle with the horizontal in radian
+ * @return a angle in radian
+ */
+float PathMovement::get_angle() const {
+    return get_current_direction() * Geometry::PI_OVER_4;
+}
 
 /**
  * \brief Returns a string describing a path with random length in one of the four main directions.

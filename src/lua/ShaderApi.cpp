@@ -207,20 +207,59 @@ int LuaContext::shader_api_set_uniform(lua_State* l) {
     const std::string& uniform_name = LuaTools::check_string(l, 2);
 
     if (lua_isboolean(l, 3)) {
+      // Boolean.
       const bool value = lua_toboolean(l, 3);
       shader.set_uniform_1b(uniform_name, value);
     }
     else if (lua_isnumber(l, 3)) {
+      // Number.
       const float value = static_cast<float>(lua_tonumber(l, 3));
-      if (lua_isnumber(l, 4)) {
-        const float value_2 = static_cast<float>(lua_tonumber(l, 4));
-        shader.set_uniform_2f(uniform_name, value, value_2);
+      shader.set_uniform_1f(uniform_name, value);
+    }
+    else if (lua_istable(l, 3)) {
+      // Table of 2, 3 or 4 numbers.
+      const char* table_error_message = "Table parameter should have 2, 3 or 4 number elements";
+
+      lua_rawgeti(l, 3, 1);
+      if (!lua_isnumber(l, -1)) {
+        LuaTools::arg_error(l, 3, table_error_message);
       }
-      else {
-        shader.set_uniform_1f(uniform_name, value);
+      const float value_1 = static_cast<float>(LuaTools::check_number(l, -1));
+
+      lua_rawgeti(l, 3, 2);
+      if (!lua_isnumber(l, -1)) {
+        LuaTools::arg_error(l, 3, table_error_message);
       }
+      const float value_2 = static_cast<float>(LuaTools::check_number(l, -1));
+
+      lua_rawgeti(l, 3, 3);
+      if (lua_isnil(l, -1)) {
+        // 2 numbers.
+        shader.set_uniform_2f(uniform_name, value_1, value_2);
+        return 0;
+      }
+
+      if (!lua_isnumber(l, -1)) {
+        LuaTools::arg_error(l, 3, table_error_message);
+      }
+      const float value_3 = static_cast<float>(LuaTools::check_number(l, -1));
+
+      lua_rawgeti(l, 3, 3);
+      if (lua_isnil(l, -1)) {
+        // 3 numbers.
+        shader.set_uniform_3f(uniform_name, value_1, value_2, value_3);
+        return 0;
+      }
+
+      if (!lua_isnumber(l, -1)) {
+        // 4 numbers.
+        LuaTools::arg_error(l, 3, table_error_message);
+      }
+      const float value_4 = static_cast<float>(LuaTools::check_number(l, -1));
+      shader.set_uniform_4f(uniform_name, value_1, value_2, value_3, value_4);
     }
     else if (is_surface(l, 3)) {
+      // Surface.
       const SurfacePtr& value = check_surface(l, 3);
       bool success = shader.set_uniform_texture(uniform_name, value);
       if (!success) {
@@ -228,7 +267,7 @@ int LuaContext::shader_api_set_uniform(lua_State* l) {
       }
     }
     else {
-      LuaTools::type_error(l, 3, "boolean, number(s) or surface");
+      LuaTools::type_error(l, 3, "boolean, number, table or surface");
     }
     return 0;
   });

@@ -44,6 +44,8 @@ PFNGLSHADERSOURCEARBPROC glShaderSourceARB;
 PFNGLUNIFORM1IARBPROC glUniform1iARB;
 PFNGLUNIFORM1FARBPROC glUniform1fARB;
 PFNGLUNIFORM2FARBPROC glUniform2fARB;
+PFNGLUNIFORM3FARBPROC glUniform3fARB;
+PFNGLUNIFORM4FARBPROC glUniform4fARB;
 PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
 PFNGLGETHANDLEARBPROC glGetHandleARB;
 
@@ -96,6 +98,8 @@ bool GL_ARBShader::initialize() {
     glUniform1iARB = get_proc_address_cast<PFNGLUNIFORM1IARBPROC>(SDL_GL_GetProcAddress("glUniform1iARB"));
     glUniform1fARB = get_proc_address_cast<PFNGLUNIFORM1FARBPROC>(SDL_GL_GetProcAddress("glUniform1fARB"));
     glUniform2fARB = get_proc_address_cast<PFNGLUNIFORM2FARBPROC>(SDL_GL_GetProcAddress("glUniform2fARB"));
+    glUniform3fARB = get_proc_address_cast<PFNGLUNIFORM3FARBPROC>(SDL_GL_GetProcAddress("glUniform3fARB"));
+    glUniform4fARB = get_proc_address_cast<PFNGLUNIFORM4FARBPROC>(SDL_GL_GetProcAddress("glUniform4fARB"));
     glUseProgramObjectARB = get_proc_address_cast<PFNGLUSEPROGRAMOBJECTARBPROC>(SDL_GL_GetProcAddress("glUseProgramObjectARB"));
     glGetHandleARB = get_proc_address_cast<PFNGLGETHANDLEARBPROC>(SDL_GL_GetProcAddress("glGetHandleARB"));
     if (glAttachObjectARB &&
@@ -112,6 +116,8 @@ bool GL_ARBShader::initialize() {
         glUniform1iARB &&
         glUniform1fARB &&
         glUniform2fARB &&
+        glUniform3fARB &&
+        glUniform4fARB &&
         glUseProgramObjectARB &&
         glGetHandleARB) {
 
@@ -411,6 +417,40 @@ void GL_ARBShader::set_uniform_2f(const std::string& uniform_name, float value_1
   GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
   glUniform2fARB(location, value_1, value_2);
+  glUseProgramObjectARB(previous_program);
+}
+
+/**
+ * \copydoc Shader::set_uniform_3f
+ */
+void GL_ARBShader::set_uniform_3f(
+    const std::string& uniform_name, float value_1, float value_2, float value_3) {
+
+  const GLint location = get_uniform_location(uniform_name);
+  if (location == -1) {
+    return;
+  }
+
+  GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
+  glUseProgramObjectARB(program);
+  glUniform3fARB(location, value_1, value_2, value_3);
+  glUseProgramObjectARB(previous_program);
+}
+
+/**
+ * \copydoc Shader::set_uniform_4f
+ */
+void GL_ARBShader::set_uniform_4f(
+    const std::string& uniform_name, float value_1, float value_2, float value_3, float value_4) {
+
+  const GLint location = get_uniform_location(uniform_name);
+  if (location == -1) {
+    return;
+  }
+
+  GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
+  glUseProgramObjectARB(program);
+  glUniform4fARB(location, value_1, value_2, value_3, value_4);
   glUseProgramObjectARB(previous_program);
 }
 

@@ -140,6 +140,37 @@ void Shader::set_uniform_2f(const std::string&, float, float) {
 }
 
 /**
+ * \fn Shader::set_uniform_3f
+ * \brief Uploads a vec3 uniform value to this shader program.
+ *
+ * Does nothing if there is no such uniform in the shader program.
+ *
+ * \param uniform_name Name of the uniform to set.
+ * \param value_1 The first float value to set.
+ * \param value_2 The third float value to set.
+ * \param value_3 The second float value to set.
+ */
+void Shader::set_uniform_3f(const std::string&, float, float, float) {
+  // TODO make pure virtual
+}
+
+/**
+ * \fn Shader::set_uniform_4f
+ * \brief Uploads a vec4 uniform value to this shader program.
+ *
+ * Does nothing if there is no such uniform in the shader program.
+ *
+ * \param uniform_name Name of the uniform to set.
+ * \param value_1 The first float value to set.
+ * \param value_2 The second float value to set.
+ * \param value_3 The third float value to set.
+ * \param value_4 The fourth float value to set.
+ */
+void Shader::set_uniform_4f(const std::string&, float, float, float, float) {
+  // TODO make pure virtual
+}
+
+/**
  * \fn Shader::set_uniform_texture
  * \brief Uploads a 2D texture uniform value to this shader program.
  *

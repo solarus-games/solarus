@@ -46,9 +46,16 @@ class Shader : public ExportableToLua {
     const std::string& get_id() const;
     const ShaderData& get_data() const;
 
-    virtual void set_uniform_1b(const std::string& uniform_name, bool value);  // TODO make pure virtual
-    virtual void set_uniform_1f(const std::string& uniform_name, float value);
-    virtual void set_uniform_2f(const std::string& uniform_name, float value_1, float value_2);
+    virtual void set_uniform_1b(
+        const std::string& uniform_name, bool value);  // TODO make pure virtual
+    virtual void set_uniform_1f(
+        const std::string& uniform_name, float value);
+    virtual void set_uniform_2f(
+        const std::string& uniform_name, float value_1, float value_2);
+    virtual void set_uniform_3f(
+        const std::string& uniform_name, float value_1, float value_2, float value_3);
+    virtual void set_uniform_4f(
+        const std::string& uniform_name, float value_1, float value_2, float value_3, float value_4);
     virtual bool set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value);
 
     virtual void render(const SurfacePtr& quest_surface);  // TODO make pure virtual

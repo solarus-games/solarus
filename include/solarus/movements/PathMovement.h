@@ -61,7 +61,7 @@ class SOLARUS_API PathMovement: public PixelMovement {
     void set_loop(bool loop);
     bool get_snap_to_grid() const;
     void set_snap_to_grid(bool snap_to_grid);
-    float get_angle() const;
+    double get_angle() const;
 
     Point get_xy_change() const;
     int get_current_direction() const;

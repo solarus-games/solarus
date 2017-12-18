@@ -192,6 +192,7 @@ void LuaContext::register_movement_module() {
       { "set_path", path_movement_api_set_path },
       { "get_speed", path_movement_api_get_speed },
       { "set_speed", path_movement_api_set_speed },
+      { "get_angle", path_movement_api_get_angle},
       { "get_loop", path_movement_api_get_loop },
       { "set_loop", path_movement_api_set_loop },
       { "get_snap_to_grid", path_movement_api_get_snap_to_grid },
@@ -210,6 +211,7 @@ void LuaContext::register_movement_module() {
       MOVEMENT_COMMON_METHODS,
       { "get_speed", random_path_movement_api_get_speed },
       { "set_speed", random_path_movement_api_set_speed },
+      { "get_angle", random_path_movement_api_get_angle},
       { nullptr, nullptr }
   };
   register_type(
@@ -225,6 +227,7 @@ void LuaContext::register_movement_module() {
       { "set_target", path_finding_movement_api_set_target },
       { "get_speed", path_finding_movement_api_get_speed },
       { "set_speed", path_finding_movement_api_set_speed },
+      { "get_angle", path_finding_movement_api_get_angle},
       { nullptr, nullptr }
   };
   register_type(
@@ -1190,6 +1193,19 @@ int LuaContext::path_movement_api_set_speed(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of path_movement:get_angle().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::path_movement_api_get_angle(lua_State* l) {
+    return LuaTools::exception_boundary_handle(l, [&] {
+       const PathMovement& movement = *check_path_movement(l,1);
+       lua_pushnumber(l,movement.get_angle());
+       return 1;
+    });
+}
+
+/**
  * \brief Implementation of path_movement:get_loop().
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
@@ -1289,6 +1305,20 @@ int LuaContext::random_path_movement_api_get_speed(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of random_path_movement:get_angle().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::random_path_movement_api_get_angle(lua_State* l) {
+    return LuaTools::exception_boundary_handle(l, [&] {
+       const PathMovement& movement = *check_random_path_movement(l,1);
+       lua_pushnumber(l,movement.get_angle());
+       return 1;
+    });
+}
+
+
+/**
  * \brief Implementation of random_path_movement:set_speed().
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
@@ -1356,6 +1386,20 @@ int LuaContext::path_finding_movement_api_get_speed(lua_State* l) {
     return 1;
   });
 }
+
+/**
+ * \brief Implementation of path_finding_movement:get_angle().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::path_finding_movement_api_get_angle(lua_State* l) {
+    return LuaTools::exception_boundary_handle(l, [&] {
+       const PathMovement& movement = *check_path_finding_movement(l,1);
+       lua_pushnumber(l,movement.get_angle());
+       return 1;
+    });
+}
+
 
 /**
  * \brief Implementation of path_finding_movement:set_speed().

@@ -613,12 +613,12 @@ GLuint Surface::to_opengl_texture(GLfloat* tex_coords) {
   SDL_Surface_UniquePtr power_2_surface;
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN     // OpenGL RGBA masks.
   power_2_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
-      SDL_SWSURFACE, width, height, 32,
+      0, width, height, 32,
       0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000
   ));
 #else
   power_2_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
-      SDL_SWSURFACE, width, height, 32,
+      0, width, height, 32,
       0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF
   ));
 #endif

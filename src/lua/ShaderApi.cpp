@@ -21,6 +21,7 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/CurrentQuest.h"
+#include <iostream>
 
 namespace Solarus {
 
@@ -244,7 +245,7 @@ int LuaContext::shader_api_set_uniform(lua_State* l) {
       }
       const float value_3 = static_cast<float>(LuaTools::check_number(l, -1));
 
-      lua_rawgeti(l, 3, 3);
+      lua_rawgeti(l, 3, 4);
       if (lua_isnil(l, -1)) {
         // 3 numbers.
         shader.set_uniform_3f(uniform_name, value_1, value_2, value_3);

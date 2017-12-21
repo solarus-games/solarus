@@ -30,23 +30,6 @@
 
 namespace Solarus {
 
-namespace {
-
-/**
- * \brief Returns the lowest power of 2 greater than or equal to a value.
- * \param value A number.
- * \return The lowest power of 2 greater than or equal to this value.
- */
-int power_of_two(int value) {
-  int result = 1;
-  while (result < value) {
-    result <<= 1;
-  }
-  return result;
-}
-
-}  // Anonymous namespace.
-
 /**
  * \brief Creates a surface with the specified size.
  * \param width The width in pixels.
@@ -595,28 +578,27 @@ GLuint Surface::to_opengl_texture() {
   glBindTexture(GL_TEXTURE_2D, opengl_texture);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);  // TODO remove?
-//  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glBindTexture(GL_TEXTURE_2D, 0);
 
   // Use the surface width and height expanded to powers of 2.
-  int width = power_of_two(internal_surface->w);
-  int height = power_of_two(internal_surface->h);
+  int width = internal_surface->w;
+  int height = internal_surface->h;
 
-  SDL_Surface_UniquePtr power_2_surface;
+  // TODO Don't copy to an intermediate surface if the format is already RGBA or ABGR.
+  SDL_Surface_UniquePtr rgba_surface;
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN     // OpenGL RGBA masks.
-  power_2_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
+  rgba_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
       0, width, height, 32,
       0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000
   ));
 #else
-  power_2_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
+  rgba_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
       0, width, height, 32,
       0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF
   ));
 #endif
 
-  if (power_2_surface == nullptr) {
+  if (rgba_surface == nullptr) {
     return 0;
   }
 
@@ -631,7 +613,7 @@ GLuint Surface::to_opengl_texture() {
   area.y = 0;
   area.w = internal_surface->w;
   area.h = internal_surface->h;
-  SDL_BlitSurface(internal_surface.get(), &area, power_2_surface.get(), &area);
+  SDL_BlitSurface(internal_surface.get(), &area, rgba_surface.get(), &area);
 
   // Restore the alpha blending attributes.
   SDL_SetSurfaceBlendMode(internal_surface.get(), saved_mode);
@@ -644,7 +626,7 @@ GLuint Surface::to_opengl_texture() {
   glBindTexture(GL_TEXTURE_2D, opengl_texture);
   glTexImage2D(GL_TEXTURE_2D,
                0,
-               GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, power_2_surface->pixels);
+               GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba_surface->pixels);
 
   glBindTexture(GL_TEXTURE_2D, 0);
 

@@ -389,6 +389,22 @@ void GL_ARBShader::set_uniform_1b(const std::string& uniform_name, bool value) {
 }
 
 /**
+ * \copydoc Shader::set_uniform_1i
+ */
+void GL_ARBShader::set_uniform_1i(const std::string& uniform_name, int value) {
+
+  const GLint location = get_uniform_location(uniform_name);
+  if (location == -1) {
+    return;
+  }
+
+  GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
+  glUseProgramObjectARB(program);
+  glUniform1iARB(location, value);
+  glUseProgramObjectARB(previous_program);
+}
+
+/**
  * \copydoc Shader::set_uniform_1f
  */
 void GL_ARBShader::set_uniform_1f(const std::string& uniform_name, float value) {

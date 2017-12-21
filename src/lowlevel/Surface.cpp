@@ -648,6 +648,7 @@ GLuint Surface::to_opengl_texture(GLfloat* tex_coords) {
   glTexImage2D(GL_TEXTURE_2D,
                0,
                GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, power_2_surface->pixels);
+
   glBindTexture(GL_TEXTURE_2D, 0);
 
   return opengl_texture;

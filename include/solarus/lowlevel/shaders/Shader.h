@@ -48,6 +48,8 @@ class Shader : public ExportableToLua {
 
     virtual void set_uniform_1b(
         const std::string& uniform_name, bool value);  // TODO make pure virtual
+    virtual void set_uniform_1i(
+        const std::string& uniform_name, int value);
     virtual void set_uniform_1f(
         const std::string& uniform_name, float value);
     virtual void set_uniform_2f(

@@ -113,6 +113,19 @@ void Shader::set_uniform_1b(const std::string&, bool) {
 }
 
 /**
+ * \fn Shader::set_uniform_1i
+ * \brief Uploads an integer uniform value to this shader program.
+ *
+ * Does nothing if there is no such uniform in the shader program.
+ *
+ * \param uniform_name Name of the uniform to set.
+ * \param value The integer value to set.
+ */
+void Shader::set_uniform_1i(const std::string&, int) {
+  // TODO make pure virtual
+}
+
+/**
  * \fn Shader::set_uniform_1f
  * \brief Uploads a float uniform value to this shader program.
  *

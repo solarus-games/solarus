@@ -90,7 +90,7 @@ class Surface: public Drawable {
 
     void render(SDL_Texture& render_target);
 
-    GLuint to_opengl_texture(GLfloat* tex_coords);
+    GLuint to_opengl_texture();
 
     const std::string& get_lua_type_name() const override;
 

@@ -581,10 +581,9 @@ void Surface::render(SDL_Texture& render_target) {
  * Only works for software surfaces.
  * Returns the same OpenGL texture for the same surface.
  *
- * \param[out] tex_coords Array of 4 texture coordinates or nullptr.
  * \return The OpenGL texture or \c 0 in case of failure.
  */
-GLuint Surface::to_opengl_texture(GLfloat* tex_coords) {
+GLuint Surface::to_opengl_texture() {
 
   if (opengl_texture != 0) {
     // TODO update if it has changed
@@ -596,19 +595,13 @@ GLuint Surface::to_opengl_texture(GLfloat* tex_coords) {
   glBindTexture(GL_TEXTURE_2D, opengl_texture);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);  // TODO remove?
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+//  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);  // TODO remove?
+//  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glBindTexture(GL_TEXTURE_2D, 0);
 
   // Use the surface width and height expanded to powers of 2.
   int width = power_of_two(internal_surface->w);
   int height = power_of_two(internal_surface->h);
-  if (tex_coords != nullptr) {
-    tex_coords[0] = 0.0f;
-    tex_coords[1] = 0.0f;
-    tex_coords[2] = static_cast<GLfloat>(internal_surface->w) / width;
-    tex_coords[3] = static_cast<GLfloat>(internal_surface->h) / height;
-  }
 
   SDL_Surface_UniquePtr power_2_surface;
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN     // OpenGL RGBA masks.

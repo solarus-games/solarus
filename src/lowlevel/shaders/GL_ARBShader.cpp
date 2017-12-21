@@ -315,7 +315,7 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
   glUseProgramObjectARB(program);
 
   const Size& window_size = Video::get_window_size();
-  set_uniform_1f("sol_time", System::now());
+  set_uniform_1i("sol_time", System::now());
   set_uniform_2f("sol_output_size", window_size.width, window_size.height);
 
   glActiveTextureARB(GL_TEXTURE0_ARB + 0);  // Texture unit 0.
@@ -339,7 +339,7 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
   SDL_GL_UnbindTexture(render_target);
 
   for (const auto& kvp : uniform_texture_units) {
-    const GLuint texture = kvp.first->to_opengl_texture(nullptr);
+    const GLuint texture = kvp.first->to_opengl_texture();
     const int texture_unit = kvp.second;
     Debug::check_assertion(texture != 0, "Failed to get OpenGL texture");
     glActiveTextureARB(GL_TEXTURE0_ARB + texture_unit);

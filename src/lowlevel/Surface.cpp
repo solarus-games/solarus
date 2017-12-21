@@ -644,10 +644,14 @@ GLuint Surface::to_opengl_texture(GLfloat* tex_coords) {
   SDL_SetSurfaceBlendMode(internal_surface.get(), saved_mode);
 
   // Copy the image to the OpenGL texture.
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);  // Restore default pixel alignment settings.
+  glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+  glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+  glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
   glBindTexture(GL_TEXTURE_2D, opengl_texture);
   glTexImage2D(GL_TEXTURE_2D,
                0,
-               GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, power_2_surface->pixels);
+               GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, power_2_surface->pixels);
 
   glBindTexture(GL_TEXTURE_2D, 0);
 
